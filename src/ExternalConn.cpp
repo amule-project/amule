@@ -223,6 +223,8 @@ wxString ExternalConn::Authenticate(const wxString& item)
 
 //TODO: do a function for each command
 wxString ExternalConn::ProcessRequest(const wxString& item) {
+	CALL_APP_DATA_LOCK;
+
 	unsigned int nChars = 0;
 	wxString sOp;
 	//---------------------------------------------------------------------
@@ -2348,13 +2350,7 @@ void *ExternalConnClientThread::Entry()
 		}
 		if (m_sock->WaitForRead()) {
 			m_owner->m_ECServer->Read(m_sock, request);
-			//
-			// lfroen: this one definitly must NOT be here. It is 'cause somewhere
-			// in ProcessRequest we're going thru X event chain
-			// 
-			wxMutexGuiEnter();
 			wxString response = m_owner->ProcessRequest(request);
-			wxMutexGuiLeave();
 			m_owner->m_ECServer->Write(m_sock, response);
 		}
 	}

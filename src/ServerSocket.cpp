@@ -107,6 +107,7 @@ CServerSocket::~CServerSocket()
 
 void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
+	CALL_APP_DATA_LOCK;
 	//CAsyncSocket::OnConnect(nErrorCode);
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
@@ -549,6 +550,7 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 
 bool CServerSocket::PacketReceived(Packet* packet)
 {
+	CALL_APP_DATA_LOCK;
 	#ifdef DEBUG_SERVER_PROTOCOL
 	AddLogLineM(true,_("Server: Packet Received: "));
 	#endif
@@ -670,15 +672,11 @@ void *CServerSocketHandler::Entry()
 	if ( !socket->wxSocketClient::IsConnected() ) {
 		printf("CServerSocket: connection refused\n");
 	}
-	wxMutexGuiEnter();
 	socket->OnConnect(wxSOCKET_NOERROR);
 	socket->OnSend(wxSOCKET_NOERROR);
-	wxMutexGuiLeave();
 	while ( !TestDestroy() ) {
 		if ( socket->WaitForLost(0, 0) ) {
-			wxMutexGuiEnter();
 			socket->OnError(socket->LastError());
-			wxMutexGuiLeave();
 
 			printf("CServerSocket: connection closed\n");
 			return 0;
@@ -686,9 +684,7 @@ void *CServerSocketHandler::Entry()
 		// lfroen: setting timeout to give app a chance gracefully destroy
 		// thread before deleting object
 		if ( socket->WaitForRead(0, 10) ) {
-			wxMutexGuiEnter();
 			socket->OnReceive(wxSOCKET_NOERROR);
-			wxMutexGuiLeave();
 		}
 	}
 	printf("CServerSocket: terminated\n");
