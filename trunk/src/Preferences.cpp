@@ -588,6 +588,11 @@ CPreferences::CPreferences()
 			Preferences_Ext_Struct prefsExt;
 	
 			memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
+			// NOTE: This Read is dangerous.  It doesn't do The Right Thing
+			// with respect to endianness for the fields of prefsExt.  At this
+			// time, it doesn't matter because no fields except the version and
+			// userhash are used and they aren't sensitive to endianness.  If
+			// other fields are used in the future, this will have to be revisited.
 			off_t read = preffile.Read( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
 			if ( read == sizeof(Preferences_Ext_Struct) ) {
@@ -1085,9 +1090,14 @@ bool CPreferences::Save()
 		prefsExt.version = PREFFILE_VERSION;
 		md4cpy( prefsExt.userhash, s_userhash.GetHash() );
 		
-		off_t read = preffile.Write( &prefsExt, sizeof(Preferences_Ext_Struct) );
+		// NOTE: This Write is dangerous.  It doesn't do The Right Thing
+		// with respect to endianness for the fields of prefsExt.  At this
+		// time, it doesn't matter because no fields except the version and
+		// userhash are used and they aren't sensitive to endianness.  If
+		// other fields are used in the future, this will have to be revisited.
+		off_t written = preffile.Write( &prefsExt, sizeof(Preferences_Ext_Struct) );
 
-		error = read != sizeof(Preferences_Ext_Struct);
+		error = written != sizeof(Preferences_Ext_Struct);
 		
 		preffile.Close();
 	} else {
