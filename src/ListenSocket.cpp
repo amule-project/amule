@@ -197,7 +197,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		
 		switch(opcode) {
 			case OP_HELLOANSWER: {
-				// 0.42e
+				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				client->ProcessHelloAnswer(packet,size);
 
@@ -215,7 +215,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_HELLO: {
-				// 0.42e
+				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				bool bNewClient = !client;				
 				if (bNewClient) {
@@ -279,7 +279,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQUESTFILENAME: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_FileRequest", client, packet);				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
@@ -339,7 +339,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;  
 			}
 			case OP_SETREQFILEID: {
-				// 0.42e
+				// 0.43b EXCEPT track of bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 				    DebugSend("OP__SetReqfileID", client);
@@ -404,7 +404,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// DbT:End
 			}			
 			case OP_FILEREQANSNOFIL: {
-				// 0.42e
+				// 0.43b protocol, lacks ZZ's download manager on swap
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_FileReqAnsNoFil", client, packet);
@@ -435,7 +435,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQFILENAMEANSWER: {
-				// 0.42e
+				// 0.43b except check for bad clients
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_FileReqAnswer", client, packet);
@@ -450,7 +450,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_FILESTATUS: {
-				// 0.42e
+				// 0.43b except check for bad clients
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_FileStatus", client, packet);
@@ -465,7 +465,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_STARTUPLOADREQ: {
-				// 0.42e
+				// 0.43b except check for bad clients. Xaignar please review.
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_StartUpLoadReq", client);
@@ -496,7 +496,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_QUEUERANK: {
-				// 0.42e
+				// 0.43b 
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_QueueRank", client);
@@ -548,7 +548,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQUESTPARTS: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_RequestParts", client, packet);
@@ -598,7 +598,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 			}
 			case OP_CANCELTRANSFER: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_CancelTransfer", client);
@@ -612,7 +612,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_END_OF_DOWNLOAD: {
-				// 0.42e
+				// 0.43b except check for bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_EndOfDownload", client);
@@ -624,11 +624,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					if (theApp.glob_prefs->GetVerbose()) {
 						AddDebugLogLineM(false, client->GetUserName() + wxT(": Upload session ended due ended transfer."));
 					}
+				} else {
+					// client->CheckFailedFileIdReqs((uchar*)packet);
 				}
 				break;
 			}
 			case OP_HASHSETREQUEST: {
-				// 0.42e
+				// 0.43b except check for bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_HashSetRequest", client);
@@ -642,7 +644,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_HASHSETANSWER: {
-				// 0.42e
+				// 0.43b 
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_HashSetAnswer", client);
@@ -653,7 +655,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_SENDINGPART: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_SendingPart", client);
@@ -663,12 +665,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					client->ProcessBlockPacket(packet,size);
 					if (client->GetRequestFile()->IsStopped() || client->GetRequestFile()->GetStatus()==PS_PAUSED || client->GetRequestFile()->GetStatus()==PS_ERROR) {
 						if (!client->GetSentCancelTransfer()) {
-							#ifdef __USE_DEBUG__
-							if (thePrefs.GetDebugClientTCPLevel() > 0) {
-							    DebugSend("OP__CancelTransfer", client);
-
-							}
-							#endif				
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 							theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 							client->socket->SendPacket(packet,true,true);
@@ -678,11 +674,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 				} else {
 					if (!client->GetSentCancelTransfer()) {
-						#ifdef __USE_DEBUG__
-						if (thePrefs.GetDebugClientTCPLevel() > 0) {
-						    DebugSend("OP__CancelTransfer", client);
-						}
-						#endif				
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						client->socket->SendPacket(packet,true,true);
@@ -693,7 +684,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_OUTOFPARTREQS: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 				    DebugSend("OP__OutOfPartReqs", client);
@@ -706,7 +697,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_CHANGE_CLIENT_ID:{
-				// 0.42e (xcept the IDHybrid)
+				// 0.43b (xcept the IDHybrid)
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 				    DebugSend("OP__ChangeClientID", client);
@@ -739,25 +730,24 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->SetServerIP(nNewServerIP);
 						client->SetServerPort(pNewServer->GetPort());
 					}
-				} else{
-					#ifdef __USE_DEBUG__
+				} 
+				#ifdef __USE_DEBUG__
+				else{
 					if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						Debug("***NOTE: OP_ChangedClientID unknown contents\n");
 					}
-					#endif
 				}
 				UINT uAddData = data.GetLength() - data.GetPosition();
 				if (uAddData > 0){
-					#ifdef __USE_DEBUG__
 					if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						Debug("***NOTE: OP_ChangedClientID contains add. data %s\n", GetHexDump((uint8*)packet + data.GetPosition(), uAddData));
 					}
-					#endif
 				}
+				#endif				
 				break;
 			}					
 			case OP_CHANGE_SLOT:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_ChangeSlot", client, size>=16 ? packet : NULL);
@@ -768,22 +758,18 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}			
 			case OP_MESSAGE: {
-				// 0.42e
-				// But anyway we can change all this to a simple Read on a mem file.
+				// 0.43b
+				// But anyway we changed all this to a simple Read on a mem file.
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_Message", client, size>=16 ? packet : NULL);
 				}
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				if (size < 2) {
-					throw wxString(wxT("Invalid message packet"));
-				}
-				uint16 length = ENDIAN_SWAP_16(*((uint16*)packet));
-				if ((uint32)length + 2 != size) {
-					throw wxString(wxT("Invalid message packet"));
-				}
 				AddLogLineM(true,wxString(wxT("New message from '")) + client->GetUserName() + wxT("' (IP:") + client->GetFullIP() + wxT(")"));
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				
+				CSafeMemFile message_file((BYTE*)packet,size);
+
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
 				if ( (theApp.glob_prefs->MsgOnlyFriends() && !client->IsFriend()) ||
@@ -796,20 +782,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					#endif
 					break;
 				}
-				char* message = new char[length+1];
-				memcpy(message,packet+2,length);
-				message[length] = '\0';
-				#ifdef __USE_DEBUG__
-				if (thePrefs.GetDebugClientTCPLevel() > 0) {
-					Debug("  %s\n", message);
-				}
-				#endif				
-				theApp.amuledlg->chatwnd->ProcessMessage(client, char2unicode(message));
-				delete[] message;
+				wxString message;
+				message_file.Read(message);
+				theApp.amuledlg->chatwnd->ProcessMessage(client, message);
 				break;
 			}
 			case OP_ASKSHAREDFILES:	{
-				// 0.42e (well, er, it does the same, but in our own way)
+				// 0.43b (well, er, it does the same, but in our own way)
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedFiles", client);
@@ -851,7 +830,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDFILESANSWER: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedFilesAnswer", client);
@@ -862,7 +841,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDDIRS: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedDirectories", client);
@@ -952,7 +931,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDFILESDIR: {
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedFilesInDirectory", client);
@@ -1017,7 +996,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}		
 			
 			case OP_ASKSHAREDDIRSANS:{
-				// 0.42e
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedDirectoriesAnswer", client);
@@ -1055,6 +1034,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
       		}
       
 			case OP_ASKSHAREDFILESDIRANS: {
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedFilesInDirectoryAnswer", client);			  
