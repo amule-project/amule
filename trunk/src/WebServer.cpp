@@ -125,10 +125,8 @@ uint32 GetHigherPrio(uint32 prio, bool autoprio)
 		switch (prio) {
 			case PR_LOW: upperpriority = PR_NORMAL; break;
 			case PR_NORMAL: upperpriority = PR_HIGH; break;
-			case PR_HIGH: upperpriority = PR_VERYHIGH; break;
-			case PR_VERYHIGH: upperpriority = PR_AUTO; break;
-			case PR_VERYLOW: upperpriority = PR_LOW; break;
-			case PR_AUTO: upperpriority = PR_AUTO; break;
+			case PR_HIGH: upperpriority = PR_AUTO; break;
+			case PR_AUTO: upperpriority = PR_LOW; break;
 		}
 	}
 	return upperpriority;
@@ -138,18 +136,18 @@ wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
 {
 	wxString sFilePriority;
 	switch (nFilePriority) {
-		case PR_VERYLOW:
-			sFilePriority = wxT("Very Low"); break;
+//		case PR_VERYLOW:
+//			sFilePriority = wxT("Very Low"); break;
 		case PR_LOW:
 			sFilePriority = wxT("Low"); break;
 		case PR_NORMAL:
 			sFilePriority = wxT("Normal"); break;
 		case PR_HIGH:
 			sFilePriority = wxT("High"); break;
-		case PR_VERYHIGH:
-			sFilePriority = wxT("Very High"); break;
-		case PR_POWERSHARE:
-			sFilePriority = wxT("PowerShare[Release]"); break;
+//		case PR_VERYHIGH:
+//			sFilePriority = wxT("Very High"); break;
+//		case PR_POWERSHARE:
+//			sFilePriority = wxT("PowerShare[Release]"); break;
 		default:
 			sFilePriority = wxT("-"); break;
 	}
@@ -166,12 +164,10 @@ uint32 GetLowerPrio(uint32 prio, bool autoprio)
 		lesserpriority = PR_VERYHIGH;
 	} else {
 		switch (prio) {
-			case PR_LOW: lesserpriority = PR_VERYLOW; break;
+			case PR_LOW: lesserpriority = PR_AUTO; break;
 			case PR_NORMAL: lesserpriority = PR_LOW; break;
 			case PR_HIGH: lesserpriority = PR_NORMAL; break;
-			case PR_VERYHIGH: lesserpriority = PR_HIGH; break;
-			case PR_VERYLOW: lesserpriority = PR_VERYLOW; break;
-			case PR_AUTO: lesserpriority = PR_VERYHIGH; break;
+			case PR_AUTO: lesserpriority = PR_HIGH; break;
 		}
 	}
 	return lesserpriority;
@@ -1253,7 +1249,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 	Out.Replace(wxT("[ShowQueue]"), _("Show Queue"));
 	Out.Replace(wxT("[HideQueue]"), _("Hide Queue"));
-	Out.Replace(wxT("[Session]"), sSession);
 	Out.Replace(wxT("[ClearCompletedButton]"), m_Templates.sClearCompleted);
 	Out.Replace(wxT("[CLEARCOMPLETED]"), _("Clear Completed"));
 
@@ -1262,6 +1257,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[UploadList]"),
 		wxString::Format(_("Uploads (%i)"), m_UploadsInfo.ItemCount()));
 	Out.Replace(wxT("[CatSel]"), sCat);
+	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
 }
