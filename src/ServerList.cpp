@@ -51,6 +51,7 @@
 #include "Statistics.h"			// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
+#include "Format.h"
 
 CServerList::CServerList()
 {
@@ -170,26 +171,40 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 }
 
 
-bool CServerList::AddServer(CServer* in_server)
+bool CServerList::AddServer(CServer* in_server, bool fromUser)
 {
-	if (thePrefs::FilterBadIPs()) {
-		if ( !in_server->HasDynIP() && !IsGoodIP( in_server->GetIP() )) {
-			AddDebugLogLineM(false, logServer, wxT("AddServer: Server IP [ ") +
-					in_server->GetAddress() + wxT(" ] is filtered or invalid"));
+	if ( thePrefs::FilterBadIPs() ) {
+		if ( !in_server->HasDynIP() && !IsGoodIP( in_server->GetIP() ) || !in_server->GetPort() ) {
+			if ( fromUser ) {
+				AddLogLineM( true,
+					CFormat( _("Server not added: IP:Port [%s:%d] is filtered or invalid.") )
+						% in_server->GetAddress()
+						% in_server->GetPort()
+				);
+			}
+			
 			return false;
 		}
 	}
+	
 	CServer* test_server = GetServerByAddress(in_server->GetAddress(), in_server->GetPort());
-	// lfroen - it's ok, gui status checked in Notify
-	// if (test_server && theApp.amuledlg) {
+
 	if (test_server) {
-		AddDebugLogLineM(false, logServer, wxT("AddServer: Server [ ") +
-				in_server->GetAddress() + wxT(" ] is already on list"));
+		if ( fromUser ) {
+			AddLogLineM( true,
+				CFormat( _("Server not added: Server with matching IP:Port [%s:%d] found in list.") )
+					% in_server->GetAddress()
+					% in_server->GetPort()
+			);
+		}
+		
 		test_server->ResetFailedCount();
 		Notify_ServerRefresh( test_server );
+		
 		return false;
 	}
-	list.AddTail(in_server); //AddTail(in_server);
+	
+	list.AddTail(in_server);
 	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
 	
 	return true;

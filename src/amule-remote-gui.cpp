@@ -396,7 +396,7 @@ wxString CamuleRemoteGuiApp::GenFakeCheckUrl2(const CAbstractFile *f)
 	return strURL;
 }
 
-bool CamuleRemoteGuiApp::AddServer(CServer *)
+bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
 	// FIXME: add remote command
 	return true;
