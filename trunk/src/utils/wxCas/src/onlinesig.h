@@ -47,12 +47,14 @@
 #endif
 
 #include <wx/filename.h>
+#include <wx/datetime.h>
 
 /// amulesig.dat file monitoring
 class OnLineSig
 {
 private:
-	double m_maxDL;
+	double m_maxSessionDL;
+	wxDateTime m_maxSessionDlDate;
 
 	int m_amuleState;
 	wxString m_serverName;
@@ -156,8 +158,14 @@ public:
 	/// Get server connexion ID: LowID or HighID
 	wxString GetConnexionIDType () const;
 
-	/// Get max Download rate sine wxCas is running
-	wxString GetMaxDL () const;
+	/// Get max Download rate since wxCas is running
+	wxString GetSessionMaxDL () const;
+
+	/// Get max Download date since wxCas is running
+	wxDateTime GetSessionMaxDlDate () const;
+
+	/// Reset max Download rate and date since wxCas is running
+	void ResetSessionMaxDl ();
 };
 
 #endif /* _ONLINESIG_H */

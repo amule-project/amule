@@ -46,6 +46,7 @@
 #include <wx/image.h>
 #include <wx/version.h>
 #include <wx/config.h>
+#include <wx/datetime.h>
 #include <wx/wfstream.h>
 #include <wx/protocol/ftp.h>
 
@@ -55,15 +56,9 @@
 #include "wxcascte.h"
 #include "wxcaspix.h"
 
-// Needed for 2.4.2 backward compatibility
-#if (wxMINOR_VERSION < 5)
-#define wxCLOSE_BOX 0
-#endif
-
 // Constructor
 WxCasFrame::WxCasFrame ( const wxString & title ) :
-		wxFrame ( ( wxFrame * ) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
-		          wxDEFAULT_FRAME_STYLE & ( wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION | wxCLOSE_BOX ) )
+		wxFrame ( ( wxFrame * ) NULL, -1, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE )
 {
 	// Give it an icon
 	wxIcon icon;
@@ -99,9 +94,9 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_sigPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "aMule" ) );
 	m_sigPanelSBoxSizer = new wxStaticBoxSizer ( m_sigPanelSBox, wxVERTICAL );
 
-	// Hit Static Vertical Box Sizer
-	m_hitPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "Hits" ) );
-	m_hitPanelSBoxSizer = new wxStaticBoxSizer ( m_hitPanelSBox, wxVERTICAL );
+	// Hit Static Horizontal Box Sizer
+	m_hitPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "Maximum DL rate since wxCas is running" ) );
+	m_hitPanelSBoxSizer = new wxStaticBoxSizer ( m_hitPanelSBox, wxHORIZONTAL );
 
 	// Statistic labels
 	m_statLine_1 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
@@ -111,7 +106,9 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_statLine_5 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
 	m_statLine_6 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
 
-	m_hitLine_1 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_hitLine = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_hitButton =
+	    new wxButton ( m_mainPanel, ID_HIT_BUTTON, wxString ( _( "Reset" ) ) );
 
 #ifdef __LINUX__		// System monitoring on Linux
 
@@ -132,6 +129,40 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 #ifdef __LINUX__		// System monitoring on Linux
 
 	m_sysMonitor = new LinuxMon ();
+#endif
+
+	// Statistic Panel Layout
+	m_sigPanelSBoxSizer->Add ( m_statLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_3, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_4, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+
+	m_hitPanelSBoxSizer->Add ( m_hitLine, 1, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_CENTER, 5 );
+
+#ifdef __LINUX__		// System monitoring on Linux
+
+	m_monPanelSBoxSizer->Add ( m_sysLine_1, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_monPanelSBoxSizer->Add ( m_sysLine_2, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+#endif
+
+	// Main panel Layout
+	m_mainPanelVBox->Add ( m_staticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
+	
+	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+	
+#ifdef __LINUX__		// System monitoring on Linux
+
+	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+#endif
+
+	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, 0, wxALL | wxALIGN_CENTER | wxGROW, 10 );
+
+#ifdef __WXMSW__
+
+	m_mainPanelVBox->Add ( m_BottomStaticLine, 0, wxALL | wxALIGN_CENTER | wxGROW );
 #endif
 
 	// Toolbar Pixmaps
@@ -173,42 +204,12 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	SetToolBar ( m_toolbar );
 
-	// Statistic Panel Layout
-	m_sigPanelSBoxSizer->Add ( m_statLine_1, 0, wxALL | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_2, 0, wxALL | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_3, 0, wxALL | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_4, 0, wxALL | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxGROW, 5 );
-	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxGROW, 5 );
-
-	m_hitPanelSBoxSizer->Add ( m_hitLine_1, 0, wxALL | wxGROW, 5 );
-
-#ifdef __LINUX__		// System monitoring on Linux
-
-	m_monPanelSBoxSizer->Add ( m_sysLine_1, 0, wxALL | wxGROW, 5 );
-	m_monPanelSBoxSizer->Add ( m_sysLine_2, 0, wxALL | wxGROW, 5 );
-#endif
-
-	// Main panel Layout
-	m_mainPanelVBox->Add ( m_staticLine, 0, wxALL | wxGROW );
-	m_mainPanelVBox->Add ( m_sigPanelSBoxSizer, 0, wxALL | wxGROW, 10 );
-#ifdef __LINUX__		// System monitoring on Linux
-
-	m_mainPanelVBox->Add ( m_monPanelSBoxSizer, 0, wxALL | wxGROW, 10 );
-#endif
-
-	m_mainPanelVBox->Add ( m_hitPanelSBoxSizer, 0, wxALL | wxGROW, 10 );
-
-#ifdef __WXMSW__
-
-	m_mainPanelVBox->Add ( m_BottomStaticLine, 0, wxALL | wxGROW );
-#endif
-
+	// Panel Layout
 	m_mainPanel->SetAutoLayout( true );
 	m_mainPanel->SetSizer ( m_mainPanelVBox );
 
 	// Frame Layout
-	m_frameVBox->Add ( m_mainPanel, 0, wxALL | wxGROW );
+	m_frameVBox->Add ( m_mainPanel, 1, wxALL | wxGROW );
 	SetAutoLayout ( TRUE );
 	SetSizerAndFit ( m_frameVBox );
 
@@ -244,6 +245,7 @@ EVT_TOOL ( ID_BAR_PREFS, WxCasFrame::OnBarPrefs )
 EVT_TOOL ( ID_BAR_ABOUT, WxCasFrame::OnBarAbout )
 EVT_TIMER ( ID_REFRESH_TIMER, WxCasFrame::OnRefreshTimer )
 EVT_TIMER ( ID_FTP_UPDATE_TIMER, WxCasFrame::OnFtpUpdateTimer )
+EVT_BUTTON ( ID_HIT_BUTTON, WxCasFrame::OnHitButton )
 END_EVENT_TABLE ()
 
 // Get Stat Bitmap
@@ -252,7 +254,6 @@ WxCasFrame::GetStatImage () const
 {
 	wxBitmap
 	statBitmap = WxCasPix::getPixmap( wxT( "stat" ) );
-	;
 
 	wxMemoryDC memdc;
 	memdc.SelectObject ( statBitmap );
@@ -482,6 +483,14 @@ WxCasFrame::OnFtpUpdateTimer ( wxTimerEvent& WXUNUSED( event ) )
 	}
 }
 
+// Reset wxcas session hit
+void
+WxCasFrame::OnHitButton ( wxCommandEvent& WXUNUSED( event ) )
+{
+	m_aMuleSig->ResetSessionMaxDl();
+	UpdateStatsPanel ();
+}
+
 // Update all panels and frame, call Fit if needed
 void
 WxCasFrame::UpdateAll ( bool forceFitting )
@@ -490,10 +499,10 @@ WxCasFrame::UpdateAll ( bool forceFitting )
 
 	if ( needFit || forceFitting ) {
 		// Fit stats pannel
-		m_mainPanelVBox->Fit( m_mainPanel );
+		m_mainPanel->Fit();
 
 		// Fit main frame
-		m_frameVBox->Fit( this );
+		SetClientSize(m_mainPanel->GetSize());
 	}
 }
 
@@ -587,11 +596,12 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Stat line 7
-		newline = _( "Maximum DL rate since wxCas is running: " );
-		newline += m_aMuleSig->GetMaxDL ();
+		// Hits line 1
+		newline = m_aMuleSig->GetSessionMaxDL ();
+		newline += _( " on " );
+		newline += m_aMuleSig->GetSessionMaxDlDate().Format( wxT( "%c" ) );
 
-		m_hitLine_1->SetLabel ( newline );
+		m_hitLine->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
