@@ -21,7 +21,7 @@
 // ServerListCtrl.cpp : implementation file
 //
 
-
+#include <wx/textfile.h>
 #include <wx/event.h>
 
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -87,9 +87,9 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		}
 		SetItemState(event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
- 
+
 	bool priority_enabled, static_enabled, show_connect;
-	
+
 	// set states
 	CServer* test=NULL;
 	int selidx;
@@ -99,7 +99,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 	} else {
 		priority_enabled = FALSE;
 	}
-	
+
 	// Create up-to-date popupmenu
 	if(m_ServerMenu==NULL) {
 		m_ServerMenu=new wxMenu(_("Server"));
@@ -109,7 +109,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		m_ServerPrioMenu->Append(MP_PRIOHIGH,_("High"));
 
 		m_ServerMenu->Append(MP_CONNECTTO,_("Connect to this server"));
-	
+
 		m_ServerMenu->Append(999999,_("Priority"),m_ServerPrioMenu);
 		m_ServerMenu->Append(MP_ADDTOSTATIC,_("Add to static"));
 		m_ServerMenu->Append(MP_REMOVEFROMSTATIC, CString(_("Remove from static server list")));
@@ -119,7 +119,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		m_ServerMenu->AppendSeparator();
 		m_ServerMenu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 	}
-	
+
 	if(selidx!=-1) {
 		test=(CServer*)GetItemData(selidx);
 		if(test) {
@@ -134,7 +134,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		if((long)test==connected) {
 			show_connect = FALSE;
 		} else {
-			show_connect = TRUE;			
+			show_connect = TRUE;
 		}
 	} else {
 		static_enabled = FALSE;
@@ -148,10 +148,10 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 	if (show_connect) {
 		m_ServerMenu->SetLabel(MP_CONNECTTO,_("Connect to this server"));
 	} else {
-		m_ServerMenu->SetLabel(MP_CONNECTTO,_("Reconnect to this server"));						
+		m_ServerMenu->SetLabel(MP_CONNECTTO,_("Reconnect to this server"));
 	}
 
-	
+
 	PopupMenu(m_ServerMenu,event.GetPoint());
 }
 
@@ -239,7 +239,7 @@ bool CServerListCtrl::Init(CServerList* in_list)
 	InsertColumn(6,_("Preference"),wxLIST_FORMAT_LEFT, 60);
 	InsertColumn(7,_("Failed"),wxLIST_FORMAT_LEFT, 40);
 	InsertColumn(8,_("Static"),wxLIST_FORMAT_LEFT, 40);
-	InsertColumn(9,_("Version"),wxLIST_FORMAT_LEFT, 80);	
+	InsertColumn(9,_("Version"),wxLIST_FORMAT_LEFT, 80);
 
 	asc_sort[3]=true;asc_sort[4]=true;asc_sort[5]=true;asc_sort[7]=true;
 	// perhaps not yet
@@ -256,15 +256,15 @@ void CServerListCtrl::RemoveServer(CServer* todel,bool bDelToList)
 	//LVFINDINFO find;
 	//find.flags = LVFI_PARAM;
 	//find.lParam = (LPARAM)todel;
-	
-	
+
+
 	sint32 result = FindItem(-1,(long)todel);
 	if (result != (-1) ) {
 		server_list->RemoveServer((CServer*)GetItemData(result));
 		DeleteItem(result);
 	}
-	
-	
+
+
 	return;
 }
 void CServerListCtrl::RemoveAllServers(int state)
@@ -273,15 +273,15 @@ void CServerListCtrl::RemoveAllServers(int state)
 	int found = -1;
 	while (pos != -1) {
 		if (GetItemData(pos) == connected) {
-			wxMessageBox(wxT("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), wxT("Info"), wxOK);	
+			wxMessageBox(wxT("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), wxT("Info"), wxOK);
 			found = pos;
 			} else {
 				server_list->RemoveServer((CServer*)this->GetItemData(pos));
-				DeleteItem(pos);					
+				DeleteItem(pos);
 			}
-				pos=GetNextItem(found,wxLIST_NEXT_ALL,state);													
+				pos=GetNextItem(found,wxLIST_NEXT_ALL,state);
 		}
-				
+
 	ShowFilesCount();
 }
 
@@ -324,10 +324,10 @@ void CServerListCtrl::HighlightServer(const CServer* server, bool highlight)
 {
 
 	long itemnr=FindItem(-1,(long)server);
-	
+
 	if (itemnr!=-1) {
 //	Kry - Gui hangs while we do this...
-//	A safer hack it to change only the connecting server and handle the disconections	
+//	A safer hack it to change only the connecting server and handle the disconections
 //	for(long pos = 0; pos < GetItemCount(); ++pos) {
 		connected = (long)server;
 		wxListItem myitem;
@@ -337,7 +337,7 @@ void CServerListCtrl::HighlightServer(const CServer* server, bool highlight)
 		myfont.SetWeight((highlight) ? wxBOLD : wxNORMAL);
 		myitem.SetFont(myfont);
 		SetItem(myitem);
-	} 
+	}
 }
 
 void CServerListCtrl::RefreshServer(CServer* server)
@@ -410,10 +410,10 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	} else {
 		SetItem(itemnr,8,_("No"));
 	}
-	
+
 	temp = server->GetVersion();
 	SetItem(itemnr,9,temp);
-			
+
 }
 
 bool CServerListCtrl::ProcessEvent(wxEvent& evt)
@@ -421,7 +421,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
 		return CMuleListCtrl::ProcessEvent(evt);
 	}
-		
+
 	wxCommandEvent& event=(wxCommandEvent&)evt;
 	int item=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 
@@ -432,11 +432,11 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 			theApp.serverconnect->Disconnect();
 			theApp.amuledlg->ShowConnectionState(false);
 		}
-		
+
 		RemoveAllServers(wxLIST_STATE_DONTCARE);
 		return true;
 	}
-	
+
 	if (item != -1) {
 		if (((CServer*)GetItemData(item)) != NULL) {
 			switch (event.GetId()) {
@@ -463,10 +463,10 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 				}
 				case MP_REMOVE: {
 					RemoveAllServers(wxLIST_STATE_SELECTED);
-					return true;					
+					return true;
 					break;
 				}
-				
+
 				case MP_ADDTOSTATIC: {
 					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					while(pos != -1) {
@@ -478,7 +478,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
-					return true;					
+					return true;
 					break;
 				}
 				// Remove Static Servers [Barry]
@@ -486,14 +486,14 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					while(pos != -1) {
 						CServer* change = (CServer*)this->GetItemData(pos);
-						if (!StaticServerFileRemove(change)) {							
+						if (!StaticServerFileRemove(change)) {
 							return false;
 						}
 						change->SetIsStaticMember(false);
 						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
-					return true;					
+					return true;
 					break;
 				}
 				case MP_PRIOLOW: {
@@ -507,7 +507,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
-					return true;					
+					return true;
 					break;
 				}
 				case MP_PRIONORMAL: {
@@ -521,7 +521,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
-					return true;					
+					return true;
 					break;
 				}
 				case MP_PRIOHIGH: {
@@ -535,7 +535,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 						theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(change);
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
-					return true;					
+					return true;
 					break;
 				}
 				case MP_GETED2KLINK: {
@@ -551,7 +551,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
 					theApp.CopyTextToClipboard(link);
-					return true;					
+					return true;
 					break;
 				}
 			}
@@ -561,7 +561,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 	return CMuleListCtrl::ProcessEvent(evt);
 }
 
-bool CServerListCtrl::AddServermetToList(wxString strFile) 
+bool CServerListCtrl::AddServermetToList(wxString strFile)
 {
 	Freeze();
 	bool flag=server_list->AddServermetToList(CString(strFile.GetData()));
@@ -571,7 +571,7 @@ bool CServerListCtrl::AddServermetToList(wxString strFile)
 	return flag;
 }
 
-void CServerListCtrl::OnLvnColumnclickServlist(wxListEvent& evt) //NMHDR *pNMHDR, LRESULT *pResult) 
+void CServerListCtrl::OnLvnColumnclickServlist(wxListEvent& evt) //NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
@@ -648,7 +648,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 						return item2->GetPort()-item1->GetPort();
 					}
 				}
-				return iTemp; 
+				return iTemp;
 			}
 		}
 		case 2: { //Description asc
@@ -671,7 +671,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return 0;
 			}
 		}
-		case 3: //Ping asc 
+		case 3: //Ping asc
 			return item1->GetPing() - item2->GetPing();
 		case 103: //Ping desc
 			return item2->GetPing() - item1->GetPing();
@@ -696,11 +696,11 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 108: //staticservers-
 			return item1->IsStaticMember() - item2->IsStaticMember();
 		case 9: // version
-			return CString(item1->GetVersion()).CmpNoCase(item2->GetVersion());			
+			return CString(item1->GetVersion()).CmpNoCase(item2->GetVersion());
 		case 109: //version-
 			return CString(item2->GetVersion()).CmpNoCase(item1->GetVersion());
 		default:
-			return 0; 
+			return 0;
 	}
 }
 
@@ -721,7 +721,7 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
 		}
-		staticservers.AddLine(wxString::Format(wxT("%s:%i,%i,%s"),server->GetAddress(),server->GetPort(), server->GetPreferences(),server->GetListName())); 
+		staticservers.AddLine(wxString::Format(wxT("%s:%i,%i,%s"),server->GetAddress(),server->GetPort(), server->GetPreferences(),server->GetListName()));
 		theApp.amuledlg->AddLogLine(false, CString(wxT("'%s:%i,%s' %s")), server->GetAddress(), server->GetPort(), server->GetListName(), CString(_("Added to static server list")).GetData());
 		server->SetIsStaticMember(true);
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
@@ -746,7 +746,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 		int pos;
 		wxString StaticFilePath(theApp.ConfigDir +wxT("staticservers.dat"));
 		wxString StaticTempPath(theApp.ConfigDir +wxT("statictemp.dat"));
-		
+
 		wxTextFile staticservers(StaticFilePath);
 		wxTextFile statictemp(StaticTempPath);
 		if (wxFileExists(StaticTempPath)) {
@@ -759,12 +759,12 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 			if ( statictemp.IsOpened() ) {
 				statictemp.Close();
 			}
-		
+
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
 		}
 		for (wxString strLine = staticservers.GetFirstLine(); !staticservers.Eof(); strLine = staticservers.GetNextLine() ) {
-			
+
 			// ignore comments or invalid lines
 			if (strLine.GetChar(0) == '#' || strLine.GetChar(0) == '/') {
 				continue;
@@ -787,7 +787,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 		}
 		staticservers.Close();
 		statictemp.Write();
-		statictemp.Close();		
+		statictemp.Close();
 
 		// All ok, remove the existing file and replace with the new one
 		wxRemoveFile( StaticFilePath );
