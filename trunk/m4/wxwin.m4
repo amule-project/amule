@@ -33,7 +33,7 @@ dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config
 dnl command line options
 dnl ---------------------------------------------------------------------------
 
-AC_DEFUN(AM_OPTIONS_WXCONFIG,
+AC_DEFUN([AM_OPTIONS_WXCONFIG],
 [
    AC_ARG_WITH(wx-prefix, [  --with-wx-prefix=PREFIX   Prefix where wxWidgets is installed (optional)],
                wx_config_prefix="$withval", wx_config_prefix="")
@@ -50,7 +50,7 @@ dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config
 dnl command line options
 dnl ---------------------------------------------------------------------------
 
-AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
+AC_DEFUN([AM_OPTIONS_WXBASECONFIG],
 [
    AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWidgets base is installed (optional)],
                wxbase_config_prefix="$withval", wxbase_config_prefix="")
@@ -73,7 +73,7 @@ dnl ---------------------------------------------------------------------------
 dnl
 dnl Get the cflags and libraries from the wx-config script
 dnl
-AC_DEFUN(AM_PATH_WXCONFIG,
+AC_DEFUN([AM_PATH_WXCONFIG],
 [
   AC_REQUIRE([AC_PROG_AWK])
 

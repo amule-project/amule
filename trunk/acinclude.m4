@@ -3,7 +3,7 @@ dnl CHECK_WX_BUILT_WITH_GTK2
 dnl check gtk version wx widgets was compiled
 dnl ----------------------------------------------------
 
-AC_DEFUN(CHECK_WX_BUILT_WITH_GTK2,
+AC_DEFUN([CHECK_WX_BUILT_WITH_GTK2],
 [
   AC_MSG_CHECKING(if wxWidgets was linked with GTK2)
   if $WX_CONFIG_NAME --cppflags | grep -q 'gtk2' ; then
@@ -21,7 +21,7 @@ dnl CHECK_WX_PARTIAL_VERSION
 dnl check wx widgets 2.x version
 dnl ----------------------------------------------------
 
-AC_DEFUN(CHECK_WX_PARTIAL_VERSION,
+AC_DEFUN([CHECK_WX_PARTIAL_VERSION],
 [
   AC_MSG_CHECKING(if wxWidgets version >=2.5.0 )
   if $WX_CONFIG_NAME --version | grep -q '2.5' ; then
@@ -38,7 +38,7 @@ dnl GET_WXGTK_VERSION
 dnl get wx widgets
 dnl ----------------------------------------------------
 
-AC_DEFUN(GET_WXGTK_VERSION,
+AC_DEFUN([GET_WXGTK_VERSION],
 [
   WXGTK_VERSION=`$WX_CONFIG_NAME --version`
   AC_SUBST(WXGTK_VERSION)
@@ -50,7 +50,7 @@ dnl GET_GTK_VERSION
 dnl get gtk 1.x version
 dnl ----------------------------------------------------
 
-AC_DEFUN(GET_GTK_VERSION,
+AC_DEFUN([GET_GTK_VERSION],
 [
   GTK_VERSION=`$GTK_CONFIG --version`
   AC_SUBST(GTK_VERSION)
@@ -61,7 +61,7 @@ dnl GET_GTK2_VERSION
 dnl get gtk 2.x version
 dnl ----------------------------------------------------
 
-AC_DEFUN(GET_GTK2_VERSION,
+AC_DEFUN([GET_GTK2_VERSION],
 [
   GTK_VERSION=`$PKG_CONFIG --modversion gtk+-2.0`
   AC_SUBST(GTK_VERSION)
@@ -71,7 +71,7 @@ dnl ----------------------------------------------------
 dnl CHECK_ZLIB
 dnl check if zlib is on the system
 dnl ----------------------------------------------------
-AC_DEFUN(CHECK_ZLIB,
+AC_DEFUN([CHECK_ZLIB],
 [
 wv_zlib=""
 found_zlib="no"
@@ -183,7 +183,7 @@ dnl adds support for --gdlib-prefix and --gdlib-config
 dnl command line options
 dnl ---------------------------------------------------------------------------
 
-AC_DEFUN(AM_OPTIONS_GDLIBCONFIG,
+AC_DEFUN([AM_OPTIONS_GDLIBCONFIG],
 [
    AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX   Prefix where gdlib is installed (optional)],
                gdlib_config_prefix="$withval", gdlib_config_prefix="")
@@ -205,7 +205,7 @@ dnl ---------------------------------------------------------------------------
 dnl
 dnl Get the cflags and libraries from the gdlib-config script
 dnl
-AC_DEFUN(AM_PATH_GDLIBCONFIG,
+AC_DEFUN([AM_PATH_GDLIBCONFIG],
 [
   dnl do we have gdlib-config name: it can be gdlib-config or gd-config or ...
   if test x${GDLIB_CONFIG_NAME+set} != xset ; then
@@ -340,7 +340,7 @@ dnl adds support for curl-config
 dnl command line options
 dnl ---------------------------------------------------------------------------
 
-AC_DEFUN(AM_OPTIONS_CURLCONFIG,
+AC_DEFUN([AM_OPTIONS_CURLCONFIG],
 [
    AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG   curl-config script to use (optional)],
                curl_config_name="$withval", curl_config_name="")
@@ -360,7 +360,7 @@ dnl
 dnl Get the cflags and libraries from the curl-config script
 dnl
 
-AC_DEFUN(AM_PATH_CURLCONFIG,[
+AC_DEFUN([AM_PATH_CURLCONFIG],[
  AC_CACHE_VAL(my_cv_curl_vers,[
  my_cv_curl_vers=NONE
  dnl check is the plain-text version of the required version
@@ -423,7 +423,7 @@ dnl --------------------------------------------------------------------------
 dnl Check for crypto++ library
 dnl --------------------------------------------------------------------------
 
-AC_DEFUN(CHECK_CRYPTO,
+AC_DEFUN([CHECK_CRYPTO],
 	[
      AC_MSG_CHECKING([for crypto++ version >= 5.1])
 	if test x$crypto_prefix == x ; then
@@ -453,7 +453,7 @@ AC_DEFUN(CHECK_CRYPTO,
 	AC_SUBST(CRYPTO_PP_STYLE)
 	])
 
-AC_DEFUN(AM_OPTIONS_CRYPTO,
+AC_DEFUN([AM_OPTIONS_CRYPTO],
 [
    AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX   Prefix where crypto++ is installed (optional)],
             crypto_prefix="$withval", crypto_prefix="")
@@ -463,7 +463,7 @@ dnl --------------------------------------------------------------------------
 dnl CCache support
 dnl --------------------------------------------------------------------------
 
-AC_DEFUN(CHECK_CCACHE,
+AC_DEFUN([CHECK_CCACHE],
 	[
 	if test x$ccache_prefix == x ; then
 	ccache_prefix="/usr/bin"
@@ -487,7 +487,7 @@ AC_DEFUN(CHECK_CCACHE,
 	])
 
 
-AC_DEFUN(AM_OPTIONS_CCACHE_PFX,
+AC_DEFUN([AM_OPTIONS_CCACHE_PFX],
 [
    AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PFX   Prefix where ccache is installed (optional)],
             ccache_prefix="$withval", ccache_prefix="")
