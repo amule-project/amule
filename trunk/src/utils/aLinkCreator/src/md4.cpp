@@ -341,6 +341,9 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
   MD4Init(&hdc);
   while (!file.Eof())
     {
+      // Update display
+      ::wxSafeYield();
+
       MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
                 file.Read(buf, bufSize));
     }
@@ -380,6 +383,9 @@ wxString MD4::calcEd2kFromFile(const wxString &filename)
       MD4Init(&hdc);
       while (dataread < PARTSIZE && !file.Eof())
         {
+          // Update display
+          ::wxSafeYield();
+
           if ((dataread + BUFSIZE) > PARTSIZE)
             {
               read = file.Read(buf, PARTSIZE - dataread);
@@ -396,11 +402,14 @@ wxString MD4::calcEd2kFromFile(const wxString &filename)
 
       // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
       // character to be interpreted as the end of the parthash string
-	#if wxUSE_UNICODE
-	tmpHash += wxString(reinterpret_cast<const wchar_t *>(ret),MD4_HASHLEN_BYTE);
-	#else
-        tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
-	#endif
+#if wxUSE_UNICODE
+
+      tmpHash += wxString(reinterpret_cast<const wchar_t *>(ret),MD4_HASHLEN_BYTE);
+#else
+
+      tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
+#endif
+
       // If some more blocks left, re-init for next block
       if (!file.Eof())
         {

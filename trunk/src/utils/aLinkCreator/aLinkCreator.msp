@@ -85,6 +85,7 @@ extraResourceOptions=
 3=src\alcframe.cpp
 4=src\alchash.cpp
 5=src\md4.cpp
+6=src\activitybar.cpp
 [Header]
 1=src\alcpix.h
 2=src\alc.h
@@ -92,6 +93,7 @@ extraResourceOptions=
 4=src\alchash.h
 5=src\bithelp.h
 6=src\md4.h
+7=src\activitybar.h
 [Resource]
 1=alc.rc
 [Other]

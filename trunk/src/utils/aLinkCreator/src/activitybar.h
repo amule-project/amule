@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Name:         AlcFrame Class
+/// Name:         ActivityBar Class
 ///
 /// Purpose:      aMule ed2k link creator
 ///
@@ -25,11 +25,11 @@
 /// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _ALCFRAME_H
-#define _ALCFRAME_H
+#ifndef _ACTIVITYBAR_H
+#define _ACTIVITYBAR_H
 
 #ifdef __GNUG__
-#pragma interface "alcframe.h"
+#pragma interface "activitybar.h"
 #endif
 
 // Include wxWindows' headers
@@ -37,66 +37,42 @@
 #include <wx/wx.h>
 #endif
 
-#include <wx/statline.h>
+#include <wx/timer.h>
+#include <wx/gauge.h>
 
-#include "activitybar.h"
-
-// Compute and display md4sum or not
-//#define WANT_MD4SUM 1
-
-/// Main Alc Frame
-class AlcFrame:public wxFrame
+class ActivityBar:public wxGauge
   {
   private:
-    wxToolBar *m_toolbar;
-    wxBitmap m_toolBarBitmaps[3];
 
-    wxBoxSizer *m_frameVBox;
-
-    wxPanel *m_mainPanel;
-    wxBoxSizer *m_mainPanelVBox;
-
-    wxStaticLine *m_staticLine;
-
-#ifdef WANT_MD4SUM
-
-    wxStaticBox *m_md4HashSBox;
-    wxStaticBoxSizer* m_md4HashSBoxSizer;
-    wxTextCtrl *m_md4HashTextCtrl;
-#endif
-
-    wxStaticBox *m_e2kHashSBox;
-    wxStaticBoxSizer* m_e2kHashSBoxSizer;
-    wxTextCtrl *m_e2kHashTextCtrl;
-
-    wxStaticBox *m_ed2kSBox;
-    wxStaticBoxSizer* m_ed2kSBoxSizer;
-    wxTextCtrl *m_ed2kTextCtrl;
-
-    ActivityBar *m_activityBar;
+    wxTimer *m_timer;
+    int m_speed;
+    int m_range;
+    bool m_goUp;
+    int m_step;
 
     enum
     {
-      ID_BAR_OPEN = 1000,
-      ID_BAR_SAVEAS,
-      ID_BAR_ABOUT,
+      ID_TIMER = 1000
     };
 
   protected:
 
-    void OnBarOpen (wxCommandEvent & event);
-    void OnBarSaveAs (wxCommandEvent & event);
-    void OnBarAbout (wxCommandEvent & event);
+    void OnTimer (wxTimerEvent & event);
 
     DECLARE_EVENT_TABLE ();
 
   public:
-    /// Constructor
-    AlcFrame (const wxString& title);
 
-    /// Destructor
-    ~AlcFrame ();
+    ActivityBar(wxWindow* parent, wxWindowID id, int range, int speed,
+                const wxPoint&  pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+                long style = wxGA_HORIZONTAL, const wxValidator& validator = wxDefaultValidator,
+                const wxString& name = "activitybar");
+
+    ~ActivityBar();
+
+    void Start();
+
+    void Stop();
   };
 
-
-#endif /* _ALCFRAME_H */
+#endif /* _ACTIVITYBAR_H */

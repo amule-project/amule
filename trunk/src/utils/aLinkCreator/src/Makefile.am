@@ -4,13 +4,15 @@ alc_SOURCES = alc.cpp \
 		alcframe.cpp \
 		alchash.cpp \
 		alcpix.cpp \
-		md4.cpp
+		md4.cpp \
+		activitybar.cpp
 	
 noinst_HEADERS = alc.h \
 		alcframe.h \
 		alchash.h \
 		alcpix.h \
 		md4.h \
+		activitybar.h \
 		bithelp.h
 
 alc_CFLAGS = $(WX_CFLAGS)
