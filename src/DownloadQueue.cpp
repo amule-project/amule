@@ -937,21 +937,6 @@ void CDownloadQueue::AddLinksFromFile()
 	wxRemoveFile(theApp.ConfigDir +  wxT("ED2KLinks"));
 }
 
-/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
-void CDownloadQueue::DisableAllA4AFAuto(void)
-{
-	CPartFile* cur_file;
-	do_not_sort_please = true;
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		cur_file = (CPartFile*)filelist[i];
-		if (cur_file != NULL) {
-			cur_file->SetA4AFAuto(false);
-		}
-	}
-	do_not_sort_please = false;
-}
-/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
-
 void CDownloadQueue::ResetCatParts(int cat)
 {
 	do_not_sort_please = true;

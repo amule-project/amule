@@ -418,19 +418,13 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 
 	// request can contain multiple files.
 	for (int i = 0; i < request->GetTagCount(); ++i) {
-		CPartFile *pfile = 0;
 		CECTag *hashtag = request->GetTagByIndex(i);
 
 		wxASSERT(hashtag->GetTagName() == EC_TAG_PARTFILE);
 
 		CMD4Hash hash = hashtag->GetMD4Data();
-		for (unsigned int j = 0; j < theApp.downloadqueue->GetFileCount(); j++) {
-			CPartFile *curr_file = theApp.downloadqueue->GetFileByIndex(j);
-			if ( curr_file->GetFileHash() == hash ) {
-				pfile = curr_file;
-				break;
-			}
-		}
+		CPartFile *pfile = theApp.downloadqueue->GetFileByID( hash );
+		
 		if ( !pfile ) {
 			AddLogLineM(false,_("Remote PartFile command failed: FileHash not found: ") + hash.Encode());
 			response = new CECPacket(EC_OP_FAILED);
@@ -453,18 +447,12 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				break;
 			case EC_OP_PARTFILE_SWAP_A4AF_THIS:
 				if ((pfile->GetStatus(false) == PS_READY) ||
-				    (pfile->GetStatus(false) == PS_EMPTY)) {
-					theApp.downloadqueue->DisableAllA4AFAuto();
-
+					(pfile->GetStatus(false) == PS_EMPTY)) {
 					CPartFile::SourceSet::iterator it = pfile->A4AFsrclist.begin();
 					while ( it != pfile->A4AFsrclist.end() ) {
 						CUpDownClient *cur_source = *it++;
-						if ((cur_source->GetDownloadState() != DS_DOWNLOADING) &&
-						    cur_source->GetRequestFile() &&
-						    ( (!cur_source->GetRequestFile()->IsA4AFAuto()) ||
-						      (cur_source->GetDownloadState() == DS_NONEEDEDPARTS))) {
-							cur_source->SwapToAnotherFile(true, false, false, pfile);
-						}
+						
+						cur_source->SwapToAnotherFile(true, false, false, pfile);
 					}
 				}
 				break;
@@ -474,8 +462,6 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			case EC_OP_PARTFILE_SWAP_A4AF_OTHERS:
 				if ((pfile->GetStatus(false) == PS_READY) ||
 				    (pfile->GetStatus(false) == PS_EMPTY)) {
-					theApp.downloadqueue->DisableAllA4AFAuto();
-
 					CPartFile::SourceSet::iterator it = pfile->m_SrcList.begin();
 					while ( it != pfile->m_SrcList.end() ) {
 						CUpDownClient* cur_source = *it++;
