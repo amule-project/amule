@@ -81,7 +81,7 @@ public:
 	ExternalConn*	ECServerHandler;
 
 	// Kry - avoid chmod on win32
-	int use_chmod;
+	bool use_chmod;
 	bool IsReady;
 	
 
