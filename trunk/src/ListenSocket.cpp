@@ -78,9 +78,9 @@ CClientReqSocket::~CClientReqSocket()
 	Notify(FALSE);
 
 	if (client) {
-		client->socket = 0;
+		client->socket = NULL;
 	}
-	client = 0;
+	client = NULL;
 	theApp.listensocket->RemoveSocket(this);
 
 	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
@@ -135,6 +135,9 @@ void CClientReqSocket::Safe_Delete()
 	//deltimer = ::GetTickCount();
 	// if (m_hSocket != INVALID_SOCKET)
 	//  ShutDown(2);
+	if (client) {
+		client->socket = NULL;
+	}
 	client = NULL;
 	byConnected = ES_DISCONNECTED;
 	deletethis = true;
