@@ -2300,6 +2300,7 @@ void *ExternalConnClientThread::Entry()
 		if (m_sock->WaitForRead()) {
 			request = m_owner->m_ECServer->ReadPacket(m_sock);
 			response = m_owner->ProcessRequest2(request);
+			delete request;
 			m_owner->m_ECServer->WritePacket(m_sock, response);
 			delete response;
 		}
