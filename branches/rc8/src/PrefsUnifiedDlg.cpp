@@ -419,6 +419,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 			"'Auto-update serverlist at startup' will be disabled\n")));
 	}
 
+	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty() ) {
+		thePrefs::EnableExternalConnections( false );
+
+		wxMessageBox( _(
+			"You have enabled external connections but have not specified a password.\n"
+			"External connections cannot be enabled unless a valid password is specified.\n") );
+	}
+	
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 
