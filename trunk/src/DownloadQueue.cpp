@@ -1051,16 +1051,12 @@ void CDownloadQueue::CheckDiskspace( const wxString& path )
 				continue;
 		}
 	
-		if ( file->IsStopped() ) {
-			continue;
-		}
-	
-		if ( free >= min ) {
+		if ( free >= min && file->GetInsufficient() ) {
 			// We'll try to resume files if there is enough free space
 			if ( free - file->GetNeededSpace() > min ) {
 				file->ResumeFile();
 			}
-		} else if ( free < min ) {
+		} else if ( free < min && !file->IsPaused() ) {
 			// No space left, stop the files.
 			file->PauseFile( true );
 		}

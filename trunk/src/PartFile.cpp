@@ -2551,7 +2551,6 @@ void CPartFile::StopFile(bool bCancel)
 	RemoveAllSources(true);
 	kBpsDown = 0.0;
 	transferingsrc = 0;
-	m_insufficient = false;
 	memset(m_anStates,0,sizeof(m_anStates));
 	
 	if (!bCancel) {
@@ -2622,7 +2621,8 @@ void CPartFile::ResumeFile()
 	
 	m_paused = false;
 	m_stopped = false;
-	
+	m_insufficient = false;
+		
 	lastsearchtime = 0;
 	
 	UpdateDisplayedInfo(true);
