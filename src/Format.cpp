@@ -52,7 +52,6 @@ CFormat::CFormat( const wxChar* str )
 {
 	m_index = 0;
 	m_indexEnd = 0;
-	m_result.Alloc( m_format.Len() * 2 );
 	SetString( str );
 }
 
