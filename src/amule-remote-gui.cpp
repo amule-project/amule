@@ -72,7 +72,6 @@
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg
-#include "ServerListCtrl.h"		// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"

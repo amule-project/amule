@@ -57,7 +57,6 @@
 #endif // __SYSTRAY_DISABLED__
 
 #include "OtherFunctions.h"	// Needed for CastItoIShort
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
