@@ -271,14 +271,12 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 		item.SetId( itemnr );
 		
 		if ( GetItem( item ) ) {
-			wxFont font = item.GetFont();
+			wxFont font = GetFont();
 			
 			if ( highlight ) {
 				font.SetWeight( wxBOLD );
 
 				m_connected = (long)server;
-			} else {
-				font.SetWeight( wxNORMAL );
 			}
 
 			item.SetFont( font );
