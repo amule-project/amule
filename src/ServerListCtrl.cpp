@@ -21,6 +21,9 @@
 // ServerListCtrl.cpp : implementation file
 //
 
+#include <wx/filefn.h>
+#include <wx/ffile.h>
+#include <wx/file.h>
 #include <wx/textfile.h>
 #include <wx/event.h>
 #include <wx/menu.h>

@@ -24,6 +24,7 @@
 #include <wx/textctrl.h>	// Needed for wxTextCtrl
 #include <wx/datetime.h>
 #include <wx/socket.h>
+#include <wx/checkbox.h>
 
 #include "ExternalConn.h"	// Interface declarations
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl

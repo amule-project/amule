@@ -21,6 +21,7 @@
 #include <cerrno>
 #include <csignal>
 #include <cmath>
+#include <wx/textctrl.h>
 #include <wx/toolbar.h>
 #include <wx/utils.h>
 #include <wx/file.h>
