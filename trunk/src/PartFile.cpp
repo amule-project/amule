@@ -397,7 +397,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		load_from_backup = true;
 	} else {
 		if (!(metFile.Length()>0)) {
-			AddLogLineM(false, _("Error: part.met fileis 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
+			AddLogLineM(false, _("Error: part.met file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
 			metFile.Close();
 			load_from_backup = true;
 		}
