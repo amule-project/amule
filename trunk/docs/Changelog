@@ -89,7 +89,7 @@ Version 2.0.0rc6 - The '???' version.
 		* Some win32 fixes (slashes and backslashes)
 		* Automake 1.8 fixes
 		* Add traditionnal Chinese translation (zh_TW) from Paul (Thanks !)
-		* Add it, nl, fr, pl, es, eu translation updates (Thanks to all translators)
+		* Add it, nl, fr, pl, es, eu, ca translation updates (Thanks to all translators)
 		* Fix copyright for alc icons
 		* Replace amule, wxCas, alc .ico simple icons by icons group .ico
 		* Replace alcc's printf by wxLogMassage
