@@ -1033,6 +1033,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 	
 	wxASSERT(prseMaxUp == Prse(IDC_MAXUP));
 	wxASSERT(prseMaxDown = Prse(IDC_MAXDOWN));
+	
 }
 
 
@@ -1267,7 +1268,16 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxEvent& event)
 	}
 }
 
-	
+void PrefsUnifiedDlg::FixUDPStatus(bool enable_status) {
+	Rse* prse = Prse(IDC_UDPPORT);
+	if (enable_status) {
+		((wxCheckBox*)FindWindowById(IDC_UDPDISABLE))->SetValue(FALSE);
+		prse->SetCtrlRange(1025,65535);
+	} else {
+		((wxCheckBox*)FindWindowById(IDC_UDPDISABLE))->SetValue(TRUE);
+		prse->SetCtrlRange(0,0);		
+	}
+}	
 	
 void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent &event)
 {

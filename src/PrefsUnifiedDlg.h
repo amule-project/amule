@@ -74,6 +74,7 @@ public:
 	Rse	*Prse(int id);	// returns the Rse* corresponding to an item ID
 
 	int GetColorIndex()  { return pchoiceColor->GetSelection(); }
+	void FixUDPStatus(bool enable_status) ;
     
 private:
     // WDR: member variable declarations for PrefsUnifiedDlg
@@ -100,8 +101,7 @@ private:
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxEvent &event);
 	void OnScroll(wxCommandEvent &event);
-
-
+	
 private:
     DECLARE_EVENT_TABLE()
 };
