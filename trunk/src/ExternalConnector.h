@@ -87,7 +87,6 @@ public:
 	void Process_Answer(const wxString& answer);
 	bool Parse_Command(wxString &buffer, CmdId *commands);
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
-	wxString SendRecvMsg(const wxChar *msg);
 	CECPacket *SendRecvMsg_v2(CECPacket *request);
 	void ConnectAndRun(const wxString &ProgName, const wxString& ProgName, CmdId *commands);
 	//

@@ -563,9 +563,6 @@ enum {
 		 *	detail level is ::EC_DETAIL_WEB (ie. for webserver only)
 		 */
 	EC_OP_STATSTREE,
-	
-	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
-					// tags: EC_TAG_STRING: v1.0 message
 };
 
 

@@ -1357,11 +1357,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		//
 		// Misc commands
 		//
-		case EC_OP_COMPAT: 
-			response = new CECPacket(EC_OP_COMPAT);
-			response->AddTag(CECTag(EC_TAG_STRING,
-				ProcessRequest(request->GetTagByIndex(0)->GetStringData())));
-			break;
 		case EC_OP_SHUTDOWN:
 			response = new CECPacket(EC_OP_NOOP);
 			AddLogLineM(true, _("ExternalConn: shutdown requested"));
@@ -1545,28 +1540,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 	return response;
 }
 
-
-//TODO: do a function for each command
-wxString ExternalConn::ProcessRequest(const wxString& item) {
-	CALL_APP_DATA_LOCK;
-
-	wxString sOp;
-	wxString buffer;
-
-	AddLogLineM(false, wxT("Remote command: ") + item);
-
-		// QUEUE
-		if (item.Left(5).Cmp(wxT("QUEUE")) == 0) { //Get queue data information
-
-			if (item.Mid(6).Cmp(wxT("UL_GETLENGTH")) == 0) {
-				return wxString::Format( wxT("%i"), theApp.uploadqueue->GetUploadQueueLength() );
-			}
-			
-			return wxT("Bad QUEUE request");
-		} // end - QUEUE
-		
-		return wxEmptyString;
-}
 
 ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock) : wxThread()
 {

@@ -280,26 +280,6 @@ CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
 	return 0;
 }
 
-wxString CaMuleExternalConnector::SendRecvMsg(const wxChar *msg)
-{
-	CECPacket request(EC_OP_COMPAT);
-	request.AddTag(CECTag(EC_TAG_STRING, wxString(msg)));
-	if (m_ECClient->WritePacket(&request)) {
-		CECPacket *reply = m_ECClient->ReadPacket();
-		if (reply != NULL) {
-			// An EC_OP_COMPAT request implies the EC_OP_COMPAT reply.
-			wxString s = reply->GetTagByIndex(0)->GetStringData();
-			delete reply;
-			return s;
-		} else {
-			delete reply;
-			return wxEmptyString;
-		}
-	} else {
-		return wxEmptyString;
-	}
-}
-
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion, CmdId *UNUSED_IN_GUI(commands))
 {
 	wxString pass_plain;
