@@ -1,13 +1,9 @@
-bin_PROGRAMS = alc alcc
+bin_PROGRAMS = alc
 
 alc_SOURCES = alc.cpp \
 		alcframe.cpp \
 		ed2khash.cpp \
 		alcpix.cpp \
-		md4.cpp
-
-alcc_SOURCES = alcc.cpp \
-		ed2khash.cpp \
 		md4.cpp
 
 noinst_HEADERS = alc.h \
@@ -22,6 +18,16 @@ alc_CFLAGS = $(WX_CFLAGS)
 alc_CXXFLAGS = $(WX_CXXFLAGS)
 alc_LDADD = $(WX_LIBS)
 
+if HAVE_WXBASE
+
+bin_PROGRAMS += alcc
+
+alcc_SOURCES = alcc.cpp \
+		ed2khash.cpp \
+		md4.cpp
+
 alcc_CFLAGS = $(WXBASE_CFLAGS)
 alcc_CXXFLAGS = $(WXBASE_CXXFLAGS)
 alcc_LDADD = $(WXBASE_LIBS)
+
+endif
