@@ -576,8 +576,9 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 		Layout();
 	}
 
-	wxDateTime now = wxDateTime::Now();
-	bufferline = now.Format("%F") + " " + now.Format("%T") + ": " + bufferline + "\n";
+	bufferline = wxDateTime::Now().FormatDate() + wxT(" ") 
+		+ wxDateTime::Now().FormatTime() + wxT(": ") 
+		+ bufferline + wxT("\n");
 
 	wxTextCtrl* ct= (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
 	if(ct) {
