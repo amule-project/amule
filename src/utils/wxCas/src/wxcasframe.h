@@ -40,6 +40,7 @@
 #include <wx/timer.h>
 
 #include "wxcascanvas.h"
+#include "onlinesig.h"
 
 // wxCas Frame
 class WxCasFrame:public wxFrame
@@ -65,9 +66,10 @@ protected:
     DECLARE_EVENT_TABLE ();
 
 private:
-    wxTimer * m_timer;
+	
+  wxTimer * m_timer;
 
-	int MaxLineCount;
+  wxUint32 MaxLineCount;
 
   wxToolBar *m_toolbar;
   wxBitmap *m_toolBarBitmaps[5];
@@ -89,6 +91,9 @@ private:
   wxStaticText *m_statLine_6;
 
   WxCasCanvas *m_imgPanel;
+  
+  OnLineSig *aMuleSig;
+  
 
   enum
   {

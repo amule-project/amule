@@ -56,7 +56,7 @@ protected:
 
 private:
 
-  wxBitmap * m_bitmap;
+    wxBitmap * m_bitmap;
   wxWindow *m_model;
 };
 
