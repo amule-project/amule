@@ -27,7 +27,13 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+
 #include <vector>
+
+#ifndef EC_REMOTE
+#include "tree.hh"	// Needed for tree<>::
+#include "amule.h"		// Needed for StatsTreeSiblingIterator
+#endif
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECSpecialTags.h"
@@ -39,7 +45,7 @@
  * \note EC remote end does not need to create these packets,
  * only using the getter functions.
  *
- * Regarding this, thos classe are removed from remote build,
+ * Regarding this, those classes are removed from remote build,
  * that have only a constructor.
  */
 
@@ -48,6 +54,7 @@ class CKnownFile;
 class CPartFile;
 class CSearchFile;
 class CUpDownClient;
+
 
 class CEC_Server_Tag : public CECTag {
  	public:
@@ -178,5 +185,12 @@ class CEC_Search_Tag : public CECTag {
 			return tag ? tag->GetStringData() : wxT("");
 		}
 };
+
+#ifndef EC_REMOTE
+class CEC_Tree_Tag : public CECTag {
+	public:
+		CEC_Tree_Tag(const StatsTreeSiblingIterator& tr);
+};
+#endif
 
 #endif /* ECSPEACIALTAGS_H */

@@ -1648,7 +1648,23 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 }
 
 
-// FIXME: Using v1-style communication
+wxString ECTree2Html(CECTag *tree, int depth)
+{
+        wxString result(wxEmptyString);
+
+	for (int i = 0; i < depth; ++i) {
+		result += wxT("&nbsp;&nbsp;&nbsp;");
+	}
+
+	result += tree->GetStringData() + wxT("\r\n");
+
+        for (int i = 0; i < tree->GetTagCount(); ++i) {
+                result += ECTree2Html(tree->GetTagByIndex(i), depth + 1);
+        }
+
+        return result;
+}												
+
 wxString CWebServer::_GetStats(ThreadData Data) {
 
 	webInterface->DebugShow(wxT("***_GetStats arrived\n"));
@@ -1657,15 +1673,16 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 
 	wxString Out = m_Templates.sStats;
 	
-	CECPacket req(EC_OP_GET_STATSTREE);
+	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	wxString sStats =  response->GetTagByIndex(0)->GetStringData();
+	wxString sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
+		response->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData().GetData(),
+		_("Statistics"),
+		response->GetTagByName(EC_TAG_USER_NICK)->GetStringData().GetData());
+	sStats += ECTree2Html(response->GetTagByName(EC_TAG_TREE), 0);
+
+	Out.Replace(wxT("[STATSDATA]"), sStats);
 	delete response;
-	
-	int brk = sStats.First(wxT("\t"));
-	
-	Out.Replace(wxT("[STATSDATA]"), sStats.Left(brk));
-	Out.Replace(wxT("[Stats]"), sStats.Mid(brk+1));
 
 	return Out;
 }

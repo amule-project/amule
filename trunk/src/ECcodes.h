@@ -557,7 +557,11 @@ enum {
 		/*!
 		 * \brief Statistics tree reply
 		 *
-		 */	
+		 * \par Child Tags:
+		 *	::EC_TAG_TREE\n
+		 *	::EC_TAG_USER_NICK and ::EC_TAG_SERVER_VERSION only if
+		 *	detail level is ::EC_DETAIL_WEB (ie. for webserver only)
+		 */
 	EC_OP_STATSTREE,
 	
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
@@ -1251,10 +1255,16 @@ enum {
 	EC_TAG_STATSGRAPH_LAST,		///< (\c string, should be \c float) Timestamp of last acquired/sent history item. Default: 0.0
 	EC_TAG_STATSGRAPH_DATA,		///< sequence of uint32 triplets for the webserver (dl,ul,conn); ...
 
-	EC_TAG_IMAGE,
-	EC_TAG_IMAGE_X,
-	EC_TAG_IMAGE_Y,
-	EC_TAG_IMAGE_DATA,
+		/*!
+		 * \brief (Sub)tree for statistics.
+		 *
+		 * Value: (string) Stats label.
+		 *
+		 * Children:
+		 *	zero or more EC_TAG_TREE tags, containing the subtree for this item
+		 */
+	EC_TAG_TREE,
+
 };
 
 
