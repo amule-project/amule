@@ -280,16 +280,38 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				/* Add more from 0.30c (Creteil) BEGIN */
 				// save TCP flags in 'cur_server'
 				wxASSERT(cur_server);
+				uint32 ConnPort = 0;
 				if (cur_server) {
+					uint32 rport = cur_server->GetConnPort();					
 					if (size >= 4+4 /* uint32 (ID) + uint32 (TCP flags)*/) {			
 						cur_server->SetTCPFlags(data.ReadUInt32());
+						if (size >= 4+4+4 /* uint32 (ID) + uint32 (TCP flags) + uint32 (aux port) */) {
+							// aux port login : we should use the 'standard' port of this server to advertize to other clients
+							ConnPort = data.ReadUInt32();
+							cur_server->SetPort(ConnPort);
+							if (cur_server->GetAuxPortsList().IsEmpty()) {
+								cur_server->SetAuxPortsList(wxString::Format(wxT("%u"), rport));
+//							} else {
+//								cur_server->SetAuxPortsList(wxString::Format(wxT("%u"), rport) + wxT(",") + cur_server->GetAuxPortsList());
+							}
+						}
 					} else {
 						cur_server->SetTCPFlags(0);
 					}
 					// copy TCP flags into the server in the server list
-					CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
+					CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), rport);
 					if (pServer) {
 						pServer->SetTCPFlags(cur_server->GetTCPFlags());
+						if (ConnPort) {
+							pServer->SetPort(ConnPort);
+							if (pServer->GetAuxPortsList().IsEmpty()) {
+								pServer->SetAuxPortsList(wxString::Format(wxT("%u"), pServer->GetConnPort()));
+//							} else {
+//								pServer->SetAuxPortsList(wxString::Format(wxT("%u"), pServer->GetConnPort()) + wxT(",") + pServer->GetAuxPortsList());
+							}
+							Notify_ServerRefresh(pServer);
+							Notify_ServerUpdateMyInfo();
+						}
 					}
 				}
 				/* Add more from 0.30c (Creteil) END */
@@ -519,7 +541,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 	AddLogLineM(true,wxT("Trying to connect\n"));
 	#endif
 	cur_server = new CServer(server);
-	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
+	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetConnPort()));
 	SetConnectionState(CS_CONNECTING);
 	// This must be used if we want to reverse-check the addr of the server
 	#define GET_ADDR true
@@ -529,10 +551,10 @@ void CServerSocket::ConnectToServer(CServer* server)
 	amuleIPV4Address addr;
 	#endif
 	addr.Hostname(server->GetAddress());
-	addr.Service(server->GetPort());
-	AddDebugLogLineM(true, wxT("Server ") + server->GetAddress() + wxString::Format(wxT(" Port %i"),server->GetPort()));
+	addr.Service(server->GetConnPort());
+	AddDebugLogLineM(true, wxT("Server ") + server->GetAddress() + wxString::Format(wxT(" Port %i"),server->GetConnPort()));
 	#ifdef GET_ADDR
-	AddDebugLogLineM(true, wxT("Addr ") + addr.Hostname() + wxString::Format(wxT(" Port %i"),server->GetPort()));
+	AddDebugLogLineM(true, wxT("Addr ") + addr.Hostname() + wxString::Format(wxT(" Port %i"),server->GetConnPort()));
 	#endif
 	Connect(addr, false);
 

@@ -67,6 +67,7 @@ CServer::CServer(CServer* pOld)
 	}
 	port = pOld->port;
 	ip = pOld->ip; 
+	realport = pOld->realport;
 	staticservermember=pOld->IsStaticMember();
 	tagcount = pOld->tagcount;
 	ipfull = pOld->ipfull;
@@ -89,6 +90,7 @@ CServer::CServer(CServer* pOld)
 	m_uDescReqChallenge = pOld->m_uDescReqChallenge;
 	m_uLowIDUsers = pOld->m_uLowIDUsers;
 	lastdescpingedcout = pOld->lastdescpingedcout;
+	m_auxPorts = pOld->m_auxPorts;
 }
 
 CServer::~CServer()
@@ -109,6 +111,7 @@ void CServer::Init() {
 	ipfull = Uint32toStringIP(ip);
 	
 	taglist = new TagList;
+	realport = 0;
 	tagcount = 0;
 	files = 0;
 	users = 0;
@@ -130,6 +133,7 @@ void CServer::Init() {
 	m_uLowIDUsers = 0;
 	m_uDescReqChallenge = 0;
 	lastdescpingedcout = 0;
+	m_auxPorts = wxEmptyString;
 }	
 
 bool CServer::AddTagFromFile(CFileDataIO* servermet){
@@ -214,12 +218,19 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 			m_uUDPFlags = tag->tag.intvalue;
 		delete tag;
 		break;
+	case ST_AUXPORTSLIST:
+		if (tag->tag.type == 2)
+			m_auxPorts = tag->tag.stringvalue;
+			realport = port;
+			port = atoi(unicode2char(m_auxPorts.BeforeFirst(',')));
+		delete tag;
+		break;
 	case ST_LOWIDUSERS:
 		wxASSERT( tag->tag.type == 3 );
 		if (tag->tag.type == 3)			
 			m_uLowIDUsers = tag->tag.intvalue;
 		delete tag;
-		break;	
+		break;
 	default:
 		if (tag->tag.specialtag){
 			tag->tag.tagname = nstrdup("Unknown");

@@ -782,6 +782,10 @@ bool CServerList::SaveServermetToFile()
 				CTag serverdesc( ST_DESCRIPTION, nextserver->GetDescription() );
 				serverdesc.WriteTagToFile(&servermet);
 			}
+			if (nextserver->GetConnPort() != nextserver->GetPort()) {
+				CTag auxportslist( ST_AUXPORTSLIST, nextserver->GetAuxPortsList() );
+				auxportslist.WriteTagToFile(&servermet);
+			}
 			CTag serverfail(ST_FAIL, nextserver->GetFailedCount() );
 			serverfail.WriteTagToFile(&servermet);
 			CTag serverpref( ST_PREFERENCE, nextserver->GetPreferences() );

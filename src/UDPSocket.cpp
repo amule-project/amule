@@ -284,8 +284,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 									tag.tag.intvalue & 0xFFFF);
 								update->SetVersion(strVersion);
 							} else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2) {
-								// currently not implemented.
-								; // <string> = <port> [, <port>...]
+								update->SetAuxPortsList(tag.tag.stringvalue);
 							} else {
 								// Unknown tag
 								;
