@@ -93,27 +93,33 @@ void CSharedFileList::FindSharedFiles() {
 	}
 }
 
+  #include <wx/encconv.h>
+       #include <sys/types.h>
+       #include <sys/stat.h>
+       #include <fcntl.h>
+
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
 		
-	wxString fname=::wxFindFirstFile(directory + wxT("/"),wxFILE);
+	wxString fname=::wxFindFirstFile(directory,wxFILE);
   	
 	if (fname.IsEmpty()) {
     		return;
 	}
-  	
 	while(!fname.IsEmpty()) {  
 
-		wxFileName fName(fname);
-
-		wxDateTime accTime,modTime,crtTime;
-		fName.GetTimes(&accTime,&modTime,&crtTime);
 		uint32 fdate=wxFileModificationTime(fname);
-		int koko;
-		struct stat sbf;
-		stat(unicode2char(fname.GetData()),&sbf);
-		koko=sbf.st_size;
-		CKnownFile* toadd=filelist->FindKnownFile(fName.GetFullName(),fdate,koko);
+		int b = open(unicode2char(fname), O_RDONLY | O_LARGEFILE);
+		wxASSERT(b!=-1);
+		wxFile new_file(b);
+		wxASSERT(new_file.IsOpened());
+		
+		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
+			// Take just the file from the path
+			fname=fname.Mid(fname.Find('/',TRUE)+1);  
+		}
+		
+		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());
 		//theApp.Yield();
 		if (toadd) {
 			if ( m_Files_map.find(toadd->GetFileHash()) == m_Files_map.end() ) {
@@ -123,12 +129,13 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 				m_Files_map[toadd->GetFileHash()] = toadd;
 				list_mut.Unlock();
 			} else {
-				if ( wxStrcmp(fName.GetFullName().GetData(), toadd->GetFileName()) )
-					printf("Warning: File '%s' already shared as '%s'\n", unicode2char(fName.GetFullName()), unicode2char(toadd->GetFileName()));
+				if (!fname.Cmp(toadd->GetFileName())) {
+					printf("Warning: File '%s' already shared as '%s'\n", unicode2char(directory + fname), unicode2char(toadd->GetFileName()));
+				}
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
-			CAddFileThread::AddFile(directory, fName.GetFullName());
+			CAddFileThread::AddFile(directory, fname);
 		}
 		fname=::wxFindNextFile();
 	}
@@ -181,14 +188,16 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
-		GetDlgItem(ID_BTNRELSHARED)->Disable();
-		output->DeleteAllItems();
-		this->FindSharedFiles();
-		if ((output) && (firstload == false))
-			output->ShowFileList(this);
-		if (sendtoserver)
-			SendListToServer();
-		GetDlgItem(ID_BTNRELSHARED)->Enable();
+	GetDlgItem(ID_BTNRELSHARED)->Disable();
+	output->DeleteAllItems();
+	this->FindSharedFiles();
+	if ((output) && (firstload == false)) {
+		output->ShowFileList(this);
+	}
+	if (sendtoserver) {
+		SendListToServer();
+	}
+	GetDlgItem(ID_BTNRELSHARED)->Enable();
 	output->InitSort();
 }
 
@@ -350,19 +359,10 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
 
 void CSharedFileList::ClearED2KPublishInfo(){
 	CKnownFile* cur_file;
-//	CCKey bufKey;
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); pos++ ) {
 		cur_file = pos->second;
 		cur_file->SetPublishedED2K(false);
 	}
 
-	// Kry - We need to define a class to keep MFC compat. I.e. CMap ;)
-	// That way, we'll have the advantages of std::map with compatibility.
-	/*
-	for (POSITION pos = m_Files_map.GetStartPosition();pos != 0;){
-		m_Files_map.GetNextAssoc(pos,bufKey,cur_file);
-		cur_file->SetPublishedED2K(false);
-	}
-	*/
 }
