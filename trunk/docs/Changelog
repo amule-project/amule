@@ -104,6 +104,7 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 		   unexpected bugs that arised on having 2 preferences implementation. Now New Prefs become Preferences.
 		* Fixed SysTray and gtk-files being compiled even when disabled on configure.
 		* Fixed several warnings.
+		* Fixed assert on Clear All (search)
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
 		
 	Madcat:
@@ -117,9 +118,13 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
 		  wxSockets to be used on other platform too.
 		  
-	the-polish:
+	thepolish:
 	
 	        * win32 stuff
+		
+	Unleashed:
+	
+	        * Memleak fix
 		  
 	Xaignar:
 	
