@@ -74,6 +74,7 @@ WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
 
 class CFileStatistic {
 	friend class CKnownFile;
+	friend class CSharedFilesRem;
 public:
 	CFileStatistic();
 	void	AddRequest();
