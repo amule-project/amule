@@ -207,7 +207,7 @@ public:
 	static void		SetUserNick(const wxString& nick) { s_nick = nick; }
 
 	static uint16		GetPort()			{ return s_port; }
-	static void		SetPort(uint16 val)		{ s_port = val; }
+	static void		SetPort(uint16 val);
 	static uint16		GetUDPPort()			{ return s_udpport; }
 	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
 	static bool		IsUDPDisabled()			{ return s_UDPDisable; }

@@ -58,6 +58,8 @@
 
 using namespace otherfunctions;
 
+#define DEFAULT_TCP_PORT 4662
+
 // Static variables
 COLORREF		CPreferences::s_colors[cntStatColors];
 COLORREF		CPreferences::s_colors_ref[cntStatColors];
@@ -683,7 +685,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MAXUP,		(MkCfg_Int( wxT("/eMule/MaxUpload"), s_maxupload, 0 )));
 	NewCfgItem(IDC_MAXDOWN,		(MkCfg_Int( wxT("/eMule/MaxDownload"), s_maxdownload, 0 )));
 	NewCfgItem(IDC_SLOTALLOC,	(MkCfg_Int( wxT("/eMule/SlotAllocation"), s_slotallocation, 2 )));
-	NewCfgItem(IDC_PORT,		(MkCfg_Int( wxT("/eMule/Port"), s_port, 4662 )));
+	NewCfgItem(IDC_PORT,		(MkCfg_Int( wxT("/eMule/Port"), s_port, DEFAULT_TCP_PORT )));
 	NewCfgItem(IDC_UDPPORT,		(MkCfg_Int( wxT("/eMule/UDPPort"), s_udpport, 4672 )));
 	NewCfgItem(IDC_UDPDISABLE,	(new Cfg_Bool( wxT("/eMule/UDPDisable"), s_UDPDisable, false )));
 	NewCfgItem(IDC_AUTOCONNECT,	(new Cfg_Bool( wxT("/eMule/Autoconnect"), s_autoconnect, true )));
@@ -914,6 +916,7 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
 	CheckUlDlRatio();
+	SetPort(s_port);
 }
 
 
@@ -1323,3 +1326,14 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 	}
 }
 
+void CPreferences::SetPort(uint16 val) { 
+	// Warning: Check for +3, because server UDP is TCP+3
+	
+	if (val +3 > 65535) {
+		AddLogLineM(true, _("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
+		AddLogLineM(false, wxString::Format(_("Default port will be used (%d)"),DEFAULT_TCP_PORT));
+		s_port = DEFAULT_TCP_PORT;
+	} else {
+		s_port = val;
+	}
+}
