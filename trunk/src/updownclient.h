@@ -144,7 +144,7 @@ public:
 	wxString			GetUserName()		const	{return Username;}
 	uint32			GetIP()						{return m_dwUserIP;}
 	bool			HasLowID()					{return (m_nUserID < 16777216);}
-	char*			GetFullIP()					{return m_szFullUserIP;}
+	wxString			GetFullIP()					{return FullUserIP;}
 	uint32			GetUserPort()				{return m_nUserPort;}
 	uint32			GetTransferedUp()			{return m_nTransferedUp;}
 	uint32			GetTransferedDown()			{return m_nTransferedDown;}
@@ -163,7 +163,7 @@ public:
 	bool			IsEmuleClient()				{return m_byEmuleVersion;}
 	CClientCredits* Credits()					{return credits;}
 	bool			IsBanned()					{return (m_bBanned && m_nDownloadState != DS_DOWNLOADING);}
-	char*			GetClientFilename()			{return m_pszClientFilename;}
+	wxString		GetClientFilename()			{return ClientFilename;}
 	bool			SupportsUDP()				{return m_byUDPVer != 0 && m_nUDPPort != 0;}
 	uint16			GetUDPPort()				{return m_nUDPPort;}
 	void			SetUDPPort(uint16 nPort)	{ m_nUDPPort = nPort; }
@@ -404,7 +404,7 @@ private:
 	uint8 m_SoftLen;
 	bool	m_bEmuleProtocol;
 	wxString	Username;
-	char	m_szFullUserIP[21];
+	wxString FullUserIP;
 	uchar	m_achUserHash[16];
 	bool	m_HasValidHash;
 	uint16	m_nUDPPort;
@@ -445,6 +445,7 @@ private:
 	//upload
 	void CreateStandartPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	void CreatePackedPackets(unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
+	
 	float			kBpsUp;
 	uint32		msSentPrev;
 	bool			m_bBanned;
@@ -478,7 +479,7 @@ private:
 	uint16		m_nPartCount;
 	uint32		m_cDownAsked;
 	uint32		m_dwLastAskedTime;
-	char*		m_pszClientFilename;
+	wxString		ClientFilename;
 	uint32		m_nTransferedDown;
 	// -khaos--+++> Download Session Stats Imported from eMule 0.30c (Creteil) BEGIN ...
 	bool		m_bTransferredDownMini;

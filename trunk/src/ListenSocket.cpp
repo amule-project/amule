@@ -238,7 +238,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				// if IP is filtered, dont reply but disconnect...
 				if (theApp.ipfilter->IsFiltered(client->GetIP())) {
-					theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: %s (%s)"),client->GetFullIP(),theApp.ipfilter->GetLastHit().GetData());					
+					theApp.amuledlg->AddDebugLogLine(true,_("Filtered IP: ") + client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
 					theApp.stat_filteredclients++;
 					if (bNewClient) {
 						delete client;
@@ -581,7 +581,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if (theApp.glob_prefs->GetVerbose()) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									AddLogLineM(false,wxString::Format(wxT("Client requests invalid %u. file block %u-%u (%d bytes): %s"), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i], client->GetFullIP()));
+									AddLogLineM(false,wxString::Format(wxT("Client requests invalid %u. file block %u-%u (%d bytes): "), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])  + client->GetFullIP());
 								}
 							}
 						}
@@ -774,14 +774,14 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if ((uint32)length + 2 != size) {
 					throw wxString(wxT("Invalid message packet"));
 				}
-				AddLogLineM(true,wxString(wxT("New message from '")) + client->GetUserName() + wxString::Format(wxT("' (IP:%s)"), client->GetFullIP()));
+				AddLogLineM(true,wxString(wxT("New message from '")) + client->GetUserName() + wxT("' (IP:") + client->GetFullIP() + wxT(")"));
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
 				if ( (theApp.glob_prefs->MsgOnlyFriends() && !client->IsFriend()) ||
 					 (theApp.glob_prefs->MsgOnlySecure() && client->GetUserName()==wxEmptyString) ) {
 					#if 0
 					if (!client->m_bMsgFiltered) {
-						AddDebugLogLine(false,"Filtered Message from '%s' (IP:%s)",client->GetUserName(), client->GetFullIP());
+						AddLogLineM(true,wxString(wxT("Message filtered from '")) + client->GetUserName() + wxT("' (IP:") + client->GetFullIP() + wxT(")"));
 					}
 					client->m_bMsgFiltered=true;
 					#endif
@@ -1120,7 +1120,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			client->SetDownloadState(DS_ERROR);
 			// TODO write this into a debugfile
-			AddDebugLogLineM(false,wxString(_("Client '")) + client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), client->GetFullIP()) + error + _(". Disconnecting client!"));
+			AddDebugLogLineM(false,wxString(_("Client '")) + client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), unicode2char(client->GetFullIP())) + error + _(". Disconnecting client!"));
 		} else {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
@@ -1755,9 +1755,9 @@ void CClientReqSocket::OnError(int nErrorCode)
 		if (client) {
 			if (client->GetUserName()) {
 				strError = wxString(_("Client '")) + client->GetUserName();
-				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),client->GetFullIP(),nErrorCode);
+				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),unicode2char(client->GetFullIP()),nErrorCode);
 			} else {
-				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),client->GetFullIP(),nErrorCode);
+				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),unicode2char(client->GetFullIP()),nErrorCode);
 			}
 		} else {
 			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),nErrorCode);

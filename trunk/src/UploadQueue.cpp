@@ -183,7 +183,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 				type = _("suspicious name change");
 			}
 		}
-		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "),newclient->m_szFullUserIP,newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
+		AddLogLineM(false, newclient->GetUserName() + wxT(" [") + newclient->FullUserIP + wxString::Format(_(":%i] using "),newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
 		// remove client !
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
 		return;
@@ -234,7 +234,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		// thief !
 		newclient->thief=true;
 		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
-		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "), newclient->GetFullIP(),newclient->GetUserPort()) + newclient->GetClientVerString() +  _("removed : leecher, invalid eMule or irregular Donkey"));
+		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "), unicode2char(newclient->GetFullIP()),newclient->GetUserPort()) + newclient->GetClientVerString() +  _("removed : leecher, invalid eMule or irregular Donkey"));
 		return;
 	}	
 
@@ -394,6 +394,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
+
 	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
