@@ -213,17 +213,19 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
 {
-	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER_UP, (uint32)client->GetTransferedUp()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
 
+	if (detail_level == EC_DETAIL_UPDATE) {
+			return;
+	}
+
+	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
-		if ( detail_level != EC_DETAIL_WEB ) {
-			AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
-		}
+		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
 	}
 	
 }
