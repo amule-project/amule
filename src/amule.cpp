@@ -29,6 +29,7 @@
 #endif
 
 #include <cmath>
+#include <csignal>
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
 
@@ -148,6 +149,31 @@ static void SetResourceLimits()
 #endif
 #endif
 }
+
+
+void OnShutdownSignal( int /* sig */ ) 
+{
+	static bool terminating = false;
+
+	if ( !terminating ) {
+		terminating = true;
+		printf("Shutdown requested, terminating.\n");
+#ifndef AMULE_DEAMON
+		if ( theApp.amuledlg ) {
+			((wxWindow*)theApp.amuledlg)->Close( true );
+		} else {
+			printf("Dialog not found, forcing termination.\n");
+			exit( 1 );
+		}
+#else
+		theApp.ExitMainLoop();
+#endif
+	} else {
+		printf("Forced termination!\n");
+		exit( 1 );
+	}
+}
+
 
 CamuleApp::CamuleApp()
 {
@@ -372,7 +398,14 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
-
+	// get rid of sigpipe
+#ifndef __WXMSW__
+	signal(SIGPIPE, SIG_IGN);
+#endif
+	// Handle sigint and sigterm
+	signal(SIGINT, OnShutdownSignal);
+	signal(SIGTERM, OnShutdownSignal);
+	
 	sent = 0;
 	
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
