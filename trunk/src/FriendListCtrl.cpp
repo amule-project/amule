@@ -145,7 +145,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 		theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
 	} else {
 		CUpDownClient* chatclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
-		chatclient->SetUserName((char*)cur_friend->m_strName.c_str());
+		chatclient->SetUserName(unicode2char(cur_friend->m_strName));
 		theApp.clientlist->AddClient(chatclient);
 		theApp.amuledlg->chatwnd->StartSession(chatclient);
 	}
@@ -337,7 +337,7 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 				cur_friend->m_LinkedClient->RequestSharedFileList();
 			} else {
 				CUpDownClient* newclient = new CUpDownClient(cur_friend->m_nLastUsedPort, cur_friend->m_dwLastUsedIP, 0, 0, 0);
-				newclient->SetUserName((char*)cur_friend->m_strName.c_str());
+				newclient->SetUserName(unicode2char(cur_friend->m_strName));
 				theApp.clientlist->AddClient(newclient);
 				newclient->RequestSharedFileList();
 			}
