@@ -185,7 +185,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_mainPanelVBox->Add (m_sigPanelSBoxSizer, 0, wxALL | wxADJUST_MINSIZE, 10);
   m_mainPanelVBox->Add (m_amuleSBitmap, 0, wxALL | wxADJUST_MINSIZE, 10);
   m_mainPanel->SetAutoLayout(true);
-  m_mainPanel->SetSizerAndFit (m_mainPanelVBox);
+  m_mainPanel->SetSizer (m_mainPanelVBox);
 
   // Frame Layout
   m_frameVBox->Add (m_mainPanel, 0, wxALL | wxADJUST_MINSIZE);
