@@ -125,6 +125,10 @@ Version 2.0.0rc6 - The '???' version.
 		  you pass a NULL pointer to it, the program segfaults.
 		* Added a timer for idle repainting in amulewebDLG and
 		  amulecmdDLG.
+		* Fixed this assertion in Preferences.cpp: [Debug] 07:02:00 AM: 
+		  include/wx/longlong.h(155): assert "(m_ll >= LONG_MIN) && 
+		  (m_ll <= LONG_MAX)" failed: wxLongLong to long conversion
+		  loss of precision.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

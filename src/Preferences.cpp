@@ -625,7 +625,7 @@ protected:
 /// new implementation
 CPreferences::CPreferences()
 {
-	srand( wxGetLocalTimeMillis().ToLong() ); // we need random numbers sometimes
+	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
 
 	CreateUserHash();
 
