@@ -14,6 +14,9 @@ endif
 if CAS
 bin_PROGRAMS += cas
 endif
+if WXCAS
+bin_PROGRAMS += wxcas
+endif
 if ED2K
 bin_PROGRAMS += ed2k
 endif
@@ -131,6 +134,14 @@ cas_SOURCES = utils/cas/cas.c
 #cas_LIBS= ""
 #cas_CFLAGS= ""
 #cas_LDADD= ""
+
+wxcas_SOURCES = utils/wxCas/src/onlinesig.cpp \
+		utils/wxCas/src/wxcas.cpp \
+		utils/wxCas/src/wxcascanvas.cpp \
+		utils/wxCas/src/wxcasframe.cpp
+wxcas_CFLAGS = $(WX_CFLAGS)		
+wxcas_CXXFLAGS = $(WX_CXXFLAGS)
+wxcas_LDADD = $(WX_LIBS)
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
 if HAVE_WXBASE
