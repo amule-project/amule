@@ -74,7 +74,7 @@ public:
 	void	SetID(uint32 newip);
 	char*	GetDynIP()						{return dynip;}
 	bool	HasDynIP()						{return dynip;}
-	void	SetDynIP(char* newdynip);
+	void	SetDynIP(const char* newdynip);
 	uint32	GetLastPinged()						{return lastpinged;}
 	void	SetLastPinged(uint32 in_lastpinged)			{lastpinged = in_lastpinged;}
 	void	SetPing(uint32 in_ping)					{ping = in_ping;}

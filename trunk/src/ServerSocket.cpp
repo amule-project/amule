@@ -201,26 +201,31 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 						}
 
 					/* Give it a try ... (Creteil) BEGIN */
-					} else if (strncmp(unicode2char(message.GetData()), "ERROR", 5) == 0) {
-
-#if 0 // Why is this commented out, don't we need to handle an ERROR?
+					} else if (message.StartsWith(wxT("ERROR"))) {
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-						theApp.amuledlg->AddDebugLogLine(false,_T("%s %s (%s:%u) - %s"),
-						CString(_("Error")),
-							pServer ? pServer->GetListName() : CString(_("Server")),
-							cur_server->GetAddress(), cur_server->GetPort(), message.Mid(5,message.Len()).Trim(_T(" :")));
-#endif
-
+						wxString servername;
+						if (pServer) {
+							servername	= char2unicode(pServer->GetListName());	
+						} else {	
+							servername = _("Server");
+						}
+						AddDebugLogLineM(false, _("Error ") + servername +
+														wxString::Format(wxT(" (%s:%u) - "),cur_server->GetAddress(), cur_server->GetPort()) 
+														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 						bOutputMessage = false;
-					} else if (strncmp(unicode2char(message.GetData()), "WARNING", 7) == 0) {
 
-#if 0 // Why is this commented out, don't we need to handle a WARNING?
+					} else if (message.StartsWith(wxT("WARNING"))) {
+
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-						theApp.amuledlg->AddDebugLogLine(false,_T("%s %s (%s:%u) - %s"),
-							CString(_("Error")),
-							pServer ? pServer->GetListName() : CString(_("Server")),
-							cur_server->GetAddress(), cur_server->GetPort(), message.Mid(7,message.Len()).Trim(_T(" :")));
-#endif
+						wxString servername;
+						if (pServer) {
+							servername	= char2unicode(pServer->GetListName());	
+						} else {	
+							servername = _("Server");
+						}
+						AddDebugLogLineM(false, _("Warning ") + servername +
+														wxString::Format(wxT(" (%s:%u) - "),cur_server->GetAddress(), cur_server->GetPort()) 
+														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 
 						bOutputMessage = false;
 					}
@@ -232,8 +237,8 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 						if ( dynip.GetLength() && dynip.GetLength() < 51){
 							CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 							if (eserver){
-								eserver->SetDynIP((char*)dynip.GetBuffer());
-								cur_server->SetDynIP((char*)dynip.GetBuffer());
+								eserver->SetDynIP(unicode2char(dynip));
+								cur_server->SetDynIP(unicode2char(dynip));
 								theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(eserver);
 							}
 						}
