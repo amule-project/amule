@@ -121,7 +121,6 @@ enum EInfoPacketState{
 	IP_BOTH				= 3,
 };
 
-#define DOWNLOADRATE_FILTERED  // see note in CUpDownClient::CalculateDownloadRate if you undefine this
 
 
 struct PartFileStamp {
@@ -283,13 +282,8 @@ public:
 	bool			IsUpPartAvailable(uint16 iPart) {return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
 
 	uint8*			GetPartStatus()				{return m_abyPartStatus;}
-#ifdef DOWNLOADRATE_FILTERED
 	float			GetKBpsDown()				{return kBpsDown;}	// Emilio
 	float			CalculateKBpsDown();
-#else
-	float			GetKBpsDown()				{return m_nDownDatarate/1024.0;}
-	uint32			CalculateDownloadRate();  // replaced by CalculateKBpsDown
-#endif
 	uint16			GetRemoteQueueRank()		{return m_nRemoteQueueRank;}
 	void			SetRemoteQueueFull( bool flag )	{m_bRemoteQueueFull = flag;}
 	bool			IsRemoteQueueFull()			{return m_bRemoteQueueFull;}
@@ -488,21 +482,11 @@ private:
 
 	CTypedPtrList<CPtrList,Pending_Block_Struct*>	m_PendingBlocks_list;
 	CTypedPtrList<CPtrList,Requested_Block_Struct*>	m_DownloadBlocks_list;
-#ifdef DOWNLOADRATE_FILTERED
 // Emilio: simplified download rate calculation
 	float		kBpsDown;
 	float		fDownAvgFilter;
 	uint32		msReceivedPrev;
 	uint32		bytesReceivedCycle;
-#else
-	uint32		m_nDownDatarate;
-	uint32		m_nDownDataRateMS;
-	uint32		m_nAvDownDatarate;  // unused
-	uint32		m_nSumForAvgDownDataRate;
-	CList<TransferredData>					m_AvarageDDR_list;
-	sint32	sumavgDDR;	// unused
-	sint32	sumavgUDR;	// unused
-#endif
 	static CBarShader s_StatusBar;
 	// chat
 	uint8 m_byChatstate;

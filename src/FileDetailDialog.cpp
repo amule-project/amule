@@ -97,11 +97,7 @@ void CFileDetailDialog::UpdateData()
 	GetDlgItem(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
 	bufferS.Format("%.2f ",m_file->GetPercentCompleted());
 	GetDlgItem(IDC_PROCCOMPL,wxControl)->SetLabel(bufferS+CString("% ")+CString(_("done")));
-#ifdef DOWNLOADRATE_FILTERED
 	bufferS.Format("%.2f %s",(float)m_file->GetKBpsDown(),CString(_("kB/s")).GetData());
-#else
-	bufferS.Format("%.2f %s",(float)m_file->GetDatarate()/1024,CString(_("kB/s")).GetData());
-#endif
 	GetDlgItem(IDC_DATARATE,wxControl)->SetLabel(bufferS);
 	bufferS.Format("%i",m_file->GetSourceCount());
 	GetDlgItem(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);

@@ -271,11 +271,7 @@ void CPartFile::Init()
 	
 	transferingsrc = 0; // new
 	
-#ifdef DOWNLOADRATE_FILTERED
 	kBpsDown = 0.0;
-#else
-	datarate = 0;
-#endif
 	
 	hashsetneeded = true;
 	count = 0;
@@ -1664,11 +1660,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	// check if we want new sources from server --> MOVED for 16.40 version
 	old_trans=transferingsrc;
 	transferingsrc = 0;
-#ifdef DOWNLOADRATE_FILTERED
 	kBpsDown = 0.0;
-#else
-	datarate = 0;  
-#endif
 
 	if (m_icounter < 10) {
 		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
@@ -1680,19 +1672,12 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				if (cur_src->socket)
 				{
 					transferingsrc++;
-	#ifdef DOWNLOADRATE_FILTERED
 					float kBpsClient = cur_src->CalculateKBpsDown();
 					kBpsDown += kBpsClient;
 //					printf("ReduceDownload %i",reducedownload);
 					if (reducedownload) {
 						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
 //						printf(" Limit %i\n",limit);
-	#else
-					uint32 cur_datarate = cur_src->CalculateDownloadRate();
-					datarate += cur_datarate;
-					if (reducedownload) {
-						uint32 limit = reducedownload*cur_datarate/1000;
-	#endif
 						if(limit<1000 && reducedownload == 200) {
 							limit +=1000;
 						} else if(limit<1) {
@@ -1717,17 +1702,10 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					switch (download_state) {
 						case DS_DOWNLOADING: {
 							transferingsrc++;
-	#ifdef DOWNLOADRATE_FILTERED
 							float kBpsClient = cur_src->CalculateKBpsDown();
 							kBpsDown += kBpsClient;
 							if (reducedownload && download_state == DS_DOWNLOADING) {
 								uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-	#else
-							uint32 cur_datarate = cur_src->CalculateDownloadRate();
-							datarate += cur_datarate;
-							if (reducedownload && download_state == DS_DOWNLOADING) {
-								uint32 limit = reducedownload*cur_datarate/1000;
-	#endif
 								if (limit < 1000 && reducedownload == 200) {
 									limit += 1000;
 								} else if (limit < 1) {
@@ -1914,11 +1892,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	
 	
 	
-#ifdef DOWNLOADRATE_FILTERED
 	return (uint32)(kBpsDown*1024.0);
-#else
-	return datarate;
-#endif
 }
 
 bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped)
@@ -2410,11 +2384,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	if (!bIsHashingDone) {
 		printf("HashNotDone\n");
 		SetPartFileStatus(PS_COMPLETING);
-#ifdef DOWNLOADRATE_FILTERED
 		kBpsDown = 0.0;
-#else
-		datarate = 0;
-#endif
 		char* partfileb = nstrdup(m_partmetfilename);
 		partfileb[strlen(m_partmetfilename)-4] = 0;
 		CAddFileThread::AddFile(theApp.glob_prefs->GetTempDir(), partfileb, this);
@@ -2874,11 +2844,7 @@ void CPartFile::StopFile(bool bCancel)
 	RemoveAllSources(true);
 	paused = true;
 	stopped=true;
-#ifdef DOWNLOADRATE_FILTERED
 	kBpsDown = 0.0;
-#else
-	datarate = 0;
-#endif
 	transferingsrc = 0;
 	memset(m_anStates,0,sizeof(m_anStates));
 	if (!bCancel) {
@@ -2933,11 +2899,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		insufficient = false;
 	}
 	
-#ifdef DOWNLOADRATE_FILTERED
 	kBpsDown = 0.0;
-#else
-	datarate = 0;
-#endif
 	transferingsrc = 0;
 	m_anStates[DS_DOWNLOADING] = 0;
 	
@@ -3029,16 +2991,10 @@ int CPartFile::getPartfileStatusRang()
 
 sint32 CPartFile::getTimeRemaining()
 {
-#ifdef DOWNLOADRATE_FILTERED
 	if (GetKBpsDown() < 0.001)
 		return -1;
 	else 
 		return((GetFileSize()-GetCompletedSize()) / ((int)(GetKBpsDown()*1024.0)));
-#else
-	if (GetDatarate()==0)
-		return -1;
-	return((GetFileSize()-GetCompletedSize()) / GetDatarate());
-#endif
 } 
 
 void CPartFile::PreviewFile()
@@ -3580,11 +3536,7 @@ void CPartFile::FlushBuffer(void)
 		paused = true;
 		m_iLastPausePurge = time(NULL);
 		theApp.downloadqueue->RemoveLocalServerRequest(this);
-#ifdef DOWNLOADRATE_FILTERED
 		kBpsDown = 0.0;
-#else
-		datarate = 0;
-#endif
 		transferingsrc = 0;
 		if (theApp.amuledlg->IsRunning()) { // may be called during shutdown!
 			UpdateDisplayedInfo();

@@ -131,16 +131,10 @@ void CUpDownClient::Init()
 	m_cSendblock = 0;
 	m_cAsked = 0;
 	m_cDownAsked = 0;
-#ifdef DOWNLOADRATE_FILTERED
 	msSentPrev = msReceivedPrev = 0;
 	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
-#else
-	m_nDownDatarate = 0;
-	m_nDownDataRateMS = 0;
-	m_nSumForAvgDownDataRate = 0;
-#endif
 	m_pszUsername = 0;
 	m_dwUserIP = 0;
 	m_nUserID = 0;
@@ -311,9 +305,6 @@ CUpDownClient::~CUpDownClient()
 		}
 	}
 
-#ifndef DOWNLOADRATE_FILTERED
-	m_AvarageDDR_list.RemoveAll();
-#endif
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
 	//printf("END\n");

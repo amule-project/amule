@@ -873,11 +873,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				if (lpPartFile->GetTransferingSrcCount() == 0) {
 					buffer = "";
 				} else {
-#ifdef DOWNLOADRATE_FILTERED
 					buffer.Format("%.1f %s", lpPartFile->GetKBpsDown(), "kB/s");
-#else
-					buffer.Format("%.1f %s", lpPartFile->GetDatarate() / 1024.0f, "kB/s");
-#endif
 				}
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -1877,11 +1873,7 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 		case 3:	//completed asc
 			return file1->GetCompletedSize()==file2->GetCompletedSize()?0:(file2->GetCompletedSize()>file1->GetCompletedSize()?1:-1);			
 		case 4:	//speed asc
-#ifdef DOWNLOADRATE_FILTERED
 			return (int)(file1->GetKBpsDown()*1024-file2->GetKBpsDown()*1024);
-#else
-			return file1->GetDatarate() - file2->GetDatarate();
-#endif
 		case 5:	//progress asc
 			{
 				float comp = file1->GetPercentCompleted() - file2->GetPercentCompleted();
@@ -2011,13 +2003,8 @@ wxString CDownloadListCtrl::getTextList()
 			wxString temp;
 			i++;
 			temp.Printf("%i: %s\t [%.1f%%] %i/%i - %s", i,buffer, file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
-#ifdef DOWNLOADRATE_FILTERED	
 			if (file->GetKBpsDown()>0.001) {
 				temp += wxString::Format(" %.1f kB/s",(float)file->GetKBpsDown());
-#else
-			if (file->GetDatarate()>0) {
-				temp += wxString::Format(" %.1f kB/s",(float)file->GetDatarate()/1024);
-#endif
 			}
 			out += temp;
 			out += "\n";

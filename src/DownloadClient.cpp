@@ -574,13 +574,9 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 				delete pending;
 			}
 			m_PendingBlocks_list.RemoveAll();
-#ifdef DOWNLOADRATE_FILTERED
 			kBpsDown = 0.0;
 			bytesReceivedCycle = 0;
 			msReceivedPrev = 0;
-#else
-			m_nDownDatarate = 0;
-#endif
 			if (byNewState == DS_NONE) {
 				if (m_abyPartStatus) {
 					delete[] m_abyPartStatus;
@@ -761,11 +757,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 		}
 		// Move end back one, should be inclusive
 		theApp.UpdateReceivedBytes(size - HEADER_SIZE);
-#ifdef DOWNLOADRATE_FILTERED
 		bytesReceivedCycle += size - HEADER_SIZE;
-#else
-		m_nDownDataRateMS += size - HEADER_SIZE;
-#endif
 
 		credits->AddDownloaded(size - HEADER_SIZE, GetIP());
 		nEndPos--;
@@ -989,7 +981,6 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 }
 
 
-#ifdef DOWNLOADRATE_FILTERED
 // Emilio: rewrite of eMule code to eliminate use of lists for averaging and fix
 // errors in calculation (32-bit rollover and time measurement)  This function 
 // uses a first-order filter with variable time constant (initially very short 
@@ -1047,53 +1038,6 @@ float CUpDownClient::CalculateKBpsDown() {
 		
 	return kBpsDown;
 }
-
-#else
-// Kry - Imported from 0.30d
-
-uint32 CUpDownClient::CalculateDownloadRate(){
-
-	// Patch By BadWolf - Accurate datarate Calculation
-	TransferredData newitem = {m_nDownDataRateMS,::GetTickCount()};
-	m_AvarageDDR_list.AddTail(newitem);
-	m_nSumForAvgDownDataRate += m_nDownDataRateMS;
-	m_nDownDataRateMS = 0;
-
-	while (m_AvarageDDR_list.GetCount()>500) {
-		m_nSumForAvgDownDataRate -= m_AvarageDDR_list.RemoveHead().datalen;
-	}
-	
-	if(m_AvarageDDR_list.GetCount() > 1){
-// COMPUTATION ERRORS: (1) "1000 * m_nSumForAvgDownDataRate" overflows for rates >84kB/s, 
-//   would need to be converted to 64 bits.  (2) dwDuration is short by one period (imagine 
-//   only two elements in the list to see why) - an initial AddTail in CUpDownClient::Init
-//   with zero count and initial timestamp might do the trick if it occurs early enough. (Emilio)
- 		DWORD dwDuration = m_AvarageDDR_list.GetTail().timestamp - m_AvarageDDR_list.GetHead().timestamp;
-		if (dwDuration)
-			m_nDownDatarate = 1000 * m_nSumForAvgDownDataRate / dwDuration;
-	
-	}
-	else
-		m_nDownDatarate = 0;
-	// END Patch By BadWolf
-
-	m_cShowDR++;
-	if (m_cShowDR == 30){
-		m_cShowDR = 0;
-		UpdateDisplayedInfo();
-	}
-	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
-		Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
-		socket->SendPacket(packet,true,true);
-		SetDownloadState(DS_ONQUEUE);
-	}
-		
-	return m_nDownDatarate;  // in bytes per second
-}
-// EOI
-#endif
-
 
 uint16 CUpDownClient::GetAvailablePartCount()
 {
