@@ -542,7 +542,9 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	if (!file.Open()) {
 		printf("Error opening log file!\n");
 	}
-	file.AddLine(bufferline);
+
+	// wxTextFile already adds newlines
+	file.AddLine( bufferline.BeforeLast( wxT('\n') ) );
 	file.Write();
 	file.Close();
 }
