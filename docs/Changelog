@@ -185,6 +185,9 @@ Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 		* Fixed PerformFileComplete to allow unicoded files to be finished :)
 		* Fixed part met filename being 001.part everytime on unicode builds.
 		* Fixed renaming on file completion causing crashes on unicode builds
+		
+	lfroen:
+		* Started to implement various changes needed to split the core and GUI.
 
 	Madcat:
 		* Fixed preferences layout of panels.
