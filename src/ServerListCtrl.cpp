@@ -592,93 +592,70 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CServer* item1 = (CServer*)lParam1;
 	CServer* item2 = (CServer*)lParam2;
-	if((item1 == NULL) || (item2 == NULL)) {
+
+	if ((item1 == NULL) || (item2 == NULL)) {
 		return 0;
 	}
-	int iTemp=0;
-	int counter1;
-	int counter2;
-	switch(lParamSort) {
-		case 0: //(List) Server-name asc
-			return item1->GetListName().CmpNoCase(item2->GetListName());
-		case 100: //(List) Server-name desc
-			return item2->GetListName().CmpNoCase(item1->GetListName());
-		case 1: { //IP asc
-			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return item1->GetDynIP().CmpNoCase(item2->GetDynIP());
-			} else if (item1->HasDynIP()) {
-				return 1;
-			} else if (item2->HasDynIP()) {
-				return 0;
-			} else {
-				counter1 = counter2 = iTemp = 0;
-				int a[4],b[4];
-				sscanf(unicode2char(item2->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(unicode2char(item1->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
-				for(int i=0;iTemp==0;i++) {
-					iTemp=b[i]-a[i];
-					if(i>3) {
-						return item1->GetPort()-item2->GetPort();
+	
+	int mode = 1;
+	if ( lParamSort >= 100 ) {
+		mode = -1;
+		lParamSort -= 100;
+	}
+	
+	switch (lParamSort) {
+		// Sort by server-name
+		case 0: return mode * item1->GetListName().CmpNoCase( item2->GetListName() );
+		// Sort by IP
+		case 1: 
+			{
+				if (item1->HasDynIP() && item2->HasDynIP()) {
+					return mode * item1->GetDynIP().CmpNoCase( item2->GetDynIP() );
+				} else if (item1->HasDynIP()) {
+					return mode * -1;
+				} else if (item2->HasDynIP()) {
+					return mode * 1;
+				} else {
+					int a[4], b[4];
+					sscanf(unicode2char(item2->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
+					sscanf(unicode2char(item1->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
+				
+					for (int i = 0; i < 3; i++) {
+						if ( b[i] - a[i] ) 
+							return mode * ( b[i] - a[i] );
 					}
+
+					return mode * CmpAny( item1->GetPort(), item2->GetPort() );
 				}
-				return iTemp;
-			  }
-		}
-		case 101: { //IP desc
-			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return item2->GetDynIP().CmpNoCase(item1->GetDynIP());
-			} else if (item2->HasDynIP()) {
-				return 1;
-			} else if (item1->HasDynIP()) {
-				return 0;
-			} else {
-				counter1 = counter2 = iTemp = 0;
-				int a[4],b[4];
-				sscanf(unicode2char(item1->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(unicode2char(item2->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
-				for(int i=0;iTemp==0;i++) {
-					iTemp=b[i]-a[i];
-					if(i>3) {
-						return item2->GetPort()-item1->GetPort();
+			}
+		// Sort by description
+		case 2: return mode * item2->GetDescription().CmpNoCase( item1->GetDescription() );
+		// Sort by Ping
+		case 3: return mode * CmpAny( item1->GetPing(), item2->GetPing() );
+		// Sort by user-count
+		case 4: return mode * CmpAny( item1->GetUsers(), item2->GetUsers() );
+		// Sort by file-count
+		case 5: return mode * CmpAny( item1->GetFiles(), item2->GetFiles() );
+		// Sort by preferences
+		case 6: return mode * CmpAny( item2->GetPreferences(), item1->GetPreferences() );
+		// Sort by failure-count
+		case 7: return mode * CmpAny( item1->GetFailedCount(), item2->GetFailedCount() );
+		// Sort by static servers
+		case 8: 
+			{
+				if ( item2->IsStaticMember() || item1->IsStaticMember() ) {
+					if ( item1->IsStaticMember() ) {
+						return mode * -1;
+					} else {
+						return mode *  1;
 					}
+				} else {
+					return 0;
 				}
-				return iTemp;
-			  }
-		}
-		case 2: { //Description asc
-			return item2->GetDescription().CmpNoCase(item1->GetDescription());
-		}
-		case 102: { //Desciption desc
-			return item1->GetDescription().CmpNoCase(item2->GetDescription());
-		}
-		case 3: //Ping asc
-			return item1->GetPing() - item2->GetPing();
-		case 103: //Ping desc
-			return item2->GetPing() - item1->GetPing();
-		case 4: //Users asc
-			return item1->GetUsers() - item2->GetUsers();
-		case 104: //Users desc
-			return item2->GetUsers() - item1->GetUsers();
-		case 5: //Files asc
-			return item1->GetFiles() - item2->GetFiles();
-		case 105: //Files desc
-			return item2->GetFiles() - item1->GetFiles();
-		case 6: //Preferences asc
-			return item2->GetPreferences() - item1->GetPreferences();
-		case 106: //Preferences desc
-			return item1->GetPreferences() - item2->GetPreferences();
-		case 7: //failed asc
-			return item1->GetFailedCount() - item2->GetFailedCount();
-		case 107: //failed desc
-			return item2->GetFailedCount() - item1->GetFailedCount();
-		case 8: //staticservers
-			return item2->IsStaticMember() - item1->IsStaticMember();
-		case 108: //staticservers-
-			return item1->IsStaticMember() - item2->IsStaticMember();
-		case 9: // version
-			return item1->GetVersion().CmpNoCase(item2->GetVersion());
-		case 109: //version-
-			return item2->GetVersion().CmpNoCase(item1->GetVersion());
+			}
+		// Sort by version
+		case 9: return mode * item1->GetVersion().CmpNoCase( item2->GetVersion() );
+
 		default:
 			return 0;
 	}
