@@ -20,9 +20,10 @@
  */
 
 #include <wx/thread.h>
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 #include "WebSocket.h"
+
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);
 
@@ -96,6 +97,9 @@ void *CWSThread::Entry() {
 		wcThreads.Clear(); //frees the memory allocated to the array
 		ws->Print("done.\n");
 	}
+	
+	// Kry - WTF to return here?
+	return NULL;
 }
 
 
@@ -206,6 +210,9 @@ void *CWCThread::Entry() {
 	//destroy the socket and terminate thread.
 	stWebSocket.m_hSocket->Destroy();
 	stWebSocket.m_pParent->Print("WCThread: exited [WebSocket closed]\n");
+
+	// Kry - WTF to return here?
+	return NULL;	
 }
 
 
