@@ -36,6 +36,10 @@
 #include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "OPCodes.h"		// Needed for PARTSIZE
 
+#ifdef CLIENT_GUI
+#include "ECSpecialTags.h"
+#endif
+
 #define	PS_READY			0
 #define	PS_EMPTY			1
 #define PS_WAITINGFORHASH		2
@@ -123,6 +127,10 @@ class CKnownFile : public CAbstractFile
 friend class CAddFileThread;
 public:
 	CKnownFile();
+#ifdef CLIENT_GUI
+	CKnownFile(CEC_SharedFile_Tag *);
+#endif
+
 	virtual ~CKnownFile();
 
 	void SetFilePath(const wxString& strFilePath);
