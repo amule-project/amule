@@ -39,16 +39,23 @@
 #include "CryptoPP.h"		// Needed for MD4
 
 //! Size to hash in one go: PARTSIZE/95, which is 100kb.
-const int CRUMBSIZE = PARTSIZE/95;
+const unsigned int CRUMBSIZE = PARTSIZE/95;
 
 //! Max number of threads. Change if you have > 1 CPUs ;)
-const int MAXTHREADCOUNT = 1;
+const unsigned int MAXTHREADCOUNT = 1;
 
+/**
+ * Container for queued files.
+ */
 struct QueuedFile
 {
+	//! Signifies if a thread is currently working on this file.
 	bool				m_busy;
+	//! The full path to the file.
 	wxString			m_path;
+	//! The name of the file.
 	wxString			m_name;
+	//! The PartFile owning this file in case of a final hashing (completing).
 	const CPartFile*	m_owner;
 };
 
@@ -56,6 +63,7 @@ struct QueuedFile
 wxMutex CAddFileThread::s_running_lock;
 wxMutex CAddFileThread::s_count_lock;
 wxMutex CAddFileThread::s_queue_lock;
+
 
 std::list<QueuedFile*> CAddFileThread::s_queue;
 bool CAddFileThread::s_running;
@@ -200,62 +208,53 @@ int	CAddFileThread::GetFileCount()
 }
 
 
-QueuedFile* CAddFileThread::PopQueuedFile(QueuedFile* remove)
+QueuedFile* CAddFileThread::GetNextFile()
 {
 	wxMutexLocker lock( s_queue_lock );
-	
+
 	QueuedFile* file = NULL;
 
-	if ( !s_queue.empty() ) {
-		if ( remove ) {
-			// Remove a queued file which has been completed
-			FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), remove );
-			
-			if ( it != s_queue.end() ) {
-				s_queue.erase( it );
-			} else {
-				// Some debug info
-				printf("Hasher: Warning, attempted to remove file from queue, but didn't find it.\n");
-			}
-			
-			delete remove;
-		} else {
-			// Get the first non-busy file
-			FileQueue::iterator it = s_queue.begin();
-			for ( ; it != s_queue.end(); ++it ) {
-				if ( !(*it)->m_busy ) {
-					file = (*it);
-					file->m_busy = true;
-					break;					
-				}
-			}
+	// Get the first non-busy file
+	FileQueue::iterator it = s_queue.begin();
+	for ( ; it != s_queue.end(); ++it ) {
+		if ( !(*it)->m_busy ) {
+			file = (*it);
+			// Mark the file as busy to avoid having multiple threads working on it
+			file->m_busy = true;
+			break;					
 		}
 	}
-
+			
 	return file;
 }
 
 
-bool CAddFileThread::PushQueuedFile(QueuedFile* file, bool addLast)
+void CAddFileThread::RemoveFromQueue(QueuedFile* file)
 {
-	wxMutexLocker lock( s_queue_lock );
-
-
-	// Avoid duplicate files
-	FileQueue::iterator it = s_queue.begin();
-	for ( ; it != s_queue.end(); ++it )
-		if ( ( file->m_name == (*it)->m_name ) && ( file->m_path == (*it)->m_path ) )
-			return false;
-
-
-	if ( addLast ) {
-		s_queue.push_back( file );
-	} else {
-		s_queue.push_front( file );
+	// Some debugging information
+	if ( !file ) {
+		printf("Hasher: Error, tried to pass NULL pointer to RemoveFromQueue().\n");
+		return;
 	}
 
-	return true;
+	// Some moredebugging information
+	if ( !file->m_busy ) {
+		printf("Hasher: Warning, non-busy file passed to RemoveFromQueue().\n");
+	}
+
+	// Remove a queued file which has been completed
+	FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), file );
+			
+	if ( it != s_queue.end() ) {
+		s_queue.erase( it );
+	} else {
+		// Some debug info
+		printf("Hasher: Warning, attempted to remove file from queue, but didn't find it.\n");
+	}
+			
+	delete file;
 }
+
 
 
 void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
@@ -266,13 +265,31 @@ void CAddFileThread::AddFile(const wxString& path, const wxString& name, const C
 	hashfile->m_name = name;
 	hashfile->m_owner = part;
 
-	// Add the file to the queue first. If it's a partfile (part != NULL), 
-	// then add it to the front so that it gets hashed sooner
-	if ( PushQueuedFile( hashfile, ( part == NULL ) ) ) {
-		// Should we start another thread?
-		if ( GetThreadCount() < MAXTHREADCOUNT )
-			CreateNewThread();
+
+	// New scope so that I can use wxMutexLocker ;) 
+	{
+		wxMutexLocker lock( s_queue_lock );
+
+		// Avoid duplicate files
+		FileQueue::iterator it = s_queue.begin();
+		for ( ; it != s_queue.end(); ++it )
+			if ( ( name == (*it)->m_name ) && ( path == (*it)->m_path ) )
+				return;
+
+		
+		// If it's a partfile (part != NULL), then add it to the front so that
+		// it gets hashed sooner, otherwise add it to the back
+		if ( part == NULL ) {
+			s_queue.push_back( hashfile );
+		} else {
+			s_queue.push_front( hashfile );
+		}
 	}
+
+
+	// Should we start another thread?
+	if ( GetThreadCount() < MAXTHREADCOUNT )
+		CreateNewThread();
 }
 
 
@@ -302,12 +319,11 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( !file.IsOpened() ) {
 
 			// Try to get the next file on queue
-			current = PopQueuedFile();
+			current = GetNextFile();
 			
 			if ( !current ) {
 				// Nothing to do, break
 				printf("Hasher: No non-busy files on queue, stopping thread.\n");
-				
 				break;
 			}
 			
@@ -318,7 +334,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				printf("Hasher: Warning, failed to open file, skipping: %s\n", unicode2char(filename));
 				
 				// Whoops, something's wrong. Delete the item and continue
-				delete current;
+				RemoveFromQueue( current );
 				current = NULL;
 				continue;
 			}
@@ -328,10 +344,11 @@ wxThread::ExitCode CAddFileThread::Entry()
 			if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
 				printf("Hasher: Warning, file is bigger than 4GB, skipping: %s\n", unicode2char(filename));
 				
+				// Close the current file so we can continue with the next
 				file.Close();
 
 				// Delete and continue 
-				delete current;
+				RemoveFromQueue( current );
 				current = NULL;
 				continue;
 			}
@@ -347,9 +364,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 			filesize = file.GetLength();
 			knownfile->SetFileSize( filesize );
 			knownfile->date = wxFileModificationTime( filename );
-
-			knownfile->m_AvailPartFrequency.Clear();
-			knownfile->m_AvailPartFrequency.Alloc( knownfile->GetPartCount() );
 			knownfile->m_AvailPartFrequency.Insert(0, 0, knownfile->GetPartCount() );
 	
 			// Starting from scratch
@@ -359,26 +373,35 @@ wxThread::ExitCode CAddFileThread::Entry()
 		}
 
 
-		// Hash the next crumb
+		// Well read at most CRUMBSIZE bytes per cycle
+		uint32 cur_length = CRUMBSIZE;
 		if ( file.GetPosition() + CRUMBSIZE > filesize ) {
 			// Less than CRUMBSIZE left, reduce read-length		
-			uint32 length = filesize - file.GetPosition();
-	
-			byte* data = new byte[length];
-			file.Read(data, length);
-
-			// Update hash
-			hasher.Update(data, length);
-		} else {
-			byte data[CRUMBSIZE];
-			file.Read(data, CRUMBSIZE);
-
-			// Update hash
-			hasher.Update(data, CRUMBSIZE);
+			cur_length = filesize - file.GetPosition();
 		}
 
+		byte* data = new byte[cur_length];
+		
+		// Check for read errors
+		if ( file.Read(data, cur_length) != cur_length ) {
+			printf("Hasher: Error while reading file, skipping: %s\n", unicode2char(current->m_name));
+			
+			file.Close();
+			
+			// Delete and continue 
+			RemoveFromQueue( current );
+			current = NULL;
+			continue;
+		}
 
-		current_pos++;
+		// Update hash
+		hasher.Update(data, cur_length);
+
+		delete[] data;
+
+		// Move to next crumb
+		current_pos++;		
+
 
 		// Finished a part?
 		if ( current_pos >= PARTSIZE/CRUMBSIZE ) {
@@ -436,7 +459,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			printf("Hasher: Finished hashing file: %s\n", unicode2char(current->m_name));
 			
 			knownfile = NULL;
-			PopQueuedFile( current );
+			RemoveFromQueue( current );
 			current = NULL;
 		
 			wxPostEvent(&theApp, evt);
