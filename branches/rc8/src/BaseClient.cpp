@@ -568,7 +568,7 @@ bool CUpDownClient::SendHelloPacket() {
 	// if IP is filtered, dont greet him but disconnect...
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
-	if ( theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(StringIPtoUint32(address.IPAddress())))) {
+	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
 		AddDebugLogLineM(true, wxT("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {
