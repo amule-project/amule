@@ -23,7 +23,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "packets.h"		// Needed for CTag
-#include "CFile.h"		// Needed for CFile
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
 #include "server.h"
