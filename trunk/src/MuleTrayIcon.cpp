@@ -228,7 +228,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 	}
 
 	//to debug fast
-	printf("%d\n",percent);
+	//printf("%d\n",percent);
 	if (percent==0) percent=0.7;
 
 	
@@ -238,7 +238,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
 	int NewSize = ((Bar_ySize -2) * percent) *0.2; //to debug fast
 	// 100;
-	printf("%d\n",NewSize); //to debug fast
+	//printf("%d\n",NewSize); //to debug fast
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
 		
