@@ -272,8 +272,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		wxString strHash = masterhash.AfterFirst( wxT('=') );
 
 		if ( !strHash.IsEmpty() ) {
-			#warning this is a removable unicode2char
-			if ( otherfunctions::DecodeBase32( unicode2char(strHash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
+			if ( otherfunctions::DecodeBase32(strHash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
 				m_bAICHHashValid = true;
 				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
 			} else {
