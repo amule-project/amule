@@ -187,7 +187,6 @@ off_t CMemFile::Read(void* buf, off_t length) const
 	// what really happened in case it triggers, which is cheaper than doing 2
 	// tests every single time
 	if ( length + m_position > m_FileSize ) {
-		printf("READ AFTER END OF CMEMFILE\n");
 		if ( m_position > m_FileSize ) {
 			throw CInvalidPacket("Position is greater than length in CMemFile");
 		} else {
