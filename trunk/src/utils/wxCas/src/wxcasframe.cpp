@@ -41,8 +41,8 @@
 #include <wx/image.h>
 #include <wx/version.h>
 #include <wx/config.h>
-#include <wx/protocol/ftp.h>
 #include <wx/wfstream.h>
+#include <wx/protocol/ftp.h>
 
 #include "wxcasframe.h"
 #include "wxcasprint.h"
@@ -122,7 +122,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_sysMonitor = new LinuxMon ();
 #endif
 
-  // Amule Static Bitmap
+  //Amule Static Bitmap
   wxBitmap amule_bitmap = wxBITMAP (amule);
   m_amuleSBitmap = new wxStaticBitmap (m_mainPanel,-1,amule_bitmap);
 
@@ -185,16 +185,12 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_mainPanelVBox->Add (m_sigPanelSBoxSizer, 0, wxALL | wxADJUST_MINSIZE, 10);
   m_mainPanelVBox->Add (m_amuleSBitmap, 0, wxALL | wxADJUST_MINSIZE, 10);
   m_mainPanel->SetAutoLayout(true);
-  m_mainPanel->SetSizer (m_mainPanelVBox);
-  m_mainPanelVBox->Fit(m_mainPanel);
-  m_mainPanelVBox->SetSizeHints(m_mainPanel);
+  m_mainPanel->SetSizerAndFit (m_mainPanelVBox);
 
   // Frame Layout
-  m_frameVBox->Add (m_mainPanel, 1, wxALL | wxADJUST_MINSIZE);
+  m_frameVBox->Add (m_mainPanel, 0, wxALL | wxADJUST_MINSIZE);
   SetAutoLayout (TRUE);
-  SetSizer(m_frameVBox);
-  m_frameVBox->Fit(this);
-  m_frameVBox->SetSizeHints(this);
+  SetSizerAndFit (m_frameVBox);
 
   // Add refresh timer
   m_refresh_timer = new wxTimer (this, ID_REFRESH_TIMER);
@@ -204,8 +200,8 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_ftp_update_timer = new wxTimer (this, ID_FTP_UPDATE_TIMER);
   m_ftp_update_timer->Start (60000 * prefs->Read (WxCasCte::FTP_UPDATE_RATE_KEY, WxCasCte::DEFAULT_FTP_UPDATE_RATE));	// min to ms
 
-  // Update stats
-  UpdateAll ();
+  // Update all stats and bitmap size
+  UpdateAll(TRUE);
 }
 
 // Destructor
@@ -486,25 +482,22 @@ WxCasFrame::OnFtpUpdateTimer (wxTimerEvent & event)
 
 // Update all panels and frame, call Fit if needed
 void
-WxCasFrame::UpdateAll ()
+WxCasFrame::UpdateAll (bool forceFitting)
 {
   bool needFit = UpdateStatsPanel ();
 
-  if (needFit)
+  if (needFit || forceFitting)
     {
-      m_mainPanel->SetAutoLayout(true);
+      // Fit stats pannel
       m_mainPanelVBox->Fit(m_mainPanel);
 
+      // Compute bitmap size and resize it
       wxInt32 ph, pw;
       m_sigPanelSBox->GetClientSize (&pw, &ph);
       AdjustSplashWidth(pw);
 
-      m_mainPanelVBox->SetSizeHints(m_mainPanel);
-
-      // Frame Layout
-      SetAutoLayout (TRUE);
+      // Fit main frame
       m_frameVBox->Fit(this);
-      m_frameVBox->SetSizeHints(this);
     }
 }
 
