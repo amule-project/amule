@@ -1,17 +1,18 @@
+# translation of en_US.po to English
 # translation of en_US.po
 # aMule i18n resource file.
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the same license as the aMule package.
-# Juan González <juan@skepticshour.com>, 2004.
+# Juan González <juan@skepticshour.com>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-02-04 06:44+0100\n"
-"PO-Revision-Date: 2004-12-08 13:57-0800\n"
+"PO-Revision-Date: 2005-01-01 11:10-0800\n"
 "Last-Translator: Juan González <juan@skepticshour.com>\n"
-"Language-Team:  English <http;//www.amule.org>\n"
+"Language-Team: English <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -505,7 +506,7 @@ msgstr "View files"
 
 #: src/FriendListCtrl.cpp:118
 msgid "Establish Friend Slot"
-msgstr "Establish freind slot"
+msgstr "Establish friend slot"
 
 #: src/HTTPDownloadDlg.cpp:34
 msgid "Downloading..."
