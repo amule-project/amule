@@ -119,6 +119,7 @@ WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;
+class CEC_UpDownClient_Tag;
 class CProgressImage;
 
 class DownloadFiles {
@@ -201,6 +202,8 @@ class UploadFiles {
 		// Don't need filename - sharedfiles already have it
 		CMD4Hash  nHash;
 
+		UploadFiles(CEC_UpDownClient_Tag *tag);
+		
 		static class UploadsInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
 };
@@ -348,6 +351,11 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 			return real_ptr;
 		}
 	
+		T *GetByID(I id)
+		{
+			// avoid creating nodes
+			return m_items_hash.count(id) ? m_items_hash[id] : NULL;
+		}
 		/*!
 		 * Process answer of update request, create list of new items for
 		 * full request later. Also remove items that no longer exist in core

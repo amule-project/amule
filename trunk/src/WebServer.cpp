@@ -940,7 +940,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString OutE = m_Templates.sTransferDownLine;
 	wxString OutE2 = m_Templates.sTransferDownLineGood;
 
-	double fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
+	uint64 fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
 	
 	m_DownloadFilesInfo.ReQuery();
 
@@ -1102,49 +1102,38 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sUpList;
 
 	//upload list
-	wxString sTransferULList = webInterface->SendRecvMsg(wxT("TRANSFER UL_LIST"));
-	wxString HTTPProcessData;
-	unsigned long transfDown, transfUp;
-	long transfDatarate; 
-	while (sTransferULList.Length()>0) {
-		int newLinePos = sTransferULList.First(wxT("\n"));
-
-		wxString sEntry = sTransferULList.Left(newLinePos);
-		sTransferULList = sTransferULList.Mid(newLinePos+1);
-
-		HTTPProcessData = OutE;
-
-		int brk=sEntry.First(wxT("\t"));
-		HTTPProcessData.Replace(wxT("[1]"), _SpecialChars(sEntry.Left(brk)));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		HTTPProcessData.Replace(wxT("[FileInfo]"), _SpecialChars(sEntry.Left(brk)));		
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		HTTPProcessData.Replace(wxT("[2]"), _SpecialChars(sEntry.Left(brk)));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+	m_UploadsInfo.ReQuery();
+	UploadsInfo::ItemIterator j = m_UploadsInfo.GetBeginIterator();
+	while (j != m_UploadsInfo.GetEndIterator()) {
+		wxString HTTPProcessData(OutE);
+		HTTPProcessData.Replace(wxT("[1]"), _SpecialChars(j->sUserName));
+		SharedFiles *file = m_SharedFilesInfo.GetByID(j->nHash);
+		if ( !file ) {
+			m_SharedFilesInfo.ReQuery();
+			file = m_SharedFilesInfo.GetByID(j->nHash);
+		}
+		if ( file ) {
+			HTTPProcessData.Replace(wxT("[2]"), _SpecialChars(file->sFileName));
+		} else {
+			HTTPProcessData.Replace(wxT("[2]"), _("Internal error - no item in container"));
+		}
+		HTTPProcessData.Replace(wxT("[3]"),
+			CastItoXBytes(j->nTransferredDown) + wxT(" / ") + CastItoXBytes(j->nTransferredUp));
+		HTTPProcessData.Replace(wxT("[4]"), CastItoXBytes(j->nSpeed) + wxT("/s"));
 		
-		sEntry.Left(brk).ToULong(&transfDown);
-		fTotalSize += transfDown;
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		
-		sEntry.Left(brk).ToULong(&transfUp);
-		fTotalTransferred += transfUp;
-		sEntry=sEntry.Mid(brk+1);
-
-		HTTPProcessData.Replace(wxT("[3]"), CastItoXBytes((uint64)transfDown) + wxT(" / ") + CastItoXBytes((uint64)transfUp));
-
-		sEntry.ToLong(&transfDatarate);
-		fTotalSpeed += transfDatarate;
-		
-		HTTPProcessData.Replace(wxT("[4]"), wxString::Format(wxT("%8.2f kB/s"), transfDatarate/1024.0));
+		fTotalSize += j->nTransferredDown;
+		fTotalTransferred += j->nTransferredUp;
+		fTotalSpeed += j->nSpeed;
 		
 		sUpList += HTTPProcessData;
+		j++;
 	}
 	
 	Out.Replace(wxT("[UploadFilesList]"), sUpList);
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
-	Out.Replace(wxT("[TotalUpTransferred]"), CastItoXBytes((uint64)fTotalSize) + wxT(" / ") + CastItoXBytes((uint64)fTotalTransferred));
-	Out.Replace(wxT("[TotalUpSpeed]"), wxString::Format(wxT("%8.2f kB/s"), fTotalSpeed/1024.0));
+	Out.Replace(wxT("[TotalUpTransferred]"), CastItoXBytes(fTotalSize) + wxT(" / ") + CastItoXBytes(fTotalTransferred));
+	Out.Replace(wxT("[TotalUpSpeed]"), CastItoXBytes(fTotalSpeed) + wxT(" /s"));
 
 	if (m_Params.bShowUploadQueue) {
 		Out.Replace(wxT("[UploadQueue]"), m_Templates.sTransferUpQueueShow);
@@ -1157,6 +1146,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		OutE = m_Templates.sTransferUpQueueLine;
 		// Replace [xx]
 		wxString sQueue;
+		wxString HTTPProcessData;
 
 		//waiting list
 		wxString sTransferWList = webInterface->SendRecvMsg(wxT("TRANSFER W_LIST"));
@@ -2579,6 +2569,15 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 	return Result ^ m_SortReverse;
 }
 
+UploadFiles::UploadFiles(CEC_UpDownClient_Tag *tag)
+{
+	nHash = tag->FileID();
+	sUserName = tag->ClientName();
+	nSpeed = tag->Speed();
+	nTransferredUp = tag->XferUp();
+	nTransferredDown = tag->XferDown();
+}
+
 UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFiles, int>(webApp)
 {
 }
@@ -2594,13 +2593,8 @@ bool UploadsInfo::ReQuery()
 	// query succeded - flush existing values and refill
 	EraseAll();
 	for(int i = 0; i < up_reply->GetTagCount(); i ++) {
-		CECTag *tag = up_reply->GetTagByIndex(i);
 		
-		UploadFiles curr;
-		curr.sUserName = tag->GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData();
-		curr.nSpeed = tag->GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data();
-		curr.nTransferredUp = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data();
-		curr.nTransferredDown = tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data();
+		UploadFiles curr((CEC_UpDownClient_Tag *)up_reply->GetTagByIndex(i));
 		
 		AddItem(curr);
 	}
