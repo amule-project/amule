@@ -1426,7 +1426,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		if (serverconnect->IsConnecting()) {
 			serverconnect->CheckForTimeout();
 		}
-		theApp.listensocket->UpdateConnectionsStatus();
+		listensocket->UpdateConnectionsStatus();
 		
 	}
 
@@ -1551,8 +1551,8 @@ void CamuleApp::ShutDown() {
 		glob_prefs->Save();
 	}
 
-	if (theApp.clientlist) {
-		theApp.clientlist->DeleteAll();
+	if (clientlist) {
+		clientlist->DeleteAll();
 	}
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
@@ -1875,21 +1875,21 @@ void CamuleApp::UpdateStatsTree() {
 
 	resize=false;
 
-	if (theApp.Start_time>0) {
-		(*h_uptime) = _("Uptime: ") + CastSecondsToHM(theApp.GetUptimeSecs());
+	if (Start_time>0) {
+		(*h_uptime) = _("Uptime: ") + CastSecondsToHM(GetUptimeSecs());
 	}
 
-	theApp.downloadqueue->GetDownloadStats(myStats);
+	downloadqueue->GetDownloadStats(myStats);
 
 	#define a_brackets_b(a,b) a +wxT(" (") + b + wxT(")")
 	
-	uint64 DownOHTotal = theApp.downloadqueue->GetDownDataOverheadFileRequest() + theApp.downloadqueue->GetDownDataOverheadSourceExchange() + theApp.downloadqueue->GetDownDataOverheadServer() + theApp.downloadqueue->GetDownDataOverheadOther();
-	uint64 DownOHTotalPackets = theApp.downloadqueue->GetDownDataOverheadFileRequestPackets() + theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets() + theApp.downloadqueue->GetDownDataOverheadServerPackets() + theApp.downloadqueue->GetDownDataOverheadOtherPackets();
+	uint64 DownOHTotal = downloadqueue->GetDownDataOverheadFileRequest() + downloadqueue->GetDownDataOverheadSourceExchange() + downloadqueue->GetDownDataOverheadServer() + downloadqueue->GetDownDataOverheadOther();
+	uint64 DownOHTotalPackets = downloadqueue->GetDownDataOverheadFileRequestPackets() + downloadqueue->GetDownDataOverheadSourceExchangePackets() + downloadqueue->GetDownDataOverheadServerPackets() + downloadqueue->GetDownDataOverheadOtherPackets();
 
 	(*down1) = _("Downloaded Data (Session (Total)): ") +
 										a_brackets_b(
-											CastItoXBytes( theApp.stat_sessionReceivedBytes),
-											CastItoXBytes( theApp.stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()));
+											CastItoXBytes( stat_sessionReceivedBytes),
+											CastItoXBytes( stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded()));
 
 	(*down2) = _("Total Overhead (Packets): ") +
 										a_brackets_b(
@@ -1898,18 +1898,18 @@ void CamuleApp::UpdateStatsTree() {
 
 	(*down3) = _("File Request Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes(theApp.downloadqueue->GetDownDataOverheadFileRequest()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadFileRequestPackets()));
+											CastItoXBytes(downloadqueue->GetDownDataOverheadFileRequest()),
+											CastItoIShort(downloadqueue->GetDownDataOverheadFileRequestPackets()));
 											
 	(*down4) = _("Source Exchange Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadSourceExchange()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadSourceExchangePackets()));	
+											CastItoXBytes(downloadqueue->GetDownDataOverheadSourceExchange()),
+											CastItoIShort(downloadqueue->GetDownDataOverheadSourceExchangePackets()));	
 
 	(*down5) = _("Server Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes( theApp.downloadqueue->GetDownDataOverheadServer()),
-											CastItoIShort(theApp.downloadqueue->GetDownDataOverheadServerPackets()));
+											CastItoXBytes(downloadqueue->GetDownDataOverheadServer()),
+											CastItoIShort(downloadqueue->GetDownDataOverheadServerPackets()));
 											
 	(*down6) = wxString::Format(_("Found Sources: %i"),myStats[0]);
 	
@@ -1917,12 +1917,12 @@ void CamuleApp::UpdateStatsTree() {
 	
 	(*up1) = _("Uploaded Data (Session (Total)): ") + 
 										a_brackets_b(
-											CastItoXBytes( theApp.stat_sessionSentBytes),
-											CastItoXBytes( theApp.stat_sessionSentBytes+thePrefs::GetTotalUploaded()));
+											CastItoXBytes( stat_sessionSentBytes),
+											CastItoXBytes( stat_sessionSentBytes+thePrefs::GetTotalUploaded()));
 
 
-	uint64 UpOHTotal = theApp.uploadqueue->GetUpDataOverheadFileRequest() + theApp.uploadqueue->GetUpDataOverheadSourceExchange() + theApp.uploadqueue->GetUpDataOverheadServer() + theApp.uploadqueue->GetUpDataOverheadOther();
-	uint64 UpOHTotalPackets = theApp.uploadqueue->GetUpDataOverheadFileRequestPackets() + theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets() + theApp.uploadqueue->GetUpDataOverheadServerPackets() + theApp.uploadqueue->GetUpDataOverheadOtherPackets();		
+	uint64 UpOHTotal = uploadqueue->GetUpDataOverheadFileRequest() + uploadqueue->GetUpDataOverheadSourceExchange() + uploadqueue->GetUpDataOverheadServer() + uploadqueue->GetUpDataOverheadOther();
+	uint64 UpOHTotalPackets = uploadqueue->GetUpDataOverheadFileRequestPackets() + uploadqueue->GetUpDataOverheadSourceExchangePackets() + uploadqueue->GetUpDataOverheadServerPackets() + uploadqueue->GetUpDataOverheadOtherPackets();		
 
 	(*up2) = _("Total Overhead (Packets): ") + 
 										a_brackets_b(
@@ -1931,27 +1931,27 @@ void CamuleApp::UpdateStatsTree() {
 
 	(*up3) = _("File Request Overhead (Packets): ") + 
 										a_brackets_b(
-											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadFileRequest()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadFileRequestPackets()));
+											CastItoXBytes(uploadqueue->GetUpDataOverheadFileRequest()),
+											CastItoIShort(uploadqueue->GetUpDataOverheadFileRequestPackets()));
 											
 	(*up4) = _("Source Exchange Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadSourceExchange()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadSourceExchangePackets()));
+											CastItoXBytes(uploadqueue->GetUpDataOverheadSourceExchange()),
+											CastItoIShort(uploadqueue->GetUpDataOverheadSourceExchangePackets()));
 											
 	(*up5) = _("Server Overhead (Packets): ") +
 										a_brackets_b(
-											CastItoXBytes( theApp.uploadqueue->GetUpDataOverheadServer()),
-											CastItoIShort(theApp.uploadqueue->GetUpDataOverheadServerPackets()));
+											CastItoXBytes(uploadqueue->GetUpDataOverheadServer()),
+											CastItoIShort(uploadqueue->GetUpDataOverheadServerPackets()));
 											
-	(*up6) = wxString::Format(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
-	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
-	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
-	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
-	running=theApp.uploadqueue->GetAverageUpTime();
+	(*up6) = wxString::Format(_("Active Uploads: %i"),uploadqueue->GetUploadQueueLength());
+	(*up7) = wxString::Format(_("Waiting Uploads: %i"),uploadqueue->GetWaitingUserCount());
+	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),uploadqueue->GetSuccessfullUpCount());
+	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),uploadqueue->GetFailedUpCount());
+	running = uploadqueue->GetAverageUpTime();
 	(*up10) = wxString::Format(_("Average upload time: ") + CastSecondsToHM(running));
 
-	if (theApp.stat_transferStarttime>0) {
+	if (stat_transferStarttime>0) {
 		#warning - move away from GUI.
 		/*
 		(*con1) = wxString::Format(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);
@@ -1962,22 +1962,22 @@ void CamuleApp::UpdateStatsTree() {
 	}
 
 	(*con3) = wxString::Format(_("Reconnects: %i"),
-										(theApp.stat_reconnects>0) ? theApp.stat_reconnects-1 : 0);	
+										(stat_reconnects>0) ? stat_reconnects-1 : 0);	
 
-	if (theApp.stat_transferStarttime==0) {
+	if (stat_transferStarttime==0) {
 		(*con4) = _("waiting for transfer...");
 	} else {
-		(*con4) =  _("Time Since First Transfer: ") + CastSecondsToHM(theApp.GetTransferSecs());
+		(*con4) =  _("Time Since First Transfer: ") + CastSecondsToHM(GetTransferSecs());
 	}
 
-	if (theApp.stat_serverConnectTime==0) {
+	if (stat_serverConnectTime==0) {
 		(*con5) = _("Waiting for connection...");
 	}	else {
-		(*con5) = _("Connected To Server Since: ") + CastSecondsToHM(theApp.GetServerSecs());
+		(*con5) = _("Connected To Server Since: ") + CastSecondsToHM(GetServerSecs());
 	}
 
-	(*con6) = wxString::Format(wxT("%s: %i"),_("Active Connections (estimate)"), theApp.listensocket->GetActiveConnections());	
-	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
+	(*con6) = wxString::Format(wxT("%s: %i"),_("Active Connections (estimate)"), listensocket->GetActiveConnections());	
+	uint32 m_itemp = listensocket->GetMaxConnectionReached();
 	if( m_itemp != m_ilastMaxConnReached ) {
 		char osDate[60];
 
@@ -1991,21 +1991,21 @@ void CamuleApp::UpdateStatsTree() {
 		(*con7) = wxString::Format(wxT("%s: %i"),_("Max Connection Limit Reached"),m_itemp);
 	}
 
-	if(theApp.serverconnect->IsConnected()) {
-		(*con8) = wxString::Format(wxT("%s: %f"),_("Average Connections (estimate)"),(theApp.listensocket->GetAverageConnections()));
+	if(serverconnect->IsConnected()) {
+		(*con8) = wxString::Format(wxT("%s: %f"),_("Average Connections (estimate)"),(listensocket->GetAverageConnections()));
 	} else {
 		(*con8) = _("waiting for connection...");
 	}
-	(*con9) = wxString::Format(wxT("%s: %i"),_("Peak Connections (estimate)"),theApp.listensocket->GetPeakConnections());
+	(*con9) = wxString::Format(wxT("%s: %i"),_("Peak Connections (estimate)"),listensocket->GetPeakConnections());
 
 		
-	if (theApp.stat_sessionReceivedBytes>0 && theApp.stat_sessionSentBytes>0 ) {
-		if (theApp.stat_sessionReceivedBytes<theApp.stat_sessionSentBytes) {
+	if (stat_sessionReceivedBytes>0 && stat_sessionSentBytes>0 ) {
+		if (stat_sessionReceivedBytes<stat_sessionSentBytes) {
 			(*tran0) = _("Session UL:DL Ratio (Total): ") 
-						+  wxString::Format(wxT("%.2f : 1"),(float)theApp.stat_sessionSentBytes/theApp.stat_sessionReceivedBytes);
+						+  wxString::Format(wxT("%.2f : 1"),(float)stat_sessionSentBytes/stat_sessionReceivedBytes);
 		} else {
 			(*tran0) = _("Session UL:DL Ratio (Total): ")
-						+ wxString::Format(wxT("1 : %.2f"),(float)theApp.stat_sessionReceivedBytes/theApp.stat_sessionSentBytes);
+						+ wxString::Format(wxT("1 : %.2f"),(float)stat_sessionReceivedBytes/stat_sessionSentBytes);
 		}
 	} else {
 			(*tran0) = wxString(_("Session UL:DL Ratio (Total): ")) + _("Not available");
@@ -2013,10 +2013,10 @@ void CamuleApp::UpdateStatsTree() {
 
 
 	// shared files stats
-	uint32 file_count = theApp.sharedfiles->GetCount();
+	uint32 file_count = sharedfiles->GetCount();
 	(*shar1) = wxString::Format(_("Number of Shared Files: %i"),file_count);
 
-	uint64 allsize=theApp.sharedfiles->GetDatasize();
+	uint64 allsize=sharedfiles->GetDatasize();
 	(*shar2) = wxString::Format(_("Total size of Shared Files: ") + CastItoXBytes(allsize));
 	
 	if(file_count != 0) {
@@ -2035,7 +2035,7 @@ void CamuleApp::UpdateStatsTree() {
 	CClientList::ClientMap clientVersionAMule;
 	uint32 totalclient;
 	aMuleOSInfoMap OSInfo;
-	theApp.clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule, &OSInfo);
+	clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule, &OSInfo);
 	totalclient -= myStats[0];
 	if( !totalclient ) {
 		totalclient = 1;
@@ -2054,7 +2054,7 @@ void CamuleApp::UpdateStatsTree() {
 	(*cli16) = wxString::Format(wxT("Shareaza: %i (%1.1f%%)"),myStats[16],(double)100*myStats[16]/totalclient);
 	(*cli11) = wxString::Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
 	(*cli6) = wxString::Format(_("Unknown: %i"),myStats[0]);
-	(*cli7) = wxString::Format(_("Filtered: %i"),theApp.stat_filteredclients);
+	(*cli7) = wxString::Format(_("Filtered: %i"),stat_filteredclients);
 	(*cli13) = wxString::Format(_("LowID: %u (%.2f%% Total %.2f%% Known)"),myStats[11] , ((totalclient + myStats[0])>0)?((double)100*myStats[11] /(totalclient + myStats[0])):0, (double)100*myStats[18]/totalclient);
 	(*cli14) = wxString::Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
 #ifdef __DEBUG__
@@ -2301,11 +2301,11 @@ void CamuleApp::UpdateStatsTree() {
 	uint32 servtuser;
 	uint32 servtfile;
 	float servocc;
-	theApp.serverlist->GetStatus( servtotal, servfail, servuser, servfile, servtuser, servtfile,servocc);
+	serverlist->GetStatus( servtotal, servfail, servuser, servfile, servtuser, servtfile,servocc);
 	(*srv1) = wxString::Format(wxT("%s: %i"),_("Working Servers"),servtotal-servfail);
 	(*srv2) = wxString::Format(wxT("%s: %i"),_("Failed Servers"),servfail);
 	(*srv3) = wxString::Format(wxT("%s: %i"),_("Total"),servtotal);
-	(*srv4) = wxString::Format(wxT("%s: %i"),_("Deleted Servers"),theApp.serverlist->GetDeletedServerCount());
+	(*srv4) = wxString::Format(wxT("%s: %i"),_("Deleted Servers"),serverlist->GetDeletedServerCount());
 	(*srv5) = wxString::Format(wxT("%s: %i"),_("Users on Working Servers"),servuser);
 	(*srv6) = wxString::Format(wxT("%s: %i"),_("Files on Working Servers"),servfile);
 	(*srv7) = wxString::Format(wxT("%s: %i"),_("Total Users"),servtuser);
