@@ -393,6 +393,7 @@ public:
 	wxIPaddress	&GetProxyBoundAddress(void) const
 						{ return m_ProxyStateMachine->GetProxyBoundAddress(); }
 	bool Start(const wxIPaddress &PeerAddress);
+	bool ProxyIsCapableOf(wxProxyCommand ProxyCommand) const;
 	
 private:
 	bool			m_UseProxy;
