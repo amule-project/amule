@@ -303,14 +303,14 @@ END_EVENT_TABLE ()
 
 /// Toolbar Open button
 void
-AlcFrame::OnBarOpen (wxCommandEvent & event)
+AlcFrame::OnBarOpen (wxCommandEvent & WXUNUSED(event))
 {
   SetFileToHash();
 }
 
 /// Browse button to select file to hash
 void
-AlcFrame::OnBrowseButton (wxCommandEvent & event)
+AlcFrame::OnBrowseButton (wxCommandEvent & WXUNUSED(event))
 {
   SetFileToHash();
 }
@@ -332,14 +332,14 @@ AlcFrame::SetFileToHash()
 
 /// Toolbar Save As button
 void
-AlcFrame::OnBarSaveAs (wxCommandEvent & event)
+AlcFrame::OnBarSaveAs (wxCommandEvent & WXUNUSED(event))
 {
   SaveEd2kLinkToFile();
 }
 
 /// Save As button
 void
-AlcFrame::OnSaveAsButton(wxCommandEvent & event)
+AlcFrame::OnSaveAsButton(wxCommandEvent & WXUNUSED(event))
 {
   SaveEd2kLinkToFile();
 }
@@ -369,14 +369,14 @@ AlcFrame::CopyEd2kLinkToClipBoard()
 
 /// Copy button
 void
-AlcFrame::OnCopyButton(wxCommandEvent & event)
+AlcFrame::OnCopyButton(wxCommandEvent & WXUNUSED(event))
 {
   CopyEd2kLinkToClipBoard();
 }
 
 /// Toolbar Copy button
 void
-AlcFrame::OnBarCopy(wxCommandEvent & event)
+AlcFrame::OnBarCopy(wxCommandEvent & WXUNUSED(event))
 {
   CopyEd2kLinkToClipBoard();
 }
@@ -419,7 +419,7 @@ AlcFrame::SaveEd2kLinkToFile()
 
 /// Toolbar About button
 void
-AlcFrame::OnBarAbout (wxCommandEvent & event)
+AlcFrame::OnBarAbout (wxCommandEvent & WXUNUSED(event))
 {
   wxMessageBox (_
                 ("aLinkCreator, the aMule ed2k link creator\n\n"
@@ -431,7 +431,7 @@ AlcFrame::OnBarAbout (wxCommandEvent & event)
 }
 
 /// Close Button
-void AlcFrame::OnCloseButton (wxCommandEvent & event)
+void AlcFrame::OnCloseButton (wxCommandEvent & WXUNUSED(event))
 {
   Close (false);
 }
@@ -454,7 +454,7 @@ bool AlcFrame::Hook(int percent)
 }
 
 /// Compute Hashes on Start Button
-void AlcFrame::OnStartButton (wxCommandEvent & event)
+void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 {
   int i;
   wxString filename = m_inputFileTextCtrl->GetValue();
@@ -548,7 +548,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
 
 /// Add an URL to the URL list box
 void
-AlcFrame::OnAddUrlButton (wxCommandEvent & event)
+AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
 {
   wxString url(m_inputAddTextCtrl->GetValue());
 
@@ -585,14 +585,14 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & event)
 
 /// Remove the selected URL from the URL list box
 void
-AlcFrame::OnRemoveUrlButton (wxCommandEvent & event)
+AlcFrame::OnRemoveUrlButton (wxCommandEvent & WXUNUSED(event))
 {
   m_inputUrlListBox->Delete(m_inputUrlListBox->GetSelection());
 }
 
 /// Clear the URL list box
 void
-AlcFrame::OnClearUrlButton (wxCommandEvent & event)
+AlcFrame::OnClearUrlButton (wxCommandEvent & WXUNUSED(event))
 {
   m_inputUrlListBox->Clear();
 }
