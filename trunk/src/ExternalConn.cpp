@@ -1270,18 +1270,9 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			}
 			uint16 nScale = request->GetTagByName(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
 			uint16 nMaxPoints = request->GetTagByName(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
-			float *data[3] = { new float [nMaxPoints], new float [nMaxPoints], new float [nMaxPoints] };
-			unsigned int numPoints = theApp.amuledlg->statisticswnd->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, data);
+			uint32 *graphData;
+			unsigned int numPoints = theApp.amuledlg->statisticswnd->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
-				uint32 *graphData = new uint32 [3 * numPoints];
-				for (unsigned int i = 0; i < numPoints; ++i) {
-					graphData[3 * i] = (uint32)((data[2])[numPoints - i - 1] * 1024.0);
-					graphData[3 * i + 1] = (uint32)((data[0])[numPoints - i - 1] * 1024.0);
-					graphData[3 * i + 2] = (uint32)((data[1])[numPoints - i - 1]);
-				}
-				delete [] data[0];
-				delete [] data[1];
-				delete [] data[2];
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
 				delete [] graphData;
@@ -1295,7 +1286,11 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			// No graphs
 			break;
 	}
-	return response;
+	if (response) {
+		return response;
+	} else {
+		return new CECPacket(EC_OP_FAILED);
+	}
 }
 #endif /* ! AMULE_DAEMON */
 
