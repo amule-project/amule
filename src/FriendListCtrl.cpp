@@ -32,7 +32,6 @@
 #include "opcodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
-#include "CFile.h"		// Needed for CFile
 #include "endianfix.h"
 #include "otherfunctions.h"
 #include "muuli_wdr.h"
