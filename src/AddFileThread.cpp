@@ -150,8 +150,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 			dwLastAddTime = GetTickCount();
 		}
 	
-		delete[] hashfile->name;
-		delete[] hashfile->directory;
 		delete hashfile;
     }
     
