@@ -64,7 +64,6 @@ SOURCES = AddFriend.cpp \
 	PPgTweaks.cpp \
 	Preferences.cpp \
 	PreferencesDlg.cpp \
-	Preview.cpp \
 	QueueListCtrl.cpp \
 	resource.cpp \
 	SafeFile.cpp \
