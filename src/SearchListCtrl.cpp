@@ -212,7 +212,7 @@ void CSearchListCtrl::UpdateColor(long index,long count)
 		if(sameFile) {
 			if(sameFile->IsPartFile()) {
 				// already downloading
-				int red=(file->GetSourceCount()+4)*20;
+				red=(file->GetSourceCount()+4)*20;
 				if(red>255) {
 					red=255;
 				}
