@@ -1,7 +1,30 @@
-Version 2.0.0rc5 - 
+Version 2.0.0rc5 - The "Let's recover our release speed" version
+
+2004-07-18
+
+	Kry:
+		* Some gui design and coding of the upcoming Kad window
+		* Protocol update:
+			* UDP protocol upgraded to eMule 0.43b
+			* TCP Standard Base protocol upgraded to eMule 0.43b
+			* TCP Extended Base protocol upgraded to eMule 0.43b
+		* Fixed memory corruption and crashes on 'cas'
+		* Fixed gsocket-2.5.c for big endian archs.
+		* Fixed CFile class to actually return error when a error ocurred and not only when it feels like.
+		* Fixed bug where the 'All' category could be removed leading to crashes and other funny behaviours.
+		* No more minimize when no tray has been selected.
+		* Fixed browse skin file button to actually browse a file ;)
+		* Fixed high 32 bits of transfered bytes not being loaded on known.met (sorry fluffly!)
+		* Some Mac bugfixes.
 
 	Hetfield:
-		* some gcc 3.4.x compilation fixes
+		* Some gcc 3.4.x compilation fixes
+		
+	lfroen:
+		* GUIEvents updated 
+		* core2gui events added.
+		* Some gcc 3.4 fixes to GUIEvents
+	
 	phoenix:
 		* Added a test with a warning to
 		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
@@ -19,14 +42,39 @@ Version 2.0.0rc5 -
 		  sizers to keep the old behaviour (wxFIXED_MINSIZE). This
 		  constant is defined to zero in amule.h when wx-version is
 		  less than 2.5.2, so that amule still compiles in old wx.
+	
 	ThePolish:
-		* Add win32 MakefileWIN32, configureWIN32.h and project file amule.msp
-		* Make win32 use winsock2 for IPFilter
-		* Enable alc, alcc, wxCas translations with aMule catalog
-		* Use normalized includes for wx in wxCas, alc and alcc
-		* Limit the server name length in wxCas to avoid a too large window
-		* New icon for alc
-		* Global fr translation
+		 * Add win32 MakefileWIN32, configureWIN32.h and project file amule.msp
+		 * Make win32 use winsock2 for IPFilter
+		 * Enable alc, alcc, wxCas translations with aMule catalog
+		 * Use normalized includes for wx in wxCas, alc and alcc
+		 * Limit the server name length in wxCas to avoid a too large window
+		 * New icon for alc
+		 * Global fr translation
+		 
+	Xaignar:
+		* Added the ability to search for "Texts"	
+		* Attempt at fixing both Random Socket Bugs and Random Client Bugs.
+		* Fixed new IPFilter code.
+		* Cleanup of CPartFile::SavePartFile
+		* Got rid of some unneeded includes.
+		* Fixed compilation when using crypto++ 5.2
+		* Ensuring that the ServerListCtrl gets unfrozen in case of corrupted met files.
+		* Fixed a crash-bug added by Kry's UDP commit.
+
+	Special thanks to:
+		* The usual people, those on the other 'Thank you!' sections of changelog.
+		* All the people at the Mac section of forums, for testing compilation and run.
+
+Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' version)
+
+2004-07-14
+
+	Kry:
+		* eserver 16.47 fix for shared files packet not compressed
+
+	deltaHF:
+		* Translations update
 
 Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
 
