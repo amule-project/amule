@@ -197,7 +197,7 @@ const unsigned int UNLIMITED =	 		0;
 #define	OP_GLOBSEARCHREQ			0x98	// <search_tree>
 #define	OP_GLOBSEARCHRES			0x99	// 
 #define	OP_GLOBGETSOURCES			0x9A	// <HASH 16>
-#define	OP_GLOBFOUNDSORUCES			0x9B	//
+#define	OP_GLOBFOUNDSOURCES			0x9B	//
 #define	OP_GLOBCALLBACKREQ			0x9C	// <IP 4><PORT 2><client_ID 4>
 #define	OP_INVALID_LOWID			0x9E	// <ID 4>
 #define	OP_SERVER_LIST_REQ			0xA0	// <IP 4><PORT 2>
