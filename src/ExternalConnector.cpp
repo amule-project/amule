@@ -439,6 +439,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	wxString aMuleConfigFile;
 	if (parser.Found(wxT("create-config-from"), &aMuleConfigFile)) {
+		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
 			fprintf(stderr, "%s\n", (const char *)unicode2char(wxT("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
 			exit(1);
