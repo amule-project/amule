@@ -385,9 +385,9 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	thePrefs::SetFilePermissions( file_perms );
 
 	int dir_perms = 0;
-	dir_perms |= 0100 * CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->GetValue();
-	dir_perms |= 0010 * CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->GetValue();
-	dir_perms |= 0001 * CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->GetValue();
+	dir_perms |= 0100 * CastChild( IDC_SPIN_PERM_DU, wxSpinCtrl )->GetValue();
+	dir_perms |= 0010 * CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->GetValue();
+	dir_perms |= 0001 * CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->GetValue();
 	thePrefs::SetDirPermissions( dir_perms );
 
 
