@@ -80,6 +80,7 @@ void CUploadListCtrl::Init()
 	InsertColumn(6,_("Status"),wxLIST_FORMAT_LEFT,110);//,5);
 	InsertColumn(7,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
     InsertColumn(8,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
+	InsertColumn(9,_("Remote Status"),wxLIST_FORMAT_LEFT,100);
 	// not here.. no preferences yet
 	//LoadSettings(CPreferences::tableUpload);
 }
@@ -204,6 +205,7 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 	SetItem(itemnr,6,status);
 	SetItem(itemnr,7,wxT("Bar is missing :)"));
 	SetItem(itemnr,8,CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal()));
+	SetItem(itemnr,9,wxT("QR: %u"),client->GetRemoteQueueRank());
 }
 
 bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
@@ -322,6 +324,10 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			return item1->GetUpPartCount() - item2->GetUpPartCount();
 		case 107:
 			return item2->GetUpPartCount() - item1->GetUpPartCount();
+		case 9:
+			return item1->GetRemoteQueueRank() - item2->GetRemoteQueueRank();
+		case 109:
+			return item2->GetRemoteQueueRank() - item1->GetRemoteQueueRank();
 		default:
 			return 0;
 	}
@@ -533,6 +539,21 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
                       Sbuffer = wxT("? / ?");
                       }
 						break;
+					case 9:
+						if (client->GetDownloadState() == DS_ONQUEUE) {
+							if (client->IsRemoteQueueFull()) {
+								Sbuffer = wxT("Queue Full");
+						} else {
+						    if (client->GetRemoteQueueRank()) {
+								Sbuffer.Printf(wxT("QR: %u"), client->GetRemoteQueueRank());
+							} else {
+								Sbuffer = wxT("Unknown");
+							}
+					}
+				} else {
+					Sbuffer = wxT("Unknown");
+				}
+				break;
 			}
 			if( iColumn != 7 && iColumn != 0 ) {
 				//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
