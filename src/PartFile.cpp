@@ -540,14 +540,14 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						//SetLastPublishTimeKadSrc(newtag.GetInt());
 						break;
 					}
-				    case FT_KADLASTPUBLISHNOTES:{
+					case FT_KADLASTPUBLISHNOTES:{
 						wxASSERT( newtag.IsInt() );
 						if (newtag.IsInt()) {
 							#warning Kad
 						    // SetLastPublishTimeKadNotes(newtag->GetInt());
 						}
-					    break;
-				    }					
+						break;
+					}					
 					// old tags: as long as they are not needed, take the chance to purge them
 					case FT_PERMISSIONS:
 					case FT_KADLASTPUBLISHKEY:
@@ -580,16 +580,13 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						}
 						break;
 					}
-
-					
 					default: {
 						// Start Changes by Slugfiller for better exception handling
-						if ((!newtag.GetNameID()) &&
-						((newtag.GetName())[0] == FT_GAPSTART ||
-						(newtag.GetName())[0] == FT_GAPEND)) {
-							Gap_Struct* gap = NULL;
+						if (	(!newtag.GetNameID()) &&
+							((newtag.GetName())[0] == FT_GAPSTART ||
+							 (newtag.GetName())[0] == FT_GAPEND)) {
+							Gap_Struct *gap = NULL;
 							uint16 gapkey = atoi(&(newtag.GetName())[1]);
-
 							if ( gap_map.find( gapkey ) == gap_map.end() ) {
 								gap = new Gap_Struct;
 								gap_map[gapkey] = gap;

@@ -36,13 +36,13 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
 #endif
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "Color.h"			// Needed for RGB
+#include "Color.h"		// Needed for RGB
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "FriendListCtrl.h" // Needed for CDlgFriend
+#include "FriendListCtrl.h"	// Needed for CDlgFriend
 #include "OtherFunctions.h"
-#include "muuli_wdr.h"            // Needed for amuleSpecial
+#include "muuli_wdr.h"		// Needed for amuleSpecial
 #include "Statistics.h"		// Needed for CStatistics
 
 #warning Needed while not ported
@@ -226,16 +226,13 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	}
 	
 	int usedtab = GetSelection();	
-
-	if (usedtab == -1) {
-		return false;
-	}
-
 	// Workaround for a problem with wxNotebook, where an invalid selection is returned
 	if (usedtab >= (int)GetPageCount()) {
 		usedtab = GetPageCount() - 1;
 	}
-		
+	if (usedtab == -1) {
+		return false;
+	}
 	
 	CChatSession* ci = (CChatSession*)GetPage( usedtab );
 
