@@ -541,7 +541,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 	}
 
 	// nr. of data parts
-	m_iPartCount = (nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	m_iPartCount = ((uint64)nFileSize + (PARTSIZE - 1)) / PARTSIZE;
 
 	// nr. of parts to be used with OP_FILESTATUS
 	m_iED2KPartCount = nFileSize / PARTSIZE + 1;
