@@ -94,6 +94,14 @@ public:
 	
 	bool SafeState() { return is_safe_state; }
 
+	void			LaunchUrl(const wxString &url);
+	
+	//! These are the currently known web-search providers
+	enum WebSearch { wsFileHash, wsJugle };
+	// websearch function
+	wxString        GenWebSearchUrl( const wxString &filename, WebSearch provider );
+
+
 #ifndef __SYSTRAY_DISABLED__
 	void CreateSystray(const wxString& title);
 #endif

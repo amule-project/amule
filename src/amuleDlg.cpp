@@ -1055,6 +1055,122 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 }
 
+
+/*
+	Try to launch the specified url:
+	 - Windows: The default browser will be used.
+	 - Mac: Currently not implemented
+	 - Anything else: Try a number of hardcoded browsers. Should be made configuable...
+*/
+void CamuleDlg::LaunchUrl( const wxString& url )
+{
+	wxString cmd;
+
+#ifdef __WXMAC__
+
+	#if 0
+	// Kry -Uh?
+	wxString url1(url);
+	if (url1.Left(5) != wxT("file:"))
+		url1 = wxNativePathToURL(url1);
+
+	OSStatus err;
+	ICInstance inst;
+	SInt32 startSel;
+	SInt32 endSel;
+
+	err = ICStart(&inst, 'STKA'); // put your app creator code here
+	if (err == noErr) {
+		#if !TARGET_CARBON
+		err = ICFindConfigFile(inst, 0, nil);
+		#endif
+		if (err == noErr) {
+		startSel = 0;
+		endSel = wxStrlen(url1);
+		err = ICLaunchURL(inst, "\p", url1, endSel, &startSel, &endSel);
+		}
+		ICStop(inst);
+	}
+	#endif
+
+
+#elif defined (__WXMSW__)
+wxFileType *ft;                            /* Temporary storage for filetype. */
+
+	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+	if (!ft) {
+		wxLogError(
+			wxT("Impossible to determine the file type for extension html."
+			"Please edit your MIME types.")
+		);
+		return;
+	}
+
+	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, _T("")))) {
+		// TODO: some kind of configuration dialog here.
+		wxMessageBox(
+			_("Could not determine the command for running the browser."),
+			wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+		delete ft;
+		return;
+	}
+	delete ft;
+
+	wxPuts(wxT("Launch Command: ") + cmd);
+	if (!wxExecute(cmd, FALSE)) {
+		wxLogError(wxT("Error launching browser for FakeCheck."));
+	}
+#else
+
+	cmd = theApp.glob_prefs->GetBrowser();
+	if ( !cmd.IsEmpty() ) {
+		wxString tmp = url;
+		// Pipes cause problems, so escape them
+		tmp.Replace( wxT("|"), wxT("%7C") );
+
+
+		if ( !cmd.Replace( wxT("%s"), tmp ) ) {
+			// No %s found, just append the url
+			cmd += tmp;
+		}
+
+		if ( wxExecute( cmd, false ) ) {
+			printf( "Launch Command: %s\n", unicode2char(cmd));
+			return;
+		}
+	}
+
+	// Unable to execute browser. But this error message doesn't make sense,
+	// cosidering that you _can't_ set the browser executable path... =/
+	wxLogError( _("Unable to launch browser. Please set correct browser executable path in Preferences.") );
+
+#endif
+
+}
+
+
+
+wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch provider )
+{
+	wxString URL;
+
+	switch ( provider )  {
+		case wsFileHash:
+			URL = wxT("http://www.filehash.com/search.html?pattern=FILENAME&submit=Find");
+			break;
+		case wsJugle:
+			URL = wxT("http://jugle.net/index.php?searchstring=FILENAME");
+			break;
+		default:
+			wxASSERT(0);
+	}
+		
+    URL.Replace(wxT("FILENAME"), filename);
+    
+	return URL;
+}
+
+
 struct SkinItem {
 	bool found;
 	wxString filename;
