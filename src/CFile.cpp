@@ -289,7 +289,7 @@ bool CFile::Open(const wxString& szFileName, OpenMode mode, int accessMode)
 		accessMode = CPreferences::GetFilePermissions();
 
     int flags = O_BINARY;
-#ifdef _LARGE_FILES
+#ifdef __linux__
 	flags |=  O_LARGEFILE;
 #endif
 	
