@@ -35,6 +35,7 @@
 // 
 #include "ExternalConnector.h"
 //-------------------------------------------------------------------
+#include "CMD4Hash.h"
 
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl
@@ -84,7 +85,7 @@ public:
 	wxString m_TemplateDir;
 	wxString m_TemplateFileName;
 	bool	m_UseGzip;
-	wxString m_AdminPass, m_GuestPass;
+	CMD4Hash m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
 
 	long		m_WebserverPort;

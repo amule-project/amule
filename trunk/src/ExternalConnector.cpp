@@ -314,8 +314,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 #else  // wxUse_GUI
 		pass_plain = char2unicode(
 			getpass("Enter password for mule connection (return if no pass defined): "));
-		m_password = MD5Sum(pass_plain).GetHash();
 #endif // wxUse_GUI
+		m_password.Decode(MD5Sum(pass_plain).GetHash());
 	}
 	
 	// Create the packet
@@ -463,7 +463,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	wxString pass_plain;
 	if (parser.Found(wxT("password"), &pass_plain)) {
-		m_password = MD5Sum(pass_plain).GetHash();
+		m_password.Decode(MD5Sum(pass_plain).GetHash());
 	}
 
 	if (parser.Found(wxT("write-config"))) {
@@ -484,7 +484,12 @@ void CaMuleExternalConnector::LoadConfigFile()
 	if (m_configFile) {
 		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
 		m_port = m_configFile->Read(wxT("/EC/Port"), -1l);
-		m_password = m_configFile->Read(wxT("/EC/Password"), wxEmptyString);
+		wxString sHash(m_configFile->Read(wxT("/EC/Password"), wxEmptyString));
+		if (sHash.IsEmpty()) {
+			m_password.Clear();
+		} else {
+			m_password.Decode(sHash);
+		}
 	}
 }
 
@@ -499,6 +504,6 @@ void CaMuleExternalConnector::SaveConfigFile()
 	if (m_configFile) {
 		m_configFile->Write(wxT("/EC/Host"), m_host);
 		m_configFile->Write(wxT("/EC/Port"), m_port);
-		m_configFile->Write(wxT("/EC/Password"), m_password);
+		m_configFile->Write(wxT("/EC/Password"), m_password.IsEmpty() ? wxString(wxEmptyString) : m_password.Encode());
 	}
 }

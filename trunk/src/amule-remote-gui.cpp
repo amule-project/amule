@@ -86,6 +86,7 @@
 #include "ClientListCtrl.h"
 #include "ServerListCtrl.h"
 
+#include "CMD4Hash.h"
 #include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECcodes.h"
@@ -679,7 +680,8 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
     packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
     packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 
-	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass));
+	CMD4Hash hash(pass);
+	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, hash));
 
 #ifdef CVSDATE
 	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));

@@ -267,7 +267,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
-				if (passwd && passwd->GetStringData() == thePrefs::ECPassword()) {
+				if (passwd && passwd->GetMD4Data() == CMD4Hash(thePrefs::ECPassword())) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -768,12 +768,12 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 			rc_prefs.AddTag(CECEmptyTag(EC_TAG_WEBSERVER_AUTORUN));
 		}
 		if (!thePrefs::GetWSPass().IsEmpty()) {
-			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, thePrefs::GetWSPass()));
+			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(thePrefs::GetWSPass())));
 		}
 		if (thePrefs::GetWSIsLowUserEnabled()) {
 			CECEmptyTag lowUser(EC_TAG_WEBSERVER_GUEST);
 			if (!thePrefs::GetWSLowPass().IsEmpty()) {
-				lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, thePrefs::GetWSLowPass()));
+				lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(thePrefs::GetWSLowPass())));
 			}
 			rc_prefs.AddTag(lowUser);
 		}
@@ -1014,12 +1014,12 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 			thePrefs::SetWSPort(oneTag->GetInt16Data());
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
-			thePrefs::SetWSPass(oneTag->GetStringData());
+			thePrefs::SetWSPass(oneTag->GetMD4Data().Encode());
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_GUEST)) != NULL) {
 			thePrefs::SetWSIsLowUserEnabled(oneTag->GetInt8Data() != 0);
 			if ((oneTag->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
-				thePrefs::SetWSLowPass(oneTag->GetTagByName(EC_TAG_PASSWD_HASH)->GetStringData());
+				thePrefs::SetWSLowPass(oneTag->GetTagByName(EC_TAG_PASSWD_HASH)->GetMD4Data().Encode());
 			}
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) != NULL) {

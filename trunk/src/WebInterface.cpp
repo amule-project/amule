@@ -320,14 +320,30 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: ") + aMuleConfigFile + _(" does not exist.\n")));
 			exit(1);
 		}
+		wxString tmp;
 		wxFileConfig cfg(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
 		m_host = wxT("localhost");
 		m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
-		cfg.Read(wxT("/ExternalConnect/ECPassword"), &m_password);
+		cfg.Read(wxT("/ExternalConnect/ECPassword"), &tmp);
+		if (tmp.IsEmpty()) {
+			m_password.Clear();
+		} else {
+			m_password.Decode(tmp);
+		}
 		m_UseGzip = (cfg.Read(wxT("/Webserver/UseGzip"), 0l) == 1l);
 		m_AllowGuest = (cfg.Read(wxT("/Webserver/UseLowRightsUser"), 0l) == 1l);
-		cfg.Read(wxT("/Webserver/Password"), &m_AdminPass);
-		cfg.Read(wxT("/Webserver/PasswordLow"), &m_GuestPass);
+		cfg.Read(wxT("/Webserver/Password"), &tmp);
+		if (tmp.IsEmpty()) {
+			m_AdminPass.Clear();
+		} else {
+			m_AdminPass.Decode(tmp);
+		}
+		cfg.Read(wxT("/Webserver/PasswordLow"), &tmp);
+		if (tmp.IsEmpty()) {
+			m_GuestPass.Clear();
+		} else {
+			m_GuestPass.Decode(tmp);
+		}
 		m_WebserverPort = cfg.Read(wxT("/Webserver/Port"), -1l);
 		m_PageRefresh = cfg.Read(wxT("/Webserver/PageRefreshTime"), 120l);
 		// do not process any other command-line parameters, use defaults instead
@@ -381,16 +397,16 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		wxString tmp;
 		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
 			if (tmp.IsEmpty()) {
-				m_AdminPass = wxEmptyString;
+				m_AdminPass.Clear();
 			} else {
-				m_AdminPass = MD5Sum(tmp).GetHash();
+				m_AdminPass.Decode(MD5Sum(tmp).GetHash());
 			}
 		}
 		if ( parser.Found(wxT("guest-pass"), &tmp) ) {
 			if (tmp.IsEmpty()) {
-				m_GuestPass = wxEmptyString;
+				m_GuestPass.Clear();
 			} else {
-				m_GuestPass = MD5Sum(tmp).GetHash();
+				m_GuestPass.Decode(MD5Sum(tmp).GetHash());
 			}
 		}
 
@@ -452,12 +468,23 @@ void CamulewebApp::LoadConfigFile()
 {
 	CaMuleExternalConnector::LoadConfigFile();
 	if (m_configFile) {
+		wxString tmp;
 		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), -1l);
 		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxT("default"));
 		m_configFile->Read(wxT("/Webserver/UseGzip"), &m_UseGzip, false);
 		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
-		m_AdminPass = m_configFile->Read(wxT("/Webserver/AdminPassword"), wxEmptyString);
-		m_GuestPass = m_configFile->Read(wxT("/Webserver/GuestPassword"), wxEmptyString);
+		tmp = m_configFile->Read(wxT("/Webserver/AdminPassword"), wxEmptyString);
+		if (tmp.IsEmpty()) {
+			m_AdminPass.Clear();
+		} else {
+			m_AdminPass.Decode(tmp);
+		}
+		tmp = m_configFile->Read(wxT("/Webserver/GuestPassword"), wxEmptyString);
+		if (tmp.IsEmpty()) {
+			m_GuestPass.Clear();
+		} else {
+			m_GuestPass.Decode(tmp);
+		}
 	}
 }
 
@@ -469,7 +496,7 @@ void CamulewebApp::SaveConfigFile()
 		m_configFile->Write(wxT("/Webserver/Template"), m_TemplateName);
 		m_configFile->Write(wxT("/Webserver/UseGzip"), m_UseGzip);
 		m_configFile->Write(wxT("/Webserver/AllowGuest"), m_AllowGuest);
-		m_configFile->Write(wxT("/Webserver/AdminPassword"), m_AdminPass);
-		m_configFile->Write(wxT("/Webserver/GuestPassword"), m_GuestPass);
+		m_configFile->Write(wxT("/Webserver/AdminPassword"), m_AdminPass.IsEmpty() ? wxString(wxEmptyString) : m_AdminPass.Encode());
+		m_configFile->Write(wxT("/Webserver/GuestPassword"), m_GuestPass.IsEmpty() ? wxString(wxEmptyString) : m_GuestPass.Encode());
 	}
 }
