@@ -91,10 +91,10 @@ AC_ARG_ENABLE(embedded_crypto,[  --enable-embedded_crypto    Use embedded Crypto
 AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       Compile aMule command line client],
               BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
 
-AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule command line client (GUI version)],
+AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui    Compile aMule GUI client],
              GUI="$enableval", GUI="no")
 
-AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI (EXPERIMENTAL)],
+AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui    Compile aMule remote GUI > WARNING - don't use it. It DOESN'T work yet! <],
              AMULE_GUI="$enableval", AMULE_GUI="no")
 
 AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon    Compile aMule daemon version],
@@ -536,10 +536,14 @@ AC_DEFINE_UNQUOTED(AMULE_INSTALL_PREFIX, "${aMuleInstallPrefix}", [aMule install
 
 AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales are.])
 		
-# Try to set the CVS checkout-date, sadly only available for scripted checkouts
-if test -f "CVSDATE"
+# Try to set the CVS checkout-date
+if test -f "CVSDATE" # CVSDATE for tarballs
 then
 	AC_DEFINE_UNQUOTED(CVSDATE, "`cat CVSDATE`", [The checkout date.])
+elif test -f "CVS/Entries" # CVSDATE for cvs
+then
+	cvsdate="$(echo `stat -c %y CVS/Entries` | sed s/.000000000//)"
+	test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date.])
 fi
 
 XRCFLAGS="-Isrc"
