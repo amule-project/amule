@@ -695,6 +695,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		if (metFile.IsOpened()) {
 			metFile.Close();		
 		}
+		delete[] buffer;
 		return false;
 	}
 
