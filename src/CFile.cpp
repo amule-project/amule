@@ -25,11 +25,12 @@
 
 #include "CFile.h"		// Interface declarations.
 
-#ifdef __WXMAC__
+//#ifdef __WXMAC__
 	#define FILE_TRACKER	1
-#endif
+//#endif
 
 #ifdef FILE_TRACKER
+	#include <wx/event.h>
 	#include "GuiEvents.h"
 #endif
 
