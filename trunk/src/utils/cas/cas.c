@@ -1,18 +1,17 @@
 /*
-		c amule statistics
-	
-	written by:
-	Pedro de Olveira <falso@rdk.homeip.net>
+   c amule statistics
 
-	this is very buggy software by i hope you like it.
-	i mainly did this cause aStats was very slow, so i
-	tried to do a remake of it in c to learn something
-	and do something useful.
+   written by:
+   Pedro de Olveira <falso@rdk.homeip.net>
 
-	if anyone wants to help me or give any ideas please
-	email me.
+   this is very buggy software by i hope you like it.
+   i mainly did this cause aStats was very slow, so i
+   tried to do a remake of it in c to learn something
+   and do something useful.
 
-*/
+   if anyone wants to help me or give any ideas please
+   email me.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +50,11 @@ int main()
 		if (!feof(amulesig))
 		{
 
-			if (ler != 10)	sprintf(stats[i],"%s%c",stats[i],ler);
+			if (ler != 10)
+			{
+				if (strlen(stats[i]) < 80 )
+					sprintf(stats[i],"%s%c",stats[i],ler);
+			}
 			else i++;
 		}
 
