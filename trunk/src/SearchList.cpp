@@ -47,7 +47,7 @@
 #endif
 
 CGlobalSearchThread::CGlobalSearchThread( Packet *packet )
-	: wxThread(wxTHREAD_JOINABLE)
+	: wxThread(wxTHREAD_DETACHED)
 {
 	m_packet = packet;
 	
@@ -567,6 +567,6 @@ void CSearchList::StopGlobalSearch()
 {
  	if (m_searchthread) {
 		m_searchthread->Delete();
-		m_searchthread = 0;
+		m_searchthread = NULL;
  	}
 }
