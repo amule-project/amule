@@ -1166,7 +1166,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
-        m_reqfile->hashsetneeded = true;
+		m_reqfile->hashsetneeded = true;
 	}
 
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
@@ -1186,16 +1186,20 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 			bDelete = false;
 	};
 
+	// The folowing code is brain damaged in aMule, the original code has
+	// AddDeadSource(this), which adds source to a list for later processing.
 	switch(m_nUploadState){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
+			// theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
 			bDelete = true;
 	};
 	switch(m_nDownloadState){
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
+			// theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
 			bDelete = true;
 	};
 
@@ -1212,7 +1216,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 
 	m_socket = NULL;
 
-    if (m_iFileListRequested){
+	if (m_iFileListRequested){
 		AddLogLineM(true, wxString(_("Failed to retrieve shared files from ")) +GetUserName());
 		m_iFileListRequested = 0;
 	}
@@ -1225,7 +1229,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	if (bDelete){
 		AddDebugLogLineM(false, wxString::Format(wxT("--- Deleted client \"") + 
 			GetClientFullInfo() + wxT("\"; Reason was ") + strReason + wxT("\n")));
-		return true;
 	}
 	else{
 		AddDebugLogLineM(false, wxString::Format(wxT("--- Disconnected client \"") + 
@@ -1233,8 +1236,9 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
-		return false;
 	}
+	
+	return bDelete;
 }
 
 //Returned bool is not if the TryToConnect is successful or not..
