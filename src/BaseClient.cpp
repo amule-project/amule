@@ -341,50 +341,68 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		
 	m_bIsHybrid = false;
 	m_bIsML = false;
-	data->ReadRaw((unsigned char*)m_achUserHash,16);
-	data->Read(m_nUserID);
-	uint16 nUserPort = 0;
-	data->Read(nUserPort); // hmm clientport is sent twice - why?
 
-	uint32 tagcount;
-	data->Read(tagcount);
-	for (uint32 i = 0;i < tagcount; i++){
-		CTag temptag(data);
-		switch(temptag.tag.specialtag){
-			case CT_NAME:
-				if (m_pszUsername){
-					delete[] m_pszUsername;
-					m_pszUsername = NULL; // needed, in case 'nstrdup' fires an exception!!
-				}
-				if( temptag.tag.stringvalue )
-					m_pszUsername = nstrdup(temptag.tag.stringvalue);
-				break;
-			case CT_VERSION:
-				m_nClientVersion = temptag.tag.intvalue;
-				break;
-			case CT_PORT:
-				nUserPort = temptag.tag.intvalue;
-				break;
+	try {	
+	
+		data->ReadRaw((unsigned char*)m_achUserHash,16);
+		data->Read(m_nUserID);
+		uint16 nUserPort = 0;
+		data->Read(nUserPort); // hmm clientport is sent twice - why?
+
+		uint32 tagcount;
+		data->Read(tagcount);
+		for (uint32 i = 0;i < tagcount; i++){
+			CTag temptag(data);
+			switch(temptag.tag.specialtag){
+				case CT_NAME:
+					if (m_pszUsername){
+						delete[] m_pszUsername;
+						m_pszUsername = NULL; // needed, in case 'nstrdup' fires an exception!!
+					}
+					if( temptag.tag.stringvalue )
+						m_pszUsername = nstrdup(temptag.tag.stringvalue);
+					break;
+				case CT_VERSION:
+					m_nClientVersion = temptag.tag.intvalue;
+					break;
+				case CT_PORT:
+					nUserPort = temptag.tag.intvalue;
+					break;
+			}
 		}
-	}
-	m_nUserPort = nUserPort;
-	data->Read(m_dwServerIP);
-	data->Read(m_nServerPort);
-	// Hybrid now has an extra uint32.. What is it for?
-	// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-	if ( data->GetLength() - data->GetPosition() == 4 ){
-		// Kry - Changes on eMule code for compat.
-		char test[5];
-		// lemonfan - this is not an "normal" string, so wxString cant be used
-		data->ReadRaw(&test, 4);
-		test[4]='\0';
-		if (strncmp(test,"MLDK",4))
-			m_bIsML=true;
-		else{
-			m_bIsHybrid = true;
-			m_fSharedDirectories = 1;
+		
+		m_nUserPort = nUserPort;
+		data->Read(m_dwServerIP);
+		data->Read(m_nServerPort);
+		// Hybrid now has an extra uint32.. What is it for?
+		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
+		if ( data->GetLength() - data->GetPosition() == 4 ){
+			// Kry - Changes on eMule code for compat.
+			char test[5];
+			// lemonfan - this is not an "normal" string, so wxString cant be used
+			data->ReadRaw(&test, 4);
+			test[4]='\0';
+			if (strncmp(test,"MLDK",4))
+				m_bIsML=true;
+			else{
+				m_bIsHybrid = true;
+				m_fSharedDirectories = 1;
+			}
 		}
+		
+	} catch ( CStrangePacket )
+	{
+		printf("\nWrong Tags on hello type packet!!\n");
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
 	}
+	catch ( CInvalidPacket (e))
+	{
+		printf("Wrong Tags on hello type packet - %s\n\n",e.what());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");		
+	}
+			
 	if( m_nClientVersion > 10000 && m_nClientVersion < 100000 )
 		m_nClientVersion = m_nClientVersion - (m_nClientVersion/10000)*10000;
 	if( m_nClientVersion > 1000 )
@@ -393,56 +411,28 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		m_nClientVersion *= 10;
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
-// #ifdef __WXMSW__
-#if 0
-	SOCKADDR_IN sockAddr;
-	memset(&sockAddr, 0, sizeof(sockAddr));
-	uint32 nSockAddrLen = sizeof(sockAddr);
-//	socket->getpeername((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-	sockAddr.sin_addr.s_addr=inet_ntoa(address.GetAddress()->c_str());
-//	getpeername(
-//		socket, 
-//		(SOCKADDR*)&sockAddr, 
-//		(int*)&nSockAddrLen
-//	);
-	
-	m_dwUserIP = sockAddr.sin_addr.S_un.S_addr;
-	strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
-
-	if (theApp.glob_prefs->AddServersFromClient() && m_dwServerIP && m_nServerPort){
-		in_addr addhost;
-		addhost.S_un.S_addr = m_dwServerIP;
-		CServer* addsrv = new CServer(m_nServerPort, inet_ntoa(addhost));
-		addsrv->SetListName(addsrv->GetAddress());
-
-		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(addsrv, true))
-			delete addsrv;
-	}
-#endif
-//#else
 	if (socket) {
 		struct sockaddr_in sockAddr;
 		memset(&sockAddr, 0, sizeof(sockAddr));
 		wxIPV4address address;
 		socket->GetPeer(address);
 		sockAddr.sin_addr.s_addr=inet_addr(address.IPAddress().c_str());
-	//uint32 nSockAddrLen = sizeof(sockAddr);
-		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
 		m_dwUserIP = sockAddr.sin_addr.s_addr;
 		strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
 	} else {
 		printf("Huh, socket failure. Avoided crash this time.\n");
 	}
+	
 	if (theApp.glob_prefs->AddServersFromClient()) {
 		in_addr addhost;
 		addhost.s_addr = m_dwServerIP;
 		CServer* addsrv = new CServer(m_nServerPort, inet_ntoa(addhost));
 		addsrv->SetListName(addsrv->GetAddress());
 			if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(addsrv, true)) {
-			delete addsrv;
+				delete addsrv;
 		}
 	}
-//#endif
+
 	if(!HasLowID() || m_nUserID == 0)
 		m_nUserID = m_dwUserIP;
 
@@ -701,15 +691,15 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	}
 	catch ( CStrangePacket )
 	{
-		printf("\nWrong Tags on hello packet!!\n");
+		printf("\nWrong Tags on Mule Info packet!!\n");
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		printf("Packet Dump:\n");
 		DumpMem(pachPacket,nSize);
 	}
-	catch ( CInvalidPacket )
+	catch ( CInvalidPacket (e))
 	{
-		printf("Wrong Tags on hello packet!!!\n\n");
+		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		printf("Packet Dump:\n");		
@@ -799,11 +789,21 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		}
 
 	}
-	catch ( CInvalidPacket e )
+	catch ( CStrangePacket )
 	{
-		printf("Invalid MuleComment packet - %s\n", e.what());
+		printf("\nInvalid MuleComment packet!\n");
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
 		return;
 	}
+	catch ( CInvalidPacket (e))
+	{
+		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");		
+		return;
+	}		
+
 	if (reqfile->HasRating() || reqfile->HasComment()) theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(reqfile);
 }
 
@@ -1323,7 +1323,8 @@ wxString CUpDownClient::GetUploadFileInfo()
 void CUpDownClient::Destroy()
 {
 	if (socket) {
-		socket->Destroy();
+		delete socket;
+		//socket->Destroy();
 	}
 }
 
@@ -1563,11 +1564,27 @@ void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
 		}
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
 	// Kry:  + 1 on the original one.
-	byte discard;
-	data.Read(discard);		
-	uint32 dwRandom;
-	data.Read(dwRandom);
-	credits->m_dwCryptRndChallengeFrom = dwRandom;
+	try {
+		byte discard;
+		data.Read(discard);		
+		uint32 dwRandom;
+		data.Read(dwRandom);
+		credits->m_dwCryptRndChallengeFrom = dwRandom;
+	} 
+	catch ( CStrangePacket )
+	{
+		printf("\nWrong Tags on SecIdentState packet!!\n");
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");
+	}
+	catch ( CInvalidPacket (e))
+	{
+		printf("Wrong Tags on SecIdentState packet - %s\n\n",e.what());
+		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("User Disconnected.\n");		
+	}
+			
+	
 	//DEBUG_ONLY(AddDebugLogLine(false, "recieved SecIdentState Packet, state: %i", pachPacket[0]));
 }
 
