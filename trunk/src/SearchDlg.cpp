@@ -219,15 +219,16 @@ void CSearchDlg::CreateNewTab(wxString searchString,uint32 nSearchID)
 void CSearchDlg::OnBnClickedCancels(wxEvent &evt)
 {
 	canceld = true;
-	globsearch = false;
+
+	if (globsearch) {
+		delete searchpacket;
+		globsearch = false;
+	}
 
 	m_timer.Stop();
 	global_search_timer = 0;
 	searchprogress->SetValue(0);
 
-	if (global_search_timer) {
-		delete searchpacket;
-	}
 	FindWindowById(IDC_CANCELS)->Disable();
 	FindWindowById(IDC_STARTS)->Enable();
 }
