@@ -37,6 +37,8 @@ Version 2.0.0rc8 - The "???????????" version.
 		* New backtrace output with demangled function names, file
 		  names and line numbers, when possible.
 		* Initial (not functional yet) SOCKS5 proxy support.
+		* Initial (not functional yet) SOCKS4 proxy support.
+		* Initial (not functional yet) HTTP proxy support.
 		* Updated some tests in configure.in.
 
 	GonoszTopi:
