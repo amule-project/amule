@@ -195,7 +195,7 @@ AC_DEFUN(AM_PATH_WXCONFIG,
     WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
     WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
   
-    WXBASEFOUND=1
+    WXBASE24FOUND=0
   
     AC_SUBST(WXBASE_CPPFLAGS)
     AC_SUBST(WXBASE_CFLAGS)
@@ -250,7 +250,7 @@ AC_DEFUN(AM_PATH_WXCONFIG,
       minvers=`echo $min_wxbase_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
     
       if test -n "$vers" && test "$vers" -ge $minvers; then
-	WXBASEFOUND=1
+	WXBASE24FOUND=1
       
         WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
         WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
@@ -277,7 +277,7 @@ AC_DEFUN(AM_PATH_WXCONFIG,
 	    AC_MSG_RESULT(no (version $WXBASE_VERSION is not new enough))
          fi
 
-	 WXBASEFOUND=0
+	 WXBASE24FOUND=0
   
          WXBASE_CFLAGS=""
          WXBASE_CPPFLAGS=""

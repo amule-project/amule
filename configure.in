@@ -213,8 +213,6 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 
 # Other tests
 
-# Other tests
-
 case "$USE_DEBUG" in
 yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
     ;;
@@ -265,11 +263,15 @@ yes)	BUILD_AMULECMD="yes"
 	;;
 esac
 
-case "$WXBASEFOUND" in
+case "$WXBASE24FOUND" in
 1)	HAVE_AMULECMD="yes"
 	WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DWXBASE"
 	;;
 *)	HAVE_AMULECMD="no"
+	if test "${WX_VERSION}" = "any"; then
+		WEB="no"
+		WEBGUI="no"
+	fi
 	;;
 esac
 
@@ -454,10 +456,16 @@ echo "  Which libraries should aMule use?"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"
 
+if test x"$WX_VERSION" = x"any" ; then
+echo
+echo "  NOTICE: With wxWidgets versions prior 2.5, you need wxBase library to compile aMule WebServer"
+fi
+echo
+
 if test x"$GTK_USEDVERSION" = x"2" && test x"$WX_VERSION" = x"any" ; then
-echo ""
-echo ""
+echo
+echo
 echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will make aMule"
 echo "  be unstable, use much more cpu and ram. You have been warned, don't report bugs under this setup."
 fi
-echo ""
+echo
