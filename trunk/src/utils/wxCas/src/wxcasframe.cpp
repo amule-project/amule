@@ -1,26 +1,30 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Name:        wxCas
-// Purpose:    Display aMule Online Statistics
-// Author:       ThePolish <thepolish@vipmail.ru>
-// Copyright (C) 2004 by ThePolish
-//
-// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
-// Pixmats from aMule http://www.amule.org
-//
-// This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the
-// Free Software Foundation, Inc.,
-// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+/// Name:         wxCasFrame Class
+///
+/// Purpose:      wxCas main frame
+///
+/// Author:       ThePolish <thepolish@vipmail.ru>
+///
+/// Copyright (C) 2004 by ThePolish
+///
+/// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
+///
+/// Pixmats from aMule http://www.amule.org
+///
+/// This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation; either version 2 of the License, or
+/// (at your option) any later version.
+///
+/// This program is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with this program; if not, write to the
+/// Free Software Foundation, Inc.,
+/// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __GNUG__
@@ -199,8 +203,8 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_refresh_timer->Start (1000 * prefs->Read (WxCasCte::REFRESH_RATE_KEY, WxCasCte::DEFAULT_REFRESH_RATE));	// s to ms
 
   // Add FTP update timer
-  m_ftp_timer = new wxTimer (this, ID_FTP_TIMER);
-  m_ftp_timer->Start (60000 * prefs->Read (WxCasCte::FTP_UPDATE_RATE_KEY, WxCasCte::DEFAULT_FTP_UPDATE_RATE));	// min to ms
+  m_ftp_update_timer = new wxTimer (this, ID_FTP_UPDATE_TIMER);
+  m_ftp_update_timer->Start (60000 * prefs->Read (WxCasCte::FTP_UPDATE_RATE_KEY, WxCasCte::DEFAULT_FTP_UPDATE_RATE));	// min to ms
 
   // Update stats
   UpdateAll ();
@@ -225,7 +229,7 @@ EVT_TOOL (ID_BAR_PRINT, WxCasFrame::OnBarPrint)
 EVT_TOOL (ID_BAR_PREFS, WxCasFrame::OnBarPrefs)
 EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
 EVT_TIMER (ID_REFRESH_TIMER, WxCasFrame::OnRefreshTimer)
-EVT_TIMER (ID_FTP_TIMER, WxCasFrame::OnFtpTimer)
+EVT_TIMER (ID_FTP_UPDATE_TIMER, WxCasFrame::OnFtpUpdateTimer)
 END_EVENT_TABLE ()
 
 // Get Stat Bitmap
@@ -279,7 +283,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
   if (m_refresh_timer->IsRunning ())
     {
       m_refresh_timer->Stop ();
-      m_ftp_timer->Stop ();
+      m_ftp_update_timer->Stop ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, wxT("Refresh"),
                              m_toolBarBitmaps[4], wxNullBitmap,
@@ -290,7 +294,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
   else
     {
       m_refresh_timer->Start ();
-      m_ftp_timer->Start ();
+      m_ftp_update_timer->Start ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
       m_toolbar->InsertTool (0, ID_BAR_REFRESH, wxT("Refresh"),
                              m_toolBarBitmaps[0], wxNullBitmap,
@@ -402,7 +406,7 @@ WxCasFrame::OnRefreshTimer (wxTimerEvent & event)
 
 // Ftp update timer
 void
-WxCasFrame::OnFtpTimer (wxTimerEvent & event)
+WxCasFrame::OnFtpUpdateTimer (wxTimerEvent & event)
 {
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
@@ -702,4 +706,50 @@ WxCasFrame::UpdateStatsPanel ()
     {
       return (FALSE);
     }
+}
+
+// Refresh period changing
+bool
+WxCasFrame::ChangeRefreshPeriod(wxInt32 newPeriod)
+{
+  // As the user can stop it, we must let it in the same state
+  // it was before changing period
+  bool wasRunning=FALSE;
+
+  if (m_refresh_timer->IsRunning())
+    {
+      wasRunning=TRUE;
+    }
+
+  bool ok=m_refresh_timer->Start(newPeriod);
+
+  if (! wasRunning)
+    {
+      m_refresh_timer->Stop();
+    }
+
+  return (ok);
+}
+
+// Ftp update period changing
+bool
+WxCasFrame::ChangeFtpUpdatePeriod(wxInt32 newPeriod)
+{
+  // As the user can stop it, we must let it in the same state
+  // it was before changing period
+  bool wasRunning=FALSE;
+
+  if (m_ftp_update_timer->IsRunning())
+    {
+      wasRunning=TRUE;
+    }
+
+  bool ok=m_ftp_update_timer->Start(newPeriod);
+
+  if (! wasRunning)
+    {
+      m_ftp_update_timer->Stop();
+    }
+
+  return (ok);
 }

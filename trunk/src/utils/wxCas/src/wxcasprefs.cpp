@@ -1,26 +1,30 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Name:        wxCas
-// Purpose:    Display aMule Online Statistics
-// Author:       ThePolish <thepolish@vipmail.ru>
-// Copyright (C) 2004 by ThePolish
-//
-// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
-// Pixmats from aMule http://www.amule.org
-//
-// This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the
-// Free Software Foundation, Inc.,
-// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+/// Name:         wxCasPrefs Class
+///
+/// Purpose:      Display user preferences dialog and manage configuration storage system
+///
+/// Author:       ThePolish <thepolish@vipmail.ru>
+///
+/// Copyright (C) 2004 by ThePolish
+///
+/// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
+///
+/// Pixmats from aMule http://www.amule.org
+///
+/// This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation; either version 2 of the License, or
+/// (at your option) any later version.
+///
+/// This program is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with this program; if not, write to the
+/// Free Software Foundation, Inc.,
+/// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __GNUG__
@@ -39,6 +43,7 @@
 
 #include "wxcasprefs.h"
 #include "wxcascte.h"
+#include "wxcasframe.h"
 
 // Constructor
 WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
@@ -51,16 +56,6 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   // Main vertical Sizer
   m_mainVBox = new wxBoxSizer (wxVERTICAL);
 
-  // Note
-  m_noteStaticText =
-    new wxStaticText (this, -1,
-                      _
-                      ("WxCas must be restarted for modifications to take place"),
-                      wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
-  m_noteStaticText->SetForegroundColour (*wxRED);
-
-  m_mainVBox->Add (m_noteStaticText, 0, wxGROW | wxALIGN_CENTER | wxALL, 10);
-
   // OS Path
   m_osPathSBox =
     new wxStaticBox (this, -1, _("Directory containing amulesig.dat file"));
@@ -72,7 +67,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
 
   wxString str;
 
-  prefs->Read (WxCasCte::AMULESIG_DIR_KEY, &str,
+  prefs->Read (WxCasCte::AMULESIG_PATH_KEY, &str,
                WxCasCte::DEFAULT_AMULESIG_PATH);
 
   // Text extent
@@ -406,14 +401,26 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
 
-  prefs->Write (WxCasCte::AMULESIG_DIR_KEY,
+  // Write amulesig dir
+  prefs->Write (WxCasCte::AMULESIG_PATH_KEY,
                 m_osPathTextCtrl->GetValue ());
+
+  // Restart timer if refresh interval has changed
+  if (prefs->Read (WxCasCte::REFRESH_RATE_KEY,WxCasCte::DEFAULT_REFRESH_RATE)	!=
+      m_refreshSpinButton->GetValue ())
+    {
+      ((WxCasFrame*)GetParent())->ChangeRefreshPeriod(1000 * m_refreshSpinButton->GetValue ());
+    }
+
+  // Write refresh interval
   prefs->Write (WxCasCte::REFRESH_RATE_KEY,
                 m_refreshSpinButton->GetValue ());
 
+  // Write auto stat img state
   prefs->Write (WxCasCte::ENABLE_AUTOSTATIMG_KEY,
                 m_autoStatImgCheck->GetValue ());
 
+  // If auto stat img is enabled
   if (m_autoStatImgCheck->GetValue ())
     {
       prefs->Write (WxCasCte::AUTOSTATIMG_DIR_KEY,
@@ -422,11 +429,20 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
       prefs->Write (WxCasCte::AUTOSTATIMG_TYPE_KEY,
                     m_autoStatImgCombo->GetValue ());
 
+      // Write Ftp update state
       prefs->Write (WxCasCte::ENABLE_FTP_UPDATE_KEY,
                     m_ftpUpdateCheck->GetValue ());
 
+      // If Ftp update is enabled
       if (m_ftpUpdateCheck->GetValue ())
         {
+          // Restart timer if update interval has changed
+          if (prefs->Read (WxCasCte::FTP_UPDATE_RATE_KEY,WxCasCte::DEFAULT_FTP_UPDATE_RATE)	!=
+              m_ftpUpdateSpinButton->GetValue ())
+            {
+              ((WxCasFrame*)GetParent())->ChangeFtpUpdatePeriod(60000 * m_refreshSpinButton->GetValue ());
+            }
+          // Write Ftp parameters
           prefs->Write (WxCasCte::FTP_UPDATE_RATE_KEY,
                         m_ftpUpdateSpinButton->GetValue ());
 
@@ -443,6 +459,9 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
                         m_ftpPasswdTextCtrl->GetValue ());
         }
     }
+
+  // Force config writing
+  prefs->Flush();
 
   // Close window
   this->EndModal (this->GetReturnCode ());

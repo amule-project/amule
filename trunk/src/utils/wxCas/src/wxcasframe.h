@@ -1,26 +1,30 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Name:        wxCas
-// Purpose:    Display aMule Online Statistics
-// Author:       ThePolish <thepolish@vipmail.ru>
-// Copyright (C) 2004 by ThePolish
-//
-// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
-// Pixmats from aMule http://www.amule.org
-//
-// This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the
-// Free Software Foundation, Inc.,
-// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+/// Name:         wxCasFrame Class
+///
+/// Purpose:      wxCas main frame
+///
+/// Author:       ThePolish <thepolish@vipmail.ru>
+///
+/// Copyright (C) 2004 by ThePolish
+///
+/// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
+///
+/// Pixmats from aMule http://www.amule.org
+///
+/// This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation; either version 2 of the License, or
+/// (at your option) any later version.
+///
+/// This program is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with this program; if not, write to the
+/// Free Software Foundation, Inc.,
+/// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WXCASFRAME_H
@@ -47,7 +51,7 @@
 #include "linuxmon.h"
 #endif
 
-// wxCas Frame
+/// Main wxCas Frame
 class WxCasFrame:public wxFrame
   {
   private:
@@ -75,7 +79,8 @@ class WxCasFrame:public wxFrame
     wxStaticText *m_statLine_7;
 
     wxTimer * m_refresh_timer;
-    wxTimer * m_ftp_timer;
+    wxTimer * m_ftp_update_timer;
+
     WxCasCanvas *m_imgPanel;
     OnLineSig *m_aMuleSig;
     wxUint32 m_maxLineCount;
@@ -95,7 +100,7 @@ class WxCasFrame:public wxFrame
       ID_BAR_PREFS,
       ID_BAR_ABOUT,
       ID_REFRESH_TIMER,
-      ID_FTP_TIMER
+      ID_FTP_UPDATE_TIMER
     };
 
   protected:
@@ -108,19 +113,25 @@ class WxCasFrame:public wxFrame
     void OnBarPrint (wxCommandEvent & event);
     void OnBarPrefs (wxCommandEvent & event);
     void OnRefreshTimer (wxTimerEvent & event);
-    void OnFtpTimer (wxTimerEvent & event);
+    void OnFtpUpdateTimer (wxTimerEvent & event);
 
     DECLARE_EVENT_TABLE ();
 
   public:
-    // Constructor
+    /// Constructor
     WxCasFrame (const wxString& title);
 
-    // Destructor
+    /// Destructor
     ~WxCasFrame ();
 
-    // Accessor
+    /// Get Online statistics image
     wxImage *GetStatImage () const;
+
+    /// Refresh timer period changing
+    bool ChangeRefreshPeriod(wxInt32 newPeriod);
+
+    /// Refresh timer period changing
+    bool ChangeFtpUpdatePeriod(wxInt32 newPeriod);
   };
 
 #endif /* _WXCASFRAME_H */
