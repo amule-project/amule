@@ -181,10 +181,11 @@ void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
 	chatselector->ConnectionResult(sender, success);
 }
 
-void CChatWnd::SendMessage(const wxString& message, bool setfocus)
+void CChatWnd::SendMessage(const wxString& message)
 {
 	if (chatselector->SendMessage( message )) {
 		GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
 	GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }
+

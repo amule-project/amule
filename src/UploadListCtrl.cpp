@@ -248,7 +248,7 @@ bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
 					if (!message.IsEmpty()) {
 						// false -> no focus set
 						theApp.amuledlg->chatwnd->StartSession(client, false);
-						theApp.amuledlg->chatwnd->SendMessage(message,false);
+						theApp.amuledlg->chatwnd->SendMessage(message);
 					}
 					return true;				
 					break;

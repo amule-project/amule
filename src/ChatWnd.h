@@ -37,15 +37,16 @@ public:
 
 	void StartSession(CUpDownClient* client, bool setfocus = true);
 
-	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
-	void		AddFriend(CUpDownClient* toadd);
-	void		AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
-	void		RefreshFriend(CFriend* toupdate);
-	
-	void		ProcessMessage(CUpDownClient* sender, const wxString& message);
-	void 		ConnectionResult(CUpDownClient* sender, bool success);
+	CFriend*FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
+	void	AddFriend(CUpDownClient* toadd);
+	void	AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP,
+			uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash);
+	void	RefreshFriend(CFriend* toupdate);
 
-	void		SendMessage(const wxString& message, bool setfocus = true);
+	void	ProcessMessage(CUpDownClient* sender, const wxString& message);
+	void 	ConnectionResult(CUpDownClient* sender, bool success);
+
+	void	SendMessage(const wxString& message);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
