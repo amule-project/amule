@@ -2573,7 +2573,7 @@ static void SigIllHandler(int)
 
 static bool HasSSE2()
 {
-/*	if (!s_sse2Enabled)
+	if (!s_sse2Enabled)
 		return false;
 
 	word32 cpuid[4];
@@ -2607,14 +2607,13 @@ static bool HasSSE2()
 	signal(SIGILL, oldHandler);
 	return result;
 #endif
-*/
-return false;
+
 }
 #endif
 
 static bool IsP4()
 {
-/*	word32 cpuid[4];
+	word32 cpuid[4];
 
 	CpuId(0, cpuid);
 	std::swap(cpuid[2], cpuid[3]);
@@ -2623,8 +2622,7 @@ static bool IsP4()
 
 	CpuId(1, cpuid);
 	return ((cpuid[0] >> 8) & 0xf) == 0xf;
-*/
-return false;
+
 }
 
 
