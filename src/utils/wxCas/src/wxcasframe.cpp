@@ -35,6 +35,7 @@
 #endif
 
 #include <wx/image.h>
+#include <wx/version.h>
 
 #include "wxcasframe.h"
 #include "wxcasprint.h"
@@ -54,13 +55,15 @@
 #endif
 
 // Constructor
-/*WxCasFrame::WxCasFrame (const wxString & title):
+#if wxCHECK_VERSION(2,5,1)
+WxCasFrame::WxCasFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION | wxCLOSE_BOX ))
-*/
+#else
 WxCasFrame::WxCasFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION ))
+#endif
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
