@@ -2486,20 +2486,21 @@ void completingThread::setFile(CPartFile* pFile)
 void completingThread::OnExit()
 {
 		wxMutexGuiEnter();
+	
 		if (completing_result & UNEXP_FILE_ERROR) {
-			theApp.amuledlg->AddLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),completing->GetFileName().GetData());
+			theApp.QueueLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),completing->GetFileName().GetData());
 		}	
 		if (completing_result & DELETE_FAIL_MET) {
-			theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s")),completing->fullname);		
+			theApp.QueueLogLine(true,CString(_("Failed to delete %s")),completing->fullname);		
 		}	
 		if (completing_result & DELETE_FAIL_MET_BAK) {
-			theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s%s")), completing->fullname, PARTMET_BAK_EXT);				
+			theApp.QueueLogLine(true,CString(_("Failed to delete %s%s")), completing->fullname, PARTMET_BAK_EXT);				
 		}	
 		if (completing_result & SAME_NAME_RENAMED) {
-			theApp.amuledlg->AddLogLine(true, CString(_("A file with that name already exists, the file has been renamed")));
+			theApp.QueueLogLine(true, CString(_("A file with that name already exists, the file has been renamed")));
 		}		
 
-		theApp.amuledlg->AddLogLine(true,CString(_("Finished downloading %s :-)")),completing->GetFileName().GetData());
+		theApp.QueueLogLine(true,CString(_("Finished downloading %s :-)")),completing->GetFileName().GetData());
 		theApp.amuledlg->ShowNotifier(CString(_("Downloaded:"))+"\n"+completing->GetFileName(), TBN_DLOAD);
 		
 		wxMutexGuiLeave();	

@@ -23,7 +23,9 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
+#include <wx/string.h>		// Needed for wxString
 
+#include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
 
 
@@ -49,6 +51,12 @@ class wxServer;
 	
 #define theApp wxGetApp()
 
+typedef struct {
+	wxString line;
+	bool		addtostatus;
+} QueuedLogLine;
+
+
 class CamuleApp : public wxApp
 {
 public:
@@ -68,6 +76,9 @@ public:
 	wxString		CreateED2kHostnameSourceLink( CAbstractFile* f );
 	wxString		GenFakeCheckUrl(CAbstractFile *file);
 	
+	void QueueLogLine(bool addtostatusbar, const wxChar* line, ...);
+	void FlushQueuedLogLines();
+		
 	// Misc functions
 	bool			CopyTextToClipboard( wxString strText );
 	void			OnlineSig(bool zero = false); 
@@ -125,7 +136,8 @@ public:
 
 protected:
 	void 			SetTimeOnTransfer();
-
+	wxCriticalSection m_LogQueueLock;
+	CList<QueuedLogLine>	QueuedAddLogLines;
 	wxLocale		m_locale;
 };
 
