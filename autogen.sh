@@ -62,6 +62,6 @@ autoheader
 echo "Running autoconf"
 autoconf
 
-echo "Running automake --foreign -a -c"
-automake --foreign -a -c
+echo "Running automake --foreign -a -c -f"
+automake --foreign -a -c -f
 
