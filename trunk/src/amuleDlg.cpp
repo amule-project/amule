@@ -788,12 +788,6 @@ void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), boo
 
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
-	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* msg = new wxMessageDialog(this, wxT("The ED2K link has been added but your download won't start until you connect to a server."), wxT("Not Connected"), wxOK|wxICON_INFORMATION);
-		msg->ShowModal();
-		delete msg;
-	}
-
 	wxTextCtrl* ctl = CastChild( wxT("FastEd2kLinks"), wxTextCtrl );
 
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
