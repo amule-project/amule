@@ -3,7 +3,7 @@ INSTALL
 
 You will need glib/gtk-1.2.10 (package names like glib and glibdev or 
 glib-devel, gtk and gtkdev or gtk-devel) and libexpat (package name should be 
-expat) to compile aMule.  Also wxWindows-2.4.0 or greater, linked against 
+expat) to compile aMule.  Also wxWidgets-2.4.0 or greater, linked against 
 glib/gtk-1.2.10 is needed (package names wxGTK and wxGTK-devel).
 
 You will need wxbase-2.4.0 packages or greater,  too, if you want to use amulecmd
@@ -13,9 +13,9 @@ thus removing all the fun ;)
 I have used GCC 2.95.2, 3.2, and 3.3 to compile aMule, older GCC's probably 
 can't handle Microsoft C++ well enough.
 
-HOW TO COMPILE WXWINDOWS
+HOW TO COMPILE wxWIDGETS
 ------------------------
-Only GTK1 is supported. Don't try GTK2 anymore. wxWindows isn't ready for it.
+Only GTK1 is supported. Don't try GTK2 anymore. wxWidgets isn't ready for it.
 
 For GTK1:
 ./configure  --prefix=/usr --disable-gtk2 --enable-timedate --enable-gui 
@@ -23,7 +23,7 @@ For GTK1:
 --enable-prologio --disable-debug --enable-final --enable-timer --with-gtk 
 --disable-profile
 
-After wxwindows has compiled and you have installed it, you can compile aMule.
+After wxWidgets has compiled and you have installed it, you can compile aMule.
 do "./configure && make" as usual.  If for some reason, wx-config cannot be 
 found, use ./configure --with-wx-config=/path/wx-config.  Sometimes it will be
 named wxgtk-2.4-config.
