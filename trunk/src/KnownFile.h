@@ -21,16 +21,12 @@
 #define KNOWNFILE_H
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/dc.h>		// Needed for wxDC
-#include <wx/gdicmn.h>		// Needed for wxRect
 #include <wx/dynarray.h>
 
 #include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "CString.h"		// Needed for CString
 #include "opcodes.h"		// Needed for PARTSIZE
-#include "CArray.h"
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-
 
 #define	PS_READY			0
 #define	PS_EMPTY			1
@@ -68,7 +64,7 @@ WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
 class CFileStatistic {
 	friend class CKnownFile;
 public:
-	CFileStatistic()					{requested = transfered = accepted = alltimerequested= alltimetransferred = alltimeaccepted = 0;}
+	CFileStatistic();
 	void	AddRequest();
 	void	AddAccepted();
 	void    AddTransferred(uint64 bytes);
@@ -102,30 +98,20 @@ class CAbstractFile
 {
 public:
 	CAbstractFile();
-	virtual ~CAbstractFile()
-	{
-//		if( m_strFileName != NULL )
-//			delete[] m_strFileName;
-	}
+	virtual ~CAbstractFile() {};
 
-//	const char*	GetFileName()			{return m_strFileName;}
 	const wxString&	GetFileName()			{return m_strFileName;}
-//	unsigned char*	GetFileHash()			{return m_abyFileHash;}
 	unsigned char*	GetFileHash()			{return m_abyFileHash;}
 	uint32	GetFileSize()			{return m_nFileSize;}
-	void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
-	uint32*	GetFileTypePtr()		{return &m_iFileType;}
-	uint32	GetFileType()			{return m_iFileType;}
-	void	SetFileName(LPCTSTR pszFilename, bool bReplaceInvalidFileSystemChars = false); // 'bReplaceInvalidFileSystemChars' is set to 'false' for backward compatibility!
+	void	SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
+	void	SetFileName(const wxString& strmakeFilename);
 	
 protected:
-//	char*	m_strFileName;
 	wxString	m_strFileName;
-	unsigned char	m_abyFileHash[16];
-	uint32	m_nFileSize;
-	uint32	m_iFileType;
-	CString m_strComment;
-	int8	m_iRate; //for rate 
+	unsigned char m_abyFileHash[16];
+	uint32		m_nFileSize;
+	CString		m_strComment;
+	int8		m_iRate;
 };
 
 class CKnownFile : public CAbstractFile
@@ -134,22 +120,18 @@ public:
 	CKnownFile();
 	~CKnownFile();
 
-	virtual bool	CreateFromFile(char* directory,char* filename, volatile int const * notify); // create date, hashset and tags from a file
-	uint32*	GetFileTypePtr()		{return &m_iFileType;}
-	char*	GetPath()				{return directory;}
-	void	SetPath(LPCTSTR path);
-	void SetFilePath(LPCTSTR pszFilePath);	
-	const CString& GetFilePath() const { return m_strFilePath; }
+	virtual bool	CreateFromFile(const wxString& directory, const wxString& filename, volatile int const * notify); // create date, hashset and tags from a file
+	
+	void SetFilePath(const wxString& strFilePath);
+	const wxString& GetFilePath() const { return m_strFilePath; }
 	
 	virtual	bool	IsPartFile()	{return false;}
 	virtual bool	LoadFromFile(CFile* file);	//load date, hashset and tags from a .met file
-	virtual uint8	GetStatus(bool ignorepause = false) {return PS_COMPLETE;}
+	virtual uint8	GetStatus(bool ignorepause = false);
 	bool	WriteToFile(CFile* file);	
 	uint32	GetFileDate()	{return date;}
-	time_t*	GetCFileDate()	{return (time_t*)&date;}
-	uint32	GetCrFileDate()	{return dateC;}
-	time_t*	GetCrCFileDate()	{return (time_t*)&dateC; }
-	
+
+		
 	void SetFileSize(uint32 nFileSize);
 
 	// local available part hashs
@@ -160,10 +142,10 @@ public:
 	UINT	GetED2KPartHashCount() const { return m_iED2KPartHashCount; }
 
 	// nr. of 9MB parts (file data)
-	__inline uint16 GetPartCount() const { return m_iPartCount; }
+	inline uint16 GetPartCount() const { return m_iPartCount; }
 
 	// nr. of 9MB parts according the file size wrt ED2K protocol (OP_FILESTATUS)
-	__inline uint16 GetED2KPartCount() const { return m_iED2KPartCount; }
+	inline uint16 GetED2KPartCount() const { return m_iED2KPartCount; }
 	
 	// file upload priority
 	uint8	GetUpPriority()			{return m_iUpPriority;}
@@ -198,7 +180,6 @@ public:
 	void	UpdatePartsInfo();	
 
 	uint32	date;
-	uint32	dateC;
 	
 	CFileStatistic statistic;
 	
@@ -219,7 +200,6 @@ protected:
 	void GetMetaDataTags();
 	ArrayOfUCharPtr hashlist;
 	ArrayOfCTag taglist;
-	char*	directory;
 	CString m_strFilePath;	
 
 private:

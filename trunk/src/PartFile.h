@@ -24,19 +24,20 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
-#include <wx/dcmemory.h>	// Needed for wxMemoryDC
 
 #include "types.h"		// Needed for uint8
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "CFile.h"		// Needed for CFile
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "BarShader.h"
+
+
 #include "otherstructs.h"	// Needed for Gap_Struct
 
 class CSearchFile;
 class CUpDownClient;
 class completingThread;
 class CMemFile;
+class wxMemoryDC;
+class wxRect;
 
 WX_DECLARE_LIST(Chunk, ListOfChunks);
 
@@ -101,9 +102,9 @@ public:
 	void	AddSources(CMemFile* sources,uint32 serverip, uint16 serverport);
 	uint8	GetStatus(bool ignorepause = false);
 	void	UpdatePartsInfo();	
-	char*	GetPartMetFileName()							{return m_partmetfilename;}
+	const wxString& GetPartMetFileName()							{return m_partmetfilename;}
 	uint32	GetTransfered()								{return transfered;}
-	char*	GetFullName()								{return fullname;}
+	const wxString& GetFullName()								{return m_fullname;}
 	uint16	GetSourceCount();
 	uint16	GetSrcA4AFCount()							{return A4AFsrclist.GetCount();}
 	uint16	GetTransferingSrcCount()						{return transferingsrc;}
@@ -150,9 +151,8 @@ public:
 	void	UpdateAvailablePartsCount();
 
 	uint32	GetLastAnsweredTime()			{ return m_ClientSrcAnswered; }
-	void	SetLastAnsweredTime()			{ m_ClientSrcAnswered = ::GetTickCount(); }
-	void	SetLastAnsweredTimeTimeout()		{ m_ClientSrcAnswered = 2 * CONNECTION_LATENCY +
-											                        ::GetTickCount() - SOURCECLIENTREASKS; }
+	void	SetLastAnsweredTime();
+	void	SetLastAnsweredTimeTimeout();
 	uint64	GetLostDueToCorruption()		{return m_iLostDueToCorruption;}
 	uint64	GetGainDueToCompression()		{return m_iGainDueToCompression;}
 	uint32	TotalPacketsSavedDueToICH()		{return m_iTotalPacketsSavedDueToICH;}
@@ -201,8 +201,8 @@ private:
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
 	float 	kBpsDown;
-	char*	fullname;
-	char*	m_partmetfilename;
+	wxString m_fullname;
+	wxString m_partmetfilename;
 	uint32	transfered;
 	bool	paused;
 	bool	stopped;
@@ -222,8 +222,7 @@ private:
 	uint32	m_ClientSrcAnswered;
 	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
-	static	CBarShader s_LoadBar;
-	static	CBarShader s_ChunkBar;
+
 	bool	hasRating;
 	bool	hasBadRating;
 	bool	hasComment;

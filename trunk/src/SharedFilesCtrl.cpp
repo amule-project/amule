@@ -566,9 +566,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			return item1->statistic.GetTransfered()==item2->statistic.GetTransfered()?0:(item2->statistic.GetTransfered()>item1->statistic.GetTransfered()?1:-1);
 
 		case 10: //folder asc
-			return strcasecmp((CString)item1->GetPath(),(CString)item2->GetPath());
+			return item1->GetFilePath().CmpNoCase( item2->GetFilePath() );
 		case 30: //folder desc
-			return strcasecmp((CString)item2->GetPath(),(CString)item1->GetPath());
+			return item2->GetFilePath().CmpNoCase( item1->GetFilePath() );
 
 
 		case 106: //all requests asc

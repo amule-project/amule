@@ -127,7 +127,7 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 		//theApp.Yield();
 		if (toadd) {
 			if ( m_Files_map.find(CCKey(toadd->GetFileHash())) == m_Files_map.end() ) {
-				toadd->SetPath(directory);
+				toadd->SetFilePath(directory);
 				output->ShowFile(toadd);
 				list_mut.Lock();
 				m_Files_map[CCKey(toadd->GetFileHash())] = toadd;
@@ -352,7 +352,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const char *directory,
 	     pos != m_Files_map.end(); pos++ ) {
 		CKnownFile *cur_file = pos->second;
 
-		if ( 0 != strcmp(cur_file->GetPath(), directory) )
+		if ( 0 != strcmp(cur_file->GetFilePath(), directory) )
 			continue;
 
 		list.AddTail(cur_file);
