@@ -137,7 +137,9 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		
 		// Init the handle
 		CURL *curl_handle = curl_easy_init();
+		#ifndef __WXMAC__
 		CURLM *curl_multi_handle =  curl_multi_init();
+		#endif
 		
 		char * tempurl = strdup((char*)unicode2char(m_url));
 		// Options for the easy handler
@@ -152,6 +154,8 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSFUNCTION, &CurlGaugeCallback);
 		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSDATA, m_myDlg);
 	#endif
+		
+		#ifndef __WXMAC__
 		// Add the easy handle to the multi handle
 		curl_multi_add_handle(curl_multi_handle, curl_handle);
 		
@@ -165,12 +169,21 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 			}
 			curl_multi_perform(curl_multi_handle, &running_handles);
 		}
+		#else
+		if (TestDestroy() || (curl_easy_perform(curl_handle)!=CURLE_OK)) {
+			m_result =0;
+		}	
+		#endif
 		
 		fclose(outfile);
 		free(tempurl);
+		#ifndef __WXMAC__
 		curl_multi_remove_handle(curl_multi_handle, curl_handle);
 		curl_easy_cleanup(curl_handle);
-		curl_multi_cleanup(curl_multi_handle);		
+		curl_multi_cleanup(curl_multi_handle);				
+		#else
+		curl_easy_cleanup(curl_handle);
+		#endif
 	}
 	printf("HTTP download thread end\n");
 	
