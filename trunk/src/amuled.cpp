@@ -327,11 +327,6 @@ bool CamuleApp::OnInit()
 
 	Start_time = GetTickCount64();
 
-#ifndef __WXMSW__
-	// catch fatal exceptions
-	wxHandleFatalExceptions(true);
-#endif
-
 	// Apprently needed for *BSD
 	SetResourceLimits();
 
@@ -344,6 +339,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
+	cmdline.AddSwitch(wxT("d"), wxT("no-fatal-handle"), wxT("Don't handle hatal exception (SIGSEG)"));
 	cmdline.Parse();
 
 	if ( cmdline.Found(wxT("version")) ) {
@@ -360,9 +356,17 @@ bool CamuleApp::OnInit()
 
 	
 	if ( cmdline.Found(wxT("log-stdout")) ) { 
-                printf("Logging to stdout enabled\n"); 
+		printf("Logging to stdout enabled\n"); 
 		enable_stdout_log = true;
-        } 
+	} 
+#ifndef __WXMSW__
+	// catch fatal exceptions
+	if ( cmdline.Found(wxT("no-fatal-handle")) ) { 
+		printf("SIGSEG handler disabled !\n"); 
+	} else {
+		wxHandleFatalExceptions(true);
+	}
+#endif
 
 
 	printf("Initialising aMule\n");
@@ -1040,9 +1044,7 @@ void CamuleApp::OnFatalException()
 		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
 	}
 	free(bt_strings);
-#endif
-
-#ifdef __BSD__
+#else
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed\n--== no BACKTRACE yet \n\n");
 #endif // __BSD__
 }
