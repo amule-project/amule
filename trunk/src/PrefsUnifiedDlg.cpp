@@ -50,7 +50,6 @@
 #include "amuleDlg.h"
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "StatisticsDlg.h"	// Needed for graph parameters, colors
-#include "Wizard.h"			// Needed for Wizard
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "SearchList.h"
 
@@ -1290,17 +1289,6 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& evt)
 {
 	pbuttonColor->SetBackgroundColour(WxColourFromCr(aprseColor[GetColorIndex()]->GetMemValue()));
 }
-
-
-
-void PrefsUnifiedDlg::OnButtonWizard(wxEvent& evt)
-{
-	Wizard test(this);
-	test.SetPrefs(theApp.glob_prefs);
-	test.OnInitDialog();
-	test.ShowModal();
-}
-
 
 void PrefsUnifiedDlg::OnButtonSystray(wxEvent& evt)
 {

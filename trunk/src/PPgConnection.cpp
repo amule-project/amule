@@ -26,7 +26,6 @@
 #include <wx/slider.h>
 
 #include "PPgConnection.h"	// Interface declarations
-#include "Wizard.h"		// Needed for Wizard
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "CamuleAppBase.h"	// Needed for theApp
@@ -52,7 +51,6 @@ CPPgConnection::~CPPgConnection()
 }
 
 BEGIN_EVENT_TABLE(CPPgConnection,wxPanel)
-	//EVT_BUTTON(IDC_WIZARD,CPPgConnection::OnBnClickedWizard)
 	EVT_CHECKBOX(IDC_UDPDISABLE,CPPgConnection::OnUDPDISABLEChecked)
 END_EVENT_TABLE()
 
@@ -198,14 +196,6 @@ void CPPgConnection::OnApply()
 
 void CPPgConnection::Localize(void)
 {	
-}
-
-void CPPgConnection::OnBnClickedWizard(wxEvent& evt)
-{
-	Wizard test(this);
-	test.SetPrefs(app_prefs);
-	test.OnInitDialog();
-	test.ShowModal();
 }
 
 void CPPgConnection::OnUDPDISABLEChecked(wxEvent& evt) 
