@@ -1491,7 +1491,7 @@ void CamuleApp::ShutDown() {
 		downloadqueue->SaveSourceSeeds();
 	}
 
-	OnlineSig(); // Added By Bouc7
+	OnlineSig(true); // Added By Bouc7
 
 	// Close sockets to avoid new clients coming in
 	if (listensocket) {
