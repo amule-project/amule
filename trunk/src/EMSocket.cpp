@@ -25,7 +25,7 @@
 #include "packets.h"		// Needed for Packet
 #include "GetTickCount.h"
 
-#define MAX_SIZE 2000000
+#define MAX_SIZE 200000
 
 IMPLEMENT_DYNAMIC_CLASS(CEMSocket,wxSocketClient)
 
@@ -136,7 +136,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode)){
 
 void CEMSocket::OnReceive(int nErrorCode){
 	// the 2 meg size was taken from another place
-	static char GlobalReadBuffer[MAX_SIZE];
+	char GlobalReadBuffer[MAX_SIZE];
 
 	// Check for an error code
 	if(nErrorCode != 0){
