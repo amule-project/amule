@@ -214,7 +214,7 @@ CUpDownClient::~CUpDownClient()
 
 	if (m_Friend) {
 		m_Friend->UnLinkClient();
-		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
+		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
 		m_Friend = NULL;
 	}
 
@@ -1174,7 +1174,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
-		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
+		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
 	}
 
 	Notify_ClientCtrlRefreshClient( this );
