@@ -304,11 +304,7 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent& WXUNUSED(evt))
 {
-	#ifndef CLIENT_GUI
 	theApp.searchlist->StopGlobalSearch();
-	#else
-	#warning EC packet to cancel search
-	#endif
 	ResetControls();
 }
 
