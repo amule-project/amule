@@ -326,23 +326,21 @@ int CIPFilter::LoadFromZipFile( wxString file, bool merge )
 		// Default parser is IPFilter.dat format
 		ParseFunc func = NULL;
 
-		if ( inputStream.LastError() == wxSTREAM_NO_ERROR ) {
-			while ( !inputStream.Eof() ) {
-				wxString line = stream.ReadLine();
-
-				if ( func ) {
-					if ( (*this.*func)( line ) ) {
+		while ( !inputStream.Eof() ) {
+			wxString line = stream.ReadLine();
+				
+			if ( func ) {
+				if ( (*this.*func)( line ) ) {
 						filtercounter++;
-					}
-				} else {
-					// Select the parser that can handle this file
-					if ( ProcessPeerGuardianLine( line ) ) {
-						func = &CIPFilter::ProcessPeerGuardianLine;
-						filtercounter++;
-					} else if ( ProcessAntiP2PLine( line ) ) {
-						func = &CIPFilter::ProcessAntiP2PLine;
-						filtercounter++;
-					}
+				}
+			} else {
+				// Select the parser that can handle this file
+				if ( ProcessPeerGuardianLine( line ) ) {
+					func = &CIPFilter::ProcessPeerGuardianLine;
+					filtercounter++;
+				} else if ( ProcessAntiP2PLine( line ) ) {
+					func = &CIPFilter::ProcessAntiP2PLine;
+					filtercounter++;
 				}
 			}
 		}
