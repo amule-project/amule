@@ -430,7 +430,7 @@ void CamulewebApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(         _("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));	
-	Show(wxT("Help:\t\t\t") + wxString(_("Shows this help.\n")));
+	Show(wxT("Help:\t\t\t") +wxString( _("Shows this help.\n")));
 	//Show(wxT("Start:\t\t\t) + _("Start web server.\n"));
 	//Show(wxT("Stop:\t\t\t)  + _("Stop web server.\n"));
 	//Show(wxT("Restart:\t\t\t) + _("Restart web server.\n"));
