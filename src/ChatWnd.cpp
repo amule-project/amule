@@ -129,7 +129,7 @@ void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
 	wxNotebookPage* current = chatselector->GetPage( chatselector->GetSelection() );
 
-	int i = 0;
+	unsigned int i = 0;
 	while ( i < chatselector->GetPageCount() ) {
 		if ( current == chatselector->GetPage( i ) ) {
 			i++;
