@@ -83,8 +83,8 @@ public:
 	uint16	GetRequests() const			{return requested;}
 	uint16	GetAccepts() const			{return accepted;}
 	uint64  GetTransfered() const			{return transfered;}
-	uint16	GetAllTimeRequests() const	{return alltimerequested;}
-	uint16	GetAllTimeAccepts() const		{return alltimeaccepted;}
+	uint32	GetAllTimeRequests() const	{return alltimerequested;}
+	uint32	GetAllTimeAccepts() const		{return alltimeaccepted;}
 	uint64	GetAllTimeTransfered() const	{return alltimetransferred;}
 	CKnownFile* fileParent;
 	
