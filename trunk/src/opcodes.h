@@ -371,6 +371,7 @@ enum {
 #define	MP_PREVIEW				30207
 #define MP_FAKECHECK1           10210   // deltaHF -> fakecheck
 #define MP_FAKECHECK2           10211
+#define MP_WS                   10212
 //For comments 
 #define	MP_CMT					10208
 #define	MP_SWITCHCTRL				10401
