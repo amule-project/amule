@@ -52,7 +52,7 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 	content->Show(this, true);
 
 	chatselector = CastChild( IDC_CHATSELECTOR, CChatSelector );
-	friendlist   = CastChild( ID_FRIENDLIST, CFriendListCtrl );
+	friendlistctrl   = CastChild( ID_FRIENDLIST, CFriendListCtrl );
 }
 
 #ifdef CLIENT_GUI
@@ -70,13 +70,13 @@ void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 
 #else
 
-void CChatWnd::StartSession(CUpDownClient* client, bool setfocus)
+void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 {
-	if ( !client->GetUserName().IsEmpty() ) {
+	if ( !friend_client->m_name.IsEmpty() ) {
 		if (setfocus) {
 			theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
 		}
-		chatselector->StartSession(client, true);
+		chatselector->StartSession(friend_client, true);
 	}
 }
 
@@ -94,28 +94,32 @@ void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-CFriend* CChatWnd::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort)
+CDlgFriend* CChatWnd::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort)
 {
-	return friendlist->FindFriend(userhash, dwIP, nPort);
+	return friendlistctrl->FindFriend(userhash, dwIP, nPort);
 }
 
 
 void CChatWnd::AddFriend(CUpDownClient* toadd)
 {
-	friendlist->AddFriend(toadd);
+	friendlistctrl->AddFriend(toadd);
 }
 
 
-void CChatWnd::AddFriend(const CMD4Hash& userhash, uint32 lastSeen, uint32 lastUsedIP, uint32 lastUsedPort, uint32 lastChatted, wxString name, uint32 hasHash)
+void CChatWnd::AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort)
 {
-	friendlist->AddFriend( userhash, lastSeen, lastUsedIP, lastUsedPort, lastChatted, name, hasHash);
+	friendlistctrl->AddFriend( userhash, name, lastUsedIP, lastUsedPort);
 }
 
 
-void CChatWnd::RefreshFriend(CFriend* toupdate)
+void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort)
 {
-	friendlist->RefreshFriend(toupdate);
-	chatselector->RefreshFriend(toupdate);
+	CDlgFriend* toupdate = friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort);
+	if (toupdate) {
+		toupdate->m_name = name;
+		friendlistctrl->RefreshFriend(toupdate);
+		chatselector->RefreshFriend(toupdate);
+	}
 }
 
 void CChatWnd::ProcessMessage(CUpDownClient* sender, const wxString& message)
@@ -128,9 +132,10 @@ void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
 	chatselector->ConnectionResult(sender, success);
 }
 
-void CChatWnd::SendMessage(const wxString& message)
+void CChatWnd::SendMessage(const wxString& message, CUpDownClient* to)
 {
-	if (chatselector->SendMessage( message )) {
+	
+	if (chatselector->SendMessage( message, to )) {
 		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 	}
 

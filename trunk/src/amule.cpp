@@ -91,6 +91,7 @@
 #include "ServerUDPSocket.h"			// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
+#include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
 #include "Packet.h"
 #include "Statistics.h"
@@ -191,6 +192,7 @@ CamuleApp::CamuleApp()
 	listensocket	= NULL;
 	clientudp	= NULL;
 	clientcredits	= NULL;
+	friendlist = NULL;
 	downloadqueue	= NULL;
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
@@ -265,6 +267,12 @@ int CamuleApp::OnExit()
 		delete clientcredits;
 		clientcredits = NULL;
 	}		
+
+	//printf("FriendList... ");
+	if (friendlist) {
+		delete friendlist;
+		friendlist = NULL;
+	}
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
@@ -678,6 +686,7 @@ bool CamuleApp::OnInit()
 	CAddFileThread::Start();
 
 	clientlist	= new CClientList();
+	friendlist = new CFriendList();
 	searchlist	= new CSearchList();
 	knownfiles	= new CKnownFileList();
 	serverlist	= new CServerList();

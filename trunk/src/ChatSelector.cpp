@@ -40,10 +40,14 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Color.h"			// Needed for RGB
 #include "SafeFile.h"		// Needed for CSafeMemFile
+#include "FriendListCtrl.h" // Needed for CDlgFriend
 #include "OtherFunctions.h"
-#include "Friend.h"
 #include "muuli_wdr.h"            // Needed for amuleSpecial
 #include "Statistics.h"		// Needed for CStatistics
+
+#warning Needed while not ported
+#include "Friend.h"
+#include "FriendList.h"
 
 
 // Default colors, 
@@ -104,10 +108,20 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 	
 	AssignImageList(imagelist);
 }
-
+CChatSession* CChatSelector::StartSession(CDlgFriend* friend_client, bool show) {
+	#warning CORE/GUI, PORT THIS!
+	#ifndef CLIENT_GUI
+	//return StartSession(theApp.friendlist->FindFriend(friend_client->m_hash, friend_client->m_ip, friend_client->m_port)->GetLinkedClient(), show);		
+	#warning BUG! does not work
+	return NULL;
+	#else
+	return NULL;
+	#endif
+}
 
 CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show) 
 {
+
 	// Check to see if we've already opened a session for this user
 	if ( GetPageByClient( client ) ) {
 		if ( show ) {
@@ -118,6 +132,7 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	}
 
 	CChatSession* chatsession = new CChatSession(this);
+	
 	chatsession->m_client = client;
 
 	wxString text;
@@ -185,14 +200,20 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, const wxString& messag
 
 #ifndef CLIENT_GUI
 
-bool CChatSelector::SendMessage( const wxString& message )
+bool CChatSelector::SendMessage( const wxString& message, CUpDownClient* to )
 {
 	// Dont let the user send empty messages
 	// This is also a user-fix for people who mash the enter-key ...
-	if ( message.IsEmpty() )
+	if ( message.IsEmpty() ) {
 		return false;
-
-	int usedtab = GetSelection();
+	}
+	
+	if (to) {
+		// Checks if there's a page with this client, and selects it or creates it
+		StartSession(to, true);
+	}
+	
+	int usedtab = GetSelection();	
 
 	if (usedtab == -1) {
 		return false;
@@ -301,6 +322,11 @@ void CChatSelector::EndSession(CUpDownClient* client)
 
 	GetParent()->FindWindow(IDC_CSEND)->Enable(GetPageCount());
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(GetPageCount());
+}
+
+// Refresh the tab assosiated with a friend
+void CChatSelector::RefreshFriend(CDlgFriend* friend_client) {
+	RefreshFriend(theApp.friendlist->FindFriend(friend_client->m_hash, friend_client->m_ip, friend_client->m_port));
 }
 
 // Refresh the tab assosiated with a friend

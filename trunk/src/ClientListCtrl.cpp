@@ -302,8 +302,7 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:") );
 		
 		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->chatwnd->StartSession(client, false);
-			theApp.amuledlg->chatwnd->SendMessage(message);
+			theApp.amuledlg->chatwnd->SendMessage(message, client);
 		}
 	}
 #endif

@@ -64,6 +64,7 @@ class CClientList;
 class CKnownFileList;
 class CSearchList;
 class CClientCreditsList;
+class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class CStatistics;
@@ -212,6 +213,7 @@ public:
 	CKnownFileList*		knownfiles;
 	CSearchList*		searchlist;
 	CClientCreditsList*	clientcredits;
+	CFriendList*		friendlist;
 	CClientUDPSocket*	clientudp;
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
@@ -223,7 +225,6 @@ public:
 	wxString GetDebugLog(bool reset = false);
 	
 	bool AddServer(CServer *srv);
-	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	void AddServerMessageLine(wxString &msg);
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
@@ -326,7 +327,6 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 
 	
 public:
-	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 
     virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
@@ -429,7 +429,6 @@ public:
 
 	virtual void NotifyEvent(const GUIEvent& event);
 
-	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
 	bool CopyTextToClipboard(wxString strText);
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);

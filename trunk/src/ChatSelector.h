@@ -33,6 +33,7 @@
 
 class CUpDownClient;
 class CFriend;
+class CDlgFriend;
 
 
 class CChatSession : public CMuleTextCtrl
@@ -54,13 +55,15 @@ class CChatSelector : public CMuleNotebook
 public:
 	CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style);
 	virtual			~CChatSelector() {};
+	CChatSession*	StartSession(CDlgFriend* friend_client, bool show = true);
 	CChatSession*	StartSession(CUpDownClient* client, bool show = true);
 	void			EndSession(CUpDownClient* client = 0);
 	CChatSession*	GetPageByClient(CUpDownClient* client);
 	int				GetTabByClient(CUpDownClient* client);
 	void			ProcessMessage(CUpDownClient* sender, const wxString& message);
-	bool			SendMessage(const wxString& message);
+	bool			SendMessage(const wxString& message, CUpDownClient* to = NULL);
 	void			ConnectionResult(CUpDownClient* sender, bool success);
+	void			RefreshFriend(CDlgFriend* friend_client);
 	void			RefreshFriend(CFriend* toupdate);
 };
 

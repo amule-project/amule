@@ -212,12 +212,13 @@ class GUIEvent : public wxEvent {
                 ptr_aux_value   = NULL;
         }
 
-        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16, const wxString& string = wxEmptyString) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
-		short_value	= value16;
+			 short_value	= value16;
                 long_value      = value32;
                 longlong_value  = 0;
+		   	string_value = string;
                 ptr_value       = NULL;
                 ptr_aux_value   = NULL;
         }
@@ -341,7 +342,7 @@ class GUIEvent : public wxEvent {
 #define Notify_Search_Add_Result(s)                 Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
 
 // chat
-#define Notify_ChatRefreshFriend(ptr)               Notify_1_ValEvent(CHAT_REFRESH_FRIEND, ptr)
+#define Notify_ChatRefreshFriend(val0, val1, s)     Notify_3_ValEvent(CHAT_REFRESH_FRIEND, val0, val1, s)
 #define Notify_ChatConnResult(ptr, val)             Notify_2_ValEvent(CHAT_CONN_RESULT, (void *)ptr, (byte)val)
 #define Notify_ChatProcessMsg(ptr, val)             Notify_2_ValEvent(CHAT_PROCESS_MSG, (CUpDownClient *)ptr, val)
 
