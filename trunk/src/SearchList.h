@@ -25,6 +25,7 @@
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "mfc.h"		// Needed for CMap
 #include "CMemFile.h"		// Needed for CMemFile
+#include "CArray.h"
 
 class CSafeMemFile;
 
