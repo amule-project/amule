@@ -216,6 +216,9 @@ class CRemoteContainer {
 			std::set<I> core_files;
 			for (int i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
+				if ( tag->GetTagName() != req_type ) {
+					continue;
+				}
 		
 				core_files.insert(tag->ID());
 				if ( m_items_hash.count(tag->ID()) ) {
