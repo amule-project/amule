@@ -87,7 +87,6 @@ amulegui_SOURCES = amule-gui.cpp \
 	amuleDlg.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
-	ECSocket.cpp \
 	EMSocket.cpp \
 	AddFriend.cpp \
 	AddFileThread.cpp \

@@ -28,36 +28,34 @@
 
 
 class ECSocket : public wxSocketClient {
-
 public:
-	
 	wxString SendRecvMsg(const wxChar *msg);
 	
-	inline ECSocket& Read(uint8& v) {
+	ECSocket& Read(uint8& v) {
 		return ReadRaw(&v, 1);
 	};
 	
-	inline ECSocket& Read(uint16& v) {
+	ECSocket& Read(uint16& v) {
 		ReadRaw(&v, 2);
 		ENDIAN_SWAP_I_16(v);
 		return *this;
 	};
 	
-	inline ECSocket& Read(uint32& v) {
+	ECSocket& Read(uint32& v) {
 		ReadRaw(&v, 4);
 		ENDIAN_SWAP_I_32(v);
 		return *this;
 	};
 	
 	#if 0
-	inline ECSocket& Read(uint64& v) {
+	ECSocket& Read(uint64& v) {
 		ReadRaw(&v, 8);
 		ENDIAN_SWAP_I_64(v);
 		return *this;
 	};
 	#endif
 	
-	inline ECSocket& Read(wxString& v) {
+	ECSocket& Read(wxString& v) {
 		uint16 len;
 		Read(len);
 		wxChar *buf = new wxChar[len+1];
@@ -71,42 +69,42 @@ public:
 		return *this;
 	};
 
-	inline ECSocket& Write(const uint8& v) {
+	ECSocket& Write(const uint8& v) {
 		return WriteRaw(&v, 1);
 	};
 
-	inline ECSocket& Write(const uint16& v) {
+	ECSocket& Write(const uint16& v) {
 		int16 tmp = ENDIAN_SWAP_16(v);
 		return WriteRaw(&tmp, 2);
 	};
 	
-	inline ECSocket& Write(const uint32& v) {
+	ECSocket& Write(const uint32& v) {
 		int32 tmp = ENDIAN_SWAP_32(v);
 		return WriteRaw(&tmp, 4);
 	};
 	
 	#if 0
-	inline ECSocket& Write(const uint64& v) {
+	ECSocket& Write(const uint64& v) {
 		int64 tmp = ENDIAN_SWAP_32(v);
 		return WriteRaw(&tmp, 8);
 	};
 	#endif
 	
-	inline ECSocket& Write(const wxString& v) {
+	ECSocket& Write(const wxString& v) {
 		Write((uint16)v.Length());
 		return WriteRaw(v.c_str(), v.Length());
 	};
 	
-	inline ECSocket& ReadRaw(void* buffer, off_t length) { 
+	ECSocket& ReadRaw(void* buffer, off_t length) { 
 		wxSocketClient::Read(buffer,length); 
 		return *this;
 	};
 	
-	inline ECSocket& WriteRaw(const void* buffer, size_t length) { 
+	ECSocket& WriteRaw(const void* buffer, size_t length) { 
 		wxSocketClient::Write(buffer,length); 
 		return *this;
 	};		
 };
 
-
 #endif // ECSOCKET_H
+

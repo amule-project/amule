@@ -70,6 +70,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Some more consts in code due to CDownloadQueue::GetFileByIndex()
 		  and CSharedFileList::GetFileByIndex(). Also cleaned those
 		  functions.
+		* Fixed Resume/Pause bug in amulecmd/amule. Now Resume/Pause
+		  argument starts at zero.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

@@ -22,11 +22,8 @@
 
 //shakraw - sends and receive string data to/from ECServer
 wxString ECSocket::SendRecvMsg(const wxChar *msg) {
-
-	wxString response(wxT(""));
-
+	wxString response;
   	uint16 len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
-
 	this->SetFlags(wxSOCKET_WAITALL);
 	this->Write(len);
 	this->WriteMsg(msg, len);
@@ -40,10 +37,11 @@ wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 			wxChar *result = new wxChar[len]; // read 10Kb at time
 			this->ReadMsg(result, len);
 			if (!this->Error()) {
-				response.Append(result);
+				response += result;
 			}
 			delete[] result;
 		}
 	}
-	return(response);
+	return response;
 }
+

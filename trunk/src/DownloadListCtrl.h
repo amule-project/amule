@@ -70,7 +70,6 @@ public:
 	void ChangeCategory(int newsel);
 	void SetCatStatus(int cat, int newstatus);
 
-	wxString getTextList();
 	void ShowSelectedFileDetails();
 	void HideFile(CPartFile* tohide);
 	void ShowFile(CPartFile* tohide);

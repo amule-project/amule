@@ -1847,37 +1847,6 @@ void CDownloadListCtrl::CreateMenues()
 {
 }
 
-wxString CDownloadListCtrl::getTextList()
-{
-	wxString out = wxT("");
-	int i=0;
-	// Search for file(s)
-	for (ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {	// const is better
-		CtrlItem_Struct *cur_item = it->second;
-		if (cur_item->type == FILE_TYPE) {
-			CPartFile *file = reinterpret_cast < CPartFile * >(cur_item->value);
-
-/*			if (file->IsPartFile() == false && CheckShowItemInGivenCat(file, curTab)) {
-				RemoveFile(file);
-			}
-*/			//AddLogLineF(false, wxT("%s"), file->GetFileName());
-
-			i++;
-			out += wxString::Format(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i, file->GetFileName().c_str(), file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
-			if (file->GetKBpsDown()>0.001) {
-				out += wxString::Format(wxT(" %.1f "),(float)file->GetKBpsDown()) + _("kB/s");
-			}
-			out += wxT("\n");
-		}
-	}
-
-	if (out.IsEmpty()) {
-		out = _("Download queue is empty.");
-	}
-	AddLogLineM(false, out);
-	return out;
-}
-
 void CDownloadListCtrl::ClearCompleted()
 {
 	// Search for completed file(s)
