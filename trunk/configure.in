@@ -3,7 +3,6 @@ AC_INIT([aMule],[CVS],[deltahf@amule.org])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/SharedFileList.h])
 AM_CONFIG_HEADER([config.h])
-AMULE_VERSION="CVS"
 AM_MAINTAINER_MODE
 
 # No -O2 by default
@@ -208,15 +207,32 @@ yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
 *)	DEBUG_FLAGS=""
     ;;
 esac
-case "${host}" in
-powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
+
+# System detection
+case "${target_os}" in
+"")
+	SYS=unknown
+	;;
+darwin*)
+	SYS=darwin
+	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS";
+	LDFLAGS="$LDFLAGS -bind_at_load"
 	USE_GSOCKET="no"
 	USE_USS="no"
 	;;
-i386-unknown-openbsd*) LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
+openbsd*) 
+	SYS=openbsd
+	LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  
+	CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
 	if test "$DEBUG_FLAGS" != ""; then
 		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
 	fi
+	;;
+*mingw32*)
+	AC_CHECK_TOOL(WINDRES, windres, :)
+	;;
+*cygwin*)
+	AC_CHECK_TOOL(WINDRES, windres, :)
 	;;
 esac
 
@@ -346,6 +362,10 @@ AM_CONDITIONAL(ADD_THROTTLER, test x$USE_USS = xyes)
 AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
+
+# Compilation of rc file with minGW
+AM_CONDITIONAL(USE_MINGW, test "${SYS}" = "mingw32")
+
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
@@ -390,7 +410,7 @@ echo
 echo
 echo "  Configure script has finished system check."
 echo
-echo "  Configured aMule ${AMULE_VERSION} for '${host}'."
+echo "  Configured aMule ${PACKAGE_VERSION} for '${host}'."
 echo
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with verbose console output?    ${VERBOSE_OUTPUT:-no}"
