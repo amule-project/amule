@@ -172,92 +172,55 @@ void CFileDataIO::WriteHash16(const uchar* pVal)
 }
 
 
-void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode, uint8 SizeLen)
+void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen)
 {
-	//
+	unsigned int sLength = s ? strlen(s) : 0;
+	unsigned int real_length = 0;
+	if (eEncode == utf8strOptBOM) {
+		real_length = sLength + 3; // For BOM header.
+	} else {
+		real_length = sLength;
+	}			
+	switch (SizeLen) {
+		case 2:
+			WriteUInt16(real_length);
+			break;
+		case 4:
+			WriteUInt32(real_length);
+			break;
+		default:
+			// Not uint16 neither uint32. BAD THING.
+			// Let's assume uint16 for not to crash.
+			wxASSERT(0);
+			printf(	"Unexpected string len size %d on WriteString!"
+				" Report on forum.amule.org!\n", SizeLen);
+			WriteUInt16(real_length);
+			break;					
+	}		
+	if (sLength) {
+		if (eEncode == utf8strOptBOM) {
+			Write(BOMHeader,3);
+		}
+		Write(s, sLength);
+	}
+}
+
+void CFileDataIO::WriteString(const wxString& rstr, EUtf8Str eEncode, uint8 SizeLen)
+{
 	// We dont include the NULL terminator. Dont know why.
 	// It is because we write the size, so the NULL is not necessary.
-	// 
-	// From wx docs: 
-	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
-	// (either char* or wxCharBuffer), except for the const.
-	
 	if ((eEncode == utf8strRaw) || (eEncode == utf8strOptBOM)) {
-		wxCharBuffer s = wxConvUTF8.cWC2MB(rstr.wc_str(aMuleConv));
-		unsigned int sLength = s ? strlen(s) : 0;
-		if (sLength == 0) {
-			//wxASSERT(sLength);
-			// Something failed on UTF8 enconding.
-			wxCharBuffer s2 = aMuleConv.cWX2MB(rstr);
-			sLength = s2 ? strlen(s2) : 0;
-			switch (SizeLen) {
-				case 2:
-					WriteUInt16(sLength);
-					break;
-				case 4:
-					WriteUInt32(sLength);
-					break;
-				default:
-					// Not uint16 neither uint32. BAD THING.
-					// Let's assume uint16 for not to crash.
-					wxASSERT(0);
-					printf("Unexpected string len size %d on WriteString! Report on forum.amule.org!\n", SizeLen);
-					WriteUInt16(sLength);
-					break;					
-			}
-			if (sLength) {
-				Write(s2, sLength);
-			}
+		Unicode2CharBuf s(unicode2UTF8(rstr));
+		if (s) {
+			WriteStringCore(s, eEncode, SizeLen);
 		} else {
-			unsigned int real_length;
-			if (eEncode == utf8strOptBOM) {
-				real_length = sLength + 3; // For BOM header.
-			} else {
-				real_length = sLength;
-			}			
-			switch (SizeLen) {
-				case 2:
-					WriteUInt16(real_length);
-					break;
-				case 4:
-					WriteUInt32(real_length);
-					break;
-				default:
-					// Not uint16 neither uint32. BAD THING.
-					// Let's assume uint16 for not to crash.
-					wxASSERT(0);
-					printf("Unexpected string len size %d on WriteString! Report on forum.amule.org!\n", SizeLen);
-					WriteUInt16(real_length);
-					break;					
-			}			
-			if (sLength) {
-				if (eEncode == utf8strOptBOM) {
-					Write(BOMHeader,3);
-				}
-				Write(s, sLength);
-			}
+			// unicode2UTF-8 might fail in non-unicode builds.
+			Unicode2CharBuf s1(unicode2char(rstr));
+			WriteStringCore(s1, utf8strNone, SizeLen);
 		}
 	} else {
-		wxCharBuffer s = aMuleConv.cWX2MB(rstr);
-		unsigned int sLength = s ? strlen(s) : 0;
-		switch (SizeLen) {
-			case 2:
-				WriteUInt16(sLength);
-				break;
-			case 4:
-				WriteUInt32(sLength);
-				break;
-			default:
-				// Not uint16 neither uint32. BAD THING.
-				// Let's assume uint16 for not to crash.
-				wxASSERT(0);
-				printf("Unexpected string len size %d on WriteString! Report on forum.amule.org!\n", SizeLen);
-				WriteUInt16(sLength);
-				break;					
-		}		
-		if (sLength) {
-			Write(s, sLength);
-		}
+		Unicode2CharBuf s(unicode2char(rstr));
+		WriteStringCore(s, eEncode, SizeLen);
 	}
 
 }
