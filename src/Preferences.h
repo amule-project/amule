@@ -471,7 +471,7 @@ public:
 	bool	Reconnect()			{return prefs->reconnect;}
 	int8	DeadServer()			{return prefs->deadserver;}
 	char*	GetUserNick()			{return prefs->nick;}
-	void	SetUserNick(CString in)		{sprintf(prefs->nick,"%s",in.GetData());}
+//	void	SetUserNick(CString in)		{sprintf(prefs->nick,"%s",in.GetData());}
 	void	SetUploadlimit(uint16 in)	{ prefs->maxupload=in;}
 	void	SetDownloadlimit(uint16 in)	{ prefs->maxdownload=in;}
 
@@ -560,30 +560,6 @@ public:
 	bool	GetNotifierPopOnNewVersion()	{return prefs->notifierNewVersion;}
 	char*   GetNotifierWavSoundPath() 	{return prefs->notifierSoundFilePath;}
 
-	CString	GetIRCNick()				{return (CString)prefs->m_sircnick;}
-	void	SetIRCNick( char in_nick[] )		{ strcpy(prefs->m_sircnick,in_nick);}
-	CString	GetIRCServer()				{return (CString)prefs->m_sircserver;}
-	void	SetIRCServer( char in_serv[] )		{ strcpy(prefs->m_sircserver,in_serv);}
-	bool	GetIRCAddTimestamp()			{return prefs->m_bircaddtimestamp;}
-	void	SetIRCAddTimestamp( bool flag )		{prefs->m_bircaddtimestamp = flag;}
-	CString	GetIRCChanNameFilter()			{return (CString)prefs->m_sircchannamefilter;}
-	bool	GetIRCUseChanFilter()			{return prefs->m_bircusechanfilter;}
-	uint16	GetIRCChannelUserFilter()		{return	prefs->m_iircchanneluserfilter;}
-	void	SetIRCChanNameFilter( char in_name[] )	{ strcpy(prefs->m_sircchannamefilter,in_name);}
-	void	SetIRCUseChanFilter( bool flag )	{prefs->m_bircusechanfilter = flag;}
-	void	SetIRCChanUserFilter( uint16 in_user)	{prefs->m_iircchanneluserfilter = in_user;}
-	CString	GetIrcPerformString()			{return (CString)prefs->m_sircperformstring;}
-	bool	GetIrcUsePerform()			{return prefs->m_bircuseperform;}
-	bool	GetIRCListOnConnect()			{return prefs->m_birclistonconnect;}
-	void	SetIRCListonConnect( bool flag )	{prefs->m_birclistonconnect = flag;}
-	void	SetIRCPerformString( char in_perf[] )	{ strcpy(prefs->m_sircperformstring, in_perf);}
-	void	SetIrcUsePerform( bool flag )		{prefs->m_bircuseperform = flag;}
-	bool	GetIrcAcceptLinks()			{return prefs->m_bircacceptlinks;}
-	void	SetIrcAcceptLInks( bool flag )		{prefs->m_bircacceptlinks = flag;}
-	bool	GetIrcIgnoreInfoMessage()		{return prefs->m_bircignoreinfomessage;}
-	void	SetIrcIgnoreInfoMessage( bool flag )	{prefs->m_bircignoreinfomessage = flag;}
-	bool	GetIrcIgnoreEmuleProtoInfoMessage()	{return prefs->m_bircignoreemuleprotoinfomessage;}
-	void	SetIrcIgnoreEmuleProtoInfoMessage( bool flag )	{prefs->m_bircignoreemuleprotoinfomessage = flag;}
 	WORD	GetWindowsVersion();
 	bool	GetStartMinimized()			{return prefs->startMinimized;}
 	void	SetStartMinimized( bool instartMinimized){prefs->startMinimized = instartMinimized;}
@@ -612,7 +588,7 @@ public:
 	void	SetCreditSystem(bool m_bInCreditSystem)	{prefs->m_bCreditSystem = m_bInCreditSystem;}
 
 	char*	GetTxtEditor()				{return prefs->TxtEditor;}
-	CString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return ""; else return CString(prefs->VideoPlayer);}
+	CString	GetVideoPlayer()			{if (strlen(prefs->VideoPlayer)==0) return wxT(""); else return CString(prefs->VideoPlayer);}
 
 	uint32	GetFileBufferSize()			{return prefs->m_iFileBufferSize*15000;}
 	uint32	GetQueueSize()				{return prefs->m_iQueueSize*100;}
@@ -635,7 +611,7 @@ public:
 	int32	GetMinFreeDiskSpace()		{return prefs->m_uMinFreeDiskSpace;}
 
 	char*	GetYourHostname()			{return prefs->yourHostname;}
-	void	SetYourHostname(CString in)		{sprintf(prefs->yourHostname,"%s",in.GetData());}
+	//void	SetYourHostname(CString in)		{sprintf(prefs->yourHostname,"%s",in.GetData());}
 
 	// quick-speed changer [xrmb]
 	void	SetMaxUpload(uint16 in) 		{prefs->maxupload =in;};
@@ -658,7 +634,7 @@ public:
 	CString GetCommentFilter()		{ return CString(prefs->commentFilter);}
 	bool	ShowRatesOnTitle()		{ return prefs->showRatesInTitle;}
 	char*   GetNotifierConfiguration()   	{return prefs->notifierConfiguration;}; //<<-- enkeyDEV(kei-kun) -skinnable notifier-
-	void    SetNotifierConfiguration(CString configFullPath) {sprintf(prefs->notifierConfiguration,"%s",configFullPath.GetData()); } //<<-- enkeyDEV(kei-kun) -skinnable notifier-
+	//void    SetNotifierConfiguration(CString configFullPath) {sprintf(prefs->notifierConfiguration,"%s",configFullPath.GetData()); } //<<-- enkeyDEV(kei-kun) -skinnable notifier-
 	void	LoadCats();
 	CString	GetDateTimeFormat()		{ return CString(prefs->datetimeformat);}
 	// Download Categories (Ornis)
@@ -685,7 +661,7 @@ public:
 	uint16	GetWSPort()			{ return prefs->m_nWebPort; }
 	void	SetWSPort(uint16 uPort)		{ prefs->m_nWebPort=uPort; }
 	CString	GetWSPass()			{ return CString(prefs->m_sWebPassword); }
-	void	SetWSPass(CString strNewPass)	{ sprintf(prefs->m_sWebPassword,"%s",MD5Sum(strNewPass).GetHash().GetData()); }
+	//void	SetWSPass(CString strNewPass)	{ sprintf(prefs->m_sWebPassword,"%s",unicode2char(MD5Sum(strNewPass).GetHash().GetData())); }
 	bool	GetWSIsEnabled()		{ return prefs->m_bWebEnabled; }
 	void	SetWSIsEnabled(bool bEnable)	{ prefs->m_bWebEnabled=bEnable; }
 	bool	GetWebUseGzip()			{ return prefs->m_bWebUseGzip; }
@@ -695,7 +671,7 @@ public:
 	bool	GetWSIsLowUserEnabled()		{ return prefs->m_bWebLowEnabled; }
 	void	SetWSIsLowUserEnabled(bool in)	{ prefs->m_bWebLowEnabled=in; }
 	CString	GetWSLowPass()			{ return CString(prefs->m_sWebLowPassword); }
-	void	SetWSLowPass(CString strNewPass){ sprintf(prefs->m_sWebLowPassword,"%s",MD5Sum(strNewPass).GetHash().GetData()); }
+	//void	SetWSLowPass(CString strNewPass){ sprintf(prefs->m_sWebLowPassword,"%s",unicode2char(MD5Sum(strNewPass).GetHash().GetData())); }
 
 	void	SetMaxSourcesPerFile(uint16 in)	{ prefs->maxsourceperfile=in;}
 	void	SetMaxConnections(uint16 in)	{ prefs->maxconnections =in;}
@@ -707,7 +683,7 @@ public:
 	uint16	GetMsgSessionsMax()		{ return prefs->maxmsgsessions;}
 
 	CString	GetTemplate()			{ return CString(prefs->m_sTemplateFile);}
-	void	SetTemplate(CString in)		{ sprintf(prefs->m_sTemplateFile,"%s",in.GetData());}
+	//void	SetTemplate(CString in)		{ sprintf(prefs->m_sTemplateFile,"%s",in.GetData());}
 
 	int32 	GetDesktopMode() 		{return prefs->desktopMode;}
 	void 	SetDesktopMode(int mode)	{prefs->desktopMode=mode;}

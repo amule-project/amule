@@ -78,7 +78,7 @@ CEMSocket::~CEMSocket(){
 
 void CEMSocket::Destroy() {
 	#ifdef __DEBUG__
-	//theApp.AddSocketDeleteDebug((uint32) this,created);
+	theApp.AddSocketDeleteDebug((uint32) this,created);
 	from_destroy =  true;
 	#endif
 	if (!DoingDestroy) {		

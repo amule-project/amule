@@ -23,7 +23,7 @@
 //shakraw - sends and receive string data to/from ECServer
 wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 
-	wxString response("");
+	wxString response(wxT(""));
 
   	uint16 len  = (wxStrlen(msg) + 1) * sizeof(wxChar);
 
@@ -47,4 +47,3 @@ wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 	}
 	return(response);
 }
-
