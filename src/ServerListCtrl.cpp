@@ -30,7 +30,7 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "PartFile.h"		// Needed for SRV_PR_LOW
+#include "KnownFile.h"		// Needed for SRV_PR_LOW
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "sockets.h"		// Needed for CServerConnect
