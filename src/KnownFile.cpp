@@ -688,7 +688,7 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 	// PARTSIZE*2+1    3               3               3
 
 	if (nFileSize == 0){
-		wxASSERT(0); // Kry - Why commented out by lemonfan? it can never be 0
+		//wxASSERT(0); // Kry - Why commented out by lemonfan? it can never be 0
 		m_iPartCount = 0;
 		m_iED2KPartCount = 0;
 		m_iED2KPartHashCount = 0;
@@ -812,14 +812,17 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 				break;
 			}
 			case FT_ULPRIORITY:{
-				uint8 autoprio = PR_AUTO;
 				m_iUpPriority = newtag->tag.intvalue;
-				if( m_iUpPriority == autoprio ){
+				if( m_iUpPriority == PR_AUTO ){
 					m_iUpPriority = PR_HIGH;
 					m_bAutoUpPriority = true;
 				}
-				else
+				else {
+					if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH) {
+						m_iUpPriority = PR_NORMAL;
+					}					
 					m_bAutoUpPriority = false;
+				}
 				delete newtag;
 				break;
 			}
@@ -893,6 +896,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	tran=statistic.alltimetransferred;
 	CTag attag1(FT_ATTRANSFERED, tran);
 	attag1.WriteTagToFile(file);
+	
 	tran=statistic.alltimetransferred>>32;
 	CTag attag4(FT_ATTRANSFEREDHI, tran);
 	attag4.WriteTagToFile(file);
