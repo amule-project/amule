@@ -24,7 +24,7 @@ ifeq ($(CFG),Debug)
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptoppd -lcurld -lzd -lws2_32 -lwxmswd -lregexd -lpngd -ljpegd -lzlibd -ltiffd -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcurld -lzd -lws2_32 -lwxmswd -lregexd -lpngd -ljpegd -lzlibd -ltiffd -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -39,7 +39,7 @@ ifeq ($(CFG),Release)
   RC_PREPROC = --define __WIN32__ --define __WIN95__ --define __GNUWIN32__ 
   RCFLAGS = 
   LIB_DIRS = -L"C:/MinGWStudio/Lib" 
-  LIBS = -lcryptopp -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
+  LIBS = -lcurl -lz -lws2_32 -lwxmsw -lregex -lpng -ljpeg -lzlib -ltiff -lstdc++ -lgcc -lodbc32 -lwsock32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lctl3d32 -lodbc32 -ladvapi32 -lodbc32 -lwsock32 -lopengl32 -lglu32 -lole32 -loleaut32 -luuid 
   LDFLAGS = -pipe -s  -Wl,--subsystem,windows -mwindows
 endif
 
@@ -69,18 +69,14 @@ SRC_OBJS = \
   $(OBJ_DIR)/DownloadClient.o	\
   $(OBJ_DIR)/DownloadListCtrl.o	\
   $(OBJ_DIR)/DownloadQueue.o	\
-  $(OBJ_DIR)/ECSocket.o	\
   $(OBJ_DIR)/ED2KLink.o	\
-  $(OBJ_DIR)/EMSocket.o	\
   $(OBJ_DIR)/EditServerListDlg.o	\
   $(OBJ_DIR)/ExternalConn.o	\
   $(OBJ_DIR)/FileDetailDialog.o	\
   $(OBJ_DIR)/FileDetailListCtrl.o	\
   $(OBJ_DIR)/Friend.o	\
   $(OBJ_DIR)/FriendListCtrl.o	\
-  $(OBJ_DIR)/HTTPDownloadDlg.o	\
   $(OBJ_DIR)/KadDlg.o	\
-  $(OBJ_DIR)/KnownFile.o	\
   $(OBJ_DIR)/KnownFileList.o	\
   $(OBJ_DIR)/ListenSocket.o	\
   $(OBJ_DIR)/MuleGifCtrl.o	\
@@ -113,14 +109,20 @@ SRC_OBJS = \
   $(OBJ_DIR)/UploadListCtrl.o	\
   $(OBJ_DIR)/UploadQueue.o	\
   $(OBJ_DIR)/amule.o	\
-  $(OBJ_DIR)/amuleDlg.o	\
   $(OBJ_DIR)/listctrl.o	\
   $(OBJ_DIR)/muuli_wdr.o	\
   $(OBJ_DIR)/otherfunctions.o	\
   $(OBJ_DIR)/packets.o	\
   $(OBJ_DIR)/server.o	\
   $(OBJ_DIR)/sockets.o	\
-  $(OBJ_DIR)/IPFilter.o
+  $(OBJ_DIR)/IPFilter.o	\
+  $(OBJ_DIR)/MuleTextCtrl.o	\
+  $(OBJ_DIR)/EMSocket.o	\
+  $(OBJ_DIR)/gsocket.o	\
+  $(OBJ_DIR)/CryptoPP.o	\
+  $(OBJ_DIR)/HTTPDownloadDlg.o	\
+  $(OBJ_DIR)/KnownFile.o	\
+  $(OBJ_DIR)/amuleDlg.o
 
 RSRC_OBJS = \
   $(OBJ_DIR)/amule.res
@@ -171,12 +173,13 @@ amule.ico
 	$(compile_resource)
 
 $(OBJ_DIR)/AddFileThread.o: src/AddFileThread.cpp	\
-src/amule.h	\
 src/AddFileThread.h	\
 src/otherfunctions.h	\
+src/amule.h	\
 src/opcodes.h	\
-src/amuleDlg.h	\
-src/KnownFile.h
+src/PartFile.h	\
+src/CFile.h	\
+src/CryptoPP.h
 	$(compile_source)
 
 $(OBJ_DIR)/AddFriend.o: src/AddFriend.cpp	\
@@ -215,13 +218,13 @@ src/PartFile.h	\
 src/ListenSocket.h	\
 src/opcodes.h	\
 src/updownclient.h	\
-src/amuleIPV4Address.h	\
-src/debugstuff.h
+src/amuleIPV4Address.h
 	$(compile_source)
 
 $(OBJ_DIR)/CFile.o: src/CFile.cpp	\
 src/CFile.h	\
-src/amule.h
+src/amule.h	\
+src/GuiEvents.h
 	$(compile_source)
 
 $(OBJ_DIR)/CatDialog.o: src/CatDialog.cpp	\
@@ -252,7 +255,8 @@ src/updownclient.h	\
 src/color.h	\
 src/SafeFile.h	\
 src/otherfunctions.h	\
-src/Friend.h
+src/Friend.h	\
+src/muuli_wdr.h
 	$(compile_source)
 
 $(OBJ_DIR)/ChatWnd.o: src/ChatWnd.cpp	\
@@ -271,13 +275,14 @@ src/otherfunctions.h
 $(OBJ_DIR)/ClientCredits.o: src/ClientCredits.cpp	\
 src/Preferences.h	\
 src/opcodes.h	\
-src/amuleDlg.h	\
 src/GetTickCount.h	\
 src/ClientCredits.h	\
 src/amule.h	\
 src/SafeFile.h	\
 src/otherfunctions.h	\
-src/sockets.h
+src/sockets.h	\
+src/CFile.h	\
+src/CryptoPP.h
 	$(compile_source)
 
 $(OBJ_DIR)/ClientDetailDialog.o: src/ClientDetailDialog.cpp	\
@@ -300,8 +305,6 @@ src/ListenSocket.h	\
 src/DownloadQueue.h	\
 src/UploadQueue.h	\
 src/IPFilter.h	\
-src/amuleDlg.h	\
-src/TransferWnd.h	\
 src/ClientCredits.h	\
 src/opcodes.h
 	$(compile_source)
@@ -351,9 +354,7 @@ src/muuli_wdr.h
 
 $(OBJ_DIR)/DownloadClient.o: src/DownloadClient.cpp	\
 src/ClientCredits.h	\
-src/DownloadListCtrl.h	\
 src/otherfunctions.h	\
-src/TransferWnd.h	\
 src/ClientUDPSocket.h	\
 src/sockets.h	\
 src/DownloadQueue.h	\
@@ -366,7 +367,9 @@ src/ListenSocket.h	\
 src/amule.h	\
 src/PartFile.h	\
 src/BarShader.h	\
-src/updownclient.h
+src/updownclient.h	\
+src/DownloadListCtrl.h	\
+src/TransferWnd.h
 	$(compile_source)
 
 $(OBJ_DIR)/DownloadListCtrl.o: src/DownloadListCtrl.cpp	\
@@ -407,19 +410,9 @@ src/opcodes.h	\
 src/otherfunctions.h
 	$(compile_source)
 
-$(OBJ_DIR)/ECSocket.o: src/ECSocket.cpp	\
-src/ECSocket.h
-	$(compile_source)
-
 $(OBJ_DIR)/ED2KLink.o: src/ED2KLink.cpp	\
 src/ED2KLink.h	\
-src/CMemFile.h
-	$(compile_source)
-
-$(OBJ_DIR)/EMSocket.o: src/EMSocket.cpp	\
-src/EMSocket.h	\
-src/packets.h	\
-src/GetTickCount.h
+src/SafeFile.h
 	$(compile_source)
 
 $(OBJ_DIR)/EditServerListDlg.o: src/EditServerListDlg.cpp	\
@@ -447,7 +440,10 @@ src/amuleDlg.h	\
 src/UploadQueue.h	\
 src/DownloadQueue.h	\
 src/amule.h	\
-src/SearchList.h
+src/SearchList.h	\
+src/IPFilter.h	\
+src/ClientList.h	\
+src/gsocket-fix.h
 	$(compile_source)
 
 $(OBJ_DIR)/FileDetailDialog.o: src/FileDetailDialog.cpp	\
@@ -487,15 +483,8 @@ src/updownclient.h	\
 src/Friend.h	\
 src/CFile.h	\
 src/endianfix.h	\
-src/otherfunctions.h
-	$(compile_source)
-
-$(OBJ_DIR)/HTTPDownloadDlg.o: src/HTTPDownloadDlg.cpp	\
-src/HTTPDownloadDlg.h	\
-src/MuleGifCtrl.h	\
-src/muuli_wdr.h	\
-src/inetdownload.h	\
-src/otherfunctions.h
+src/otherfunctions.h	\
+src/muuli_wdr.h
 	$(compile_source)
 
 $(OBJ_DIR)/KadDlg.o: src/KadDlg.cpp	\
@@ -503,22 +492,6 @@ src/KadDlg.h	\
 src/muuli_wdr.h	\
 src/CMD4Hash.h	\
 src/otherfunctions.h
-	$(compile_source)
-
-$(OBJ_DIR)/KnownFile.o: src/KnownFile.cpp	\
-src/KnownFile.h	\
-src/otherfunctions.h	\
-src/UploadQueue.h	\
-src/CMemFile.h	\
-src/SharedFilesCtrl.h	\
-src/SharedFilesWnd.h	\
-src/updownclient.h	\
-src/packets.h	\
-src/Preferences.h	\
-src/SharedFileList.h	\
-src/KnownFileList.h	\
-src/amule.h	\
-src/PartFile.h
 	$(compile_source)
 
 $(OBJ_DIR)/KnownFileList.o: src/KnownFileList.cpp	\
@@ -537,7 +510,6 @@ src/amule.h	\
 src/otherfunctions.h	\
 src/server.h	\
 src/ServerList.h	\
-src/amuleDlg.h	\
 src/updownclient.h	\
 src/opcodes.h	\
 src/DownloadQueue.h	\
@@ -550,9 +522,7 @@ src/SafeFile.h	\
 src/packets.h	\
 src/UploadQueue.h	\
 src/otherstructs.h	\
-src/ChatWnd.h	\
-src/sockets.h	\
-src/TransferWnd.h
+src/sockets.h
 	$(compile_source)
 
 $(OBJ_DIR)/MuleGifCtrl.o: src/MuleGifCtrl.cpp	\
@@ -560,12 +530,14 @@ src/MuleGifCtrl.h
 	$(compile_source)
 
 $(OBJ_DIR)/filefn.o: src/filefn.cpp	\
-src/filefn.h
+src/filefn.h	\
+src/CFile.h	\
+src/amule.h
 	$(compile_source)
 
 $(OBJ_DIR)/filemem.o: src/filemem.cpp	\
 src/CMemFile.h	\
-src/otherfunctions.h
+src/packets.h
 	$(compile_source)
 
 $(OBJ_DIR)/MD5Sum.o: src/MD5Sum.cpp	\
@@ -617,17 +589,16 @@ src/SearchList.h	\
 src/BarShader.h	\
 src/GetTickCount.h	\
 src/ClientList.h	\
-src/debugstuff.h	\
-src/color.h
+src/color.h	\
+src/filefn.h
 	$(compile_source)
 
 $(OBJ_DIR)/Preferences.o: src/Preferences.cpp	\
 src/otherfunctions.h	\
-src/PrefsUnifiedDlg.h	\
 src/opcodes.h	\
-src/color.h	\
 src/amule.h	\
-src/Preferences.h
+src/Preferences.h	\
+src/CFile.h
 	$(compile_source)
 
 $(OBJ_DIR)/PrefsUnifiedDlg.o: src/PrefsUnifiedDlg.cpp	\
@@ -670,13 +641,15 @@ src/color.h
 	$(compile_source)
 
 $(OBJ_DIR)/SafeFile.o: src/SafeFile.cpp	\
-src/SafeFile.h
+src/SafeFile.h	\
+src/otherfunctions.h	\
+src/packets.h
 	$(compile_source)
 
 $(OBJ_DIR)/SearchDlg.o: src/SearchDlg.cpp	\
 src/SearchDlg.h	\
 src/UploadQueue.h	\
-src/CMemFile.h	\
+src/SafeFile.h	\
 src/SearchList.h	\
 src/DownloadQueue.h	\
 src/otherfunctions.h	\
@@ -689,8 +662,7 @@ src/SearchListCtrl.h	\
 src/muuli_wdr.h	\
 src/amuleDlg.h	\
 src/MuleNotebook.h	\
-src/GetTickCount.h	\
-src/debugstuff.h
+src/GetTickCount.h
 	$(compile_source)
 
 $(OBJ_DIR)/SearchList.o: src/SearchList.cpp	\
@@ -705,6 +677,9 @@ src/CFile.h	\
 src/SearchDlg.h	\
 src/amuleDlg.h	\
 src/amule.h	\
+src/ServerSocket.h	\
+src/server.h	\
+src/ServerList.h	\
 src/MuleNotebook.h	\
 src/SharedFileList.h	\
 src/DownloadQueue.h
@@ -773,8 +748,7 @@ src/CMemFile.h	\
 src/SearchDlg.h	\
 src/SearchList.h	\
 src/otherstructs.h	\
-src/ServerListCtrl.h	\
-src/ServerWnd.h	\
+src/Preferences.h	\
 src/DownloadQueue.h	\
 src/opcodes.h	\
 src/otherfunctions.h	\
@@ -795,6 +769,7 @@ src/ServerListCtrl.h	\
 src/HTTPDownloadDlg.h	\
 src/otherfunctions.h	\
 src/Preferences.h	\
+src/sockets.h	\
 src/amuleDlg.h	\
 src/amule.h
 	$(compile_source)
@@ -804,15 +779,13 @@ src/muuli_wdr.h	\
 src/SharedFileList.h	\
 src/UploadQueue.h	\
 src/packets.h	\
-src/CMemFile.h	\
+src/SafeFile.h	\
 src/sockets.h	\
-src/SharedFilesCtrl.h	\
 src/KnownFile.h	\
 src/KnownFileList.h	\
 src/AddFileThread.h	\
 src/Preferences.h	\
 src/DownloadQueue.h	\
-src/amuleDlg.h	\
 src/amule.h	\
 src/CMD4Hash.h	\
 src/PartFile.h	\
@@ -831,6 +804,7 @@ src/SharedFileList.h	\
 src/opcodes.h	\
 src/amule.h	\
 src/color.h	\
+src/sockets.h	\
 src/BarShader.h
 	$(compile_source)
 
@@ -992,14 +966,134 @@ src/ServerSocket.h	\
 src/UDPSocket.h	\
 src/PartFile.h	\
 src/AddFileThread.h	\
+src/packets.h	\
+src/PrefsUnifiedDlg.h	\
 src/amuleDlg.h	\
 src/SearchDlg.h	\
+src/SearchListCtrl.h	\
 src/ServerListCtrl.h	\
 src/SharedFilesCtrl.h	\
 src/QueueListCtrl.h	\
 src/UploadListCtrl.h	\
 src/DownloadListCtrl.h	\
 src/ChatWnd.h
+	$(compile_source)
+
+$(OBJ_DIR)/listctrl.o: src/listctrl.cpp	\
+src/listctrl.h	\
+src/pixmaps/sort_dn.xpm	\
+src/pixmaps/sort_up.xpm
+	$(compile_source)
+
+$(OBJ_DIR)/muuli_wdr.o: src/muuli_wdr.cpp	\
+src/muuli_wdr.h	\
+src/types.h	\
+src/amule.h	\
+src/ServerListCtrl.h	\
+src/SearchListCtrl.h	\
+src/DownloadListCtrl.h	\
+src/UploadListCtrl.h	\
+src/QueueListCtrl.h	\
+src/SharedFilesCtrl.h	\
+src/OScopeCtrl.h	\
+src/ColorFrameCtrl.h	\
+src/FriendListCtrl.h	\
+src/FileDetailListCtrl.h	\
+src/MuleGifCtrl.h	\
+src/MuleNotebook.h	\
+src/ChatSelector.h	\
+src/DirectoryTreeCtrl.h	\
+src/MuleTextCtrl.h
+	$(compile_source)
+
+$(OBJ_DIR)/otherfunctions.o: src/otherfunctions.cpp	\
+src/otherfunctions.h
+	$(compile_source)
+
+$(OBJ_DIR)/packets.o: src/packets.cpp	\
+src/packets.h	\
+src/otherfunctions.h	\
+src/CMemFile.h	\
+src/otherstructs.h
+	$(compile_source)
+
+$(OBJ_DIR)/server.o: src/server.cpp	\
+src/types.h	\
+src/server.h	\
+src/SafeFile.h	\
+src/otherfunctions.h	\
+src/otherstructs.h	\
+src/packets.h
+	$(compile_source)
+
+$(OBJ_DIR)/sockets.o: src/sockets.cpp	\
+src/sockets.h	\
+src/GetTickCount.h	\
+src/UploadQueue.h	\
+src/SysTray.h	\
+src/SearchDlg.h	\
+src/UDPSocket.h	\
+src/SharedFileList.h	\
+src/packets.h	\
+src/opcodes.h	\
+src/SafeFile.h	\
+src/otherfunctions.h	\
+src/ServerSocket.h	\
+src/ListenSocket.h	\
+src/server.h	\
+src/amule.h	\
+src/ServerList.h	\
+src/Preferences.h	\
+src/updownclient.h
+	$(compile_source)
+
+$(OBJ_DIR)/IPFilter.o: src/IPFilter.cpp	\
+src/IPFilter.h	\
+src/otherfunctions.h	\
+src/Preferences.h	\
+src/amule.h
+	$(compile_source)
+
+$(OBJ_DIR)/MuleTextCtrl.o: src/MuleTextCtrl.cpp	\
+src/MuleTextCtrl.h
+	$(compile_source)
+
+$(OBJ_DIR)/EMSocket.o: src/EMSocket.cpp	\
+src/EMSocket.h	\
+src/packets.h	\
+src/GetTickCount.h
+	$(compile_source)
+
+$(OBJ_DIR)/gsocket.o: src/gsocket.c	\
+src/gsocket.h
+	$(compile_source)
+
+$(OBJ_DIR)/CryptoPP.o: src/CryptoPP.cpp	\
+src/CryptoPP.h
+	$(compile_source)
+
+$(OBJ_DIR)/HTTPDownloadDlg.o: src/HTTPDownloadDlg.cpp	\
+src/HTTPDownloadDlg.h	\
+src/MuleGifCtrl.h	\
+src/muuli_wdr.h	\
+src/inetdownload.h	\
+src/otherfunctions.h
+	$(compile_source)
+
+$(OBJ_DIR)/KnownFile.o: src/KnownFile.cpp	\
+src/KnownFile.h	\
+src/otherfunctions.h	\
+src/UploadQueue.h	\
+src/SafeFile.h	\
+src/updownclient.h	\
+src/packets.h	\
+src/Preferences.h	\
+src/SharedFileList.h	\
+src/KnownFileList.h	\
+src/amule.h	\
+src/PartFile.h	\
+src/endianfix.h	\
+src/CryptoPP.h
 	$(compile_source)
 
 $(OBJ_DIR)/amuleDlg.o: src/amuleDlg.cpp	\
@@ -1039,86 +1133,8 @@ src/DownloadQueue.h	\
 src/amule.h	\
 src/opcodes.h	\
 src/muuli_wdr.h	\
+src/PrefsUnifiedDlg.h	\
 src/aMule.xpm	\
 src/splash.xpm
-	$(compile_source)
-
-$(OBJ_DIR)/listctrl.o: src/listctrl.cpp	\
-src/listctrl.h	\
-src/pixmaps/sort_dn.xpm	\
-src/pixmaps/sort_up.xpm
-	$(compile_source)
-
-$(OBJ_DIR)/muuli_wdr.o: src/muuli_wdr.cpp	\
-src/muuli_wdr.h	\
-src/types.h	\
-src/amule.h	\
-src/ServerListCtrl.h	\
-src/SearchListCtrl.h	\
-src/DownloadListCtrl.h	\
-src/UploadListCtrl.h	\
-src/QueueListCtrl.h	\
-src/SharedFilesCtrl.h	\
-src/OScopeCtrl.h	\
-src/ColorFrameCtrl.h	\
-src/FriendListCtrl.h	\
-src/FileDetailListCtrl.h	\
-src/MuleGifCtrl.h	\
-src/MuleNotebook.h	\
-src/ChatSelector.h	\
-src/DirectoryTreeCtrl.h
-	$(compile_source)
-
-$(OBJ_DIR)/otherfunctions.o: src/otherfunctions.cpp	\
-src/otherfunctions.h	\
-src/PartFile.h	\
-src/KnownFile.h	\
-src/amule.h	\
-src/filefn.h	\
-src/Preferences.h
-	$(compile_source)
-
-$(OBJ_DIR)/packets.o: src/packets.cpp	\
-src/packets.h	\
-src/otherfunctions.h	\
-src/CMemFile.h	\
-src/otherstructs.h
-	$(compile_source)
-
-$(OBJ_DIR)/server.o: src/server.cpp	\
-src/types.h	\
-src/server.h	\
-src/SafeFile.h	\
-src/otherfunctions.h	\
-src/otherstructs.h	\
-src/packets.h
-	$(compile_source)
-
-$(OBJ_DIR)/sockets.o: src/sockets.cpp	\
-src/sockets.h	\
-src/GetTickCount.h	\
-src/UploadQueue.h	\
-src/SysTray.h	\
-src/SearchDlg.h	\
-src/UDPSocket.h	\
-src/SharedFileList.h	\
-src/packets.h	\
-src/opcodes.h	\
-src/CMemFile.h	\
-src/otherfunctions.h	\
-src/ServerSocket.h	\
-src/ListenSocket.h	\
-src/server.h	\
-src/amule.h	\
-src/ServerList.h	\
-src/Preferences.h	\
-src/updownclient.h
-	$(compile_source)
-
-$(OBJ_DIR)/IPFilter.o: src/IPFilter.cpp	\
-src/IPFilter.h	\
-src/otherfunctions.h	\
-src/Preferences.h	\
-src/amule.h
 	$(compile_source)
 
