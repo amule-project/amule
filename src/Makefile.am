@@ -121,6 +121,10 @@ if HAVE_GTK
 amule_SOURCES += gtk2-funcs.c gtkplugxembed.c 
 endif
 
+if ADD_THROTTLER
+amule_SOURCES += UploadBandwidthThrottler.cpp LastCommonRouteFinder.cpp 
+endif
+
 amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 amule_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
 amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS)
