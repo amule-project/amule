@@ -6,8 +6,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	    * NetBSD compilation fixes.
 		
     deltaHF:
-	    * GUI for auto-sort download queue.
+	    * Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
+		* Added aMule version info into "About" popup.
 
 	GonoszTopi:
 		* Unicode fixes:
@@ -16,7 +17,6 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	
 	Kry:
 	    
-
 --------------------------------------------------------------------------------
 
 Version 2.0.0rc8 - The "last rc" version.
