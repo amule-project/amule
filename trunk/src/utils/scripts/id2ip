@@ -3,7 +3,7 @@
 # This file is part of the aMule project.
 #
 # Copyright (c) 2003-2005 aMule Project ( http://www.amule.org )
-# Copyright (c) 2004-2005 xmb
+# Copyright (c) 2004-2005 xmb ( http://xmb.ath.cx )
 # Copyright (c) 2004-2005 Jacobo Vilella aka Jacobo221
 #
 # This program is free software; you can redistribute it and/or
@@ -48,16 +48,16 @@
 BEGIN {
 
 	if (ARGC == 1) {
-		printf"Usage: id2ip.awk ID <...>\n"
+		printf "Usage: id2ip.awk ID <...>\n"
 		exit
 	}
 
 	while (num = ARGV[++i]) {
 
 		if (ARGV[i] < 16777216) {
-			printf"%s -> LowID\n",ARGV[i]
+			printf "%s -> LowID\n",ARGV[i]
 		} else if (ARGV[i] > 256*256*256*256) {
-			printf"%s -> Invalid IP\n",ARGV[i]
+			printf "%s -> Invalid IP\n",ARGV[i]
 		} else {
 
 			m = 256 * 256 * 256
@@ -68,7 +68,7 @@ BEGIN {
 				m /= 256
 			}
 
-			printf"%s -> %d.%d.%d.%d\n", ARGV[i], IP[3], IP[2], IP[1], IP[0]
+			printf "%s -> %d.%d.%d.%d\n", ARGV[i], IP[3], IP[2], IP[1], IP[0]
 		}
 	}
 
