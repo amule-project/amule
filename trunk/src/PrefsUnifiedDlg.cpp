@@ -693,7 +693,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseDynLabel(IDC_SERVERKEEPALIVE_LABEL, IDC_SERVERKEEPALIVE, 1,
 		_("Server connection refresh interval %i mins"), _("Server connection refresh interval %i min"), _("Server connection refresh interval: Disabled")));
 
-	listRse.Append(new RseInt(IDC_LISTREFRESH, prefs->m_dwListRefreshSecs, "ListRefresh", 1));
+	listRse.Append(new RseInt(IDC_LISTREFRESH, prefs->m_dwListRefreshSecs, "ListRefresh", 0));
 	listRse.Append(new RseDynLabel(IDC_LISTREFRESH_LABEL, IDC_LISTREFRESH, 1, _("Upload/Download list refresh time: %i secs"),
 		_("Upload/Download list refresh time: %i sec"),	_("Upload/Download list refresh time: Realtime")));
 	listRse.Append(new RseInt(0, prefs->splitterbarPosition, "SplitterbarPosition", 75));	// no GUI needed (window layout)
