@@ -510,9 +510,8 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 			file->WriteString(char2unicode(tag.tagname));
 		}
 		else{
-			uint16 taglen = 1;
-			file->WriteUInt16(taglen);
-			file->Write(&tag.specialtag,taglen);
+			file->WriteUInt16(1);
+			file->WriteUInt8(tag.specialtag);
 		}
 
 		if (tag.type == 2){
