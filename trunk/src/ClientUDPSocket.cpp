@@ -54,7 +54,7 @@
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "opcodes.h"		// Needed for OP_EMULEPROT
-
+#include "Statistics.h"		// Needed for CStatistics
 #include "amule.h"			// Needed for theApp
 #include "otherfunctions.h"
 #include "SafeFile.h"
@@ -126,7 +126,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 	try {
 		switch(opcode) {
 			case OP_REASKFILEPING: {
-				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
+				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				if (size != 16) {
 					break;
 				}
@@ -195,7 +195,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				break;
 			}
 			case OP_QUEUEFULL: {
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender) {
 					sender->SetRemoteQueueFull(true);
@@ -204,7 +204,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				break;
 			}
 			case OP_REASKACK: {				
-				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
+				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender) {
 					CSafeMemFile data_in((BYTE*)packet,size);
@@ -219,7 +219,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 			}
 			case OP_FILENOTFOUND:
 			{
-				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
+				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP(host);
 				if (sender){
 					sender->UDPReaskFNF(); // may delete 'sender'!
@@ -228,7 +228,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				break;
 			}
 			default:
-				theApp.downloadqueue->AddDownDataOverheadOther(size);				
+				theApp.statistics->AddDownDataOverheadOther(size);				
 				return false;
 		}
 		return true;

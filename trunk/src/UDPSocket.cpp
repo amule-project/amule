@@ -39,6 +39,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
 #include "ServerSocket.h"
+#include "Statistics.h"		// Needed for CStatistics
 #include <sys/types.h>
 
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocketProxy)
@@ -105,7 +106,7 @@ void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
-				theApp.downloadqueue->AddDownDataOverheadOther(length);
+				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
 				printf("Received UDP server packet with unknown protocol 0x%x!\n",buffer[0]);
@@ -132,7 +133,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
 		switch(opcode){
 			case OP_GLOBSEARCHRES: {
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 				// process all search result packets
 				int iLeft;
 				do{
@@ -160,12 +161,12 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 					}
 				} while (iLeft > 0);
 				
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 
 				break;
 			}
 			case OP_GLOBFOUNDSORUCES:{
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 				// process all source packets
 				int iLeft;
 				do{
@@ -204,7 +205,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 
  			case OP_GLOBSERVSTATRES:{
 				// Imported from 0.43b
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 				if( size < 12 || !update) {
 					throw(wxString(wxT("Invalid OP_GLOBSERVSTATRES packet or unknown server")));
 				}
@@ -306,7 +307,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 				break;
 			}
 			default:
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
+				theApp.statistics->AddDownDataOverheadOther(size);
 		}
 	} catch(wxString error) {
 		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet: ")+error);

@@ -63,6 +63,7 @@
 #include "server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
+#include "Statistics.h"		// Needed for CStatistics
 
 //#define DEBUG_SERVER_PROTOCOL
 
@@ -188,7 +189,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_SERVERMESSAGE\n"));
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				char* buffer = new char[size-1];
 				memcpy(buffer,&packet[2],size-2);
 				buffer[size-2] = 0;
@@ -267,7 +268,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_IDCHANGE\n"));
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				
 				if (size < 4 /* uint32 (ID)*/) {
 					throw wxString(_("Corrupt or invalid loginanswer from server received"));
@@ -363,7 +364,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_SEARCHRESULT\n"));
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
 				theApp.searchlist->ProcessSearchanswer(packet,size, true /*(cur_srv && cur_srv->GetUnicodeSupport())*/, (cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0);
 				theApp.searchlist->LocalSearchEnd();
@@ -373,7 +374,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				CSafeMemFile sources((BYTE*)packet,size);
 				uint8 fileid[16];
 				sources.ReadHash16(fileid);
@@ -408,7 +409,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#endif
 				//DumpMem(packet,size);
 
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size<38) {
 					AddLogLineM(false, _("Unknown server info received! - too short"));
 					// throw wxString(wxT("Unknown server info received!"));
@@ -488,7 +489,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_CALLBACKREQUESTED\n"));
 				#endif
-				theApp.downloadqueue->AddDownDataOverheadServer(size);
+				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size == 6) {
 					CSafeMemFile data((BYTE*)packet,size);
 					uint32 dwIP = data.ReadUInt32();
@@ -581,7 +582,7 @@ bool CServerSocket::PacketReceived(Packet* packet)
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
 			if (!packet->UnPackPacket(250000)){
 				AddDebugLogLineM(false, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-				theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
+				theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
 				return true;
 			}
 			packet->SetProtocol(OP_EDONKEYPROT);
@@ -590,7 +591,7 @@ bool CServerSocket::PacketReceived(Packet* packet)
 			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 		} else {
 			AddDebugLogLineM(false, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-			theApp.downloadqueue->AddDownDataOverheadServer(packet->GetPacketSize());
+			theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
 		}
 	} catch(...) {
 		AddDebugLogLineM(false, wxString::Format(wxT("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));

@@ -77,20 +77,7 @@ CDownloadQueue::CDownloadQueue(CSharedFileList* in_sharedfilelist)
 	lastudpstattime = 0;
 	udcounter = 0;
 	m_iSearchedServers = 0;
-	m_datarateMS=0;
-	m_nDownDataRateMSOverhead = 0;
-	m_nDownDatarateTotal = 0;
-	m_nDownDatarateOverhead = 0;
-	m_nDownDataOverheadSourceExchange = 0;
-	m_nDownDataOverheadFileRequest = 0;
-	m_nDownDataOverheadOther = 0;
-	m_nDownDataOverheadServer = 0;
-	m_nDownDataOverheadSourceExchangePackets = 0;
-	m_nDownDataOverheadFileRequestPackets = 0;
-	m_nDownDataOverheadOtherPackets = 0;
-	m_nDownDataOverheadServerPackets = 0;
 	m_nLastED2KLinkCheck = 0;
-	m_lastRefreshedDLDisplay = 0;
 	m_dwNextTCPSrcReq = 0;
 	m_cRequestsSentToServer = 0;
 	do_not_sort_please = true;
@@ -108,40 +95,6 @@ void CDownloadQueue::AddPartFilesToShare()
 		}
 	}
 	do_not_sort_please = false;
-}
-
-void CDownloadQueue::CompDownDatarateOverhead()
-{
-	// Adding the new overhead
-	m_nDownDatarateTotal += m_nDownDataRateMSOverhead * 10;
-	m_AverageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
-	
-	// Reset the overhead count
-	m_nDownDataRateMSOverhead = 0;
-	
-	// We want at least 11 elements before we will start doing averages
-	if ( m_AverageDDRO_list.size() > 10 ) {
-		
-		// We want 50 elements at most (~5s)
-		if ( m_AverageDDRO_list.size() > 50 ) {
-			m_nDownDatarateTotal -= m_AverageDDRO_list.front();
-		
-			m_AverageDDRO_list.pop_front();
-		
-			m_nDownDatarateOverhead = m_nDownDatarateTotal / 50.0f;
-		} else {
-			m_nDownDatarateOverhead = m_nDownDatarateTotal / (double)m_AverageDDRO_list.size();
-		}
-	} else if ( m_AverageDDRO_list.size() == 10 ) {
-		// Create the starting average once we have 10 items
-		m_nDownDatarateTotal = std::accumulate( m_AverageDDRO_list.begin(),
-		                                      m_AverageDDRO_list.end(), 0 );
-	
-		m_nDownDatarateOverhead = m_nDownDatarateTotal / 10.0;
-		
-	} else {
-		m_nDownDatarateOverhead = 0;
-	}
 }
 
 

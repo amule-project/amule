@@ -29,6 +29,9 @@
 
 #include <wx/string.h>
 
+#include <deque>
+
+
 typedef tree<wxString> StatsTree;
 typedef StatsTree::iterator StatsTreeNode;
 typedef StatsTree::sibling_iterator StatsTreeSiblingIterator;	
@@ -137,6 +140,32 @@ public:
 		return GetUptimeMsecs() / 1000;
 	}
 
+	
+	// Download related
+	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
+															  m_nDownDataOverheadSourceExchange += data;
+															  m_nDownDataOverheadSourceExchangePackets++;}
+	void	AddDownDataOverheadFileRequest(uint32 data)		{ m_nDownDataRateMSOverhead += data;
+															  m_nDownDataOverheadFileRequest += data;
+															  m_nDownDataOverheadFileRequestPackets++;}
+	void	AddDownDataOverheadServer(uint32 data)			{ m_nDownDataRateMSOverhead += data;
+															  m_nDownDataOverheadServer += data;
+															  m_nDownDataOverheadServerPackets++;}
+	void	AddDownDataOverheadOther(uint32 data)			{ m_nDownDataRateMSOverhead += data;
+															  m_nDownDataOverheadOther += data;
+															  m_nDownDataOverheadOtherPackets++;}
+	
+	double	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
+	uint64	GetDownDataOverheadSourceExchange()		{return m_nDownDataOverheadSourceExchange;}
+	uint64	GetDownDataOverheadFileRequest()		{return m_nDownDataOverheadFileRequest;}
+	uint64	GetDownDataOverheadServer()			{return m_nDownDataOverheadServer;}
+	uint64	GetDownDataOverheadOther()			{return m_nDownDataOverheadOther;}
+	uint64	GetDownDataOverheadSourceExchangePackets()	{return m_nDownDataOverheadSourceExchangePackets;}
+	uint64	GetDownDataOverheadFileRequestPackets()		{return m_nDownDataOverheadFileRequestPackets;}
+	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
+	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
+	void	CompDownDatarateOverhead();
+	
 private:
 
 	/* Graph-related functions */
@@ -218,6 +247,19 @@ private:
 	}
 	
 	
+	// Download-related vars.
+	long		m_nDownDatarateTotal;
+	double		m_nDownDatarateOverhead;
+	uint32		m_nDownDataRateMSOverhead;
+	uint64		m_nDownDataOverheadSourceExchange;
+	uint64		m_nDownDataOverheadSourceExchangePackets;
+	uint64		m_nDownDataOverheadFileRequest;
+	uint64		m_nDownDataOverheadFileRequestPackets;
+	uint64		m_nDownDataOverheadServer;
+	uint64		m_nDownDataOverheadServerPackets;
+	uint64		m_nDownDataOverheadOther;
+	uint64		m_nDownDataOverheadOtherPackets;
+	std::deque<int>	m_AverageDDRO_list;	
 };
 
 #endif // STATISTICS_H
