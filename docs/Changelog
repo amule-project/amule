@@ -104,6 +104,10 @@ Version 2.0.0rc6 - The '???' version.
 		  greater than 64K chars. There is still some replicated code
 		  in ExternalConn.cpp, but the idea is that it will use the
 		  code in ECSocket.cpp.
+		* Bug fix in ExternalConn.cpp. ECSocket must have the
+		  wxSOCKET_WAITALL flag to work properly when the message has
+		  more than 64Kbytes. aMule now uses ECSocket.cpp, no more
+		  replicated code in ExternalConn.cpp.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

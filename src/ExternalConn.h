@@ -42,26 +42,25 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		ExternalConn();
 		~ExternalConn();
 	
-		wxString Authenticate(const wxString& item);
 		wxString ProcessRequest(const wxString& item);
 	
-		void Read(wxSocketBase *sock, wxString& s);
-		void Write(wxSocketBase *sock, const wxString& s);
-	
+	public:
+		wxString Authenticate(const wxString& item);
+		ECSocket *m_ECServer;
+
 	private:
 		wxString GetDownloadFileInfo(const CPartFile* file);
-		
-		
 #ifdef AMULE_DAEMON
 		void *Entry();
 #else
+	private:
+		int m_numClients;
+
 		// event handlers (these functions should _not_ be virtual)
-		DECLARE_EVENT_TABLE()
 		void OnServerEvent(wxSocketEvent& event);
 		void OnSocketEvent(wxSocketEvent& event);
+		DECLARE_EVENT_TABLE()
 #endif
-		wxSocketServer *m_ECServer;
-		int m_numClients;
 };
 
 class ExternalConnClientThread : public wxThread {
@@ -71,8 +70,8 @@ class ExternalConnClientThread : public wxThread {
 	
 	private:
 		ExitCode Entry();
-		
 
+	private:
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;
 };

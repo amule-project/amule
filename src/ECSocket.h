@@ -32,19 +32,25 @@ enum aMuleECSocketType {
 	AMULE_EC_SERVER
 };
 
-class ECSocket {
+#ifndef AMULE_DAEMON
+#define ECSocketBase wxEvtHandler
+#endif
+
+class ECSocket  : public ECSocketBase {
 public:
 	//
-	// Constructors
+	// Constructors/Destructor
 	//
 	ECSocket();
-	ECSocket(wxSockAddress& address, wxSocketFlags flags = wxSOCKET_NONE);
-	
+	ECSocket(wxSockAddress& address, wxEvtHandler& handler, int id = -1);
+	~ECSocket();
+
 	//
 	// Send/receive string
 	//
 	wxString SendRecvMsg(const wxString &msg);
-	
+	wxString SendRecvMsg(wxSocketBase *sock, const wxString &msg);
+
 	//
 	// Base
 	//
@@ -52,26 +58,10 @@ public:
 	{
 		return m_sock->Destroy();
 	}
-	
 	bool Ok() const
 	{
 		return m_sock->Ok();
 	}
-	void Notify(bool notify)
-	{
-		m_sock->Notify(notify);
-	}
-	
-	void SetNotify(wxSocketEventFlags flags)
-	{
-		m_sock->SetNotify(flags);
-	}
-	
-	void SetEventHandler(wxEvtHandler& handler, int id = -1)
-	{
-		m_sock->SetEventHandler(handler, id);
-	}
-	
 	//
 	// Client
 	//
@@ -100,24 +90,25 @@ public:
 	
 private:
 	// 8 bits
-	void Read(uint8& i);
-	void Write(const uint8& i);
+	void Read(wxSocketBase *sock, uint8& i);
+	void Write(wxSocketBase *sock, const uint8& i);
 	
 	// 16 bis
-	void Read(uint16& v);
-	void Write(const uint16& i);
+	void Read(wxSocketBase *sock, uint16& v);
+	void Write(wxSocketBase *sock, const uint16& i);
 	
 	// 32 bits
-	void Read(uint32& v);
-	void Write(const uint32& i);
+	void Read(wxSocketBase *sock, uint32& v);
+	void Write(wxSocketBase *sock, const uint32& i);
 #if 0
 	// 64 bits
-	void Read(uint64& i);
-	void Write(const uint64& i);
+	void Read(wxSocketBase *sock, uint64& i);
+	void Write(wxSocketBase *sock, const uint64& i);
 #endif
 	// String
-	void Read(wxString& s);
-	void Write(const wxString& s);
+public:
+	void Read(wxSocketBase *sock, wxString& s);
+	void Write(wxSocketBase *sock, const wxString& s);
 	
 private:
 	aMuleECSocketType m_type;
