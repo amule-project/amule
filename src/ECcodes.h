@@ -25,7 +25,7 @@
  */
 
 typedef uint8 ec_opcode_t;
-typedef uint8 ec_tagname_t;
+typedef uint16 ec_tagname_t;
 typedef uint16 ec_taglen_t;
 
 /**
@@ -36,22 +36,12 @@ typedef struct {
 	uint8	minor;
 } EC_Version_t;
 
-/**
- * Checks for a TAGCOUNT field presence.
- *
- * Given a tag name, it returns whether the tag contains a
- * TAGCOUNT field, and thus can contain child tags.
- *
- * @param tagName TAG name to check
- *
- * @return Whether the a TAG with the specified name has a TAGCOUNT field.
- */
-
-inline bool HasTagCount(const ec_tagname_t tagName) { return (tagName & 0x80) ? true : false; }
-
 
 /*
  * EC opcodes
+ *
+ * If you plan to use opcodes greater than 0x00ff, please
+ * change the size of ec_opcode_t to uint16.
  */
 
 enum {
@@ -68,6 +58,9 @@ enum {
 
 /*
  * EC TAG names
+ *
+ * Please do not use tagnames greater than 0x7fff, beacuse that
+ * would mess up the protocol.
  */
 
 enum {

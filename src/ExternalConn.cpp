@@ -225,9 +225,8 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	}
 
 	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
-		CECTag *cname = request->GetTagByName(EC_TAG_CLIENT_NAME);
-		const char *client = (cname == NULL) ? NULL : (const char *)cname->GetTagData();	// Extracting the UTF-8 string data
-		AddLogLineM(false, wxT("Connecting client: ") + wxString(client));
+		CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
+		AddLogLineM(false, _("Connecting client: ") + ((clientName == NULL) ? wxString(_("Unknown")) : clientName->GetTagString()));
 		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 		if (protocol != NULL) {
@@ -262,8 +261,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		AddLogLineM(false, _("Access granted."));
 	} else {
-		const char *resp = (const char *)response->GetTagByIndex(0)->GetTagData();
-		AddLogLineM(false, wxString(resp) );
+		AddLogLineM(false, response->GetTagByIndex(0)->GetTagString());
 	}
 
 	return response;

@@ -143,6 +143,13 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 		// Protocol error - other end might use an older protocol
 		return NULL;
 	}
+	if ((flags & 0x80) != 0) {	// Get rid of extension bytes
+		uint8 tmp_flags = flags;
+		// <ugly_code>
+		while ((tmp_flags & 0x80) && ReadNumber(sock, &tmp_flags, 1)) ;
+		if (tmp_flags & 0x80) return NULL;	// socket error
+		// </ugly_code>
+	}
 	if ((flags & 0x01) != 0) {
 		// TODO: compression not implemented yet !
 		return NULL;
@@ -157,6 +164,7 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 	return p;
 }
 
+/*
 #warning TODO: implement this
 const uint8 *ECSocket::ReadData(wxSocketBase *sock)
 {
@@ -174,3 +182,4 @@ bool ECSocket::WriteData(wxSocketBase *sock, const void *buffer, unsigned int le
 	if (!WriteNumber(sock, &flags, 1)) return false;
 	return WriteBuffer(sock, buffer, len);
 }
+*/
