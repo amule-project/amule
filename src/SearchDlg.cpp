@@ -357,6 +357,8 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 		uint8 cat = ((wxChoice*)FindWindow(ID_AUTOCATASSIGN))->GetSelection();
 		
 		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), cat );
+		
+		searchlistctrl->UpdateColor( index );
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}

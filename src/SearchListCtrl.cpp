@@ -158,7 +158,7 @@ void CSearchListCtrl::UpdateColor( long index )
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
 
-		CKnownFile* sameFile = theApp.sharedfiles->GetFileByID(file->GetFileHash());
+		CKnownFile* sameFile = theApp.downloadqueue->GetFileByID(file->GetFileHash());
 		if ( !sameFile ) {
 			sameFile = theApp.knownfiles->FindKnownFileByID(file->GetFileHash());
 		}
