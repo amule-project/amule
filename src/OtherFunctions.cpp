@@ -46,8 +46,6 @@
 
 #include <cctype>
 
-#include "StringFunctions.h" // Needed for the wxString<->char* conversion.
-
 namespace otherfunctions {
 
 wxString GetMuleVersion()
