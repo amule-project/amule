@@ -41,7 +41,7 @@
 	#include <wx/statline.h>
 #endif
 
-#include <iostream>
+#include <stdio.h>
 
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
@@ -317,7 +317,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	wxString aMuleConfigFile;
 	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
 		if (!::wxFileExists(aMuleConfigFile)) {
-			std::cerr << "FATAL ERROR: "  << (const char *)unicode2char(aMuleConfigFile) << " does not exist.\n";
+			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: ") + aMuleConfigFile + _(" does not exist.\n")));
 			exit(1);
 		}
 		wxFileConfig cfg(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
@@ -334,8 +334,8 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		m_TemplateName = wxT("default");
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
-			std::cerr << _("FATAL ERROR: Cannot find template: ") << m_TemplateName << wxT("\n");
-			std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
+			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
+			//std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
 			exit(1);
 			// cmd-line versions exit after a return false; but DLG versions not - that's why the exit()
 			//return false;
@@ -352,8 +352,8 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		parser.Found(wxT("template"), &m_TemplateName);
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
-			std::cerr << _("FATAL ERROR: Cannot find template: ") << m_TemplateName << wxT("\n");
-			std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
+			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
+			//std::cerr << _("You should have a look at http://www.amule.org/wiki/index.php/Webserver#Webserver_with_aMule_2.0.0_or_later_(starting_from_CVS_2005.02.27)\n");
 			exit(1);
 			//return false;
 		}
