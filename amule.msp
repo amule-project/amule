@@ -27,7 +27,7 @@ optimizeLevel=0
 // linker
 libraryPath=
 outputFilename=Debug\amule.exe
-libraries=cryptopp,curl,wxmswd, regexd, pngd, jpegd, zlibd, tiffd, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32 , ctl3d32 , odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
+libraries=cryptoppd,curld,zd,ws2_32,,wxmswd, regexd, pngd, jpegd, zlibd, tiffd, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32 , ctl3d32 , odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
 extraLinkerOptions=
 ignoreStartupFile=0
 ignoreDefaultLibs=0
@@ -65,7 +65,7 @@ optimizeLevel=2
 // linker
 libraryPath=
 outputFilename=Release\amule.exe
-libraries=cryptopp,curl,wxmsw, regex, png, jpeg, zlib, tiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
+libraries=cryptopp,curl,z,ws2_32,wxmsw, regex, png, jpeg, zlib, tiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
 extraLinkerOptions=
 ignoreStartupFile=0
 ignoreDefaultLibs=0
@@ -156,3 +156,4 @@ extraResourceOptions=
 1=amule.rc
 [Other]
 [History]
+src\IPFilter.cpp,1208
