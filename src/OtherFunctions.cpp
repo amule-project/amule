@@ -50,6 +50,7 @@
 	#if wxUSE_GUI
 		#include <wx/utils.h>
 	#endif
+	#include <unistd.h> // Seems to be needed at least on Creteil's box
 #endif
 
 namespace otherfunctions {
