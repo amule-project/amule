@@ -60,6 +60,8 @@ amulegui_SOURCES = \
 	BarShader.cpp \
 	CatDialog.cpp \
 	CFile.cpp \
+	ChatSelector.cpp \
+	ChatWnd.cpp \
 	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientListCtrl.cpp \
@@ -75,6 +77,7 @@ amulegui_SOURCES = \
 	EditServerListDlg.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	FriendListCtrl.cpp \
 	KadDlg.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
