@@ -146,7 +146,7 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		// UDP Socket (clients)
 		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)
 
-	// Socket timers (TCP + UDO)
+	// Socket timers (TCP + UDP)
 		EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
 		EVT_TIMER(TM_TCPSOCKET, CamuleApp::OnTCPTimer)
 
@@ -169,6 +169,9 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// File completion ended notifier
 		EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleApp::OnFinishedCompletion)
+
+	// HTTPDownload finished
+		EVT_CUSTOM(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleApp::OnFinishedHTTPDownload)
 
 END_EVENT_TABLE()
 
@@ -2212,6 +2215,18 @@ void CamuleApp::RunAICHThread()
 		CAICHSyncThread::Start();
 }
 
+void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
+{
+	wxMuleInternalEvent& event = *((wxMuleInternalEvent*)&evt);
+	switch (event.GetInt()) {
+		case HTTP_IPFilter:
+			ipfilter->DownloadFinished(event.GetExtraLong());
+			break;
+		case HTTP_ServerMet:
+			// not implemented
+			break;
+	}
+}
 
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
@@ -2219,5 +2234,6 @@ DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_EVENT_TYPE(wxEVT_CORE_DNS_DONE)

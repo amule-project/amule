@@ -43,7 +43,7 @@
 #include "otherfunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
-#include "HTTPDownloadDlg.h"
+#include "HTTPDownload.h"
 #include "GetTickCount.h"
 
 CIPFilter::CIPFilter(){
@@ -418,23 +418,21 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 void CIPFilter::Update() {
 	wxString strURL = theApp.glob_prefs->IPFilterURL();
 	if (!strURL.IsEmpty()) {
-		
-		wxString strTempFilename(theApp.ConfigDir + wxString::Format(wxT("temp-%d-ipfilter.dat"), ::GetTickCount()));
-#ifndef AMULE_DAEMON
-		CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.GetTopWindow(),strURL,strTempFilename);
-		int retval=dlg->ShowModal();
-		delete dlg;
-#else
-		#warning Xaignar, please fix auto-update on daemon.
-		int retval=0;
-#endif
-		if(retval==0) {
-			// curl succeeded. proceed with ipfilter loading
-			LoadFromFile(strTempFilename, true); // merge it
-			// So, file is loaded and merged, and also saved to ipfilter.dat
-			wxRemoveFile(strTempFilename);
-		} else {
-			AddLogLineM(true, _("Failed to download the ipfilter from ")+ strURL);
-		}
+		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
+		HTTPThread *downloader = new HTTPThread(strURL,strTempFilename, HTTP_IPFilter);
+		downloader->Create();
+		downloader->Run();
 	}	
+}
+
+void CIPFilter::DownloadFinished(uint32 result) {
+	if(result==0) {
+		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
+		// curl succeeded. proceed with ipfilter loading
+		LoadFromFile(strTempFilename, true); // merge it
+		// So, file is loaded and merged, and also saved to ipfilter.dat
+		wxRemoveFile(strTempFilename);
+	} else {
+		AddLogLineM(true, _("Failed to download the ipfilter from ") + theApp.glob_prefs->IPFilterURL());
+	}
 }

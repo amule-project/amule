@@ -126,6 +126,7 @@ amule_SOURCES = ListenSocket.cpp \
 	FriendListCtrl.cpp \
 	MuleGifCtrl.cpp \
 	HTTPDownloadDlg.cpp \
+	HTTPDownload.cpp \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
