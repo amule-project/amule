@@ -1652,6 +1652,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 
 	if (m_stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
+		AddDebugLogLineM(false,wxT("Trying to add sources for a stopped file\n"));
 		sources.Seek(count*(4+2), wxFromCurrent);
 		return;
 	}
@@ -1680,8 +1681,10 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
-			// since we may received multiple search source UDP results we have to "consume" all data of that packet
-			sources.Seek((count-i)*(4+2), wxFromCurrent);
+			AddDebugLogLineM(false,wxT("Consuming a packet because of max sources reached\n"));
+			// Since we may receive multiple search source UDP results we have to "consume" all data of that packet
+			// This '+1' is added because 'i' counts from 0.
+			sources.Seek((count-(i+1))*(4+2), wxFromCurrent);
 			break;
 		}
 	}
@@ -3734,4 +3737,3 @@ uint8 CPartFile::GetStatus(bool ignorepause) const
 		return PS_PAUSED;
 	}
 }
-
