@@ -80,7 +80,7 @@ ZLIB_DIR=""
 ZVERMAX="1"
 ZVERMED="1"
 ZVERMIN="4"
-AC_ARG_WITH(zlib,[  --with-zlib=DIR       use zlib in DIR],[
+AC_ARG_WITH(zlib,[  --with-zlib=DIR                  use zlib in DIR],[
 	if [ test "$withval" = "no" ]; then
 		AC_MSG_ERROR([zlib is required by aMule])
         elif [ test "$withval" = "yes" ]; then
@@ -185,11 +185,11 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_LIBPNGCONFIG],
 [
-   AC_ARG_WITH(libpng-prefix, [  --with-libpng-prefix=PREFIX   Prefix where libpng is installed],
+   AC_ARG_WITH(libpng-prefix, [  --with-libpng-prefix=PREFIX      prefix where libpng is installed],
                libpng_config_prefix="$withval", libpng_config_prefix="")
-   AC_ARG_WITH(libpng-exec-prefix,[  --with-libpng-exec-prefix=PREFIX Exec prefix where libpng  is installed],
+   AC_ARG_WITH(libpng-exec-prefix,[  --with-libpng-exec-prefix=PREFIX exec prefix where libpng  is installed],
                libpng_config_exec_prefix="$withval", libpng_config_exec_prefix="")
-   AC_ARG_WITH(libpng-config,[  --with-libpng-config=CONFIG   libpng-config script to use],
+   AC_ARG_WITH(libpng-config,[  --with-libpng-config=CONFIG      libpng-config script to use],
                libpng_config_name="$withval", libpng_config_name="")
 ])
 
@@ -345,11 +345,11 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_GDLIBCONFIG],
 [
-   AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX   Prefix where gdlib is installed (optional)],
+   AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX       prefix where gdlib is installed (optional)],
                gdlib_config_prefix="$withval", gdlib_config_prefix="")
-   AC_ARG_WITH(gdlib-exec-prefix,[  --with-gdlib-exec-prefix=PREFIX Exec prefix where gdlib  is installed (optional)],
+   AC_ARG_WITH(gdlib-exec-prefix,[  --with-gdlib-exec-prefix=PREFIX  exec prefix where gdlib  is installed (optional)],
                gdlib_config_exec_prefix="$withval", gdlib_config_exec_prefix="")
-   AC_ARG_WITH(gdlib-config,[  --with-gdlib-config=CONFIG   gdlib-config script to use (optional)],
+   AC_ARG_WITH(gdlib-config,[  --with-gdlib-config=CONFIG       gdlib-config script to use (optional)],
                gdlib_config_name="$withval", gdlib_config_name="")
 ])
 
@@ -505,10 +505,10 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_CURLCONFIG],
 [
-   AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG   curl-config script to use (optional)],
+   AC_ARG_WITH(curl-config,[  --with-curl-config=CONFIG        curl-config script to use (optional)],
                curl_config_name="$withval", curl_config_name="")
 
-   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PFX   Prefix where curl is installed (optional) (unused)],
+   AC_ARG_WITH(curl-prefix,[  --with-curl-prefix=PFX           prefix where curl is installed (optional) (unused)],
             curl_config_prefix="$withval", curl_config_prefix="")
 ])
 
@@ -656,7 +656,7 @@ AC_SUBST(CRYPTO_PP_STYLE)
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
-     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX   Prefix where crypto++ is installed (optional)],
+     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PFX         prefix where crypto++ is installed (optional)],
        crypto_prefix="$withval", crypto_prefix="")
 ])
 
@@ -686,6 +686,6 @@ AC_DEFUN([CHECK_CCACHE],
 
 AC_DEFUN([AM_OPTIONS_CCACHE_PFX],
 [
-   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PFX   Prefix where ccache is installed (optional)],
+   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PFX         prefix where ccache is installed (optional)],
             ccache_prefix="$withval", ccache_prefix="")
 ])
