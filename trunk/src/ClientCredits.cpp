@@ -220,10 +220,29 @@ void CClientCreditsList::LoadList()
 
 		const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
 		uint32 cDeleted = 0;
+		bool error = false;
 		for (uint32 i = 0; i < count; i++){
 			CreditStruct* newcstruct = new CreditStruct;
 			memset(newcstruct, 0, sizeof(CreditStruct));
 			file.Read(newcstruct, sizeof(CreditStruct));
+		
+			if ( newcstruct->nKeySize > MAXPUBKEYSIZE ) {
+				// Oh dear, this is bad mojo, the file is most likely corrupt
+				// We can no longer assume that any of the clients in the file are valid
+				// and will have to discard it.
+				delete newcstruct;
+				
+				// Remove already read, and possibly invalid, entries
+				std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
+				for ( ; it != m_mapClients.end(); ++it ){
+					delete it->second;
+				}
+				m_mapClients.clear();
+				
+				error = true;
+				
+				break;
+			}
 		
 			if (newcstruct->nLastSeen < dwExpired){
 				cDeleted++;
@@ -237,13 +256,22 @@ void CClientCreditsList::LoadList()
 		file.Close();
 
 		GUIEvent event(ADDLOGLINE);
-		event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
-		event.byte_value = false;
+		
+		if ( error ) {
+			printf("WARNING: Corruptions found while reading Creditfile!\n");
+			
+			event.string_value = _("WARNING: Failed to load Creditfile due to corruptions!");	
+			event.byte_value = true;
+		} else {
+			event.string_value = wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted);	
+			event.byte_value = false;
 	
-		if (cDeleted>0) {
-			event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
+			if (cDeleted) {
+				event.string_value += wxString::Format(_(" - Credits expired for %u clients!"),cDeleted);
+			}
 		}
 	
+		
 		theApp.NotifyEvent(event);
 		
 	} catch (wxString error) {
