@@ -30,6 +30,10 @@
 #ifndef GTKPLUGXEMBED_H
 #define GTKPLUGXEMBED_H
 
+#include "MuleTrayIcon.h"
+
+#if !USE_WX_TRAY
+
 #ifdef __WXGTK__
 
 #include <gdk/gdk.h>
@@ -98,5 +102,7 @@ void _gtk_plug_xembed_remove_from_socket (GtkPlugXEmbed   *plug,
 #endif /* __cplusplus */
 
 #endif // __WXGTK__
+
+#endif //USE_WX_TRAY
 
 #endif // GTKPLUGXEMBED_H
