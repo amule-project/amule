@@ -116,7 +116,7 @@ void CMuleListCtrl::SaveSettings()
 	
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
-	for ( int i = 0; i < GetColumnCount(); i++ ) {
+	for ( int i = 0; i < GetColumnCount(); ++i ) {
 		if ( i ) buffer << wxT(",");
 
 		buffer << GetColumnWidth(i);
@@ -262,7 +262,7 @@ void CMuleListCtrl::OnColumnRClick(wxListEvent& evt)
 	wxMenu* menu = new wxMenu;
 	wxListItem item;
 	
-	for ( int i = 0; i < GetColumnCount() && i < 15; i++) {
+	for ( int i = 0; i < GetColumnCount() && i < 15; ++i) {
 		GetColumn(i, item);
 
 		//
