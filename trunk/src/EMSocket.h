@@ -24,7 +24,7 @@
 #pragma interface "EMSocket.h"
 #endif
 
-#include <wx/socket.h>		// Needed for wxSocketClient
+#include "Proxy.h"		// Needed for wxSocketClientProxy
 #include <wx/event.h>
 
 #include "types.h"		// Needed for uint8 and uint32
@@ -46,12 +46,12 @@ class Packet;
 #define PACKET_HEADER_SIZE	6
 
 class CEMSocket :
-	public wxSocketClient
+	public wxSocketClientProxy
 {
   DECLARE_DYNAMIC_CLASS(CEMSocket)
     
 public:
-	CEMSocket(void);
+	CEMSocket(const wxProxyData *ProxyData = NULL);
 	virtual ~CEMSocket(void);
 	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);// controlpackets have a higher priority
 	bool	IsBusy()	{return sendbuffer;}

@@ -62,7 +62,7 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
-#include "amuleIPV4Address.h" // Needed for amuleIPV4Address
+#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 //#define DEBUG_SERVER_PROTOCOL
 
@@ -78,7 +78,9 @@ END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
-CServerSocket::CServerSocket(CServerConnect* in_serverconnect)
+CServerSocket::CServerSocket(CServerConnect* in_serverconnect, const wxProxyData *ProxyData)
+:
+CEMSocket(ProxyData)
 {
 	// AddLogLine(true,"Serversocket: size %d\n",sizeof(CServerSocket));
 
@@ -531,13 +533,27 @@ void CServerSocket::ConnectToServer(CServer* server)
 	addr.Hostname(server->GetAddress());
 	addr.Service(server->GetPort());
 	AddDebugLogLineM(true, wxT("Server ") + server->GetAddress() + wxString::Format(wxT(" Port %i"),server->GetPort()));
-	#ifdef GET_ADDR	
+	#ifdef GET_ADDR
 	AddDebugLogLineM(true, wxT("Addr ") + addr.Hostname() + wxString::Format(wxT(" Port %i"),server->GetPort()));
 	#endif
-	this->Connect(addr,FALSE);
+	Connect(addr, false);
+#ifndef AMULE_DAEMON
+	/* If proxy is beeing used, CServerSocketHandler will not receive a 
+	 * wxSOCKET_CONNECTION event, because the connection has already 
+	 * started with the proxy. So we must add a wxSOCKET_CONNECTION
+	 * event to make things go undetected. A wxSOCKET_OUTPUT event is
+	 * also necessary to start sending data to the server. */
+	if(UseProxy()) {
+		wxSocketEvent e(SERVERSOCKET_HANDLER);
+		e.m_event = wxSOCKET_CONNECTION;
+		e.SetEventObject(this);
+		my_handler->AddPendingEvent(e);
+		e.m_event = wxSOCKET_OUTPUT;
+		my_handler->AddPendingEvent(e);
+	}
+#endif
 
 	info = server->GetListName();
-	SetConnectionState(CS_CONNECTING);
 }
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
@@ -593,7 +609,7 @@ void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 void CServerSocket::SetConnectionState(sint8 newstate)
 {
 	connectionstate = newstate;
-	if (newstate < 1) {
+	if (newstate < CS_CONNECTING) {
 		serverconnect->ConnectionFailed(this);
 	} else if (newstate == CS_CONNECTED || newstate == CS_WAITFORLOGIN) {
 		if (serverconnect) {

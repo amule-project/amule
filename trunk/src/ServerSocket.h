@@ -35,17 +35,17 @@ class CServer;
 
 class CServerSocket : public CEMSocket
 {
-  DECLARE_DYNAMIC_CLASS(CServerSocket)
-    friend class CServerConnect;
-
-    CServerSocket() {};
+	DECLARE_DYNAMIC_CLASS(CServerSocket)
+	friend class CServerConnect;
+	CServerSocket() {};
+	
 public:
-	CServerSocket(CServerConnect* in_serverconnect);
+	CServerSocket(CServerConnect* in_serverconnect, const wxProxyData *ProxyData = NULL);
 	virtual ~CServerSocket();
 
 	void	ConnectToServer(CServer* server);
-	sint8	GetConnectionState()	{return connectionstate;} 
- 	DWORD   GetLastTransmission() const { return m_dwLastTransmission; }
+	sint8	GetConnectionState()		{ return connectionstate; } 
+ 	DWORD   GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
  public:
@@ -86,15 +86,14 @@ private:
 
 class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
 {
-	public:
+public:
 	CServerSocketHandler(CServerSocket* parent);
-	
-	CServerSocket* socket;
-	
-	
-	private:
-	
+
+private:
 	void ServerSocketHandler(wxSocketEvent& event);
+
+public:	
+	CServerSocket* socket;
 	
 #ifdef AMULE_DAEMON
 	void *Entry();

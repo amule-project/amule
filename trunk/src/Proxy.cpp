@@ -78,24 +78,16 @@ void wxProxyData::Empty()
 
 wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 {
-	m_ProxyClientSocket = new wxSocketClient();
-/*
-	m_ProxyClientSocket->SetEventHandler(
-		wxProxyEventHandler, PROXY_SOCKET_HANDLER);
-*/
-	m_ProxyClientSocket->SetNotify(
-		wxSOCKET_CONNECTION_FLAG |
-		wxSOCKET_INPUT_FLAG |
-		wxSOCKET_LOST_FLAG);
-	m_ProxyClientSocket->Notify(true);
 	SetProxyData(ProxyData);
 }
 
 wxSocketProxy::~wxSocketProxy()
 {
+#if 0
 	// Never call delete on a socket! Call Destroy().
 	// delete m_ProxyClientSocket;
 	m_ProxyClientSocket->Destroy();
+#endif
 }
 
 void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
@@ -109,10 +101,26 @@ void wxSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 	}
 }
 
-bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
+bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocketClient *socket)
 {
 	bool ok = false;
 
+printf("wxSocketClientProxy\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
+unicode2char(address.Hostname()),
+unicode2char(address.IPAddress()),
+address.Service());
+	m_ProxyClientSocket = socket;
+	m_ProxyClientSocket->SaveState();
+#if 0
+	m_ProxyClientSocket->SetEventHandler(
+		wxProxyEventHandler, PROXY_SOCKET_HANDLER);
+	m_ProxyClientSocket->SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+	m_ProxyClientSocket->Notify(true);
+#endif
+	m_ProxyClientSocket->Notify(false);
 	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
 	if (m_ProxyClientSocket->WaitOnConnect(10,0) )
 	{
@@ -126,6 +134,7 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 			case wxPROXY_NONE:
 				ok = false;
 				break;
+				
 			case wxPROXY_SOCKS4:
 				ok = DoSocks4(address, cmd);
 				break;
@@ -140,6 +149,10 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd)
 			}
 		}
 	}
+	m_ProxyClientSocket->RestoreState();
+printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
+unicode2char(GetProxyBoundAddress().IPAddress()),
+GetProxyBoundAddress().Service(), ok);
 	
 	return ok;
 }
@@ -221,13 +234,13 @@ bool wxSocketProxy::DoSocks4Reply(void)
 	if (ok) {
 		// Read BND.PORT
 		const unsigned int Port_offset = 2;
-		m_TargetAddressIPV4.Service(ntohs(
+		m_ProxyBoundAddressIPV4.Service(ntohs(
 			*((uint16 *)(m_buffer+Port_offset)) ));
 		// Read BND.ADDR
 		const unsigned int Addr_offset = 4;
-		m_TargetAddressIPV4.Hostname(Uint32toStringIP(
+		m_ProxyBoundAddressIPV4.Hostname(Uint32toStringIP(
 			*((uint32 *)(m_buffer+Addr_offset)) ));
-		m_TargetAddress = &m_TargetAddressIPV4;
+		m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
 	}
 
 	return ok;
@@ -433,16 +446,8 @@ bool wxSocketProxy::DoSocks5Reply(void)
 			if (ok) {
 				wxString strAddr = Uint32toStringIP(
 					*((uint32 *)(m_buffer+Addr_offset)) );
-//				if (strAddr == wxT("0.0.0.0") ) {
-//					ok = m_TargetAddressIPV4.AnyAddress();
-//				} else {
-//					ok = m_TargetAddressIPV4.Hostname(strAddr);
-//				}
-				ok = m_TargetAddressIPV4.Hostname(strAddr);
-				m_TargetAddress = &m_TargetAddressIPV4;
-printf("Hostname1 %s\n", unicode2char(strAddr));
-printf("Hostname2 %s\n", unicode2char(m_TargetAddress->Hostname()));
-printf("Ok1 = %d\n", ok);
+				ok = m_ProxyBoundAddressIPV4.Hostname(strAddr);
+				m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
 			}
 			break;
 		}
@@ -464,9 +469,9 @@ printf("Ok1 = %d\n", ok);
 					m_ProxyClientSocket->LastCount() == LenPacket;
 				if (ok) {
 					m_buffer[Port_offset] = 0;
-					m_TargetAddressIPV4.Hostname(
+					m_ProxyBoundAddressIPV4.Hostname(
 						char2unicode(m_buffer+Addr_offset));
-					m_TargetAddress = &m_TargetAddressIPV4;
+					m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
 				}
 			}
 			break;
@@ -481,9 +486,9 @@ printf("Ok1 = %d\n", ok);
 				m_ProxyClientSocket->LastCount() == LenPacket;
 			// TODO
 			// IPV6 not yet implemented in wx
-			//m_TargetAddress.Hostname(Uint128toStringIP(
+			//m_ProxyBoundAddress.Hostname(Uint128toStringIP(
 			//	*((uint128 *)(m_buffer+Addr_offset)) ));
-			//m_TargetAddress = &m_TargetAddressIPV6;
+			//m_ProxyBoundAddress = &m_ProxyBoundAddressIPV6;
 			ok = false;
 			break;
 		}
@@ -494,9 +499,8 @@ printf("Ok1 = %d\n", ok);
 			m_ProxyClientSocket->Read(m_buffer+Port_offset, LenPacket);
 			ok =	!m_ProxyClientSocket->Error() &&
 				m_ProxyClientSocket->LastCount() == LenPacket &&
-				m_TargetAddress->Service(ntohs(
+				m_ProxyBoundAddress->Service(ntohs(
 					*((uint16 *)(m_buffer+Port_offset)) ));
-printf("Ok2 = %d\n", ok);
 		}
 	}
 
@@ -512,9 +516,10 @@ bool wxSocketProxy::DoSocks5CmdConnect(void)
 
 bool wxSocketProxy::DoSocks5CmdBind(void)
 {
-	// Nothing to do here.
+	// TODO
+	bool ok = false;
 	
-	return true;
+	return ok;
 }
 
 bool wxSocketProxy::DoSocks5CmdUDPAssociate(void)
@@ -572,11 +577,11 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
 		break;
 		
 	case wxPROXY_CMD_BIND:
-		/* Is this possible? */
+		/* This is not possible */
 		return false;
 		
 	case wxPROXY_CMD_UDP_ASSOCIATE:
-		/* Is this possible? */
+		/* This is not possible */
 		return false;
 	}
 	
@@ -596,6 +601,7 @@ bool wxSocketProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
 bool wxSocketProxy::DoHttpReply(void)
 {
 	// TODO
+	
 	return false;
 }
 
@@ -623,10 +629,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 	bool ok;
 	
 	if (m_UseProxy) {
-		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT);
-		if (ok) {
-			ok = wxSocketClient::Connect(m_SocketProxy.GetTargetAddress(), wait);
-		}
+		ok = m_SocketProxy.Start(address, wxPROXY_CMD_CONNECT, this);
 	} else {
 		ok = wxSocketClient::Connect(address, wait);
 	}
@@ -642,50 +645,17 @@ void wxSocketClientProxy::SetProxyData(const wxProxyData *ProxyData)
 
 /******************************************************************************/
 
-/*
- * RANT: If it was possible to bind the wxServerSocket later, i.e., 
- * after the object creation, it would be possible to derive wxSocketServerProxy
- * from wxSocketServer and it would be much cleaner. All those useless functions
- * replicating the wxSocketServer interface in Proxy.h would disappear.
- */
 wxSocketServerProxy::wxSocketServerProxy(
 	wxIPaddress &address,
 	wxSocketFlags flags,
 	const wxProxyData *ProxyData)
 :
+wxSocketServer(address, flags),
 m_SocketProxy(ProxyData)
 {
-printf("Hostname Orig:%s, IPAddr:%s\n", unicode2char(address.Hostname()),unicode2char(address.IPAddress()));
 	m_UseProxy = ProxyData != NULL;
 	if (m_UseProxy) {
-		bool ok = m_SocketProxy.Start(address, wxPROXY_CMD_BIND);
-		if (ok) {
-			m_SocketServer = new wxSocketServer(
-				m_SocketProxy.GetTargetAddress(), flags);
-printf("Proxy socket: ip:%s, port:%u, ok:%d\n",
-	unicode2char(m_SocketProxy.GetTargetAddress().IPAddress()),
-	m_SocketProxy.GetTargetAddress().Service(),
-	m_SocketServer->Ok());
-			if (!m_SocketServer->Ok()) {
-				m_SocketServer->Destroy();
-				m_SocketServer = NULL;
-			}
-		} else {
-			m_SocketServer = NULL;
-		}
-	} else {
-		m_SocketServer = new wxSocketServer(address, flags);
-printf("Normal socket: ip:%s, port:%u, ok:%d\n",
-	unicode2char(address.IPAddress()),
-	address.Service(),
-	m_SocketServer->Ok());
-	}
-}
-
-wxSocketServerProxy::~wxSocketServerProxy()
-{
-	if (m_SocketServer) {
-		m_SocketServer->Destroy();
+		/* Maybe some day when socks6 is out... :) */
 	}
 }
 
