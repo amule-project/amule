@@ -47,24 +47,12 @@
 
 #include "types.h"
 #include "WebInterface.h"
+#include "KnownFile.h"
 
 class TransferredData;
 class CWSThread;
 class CWebSocket;
 
-//shakraw, these are defined in PartFile.h, but if I include PartFile.h
-//I get several wx-errors in compilation...
-//Needed for categories
-#define	PS_READY		0
-#define	PS_EMPTY		1
-#define PS_WAITINGFORHASH	2
-#define PS_HASHING		3
-#define PS_ERROR		4
-#define	PS_UNKNOWN		6
-#define PS_PAUSED		7
-#define PS_COMPLETING		8
-#define PS_COMPLETE		9
-//shakraw, end of imported definitions
 
 //shakraw - webserver code below
 #define WEB_GRAPH_HEIGHT		120
