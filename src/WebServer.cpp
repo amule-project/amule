@@ -2756,8 +2756,9 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(name)
 
 #ifdef WITH_LIBPNG
 
-CDynImage::CDynImage(uint32 id, int width, int height, otherfunctions::PartFileEncoderData &encoder) :
-	CAnyImage(width * height * sizeof(uint32)), m_Encoder(encoder)
+CDynImage::CDynImage(uint32 id, int width, int height, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
+	CProgressImage(width * height * sizeof(uint32), tmpl), m_Encoder(encoder),
+	m_name(wxString::Format(wxT("%d"), id))
 {
 	m_id = id;
 	m_width = width;
@@ -2789,6 +2790,12 @@ void CDynImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t len
 	memcpy(This->m_data + This->m_write_idx, data, length);
 }
 
+wxString CDynImage::GetHTML()
+{
+	// template contain %s (name) %d (width)
+	return wxString::Format(m_tmpl, m_name.GetData(), m_width);
+}
+
 unsigned char *CDynImage::RequestData(int &size)
 {
 	// create image
@@ -2801,9 +2808,15 @@ unsigned char *CDynImage::RequestData(int &size)
 	png_write_image(m_png_ptr, m_row_ptrs);
 	png_write_end(m_png_ptr, 0);
 	
-	return CAnyImage::RequestData(size);
+	return CProgressImage::RequestData(size);
 }
 
 #else
+
+wxString CDynImage::GetHTML()
+{
+	// template contain %s (name) %d (width)
+	return wxString::Format(m_tmpl, m_name.GetData(), m_width);
+}
 
 #endif
