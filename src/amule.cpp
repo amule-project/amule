@@ -75,7 +75,6 @@
 #include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-#include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/url.h>
 
 #include "amule.h"			// Interface declarations.
