@@ -721,7 +721,7 @@ CECPacket *ProcessPreferencesRequest(const CECPacket *request)
 	if (selection & EC_PREFS_GENERAL) {
 		CECEmptyTag user_prefs(EC_TAG_PREFS_GENERAL);
 		user_prefs.AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
-		// TODO: Add userhash
+		user_prefs.AddTag(CECTag(EC_TAG_USER_USERHASH, thePrefs::GetUserHash()));
 		response->AddTag(user_prefs);
 	}
 
