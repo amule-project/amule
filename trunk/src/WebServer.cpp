@@ -2038,6 +2038,23 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 	wxString sToSearch = _ParseURL(Data, wxT("tosearch"));
 	if (!sToSearch.IsEmpty() && IsSessionAdmin(Data,sSession)) {
+		long min_size = 0, max_size = 0, avail = 0;
+		_ParseURL(Data, wxT("min")).ToLong(&min_size);
+		_ParseURL(Data, wxT("max")).ToLong(&max_size);
+		_ParseURL(Data, wxT("avail")).ToLong(&avail);
+		wxString ext = _ParseURL(Data, wxT("ext"));
+		wxString method = _ParseURL(Data, wxT("method"));
+		wxString type = _ParseURL(Data, wxT("type"));
+		EC_SEARCH_TYPE search_type = EC_SEARCH_LOCAL;
+		if ( type == wxT("Global") ) {
+			search_type = EC_SEARCH_GLOBAL;
+		} else if  ( type == wxT("Web") ) {
+			search_type = EC_SEARCH_WEB;
+		}
+		CECPacket search_req(EC_OP_SEARCH_START);
+		search_req.AddTag(CEC_Search_Tag (sToSearch, search_type, type, ext, avail, min_size, max_size));
+		//CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
+		
 		wxString sParams;
 		sParams.Printf(sToSearch+wxT("\n"));
 		sParams.Append(_ParseURL(Data, wxT("type"))+wxT("\n"));
