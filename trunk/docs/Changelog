@@ -2,8 +2,11 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 ----------
 2004-10-XX
 
+	KingFish:
+		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
+
 	Phoenix:
-		* Fixed '&' char next to Preferences in amuleweb page, as
+		* Fixed '&' char next to Preferences in amuleweb web page, as
 		  reported by DreamWalker.
 
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
