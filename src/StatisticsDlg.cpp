@@ -51,6 +51,12 @@ END_EVENT_TABLE()
 
 using namespace otherfunctions;
 
+
+COLORREF CStatisticsDlg::getColors(int num){ 
+
+	return acrStat[num];
+}
+
 CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
 : wxPanel(pParent, -1)
 {

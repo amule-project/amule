@@ -26,12 +26,12 @@
 #ifndef STATISTICSDLG_H
 #define STATISTICSDLG_H
 
-#include <cmath>			// Needed for std::exp
+#include <cmath>		// Needed for std::exp
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
-#include "Types.h"			// Needed for uint32 and uint64
+#include "Types.h"		// Needed for uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CList
 #include "Statistics.h"
 
@@ -45,6 +45,7 @@ class CStatisticsDlg : public wxPanel// CResizableDialog
 {
 	friend class PrefsUnifiedDlg;
 	friend class CPreferences;
+
 public:
 	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
 	~CStatisticsDlg();
@@ -59,14 +60,13 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
-	
-	COScopeCtrl* GetDLScope()	{ return pscopeDL; };
+	static COLORREF getColors(int num);	
+	COScopeCtrl* GetDLScope() { return pscopeDL; };
 	
 protected:
 	static COLORREF	acrStat[13];
-	
-    COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
-    wxTreeCtrl* stattree;
+	COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
+	wxTreeCtrl* stattree;
 
 	DECLARE_EVENT_TABLE()
 

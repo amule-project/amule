@@ -46,13 +46,14 @@
 #include "Preferences.h"		// Needed for glod_prefs
 #include "DownloadQueue.h" 		// Needed for GetKbps
 #include "UploadQueue.h" 		// Needed for GetKbps
-#include "ServerConnect.h"			// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "OtherFunctions.h"		// Needed for CastSecondsToHM
 #include "Server.h"			// Needed for CServer
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "Statistics.h"
 #include "Logger.h"
+#include "Color.h"			// Needed for WxColourFromCr
+#include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
 
 using namespace otherfunctions;
 
@@ -233,6 +234,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		default:
 			wxASSERT(0);
 	}
+
 	// Lookup this values for speed improvement: don't draw if not needed
 	int NewSize = (Bar_ySize * percent) / 100;
 	
@@ -270,8 +272,10 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		// X
 		int Bar_xSize = 4; 
 		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
-			
-		IconWithSpeed.SetBrush(*wxBLUE_BRUSH);
+		
+		wxColour col= WxColourFromCr( CStatisticsDlg::getColors(11) );
+		wxBrush	brush(col);
+		IconWithSpeed.SetBrush(brush);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
