@@ -143,6 +143,8 @@ class CEC_UpDownClient_Tag : public CECTag {
 	public:
 		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
 
+		uint32 ID() { return GetInt32Data(); }
+		
  		CMD4Hash FileID() { return GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data(); }
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
