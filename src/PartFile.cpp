@@ -82,7 +82,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
 	md4cpy(m_abyFileHash, searchresult->GetFileHash());
-	for (int i = 0; i < searchresult->taglist.size();i++){
+	for (unsigned int i = 0; i < searchresult->taglist.size(); i++){
 		const CTag* pTag = searchresult->taglist[i];
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{
@@ -649,7 +649,8 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	// Now to flush the map into the list (Slugfiller)
 	std::map<uint16, Gap_Struct*>::iterator it = gap_map.begin();
 	for ( ; it != gap_map.end(); ++it ) {
-		uint16 gapkey = it->first;
+		#warning who left this gapkey here? it''s not used anymore, delete if useless.
+		// uint16 gapkey = it->first;
 		Gap_Struct* gap = it->second;
 		// SLUGFILLER: SafeHash - revised code, and extra safety
 		if (((int)gap->start) != -1 && ((int)gap->end) != -1 && gap->start <= gap->end && gap->start < m_nFileSize){
@@ -3043,22 +3044,26 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
-				#warning Phoenix - ugly hack to see the problem - I
-				if( cur_src->m_nPartCount != forClient->m_nPartCount ) {
+				#warning Phoenix - hack to see the mixed sources problem - I
+				if ( md4cmp(cur_src->reqfile->GetFileHash(), forClient->reqfile->GetFileHash()) || md4cmp(cur_src->reqfile->GetFileHash(), GetFileHash() ) ) {
+#ifdef __DEBUG__
+					printf("Mismatching hashes!\n");
+					printf("\tthis: %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
+					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
+					printf("Filenames are: \n");
+					printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
+#endif // __DEBUG__
+					return 0;
+				}
+				if( n != cur_src->m_nPartCount ||
+					cur_src->m_nPartCount == forClient->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
-					if ( md4cmp(cur_src->reqfile->GetFileHash(), forClient->reqfile->GetFileHash()) || md4cmp(cur_src->reqfile->GetFileHash(), GetFileHash() ) ) {
-						printf("Mismatching hashes!\n");
-						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-						printf("Filenames are: \n");
-						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-					}
 #endif // __DEBUG__
-					n = cur_src->m_nPartCount < forClient->m_nPartCount ? cur_src->m_nPartCount : forClient->m_nPartCount;
+					return 0;
 				}
 				for (int x = 0; x < n; x++) {
 					if (srcstatus[x] && !reqstatus[x]) {
@@ -3069,21 +3074,23 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			} else {
 				// if we don't know the need parts for this client, return any source
 				// currently a client sends it's file status only after it has at least one complete part,
-				#warning Phoenix - ugly hack to see the problem - II
+				#warning Phoenix - hack to see the mixed sources problem - II
+				if ( md4cmp( cur_src->reqfile->GetFileHash(), cur_src->reqfile->GetFileHash() ) ) {
+#ifdef __DEBUG__
+					printf("Mismatching hashes!\n");
+					printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
+					printf("Filenames are: \n");
+					printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+#endif // __DEBUG__
+					return 0;
+				}
 				if( n != cur_src->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
-
-					if ( md4cmp( cur_src->reqfile->GetFileHash(), cur_src->reqfile->GetFileHash() ) ) {
-						printf("Mismatching hashes!\n");
-						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-						printf("Filenames are: \n");
-						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
-						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-					}
 #endif // __DEBUG__
-					n = cur_src->m_nPartCount;
+					return 0;
 				}
 				for (int x = 0; x < GetPartCount(); x++){
 					if (srcstatus[x]) {
