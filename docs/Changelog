@@ -128,6 +128,7 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 			* Fixed sharing dirs giving access errors (and probably on other archs than Mac).
 			* Fixed amule daemon for taking 100% (or 198% on a dual system) CPU.
 			* Fixed wrong filenames being shown when more than 24 chars. See CDirIterator above.
+			* Fixed 'MyInfo' tab showing wrong endianess on IP.
 			
 		* Deleted files:
 			eMule-Import-Status	-> Very old unused file.
@@ -439,8 +440,16 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 
 		
 	Special Thanks To:
-		Lucasvr, for providing fixes for compilation with some wx versions.
-		
+		* Lucasvr, for providing fixes for compilation with some wx versions.
+		* All translators
+		* All testers
+		* BrianHV and the people at #wxwidgets for their help and supportç
+		* EVERYONE at #amule (even codewarrior2!)
+		* All the people in aMule's forum
+		* All the users, for having the patience to wait the delayed rc6 release.
+		* Hellimod, one_2_one, ASTIOBOY, sssnake, lami123, Ocimin, agav,  PowerMike
+		   and all the mac testers and people providing Macs for ssh & vnc. 
+		   
 	Funny stuff about this changelog:
 		* You can notice that the Search dialog was rewritten 3 (THREE!) times
 		   between rc5 and rc6. You only get to see the final version (Xaignar's), 
