@@ -375,14 +375,34 @@ class CProgressImage : public CAnyImage {
 	protected:
 		wxString m_template;
 		int m_width, m_height;
-		otherfunctions::PartFileEncoderData &m_Encoder;
+		otherfunctions::PartFileEncoderData *m_Encoder;
 		wxString m_name;
-	public:
-		CProgressImage(int size, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
-			CAnyImage(size), m_template(tmpl), m_Encoder(encoder)
-		{
-		}
+		uint32 m_file_size;
+		
+		//
+		// sorted list of gaps
+		int m_gap_buf_size, m_gap_alloc_size;
+		Gap_Struct *m_gap_buf;
+		
+		void ReallocGapBuffer();
+		void InitSortedGaps();
+		// for qsort
+		static int compare_gaps(const void *, const void *);
+		
+		//
+		// Turn list of gaps, partstatus into array of color strips
+		typedef struct Color_Gap_Struct : public Gap_Struct {
+			uint32 color;
+		} Color_Gap_Struct;
+		int m_colored_gaps_size;
+		Color_Gap_Struct *m_colored_gaps;
 
+		void CreateSpan();
+	public:
+		CProgressImage(int w, int h, uint32 filesize, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
+
+		~CProgressImage();
+				
 		const wxString &Name() { return m_name; }
 				
 		virtual wxString GetHTML() = 0;
@@ -394,34 +414,32 @@ class CProgressImage : public CAnyImage {
 // Dynamic png image generation from gap info
 class CDynImage : public CProgressImage {
 		uint32 m_id;
-		unsigned char **m_row_ptrs;
-		
-		int m_write_idx;
-		png_structp m_png_ptr;
-		png_infop m_info_ptr;
+		png_bytep *m_row_ptrs;
 		
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
 		
+		void FillRange(uint32 gap_begin, uint32 gap_end,  COLORREF color);
+		
+		void DrawImage();
 	public:
-		CDynImage(uint32 id, int w, int h, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder);
-
+		CDynImage(uint32 id, int w, int h, uint32 filesize,
+			wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
+		~CDynImage();
+		
 		virtual unsigned char *RequestData(int &size);
 		virtual wxString GetHTML();
 };
 
 #else
 
+
 //
 // Fallback to original implementation
 class CDynImage : public CProgressImage {
-	private:
-		wxString m_name;
-		int m_width;
+		uint32 m_id;
 	public:
-		CDynImage(uint32 id, int w, int h, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
-			CProgressImage(0, tmpl, encoder)
-		{
-		}
+		CDynImage(uint32 id, int w, int h, uint32 filesize,
+			wxString &tmpl, otherfunctions::PartFileEncoderData *encoder);
 
 		virtual wxString GetHTML();
 };
