@@ -47,7 +47,8 @@ public:
 	uint16	BanCount()			{ return iplist.size(); }
 	void 	Reload();
 	void	Update();
-
+	void	DownloadFinished(uint32 result);
+	
 private:
 	bool m_inet_atoh(wxString &s, uint32 *ip);
 	wxString lasthit;
