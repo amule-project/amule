@@ -174,6 +174,8 @@ FileType GetFiletype(const wxString& filename);
 wxString GetFiletypeDesc(FileType type);
 // Shorthand for GetFiletypeDesc(GetFiletype(filename))
 wxString GetFiletypeByName(const wxString& filename);
+// Reports if the file has contents or not (no need for the file to exist)
+bool IsEmptyFile(const wxString& filename);
 
 
 // Returns the max number of connections the current OS can handle.

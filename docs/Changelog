@@ -5,6 +5,7 @@ Version 2.0.0rc8 - The "???????????" version.
 	Jacobo221:
 		* Added option to select the max and min size-type in advanced searches
 		* When "Extended Parameters" in Search tab is not selected, defaults are used
+		* Now "Auto-update serverlist at startup" checks if there's a serverlist to avoid annoying messages at startup
 
 	Phoenix:
 		* Added readline and history support to amuleweb/amulecmd text

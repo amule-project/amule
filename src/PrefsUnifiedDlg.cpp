@@ -47,7 +47,7 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"
 #include "color.h"
-#include "otherfunctions.h"		// Needed for MakeFoldername
+#include "otherfunctions.h"		// Needed for MakeFoldername, IsFileEmpty
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
@@ -66,6 +66,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX( IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange )
 
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
@@ -379,6 +380,13 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
 
+	if ( IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
+		thePrefs::UnsetAutoServerStart();
+		wxMessageBox(wxString::wxString( _(
+			"Your Auto-update servers list is in blank.\n"
+			"'Auto-update serverlist at startup' will be disabled\n")));
+	}
+
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 
@@ -430,7 +438,6 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if ( CfgChanged(IDC_UPLOAD_CAP) ) {
 		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
-
 
 	// Final actions:
 	// Reset the ID so that a new dialog can be created
@@ -488,6 +495,16 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_ENABLE_AUTO_HQRS:
 			widget = FindWindow( IDC_HQR_VALUE );
+			break;
+
+		case IDC_AUTOSERVER:
+			if ( IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
+				wxMessageBox(wxString::wxString( _(
+					"Your Auto-update servers list is in blank.\n"
+					"Please fill in at least one URL to point to a valid server.met file.\n"
+					"Click on the button \"List\" by this checkbox to enter an URL.\n")));
+				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
+			}
 			break;
 
 		case IDC_AUTOIPFILTER:
@@ -624,7 +641,6 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 
 	delete test;
 }
-
 
 void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
