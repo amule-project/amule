@@ -1614,11 +1614,11 @@ void CClientReqSocket::OnError(int nErrorCode)
 		} else {
 			strError.Format(_("A client caused an error or did something bad (error %u). Disconnecting client !"),nErrorCode);
 		}
+		theApp.amuledlg->AddLogLine(false,strError);
 	} else {
 		strError = "No error or error 107 (Transport endpoint is not connected)";
 	}
 	
-	theApp.amuledlg->AddLogLine(false,strError);
 	Disconnect(strError);
 }
 
