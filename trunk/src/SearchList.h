@@ -125,9 +125,16 @@ public:
 	void	LocalSearchEnd();
 
 	void StopGlobalSearch();
-	void ClearThreadData() { m_searchthread = NULL; };
 	
-	bool		IsGlobalSearch() { return m_globalsearch; };
+	void ClearThreadData(CGlobalSearchThread* thread = NULL) 
+	{ 
+		// The thread going down might not be the actual one.
+		if (!thread || (thread == m_searchthread)) {
+			m_searchthread = NULL; 
+		}
+	};
+	
+	bool		IsGlobalSearch() { return m_searchthread != NULL; };
 
 private:
 
@@ -147,7 +154,6 @@ private:
 	long		m_CurrentSearch;
 
 	CGlobalSearchThread* m_searchthread;
-	bool		m_globalsearch;
 
 };
 

@@ -123,12 +123,8 @@ public:
 	 */
 	void		ResetControls();
 
-	
-	// Event handlers
-	void		OnBnClickedStart(wxCommandEvent& evt);
+	// Event handler and helper function
 	void		OnBnClickedDownload(wxCommandEvent& ev);
-	void		OnBnClickedCancel(wxCommandEvent& evt);
-
 
 	CSearchListCtrl* GetSearchList( long id );
 	
@@ -146,12 +142,14 @@ private:
 	void		StartNewSearch();
 	void		OnSearchClosed(wxNotebookEvent& evt);
 
+	void		OnBnClickedStart(wxCommandEvent& evt);
+	void		OnBnClickedStop(wxCommandEvent& evt);
+
+
 	/**
 	 * Event-handler for page-chages which takes care of enabling/disabling the download button.
 	 */
 	void		OnSearchPageChanged(wxNotebookEvent& evt);
-
-	bool		m_canceld;
 	
 	uint32		m_last_search_time;
 	

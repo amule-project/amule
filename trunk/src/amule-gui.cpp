@@ -809,8 +809,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		// search window
 		case SEARCH_CANCEL:
 			if ( amuledlg->searchwnd ) {
-				wxCommandEvent evt;
-				amuledlg->searchwnd->OnBnClickedCancel(evt);
+				amuledlg->searchwnd->ResetControls();
 			}
 			break;
 		case SEARCH_LOCAL_END:
