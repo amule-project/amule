@@ -48,18 +48,7 @@
 #include "wxcasprint.h"
 #include "wxcasprefs.h"
 #include "wxcascte.h"
-
-#ifndef __WXMSW__
-#include "../pixmaps/wxcas.xpm"
-#include "../pixmaps/refresh.xpm"
-#include "../pixmaps/stop.xpm"
-#include "../pixmaps/save.xpm"
-#include "../pixmaps/print.xpm"
-#include "../pixmaps/about.xpm"
-#include "../pixmaps/prefs.xpm"
-#include "../pixmaps/stat.xpm"  // Stat banner
-#include "../pixmaps/amule.xpm" // aMule splash
-#endif
+#include "wxcaspix.h"
 
 // Needed for 2.4.2 backward compatibility
 #if (wxMINOR_VERSION < 5)
@@ -72,7 +61,9 @@ WxCasFrame::WxCasFrame (const wxString & title):
              wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION | wxCLOSE_BOX ))
 {
   // Give it an icon
-  SetIcon (wxICON (wxcas));
+  wxIcon icon;
+  icon.CopyFromBitmap(WxCasPix::getPixmap(wxT("wxcas")));
+  SetIcon (icon);
 
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
@@ -126,26 +117,17 @@ WxCasFrame::WxCasFrame (const wxString & title):
 #endif
 
   //Amule Static Bitmap
-  wxBitmap amule_bitmap = wxBITMAP (amule);
+  wxBitmap amule_bitmap = WxCasPix::getPixmap(wxT("amule"));
+  ;
   m_amuleSBitmap = new wxStaticBitmap (m_mainPanel,-1,amule_bitmap);
 
   // Toolbar Pixmaps
-  m_toolBarBitmaps[0] = wxBITMAP (refresh);
-  m_toolBarBitmaps[1] = wxBITMAP (save);
-  m_toolBarBitmaps[2] = wxBITMAP (print);
-  m_toolBarBitmaps[3] = wxBITMAP (about);
-  m_toolBarBitmaps[4] = wxBITMAP (stop);
-  m_toolBarBitmaps[5] = wxBITMAP (prefs);
-
-#ifdef __WXMSW__ // Set transparency on BMP
-
-  m_toolBarBitmaps[0].SetMask(new wxMask(m_toolBarBitmaps[0], *wxBLACK));
-  m_toolBarBitmaps[1].SetMask(new wxMask(m_toolBarBitmaps[1], *wxBLACK));
-  m_toolBarBitmaps[2].SetMask(new wxMask(m_toolBarBitmaps[2], *wxBLACK));
-  m_toolBarBitmaps[3].SetMask(new wxMask(m_toolBarBitmaps[3], *wxBLACK));
-  m_toolBarBitmaps[4].SetMask(new wxMask(m_toolBarBitmaps[4], *wxBLACK));
-  m_toolBarBitmaps[5].SetMask(new wxMask(m_toolBarBitmaps[5], *wxBLACK));
-#endif
+  m_toolBarBitmaps[0] = WxCasPix::getPixmap(wxT("refresh"));
+  m_toolBarBitmaps[1] = WxCasPix::getPixmap(wxT("save"));
+  m_toolBarBitmaps[2] = WxCasPix::getPixmap(wxT("print"));
+  m_toolBarBitmaps[3] = WxCasPix::getPixmap(wxT("about"));
+  m_toolBarBitmaps[4] = WxCasPix::getPixmap(wxT("stop"));
+  m_toolBarBitmaps[5] = WxCasPix::getPixmap(wxT("prefs"));
 
   // Constructing toolbar
   m_toolbar =
@@ -244,7 +226,8 @@ wxImage *
 WxCasFrame::GetStatImage () const
   {
     wxBitmap
-    statBitmap = wxBITMAP (stat);
+    statBitmap = WxCasPix::getPixmap(wxT("stat"));
+    ;
 
     wxMemoryDC memdc;
     memdc.SelectObject (statBitmap);

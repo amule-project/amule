@@ -6,15 +6,8 @@ wxcas_SOURCES = onlinesig.cpp \
 		wxcasprint.cpp \
 		wxcasframe.cpp \
 		wxcasprefs.cpp \
-		wxcascte.cpp
-		
-if USE_MINGW
-wxcas_SOURCES += ../wxcas.rc
-  
-../wxcas.rc.$(OBJEXT): ../wxcas.rc
-	$(WINDRES) -i $< -o $@
-	
-endif
+		wxcascte.cpp \
+		wxcaspix.cpp	
 
 noinst_HEADERS = onlinesig.h \
 		linuxmon.h \
@@ -22,8 +15,9 @@ noinst_HEADERS = onlinesig.h \
 		wxcasprint.h \
 		wxcasframe.h \
 		wxcasprefs.h \
-		wxcascte.h
-		
+		wxcascte.h \
+		wxcaspix.h
+
 wxcas_CFLAGS = $(WX_CFLAGS)
 wxcas_CXXFLAGS = $(WX_CXXFLAGS)
 wxcas_LDADD = $(WX_LIBS)
