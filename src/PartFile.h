@@ -41,8 +41,6 @@ class CSearchFile;
 class CUpDownClient;
 class completingThread;
 class CSafeMemFile;
-class wxMemoryDC;
-class wxRect;
 class CED2KFileLink;
 
 
@@ -89,10 +87,6 @@ public:
 	void	AddGap(uint32 start, uint32 end);
 	void	FillGap(uint32 start, uint32 end);
 
-#ifndef AMULE_DAEMON
-	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);
-#endif
-	
 	bool	IsComplete(uint32 start, uint32 end);
 	bool	IsPureGap(uint32 start, uint32 end);
 	bool	IsCorruptedPart(uint16 partnumber);
@@ -223,7 +217,22 @@ public:
 	void	UpdatePartsFrequency( CUpDownClient* client, bool increment );
 
 	ArrayOfUInts16	m_SrcpartFrequency;
+
+	void	SetShowSources( bool val )	{ m_showSources = val; }
+	bool	ShowSources()				const { return m_showSources; }
+
+	typedef std::set<CUpDownClient*> SourceSet;
+	
+	const SourceSet& GetSourceList()	const { return m_SrcList; }
+	const SourceSet& GetA4AFList()		const { return A4AFsrclist; }
+
+	const CList<Gap_Struct*>&	GetGapList() const	{ return gaplist; }
+	const CList<Requested_Block_Struct*>& GetRequestedBlockList() const { return requestedblocks_list; }
+
+
 protected:
+	bool	m_showSources;
+	
 	uint32	m_validSources;
 	uint32	m_notCurrentSources;
 	
@@ -254,8 +263,8 @@ private:
 	bool	newdate;	// indicates if there was a writeaccess to the .part file
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
-	CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
-	CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
+	CList<Gap_Struct*> gaplist;
+	CList<Requested_Block_Struct*> requestedblocks_list;
 	double	percentcompleted;
 	CList<uint16, uint16> corrupted_list;
 	uint8	m_availablePartsCount;
@@ -284,16 +293,13 @@ private:
 	DWORD	m_LastSourceDropTime;
 
 public:
-	typedef std::set<CUpDownClient*> SourceSet;
 	SourceSet m_SrcList;
-	SourceSet A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
+	SourceSet A4AFsrclist;
 	
 	// Kry - Avoid counting again and again (mayor cpu leak)
 	bool	IsCountDirty;
 	uint16	CleanCount;
 
-	bool	srcarevisible;		// used for downloadlistctrl
-	bool	m_bShowOnlyDownloading;	// used for downloadlistctrl
 	bool	hashsetneeded;
 	uint32  GetCompletedSize() const	{ return completedsize; }
 

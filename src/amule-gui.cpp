@@ -651,9 +651,13 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			break;
 		case DOWNLOAD_CTRL_ADD_SOURCE:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->AddSource((CPartFile*)event.ptr_value,
-										   (CUpDownClient*)event.ptr_aux_value,
-										   event.byte_value);
+				CPartFile* file = (CPartFile*)event.ptr_value;
+				
+				if ( file->ShowSources() ) {
+					amuledlg->transferwnd->downloadlistctrl->AddSource( file,
+											   (CUpDownClient*)event.ptr_aux_value,
+											   event.byte_value);
+				}
 			}
 			break;
 		case DOWNLOAD_CTRL_RM_FILE:
@@ -663,27 +667,26 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			break;
 		case DOWNLOAD_CTRL_RM_SOURCE:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->RemoveSource((CUpDownClient*)event.ptr_value,
-										      (CPartFile*)event.ptr_aux_value);
+				CPartFile* file = (CPartFile*)event.ptr_aux_value;
+
+				if ( !file || file->ShowSources() ) {
+					amuledlg->transferwnd->downloadlistctrl->RemoveSource((CUpDownClient*)event.ptr_value,
+										      file );
+				}
 			}
 			break;
 
 		case DOWNLOAD_CTRL_SHOW_HIDE_FILE:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
 				// for remote gui just send message
-				amuledlg->transferwnd->downloadlistctrl->Freeze();
-				if (!((CPartFile*)event.ptr_value)->CheckShowItemInGivenCat( amuledlg->transferwnd->downloadlistctrl->curTab)) {
-					amuledlg->transferwnd->downloadlistctrl->HideFile((CPartFile*)event.ptr_value);
-				} else {
-					amuledlg->transferwnd->downloadlistctrl->ShowFile((CPartFile*)event.ptr_value);
-				}
-				amuledlg->transferwnd->downloadlistctrl->Thaw();
+				bool show = !((CPartFile*)event.ptr_value)->CheckShowItemInGivenCat( amuledlg->transferwnd->downloadlistctrl->GetCategory() );
+				amuledlg->transferwnd->downloadlistctrl->ShowFile( (CPartFile*)event.ptr_value, show );
 			}
 			break;
 
 		case DOWNLOAD_CTRL_HIDE_SOURCE:
 		if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-					amuledlg->transferwnd->downloadlistctrl->HideSources((CPartFile*)event.ptr_value);
+					amuledlg->transferwnd->downloadlistctrl->ShowSources((CPartFile*)event.ptr_value, false);
 			}
 			break;
 		case DOWNLOAD_CTRL_SORT:

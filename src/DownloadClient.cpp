@@ -36,87 +36,10 @@
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
-#include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "otherfunctions.h"	// md4hash
+#include "otherfunctions.h" // md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
-
-// members of CUpDownClient
-// which are mainly used for downloading functions
-#ifndef AMULE_DAEMON
-#include <wx/dcmemory.h>	// Needed for wxMemoryDC
-#include <wx/gdicmn.h>		// Needed for wxRect
-
-#include "color.h"		// Needed for RGB
-
-
-void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, const wxRect& rect, bool onlygreyrect, bool  bFlat)
-{
-	static CBarShader s_StatusBar(16);
-
-	// 0.42e
-	DWORD crBoth;
-	DWORD crNeither;
-	DWORD crClientOnly;
-	DWORD crPending;
-	DWORD crNextPending;
-
-	if(bFlat) {
-		crBoth = RGB(0, 150, 0);
-		crNeither = RGB(224, 224, 224);
-		crClientOnly = RGB(0, 0, 0);
-		crPending = RGB(255,208,0);
-		crNextPending = RGB(255,255,100);
-	} else {
-		crBoth = RGB(0, 192, 0);
-		crNeither = RGB(240, 240, 240);
-		crClientOnly = RGB(104, 104, 104);
-		crPending = RGB(255, 208, 0);
-		crNextPending = RGB(255,255,100);
-	} 
-
-	s_StatusBar.SetFileSize(m_reqfile->GetFileSize()); 
-	s_StatusBar.SetHeight(rect.height - rect.y);
-	s_StatusBar.SetWidth(rect.width - rect.x);
-	s_StatusBar.Fill(crNeither);
-	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
-
-	// Barry - was only showing one part from client, even when reserved bits from 2 parts
-	wxString gettingParts = ShowDownloadingParts();
-
-	if (!onlygreyrect && !m_downPartStatus.empty() ) {
-		for (uint32 i = 0;i != m_nPartCount;i++) {
-			if ( m_downPartStatus[i]) {
-				uint32 uEnd;
-				if (PARTSIZE*(i+1) > m_reqfile->GetFileSize()) {
-					uEnd = m_reqfile->GetFileSize();
-				} else {
-					uEnd = PARTSIZE*(i+1);
-				}
-				DWORD chunk_color;
-				if (m_reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
-					chunk_color = crBoth;
-				} else if (m_nDownloadState == DS_DOWNLOADING && m_nLastBlockOffset < uEnd && m_nLastBlockOffset >= PARTSIZE*i) {
-					chunk_color = crPending;
-				} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-					chunk_color = crNextPending;
-				} else {
-					chunk_color = crClientOnly;
-				}
-				
-				if (m_reqfile->IsStopped()) {
-					chunk_color = DarkenColour(chunk_color,2);
-				}
-				
-				s_StatusBar.FillRange(PARTSIZE*i, uEnd, chunk_color);
-				
-			}
-		}
-	}
-	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
-}
-#endif
 
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
@@ -1084,7 +1007,25 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
 	DWORD curTick = ::GetTickCount();
 	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE) {
-		Notify_DownloadCtrlUpdateItem(this);
+		// Check if we actually need to notify of changes
+		bool update = m_reqfile && m_reqfile->ShowSources();
+		
+		// Check A4AF files only if needed
+		if ( !update ) {
+			A4AFList::iterator it = m_A4AF_list.begin();
+			for ( ; it != m_A4AF_list.end(); ++it ) {
+				if ( it->first->ShowSources() ) {
+					update = true;
+					break;
+				}
+			}
+		}
+	
+		// And finnaly trigger an event if there's any reason
+		if ( update ) {
+			Notify_DownloadCtrlUpdateItem(this);
+		}
+				
 		m_lastRefreshedDLDisplay = curTick;
 	}
 }
@@ -1177,7 +1118,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 				// Avoid swapping to this file for a while
 				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount(); 
 							
-				Notify_DownloadCtrlAddSource(m_reqfile, this, true);
+				Notify_DownloadCtrlAddSource(m_reqfile, this, false);
 			} else {
 				Notify_DownloadCtrlRemoveSource( this, m_reqfile );
 			}
@@ -1194,7 +1135,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			SwapTo->AddSource( this );
 		
-			Notify_DownloadCtrlAddSource(SwapTo, this, false);
+			Notify_DownloadCtrlAddSource(SwapTo, this, true);
 
 			// Remove the new reqfile from the list of other files
 			m_A4AF_list.erase( target );

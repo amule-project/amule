@@ -69,7 +69,6 @@
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "packets.h"		// Needed for CTag
 #include "SearchList.h"		// Needed for CSearchFile
-#include "BarShader.h"		// Needed for CBarShader
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
@@ -201,6 +200,8 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 
 void CPartFile::Init()
 {
+	m_showSources = false;
+
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -227,7 +228,6 @@ void CPartFile::Init()
 		m_iDownPriority = PR_NORMAL;
 		m_bAutoDownPriority = false;
 	}
-	srcarevisible = false;
 	
 	memset(m_anStates,0,sizeof(m_anStates));
 	
@@ -260,7 +260,6 @@ void CPartFile::Init()
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_is_A4AF_auto = false;
-	m_bShowOnlyDownloading = false;
 	m_bLocalSrcReqQueued = false;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
@@ -1396,110 +1395,6 @@ void CPartFile::UpdateCompletedInfos()
 }
 
 
-#ifndef AMULE_DAEMON
-#include <wx/dcmemory.h>		// Needed for wxMemoryDC
-#include <wx/gdicmn.h>			// Needed for wxRect
- 
-void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
-{
-	static CBarShader s_ChunkBar(16);
-	
-	COLORREF crHave;
-	COLORREF crPending;
-	COLORREF crProgress;
-	COLORREF crMissing = RGB(255, 0, 0);
-
-	if ( bFlat ) {
-		crProgress = RGB(0, 150, 0);
-		crHave = RGB(0, 0, 0);
-		crPending = RGB(255,255,100);
-	} else {
-		crProgress = RGB(0, 224, 0);
-		crHave = RGB(104, 104, 104);
-		crPending = RGB(255, 208, 0);
-	}
-
-	s_ChunkBar.SetHeight(rect.height);
-	s_ChunkBar.SetWidth(rect.width); 
-	s_ChunkBar.SetFileSize(m_nFileSize);
-	s_ChunkBar.Fill(crHave);
-	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
-
-
-	if ( status == PS_COMPLETE || status == PS_COMPLETING ) {
-		s_ChunkBar.Fill( crProgress );
-		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
-		return;
-	}
-
-	// Part availability ( of missing parts )
-	for ( POSITION pos = gaplist.GetHeadPosition(); pos; ) {
-		Gap_Struct* gap = gaplist.GetNext( pos );
-
-		// Start position
-		uint32 start = ( gap->start / PARTSIZE );
-		// End position
-		uint32 end   = ( gap->end / PARTSIZE ) + 1;
-
-		// Avoid going past the filesize. Dunno if this can happen, but the old code did check.
-		if ( end > GetPartCount() )
-			end = GetPartCount();
-
-		// Place each gap, one PART at a time
-		for ( uint32 i = start; i < end; ++i ) {
-			COLORREF color = crMissing;
-			if ( i < m_SrcpartFrequency.GetCount() ) {
-				if (m_SrcpartFrequency[i]) {
-					int blue = 210 - ( 22 * ( m_SrcpartFrequency[i] - 1 ) );
-					color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
-				}
-			}
-		
-			if (IsStopped() || IsPaused()) {
-				color = DarkenColour(color,2);
-			}			
-
-			uint32 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
-			uint32 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
-		
-			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
-		}
-	}
-	
-	// Pending parts
-	for ( POSITION pos = requestedblocks_list.GetHeadPosition(); pos; ) {
-		COLORREF color = crPending;
-		Requested_Block_Struct* block = requestedblocks_list.GetNext( pos );
-		if (IsStopped() || IsPaused()) {
-			color = DarkenColour(color,2);
-		}					
-		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, color );
-	}
-
-	// Draw the progress-bar
-	s_ChunkBar.Draw( dc, rect.x, rect.y, bFlat );
-
-	
-	// Green progressbar width
-	int width = (int)(( (float)rect.width / (float)m_nFileSize ) * GetCompletedSize() );
-
-	if ( bFlat ) {
-		dc->SetBrush( wxBrush( crProgress, wxSOLID ) );
-		
-		dc->DrawRectangle( rect.x, rect.y, width, 3 );
-	} else {
-		// Draw the two black lines for 3d-effect
-		dc->SetPen( wxPen( wxColour( 0, 0, 0 ), 1, wxSOLID ) );
-		dc->DrawLine( rect.x, rect.y + 0, rect.x + width, rect.y + 0 );
-		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
-		
-		// Draw the green line
-		dc->SetPen( wxPen( crProgress, 1, wxSOLID ) );
-		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
-	}
-}
-#endif
-
 void CPartFile::WritePartStatus(CSafeMemFile* file)
 {
 	uint16 parts = GetED2KPartCount();
@@ -2217,9 +2112,6 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 {
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
-	if(srcarevisible) {
-		Notify_DownloadCtrlHideSource(this);
-	}
 	if (!bIsHashingDone) {
 #ifdef DEBUG
 		printf("HashNotDone\n");

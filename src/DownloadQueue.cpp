@@ -440,7 +440,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 					// Try to add a request for the other file
 					if ( (*it)->AddRequestForAnotherFile(sender)) {
 						// Add it to downloadlistctrl
-						Notify_DownloadCtrlAddSource(sender, *it, true);
+						Notify_DownloadCtrlAddSource(sender, *it, false);
 					}
 				}
 				
@@ -477,7 +477,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	
 			sender->AddSource( source );
 			
-			Notify_DownloadCtrlAddSource(sender, source, false);
+			Notify_DownloadCtrlAddSource(sender, source, true);
 		}
 	} else {
 		// Unknown client, add it to the clients list
@@ -491,7 +491,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	
 		sender->AddSource( source );
 	
-		Notify_DownloadCtrlAddSource(sender, source, false);
+		Notify_DownloadCtrlAddSource(sender, source, true);
 	}
 }
 
@@ -512,7 +512,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	if ( cur_file ) {
 		if ( cur_file != sender ) {
 			if ( source->AddRequestForAnotherFile( sender ) ) {
-				Notify_DownloadCtrlAddSource( sender, source, true );
+				Notify_DownloadCtrlAddSource( sender, source, false );
 			}
 		}
 	} else {
@@ -523,7 +523,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		}
 
 		sender->AddSource( source );
-		Notify_DownloadCtrlAddSource( sender, source, false );
+		Notify_DownloadCtrlAddSource( sender, source, true );
 	}
 }
 
