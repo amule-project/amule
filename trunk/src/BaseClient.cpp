@@ -1584,7 +1584,13 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString +=  wxString::Format(wxT(" v%u.%.2u%c"), nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);
 					break;
 				case SO_EMULEPLUS:
-					m_clientVerString +=  wxString::Format(wxT(" v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion - 1);
+					m_clientVerString +=  wxString::Format(wxT(" v%u"), nClientMajVersion);
+					if(nClientMinVersion != 0) {
+						m_clientVerString +=  wxString::Format(wxT(".%u"), nClientMinVersion);
+					}
+					if(nClientUpVersion != 0) {
+						m_clientVerString +=  wxString::Format(wxT("%c"), 'a' + nClientUpVersion - 1);
+					}
 					break;
 				default:
 					if (GetClientModString().IsEmpty() == false) {
