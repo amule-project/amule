@@ -40,6 +40,7 @@
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl
 #include <wx/timer.h>		// For wxTimer
+#include <wx/frame.h>		// For wxFrame
 
 class CamulewebFrame : public wxFrame
 {
