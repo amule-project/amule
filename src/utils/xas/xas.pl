@@ -101,7 +101,7 @@ sub xas
 		# Crash detection is implemented since v2-rc4, so XAS should be backwards compatible
 		if ( grep(/^1./,$amulesigdata[12]) || $amulesigdata[12]=="2.0.0rc1" || $amulesigdata[12]=="2.0.0rc2" || $amulesigdata[12]=="2.0.0rc3" ) {
 			IRC::command "/say aMule $amulesigdata[12] was closed after $runtime!" }
-		elsif ( ! grep(/^00 /,$runtime)) {
+		elsif ( ! grep(/^00 /,$amulesigdata[15])) {
 			IRC::command "/say aMule $amulesigdata[12] crashed after $runtime!" }
 		else {
 			IRC::command "/say aMule $amulesigdata[12] was closed" };
