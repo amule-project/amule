@@ -264,7 +264,7 @@ public:
                                         return temp; }
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
 	static void		SetDeadserverRetries(uint16 val) { s_deadserverretries = val; }
-	static DWORD		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
+	static uint32	GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
 	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 	
 	static WORD		GetLanguageID()			{ return s_languageID; }
@@ -497,6 +497,8 @@ public:
 	// Hidden files
 	
 	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
+	
+	static bool AutoSortDownload() { return s_AutoSortDownload; } 
 
 protected:
 	void	CreateUserHash();
@@ -656,14 +658,9 @@ protected:
 	static bool	s_bWebUseGzip;
 	static uint32	s_nWebPageRefresh;
 	static bool	s_bWebLowEnabled;
-	static wxString	s_sWebResDir;
-
-	static wxString	s_sTemplateFile;
-	static bool	s_bIsASCWOP;
 
 	static bool	s_showCatTabInfos;
-	static bool	s_resumeSameCat;
-	static bool	s_dontRecreateGraphs;
+//	static bool	s_resumeSameCat;
 	static uint32	s_allcatType;
 	
 	static uint32 	s_desktopMode;
@@ -725,6 +722,8 @@ protected:
 	
 	// Hidden files sharing
 	static bool	s_ShareHiddenFiles;
+	
+	static bool s_AutoSortDownload;
 };
 
 
