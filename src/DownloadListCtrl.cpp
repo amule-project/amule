@@ -51,6 +51,7 @@
 #include <wx/stattext.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 #define DLC_BARUPDATE 512
 
 class CPartFile;
