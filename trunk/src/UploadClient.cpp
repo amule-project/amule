@@ -368,7 +368,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 		}
 	}
 	catch(wxString error){
-		theApp.amuledlg->AddDebugLogLine(false,CString(_("Client '%s' caused error while creating package (%s) - disconnecting client")),GetUserName(),error.GetData());
+		AddDebugLogLineM(false,wxString::Format(_("Client '%s' caused error while creating package (%s) - disconnecting client"),GetUserName(),error.GetData()));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -804,7 +804,7 @@ void CUpDownClient::Ban(){
 	theApp.amuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
 	m_dwBanTime = ::GetTickCount();
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
-	theApp.amuledlg->AddDebugLogLine(false,CString(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue")),GetUserName());
+	AddDebugLogLineM(false,wxString::Format(_("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"),GetUserName()));
 }
 
 void CUpDownClient::UDPFileReasked(){
