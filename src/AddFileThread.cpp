@@ -392,6 +392,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			// Delete and continue 
 			RemoveFromQueue( current );
 			current = NULL;
+			delete [] data;
 			continue;
 		}
 
