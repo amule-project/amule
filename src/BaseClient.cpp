@@ -511,9 +511,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 	
 	if (theApp.glob_prefs->AddServersFromClient()) {
-		in_addr addhost;
-		addhost.s_addr = m_dwServerIP;
-		CServer* addsrv = new CServer(m_nServerPort, char2unicode(inet_ntoa(addhost)));
+		CServer* addsrv = new CServer(m_nServerPort, IPToStr(m_dwServerIP));
 		addsrv->SetListName(addsrv->GetAddress());
 			if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(addsrv, true)) {
 				delete addsrv;

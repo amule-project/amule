@@ -54,7 +54,7 @@ public:
 	void			EndSession(CUpDownClient* client = 0);
 	CChatSession*	GetPageByClient(CUpDownClient* client);
 	int				GetTabByClient(CUpDownClient* client);
-	void			ProcessMessage(CUpDownClient* sender, char* message);
+	void			ProcessMessage(CUpDownClient* sender, const wxString& message);
 	bool			SendMessage(const wxString& message);
 	void			ConnectionResult(CUpDownClient* sender, bool success);
 	void			RefreshFriend(CFriend* toupdate);
