@@ -391,11 +391,6 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.sharedfiles->Reload(true, false);
 
 
-	if ( CfgChanged(IDC_PERCENT) || CfgChanged(IDC_PROGBAR) ) {
-		// Force upload of the donwload queue
-		theApp.downloadqueue->UpdateDisplayedInfo( true );
-	}
-
 	if ( CfgChanged(IDC_OSDIR) ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_OSDIR );
 

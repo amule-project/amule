@@ -383,10 +383,10 @@ void CDownloadListCtrl::OnColResize(wxListEvent& WXUNUSED(evt))
 void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
 	/* Don't do any drawing if there's nobody to see it. */
-	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->GetActiveDialog() != CamuleDlg::TransferWnd)) {
+    if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
 		return;
 	}
-
+	
 	CtrlItem_Struct *content = (CtrlItem_Struct *) GetItemData(item);
 	
 	// Define text-color and background
@@ -701,30 +701,35 @@ void CDownloadListCtrl::RemoveFile(const CPartFile * toremove)
 	ShowFilesCount();
 }
 
-void CDownloadListCtrl::UpdateItem(void *toupdate)
+void CDownloadListCtrl::UpdateItem(void* toupdate)
 {
-	if (!(theApp.amuledlg->IsIconized())) {
+	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
 		// Retrieve all entries matching the source
 		std::pair < ListItems::const_iterator, ListItems::const_iterator > rangeIt = m_ListItems.equal_range(toupdate);
+		
+		// Visible lines, default to all because not all platforms support the GetVisibleLines function
+		long first = 0, last = GetItemCount();
+		
+#ifndef __WXMSW__
+		// Get visible lines if we need them
+		if ( rangeIt.first != rangeIt.second ) {
+			GetVisibleLines( &first, &last );
+		}
+#endif
+		
 		for (ListItems::const_iterator it = rangeIt.first; it != rangeIt.second; it++) {
-			CtrlItem_Struct *updateItem = it->second;
+			CtrlItem_Struct* updateItem = it->second;
 
-			// Find entry in CListCtrl and update object
-			//LVFINDINFO find;
-			//find.flags = LVFI_PARAM;
-			//find.lParam = (LPARAM)updateItem;
-			sint16 result = FindItem(-1, (long)updateItem);
-			if (result != (-1)) {
-				updateItem->dwUpdated = 0;
-			#ifdef __WXMSW__ // Lets hope MSW listctrl can handle it.
-				RefreshItem(result);
-			#else
-				long first = 0, last = 0;
-				GetVisibleLines(&first, &last);
-				if (result >= first && result <= last) {
-					RefreshItem(result);
+			// Avoid searching for hidden objects
+			if ( ( updateItem->type == FILE_TYPE ) || ( updateItem->owner->srcarevisible ) ) {
+				sint16 result = FindItem(-1, (long)updateItem);
+				if (result != -1 ) {
+					updateItem->dwUpdated = 0;
+					
+					if ( result >= first && result <= last) {
+						RefreshItem(result);
+					}
 				}
-			#endif
 			}
 		}
 	}

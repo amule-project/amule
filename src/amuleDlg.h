@@ -78,7 +78,17 @@ public:
 	enum DialogType { TransferWnd, ServerWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd, KadWnd };
 	DialogType GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
-	
+
+	/**
+	 * Helper function for deciding if a certian dlg is visible.
+	 *
+	 * @return True if the dialog is visible to the user, false otherwise.
+	 */
+	bool IsDialogVisible( DialogType dlg )
+	{
+		return ( m_nActiveDialog == dlg ) && ( is_safe_state ) && ( !IsIconized() ); 
+	}
+
 	void ShowED2KLinksHandler( bool show );
 
 	void OnClose(wxCloseEvent& evt);
