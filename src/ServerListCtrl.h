@@ -183,6 +183,11 @@ private:
 	void	OnRemoveServers( wxCommandEvent& event );
 
 	/**
+	 * Event-handler for deleting servers when the delete-key is pressed.
+	 */
+	void	OnKeyPressed( wxKeyEvent& event );
+	
+	/**
 	 * Sorter function.
 	 *
 	 * @see wxListCtrl::SortItems

@@ -106,6 +106,7 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST, CDownloadListCtrl::OnItemActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnNMRclick)
 
+	EVT_CHAR( CDownloadListCtrl::OnKeyPressed )
 
 	EVT_MENU( MP_DROP_NO_NEEDED_SOURCES,			CDownloadListCtrl::OnCleanUpSources )
 	EVT_MENU( MP_DROP_FULL_QUEUE_SOURCES,			CDownloadListCtrl::OnCleanUpSources )
@@ -1090,6 +1091,18 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			m_menu = NULL;
 		}
+	}
+}
+
+
+void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
+{
+	// Check if delete was pressed
+	if ( event.GetKeyCode() == WXK_DELETE ) {
+		wxCommandEvent evt;
+		OnCancelFile( evt );
+	} else {
+		event.Skip();
 	}
 }
 

@@ -238,9 +238,11 @@ private:
 	void	OnSendMessage( wxCommandEvent& event );
 	void	OnViewClientInfo( wxCommandEvent& event );
 
+	// Misc event-handlers
 	void	OnItemActivated( wxListEvent& event );
 	void	OnColumnLClick( wxListEvent& event );
 	void 	OnNMRclick( wxListEvent& event );
+	void	OnKeyPressed( wxKeyEvent& event );
 
 
 	/**
