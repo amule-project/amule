@@ -2084,10 +2084,6 @@ void CUpDownClient::CheckForGPLEvilDoer_Nick()
 			m_bGPLEvildoer = true;
 
 		m_bHasBeenGPLEvildoer = true;
-
-#ifdef __VERBOSE_OUTPUT__
-		printf("EVIL nickname found: %s\n", unicode2char( m_Username ) );
-#endif
 	}
 }
 
@@ -2176,10 +2172,6 @@ void CUpDownClient::CheckForGPLEvilDoer_Mod()
 			m_bGPLEvildoer = true;
 
 		m_bHasBeenGPLEvildoer = true;
-		
-#ifdef __VERBOSE_OUTPUT__
-		printf("EVIL mod found: %s\n", unicode2char( m_strModVersion ) );
-#endif
 	}
 }
 
