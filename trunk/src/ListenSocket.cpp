@@ -1082,14 +1082,14 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		}
 	}
 	catch(CInvalidPacket) {
-		printf("Uncatched invalid packet exception - done on ProcessPacket\n");
+		printf("UnCaught invalid packet exception - done on ProcessPacket\n");
 		client->SetDownloadState(DS_ERROR);
-		Disconnect(CString("Uncatched invalid packet exception On ProcessPacket\n"));
+		Disconnect(CString("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	}
 	catch(wxString error) {
 		#ifdef __DEBUG__
-		printf("Catched wxString error %s on ListenSocket\n", error.c_str());
+		printf("Caught wxString error %s on ListenSocket\n", error.c_str());
 		#endif
 		if (client) {
 			client->SetDownloadState(DS_ERROR);
@@ -1256,13 +1256,13 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 				//Make sure we are downloading this file.
 				if (reqfile==NULL) {
-					throw wxString(_(" Wring File ID: (OP_MULTIPACKETANSWER; reqfile==NULL)"));
+					throw wxString(_(" Wrong File ID: (OP_MULTIPACKETANSWER; reqfile==NULL)"));
 				}
 				if (client->reqfile==NULL) {
-					throw wxString(_(" Wring File ID: OP_MULTIPACKETANSWER; client->reqfile==NULL)"));
+					throw wxString(_(" Wrong File ID: OP_MULTIPACKETANSWER; client->reqfile==NULL)"));
 				}
 				if (reqfile != client->reqfile) {
-					throw wxString(_(" Wring File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
+					throw wxString(_(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
 				uint8 opcode_in;
 				while(data_in.GetLength()-data_in.GetPosition())
@@ -1552,7 +1552,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 	}
 	catch(wxString error) {
 		#ifdef __DEBUG__
-		printf("Catched wxString error %s on ListenSocket\n", error.c_str());
+		printf("Caught wxString error %s on ListenSocket\n", error.c_str());
 		#endif
 		theApp.amuledlg->AddDebugLogLine(false,CString(_("A client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
 		if (client) {
