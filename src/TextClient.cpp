@@ -82,6 +82,7 @@ static CmdId commands[] = {
 	{ wxT("setdownbwlimit"),	CMD_ID_SETDOWNBWLIMIT },
 	{ wxT("getbwlimits"),	CMD_ID_GETBWLIMITS },
 	{ wxT("statistics"),	CMD_ID_STATTREE },
+	{ wxT("reloadshared"),	CMD_ID_RELOADSHARED },
 	{ wxEmptyString,	0 },
 };
 
@@ -489,6 +490,10 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request = new CECPacket(EC_OP_GET_STATSTREE);
 			request_list.push_back(request);
 			break;
+		case CMD_ID_RELOADSHARED:
+			request = new CECPacket(EC_OP_SHAREDFILES_RELOAD);
+			request_list.push_back(request);
+			break;
 		default:
 			return -1;
 	}
@@ -715,11 +720,12 @@ void CamulecmdApp::ShowHelp() {
 //	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
 //	Show(wxString(wxT("SetIPLevel <")) + wxString(_("new level")) + wxString(wxT(">:\t")) + wxString(_("Changes current IP Filter level.\n")));
 	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(wxT("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
-	Show(wxString(wxT("Add <")) + wxString(_("ED2k Link")) + wxString(wxT(">\t\t")) + wxString(_("Adds <ED2k Link> to aMule.\n\t\t\t\tCurrently file and server links are supported.\n")));
-	Show(wxString(wxT("SetUpBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum upload bandwidth.\n")));
-	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum downloadload bandwidth.\n")));
-	Show(wxString(wxT("GetBWLimits\t\t")) + wxString(_("Displays bandwidth limits.\n")));
-	Show(wxString(wxT("Statistics\t\t")) + wxString(_("Displays full statistics tree.\n")));
+	Show(wxString(wxT("Add <")) + wxString(_("ED2k Link")) + wxString(wxT(">:\t\t")) + wxString(_("Adds <ED2k Link> to aMule.\n\t\t\t\tCurrently file and server links are supported.\n")));
+	Show(wxString(wxT("SetUpBWLimit <")) + wxString(_("limit")) + wxString(wxT(">:\t")) + wxString(_("Sets maximum upload bandwidth.\n")));
+	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">:\t")) + wxString(_("Sets maximum downloadload bandwidth.\n")));
+	Show(wxString(wxT("GetBWLimits:\t\t")) + wxString(_("Displays bandwidth limits.\n")));
+	Show(wxString(wxT("Statistics:\t\t")) + wxString(_("Displays full statistics tree.\n")));
+	Show(wxString(wxT("ReloadShared:\t\t")) + wxString(_("Reload shared files list.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit, exit:\t\t")) + wxString(_("Exits Textclient.\n")));
 	Show(wxString(wxT("Shutdown:\t\t")) + wxString(_("Shutdown amule\n")));
