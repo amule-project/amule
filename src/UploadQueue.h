@@ -66,7 +66,6 @@ waitinglist.GetHeadPosition();}
 	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
 	uint32	GetFailedUpCount()						{return failedupcount;}
 	uint32	GetAverageUpTime();
-	void	FindSourcesForFileById(CTypedPtrList<CPtrList, CUpDownClient*>* srclist, const CMD4Hash& filehash);
 	void	AddUpDataOverheadSourceExchange(uint32 data)	{ m_nUpDataRateMSOverhead += data;
 															  m_nUpDataOverheadSourceExchange += data;
 															  m_nUpDataOverheadSourceExchangePackets++;}
@@ -122,7 +121,6 @@ private:
 	uint64	m_nUpDataOverheadFileRequestPackets;
 	uint64	m_nUpDataOverheadServerPackets;
 	uint64	m_nUpDataOverheadOtherPackets;
-	bool	lastupslotHighID; // VQB lowID alternation
 	std::deque<int>	m_AverageUDRO_list;
 
 };

@@ -196,7 +196,6 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					uint16 nRank = data_in.ReadUInt16();
 					sender->SetRemoteQueueFull(false);
 					sender->UDPReaskACK(nRank);
-					sender->AddAskedCountDown();
 				}
 				break;
 			}
