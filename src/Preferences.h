@@ -663,7 +663,6 @@ protected:
 	static bool	s_bWebLowEnabled;
 
 	static bool	s_showCatTabInfos;
-//	static bool	s_resumeSameCat;
 	static uint32	s_allcatType;
 	
 	static uint32 	s_desktopMode;
