@@ -262,6 +262,7 @@ void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) ) {
 #ifdef AMULEWEBDLG
 int CamulewebApp::OnExit() {
 	m_ECClient->Destroy();
+	if (webserver) webserver->StopServer();
 	return 0;
 }
 #endif
@@ -336,7 +337,7 @@ int CamulewebApp::OnRun() {
 		if (m_ECClient->SendRecvMsg(wxString::Format("AUTH %s", passwd.GetData())) == "Access Denied") {
 			Print("ExternalConn: Access Denied.\n");
 		} else {
-    			Print("Succeeded ! Connection established\n\n");
+    		Print("Succeeded ! Connection established\n\n");
 			Print("---------------------------------\n");
 			Print("|       aMule Web Server        |\n");
 			Print("---------------------------------\n\n\n");
@@ -349,6 +350,8 @@ int CamulewebApp::OnRun() {
 #ifndef AMULEWEBDLG
 			WebInterfaceShell();
 			Print("Ok, exiting WebServer...\n");
+			
+			webserver->StopServer();
 #endif
 		}
 	}

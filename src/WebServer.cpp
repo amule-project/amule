@@ -180,7 +180,7 @@ CWebServer::CWebServer(CamulewebApp *webApp) {
 
 CWebServer::~CWebServer(void) {
 	//stop web socket thread
-	wsThread->Delete();
+	if (wsThread) wsThread->Delete();
 }
 
 

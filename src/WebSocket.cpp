@@ -27,6 +27,8 @@
 
 WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);
 
+static ArrayOfCWCThread wcThreads;
+
 /*** CWSThread ***/
 CWSThread::CWSThread(CWebServer *ws) {
 	this->ws = ws;
@@ -39,7 +41,6 @@ CWSThread::CWSThread(CWebServer *ws) {
 // thread execution starts here
 void *CWSThread::Entry() {
 	wxSocketBase *sock;
-	ArrayOfCWCThread wcThreads;
 	
 	ws->Print("\nWSThread: Thread started\n");	
 	// Create the address - listen on localhost:ECPort
@@ -77,22 +78,12 @@ void *CWSThread::Entry() {
 				}
 			}
 
-			//ws->Print("*** WSThread: %d threads\n", wcThreads.GetCount());
-			for (size_t i=0; i<wcThreads.GetCount(); i++) {
-				if (!wcThreads.Item(i)->IsAlive()) {
-					//ws->Print("*** WSThread: thread %d removed\n", i);
-					wcThreads.RemoveAt(i); //remove terminated thread from array to save memory
-				}
-			}
-			
 			wxThread::Sleep(200);
 		}
 		
 		ws->Print("WSThread: Waiting for WCThreads to be terminated...");
 		for (size_t i=0; i<wcThreads.GetCount(); i++) {
-			if (wcThreads.Item(i)->IsAlive()) {
-				wcThreads.Item(i)->Delete(); //terminate i-th alive thread
-			}
+				wcThreads.Item(i)->Delete(); //terminate i-th thread
 		}
 		wcThreads.Clear(); //frees the memory allocated to the array
 		ws->Print("done.\n");
@@ -126,84 +117,83 @@ void *CWCThread::Entry() {
 #ifdef DEBUG
 	stWebSocket.m_pParent->Print("WCThread: Started a new WCThread\n");
 #endif
-	//while (!TestDestroy()) {
-		//check for connection status and return immediately
-		if (stWebSocket.m_hSocket->WaitForLost(0)) {
-			//stWebSocket.m_pParent->Print("*** WCThread - WaitForLost\n");
-			//connection closed/lost. exit thread cicle
-		} else {
-		
-			//check for read and return immediately
-			if (stWebSocket.m_hSocket->WaitForRead(0)) {
-				//stWebSocket.m_pParent->Print("*** WCThread - WaitForRead\n");
-				char pBuf[0x1000];
-				//READ
-				stWebSocket.m_hSocket->Read(&pBuf, sizeof(pBuf));
-				//stWebSocket.m_pParent->Print("*** WCThread read:\n%s\n", pBuf);
-				if (stWebSocket.m_hSocket->LastCount() == 0) {
-					if (stWebSocket.m_hSocket->Error()) {
-						if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
-							//close socket&thread
-							stWebSocket.m_pParent->Print("WCThread: got read error. closing socket and terminating thread\n");			
-							stWebSocket.m_bValid = false;
-							//break;
-						}
-					} else {
-						//read nothing
-						stWebSocket.m_bCanRecv = false;
-						stWebSocket.OnReceived(NULL, 0);
+
+	//check for connection status and return immediately
+	if (stWebSocket.m_hSocket->WaitForLost(0)) {
+		//stWebSocket.m_pParent->Print("*** WCThread - WaitForLost\n");
+		//connection closed/lost. terminate thread
+	} else {
+		//check for read and return immediately
+		if (stWebSocket.m_hSocket->WaitForRead(0)) {
+			//stWebSocket.m_pParent->Print("*** WCThread - WaitForRead\n");
+			char pBuf[0x1000];
+			//READ
+			stWebSocket.m_hSocket->Read(&pBuf, sizeof(pBuf));
+			//stWebSocket.m_pParent->Print("*** WCThread read:\n%s\n", pBuf);
+			if (stWebSocket.m_hSocket->LastCount() == 0) {
+				if (stWebSocket.m_hSocket->Error()) {
+					if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
+						//close socket&thread
+						stWebSocket.m_pParent->Print("WCThread: got read error. closing socket and terminating thread\n");			
+						stWebSocket.m_bValid = false;
 					}
+				} else {
+					//read nothing
+					stWebSocket.m_bCanRecv = false;
+					stWebSocket.OnReceived(NULL, 0);
 				}
-				stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
 			}
+			stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
+		}
 		
-			//check for write and return immediately
-			if (stWebSocket.m_hSocket->WaitForWrite(0)) {
-				// send what is left in our tails
-				while (stWebSocket.m_pHead) {
-					if (stWebSocket.m_pHead->m_pToSend) {
-						//stWebSocket.m_pParent->Print("*** WCThread write:\n%s\n", stWebSocket.m_pHead->m_pToSend);
-						//WRITE
-						stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
-						wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
-						if (nRes != stWebSocket.m_pHead->m_dwSize) {
-							if (nRes > 0) {
-								if (/*(nRes > 0) &&*/(nRes < stWebSocket.m_pHead->m_dwSize)) {
-									stWebSocket.m_pHead->m_pToSend += nRes;
-									stWebSocket.m_pHead->m_dwSize -= nRes;
-								}
-							} else {
-								if (stWebSocket.m_hSocket->Error()) {
-									if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
-										//got error
-										stWebSocket.m_pParent->Print("WCThread: got write error.\n");
-										stWebSocket.m_bValid = false;
-									}
+		//check for write and return immediately
+		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
+			// send what is left in our tails
+			while (stWebSocket.m_pHead) {
+				if (stWebSocket.m_pHead->m_pToSend) {
+					//stWebSocket.m_pParent->Print("*** WCThread write:\n%s\n", stWebSocket.m_pHead->m_pToSend);
+					//WRITE
+					stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
+					wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
+					if (nRes != stWebSocket.m_pHead->m_dwSize) {
+						if (nRes > 0) {
+							if (/*(nRes > 0) &&*/(nRes < stWebSocket.m_pHead->m_dwSize)) {
+								stWebSocket.m_pHead->m_pToSend += nRes;
+								stWebSocket.m_pHead->m_dwSize -= nRes;
+							}
+						} else {
+							if (stWebSocket.m_hSocket->Error()) {
+								if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
+									//got error
+									stWebSocket.m_pParent->Print("WCThread: got write error.\n");
+									stWebSocket.m_bValid = false;
 								}
 							}
-							break;
 						}
+						break;
 					}
+				}
 	
-					// erase this chunk
-					CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
-					delete stWebSocket.m_pHead;
-					if (!(stWebSocket.m_pHead = pNext)) {
-						stWebSocket.m_pTail = NULL;
-					}
+				// erase this chunk
+				CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
+				delete stWebSocket.m_pHead;
+				if (!(stWebSocket.m_pHead = pNext)) {
+					stWebSocket.m_pTail = NULL;
 				}
 			}
 		}
+	}
 		
-		//wxThread::Sleep(200);
-	//}
-	
-	//destroy the socket and terminate thread.
+	//destroy the socket
 	stWebSocket.m_hSocket->Destroy();
+	
 #ifdef DEBUG
 	stWebSocket.m_pParent->Print("WCThread: exited [WebSocket closed]\n");
 #endif
 
+	// remove ourself from threads array
+	wcThreads.Remove(this);
+		
 	// Kry - WTF to return here?
 	// shakraw - it must return NULL. it is correct now.
 	return NULL;	
