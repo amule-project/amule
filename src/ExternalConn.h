@@ -83,12 +83,11 @@ class CPartFile_Encoder {
 		CECTag *Encode();
 		// decode - take data from tag
 		void Decode(CECTag *tag);
-		
-		const unsigned char *GapData();
-		int GapDataSize();
-		
-		const unsigned char *PartStatusData();
-		int PartStatusDataSize();
+
+		void ResetEncoder()
+		{
+			m_enc_data.ResetEncoder();
+		}
 };
 
 typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
