@@ -449,7 +449,6 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 CServerList::~CServerList()
 {
 	SaveServermetToFile();
-	printf("Saving of server.met file Done !!!\n");
 	for(POSITION pos = list.GetHeadPosition(); pos != NULL; pos = list.GetHeadPosition()) {
 		delete list.GetAt(pos);
 		list.RemoveAt(pos);
@@ -786,10 +785,7 @@ bool CServerList::SaveServermetToFile()
 
 	version = 0xE0;
 	servermet.Write(&version, 1);
-	uint32 fservercount = list.GetCount();
-	printf("Save ServerCount = %i /0x%X/\n",fservercount, fservercount);
-	ENDIAN_SWAP_I_32(fservercount);			
-	printf("Saved ServerCount endian = %i /0x%X/\n",fservercount, fservercount);
+	uint32 fservercount = ENDIAN_SWAP_32(list.GetCount());
 	servermet.Write(&fservercount,4);
 	ServerMet_Struct sbuffer;
 	CServer* nextserver;
