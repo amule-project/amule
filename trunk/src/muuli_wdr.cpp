@@ -3367,8 +3367,8 @@ wxSizer *MyInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item4 = new wxTextCtrl( parent, ID_MYSERVINFO, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
-    item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxListCtrl *item4 = new wxListCtrl( parent, ID_MYSERVINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
