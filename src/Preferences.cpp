@@ -26,7 +26,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <wx/timer.h>
+#include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
