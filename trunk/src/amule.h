@@ -156,6 +156,15 @@ class wxMuleInternalEvent : public wxEvent {
 	}
 };
 
+#ifdef AMULE_DAEMON
+// Helper class, there only if we can't use wxExecute with async flag.
+class CamuleWebserverThread : public wxThread {
+		
+	virtual ExitCode 	Entry();
+	
+};
+#endif
+
 
 #ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
@@ -328,7 +337,11 @@ protected:
 	
 	uint32 m_dwPublicIP;
 	
-	long webserver_pid;
+	#ifndef AMULE_DAEMON
+		long webserver_pid;
+	#else
+		CamuleWebserverThread* webserver_thread;
+	#endif
 	
 	wxFile *applog;
 	bool enable_stdout_log;
