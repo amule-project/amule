@@ -819,6 +819,8 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 
 	for ( unsigned int i = 0; i < strText.Length(); i++ ) {
 		switch ( strText.GetChar(i) ) {
+			case wxT('/'):
+#ifdef __WXMSW__
 			case wxT('\"'):
 			case wxT('*'):
 			case wxT('<'):
@@ -826,8 +828,8 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 			case wxT('?'):
 			case wxT('|'):
 			case wxT('\\'):
-			case wxT('/'):
 			case wxT(':'):
+#endif
 				continue;
 			default:
 				// Many illegal for filenames in windows below the 32th char (which is space).
