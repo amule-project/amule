@@ -559,6 +559,8 @@ private:
 
 	wxString		m_clientModString; 
 	wxString		m_clientVerString;
+
+	int SecIdentSupRec;
 	
 	// Hash anti-thief from HoaX_69 [BlackRat]
 public:
