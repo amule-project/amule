@@ -90,7 +90,7 @@ public:
 	bool	LoadFromFile(FILE* file)						{return false;}
 	bool	WriteToFile(FILE* file)							{return false;}
 	bool	IsPartFile()									{return !(status == PS_COMPLETE);}
-	uint32	Process(uint32 reducedownload);
+	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsizeonly=false);
 	bool	SavePartFile(bool Initial=false);
 	void	PartFileHashFinished(CKnownFile* result);
@@ -258,7 +258,7 @@ private:
 	bool	hasRating;
 	bool	hasBadRating;
 	bool	hasComment;
-	bool 	PerformFileComplete(); // Lord KiRon
+	uint8 	PerformFileComplete(); // Lord KiRon
 	//static unsigned int CompleteThreadProc(CPartFile* pFile); // Lord KiRon - Used as separate thread to complete file
 	void    CharFillRange(wxString* buffer,uint32 start, uint32 end, char color);
 
