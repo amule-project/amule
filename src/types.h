@@ -40,6 +40,10 @@ typedef int64_t		sint64;
 typedef uint8_t		uchar;
 typedef uint8_t		BYTE;
 
+#if !defined(__cplusplus)
+	typedef int bool;
+#endif
+
 #ifdef __WXMSW__
 	#include <windef.h>
 	#include <wingdi.h>
