@@ -2230,9 +2230,6 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		AddLogLineM(true, wxString::Format(_("WARNING: Failed to delete %s.seeds\n"), unicode2char(m_partmetfilename)));
 	}	
 
-	theApp.downloadqueue->SetCompletedFilesExist();
-	Notify_0_ValEvent(DLOAD_UPDATE_COMPLETED);
-	
 	AddLogLineM(true, wxString::Format(_("Finished downloading %s :-)"), unicode2char(GetFileName())));
 	Notify_ShowNotifier(wxString(_("Downloaded:"))+wxT("\n")+GetFileName(), TBN_DLOAD, 0);
 }

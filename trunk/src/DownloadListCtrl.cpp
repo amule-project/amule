@@ -1033,7 +1033,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable( MP_PAUSE,				fileReady && fileReady2 );
 			menu->Enable( MP_STOP,				fileReady && fileReady2 );
 			menu->Enable( MP_RESUME, 			( file->GetStatus() == PS_PAUSED ) );
-			menu->Enable( MP_CLEARCOMPLETED,	theApp.downloadqueue->CompletedFilesExist() );
 
 			wxString view;
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
@@ -1904,9 +1903,6 @@ void CDownloadListCtrl::ClearCompleted()
 			}
 		}
 	}
-	
-	theApp.downloadqueue->UnsetCompletedFilesExist();
-	Notify_0_ValEvent(DLOAD_UPDATE_COMPLETED);
 }
 
 
