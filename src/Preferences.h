@@ -269,6 +269,7 @@ public:
 	
 	// Kry - Ip filter On/Off
 	static bool GetIPFilterOn() { return s_IPFilterOn; }
+	static void SetIPFilterOn(bool val) { s_IPFilterOn = val; }
 
 	// Kry - Source seeds On/Off
 	static bool GetSrcSeedsOn() { return s_UseSrcSeeds; }

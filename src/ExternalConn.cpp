@@ -32,7 +32,7 @@
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ED2KLink.h"		// Needed for CED2KLink
-#include "server.h"			// Needed for CServer
+#include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
@@ -45,8 +45,10 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "SearchList.h"		// Needed for GetWebList
+#include "IPFilter.h"		// Needed for CIPFilter
+#include "ClientList.h"
 
 //ExternalConn: listening server using wxSockets
 enum
@@ -943,37 +945,52 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		
 		if (item == wxT("CONNSTAT")) {
-					if (theApp.serverconnect->IsConnected()) {
-						return wxT("Connected");
-					//Start - Added by shakraw
-					} else if (theApp.serverconnect->IsConnecting()) {
-						return wxT("Connecting");
-					//End
-					} else {
-						return wxT("Not Connected");
-					}
+			if (theApp.serverconnect->IsConnected()) {
+				return wxT("Connected");
+			//Start - Added by shakraw
+			} else if (theApp.serverconnect->IsConnecting()) {
+				return wxT("Connecting");
+			//End
+			} else {
+				return wxT("Not Connected");
+			}
 		}
 
 		if (item == wxT("RECONN")) { //shakraw, should be replaced by SERVER CONNECT [ip] below?
-					if (theApp.serverconnect->IsConnected()) {
-						return wxT("Already Connected");
-					} else {
-						theApp.serverconnect->ConnectToAnyServer();
-						theApp.amuledlg->ShowConnectionState(false);
-						return wxT("Reconected");
-					}
+			if (theApp.serverconnect->IsConnected()) {
+				return wxT("Already Connected");
+			} else {
+				theApp.serverconnect->ConnectToAnyServer();
+				theApp.amuledlg->ShowConnectionState(false);
+				return wxT("Reconected");
+			}
 		}
 
 		if (item == wxT("DISCONN")) {
-					if (theApp.serverconnect->IsConnected()) {
-						theApp.serverconnect->Disconnect();
-						theApp.OnlineSig(); // Added By Bouc7
-						return wxT("Disconnected");
-					} else {
-						return wxT("Already conected");
-					}
+			if (theApp.serverconnect->IsConnected()) {
+				theApp.serverconnect->Disconnect();
+				theApp.OnlineSig(); // Added By Bouc7
+				return wxT("Disconnected");
+			} else {
+				return wxT("Already conected");
+			}
 		}
 		
+		if (item == wxT("RELOADIPF")) {
+			theApp.ipfilter->Reload();
+			return("IPFilter Reloaded");
+		}
+		
+		if (item.Left(12) == wxT("SET IPFILTER")) {
+			wxString param = item.Mid(13).Strip(wxString::both).MakeLower();
+			theApp.glob_prefs->SetIPFilterOn(param == wxT("on"));
+			if (theApp.glob_prefs->GetIPFilterOn()) {
+				theApp.clientlist->FilterQueues();
+			}
+			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
+			AddLogLineM(true, msg);
+			return unicode2char(msg);
+		}
 		
 		if (item.Left(5).Cmp( wxT("PAUSE"))==0) { 
 			if (item.Mid(5).IsNumber()) {
@@ -993,10 +1010,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				int fileID2 =theApp.downloadqueue->GetFileCount() - StrToLong(item.Mid(6));
 				if ((fileID2 >= 0) && (fileID2 < theApp.downloadqueue->GetFileCount())) {
 					if (theApp.downloadqueue->GetFileByIndex(fileID2)->IsPartFile()) {
-							theApp.downloadqueue->GetFileByIndex(fileID2)->ResumeFile();
-							theApp.downloadqueue->GetFileByIndex(fileID2)->SavePartFile();
-							printf("Resumed\n");
-							return(theApp.amuledlg->transferwnd->downloadlistctrl->getTextList());
+						theApp.downloadqueue->GetFileByIndex(fileID2)->ResumeFile();
+						theApp.downloadqueue->GetFileByIndex(fileID2)->SavePartFile();
+						printf("Resumed\n");
+						return(theApp.amuledlg->transferwnd->downloadlistctrl->getTextList());
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");				
 			} else return wxT("Not a number");

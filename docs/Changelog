@@ -1,8 +1,8 @@
 Version 2.0.0rc6 - The '???' version.
 ----------
 2004-0?-??
-        Hetfield:
-                * Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
+	Hetfield:
+		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
 		  and wx headers checks.
 
 	phoenix:
@@ -15,6 +15,17 @@ Version 2.0.0rc6 - The '???' version.
 		* wxCHECK_VERSION(2,5,0) no longer necessary in
 		  amule{web,cmd} for wxApp because we have now -DwxUSE_GUI=0.
 		* New command line parameter in amulecmd: -pw or --password.
+		* New commands in amulecmd: serverconnect, reloadipf and
+		  setipfilter. Thanks rommel for the initial patch.
+		* Fixed amulecmd command parser. Help was not coherent and
+		  giving syntar errors.
+		* Rewrote command parser/processor im amulecmd to use
+		  wxStrings.
+		* Some i18n stuff in amulecmd.
+
+	rommel:
+		* Patch to implement the commands serverconnect and reloadipf
+		  in amulecmd.
 
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
