@@ -245,6 +245,7 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		wxASSERT( tag->tag.type == 3 );
 		if (tag->tag.type == 3)			
 			m_uLowIDUsers = tag->tag.intvalue;
+		delete tag;
 		break;	
 	default:
 		if (tag->tag.specialtag){
