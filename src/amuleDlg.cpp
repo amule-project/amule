@@ -289,7 +289,7 @@ public:
 		Centre();
 	};
 protected:
-	void OnOk(wxCommandEvent& evt) { EndModal(0); };
+	void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };
 	DECLARE_EVENT_TABLE();
 };
 
@@ -338,7 +338,7 @@ void CamuleDlg::RemoveSystray()
 
 
 extern void TimerProc();
-void CamuleDlg::OnUQTimer(wxTimerEvent& evt)
+void CamuleDlg::OnUQTimer(wxTimerEvent& WXUNUSED(evt))
 {
 	if( IsRunning() ) {
 		TimerProc();
@@ -402,7 +402,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 }
 
 
-void CamuleDlg::OnPrefButton(wxCommandEvent& ev)
+void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
 		prefsunifiedwnd->ShowModal();
@@ -533,7 +533,7 @@ CamuleDlg::~CamuleDlg()
 }
 
 
-void CamuleDlg::OnBnConnect(wxCommandEvent& evt)
+void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
 		//connect if not currently connected
@@ -770,7 +770,7 @@ void CamuleDlg::ShowTransferRate()
 }
 
 
-void CamuleDlg::OnHashingShutdown(wxCommandEvent& evt)
+void CamuleDlg::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
 		printf("Hashing thread ended\n");
@@ -891,7 +891,7 @@ void CamuleDlg::ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF)
 //END - enkeyDEV(kei-kun) -TaskbarNotifier-
 
 
-void CamuleDlg::OnUDPTimer(wxTimerEvent& evt)
+void CamuleDlg::OnUDPTimer(wxTimerEvent& WXUNUSED(evt))
 {
 	if( IsRunning() ) {
 		theApp.serverlist->SendNextPacket();
@@ -899,7 +899,7 @@ void CamuleDlg::OnUDPTimer(wxTimerEvent& evt)
 }
 
 
-void CamuleDlg::OnSocketTimer(wxTimerEvent& evt)
+void CamuleDlg::OnSocketTimer(wxTimerEvent& WXUNUSED(evt))
 {
 	if(!IsRunning()) {
 		return;
@@ -914,7 +914,7 @@ void CamuleDlg::OnSocketTimer(wxTimerEvent& evt)
 }
 
 
-void CamuleDlg::OnBnClickedFast(wxCommandEvent& evt)
+void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
 		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT(_("You are not connected to a server!")), wxT(_("Not Connected")), wxOK|wxICON_INFORMATION);
@@ -1088,7 +1088,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 }
 
 
-void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
+void CamuleDlg::OnMinimize(wxIconizeEvent& WXUNUSED(evt))
 {
 #ifndef __SYSTRAY_DISABLED__
 	if (theApp.amuledlg->IsIconized()) {
@@ -1108,7 +1108,7 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 }
 
 
-void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent &event)
+void CamuleDlg::OnBnClickedPrefOk(wxCommandEvent& WXUNUSED(event))
 {
 	prefsunifiedwnd->EndModal(TRUE);
 }
