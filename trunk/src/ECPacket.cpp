@@ -36,7 +36,10 @@
  * @param name	 TAG name
  * @param length length of data buffer
  * @param data	 TAG data
- * @param copy	 whether to create a copy of the TAG data at *data, or should use the provided pointer.
+ * @param copy	 whether to create a copy of the TAG data at \e *data, or should use the provided pointer.
+ *
+ * \note When you set \e copy to \b false, the provided data buffer must exist
+ * in the whole lifetime of the packet.
  */
 CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy) : m_tagName(name), m_dynamic(copy)
 {
@@ -149,8 +152,45 @@ CECTag::~CECTag(void)
 /**
  * Add a child tag to this one.
  *
- * @param tag CECTag to add.
- * @return true on succcess, false when an error occured
+ * Be very careful that this creates a copy of \e tag. Thus, the following code won't work as expected:
+ * \code
+ * {
+ *	CECPacket *p = new CECPacket(whatever);
+ *	CECTag *t1 = new CECTag(whatever);
+ *	CECTag *t2 = new CECTag(whatever);
+ *	p.AddTag(*t1);
+ *	t1.AddTag(*t2);	// t2 won't be part of p !!!
+ * }
+ * \endcode
+ *
+ * To get the desired results, the above should be replaced with something like:
+ *
+ * \code
+ * {
+ *	CECPacket *p = new CECPacket(whatever);
+ *	CECTag *t1 = new CECTag(whatever);
+ *	CECTag *t2 = new CECTag(whatever);
+ *	t1.AddTag(*t2);
+ *	delete t2;	// we can safely delete t2 here, because t1 holds a copy
+ *	p.AddTag(*t1);
+ *	delete t1;	// now p holds a copy of both t1 and t2
+ * }
+ * \endcode
+ *
+ * Then why copying? The answer is to enable simplifying the code like this:
+ *
+ * \code
+ * {
+ *	CECPacket *p = new CECPacket(whatever);
+ *	CECTag *t1 = new CECTag(whatever);
+ *	t1.AddTag(CECTag(whatever));	// t2 is now created on-the-fly
+ *	p.AddTag(*t1);
+ *	delete t1;	// now p holds a copy of both t1 and t2
+ * }
+ * \endcode
+ *
+ * @param tag a CECTag class instance to add.
+ * @return \b true on succcess, \b false when an error occured
  */
 bool CECTag::AddTag(const CECTag& tag)
 {
@@ -195,19 +235,22 @@ bool CECTag::AddTag(const CECTag& tag)
 CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 {
 	ec_taglen_t tagLen;
+	ec_tagname_t tmp_tagName;
 
 	m_listSize = m_tagCount = 0;
 	m_tagData = NULL;
 	m_dataLen = 0;
-	if (!socket.ReadNumber(sock, &m_tagName, sizeof(ec_tagname_t))) {
+	if (!socket.ReadNumber(sock, &tmp_tagName, sizeof(ec_tagname_t))) {
 		m_error = 2;
+		m_tagName = 0;
 		return;
 	}
+	m_tagName = tmp_tagName & 0x7fff;
 	if (!socket.ReadNumber(sock, &tagLen, sizeof(ec_taglen_t))) {
 		m_error = 2;
 		return;
 	}
-	if (HasTagCount(m_tagName)) {
+	if (tmp_tagName > 0x7fff) {
 		if (!ReadChildren(sock, socket)) {
 			return;
 		}
@@ -234,9 +277,11 @@ CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 bool CECTag::WriteTag(wxSocketBase *sock, ECSocket& socket) const
 {
 	ec_taglen_t tagLen = GetTagLen();
-	if (!socket.WriteNumber(sock, &m_tagName, sizeof(ec_tagname_t))) return false;
+	ec_tagname_t tmp_tagName = (m_tagCount > 0) ? m_tagName | 0x8000 : m_tagName;
+	
+	if (!socket.WriteNumber(sock, &tmp_tagName, sizeof(ec_tagname_t))) return false;
 	if (!socket.WriteNumber(sock, &tagLen, sizeof(ec_taglen_t))) return false;
-	if (HasTagCount(m_tagName)) {
+	if (tmp_tagName > 0x7fff) {
 		if (!WriteChildren(sock, socket)) return false;
 	}
 	if (m_dataLen > 0) {
@@ -318,14 +363,14 @@ CECTag *CECTag::GetTagByName(ec_tagname_t name) const
  * Query TAG length that is suitable for the TAGLEN field (i.e.\ 
  * without it's own header size).
  *
- *
+ * @return Tag length, containing its childs' length.
  */
 uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
 	for (int i=0; i<m_tagCount; i++) {
 		length += (*m_tagList)[i]->GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (HasTagCount((*m_tagList)[i]->GetTagName()) ? 2 : 0);
+		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (((*m_tagList)[i]->GetTagCount() > 0) ? 2 : 0);
 	}
 	return length;
 }
@@ -335,7 +380,7 @@ uint32 CECTag::GetTagLen(void) const
  *
  * \brief Finds the indexth child tag.
  *
- * \param index 0-based index, 0 <= index < GetTagCount()
+ * \param index 0-based index, 0 <= \e index < GetTagCount()
  *
  * \return The child tag, or NULL if index out of range.
  */
@@ -380,13 +425,13 @@ uint32 CECTag::GetTagLen(void) const
  * Returns a wxString created from TAGDATA. It is automatically
  * converted from UTF-8 to the internal application encoding.
  * Should be used with care (only on tags created with the
- * CECTag(const ec_tagname_t, const wxString&) constructor),
+ * CECTag(ec_tagname_t, const wxString&) constructor),
  * becuse it does not perform any check to see if the tag really contains a
  * string object.
  *
  * \return The string data of the tag.
  *
- * \sa CECTag(const ec_tagname_t, const wxString&)
+ * \sa CECTag(ec_tagname_t, const wxString&)
  */
 
 
