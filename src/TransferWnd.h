@@ -26,6 +26,7 @@
 #include <wx/listctrl.h>	// Needed for wxListCtrl
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/notebook.h>	// Needed for wxNotebookEvent
+#include <wx/splitter.h>		// Needed for wxSplitterEvent
 
 #include "types.h"		// Needed for uint32
 #include "resource.h"		// Needed for IDD_TRANSFER
