@@ -131,16 +131,15 @@ void ExternalConn::OnAuthEvent(wxSocketEvent& event) {
 
 			// Which command are we going to run?
 			wxChar *buf = new wxChar[1024];
-  			size_t len;
+			uint16 len;
 			
-			sock->Read(&len, sizeof(size_t));
+			sock->Read(&len, sizeof(uint16));
 			sock->ReadMsg(buf, len);
-
 			wxString response = Authenticate(wxString(buf));
 			delete[] buf;
 
 			len=(wxString(response).Length() + 1) * sizeof(wxChar);
-			sock->Write(&len, sizeof(size_t));
+			sock->Write(&len, sizeof(uint16));
 			sock->WriteMsg(response.c_str(), len);
   			
 			if (response=="Authenticated") {
@@ -179,14 +178,14 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 
 			// Which command are we going to run?
 			wxChar *buf = new wxChar[1024];
-  			size_t len;
+  			uint16 len;
 			
-			sock->Read(&len, sizeof(size_t));
+			sock->Read(&len, sizeof(uint16));
 			sock->ReadMsg(buf, len);
 
 			wxString response = ProcessRequest(wxString(buf));
 			len=(wxString(response).Length() + 1) * sizeof(wxChar);
-			sock->Write(&len, sizeof(size_t));
+			sock->Write(&len, sizeof(uint16));
 			sock->WriteMsg(response.c_str(), len);
   			delete[] buf;
 			
@@ -383,6 +382,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if (item.Left(15) == "PREFS GETWSPASS") {
 			wxString pwdHash = item.Mid(16);
+printf("pwdHash: %s\n", pwdHash.GetData());
+printf("pwdHash: %s\n", theApp.glob_prefs->GetWSPass().GetData());			
 			if (pwdHash == theApp.glob_prefs->GetWSPass()) {
 				theApp.amuledlg->AddLogLine(false, "Webserver-Admin-Login");
 				return("AdminLogin");
