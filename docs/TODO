@@ -68,6 +68,9 @@
 	- Fix amule{web,cmd}DLG
 	- add new amule's images for web interface (low)
 	
+- stefanero:
+	- try to kill creteil and shut down EFnet amule ;)
+
 - hellimod:
 	- Check little/big endian access to mem/files that must be fixed.
 
