@@ -315,7 +315,7 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
 			catmenu->Append( MP_CAT_SET0 + 13, _("Pictures") );
 			catmenu->Append( MP_CAT_SET0 + 14, _("Text") );
 			
-			m_menu->Append(-1, _("Select view filter"), catmenu);
+			m_menu->Append(0, _("Select view filter"), catmenu);
 		}
 
 		m_menu->Append( MP_CAT_ADD, _("Add category") );
