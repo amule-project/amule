@@ -2357,6 +2357,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 		printf("ListenSocket: Ok.\n");
 	} else {
 		AddLogLineM(true,_("Error: Could not listen to TCP port.\n"));
+		printf("ListenSocket: Could not listen to TCP port.\n");
 	}
 }
 
