@@ -6,7 +6,7 @@ dnl ----------------------------------------------------
 AC_DEFUN([CHECK_WX_BUILT_WITH_GTK2],
 [
   AC_MSG_CHECKING(if wxWidgets was linked with GTK2)
-  if $WX_CONFIG_NAME --cppflags | grep -q 'gtk2' ; then
+  if $WX_CONFIG_WITH_ARGS --cppflags | grep -q 'gtk2' ; then
      GTK_USEDVERSION=2
      AC_MSG_RESULT(yes)
   else
@@ -24,7 +24,7 @@ dnl ----------------------------------------------------
 AC_DEFUN([CHECK_WX_PARTIAL_VERSION],
 [
   AC_MSG_CHECKING(if wxWidgets version >=2.5.0 )
-  if $WX_CONFIG_NAME --version | grep -q '2.5' ; then
+  if $WX_CONFIG_WITH_ARGS --version | grep -q '2.5' ; then
      WX_PARTIAL_VERSION=5
      AC_MSG_RESULT(yes)
   else
@@ -40,7 +40,7 @@ dnl ----------------------------------------------------
 
 AC_DEFUN([GET_WXGTK_VERSION],
 [
-  WXGTK_VERSION=`$WX_CONFIG_NAME --version`
+  WXGTK_VERSION=`$WX_CONFIG_WITH_ARGS --version`
   AC_SUBST(WXGTK_VERSION)
 ])
 
