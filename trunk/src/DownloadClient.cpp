@@ -505,7 +505,7 @@ bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 		return false;
 	}
 	m_OtherRequests_list.AddTail(file);
-	file->A4AFsrclist.AddTail(this); // [enkeyDEV(Ottavio84) -A4AF-] 
+	file->A4AFsrclist.insert(this); // [enkeyDEV(Ottavio84) -A4AF-] 
 	return true;
 }
 
@@ -1142,21 +1142,17 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 {
 	if (m_reqfile) {
 		// Dirty fix. Why is m_reqfile NULL?
-		POSITION pos = m_reqfile->m_SrcList.Find(this);
-		if(pos)	{
+		if ( m_reqfile->m_SrcList.erase( this ) ) {
 			// remove this client from the A4AF list of our new m_reqfile
-			POSITION pos2 = SwapTo->A4AFsrclist.Find(this);
-			if (pos2) {
-				SwapTo->A4AFsrclist.RemoveAt(pos2);
+			if ( SwapTo->A4AFsrclist.erase( this ) ) {
 				theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(this,SwapTo);
 			}
 
-			m_reqfile->m_SrcList.RemoveAt(pos);
 			m_reqfile->IsCountDirty = true;
 			m_reqfile->RemoveDownloadingSource(this);
 
 			if(!bRemoveCompletely) {
-				m_reqfile->A4AFsrclist.AddTail(this);
+				m_reqfile->A4AFsrclist.insert(this);
 				if (GetDownloadState() == DS_NONEEDEDPARTS) {
 					m_OtherNoNeeded_list.AddTail(m_reqfile);
 				} else {
@@ -1175,7 +1171,7 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			m_reqfile->UpdateAvailablePartsCount();
 			SetRequestFile( SwapTo );
 
-			SwapTo->m_SrcList.AddTail(this);
+			SwapTo->m_SrcList.insert(this);
 			SwapTo->IsCountDirty = true;
 			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
 

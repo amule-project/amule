@@ -29,8 +29,8 @@
 
 #include "otherstructs.h"	// Needed for Gap_Struct
 
+#include <set>
 #include <list>
-#include <algorithm>
 
 class CSearchFile;
 class CUpDownClient;
@@ -109,8 +109,8 @@ public:
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
 	uint32	GetTransfered() const		{ return transfered; }
 	const wxString& GetFullName() const	{ return m_fullname; }
-	uint16	GetSourceCount() const		{ return m_SrcList.GetCount(); }
-	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.GetCount(); }
+	uint16	GetSourceCount() const		{ return m_SrcList.size(); }
+	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.size(); }
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	float	GetPercentCompleted() const	{ return percentcompleted; }
@@ -178,7 +178,6 @@ public:
 
 	CFile	m_hpartfile;	//permanent opened handle to avoid write conflicts
 	volatile bool m_bPreviewing;
-	CTypedPtrList<CPtrList, CUpDownClient*> A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
 	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
 	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
@@ -248,7 +247,9 @@ private:
 	DWORD	m_LastSourceDropTime;
 
 public:
-	CTypedPtrList<CPtrList, CUpDownClient*> m_SrcList;
+	typedef std::set<CUpDownClient*> SourceSet;
+	SourceSet m_SrcList;
+	SourceSet A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
 	
 	// Kry - Avoid counting again and again (mayor cpu leak)
 	bool	IsCountDirty;

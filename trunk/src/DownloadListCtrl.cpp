@@ -1469,8 +1469,9 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					{
 						theApp.downloadqueue->DisableAllA4AFAuto();
 
-						for (POSITION pos = file->A4AFsrclist.GetHeadPosition(); pos != NULL;) {
-							CUpDownClient *cur_source = file->A4AFsrclist.GetNext(pos);
+						CPartFile::SourceSet::iterator it;
+						for ( it = file->A4AFsrclist.begin(); it != file->A4AFsrclist.end(); ) {
+							CUpDownClient *cur_source = *it++;
 							if (cur_source->GetDownloadState() != DS_DOWNLOADING
 							&& cur_source->GetRequestFile()
 							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS)
@@ -1499,8 +1500,9 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					&& (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 						theApp.downloadqueue->DisableAllA4AFAuto();
 
-						for(POSITION pos = file->m_SrcList.GetHeadPosition(); pos != NULL;) {
-							file->m_SrcList.GetNext(pos)->SwapToAnotherFile(false, false, false, NULL);
+						CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
+						for( ; it != file->m_SrcList.end(); ++it ) {
+							(*it)->SwapToAnotherFile(false, false, false, NULL);
 						}
 					}
 					Thaw();
