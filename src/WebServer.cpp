@@ -2092,13 +2092,13 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	while (i != m_SearchInfo.GetEndIterator()) {
 		wxString line = m_Templates.sSearchResultLine;
 		if ( i->bPresent ) {
-			line.Replace("[FILENAME]", wxT("<font color=\"#00FF00\">") + i->sFileName + wxT("</font>"));
+			line.Replace(wxT("[FILENAME]"), wxT("<font color=\"#00FF00\">") + i->sFileName + wxT("</font>"));
 		} else {
-			line.Replace("[FILENAME]", i->sFileName);
+			line.Replace(wxT("[FILENAME]"), i->sFileName);
 		}
-		line.Replace("[FILESIZE]", CastItoXBytes(i->lFileSize));
-		line.Replace("[SOURCECOUNT]", wxString::Format(wxT("%u"), i->lSourceCount));
-		line.Replace("[FILEHASH]", i->nHash.Encode());
+		line.Replace(wxT("[FILESIZE]"), CastItoXBytes(i->lFileSize));
+		line.Replace(wxT("[SOURCECOUNT]"), wxString::Format(wxT("%u"), i->lSourceCount));
+		line.Replace(wxT("[FILEHASH]"), i->nHash.Encode());
 		
 		result += line;
 		i++;

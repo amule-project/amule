@@ -23,7 +23,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	
 	Hetfield:
 		* New popup menu and events management for new wx SysTray
-	
+
 	Kry:
 		* New SysTray Core written in wxWidgets (portable and transparent icon)
 
@@ -31,6 +31,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
 		processing of OP_COMPRESSEDPART.
+		* More UNICODE fixes.
 
 --------------------------------------------------------------------------------
 
