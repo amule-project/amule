@@ -34,101 +34,65 @@
 #include "types.h"		// Needed for uint16 and uint32
 #include "resource.h"		// Needed for IDD_SEARCH
 #include "CString.h"		// Needed for CString
+#include "server.h"			// Needed for CServer
 
+#include <set>
+
+class CMuleNotebook;
 class CSearchListCtrl;
 class CMuleNotebookEvent;
 class Packet;
 
-// CSearchDlg dialog
-class CSearchDlg : public wxPanel {
-DECLARE_DYNAMIC_CLASS(CSearchDlg)
-public:
-	CSearchDlg() {};                 // dummy constructor
-	CSearchDlg(wxWindow* pParent);   // standard constructor
-	virtual ~CSearchDlg();           // destructor
 
-	// public methods
+class CSearchDlg : public wxPanel {
+public:
+	enum { IDD = IDD_SEARCH };
+	
+	CSearchDlg(wxWindow* pParent);   
+	~CSearchDlg() {};
+
 	uint8		GetCatChoice();
 	void		DeleteAllSearchs();
 	void		ToggleLinksHandler();
-	bool  		CheckTabNameExists(wxString searchString);
-	void  		CreateNewTab(wxString searchString,uint32 nSearchID);
+	bool		CheckTabNameExists(wxString searchString);
+	void		CreateNewTab(wxString searchString, uint32 nSearchID);
 	void		DeleteSearch(uint16 nSearchID);
 	void		LocalSearchEnd(uint16 count);
 	void		UpdateCatChoice();
-	void		AddUDPResult(uint16 count);
 
-	enum { IDD = IDD_SEARCH };
+	// Event handlers
+	void		OnBnClickedStarts(wxCommandEvent& evt);
+	void		OnBnClickedSdownload(wxCommandEvent& ev);
+	void		OnBnClickedCancels(wxCommandEvent& evt);
 
-	// public member variables
-	CSearchListCtrl* searchlistctrl;
+	void		OnPopupClose(wxCommandEvent& evt);
+	void		OnPopupCloseAll(wxCommandEvent& evt);
+	void		OnPopupCloseOthers(wxCommandEvent& evt);
 
-	// event handlers
-	void 		OnBnClickedStarts(wxCommandEvent& evt);
-	void 		OnBnClickedSdownload(wxCommandEvent& ev);
-	void 		OnBnClickedCancels(wxCommandEvent& evt);
+	CMuleNotebook*	notebook;
 private:
-	// event handlers
-	void 		OnFieldsChange(wxCommandEvent& evt);
-	void 		OnTimer(wxTimerEvent &evt);
-	void 		OnListItemSelected(wxListEvent& ev);
-	void 		OnBnClickedSearchReset(wxCommandEvent& ev);
-	void 		OnBnClickedClearall(wxCommandEvent& ev);
-	void 		OnRMButton(wxMouseEvent& evt);
+	// Event handlers
+	void		OnFieldsChange(wxCommandEvent& evt);
+	void		OnTimer(wxTimerEvent &evt);
+	void		OnListItemSelected(wxListEvent& ev);
+	void		OnBnClickedSearchReset(wxCommandEvent& ev);
+	void		OnBnClickedClearall(wxCommandEvent& ev);
+	void		OnRMButton(wxMouseEvent& evt);
 
-	// private methods
-	void 		StartNewSearch();
-	wxString	CreateWebQuery();
-	void 		OnSearchClosed(wxNotebookEvent& evt);
-	void 		DirectDownload(wxCommandEvent &event);
-	void		DownloadSelected();
-	bool		GetGlobSearchStatus() {return globsearch;}
-	virtual bool 	ProcessEvent(wxEvent& evt);
+	void		StartNewSearch();
+	void		OnSearchClosed(wxNotebookEvent& evt);
+	void		DirectDownload(wxCommandEvent &event);
 
-	// private member variables
 	Packet*		searchpacket;
-	unsigned int*	global_search_timer;
-	wxGauge* 	searchprogress;
+	wxGauge*	progressbar;
 	bool		canceld;
-	bool		globsearch;
-	uint16		servercount;
-	uint16		m_nSearchID;
-	wxComboBox	typebox;
-	wxComboBox	Stypebox;
-	wxTimer 	m_timer;
-	wxStaticBitmap	m_ctrlSearchFrm;
-	wxStaticBitmap	m_ctrlWebSearchFrm;
-	wxStaticBitmap	m_ctrlDirectDlFrm;
+	bool		globalsearch;
+	wxTimer		m_timer;	
 
+	// Used to keep track of the servers we have sent UDP packet to
+	std::set<CServer*> askedlist;
+	
 	DECLARE_EVENT_TABLE()
 };
 
-// ESearchType
-enum ESearchType
-{
-	//NOTE: The numbers are *equal* to the entries in the comboxbox -> TODO: use item data
-	SearchTypeServer = 0,
-	SearchTypeGlobal,
-	SearchTypeJigleSOAP,
-	SearchTypeJigle,
-	SearchTypeFileDonkey
-};
-
-// SSearchParams
-struct SSearchParams
-{
-	SSearchParams(void) : dwSearchID((DWORD)-1), eType(SearchTypeServer),
-	                      ulMinSize(0), ulMaxSize(0), iAvailability(-1) { }
-	DWORD dwSearchID;
-	CString strExpression;
-	ESearchType eType;
-	CString strFileType;
-	CString strMinSize;
-	wxUint32 ulMinSize;
-	CString strMaxSize;
-	wxUint32 ulMaxSize;
-	int iAvailability;
-	CString strExtension;
-	bool bMatchKeywords;
-};
 #endif // SEARCHDLG_H
