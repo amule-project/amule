@@ -337,7 +337,7 @@ EVT_CHECKBOX (ID_FTP_UPDATE_CHECK, WxCasPrefs::OnFtpUpdateCheck)
 END_EVENT_TABLE ()
 
 // Browse for OS Path
-void WxCasPrefs::OnOSPathBrowseButton (wxCommandEvent & event)
+void WxCasPrefs::OnOSPathBrowseButton (wxCommandEvent& WXUNUSED(event))
 {
   const wxString & dir =
     wxDirSelector (_("Folder containing your signature file"),
@@ -351,7 +351,7 @@ void WxCasPrefs::OnOSPathBrowseButton (wxCommandEvent & event)
 
 // Browse for stat image Path
 void
-WxCasPrefs::OnAutoStatImgBrowseButton (wxCommandEvent & event)
+WxCasPrefs::OnAutoStatImgBrowseButton (wxCommandEvent& WXUNUSED(event))
 {
   const wxString & dir =
     wxDirSelector (_("Folder where generating the statistic image"),
@@ -365,7 +365,7 @@ WxCasPrefs::OnAutoStatImgBrowseButton (wxCommandEvent & event)
 
 // Auto Generate Stat Image Check Button
 void
-WxCasPrefs::OnAutoStatImgCheck (wxCommandEvent & event)
+WxCasPrefs::OnAutoStatImgCheck (wxCommandEvent& WXUNUSED(event))
 {
   if (m_autoStatImgCheck->GetValue ())
     {
@@ -388,7 +388,7 @@ WxCasPrefs::OnAutoStatImgCheck (wxCommandEvent & event)
 
 // Ftp update Check Button
 void
-WxCasPrefs::OnFtpUpdateCheck (wxCommandEvent & event)
+WxCasPrefs::OnFtpUpdateCheck (wxCommandEvent& WXUNUSED(event))
 {
   if (m_ftpUpdateCheck->GetValue ())
     {
@@ -401,7 +401,7 @@ WxCasPrefs::OnFtpUpdateCheck (wxCommandEvent & event)
 }
 // Validate Prefs
 void
-WxCasPrefs::OnValidateButton (wxCommandEvent & event)
+WxCasPrefs::OnValidateButton (wxCommandEvent& WXUNUSED(event))
 {
   // Prefs
   wxConfigBase * prefs = wxConfigBase::Get();
