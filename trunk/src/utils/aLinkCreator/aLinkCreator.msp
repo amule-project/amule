@@ -96,8 +96,8 @@ extraResourceOptions=
 1=alc.rc
 [Other]
 1=alc.desktop
+2=Makefile.am
+3=src\Makefile.am
 [History]
-src\alchash.h,448
-src\alchash.cpp,1461
-src\alcframe.h,181
-src\alcframe.cpp,5571
+src\md4.cpp,696
+src\alcframe.cpp,7772

@@ -7,10 +7,15 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
+/// Copyright (C) 2004 by Madcat
+///
 /// Copyright (C) 2002, 2003, 2004 by Michael Buesch
 /// Email: mbuesch@freenet.de
 ///
-/// Copyright (C) 2001 Nikos Mavroyanopoulos
+/// The algorithm is due to Ron Rivest.  This code is based on code
+/// written by Colin Plumb in 1993.
+///
+/// This code implements the MD4 message-digest algorithm.
 ///
 /// Pixmaps from http://www.everaldo.com and http://www.amule.org
 ///
@@ -30,8 +35,8 @@
 /// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MD4_H
-#define MD4_H
+#ifndef _MD4_H
+#define _MD4_H
 
 #ifdef __GNUG__
 #pragma interface "md4.h"
@@ -44,11 +49,10 @@
 
 #include <stdint.h> // needed for uint32_t
 
-#define MD4_HASHLEN_BYTE	(128 / 8)
-
 class MD4
   {
   private:
+
     struct MD4Context
       {
         uint32_t buf[4];
@@ -59,28 +63,46 @@ class MD4
     wxString charToHex(const char *buf, unsigned int len);
     unsigned int calcBufSize(size_t filesize);
 
-  public:
-    MD4()
-    {}
-    virtual ~MD4()
-    {}
-    static bool selfTest();
-
-    wxString calcMd4FromString(const wxString &buf);
-    wxString calcMd4FromFile(const wxString &filename);
-
   protected:
+
+    static const unsigned int MD4_HASHLEN_BYTE;
+    static const unsigned int BUFSIZE;
+    static const unsigned int PARTSIZE;
+
     void MD4Init(struct MD4Context *context);
     void MD4Update(struct MD4Context *context,
                    unsigned char const *buf, unsigned len);
     void MD4Final(struct MD4Context *context,
                   unsigned char *digest);
     void MD4Transform(uint32_t buf[4], uint32_t const in[16]);
+
+    // Needed to reverse byte order on BIG ENDIAN machines
 #if wxBYTE_ORDER == wxBIG_ENDIAN
 
     void byteReverse(unsigned char *buf, unsigned longs);
 #endif
 
+  public:
+
+    /// Constructor
+    MD4()
+    {}
+
+    /// Desstructor
+    virtual ~MD4()
+    {}
+
+    /// Algorithm verification
+    static bool selfTest();
+
+    /// Get Md4 hash from a string
+    wxString calcMd4FromString(const wxString &buf);
+
+    /// Get Md4 hash from a file
+    wxString calcMd4FromFile(const wxString &filename);
+
+    /// Get Ed2k hash from a file
+    wxString calcEd2kFromFile(const wxString &filename);
   };
 
-#endif
+#endif /* _MD4_H */
