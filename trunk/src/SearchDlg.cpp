@@ -286,7 +286,11 @@ void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
  	if (globalsearch) {
 		theApp.searchlist->searchthread->Delete();
  	}
+	ResetControls();
+}
 
+void CSearchDlg::ResetControls()
+{
 	progressbar->SetValue(0);
 
 	FindWindow(IDC_CANCELS)->Disable();
@@ -297,8 +301,7 @@ void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
 {
 	if (!canceld) {
 		if (!globalsearch) {
-			FindWindow(IDC_CANCELS)->Disable();
-			FindWindow(IDC_STARTS)->Enable();
+			ResetControls();
 		}
 	}
 }
