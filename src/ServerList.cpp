@@ -757,9 +757,7 @@ bool CServerList::SaveServermetToFile()
 	
 		for (uint32 j = 0; j != fservercount; ++j){
 			nextserver = this->GetServerAt(j);
-			// Somehow, internally we store it the wrong way.
-			//sbuffer.ip = ENDIAN_SWAP_32(nextserver->GetIP());
-			sbuffer.ip = nextserver->GetIP();
+			sbuffer.ip = ENDIAN_SWAP_32(nextserver->GetIP());
 			sbuffer.port = ENDIAN_SWAP_16(nextserver->GetPort());
 			uint16 tagcount = 12;
 			if (!nextserver->GetListName().IsEmpty()) 
