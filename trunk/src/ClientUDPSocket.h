@@ -56,6 +56,7 @@ protected:
  public:
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
+	void ReceiveAndDiscard(); 
 private:
 	void	ClearQueues();	
 	bool	SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort);
