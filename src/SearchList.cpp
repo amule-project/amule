@@ -55,7 +55,7 @@ static CSearchListCtrl* GetSearchListControl(long nSearchID)
 
 	nb->m_LockTabs.Lock();
 
-	for (int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
+	for (unsigned int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
 		if(nb->GetUserData(tabCounter)==nSearchID) {
 			return (CSearchListCtrl*)(nb->GetPage(tabCounter));
 		}
@@ -398,7 +398,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, uint
 		theApp.mmserver->SearchFinished(false);
 	m_MobilMuleSearch = false;*/
 	packet->Close();
-    delete packet;
+	delete packet;
 	return GetResultCount();
 }
 
@@ -565,7 +565,7 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 cat) {
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
 		CSearchFile* sf=list.GetNext(pos);
 		if (hash == sf->GetFileHash()) {
-			theApp.downloadqueue->AddSearchToDownload(sf, cat);
+			CoreNotify_Search_Add_Download(sf, cat);
 			break;
 		}
 	}
