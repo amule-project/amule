@@ -1644,12 +1644,17 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	if ((_ParseURL(Data, wxT("saveprefs")) == wxT("true")) && IsSessionAdmin(Data,sSession) ) {
-		wxString prefList(wxEmptyString);
+		CECPacket prefs(EC_OP_SET_PREFERENCES);
+		CECEmptyTag filePrefs(EC_TAG_PREFS_FILES);
+		CECEmptyTag connPrefs(EC_TAG_PREFS_CONNECTIONS);
+		CECEmptyTag webPrefs(EC_TAG_PREFS_REMOTECTRL);
 		if (_ParseURL(Data, wxT("gzip")) == wxT("true") || _ParseURL(Data, wxT("gzip")) == wxT("on")) {
-			prefList.Append(wxT("1\t"));
+			webPrefs.AddTag(CECTag(EC_TAG_WEBSERVER_USEGZIP, (uint8)1));
+			pThis->webInterface->m_UseGzip = true;
 		}
 		if (_ParseURL(Data, wxT("gzip")) == wxT("false") || _ParseURL(Data, wxT("gzip")) == wxEmptyString) {
-			prefList.Append(wxT("0\t"));
+			webPrefs.AddTag(CECTag(EC_TAG_WEBSERVER_USEGZIP, (uint8)0));
+			pThis->webInterface->m_UseGzip = false;
 		}
 		if (_ParseURL(Data, wxT("showuploadqueue")) == wxT("true") || _ParseURL(Data, wxT("showuploadqueue")) == wxT("on") ) {
 			pThis->m_Params.bShowUploadQueue = true;
@@ -1658,34 +1663,40 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 			pThis->m_Params.bShowUploadQueue = false;
 		}
 		if (_ParseURL(Data, wxT("refresh")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("refresh"))));
+			webPrefs.AddTag(CECTag(EC_TAG_WEBSERVER_REFRESH, (uint32)StrToLong(_ParseURL(Data, wxT("refresh")))));
 		}
 		if (_ParseURL(Data, wxT("maxdown")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxdown"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_MAX_DL, (uint16)StrToLong(_ParseURL(Data, wxT("maxdown")))));
 		}
 		if (_ParseURL(Data, wxT("maxup")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxup"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_MAX_UL, (uint16)StrToLong(_ParseURL(Data, wxT("maxup")))));
 		}
 		if (_ParseURL(Data, wxT("maxcapdown")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxcapdown"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_DL_CAP, (uint32)StrToLong(_ParseURL(Data, wxT("maxcapdown")))));
 		}
 		if (_ParseURL(Data, wxT("maxcapup")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxcapup"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_UL_CAP, (uint32)StrToLong(_ParseURL(Data, wxT("maxcapup")))));
 		}
 		if (_ParseURL(Data, wxT("maxsources")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxsources"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_MAX_FILE_SOURCES, (uint16)StrToLong(_ParseURL(Data, wxT("maxsources")))));
 		}
 		if (_ParseURL(Data, wxT("maxconnections")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxconnections"))));
+			connPrefs.AddTag(CECTag(EC_TAG_CONN_MAX_CONN, (uint16)StrToLong(_ParseURL(Data, wxT("maxconnections")))));
 		}
 		if (_ParseURL(Data, wxT("maxconnectionsperfive")) != wxEmptyString) {
-			prefList+=wxString::Format(wxT("%li\t"), StrToLong(_ParseURL(Data, wxT("maxconnectionsperfive"))));
+			CECEmptyTag twPrefs(EC_TAG_PREFS_CORETWEAKS);
+			twPrefs.AddTag(CECTag(EC_TAG_CORETW_MAX_CONN_PER_FIVE, (uint16)StrToLong(_ParseURL(Data, wxT("maxconnectionsperfive")))));
+			prefs.AddTag(twPrefs);
 		}
 
-		prefList+=wxString::Format(wxT("%d\t"), ((_ParseURL(Data, wxT("fullchunks")).MakeLower() == wxT("on")) ? 1 : 0));
-		prefList+=wxString::Format(wxT("%d\t"), ((_ParseURL(Data, wxT("firstandlast")).MakeLower() == wxT("on")) ? 1 : 0));
+		filePrefs.AddTag(CECTag(EC_TAG_FILES_UL_FULL_CHUNKS, (uint8)((_ParseURL(Data, wxT("fullchunks")).MakeLower() == wxT("on")) ? 1 : 0)));
+		filePrefs.AddTag(CECTag(EC_TAG_FILES_PREVIEW_PRIO, (uint8)((_ParseURL(Data, wxT("firstandlast")).MakeLower() == wxT("on")) ? 1 : 0)));
+
+		prefs.AddTag(filePrefs);
+		prefs.AddTag(connPrefs);
+		prefs.AddTag(webPrefs);
 		
-		pThis->webInterface->SendRecvMsg(wxString::Format(wxT("WEBPAGE SETPREFERENCES %s"), prefList.GetData()).GetData());
+		pThis->Send_Discard_V2_Request(&prefs);
 	}
 
 	CECPacket req(EC_OP_GET_PREFERENCES);
