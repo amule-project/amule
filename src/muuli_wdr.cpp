@@ -411,6 +411,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBitmapButton *item4 = new wxBitmapButton( parent, ID_BTNCLRCOMPL, amuleDlgImages( 17 ), wxDefaultPosition, wxSize(20,20) );
     item4->SetToolTip( _("Clears completed downloads") );
+    item4->Enable( false );
     item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
@@ -1229,7 +1230,7 @@ item23->SetName(wxT("otherScope"));
 
     wxWindow *item27 = new CColorFrameCtrl(parent,IDC_S3,20,14);
     wxASSERT( item27 );
-    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxLEFT|wxFIXED_MINSIZE, 5 );
+    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxFIXED_MINSIZE, 5 );
 
     wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Active downloads"), wxDefaultPosition, wxDefaultSize, 0 );
     item26->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );

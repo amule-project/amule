@@ -334,7 +334,8 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			wxMenu *menu = m_FileMenu;
 			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
-			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSE) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_CLEARCOMPLETED, (theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED);
 			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
 			
 			wxString preview(_("Preview"));
@@ -1916,6 +1917,8 @@ void CDownloadListCtrl::ClearCompleted()
 			}
 		}
 	}
+	theApp.downloadqueue->UnsetCompletedFilesExist();
+	Notify_0_ValEvent(DLOAD_UPDATE_COMPLETED);
 }
 
 void CDownloadListCtrl::ShowFilesCount()

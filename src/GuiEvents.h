@@ -122,6 +122,7 @@ enum GUI_Event_ID {
 	// download queue
 	DLOAD_SET_CAT_PRIO,
 	DLOAD_SET_CAT_STATUS,
+	DLOAD_UPDATE_COMPLETED,
 };
 
 // lfroen : custom events for core internal messages
