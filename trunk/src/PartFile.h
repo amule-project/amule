@@ -72,7 +72,7 @@ public:
 	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool LoadFromFile(const CFile* WXUNUSED(file)) const { return false; }
-	bool	WriteToFile(CFile* file) const	{ return false; }
+	bool	WriteToFile(CFile* WXUNUSED(file)) const	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly = false);
