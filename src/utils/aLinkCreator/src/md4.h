@@ -56,6 +56,8 @@ class MD4
   {
   private:
 
+  protected:
+
     struct MD4Context
       {
         uint32_t buf[4];
@@ -63,21 +65,20 @@ class MD4
         unsigned char in[64];
       };
 
-    wxString charToHex(const char *buf, unsigned int len);
-    unsigned int calcBufSize(size_t filesize);
-
-  protected:
-
     static const unsigned int MD4_HASHLEN_BYTE;
     static const unsigned int BUFSIZE;
     static const unsigned int PARTSIZE;
 
     void MD4Init(struct MD4Context *context);
     void MD4Update(struct MD4Context *context,
-                   unsigned char const *buf, unsigned len);
+                   unsigned char const *buf, size_t len);
     void MD4Final(struct MD4Context *context,
                   unsigned char *digest);
     void MD4Transform(uint32_t buf[4], uint32_t const in[16]);
+
+    wxString charToHex(const char *buf, size_t len);
+
+    size_t calcBufSize(size_t filesize);
 
     // Needed to reverse byte order on BIG ENDIAN machines
 #if wxBYTE_ORDER == wxBIG_ENDIAN
@@ -91,7 +92,7 @@ class MD4
     MD4()
     {}
 
-    /// Desstructor
+    /// Destructor
     virtual ~MD4()
     {}
 
@@ -103,9 +104,6 @@ class MD4
 
     /// Get Md4 hash from a file
     wxString calcMd4FromFile(const wxString &filename);
-
-    /// Get Ed2k hash and part-hashes from a file
-    wxArrayString calcEd2kFromFile(const wxString &filename);
   };
 
 #endif /* _MD4_H */

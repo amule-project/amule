@@ -46,7 +46,9 @@
 #pragma hdrstop
 #endif
 
+#ifndef WX_PRECOMP
 #include <wx/ffile.h>
+#endif
 
 #include "md4.h"
 #include "bithelp.h"
@@ -89,7 +91,7 @@ void MD4::MD4Init(struct MD4Context *ctx)
 
 /// Update context to reflect the concatenation of another buffer full of bytes.
 void MD4::MD4Update(struct MD4Context *ctx, unsigned char const *buf,
-                    unsigned len)
+                    size_t len)
 {
   register uint32_t t;
 
@@ -329,6 +331,8 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
   unsigned char ret[MD4_HASHLEN_BYTE];
   MD4Context hdc;
 
+  // Open file and let wxFFile destructor close the file
+  // Closing it explicitly may crash on Win32 ...
   wxFFile file(filename, wxT("rbS"));
   if (! file.IsOpened())
     {
@@ -341,160 +345,50 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
   MD4Init(&hdc);
   while (!file.Eof())
     {
+#if wxUSE_GUI
       // Update display
       ::wxSafeYield();
+#endif
 
       MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
                 file.Read(buf, bufSize));
     }
   MD4Final(&hdc, ret);
 
-  file.Close();
   delete [] buf;
 
   return charToHex(reinterpret_cast<const char *>(ret),
                    MD4_HASHLEN_BYTE);
 }
 
-/// Get Ed2k hash from a file
-wxArrayString MD4::calcEd2kFromFile(const wxString &filename)
-{
-  size_t read;
-  unsigned char ret[MD4_HASHLEN_BYTE];
-  MD4Context hdc;
-
-  size_t partcount;
-  size_t dataread;
-
-  char *buf = new char[BUFSIZE];
-
-  wxArrayString arrayOfHashes;
-  wxString finalHash;
-
-#if WANT_STRING_IMPLEMENTATION
-
-  wxString tmpHash(wxEmptyString);
-#else
-
-  unsigned char* tmpCharHash = NULL;
-#endif
-
-  // Opening file
-  wxFFile file(filename, wxT("rbS"));
-  if (! file.IsOpened())
-    {
-      return arrayOfHashes;
-    }
-
-  // Processing each block
-  partcount = 0;
-  while (!file.Eof())
-    {
-      dataread = 0;
-      MD4Init(&hdc);
-      while (dataread < PARTSIZE && !file.Eof())
-        {
-          // Update display
-          ::wxSafeYield();
-
-          if ((dataread + BUFSIZE) > PARTSIZE)
-            {
-              read = file.Read(buf, PARTSIZE - dataread);
-            }
-          else
-            {
-              read = file.Read(buf, BUFSIZE);
-            }
-          dataread += read;
-          MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf),
-                    read);
-        }
-      MD4Final(&hdc, ret);
-
-      // Add part-hash
-      arrayOfHashes.Add(charToHex(reinterpret_cast<const char *>(ret),
-                                  MD4_HASHLEN_BYTE));
-
-      partcount++;
-
-#if WANT_STRING_IMPLEMENTATION
-      // MD4_HASHLEN_BYTE is ABSOLUTLY needed as we dont want NULL
-      // character to be interpreted as the end of the parthash string
-#if wxUSE_UNICODE
-
-      tmpHash += wxString(reinterpret_cast<const wchar_t *>(ret),MD4_HASHLEN_BYTE);
-#else
-
-      tmpHash += wxString(reinterpret_cast<const char *>(ret),MD4_HASHLEN_BYTE);
-#endif
-#else
-
-      tmpCharHash = (unsigned char*)realloc(tmpCharHash,
-                                            sizeof(unsigned char) * (MD4_HASHLEN_BYTE * partcount));
-      memcpy ( tmpCharHash + MD4_HASHLEN_BYTE * (partcount - 1), ret, MD4_HASHLEN_BYTE );
-#endif
-
-    }
-
-  file.Close();
-  delete [] buf;
-
-  if (partcount > 1)
-    {
-      // hash == hash of concatenned parthashes
-#if WANT_STRING_IMPLEMENTATION
-      finalHash=calcMd4FromString(tmpHash);
-#else
-
-      MD4Init(&hdc);
-      MD4Update(&hdc, tmpCharHash, MD4_HASHLEN_BYTE * partcount);
-      MD4Final(&hdc, ret);
-
-      finalHash = charToHex(reinterpret_cast<const char *>(ret),
-                            MD4_HASHLEN_BYTE);
-#endif
-
-      arrayOfHashes.Add(finalHash);
-    }
-
-#if !WANT_STRING_IMPLEMENTATION
-  free(tmpCharHash);
-  tmpCharHash=NULL;
-#endif
-
-  arrayOfHashes.Shrink();
-
-  return (arrayOfHashes);
-}
-
 /// Convert hash to hexa string
-wxString MD4::charToHex(const char *buf, unsigned int len)
+wxString MD4::charToHex(const char *buf, size_t len)
 {
-  unsigned int i;
-  wxString ret(wxEmptyString);
+  size_t i;
+  wxString hexString;
 
   for (i = 0; i < len; ++i)
     {
-      ret += wxString::Format(wxT("%02x"), 0xFF & *(buf + i));
+      hexString += wxString::Format(wxT("%02x"), 0xFF & *(buf + i));
     }
 
-  return ret;
+  // Reduce memory usage
+  hexString.Shrink();
+
+  return (hexString);
 }
 
 /// Compute Md4 buffsize
-unsigned int MD4::calcBufSize(size_t filesize)
+size_t MD4::calcBufSize(size_t filesize)
 {
-  unsigned int ret;
-
-  ret = filesize;
-  if (ret < 100000)
+  if (filesize < 100000)
     {
-      ret = 100000;
+      filesize = 100000;
     }
-  else if (ret > 200000)
+  else if (filesize > 200000)
     {
-      ret = 200000;
+      filesize = 200000;
     }
 
-  return ret;
+  return (filesize);
 }
