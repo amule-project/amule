@@ -14,6 +14,13 @@ Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
 		* Fixed high CPU usage problem in amuleweb, thanks to jaguarwan for
 		  the report. Daemonizing amuleweb should be done using the -q
 		  switch.
+		  
+	ThePolish:
+		* Little fix in wxCas SetSizer which caused display bug with wx-cvs
+		* Add translations update (Thanks to all translators)
+		* Removed wxCas documentation to slim source tree 
+		(now downloadable from berlios)
+	
 
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------
