@@ -44,7 +44,7 @@ enum EUtf8Str
 ///////////////////////////////////////////////////////////////////////////////
 class CFileDataIO
 {
- public:
+public:
 	virtual off_t Read(void *pBuf, off_t nCount) const = 0;
 	virtual size_t Write(const void *pBuf, size_t nCount) = 0;
 	virtual off_t GetPosition() const = 0;
@@ -62,7 +62,9 @@ class CFileDataIO
 	virtual void WriteUInt32(uint32 nVal);
 	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
 	virtual void WriteHash16(const unsigned char* pVal);
-	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */); 
+	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
+private:
+	void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
  };
  
 
