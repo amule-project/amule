@@ -71,7 +71,6 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_CHECKBOX(ID_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
 	
 	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
-	EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(ID_NOTEBOOK, CSearchDlg::OnAllPagesClosed)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 
 	// Event handlers for the parameter fields getting changed
@@ -108,7 +107,6 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
-	s_searchresults->Show(s_sresults, false);
 	
 	Layout();
 }
@@ -173,11 +171,6 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 }
 
 
-void CSearchDlg::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
-{
-	s_searchresults->Show(s_stext);
-	s_searchresults->Show(s_sresults, false);
-}
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
@@ -218,11 +211,6 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 	
 	if ( searchString.IsEmpty() ) {
 		return;
-	}
-
-	if ( !m_notebook->GetPageCount() ) {
-		s_searchresults->Show(s_stext, false);
-		s_searchresults->Show(s_sresults);
 	}
 
 	wxChoice* choice = CastChild( ID_SEARCHTYPE, wxChoice );
