@@ -70,6 +70,7 @@ Packet::Packet(uint8 protocol)
 // only used for receiving packets
 Packet::Packet(char* header)
 {
+	memset(head, 0, sizeof head);
 	Header_Struct* head = (Header_Struct*) header;
 	size 		= ENDIAN_SWAP_32(head->packetlength) - 1;
 	opcode		= head->command;
@@ -78,7 +79,6 @@ Packet::Packet(char* header)
 	m_bLastSplitted = false;
 	m_bPacked 	= false;
 	m_bFromPF 	= false;
-	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	completebuffer 	= NULL;
 	pBuffer 	= NULL;
