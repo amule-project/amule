@@ -187,7 +187,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
 		// Add the icon and label assosiated with the page
 		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
-		PrefsIcons->InsertItem(i, pages[i].m_title, i);
+		PrefsIcons->InsertItem(i, _(pages[i].m_title), i);
 	}
 	
 	// Set list-width so that there arn't any scrollers

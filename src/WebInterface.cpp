@@ -308,7 +308,7 @@ int CamulewebApp::ProcessCommand(int ID) {
 void CamulewebApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	Show(         _("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));	
+	Show(         _("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));	
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));
 	//Show(wxString(wxT("Start:\t\t\t)) + wxString(_("Start web server.\n")));
 	//Show(wxString(wxT("Stop:\t\t\t))  + wxString(_("Stop web server.\n")));
