@@ -387,19 +387,17 @@ CPartFile *CDownloadQueue::GetFileByID(const CMD4Hash& filehash) const {
 	return NULL;
 }
 
-CPartFile *CDownloadQueue::GetFileByIndex(unsigned int index) const {
-	if ( index >= filelist.size() ) {
-		return NULL;
+
+CPartFile *CDownloadQueue::GetFileByIndex(unsigned int index) const
+{
+	if ( index < filelist.size() ) {
+		return filelist[ index ];
 	}
-	for ( unsigned int i = 0; i < filelist.size(); ++i ) {
-		if ( i == index ) {
-			return filelist[i];
-		}
-	}
-	// Should never return here
-	wxASSERT(0);
+	
+	wxASSERT( false );
 	return NULL;
 }
+
 
 bool CDownloadQueue::IsPartFile(const CKnownFile* totest) const{
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
