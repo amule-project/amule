@@ -82,9 +82,10 @@ void CCommentDialogLst::CompleteList()
 	CUpDownClient* cur_src;
 	int count=0;
 	pmyListCtrl->DeleteAllItems();
-   
-	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL;) {
-		cur_src = m_file->m_SrcList.GetNext(pos);
+  
+	CPartFile::SourceSet::iterator it = m_file->m_SrcList.begin();
+	for ( ; it != m_file->m_SrcList.end(); ++it ) {
+		cur_src = *it;
 
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
 			pmyListCtrl->InsertItem(count, cur_src->GetUserName());

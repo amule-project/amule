@@ -471,16 +471,16 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	// uses this only for temp. clients
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
-			if (cur_file->m_SrcList.GetAt(pos2)->Compare(source)) {
+		for ( CPartFile::SourceSet::iterator it = cur_file->m_SrcList.begin(); it != cur_file->m_SrcList.end(); ++it) {
+			if ( (*it)->Compare(source) ) {
 				if (cur_file == sender) { // this file has already this source
 					delete source;
 					return;
 				}
 				// set request for this source
-				if (cur_file->m_SrcList.GetAt(pos2)->AddRequestForAnotherFile(sender)) {
+				if ( (*it)->AddRequestForAnotherFile(sender)) {
 					// add it to uploadlistctrl
-					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,cur_file->m_SrcList.GetAt(pos2),true);
+					theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender, *it,true);
 					delete source;
 					return;
 				}
@@ -507,7 +507,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		sender->UpdateFileRatingCommentAvail();
 	}
 
-	sender->m_SrcList.AddTail(source);
+	sender->m_SrcList.insert(source);
 	sender->IsCountDirty = true;
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
 	UpdateDisplayedInfo();
@@ -526,7 +526,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	// use this for client which are already know (downloading for example)
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		if (cur_file->m_SrcList.Find(source)) {
+		if (cur_file->m_SrcList.find(source) != cur_file->m_SrcList.end()) {
 			if (cur_file == sender) {
 				return;
 			}
@@ -544,7 +544,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		sender->UpdateFileRatingCommentAvail();
 	}
 
-	sender->m_SrcList.AddTail(source);
+	sender->m_SrcList.insert(source);
 	sender->IsCountDirty = true;
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(sender,source,false);
 	UpdateDisplayedInfo();
@@ -553,12 +553,15 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 /* Creteil importing new method from eMule 0.30c */
 bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatewindow), bool bDoStatsUpdate)
 {
+	toremove->m_OtherRequests_list.RemoveAll();
+	toremove->m_OtherNoNeeded_list.RemoveAll();
+	
 	bool removed = false;
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		POSITION pos2 = cur_file->m_SrcList.Find( toremove );
-		if ( pos2 != NULL ) {
-			cur_file->m_SrcList.RemoveAt(pos2);
+		
+		// Remove from source-list
+		if ( cur_file->m_SrcList.erase( toremove ) ) {
 			cur_file->IsCountDirty = true;
 			removed = true;
 			if ( bDoStatsUpdate ) {
@@ -567,40 +570,19 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 				cur_file->UpdateAvailablePartsCount();
 			}
 		}
-	}
 
-	/* Creteil Changes BEGIN */
-
-	// remove this source on all files in the downloadqueue who link this source
-	// pretty slow but no way arround, maybe using a Map is better, but that's slower on other parts
-	POSITION pos3, pos4;
-	for(pos3 = toremove->m_OtherRequests_list.GetHeadPosition();(pos4=pos3)!=NULL;) {
-		toremove->m_OtherRequests_list.GetNext(pos3);
-		POSITION pos5 = toremove->m_OtherRequests_list.GetAt(pos4)->A4AFsrclist.Find(toremove);
-		if(pos5) {
-			toremove->m_OtherRequests_list.GetAt(pos4)->A4AFsrclist.RemoveAt(pos5);
-			theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,toremove->m_OtherRequests_list.GetAt(pos4));
-			toremove->m_OtherRequests_list.RemoveAt(pos4);
-		}
-	}
-	for(pos3 = toremove->m_OtherNoNeeded_list.GetHeadPosition();(pos4=pos3)!=NULL;) {
-		toremove->m_OtherNoNeeded_list.GetNext(pos3);
-		POSITION pos5 = toremove->m_OtherNoNeeded_list.GetAt(pos4)->A4AFsrclist.Find(toremove);
-		if(pos5) {
-			toremove->m_OtherNoNeeded_list.GetAt(pos4)->A4AFsrclist.RemoveAt(pos5);
-			theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,toremove->m_OtherNoNeeded_list.GetAt(pos4));
-			toremove->m_OtherNoNeeded_list.RemoveAt(pos4);
-		}
+		// Remove from A4AF-list
+		cur_file->A4AFsrclist.erase( toremove );
 	}
 
 	if ( !toremove->GetFileComment().IsEmpty() || toremove->GetFileRate()>0) {
 		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
 	
-	/* Creteil changes END */
-
 	toremove->SetDownloadState(DS_NONE);
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove,0);
+
+	// Remove from downloadlist widget
+	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveSource(toremove, 0);
 	toremove->ResetFileStatusInfo();
 	toremove->SetRequestFile( NULL );
 	return removed;
@@ -635,7 +617,7 @@ void CDownloadQueue::RemoveFile(CPartFile* toremove)
 void CDownloadQueue::DeleteAll(){
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		cur_file->m_SrcList.RemoveAll();
+		cur_file->m_SrcList.clear();
 		cur_file->IsCountDirty = true;
 		// Barry - Should also remove all requested blocks
 		// Don't worry about deleting the blocks, that gets handled
@@ -910,9 +892,9 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP(uint32 dwIP)
 {
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
-		for (POSITION pos2 = cur_file->m_SrcList.GetHeadPosition();pos2 != 0; cur_file->m_SrcList.GetNext(pos2)) {
-			if (dwIP == cur_file->m_SrcList.GetAt(pos2)->GetIP()) {
-				return cur_file->m_SrcList.GetAt(pos2);
+		for (CPartFile::SourceSet::iterator it = cur_file->m_SrcList.begin(); it != cur_file->m_SrcList.end(); ++it ) {
+			if (dwIP == (*it)->GetIP()) {
+				return *it;
 			}
 		}
 	}

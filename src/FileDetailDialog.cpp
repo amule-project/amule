@@ -145,8 +145,8 @@ void CFileDetailDialog::FillSourcenameList()
 	}
 
 	// update
-	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL; ) { 
-		cur_src = m_file->m_SrcList.GetNext(pos); 
+	for ( CPartFile::SourceSet::iterator it = m_file->m_SrcList.begin(); it != m_file->m_SrcList.end(); ++it ) { 
+		cur_src = *it; 
 		if (cur_src->GetRequestFile()!=m_file || cur_src->GetClientFilename().Length()==0)
 			continue;
 
