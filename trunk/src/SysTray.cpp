@@ -49,7 +49,6 @@
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
-#include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "Statistics.h"
 #include "TransferWnd.h"	// Needed for CTransferWnd
