@@ -145,12 +145,12 @@ void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt)
 
 void CServerWnd::OnBnClickedResetLog(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.amuledlg->ResetLog(1);
+	theApp.GetLog(true); // Reset it.
 }
 
 void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.amuledlg->ResetLog(2);
+	theApp.GetServerLog(true); // Reset it
 }
 
 void CServerWnd::UpdateMyInfo()

@@ -483,26 +483,12 @@ void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
 	wxMessageBox(CastChild( wxT("infoLabel"), wxStaticText )->GetLabel(), wxString(_("Status text")), wxOK|wxICON_INFORMATION);
 }
 
-void CamuleDlg::ResetLog(uint8 whichone)
+void CamuleDlg::ResetLog(uint32 whichone)
 {
-	wxTextCtrl* ct = NULL;
-
-	switch (whichone){
-		case 1: {
-			ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
-			// Delete log file aswell.
-			theApp.GetLog(true);
-			break;
-		}
-		case 2:
-			ct = CastByID( ID_SERVERINFO, serverwnd, wxTextCtrl );
-			break;
-		default:
-			return;
-	}
+	wxTextCtrl* ct = CastByID( whichone, serverwnd, wxTextCtrl );
 
 	if(ct) {
-		ct->SetValue(wxEmptyString);
+		ct->Clear();
 	}
 }
 

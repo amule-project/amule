@@ -876,17 +876,16 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 wxString CamuleGuiApp::GetLog(bool reset)
 {
     if ( reset ) {
-            amuledlg->ResetLog();
+            amuledlg->ResetLog(ID_LOGVIEW);
     }
 	return CamuleApp::GetLog(reset);
 }
 
 wxString CamuleGuiApp::GetServerLog(bool reset)
 {
-	wxTextCtrl *logview = CastByID(ID_SERVERINFO, amuledlg->serverwnd, wxTextCtrl);
-	if ( reset ) {
-		logview->Clear();
-	}
+    if ( reset ) {
+            amuledlg->ResetLog(ID_SERVERINFO);
+    }
 	return CamuleApp::GetServerLog(reset);
 }
 
