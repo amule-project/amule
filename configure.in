@@ -453,11 +453,12 @@ yes)	DEBUG_FLAGS="-W -Wall -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0"
     ;;
 esac
 
-# gsocket stuff
+# wx version dependent stuff
 case "$WXGTK_VERSION" in
 2.4.2)
 	USE_24GSOCKET="yes"
 	if test x$AMULE_DAEMON = xyes; then
+	 NEEDSWX25="yes"
 	 AC_MSG_NOTICE([WARNING: aMuled cannot be used with wxWidgets-2.4: disabling it])
 	fi
 	AMULE_DAEMON="no"
@@ -490,6 +491,7 @@ case "$WXBASE24FOUND" in
 		WXBASE_CFLAGS="$WXBASE_CFLAGS -DwxUSE_GUI=0"
 		WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DwxUSE_GUI=0"
 	else
+		( test x"$WEB" = x"yes" || test x"$ALCC" = x"yes" || test x"$BUILDAMULECMD" = x"yes" ) && NEEDSWXBASE="yes"
 		WEB="no"
 		WEBGUI="no"
 		ALCC="no"
@@ -702,10 +704,17 @@ else
 echo " (Not used)"
 fi
 
-if test x"$WX_VERSION" = x"any" ; then
+if test x"$NEEDSWX25" = x"yes" ; then
 echo
-echo "  NOTICE: With wxWidgets versions prior 2.5, you need wxBase library to compile:"
-echo "          amuleweb amulecmd and alcc"
+echo "  NOTICE: You need wxWidgets 2.5 or later to compile:"
+echo "          amuled"
+fi
+echo
+
+if test x"$NEEDSWXBASE" = x"yes" ; then
+echo
+echo "  NOTICE: With wxWidgets versions prior to 2.5, you need wxBase library to compile:"
+echo "          amuleweb amulecmd alcc"
 fi
 echo
 
