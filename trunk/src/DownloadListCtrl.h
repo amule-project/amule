@@ -48,16 +48,12 @@ struct CtrlItem_Struct{
 
 class CDownloadListCtrl : public CMuleListCtrl
 {
-DECLARE_DYNAMIC_CLASS(CDownloadListCtrl)
-
 public:
-	CDownloadListCtrl();
 	CDownloadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 	virtual	~CDownloadListCtrl();
 	uint8 curTab;
 	void UpdateItem(void* toupdate);
 	void Init();
-	void InitSort();
 	void AddFile(CPartFile* toadd);
 	void AddSource(CPartFile* owner,CUpDownClient* source,bool notavailable);
 	void RemoveSource(CUpDownClient* source,CPartFile* owner);
@@ -84,10 +80,8 @@ public:
 protected:
 	void OnColResize(wxListEvent& evt);
 
-	virtual int TablePrefs();
 	void DrawFileItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
 	void DrawSourceItem(wxDC* dc,int nColumn, const wxRect& rect,CtrlItem_Struct* lpCtrlItem);
-	void OnColumnClick(wxListEvent& evt);
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 	static int Compare(CPartFile* file1, CPartFile* file2, long lParamSort);
 	static int Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);

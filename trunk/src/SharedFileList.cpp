@@ -208,7 +208,7 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 		if (sendtoserver) {
 			SendListToServer();
 		}
-		Notify_SharedFilesInitSort();
+		Notify_SharedFilesSort();
 		reloading = false;
 	}
 }

@@ -1896,6 +1896,8 @@ IMPLEMENT_DYNAMIC_CLASS(wxODListHeaderWindow,wxWindow)
 
 #include "pixmaps/sort_dn.xpm"
 #include "pixmaps/sort_up.xpm"
+#include "pixmaps/sort_dnx2.xpm"
+#include "pixmaps/sort_upx2.xpm"
 
 BEGIN_EVENT_TABLE(wxODListHeaderWindow,wxWindow)
     EVT_PAINT         (wxODListHeaderWindow::OnPaint)
@@ -2098,11 +2100,21 @@ void wxODListHeaderWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
                          x + EXTRA_WIDTH, HEADER_OFFSET_Y + EXTRA_HEIGHT );
         }
 
-	if(m_owner->GetSortArrow(i)==1) {
-	  dc.DrawBitmap(wxBitmap(sort_dn_xpm),x+wCol-18,HEADER_OFFSET_Y+(h/2-3),TRUE);
-	} else if(m_owner->GetSortArrow(i)==2) {
-	  dc.DrawBitmap(wxBitmap(sort_up_xpm),x+wCol-18,HEADER_OFFSET_Y+(h/2-3),TRUE);
-	}
+		wxBitmap arrow;
+		
+		// Select the arrow type
+		switch ( m_owner->GetSortArrow(i) )
+		{
+			case 1: arrow = wxBitmap(sort_dn_xpm); break;
+			case 2: arrow = wxBitmap(sort_up_xpm); break;
+			case 3: arrow = wxBitmap(sort_dnx2_xpm); break;
+			case 4: arrow = wxBitmap(sort_upx2_xpm); break;
+			default: break;
+		}
+	
+		if ( arrow.Ok() )
+			dc.DrawBitmap( arrow, x + wCol - 21, HEADER_OFFSET_Y + (h - 18)/2, TRUE);
+		
         x += wCol;
     }
 
@@ -3019,8 +3031,6 @@ void wxODListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
 				// This DC is used to write to the bitmaps used to double-buffer
 				wxMemoryDC dbDC( &dc );
-				// The font doesn't get set for some reason ...
-				dbDC.SetFont( GetFont() );
 
 				// We use this for double-buffer
 				wxBitmap buffer( rectLine.width, rectLine.height );

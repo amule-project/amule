@@ -43,19 +43,19 @@
 
 BEGIN_EVENT_TABLE(CUploadListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CUploadListCtrl::OnNMRclick)
-	EVT_LIST_COL_CLICK(ID_UPLOADLIST,CUploadListCtrl::OnColumnClick)
 END_EVENT_TABLE()
 	
 #define imagelist theApp.amuledlg->imagelist
 
-//IMPLEMENT_DYNAMIC(CUploadListCtrl, CMuleListCtrl)
-CUploadListCtrl::CUploadListCtrl()
-{
-}
-
 CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
 : CMuleListCtrl(parent,id,pos,siz,flags|wxLC_OWNERDRAW)
 {
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Upload") );
+
 	m_ClientMenu=NULL;
 
 	wxColour col=wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
@@ -88,16 +88,6 @@ void CUploadListCtrl::Init()
 	//LoadSettings(TP_Upload);
 }
 
-void CUploadListCtrl::InitSort()
-{
-	LoadSettings();
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Upload);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Upload);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-}
 
 CUploadListCtrl::~CUploadListCtrl()
 {
@@ -105,9 +95,6 @@ CUploadListCtrl::~CUploadListCtrl()
 	delete m_hilightUnfocusBrush;
 }
 
-void CUploadListCtrl::Localize()
-{
-}
 
 void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 {
@@ -147,10 +134,7 @@ void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 
 void CUploadListCtrl::AddClient(CUpDownClient* client)
 {
-	uint32 itemnr = GetItemCount();
-
-	//itemnr = InsertItem(LVIF_TEXT|LVIF_PARAM,itemnr,client->GetUserName(),0,0,1,(LPARAM)client);
-	itemnr=InsertItem(itemnr,client->GetUserName());
+	long itemnr=InsertItem( GetInsertPos((long)client), client->GetUserName() );
 	SetItemData(itemnr,(long)client);
 
 	wxListItem myitem;
@@ -266,27 +250,6 @@ bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
 	return CMuleListCtrl::ProcessEvent(evt);	
 }
 
-void CUploadListCtrl::OnColumnClick( wxListEvent& evt)
-{
-	// NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-	// if it's a second click on the same column then reverse the sort order,
-	// Barry - Store sort order in preferences
-        // Determine ascending based on whether already sorted on this column
-
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Upload);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Upload);
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(TP_Upload, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(TP_Upload, sortAscending);
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-	// otherwise sort the new column in ascending order.
-	//*pResult = 0;
-}
 
 int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
@@ -295,9 +258,9 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 	// Sorting ascending or decending	
 	int mode = 1;
-	if ( lParamSort >= 100 ) {
+	if ( lParamSort >= 1000 ) {
 		mode = -1;
-		lParamSort -= 100;
+		lParamSort -= 1000;
 	}
 
 	switch (lParamSort) {
@@ -601,9 +564,4 @@ void CUploadListCtrl::ShowSelectedUserDetails()
 	}
 }
 
-
-int CUploadListCtrl::TablePrefs()
-{
-	return TP_Upload;
-}
 

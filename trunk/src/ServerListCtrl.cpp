@@ -50,21 +50,18 @@
 
 BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_SERVERLIST,CServerListCtrl::OnRclickServlist)
-	EVT_LIST_COL_CLICK(ID_SERVERLIST,CServerListCtrl::OnLvnColumnclickServlist)
 	EVT_LEFT_DCLICK(CServerListCtrl::OnLDclick)
 END_EVENT_TABLE()
-
-//IMPLEMENT_DYNAMIC(CServerListCtrl, CMuleListCtrl/*CTreeCtrl*/)
-
-CServerListCtrl::CServerListCtrl()
-{
-	memset(&asc_sort,0,8);
-}
 
 CServerListCtrl::CServerListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
 : CMuleListCtrl(parent,id,pos,siz,flags)
 {
-	memset(&asc_sort,0,8);
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Server") );
+
 	m_ServerPrioMenu=NULL;
 	m_ServerMenu=NULL;
 	connected = -1;
@@ -220,17 +217,6 @@ void CServerListCtrl::OnCopyLink(wxCommandEvent& WXUNUSED(event))
 	theApp.CopyTextToClipboard(link);
 }
 
-void CServerListCtrl::InitSort()
-{
-	LoadSettings();
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Server);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Server);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-	ShowFilesCount();
-}
 
 bool CServerListCtrl::Init(CServerList* in_list)
 {
@@ -248,7 +234,6 @@ bool CServerListCtrl::Init(CServerList* in_list)
 	InsertColumn(8,_("Static"),wxLIST_FORMAT_LEFT, 40);
 	InsertColumn(9,_("Version"),wxLIST_FORMAT_LEFT, 80);
 
-	asc_sort[3]=true;asc_sort[4]=true;asc_sort[5]=true;asc_sort[7]=true;
 	// perhaps not yet
 	//LoadSettings(TP_Server);
 	return true;
@@ -318,8 +303,7 @@ bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
 	}
 	*/
 	if (bAddToList) {
-		uint32 itemnr=GetItemCount();
-		uint32 newid=InsertItem(itemnr,toadd->GetListName());
+		uint32 newid=InsertItem( GetInsertPos((long)toadd), toadd->GetListName() );
 		SetItemData(newid,(long)toadd);
 		wxListItem myitem;
 		myitem.m_itemId=newid;
@@ -572,23 +556,6 @@ bool CServerListCtrl::AddServermetToList(wxString strFile)
 	return flag;
 }
 
-void CServerListCtrl::OnLvnColumnclickServlist(wxListEvent& evt) //NMHDR *pNMHDR, LRESULT *pResult)
-{
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Server);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Server);
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(TP_Server, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(TP_Server, sortAscending);
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-}
-
 int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CServer* item1 = (CServer*)lParam1;
@@ -599,9 +566,9 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	}
 	
 	int mode = 1;
-	if ( lParamSort >= 100 ) {
+	if ( lParamSort >= 1000 ) {
 		mode = -1;
-		lParamSort -= 100;
+		lParamSort -= 1000;
 	}
 	
 	switch (lParamSort) {
@@ -761,10 +728,5 @@ void CServerListCtrl::ShowFilesCount()
 {
 	wxString fmtstr = wxString::Format(_("Servers (%i)"), GetItemCount());
 	wxStaticCast(FindWindowByName(wxT("serverListLabel")),wxStaticText)->SetLabel(fmtstr);
-}
-
-int CServerListCtrl::TablePrefs()
-{
-	return TP_Server;
 }
 

@@ -41,7 +41,6 @@
 
 // CQueueListCtrl
 
-//IMPLEMENT_DYNAMIC(CQueueListCtrl, CMuleListCtrl)
 BEGIN_EVENT_TABLE(CQueueListCtrl,CMuleListCtrl)
   EVT_RIGHT_DOWN(CQueueListCtrl::OnNMRclick)
   EVT_LIST_COL_CLICK(ID_QUEUELIST,CQueueListCtrl::OnColumnClick)
@@ -50,12 +49,16 @@ END_EVENT_TABLE()
 
 #define imagelist theApp.amuledlg->imagelist
 
-CQueueListCtrl::CQueueListCtrl(){
-}
 
 CQueueListCtrl::CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
   : CMuleListCtrl(parent,id,pos,siz,flags|wxLC_OWNERDRAW)
 {
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Queue") );
+
   m_ClientMenu=NULL;
 
   wxColour col=wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
@@ -76,16 +79,6 @@ CQueueListCtrl::CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSiz
   m_hTimer.Start(10000);
 }
 
-void CQueueListCtrl::InitSort()
-{
-	LoadSettings();
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem( TP_Queue );
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending( TP_Queue );
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
-}
 
 // paha lametus :)
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
@@ -215,8 +208,7 @@ void CQueueListCtrl::Localize() {
 }
 
 void CQueueListCtrl::AddClient(CUpDownClient* client){
-  uint32 itemnr=GetItemCount();
-  itemnr=InsertItem(itemnr,client->GetUserName());
+  uint32 itemnr = InsertItem( GetInsertPos( (long)client ), client->GetUserName() );
   SetItemData(itemnr,(long)client);
 
   wxListItem myitem;
@@ -472,24 +464,6 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
     }
 }
 
-#if 0
-BEGIN_MESSAGE_MAP(CQueueListCtrl, CMuleListCtrl)
-	ON_NOTIFY_REFLECT (NM_RCLICK, OnNMRclick)
-	ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnColumnClick)
-END_MESSAGE_MAP()
-#endif
-
-
-#if 0
-// CQueueListCtrl message handlers
-void CQueueListCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult){	
-	POINT point;
-	::GetCursorPos(&point);	
-	m_ClientMenu.TrackPopupMenu(TPM_LEFTALIGN |TPM_RIGHTBUTTON, point.x, point.y, this);
-	*pResult = 0;
-}
-#endif
-
 bool CQueueListCtrl::ProcessEvent(wxEvent& evt)
 {
 	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
@@ -539,27 +513,16 @@ bool CQueueListCtrl::ProcessEvent(wxEvent& evt)
 
 void CQueueListCtrl::OnColumnClick( wxListEvent& evt)
 {
-
-//	theApp.uploadqueue->ResetClientPos();
+	// Update the displayed clients before sorting
 	CUpDownClient* update = theApp.uploadqueue->GetNextClient(NULL);
 
-	while(update) {
+	while (update) {
 		RefreshClient( update);
 		update = theApp.uploadqueue->GetNextClient(update);
 	}
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem( TP_Queue );
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending( TP_Queue );
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem( TP_Queue, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending( TP_Queue, sortAscending);
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
+
+	// Pass the event on to do the actual sorting
+	evt.Skip();
 }
 
 int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
@@ -569,9 +532,9 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	
 	// Ascending or decending?
 	int mode = 1;
-	if ( lParamSort >= 100 ) {
+	if ( lParamSort >= 1000 ) {
 		mode = -1;
-		lParamSort -= 100;
+		lParamSort -= 1000;
 	}
 	
 	switch(lParamSort) {
@@ -690,10 +653,5 @@ void CQueueListCtrl::ShowSelectedUserDetails()
 			dialog.ShowModal();
 		}
 	}
-}
-
-int CQueueListCtrl::TablePrefs()
-{
-	return TP_Queue;
 }
 

@@ -3706,7 +3706,7 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 		Notify_DownloadCtrlShowHideFileStatus(this);
 		Notify_DownloadCtrlShowFilesCount();
 	}
-	Notify_DownloadCtrlInitSort();
+	Notify_DownloadCtrlSort();
 }
 
 void CPartFile::ResumeFileInsufficient()

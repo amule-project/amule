@@ -61,27 +61,22 @@ class CPartFile;
 
 // CDownloadListCtrl
 
-// hmm some parts here might be overkill ;) ...
-// oh well at least I can do/draw/paint everything I want in this window now ;)
-IMPLEMENT_DYNAMIC_CLASS(CDownloadListCtrl, CMuleListCtrl)
-
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_LIST_COL_END_DRAG(ID_DLOADLIST, CDownloadListCtrl::OnColResize)
-	EVT_LIST_COL_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnColumnClick)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST, CDownloadListCtrl::OnLvnItemActivate)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnNMRclick)
 	EVT_KEY_UP(CDownloadListCtrl::OnKeyUp)
 	EVT_KEY_DOWN(CDownloadListCtrl::OnKeyDown)
 END_EVENT_TABLE()
 
-//IMPLEMENT_DYNAMIC(CDownloadListCtrl, CListBox)
-CDownloadListCtrl::CDownloadListCtrl()
-{
-	//SetImageList(&theApp.amuledlg->imagelist, wxIMAGE_LIST_SMALL);
-}
-
 CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags | wxLC_OWNERDRAW)
 {
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Download") );
+
 	m_ClientMenu = NULL;
 	m_PrioMenu = NULL;
 	m_FileMenu = NULL;
@@ -91,21 +86,11 @@ CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint &
 	col = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW);
 	newcol = wxColour(G_BLEND(col.Red(), 125), G_BLEND(col.Green(), 125), G_BLEND(col.Blue(), 125));
 	m_hilightUnfocusBrush = new wxBrush(newcol, wxSOLID);
-	//SetImageList(&theApp.amuledlg->imagelist, wxIMAGE_LIST_SMALL);
-	Init();
-	LoadSettings();
-}
-
-void CDownloadListCtrl::InitSort()
-{
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Download);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Download);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0 : 100));
 	isShift = false;
+	
+	Init();
 }
+
 
 CDownloadListCtrl::~CDownloadListCtrl()
 {
@@ -557,7 +542,6 @@ void CDownloadListCtrl::Init()
 void CDownloadListCtrl::AddFile(CPartFile * toadd)
 {
 	CtrlItem_Struct *newitem = new CtrlItem_Struct;
-	uint16 itemnr = GetItemCount();
 	newitem->owner = NULL;
 	newitem->type = FILE_TYPE;
 	newitem->value = toadd;
@@ -566,12 +550,11 @@ void CDownloadListCtrl::AddFile(CPartFile * toadd)
 	newitem->dwUpdated = 0;
 	//listcontent.Append(newitem);  
 	m_ListItems.insert(ListItemsPair(toadd, newitem));
-	//InsertItem(LVIF_PARAM,itemnr,0,0,0,0,(LPARAM)newitem);
 
 	if (toadd->CheckShowItemInGivenCat(curTab)) {
 		// rip something off from DrawFileItem()
 		CPartFile *pf = (CPartFile *) newitem->value;
-		uint32 newid = InsertItem(itemnr, pf->GetFileName());
+		uint32 newid = InsertItem( GetInsertPos( (long)newitem ), pf->GetFileName() );
 		SetItemData(newid, (long)newitem);
 
 		wxListItem myitem;
@@ -921,7 +904,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 				}
 				break;
 			case 11:	// last receive
-				if (!IsColumnHidden(11)) {
+				{	
 					wxString buffer;
 					if ( lpPartFile->GetLastChangeDatetime() ) {
 						buffer = wxDateTime( lpPartFile->lastseencomplete ).Format( wxT("%y/%m/%d %H:%M:%S") );
@@ -1652,34 +1635,15 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 }
 
 
-void CDownloadListCtrl::OnColumnClick(wxListEvent & evt)
-{	//NMHDR* pNMHDR, LRESULT* pResult){
-	//NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Download);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Download);
-	bool sortAscending = (sortItem != evt.GetColumn())? true : !m_oldSortAscending;
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(TP_Download, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(TP_Download, sortAscending);
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0 : 100));
-}
-
 int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CtrlItem_Struct *item1 = (CtrlItem_Struct *) lParam1;
 	CtrlItem_Struct *item2 = (CtrlItem_Struct *) lParam2;
 
 	int sortMod = 1;
-	if (lParamSort >= 100) {
+	if (lParamSort >= 1000) {
 		sortMod = -1;
-		lParamSort -= 100;
+		lParamSort -= 1000;
 	}
 
 	int comp = 0;
@@ -1946,7 +1910,6 @@ void CDownloadListCtrl::ShowFile(CPartFile * toshow)
 		//find.lParam = (LPARAM)updateItem;
 		sint16 result = FindItem(-1, (long)updateItem);
 		if (result == (-1)) {
-			//InsertItem(LVIF_PARAM,GetItemCount(),0,0,0,0,(LPARAM)updateItem);
 			int newitem = InsertItem(GetItemCount(), wxT("This is not visible"));
 			SetItemData(newitem, (long)updateItem);
 
@@ -2039,9 +2002,4 @@ void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
 	}
 }
 
-
-int CDownloadListCtrl::TablePrefs()
-{
-	return TP_Download;
-}
 

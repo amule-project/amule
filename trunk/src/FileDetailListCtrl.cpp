@@ -28,22 +28,22 @@
 #define wxLIST_STATE_DESELECTED 0x0000
 
 BEGIN_EVENT_TABLE(CFileDetailListCtrl, CMuleListCtrl)
-	EVT_LIST_COL_CLICK(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnColumnClick) // Change sorting
 	EVT_LIST_ITEM_SELECTED(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl::OnSelect) // Care for single selection
 END_EVENT_TABLE()
 
 
 CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags)
 {
+	// Set sorter function
+	SetSortFunc( CompareListNameItems );
+	
 	// Initial sorting: Sources descending
-	sortItem = 1;
-	m_SortAscending[0] =true;
-	m_SortAscending[1] =false; 
- 
 	InsertColumn(0, _("File Name"), LVCFMT_LEFT, 370);
 	InsertColumn(1, _("Sources"), LVCFMT_LEFT, 70);
-	SetSortArrow(1, 1);
-	SortItems(CompareListNameItems, 11);
+	
+	SetSortColumn( 1 );
+
+	SortList();
 }
 
 int CFileDetailListCtrl::CompareListNameItems(long lParam1, long lParam2, long lParamSort)
@@ -53,33 +53,13 @@ int CFileDetailListCtrl::CompareListNameItems(long lParam1, long lParam2, long l
 	SourcenameItem *item2 = (SourcenameItem *) lParam2; 
 	switch (lParamSort){
 		case 1: return (item1->count - item2->count); break;       // Sources descending
-		case 11: return (item2->count - item1->count); break;      // Sources ascending
+		case 1001: return (item2->count - item1->count); break;      // Sources ascending
 		case 0: return item1->name.CmpNoCase(item2->name); break;  // Name descending
-		case 10: return item2->name.CmpNoCase(item1->name); break; // Name ascending
+		case 1000: return item2->name.CmpNoCase(item1->name); break; // Name ascending
 		default: return 0;
 	}
 } 
 
-
-void CFileDetailListCtrl::UpdateSort()
-{
-	SortItems(CompareListNameItems,sortItem+((m_SortAscending[sortItem])? 0:10));
-}
-
-
-void CFileDetailListCtrl::OnColumnClick(wxListEvent & evt)
-{
-	int newSortItem = evt.GetColumn();
-	if (newSortItem == sortItem) {
-		// Sort by same column -> only change the order
-		m_SortAscending[sortItem] = !m_SortAscending[sortItem];
-	} else {
-		// Sort by other column 
-		sortItem = newSortItem;
-	}
-	SetSortArrow(sortItem, m_SortAscending[sortItem]);
-	SortItems(CompareListNameItems,sortItem+((m_SortAscending[sortItem])? 0:10));
-}
 
 void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 {

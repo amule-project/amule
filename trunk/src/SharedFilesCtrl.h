@@ -34,26 +34,23 @@ class CKnownFile;
 // CSharedFilesCtrl
 class CSharedFilesCtrl : public CMuleListCtrl {
 public:
-	CSharedFilesCtrl();
 	CSharedFilesCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 	virtual ~CSharedFilesCtrl();
 	void	Init();
-	void	InitSort();
 	void	ShowFileList(CSharedFileList* in_sflist);
 	void	ShowFile(CKnownFile* file);
-	void	ShowFile(CKnownFile* file,uint32 itemnr);
 	void	RemoveFile(CKnownFile* toremove);
 	void	UpdateFile(CKnownFile* file,uint32 pos);
 	void	UpdateItem(CKnownFile* toupdate);
 	void	Localize();
 	void	ShowFilesCount();
-private:
+protected:
+	virtual bool AltSortAllowed( int column );
+
 	virtual void	OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 	static int wxCALLBACK SortProc(long lParam1, long lParam2, long lParamSort);
-	void		OnColumnClick(wxListEvent& evt);
 	void		OnNMRclick(wxListEvent& evt);
 	virtual bool ProcessEvent(wxEvent& evt);
-	int TablePrefs();
 
 	CBarShader s_ShareStatusBar;
 
@@ -61,7 +58,6 @@ private:
 	wxMenu		   m_PrioMenu;
 	wxMenu		   m_PermMenu;
 	CSharedFileList* sflist;
-	bool		   sortstat[3];
 
 	DECLARE_EVENT_TABLE()
 };

@@ -175,8 +175,6 @@ private:
 
 const int cntStatColors = 13;
 
-enum TablePreference { TP_None = 0, TP_Download, TP_Upload, TP_Queue, TP_Search, 
-                       TP_Shared, TP_Server, TP_ClientList };
 
 class CPreferences
 {
@@ -242,19 +240,6 @@ public:
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
 	static DWORD		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
 	
-	static int32		GetColumnWidth (TablePreference t, int index);
-	static bool		GetColumnHidden(TablePreference t, int index);
-	static int32		GetColumnOrder (TablePreference t, int index);
-	static void		SetColumnWidth (TablePreference t, int index, int32 width);
-	static void		SetColumnHidden(TablePreference t, int index, bool bHidden);
-	static void		SetColumnOrder (TablePreference t, INT *piOrder);
-
-	// Barry - Provide a mechanism for all tables to store/retrieve sort order
-	static int32		GetColumnSortItem 	(TablePreference t);
-	static bool		GetColumnSortAscending 	(TablePreference t);
-	static void		SetColumnSortItem 	(TablePreference t, int32 sortItem);
-	static void		SetColumnSortAscending 	(TablePreference t, bool sortAscending);
-
 	static WORD		GetLanguageID()			{ return s_languageID; }
 	static void		SetLanguageID(WORD new_id)	{ s_languageID = new_id; }
 	static uint8		CanSeeShares()			{ return s_iSeeShares; }
@@ -469,28 +454,6 @@ protected:
 	static bool	s_ICH;
 	
 ////////////// GUI
-	static uint16	s_downloadColumnWidths[13];
-	static uint16	s_downloadColumnHidden[13];
-	static uint16	s_downloadColumnOrder[13];
-	static uint16	s_uploadColumnWidths[11];
-	static uint16	s_uploadColumnHidden[11];
-	static uint16	s_uploadColumnOrder[11];
-	static uint16	s_queueColumnWidths[11];
-	static uint16	s_queueColumnHidden[11];
-	static uint16	s_queueColumnOrder[11];
-	static uint16	s_searchColumnWidths[5];
-	static uint16	s_searchColumnHidden[5];
-	static uint16	s_searchColumnOrder[5];
-	static uint16	s_sharedColumnWidths[12];
-	static uint16	s_sharedColumnHidden[12];
-	static uint16	s_sharedColumnOrder[12];
-	static uint16	s_serverColumnWidths[12];
-	static uint16	s_serverColumnHidden[12];
-	static uint16 	s_serverColumnOrder[12];
-	static uint16	s_clientListColumnWidths[8];
-	static uint16	s_clientListColumnHidden[8];
-	static uint16 	s_clientListColumnOrder[8];
-
 	static uint8	s_depth3D;
 	
 	// Barry - Provide a mechanism for all tables to store/retrieve sort order

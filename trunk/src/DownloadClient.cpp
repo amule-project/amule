@@ -45,7 +45,7 @@
 #ifndef AMULE_DAEMON
 #include "DownloadListCtrl.h"  // Needed for CDownloadListCtrl
 #include "TransferWnd.h"       // Needed for CTransferWnd
-
+#include "color.h"             // Needed for RGB
 
 void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat)
 {
