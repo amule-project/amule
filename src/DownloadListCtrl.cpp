@@ -540,6 +540,8 @@ void CDownloadListCtrl::Init()
 
 	curTab = 0;
 	last_moment = 0;
+
+	LoadSettings();
 }
 
 void CDownloadListCtrl::AddFile(CPartFile * toadd)

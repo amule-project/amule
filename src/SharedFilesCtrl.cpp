@@ -78,6 +78,8 @@ void CSharedFilesCtrl::Init(){
 	InsertColumn(7,_("Accepted Requests"),LVCFMT_LEFT,100);
 	InsertColumn(8,_("Transferred Data"),LVCFMT_LEFT,120);
 	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,120);
+
+	LoadSettings();
 }
 
 void CSharedFilesCtrl::OnNMRclick(wxListEvent& evt)

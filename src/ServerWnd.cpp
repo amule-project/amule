@@ -91,7 +91,7 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 	int retval=dlg->ShowModal();
 	if(retval==0) {
 		// curl succeeded. proceed with serverlist processing
-		serverlistctrl->AddServermetToList(strTempFilename);
+		theApp.serverlist->AddServermetToList(strTempFilename);
 		wxRemoveFile(strTempFilename);
 		theApp.serverlist->SaveServermetToFile();
 		printf("Saving of server.met file Done !!!\n");

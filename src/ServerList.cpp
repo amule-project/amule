@@ -894,3 +894,17 @@ void CServerList::Process()
 		m_nLastED2KServerLinkCheck = ::GetTickCount();
 	}
 }
+
+
+void CServerList::RemoveDeadServers()
+{
+	if ( theApp.glob_prefs->DeadServer() ) {
+		for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
+			CServer* cur_server = theApp.serverlist->list.GetNext( pos );
+			if ( cur_server->GetFailedCount() > theApp.glob_prefs->GetDeadserverRetries() ) {
+				RemoveServer(cur_server);
+			}
+		}
+	}
+}
+
