@@ -35,6 +35,9 @@ ordinal	content
  11	as online	as online	total download in GB
  12	as online	as online	total upload in GB
  13	as online	as online	aMule version
+ 14     as online	as online	Total Downloaded in Session
+ 15	as online	as online	Total Uploaded in Session
+ 16	as online	as online	aMule Uptime
 
 For comments and additions on this format please contact
 <smallbob@users.sourceforge.net>.
