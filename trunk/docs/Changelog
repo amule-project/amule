@@ -58,6 +58,9 @@ Version 2.0.0rc6 - The '???' version.
 		  ExternalConn.cpp. There should be some speed improovement.
 		* Removed pop up when web server requested ed2k source link
 		  and amule was low id.
+		* Fixed a problem with Server Connect command in amulecmd, it
+		  was not working. It has been renamed to ConnectTo. Also
+		  fixed help command output, should look better now.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
