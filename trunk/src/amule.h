@@ -286,11 +286,7 @@ protected:
 	
 	uint32 m_dwPublicIP;
 	
-	#ifndef AMULE_DAEMON
-		long webserver_pid;
-	#else
-		CamuleWebserverThread* webserver_thread;
-	#endif
+	long webserver_pid;
 	
 #if wxCHECK_VERSION(2,5,3)
 	wxFFileOutputStream* applog;
