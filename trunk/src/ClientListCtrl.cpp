@@ -417,7 +417,9 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 
 	
 	CUpDownClient* client = (CUpDownClient*)GetItemData(item);
-	
+	if ( !client ) {
+		return;
+	}
 	wxRect cur_rect = rect;
 	cur_rect.x += 4;
 
