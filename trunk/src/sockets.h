@@ -24,7 +24,6 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/timer.h>		// Needed for wxTimer
-#include <wx/version.h>		// for wxCHECK_VERSION
 
 #include "types.h"		// Needed for int8, uint8, uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList

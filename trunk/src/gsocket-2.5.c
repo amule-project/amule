@@ -510,7 +510,7 @@ GSocketError GSocket_SetServer(GSocket *sck)
    */
 #warning when 2.5.3 is released, change 2.5.2 to 2.5.3. For the moment, cvs is 2.5.2
 // This will make every socket reusable in wx-2.5.1
-#if wxCHECK_VERSION(2,5,2)
+#if wxCHECK_VERSION_FULL(2,5,2,3)
   if (sck->m_reusable)
 #endif
     setsockopt(sck->m_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&arg, sizeof(u_long));
@@ -632,7 +632,7 @@ int GSocket_SetReusable(GSocket *socket)
     if (NULL != socket && socket->m_fd == INVALID_SOCKET) {
 #warning when 2.5.3 is released, change 2.5.2 to 2.5.3. For the moment, cvs is 2.5.2
 // This function will be void in 2.5.1
-#if wxCHECK_VERSION(2,5,2)
+#if wxCHECK_VERSION_FULL(2,5,2,3)
         socket->m_reusable = TRUE;
 #endif
 	return TRUE;
