@@ -1837,8 +1837,13 @@ void CUpDownClient::SendSecIdentStatePacket(){
 }
 
 
-void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize){
-	if ( nSize != 5 || !credits ) {
+void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 nSize)
+{
+	if ( nSize != 5 ) {
+		return;
+	}
+	
+	if ( !credits ) {
 		wxASSERT( credits );
 		return;
 	}
