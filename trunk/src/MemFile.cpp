@@ -136,7 +136,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
 	// buffers with growlength == 0
 	if ( m_GrowBytes ) {
 		// Everything is fine if m_GrowBytes is non-zero
-		while ( newsize < size )
+		while ( newsize < (off_t)size )
 			newsize += m_GrowBytes;
 	} else {
 		// Does the buffer belong to the CMemFile object? 
@@ -213,7 +213,7 @@ size_t CMemFile::Write(const void* buf, size_t length)
 		return 0;
 
 	// Needs more space?
-	if (m_position + length > m_BufferSize) {
+	if ((off_t)(m_position + length) > m_BufferSize) {
 		enlargeBuffer(m_position + length);
 	}
 	

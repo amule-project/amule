@@ -183,9 +183,11 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 	}			
 	switch (SizeLen) {
 		case 2:
+			wxASSERT(sLength < (uint16)0xFFFF); // Can't be higher than a uint16
 			WriteUInt16(real_length);
 			break;
 		case 4:
+			wxASSERT(sLength < (uint32)0xFFFFFFFF); // Can't be higher than a uint32
 			WriteUInt32(real_length);
 			break;
 		default:
@@ -201,28 +203,28 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 		if (eEncode == utf8strOptBOM) {
 			Write(BOMHeader,3);
 		}
+		// We dont include the NULL terminator.
+		// It is because we write the size, so the NULL is not necessary.		
 		Write(s, sLength);
 	}
 }
 
 void CFileDataIO::WriteString(const wxString& rstr, EUtf8Str eEncode, uint8 SizeLen)
 {
-	// We dont include the NULL terminator. Dont know why.
-	// It is because we write the size, so the NULL is not necessary.
-	if ((eEncode == utf8strRaw) || (eEncode == utf8strOptBOM)) {
-		Unicode2CharBuf s(unicode2UTF8(rstr));
-		if (s) {
-			WriteStringCore(s, eEncode, SizeLen);
-		} else {
-			// unicode2UTF-8 might fail in non-unicode builds.
-			Unicode2CharBuf s1(unicode2char(rstr));
-			WriteStringCore(s1, utf8strNone, SizeLen);
+	switch (eEncode) {
+		case utf8strRaw:
+		case utf8strOptBOM: {
+			Unicode2CharBuf s(unicode2UTF8(rstr));
+			if (s) {
+				WriteStringCore(s, eEncode, SizeLen);
+				break;
+			}
 		}
-	} else {
-		Unicode2CharBuf s(unicode2char(rstr));
-		WriteStringCore(s, eEncode, SizeLen);
+		default: {
+			Unicode2CharBuf s1(unicode2char(rstr));
+			WriteStringCore(s1, utf8strNone, SizeLen);			
+		}
 	}
-
 }
 
 
@@ -285,21 +287,21 @@ void CSafeMemFile::ReadHash16(unsigned char* pVal) const
 
 void CSafeMemFile::WriteUInt8(uint8 nVal)
 {
-	if (m_position + sizeof(uint8) > m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint8)) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint8));
 	CFileDataIO::WriteUInt8(nVal);
 }
 
 void CSafeMemFile::WriteUInt16(uint16 nVal)
 {
-	if (m_position + sizeof(uint16) > m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint16)) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint16));
 	CFileDataIO::WriteUInt16(nVal);
 }
 
 void CSafeMemFile::WriteUInt32(uint32 nVal)
 {
-	if (m_position + sizeof(uint32) > m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint32)) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32));
 	CFileDataIO::WriteUInt32(nVal);
 }
@@ -307,7 +309,7 @@ void CSafeMemFile::WriteUInt32(uint32 nVal)
 
 void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 {
-	if (m_position + sizeof(uint32)*4 > m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32)*4);
 	CFileDataIO::WriteUInt128(pVal);
 }
@@ -315,7 +317,7 @@ void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 
 void CSafeMemFile::WriteHash16(const uchar* pVal)
 {
-	if (m_position + sizeof(uint32)*4 /* 16 bytes */> m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint32)*4 /* 16 bytes */) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32)*4);
 	CFileDataIO::WriteHash16(pVal);
 }

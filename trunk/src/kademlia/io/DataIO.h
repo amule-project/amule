@@ -80,6 +80,10 @@ public:
 	virtual void readArray(void* lpResult, uint32 byteCount) = 0;
 	virtual void writeArray(const void* lpVal, uint32 byteCount) = 0;
 	virtual uint32 getAvailable() const = 0;
+
+private:
+	void	WriteStringCore(const char *s);	
+	
 };
 
 } // End namespace

@@ -300,44 +300,34 @@ void CDataIO::writeBsob(const BYTE* value, uint8 size)
 	writeArray(value, size);
 }
 
-void CDataIO::writeString(const wxString& rstr,  bool UTF8)
-{
-	//
-	// We dont include the NULL terminator. Dont know why.
-	// It is because we write the size, so the NULL is not necessary.
-	// 
-	// From wx docs: 
-	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
-	// (either char* or wxCharBuffer), except for the const.
-	
-	if (UTF8) {
-		wxCharBuffer s = wxConvUTF8.cWC2MB(rstr.wc_str(aMuleConv));
-		unsigned int sLength = s ? strlen(s) : 0;
-		if (sLength == 0) {
-			// Something failed on UTF8 enconding.
-			wxCharBuffer s2 = aMuleConv.cWX2MB(rstr);
-			sLength = s2 ? strlen(s2) : 0;
-			writeUInt16(sLength);
-			if (sLength) {
-				writeArray(s2, sLength);
-			}
-		} else {
-			writeUInt16(sLength);
-			if (sLength) {
-				writeArray(s, sLength);
-			}
-		}
-	} else {
-		wxCharBuffer s = aMuleConv.cWX2MB(rstr);
-		unsigned int sLength = s ? strlen(s) : 0;
-		writeUInt16(sLength);
-		if (sLength) {
-			writeArray(s, sLength);
-		}
-	}
+
+void CDataIO::WriteStringCore(const char *s) {
+	unsigned int sLength = s ? strlen(s) : 0;
+	wxASSERT(sLength < (uint16)0xFFFF); // Can't be higher than a uint16
+	writeUInt16(sLength);
+	if (sLength) {
+		// We dont include the NULL terminator.
+		// It is because we write the size, so the NULL is not necessary.
+		writeArray(s, sLength);
+	}	
 }
 
-
+void CDataIO::writeString(const wxString& rstr,  bool UTF8)
+{
+	switch (UTF8) {
+		case true: {
+			Unicode2CharBuf s(unicode2UTF8(rstr));
+			if (s) {
+				WriteStringCore(s);
+				break;
+			}
+		}
+		default: {
+			Unicode2CharBuf s(unicode2char(rstr));
+			WriteStringCore(s);
+		}
+	}	
+}
 
 void CDataIO::writeTag(const CTag* tag)
 {
