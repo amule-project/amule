@@ -191,15 +191,26 @@ enum {
 		 * \brief Request for download queue.
 		 *
 		 * \par Tags:
-		 *	(none)
+		 *  ::EC_TAG_PARTFILE (*) info can be requested for selected list only
 		 */
 	EC_OP_GET_DLOAD_QUEUE,
+	
+		/*!
+		 * Same as EC_OP_GET_DLOAD_QUEUE but only status and parts status are returned
+		 */
+	EC_OP_GET_DLOAD_QUEUE_STATUS,
 
+		/*!
+		 * \brief Same as EC_OP_GET_DLOAD_QUEUE, but parts status returned for every file
+		 * 
+		 */
+	EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS,
+	
 		/*!
 		 * \brief Request for upload queue - currect uploads
 		 *
 		 * \par Tags:
-		 *	(none)
+		 *  ::EC_TAG_PARTFILE (*) status can be requested for selected list only
 		 */
 	EC_OP_GET_ULOAD_QUEUE,
 
@@ -239,7 +250,7 @@ enum {
 		 *	\b ::EC_TAG_PARTFILE (1+) info about file in download queue
 		 */
 	EC_OP_DLOAD_QUEUE,
-
+		
 		/*!
 		 * \brief Get upload queue.
 		 *
@@ -469,6 +480,13 @@ enum {
 	EC_TAG_PARTFILE_ED2K_LINK,
 
 	/*!
+	 * This tag contain info about status of gaps in PartFile and availability of each part.
+	 * 
+	 * Value (string): status of each part
+	 */	
+	EC_TAG_PARTFILE_PART_STATUS,
+
+	/*!
 	 * \brief Info about CKnownFile (shared file)
 	 * 
 	 * Value (string): (the full one)
@@ -564,12 +582,5 @@ enum {
 
 };
 
-/*!
- * Flags for commands
- */
- 
- enum {
- 	EC_LIST_ONLY_STATUS, // for EC_OP_GET_*_QUEUE
- };
- 
+
 #endif	/* ECCODES_H */

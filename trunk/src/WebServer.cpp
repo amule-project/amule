@@ -23,11 +23,6 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-//-------------------------------------------------------------------
-
-#include "WebServer.h"
-
-//-------------------------------------------------------------------
 
 #include <cstdlib>
 #include <cstdio>
@@ -35,8 +30,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include <map>
-#include <vector>
+#include "WebServer.h"
 
 //-------------------------------------------------------------------
 
@@ -952,16 +946,12 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	if (cat) {
 		sCat = wxT("&cat=") + sCat;
 	}
-	bool clcompl = _ParseURL(Data, wxT("ClCompl")) == wxT("yes");
+
 	wxString sOp = _ParseURL(Data, wxT("op"));
 	wxString sFileHash = _ParseURL(Data, wxT("file"));
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 	wxString sDownloadSortRev = _ParseURL(Data, wxT("sortreverse"));
-	//
-	if (clcompl && IsSessionAdmin(Data, sSession)) {
-		pThis->webInterface->SendRecvMsg(wxT("TRANSFER CLEARCOMPLETE"));
-	}
-	//
+
 	wxString Out;
 	wxString HTTPTemp = _ParseURL(Data, wxT("c"));
 	if (!HTTPTemp.IsEmpty() && IsSessionAdmin(Data, sSession)) {
@@ -2854,4 +2844,114 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	}
 	return Result ^ m_SortReverse;
 }
+
+DownloadFilesInfo *DownloadFilesInfo::m_This = 0;
+
+DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp) : ItemsContainer<DownloadFiles, xDownloadSort>(webApp)
+{
+	m_This = this;
+}
+
+bool DownloadFilesInfo::ReQuery()
+{
+	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE_STATUS);
+	//
+	// Phase 1: request status
+	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
+	if ( !reply ) {
+		return false;
+	}
+	
+	//
+	// Phase 2: update status, mark new files for subsequent query
+	std::set<uint32> core_files;
+	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE_PARTS_STATUS);
+
+	for (int i = 0;i < reply->GetTagCount();i++) {
+		CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
+
+		core_files.insert(tag->FileID());
+		if ( m_files.count(tag->FileID()) ) {
+			// already have it - update status
+			m_files[tag->FileID()]->sFileStatus = tag->FileStatus();
+			if ( tag->FileStatus() == wxT("Downloading") ) {
+			}
+		} else {
+			// don't have it - prepare to request full info
+			req_full.AddTag(CECTag(EC_TAG_PARTFILE, tag->FileID()));
+		}
+	}
+	delete reply;
+
+	//
+	// Phase 2.5: remove files that core no longer have; mark files with
+	// status = "downloading" for parts query
+	for(std::list<DownloadFiles>::iterator i = m_items.begin(); i != m_items.end();i++) {
+		if ( core_files.count(i->file_id) == 0 ) {
+			m_files.erase(i->file_id);
+			m_items.erase(i);
+		}
+	}
+	//
+	// Phase 3: request full info about files we don't have yet
+	if ( req_full.GetTagCount() ) {
+		reply = m_webApp->SendRecvMsg_v2(&req_full);
+		if ( !reply ) {
+			return false;
+		}
+		for (int i = 0;i < reply->GetTagCount();i++) {
+			CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply->GetTagByIndex(i);
+
+			DownloadFiles file;
+			file.sFileName = tag->FileName();
+			file.lFileSize = tag->SizeFull();
+			file.lFileCompleted = tag->SizeDone();
+			file.lFileTransferred = tag->SizeXfer();
+			file.lFileSpeed = tag->Speed();
+			file.lSourceCount = tag->SourceCount();
+			file.lNotCurrentSourceCount = tag->SourceNotCurrCount();
+			file.lTransferringSourceCount = tag->SourceXferCount();
+			file.fCompleted = (100.0*file.lFileCompleted) / file.lFileSize;
+			file.lFileStatus = 17; // FIXME ??
+			file.lFilePrio = tag->Prio();
+			file.sFileHash = wxString::Format(wxT("%08x"), tag->FileID());
+			file.sED2kLink = tag->FileEd2kLink();
+			file.sFileInfo = "FIXME";
+		}
+	}
+	
+	return true;
+}
+
+bool DownloadFilesInfo::ProcessUpdate(CECPacket *)
+{
+	return false;
+}
+
+bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFiles &i2)
+{
+	bool Result;
+	switch(m_SortOrder) {
+		case DOWN_SORT_NAME:
+            Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+			break;
+		case DOWN_SORT_SIZE:
+			Result = i1.lFileSize < i2.lFileSize;
+			break;
+		case DOWN_SORT_COMPLETED:
+			Result = i1.lFileCompleted < i2.lFileCompleted;
+			break;
+		case DOWN_SORT_TRANSFERRED:
+			Result = i1.lFileTransferred < i2.lFileTransferred;
+			break;
+		case DOWN_SORT_SPEED:
+			Result = i1.lFileSpeed < i2.lFileSpeed;
+			break;
+		case DOWN_SORT_PROGRESS:
+			Result = i1.fCompleted < i2.fCompleted;
+			break;
+	}
+	return Result ^ m_SortReverse;
+}
+
 
