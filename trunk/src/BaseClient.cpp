@@ -37,7 +37,6 @@
 #include "otherfunctions.h"	// Needed for nstrdup
 
 #include "SearchList.h"		// Needed for CSearchList
-#include "ChatSelector.h"	// Needed for CChatSelector
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
@@ -54,7 +53,6 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "packets.h"		// Needed for Packet
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
-#include "FriendList.h"		// Needed for CFriendList
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
 #include "amule.h"		// Needed for theApp
@@ -240,7 +238,7 @@ CUpDownClient::~CUpDownClient()
 	theApp.clientlist->RemoveClient(this);
 	if (m_Friend) {
 		m_Friend->m_LinkedClient = NULL;
-		theApp.friendlist->RefreshFriend(m_Friend);
+		theApp.amuledlg->chatwnd->RefreshFriend(m_Friend);
 		m_Friend = NULL;
 	}
 	//printf("2...");
@@ -554,7 +552,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		Ban();
 	}
 
-	if ((m_Friend = theApp.friendlist->SearchFriend(m_achUserHash, m_dwUserIP, m_nUserPort)) != NULL){
+	if ((m_Friend = theApp.amuledlg->chatwnd->FindFriend(m_achUserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		// Link the friend to that client
 		if (m_Friend->m_LinkedClient){
 			if (m_Friend->m_LinkedClient != this){
@@ -575,7 +573,7 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		m_Friend->m_dwLastUsedIP = m_dwUserIP;
 		m_Friend->m_nLastUsedPort = m_nUserPort;
 		m_Friend->m_dwLastSeen = time(NULL);
-		theApp.friendlist->RefreshFriend(m_Friend);
+		theApp.amuledlg->chatwnd->RefreshFriend(m_Friend);
 	}
 	else{
 		// avoid that an unwanted client instance keeps a friend slot
@@ -1108,7 +1106,7 @@ bool CUpDownClient::Disconnected(CString strReason, bool bFromSocket){
 
 	if (GetChatState() != MS_NONE){
 		bDelete = false;
-		theApp.amuledlg->chatwnd->chatselector->ConnectingResult(this,false);
+		theApp.amuledlg->chatwnd->ConnectionResult(this,false);
 	}
 	
 	if (!bFromSocket && socket){
@@ -1123,7 +1121,7 @@ bool CUpDownClient::Disconnected(CString strReason, bool bFromSocket){
 		m_iFileListRequested = 0;
 	}
 	if (m_Friend) {
-		theApp.friendlist->RefreshFriend(m_Friend);
+		theApp.amuledlg->chatwnd->RefreshFriend(m_Friend);
 	}
 	//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(this);
 
@@ -1284,7 +1282,7 @@ void CUpDownClient::ConnectionEstablished()
 	
 	// ok we have a connection, lets see if we want anything from this client
 	if (GetChatState() == MS_CONNECTING) {
-		theApp.amuledlg->chatwnd->chatselector->ConnectingResult(this,true);
+		theApp.amuledlg->chatwnd->ConnectionResult(this,true);
 	}
 
 	switch(GetDownloadState()) {

@@ -26,7 +26,7 @@
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
-#include "FriendList.h"		// Needed for CFriendList
+#include "ChatWnd.h"		// Needed for CChatWnd
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ClientCredits.h"	// Needed for CClientCredits
@@ -265,7 +265,7 @@ bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
 			case MP_ADDFRIEND: {
 				// int pos;
 				// while (pos!=-1) {
-				theApp.friendlist->AddFriend(client);
+				theApp.amuledlg->chatwnd->AddFriend(client);
 				// pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				// }
 				return true;

@@ -37,7 +37,7 @@
 #include "otherfunctions.h"	// Needed for CheckShowItemInGivenCat
 #include "amule.h"		// Needed for theApp
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
-#include "FriendList.h"		// Needed for CFriendList
+#include "ChatWnd.h"		// Needed for CChatWnd
 #include "PartFile.h"		// Needed for CPartFile
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
@@ -1754,7 +1754,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					return true;				
 					break;
 				case MP_ADDFRIEND:
-					theApp.friendlist->AddFriend(client);
+					theApp.amuledlg->chatwnd->AddFriend(client);
 					return true;				
 					break;
 				case MP_DETAIL:

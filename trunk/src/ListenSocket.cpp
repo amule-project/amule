@@ -39,7 +39,6 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "ChatSelector.h"	// Needed for CChatSelector
 #include "sockets.h"		// Needed for CServerConnect
 #include "TransferWnd.h"	// Needed for transferwnd
 
@@ -788,7 +787,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					Debug("  %s\n", message);
 				}
 				#endif				
-				theApp.amuledlg->chatwnd->chatselector->ProcessMessage(client,message);
+				theApp.amuledlg->chatwnd->ProcessMessage(client,message);
 				delete[] message;
 				break;
 			}

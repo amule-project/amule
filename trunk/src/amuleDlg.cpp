@@ -41,7 +41,6 @@
 #include "UploadListCtrl.h"	// Needed for CUploadListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "sockets.h"		// Needed for CServerConnect
-#include "FriendList.h"		// Needed for CFriendList
 #include "ClientList.h"		// Needed for CClientList
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ClientCredits.h"	// Needed for CClientCreditsList
@@ -528,7 +527,6 @@ CamuleDlg::~CamuleDlg()
 	delete theApp.knownfiles; theApp.knownfiles = NULL;
 	delete theApp.uploadqueue; theApp.uploadqueue = NULL;
 	delete theApp.clientlist; theApp.clientlist = NULL;
-	delete theApp.friendlist; theApp.friendlist = NULL;
 	delete theApp.glob_prefs; theApp.glob_prefs = NULL;
 	delete theApp.serverconnect; theApp.serverconnect = NULL;
 	printf("aMule dialog destroyed\n");
@@ -833,10 +831,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		theApp.glob_prefs->Add2TotalUploaded(theApp.stat_sessionSentBytes);
 	}
 
-	// save friends
-	if (theApp.friendlist) {
-		theApp.friendlist->SaveList();
-	}
 	if (theApp.glob_prefs) {
 		theApp.glob_prefs->Save();
 	}
