@@ -100,7 +100,7 @@ void CMuleListCtrl::SaveSettings()
 		return;
 		
 
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 
 	// Sort order
 	long sort_order = 0;
@@ -136,7 +136,7 @@ void CMuleListCtrl::LoadSettings()
 		return;
 		
 
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 
 	// Set the sort-column (defaults to the first row)
 	cfg->Read( wxT("/eMule/TableSortItem") + name, &m_sort_column, 0l );
