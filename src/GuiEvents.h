@@ -384,7 +384,7 @@ class GUIEvent : public wxEvent {
 #define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_PERM,(CKnownFile *)ptr, val);
 
 // Search
-#define CoreNotify_Search_Req(ptr, global)          Notify_2_ValEvent(SEARCH_REQ,(Packet *)ptr, global);
+#define CoreNotify_Search_Req(ptr, global)          Notify_2_ValEvent(SEARCH_REQ,(Packet *)ptr, (uint8)global);
 
 #define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
 
