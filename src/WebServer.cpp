@@ -1015,6 +1015,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 		
 		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
+		//HTTPProcessData.Replace(wxT("[DownloadBar]"), i->m_Image->GetHTML());
 
 		if (i->lFileSpeed > 0.0f) {
 			fTotalSpeed += i->lFileSpeed;
@@ -2443,6 +2444,7 @@ bool DownloadFilesInfo::ReQuery()
 	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_UPDATE);
 	//
 	// Phase 1: request status
+	//printf("DownloadFilesInfo: first request\n");
 	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
 	if ( !reply ) {
 		return false;
@@ -2490,7 +2492,7 @@ bool DownloadFilesInfo::ReQuery()
 		if ( core_files.count(i->file_id) == 0 ) {
 			delete i->m_Image;
 #ifdef WITH_LIBPNG
-			m_ImageLib->RemoveImage(i->m_Image->Name());
+			m_ImageLib->RemoveImage(wxT("/") + i->m_Image->Name());
 #endif
 			m_files.erase(i->file_id);
 			m_items.erase(i);
@@ -2499,6 +2501,7 @@ bool DownloadFilesInfo::ReQuery()
 	//
 	// Phase 3: request full info about files we don't have yet
 	if ( req_full.GetTagCount() ) {
+		//printf("DownloadFilesInfo: second request\n");
 		reply = m_webApp->SendRecvMsg_v2(&req_full);
 		if ( !reply ) {
 			return false;
@@ -2526,13 +2529,24 @@ bool DownloadFilesInfo::ReQuery()
 						
 			file.m_Encoder = PartFileEncoderData( (file.lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
 
-			file.m_Image = new CDynImage(file.file_id, m_width, m_height, m_Template, file.m_Encoder);
+			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
+			if ( gaptag ) {
+				file.m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+			}
 			
-#ifdef WITH_LIBPNG
-			m_ImageLib->AddImage(file.m_Image, file.m_Image->Name());
-#endif
+			//
+			// That's the dark side of using stl containers by instance - copy constructor
+			// can invalidate pointers.
 			m_items.push_back(file);
-			m_files[file.file_id] = &(m_items.back());
+			DownloadFiles *real_ptr = &(m_items.back());
+			m_files[file.file_id] = real_ptr;
+			
+			real_ptr->m_Image = new CDynImage(file.file_id, m_width, m_height,
+				file.lFileSize, m_Template, &real_ptr->m_Encoder);
+
+#ifdef WITH_LIBPNG
+			m_ImageLib->AddImage(real_ptr->m_Image, wxT("/") + real_ptr->m_Image->Name());
+#endif
 
 		}
 	}
@@ -2655,15 +2669,120 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 	}
 }
 
-#ifdef WITH_LIBPNG
 
-CDynImage::CDynImage(uint32 id, int width, int height, wxString &tmpl, otherfunctions::PartFileEncoderData &encoder) :
-	CProgressImage(width * height * sizeof(uint32), tmpl, encoder)
+CProgressImage::CProgressImage(int width, int height, uint32 filesize, wxString &tmpl,
+	otherfunctions::PartFileEncoderData *encoder) :
+		CAnyImage(width * height * sizeof(uint32)), m_template(tmpl)
 {
-	m_id = id;
 	m_width = width;
 	m_height = height;
-	m_name = wxString::Format(wxT("%d"), id);
+	m_file_size = filesize;
+
+	m_gap_buf_size = m_gap_alloc_size = encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
+	m_Encoder = encoder;
+}
+
+CProgressImage::~CProgressImage()
+{
+	delete [] m_gap_buf;
+}
+
+void CProgressImage::ReallocGapBuffer()
+{
+	int size = m_Encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	if ( size == m_gap_alloc_size ) {
+		return;
+	}
+	if ( (size > m_gap_alloc_size) || (size < m_gap_alloc_size/2) ) {
+		m_gap_buf_size = m_gap_alloc_size = size;
+		delete [] m_gap_buf;
+		m_gap_buf = new Gap_Struct[m_gap_alloc_size];
+	} else {
+		m_gap_buf_size = size;
+	}
+}
+
+void CProgressImage::InitSortedGaps()
+{
+	ReallocGapBuffer();
+
+	const uint32 *gap_info = (const uint32 *)m_Encoder->m_gap_status.Buffer();
+	m_gap_buf_size = m_Encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	
+	memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
+	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint32), compare_gaps);
+}
+
+#define RGB_ALPHA(r, g, b) ( (((unsigned char)b) << 16) | (((unsigned char)g) << 8) | ((unsigned char)r))
+
+void CProgressImage::CreateSpan()
+{
+	// Step 1: sort gaps list in accending order
+	InitSortedGaps();
+	
+	// allocate for worst case !
+	int color_gaps_alloc = 2 * (2*m_gap_buf_size + m_file_size / PARTSIZE + 1);
+	m_colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
+	
+	// Step 2: combine gap and part status information
+	const uint32 *gap_info = (const uint32 *)m_Encoder->m_gap_status.Buffer();
+	const unsigned char *part_info = m_Encoder->m_part_status.Buffer();
+	
+	// Init first item to dummy info, so we will always have "previous" item
+	m_colored_gaps_size = 0;
+	m_colored_gaps[0].start = 0;
+	m_colored_gaps[0].end = 0;
+	m_colored_gaps[0].color = 0xffffffff;
+	for (int j = 0; j < m_gap_buf_size;j++) {
+		uint32 gap_start = ENDIAN_SWAP_32(gap_info[2*j]);
+		uint32 gap_end = ENDIAN_SWAP_32(gap_info[2*j+1]);
+		printf("DEBUG: current gap [%08x %08x]\n", gap_start, gap_end);
+
+		uint32 start = gap_start / PARTSIZE;
+		uint32 end = (gap_end / PARTSIZE) + 1;
+
+		for (uint32 i = start; i < end; i++) {
+			COLORREF color = RGB_ALPHA(255, 0, 0);
+			if ( part_info[i] ) {
+				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
+				color = RGB_ALPHA( 0, ( blue < 0 ? 0 : blue ), 255 );
+			}
+
+			uint32 fill_gap_begin = ( (i == start)   ? gap_start: PARTSIZE * i );
+			uint32 fill_gap_end   = ( (i == (end - 1)) ? gap_end   : PARTSIZE * ( i + 1 ) );
+			
+			wxASSERT(m_colored_gaps_size < color_gaps_alloc);
+			
+			if ( (m_colored_gaps[m_colored_gaps_size].end == fill_gap_begin) &&
+				(m_colored_gaps[m_colored_gaps_size].color == color) ) {
+				m_colored_gaps[m_colored_gaps_size].end = fill_gap_end;
+			} else {
+				m_colored_gaps_size++;
+				m_colored_gaps[m_colored_gaps_size].start = fill_gap_begin;
+				m_colored_gaps[m_colored_gaps_size].end = fill_gap_end;
+				m_colored_gaps[m_colored_gaps_size].color = color;
+			}
+		}
+		
+		//
+		// FIXME: Requested parts !
+		//
+	}
+}
+
+int CProgressImage::compare_gaps(const void *g1, const void *g2)
+{
+	return ((const Gap_Struct *)g1)->start - ((const Gap_Struct *)g2)->start;
+}
+
+#ifdef WITH_LIBPNG
+
+CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder) :
+	CProgressImage(width, height, file_size, tmpl, encoder)
+{
+	m_id = id;
+	m_name = wxString::Format(wxT("dyn_%d.png"), id);
 	
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
@@ -2672,23 +2791,27 @@ CDynImage::CDynImage(uint32 id, int width, int height, wxString &tmpl, otherfunc
 	// When allocating an array with a new expression, GCC used to allow 
 	// parentheses around the type name. This is actually ill-formed and it is 
 	// now rejected. From gcc3.4
-	m_row_ptrs = new unsigned char *[m_height];
+	m_row_ptrs = new png_bytep [m_height];
 	for (int i = 0; i < m_height;i++) {
-		m_row_ptrs[i] = m_data + i * m_width;
+		m_row_ptrs[i] = new png_byte[3*m_width];
+		memset(m_row_ptrs[i], 0, 3*m_width);
 	}
-	
-	m_png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-	m_info_ptr = png_create_info_struct(m_png_ptr);
-	png_set_IHDR(m_png_ptr, m_info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
-		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-		
-	png_set_write_fn(m_png_ptr, this, png_write_fn, 0);
+}
+
+CDynImage::~CDynImage()
+{
+	for (int i = 0; i < m_height;i++) {
+		delete [] m_row_ptrs[i];
+	}
+	delete [] m_row_ptrs;
 }
 
 void CDynImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	CDynImage *This = (CDynImage *)png_get_io_ptr(png_ptr);
-	memcpy(This->m_data + This->m_write_idx, data, length);
+	wxASSERT((png_size_t)(This->m_size + length) <= (png_size_t)This->m_alloc_size);
+	memcpy(This->m_data + This->m_size, data, length);
+	This->m_size += length;
 }
 
 wxString CDynImage::GetHTML()
@@ -2696,27 +2819,77 @@ wxString CDynImage::GetHTML()
 	// template contain %s (name) %d (width)
 	return wxString::Format(m_template, m_name.GetData(), m_width);
 }
+	
+void CDynImage::DrawImage()
+{
+	CreateSpan();
+	printf("CDynImage::DrawImage [%s] = \n", m_name.GetData());
+	for(int i = 1; i <= m_colored_gaps_size;i++) {
+		FillRange(m_colored_gaps[i].start, m_colored_gaps[i].end, m_colored_gaps[i].color);
+	}
+	delete [] m_colored_gaps;
+}
+
+inline void set_rgb_color_val(unsigned char *start, uint32 val)
+{
+	start[0] = (unsigned char)val;
+	start[1] = (unsigned char)((val) >> 8);
+	start[2] = (unsigned char)((val) >> 16);
+}
+
+
+void CDynImage::FillRange(uint32 gap_begin, uint32 gap_end,  COLORREF color)
+{
+	uint32 factor = m_file_size / m_width;
+	uint32 start = gap_begin / factor;
+	uint32 end = gap_end / factor;
+	printf("\tRANGE: [%08x - %08x] => %d => [%d %d] = %08x \n", gap_begin, gap_end, m_file_size, start, end, color);
+	for(int i = 0; i < m_height/2; i++) {
+		png_bytep u_row = m_row_ptrs[i];
+		png_bytep d_row = m_row_ptrs[m_height-i-1];
+		for(uint32 j = start; j < end; j++) {
+			set_rgb_color_val(u_row+3*j, color);
+			set_rgb_color_val(d_row+3*j, color);
+		}
+	}
+}
 
 unsigned char *CDynImage::RequestData(int &size)
 {
-	// create image
-	// ....
-	
-	//
+	// create new one
+	DrawImage();
+
 	// write png into buffer
-	m_write_idx = 0;
-	png_write_info(m_png_ptr, m_info_ptr);
-	png_write_image(m_png_ptr, m_row_ptrs);
-	png_write_end(m_png_ptr, 0);
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
+		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_write_fn(png_ptr, this, png_write_fn, 0);
+	
+	//printf("PNG: writing %p [ ", this);
+	
+	m_size = 0;
+	png_write_info(png_ptr, info_ptr);
+	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
+	png_write_end(png_ptr, 0);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
 	
 	return CProgressImage::RequestData(size);
 }
 
 #else
 
+CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder) :
+	CProgressImage(width, height, file_size, tmpl, encoder)
+{
+	m_id = id;
+	m_name = wxString::Format(wxT("dyn_%d.png"), id);
+	
+}
+
 wxString CDynImage::GetHTML()
 {
-	// template contain %s (name) %d (width)
+	// this is actually drawing function for compilation without libpng
 	return wxString::Format(m_template, unicode2char(m_name), m_width);
 }
 
