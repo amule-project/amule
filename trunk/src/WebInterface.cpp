@@ -235,18 +235,27 @@ void CamulewebApp::Post_Shell() {
 
 bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 {
-	DebugShow(wxT("checking whether directory ") + dir + wxT(" exists\n"));
+	DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
 	if (wxFileName::DirExists(dir)) {
+		DebugShow(wxT(" yes\n"));
 		dir += wxFileName::GetPathSeparator() + tmpl;
-		DebugShow(wxT("checking whether directory ") + dir + wxT(" exists\n"));
+		DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
 		if (wxFileName::DirExists(dir)) {
+			DebugShow(wxT(" yes\n"));
 			wxString tmplPath(dir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl"));
-			DebugShow(wxT("checking whether file ") + tmplPath + wxT(" exists\n"));
+			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {
+				DebugShow(wxT(" yes\n"));
 				// dir is already set to the directory component of the template path
 				return true;
+			} else {
+				DebugShow(wxT(" no\n"));
 			}
+		} else {
+			DebugShow(wxT(" no\n"));
 		}
+	} else {
+		DebugShow(wxT(" no\n"));
 	}
 	return false;
 }
