@@ -88,8 +88,8 @@ bool CMuleNotebook::DeleteAllPages()
 	Freeze();
 	
 	bool result = false;
-	while ( GetPageCount() )
-		result |= DeletePage(0);
+	for ( int i = GetPageCount(); i > 0; i-- )
+		result |= DeletePage(i - 1);
 		
 	Thaw();
 		
