@@ -84,7 +84,7 @@ bool wxAnimationPlayer::Play(wxWindow& window, const wxPoint& pos, bool looped)
     {
         if (!Build())
         {
-            wxLogWarning("wxAnimationPlayer::Play: could not build the image cache.");
+            wxLogWarning(wxT("wxAnimationPlayer::Play: could not build the image cache."));
             return FALSE;
         }
     }
@@ -631,7 +631,7 @@ bool wxAnimationCtrlBase::LoadData(char* data,int size)
         m_animation = NULL;
     }
 
-    m_animation = DoCreateAnimation("Ai Äm Not Used");
+    m_animation = DoCreateAnimation(wxT("Ai Äm Not Used"));
     if (!m_animation)
         return FALSE;
 

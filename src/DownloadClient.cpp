@@ -1125,7 +1125,7 @@ void CUpDownClient::UDPReaskForDownload()
 wxString CUpDownClient::ShowDownloadingParts()
 {
 	// Initialise to all N's
-	wxString Parts('N', m_nPartCount);
+	wxString Parts(wxT('N'), m_nPartCount);
 	
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != 0; ) {
 		Parts.SetChar((m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE), 'Y');

@@ -81,7 +81,7 @@ CED2KLink::~CED2KLink()
 ///////////////////////////////////////////// 
 CED2KServerListLink::CED2KServerListLink(const TCHAR* address)
 {
-	m_address = address;
+	m_address = char2unicode(address);
 }
 
 CED2KServerListLink::~CED2KServerListLink()
@@ -91,9 +91,9 @@ CED2KServerListLink::~CED2KServerListLink()
 void
 CED2KServerListLink::GetLink(wxString& lnk)
 {
-	lnk = ("ed2k://|serverlist|");
+	lnk = (wxT("ed2k://|serverlist|"));
 	lnk += m_address;
-	lnk += ("|/");
+	lnk += (wxT("|/"));
 }
 
 CED2KServerListLink*
@@ -130,10 +130,10 @@ CED2KServerLink::CED2KServerLink(const TCHAR* ip,const TCHAR* port)
 	if ( ul > 0xFFFF )
 		throw wxString(wxT("bad port number"));
 	m_port = static_cast<uint16>(ul);
-	m_defaultName = "Server ";
-	m_defaultName += ip;
-	m_defaultName += ":";
-	m_defaultName += port;
+	m_defaultName = wxT("Server ");
+	m_defaultName += char2unicode(ip);
+	m_defaultName += wxT(":");
+	m_defaultName += char2unicode(port);
 }
 
 CED2KServerLink::~CED2KServerLink()
@@ -146,13 +146,13 @@ CED2KServerLink::GetLink(wxString& lnk)
 {
 	in_addr adr;
 	char buffer[32];
-	lnk = ("ed2k://|server|");
+	lnk = (wxT("ed2k://|server|"));
 	adr.s_addr = m_ip;
-	lnk += inet_ntoa(adr);
-	lnk += ("|");
+	lnk += char2unicode(inet_ntoa(adr));
+	lnk += (wxT("|"));
 	sprintf(buffer,"%d",static_cast<int>(m_port));
-	lnk += buffer;
-	lnk += ("|/");
+	lnk += char2unicode(buffer);
+	lnk += (wxT("|/"));
 }
 
 CED2KServerListLink*
@@ -184,8 +184,8 @@ CED2KServerLink::GetKind() const
 // CED2KFileLink implementation
 /////////////////////////////////////////////
 CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash,const TCHAR* sources)
-: m_name(name)
-, m_size(size)
+: m_name(char2unicode(name))
+, m_size(char2unicode(size))
 {
   SourcesList=NULL;
 
@@ -220,7 +220,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 
 		int nInvalid = 0;
 
-		pCh = strstr( pCh, _T("sources") );
+		pCh = strstr( pCh, unicode2char(_T("sources")) );
 		if( pCh != NULL ) {
 			pCh = pCh + 7; // point to char after "sources"
 			pEnd = pCh;
@@ -326,18 +326,18 @@ CED2KFileLink::~CED2KFileLink()
 void 
 CED2KFileLink::GetLink(wxString& lnk)
 {
-	lnk = ("ed2k://|file|");
+	lnk = wxT("ed2k://|file|");
 	lnk += m_name;
-	lnk += ("|");
+	lnk += wxT("|");
 	lnk += m_size;
-	lnk += ("|");
+	lnk += wxT("|");
 	for (int idx=0; idx != 16 ; ++idx ) {
 		unsigned int ui1 = m_hash[idx] / 16;
 		unsigned int ui2 = m_hash[idx] % 16;
 		lnk+= static_cast<TCHAR>( ui1 > 9 ? (('0')+ui1) : (('A')+(ui1-10)) );
 		lnk+= static_cast<TCHAR>( ui2 > 9 ? (('0')+ui2) : (('A')+(ui2-10)) );
 	}
-	lnk += ("|/");
+	lnk += wxT("|/");
 }
 
 CED2KServerListLink*
@@ -354,7 +354,7 @@ CED2KFileLink::GetServerLink()
 CED2KFileLink* 
 CED2KFileLink::GetFileLink() 
 { 
-	m_name.Replace("%20"," ");
+	m_name.Replace(wxT("%20"),wxT(" "));
 	return this; 
 }
 
@@ -400,10 +400,10 @@ CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 	if ( strcmp( ("file") , pChArray[1]  ) == 0 && idx >=  5 && pChArray[4] != 0 ) {
 		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4],pChArray[6]);
 	}
-	else if ( strcmp( _T("serverlist") , pChArray[1] ) == 0 && idx == 3 ) {
+	else if ( strcmp( unicode2char(_T("serverlist")) , pChArray[1] ) == 0 && idx == 3 ) {
 		return new CED2KServerListLink(pChArray[2]);
 	}
-	else if ( strcmp( _T("server") , pChArray[1]  ) == 0 && idx == 4 ) {
+	else if ( strcmp( unicode2char(_T("server")) , pChArray[1]  ) == 0 && idx == 4 ) {
 		return new CED2KServerLink(pChArray[2],pChArray[3]);
 	}
 	else {
