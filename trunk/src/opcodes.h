@@ -396,6 +396,7 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_FAKECHECK2		10211
 #define	MP_WS					10212
 #define	MP_RAZORSTATS		10213
+#define MP_GETCOMMENTS      10214
 //For comments 
 #define	MP_CMT					10208
 #define	MP_SWITCHCTRL_0			10250
