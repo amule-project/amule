@@ -756,10 +756,13 @@ wxDatagramSocketProxy::~wxDatagramSocketProxy()
 		// From RFC-1928:
 		// "A UDP association terminates when the TCP connection that the
 		// UDP ASSOCIATE request arrived terminates."
+#ifndef AMULE_DAEMON
 		m_ProxySocket->Destroy();
+#else
+		delete m_ProxySocket;
+#endif
 	} else {
 	}
-	Destroy();
 }
 
 void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
