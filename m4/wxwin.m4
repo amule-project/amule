@@ -44,6 +44,23 @@ AC_DEFUN(AM_OPTIONS_WXCONFIG,
 ])
 
 dnl ---------------------------------------------------------------------------
+dnl AM_OPTIONS_WXBASECONFIG
+dnl
+dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config
+dnl command line options
+dnl ---------------------------------------------------------------------------
+
+AC_DEFUN(AM_OPTIONS_WXBASECONFIG,
+[
+   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX   Prefix where wxWidgets base is installed (optional)],
+               wxbase_config_prefix="$withval", wx_config_prefix="")
+   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX Exec prefix where wxWidgetsbase  is installed (optional)],
+               wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
+   AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG   wxbase-config script to use (optional)],
+               wxbase_config_name="$withval", wxbase_config_name="")
+])
+
+dnl ---------------------------------------------------------------------------
 dnl AM_PATH_WXCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
 dnl Test for wxWidgets, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
@@ -178,6 +195,8 @@ AC_DEFUN(AM_PATH_WXCONFIG,
     WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
     WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
   
+    WXBASEFOUND=1
+  
     AC_SUBST(WXBASE_CPPFLAGS)
     AC_SUBST(WXBASE_CFLAGS)
     AC_SUBST(WXBASE_CXXFLAGS)
@@ -231,6 +250,8 @@ AC_DEFUN(AM_PATH_WXCONFIG,
       minvers=`echo $min_wxbase_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
     
       if test -n "$vers" && test "$vers" -ge $minvers; then
+	WXBASEFOUND=1
+      
         WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
         WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
       
@@ -256,6 +277,8 @@ AC_DEFUN(AM_PATH_WXCONFIG,
 	    AC_MSG_RESULT(no (version $WXBASE_VERSION is not new enough))
          fi
 
+	 WXBASEFOUND=0
+  
          WXBASE_CFLAGS=""
          WXBASE_CPPFLAGS=""
          WXBASE_CXXFLAGS=""
@@ -281,7 +304,7 @@ AC_DEFUN(AM_PATH_WXCONFIG,
 	 ])
       fi
     fi
-
+    
     AC_SUBST(WXBASE_CPPFLAGS)
     AC_SUBST(WXBASE_CFLAGS)
     AC_SUBST(WXBASE_CXXFLAGS)

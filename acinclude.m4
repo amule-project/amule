@@ -264,7 +264,7 @@ AC_DEFUN(AM_PATH_GDLIBCONFIG,
     else
       if test $gdlib_config_major_version -eq $gdlib_requested_major_version; then
          if test $gdlib_config_minor_version -gt $gdlib_requested_minor_version; then
-            wxbase_ver_ok=yes
+            gdlib_ver_ok=yes
          else
             if test $gdlib_config_minor_version -eq $gdlib_requested_minor_version; then
                if test $gdlib_config_micro_version -ge $gdlib_requested_micro_version; then
@@ -279,25 +279,6 @@ AC_DEFUN(AM_PATH_GDLIBCONFIG,
       no_gdlib=yes
     else
       GDLIB_LIBS=`$GDLIB_CONFIG_WITH_ARGS --libs`
-#     GDLIB_LIBS_STATIC=`$GDLIB_CONFIG_WITH_ARGS --libs`
-
-#      dnl gdlib-config doesn't have --cppflags... that's why # here
-#      gdlib_has_cppflags=""
-#      if test $wxbase_config_major_version -gt 2; then
-#        wxbase_has_cppflags=yes
-#      else
-#        if test $wxbase_config_major_version -eq 2; then
-#           if test $wxbase_config_minor_version -gt 2; then
-#              wxbase_has_cppflags=yes
-#           else
-#              if test $wxbase_config_minor_version -eq 2; then
-#                 if test $wxbase_config_micro_version -ge 6; then
-#                    wxbase_has_cppflags=yes
-#                 fi
-#              fi
-#           fi
-#        fi
-#      fi
 
       if test "x$gdlib_has_cppflags" = x ; then
          dnl no choice but to define all flags like CFLAGS
