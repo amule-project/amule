@@ -736,7 +736,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	Out.Replace(wxT("[ServerInfo]"), _("Serverinfo"));
 	Out.Replace(wxT("[DebugLog]"), _("Debug Log"));
 	Out.Replace(wxT("[Stats]"), _("Statistics"));
-	Out.Replace(wxT("[Options]"), _("&Preferences"));
+	Out.Replace(wxT("[Options]"), _("Preferences"));
 	Out.Replace(wxT("[Logout]"), _("Logout"));
 	Out.Replace(wxT("[Search]"), _("Search"));
 

@@ -1,3 +1,11 @@
+Version 2.0.0rc7 - The "xxxxxxxxxxxxxxxx" version.
+----------
+2004-10-XX
+
+	Phoenix:
+		* Fixed '&' char next to Preferences in amuleweb page, as
+		  reported by DreamWalker.
+
 Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
 ----------
 2004-10-03
@@ -11,7 +19,7 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		* Added hability for send msg to clients in upload queue, without having to add 
 		  them as friends (based on Kry's download queue send-on-right-click implementation)
 		* Translations update.
-		
+
 	falso:
 		* New upstream cas version. Now supports creating html pages with the statistics
 		* Now cas runs on netbsd.
@@ -451,13 +459,13 @@ Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair
 		* likesylph, for providing a fix for the StripInvalidFilenameChars function.
 		* All translators
 		* All testers
-		* BrianHV and the people at #wxwidgets for their help and supportç
+		* BrianHV and the people at #wxwidgets for their help and support
 		* EVERYONE at #amule (even codewarrior2!)
 		* All the people in aMule's forum
 		* All the users, for having the patience to wait the delayed rc6 release.
 		* Hellimod, one_2_one, ASTIOBOY, sssnake, lami123, Ocimin, agav,  PowerMike
 		   and all the mac testers and people providing Macs for ssh & vnc. 
-		   
+
 	Funny stuff about this changelog:
 		* You can notice that the Search dialog was rewritten 3 (THREE!) times
 		   between rc5 and rc6. You only get to see the final version (Xaignar's), 
