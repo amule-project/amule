@@ -3059,7 +3059,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 					return 0;
 				}
 				if( n != cur_src->m_nPartCount ||
-					cur_src->m_nPartCount == forClient->m_nPartCount ) {
+					cur_src->m_nPartCount != forClient->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
 #endif // __DEBUG__
