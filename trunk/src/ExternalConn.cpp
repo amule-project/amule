@@ -513,6 +513,56 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_ServerList(const CECPacket *WXUNUSED(request))
+{
+	CECPacket *response = new CECPacket(EC_OP_SERVER_LIST);
+	for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
+		CServer *curr_srv = theApp.serverlist->GetServerAt(i);
+		CECTag srv_tag(EC_TAG_SERVER, curr_srv->GetListName());
+		srv_tag.AddTag(CECTag(EC_TAG_ITEM_ID, PTR_2_ID(curr_srv)));
+		srv_tag.AddTag(CECTag(EC_TAG_SERVER_USERS, curr_srv->GetUsers()));
+		srv_tag.AddTag(CECTag(EC_TAG_SERVER_FILES, curr_srv->GetFiles()));
+		response->AddTag(srv_tag);
+	}	
+	return response;
+}
+
+CECPacket *Get_EC_Response_Server(const CECPacket *request)
+{
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	CECTag *srv_tag = request->GetTagByIndex(0);
+	switch (request->GetOpCode()) {
+		case EC_OP_SERVER_DISCONNECT:
+			theApp.serverconnect->Disconnect();
+			response->AddTag(CECTag(EC_TAG_STRING,_("OK: disconnected from server")));
+			break;
+		case EC_OP_SERVER_CONNECT:
+			if ( srv_tag ) {
+				uint32 srv_id = srv_tag->GetInt32Data();
+				CServer *srv = 0;
+				for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
+					CServer *curr_srv = theApp.serverlist->GetServerAt(i);
+					if ( PTR_2_ID(curr_srv) == srv_id ) {
+						srv = curr_srv;
+						break;
+					}
+				}
+				if ( srv ) {
+					theApp.serverconnect->ConnectToServer(srv);
+					response->AddTag(CECTag(EC_TAG_STRING, _("OK: trying to connect")));
+				} else {
+					response->AddTag(CECTag(EC_TAG_STRING,
+						_("ERROR: server not found by id")));
+				}
+			} else {
+				theApp.serverconnect->ConnectToAnyServer();
+				response->AddTag(CECTag(EC_TAG_STRING, _("OK: connecting to any server")));
+			}
+			break;
+	}	
+	return response;
+}
+
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
 
@@ -537,6 +587,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 			response = Get_EC_Response_GetDownloadQueue(request);
+			break;
+		case EC_OP_SERVER_DISCONNECT:
+		case EC_OP_SERVER_CONNECT:
+			response = Get_EC_Response_Server(request);
+			break;
+		case EC_OP_GET_SERVER_LIST:
+			response = Get_EC_Response_ServerList(request);
 			break;
 		case EC_OP_IPFILTER_CMD:
 			response = Process_IPFilter(request);
