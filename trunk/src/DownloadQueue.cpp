@@ -1116,7 +1116,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 	wxMutexLocker lock( m_mutex );
 		
 	Hostname_Entry entry = { fileid, pszHostname, port };
-	m_toresolve.push_back(entry);
+	m_toresolve.push_front(entry);
 
 	// Check if there are other DNS lookups on queue
 	if ( m_toresolve.size() > 1 ) {
@@ -1165,7 +1165,9 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE);
 	
 		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
-			if ( dns->Run() != wxTHREAD_NO_ERROR ) {
+			if ( dns->Run() == wxTHREAD_NO_ERROR ) {
+				break;
+			} else {
 				dns->Delete();
 				m_toresolve.pop_front();
 			}
