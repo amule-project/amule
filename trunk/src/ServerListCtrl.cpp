@@ -314,7 +314,7 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 
 void CServerListCtrl::ShowServerCount()
 {
-	wxStaticText* label = wxStaticCast( FindWindowByName( wxT("serverListLabel"), theApp.amuledlg->serverwnd ), wxStaticText );
+	wxStaticText* label = CastByName( wxT("serverListLabel"), GetParent(), wxStaticText );
 
 	if ( label ) {
 		label->SetLabel( wxString::Format( _("Servers (%i)"), GetItemCount() ) );

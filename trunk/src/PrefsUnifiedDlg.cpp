@@ -164,7 +164,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	s_ID = GetId();
 
 	preferencesDlgTop( this, FALSE );
-	wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
+	wxListCtrl* PrefsIcons = CastChild( ID_PREFSLISTCTRL, wxListCtrl );
 
 	wxImageList* icon_list = new wxImageList(16, 16);
 	PrefsIcons->AssignImageList( icon_list, wxIMAGE_LIST_SMALL);
@@ -225,13 +225,13 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	prefs_sizer->SetMinSize( width, height );
 
 	// Store some often used pointers
-	m_ShareSelector = ((CDirectoryTreeCtrl*)FindWindowById(IDC_SHARESELECTOR, this));
-	m_buttonColor = (wxButton*)FindWindowById(IDC_COLOR_BUTTON, this);
-	m_choiceColor = (wxChoice*)FindWindowById(IDC_COLORSELECTOR, this);
+	m_ShareSelector = CastChild( IDC_SHARESELECTOR, CDirectoryTreeCtrl );
+	m_buttonColor   = CastChild( IDC_COLOR_BUTTON, wxButton );
+	m_choiceColor   = CastChild( IDC_COLORSELECTOR, wxChoice );
 
 	// Connect the Cfgs with their widgets
-	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.begin();
-	for ( ; it != CPreferences::s_CfgList.end(); ++it ) {
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->ConnectToWidget( it->first, this ) ) {
 			printf("Failed to connect Cfg to widget with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));
@@ -254,8 +254,8 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 PrefsUnifiedDlg::~PrefsUnifiedDlg()
 {
 	// Un-Connect the Cfgs
-	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.begin();
-	for ( ; it != CPreferences::s_CfgList.end(); ++it ) {
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		it->second->ConnectToWidget( 0 );
 	}
@@ -264,9 +264,9 @@ PrefsUnifiedDlg::~PrefsUnifiedDlg()
 
 Cfg_Base* PrefsUnifiedDlg::GetCfg(int id)
 {
-	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.find( id );
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.find( id );
 
-	if ( it != CPreferences::s_CfgList.end() )
+	if ( it != thePrefs::s_CfgList.end() )
 		return it->second;
 
 	return NULL;
@@ -276,8 +276,8 @@ Cfg_Base* PrefsUnifiedDlg::GetCfg(int id)
 bool PrefsUnifiedDlg::TransferToWindow()
 {
 	// Connect the Cfgs with their widgets
-	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.begin();
-	for ( ; it != CPreferences::s_CfgList.end(); ++it ) {
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->TransferToWindow() ) {
 			printf("Failed to transfer data from Cfg to Widget with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));
@@ -288,34 +288,34 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
-		CPreferences::s_colors[i] = CStatisticsDlg::acrStat[i];
-		CPreferences::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
+		thePrefs::s_colors[i] = CStatisticsDlg::acrStat[i];
+		thePrefs::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
 	}
 
 
 	// Enable/Disable some controls
-	FindWindow( IDC_FCHECKSELF )->Enable( ((wxChoice*)FindWindow( IDC_FCHECK ))->GetSelection() == 8 );
-	FindWindow( IDC_MINDISKSPACE )->Enable( CPreferences::IsCheckDiskspaceEnabled() );
-	FindWindow( IDC_SKINFILE )->Enable( CPreferences::UseSkin() );
-	FindWindow( IDC_OSDIR )->Enable( CPreferences::IsOnlineSignatureEnabled() );
+	FindWindow( IDC_FCHECKSELF )->Enable( CastChild( IDC_FCHECK, wxChoice )->GetSelection() == 8 );
+	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
+	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
+	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 #warning UDPDisable isnt implemented!
-	FindWindow( IDC_UDPPORT )->Enable( !CPreferences::s_UDPDisable );
-	FindWindow( IDC_SERVERRETRIES )->Enable( CPreferences::DeadServer() );
-	FindWindow( IDC_HQR_VALUE )->Enable( CPreferences::DropHighQueueRankingSources() );
-	FindWindow( IDC_IPFILTERURL )->Enable( CPreferences::IPFilterAutoLoad() );
+	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
+	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
+	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
+	FindWindow( IDC_IPFILTERURL )->Enable( thePrefs::IPFilterAutoLoad() );
 
 	// Set the permissions scrollers for files
-	int perms = CPreferences::GetFilePermissions();
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->SetValue( perms / 0100 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->SetValue( perms % 0100 / 010 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->SetValue( perms % 0100 % 010 / 01 );
+	int perms = thePrefs::GetFilePermissions();
+	CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->SetValue( perms / 0100 );
+	CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
+	CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
 	
 	// Set the permissions scrollers for directories
-	perms = CPreferences::GetDirPermissions();
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DU))->SetValue( perms / 0100 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DG))->SetValue( perms % 0100 / 010 );
-	((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_DO))->SetValue( perms % 0100 % 010 / 01 );
-
+	perms = thePrefs::GetDirPermissions();
+	CastChild( IDC_SPIN_PERM_DU, wxSpinCtrl )->SetValue( perms / 0100 );
+	CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
+	CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
+	
 	return true;
 }
 
@@ -323,8 +323,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 bool PrefsUnifiedDlg::TransferFromWindow()
 {
 	// Connect the Cfgs with their widgets
-	CPreferences::CFGMap::iterator it = CPreferences::s_CfgList.begin();
-	for ( ; it != CPreferences::s_CfgList.end(); ++it ) {
+	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->TransferFromWindow() ) {
 			printf("Failed to transfer data from Widget to Cfg with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));
@@ -335,8 +335,8 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	m_ShareSelector->GetSharedDirectories(&theApp.glob_prefs->shareddir_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
-		if ( CPreferences::s_colors[i] != CPreferences::s_colors_ref[i] ) {
-			CStatisticsDlg::acrStat[i] = CPreferences::s_colors[i];
+		if ( thePrefs::s_colors[i] != thePrefs::s_colors_ref[i] ) {
+			CStatisticsDlg::acrStat[i] = thePrefs::s_colors[i];
 			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);
 		}
 
@@ -345,16 +345,16 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 	// Set the file-permissions value
 	int file_perms = 0;
-	file_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
-	file_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
-	file_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
-	CPreferences::SetFilePermissions( file_perms );
+	file_perms |= 0100 * CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->GetValue();
+	file_perms |= 0010 * CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->GetValue();
+	file_perms |= 0001 * CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->GetValue();
+	thePrefs::SetFilePermissions( file_perms );
 
 	int dir_perms = 0;
-	dir_perms |= 0100 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FU))->GetValue();
-	dir_perms |= 0010 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FG))->GetValue();
-	dir_perms |= 0001 * ((wxSpinCtrl*)FindWindow(IDC_SPIN_PERM_FO))->GetValue();
-	CPreferences::SetDirPermissions( dir_perms );
+	dir_perms |= 0100 * CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->GetValue();
+	dir_perms |= 0010 * CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->GetValue();
+	dir_perms |= 0001 * CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->GetValue();
+	thePrefs::SetDirPermissions( dir_perms );
 
 
 	return true;
@@ -395,7 +395,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 
 	if ( CfgChanged(IDC_OSDIR) ) {
-		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_OSDIR );
+		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 
 		// Build the filenames for the two OS files
 		theApp.SetOSFiles( widget->GetValue() );
@@ -424,11 +424,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 	
 	if ( CfgChanged(IDC_DOWNLOAD_CAP) ) {
-		theApp.amuledlg->statisticswnd->SetARange( true, CPreferences::GetMaxGraphDownloadRate() );
+		theApp.amuledlg->statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
 	}
 
 	if ( CfgChanged(IDC_UPLOAD_CAP) ) {
-		theApp.amuledlg->statisticswnd->SetARange( false, CPreferences::GetMaxGraphUploadRate() );
+		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
 
@@ -503,24 +503,24 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent& WXUNUSED(event))
 {
 	int index = m_choiceColor->GetSelection();
-	wxColour col = WxColourFromCr( CPreferences::s_colors[index] );
+	wxColour col = WxColourFromCr( thePrefs::s_colors[index] );
 	col = wxGetColourFromUser( this, col );
 	if ( col.Ok() ) {
 		m_buttonColor->SetBackgroundColour( col );
-		CPreferences::s_colors[index] = CrFromWxColour(col);
+		thePrefs::s_colors[index] = CrFromWxColour(col);
 	}
 }
 
 
 void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 {
-	m_buttonColor->SetBackgroundColour( WxColourFromCr( CPreferences::s_colors[ m_choiceColor->GetSelection() ] ) );
+	m_buttonColor->SetBackgroundColour( WxColourFromCr( thePrefs::s_colors[ m_choiceColor->GetSelection() ] ) );
 }
 
 
 void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 {
-	wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_FCHECKSELF );
+	wxTextCtrl* widget = CastChild( IDC_FCHECKSELF, wxTextCtrl );
 
 	if ( widget )
 		widget->Enable( evt.GetSelection() == 8 );
@@ -563,7 +563,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		return;
 	}
 
-	wxTextCtrl* widget	= (wxTextCtrl*)FindWindow( id );
+	wxTextCtrl* widget	= CastChild( id, wxTextCtrl );
 	wxString dir		= widget->GetValue();
 
 	wxString str = wxDirSelector( type, dir );
@@ -580,7 +580,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 		wxT("*.wav"), _("File wav (*.wav)|*.wav||") );
 	
 	if ( !str.IsEmpty() ) {
-		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_EDIT_TBN_WAVFILE );
+		wxTextCtrl* widget = CastChild( IDC_EDIT_TBN_WAVFILE, wxTextCtrl );
 
 		widget->SetValue( str );
 	}
@@ -592,7 +592,7 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 	wxString str = wxFileSelector( _("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*") );
 
 	if ( !str.IsEmpty() ) {
-		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_SKINFILE );
+		wxTextCtrl* widget = CastChild( IDC_SKINFILE, wxTextCtrl );
 
 		widget->SetValue( str );
 	}
@@ -605,7 +605,7 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 	                               wxT(""), _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
-		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_VIDEOPLAYER );
+		wxTextCtrl* widget = CastChild( IDC_VIDEOPLAYER, wxTextCtrl );
 
 		widget->SetValue( str );
 	}
@@ -633,7 +633,7 @@ void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 
 void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
 {
-	theApp.ipfilter->Update(((wxTextCtrl*)FindWindow(IDC_IPFILTERURL))->GetValue());
+	theApp.ipfilter->Update( CastChild( IDC_IPFILTERURL, wxTextCtrl )->GetValue() );
 }
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
@@ -716,7 +716,7 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 		return;
 	}
 
-	wxStaticText* widget = (wxStaticText*)FindWindow( id );
+	wxStaticText* widget = CastChild( id, wxStaticText );
 
 	if ( widget )
 		widget->SetLabel( label );
@@ -730,7 +730,7 @@ void PrefsUnifiedDlg::OnRateLimitChanged( wxSpinEvent& event )
 
 	// We only do checks if the rate is limited
 	if ( event.GetPosition() != UNLIMITED ) {
-		wxSpinCtrl* dlrate = (wxSpinCtrl*)FindWindow( IDC_MAXDOWN );
+		wxSpinCtrl* dlrate = CastChild( IDC_MAXDOWN, wxSpinCtrl );
 	
 		if ( event.GetPosition() < 4 ) {
 			if ( ( event.GetPosition() * 3 < dlrate->GetValue() ) || ( dlrate->GetValue() == UNLIMITED ) )

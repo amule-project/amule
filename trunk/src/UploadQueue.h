@@ -29,13 +29,12 @@
 #include <deque>
 #include <list>
 
-class CPreferences;
 class CUpDownClient;
 
 
 class CUploadQueue{
 public:
-	CUploadQueue(CPreferences* in_prefs);
+	CUploadQueue();
 	~CUploadQueue();
 	void	Process();
 	void	AddClientToQueue(CUpDownClient* client);
@@ -108,7 +107,6 @@ private:
 	uint32	msPrevProcess;
 	float	kBpsUp;
 	float	kBpsEst;
-	CPreferences* app_prefs;
 	uint32	successfullupcount;
 	uint32	failedupcount;
 	uint32	totaluploadtime;

@@ -62,15 +62,15 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
 
 	// init serverlist
 	// no use now. too early.
-	CServerListCtrl* list=(CServerListCtrl*)FindWindowById(ID_SERVERLIST);
+	CServerListCtrl* list= CastChild( ID_SERVERLIST, CServerListCtrl );
 	serverlistctrl=list;
 
-	wxTextCtrl* cv=(wxTextCtrl*)FindWindowById(ID_SERVERINFO);
+	wxTextCtrl* cv = CastChild( ID_SERVERINFO, wxTextCtrl );
 	cv->AppendText(wxT("This is aMule ") wxT(VERSION) wxT(" (based on eMule)\n"));
 	cv->AppendText(wxT("Visit http://www.amule.org to check if a new version is available.\n"));
 
 	// Insert two columns, currently without a header
-	wxListCtrl* MyInfoList = (wxListCtrl*)FindWindow(ID_MYSERVINFO);
+	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
 	MyInfoList->InsertColumn(0, wxEmptyString);
 	MyInfoList->InsertColumn(1, wxEmptyString);
 }
@@ -93,22 +93,22 @@ void CServerWnd::Localize()
 void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString serveraddr;
-	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetValue().IsEmpty()) {
+	if( CastChild( IDC_IPADDRESS, wxTextCtrl )->GetValue().IsEmpty() ) {
 		AddLogLineM(true, _("Please enter a serveraddress"));
 		return;
 	} else {
-		serveraddr=((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetValue();
+		serveraddr = CastChild( IDC_IPADDRESS, wxTextCtrl )->GetValue();
 	}
-	if (((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetValue().IsEmpty()) {
+	if ( CastChild( IDC_SPORT, wxTextCtrl )->GetValue().IsEmpty() ) {
 		AddLogLineM(true, _("Incomplete serverport: Please enter a serverport"));
 		return;
 	}
   
 	wxString portstr;
-	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetValue();
+	portstr= CastChild( IDC_SPORT, wxTextCtrl )->GetValue();
 	CServer* toadd = new CServer(atoi(unicode2char(portstr)),serveraddr);
 	wxString servername;
-	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetValue();
+	servername = CastChild( IDC_SERVERNAME, wxTextCtrl )->GetValue();
 	if (!servername.IsEmpty()) {
 		toadd->SetListName(servername);
 	} else {
@@ -127,15 +127,15 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	}
 	theApp.serverlist->SaveServermetToFile();
 	printf("Saving of server.met file Done !!!\n");
-	((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->SetValue(wxEmptyString);
-	((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->SetValue(wxEmptyString);
-	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue(wxEmptyString);
+
+	CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
+	CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
+	CastChild( IDC_SPORT, wxTextCtrl )->Clear();
 }
 
 void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString strURL;
-	strURL=((wxTextCtrl*)FindWindowById(IDC_SERVERLISTURL))->GetValue();
+	wxString strURL = CastChild( IDC_SERVERLISTURL, wxTextCtrl )->GetValue();
 	UpdateServerMetFromURL(strURL);
 }
 
@@ -151,7 +151,7 @@ void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 
 void CServerWnd::UpdateMyInfo()
 {
-	wxListCtrl* MyInfoList = (wxListCtrl*)FindWindow(ID_MYSERVINFO);
+	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
 	
 	wxString buffer;
 
@@ -174,7 +174,7 @@ void CServerWnd::UpdateMyInfo()
 			uint8 c = ( myid >> 16 ) & 0xFF;
 			uint8 d = ( myid >> 24 ) & 0xFF;
 			buffer.Printf(wxT("%i.%i.%i.%i:%i"),
-				a, b, c, d, theApp.glob_prefs->GetPort());
+				a, b, c, d, thePrefs::GetPort());
 		}
 		MyInfoList->SetItem(1, 1, buffer);
 
@@ -199,5 +199,5 @@ void CServerWnd::UpdateMyInfo()
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
-	theApp.amuledlg->srv_split_pos = ((wxSplitterWindow*)FindWindow(wxT("SrvSplitterWnd")))->GetSashPosition();
+	theApp.amuledlg->srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
 }

@@ -1375,14 +1375,14 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 
 	if (!m_socket) {
-		m_socket = new CClientReqSocket(theApp.glob_prefs,this);
+		m_socket = new CClientReqSocket(this);
 		if (!m_socket->Create()) {
 			m_socket->Safe_Delete();
 			return true;
 		} 
 	} else if (!m_socket->IsConnected()) {
 		m_socket->Safe_Delete();
-		m_socket = new CClientReqSocket(theApp.glob_prefs,this);
+		m_socket = new CClientReqSocket(this);
 		if (!m_socket->Create()) {
 			m_socket->Safe_Delete();
 			return true;

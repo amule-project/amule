@@ -90,10 +90,10 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	wxSizer* content = searchDlg(this, true);
 	content->Show(this, true);
 
-	m_progressbar = (wxGauge*)FindWindow(ID_SEARCHPROGRESS);
+	m_progressbar = CastChild( ID_SEARCHPROGRESS, wxGauge );
 	m_progressbar->SetRange(100);
 	
-	m_notebook = (CMuleNotebook*)FindWindow(ID_NOTEBOOK);
+	m_notebook = CastChild( ID_NOTEBOOK, CMuleNotebook );
 
 	// Initialise the image list
 	wxImageList* m_ImageList = new wxImageList(16,16);
@@ -101,8 +101,8 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	m_ImageList->Add(amuleSpecial(4));
 	m_notebook->AssignImageList(m_ImageList);
 
-	((wxChoice*)FindWindow(ID_SEARCHTYPE))->SetSelection(0);
-	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
+	CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(0);
+	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
@@ -205,7 +205,7 @@ void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 
 void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
+	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
 	searchString.Trim(true);
 	searchString.Trim(false);	
 	
@@ -214,7 +214,7 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 	}
 
 
-	wxChoice* choice = (wxChoice*)FindWindow(ID_SEARCHTYPE);
+	wxChoice* choice = CastChild( ID_SEARCHTYPE, wxChoice );
 
 	// Web seaches
 	switch ( choice->GetSelection() ) {
@@ -258,7 +258,7 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHEXTENSION };
 
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
-		enable |= !((wxTextCtrl*)FindWindowById( textfields[i] ))->GetValue().IsEmpty();
+		enable |= !CastChild( textfields[i], wxTextCtrl )->GetValue().IsEmpty();
 	}
 
 
@@ -266,7 +266,7 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
 
 	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
-		enable |= ((wxSpinCtrl*)FindWindowById( spinfields[i] ))->GetValue();
+		enable |= CastChild( spinfields[i], wxSpinCtrl )->GetValue();
 	}
 
 	// Enable the Clear and Clear-All button if any fields contain text
@@ -275,8 +275,8 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 
 	
 	// Enable the Server Search button if the Name field contains text
-	enable = !((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue().IsEmpty();
-	FindWindowById(IDC_STARTS)->Enable( enable );
+	enable = !CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue().IsEmpty();
+	FindWindow(IDC_STARTS)->Enable( enable );
 }
 
 
@@ -351,11 +351,11 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 	if ( !searchlistctrl->GetSelectedItemCount() )
 		return;
 	
-	FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 	
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while ( index > -1 ) {
-		uint8 cat = ((wxChoice*)FindWindow(ID_AUTOCATASSIGN))->GetSelection();
+		uint8 cat = CastChild( ID_AUTOCATASSIGN, wxChoice )->GetSelection();
 		
 		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), cat );
 		
@@ -399,7 +399,7 @@ void CSearchDlg::StartNewSearch()
 
 	m_canceld = false;
 	
-	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
+	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
 	searchString.Trim(true);
 	searchString.Trim(false);	
 	if ( searchString.IsEmpty() ) {
@@ -411,25 +411,25 @@ void CSearchDlg::StartNewSearch()
 	
 	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
 
-		extension = ((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->GetValue();
+		extension = CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->GetValue();
 		if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
 			extension = wxT(".") + extension;
 		}		
 
-		typeText = ((wxChoice*)FindWindow(IDC_TypeSearch))->GetStringSelection();
+		typeText = CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection();
 
 		// Parameter Minimum Size
-		min = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->GetValue() * 1048576;
+		min = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * 1048576;
 
 		// Parameter Maximum Size
-		max = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->GetValue() * 1048576;
+		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * 1048576;
 
 		if ( max < min ) max = 0;
 
 		// Parameter Availability
-		availability = ((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->GetValue();
+		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
-		switch ( ((wxChoice*)FindWindow(IDC_TypeSearch))->GetSelection() ) {
+		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
 			case 0: typeText = wxT("Any"); break;
 			case 1: typeText = wxT("Archives"); break;
 			case 2: typeText = wxT("Audio"); break;
@@ -447,7 +447,7 @@ void CSearchDlg::StartNewSearch()
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
 	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
 	
-	m_globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
+	m_globalsearch = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection() == 1;
 
 	CoreNotify_Search_Req(packet, m_globalsearch);
 	
@@ -457,7 +457,7 @@ void CSearchDlg::StartNewSearch()
 
 void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 {
-	for ( unsigned i = 0; i < m_notebook->GetPageCount(); ++i ) {
+	for ( uint32 i = 0; i < (uint32)m_notebook->GetPageCount(); ++i ) {
 		if ( m_notebook->GetPage(i) == page ) {
 			wxString searchtxt = m_notebook->GetPageText(i).BeforeLast(wxT(' '));
 		
@@ -473,16 +473,16 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 
 void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 {
-	((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->Clear();
-	((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->Clear();
-	
-	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMIN))->SetValue(0);
-	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->SetValue(0);
-	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->SetValue(0);
+	CastChild( IDC_SEARCHNAME, wxTextCtrl )->Clear();
+	CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->Clear();
+
+	CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->SetValue(0);
+	CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->SetValue(0);
+	CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->SetValue(0);
 
 	FindWindow(IDC_CLEAR_RESULTS)->Enable( m_notebook->GetPageCount() );
 
-	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
+	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	
 	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
 }
@@ -490,7 +490,7 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 
 void CSearchDlg::UpdateCatChoice()
 {
-	wxChoice* c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
+	wxChoice* c_cat = CastChild( ID_AUTOCATASSIGN, wxChoice );
 	c_cat->Clear();
 
 	for ( unsigned i = 0; i < theApp.glob_prefs->GetCatCount(); i++ ) {

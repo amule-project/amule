@@ -138,9 +138,8 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP)
 }
 
 
-CClientCreditsList::CClientCreditsList(CPreferences* in_prefs)
+CClientCreditsList::CClientCreditsList()
 {
-	m_pAppPrefs = in_prefs;
 	m_nLastSaved = ::GetTickCount();
 	LoadList();
 	
@@ -319,7 +318,6 @@ void CClientCreditsList::SaveList()
 	ENDIAN_SWAP_I_32(count);
 	file.Write(&count, 4);
 	file.Write(pBuffer, ENDIAN_SWAP_32(count)*sizeof(CreditStruct));
-//		if (theApp.glob_prefs->GetCommitFiles() >= 2 || (theApp.glob_prefs->GetCommitFiles() >= 1 && !theApp.emuledlg->IsRunning()))
 	file.Flush();
 	file.Close();
 	
@@ -437,7 +435,7 @@ void CClientCreditsList::InitalizeCrypting(){
 	memset(m_abyMyPublicKey,0,80); // not really needed; better for debugging tho
 	m_pSignkey = NULL;
 
-	if (!m_pAppPrefs->IsSecureIdentEnabled()) {
+	if (!thePrefs::IsSecureIdentEnabled()) {
 		return;
 	}
 	
@@ -597,7 +595,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 }
 
 bool CClientCreditsList::CryptoAvailable() const {
-	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && m_pAppPrefs->IsSecureIdentEnabled());
+	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && thePrefs::IsSecureIdentEnabled());
 }
 
 

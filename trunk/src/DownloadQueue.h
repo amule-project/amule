@@ -27,7 +27,6 @@
 #include <list>
 
 class CSharedFileList;
-class CPreferences;
 class CSearchFile;
 class CPartFile;
 class CUpDownClient;
@@ -76,7 +75,7 @@ class CDownloadQueue
 {
 	friend class CServerSocket;
 public:
-	CDownloadQueue(CPreferences* in_prefs, CSharedFileList* in_sharedfilelist);
+	CDownloadQueue(CSharedFileList* in_sharedfilelist);
 	~CDownloadQueue();
 	void	Process();
 	void	Init();
@@ -160,7 +159,6 @@ private:
 	std::deque<CPartFile*> filelist;
 	std::list<CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;
-	CPreferences*	 app_prefs;
 	uint16	filesrdy;
 	uint32	datarate;
 

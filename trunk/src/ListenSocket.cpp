@@ -52,13 +52,9 @@ WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
-CClientReqSocket::CClientReqSocket()
-{
-}
 
-CClientReqSocket::CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client)
+CClientReqSocket::CClientReqSocket(CUpDownClient* in_client)
 {
-	app_prefs = in_prefs;
 	m_client = in_client;
 	if (m_client) {
 		m_client->SetSocket(this);
@@ -342,7 +338,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					// if we are downloading this file, this could be a new source
 					// no passive adding of files with only one part
 					if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
-						if (theApp.glob_prefs->GetMaxSourcePerFile() > 
+						if (thePrefs::GetMaxSourcePerFile() > 
 							((CPartFile*)reqfile)->GetSourceCount()) {
 							theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
 						}
@@ -662,7 +658,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						reqblock->transferred = 0;
 						m_client->AddReqBlock(reqblock);
 					} else {
-						if (theApp.glob_prefs->GetVerbose()) {
+						if (thePrefs::GetVerbose()) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
 									AddLogLineM(false,wxString::Format(_("Client requests invalid %u. file block %u-%u (%d bytes): "), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])  + m_client->GetFullIP());
 								}
@@ -683,7 +679,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
-				if (theApp.glob_prefs->GetVerbose()) {
+				if (thePrefs::GetVerbose()) {
 					AddDebugLogLineM(false, m_client->GetUserName() + _(": Upload session ended due canceled transfer."));
 				}
 				break;
@@ -701,7 +697,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				if (size>=16 && !md4cmp(m_client->GetUploadFileID(),packet)) {
 					theApp.uploadqueue->RemoveFromUploadQueue(m_client);
-					if (theApp.glob_prefs->GetVerbose()) {
+					if (thePrefs::GetVerbose()) {
 						AddDebugLogLineM(false, m_client->GetUserName() + _(": Upload session ended due ended transfer."));
 					}
 				} else {
@@ -883,8 +879,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
-				if ( (theApp.glob_prefs->MsgOnlyFriends() && !m_client->IsFriend()) ||
-					 (theApp.glob_prefs->MsgOnlySecure() && m_client->GetUserName()==wxEmptyString) ) {
+				if ( (thePrefs::MsgOnlyFriends() && !m_client->IsFriend()) ||
+					 (thePrefs::MsgOnlySecure() && m_client->GetUserName()==wxEmptyString) ) {
 					#if 0
 					if (!m_client->m_bMsgFiltered) {
 						AddLogLineM(true,wxString(_("Message filtered from '")) + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
@@ -914,7 +910,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				CList<void*,void*> list;
-				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
+				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 					CKnownFileMap& filemap = theApp.sharedfiles->m_Files_map;
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
@@ -973,7 +969,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (m_client->IsBanned()) {
 					break;
 				}
-				if ((theApp.glob_prefs->CanSeeShares()==vsfaEverybody) || ((theApp.glob_prefs->CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
+				if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),m_client->GetUserID()) + _("accepted"));			
 
 					// Kry - This new code from eMule will avoid duplicated folders
@@ -991,7 +987,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					
 					wxString char_ptrDir;
 					// ... the categories folders ... (category 0 -> incoming)
-					for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
+					for (uint32 ix=0;ix< theApp.glob_prefs->GetCatCount();ix++) {
 						char_ptrDir = theApp.glob_prefs->GetCategory(ix)->incomingpath;
 						bFoundFolder = false;
 						for (uint32 iDir=0; iDir < (uint32)folders_to_send.GetCount(); iDir++) {	
@@ -1067,7 +1063,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CSafeMemFile data((uchar*)packet, size);
 											
 				wxString strReqDir = data.ReadString();
-				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
+				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
@@ -1205,7 +1201,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	}
 	catch(CInvalidPacket ErrorPacket) {
 		if (m_client) {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
 					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n",unicode2char(m_client->GetClientFullInfo()));
 				} else {
@@ -1214,7 +1210,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			m_client->SetDownloadState(DS_ERROR);
 		} else {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {				
 					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n");
 				} else {
@@ -1227,7 +1223,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	}
 	catch(wxString error) {
 		if (m_client) {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n",unicode2char(m_client->GetClientFullInfo()));
 				} else {
@@ -1238,7 +1234,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			// TODO write this into a debugfile
 			AddDebugLogLineM(false,wxString(_("Client '")) + m_client->GetUserName() + wxString::Format(_(" (IP:%s) caused an error: "), m_client->GetFullIP().c_str()) + error + _(". Disconnecting client!"));
 		} else {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n");
 				} else {
@@ -1317,7 +1313,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				// if we are downloading this file, this could be a new source
 				// no passive adding of files with only one part
 				if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
-					if (theApp.glob_prefs->GetMaxSourcePerFile() > ((CPartFile*)reqfile)->GetSourceCount()) {
+					if (thePrefs::GetMaxSourcePerFile() > ((CPartFile*)reqfile)->GetSourceCount()) {
 						theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
 					}
 				}
@@ -1377,7 +1373,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									Packet* tosend = reqfile->CreateSrcInfoPacket(m_client);
 									if(tosend) {
 										#ifdef __USE_DEBUG__
-										if (theApp.glob_prefs->GetDebugClientTCPLevel() > 0) {
+										if (thePrefs::GetDebugClientTCPLevel() > 0) {
 											DebugSend("OP__AnswerSources", m_client, (char*)reqfile->GetFileHash());
 										}										
 										if (thePrefs.GetDebugSourceExchange()) {
@@ -1388,7 +1384,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 										SendPacket(tosend, true);
 									}
 								} //else {
-								//	if (theApp.glob_prefs->GetVerbose()) {
+								//	if (thePrefs::GetVerbose()) {
 								//		AddLogLineM(false, _("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
 								//	}
 								//}
@@ -1417,7 +1413,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
-				if (theApp.glob_prefs->GetDebugClientTCPLevel() > 0)
+				if (thePrefs::GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_MultiPacketAns", m_client);
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
@@ -1895,7 +1891,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		}
 	} catch(CInvalidPacket ErrorPacket) {
 		if (m_client) {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
 					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(m_client->GetClientFullInfo()));
 				} else {
@@ -1904,7 +1900,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			m_client->SetDownloadState(DS_ERROR);
 		} else {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {				
 					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessExtPacket\n");
 				} else {
@@ -1917,7 +1913,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	} catch(wxString error) {
 		AddDebugLogLineM(false, wxString::Format(_("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
 		if (m_client) {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(m_client->GetClientFullInfo()));
 				} else {
@@ -1926,7 +1922,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			m_client->SetDownloadState(DS_ERROR);
 		} else {
-			if (theApp.glob_prefs->GetVerbosePacketError()) {
+			if (thePrefs::GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket\n");
 				} else {
@@ -2006,7 +2002,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 		return;
 	}
 	
-	if (theApp.glob_prefs->GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
+	if (thePrefs::GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
 		// 0    -> No Error / Disconect
 		// 107  -> Transport endpoint is not connected
 		if (m_client) {
@@ -2188,7 +2184,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 // Do we really need that?
 IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 
-CListenSocket::CListenSocket(CPreferences* in_prefs, wxSockAddress& addr)
+CListenSocket::CListenSocket(wxSockAddress& addr)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
@@ -2200,7 +2196,6 @@ wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 {
 	// 0.42e - vars not used by us
 	bListening = false;
-	app_prefs = in_prefs;
 	opensockets = 0;
 	maxconnectionreached = 0;
 	m_OpenSocketsInterval = 0;
@@ -2262,7 +2257,6 @@ bool CListenSocket::StartListening()
 {
 	// 0.42e
 	bListening = true;
-	//return (this->Create(app_prefs->GetPort(),SOCK_STREAM,FD_ACCEPT) && this->Listen());
 #ifdef AMULE_DAEMON
 	Run();
 	global_sock_thread.Run();
@@ -2310,7 +2304,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 		while (m_nPeningConnections) {
 			m_nPeningConnections--;
 			// Create a new socket to deal with the connection
-			CClientReqSocket* newclient = new CClientReqSocket(app_prefs);
+			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
 			if (AcceptWith(*newclient, true)) {
 				// OnInit currently does nothing
@@ -2347,7 +2341,7 @@ void CListenSocket::Process()
 		}
 	}
 	
-	if ((GetOpenSockets()+5 < app_prefs->GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
+	if ((GetOpenSockets()+5 < thePrefs::GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
 		ReStartListening();
 	}
 }
@@ -2408,7 +2402,7 @@ void CListenSocket::KillAllSockets()
 
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 {
-	if (GetOpenSockets() > app_prefs->GetMaxConnections() || (m_OpenSocketsInterval > (theApp.glob_prefs->GetMaxConperFive()*GetMaxConperFiveModifier()) && !bIgnoreInterval)) {
+	if (GetOpenSockets() > thePrefs::GetMaxConnections() || (m_OpenSocketsInterval > (thePrefs::GetMaxConperFive()*GetMaxConperFiveModifier()) && !bIgnoreInterval)) {
 		return true;
 	} else {
 		return false;
@@ -2455,13 +2449,13 @@ float CListenSocket::GetMaxConperFiveModifier(){
 	// But otoh it might help a lot on users with crappy modems 
 	// or routers. Will be called 'Safe Max Connections Calculation"
 	
-	if (theApp.glob_prefs->GetSafeMaxConn()) {
+	if (thePrefs::GetSafeMaxConn()) {
 		//This is a alpha test.. Will clean up for b version.
 		float SpikeSize = GetOpenSockets() - averageconnections ;
 		if ( SpikeSize < 1 ) {
 			return 1;
 		}
-		float SpikeTolerance = 25.0f*(float)theApp.glob_prefs->GetMaxConperFive()/10.0f;
+		float SpikeTolerance = 25.0f*(float)thePrefs::GetMaxConperFive()/10.0f;
 		if ( SpikeSize > SpikeTolerance ) {
 			return 0;
 		}

@@ -28,7 +28,6 @@
 
 #include "CMD4Hash.h"
 
-class CPreferences;
 
 #define	 MAXPUBKEYSIZE		80
 
@@ -101,7 +100,7 @@ private:
 class CClientCreditsList
 {
 public:
-	CClientCreditsList(CPreferences* in_prefs);
+	CClientCreditsList();
 	~CClientCreditsList();
 	
 			// return signature size, 0 = Failed | use sigkey param for debug only
@@ -123,7 +122,6 @@ protected:
 #endif
 private:
 	std::map<CMD4Hash, CClientCredits*> m_mapClients;
-	CPreferences*	m_pAppPrefs;
 	uint32			m_nLastSaved;
 	// A void* to avoid having to include the large CryptoPP.h file
 	void*		m_pSignkey;
