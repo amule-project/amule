@@ -1,16 +1,14 @@
-# translation of fr.po to Français
 # translation of source_strings.po to Français
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# ThePolish <ThePolish@vipmail.ru>, 2004.
 # ThePolish <thepolish@vipmail.ru>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fr\n"
+"Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-07 15:35+0200\n"
-"PO-Revision-Date: 2004-10-07 19:27+0200\n"
+"POT-Creation-Date: 2004-10-06 21:58+0200\n"
+"PO-Revision-Date: 2004-10-09 18:59+0200\n"
 "Last-Translator: ThePolish <thepolish@vipmail.ru>\n"
 "Language-Team: Français <fr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,11 +22,11 @@ msgstr "Ajouter un ami"
 
 #: src/AddFriend.cpp:70
 msgid "You have to enter a valid IP and port!"
-msgstr "Vous devez entrer une adresse IP et un port valide !"
+msgstr "Vous devez entrer une adresse IP valide et un port"
 
 #: src/AddFriend.cpp:75
 msgid "The specified userhash is not valid!"
-msgstr "Le Hash utilisateur spécifié est invalide !"
+msgstr "Le Hash utilisateur spécifié est invalide"
 
 #: src/AICHSyncThread.cpp:49
 msgid "Failed to create AICH thread!"
@@ -124,15 +122,15 @@ msgstr ""
 
 #: src/amule.cpp:1386
 msgid "This version is a testing version, updated daily, and \n"
-msgstr "Cette version est une version de test, mise à jour chaque jour, et \n"
+msgstr "Ceci est une version de test, mise à jour journellement, et \n"
 
 #: src/amule.cpp:1387
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "nous aucune garantie n'est donnée en cas de dommages, incendie de votre maison,\n"
+msgstr "Nous ne fournissons aucune garantie si cela endommage quelquechose, provoque un incendie de votre maison,\n"
 
 #: src/amule.cpp:1388
 msgid "or kill your dog. But it *should* be safe to use anyway. \n"
-msgstr "ou mort de votre chien. Mais elle *devrait* être sans danger à utiliser quant même. \n"
+msgstr "ou tue votre chien. Mais cela *devrait* normalement se révéler assez sûr. \n"
 
 #: src/amule.cpp:1393
 msgid "More information, support and new releases can found at our homepage, \n"
@@ -150,7 +148,7 @@ msgstr "Votre localisation a été ramenée à celle du système par défaut à 
 
 #: src/amule.cpp:1397
 msgid "Feel free to report any bugs to forum.amule.org"
-msgstr "Merci de rapporter tout bug sur forum.amule.org"
+msgstr "Faites nous part librement de tous bugs sur forum.amule.org"
 
 #: src/amule.cpp:1442
 msgid ""
@@ -321,7 +319,7 @@ msgstr "Impossible de déterminer la commande pour lancer votre navigateur."
 msgid ""
 "Unable to launch browser. Please set correct browser executable path in "
 "Preferences."
-msgstr "Impossible de charger votre Navigateur. Veuillez entrer un chemin correct vers l'exécutable dans les Préférences."
+msgstr "Impossible de charger votre Navigateur. Veuillez entrer un chemin correct vers l'exécutable dans les Préférences"
 
 #: src/amuleDlg.cpp:1220
 msgid "Skin file name is empty - loading defaults"
@@ -349,7 +347,7 @@ msgstr "Clients: %s (%s), Raison du bannissement: changement d'Userhash (Trouvé
 msgid "Clients: %s (%s), Banreason: Userhash changed"
 msgstr "Clients: %s (%s), Raison du bannissement: changement d'Userhash"
 
-#: src/BaseClient.cpp:728 src/ListenSocket.cpp:283
+#: src/BaseClient.cpp:728 src/ListenSocket.cpp:302
 msgid "Filtered IP: "
 msgstr "IP filtrées: "
 
@@ -476,7 +474,7 @@ msgstr "Demandé:"
 #: src/BaseClient.cpp:1800
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr "Statistiques fichiers pour cette session: %d acceptés sur %d demandés, %s transférés\n"
+msgstr "Fichier statistique pour cette session: %d requêtes acceptées sur %d, %s transférés\n"
 
 #: src/BaseClient.cpp:1800
 #, c-format
@@ -534,7 +532,7 @@ msgstr "Client local: OP_SECIDENTSTATE\n"
 
 #: src/BaseClient.cpp:2101
 msgid "Handshake not finished while processing packet."
-msgstr "Poignée de main non terminée lors du traitement du paquet."
+msgstr "Poignée de mains non terminée pendant le traitement du paquet."
 
 #: src/BaseClient.cpp:2304
 msgid "Client "
@@ -650,7 +648,7 @@ msgstr "Impossible de déterminer si la fin du fichier est atteinte dans le desc
 
 #: src/CFile.cpp:582
 msgid "invalid eof() return value."
-msgstr "Valeur retournée par eof() invalide."
+msgstr "Valeur retournée par eof() invalide"
 
 #: src/ChatSelector.cpp:180 src/ChatSelector.cpp:270
 msgid "*** Connected to Client ***\n"
@@ -670,11 +668,11 @@ msgstr "*** Déconnecté du Client ***\n"
 
 #: src/ClientCredits.cpp:171 src/ClientCredits.cpp:210
 msgid "Failed to load creditfile"
-msgstr "Impossible de charger le fichier de crédits"
+msgstr "Échec du chargement du fichier de crédits"
 
 #: src/ClientCredits.cpp:182
 msgid "Creditfile is out of date and will be replaced"
-msgstr "Le fichier de crédit est trop vieux et va être remplacé"
+msgstr "Votre fichier de Crédits est trop vieux et va être remplacé"
 
 #: src/ClientCredits.cpp:206
 msgid "Could not create backup file "
@@ -714,7 +712,7 @@ msgstr "Impossible de créer une nouvelle paire de clés RSA"
 msgid "IDS_CRYPT_INITFAILED\n"
 msgstr "IDS_CRYPT_INITFAILED\n"
 
-#: src/ClientCredits.cpp:533
+#: src/ClientCredits.cpp:532
 msgid "Warning: Maybe SecureHash Ident fails because LocalIP is unknown"
 msgstr "Attention: Peut-être que le SecureHash Ident ne marche pas car l'IP locale est inconnue"
 
@@ -976,7 +974,7 @@ msgstr "Désassocier"
 msgid "Assign to category"
 msgstr "Associer à une catégorie"
 
-#: src/DownloadListCtrl.cpp:386 src/FriendListCtrl.cpp:270
+#: src/DownloadListCtrl.cpp:386 src/FriendListCtrl.cpp:269
 #: src/QueueListCtrl.cpp:132 src/UploadListCtrl.cpp:120
 msgid "Show &Details"
 msgstr "Afficher &Détails"
@@ -986,7 +984,7 @@ msgstr "Afficher &Détails"
 msgid "Add to Friends"
 msgstr "Ajouter aux amis"
 
-#: src/DownloadListCtrl.cpp:388 src/FriendListCtrl.cpp:279
+#: src/DownloadListCtrl.cpp:388 src/FriendListCtrl.cpp:278
 #: src/QueueListCtrl.cpp:135 src/UploadListCtrl.cpp:122
 msgid "View Files"
 msgstr "Voir les fichiers"
@@ -1207,7 +1205,7 @@ msgstr "\" non envoyée à cause du statu '"
 
 #: src/DownloadQueue.cpp:958
 msgid "Bad link."
-msgstr "Lien.invalide."
+msgstr "Lien.invalide"
 
 #: src/DownloadQueue.cpp:962
 #, c-format
@@ -1415,37 +1413,37 @@ msgstr "Info: impossible de créer une sauvegarde de '%s'\n"
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: src/FriendListCtrl.cpp:193
+#: src/FriendListCtrl.cpp:192
 msgid "Failed to open friendlist file 'emfriends.met' for reading!\n"
 msgstr "Impossible d'ouvrir en lecture le fichier contenant la liste des amis 'emfriends.met' !\n"
 
-#: src/FriendListCtrl.cpp:217
+#: src/FriendListCtrl.cpp:216
 msgid "Failed to open friendlist file 'emfriends.met' for writing!\n"
 msgstr "Impossible d'ouvrir en écriture le fichier contenant la liste des amis 'emfriends.met' !\n"
 
-#: src/FriendListCtrl.cpp:265 src/muuli_wdr.cpp:464 src/muuli_wdr.cpp:3261
+#: src/FriendListCtrl.cpp:264 src/muuli_wdr.cpp:464 src/muuli_wdr.cpp:3261
 msgid "Friends"
 msgstr "Amis"
 
-#: src/FriendListCtrl.cpp:274
+#: src/FriendListCtrl.cpp:273
 msgid "Add a friend"
 msgstr "Ajouter un ami"
 
-#: src/FriendListCtrl.cpp:277
+#: src/FriendListCtrl.cpp:276
 msgid "Remove Friend"
 msgstr "Supprimer un ami"
 
-#: src/FriendListCtrl.cpp:278
+#: src/FriendListCtrl.cpp:277
 msgid "Send &Message"
 msgstr "Envoyer &Message"
 
-#: src/FriendListCtrl.cpp:280
+#: src/FriendListCtrl.cpp:279
 msgid "Establish Friend Slot"
 msgstr "Établissement d'un slot Ami"
 
 #: src/HTTPDownload.cpp:53
 msgid "Downloading..."
-msgstr "En téléchargement..."
+msgstr "En téléchargement."
 
 #: src/IPFilter.cpp:280 src/IPFilter.cpp:290
 #, c-format
@@ -1474,165 +1472,165 @@ msgstr "Le fichier known.met est erroné, impossible de charger les fichiers con
 msgid "Unexpected file error while reading known.met: %s, unable to load known files"
 msgstr "Erreur inattendue en lisant known.met: %s, impossible de charger les fichiers connus"
 
-#: src/ListenSocket.cpp:680
+#: src/ListenSocket.cpp:699
 #, c-format
 msgid "Client requests invalid %u. file block %u-%u (%d bytes): "
 msgstr "Requête client invalide %u. bloc du fichier %u-%u (%d octets): "
 
-#: src/ListenSocket.cpp:700
+#: src/ListenSocket.cpp:719
 msgid ": Upload session ended due canceled transfer."
 msgstr ": Session d'upload terminée à cause de l'annulation du transfert."
 
-#: src/ListenSocket.cpp:718
+#: src/ListenSocket.cpp:737
 msgid ": Upload session ended due ended transfer."
 msgstr ": Session d'upload terminée à cause de fin du transfert."
 
-#: src/ListenSocket.cpp:892
+#: src/ListenSocket.cpp:911
 msgid "New message from '"
 msgstr "Nouveau message de '"
 
-#: src/ListenSocket.cpp:892 src/ListenSocket.cpp:903
+#: src/ListenSocket.cpp:911 src/ListenSocket.cpp:922
 msgid "' (IP:"
 msgstr "' (IP:"
 
-#: src/ListenSocket.cpp:903
+#: src/ListenSocket.cpp:922
 msgid "Message filtered from '"
 msgstr "Message filtré de '"
 
-#: src/ListenSocket.cpp:935 src/ListenSocket.cpp:937 src/ListenSocket.cpp:990
-#: src/ListenSocket.cpp:1057 src/ListenSocket.cpp:1084
-#: src/ListenSocket.cpp:1119 src/ListenSocket.cpp:1149
-#: src/ListenSocket.cpp:1166 src/ListenSocket.cpp:1187
-#: src/ListenSocket.cpp:1191 src/ListenSocket.cpp:1194
-#: src/ListenSocket.cpp:1210
+#: src/ListenSocket.cpp:954 src/ListenSocket.cpp:956 src/ListenSocket.cpp:1009
+#: src/ListenSocket.cpp:1076 src/ListenSocket.cpp:1103
+#: src/ListenSocket.cpp:1138 src/ListenSocket.cpp:1168
+#: src/ListenSocket.cpp:1185 src/ListenSocket.cpp:1206
+#: src/ListenSocket.cpp:1210 src/ListenSocket.cpp:1213
+#: src/ListenSocket.cpp:1229
 msgid "User "
 msgstr "Utilisateur "
 
-#: src/ListenSocket.cpp:935 src/ListenSocket.cpp:937
+#: src/ListenSocket.cpp:954 src/ListenSocket.cpp:956
 #, c-format
 msgid " (%u) requested your sharedfiles-list -> %s"
 msgstr " (%u) a demandé votre liste de fichiers partagés -> %s"
 
-#: src/ListenSocket.cpp:935
+#: src/ListenSocket.cpp:954
 msgid "Accepted"
 msgstr "Accepté"
 
-#: src/ListenSocket.cpp:937
+#: src/ListenSocket.cpp:956
 msgid "Denied"
 msgstr "Refusé"
 
-#: src/ListenSocket.cpp:990 src/ListenSocket.cpp:1057
+#: src/ListenSocket.cpp:1009 src/ListenSocket.cpp:1076
 #, c-format
 msgid " (%u) requested your shareddirectories-list -> "
 msgstr " (%u) a demandé votre liste de répertoires partagés -> "
 
-#: src/ListenSocket.cpp:990 src/ListenSocket.cpp:1084
+#: src/ListenSocket.cpp:1009 src/ListenSocket.cpp:1103
 msgid "accepted"
-msgstr "Accepté"
+msgstr "accepté"
 
-#: src/ListenSocket.cpp:1057 src/ListenSocket.cpp:1119
+#: src/ListenSocket.cpp:1076 src/ListenSocket.cpp:1138
 msgid "denied"
-msgstr "Refusé"
+msgstr "refusé"
 
-#: src/ListenSocket.cpp:1084 src/ListenSocket.cpp:1119
+#: src/ListenSocket.cpp:1103 src/ListenSocket.cpp:1138
 #, c-format
 msgid " (%u) requested your sharedfiles-list for directory "
 msgstr " (%u) a demandé votre liste de fichiers partagés dans le répertoire "
 
-#: src/ListenSocket.cpp:1149
+#: src/ListenSocket.cpp:1168
 #, c-format
 msgid " (%u) shares directory "
 msgstr " (%u) répertoire de partage "
 
-#: src/ListenSocket.cpp:1166
+#: src/ListenSocket.cpp:1185
 #, c-format
 msgid " (%u) sent unasked shared dirs."
 msgstr " (%u) a envoyé des répertoires de partage non demandés."
 
-#: src/ListenSocket.cpp:1187
+#: src/ListenSocket.cpp:1206
 #, c-format
 msgid " (%u) sent sharedfiles-list for directory "
 msgstr " (%u) a envoyé sa liste de fichier partagés pour le répertoire "
 
-#: src/ListenSocket.cpp:1191
+#: src/ListenSocket.cpp:1210
 #, c-format
 msgid " (%u) finished sending sharedfiles-list"
 msgstr " (%u) a fini d'envoyer la liste des fichiers partagés"
 
-#: src/ListenSocket.cpp:1194
+#: src/ListenSocket.cpp:1213
 #, c-format
 msgid " (%u) sent unwanted sharedfiles-list"
-msgstr " (%u) a envoyé une liste des fichiers partagés non demandée"
+msgstr " (%u) a envoyé une liste des fichiers partagés non demandée."
 
-#: src/ListenSocket.cpp:1210
+#: src/ListenSocket.cpp:1229
 #, c-format
 msgid " (%u) denied access to shareddirectories/files-list"
-msgstr " (%u) a refusé l'accès à sa liste de fichiers/répertoires partagés"
+msgstr " (%u) a refusé l'accès à sa liste de fichiers/répertoires partagés."
 
-#: src/ListenSocket.cpp:1215
+#: src/ListenSocket.cpp:1234
 #, c-format
 msgid "Edonkey packet: unknown opcode: %i %x"
 msgstr "Paquet Edonkey: opcode inconnu: %i %x"
 
-#: src/ListenSocket.cpp:1252 src/ListenSocket.cpp:1985
+#: src/ListenSocket.cpp:1271 src/ListenSocket.cpp:2004
 msgid "Client '"
 msgstr "Client '"
 
-#: src/ListenSocket.cpp:1252
+#: src/ListenSocket.cpp:1271
 #, c-format
 msgid " (IP:%s) caused an error: "
 msgstr " (IP:%s) a causé un erreur: "
 
-#: src/ListenSocket.cpp:1252 src/ListenSocket.cpp:1261
+#: src/ListenSocket.cpp:1271 src/ListenSocket.cpp:1280
 msgid ". Disconnecting client!"
 msgstr ". Déconnexion du client!"
 
-#: src/ListenSocket.cpp:1261
+#: src/ListenSocket.cpp:1280
 msgid "A unknown client caused an error or did something bad: "
 msgstr "Un client inconnu a causé une erreur ou fait quelque chose de mal: "
 
-#: src/ListenSocket.cpp:1740
+#: src/ListenSocket.cpp:1759
 #, c-format
 msgid "RCV:Source Request User(%s) File(%s)"
 msgstr "RCV:Source Request User(%s) Fichier(%s)"
 
-#: src/ListenSocket.cpp:1906
+#: src/ListenSocket.cpp:1925
 #, c-format
 msgid "eMule packet : unknown opcode: %i %x"
 msgstr "Paquet eMule: opcode inconnu: %i %x"
 
-#: src/ListenSocket.cpp:1931
+#: src/ListenSocket.cpp:1950
 #, c-format
 msgid "A client caused an error or did something bad: %s. Disconnecting client!"
 msgstr "Un client a causé une erreur ou fait quelque chose de mal: %s. Déconnexion du client !"
 
-#: src/ListenSocket.cpp:1963
+#: src/ListenSocket.cpp:1982
 #, c-format
 msgid "Client TCP socket error (OnConnect): %u"
 msgstr "Erreur de socket TCP client (OnConnect): %u"
 
-#: src/ListenSocket.cpp:1986
+#: src/ListenSocket.cpp:2005
 #, c-format
 msgid "' (IP:%s) caused an error: %u. Disconnecting client!"
 msgstr "' (IP:%s) a causé une erreur: %u. Déconnexion du client!"
 
-#: src/ListenSocket.cpp:1989
+#: src/ListenSocket.cpp:2008
 #, c-format
 msgid "Unknown client (IP:%s) caused an error: %u. Disconnecting client!"
 msgstr "Un client inconnu (IP:%s) a causé une erreur: %u. Déconnexion du client !"
 
-#: src/ListenSocket.cpp:1993
+#: src/ListenSocket.cpp:2012
 #, c-format
 msgid ""
 "A client caused an error or did something bad (error %u). Disconnecting "
 "client !"
 msgstr "Un client a causé une erreur ou fait quelquechose de mal (erreur %u). Déconnexion du client !"
 
-#: src/ListenSocket.cpp:1998
+#: src/ListenSocket.cpp:2017
 msgid "No error or error 107 (Transport endpoint is not connected)"
 msgstr "Pas d'erreur ou erreur 107 (Le noeud de destination n'est pas connecté)"
 
-#: src/ListenSocket.cpp:2015
+#: src/ListenSocket.cpp:2034
 #, c-format
 msgid ""
 "Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size="
@@ -1641,7 +1639,7 @@ msgstr ""
 "Impossible de décompresser le paquet TCP client; protocole=0x%02x  opcode=0x%02x  taille="
 "%u"
 
-#: src/ListenSocket.cpp:2438
+#: src/ListenSocket.cpp:2457
 msgid "CSocketGlobalThread: call to Create failed"
 msgstr "CSocketGlobalThread: échec de l'appel de Create"
 
@@ -1791,7 +1789,7 @@ msgstr "Nom:"
 #: src/muuli_wdr.cpp:223 src/muuli_wdr.cpp:2935 src/muuli_wdr.cpp:2970
 #: src/WebServer.cpp:2183 src/WebServer.cpp:2204 src/WebServer.cpp:2227
 msgid "Reset"
-msgstr "Effacer"
+msgstr "Annuler"
 
 #: src/muuli_wdr.cpp:231 src/SearchListCtrl.cpp:67 src/SharedFilesCtrl.cpp:73
 #: src/WebServer.cpp:2154 src/WebServer.cpp:2769
@@ -1973,7 +1971,7 @@ msgstr "État des fichiers .part:"
 
 #: src/muuli_wdr.cpp:574
 msgid "Last seen complete :"
-msgstr "Vu complet pour la dernière fois:"
+msgstr "Vu complet pour la dernière fois: "
 
 #: src/muuli_wdr.cpp:585
 msgid "Media Info"
@@ -2724,7 +2722,7 @@ msgstr "Sauvegarder 5 sources sur des fichiers rares (< 20 sources)"
 
 #: src/muuli_wdr.cpp:2042
 msgid "Extract Meta Data Tags"
-msgstr "Extraire les étiquettes Méta Data"
+msgstr "Extraire les étiquettes Meta Data"
 
 #: src/muuli_wdr.cpp:2048
 msgid "Reduce Fragmentation"
@@ -2766,7 +2764,7 @@ msgstr "    Espace disque mini:    "
 
 #: src/muuli_wdr.cpp:2076
 msgid "Enter here the min disk space desired."
-msgstr "Entrez ici l'espace disque minimum désiré."
+msgstr "Entrez ici l'espace disque minimum désiré"
 
 #: src/muuli_wdr.cpp:2079
 msgid "Mb"
@@ -2978,7 +2976,7 @@ msgstr "Bavard (commentaires additionnels)"
 
 #: src/muuli_wdr.cpp:2412
 msgid "Verbose packet error output (only in debug)"
-msgstr "Signaler les erreurs de paquets en mode bavard (Débuggage seulement)"
+msgstr "Signaler les erreurs de paquets en mode bavard (Debuggage seulement)"
 
 #: src/muuli_wdr.cpp:2415
 msgid "File Buffer Size: 240000 bytes"
@@ -3030,7 +3028,7 @@ msgstr "Utilisez un fichier de thème pour les icônes d'aMule."
 
 #: src/muuli_wdr.cpp:2502
 msgid "Skin file:"
-msgstr "Fichier de thème:"
+msgstr "Fichier de thème: "
 
 #: src/muuli_wdr.cpp:2515
 msgid "Misc Gui Tweaks"
@@ -3186,7 +3184,7 @@ msgstr "..."
 
 #: src/muuli_wdr.cpp:2819
 msgid "Change priority for new assigned files :"
-msgstr "Changer la priorité des nouveaux fichiers assignés:"
+msgstr "Changer la priorité des nouveaux fichiers assignés"
 
 #: src/muuli_wdr.cpp:2824
 msgid "Dont change"
@@ -3194,11 +3192,11 @@ msgstr "Ne rien changer"
 
 #: src/muuli_wdr.cpp:2838
 msgid "Select color for this Category (currently selected) :"
-msgstr "Choisir la couleur pour cette Catégorie (actuellement sélectionnée):"
+msgstr "Choisir la couleur pour cette Catégorie (actuellement sélectionnée)"
 
 #: src/muuli_wdr.cpp:2895
 msgid "Clients on queue :"
-msgstr "Clients dans la queue:"
+msgstr "Clients dans la queue"
 
 #: src/muuli_wdr.cpp:2898
 msgid "0"
@@ -3417,7 +3415,7 @@ msgstr "Marche/Arrêt t"
 
 #: src/muuli_wdr.cpp:3408
 msgid "Enable Online-Signature"
-msgstr "Activer la signature en ligne"
+msgstr "Activer Online-Signature"
 
 #: src/muuli_wdr.cpp:3410
 msgid ""
@@ -3435,7 +3433,7 @@ msgstr "Change la fréquence des mises à jour de la signature en ligne (en seco
 
 #: src/muuli_wdr.cpp:3425
 msgid "Online Signature Directory:"
-msgstr "Répertoire du fichier de signature en ligne:"
+msgstr "Répertoire du fichier Online Signature: "
 
 #: src/muuli_wdr.cpp:3432
 msgid "Click here to select the directory containing the the Online Signature files."
@@ -3525,19 +3523,19 @@ msgstr "To"
 
 #: src/otherfunctions.cpp:94
 msgid "K"
-msgstr "Ko"
+msgstr "K"
 
 #: src/otherfunctions.cpp:96
 msgid "M"
-msgstr "Mo"
+msgstr "M"
 
 #: src/otherfunctions.cpp:98
 msgid "G"
-msgstr "Go"
+msgstr "G"
 
 #: src/otherfunctions.cpp:100
 msgid "T"
-msgstr "To"
+msgstr "T"
 
 #: src/otherfunctions.cpp:113 src/WebServer.cpp:138
 msgid "secs"
@@ -3887,7 +3885,7 @@ msgstr "Paramètres de l'IHM"
 
 #: src/PrefsUnifiedDlg.cpp:390
 msgid "Language change will not be applied until aMule is restarted."
-msgstr "Le changement de langue ne sera pris en compte qu'après le redémarrage d'aMule."
+msgstr "Le changement de langue ne sera pris en compte qu'après le redémarrage d'aMule"
 
 #: src/PrefsUnifiedDlg.cpp:523
 msgid "Choose a folder for "
@@ -3974,7 +3972,7 @@ msgstr "Intervalle de rafraschssement de la connexion serveur %d minutes"
 
 #: src/PrefsUnifiedDlg.cpp:692
 msgid "Server connection refresh interval: Disabled"
-msgstr "Intervalle de rafraichssement de la connexion serveur: désactivée"
+msgstr "Intervalle de rafraîchissement de la connexion serveur: Désactivé"
 
 #: src/QueueListCtrl.cpp:89 src/QueueListCtrl.cpp:163
 #: src/SearchListCtrl.cpp:325 src/UploadListCtrl.cpp:78
@@ -4120,7 +4118,7 @@ msgstr "Echec du téléchargement de la liste des serveurs depuis "
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
-msgstr "Aucun serveur n'est répertorié dans 'adresses.dat'. Placez-y une liste de serveurs avec leur adresse pour assurer une mise à jour automatique"
+msgstr "Aucun serveur n'est répertorié dans 'adresses.dat'. Placez-y une liste de serveurs avec leur adresse pour assurer une mise à jour automatique."
 
 #: src/ServerList.cpp:902
 msgid "Invalid URL "
@@ -4241,78 +4239,78 @@ msgstr "Serveur: OP_IDCHANGE\n"
 msgid "Corrupt or invalid loginanswer from server received"
 msgstr "Réponse de login reçue invalide ou corrompue"
 
-#: src/ServerSocket.cpp:331
+#: src/ServerSocket.cpp:324
 msgid "Connected\n"
 msgstr "Connecté\n"
 
-#: src/ServerSocket.cpp:337
+#: src/ServerSocket.cpp:330
 #, c-format
 msgid "New clientid is %u"
 msgstr "Nouvel ID client: %u"
 
-#: src/ServerSocket.cpp:356
+#: src/ServerSocket.cpp:349
 msgid "Server: OP_SEARCHRESULT\n"
 msgstr "Serveur: OP_SEARCHRESULT\n"
 
-#: src/ServerSocket.cpp:366
+#: src/ServerSocket.cpp:359
 #, c-format
 msgid "ServerMsg - OP_FoundSources; sources = %u\n"
 msgstr "Message serveur - OP_FoundSources; sources = %u\n"
 
-#: src/ServerSocket.cpp:380
+#: src/ServerSocket.cpp:373
 msgid "Server: OP_SERVERSTATUS\n"
 msgstr "Serveur: OP_SERVERSTATUS\n"
 
-#: src/ServerSocket.cpp:384
+#: src/ServerSocket.cpp:377
 msgid "Invalid server status packet"
 msgstr "Paquet de statut serveur invalide"
 
-#: src/ServerSocket.cpp:404
+#: src/ServerSocket.cpp:397
 msgid "Server: OP_SERVERIDENT\n"
 msgstr "Serveur: OP_SERVERIDENT\n"
 
-#: src/ServerSocket.cpp:410
+#: src/ServerSocket.cpp:403
 msgid "Unknown server info received! - too short"
 msgstr "Info serveur reçue inconnue! - trop court"
 
-#: src/ServerSocket.cpp:423
+#: src/ServerSocket.cpp:416
 msgid "Unknown server info received!- wrong server name"
 msgstr "Info serveur reçue inconnue! - nom du serveur incorrect"
 
-#: src/ServerSocket.cpp:435
+#: src/ServerSocket.cpp:428
 msgid "Unknown server info received! - wrong description"
 msgstr "Info serveur reçue inconnue! - description incorrecte"
 
-#: src/ServerSocket.cpp:449
+#: src/ServerSocket.cpp:442
 msgid "Server: OP_SERVERLIST\n"
 msgstr "Serveur: OP_SERVERLIST\n"
 
-#: src/ServerSocket.cpp:473 src/WebServer.cpp:2119
+#: src/ServerSocket.cpp:466 src/WebServer.cpp:2119
 #, c-format
 msgid "Received %d new servers"
 msgstr "%d nouveaux serveurs reçus"
 
-#: src/ServerSocket.cpp:476
+#: src/ServerSocket.cpp:469
 msgid "Saving of server-list completed.\n"
 msgstr "Sauvegarde de la liste des serveurs effectuée.\n"
 
-#: src/ServerSocket.cpp:481
+#: src/ServerSocket.cpp:474
 msgid "Server: OP_CALLBACKREQUESTED\n"
 msgstr "Serveur: OP_CALLBACKREQUESTED\n"
 
-#: src/ServerSocket.cpp:504
+#: src/ServerSocket.cpp:497
 msgid "Server: OP_CALLBACK_FAIL\n"
 msgstr "Serveur: OP_CALLBACK_FAIL\n"
 
-#: src/ServerSocket.cpp:510
+#: src/ServerSocket.cpp:503
 msgid "Server: OP_REJECT\n"
 msgstr "Serveur: OP_REJECT\n"
 
-#: src/ServerSocket.cpp:512
+#: src/ServerSocket.cpp:505
 msgid "Server rejected last command"
 msgstr "Le serveur a rejeté la dernière commande"
 
-#: src/ServerSocket.cpp:517
+#: src/ServerSocket.cpp:510
 msgid ""
 "Server: Unrecognized packet -- protocol error\n"
 "\n"
@@ -4320,44 +4318,44 @@ msgstr ""
 "Serveur: paquet non reconnu -- Erreur de protocol\n"
 "\n"
 
-#: src/ServerSocket.cpp:524
+#: src/ServerSocket.cpp:517
 msgid "Unhandled error while processing packet from server - "
 msgstr "Erreur non prise en charge pendant le traitement d'un paquet du serveur - "
 
-#: src/ServerSocket.cpp:528
+#: src/ServerSocket.cpp:521
 msgid "Unknown exception while processing packet from server!"
 msgstr "Exception inconnue pendant le traitement d'un paquet en provenance du serveur !"
 
-#: src/ServerSocket.cpp:537
+#: src/ServerSocket.cpp:530
 msgid "Trying to connect\n"
 msgstr "Essai de connexion\n"
 
-#: src/ServerSocket.cpp:540 src/sockets.cpp:366
+#: src/ServerSocket.cpp:533 src/sockets.cpp:366
 msgid "Connecting to "
 msgstr "Connexion à "
 
-#: src/ServerSocket.cpp:545
+#: src/ServerSocket.cpp:538
 msgid "Server "
 msgstr "Serveur "
 
-#: src/ServerSocket.cpp:545 src/ServerSocket.cpp:546
+#: src/ServerSocket.cpp:538 src/ServerSocket.cpp:539
 #, c-format
 msgid " Port %i"
 msgstr " Port %i"
 
-#: src/ServerSocket.cpp:546
+#: src/ServerSocket.cpp:539
 msgid "Addr "
 msgstr "Adresse "
 
-#: src/ServerSocket.cpp:556
+#: src/ServerSocket.cpp:549
 msgid "Error in serversocket: "
 msgstr "Erreur dans une socket serveur: "
 
-#: src/ServerSocket.cpp:565
+#: src/ServerSocket.cpp:558
 msgid "Server: Packet Received: "
 msgstr "Serveur: Packet Received: "
 
-#: src/ServerSocket.cpp:570
+#: src/ServerSocket.cpp:563
 #, c-format
 msgid ""
 "Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size="
@@ -4366,7 +4364,7 @@ msgstr ""
 "La décompression du paquet serveur TCP a échoué: protocole=0x%02x  opcode=0x%02x  taille="
 "%u"
 
-#: src/ServerSocket.cpp:579
+#: src/ServerSocket.cpp:572
 #, c-format
 msgid ""
 "Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%"
@@ -4375,7 +4373,7 @@ msgstr ""
 "Paquet serveur TCP reçu avec un protocole inconnu: protocole=0x%02x  opcode=0x%"
 "02x  taille=%u"
 
-#: src/ServerSocket.cpp:583
+#: src/ServerSocket.cpp:576
 #, c-format
 msgid ""
 "Error: Unhandled exception while processing server TCP packet: protocol=0x%"
@@ -4394,7 +4392,7 @@ msgstr "Port du serveur incomplet: Entrer un port SVP"
 
 #: src/ServerWnd.cpp:124
 msgid "Server not added!"
-msgstr "Serveur non ajouté !"
+msgstr "Serveur non ajouté"
 
 #: src/ServerWnd.cpp:159
 msgid "Status:"
@@ -4494,7 +4492,7 @@ msgstr "Vous devez être en HighID pour créer un lien valide"
 
 #: src/SharedFilesCtrl.cpp:330 src/SharedFilesCtrl.cpp:346
 msgid "You cannot change permissions while a file is still downloading!"
-msgstr "Vous ne pouvez pas changer les permissions d'un fichier encore en téléchargement !"
+msgstr "Vous ne pouvez pas changer les permissions d'un fichier encore en téléchargement"
 
 #: src/SharedFilesCtrl.cpp:574
 #, c-format
@@ -4876,7 +4874,7 @@ msgstr ""
 
 #: src/SysTray.cpp:171
 msgid "UL: None, "
-msgstr "UL: Aucun, "
+msgstr "UL: Aucune, "
 
 #: src/SysTray.cpp:173
 #, c-format
@@ -4885,7 +4883,7 @@ msgstr "UL: %d, "
 
 #: src/SysTray.cpp:179
 msgid "DL: None"
-msgstr "DL: Aucun"
+msgstr "DL: Aucune"
 
 #: src/SysTray.cpp:181
 #, c-format
@@ -4906,7 +4904,7 @@ msgstr "Pseudo: "
 
 #: src/SysTray.cpp:210
 msgid "No Nickname Selected!"
-msgstr "Aucun pseudo sélectionné !"
+msgstr "Aucun pseudo selectionne !"
 
 #: src/SysTray.cpp:238
 msgid "ServerName: "
@@ -4922,7 +4920,7 @@ msgstr "Port TCP: "
 
 #: src/SysTray.cpp:280
 msgid "TCP Port: Not Ready"
-msgstr "Port TCP: Pas prêt"
+msgstr "Port TCP: Pas pret"
 
 #: src/SysTray.cpp:289
 msgid "UDP Port: "
@@ -4930,19 +4928,19 @@ msgstr "Port UDP: "
 
 #: src/SysTray.cpp:292
 msgid "UDP Port: Not Ready"
-msgstr "Port UDP: Pas prêt"
+msgstr "Port UDP: Pas pret"
 
 #: src/SysTray.cpp:301
 msgid "Online Signature: Enabled"
-msgstr "Signature en ligne: Activée"
+msgstr "Online Signature: Activee"
 
 #: src/SysTray.cpp:303
 msgid "Online Signature: Disabled"
-msgstr "Signature en ligne: Désactivée"
+msgstr "Online Signature: Desactivee"
 
 #: src/SysTray.cpp:320
 msgid "Shared Files: "
-msgstr "Fichiers partagés: "
+msgstr "Fichiers partages: "
 
 #: src/SysTray.cpp:328
 msgid "Queued Clients: "
@@ -4962,7 +4960,7 @@ msgstr "Limite en envoi"
 
 #: src/SysTray.cpp:365 src/SysTray.cpp:400
 msgid "Unlimited"
-msgstr "Illimité"
+msgstr "Pas de limite"
 
 #: src/SysTray.cpp:382 src/SysTray.cpp:416
 msgid " kb/s"
@@ -4970,11 +4968,11 @@ msgstr " Ko/s"
 
 #: src/SysTray.cpp:396
 msgid "Download Limit"
-msgstr "Limite en téléchargement"
+msgstr "Limite en DL"
 
 #: src/SysTray.cpp:433
 msgid "Disconnect from server"
-msgstr "Déconnexion du serveur"
+msgstr "Deconnexion du serveur"
 
 #: src/SysTray.cpp:451
 msgid "Hide aMule"
@@ -5470,24 +5468,24 @@ msgstr "%.2f To"
 msgid "wxCas, aMule Online Statistics"
 msgstr "wxCas, statistiques en ligne d'aMule"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:146
+#: src/utils/wxCas/src/wxcasframe.cpp:145
 #: src/utils/wxCas/src/wxcasframe.cpp:296
 msgid "Stop Auto Refresh"
 msgstr "Arrêter le rafraîchissement automatique"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:151
+#: src/utils/wxCas/src/wxcasframe.cpp:150
 msgid "Save Online Statistics image"
 msgstr "Sauvegarder l'image des statistiques en ligne"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:154
+#: src/utils/wxCas/src/wxcasframe.cpp:153
 msgid "Print Online Statistics image"
 msgstr "Imprimer l'image des statistiques en ligne"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:157
+#: src/utils/wxCas/src/wxcasframe.cpp:156
 msgid "Preferences setting"
 msgstr "Préférences"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:162
+#: src/utils/wxCas/src/wxcasframe.cpp:161
 #: src/utils/wxCas/src/wxcasframe.cpp:365
 msgid "About wxCas"
 msgstr "A propos de wxCas"
@@ -5628,7 +5626,7 @@ msgstr "ATTENTION: aMule est arrêté !"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:731
 msgid " is connecting..."
-msgstr " se connecte..."
+msgstr "se connecte..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:747
 msgid "aMule is connecting..."
