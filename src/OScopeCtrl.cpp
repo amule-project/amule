@@ -86,8 +86,8 @@ COLORREF crPreset [ 16 ] = {
 	crGrid  = RGB(  0, 255, 255) ;  // see also SetGridColor
 	brushBack=*(wxTheBrushList->FindOrCreateBrush(wxColour(GetRValue(crBackground),GetGValue(crBackground),GetBValue(crBackground)),wxSOLID));
 
-	strXUnits.Format(wxT("X")) ;  // can also be set with SetXUnits
-	strYUnits.Format(wxT("Y")) ;  // can also be set with SetYUnits
+	strXUnits.Printf(wxT("X")) ;  // can also be set with SetXUnits
+	strYUnits.Printf(wxT("Y")) ;  // can also be set with SetYUnits
 
 	bmapOldGrid = NULL ;
 	bmapOldPlot = NULL ;
@@ -141,7 +141,7 @@ void COScopeCtrl::SetRanges(float fLower, float fUpper)
 
 // G.Hayduk: Apart from setting title of axis, now you can optionally set 
 // the limits strings (string which will be placed on the left and right of axis)
-void COScopeCtrl::SetXUnits(CString strUnits, CString strMin, CString strMax)
+void COScopeCtrl::SetXUnits(const wxString& strUnits, const wxString& strMin, const wxString& strMax)
 {
 	strXUnits = strUnits;
 	strXMin = strMin;
@@ -150,7 +150,7 @@ void COScopeCtrl::SetXUnits(CString strUnits, CString strMin, CString strMax)
 }  // SetXUnits
 
 
-void COScopeCtrl::SetYUnits(CString strUnits, CString strMin, CString strMax)
+void COScopeCtrl::SetYUnits(const wxString& strUnits, const wxString& strMin, const wxString& strMax)
 {
 	strYUnits = strUnits;
 	strYMin = strMin;
@@ -200,7 +200,7 @@ void COScopeCtrl::RecreateGrid()
 	unsigned j, GridPos;
 	int nCharacters ;
 	wxPen solidPen=*(wxThePenList->FindOrCreatePen(wxColour(GetRValue(crGrid),GetGValue(crGrid),GetBValue(crGrid)),1,wxSOLID));
-	CString strTemp ;
+	wxString strTemp;
 
 	// fill the grid background
 	dcGrid->SetBrush(brushBack);
@@ -243,7 +243,7 @@ void COScopeCtrl::RecreateGrid()
 	// y max
 	dcGrid->SetTextForeground(wxColour(GetRValue(crGrid),GetGValue(crGrid),GetBValue(crGrid)));
 	if( strYMax.IsEmpty() )
-		strTemp.Format (wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit) ;
+		strTemp.Printf(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit) ;
 	else
 		strTemp = strYMax;
 	wxCoord sizX,sizY;
@@ -252,13 +252,13 @@ void COScopeCtrl::RecreateGrid()
 //	dcGrid->SetPen(wxNullPen);
 /*
 	// y/2
-	strTemp.Format ("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit / 2) ;
+	strTemp.Printf("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit / 2) ;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
 	dcGrid->DrawText(strTemp,rectPlot.left-2-sizX,rectPlot.bottom+((rectPlot.top-rectPlot.bottom)/2)-7);
 */
 	// y min
 	if( strYMin.IsEmpty() )
-		strTemp.Format (wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+		strTemp.Printf(wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
 	else
 		strTemp = strYMin;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
@@ -267,7 +267,7 @@ void COScopeCtrl::RecreateGrid()
 	// x units
 	strTemp = CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
-	strXUnits.Format((bStopped ? _("Disabled [%s]") : wxT("%s")), unicode2char(strTemp));
+	strXUnits.Printf((bStopped ? _("Disabled [%s]") : wxT("%s")), unicode2char(strTemp));
 	
 	dcGrid->GetTextExtent(strXUnits,&sizX,&sizY);
 	dcGrid->DrawText(strXUnits,(rectPlot.left+rectPlot.right)/2-sizX/2,rectPlot.bottom+4);
