@@ -59,6 +59,7 @@
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
 #include "Preferences.h"
 #include "listbase.h"		// Needed for wxLC_OWNERDRAW
+#include "DataToText.h"		// Needed for PriorityToStr
 
 #define DLC_BARUPDATE 512
 
@@ -892,18 +893,10 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 				break;
 
 			case 7:	// Priority
-				if ( lpPartFile->IsAutoDownPriority() ) {
-					switch ( lpPartFile->GetDownPriority() ) {
-						case PR_LOW:	dc->DrawText(_("Auto [Lo]"), rect.GetX(), rect.GetY()); break;
-						case PR_NORMAL:	dc->DrawText(_("Auto [No]"), rect.GetX(), rect.GetY()); break;
-						case PR_HIGH:	dc->DrawText(_("Auto [Hi]"), rect.GetX(), rect.GetY()); break;
-					}
-				} else {
-					switch ( lpPartFile->GetDownPriority() ) {
-						case PR_LOW:	dc->DrawText(_("Low"),    rect.GetX(), rect.GetY());	break;
-						case PR_NORMAL:	dc->DrawText(_("Normal"), rect.GetX(), rect.GetY());	break;
-						case PR_HIGH:	dc->DrawText(_("High"),   rect.GetX(), rect.GetY());	break;
-					}
+				{
+					wxString str = PriorityToStr( lpPartFile->GetDownPriority(), lpPartFile->IsAutoDownPriority() );
+
+					dc->DrawText( str, rect.GetX(), rect.GetY());
 				}
 				break;
 			case 8: // Status
