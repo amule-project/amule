@@ -1352,7 +1352,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 	}
 	delete ft;
 
-	wxPuts(wxString::Format(wxT("Launch Command: %s"), cmd.c_str()));
+	wxPuts(wxT("Launch Command: ") + cmd);
 	if (!wxExecute(cmd, FALSE)) {
 		wxLogError(wxT("Error launching browser for FakeCheck."));
 	}
@@ -1453,7 +1453,7 @@ void CamuleApp::FlushQueuedLogLines() {
 
 	while (!QueuedAddLogLines.IsEmpty()) {
 		line_to_add = QueuedAddLogLines.RemoveHead();
-		amuledlg->AddLogLine(line_to_add.addtostatus, wxT("%s"), line_to_add.line.c_str());
+		amuledlg->AddLogLine(line_to_add.addtostatus, line_to_add.line);
 	}
 
 	m_LogQueueLock.Leave();
