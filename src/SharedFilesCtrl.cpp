@@ -56,6 +56,8 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_PERMFRIENDS,	CSharedFilesCtrl::OnSetPermissions )
 	EVT_MENU( MP_PERMALL,		CSharedFilesCtrl::OnSetPermissions )
 	
+	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
+	
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHTMLED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
