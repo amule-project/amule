@@ -287,10 +287,8 @@ protected:
 
 	APPState m_app_state;	
 
-	wxTextFile amulesig_out;
-	wxTextFile emulesig_out;
-	wxString emulesig_path;
-	wxString amulesig_path;
+	wxString m_emulesig_path;
+	wxString m_amulesig_path;
 	
 	wxString OSType;
 	

@@ -1038,68 +1038,42 @@ wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 {
 	// Do not do anything if online signature is disabled in Preferences
-	if (!thePrefs::IsOnlineSignatureEnabled() || emulesig_path.IsEmpty()) {
-		// We do not need to check amulesig_path because if emulesig_path is empty,
-		// that means amulesig_path is empty too.
+	if (!thePrefs::IsOnlineSignatureEnabled() || m_emulesig_path.IsEmpty()) {
+		// We do not need to check m_amulesig_path because if m_emulesig_path is empty,
+		// that means m_amulesig_path is empty too.
 		return;
 	}
 
-	// Open both files if needed
-	if (!emulesig_out.IsOpened()) {
-		if ( !wxFileExists( emulesig_path ) ) {
-			if ( !emulesig_out.Create(emulesig_path) ) {
-				AddLogLineM(true, wxString(_("Failed to create"))+_(" OnlineSig File"));
-				// Will never try again.
-				amulesig_path.Clear();
-				emulesig_path.Clear();
-				return;
-			}
-		} else if  ( !emulesig_out.Open(emulesig_path) ) {
-			AddLogLineM(true, wxString(_("Failed to open"))+_(" OnlineSig File"));
-			// Will never try again.
-			amulesig_path.Clear();
-			emulesig_path.Clear();
-			return;
-		}
-	}
-	if (!amulesig_out.IsOpened()) {
-		if ( !wxFileExists( amulesig_path ) ) {
-			if ( !amulesig_out.Create(amulesig_path) ) {
-				AddLogLineM(true, wxString(_("Failed to create"))+_(" aMule OnlineSig File"));
-				// Will never try again.
-				amulesig_path.Clear();
-				emulesig_path.Clear();
-				return;
-			}
-		} else if  ( !amulesig_out.Open(amulesig_path) ) {
-			AddLogLineM(true, wxString(_("Failed to open"))+_(" aMule OnlineSig File"));
-			// Will never try again.
-			amulesig_path.Clear();
-			emulesig_path.Clear();
-			return;
-		}
-	}
+	// Remove old signature files
+	if ( wxFileExists( m_emulesig_path ) ) { wxRemoveFile( m_emulesig_path ); }
+	if ( wxFileExists( m_amulesig_path ) ) { wxRemoveFile( m_amulesig_path ); }
 
-#if wxCHECK_VERSION(2,5,3)
-	emulesig_out.Clear();
-	amulesig_out.Clear();
-#else
-	unsigned int i;
-	for( i = 0; i < emulesig_out.GetLineCount(); ++i) {
-		emulesig_out.RemoveLine(1);
+	
+	wxTextFile amulesig_out;
+	wxTextFile emulesig_out;
+	
+	// Open both files if needed
+	if ( !emulesig_out.Create( m_emulesig_path) ) {
+		AddLogLineM(true, wxString(_("Failed to create"))+_(" OnlineSig File"));
+		// Will never try again.
+		m_amulesig_path.Clear();
+		m_emulesig_path.Clear();
+		return;
 	}
-	for( i = 0; i < amulesig_out.GetLineCount(); ++i) {
-		amulesig_out.RemoveLine(1);
+	
+	if ( !amulesig_out.Create(m_amulesig_path) ) {
+		AddLogLineM(true, wxString(_("Failed to create"))+_(" aMule OnlineSig File"));
+		// Will never try again.
+		m_amulesig_path.Clear();
+		m_emulesig_path.Clear();
+		return;
 	}
-#endif
 	
 	wxString emulesig_string;
 	
 	if (zero) {
-		
 		emulesig_string = wxT("0\xA0.0|0.0|0");
 		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
-		
 	} else {
 		if (serverconnect->IsConnected()) {
 
@@ -1119,7 +1093,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			// Now for amule sig
 			
 			// Connected. State 1, full info
-			
 			amulesig_out.AddLine(wxT("1"));
 			// Server Name
 			amulesig_out.AddLine(serverconnect->GetCurrentServer()->GetListName());
@@ -1135,17 +1108,12 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			}
 			
 		} else if (serverconnect->IsConnecting()) {
-			
 			emulesig_string = wxT("0");
 			
 			// Connecting. State 2, No info.
-			
 			amulesig_out.AddLine(wxT("2\n0\n0\n0\n0"));
-			
 		} else {	
-			
 			// Not connected to a server
-			
 			emulesig_string = wxT("0");
 			
 			// Not connected, state 0, no info
@@ -1153,9 +1121,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		}
 		
 		emulesig_string += wxT("\xA");
-		/*
-		emulesig_out.Write("\xA",1);
-		*/
 
 		wxString temp;
 		
@@ -1179,8 +1144,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		
 		// Number of shared files (not on eMule)
 		amulesig_out.AddLine(wxString::Format(wxT("%d"), sharedfiles->GetCount()));
-		
-	}	/* if (!zero) */
+	}
 	
 	// eMule signature finished here. Write the line to the wxTextFile.
 	emulesig_out.AddLine(emulesig_string);
@@ -1207,34 +1171,28 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine(wxT(VERSION));
 #endif
 
-        // Total received bytes in session
 	if (zero) {
 		amulesig_out.AddLine(wxT("0"));
+		amulesig_out.AddLine(wxT("0"));
+		amulesig_out.AddLine(wxT("0"));
 	} else {
+        // Total received bytes in session
 		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
 			(long long unsigned int)theApp.statistics->GetSessionReceivedBytes()));
-	}
 
         // Total sent bytes in session
-	if (zero) {
-		amulesig_out.AddLine(wxT("0"));
-	} else {
 		amulesig_out.AddLine(wxString::Format(wxT("%llu"),
 			(long long unsigned int)theApp.statistics->GetSessionSentBytes()));
-	}
-
-	// Uptime
-	if (zero) {
-		amulesig_out.AddLine(wxT("0"));
-	} else {
+		
+		// Uptime
 		amulesig_out.AddLine(wxString::Format(wxT("%u"),statistics->GetUptimeSecs()));
 	}
-	
+
 	// Flush the files
 	emulesig_out.Write();
 	amulesig_out.Write();
-
 } //End Added By Bouc7
+
 
 // Gracefully handle fatal exceptions and print backtrace if possible
 void CamuleApp::OnFatalException()
@@ -1298,18 +1256,19 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 
 void CamuleApp::SetOSFiles(const wxString new_path)
 {
+	printf("%s\n", new_path.c_str());
 	if ( thePrefs::IsOnlineSignatureEnabled() ) {
 		if ( ::wxDirExists(new_path) ) {
-			emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
-			amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
+			m_emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
+			m_amulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("amulesig.dat");
 		} else {
 			ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
-			emulesig_path = wxEmptyString;
-			amulesig_path = wxEmptyString;
+			m_emulesig_path.Clear();
+			m_amulesig_path.Clear();
 		}
 	} else {
-		emulesig_path = wxEmptyString;
-		amulesig_path = wxEmptyString;	
+		m_emulesig_path.Clear();
+		m_amulesig_path.Clear();
 	}
 }
 
