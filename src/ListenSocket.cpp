@@ -1440,7 +1440,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (reqfile != m_client->GetRequestFile()) {
 					throw wxString(wxT(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
-				while(data_in.GetLength()-data_in.GetPosition())
+				while((data_in.GetLength()-data_in.GetPosition()) && m_client)
 				{
 					uint8 opcode_in = data_in.ReadUInt8();
 					switch(opcode_in)
