@@ -2056,7 +2056,6 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
     wxCheckBox *item4 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->SetValue( TRUE );
     item3->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
     wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(30,-1), 0, 1, 10, 2 );
@@ -2086,11 +2085,9 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     wxCheckBox *item12 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update serverlist when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetValue( TRUE );
     item1->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxCheckBox *item13 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update serverlist when a client connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetValue( TRUE );
     item1->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxCheckBox *item14 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2102,6 +2099,7 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxCheckBox *item16 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetValue( TRUE );
     item1->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxCheckBox *item17 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2539,7 +2537,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item16 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item17 = new wxSlider( parent, IDC_QUEUESIZE, 50, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    wxSlider *item17 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item1->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item18 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
