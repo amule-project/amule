@@ -71,7 +71,6 @@ amule_SOURCES = ListenSocket.cpp \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
-	debugstuff.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadClient.cpp \
 	DownloadListCtrl.cpp \
@@ -145,6 +144,10 @@ endif
 
 if ADD_THROTTLER
 amule_SOURCES += UploadBandwidthThrottler.cpp LastCommonRouteFinder.cpp 
+endif
+
+if USE_DEBUG
+amule_SOURCES += debugstuff.cpp
 endif
 
 amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
