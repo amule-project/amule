@@ -1909,7 +1909,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 	
 	wxString FullVerName;
 	FullVerName = wxT("Client ");
-	if (!Username.IsEmpty()) {
+	if (Username.IsEmpty()) {
 		FullVerName += wxT("(Unknown)");
 	} else {
 		FullVerName += Username;
