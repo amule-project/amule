@@ -253,7 +253,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 
 					if (bOutputMessage) {
-						theApp.amuledlg->AddServerMessageLine(message);
+						theApp.AddServerMessageLine(message);
 					}
 				}
 				break;
@@ -383,8 +383,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				if (update) {
 					update->SetUserCount(cur_user);
 					update->SetFileCount(cur_files);
-					theApp.amuledlg->ShowUserCount(cur_user, cur_files);
-					Notify_ServerRefresh(update);
+					Notify_ShowUserCount(update);
 				}
 				break;
 			}

@@ -698,11 +698,8 @@ bool CamuleApp::OnInit()
 	listensocket->StartListening();
 	// If we wern't able to start listening, we need to warn the user
 	if ( !listensocket->Ok() ) {
-		GUIEvent event(ADDLOGLINE);
-		event.string_value = wxString::Format(_("Port %d is not available. You will be LOWID"),
-			glob_prefs->GetPort());
-		event.byte_value = true;
-		NotifyEvent(event);
+		AddLogLineM(true, wxString::Format(_("Port %d is not available. You will be LOWID"),
+			glob_prefs->GetPort()));
 		#warning we need to move this lowid warning to the GUI itself.
 		wxMessageBox(wxString::Format(
 			_("Port %d is not available !!\n\n"
@@ -2024,7 +2021,11 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				amuledlg->transferwnd->UpdateCatTabTitles();
 			}
 			break;
-			
+		case SHOW_USER_COUNT:
+			amuledlg->ShowUserCount(((CServer*)event.ptr_value)->GetUsers(),
+						((CServer*)event.ptr_value)->GetFiles());
+			amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
+			break;
 		case SHOW_GUI:
 			amuledlg->Show_aMule(true);
 			break;
@@ -2189,6 +2190,11 @@ wxString CamuleApp::GetServerLog(bool reset)
 wxString CamuleApp::GetDebugLog(bool reset)
 {
 	return GetLog(reset);
+}
+
+void CamuleApp::AddServerMessageLine(wxString &msg)
+{
+	amuledlg->AddServerMessageLine(msg);
 }
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)

@@ -78,6 +78,7 @@ enum GUI_Event_ID {
 	// notification
 	SHOW_NOTIFIER,
 	SHOW_CONN_STATE,
+	SHOW_USER_COUNT,
 	SHOW_QUEUE_COUNT,
 	SHOW_UPDATE_CAT_TABS,
 	SHOW_GUI,
@@ -275,6 +276,7 @@ class GUIEvent {
 // misc
 #define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)
 #define Notify_ShowConnState(val0, str)             Notify_2_ValEvent(SHOW_CONN_STATE, val0, str)
+#define Notify_ShowUserCount(ptr)                   Notify_1_ValEvent(SHOW_USER_COUNT, ptr)
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
