@@ -40,6 +40,8 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "MapKey.h"		// Needed for CCKey
+#include "PartFile.h"		// Needed for PartFile
+#include "server.h"		// Needed for CServer
 
 CSharedFileList::CSharedFileList(CPreferences* in_prefs,CServerConnect* in_server,CKnownFileList* in_filelist){
 	app_prefs = in_prefs;
@@ -169,7 +171,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	CMemFile* files = new CMemFile(100);
 
 	files->Write((uint32)1); // filecount
-	CreateOfferedFilePacket(toadd,files);
+	CreateOfferedFilePacket(toadd,files, true);
 	Packet* packet = new Packet(files);
 	packet->opcode = OP_OFFERFILES;
 	delete files;
@@ -214,7 +216,7 @@ void CSharedFileList::SendListToServer(){
 	
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); pos++ ) {
-		CreateOfferedFilePacket(pos->second,files);
+		CreateOfferedFilePacket(pos->second,files,true);
 	}
 	Packet* packet = new Packet(files);
 	packet->opcode = OP_OFFERFILES;
@@ -234,7 +236,7 @@ CKnownFile* CSharedFileList::GetFileByIndex(int index){
         return 0;
 }
 
-void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files){
+void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files, bool fromserver){
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
@@ -244,14 +246,34 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 
 	uint32 nClientID;
 	uint16 nClientPort;
-	if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID()){
-		nClientID = 0;
-		nClientPort = 0;
+	
+	if (!fromserver || (theApp.serverconnect->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
+		#define FILE_COMPLETE_ID		0xfbfbfbfb
+		#define FILE_COMPLETE_PORT	0xfbfb
+		#define FILE_INCOMPLETE_ID	0xfcfcfcfc
+		#define FILE_INCOMPLETE_PORT	0xfcfc
+		// complete   file: ip 251.251.251 (0xfbfbfbfb) port 0xfbfb
+		// incomplete file: op 252.252.252 (0xfcfcfcfc) port 0xfcfc
+		if (cur_file->GetStatus() == PS_COMPLETE) {
+//			printf("Publishing complete file\n");
+			nClientID = FILE_COMPLETE_ID;
+			nClientPort = FILE_COMPLETE_PORT;
+		} else {
+//			printf("Publishing incomplete file\n");			
+			nClientID = FILE_INCOMPLETE_ID;
+			nClientPort = FILE_INCOMPLETE_PORT;		
+		}
+	} else {
+//		printf("Publishing standard file\n");
+		if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID()){
+			nClientID = 0;
+			nClientPort = 0;
+		} else {
+			nClientID = theApp.serverconnect->GetClientID();
+			nClientPort = theApp.glob_prefs->GetPort();
+		}
 	}
-	else{
-		nClientID = theApp.serverconnect->GetClientID();
-		nClientPort = theApp.glob_prefs->GetPort();
-	}
+	
 	files->Write(nClientID);
 	files->Write(nClientPort);
 
@@ -395,7 +417,7 @@ void CSharedFileList::ClearED2KPublishInfo(){
 	CCKey bufKey;
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); pos++ ) {
-		CKnownFile *cur_file = pos->second;
+		cur_file = pos->second;
 		cur_file->SetPublishedED2K(false);
 	}
 

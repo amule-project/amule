@@ -747,6 +747,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		//struct stat statbuf;
 		//fstat(m_hpartfile.fd(),&statbuf);
 		//if ((time_t)date != (time_t)statbuf.st_mtime) {
+
 		if ((time_t)date != wxFileModificationTime(wxString::wxString(fullname))) {
 			theApp.amuledlg->AddLogLine(false, CString(_("Warning: %s might be corrupted")), buffer, m_strFileName.GetData());
 			// rehash
@@ -758,6 +759,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 			delete[] partfilename;
 		}
 		delete[] searchpath;
+
 	}
 
 	UpdateCompletedInfos();
@@ -953,7 +955,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 	}
 	
-	
+	/*
 	#ifdef __WXGTK__
 	if (!theApp.use_chmod) {
 		struct stat sbf;
@@ -970,7 +972,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		//printf(" done.\n");
 	}
 	#endif
-	
+	*/
 	return true;
 }
 
@@ -3611,6 +3613,7 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 		theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(this);
 		m_lastRefreshedDLDisplay = curTick;
 	}
+	
 }
 
 time_t CPartFile::GetLastChangeDatetime(bool forcecheck)

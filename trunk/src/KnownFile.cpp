@@ -35,11 +35,11 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "BarShader.h"		// Needed for CBarShader
 #include "packets.h"		// Needed for CTag
-#include "PartFile.h"		// Needed for PR_HIGH
 #include "Preferences.h"	// Needed for CPreferences
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "amule.h"			// Needed for theApp
+#include "PartFile.h"		// Needed for SavePartFile
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 

@@ -102,7 +102,7 @@ public:
 	short	GetFilePriorityByID(unsigned char* filehash);
 	CKnownFile*     GetFileByIndex(int index);
 	CKnownFileList*		filelist;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files);
+	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files, bool toserver);
 	uint64	GetDatasize();
 	uint16	GetCount()	{return m_Files_map.size(); }
 	void	UpdateItem(CKnownFile* toupdate);
