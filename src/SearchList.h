@@ -111,6 +111,8 @@ public:
 
 	Packet* 	m_searchpacket;
 	void StopGlobalSearch();
+	void ClearThreadData() { m_searchthread = NULL; };
+
 private:
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 

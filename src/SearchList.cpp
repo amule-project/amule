@@ -93,6 +93,7 @@ void *CGlobalSearchThread::Entry()
 	}
 	
 	CoreNotify_Search_Update_Progress(0xffff);
+	theApp.searchlist->ClearThreadData();
 	
 	return NULL;
 }
@@ -131,7 +132,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	// Packet body:
 	if ( !searchString.IsEmpty() ) {
 		data->WriteUInt8( stringParameter ); // Search-String is a string parameter type
-		data->WriteString( searchString );   // Write the value of the string
+		data->WriteString( searchString/*, utf8strRaw*/ );   // Write the value of the string
 	}
 	
 	if ( !typeText.IsEmpty() ) {
