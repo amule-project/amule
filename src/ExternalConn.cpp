@@ -924,6 +924,85 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 	return response;
 }
 
+/*
+ * RLE encoder implementation
+ */
+ 
+RLE_String::RLE_String(int len)
+{
+	// since we using char, length limited to 255
+	wxASSERT(len < 0xff);
+	
+	m_len = len;
+	m_buff = new unsigned char[m_len];
+	//
+	// in worst case string will be twice long
+	m_enc_buff = new unsigned char[m_len*2];
+}
+
+RLE_String::~RLE_String()
+{
+	delete [] m_buff;
+	delete [] m_enc_buff;
+}
+
+CECTag *RLE_String::Encode(unsigned char *buff)
+{
+	//
+	// calculate difference from prev
+	//
+	for (int i = 0; i < m_len; i++) {
+		m_buff[i] ^= buff[i];
+	}
+	
+	//
+	// now RLE
+	//
+	int i = 0, j = 0;
+	while ( i != m_len ) {
+		unsigned char curr_val = m_buff[i];
+		int seq_start = i;
+		while ( (i != m_len) && (curr_val == m_buff[i]) ) {
+			i++;
+		}
+		m_enc_buff[j++] = i - seq_start;
+		m_enc_buff[j++] = curr_val;
+	}
+	m_enc_len = j - 1;
+	
+	CECTag *tag = new CECTag(EC_TAG_PARTFILE_PART_STATUS,
+		m_enc_len, m_enc_buff);
+
+	return tag;
+}
+
+const unsigned char *RLE_String::Decode(CECTag *tag)
+{
+	//
+	// Open RLE
+	//
+	int i = 0, j = 0;
+	const unsigned char *next = (unsigned char*)tag->GetTagData();
+	while ( i != m_len ) {
+		memset(m_enc_buff + i, next[j + 1], next[j]);
+		i += next[j];
+		j += 2;
+	}
+	
+	//
+	// Recreate data from diff
+	//
+	for (int i = 0; i < m_len; i++) {
+		m_buff[i] ^= m_enc_buff[i];
+	}
+	
+	return m_buff;
+}
+
+RLE_Encoder::RLE_Encoder(int len)
+{
+	m_len = len;
+}
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
