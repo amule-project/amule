@@ -72,6 +72,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	Hetfield:
 		* New popup menu and events management for new wx SysTray
+		
+	lfroen:
+		* Amule remote gui implementation
+		* EC additions
+		* RLE encoder for shared files
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
