@@ -58,6 +58,8 @@
 #include "Preferences.h"
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 	#include "OScopeCtrl.h"		// Needed for DelayPoints
@@ -498,8 +500,8 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 	if ( it != suspended_uploads_list.end() )
 		suspended_uploads_list.erase( it );
 	
-	printf("%s: Resuming uploads of file.\n",
-		(const char *)unicode2char(EncodeBase16(filehash, 16)));
+	AddLogLineM( false, CFormat( _("Resuming uploads of file: %s" ) )
+				% filehash.Encode() );
 }
 
 /*
@@ -507,6 +509,9 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
  */
 void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
+	AddLogLineM( false, CFormat( _("Suspending upload of file: %s" ) )
+				% filehash.Encode() );
+	
 	//Append the filehash to the list.
 	suspended_uploads_list.push_back(filehash);
 	wxString base16hash = EncodeBase16(filehash, 16);

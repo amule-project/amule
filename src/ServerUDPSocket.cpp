@@ -46,6 +46,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
+
 #include <sys/types.h>
 
 //
@@ -117,7 +118,8 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
-				printf("Received UDP server packet with unknown protocol 0x%x!\n",buffer[0]);
+				AddDebugLogLineM( true, logServerUDP,
+					wxString::Format( wxT("Received UDP server packet with unknown protocol 0x%x!"), buffer[0] ) );
 		}		
 	}
 }
@@ -166,10 +168,12 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 						uint8 new_opcode = packet.ReadUInt8();
 					
 						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBSEARCHRES) {
-							printf("Server search reply got additional bogus bytes\n");
+							AddDebugLogLineM( true, logServerUDP,
+								wxT("Server search reply got additional bogus bytes.") );
 							break;
 						} else {
-							printf("Got server search reply with additional packet\n");
+							AddDebugLogLineM( true, logServerUDP, 
+								wxT("Got server search reply with additional packet.") );
 						}
 					}					
 					
@@ -185,7 +189,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 						file->AddSources(packet, StringIPtoUint32(host), port-4);
 					} else {
-						printf("\tSources received for unknown file\n");
+						AddDebugLogLineM( true, logServerUDP, wxT("Sources received for unknown file") );
 						// skip sources for that file
 						uint8 count = packet.ReadUInt8();
 						packet.Seek(count*(4+2), wxFromCurrent);
@@ -197,7 +201,8 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 						uint8 new_opcode = packet.ReadUInt8();
 					
 						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBFOUNDSOURCES) {
-							printf("\tServer sources reply got additional bogus bytes\n");
+							AddDebugLogLineM( true, logServerUDP,
+								wxT("Server sources reply got additional bogus bytes.") );
 							break;
 						} 
 					}
@@ -325,7 +330,8 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				break;
 			}
 			default:
-				printf("Unknown Server UDP opcode %x\n",opcode);
+				AddDebugLogLineM( true, logServerUDP,
+					wxString::Format( wxT("Unknown Server UDP opcode %x"), opcode ) );
 		}
 	} catch (const wxString& error) {
 		AddDebugLogLineM(false, logServer, wxT("Error while processing incoming UDP Packet: ") + error);
@@ -343,7 +349,6 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 
 void CServerUDPSocket::OnHostnameResolved(uint32 ip) {
   /* An asynchronous database routine completed. */
-	//printf("Server UDP packet dns lookup done\n");
 	if (!ip) { 
 		if (sendbuffer) {
 			delete[] sendbuffer;
@@ -356,7 +361,6 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip) {
 		}
 		
 		if (!server_packet_queue.IsEmpty()) {
-			//printf("Sending a queued Server UDP packet after dns lookup\n");
 			ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
 			SendPacket(queued_packet->packet, queued_packet->server);
 			delete queued_packet->packet;
@@ -396,10 +400,8 @@ void CServerUDPSocket::SendBuffer(){
 		sendbuffer = NULL;		
 	}
 	
-	//printf("Server UDP packet sent.\n");
 	
 	if (!server_packet_queue.IsEmpty()) {
-		//printf("Sending a queued Server UDP packet\n");
 		ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
 		SendPacket(queued_packet->packet, queued_packet->server);
 		delete queued_packet->packet;
@@ -411,7 +413,6 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 
 	if (cur_server) {
 		// There's a packet being processed, queue this one.
-		//printf("Trying to send a Server UDP packet while there's one active, queueing\n");
 		ServerUDPPacket* queued_packet = new ServerUDPPacket;
 		queued_packet->packet = new CPacket(*packet); // Because packet might be deleted
 		queued_packet->server = host;
@@ -419,7 +420,6 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 		return;
 	}
 
-	//printf("Sending a Server UDP packet ... ");
 	wxASSERT(!cur_server);
 	
 	cur_server = new CServer(host);
@@ -433,7 +433,6 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 	// see if we need to dns()
 	if (cur_server->HasDynIP()) {
 		// This not an ip but a hostname. Resolve it.
-		//printf("Have to solve hostname\n");
 		CAsyncDNS* dns=new CAsyncDNS(cur_server->GetDynIP(), DNS_UDP, this);
 		if(dns->Create()!=wxTHREAD_NO_ERROR) {
 			// uh?
@@ -442,7 +441,6 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 		dns->Run();
 	} else {
 		m_SaveAddr.Hostname(cur_server->GetIP());
-		//printf("Sending\n");
 		SendBuffer();
 	}
 }

@@ -48,6 +48,7 @@
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Statistics.h"
 #include "Logger.h"
+#include "Format.h"
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
@@ -124,20 +125,8 @@ CClientReqSocketHandler::~CClientReqSocketHandler()
 
 void *CClientReqSocketHandler::Entry()
 {
-	/*
-	if (m_socket->GetClient()) {
-		if (m_socket->GetClient()->HasLowID()) {
-			printf("DL from lowid\n");
-		} else {
-			printf("DL from highid\n");
-		}
-	} else {
-		printf("Socket with no client\n");
-	}
-	*/
 	while ( !TestDestroy() ) {
 		if ( m_socket->deletethis ) {
-			//printf("CClientReqSocketHandler: socket %p in %ld being deleted\n",	m_socket, GetId());
 			break;
 		}
 		if ( m_socket->Error()) {
@@ -163,7 +152,6 @@ void *CClientReqSocketHandler::Entry()
 			}
 		}
 	}
-	//printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), m_socket);
 	m_socket->my_handler = 0;
 	m_socket->Safe_Delete();
 	m_socket = NULL;
@@ -1106,41 +1094,40 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 		}
 	}
-	catch (const CInvalidPacket& ErrorPacket) {
-		if ( CLogger::IsEnabled( logPacketErrors ) ) {
-			printf(	"\tCaught InvalidPacket exception:\n"
-				"\t\tError: %s\n"
-				"\t\tClientData: %s\n"
-				"\ton ListenSocket::ProcesstPacket\n",
-				strlen(ErrorPacket.what()) ? ErrorPacket.what() : "Unknown",
-				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
-			if (m_client) {
-				m_client->SetDownloadState(DS_ERROR);
-			}
+	catch (const CInvalidPacket& err) {
+		AddDebugLogLineM( false, logPacketErrors,
+			CFormat( wxT("Caught InvalidPacket exception:\n"
+						 "\tError: %s\n"
+						 "\tClientData: %s\n"
+						 "on ListenSocket::ProcesstPacket") )
+				% ( !err.what().IsEmpty() ? err.what() : wxT("Unknown") )
+				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
+		);
+			
+		if (m_client) {
+			m_client->SetDownloadState(DS_ERROR);
 		}
 		
 		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch (const wxString& error) {
-		if ( CLogger::IsEnabled( logPacketErrors ) ) {
-			printf(	"\tCaught error:\n"
-				"\t\tError: %s\n"
-				"\t\tClientData: %s\n"
-				"\ton ListenSocket::ProcessPacket\n",
-				error.IsEmpty() ? "Unknown" : (const char *)unicode2char(error),
-				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
-		}
-		AddDebugLogLineM
-			(
-			false,
-			logClient, 
-			(	m_client ?
-				wxT("Client '") + m_client->GetUserName() + wxT(" (IP:") +
-					m_client->GetFullIP() + wxT(")") :
-				wxString(wxT("An unknown client"))
-			) +
-			wxT(" caused an error: ") + error + wxT(". Disconnecting client!")
-			);
+		AddDebugLogLineM( false, logPacketErrors, 
+			CFormat( wxT("Caught error:\n"
+						 "\tError: %s\n"
+						 "\tClientData: %s\n"
+						 "on ListenSocket::ProcessPacket") )
+				% ( error.IsEmpty() ? wxT("Unknown") : error )
+				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
+		);
+
+		AddDebugLogLineM( false, logClient, 
+			CFormat( wxT("Client '%s' (IP: %s) caused an error (%s). Disconnecting client!" ) )
+				% ( m_client ? m_client->GetUserName() : wxString(wxT("Unknown")) )
+				% ( m_client ? m_client->GetFullIP() : wxString(wxT("Unknown")) )
+				% error
+		);
+
+		
 		if (m_client) {
 			m_client->SetDownloadState(DS_ERROR);
 		}
@@ -1645,15 +1632,16 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
-	} catch (const CInvalidPacket& ErrorPacket) {
-		if ( CLogger::IsEnabled( logPacketErrors ) ) {
-			printf(	"\tCaught InvalidPacket exception:\n"
-				"\t\tError: %s\n"
-				"\t\tClientData: %s\n"
-				"\ton ListenSocket::ProcessExtPacket\n",
-				strlen(ErrorPacket.what()) ? ErrorPacket.what() : "Unknown",
-				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
-		}
+	} catch (const CInvalidPacket& err) {
+		AddDebugLogLineM( false, logPacketErrors,
+			CFormat( wxT("Caught InvalidPacket exception:\n"
+						 "\tError: %s\n"
+						 "\tClientData: %s\n"
+						 "on ListenSocket::ProcessExtPacket") )
+				% ( !err.what().IsEmpty() ? err.what() : wxT("Unknown") )
+				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
+		);
+		
 		if (m_client) {
 			m_client->SetDownloadState(DS_ERROR);
 		}
@@ -1663,17 +1651,21 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		AddDebugLogLineM( false, logClient,
 			wxT("A client caused an error or did something bad: ") +
 			error + _(". Disconnecting client!"));
-		if ( CLogger::IsEnabled( logPacketErrors ) ) {
-			printf(	"\tCaught error:\n"
-				"\t\tError: %s\n"
-				"\t\tClientData: %s\n"
-				"\ton ListenSocket::ProcessExtPacket\n",
-				error.IsEmpty() ? "Unknown" : (const char *)unicode2char(error),
-				m_client ? (const char *)unicode2char(m_client->GetClientFullInfo()) : "Unknown");
-		}
+		
+		
+		AddDebugLogLineM( false, logPacketErrors,
+			CFormat( wxT("Caught error:\n"
+						 "\tError: %s\n"
+						 "\tClientData: %s\n"
+						 "\ton ListenSocket::ProcessExtPacket") )
+				% ( error.IsEmpty() ? wxT("Unknown") : error )
+				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
+		);
+		
 		if (m_client) {
 			m_client->SetDownloadState(DS_ERROR);
 		}
+		
 		Disconnect(wxT("Client error on ListenSocket::ProcessExtPacket: ") + error);
 		return false;
 	} catch (...) {
@@ -1694,16 +1686,12 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 {
 	if (nErrorCode) {
 		OnError(nErrorCode);
-	} else {
-		if (!m_client) {
-			printf("Couldn't send hello packet (client deleted!)\n");
-			// and now? Disconnect? not?			
-		} else {
-			if (!m_client->SendHelloPacket()) {	
-				printf("Couldn't send hello packet (client deleted?)\n");				
-				// and now? Disconnect? not?				
-			}				
-		}
+	} else if (!m_client) {
+		// and now? Disconnect? not?			
+		AddDebugLogLineM( true, logClient, wxT("Couldn't send hello packet (Client deleted!)") );
+	} else if (!m_client->SendHelloPacket()) {	
+		// and now? Disconnect? not?				
+		AddDebugLogLineM( true, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
 	}
 }
 
@@ -2109,7 +2097,6 @@ void CListenSocket::KillAllSockets()
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 {
 	if (GetOpenSockets() > thePrefs::GetMaxConnections() || (m_OpenSocketsInterval > (thePrefs::GetMaxConperFive()*GetMaxConperFiveModifier()) && !bIgnoreInterval)) {
-		//printf("TOO MANY SOCKETS!\n");
 		return true;
 	} else {
 		return false;
@@ -2230,7 +2217,6 @@ void *CSocketGlobalThread::Entry()
 					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
 						// If client is downloading, we create a thread for it.
 						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
-						//printf("Socket %p started dload\n", cur_sock);
 						socket_list.erase(cur_sock);
 						t->Run();
 					}

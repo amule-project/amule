@@ -277,7 +277,7 @@ void CClientCreditsList::LoadList()
 		GUIEvent event(ADDLOGLINE);
 		
 		if ( error ) {
-			printf("WARNING: Corruptions found while reading Creditfile!\n");
+			AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!\n") );
 			
 			event.string_value = _("WARNING: Failed to load Creditfile due to corruptions!");	
 			event.byte_value = true;
@@ -483,13 +483,13 @@ void CClientCreditsList::InitalizeCrypting()
 	if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
 		KeyFile.Open(theApp.ConfigDir + CRYPTKEY_FILENAME,CFile::read);
 		if (KeyFile.Length() == 0) {
-			printf("cryptkey.dat is 0 size, creating\n");
+			AddDebugLogLineM( true, logCredits, wxT("'cryptkey.dat' is 0 size, creating.") );
 			bCreateNewKey = true;
 		}
 		KeyFile.Close();
 	}
 	else {
-		printf("No cryptkey.dat found, creating\n");
+		AddLogLineM( false, _("No 'cryptkey.dat' file found, creating") );
 		bCreateNewKey = true;
 	}
 	

@@ -34,6 +34,8 @@
 #include "OtherStructs.h"	// Needed for ServerMet_Struct
 #include "Packet.h"		// Needed for CTag
 #include "StringFunctions.h" // Needed for unicode2char 
+#include "Logger.h"
+#include "Format.h"
 
 #include <wx/intl.h>	// Needed for _
 
@@ -264,15 +266,23 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 			}
 		}
 	} catch (const CInvalidPacket& e) {
-		printf("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.\n");
+		AddDebugLogLineM( true, logPacketErrors,
+			wxT("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.")
+		);
+		
 		throw;
 	} catch (const wxString& error) {
-		printf("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\n");
-		printf("Error: %s\n", (const char *)unicode2char(error)); 
-		throw CInvalidPacket("Error reading server.met");		
+		AddDebugLogLineM( true, logPacketErrors,
+			CFormat( wxT("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\nError: %s\n") )
+				% error
+		);
+		
+		throw CInvalidPacket(wxT("Error reading server.met"));
 	} catch (...) {
-		printf("Caught unknown exception in CServer::AddTagFromFile! server.met is corrupted.\n");
-		throw CInvalidPacket("Error reading server.met");				
+		AddDebugLogLineM( true, logGeneral,
+			wxT("Caught unknown exception in CServer::AddTagFromFile! server.met is corrupted.") );
+		
+		throw CInvalidPacket(wxT("Error reading server.met"));
 	}
 	return true;
 }

@@ -148,7 +148,7 @@ CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearc
 	wxString tempName = GetStrTagValue(FT_FILENAME);
 	
 	if (tempName.IsEmpty()) {
-		throw CInvalidPacket("No filename in search result");
+		throw CInvalidPacket(wxT("No filename in search result"));
 	}
 		
 	SetFileName(tempName);

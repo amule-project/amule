@@ -402,7 +402,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 			//please fix your protocol implementation (shareaza, xmule, etc)!
 			//return;
 			// Kry - No mercy since xMule bans aMule and eMule 0.43x
-			throw(CInvalidPacket("Wrong size on extended info packet"));
+			throw(CInvalidPacket(wxT("Wrong size on extended info packet")));
 		}
 		
 		uint16 nED2KUpPartCount = data->ReadUInt16();
@@ -452,8 +452,8 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		}
 	} catch (const CInvalidPacket& InvalidPacket) {
 		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: ");
-		if (strlen(InvalidPacket.what())) {
-			error += char2unicode(InvalidPacket.what());
+		if ( !InvalidPacket.what().IsEmpty() ) {
+			error += InvalidPacket.what();
 		} else {
 			error += wxT("Unknown InvalidPacket exception");
 		}

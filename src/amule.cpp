@@ -278,25 +278,21 @@ int CamuleApp::OnExit()
 	}
 	
 	
-	//printf("ServerList... ");
 	if (serverlist) {
 		delete serverlist;
 		serverlist = NULL;
 	}
 	
-	//printf("SearchList... ");
 	if (searchlist) {
 		delete searchlist;
 		searchlist = NULL;
 	}
 	
-	//printf("ClientCredits... ");
 	if (clientcredits) {
 		delete clientcredits;
 		clientcredits = NULL;
 	}		
 
-	//printf("FriendList... ");
 	if (friendlist) {
 		delete friendlist;
 		friendlist = NULL;
@@ -304,85 +300,71 @@ int CamuleApp::OnExit()
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
-	//printf("SharedFiles... ");
 	if (sharedfiles) {
 		delete sharedfiles;
 		sharedfiles = NULL;
 	}
 	
-	//printf("SeverConnect... ");
 	if (serverconnect) {
 		delete serverconnect;
 		serverconnect = NULL;
 	}
 	
-	//printf("ListenSocket... ");
 	if (listensocket) {
 		delete listensocket;
 		listensocket = NULL;
 	}
 	
-	//printf("KnownFiles... ");
 	if (knownfiles) {
 		delete knownfiles;
 		knownfiles = NULL;
 	}
 	
-	//printf("ClientList... ");
 	if (clientlist) {
 		delete clientlist;
 		clientlist = NULL;
 	}
 	
-	//printf("UploadQueue... ");
 	if (uploadqueue) {
 		delete uploadqueue;
 		uploadqueue = NULL;
 	}
 	
-	//printf("DownloadQueue... ");
 	if (downloadqueue) {
 		delete downloadqueue;
 		downloadqueue = NULL;
 	}
 	
-	//printf("IPFilter... ");
 	if (ipfilter) {
 		delete ipfilter;
 		ipfilter = NULL;
 	}
 	
-	//printf("ECServerHandler... ");
 	if (ECServerHandler) {
 		delete ECServerHandler;
 		ECServerHandler = NULL;
 	}
 
-	//printf("Statistics... ");
 	if (statistics) {
 		delete statistics;		
 	}		
 
-	//printf("Preferences... ");
 	if (glob_prefs) {
 		delete glob_prefs;
 		glob_prefs = NULL;
 		CPreferences::EraseItemList();
 	}
 
-	//printf("LocalServer... ");
 	if (localserver) {
 		delete localserver;
 		localserver = NULL;
 	}
 	
-	//printf("AppLog... ");
 	if (applog) {
 		delete applog; // deleting a wxFFileOutputStream closes it
 		applog = NULL;
 	}
 	
-	//printf("Done! ");
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
@@ -478,7 +460,6 @@ bool CamuleApp::OnInit()
 	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
 	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
-	printf("0\n");
 	// If the connection failed, conn is NULL
 	if ( conn ) {
 		// An instance is already running!
@@ -489,14 +470,11 @@ bool CamuleApp::OnInit()
 
 		sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
 		ed2kfile = fopen(filename,"a");
-		printf("1\n");
 		if (ed2kfile != NULL) {
-			printf("2\n");
 			fprintf(ed2kfile,"RAISE_DIALOG");
 			printf("Raised current running aMule\n");
 			fclose(ed2kfile);
 		} else {
-			printf("3\n");
 			printf("Error opening file %s.Cannot raise active aMule\n", filename);
 		}
 		
@@ -507,7 +485,6 @@ bool CamuleApp::OnInit()
 		printf("aMule already running: exiting\n");
 		return false;
 	}
-	printf("4\n");
 	delete client;
 
 	// If there was no server, start one
@@ -1397,7 +1374,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		}
 		listensocket->UpdateConnectionsStatus();
 		
-		//printf("Bytes sent this second: %i\n",sent);
 		sent = 0;
 	}
 
@@ -1414,10 +1390,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		wxString buffer;
 		
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = CFormat( wxT("%llu") ) % ( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer = CFormat( wxT("%llu") ) % ( theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
+		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 

@@ -52,8 +52,6 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 
-//#define DEBUG_SERVER_PROTOCOL
-
 #ifndef AMULE_DAEMON
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -264,16 +262,14 @@ void CServerSocket::OnReceive(wxSocketError nErrorCode)
 bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 {
 	try {
-		#ifdef DEBUG_SERVER_PROTOCOL
-		AddLogLineM(true,wxT("Processing Server Packet: "));
-		#endif
+		AddDebugLogLineM( false, logServer, wxT("Processing Server Packet: ") );
+		
 		CServer* update;
 		switch(opcode) {
 			case OP_SERVERMESSAGE: {
 				/* Kry import of lugdunum 16.40 new features */
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_SERVERMESSAGE\n"));
-				#endif
+				AddDebugLogLineM( false, logServer, wxT("Server: OP_SERVERMESSAGE") );
+				
 				theApp.statistics->AddDownDataOverheadServer(size);
 				char* buffer = new char[size-1];
 				memcpy(buffer,&packet[2],size-2);
@@ -350,9 +346,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_IDCHANGE:{
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_IDCHANGE\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_IDCHANGE"));
+				
 				theApp.statistics->AddDownDataOverheadServer(size);
 				
 				if (size < 4 /* uint32 (ID)*/) {
@@ -433,9 +428,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				serverconnect->clientid = new_id;
 
 				if (connectionstate != CS_CONNECTED) {
-					#ifdef DEBUG_SERVER_PROTOCOL
-					AddLogLineM(true,wxT("Connected\n"));
-					#endif
+					AddDebugLogLineM(true,logServer,wxT("Connected"));
+					
 					SetConnectionState(CS_CONNECTED);
 					theApp.OnlineSig();       // Added By Bouc7
 				}
@@ -446,9 +440,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_SEARCHRESULT: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_SEARCHRESULT\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_SEARCHRESULT"));
+				
 				theApp.statistics->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? 
 					serverconnect->GetCurrentServer() : NULL;
@@ -462,9 +455,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_FOUNDSOURCES: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u\n"), (uint32)(byte)packet[16]));
-				#endif
+				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
 				theApp.statistics->AddDownDataOverheadServer(size);
 				CSafeMemFile sources((byte*)packet,size);
 				uint8 fileid[16];
@@ -475,9 +466,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_SERVERSTATUS: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_SERVERSTATUS\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERSTATUS"));
 				// FIXME some statuspackets have a different size -> why? structur?
 				if (size < 8) {
 					throw wxString(_("Invalid server status packet"));
@@ -495,10 +484,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			// Cleaned.
 			case OP_SERVERIDENT: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_SERVERIDENT\n"));
-				#endif
-				//DumpMem(packet,size);
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERIDENT"));
 
 				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size<38) {
@@ -545,9 +531,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			// tecxx 1609 2002 - add server's serverlist to own serverlist
 			case OP_SERVERLIST: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_SERVERLIST\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERLIST"));
+				
 				CSafeMemFile* servers = new CSafeMemFile((byte*)packet,size);
 				uint8 count = servers->ReadUInt8();
 				if (((int32)(count*6 + 1) > size)) {
@@ -573,13 +558,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					AddLogLineM(false, wxString::Format(_("Received %d new servers"), addcount));
 				}
 				theApp.serverlist->SaveServerMet();
-				AddLogLineM(false, _("Saving of server-list completed.\n"));
+				AddLogLineM(false, _("Saving of server-list completed."));
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_CALLBACKREQUESTED\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_CALLBACKREQUESTED"));
+				
 				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size == 6) {
 					CSafeMemFile data((byte*)packet,size);
@@ -597,29 +581,22 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			case OP_CALLBACK_FAIL: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_CALLBACK_FAIL\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_CALLBACK_FAIL"));
 				break;
 			}
 			case OP_REJECT: {
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: OP_REJECT\n"));
-				#endif
+				AddDebugLogLineM(false,logServer,wxT("Server: OP_REJECT"));
 				AddLogLineM(false, _("Server rejected last command"));
 				break;
 			}
-			default: {
-				printf("Unknown server packet with OPcode %x\n",opcode);
-				#ifdef DEBUG_SERVER_PROTOCOL
-				AddLogLineM(true,wxT("Server: Unrecognized packet -- protocol error\n\n"));
-				#endif
-			}
-				;
+			default:
+				AddDebugLogLineM( false, logPacketErrors, 
+					wxString::Format( wxT("Unknown server packet with OPcode %x"), opcode )
+				);
 		}
 		return true;
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(false,wxString(_("Bogus packet received from server - ")) + char2unicode(e.what()));
+		AddLogLineM(false,wxString(_("Bogus packet received from server - ")) + e.what());
 	} catch (const wxString& error) {
 		AddLogLineM(false,_("Unhandled error while processing packet from server - ") + error);
 	} catch (...) {
@@ -637,9 +614,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 
 void CServerSocket::ConnectToServer(CServer* server)
 {
-	#ifdef DEBUG_SERVER_PROTOCOL
-	AddLogLineM(true,wxT("Trying to connect\n"));
-	#endif
+	AddDebugLogLineM(true,logServer,wxT("Trying to connect"));
+	
 	cur_server = new CServer(server);
 	AddLogLineM(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetConnPort()));
 	SetConnectionState(CS_CONNECTING);
@@ -677,9 +653,8 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 bool CServerSocket::PacketReceived(CPacket* packet)
 {
 	CALL_APP_DATA_LOCK;
-	#ifdef DEBUG_SERVER_PROTOCOL
-	AddLogLineM(true,wxT("Server: Packet Received: "));
-	#endif
+	AddDebugLogLineM(false,logServer,wxT("Server: Packet Received: "));
+	
 	try {
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
 			if (!packet->UnPackPacket(250000)){
@@ -742,7 +717,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		amuleIPV4Address addr;
 		addr.Hostname(ip);
 		addr.Service(cur_server->GetConnPort());
-		AddDebugLogLineM(true, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
+		AddDebugLogLineM(false, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
 		Connect(addr, false);
 	} else {
 		AddLogLineM(true, _("Could not solve dns for server ") + cur_server->GetAddress() + _(" : Unable to connect!"));

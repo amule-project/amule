@@ -108,11 +108,11 @@ off_t CMemFile::Seek(off_t offset, wxSeekMode from)
 			newpos = m_FileSize - offset;
 			break;
 		default:
-			throw CInvalidPacket("Using an invalid seek-mode in CMemFile::Seek!");
+			throw CInvalidPacket(wxT("Using an invalid seek-mode in CMemFile::Seek!"));
 	}
 	
 	if ( newpos < 0 ) {
-		throw CInvalidPacket("Position after seeking in CMemFile is less than zero!");
+		throw CInvalidPacket(wxT("Position after seeking in CMemFile is less than zero!"));
 	}
 
 	// If the new position is greater than current filesize, then the 
@@ -152,7 +152,7 @@ void CMemFile::enlargeBuffer(unsigned long size)
 		} else {
 			// Attached. This is an illegal operation, as we could be trying to 
 			// free/alloc a local variable
-			throw CInvalidPacket("A CMemFile attempted to grow an attached buffer where m_GrowBytes is zero.");
+			throw CInvalidPacket(wxT("A CMemFile attempted to grow an attached buffer where m_GrowBytes is zero."));
 		}
 	}
 
@@ -198,9 +198,9 @@ off_t CMemFile::Read(void* buf, off_t length) const
 	// tests every single time
 	if ( length + m_position > m_FileSize ) {
 		if ( m_position > m_FileSize ) {
-			throw CInvalidPacket("Position is greater than length in CMemFile");
+			throw CInvalidPacket(wxT("Position is greater than length in CMemFile"));
 		} else {
-			throw CInvalidPacket("Attempted to read past end of CMemFile");
+			throw CInvalidPacket(wxT("Attempted to read past end of CMemFile"));
 		}
 	}
 

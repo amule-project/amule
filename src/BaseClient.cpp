@@ -463,27 +463,21 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 				m_fSharedDirectories = 1;
 			}
 		}
-
-	} catch ( const CStrangePacket& )
-	{
-		printf(	"\n"
-			"Wrong Tags on hello type packet!!\n"
-			"Sent by %s on ip %s port %i using client %x version %x\n"
-			"User Disconnected.\n",
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(), GetClientSoft(), GetVersion());
-		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 	catch ( const CInvalidPacket& e )
 	{
-		printf(	"Wrong Tags on hello type packet - %s\n\n"
-			"Sent by %s on ip %s port %i using client %x version %x\n"
-			"User Disconnected.\n",
-			e.what(),
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetVersion());
+		AddDebugLogLineM( true, logPacketErrors,
+			CFormat( wxT("Wrong Tags on hello type packet - %s\n"
+						 "Sent by %s on ip %s port %i using client %x version %x\n"
+						 "User Disconnected.") )
+				% e.what()
+				% GetUserName()
+				% GetFullIP()
+				% GetUserPort()
+				% GetClientSoft()
+				% GetVersion()
+		);
+
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 
@@ -798,7 +792,8 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						break;
 
 					default:
-						//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
+						AddDebugLogLineM( true, logPacketErrors, wxT("Unknown Mule tag: %s") + temptag.GetFullInfo() );
+
 						break;
 				}
 			}				
@@ -836,30 +831,22 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
 		}
 	}
-	catch ( const CStrangePacket& )
-	{
-		printf(	"\n"
-			"Wrong Tags on Mule Info packet!!\n"
-			"Sent by %s on ip %s port %i using client %x version %x\n"
-			"User Disconnected.\n",
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("Packet Dump:\n");
-		DumpMem(pachPacket, nSize);
-		throw wxString(wxT("Wrong Tags on Mule Info packet"));
-	}
 	catch ( const CInvalidPacket& e )
 	{
-		printf(	"Wrong Tags on Mule Info packet - %s\n\n"
-			"Sent by %s on ip %s port %i using client %x version %x\n"
-			"User Disconnected.\n",
-			e.what(),
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetMuleVersion());
-		printf("Packet Dump:\n");
-		DumpMem(pachPacket, nSize);
+		AddDebugLogLineM( true, logPacketErrors,
+			CFormat( wxT("Wrong Tags on Mule Info packet!\n"
+						 "Sent by %s on ip %s port %i using client %x version %x\n"
+						 "User Disconnected.\n"
+						 "Packet dump:\n"
+						 "%s\n") )
+				% GetUserName()
+				% GetFullIP()
+				% GetUserPort()
+				% GetClientSoft()
+				% GetMuleVersion()
+				% DumpMemToStr( pachPacket, nSize )
+		);
+		
 		throw wxString(wxT("Wrong Tags on Mule Info packet"));
 	}
 
@@ -998,11 +985,11 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	try
 	{
 		if (!m_reqfile) {
-			throw CInvalidPacket("Comment packet for unknown file");
+			throw CInvalidPacket(wxT("Comment packet for unknown file"));
 		}
 
 		if (!m_reqfile->IsPartFile()) {
-			throw CInvalidPacket("Comment packet for completed file");
+			throw CInvalidPacket(wxT("Comment packet for completed file"));
 		}
 
 		const CSafeMemFile data((byte*)pachPacket, nSize);
@@ -1022,43 +1009,39 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		// Update file rating
 		m_reqfile->UpdateFileRatingCommentAvail();
 	}
-	catch ( const CStrangePacket& )
-	{
-		delete[] desc;
-
-		printf(	"\nInvalid MuleComment packet!\n"
-			"Sent by %s on ip %s port %i using client %i version %i\n"
-			"User Disconnected.\n",
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetMuleVersion());
-		throw wxString(wxT("Wrong MuleComment packet"));
-	}
 	catch ( const CInvalidPacket& e )
 	{
 		delete[] desc;
 
-		printf(	"\n"
-			"Invalid MuleComment packet - %s\n\n"
-			"Sent by %s on ip %s port %i using client %i version %i\n"
-			"User Disconnected.\n",
-			e.what(),
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetMuleVersion());
+		AddDebugLogLineM( true, logPacketErrors,
+			CFormat( wxT("Invalid MuleComment packet - %s\n\n"
+						 "Sent by %s on ip %s port %i using client %i version %i\n"
+						 "User Disconnected.\n") )
+				% e.what()
+				% GetUserName()
+				% GetFullIP()
+				% GetUserPort()
+				% GetClientSoft()
+				% GetMuleVersion()
+		);
+		
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 	catch (...)
 	{
 		delete[] desc;
 
-		printf(	"\n"
-			"Invalid MuleComment packet - Uncatched exception\n\n"
-			"Sent by %s on ip %s port %i using client %i version %i\n"
-			"User Disconnected.\n",
-			(const char *)unicode2char(GetUserName()),
-			(const char *)unicode2char(GetFullIP()),
-			GetUserPort(),GetClientSoft(),GetMuleVersion());
+		AddDebugLogLineM( true, logPacketErrors,
+			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n\n"
+						 "Sent by %s on ip %s port %i using client %i version %i\n"
+						 "User Disconnected.\n") )
+				% GetUserName()
+				% GetFullIP()
+				% GetUserPort()
+				% GetClientSoft()
+				% GetMuleVersion()
+		);
+		
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 
@@ -1105,8 +1088,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	#ifdef __USE_KAD__
 	SetKadState(KS_NONE);
 	#endif
-	
-	//printf("Client disconnected! (%s)\n",unicode2char(strReason));
 	
 	if (GetUploadState() == US_UPLOADING) {
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
@@ -1318,7 +1299,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		amuleIPV4Address tmp;
 		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
-		//printf("Connecting to source %x\n",this);
 		m_socket->Connect(tmp, false);
 		// We should send hello packets AFTER connecting!
 		// so I moved it to OnConnect

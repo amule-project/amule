@@ -253,7 +253,7 @@ off_t CSafeFile::Read(void *pBuf, off_t nCount) const
 {
 	if ( GetPosition() + nCount > GetLength() )
 		// For lack of better
-		throw CInvalidPacket("Read after end of CSafeFile");
+		throw CInvalidPacket(wxT("Read after end of CSafeFile"));
 		// AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
 	
 	return CFile::Read( pBuf, nCount );
@@ -270,28 +270,28 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 uint8 CSafeMemFile::ReadUInt8() const
 {
 	if ((off_t)(m_position + sizeof(uint8)) > m_BufferSize)
-		throw CInvalidPacket("EOF");
+		throw CInvalidPacket(wxT("EOF"));
 	return CFileDataIO::ReadUInt8();
 }
 
 uint16 CSafeMemFile::ReadUInt16() const
 {
 	if ((off_t)(m_position + sizeof(uint16)) > m_BufferSize)
-		throw CInvalidPacket("EOF");
+		throw CInvalidPacket(wxT("EOF"));
 	return CFileDataIO::ReadUInt16();
 }
 
 uint32 CSafeMemFile::ReadUInt32() const
 {
 	if ((off_t)(m_position + sizeof(uint32)) > m_BufferSize)
-		throw CInvalidPacket("EOF");
+		throw CInvalidPacket(wxT("EOF"));
 	return CFileDataIO::ReadUInt32();
 }
 
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 {
 	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
-		throw CInvalidPacket("EOF");
+		throw CInvalidPacket(wxT("EOF"));
 	CFileDataIO::ReadUInt128(pVal);
 }
 
@@ -299,7 +299,7 @@ void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 void CSafeMemFile::ReadHash16(unsigned char* pVal) const
 {
 	if ((off_t)(m_position + 16 /* Hash size*/) > m_BufferSize)
-		throw CInvalidPacket("EOF");
+		throw CInvalidPacket(wxT("EOF"));
 	CFileDataIO::ReadHash16(pVal);
 }
 
@@ -346,7 +346,7 @@ void CSafeMemFile::WriteHash16(const byte* pVal)
 off_t CSafeBufferedFile::Read(void *pBuf, off_t nCount) const
 {
 	if ( GetPosition() + nCount > GetLength() )
-		throw CInvalidPacket("Reading past end of CSafeBufferedFile!");
+		throw CInvalidPacket(wxT("Reading past end of CSafeBufferedFile!"));
 //		AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
 
 	return CFile::Read( pBuf, nCount );

@@ -3082,7 +3082,6 @@ void CProgressImage::CreateSpan()
 	for (int j = 0; j < m_gap_buf_size;j++) {
 		uint32 gap_start = m_gap_buf[j].start;
 		uint32 gap_end = m_gap_buf[j].end;
-		//printf("DEBUG: current gap [%08x %08x]\n", gap_start, gap_end);
 
 		uint32 start = gap_start / PARTSIZE;
 		uint32 end = (gap_end / PARTSIZE) + 1;
@@ -3228,8 +3227,6 @@ unsigned char *CDynImage::RequestData(int &size)
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 	png_set_write_fn(png_ptr, this, png_write_fn, 0);
 	
-	//printf("PNG: writing %p [ ", this);
-	
 	m_size = 0;
 	png_write_info(png_ptr, info_ptr);
 	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
@@ -3347,8 +3344,6 @@ unsigned char *CDynPngImage::RequestData(int &size)
 	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
 		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 	png_set_write_fn(png_ptr, this, png_write_fn, 0);
-	
-	//printf("PNG: writing %p [ ", this);
 	
 	m_size = 0;
 	png_write_info(png_ptr, info_ptr);

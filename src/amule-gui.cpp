@@ -245,7 +245,6 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 #else
 		#warning Need to parse the geometry for non-GTK/WIN platforms
 #endif
-		printf("geometry:  x: %d y: %d width: %d height: %d\n", geometry_x, geometry_y, geometry_width, geometry_height);
 	}
 	
 	// Should default/last-used position be overridden?

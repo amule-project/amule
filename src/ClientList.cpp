@@ -729,9 +729,9 @@ bool CClientList::IsDeadSource(const CUpDownClient* client)
 bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 {
 	CUpDownClient* client = FindClientByIP(IP_FROM_GUI_ID(client_id), PORT_FROM_GUI_ID(client_id));
-	printf("Send Message: ");
+	AddDebugLogLineM( false, logClient, wxT("Trying to Send Message.") );
 	if (client) {
-		printf("Sending\n");
+		AddDebugLogLineM( false, logClient, wxT("Sending.") );
 		return client->SendMessage(message);
 	} else {
 		AddDebugLogLineM( true, logClient, 

@@ -103,11 +103,21 @@ private:
 	char		*pBuffer;
 };
 
-struct CInvalidPacket : public std::runtime_error
-	{ CInvalidPacket(const std::string& arg = "invalid packet") : runtime_error(arg) { } };
 
-struct CStrangePacket : public CInvalidPacket
-	{ CStrangePacket(const std::string& arg = "strange packet") : CInvalidPacket(arg) { } };
+class CInvalidPacket
+{
+public:
+	CInvalidPacket( const wxString& arg = wxT("Invalid packet") )
+		: m_what(arg)
+	{ }
+
+	const wxString& what() const {
+		return m_what;
+	}
+	
+private:
+	wxString m_what;
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////
