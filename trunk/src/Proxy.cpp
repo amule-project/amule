@@ -1307,6 +1307,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 			CClientReqSocket *s1 = dynamic_cast<CClientReqSocket *>(this);
 			if (s1) {
 				CClientReqSocketHandler *h = s1->GetEventHandler();
+				SetEventHandler(*h, CLIENTREQSOCKET_HANDLER);
 				h->AddPendingEvent(e);
 				e.m_event = wxSOCKET_OUTPUT;
 				h->AddPendingEvent(e);
@@ -1315,6 +1316,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 			CServerSocket *s2 = dynamic_cast<CServerSocket *>(this);
 			if (s2) {
 				CServerSocketHandler *h = s2->GetEventHandler();
+				SetEventHandler(*h, SERVERSOCKET_HANDLER);
 				h->AddPendingEvent(e);
 				e.m_event = wxSOCKET_OUTPUT;
 				h->AddPendingEvent(e);
