@@ -92,20 +92,20 @@ public:
 	
 private:
 	// 8 bits
-	void Read(wxSocketBase *sock, uint8& i);
-	void Write(wxSocketBase *sock, const uint8& i);
+	bool Read(wxSocketBase *sock, uint8& i);
+	bool Write(wxSocketBase *sock, const uint8& i);
 	
 	// 16 bis
-	void Read(wxSocketBase *sock, uint16& v);
-	void Write(wxSocketBase *sock, const uint16& i);
+	bool Read(wxSocketBase *sock, uint16& v);
+	bool Write(wxSocketBase *sock, const uint16& i);
 	
 	// 32 bits
-	void Read(wxSocketBase *sock, uint32& v);
-	void Write(wxSocketBase *sock, const uint32& i);
+	bool Read(wxSocketBase *sock, uint32& v);
+	bool Write(wxSocketBase *sock, const uint32& i);
 #if 0
 	// 64 bits
-	void Read(wxSocketBase *sock, uint64& i);
-	void Write(wxSocketBase *sock, const uint64& i);
+	bool Read(wxSocketBase *sock, uint64& i);
+	bool Write(wxSocketBase *sock, const uint64& i);
 #endif
 	// String
 public:
