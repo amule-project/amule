@@ -34,9 +34,16 @@
 #pragma interface "wxcas.h"
 #endif
 
-// Include wxWindows' headers
+// For compilers that support precompilation, includes "wx/wx.h"
+#include "wx/wxprec.h"
+
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
+
+// For all others, include the necessary headers
 #ifndef WX_PRECOMP
-#include <wx/wx.h>
+    #include "wx/wx.h"
 #endif
 
 #include "wxcasframe.h"
