@@ -369,9 +369,12 @@ wxThread::ExitCode CAddFileThread::Entry()
 		knownfile->m_AvailPartFrequency.Insert(0, 0, knownfile->GetPartCount() );
 	
 		
-		// We can only allow ourselves to create AICH hashsets for knownfiles.
-		// This is because we do not know yet if a partfile was uncorrupted.
-		bool needsAICH = !current->m_owner;
+		// We can only create the AICH hashset if the file is a knownfile or 
+		// if the partfile is complete, since the MD4 hashset is checked first,
+		// so that the AICH hashset only gets assigned if the MD4 hashset 
+		// matches what we expected. Due to the rareity of post-completion
+		// corruptions, this gives us a nice speedup in almost all cases.
+		bool needsAICH = !current->m_owner || !current->m_owner->GetGapList().IsEmpty();
 		bool error = false;
 		
 		
