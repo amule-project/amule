@@ -44,7 +44,9 @@ if AMULE_DAEMON
 bin_PROGRAMS += amuled
 endif
 
+if MONOLITHIC
 bin_PROGRAMS += amule
+endif
 
 DEFS = -DHAVE_CONFIG_H
 

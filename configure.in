@@ -134,6 +134,10 @@ AC_ARG_ENABLE([verbose],
 	AC_HELP_STRING([--enable-verbose],[Enable verbose debug output]),
 	[VERBOSE_OUTPUT="$enableval"], [VERBOSE_OUTPUT="no"])
 
+AC_ARG_ENABLE(monolithic, AC_HELP_STRING([--disable-monolithic],[Disable building of the monolithic aMule app.]),
+	MONOLITHIC="$enableval", MONOLITHIC="yes")
+
+
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
 # to avoid losing to much time
@@ -509,6 +513,7 @@ AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
+AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 
 dnl
 dnl Check for readline library
@@ -591,6 +596,7 @@ echo "  Should aMule be compiled with systray?                   ${systray}"
 echo "  Should aMule be compiled with UTF-8 systray?             ${utf8_systray}"
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
+echo "  Should aMule monolithic application be built?            ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)         ${AMULE_GUI:-no}"
 echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
