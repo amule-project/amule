@@ -29,7 +29,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "StringFunctions.h"
-#include "GuiEvents.h"		// Needed for AddDebugLogLineM
+#include "amule.h"		// Needed for AddDebugLogLineM & theApp
 
 #include <map>
 #include <vector>
