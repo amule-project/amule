@@ -192,11 +192,8 @@ CamuleApp::CamuleApp()
 	
 	m_dwPublicIP	= 0;
 
-	#ifndef AMULE_DAEMON
 	webserver_pid = 0;
-	#else
-	webserver_thread = NULL;
-	#endif
+	
 	// Apprently needed for *BSD
 	SetResourceLimits();
 
@@ -310,22 +307,13 @@ int CamuleApp::OnExit()
 	ipfilter->SaveToFile();
 	
 	// Kill amuleweb if running
-	#ifndef AMULE_DAEMON
-		if (webserver_pid) {
-			printf("Killing amuleweb instance...\n");			
-			wxKillError rc;
-			wxKill(webserver_pid,wxSIGKILL, &rc);
-			printf("Killed!\n");
-		}
-	#else
-		#warning Well, thread does nothing so it dies. We need a safe way to know if it is running.
-		if (webserver_thread) {
-			printf("Killing amuleweb instance...\n");			
-			// We can't use delete...
-			//webserver_thread->Kill();
-			printf("Killed!\n");			
-		}
-	#endif
+
+	if (webserver_pid) {
+		printf("Killing amuleweb instance...\n");			
+		wxKillError rc;
+		wxKill(webserver_pid,wxSIGKILL, &rc);
+		printf("Killed!\n");
+	}
 	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
@@ -714,12 +702,13 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				printf("amuleweb is running on pid %d\n", pid);
+				printf("aMuleweb is running on pid %d\n", pid);
+				webserver_pid = pid;
 			}
 		}
 		#endif
 	}
- 		
+
 	return true;
 }
 
