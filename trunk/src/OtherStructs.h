@@ -42,12 +42,6 @@ struct UDP_Header_Struct{
 #pragma pack()
 
 #pragma pack(1)
-struct LoginAnswer_Struct {
-	uint32	clientid;
-};
-#pragma pack()
-
-#pragma pack(1)
 struct Requested_Block_Struct{
 	uint32	StartOffset;
 	uint32	EndOffset;
