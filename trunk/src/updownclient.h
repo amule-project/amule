@@ -250,7 +250,8 @@ public:
 				printf("%s\n",unicode2char(GetClientFullInfo()));
 				printf("User Disconnected.\n");			
 			}
-			wxASSERT(SecIdentSupRec);
+			// Remove this if not necessary!
+			// wxASSERT(SecIdentSupRec);
 		}
 		return m_SecureIdentState;
 	}
