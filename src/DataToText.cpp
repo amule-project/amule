@@ -18,7 +18,9 @@
 //
 
 #include "DataToText.h"
-#include "KnownFile.h"
+
+#include "KnownFile.h"		// Needed by PriorityToStr
+#include "updownclient.h"	// Needed by DownloadStateToStr
 
 #include <wx/string.h>
 #include <wx/intl.h>
@@ -48,3 +50,21 @@ wxString PriorityToStr( int priority, bool isAuto )
 }
 
 
+wxString DownloadStateToStr( int state, bool queueFull )
+{
+	switch ( state ) {
+		case DS_CONNECTING:		return  _("Connecting");
+		case DS_CONNECTED:		return _("Asking");
+		case DS_WAITCALLBACK:	return _("Connecting via server");
+		case DS_ONQUEUE:		return ( queueFull ? _("Queue Full") : _("On Queue") );
+		case DS_DOWNLOADING:	return _("Transferring");
+		case DS_REQHASHSET:		return _("Receiving hashset");
+		case DS_NONEEDEDPARTS:	return _("No needed parts");
+		case DS_LOWTOLOWIP:		return _("Cannot connect LowID to LowID");
+		case DS_TOOMANYCONNS:	return _("Too many connections");
+	}
+	
+	wxASSERT( false );
+	
+	return _("Unknown");
+}

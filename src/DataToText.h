@@ -26,4 +26,8 @@ class wxString;
 // Returns the textual representation of a priority value
 wxString PriorityToStr( int priority, bool isAuto );
 
+// Returns the textual representation of download states
+wxString DownloadStateToStr( int state, bool queueFull );
+
+
 #endif
