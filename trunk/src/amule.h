@@ -203,6 +203,8 @@ public:
 #endif
 	void SetOSFiles(const wxString new_path); 
 	
+	wxString ConfigDir;
+	
 protected:
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);

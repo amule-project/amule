@@ -238,6 +238,7 @@ int CamuleApp::OnExit()
 bool CamuleApp::OnInit()
 {
 	m_app_state = APP_STATE_STARTING;
+	ConfigDir = wxGetHomeDir() + wxT("/.aMule/");
 
 	// Initialization
 	IsReady			= false;
@@ -399,9 +400,11 @@ bool CamuleApp::OnInit()
 
 
 	// see if there is another instance running
-	wxString server = server.Format(wxT("%s/.aMule/muleconn"), getenv("HOME"));
+	wxString server = ConfigDir + wxT("/muleconn");
+	wxString host = wxT("localhost");
+	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
-	wxConnectionBase* conn = client->MakeConnection(wxT("localhost"), server, wxT("aMule IPC TESTRUN"));
+	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
 
 	// If the connection failed, conn is NULL
 	if ( conn ) {
@@ -425,23 +428,22 @@ bool CamuleApp::OnInit()
 
 	/* If no aMule configuration files exist, see if either lmule or xmule config
 	   exists, so that we can use those. */
-	wxString lMulePrefDir = lMulePrefDir.Format(wxT("%s//.lmule"), getenv("HOME"));
-	wxString xMulePrefDir = xMulePrefDir.Format(wxT("%s//.xmule"), getenv("HOME"));
-	wxString aMulePrefDir = aMulePrefDir.Format(wxT("%s//.aMule"), getenv("HOME"));
+	wxString lMulePrefDir = wxGetHomeDir() + wxT("/.lmule");
+	wxString xMulePrefDir = wxGetHomeDir() + wxT("/.xmule");
 
-	if ( !wxDirExists( aMulePrefDir ) ) {
+	if ( !wxDirExists( ConfigDir ) ) {
 		if ( wxDirExists( lMulePrefDir ) ) {
 			printf("Found lMule old settings, moving to new dir.\n");
-			wxRenameFile(lMulePrefDir, aMulePrefDir);
+			wxRenameFile(lMulePrefDir,ConfigDir);
 
 		} else if ( wxDirExists(xMulePrefDir) ) {
 			printf("Found xMule old settings, copying config & credits files.\n");
-			wxMkdir(aMulePrefDir);
+			wxMkdir(ConfigDir);
 
 			// Copy .dat files to the aMule dir
 			wxString file = wxFindFirstFile(xMulePrefDir + wxT("/*.dat"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, aMulePrefDir + wxT("/") + file.AfterLast('/'));
+				wxCopyFile( file, ConfigDir + wxT("/") + file.AfterLast('/'));
 
 				file = wxFindNextFile();
   			}
@@ -449,18 +451,21 @@ bool CamuleApp::OnInit()
 			// Copy .met files to the aMule dir
 			file = wxFindFirstFile(xMulePrefDir + wxT("/*.met"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, aMulePrefDir + wxT("/") + file.AfterLast('/'));
+				wxCopyFile( file, ConfigDir + wxT("/") + file.AfterLast('/'));
 
 				file = wxFindNextFile();
   			}
 
 			wxMessageBox(wxT("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), wxT("Info"), wxOK);
+		} else {
+			// No settings to import, new to build.
+			wxMkdir(ConfigDir);
 		}
 	}
 
 
 	// Delete old log file.
-	wxRemoveFile(wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME")));
+	wxRemoveFile(ConfigDir + wxT("logfile"));
 
 	// Load Preferences
 	glob_prefs = new CPreferences();
@@ -476,7 +481,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// Display notification on new version or first run
-	wxTextFile vfile( aMulePrefDir + wxT("/lastversion") );
+	wxTextFile vfile( ConfigDir + wxT("/lastversion") );
 	wxString newMule(wxT(VERSION));
 	if ( wxFileExists( vfile.GetName() ) && vfile.Open() && !vfile.Eof() ) {
 		if ( vfile.GetFirstLine() != newMule ) {
@@ -577,7 +582,7 @@ bool CamuleApp::OnInit()
 
 	clientlist		= new CClientList();
 	searchlist		= new CSearchList();
-	knownfiles		= new CKnownFileList(glob_prefs->GetAppDir());
+	knownfiles		= new CKnownFileList();
 	serverlist		= new CServerList(glob_prefs);
 	serverconnect	= new CServerConnect(serverlist, glob_prefs);
 	sharedfiles		= new CSharedFileList(glob_prefs, serverconnect, knownfiles);

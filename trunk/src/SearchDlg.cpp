@@ -120,7 +120,7 @@ void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
-	if ( evt.GetSelection() == ( notebook->GetPageCount() - 1 ) ) {
+	if ( evt.GetSelection() == (notebook->GetPageCount() - 1 ) ) {
 		OnBnClickedCancels(nullEvent);
 	}
 }
@@ -350,7 +350,7 @@ void CSearchDlg::StartNewSearch()
 		case 5: typeText = wxT("Programs"); break;
 		case 6: typeText = wxT("Videos"); break;
 		default:
-			printf("Warning! Unknown search-category ( %s ) selected!\n", typeText.c_str());
+			printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
 			break;
 	}
 

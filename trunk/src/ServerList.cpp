@@ -97,7 +97,7 @@ uint8 CServerList::AutoUpdate()
 		if (strURLToDownload.Find(wxT("://")) == -1) {
 			theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL %s")),strURLToDownload.c_str());
 		} else {
-			strTempFilename=  theApp.glob_prefs->GetAppDir() + wxString::Format(wxT("server_auto%u.met"), temp_count);
+			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
 
 			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.amuledlg->serverwnd,strURLToDownload,strTempFilename);
 			int retval=dlg->ShowModal();
@@ -128,18 +128,18 @@ bool CServerList::Init()
 	// Load Metfile
 	CString strTempFilename;
 	printf("*** reading servers\n");
-	strTempFilename = app_prefs->GetAppDir() + wxT("server.met");
+	strTempFilename = theApp.ConfigDir + wxT("server.met");
 	bool bRes = AddServermetToList(strTempFilename, false);
 	if(theApp.glob_prefs->AutoServerlist()) {
 		for (uint8 i=1; i<=auto_count;i++) {
-			strTempFilename =  theApp.glob_prefs->GetAppDir() + wxString::Format(wxT("server_auto%u.met"), i);
+			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), i);
 			bool bRes2 = AddServermetToList(strTempFilename);
 			if( !bRes && bRes2 )
 				bRes = true;
 		}
 	}
 	// insert static servers from textfile
-	strTempFilename=  theApp.glob_prefs->GetAppDir() + wxT("staticservers.dat");
+	strTempFilename=  theApp.ConfigDir + wxT("staticservers.dat");
 	AddServersFromTextFile(strTempFilename);
 	return bRes;
 }
@@ -780,7 +780,7 @@ bool CServerList::SaveServermetToFile()
 {
 	m_nLastSaved=::GetTickCount(); // oops.. don't save ALL the time :)
 
-	CString newservermet = app_prefs->GetAppDir() + wxT("server.met.new");
+	CString newservermet(theApp.ConfigDir + wxT("server.met.new"));
 	CFile servermet;
 	servermet.Open(newservermet, CFile::write);
 	if (!servermet.IsOpened()) {
@@ -849,8 +849,8 @@ bool CServerList::SaveServermetToFile()
 	
 	servermet.Flush();
 	servermet.Close();
-	CString curservermet = app_prefs->GetAppDir() + wxT("server.met");
-	CString oldservermet = app_prefs->GetAppDir() + wxT("server_met.old");
+	CString curservermet(theApp.ConfigDir + wxT("server.met"));
+	CString oldservermet(theApp.ConfigDir + wxT("server_met.old"));
 	if ( wxFileExists(oldservermet) ) {
 		wxRemoveFile(oldservermet);
 	}
@@ -875,7 +875,7 @@ void CServerList::Process()
 	if ((::GetTickCount() - m_nLastED2KServerLinkCheck) >= 1000) {
 		wxString filename = filename.Format(wxT("%s/.aMule/ED2KServers"), getenv("HOME"));
 		
-		CString strPath = app_prefs->GetAppDir() + wxT("ED2KServers");
+		CString strPath(theApp.ConfigDir + wxT("ED2KServers"));
 	
 		if (wxFile::Exists(filename)) {
 			AddServersFromTextFile(strPath, false, true);

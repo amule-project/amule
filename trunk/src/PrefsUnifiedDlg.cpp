@@ -45,7 +45,6 @@
 
 #include "amule.h"			// Needed for theApp
 #include "otherfunctions.h"	// Needed for MakeFoldername
-#include "Preferences.h"	// Needed for GetAppDir
 #include "PrefsUnifiedDlg.h"
 #include "CTypedPtrList.h"	// Needed for CList
 #include "EditServerListDlg.h"
@@ -692,13 +691,13 @@ Rse*	aprseColor[cntStatColors];  // this array helps in accessing stat colors th
     
 
 
-void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appdir)  // gets called at init time
+void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString appdir)  // gets called at init time
 {
 	listRse.Append(new Rse(wxT("Missing ID of dlg item in listRse")));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
 	
-	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, char2unicode(appdir), wxT("TempDir"), wxT("Temp"), wxT("eMule")));
+	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, wxT("TempDir"), wxT("Temp"), wxT("eMule")));
 	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), wxT("Nick"), wxT("http://www.aMule.org"), wxT("eMule")));
-	listRse.Append(new RseDirAssured(IDC_INCFILES,prefs->incomingdir, char2unicode(appdir), wxT("IncomingDir"), wxT("Incoming"),wxT("eMule")));
+	listRse.Append(new RseDirAssured(IDC_INCFILES,prefs->incomingdir, appdir, wxT("IncomingDir"), wxT("Incoming"),wxT("eMule")));
 
 	listRse.Append(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, wxT("MaxUpload"), UNLIMITED, wxT("eMule"))); // see note in ForceUlDlRateCorrelation
 	listRse.Append(prseMaxDown = new RseInt(IDC_MAXDOWN, prefs->maxdownload, wxT("MaxDownload"), UNLIMITED, wxT("eMule"))); // ditto
@@ -948,7 +947,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, wxT("Browser"), 0,wxT("FakeCheck")));	
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
-	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, char2unicode(appdir), wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
+	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
 }
 
 //==============================================================================
@@ -1384,7 +1383,7 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& e)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& evt)
 {
-	CString fullpath = theApp.glob_prefs->GetAppDir() + wxT("addresses.dat");
+	CString fullpath(theApp.ConfigDir + wxT("addresses.dat"));
 	
 	EditServerListDlg* test=new EditServerListDlg(this, _("Edit Serverlist"),
 	_("Add here URL's to download server.met files.\nOnly one url on each line."), fullpath);

@@ -18,6 +18,10 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pkcs12.h>
+
 #ifdef __CRYPTO_DEBIAN_GENTOO__
 //	#include <crypto++/config.h>
 	#include <crypto++/base64.h>
@@ -48,6 +52,7 @@
 	#endif
 #endif
 
+
 #include <cmath>
 #include <ctime>
 #include <sys/types.h>		//
@@ -56,6 +61,7 @@
 #include <unistd.h>		// Needed for close(2)
 #include <wx/utils.h>
 #include <wx/intl.h>		// Needed for _
+#include <wx/textfile.h>
 
 #include "Preferences.h"	// Needed for CPreferences
 
@@ -195,7 +201,7 @@ void CClientCreditsList::LoadList()
 {
 	
 	CSafeFile file;
-	CString strFileName = CString(m_pAppPrefs->GetAppDir()) + CString(CLIENTS_MET_FILENAME);
+	CString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
 		AddLogLineM(true, wxT("Failed to load creditfile"));
 		return;
@@ -212,45 +218,32 @@ void CClientCreditsList::LoadList()
 	}
 
 	// everything is ok, lets see if the backup exist...
-	CString strBakFileName;
-	strBakFileName = m_pAppPrefs->GetAppDir() + CLIENTS_MET_BAK_FILENAME;
+	CString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
 	
 	bool bCreateBackup = TRUE;
-	//HANDLE hBakFile = ::CreateFile(strBakFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
-	int hBakFile=open(unicode2char(strBakFileName),O_RDONLY);
-	//OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hBakFile != (-1)) {
+	wxFile hBakFile(strBakFileName);
+	if (wxFileExists(strBakFileName)) {
 		// Ok, the backup exist, get the size
-		// dwBakFileSize = ::GetFileSize(hBakFile, NULL); //debug
-		struct stat sbuf;
-		fstat(hBakFile,&sbuf);
-		if (sbuf.st_size > (DWORD)file.Length()) {
+		wxFile hBakFile(strBakFileName);
+		if ( hBakFile.Length() > file.Length()) {
 			// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
 			bCreateBackup = FALSE;
 		}
 		// else: backup is smaller or the same size as org. file, proceed with copying of file
-		close(hBakFile);
 	}
+	
 	//else: the backup doesn't exist, create it
 	if (bCreateBackup) {
 		file.Close(); // close the file before copying
-		//bool bResult = ::CopyFile(strFileName, strBakFileName, FALSE);
 		// safe? you bet it is
 		if (!wxCopyFile(strFileName,strBakFileName)) {
-			printf("info: Could not create backup file '%s'\n", unicode2char(strFileName));
+			AddLogLineM(true, wxT("Could not create backup file ") + strFileName);
 		}
-		//DWORD dwError;
-		//if (!bResult)
-		//{
-		//	dwError = ::GetLastError(); // debug
-		//	theApp.amuledlg->AddLogLine(false, CString(_("Failed to make backup of creditfile")));
-		//}
 		// reopen file
 		if (!file.Open(strFileName, CFile::read)) {
 			AddLogLineM(true, wxT("Failed to load creditfile"));
 			return;
 		}
-		// file.Seek(1); //, CFile::begin); // set filepointer
 		file.Seek(1);
 	}	
 	
@@ -265,10 +258,7 @@ void CClientCreditsList::LoadList()
 	for (uint32 i = 0; i < count; i++){
 		CreditStruct* newcstruct = new CreditStruct;
 		memset(newcstruct, 0, sizeof(CreditStruct));
-		if (version == CREDITFILE_VERSION_29)
-			file.Read(newcstruct, sizeof(CreditStruct_29a));
-		else
-			file.Read(newcstruct, sizeof(CreditStruct));
+		file.Read(newcstruct, sizeof(CreditStruct));
 		
 		if (newcstruct->nLastSeen < dwExpired){
 			cDeleted++;
@@ -298,32 +288,15 @@ void CClientCreditsList::SaveList()
 	theApp.amuledlg->AddDebugLogLine(false, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
-	CString name = m_pAppPrefs->GetAppDir() + CString(CLIENTS_MET_FILENAME);
+	CString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	CFile file;
 
-	if (!file.Create(name,TRUE)) //Open(name, CFile::modeWrite|CFile::modeCreate))
-	{
+	if (!file.Create(name,TRUE)) {
 		theApp.amuledlg->AddLogLine(true, CString(_("Failed to save creditfile")));
 		return;
 	}
 	
 	file.Open(name,CFile::write);
-	
-/*
-	CString name = m_pAppPrefs->GetConfigDir() + CString(CLIENTS_MET_FILENAME);
-	CFile file;// no buffering needed here since we swap out the entire array
-	CFileException fexp;
-	if (!file.Open(name, CFile::modeWrite|CFile::modeCreate|CFile::typeBinary, &fexp)){
-		CString strError(GetResString(IDS_ERR_FAILED_CREDITSAVE));
-		TCHAR szError[MAX_CFEXP_ERRORMSG];
-		if (fexp.GetErrorMessage(szError, ELEMENT_COUNT(szError))){
-			strError += _T(" - ");
-			strError += szError;
-		}
-		theApp.amuledlg->AddLogLine(true, _T("%s"), strError);
-		return;
-	}
-*/
 	
 	uint32 count = m_mapClients.GetCount();
 	BYTE* pBuffer = new BYTE[count*sizeof(CreditStruct)];
@@ -428,7 +401,63 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP){
 	}
 }
 
+
 using namespace CryptoPP;
+
+bool CClientCreditsList::CreateKeyPair(){
+	try{
+		
+	#if USE_OPENSSL
+		
+		FILE* file;
+		char 	buffer_pkcs8[1024 + 1];
+		
+		RSA* privkey = RSA_generate_key(RSAKEYSIZE, 3, NULL, NULL);
+	
+		EVP_PKEY *pkey = EVP_PKEY_new();
+
+		EVP_PKEY_assign_RSA(pkey,privkey);
+
+		privkey = NULL;
+		
+		file = fopen(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), "w");
+
+		PEM_write_PKCS8PrivateKey(file, pkey, NULL, NULL, 0, NULL, NULL);
+
+		fclose(file);
+		
+		// Remove -----BEGIN PRIVATE KEY----- and -----END PRIVATE KEY-----
+		wxTextFile	to_clean;
+		to_clean.Open(theApp.ConfigDir + CRYPTKEY_FILENAME);
+		to_clean.RemoveLine(0);
+		to_clean.RemoveLine(to_clean.GetLineCount()-1);
+		to_clean.Write();
+		to_clean.Close();
+
+	#else 
+
+		AutoSeededRandomPool rng;
+		InvertibleRSAFunction privkey;
+		privkey.Initialize(rng,RSAKEYSIZE);
+
+		Base64Encoder privkeysink(new FileSink(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME)));
+		
+		privkey.DEREncode(privkeysink);
+		
+		privkeysink.MessageEnd();
+
+	#endif
+		theApp.amuledlg->AddDebugLogLine(false,wxT("Created new RSA keypair"));
+	}
+	catch(...)
+	{
+		theApp.amuledlg->AddDebugLogLine(false, wxT("Failed to create new RSA keypair"));
+		wxASSERT ( false );
+		return false;
+	}
+	return true;
+}
+
 
 void CClientCreditsList::InitalizeCrypting(){
 	m_nMyPublicKeyLen = 0;
@@ -444,8 +473,8 @@ void CClientCreditsList::InitalizeCrypting(){
 
 	CFile KeyFile;
 
-	if (wxFileExists(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME)) {
-		KeyFile.Open(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME,CFile::read);
+	if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
+		KeyFile.Open(theApp.ConfigDir + CRYPTKEY_FILENAME,CFile::read);
 		if (KeyFile.Length() == 0) {
 			printf("cryptkey.dat is 0 size, creating\n");
 			bCreateNewKey = true;
@@ -463,7 +492,7 @@ void CClientCreditsList::InitalizeCrypting(){
 	// load key
 	try{
 		// load private key
-		FileSource filesource(unicode2char(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME), true,new Base64Decoder);
+		FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new Base64Decoder);
 		m_pSignkey = new RSASSA_PKCS1v15_SHA_Signer(filesource);
 		// calculate and store public key
 		RSASSA_PKCS1v15_SHA_Verifier pubkey(*m_pSignkey);
@@ -481,27 +510,6 @@ void CClientCreditsList::InitalizeCrypting(){
 		theApp.amuledlg->AddLogLine(false, CString(_("IDS_CRYPT_INITFAILED\n")));
 	}
 	//Debug_CheckCrypting();
-}
-
-bool CClientCreditsList::CreateKeyPair(){
-	try{
-		AutoSeededRandomPool rng;
-		InvertibleRSAFunction privkey;
-		privkey.Initialize(rng,RSAKEYSIZE);
-
-		Base64Encoder privkeysink(new FileSink(unicode2char(m_pAppPrefs->GetAppDir() + CRYPTKEY_FILENAME)));
-		privkey.DEREncode(privkeysink);
-		privkeysink.MessageEnd();
-
-		theApp.amuledlg->AddDebugLogLine(false,wxT("Created new RSA keypair"));
-	}
-	catch(...)
-	{
-		theApp.amuledlg->AddDebugLogLine(false, wxT("Failed to create new RSA keypair"));
-		wxASSERT ( false );
-		return false;
-	}
-	return true;
 }
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, CryptoPP::RSASSA_PKCS1v15_SHA_Signer* sigkey){

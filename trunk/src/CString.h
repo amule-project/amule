@@ -56,14 +56,14 @@ public:
 		va_end(argptr);
 	};
 	
-	CString& operator=(wxString& src) {
+	CString& operator=(const wxString& src) {
 		if(this!=&src) {
 			Clear();
 			Append(src.GetData());
 		}
-    	return *this;
+    		return *this;
 	}
-
+#if 0
 	CString& operator=(wxString src) {
 		if(this!=&src) {
 			Clear();
@@ -71,7 +71,7 @@ public:
 		}
 		return *this;
 	}
-  
+ #endif
 	CString& operator=(const wxChar a[]) {
 		Clear();
 		Append((wxChar*)a);

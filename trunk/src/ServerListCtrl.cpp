@@ -722,22 +722,24 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 	try {
 		// Remove any entry before writing to avoid duplicates
 		StaticServerFileRemove(server);
-		FILE* staticservers = fopen(unicode2char(theApp.glob_prefs->GetAppDir() + wxString(wxT("staticservers.dat"))), "a");
-		if (staticservers==NULL) {
+		wxString staticsfile(theApp.ConfigDir +wxT("staticservers.dat"));
+		wxTextFile staticservers(staticsfile);
+		bool error;
+		if (wxFileExists(staticsfile)) {
+			error = staticservers.Open();
+		} else {
+			error = staticservers.Create();
+		}
+		if (error) {
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
 		}
-		if (fprintf(staticservers,
-		"%s:%i,%i,%s\n",
-		server->GetAddress(),
-		server->GetPort(), 
-		server->GetPreferences(),
-		server->GetListName()) != EOF) {
-			theApp.amuledlg->AddLogLine(false, CString(wxT("'%s:%i,%s' %s")), server->GetAddress(), server->GetPort(), server->GetListName(), CString(_("Added to static server list")).GetData());
-			server->SetIsStaticMember(true);
-			theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
-		}
-		fclose(staticservers);
+		staticservers.AddLine(wxString::Format(wxT("%s:%i,%i,%s"),server->GetAddress(),server->GetPort(), server->GetPreferences(),server->GetListName())); 
+		theApp.amuledlg->AddLogLine(false, CString(wxT("'%s:%i,%s' %s")), server->GetAddress(), server->GetPort(), server->GetListName(), CString(_("Added to static server list")).GetData());
+		server->SetIsStaticMember(true);
+		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
+		staticservers.Write();
+		staticservers.Close();
 	}
 	catch (...)
 	{
@@ -754,29 +756,28 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 		}
 		wxString strLine;
 		wxString strTest;
-		char buffer[1024];
-		int lenBuf = 1024;
 		int pos;
-		wxString StaticFilePath = wxString::Format(wxT("%s"),unicode2char(theApp.glob_prefs->GetAppDir())) + wxT("staticservers.dat");
-		wxString StaticTempPath = wxString::Format(wxT("%s"),unicode2char(theApp.glob_prefs->GetAppDir())) + wxT("statictemp.dat");
-		FILE* staticservers = fopen(unicode2char(StaticFilePath) , "r");
-		FILE* statictemp = fopen(unicode2char(StaticTempPath) , "w");
-		if ((staticservers == NULL) || (statictemp == NULL)) {
-			if ( staticservers ) {
-				fclose(staticservers);
+		wxString StaticFilePath(theApp.ConfigDir +wxT("staticservers.dat"));
+		wxString StaticTempPath(theApp.ConfigDir +wxT("statictemp.dat"));
+		
+		wxTextFile staticservers(StaticFilePath);
+		wxTextFile statictemp(StaticTempPath);
+		if (wxFileExists(StaticTempPath)) {
+			wxRemoveFile(StaticTempPath);
+		}
+		if (!staticservers.Open() || !statictemp.Create()) {
+			if ( staticservers.IsOpened() ) {
+				staticservers.Close();
 			}
-			if ( statictemp ) {
-				fclose(statictemp);
+			if ( statictemp.IsOpened() ) {
+				statictemp.Close();
 			}
 		
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
 		}
-		while (!feof(staticservers)) {
-			if (fgets(buffer, lenBuf, staticservers) == 0) {
-				break;
-			}
-			strLine = char2unicode(buffer);
+		for (wxString strLine = staticservers.GetFirstLine(); !staticservers.Eof(); strLine = staticservers.GetNextLine() ) {
+			
 			// ignore comments or invalid lines
 			if (strLine.GetChar(0) == '#' || strLine.GetChar(0) == '/') {
 				continue;
@@ -794,11 +795,13 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 			strTest.Printf(wxT("%s:%i"), server->GetAddress(), server->GetPort());
 			// Compare, if not the same server write original line to temp file
 			if (strLine.Cmp(strTest) != 0) {
-				fprintf(statictemp, "%s", buffer);
+				statictemp.AddLine(strLine);
 			}
 		}
-		fclose(staticservers);
-		fclose(statictemp);
+		staticservers.Close();
+		statictemp.Write();
+		statictemp.Close();		
+
 		// All ok, remove the existing file and replace with the new one
 		wxRemoveFile( StaticFilePath );
 		wxRenameFile( StaticTempPath, StaticFilePath );

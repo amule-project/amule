@@ -55,15 +55,6 @@
 #define CRYPT_CIP_NONECLIENT	30
 
 #pragma pack(1)
-struct CreditStruct_29a{
-	uchar		abyKey[16];
-	uint32		nUploadedLo;	// uploaded TO him
-	uint32		nDownloadedLo;	// downloaded from him
-	uint32		nLastSeen;
-	uint32		nUploadedHi;	// upload high 32
-	uint32		nDownloadedHi;	// download high 32
-	uint16		nReserved3;
-};
 struct CreditStruct{
 	uchar		abyKey[16];
 	uint32		nUploadedLo;	// uploaded TO him
