@@ -336,6 +336,29 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 			queryitems.insert(tag->GetInt32Data());
 		}
 	}
+	
+	// check if encoder contains files that no longer in download queue
+	if ( encoders.size() > theApp.downloadqueue->GetFileCount() ) {
+		std::set<CPartFile *> curr_files, dead_files;
+		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+			curr_files.insert(theApp.downloadqueue->GetFileByIndex(i));
+		}
+		for(CPartFile_Encoder_Map::iterator i = encoders.begin(); i != encoders.end(); i++) {
+			if ( curr_files.count(i->first) == 0 ) {
+				dead_files.insert(i->first);
+			}
+		}
+		for(std::set<CPartFile *>::iterator i = dead_files.begin(); i != dead_files.end(); i++) {
+			encoders.erase(*i);
+		}
+	} else if ( encoders.size() < theApp.downloadqueue->GetFileCount() ) {
+		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
+			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+			if ( encoders.count(cur_file) == 0 ) {
+				encoders[cur_file] = CPartFile_Encoder(cur_file);
+			}
+		}
+	}
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
 	
@@ -345,9 +368,8 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 
 		CEC_PartFile_Tag filetag(cur_file, detail_level);
 		
-		// FIXME: RLE_Data doesn't have copy constructor which std::map need
-		//CECTag *etag = encoders[cur_file].Encode();
-		//filetag.AddTag(etag);
+		CECTag *etag = encoders[cur_file].Encode();
+		filetag.AddTag(etag);
 
 		response->AddTag(filetag);
 	}
@@ -948,75 +970,65 @@ CECTag *CPartFile_Encoder::Encode()
 	//
 	// compare gaps lists, calculate difference
 	std::list<Gap_Struct> diff_list;
-	std::list<Gap_Struct>::iterator prev = m_gap_list.begin();
-	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
-	unsigned int gap_ptr;
-	while ( curr_pos ) {
-		Gap_Struct diff;
-		Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
-		gap_ptr = prev->start;
-		while ( curr->end <= prev->end ) {
-			if ( gap_ptr != curr->start ) {
-				diff.start = gap_ptr;
-				diff.end = curr->start;
-				diff_list.push_back(diff);
-			}
-			gap_ptr = curr->end;
-			curr = m_file->gaplist.GetNext(curr_pos);
+
+	if ( m_enc_data.m_gap_list.empty() ) {
+		POSITION curr_pos = m_file->gaplist.GetHeadPosition();
+		while ( curr_pos ) {
+			Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
+			m_enc_data.m_gap_list.push_back(*curr);
+			diff_list.push_back(*curr);
 		}
-		if ( gap_ptr != prev->end ) {
-				diff.start = gap_ptr;
-				diff.end = prev->end;
-				diff_list.push_back(diff);
-		}
-		prev++;
-	}
-	
-	//
-	// now go over prev list again, and change it to curr
-	// by applying diffs. Similar to CPartFile->FillGap
-	std::list<Gap_Struct>::iterator diff = diff_list.begin();
-	prev = m_gap_list.begin();
-	while (diff != diff_list.end()) {
-		if ( diff->start >= prev->start ) {
-			// insert new gaps before next element - and erase current
-			while ( diff->end <= prev->end ) {
-				Gap_Struct new_diff;
-				new_diff.start = prev->start;
-				new_diff.end = diff->start;
-				if ( new_diff.start != new_diff.end ) {
-					m_gap_list.insert(prev, new_diff);
+	} else {	
+		std::list<Gap_Struct>::iterator prev = m_enc_data.m_gap_list.begin();
+		POSITION curr_pos = m_file->gaplist.GetHeadPosition();
+		unsigned int gap_ptr;
+		while ( curr_pos ) {
+			Gap_Struct diff;
+			Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
+			gap_ptr = prev->start;
+			while ( curr->end <= prev->end ) {
+				if ( gap_ptr != curr->start ) {
+					diff.start = gap_ptr;
+					diff.end = curr->start;
+					diff_list.push_back(diff);
 				}
-				diff++;
+				gap_ptr = curr->end;
+				curr = m_file->gaplist.GetNext(curr_pos);
 			}
-			if ( diff->end < prev->end )  {
-				Gap_Struct new_diff;
-				new_diff.start = diff->end;
-				new_diff.end = prev->end;
-				m_gap_list.insert(prev, new_diff);				
+			if ( gap_ptr != prev->end ) {
+					diff.start = gap_ptr;
+					diff.end = prev->end;
+					diff_list.push_back(diff);
 			}
-			std::list<Gap_Struct>::iterator to_erase = prev;
-			prev++;
-			m_gap_list.erase(to_erase);
-		} else {
 			prev++;
 		}
+	
+		m_enc_data.ApplyGapDiffs(diff_list);
 	}
 	
 	int enc_size;
-	const unsigned char *enc_data = m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
+	const unsigned char *enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, enc_size);
 
-	CECTag *etag = new CECTag(EC_TAG_PARTFILE_PART_STATUS, enc_size +
-		diff_list.size() * sizeof(uint32) * 2, 0, false);
-	
-	// rle-encoded data is byte stream. remove const'ness
-	memcpy((void *)etag->GetTagData(), enc_data, enc_size);
+	//
+	// Put data inside of tag in following order:
+	// [size of enc_data] [enc_data] [gap_diff_list]
+	//
+	unsigned char *tagdata;
+	CECTag *etag = new CECTag(EC_TAG_PARTFILE_GAP_STATUS, sizeof(uint32) + enc_size +
+		diff_list.size() * sizeof(uint32) * 2, &tagdata);
+
+	// size of RLE data
+	*((uint32 *)tagdata) = enc_size;
+	tagdata += sizeof(uint32);
+	// RLE data itself
+	memcpy(tagdata, enc_data, enc_size);
 	// gap list is list of pairs of uint32 number - keep endiness
-	uint32 *gap_data = (uint32 *)( ((char *)etag->GetTagData()) + enc_size );
-	for (diff = diff_list.begin(); diff != diff_list.end(); diff++) {
+	uint32 *gap_data = (uint32 *)(tagdata + enc_size);
+	for (std::list<Gap_Struct>::iterator diff = diff_list.begin(); diff != diff_list.end(); diff++) {
 		*gap_data++ = ENDIAN_SWAP_32(diff->start);
 		*gap_data++ = ENDIAN_SWAP_32(diff->end);
 	}
+
 	return etag;
 }
 

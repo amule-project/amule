@@ -28,6 +28,9 @@
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
+#include "otherstructs.h" // for Gap_Struct
+
+#include <list>
 
 namespace otherfunctions {
 	
@@ -306,6 +309,16 @@ class RLE_Data {
 		const unsigned char *Decode(const unsigned char *data);	
 };
 
+/*!
+ * Data difference is different for each EC client
+ */
+class PartFileEncoderData {
+public:
+	RLE_Data m_part_status;
+	std::list<Gap_Struct> m_gap_list;
+	
+	void ApplyGapDiffs(std::list<Gap_Struct> &diff_list);
+};
 
 } // End namespace
 

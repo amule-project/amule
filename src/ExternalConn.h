@@ -32,7 +32,6 @@
 #include "ECPacket.h"
 
 #include "otherfunctions.h" // for RLE
-#include "otherstructs.h" // for Gap_Struct
 
 class CPartFile;
 class wxSocketServer;
@@ -55,8 +54,7 @@ class CPartFile_Encoder {
 		// List of gaps sent to particular client. Since clients
 		// can request lists in different time, they can get
 		// different results
-		std::list<Gap_Struct> m_gap_list;
-
+		otherfunctions::PartFileEncoderData m_enc_data;
 		CPartFile *m_file;
 	public:
 		// encoder side
@@ -72,7 +70,7 @@ class CPartFile_Encoder {
 		CPartFile_Encoder(const CPartFile_Encoder &obj) : m_part_status(obj.m_part_status)
 		{
 			m_file = obj.m_file;
-			m_gap_list = obj.m_gap_list;
+			m_enc_data = obj.m_enc_data;
 		}
 		
 		// encode - take data from m_file
@@ -80,10 +78,6 @@ class CPartFile_Encoder {
 		// decode - take data from tag
 		void Decode(CECTag *tag);
 		
-		/*!
-		 * Return encoded or decoded data depands on which
-		 * side created
-		 */
 		const unsigned char *GapData();
 		int GapDataSize();
 		
