@@ -1344,13 +1344,12 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		}
 		break;
 	
-//#ifndef DISABLE_PROGRESS
 	case 5:	// progress
 	{
 		if (thePrefs::ShowProgBar())
 		{
-			int iWidth  = rect.GetWidth();
-			int iHeight = rect.GetHeight();
+			int iWidth  = rect.GetWidth() - 2;
+			int iHeight = rect.GetHeight() - 2;
 
 			// DO NOT DRAW IT ALL THE TIME
 			uint32 dwTicks = GetTickCount();
@@ -1367,9 +1366,14 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 				cdcStatus.SelectObject( *item->status );
 				
 				DrawFileStatusBar( file, &cdcStatus,
-					wxRect(0, 0, iWidth, iHeight), thePrefs::UseFlatBar());
+					wxRect(1, 1, iWidth - 2, iHeight - 2), thePrefs::UseFlatBar());
+		
+				// Draw black border
+				cdcStatus.SetPen( *wxBLACK_PEN );
+				cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
+				cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );
+			
 				item->dwUpdated = dwTicks + 5000; // Plus five seconds
-				
 			} else {
 				cdcStatus.SelectObject( *item->status );
 			}
@@ -1403,7 +1407,6 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		}
 	}
 	break;
-//#endif
 
 	// Sources
 	case 6:	{
@@ -1625,20 +1628,18 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-//#ifndef DISABLE_PROGRESS
 		case 5:	// file info
-			{
-				if ( thePrefs::ShowProgBar() && (item->type == AVAILABLE_SOURCE) )
-				{
-					int iWidth = rect.GetWidth();
-					int iHeight = rect.GetHeight() - 2;
-
+			if ( thePrefs::ShowProgBar() ) {
+				int iWidth = rect.GetWidth() - 2;
+				int iHeight = rect.GetHeight() - 2;
+			
+				if ( item->type == AVAILABLE_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
 					wxMemoryDC cdcStatus;
 
-					if (	item->dwUpdated < dwTicks ||
-						!item->status ||
-						iWidth != item->status->GetWidth() ) {
+					if ( item->dwUpdated < dwTicks || !item->status || 
+							iWidth != item->status->GetWidth() ) {
+						
 						if (item->status == NULL) {
 							item->status = new wxBitmap(iWidth, iHeight);
 						} else {
@@ -1650,8 +1651,14 @@ void CDownloadListCtrl::DrawSourceItem(
 						cdcStatus.SelectObject(*(item->status));
 
 						DrawSourceStatusBar( client, &cdcStatus,
-							wxRect(0, 0, iWidth, iHeight),
+							wxRect(1, 1, iWidth - 1, iHeight - 1),
 							thePrefs::UseFlatBar());
+				
+						// Draw black border
+						cdcStatus.SetPen( *wxBLACK_PEN );
+						cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
+						cdcStatus.DrawRectangle( 0, 0, iWidth, iHeight );		
+						
 						// Plus ten seconds
 						item->dwUpdated = dwTicks + 10000;
 					} else {
@@ -1661,11 +1668,26 @@ void CDownloadListCtrl::DrawSourceItem(
 					dc->Blit(rect.GetX(), rect.GetY() + 1,
 						iWidth, iHeight, &cdcStatus, 0, 0);
 					cdcStatus.SelectObject(wxNullBitmap);
+				} else {
+					wxString buffer = _("A4AF");
+					
+					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
+					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;
+					
+					wxCoord txtwidth, txtheight;
+					
+					dc->GetTextExtent(buffer, &txtwidth, &txtheight);
+					
+					dc->SetTextForeground(*wxBLACK);
+					dc->DrawText(buffer, midx - (txtwidth >> 1), midy - (txtheight >> 1));
+
+					// Draw black border
+					dc->SetPen( *wxBLACK_PEN );
+					dc->SetBrush( *wxTRANSPARENT_BRUSH );
+					dc->DrawRectangle( rect.GetX(), rect.GetY() + 1, iWidth, iHeight );		
 				}
 			}
 			break;
-
-//#endif
 
 		case 6: {
 				// Version
