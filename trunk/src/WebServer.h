@@ -437,13 +437,11 @@ class CWebServer {
 		static wxString	_GetLoginScreen(ThreadData);
 		static wxString	_GetConnectedServer(ThreadData);
 		static wxString _GetAddServerBox(ThreadData Data);
-		static void	_RemoveServer(CWebServer *pThis, wxString sIP, wxString sPort);
 		static wxString	_GetWebSearch(ThreadData Data);
 		static wxString _GetSearch(ThreadData);
 
 		static wxString	_ParseURL(ThreadData Data, wxString fieldname); 
 		static wxString	_ParseURLArray(ThreadData Data, wxString fieldname);
-		static void	_ConnectToServer(CWebServer *pThis, wxString sIP, wxString sPort); //shakraw, added sPort
 		static bool	_IsLoggedIn(ThreadData Data, long lSession);
 		static void	_RemoveTimeOuts(ThreadData Data, long lSession);
 		static bool	_RemoveSession(ThreadData Data, long lSession);
