@@ -55,6 +55,9 @@ private:
 #endif
 
 class CUDPSocket : public wxDatagramSocket //CAsyncSocket
+#ifdef AMULE_DAEMON
+, wxThread
+#endif
 {
 	friend class CServerConnect;
 	DECLARE_DYNAMIC_CLASS(CUDPSocket);
@@ -90,6 +93,9 @@ private:
 	CServer* cur_server;
 	char	DnsHostBuffer[1024]; //MAXGETHOSTSTRUCT];	// dns lookup structure
 	wxIPV4address useless;
+#ifdef AMULE_DAEMON
+	void *Entry();
+#endif
 };
 
 #endif // UDPSOCKET_H

@@ -39,6 +39,9 @@ struct UDPPack {
 // CClientUDPSocket command target
 
 class CClientUDPSocket : public wxDatagramSocket
+#ifdef AMULE_DAEMON
+, wxThread
+#endif
 {
   DECLARE_DYNAMIC_CLASS(CClientUDPSocket)
     CClientUDPSocket() : wxDatagramSocket(useless2) {};
@@ -47,7 +50,6 @@ public:
 	virtual ~CClientUDPSocket();
 	bool	SendPacket(Packet* packet, uint32 dwIP, uint16 nPort);
 	bool	IsBusy()	{return m_bWouldBlock;}
-	bool	Create();
 protected:
 	bool	ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 	
@@ -61,6 +63,9 @@ private:
 
 	CTypedPtrList<CPtrList, UDPPack*> controlpacket_queue;
 	wxIPV4address  useless2;
+#ifdef AMULE_DAEMON
+	void *Entry();
+#endif
 };
 
 #endif // CLIENTUDPSOCKET_H

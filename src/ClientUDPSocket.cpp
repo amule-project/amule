@@ -62,9 +62,17 @@ CClientUDPSocket::CClientUDPSocket(wxIPV4address address)
 	m_bWouldBlock = false;
 
 	printf("*** UDP socket at %d\n",address.Service());
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CClientUDPSocket failed create\n");
+		wxASSERT(0);
+	}
+	Run();
+#else
 	SetEventHandler(theApp,CLIENTUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG);
 	Notify(TRUE);
+#endif
 }
 
 CClientUDPSocket::~CClientUDPSocket()
@@ -320,15 +328,18 @@ bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort)
 	return true;
 }
 
-bool  CClientUDPSocket::Create()
-{
-	// constructor does dirty work
-	return true;
 
-	/*
-	if (theApp.glob_prefs->GetUDPPort()) {
-		return CAsyncSocket::Create(theApp.glob_prefs->GetUDPPort(),SOCK_DGRAM,FD_READ);
-	} else {
-		return true;
-	}*/
+#ifdef AMULE_DAEMON
+
+void *CClientUDPSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( WaitForRead(0, 10) ) {
+			CALL_APP_DATA_LOCK;
+			OnReceive(0);
+		}
+	}
+	return 0;
 }
+
+#endif

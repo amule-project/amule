@@ -124,10 +124,17 @@ CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
   serverconnect = in_serverconnect;
 
   printf("*** UDP socket at %d\n",address.Service());
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CUDPSocket failed create\n");
+		wxASSERT(0);
+	}
+	Run();
+#else
   SetEventHandler(theApp,UDPSOCKET_HANDLER);
   SetNotify(wxSOCKET_INPUT_FLAG);
   Notify(TRUE);
-
+#endif
   //DnsTaskHandle = 0;
 }
 
@@ -519,3 +526,18 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	  SendBuffer();
 	}
 }
+
+#ifdef AMULE_DAEMON
+
+void *CUDPSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( WaitForRead(0, 10) ) {
+			CALL_APP_DATA_LOCK;
+			OnReceive(0);
+		}
+	}
+	return 0;
+}
+
+#endif
