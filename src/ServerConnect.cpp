@@ -580,15 +580,14 @@ void CServerConnect::KeepConnectionAlive()
 void CServerConnect::InitLocalIP()
 {
 	m_nLocalIP = 0;
-	// Don't use 'gethostbyname(NULL)'. The winsock DLL may be replaced by a DLL from a third party
-	// which is not fully compatible to the original winsock DLL. ppl reported crash with SCORSOCK.DLL
-	// when using 'gethostbyname(NULL)'.
+
+	#warning Gah, ugly as Xaignar. Can someone review this?
 	try{
 		char szHost[256];
 		if (gethostname(szHost, sizeof szHost) == 0){
 			hostent* pHostEnt = gethostbyname(szHost);
 			if (pHostEnt != NULL && pHostEnt->h_length == 4 && pHostEnt->h_addr_list[0] != NULL)
-				m_nLocalIP = *((uint32*)pHostEnt->h_addr_list[0]);
+				m_nLocalIP = ENDIAN_SWAP_32(*((uint32*)pHostEnt->h_addr_list[0]));
 		}
 	}
 	catch(...){
