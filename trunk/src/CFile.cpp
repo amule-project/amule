@@ -629,12 +629,7 @@ wxString  CDirIterator::FindNextFile() {
 	
 	struct stat* buf=(struct stat*)malloc(sizeof(struct stat));
 
-	bool is_volumes = (DirStr.CmpNoCase(wxT("/Volumes/")) == 0);
-	
 	while (dp!=NULL && !found) {
-		if (is_volumes) {
-			printf("On Volumes: %s\n",dp->d_name);
-		}
 
 		if ((type == CDirIterator::Any)) {
 			// return anything.
@@ -642,9 +637,6 @@ wxString  CDirIterator::FindNextFile() {
 		} else {		
 			switch (dp->d_type) {
 				case DT_DIR:
-					if (is_volumes) {
-						printf("Is a dir\n");
-					}
 					if (type == CDirIterator::Dir)  {
 						found = true;
 					} else {
@@ -652,9 +644,6 @@ wxString  CDirIterator::FindNextFile() {
 					}
 					break;
 				case DT_REG:
-					if (is_volumes) {
-						printf("Is a file\n");
-					}
 					if (type == CDirIterator::File)  {
 						found = true;
 					} else {
@@ -662,16 +651,10 @@ wxString  CDirIterator::FindNextFile() {
 					}
 					break;
 				default:
-					if (is_volumes) {
-						printf("Is a... uh... ");
-					}
 
 					// Fallback to stat
 					stat(unicode2char(DirStr + char2unicode(dp->d_name)),buf);
 					if (S_ISREG(buf->st_mode)) {
-						if (is_volumes) {
-							printf("file?\n");
-						}
 						if (type == CDirIterator::File) { 
 							found = true; 
 						} else { 
@@ -679,9 +662,6 @@ wxString  CDirIterator::FindNextFile() {
 						} 
 					} else {
 						if (S_ISDIR(buf->st_mode)) {
-							if (is_volumes) {
-								printf("dir?\n");
-							}
 							
 							if (type == CDirIterator::Dir) {
 								found = true; 
@@ -689,11 +669,7 @@ wxString  CDirIterator::FindNextFile() {
 								dp = readdir(DirPtr);
 							}
 						} else {				
-							if (is_volumes) {
-								printf("I give up, I dunno\n");
-							}
 							// unix socket, block device, etc
-							printf("Strange file -> %s\n",dp->d_name);
 							dp = readdir(DirPtr);
 						}
 					}
@@ -705,7 +681,6 @@ wxString  CDirIterator::FindNextFile() {
 			if (
 				(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) 
 				|| FoundName.IsSameAs(wxT(".")) || FoundName.IsSameAs(wxT(".."))) {
-				printf("%s Discarded! %x %x %x %x\n",dp->d_name, !FileMask.IsEmpty(), !FoundName.Matches(FileMask), FoundName.IsSameAs(wxT(".")),FoundName.IsSameAs(wxT("..")));
 				found = false;	
 				dp = readdir(DirPtr);
 			}

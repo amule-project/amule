@@ -249,8 +249,10 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 bool CDirectoryTreeCtrl::HasSubdirectories(wxString folder)
 {
 	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
+
+	CDirIterator SharedDir(folder); 
+	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
 	
-	wxString fname=wxFindFirstFile(folder + wxT("*"),wxDIR);
 	if(!fname.IsEmpty()) {
 		return TRUE; // at least one directory ...
 	}
