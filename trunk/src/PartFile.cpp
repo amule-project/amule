@@ -496,6 +496,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		if (isnewstyle) {
 			uint32 temp;
 			metFile.Read(&temp,4);
+			ENDIAN_SWAP_I_32(temp);
 	
 			if (temp==0) {	// 0.48 partmets - different again
 				LoadHashsetFromFile(&metFile, false);
