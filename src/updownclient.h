@@ -312,14 +312,18 @@ public:
 	uint8		GetUploadState() const		{ return m_nUploadState; }
 	void		SetUploadState(uint8 news)	{ m_nUploadState = news; }
 
+
 #ifndef CLIENT_GUI
+	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
+	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
 	uint32		GetWaitStartTime() const;
 #else
-	uint32 m_WaitStartTime;
+	uint32 m_WaitTime, m_UpStartTimeDelay, m_WaitStartTime;
+	uint32 GetWaitTime() const { return m_WaitTime; }
+	uint32 GetUpStartTimeDelay() const	{ return m_UpStartTimeDelay; }
 	uint32 GetWaitStartTime() const { return m_WaitStartTime; }
 #endif
 
-	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 	bool		HasBlocks() const
 		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
@@ -345,7 +349,6 @@ public:
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	bool		CreateNextBlockPackage();
 	void		SetUpStartTime() 			{ m_dwUploadTime = ::GetTickCount(); }
-	uint32		GetUpStartTimeDelay() const	{ return ::GetTickCount() - m_dwUploadTime; }
 	void		SetWaitStartTime();
 	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
