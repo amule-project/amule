@@ -221,23 +221,23 @@ void CSearchList::RemoveResults(long nSearchID){
 	}
 }
 
-void CSearchList::ShowResults(long nSearchID){
-	CSearchListCtrl* outputwnd = GetSearchListControl(nSearchID);
-	if ( outputwnd ) {
-		//outputwnd->SetRedraw(false);
-		for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)){
-			if( ((CSearchFile*)list.GetAt(pos))->GetSearchID() == nSearchID ){
-				outputwnd->AddResult(list.GetAt(pos));
-			}
-		}
-		//outputwnd->SetRedraw(true);
-	
-		// Update the result count
-		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
-	}
-
-	UngetSearchListControl(outputwnd);
-}
+// void CSearchList::ShowResults(long nSearchID){
+// 	CSearchListCtrl* outputwnd = GetSearchListControl(nSearchID);
+// 	if ( outputwnd ) {
+// 		//outputwnd->SetRedraw(false);
+// 		for (POSITION pos = list.GetHeadPosition(); pos !=0;list.GetNext(pos)){
+// 			if( ((CSearchFile*)list.GetAt(pos))->GetSearchID() == nSearchID ){
+// 				outputwnd->AddResult(list.GetAt(pos));
+// 			}
+// 		}
+// 		//outputwnd->SetRedraw(true);
+// 	
+// 		// Update the result count
+// 		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
+// 	}
+// 
+// 	UngetSearchListControl(outputwnd);
+// }
 
 void CSearchList::NewSearch(const wxString& resTypes, long nSearchID){
 	resultType=resTypes;
@@ -409,32 +409,19 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 		return false;
 	}
 
-	CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL; ){
 		CSearchFile* cur_file = list.GetNext(pos);
 		if ( (toadd->GetFileHash() == cur_file->GetFileHash()) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
-			if (outputwnd) {
-				outputwnd->UpdateSources(cur_file);
-	
-				// Update the result count
-				theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
-			}
+			CoreNotify_Search_Update_Sources(toadd, cur_file);
 			delete toadd;
-			UngetSearchListControl(outputwnd);
 			return true;
 		}
 	}
 	if (list.AddTail(toadd)) {	
 		foundFilesCount[toadd->GetSearchID()]++;
 	}
-	if (outputwnd) {
-		outputwnd->AddResult(toadd);
-			
-		// Update the result count
-		theApp.amuledlg->searchwnd->UpdateHitCount( outputwnd );
-	}
-	UngetSearchListControl(outputwnd);
+	CoreNotify_Search_Add_Result(toadd);
 	return true;
 }
 

@@ -679,8 +679,6 @@ bool CamuleApp::OnInit()
 	// init downloadqueue
 	downloadqueue->Init();
 
-	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow(wxT("sharedFilesCt")));
-
 	SetTopWindow(amuledlg);
 
 	m_app_state = APP_STATE_RUNNING;
@@ -1916,11 +1914,39 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			}
 			break;
 		// shared files
-		case SHAREDFILES_UPDATEITEM:
+		case SHAREDFILES_UPDATE_ITEM:
 			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
 				amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem((CKnownFile*)event.ptr_value);
 			}
 			break;
+		case SHAREDFILES_SHOW_ITEM:
+			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
+				amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile((CKnownFile*)event.ptr_value);
+			}
+			break;
+		
+		case SHAREDFILES_REMOVE_ITEM:
+			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
+				amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile((CKnownFile*)event.ptr_value);
+			}
+			break;
+		case SHAREDFILES_REMOVE_ALL_ITEMS:
+			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
+				amuledlg->sharedfileswnd->sharedfilesctrl->DeleteAllItems();
+			}
+			break;
+		case SHAREDFILES_INIT_SORT:
+			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
+				amuledlg->sharedfileswnd->sharedfilesctrl->InitSort();
+			}
+			break;
+		case SHAREDFILES_SHOW_ITEM_LIST:
+			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
+				amuledlg->sharedfileswnd->sharedfilesctrl->ShowFileList((CSharedFileList*)event.ptr_value);
+			}
+			break;
+
+						
 		// download ctrl
 		case DOWNLOAD_CTRL_UPDATEITEM:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
