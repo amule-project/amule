@@ -137,6 +137,7 @@ class DownloadFiles {
 		long		lSourceCount;
 		long		lNotCurrentSourceCount;
 		long		lTransferringSourceCount;
+		long		lSourceCountA4AF;
 		double		fCompleted;
 		long		lFilePrio;
 		wxString	sFileHash;
