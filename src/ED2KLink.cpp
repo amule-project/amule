@@ -270,10 +270,11 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 	}
 
 	if ( !masterhash.IsEmpty() ) {
-		wxString strHash = masterhash;
-		
+		// Remove the prefix of "h="
+		wxString strHash = masterhash.AfterFirst( wxT('=') );
+
 		if ( !strHash.IsEmpty() ) {
-			if ( otherfunctions::DecodeBase32( unicode2char(masterhash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
+			if ( otherfunctions::DecodeBase32( unicode2char(strHash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
 				m_bAICHHashValid = true;
 				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
 			} else {
