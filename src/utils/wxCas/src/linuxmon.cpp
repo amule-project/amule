@@ -41,10 +41,10 @@
 
 // Constants
 const wxFileName
-LinuxMon::UPTIME_FILE ("/proc/uptime");
+LinuxMon::UPTIME_FILE (wxT("/proc/uptime"));
 
 const wxFileName
-LinuxMon::LOADAVG_FILE ("/proc/loadavg");
+LinuxMon::LOADAVG_FILE (wxT("/proc/loadavg"));
 
 // Constructors
 LinuxMon::LinuxMon ()

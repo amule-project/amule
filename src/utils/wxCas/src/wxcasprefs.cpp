@@ -75,7 +75,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
   wxInt32 x, y;
   prefs->Read (WxCasCte::AMULESIG_DIR_KEY, &str,
                WxCasCte::DEFAULT_AMULESIG_PATH);
-  m_osPathTextCtrl->GetTextExtent ("8", &x, &y);
+  m_osPathTextCtrl->GetTextExtent (wxT("8"), &x, &y);
   m_osPathTextCtrl->SetSize (wxSize (x * (str.Length () + 1), -1));
   m_osPathTextCtrl->SetValue (str);
   m_osPathTextCtrl->
@@ -124,7 +124,7 @@ WxCasPrefs::WxCasPrefs (wxWindow * parent):wxDialog (parent, -1,
 
   wxString strs[] =
     {
-      _T ("PNG"), _T ("JPG"), _T ("BMP")};
+      wxT ("PNG"), wxT ("JPG"), wxT ("BMP")};
 
   m_autoStatImgCombo =
     new wxComboBox (this, ID_AUTOSTATIMG_COMBO,

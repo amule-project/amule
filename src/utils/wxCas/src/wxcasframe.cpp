@@ -94,22 +94,22 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_sigPanel = new wxPanel (m_mainPanel, -1);
 
   // Panel Vertical Sizer
-  m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, "");
+  m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, wxEmptyString);
   m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
   // Statistics labels
-  m_statLine_1 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_2 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_3 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_4 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
-  m_statLine_7 = new wxStaticText (m_sigPanel, -1, "");
+  m_statLine_1 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_2 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_3 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_4 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_5 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_6 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_statLine_7 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
 
 #ifdef __LINUX__		// System monitoring on Linux
 
-  m_sysLine_1 = new wxStaticText (m_sigPanel, -1, "");
-  m_sysLine_2 = new wxStaticText (m_sigPanel, -1, "");
+  m_sysLine_1 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
+  m_sysLine_2 = new wxStaticText (m_sigPanel, -1, wxEmptyString);
 #endif
 
   // Add Online Sig file
@@ -164,23 +164,23 @@ WxCasFrame::WxCasFrame (const wxString & title):
 
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
 
-  m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", m_toolBarBitmaps[0],
+  m_toolbar->AddTool (ID_BAR_REFRESH, wxT("Refresh"), m_toolBarBitmaps[0],
                       _("Stop Auto Refresh"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_SAVE, "Save", m_toolBarBitmaps[1],
+  m_toolbar->AddTool (ID_BAR_SAVE, wxT("Save"), m_toolBarBitmaps[1],
                       _("Save Online Statistics image"));
 
-  m_toolbar->AddTool (ID_BAR_PRINT, "Print", m_toolBarBitmaps[2],
+  m_toolbar->AddTool (ID_BAR_PRINT, wxT("Print"), m_toolBarBitmaps[2],
                       _("Print Online Statistics image"));
 
-  m_toolbar->AddTool (ID_BAR_PREFS, "Prefs", m_toolBarBitmaps[5],
+  m_toolbar->AddTool (ID_BAR_PREFS, wxT("Prefs"), m_toolBarBitmaps[5],
                       _("Preferences setting"));
 
   m_toolbar->AddSeparator ();
 
-  m_toolbar->AddTool (ID_BAR_ABOUT, "About", m_toolBarBitmaps[3],
+  m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[3],
                       _("About wxCas"));
 
   m_toolbar->SetMargins (2, 2);
@@ -273,7 +273,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
     {
       m_timer->Stop ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
-      m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
+      m_toolbar->InsertTool (0, ID_BAR_REFRESH, wxT("Refresh"),
                              m_toolBarBitmaps[4], wxNullBitmap,
                              wxITEM_NORMAL, _("Start Auto Refresh"));
       m_toolbar->Realize ();
@@ -283,7 +283,7 @@ WxCasFrame::OnBarRefresh (wxCommandEvent & event)
     {
       m_timer->Start ();
       m_toolbar->DeleteTool (ID_BAR_REFRESH);
-      m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
+      m_toolbar->InsertTool (0, ID_BAR_REFRESH, wxT("Refresh"),
                              m_toolBarBitmaps[0], wxNullBitmap,
                              wxITEM_NORMAL, _("Stop Auto Refresh"));
       m_toolbar->Realize ();
@@ -341,9 +341,8 @@ WxCasFrame::OnBarPrint (wxCommandEvent & event)
 void
 WxCasFrame::OnBarPrefs (wxCommandEvent & event)
 {
-  WxCasPrefs *dlg = new WxCasPrefs (this);
-  dlg->ShowModal ();
-  dlg->Destroy ();
+  WxCasPrefs dlg (this);
+  dlg.ShowModal ();
 }
 
 // About button
@@ -423,7 +422,7 @@ WxCasFrame::UpdateStatsPanel ()
   Freeze ();
 
   // Stat line 1
-  newline = "aMule ";
+  newline = _("aMule ");
   newline += m_aMuleSig->GetVersion ();
   newline += _(" has been running for ");
   newline += m_aMuleSig->GetRunTime ();
@@ -436,9 +435,9 @@ WxCasFrame::UpdateStatsPanel ()
   newline = m_aMuleSig->GetUser ();
   newline += _(" is on ");
   newline += m_aMuleSig->GetServerName ();
-  newline += " [";
+  newline += _(" [");
   newline += m_aMuleSig->GetServerIP ();
-  newline += ":";
+  newline += _(":");
   newline += m_aMuleSig->GetServerPort ();
   newline += _("] with ");
   newline += m_aMuleSig->GetConnexionIDType ();
@@ -553,7 +552,7 @@ WxCasFrame::UpdateStatsPanel ()
 #ifdef __LINUX__		// System monitoring on Linux
   newline = _("System Load Average (1-5-15 min): ");
   newline +=
-    newline.Format ("%.2f - %.2f - %.2f", m_sysMonitor->GetSysLoad_1 (),
+    newline.Format (wxT("%.2f - %.2f - %.2f"), m_sysMonitor->GetSysLoad_1 (),
                     m_sysMonitor->GetSysLoad_5 (),
                     m_sysMonitor->GetSysLoad_15 ());
 

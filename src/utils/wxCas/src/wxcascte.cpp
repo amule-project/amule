@@ -39,9 +39,9 @@
 #include "wxcascte.h"
 
 const wxString
-WxCasCte::AMULESIG_FILENAME ("amulesig.dat");
+WxCasCte::AMULESIG_FILENAME (wxT("amulesig.dat"));
 const wxString
-WxCasCte::AMULESIG_IMG_NAME ("aMule-online-sign");
+WxCasCte::AMULESIG_IMG_NAME (wxT("aMule-online-sign"));
 
 // Refresh rate limits
 const wxUint32
@@ -51,21 +51,21 @@ WxCasCte::MAX_REFRESH_RATE = 3600;
 
 // Key config names
 const wxString
-WxCasCte::AMULESIG_DIR_KEY ("OSDirectory");
+WxCasCte::AMULESIG_DIR_KEY (wxT("OSDirectory"));
 const wxString
-WxCasCte::REFRESH_RATE_KEY ("RefreshRate");
+WxCasCte::REFRESH_RATE_KEY (wxT("RefreshRate"));
 const wxString
-WxCasCte::ENABLE_AUTOSTATIMG_KEY ("EnableAutoStatImg");
+WxCasCte::ENABLE_AUTOSTATIMG_KEY (wxT("EnableAutoStatImg"));
 const wxString
-WxCasCte::AUTOSTATIMG_DIR_KEY ("StatImgDirectory");
+WxCasCte::AUTOSTATIMG_DIR_KEY (wxT("StatImgDirectory"));
 const wxString
-WxCasCte::AUTOSTATIMG_TYPE_KEY ("StatImgType");
+WxCasCte::AUTOSTATIMG_TYPE_KEY (wxT("StatImgType"));
 
 
 // Default config parameters
 const wxString
 WxCasCte::DEFAULT_AMULESIG_PATH (wxFileName::GetHomeDir () +
-                                 wxFileName::GetPathSeparator () + ".aMule");
+                                 wxFileName::GetPathSeparator () + wxT(".aMule"));
 const wxUint32
 WxCasCte::DEFAULT_REFRESH_RATE = 5;
 const bool
@@ -73,4 +73,4 @@ WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED = FALSE;
 const wxString
 WxCasCte::DEFAULT_AUTOSTATIMG_PATH (wxFileName::GetHomeDir ());
 const wxString
-WxCasCte::DEFAULT_AUTOSTATIMG_TYPE ("PNG");
+WxCasCte::DEFAULT_AUTOSTATIMG_TYPE (wxT("PNG"));
