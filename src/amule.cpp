@@ -1393,7 +1393,8 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		if (serverconnect->IsConnecting()) {
 			serverconnect->CheckForTimeout();
 		}
-	
+		
+		theApp.listensocket->UpdateConnectionsStatus();		
 		
 	}
 
