@@ -581,7 +581,7 @@ void CDownloadListCtrl::AddFile(CPartFile * toadd)
 	m_ListItems.insert(ListItemsPair(toadd, newitem));
 	//InsertItem(LVIF_PARAM,itemnr,0,0,0,0,(LPARAM)newitem);
 
-	if (CheckShowItemInGivenCat(toadd, curTab)) {
+	if (toadd->CheckShowItemInGivenCat(curTab)) {
 		// rip something off from DrawFileItem()
 		CPartFile *pf = (CPartFile *) newitem->value;
 		uint32 newid = InsertItem(itemnr, pf->GetFileName());
@@ -1951,7 +1951,7 @@ void CDownloadListCtrl::ChangeCategory(int newsel)
 		const CtrlItem_Struct *cur_item = it->second;
 		if (cur_item->type == FILE_TYPE) {
 			CPartFile *file = reinterpret_cast < CPartFile * >(cur_item->value);
-			if (!CheckShowItemInGivenCat(file, newsel)) {
+			if (!file->CheckShowItemInGivenCat(newsel)) {
 				HideFile(file);
 			} else {
 				ShowFile(file);
@@ -2046,63 +2046,6 @@ bool CDownloadListCtrl::this_is_the_moment() {
 }
 
 
-bool CDownloadListCtrl::CheckShowItemInGivenCat(CPartFile* file, int inCategory)
-{
-	// easy normal cases
-	bool IsInCat;
-	bool IsNotFiltered = true;
-
-	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==file->GetCategory()));
-
-	switch (theApp.glob_prefs->GetAllcatType()) {
-		case 1:
-			IsNotFiltered = ((file->GetCategory()==0) || (inCategory>0));
-			break;
-		case 2:
-			IsNotFiltered = (file->IsPartFile());
-			break;
-		case 3:
-			IsNotFiltered = (!file->IsPartFile());
-			break;
-		case 4:
-			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()==0);
-			break;
-		case 5:
-			IsNotFiltered = ((file->GetStatus()==PS_READY|| file->GetStatus()==PS_EMPTY) && file->GetTransferingSrcCount()>0);
-			break;
-		case 6:
-			IsNotFiltered = ( file->GetStatus() == PS_ERROR );
-			break;
-		case 7:
-			IsNotFiltered = ((file->GetStatus()==PS_PAUSED) && (!file->IsStopped()));
-			break;
-		case 8:
-			IsNotFiltered = file->IsStopped();
-			break;
-		case 9:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftVideo;
-			break;
-		case 10:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftAudio;
-			break;
-		case 11:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftArchive;
-			break;
-		case 12:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftCDImage;
-			break;
-		case 13:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftPicture;
-			break;
-		case 14:
-			IsNotFiltered = GetFiletype(file->GetFileName()) == ftText;
-			break;
-	}
-	
-	return (IsNotFiltered && IsInCat);
-}
-
-
 void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
 {
 	bool reset = false;
@@ -2118,7 +2061,7 @@ void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
 			continue;
 		}
 
-		if (CheckShowItemInGivenCat(cur_file,cat)) {
+		if (cur_file->CheckShowItemInGivenCat(cat)) {
 			switch (newstatus) {
 				case MP_CANCEL:
 					cur_file->Delete();

@@ -25,7 +25,6 @@
 #include "otherfunctions.h"	// Needed for md4cpy
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "opcodes.h"		// Needed for CONNECTION_TIMEOUT
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -38,9 +37,7 @@
 #include "packets.h"		// Needed for Packet
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
-#include "ChatWnd.h"		// Needed for CChatWnd
 #include "sockets.h"		// Needed for CServerConnect
-#include "TransferWnd.h"	// Needed for transferwnd
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
@@ -804,7 +801,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				wxString message = message_file.ReadString();
-				theApp.amuledlg->chatwnd->ProcessMessage(m_client, message);
+				Notify_ChatProcessMsg(m_client, message);
 				break;
 			}
 			case OP_ASKSHAREDFILES:	{

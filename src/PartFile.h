@@ -86,7 +86,7 @@ public:
 	// TODO: check files atributes
 	//bool	IsNormalFile() const { return (m_dwFileAttributes & (FILE_ATTRIBUTE_COMPRESSED | FILE_ATTRIBUTE_SPARSE_FILE)) == 0; }
 	bool	IsNormalFile() const 		{ return true; }
-	
+	bool    CheckShowItemInGivenCat(int inCategory);
 	void	AddGap(uint32 start, uint32 end);
 	void	FillGap(uint32 start, uint32 end);
 	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);

@@ -226,7 +226,11 @@ void CPartFile::Init()
 	lastpurgetime = ::GetTickCount();
 	paused = false;
 	stopped = false;
+#ifdef CLIENT_GUI
+	status = PS_EMPTY;
+#else
 	SetPartFileStatus(PS_EMPTY);
+#endif // CLIENT_GUI
 	insufficient = false;
 	
 	//m_bCompletionError = false; // added
@@ -290,6 +294,7 @@ void CPartFile::Init()
 	
 }
 
+#ifndef CLIENT_GUI
 CPartFile::~CPartFile()
 {
 	
@@ -324,6 +329,11 @@ CPartFile::~CPartFile()
 		delete item;
 	}	
 }
+#else
+CPartFile::~CPartFile()
+{
+}
+#endif // CLIENT_GUI
 
 void CPartFile::CreatePartFile()
 {
@@ -907,7 +917,6 @@ bool CPartFile::SavePartFile(bool Initial)
 	return true;
 }
 
-
 void CPartFile::SaveSourceSeeds() {
 	// Kry - Sources seeds
 	// Copyright (c) Angel Vidal (Kry) 2004
@@ -1348,6 +1357,7 @@ void CPartFile::DrawShareStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool 
 } 
 #endif
 
+#ifndef AMULE_DAEMON
 void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 {
 	static CBarShader s_ChunkBar(16);
@@ -1457,6 +1467,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 		completedsize=m_nFileSize;
 	}
 }
+#endif
 
 void CPartFile::WritePartStatus(CSafeMemFile* file)
 {
@@ -2501,6 +2512,12 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	UpdateFileRatingCommentAvail();
 }
 
+#ifdef CLIENT_GUI
+void CPartFile::Delete()
+{
+#warning lfroen - provide different implementation on gui-side
+}
+#else
 void CPartFile::Delete()
 {
 	printf("Canceling\n");
@@ -2562,6 +2579,7 @@ void CPartFile::Delete()
 	printf("Done\n");
 	delete this;
 }
+#endif // CLIENT_GUI
 
 bool CPartFile::HashSinglePart(uint16 partnumber)
 {
@@ -3723,3 +3741,58 @@ void CPartFile::SetStatus(uint8 in)
 	}
 }
 
+bool CPartFile::CheckShowItemInGivenCat(int inCategory)
+{
+	// easy normal cases
+	bool IsInCat;
+	bool IsNotFiltered = true;
+
+	IsInCat = ((inCategory==0) || (inCategory>0 && inCategory==GetCategory()));
+
+	switch (theApp.glob_prefs->GetAllcatType()) {
+		case 1:
+			IsNotFiltered = ((GetCategory()==0) || (inCategory>0));
+			break;
+		case 2:
+			IsNotFiltered = (IsPartFile());
+			break;
+		case 3:
+			IsNotFiltered = (!IsPartFile());
+			break;
+		case 4:
+			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()==0);
+			break;
+		case 5:
+			IsNotFiltered = ((GetStatus()==PS_READY|| GetStatus()==PS_EMPTY) && GetTransferingSrcCount()>0);
+			break;
+		case 6:
+			IsNotFiltered = ( GetStatus() == PS_ERROR );
+			break;
+		case 7:
+			IsNotFiltered = ((GetStatus()==PS_PAUSED) && (!IsStopped()));
+			break;
+		case 8:
+			IsNotFiltered = IsStopped();
+			break;
+		case 9:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftVideo;
+			break;
+		case 10:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftAudio;
+			break;
+		case 11:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftArchive;
+			break;
+		case 12:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftCDImage;
+			break;
+		case 13:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftPicture;
+			break;
+		case 14:
+			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
+			break;
+	}
+	
+	return (IsNotFiltered && IsInCat);
+}
