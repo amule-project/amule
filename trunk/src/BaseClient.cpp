@@ -882,9 +882,14 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	data->WriteHash16(theApp.glob_prefs->GetUserHash());
 	data->Write((uint32)theApp.serverconnect->GetClientID());
 	data->Write((uint16)theApp.glob_prefs->GetPort());
-	
+
+	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
-	data->Write((uint32)5);
+	data->Write((uint32)6);
+	#else
+	data->Write((uint32)5);  // NO MOD_VERSION
+	#endif
+	
 	
 	CTag tagname(CT_NAME,theApp.glob_prefs->GetUserNick());
 	tagname.WriteTagToFile(data);
@@ -940,7 +945,11 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(uSupportPreview		<< 1*0) );
 	tagMisOptions.WriteTagToFile(data);
 
-
+#ifdef __CVS__
+	wxString mod_name(MOD_VERSION);
+	CTag tagModName(ET_MOD_VERSION, mod_name);
+	tagModName.WriteTagToFile(data);
+#endif
 	
 	uint32 dwIP = 0;
 	uint16 nPort = 0;
