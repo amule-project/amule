@@ -26,7 +26,6 @@
 
 class CMemFile : public CFile {
 public:  
-	enum { start = wxFromStart, current = wxFromCurrent, end = wxFromEnd}; 
 	
 	CMemFile( unsigned int growBytes = 1024 );
 	CMemFile( BYTE* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
