@@ -150,7 +150,7 @@ CClientCreditsList::~CClientCreditsList()
 {
 	SaveList();
 	
-	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
+	ClientMap::iterator it = m_mapClients.begin();
 	for ( ; it != m_mapClients.end(); ++it ){
 		delete it->second;
 	}
@@ -232,7 +232,7 @@ void CClientCreditsList::LoadList()
 				delete newcstruct;
 				
 				// Remove already read, and possibly invalid, entries
-				std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
+				ClientMap::iterator it = m_mapClients.begin();
 				for ( ; it != m_mapClients.end(); ++it ){
 					delete it->second;
 				}
@@ -287,48 +287,47 @@ void CClientCreditsList::SaveList()
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
-	CFile file;
+	CSafeFile file;
 
-	if (!file.Create(name,TRUE)) {
-		AddLogLineM(true, _("Failed to save creditfile"));
+	if ( !file.Create(name, true) ) {
+		AddLogLineM(true, _("Failed to create creditfile"));
 		return;
 	}
 	
-	file.Open(name,CFile::write);
-	
-	uint32 count = m_mapClients.size();
-	BYTE* pBuffer = new BYTE[count*sizeof(CreditStruct)];
-	count = 0;
-	
-	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.begin();
-	for ( ; it != m_mapClients.end(); ++it )
-	{
-		CClientCredits* cur_credit = it->second;
+	if ( file.Open(name, CFile::write) ) {
+		uint32 count = 0;
+
+		file.WriteUInt8( CREDITFILE_VERSION );
+
+		// Temporary place-holder for number of stucts
+		file.WriteUInt32( 0 );
+
+		ClientMap::iterator it = m_mapClients.begin();
+		for ( ; it != m_mapClients.end(); ++it ) {	
+			CClientCredits* cur_credit = it->second;
 		
-		if (cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal())
-		{
-			memcpy(pBuffer+(count*sizeof(CreditStruct)), cur_credit->GetDataStruct(), sizeof(CreditStruct));
-			count++; 
+			if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
+				file.Write( cur_credit->GetDataStruct(), sizeof(CreditStruct) );
+				count++;
+			}
 		}
+		
+		// Write the actual number of structs
+		file.Seek( 1 );
+		file.WriteUInt32( count );
+
+		file.Flush();
+		file.Close();
+	} else {
+		AddLogLineM(true, _("Failed to open existing creditfile!"));
 	}
-
-
-	uint8 version = CREDITFILE_VERSION;
-	file.Write(&version, 1);
-	ENDIAN_SWAP_I_32(count);
-	file.Write(&count, 4);
-	file.Write(pBuffer, ENDIAN_SWAP_32(count)*sizeof(CreditStruct));
-	file.Flush();
-	file.Close();
-	
-	delete[] pBuffer;
 }
 
 CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 {
 	CClientCredits* result;
 
-	std::map<CMD4Hash, CClientCredits*>::iterator it = m_mapClients.find( key );
+	ClientMap::iterator it = m_mapClients.find( key );
 
 	
 	if ( it == m_mapClients.end() ){

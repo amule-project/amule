@@ -121,7 +121,8 @@ protected:
 	bool	Debug_CheckCrypting();
 #endif
 private:
-	std::map<CMD4Hash, CClientCredits*> m_mapClients;
+	typedef std::map<CMD4Hash, CClientCredits*> ClientMap;
+	ClientMap m_mapClients;
 	uint32			m_nLastSaved;
 	// A void* to avoid having to include the large CryptoPP.h file
 	void*		m_pSignkey;
