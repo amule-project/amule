@@ -130,19 +130,15 @@ struct PartFileStamp {
 };
 
 class CUpDownClient {
-#if defined( __DEBUG__ )
+	friend class CUploadQueue;
 private:
 	unsigned int	MagicNumber1;
-#endif // __DEBUG__
-	friend class CUploadQueue;
 public:
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile);
 	~CUpDownClient();
-#if defined( __DEBUG__ )
-	bool	IsASaneUpDownClient(char *function, char *file, int line) const;
-#endif // __DEBUG__
+	bool		IsASaneUpDownClient(char *function, char *file, int line) const;
 //	void		Destroy();
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
@@ -594,10 +590,8 @@ public:
 	//return ((uint64)m_dwUserIP<<32)+((uint64)m_nUserPort<<16); }
 	int	leechertype; // what kind of leecher is it ?
   
-#if defined( __DEBUG__ )
 private:
 	unsigned int	MagicNumber2;
-#endif // __DEBUG__
 };
 
 #define	MAKE_CLIENT_VERSION(mjr, min, upd) \

@@ -221,24 +221,25 @@ void CUpDownClient::Init()
 	ClearHelloProperties();	
 }
 
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
 bool CUpDownClient::IsASaneUpDownClient(char *function, char *file, int line) const
 {
 	int sane;
 	
 	sane = 	this &&
 		MagicNumber1 == MAGIC_1 && 
-		MagicNumber2 == MAGIC_2; 
-#if defined( __DEBUG__ )
+		MagicNumber2 == MAGIC_2;
 	if( !sane ) {
 		// scream loud!
+#if defined( __DEBUG__ )
 		printf("Bogus pointer to UpDownClient detected in %s(%s:%d)!\n", function, file, line);
 		if(this) {
 			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
 		} else {
 			printf("'this' is a NULL pointer.\n");
 		}
-	}
 #endif // __DEBUG__
+	}
 
 	return sane;
 }

@@ -333,23 +333,24 @@ CPartFile::~CPartFile()
 	}	
 }
 
+#warning Dont forget to remove this and the magic numbers when the bug is gone.
 bool CPartFile::IsASanePartFile() const {
 	int sane;
 	
 	sane = 	this &&
 		MagicNumber1 == MAGIC_1 && 
 		MagicNumber2 == MAGIC_2; 
-#if defined( __DEBUG__ )
 	if( !sane ) {
 		// scream loud!
+#if defined( __DEBUG__ )
 		printf("Bogus pointer to newfile detected!\n");
 		if(this) {
 			printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
 		} else {
 			printf("'this' is a NULL pointer.\n");
 		}
-	}
 #endif // __DEBUG__
+	}
 
 	return sane;
 }
