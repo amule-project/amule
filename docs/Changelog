@@ -5,7 +5,7 @@ Version 2.0.0rc6 - The '???' version.
 	Hetfield:
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
 		  and wx headers checks.
-
+		* Configure cleanup, safetray remove and nice cosmetics for tools
 	phoenix:
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
