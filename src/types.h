@@ -1,30 +1,32 @@
-//
-// This file is part of the aMule project.
-//
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
+/*
+ * This file is part of the aMule project.
+ *
+ * Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
 
 #ifndef TYPES_H
 #define TYPES_H
 
 #include <wx/defs.h>
 #include <inttypes.h>
-// Backwards compatibility with emule.
-// Note that the int* types are indeed unsigned.
+/* 
+ * Backwards compatibility with emule.
+ * Note that the int* types are indeed unsigned.
+ */
 typedef uint8_t		int8;
 typedef uint8_t		uint8;
 typedef uint16_t	int16;
@@ -48,7 +50,7 @@ typedef uint8_t		BYTE;
 	#include <windef.h>
 	#include <wingdi.h>
 	#include <winuser.h>
-	#include <wx/msw/winundef.h>    // Needed to be able to include mingw headers
+	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */
 
 	typedef uint32_t	in_addr_t;
 	typedef uint8_t		byte;
@@ -92,29 +94,29 @@ typedef uint8_t		BYTE;
 	typedef int16_t 	WPARAM;
 	typedef int32_t 	LPARAM;
 
-	struct POINT {
+	typedef struct sPOINT {
 	  UINT x;
 	  UINT y;
-	};
+	} POINT;
 
-	struct RECT {
+	typedef struct sRECT {
 	  UINT left;
 	  UINT top;
 	  UINT right;
 	  UINT bottom;
-	};
+	} RECT;
 
-	typedef RECT*			LPRECT;
+	typedef RECT		*LPRECT;
 
-	struct WINDOWPLACEMENT {
+	typedef struct sWINDOWPLACEMENT {
 	  UINT length;
 	  UINT flags;
 	  UINT showCmd;
 	  POINT ptMinPosition;
 	  POINT ptMaxPosition;
 	  RECT rcNormalPosition;
-	};
-#endif // __WXMSW__
+	} WINDOWPLACEMENT;
+#endif /* __WXMSW__ */
 
 #ifdef AMULE_DAEMON
 #define AMULE_TIMER_CLASS CTimer
@@ -123,9 +125,9 @@ class wxEvtHandler;
 
 #include <wx/thread.h>
 
-//
-// replace wxTimer with my own on non-X builds
-//
+/*
+ * replace wxTimer with my own on non-X builds
+ */
 class CTimer {
 	wxEvtHandler *owner;
 	int id;
@@ -174,23 +176,5 @@ class CTimer {
 
 #endif
 
-/*
- * wxFileSize_t stuff
- */
-#if !wxCHECK_VERSION_FULL(2,5,3,1)
-	#include <wx/longlong.h>
-
-	typedef off_t wxFileOffset;
-	#ifdef _LARGE_FILES
-		#define wxFileOffsetFmtSpec wxLongLongFmtSpec
-		wxCOMPILE_TIME_ASSERT( sizeof(off_t) == sizeof(wxLongLong_t),
-			BadFileSizeType );
-		typedef unsigned wxLongLong_t wxFileSize_t;
-	#else
-		#define wxFileOffsetFmtSpec _T("")
-		typedef unsigned long wxFileSize_t;
-	#endif
-#endif
-
-#endif // TYPES_H
+#endif /* TYPES_H */
 
