@@ -92,7 +92,7 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_staticLine = new wxStaticLine (m_mainPanel, -1);
 
   // Statistics Static Vertical Box Sizer
-  m_sigPanelSBox = new wxStaticBox (m_mainPanel, -1, long_line);
+  m_sigPanelSBox = new wxStaticBox (m_mainPanel, -1, wxEmptyString);
   m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
   // Statistic labels
