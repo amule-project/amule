@@ -44,12 +44,6 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 
-#ifndef AMULE_DAEMON
-#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "OScopeCtrl.h"
-#endif
-
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
@@ -1320,7 +1314,6 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 }
 
 
-// FIXME: remove code from GUI
 CECPacket *GetStatsGraphs(const CECPacket *request)
 {
 	CECPacket *response = NULL;
