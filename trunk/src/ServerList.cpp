@@ -45,11 +45,10 @@
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket
-#include "server.h"		// Needed for SRV_PR_*
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "sockets.h"		// Needed for CServerConnect
-#include "server.h"		// Needed for CServer
+#include "server.h"		// Needed for CServer and SRV_PR_*
 #include "otherstructs.h"	// Needed for ServerMet_Struct
 #include "packets.h"		// Needed for CInvalidPacket
 #include "opcodes.h"		// Needed for MET_HEADER
