@@ -37,6 +37,10 @@
 #include "opcodes.h"		// Needed for PREFFILE_VERSION
 #include "color.h"			// Needed for RGB
 
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+
+WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
+
 /// new implementation
 CPreferences::CPreferences()
 {
@@ -426,13 +430,16 @@ void CPreferences::SetColumnOrder(Table t, INT *piOrder)
 
 CPreferences::~CPreferences()
 {
+	catMap.Clear();
+	
+	/*
 	Category_Struct* delcat;
 	while (!catMap.IsEmpty()) {
-		delcat=catMap.GetAt(0); 
+		delcat=catMap[0]; 
 		catMap.RemoveAt(0); 
 		delete delcat;
 	}
-	
+	*/
 	if (adresses_list.GetCount()>0) {
 		// the 'true' tells wxList to do 'delete' on the nodes.
 		adresses_list.DeleteContents(true); 
@@ -738,14 +745,14 @@ void CPreferences::SaveCats()
 		CIni catini( catinif, "Category" );
 		printf("Opening %s\n",catinif.GetData());
 		catini.WriteInt("Count",catMap.GetCount()-1,"General");
-		for (int ix=1;ix<catMap.GetCount();ix++) {
+		for (size_t ix=1;ix<catMap.GetCount();ix++) {
 			ixStr.Format("Cat#%i",ix);
-			catini.WriteString("Title",catMap.GetAt(ix)->title,(char*)ixStr.GetData());
-			catini.WriteString("Incoming",catMap.GetAt(ix)->incomingpath,(char*)ixStr.GetData());
-			catini.WriteString("Comment",catMap.GetAt(ix)->comment,(char*)ixStr.GetData());
-			buffer.Format("%lu",(uint32)catMap.GetAt(ix)->color);
+			catini.WriteString("Title",catMap[ix]->title,(char*)ixStr.GetData());
+			catini.WriteString("Incoming",catMap[ix]->incomingpath,(char*)ixStr.GetData());
+			catini.WriteString("Comment",catMap[ix]->comment,(char*)ixStr.GetData());
+			buffer.Format("%lu",(uint32)catMap[ix]->color);
 			catini.WriteString("Color",buffer,(char*)ixStr.GetData());
-			catini.WriteInt("Priority",catMap.GetAt(ix)->prio,(char*)ixStr.GetData());
+			catini.WriteInt("Priority",catMap[ix]->prio,(char*)ixStr.GetData());
 		}
 	}
 }
@@ -1230,12 +1237,9 @@ void CPreferences::SetColumnSortAscending(Table t, bool sortAscending)
 	}
 }
 
-void CPreferences::RemoveCat(int index)
+void CPreferences::RemoveCat(size_t index)
 {
 	if (index>=0 && index<catMap.GetCount()) {
-		Category_Struct* delcat;
-		delcat=catMap.GetAt(index);
 		catMap.RemoveAt(index);
-		delete delcat;
 	}
 }

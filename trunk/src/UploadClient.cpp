@@ -383,12 +383,12 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 	m_nUpCompleteSourcesCount= 0;
 	if( size == 16 )
 		return;
-	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
+	CSafeMemFile data((BYTE*)packet,size);
 	uchar cfilehash[16];
-	data->ReadRaw(cfilehash,16);
+	data.ReadRaw(cfilehash,16);
 	CKnownFile* tempreqfile = theApp.sharedfiles->GetFileByID(cfilehash);
 	uint16 nED2KUpPartCount;
-	data->Read(nED2KUpPartCount);
+	data.Read(nED2KUpPartCount);
 	if (!nED2KUpPartCount){
 		m_nUpPartCount = tempreqfile->GetPartCount();
 		m_abyUpPartStatus = new uint8[m_nUpPartCount];
@@ -396,7 +396,6 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 	}
 	else{
 		if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount){
-			delete data;	//mf
 			m_nUpPartCount = 0;
 			return;
 		}
@@ -405,7 +404,7 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 		uint16 done = 0;
 		while (done != m_nUpPartCount){
 			uint8 toread;
-			data->Read(toread);
+			data.Read(toread);
 			for (sint32 i = 0;i != 8;i++){
 				m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
 //				We may want to use this for another feature..
@@ -416,16 +415,15 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 					break;
 			}
 		}
-		if ((GetExtendedRequestsVersion() > 1) && (data->GetLength() - data->GetPosition() > 1)) {
+		if ((GetExtendedRequestsVersion() > 1) && (data.GetLength() - data.GetPosition() > 1)) {
 			uint16 nCount;
-			data->Read(nCount);
+			data.Read(nCount);
 			SetUpCompleteSourcesCount(nCount);
 		}
 	}
 
 	tempreqfile->NewAvailPartsInfo();
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
-	delete data;
 }
 
 void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock){

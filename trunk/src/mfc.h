@@ -149,14 +149,6 @@ private:
 // END CMAP
 };
 
-/*
-These are moved to "CArray.h"
-template<class TYPE,class ARG_TYPE> class CArray;
-template <class TYPE> void QuickSortRecursive(...)
-template <class TYPE> bool QuickSort(...)
-template <class BASE_CLASS, class TYPE> class CQArray;
-*/
-
 char *itoa(int i, char *a, int r);
 
 #endif // MFC_H

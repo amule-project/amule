@@ -145,18 +145,14 @@ __inline void md4cpy(const void* dst, const void* src) {
 CString md4str(const unsigned char* hash);
 void md4str(const unsigned char* hash, char* pszHash);
 
-__inline int CompareUnsigned(uint32 uSize1, uint32 uSize2) {
-	if (uSize1 < uSize2)
-		return -1;
-	if (uSize1 > uSize2)
-		return 1;
-	return 0;
-}
-
 /* GetTickCount() was moved to "GetTickCount.h" */
 
 bool IsGoodIP(uint32 nIP);
 bool IsGoodIPPort(uint32 nIP, uint16 nPort);
+
+// For uint16 arrays sorting
+
+int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 
 #ifdef __FreeBSD__
 inline long long atoll(char const* s) {

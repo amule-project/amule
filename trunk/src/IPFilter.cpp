@@ -24,6 +24,10 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "CamuleAppBase.h"	// Needed for theApp
 
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+
+WX_DEFINE_OBJARRAY(ArrayOfIPRange_Struct);
+
 CIPFilter::CIPFilter(){
 	lasthit="";
 	LoadFromFile();
@@ -50,13 +54,13 @@ void CIPFilter::AddBannedIPRange(uint32 IPfrom,uint32 IPto,uint8 filter, CString
 	newFilter->filter=filter;
 	newFilter->description=desc;
 
-	if (iplist.GetCount()==0) iplist.InsertAt(0,newFilter); else {
-		for (int i=0;i<iplist.GetCount();i++) {
-			search=iplist.GetAt(i);
+	if (iplist.GetCount()==0) iplist.Insert(newFilter,0); else {
+		for (size_t i=0;i<iplist.GetCount();i++) {
+			search=iplist[i];
 			if (search->IPstart>IPfrom) {
-				iplist.InsertAt(i,newFilter);
+				iplist.Insert(newFilter,i);
 				inserted=true;
-				break;
+				break; 
 			}
 		}
 		if (!inserted) iplist.Add(newFilter);
@@ -192,7 +196,7 @@ void CIPFilter::SaveToFile(){
 void CIPFilter::RemoveAllIPs(){
 	IPRange_Struct* search;
 	while (iplist.GetCount()>0) {
-        search=iplist.GetAt(0);
+        search=iplist[0];
 		iplist.RemoveAt(0);
 		delete search;
 	}
@@ -212,7 +216,7 @@ bool CIPFilter::IsFiltered(uint32 IP2test){
 
 	while (true) {
 		mi=((hi-lo)/2) +lo;
-		search=iplist.GetAt(mi);
+		search=iplist[mi];
 		if (search->IPstart<=IP2test_ && search->IPend>=IP2test_ ) {
 			if (search->filter<theApp.glob_prefs->GetIPFilterLevel() ) {
 				lasthit=search->description;

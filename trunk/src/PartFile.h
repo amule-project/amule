@@ -246,7 +246,7 @@ private:
 	uint32	m_LastNoNeededCheck;
 	CTypedPtrList<CPtrList, Gap_Struct*> gaplist;
 	CTypedPtrList<CPtrList, Requested_Block_Struct*> requestedblocks_list;
-	CArray<uint16, uint16> m_SrcpartFrequency;
+	ArrayOfUInts16	m_SrcpartFrequency;
 	float	percentcompleted;
 	CList<uint16, uint16> corrupted_list;
 	uint8	availablePartsCount;
