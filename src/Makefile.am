@@ -99,7 +99,6 @@ amule_SOURCES = ListenSocket.cpp \
 	UploadListCtrl.cpp \
 	UploadQueue.cpp \
 	XBMDraw.cpp \
-	Wizard.cpp \
 	amule.cpp \
 	amuleDlg.cpp 
 	
