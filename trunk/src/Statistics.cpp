@@ -880,16 +880,14 @@ void CStatistics::UpdateStatsTree() {
 	(*con6) = wxString::Format(wxT("%s: %i"),_("Active Connections (estimate)"), theApp.listensocket->GetActiveConnections());	
 	uint32 m_itemp = theApp.listensocket->GetMaxConnectionReached();
 	if( m_itemp != m_ilastMaxConnReached ) {
-		char osDate[60];
+		
+		wxDateTime now = wxDateTime::Now();
 
-		time_t mytime=time(NULL);
-		struct tm* now=localtime(&mytime);
-		strftime(osDate,sizeof(osDate)-1,"%d.%m.%Y %H:%M:%S",now);
+		(*con7) = wxString::Format(wxT("%s: %i : "),_("Max Connection Limit Reached"),m_itemp) +  now.FormatISODate() + wxT(" ") + now.FormatISOTime();
 
-		(*con7) = wxString::Format(wxT("%s: %i : %s"),_("Max Connection Limit Reached"),m_itemp,osDate);
 		m_ilastMaxConnReached = m_itemp;
 	} else if( m_itemp == 0 ) {
-		(*con7) = wxString::Format(wxT("%s: %i"),_("Max Connection Limit Reached"),m_itemp);
+		(*con7) = wxString::Format(wxT("%s: %s"),_("Max Connection Limit Reached"), _("Never"));
 	}
 
 	if(theApp.serverconnect->IsConnected()) {
