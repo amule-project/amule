@@ -681,6 +681,7 @@ void  CStatisticsDlg::InitTree()
 	cli4= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli5= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli9= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli16= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli11= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli12= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli6= stattree->AppendItem(h_clients,_("Waiting..."));
@@ -723,7 +724,7 @@ void CStatisticsDlg::ShowStatistics()
 	CString cbuffer2;
 	bool resize;
 	DWORD running;
-	uint32 myStats[16];
+	uint32 myStats[17];
 
 	resize=false;
 	theApp.downloadqueue->GetDownloadStats(myStats);
@@ -872,6 +873,8 @@ void CStatisticsDlg::ShowStatistics()
 	stattree->SetItemText(cli9, cbuffer);
 	cbuffer.Format(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);
 	stattree->SetItemText(cli12, cbuffer);
+	cbuffer.Format(_("Shareaza: %i (%1.1f%%)"),myStats[16],(double)100*myStats[16]/totalclient);
+	stattree->SetItemText(cli16, cbuffer);	
 	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
 	stattree->SetItemText(cli11, cbuffer);
 	cbuffer.Format(_("Unknown: %i"),myStats[0]);
