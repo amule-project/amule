@@ -320,7 +320,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 		delete[] m_pszClientFilename;
 	}
 	m_pszClientFilename = new char[Filename.Length()+1];
-	strncpy(m_pszClientFilename, Filename.GetData(), Filename.Length());
+	strncpy(m_pszClientFilename, unicode2char(Filename), Filename.Length());
 	// Kry - Hum. Just to be sure.
 	m_pszClientFilename[Filename.Length()] = 0;	
 	
@@ -829,7 +829,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 						if (cur_block->zStream && cur_block->zStream->msg) {
 							strZipError.Format(_T(" - %s"), cur_block->zStream->msg);
 						} 
-						AddDebugLogLine(false, "%s %s", wxString::Format(_("Corrupted compressed packet for %s received (error %i)"), reqfile->GetFileName().c_str(), result).c_str(), strZipError.c_str() );
+						AddDebugLogLineM(false, wxString::Format(wxT("Corrupted compressed packet for %s recieved (error %i) "), reqfile->GetFileName().c_str(), result) + strZipError );
 						reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 
 						// If we had an zstream error, there is no chance that we could recover from it nor that we
@@ -873,7 +873,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 			}
 		}
  	} catch (...) {
-		AddDebugLogLine(false, CString(_("Unknown exception in %s: file \"%s\"")), __FUNCTION__, reqfile ? reqfile->GetFileName().GetData() : "?");
+		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("%s\""));
 	}
 }
 
@@ -968,14 +968,14 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 				strZipError.Format(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
 				strZipError.Format(_T(" %d"), err);
-			AddDebugLogLine(false,"Unexpected zip error%s in file \"%s\"", strZipError.c_str(), reqfile ? reqfile->GetFileName().GetData() : "?");
+			AddDebugLogLineM(false, wxString::Format(wxT("Unexpected zip error %s in file \""),strZipError.c_str()) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		}
 
 		if (err != Z_OK) {
 			(*lenUnzipped) = 0;
 		}
 	} catch (...) {
-		AddDebugLogLine(false, _T("Unknown exception in %s: file \"%s\""), __FUNCTION__, reqfile ? reqfile->GetFileName().GetData() : "?");
+		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (reqfile ? reqfile->GetFileName() : wxT("?")) + wxT("\""));
 		err = Z_DATA_ERROR;
 	}
 	return err;
@@ -1125,10 +1125,10 @@ void CUpDownClient::UDPReaskForDownload()
 void CUpDownClient::ShowDownloadingParts(CString *partsYN)
 {
 	// Initialise to all N's
-	char *n = partsYN->GetWriteBuf(m_nPartCount+1);
-	memset(n,'N',m_nPartCount);
-	n[m_nPartCount] = 0;
-	partsYN->UngetWriteBuf();
+	//char *n = partsYN->GetWriteBuf(m_nPartCount+1);
+	//memset(n,'N',m_nPartCount);
+	//n[m_nPartCount] = 0;
+	//partsYN->UngetWriteBuf();
 
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != 0; ) {
 		partsYN->SetChar((m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE), 'Y');

@@ -117,7 +117,7 @@ void CDownloadQueue::AddPartFilesToShare()
 		CPartFile* cur_file = filelist[i];
 		if (cur_file->GetStatus(true) == PS_READY) {
 			sharedfilelist->SafeAddKFile(cur_file,true);
-			printf("Sharing %s\n",cur_file->GetFullName().c_str());
+			printf("Sharing %s\n",unicode2char(cur_file->GetFullName()));
 		}
 	}
 }
@@ -149,15 +149,15 @@ void CDownloadQueue::Init()
 	// find all part files, read & hash them if needed and store into a list
 	int count = 0;
 
-	wxString searchPath(app_prefs->GetTempDir());
-	searchPath += "/*.part.met";
+	wxString searchPath(char2unicode(app_prefs->GetTempDir()));
+	searchPath += wxT("/*.part.met");
 
 	// check all part.met files
-	printf("Loading temp files from %s.\n",searchPath.GetData());
+	printf("Loading temp files from %s.\n",unicode2char(searchPath));
 	wxString fileName=::wxFindFirstFile(searchPath,wxFILE);
 	while(!fileName.IsEmpty()) {
 		wxFileName myFileName(fileName);
-		printf("Loading %s... ",myFileName.GetFullName().GetData());
+		printf("Loading %s... ",unicode2char(myFileName.GetFullName()));
 		CPartFile* toadd = new CPartFile();
 		if (toadd->LoadPartFile(app_prefs->GetTempDir(),(char*)myFileName.GetFullName().GetData())) {
 			count++;
@@ -326,7 +326,7 @@ void CDownloadQueue::AddDownload(CPartFile* newfile,bool paused)
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(newfile);
 	theApp.amuledlg->AddLogLine(true, CString(_("Downloading %s")),newfile->GetFileName().GetData());
 	CString msgTemp;
-	msgTemp.Format(CString(_("Downloading %s"))+"\n",newfile->GetFileName().GetData());
+	msgTemp.Format(CString(wxT("Downloading %s"))+wxT("\n"),newfile->GetFileName().GetData());
 	theApp.amuledlg->ShowNotifier(msgTemp, TBN_DLOAD);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {
@@ -405,7 +405,7 @@ void CDownloadQueue::Process()
 
 	// Check for new links once per second.
 	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
-		wxString filename = filename.Format("%s/.aMule/ED2KLinks", getenv("HOME"));
+		wxString filename = filename.Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME"));
 		if (wxFile::Exists(filename)) {
 			AddLinksFromFile();
 		}
@@ -887,7 +887,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				else{
 					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
-					theApp.amuledlg->AddDebugLogLine(false, "Local server source request for file \"%s\" not sent because of status '%s'", cur_file->GetFileName().GetData(), cur_file->getPartfileStatus().c_str());
+					AddDebugLogLineM(false, wxString::Format(wxT("Local server source request for file \"%s\" not sent because of status'%s'"), cur_file->GetFileName().c_str(), cur_file->getPartfileStatus().c_str()));
 				}
 			}
 			
@@ -965,7 +965,7 @@ void CDownloadQueue::AddLinksFromFile()
 {
         wxString filename;
 	wxString link;
-	wxTextFile linksfile(wxString::Format("%s/.aMule/ED2KLinks", getenv("HOME")));
+	wxTextFile linksfile(wxString::Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME")));
 	
 	if (linksfile.Open()) {
 		link = linksfile.GetFirstLine();
@@ -973,11 +973,11 @@ void CDownloadQueue::AddLinksFromFile()
 		// starts from zero. Thus we must loop until i = GetLineCount()-1.
 		for (unsigned int i = 0; i < linksfile.GetLineCount(); i++) {
 			// Need the links to end with /, otherwise CreateLinkFromUrl crashes us.
-			if (link.Right(1) != "/") {
-				link+="/";
+			if (link.Right(1) != wxT("/")) {
+				link+=wxT("/");
 			}
 			try {
-				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(link);
+				CED2KLink* pLink=CED2KLink::CreateLinkFromUrl(unicode2char(link));
 				if(pLink->GetKind()==CED2KLink::kFile) {
 					// All seems ok, add it to download queue.
 					AddFileLinkToDownload(pLink->GetFileLink());
@@ -987,7 +987,7 @@ void CDownloadQueue::AddLinksFromFile()
 				delete pLink;
 			} catch(wxString error) {
 				char buffer[200];
-				sprintf(buffer,_("This ed2k link is invalid (%s)"),error.GetData());
+				sprintf(buffer,unicode2char(_("This ed2k link is invalid (%s)")),error.GetData());
 				theApp.amuledlg->AddLogLine(true,CString(_("Invalid link: %s")),buffer);
 			}
 			// We must double-check here where are we, because GetNextLine moves reading head
@@ -1002,7 +1002,7 @@ void CDownloadQueue::AddLinksFromFile()
 	}
 	// Save and Delete the file.
 	linksfile.Write();
-	wxRemoveFile(wxString::Format("%s/.aMule/ED2KLinks", getenv("HOME")));
+	wxRemoveFile(wxString::Format(wxT("%s/.aMule/ED2KLinks"), getenv("HOME")));
 }
 
 /* Razor 1a - Modif by MikaelB
@@ -1169,7 +1169,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 		return;
 	}
 	wxLongLong total, free;
-	wxGetDiskSpace(theApp.glob_prefs->GetTempDir(), &total, &free);
+	wxGetDiskSpace(char2unicode(theApp.glob_prefs->GetTempDir()), &total, &free);
 	// 'bNotEnoughSpaceLeft' - avoid worse case, if we already had 'disk full'
 	uint64 nTotalAvailableSpace = bNotEnoughSpaceLeft ? 0 : free.GetValue();
 	if (theApp.glob_prefs->GetMinFreeDiskSpace() == 0) {
@@ -1191,8 +1191,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 				cur_file->ResumeFileInsufficient();
 			} else {
 				if (!cur_file->GetInsufficient()) {
-					theApp.amuledlg->AddLogLine(false,"Free Disk Space (Total): %lli\n", nTotalAvailableSpace);
-					theApp.amuledlg->AddLogLine(true,"File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace());
+					AddLogLineM(false, wxString::Format(wxT("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
+					AddLogLineM(true, wxString::Format(wxT("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
 					cur_file->PauseFile(true);
 				}
 			}
@@ -1212,8 +1212,8 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 					uint32 nSpaceToGrow = cur_file->GetNeededSpace();
 					if (nSpaceToGrow) {
 						if (!cur_file->GetInsufficient()) {						
-							theApp.amuledlg->AddLogLine(false, "Free Disk Space (Total): %lli\n", nTotalAvailableSpace);
-							theApp.amuledlg->AddLogLine(true, "File : %s, Needed Space : %i - PAUSED !!!\n", cur_file->GetFileName().GetData(),cur_file->GetNeededSpace());
+							AddLogLineM(false, wxString::Format(wxT("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
+							AddLogLineM(true, wxString::Format(wxT("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
 							// cur_file->PauseFileInsufficient();
 							cur_file->PauseFile(true/*bInsufficient*/);
 						}
@@ -1295,7 +1295,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 #endif
 
 #if defined(__linux__)
-	gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
+	gethostbyname_r(unicode2char(ipName.GetData()),&ret,dataBuf,sizeof(dataBuf),&result,&errorno);
 #elif defined(__WXMSW__)
 	result = gethostbyname(ipName.GetData());
 #else
@@ -1336,7 +1336,8 @@ void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 po
 	if (bResolving) {
 		return;
 	}
-	printf("Opening thread for resolving %s\n",pszHostname.c_str());;
+	//printf("Opening thread for resolving %s\n",pszHostname.c_str());;
+	printf(unicode2char(wxString::Format(wxT("Opening thread for resolving %s\n"), pszHostname.c_str())));
 	SourcesAsyncDNS* dns=new SourcesAsyncDNS();
 	if(dns->Create()!=wxTHREAD_NO_ERROR) {
 		// Cannot create (Already there?)
@@ -1363,7 +1364,8 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	m_toresolve.pop_front();
 	
 	if (resolved) {
-		printf("Thread finished, Hostname %s resolved to %s\n", resolved->strHostname.c_str(),inet_ntoa(inaddr->sin_addr));
+		//printf("Thread finished, Hostname %s resolved to %s\n", resolved->strHostname.c_str(),inet_ntoa(inaddr->sin_addr));
+		printf(unicode2char(wxString::Format(wxT("Thread finished, Hostname %s resolved to %s\n"), resolved->strHostname.c_str(), inet_ntoa(inaddr->sin_addr))));
 		if (inaddr!=NULL) {
 			CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
 			if (file) {
