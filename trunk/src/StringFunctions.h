@@ -34,30 +34,39 @@
 /******************* Inlines ************************/
 /****************************************************/
 
-// Unicode <-> char* conversion functions
-
-//
-// Please, DO NOT store pointers returned by unicode2char(), because they 
-// get free'ed as soon as the return value of cWX2MB gets out of scope.
-// If you need to store a pointer, use a buffer of type wxWX2MBbuf,
-// and then cast it to a char pointer, e.g.:
-// 
-// const wxWX2MBbuf buf = unicode2char(aWxString);
-// const char *p = (const char *)buf;
-// 
-// --- Now you can freely use p                              ---
-// --- don't worry about memory allocation, memory will be   ---
-// --- free'ed when buf gets out of scope, i.e., upon return ---
-// 
-static wxCSConv aMuleConv(wxT("iso8859-1"));
-//
-// wxMB2WXbuf, wxWX2MBbuf are always the appropriate return type,
-// either (wxChar *) or (wxWCharBuffer)
-//
-// Simplify those names
-// 
+/** 
+ * Functions to perform Unicode <-> (char *) and UTF-8 conversion
+ * 
+ * Please, DO NOT store pointers returned by unicode2char(), because they 
+ * get free'ed as soon as the return value of cWX2MB gets out of scope.
+ * If you need to store a pointer, use a buffer of type wxWX2MBbuf:
+ * and then cast it to a char pointer, e.g.:
+ * 
+ * const wxWX2MBbuf buf(unicode2char(aWxString));
+ * 
+ * --- Now you can freely use buf as if it were a (const char *) ---
+ * 
+ * puts(buf);
+ * printf("%s", (const char *)buf);
+ *
+ * The cast in printf is necessary because variable number of parameter
+ * functions have no type for these parameters, so the automatic casting
+ * of wxWX2MBbuf to (const char *) is not performed.
+ * 
+ * --- don't worry about memory allocation, memory will be       ---
+ * --- free'ed when buf gets out of scope, i.e., upon return     ---
+ * 
+ * wxMB2WXbuf, wxWX2MBbuf are always the appropriate return type,
+ * either (wxChar *) or (wxWCharBuffer)
+ *
+ * Use the simplified names Unicode2CharBuf and Char2UnicodeBuf, and
+ * do not declare these names const or the compiler will complain about
+ * a double const.
+ */
 #define Unicode2CharBuf	const wxWX2MBbuf
 #define Char2UnicodeBuf const wxMB2WXbuf
+
+static wxCSConv aMuleConv(wxT("iso8859-1"));
 
 inline Unicode2CharBuf unicode2char(wxString    x) { return (const char *)aMuleConv.cWX2MB(x); }
 inline Char2UnicodeBuf char2unicode(const char *x) { return               aMuleConv.cMB2WX(x); }
@@ -143,3 +152,4 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
 wxString URLEncode(wxString sIn);
 	
 #endif // STRING_FUNCTIONS_H
+
