@@ -763,15 +763,6 @@ bool CamuleApp::OnInit()
 	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
 
-	#warning activate here AICH thread	
-
-	// First Run AICH.
-	
-	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-	AICH_Thread->Create();
-	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
-	AICH_Thread->Run();
-
 	return true;
 }
 
@@ -1624,14 +1615,8 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 		knownfiles->Save();
 		
 		// Known.met changed, AICH sync thread start
-
-		#warning activate here AICH thread	
+		RunAICHThread();
 		
-		CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-		AICH_Thread->Create();
-		AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
-		AICH_Thread->Run();
-				
 	} 
 }
 
@@ -2216,6 +2201,18 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	amuledlg->AddServerMessageLine(msg);
 }
+
+void CamuleApp::RunAICHThread()
+{
+	
+	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
+	AICH_Thread->Create();
+	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
+	AICH_Thread->Run();
+	
+}
+
+
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 

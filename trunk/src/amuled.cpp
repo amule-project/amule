@@ -95,6 +95,7 @@
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "packets.h"
 #include "PrefsUnifiedDlg.h"
+#include "AICHSyncThread.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -1512,6 +1513,10 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 		printf("Hashing thread ended\n");
 		// Save the known.met file
 		knownfiles->Save();
+
+		// Known.met changed, AICH sync thread start
+		RunAICHThread();
+		
 	} else {
 		printf("Hashing thread terminated, ready to shutdown\n");
 	}
@@ -1744,6 +1749,16 @@ wxString CamuleApp::GetDebugLog(bool reset)
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	printf("ServerMessage: %s",msg.c_str());
+}
+
+void CamuleApp::RunAICHThread()
+{
+	
+	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
+	AICH_Thread->Create();
+	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
+	AICH_Thread->Run();
+	
 }
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
