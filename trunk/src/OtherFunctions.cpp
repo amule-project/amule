@@ -41,7 +41,7 @@
 #include "OtherFunctions.h"	// Interface declarations
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION and LOCALEDIR
+#include "config.h"		// Needed for a number of defines
 #endif
 
 #include <cctype>
@@ -1294,6 +1294,12 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 }
 
 
+wxString GetLocaleDir() {
+	wxString localeDir(wxT(AMULE_LOCALEDIR));
+	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
+	return localeDir;
+}
+
 void InitCustomLanguages()
 {
 	wxLanguageInfo CustomLanguage;
@@ -1318,7 +1324,7 @@ void InitLocale(wxLocale& locale, int language)
 	locale.Init(language,language_flags); 
 	
 	if (language != wxLANGUAGE_CUSTOM) {
-		locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
+		locale.AddCatalogLookupPathPrefix(GetLocaleDir());
 		locale.AddCatalog(wxT(PACKAGE));
 	} else {
 		locale.AddCatalogLookupPathPrefix(GetConfigDir());
