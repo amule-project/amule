@@ -31,20 +31,20 @@ class ECSocket : public wxSocketClient {
 public:	
 	wxString SendRecvMsg(const wxChar *msg);
 	
-	virtual off_t Read(uint8&);
-	virtual off_t Read(uint16&);
-	virtual off_t Read(uint32&);
-	virtual off_t Read(uint64&);
-	virtual off_t Read(wxString&);
+	virtual ECSocket& Read(uint8&);
+	virtual ECSocket& Read(uint16&);
+	virtual ECSocket& Read(uint32&);
+	virtual ECSocket& Read(uint64&);
+	virtual ECSocket& Read(wxString&);
 
-	virtual size_t Write(const uint8&);
-	virtual size_t Write(const uint16&);
-	virtual size_t Write(const uint32&);
-	virtual size_t Write(const uint64&);
-	virtual size_t Write(const wxString&);
+	virtual ECSocket& Write(const uint8&);
+	virtual ECSocket& Write(const uint16&);
+	virtual ECSocket& Write(const uint32&);
+	virtual ECSocket& Write(const uint64&);
+	virtual ECSocket& Write(const wxString&);
 	
-	virtual off_t  ReadRaw(void* buffer,off_t length) { wxSocketClient::Read(buffer,length);};
-	virtual size_t WriteRaw(const void* buffer,size_t length) { wxSocketClient::Write(buffer,length); };		
+	virtual ECSocket& ReadRaw(void* buffer,off_t length) { wxSocketClient::Read(buffer,length); return *this; };
+	virtual ECSocket& WriteRaw(const void* buffer,size_t length) { wxSocketClient::Write(buffer,length); return *this;};		
 };
 
 

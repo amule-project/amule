@@ -338,13 +338,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				theApp.glob_prefs->SetMaxUpload(atoi(prefList.Left(brk).GetData()));
 				prefList=prefList.Mid(brk+1); brk=prefList.First("\t");
 				
-				if (atoi(prefList.Left(brk).GetData()) != theApp.glob_prefs->GetMaxGraphDownloadRate()) {
+				if ((int32)atoi(prefList.Left(brk).GetData()) != theApp.glob_prefs->GetMaxGraphDownloadRate()) {
 					theApp.amuledlg->statisticswnd->SetARange(true, theApp.glob_prefs->GetMaxGraphDownloadRate());
 				}
 				theApp.glob_prefs->SetMaxGraphDownloadRate(atoi(prefList.Left(brk).GetData()));
 				prefList=prefList.Mid(brk+1); brk=prefList.First("\t");
 			
-				if (atoi(prefList.Left(brk).GetData()) != theApp.glob_prefs->GetMaxGraphUploadRate()) {
+				if ((int32)atoi(prefList.Left(brk).GetData()) != theApp.glob_prefs->GetMaxGraphUploadRate()) {
 					theApp.amuledlg->statisticswnd->SetARange(false, theApp.glob_prefs->GetMaxGraphUploadRate());
 				}
 				theApp.glob_prefs->SetMaxGraphUploadRate(atoi(prefList.Left(brk).GetData()));

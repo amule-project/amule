@@ -437,9 +437,9 @@ off_t CFile::Length() const
 bool CFile::SetLength(off_t new_len) {
 
 	#ifdef __WXMSW__
-	chsize(this->fd(), new_len);
+	return chsize(this->fd(), new_len);
 	#else
-	ftruncate(this->fd(), new_len);
+	return ftruncate(this->fd(), new_len);
 	#endif
 }	
 

@@ -307,6 +307,10 @@ struct Preferences_Struct{
 	bool		ProgBar;
 	bool		Percent;	
 	
+	bool		SecIdent;
+	
+	bool		ExtractMetaData;
+	
 	bool	FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
 	bool	bDlgTabsOnTop;			// Creteil: dlg aesthetics
 };
@@ -641,7 +645,7 @@ public:
 	// Download Categories (Ornis)
 	int32	AddCat(Category_Struct* cat) 	{ catMap.Add(cat); return catMap.GetCount()-1;}
 	void	RemoveCat(int index);
-	int32	GetCatCount()			{ return catMap.GetCount();}
+	uint32	GetCatCount()			{ return catMap.GetCount();}
 	Category_Struct* GetCategory(int index) { if (index>=0 && index<catMap.GetCount()) return catMap.GetAt(index); else return NULL;}
 	char*	GetCatPath(uint8 index)		{ return catMap.GetAt(index)->incomingpath;}
 	DWORD	GetCatColor(int index)		{ if ((int)index>=0 && (int)index<(int)catMap.GetCount()) return catMap.GetAt(index)->color; else return 0;}
@@ -728,6 +732,9 @@ public:
 	// Kry - Source seeds On/Off
 	bool GetSrcSeedsOn() { return prefs->UseSrcSeeds; }
 	
+	bool IsSecureIdentEnabled() { return prefs->SecIdent; }
+	
+	bool GetExtractMetaData() { return prefs->ExtractMetaData; }
 	
 	bool ShowProgBar() { return prefs->ProgBar; }
 	bool ShowPercent() { return prefs->Percent; }	

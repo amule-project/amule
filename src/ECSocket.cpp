@@ -50,69 +50,69 @@ wxString ECSocket::SendRecvMsg(const wxChar *msg) {
 	return(response);
 }
 
-inline off_t ECSocket::Read(uint8& v)
+inline ECSocket& ECSocket::Read(uint8& v)
 {
 	return ReadRaw(&v, 1);
 }
 
-inline off_t ECSocket::Read(uint16& v)
+inline ECSocket& ECSocket::Read(uint16& v)
 {
-	off_t off = ReadRaw(&v, 2);
+	ReadRaw(&v, 2);
 	ENDIAN_SWAP_I_16(v);
-	return off;
+	return *this;
 }
 
-inline off_t ECSocket::Read(uint32& v)
+inline ECSocket& ECSocket::Read(uint32& v)
 {
-	off_t off = ReadRaw(&v, 4);
+	ReadRaw(&v, 4);
 	ENDIAN_SWAP_I_32(v);
-	return off;
+	return *this;
 }
 
-inline off_t ECSocket::Read(uint64& v)
+inline ECSocket& ECSocket::Read(uint64& v)
 {
-	off_t off = ReadRaw(&v, 8);
+	ReadRaw(&v, 8);
 	ENDIAN_SWAP_I_64(v);
-	return off;
+	return *this;
 }
 
-inline off_t ECSocket::Read(wxString& v)
+inline ECSocket& ECSocket::Read(wxString& v)
 {
 	uint16 len;
-	off_t off = Read(len);
-	off += ReadRaw(v.GetWriteBuf(len), len);
+	Read(len);
+	ReadRaw(v.GetWriteBuf(len), len);
 	v.UngetWriteBuf(len);
-	if (off != (len + 2)) {
+	if (Error()) {
 		printf("Wrong wxString Reading Packet!!!\n");
 	}
-	return off;
+	return *this;
 }
 
-inline size_t ECSocket::Write(const uint8& v)
+inline ECSocket& ECSocket::Write(const uint8& v)
 {
 	return WriteRaw(&v, 1);
 }
 
-inline size_t ECSocket::Write(const uint16& v)
+inline ECSocket& ECSocket::Write(const uint16& v)
 {
 	int16 tmp = ENDIAN_SWAP_16(v);
 	return WriteRaw(&tmp, 2);
 }
 	
-inline size_t ECSocket::Write(const uint32& v)
+inline ECSocket& ECSocket::Write(const uint32& v)
 {
 	int32 tmp = ENDIAN_SWAP_32(v);
 	return WriteRaw(&tmp, 4);
 }
 	
-inline size_t ECSocket::Write(const uint64& v)
+inline ECSocket& ECSocket::Write(const uint64& v)
 {
 	int64 tmp = ENDIAN_SWAP_32(v);
 	return WriteRaw(&tmp, 8);
 }
 
-inline size_t ECSocket::Write(const wxString& v)
+inline ECSocket& ECSocket::Write(const wxString& v)
 {
-	size_t Len = Write((uint16)v.Length());
-	return Len + WriteRaw(v.c_str(), v.Length());
+	Write((uint16)v.Length());
+	return WriteRaw(v.c_str(), v.Length());
 }

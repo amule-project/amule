@@ -481,7 +481,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 
 		uint32 tagcount = 0;	
 		metFile.Read(&tagcount,4);
-		ENDIAN_SWAP_32(tagcount);
+		ENDIAN_SWAP_I_32(tagcount);
 
 		for (uint32 j = 0; j < tagcount;j++) {
 			CTag* newtag = new CTag(&metFile);
@@ -697,11 +697,12 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	SetFilePath(searchpath);
 
 	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
-	if ((unsigned)m_hpartfile.GetLength() < m_nFileSize)
+	if ((uint64)m_hpartfile.GetLength() < m_nFileSize)
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
-	if ((unsigned)m_hpartfile.GetLength() > (unsigned)m_nFileSize){
-		printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
+	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
+		//printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
+		printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
@@ -2651,7 +2652,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		uchar hashresult[16];
 		m_hpartfile.Seek((off_t)(PARTSIZE*partnumber),wxFromStart);
 		uint32 length = PARTSIZE;
-		if (((ULONGLONG)PARTSIZE*(partnumber+1)) > m_hpartfile.GetLength()){
+		if (((ULONGLONG)PARTSIZE*(partnumber+1)) > (ULONGLONG)m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}

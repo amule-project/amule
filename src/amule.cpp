@@ -393,7 +393,7 @@ bool CamuleApp::OnInit()
 			old_version = version_file.GetFirstLine();
 			if (old_version != new_version) {
 				Trigger_New_version(old_version, new_version);		
-				for (int lines_count = 0; lines_count < version_file.GetLineCount(); lines_count++) {
+				for (uint32 lines_count = 0; lines_count < version_file.GetLineCount(); lines_count++) {
 					version_file.RemoveLine(lines_count);
 				}
 				version_file.AddLine(VERSION);

@@ -874,7 +874,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	
 	uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
 
-	#warning Needs the preferences! And the preview!
+	// Kry - Needs the preferences && the preview code form eMule
 	/*
 	if (theApp.glob_prefs->IsPreviewEnabled())
 		dwTagValue |= 128;
@@ -1553,7 +1553,7 @@ void CUpDownClient::ResetFileStatusInfo()
 	}
 	m_nPartCount = 0;
 
-	#warning ADDME // m_strClientFilename = "";
+	#warning ADDME - Import needed // m_strClientFilename = "";
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;

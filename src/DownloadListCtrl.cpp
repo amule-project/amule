@@ -317,7 +317,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			// Add dinamic entries 
 			wxMenu *cats = new wxMenu(CString(_("Category")));
 			if (theApp.glob_prefs->GetCatCount() > 1) {
-				for (int i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
+				for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
 					cats->Append(MP_ASSIGNCAT + i, (i == 0) ? CString(_("unassign")) : CString(theApp.glob_prefs->GetCategory(i)->title));
 				}
 			}

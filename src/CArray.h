@@ -54,7 +54,7 @@ public:
 		return intArr.GetCount()+1;
 	};
 	
-	void SetSize(int newsiz,int growby=-1) {
+	void SetSize(uint32 newsiz,int growby=-1) {
 		intArr.Alloc(newsiz);
 		if (newsiz > intArr.GetCount()) {
 			intArr.Add(NULL, newsiz - intArr.GetCount());

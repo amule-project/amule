@@ -636,7 +636,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					}
 					
 					// and the incoming folders
-					for (int ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
+					for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 						wxString strDir;
 						strDir=CString(theApp.glob_prefs->GetCategory(ix)->incomingpath);
 						tempfile.Write(strDir);

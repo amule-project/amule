@@ -881,7 +881,9 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.AddTail(new RseBool(IDC_IPFONOFF, prefs->IPFilterOn, "IpFilterOn", true)); 	 
 	listRse.AddTail(new RseBool(IDC_SRCSEEDS, prefs->UseSrcSeeds, "UseSrcSeeds", false)); 	 
 	listRse.AddTail(new RseBool(IDC_PROGBAR, prefs->ProgBar, "ShowProgressBar", true)); 	 
-	listRse.AddTail(new RseBool(IDC_PERCENT, prefs->Percent, "ShowPercent", false)); 	 
+	listRse.AddTail(new RseBool(IDC_PERCENT, prefs->Percent, "ShowPercent", false)); 	
+	listRse.AddTail(new RseBool(IDC_METADATA, prefs->ExtractMetaData, "ExtractMetaDataTags", false)); 	
+	listRse.AddTail(new RseBool(IDC_SECIDENT, prefs->SecIdent, "UseSecIdent", false)); 		
 
 }
 

@@ -442,7 +442,7 @@ void CStatisticsDlg::VerifyHistory(bool bMsgIfOk)
 	for (cnt=1; cnt<=cntExpected; cnt++) {
 		cntInRange++;
 		if (posCur==NULL) {
-			printf("History list too short: % elements (% expected), ends at t=%.2f\n", cnt-1, sPrev);
+			printf("History list too short: %i elements (%i expected), ends at t=%.2f\n", cnt-1,cntExpected, sPrev);
 			return;
 		}
 		sCur = (listHR.GetDataPtr(posCur))->sTimestamp;
