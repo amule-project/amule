@@ -904,6 +904,7 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
+	theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(client, vtUploading);
 	delete client;
 }
 
