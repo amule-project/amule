@@ -395,6 +395,7 @@ noinst_HEADERS = AddFileThread.h \
 		 SysTray.h \
 		 TextClient.h \
 		 TransferWnd.h \
+		 tree.hh \
 		 types.h \
 		 UDPSocket.h \
 		 updownclient.h \

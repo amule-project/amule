@@ -979,7 +979,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 
-	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats;
+	static uint32	/*msPrev1, */msPrev5, msPrevGraph, msPrevStats;
 	static uint32	msPrevHist;
 
 	uint32 			msCur = theApp.GetUptimeMsecs();
@@ -1001,11 +1001,13 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		
 	}
 
+/* Here used to be the update of the connection graphs on GUI. Now it's requested.
 	if (msCur-msPrev1 > 950) {  // approximately every second
 		msPrev1 = msCur;
 		statisticswnd->UpdateConnectionsStatus();
 	}
-
+*/
+	
 	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
 	int msGraphUpdate= thePrefs::GetTrafficOMeterInterval()*1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
@@ -1031,9 +1033,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 			transferwnd->UpdateCatTabTitles();
 		}
 		if (thePrefs::AutoSortDownload()) {
-			transferwnd->downloadlistctrl->Freeze();
 			transferwnd->downloadlistctrl->SortList();
-			transferwnd->downloadlistctrl->Thaw();
 		}
 	}
 

@@ -30,9 +30,11 @@
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
 #include <wx/file.h>
+#include <wx/string.h>
 
 #include "types.h"			// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
+#include "tree.hh"
 
 #include <deque>
 
@@ -76,6 +78,15 @@ class wxCommandEvent;
 	} socket_deletion_log_item;
 #endif
 
+typedef tree<wxString> StatsTree;
+typedef StatsTree::iterator StatsTreeNode;
+typedef StatsTree::sibling_iterator StatsTreeSiblingIterator;	
+
+typedef struct {
+	StatsTreeNode TreeItem;
+	bool active;
+} StatsTreeVersionItem;
+	
 #define theApp wxGetApp()
 
 enum APPState {
@@ -220,7 +231,7 @@ public:
 	uint64		stat_transferStarttime;
 	uint64		stat_serverConnectTime;
 	uint32		stat_filteredclients;
-
+	uint32		m_ilastMaxConnReached;
 
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;
@@ -236,6 +247,9 @@ public:
 	CClientCreditsList*	clientcredits;
 	CClientUDPSocket*	clientudp;
 	CIPFilter*		ipfilter;
+
+	// Statistics tree
+	StatsTree statstree;
 
 	void ShutDown();
 	
@@ -268,7 +282,6 @@ protected:
 		//! True if the line should be shown on the status bar, false otherwise.
 		bool		addtostatus;
 	};
-
 
 	void OnDnsDone(wxEvent& evt);
 	void OnSourcesDnsDone(wxEvent& evt);
@@ -305,6 +318,23 @@ protected:
 	bool enable_stdout_log;
 	wxString server_msg;
 
+private:
+	/* Kry - Statistics tree */
+	
+	void InitStatsTree();
+	void UpdateStatsTree();
+	void ShowStatsTree();
+	
+	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
+	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
+	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
+	StatsTreeNode tran0;
+	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
+	StatsTreeNode shar1,shar2,shar3;
+	StatsTreeNode cli1,cli2,cli3,cli4,cli5,cli6,cli7,cli8,cli9,cli10, cli10_1, cli10_2, cli11, cli12,cli13,cli14,cli15,cli16,cli17;	
+	StatsTreeNode srv1,srv2,srv3,srv4,srv5,srv6,srv7,srv8,srv9;
+	
+	StatsTreeVersionItem cli_versions[18];
 };
 
 #ifndef AMULE_DAEMON

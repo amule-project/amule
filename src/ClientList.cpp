@@ -330,32 +330,40 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 {
 	totalclient = m_clientList.size();
 	
-	if (clientVersionEDonkey)
+	if (clientVersionEDonkey) {
 		clientVersionEDonkey->clear();
+	}
 		
-	if (clientVersionEMule)
+	if (clientVersionEMule) {
 		clientVersionEMule->clear();
+	}
 		
-	if (clientVersionEDonkeyHybrid)
+	if (clientVersionEDonkeyHybrid) {
 		clientVersionEDonkeyHybrid->clear();
+	}
 		
-	if (clientVersionAMule)
+	if (clientVersionAMule) {
 		clientVersionAMule->clear();
+	}
 	
-	if (OSMap)
+	if (OSMap) {
 		OSMap->clear();
+	}
 
 
-	for ( int i = 0; i < 18; i++ )
+	for ( int i = 0; i < 19; i++ ) {
 		stats[i] = 0;
-
+	}
 
 	IDMap::iterator it = m_clientList.begin();
 	for ( IDMap::iterator it = m_clientList.begin(); it != m_clientList.end(); ++it ) {
 		CUpDownClient* cur_client =	it->second;
 		
 		if (cur_client->HasLowID()) {
-			stats[11]++;		
+			stats[11]++;
+			if (cur_client->GetClientSoft()!=SO_UNKNOWN) {
+				stats[18]++;
+			}
 		}
 		
 		switch (cur_client->GetClientSoft()) {
@@ -364,13 +372,15 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 				break;
 			case SO_EDONKEY : 
 				stats[1]++;
-				if(clientVersionEDonkey)
+				if(clientVersionEDonkey) {
 					(*clientVersionEDonkey)[cur_client->GetVersion()]++;
+				}
 				break;
 			case SO_EDONKEYHYBRID : 
 				stats[4]++;
-				if(clientVersionEDonkeyHybrid)
+				if(clientVersionEDonkeyHybrid) {
 					(*clientVersionEDonkeyHybrid)[cur_client->GetVersion()]++;
+				}
 				break;
 				
 			case SO_EMULE   :

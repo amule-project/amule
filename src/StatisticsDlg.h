@@ -20,16 +20,13 @@
 #ifndef STATISTICSDLG_H
 #define STATISTICSDLG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "StatisticsDlg.h"
-#endif
-
 #include <cmath>			// Needed for std::exp
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "types.h"			// Needed for uint32 and uint64
+#include "amule.h"			// Needed for StatsTreeNode
 #include "CTypedPtrList.h"	// Needed for CList
 
 class COScopeCtrl;
@@ -68,7 +65,7 @@ public:
 	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, uint32 **graphData);
 	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, COScopeCtrl* pscope);
 	void VerifyHistory(bool bMsgIfOk = false);
-	float GetMaxConperFiveModifier();
+	void FillTree(StatsTreeSiblingIterator& statssubtree, wxTreeItemId& StatsGUITree);
 	void Init();
 	void InitTree();
 	void InitGraphs();
@@ -131,12 +128,10 @@ protected:
 
 	void SetStatsRanges(int min, int max);
  public:
-	void	UpdateConnectionsStatus();
 
-    uint32 peakconnections;
-	uint32 totalconnectionchecks;
-	float averageconnections;
+ 	uint32 peakconnections;
 	uint32 activeconnections;
+ 
 private:
 	void ComputeAverages(HR **pphr, POSITION pos, unsigned cntFilled, double sStep, float **ppf, COScopeCtrl	*pscope);
 
