@@ -107,6 +107,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  servers don't fail continuously until eventually removed from the
 		  list; server pings work.  Global search seems to work better.
 		  DNS lookup of servers and ED2K link sources should now work.
+		* Enabled support for ed2k links in web browsers for Mac
+		  (although idiosyncracies of common browsers prevent it from
+		  being as transparent as one would like).
 
 	lfroen:
 		* aMule remote gui implementation
