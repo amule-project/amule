@@ -16,7 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#pragma implementation
+// Commented out because with current code it'll most likely screw up gcc optimizations
+//#pragma implementation
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
 #include "ECSocket.h"	// Needed for ECSocket

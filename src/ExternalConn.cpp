@@ -577,8 +577,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 	if ( !request ) {
 		return 0;
 	}
-	
+
 	CECPacket *response = NULL;
+
+	unsigned int detail_level = (request->GetTagByName(EC_TAG_DETAIL_LEVEL) != NULL) ? request->GetTagByName(EC_TAG_DETAIL_LEVEL)->GetInt8Data() : EC_DETAIL_GUI;
 
 	switch (request->GetOpCode()) {
 		case EC_OP_COMPAT: 
@@ -596,7 +598,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			if (!response) {
 				response = new CECPacket(EC_OP_MISC_DATA);
 			}
-			response->AddTag(CEC_ConnState_Tag());
+			response->AddTag(CEC_ConnState_Tag(detail_level));
 			break;
 		case EC_OP_GET_DLOAD_QUEUE:
 		case EC_OP_GET_DLOAD_QUEUE_STATUS:
@@ -614,7 +616,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_GET_SERVER_LIST:
 			response = new CECPacket(EC_OP_SERVER_LIST);
 			for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-				response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i)));
+				response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i), detail_level));
 			}	
 			break;
 		case EC_OP_IPFILTER_CMD:
@@ -2698,62 +2700,61 @@ void *ExternalConnClientThread::Entry()
 	return 0;
 }
 
-CEC_Server_Tag::CEC_Server_Tag(CServer *server) :
+
+CEC_Server_Tag::CEC_Server_Tag(CServer *server, unsigned int detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
 {
 	wxString tmpStr;
 	uint32 tmpInt;
 	uint8 tmpShort;
 
-	if (!(tmpStr = server->GetListName()).IsEmpty()) {
-		AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));
-	}
-
-	if (!(tmpStr = server->GetDescription()).IsEmpty()) {
-		AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
-	}
-
-	if ((tmpInt = server->GetPing()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
-	}
-
-	if ((tmpInt = server->GetUsers()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
-	}
-
-	if ((tmpInt = server->GetMaxUsers()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, tmpInt));
-	}
-
-	if ((tmpInt = server->GetFiles()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
-	}
-
-	if ((tmpShort = (uint8)server->GetPreferences()) != SRV_PR_NORMAL) {
-		AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
-	}
-
-	if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
-	}
-
-	if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
-		AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
-	}
-
-	if (!(tmpStr = server->GetVersion()).IsEmpty()) {
-		AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
+	switch (detail_level) {
+		case EC_DETAIL_GUI:
+			if ((tmpInt = server->GetPing()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
+			}
+			if ((tmpShort = (uint8)server->GetPreferences()) != SRV_PR_NORMAL) {
+				AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
+			}
+			if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
+			}
+			if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
+			}
+			if (!(tmpStr = server->GetVersion()).IsEmpty()) {
+				AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
+			}
+		case EC_DETAIL_WEB:
+			if (!(tmpStr = server->GetDescription()).IsEmpty()) {
+				AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
+			}
+			if ((tmpInt = server->GetUsers()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
+			}
+			if ((tmpInt = server->GetMaxUsers()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, tmpInt));
+			}
+			if ((tmpInt = server->GetFiles()) != 0) {
+				AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
+			}
+		case EC_DETAIL_CMD:
+			if (!(tmpStr = server->GetListName()).IsEmpty()) {
+				AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));
+			}
 	}
 }
 
-CEC_ConnState_Tag::CEC_ConnState_Tag() : CECTag(EC_TAG_STATS_CONNSTATE,
+
+CEC_ConnState_Tag::CEC_ConnState_Tag(unsigned int detail_level) : CECTag(EC_TAG_STATS_CONNSTATE,
 	(uint8) (theApp.serverconnect->IsConnected() ? (theApp.serverconnect->IsLowID() ? 2 : 3) : 
 		theApp.serverconnect->IsConnecting() ? 1 : 0))
 {
 	if ( theApp.serverconnect->GetCurrentServer() ) {
-		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer()));
+		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
 	}
 }
+
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includeparts) : CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
 {
@@ -2782,6 +2783,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, bool onlystatus, bool includ
 				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
+
 
 CEC_PartStatus_Tag::CEC_PartStatus_Tag(CPartFile *file, int size) : CECTag(EC_TAG_PARTFILE_PART_STATUS,
 	file->GetProgressString(size))

@@ -78,6 +78,4 @@ class ExternalConnClientThread : public wxThread {
 		wxSocketBase *m_sock;
 };
 
-
 #endif // EXTERNALCONN_H
-
