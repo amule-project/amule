@@ -1722,19 +1722,18 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					break;
 				}
 				case DS_LOWTOLOWIP: {
-					if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
+					if ( cur_src->HasLowID() && theApp.serverconnect->IsLowID() ) {
 						//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
 						if( ((dwCurTick - lastpurgetime) > 30000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
 							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break;
 						}
-						if (theApp.serverconnect->IsLowID()) {
-							break;
-						}
 					} else {
 						cur_src->SetDownloadState(DS_ONQUEUE);
 					}
+					
+					break;
 				}
 				case DS_NONEEDEDPARTS: {
 					// we try to purge noneeded source, even without reaching the limit
@@ -1756,10 +1755,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						break;
 					}
 					// Recheck this client to see if still NNP.. Set to DS_NONE so that we force a TCP reask next time..
-					cur_src->SetDownloadState(DS_NONE);						
+					cur_src->SetDownloadState(DS_NONE);
+					
+					break;
 				}
 				case DS_ONQUEUE: {
-					cur_src->SetValidSource(true);
 					if( cur_src->IsRemoteQueueFull()) {
 						cur_src->SetValidSource(false);
 						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
@@ -1767,11 +1767,16 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 							lastpurgetime = dwCurTick;
 							break; //Johnny-B - nothing more to do here (good eye!)
 						}
+					} else {
+						cur_src->SetValidSource(true);
 					}
+					
 					//Give up to 1 min for UDP to respond.. If we are within on min on TCP, do not try..
 					if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
 						cur_src->UDPReaskForDownload();
 					}
+					
+					break;
 				}
 				case DS_CONNECTING: 
 				case DS_TOOMANYCONNS: 
@@ -1784,21 +1789,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					}
 					break;
 				}
-				// Kry - this extra case is not processed on 0.42e
-				/*
-				case DS_CONNECTED: {
-					if (download_state == DS_CONNECTED) {
-						if( !cur_src->IsConnected()) ){
-							cur_src->SetDownloadState(DS_NONE);
-							break;
-						}
-						if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
-							theApp.downloadqueue->RemoveSource( cur_src );
-							break;
-						}
-					}
-				}
-				*/					
 			}
 		}
 
