@@ -412,7 +412,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
 			"Your Auto-update servers list is in blank.\n"
-			"'Auto-update serverlist at startup' will be disabled\n")), _("Auto-update serverlist error"), wxOK, this);
+			"'Auto-update serverlist at startup' will be disabled\n")));
 	}
 
 	// save the preferences on ok
@@ -423,7 +423,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 
 	if ( CfgChanged(IDC_LANGUAGE) )
-		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")),_("Language change information"),wxOK,this);
+		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")));
 
 
 	if ( CfgChanged(IDC_INCFILES) || CfgChanged(IDC_TEMPFILES) || m_ShareSelector->HasChanged )
@@ -530,7 +530,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"
 					"Please fill in at least one URL to point to a valid server.met file.\n"
-					"Click on the button \"List\" by this checkbox to enter an URL.\n")),_("Auto-update serverlist error"),wxOK,this);
+					"Click on the button \"List\" by this checkbox to enter an URL.\n")));
 				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
 			}
 			break;
@@ -604,7 +604,7 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.amuledlg->changeDesktopMode(this);
+	theApp.amuledlg->changeDesktopMode();
 
 	// Ensure that the dialog is still visible afterwards
 	Raise();
@@ -641,7 +641,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 	wxTextCtrl* widget	= CastChild( id, wxTextCtrl );
 	wxString dir		= widget->GetValue();
 
-	wxString str = wxDirSelector( type, dir, wxDD_DEFAULT_STYLE, wxDefaultPosition, this );
+	wxString str = wxDirSelector( type, dir );
 
 	if ( !str.IsEmpty() ) {
 		widget->SetValue( str );
@@ -664,7 +664,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString str = wxFileSelector( _("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*"), wxT("*.*"), 0, this );
+	wxString str = wxFileSelector( _("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_SKINFILE, wxTextCtrl );
@@ -676,8 +676,8 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
-	wxString str = wxFileSelector( _("Browse for videoplayer"), wxEmptyString, wxEmptyString,
-	                               wxEmptyString, wxString::Format("%s %s",_("Executable"),wxT("(*)|*||")), 0, this );
+	wxString str = wxFileSelector( _("Browse for videoplayer"), wxT(""), wxT(""),
+	                               wxT(""), _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_VIDEOPLAYER, wxTextCtrl );

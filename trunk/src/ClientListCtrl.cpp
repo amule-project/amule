@@ -266,7 +266,7 @@ void CClientListCtrl::OnShowDetails( wxCommandEvent& WXUNUSED(event) )
 	if ( index > -1 ) {
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 
-		CClientDetailDialog dialog((wxWindow*)theApp.amuledlg, client);
+		CClientDetailDialog dialog(this, client);
 		
 		dialog.ShowModal();
 	}
@@ -292,7 +292,7 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 	if ( index > -1 ) {
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 
-		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:"), "", (wxWindow*)theApp.amuledlg);
+		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:") );
 		
 		if ( !message.IsEmpty() ) {
 			theApp.amuledlg->chatwnd->StartSession(client, false);

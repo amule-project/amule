@@ -321,7 +321,7 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		}
 		
 		case MP_ADDFRIEND: {
-			CAddFriend* dialog2 = new CAddFriend((wxWindow*)theApp.amuledlg); 
+			CAddFriend* dialog2 = new CAddFriend(this); 
 			if (dialog2->ShowModal()) {
 				SaveList();
 			}
@@ -331,7 +331,7 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		
 		case MP_DETAIL: {
 			if (cur_friend->m_LinkedClient) {
-				CClientDetailDialog* dialog = new CClientDetailDialog((wxWindow*)theApp.amuledlg, cur_friend->m_LinkedClient);
+				CClientDetailDialog* dialog = new CClientDetailDialog(this, cur_friend->m_LinkedClient);
 				dialog->ShowModal();
 				delete dialog;
 			}

@@ -65,12 +65,12 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	ip = StringIPtoUint32(fullip);
 	
 	if (!ip) {
-		wxMessageBox(_("You have to enter a valid IP and port!"),_("Invalid IP"),wxOK,this);
+		wxMessageBox(_("You have to enter a valid IP and port!"));
 		return;		
 	}
 	
 	if ( hash.Length() != 0 && hash.Length() != 32 ) {
-		wxMessageBox(_("The specified userhash is not valid!"),_("Invalid userhash"),wxOK,this);
+		wxMessageBox(_("The specified userhash is not valid!"));
 		return;
 	};
 

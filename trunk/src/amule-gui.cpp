@@ -240,7 +240,7 @@ bool CamuleGuiApp::OnInit()
 
 void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 {
-	wxMessageBox(msg, title, flags, (wxWindow*)theApp.amuledlg);
+	wxMessageBox(msg, title, flags);
 }
 
 int CamuleGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
