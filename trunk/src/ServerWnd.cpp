@@ -116,7 +116,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
   
 	wxString portstr;
 	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0);
-	CServer* toadd = new CServer(atoi(unicode2char(portstr)),(unicode2char(serveraddr)));
+	CServer* toadd = new CServer(atoi(unicode2char(portstr)),serveraddr);
 	wxString servername;
 	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetLineText(0);
 	if (!servername.IsEmpty()) {
@@ -131,15 +131,15 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 			serverlistctrl->RefreshServer(update);
 		}
 		delete toadd;
-		theApp.amuledlg->AddLogLine(true, _("Server not added!"));
+		AddLogLineM(true, _("Server not added!"));
 	} else {
-		theApp.amuledlg->AddLogLine(true, wxString(_("Server added: ")) + wxT("%s"), toadd->GetListName());
+		AddLogLineM(true, _("Server added: ") + toadd->GetListName());
 	}
 	theApp.serverlist->SaveServermetToFile();
 	printf("Saving of server.met file Done !!!\n");
-	((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->SetValue(wxT(""));
-	((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->SetValue(wxT(""));
-	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue(wxT(""));
+	((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->SetValue(wxEmptyString);
+	((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->SetValue(wxEmptyString);
+	((wxTextCtrl*)FindWindowById(IDC_SPORT))->SetValue(wxEmptyString);
 }
 
 void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt))

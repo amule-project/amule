@@ -201,15 +201,12 @@ void CServerListCtrl::OnRemove(wxEvent& WXUNUSED(event))
 void CServerListCtrl::OnCopyLink(wxCommandEvent& WXUNUSED(event))
 {
 	long item=-1;
-	wxString buffer,link;
+	wxString link;
 	while((item=GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1) {
 		CServer* change = (CServer*) this->GetItemData(item);
-		buffer=buffer.Format(wxT("ed2k:|server|%s|%d|"), change->GetFullIP(), change->GetPort());
-		if(link.Length()>0) {
-			buffer=wxT("\n")+buffer;
-		}
-		link += buffer;
+		link += wxT("ed2k:|server|") + change->GetFullIP() + wxString::Format(wxT("|%d|"),change->GetPort()) + wxT("\n");		
 	}
+	link.RemoveLast();	
 	theApp.CopyTextToClipboard(link);
 }
 
@@ -307,7 +304,7 @@ bool CServerListCtrl::AddServer(CServer* toadd,bool bAddToList)
 	}
 	if (bAddToList) {
 		uint32 itemnr=GetItemCount();
-		uint32 newid=InsertItem(itemnr,char2unicode(toadd->GetListName()));
+		uint32 newid=InsertItem(itemnr,toadd->GetListName());
 		SetItemData(newid,(long)toadd);
 		wxListItem myitem;
 		myitem.m_itemId=newid;
@@ -346,70 +343,58 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	if(itemnr==(-1)) {
 		return;
 	}
-	wxString temp;
 	if(!server) {
 		return;
 	}
-	temp = char2unicode(server->GetAddress()) + wxString::Format(wxT(" : %i"),server->GetPort());
-	SetItem(itemnr,1,temp);
-	if(server->GetListName()) {
-		temp=char2unicode(server->GetListName());
-		SetItem(itemnr,0,temp);
+	SetItem(itemnr,1,server->GetAddress() + wxString::Format(wxT(" : %i"),server->GetPort()));
+	if(!server->GetListName().IsEmpty()) {
+		SetItem(itemnr,0,server->GetListName());
 	}
-	if(server->GetDescription()) {
-		temp=char2unicode(server->GetDescription());
-		SetItem(itemnr,2,temp);
+	if(!server->GetDescription().IsEmpty()) {
+		SetItem(itemnr,2,server->GetDescription());
 	}
 	if(1) {
 		if(server->GetPing()) {
-			temp=wxString::Format( wxT("%i"),server->GetPing());
+			SetItem(itemnr,3,wxString::Format( wxT("%i"),server->GetPing()));
 		} else {
-			temp=wxT("");
+			SetItem(itemnr,3,wxEmptyString);
 		}
-		SetItem(itemnr,3,temp);
 	} else {
 		printf("%lx: ei ping\n",(long)server);
 		SetItem(itemnr,3,wxT("Ei ei"));
 	}
 	if(server->GetUsers()) {
-		temp=wxString::Format( wxT("%i"),server->GetUsers());
-		SetItem(itemnr,4,temp);
+		SetItem(itemnr,4,wxString::Format( wxT("%i"),server->GetUsers()));
 	}
 	if(server->GetFiles()) {
-		temp=wxString::Format( wxT("%i"),server->GetFiles());
-		SetItem(itemnr,5,temp);
+		SetItem(itemnr,5,wxString::Format( wxT("%i"),server->GetFiles()));
 	}
 	if(server->GetPreferences()) {
-		temp=wxString::Format( wxT("%i"),server->GetPreferences());
-		SetItem(itemnr,6,temp);
+		SetItem(itemnr,6,wxString::Format( wxT("%i"),server->GetPreferences()));
 	}
 	switch(server->GetPreferences()) {
 		case SRV_PR_LOW:
-			temp.Printf( _("Low"));
-			SetItem(itemnr,6,temp);
+			SetItem(itemnr,6,_("Low"));
 			break;
 		case SRV_PR_NORMAL:
-			temp.Printf( _("Normal"));
-			SetItem(itemnr,6,temp);
+			SetItem(itemnr,6,_("Normal"));
 			break;
 		case SRV_PR_HIGH:
-			temp.Printf( _("High"));
-			SetItem(itemnr,6,temp);
+			SetItem(itemnr,6,_("High"));
 			break;
 		default:
-			temp.Printf( _("No Pref"));
-			SetItem(itemnr,6,temp);
+			SetItem(itemnr,6,_("No Pref"));
 	}
-	temp=wxString::Format( wxT("%i"),server->GetFailedCount());
-	SetItem(itemnr,7,temp);
+
+	SetItem(itemnr,7,wxString::Format( wxT("%i"),server->GetFailedCount()));
+
 	if (server->IsStaticMember()) {
 		SetItem(itemnr,8,_("Yes"));
 	} else {
 		SetItem(itemnr,8,_("No"));
 	}
 
-	temp = server->GetVersion();
-	SetItem(itemnr,9,temp);
+	SetItem(itemnr,9,server->GetVersion());
 
 }
 
@@ -537,16 +522,13 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 				}
 				case MP_GETED2KLINK: {
 					int pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-					wxString buffer, link;
+					wxString link;
 					while(pos != -1) {
 						CServer* change = (CServer*)this->GetItemData(pos);
-						buffer.Printf(wxT("ed2k://|server|%s|%d|/"), change->GetFullIP(), change->GetPort());
-						if (link.Length()>0) {
-							buffer=wxT("\n")+buffer;
-						}
-						link += buffer;
+						link += wxT("ed2k:|server|") + change->GetFullIP() + wxString::Format(wxT("|%d|"),change->GetPort()) + wxT("\n");		
 						pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 					}
+					link.RemoveLast();
 					theApp.CopyTextToClipboard(link);
 					return true;
 					break;
@@ -597,24 +579,21 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	int counter2;
 	switch(lParamSort) {
 		case 0: //(List) Server-name asc
-			return wxString(char2unicode(item1->GetListName())).CmpNoCase(char2unicode(item2->GetListName()));
+			return item1->GetListName().CmpNoCase(item2->GetListName());
 		case 100: //(List) Server-name desc
-			return wxString(char2unicode(item2->GetListName())).CmpNoCase(char2unicode(item1->GetListName()));
+			return item2->GetListName().CmpNoCase(item1->GetListName());
 		case 1: { //IP asc
 			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return wxString(char2unicode(item1->GetDynIP())).CmpNoCase(char2unicode(item2->GetDynIP()));
+				return item1->GetDynIP().CmpNoCase(item2->GetDynIP());
 			} else if (item1->HasDynIP()) {
 				return 1;
 			} else if (item2->HasDynIP()) {
 				return 0;
 			} else {
-				wxString sIP1, sIP2, sTemp1, sTemp2;
 				counter1 = counter2 = iTemp = 0;
-				sIP1 = item2->GetFullIP();
-				sIP2 = item1->GetFullIP();
 				int a[4],b[4];
-				sscanf(unicode2char(sIP1),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(unicode2char(sIP2),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
+				sscanf(unicode2char(item2->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
+				sscanf(unicode2char(item1->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
 				for(int i=0;iTemp==0;i++) {
 					iTemp=b[i]-a[i];
 					if(i>3) {
@@ -625,48 +604,31 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			  }
 		}
 		case 101: { //IP desc
-			if(item1->HasDynIP() && item2->HasDynIP()) {
-				return wxString(char2unicode(item2->GetDynIP())).CmpNoCase(char2unicode(item1->GetDynIP()));
-			} else if(item1->HasDynIP()) {
-				return 0;
-			} else if(item2->HasDynIP()) {
+			if (item1->HasDynIP() && item2->HasDynIP()) {
+				return item2->GetDynIP().CmpNoCase(item1->GetDynIP());
+			} else if (item2->HasDynIP()) {
 				return 1;
+			} else if (item1->HasDynIP()) {
+				return 0;
 			} else {
-				wxString s2IP1, s2IP2, s2Temp1, s2Temp2;
 				counter1 = counter2 = iTemp = 0;
-				s2IP1 = item2->GetFullIP();
-				s2IP2 = item1->GetFullIP();
 				int a[4],b[4];
-				sscanf(unicode2char(s2IP1),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-				sscanf(unicode2char(s2IP2),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
+				sscanf(unicode2char(item1->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
+				sscanf(unicode2char(item2->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
 				for(int i=0;iTemp==0;i++) {
-					iTemp=a[i]-b[i];
+					iTemp=b[i]-a[i];
 					if(i>3) {
 						return item2->GetPort()-item1->GetPort();
 					}
 				}
 				return iTemp;
-			}
+			  }
 		}
 		case 2: { //Description asc
-			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				//the 'if' is necessary, because the Description-String is not
-				//always initialisized in server.cpp
-				return wxString(char2unicode(item2->GetDescription())).CmpNoCase(char2unicode(item1->GetDescription()));
-			} else if (item1->GetDescription() == NULL) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return item2->GetDescription().CmpNoCase(item1->GetDescription());
 		}
 		case 102: { //Desciption desc
-			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				return wxString(char2unicode(item1->GetDescription())).CmpNoCase(char2unicode(item2->GetDescription()));
-			} else if (item1->GetDescription() == NULL) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return item1->GetDescription().CmpNoCase(item2->GetDescription());
 		}
 		case 3: //Ping asc
 			return item1->GetPing() - item2->GetPing();
@@ -693,9 +655,9 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 108: //staticservers-
 			return item1->IsStaticMember() - item2->IsStaticMember();
 		case 9: // version
-			return wxString(item1->GetVersion()).CmpNoCase(item2->GetVersion());
+			return item1->GetVersion().CmpNoCase(item2->GetVersion());
 		case 109: //version-
-			return wxString(item2->GetVersion()).CmpNoCase(item1->GetVersion());
+			return item2->GetVersion().CmpNoCase(item1->GetVersion());
 		default:
 			return 0;
 	}
@@ -718,8 +680,8 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 			theApp.amuledlg->AddLogLine( false, wxString(_("Failed to open staticservers.dat")));
 			return false;
 		}
-		staticservers.AddLine(wxString::Format(wxT("%s:%i,%i,%s"),server->GetAddress(),server->GetPort(), server->GetPreferences(),server->GetListName()));
-		theApp.amuledlg->AddLogLine(false, wxT("'%s:%i,%s' %s"), server->GetAddress(), server->GetPort(), server->GetListName(), _("Added to static server list"));
+		staticservers.AddLine(server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName());
+		theApp.amuledlg->AddLogLine(false, wxT("\"") + server->GetAddress() + wxString::Format(wxT(":%i,%i,"),server->GetPort(), server->GetPreferences()) + server->GetListName() + _("\" Added to static server list"));
 		server->SetIsStaticMember(true);
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
 		staticservers.Write();
@@ -776,7 +738,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 			}
 			strLine = strLine.Left(pos);
 			// Get host and port from given server
-			strTest.Printf(wxT("%s:%i"), server->GetAddress(), server->GetPort());
+			strTest = server->GetAddress() + wxString::Format(wxT(":%i"), server->GetPort());
 			// Compare, if not the same server write original line to temp file
 			if (strLine.Cmp(strTest) != 0) {
 				statictemp.AddLine(strLine);

@@ -336,11 +336,11 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 	if (theApp.serverconnect->GetCurrentServer()!=NULL) {
 
-	info_item=gtk_menu_item_new_with_label(wxString(_("ServerName: "))+(theApp.serverconnect->GetCurrentServer()->GetListName()));
+	info_item=gtk_menu_item_new_with_label(_("ServerName: ") + theApp.serverconnect->GetCurrentServer()->GetListName() );
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	tempstring = g_strdup_printf("%d", theApp.serverconnect->GetCurrentServer()->GetPort() );
-	info_item=gtk_menu_item_new_with_label(wxString(_("ServerIP: "))+(theApp.serverconnect->GetCurrentServer()->GetFullIP())+wxString(" : ")+tempstring );
+	info_item=gtk_menu_item_new_with_label(_("ServerIP: ") + theApp.serverconnect->GetCurrentServer()->GetFullIP() + wxT(" : ") + tempstring );
 	gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 
 	}

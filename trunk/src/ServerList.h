@@ -53,7 +53,7 @@ public:
 	CServer*	GetServerAt(uint32 pos)	{return list.GetAt(list.FindIndex(pos));}
 	uint32		GetServerCount()	{return list.GetCount();}
 	CServer*	GetNextServer(CServer* lastserver); // slow
-	CServer*	GetServerByAddress(char* address, uint16 port);
+	CServer*	GetServerByAddress(const wxString& address, uint16 port);
 	CServer*	GetServerByIP(uint32 nIP);
 	CServer*	GetServerByIP(uint32 nIP, uint16 nPort);	
 	bool		IsGoodServerIP( CServer* in_server ); //<<--

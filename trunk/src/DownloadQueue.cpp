@@ -1215,22 +1215,28 @@ int CDownloadQueue::GetMaxFilesPerUDPServerPacket() const
 
 bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 {
-	bool bSentPacket = false;
 
-	if (cur_udpserver && (theApp.serverconnect->GetCurrentServer() == NULL ||
-	cur_udpserver != theApp.serverlist->GetServerByAddress(theApp.serverconnect->GetCurrentServer()->GetAddress(),theApp.serverconnect->GetCurrentServer()->GetPort()))) {
-		int iFileIDs = data.GetLength() / 16;
-		Packet packet(&data);
-
-		packet.SetOpCode(OP_GLOBGETSOURCES);
-		theApp.uploadqueue->AddUpDataOverheadServer(packet.GetPacketSize());
-		theApp.serverconnect->SendUDPPacket(&packet,cur_udpserver,false);
-
-		m_cRequestsSentToServer += iFileIDs;
-		bSentPacket = true;
+	if (!cur_udpserver) {
+		return false;
 	}
+	
 
-	return bSentPacket;
+	if (theApp.serverconnect->GetCurrentServer() != NULL) {
+		wxString srvaddr = theApp.serverconnect->GetCurrentServer()->GetAddress();
+		if (cur_udpserver == theApp.serverlist->GetServerByAddress(srvaddr,theApp.serverconnect->GetCurrentServer()->GetPort())) {
+			return false;	
+		}
+	}	
+		
+	int iFileIDs = data.GetLength() / 16;
+	Packet packet(&data);
+
+	packet.SetOpCode(OP_GLOBGETSOURCES);
+	theApp.uploadqueue->AddUpDataOverheadServer(packet.GetPacketSize());
+	theApp.serverconnect->SendUDPPacket(&packet,cur_udpserver,false);
+
+	m_cRequestsSentToServer += iFileIDs;
+	return true;
 }
 
 

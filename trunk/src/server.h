@@ -45,46 +45,53 @@ WX_DECLARE_LIST(CTag,TagList);
 class CServer {
 public:
 	CServer(ServerMet_Struct* in_data);
-	CServer(uint16 in_port, const char* i_addr);
+	CServer(uint16 in_port, const wxString i_addr);
 	CServer(CServer* pOld);
 	~CServer();
 	void	AddTag(CTag* in_tag)					{taglist->Append(in_tag);}
-	char*	GetListName()						{return listname;}
-	char*	GetFullIP()						{return ipfull;}
-	char*	GetAddress();
+	const wxString&	GetListName()	const		{return listname;}
+	const wxString&	GetFullIP()		const		{return ipfull;}
+	
+	const wxString& GetAddress() const {
+		if (!dynip.IsEmpty()) {
+			return dynip;
+		} else {
+			return ipfull;
+		}
+	}	
+	
 	uint16	GetPort()						{return port;}
-	void	FillWindowTags(wxTreeCtrl* wnd,wxTreeItemId rootitem);
 	bool	AddTagFromFile(CFile* servermet);
-	void	SetListName(char* newname);
-	void	SetDescription(char* newdescription);
-	uint32	GetIP()							{return ip;}
-	uint32	GetFiles()						{return files;} 
-	uint32	GetUsers()						{return users;} 
-	char*	GetDescription()					{return description;} 
-	uint32	GetPing()						{return ping;} 
-	uint32	GetPreferences()					{return preferences;} 
-	uint32	GetMaxUsers()						{return maxusers;}
+	void	SetListName(const wxString& newname);
+	void	SetDescription(const wxString& newdescription);
+	uint32	GetIP()		const			{return ip;}
+	uint32	GetFiles()	const			{return files;} 
+	uint32	GetUsers()	const			{return users;} 
+	const wxString&	GetDescription()	const	{return description;} 
+	uint32	GetPing()			const	{return ping;} 
+	uint32	GetPreferences()	const	{return preferences;} 
+	uint32	GetMaxUsers()		const	{return maxusers;}
 	void	SetMaxUsers(uint32 in_maxusers) 			{maxusers = in_maxusers;}
 	void	SetUserCount(uint32 in_users)				{users = in_users;}
 	void	SetFileCount(uint32 in_files)				{files = in_files;}
 	void	ResetFailedCount()					{failedcount = 0;} 
 	void	AddFailedCount()					{failedcount++;} 
-	uint32	GetFailedCount()					{return failedcount;} 
+	uint32	GetFailedCount()	const	{return failedcount;} 
 	void	SetID(uint32 newip);
-	char*	GetDynIP()						{return dynip;}
-	bool	HasDynIP()						{return dynip;}
-	void	SetDynIP(const char* newdynip);
-	uint32	GetLastPinged()						{return lastpinged;}
+	const wxString&	GetDynIP()			const	{return dynip;}
+	bool	HasDynIP()			const		{return dynip;}
+	void	SetDynIP(const wxString& newdynip);
+	uint32	GetLastPinged()	const			{return lastpinged;}
 	void	SetLastPinged(uint32 in_lastpinged)			{lastpinged = in_lastpinged;}
 	void	SetPing(uint32 in_ping)					{ping = in_ping;}
 	void	SetPreference(uint32 in_preferences)			{preferences = in_preferences;}
 	void	SetIsStaticMember(bool in)				{staticservermember=in;}
-	bool	IsStaticMember()					{return staticservermember;}
-	uint32	GetChallenge()						{return challenge;}
+	bool	IsStaticMember()		const		{return staticservermember;}
+	uint32	GetChallenge()		const		{return challenge;}
 	void	SetChallenge(uint32 in_challenge)			{challenge = in_challenge;}
-	uint32	GetSoftFiles()						{return softfiles;}
+	uint32	GetSoftFiles()		const		{return softfiles;}
 	void	SetSoftFiles(uint32 in_softfiles)			{softfiles = in_softfiles;}
-	uint32	GetHardFiles()						{return hardfiles;}
+	uint32	GetHardFiles()		const		{return hardfiles;}
 	void	SetHardFiles(uint32 in_hardfiles)			{hardfiles = in_hardfiles;}
 	const	wxString& GetVersion() const				{return m_strVersion;}
 	void	SetVersion(wxString pszVersion)				{m_strVersion = pszVersion;}
@@ -103,11 +110,11 @@ private:
 	uint32		hardfiles;
 	uint32		preferences;
 	uint32		ping;
-	char*		description;
-	char*		listname;
-	char*		dynip;
+	wxString		description;
+	wxString		listname;
+	wxString		dynip;
 	uint32		tagcount;
-	char		ipfull[17];
+	wxString		ipfull;
 	uint32		ip;
 	uint16		port;
 	uint32		failedcount; 

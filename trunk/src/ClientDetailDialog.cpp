@@ -104,11 +104,12 @@ bool CClientDetailDialog::OnInitDialog() {
 	if (m_client->GetServerIP()) {
 		in_addr server;
 		server.s_addr = m_client->GetServerIP();
-		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(char2unicode(inet_ntoa(server)));
+		wxString srvaddr = char2unicode(inet_ntoa(server));
+		GetDlgItem(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
 		
-		CServer* cserver = theApp.serverlist->GetServerByAddress(inet_ntoa(server), m_client->GetServerPort()); 
+		CServer* cserver = theApp.serverlist->GetServerByAddress(srvaddr, m_client->GetServerPort()); 
 		if (cserver) {
-			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(char2unicode(cserver->GetListName()));
+			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(cserver->GetListName());
 		} else {
 			GetDlgItem(ID_DSNAME,wxStaticText)->SetLabel(wxT("Unknown"));
 		}
