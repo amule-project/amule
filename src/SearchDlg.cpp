@@ -218,7 +218,7 @@ void CSearchDlg::CreateNewTab(wxString searchString, uint32 nSearchID)
 
 	GetParent()->Layout();
 	
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)sizCont->FindWindowById(ID_SEARCHLISTCTRL, sizCont);
+	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, sizCont);
 	searchlistctrl->Init(theApp.searchlist);
 	searchlistctrl->ShowResults(nSearchID);
 	
@@ -263,7 +263,7 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent &evt)
 	}
 	
 	wxNotebookPage* page = notebook->GetPage(notebook->GetSelection());
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)page->FindWindowById(ID_SEARCHLISTCTRL);
+	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)FindWindowById(ID_SEARCHLISTCTRL, page);
 
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while ( index > -1 ) {
@@ -441,7 +441,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID)
 
 	for ( int i = 0; i < notebook->GetPageCount(); i++ ) {
 		wxWindow * page = (wxWindow *)notebook->GetPage( i );
-		wxWindow * slctrl = page->FindWindowById(ID_SEARCHLISTCTRL, page);
+		wxWindow * slctrl = FindWindowById(ID_SEARCHLISTCTRL, page);
 		
 		// Make sure we have a valid pointer
 		if( slctrl ) {
