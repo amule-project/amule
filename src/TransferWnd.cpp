@@ -345,15 +345,6 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
 }
 
 
-void CTransferWnd::UpdateBtnClearDownloads()
-{
-	if( theApp.downloadqueue->CompletedFilesExist() )
-		CastChild( ID_BTNCLRCOMPL, wxButton )->Enable();
-	else
-		CastChild( ID_BTNCLRCOMPL, wxButton )->Disable();
-		
-}
-
 void CTransferWnd::OnBtnClearDownloads( wxCommandEvent& WXUNUSED(evt) )
 {
     downloadlistctrl->Freeze();

@@ -119,10 +119,6 @@ public:
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
 	
-	bool	CompletedFilesExist() { return completedFilesExist; }
-	void	SetCompletedFilesExist() { completedFilesExist = true; }
-	void	UnsetCompletedFilesExist() { completedFilesExist = false; }
-
 	bool	AddED2KLink( const wxString& link, int category = 0 );
 	bool	AddED2KLink( const CED2KLink* link, int category = 0 );
 	bool	AddED2KLink( const CED2KFileLink* link, int category = 0 );
@@ -154,7 +150,6 @@ private:
 	uint32		m_dwNextTCPSrcReq;
 	int		m_iSearchedServers;
 	uint8		udcounter;
-	bool		completedFilesExist;
 
 	uint64		m_datarateMS;
 	long		m_nDownDatarateTotal;

@@ -112,12 +112,6 @@ public:
 	 */
 	void	UpdateCatTabTitles();
 
-	/**
-	 * Button update (enables / disables) depending on whether completed
-	 * files exist or not
-	 */
-	void UpdateBtnClearDownloads();
-
 	
 	/**
 	 * Call this function before displaying the dialog.

@@ -632,11 +632,6 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			}
 			break;
 
-		// download
-	        case DLOAD_UPDATE_COMPLETED:
-			amuledlg->transferwnd->UpdateBtnClearDownloads();
-			break;
-						
 		// download ctrl
 		case DOWNLOAD_CTRL_UPDATEITEM:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
