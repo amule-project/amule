@@ -792,7 +792,11 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						break;
 
 					default:
-						AddDebugLogLineM( true, logPacketErrors, wxT("Unknown Mule tag: %s") + temptag.GetFullInfo() );
+						AddDebugLogLineM( false, logPacketErrors,
+							CFormat( wxT("Unknown Mule tag (%s) from client: %s") )
+								% temptag.GetFullInfo()
+								% GetClientFullInfo()
+						);
 
 						break;
 				}
