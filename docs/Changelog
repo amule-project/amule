@@ -63,8 +63,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed Mac bug: window was a little larger each restart
 		* Fixed aMule.tmpl so Safari can work with amuleweb
 		* On Mac, enabled Command-clicking in lists to toggle selection
-		* Solved the DECLARE_ABSTRACT_CLASS() mistery on wx-2.4.2. Now
+		* Solved the DECLARE_ABSTRACT_CLASS() mystery on wx-2.4.2. Now
 		we can have UDP socks5 with wx-2.4.2.
+		* Included CVSDATE with version in amulesig.dat
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
