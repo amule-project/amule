@@ -133,6 +133,10 @@ bool CServerList::Init()
 
 bool CServerList::AddServermetToList(CString strFile, bool merge)
 {
+	if (!theApp.amuledlg || !theApp.amuledlg->serverwnd || !theApp.amuledlg->serverwnd->serverlistctrl) {
+		return false;
+	}
+	
 	if (!merge) {
 		theApp.amuledlg->serverwnd->serverlistctrl->DeleteAllItems();
 		this->RemoveAllServers();
@@ -226,13 +230,13 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 
 bool CServerList::AddServer(CServer* in_server)
 {
-	if (theApp.glob_prefs->FilterBadIPs()) {
+	if (theApp.glob_prefs && theApp.glob_prefs->FilterBadIPs()) {
 		if ( !IsGoodServerIP( in_server )) {
 			return false;
 		}
 	}
 	CServer* test_server = GetServerByAddress(in_server->GetAddress(), in_server->GetPort());
-	if (test_server) {
+	if (test_server && theApp.amuledlg) {
 		test_server->ResetFailedCount();
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer( test_server );
 		return false;

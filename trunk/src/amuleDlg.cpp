@@ -907,9 +907,15 @@ void CamuleDlg::OnClose(wxCloseEvent& evt) {
 	theApp.OnlineSig(); // Added By Bouc7
 
 	// Close sockets to avoid new clients coming in
-	theApp.listensocket->StopListening();
-	theApp.clientudp->Destroy();
-	theApp.serverconnect->Disconnect();
+	if (theApp.listensocket) {
+		theApp.listensocket->StopListening();
+	}
+	if (theApp.clientudp) {
+		theApp.clientudp->Destroy();
+	}
+	if (theApp.serverconnect) {
+		theApp.serverconnect->Disconnect();
+	}
 
 	// Signal the hashing thread to terminate
 	CAddFileThread::Shutdown();
@@ -919,18 +925,28 @@ void CamuleDlg::OnClose(wxCloseEvent& evt) {
 	//theApp.glob_prefs->SetWindowLayout(wp);
 
 	// saving data & stuff
-	theApp.knownfiles->Save();
+	if (theApp.knownfiles) {
+		theApp.knownfiles->Save();
+	}
 
-	theApp.glob_prefs->Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
-	theApp.glob_prefs->Add2TotalUploaded(theApp.stat_sessionSentBytes);
+	if (theApp.glob_prefs) {
+		theApp.glob_prefs->Add2TotalDownloaded(theApp.stat_sessionReceivedBytes);
+		theApp.glob_prefs->Add2TotalUploaded(theApp.stat_sessionSentBytes);
+	}
 
 	// save friends
-	theApp.friendlist->SaveList();
-	theApp.glob_prefs->Save();
+	if (theApp.friendlist) {
+		theApp.friendlist->SaveList();
+	}
+	if (theApp.glob_prefs) {
+		theApp.glob_prefs->Save();
+	}
 
 	transferwnd->downloadlistctrl->DeleteAllItems();
 	//amuledlg->chatwnd->chatselector->DeleteAllItems();
-	theApp.clientlist->DeleteAll();
+	if (theApp.clientlist) {
+		theApp.clientlist->DeleteAll();
+	}
 
 #ifndef __SYSTRAY_DISABLED__
 	//We want to delete the systray too!
