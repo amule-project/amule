@@ -899,50 +899,60 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 
 			case 5:	// progress
 				{
-					lpRect->bottom--;
-					lpRect->top++;
-					int iWidth = lpRect->right - lpRect->left;
-					int iHeight = lpRect->bottom - lpRect->top;
+//					lpRect->bottom--;
+//					lpRect->top++;
 
-					// DO NOT DRAW IT ALL THE TIME
-					DWORD dwTicks = GetTickCount();
-					wxMemoryDC cdcStatus;
+					if (theApp.glob_prefs->ShowProgBar()) {
+					
+						int iWidth = lpRect->right - lpRect->left;
+						int iHeight = (lpRect->bottom - lpRect->top) + 2;
+	
+						// DO NOT DRAW IT ALL THE TIME
+						DWORD dwTicks = GetTickCount();
+						wxMemoryDC cdcStatus;
 
-					if (lpCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || !lpCtrlItem->status || iWidth != lpCtrlItem->status->GetWidth() || !lpCtrlItem->dwUpdated) {
-						if (lpCtrlItem->status == NULL) {
-							lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
-						} else {
-							//delete lpCtrlItem->status;
+						if (lpCtrlItem->dwUpdated + DLC_BARUPDATE < dwTicks || !lpCtrlItem->status || iWidth != lpCtrlItem->status->GetWidth() || !lpCtrlItem->dwUpdated) {
+							if (lpCtrlItem->status == NULL) {
+								lpCtrlItem->status = new wxBitmap(iWidth, iHeight);
+							} else {
+								//delete lpCtrlItem->status;
 							//lpCtrlItem->status=NULL;
-							//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
-							lpCtrlItem->status->Create(iWidth, iHeight);	//SetWidth(iWidth);
+								//lpCtrlItem->status=new wxBitmap(iWidth,iHeight);
+								lpCtrlItem->status->Create(iWidth, iHeight);	//SetWidth(iWidth);
+							}
+							//lpCtrlItem->status->Create(iWidth,iHeight);
+							cdcStatus.SelectObject(*(lpCtrlItem->status));
+	
+							lpPartFile->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), theApp.glob_prefs->UseFlatBar());
+							lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
+	
+						} else {
+							cdcStatus.SelectObject(*(lpCtrlItem->status));
 						}
-						//lpCtrlItem->status->Create(iWidth,iHeight);
-						cdcStatus.SelectObject(*(lpCtrlItem->status));
 
-						lpPartFile->DrawStatusBar(&cdcStatus, wxRect(0, 0, iWidth, iHeight), theApp.glob_prefs->UseFlatBar());
-						lpCtrlItem->dwUpdated = dwTicks + (rand() % 128);
-
-					} else {
-						cdcStatus.SelectObject(*(lpCtrlItem->status));
+						dc->Blit(lpRect->left, lpRect->top+1, iWidth, iHeight, &cdcStatus, 0, 0);
+						cdcStatus.SelectObject(wxNullBitmap);
+					}
+					if (theApp.glob_prefs->ShowPercent()) {					
+						// ts: Percentage of completing
+						// Kry - Modified for speed
+						buffer.Format("%.1f %%", lpPartFile->GetPercentCompleted());
+						int middlex = (lpRect->left + lpRect->right) / 2;
+						int middley = (lpRect->bottom + lpRect->top) / 2;
+						dc->GetTextExtent(buffer, &textwidth, &textheight);
+							wxColour AktColor = dc->GetTextForeground();
+						if (theApp.glob_prefs->ShowProgBar()) {	
+							dc->SetTextForeground(*wxWHITE);
+						} else {	
+							dc->SetTextForeground(*wxBLACK);
+						}
+						dc->DrawText(buffer, middlex - (textwidth / 2), middley - (textheight / 2));
+						dc->SetTextForeground(AktColor);					
 					}
 
-					dc->Blit(lpRect->left, lpRect->top, iWidth, iHeight, &cdcStatus, 0, 0);
-					cdcStatus.SelectObject(wxNullBitmap);
-
-					// ts: Percentage of completing
-					// Kry - Modified for speed
-					buffer.Format("%.1f %%", lpPartFile->GetPercentCompleted());
-					int middlex = (lpRect->left + lpRect->right) / 2;
-					int middley = (lpRect->bottom + lpRect->top) / 2;
-					dc->GetTextExtent(buffer, &textwidth, &textheight);
-					wxColour AktColor = dc->GetTextForeground();
-					dc->SetTextForeground(*wxWHITE);
-					dc->DrawText(buffer, middlex - (textwidth / 2), middley - (textheight / 2));
-					dc->SetTextForeground(AktColor);					
+//					lpRect->bottom++;
+//					lpRect->top--;
 					
-					lpRect->bottom++;
-					lpRect->top--;
 				}
 				break;
 

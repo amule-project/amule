@@ -140,6 +140,9 @@ public:
 	bool OnHostnameResolved(struct sockaddr_in* inaddr);
 	CTypedPtrList<CPtrList, Hostname_Entry*> m_toresolve;
 	
+	void SaveSourceSeeds();
+	void LoadSourceSeeds();
+	
 protected:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();

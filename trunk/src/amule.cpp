@@ -608,6 +608,11 @@ bool CamuleApp::OnInit()
 	wxDebugContext::SetCheckpoint();
 #endif
 
+	// Kry - Load the sources seeds on app init
+	if (theApp.glob_prefs->GetSrcSeedsOn()) {
+		theApp.downloadqueue->LoadSourceSeeds();
+	}	
+	
 	return TRUE;
 }
 

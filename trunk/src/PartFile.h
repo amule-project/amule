@@ -318,6 +318,10 @@ public:
 	// void SetA4AFAuto(bool A4AFauto)
 	void	SetA4AFAuto(bool in)			{m_is_A4AF_auto = in;} // [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
 	bool	IsA4AFAuto()				{return m_is_A4AF_auto;} // [sivka / Tarod] Imported from eMule 0.30c (Creteil) ...
+	
+	// Kry -Sources seeds
+	void SaveSourceSeeds();
+	void LoadSourceSeeds();
 
 private:
 

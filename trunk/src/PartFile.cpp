@@ -758,6 +758,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	} else if (completedsize != transfered) {
 		m_iLostDueToCorruption = transfered - completedsize;
 	}
+	
 	return true;
 }
 
@@ -965,6 +966,173 @@ bool CPartFile::SavePartFile(bool Initial)
 	return true;
 }
 
+
+void CPartFile::SaveSourceSeeds() {
+	// Kry - Sources seeds
+	// Copyright (c) Angel Vidal (Kry) 2004
+	// Based on a Feature request, this saves the last 5 sources of the file,
+	// giving a 'seed' for the next run.
+	// We save the last sources because:
+	// 1 - They could be the hardest to get
+	// 2 - They will more probably be available
+	// However, if we have downloading sources, they have preference because
+	// we probably have more credits on them.
+	// Anyway, source exchange will get us the rest of the sources
+	// This function also saves load on servers on first run - and avoids 
+	// being unable to download if not server available
+	
+	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
+	int n_sources = 0;
+	
+	if (m_downloadingSourcesList.GetCount()>0) {
+		POSITION pos1, pos2;
+		for (pos1 = m_downloadingSourcesList.GetHeadPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
+			CUpDownClient* cur_src = m_downloadingSourcesList.GetNext(pos1);		
+			if (cur_src->HasLowID()) {
+				continue;
+			} else {
+				source_seeds.AddTail(cur_src);
+			}
+			n_sources++;
+		}
+	}
+
+	if (n_sources<5) {
+		// Not enought downloading sources to fill the list, going to sources list	
+		if (GetSourceCount()>0) {
+			// Random first slot to avoid flooding same sources always
+			uint32 fst_slot = (uint32)(rand()/(RAND_MAX/(SOURCESSLOTS-1)));
+			for (int sl=fst_slot;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
+				POSITION pos1, pos2;
+				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
+					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
+					if (cur_src->HasLowID()) {
+						continue;
+					} else {
+						source_seeds.AddTail(cur_src);
+					}
+					n_sources++;
+				}		
+			}
+			// Not yet? wrap around
+			for (int sl=0;sl<fst_slot-1;sl++) if (!srclists[sl].IsEmpty()) {
+				POSITION pos1, pos2;
+				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
+					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
+					if (cur_src->HasLowID()) {
+						continue;
+					} else {
+						source_seeds.AddTail(cur_src);
+					}
+					n_sources++;
+				}		
+			}
+		}			
+	}	
+	
+	// Write the file
+	if (!n_sources) {
+		theApp.amuledlg->AddLogLine(false,CString(_("File %s has no sources so no .seed saved")),fullname);
+		return;
+	} 
+	
+
+	CFile file;
+	wxString fName;
+	
+	file.Create(wxString(fullname) + ".seeds",true);
+	
+	if (!file.IsOpened()) {
+		theApp.amuledlg->AddLogLine(false,CString(_("Failed to save part.met.seeds file for %s")),fullname);
+	}	
+
+	uint8 src_count = source_seeds.GetCount();
+	file.Write(&src_count,1);
+	
+	POSITION pos1, pos2;
+	for (pos1 = source_seeds.GetHeadPosition();(pos2 = pos1)  != NULL;) {
+		CUpDownClient* cur_src = source_seeds.GetNext(pos1);		
+		uint32 dwID = cur_src->GetUserID();
+		uint16 nPort = cur_src->GetUserPort();
+		uint32 dwServerIP = cur_src->GetServerIP();
+		uint16 nServerPort = cur_src->GetServerPort();
+		file.Write(&dwID,4);
+		file.Write(&nPort,2);
+		file.Write(&dwServerIP,4);
+		file.Write(&nServerPort,2);
+		file.Write(cur_src->GetUserHash(),16);
+	}	
+	file.Flush();
+	file.Close();
+
+	theApp.amuledlg->AddLogLine(false,CString(_("Saved %i sources seeds for partfile: %s (%s)")),n_sources,fullname,m_strFileName.GetData());
+	
+}	
+
+
+void CPartFile::LoadSourceSeeds() {
+	
+	wxString fName;
+	CFile file;
+	
+	if (!wxFileName::FileExists(wxString(fullname) + ".seeds")) {
+		return;
+	} 
+	
+	file.Open(wxString(fullname) + ".seeds",CFile::read);
+
+	if (!file.IsOpened()) {
+		theApp.amuledlg->AddLogLine(false,CString(_("Partfile %s (%s) has no seeds file")),m_partmetfilename,m_strFileName.GetData());
+		return;
+	}	
+	
+	if (!file.Length()>1) {
+		theApp.amuledlg->AddLogLine(false,CString(_("Partfile %s (%s) has void seeds file")),m_partmetfilename,m_strFileName.GetData());
+		return;
+	}	
+	
+	uint8 src_count;
+	file.Read(&src_count,1);	
+	printf("src_count %i\n",src_count);
+
+	for (int i=0;i<src_count;i++) {
+	
+		uint32 dwID;
+		uint16 nPort;
+		uint32 dwServerIP;
+		uint16 nServerPort;
+		uint8 achUserHash[16];
+		file.Read(&dwID,4);
+		file.Read(&nPort,2);
+		file.Read(&dwServerIP,4);
+		file.Read(&nServerPort,2);
+		file.Read(achUserHash,16);
+		
+		if (theApp.serverconnect->IsConnected()) {
+			// check first if we are this source
+			if (theApp.serverconnect->GetClientID() < 16777216) {
+				if ((theApp.serverconnect->GetClientID() == dwID) && theApp.serverconnect->GetCurrentServer()->GetIP() == dwServerIP) {
+					continue;
+				}
+			} else if (theApp.serverconnect->GetClientID() == dwID) {
+				continue;
+			} 
+		} 
+		
+		if (dwID < 16777216) {
+			continue;
+		}			
+		
+		if(theApp.glob_prefs->GetMaxSourcePerFile() > this->GetSourceCount()) {
+			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
+			newsource->SetUserHash(achUserHash);
+			theApp.downloadqueue->CheckAndAddSource(this,newsource);
+		} else {
+			break;
+		}				
+	}
+	file.Close();	
+}		
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
 {

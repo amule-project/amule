@@ -2183,6 +2183,8 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item55->Add( item56, 1, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
+    item0->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
     wxStaticBox *item63 = new wxStaticBox( parent, -1, _("IP-Filter") );
     wxStaticBoxSizer *item62 = new wxStaticBoxSizer( item63, wxVERTICAL );
     IDC_IPF_0 = item62;
@@ -2194,9 +2196,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item65->SetValue( TRUE );
     item62->Add( item65, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item55->Add( item62, 0, wxLEFT, 5 );
-
-    item0->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item62, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     if (set_sizer)
     {
@@ -2345,6 +2345,9 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxCheckBox *item16 = new wxCheckBox( parent, IDC_STARTNEXTFILE, _("Start next paused file when a file completed"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->SetValue( TRUE );
     item9->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Use sources seeds"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -2757,6 +2760,27 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     item7->Add( item17, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item7, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+
+    wxStaticBox *item21 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
+    wxStaticBoxSizer *item20 = new wxStaticBoxSizer( item21, wxVERTICAL );
+
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetValue( TRUE );
+    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetValue( TRUE );
+    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item25 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBoxSizer *item24 = new wxStaticBoxSizer( item25, wxVERTICAL );
+
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

@@ -194,6 +194,20 @@ void CDownloadQueue::SavePartFiles(bool del /*= false*/)
 	}
 }
 
+void CDownloadQueue::SaveSourceSeeds()
+{
+	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
+		filelist.GetAt(pos)->SaveSourceSeeds();
+	}
+}
+
+void CDownloadQueue::LoadSourceSeeds()
+{
+	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)) {
+		filelist.GetAt(pos)->LoadSourceSeeds();
+	}
+}
+
 void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd,uint8 paused)
 {
 	if (IsFileExisting(toadd->GetFileHash())) {
