@@ -2073,7 +2073,9 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	wxString command;
 
 	// If no player set in preferences, use mplayer.
+	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
+		wxMessageBox(_("Please set your prefered video player on preferences.\n Meanwhile, mplayer will be used and you will get this warning on every preview"), _("File preview"),wxOK);
 		command = wxT("mplayer");
 	} else {
 		command = thePrefs::GetVideoPlayer();
@@ -2086,13 +2088,6 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	} else {
 		command += file->GetFullName().BeforeLast( wxT('.') );
 	}
-	
-	#warning Need PreviewSmallBlocks preferences.
-	/*
-	if (thePrefs.GetPreviewSmallBlocks()) {
-		FlushBuffer(true);
-	}
-	*/
 	
 	command += wxT("\"");
 	
