@@ -947,7 +947,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	Hash[1] = 0xEFCDAB89;
 	Hash[2] = 0x98BADCFE;
 	Hash[3] = 0x10325476;
-	CMemFile* data = NULL;
+	CFile* data = NULL;
 	if (in_string)
 		data = new CMemFile(in_string,Length);
 	uint32 Required = Length;
@@ -957,7 +957,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
         if (len > sizeof(X)/(64 * sizeof(X[0]))) 
              len = sizeof(X)/(64 * sizeof(X[0])); 
 		if (in_string)
-			data->ReadRaw(&X,len*64);
+			data->Read(&X,len*64);
 		else if (file)
             fread(&X,len*64,1,file); 
 		else if (file2)
@@ -972,7 +972,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 	Required = Length % 64;
 	if (Required != 0){
 		if (in_string)
-			data->ReadRaw(&X,Required);
+			data->Read(&X,Required);
 		else if (file)
 			fread(&X,Required,1,file);
 		else if (file2)
