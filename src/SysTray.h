@@ -52,11 +52,12 @@ enum DesktopMode
 #include "color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
 
-#if defined(__UTF8_SYSTRAY_ENABLED__)
+#if defined(__UTF8_SYSTRAY_ENABLED__) || wxUSE_UNICODE 
+	// On unicode builds on gtk, UTF8 must be used!
 	#define char2gtk(x) 		char2UTF8(x)
 	#define unicode2gtk(x) 	unicode2UTF8(x)
 #else
-	#define char2gtk(x) 		x
+	#define char2gtk(x) 		unicode2char(x)
 	#define unicode2gtk(x) 	unicode2char(x)
 #endif
 

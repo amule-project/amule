@@ -93,7 +93,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{
 				if (pTag->tag.type == 2)
-					SetFileName(char2unicode(pTag->tag.stringvalue));
+					SetFileName(pTag->tag.stringvalue);
 				break;
 			}
 			case FT_FILESIZE:{
@@ -124,11 +124,11 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 						if (pTag->tag.type == _aMetaTags[t].nType && !strcasecmp(pTag->tag.tagname, _aMetaTags[t].pszName))
 						{
 							// skip string tags with empty string values
-							if (pTag->tag.type == 2 && (pTag->tag.stringvalue == NULL || pTag->tag.stringvalue[0] == '\0'))
+							if (pTag->tag.type == 2 && pTag->tag.stringvalue.IsEmpty())
 								break;
 
 							// skip "length" tags with "0: 0" values
-							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_LENGTH) && (!strcmp(pTag->tag.stringvalue, "0: 0") || !strcmp(pTag->tag.stringvalue, "0:0")))
+							if (!strcasecmp(pTag->tag.tagname, FT_ED2K_MEDIA_LENGTH) && (pTag->tag.stringvalue.IsSameAs(wxT("0: 0")) || pTag->tag.stringvalue.IsSameAs(wxT("0:0"))))
 								break;
 
 							// skip "bitrate" tags with '0' values
@@ -159,7 +159,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 						if (pTag->tag.type == _aMetaTags[t].nType && pTag->tag.specialtag == _aMetaTags[t].nID)
 						{
 							// skip string tags with empty string values
-							if (pTag->tag.type == 2 && (pTag->tag.stringvalue == NULL || pTag->tag.stringvalue[0] == '\0'))
+							if (pTag->tag.type == 2 && pTag->tag.stringvalue.IsEmpty())
 								break;
 
 							printf("CPartFile::CPartFile(CSearchFile*): added tag %s\n", unicode2char(pTag->GetFullInfo()));
@@ -434,7 +434,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			return false;
 		} else {
 			if (!(metFile.Length()>0)) {
-				AddLogLineM(false, _("Error: part.met file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
+				AddLogLineM(false, _("Error: part.met nackups file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
 				metFile.Close();
 				return false;
 			}
@@ -442,7 +442,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 	}
 	
 	try {
-		metFile.Read(&version,1);
+		version = metFile.ReadUInt8();
 		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
 			metFile.Close();
 			AddLogLineM(false, wxString::Format(_("Error: Invalid part.met fileversion! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str()));
@@ -466,9 +466,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			}
 		}
 		if (isnewstyle) {
-			uint32 temp;
-			metFile.Read(&temp,4);
-			ENDIAN_SWAP_I_32(temp);
+			uint32 temp = metFile.ReadUInt32();
 	
 			if (temp==0) {	// 0.48 partmets - different again
 				LoadHashsetFromFile(&metFile, false);
@@ -476,7 +474,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 				uchar gethash[16];
 				metFile.Seek(2, CFile::start);
 				LoadDateFromFile(&metFile);
-					metFile.Read(gethash, 16);
+				metFile.ReadHash16(gethash);
 				m_abyFileHash = gethash;
 			}
 
@@ -485,22 +483,20 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			LoadHashsetFromFile(&metFile, false);
 		}	
 
-		uint32 tagcount = 0;	
-		metFile.Read(&tagcount,4);
-		ENDIAN_SWAP_I_32(tagcount);
+		uint32 tagcount = metFile.ReadUInt32();
 
 		for (uint32 j = 0; j < tagcount;++j) {
-			CTag* newtag = new CTag(metFile);
+			CTag* newtag = new CTag(metFile,false);
 			if (!getsizeonly || (getsizeonly && (newtag->tag.specialtag==FT_FILESIZE || newtag->tag.specialtag==FT_FILENAME))) {
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
-						if(newtag->tag.stringvalue == NULL) {
+						if(newtag->tag.stringvalue.IsEmpty()) {
 							AddLogLineM(true, wxString::Format(_("Error: %s (%s) is corrupt"), m_partmetfilename.c_str(), m_strFileName.c_str()));
 							delete newtag;
 							return false;
 						}
-						printf(" - filename %s - ",newtag->tag.stringvalue);
-						SetFileName(char2unicode(newtag->tag.stringvalue));
+						printf(" - filename %s - ",unicode2char(newtag->tag.stringvalue));
+						SetFileName(newtag->tag.stringvalue);
 						delete newtag;
 						break;
 					}
@@ -607,7 +603,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 					case FT_AICH_HASH:{
 						//wxASSERT( newtag->IsStr() );
 						CAICHHash hash;
-						if (hash.DecodeBase32(newtag->tag.stringvalue) == CAICHHash::GetHashSize())
+						if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize())
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
 						else
 							wxASSERT( false );
@@ -790,7 +786,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 
 		time_t file_date = wxFileModificationTime(m_fullname);
 		if ( (((time_t)date) < (time_t)(file_date - 10)) || (((time_t)date) > (time_t)(file_date + 10))) {
-			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted"), m_fullname.c_str(), m_strFileName.c_str()));
+			AddLogLineM(false, wxString::Format(_("Warning: %s might be corrupted (%i)"), m_fullname.c_str(), (date - file_date)));
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			
@@ -824,7 +820,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		return false;
 	}
 	
-	CFile file;
+	CSafeFile file;
 	try {
 		if ( !wxFileExists( m_fullname.Left(m_fullname.Length() - 4) ) ) {
 			throw wxString(wxT(".part file not found"));
@@ -843,18 +839,15 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 
 		// version
-		uint8 version = PARTFILE_VERSION;
-		file.Write(&version,1);
+		file.WriteUInt8(PARTFILE_VERSION);
 		
-		date = ENDIAN_SWAP_32(wxFileModificationTime(m_fullname));
-		file.Write(&date,4);
+		file.WriteUInt32(wxFileModificationTime(m_fullname));
 		// hash
-		file.Write(m_abyFileHash,16);
-		uint16 parts = ENDIAN_SWAP_16(hashlist.GetCount());
-		file.Write(&parts,2);
-		parts = hashlist.GetCount();
+		file.WriteHash16(m_abyFileHash);
+		uint16 parts = hashlist.GetCount();
+		file.WriteUInt16(parts);
 		for (int x = 0; x != parts; ++x) {
-			file.Write(hashlist[x],16);
+			file.WriteHash16(hashlist[x]);
 		}
 		// tags		
 		#define FIXED_TAGS 10
@@ -865,8 +858,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
 			++tagcount;
 		}
-		uint32 endian_tagcount = ENDIAN_SWAP_32(tagcount);
-		file.Write(&endian_tagcount,4);
+		file.WriteUInt32(tagcount);
 
 		CTag(FT_FILENAME,m_strFileName).WriteTagToFile(&file);	// 1
 		CTag(FT_FILESIZE,m_nFileSize).WriteTagToFile(&file);	// 2

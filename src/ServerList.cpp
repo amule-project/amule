@@ -125,29 +125,25 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 
 		Notify_ServerFreeze();
 		
-		if ( (1 != servermet.Read(&version,1)) || (version != 0xE0 && version != MET_HEADER)) {
+		version = servermet.ReadUInt8();
+		
+		if (version != 0xE0 && version != MET_HEADER) {
 			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
 			throw CInvalidPacket("Corrupted server.met");
 		}
 
-		uint32 fservercount;
-		if (4 != servermet.Read(&fservercount,4)) {
-			throw CInvalidPacket("Corrupted server.met");
-		}
-
-		ENDIAN_SWAP_I_32(fservercount);			
+		uint32 fservercount = servermet.ReadUInt32();
 
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
 
 		for (uint32 j = 0;j < fservercount; ++j) {
 			// get server
-			if (sizeof(ServerMet_Struct) != servermet.Read(&sbuffer,sizeof(ServerMet_Struct))) {
-				throw CInvalidPacket();
-			}
-			ENDIAN_SWAP_I_32(sbuffer.ip);
-			ENDIAN_SWAP_I_16(sbuffer.port);			
-			ENDIAN_SWAP_I_32(sbuffer.tagcount);
+
+			sbuffer.ip = servermet.ReadUInt32();
+			sbuffer.port = servermet.ReadUInt16();
+			
+			sbuffer.tagcount = servermet.ReadUInt32();
 			
 			CServer* newserver = new CServer(&sbuffer);
 
@@ -740,26 +736,24 @@ bool CServerList::SaveServermetToFile()
 	m_nLastSaved=::GetTickCount(); // oops.. don't save ALL the time :)
 
 	wxString newservermet(theApp.ConfigDir + wxT("server.met.new"));
-	CFile servermet;
+	CSafeFile servermet;
 	servermet.Open(newservermet, CFile::write);
 	if (!servermet.IsOpened()) {
 		AddLogLineM(false,_("Failed to save server.met!"));
 		return false;
 	}
 
-	version = 0xE0;
-	servermet.Write(&version, 1);
-	uint32 fservercount = ENDIAN_SWAP_32(list.GetCount());
-	servermet.Write(&fservercount,4);
-	ServerMet_Struct sbuffer;
-	CServer* nextserver;
 
-	fservercount = list.GetCount(); // fservercount was modified above by ENDIAN_SWAP_I_32 !
+	servermet.WriteUInt8(0xE0);
+	
+	uint32 fservercount = list.GetCount(); 
+	servermet.WriteUInt32(fservercount);
+	
+	CServer* nextserver;
 	
 		for (uint32 j = 0; j != fservercount; ++j){
 			nextserver = this->GetServerAt(j);
-			sbuffer.ip = ENDIAN_SWAP_32(nextserver->GetIP());
-			sbuffer.port = ENDIAN_SWAP_16(nextserver->GetPort());
+
 			uint16 tagcount = 12;
 			if (!nextserver->GetListName().IsEmpty()) 
 				++tagcount;
@@ -767,8 +761,10 @@ bool CServerList::SaveServermetToFile()
 				++tagcount;
 			if (!nextserver->GetDescription().IsEmpty())
 				++tagcount;
-			sbuffer.tagcount = ENDIAN_SWAP_32(tagcount);
-			servermet.Write(&sbuffer, sizeof(ServerMet_Struct));	
+			
+			servermet.WriteUInt32(nextserver->GetIP());
+			servermet.WriteUInt16(nextserver->GetPort());
+			servermet.WriteUInt32(tagcount);
 						
 			if (!nextserver->GetListName().IsEmpty()) {
 				CTag servername( ST_SERVERNAME, nextserver->GetListName() );

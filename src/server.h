@@ -32,13 +32,16 @@ class CTag;
 class TagList;
 class ServerMet_Struct;
 class CSafeFile;
+class CFileDataIO;
 
 // Server TCP flags
-#define SRV_TCPFLG_COMPRESSION		0x00000001
+#define	SRV_TCPFLG_COMPRESSION		0x00000001
+#define	SRV_TCPFLG_NEWTAGS			0x00000008
+#define	SRV_TCPFLG_UNICODE			0x00000010
 
 // Server UDP flags
-#define SRV_UDPFLG_EXT_GETSOURCES	0x00000001
-#define SRV_UDPFLG_EXT_GETFILES		0x00000002
+#define	SRV_UDPFLG_EXT_GETSOURCES	0x00000001
+#define	SRV_UDPFLG_EXT_GETFILES		0x00000002
 
 // Server priority
 #define SRV_PR_LOW                      2
@@ -70,7 +73,7 @@ public:
 	}	
 	
 	uint16	GetPort()						{return port;}
-	bool	AddTagFromFile(CFile* servermet);
+	bool	AddTagFromFile(CFileDataIO* servermet);
 	void	SetListName(const wxString& newname);
 	void	SetDescription(const wxString& newdescription);
 	uint32	GetIP() const			{return ip;}
@@ -114,6 +117,7 @@ public:
 	void	SetDescReqChallenge(uint32 uDescReqChallenge) {m_uDescReqChallenge = uDescReqChallenge;}
 	uint8	GetLastDescPingedCount() const	{return lastdescpingedcout;}
 	void	SetLastDescPingedCount(bool reset);
+	bool	GetUnicodeSupport() const				{return GetTCPFlags() & SRV_TCPFLG_UNICODE;}
 	
 private:
 	uint32		challenge;
@@ -148,4 +152,3 @@ private:
 };
 
 #endif // SERVER_H
-

@@ -40,6 +40,7 @@
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "server.h"		// Needed for CServer
+#include "updownclient.h"
 #include "StringFunctions.h" // Needed for unicode2char
 
 #ifndef AMULE_DAEMON
@@ -235,13 +236,14 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	Notify_SharedFilesShowFile(toadd);
 
 	// offer new file to server
+	
 	if (!server->IsConnected()) {
 		return;
 	}
 	CSafeMemFile* files = new CSafeMemFile(100);
 
 	files->WriteUInt32(1); // filecount
-	CreateOfferedFilePacket(toadd,files, true);
+	CreateOfferedFilePacket(toadd,files, server->GetCurrentServer(), NULL);
 	Packet* packet = new Packet(files);
 	packet->SetOpCode(OP_OFFERFILES);
 	// compress packet
@@ -293,7 +295,7 @@ void CSharedFileList::SendListToServer(){
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); ++pos ) {
-		CreateOfferedFilePacket(pos->second,files,true);
+		CreateOfferedFilePacket(pos->second,files,server->GetCurrentServer(), NULL);
 	}
 	Packet* packet = new Packet(files);
 	packet->SetOpCode(OP_OFFERFILES);
@@ -329,7 +331,7 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
         return NULL;
 }
 
-void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, bool fromserver){
+void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, CServer* pServer, CUpDownClient* pClient){
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
@@ -340,7 +342,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 	uint32 nClientID;
 	uint16 nClientPort;
 
-	if (!fromserver || (theApp.serverconnect->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
+	if (pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
 		#define FILE_COMPLETE_ID		0xfbfbfbfb
 		#define FILE_COMPLETE_PORT	0xfbfb
 		#define FILE_INCOMPLETE_ID	0xfcfcfcfc
@@ -385,9 +387,23 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 
 	files->WriteUInt32(uTagCount);
 
+	EUtf8Str eStrEncode;
+
+	if (pServer != NULL && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE)){
+		// eserver doesn't properly support searching with ASCII-7 strings in BOM-UTF8 published strings
+		//eStrEncode = utf8strOptBOM;
+		eStrEncode = utf8strRaw;
+	} else {
+		if (pClient && !pClient->GetUnicodeSupport()) {
+			eStrEncode = utf8strNone;
+		} else {
+			eStrEncode = utf8strRaw;
+		}
+	}
+	
 	if (cur_file->GetFileName()) {
 		CTag* nametag = new CTag(FT_FILENAME,cur_file->GetFileName());
-		nametag->WriteTagToFile(files);
+		nametag->WriteTagToFile(files, eStrEncode);
 		delete nametag;
 	}
 

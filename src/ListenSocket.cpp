@@ -882,7 +882,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CSafeMemFile message_file((BYTE*)packet,size);
 
 				//filter me?
-				wxString message = message_file.ReadString();
+				wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
 						AddLogLineM(true,wxString(_("Message filtered from '")) + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
@@ -923,7 +923,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CSafeMemFile tempfile(80);
 				tempfile.WriteUInt32(list.GetCount());
 				while (list.GetCount()) {
-					theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile, false);
+					theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile, NULL, m_client);
 					list.RemoveHead();
 				}
 				// create a packet and send it
@@ -1062,7 +1062,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 				CSafeMemFile data((uchar*)packet, size);
 											
-				wxString strReqDir = data.ReadString();
+				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
 					wxASSERT( data.GetPosition() == data.GetLength() );
@@ -1086,7 +1086,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					tempfile.WriteString(strReqDir);
 					tempfile.WriteUInt32(list.GetCount());
 					while (list.GetCount()) {
-						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, false);
+						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, NULL, m_client);
 						list.RemoveHead();
 					}
 					#ifdef __USE_DEBUG__
@@ -1128,7 +1128,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					CSafeMemFile data((uchar*)packet, size);
 					uint32 uDirs = data.ReadUInt32();
 					for (uint32 i = 0; i < uDirs; i++){
-						wxString strDir = data.ReadString();
+						wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 						AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) shares directory "),m_client->GetUserID()) + strDir);
 						#ifdef __USE_DEBUG__
 						if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1164,7 +1164,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile data((uchar*)packet, size, 0);
-				wxString strDir = data.ReadString();
+				wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 				if (m_client->GetFileListRequested() > 0){
 					AddLogLineM(true,wxString(_("User ")) + m_client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory "),m_client->GetUserID()) + strDir);

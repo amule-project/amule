@@ -517,17 +517,16 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 
 
 // needed for memfiles. its probably better to switch everything to CFile...
-bool CKnownFile::LoadHashsetFromFile(const CFile* file, bool checkhash){
+bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash){
 	CMD4Hash checkid;
-	file->Read(&checkid,16);
+	file->ReadHash16(checkid);
 	
-	uint16	parts;
-	file->Read(&parts,2);
-	ENDIAN_SWAP_I_16(parts);
+	uint16 parts = file->ReadUInt16();
+	
 	
 	for (uint16 i = 0; i < parts; i++){
 		CMD4Hash cur_hash;
-		file->Read(cur_hash,16);
+		file->ReadHash16(cur_hash);
 		hashlist.Add(cur_hash);
 	}
 	
@@ -573,17 +572,16 @@ bool CKnownFile::LoadHashsetFromFile(const CFile* file, bool checkhash){
 	}
 }
 
-bool CKnownFile::LoadTagsFromFile(const CFile* file)
+bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 {
 	try {
 		uint32 tagcount;
-		file->Read(&tagcount,4);
-		ENDIAN_SWAP_I_32(tagcount);
+		tagcount = file->ReadUInt32();
 		for (uint32 j = 0; j != tagcount;j++){
-			CTag* newtag = new CTag(*file);
+			CTag* newtag = new CTag(*file, false);
 			switch(newtag->tag.specialtag){
 				case FT_FILENAME:{
-					SetFileName(char2unicode(newtag->tag.stringvalue));
+					SetFileName(newtag->tag.stringvalue);
 					delete newtag;
 					break;
 				}
@@ -636,7 +634,7 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 				}
 				case FT_AICH_HASH:{
 					CAICHHash hash;
-					if (hash.DecodeBase32(newtag->tag.stringvalue) == CAICHHash::GetHashSize()) {
+					if (hash.DecodeBase32(unicode2char(newtag->tag.stringvalue)) == CAICHHash::GetHashSize()) {
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 					} else {
 						wxASSERT( false );
@@ -655,14 +653,12 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 	}
 }
 
-bool CKnownFile::LoadDateFromFile(const CFile* file){
-	uint32 i;
-	int j = file->Read(&i,4);
-	date = ENDIAN_SWAP_32(i);
-	return (4 == j);
+bool CKnownFile::LoadDateFromFile(const CFileDataIO* file){
+	date = file->ReadUInt32();
+	return true;
 }
 
-bool CKnownFile::LoadFromFile(const CFile* file){
+bool CKnownFile::LoadFromFile(const CFileDataIO* file){
 	// SLUGFILLER: SafeHash - load first, verify later
 	bool ret1 = LoadDateFromFile(file);
 	bool ret2 = LoadHashsetFromFile(file,false);
@@ -673,20 +669,18 @@ bool CKnownFile::LoadFromFile(const CFile* file){
 }
 
 
-bool CKnownFile::WriteToFile(CFile* file){
+bool CKnownFile::WriteToFile(CFileDataIO* file){
 	// date
-	uint32 endiandate = ENDIAN_SWAP_32(date);
-	file->Write(&endiandate,4); 
+	file->WriteUInt32(date); 
 	// hashset
-	file->Write(m_abyFileHash,16);
+	file->WriteHash16(m_abyFileHash);
+	
 	uint16 parts = hashlist.GetCount();
+	file->WriteUInt16(parts);
 
-	ENDIAN_SWAP_I_16(parts);
-
-	file->Write(&parts,2);
-	parts = hashlist.GetCount();
 	for (int i = 0; i < parts; i++)
-		file->Write(hashlist[i],16);
+		file->WriteHash16(hashlist[i]);
+	
 	//tags
 	const int iFixedTags = 8;
 	uint32 tagcount = iFixedTags;
@@ -708,9 +702,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	}
 	// standard tags
 
-	ENDIAN_SWAP_I_32(tagcount);
-
-	file->Write(&tagcount, 4);
+	file->WriteUInt32(tagcount);
 	
 	CTag nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);

@@ -125,9 +125,9 @@ public:
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
 	virtual	bool	IsPartFile() const	{return false;}
-	virtual bool	LoadFromFile(const CFile* file);	//load date, hashset and tags from a .met file
+	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
-	bool	WriteToFile(CFile* file);	
+	bool	WriteToFile(CFileDataIO* file);	
 	uint32	GetFileDate() const	{return date;}
 
 		
@@ -160,7 +160,7 @@ public:
 	uint8	GetPermissions() const	{ return m_iPermissions; };
 	void	SetPermissions(uint8 iNewPermissions) {m_iPermissions = iNewPermissions;};
 
-	bool	LoadHashsetFromFile(const CFile* file, bool checkhash);
+	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
 	void	NewAvailPartsInfo();
@@ -216,8 +216,8 @@ public:
 
 	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 protected:
-	bool	LoadTagsFromFile(const CFile* file);
-	bool	LoadDateFromFile(const CFile* file);
+	bool	LoadTagsFromFile(const CFileDataIO* file);
+	bool	LoadDateFromFile(const CFileDataIO* file);
 	void	CreateHashFromFile(CFile* file, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
 	void GetMetaDataTags();

@@ -289,7 +289,6 @@ STag::STag()
 {
 	type = 0;
 	tagname = NULL;
-	stringvalue = NULL;
 	intvalue = 0;
 	specialtag = 0;
 }
@@ -299,7 +298,7 @@ STag::STag(const STag& in)
 	type = in.type;
 	tagname = in.tagname!=NULL ? nstrdup(in.tagname) : NULL;
 	if (in.type == 2)
-		stringvalue = in.stringvalue!=NULL ? nstrdup(in.stringvalue) : NULL;
+		stringvalue = in.stringvalue;
 	else if (in.type == 3)
 		intvalue = in.intvalue;
 	else if (in.type == 4)
@@ -316,9 +315,6 @@ STag::~STag()
 {
 	if (tagname) {
 		delete[] tagname;
-	}
-	if (type == 2 && stringvalue) {
-		delete[] stringvalue;
 	}
 }
 
@@ -341,24 +337,24 @@ CTag::CTag(int8 special,uint32 intvalue){
 CTag::CTag(LPCSTR name,LPCSTR strvalue){
 	tag.tagname = nstrdup(name);
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue);
+	tag.stringvalue = char2unicode(strvalue);
 }
 
 CTag::CTag(int8 special, LPCSTR strvalue){
 	tag.type = 2;
-	tag.stringvalue = nstrdup(strvalue);
+	tag.stringvalue = char2unicode(strvalue);
 	tag.specialtag = special;
 }
 
 CTag::CTag(LPCSTR name, const wxString& strvalue){
 	tag.tagname = nstrdup(name);
 	tag.type = 2;
-	tag.stringvalue = nstrdup(unicode2char(strvalue));
+	tag.stringvalue = strvalue;
 }
 
 CTag::CTag(uint8 special, const wxString& strvalue){
 	tag.type = 2;
-	tag.stringvalue = nstrdup(unicode2char(strvalue));
+	tag.stringvalue = strvalue;
 	tag.specialtag = special;
 }
 
@@ -375,10 +371,10 @@ CTag::CTag(CFile *file)
 }
 #endif // UNDEFINED
 
-CTag::CTag(const CFile &in_data)
+CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
 	off_t off;
-	if ((off = in_data.Read(&tag.type,1)) == wxInvalidOffset) {
+	if ((off = data.Read(&tag.type,1)) == (off_t)wxInvalidOffset) {
 		throw CInvalidPacket("Bad Met File");
 	}
 	
@@ -389,24 +385,17 @@ CTag::CTag(const CFile &in_data)
 		tag.type &= 0x7F;
 		
 		#warning we need to add the new tag types before 2.0.0
-		if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {	
-			throw CInvalidPacket("Bad Met File");
-		}
+		tag.specialtag = data.ReadUInt8();
 		tag.tagname = NULL;
 	} else {
 	
-		if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {	
-			throw CInvalidPacket("Bad Met File");
-		}
-
-		ENDIAN_SWAP_I_16(length);
+		length = data.ReadUInt16();
+		
 		if (length == 1) {
-			if ((off = in_data.Read(&tag.specialtag,1)) == wxInvalidOffset) {
-				throw CInvalidPacket("Bad Met File");
-			}
+			tag.specialtag = data.ReadUInt8();
 		} else {
 			tag.tagname = new char[length+1];
-			if ((off = in_data.Read(tag.tagname,length)) == wxInvalidOffset) {
+			if ((off = data.Read(tag.tagname,length)) == (off_t)wxInvalidOffset) {
 				throw CInvalidPacket("Bad Met File");
 			}
 			tag.tagname[length] = 0;
@@ -418,88 +407,59 @@ CTag::CTag(const CFile &in_data)
 	// a list - like the search results from a server.
 	
 	if (tag.type == 2){ // STRING
-		if ((off = in_data.Read(&length,2)) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}
-		ENDIAN_SWAP_I_16(length);
-		tag.stringvalue = new char[length+1];
-		if (in_data.Read(tag.stringvalue,length) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}		
-		tag.stringvalue[length] = '\0';
+		tag.stringvalue = data.ReadString(bOptUTF8);
 	}
 	else if (tag.type == 3){ // DWORD
-		if (in_data.Read(&tag.intvalue,4) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}				
-		ENDIAN_SWAP_I_32(tag.intvalue);
+		tag.intvalue = data.ReadUInt32();
 	}
 	else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
 		// What to do with them?
-		if (in_data.Read(&tag.floatvalue,4) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}				
+		data.ReadUInt32();
 	}
 	else if (tag.type == 1){ // HASH (never seen)
 		printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-		if (in_data.Seek(16, CFile::current) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}								
+		uchar* discard = new uchar[16];
+		data.ReadHash16(discard);
+		delete discard;
 	}
 	else if (tag.type == 5){ // BOOL (never seen; propably 1 byte)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-		if (in_data.Seek(1, CFile::current) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}								
+		data.ReadUInt8();
 	}
 	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbytes> <bytes>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
-		uint16 len;
-		if (in_data.Read(&len,2) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}										
-		ENDIAN_SWAP_I_16(len);
-		if (in_data.Seek((len+7)/8, CFile::current) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}								
+		uint16 len = data.ReadUInt16();
+		uchar* discard = new uchar[(len/8) +1];
+		data.Read(discard, (len/8) +1);
+		delete discard;
 	}
 	else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
-		uint16 len;
-		if (in_data.Read(&len,2) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}										
-		ENDIAN_SWAP_I_16(len);
-		if (in_data.Seek(len, CFile::current) == wxInvalidOffset) {		
-			throw CInvalidPacket("Bad Met File");
-		}								
+		uint32 len = data.ReadUInt32();
+		uchar* discard = new uchar[len];
+		data.Read(discard, len);
+		delete discard;
 	}
 	else if (tag.type == TAGTYPE_UINT16){ 
-		uint16 value;
-		if (in_data.Read(&value,2) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}				
 		tag.type = 3;
-		tag.intvalue = ENDIAN_SWAP_16(value);
+		tag.intvalue = data.ReadUInt16();
 	}
 	else if (tag.type == TAGTYPE_UINT8){ 
-		uint8 value;
-		if (in_data.Read(&value,1) == wxInvalidOffset) {
-			throw CInvalidPacket("Bad Met File");
-		}				
 		tag.type = 3;
-		tag.intvalue = value;
+		tag.intvalue = data.ReadUInt8();
 	}	
 	else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
 		length = tag.type - TAGTYPE_STR1 + 1;
-		tag.stringvalue = new char[length+1];
-		if (in_data.Read(tag.stringvalue,length) == wxInvalidOffset) {
+		char* stringvalue = new char[length+1];
+		if (data.Read(stringvalue,length) == wxInvalidOffset) {
 			throw CInvalidPacket("Bad Met File");
 		}		
-		tag.stringvalue[length] = '\0';		
+		stringvalue[length] = '\0';		
+		// NETWORK UNICODE!
+		tag.stringvalue = char2unicode(stringvalue);
 		tag.type = 2;
 	}
 	else{
@@ -515,38 +475,28 @@ CTag::~CTag()
 {
 }
 
-bool CTag::WriteTagToFile(CFile* file)
+bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 {
 	// don't write tags of unknown types, we wouldn't be able to read them in again 
 	// and the met file would be corrupted
 	if (tag.type==2 || tag.type==3 || tag.type==4){
-		file->Write(&tag.type,1);
+		file->WriteUInt8(tag.type);
 		
 		if (tag.tagname){
-			uint16 taglen= (uint16)strlen(tag.tagname);
-			ENDIAN_SWAP_I_16(taglen);
-			file->Write(&taglen,2);
-                        ENDIAN_SWAP_I_16(taglen);
-			file->Write(tag.tagname,taglen);
+			wxString tagname = char2unicode(tag.tagname);
+			file->WriteString(char2unicode(tag.tagname));
 		}
 		else{
 			uint16 taglen = 1;
-			ENDIAN_SWAP_I_16(taglen);
-			file->Write(&taglen,2);
-                        ENDIAN_SWAP_I_16(taglen);
+			file->WriteUInt16(taglen);
 			file->Write(&tag.specialtag,taglen);
 		}
 
 		if (tag.type == 2){
-			uint16 len = (uint16)strlen(tag.stringvalue);
-			ENDIAN_SWAP_I_16(len);
-			file->Write(&len,2);
-			ENDIAN_SWAP_I_16(len);
-			file->Write(tag.stringvalue,len);
+			file->WriteString(tag.stringvalue, eStrEncode);
 		}
 		else if (tag.type == 3){
-			uint32 intvalue_endian = ENDIAN_SWAP_32(tag.intvalue);
-			file->Write(&intvalue_endian,4);
+			file->WriteUInt32(tag.intvalue);
 		}
 		else if (tag.type == 4){
 			// What to to with them on ppc?
@@ -581,7 +531,7 @@ wxString CTag::GetFullInfo() const
 	strTag += _T("=");
 	if (tag.type == 2){
 		strTag += _T("\"");
-		strTag += (char2unicode(tag.stringvalue));
+		strTag += tag.stringvalue;
 		strTag += _T("\"");
 	}
 	else if (tag.type == 3){

@@ -130,7 +130,7 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 				// process all search result packets
 				int iLeft;
 				do{
-					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(packet, StringIPtoUint32(host), port-4);
+					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(packet, true /* (update && update->GetUnicodeSupport())*/, StringIPtoUint32(host), port-4);
 					// There is no need because we don't limit the global results
 					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
@@ -264,15 +264,15 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 						
 						uint32 uTags = packet.ReadUInt32();
 						for (uint32 i = 0; i < uTags; ++i) {
-							CTag tag(packet);
+							CTag tag(packet, update->GetUnicodeSupport());
 							if (tag.tag.specialtag == ST_SERVERNAME && tag.tag.type == 2) {
-								update->SetListName(char2unicode(tag.tag.stringvalue));
+								update->SetListName(tag.tag.stringvalue);
 							} else if (tag.tag.specialtag == ST_DESCRIPTION && tag.tag.type == 2) {
-								update->SetDescription(char2unicode(tag.tag.stringvalue));
+								update->SetDescription(tag.tag.stringvalue);
 							} else if (tag.tag.specialtag == ST_DYNIP && tag.tag.type == 2) {
-								update->SetDynIP(char2unicode(tag.tag.stringvalue));
+								update->SetDynIP(tag.tag.stringvalue);
 							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 2) {
-								update->SetVersion(char2unicode(tag.tag.stringvalue));
+								update->SetVersion(tag.tag.stringvalue);
 							} else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3) {
 								wxString strVersion;
 								strVersion.Printf(wxT("%u.%u"), tag.tag.intvalue >> 16,
@@ -295,8 +295,8 @@ void CUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, co
 						
 					}
 				} else {
-					update->SetDescription(packet.ReadString());
-					update->SetListName(packet.ReadString());
+					update->SetDescription(packet.ReadString(update->GetUnicodeSupport()));
+					update->SetListName(packet.ReadString(update->GetUnicodeSupport()));
 				}
 				break;
 			}
