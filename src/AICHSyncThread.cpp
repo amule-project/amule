@@ -45,24 +45,33 @@
 #include <algorithm>
 
 
-wxMutex			CAICHSyncThread::s_thread_mutex;
+wxMutex			CAICHSyncThread::s_mutex;
 CAICHSyncThread*	CAICHSyncThread::s_thread;
 
 
 bool CAICHSyncThread::Start()
 {
-	// Check if we already have a thread
-	if ( GetThread() )
-		return false;
+	wxMutexLocker lock( s_mutex );
 
-	CAICHSyncThread* thread = new CAICHSyncThread();
-	if ( thread->Create() != wxTHREAD_NO_ERROR ) {
+	// Check if the hasher is running already.
+	if ( s_thread ) {
+		AddDebugLogLineM( true, logAICHThread, wxT("Start() called while thread is active!") );
+		return false;
+	}
+	
+	s_thread = new CAICHSyncThread();
+	if ( s_thread->Create() != wxTHREAD_NO_ERROR ) {
 		AddDebugLogLineM( true, logAICHThread, wxT("Failed to create AICH thread!") );
+
+		delete s_thread;
+		s_thread = NULL;
+		
 		return false;
 	}
 
-	thread->SetPriority( WXTHREAD_DEFAULT_PRIORITY - 10 ); // slightly less than main
-	thread->Run();
+	// slightly less than the main thread.
+	s_thread->SetPriority( WXTHREAD_MIN_PRIORITY );
+	s_thread->Run();
 
 	return true;
 }
@@ -70,13 +79,22 @@ bool CAICHSyncThread::Start()
 
 bool CAICHSyncThread::Stop()
 {
-	if ( IsRunning() ) {
+	s_mutex.Lock();
+	
+	if ( s_thread ) {
 		// Are there any threads to kill?
 		AddLogLineM( false, _("AICH Thread: Signaling for thread to terminate.") );
-	
+		
 		// Tell the thread to terminate, this function returns immediatly
-		GetThread()->Delete();
+		s_thread->Delete();
 
+		s_mutex.Unlock();
+		
+		// We will be blocking the main thread, so we need to leave the
+		// gui mutex, so that events can still be processed while we are
+		// waiting.
+		wxMutexGuiLeave();
+			
 		// Wait for all threads to die
 		while ( IsRunning() ) {
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
@@ -84,62 +102,41 @@ bool CAICHSyncThread::Stop()
 			// once the thread has died.
 
 		 	otherfunctions::MilliSleep(10);
-			
 		}
 
-		return true;
-	}
+		// Re-claim the GUI mutex.
+		wxMutexGuiLeave();
 
-	AddDebugLogLineM( true, logAICHThread, wxT("Warning, attempted to stop non-existing thread!") );
-	return false;		
+		return true;
+	} else {
+		s_mutex.Unlock();
+
+		AddDebugLogLineM( true, logAICHThread, wxT("Warning, attempted to stop non-existing thread!") );
+		return false;
+	}
 }
 
 
 bool CAICHSyncThread::IsRunning()
 {
-	return ( GetThread() != NULL );
-}
-
-
-CAICHSyncThread* CAICHSyncThread::GetThread()
-{
-	wxMutexLocker lock( s_thread_mutex );
+	wxMutexLocker lock( s_mutex );
 
 	return s_thread;
-}
-
-
-void CAICHSyncThread::SetThread( CAICHSyncThread* ptr )
-{
-	wxMutexLocker lock( s_thread_mutex );
-
-	s_thread = ptr;
 }
 
 
 CAICHSyncThread::CAICHSyncThread()
 	: wxThread( wxTHREAD_DETACHED )
 {
-	// Some sainity checking, this should never happen
-	if ( GetThread() ) {
-		AddDebugLogLineM( true, logAICHThread, wxT("Error, thread has already been started!") );
-	}
-
-	SetThread( this );
 }
 
 
 CAICHSyncThread::~CAICHSyncThread()
 {
-	// Some sainity checking, this should never happen
-	if ( GetThread() != this ) {
-		AddDebugLogLineM( true, logAICHThread, wxT("Error, mismatch between running thread and static pointer!") );
-		return;
-	}
-
-	SetThread( NULL );
-
-	AddLogLineM( false, _("AICH Thread: Thread terminated.") );
+	wxMutexLocker lock( s_mutex );
+	s_thread = NULL;	
+	
+	AddLogLineM( false, _("AICH Thread: Terminated.") );
 }
 
 
@@ -227,19 +224,14 @@ void* CAICHSyncThread::Entry()
 
 	if ( !queue.empty() ) {
 		AddLogLineM( false, wxString::Format( _("AICH Thread: Starting to hash files. %li files found."), (long int)queue.size() ) );
-		while ( !queue.empty() ) {
-			// Check for termination
-			if ( TestDestroy() ) {
-				return 0;
-			}
-
+		while ( !queue.empty() && !TestDestroy() ) {
 			CKnownFile* pCurFile = queue.front();
 			queue.pop_front();
 
 			AddLogLineM( false, CFormat( _("AICH Thread: Hashing file: %s, total files left: %li") ) % pCurFile->GetFileName() % queue.size() );
 
 			// Just to be sure that the file hasnt been deleted lately
-			if ( 	!(theApp.knownfiles->IsKnownFile(pCurFile) &&
+			if ( !(theApp.knownfiles->IsKnownFile(pCurFile) &&
 				theApp.sharedfiles->GetFileByID(pCurFile->GetFileHash())) )
 				continue;
 
