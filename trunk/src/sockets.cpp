@@ -157,6 +157,11 @@ void CServerConnect::StopConnectionTry(){
 	}
 }
 
+#define CAPABLE_ZLIB 1
+#define CAPABLE_IP_IN_LOGIN_FRAME 2
+#define CAPABLE_AUXPORT 4
+#define CAPABLE_NEWTAGS 8
+
 void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 	if (connecting == false)
 	{
@@ -189,9 +194,18 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		CTag tagport(CT_PORT,app_prefs->GetPort());
 		tagport.WriteTagToFile(&data);
 		
-		CTag tagflags(0x20,0x00000001); // FLAGS for server connection : zlib awareness
+		CTag tagflags(0x20,CAPABLE_ZLIB); // FLAGS for server connection
 		tagflags.WriteTagToFile(&data);
-
+		
+		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
+		// to send an Hello packet to the server during the callback test))
+		// Kry - We're identifying as eMule 0.42e (0 42 4)
+		CTag tagMuleVersion(CT_EMULE_VERSION, 
+							//(uCompatibleClientID	<< 24) |
+							(0			<< 17) |
+							(42			<< 10) |
+							(4			<<  7) );
+		tagMuleVersion.WriteTagToFile(&data);
 
 		Packet* packet = new Packet(&data);
 		packet->opcode = OP_LOGINREQUEST;
