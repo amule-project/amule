@@ -151,15 +151,6 @@ class wxMuleInternalEvent : public wxEvent {
 };
 
 #ifdef AMULE_DAEMON
-// Helper class, there only if we can't use wxExecute with async flag.
-class CamuleWebserverThread : public wxThread {
-		
-	virtual ExitCode 	Entry();
-	
-};
-#endif
-
-#ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
 #else
 #define AMULE_APP_BASE wxApp
@@ -416,7 +407,8 @@ public:
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
-
+	void QueueLogLine(bool addtostatusbar, const wxString& line);
+	
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 	
 	DECLARE_EVENT_TABLE()
