@@ -1974,12 +1974,6 @@ void CClientReqSocket::OnSend(int nErrorCode)
 	CEMSocket::OnSend(nErrorCode);
 }
 
-#ifdef __LINUX__ 
-	#include <unistd.h>
-	#include <execinfo.h>
-#endif
-
-
 void CClientReqSocket::OnError(int nErrorCode)
 {
 	// 0.42e + Kry changes for handling of socket lost events
