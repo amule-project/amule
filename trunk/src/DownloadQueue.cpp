@@ -810,26 +810,8 @@ void CDownloadQueue::StopUDPRequests()
 	lastfile = 0;
 }
 
-void CDownloadQueue::SortByPriority()
-{
-	uint16 n = filelist.size();
-	if (!n) {
-		return;
-	}
-	uint16 i;
-	for ( i = n/2; i--; ) {
-		HeapSort(i, n-1);
-	}
-	for ( i = n; --i; ) {
-		std::swap(filelist[0], filelist[i]);
-		HeapSort(0, i-1);
-	}
-}
-
-bool CDownloadQueue::CompareParts(int pos1, int pos2)
-{
-	CPartFile* file1 = filelist[pos1];
-	CPartFile* file2 = filelist[pos2];
+// Comparison function needed by sort
+bool ComparePartFiles(CPartFile* file1, CPartFile* file2) {
 	if (file1->GetDownPriority() == file2->GetDownPriority()) {
 		return (wxString::wxString(file1->GetPartMetFileName()).CmpNoCase(file2->GetPartMetFileName()))>=0;
 	}
@@ -837,29 +819,9 @@ bool CDownloadQueue::CompareParts(int pos1, int pos2)
 	return (file1->GetDownPriority() < file2->GetDownPriority());
 }
 
-void CDownloadQueue::HeapSort(uint16 first, uint16 last)
+void CDownloadQueue::SortByPriority()
 {
-	uint16 r;
-	uint16 pos1 = first;
-	for ( r = first; !(r & 0x8000) && (r<<1) < last; ) {
-		uint16 r2 = (r<<1)+1;
-		uint16 pos2 = r2;
-		if (r2 != last) {
-			uint16 pos3 = pos2;
-			pos3++;
-			if (!CompareParts(pos2, pos3)) {
-				pos2 = pos3;
-				r2++;
-			}
-		}
-		if (!CompareParts(pos1, pos2)) {
-			std::swap(filelist[pos1], filelist[pos2]);
-			r = r2;
-			pos1 = pos2;
-		} else {
-			break;
-		}
-	}
+	sort(filelist.begin(), filelist.end(), ComparePartFiles);
 }
 
 void CDownloadQueue::ResetLocalServerRequests()

@@ -152,8 +152,6 @@ protected:
 	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
 
 private:
-	bool	CompareParts(int pos1, int pos2);
-	void	HeapSort(uint16 first, uint16 last);
 	std::deque<CPartFile*> filelist;
 	std::list<CPartFile*> m_localServerReqQueue;
 	CSharedFileList* sharedfilelist;
