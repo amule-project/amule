@@ -114,7 +114,6 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	m_nServerPort = in_serverport;
 	reqfile = in_reqfile;
 	ReGetClientSoft();
-	
 }
 
 void CUpDownClient::Init()
@@ -223,6 +222,7 @@ void CUpDownClient::Init()
 	m_nUpCompleteSourcesCount= 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_bAddNextConnect = false;  // VQB Fix for LowID slots only on connection
+	m_SoftLen = 0;
 }
 
 
@@ -328,6 +328,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_nClientVersion = 0;
 	m_fSharedDirectories = 0;
 	m_bMultiPacket = 0;
+	m_SoftLen = 0;
 }
 
 void CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
@@ -466,13 +467,13 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
 		if ( data->GetLength() - data->GetPosition() == 4 ){
 			// Kry - Changes on eMule code for compat.
-			char test[5];
+			char test[4];
 			// lemonfan - this is not an "normal" string, so wxString cant be used
 			data->ReadRaw(&test, 4);
-			test[4]='\0';
-			if (strncmp(test,"MLDK",4))
+			if ((test[0]=='M') && (test[0]=='L') && (test[0]=='D') && (test[0]=='K')) {
+				printf("MLdonkey detected\n");
 				m_bIsML=true;
-			else{
+			} else{
 				m_bIsHybrid = true;
 				m_fSharedDirectories = 1;
 			}
@@ -481,23 +482,28 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	} catch ( CStrangePacket )
 	{
 		printf("\nWrong Tags on hello type packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetVersion());
 		printf("User Disconnected.\n");
+		throw wxString("Wrong Tags on hello type packet");
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong Tags on hello type packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetVersion());
 		printf("User Disconnected.\n");		
+		throw wxString("Wrong Tags on hello type packet");
 	}
-	/* Kry - Added the CT_EMULE_VERSION tag		
+	/* Kry - Added the CT_EMULE_VERSION tag - probably no more need for this
+	
 	if( m_nClientVersion > 10000 && m_nClientVersion < 100000 )
 		m_nClientVersion = m_nClientVersion - (m_nClientVersion/10000)*10000;
 	if( m_nClientVersion > 1000 )
 		m_nClientVersion = m_nClientVersion - (m_nClientVersion/1000)*1000;
 	if( m_nClientVersion < 100 )
 		m_nClientVersion *= 10;
+	
 	*/
+	
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
 	if (socket) {
@@ -583,6 +589,7 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	}
 
 	ReGetClientSoft();
+	
 	m_byInfopacketsReceived |= IP_EDONKEYPROTPACK;
 	if (m_byInfopacketsReceived == IP_BOTH)
 		InfoPacketsReceived();
@@ -765,12 +772,15 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 					m_bSupportsPreview = (temptag.tag.intvalue & 128) > 0;
 					break;
 				case ET_MOD_VERSION:
-					if (temptag.tag.type == 2)
+					if (temptag.tag.type == 2) {
 						m_strModVersion = temptag.tag.stringvalue;
-					else if (temptag.tag.type == 3)
+					}
+					else if (temptag.tag.type == 3) {
 						m_strModVersion.Format(_T("ModID=%u"), temptag.tag.intvalue);
-					else
+					}
+					else {
 						m_strModVersion = _T("ModID=<Unknwon>");
+					}
 					break;
 				default:
 					//printf("Mule Unk Tag 0x%02x=%x\n", temptag.tag.specialtag, (UINT)temptag.tag.intvalue);
@@ -781,18 +791,20 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 	catch ( CStrangePacket )
 	{
 		printf("\nWrong Tags on Mule Info packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		printf("Packet Dump:\n");
 		DumpMem(pachPacket,nSize);
+		throw wxString("Wrong Tags on Mule Info packet");
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong Tags on Mule Info packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		printf("Packet Dump:\n");		
 		DumpMem(pachPacket,nSize);
+		throw wxString("Wrong Tags on Mule Info packet");
 	}
 	
 	if( m_byDataCompVer == 0 ){
@@ -801,7 +813,9 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 		m_byAcceptCommentVer = 0;
 		m_nUDPPort = 0;
 	}
+
 	ReGetClientSoft();
+
 	m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 	if (m_byInfopacketsReceived == IP_BOTH)
 		InfoPacketsReceived();
@@ -825,16 +839,39 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	data->WriteRaw(theApp.glob_prefs->GetUserHash(),16);
 	data->Write(theApp.serverconnect->GetClientID());
 	data->Write(theApp.glob_prefs->GetPort());
-	data->Write((uint32)2);
-	CTag* tag = new CTag(CT_NAME,theApp.glob_prefs->GetUserNick());
-	tag->WriteTagToFile(data);
-	delete tag;
-	tag = new CTag(CT_VERSION,EDONKEYVERSION);
-	tag->WriteTagToFile(data);
-	delete tag;
-//	tag = new CTag(CT_PORT,theApp.glob_prefs->GetPort());
-//	tag->WriteTagToFile(data);
-//	delete tag;
+	
+	// Kry - This is the tagcount!!! Be sure to update it!!
+	data->Write((uint32)4);
+	
+	CTag tagname(CT_NAME,theApp.glob_prefs->GetUserNick());
+	tagname.WriteTagToFile(data);
+	
+	CTag tagversion(CT_VERSION,EDONKEYVERSION);
+	tagversion.WriteTagToFile(data);
+	// eMule UDP Ports
+	
+	uint32 kadUDPPort = 0;
+	#ifdef __USE_KAD__
+	if(Kademlia::CKademlia::isConnected())
+	{
+		kadUDPPort = theApp.glob_prefs->GetUDPPort();
+	}
+	#endif
+	CTag tagUdpPorts(CT_EMULE_UDPPORTS, 
+				(kadUDPPort									<< 16) |
+				((uint32)theApp.glob_prefs->GetUDPPort()         ) ); 
+	tagUdpPorts.WriteTagToFile(data);
+	
+	// aMule Version
+	CTag tagMuleVersion(CT_EMULE_VERSION, 
+				(SO_AMULE	<< 24) |
+				(VERSION_MJR			<< 17) |
+				(VERSION_MIN			<< 10) |
+				(VERSION_UPDATE			<<  7) |
+				(VERSION_RC			     ) 
+				);
+	tagMuleVersion.WriteTagToFile(data);	
+	
 	uint32 dwIP = 0;
 	uint16 nPort = 0;
 	if (theApp.serverconnect->IsConnected()) {
@@ -884,12 +921,14 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		return;
+		throw wxString("Wrong MuleComment packet");
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
+		throw wxString("Wrong MuleComment packet");
 		return;
 	}		
 
@@ -1256,88 +1295,200 @@ void CUpDownClient::ConnectionEstablished()
 	}
 }
 
-
+int CUpDownClient::GetHashType() const
+{
+	if (m_achUserHash[5] == 13 && m_achUserHash[14] == 110)
+		return SO_OLDEMULE;
+	else if (m_achUserHash[5] == 14 && m_achUserHash[14] == 111)
+		return SO_EMULE;
+ 	else if (m_achUserHash[5] == 'M' && m_achUserHash[14] == 'L')
+		return SO_MLDONKEY;
+	else
+		return SO_UNKNOWN;
+}
 
 void CUpDownClient::ReGetClientSoft()
 {
-	do {
-		//theApp.clientlist->RemoveClientType(GetClientSoft(), GetClientVerString());
-		if (!m_pszUsername) {
-			m_clientSoft=SO_UNKNOWN;break;
-		}
-		if( m_bIsHybrid ) {
-			m_clientSoft=SO_EDONKEYHYBRID;break;
-		}
-		if( m_bIsNewMLD ) {
-			m_clientSoft=SO_NEW_MLDONKEY;break;
-		}
-		if (m_achUserHash[5] == 13 && m_achUserHash[14] == 110) {
-			m_clientSoft= SO_OLDEMULE;break;
-		}
-		if (m_achUserHash[5] == 14 && m_achUserHash[14] == 111) {
-			if( m_byCompatibleClient == 1 ) {
-				m_clientSoft= SO_CDONKEY;
+
+	if (!m_pszUsername) {
+		m_clientSoft=SO_UNKNOWN;
+		m_clientVerString = _("Unknown");
+		m_SoftLen = m_clientVerString.Length();
+		return;
+	}
+
+	int iHashType = GetHashType();
+	if (iHashType == SO_EMULE) {
+		switch(m_byCompatibleClient){
+			case SO_CDONKEY:
+				m_clientSoft = SO_CDONKEY;
+				m_clientVerString = _("cDonkey");
 				break;
-			} else if( m_byCompatibleClient == 2 ){
-				m_clientSoft= SO_LXMULE;
+			case SO_LXMULE:
+				m_clientSoft = SO_LXMULE;
+				if(GetClientModString().IsEmpty() == false) {
+					m_clientVerString = wxString::Format(("xMule %s"), GetClientModString().c_str());
+				} else {
+					m_clientVerString = _("xMule");
+				}
+				if (GetMuleVersion() > 0x26) {
+					m_clientVerString += wxString::Format(" (Fake eMule version %x)",GetMuleVersion());
+				}
 				break;
-			} else if( m_byCompatibleClient == 3 ){
-				m_clientSoft= SO_AMULE;
+			case SO_AMULE:
+				m_clientSoft = SO_AMULE;
+				if(GetClientModString().IsEmpty() == false) {
+					m_clientVerString = wxString::Format("aMule %s", GetClientModString().c_str());
+				} else {
+					m_clientVerString = _("aMule");
+				}
 				break;
+			case SO_SHAREAZA:
+				m_clientSoft = SO_SHAREAZA;
+				m_clientVerString = _("Shareaza");
+				break;
+			case SO_MLDONKEY:
+				m_clientVerString = _("Old MlDonkey");
+				break;
+			case SO_NEW_MLDONKEY:
+				m_clientVerString = _("New MlDonkey");
+				break;		
+			default:
+				if (m_bIsML){
+					m_clientSoft = SO_MLDONKEY;
+					m_clientVerString = _("MLdonkey");
+				}
+				else if (m_bIsHybrid){
+					m_clientSoft = SO_EDONKEYHYBRID;
+					m_clientVerString = _("eDonkeyHybrid");
+				}
+				else if (m_byCompatibleClient != 0){
+					m_clientSoft = SO_LXMULE;
+					m_clientVerString = _("eMule Compat");
+				}
+				else {
+					// If we step here, it might mean 2 things:
+					// a eMule
+					// a Compat Client that has sent no MuleInfo packet yet.
+					m_clientSoft = SO_EMULE;
+					m_clientVerString = _("eMule");
+				}
+		}	
+		
+		m_SoftLen = m_clientVerString.Length();
+		
+		if (m_byEmuleVersion == 0){
+			m_nClientVersion = 0;
+		} else if (m_byEmuleVersion != 0x99) {		
+			UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
+			m_nClientVersion = nClientMinVersion*100*10;
+			if (m_clientSoft == SO_AMULE) {
+				m_clientVerString += wxString::Format(" 1.x (based on eMule v0.%u)", nClientMinVersion);
 			} else {
-				m_clientSoft= SO_EMULE;
-				break;
+				m_clientVerString +=  wxString::Format(" v0.%u", nClientMinVersion);
 			}
+		} else {					
+			UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
+			UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
+			UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
+			UINT nClientRcVersion  = m_nClientVersion & 0x0f;
+			
+			m_nClientVersion = nClientMajVersion*100*10*100 + nClientMinVersion*100*10 + nClientUpVersion*100;
+			if (m_clientSoft == SO_AMULE) {
+				m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
+				if (nClientRcVersion > 0) {
+					m_clientVerString +=  wxString::Format("-rc%i",nClientRcVersion);
+				}
+			} else {
+				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+			}			
 		}
-		if (m_achUserHash[5] == 'M' && m_achUserHash[14] == 'L') {
-			m_clientSoft= SO_MLDONKEY;break;
+		return;
+	}		
+
+	if (m_bIsHybrid){
+		m_clientSoft = SO_EDONKEYHYBRID;
+		// seen:
+		// 105010	50.10
+		// 10501	50.1
+		// 1051		51.0
+		// 501		50.1
+
+		UINT nClientMajVersion;
+		UINT nClientMinVersion;
+		UINT nClientUpVersion;
+		if (m_nClientVersion > 100000){
+			UINT uMaj = m_nClientVersion/100000;
+			nClientMajVersion = uMaj - 1;
+			nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
+			nClientUpVersion = m_nClientVersion % 100;
+		}
+		else if (m_nClientVersion > 10000){
+			UINT uMaj = m_nClientVersion/10000;
+			nClientMajVersion = uMaj - 1;
+			nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
+			nClientUpVersion = m_nClientVersion % 10;
+		}
+		else if (m_nClientVersion > 1000){
+			UINT uMaj = m_nClientVersion/1000;
+			nClientMajVersion = uMaj - 1;
+			nClientMinVersion = m_nClientVersion - uMaj*1000;
+			nClientUpVersion = 0;
+		}
+		else if (m_nClientVersion > 100){
+			UINT uMin = m_nClientVersion/10;
+			nClientMajVersion = 0;
+			nClientMinVersion = uMin;
+			nClientUpVersion = m_nClientVersion - uMin*10;
+		}
+		else{
+			nClientMajVersion = 0;
+			nClientMinVersion = m_nClientVersion;
+			nClientUpVersion = 0;
+		}
+		m_nClientVersion = nClientMajVersion*100*10*100 + nClientMinVersion*100*10 + nClientUpVersion*100;
+
+		m_clientVerString = "eDonkeyHybrid";
+
+		m_SoftLen = m_clientVerString.Length();		
+		
+		if (nClientUpVersion) {
+			m_clientVerString += wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
 		} else {
-			m_clientSoft=SO_EDONKEY;
+			m_clientVerString += wxString::Format(" v%u.%u", nClientMajVersion, nClientMinVersion);
 		}
+	
+		return;
 	}
-	while (0);
-	// Format name of client
-	switch(GetClientSoft()) {
-		case SO_EDONKEY:
-			m_clientVerString.Printf(_T("eDonkey v%u"), GetVersion());
-			break;
-		case SO_EDONKEYHYBRID:
-			m_clientVerString.Printf(_T("eDonkey Hybrid v%u"), GetVersion());
-			break;
-		case SO_EMULE:
-			m_clientVerString.Printf(_T("eMule v%02X"), GetMuleVersion());
-			break;
-		case SO_OLDEMULE:
-			m_clientVerString.Printf(_T("old eMule v%02X"), GetMuleVersion());
-			break;
-		case SO_CDONKEY:
-			m_clientVerString.Printf(_T("cDonkey v%02X"), GetMuleVersion());
-			break;
-		case SO_LXMULE:
-			m_clientVerString.Printf(_T("lMule/xMule v%02X"), GetMuleVersion());
-			if(GetClientModString().IsEmpty() == false) {
-				m_clientVerString.Printf(_T("lMule/xMule %s"), GetClientModString().c_str());
-			}
-			break;			
-		case SO_AMULE:
-			m_clientVerString.Printf(_T("aMule v%02X"), GetMuleVersion());
-			if(GetClientModString().IsEmpty() == false) {
-				m_clientVerString.Printf(_T("aMule %s"), GetClientModString().c_str());
-			}
-			break;			
-		case SO_MLDONKEY:
-			m_clientVerString = _T("Old MlDonkey");
-			break;
-		case SO_NEW_MLDONKEY:
-			m_clientVerString = _T("New MlDonkey");
-			break;
-		default:
-			m_clientVerString = _("Unknown");
+
+	if (m_bIsML || (iHashType == SO_MLDONKEY)){
+		m_clientSoft = SO_MLDONKEY;
+		UINT nClientMinVersion = m_nClientVersion;
+		m_nClientVersion = nClientMinVersion*100*10;
+		m_clientVerString = "MLdonkey";
+		m_SoftLen = m_clientVerString.Length();
+		m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);
+		return;
 	}
-	if(m_clientModString.IsEmpty() == false) {
-		m_clientVerString = m_clientModString;
+
+
+	if (iHashType == SO_OLDEMULE){
+		m_clientSoft = SO_OLDEMULE;
+		UINT nClientMinVersion = m_nClientVersion;
+		m_nClientVersion = nClientMinVersion*100*10;
+		m_clientVerString = "Old eMule";
+		m_SoftLen = m_clientVerString.Length();
+		m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);		
+		return;
 	}
-	//theApp.clientlist->AddClientType(GetClientSoft(), GetClientVerString());
+
+	m_clientSoft = SO_EDONKEY;
+	UINT nClientMinVersion = m_nClientVersion;
+	m_nClientVersion = nClientMinVersion*100*10;
+	m_clientVerString = "eDonkey";
+	m_SoftLen = m_clientVerString.Length();
+	m_clientVerString += wxString::Format(" v0.%u", nClientMinVersion);
+	
 }
 
 
@@ -1665,12 +1816,14 @@ void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
 		printf("\nWrong Tags on SecIdentState packet!!\n");
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
+		throw wxString("Wrong Tags on SecIdentState packet");
 	}
 	catch ( CInvalidPacket (e))
 	{
 		printf("Wrong Tags on SecIdentState packet - %s\n\n",e.what());
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
+		throw wxString("Wrong Tags on SecIdentState packet");
 	}
 			
 	
