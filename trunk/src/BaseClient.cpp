@@ -868,9 +868,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	CTag tag6(ET_EXTENDEDREQUEST,2);
 	tag6.WriteTagToFile(data);
 	
-	#warning Needs the preferences!
-	//uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
-	uint32 dwTagValue = 3;
+	uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+
 	#warning Needs the preferences! And the preview!
 	/*
 	if (theApp.glob_prefs->IsPreviewEnabled())
