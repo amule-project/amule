@@ -1,5 +1,7 @@
 Version 2.0.0rc5 - 
 
+	Hetfield:
+		* some gcc 3.4.x compilation fixes
 	phoenix:
 		* Added a test with a warning to
 		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
