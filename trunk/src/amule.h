@@ -48,6 +48,15 @@ class GUIEvent {
 		ptr_value			= NULL;
 	};
 	
+	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s) {
+		ID 					= new_id;	
+		byte_value 		= value8;
+		long_value 		= 0;
+		longlong_value 	= 0;
+		string_value 	= value_s;
+		ptr_value			= NULL;
+	};
+	
 	GUI_Event_ID ID;
 	byte			byte_value;
 	uint32		long_value;
@@ -58,17 +67,9 @@ class GUIEvent {
 };
 
 
-#define AddLogLineM(x,y); \
-		GUIEvent event(ADDLOGLINE); \
-		event.string_value = y; \
-		event.byte_value = x; \
-		theApp.NotifyEvent(event);
+#define AddLogLineM(x,y); theApp.NotifyEvent(GUIEvent(ADDLOGLINE,x,y));
 		
-#define AddDebugLogLineM(x,y); \
-		GUIEvent event(ADDDEBUGLOGLINE); \
-		event.string_value = y; \
-		event.byte_value = x; \
-		theApp.NotifyEvent(event);
+#define AddDebugLogLineM(x,y); theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,x,y));
 
 class CAbstractFile;
 class ExternalConn;
