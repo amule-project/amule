@@ -19,7 +19,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
+#include <wx/filefn.h>
 #include <wx/textfile.h>
 #include <wx/menu.h>
 #include <wx/stattext.h>
