@@ -71,11 +71,17 @@ public:
 	CamulecmdFrame *frame;
 private:
 	// GUI Version
-	virtual bool 	OnInit();
+	virtual bool OnInit();
 #else
 private:
 	// Command line version
-	virtual int 	OnRun();
+	virtual int OnRun();
+	// other command line switches
+	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
+	bool OnCmdLineParsed(wxCmdLineParser& parser);
+	void TextShell(const wxString& prompt, CmdId *commands);
+	bool m_HasCmdOnCmdLine;
+	wxString m_CmdString;
 #endif
 };
 
