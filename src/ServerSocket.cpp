@@ -187,9 +187,13 @@ CEMSocket(ProxyData)
 	m_bIsDeleting = false;
 #ifndef AMULE_DAEMON	
 	my_handler = &TheServerSocketHandler;
-	SetEventHandler(*my_handler,SERVERSOCKET_HANDLER);
-	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-	Notify(TRUE);
+	SetEventHandler(*my_handler, SERVERSOCKET_HANDLER);
+	SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+	Notify(true);
 #else
 	my_handler = new CServerSocketHandler(this);
 #endif

@@ -197,9 +197,9 @@ CEMSocket(ProxyData)
 	my_handler = &TheClientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
-		wxSOCKET_CONNECTION_FLAG|
-		wxSOCKET_INPUT_FLAG|
-		wxSOCKET_OUTPUT_FLAG|
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
 #else
