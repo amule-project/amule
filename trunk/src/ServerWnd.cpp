@@ -51,8 +51,6 @@
 #include "StringFunctions.h" // Needed for StrToULong
 #include "Logger.h"
 
-//IMPLEMENT_DYNAMIC(CServerWnd, CDialog)
-IMPLEMENT_DYNAMIC_CLASS(CServerWnd,wxPanel)
 
 BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)
@@ -63,6 +61,7 @@ BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SRV_SPLITTER,CServerWnd::OnSashPositionChanged)
 END_EVENT_TABLE()
 
+	
 CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 : wxPanel(pParent, -1)
 {
@@ -83,56 +82,53 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	sizer->Show(this,TRUE);
 }
 
+
 CServerWnd::~CServerWnd()
 {
 }
+
 
 void CServerWnd::UpdateServerMetFromURL(const wxString& strURL)
 {
 	theApp.serverlist->UpdateServerMetFromURL(strURL);
 }
 
-// CServerWnd message handlers
 
 void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString serveraddr;
-	if( CastChild( IDC_IPADDRESS, wxTextCtrl )->GetValue().IsEmpty() ) {
-		AddLogLineM(true, _("Please enter a serveraddress"));
+	wxString servername = CastChild( IDC_SERVERNAME, wxTextCtrl )->GetValue();
+	wxString serveraddr = CastChild( IDC_IPADDRESS, wxTextCtrl )->GetValue();
+	long port = StrToULong( CastChild( IDC_SPORT, wxTextCtrl )->GetValue() );
+
+	if ( serveraddr.IsEmpty() ) {
+		AddLogLineM( true, _("Server not added: No IP or hostname specified."));
 		return;
-	} else {
-		serveraddr = CastChild( IDC_IPADDRESS, wxTextCtrl )->GetValue();
 	}
-	if ( CastChild( IDC_SPORT, wxTextCtrl )->GetValue().IsEmpty() ) {
-		AddLogLineM(true, _("Incomplete serverport: Please enter a serverport"));
+	
+	if ( port <= 0 || port > 65535 ) {
+		AddLogLineM( true, _("Server not added: Invalid server-port specified."));
 		return;
 	}
   
-	wxString portstr;
-	portstr= CastChild( IDC_SPORT, wxTextCtrl )->GetValue();
-	CServer* toadd = new CServer(StrToULong(portstr),serveraddr);
-	wxString servername;
-	servername = CastChild( IDC_SERVERNAME, wxTextCtrl )->GetValue();
-	if (servername.IsEmpty()) {
-		toadd->SetListName(serveraddr);
+	CServer* toadd = new CServer( port, serveraddr );
+	toadd->SetListName( servername.IsEmpty() ? serveraddr : servername );
+	
+	if ( theApp.AddServer( toadd, true ) ) {
+		CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
+		CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
+		CastChild( IDC_SPORT, wxTextCtrl )->Clear();
 	} else {
-		toadd->SetListName(servername);		
-	}
-	if ( !theApp.AddServer(toadd, true ) ) {
-		// Remove data
 		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
-		if(update) {
+		if ( update ) {
 			update->SetListName(toadd->GetListName());
 			serverlistctrl->RefreshServer(update);
 		}
 		delete toadd;
 	}
+	
 	theApp.serverlist->SaveServerMet();
-
-	CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
-	CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
-	CastChild( IDC_SPORT, wxTextCtrl )->Clear();
 }
+
 
 void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt))
 {
@@ -140,15 +136,18 @@ void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt)
 	UpdateServerMetFromURL(strURL);
 }
 
+
 void CServerWnd::OnBnClickedResetLog(wxCommandEvent& WXUNUSED(evt))
 {
 	theApp.GetLog(true); // Reset it.
 }
 
+
 void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 {
 	theApp.GetServerLog(true); // Reset it
 }
+
 
 void CServerWnd::UpdateMyInfo()
 {
@@ -190,7 +189,9 @@ void CServerWnd::UpdateMyInfo()
 	MyInfoList->SetColumnWidth(1, -1);
 }
 
+
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
 	theApp.amuledlg->srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
 }
+

@@ -34,14 +34,11 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/splitter.h>	// Needed for wxSplitter
 
+
 class CServerListCtrl;
 
-class CServerWnd : public wxPanel //CResizableDialog
+class CServerWnd : public wxPanel
 {
-  DECLARE_DYNAMIC_CLASS(CServerWnd)
-    
-    CServerWnd() {};
-
 public:
 	CServerWnd(wxWindow* pParent, int splitter_pos);   // standard constructor
 	virtual ~CServerWnd();
@@ -50,17 +47,13 @@ public:
 	void UpdateMyInfo();
 
 	CServerListCtrl* serverlistctrl;
-protected:
+
+private:
 	void OnSashPositionChanged(wxSplitterEvent& evt);
-	
-public:
-	
 	void OnBnClickedAddserver(wxCommandEvent& evt);
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	void OnBnClickedResetLog(wxCommandEvent& evt);
 	void OnBnClickedResetServerLog(wxCommandEvent& evt);
-	
-private:
 
 	DECLARE_EVENT_TABLE()
 };
