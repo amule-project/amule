@@ -120,7 +120,7 @@ void CClientReqSocket::OnClose(int nErrorCode)
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode > 0) {
 		CString strError;
-		strError.Format("Closed: %u",nErrorCode);
+		strError.Format(wxT("Closed: %u"),nErrorCode);
 		Disconnect(strError);
 	} else {
 		Disconnect("Close");
@@ -568,7 +568,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					} else {
 						if (theApp.glob_prefs->GetVerbose()) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									theApp.amuledlg->AddLogLine(false, "Client requests invalid %u. file block %u-%u (%d bytes): %s", i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i], client->GetFullIP());
+									AddLogLineM(false,wxString::Format(wxT("Client requests invalid %u. file block %u-%u (%d bytes): %s"), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i], client->GetFullIP()));
 								}
 							}
 						}
@@ -585,7 +585,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				theApp.uploadqueue->RemoveFromUploadQueue(client);
 				if (theApp.glob_prefs->GetVerbose()) {
-					theApp.amuledlg->AddDebugLogLine(false, "%s: Upload session ended due canceled transfer.", client->GetUserName());
+					AddDebugLogLineM(false,wxString::Format(wxT("%s: Upload session ended due canceled transfer."), client->GetUserName()));
 				}
 				break;
 			}
@@ -600,7 +600,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				if (size>=16 && !md4cmp(client->GetUploadFileID(),packet)) {
 					theApp.uploadqueue->RemoveFromUploadQueue(client);
 					if (theApp.glob_prefs->GetVerbose()) {
-						theApp.amuledlg->AddDebugLogLine(false, "%s: Upload session ended due ended transfer.", client->GetUserName());
+						AddDebugLogLineM(false,wxString::Format(wxT("%s: Upload session ended due ended transfer."), client->GetUserName()));
 					}
 				}
 				break;
@@ -761,7 +761,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				if ((uint32)length + 2 != size) {
 					throw wxString(wxT("Invalid message packet"));
 				}
-				theApp.amuledlg->AddLogLine(true,"New Message from '%s' (IP:%s)",client->GetUserName(), client->GetFullIP());
+				AddLogLineM(true,wxString::Format(wxT("New Message from '%s' (IP:%s)"),client->GetUserName(), client->GetFullIP()));
 				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
 				if ( (theApp.glob_prefs->MsgOnlyFriends() && !client->IsFriend()) ||
@@ -805,9 +805,9 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list -> %s")).GetData(),client->GetUserName(),client->GetUserID(),CString(_("accepted")).GetData() );
+					AddLogLineM(true,wxString::Format(wxT("User %s (%u) requested your sharedfiles-list -> %s"),client->GetUserName(),client->GetUserID(),_("Accepted")));
 				} else {
-					theApp.amuledlg->AddLogLine(true,CString(_("User %s (%u) requested your sharedfiles-list -> %s")),client->GetUserName(),client->GetUserID(),CString(_("denied")).GetData());
+					AddLogLineM(true,wxString::Format(wxT("User %s (%u) requested your sharedfiles-list -> %s"),client->GetUserName(),client->GetUserID(),_("Denied")));
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -869,10 +869,10 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					
 					bool bFoundFolder = false;
 					
-					char* char_ptrDir;
+					wxString char_ptrDir;
 					// ... the categories folders ... (category 0 -> incoming)
 					for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
-						char_ptrDir = theApp.glob_prefs->GetCategory(ix)->incomingpath;
+						char_ptrDir = char2unicode(theApp.glob_prefs->GetCategory(ix)->incomingpath);
 						bFoundFolder = false;
 						for (uint32 iDir=0; iDir < (uint32)folders_to_send.GetCount(); iDir++) {	
 							if (folders_to_send[iDir].CmpNoCase(char_ptrDir) == 0) {
@@ -1027,7 +1027,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					client->SetFileListRequested(uDirs);
 				} else {
-						theApp.amuledlg->AddLogLine(true,CString("Client %s ID %u sent unasked shared dir files"),client->GetUserName(),client->GetUserID());
+						AddLogLineM(true,wxString::Format(wxT("Client %s ID %u sent unasked shared dir files"),client->GetUserName(),client->GetUserID()));
 				}
       			break;
       		}
@@ -1070,7 +1070,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				break;
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				theApp.amuledlg->AddDebugLogLine(false,"Edonkey packet: unknown opcode: %i %x",opcode,opcode);
+				AddDebugLogLineM(false,wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	}
@@ -1078,9 +1078,9 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n",client->GetClientFullInfo().c_str());
+					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n",unicode2char(client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n", ErrorPacket.what(),client->GetClientFullInfo().c_str());
+					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcesstPacket\n", ErrorPacket.what(),unicode2char(client->GetClientFullInfo()));
 				}
 			}
 			client->SetDownloadState(DS_ERROR);
@@ -1100,9 +1100,9 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n",client->GetClientFullInfo().c_str());
+					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n",unicode2char(client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n", error.c_str(),client->GetClientFullInfo().c_str());
+					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessPacket\n", unicode2char(error),unicode2char(client->GetClientFullInfo()));
 				}
 			}
 			client->SetDownloadState(DS_ERROR);
@@ -1113,7 +1113,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				if (error.IsEmpty()) {
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n");
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", error.c_str());
+					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket::ProcessPacket\n", unicode2char(error));
 				}
 			}
 			theApp.amuledlg->AddDebugLogLine(false,CString(_("A unknown client caused an error or did something bad: %s. Disconnecting client!")),error.GetData());
@@ -1238,7 +1238,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 									}
 								} else {
 									if (theApp.glob_prefs->GetVerbose()) {
-											theApp.amuledlg->AddLogLine(false, "RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)");
+											AddLogLineM(false, wxT("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
 									}
 								}
 							}
@@ -1568,16 +1568,16 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 			#endif
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				theApp.amuledlg->AddDebugLogLine(false,"eMule packet : unknown opcode: %i %x",opcode,opcode);
+				AddDebugLogLineM(false,wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	} catch(CInvalidPacket ErrorPacket) {
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (!strlen(ErrorPacket.what())) {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",client->GetClientFullInfo().c_str());
+					printf("\tCaught InvalidPacket exception:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", ErrorPacket.what(),client->GetClientFullInfo().c_str());
+					printf("\tCaught InvalidPacket exception:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", ErrorPacket.what(),unicode2char(client->GetClientFullInfo()));
 				}
 			}
 			client->SetDownloadState(DS_ERROR);
@@ -1597,9 +1597,9 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 		if (client) {
 			if (theApp.glob_prefs->GetVerbosePacketError()) {
 				if (error.IsEmpty()) {			
-					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",client->GetClientFullInfo().c_str());
+					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n",unicode2char(client->GetClientFullInfo()));
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", error.c_str(),client->GetClientFullInfo().c_str());
+					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: %s\n\ton ListenSocket::ProcessExtPacket\n", unicode2char(error),unicode2char(client->GetClientFullInfo()));
 				}
 			}
 			client->SetDownloadState(DS_ERROR);
@@ -1608,7 +1608,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 				if (error.IsEmpty()) {
 					printf("\tCaught error:\n\t\tError: Unknown\n\t\tClientData: Unknown\n\ton ListenSocket\n");
 				} else {
-					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket\n", error.c_str());
+					printf("\tCaught error:\n\t\tError: %s\n\t\tClientData: Unknown\n\ton ListenSocket\n", unicode2char(error));
 				}
 			}
 		}

@@ -24,15 +24,15 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/list.h>		// Needed for WX_DECLARE_LIST
 #include "position.h"		// Needed for POSITION
+#include "otherfunctions.h"
 
 class stringList;
 
 class CString : public wxString {
 public:
 	CString() : wxString() {};
-	CString(wxChar*ptr) : wxString(ptr) {};
-	CString(const wxChar*ptr) : wxString(ptr) {};
-		
+	CString(const char* ptr) : wxString(char2unicode(ptr)) {};
+	CString(const wchar_t* ptr) : wxString(ptr) {};
 	const char* GetBuffer() { 
 		return (const char*)GetData();
 	};
@@ -46,14 +46,6 @@ public:
 		va_start(argptr,pszFormat);
 		PrintfV(pszFormat,argptr);
 		va_end(argptr);
-	};
-  
-	int Find(CString what) const {
-		return wxString::Find(what);
-	};
-	
-	CString Mid(int from,int len) {
-		return CString(wxString::Mid(from,len).GetData());
 	};
 	
 	CString& operator=(wxString& src) {

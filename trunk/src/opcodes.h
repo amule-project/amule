@@ -238,7 +238,7 @@
 
 // this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
-#define OP_INCOMPLETE_SHARED_FILES "!Incomplete Files"
+#define OP_INCOMPLETE_SHARED_FILES wxT("!Incomplete Files")
 
 // extened prot client <-> extened prot client
 #define	OP_EMULEINFO				0x01	//

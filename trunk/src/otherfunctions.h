@@ -23,7 +23,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
-
+#include <wx/strconv.h>
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "filefn.h"		// Needed for wxCopyFile_fat32
 #include "endianfix.h"
@@ -31,6 +31,8 @@
 class CString;
 class CPartFile;
 
+#define unicode2char(x) (const char*)wxConvCurrent->cWX2MB(x)
+#define char2unicode(x) wxConvCurrent->cMB2WX(x)
 
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a CString
