@@ -77,6 +77,7 @@ wv_zlib=""
 found_zlib="no"
 
 ZLIB_DIR=""
+ZVER="1.1.4"
 AC_ARG_WITH(zlib,[  --with-zlib=DIR       use zlib in DIR],[
 	if [ test "$withval" = "no" ]; then
 		AC_MSG_ERROR([zlib is required by amule])
@@ -101,6 +102,13 @@ else
 	fi
 	AC_CHECK_HEADER(zlib.h,[
 		z=sys
+        	grep $ZVER /usr/include/zlib.h > /dev/null 2>&1
+        	CZVER=$?
+	        if test "$CZVER" != 0; then
+       		        result="no"
+                	AC_MSG_ERROR([ zlib 1.1.14 is required by amule])
+		fi;
+		
 	],[	if test $zlib = sys; then
 			AC_MSG_ERROR([zlib not found in system location])
 		fi
@@ -116,6 +124,11 @@ if test $z = peer; then
 	if test -d ../zlib; then
 		if test -r ../zlib/libz.a; then
 			AC_MSG_RESULT(yes)
+        		grep $ZVER ../include/zlib.h > /dev/null 2>&1
+        		CZVER=$?
+	        	if test "$CZVER" != 0; then
+                		AC_MSG_ERROR([ zlib 1.1.4 is required by amule])
+			fi;
 		else
 			AC_MSG_RESULT(no)
 			AC_MSG_ERROR([unable to use peer zlib - zlib/libz.a not found])
