@@ -402,6 +402,7 @@ public:
 	
 	// Kry - External Connections
 	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
+	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
 	static bool 		ECUseTCPPort()			{ return s_ECUseTCPPort; }
 	static uint32 		ECPort()			{ return s_ECPort; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
