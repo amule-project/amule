@@ -202,12 +202,6 @@ CEMSocket(ProxyData)
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
 #else
-#warning lfroen, read this comment below
-	// Shouldn't this line be: my_handler = new CClientReqSocketHandler(this); ?
-	// my_handler is not set anywhere else in the code, so it will be zero forever
-	// in amuled. So, all the "if (my_handler)"'s around the code will fail, not
-	// to mention that "delete my_handler" is void. I wont touch this code now, but
-	// I recommend that you clean this code, you certainly know better than me.
 	my_handler = 0;
 	Notify(false);
 #endif
