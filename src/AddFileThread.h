@@ -118,25 +118,25 @@ private:
 	static void CreateNewThread();
 
 	/**
-	 * Helper function for getting the next file on the queue, or removed a hashed file from the queue.
+	 * Helper function which returns the next non-busy file or NULL.
 	 *
-	 * @param remove Remove this file from the queue.
 	 * @return A viable file on the queue or NULL if the list is empty.
 	 *
 	 * Returns the first non-busy file on the queue and sets it's busy flag. 
-	 * However, if remove isn't NULL, it'll remove that file instead and return
-	 * NULL.
+	 * This allows multiple threads to work on the list and also to check 
+	 * for duplicates when adding files.
 	 */
-	static QueuedFile* PopQueuedFile(QueuedFile* remove = false);
+	static QueuedFile* GetNextFile();
 
 	/**
-	 * Helper function for adding a file to the queue.
+	 * Helper function for removing a file from the queue.
 	 *
-	 * @param file The object to be added to the queue
-	 * @param addLast If true then add the file to the back of the queue, otherwise, insert it at the front.
-	 * @return True if the file was added, false otherwise.
+	 * @param file The object to be removed from to the queue.
+	 *
+	 * Please not that this function will also delete the pointer, so 
+	 * do not attempt to delete it afterwards.
 	 */
-	static bool PushQueuedFile(QueuedFile* file, bool addLast = true);
+	static void RemoveFromQueue(QueuedFile* file);
 	 
 
 	//! Sets the IsRunning status
