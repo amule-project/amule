@@ -942,7 +942,9 @@ void CClientReqSocket::OnSend(int nErrorCode)
 
 void CClientReqSocket::OnError(int nErrorCode)
 {
-	if (theApp.glob_prefs->GetVerbose()) {
+	if (theApp.glob_prefs->GetVerbose() && (nErrorCode != 0) && (nErrorCode != 107)) {
+		// 0    -> No Error / Disconect
+		// 107  -> Transport endpoint is not connected
 		if (client) {
 			if (client->GetUserName()) {
 				theApp.amuledlg->AddLogLine(false,CString(_("Client '%s' (IP:%s) caused an error: %u. Disconnecting client!")),client->GetUserName(),client->GetFullIP(),nErrorCode);
@@ -950,7 +952,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 				theApp.amuledlg->AddLogLine(false,CString(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!")),client->GetFullIP(),nErrorCode);
 			}
 		} else {
-			theApp.amuledlg->AddLogLine(false, CString(_("A client caused an error or did something bad. Disconnecting client !")));
+			theApp.amuledlg->AddLogLine(false, CString(_("A client caused an error or did something bad (error %u). Disconnecting client !")),nErrorCode);
 		}
 	}
 	Disconnect();
