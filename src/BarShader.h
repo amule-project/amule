@@ -29,22 +29,52 @@ class wxRect;
 class wxDC;
 
 
+/**
+ * The barshader class is responsible for drawing the chunk-based progress bars used in aMule.
+ *
+ * CBarShader represents the chunks of a file through the use of spans, which 
+ * cover a range in the file with a certain color. New spans can be added on 
+ * the fly and old spams are automatically removed, resized or merged when
+ * neseccary.
+ *
+ * CBarShader will try to minimize the number of spans when possible.
+ */
 class CBarShader
 {
 public:
+	/**
+	 * Contructor.
+	 * 
+	 * @param height The height of the area upon which the span is drawn.
+	 * @param width  The width of the area upon which the span is drawn.
+	 */
 	CBarShader(uint32 height = 1, uint32 width = 1);
+
+	/**
+	 * Destructor.
+	 */
 	~CBarShader();
 
-	// Set the width of the bar
+	/**
+	 * Sets the width of the drawn bar.
+	 *
+	 * @param width The new width. 
+	 *
+	 * Setting this sets the width the bar which is used when it
+	 * is drawn. The BarShader automatically fits the intire span-
+	 * structure inside this area.
+	 */
 	void SetWidth(int width) {
-		if( m_Width != width ) {
-			m_Width = width;
-			m_PixelsPerByte = (double)m_Width / m_FileSize;
-			m_BytesPerPixel = (double)m_FileSize / m_Width;
-		}
+		m_Width = width;
 	}
 
-	// Set the height of the bar
+	/**
+	 * Sets the height of the drawn bar.
+	 *
+	 * @param height The new height. 
+	 *
+	 * Changes the height of the bar, used when it is drawn.
+	 */
 	void SetHeight( int height ) {
 		if( m_Height != height ) {
 			m_Height = height;
@@ -57,9 +87,18 @@ public:
 		}
 	}
 	
-	// Set the (3d) depth of the bar ( range 1-20 )
+	/**
+	 * Sets the 3D-depth of the bar
+	 *
+	 * @param depth A value in the range from 1 to 20.
+	 *
+	 * The 3D effect on the bar is created by applying a sinus 
+	 * curve across vertically. Each point of depth represents
+	 * a 1/10 which is multiplied by the value of y * (PI/height),
+	 * meaning that it sets the maximum height of the sinus curve.
+	 */
 	void Set3dDepth( int depth ) {
-		wxASSERT( ( depth > 1 ) && ( depth < 21 ) );
+		wxASSERT( ( depth > 0 ) && ( depth < 21 ) );
 	
 		if ( m_used3dlevel != depth ) {
 			m_used3dlevel = depth;
@@ -72,71 +111,153 @@ public:
 		}
 	}
 
-	// Returns the width of the bar
+	
+	/**
+	 * Returns the current width of the bar.
+	 *
+	 * @return The width of the bar.
+	 */
 	int GetWidth() const {
 		return m_Width;
 	}
 
-	// Returns the height of the bar
+	/**
+	 * Returns the current height of the bar.
+	 *
+	 * @return The height of the bar.
+	 */
 	int GetHeight() const {
 		return m_Height;
 	}
 
-	// Returns the (3d) depth of the bar
+	/**
+	 * Returns the current 3D-depth of the bar.
+	 *
+	 * @return The 3D-depth of the bar.
+	 */
 	int Get3dDepth() const {
 		return m_used3dlevel;
 	}
 	
 	
-	// Call this to blank the shader without changing the file size
+	/**
+	 * Removes all spans from the bar.
+	 *
+	 * Calling this function deletes all current spans and fills the
+	 * bar with a black span from 0 to filesize.
+	 */
 	void Reset();
 
-	// Sets a new file size and resets the shader
-	void SetFileSize(uint32 fileSize);
+	/**
+	 * Sets a new filesize.
+	 *
+	 * @param fileSize The new filesize.
+	 *
+	 * Calling this function sets a new filesize, which is the virtual 
+	 * length of the bar. This function does not change any spans already
+	 * present and therefore, they might end up pointing past current
+	 * filesize if the size if smaller than before.
+	 */
+	void SetFileSize(uint32 fileSize) {
+		m_FileSize = fileSize;
+	}
 
-	// Fills in a range with a certain color, new ranges overwriting old ranges
+	/**
+	 * Fills in a range with a certain color.
+	 *
+	 * @param start The starting position of the new span.
+	 * @param end The ending position of the new span. Must be larger than start.
+	 * @param color The color of the new span.
+	 *
+	 * Calling this function fill the specified range with the specified color.
+	 * Any spans completly or partially covered by the new span are either
+	 * removed or resized. If the value of end is larger than the current
+	 * filesize, the filesize is increased to the value of end.
+	 */
 	void FillRange(uint32 start, uint32 end, const DWORD color);
 
-	// Fills in entire range with a certain color
+	/**
+	 * Fill the entire bar with a span of the specified color.
+	 *
+	 * @param color The color of the new span.
+	 */
 	void Fill(DWORD color);
 
-	// Draws the bar
+	/**
+	 * Draws the bar on the specifed wxDC.
+	 *
+	 * @param dc The wxDC upon which the bar should be drawn.
+	 * @param iLeft The left position from where to start drawing.
+	 * @param iTop The top position from where to start drawing.
+	 * @param bFlat 3D effect is not applied if this is true.
+	 *
+	 * This functions draws the bar with the height and width specified
+	 * through either the contructor or with SetWidth() and SetHeight().
+	 */
 	void Draw( wxDC* dc, int iLeft, int iTop, bool bFlat );
 
-protected:
-	/* This calculates the modifiers used to create the 3d effect. In essence, 
-	   the effect is created by using a sinus curve to calculate the "darkness"
-	   of a line. */
+private:
+	/**
+	 * Calculate the sinus curve used to modify the colors.
+	 *
+	 * This calculates the modifiers used to create the 3d effect. In essence, 
+	 * the effect is created by using a sinus curve to calculate the "darkness"
+	 * of the colors at a given height.
+	 */
 	void BuildModifiers();
-	// Fills a rectangle with a given color
+	
+	/**
+	 * Fills a rectangle with a given color.
+	 *
+	 * @param dc The DC upon which to draw the bar.
+	 * @param rectSpan The area within the specifed DC upon which to draw.
+	 * @param color The color of the rectangle.
+	 * @param bFlat If this is true, a simple rectangle will be drawn, otherwise the modifers will be applyed to achive a 3D effect.
+	 */
 	void FillRect(wxDC* dc, const wxRect& rectSpan, DWORD color, bool bFlat);
 
+	//! The width of the drawn bar
 	int    m_Width;
+	//! The height of the drawn bar
 	int    m_Height;
-	double m_PixelsPerByte;
-	double m_BytesPerPixel;
+	//! The virtual filesize assosiated with the bar
 	uint32 m_FileSize;
-
-private:
+	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
+	double* m_Modifiers;
+	//! The current 3d level 
+	uint16 m_used3dlevel;
+	
+	
+	/**
+	 * This structure is used to represent a span in a CBarShader.
+	 */
 	struct BarSpan
 	{
+		//! The start position of the span
 		uint32		start;
+		//! The end position of the span
 		uint32		end;
+		//! The color of the span. 
 		DWORD		color;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param s The start position of the new span
+		 * @param e The end position of the new span
+		 * @param cr The color of the new span
+		 */
 		BarSpan(uint32 s, uint32 e, DWORD cr = 0)
 		 : start( s ),
 		   end( e ),
 		   color( cr )
-		{
-		}
+		{}
 	};
 
-	float* m_Modifiers;
-	uint16 m_used3dlevel;
-
+	//! SpanList is defined as a std::list of BarSpans for the sake of readability.
 	typedef std::list<BarSpan> SpanList;
+	//! The list of spans. This list is kept sorted.
 	SpanList m_spanlist;
 };
 
-#endif // BARSHADER_H
+#endif
