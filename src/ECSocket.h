@@ -38,13 +38,17 @@ enum aMuleECSocketType {
 
 class CECPacket;
 
+//
+// Socket registry functions
+//
+void RegisterSocket(wxSocketBase*);
+void UnregisterSocket(wxSocketBase*);
+
 /*! \class ECSocket
  *
  * \brief Socket handler for External Communications (EC).
  *
  * ECSocket takes care of the transmission of EC packets
- *
- * \todo Implement compression.
  */
 
 #ifdef AMULE_DAEMON
@@ -65,7 +69,7 @@ class ECSocket
 		//
 		// Base
 		//
-		bool Destroy() { return m_sock->Destroy(); }
+		bool Destroy() { UnregisterSocket(m_sock); return m_sock->Destroy(); }
 		bool Ok() const { return m_sock->Ok(); }
 
 		//
@@ -88,11 +92,11 @@ class ECSocket
 		bool WritePacket(wxSocketBase *sock, const CECPacket *packet);
 
 		// These 4 methods are to be used by CECPacket & CECTag
-		bool ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len);
-		bool ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len);
+		bool ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque);
+		bool ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque);
 
-		bool WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len);
-		bool WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len);
+		bool WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque);
+		bool WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque);
 
 		//
 		// Wrapper functions for client sockets
@@ -100,14 +104,15 @@ class ECSocket
 		CECPacket * ReadPacket(void) { return ReadPacket(m_sock); }
 		bool WritePacket(const CECPacket *packet) { return WritePacket(m_sock, packet); }
 
-		bool ReadNumber(void *buffer, unsigned int len) { return ReadNumber(m_sock, buffer, len); }
-		bool ReadBuffer(void *buffer, unsigned int len) { return ReadBuffer(m_sock, buffer, len); }
+//		bool ReadNumber(void *buffer, unsigned int len) { return ReadNumber(m_sock, buffer, len); }
+//		bool ReadBuffer(void *buffer, unsigned int len) { return ReadBuffer(m_sock, buffer, len); }
 
-		bool WriteNumber(const void *buffer, unsigned int len) { return WriteNumber(m_sock, buffer, len); }
-		bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
+//		bool WriteNumber(const void *buffer, unsigned int len) { return WriteNumber(m_sock, buffer, len); }
+//		bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
 
 	private:
 		uint32	ReadFlags(wxSocketBase *);
+		bool	WriteFlags(wxSocketBase *, uint32);
 		aMuleECSocketType m_type;
 		wxSocketBase *m_sock;
 };

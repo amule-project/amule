@@ -33,7 +33,7 @@ Section 1.1: Transmission layer
 -------------------------------
 
     The transmission layer is completely independent of the application layer,
-	and holds only transport-related information.
+    and holds only transport-related information.
 
     The transmission layer actually consists of an uint32 number, referenced
     below as flags, which describes flags for the current transmission session
@@ -46,13 +46,12 @@ Section 1.1: Transmission layer
     Bit description:
 
 	bit 0:	Compression flag. When set, zlib compression is applied to
-		the application layer's data. (Yet unused)
+		the application layer's data.
 
-	bit 1:	Compressed TAGLEN fields. When set (presumably on small
-		packets that doesn't worth compressing by zlib), the uint32
-		TAGLEN value is encoded as a wide char converted to utf-8 to
-		let some zero bytes not to be sent over the network.
-		(Yet unused)
+	bit 1:	Compressed numbers. When set (presumably on small packets
+		that doesn't worth compressing by zlib), all the numbers used
+		in the protocol are encoded as a wide char converted to utf-8
+		to let some zero bytes not to be sent over the network.
 
 	bits 2-3: Reserved for later use.
 
@@ -79,7 +78,7 @@ Section 1.1: Transmission layer
     Transmission layer example:
     	0x30 0x23 <appdata>	- Client uses no extensions on this packet,
 		and indicates that it can accept zlib compression and
-		compressed tagnames.
+		compressed numbers.
 
     Notes:
 	Note 1:	On the "accepts" value, the predefined flags must be set to
@@ -117,14 +116,13 @@ Section 1.2: Application layer
     The ec_tagname_t is defined as an uint16, ec_taglen_t as an uint32 value
     at the moment. TagName tells what it contains (see ECcodes.h for details).
     TagLen contains the whole length of the tag, including the lengths of the
-    possible sub-tags, but without the size of the tagName. So, an unknown tag
-    can simply be skipped by skipping tagLen bytes of the input stream.
-    Actually the highest bit of the tagname doesn't belong to the tagName
+    possible sub-tags, but without the size of the tagName and tagLen fields.
+    Actually the lowest bit of the tagname doesn't belong to the tagName
     itself, so it has to be cleared before checking the name.
 
     Tags may contain sub-tags to store the information, and a tagCount field
     is present only for these tags. The presence of the tagCount field can
-    be tested by checking the highest bit of the tagName field, when it is
+    be tested by checking the lowest bit of the tagName field, when it is
     set, tagCount field present.
 
     When a tag contains sub-tags, the sub-tags are sent before the tag's own

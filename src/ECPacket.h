@@ -82,10 +82,10 @@ class CECTag {
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { return CMD4Hash((const unsigned char *)m_tagData); }
 	protected:
-				CECTag(wxSocketBase *sock, ECSocket& socket);
-		bool		WriteTag(wxSocketBase *sock, ECSocket& socket) const;
-		bool		ReadChildren(wxSocketBase *sock, ECSocket& socket);
-		bool		WriteChildren(wxSocketBase *sock, ECSocket& socket) const;
+				CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		bool		WriteTag(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
+		bool		ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		bool		WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
 		int		m_error;
 		const void *	m_tagData;
 	private:
@@ -137,8 +137,8 @@ class CECPacket : private CECEmptyTag {
 					return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
 				}
 	private:
-				CECPacket(wxSocketBase *sock, ECSocket& socket);
-		bool		WritePacket(wxSocketBase *sock, ECSocket& socket) const;
+				CECPacket(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		bool		WritePacket(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
 		ec_opcode_t	m_opCode;
 };
 

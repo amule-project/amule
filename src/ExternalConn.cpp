@@ -149,6 +149,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
 		sock->Notify(true);
 		m_numClients++;
+		RegisterSocket(sock);
 	} else {
 		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
@@ -210,7 +211,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		AddLogLineM(false,_("External connection closed."));
 		//sock->Destroy();
 		sock->Close();
-		
+		UnregisterSocket(sock);
 		// remove client data
 		m_encoders.erase(sock);
 		break;
@@ -1585,11 +1586,12 @@ ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocket
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		AddLogLineM(false, _("ExternalConnClientThread: failed to Create thread\n"));
 	}
-	sock->SetFlags(wxSOCKET_WAITALL);
+	RegisterSocket(sock);
 }
 
 ExternalConnClientThread::~ExternalConnClientThread()
 {
+	UnregisterSocket(m_sock);
 	delete m_sock;
 }
 
