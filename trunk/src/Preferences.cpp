@@ -627,8 +627,6 @@ static LangInfo aMuleLanguages[] = {
 //	{ wxLANGUAGE_TURKISH,			wxTRANSLATE("Turkish") },
 // Yet no real support for "custom"
 //	{ wxLANGUAGE_CUSTOM,			wxTRANSLATE("Custom") },
-// Mark end of list
-	{ wxLANGUAGE_UNKNOWN,			wxEmptyString }
 };
 
 
@@ -669,7 +667,7 @@ public:
 	{
 		// Sort the list after the current locale
 		std::sort( aMuleLanguages + 1, // Dont include DEFAULT
-			   aMuleLanguages + itemsof(aMuleLanguages) - 1, // Dont include UNKNOWN
+			   aMuleLanguages + itemsof(aMuleLanguages),
 			   TranslatedSort );
 			
 		wxChoice *langSelector = dynamic_cast<wxChoice*>(m_widget);
@@ -679,9 +677,9 @@ public:
 		m_selection = 0;
 		int wxId = otherfunctions::StrLang2wx(thePrefs::GetLanguageID());
 	
-		// Add all other languages in alphabetical order, excluding UNKNOWN
+		// Add all other languages in alphabetical order
 		// and find the index of the selected language.
-		for (int i = 0; i < itemsof(aMuleLanguages) - 1; i++) {
+		for (int i = 0; i < itemsof(aMuleLanguages); i++) {
 			if ( aMuleLanguages[i].id == wxId ) {
 				m_selection = i;
 			}
