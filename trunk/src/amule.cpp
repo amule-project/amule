@@ -1179,8 +1179,7 @@ void CamuleApp::Localize_mule()
 
 	}
 
-	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {
-		
+	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {	
 		wxMessageBox(wxT(_("The selected locale seems not to be installed on your box\n You must generate it to use this language.\nA good start on linux systems is the file /etc/locale.gen and the package 'locales'\nGood luck!\n(Note: I'll try to set it anyway)")));
 	}
 	
@@ -1301,17 +1300,21 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		info += wxT(_("This version is a testing version, updated daily, and \n"));
 		info += wxT(_("we give no warranty it won't break anything, burn your house,\n"));
 		info += wxT(_("or kill your dog. But it *should* be safe to use anyway. \n"));		
-	} else if ((new_version == wxT("2.0.0rc1")) || (old_version == wxT("1.2.6"))) {
+	} else if (old_version == wxT("1.2.6")) {
 		info += wxT(_("This version has new SecureIdent support, so your \n"));
 		info += wxT(_("client credits will be lost on this first run. \n"));
 		info += wxT(_("There is no way to fix that, and eMule did the same.\n"));
 		info += wxT(_("But your hash will be safe against stealers now, and your\n"));
-		info += wxT(_("cryptokey.dat and clients.met are eMule compatible now.\n"));
+		info += wxT(_("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n"));
 		info += wxT(_("Just take them from your eMule config dir and put then on ~/.aMule.\n"));
-		
-	}		
-
+	} else if (old_version == wxT("2.0.0-rc1")) {
+		info += wxT(_("This rc2 version fixes most of the rc1 version bugs and adds new features.\n"));
+		info += wxT(_("For a full changes review, check Changelog file or www.amule.org, section Changelog.\n"));
+	}
+	
+	info += wxT(_("You locale has been changed to System Default due to version change. Sorry."));
 	info += wxT(_("Feel free to report any bugs to forum.amule.org"));
+	
 		
 	wxMessageBox(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);	
 
