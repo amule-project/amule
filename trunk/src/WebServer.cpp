@@ -1828,9 +1828,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 			OutS.Replace(wxT("[1]"), wxString(_("Connected ")) + ((connstate == 2) ? wxString(_("with LowID")) : wxString(_("with HighID"))));
 			CECTag *server = sServerStat->GetTagByIndex(0)->GetTagByIndex(0);
 			OutS.Replace(wxT("[2]"), server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData());
-			sprintf(HTTPTempC, "%10i", server->GetTagByName(EC_TAG_SERVER_USERS)->GetInt32Data());
-			HTTPTemp = HTTPTemp.Format(wxT("%s"), HTTPTempC);
-			OutS.Replace(wxT("[3]"), HTTPTemp);
+			OutS.Replace(wxT("[3]"), wxString::Format(wxT("%10i"),server->GetTagByName(EC_TAG_SERVER_USERS)->GetInt32Data()));
 	}
 	delete sServerStat;
 	return OutS;
