@@ -257,7 +257,14 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			wxT(" ") + ((clientVersion == NULL) ? wxString(_("Unknown version")) : clientVersion->GetStringData()));
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
-		if (protocol != NULL) {
+#ifdef CVSDATE
+		if (request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData() != wxT(CVSDATE)) {
+#else
+		if (request->GetTagByName(EC_TAG_CVSDATE)) {
+#endif
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect CVSDATE. Please run core and remote from the same CVS tarball.")));
+		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
 				if (passwd && passwd->GetStringData() == thePrefs::ECPassword()) {

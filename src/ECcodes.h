@@ -647,6 +647,17 @@ enum {
 	EC_TAG_PROTOCOL_VERSION,
 
 		/*!
+		 * \brief CVS checkout date
+		 *
+		 * Used with scripted checkouts (in out CVS tarballs)
+		 * to ensure that core & remote are from the same
+		 * CVS version.
+		 *
+		 * Data type: \c string
+		 */
+	EC_TAG_CVSDATE,
+
+		/*!
 		 * \brief Selects response detail level.
 		 *
 		 * Selects response detail level in all packets that contain
