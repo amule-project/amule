@@ -2065,45 +2065,42 @@ bool CDownloadListCtrl::this_is_the_moment() {
 
 void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
 {
-	bool reset = false;
+	std::list<CPartFile*> fileList;
 
+	// It's not safe to do this manipulation directly, so we first make a list of
+	// files that we are going to change.
 	ListItems::iterator it = m_ListItems.begin();
+	for ( ; it != m_ListItems.end(); it++ ) {
+		if ( ( it->second->type == FILE_TYPE ) && it->second->value ) {
+			CPartFile* cur_file = (CPartFile*)it->second->value;
 
-	while ( it != m_ListItems.end() ) {
-		if ( it->second->type != FILE_TYPE )
-			continue;
-	
-		CPartFile* cur_file = (CPartFile*)it->second->value;
-		if (!cur_file) {
-			continue;
+			if ( cur_file->CheckShowItemInGivenCat(cat) ) {
+				fileList.push_back( cur_file );
+			}
 		}
+	}
 
-		if (cur_file->CheckShowItemInGivenCat(cat)) {
-			switch (newstatus) {
+	if ( !fileList.empty() ) {
+		std::list<CPartFile*>::iterator it = fileList.begin();
+		
+		for ( ; it != fileList.end(); it++ ) {
+			switch ( newstatus ) {
 				case MP_CANCEL:
-					cur_file->Delete();
-					reset=true;
+					(*it)->Delete();
 					break;
 				case MP_PAUSE:
-					cur_file->PauseFile();
+					(*it)->PauseFile();
 					break;
 				case MP_STOP:
-					cur_file->StopFile();
+					(*it)->StopFile();
 					break;
 				case MP_RESUME:
-					if (cur_file->GetStatus()==PS_PAUSED) {
-						cur_file->ResumeFile();
+					if ( (*it)->GetStatus() == PS_PAUSED ) {
+						(*it)->ResumeFile();
 					}
 					break;
 			}
 		}
-		
-		if (reset) {
-			reset = false;
-			it = m_ListItems.begin();
-		} else {
-			++it;
-		}		
 	}
 }
 
