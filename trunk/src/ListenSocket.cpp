@@ -2085,7 +2085,8 @@ bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client
 			} else {
 				wxStringTokenizer tokenizer( thePrefs::MessageFilter(), wxT(",") );
 				while (tokenizer.HasMoreTokens() && !filtered) {
-					if (Message.MakeLower().Contains(tokenizer.GetNextToken().MakeLower())) {
+					if ( Message.MakeLower().Trim(false).Trim(true).Contains(
+							tokenizer.GetNextToken().MakeLower().Trim(false).Trim(true))) {
 						filtered = true;
 					}
 				}
