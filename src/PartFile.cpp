@@ -3400,6 +3400,11 @@ void CPartFile::FlushBuffer(void)
 						theApp.amuledlg->AddDebugLogLine(false, wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str());
 					}
 					
+					// if this part was successfully completed (although ICH is active), remove from corrupted list
+					POSITION posCorrupted = corrupted_list.Find(partNumber);
+					if (posCorrupted)
+						corrupted_list.RemoveAt(posCorrupted);
+					
 					// Successfully completed part, make it available for sharing				
 					if (status == PS_EMPTY) {
 						SetStatus(PS_READY);
@@ -3412,7 +3417,20 @@ void CPartFile::FlushBuffer(void)
 					m_iTotalPacketsSavedDueToICH++;
 					FillGap(PARTSIZE*partNumber,(PARTSIZE*partNumber+partRange));
 					RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
+
+					// remove from corrupted list
+					POSITION posCorrupted = corrupted_list.Find(partNumber);
+					if (posCorrupted)
+						corrupted_list.RemoveAt(posCorrupted);
+					
 					theApp.amuledlg->AddLogLine(true, _("ICH: Recovered corrupted part %i  (%s)"), partNumber,GetFileName().c_str());
+					
+					// Successfully recovered part, make it available for sharing
+					if (status == PS_EMPTY) {
+						SetStatus(PS_READY);
+						if (theApp.IsRunning()) // may be called during shutdown!
+							theApp.sharedfiles->SafeAddKFile(this);
+					}
 				}
 			}
 			// Any parts other than last must be full size
