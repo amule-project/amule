@@ -310,8 +310,8 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				fullname[strlen(fullname)-4] = 0;			
 			}
 			else{
-				fullname = new char[strlen(srcfile->GetPath())+strlen(srcfile->GetFileName().c_str())+10];
-				sprintf(fullname,"%s/%s",srcfile->GetPath(),srcfile->GetFileName().GetData());
+				fullname = new char[strlen(srcfile->GetFilePath())+strlen(srcfile->GetFileName().c_str())+10];
+				sprintf(fullname,"%s/%s",srcfile->GetFilePath().c_str(),srcfile->GetFileName().GetData());
 			}
 		
 			uint32 togo;

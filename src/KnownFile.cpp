@@ -48,12 +48,14 @@ WX_DEFINE_OBJARRAY(ArrayOfCTag);
 
 static void MD4Transform(uint32 Hash[4], uint32 x[16]);
 
-CAbstractFile::CAbstractFile()
+CFileStatistic::CFileStatistic() : 
+	requested(0), 
+	transfered(0),
+	accepted(0),
+	alltimerequested(0),
+	alltimetransferred(0),
+	alltimeaccepted(0) 
 {
-	md4clr(m_abyFileHash);
-	m_strFileName = "";
-	m_nFileSize = 0;
-	m_iFileType = 2;
 }
 
 
@@ -78,35 +80,38 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 	theApp.sharedfiles->UpdateItem(fileParent);
 }
 
-CKnownFile::CKnownFile(){
-	m_iPartCount=0;
-	m_iED2KPartCount = 0;
-	m_iED2KPartHashCount = 0;
 
-	m_iFileType = 2;
-	directory = NULL;
-	m_strFileName = "";
-	m_nFileSize = 0;
-	date = 0;
-	dateC = 0;
-	m_iPermissions = PERM_ALL;
-	statistic.fileParent=this;
-	if (theApp.glob_prefs->GetNewAutoUp()){
-		m_iUpPriority = PR_HIGH;
-		m_bAutoUpPriority = true;
-	} else {
-		m_iUpPriority = PR_NORMAL;
-		m_bAutoUpPriority = false;
-	}
-	m_iQueuedCount = 0;
-	m_bCommentLoaded=false;
-	m_iRate=0;
-	m_strComment="";
-	
-	m_PublishedED2K = false;
-	
-	m_nCompleteSourcesTime = time(NULL);
+CAbstractFile::CAbstractFile() :
+	m_nFileSize(0),
+	m_iRate(0)
+{
+	md4clr(m_abyFileHash);
+}
 
+
+void CAbstractFile::SetFileName(const wxString& strFileName)
+{ 
+	m_strFileName = strFileName;
+} 
+
+CKnownFile::CKnownFile() :
+	date(0),
+	m_nCompleteSourcesTime(time(NULL)),
+	m_nCompleteSourcesCount(0),
+	m_nCompleteSourcesCountLo(0),
+	m_nCompleteSourcesCountHi(0),
+	m_bCommentLoaded(false),
+	m_iPartCount(0),
+	m_iED2KPartCount(0),
+	m_iED2KPartHashCount(0),
+	m_iPermissions(PERM_ALL),
+	m_iQueuedCount(0),
+	m_PublishedED2K(false)
+{
+	statistic.fileParent = this;
+	
+	m_bAutoUpPriority = theApp.glob_prefs->GetNewAutoUp();
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 }
 
 CKnownFile::~CKnownFile(){
@@ -115,17 +120,12 @@ CKnownFile::~CKnownFile(){
 		if (hashlist[i])
 			delete[] hashlist[i];
 		
-	hashlist.Clear();		
+	hashlist.Clear();
 			
-	for (int i = 0; i != taglist.GetCount(); i++) {
+	for (size_t i = 0; i != taglist.GetCount(); i++) {
 		delete taglist[i];
 	}
 				
-//	if (filename)	// done by CAbstractFile destructor
-//		delete[] filename;
-	if (directory) {
-		delete[] directory;
-	}
 	
 	m_AvailPartFrequency.Clear();
 }
@@ -147,25 +147,19 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
 	}
 }
 
-void CKnownFile::SetPath(LPCTSTR path){
-	if (directory)
-		delete[] directory;
-	directory = nstrdup(path);
-}
-
-void CKnownFile::SetFilePath(LPCTSTR pszFilePath)
+void CKnownFile::SetFilePath(const wxString& strFilePath)
 {
-	m_strFilePath = pszFilePath;
+	m_strFilePath = strFilePath;
 }
 
-bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile int const * notify){
+bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in_filename, volatile int const * notify){
 	
-	directory = nstrdup(in_directory);
+	m_strFilePath = in_directory;
 	m_strFileName = in_filename;
 	
 	// open file
 	CString namebuffer;
-	namebuffer.Format("%s/%s", in_directory, in_filename);
+	namebuffer.Format("%s/%s", in_directory.c_str(), in_filename.c_str());
 	//SetFilePath(namebuffer); ??
 	FILE* file = fopen(namebuffer.c_str(), "rbS");
 	if (!file){
@@ -715,6 +709,11 @@ bool CKnownFile::LoadFromFile(CFile* file){
 	// SLUGFILLER: SafeHash
 }
 
+uint8 CKnownFile::GetStatus(bool WXUNUSED(ignorepause))
+{
+	return PS_COMPLETE;
+}
+
 bool CKnownFile::WriteToFile(CFile* file){
 	// date
 	uint32 endiandate = ENDIAN_SWAP_32(date);
@@ -934,26 +933,6 @@ static void MD4Transform(uint32 Hash[4], uint32 x[16])
 }
 
 
-void CAbstractFile::SetFileName(LPCTSTR pszFileName, bool bReplaceInvalidFileSystemChars)
-{ 
-	m_strFileName = pszFileName;
-
-	if (bReplaceInvalidFileSystemChars) {
-		m_strFileName=pszFileName;//.Format("%s",NewName);
-		m_strFileName.Replace("\\","-");
-		m_strFileName.Replace(">","-");
-		m_strFileName.Replace("<","-");
-		m_strFileName.Replace("*","-");
-		m_strFileName.Replace(":","-");
-		m_strFileName.Replace("?","-");
-	}
-
-	#warning Setfiletype
-	#if 0
-	SetFileType(GetFiletypeByName(m_strFileName));
-	#endif
-} 
-
 Packet*	CKnownFile::CreateSrcInfoPacket(CUpDownClient* forClient){
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
 	//theApp.uploadqueue->FindSourcesForFileById(&srclist, forClient->reqfileid); //should we use "filehash"?
@@ -1032,73 +1011,57 @@ void CKnownFile::UpdateAutoUpPriority(void)
 }
 
 //For File Comment // 
-void CKnownFile::LoadComment(){ 
-   char buffer[100]; 
-   char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13]; 
-   sprintf(fullpath,"%sfileinfo.ini",theApp.glob_prefs->GetAppDir()); 
-   
-   buffer[0] = 0;
-   for (uint16 i = 0;i != 16;i++) 
-      sprintf(buffer,"%s%02X",buffer,m_abyFileHash[i]); 
-    
-   wxString fp(fullpath), br(buffer);
-   CIni ini(fp, br);
-   m_strComment = ini.GetString("Comment").GetData(); 
-   m_iRate = ini.GetInt("Rate", 0);//For rate
-   m_bCommentLoaded=true;
-   delete[] fullpath;
-    
+void CKnownFile::LoadComment()
+{
+	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
+
+	CIni ini( strFullPath, strHash );
+	
+	m_strComment = ini.GetString("Comment"); 
+	m_iRate = ini.GetInt("Rate", 0);
+	m_bCommentLoaded = true;
 }    
 
-void CKnownFile::SetFileComment(CString strNewComment){ 
-   char buffer[100]; 
-   char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13]; 
-   sprintf(fullpath,"%sfileinfo.ini",theApp.glob_prefs->GetAppDir()); 
-       
-   buffer[0] = 0; 
-   for (uint16 i = 0;i != 16;i++) 
-      sprintf(buffer,"%s%02X",buffer,m_abyFileHash[i]); 
-    
-   wxString fp(fullpath), br(buffer);
-   CIni ini(fp, br);
-    
-   ini.WriteString ("Comment", strNewComment); 
-   m_strComment = strNewComment;
-   delete[] fullpath;
-   
-   CTypedPtrList<CPtrList, CUpDownClient*> srclist;
-   theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
+void CKnownFile::SetFileComment(CString strNewComment)
+{ 
+	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
 
-   for (POSITION pos = srclist.GetHeadPosition();pos != 0;srclist.GetNext(pos)){
-	CUpDownClient *cur_src = srclist.GetAt(pos);
-	cur_src->SetCommentDirty();
-   }
+	CIni ini( strFullPath, strHash );
+    
+	ini.WriteString ("Comment", strNewComment); 
+	m_strComment = strNewComment;
    
+	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
+	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
+
+	for (POSITION pos = srclist.GetHeadPosition();pos != 0;srclist.GetNext(pos)){
+		CUpDownClient *cur_src = srclist.GetAt(pos);
+		cur_src->SetCommentDirty();
+	}   
 }
-// For File rate 
-void CKnownFile::SetFileRate(int8 iNewRate){ 
-   char buffer[100]; 
-   char* fullpath = new char[strlen(theApp.glob_prefs->GetAppDir())+13]; 
-   sprintf(fullpath,"%sfileinfo.ini",theApp.glob_prefs->GetAppDir()); 
-       
-   buffer[0] = 0; 
-   for (uint16 i = 0;i != 16;i++) 
-      sprintf(buffer,"%s%02X",buffer,m_abyFileHash[i]); 
-    
-   wxString fp(fullpath), br(buffer);
-   CIni ini(fp, br); 
-    
-   ini.WriteInt ("Rate", iNewRate); 
-   m_iRate = iNewRate; 
-   delete[] fullpath;
 
-  CTypedPtrList<CPtrList, CUpDownClient*> srclist;
-  theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
-  for (POSITION pos = srclist.GetHeadPosition();pos != 0;srclist.GetNext(pos)){
-	CUpDownClient *cur_src = srclist.GetAt(pos);
-	cur_src->SetCommentDirty();
-  }
+
+// For File rate 
+void CKnownFile::SetFileRate(int8 iNewRate)
+{ 
+	wxString strFullPath = wxString::Format("%sfileinfo.ini",theApp.glob_prefs->GetAppDir());
+	wxString strHash = EncodeBase16( m_abyFileHash, 16 );
+
+	CIni ini( strFullPath, strHash );
+	    
+	ini.WriteInt ("Rate", iNewRate); 
+	m_iRate = iNewRate; 
+
+	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
+	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
+	for (POSITION pos = srclist.GetHeadPosition(); pos != 0; srclist.GetNext(pos)) {
+		CUpDownClient *cur_src = srclist.GetAt(pos);
+		cur_src->SetCommentDirty();
+	}
 } 
+
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	m_iUpPriority = iNewUpPriority;
