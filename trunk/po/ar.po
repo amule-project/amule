@@ -77,11 +77,11 @@ msgstr "تم الاتصال بي:"
 #: src/muuli_wdr.cpp:1093 src/muuli_wdr.cpp:2942 src/muuli_wdr.cpp:3047
 #: src/PreferencesDlg.cpp:77 src/TransferWnd.cpp:183
 msgid "Cancel"
-msgstr "الغاء"
+msgstr "إلغاء"
 
 #: src/amuleDlg.cpp:759
 msgid "Stops the current connection attempts"
-msgstr "ايقاف محاولة الاتصال الحاليه"
+msgstr "إيقاف محاولة اﻹتصال الحاليه"
 
 #: src/amuleDlg.cpp:771 src/amuleDlg.cpp:943 src/ChatSelector.cpp:319
 #: src/DownloadListCtrl.cpp:1260 src/SysTray.cpp:174
@@ -118,7 +118,7 @@ msgstr "ملفات"
 #: src/amuleDlg.cpp:839
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
-msgstr "رفع : %.1f(%.1f) |تحميل : %.1f(%.1f)"
+msgstr "تحميل: %.1f(%.1f) | رفع: %.1f(%.1f)"
 
 #: src/amuleDlg.cpp:841
 #, c-format
@@ -147,7 +147,7 @@ msgstr "&مستظيفات"
 
 #: src/amuleDlg.cpp:1014
 msgid "S&earch"
-msgstr ""
+msgstr "ب&حث"
 
 #: src/amuleDlg.cpp:1015
 msgid "Shared &Files"
@@ -173,7 +173,7 @@ msgstr "أنت غير متصل بي مستظيف!"
 #: src/PartFile.cpp:145
 #, c-format
 msgid "This ed2k link is invalid (%s)"
-msgstr ""
+msgstr "رابط ed2k غير صحيح (%s)"
 
 #: src/amuleDlg.cpp:1090 src/DownloadQueue.cpp:1044 src/PartFile.cpp:124
 #: src/PartFile.cpp:146
@@ -189,7 +189,7 @@ msgstr "ترشيحIP: %s (%s)"
 #: src/BaseClient.cpp:1004
 #, c-format
 msgid "Rating for file '%s' received: %i"
-msgstr ""
+msgstr "تقيم ملف '%s' تم تلقيه: %i"
 
 #: src/BaseClient.cpp:1011
 #, c-format
@@ -223,7 +223,7 @@ msgstr "طلب ملف مشاركة من '%s'"
 #: src/BaseClient.cpp:1473
 #, c-format
 msgid "Requesting shared files from user %s (%u) is already in progress"
-msgstr ""
+msgstr "طلب ملفات المشاركةمن المستخدم %s (%u) في طور العمل"
 
 #: src/BaseClient.cpp:1506
 #, c-format
@@ -243,7 +243,7 @@ msgstr ""
 #: src/BaseClient.cpp:1510
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d requests"
-msgstr ""
+msgstr "حالة الملفات في كل الجلسات :قبل %d من %d طلب"
 
 #: src/BaseClient.cpp:1516
 msgid "Requested unknown file"
@@ -251,7 +251,7 @@ msgstr "طلب ملف غير معروف"
 
 #: src/CatDialog.cpp:49 src/DownloadListCtrl.cpp:302 src/TransferWnd.cpp:151
 msgid "Category"
-msgstr ""
+msgstr "صنف"
 
 #: src/CatDialog.cpp:103
 msgid "Choose a folder for incoming files"
@@ -467,19 +467,19 @@ msgstr "تحميل"
 #: src/ServerListCtrl.cpp:97 src/SharedFilesCtrl.cpp:81
 #: src/SharedFilesCtrl.cpp:120
 msgid "Priority"
-msgstr "اولوية"
+msgstr "أولوية"
 
 #: src/DownloadListCtrl.cpp:257 src/TransferWnd.cpp:184
 msgid "&Stop"
-msgstr "%ايقاف"
+msgstr "%إيقاف"
 
 #: src/DownloadListCtrl.cpp:258 src/TransferWnd.cpp:185
 msgid "&Pause"
-msgstr ""
+msgstr "&إمهال"
 
 #: src/DownloadListCtrl.cpp:259 src/TransferWnd.cpp:186
 msgid "&Resume"
-msgstr "%اكمل"
+msgstr "%إكمل"
 
 #: src/DownloadListCtrl.cpp:271
 msgid "Swap every A4AF to this file now"
@@ -2171,11 +2171,11 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3087
 msgid "Clients on queue :"
-msgstr "عملاء في اﻻنتظار"
+msgstr "عملاء في اﻻنتظار:"
 
 #: src/muuli_wdr.cpp:3090
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/muuli_wdr.cpp:3122
 msgid "Display server motd when connected ..."
@@ -2187,7 +2187,7 @@ msgstr "معلومات الخادم"
 
 #: src/muuli_wdr.cpp:3160 src/muuli_wdr.cpp:3282
 msgid "aMule Log"
-msgstr ""
+msgstr "سجل aMule"
 
 #: src/muuli_wdr.cpp:3212
 msgid "Click on this button to update the servers list from URL ..."
@@ -2201,18 +2201,18 @@ msgstr "قائمة الخادمات"
 msgid ""
 "http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"
 msgstr ""
-
+"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-good.met"
 #: src/muuli_wdr.cpp:3227
 msgid "Manual Server Add : Name"
 msgstr "اضافة خادم يدويا : اسم"
 
 #: src/muuli_wdr.cpp:3233
 msgid "IP:Port"
-msgstr ""
+msgstr "عنوان شبكي :منفذ"
 
 #: src/muuli_wdr.cpp:3239
 msgid ":"
-msgstr ""
+msgstr ":"
 
 #: src/muuli_wdr.cpp:3246
 msgid "Add manually a server (fill fields to the left before) ..."
@@ -2784,31 +2784,31 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:103
 msgid "Remove server"
-msgstr ""
+msgstr "الغاء الخادم"
 
 #: src/ServerListCtrl.cpp:104
 msgid "Remove all servers"
-msgstr ""
+msgstr "الغاء كل الخادمات"
 
 #: src/ServerListCtrl.cpp:214
 msgid "Server Name"
-msgstr ""
+msgstr "إسم الخادم"
 
 #: src/ServerListCtrl.cpp:216
 msgid "Description"
-msgstr ""
+msgstr "وصف"
 
 #: src/ServerListCtrl.cpp:220
 msgid "Preference"
-msgstr ""
+msgstr "أداء"
 
 #: src/ServerListCtrl.cpp:221
 msgid "Failed"
-msgstr ""
+msgstr "فشل"
 
 #: src/ServerListCtrl.cpp:222
 msgid "Static"
-msgstr ""
+msgstr "ثابت"
 
 #: src/ServerListCtrl.cpp:351
 msgid "No Pref"
@@ -2820,7 +2820,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:672
 msgid "Added to static server list"
-msgstr ""
+msgstr "أضيف خادم للقائمة الثابتة"
 
 #: src/ServerListCtrl.cpp:743
 #, c-format
@@ -2830,16 +2830,16 @@ msgstr ""
 #: src/ServerSocket.cpp:307
 #, c-format
 msgid "New clientid is %u"
-msgstr ""
+msgstr "عميل جديد هو %u"
 
 #: src/ServerSocket.cpp:378
 msgid "Unknown server info received !"
-msgstr ""
+msgstr "تلقي معلومات خادم غير معرفة !"
 
 #: src/ServerSocket.cpp:443
 #, c-format
 msgid "Received %d new servers"
-msgstr ""
+msgstr "تلقي %d خادم جديد"
 
 #: src/ServerSocket.cpp:480
 msgid "Server rejected last command"
@@ -2965,12 +2965,12 @@ msgstr "مخفي"
 
 #: src/SharedFilesCtrl.cpp:321 src/SharedFilesCtrl.cpp:337
 msgid "You cannot change permissions while a file is still downloading!"
-msgstr ""
+msgstr "ﻻ يمكنك تغير سماحية ملف وهو قيد التحميل!"
 
 #: src/SharedFilesCtrl.cpp:603
 #, c-format
 msgid "Shared Files (%i)"
-msgstr ""
+msgstr "ملفات مشاركة (%i)"
 
 #: src/sockets.cpp:50
 msgid "Failed to connect to all servers listed. Making another pass."
@@ -2983,45 +2983,45 @@ msgstr "ﻻ يوجد خادمات صحيحة في قائمة الخادمات"
 #: src/sockets.cpp:157
 #, c-format
 msgid "Connected to %s (%s:%i)"
-msgstr ""
+msgstr "متصل بي %s (%s:%i)"
 
 #: src/sockets.cpp:195
 #, c-format
 msgid "Connection established on: %s"
-msgstr ""
+msgstr "إتصال بي : %s"
 
 #: src/sockets.cpp:242
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
+msgstr "خطأ قاتل اثناء محاولة اﻹتصال . احتمال أنك غير متصل باﻹنترنت"
 
 #: src/sockets.cpp:246
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
-msgstr ""
+msgstr "فقد اﻹتصال بي %s (%s:%i)"
 
 #: src/sockets.cpp:249
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
-msgstr ""
+msgstr "%s (%s:%i) يظهر انه ﻻ يعمل"
 
 #: src/sockets.cpp:259
 #, c-format
 msgid "%s (%s:%i) appears to be full"
-msgstr ""
+msgstr "%s (%s:%i) يظهر انه ملي"
 
 #: src/sockets.cpp:274
 #, c-format
 msgid "Automatic connection to server will retry in %d seconds"
-msgstr ""
+msgstr "اﻹتصال الذاتي بالخادم سيعيد المحاولة بعد %d ثانية"
 
 #: src/sockets.cpp:294
 msgid "Connection lost"
-msgstr "اﻻتصال فقد"
+msgstr "اﻹتصال فقد"
 
 #: src/sockets.cpp:303
 #, c-format
 msgid "Connecting to %s (%s:%i ) failed."
-msgstr ""
+msgstr "اﻹتصال بي %s (%s:%i) فشل."
 
 #: src/sockets.cpp:352
 msgid "Error: Socket invalid at timeoutcheck"
@@ -3034,12 +3034,12 @@ msgstr ""
 
 #: src/sockets.cpp:471
 msgid "Refreshing server connection"
-msgstr ""
+msgstr "إعادة تنشيط اﻹتصال بالخادم"
 
 #: src/StatisticsDlg.cpp:496
 #, c-format
 msgid "Active connections (1:%u)"
-msgstr ""
+msgstr "إتصال نشط (1:%u)"
 
 #: src/StatisticsDlg.cpp:573 src/StatisticsDlg.cpp:575
 #: src/StatisticsDlg.cpp:578 src/StatisticsDlg.cpp:579
@@ -3074,12 +3074,12 @@ msgstr ""
 #: src/StatisticsDlg.cpp:647 src/StatisticsDlg.cpp:648
 #: src/StatisticsDlg.cpp:649
 msgid "Waiting..."
-msgstr ""
+msgstr "إنتظار..."
 
 #: src/StatisticsDlg.cpp:633 src/StatisticsDlg.cpp:808
 #, c-format
 msgid "Filtered: %i"
-msgstr ""
+msgstr "تم ترشيح : %i"
 
 #: src/StatisticsDlg.cpp:678
 #, c-format
@@ -3169,16 +3169,16 @@ msgstr ""
 #: src/StatisticsDlg.cpp:729 src/StatisticsDlg.cpp:731
 #, c-format
 msgid "Reconnects: %i"
-msgstr ""
+msgstr "اعادة اﻹتصال : %i"
 
 #: src/StatisticsDlg.cpp:736
 msgid "waiting for transfer..."
-msgstr ""
+msgstr "بإنتظار التحميل ..."
 
 #: src/StatisticsDlg.cpp:739
 #, c-format
 msgid "Time Since First Transfer: %s"
-msgstr ""
+msgstr "الوقت منذ بدء التحميل: %s"
 
 #: src/StatisticsDlg.cpp:750 src/StatisticsDlg.cpp:963
 msgid "waiting for connection..."
@@ -3289,7 +3289,7 @@ msgstr "مجموع الملفات"
 
 #: src/StatisticsDlg.cpp:940
 msgid "Active Connections (estimate)"
-msgstr ""
+msgstr "إتصاﻻت نشطة تقديري"
 
 #: src/StatisticsDlg.cpp:941
 #, c-format
@@ -3334,7 +3334,7 @@ msgstr "وقت رفع المعلومات"
 
 #: src/SysTray.cpp:507
 msgid "Disconnect from server"
-msgstr ""
+msgstr "فصل من الخادم"
 
 #: src/SysTray.cpp:516
 msgid "Exit"
@@ -3362,7 +3362,7 @@ msgstr "الغاء المجموعة"
 
 #: src/TransferWnd.cpp:306
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
+msgstr "هل أنت متاكد من حذف كل الملفات في هذا المصنف؟"
 
 #: src/TransferWnd.cpp:306
 msgid "Confirmation Required"
@@ -3380,7 +3380,7 @@ msgstr ""
 
 #: src/UploadClient.cpp:625
 msgid "requested file not found"
-msgstr ""
+msgstr "لم يتم العثور على الملف المطلوب"
 
 #: src/UploadClient.cpp:746
 #, c-format
@@ -3391,11 +3391,11 @@ msgstr ""
 
 #: src/UploadListCtrl.cpp:90
 msgid "Waited"
-msgstr ""
+msgstr "إنتظار"
 
 #: src/UploadListCtrl.cpp:91
 msgid "Upload Time"
-msgstr ""
+msgstr "زمن الرفع"
 
 #: src/UploadListCtrl.cpp:151
 msgid "Show Queue"
@@ -3403,7 +3403,7 @@ msgstr "أظهر المنتظرين"
 
 #: src/UploadQueue.cpp:59
 msgid "Fatal Error: Failed to create Timer"
-msgstr ""
+msgstr "خطأ قاتل :فشل في تكوين الموَقت"
 
 #: src/UploadQueue.cpp:156
 #, c-format
@@ -3448,23 +3448,23 @@ msgstr ""
 
 #: src/Wizard.cpp:43
 msgid "Wizard"
-msgstr ""
+msgstr "مساعداﻹعداد"
 
 #: src/Wizard.cpp:236
 msgid "Down (kbit/s)"
-msgstr ""
+msgstr "تحميل (kbit/s)"
 
 #: src/Wizard.cpp:237
 msgid "Up (kbit/s)"
-msgstr ""
+msgstr "رفع (kbit/s)"
 
 #: src/Wizard.cpp:240
 msgid "Custom"
-msgstr ""
+msgstr "مخصص"
 
 #: src/Wizard.cpp:240
 msgid "(enter below!)"
-msgstr ""
+msgstr "(أدخل في اﻷسفل)"
 
 #: src/Wizard.cpp:241
 msgid "56-k Modem"
