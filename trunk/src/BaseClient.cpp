@@ -323,7 +323,6 @@ bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 		 *       - the magic number is spread all over the source
 		 *       - the answer packet lacks the size field
 		 */
-		wxASSERT(0);
 		throw wxString(wxT("Invalid Hello packet: Other userhash sizes than 16 are not implemented"));
 	}
 	// eMule 0.42: reset all client properties; a client may not send a particular emule tag any longer
