@@ -1,0 +1,3181 @@
+Version 2.0.0rc8 - The "last rc" version.
+----------
+2004-12-21
+
+	Baz:
+		* Fix for server stats for users/files not being updated correctly.
+		* Fix for ERROR and WARNING server messages not being shown.
+		* Fixed server / transfers window splitters not being loaded/saved correctly.
+		* Fixed categories on search dialog not being refreshed on category name change.
+		
+	deltaHF: 
+		* Show comments for shared files
+		
+	Hetfield:
+		* Some fix in new Tray system and desktopMode bypass
+
+	Jacobo221:
+		* Added option to select the max and min size-type in advanced
+		  searches.
+		* When "Extended Parameters" in Search tab is not selected, 
+		  defaults are used.
+		* Now "Auto-update serverlist at startup" checks if there's a 
+		  serverlist to avoid annoying messages at startup.
+		* "Clear completed downloads" is now disabled while no
+		  completed downloads are listed.
+		* Context menu for download items only enables relevant
+		  information now.
+		* Context menu little optimization (removed an unuseful loop)
+		  and Open File fix.
+		* Added bitmap button wich pops-up the last status log line
+		  (useful when it doesn't fit the window).
+		* Merged Preview and Open File and enabled Open File.
+		* New Port column in Servers tab (splitting IP column).
+		* Moved "Always filter bad IPs" from Server to Security
+		  in Preferences.
+		* Changed "Preference" in servers tab as suggested by Sir and
+		  "IP" to "Address" since that's more accurate (could be DNS).
+		* Optimizations in the RLE code.
+		* Based on kry's patch, also darken paused files' progress
+		  bar.
+		* Translations updates.
+		* Fixed: Servers priority now working. (reported by Sir)
+		* Fixed: Now all unset Server Priorities are set to normal.
+		  (reported by plaenky)
+		* Fixed: Sorting Servers by priority works now.
+		* Fixed: Setting "A4AF to others" works now.
+		* Fixed: Server names sorting now differences between names
+		  and IPs.
+		* Fixed: Last byte is now drawn in bar progress.
+		* Fixed: Stop button now working after second global search
+		  and another hidden bug in global searches' progress bar.
+		  (reported by ecforum)
+		  
+	ken_aMule:
+		* Fixed ipfilter on big endian archs.
+		* Fixed wxWidget's bugs that were creating serious memleaks on Mac		  
+
+	Kry:
+		===============::MULTIPLATFORM::===============
+		* When a socket connection error like WOULD_BLOCK happens, aMule retries 
+		   the connection to avoid just-once errors
+		* Stopped files are now darker than non-sources ones.
+		* AICH e-links working now, with masterhash and with hashset
+		* Proper handling of removing -fomit-frame-pointer flag that worls on all platforms.
+		* Initial support for wx-compliant systray. Will be ready for 2.0.0 final release.
+		* aMule no longer crashes on opening a non-existing folder. CDirIterator is safe now.
+		* Fixed crash on app close - never call a pure virtual function from a destructor.
+		* Moved the init/close code of aMule to where they belong: destructor/constructor.
+		* Much more debug info available to debug packets (packet dump and others)
+		* Major network improvements:
+			* Improved the socket processing on CPU usage and performance.
+			* Coded the functions handling the network string/bytes conversion of ips and 
+			   hostnames and the generic hostname solving thread, non dependant from host's 
+			   socket implementation. Less CPU and more reliable on both cases.
+		* Crash fixed on wrong arguments for wxString::Format
+		* New option on right click on downloading or search files for showing eserver's stats for
+		   that filehash. Needs browser correctly configured on preferences.
+		* Implemented messages filtering, from know clients/bogus clients/by words.
+		* Fixed hashing files changing display status.
+		* Fixed crash where transferwnd and clientlistctrl could be accessed before created.
+		* Listen socket on accepting connection no longer uses a blocking socket (CPU improvement).
+		* Not linking anymore to gtk libs if not needed.
+		* "GTK: Not Detected" is now either "Not Detected" or "Not Used" to avoid confusion.
+		* Fix for crashing on 'OK' button on preferences.
+		* Fix for preferences window being unreachable if aMule is minimized while showing it.
+		* Fix for crash on HTTP dialog if StopAnimation() was not called on destructor.
+		* Fixed crash when shutdown and preferences window open.
+		* Implemented OS_Info tag. Broke it 400 times, and fixed it 401 times, so working.
+		* Implemented statistics tree for OS_Info tag.
+		* Fixed several memory corruption issued caused by icons with wrong size.
+		* Fixed several memory corruption bugs on amule init/close.
+		* When aMule crashes, it not longer fails saving:
+			* Preferences (Saved on 'OK')
+			* Categories (Saved on changes)
+			* Total upload / download bytes (saved while running).
+		* Fixed crash on	OP_MULTIPACKETANSWER
+		* Sent wxInt and wxUInt classes usage down the drain for the standard int / uint
+		* Implemented "Share hidden files" checkbox.
+		* Immplemented the CT_EMULECOMPAT_OPTIONS new tag. 
+		  Right now only OS info support capabilities.
+		* Implemented new short tags style for server and client interchange of info.
+		  Fixes not being able to browse eMule >=0.42x shared files.
+		* Fixed aMule daemon compilation to use wxBase headers and libraries.
+		  This fixes amuled not compiling on wxBase only-boxes, thus making it kinnda pointless.
+		* Fixed AMD64 and GCC4.0 compilation/run, closes debian bug #285110
+		* Fixed some performance issues on Log text controls.
+		* Fixed long browsers requests on WebSocket. Buffer is now enlarged accordingly.
+		* Fixed timeout on webserver socket being... 10 minutes!!!
+		* Fixed several 100% cpu errors on WebSocket.
+		* Fixed our source exchange implementation that was... uh... wrong.
+		* Fixed stats tree on webserver.
+		* Misc. work on ECv2 implementation of messages.
+		* aMule can send now RGB encoded images via ECv2
+		* Webserber can read ECv2 Image tags via the new CDynPngImage class.
+		* eMule+ is now recognised under compatible client tag 0x05
+		* Unicode fixes on webserver.
+		* Got rid of almost all wxString::GetData()
+		* Major CPU improvements on WebServer.cpp
+		* otherfunctions.* is now clean from aMule specific stuff. Can be used anywhere.
+		* otherfunctions now have a namespace (surprinsigly named 'otherfunctions')
+		* Changed wxFileStreamInput -> wxFile (less class overhead).
+		* Several speed fixes on Stats code.
+		* Fixed possible crash on search thread creation + verbose on error.
+		* Fixed aMule crashing when local search is not returning and we click stop 
+		  or start another search.
+		* Fixed severeral endianess bugs.
+		* General rewrite of UDP Socket
+			* Received packets when app is not ready are now discarded.
+			* Small fix preventing memleaks and some strange asserts
+			* Fixed a severe memleak if 2 UDP packets are send at the same time, before the 
+			   first one finishes.
+			* Fixed the host solving fail not cleaning the data (another severe memleak)
+			* Fixed sending wrong data to wrong servers and thus not being replied.
+			* Fixed some server udp packets never reaching destination.
+		* Unicode fixes (char*/wxString issues)
+		* General cleaning, bugfixing and documenting.
+		* Added files:
+			StringFunctions.(h/cpp)
+			NetworkFunctions.(h/cpp)
+		
+		==================::MAC::===================
+		* Fixed server connection crashes related to accepting a connection from a being 
+		   destroyed socket. Probably fixes also some random BSD/Linux crashes on conection.
+		* Got rid of all <wx/wx.h> includes, improved compilation speed greatly.
+		* Fixed stats color boxes
+		* Fixed servers saving, not anymore stored wrong internaly.
+		* Coded Mac packager script for releases with included libcurl and wxWidgets.
+		* Included Mac aMule.app bundle on sources.
+		* Fixed sharing /Volumes and other special folders.
+		* Fixed crash on server.met download
+
+	permats:
+		* FIXED: Preferences -> Security -> Permissions wasn't being
+		  correctly saved for directories.
+
+	Phoenix:
+		* Lots of unicode fixes.
+		* Added readline and history support to amuleweb/amulecmd text
+		  clients.
+		* Added template loading capability to amuleweb with the new
+		  command line parameter -t.
+		* Changed m4/readline.m4 so that readline libs are only used
+		  when needed, i.e., no longer append readline libs to LIBS,
+		  use READLINE_LIBS instead.
+		* Fixed crash in aMule when amuleweb tried to get transfers
+		  tab and aMule had never connected to a server before.
+		* New backtrace output with demangled function names, file
+		  names and line numbers, when possible.
+		* Initial (not functional yet) SOCKS5 proxy support.
+		* Initial (not functional yet) SOCKS4 proxy support.
+		* Initial (not functional yet) HTTP proxy support.
+		* Updated some tests in configure.in.
+		* Fixed a problem with _() usage. Static string initialization
+		  must be done with wxTRANSLATE, and wxGetTranslation() must
+		  be explicitly called in code instead of _().
+		* Fixed a bug in WebServer.cpp:CWebServer::GetStatusBox():
+		  return value was missing end tags.
+		* Changed back to macro the inline function version of
+		  unicode2char() when using UNICODE. Unfortunately, when the
+		  fucntion returns, the string object gets out of scope, so we
+		  stick to the macro version for now.
+
+	lfroen:
+		* Moving amuleweb to EC version 2.0
+		* Fixes on amuleweb socket code
+		* Added generated png images to amuleweb
+		* Added RLE encoder for gap and parts status to EC
+		* Fixes in amule daemon
+		
+	Madcat:
+		* Added support for detecting HydraNode clients.
+		
+	GonoszTopi:
+		* Initial work on EC protocol version 2.0.
+		* Fixed a crash on broken language files (.po)
+		* Some GUI cosmetics.
+		* Lots of i18n fixes.
+		* As a side effect, fixed the "Any" search in webserver.
+		* Fixed webserver connection with empty passwords. :)
+		* Fixed webserver connection with guest account.
+		* Added "add <ed2k link>" command to amulecmd.
+		* Tracked down and killed a number of hidden bugs.
+		* Added commands to change/monitor bandwidth settings to
+		  amulecmd.
+		* Made wxTRANSLATE actually work.
+		* Fixed graphs in webserver. Also added the missing back.gif file.
+		* Fixed buffer overflow problem in ed2k link handler.
+		* Stats bug fixed.
+
+	wizeman:
+		* Helped finding the code snippet where WebSocket was failing on request.
+		* Fixed 'Safe Max connections' code. It's safer to use it now, and it works.
+		* Fixed bug where amule would start consuming 100% cpu when it received a 
+		  corrupted EC packet.
+		* Fixed webserver, it wouldn't close connection when it received a POST request.
+		* Fixed webserver crash: added mutex to make variable wcThreads thread-safe.
+		* Fixed webserver <-> amule communication corruption when the webserver 
+		  received simultaneous requests. The problem was that all webserver threads 
+		  were using the same socket for sending/receiving EC packets to/from amule 
+		  without synchronization.
+		
+	Xaignar:
+		* Added the new casting macros to otherfunctions.
+		* Added a helper-function to CMuleListCtrl for use in the Sorter functions.
+		* Fixed the priority-column on Server List.
+		* Added the handling of friends to ECv2 implementation.
+		* Merged CUploadListCtrl and CQueueListCtrl on CClientListCtrl.
+		* Added the posibility to see a list of all existing clients.
+		* Fixed aMule dialog not always being unfrozen upon restoring it from tray.
+		* Some changes to the overhead calculation functions.
+		* Slight improvement of the GetScore function CPU usage.
+		* Replaced "theApp.glob_prefs->" with the new usage "thePrefs::"
+		* Fixed the MyTimer class behind GetTickCount returning random values on close.
+		* Fixed two crashes on ClientList.
+		* Fixed compilation for solaris on several places.
+		* Make sure that clients cant just crash us by sending a aich-request for an invalid hash.
+		* Fixed a couple of sub-menues.
+		* Removed the leech-mod checks, they were getted outdated anyway
+		* Fixed open sockets count.
+		* Avoid re-layouting the entire dlg when updating some labels.
+		* Small fix to CMuleNoteBook.
+		* Adding a missing event-handler en shared files tab.
+		* Changed the primary hashing thread to do both MD4 and AICH hashing for non-part files.
+		  This cut down hashing of ~2.8gb of data from ~12:40 minutes to ~7 minutes on tests.
+		* Adding checks against the user sharing the following dirs: Home-dir, .aMule, Temp-dir.
+		  Sharing home is allowed but results in a warning.
+		* Fixed the Upload-parts drawing.
+		* Fixed sorting by filename on the Uploading list.
+		* Fixed crash on server list auto-update. Removes the possibility of overrunning a array.
+		* Optimization of UpdatePartsInfo, which now no longer needs to traverse the parts-info 
+		  arrays of each source for that file.
+		* Fixed the redraw problems where some things wouldn't be erased on list controls.
+		* Code cleaning, documenting and rewrite.
+
+	Special Thanks To:
+
+		* Translators:
+		  Ateo:             (US english / en_US)
+		  biger [HUN]:      (Hungarian  / hu_HU)
+		  experience.chris: (German     / de_DE)
+		  GhePeU:	    (Italian    / it_IT)
+		  Gusar:	    (Slovenian  / sl_SL)
+		  ilbuio:	    (Italian    / it_IT)
+		  KamiKazeNH:	    (Brazilian  / pt_BR)
+		  mad_soft:	    (Spanish    / es_ES)
+		  nbfnw:	    (Chinese    / zh_CH)
+		  Ogon:		    (Polish     / pl_PL)
+		  piarres:	    (Basque     / es_EU)
+		  pukyxd:	    (Catalan    / es_CA)
+		  Supersnail	    (Dutch      / nl_NL)
+		  Typhon:	    (Slovenian  / sl_SL)
+
+		* Contributors:
+		  alehack,	alus,
+		  boutros,	fossybaer,
+		  Frankk,	han,
+		  junaru,	sebaX,
+		  skolnick,	sLiCeR\,
+		  Vollstrecker,	volpop,
+		  {xmb}
+
+		* Bug and feature reporters:
+		  Banerjee,	chisky2003,
+		  Danny,	ecforum,
+		  fctk,		Gnucco,
+		  hades,	jaguarwan,
+		  jolupa,	juanii,
+		  kdka,		kno,
+		  m2kio,	MichaelLong,
+		  Pableron,	pi-c,
+		  plaenky,	realcruncher,
+		  Sir,		Sniffer,
+		  sosonok,	|Syrius|,
+		  xplode_me
+
+		* Everyone at:
+		  #amule	irc.freenode.net
+		  wiki		http://wiki.amule.org
+		  forums	http://forum.amule.org
+		  bugtracker	http://bugs.amule.org
+
+		* All aMule users!!!
+
+	Welcome our new aMule team members: 
+		lionel77, ken_aMule, nachbarnebenan & one2one
+
+
+--------------------------------------------------------------------------------
+
+
+Version 2.0.0rc7 - The "99,6% Final" version.
+----------
+2004-10-19
+
+	bisley:
+		* Added session ratio and total ratio to XAS
+
+	deltaHF:
+	        * Got back from hell and changed one icon on the GUI ;)
+
+	Jacobo221:
+		aMule GUI:
+		* Fixed two almost-the-same bugs when clicked download button 
+		  and no items where selected (as reported by powtrix/willy,
+		  thanks).
+
+		aMuleWeb:
+		* Fixed a bug where up/down limits woudln't be displayed 
+		  correctly if their string length were different.
+
+		aMuleCMD:
+		* Added 'list' (or 'find') command to search for a file in
+		  the downloads queue by name or by number (or just show all).
+		* Added the ability to resume/pause all downloads at the same 
+		  time through amulecmd (very handy when all downloads have
+		  been paused due to lack of space).
+		* Fixed two bugs on amulecmd by which using 'pause' or 'resume'
+		  without arguments would pause/resume the oldest download.
+		* Fixed a bug so that help command no longer is send to core.
+		* Fixed other commands sending blank data to core.
+		* Cleaned unneeded output log messages + added sent command
+		  messages to log (for easier security monitoring).
+		* Several command simplifications on amulecmd to make it easier
+		  to use (while maintaining backwards compatibility).
+		* Lots of translations lacks
+
+	KingFish:
+		* Fixed broken compilation in SysTray.cpp with gcc 3.3.4.
+
+	Kry:
+		* Fixed: 	Crashes related to animation deletion on http download dialog
+		* Fixed: 	0-size server.met file crashing aMule on startup and on download.
+		* Fixed:	GUI blocking on server connection.
+		* Fixed: 	The last (hopefully) "fixed minsize" bug. FileDetail dialog was growing :)
+		* Misc code cleaning.
+		* Mac: 
+			* Enabling wxCocoa compilation
+			* Fixed: 	Secure Ident was not working on big endian archs.
+			* Fixed: 	ClientID endianess issues leading to faking low/high id
+			* Fixed: 	Several fields were not having correct size on preferences.
+			* Fixed: 	Curl preform_multi was crashing the http download dialog on Mac.
+					This means server.met update and ipfilter update was crashing.
+					Currently the fix disables 'Cancel' button on that dialog, while we
+					wait for curl lib to fix this issue.
+		
+	lfroen:
+	        * Removed debug printf's in timer.cpp.
+		* Fix for deadlock on connection timeout in ServerSocket.cpp.
+		* Fixed assert when build with wx-cvs.
+		* Added option for disabling SIGSEG handling: useful for
+		  debuging in amuled.cpp.
+		* EMSocket.h cleanup.
+		* Fixed unclosed sockets (CLOSE_WAIT) and few stability
+		  problems.
+		* Make CEMSocket::OnReceive thread safe. MAX_SIZE reduced,
+		  cause even theoretically tcp can buffer up to 64K.
+		* amuled fixes.
+
+	mfs:
+		* Fixed crashes on friendlist when keeping keys pressed
+		* Fixed one server not being removed when several servers selected
+		* Fixed access problems on deleting the ipfilter while accessing it
+
+	Phoenix:
+		* Fixed '&' char next to Preferences in amuleweb web page, as
+		  reported by DreamWalker.
+		* ExternalConn: protected GETCATTITLE command from buffer
+		  overflow.
+		* Start removing unused code from ExternalConn.cpp.
+		* Fixed high CPU usage problem in amuleweb, thanks to jaguarwan for
+		  the report. Daemonizing amuleweb should be done using the -q
+		  switch.
+
+	ThePolish:
+		* Implemented new hits system in wxCas to display and save download rate records.
+		* Changed wxCas layout to try to avoid display bug with wx-cvs
+		* Added translations update (Thanks to all translators)
+		* Removed wxCas documentation to slim source tree (now downloadable from berlios)
+
+	Seagull:
+		* Patch adding "Directory" column to the shared-files dialog.
+		* Patch to add "Swap to this file" option for sources marked as 
+		  "Asked For Another File" on download queue.
+
+	Unleashed:
+		* Better fix for amuleweb's high CPU usage problem. Now main thread only gets
+		  woken up when absolutely needed.
+
+	Xaignar:
+		* Reinsured that the preferences will be saved upon clicking "Ok".
+		* Removed SSE2 specific optimizations from the embedded Crypto++ sources,
+		  they would break very easily and crash aMule.
+		* Fixed a bug where we would sometimes attempt to remove a client 
+		  from the wrong file, resulting in dangling pointers and crashes.
+		* Ensured that the statistics-dialog would be updated when preferences
+		  relating to it where changed.
+		* Added sainity checks to category-loading, to avoid adding categories
+		  without incomming dir or name.
+		* Initial fix for crashes if aMule tried to share an inaccessible folder.
+		* The redraw problems on restoring from minimized state should be fixed.
+		* Fixed the shared-files list, which would draw columns regardless 
+		  of whenever or not they were hidden.
+		* Fixed the progress-bars in the shared-files dialog. It should now
+		  work properly for both part and completed files.
+		* Fixed a bug in the ipfilter, where non-numeric chars on lines would
+		  cause wrong ranges of IPs to be filtered.
+		* Re-added the priority menu for servers, which had gone missing due
+		  to a mistake.
+		* Stopped the client-credits class from attempting to load older 
+		  versions of the lists, which again would lead to mem-corruption.
+		* Fixed hidden columns on download queue, which would still be drawn.
+		* Added sainity checks to loading of clients.met file, since corrupted 
+		  files would lead to potentially huge ammounts of mem-corruption.
+		* Added "Completed Sources" column to the shared-files dialog.
+		* Fixed a bug in sockets where disconnected sockets wouldn't be removed
+		  immediatly, but left to timeout instead.
+		* Fixed an end-less loop on the AICH thread if a file on the queue
+		  was removed from the list of shared files.
+		* Fixed an end-less loop when changing file-status by category.
+		* Fixed the auto-priority menu-item on the download list when multiple items
+		  where selected. It would un-set auto-priotity instead.
+		* A bit of optimization in CPartFile. More work will follow later.
+		* Properly initialized a number of variables.
+		* Fixed the column-width saving/loading which I managed to break shortly before 
+		  rc6 was release. Whoops. :p
+		* Ampersands will no longer be doubled when lines are added to the log-view.
+
+	Special Thanks To:
+
+		* Translators in this release:
+		   biger [HUN]:		(Hungarian / hu_HU)	
+		   GhePeU:		(Italian / it_IT)
+		   mad_soft:		(Spanish / es_ES)
+		   Ogon:		(Polish / pl_PL)
+		   piarres:		(Basque / es_EU)
+		   powtrix/willy:	(Brazilian / pt_BR)
+		   punkyxd:		(Catalan / es_CA)
+		   stefanero:           (German / de_DE)
+		   Supersnail:		(Dutch / nl_NL)
+
+		* Testers and bug reporters:
+		   angel,	BiByFoK,
+		   bill_bool,	boutros,
+		   elui,	Gaenya,
+		   jolupa,	ken_aMule,
+		   mad_soft,	Mig21,
+		   one2one,	powtrix,
+		   RedDwarf,	skolnick,
+		   wi777
+
+		* Everyone at:
+		   #amule	irc.freenode.net
+		   wiki		http://wiki.amule.org
+		   forums	http://forum.amule.org
+		   bugtracker	http://abugs.amule.org
+
+		* All aMule users!!!
+		
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+	
+Version 2.0.0rc6 - The "We're so EVIL that we make you lose a sock in every pair" version.
+----------
+2004-10-03
+	
+	deltaHF:
+		* GUI for MyInfo at Server window.
+		* Added 'About' button.
+		* Fixed sorting upload list by speed
+		* Changed the Search dialog. 
+		* Fixes websearch for jugle.net
+		* Added hability for send msg to clients in upload queue, without having to add 
+		  them as friends (based on Kry's download queue send-on-right-click implementation)
+		* Translations update.
+
+	falso:
+		* New upstream cas version. Now supports creating html pages with the statistics
+		* Now cas runs on netbsd.
+		* Misc fixes on cas.
+
+	GonoszTopi:
+		* Patch to fix buffer overflow in cas when line had more than
+		  80 chars.
+		* Patch to fix help switch in ExternalConnector.cpp
+		* Patch to create -c switch in amulecmd: now the command line
+		  version can connect, execute a command and exit.
+
+	Hetfield:
+		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
+		  and wx headers checks.
+		* Configure cleanup, safetray remove and nice cosmetics for tools
+		* Configure option added: --enable-embedded_crypto to use amule crypto code
+		and bypass crypto libs. Also fix freeze problem.
+		* fixed crypto usage in core with configure and compilation flags
+		* Re-enable Pentium4 and SSE2 optimizations fro Crypto stuff
+
+	Jacobo221:
+		* Fixed issue on the About button.
+
+	Kry:
+		* Got back from hell.
+		* Imported eMule's 0.44x new corruption handling: AICH
+		   AICH stands for Advanced Inteligent Corruption Handling, and avoid having to 
+		   re-download a full part everytime we get corruption on a file. With AICH, you will
+		   just re-download the 184Kb block that has corruption. It uses HashTrees to achieve 
+		   the corruption diagnosis. 
+		   More info: http://www.emule-project.net/home/perl/help.cgi?l=1&rm=show_topic&topic_id=589
+		   *********************************************************************************
+		   WARNING: AICH thread will re-hash all your files on your first rc6 startup. This can 
+		   take very long when the user has lots of shared files. We're sorry but that's the only 
+		   way to build the HashTree and thus making AICH able to work.
+		   *********************************************************************************
+		* Fixed the AICH implementation to support big endian archs (like ppc).
+		* Implemented IPfilter auto-load on startup
+		* Implemented IPFilter 'Update Now' button on preferences.
+		* Revamped the HTTP download dialog, used to download IPfilter and server.met 
+		   (and probably other files in a near future) Now it's the thread who runs the dialog,
+		   and dialog no longer block aMule while loading. It also has a progress bar. Yay!
+		* Fixed amule daemon not allowing auto-dowload of server.met.
+		* First rework of the Search dialog, later re-worked by Xaignar using the 
+		  hide/show engine I did.
+		* Implemented "Send messages" via right-click on source.
+		* When aMule is running and you try to run a second aMule, it now send a 
+		   'raise' message to the current runing one. This is designed to fix the problems
+		   with aMule being in a inexistant systray and thus people being unable to recover it.
+		* Fixed documentation:
+			* Bugs on  kb/kB mistakes
+			* Added "What are all those fancy colors in the download progress bar about?"
+		* --version switch now returns 0 (sucessfull app termination)
+		* MOD_VERSION_LONG does no longer show 2.0.0 version on CVS
+		* Cleaned the GUI for LOTS of unnecessary wxSizers that were looking ugly on Mac
+		   and making wxDesigner project file much cleaner.
+		* Fixed memleaks on curl usage (thanks Seagull)
+		* Systray is now skinnable
+		* Safety checks: A File can't have more than 441 partcount
+		* Added a file-access tracker that allowed us to fix lot of file access bugs:
+			* We were closing invalid file descriptors!
+			* Random Error responese from CFile class, again
+			* Misc multiple bugs that made me kinnda rewrite the class
+		* Fixed user not being notified of duplicated files on shareds
+		* Safe load for clients.met (no more removing to load amule)
+		* Fixed PrefsUnifiedDlg using wrong events for Spin controls.
+		* Search textbox now accepts enter key (did it work before? or never worked?)
+		* aMule now compiles and works with wxWidgets 2.5.2, with no gui bugs
+		* Fixed a nasty cvs bug that was just taking '0' on upload settings as 0, not unlimited.
+		* Fixed CArray implementation to avoid ints and make usage of size_t and off_t
+		* Added GetConnectIP() implementation to BaseClient so we can hold the supposed IP 
+		   or (after we had a connection) the real IP
+		* Implemented extra-file_corruption_safety on files. No more 'please rm -rf .aMule/'
+		* Implemented safe recover of .part.met files.
+		   This means that if a .part.met file gets corrupted, aMule will take care of it and try 
+		   to recover it with minimal info. As a matter of fact, only filesize and hash is need,
+		   so any other info will be recovered or set to default instead of discarding the part file.
+		* Fixed mem corruption on BaseClient
+		* Fixed a crash on UploadListCtrl due to access to a either uninitialised or removed client.
+		* Fixed the annoying empty message being sent every time a client connects to us while 
+		  we have a chatwindow with him. this was really pissing people off ;)
+		* Reworked SafeFile.cpp and made it compatible with eMule 0.44x. 
+		* aMule defaults to maximize if not size not overriden and no gui size stored (robably first run)
+		* Implemented CDirIterator. 
+		   Used to get rid of wxFindFirstFile and such buggy functions (breaking filenames on Mac and others). 
+		* Added GUI preferences fo AICH's hash trusting and IPfilter new options.
+		* Corrected xMule version show. xMule started sending correct version tags on 1.9.1b, only 4
+		   months after I told them, and only 1 after eMule+ developers did. Is based on our implementation
+		   (x.y.z instead of eMule's x.ya), so it was not hard to show them correctly ;)
+		* Misc developing, memleak fixing, code rewrite, and co-workers abuse by insulting 
+		   them and degrading them to worm state.
+		
+		* Kademlia Import:
+			kademlia/utils
+			* UInt128.cpp (class for handling 128-bits integers, added hability to read/write on SafeFile).
+			* UInt128.h
+			* All other files on the kademlia/utils are not needed by aMule.
+			kademlia/kademlia/
+			* Defines.h
+			* Entries.h
+			* Error.h
+			* Tag.h
+			kademlia/routing/
+			* Map.h
+
+		* Mac:
+			* Fixed compilation near every day :)
+			* Fixed the file descriptor problems, using the new file access tracker.
+			* Fixed the clients.met file being saved badly and thus breaking load.
+			* Fixed Search page not setting the SearchType to default.
+			* Fixed the start, clear and clear all buttons on Search page
+			* Fixed wrong usage (at least on Mac) of multi line control functions on single line text control
+			* Fixed sharing dirs giving access errors (and probably on other archs than Mac).
+			* Fixed amule daemon for taking 100% (or 198% on a dual system) CPU.
+			* Fixed wrong filenames being shown when more than 24 chars. See CDirIterator above.
+			* Fixed 'MyInfo' tab showing wrong endianess on IP.
+			
+		* Deleted files:
+			eMule-Import-Status	-> Very old unused file.
+			RC1-KnownBugs	-> Very old unused file.
+			HTTPDownloadDlg.*	-> HTTPDownload.* (no longer a GUI file)
+			
+
+	lfroen:
+		* Core/GUI separation:
+			* Moved all GUI code out of Core files.
+			* Made a new socket engine to be able to use wxSocket on wxBase, even when
+			   wxBase has no event pool.
+			* aMule daemon is now functional,  but it still need hard testing.
+			   Enable it using --enable-amule-daemon.
+			   You can control it via any EC app (amulecmd, amuleweb)
+			* aMule separated GUI does not compile right now, and the communication
+			   with the core will be improved as EC is rewritten by GonoszTopi.
+		* Fixed crash on DownloadClient
+		* Misc aMule fixes here and there :)
+			
+	Littletux:
+		* Patch to include UTF-8 support in systray.
+		* Patch to fix configure.in UTF-8 SysTray code.
+
+	Phoenix:
+		* Fixed a compilation warning + appartently useless code in 
+		  DirectoryTree.cpp.
+		* Fixed amuleIPV4Address for wx-2.5.2 and up.
+		* Fixed the low number of sources problem with wx-2.5.2 and
+		  up. Problem was in CUDPSocket::SendBuffer, now there is a
+		  macro to test. aMule should be 2.5.2 network ready now.
+		* wxCHECK_VERSION(2,5,0) no longer necessary in
+		  amule{web,cmd} for wxApp because we have now -DwxUSE_GUI=0.
+		* New command line parameter in amulecmd: -pw or --password.
+		* New commands in amulecmd: serverconnect, reloadipf and
+		  setipfilter. Thanks rommel for the initial patch.
+		* Fixed amulecmd command parser. Help was not coherent and
+		  giving syntar errors.
+		* Rewrote command parser/processor im amulecmd to use
+		  wxStrings.
+		* Some i18n stuff in amulecmd.
+		* Rewrote amulecmd and amuleweb, creating a new module,
+		  ExternalConnector.cpp. This module has a lot of code
+		  common to both programs, and will make it easier to
+		  maintain.
+		* Fixed a small wxString bug in CamuleDlg::AddLogLine() 
+		  in amuleDlg.cpp.
+		* Improoved wxSting usage in ExternalConn.cpp.
+		* Yielding in DownloadQueue.cpp Init() so that gui is not 
+		  blank when loading lots of files.
+		* A little better font/color handling in amulewebDLG and 
+		  amulecmdDLG.
+		* New command line parameter for amuleweb, amulewebDLG,
+		  amulecmd and amulecmdDLG: -f. This parameter reads the
+		  ECPpassword and the ECPort from the [ExternalConnect]
+		  section of file ~/.eMule. This way, the plain text password
+		  doesn't have to be passed in the command line.
+		* Updated socket-2.5.c to the latest wx-cvs code. 
+		  Fast reconnect -> lowid bug is fixed in wx-cvs now. When
+		  wx-2.5.3 is out, we will finally be able to drop this file.
+		  It will only be needed for versions 2.5.0(?) to 2.5.2.
+		* Removed gsocket-2.5.h from the project. This file was not
+		  beeing used anymore.
+		* Added command line parameter "-q" or "--quiet" to
+		  amuleweb(Dlg) and amulecmd(Dlg). This is to run amuleweb
+		  without any output to stdout, so that it does not need a
+		  terminal.
+		* Changed amulewebDLG and amulecmdDLG to use sizers.
+		* Removed a bug in WebSocket.cpp: was not testing the return
+		  value of Accept, this could create a thread with a NULL socket.
+		* Added two new commands to amulecmd(DLG), GetIPLevel and
+		  SetIPLevel <new level>.
+		* Rewrote most of the wxString usage of amule web server in
+		  ExternalConn.cpp. There should be some speed improovement.
+		* Removed pop up when web server requested ed2k source link
+		  and amule was low id.
+		* Fixed a problem with Server Connect command in amulecmd, it
+		  was not working. It has been renamed to ConnectTo. Also
+		  fixed help command output, should look better now.
+		* Added "-fmessage-length=0 -W" flags when --enable-debug.
+		* Changed m4/wxwin.m4 to recognize wx-config --libs base (no
+		  equal sign from 2.5.3 and up).
+		* Unicode fix in SysTray and new compiler wanings fix due to
+		  new compiler debug option -W.
+		* Some more consts in code due to CDownloadQueue::GetFileByIndex()
+		  and CSharedFileList::GetFileByIndex(). Also cleaned those
+		  functions.
+		* Fixed Resume/Pause bug in amulecmd/amule. Now Resume/Pause
+		  argument starts at zero.
+		* More gsocket.h update.
+		* Debug protocol options. Comment/Uncomment:
+		    #define DEBUG_LOCAL_CLIENT_PROTOCOL in BaseClient.cpp
+		    #define DEBUG_REMOTE_CLIENT_PROTOCOL in ListenSocket.cpp
+		    #define DEBUG_SERVER_PROTOCOL in ServerSocket.cpp
+		    #define DEBUG_CLIENT_PROTOCOL in sockets.cpp
+		* Changed configure.in to no longer use gsocket-2.5.c for 
+		  wx-2.5.3 and up.
+		* Fixed the Random Lowid Bug.
+		* Cleaner solution to RLB: Accept() the connection and
+		  Destroy() the socket immediately.
+		* Fixed a lot of bugs in amuleweb. In particular, stop / pause
+		  / cancel / priority(up/down) now works.
+		* Removed bubble sort code in download queue from amuleweb.
+		  This code did not scale for large number of files, like
+		  hundreds. There is still room for improovement here.
+		* Fixed a bug in SafeFile.cpp. wxString.Length() returns the
+		  number of codes in the string, which is less than or equal
+		  to the number of bytes in a multibyte encoded string. This way, 
+		  amule will also not crash with locale search strings like korean,
+		  japanese and chinese.
+		* Several amuleweb/ExternalConn bug fixes. Now the
+		  communication is in UTF8, so that soon amuleweb non-unicode can 
+		  communicate with amule unicode and vice-versa. There was a
+		  bug when the number of files was more than approximately 90
+		  because the communication routines could not handle strings
+		  greater than 64K chars. There is still some replicated code
+		  in ExternalConn.cpp, but the idea is that it will use the
+		  code in ECSocket.cpp.
+		* Bug fix in ExternalConn.cpp. ECSocket must have the
+		  wxSOCKET_WAITALL flag to work properly when the message has
+		  more than 64Kbytes. aMule now uses ECSocket.cpp, no more
+		  replicated code in ExternalConn.cpp.
+		* Fixed a bug in ListenSocket.cpp, m_client can be null after
+		  ProcessSecIdentStatePacket(), so, we must check.
+		* Fixed conversion problems in ECSocket.cpp. Now external
+		  connections in UTF-8 are really working, and
+		  amuleweb/amulecmd (unicoded or not) can connect to amule
+		  (unicoded or not).
+		* Fixed an unprotected call to strlen() in ECSockets.cpp, if 
+		  you pass a NULL pointer to it, the program segfaults.
+		* Added a timer for idle repainting in amulewebDLG and
+		  amulecmdDLG.
+		* Fixed this assertion in Preferences.cpp: [Debug] 07:02:00 AM: 
+		  include/wx/longlong.h(155): assert "(m_ll >= LONG_MIN) && 
+		  (m_ll <= LONG_MAX)" failed: wxLongLong to long conversion
+		  loss of precision.
+		* Reimplemented "Show Rates On Title" preference.
+		* Initial import of new MD4 hash code from emule 0.44a into
+		  KnownFile.{cpp,h}.
+		* Removed amuleweb html template 12 char password limitation.
+		* Small fixes to UTF-8 SysTray support patch.
+		* Several unicode fixes.
+		* New macro in otherfunctions.h: unicode2charbuf(x) -- used
+		  when you need to store a (char *) to use several times.
+
+	Rommel:
+		* Patch to implement the commands serverconnect and reloadipf
+		  in amulecmd.
+
+	ThePolish:
+		* i18n amule log lines (server window)
+		* amulecmd and webinterface i18n fixes
+		* Some win32 fixes (slashes and backslashes)
+		* Automake 1.8 fixes
+		* Add traditionnal Chinese translation (zh_TW) from Paul (Thanks !)
+		* Add it, nl, fr, pl, es, eu, ca translation updates (Thanks to
+		  all translators)
+		* Fix copyright for alc icons
+		* Replace amule, wxCas, alc .ico simple icons by icons group .ico
+		* Replace alcc's printf by wxLogMassage
+		* Make runtime to be in seconds in amulesig.dat
+		* Modify Xas to handle runtime in seconds
+		* Modify wxCas to handle runtime in seconds
+
+	Unleashed:
+		* cas: some sprintf -> snprintf conversions, ifdef unix specific
+		  code, and revert get_path() breakage
+
+	Xaignar:
+		* Other stuff I'm too lazy to write or have forgotten about. ;)
+		* Initial multi-sorting on download list. Upon changing sort-column,
+		  any items that were evaulated to equal will be resorted by the 
+		  last used column.
+		* Fixed the constant resetting of the category dropdown-menu in
+		  the searchdlg.
+		* Fixed "&"s being replaced with "&&" on the log-view.
+		* Only displayed category color when the items arn't highlighted
+		  on the download list, to improve readability. (thanks to Seagull)
+		* Optimized the IPFilter-code.
+		* Improved the CDownloadListCtrl::Updateitem function so that it 
+		  doesn't search the list for hidden items.
+		* Improved sorting of clients by QR on the download list.
+		* Removed a number of unsued files, cutting down archive-size
+		  by around 900kb.
+		* Changed systray behavior to match KDE/GNOME. Single-clicks hide/show.
+		* Fixed the "Last Recieved" column, which would show the 
+		  same as the "Last Seen Completed" column.
+		* Fixed the placement of sources on the download list, where they 
+		  would sometimes be placed with the wrong file.
+		* Cleanup of the new AICHSyncThread class.
+		* Removed extra newlines before writing text to the logfile,
+		  to avoid having a double-spaced file.
+		* Fixed loading of addresses.dat, where the first line would
+		  be ignored and replaced the messagebox with a log-line.
+		* Fix the percentage displayed on the progress-bars being rounded,
+		  which would result in non-completed files showing 100%.
+		* Added the ability for the user to specify permission settings for 
+		  fildes and directories. These settings default to 640 for files and
+		  750 for directories and are used throughout the app, with the 
+		  exception of files created with wxTextFile, as that class lacks 
+		  support for permissions. Will be fixed later		  
+		* Cleanup of CServerListCtrl:
+		  - The sorting of the list is now always maintained, including when items 
+		    on the list are updated or new items updated.
+		  - Cleanup of the popup-menu.
+		  - Disallow connecting to multiple servers at the same time.
+		  - Other changes.
+		* Reduced the overhead of the overhead calculation by using 
+		  code that didn't require iterating through a list every time.
+		* Added checks to avoid the user getting spammed with the "Connected
+		  to user" and "Disconnected ..." when having an open chat-window.
+		* Second reworking of the SearchDlg
+		  - The crash on searching should be fixed now.
+		  - Initial cleanups of the SearchList class
+		* Cleanup of the SearchListCtrl class
+		  - Results will now always be sorted
+		  - Syncronized all lists during runtime, so that they behave 
+		    as a single list.
+		  - Improving the coloring of items.
+		* Cleanup of the CMuleNotebook class
+		* Cleanup of the CMuleListCtrl class:
+		  - Added double-arrow for alternate sorting.
+		  - Centralized a lot of logical plus lots of other changes
+		* Double-buffered all listctrls using custom drawing, to reduce flicker.
+		* Added warning if the user recieves LowID from the server.
+		* Disallowing the user to send empty messages in the chat window.
+		* Rewrote the PrefsUnifiedDlg class
+		  - Removed the Rse classes and create a more clean replacement.
+		  - Made the dialog mode-less.
+		  - Removed the un-implemented Notify page
+		  - Serveral other changes.
+		* Updated the version reporting capabilities of aMule, so that it
+		  will report version, wxWidgets type and version and if unicode
+		  has been enabled or not.
+		* Added the new MuleTextCtrl class which supports the traditional
+		  popup-menu with Cut/Copy/Past/Clear and Select All. All existing
+		  wxTextCtrls were replaced with this new class.
+		* Imported the parts of Crypto++ that aMule needs into two files
+		  with permission from the Crypto++ developer. This means that aMule 
+		  now compiles without the user having Crypto++ installed, though it 
+		  is still possible to use external Crypto++ installations if the user
+		  wishes to do so.
+		* Fixed some compilation problems with aLinkCreator and wx-2.5.2.
+		* Fixed the First-Time-Message being displayed twice and rewrote it 
+		  somewhat since it was becomming quite outdated.
+		* Fixed the "unable to open preferences.dat" bugs.
+		* Fixed the ability to add static servers.
+		* Cleanup of column sorting functions.
+		* Fixed a bug where CServer::HasDynIP would always return true.
+		  This would result in need-less dns lookups.
+		* Removed a redundant attempt at adding servers from connected 
+		  clients.
+		* Fix for Packet::PackPackets function where new size of packet 
+		  wouldn't be saved.
+		* Fixed some access to the dialog-window ptr after it had been
+		  deleted. This was causing some odd behavior once in a while
+		  on termination.
+		* Fixed the downloadqueue sorting, which was reversed. Low-priorty 
+		  files having high priority and high-priority files having low 
+		  priority. (Thanks to thomas001 for noticing)
+		* Rewroked the systray:
+		  - Fixed the the problems with the rate-limiting functionality.
+		  - Enabled use of PublicIP requests, so that the tray will show
+		    the users actual IP rather than the interface IP.
+		  - Some changes of the menu-structure.
+		* Complete reworking of the hashing thread:
+		  - More informative output
+		  - Much better error handling
+		  - Handles duplicate files gracefully
+		  - Reads only 128kb (instead of 9mb) at a time to avoid killing 
+		    the harddisk entirely while the thread is running.
+		  - Made the thread terminate when no files are left, instead
+		    of timing out as before.
+		* Disconnected otherfunctions.h from the rest of the aMule code,
+		  so that it should be possible to use it in external apps.
+		* Added checks when using the client-pointer in the socket-code,
+		  since that suffered from the same problem as the previously 
+		  fixed clients (they have a habbit of dying at random).
+		* Added function for truncanating displayed filenames, which is now
+		  used in file-details dialog, to avoid it getting resized to 
+		  extreme widths.
+		* Some work on readying the Info tab on servers, deltaHF_ did the
+		  rest of the work.
+		* Small re-fix for the "mis-matching hash"-bug fix
+		* Reworked the SearchDlg once
+		  - Added Jugle.net websearch
+		  - Added results-count to the result tabs
+		  - Other smaller changes 
+		* Fixed mem-leak where certian client-objects wouldn't be deleted. 
+		  Specifically those that were removed from the download queue but 
+		  wern't on the upload queue and didn't have a active socket.
+		* Removed debugging functionality no longer needed.
+		* Removed variable-arguments logging functions, since they were 
+		  only needed in a very few places and posed a potential risk 
+		  everywhere else.
+		* Fixed StripInvalidFilenameChars function to avoid legit letters
+		  being dropped (thanks to likesylph).
+		* Changed all file-accessing to use CFile rather than a mix of CFile, 
+		  wxFile and FILE.
+		
+		* Removed a number of warnings.
+		* Cleanups of the following files
+		  - AICHSyncThread.*
+		  - ServerListCtrl.*
+		  - SearchListCtrl.*
+		  - MuleNotebook.*
+		  - MuleListCtrl.*
+		  - PrefsUnifiedDlg.*
+		  - SysTray.*
+		  - AddFileThread.*
+		  - SearchDlg.*
+		  - CMemFile.h and filemem.cpp
+		  - SafeFiles.*
+		  - CFile.*
+
+		
+	Special Thanks To:
+		* Lucasvr, for providing fixes for compilation with some wx versions.
+		* Seagull, for providing fixes and suggestions.
+		* likesylph, for providing a fix for the StripInvalidFilenameChars function.
+		* All translators
+		* All testers
+		* BrianHV and the people at #wxwidgets for their help and support
+		* EVERYONE at #amule (even codewarrior2!)
+		* All the people in aMule's forum
+		* All the users, for having the patience to wait the delayed rc6 release.
+		* Hellimod, one_2_one, ASTIOBOY, sssnake, lami123, Ocimin, agav,  PowerMike
+		   and all the mac testers and people providing Macs for ssh & vnc. 
+
+	Funny stuff about this changelog:
+		* You can notice that the Search dialog was rewritten 3 (THREE!) times
+		   between rc5 and rc6. You only get to see the final version (Xaignar's), 
+		   but the initial one was Kry's (when the extended buttons show/hide 
+		   were added) and then deltaHF changed it later. 
+		   We just love changing that page.
+		
+----------------------------------------------------------------------------------------------------------------------
+		   
+Version 2.0.0rc5 - The 'Let's recover our release speed' version.
+----------
+2004-07-18
+
+	deltaHF:
+	        * Better sorting of some columns
+
+	Kry:
+		* Some gui design and coding of the upcoming Kad window
+		* Protocol update:
+			* UDP protocol upgraded to eMule 0.43b
+			* TCP Standard Base protocol upgraded to eMule 0.43b
+			* TCP Extended Base protocol upgraded to eMule 0.43b
+		* Fixed memory corruption and crashes on 'cas'
+		* Fixed gsocket-2.5.c for big endian archs.
+		* Fixed CFile class to actually return error when a error ocurred and not only when it feels like.
+		* Fixed bug where the 'All' category could be removed leading to crashes and other funny behaviours.
+		* No more minimize when no tray has been selected.
+		* Fixed browse skin file button to actually browse a file ;)
+		* Fixed high 32 bits of transfered bytes not being loaded on known.met (sorry fluffly!)
+		* Some Mac bugfixes.
+
+	Hetfield:
+		* Some gcc 3.4.x compilation fixes
+
+	lfroen:
+		* GUIEvents updated 
+		* core2gui events added.
+		* Some gcc 3.4 fixes to GUIEvents
+
+	Phoenix:
+		* Added a test with a warning to
+		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
+		  value has been reported on the foruns, we don't know how
+		  GetPage() or FindWindowById() could have returned NULL.
+		* More unicode fixes to alcc and ed2khash.
+		* Fixed flags for console applications. -DwxUSE_GUI=0 is
+		  required so that amuleweb, amulecmd, etc, run fine with
+		  wxWidgets version 2.5.2 and up.
+		* Fixed a problem with gsocket-2.5.c when using wxWidgets
+		  version 2.5.2 and up. Now amule runs with 2.5.2.
+		* New ipfilter code.
+		* Found the reason why wx-2.5.2 gui was messed: starting with
+		  wx-2.5.2, a new flag must be added when adding components to
+		  sizers to keep the old behaviour (wxFIXED_MINSIZE). This
+		  constant is defined to zero in amule.h when wx-version is
+		  less than 2.5.2, so that amule still compiles in old wx.
+	
+	ThePolish:
+		 * Add win32 MakefileWIN32, configureWIN32.h and project file amule.msp
+		 * Make win32 use winsock2 for IPFilter
+		 * Enable alc, alcc, wxCas translations with aMule catalog
+		 * Use normalized includes for wx in wxCas, alc and alcc
+		 * Limit the server name length in wxCas to avoid a too large window
+		 * New icon for alc
+		 * Global fr translation
+		 * Fix win32 ToolBar problem
+
+	Xaignar:
+		* Added the ability to search for "Texts"	
+		* Attempt at fixing both Random Socket Bugs and Random Client Bugs.
+		* Fixed new IPFilter code.
+		* Cleanup of CPartFile::SavePartFile
+		* Got rid of some unneeded includes.
+		* Fixed compilation when using crypto++ 5.2
+		* Ensuring that the ServerListCtrl gets unfrozen in case of corrupted met files.
+		* Fixed a crash-bug added by Kry's UDP commit.
+
+	Special thanks to:
+		* The usual people, those on the other 'Thank you!' sections of changelog.
+		* All the people at the Mac section of forums, for testing compilation and run.
+		
+		
+----------------------------------------------------------------------------------------------------------------------
+
+
+Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' version)
+----------
+2004-07-14
+
+	Kry:
+		* eserver 16.47 fix for shared files packet not compressed
+
+	deltaHF:
+		* Translations update
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
+----------
+2004-07-12
+
+	alehack:
+		* Patch to show extra QR info
+		* Patch to colorize the download list
+
+	aquatroll:
+		* Fixed includes for Win32 compilation
+		* Cleaning of unused variables on Win32
+		* Fixed compilation on Win32
+
+	Citroklar:
+		* lots of unicode slave work ;)
+	
+	croakerc:
+		* Fixed OpenBSD compilation
+
+	deltaHF:
+	        * Added websearch function (filehash.com)
+		* Added jugle.net as Fake-check URL
+		* New buttons added:
+		  - reload sharedfiles
+		  - switch upload/uploadqueue
+		  - clear completed files
+		* Added 3 new columns in upload window (Client Software , Upload/Download , Remote Status)
+		* Added 'Client Software' column in upload-queue window
+		* "Asked for another file" on sources now with the filename that is asked for ( i.e. A4AF -> xyz.avi)
+		* Added 'copy file feedback to clipboard' function
+		* Added new Toolbar icons [ thx to http://www.everaldo.com ;) ]
+		* Added icons in Preferences
+		* Download menu changed
+		* Work on skin support
+
+	falso:
+		* Typo fix: bandwith to bandwidth
+		
+	hellimod, one_2_one:
+	    * MacOSX support
+
+	Hetfield:
+		* Fixed unicode issues on SysTray.cpp, now apps is really unicoded!
+		* deleted separated i18n stuff from SysTray, now uses global one
+		* Fixed 2 memory leaks in SysTray
+		* updated italian and napoletanean translations
+		* Fixed unicode issues in serverlist updates and download tab
+		* Fixed unicode issues that stopped adding files to download from ed2k utility 
+		  and internal link handler
+
+	Jacobo221:
+		* New feature to open webpages in new tab instead of new window
+		* Fixed a compatibility bug in OnlineSig with eMule's and added connecting support
+		* Fixed bug in Statistics limits in Preferences
+		* Fixed bug in Upload/UpQueue button
+		* Fixed SERV.4 bug
+		* Fixed DISP.14 bug
+		* Added DOS compatibility into CAS and update onlinesig support
+		* Several features in XAS (see XAS's changelog)
+
+	Kry:	
+		* Fixed wxWidgets 2.5.x socket code. aMule now works on wx2.5.1 perfectly, wx2.5.2 introduces some GUI bugs.
+		* Rewrote Preferences engine to be much nicer, and Mac compatible :) Thanks to deltaHF for the new icons.
+		* Added a hack to make new preferences work on wxWidgets 2.4.2. I hope we can get rid of wx 2.4.2 soon ;)
+		* Wrong .part.met files no longer make aMule abort on startup. Now a warning is displayed on log and aMule ignores that file.
+		* Added the new compatible client flags tag agreed with lphant devs and eMule devs. xMule devs refused to use it.
+		* Overloaded the wxSocketClient::Destroy to a safer version, to check cases when deletion is not called from Destroy()
+		* Fixed the disconnection of clients that have MS_CHATTING state.
+		* Fixed the usage of QueueLogLine fucntion to avoid crashed on too fast computers ;)
+		* Remove spaces from search string start and end.
+		* Remove spaces from ed2k links start and end.
+		* Fixed a mem corruption due to lphant icon size (we all know lphants are big)
+		* Splitted internal core and GUI events 
+			* Socket events mover to core
+			* Timer got separated into core_timer and gui_timer, each one with the matching functions.
+		* Fixed UDP socket handler being... the TCP handler. Since lmule times.
+		* Delayed deletion of sockets to avoid async deletion issues that happens when Destroy() is called on a event
+		* Fixed several rare crashes happening on some fast computers on shutdown aMule.
+		* Added a debug function to get track of double-deletion of clients.
+		* Socket handlers now stop notifying new events when Safe_Delete() is called.
+		* m_pszUsername inited before a new call to handle 'new' exceptions correctly.
+		* Added a hack on  IsRunning() to check for current app object not existing yet (or deleted on shutdown)
+		* Fixed all icons to be 16x16 to avoid asserts on 2.5.x for unmatching wxImageList sizes.
+		* Fixed all wxImageList sizes to avoid asserts on 2.5.x on object construction.
+		* KnownFileList takes account of the duplicates now, so those are not rehashed each time anymore.
+		* Fixed EC password not being shadowed on preferences.
+		* The preferences dialog should be resizable now.
+		* Updated lphant stats to show the version as they added the extended version tag.
+		* Fixed 1 double-delete on ListenSocket, when socket is not connected.
+		* Each socket has its own handler now. Much safer and faster.
+		* Fixed hashing thread implementation to make it shutdown safely.
+		* Fixes on geometry handling to make it work properly from commandline.
+		* Fixed minimize to tray to work properly with no more double-minimizes.
+		* Coded the skeleton of the core/gui separation event system, improved by lfroen later.
+		* Fixed CString implementation for operator '+'
+		* No linking cas, wxcas and ed2k against crypto, please :) Fixed.
+		* Lots of speedups on ClientUDPSocket handling, someone went paranoid and added lot of redundant code.
+		* Changed most of the wxT("") to wxEmptyString
+		* Fixed the splitter position and client size on restart.
+		* Fixed compilation on wxWidgets CVS
+		* Fixed amuledlg not being set to null + moved the init to beginning on amule.cpp
+		* Fixes mem corruption and crash on PrefsUnifiedDlg
+		* Fixed missuse of  inet_addr on BaseClient.
+		* Fixed crash on stats disabled
+		* Reduced memory usage with a centralised icon handling.
+		* Fixed wrong var type on EMSocket.h causing mem waste.
+		* Fixed bug on SetFileSize (thanks to Pichuein on eMule forums)
+		*  wxWidgets 2.5 compatible CDirectoryTreeCtrl. 
+			WARNING- NEW BEHAVIOUR IS: LEFT CLICK ON ICON -> SHARE, RIGHT CLICK -> RECURSIVE SHARE 
+			Also made the icon red if the folder is shared.
+		* ModString fixed - Now mods identify themselves correctly.
+		* As xMule now identifies as eMule 0.0a, added xMule detection based on username 
+		   and modstring to keep stats coherent.
+		* On debug builds, client stats now show the amount of clients with open socket.
+		* Changed theApp.glob_prefs->GetAppDir() to theApp.ConfigDir for speed improvements.
+		* Fixed crash on empty shareddir.dat
+		* Fixed listen socket being processed before created on fast computers and thus causing crashes on startup.
+		* Fixed server version tag.
+		* Added frame name to the aMule main window to be handled correctly by X server
+		* Fixed a crash on log file re-creating on startup.
+		* Fixed the update of the categories tab names to show the file count and the downloading files.
+		* Fixed the update of the categories tab names tp happen only when needed to save cpu.
+		* Changed several vars and functions to const for speed improvements.
+		* Enter button working now for web search.
+		* Added a check to disconnect clients sending non-hello packets before finishing handshake.
+		* Added preferences items for the upcoming Skin engine.
+		* Fix from lugdunum to avoid blacklisting on servers because of key repeat on pressing enter for search :)
+		* Use generic BSD wx preprocessor define to make aMule FreeBSD and OpenBSD compatible.
+		* Fixed Incoming folder not being shared on strange situations.
+		* Fixed usage of '/' instead of '\' on Win32 builds.
+		* Made file comparison case-insensitive on Win32.
+		* Better fitting of notebooks
+		* Fixed shared files reloading to stop being dependant of buttons/labels
+		* Socket handling now deletes the client if connection fails ;)
+		* Fixed some wxSizer usage causing compilation compatibility problems between wx 2.4.2 and 2.5.x
+		* aMule now filter bad ips on source seeds.
+		* Autoconnect and onlinesig are now on by default.
+		* Added a check on graphic stats drawing to avoid crashes if no DC is created yet.
+		* aMule now uses crypto++ for MD4 calculation (faster, and endian safe)
+		* Added two sanity checks for source drawn with no reqfile associated, avoiding crashes.
+		* Fixed mem corruption and possible memleaks and crashes on file comments received.
+		* Fixed a BAD and UGLY and EVIL mem corruption happening since more than a year ago and still present
+		   on the original program (xMule).
+		* Client sending wrong OP_FILEREQUEST packets are now disconnected to avoid further problems caused by their 
+		   corrupted packets. Old shareazas and most xMule versions have been warned since 2004/04/13 from aMule and 
+		   since much more time ago from eMule. Shareaza fixed it, but xMule refuses to fix it. eMule 0.43x disconnects them too now.
+		* Fixed crashes on sockets because of packet overhead being calculated after packet was deleted.
+		* Fixed the CVS mod reporting for aMule 2.x
+		* Fixed the Online Signature dir selection.
+		* Fixed some shared files not being shared due to a return; on a wrong place ;)
+		* Fixed some events being posted to wrong event handler.
+		* Added GUIEvents.h to take care of the core/gui separation events.
+		* Cleaned ColorFrameCtrl class
+		* Cleaned otherfunctions.*
+		* Lots of misc code cleaning
+		* Several minor messages and GUI bugs.
+		* Several warnings removed.
+		* Removed useless files:
+			XBMDraw.cpp
+			XBMDraw.h
+			SplitterControl.cpp
+			SplitterControl.h
+				
+					------------ MAC -------------
+		* Fixed compilation on wxMac CVS and 2.5.x
+		* Fixed socket connection on Mac.
+		* Fixed endian issues causing crashes on server communication.
+		* Fixed string tags being read wrong.
+		* Fixed known.met being corrupted on every save and reload.
+		* Fixed stats not working on Mac (no longer crashes because of drawing)
+		* Fixed mnemonics on file search not being endian-safe.
+		* Fixed server TCP flags.
+		* Fiexd bug on lowid callback.
+		* Fixed serverlist on Mac:
+			- Server users
+			- Server files
+			- Server ip being reversed on restart
+			- Server port set to 0 on restart.
+
+					-------- UNICODE ---------
+		* Fixed unicode compilation of most files (except those by Citroklar, Hetfiled, and shakraw)
+		* Fixed search on unicode builds.
+		* Unicoded most of the app internals :)
+		* Fixed part.met on unicode builds	
+		* Hunted and killed (char*) casts and c_str() calls.
+		* Fix unicode client names and misc.
+		* Percentage & Download speed fixed
+		* Reported several bugs to wxDesigner's mantainer to make it work properly on unicode builds 
+		* Fix usage of st_mtime to allow files with non-std chars to be shared without crashes on wx2.5.1
+		* Fixed PerformFileComplete to allow unicoded files to be finished :)
+		* Fixed part met filename being 001.part everytime on unicode builds.
+		* Fixed renaming on file completion causing crashes on unicode builds
+		
+	lfroen:
+		* Started to implement various changes needed to split the core and GUI.
+
+	Madcat:
+		* Fixed preferences layout of panels.
+		* Simpler ed2k link integration for Mozilla 1.3+ / FireFox 0.6+ - Using Mozex plugin 
+
+	niet:
+		* Added support for memory usage and binary name (on xas)
+
+	Phoenix:
+		* Code cleaning in several modules due to making the members
+		  size, opcode and prot private in packets.h.
+		* CFile Close(), Read() and Seek() made const. Seek() needed
+		  the use of mutable with m_fd to be const.
+		* Put lots of consts around the code in the routines that
+		  should be so.
+		* Patch to --enable-stdin to aid in debug with valgrind.
+		* Code cleaning in module Packets, made a lot of stuff private
+		  now.
+		* Small hacks to print debug messages and avoid crashes,
+		  mainly in PartFile.cpp.
+		* Sanity checks in debug mode (MagicNumbers) to aid finding
+		  bogus clients and files.
+		* Created debugstuff module, debug build only.
+		* New configure option --enale-verbose, so that normal users
+		  are not flooded with debug messages.
+		* MagicNumbers are swapped to signal deleted source/PartFile.
+		* Removed deprecated wxArrayString::Remove(size_t nIndex,
+		  size_t nRemove = 1) using wxArrayString::RemoveAt(size_t
+		  nIndex, size_t nRemove = 1) now.
+		* Get rid of evil wxString::GetWriteBuff() and
+		  wxString::UngetWriteBuf() in ECSocket.h.
+		* Added -pw/--password command line option to amuleweb.
+		* Small unicode fixes.
+		* Fixed a messed up display in html code in aMule.tmpl (thanks
+		  to steve.reaver)
+		* Fixed font problem after Xaignar's great flicker free
+		  work in download list control.
+		* Fixed broken sort arrow after flicker free clean up.
+		* Enabled mouse wheel scrolling in all aMule list controls.
+		* Fixed two unhandled events in amule.cpp: CHAT_REFRESH_FRIEND
+		  and CHAT_FIND_FRIEND.
+		* Fixed compilation in 2.5.x and some unicode issues in
+		  aLinkCreator. Using wxAppConsole when wx > 2.5.0.
+		* Fixed compilation and linking in 2.5.x for amuleweb. Now
+		  uses wxAppConsole when wx > 2.5.0.
+		* Added a test for the return value of
+		  theApp.serverlist->GetServerByAddress(), which could be
+		  NULL. This was the reason why aMule was crashing when trying
+		  to connect to server with wxWidgets-2.5.2.
+		* Fixed compilation and linking in 2.5.x for amulecmd. Same
+		  problem as amuleweb.
+		* Commited a patch from wolti that fixes compilation on 
+		  sparc/Solaris systems.
+		* More sparc compilation fixes, thanks to wimms.
+		* Removed the declaration of void ParseCommandLine(); from
+		  TextClient.h and WebInterface.h. It seems to have been
+		  forgotten here.
+		* Patch to listctrl.cpp, was segfaulting in 2.5.1 when
+		  hiding/resizing columns. In 2.4.2 was just asserting.
+		* Patch to Partfile.cpp, workaround the socket == NULL bug, so
+		  that amule does not crash.
+
+	shakraw:
+		* Fixed the "remote connect" bug
+		* Unicode support for amuleweb
+		* Fixed typos on amuleDlg
+		* Unicoded some files.
+
+	steve.reaver:
+		* Fixed a messed up display in html code in aMule.tmpl
+
+	thepolish:
+		* wxCas:
+			- Fixed for amulesig.dat changes
+			- Solved localized decimal separator pb
+			- Embeded all pixmaps in src files and remove now unused pixmaps dir (better for portability)
+			- Win32 toolbar pixmaps have transparency now
+			- Added variable refresh timers
+			- Added user preference system
+			- Added statistic image creation
+			- Added FTP support for an automatic upload of the statistic image
+		
+		* aLinkCreator:
+			- Added this new maaarvellous tool suggested by DeltaHF to compute ed2k links from a file (same behavior as eMule link creator, but no shared code)
+			- Rewrote md4hash and ed2khash code to avoid external dependencies (libcryptopp free), and to be Big Endian proof (works on Mac afaik)
+			- Added alcc, the "alc for console" command line client
+			- Added toolbar themes (KDE and DeltaHF's default for now)
+			- Thanks to Phoenix (Unicode, Hook, commandline...) and one_2_one (Mac tests)
+			
+		* aMule:
+			- Rewrote Makefile.am tree to fit to GNU standards
+			- Removed Makefiles stuff for wxwidgets < 2.2.6
+			- With >= wx-2.5, use wx-config --libs=base,net instead wxbase-config (because base in buggy on 2.5), and keep using both on 2.4 versions
+			- Check for wx >= 2.4.2 instead of 2.4.0
+			- Removed GTK2 warning with wx >= 2.5
+			- Fixed GTK2 not detected
+			- Enabled documentation installation
+			- Install xas in $(libdir)/xchat/plugins. Will work if aMule and xchat are installed with same DESTDIR
+			- Suppressed widlcats in makefile (not fully supported in all make)
+			- Enabled make dist and make distcheck targets
+			- Force automake scripts update (missing...) to suppress warning in configure
+			- Force autogen.sh to regenerate intl at each call to keep sychronised with system gettext templates
+			- Some minor i18n and unicode fixes
+			- Updated POTFILE.in
+			- Removed Win32 stuff from autotools scripts
+			- Added static MakefileWIN32 for win32 compilation
+	
+	Unleashed:
+		[ From rc3 (not on changelog)]
+		* Cache get_path homedir to speed up multiple calls
+		* Removed unused Tag_Struct
+		* Fixed var init and memleak in SearchList
+		[ rc4 ]
+		* Fixed COMP.10 bug
+		* Wiped out USE_DEBUG_SYMS
+
+	wimms:
+		* More sparc compilation fixes.
+
+	wolti:
+		* Patch that fixes compilation on sparc/Solaris systems.
+
+	Xaignar:
+		* Merged lists used to identify file-types to avoid duplicity.
+		* Added wrapper-class around MD4 hashes.
+		* Fixed a number of places where the hashes where used as NULL-terminated strings, despite
+		  them not having a NULL-terminator.
+		* Most functions using hashes now use the MD4 wrapper class for arguments.
+		* Fixed rare possibility of ending with an unclosed file in CServerListCtrl.
+		* Fixed unsafe parsing of OP_SERVERIDENT type packets.
+		* Fixed unsafe passing of strings as arguments to functions using format-strings.
+		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by highlighting it.
+		* Fixed some memleaks.
+		* Fixed "&"s not being escaped on status-bar.
+		* Fixed incorrect source exchange packet format (Many thanks to the eMule Plus team for reporting).
+		* Started to document source-files with a Doxygen compatible comment format.
+		* Fixed the height of the barshaders used on the download list, it was 2 pixels too high, resulting in a slight cutoff.
+		* Reducing CPU-usage of auto-priority by not forcing a redraw every time the priority was automatically changed.
+		* Fixed that some overloaded functions hadn't been declared virtual in the base class.
+		* Replaced gif-animation widget with something more lightweight.
+		* Added sainity checks to CMemFile::Read.
+		* Fixed a number of uninitialized variables.
+		* Fixed several warnings about non-existing files.
+		* Fixes warning about not being able to create dir "" on first run.
+		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when this version of aMule is first run.
+		* Got rid of most warnings when compiling.
+		* Lots of work on getting rid of c-strings.
+		* Fixed bug that would cause deleted sources not to be removed from the A4AF lists. This was a major source of crashes.
+		* Improved performance and safety of the source lists used with PartFiles.
+		* Lots of small imports from eMule.
+		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information getting out of sync.
+		* Cleanup of includes.
+		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an OP_REASKFILEPING.
+		* Fixed Bug 45: URLs are now properly escaped when opening browsers for Fake-check and such.
+		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed after having been hidden.
+		* Added checks against aggressive clients (clients who reask for files too often).
+		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for allowing us to use their work ).
+		* Fixed wrong initialization of headers for some packets ( Thanks to thomas001 for reporting ).
+		* Fixed a delete called on an uninitialized pointer in the statistics dialog and properly initalized serveral other pointers.
+		* Optimizing the Comp(Up/Down)DatarateOverhead functions to something that didn't require traversing a list at each call.
+		* Complete rework of the source-swapping functions.
+		* Fixed the possibility of sources being added to multiple source-lists at the same time (No more mis-matching hashes warnings).
+		* Fixed the new columns added by deltaHF not being displayed and added checks in case the same thing happens again.
+		* Almost completly eleminated flicker on the download list and did a cleanup of the drawing routines associated the the download list widget.
+		* Fixed some lists (Server list, maybe others) not being sorted when aMule is started.
+		* Fix mem-corruption bug in SysTray code if the systray was compiled in but hidden.
+		* Fixed the problem with deleting the last (connected) server on the server list.
+		* Removed the following files:
+		  - ini2.*
+		  - CString.h
+		  - mfc.h
+		  - position.h
+		  - resource.h
+		  - strings.en
+		* Cleaned up the following files:
+		  - CTypedPtrList.h
+		  - BarShader.*
+		* Many other smaller changes.
+	
+	
+	Special thanks to:
+		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their     work on detecting bad clients.
+		* Optimazer and the eMule Plus team (http://emuleplus.sourceforge.net/) for reporting a bug in source-exchange packets.
+		* thomas001 for reporting a problem with packet headers.
+		* Everaldo (http://www.everaldo.com) & "Jimmac" (http://jimmac.musichall.cz/ikony.php3) for new icons
+		* Phk for searching for new icons ;)
+		* kno and thermoman for their fixes :)
+		* TheBlackHand and Hawkster eMule mods 
+		* uberpenguin for AMPS :)
+		* All aMule users, testers & translators
+		* eMule & wxWidgets devs
+		* Everyone we forgot here ;)
+		
+		
+--------------------------------------------------------------------------------------------
+
+		
+Version 2.0.0rc3 - The 'Target: Stability' version.
+-------------
+2004-04-22
+	
+	aquatroll:
+	
+		* win32 stuff
+
+	barbapapa;
+		
+		* Fixed >2Gb files sorting bug on transfer window.
+
+	Citroklar:
+		
+		* Fixed saving preferences on klick OK, not only on shutdown.
+		* Configure stuff 
+		* Cas related stuff
+
+	deltaHF:
+	
+		* i18n stuff
+		* Minor timer fix ;)
+
+	elfstone:
+		* Fixed already downloading files not being marked as such on search results.
+
+	falso:
+		
+		* Improving and fixing cas 
+		* Added capability to create pngs with cas
+		* Fixed ed2k fast links handler
+
+	Kry:
+
+		* Complete rewrite to emule 0.42x ed2k network code
+		* Rewrite of hashing thread. Also added a timeout to save resources.
+		   It times out after 1 min without hashing or receiving new files to hash, or 1 min since last hash, and dies gracefully.
+		* Fixed the crash on startup if incoming/temp folder are on FAT32
+		* Added Safe Max Connections code to Preferences->Tweaks. 
+		   This code will help all people with USB modems and crappy routers to not hang them.
+		* Identify to lugdunum > 16.45 with our proper extended version tag (2.0.0)
+		* Fixed & rewrote stats 
+			* Added Shareaza & lphant
+			* Fixed mldonkey stats (do they have to change their compatible number this often?)
+			* Added aMule / eMule / eDonkey proper version handling
+			* Dynamic tree of client versions (no more void versions)
+			* Fixed the xmule inflated statitics on the stats tree
+		* Rewrote client icons handling
+			* Use alpha channel to show the extended protocol and secure ident
+			* Added Shareaza, xmule, lphant, bad_guy and unknown client icons
+		* Fixed chuck selection. Much, much, much, much faster downloads. Back to the 1.2.6 speeds :)
+		* Fixed Win32 compilation
+		* Fixed lowID warning message on start being void.
+		* Proper Win32 and Mac disabling of the vertical preferences
+		* Severe bug on wxRadio button on RseInt was preventing ANY radio button on preferences from working.
+		* Fixed crash on 'cancel' while downloading server list.
+		* Fixed a UpdatePartsInfo missing on KnownFile.cpp
+		* Fixes the fake-check custom browser textfield
+		* Added wxNB_MULTILINE to preferences notebook.
+		* Minor issue on the chunk selection (thanks to AndCycle on eMule forum)
+		* Fixed a SEVERE mem access issue on the hash of the file id to check on knownfilelist.
+		* Fixed a SEVERE memory bug on sending the shared folders
+		* Fixed not sending the incoming and categories folders when sharing folders.
+		* Fixed 'Friends' working as 'None' on 'view shared' preferences.
+		* No more [0xy.part] on preview of completed files
+		* Fixed the FAT32 rehashing of files on startup
+		* Fixed filters not being used on right click on main transfer tab -> new status
+		* Changed known file list from wxHashMap to std::map
+		* Fixed auto-update server list at startup
+		   Added posibility of multiple servelist urls too
+		* Fix for files publishing, reported by lugdunum to eMule/aMule developers.
+		* Proper use of ClearHelloProperties that fixes some crashes related to a var not being init.
+		* Added MOD_VERSION to hello type packets (just for CVS versions)
+		* Fixed packet processing on EMSocket error.
+		* Changed the full part (9.28Mb) lower limit for preview to 256Kb
+		* Added 'LI0' to the evil GPL doer checks.
+		* Bugfixes on the KnownFile::UpdatePartsInfo code.
+		* Added new verbose client info checkbox, to find out which clients are sending bad data.
+		* Fix UDP socket for Win32
+		* Re-added the timed part file buffer flush()
+		* Custom language support added
+		* Fixed FAT32 incoming/temp warning messages only shown on one of the folders.
+		* Fixed issues on packet unzip and crash on OP_CANCELTRANSFER already sent
+		* Added aMule 1.x / 2.x / CVS versioning.
+		* Thread-safe log lines adding using a queued loglines list.
+		* Completion Thread revamped --> No longer crashes, no longer asserts, and it's much nicer. 
+		* Fixed safe_delete (again)
+		* Fixed some memleaks
+		* Changed some CLists to wxLists
+		* Cleanup and fixing little bugs ;)
+
+	Madcat:
+	
+	        * Disable autobacktrace on win32
+		* Removed wxTE_PROCESS_ENTER style from fast ed2k links handler (fixes assert)
+		* The following modifications to CamuleDlg::AddLogLine() function:
+		  * Now uses system locale for date/time formatting.
+		  * No longer asserts.
+		  * Now also works on win32.
+		* Removed unused m_StateImageList
+		* Code cleanup
+
+	one_2_one, hoschy007:
+	
+	        * MacOSX stuff
+
+	shakraw:
+		
+		* Fixed multiple file download bug in webserver search section
+		* Fixed ed2k download link
+		* Fixed categories for web interface
+		* WebSocket.* & WebServer.*: now uses wxThreads and wxSockets to be cross platform.
+		* Better threads' array remove in WebSocket
+		* WebServer cleanly stopped before exit	
+		* Fixed max 2Gb display bug in amuleweb
+		* Updated aMule.tmpl: added file %complete support in transfer list
+	thepolish:
+
+		* Wrote wxcas based on cas from falso
+		* Enable auto-refresh and Fix GPL headers (wxcas)
+		* Add system load and uptime (wxcas, Linux only)
+
+	Unleashed:
+
+		* cas: better layout and fixes
+		* Fixed a pair of memleaks
+
+	Xaignar:
+		* Fixed negative percentages in downloadlist ... again (Disp.8)
+		* Fixed the "free(): Invalid pointer" bug (Misc.10)
+		* Fixed PowerShare priority level not being saved. (Tran.9)
+		* Fixed the problem where it wasn't possible to select auto-priority in the uploadlist after having selected another priority (Tran.8)
+		* Cleanup of Search Dialog:
+  		  * The reset button is now properly enabled/disabled depending on the contenst of the text fields
+		  * Fixed a bug where searched would be limited to 2gb if max size was set to a value less than min size
+  		  * The popup-menu for the notebook now works as expected (SRCH.1) 
+		  * The popup-menu will now only show when right-clicking within the bounds of the notebook (DISP.12)
+		* Fixed the green progressbar on downloads always displaying 100%. (DISP.9)
+		* aMule will no longer display warnings about not being able to find server.met when a new server.met is saved and no old copy exists.
+		* known.met is now auto-saved (1) when 30 files have been hashed, (2) when 300mb worth of files have been hashed, (3) and when all files have been hashed. This is to reduce the chances of having to rehash all files after a crash.	
+		* Now uses the user-selected browser for fake-checking and such. (PREF.3)
+		* Further update of the Chat Page:
+		  * Pages can now be closed like the ones on the Search Page
+		  * Double-clicking on a nickname will open a chatsession for that friend
+		  * When a nickname is updated in the friendlist, the assosiated tab is updated as well
+		* Other stuff
+
+
+	** Special thanks 
+		
+		* All the bug-reporters, helpers, translators and users at http://forum.amule.org
+		* Batman who commited a mldonkey related fix, thanks :) 
+		* Jacobo221, Stefanero for their help and support on forum and all the other stuff ;) 
+		* lugdunummaster for providing support on version tags and new features of lugdunum servers
+		.
+		 --- As usual thx to eMule & wxWidgets devs and everyone i forgot ;) ---
+
+---------------------------------------------------------------------------------------------------------------
+
+Version 2.0.0-rc2 - The 'white rabbit' version.
+-------------
+2004-04-11
+
+	aquatroll:
+	
+		* Fixed Win32 compilation (again).
+
+	Ariel:
+	
+		* Implemented completed parts count on file rehash.
+		   Prevents your downloads to completely lost on a wrong .part.met write.
+		   
+	croakerc:
+	        * Added zlib version check
+		* *BSD compatibility
+		
+	deltaHF:
+	
+	        * New icon for aMule in DL/UP window ;)
+		* curl-config now >= 7.9.5 (for debian)
+		* i18n stuff
+		* Removed double catalan entry from prefs
+		* Fixed some typos
+
+	falso:
+	
+		* Added cas (C aMule Statistics), a remake of aStats but 10 times faster (still lack online sign).
+		* amulesign.dat now shows the Total transfered values in bytes.
+		* Added Session upload and download to amulesign and uptime too.
+	
+	Hetfield:
+	
+		* Added new inclusion path if distro in not detected
+		* fixed wrong and duplicated inclusion in ClientCredits.*
+		* Modified configure scripts, only amule is compiled by default
+		* Added cas, ed2k, amulecmd, amulegui, amule webserver, amule webserver gui
+		* fixed wrong zlib check in configure    
+		
+	hoschy, one-2-one, godard, PowerMike, hellimod:
+	
+	        * MacOSX stuff
+		
+	Jacobo221:
+	
+	        * Compiled the RC1 bugs and provided support on forums. It's our man-for-all.
+		  	
+	Kry:
+	
+		* Implemented the Complete count on search results and on file publishing.
+		   This feature added since aMule 2.0.0-rc1 and eMule 0.42e was not released
+		   with the rc1 for network technical reasons (still on testing with lugdunummaster).
+		   When publishing a file, we also inform the server if the file is complete or not.
+		   Search results show the count of complete sources sent by the server next to the sources
+		   found: i.e. 100 (28) meaning 100 sources, 28 of them complete (72 incomplete or old client)
+		* Added sending of the extended eMule version using aMule version, with additional rc version
+		* Added parsing of the new 0.4x eMule tags on hello packets.		
+		* Added parsing the Secure Ident packets for new eMule versions. Reduce overhead on download/upload.
+		* Added HandShake check on upload request.
+		* Rewrote display of client version on transfers page to handle the client soft/version correctly on any client.
+		   That means eDonkeyHybrids and eMule does show now the correct version (i.e edonkey 0.50.1 or emule 0.42d)
+		   aMule shows now as either "aMule 1.x (based on eMule v0.xx)" (<= 2.0.0-rc1) or aMule "A.B.C-rcX" (>= 2.0.0-rc2)
+		* Fixed Mule Info packet only sent to eMule clients. Now is sent to old eMule && eMule-like clients (compatible clients)
+		* Added 'Allocate Full Part File" and "Allocate Full Chunk" to preferences. None functional yet.
+		* Fixed Client Detail Dialog to show correct client version.
+		* Fixed comment mark on Download list being cut on the display.
+		* Fixed the crashes on Base Client packets.
+		* aMule now loads .par.met.BAK if the .part.met is 0-size (added to Ariel's commit, this prevents losing met files).
+		* Made SafeMem files really safe checking for read after end of file.
+		* Fixed wrong Modversion data (fixes random crash too)
+		* Fixed assert on wrong upload list control data.
+		* Fixed several crashes on wxString::GetData usage.
+		* Fixed UDP disable button not being saved across sessions
+		* Fixed a bug on new version check.
+		* Locale goes to System Default on new version now (fixes weird language problems)
+		* Fixed wrong OP_REASKFILEPING packets being sent .
+		* Reverted GAddress_INET functions to standard inet_addr ones.
+		* Completely removed list refresh functions. CPU saved was not worth it.
+		* Added CheckDiskSpace checkbox and radio button to the preferences.
+		* Added the scale of the connections graph on stats. (only rescaled on restart)
+		* Added 'Reset' button for Server Log
+		* Fixed: Right click popup on server connected was showing 'connect' now shows 'reconnect'.
+		* gscocket shouldn't be compiled on Mac, and so it's not compiled now ;)
+		* Fixed Preview of already completed files not working.
+		* Fixed files > 2Gb not working on fast ed2k links handler and ed2k app.
+		* Fixed file size for files larger then 2Gb displayed incorrectly
+		* Changed timeout of curl functions to 10 - fixes hangups when clicking server update without
+		   internet conenction.
+		* We don't share 0 size files anymore.
+		* Fixed the crash on invalid socket using 5 different ways. The last one seems to be the most stable.
+		* Fixed several hangups on file completion.
+		* Fixed % and progressbar not being updated when changed on GUI Tweaks.
+		* Fixed comment packets. This was causing disconection from eMule clients (and crashing aMule clients)
+		* Fixed amule dissapearing because sent to systray when --disable-systray was used.
+		* Fixed memleak on search packet sent.
+		* Fixed memleak on KnownFile deletion
+		* Fixed memleak on search results received.
+		* Fixed memleak on comment packet received.
+		* Speeded up socket event handling.
+		* Cleaned server connection. No more 'inet connection might be down' - unless it's down ;)
+		* Faster PartFile processing.
+		* Fixed endian issue on PartFile loading.
+		* Fixed non-needed delete of an array on the notebook destructor.
+		* Doesn't allow an incoming packet to get processed if socket is deleting.
+		* Fixed double-highlight of servers if disconnected by the server.
+		* Speeded up hashing of the files a lot. This should fix the gui hangs at startup.
+		* Removed all old preferences code. That makes the app smaller, less memory used, and avoid some
+		   unexpected bugs that arised on having 2 preferences implementation. Now New Prefs become Preferences.
+		* Fixed SysTray and gtk-files being compiled even when disabled on configure.
+		* Fixed several warnings.
+		* Fixed assert on Clear All (search)
+		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
+		
+	Madcat:
+	
+	        * win32 LaunchUrl() function
+		* Added amule-win32.HOWTO.txt
+		* Better win32 version of Hostname() function
+
+	shakraw:
+	
+		* WebSocket.* & WebServer.*: now uses wxThreads and
+		  wxSockets to be cross platform.
+		* Better threads' array remove in WebSocket
+		* WebServer cleanly stopped before exit
+		* Fixed multiple file download bug in webserver search section
+		* Fixed ed2k download link
+		* Fixed categories for web interface
+		  
+	thepolish:
+	
+	        * win32 stuff
+		
+	Unleashed:
+	
+	        * Memleak fix
+		  
+	Xaignar:
+	
+		* Amule no longer writes met files when priority is changed through the
+		   auto-priority subsystem. Thus hd-writes are substancially reduced 
+		   depending on the number of files set to auto-priority.
+		* Fixed bug where text fields overlap each other (Disp. 4 & 5)
+		* Cleanup of amuleDlg.*
+		* aMule no longer displays a message about not being able to open the 
+		   file "lastversion" the first time it is run
+		* Changed the CTypedPtrList filelist in DownloadQueue.* to a std::deque,
+		   with a speed-increase as a result
+		* Fixed the bug where the background of previously selected items in the
+		   friendslist wouldn't be redrawn (Disp. 2)
+		* Fixed auto-priority. Priority would be set one tad too high, resulting
+		   in the downloadlist failing to assign a name to the priority, thus 
+		   leaving empty fields. Also fixed displaying of priorty "Auto [Lo]" 
+		   in sharedfiles-list. (Tran. 3)
+		* Fixed the problem where "completed percent" of files that hadn't 
+		   transfered any bits yet would display a negative percentage (Disp. 8)
+
+		   
+        ** Special thanks to niet for his DNS service, bootstrap for his CVS service, stefanero & Citroklar for their    
+	   great help with a lot of stuff.
+	   Thx also to all translators and the users for reporting bugs and testing aMule (feel free to report more) :)
+	   As usual thx to eMule & wxWidgets devs and everyone i forgot ;)
+	
+	** New translators:
+	
+	   Supergirl: Croatian
+	   rommel:    Portuguese
+	   sNeo:      Italian (Napoletan)
+	   
+	** Follow the white rabbit and u'll find rc3 soon ;)
+	   
+--------------------------------------------------------------------------------------------------	
+	
+Version 2.0.0-rc1 - The 'Mules and Rabbits love carrots' version.
+-------------
+2004-03-26
+
+	Kry:
+		* Implemented SecureIdent (SUI) (imported from eMule 0.30x)
+		   This mean your credits will be lost on first run 
+		   There is no way to avoid that. Sorry :) Same happened with eMule.
+		* Send sources request for files added from search page first.
+		* Rewrote MuleNoteBook from gtk to a cross-platform implementation.	
+		   The code is already used by xMule too, so I guess they liked it.
+		* Fixed most of > 2Gb bug, except the dom's contibution you can scrolling down ;)
+		* Made the .part.met load/save 100% compatible with eMule.
+		* Fixed the Safe_Delete bug. Seems it arised when we made the app too fast ;)
+		* Random usable position of the server split.
+		* Added bluecow's fix for zlib compressed packets.
+		* Even safer .met saving
+		* Added preferences checkbox for new style / old style tabs on preferences 
+		   (vertical/horizontal)
+		* Checked for protocol limits on file size.
+		* Now client detail dialog show Secure Ident State 
+		  (Not Supported/BadGuy/Not Complete/Verified)
+		* Added itoa to the MFC layer
+		* Added SetLength to CFile (MFC compat layer)
+		* Fixed hangup on message sending.
+		* Moved Fast ED2K show to GUI tweaks
+		* Slugfiller's Secure Hash (imported from eMule 0.30x)
+		* Fixed GetTickCount code returning signed value
+		* Fixed GetTickCount code not initializing the vars.
+		* Moved the FILE* to CFile for furter compatibility of code.
+		* Added the first version run detection
+		* Removed some Yield() code that only slowed init.
+		* Simplified systray menu by only showing what needed. 
+		   Thanks to jadrian for the feature request.
+		* Grayed non-working Preferences options to avoid confusion and to
+		   make the developer life easier selecting what to do ;)
+		* Fixed CTag new structure (imported from eMule 0.30x)
+		* Removed the mostly useless wizzard.
+		* Fixed the DoSwap crash on swapping A4AF sources. (hopefully)
+		* Fixed the log auto-scrolling up on messages window.
+		* Fixed the Upload bug that arised during endian changes.
+		* Added the Arabic, Chinese & Finnish compatibility on loading
+		* OpenBSD compatibility fixed
+		* Mac port 99% done, next version will be Mac compatible
+		   Some final bugs to be fixed ;) 
+		   Fixed:
+		      *) .met files loading/saving (except knownfiles.met)
+		      *) .dat files loading/saving
+		      *) 99% of the preferences bugs.
+		      *) Compilation and linking.
+		      *) Error popups relates to c_opaque colour.
+		* Starting sync with eMule 0.42
+		* Speedups on Partfile Process nd DownloadQueue process.
+		* New 'server version' colum on server list window.
+		* MUCH safer packet handlig - avoids crashes on 99% of wrong tags.
+		* Fixed Dirs number on 'view shared'. Made aMule/eMule assert ;)
+		* Made download queue list refresh on a nicer way (much less glitches).
+		* Fixes an assert for  invalid menu entry on right click queue popup. 
+		* Mayor speedup on Highlight server (and thus on server connect/disconnect)
+		* Prevent removing the server we're connected at, either directly, on in a 
+		   list of servers to delete, or in removing all servers. Warn the user with a
+		   message Box and then leave it non-deleted. Fixes crash.
+		* Fixed hangup on message sending
+		* New IPFilter code (reload & on/off)
+		* Added checkboxes on GUI Tweaks tab for download progress % 
+		   and Bar drawing.
+		* Fixed a severe memleak on the % showing and speeded it up.
+		* Save 5 sources on rare files (<20 sources)
+		* New SetFileSize code to avoid cpu usage.
+		* Removed the List Show/Hide and slider that made too much 
+		   problems on 1.2.6. Safer version (and better) will be on 2.0.0 final.
+		* Speedups on Hash thread.
+		* Safer corrupt detection on FAT partitions
+		   I'm sorry if it rehashes every file on your system on restart, will be fixed.
+		* The file pause because of diskpace shows now on aMule logs
+		* Fixed BackUp file to REALLY backup instead of moving.
+		* Added code to check 0-size .part.met and load backup if needed.
+		* Fixed types.h and wintypes.h for proper Win32/Mac/linux compatibility.
+		* Added ECSocket code as common implementation for interaction between
+		   different UIs (webserver, amulecmd, etc). 
+		* Fixed intercomunication for little endian <-> big endian machines on ECSocket.
+		* Speedups on Endian Swap code & proper wxWindows way to detect it.
+		* Changed CArray to wxArray on most places for safety.
+		* Added configure code for detection of the crypto++ includes/libs
+		* Fixed buggy curl-config on Mac including -mi386.
+		* Removed useless files: TabCtrl.*
+		* Fixed several bugs, memleaks, warnings and one mem corruption
+		* Code cleanup
+
+	Creteil:
+		* Added the client detail dialog item for Securehash 
+		* Fixed sockets.cpp includes for non-debian systems ;)
+		* Added Arabic, Chinese & Finnish to languages in Preferences
+
+	Hetfield:
+		* Configure now checks for crypto++ libs
+		* Added --with-crypto-prefix option to configure
+		* Possibile Fix to ListenSocket::Safe_Delete() seg fault
+		* Added ccache support to configure, no variables tricks needed
+		* Added --with-ccache-prefix option to configure
+		* deleted --enable-libcwd option from configure
+		* deleted useless libcwd debug files and code from whole project
+
+	Madcat:
+		* Made Fast ED2K Links Handler optional
+		        Something like the old Frankk's ED2K Links Handler patch.
+		* FakeCheck using donkeyfakes.gambri.net
+			Original idea and implementation by deltaHF.
+		* Clean(er) fix for splashscreen-creation compiler warning (unused variable
+		* Moved project/muuli.wdr to src/muuli.wdr
+		* ED2K-Links.HOWTO fix for some aMule/eMule error
+		* Added -ggdb -fno-inline to debug compilation flags
+		* Automatic category assignment for new downloads
+		* Updated AUTHORS file to reflect original eMule authors and give 
+			credit to original Linux port author (Timo Kujala aka Tiku)
+		* Win32 port 99% operative, next version will be Win32 compatible
+
+        Emilio Sandoz:
+		* complete re-write of preference handling to make it table-driven
+			in both file-I/O and dialog
+		* improvements in feedback given during dialog interaction
+
+	pure_ascii:
+		* Added highlighting of the connected server in server list
+		* Enabled and fixed setting the server version
+
+	shakraw:
+		* Some fixes on web interface file type search, and code cleaning
+		* Fixed amule crash when closing socket
+		* size_t seems to break Mac compilation - anyway uintt6 is enought for
+		  messages
+		* Modified RseStringEncrypted. Now we encrypt passwd just (and only)
+		  when changing them in prefs' dialog. So, now we use always encrypted
+		  passwords, noone in clear neither in memory or disk
+		* Check if we're able to use TCP ports (lacks what todo if not but we
+		  can accept EC. do nothing atm = EC disabled)
+		  Added "AMULEDLG SHOW" to EC available commands
+		* WebServer now use the more correct _("") for localized strings
+		* Created WebInterface.{h,cpp} for the web interface, and
+                   cleaned WebServer.{h,cpp} code
+                          
+	neiro:
+		* Helped with OpenBSD port by providing a workbench
+		
+	Ganael Laplanche:
+		* FreeBSD port fixes
+		
+	PowerMike, hellimod:
+		* Helped a lot on future Mac port by giving ssh & vnc access
+		
+	deltaHF:
+	        * New toolbar icons (thx to everaldo.com)
+		* Added & enabled chinese, danish and hungarian translation
+		* Preferences (added/changed):
+		  IP-Filter reload and on/off buttons 
+		  securehash -> secure ident
+		  media info 
+		  max connections: 25-7500
+		  upload queue: 500-1000
+		  max new connections / 5 sec: 5-500
+		  remove dead servers after: 1 >
+		  tcp port: 80 > (for users with bad ISP's .. but remember -> running aMule as root is unsecure !!!)
+		  add new files (dl & share) with auto priority: off by default now (if running aMule for the first time)
+		* Updated the header of all files
+		* Changed wxWindows to wxWidgets
+		* "Donated" amule-project.de
+	niet:
+		* Donated amule-project.net :-)
+		
+	bootstrap:
+		* CVS support
+		
+	Torsten SCHULZ:
+		* Added the % showing on progressbars.
+
+	lemonfan:
+		* Modified network code for big-endian systems
+		* Fixed preferences bug
+		* Fixed copy ed2k link to clipboard
+		* Fixed CArray for MFC compatibility
+		* More rigid compatibility to MFC types
+		* Fixed misformatted strings and several warnings in WebServer.cpp
+	
+	Xaignar:
+		* Code cleanup in amule.* and otherfunctions.* and other files
+		* The Cleanup button in the File Details dialog no longer replaces "&" with "&&"
+		* Max connections should be correctly set on windows platforms, instead of defaulting to 500
+		* Finished the CArray -> wxArray conversion
+		* Fixed ECSocket compilation with gcc < 3.3
+		* Fixed segfault on close.
+		* Some other fixes
+
+	Citroklar:
+		* External Connections are now only done when configuration tells us so (thanks to tonar from #amule)
+		* crypto++ detection fix
+		
+ 	aquatroll:
+	        * Win32 compilation Support & Development.
+		
+	hellimod, PowerMike, godard, hoschy007:
+		* MacOSX compilation support
+		
+	dom:    
+		* Found the last  > 2GB bug ;)
+		
+	Special Thanks To:
+		
+		* All the bug-reporters, helpers, translators and users at http://forum.amule.org
+		
+		* eMule developers for their support. Long life to *Mule
+		
+		* FreshIRC & Freenode irc admins
+		
+		* People at #gentoo on freenode for their support, specially ferringb
+		
+		* The Testing Team: 
+		   thepolish, efe, Citroklar, bizzY, KamiKazeNH, and anyone testing aMule.
+		
+		* New translators:
+		
+		Chinese:   nbfnw
+		Arabic:    hathalsal
+		Finnish:   eQualizer
+		Russian:   Elf
+		Italian:   GhePeU, sNeo
+		Portuguese (BR): KamiKazeNH
+		Korean:    BlueSpring
+		Spanish:   JonathanShields
+		Danish:    nowlin
+		Hungarian: biger [HUN]
+		Galician:  thorero
+		Hebrew:    denisliber
+	
+		* All aMule users!!!
+
+---------------------------------------------------------------------------
+
+Version 1.2.6
+-------------
+2004-02-16
+
+        Kry:
+               * Improved Mac compatibility.
+               * Fixed the i18n charset.
+               * Try to set the locale even if it seems to fail. 
+
+        Creteil: 
+               * Fixed the default Size to 800x600 for 1st time aMule launched without ~/.eMule config file. 
+
+        shakraw: 
+               * ExternalConn: new communication code using wxSockets.
+               * Web interface: improved communication performance.
+               * Text interface: now using new wxSockets code. 
+
+        pil0t: 
+               * Fix for the geometry on start. 
+
+        pure_ascii: 
+               * Added sorting to filename list in file details.
+               * Added "Takeover" by doubleclick in file details.
+               * Fixed preferences window popping up on "Show/Hide UL/DL" in download list.
+               * i18n stuff (Systray). 
+
+        rubber30: 
+               * Fixed viewing and sorting by LastSeenComplete and LastReception. 
+
+        Emilio Sandoz:
+               * Converted stats calculations to 64bit where necessary (for uptime >49days).
+               * i18n strings fixed.
+               * gcc 2.95 compilation fix. 
+
+        deltaHF: 
+               * i18n stuff.
+
+---------------------------------------------------------------------------
+
+Version 1.2.5
+-------------
+2004-02-10
+
+	Hetfield:
+		* Fixed a memory leak in SysTray. (SysTray.cpp)
+		* Fixed a DL/UL ratio problem. (amule.cpp)
+
+	Aleric:
+		* Fixed all compiler warnings.
+		* Rewrote all header #include's to only include what is necessary.
+		* Removed or renamed all functions that clashed with one of the
+		  same name from libwx_gtk.  With as result:
+		* Fixed --enable-static possibility (needs a lot of static
+		  libraries to be installed; and latest XFree86 CVS version of libX11
+		  (I had to fix a bug in XFree86 too for this)).
+		* Fixed check-boxes in Preferences -> Directories + a little code
+		  speed up there.
+		* Fixed a duplicated server_list delete
+		* Server IP# filter.
+		
+	Shakraw:
+		* Added missing string in GetDownloadFileInfo() causing SIGSEGV when 
+		  called.
+		* Fixed the amuleweb login problem.
+		* Added GetWebList() support. 
+		* amuleweb's search feature complete. Now it is possible to search, 
+		  download and web-search on filedonkey
+		* Fixed a write error in SETMAXGRAPHUPLOADRATE 
+		* Added support for statistic text infos for web interface (Statistics link)
+		* Fixed two bugged index causing crashes on Webserver.cpp
+		* Little improvement for server list request (now responses are much faster)
+		* Generally improved External Connections.
+		* Fixed search type feature for web interface
+		* Fixed amule crashes when quitting from amuleweb during requests
+		
+	umale:
+		* Fixed debugloglines on ListenSocket.cpp ServerSocket.cpp having too
+		  much arguments.
+		* SysTray code will not be compiled if disabled
+		* Fixed 5 wrong delete -> delete[]
+		* Converted po-files
+	
+	Emilio Sandoz:
+		* Statistics graphs: 
+		    Param changes reversible; 
+		    Color change now works; 
+		    Active connections rescaling now works; 
+		    Graphs and tree suspended when not visible.
+		* Set correct initial radio button in Systray integration dialog  
+		* Simplified statistics graph averaging
+		* Corrected UL loop for timer errors
+		* Simplified UL rate averaging
+		* Preliminary cleanup of graphing engine; ghosting eliminated
+		* Client DL rate computation without CList
+		    Fixed 32bit rollover error for rates over 84kB/s
+		    Reduced initial spiking
+		    Generally improved speed and CPU/RAM usage.
+		* Search window column widths remembered between searches & saved in preferences
+		* Statistics preferences dialog: changes are now applied on-the-fly (with proper 
+		  Cancel semantics)
+		* Eliminated possibility of root directory being invisibly shared
+		
+	Kry:
+		* Added some sanity checks to avoid losing *.part.met files on 
+		  power failure. 0-Size files are never written.
+		* Fixed the 'all time transfered' on Shared Files window
+		  This one fixed some eMule/aMule incompatibility on part.met files
+		* Some aditional functions on CFile for windoze compatibility
+		* MFC compatibility enhanced.
+		* Added SetFilePath to CKnownFile
+		* Changed most 'assert' to wxASSERT
+		* Fixed some NULL clientname causing crash on ListenSocket.cpp
+		* Fixed the tagcount on .part.met files (KnownFile.cpp)
+		* Added missing OP_CHANGE_CLIENT_ID on ListenSocket
+		* Updated HomePage to www.amule.org on messages
+		* Fixed the server windows splitter. Or sash. Whatever.
+		* Imported all the other ListenSocket.cpp code from 0.30e
+		* Fixed 'View Shared Files'. No multiple tabs, also.
+		* Added theApp.listensocket->StartListening() on startup. 
+		  Really. Don't ask me why it worked before.
+		* Fixed the systray bug where speed bar was always 10 times smaller.
+		* Added lots of vars initilization that fixed some crashes.
+		* Fixed a crash on ClientList.cpp caused by a void node on list.
+		* Fixed 9 memleaks, some of them big ones.
+		* Fixed 6 wrong delete -> delete[]
+		* Fixed wrong hashsetneeded causing random crash
+		* Added GetED2KPartHashCount() & GetED2KPartCount()
+		* Fixed a bug on app init, related to Toolbar.
+		* Fixed a severe crash & memory corruption on UploadClient.cpp
+		* Fixed download rate overhead calculation
+		* New HeapSort() and NewSrcPartsInfo() ported from eMule 0.30e
+		* wxGTK 2.5 compilation fixes
+		* Fixed the 'rehashing of files on restart' problem. 
+		* Fixed a missing "Error" message on console when partfile loading failed.
+		* i18n activated, GNU xgettext compatible.
+		* Fixed bug on OP_REQUESTFILENAME packet that made eMule clients to disconnect 
+		  from us. eMule clients got our version of client and expected to get the
+		  new OP_REQUESTFILENAME from eMule 0.30. Thanks to John & BlubbX from eMule 
+		  team for the report and help tracking down it.
+		* Fixed several i18n bugs from xMule times.
+		* Fixed the lseek error on console and window popup when canceling a file
+		  that is transfering.
+		* First implementation of selectable refresh. The refresh is bugged - it 
+		  deletes the info on screen, except for about 1 sec, every time
+		  seconds_defined_on_preferences is reached. 
+		* Used selectable refresh code for SysTray-hiden cpu lower.
+		* New option on right-click on downloadlist: Hide/Show lists.
+		* Minimize on startup works now.
+		* Minimize to tray works now.
+		* Lots of BSD compilation fixed (aMule compiles under BSD again)
+		* Fixed the upload disconecting clients at high upload speed
+		* Changed another wxList to CList (FriendList)
+		* FriendSlot should have no effect on LowId user.
+		* Fixed FriendSlot not being persistent and kicking friend after 1 chunk.
+		* Fixed lowid users on upload queue by importing VQB's lowid alternate
+		* Added language selection support on preferences
+		* Fixed the bug that caused never to tell user 'server full'
+		* Fixed several server connection issues not detected before.
+		* Added a popup on language change warning for restart.
+		* Added another popup, this time to point the user on the right direction
+		  if the locale for that language cannot be set.
+		* Stop publishing on ED2K network shared files we don't have anymore
+		* Removed the annoying messages of dropping sources (too much CPU)
+		* Sanity check to avoid user pushing buttons before aMule is ready for it.
+
+	thermoman:
+		* Made aMule gcc 2.95 compatible	
+				  
+	seneca:
+		* Near finished all i18n stuff. We expect aMule 1.2.5 is fully i18n-compatible
+		* Added wxT() Macro for Unicode Support (not functional yet)
+		
+	Citroklar:
+		* Testing, lots of testing. Bug-tracker.
+		* Found the versions that introduced the upload bug and made a nice diff.
+		  We could look at code for years, without seeing it. Nice guy.
+		* Fixed README, amulesig.txt.
+	
+	gjn:
+		* Fixed bug in creditsystem.
+		
+	jmccorm:
+		* Fixed "Close This Searchresult" -> "Close This Search Result"
+		* Fixed some typos.
+		
+	lemonfan:
+		* Fixed stopped files being counted on CheckDiskSpace()
+		* Progressbar fixes on webserver implementation.
+		* Several crashes fixed by adding sanity checks to reqfile
+		
+	deltastar (on irc channel):
+		* Fixes the > 2Gb files problem caused by a bug on CFile wrapper.
+	
+	deltaHF:
+	        * i18n stuff
+	
+	pure_ascii:
+		* fixed recreation of filename list in file details 
+		* scrolling and selecting filenames works now 
+	
+	hellimod:
+		* BSD and Mac support. We're very near to the Mac aMule.
+		
+	niet:
+		* Donated www.amule.org!
+
+	Creteil:
+		* Change order in the notebook for logs in Servers Window
+		* Updated the logo for webserver from eMule logo to aMule one
+		* Fixed Switching to Searches Window Bug when removing all servers 
+		  in Servers Window
+		* Changed default server list from 'best' to 'max', then 'max' to 'best' again
+		* Fixed the default systray value on preferences.
+		* Added debug values on UploadQueue.
+		* Changed max Slot Allocation to 30Kb/s
+		* Fixed typo in Preferences
+		* Implemented notebook in Server Window 
+		  (merged 'Server Info' & 'aMule Log' windows in a notebook)
+		* Fixed bug crashing aMule on Server Window Notebook implementation.
+		* Now, if no --geometry width & size used, aMule starts with 800x600 as default
+		* Fixed size restoring from .eMule saved size
+		* Option 'Search global' in Search Window in the default now.
+		* GUI code for new slider in Preferences->Tweaks tab handling the lists refresh
+		* Some cosmetic fixes on Preferences and GUI by Madcat's request.
+		* Made GUI i18n compliant.
+		* Slot alloc calculation is properly rounded now.
+		* Added the Language listbox on preferences.
+
+	special thx to:
+		
+		* Our translators:
+
+		   german:       emperor, hariolf, crazeee, neolino (M$ user), deltaHF
+		   italian:      ilbuio, AnonimoVeneziano
+		   spanish:      mad_soft, aquatroll, Kry
+		   russian:      Vl@dCoR
+		   bulgarian:    tindor
+		   dutch:        Supersnail
+		   polish:       Ogon
+		   lithuanian:   Fatalissimo
+		   french:       SlayeruleZ, thepolish
+		   catalan:      pukyxd
+		   portuguese:   willy, coolzero
+		   basque:       piarres
+		   galego:       thorero
+  
+		* The people at #wxwindows, irc.freenode.net for being so helpful
+		  Specially BrianHV, raboof and ajjl.
+
+		* All eMule devs for being so nice and work close with aMule team now.
+		
+		* Madcat, from Sharedaemon team (sharedaemon.sf.net) for his support
+		  and friendship.
+
+		* All aMule users!!!
+				
+---------------------------------------------------------------------------
+		
+Version 1.2.4
+-------------
+2004-01-10
+
+(Previously released, with some errors, as 1.2.3-1)
+
+	Aleric, Kry:
+		* Fixed the 'Completing file' bug.
+
+---------------------------------------------------------------------------
+
+Version 1.2.3
+-------------
+2003-12-31
+
+The "Happy New Year!" version.
+
+	Kry:
+		* New ProcessLocalRequest ported from eMule 0.30e.
+		* Fixed crash on DownloadQueue caused by a CString being passed 
+		  through "...".
+		* Nice CPU usage drop with new GetSourcesCount code.
+		* Some little speed optimizations here and there.
+		* Fixed bug on second mule starting. 
+		  Now amule also spawns two servers for external connection, one 
+		  local and one TCP (optional).
+		* Added gsocket-2.5.* from wxGTK2.5's gsocket files.
+		  This files are patched to fix LOWID.
+		* Added EC REQ for total upload for a file, by deltaHF's request.
+		  It uses CPU, so it can be enabled with --enable-releasegrp
+		* Several TextClient improvements / cleanings / cosmetics
+		* Fixed a strdup being used instead of nstrdup (with Aleric)
+		* Fixed anoying DiskSpace Bug (tm)
+		  Now files paused because there's no space left are resumed as soon
+		  as we have diskspace again.
+		* Got rid of the chmod stuff on fat32 partitions.
+		  aMule detect the filesystem the temp/incoming folders are mounted on.
+		* Fixed column hiding on all lists
+		* New configure option: --with-curl-prefix
+		  Also fixed CURL_LIBS and CURL_FLAGS to be passed to compiler/linker
+		* Weird I18N bugs fixed (labels, etc)
+		* Cleanups and code cleaning on 
+		  ServerSocket.cpp DownloadQueue.cpp PartFile.cpp 
+		* Fixed compiler warnings on:
+			TextClient.cpp PartFile.cpp
+		
+	pure_ascii:
+		* More docs/ cleaning.
+
+	Hetfield:
+		* Patched Process() function in Partfile class to reduce cpu
+		  load.
+		* Added new optimization to Tray to stop window updating when minimized.
+		
+	Shakraw:
+		* Added commands to use with amuleweb to EC.
+		* Completed Transfer feature and Started Search.
+		* Added SharedFiles, Statistics, Graphs and Prefs features.
+		* Cleaned webserver code from amule sources.
+		* Imported emule0.30d webserver code.
+		* New web template & images from eMule 0.30d.
+		* New binaries: amuleweb and amulewebDLG.
+			This binaries are used for webserver.
+		* Webserver runs now over EC, and has a separate app to serve web.
+
+	umale:
+		* Fixed storing pointer on 64-bit archs
+		* Fixed resolving of broadcast IPs.
+		* Changed trunc() to explicit casting.
+
+	Creteil:
+		* Re-imported new code to handle 'CheckDiskspace'.
+		* Changed labels in Statistics to stick on stats patch from Emilio
+		  Sandoz.
+		* Synched some code on :
+			DownloadClient.cpp
+			ListenSocket.cpp
+			UploadClient.cpp
+		  with eMule 0.30e.
+		* Cosmetics & Indentation.
+
+	deltaHF:
+		* Added new function - PowerShare. Release your vacation movies
+		  now ;-).
+
+	Aleric:
+		* autogen.sh revamp.
+		* Global "sys.h" inclusion policy.
+		* --enable-libcwd configure option: Use libcwd.
+		* Makefile.am (SUBDIRS): Include intl and correct order.
+		* configure.in 
+			(AM_MAINTAINER_MODE): Add. 
+			(AC_CONFIG_FILES)   : Add intl/Makefile.
+			Add --enable-static.
+		* configure.in (EXPORT_DYN_FLAGS): Removed.
+		* All files (when appropriate): Removed #pragma interface
+		  implementation.
+		* Koenig lookup fix for g++ 3.4 on mfc.h's CQArray::QuickSort
+		* Fix of compiler errors on ExternalConn.cpp
+		* dos2unix several files.
+		* Added GPL license header where needed.
+		* Compile fixes for FreeBSD on systray and gsocket*
+	
+	Emilio Sandoz:
+		* Patched stats for acurate resizing / scale.
+		* Fix for inflated UL/DL rates in Transfer and Statistics windows
+		* Debug code for UL/DL rate measurement in UploadQueue.cpp 
+		  (activate with '#define MEASURE_LOST_CYCLES 1')
+	
+	Seneca: 
+		* I18N:
+		  ListenSocket.cpp PartFile.cpp ServerList.cpp
+		  ServerSocket.cpp SharedFileList.cpp sockets.cpp
+		  WebServer.cpp PartFile.cpp UploadClient.cpp
+		  ClientCredits.cpp ClientUDPSocket.cpp.
+		   
+---------------------------------------------------------------------------
+
+Version 1.2.2
+-------------
+
+     Phantom version. Expected to be released on 21/22 dec, delayed and then made
+     into 1.2.3 version.
+
+---------------------------------------------------------------------------
+
+Version 1.2.1
+-------------
+2003-12-14
+
+	Kry:
+		* Now amule shows icon on taskbar and main window
+		* amulecmd now compiles under win32 using dialogs to get
+		  port, hostname and password. 
+		* Added clientversion on download list. 
+		* Modified configure script and makefiles for faster
+		  compilation and smaller binaries.
+		* Fixed nasty download list bug due to memory corruption
+		  inside CUpDownClient class vars.
+		* Imported new acurate download speed calculation from eMule
+		  0.30d.
+		* Moved docs to doc/ folder.
+		* Imported new GetNextRequestedBlock algorythm from eMule
+		  0.30d.
+		* Ed2k links with hostname sources on it are processed
+		  now, and on a separate thread.
+		* Showing filename on CheckDiskSpace debug statement.
+		* Imported eMule's 0.30d SortByPriority to complete
+		  CheckDiskSpace import.
+		* Several addings to mfc.h file (MS MFC compatibility
+		  layer).
+		* We forgot to show A4AF sources on download list. Fixed now
+		  (eMule style, x/y+z (t)).
+		* New packet receiving handling should avoid high_dlspeed->
+		  high_cpu.  It also makes download more stable and faster.
+		* Modified autogen.sh script to notify users that automake <
+		  1.7 is NOT supported.
+		* Imported CanAddSource(), AddSources(), IsGoodIP() and
+		  IsGoodIPPort() from 0.30d (new sources handling).
+		* Added plain password support to amulecmd.
+		* Updated amulecmd passwords to use MD5.
+		* New External Connection stuff to handle amulecmd & other
+		  remotes (alpha).
+		* Fixed some code causing strange errors when trying to
+		  connect to servers.
+		* Imported new network UDP features from eMule 0.30d, we
+		  process Search results and Found sources correctly now on
+		  16.40 behaviour.
+		* Fixed lowid on restart introduced by himself on 1.2.0 ;).
+		* Code cleaning & optimising.
+
+	pure_ascii:
+		* Fixed segfault on call of CEMSocket::DisableDownloadLimit()
+		  from client if there is no socket.
+		* Fixed bug on mfc.h's CList.
+		* Added zlib fixes from eMule 0.30e code.
+
+	Hetfield:
+		* Added new server list fetching via libcurl libs and wxThread, 
+		  thus removing wget usage from amule.		 
+		* Modified configure to check libcurl presence.
+		* Changed thread file completion from pthread to wxThread.
+
+	falso:
+		* Several i18n stuff. We're more close to get i18n working.
+
+	umale:
+		* Patch for x86_64 arch. (GetTickCount)
+
+	spiralvoice:
+		* Found wrong ET_COMPATIBLECLIENT on aMule. Now we identify
+		  correctly as emule compatible client.
+		* Also did MLdonkey patch for recognising amule as new client
+		  brand.
+
+	Unleashed:
+		* Typo and cosmetic changes on configure script 
+		* Cleaned and optimised several files.
+
+	Creteil:
+		* Imported 'Copy ED2k link to clipboard (Source)' from
+		  eMule, this one permit to send an ed2k link with our ip
+		  address as source for the link.
+		* Imported 'Copy ED2k link to clipboard (Hostname)' from
+		  eMule, this one permit to send an ed2k link with our
+		  hostname as source for the link.
+		* Fixed handling of bad ET_COMPATABLECLIENT for buggy aMules
+		  clients (buggy are 1.1.1 - 1.2.0).
+		* Lot of code cleaning / indenting.
+		* Fixed clientversion on download list implemented by Kry.
+		* Added new mini icon for aMule clients in downloadlist,
+		  uploadlist & uploadclient.
+		* Defined 'deletethis' as 'bool' in ListenSocket.h.
+		* Fixed typo on Statistics window.
+		* Imported CheckDiskspace() from eMule 0.30c.
+		* Imported eMule's 0.30c A4AF (now more handled by Razor).
+		* Imported new file rating management from eMule 0.30c.
+		* Modified BaseClient.cpp to sync better with eMule 0.30c
+		  (added m_fSharedDirectories flag to stick with eMule
+		  code).
+		* Fixed bug on CPartFile::IsAlreadyRequested().
+		* Added new mini icon handling in downloadlist/uploadlist
+		  for aMule clients.
+		* Fixed bug in uploadlist.
+
+---------------------------------------------------------------------------
+
+Version 1.2.0
+-------------
+2003-11-26
+
+	Kry:
+		* Some memleaks fixed (Thanks to xMule team)
+		* Removed no-needed break statement
+		* Added '--help' option to amule.
+		* Fixed (probably) all m_abyPartStatus related bugs (~CUpdownClient related)
+		* Imported ResetFileStatusInfo() (minor import)
+		* Fixed the bug that made files >2.4Gb get sorted as if size < 0 bytes
+		* Fixed the search types bug.
+		* Fixed Small Files bug. 
+		  Thanks to Citroklar for his research on this one.
+		  He tested all versions to find when did the bug enter amule.
+		* Added new hashshet handling for sources.
+		* Added new timeout handling for sources.
+		* Finished porting of NewSrcPartsInfo started by Creteil
+		* New standalone app: amulecmd.
+		* gsocket.c no longer gets compiled if wx version >=2.5
+		* Added --disable-amulecmd to configure		
+		* Added check on configure for wxbase (needed for amulecmd)
+
+	Hetfield:
+		* Added --safe-systray to configure
+		* Added --disable-systray to configure
+		* Much better configure script output.
+
+	Ganael LAPLANCHE:
+		* Kinnda good guy. Fixed BSD compilation and also did BSD packages.
+
+	eagle:
+		* Added --geometry option
+	
+	pure_ascii:
+		* Fixed a bug on ListenSocket.cpp that crashed amule.
+
+	Creteil:
+		* Updated ServerSocket.cpp for bOutputMessage we always send even on error ...
+		* Fixed all 'return statements' in all Lists 
+		* Set minimum refresh for stats tree slider to 5 seconds 
+		* Fixed several CVS crashes due to indentation & porting bugs.
+		* Fixed downloadlist expand crash.
+		* Connect 'Verbose (additional program feedback)' CheckBox to some debug in log window and logfile
+		* Fixed bug in ServerList Window when changing priority
+		* Added preferences box for KeepAlive time.
+		* Imported code from eMule 0.30
+		  GetMaxFilesPerUDPServerPacket() SendGlobGetSourcesUDPPacket()	
+		  GetSoftFiles() SetSoftFiles()	GetHardFiles() SetHardFiles()
+		  SetVersion() DbgGetFileInfo()
+
+---------------------------------------------------------------------------
+
+Version 1.1.2
+-------------
+2003-11-04
+
+	Kry:
+		* Ok, REALLY fixed the 'no sources' bug.
+		* Added the KeepConnectionAlive function (This one is
+		  recomended by lugdunummaster himself).
+		* Some more memleaks fixed.
+		* Now aMule compiles under wxGTK2.5
+
+---------------------------------------------------------------------------
+
+Version 1.1.1b
+--------------
+2003-11-03
+
+	Kry:
+		* * Fixed severes memleaks.
+
+---------------------------------------------------------------------------
+
+Version 1.1.1a
+--------------
+2003-11-03
+
+	Kry:
+		* Fixed annoying bug about no sources can be find.
+
+	Creteil:
+		* Fixed another assert statement causing crash.
+
+---------------------------------------------------------------------------
+
+Version 1.1.1
+-------------
+2003-11-01
+
+	Kry:
+		* Added zlib support.
+		* No more need to launch aMule with params for localized
+		  users we force the english language in the prog now
+		  (credits go to Eru).
+		* Fixed minor network bugs.
+		* Added SERVER_NET_DEBUG and NET_DEBUG mesages.
+		* Fixed TCP packet not being consumed if not readed.
+
+	Olonho:
+		* Fixes to search dialog and download menu.
+
+	Creteil:
+		* Added new toolbar icons made by deltaHF.
+		* Added new clients icons made by deltaHF.
+		* Reverted default minimum upload slots = 3, now slot
+		  allocation take effect if max upload >= 10kB/s.
+		* Fixes bad code branch escaping in Shared Files Window.
+		* Shared Files Window, Priority & Permissions in righ mouse
+		  click working like expected now.
+		* Mass Code Cleaning (no more compilation of wx/xrc shit we
+		  don't use anymore), my old binarie = 2.9Mb the new one
+		  = 2.5Mb.
+
+---------------------------------------------------------------------------
+
+Version 1.1.0 (Kry special edition).
+------------------------------------
+2003-10-21
+
+	Kry:
+		* Fixed UDP packet not being consumed when reading sources
+		  if file status = stopped.
+		* Added lugdunum 16.40 sources Handling (you get more
+		  sources now).
+		* Added lugdunum 16.40 extended server messages (we receive
+		  full message now).
+		* Initial import of Messaging sytem core. Credits go to Tiku.
+
+	Creteil:
+		* Fixed a bug introduced in 1.0.9 in Preferences Connection
+		  Tab.
+		* Fixed aMule banned aMule client :-) (aMule seem to be too
+		  much aggressive) (Creteil).
+		* Relooked all main windows.
+		* Initial import of Messaging sytem GUI. Credits go to Tiku.
+
+---------------------------------------------------------------------------
+
+Version 1.0.9
+-------------
+2003-10-17
+
+ - Fixes :
+
+	* olonho various fixes (added gsocket.c, inited variable, fixed
+	  Valgrind error, removed buggy debug print, fixed SIG_PIPE in
+	  better way, fixed valgrind warnings).
+	* Fixed icons used to reflect status in download list.
+
+ - New Features :
+
+	* New Preferences with old implementation (this mean we dont have
+	  already the WebServer and Gui Tweak Tabs).
+	* Slot Allocation in Connection Preferences Tab (you can now set the
+	  bandwith per client in upload list).
+
+ - Info :
+
+	* I'm working hard on the rewrite of preferences, don't expect many
+	  changes during this time ...
+
+---------------------------------------------------------------------------
+
+Version 1.0.8
+-------------
+2003-10-10
+
+ - Fixes :
+
+	* Fixed bugs in "EMSocket.cpp" causing crash.
+
+ - New Features :
+
+	* Good news !!! Hetfield have contributed to aMule with the new
+	  systray integration ...
+
+	  Like emule one :
+
+	  Let you set Download & Upload speed.
+	  Shows speed.
+	  Let you iconify and hide aMule.
+	  Shows your infos like ip, hash, server, GB, etc ...
+	  Let you disconnect and reconnect. 
+
+ - Need to be Fixed :
+
+	* Localization Languages are broken for the moment (i'm thinking about
+	  removing totally this functionnality).
+
+ - Info :
+
+	* I'm working hard on the rewrite of preferences, don't expect many
+	  changes during this time ...
+
+---------------------------------------------------------------------------
+
+Version 1.0.7
+-------------
+2003-10-03
+
+ - Fixes :
+
+	* Fix the annoying message when searching "Client too old ...".
+	* Fix compilation a compilation bug introduced in 1.0.6.
+	* Move the code to put the toolbar in the gui file (no more designed
+	  by hand gui code for this part).
+
+ - Code Cleaning :
+
+	* Changed the Connection Wizard with SpinCtrl in place of the
+	  TextCtrl to handle values of line capacities (no more atoi
+	  converssion since we use already int return from SpinCtrl).
+
+ - Need to be Fixed :
+
+	* Localization Languages are broken for the moment, don't panic it's
+	  just temporary ... (i'm thinking about removing totally this
+	  functionnality).
+
+---------------------------------------------------------------------------
+
+Version 1.0.6
+-------------
+2003-09-24
+
+ - Fixes :
+
+	* Just somes fixes.
+
+ - New Functionnalities :
+
+	* ed2k servers handler : by Emanuel Wontorra
+
+ - Need to be Fixed :
+
+	* Localization Languages are broken for the moment, don't panic it's
+	  just temporary ..
+
+---------------------------------------------------------------------------
+
+Version 1.0.5
+-------------
+2003-09-15
+
+ - Gui changes :
+
+	* Import from eMule 0.27a: "Obtained Parts" bar in the shared files
+	  list.
+
+ - Fixes :
+
+	* Synced aMule with xMule latest fixes.
+	  It's a Malware non direct contribution :-) ...
+
+ - New Functionnalities :
+
+	* Import from eMule: Request of shared files by directory.
+	* Import from eMule 0.27a: Up-/download auto-priority.
+
+ - Code cleanup :
+
+	* Mass code removing for none working sections ...
+
+ - Need to be Fixed :
+
+	* Localization Languages are broken for the moment, don't panic it's
+	  just temporary ..
+
+---------------------------------------------------------------------------
+
+Version 1.0.4
+-------------
+2003-09-14
+
+ - Gui changes :
+
+	* MASS GUI changes (look in Transfer Window), removed the fucking
+	  unusable Messages Window and moved the Friend stuff from these to
+	  a new alligned left wxListCtrl ... Enjoy !!!
+	* Now i report only Client name in Sources column of Transfert
+	  Window (use right mouse click to see Details of the client as
+	  usual).
+
+ - Fixes :
+
+	* Synced aMule with xMule latest fixes (Fix various minor problems
+	  as found by valgrind and electric-fence & Fix a bug with the
+	  client credits map: It is not possible to convert the map key...).
+	  It's a Malware non direct contribution :-) ...
+
+ - Code cleanup :
+
+	* Mass code removing for none working sections ...
+
+ - Need to be Fixed :
+
+	* Localization Languages are broken for the moment, don't panic it's
+	  just temporary ..
+
+---------------------------------------------------------------------------
+
+Version 1.0.3
+-------------
+2003-09-08
+
+ - Gui changes :
+
+	* Changed 'Edit Category Properties' dialog.
+
+ - Fixes :
+
+	* Fixed comments count in 'File Comments' dialog.
+	* Fixed bug introduced in 1.0.2 (can't call comments in File
+	  Details).
+
+ - Code cleanup :
+
+	* Removed mmMultiButton from source (no more used).
+
+---------------------------------------------------------------------------
+
+Version 1.0.2
+-------------
+2003-09-03
+
+ - Gui changes :
+
+	* Changed Show all comments dialog.
+
+ - Fixes :
+
+	* Synced aMule with xMule latest fixes (Imported source exchange v2
+	  from eMule, Possible fix for some problems while ending the
+	  program).
+
+---------------------------------------------------------------------------
+
+Version 1.0.1
+-------------
+2003-09-29
+
+ - Gui changes :
+
+	* Changed Client Details & File Details Dialog (auto resizing of all
+	  fields).
+
+ - Fixes :
+
+	* Synched aMule with xMule latest fixes.
+
+---------------------------------------------------------------------------
+
+Version 1.0.0
+-------------
+2003-08-25
+
+!!! Initial Launch of aMule !!!
+
+ - Gui changes :
+
+	* Changed Main Servers Window (changed position of functionnalities,
+	  now, to update serverlist from url, click on the serverlist icon,
+	  all others field are descriptive by herself).
+	* Changed Main Search Windows (removed not connected functions and
+	  Direct Download), all GUI stuff of this window come in
+	  muuli_wdr.cpp & muuli_wdr.h.
+	* Fixed behaviors of buttons in Main Search Window.
+	* Added Fast ED2K Links Handler (Direct Download) with same
+	  functionnality as the original Direct Download of xMule Search
+	  Main Window but followin all main windows (i hate to have to
+	  switch to Search Main Window to be able to send a ED2K Link ...
+
+
+ Nothing more i can remind ;-)
+
+---------------------------------------------------------------------------
+
+malware's contributions:
+   * Speed up the initial sharing by making KnowFileList a hash map.
+   * Remove the assign to category context menu entry only if it was
+     already there.
+   * Reimplemented hashing thread.
+   * Removed unused locks. As the NetBSD team pointed out they are
+     causing problems on their system because it does core dump on
+     unlocking a mutex that was not locked.
+   * Made the title for systray the same as for the main dialog.
+   * Never share a file twice.
+   * Fixed endless loop in sending UDP packets.
+   * Fixed a possibly exploitable bug as noticed by S. Esser from e-matters.
+   * Fixed new downloads assigned to random category.
+   * Check size of OP_SERVERSTATUS packet more strictly.
+   * Do not display the unit for file size twice in shared file list web page.
+
+Un-Thesis' contributions:
+   * Added more support for Solaris, thanks to wimms.
+   * Corrected various Linux-specific #ifdefs.
+   * Fixed the bug that kept auto-backtrace from occuring in Linux.
+
+NetBSD team's contributions:
+   * Fixed bug with the mutex protecting calls to gethostbyname.
+   * Try to increase some resource limitation to the permitted maximum.
+
+sepahewe's contributions:
+   * Fix images in transfer list web page.
+
+Version 1.5.6
+-------------
+2003/08/01
+
+Highlights:
+   * Fixes for a great many bugs that cropped up from 1.5.2 to 1.5.5.
+
+malware's contributions:
+   * Added simple workaround in case CClientUDPSocket::OnSend is called
+     recursivly.
+   * Do not share the global incoming directory twice.
+   * Fixed wrong tag count written to part.met files.
+   * Various xmule signature changes as requested by BigBob.
+   * Fixed statistics color saving/loading.
+   * Decode %-escaped characters in URL within the ed2k application as
+     suggested by __JusSx__.
+   * Removed two trouble-maker member variables used in the search.
+   * Catch invalid/strange packets before they can cause harm. This
+     does also affect parts of network packets stored in *.met files.
+   * No longer throw out clients sending packets larger than needed.
+   * Fixed invalid messages "You already have...", caused by comparing
+     a hash over the File-ID rather than the ID itself.
+   * Cleaned up the nstrdup() mess.
+   * When finishing download share the file in the incoming directory
+     of the category it does belong to.
+   * Removed various possible format string exploits.
+   * Make it possible to delete the last user-defined category.
+
+MikaelB's contributions:
+   * Optimized anti-hash thief.
+   * Test for invalide eMule clients and irregular eDonkey clients.
+   * Anti-leechers test - Mison-like clients are automatically detected.
+   * Special icon in Upload List/Queue for invalid clients.
+   * Ban spammer clients ( Mison and others ).
+
+Un-Thesis' contributions:
+   * Upgraded XRC library to latest wx release.
+   * Converted internal XPMs to PNGs and JPEGs.
+   * Fixed a few Intel C++ compiler warnings.
+   * Re-organized the ChangeLog system.
+	* Made sure Italian and Korean translations were included in release.
+
+Madcat's contributions:
+   * Fixed crash in ClientDetailDialog.
+   * Fixed Directory Tree displaying.
+   * Fixed crash when attempting to delete noexistent TreeCtrl items.
+
+BigBob's contributions:
+   * Cosemtic GUI change - the IRC button is gone
+   * Make the status line resizing the areas to fit the text into.
+
+bothie's contributions:
+   * Actually send the MOD info with the MuleInfo packet.
+
+FooMan's contributions:
+   * Fix for failing file access during download completion.
+
+DongCheon Park's contributions:
+	* Updated the Korean translation files for new features.
+
+Version 1.5.5
+-------------
+2003/07/11
+
+Madcat's contributions:
+   * Column widths are now saved (got broken in 1.5.4).
+   * Possible fix for column hiding in Transfer tab (got broken in 1.5.3).
+   * Abort flushing and pause file if less than 9.28MB free disk space left.
+   * Abort part.met file writing if less than 5000 bytes free disk space.
+   * Code cleanup: Removed large amount of unused variables, #if 0'ed blocks,
+     indented several files and changed EOL to UNIX style in most.
+   * Online signature is now cleared on shutdown.
+   * Category incoming directories are now automatically shared.
+   * Automatic sources dropping at user-defined interval.
+
+MikaelB's contributions:
+   * Fixed a window increasing size problem at startup
+   * Fixed the '$' appearing in Cancel button in Categorie dialog
+   * Added timer in Sources Dropping tab
+
+plobb's contributions:
+   * Hotranking: Sources with QR: <5 ignore MaxNewConPer5Sec value.
+
+Version 1.5.4
+-------------
+2003/07/05
+
+Madcat's contributions:
+   * Lists are no longer redrawn when they are not shown.
+     NOTE: This reduces CPU usage SIGNIFICENTLY (for better effect,
+     stay off Transfer tab when running on background.
+   * Possible fix for gcc 2.95 compliation problems (DownloadListCtrl.cpp)
+   * Possible fix for BSD compatibility problems with configure.
+   * Possible fix for eMule 29a compatibility problems in met files.
+   * Reverted to old sources handling. New engine was way too aggressive.
+
+MikaelB's contributions:
+   * Possible fix for main toolbar display bug.
+   * Possible fix for sash position loading problems after new compilation.
+
+Version 1.5.3
+-------------
+2003/07/02
+
+Highlights:
+   * Categories implemented
+   * Much better No Needed/High Queue Ranking sources handling
+   * Shared files loading made 30x faster.
+
+Madcat's contributions:
+   * Possible fix for AppVersion value in .eMule file.
+   * Possible fix for statistics colours saving problems.
+   * Possible fix for shared files loading. Loading is MUCH faster now.
+   * Possible fix for crash if Hello Packet had tagcount 0. Strangely,
+     this only happened randomly after closing movie preview.
+   * Possible fix for endless loop when UDP packet sending fails.
+   * Imported categories from LMule CVS (written by Tiku).
+   * Category functions now apply to selected category only.
+   * Added confirmation message when cancelling all files in a category.
+   * Category setting is now saved.
+   * Much better HQR/NNS handling. Those two are now dropped automatically as  they connect.
+   * Fixed New MLDonkey compatibility (Been broken since 1.4.1)
+
+MikaelB's contributions:
+   * Fixed bug in File Comments dialog ( nothing displayed )
+   * Save sash position of splitter in transfer window at exit
+   * Fixed a bug in Sources Dropping Preferences window
+   * HQR Value is know set between 300 and 3000
+   * Fixed Dropping Sources Preferences saving bug (there were saved into
+     WebServer section in .eMule file)
+   * Changed Dropping Sources tab in Preferences window
+   * Better handling for NNS
+     User can now choose to:
+       * Automatically drop file
+       * Try to send it to an other file
+   * Default HQR value changed to 1200
+
+Kry's contributions:
+   * First Main category filters attempt to work.
+     * Downloads are now filtered from or added to shown list if status changes
+       after filter apply.
+     * Main category tab should be showing Filter name as tab name. Fixed.
+     * Added several more filters: Video, Audio, Image, Text, CDImage, Archive.
+     * Filters Apply now to all categories.
+   * Stopped files now have Stopped status instead of Paused.
+   * Colors for categories on download list were reversed from those the user
+     selected. Fixed.
+   * Added xMule Uptime to statistics tree.
+   * Possible fix for multiple PopUp menus on categories tab right-click.
+        * Shared files should be reloaded when closing preferences only if
+          folders changed.
+
+Tiku's contributions:
+   * Implemented Download list Categories.
+
+Malware's contributions:
+   * Possible fix for various exception handling bugs.
+   * Possible fix for the remaining of search page crashes.
+
+Balu's contributions:
+   * Updated spanish translation.
+
+Version 1.5.2
+-------------
+2003-06-22
+
+Madcat's contributions:
+   * Imported all features in Razor 1a Beta 1 mod.
+   * Imported most of the features in Lagloose mod v0.1a
+
+MikaelB's contributions: ( thanks to eMule Sivka mod )
+   * Added support for 'Swap every A4AF to this file now'.
+   * Added support for 'Swap every A4AF to this file AUTO'.
+   * Added support for 'Swap every A4AF to any other file now'.
+   * Added support for 'Drop No Needed Sources now'.
+   * Added support for 'Drop Full Queue Sources now'.
+   * Added support for 'Drop High Queue Rating Sources now'.
+   * Added support for 'Clean Up Sources now ( Drop NNS, FQS and HQRS now)'.
+   * Added Sources Dropping Preferences Tab (not functional yet).
+   * Possible fix for saving main window position and size.
+   * Initial support for Auto Drop NNS, FQS and HQRS (not functional yet).
+   * Initial support for Dynamic Upload (not functional yet).
+
+Lagloose's contributions:
+   * Shift+Doubleclick in downloadlist only shows transferring sources.
+   * Increased font size for the axis in statistics.
+   * More Information on uploading clients in upload window.
+
+
+Version 1.5.1
+-------------
+2003-06-11
+
+Un-Thesis' contributions:
+   * Possible fix for bad return statements in ClientUDPSocket and BaseClient.
+   * Reverted to old code for several bad fixes in 1.5.0.
+
+Kry's contributions:
+   * Made ./xmule statistics more readable.
+   * Possible fix for download limit being higher than capacity.
+   * Added a notification message in case second xMule is started.
+   * Possible fix for --version commandline argument.
+
+Version 1.5.0
+-------------
+2003-06-08
+
+Madcat's contributions:
+   * Sockets are also closed on crash now.
+   * Revised Search Result packet handling, shouldn't crash/memleak there
+     anymore.
+   * Removed annoying MAX_RESULTS check from search tab.
+   * Added log line when ipfilter is loaded.
+   * Possible fix for various crashes regarding Shared Files Reloading.
+   * Possible fix for several Search Tab Closing/Global Search related crashes.
+   * Possible fix for several eMule/xMule typos.
+   * Possible fix for potential endless loop if UDP packet sending failed.
+   * Possible fix for potential endless loop/memleak at ProcessMuleInfoPacket().
+   * Possible fix for CPU leak in ProcessHelloPacket().
+   * Possible fix for endless loop at CPartFile::FlushBuffer().
+   * Possible fix for gsocket.c compilation problems with older compilers.
+
+Un-Thesis' contributions:
+   * Possible fix for GTK-only XPM compatibillity problems.
+   * Possible fix for GetTickCount compilation errors.
+   * Possible fix for LOWID problems (AGAIN!).
+   * Removed pure GTK code from GetColour.
+
+MikaelB's contributions:
+   * Possible fix for toolbar sizing with i18n
+
+Version 1.3.1
+-------------
+2003-05-16
+
+Madcat's contributions:
+   * FIXED: 'All Columns Hidden on First Start-Up' bug.
+   * FIXED: Systray integration setting saving.
+   * FIXED: Start webserver only if it's enabled in preferences.
+   * FIXED: Shared files Re-Loading.
+   * FIXED: Shutdown seg-fault.
+
+ArCePi's contributions:
+   * Updated spanish translation.
+
+Shuttle's contributions:
+   * Added Italian translation
+
+Version 1.3.0
+-------------
+2003-05-15
+
+* Changed the release organization of xmule
+  * Stable releases have even middle numbers (ex: 1.2.1 is stable)
+  * Unstable releases have odd middle numbers (ex: 1.3.0 is unstable)
+
+Pure_Ascii's contributions:
+   * FIXED: Last part always being corrupt problems.
+   * FIXED: FreeBSD 5.x compatibility problems.
+   * Started port to MacOS X.
+
+Un-Thesis' contributions:
+   * FIXED: Implemented McCabe's and arkanses' LOWID on restart fix.
+   * FIXED: Several major Mem and CPU leaks
+   * FIXED: Application termination improved.
+   * FIXED: Removed & symbols from the main toolbar.
+   * Added new MakeNG system, see README.makeng.
+   * Added --version command line option.
+   * Ported xMule 28b Partfile.
+   * Added framework for more robust command line control.
+
+Madcat's contributions:
+   * FIXED: Major Memory leak caused by NOT flushing files.
+   * FIXED: Toolbar sizing if texts are too long.
+   * All lists are now sorted on startup.
+   * Preview now defaults to mplayer if none set.
+
+Tiku's contributions:
+   * Added initial code for Webserver, not currently functional.
+   * Further synchronized statistics windows with xmule.
+
+Gib[S]On's contributions:
+   * Added list counters for Servers, Transfer and SharedFiles windows.
+
+Ender's contributions:
+   * Opera 7.1 info to ED2K-Links.HOWTO
+
+-------------

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=aLinkCreator
+Name[xx]=xxwxCasxx
+Exec=alc
+Icon=alc.xpm
+Type=Application
+Categories=Application;Network;
+Comment=aMule ed2k link creator
+Comment[fr]=Créateur de liens ed2k d'aMule
