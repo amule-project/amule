@@ -74,22 +74,19 @@ void UngetSearchListControl(CSearchListCtrl* ctrl)
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CSearchListCtrl::OnNMRclick)
 	EVT_LEFT_DCLICK(CSearchListCtrl::OnLDclick)
-	EVT_LIST_COL_CLICK(ID_SERVERLIST,CSearchListCtrl::OnColumnClick)
 END_EVENT_TABLE()
-
-//IMPLEMENT_DYNAMIC(CSearchListCtrl, CMuleListCtrl)
-
-CSearchListCtrl::CSearchListCtrl()
-{
-	memset(&asc_sort,0,6);
-}
 
 CSearchListCtrl::CSearchListCtrl(wxWindow* parent,int id,const wxPoint& pos,wxSize siz,int flags)
 : CMuleListCtrl(parent,id,pos,siz,flags)
 {
 	wxASSERT( parent );
 
-	memset(&asc_sort,0,6);
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Search") );
+
 	m_SearchFileMenu=NULL;
 }
 
@@ -106,40 +103,13 @@ void CSearchListCtrl::Init(CSearchList* in_searchlist)
 	InsertColumn(3,_("Type"),LVCFMT_LEFT,65);
 	InsertColumn(4,_("FileID"),LVCFMT_LEFT,280);
 	
-	// contrary to other lists, here we can set everything in constructor
-	// as this control is created only in run-time
 	LoadSettings();
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:10));
 }
 
 CSearchListCtrl::~CSearchListCtrl()
 {
 }
 
-void CSearchListCtrl::OnColumnClick(wxListEvent& evt)
-{
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(TP_Search, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(TP_Search, sortAscending);
-
-	// Sort table
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:10));
-}
 
 void CSearchListCtrl::OnNMRclick(wxMouseEvent& evt)
 {
@@ -200,8 +170,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	if (toshow->GetSearchID() != m_nResultsID) {
 		return;
 	}
-	uint32 itemnr=GetItemCount();
-	uint32 newid=InsertItem(itemnr,toshow->GetFileName());
+	uint32 newid=InsertItem( GetInsertPos((long)toshow),toshow->GetFileName());
 	SetItemData(newid,(long)toshow);
 	char buffer[50];
 	uint32 filesize=toshow->GetIntTagValue(FT_FILESIZE);
@@ -217,10 +186,6 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItem(newid,4,char2unicode(buffer));
 	// set color
 	UpdateColor(newid,toshow->GetIntTagValue(FT_SOURCES));
-	// Re-sort the items after each added item to keep the sort order.
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
-	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
-	SortItems(SortProc, sortItem + (SortAscending ? 0:10));
 }
 
 void CSearchListCtrl::UpdateColor(long index,long WXUNUSED(count))
@@ -284,9 +249,7 @@ void CSearchListCtrl::UpdateSources(CSearchFile* toupdate)
 	}
   
 	// Re-sort the items after each added source to keep the sort order.
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
-	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
-	SortItems(SortProc, sortItem + (SortAscending ? 0:10));
+	SortList();
 }
 
 void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
@@ -319,7 +282,7 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	switch(lParamSort){
 		case 0: //filename asc
 		    return item1->GetFileName().CmpNoCase(item2->GetFileName());
-		case 10: //filename desc
+		case 1000: //filename desc
 			return item2->GetFileName().CmpNoCase(item1->GetFileName());
 		case 1: //size asc
 			// Need to avoid nasty bug on files >2.4Gb
@@ -334,7 +297,7 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				// item1 == item2
 				return 0;
 			}		
-		case 11: //size desc
+		case 1001: //size desc
 			// Need to avoid nasty bug on files >2.4Gb
 			//	return item2->GetIntTagValue(FT_FILESIZE) - item1->GetIntTagValue(FT_FILESIZE);
 			if (item2->GetIntTagValue(FT_FILESIZE) > item1->GetIntTagValue(FT_FILESIZE)) {
@@ -356,7 +319,7 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			}	
 
 		}
-		case 12: {  //sources desc
+		case 1002: {  //sources desc
 			int cmpS = item2->GetIntTagValue(FT_SOURCES) - item1->GetIntTagValue(FT_SOURCES);
 			if (!cmpS) {			
 				return(item2->GetIntTagValue(FT_COMPLETE_SOURCES) - item2->GetIntTagValue(FT_COMPLETE_SOURCES));
@@ -368,12 +331,12 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 3: //type asc
 			return GetFiletypeByName(item1->GetFileName()).Cmp(GetFiletypeByName(item2->GetFileName()));
 
-		case 13: //type  desc
+		case 1003: //type  desc
 			return GetFiletypeByName(item2->GetFileName()).Cmp(GetFiletypeByName(item1->GetFileName()));
 
 		case 4: //filahash asc
 			return memcmp(item1->GetFileHash(),item2->GetFileHash(),16);
-		case 14: //filehash desc
+		case 1004: //filehash desc
 			return memcmp(item2->GetFileHash(),item1->GetFileHash(),16);
 		default:
 			return 0;
@@ -382,12 +345,6 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
 {
-	if(evt.GetEventType()==wxEVT_COMMAND_LIST_COL_CLICK) {
-		// ok, this won't get dispatched through event table
-		// so do it manually here
-		OnColumnClick((wxListEvent&)evt);
-		return CMuleListCtrl::ProcessEvent(evt);
-	}
 	if(evt.GetEventType()!=wxEVT_COMMAND_MENU_SELECTED) {
 		return CMuleListCtrl::ProcessEvent(evt);
 	}
@@ -463,9 +420,4 @@ bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
 	return true;
 }
 
-
-int CSearchListCtrl::TablePrefs()
-{
-	return TP_Search;
-}
 

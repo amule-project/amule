@@ -34,34 +34,25 @@ class CUpDownClient;
 
 class CQueueListCtrl : public CMuleListCtrl
 {
-  //DECLARE_DYNAMIC(CQueueListCtrl)
-
 public:
-	CQueueListCtrl();
 	CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
 	virtual ~CQueueListCtrl();
 	void	Init();
-	void InitSort();
 	void	AddClient(CUpDownClient* client);
 	void	RemoveClient(CUpDownClient* client);
 	void	RefreshClient(CUpDownClient* client);
-	void	Hide() {/*ShowWindow(SW_HIDE);*/}
-	void	Visable() {/*ShowWindow(SW_SHOW);*/}
 	void	Localize();
 
 protected:
-	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpsort);
 	void OnNMRclick(wxMouseEvent& evt);
-	void OnColumnClick(wxListEvent& evt);
 	bool ProcessEvent(wxEvent& evt);
+	void OnColumnClick(wxListEvent& evt);
 	virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rc,const wxRect& rectHL,bool hl);
 
 	DECLARE_EVENT_TABLE()
 private:
-	bool		 asc_sort[8];	 
-
 	wxMenu*	   m_ClientMenu;
 	// Barry - Refresh the queue every 10 seconds
 	wxTimer  m_hTimer;

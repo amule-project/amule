@@ -42,18 +42,9 @@
 
 // CSharedFilesCtrl
 
-//IMPLEMENT_DYNAMIC(CSharedFilesCtrl, CMuleListCtrl)
-
 BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_SHFILELIST,CSharedFilesCtrl::OnNMRclick)
-	EVT_LIST_COL_CLICK(ID_SHFILELIST,CSharedFilesCtrl::OnColumnClick)  
 END_EVENT_TABLE()
-
-CSharedFilesCtrl::CSharedFilesCtrl()
-{
-	sflist = 0;                // i_a 
-	memset(&sortstat, 0, sizeof(sortstat));  // i_a 
-}
 
 CSharedFilesCtrl::~CSharedFilesCtrl()
 {
@@ -62,21 +53,15 @@ CSharedFilesCtrl::~CSharedFilesCtrl()
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
 : CMuleListCtrl(parent,id,pos,siz,flags|wxLC_OWNERDRAW)
 {
+	// Setting the sorter function.
+	SetSortFunc( SortProc );
+
+	// Set the table-name (for loading and saving preferences).
+	SetTableName( wxT("Shared") );
+
 	sflist = 0;                // i_a 
-	memset(&sortstat, 0, sizeof(sortstat));  // i_a 
 	m_SharedFilesMenu=NULL;
 	Init();
-}
-
-void CSharedFilesCtrl::InitSort()
-{
-	LoadSettings();
-
-	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Shared);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Shared);
-	SetSortArrow(sortItem, sortAscending);
-	SortItems(SortProc, sortItem + (sortAscending ? 0:20));
 }
 
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
@@ -239,21 +224,17 @@ void CSharedFilesCtrl::UpdateFile(CKnownFile* file,uint32 itemnr)
 
 void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 {
-	ShowFile(file,GetItemCount());
-}
-
-void CSharedFilesCtrl::ShowFile(CKnownFile* file,uint32 itemnr)
-{
-	int newitem=InsertItem(itemnr,file->GetFileName());
+	int newitem=InsertItem( GetInsertPos((long)file), file->GetFileName() );
 	SetItemData(newitem,(long)file);
 	// set background... 
 	wxListItem myitem;
 	myitem.m_itemId=newitem;
 	myitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 	SetItem(myitem);
-	UpdateFile(file,itemnr);
+	UpdateFile(file, newitem);
 	ShowFilesCount();
 }
+
 
 //bool CSharedFilesCtrl::OnCommand(WPARAM wParam, LPARAM lParam)
 bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
@@ -477,39 +458,6 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 	return CMuleListCtrl::ProcessEvent(evt);
 }
 
-//void CSharedFilesCtrl::OnColumnClick( NMHDR* pNMHDR, LRESULT* pResult){
-void CSharedFilesCtrl::OnColumnClick(wxListEvent& evt)
-{
-	// Barry - Store sort order in preferences
-	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Shared);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Shared);
-	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
-
-	// Item is column clicked
-	sortItem = evt.GetColumn();
-
-	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(TP_Shared, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(TP_Shared, sortAscending);
-
-        // Ornis 4-way-sorting
-	int adder=0;
-	if (evt.GetColumn()>5 && evt.GetColumn()<9) {
-		if (!sortAscending) {
-			sortstat[evt.GetColumn()-6]=!sortstat[evt.GetColumn()-6];
-		}
-		adder=sortstat[evt.GetColumn()-6] ? 0:100;
-	}
-	// Sort table
-	if (adder==0) {
-		SetSortArrow(sortItem, sortAscending);
-	} else {
-		SetSortArrow(sortItem, sortAscending); // ? arrowDoubleUp : arrowDoubleDown);
-	}
-	SortItems(SortProc, sortItem + adder + (sortAscending ? 0:20));
-}
-
 
 int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
@@ -518,25 +466,25 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 	switch (lParamSort) {
 		// Sort by filename. Ascending.
-		case 0:  return item1->GetFileName().CmpNoCase( item2->GetFileName() );
+		case 0		: return item1->GetFileName().CmpNoCase( item2->GetFileName() );
 		// Sort by filename. Decending.
-		case 20: return item2->GetFileName().CmpNoCase( item1->GetFileName() );
+		case 1000	: return item2->GetFileName().CmpNoCase( item1->GetFileName() );
 
 
 		// Sort by filesize. Ascending.
-		case 1:  return CmpAny( item1->GetFileSize(), item2->GetFileSize() );
+		case 1		:  return CmpAny( item1->GetFileSize(), item2->GetFileSize() );
 		// Sort by filesize. Decending.
-		case 21: return CmpAny( item2->GetFileSize(), item1->GetFileSize() );
+		case 1001	: return CmpAny( item2->GetFileSize(), item1->GetFileSize() );
 
 
 		// Sort by filetype. Ascending.
-		case 2:  return GetFiletypeByName(item1->GetFileName()).CmpNoCase(GetFiletypeByName( item2->GetFileName()) );
+		case 2		:  return GetFiletypeByName(item1->GetFileName()).CmpNoCase(GetFiletypeByName( item2->GetFileName()) );
 		// Sort by filetype. Decending.
-		case 22: return GetFiletypeByName(item2->GetFileName()).CmpNoCase(GetFiletypeByName( item1->GetFileName()) );
+		case 1002	: return GetFiletypeByName(item2->GetFileName()).CmpNoCase(GetFiletypeByName( item1->GetFileName()) );
 
 
 		// Sort by priority. Ascending.
-		case 3:
+		case 3		:
 			{
 				int8 prioA = item1->GetUpPriority();
 				int8 prioB = item2->GetUpPriority();
@@ -545,7 +493,7 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return CmpAny( ( prioB != PR_VERYLOW ? prioB : -1 ), ( prioA != PR_VERYLOW ? prioA : -1 ) );
 			}
 		// Sort by priority. Decending.
-		case 23:
+		case 1003	:
 			{
 				int8 prioA = item1->GetUpPriority();
 				int8 prioB = item2->GetUpPriority();
@@ -556,52 +504,51 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 
 		// Sort by permission. Ascending.
-		case 4:  return CmpAny( item2->GetPermissions(), item1->GetPermissions() );
+		case 4		:  return CmpAny( item2->GetPermissions(), item1->GetPermissions() );
 		// Sort by permission. Decending.
-		case 24: return CmpAny( item1->GetPermissions(), item2->GetPermissions() );
+		case 1004	: return CmpAny( item1->GetPermissions(), item2->GetPermissions() );
 
 
 		// Sort by fileID. Ascending.
-		case 5:  return item1->GetFileHash().Encode().Cmp( item2->GetFileHash().Encode() );
+		case 5		:  return item1->GetFileHash().Encode().Cmp( item2->GetFileHash().Encode() );
 		// Sort by fileID. Decending.
-		case 25: return item2->GetFileHash().Encode().Cmp( item1->GetFileHash().Encode() );
+		case 1005	: return item2->GetFileHash().Encode().Cmp( item1->GetFileHash().Encode() );
 
 
 		// Sort by Requests this session. Ascending.
-		case 6:  return CmpAny( item1->statistic.GetRequests(), item2->statistic.GetRequests() );
+		case 6		:  return CmpAny( item1->statistic.GetRequests(), item2->statistic.GetRequests() );
 		// Sort by Requests this session. Decending.
-		case 26: return CmpAny( item2->statistic.GetRequests(), item1->statistic.GetRequests() );
+		case 1006	: return CmpAny( item2->statistic.GetRequests(), item1->statistic.GetRequests() );
 		
 		
 		// Sort by accepted requests. Ascending.
-		case 7:  return CmpAny( item1->statistic.GetAccepts(), item2->statistic.GetAccepts() );
+		case 7		:  return CmpAny( item1->statistic.GetAccepts(), item2->statistic.GetAccepts() );
 		// Sort by accepted requests. Decending.
-		case 27: return CmpAny( item2->statistic.GetAccepts(), item1->statistic.GetAccepts() );
+		case 1007	: return CmpAny( item2->statistic.GetAccepts(), item1->statistic.GetAccepts() );
 
 
 		// Sort by transferred. Ascending.
-		case 8:  return CmpAny( item1->statistic.GetTransfered(), item2->statistic.GetTransfered() );
+		case 8		:  return CmpAny( item1->statistic.GetTransfered(), item2->statistic.GetTransfered() );
 		// Sort by transferred. Decending.
-		case 28: return CmpAny( item2->statistic.GetTransfered(), item1->statistic.GetTransfered() );
+		case 1008	: return CmpAny( item2->statistic.GetTransfered(), item1->statistic.GetTransfered() );
 
-
+		
 		// Sort by requests (All). Ascending.
-		case 106: return CmpAny( item1->statistic.GetAllTimeRequests(), item2->statistic.GetAllTimeRequests() );
+		case 2006: return CmpAny( item1->statistic.GetAllTimeRequests(), item2->statistic.GetAllTimeRequests() );
 		// Sort by requests (All). Descending.
-		case 126: return CmpAny( item2->statistic.GetAllTimeRequests(), item1->statistic.GetAllTimeRequests() );
+		case 3006: return CmpAny( item2->statistic.GetAllTimeRequests(), item1->statistic.GetAllTimeRequests() );
 
 
 		// Sort by accepted requests (All). Ascending.
-		case 107: return CmpAny( item1->statistic.GetAllTimeAccepts(), item2->statistic.GetAllTimeAccepts() );
+		case 2007: return CmpAny( item1->statistic.GetAllTimeAccepts(), item2->statistic.GetAllTimeAccepts() );
 		// Sort by accepted requests (All). Decending.
-		case 127: return CmpAny( item2->statistic.GetAllTimeAccepts(), item1->statistic.GetAllTimeAccepts() );
+		case 3007: return CmpAny( item2->statistic.GetAllTimeAccepts(), item1->statistic.GetAllTimeAccepts() );
 
 
 		// Sort by transferred (All). Ascending.
-		case 108: return CmpAny( item1->statistic.GetAllTimeTransfered(), item2->statistic.GetAllTimeTransfered() );
+		case 2008: return CmpAny( item1->statistic.GetAllTimeTransfered(), item2->statistic.GetAllTimeTransfered() );
 		// Sort by transferred (All). Decending.
-		case 128: return CmpAny( item2->statistic.GetAllTimeTransfered(), item1->statistic.GetAllTimeTransfered() );
-
+		case 3008: return CmpAny( item2->statistic.GetAllTimeTransfered(), item1->statistic.GetAllTimeTransfered() );
 
 		default: 
 			return 0;
@@ -713,8 +660,17 @@ void CSharedFilesCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxR
 	}
 }
 
-int CSharedFilesCtrl::TablePrefs()
+
+bool CSharedFilesCtrl::AltSortAllowed( int column )
 {
-	return TP_Shared;
+	switch ( column ) {
+		case 6:
+		case 7:
+		case 8:
+			return true;
+
+		default:
+			return false;
+	}
 }
 

@@ -31,10 +31,7 @@ class CSearchFile;
 
 class CSearchListCtrl : public CMuleListCtrl
 {
-  //DECLARE_DYNAMIC(CSearchListCtrl)
-
 public:
-	CSearchListCtrl();
 	CSearchListCtrl(wxWindow* parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
 	virtual ~CSearchListCtrl();
@@ -52,7 +49,6 @@ public:
 	void    InvalidateSearchId() { m_nResultsID = (uint32)-1; }
 
 protected:
-	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lParam1, long lParam2, long lParamSort);
 	void OnColumnClick(wxListEvent& evt);
 
@@ -66,7 +62,6 @@ private:
 	wxMenu* m_SearchFileMenu;
 	CSearchList* searchlist;
 	long		 m_nResultsID;
-	bool		 asc_sort[7];	 
 };
 
 CSearchListCtrl* GetSearchListControl(long nSearchID);

@@ -27,18 +27,14 @@ class CFileDetailListCtrl : public CMuleListCtrl
 
 public: 
 	CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags);
-	void UpdateSort(void);
 
 private:
-	bool m_SortAscending[2];
-	int sortItem;
 	struct SourcenameItem {
 		wxString	name;
 		long		count;
 	};
 
 	static int wxCALLBACK CompareListNameItems(long lParam1, long lParam2, long lParamSort);
-	void OnColumnClick(wxListEvent& evt);
 	void OnSelect(wxListEvent& event);
 
 	DECLARE_EVENT_TABLE()

@@ -266,11 +266,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 void CamuleDlg::InitSort()
 {
 	// Initialize and sort all lists.
-	transferwnd->downloadlistctrl->InitSort();
-	transferwnd->uploadlistctrl->InitSort();
-	transferwnd->queuelistctrl->InitSort();
-	serverwnd->serverlistctrl->InitSort();
-	sharedfileswnd->sharedfilesctrl->InitSort();
+	transferwnd->downloadlistctrl->LoadSettings();
+	transferwnd->uploadlistctrl->LoadSettings();
+	transferwnd->queuelistctrl->LoadSettings();
+	serverwnd->serverlistctrl->LoadSettings();
+	sharedfileswnd->sharedfilesctrl->LoadSettings();
 }
 
 // Madcat - Toggles Fast ED2K Links Handler on/off.

@@ -147,7 +147,7 @@ void CTransferWnd::Localize()
 void CTransferWnd::OnSelchangeDltab(wxNotebookEvent& evt)
 {
   downloadlistctrl->ChangeCategory(evt.GetSelection());
-  downloadlistctrl->InitSort();
+  downloadlistctrl->SortList();
 }
 
 void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
@@ -243,7 +243,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			theApp.glob_prefs->GetCategory(0)->title = GetCatTitle(theApp.glob_prefs->GetAllcatType());
 			EditCatTabLabel(0,theApp.glob_prefs->GetCategory(0)->title);
 			downloadlistctrl->ChangeCategory(0);
-			downloadlistctrl->InitSort();
+			downloadlistctrl->SortList();
 			break;
 		}
 

@@ -42,7 +42,7 @@ enum GUI_Event_ID {
 	SHAREDFILES_REMOVE_ALL_ITEMS,
 	SHAREDFILES_SHOW_ITEM,
 	SHAREDFILES_SHOW_ITEM_LIST,
-	SHAREDFILES_INIT_SORT,
+	SHAREDFILES_SORT,
 	
 	// download control
 	DOWNLOAD_CTRL_UPDATEITEM,
@@ -52,7 +52,7 @@ enum GUI_Event_ID {
 	DOWNLOAD_CTRL_RM_SOURCE,
 	DOWNLOAD_CTRL_SHOW_HIDE_FILE,
 	DOWNLOAD_CTRL_HIDE_SOURCE,
-	DOWNLOAD_CTRL_INIT_SORT,
+	DOWNLOAD_CTRL_SORT,
 	DOWNLOAD_CTRL_SHOW_FILES_COUNT,
 	// upload control
 	UPLOAD_CTRL_ADD_CLIENT,
@@ -267,7 +267,7 @@ class GUIEvent : public wxEvent {
 #define Notify_SharedFilesRemoveFile(file)          Notify_1_ValEvent(SHAREDFILES_REMOVE_ITEM, file)
 #define Notify_SharedFilesRemoveAllItems()          Notify_0_ValEvent(SHAREDFILES_REMOVE_ALL_ITEMS)
 #define Notify_SharedFilesShowFileList(list)        Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM_LIST, list)
-#define Notify_SharedFilesInitSort()                Notify_0_ValEvent(SHAREDFILES_INIT_SORT)
+#define Notify_SharedFilesSort()                    Notify_0_ValEvent(SHAREDFILES_SORT)
 #define Notify_SharedFilesUpdateItem(ptr)           Notify_1_ValEvent(SHAREDFILES_UPDATE_ITEM, ptr)
 
 // download ctrl
@@ -278,7 +278,7 @@ class GUIEvent : public wxEvent {
 #define Notify_DownloadCtrlRemoveSource(ptr0, ptr1) Notify_2_ValEvent(DOWNLOAD_CTRL_RM_SOURCE, (void *)ptr0, (void *)ptr1)
 #define Notify_DownloadCtrlShowHideFileStatus(ptr)  Notify_1_ValEvent(DOWNLOAD_CTRL_SHOW_HIDE_FILE, ptr)
 #define Notify_DownloadCtrlHideSource(ptr)          Notify_1_ValEvent(DOWNLOAD_CTRL_HIDE_SOURCE, ptr)
-#define Notify_DownloadCtrlInitSort()               Notify_0_ValEvent(DOWNLOAD_CTRL_INIT_SORT)
+#define Notify_DownloadCtrlSort()                   Notify_0_ValEvent(DOWNLOAD_CTRL_SORT)
 #define Notify_DownloadCtrlShowFilesCount()         Notify_0_ValEvent(DOWNLOAD_CTRL_SHOW_FILES_COUNT)
 
 // upload ctrl

@@ -169,8 +169,9 @@ void CFileDetailDialog::FillSourcenameList()
 			nameCountStr.Printf(wxT("%li"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
-		pmyListCtrl->UpdateSort();
 	}
+
+	pmyListCtrl->SortList();
 
 	// remove 0'er
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++)

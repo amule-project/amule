@@ -42,12 +42,10 @@ class serverListItem : public wxListItem {
 class CServerListCtrl : public CMuleListCtrl 
 {
 public:
-	CServerListCtrl();
 	CServerListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
 	virtual ~CServerListCtrl() { }
 	bool	Init(CServerList* in_list);
-	void InitSort();
 	bool	AddServer(CServer* toadd,bool bAddToList = true);
 	void	RemoveServer(CServer* todel,bool bDelToList = true);
 	void	RemoveAllServers(int state);
@@ -69,7 +67,6 @@ public:
 	void OnLvnColumnclickServlist(wxListEvent& evt);
 	static int wxCALLBACK SortProc(long item1,long item2,long sortData);
 
-	bool	asc_sort[9]; 
 	bool ProcessEvent(wxEvent& evt);
 
 	// Barry - New methods
@@ -77,9 +74,6 @@ public:
 	bool StaticServerFileRemove(CServer *server);
 	
 	long connected;
-
-protected:
-	virtual int TablePrefs();
 
 private:
 	CServerList*	server_list;

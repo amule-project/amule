@@ -1887,9 +1887,9 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 				amuledlg->sharedfileswnd->sharedfilesctrl->DeleteAllItems();
 			}
 			break;
-		case SHAREDFILES_INIT_SORT:
+		case SHAREDFILES_SORT:
 			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->InitSort();
+				amuledlg->sharedfileswnd->sharedfilesctrl->SortList();
 			}
 			break;
 		case SHAREDFILES_SHOW_ITEM_LIST:
@@ -1947,9 +1947,9 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 					amuledlg->transferwnd->downloadlistctrl->HideSources((CPartFile*)event.ptr_value);
 			}
 			break;
-		case DOWNLOAD_CTRL_INIT_SORT:
+		case DOWNLOAD_CTRL_SORT:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->InitSort();
+				amuledlg->transferwnd->downloadlistctrl->SortList();
 			}
 			break;
 		case DOWNLOAD_CTRL_SHOW_FILES_COUNT:

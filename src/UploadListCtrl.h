@@ -36,31 +36,22 @@ class CUpDownClient;
 
 class CUploadListCtrl : public CMuleListCtrl {
 public:
-	CUploadListCtrl();
 	CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
 
 	virtual		~CUploadListCtrl();
 	void		Init();
-	void		InitSort();
 	void		AddClient(CUpDownClient* client);
 	void		RemoveClient(CUpDownClient* client);
 	void		RefreshClient(CUpDownClient* client);
-	void		Hide() {/*ShowWindow(SW_HIDE);*/}
-	void		Visable() {/*ShowWindow(SW_SHOW);*/}
-	void		Localize();
 	virtual void	OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 	void		ShowSelectedUserDetails();
 private:
-	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 
-	void		OnColumnClick(wxListEvent& evt);
 	void		OnNMRclick(wxMouseEvent& evt);
 
 
 	bool		ProcessEvent(wxEvent& evt);
-
-	bool		asc_sort[7];	 
 
 	wxMenu*		m_ClientMenu;
 	wxBrush*	m_hilightBrush,*m_hilightUnfocusBrush;
