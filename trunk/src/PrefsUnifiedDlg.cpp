@@ -458,7 +458,7 @@ public:
 
 		buffer = ini.Read( wxT("/") + szSection + wxT("/") + strName, wxT("0"));
 		
-		*piSet = atoll(buffer);
+		*piSet = atoll(unicode2char(buffer));
 	}
 	virtual void SaveToFile(wxConfigBase& ini)		{ 
 		wxString str = wxString::Format(wxT("%llu"),(unsigned long long)*piSet);
@@ -487,14 +487,14 @@ public:
 	}
 	
 	virtual void SaveToFile(wxConfigBase& ini) {
-		ini.Write( wxT("/") + szSection + wxT("/") + strName, wxT(pchSet) );
+		ini.Write( wxT("/") + szSection + wxT("/") + strName, wxString(char2unicode(pchSet)));
 	}
 
 	virtual void SetDlgValue() 				
 	{
 		bWasChanged = false;
 		if (wxc==wxcText)
-			((wxTextCtrl*)pctrl)->SetValue(pchSet);
+			((wxTextCtrl*)pctrl)->SetValue(char2unicode(pchSet));
 	}
 	
 	virtual void RestorePrevValue()			
@@ -523,7 +523,7 @@ public:
 			wxc = wxcText; 
 	}
 	
-	wxString GetMemStringValue() { wxASSERT(pchSet); return pchSet; }
+	wxString GetMemStringValue() { wxASSERT(pchSet); return char2unicode(pchSet); }
 	
 protected:
 	RseString() {};
@@ -548,10 +548,10 @@ public:
 	//shakraw, when storing value, store it encrypted here (only if changed in prefs)
 	virtual void StoreDlgValue()
 	{
-		const char * sz = ((wxTextCtrl*)pctrl)->GetValue().c_str();
+		const char * sz = unicode2char(((wxTextCtrl*)pctrl)->GetValue());
 		bWasChanged = (strcmp(pchSet, sz) != 0);
 		if ((wxc==wxcText) && (bWasChanged))
-			snprintf(pchSet, cch, "%s", unicode2char(MD5Sum(wxT(sz)).GetHash()));
+			snprintf(pchSet, cch, "%s", unicode2char(MD5Sum(char2unicode(sz)).GetHash()));
 	}
 	
 private:
@@ -614,7 +614,7 @@ public:
 		{
     		wxString token = tokenizer.GetNextToken();
 
-			piSet[counter] = atoi( token );
+			piSet[counter] = atoi( unicode2char(token) );
 			
 			counter++;
 		}
@@ -696,9 +696,9 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 {
 	listRse.Append(new Rse(wxT("Missing ID of dlg item in listRse")));  // LEAVE AT HEAD OF LIST - handles missing dlg IDs gracefully
 	
-	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, appdir, wxT("TempDir"), wxT("Temp"), wxT("eMule")));
+	listRse.Append(new RseDirAssured(IDC_TEMPFILES, prefs->tempdir, char2unicode(appdir), wxT("TempDir"), wxT("Temp"), wxT("eMule")));
 	listRse.Append(new RseString(IDC_NICK, prefs->nick, sizeof(prefs->nick), wxT("Nick"), wxT("http://www.aMule.org"), wxT("eMule")));
-	listRse.Append(new RseDirAssured(IDC_INCFILES, prefs->incomingdir, appdir, wxT("IncomingDir"), wxT("Incoming"),wxT("eMule")));
+	listRse.Append(new RseDirAssured(IDC_INCFILES,prefs->incomingdir, char2unicode(appdir), wxT("IncomingDir"), wxT("Incoming"),wxT("eMule")));
 
 	listRse.Append(prseMaxUp = new RseInt(IDC_MAXUP, prefs->maxupload, wxT("MaxUpload"), UNLIMITED, wxT("eMule"))); // see note in ForceUlDlRateCorrelation
 	listRse.Append(prseMaxDown = new RseInt(IDC_MAXDOWN, prefs->maxdownload, wxT("MaxDownload"), UNLIMITED, wxT("eMule"))); // ditto
@@ -899,7 +899,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 
 	for (int i=0; i<cntStatColors; i++) {  // colors have been moved from global prefs to CStatisticsDlg
 		wxString str = wxString::Format(wxT("StatColor%i"),i);
-		listRse.Append(aprseColor[i] = new RseInt(0, CStatisticsDlg::acrStat[i], (char*)(str.c_str()), CStatisticsDlg::acrStat[i], wxT("eMule")));
+		listRse.Append(aprseColor[i] = new RseInt(0, CStatisticsDlg::acrStat[i], str, CStatisticsDlg::acrStat[i], wxT("eMule")));
 	}
 
 	listRse.Append(new RseCounter(prefs->totalDownloadedBytes, wxT("TotalDownloadedBytes"), wxT("Statistics"))); // no GUI needed
@@ -948,7 +948,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const char * appd
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, wxT("Browser"), 0,wxT("FakeCheck")));	
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, wxT("SafeMaxConn"), false, wxT("FakeCheck"))); 		
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, wxT("VerbosePacketError"), false, wxT("FakeCheck"))); 
-	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
+	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, char2unicode(appdir), wxT("OSDirectory"), wxT(""), wxT("FakeCheck")));	
 }
 
 //==============================================================================
@@ -1263,7 +1263,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 
 	if (Prse(IDC_OSDIR)->WasChanged()) {		
 		// Build the filenames for the two OS files
-		theApp.SetOSFiles(wxString(char2unicode(Prse(IDC_OSDIR)->GetMemStringValue())));
+		theApp.SetOSFiles(wxString(Prse(IDC_OSDIR)->GetMemStringValue()));
 	}
 	
     EndModal(ID_PREFS_OK_LEFT);

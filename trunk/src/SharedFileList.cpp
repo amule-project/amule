@@ -134,7 +134,7 @@ void CSharedFileList::AddFilesFromDirectory(char* directory)
 				list_mut.Unlock();
 			} else {
 				if ( wxStrcmp(fName.GetFullName().GetData(), toadd->GetFileName()) )
-					printf("Warning: File '%s' already shared as '%s'\n", fName.GetFullName().GetData(), toadd->GetFileName().GetData());
+					printf("Warning: File '%s' already shared as '%s'\n", unicode2char(fName.GetFullName()), unicode2char(toadd->GetFileName()));
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
