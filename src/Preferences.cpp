@@ -53,7 +53,7 @@ CPreferences::CPreferences()
 	// Use home directory to save preferences 
 	snprintf(buffer,400,"%s/." PACKAGE_NAME,getenv("HOME"));
 
-	if (!wxDirExists(buffer)) {
+	if (!wxFileName::wxDirExists(buffer)) {
 		wxMkdir(buffer,0777);
 	}
 	strncat(buffer,"/",1);
@@ -180,27 +180,12 @@ CPreferences::CPreferences()
 	fullpath=NULL;
 	userhash[5] = 14;
 	userhash[14] = 111;
-	if (!wxDirExists(GetIncomingDir())) {
+	if (!wxFileName::wxDirExists(GetIncomingDir())) {
 		wxMkdir(GetIncomingDir(),0777);
 	}
-	if (!wxDirExists(GetTempDir())) {
+	if (!wxFileName::wxDirExists(GetTempDir())) {
 		wxMkdir(GetTempDir(),0777);
 	}
-
-#if 0
-
-	// what is this supposed to do??
-	// fail-safe operation if incoming and temp dirs can't be created?
-	if (!wxFileName::FileExists(prefs->incomingdir)) {
-		sprintf(prefs->incomingdir,"%sincoming",appdir);
-		wxMkdir(prefs->incomingdir,0777);
-	}
-	if (!wxFileName::FileExists(prefs->tempdir)) {
-		sprintf(prefs->tempdir,"%stemp",appdir);
-		wxMkdir(prefs->tempdir,0777);
-	}
-
-#endif
 
 	if (((int*)prefs->userhash)[0] == 0 && ((int*)prefs->userhash)[1] == 0 && ((int*)prefs->userhash)[2] == 0 && ((int*)prefs->userhash)[3] == 0) {
 		CreateUserHash();
@@ -260,10 +245,10 @@ bool CPreferences::Save()
 		error = true;
 	}
 	delete[] fullpath;
-	if (!wxDirExists(GetIncomingDir())) {
+	if (!wxFileName::wxDirExists(GetIncomingDir())) {
 		wxMkdir(GetIncomingDir(),0777);
 	}
-	if (!wxDirExists(GetTempDir())) {
+	if (!wxFileName:wxDirExists(GetTempDir())) {
 		wxMkdir(GetTempDir(),0777);
 	}
 	return error;
