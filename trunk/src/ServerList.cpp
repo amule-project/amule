@@ -51,6 +51,7 @@
 #include "packets.h"		// Needed for CInvalidPacket
 #include "opcodes.h"		// Needed for MET_HEADER
 #include "SafeFile.h"		// Needed for CSafeFile
+#include "HTTPDownload.h"	// Needed for HTTPThread
 #include "HTTPDownloadDlg.h"	// Needed for CHTTPDownloadDlg
 #include "Preferences.h"	// Needed for CPreferences
 #include "otherfunctions.h"	// Needed for GetTickCount
@@ -902,5 +903,31 @@ void CServerList::RemoveDeadServers()
 				RemoveServer(cur_server);
 			}
 		}
+	}
+}
+
+void CServerList::UpdateServerMetFromURL(wxString strURL)
+{
+	if (strURL.Find(wxT("://")) == -1) {
+		AddLogLineM(true, _("Invalid URL"));
+		return;
+	}
+	URLUpdate = strURL;
+	wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
+	HTTPThread *downloader = new HTTPThread(strURL,strTempFilename, HTTP_ServerMet);
+	downloader->Create();
+	downloader->Run();
+}
+
+void CServerList::DownloadFinished(uint32 result) {
+	if(result==1) {
+		wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
+		// curl succeeded. proceed with server.met loading
+		theApp.serverlist->AddServermetToList(strTempFilename);
+		theApp.serverlist->SaveServermetToFile();
+		// So, file is loaded and merged, and also saved
+		wxRemoveFile(strTempFilename);
+	} else {
+		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
 	}
 }

@@ -82,23 +82,7 @@ CServerWnd::~CServerWnd()
 
 void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 {
-	if (strURL.Find(wxT("://")) == -1) {
-		AddLogLineM(true, _("Invalid URL"));
-		return;
-	}
-	wxString strTempFilename(theApp.ConfigDir + wxString::Format(wxT("temp-%d-server.met"), ::GetTickCount()));
-	CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(this,strURL,strTempFilename);
-	int retval=dlg->ShowModal();
-	if(retval==0) {
-		// curl succeeded. proceed with serverlist processing
-		theApp.serverlist->AddServermetToList(strTempFilename);
-		wxRemoveFile(strTempFilename);
-		theApp.serverlist->SaveServermetToFile();
-		printf("Saving of server.met file Done !!!\n");
-	} else {
-		AddLogLineM(true, _("Failed to download the serverlist from ")+ strURL);
-	}
-	delete dlg;
+	theApp.serverlist->UpdateServerMetFromURL(strURL);
 }
 
 void CServerWnd::Localize()
