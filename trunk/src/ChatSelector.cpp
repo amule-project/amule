@@ -47,14 +47,18 @@
 
 
 
+// Default colors, 
+#define COLOR_BLACK wxTextAttr( wxColor( 255,   0,   0 ) )
+#define COLOR_BLUE  wxTextAttr( wxColor(   0,   0, 255 ) )
+#define COLOR_GREEN wxTextAttr( wxColor(   0, 102,   0 ) )
+#define COLOR_RED   wxTextAttr( wxColor(   0,   0, 255 ) )
 
-CChatSession::CChatSession(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
-: wxHtmlWindow( parent, id, pos, size, style, name )
+
+
+CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
+: wxTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
 	client = NULL;
-	SetBorders(5);
-	int sizes[]={7, 8, 10, 12, 16, 22, 30};
-	SetFonts("", "", sizes);
 }
 
 
@@ -64,20 +68,11 @@ CChatSession::~CChatSession()
 }
 
 
-void CChatSession::AddText(const wxString& text)
+void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 {
-	m_log += text;
-
-	wxString result = "<html><body>" + m_log + "</body></html>";
-	result.Replace("\n", "<br>\n");
+	SetDefaultStyle(style);
 	
-	Freeze();
-	SetPage(result);
-	
-	int x, y;
-	GetVirtualSize(&x, &y);
-	Scroll(-1, y);
-	Thaw();
+	AppendText(text);
 }
 
 
@@ -112,7 +107,7 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 	chatsession->client = client;
 
 	wxString text = wxString(_("*** Chatsession Start : ")) + client->GetUserName() + "\n";
-	chatsession->AddText( ColorText( text, RGB(255, 0, 0) ) );
+	chatsession->AddText( text, COLOR_BLACK );
 	AddPage(chatsession, client->GetUserName(), show, 0);
 	
 	client->SetChatState(MS_CHATTING);
@@ -160,8 +155,8 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 		session = StartSession( sender, true );
 	}
 	
-	session->AddText( ColorText( wxString(sender->GetUserName()), RGB(0, 0, 255) ) );
-	session->AddText( wxString(": ") + wxString(message) + wxString("\n") );
+	session->AddText( wxString(sender->GetUserName()), COLOR_BLUE );
+	session->AddText( wxString(": ") + wxString(message) + wxString("\n"), COLOR_BLACK );
 }
 
 
@@ -191,11 +186,11 @@ bool CChatSelector::SendMessage( const wxString& message )
 		packet->opcode = OP_MESSAGE;
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		ci->client->socket->SendPacket(packet, true, true);
-		ci->AddText( ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(0, 102, 0) ) );
-		ci->AddText( ": " + message + "\n" );
+		ci->AddText( wxString(theApp.glob_prefs->GetUserNick()), COLOR_GREEN );
+		ci->AddText( ": " + message + "\n", COLOR_BLACK );
 	} else {
 		printf("Not connected to Chat. Trying to connect...\n");
-		ci->AddText( ColorText( wxString("*** ") + wxString(_("Connecting")) , RGB(255, 0, 0) ));
+		ci->AddText( wxString("*** ") + wxString(_("Connecting")) , COLOR_RED );
 		ci->messagepending = message;
 		ci->client->SetChatState(MS_CONNECTING);
 		ci->client->TryToConnect();
@@ -232,14 +227,14 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 	ci->client->SetChatState( MS_CHATTING );
 	if ( !success ) {
 		if ( !ci->messagepending.IsEmpty() ) {
-			ci->AddText( ColorText( wxString(" ") + wxString(_("failed")) + wxString("\n"), RGB(255, 0, 0) ) );
+			ci->AddText( wxString(" ") + wxString(_("failed")) + wxString("\n"), COLOR_RED );
 		} else {
-			ci->AddText( ColorText( wxString(_("*** Disconnected")) + wxString("\n"), RGB(255, 0, 0) ) );
+			ci->AddText( wxString(_("*** Disconnected")) + wxString("\n"), COLOR_RED );
 		}
 		
 		ci->messagepending.Clear();
 	} else {
-		ci->AddText( ColorText( wxString(" ok\n"), RGB(255, 0, 0) ) );
+		ci->AddText( wxString(" ok\n"), COLOR_RED );
 		
 		CMemFile data;
 		data.Write(wxString(ci->messagepending));
@@ -248,8 +243,8 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		ci->client->socket->SendPacket(packet, true, true);
 		
-		ci->AddText( ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(0, 102, 0) ) );
-		ci->AddText( ": " + ci->messagepending + "\n" );
+		ci->AddText( wxString(theApp.glob_prefs->GetUserNick()), COLOR_GREEN );
+		ci->AddText( ": " + ci->messagepending + "\n", COLOR_BLACK );
 		
 		ci->messagepending.Clear();
 	}
@@ -281,10 +276,6 @@ void CChatSelector::EndSession(CUpDownClient* client)
 }
 
 
-wxString CChatSelector::ColorText( const wxString& text, COLORREF iColor )
-{
-	return wxString::Format("<font color=\"#%06x\">%s</font>", iColor, text.c_str());
-}
 
 
 // Refresh the tab assosiated with a friend
