@@ -135,21 +135,21 @@ struct PrefsPage
 
 PrefsPage pages[] =
     {
-		{ _("General"),				PreferencesGeneralTab,			13,	NULL },
-		{ _("Connection"),			PreferencesConnectionTab,		14,	NULL },
-		{ _("Message Filter"),      PreferencesMessagesTab,         23, NULL },
-		{ _("Remote Controls"),		PreferencesRemoteControlsTab,	11,	NULL },
-		{ _("Online Signature"),	PreferencesOnlineSigTab,	 	21,	NULL },
-		{ _("Server"),				PreferencesServerTab,			15,	NULL },
-		{ _("Files"),				PreferencesFilesTab,			16,	NULL },
-		{ _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20,	NULL },
-		{ _("Directories"),			PreferencesDirectoriesTab,		17,	NULL },
-		{ _("Statistics"),			PreferencesStatisticsTab,		10,	NULL },
-		{ _("Security"),			PreferencesSecurityTab,		 	22,	NULL },
-		//	Notications are disabled since they havent been implemented
-		//	{ _("Notifications"),	PreferencesNotifyTab,			18,	NULL },
-		{ _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL },
-		{ _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL }
+		{ wxTRANSLATE("General"),		PreferencesGeneralTab,		13, NULL },
+		{ wxTRANSLATE("Connection"),		PreferencesConnectionTab,	14, NULL },
+		{ wxTRANSLATE("Message Filter"),	PreferencesMessagesTab,		23, NULL },
+		{ wxTRANSLATE("Remote Controls"),	PreferencesRemoteControlsTab,	11, NULL },
+		{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
+		{ wxTRANSLATE("Server"),		PreferencesServerTab,		15, NULL },
+		{ wxTRANSLATE("Files"),			PreferencesFilesTab,		16, NULL },
+		{ wxTRANSLATE("Sources Dropping"),	PreferencesSourcesDroppingTab,	20, NULL },
+		{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17, NULL },
+		{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10, NULL },
+		{ wxTRANSLATE("Security"),		PreferencesSecurityTab,		22, NULL },
+		//Notications are disabled since they havent been implemented
+		//{ wxTRANSLATE("Notifications"),	PreferencesNotifyTab,		18, NULL },
+		{ wxTRANSLATE("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL },
+		{ wxTRANSLATE("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL }
     };
 
 
@@ -187,7 +187,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
 		// Add the icon and label assosiated with the page
 		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
-		PrefsIcons->InsertItem(i, _(pages[i].m_title), i);
+		PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
 	}
 	
 	// Set list-width so that there arn't any scrollers
