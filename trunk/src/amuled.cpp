@@ -1045,9 +1045,6 @@ void CamuleApp::OnFatalException()
 #ifdef __BSD__
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed\n--== no BACKTRACE yet \n\n");
 #endif // __BSD__
-	
-#endif
-#endif
 }
 
 #define wxGTK_WINDOW 1
