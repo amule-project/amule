@@ -406,29 +406,24 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 //
 // [Out]
 //   buffer: byte array containing decoded string
-void DecodeBase16(wxString base16, unsigned int base16BufLen, byte *buffer)
+unsigned int DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buffer)
 {
-	memset( buffer, 0, base16BufLen / 2 );
-	// This is safe - hash should always be an ANSI string
-	const char* base16Buffer =base16.mb_str();
-	
+	if (!base16Buffer || (base16BufLen & 1)) {
+		return 0;
+	}
+	unsigned int ret = base16BufLen >> 1;
+	memset( buffer, 0,  ret);
 	for(unsigned int i = 0; i < base16BufLen; ++i) {
 		int lookup = toupper(base16Buffer[i]) - '0';
-
 		// Check to make sure that the given word falls inside a valid range
-		byte word = 0;
-
-		if ( lookup < 0 || lookup >= BASE16_LOOKUP_MAX)
-			word = 0xFF;
-		else
-			word = base16Lookup[lookup][1];
-
-		if(i % 2 == 0) {
-			buffer[i/2] = word << 4;
-		} else {
-			buffer[(i-1)/2] |= word;
-		}
+		byte word = (lookup < 0 || lookup >= BASE16_LOOKUP_MAX) ?
+			0xFF : base16Lookup[lookup][1];
+		unsigned idx = i >> 1;
+		buffer[idx] = (i & 1) ? // odd or even?
+			(buffer[idx] | word) : (word << 4);
 	}
+
+	return ret;
 }
 
 // Returns a BASE32 encoded byte array
@@ -451,14 +446,16 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 			word = (buffer[i] & (0xFF >> index));
 			index = (index + 5) % 8;
 			word <<= index;
-			if (i < bufLen - 1)
+			if (i < bufLen - 1) {
 				word |= buffer[i + 1] >> (8 - index);
+			}
 			++i;
 		} else {
 			word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
 			index = (index + 5) % 8;
-			if (index == 0)
+			if (index == 0) {
 				++i;
+			}
 		}
 		Base32Buff += (char) base32Chars[word];
 	}
@@ -476,38 +473,40 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 //   buffer: byte array containing decoded string
 // [Return]
 //   nDecodeLen:
-unsigned int DecodeBase32(wxString base32, unsigned int base32BufLen, unsigned char *buffer)
+unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer)
 {
-
-	if (base32.IsEmpty()) {
-		return false;
+	if (!base32Buffer) {
+		return 0;
 	}
 
-	// This is safe - hash should always be an ANSI string
-	const char* base32Buffer = base32.mb_str();
-
 	uint32 nDecodeLen = (strlen(base32Buffer)*5)/8;
-	if ((strlen(base32Buffer)*5) % 8 > 0)
+	if ((strlen(base32Buffer)*5) % 8 > 0) {
 		++nDecodeLen;
+	}
 	uint32 nInputLen = strlen(base32Buffer);
-	if (buffer == NULL || base32BufLen == 0)
+	if (buffer == NULL || base32BufLen == 0) {
 		return nDecodeLen;
-	if (nDecodeLen > base32BufLen || buffer == NULL) 
+	}
+	if (nDecodeLen > base32BufLen || buffer == NULL) {
 		return 0;
+	}
 
 	DWORD nBits	= 0;
 	int nCount	= 0;
 
 	for ( int nChars = nInputLen ; nChars-- ; ++base32Buffer )
 	{
-		if ( *base32Buffer >= 'A' && *base32Buffer <= 'Z' )
+		if ( *base32Buffer >= 'A' && *base32Buffer <= 'Z' ) {
 			nBits |= ( *base32Buffer - 'A' );
-		else if ( *base32Buffer >= 'a' && *base32Buffer <= 'z' )
+		}
+		else if ( *base32Buffer >= 'a' && *base32Buffer <= 'z' ) {
 			nBits |= ( *base32Buffer - 'a' );
-		else if ( *base32Buffer >= '2' && *base32Buffer <= '7' )
+		}
+		else if ( *base32Buffer >= '2' && *base32Buffer <= '7' ) {
 			nBits |= ( *base32Buffer - '2' + 26 );
-		else
+		} else {
 			return 0;
+		}
 		
 		nCount += 5;
 
@@ -636,18 +635,15 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	return pbBufferOut;
 }
 
-unsigned int DecodeBase64( wxString base64, unsigned int base64BufLen, unsigned char *buffer)
+unsigned int DecodeBase64(const char *base64Buffer, unsigned int base64BufLen, unsigned char *buffer)
 {
 	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
 	unsigned int nData = 0;
 	unsigned int i = 0;
 
-	if (base64.IsEmpty()) {
+	if (!base64Buffer) {
 		return false;	
 	}
-	
-	// This is safe, hash is always an ANSI string.
-	const char* base64Buffer = base64.mb_str();
 	
 	if( base64BufLen == 0 ) {
 		*buffer = 0;
