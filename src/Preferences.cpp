@@ -1310,7 +1310,10 @@ void CPreferences::SaveCats()
 	if ( GetCatCount() ) {
 		wxConfigBase* cfg = wxConfigBase::Get();
 
-		// The first category is the default one and should not be counte
+		// Save the main cat.
+		cfg->Write( wxT("/eMule/AllcatType"), (int)s_allcatType);
+		
+		// The first category is the default one and should not be counted
 
 		cfg->Write( wxT("/General/Count"), (long)(m_CatList.size() - 1) );
 
