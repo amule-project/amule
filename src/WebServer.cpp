@@ -2736,7 +2736,7 @@ unsigned char *CAnyImage::RequestData(int &size)
 	return m_data;
 }
 
-CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(name)
+CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(name))
 {
 	m_size = 0;
 	wxFFile fis(m_name);
@@ -2747,10 +2747,10 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(name)
 			Realloc(fis.Length());
 			m_size = fis.Read(m_data,file_size);
 		} else {
-			printf("CFileImage: file %s have zero length\n", m_name.GetData());
+			printf("CFileImage: file %s have zero length\n", unicode2char(m_name));
 		}
 	} else {
-		printf("CFileImage: failed to open %s\n", m_name.GetData());
+		printf("CFileImage: failed to open %s\n", unicode2char(m_name));
 	}
 }
 
@@ -2816,7 +2816,7 @@ unsigned char *CDynImage::RequestData(int &size)
 wxString CDynImage::GetHTML()
 {
 	// template contain %s (name) %d (width)
-	return wxString::Format(m_tmpl, m_name.GetData(), m_width);
+	return wxString::Format(m_tmpl, unicode2char(m_name), m_width);
 }
 
 #endif
