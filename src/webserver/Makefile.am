@@ -2,6 +2,7 @@ dist_htmlimg_DATA = add_server.gif \
 		    arrow_down.gif \
 		    arrow_right.gif \
 		    arrow_up.gif \
+		    back.gif \
 		    black.gif \
 		    blue1.gif \
 		    blue2.gif \
