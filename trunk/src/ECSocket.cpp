@@ -50,57 +50,92 @@ ECSocket::~ECSocket()
 	delete m_sock;
 }
 
-void ECSocket::Read(wxSocketBase *sock, uint8& i) {
+
+bool ECSocket::Read(wxSocketBase *sock, uint8& i)
+{
 	sock->Read(&i, 1);
+	
+	return ( sock->LastCount() == 1 ) && !sock->Error();
 };
 	
-void ECSocket::Write(wxSocketBase *sock, const uint8& i) {
+
+bool ECSocket::Write(wxSocketBase *sock, const uint8& i)
+{
 	sock->Write(&i, 1);
+	
+	return ( sock->LastCount() == 1 ) && !sock->Error();
 };
 
-void ECSocket::Read(wxSocketBase *sock, uint16& i) {
+
+bool ECSocket::Read(wxSocketBase *sock, uint16& i)
+{
 	sock->Read(&i, 2);
 	ENDIAN_SWAP_I_16(i);
-};
 	
-void ECSocket::Write(wxSocketBase *sock, const uint16& i) {
-	int16 tmp = ENDIAN_SWAP_16(i);
-	sock->Write(&tmp, 2);
+	return ( sock->LastCount() == 2 ) && !sock->Error();
 };
 
-void ECSocket::Read(wxSocketBase *sock, uint32& i) {
+
+bool ECSocket::Write(wxSocketBase *sock, const uint16& i)
+{
+	int16 tmp = ENDIAN_SWAP_16(i);
+	sock->Write(&tmp, 2);
+
+	return ( sock->LastCount() == 2 ) && !sock->Error();
+};
+
+bool ECSocket::Read(wxSocketBase *sock, uint32& i)
+{
 	sock->Read(&i, 4);
 	ENDIAN_SWAP_I_32(i);
+	
+	return ( sock->LastCount() == 4 ) && !sock->Error();
 };
 	
-void ECSocket::Write(wxSocketBase *sock, const uint32& i) {
+bool ECSocket::Write(wxSocketBase *sock, const uint32& i)
+{
 	int32 tmp = ENDIAN_SWAP_32(i);
 	sock->Write(&tmp, 4);
+	
+	return ( sock->LastCount() == 4 ) && !sock->Error();
 };
 
 #if 0
-void ECSocket::Read(wxSocketBase *sock, uint64& i) {
+bool ECSocket::Read(wxSocketBase *sock, uint64& i)
+{
 	sock->Read(&i, 8);
 	ENDIAN_SWAP_I_64(i);
+
+	return ( sock->LastCount() == 8 ) && !sock->Error();
 };
 
-void ECSocket::Write(wxSocketBase *sock, const uint64& v) {
+bool ECSocket::Write(wxSocketBase *sock, const uint64& v)
+{
 	int64 tmp = ENDIAN_SWAP_32(v);
 	sock->Write(&tmp, 8);
+
+	return ( sock->LastCount() == 8 ) && !sock->Error();
 };
 #endif
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 
 bool ECSocket::Read(wxSocketBase *sock, wxString& s) {
-	unsigned int msgBytes;
-	Read(sock, msgBytes);
+	unsigned int msgBytes = 0;
+	
+	// Fail if we cant read the string-size
+	if ( !Read(sock, msgBytes) )
+		return false;
+	
+	// Fail if the string is abnormally large ( > 1kb )
+	if ( msgBytes > 1024 )
+		return false;
+	
 	char *utf8 = new char[msgBytes+1];
 	utf8[msgBytes] = 0;
 	unsigned int msgRemain = msgBytes;
 	unsigned int LastIO;
 	char *iobuf = utf8;
-	register int i = 0;
 	bool error = false;
 	while(msgRemain && !error) {
 		sock->Read(iobuf, msgRemain);
@@ -108,11 +143,9 @@ bool ECSocket::Read(wxSocketBase *sock, wxString& s) {
 		error = sock->Error();
 		msgRemain -= LastIO;
 		iobuf += LastIO;
-		++i;
 	}
 	// Converts an UTF-8 string to ISO-8859-1
 	s = wxString(wxConvUTF8.cMB2WC(utf8), aMuleConv);
-//printf("ECSocket::Read: loop=%d, bytes=%d, original=%d, msg=%s\n", i, msgBytes, s.size(), wxConvUTF8.cWX2MB(s.Left(40)));
 	delete [] utf8;
 	if(error) {
 		printf("ECSocket::Read:Error reading wxString Packet!\n");
@@ -132,12 +165,13 @@ bool ECSocket::Write(wxSocketBase *sock, const wxString& s) {
 		return false;
 	}
 	unsigned int msgBytes = strlen(utf8);
-//printf("ECSocket::Write bytes=%d, original=%d, msg=%s\n", msgBytes, s.size(), wxConvUTF8.cWX2MB(s.Left(40)));
-	Write(sock, msgBytes);
+	
+	if ( !Write(sock, msgBytes) )
+		return false;
+
 	unsigned int msgRemain = msgBytes;
 	unsigned int LastIO;
 	const char *iobuf = utf8;
-	register int i = 0;
 	bool error = false;
 	while(msgRemain && !error) {
 		sock->Write(iobuf, msgBytes);
@@ -145,9 +179,6 @@ bool ECSocket::Write(wxSocketBase *sock, const wxString& s) {
 		error = sock->Error();
 		msgRemain -= LastIO;
 		iobuf += LastIO;
-		++i;
-//printf("i=%d, LastIO=%u, msgRemain=%u\n", i, LastIO, msgRemain);
-//if(i > 5) break;
 	}
 	
 	return !error;
