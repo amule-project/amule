@@ -2547,21 +2547,21 @@ void DownloadFilesInfo::LoadImageParams(wxString &tpl, int width, int height)
 	m_height = height;
 }
 
-void DownloadFilesInfo::ItemInserted(DownloadFiles &item)
+void DownloadFilesInfo::ItemInserted(DownloadFiles *item)
 {
-	item.m_Image = new CDynImage(m_width, m_height, m_Template, &item);
+	item->m_Image = new CDynImage(m_width, m_height, m_Template, item);
 
 #ifdef WITH_LIBPNG
-	m_ImageLib->AddImage(item.m_Image, wxT("/") + item.m_Image->Name());
+	m_ImageLib->AddImage(item->m_Image, wxT("/") + item->m_Image->Name());
 #endif
 }
 
-void DownloadFilesInfo::ItemDeleted(DownloadFiles &item)
+void DownloadFilesInfo::ItemDeleted(DownloadFiles *item)
 {
 #ifdef WITH_LIBPNG
-			m_ImageLib->RemoveImage(wxT("/") + item.m_Image->Name());
+	m_ImageLib->RemoveImage(wxT("/") + item->m_Image->Name());
 #endif
-			delete item.m_Image;
+	delete item->m_Image;
 }
 
 bool DownloadFilesInfo::ReQuery()
