@@ -49,6 +49,8 @@ CChatSession::CChatSession(wxWindow *parent, wxWindowID id, const wxPoint& pos, 
 {
 	client = NULL;
 	SetBorders(5);
+	int sizes[]={7,8,10,12,16,22,30};
+	SetFonts("","",sizes);
 }
 
 
