@@ -110,7 +110,7 @@ wxString _SpecialChars(wxString str) {
 
 CWebServer::CWebServer(CamulewebApp *webApp):
 	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
-	m_UploadsInfo(webApp),
+	m_UploadsInfo(webApp), m_SearchInfo(webApp),
 	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
 {
 	webInterface = webApp;
@@ -2068,13 +2068,6 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	} else 
 		Out.Replace(wxT("[Message]"),wxEmptyString);
 
-	wxString sSort = _ParseURL(Data, wxT("sort"));
-	if (sSort.Length()>0) m_iSearchSortby = StrToLong(sSort);
-	sSort = _ParseURL(Data, wxT("sortAsc"));
-	if (sSort.Length()>0) m_bSearchAsc = StrToLong(sSort);
-
-	wxString result = m_Templates.sSearchHeader + webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH WEBLIST %s\t%d\t%d"), m_Templates.sSearchResultLine.GetData(), m_iSearchSortby, m_bSearchAsc));
-	
 	// categoriesa
 	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
@@ -2086,6 +2079,26 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	}
 	delete reply;
 
+	wxString sSort = _ParseURL(Data, wxT("sort"));
+	wxString sSearchSortRev = _ParseURL(Data, wxT("sortreverse"));
+	m_SearchInfo.SetSortOrder(sSort, sSearchSortRev);
+	
+	m_SearchInfo.ReQuery();
+
+	wxString result = m_Templates.sSearchHeader;
+	m_SearchInfo.ProcessHeadersLine(result);
+	
+	SearchInfo::ItemIterator i = m_SearchInfo.GetBeginIterator();
+	while (i != m_SearchInfo.GetEndIterator()) {
+		wxString line = m_Templates.sSearchResultLine;
+		line.Replace("[FILENAME]", i->sFileName);
+		line.Replace("[FILESIZE]", CastItoXBytes(i->lFileSize));
+		line.Replace("[SOURCECOUNT]", wxString::Format(wxT("%u"), i->lSourceCount));
+		line.Replace("[FILEHASH]", i->nHash.Encode());
+		
+		result += line;
+		i++;
+	}
 	Out.Replace(wxT("[SEARCHINFOMSG]"),wxEmptyString);
 	Out.Replace(wxT("[RESULTLIST]"), result);
 	Out.Replace(wxT("[Result]"), _("Search Results"));
@@ -2635,12 +2648,17 @@ bool UploadsInfo::ReQuery()
 	return true;
 }
 
-SearchFile::SearchFile(CEC_SearchFile_Tag *)
+SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
 {
+	nHash = tag->FileHash();
+	sFileName = tag->FileName();
+	lFileSize = tag->SizeFull();
+	lSourceCount = tag->SourceCount();
 }
 
-void SearchFile::ProcessUpdate(CEC_SearchFile_Tag *)
+void SearchFile::ProcessUpdate(CEC_SearchFile_Tag *tag)
 {
+	lSourceCount = tag->SourceCount();
 }
 
 SearchInfo *SearchFile::GetContainerInstance()

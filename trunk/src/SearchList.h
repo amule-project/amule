@@ -99,6 +99,8 @@ public:
 
 	void	RemoveResults(long nSearchID);
 	void	ShowResults(long nSearchID);
+	const std::vector<CSearchFile*> GetSearchResults(long nSearchID);
+	
 	wxString GetWebList(const wxString& linePattern,int sortby,bool asc) const;
 	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
 	void LocalSearchEnd();

@@ -736,6 +736,7 @@ class CWebServer {
 	SharedFilesInfo m_SharedFilesInfo;
 	DownloadFilesInfo m_DownloadFilesInfo;
 	UploadsInfo m_UploadsInfo;
+	SearchInfo m_SearchInfo;
 	
 	CImageLib m_ImageLib;
 	
