@@ -20,85 +20,98 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-//START - enkeyDEV(kei-kun) -TaskbarNotifier-
-#define TBN_NULL				0
-#define TBN_CHAT				1
-#define TBN_DLOAD				2
-#define TBN_LOG					3
-#define TBN_IMPORTANTEVENT		        4
-#define TBN_NEWVERSION				5
-//END - enkeyDEV(kei-kun) -TaskbarNotifier-
+
+enum TaskbarNotifier
+{
+	TBN_NULL = 0,
+	TBN_CHAT,
+	TBN_DLOAD,
+	TBN_LOG,
+	TBN_IMPORTANTEVENT,
+	TBN_NEWVERSION
+};
+
+enum DesktopMode
+{
+	dmUnknown = 0,
+	dmGNOME2,
+	dmKDE3,
+	dmKDE2,
+	dmDisabled
+};
+
 
 #ifndef __SYSTRAY_DISABLED__
 
 #include <cstddef>		// Needed for NULL, must be included BEFORE gtk/gdk headers!
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/wxchar.h>		// Needed for wxChar
 #include <wx/string.h>		// Needed for wxString
 
 #include "types.h"		// Needed for DWORD
 #include "color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
+
 class wxWindow;
 
-#ifndef __WXMSW__ // defined in windef.h 
-typedef struct _tagSIZE {
-  int cx,cy;
-} SIZE;
-#endif
+#ifdef __WXMSW__
 
-#if defined(__WXMSW__)
+
 #include <wx/taskbar.h>
-class CSysTray : public wxTaskBarIcon {
+
+class CSysTray : public wxTaskBarIcon
+{
 public:
-	CSysTray(wxWindow *parent, int desktopMode = 0, const wxString &title = wxEmptyString);
-	void TraySetToolTip(char* data);
-	void TraySetIcon(char** data,bool what=false,int* pVals=NULL);
-	bool SetColorLevels(int* pLimits,COLORREF* pColors, int nEntries);
+	CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& title);
+	
+	void SetTrayToolTip(const wxString& tip);
+	void SetTrayIcon(char** data, int* pVals = NULL);
+	
 private:
 	wxIcon c;
 };
 
+
 #elif defined(__WXGTK__)
-class CSysTray {
- public:
-  CSysTray(wxWindow* parent,int desktopMode,const wxString& title);
-  ~CSysTray();
-
-  void Show(const wxChar* caption,int nMsgType,DWORD dwTimeToShow=500,DWORD dwTimeToStay=4000,DWORD dwTimeTOHide=200);
-
-  void TraySetToolTip(char* data);
-  void TraySetIcon(char** data,bool what=false,int* pVals=NULL);
-  bool SetColorLevels(int* pLimits,COLORREF* pColors, int nEntries);
- 
- private:
-  void setupProperties();
-
-  void drawMeters(GdkPixmap* pix,GdkBitmap* mask,int* pBarData);
-  void DrawIconMeter(GdkPixmap* pix,GdkBitmap* mask,int pBarData,int x);
-  COLORREF GetMeterColor(int level);
-
-  int desktopMode;
-  wxWindow* parent;
-  GtkWidget* status_docklet;
-  GtkWidget* status_image;
-  GtkTooltips* status_tooltips;
-  SIZE m_sDimensions;
-
-  int m_nSpacingWidth;
-  int m_nNumBars;
-  int m_nMaxVal;
-  int *m_pLimits;
-  COLORREF *m_pColors;
-  int m_nEntries;
 
 
+const int SysTrayWidth = 16;
+const int SysTrayHeight = 16;
+const int SysTraySpacing = 1;
+const int SysTrayBarCount = 1;
+const int SysTrayMaxValue = 100;
+
+
+class CSysTray
+{
+public:
+	CSysTray(wxWindow* parent, DesktopMode desktopMode, const wxString& title);
+	~CSysTray();
+
+	void SetTrayToolTip(const wxString& tip);
+	void SetTrayIcon(char** data, int* pVals = NULL);
+
+private:
+	void setupProperties();
+
+	void drawMeters(GdkPixmap* pix,GdkBitmap* mask,int* pBarData);
+	void DrawIconMeter(GdkPixmap* pix,GdkBitmap* mask,int pBarData,int x);
+
+	DesktopMode		m_DesktopMode;
+	
+	wxWindow*		m_parent;
+	GtkWidget*		m_status_docklet;
+	GtkWidget*		m_status_image;
+	GtkTooltips*	m_status_tooltips;
 };
+
+
 #else
-	// No native tray
-	#warning Native systray support missing for your platform.
+
+// No native tray
+#warning No systray support for your platform!
+
 #endif
 
 #endif // __SYSTRAY_DISABLED__
-
 #endif // SYSTRAY_H
+

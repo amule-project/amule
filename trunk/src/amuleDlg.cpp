@@ -344,7 +344,7 @@ void CamuleDlg::CreateSystray(const wxString& title)
 		changeDesktopMode();
 	}
 
-	m_wndTaskbarNotifier = new CSysTray(this, theApp.glob_prefs->GetDesktopMode(), title);
+	m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)theApp.glob_prefs->GetDesktopMode(), title);
 }
 
 
@@ -681,9 +681,7 @@ void CamuleDlg::ShowTransferRate()
 	} else {
 		buffer2 = wxT("aMule (") +buffer + wxT(" | ") +  _("Disconnected") + wxT(")");
 	}
-	char* buffer3 = nstrdup(unicode2char(buffer2));
-	m_wndTaskbarNotifier->TraySetToolTip(buffer3);
-	delete[] buffer3;
+	m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 #endif
 
 	wxStaticBitmap* bmp=(wxStaticBitmap*)FindWindow(wxT("transferImg"));
@@ -763,15 +761,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 #ifndef __SYSTRAY_DISABLED__
 void CamuleDlg::UpdateTrayIcon(int procent)
 {
-	// set the limits of where the bar color changes (low-high)
-	int pLimits16[1] = {100};
-
-	// set the corresponding color for each level
-	COLORREF pColors16[1] = {statisticswnd->GetTrayBarColor()};  // ={theApp.glob_prefs->GetStatsColor(11)};
-
-	// load our limit and color info
-	m_wndTaskbarNotifier->SetColorLevels(pLimits16, pColors16, 1);
-
 	// generate the icon (destroy these icon using DestroyIcon())
 	int pVals16[1] = {procent};
 
@@ -790,7 +779,7 @@ void CamuleDlg::UpdateTrayIcon(int procent)
 			data=mule_Tr_grey_ico;
 		}
 	}
-	m_wndTaskbarNotifier->TraySetIcon(data, true, pVals16);
+	m_wndTaskbarNotifier->SetTrayIcon(data, pVals16);
 }
 #endif // __SYSTRAY_DISABLED__
 
