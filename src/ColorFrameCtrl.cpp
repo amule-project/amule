@@ -33,27 +33,13 @@ CColorFrameCtrl::CColorFrameCtrl( wxWindow* parent,int id, int wid,int hei )
 	m_crBackColor  = RGB(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_crFrameColor  = RGB(  0, 255, 255) ;  // see also SetFrameColor
 
-	//m_brushBack.CreateSolidBrush( m_crBackColor ) ;
-	//m_brushFrame.CreateSolidBrush( m_crFrameColor );
-
 }  // CColorFrameCtrl
 
 /////////////////////////////////////////////////////////////////////////////
 CColorFrameCtrl::~CColorFrameCtrl()
 {
-  //m_brushFrame.DeleteObject() ;
-  //m_brushBack.DeleteObject();
 } // ~CColorFrameCtrl
 
-
-#if 0
-BEGIN_MESSAGE_MAP(CColorFrameCtrl, CWnd)
-	//{{AFX_MSG_MAP(CColorFrameCtrl)
-	ON_WM_PAINT()
-	ON_WM_SIZE()
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-#endif
 
 BEGIN_EVENT_TABLE(CColorFrameCtrl,wxControl)
   EVT_PAINT(CColorFrameCtrl::OnPaint)
@@ -63,38 +49,14 @@ END_EVENT_TABLE()
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl message handlers
 
-#if 0
-/////////////////////////////////////////////////////////////////////////////
-bool CColorFrameCtrl::Create(DWORD dwStyle, const RECT& rect, 
-		                     CWnd* pParentWnd, UINT nID) 
-{
-	bool result ;
-	static wxString className = AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW) ;
-
-	result = CWnd::CreateEx( WS_EX_STATICEDGE, 
-		                      className, NULL, dwStyle, 
-		                      rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top,
-		                      pParentWnd->GetSafeHwnd(), (HMENU)nID) ;
-	if (result != 0)
-		Invalidate() ;
-
-	return result ;
-
-} // Create
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 void CColorFrameCtrl::SetFrameColor( COLORREF color )
 {
 	m_crFrameColor = color;
-	//m_brushFrame.DeleteObject() ;
-	//m_brushFrame.CreateSolidBrush(m_crFrameColor) ;
 	m_brushFrame.SetColour(wxColour(GetRValue(m_crFrameColor),
 					GetGValue(m_crFrameColor),
 					GetBValue(m_crFrameColor)));
 
-	// clear out the existing garbage, re-start with a clean plot
-	//Invalidate() ;
 	Refresh(FALSE);
 
 }  // SetFrameColor
@@ -105,14 +67,11 @@ void CColorFrameCtrl::SetBackgroundColor(COLORREF color)
 {
 	m_crBackColor = color ;
 
-	//m_brushBack.DeleteObject() ;
-	//m_brushBack.CreateSolidBrush(m_crBackColor) ;
 	m_brushBack.SetColour(wxColour(GetRValue(m_crBackColor),
 				       GetGValue(m_crBackColor),
 				       GetBValue(m_crBackColor)));
 
 	// clear out the existing garbage, re-start with a clean plot
-	//Invalidate() ;
 	Refresh(FALSE);
 
 }  // SetBackgroundColor
@@ -121,7 +80,6 @@ void CColorFrameCtrl::SetBackgroundColor(COLORREF color)
 ////////////////////////////////////////////////////////////////////////////
 void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt)) 
 {
-  //CPaintDC dc(this) ;  // device context for painting
   wxPaintDC dc(this);
 
   wxRect rc;
@@ -129,10 +87,6 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
   rc.y=m_rectClient.top;
   rc.width=m_rectClient.right-m_rectClient.left;
   rc.height=m_rectClient.bottom-m_rectClient.top;
-
-  //rc.Deflate(1,1);
-  //rc.Offset(1,1);
-  //rc.Inflate(-1,-1);
 
   dc.SetPen(*wxTRANSPARENT_PEN);
   dc.SetBrush(m_brushBack);
@@ -145,10 +99,6 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
   dc.DrawLine(rc.x+rc.width-2,rc.y+rc.height-2,rc.x+1,rc.y+rc.height-2);
   dc.DrawLine(rc.x+1,rc.y+rc.height-2,rc.x+1,rc.y+1);
 
-  // 3d-luuk
-  //rc.Offset(-1,-1);
-  //rc.Inflate(1,1);
-
   dc.SetPen(*wxWHITE_PEN);
   dc.DrawLine(rc.x+rc.width-1,rc.y,rc.x+rc.width-1,rc.y+rc.height-1);
   dc.DrawLine(rc.x+rc.width-1,rc.y+rc.height-1,rc.x,rc.y+rc.height-1);
@@ -156,24 +106,18 @@ void CColorFrameCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
   dc.DrawLine(rc.x+rc.width,rc.y,rc.x,rc.y);
   dc.DrawLine(rc.x,rc.y,rc.x,rc.y+rc.height);
 
-  //dc.FillRect( m_rectClient, &m_brushBack ) ;
-  //dc.FrameRect( m_rectClient, &m_brushFrame );
-
 } // OnPaint
-
 
 /////////////////////////////////////////////////////////////////////////////
 void CColorFrameCtrl::OnSize(wxSizeEvent& WXUNUSED(evt)) 
 {
-  //CWnd::OnSize(nType, cx, cy) ;
 
   // NOTE: OnSize automatically gets called during the setup of the control
 	
-  //GetClientRect(m_rectClient) ;
   wxRect rc=GetClientRect();
   m_rectClient.left=rc.x;
   m_rectClient.top=rc.y;
-  m_rectClient.right=rc.x+rc.width;
-  m_rectClient.bottom=rc.y+rc.height;
+  m_rectClient.right=rc.x + rc.width;
+  m_rectClient.bottom=rc.y + rc.height;
 
 } // OnSize
