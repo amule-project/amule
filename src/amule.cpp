@@ -329,7 +329,7 @@ bool CamuleApp::OnInit()
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
-		printf("%s\n", unicode2char(GetMuleVersion()));
+		printf("aMule %s\n", unicode2char(GetMuleVersion()));
 		return false;
 	}
 
@@ -1044,11 +1044,10 @@ void CamuleApp::OnFatalException()
 		fprintf(stderr, "Oops, aMule crashed!\n");
 		fprintf(stderr, "Hey, stop crying! You wanted the edge, and now you fell down?!\n");
 	} else {
-		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
 	}
 	fprintf(stderr, "Please, post these lines on the backtrace forum on http://www.amule.org/\n");
-	fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	
 	for (int i = 0; i < num_entries; ++i) {
@@ -1077,7 +1076,7 @@ void CamuleApp::OnFatalException()
 
 #ifdef __BSD__
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed.\n");
-	fprintf(stderr, "\tVersion is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
 	fprintf(stderr, "--== no BACKTRACE yet ==--\n\n");
 #endif // __BSD__
 	
