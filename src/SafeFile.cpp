@@ -159,9 +159,9 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 		const char *s = (const char *)tmp;		
 		unsigned int sLength = s ? strlen(s) : 0;
 		if (sLength == 0) {
-			wxASSERT(sLength);
+			//wxASSERT(sLength);
 			// Something failed on UTF8 enconding.
-			printf("Failed UTF8 conversion (WRITE), going for current locale: %s\n",unicode2char(rstr));			
+			//printf("Failed UTF8 conversion (WRITE), going for current locale: %s\n",unicode2char(rstr));			
 			const wxWX2MBbuf tmp2 = aMuleConv.cWX2MB(rstr);
 			const char *s2 = (const char *)tmp2;
 			sLength = s2 ? strlen(s2) : 0;
