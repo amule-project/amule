@@ -102,7 +102,7 @@ private:
 	int rightclickindex;
 	bool CatMenu;
 	void OnBtnClearDownloads(wxCommandEvent &evt);
-	void OnBtnSwitchUpload(wxCommandEvent &evt);
+	//void OnBtnSwitchUpload(wxCommandEvent &evt);
 };
 
 #endif // TRANSFERWND_H
