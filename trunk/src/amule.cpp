@@ -116,6 +116,10 @@
 #include <sys/resource.h>
 #endif
 
+#ifdef HAVE_SYS_STATVFS_H
+#include <sys/statvfs.h>
+#endif
+
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
 #else
@@ -528,7 +532,11 @@ bool CamuleApp::OnInit()
 	wxString incomingdir = thePrefs::GetIncomingDir();
 	wxString tempdir = thePrefs::GetTempDir();
 	long size, i;
+#ifdef HAVE_SYS_STATVFS_H
+	struct statvfs *mntbuf;
+#else
 	struct statfs *mntbuf;
+#endif
 
 	size = getmntinfo(&mntbuf, MNT_NOWAIT);
 	for (i = 0; i < size; i++) {
