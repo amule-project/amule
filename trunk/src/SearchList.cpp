@@ -68,7 +68,13 @@ CGlobalSearchThread::~CGlobalSearchThread()
 void *CGlobalSearchThread::Entry()
 {
 	CServer* current = theApp.serverconnect->GetCurrentServer();
-	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
+	// If we are not lucky, GetCurrentServer() may return NULL
+	if (current) {
+		current = theApp.serverlist->GetServerByIP(
+			current->GetIP(), current->GetPort() );
+	} else {
+		return NULL;
+	}
 	
 	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); ++i ) {
 		if ( TestDestroy() )
@@ -88,7 +94,7 @@ void *CGlobalSearchThread::Entry()
 	
 	CoreNotify_Search_Update_Progress(0xffff);
 	
-	return 0;
+	return NULL;
 }
 
 
