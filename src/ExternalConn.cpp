@@ -163,6 +163,10 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		// wxSocketEvent again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG);		
 		request = m_ECServer->ReadPacket(sock);		
+		if(request == NULL) {
+			AddLogLineM(false, _("Invalid EC packet received"));
+			break;
+		}
 		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
 			delete request;	request = NULL;

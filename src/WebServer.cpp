@@ -99,7 +99,8 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
 {
 	webInterface = webApp;
-	
+	m_mutexChildren = new wxMutex();
+
 	m_Params.bShowUploadQueue = false;
 
 	m_iSearchSortby = 3;
@@ -111,6 +112,8 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 CWebServer::~CWebServer(void) {
 	//stop web socket thread
 	if (wsThread) wsThread->Delete();
+
+	delete m_mutexChildren;
 }
 
 //start web socket and reload templates
@@ -406,6 +409,9 @@ void CWebServer::ProcessImgFileReq(ThreadData Data)
 }
 
 void CWebServer::ProcessURL(ThreadData Data) {
+	/* This method is called by different threads, and it
+	   seems dangerous. For now we just serialize it */
+	wxMutexLocker lock(*m_mutexChildren);
 
 	bool isUseGzip = webInterface->m_UseGzip;
 	wxString Out;
