@@ -330,6 +330,8 @@ void CSearchDlg::StartNewSearch()
 				
 			
 	wxString searchString = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue();
+	searchString.Trim(true);
+	searchString.Trim(false);	
 	if ( searchString.IsEmpty() ) {
 		return;
 	}
