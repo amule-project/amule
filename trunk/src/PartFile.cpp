@@ -351,6 +351,8 @@ void CPartFile::CreatePartFile()
 	// Update last-changed date
 	m_lastDateChanged = wxFileName( strPartPath ).GetModificationTime();
 	
+	SetFilePath( thePrefs::GetTempDir() );
+	
 	if (thePrefs::GetAllocFullPart()) {
 		#warning Code for full file alloc - should be done on thread.
 	}
