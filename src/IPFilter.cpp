@@ -30,6 +30,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/txtstrm.h>		// Needed for wxTextInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
+#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
 
 #include "IPFilter.h"		// Interface declarations.
 #include "NetworkFunctions.h"
@@ -38,10 +39,12 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "HTTPDownload.h"
 #include "GetTickCount.h"
+#include "CFile.h"
+
 
 CIPFilter::CIPFilter()
 {
-	LoadFromDatFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on construction
+	LoadFromDatFile( theApp.ConfigDir + wxT("ipfilter.dat") );
 	
 	if (thePrefs::IPFilterAutoLoad()) {
 		Update();
@@ -59,7 +62,7 @@ void CIPFilter::Reload()
 {
 	RemoveAllIPs();
 	
-	LoadFromDatFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
+	LoadFromDatFile( theApp.ConfigDir + wxT("ipfilter.dat") );
 }
 
 
@@ -298,48 +301,24 @@ bool CIPFilter::ProcessAntiP2PLine( const wxString& sLine )
 }
 
 
-int CIPFilter::LoadFromZipFile( wxString file, bool merge )
+int CIPFilter::LoadFromFile( const wxString& file, bool merge )
 {
 	int filtercounter = 0;
+
 	if ( !merge ) {
 		RemoveAllIPs();
 	}
-	
+
 	if ( wxFileExists( file ) ) {
-		wxMutexLocker lock( m_mutex );
-		
-		wxZipInputStream inputStream( file, wxT("ipfilter.dat") );
-		wxBufferedInputStream buffer( inputStream );
-		wxTextInputStream stream( buffer );
-
-		// Function pointer-type of the parse-functions we can use
-		typedef bool (CIPFilter::*ParseFunc)(const wxString&);
-
-		// Default parser is IPFilter.dat format
-		ParseFunc func = NULL;
-
-		while ( !inputStream.Eof() ) {
-			wxString line = stream.ReadLine();
-				
-			if ( func ) {
-				if ( (*this.*func)( line ) ) {
-						filtercounter++;
-				}
-			} else {
-				// Select the parser that can handle this file
-				if ( ProcessPeerGuardianLine( line ) ) {
-					func = &CIPFilter::ProcessPeerGuardianLine;
-					filtercounter++;
-				} else if ( ProcessAntiP2PLine( line ) ) {
-					func = &CIPFilter::ProcessAntiP2PLine;
-					filtercounter++;
-				}
-			}
+		// Attempt to discover the filetype
+		if ( IsZipFile( file ) ) {
+			filtercounter = LoadFromZipFile( file );
+		} else {
+			filtercounter = LoadFromDatFile( file );
 		}
+	
+		AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
 	}
-
-	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
-
 
 	if (merge) {
 		SaveToFile();
@@ -349,13 +328,75 @@ int CIPFilter::LoadFromZipFile( wxString file, bool merge )
 }
 
 
-int CIPFilter::LoadFromDatFile(wxString file, bool merge)
+bool CIPFilter::IsZipFile( const wxString& filename )
 {
-	int filtercounter = 0;
-	if ( !merge ) {
-		RemoveAllIPs();
+	CFile file( filename, CFile::read );
+	char head[2];
+
+	if ( file.Read( head, 2 ) == 2 ) {
+		// Zip-archives have a header of "PK".
+		return ( head[0] == 'P' ) && ( head[1] == 'K' );
 	}
 
+	return false;
+}
+
+
+int CIPFilter::LoadFromZipFile( const wxString& file )
+{
+	int filtercounter = 0;
+	
+	if ( wxFileExists( file ) ) {
+		wxMutexLocker lock( m_mutex );
+	
+		// Try to load every file in the archive
+		wxZipFSHandler archive; 
+		wxString filename = archive.FindFirst( file + "#file:/*", wxFILE );
+
+		while ( !filename.IsEmpty() ) {
+			// Extract the filename part of the URI
+			filename = filename.AfterLast( ':' );
+			
+			wxZipInputStream inputStream( file, filename );
+			wxBufferedInputStream buffer( inputStream );
+			wxTextInputStream stream( buffer );
+
+			// Function pointer-type of the parse-functions we can use
+			typedef bool (CIPFilter::*ParseFunc)(const wxString&);
+
+			ParseFunc func = NULL;
+
+			while ( !inputStream.Eof() ) {
+				wxString line = stream.ReadLine();
+					
+				if ( func ) {
+					if ( (*this.*func)( line ) ) {
+							filtercounter++;
+					}
+				} else {
+					// Select the parser that can handle this file
+					if ( ProcessPeerGuardianLine( line ) ) {
+						func = &CIPFilter::ProcessPeerGuardianLine;
+						filtercounter++;
+					} else if ( ProcessAntiP2PLine( line ) ) {
+						func = &CIPFilter::ProcessAntiP2PLine;
+						filtercounter++;
+					}
+				}
+			}
+			
+			filename = archive.FindNext();
+		}
+	}
+
+	return filtercounter;
+}
+
+
+int CIPFilter::LoadFromDatFile( const wxString& file )
+{
+	int filtercounter = 0;
+	
 	wxTextFile readFile(file);
 	if( readFile.Exists() && readFile.Open() ) {
 		wxMutexLocker lock( m_mutex );
@@ -363,7 +404,6 @@ int CIPFilter::LoadFromDatFile(wxString file, bool merge)
 		// Function pointer-type of the parse-functions we can use
 		typedef bool (CIPFilter::*ParseFunc)(const wxString&);
 
-		// Default parser is IPFilter.dat format
 		ParseFunc func = NULL;
 
 		for ( size_t i = 0; i < readFile.GetLineCount(); i++ ) {
@@ -384,12 +424,6 @@ int CIPFilter::LoadFromDatFile(wxString file, bool merge)
 				}
 			}
 		}
-	}
-	
-	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
-
-	if (merge) {
-		SaveToFile();
 	}
 
 	return filtercounter;
@@ -499,13 +533,9 @@ void CIPFilter::DownloadFinished(uint32 result)
 		// curl succeeded. proceed with ipfilter loading
 		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
 		
-#warning Needs improvement. Kry?
-		// Simply try to load as a Zip file first, then as a Dat file, I check Zip
-		// first since that is much better at detecting whenever or not it is a zip-file.
-		if ( !LoadFromZipFile( filename, true ) ) {
-			if ( !LoadFromDatFile( filename, true ) ) {
-				AddLogLineM(true, _("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
-			}
+		// Load the downloaded file, which may be a zip archive
+		if ( !LoadFromFile( filename, true ) ) {
+			AddLogLineM(true, _("Failed to load the ipfilter from ") + thePrefs::IPFilterURL());
 		}
 		
 		// Remove the now unused file
