@@ -207,8 +207,6 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 							eserver->SetVersion(strVer);
 							Notify_ServerRefresh(eserver);
 						}
-
-					/* Give it a try ... (Creteil) BEGIN */
 					} else if (message.StartsWith(wxT("ERROR"))) {
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						wxString servername;
@@ -217,9 +215,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddDebugLogLineM(false, wxT("Error ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "), cur_server->GetAddress().c_str(), cur_server->GetPort()) 
-														+ message.Mid(5,message.Len()).Trim(_T(" :")))
+						AddLogLineM(false, wxT("Error: ") + servername +
+														wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
+														message.Mid(5,message.Len()).Trim(_T(" :")));
 						bOutputMessage = false;
 
 					} else if (message.StartsWith(wxT("WARNING"))) {
@@ -231,9 +229,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} else {	
 							servername = _("Server");
 						}
-						AddDebugLogLineM(false, wxT("Warning ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "), cur_server->GetAddress().c_str(), cur_server->GetPort()) 
-														+ message.Mid(5,message.Len()).Trim(_T(" :")))
+						AddLogLineM(false, wxT("Warning: ") + servername +
+										wxT(" (") + Uint32_16toStringIP_Port(cur_server->GetIP(), cur_server->GetPort()) + wxT(") - ") +
+										message.Mid(5,message.Len()).Trim(_T(" :")));
 
 						bOutputMessage = false;
 					}
@@ -331,19 +329,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				serverconnect->SetClientID(la->clientid);
 				AddLogLineM(false, wxString::Format(_("New clientid is %u"),la->clientid));
-				
-				
-				// Kry - No need for this. eMule doesn't do it either.
-				// I migth be wrong, anyway, so I'll leave it around.
-				/*								
-				for(POSITION pos = theApp.downloadqueue->filelist.GetHeadPosition(); pos != NULL;theApp.downloadqueue->filelist.GetNext(pos)) {
-					CPartFile* cur_file = theApp.downloadqueue->filelist.GetAt(pos);
-					if(cur_file->GetStatus() == PS_READY) {
-						cur_file->ResumeFile();
-					}
-				}
-				*/
-				
+								
 				theApp.downloadqueue->ResetLocalServerRequests();
 				break;
 			}
@@ -508,6 +494,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				break;
 			}
 			default: {
+				printf("Unknown server packet with OPcode %x\n",opcode);
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: Unrecognized packet -- protocol error\n\n"));
 				#endif
