@@ -33,6 +33,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
+#include "Logger.h"
 
 #include <algorithm>
 

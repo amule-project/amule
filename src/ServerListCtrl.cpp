@@ -40,6 +40,7 @@
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer and SRV_PR_*
 #include "OPCodes.h"		// Needed for MP_PRIO*
+#include "Logger.h"
 
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))

@@ -80,6 +80,7 @@
 #include "Packet.h"
 #include "AICHSyncThread.h"
 #include "Statistics.h"
+#include "Logger.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>

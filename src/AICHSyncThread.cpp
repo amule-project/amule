@@ -34,6 +34,7 @@
 #include "SharedFileList.h"
 #include "KnownFileList.h"
 #include "Preferences.h"
+#include "Logger.h"
 
 #include <list>
 #include <algorithm>

@@ -43,9 +43,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
 #include "StringFunctions.h" // Needed for StrToULong
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION
-#endif
+#include "Logger.h"
 
 //IMPLEMENT_DYNAMIC(CServerWnd, CDialog)
 IMPLEMENT_DYNAMIC_CLASS(CServerWnd,wxPanel)

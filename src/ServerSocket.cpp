@@ -48,6 +48,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
 
 //#define DEBUG_SERVER_PROTOCOL
 

@@ -48,6 +48,7 @@
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "Statistics.h"
+#include "Logger.h"
 
 using namespace otherfunctions;
 

@@ -44,6 +44,7 @@
 #include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Statistics.h"
+#include "Logger.h"
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__

@@ -77,7 +77,7 @@
 #include "StringFunctions.h"
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"
-
+#include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg

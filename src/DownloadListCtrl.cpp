@@ -57,7 +57,7 @@
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
 #include "BarShader.h"			// Needed for CBarShader
 #include "Preferences.h"
-
+#include "Logger.h"
 
 #include <list>
 

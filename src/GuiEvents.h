@@ -356,8 +356,6 @@ class GUIEvent : public wxEvent {
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
 
-#define AddLogLineM(x,y); 			theApp.NotifyEvent(GUIEvent(ADDLOGLINE,(byte)x,y));
-#define AddDebugLogLineM(x,y); 	theApp.NotifyEvent(GUIEvent(ADDDEBUGLOGLINE,(byte)x,y));
 
 //
 // GUI -> core notification

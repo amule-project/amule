@@ -89,6 +89,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics
+#include "Logger.h"
 
 #include "aMule.xpm"
 

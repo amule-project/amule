@@ -40,6 +40,7 @@
 #include "HTTPDownload.h"
 #include "GetTickCount.h"
 #include "CFile.h"
+#include "Logger.h"
 
 
 CIPFilter::CIPFilter()

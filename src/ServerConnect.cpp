@@ -44,6 +44,7 @@
 #include "updownclient.h"	// for SO_AMULE
 #include "Statistics.h"
 #include "NetworkFunctions.h" // for StringHosttoUint32
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 	#include "SearchDlg.h"		// Needed for CSearchDlg

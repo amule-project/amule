@@ -47,6 +47,7 @@
 #include "Preferences.h"
 #include "CFile.h"
 #include "MD5Sum.h"
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>

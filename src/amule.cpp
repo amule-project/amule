@@ -91,6 +91,7 @@
 #include "Packet.h"
 #include "Statistics.h"
 #include "AICHSyncThread.h"
+#include "Logger.h"
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
