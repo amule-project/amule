@@ -34,6 +34,7 @@
 #include <wx/object.h>		// Needed by wx/sckaddr.h
 #include <wx/sckaddr.h>		// Needed for wxIPV4address
 
+// prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address {
   public:
   amuleIPV4Address(void) { }
