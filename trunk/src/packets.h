@@ -41,7 +41,7 @@ public:
 	Packet(Packet &p);
 	Packet(uint8 protocol = OP_EDONKEYPROT);
 	Packet(char* header); // only used for receiving packets
-	Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT);	
+	Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
 	Packet(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
 	Packet(char* pPacketPart, wxUint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 

@@ -182,9 +182,16 @@ public:
 	uint32		GetUserID() const		{ return m_nUserID; }
 	void		SetUserID(uint32 nUserID)	{ m_nUserID = nUserID; }
 	const wxString&	GetUserName() const		{ return m_Username; }
+	//Only use this when you know the real IP or when your clearing it.
+	void			SetIP( uint32 val )
+					{
+						m_dwUserIP = val;
+						m_nConnectIP = val;
+					}	
 	uint32		GetIP() const 			{ return m_dwUserIP; }
 	bool		HasLowID() const 		{ return (m_nUserID < 16777216); }
 	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
+	uint32			GetConnectIP() const				{return m_nConnectIP;}
 	uint32		GetUserPort() const		{ return m_nUserPort; }
 	uint32		GetTransferedUp() const 	{ return m_nTransferedUp; }
 	uint32		GetTransferedDown() const	{ return m_nTransferedDown; }
@@ -256,8 +263,11 @@ public:
 				printf("%s\n",unicode2char(GetClientFullInfo()));
 				printf("User Disconnected.\n");			
 			}
-			// Remove this if not necessary!
-			// wxASSERT(SecIdentSupRec);
+			// Kry - This assert is a fucking BIG PROBLEM!
+			// This means m_SecureIdentState != IS_UNAVAILABLE
+			// and no secure ident packet received or requested.
+			// That means - Mem Corruption.			
+			wxASSERT(SecIdentSupRec);
 		}
 		return m_SecureIdentState;
 	}
@@ -401,15 +411,23 @@ public:
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
 
 	// Kry - AICH import
-	#warning AICH  TODO
+	// DONE
 	void			SetReqFileAICHHash(CAICHHash* val);
+	// DONE
 	CAICHHash*		GetReqFileAICHHash() const					{return m_pReqFileAICHHash;}
+	#warning AICH  TODO -  CHECK USAGE.		
+	// Needs changes on DownloadClient and ListenSocket
 	bool			IsSupportingAICH() const					{return m_fSupportsAICH & 0x01;}
-//	void			SendAICHRequest(CPartFile* pForFile, uint16 nPart);
+	// DONE
+	void			SendAICHRequest(CPartFile* pForFile, uint16 nPart);
+	// DONE
 	bool			IsAICHReqPending() const					{return m_fAICHRequested; }
-//	void			ProcessAICHAnswer(char* packet, UINT size);
-//	void			ProcessAICHRequest(char* packet, UINT size);
-//	void			ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file);	
+	// Needs changes on ListenSocket
+	void			ProcessAICHAnswer(char* packet, UINT size);
+	// Needs changes on ListenSocket
+	void			ProcessAICHRequest(char* packet, UINT size);
+	// Needs changes on ListenSocket
+	void			ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file);	
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
@@ -515,6 +533,7 @@ private:
 	void		ClearHelloProperties(); // eMule 0.42
 	bool		m_bIsBotuser;
 	uint32		m_dwUserIP;
+	uint32	m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;
 	uint32		m_nUserID;
 	int16		m_nUserPort;
@@ -546,7 +565,8 @@ private:
 	bool		m_bIsNewMLD;
 	bool		m_bIsML;
  	bool		m_bSupportsPreview;
- 	bool		m_bPreviewReqPending;
+	bool		m_bUnicodeSupport;	
+	bool		m_bPreviewReqPending;
  	bool		m_bPreviewAnsPending;
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;

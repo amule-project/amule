@@ -84,10 +84,10 @@ Packet::Packet(char* header)
 	pBuffer 	= NULL;
 }
 
-Packet::Packet(CMemFile* datafile, uint8 protocol)
+Packet::Packet(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 {
 	size		= datafile->GetLength();
-	opcode		= 0;
+	opcode		= ucOpcode;
 	prot		= protocol;
 	m_bSplitted 	= false;
 	m_bLastSplitted = false;
