@@ -36,8 +36,9 @@
 #include "muuli_wdr.h"
 #include "ini2.h"
 #include "Preferences.h"
-#include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 
+class CDirectoryTreeCtrl;
+	
 // WDR: class declarations
 
 //----------------------------------------------------------------------------
