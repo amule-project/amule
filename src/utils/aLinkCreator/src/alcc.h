@@ -93,7 +93,10 @@ class alcc : public wxApp
 
     /// Command line preocessing
     virtual bool OnCmdLineParsed(wxCmdLineParser& cmdline);
-
+    
+  protected:
+    wxLocale m_locale; // Used to tell wxCas to use aMule catalog
+    
   public:
     virtual int OnRun ();
   };

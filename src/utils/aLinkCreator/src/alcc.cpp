@@ -52,6 +52,10 @@ IMPLEMENT_APP (alcc)
 /// Running Alcc
 int alcc::OnRun ()
 {
+  // Used to tell wxCas to use aMule catalog
+  m_locale.Init();
+  m_locale.AddCatalog(wxT("amule"));
+  
   Ed2kHash hash;
   size_t i;
   for (i=0;i<(m_filesToHash.GetCount());i++)
