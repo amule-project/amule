@@ -1224,7 +1224,7 @@ enum {
 		*	::EC_TAG_IPFILTER_AUTO_UPDATE\n
 		*	::EC_TAG_IPFILTER_UPDATE_URL\n
 		*	::EC_TAG_IPFILTER_LEVEL\n
-		*	::EC_TAG_IPFILTER_FILTER_BAD\n
+		*	::EC_TAG_IPFILTER_FILTER_LAN\n
 		*	::EC_TAG_SECURITY_USE_SECIDENT
 		*/
 	EC_TAG_PREFS_SECURITY,
@@ -1242,7 +1242,7 @@ enum {
 	EC_TAG_IPFILTER_AUTO_UPDATE,		///< (boolean) Auto-update IPFilter from URL at startup.
 	EC_TAG_IPFILTER_UPDATE_URL,		///< (\c string) IPFilter auto-update URL.
 	EC_TAG_IPFILTER_LEVEL,			///< (\c uint8) IPFilter filtering level.
-	EC_TAG_IPFILTER_FILTER_BAD,		///< (boolean) Always filter bad IPs.
+	EC_TAG_IPFILTER_FILTER_LAN,		///< (boolean) Always filter LAN IPs.
 	EC_TAG_SECURITY_USE_SECIDENT,		///< (boolean) Use Secure Identification.
 
 

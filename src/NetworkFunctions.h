@@ -101,11 +101,12 @@ wxString GetLocalHost();
  * Checks for invalid IP-values.
  *
  * @param IP the IP-address to check.
+ * @param filterLAN Specifies if LAN IP-ranges should be filtered.
  * @return True if it was valid, false otherwise.
  * 
  * Note: IP must be in anti-host order (BE on LE platform, LE on BE platform).
  */
-bool IsGoodIP( uint32 IP );
+bool IsGoodIP( uint32 IP, bool filterLAN );
 
 
 #ifndef EC_REMOTE

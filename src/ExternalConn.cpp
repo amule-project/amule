@@ -950,8 +950,8 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_LEVEL)) != NULL) {
 			thePrefs::SetIPFilterLevel(oneTag->GetInt8Data());
 		}
-		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_FILTER_BAD)) != NULL) {
-			thePrefs::SetFilterBadIPs(oneTag->GetInt8Data() != 0);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_FILTER_LAN)) != NULL) {
+			thePrefs::SetFilterLanIPs(oneTag->GetInt8Data() != 0);
 		}
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_USE_SECIDENT)) != NULL) {
 			thePrefs::SetSecureIdentEnabled(oneTag->GetInt8Data() != 0);

@@ -179,16 +179,26 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 
 bool CServerList::AddServer(CServer* in_server, bool fromUser)
 {
-	if ( thePrefs::FilterBadIPs() ) {
-		if ( !in_server->HasDynIP() && !IsGoodIP( in_server->GetIP() ) || !in_server->GetPort() ) {
+	if ( !in_server->GetPort() ) {
+		if ( fromUser ) {
+			AddLogLineM( true,
+				CFormat( _("Server not added: [%s:%d] does not specify a valid port.") )
+					% in_server->GetAddress()
+					% in_server->GetPort()
+			);
+		}
+
+		return false;
+	} else if ( !in_server->HasDynIP() ) {
+		if ( !IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ) {
 			if ( fromUser ) {
 				AddLogLineM( true,
-					CFormat( _("Server not added: IP:Port [%s:%d] is filtered or invalid.") )
+					CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
 						% in_server->GetAddress()
 						% in_server->GetPort()
 				);
 			}
-			
+		
 			return false;
 		}
 	}
@@ -212,6 +222,16 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	
 	list.AddTail(in_server);
 	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
+
+	if ( fromUser ) {
+		AddLogLineM( true,
+			CFormat( _("Server added: Server at [%s:%d] using the name '%s'.") )
+				% in_server->GetAddress()
+				% in_server->GetPort()
+				% in_server->GetListName()
+		);
+	}
+
 	
 	return true;
 }

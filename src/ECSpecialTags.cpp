@@ -278,8 +278,8 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 		}
 		secPrefs.AddTag(CECTag(EC_TAG_IPFILTER_UPDATE_URL, thePrefs::IPFilterURL()));
 		secPrefs.AddTag(CECTag(EC_TAG_IPFILTER_LEVEL, thePrefs::GetIPFilterLevel()));
-		if (thePrefs::FilterBadIPs()) {
-			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_FILTER_BAD));
+		if (thePrefs::FilterLanIPs()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_FILTER_LAN));
 		}
 		if (thePrefs::IsSecureIdentEnabled()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_USE_SECIDENT));

@@ -248,8 +248,8 @@ public:
 	static uint64		GetTotalDownloaded()		{ return s_totalDownloadedBytes; }
 	static uint64		GetTotalUploaded()		{ return s_totalUploadedBytes; }
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
-	static bool		FilterBadIPs()			{ return s_filterBadIP; }
-	static void		SetFilterBadIPs(bool val)	{ s_filterBadIP = val; }
+	static bool		FilterLanIPs()			{ return s_filterLanIP; }
+	static void		SetFilterLanIPs(bool val)	{ s_filterLanIP = val; }
 	static bool		IsOnlineSignatureEnabled()	{ return s_onlineSig; }
 	static void		SetOnlineSignatureEnabled(bool val) { s_onlineSig = val; }
 	static uint32		GetMaxGraphUploadRate()		{ return s_maxGraphUploadRate; }
@@ -593,7 +593,7 @@ protected:
 	static bool	s_confirmExit;
 
 
-	static bool	s_filterBadIP;
+	static bool	s_filterLanIP;
 	static bool	s_onlineSig;
 
 	static uint64  	s_totalDownloadedBytes;
