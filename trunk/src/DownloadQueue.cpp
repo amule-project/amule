@@ -88,7 +88,7 @@ CDownloadQueue::~CDownloadQueue()
 		printf(".");
 		fflush(stdout);
 	}
-	printf("\ndone!\n");
+	printf(" done!\n");
 }
 
 
