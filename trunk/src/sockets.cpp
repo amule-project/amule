@@ -132,7 +132,6 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	}
 	connecting = true;
 	singleconnecting = !multiconnect;
-	Notify_ShowConnState(false,wxEmptyString);
 
 	CServerSocket* newsocket = new CServerSocket(this);
 	m_lstOpenSockets.AddTail(newsocket);
@@ -147,7 +146,6 @@ void CServerConnect::StopConnectionTry()
 	connectionattemps.clear();
 	connecting = false;
 	singleconnecting = false;
-	Notify_ShowConnState(false,wxEmptyString);
 
 	if (m_idRetryTimer.IsRunning()) 
 	{ 
@@ -257,7 +255,6 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			#endif
 		}
 	}
-	Notify_ShowConnState(false,wxEmptyString);
 }
 
 

@@ -462,7 +462,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					AddLogLineM(false, wxString::Format(_("Received %d new servers"), addcount));
 				}
 				theApp.serverlist->SaveServermetToFile();
-				AddLogLineM(true,_("Saving of server.met file Done !!!\n"));
+				AddLogLineM(false, _("Saving of server-list completed.\n"));
 				break;
 			}
 			case OP_CALLBACKREQUESTED: {

@@ -599,6 +599,11 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		wxStaticText* connLabel = (wxStaticText*)FindWindow(wxT("connLabel"));
 		switch ( NewState ) {
 			case sLowID:
+				// Display a warning about LowID connections
+				AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
+				AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
+				AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
+			
 			case sHighID: {
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
 					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
