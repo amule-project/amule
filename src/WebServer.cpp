@@ -83,13 +83,13 @@ wxString _SpecialChars(wxString str) {
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp):
-	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp) {
+	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp),
+	m_ImageLib(wxString(char2unicode(getenv("HOME"))) + wxT("/.aMule/webserver/"))
+{
 	webInterface = webApp;
 	
 	m_Params.bShowUploadQueue = false;
 
-	m_Params.sLastModified = wxEmptyString;
-	m_Params.sETag = wxEmptyString;
 	m_iSearchSortby = 3;
 	m_bSearchAsc = 0;
 
@@ -243,15 +243,7 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 }
 
 //reload template file
-void CWebServer::ReloadTemplates(void) {
-	time_t t = time(NULL);
-	char *s = new char[255];
-	strftime(s, 255, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&t));
-	m_Params.sLastModified = char2unicode(s);
-	delete[] s;
-	
-	m_Params.sETag = MD5Sum(m_Params.sLastModified).GetHash();
-	
+void CWebServer::ReloadTemplates(void) {	
 	wxString sFile;
 	if( webInterface->m_HasTemplate) {
 		sFile = webInterface->m_TemplateFileName;
@@ -385,42 +377,18 @@ void CWebServer::AddStatsLine(UpDown* line) {
 }
 
 
-void CWebServer::ProcessImgFileReq(ThreadData Data) {
-		
-	wxString filename=Data.sURL;
-	wxString contenttype;
+void CWebServer::ProcessImgFileReq(ThreadData Data)
+{
+	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
 
-	webInterface->DebugShow(wxT("inc. fname=") + filename + wxT("\n"));
-	if (filename.Right(4).MakeLower()==wxT(".gif")) contenttype=wxT("Content-Type: image/gif\r\n");
-	else if (filename.Right(4).MakeLower()==wxT(".jpg") || filename.Right(5).MakeLower()==wxT(".jpeg")) contenttype=wxT("Content-Type: image/jpg\r\n");
-	else if (filename.Right(4).MakeLower()==wxT(".bmp")) contenttype=wxT("Content-Type: image/bmp\r\n");
-	else if (filename.Right(4).MakeLower()==wxT(".png")) contenttype=wxT("Content-Type: image/png");
-	//DonQ - additional filetypes
-	else if (filename.Right(4).MakeLower()==wxT(".ico")) contenttype=wxT("Content-Type: image/x-icon\r\n");
-	else if (filename.Right(4).MakeLower()==wxT(".css")) contenttype=wxT("Content-Type: text/css\r\n");
-	else if (filename.Right(3).MakeLower()==wxT(".js")) contenttype=wxT("Content-Type: text/javascript\r\n");
-	
-	contenttype += wxT("Last-Modified: ") + m_Params.sLastModified + wxT("\r\n");
-	contenttype += wxT("ETag: ") + m_Params.sETag + wxT("\r\n");
-	
-	webInterface->DebugShow(wxT("**** imgrequest: ") + filename + wxT("\n"));
-
-	wxFFile fis(imgs_folder + filename.Right(filename.Length()-1));
-	if (!fis.IsOpened()) {
-		webInterface->DebugShow(wxT("**** imgrequest: file ") + filename + wxT(" does not exists or you have no permisions\n"));
+	CAnyImage *img = m_ImageLib.GetImage(Data.sURL);
+	if ( img ) {
+		int img_size;
+		unsigned char* img_data = img->RequestData(img_size);
+		Data.pSocket->SendContent(img->GetHTTP(), img_data, img_size);
 	} else {
-		size_t file_size = fis.Length();
-		char* img_data = new char[file_size];
-		size_t bytes_read;
-		if ((bytes_read = fis.Read(img_data,file_size)) != file_size) {
-			webInterface->DebugShow(wxT("**** imgrequest: file ") + filename + wxT(" was not fully read\n"));				
-		}
-		// Try to send as much as possible if it failed
-		Data.pSocket->SendContent(unicode2char(contenttype),(void*)img_data,bytes_read);	
-		delete [] img_data;
-	}
-	
-	
+		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
+	}	
 }
 
 
@@ -2659,12 +2627,24 @@ unsigned char *CAnyImage::RequestData(int &size)
 	return m_data;
 }
 
+void CAnyImage::SetHttpType(wxString &ext)
+{
+	m_Http = wxT("Content-Type: image/") + ext + wxT("\r\n");
+
+	time_t t = time(NULL);
+	char tmp[255];
+	strftime(tmp, 255, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&t));
+	m_Http += wxT("Last-Modified: ") + wxString(char2unicode(tmp)) + wxT("\r\n");
+
+	m_Http += wxT("ETag: ") + MD5Sum(char2unicode(tmp)).GetHash() + wxT("\r\n");
+}
+
 CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(name))
 {
 	m_size = 0;
 	wxFFile fis(m_name);
 	// FIXME: proper logging is needed
-	if ( !fis.IsOpened() ) {
+	if ( fis.IsOpened() ) {
 		size_t file_size = fis.Length();
 		if ( file_size ) {
 			Realloc(fis.Length());
@@ -2672,6 +2652,8 @@ CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(nam
 		} else {
 			printf("CFileImage: file %s have zero length\n", unicode2char(m_name));
 		}
+		wxString ext = wxString(name).Right(3).MakeLower();
+		SetHttpType(ext);
 	} else {
 		printf("CFileImage: failed to open %s\n", unicode2char(m_name));
 	}
@@ -2743,3 +2725,47 @@ wxString CDynImage::GetHTML()
 }
 
 #endif
+
+CImageLib::CImageLib(wxString image_dir) : m_image_dir(image_dir)
+{
+}
+
+CImageLib::~CImageLib()
+{
+}
+
+void CImageLib::AddImage(CAnyImage *img, wxString &name)
+{
+	CAnyImage *prev = m_image_map[name];
+	if ( prev ) {
+		delete prev;
+	}
+	m_image_map[name] = img;
+}
+
+void CImageLib::RemoveImage(wxString &name)
+{
+	CAnyImage *prev = m_image_map[name];
+	if ( prev ) {
+		delete prev;
+		m_image_map.erase(name);
+	}
+}
+
+CAnyImage *CImageLib::GetImage(wxString &name)
+{
+	CAnyImage *img = m_image_map[name];
+	if ( img ) {
+		return img;
+	}
+	wxFileName filename(m_image_dir + name);
+	CFileImage *fimg = new CFileImage(filename.GetFullPath());
+	if ( fimg->OpenOk() ) {
+		m_image_map[name] = fimg;
+		return fimg;
+	} else {
+		delete fimg;
+		return 0;
+	}
+}
+
