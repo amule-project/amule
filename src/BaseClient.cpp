@@ -1893,7 +1893,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
 
 void CUpDownClient::CheckForGPLEvilDoer(){
 	// check for known major gpl breaker 
-	if (m_strModVersion.Trim().MakeUpper().Find("LH") == 0 || m_strModVersion.Trim().MakeUpper().Find("LIO") == 0){
+	if (m_strModVersion.Trim().MakeUpper().Find("LH") == 0 || m_strModVersion.Trim().MakeUpper().Find("LIO") == 0 || m_strModVersion.Trim().MakeUpper().Find("LI0") == 0){
 		m_bGPLEvildoer = true;
 	}
 }
