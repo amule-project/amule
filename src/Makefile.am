@@ -50,7 +50,6 @@ amule_SOURCES = ListenSocket.cpp \
 	DownloadQueue.cpp \
 	ED2KLink.cpp \
 	EditServerListDlg.cpp \
-	eggtrayicon.c \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
@@ -59,8 +58,6 @@ amule_SOURCES = ListenSocket.cpp \
 	Friend.cpp \
 	FriendList.cpp \
 	FriendListCtrl.cpp \
-	gtk2-funcs.c \
-	gtkplugxembed.c \
 	HTTPDownloadDlg.cpp \
 	ini2.cpp \
 	IPFilter.cpp \
@@ -95,7 +92,6 @@ amule_SOURCES = ListenSocket.cpp \
 	sockets.cpp \
 	SplitterControl.cpp \
 	StatisticsDlg.cpp \
-	SysTray.cpp \
 	TransferWnd.cpp \
 	treebasc.cpp \
 	treectlc.cpp \
@@ -113,6 +109,14 @@ amule_SOURCES += gsocket.c
 else
 amule_SOURCES += gsocket-2.5.c
 endif
+endif
+
+if HAVE_TRAY
+amule_SOURCES += eggtrayicon.c SysTray.cpp 
+endif
+
+if HAVE_GTK
+amule_SOURCES += gtk2-funcs.c gtkplugxembed.c 
 endif
 
 amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)

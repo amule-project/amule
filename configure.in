@@ -153,8 +153,8 @@ AC_ARG_ENABLE(webserver,  [  --enable-webserver      Compile aMule WebServer],
 AC_ARG_ENABLE(webservergui,  [  --enable-webservergui   Compile aMule WebServer GUI],
               WEBGUI="$enableval", WEBGUI="no")
 
-AC_ARG_ENABLE(cas,  [  --enable-cas            Compile C aMule Statistics],
-              CAS="$enableval", CAS="no")
+AC_ARG_ENABLE(cas,  [  --disable-cas            Don't compile C aMule Statistics],
+              CAS="$disableval", CAS="yes")
 	      
 AC_ARG_ENABLE(ed2k,  [  --disable-ed2k           Don't compile aMule ed2k links handler],
               ED2K="$disableval", ED2K="yes")
@@ -342,6 +342,8 @@ AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(HAVE_WXBASE, test x$HAVE_AMULECMD = xyes)
 AM_CONDITIONAL(ADD_24GSOCKET, test x$USE_24GSOCKET = xyes)
 AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
+AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
+AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 
