@@ -54,7 +54,7 @@ class CRemoteConnect {
 		CRemoteConnect();
 		~CRemoteConnect();
 		
-		bool Connect(const wxString &host, int port);
+		bool Connect(const wxString &host, int port, const wxString& login, const wxString &pass);
 
 		CECPacket *SendRecv(CECPacket *);
 		void Send(CECPacket *);
