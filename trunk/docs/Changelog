@@ -68,7 +68,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  apps are from the CVS tarball (for CVS users).
 		* Improved filename cleanup.
 		* Fixed setting priorities via web interface on both downloads
-		  and shared files
+		  and shared files.
+		* Added a spec file to the CVS tarball. Now users can do
+		rpmbuild -ta aMule-CVS-20050309.tar.bz2 and generate rpms for
+		the tarball of the same day.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
