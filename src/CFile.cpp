@@ -559,7 +559,7 @@ bool CFile::Eof() const
     // @@ this doesn't work, of course, on unseekable file descriptors
     off_t ofsCur = GetPosition(),
     ofsMax = Length();
-    if ( ofsCur == wxInvalidOffset || ofsMax == wxInvalidOffset )
+    if ( ofsCur == (off_t)wxInvalidOffset || ofsMax == (off_t)wxInvalidOffset )
         iRc = -1;
     else
         iRc = ofsCur == ofsMax;
@@ -630,6 +630,9 @@ wxString  CDirIterator::FindNextFile() {
 	struct stat* buf=(struct stat*)malloc(sizeof(struct stat));
 	
 	while (dp!=NULL && !found) {
+		if (DirStr.RemoveLast().CmpNoCase(wxT("/Volumes"))) {
+			printf("On Volumes: %s\n",dp->d_name);
+		}
 		if ((type == CDirIterator::Any)) {
 			// return anything.
 			found = true;
