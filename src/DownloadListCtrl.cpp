@@ -1114,7 +1114,8 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, const wxRect& rec
 			}
 
 			case 7:	// prio
-				if (lpUpDownClient->GetDownloadState() == DS_ONQUEUE) {
+				// We only show priority for sources actually queued for that file
+				if ( ( lpCtrlItem->type == 2 ) && ( lpUpDownClient->GetDownloadState() == DS_ONQUEUE ) ) {
 					if (lpUpDownClient->IsRemoteQueueFull()) {
 						buffer = _("Queue Full");
 						dc->DrawText(buffer, rect.GetX(), rect.GetY());
@@ -1690,7 +1691,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 				// Do we need to futher compare them? Happens if both have same type.
 				if ( !comp ) {
-					comp = Compare( (CUpDownClient*)item1->value, (CUpDownClient*)item1->value, lParamSort);
+					comp = Compare( (CUpDownClient*)item1->value, (CUpDownClient*)item2->value, lParamSort);
 				}
 			} else {
 				// Belongs to different files, so we compare the files
@@ -1811,28 +1812,50 @@ int CDownloadListCtrl::Compare(const CUpDownClient* client1, const CUpDownClient
 		// Sort by Queue-Rank
 		case 7:
 			{
-				// Are both on queue?
-				if ( !client1->IsRemoteQueueFull() && !client2->IsRemoteQueueFull() ) {
-					// Places clients with ranks before clients without or acording to rank if both have ranks
-					if ( client1->GetRemoteQueueRank() && client2->GetRemoteQueueRank() ) {
-						return CmpAny( client1->GetRemoteQueueRank(), client2->GetRemoteQueueRank() );
-					} else if ( client1->GetRemoteQueueRank() ) {
-						return -1;
-					} else if ( client2->GetRemoteQueueRank() ) {
-						return  1;
-					} else {
-						return  0;
-					}
-				} else {
-					if ( client1->IsRemoteQueueFull() && !client2->IsRemoteQueueFull() )
-						return 1;
+				/**
+				 * This is the order used to sort the clients:
+				 *  - Downloading
+				 *  - On Queue ( by QR )
+				 *  - Queue Full
+				 *  - Unknown
+				 */
 
-					if ( client2->IsRemoteQueueFull() && !client1->IsRemoteQueueFull() )
+				// Place downloading sources first								
+				if ( client1->GetDownloadState() == DS_DOWNLOADING ) {
+					if ( client2->GetDownloadState() == DS_DOWNLOADING ) {
+						return  0;
+					} else {
 						return -1;
-						
-					// Both are Full
-					return 0;
+					}
+				} else if ( client2->GetDownloadState() == DS_DOWNLOADING ) {
+					return 1;
 				}
+			
+				// Place clients with full queues third
+				if ( client1->IsRemoteQueueFull() ) {
+					if ( client2->IsRemoteQueueFull() ) {
+						return 0;
+					} else {
+						return 1;
+					}
+				} else if ( client2->IsRemoteQueueFull() ) {
+					return -1;
+				}
+			
+				// Place clients on queue second
+				if ( client1->GetRemoteQueueRank() ) {
+					if ( client2->GetRemoteQueueRank() ) {
+						return CmpAny( client1->GetRemoteQueueRank(),  client2->GetRemoteQueueRank() );
+					} else {
+						return -1;
+					}
+				} else if ( client2->GetRemoteQueueRank() ) {
+					return 1;
+				}
+
+				
+				// Anything else will be clients with unknown QR
+				return 0;
 			}
 		// Sort by state
 		case 8:
