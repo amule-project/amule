@@ -1,13 +1,13 @@
 /*  This file is part of aMule project
  *  
- *  aMule Copyright (C)2003-2004 aMule Team ( http://www.amule-project.net )
- *  This file Copyright (C)2003 Kry (elkry@sourceforge.net  http://www.amule-project.net)
- *  This file Copyright (C)2004 shakraw <shakraw@users.sourceforge.net>
+ *  aMule Copyright (C) 2003-2004 aMule Team ( http://www.amule.org)
+ *  This file Copyright (C) 2003 Kry (elkry@sourceforge.net)
+ *  This file Copyright (C) 2004 shakraw <shakraw@users.sourceforge.net>
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ *  This program is free software; you can redistribute it and/or 
+ *  modify it under the terms of the GNU General Public License 
+ *  as published by the Free Software Foundation; either 
+ *  version 2 of the License, or (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,85 +26,63 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-// wxUSE_GUI gets defined inside this include
-#include <wx/wx.h>
-
-#ifdef AMULEWEBDLG
-	#include <wx/textdlg.h>
-#else
-	#include <wx/cmdline.h>
-#endif
-
 #ifndef WIN32
 	#include "config.h"
 #endif
 
-#define theApp (*((CamulewebApp*)wxTheApp))
+//-------------------------------------------------------------------
+//
+// wxUSE_GUI will only be defined after this include
+// 
+#include "ExternalConnector.h"
+//-------------------------------------------------------------------
 
-
-#ifndef AMULEWEBDLG
-static const wxCmdLineEntryDesc cmdLineDesc[] = {
-	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),  wxT("show this help") },
-	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"), wxT("host where aMule is running (default localhost)")},
-	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"), wxT("aMule's port for External Connection"), wxCMD_LINE_VAL_NUMBER},
-	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), wxT("Password.")},
-	{ wxCMD_LINE_NONE }
-};
-#endif
-
-
-#ifdef AMULEWEBDLG //define frame dialog
-class CamulewebFrame : public wxFrame {
-	public:
-		// ctor(s)
-		CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
-
-		// event handlers (these functions should _not_ be virtual)
-		void OnQuit(wxCommandEvent& event);
-		void OnAbout(wxCommandEvent& event);
-		void OnCommandEnter(wxCommandEvent& event);
-		void OnSize( wxSizeEvent& event );
-		wxTextCtrl    *log_text;
-		wxTextCtrl    *cmd_control;
-	private:
-		wxLog *logTargetOld;
-		// any class wishing to process wxWindows events must use this macro
-		DECLARE_EVENT_TABLE()
-};
-#endif
-
-#ifdef AMULEWEBDLG
-
-// GUI Version
-class CamulewebApp : public wxApp
-#else // AMULEWEBDLG
-class CamulewebApp : public wxApp
-#endif // AMULEWEBDLG
+#if wxUSE_GUI
+#include <wx/textctrl.h>
+class CamulewebFrame : public wxFrame
 {
-	public:
-		void 		Print(char *sFormat, ...);
-		wxString	SendRecvMsg(const wxChar *msg);
-#ifdef AMULEWEBDLG
-	private:
-		// GUI Version
-		virtual bool	OnInit();
-		int		OnExit();
-		CamulewebFrame 	*frame;
-#else // AMULEWEBDLG
-	private:
-		// Command line version
-		virtual int 	OnRun();
-		virtual void 	OnInitCmdLine(wxCmdLineParser& amuleweb_parser) {
-			amuleweb_parser.SetDesc(cmdLineDesc); 
-		}
-		virtual bool 	OnCmdLineParsed(wxCmdLineParser& amuleweb_parser);
-		
-		bool 		m_HasCommandLinePassword;
-		wxString	m_CommandLinePassword;
-#endif // AMULEWEBDLG
-	private:
-		wxString 	sPort;
-		wxString 	hostName;
+public:
+	CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
+
+	// event handlers (these functions should _not_ be virtual)
+	void OnQuit(wxCommandEvent& event);
+	void OnAbout(wxCommandEvent& event);
+	void OnCommandEnter(wxCommandEvent& event);
+	void OnSize( wxSizeEvent& event );
+	void OnIdle(wxIdleEvent &e);
+	wxTextCtrl *log_text;
+	wxTextCtrl *cmd_control;
+
+private:
+	wxLog *logTargetOld;
+	// any class wishing to process wxWindows events must use this macro
+	DECLARE_EVENT_TABLE()
+};
+#endif
+
+class CamulewebApp : public CaMuleExternalConnector
+{
+public:
+	void ShowHelp();
+	void ShowGreet();
+	void Pre_Shell();
+	int ProcessCommand(int ID);
+
+#if wxUSE_GUI
+public:
+	void LocalShow(const wxString &s);
+	CamulewebFrame 	*frame;
+private:
+	// GUI Version
+	virtual bool	OnInit();
+	int		OnExit();
+#else
+public:
+	void Post_Shell();
+private:
+	// Command line version
+	virtual int 	OnRun();
+#endif
 };
 
 /******************************************************************************
@@ -127,5 +105,5 @@ class CamulewebApp : public wxApp
 #endif
 /******************************************************************************/
 
-#endif //WEBINTERFACE_H
+#endif // WEBINTERFACE_H
 

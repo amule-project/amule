@@ -1,110 +1,80 @@
-// This file is part of the aMule Project
-//
-// Copyright (c) 2003-2004 aMule Team ( http://www.amule-project.net )
-// This fle Copyright (c) 2003 Kry ( elkry@users.sourceforge.net   http://www.amule-project.net )
-//
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
-//
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
-//
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+/*  This file is part of aMule project
+ *  
+ *  aMule Copyright (C) 2003-2004 aMule Team (http://www.amule.org)
+ *  This fle Copyright (C) 2003 Kry (elkry@users.sourceforge.net)
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
 #ifndef TEXTCLIENT_H
 #define TEXTCLIENT_H
 
-#include <wx/string.h>
-#include <wx/intl.h>
-#include <wx/wx.h>
-#define wxUSE_DDE_FOR_IPC  0
-#include <wx/ipc.h>
-
-#ifdef AMULECMDDLG
-#include <wx/textdlg.h>
-#else
-#include <wx/cmdline.h>
-#endif
-
 #ifndef WIN32
-#include "config.h"
+	#include "config.h"
 #endif
 
-#define theApp (*((CamulecmdApp*)wxTheApp))
+//-------------------------------------------------------------------
+//
+// wxUSE_GUI will only be defined after this include
+// 
+#include "ExternalConnector.h"
+//-------------------------------------------------------------------
 
-#ifndef AMULECMDDLG
- static const wxCmdLineEntryDesc cmdLineDesc[] =
-{
-	{ wxCMD_LINE_OPTION, wxT("h"), wxT("help"),  wxT("show this help") },
-	{ wxCMD_LINE_OPTION, wxT("rh"), wxT("remote-host"),  wxT("host where aMule is running (default localhost)")},
-	{ wxCMD_LINE_OPTION, wxT("p"), wxT("port"),   wxT("aMule's port for External Connection"),wxCMD_LINE_VAL_NUMBER},
-	{ wxCMD_LINE_OPTION, wxT("pw"), wxT("password"), wxT("Password.")},
-	{ wxCMD_LINE_NONE }
-};
-#endif
-
-
-#ifdef AMULECMDDLG
+#if wxUSE_GUI
+#include <wx/textctrl.h>
 class CamulecmdFrame : public wxFrame
 {
 public:
-    // ctor(s)
-    CamulecmdFrame(const wxString& title, const wxPoint& pos, const wxSize& size,
-            long style = wxDEFAULT_FRAME_STYLE);
+	CamulecmdFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
 
-    // event handlers (these functions should _not_ be virtual)
-    void OnQuit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-    void OnComandEnter(wxCommandEvent& event);
-    void OnSize( wxSizeEvent& event );
-    wxTextCtrl    *log_text;
-    wxTextCtrl    *cmd_control;
+	// event handlers (these functions should _not_ be virtual)
+	void OnQuit(wxCommandEvent& event);
+	void OnAbout(wxCommandEvent& event);
+	void OnComandEnter(wxCommandEvent& event);
+	void OnSize( wxSizeEvent& event );
+	void OnIdle(wxIdleEvent &e);
+	wxTextCtrl *log_text;
+	wxTextCtrl *cmd_control;
+	
 private:
-    wxLog*	logTargetOld;
-    // any class wishing to process wxWindows events must use this macro
-    DECLARE_EVENT_TABLE()
+	wxLog *logTargetOld;
+	// any class wishing to process wxWindows events must use this macro
+	DECLARE_EVENT_TABLE()
 };
 #endif
 
-class CamulecmdApp : public wxApp
+class CamulecmdApp : public CaMuleExternalConnector
 {
-#ifdef AMULECMDDLG
 public:
-	virtual bool 	OnInit();
-	virtual int	OnExit();
+	void ShowHelp();
+	void ShowGreet();
+	int ProcessCommand(int ID);
+
+#if wxUSE_GUI
+public:
+	void LocalShow(const wxString &s);
 	CamulecmdFrame *frame;
+private:
+	// GUI Version
+	virtual bool 	OnInit();
 #else
 private:
+	// Command line version
 	virtual int 	OnRun();
-	virtual void 	OnInitCmdLine(wxCmdLineParser& amulecmd_parser) {
-		amulecmd_parser.SetDesc(cmdLineDesc); 	
-	}
-	virtual bool 	OnCmdLineParsed(wxCmdLineParser& amulecmd_parser);
-	bool 		m_HasCommandLinePassword;
-	wxString	m_CommandLinePassword;
-
 #endif
-private:
-	wxString	sPort;
-	wxString	hostName;
 };
 
-/*
-class MuleConnection:public wxConnection {
-  public:
-    bool OnAdvise(const wxString& topic, const wxString& item, wxChar *data, int size, wxIPCFormat format);
-    bool OnDisconnect();
-};
-
-class MuleClient:public wxClient {
-  public:
-      wxConnectionBase *OnMakeConnection();
- };
-*/
 #endif // TEXTCLIENT_H
+

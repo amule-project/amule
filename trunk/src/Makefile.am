@@ -192,7 +192,7 @@ amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
 if HAVE_WXBASE
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
@@ -203,13 +203,13 @@ amulecmd_CXXFLAGS = $(WX_CXXFLAGS)
 amulecmd_LDADD = $(WX_LIBS)
 endif
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG 
 amulecmdDLG_LDADD = $(WX_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-					MD5Sum.cpp ECSocket.cpp
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
 if HAVE_WXBASE
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
@@ -221,7 +221,7 @@ amuleweb_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 endif
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-					  MD5Sum.cpp ECSocket.cpp
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) -DAMULEWEBDLG
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULEWEBDLG 
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
@@ -258,6 +258,7 @@ noinst_HEADERS = AddFileThread.h \
 		 EMSocket.h \
 		 endianfix.h \
 		 ExternalConn.h \
+		 ExternalConnector.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
 		 filefn.h \
@@ -324,3 +325,4 @@ noinst_HEADERS = AddFileThread.h \
 		 xembed.h
 
 MAINTAINERCLEANFILES = Makefile.in
+

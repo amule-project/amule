@@ -22,30 +22,36 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
+//-------------------------------------------------------------------
+
+#include "WebServer.h"
+
+//-------------------------------------------------------------------
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
 #include <ctype.h>
-
-#include "WebServer.h"
-#include "MD5Sum.h"
-//#ifdef __FreeBSD__
-	#include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
-//#endif
-
-#include "WebSocket.h"		// Needed for StopSockets()
-#include "otherstructs.h"	// Needed for TransferredData
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "ECSocket.h"	
-
-#include "types.h"
-#include "WebServer.h"
-#include "ED2KLink.h"
-#include "MD5Sum.h"
 #include <stdlib.h>
+
+//-------------------------------------------------------------------
+
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+
+//-------------------------------------------------------------------
+
+#include "ECSocket.h"	
+#include "ED2KLink.h"
+#include "GetTickCount.h"	// Needed for GetTickCount
+#include "MD5Sum.h"
+#include "otherstructs.h"	// Needed for TransferredData
+#include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
+#include "types.h"
+#include "WebSocket.h"		// Needed for StopSockets()
+
+//-------------------------------------------------------------------
 
 WX_DEFINE_OBJARRAY(ArrayOfUpDown);
 WX_DEFINE_OBJARRAY(ArrayOfSession);
@@ -150,20 +156,18 @@ CWebServer::CWebServer(CamulewebApp *webApp) {
 	m_Params.SharedSort = SHARED_SORT_NAME;
 	m_Params.bSharedSortReverse = false;
 		
-	m_Params.sLastModified=wxString(wxT(""));
-	m_Params.sETag=wxString(wxT(""));
-	m_iSearchSortby=3;
-	m_bSearchAsc=0;
+	m_Params.sLastModified = wxEmptyString;
+	m_Params.sETag = wxEmptyString;
+	m_iSearchSortby = 3;
+	m_bSearchAsc = 0;
 
 	m_bServerWorking = false; // not running (listening) yet
 }
-
 
 CWebServer::~CWebServer(void) {
 	//stop web socket thread
 	if (wsThread) wsThread->Delete();
 }
-
 
 //start web socket and reload templates
 void CWebServer::StartServer(void) {
@@ -173,16 +177,16 @@ void CWebServer::StartServer(void) {
 		//create the thread...
 		wsThread = new CWSThread(this);
 		if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
-			webInterface->Print("Can't create web socket thread\n");
+			webInterface->Show(_("Can't create web socket thread\n"));
 		} else {
 			//...and run it
 			wsThread->Run();
  
 			m_bServerWorking = true;
-			webInterface->Print("Web Server: Started\n");
+			webInterface->Show(_("Web Server: Started\n"));
 		}
 	} else
-		webInterface->Print("Web Server: running\n");
+		webInterface->Show(_("Web Server: running\n"));
 }
 
 //restart web socket and reload templates
@@ -194,11 +198,11 @@ void CWebServer::RestartServer(void) {
 	//create the thread...
 	wsThread = new CWSThread(this);
 	if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
-		webInterface->Print("Can't create web socket thread\n");
+		webInterface->Show(_("Can't create web socket thread\n"));
 	} else {
 		//...and run it
 		wsThread->Run();
-		webInterface->Print("Web Server: Restarted\n");
+		webInterface->Show(_("Web Server: Restarted\n"));
 	}
 }
 
@@ -208,27 +212,24 @@ void CWebServer::StopServer(void) {
 	if (m_bServerWorking) {
 		m_bServerWorking = false;
 		if (wsThread) wsThread->Delete();
-		webInterface->Print("Web Server: Stopped\n");
+		webInterface->Show(_("Web Server: Stopped\n"));
 	} else
-		webInterface->Print("Web Server: not running\n");
+		webInterface->Show(_("Web Server: not running\n"));
 }
 
 
 //returns web server listening port
 int CWebServer::GetWSPort(void) {
-	return(atoi((char*) webInterface->SendRecvMsg(wxT("PREFERENCES GETWSPORT")).GetData()));
+	wxString msg = webInterface->SendRecvMsg(unicode2char(wxT("PREFERENCES GETWSPORT")));
+	long i;
+	msg.ToLong(&i);
+	
+	return (int)i;
 }
 
 //sends output to web interface
-void CWebServer::Print(char *sFormat, ...) {
-	char buffer[5000];
-
-	va_list argptr;
-	va_start(argptr, sFormat);
-	vsnprintf(buffer, 5000, sFormat, argptr);
-	va_end(argptr);
-	
-	webInterface->Print("%s", buffer);
+void CWebServer::Print(const wxString &s) {
+	webInterface->Show(s);
 }
 
 //reload template file
@@ -329,8 +330,8 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 	
 	if (sRet.IsEmpty()) {
 		if (sTemplateName==wxT("TMPL_VERSION"))
-			webInterface->Print((char *) _("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!"));
-		webInterface->Print((char *) _("Failed to load template %s\n"), sTemplateName.GetData());
+			webInterface->Show(_("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!"));
+		webInterface->Show(_("Failed to load template ") + sTemplateName + wxT("\n"));
 	}
 	return sRet;
 }
@@ -385,7 +386,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	pThis->webInterface->Print("inc. fname=%s\n",filename.GetData());
+	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
 	if (filename.Right(4).MakeLower()==wxT(".gif")) contenttype=wxT("Content-Type: image/gif\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".jpg") || filename.Right(5).MakeLower()==wxT(".jpeg")) contenttype=wxT("Content-Type: image/jpg\r\n");
 	else if (filename.Right(4).MakeLower()==wxT(".bmp")) contenttype=wxT("Content-Type: image/bmp\r\n");
@@ -403,10 +404,10 @@ void CWebServer::ProcessImgFileReq(ThreadData Data) {
 	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
 	//filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
 	filename.Printf(wxT("%s/.aMule/webserver/%s"), getenv("HOME"), filename.GetData());
-	pThis->webInterface->Print("**** imgrequest: %s\n",filename.GetData());
+	pThis->webInterface->Show(wxT("**** imgrequest: ") + filename + wxT("\n"));
 
 	if (!wxFileName::FileExists(filename)) {
-		pThis->webInterface->Print("**** imgrequest: file %s does not exists\n", filename.GetData());
+		pThis->webInterface->Show(wxT("**** imgrequest: file ") + filename + wxT(" does not exists\n"));
 	}
 
 	wxFileInputStream* fis = new wxFileInputStream(filename);
@@ -430,7 +431,7 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	wxString filename=Data.sURL;
 	wxString contenttype;
 
-	pThis->webInterface->Print("inc. fname=%s\n",filename.GetData());
+	pThis->webInterface->Show(wxT("inc. fname=") + filename + wxT("\n"));
 	contenttype=wxT("Content-Type: text/css\r\n");
 
 	filename=filename.Right(filename.Length()-1);
@@ -438,7 +439,7 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 	//filename=wxString(theApp.glob_prefs->GetAppDir())+"webserver/"+filename;
 	//filename=getenv("HOME") + wxString("/.aMule/webserver/") + wxString(filename);
 	filename.Printf(wxT("%s/.aMule/webserver/%s"), getenv("HOME"), filename.GetData());
-	pThis->webInterface->Print("**** cssrequest: %s\n",filename.GetData());
+	pThis->webInterface->Show(wxT("**** cssrequest: ") + filename + wxT("\n"));
 
 	if (wxFileName::FileExists(filename)) {
 		wxFileInputStream* fis = new wxFileInputStream(filename);
@@ -453,7 +454,7 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 			delete[] buffer;
 		}
 	} else {
-		pThis->webInterface->Print("**** imgrequest: file %s does not exists\n", filename.GetData());
+		pThis->webInterface->Show(wxT("**** imgrequest: file") + filename + wxT(" does not exists\n"));
 	}
 }
 
@@ -531,8 +532,8 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		Out += _GetHeader(Data, lSession);
 		
 		wxString sPage = sW;
-		pThis->webInterface->Print("***** logged in, getting page %s\n", sPage.GetData());
-		pThis->webInterface->Print("***** session is %s\n", sSession.GetData());
+		pThis->webInterface->Show(_("***** logged in, getting page ") + sPage + wxT("\n"));
+		pThis->webInterface->Show(_("***** session is ") + sSession + wxT("\n"));
 		
 		if (sPage == wxT("server")) {
 			Out += _GetServerList(Data);
@@ -654,7 +655,7 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 	int findPos = -1;
 	int findLength = 0;
 
-	pThis->webInterface->Print("*** parsing url %s :: field %s\n", URL.GetData(), fieldname.GetData());
+	pThis->webInterface->Show(wxT("*** parsing url ") + URL + _(" :: field ") + fieldname + wxT("\n"));
 	if (URL.Find(wxT("?")) > -1) {
 		Parameter = URL.Mid(URL.Find(wxT("?"))+1, URL.Length()-URL.Find(wxT("?"))-1);
 
@@ -687,7 +688,7 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 			}
 		}
 	}
-	pThis->webInterface->Print("*** URL parsed. returning %s\n",value.GetData());
+	pThis->webInterface->Show(_("*** URL parsed. returning ") + value + wxT("\n"));
 	return value;
 }
 
@@ -730,7 +731,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	}
 	
 	Out.Replace(wxT("[Session]"), sSession);
-	pThis->webInterface->Print("*** replaced session with %s\n", sSession.GetData());
+	pThis->webInterface->Show(_("*** replaced session with ") + sSession + wxT("\n"));
 	Out.Replace(wxT("[HeaderMeta]"), wxT("")); // In case there are no meta
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[version]"), wxString::Format(wxT("%s"), VERSION)); //shakraw - was CURRENT_VERSION_LONG);
@@ -2205,7 +2206,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	if (pThis == NULL)
 		return wxT("");
 
-	pThis->webInterface->Print("***_GetStats arrived\n");
+	pThis->webInterface->Show(_("***_GetStats arrived\n"));
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 
