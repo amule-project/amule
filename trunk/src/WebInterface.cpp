@@ -25,13 +25,17 @@
 
 #if !defined( __WXMSW__ )
 	#include <unistd.h>
-#else
-	#define AMULEWEBDLG 1
 #endif
 
 //-------------------------------------------------------------------
 
 #include "WebInterface.h"
+
+//-------------------------------------------------------------------
+
+#if wxUSE_GUI
+	#include <wx/statline.h>
+#endif
 
 //-------------------------------------------------------------------
 
@@ -89,9 +93,7 @@ enum {
 BEGIN_EVENT_TABLE(CamulewebFrame, wxFrame)
 	EVT_MENU(amuleweb_Quit,  CamulewebFrame::OnQuit)
 	EVT_MENU(amuleweb_About, CamulewebFrame::OnAbout)
-//	EVT_TEXT(Event_Comand_ID, CamulewebFrame::OnCommandChange)
 	EVT_TEXT_ENTER(Event_Comand_ID, CamulewebFrame::OnCommandEnter)
-	EVT_SIZE(CamulewebFrame::OnSize)
 	EVT_IDLE(CamulewebFrame::OnIdle)
 END_EVENT_TABLE()
 
@@ -113,10 +115,11 @@ CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const 
 	// ... and attach this menu bar to the frame
 	SetMenuBar(menuBar);
 
+	// Text controls and sizer
+	wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 	log_text = new wxTextCtrl(this, -1, wxEmptyString,
-		wxPoint(2, 2),
-		wxSize(APP_INIT_SIZE_X-4, APP_INIT_SIZE_Y-30-4),
-		wxTE_MULTILINE | wxTE_READONLY);
+		wxDefaultPosition, wxSize(APP_INIT_SIZE_X,APP_INIT_SIZE_Y),
+		wxTE_MULTILINE|wxVSCROLL|wxTE_READONLY);
 	log_text->SetBackgroundColour(wxT("wheat"));
 	log_text->SetDefaultStyle(
 		wxTextAttr(
@@ -125,12 +128,17 @@ CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const 
 			wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
 		)
 	);
-
+	vsizer->Add( log_text, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	wxStaticLine *line = new wxStaticLine( this, -1,
+		wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	vsizer->Add( line, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	cmd_control = new wxTextCtrl(this, Event_Comand_ID, wxEmptyString,
-		wxPoint(2, APP_INIT_SIZE_Y-30-4),
-		wxSize(APP_INIT_SIZE_X-4,30),
-		wxTE_PROCESS_ENTER);
+			wxDefaultPosition, wxSize(APP_INIT_SIZE_X,-1), wxTE_PROCESS_ENTER);
 	cmd_control->SetBackgroundColour(wxT("wheat"));
+	vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+	SetSizer(vsizer);
+	vsizer->SetSizeHints(this);
 }
 
 void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
@@ -159,15 +167,6 @@ void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
 		Close(true);
 	}
 	cmd_control->Clear();
-}
-
-void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) )
-{
-	int x = 0;
-	int y = 0;
-	GetClientSize( &x, &y );	
-	if (log_text) log_text->SetSize( 2, 2, x-4, y-30 - 4 );
-	if (cmd_control) cmd_control->SetSize( 2, y-30-2, x-4,30);
 }
 
 void CamulewebFrame::OnIdle(wxIdleEvent &WXUNUSED(event))

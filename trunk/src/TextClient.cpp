@@ -32,10 +32,12 @@
 
 //-------------------------------------------------------------------
 
-#include <wx/intl.h>		// For _()
+#include <wx/intl.h>			// For _()
 #if wxUSE_GUI
 	#include <wx/menu.h>		// For wxMenu
 	#include <wx/msgdlg.h>		// For wxMessageBox
+	#include <wx/sizer.h>		// For wxBoxSizer
+	#include <wx/statline.h>	// For wxStaticLine
 #endif
 
 //-------------------------------------------------------------------
@@ -104,7 +106,6 @@ BEGIN_EVENT_TABLE(CamulecmdFrame, wxFrame)
 	EVT_MENU(amulecmd_Quit, CamulecmdFrame::OnQuit)
 	EVT_MENU(amulecmd_About, CamulecmdFrame::OnAbout)
 	EVT_TEXT_ENTER(Event_Comand_ID, CamulecmdFrame::OnComandEnter)
-	EVT_SIZE(CamulecmdFrame::OnSize)
 END_EVENT_TABLE()
 
 //-------------------------------------------------------------------
@@ -126,10 +127,11 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
 	// ... and attach this menu bar to the frame
 	SetMenuBar(menuBar);
 
+	// Text controls and sizer
+	wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 	log_text = new wxTextCtrl(this, -1, wxEmptyString,
-		wxPoint(2, 2),
-		wxSize(APP_INIT_SIZE_X-4, APP_INIT_SIZE_Y-30-4),
-		wxTE_MULTILINE | wxTE_READONLY);
+		wxDefaultPosition, wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y),
+		wxTE_MULTILINE|wxVSCROLL|wxTE_READONLY);
 	log_text->SetBackgroundColour(wxT("wheat"));
 	log_text->SetDefaultStyle(
 		wxTextAttr(
@@ -138,12 +140,19 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
 			wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
 		)
 	);
-
+	vsizer->Add( log_text, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+	wxStaticLine *line = new wxStaticLine( this, -1,
+		wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	vsizer->Add( line, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	cmd_control = new wxTextCtrl(this,Event_Comand_ID, wxEmptyString,
 		wxPoint(2, APP_INIT_SIZE_Y-30-4),
 		wxSize(APP_INIT_SIZE_X-4,30),
 		wxTE_PROCESS_ENTER);
 	cmd_control->SetBackgroundColour(wxT("wheat"));
+vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+	SetSizer(vsizer);
+	vsizer->SetSizeHints(this);
 }
 
 void CamulecmdFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
@@ -174,15 +183,6 @@ void CamulecmdFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) {
 		Close(TRUE);
 	}
 	cmd_control->Clear();
-}
-
-void CamulecmdFrame::OnSize( wxSizeEvent& WXUNUSED(event) )
-{
-	int x = 0;
-	int y = 0;
-	GetClientSize( &x, &y );
-	if (log_text) log_text->SetSize( 2, 2, x-4, y-30 - 4 );
-	if (cmd_control) cmd_control->SetSize( 2, y-30-2, x-4,30);
 }
 
 void CamulecmdFrame::OnIdle(wxIdleEvent &WXUNUSED(event))

@@ -37,14 +37,14 @@
 class CamulecmdFrame : public wxFrame
 {
 public:
-	CamulecmdFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
+	CamulecmdFrame(const wxString& title, const wxPoint& pos,
+		const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
 
 	// event handlers (these functions should _not_ be virtual)
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 	void OnComandEnter(wxCommandEvent& event);
 	void OnSize( wxSizeEvent& event );
-	void OnIdle(wxIdleEvent &e);
 	wxTextCtrl *log_text;
 	wxTextCtrl *cmd_control;
 	

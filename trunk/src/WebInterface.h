@@ -1,6 +1,6 @@
 /*  This file is part of aMule project
  *  
- *  aMule Copyright (C) 2003-2004 aMule Team ( http://www.amule.org)
+ *  aMule Copyright (C) 2003-2004 aMule Team (http://www.amule.org)
  *  This file Copyright (C) 2003 Kry (elkry@sourceforge.net)
  *  This file Copyright (C) 2004 shakraw <shakraw@users.sourceforge.net>
  *
@@ -42,13 +42,13 @@
 class CamulewebFrame : public wxFrame
 {
 public:
-	CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
+	CamulewebFrame(const wxString& title, const wxPoint& pos,
+		const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
 
 	// event handlers (these functions should _not_ be virtual)
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 	void OnCommandEnter(wxCommandEvent& event);
-	void OnSize( wxSizeEvent& event );
 	void OnIdle(wxIdleEvent &e);
 	wxTextCtrl *log_text;
 	wxTextCtrl *cmd_control;
