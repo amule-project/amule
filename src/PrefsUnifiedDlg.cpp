@@ -52,6 +52,8 @@
 #include "StatisticsDlg.h"	// Needed for graph parameters, colors
 #include "Wizard.h"			// Needed for Wizard
 #include "IPFilter.h"		// Needed for CIPFilter
+#include "SearchList.h"
+
 
 
 // The following classes are used for table-driven access to user-definable settings,
