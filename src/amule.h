@@ -77,12 +77,6 @@ enum APPState {
 	APP_STATE_DONE,
 	APP_STATE_STARTING
 };	
-	
-typedef struct {
-	wxString line;
-	bool		addtostatus;
-} QueuedLogLine;
-
 
 class CamuleApp : public wxApp
 {
@@ -178,6 +172,20 @@ public:
 	wxString ConfigDir;
 	
 protected:
+	/**
+	 * This class is used to contain log messages that are to be displayed
+	 * on the GUI, when it is currently impossible to do so. This is in order 
+	 * to allows us to queue messages till after the dialog has been created.
+	 */
+	struct QueuedLogLine
+	{
+		//! The text line to be displayed
+		wxString 	line;
+		//! True if the line should be shown on the status bar, false otherwise.
+		bool		addtostatus;
+	};
+
+
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
 	void ClientReqSocketHandler(wxSocketEvent& event);
@@ -203,7 +211,7 @@ protected:
 	wxTimer* core_timer;
 		
 	wxCriticalSection m_LogQueueLock;
-	std::deque<QueuedLogLine>	QueuedAddLogLines;
+	std::list<QueuedLogLine>	QueuedAddLogLines;
 #ifdef __DEBUG__
 	std::deque<socket_deletion_log_item>	SocketDeletionList;
 #endif
