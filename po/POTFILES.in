@@ -10,6 +10,7 @@ src/ChatSelector.cpp
 src/ClientCredits.cpp
 src/ClientDetailDialog.cpp
 src/ClientList.cpp
+src/ClientListCtrl.cpp
 src/ClientUDPSocket.cpp
 src/CommentDialog.cpp
 src/CommentDialogLst.cpp
@@ -17,7 +18,6 @@ src/CryptoPP.cpp
 src/DownloadClient.cpp
 src/DownloadListCtrl.cpp
 src/DownloadQueue.cpp
-src/ED2KLink.cpp
 src/EditServerListDlg.cpp
 src/ExternalConn.cpp
 src/ExternalConnector.cpp
@@ -37,7 +37,6 @@ src/OScopeCtrl.cpp
 src/otherfunctions.cpp
 src/PartFile.cpp
 src/PrefsUnifiedDlg.cpp
-src/QueueListCtrl.cpp
 src/SearchDlg.cpp
 src/SearchList.cpp
 src/SearchListCtrl.cpp
@@ -48,7 +47,6 @@ src/ServerWnd.cpp
 src/SHAHashSet.cpp
 src/SharedFileList.cpp
 src/SharedFilesCtrl.cpp
-src/SharedFilesWnd.cpp
 src/sockets.cpp
 src/StatisticsDlg.cpp
 src/SysTray.cpp
@@ -56,7 +54,6 @@ src/TextClient.cpp
 src/TransferWnd.cpp
 src/UDPSocket.cpp
 src/UploadClient.cpp
-src/UploadListCtrl.cpp
 src/UploadQueue.cpp
 src/utils/aLinkCreator/src/alcc.cpp
 src/utils/aLinkCreator/src/alc.cpp
