@@ -2231,7 +2231,7 @@ void *ExternalConnClientThread::Entry()
 		// Access denied!
 		//
 		printf("Unauthorized access attempt. Connection closed.\n");
-		goto LeaveThread;
+		return 0;
 	}
 	//
 	// Authenticated
@@ -2239,7 +2239,7 @@ void *ExternalConnClientThread::Entry()
 	while ( !TestDestroy() ) {
 		if ( m_sock->WaitForLost(0, 0) ) {
 			printf("ExternalConnClientThread: connection closed\n");
-			goto LeaveThread;
+			return 0;
 		}
 		if (m_sock->WaitForRead()) {
 			Read(m_sock, request);
@@ -2253,7 +2253,6 @@ void *ExternalConnClientThread::Entry()
 			Write(m_sock, response);
 		}
 	}
-LeaveThread:
 	return 0;
 }
 
