@@ -90,15 +90,14 @@ public:
 	/**
 	 * Sets the 3D-depth of the bar
 	 *
-	 * @param depth A value in the range from 1 to 20.
-	 *
-	 * The 3D effect on the bar is created by applying a sinus 
-	 * curve across vertically. Each point of depth represents
-	 * a 1/10 which is multiplied by the value of y * (PI/height),
-	 * meaning that it sets the maximum height of the sinus curve.
+	 * @param depth A value in the range from 1 to 5.
 	 */
 	void Set3dDepth( int depth ) {
-		wxASSERT( ( depth > 0 ) && ( depth < 21 ) );
+		if ( depth < 1 ) {
+			depth = 1;
+		} else if ( depth > 5 ) {
+			depth = 5;
+		}
 	
 		if ( m_used3dlevel != depth ) {
 			m_used3dlevel = depth;
@@ -198,11 +197,7 @@ public:
 
 private:
 	/**
-	 * Calculate the sinus curve used to modify the colors.
-	 *
-	 * This calculates the modifiers used to create the 3d effect. In essence, 
-	 * the effect is created by using a sinus curve to calculate the "darkness"
-	 * of the colors at a given height.
+	 * Calculates the modifiers used to create 3d effect.
 	 */
 	void BuildModifiers();
 	

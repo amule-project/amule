@@ -63,13 +63,15 @@ void CBarShader::BuildModifiers()
 		delete[] m_Modifiers;
 	}
 
+	int depth = (7-m_used3dlevel);
 	int count = HALF(m_Height);
-	double increment = ( Pi / m_Height );
-	double depth = m_used3dlevel / 10.0;
+	double piOverDepth = Pi/depth;
+	double base = piOverDepth * ((depth / 2.0) - 1);
+	double increment = piOverDepth / (count - 1);
 
 	m_Modifiers = new double[count];
 	for (int i = 0; i < count; i++)
-		m_Modifiers[i] = sin(i * increment) * depth;
+		m_Modifiers[i] = (double)(sin(base + i * increment));
 }
 
 
