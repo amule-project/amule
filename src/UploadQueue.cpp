@@ -91,7 +91,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			waitinglist.GetNext(pos1);
 			CUpDownClient* cur_client =	waitinglist.GetAt(pos2);
 			// clear dead clients
-			if ((::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
+			if ( cur_client->IsGPLEvildoer() || (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2,true);	
 				if (!cur_client->socket) {
@@ -148,91 +148,6 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		}
 	}
 	
-	// Thief clients handling [BlackRat]
-	if (newclient->thief) {
-		// what kind of thief is it ?
-		wxString type;
-		switch (newclient->leechertype){
-		/* Add log line according to leecher type */
-			case 1 : {
-				type = _("invalid eMule client");
-				break;
-			}
-			case 2 : {
-				type = _("suspicious mod string change");
-				break;
-			}
-			case 3 : {
-				type = _("known leecher");
-				break;
-			}
-			case 4 : {
-				type = _("suspicious hash change");
-				break;
-			}
-			case 5 : {
-				type = _("use your own hash");
-				break;
-			}
-			default : {
-				type = _("suspicious name change");
-			}
-		}
-		AddLogLineM(false, newclient->GetUserName() + wxT(" [") + newclient->m_FullUserIP + wxString::Format(_(":%i] using "),newclient->m_nUserPort) + newclient->m_clientVerString + _(" removed : ") + type);		
-		// remove client !
-		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
-		return;
-	}
-
-	// Anti-leecher mods and irregular clients [BlackRat - LSD]
-	if (
-	(newclient->GetUserName().Cmp(wxT("celinesexy")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("Chief")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("darkmule")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("dodgethis")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("edevil")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("energyfaker")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("eVortex")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("|eVorte|X|")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("$GAM3R$")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("G@m3r")) == 0) ||		 
-	(newclient->GetUserName().Cmp(wxT("Leecha")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("Mison")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("phArAo")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("RAMMSTEIN")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("Reverse")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("[toXic]")) == 0) ||
-	(newclient->GetUserName().Cmp(wxT("$WAREZ$")) == 0) ||
-	(newclient->m_strModVersion.Cmp(wxT("aldo")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("booster")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("darkmule")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("d-unit")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("DM-")) == 0 ) ||       
-	(newclient->m_strModVersion.Cmp(wxT("dodgethis")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("Dragon")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("egomule")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("eVortex")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("father")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("Freeza")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("gt mod")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("imperator")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("LegoLas")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("Max")) == 0 )  ||
-	(newclient->m_strModVersion.Cmp(wxT("Mison")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("SpeedLoad")) == 0 ) ||
-	(newclient->m_strModVersion.Cmp(wxT("|X|")) == 0 ) ||
-	((newclient->m_strModVersion.IsEmpty() == false) && (newclient->GetClientSoft() != SO_EMULE) && (newclient->GetClientSoft() != SO_LXMULE) && (newclient->GetClientSoft() != SO_AMULE) ) ||
- 	((!newclient->GetMuleVersion() && (newclient->GetClientSoft()==SO_EMULE || newclient->GetClientSoft()==SO_OLDEMULE)) && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
- 	(!newclient->ExtProtocolAvailable() && newclient->GetClientSoft()==SO_EMULE && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
- 	((newclient->GetVersion()>589) && (newclient->GetSourceExchangeVersion()>0) && (newclient->GetClientSoft()== SO_EDONKEY)))
-	{		
-		// thief !
-		newclient->thief=true;
-		theApp.uploadqueue->RemoveFromUploadQueue(newclient,true);
-		AddLogLineM(false, newclient->GetUserName() + wxString::Format(_(" [%s:%i] using "), unicode2char(newclient->GetFullIP()),newclient->GetUserPort()) + newclient->GetClientVerString() +  _("removed : leecher, invalid eMule or irregular Donkey"));
-		return;
-	}	
-
 	if (IsDownloading(newclient)) {
 		return;
 	}
@@ -494,6 +409,12 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		client->socket->SendPacket(packet,true);
 		return;
 	}
+
+	// Imported from BlackRat : Anti-Leech
+	if ( client->Credits() && client->Credits()->GetUploadedTotal() < client->Credits()->GetDownloadedTotal() ) // must share
+		client->SetGPLEvildoer( false );
+	// Import from BlackRat end
+	
 	if (waitinglist.IsEmpty() && AcceptNewClient()) {
 		AddUpNextClient(client);
 		m_nLastStartUpload = ::GetTickCount();
@@ -538,6 +459,14 @@ uint32 CUploadQueue::GetAverageUpTime()
 
 bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 {
+	// BlackRat : Anti-Leech
+	if ( client->HasBeenGPLEvildoer() ) {
+		if ( client->Credits()->GetUploadedTotal() >= client->Credits()->GetDownloadedTotal() ) {
+			client->SetGPLEvildoer(true);
+			return true;
+		}
+	}
+	
 	if (theApp.glob_prefs->TransferFullChunks()) {
 		if( client->GetUpStartTimeDelay() > 3600000 ) { // Try to keep the clients from downloading for ever.
 			return true;

@@ -185,8 +185,6 @@ public:
 	
 	wxString	GetUploadFileInfo();
 	
-	void		CheckForGPLEvilDoer();
-
 	void		SetUserName(const wxString& NewName) { m_Username = NewName; }
 	
 	uint8		GetClientSoft() const		{ return m_clientSoft; }
@@ -328,7 +326,6 @@ public:
 	void		UDPReaskFNF();
 	void		UDPReaskForDownload();
 	bool		IsSourceRequestAllowed();
-	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) BEGIN ...
 	void		SetDownStartTime()		{ m_dwDownStartTime = ::GetTickCount(); }
 	uint32		GetDownTimeDifference() 
 		{ uint32 myTime = m_dwDownStartTime; m_dwDownStartTime = 0; return ::GetTickCount() - myTime; }
@@ -345,7 +342,6 @@ public:
 	//		option than looping through the lists for unavailable sources.
 	//
 	uint16		GetA4AFCount() const 		{ return m_OtherRequests_list.GetCount(); }
-	// -khaos--+++> Download Sessions Stuff Imported from eMule 0.30c (Creteil) END ...
 
 	uint16		GetUpCompleteSourcesCount() const { return m_nUpCompleteSourcesCount; }
 	void		SetUpCompleteSourcesCount(uint16 n){ m_nUpCompleteSourcesCount = n; }
@@ -396,7 +392,6 @@ private:
 	void		SendHelloTypePacket(CMemFile* data);
 	void		ClearHelloProperties(); // eMule 0.42
 	bool		m_bIsBotuser;
-//	bool		isfriend;
 	uint32		m_dwUserIP;
 	uint32		m_dwServerIP;
 	uint32		m_nUserID;
@@ -428,7 +423,6 @@ private:
 	bool		m_bIsHybrid;
 	bool		m_bIsNewMLD;
 	bool		m_bIsML;
-	bool		m_bGPLEvildoer;
  	bool		m_bSupportsPreview;
  	bool		m_bPreviewReqPending;
  	bool		m_bPreviewAnsPending;
@@ -533,25 +527,11 @@ public:
 	uint8*		m_abyPartStatus;
 
 public:
-	/* m_OtherRequests_list --> public instead of private */
 	CTypedPtrList<CPtrList, CPartFile*>	m_OtherRequests_list;
-	/* Same for m_OtherNoNeeded_list --> public instead of private (Creteil) */
 	CTypedPtrList<CPtrList, CPartFile*>	m_OtherNoNeeded_list;
 
-	/* IsValidSource function
-	 * @return true id it's valid source
-	*/
 	bool IsValidSource() const	{ return m_ValidSource; };
-
-	/* SetValidSource function
-	 * @param boolean - set valid source
-	*/
 	void SetValidSource(bool in)	{ m_ValidSource = in; };
-
-	/* SwapToThisFile function
-	 * @param CPartFile* - the file
-	*/
-	void SwapToThisFile(CPartFile* file);
 
 	uint8 GetExtended_aMule_SO() const{ return Extended_aMule_SO; };
 	
@@ -590,32 +570,59 @@ private:
 
 	/* End modif */
 
-	// Support for tag ET_MOD_VERSION [BlackRat]
 public:
-
 	const wxString&	GetClientModString() const { return m_strModVersion; }
 	const wxString&	GetClientVerString() const { return m_clientVerString; }
 
-private:
+	// Imported from BlackRat : Anti-Leech
+	/**
+	 * Checks the current username for known evil mods.
+	 */
+	void		CheckForGPLEvilDoer_Nick();
+	/**
+	 * Checks the current eMule mod or client version for known leechers.
+	 */
+	void		CheckForGPLEvilDoer_Mod();
+	/**
+	 * Returns true if the client has been flagged as EVIL.
+	 *
+	 * @return True if the client is EVIL, false otherwise.
+	 */
+	bool		IsGPLEvildoer() const { return m_bGPLEvildoer; }
+	/**
+	 * Returns true if the client used to be EVIL.
+	 *
+	 * @return True if the client shows signs of having been EVIL, such
+	 *         as bad usernames and such. 
+	 *
+	 * Please note that the client might not be EVIL, even if this returns true,
+	 * and should only be used as an indication of the client's past behavior.
+	 */
+	bool		HasBeenGPLEvildoer() const { return m_bHasBeenGPLEvildoer; }
+	/**
+	 * Specifies if the client is a GPLEvilDoer (or leech) or not.
+	 */
+	void		SetGPLEvildoer(bool bVal) {
+						m_bGPLEvildoer = bVal;
+						m_bHasBeenGPLEvildoer |= bVal;
+					}
+	uint64	getUID() { return ((uint64)m_dwUserIP<<32)+((uint64)m_nUserPort<<16); }
 
+private:
+	//! The last username used by the client. Used to check for clients constantly changing nicks.
+	wxString	m_old_Username;
+	//! The last mod specified by the client. Used to check for clients constantly changing mods.
+	wxString	m_old_ModVersion;
+	//! Is the client EVIL? This includes leeches and people not respecting the GPL.
+	bool		m_bGPLEvildoer;
+	//! Is set to true if the clients shows signs of having been a GPLEvilDoer.
+	bool		m_bHasBeenGPLEvildoer;
+	// BlackRat import end
+	
 	wxString		m_clientVerString;
 
 	int SecIdentSupRec;
 	
-	// Hash anti-thief from HoaX_69 [BlackRat]
-public:
-
-	bool			thief;  // is a thief ?
-	uint64 getUID() const
-	{
-		uint64 ip = ((uint64) m_dwUserIP) << 32;
-		uint64 port = ((uint64) m_nUserPort) << 16;
-		uint64 uid = ip + port;
-		return uid;
-	}
-	//return ((uint64)m_dwUserIP<<32)+((uint64)m_nUserPort<<16); }
-	int	leechertype; // what kind of leecher is it ?
-  
 #ifdef __DEBUG__
 public:
 	bool		IsASaneUpDownClient(bool verbose, char *function, char *file, int line) const;
