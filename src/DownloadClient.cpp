@@ -538,15 +538,15 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			#endif
 
 			m_nDownloadState = byNewState;
-			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;m_DownloadBlocks_list.GetNext(pos)) {
-				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetAt(pos);
+			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
+				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
 				m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
-				delete m_DownloadBlocks_list.GetAt(pos);
+				delete cur_block;
 			}
 			m_DownloadBlocks_list.RemoveAll();
 
-			for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;m_PendingBlocks_list.GetNext(pos)) {
-				Pending_Block_Struct *pending = m_PendingBlocks_list.GetAt(pos);
+			for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0; ) {
+				Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
 				if (m_reqfile) {
 					m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 				}

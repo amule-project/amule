@@ -1469,10 +1469,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					{
 						theApp.downloadqueue->DisableAllA4AFAuto();
 
-						POSITION pos1, pos2;
-						for (pos1 = file->A4AFsrclist.GetHeadPosition();(pos2=pos1)!=NULL;) {
-							file->A4AFsrclist.GetNext(pos1);
-							CUpDownClient *cur_source = file->A4AFsrclist.GetAt(pos2);
+						for (POSITION pos = file->A4AFsrclist.GetHeadPosition(); pos != NULL;) {
+							CUpDownClient *cur_source = file->A4AFsrclist.GetNext(pos);
 							if (cur_source->GetDownloadState() != DS_DOWNLOADING
 							&& cur_source->GetRequestFile()
 							&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || cur_source->GetDownloadState() == DS_NONEEDEDPARTS)
@@ -1501,10 +1499,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					&& (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 						theApp.downloadqueue->DisableAllA4AFAuto();
 
-						POSITION pos1, pos2;
-						for(pos1 = file->m_SrcList.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-							file->m_SrcList.GetNext(pos1);
-							file->m_SrcList.GetAt(pos2)->SwapToAnotherFile(false, false, false, NULL);
+						for(POSITION pos = file->m_SrcList.GetHeadPosition(); pos != NULL;) {
+							file->m_SrcList.GetNext(pos)->SwapToAnotherFile(false, false, false, NULL);
 						}
 					}
 					Thaw();
@@ -1517,11 +1513,13 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						wxString fileList;
 						bool validdelete = false;
 
-						for (POSITION pos = selectedList.GetHeadPosition(); pos != 0; selectedList.GetNext(pos)) {
-							if(selectedList.GetAt(pos)->GetStatus() != PS_COMPLETING && selectedList.GetAt(pos)->GetStatus() != PS_COMPLETE) {
+						for (POSITION pos = selectedList.GetHeadPosition(); pos != 0; ) {
+							CPartFile* cur_file = selectedList.GetNext(pos);
+							
+							if ( cur_file->GetStatus() != PS_COMPLETING && cur_file->GetStatus() != PS_COMPLETE) {
 								validdelete = true;
 								fileList += wxT("\n");
-								fileList += selectedList.GetAt(pos)->GetFileName();
+								fileList += cur_file->GetFileName();
 							}
 						}
 						wxString quest;

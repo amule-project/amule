@@ -322,8 +322,8 @@ CPartFile::~CPartFile()
 	m_SrcpartFrequency.Clear();
 	
 	POSITION pos;
-	for (pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-		delete gaplist.GetAt(pos);
+	for (pos = gaplist.GetHeadPosition();pos != 0;) {
+		delete gaplist.GetNext(pos);
 	}
 	pos = m_BufferedData_list.GetHeadPosition();
 	while (pos){
@@ -998,9 +998,8 @@ void CPartFile::SaveSourceSeeds() {
 	uint8 src_count = source_seeds.GetCount();
 	file.Write(&src_count,1);
 	
-	POSITION pos1, pos2;
-	for (pos1 = source_seeds.GetHeadPosition();(pos2 = pos1)  != NULL;) {
-		CUpDownClient* cur_src = source_seeds.GetNext(pos1);		
+	for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
+		CUpDownClient* cur_src = source_seeds.GetNext(pos);		
 		uint32 dwID = cur_src->GetUserID();
 		uint16 nPort = cur_src->GetUserPort();
 		//uint32 dwServerIP = cur_src->GetServerIP();
@@ -1176,8 +1175,8 @@ bool CPartFile::IsComplete(uint32 start, uint32 end)
 	if (end >= m_nFileSize) {
 		end = m_nFileSize-1;
 	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-		Gap_Struct* cur_gap = gaplist.GetAt(pos);
+	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
+		Gap_Struct* cur_gap = gaplist.GetNext(pos);
 		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
 		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
 		||(start >= cur_gap->start && end <= cur_gap->end)) {
@@ -1192,8 +1191,8 @@ bool CPartFile::IsPureGap(uint32 start, uint32 end)
 	if (end >= m_nFileSize) {
 		end = m_nFileSize-1;
 	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-		Gap_Struct* cur_gap = gaplist.GetAt(pos);
+	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
+		Gap_Struct* cur_gap = gaplist.GetNext(pos);
 		if (start >= cur_gap->start  && end <= cur_gap->end) {
 			return true;
 		}
@@ -1203,8 +1202,8 @@ bool CPartFile::IsPureGap(uint32 start, uint32 end)
 
 bool CPartFile::IsAlreadyRequested(uint32 start, uint32 end)
 {
-	for (POSITION pos =  requestedblocks_list.GetHeadPosition();pos != 0; requestedblocks_list.GetNext(pos)) {
-		Requested_Block_Struct* cur_block =  requestedblocks_list.GetAt(pos);
+	for (POSITION pos =  requestedblocks_list.GetHeadPosition();pos != 0; ) {
+		Requested_Block_Struct* cur_block =  requestedblocks_list.GetNext(pos);
 		// if (cur_block->StartOffset == start && cur_block->EndOffset == end)
 		/* eMule 0.30c manage the problem like that, i give it a try ... (Creteil) */
 		if ((start <= cur_block->EndOffset) && (end >= cur_block->StartOffset)) {
@@ -1235,8 +1234,8 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 		firstGap = NULL;
 
 		// Find the first gap from the start position
-		for (POSITION pos = gaplist.GetHeadPosition(); pos != 0; gaplist.GetNext(pos)) {
-			currentGap = gaplist.GetAt(pos);
+		for (POSITION pos = gaplist.GetHeadPosition(); pos != 0; ) {
+			currentGap = gaplist.GetNext(pos);
 			// Want gaps that overlap start<->partEnd
 			if ((currentGap->start <= partEnd) && (currentGap->end >= start)) {
 				// Is this the first gap?
@@ -1412,8 +1411,8 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	}
 
 	// red gaps
-	for (POSITION pos = gaplist.GetHeadPosition();pos !=  0;gaplist.GetNext(pos)) {
-		Gap_Struct* cur_gap = gaplist.GetAt(pos);
+	for (POSITION pos = gaplist.GetHeadPosition();pos !=  0; ) {
+		Gap_Struct* cur_gap = gaplist.GetNext(pos);
 		allgaps += cur_gap->end - cur_gap->start + 1;
 		bool gapdone = false;
 		uint32 gapstart = cur_gap->start;
@@ -1447,8 +1446,8 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 		}
 	}
 	// yellow pending parts
-	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0;requestedblocks_list.GetNext(pos)) {
-		Requested_Block_Struct* block =  requestedblocks_list.GetAt(pos);
+	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0; ) {
+		Requested_Block_Struct* block =  requestedblocks_list.GetNext(pos);
 		s_ChunkBar.FillRange(block->StartOffset, block->EndOffset,  crPending);
 	}
 	s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
@@ -1514,11 +1513,9 @@ void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 int CPartFile::GetValidSourcesCount()
 {
 	int counter=0;
-	POSITION pos1,pos2;
 	
-	for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-		m_SrcList.GetNext(pos1);
-		CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+	for (POSITION pos = m_SrcList.GetHeadPosition(); pos != NULL;){
+		CUpDownClient* cur_src = m_SrcList.GetNext(pos);
 		uint8 state = cur_src->GetDownloadState();
 		
 		if ( state != DS_ONQUEUE && state != DS_DOWNLOADING && state != DS_NONEEDEDPARTS ) {
@@ -1532,10 +1529,8 @@ uint16 CPartFile::GetNotCurrentSourcesCount()
 {
 		uint16 counter=0;
 
-		POSITION pos1,pos2;
-		for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;){
-			m_SrcList.GetNext(pos1);
-			CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+		for (POSITION pos = m_SrcList.GetHeadPosition(); pos != NULL;){
+			CUpDownClient* cur_src = m_SrcList.GetNext(pos);
 			uint8 state = cur_src->GetDownloadState();
 			
 			if ( state != DS_ONQUEUE && state != DS_DOWNLOADING ) {
@@ -1609,10 +1604,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		}
 	} else {
 		CUpDownClient* cur_src;
-		POSITION pos1, pos2;
-		for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-			m_SrcList.GetNext(pos1);
-			cur_src = m_SrcList.GetAt(pos2);
+		for (POSITION pos = m_SrcList.GetHeadPosition(); pos != NULL;) {
+			cur_src = m_SrcList.GetNext(pos);
 #ifdef __DEBUG__
 #warning phoenix - caught one insane source here in a backtrace - II
 			//if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
@@ -1743,10 +1736,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
 			m_LastNoNeededCheck = dwCurTick;
-			POSITION pos1, pos2;
-			for (pos1 = A4AFsrclist.GetHeadPosition();(pos2=pos1)!=NULL;) {
-				A4AFsrclist.GetNext(pos1);
-				CUpDownClient *cur_source = A4AFsrclist.GetAt(pos2);
+			for (POSITION pos = A4AFsrclist.GetHeadPosition(); pos != NULL;) {
+				CUpDownClient *cur_source = A4AFsrclist.GetNext(pos);
 				uint8 download_state=cur_source->GetDownloadState();
 				if( download_state != DS_DOWNLOADING
 				&& cur_source->GetRequestFile() 
@@ -3569,10 +3560,8 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	int badratings=0;
 	int ratings=0;
 
-	POSITION pos1,pos2;
-	for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-		m_SrcList.GetNext(pos1);
-		CUpDownClient* cur_src = m_SrcList.GetAt(pos2);
+	for (POSITION pos = m_SrcList.GetHeadPosition(); pos != NULL;) {
+		CUpDownClient* cur_src = m_SrcList.GetNext(pos);
 		
 		if (cur_src->GetFileComment().Length()>0) {
 			hasComment=true;
@@ -3664,8 +3653,8 @@ wxString CPartFile::GetProgressString(uint16 size)
 		CharFillRange(&my_ChunkBar,0,(uint32)(m_nFileSize*unit), crProgress);
 	} else {	
 		// red gaps
-		for (POSITION pos = gaplist.GetHeadPosition();pos !=  0;gaplist.GetNext(pos)) {
-			Gap_Struct* cur_gap = gaplist.GetAt(pos);
+		for (POSITION pos = gaplist.GetHeadPosition();pos !=  0; ) {
+			Gap_Struct* cur_gap = gaplist.GetNext(pos);
 			allgaps += cur_gap->end - cur_gap->start + 1;
 			bool gapdone = false;
 			uint32 gapstart = cur_gap->start;
@@ -3699,8 +3688,8 @@ wxString CPartFile::GetProgressString(uint16 size)
 	}
 
 	// yellow pending parts
-	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0;requestedblocks_list.GetNext(pos)) {
-		Requested_Block_Struct* block =  requestedblocks_list.GetAt(pos);
+	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0; ) {
+		Requested_Block_Struct* block =  requestedblocks_list.GetNext(pos);
 		CharFillRange(&my_ChunkBar, (uint32)((block->StartOffset + block->transferred)*unit),(uint32)(block->EndOffset*unit),crPending);
 	}
 	return my_ChunkBar;

@@ -1958,12 +1958,10 @@ void CListenSocket::OnAccept(int nErrorCode)
 void CListenSocket::Process()
 {
 	// 042e + Kry changes for Destroy
-	POSITION pos2;
 	m_OpenSocketsInterval = 0;
 	opensockets = 0;
-	for(POSITION pos1 = socket_list.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-		socket_list.GetNext(pos1);
-		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
+	for(POSITION pos = socket_list.GetHeadPosition(); pos != NULL;) {
+		CClientReqSocket* cur_sock = socket_list.GetNext(pos);
 		opensockets++;
 		
 		if (!cur_sock->OnDestroy()) {
@@ -1983,10 +1981,8 @@ void CListenSocket::RecalculateStats()
 {
 	// 0.42e
 	memset(m_ConnectionStates,0,6);
-	POSITION pos1,pos2;
-	for(pos1 = socket_list.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-		socket_list.GetNext(pos1);
-		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
+	for(POSITION pos = socket_list.GetHeadPosition(); pos != NULL;) {
+		CClientReqSocket* cur_sock = socket_list.GetNext(pos);
 		switch (cur_sock->GetConState()) {
 			case ES_DISCONNECTED:
 				m_ConnectionStates[0]++;

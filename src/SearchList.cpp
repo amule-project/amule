@@ -231,10 +231,10 @@ CSearchList::~CSearchList(){
 }
 
 void CSearchList::Clear(){
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL; pos = list.GetHeadPosition()) {
-		delete list.GetAt(pos);
-		list.RemoveAt(pos);
+	for(POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
+		delete list.GetNext(pos);
 	}
+	list.RemoveAll();
 }
 
 void CSearchList::RemoveResults( uint32 nSearchID){
@@ -442,8 +442,8 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	}
 
 	CSearchListCtrl* outputwnd = GetSearchListControl(toadd->GetSearchID());
-	for (POSITION pos = list.GetHeadPosition(); pos != NULL; list.GetNext(pos)){
-		CSearchFile* cur_file = list.GetAt(pos);
+	for (POSITION pos = list.GetHeadPosition(); pos != NULL; ){
+		CSearchFile* cur_file = list.GetNext(pos);
 		if ( (toadd->GetFileHash() == cur_file->GetFileHash()) && cur_file->GetSearchID() ==  toadd->GetSearchID()){
 			cur_file->AddSources(toadd->GetIntTagValue(FT_SOURCES),toadd->GetIntTagValue(FT_COMPLETE_SOURCES));
 			if (outputwnd) {

@@ -264,18 +264,18 @@ CUpDownClient::~CUpDownClient()
 	
 	ClearUploadBlockRequests();
 	
-	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;m_DownloadBlocks_list.GetNext(pos)) {
-		delete m_DownloadBlocks_list.GetAt(pos);
+	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
+		delete m_DownloadBlocks_list.GetNext(pos);
 	}
 	
 	m_DownloadBlocks_list.RemoveAll();
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)) {
-		delete m_RequestedFiles_list.GetAt(pos);
+	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ) {
+		delete m_RequestedFiles_list.GetNext(pos);
 	}
 	
 	m_RequestedFiles_list.RemoveAll();
-	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;m_PendingBlocks_list.GetNext(pos)) {
-		Pending_Block_Struct *pending = m_PendingBlocks_list.GetAt(pos);
+	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0; ) {
+		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
 		delete pending->block;
 		// Not always allocated
 		if (pending->zStream) {
@@ -286,8 +286,8 @@ CUpDownClient::~CUpDownClient()
 	}
 	/* eMule 0.30c manage this also, i give it a try ... (Creteil) */
 	
-	for (POSITION pos =m_WaitingPackets_list.GetHeadPosition();pos != 0;m_WaitingPackets_list.GetNext(pos)) {
-		delete m_WaitingPackets_list.GetAt(pos);
+	for (POSITION pos =m_WaitingPackets_list.GetHeadPosition();pos != 0; ) {
+		delete m_WaitingPackets_list.GetNext(pos);
 	}
 
 	

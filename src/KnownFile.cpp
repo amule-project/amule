@@ -997,9 +997,8 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
 	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
 
-	for (POSITION pos = srclist.GetHeadPosition();pos != 0;srclist.GetNext(pos)){
-		CUpDownClient *cur_src = srclist.GetAt(pos);
-		cur_src->SetCommentDirty();
+	for (POSITION pos = srclist.GetHeadPosition();pos != 0; ){
+		srclist.GetNext(pos)->SetCommentDirty();
 	}   
 }
 
@@ -1014,9 +1013,8 @@ void CKnownFile::SetFileRate(int8 iNewRate)
 
 	CTypedPtrList<CPtrList, CUpDownClient*> srclist;
 	theApp.uploadqueue->FindSourcesForFileById(&srclist, this->GetFileHash());
-	for (POSITION pos = srclist.GetHeadPosition(); pos != 0; srclist.GetNext(pos)) {
-		CUpDownClient *cur_src = srclist.GetAt(pos);
-		cur_src->SetCommentDirty();
+	for (POSITION pos = srclist.GetHeadPosition(); pos != 0; ) {
+		srclist.GetNext(pos)->SetCommentDirty();
 	}
 } 
 

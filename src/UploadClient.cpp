@@ -651,16 +651,16 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 void CUpDownClient::ClearUploadBlockRequests(){
 	//printf("entered in : CUpDownClient::ClearUploadBlockRequests\n");
 	FlushSendBlocks();
-	for (POSITION pos = m_BlockRequests_queue.GetHeadPosition();pos != 0;m_BlockRequests_queue.GetNext(pos))
-		delete m_BlockRequests_queue.GetAt(pos);
+	for (POSITION pos = m_BlockRequests_queue.GetHeadPosition();pos != 0; )
+		delete m_BlockRequests_queue.GetNext(pos);
 	m_BlockRequests_queue.RemoveAll();
 	
-	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition();pos != 0;m_DoneBlocks_list.GetNext(pos))
-		delete m_DoneBlocks_list.GetAt(pos);
+	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition();pos != 0; )
+		delete m_DoneBlocks_list.GetNext(pos);
 	m_DoneBlocks_list.RemoveAll();
 	
-	for (POSITION pos = m_BlockSend_queue.GetHeadPosition();pos != 0;m_BlockSend_queue.GetNext(pos))
-		delete m_BlockSend_queue.GetAt(pos);
+	for (POSITION pos = m_BlockSend_queue.GetHeadPosition();pos != 0; )
+		delete m_BlockSend_queue.GetNext(pos);
 	m_BlockSend_queue.RemoveAll();
 }
 
@@ -720,8 +720,8 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 
 void  CUpDownClient::AddRequestCount(const CMD4Hash& fileid){
 	//printf("entered in : CUpDownClient::AddRequestCount\n");
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)){
-		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetAt(pos);
+	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ){
+		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetNext(pos);
 		if (!md4cmp(cur_struct->fileid,fileid)){
 			if (::GetTickCount() - cur_struct->lastasked < MIN_REQUESTTIME && !GetFriendSlot()){ 
 				if (GetDownloadState() != DS_DOWNLOADING)
@@ -752,8 +752,8 @@ void  CUpDownClient::UnBan(){
 	SetWaitStartTime();
 	theApp.uploadqueue->UpdateBanCount();
 	theApp.amuledlg->transferwnd->ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
-	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0;m_RequestedFiles_list.GetNext(pos)){
-		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetAt(pos);
+	for (POSITION pos = m_RequestedFiles_list.GetHeadPosition();pos != 0; ) {
+		Requested_File_Struct* cur_struct = m_RequestedFiles_list.GetNext(pos);
 		cur_struct->badrequests = 0;
 		cur_struct->lastasked = 0;	
 	}

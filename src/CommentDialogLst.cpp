@@ -79,14 +79,12 @@ bool CCommentDialogLst::OnInitDialog()
 
 void CCommentDialogLst::CompleteList()
 {
-	POSITION pos1,pos2;
 	CUpDownClient* cur_src;
 	int count=0;
 	pmyListCtrl->DeleteAllItems();
    
-	for (pos1 = m_file->m_SrcList.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-		m_file->m_SrcList.GetNext(pos1);
-		cur_src = m_file->m_SrcList.GetAt(pos2);
+	for (POSITION pos = m_file->m_SrcList.GetHeadPosition(); pos != NULL;) {
+		cur_src = m_file->m_SrcList.GetNext(pos);
 
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
 			pmyListCtrl->InsertItem(count, cur_src->GetUserName());
