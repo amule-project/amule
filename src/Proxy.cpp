@@ -27,6 +27,7 @@
 
 #include "opcodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for CStringIPtoUint32()	*/
+#include "otherfunctions.h"	/* for EncodeBase64()		*/
 
 
 /******************************************************************************/
@@ -408,7 +409,7 @@ bool wxSocketProxy::DoSocks5Reply(void)
 			ok =	!m_ProxyClientSocket->Error() &&
 				m_ProxyClientSocket->LastCount() == LenPacket;
 			// TODO
-			// IPV6 not yet implemented
+			// IPV6 not yet implemented in wx
 			//m_TargetAddress.Hostname(Uint128toStringIP(
 			//	*((uint128 *)(m_buffer+Addr_offset)) ));
 			//m_TargetAddress = &m_TargetAddressIPV6;
@@ -451,6 +452,76 @@ bool wxSocketProxy::DoSocks5CmdUDPAssociate(void)
 	bool ok = false;
 	
 	return ok;
+}
+
+bool wxSocketProxy::DoHttp(wxIPaddress& address, wxProxyCommand cmd)
+{
+	// Use the short circuit evaluation
+	int ok = 
+		DoHttpRequest(address, cmd) &&
+		DoHttpReply();
+	if (ok) {
+		switch(cmd)
+		{
+		case wxPROXY_CMD_CONNECT:
+			ok = DoHttpCmdConnect();
+			break;
+		
+		case wxPROXY_CMD_BIND:
+			ok = false;
+			break;
+		
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			ok = false;
+			break;
+		}
+	}
+
+	return ok;
+}
+
+bool wxSocketProxy::DoHttpRequest(wxIPaddress& address, unsigned char cmd)
+{
+	// Prepare the request command buffer
+	wxCharBuffer buf = unicode2char(address.IPAddress());
+	const char *host = (const char *)buf;
+	uint16 port = address.Service();
+	wxString UserPass = wxString::Format(
+		wxT("%s:%s"),
+		unicode2char(m_ProxyData.Username),
+		unicode2char(m_ProxyData.Password));
+	wxString UserPassEncoded = EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+	wxString msg = wxString::Format(
+		wxT(
+		"CONNECT %s:%d HTTP/1.1\r\n"
+		"Host: %s:%d\r\n"
+		"Proxy-Authorization: Basic %s\r\n"),
+		host, port, host, port, unicode2char(UserPassEncoded));
+	
+	// Send the command packet
+	unsigned int LenPacket = msg.Len();
+	memcpy(m_buffer, unicode2char(msg), LenPacket+1);
+	m_ProxyClientSocket->Write(m_buffer, LenPacket);
+
+	// Check the if the write operation succeded
+	bool ok =
+		!m_ProxyClientSocket->Error() &&
+		m_ProxyClientSocket->LastCount() == LenPacket;
+
+	return ok;
+}
+
+bool wxSocketProxy::DoHttpReply(void)
+{
+	// TODO
+	return false;
+}
+
+bool wxSocketProxy::DoHttpCmdConnect(void)
+{
+	// Nothing to do here.
+	
+	return true;
 }
 
 /******************************************************************************/

@@ -114,6 +114,8 @@ public:
 	#define wxIPaddress amuleIPV4Address
 #endif
 
+const unsigned int wxPROXY_BUFFER_SIZE = 1024;
+
 class wxProxyEventHandler;
 class wxSocketProxy
 {
@@ -142,9 +144,15 @@ private:
 	bool DoSocks5CmdConnect(void);
 	bool DoSocks5CmdBind(void);
 	bool DoSocks5CmdUDPAssociate(void);
+
+	/* HTTP */
+	bool DoHttp(wxIPaddress& address, wxProxyCommand cmd);
+	bool DoHttpRequest(wxIPaddress& address, unsigned char cmd);
+	bool DoHttpReply(void);
+	bool DoHttpCmdConnect(void);
 	
 	wxProxyData		m_ProxyData;
-	char			m_buffer[1024];
+	char			m_buffer[wxPROXY_BUFFER_SIZE];
 	amuleIPV4Address	m_ProxyAddress;
 	wxSocketClient		*m_ProxyClientSocket;
 	wxIPaddress		*m_TargetAddress;
