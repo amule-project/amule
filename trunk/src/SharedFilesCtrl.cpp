@@ -34,7 +34,7 @@
 #include "opcodes.h"			// Needed for MP_PRIOVERYLOW
 #include "amule.h"				// Needed for theApp
 #include "color.h"				// Needed for SYSCOLOR
-#include "sockets.h"			// Needed for CServerConnect
+#include "ServerConnect.h"			// Needed for CServerConnect
 #include "Preferences.h"
 #include "BarShader.h"			// Needed for CBarShader
 #include "DataToText.h"			// Needed for PriorityToStr

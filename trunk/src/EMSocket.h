@@ -34,7 +34,7 @@
 	#include "amule.h"
 #endif
 
-class Packet;
+class CPacket;
 
 #define ERR_WRONGHEADER		0x01
 #define ERR_TOOBIG		0x02
@@ -52,7 +52,7 @@ class CEMSocket : public CSocketClientProxy
 public:
 	CEMSocket(const CProxyData *ProxyData = NULL);
 	virtual ~CEMSocket(void);
-	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);// controlpackets have a higher priority
+	bool	SendPacket(CPacket* packet, bool delpacket = true,bool controlpacket = true);// controlpackets have a higher priority
 	bool	IsBusy()	{return sendbuffer;}
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
@@ -72,7 +72,7 @@ public:
 	uint32 created;
 	#endif
 
-	virtual bool	PacketReceived(Packet* WXUNUSED(packet)) { return false; };
+	virtual bool	PacketReceived(CPacket* WXUNUSED(packet)) { return false; };
 
 	virtual void	OnClose(int nErrorCode);
 	uint8	byConnected;
@@ -91,7 +91,7 @@ private:
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
-	Packet* pendingPacket;
+	CPacket* pendingPacket;
 	uint32  pendingPacketSize;
 
 	char*	sendbuffer;
@@ -104,8 +104,8 @@ private:
 	bool from_destroy;
 	#endif
 
-	CList<Packet*, Packet*> controlpacket_queue;
-	CList<Packet*, Packet*> standartpacket_queue;
+	CList<CPacket*, CPacket*> controlpacket_queue;
+	CList<CPacket*, CPacket*> standartpacket_queue;
 	
 };
 

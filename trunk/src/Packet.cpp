@@ -18,19 +18,19 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "packets.h"
+#pragma implementation "Packet.h"
 #endif
 
 #include <zlib.h>		// Needed for uLongf
 
-#include "packets.h"		// Interface declarations
+#include "Packet.h"		// Interface declarations
 #include "StringFunctions.h"	// Needed for nstrdup
-#include "CMemFile.h"		// Needed for CMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "otherstructs.h"	// Needed for Header_Struct
 #include "types.h"		// Needed for wxFileSize_t
 
 // Copy constructor
-Packet::Packet(Packet &p)
+CPacket::CPacket(CPacket &p)
 {
 	size 		= p.size;
 	opcode		= p.opcode;
@@ -56,7 +56,7 @@ Packet::Packet(Packet &p)
 		memcpy( pBuffer, p.pBuffer, size + 1);
 }
 
-Packet::Packet(uint8 protocol)
+CPacket::CPacket(uint8 protocol)
 {
 	size 		= 0;
 	opcode		= 0;
@@ -72,7 +72,7 @@ Packet::Packet(uint8 protocol)
 }
 
 // only used for receiving packets
-Packet::Packet(char* header)
+CPacket::CPacket(char* header)
 {
 	memset(head, 0, sizeof head);
 	Header_Struct* head = (Header_Struct*) header;
@@ -88,7 +88,7 @@ Packet::Packet(char* header)
 	pBuffer 	= NULL;
 }
 
-Packet::Packet(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
+CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 {
 	size		= datafile->GetLength();
 	opcode		= ucOpcode;
@@ -107,7 +107,7 @@ Packet::Packet(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	free(tmp); 
 }
 
-Packet::Packet(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
+CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 {
 	size		= in_size;
 	opcode		= in_opcode;
@@ -129,7 +129,7 @@ Packet::Packet(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 }
 
 // only used for splitted packets!
-Packet::Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
+CPacket::CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 {
 	size		= nSize - 6;
 	opcode		= 0;
@@ -144,7 +144,7 @@ Packet::Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 	pBuffer		= NULL;
 }
 
-Packet::~Packet()
+CPacket::~CPacket()
 {
 	// Never deletes pBuffer when completebuffer is not NULL
 	if (completebuffer) {
@@ -159,19 +159,19 @@ Packet::~Packet()
 	}
 }
 
-void Packet::AllocDataBuffer(void)
+void CPacket::AllocDataBuffer(void)
 {
 	wxASSERT(completebuffer == NULL);
 	pBuffer = new char[size + 1];
 }
 
-void Packet::CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n)
+void CPacket::CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n)
 {
 	wxASSERT(offset + n <= size + 1);
 	memcpy(pBuffer + offset, data, n);
 }
 
-char* Packet::GetPacket() {
+char* CPacket::GetPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), 6);
@@ -190,7 +190,7 @@ char* Packet::GetPacket() {
 	}
 }
 
-char* Packet::DetachPacket() {
+char* CPacket::DetachPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), 6);
@@ -212,7 +212,7 @@ char* Packet::DetachPacket() {
 	}
 }
 
-char* Packet::GetHeader() {
+char* CPacket::GetHeader() {
 	wxASSERT( !m_bSplitted );
 
 	Header_Struct* header = (Header_Struct*) head;
@@ -223,7 +223,7 @@ char* Packet::GetHeader() {
 	return head;
 }
 
-char* Packet::GetUDPHeader() {
+char* CPacket::GetUDPHeader() {
 	wxASSERT( !m_bSplitted );
 
 	memset(head, 0, 6);
@@ -234,7 +234,7 @@ char* Packet::GetUDPHeader() {
 	return head;
 }
 
-void Packet::PackPacket() {
+void CPacket::PackPacket() {
 	wxASSERT(!m_bSplitted);
 
 	uLongf newsize = size + 300;
@@ -255,7 +255,7 @@ void Packet::PackPacket() {
 	size = newsize;
 }
 
-bool Packet::UnPackPacket(UINT uMaxDecompressedSize) {
+bool CPacket::UnPackPacket(UINT uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT );
 
 	uint32 nNewSize = size * 10 + 300;

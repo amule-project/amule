@@ -140,7 +140,7 @@ public:
 	void	PauseFile(bool bInsufficient = false);
 	void	ResumeFile();
 
-	virtual	Packet* CreateSrcInfoPacket(const CUpDownClient* forClient);
+	virtual	CPacket* CreateSrcInfoPacket(const CUpDownClient* forClient);
 	//void	AddClientSources(CMemFile* sources);
 	void    AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion);
 

@@ -32,12 +32,12 @@
 
 #include "DownloadQueue.h"	// Interface declarations
 #include "server.h"		// Needed for CServer
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "ClientList.h"		// Needed for CClientList
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ServerList.h"		// Needed for CServerList
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ED2KLink.h"		// Needed for CED2KFileLink
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -841,7 +841,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				iFiles++;
 
 				// create request packet
-				Packet* packet = new Packet(OP_GETSOURCES,16);
+				CPacket* packet = new CPacket(OP_GETSOURCES,16);
 				packet->Copy16ToDataBuffer((const char *)cur_file->GetFileHash().GetHash());
 				dataTcpFrame.Write(packet->GetPacket(), packet->GetRealPacketSize());
 				delete packet;
@@ -853,7 +853,7 @@ void CDownloadQueue::ProcessLocalRequests()
 		{
 			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
-			Packet* packet = new Packet(new char[iSize], dataTcpFrame.GetLength(), true, false);
+			CPacket* packet = new CPacket(new char[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
@@ -1095,7 +1095,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 	}	
 		
 	int iFileIDs = data.GetLength() / 16;
-	Packet packet(&data);
+	CPacket packet(&data);
 
 	packet.SetOpCode(OP_GLOBGETSOURCES);
 	theApp.statistics->AddUpDataOverheadServer(packet.GetPacketSize());

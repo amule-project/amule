@@ -18,11 +18,11 @@
 //
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "CMemFile.h"
+#pragma implementation "MemFile.h"
 #endif
 
-#include "CMemFile.h"		// Needed for CMemFile
-#include "packets.h"
+#include "MemFile.h"		// Needed for CMemFile
+#include "Packet.h"
 
 
 CMemFile::CMemFile(unsigned int growBytes)

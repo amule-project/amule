@@ -26,13 +26,13 @@
 
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Preferences.h"	// Needed for CPreferences
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "PartFile.h"		// Needed for PR_POWERSHARE
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"		// Needed for CKnownFileLists
@@ -322,7 +322,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 			memfile.Read(tempbuf, nPacketSize);
 			data.Write(tempbuf, nPacketSize);
 			delete [] tempbuf;
-			Packet* packet = new Packet(&data,OP_EDONKEYPROT,OP_SENDINGPART);
+			CPacket* packet = new CPacket(&data,OP_EDONKEYPROT,OP_SENDINGPART);
 			m_BlockSend_queue.AddTail(packet);
 		}
 	} catch (...) {
@@ -362,7 +362,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 			memfile.Read(tempbuf, nPacketSize);
 			data.Write(tempbuf,nPacketSize);
 			delete [] tempbuf;
-			Packet* packet = new Packet(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
+			CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
 			m_BlockSend_queue.AddTail(packet);
 		}
 		delete[] output;
@@ -580,7 +580,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 				nPos -= nNewSize;
 				char* pBuffer2 = new char[nNewSize];
 				memcpy(pBuffer2,pBuffer+nPos,nNewSize);
-				m_BlockSend_queue.AddHead(new Packet(pBuffer2,nNewSize,bLast));
+				m_BlockSend_queue.AddHead(new CPacket(pBuffer2,nNewSize,bLast));
 				bLast = false;
 			}
 			delete[] pBuffer;
@@ -588,7 +588,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 	while (!m_BlockSend_queue.IsEmpty()
 		&& m_BlockSend_queue.GetHead()->GetRealPacketSize() <= m_nMaxSendAllowed){
 			
-		Packet* tosend = m_BlockSend_queue.RemoveHead();
+		CPacket* tosend = m_BlockSend_queue.RemoveHead();
 		uint32 nBlockSize = tosend->GetRealPacketSize();
 		m_nMaxSendAllowed -= nBlockSize;
 		SendPacket(tosend,true,false);
@@ -606,7 +606,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 void CUpDownClient::FlushSendBlocks()
 { // call this when you stop upload, or the socket might be not able to send
 	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && IsConnected() ) {	
-		Packet* tosend = m_BlockSend_queue.RemoveHead();
+		CPacket* tosend = m_BlockSend_queue.RemoveHead();
 		theApp.statistics->AddUpDataOverheadOther(tosend->GetPacketSize());
 		SendPacket(tosend,true,false);
 	}
@@ -645,7 +645,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	data->WriteUInt16(parts);
 	for (int i = 0; i != parts; i++)
 		data->WriteHash16(file->GetPartHash(i));
-	Packet* packet = new Packet(data);
+	CPacket* packet = new CPacket(data);
 	delete data;
 	packet->SetOpCode(OP_HASHSETANSWER);
 	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
@@ -679,7 +679,7 @@ void CUpDownClient::SendRankingInfo(){
 	// Kry: what are these zero bytes for. are they really correct?
 	// Kry - Well, eMule does like that. I guess they're ok.
 	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
-	Packet* packet = new Packet(&data,OP_EMULEPROT);
+	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_QUEUERANKING);
 	
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -706,7 +706,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	data.WriteUInt32(desc.Length()); // We can'y use WriteString because len is 32 bits
 	data.Write(unicode2char(desc), desc.Length());
 	
-	Packet *packet = new Packet(&data,OP_EMULEPROT);
+	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_FILEDESC);
 	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);

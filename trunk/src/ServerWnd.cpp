@@ -38,7 +38,7 @@
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
-#include "sockets.h"
+#include "ServerConnect.h"
 #include "NetworkFunctions.h" // Needed for Uint32_16toStringIP_Port
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp

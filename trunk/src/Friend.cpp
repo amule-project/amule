@@ -25,7 +25,7 @@
 #include <ctime>		// Needed for time(2)
 
 #include "Friend.h"		// Interface declarations.
-#include "packets.h"		// Needed for CInvalidPacket
+#include "Packet.h"		// Needed for CInvalidPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h"

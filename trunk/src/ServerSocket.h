@@ -30,7 +30,7 @@
 
 #include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
-#include "sockets.h"
+#include "ServerConnect.h"
 
 //------------------------------------------------------------------------------
 // CServerSocketHandler
@@ -84,8 +84,8 @@ public:
 	void	OnConnect(wxSocketError nErrorCode);
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
-	bool	PacketReceived(Packet* packet);
-	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
+	bool	PacketReceived(CPacket* packet);
+	bool	SendPacket(CPacket* packet, bool delpacket = true,bool controlpacket = true);
 	bool	IsSolving() const { return m_IsSolving;};
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }

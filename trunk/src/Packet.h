@@ -17,11 +17,11 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef PACKETS_H
-#define PACKETS_H
+#ifndef PACKET_H
+#define PACKET_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "packets.h"
+#pragma interface "Packet.h"
 #endif
 
 #include <exception>
@@ -43,16 +43,16 @@ using namespace otherfunctions;
 //			PACKET CLASS
 // TODO some parts could need some work to make it more efficient
 
-class Packet {
+class CPacket {
 public:
-	Packet(Packet &p);
-	Packet(uint8 protocol = OP_EDONKEYPROT);
-	Packet(char* header); // only used for receiving packets
-	Packet(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
-	Packet(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
-	Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
+	CPacket(CPacket &p);
+	CPacket(uint8 protocol = OP_EDONKEYPROT);
+	CPacket(char* header); // only used for receiving packets
+	CPacket(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
+	CPacket(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
+	CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
-	~Packet();
+	~CPacket();
 	
 	void 			AllocDataBuffer();	
 	char*			GetHeader();
@@ -147,4 +147,4 @@ public:
 	wxString GetFullInfo() const;
 };
 
-#endif // PACKETS_H
+#endif // PACKET_H

@@ -29,7 +29,7 @@
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "opcodes.h"		// Needed for OP_MESSAGE
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
@@ -212,7 +212,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 	if (ci->m_client->IsConnected()) {
 		CSafeMemFile data;
 		data.WriteString(message);
-		Packet* packet = new Packet(&data);
+		CPacket* packet = new CPacket(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 		if ( ci->m_client->SendPacket(packet, true, true) ) {
@@ -270,7 +270,7 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 			
 			CSafeMemFile data;
 			data.WriteString(ci->m_pending);
-			Packet* packet = new Packet(&data);
+			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_MESSAGE);
 			theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 			if ( ci->m_client->SendPacket(packet, true, true) ) {

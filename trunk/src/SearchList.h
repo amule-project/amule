@@ -39,18 +39,18 @@ class CServer;
 class CSearchList;
 
 
-Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
+CPacket *CreateSearchPacket(wxString &searchString, wxString& typeText,
 				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
 
 
 class CGlobalSearchThread : public wxThread 
 {	
 public:
-	CGlobalSearchThread( Packet *packet );
+	CGlobalSearchThread( CPacket *packet );
 	~CGlobalSearchThread();
 
 private:
-	Packet* 	m_packet;
+	CPacket* 	m_packet;
 
 	virtual void* Entry();
 };
@@ -109,7 +109,7 @@ public:
 	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
 	void LocalSearchEnd();
 
-	Packet* 	m_searchpacket;
+	CPacket* 	m_searchpacket;
 	void StopGlobalSearch();
 	void ClearThreadData() { m_searchthread = NULL; };
 

@@ -57,7 +57,7 @@
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "server.h"		// Needed for CServer
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -67,7 +67,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
 #include "ED2KLink.h"		// Needed for CED2KLink
-#include "packets.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CTag
 #include "SearchList.h"		// Needed for CSearchFile
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
@@ -2586,7 +2586,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 	
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
-	Packet packet( OP_CANCELTRANSFER, 0 );
+	CPacket packet( OP_CANCELTRANSFER, 0 );
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 		CUpDownClient* cur_src = *it++;
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
@@ -2751,7 +2751,7 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount() - SOURCECLIENTREASKS;
 }
 
-Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if(!IsPartFile()) 
 		return CKnownFile::CreateSrcInfoPacket(forClient);
@@ -2841,7 +2841,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	Packet* result = new Packet(&data, OP_EMULEPROT);
+	CPacket* result = new CPacket(&data, OP_EMULEPROT);
 	result->SetOpCode(OP_ANSWERSOURCES);
 	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
 	if (result->GetPacketSize() > 354) {

@@ -129,7 +129,7 @@ public:
 	void Destroy();
 #endif
 protected:
-	bool	 PacketReceived(Packet* packet);
+	bool	 PacketReceived(CPacket* packet);
 
 private:
 	CUpDownClient*	m_client;

@@ -73,23 +73,23 @@ amulegui_SOURCES = \
 	ECPacket.cpp \
 	ECSpecialTags.cpp \
 	EditServerListDlg.cpp \
-	filemem.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
 	listctrl.cpp \
-	muuli_wdr.cpp \
 	MD5Sum.cpp \
+	MemFile.cpp \	
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
+	muuli_wdr.cpp \
 	otherfunctions.cpp \
 	DataToText.cpp \
 	OScopeCtrl.cpp \
-	packets.cpp \
+	Packet.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	SHA.cpp \
@@ -138,10 +138,10 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
-	filemem.cpp \
 	filefn.cpp \
 	Friend.cpp \
 	FriendListCtrl.cpp \
+	MemFile.cpp \	
 	MuleGifCtrl.cpp \
 	HTTPDownload.cpp \
 	IPFilter.cpp \
@@ -160,7 +160,7 @@ amule_SOURCES = \
 	OScopeCtrl.cpp \
 	otherfunctions.cpp \
 	DataToText.cpp \
-	packets.cpp \
+	Packet.cpp \
 	PartFile.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
@@ -171,22 +171,22 @@ amule_SOURCES = \
 	SearchList.cpp \
 	SearchListCtrl.cpp \
 	server.cpp \
+	ServerConnect.cpp \
 	ServerList.cpp \
 	ServerListCtrl.cpp \
 	ServerSocket.cpp \
+	ServerUDPSocket.cpp \
 	ServerWnd.cpp \
 	SharedFileList.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
 	SHA.cpp \
 	SHAHashSet.cpp \
-	sockets.cpp \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
 	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
-	UDPSocket.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
 	amule.cpp \
@@ -212,7 +212,6 @@ amuled_SOURCES = \
         ED2KLink.cpp \
         EMSocket.cpp \
         ExternalConn.cpp \
-        filemem.cpp \
         filefn.cpp \
         Friend.cpp \
 	HTTPDownload.cpp \
@@ -221,24 +220,25 @@ amuled_SOURCES = \
         KnownFileList.cpp \
 	ListenSocket.cpp \
         MD5Sum.cpp \
+        MemFile.cpp \	   
 	NetworkFunctions.cpp \
         otherfunctions.cpp \
-        packets.cpp \
+        Packet.cpp \
         PartFile.cpp \
         Preferences.cpp \
 	Proxy.cpp \
         SafeFile.cpp \
         SearchList.cpp \
         server.cpp \
+        ServerConnect.cpp \
         ServerList.cpp \
         ServerSocket.cpp \
+        ServerUDPSocket.cpp \
         SharedFileList.cpp \
 	StateMachine.cpp \
 	Statistics.cpp \
 	StringFunctions.cpp \
-        sockets.cpp \
 	timer.cpp \
-        UDPSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
         amule.cpp \
@@ -374,6 +374,7 @@ noinst_HEADERS = AddFileThread.h \
 		 listctrl.h \
 		 ListenSocket.h \
 		 MD5Sum.h \
+		 MemFile.h \
 		 MuleGifCtrl.h \
 		 MuleListCtrl.h \
 		 MuleNotebook.h \
@@ -385,7 +386,7 @@ noinst_HEADERS = AddFileThread.h \
 		 OScopeCtrl.h \
 		 otherfunctions.h \
 		 otherstructs.h \
-		 packets.h \
+		 Packet.h \
 		 PartFile.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
@@ -396,16 +397,17 @@ noinst_HEADERS = AddFileThread.h \
 		 SearchListCtrl.h \
 		 SearchList.h \
 		 server.h \
+		 ServerConnect.h \
 		 ServerListCtrl.h \
 		 ServerList.h \
 		 ServerSocket.h \
+		 ServerUDPSocket.h \
 		 ServerWnd.h \
 		 SHA.h \
 		 SHAHashSet.h \
 		 SharedFileList.h \
 		 SharedFilesCtrl.h \
 		 SharedFilesWnd.h \
-		 sockets.h \
 		 Statistics.h \
 		 StatisticsDlg.h \
 		 StateMachine.h \
@@ -415,7 +417,6 @@ noinst_HEADERS = AddFileThread.h \
 		 TransferWnd.h \
 		 tree.hh \
 		 types.h \
-		 UDPSocket.h \
 		 updownclient.h \
 		 UploadBandwidthThrottler.h \
 		 UploadQueue.h \

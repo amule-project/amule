@@ -35,7 +35,7 @@
 
 #include "server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "updownclient.h"
 #include "SharedFileList.h"
 #include "SearchList.h"

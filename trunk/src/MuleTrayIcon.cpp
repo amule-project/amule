@@ -42,7 +42,7 @@
 #include "Preferences.h"		// Needed for glod_prefs
 #include "DownloadQueue.h" 		// Needed for GetKbps
 #include "UploadQueue.h" 		// Needed for GetKbps
-#include "sockets.h"			// Needed for CServerConnect
+#include "ServerConnect.h"			// Needed for CServerConnect
 #include "otherfunctions.h"		// Needed for CastSecondsToHM
 #include "server.h"			// Needed for CServer
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP

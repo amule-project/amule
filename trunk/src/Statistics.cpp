@@ -31,7 +31,7 @@
 #include "DownloadQueue.h"
 #include "otherfunctions.h"
 #include "ListenSocket.h"
-#include "sockets.h"
+#include "ServerConnect.h"
 #include "SharedFileList.h"
 #include "ServerList.h"
 

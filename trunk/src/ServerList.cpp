@@ -56,10 +56,10 @@
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "server.h"		// Needed for CServer and SRV_PR_*
 #include "otherstructs.h"	// Needed for ServerMet_Struct
-#include "packets.h"		// Needed for CInvalidPacket
+#include "Packet.h"		// Needed for CInvalidPacket
 #include "opcodes.h"		// Needed for MET_HEADER
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "HTTPDownload.h"	// Needed for HTTPThread
@@ -247,7 +247,7 @@ void CServerList::ServerStats()
 			Notify_ServerRemove(ping_server);
 			return;
 		}
-		Packet* packet = new Packet(OP_GLOBSERVSTATREQ, 4);
+		CPacket* packet = new CPacket(OP_GLOBSERVSTATREQ, 4);
 		srand((unsigned)time(NULL));
 		uint32 time = 0x55AA0000 + (uint16)rand();
 		ping_server->SetChallenge(time);
@@ -267,7 +267,7 @@ void CServerList::ServerStats()
 			// of the challenge (in network byte order) MUST NOT be a valid string-len-int16!
 			uint32 randomness = 1 + (int) (((float)(0xFFFF))*rand()/(RAND_MAX+1.0));
 			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
-			packet = new Packet( OP_SERVER_DESC_REQ,4);
+			packet = new CPacket( OP_SERVER_DESC_REQ,4);
 			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
@@ -630,7 +630,7 @@ CServer* CServerList::GetNextStatServer()
 	return nextserver;
 }
 
-bool CServerList::BroadCastPacket(Packet* packet)
+bool CServerList::BroadCastPacket(CPacket* packet)
 {
 	// unused atm . but might be useful later
 	if (udp_timer.IsRunning()) {

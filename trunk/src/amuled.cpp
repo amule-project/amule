@@ -78,7 +78,7 @@
 #include "ClientCredits.h"		// Needed for CClientCreditsList
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "sockets.h"			// Needed for CServerConnect
+#include "ServerConnect.h"			// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -87,10 +87,10 @@
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "ServerSocket.h"	// Needed for CServerSocket
-#include "UDPSocket.h"		// Needed for CUDPSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
-#include "packets.h"
+#include "Packet.h"
 #include "AICHSyncThread.h"
 #include "Statistics.h"
 
@@ -230,10 +230,10 @@ void CamuleDaemonApp::NotifyEvent(GUIEvent event)
 			break;
 		// search
 	        case SEARCH_REQ:
-			statistics->AddUpDataOverheadServer(((Packet *)event.ptr_value)->GetPacketSize());
-			serverconnect->SendPacket( (Packet *)event.ptr_value, 0 );
+			statistics->AddUpDataOverheadServer(((CPacket*)event.ptr_value)->GetPacketSize());
+			serverconnect->SendPacket( (CPacket*)event.ptr_value, 0 );
 			if ( event.byte_value ) {
-				searchlist->m_searchpacket = (Packet *)event.ptr_value;
+				searchlist->m_searchpacket = (CPacket*)event.ptr_value;
 			} else {
 				searchlist->m_searchpacket = 0;
 			}

@@ -41,7 +41,7 @@
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "otherfunctions.h" 	// Needed for md4cpy
 
-#include "sockets.h"
+#include "ServerConnect.h" // Needed for CServerConnect
 #include "CFile.h"
 
 #include "CryptoPP_Inc.h"

@@ -37,7 +37,7 @@
 #include "otherfunctions.h"		// Needed for CastByName
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
-#include "sockets.h"		// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "server.h"			// Needed for CServer and SRV_PR_*
 #include "opcodes.h"		// Needed for MP_PRIO*
 

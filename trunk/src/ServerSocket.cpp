@@ -48,19 +48,19 @@
 #include <wx/tokenzr.h>
 
 #include "ServerSocket.h"	// Interface declarations
-#include "packets.h"		// Needed for Packet
+#include "Packet.h"		// Needed for CPacket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"		// Needed for CClientList
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "PartFile.h"		// Needed for CPartFile
-#include "CMemFile.h"		// Needed for CMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "otherstructs.h"	// Needed for LoginAnswer_Struct
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "opcodes.h"		// Needed for OP_SERVERMESSAGE
 #include "otherfunctions.h"	// Needed for GetTickCount
-#include "sockets.h"		// Needed for CS_WAITFORLOGIN
+#include "ServerConnect.h"		// Needed for CS_WAITFORLOGIN
 #include "ServerList.h"		// Needed for CServerList
 #include "server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
@@ -685,7 +685,7 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 	SetConnectionState(CS_DISCONNECTED);
 }
 
-bool CServerSocket::PacketReceived(Packet* packet)
+bool CServerSocket::PacketReceived(CPacket* packet)
 {
 	CALL_APP_DATA_LOCK;
 	#ifdef DEBUG_SERVER_PROTOCOL
@@ -739,7 +739,7 @@ void CServerSocket::SetConnectionState(sint8 newstate)
 	}
 }
 
-bool CServerSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket)
+bool CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	m_dwLastTransmission = GetTickCount();
 	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
