@@ -30,12 +30,12 @@
 #include "amule.h"			// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "KnownFile.h"		// Needed for SRV_PR_LOW
+#include "KnownFile.h"		// Needed for SRV_PR_*
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerWnd.h"		// Needed for CServerWnd
 #include "sockets.h"		// Needed for CServerConnect
 #include "server.h"			// Needed for CServer
-#include "opcodes.h"		// Needed for MP_PRIOLOW
+#include "opcodes.h"		// Needed for MP_PRIO*
 
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
