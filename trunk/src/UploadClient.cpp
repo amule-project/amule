@@ -384,8 +384,8 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 	if( size == 16 )
 		return;
 	CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
-	uint8 cfilehash[16];
-	data->Read(cfilehash);
+	uchar* cfilehash;
+	data->ReadRaw(cfilehash,16);
 	CKnownFile* tempreqfile = theApp.sharedfiles->GetFileByID(cfilehash);
 	uint16 nED2KUpPartCount;
 	data->Read(nED2KUpPartCount);
@@ -431,7 +431,8 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock){
 	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
-//	CMemFile memfile((BYTE*)data,togo);
+
+	CMemFile outdata;
 	if (togo > 10240) 
 		nPacketSize = togo/(uint32)(togo/10240);
 	else
@@ -441,10 +442,9 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 			nPacketSize = togo;
 		togo -= nPacketSize;
 
-		CMemFile outdata;
-		outdata.Write((const uint8*)GetUploadFileID());
-		outdata.Write(currentblock->EndOffset - togo - nPacketSize); // startpos
-		outdata.Write(currentblock->EndOffset - togo);               // endpos
+		outdata.WriteRaw(GetUploadFileID(),16);
+		outdata.Write((uint32)currentblock->EndOffset - togo - nPacketSize); // startpos
+		outdata.Write((uint32)currentblock->EndOffset - togo);               // endpos
 		outdata.WriteRaw(data, nPacketSize);
 		Packet* packet = new Packet(&outdata);
 		packet->opcode = OP_SENDINGPART;
@@ -468,7 +468,7 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 		return;
 	}
 	m_bUsedComprUp = true;
-//	CMemFile memfile(output,newsize);
+	CMemFile outdata;
 	togo = newsize;
 	uint32 nPacketSize;
 	if (togo > 10240) 
@@ -480,8 +480,8 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 			nPacketSize = togo;
 		togo -= nPacketSize;
 
-		CMemFile outdata;
-		outdata.Write((const uint8*)GetUploadFileID());
+
+		outdata.WriteRaw(GetUploadFileID(),16);
 		outdata.Write(currentblock->StartOffset);
 		outdata.Write((uint32)newsize);
 		outdata.WriteRaw(output, nPacketSize);
@@ -641,11 +641,11 @@ void CUpDownClient::SendHashsetPacket(char* forfileid){
 	}
 
 	CMemFile* data = new CMemFile();
-	data->Write((const uint8*)file->GetFileHash());
+	data->WriteRaw(file->GetFileHash(),16);
 	uint16 parts = file->GetHashCount();
 	data->Write(parts);
 	for (int i = 0; i != parts; i++)
-		data->Write((const uint8*)file->GetPartHash(i));
+		data->WriteRaw(file->GetPartHash(i),16);
 	Packet* packet = new Packet(data);
 	packet->opcode = OP_HASHSETANSWER;
 	delete data;
@@ -680,6 +680,7 @@ void CUpDownClient::SendRankingInfo(){
 	CMemFile data;
 	data.Write(nRank);
 	// Kry: what are these zero bytes for. are they really correct?
+	// Kry - Well, eMule does like that. I guess they're ok.
 	data.Write((uint32)0); data.Write((uint32)0); data.Write((uint16)0);
 	Packet* packet = new Packet(&data,OP_EMULEPROT);
 	packet->opcode = OP_QUEUERANKING;
@@ -702,12 +703,11 @@ void CUpDownClient::SendCommentInfo(CKnownFile *file)
 	if(file->GetFileRate() == 0 && desc.IsEmpty()) {
 		return;
 	}
-	CMemFile *data = new CMemFile();
-	data->Write(rating);
-	data->Write(desc.Left(128));
-	Packet *packet = new Packet(data,OP_EMULEPROT);
+	CMemFile data;
+	data.Write(rating);
+	data.Write(desc.Left(128));
+	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->opcode = OP_FILEDESC;
-	delete data;
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 	socket->SendPacket(packet,true);
 }
