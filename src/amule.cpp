@@ -1613,7 +1613,6 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 		
 		// Known.met changed, AICH sync thread start
 		RunAICHThread();
-		
 	} 
 }
 
@@ -1669,6 +1668,9 @@ void CamuleApp::ShutDown() {
 	amuledlg->Destroy();
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
+	}
+	if (CAICHSyncThread::IsRunning()) {
+		CAICHSyncThread::Stop();
 	}
 }
 
@@ -2201,15 +2203,8 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 
 void CamuleApp::RunAICHThread()
 {
-	
-	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-	if ( AICH_Thread->Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true, _("CamuleApp: can't create AICH thread"));
-		return;
-	}
-	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
-	AICH_Thread->Run();
-	
+	if ( !CAICHSyncThread::IsRunning() )
+		CAICHSyncThread::Start();
 }
 
 
