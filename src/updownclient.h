@@ -339,7 +339,7 @@ public:
 
 	//File Comment 
 	CString			GetFileComment()			{return m_strComment;} 
-	void			SetFileComment(char *desc)		{m_strComment.Format("%s",desc);}
+	void			SetFileComment(char *desc)		{m_strComment.Format(wxT("%s"),desc);}
 	uint8			GetFileRate()				{return m_iRate;}
 	
 	wxString		GetSoftStr() { return m_clientVerString.Left(m_SoftLen); }

@@ -58,9 +58,11 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	name = GetDlgItem(ID_USERNAME, wxTextCtrl)->GetValue();
 	hash = GetDlgItem(ID_USERHASH, wxTextCtrl)->GetValue();
 	fullip = GetDlgItem(ID_IPADDRESS, wxTextCtrl)->GetValue();
-	port = atoi( GetDlgItem(ID_IPORT, wxTextCtrl)->GetValue().c_str() );
+	unsigned long temp;
+	GetDlgItem(ID_IPORT, wxTextCtrl)->GetValue().ToULong(&temp);
+	port = temp;
 
-	scancount = sscanf(fullip.c_str(), "%d.%d.%d.%d", &a, &b, &c, &d);
+	scancount = sscanf(unicode2char(fullip), "%d.%d.%d.%d", &a, &b, &c, &d);
 	if ( scancount != 4 || port <= 0 ) {
 		wxMessageBox(_("You have to enter a valid IP and port!"));
 		return;
@@ -81,7 +83,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 		theApp.amuledlg->chatwnd->AddFriend( NULL, 0, ip, port, 0, name, 0 );
 	} else {
 		unsigned char userhash[16];
-		DecodeBase16( hash.c_str(), 32, userhash );
+		DecodeBase16( unicode2char(hash), 32, userhash );
 		
 		theApp.amuledlg->chatwnd->AddFriend( userhash, 0, ip, port, 0, name, 1 );
 	};

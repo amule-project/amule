@@ -33,7 +33,8 @@
 enum GUI_Event_ID {
 	INVALID_EVENT = 0,
 	SHAREDFILES_UPDATEITEM,
-	ADDLOGLINE
+	ADDLOGLINE,
+	ADDDEBUGLOGLINE
 };
 
 class GUIEvent {
@@ -43,7 +44,7 @@ class GUIEvent {
 		byte_value 		= 0;
 		long_value 		= 0;
 		longlong_value 	= 0;
-		string_value 	= "";
+		string_value 	= wxT("");
 		ptr_value			= NULL;
 	};
 	
@@ -56,6 +57,18 @@ class GUIEvent {
 	void*			ptr_value; 
 };
 
+
+#define AddLogLineM(x,y); \
+		GUIEvent event(ADDLOGLINE); \
+		event.string_value = y; \
+		event.byte_value = x; \
+		theApp.NotifyEvent(event);
+		
+#define AddDebugLogLineM(x,y); \
+		GUIEvent event(ADDDEBUGLOGLINE); \
+		event.string_value = y; \
+		event.byte_value = x; \
+		theApp.NotifyEvent(event);
 
 class CAbstractFile;
 class ExternalConn;

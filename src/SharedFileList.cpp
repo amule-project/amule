@@ -345,15 +345,16 @@ void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 	output->UpdateItem(toupdate);
 }
 
-void CSharedFileList::GetSharedFilesByDirectory(const char *directory,
+void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
                             CTypedPtrList<CPtrList, CKnownFile*>& list)
 {
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); pos++ ) {
 		CKnownFile *cur_file = pos->second;
 
-		if ( 0 != strcmp(cur_file->GetFilePath(), directory) )
+		if (directory.CompareTo(cur_file->GetFilePath())) {
 			continue;
+		}
 
 		list.AddTail(cur_file);
 	}
