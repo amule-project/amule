@@ -51,7 +51,6 @@ public:
 	void		RemoveAllServers();
 	void		RemoveDeadServers();	
 	bool		AddServermetToList(const wxString& strFile, bool merge = true);
-	void		AddServersFromTextFile(wxString strFilename,bool isstaticserver=true, bool writetolog = false);// emanuelw(20030924) added writetolog
 	bool		SaveServermetToFile(); //<<--9/22/02
 	void		ServerStats();
 	void		ResetServerPos()	{serverpos = 0;}
@@ -72,10 +71,11 @@ public:
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
 
-protected:
-	virtual void ObserverAdded( ObserverType* );
-	void			AutoUpdate();
 private:
+	virtual void 	ObserverAdded( ObserverType* );
+	void			AutoUpdate();
+	
+	void			LoadStaticServers( const wxString& filename );
 	uint8			current_url_index;
 	uint32		serverpos;
 	uint32		statserverpos;
