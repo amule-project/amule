@@ -1311,9 +1311,19 @@ enum {
  */
 enum EC_DETAIL_LEVEL {
 	EC_DETAIL_CMD,		///< aMuleCmd uses this level to obtain only basic information
-	EC_DETAIL_WEB,		///< aMuleWeb uses this level to obtain represenative (but not full) information
-	EC_DETAIL_GUI,		///< the (upcoming) remote gui will use this (default) value, to obtain full information
-	EC_DETAIL_UPDATE,	///< return only fields that constatly change (rate, ping, part status)
+	
+	/*
+	 * Send either full info or fields that usually changes (speed, source count, etc).
+	 * This algorithm doesn't use match memory, but consumes more bandwidth.
+	 */
+	EC_DETAIL_FULL,
+	EC_DETAIL_UPDATE,
+	
+	/*
+	 * Send only tags that has been changed since last request. This algorithm
+	 * uses twice memory as previous, but saves bandwidth. Good for remote gui
+	 */
+	EC_DETAIL_INC_UPDATE,
 };
 
 

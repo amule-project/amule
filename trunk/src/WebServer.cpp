@@ -1317,7 +1317,7 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	// categories
-	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
+	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
 	if (reply) {
@@ -1468,7 +1468,7 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 		return wxEmptyString;
 	}
 	
-	request = new CECPacket(EC_OP_GET_STATSGRAPHS, EC_DETAIL_WEB);
+	request = new CECPacket(EC_OP_GET_STATSGRAPHS);
 	if (!request) {
 		return wxEmptyString;
 	}
@@ -1770,7 +1770,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	wxString Out = m_Templates.sStats;
 	wxString sStats;
 	
-	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
+	CECPacket req(EC_OP_GET_STATSTREE);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		CECTag *serverVersion = response->GetTagByName(EC_TAG_SERVER_VERSION);
@@ -2053,7 +2053,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	OutS.Replace(wxT("[ServerOptions]"), _("Server Preferences"));
 	OutS.Replace(wxT("[WebSearch]"), _("Web-based Search"));
 
-	CECPacket connstate_req(EC_OP_GET_CONNSTATE, EC_DETAIL_WEB);
+	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
 	CECPacket *sServerStat = webInterface->SendRecvMsg_v2(&connstate_req);
 	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByIndexSafe(0) : NULL;
 	if (sServerStat && tag) {
@@ -2272,7 +2272,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	Out.Replace(wxT("[Message]"), messageString);
 
 	// categoriesa
-	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
+	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
 	if (reply) {
@@ -2485,7 +2485,7 @@ ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry, xSe
 
 bool ServersInfo::ServersInfo::ReQuery()
 {
-	CECPacket srv_req(EC_OP_GET_SERVER_LIST, EC_DETAIL_WEB);
+	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
 	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
 	if (!srv_reply) {
 		return false;
@@ -2825,7 +2825,7 @@ UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFiles, int
 
 bool UploadsInfo::ReQuery()
 {
-	CECPacket up_req(EC_OP_GET_ULOAD_QUEUE, EC_DETAIL_WEB);
+	CECPacket up_req(EC_OP_GET_ULOAD_QUEUE);
 	CECPacket *up_reply = m_webApp->SendRecvMsg_v2(&up_req);
 	if (!up_reply) {
 		return false;
