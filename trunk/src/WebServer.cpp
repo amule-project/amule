@@ -2540,8 +2540,6 @@ DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib) :
 	m_SortStrVals[wxT("transferred")] = DOWN_SORT_TRANSFERRED;
 	m_SortStrVals[wxT("progress")] = DOWN_SORT_PROGRESS;
 	m_SortStrVals[wxT("speed")] = DOWN_SORT_SPEED;
-	
-	m_This = this;
 }
 
 void DownloadFilesInfo::LoadImageParams(wxString &tpl, int width, int height)
@@ -2637,6 +2635,61 @@ bool UploadsInfo::ReQuery()
 	return true;
 }
 
+SearchFile::SearchFile(CEC_SearchFile_Tag *)
+{
+}
+
+void SearchFile::ProcessUpdate(CEC_SearchFile_Tag *)
+{
+}
+
+SearchInfo *SearchFile::GetContainerInstance()
+{
+	return SearchInfo::m_This;
+}
+
+SearchInfo *SearchInfo::m_This = 0;
+
+SearchInfo::SearchInfo(CamulewebApp *webApp) :
+	UpdatableItemsContainer<SearchFile, xSearchSort, CEC_SearchFile_Tag, CMD4Hash>(webApp)
+{
+	m_This = this;
+	
+	m_SortHeaders[SEARCH_SORT_NAME] = wxT("[SortName]");
+	m_SortHeaders[SEARCH_SORT_SIZE] = wxT("[SortSize]");
+	m_SortHeaders[SEARCH_SORT_SOURCES] = wxT("[SortSources]");
+	
+	m_SortStrVals[wxT("")] = SEARCH_SORT_NAME;
+	m_SortStrVals[wxT("name")] = SEARCH_SORT_NAME;
+	m_SortStrVals[wxT("size")] = SEARCH_SORT_SIZE;
+	m_SortStrVals[wxT("sources")] = SEARCH_SORT_SOURCES;
+}
+
+bool SearchInfo::ReQuery()
+{
+	DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
+	
+	SortItems();
+
+	return true;
+}
+
+bool SearchInfo::CompareItems(const SearchFile &i1, const SearchFile &i2)
+{
+	bool Result;
+	switch(m_SortOrder) {
+		case SEARCH_SORT_NAME:
+			Result = i1.sFileName.CmpNoCase(i2.sFileName) > 0;
+			break;
+		case SEARCH_SORT_SIZE:
+			Result = i1.lFileSize < i2.lFileSize;
+			break;
+		case SEARCH_SORT_SOURCES:
+			Result = i1.lSourceCount < i2.lSourceCount;
+			break;
+	}
+	return Result ^ m_SortReverse;
+}
 
 /*!
  * Image classes:

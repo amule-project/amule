@@ -842,7 +842,11 @@ enum {
 	//
 	// Search
 	//
-	
+		/*!
+		 * \brief Info about file found in search
+		 */
+		 EC_TAG_SEARCHFILE,
+		 
 		/*!
 		 * \brief Type of search requested
 		 * 
