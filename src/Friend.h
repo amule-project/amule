@@ -43,18 +43,32 @@ public:
 	CFriend(CUpDownClient* client);
 	CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLastUsedIP, uint32 tm_nLastUsedPort, uint32 tm_dwLastChatted, wxString tm_strName, uint32 tm_dwHasHash);
 	
-	CMD4Hash	m_Userhash;
+	void	SetUserHash(const CMD4Hash& userhash) { m_UserHash = userhash;}
+	bool	HasHash() { return !m_UserHash.IsEmpty(); }
+	const	CMD4Hash& GetUserHash() const { return m_UserHash; }
+	
+	void	LinkClient(CUpDownClient* client, bool unlink = true);
+	CUpDownClient* GetLinkedClient() const { return m_LinkedClient; }
+	void	UnLinkClient() {  m_LinkedClient = NULL; }
+
+	const wxString& GetName() { return m_strName; }
+	uint16 GetPort() const { return m_nLastUsedPort; }
+	uint32 GetIP() const { return m_dwLastUsedIP; }
+	
+	void	LoadFromFile(CFileDataIO* file);
+	void	WriteToFile(CFileDataIO* file);
+
+private:
+	
+	CUpDownClient* m_LinkedClient;
+
+	CMD4Hash	m_UserHash;
 	uint32	m_dwLastSeen;
 	uint32	m_dwLastUsedIP;
 	uint16	m_nLastUsedPort;
 	uint32	m_dwLastChatted;
-	uint32	m_dwHasHash;
 	wxString	m_strName;
-
-	CUpDownClient* m_LinkedClient;
-
-	void	LoadFromFile(CFileDataIO* file);
-	void	WriteToFile(CFileDataIO* file);
+		
 };
 
 #endif
