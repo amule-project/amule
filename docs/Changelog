@@ -123,6 +123,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		stdout/stderr.
 		* Fixed lots of segfaults in amuleweb, thanks to alandar and
 		Mr Faber.
+		* Updated proxy debug code to use new logger.
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.

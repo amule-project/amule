@@ -45,27 +45,28 @@ DebugType CDebugCategory::GetType() const
 
 
 CDebugCategory g_debugcats[] = {
-	CDebugCategory( logGeneral,			wxT("General") ),
-	CDebugCategory( logHasher,			wxT("Hasher") ),
-	CDebugCategory( logClient,			wxT("ED2k Client") ),
+	CDebugCategory( logGeneral,		wxT("General") ),
+	CDebugCategory( logHasher,		wxT("Hasher") ),
+	CDebugCategory( logClient,		wxT("ED2k Client") ),
 	CDebugCategory( logLocalClient,		wxT("Local Client Protocol") ),
 	CDebugCategory( logRemoteClient,	wxT("Remote Client Protocl") ),
 	CDebugCategory( logPacketErrors,	wxT("Packet Parsing Errors") ),
-	CDebugCategory( logCFile,			wxT("CFile") ),
-	CDebugCategory( logFileIO,			wxT("FileIO") ),
-	CDebugCategory( logZLib,			wxT("ZLib") ),
+	CDebugCategory( logCFile,		wxT("CFile") ),
+	CDebugCategory( logFileIO,		wxT("FileIO") ),
+	CDebugCategory( logZLib,		wxT("ZLib") ),
 	CDebugCategory( logAICHThread,		wxT("AICH-Hasher") ),
 	CDebugCategory( logAICHTransfer,	wxT("AICH-Transfer") ),
 	CDebugCategory( logAICHRecovery,	wxT("AICH-Recovery") ),
 	CDebugCategory( logListenSocket,	wxT("ListenSocket") ),
-	CDebugCategory( logCredits,			wxT("Credits") ),
+	CDebugCategory( logCredits,		wxT("Credits") ),
 	CDebugCategory( logClientUDP,		wxT("ClientUDPSocket") ),
 	CDebugCategory( logDownloadQueue,	wxT("DownloadQueue") ),
 	CDebugCategory( logIPFilter,		wxT("IPFilter") ),
 	CDebugCategory( logKnownFiles,		wxT("KnownFileList") ),
 	CDebugCategory( logPartFile,		wxT("PartFiles") ),
 	CDebugCategory( logSHAHashSet,		wxT("SHAHashSet") ),
-	CDebugCategory( logServer,			wxT("Servers") )
+	CDebugCategory( logServer,		wxT("Servers") ),
+	CDebugCategory( logProxy,		wxT("Proxy") )
 };
 
 
