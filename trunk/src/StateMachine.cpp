@@ -36,6 +36,7 @@ m_initial_state(initial_state),
 m_clock_counter(0)
 {
 	m_state = initial_state;
+	m_clocks_in_current_state = 0;
 }
 
 StateMachine::~StateMachine()
