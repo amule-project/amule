@@ -242,6 +242,8 @@ Version 2.0.0rc4 - The 'Rabbits and Mules love carrots' version.
 		* Removed the declaration of void ParseCommandLine(); from
 		  TextClient.h and WebInterface.h. It seems to have been
 		  forgotten here.
+		* Patch to listctrl.cpp, was segfaulting in 2.5.1 when
+		  hiding/resizing columns. In 2.4.2 was just asserting.
 
 	shakraw:
 		* Fixed the "remote connect" bug
