@@ -45,8 +45,8 @@ public:
 		return wxString::Find(what);
 	};
        
-	CString Mid(int from,int len) {
-		return CString(wxString::Mid(from,len).GetData());
+	CString Mid(int from,size_t count = wxSTRING_MAXLEN) {
+		return CString(wxString::Mid(from,count).GetData());
 	}	
 	
 	void Format(const wxChar* pszFormat,...) {
@@ -72,13 +72,13 @@ public:
 		return *this;
 	}
   
-	CString& operator=(const char a[]) {
+	CString& operator=(const wxChar a[]) {
 		Clear();
 		Append((wxChar*)a);
 		return *this;
 	}
 
-	CString& operator+(const char a[]) {
+	CString& operator+(const wxChar a[]) {
 		Append((wxChar*)a);
 		return *this;
 	}
