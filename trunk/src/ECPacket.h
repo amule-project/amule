@@ -25,7 +25,7 @@
 #include "types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
 #include <netinet/in.h>	// Needed for ntoh, hton functions
-#include "StringFunctions.h"	// Needed for aMuleConvToUTF8
+#include "StringFunctions.h"	// Needed for char2UTF8
 #include "ECcodes.h"	// Needed for EC types
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
