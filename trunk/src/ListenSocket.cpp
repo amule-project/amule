@@ -111,6 +111,7 @@ static CClientReqSocketHandler TheClientReqSocketHandler;
 CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
 {
 	m_socket = socket;
+	socket->my_handler = this;
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		printf("ERROR: CClientReqSocketHandler failed create\n");
 		wxASSERT(0);
