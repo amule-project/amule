@@ -45,6 +45,10 @@ dist_doc_DATA += utils/wxCas/doc/wxcas_reference_manual.pdf \
 	utils/wxCas/doc/wxcas_user_manual.pdf
 endif
 
+# Xas plugin
+plugins_DATA = utils/xas/xas.pl
+pluginsdir = $(libdir)/xchat/plugins
+
 if ED2K
 bin_PROGRAMS += ed2k
 endif
