@@ -39,6 +39,7 @@
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"			// Needed for CFile
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread
+#include "Logger.h"			// Needed for AddLogLine
 
 #include <algorithm>
 
@@ -136,28 +137,30 @@ void CAddFileThread::ThreadCountDec()
 		s_count_lock.Unlock();
 
 		// Some debug info
-		printf("Hasher: Warning, ThreadCountDec() called while thread count was zero!\n");
+		AddDebugLogLineM( true, logHasher, wxT("Warning, ThreadCountDec() called while thread count was zero!") );
 	}
 }
 
 
 void CAddFileThread::CreateNewThread()
 {
-	printf("Hasher: Creating new thread.\n");
+	AddLogLineM( false, _("Hasher: Creating new thread.") );
 
 	ThreadCountInc();
 
 	CAddFileThread* th = new CAddFileThread();
-	wxThreadError create_error;
-	if ((create_error = th->Create()) != wxTHREAD_NO_ERROR) {
-		// Error!
-		if (create_error == wxTHREAD_RUNNING) {
-			printf("Attempt to create a already running thread!\n");
-		} else if (create_error == wxTHREAD_NO_RESOURCE) {
-			printf("Attempt to create a thread without resources!\n");
-		} else {
-			printf("Unkown error attempting to create a thread!\n");
-		}
+	
+	switch ( th->Create() ) {
+		case wxTHREAD_NO_ERROR:
+			break;
+		case wxTHREAD_RUNNING:
+			AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a already running thread!") );
+			break;
+		case wxTHREAD_NO_RESOURCE:
+			AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a thread without resources!") );
+			break;
+		default:
+			AddDebugLogLineM( true, logHasher, wxT("Error, unknown error attempting to create a thread!") );
 	}
 
 	// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
@@ -170,7 +173,7 @@ void CAddFileThread::CreateNewThread()
 void CAddFileThread::Start()
 {
 	if ( IsRunning() ) {
-		printf("Hasher: Warning, Start() called while already running.\n");
+		AddDebugLogLineM( true, logHasher, wxT("Warning, Start() called while already running.") );
 	} else {
 		SetRunning(true);
 
@@ -193,7 +196,7 @@ void CAddFileThread::Stop()
 	if ( IsRunning() ) {
 		// Are there any threads to kill?
 		if ( GetThreadCount() ) {		
-			printf("Hasher: Signaling for remaining threads to terminate.\n");
+			AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
 		
 			SetRunning( false );
 
@@ -207,13 +210,13 @@ void CAddFileThread::Stop()
 				
 			}
 			
-			printf("Hasher: Threads terminated.\n");
+			AddLogLineM( false, _("Hasher: Threads terminated.") );
 		} else {
 			// No threads to kill, just stay quiet.
 			SetRunning( false );
 		}
 	} else {
-		printf("Hasher: Warning, attempted to stop already stopped hasher!\n");
+		AddDebugLogLineM( true, logHasher, wxT("Warning, Attempted to stop already stopped hasher!") );
 	}
 }
 
@@ -250,13 +253,13 @@ void CAddFileThread::RemoveFromQueue(QueuedFile* file)
 {
 	// Some debugging information
 	if ( !file ) {
-		printf("Hasher: Error, tried to pass NULL pointer to RemoveFromQueue().\n");
+		AddDebugLogLineM( true, logHasher, wxT("Error, tried to pass NULL pointer to RemoveFromQueue().") );
 		return;
 	}
 
-	// Some moredebugging information
+	// Some more debugging information
 	if ( !file->m_busy ) {
-		printf("Hasher: Warning, non-busy file passed to RemoveFromQueue().\n");
+		AddDebugLogLineM( true, logHasher, wxT("Error, non-busy file passed to RemoveFromQueue().") );
 	}
 
 	// Remove a queued file which has been completed
@@ -266,16 +269,17 @@ void CAddFileThread::RemoveFromQueue(QueuedFile* file)
 		s_queue.erase( it );
 	} else {
 		// Some debug info
-		printf("Hasher: Warning, attempted to remove file from queue, but didn't find it.\n");
+		AddDebugLogLineM( true, logHasher, wxT("Error, attempted to remove file from queue, but didn't find it.") );
 	}
 			
 	delete file;
 }
 
 
-
 void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
 {
+	AddDebugLogLineM( false, logHasher, wxString( wxT("Adding file to queue: ") ) + path );
+
 	QueuedFile* hashfile = new QueuedFile;
 	hashfile->m_busy = false;
 	hashfile->m_path = path;
@@ -327,7 +331,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			
 		if ( !current ) {
 			// Nothing to do, break
-			printf("Hasher: No files on queue, stopping thread.\n");
+			AddLogLineM( false, _("Hasher: No files on queue, stopping thread.") );
 			break;
 		}
 		
@@ -339,8 +343,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 	
 		// Attempt to open the file
 		if ( !file.Open( filename, CFile::read ) ) {
-			printf("Hasher: Warning, failed to open file, skipping: %s\n",
-				(const char *)unicode2char(filename));
+			AddDebugLogLineM( true, logHasher, wxT("Warning, failed to open file, skipping: " ) + filename );
 			
 			// Whoops, something's wrong. Delete the item and continue
 			RemoveFromQueue( current );
@@ -350,8 +353,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 		// We only support files <= 4gigs
 		if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
-			printf("Hasher: Warning, file is bigger than 4GB, skipping: %s\n",
-				(const char *)unicode2char(filename));
+			AddDebugLogLineM( true, logHasher, wxT("Warning, file is bigger than 4GB, skipping: ") + filename );
 			
 			// Delete and continue 
 			RemoveFromQueue( current );
@@ -359,8 +361,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		}
 
 		if (!file.GetLength()) {
-			printf("Hasher: 0-size file, skipping: %s\n",
-				(const char *)unicode2char(filename));
+			AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + filename );
 			
 			// Delete and continue 
 			RemoveFromQueue( current );
@@ -393,11 +394,9 @@ wxThread::ExitCode CAddFileThread::Entry()
 		if ( needsAICH ) {
 			knownfile->GetAICHHashset()->FreeHashSet();
 		
-			printf("Hasher: Starting to create MD4 and AICH hash for file: %s\n",
-				(const char *)unicode2char(current->m_name));
+			AddLogLineM( false, _("Hasher: Starting to create MD4 and AICH hash for file: ") + current->m_name );
 		} else {
-			printf("Hasher: Starting to create MD4 hash for file: %s\n",
-				(const char *)unicode2char(current->m_name));
+			AddLogLineM( false, _("Hasher: Starting to create MD4 hash for file: ") + current->m_name );
 		}
 		
 		
@@ -409,8 +408,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 		// Checking if something went wrong
 		if ( error ) {
-			printf("Hasher: Error while reading file, skipping: %s\n",
-				(const char *)unicode2char(current->m_name));
+			AddDebugLogLineM( true, logHasher, wxT("Error while reading file, skipping: ") + current->m_name );
 		
 			// Remove the temp-result
 			delete knownfile;
@@ -419,7 +417,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 			RemoveFromQueue( current );
 			continue;
 		}
-		
 
 
 		if ( IsRunning() ) {
@@ -454,8 +451,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 					m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 		
 					if ( !m_pAICHHashSet->SaveHashSet() ) {
-						printf("Hasher: Warning, failed to save AICH hashset for file: %s\n",
-							(const char *)unicode2char(current->m_name));
+						AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + current->m_name );
 					}
 				}
 			}
@@ -466,8 +462,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			evt.SetClientData( knownfile );
 			evt.SetExtraLong( (long)current->m_owner );
 
-			printf("Hasher: Finished hashing file: %s\n",
-				(const char *)unicode2char(current->m_name));
+			AddLogLineM( false, _("Hasher: Finished hashing file: ") + current->m_name );
 			
 			RemoveFromQueue( current );
 			wxPostEvent(&theApp, evt);
@@ -484,7 +479,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 	
 	
 	// Notify that the thread has died
-	printf("Hasher: A thread has died.\n");
+	AddLogLineM( false, _("Hasher: A thread has died.") );
 
 
 	return 0;
@@ -505,7 +500,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 	// Sanity check, this shoulnd't happen due to the loop calling this function, but ...
 	if ( cur_length == 0 ) {
-		printf("Hasher: Warning, EOF in CreateNextPartHash!\n");
+		AddDebugLogLineM( true, logHasher, wxT("Warning, EOF in CreateNextPartHash!") );
 	
 		return false;
 	}
@@ -553,3 +548,4 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 	return true;
 }
+
