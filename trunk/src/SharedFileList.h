@@ -37,7 +37,6 @@ struct UnknownFile_Struct;
 
 class CKnownFileList;
 class CKnownFile;
-class CServerConnect;
 class CSafeMemFile;
 class CMD4Hash;
 class CServer;
@@ -67,14 +66,12 @@ public:
 	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
 	void	ClearED2KPublishInfo();
-	void	SetServerConnect(CServerConnect* in_server) { server = in_server; }
 	
 private:
 	void	FindSharedFiles();
 	bool	reloading;
 	
 	CKnownFileMap		m_Files_map;
-	CServerConnect*		server;
 };
 
 #endif // SHAREDFILELIST_H

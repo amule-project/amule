@@ -782,8 +782,6 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
-	// Whenever we change serverconnect, we have to update the SharedFileList.
-	sharedfiles->SetServerConnect(serverconnect);
 	
 	*msg << wxT("*** Server UDP socket (TCP+3) at ") << 
 		ip << wxT(":") << thePrefs::GetPort() + 3 << wxT("\n");
