@@ -35,8 +35,8 @@ there client on the eMule forum..
 #define __KAD_TAG_H__
 
 #include <list>
-#include "../../opcodes.h"
-#include "../../otherfunctions.h"
+#include "../../OPCodes.h"
+#include "../../OtherFunctions.h"
 #include <wx/string.h>
 
 ////////////////////////////////////////
@@ -52,27 +52,27 @@ public:
 	{
 	}
 
-	CTagNameString(LPCSTR psz)
+	CTagNameString(wxString psz)
 		: wxString(psz)
 	{
 	}
 
-	CTagNameString(LPCSTR psz, int len)
+	CTagNameString(wxChar* psz, int len)
 		: wxString(psz, len)
 	{
 	}
 
 	// A tag name may include character values >= 0xD0 and therefor also >= 0xF0. to prevent those
-	// characters be interpreted as multi byte character sequences we have to sensure that a binary
+	// characters be interpreted as multi byte character sequences we have to ensure that a binary
 	// string compare is performed.
-	int Compare(LPCSTR psz) const throw()
+	int Compare(wxString psz) const throw()
 	{
 		//ATLASSERT( AtlIsValidString(psz) );
 		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
-		return strcmp(GetString(), psz);
+		return strcmp((char*)c_str(), (char*)psz.c_str());
 	}
 
-	int CompareNoCase(LPCSTR psz) const throw()
+	int CompareNoCase(wxString psz) const throw()
 	{
 //		ATLASSERT( AtlIsValidString(psz) );
 
@@ -82,37 +82,24 @@ public:
 		//return stricmp(GetString(), psz);
 
 		// Version #2 - independant from any codepage and/or LC_CTYPE setting.
-		return __ascii_stricmp(GetString(), psz);
+		return stricmp((char*)c_str(), (char*)psz.c_str());
 	}
 
-	CTagNameString& operator=(LPCSTR pszSrc)
+	CTagNameString& operator=(wxString pszSrc)
 	{
 		wxString::operator=(pszSrc);
 		return *this;
 	}
-
-	#warning HUM?
-/*
-	operator PCXSTR() const throw()
+	
+	wxChar* GetBuffer(int nMinBufferLength)
 	{
-		return wxString::operator PCXSTR();
+		return wxString::GetWriteBuf(nMinBufferLength);
 	}
 
-	XCHAR operator[]( int iChar ) const throw()
-	{
-		return wxString::operator [](iChar);
+	void ReleaseBuffer() {
+		wxString::UngetWriteBuf();
 	}
-
-	PXSTR GetBuffer()
-	{
-		return wxString::GetBuffer();
-	}
-
-	PXSTR GetBuffer(int nMinBufferLength)
-	{
-		return wxString::GetBuffer(nMinBufferLength);
-	}
-*/
+	
 
 	int GetLength() const throw()
 	{
@@ -129,7 +116,7 @@ public:
 	byte	m_type;
 	CTagNameString m_name;
 
-	CTag(byte type, LPCSTR name)
+	CTag(byte type, const wxString& name)
 		: m_name(name)
 	{
 		m_type = type;
@@ -143,7 +130,7 @@ public:
 	bool IsBsob() const { return m_type == TAGTYPE_BSOB; }
 	bool IsHash() const { return m_type == TAGTYPE_HASH; }
 
-	virtual CTagValueString GetStr() const { wxASSERT(0); return wxT("")s; }
+	virtual CTagValueString GetStr() const { wxASSERT(0); return wxT(""); }
 	virtual uint32 GetInt() const { wxASSERT(0); return 0; }
 	virtual float GetFloat() const { wxASSERT(0); return 0.0F; }
 	virtual const BYTE* GetBsob() const { wxASSERT(0); return NULL; }
@@ -159,7 +146,7 @@ protected:
 class CTagUnk : public CTag
 {
 public:
-	CTagUnk(byte type, LPCSTR name)
+	CTagUnk(byte type, const wxString& name)
 		: CTag(type, name)
 	{ }
 };
@@ -168,21 +155,9 @@ public:
 class CTagStr : public CTag
 {
 public:
-	CTagStr(LPCSTR name, LPCWSTR value, int len)
+	CTagStr(const wxString& name, const wxString& value)
 		: CTag(TAGTYPE_STRING, name)
-		, m_value(value, len)
-	{ }
-
-#ifndef _UNICODE
-	CTagStr(LPCSTR name, const wxString& rstr)
-		: CTag(TAGTYPE_STRING, name)
-		, m_value(rstr)
-	{ }
-#endif
-
-	CTagStr(LPCSTR name, const wxString& rstr)
-		: CTag(TAGTYPE_STRING, name)
-		, m_value(rstr)
+		, m_value(value)
 	{ }
 
 	virtual CTagValueString GetStr() const { return m_value; }
@@ -195,7 +170,7 @@ protected:
 class CTagUInt : public CTag
 {
 public:
-	CTagUInt(LPCSTR name, uint32 value)
+	CTagUInt(const wxString& name, uint32 value)
 		: CTag(0xFE, name)
 		, m_value(value)
 	{ }
@@ -210,7 +185,7 @@ protected:
 class CTagUInt32 : public CTag
 {
 public:
-	CTagUInt32(LPCSTR name, uint32 value)
+	CTagUInt32(const wxString& name, uint32 value)
 		: CTag(TAGTYPE_UINT32, name)
 		, m_value(value)
 	{ }
@@ -225,7 +200,7 @@ protected:
 class CTagFloat : public CTag
 {
 public:
-	CTagFloat(LPCSTR name, float value)
+	CTagFloat(const wxString& name, float value)
 		: CTag(TAGTYPE_FLOAT32, name)
 		, m_value(value)
 	{ }
@@ -240,7 +215,7 @@ protected:
 class CTagBool : public CTag
 {
 public:
-	CTagBool(LPCSTR name, bool value)
+	CTagBool(const wxString& name, bool value)
 		: CTag(TAGTYPE_BOOL, name)
 		, m_value(value)
 	{ }
@@ -255,7 +230,7 @@ protected:
 class CTagUInt16 : public CTag
 {
 public:
-	CTagUInt16(LPCSTR name, uint16 value)
+	CTagUInt16(const wxString& name, uint16 value)
 		: CTag(TAGTYPE_UINT16, name)
 		, m_value(value)
 	{ }
@@ -270,7 +245,7 @@ protected:
 class CTagUInt8 : public CTag
 {
 public:
-	CTagUInt8(LPCSTR name, uint8 value)
+	CTagUInt8(const wxString& name, uint8 value)
 		: CTag(TAGTYPE_UINT8, name)
 		, m_value(value)
 	{ }
@@ -285,7 +260,7 @@ protected:
 class CTagBsob : public CTag
 {
 public:
-	CTagBsob(LPCSTR name, const BYTE* value, uint8 nSize)
+	CTagBsob(const wxString& name, const BYTE* value, uint8 nSize)
 		: CTag(TAGTYPE_BSOB, name)
 	{
 		m_value = new BYTE[nSize];
@@ -310,7 +285,7 @@ protected:
 class CTagHash : public CTag
 {
 public:
-	CTagHash(LPCSTR name, const BYTE* value) 
+	CTagHash(const wxString& name, const BYTE* value) 
 		: CTag(TAGTYPE_HASH, name)
 	{ 
 		m_value = new BYTE[16];
