@@ -387,6 +387,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	
 	CFile file(GetFilePath(),CFile::read);
 	if (!file.IsOpened()){
+// TODO
 		//theApp.QueueLogLine(false, GetResString(IDS_ERR_FILEOPEN) + _T(" - %hs"), GetFilePath(), _T(""), strerror(errno));
 		return false;
 	}
@@ -397,8 +398,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
 		wxASSERT( pBlockAICHHashTree != NULL );
-		#warning damm ¬¬ we have to change the md4 algorithm!
-		//CreateHashFromFile(file, PARTSIZE, NULL, pBlockAICHHashTree);
+		CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
 		// SLUGFILLER: SafeHash - quick fallback
 		if (theApp.amuledlg==NULL || !theApp.IsRunning()){ // in case of shutdown while still hashing
 			file.Close();
@@ -412,19 +412,20 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	if (togo != 0){
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, togo);
 		wxASSERT( pBlockAICHHashTree != NULL );
-		#warning damm ¬¬ we have to change the md4 algorithm!
-		//CreateHashFromFile(file, togo, NULL, pBlockAICHHashTree);
+		CreateHashFromFile(&file, togo, NULL, pBlockAICHHashTree);
 	}
 	
 	m_pAICHHashSet->ReCalculateHash(false);
 	if ( m_pAICHHashSet->VerifyHashTree(true) ){
 		m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 		if (!m_pAICHHashSet->SaveHashSet()){
+// TODO
 			//theApp.QueueLogLine(true, GetResString(IDS_SAVEACFAILED));
 		}
 	}
 	else{
 		// now something went pretty wrong
+// TODO
 		//theApp.QueueDebugLogLine(true,_T("Failed to calculate AICH Hashset from file %s"), GetFileName());
 	}
 	
@@ -755,14 +756,33 @@ void CKnownFile::CreateHashFromInput(CFile* file, int Length, uchar* Output, uch
 #ifndef VERIFY
 #define VERIFY(x) (void(x))
 #endif //VERIFY
-#ifndef ASSERT
-#define ASSERT(x)
-#endif //ASSERT
 #endif //_AFX
+
+// This code is taken from aLinkCreator
+// Copyright holders are those on md4.cpp file
+// on aLinkCreator sources.
+
+/// BIG ENDIAN byte reversing
+#if wxBYTE_ORDER == wxBIG_ENDIAN
+// Note: this code is harmless on little-endian machines.
+void byteReverse(unsigned char *buf, unsigned longs) {
+  uint32 t;
+  do
+    {
+      t = (uint32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
+          ((unsigned) buf[1] << 8 | buf[0]);
+      *(uint32 *) buf = t;
+      buf += 4;
+    }
+  while (--longs);
+}
+#else
+#define byteReverse(buf, len)	do { } while (0)
+#endif
 
 void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar* Output, uchar* in_string, CAICHHashTree* pShaHashOut) const
 {
-	ASSERT( Output != NULL || pShaHashOut != NULL);
+	wxASSERT( Output != NULL || pShaHashOut != NULL);
 	// time critial
 	bool PaddingStarted = false;
 	uint32 Hash[4];
@@ -796,7 +816,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 			if (nIACHPos + len*64 >= EMBLOCKSIZE){
 				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
 				pHashAlg->Add(X, nToComplete);
-				ASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
 				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
 				posCurrentEMBlock += EMBLOCKSIZE;
 				pHashAlg->Reset();
@@ -812,6 +832,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 		if (Output != NULL){
 			for (uint32 i = 0; i < len; i++) 
 			{ 
+				byteReverse((uchar*)(X + i*64), 16);
 				MD4Transform(Hash, (uint32*)(X + i*64)); 
 			}
 		}
@@ -831,7 +852,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 			if (nIACHPos + Required >= EMBLOCKSIZE){
 				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
 				pHashAlg->Add(X, nToComplete);
-				ASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
 				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
 				posCurrentEMBlock += EMBLOCKSIZE;
 				pHashAlg->Reset();
@@ -850,7 +871,7 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 			pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg);
 			posCurrentEMBlock += nIACHPos;
 		}
-		ASSERT( posCurrentEMBlock == Length );
+		wxASSERT( posCurrentEMBlock == Length );
 		VERIFY( pShaHashOut->ReCalculateHash(pHashAlg, false) );
 	}
 
@@ -860,17 +881,21 @@ void CKnownFile::CreateHashFromInput(FILE* file,CFile* file2, int Length, uchar*
 			X[Required] = 0x80;
 			PaddingStarted = TRUE;
 			memset(&X[Required + 1], 0, 63 - Required);
+			byteReverse((uchar*)X, 16);
 			MD4Transform(Hash, (uint32*)X);
 			Required = 0;
 		}
 		if (!PaddingStarted)
 			X[Required++] = 0x80;
 		memset(&X[Required], 0, 64 - Required);
+		
 		// add size (convert to bits)
-		uint32 Length2 = Length >> 29;
-		Length <<= 3;
-		memcpy(&X[56], &Length, 4);
-		memcpy(&X[60], &Length2, 4);
+		// Kry - Afaik << and >> are endian safe ;)
+		((uint32*)X)[14] = Length << 3;
+		((uint32*)X)[15] = Length >> 29;			
+		
+		byteReverse((uchar*)X, 16); 
+	
 		MD4Transform(Hash, (uint32*)X);
 		md4cpy(Output, Hash);
 	}

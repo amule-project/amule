@@ -209,7 +209,15 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
-	void	CreateHashFromFile(CFile* file, int Length, unsigned char* Output)	{CreateHashFromInput(file,Length,Output,0);}
+	void	CreateHashFromFile(CFile* file, int Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { 
+			// This allows big endian build to not get done while I import.
+			#if wxBYTE_ORDER == wxBIG_ENDIAN
+				#error Sorry, no big endian compilation allowed today.
+				#error Will be fixed ASAP.
+			#endif
+			CreateHashFromInput(NULL, file, Length, Output, NULL, pShaHashOut); 
+		}	
+	void	CreateHashFromFile(FILE* file, int Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, NULL, Length, Output, NULL, pShaHashOut); }		
 	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,Length,Output,in_string);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
