@@ -144,42 +144,8 @@ public:
 	uint32 GetUptimeSecs() {
 		return GetUptimeMsecs() / 1000;
 	}
-
-	void AddDownloadFromSoft(uint8 SoftType, uint32 bytes) {
-		switch (SoftType) {
-			case SO_OLDEMULE:
-			case SO_EMULE:
-			case SO_EMULEPLUS:
-			case SO_COMPAT_UNK:
-				downloaded_eMule += bytes;
-				break;
-			case SO_AMULE:
-				downloaded_aMule += bytes;
-				break;
-			case SO_EDONKEY:
-				downloaded_eDonkey += bytes;
-				break;
-			case SO_EDONKEYHYBRID:
-				downloaded_eDonkeyHybrid += bytes;
-				break;
-			case SO_SHAREAZA:
-			case SO_NEW_SHAREAZA:
-				downloaded_Shareaza += bytes;
-				break;
-			case SO_MLDONKEY:
-			case SO_NEW_MLDONKEY:
-			case SO_NEW2_MLDONKEY:			
-				downloaded_MLDonkey += bytes;
-				break;
-			case SO_LXMULE:
-				downloaded_lxMule += bytes;
-				break;
-			default:
-				downloaded_Other += bytes;
-				break;
-		}
-	}
 	
+	void AddDownloadFromSoft(uint8 SoftType, uint32 bytes);
 	
 	// Download related
 	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;

@@ -396,7 +396,9 @@ public:
 	CIPFilterRem *ipfilter;
 	CSearchListRem *searchlist;
 	CListenSocketRem *listensocket;
-	CStatisticsRem *statistics;
+
+	CStatistics *statistics;
+	CStatisticsRem *rem_stat_updater;
 	
 	bool AddServer(CServer *srv);
 	
