@@ -1625,7 +1625,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 #endif
 
 	if (m_icounter < 10) {
-		uint32 cur_datarate;
 		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
 		{
 			cur_src = m_downloadingSourcesList.GetNext(pos);
@@ -2476,7 +2475,7 @@ uint8 CPartFile::PerformFileComplete()
 	m_hpartfile.Close();
 
 	if(wxFileName::FileExists(newname)) {
-		completed_errno | SAME_NAME_RENAMED;
+		completed_errno |= SAME_NAME_RENAMED;
 
 		int namecount = 0;
 
@@ -2525,7 +2524,7 @@ uint8 CPartFile::PerformFileComplete()
 		if (!FS_wxCopyFile(partfilename, newname)) {
 			delete[] partfilename;
 			delete[] newname;
-			completed_errno | UNEXP_FILE_ERROR;
+			completed_errno |= UNEXP_FILE_ERROR;
 			paused = true;
 			SetPartFileStatus(PS_ERROR);
 			wxMutexGuiEnter();
@@ -2538,12 +2537,12 @@ uint8 CPartFile::PerformFileComplete()
 		}
 	}
 	if (!wxRemoveFile(fullname)) {
-		completed_errno | DELETE_FAIL_MET;
+		completed_errno |= DELETE_FAIL_MET;
 	}
 	CString BAKName(fullname);
 	BAKName.Append(PARTMET_BAK_EXT);
 	if (!wxRemoveFile(BAKName)) {
-		completed_errno | DELETE_FAIL_MET_BAK;
+		completed_errno |= DELETE_FAIL_MET_BAK;
 	}
 	delete[] partfilename;
 	delete [] fullname;
