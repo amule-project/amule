@@ -455,7 +455,7 @@ class RPtr : public U {
 		}
 	T *operator->()
 		{
-			return (T *)loc_ptr;
+			return (T *)this->loc_ptr;
 		}
 	T *PtrCast(void *ptr)
 		{
