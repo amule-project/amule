@@ -387,8 +387,13 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				menu->Append(MP_ADDFRIEND, _("Add to Friends"));
 				menu->Append(MP_SHOWLIST, _("View Files"));
 				menu->Append(MP_SENDMESSAGE, _("Send message"));
+				menu->Append(MP_CHANGE2FILE, _("Swap to this file")); 
 				m_ClientMenu = menu;
 			}
+			
+			// Only enable the Swap option for A4AF sources
+			m_ClientMenu->Enable(MP_CHANGE2FILE, ( content->type == 3 ) ? MF_ENABLED : MF_GRAYED );
+			
 			PopupMenu(m_ClientMenu, evt.GetPoint());
 		}
 		// make sure that we terminate
@@ -1622,8 +1627,13 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					}
 			}
 		} else {
-			CUpDownClient *client = (CUpDownClient *) content->value;
+			CUpDownClient *client = (CUpDownClient*)content->value;
+			CPartFile* file = (CPartFile*)(content->parent)->value;
 			switch (event.GetId()) {
+				case MP_CHANGE2FILE:
+					client->SwapToAnotherFile(true,false,false,file);
+					
+					return true;
 				case MP_SHOWLIST:
 					client->RequestSharedFileList();
 					return true;				

@@ -383,6 +383,7 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_REMOVEFRIEND				10105
 #define	MP_SHOWLIST				10106
 #define	MP_FRIENDSLOT				10107
+#define MP_CHANGE2FILE				10108
 #define	MP_CANCEL				10201
 #define	MP_STOP					10202
 #define	MP_RESUME				10204
