@@ -63,11 +63,11 @@ fi
 
 AM_OPTIONS_CURLCONFIG
 
-AM_PATH_CURLCONFIG(7.9.7,CURLFOUND=1)
+AM_PATH_CURLCONFIG(7.9.5,CURLFOUND=1)
 
 if test "$CURLFOUND" != 1; then
     AC_MSG_ERROR([
-	WARNING: curl >= 7.9.7 is not found.
+	WARNING: curl >= 7.9.5 is not found.
 	Please check that curl-config is in your default path, check out
         LD_LIBRARY_PATH or equivalent variable.
 	Or this might also be that your curl-config has other name.
