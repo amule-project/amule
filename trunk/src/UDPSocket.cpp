@@ -117,7 +117,11 @@ IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 //static wxIPV4address tmpaddress;
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
-: wxDatagramSocket(address,wxSOCKET_NOWAIT){
+: wxDatagramSocket(address,wxSOCKET_NOWAIT)
+#ifdef AMULE_DAEMON
+	, wxThread(wxTHREAD_JOINABLE)
+#endif
+{
   //m_hWndResolveMessage = NULL;
   sendbuffer = 0;
   cur_server = 0;
