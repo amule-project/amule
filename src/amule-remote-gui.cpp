@@ -1188,12 +1188,6 @@ CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchF
 	m_curr_search = -1;
 }
 
-void CSearchListRem::Clear()
-{
-	// FIXME: add code
-	wxASSERT(0);
-}
-
 bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString &searchString,
 	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
 {
@@ -1223,8 +1217,6 @@ CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 	m_strFileName = tag->FileName();
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
-	m_SourceCount = tag->SourceCount();
-	m_CompleteSourceCount = 0;
 	
 	m_nSearchID = theApp.searchlist->m_curr_search;
 
@@ -1238,14 +1230,16 @@ CSearchFile::~CSearchFile()
 CSearchFile *CSearchListRem::CreateItem(CEC_SearchFile_Tag *tag)
 {
 	CSearchFile *file = new CSearchFile(tag);
-
+	ProcessItemUpdate(tag, file);
+	
 	theApp.amuledlg->searchwnd->AddResult(file);
 	
 	return file;
 }
 
-void CSearchListRem::DeleteItem(CSearchFile *)
+void CSearchListRem::DeleteItem(CSearchFile *file)
 {
+	delete file;
 }
 
 CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
@@ -1253,8 +1247,10 @@ CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
 	return file->GetFileHash();
 }
 
-void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *)
+void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *file)
 {
+	file->m_SourceCount = tag->SourceCount();
+	file->m_CompleteSourceCount = tag->CompleteSourceCount();
 }
 
 bool CSearchListRem::Phase1Done(CECPacket *reply)

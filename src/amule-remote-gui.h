@@ -547,7 +547,6 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		//
 		// Actions
 		//
-		void Clear();
 
 		bool StartNewSearch(long nSearchID, bool global_search, wxString &searchString, 
 			wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability);
