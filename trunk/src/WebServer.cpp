@@ -45,9 +45,10 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/filename.h>
-#include <wx/fileconf.h>
 #if wxCHECK_VERSION(2, 4, 2)
 	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
+#else
+	#include <wx/fileconf.h>
 #endif
 
 //-------------------------------------------------------------------
