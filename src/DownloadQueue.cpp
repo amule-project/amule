@@ -809,28 +809,6 @@ void CDownloadQueue::StopUDPRequests()
 	lastudpsearchtime = ::GetTickCount();
 	lastfile = 0;
 }
-/*
-void CDownloadQueue::SortByPriority()
-{
-	POSITION pos1, pos2;
-	uint16 i = 0;
-	for(pos1 = filelist.GetHeadPosition(); (pos2 = pos1 ) != NULL;) {
-		filelist.GetNext(pos1);
-		CPartFile* cur_file = filelist.GetAt(pos2);
-		if (cur_file->GetDownPriority() == PR_HIGH) {
-			filelist.AddHead(cur_file);
-			filelist.RemoveAt(pos2);
-		} else if (cur_file->GetDownPriority() == PR_LOW) {
-			filelist.AddTail(cur_file);
-			filelist.RemoveAt(pos2);
-		}
-		i++;
-		if (i == filelist.GetCount()) {
-			break;
-		}
-	}
-}
-*/
 
 void CDownloadQueue::SortByPriority()
 {
@@ -855,10 +833,8 @@ bool CDownloadQueue::CompareParts(int pos1, int pos2)
 	if (file1->GetDownPriority() == file2->GetDownPriority()) {
 		return (wxString::wxString(file1->GetPartMetFileName()).CmpNoCase(file2->GetPartMetFileName()))>=0;
 	}
-	if (file1->GetDownPriority() < file2->GetDownPriority()) {
-		return true;
-	}
-	return false;
+	
+	return (file1->GetDownPriority() < file2->GetDownPriority());
 }
 
 void CDownloadQueue::HeapSort(uint16 first, uint16 last)
