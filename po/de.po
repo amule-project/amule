@@ -2080,7 +2080,7 @@ msgstr "Ergebnisse"
 
 #: src/muuli_wdr.cpp:386
 msgid "Clears completed downloads"
-msgstr "Komplette Downloads löschen"
+msgstr "Fertige Downloads aus der Liste entfernen"
 
 #: src/muuli_wdr.cpp:394
 msgid "switch download list to clients you're downloading from, with files also (some day)"
