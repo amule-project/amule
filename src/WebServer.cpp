@@ -999,22 +999,23 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString sDownList;
 	DownloadFilesInfo::ItemIterator i = pThis->m_DownloadFilesInfo.GetBeginIterator();
 	while (i != pThis->m_DownloadFilesInfo.GetEndIterator()) {
+		wxString sFileStatus = i->GetFileStatus;
 
-		if ( sCat.Length() && (sCat != i->GetFileStatus())) {
+		if ( sCat.Length() && (sCat != sFileStatus)) {
 			i++;
 			continue;
 		}
 		
-		wxString JSfileinfo = i->sFileName + wxT("-") + i->GetFileStatus();
+		wxString JSfileinfo = i->sFileName + wxT("-") + sFileStatus;
 
 		JSfileinfo.Replace(wxT("|"),wxT("\\n"));
 		wxString sActions = 
 			wxT("<acronym title=\"") +
-			i->GetFileStatus() +
+			sFileStatus +
 			wxT("\"><a ref=\"javascript:alert('") +
 			JSfileinfo +
 			wxT("')\"><img src=\"l_info.gif\" alt=\"") +
-			i->GetFileStatus() +
+			sFileStatus +
 			wxT("\"></a></acronym>");
 		wxString sED2kLink =
 			wxT("<acronym title=\"[Ed2klink]\"><a href=\"") +
