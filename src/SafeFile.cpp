@@ -284,14 +284,41 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 ///////////////////////////////////////////////////////////////////////////////
 // CSafeMemFile
 
+uint8 CSafeMemFile::ReadUInt8() const
+{
+	if ((off_t)(m_position + sizeof(uint8)) > m_BufferSize)
+		throw CInvalidPacket("EOF");
+	return CFileDataIO::ReadUInt8();
+}
+
+uint16 CSafeMemFile::ReadUInt16() const
+{
+	if ((off_t)(m_position + sizeof(uint16)) > m_BufferSize)
+		throw CInvalidPacket("EOF");
+	return CFileDataIO::ReadUInt16();
+}
+
+uint32 CSafeMemFile::ReadUInt32() const
+{
+	if ((off_t)(m_position + sizeof(uint32)) > m_BufferSize)
+		throw CInvalidPacket("EOF");
+	return CFileDataIO::ReadUInt32();
+}
 
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 {
-	if (m_position + sizeof(uint32)*4 > m_BufferSize)
+	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
 		throw CInvalidPacket("EOF");
 	CFileDataIO::ReadUInt128(pVal);
 }
 
+
+void CSafeMemFile::ReadHash16(unsigned char* pVal) const
+{
+	if ((off_t)(m_position + 16 /* Hash size*/) > m_BufferSize)
+		throw CInvalidPacket("EOF");
+	CFileDataIO::ReadHash16(pVal);
+}
 
 void CSafeMemFile::WriteUInt8(uint8 nVal)
 {
