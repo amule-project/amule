@@ -2547,7 +2547,11 @@ void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		m_ReqParts.resize(reqcount);
 		for (int i = 0; i < reqcount;i++) {
-			m_ReqParts[i] = reqparts[i];
+            // In CPartFile_Encoder::Encode, where EC_TAG_PARTFILE_REQ_STATUS is
+            // built, the start and end values are ENDIAN_SWAPped from host-order
+            // to little-endian order.  We have to reverse that here.
+			m_ReqParts[i].start = ENDIAN_SWAP_32(reqparts[i].start);
+			m_ReqParts[i].end   = ENDIAN_SWAP_32(reqparts[i].end);
 		}
 	}
 }

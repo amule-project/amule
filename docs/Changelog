@@ -51,6 +51,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed aMule.tmpl so Safari can work with amuleweb (reported
 		by blue_eclipse).
 		* On Mac, enabled Command-clicking in lists to toggle selection.
+		* Fixed an endianness bug with webserver
 
 	volpol
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
