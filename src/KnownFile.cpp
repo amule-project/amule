@@ -306,7 +306,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		return false;		
 	}
 
-	if (file_stats.st_size >= (off64_t)(4294967295U)){
+	if (file_stats.st_size >= (uint64)(4294967295U)){
 		fclose(file);
 		return false; // not supported by network
 	}
