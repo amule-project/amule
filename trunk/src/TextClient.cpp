@@ -602,24 +602,23 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			}
 			break;
 		case EC_OP_STATS: {
-			CECTag *connState = response->GetTagByName(EC_TAG_CONNSTATE);
+			CEC_ConnState_Tag *connState = (CEC_ConnState_Tag*)response->GetTagByName(EC_TAG_CONNSTATE);
 			if (connState) {
-				switch (connState->GetInt8Data()) {
+				switch (connState->ClientID()) {
 				case 0:
 					s = _("Not connected");
 					break;
-				case 1:
+				case 0xffffffff:
 					s = _("Now connecting");
 					break;
-				case 2:
-				case 3:
+				default:
 					CECTag *server = connState ? connState->GetTagByIndex(0) : NULL;
 					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 					if (server && serverName) {
 						s << 	_("Connected to ") <<
 							serverName->GetStringData() <<
 							wxT(" ") << server->GetIPv4Data().StringIP() << wxT(" ") <<
-							(connState->GetInt8Data() == 2 ? _("with LowID") : _("with HighID"));
+							(connState->HaveLowID() ? _("with LowID") : _("with HighID"));
 					}
 					break;
 				}

@@ -64,6 +64,15 @@ class CEC_Server_Tag : public CECTag {
 class CEC_ConnState_Tag : public CECTag {
  	public:
  		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
+ 		
+ 		bool IsConnected() { return ClientID() && (ClientID() != 0xffffffff); }
+ 		bool IsConnecting() {return (ClientID() == 0xffffffff); }
+ 		bool HaveLowID() { return ClientID() < 16777216; }
+ 		
+ 		// 0  : disconnected
+ 		// 0xffffffff : connecting
+ 		// other: client ID
+ 		uint32 ClientID() { return GetInt32Data(); }
 };
 
 
