@@ -34,7 +34,7 @@
 
 IMPLEMENT_DYNAMIC_CLASS(CDirectoryTreeCtrl, wxCTreeCtrl)
 CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: wxCTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,"ShareTree"),
+: wxCTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree")),
 m_image(16,16)
 {
 	//m_SharedMenu.m_hMenu = NULL;
@@ -119,9 +119,9 @@ void CDirectoryTreeCtrl::Init(void)
 	m_image.Add(wxBitmap(amuleSpecial(2)));
 	SetImageList(&m_image);
 
-	hRoot=AddRoot("/");
+	hRoot=AddRoot(wxT("/"));
 	SetItemImage(hRoot, 0);  // yes, this is a folder too
-	AppendItem(hRoot,"Cool. Works");
+	AppendItem(hRoot,wxT("Cool. Works"));
 
 	HasChanged = false;
 }
@@ -131,7 +131,7 @@ void CDirectoryTreeCtrl::AddChildItem(HTREEITEM hBranch, wxString const& strText
 	wxString strDir = GetFullPath(hBranch);
 	size_t len = strDir.Len();
 	if (hBranch.IsOk() && len > 0 && strDir.c_str()[len - 1] != '/') {
-		strDir += "/";
+		strDir += wxT("/");
 	}
 	strDir += strText;
 
@@ -144,7 +144,7 @@ void CDirectoryTreeCtrl::AddChildItem(HTREEITEM hBranch, wxString const& strText
 		SetChecked(item,TRUE);
 	}
 	if(HasSubdirectories(strDir)) {
-		AppendItem(item,"."); // trick. will show +
+		AppendItem(item,wxT(".")); // trick. will show +
 	}
 }
 
@@ -154,7 +154,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
 	HTREEITEM hSearchItem = hItem;
 	// don't traverse to the root item ... it will cause extra / to the path
 	while(hSearchItem.IsOk()) {
-		strDir = GetItemText(hSearchItem) + "/" + strDir;
+		strDir = GetItemText(hSearchItem) + wxT("/") + strDir;
 		hSearchItem = GetItemParent(hSearchItem);
 	}
 	return strDir;
@@ -162,11 +162,11 @@ wxString CDirectoryTreeCtrl::GetFullPath(HTREEITEM hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(HTREEITEM hBranch, wxString strDir)
 {
-	if (strDir.Right(1) != "/") {
-		strDir += "/";
+	if (strDir.Right(1) != wxT("/")) {
+		strDir += wxT("/");
 	}
 	wxString fname;
-	wxString dirname=strDir+"*";
+	wxString dirname=strDir+wxT("*");
 	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
 
@@ -192,10 +192,10 @@ void CDirectoryTreeCtrl::AddSubdirectories(HTREEITEM hBranch, wxString strDir)
 bool CDirectoryTreeCtrl::HasSubdirectories(wxString strDir)
 {
 	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
-	if (strDir.Right(1) != "/") {
-		strDir += "/";
+	if (strDir.Right(1) != wxT("/")) {
+		strDir += wxT("/");
 	}
-	wxString fname=wxFindFirstFile(strDir+"*",wxDIR);
+	wxString fname=wxFindFirstFile(strDir+wxT("*"),wxDIR);
 	if(!fname.IsEmpty()) {
 		return TRUE; // at least one directory ...
 	}
@@ -226,10 +226,10 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		}
 		m_lstShared.Add(*str);
 	}
-	if(HasSharedSubdirectory("/")) {
+	if(HasSharedSubdirectory(wxT("/"))) {
 		SetItemBold(hRoot,TRUE);
 	}
-	if(IsShared("/")) {
+	if(IsShared(wxT("/"))) {
 		SetChecked(hRoot,TRUE);
 	}
 }

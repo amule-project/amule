@@ -323,14 +323,14 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			wxString preview(_("Preview"));
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-		  		char* buffer = nstrdup(file->GetPartMetFileName());
+		  		char* buffer = nstrdup(unicode2char(file->GetPartMetFileName()));
 		  		int n = strlen(buffer);
 		  		if (n >= 4) {
 			  		buffer[n-4] = 0;
 		  		}
-				preview += " [";					
-				preview += buffer;
-				preview += "]";
+				preview += wxT(" [");					
+				preview += char2unicode(buffer);
+				preview += wxT("]");
 				delete[] buffer;
 			}
 			menu->SetLabel(MP_PREVIEW, preview);			
@@ -372,7 +372,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			PopupMenu(m_FileMenu, evt.GetPoint());
 		} else {
 			if (m_ClientMenu == NULL) {
-				wxMenu *menu = new wxMenu("Clients");
+				wxMenu *menu = new wxMenu(wxT("Clients"));
 				menu->Append(MP_DETAIL, CString(_("Show &Details")));
 				menu->Append(MP_ADDFRIEND, CString(_("Add to Friends")));
 				menu->Append(MP_SHOWLIST, CString(_("View Files")));
@@ -714,7 +714,7 @@ void CDownloadListCtrl::AddSource(CPartFile * owner, CUpDownClient * source, boo
 	while (GetItemCount() > itemnr + 1 && ((CtrlItem_Struct *) GetItemData(itemnr + 1))->type != FILE_TYPE) {
 		itemnr++;
 	}
-	int newid = InsertItem(itemnr + 1, "This text is not visible");
+	int newid = InsertItem(itemnr + 1, wxT("This text is not visible"));
 	SetItemData(newid, (long)newitem);
 
 	// background.. this should be in a function
@@ -849,19 +849,19 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				break;
 
 			case 1:	// size
-				buffer.Format("%s", CastItoXBytes(lpPartFile->GetFileSize()).GetData());
+				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetFileSize()).GetData());
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
 			case 2:	// transfered
-				buffer.Format("%s", CastItoXBytes(lpPartFile->GetTransfered()).GetData());
+				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetTransfered()).GetData());
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);   
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
 			case 3:	// transfered complete
-				buffer.Format("%s", CastItoXBytes(lpPartFile->GetCompletedSize()).GetData());
+				buffer.Format(wxT("%s"), CastItoXBytes(lpPartFile->GetCompletedSize()).GetData());
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
 
@@ -869,7 +869,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				if (lpPartFile->GetTransferingSrcCount() == 0) {
 					buffer = "";
 				} else {
-					buffer.Format("%.1f %s", lpPartFile->GetKBpsDown(), "kB/s");
+					buffer.Format(wxT("%.1f %s"), lpPartFile->GetKBpsDown(), "kB/s");
 				}
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -916,7 +916,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					if (theApp.glob_prefs->ShowPercent()) {					
 						// ts: Percentage of completing
 						// Kry - Modified for speed
-						buffer.Format("%.1f %%", lpPartFile->GetPercentCompleted());
+						buffer.Format(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
 						int middlex = (lpRect->left + lpRect->right) >> 1;
 						int middley = (lpRect->bottom + lpRect->top) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
@@ -945,16 +945,16 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					uint16 ncsc = lpPartFile->GetNotCurrentSourcesCount();				
 
 					if(ncsc>0) {
-						buffer = buffer + wxString::Format("%i/",sc-ncsc);
+						buffer = buffer + wxString::Format(wxT("%i/"),sc-ncsc);
 					}
 					
-					buffer = buffer + wxString::Format("%i",sc);
+					buffer = buffer + wxString::Format(wxT("%i"),sc);
 					
 					if (lpPartFile->GetSrcA4AFCount()>0 ) {
-						buffer = buffer + (wxString::Format("+%i",lpPartFile->GetSrcA4AFCount()));						
+						buffer = buffer + (wxString::Format(wxT("+%i"),lpPartFile->GetSrcA4AFCount()));						
 					}
 					
-					buffer = buffer + (wxString::Format(" (%i)",lpPartFile->GetTransferingSrcCount()));
+					buffer = buffer + (wxString::Format(wxT(" (%i)"),lpPartFile->GetTransferingSrcCount()));
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
 				break;
@@ -1005,7 +1005,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 					}
 					// time 
 					sint32 restTime = lpPartFile->getTimeRemaining();
-					buffer.Format("%s (%s)", CastSecondsToHM(restTime).GetData(), CastItoXBytes(remains).GetData());
+					buffer.Format(wxT("%s (%s)"), CastSecondsToHM(restTime).GetData(), CastItoXBytes(remains).GetData());
 					if (lpPartFile->GetStatus() == PS_COMPLETING || lpPartFile->GetStatus() == PS_COMPLETE) {
 						buffer = "";
 					}
@@ -1169,7 +1169,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					if (!lpUpDownClient->GetUserName()) {
 						buffer = "?";
 					} else {
-						buffer.Format("%s", lpUpDownClient->GetUserName());
+						buffer.Format(wxT("%s"), lpUpDownClient->GetUserName());
 					}
 					//dc->DrawText(buffer, cur_rec.left, cur_rec.top);
 					lpRect->left += 40;
@@ -1183,13 +1183,13 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 
 			case 2:
 				if (!IsColumnHidden(3)) {
-					dc->DrawText("", lpRect->left, lpRect->top);
+					dc->DrawText(wxT(""), lpRect->left, lpRect->top);
 					break;
 				}
 
 			case 3:	// completed
 				if (lpCtrlItem->type == 2 && lpUpDownClient->GetTransferedDown()) {
-					buffer.Format("%s", CastItoXBytes(lpUpDownClient->GetTransferedDown()).GetData());
+					buffer.Format(wxT("%s"), CastItoXBytes(lpUpDownClient->GetTransferedDown()).GetData());
 					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT); 
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
 				}
@@ -1201,7 +1201,7 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					if (lpUpDownClient->GetKBpsDown()<0.001) {
 						buffer = "";
 					} else {
-						buffer.Format("%.1f %s", lpUpDownClient->GetKBpsDown(), "kB/s");
+						buffer.Format(wxT("%.1f %s"), lpUpDownClient->GetKBpsDown(), "kB/s");
 					}
 					//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 					dc->DrawText(buffer, lpRect->left, lpRect->top);
@@ -1259,11 +1259,11 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 			case 7:	// prio
 				if (lpUpDownClient->GetDownloadState() == DS_ONQUEUE) {
 					if (lpUpDownClient->IsRemoteQueueFull()) {
-						buffer.Format("%s", (_("Queue Full")));
+						buffer.Format(wxT("%s"), (_("Queue Full")));
 						dc->DrawText(buffer, lpRect->left, lpRect->top);
 					} else {
 						if (lpUpDownClient->GetRemoteQueueRank()) {
-							buffer.Format("QR: %u", lpUpDownClient->GetRemoteQueueRank());
+							buffer.Format(wxT("QR: %u"), lpUpDownClient->GetRemoteQueueRank());
 							dc->DrawText(buffer, lpRect->left, lpRect->top);
 						} else {
 							buffer = "";
@@ -1526,7 +1526,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						for (POSITION pos = selectedList.GetHeadPosition(); pos != 0; selectedList.GetNext(pos)) {
 							if(selectedList.GetAt(pos)->GetStatus() != PS_COMPLETING && selectedList.GetAt(pos)->GetStatus() != PS_COMPLETE) {
 								validdelete = true;
-								fileList += "\n";
+								fileList += wxT("\n");
 								fileList += selectedList.GetAt(pos)->GetFileName();
 							}
 						}
@@ -1538,7 +1538,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							// for multiple selections
 							quest=CString(_("Are you sure that you want to cancel and delete these files ?\n"));
 						}
-						if (validdelete && wxMessageBox((quest + fileList), "Cancel", wxICON_QUESTION | wxYES_NO) == wxYES) {
+						if (validdelete && wxMessageBox((quest + fileList), wxT("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
 							while (!selectedList.IsEmpty()) {
 								HideSources(selectedList.GetHead());
 								switch (selectedList.GetHead()->GetStatus()) {
@@ -1697,7 +1697,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					if (selectedCount > 1) {
 						wxString str;
 						while (!selectedList.IsEmpty()) {
-							str += theApp.CreateED2kLink(selectedList.GetHead()) + "\n";
+							str += theApp.CreateED2kLink(selectedList.GetHead()) + wxT("\n");
 							selectedList.RemoveHead();
 						}
 						theApp.CopyTextToClipboard(str);
@@ -1711,7 +1711,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					if (selectedCount > 1) {
 						CString str;
 						while (!selectedList.IsEmpty()) {
-							str += theApp.CreateHTMLED2kLink(selectedList.GetHead()) + "\n";
+							str += theApp.CreateHTMLED2kLink(selectedList.GetHead()) + wxT("\n");
 							selectedList.RemoveHead();
 						}
 						theApp.CopyTextToClipboard(str);
@@ -1726,7 +1726,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							break;
 						}
 						char *buffer = new char[250];
-						sprintf(buffer, "%s/%s", theApp.glob_prefs->GetIncomingDir(), file->GetFileName().GetData());
+						sprintf(buffer, "%s/%s", theApp.glob_prefs->GetIncomingDir(), unicode2char(file->GetFileName()));
 						//ShellOpenFile(buffer);
 						printf("===> open %s\n", buffer);
 						delete[] buffer;
@@ -1861,7 +1861,7 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 {
 	switch (lParamSort) {
 		case 0:	//filename asc
-			return strcmpi(file1->GetFileName().c_str(), file2->GetFileName().c_str());
+			return strcmpi(unicode2char(file1->GetFileName()), unicode2char(file2->GetFileName()));
 		case 1:	//size asc
 			return file1->GetFileSize()==file2->GetFileSize()?0:(file2->GetFileSize()>file1->GetFileSize()?1:-1);
 		case 2:	//transfered asc
@@ -1979,7 +1979,7 @@ void CDownloadListCtrl::CreateMenues()
 
 wxString CDownloadListCtrl::getTextList()
 {
-	wxString out = "";
+	wxString out = wxT("");
 	int i=0;
 	// Search for file(s)
 	for (ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); it++) {	// const is better
@@ -1993,17 +1993,17 @@ wxString CDownloadListCtrl::getTextList()
 */			//theApp.amuledlg->AddLogLine(false, CString(wxT("%s")), file->GetFileName());
 
 			char buffer[255 + 1];
-			strncpy(buffer, file->GetFileName().c_str(), 255);
+			strncpy(buffer, unicode2char(file->GetFileName()), 255);
 			buffer[255] = '\0';
 
 			wxString temp;
 			i++;
-			temp.Printf("%i: %s\t [%.1f%%] %i/%i - %s", i,buffer, file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
+			temp.Printf(wxT("%i: %s\t [%.1f%%] %i/%i - %s"),i,buffer, file->GetPercentCompleted(), file->GetTransferingSrcCount(), file->GetSourceCount(), file->getPartfileStatus().GetData());
 			if (file->GetKBpsDown()>0.001) {
-				temp += wxString::Format(" %.1f kB/s",(float)file->GetKBpsDown());
+				temp += wxString::Format(wxT(" %.1f kB/s"),(float)file->GetKBpsDown());
 			}
 			out += temp;
-			out += "\n";
+			out += wxT("\n");
 		}
 	}
 
@@ -2131,7 +2131,7 @@ void CDownloadListCtrl::ShowFile(CPartFile * toshow)
 		sint16 result = FindItem(-1, (long)updateItem);
 		if (result == (-1)) {
 			//InsertItem(LVIF_PARAM,GetItemCount(),0,0,0,0,(LPARAM)updateItem);
-			int newitem = InsertItem(GetItemCount(), "This is not visible");
+			int newitem = InsertItem(GetItemCount(), wxT("This is not visible"));
 			SetItemData(newitem, (long)updateItem);
 
 			wxListItem myitem;
