@@ -228,10 +228,6 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, wxString folder
 	
 	while(!fname.IsEmpty()) {
 
-		if (folder.CmpNoCase(wxT("/Volumes/")) == 0) {
-			printf("On Volumes: %s\n",unicode2char(fname));
-		}		
-				
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
 			// Take just the last folder of the path
 			fname=fname.Mid(fname.Find(ROOT_CHAR,TRUE)+1);  
