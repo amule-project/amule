@@ -291,31 +291,31 @@ bool CamuleApp::OnInit()
 	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
 
 	// Handle these arguments.
-	cmdline.AddSwitch("v", "version", "Displays the current version number.");
-	cmdline.AddSwitch("h", "help", "Displays this information.");
-	cmdline.AddOption("geometry", "", "Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]");
+	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
+	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
+	cmdline.AddOption(wxT("geometry"), wxT(""), wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 	cmdline.Parse();
 
-	if ( cmdline.Found("version") ) {
+	if ( cmdline.Found(wxT("version")) ) {
 		printf("aMule %s\n", VERSION);
 
 		return false;
 	}
 
-	if ( cmdline.Found("help") ) {
+	if ( cmdline.Found(wxT("help")) ) {
 		cmdline.Usage();
 
 		return false;
 	}
 
 	wxString geom_string;
-	if ( cmdline.Found("geometry", &geom_string) ) {
+	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 
 		// I plan on moving this to a seperate function, as it just clutters up OnInit()
 
 #ifdef __WXGTK__
 
-		XParseGeometry(geom_string.c_str(), &geometry_x, &geometry_y, &geometry_width, &geometry_height);
+		XParseGeometry(unicode2char(geom_string), &geometry_x, &geometry_y, &geometry_width, &geometry_height);
 
 		geometry_enabled = true;
 
@@ -392,16 +392,16 @@ bool CamuleApp::OnInit()
 
 	printf("Initialising aMule\n");
 
-	SetVendorName("TikuWarez");
+	SetVendorName(wxT("TikuWarez"));
 
 	// Do NOT change this string to aMule nor anything else, it WILL fuck you up.
-	SetAppName("eMule");
+	SetAppName(wxT("eMule"));
 
 
 	// see if there is another instance running
-	wxString server = getenv("HOME") + wxString("/.aMule/muleconn");
+	wxString server = server.Format(wxT("%s/.aMule/muleconn"), getenv("HOME"));
 	wxClient* client = new wxClient();
-	wxConnectionBase* conn = client->MakeConnection("localhost", server, wxT("aMule IPC TESTRUN"));
+	wxConnectionBase* conn = client->MakeConnection(wxT("localhost"), server, wxT("aMule IPC TESTRUN"));
 
 	// If the connection failed, conn is NULL
 	if ( conn ) {
@@ -425,9 +425,9 @@ bool CamuleApp::OnInit()
 
 	/* If no aMule configuration files exist, see if either lmule or xmule config
 	   exists, so that we can use those. */
-	wxString lMulePrefDir = getenv("HOME") + wxString("/.lmule");
-	wxString xMulePrefDir = getenv("HOME") + wxString("/.xMule");
-	wxString aMulePrefDir = getenv("HOME") + wxString("/.aMule");
+	wxString lMulePrefDir = lMulePrefDir.Format(wxT("%s//.lmule"), getenv("HOME"));
+	wxString xMulePrefDir = xMulePrefDir.Format(wxT("%s//.xmule"), getenv("HOME"));
+	wxString aMulePrefDir = aMulePrefDir.Format(wxT("%s//.aMule"), getenv("HOME"));
 
 	if ( !wxDirExists( aMulePrefDir ) ) {
 		if ( wxDirExists( lMulePrefDir ) ) {
@@ -439,17 +439,17 @@ bool CamuleApp::OnInit()
 			wxMkdir(aMulePrefDir);
 
 			// Copy .dat files to the aMule dir
-			wxString file = wxFindFirstFile(xMulePrefDir + "/*.dat", wxFILE);
+			wxString file = wxFindFirstFile(xMulePrefDir + wxT("/*.dat"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, aMulePrefDir + "/" + file.AfterLast('/'));
+				wxCopyFile( file, aMulePrefDir + wxT("/") + file.AfterLast('/'));
 
 				file = wxFindNextFile();
   			}
 
 			// Copy .met files to the aMule dir
-			file = wxFindFirstFile(xMulePrefDir + "/*.met", wxFILE);
+			file = wxFindFirstFile(xMulePrefDir + wxT("/*.met"), wxFILE);
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, aMulePrefDir + "/" + file.AfterLast('/'));
+				wxCopyFile( file, aMulePrefDir + wxT("/") + file.AfterLast('/'));
 
 				file = wxFindNextFile();
   			}
@@ -460,13 +460,13 @@ bool CamuleApp::OnInit()
 
 
 	// Delete old log file.
-	wxRemoveFile(wxString::Format("%s/.aMule/logfile", getenv("HOME")));
+	wxRemoveFile(wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME")));
 
 	// Load Preferences
 	glob_prefs = new CPreferences();
 
 	// Build the filenames for the two OS files
-	SetOSFiles(wxString(glob_prefs->GetOSDir()));
+	SetOSFiles(char2unicode(glob_prefs->GetOSDir()));
 
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
@@ -476,8 +476,8 @@ bool CamuleApp::OnInit()
 	}
 
 	// Display notification on new version or first run
-	wxTextFile vfile( aMulePrefDir + wxString("/lastversion") );
-	wxString newMule(VERSION);
+	wxTextFile vfile( aMulePrefDir + wxT("/lastversion") );
+	wxString newMule(wxT(VERSION));
 	if ( wxFileExists( vfile.GetName() ) && vfile.Open() && !vfile.Eof() ) {
 		if ( vfile.GetFirstLine() != newMule ) {
 			Trigger_New_version( vfile.GetFirstLine(), newMule );
@@ -499,7 +499,7 @@ bool CamuleApp::OnInit()
 		if ( !vfile.IsOpened() )
 			vfile.Create();
 
-		vfile.AddLine(VERSION);
+		vfile.AddLine(wxT(VERSION));
 		vfile.Write();
 		vfile.Close();
 	}
@@ -514,20 +514,20 @@ bool CamuleApp::OnInit()
 #ifndef __OPENBSD__
 	FILE* mnt_tab = setmntent("/etc/mtab","r");
 	if ( mnt_tab ) {
-		wxString incomingdir = glob_prefs->GetIncomingDir();
-		wxString tempdir = glob_prefs->GetTempDir();
+		wxString incomingdir = char2unicode(glob_prefs->GetIncomingDir());
+		wxString tempdir = char2unicode(glob_prefs->GetTempDir());
 		struct mntent* entries;
 
 		entries = getmntent(mnt_tab);
 		while ( entries ) {
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
-				if ( tempdir.StartsWith( entries->mnt_dir ) ) {
+				if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
 					// Kry - We cannot addlogline because there's no GUI yet!
-					QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+					QueueLogLine(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
-				if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
-					QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+				if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
+					QueueLogLine(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
 				if (!use_chmod) {
@@ -609,7 +609,7 @@ bool CamuleApp::OnInit()
 	// init downloadqueue
 	downloadqueue->Init();
 
-	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow("sharedFilesCt"));
+	sharedfiles->SetOutputCtrl((CSharedFilesCtrl *) amuledlg->sharedfileswnd->FindWindow(wxT("sharedFilesCt")));
 
 
 	SetTopWindow(amuledlg);
@@ -646,7 +646,7 @@ bool CamuleApp::OnInit()
 		event.byte_value = true;
 		NotifyEvent(event);
 		#warning we need to move this lowid warning to the GUI itself.
-		wxMessageBox(wxT(wxString::Format(_("Port %d is not available !!\n\nThis mean that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input."), glob_prefs->GetPort())), _("Error"), wxOK | wxICON_ERROR);
+		wxMessageBox(wxString::Format(_("Port %d is not available !!\n\nThis mean that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input."), glob_prefs->GetPort()), _("Error"), wxOK | wxICON_ERROR);
 	}
 
 
@@ -771,7 +771,7 @@ wxString CamuleApp::StripInvalidFilenameChars(const wxString& strText, bool bKee
 
 	// Should we replace spaces?
 	if ( !bKeepSpaces ) {
-		result.Replace(" ", "_", TRUE);
+		result.Replace(wxT(" "), wxT("_"), TRUE);
 	}
 
 	return result;
@@ -784,13 +784,13 @@ wxString CamuleApp::CreateED2kLink(CAbstractFile* f)
 	wxString strURL;
 
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
-	strURL << "ed2k://|file|"
+	strURL << wxT("ed2k://|file|")
 	       << StripInvalidFilenameChars(f->GetFileName(), true)
-		   << "|"
+		   << wxT("|")
 	       << f->GetFileSize()
-		   << "|"
+		   << wxT("|")
 		   << EncodeBase16( f->GetFileHash(), 16 )
-		   << "|/";
+		   << wxT("|/");
 
 	return strURL;
 }
@@ -801,7 +801,7 @@ wxString CamuleApp::CreateED2kSourceLink(CAbstractFile* f)
 {
 	if ( !serverconnect->IsConnected() || serverconnect->IsLowID() ) {
 		wxMessageBox(_("You need a HighID to create a valid sourcelink"));
-		return "";
+		return wxT("");
 	}
 
 	uint32 clientID = serverconnect->GetClientID();
@@ -810,12 +810,12 @@ wxString CamuleApp::CreateED2kSourceLink(CAbstractFile* f)
 	wxString strURL = CreateED2kLink( f );
 
 	// And append the source information: "|sources,<ip>:<port>|/"
-	strURL << "|sources,"
-	       << (uint8) clientID << "."
-		   << (uint8) (clientID >> 8) << "."
-		   << (uint8) (clientID >> 16) << "."
-		   << (uint8) (clientID >> 24) << ":"
-		   << glob_prefs->GetPort() << "|/";
+	strURL << wxT("|sources,")
+	       << (uint8) clientID << wxT(".")
+		   << (uint8) (clientID >> 8) << wxT(".")
+		   << (uint8) (clientID >> 16) << wxT(".")
+		   << (uint8) (clientID >> 24) << wxT(":")
+		   << glob_prefs->GetPort() << wxT("|/");
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<ip>:<port>|/"
 	return strURL;
@@ -832,9 +832,9 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(CAbstractFile* f)
 	strURL = CreateED2kLink( f );
 
 	// Append the source information: "|sources,<host>:port|/"
-	strURL << "|sources,"
-	       << glob_prefs->GetYourHostname() << ":"
-		   << glob_prefs->GetPort() << "|/";
+	strURL << wxT("|sources,")
+	       << char2unicode(glob_prefs->GetYourHostname()) << wxT(":")
+		   << glob_prefs->GetPort() << wxT("|/");
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<host>:<port>|/"
 	return strURL;
@@ -844,7 +844,7 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(CAbstractFile* f)
 // Creates a ED2k hyperlink
 wxString CamuleApp::CreateHTMLED2kLink(CAbstractFile* f)
 {
-	wxString strCode = "<a href=\"" + CreateED2kLink(f) + "\">" + StripInvalidFilenameChars(f->GetFileName(), true) + "</a>";
+	wxString strCode = wxT("<a href=\"") + CreateED2kLink(f) + wxT("\">") + StripInvalidFilenameChars(f->GetFileName(), true) + wxT("</a>");
 	return strCode;
 }
 
@@ -852,14 +852,14 @@ wxString CamuleApp::CreateHTMLED2kLink(CAbstractFile* f)
 // Generates an URL for checking if a file is "fake"
 wxString CamuleApp::GenFakeCheckUrl(CAbstractFile *f)
 {
-	wxString strURL = "http://donkeyfakes.gambri.net/index.php?action=search&ed2k=";
+	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
 
 	strURL = wxURL::ConvertToValidURI( strURL +  CreateED2kLink( f ) );
 
 	// The following cause problems, so we escape them
-	strURL.Replace("\"", "%22");
-	strURL.Replace("'",  "%27");
-	strURL.Replace("`",  "%60");
+	strURL.Replace(wxT("\""), wxT("%22"));
+	strURL.Replace(wxT("'"),  wxT("%27"));
+	strURL.Replace(wxT("`"),  wxT("%60"));
 
 	return strURL;
 }
@@ -899,7 +899,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		amuledlg->AddLogLine(true, wxString(_("Failed to save"))+wxString(_(" OnlineSig File")));
 	}
 	if (!amulesig_out.Open(amulesig_path, CFile::write)) {
-		amuledlg->AddLogLine(true, wxString(_("Failed to save"))+wxString(" aMule OnlineSig File"));
+		amuledlg->AddLogLine(true, wxString(_("Failed to save"))+wxString(_(" aMule OnlineSig File")));
 	}
 
 	char buffer[256];
@@ -1111,13 +1111,13 @@ void CamuleApp::Localize_mule()
 
 	wxLanguageInfo CustomLanguage;
 	CustomLanguage.Language = wxLANGUAGE_ITALIAN_NAPOLITAN;
-	CustomLanguage.CanonicalName = "it_NA";
-	CustomLanguage.Description = "sNeo's Custom Napolitan Language";
+	CustomLanguage.CanonicalName = wxT("it_NA");
+	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
 	wxLocale::AddLanguage(CustomLanguage);
 
 	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
-	CustomLanguage.CanonicalName = "aMule_custom";
-	CustomLanguage.Description = "aMule's custom language";
+	CustomLanguage.CanonicalName = wxT("aMule_custom");
+	CustomLanguage.Description = wxT("aMule's custom language");
 
 	switch (glob_prefs->GetLanguageID()) {
 		case 0:
@@ -1247,14 +1247,14 @@ void CamuleApp::Localize_mule()
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT) && (language != wxLANGUAGE_CUSTOM)) {
-		QueueLogLine(false,"The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
+		QueueLogLine(false,wxT("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
 	if (language != wxLANGUAGE_CUSTOM) {
-		m_locale.AddCatalogLookupPathPrefix(LOCALEDIR);
-		m_locale.AddCatalog(PACKAGE);
+		m_locale.AddCatalogLookupPathPrefix(wxT(LOCALEDIR));
+		m_locale.AddCatalog(wxT(PACKAGE));
 	} else {
-		m_locale.AddCatalogLookupPathPrefix(wxString::Format("%s/.aMule", getenv("HOME")));
-		m_locale.AddCatalog("custom");
+		m_locale.AddCatalogLookupPathPrefix(wxString::Format(wxT("%s/.aMule"), getenv("HOME")));
+		m_locale.AddCatalog(wxT("custom"));
 	}
 }
 
@@ -1329,10 +1329,10 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 	if ( !cmd.IsEmpty() ) {
 		wxString tmp = url;
 		// Pipes cause problems, so escape them
-		tmp.Replace( "|", "%7C" );
+		tmp.Replace( wxT("|"), wxT("%7C") );
 
 
-		if ( !cmd.Replace( "%s", tmp ) ) {
+		if ( !cmd.Replace( wxT("%s"), tmp ) ) {
 			// No %s found, just append the url
 			cmd += tmp;
 		}
@@ -1359,26 +1359,26 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 	wxString info;
 
 	info = _(" --- This is the first time you run aMule %s ---\n\n");
-	info.Replace( "%s", new_version );
+	info.Replace( wxT("%s"), new_version );
 
 	if (new_version == wxT("CVS")) {
-		info += wxT(_("This version is a testing version, updated daily, and \n"));
-		info += wxT(_("we give no warranty it won't break anything, burn your house,\n"));
-		info += wxT(_("or kill your dog. But it *should* be safe to use anyway. \n"));
+		info += wxT("This version is a testing version, updated daily, and \n");
+		info += wxT("we give no warranty it won't break anything, burn your house,\n");
+		info += wxT("or kill your dog. But it *should* be safe to use anyway. \n");
 	} else if (old_version == wxT("1.2.6")) {
-		info += wxT(_("This version has new SecureIdent support, so your \n"));
-		info += wxT(_("client credits will be lost on this first run. \n"));
-		info += wxT(_("There is no way to fix that, and eMule did the same.\n"));
-		info += wxT(_("But your hash will be safe against stealers now, and your\n"));
-		info += wxT(_("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n"));
-		info += wxT(_("Just take them from your eMule config dir and put then on ~/.aMule.\n"));
+		info += wxT("This version has new SecureIdent support, so your \n");
+		info += wxT("client credits will be lost on this first run. \n");
+		info += wxT("There is no way to fix that, and eMule did the same.\n");
+		info += wxT("But your hash will be safe against stealers now, and your\n");
+		info += wxT("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n");
+		info += wxT("Just take them from your eMule config dir and put then on ~/.aMule.\n");
 	} else if (old_version == wxT("2.0.0-rc1")) {
-		info += wxT(_("This rc2 version fixes most of the rc1 version bugs and adds new features.\n"));
-		info += wxT(_("A full changelog can be found in the Changelog file or at www.amule.org.\n"));
+		info += wxT("This rc2 version fixes most of the rc1 version bugs and adds new features.\n");
+		info += wxT("A full changelog can be found in the Changelog file or at www.amule.org.\n");
 	}
 
-	info += wxT(_("Your locale has been changed to System Default due to a version change. Sorry.\n"));
-	info += wxT(_("Feel free to report any bugs to forum.amule.org"));
+	info += wxT("Your locale has been changed to System Default due to a version change. Sorry.\n");
+	info += wxT("Feel free to report any bugs to forum.amule.org");
 
 
 	wxMessageBox(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
@@ -1420,7 +1420,7 @@ void CamuleApp::FlushQueuedLogLines() {
 
 	while (!QueuedAddLogLines.IsEmpty()) {
 		line_to_add = QueuedAddLogLines.RemoveHead();
-		amuledlg->AddLogLine(line_to_add.addtostatus, "%s", line_to_add.line.c_str());
+		amuledlg->AddLogLine(line_to_add.addtostatus, wxT("%s"), line_to_add.line.c_str());
 	}
 
 	m_LogQueueLock.Leave();
@@ -1667,11 +1667,11 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 		CString buffer;
 		
 		wxConfigBase* cfg = wxConfig::Get();
-		buffer.Format("%llu",stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
-		cfg->Write("/Statistics/TotalDownloadedBytes", buffer);
+		buffer.Format(wxT("%llu"),stat_sessionReceivedBytes+glob_prefs->GetTotalDownloaded());
+		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer.Format("%llu",stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
-		cfg->Write("/Statistics/TotalUploadedBytes", buffer);
+		buffer.Format(wxT("%llu"),stat_sessionSentBytes+glob_prefs->GetTotalUploaded());
+		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 
 	// Recomended by lugdunummaster himself - from emule 0.30c
