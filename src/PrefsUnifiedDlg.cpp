@@ -148,6 +148,14 @@ public:
 	RseBool(int ID, bool& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pbSet(&bSetting), bDef(bDefault)  {}
 
+	RseBool(int ID, sint8& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
+		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
+			{ wxASSERT(sizeof(bool)==sizeof(sint8)); }
+
+	RseBool(int ID, uint8& bSetting, const wxString&  szIniName, bool bDefault, const wxString& szIniSection)
+		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
+			{ wxASSERT(sizeof(bool)==sizeof(uint8)); }
+
 	virtual void LoadFromFile(wxConfigBase& ini) {
 		ini.Read( wxT("/") + szSection + wxT("/") + strName, pbSet, bDef );
 	}
@@ -526,8 +534,9 @@ public:
 
 		buffer = ini.Read( wxT("/") + szSection + wxT("/") + strName, strAppDir + szDef);
 
+		buffer = MakeFoldername(buffer);
+		
 		sprintf(pchSet, "%s", unicode2char(buffer) );
-		MakeFoldername(pchSet);
 	}
 	
 	void SelectDir()
@@ -782,7 +791,6 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseBool(0, prefs->log2disk, wxT("SaveLogToDisk"), false, wxT("eMule")));
 	listRse.Append(new RseBool(0, prefs->debug2disk, wxT("SaveDebugToDisk"), false, wxT("eMule")));
 	listRse.Append(new RseInt(0, prefs->iMaxLogMessages, wxT("MaxLogMessages"), 1000, wxT("eMule")));
-	listRse.Append(new RseBool(0, prefs->showCatTabInfos, wxT("ShowInfoOnCatTabs"), false, wxT("eMule")));
 	listRse.Append(new RseBool(0, prefs->resumeSameCat, wxT("ResumeNextFromSameCat"), false, wxT("eMule")));
 	listRse.Append(new RseBool(0, prefs->resumeSameCat, wxT("DontRecreateStatGraphsOnResize"), false, wxT("eMule")));
 	listRse.Append(new RseInt(0, prefs->versioncheckLastAutomatic, wxT("VersionCheckLastAutomatic"), 0, wxT("eMule")));
@@ -799,6 +807,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, const wxString ap
 	listRse.Append(new RseString(0, prefs->commentFilter, sizeof(prefs->commentFilter), wxT("CommentFilter"), wxT("http://"), wxT("eMule")));
 
 	listRse.Append(new RseString(IDC_VIDEOPLAYER, prefs->VideoPlayer, sizeof(prefs->VideoPlayer), wxT("VideoPlayer"), wxT(""), wxT("eMule")));
+	listRse.Append(new RseBool(IDC_EXTCATINFO, prefs->showCatTabInfos, wxT("ShowInfoOnCatTabs"), false, wxT("eMule")));
 	
 /* window colum widths, no dialog interaction - BEGIN */
 	listRse.Append(new RseColumns(prefs->downloadColumnWidths, ELEMENT_COUNT(prefs->downloadColumnWidths), wxT("DownloadColumnWidths"), DEFAULT_COL_SIZE, wxT("eMule")));
@@ -1211,7 +1220,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 
 	if (Prse(IDC_OSDIR)->WasChanged()) {		
 		// Build the filenames for the two OS files
-		theApp.SetOSFiles(wxString(Prse(IDC_OSDIR)->GetMemStringValue()));
+		theApp.SetOSFiles(Prse(IDC_OSDIR)->GetMemStringValue());
 	}
 	
     EndModal(ID_PREFS_OK_LEFT);

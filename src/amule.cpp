@@ -628,19 +628,6 @@ bool CamuleApp::OnInit()
 
 	SetTopWindow(amuledlg);
 
-
-	// Start the Core Timer
-
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
-	core_timer->Start(100);
-
 	m_app_state = APP_STATE_RUNNING;
 
 	// reload shared files
@@ -695,6 +682,30 @@ bool CamuleApp::OnInit()
 		downloadqueue->LoadSourceSeeds();
 	}
 
+	// Start the Core Timer
+
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	core_timer->Start(100);	
+
+	// Start the Gui Timer
+	
+	// Note: wxTimer can be off by more than 10% !!!
+	// In addition to the systematic error introduced by wxTimer, we are losing
+	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
+	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
+	// in the system, such as a video player or a VMware virtual machine.
+	// The upload queue process loop has now been rewritten to compensate for timer errors.
+	// When adding functionality, assume that the timer is only approximately correct;
+	// for measurements, always use the system clock [::GetTickCount()].
+	amuledlg->StartGuiTimer();
+	
 	return TRUE;
 }
 

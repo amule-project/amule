@@ -513,8 +513,8 @@ void CServerSocket::ConnectToServer(CServer* server)
 	wxIPV4address addr;
 	addr.Hostname(char2unicode(server->GetAddress()));
 	addr.Service(server->GetPort());
-	theApp.amuledlg->AddLogLine(true,CString(_("Server %s Port %i")),server->GetAddress(),server->GetPort());
-	theApp.amuledlg->AddLogLine(true,CString(_("Addr %s Port %i")),addr.Hostname().c_str(),addr.Service());
+	AddDebugLogLineM(true, wxString(_("Server ")) + char2unicode(server->GetAddress()) + wxString::Format(_(" Port %i"),server->GetPort()));
+	AddDebugLogLineM(true, wxString(_("Addr ")) + addr.Hostname() + wxString::Format(_(" Port %i"),server->GetPort()));
 	this->Connect(addr,FALSE);
 
 	info=server->GetListName();

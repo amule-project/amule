@@ -34,6 +34,14 @@
 #include "CString.h"		// Needed for CString
 #include <ctype.h>
 
+wxString ConvertChar2Unicode(const char* c_string) {
+	 return wxConvLocal.cMB2WX(c_string);
+}
+
+const char* ConvertUnicode2Char(wxString unic_string) {
+	return (const char*)wxConvLocal.cWX2MB(unic_string);
+}
+
 // Formats a filesize in bytes to make it suitable for displaying
 CString CastItoXBytes( uint64 count )
 {
@@ -162,7 +170,7 @@ wxString GetFiletypeByName(const wxString& filename)
 }
 
 
-CString MakeStringEscaped(CString in)
+wxString MakeStringEscaped(wxString in)
 {
 	in.Replace(wxT("&"),wxT("&&"));
 	
@@ -409,11 +417,13 @@ bool CheckShowItemInGivenCat(CPartFile* file, int inCategory)
 }
 
 
-void MakeFoldername(char* path) {
-	wxString string(char2unicode(path));
-	if ( !string.IsEmpty() && ( string.Right(1) == wxT('\\' )) )
-		string = string.Left( string.Length() - 1 );
-	sprintf(path,"%s",unicode2char(string));
+wxString MakeFoldername(wxString path) {
+	/*
+	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
+		path.RemoveLast();
+	}
+	*/
+	return path;
 }
 
 

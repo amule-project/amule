@@ -21,9 +21,6 @@
 // SharedFilesCtrl.cpp : implementation file
 //
 
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-
 
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST
 #include "SharedFilesCtrl.h"	// Interface declarations

@@ -115,11 +115,8 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 	}
 	uint32 tagcount;
 	in_data->Read(tagcount);
-//	printf("tagcount %i\n",tagcount);
 
 	for (unsigned int i = 0; i != tagcount; ++i){
-//		printf("tag %i\n",i);
-//		DumpMem(in_data->GetCurrentBuffer(),32);
 		CTag* toadd = new CTag(in_data);
 		taglist.Add(toadd);
 	}
@@ -135,7 +132,7 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 		iSize = 2;		// required by tag format
 	}
 
-	m_strFileName = char2unicode(tempName);
+	SetFileName(char2unicode(tempName));
 	
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
@@ -162,6 +159,7 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 	taglist.Add(new CTag(FT_FILESIZE, uFileSize));
 	taglist.Add(new CTag(FT_FILENAME, pszFileName));
 	taglist.Add(new CTag(FT_SOURCES, iAvailability));
+	printf("Filename2: %s\n",pszFileName);
 	SetFileName(char2unicode(pszFileName));
 	SetFileSize(uFileSize);
 

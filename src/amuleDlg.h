@@ -113,6 +113,8 @@ public:
 	int					srv_split_pos;
 	
 	wxImageList imagelist;
+	
+	void StartGuiTimer() { gui_timer->Start(100); }
 
 protected:
 	

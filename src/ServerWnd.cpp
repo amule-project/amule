@@ -24,7 +24,6 @@
 
 #include <wx/settings.h>
 #include <wx/textctrl.h>
-#include <wx/sizer.h>
 
 #include "muuli_wdr.h"		// Needed for ID_ADDTOLIST
 #include "ServerWnd.h"		// Interface declarations.

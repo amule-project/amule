@@ -26,10 +26,6 @@
 #include <wx/file.h>
 #include <wx/datetime.h>
 #include <wx/config.h>
-#include <wx/sizer.h>
-#include <wx/msgdlg.h>
-#include <wx/radiobox.h>
-#include <wx/log.h>
 
 #ifndef __SYSTRAY_DISABLED__
 #include "pixmaps/mule_TrayIcon.ico.xpm"
@@ -189,17 +185,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	
 	is_safe_state = true;
 	
-	// Start the Gui Timer
-	
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
-	gui_timer->Start(100);	
 	Show(TRUE);
 
 #ifndef __SYSTRAY_DISABLED__
@@ -669,7 +654,7 @@ void CamuleDlg::ShowTransferRate()
 	if ( theApp.serverconnect->IsConnected() ) {
 		buffer2 = wxT("aMule (") +buffer + wxT(" | ") + _("Connected") + wxT(")");
 	} else {
-		buffer2 = wxT("aMule (") +buffer + wxT(" | ") + _("Disconnected") + wxT(")");
+		buffer2 = wxT("aMule (") +buffer + wxT(" | ") +  _("Disconnected") + wxT(")");
 	}
 	char* buffer3 = nstrdup(unicode2char(buffer2));
 	m_wndTaskbarNotifier->TraySetToolTip(buffer3);

@@ -24,7 +24,6 @@
 #include <unistd.h>
 #include <wx/msgdlg.h>
 #include <wx/filename.h>
-#include <wx/button.h>
 
 #include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
 #include "SharedFileList.h"	// Interface declarations
@@ -72,7 +71,7 @@ void CSharedFileList::FindSharedFiles() {
 	/* Global incoming dir and all category incoming directories are automatically shared. */
 	AddFilesFromDirectory(char2unicode(theApp.glob_prefs->GetIncomingDir()));
 	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
-		AddFilesFromDirectory(char2unicode(theApp.glob_prefs->GetCatPath(i)));
+		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
 	//for (POSITION pos = app_prefs->shareddir_list.GetHeadPosition();pos != 0;app_prefs->shareddir_list.GetNext(pos))
 	// remove bogus entries first

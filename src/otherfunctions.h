@@ -31,8 +31,18 @@
 class CString;
 class CPartFile;
 
-#define unicode2char(x) (const char*)wxConvCurrent->cWX2MB(x)
-#define char2unicode(x) wxConvCurrent->cMB2WX(x)
+static wxCSConv aMuleConv(wxT("iso8859-1"));
+
+#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
+#define char2unicode(x) aMuleConv.cMB2WX(x)
+
+/*
+#define unicode2char(x) ConvertUnicode2Char(x)
+#define char2unicode(x) ConvertChar2Unicode(x)
+
+wxString ConvertChar2Unicode(const char* c_string);
+const char* ConvertUnicode2Char(wxString unic_string);
+*/
 
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a CString
@@ -83,9 +93,9 @@ inline bool IsLowIDED2K(uint32 id){
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(wxString sIn);
 // Replaces "&" with "&&" in 'in' for use with text-labels
-CString MakeStringEscaped(CString in);
+wxString MakeStringEscaped(wxString in);
 // Removes the last '\' from a path
-void MakeFoldername(char* path);
+wxString MakeFoldername(wxString path);
 
 
 // Makes a backup of a file, by copying the original file to filename + appendix
