@@ -1,11 +1,17 @@
+Version 2.0.1 - The "xx" version.
+----------
+2005-XX-XX
+
+--------------------------------------------------------------------------------
+
 Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 ----------
 2004-12-XX
 
-    CosmicDJ:
+	CosmicDJ:
 	    * NetBSD compilation fixes.
-		
-    deltaHF:
+
+	deltaHF:
 	    * Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
@@ -16,7 +22,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 			- webserver search results (found by poulpe)
 	
 	Kry:
-	    
+
+	Phoenix:
+		* Fixed crash in CClientReqSocket::ProcessExtPacket()
+		processing of OP_COMPRESSEDPART.
+
 --------------------------------------------------------------------------------
 
 Version 2.0.0rc8 - The "last rc" version.
@@ -28,10 +38,10 @@ Version 2.0.0rc8 - The "last rc" version.
 		* Fix for ERROR and WARNING server messages not being shown.
 		* Fixed server / transfers window splitters not being loaded/saved correctly.
 		* Fixed categories on search dialog not being refreshed on category name change.
-		
+
 	deltaHF: 
 		* Show comments for shared files
-		
+
 	Hetfield:
 		* Some fix in new Tray system and desktopMode bypass
 
@@ -71,7 +81,7 @@ Version 2.0.0rc8 - The "last rc" version.
 		* Fixed: Stop button now working after second global search
 		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
-		  
+
 	ken_aMule:
 		* Fixed ipfilter on big endian archs.
 		* Fixed wxWidget's bugs that were creating serious memleaks on Mac		  
@@ -207,10 +217,10 @@ Version 2.0.0rc8 - The "last rc" version.
 		* Added generated png images to amuleweb
 		* Added RLE encoder for gap and parts status to EC
 		* Fixes in amule daemon
-		
+
 	Madcat:
 		* Added support for detecting HydraNode clients.
-		
+
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.
 		* Fixed a crash on broken language files (.po)
@@ -239,7 +249,7 @@ Version 2.0.0rc8 - The "last rc" version.
 		  received simultaneous requests. The problem was that all webserver threads 
 		  were using the same socket for sending/receiving EC packets to/from amule 
 		  without synchronization.
-		
+
 	Xaignar:
 		* Added the new casting macros to otherfunctions.
 		* Added a helper-function to CMuleListCtrl for use in the Sorter functions.
