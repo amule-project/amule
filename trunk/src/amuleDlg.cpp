@@ -62,7 +62,6 @@
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "SearchList.h"		// Needed for CSearchList
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
-#include "ListenSocket.h"	// Needed for CListenSocket
 #include "ServerList.h"		// Needed for CServerList
 #include "SysTray.h"		// Needed for CSysTray
 #include "Preferences.h"	// Needed for CPreferences
