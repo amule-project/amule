@@ -290,6 +290,7 @@ CUpDownClient::~CUpDownClient()
 	
 	if (m_pReqFileAICHHash != NULL) {
 		delete m_pReqFileAICHHash;	
+		m_pReqFileAICHHash = NULL;
 	}
 	
 #ifdef __DEBUG__
@@ -1042,7 +1043,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uSupportPreview		= 0; // No network preview at all.
 	const UINT uPeerCache			= 0; // No peercache for aMule, baby
 	const UINT uUnicodeSupport		= 0; // No unicode support yet.
-	const UINT nAICHVer				= 0; // AICH is DISABLED right now.
+	const UINT nAICHVer				= 1; // AICH is ENABLED right now.
 	
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1, 
 				(nAICHVer				<< ((4*7)+1)) |
@@ -1757,6 +1758,7 @@ void CUpDownClient::ResetFileStatusInfo()
 	
 	if (m_pReqFileAICHHash != NULL) {
 		delete m_pReqFileAICHHash;
+		m_pReqFileAICHHash = NULL;
 	}
 
 }
