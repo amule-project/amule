@@ -58,10 +58,7 @@ LinuxMon::LOADAVG_FILE ( wxT( "/proc/loadavg" ) );
 // Constructors
 LinuxMon::LinuxMon ()
 {
-	m_uptime = _( "Unknown" );
-	m_sysLoad_1 = wxT( "0.00" );
-	m_sysLoad_5 = wxT( "0.00" );
-	m_sysLoad_15 = wxT( "0.00" );
+	Refresh ();
 }
 
 // Destructor

@@ -63,9 +63,6 @@ OnLineSig::OnLineSig ( const wxFileName& file,
 	m_absoluteMaxDlDate = absoluteMaxDlDate;
 
 	Refresh ();
-
-	m_isSessionMaxDlChanged = true;
-	m_isAbsoluteMaxDlChanged = true;
 }
 
 // Destructor
@@ -251,9 +248,9 @@ wxString OnLineSig::GetConnexionIDType () const
 	}
 }
 
-wxString OnLineSig::GetSessionMaxDL () const
+double OnLineSig::GetSessionMaxDL () const
 {
-	return ( wxString::Format ( _( "%.2f kB/s" ), m_sessionMaxDL ) );
+	return ( m_sessionMaxDL );
 }
 
 wxDateTime OnLineSig::GetSessionMaxDlDate () const
@@ -273,9 +270,9 @@ bool OnLineSig::IsSessionMaxDlChanged() const
 	return ( m_isSessionMaxDlChanged );
 }
 
-wxString OnLineSig::GetAbsoluteMaxDL () const
+double OnLineSig::GetAbsoluteMaxDL () const
 {
-	return ( wxString::Format ( _( "%.2f kB/s" ), m_absoluteMaxDL ) );
+	return ( m_absoluteMaxDL );
 }
 
 wxDateTime OnLineSig::GetAbsoluteMaxDlDate () const

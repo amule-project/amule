@@ -70,6 +70,28 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	m_maxLineCount = 0;
 
+	// Check if we have a previous DL max hit
+	double absoluteMaxDL = ( double ) ( prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_KEY, 0L ) ) / 1024.0; // Stored in bytes
+	wxDateTime absoluteMaxDlDate( ( time_t ) ( prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY,
+	                              ( long ) ( wxDateTime::Now().GetTicks() ) ) ) ); // Stored in Ticks
+
+	// Add Online Sig file
+	m_aMuleSig = new OnLineSig ( wxFileName( prefs->
+	                             Read ( WxCasCte::AMULESIG_PATH_KEY,
+	                                    WxCasCte::DEFAULT_AMULESIG_PATH ),
+	                             WxCasCte::AMULESIG_FILENAME ),
+	                             absoluteMaxDL, absoluteMaxDlDate );
+
+	//Save absolute hit if we reach it during constructing
+	if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+		SaveAbsoluteHits();
+	}
+
+#ifdef __LINUX__		// System monitoring on Linux
+
+	m_sysMonitor = new LinuxMon ();
+#endif
+
 	// Status Bar
 	CreateStatusBar ();
 	SetStatusText ( _( "Welcome!" ) );
@@ -85,6 +107,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 
 	// Main Panel static line
 	m_staticLine = new wxStaticLine ( m_mainPanel, -1 );
+
 #ifdef __WXMSW__
 
 	m_BottomStaticLine = new wxStaticLine ( m_mainPanel, -1 );
@@ -103,18 +126,18 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_absHitPanelSBoxSizer = new wxStaticBoxSizer ( m_absHitPanelSBox, wxHORIZONTAL );
 
 	// Statistic labels
-	m_statLine_1 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_statLine_2 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_statLine_3 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_statLine_4 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_statLine_5 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_statLine_6 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_statLine_1 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_1() );
+	m_statLine_2 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_2() );
+	m_statLine_3 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_3() );
+	m_statLine_4 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_4() );
+	m_statLine_5 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_5() );
+	m_statLine_6 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_6() );
 
-	m_hitLine = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_hitLine = new wxStaticText ( m_mainPanel, -1, MakeHitsLine_1() );
 	m_hitButton =
 	    new wxButton ( m_mainPanel, ID_HIT_BUTTON, wxString ( _( "Reset" ) ) );
 
-	m_absHitLine = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
+	m_absHitLine = new wxStaticText ( m_mainPanel, -1, MakeHitsLine_2() );
 	m_absHitButton =
 	    new wxButton ( m_mainPanel, ID_ABS_HIT_BUTTON, wxString ( _( "Reset" ) ) );
 
@@ -124,27 +147,8 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_monPanelSBox = new wxStaticBox ( m_mainPanel, -1, _( "System" ) );
 	m_monPanelSBoxSizer = new wxStaticBoxSizer ( m_monPanelSBox, wxVERTICAL );
 
-	m_sysLine_1 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-	m_sysLine_2 = new wxStaticText ( m_mainPanel, -1, wxEmptyString );
-#endif
-
-	// Check if we have a previous DL max hit
-	//double absoluteMaxDL=prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_KEY, 0.0);
-	//wxDateTime absoluteMaxDlDate=prefs->Read ( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY, wxDateTime::Now());
-
-	double absoluteMaxDL = 0.0;
-	wxDateTime absoluteMaxDlDate = wxDateTime::Now();
-
-	// Add Online Sig file
-	m_aMuleSig = new OnLineSig ( wxFileName( prefs->
-	                             Read ( WxCasCte::AMULESIG_PATH_KEY,
-	                                    WxCasCte::DEFAULT_AMULESIG_PATH ),
-	                             WxCasCte::AMULESIG_FILENAME ),
-	                             absoluteMaxDL, absoluteMaxDlDate );
-
-#ifdef __LINUX__		// System monitoring on Linux
-
-	m_sysMonitor = new LinuxMon ();
+	m_sysLine_1 = new wxStaticText ( m_mainPanel, -1, MakeSysLine_1() );
+	m_sysLine_2 = new wxStaticText ( m_mainPanel, -1, MakeSysLine_2() );
 #endif
 
 	// Statistic Panel Layout
@@ -155,10 +159,10 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 
-	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxGROW, 5 );
+	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
 	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
 
-	m_absHitPanelSBoxSizer->Add ( m_absHitLine, 0, wxALL | wxALIGN_LEFT | wxGROW, 5 );
+	m_absHitPanelSBoxSizer->Add ( m_absHitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
 	m_absHitPanelSBoxSizer->Add ( m_absHitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
 
 #ifdef __LINUX__		// System monitoring on Linux
@@ -241,9 +245,6 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	// Add FTP update timer
 	m_ftp_update_timer = new wxTimer ( this, ID_FTP_UPDATE_TIMER );
 	m_ftp_update_timer->Start ( 60000 * prefs->Read ( WxCasCte::FTP_UPDATE_RATE_KEY, WxCasCte::DEFAULT_FTP_UPDATE_RATE ) );	// min to ms
-
-	// Update all stats and bitmap size
-	UpdateAll( TRUE );
 }
 
 // Destructor
@@ -518,6 +519,7 @@ void
 WxCasFrame::OnAbsHitButton ( wxCommandEvent& WXUNUSED( event ) )
 {
 	m_aMuleSig->ResetAbsoluteMaxDL();
+	SaveAbsoluteHits();
 	UpdateStatsPanel ();
 }
 
@@ -554,119 +556,71 @@ WxCasFrame::UpdateStatsPanel ()
 
 	Freeze ();
 
+	// Stat line 1
+	newline = MakeStatLine_1();
+	m_statLine_1->SetLabel ( newline );
+
+	newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
 	// aMule is running
 	if ( m_aMuleSig->GetAmuleState () == 1 ) {
-		// Stat line 1
-		newline = _( "aMule " );
-		newline += m_aMuleSig->GetVersion ();
-		newline += _( " has been running for " );
-		newline += m_aMuleSig->GetRunTime ();
-
-		m_statLine_1->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-
 		// Stat line 2
-		wxString notTooLongName ( m_aMuleSig->GetServerName () );
-		if ( notTooLongName.Length() > 32 ) {
-			notTooLongName = notTooLongName.Left( 32 ) + wxT( "..." );
-		}
-		newline = m_aMuleSig->GetUser ();
-		newline += _( " is on " );
-		newline += notTooLongName;
-		newline += _( " [" );
-		newline += m_aMuleSig->GetServerIP ();
-		newline += _( ":" );
-		newline += m_aMuleSig->GetServerPort ();
-		newline += _( "] with " );
-		newline += m_aMuleSig->GetConnexionIDType ();
-
+		newline = MakeStatLine_2();
 		m_statLine_2->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Stat line 3
-		newline = _( "Total Download: " );
-		newline += m_aMuleSig->GetConvertedTotalDL ();
-		newline += _( ", Upload: " );
-		newline += m_aMuleSig->GetConvertedTotalUL ();
-
+		newline = MakeStatLine_3();
 		m_statLine_3->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Stat line 4
-		newline = _( "Session Download: " );
-		newline += m_aMuleSig->GetConvertedSessionDL ();
-		newline += _( ", Upload: " );
-		newline += m_aMuleSig->GetConvertedSessionUL ();
-
+		newline = MakeStatLine_4();
 		m_statLine_4->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Stat line 5
-		newline = _( "Download: " );
-		newline += m_aMuleSig->GetDLRate ();
-		newline += _( " kB/s, Upload: " );
-		newline += m_aMuleSig->GetULRate ();
-		newline += _( "kB/s" );
-
+		newline = MakeStatLine_5();
 		m_statLine_5->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Stat line 6
-		newline = _( "Sharing: " );
-		newline += m_aMuleSig->GetSharedFiles ();
-		newline += _( " file(s), Clients on queue: " );
-		newline += m_aMuleSig->GetQueue ();
-
+		newline = MakeStatLine_6();
 		m_statLine_6->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
 		// Hits line 1
 
-		//if (m_aMuleSig->IsSessionMaxDlChanged()) {
-		newline = m_aMuleSig->GetSessionMaxDL ();
-		newline += _( " on " );
-		newline += m_aMuleSig->GetSessionMaxDlDate().Format( wxT( "%c" ) );
+		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+			newline = MakeHitsLine_1();
+			m_hitLine->SetLabel ( newline );
 
-		m_hitLine->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-		//}
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		}
 
 		// Hits line 2
+		if ( m_aMuleSig->IsAbsoluteMaxDlChanged() ) {
+			newline = MakeHitsLine_2();
+			m_absHitLine->SetLabel ( newline );
 
-		//if (m_aMuleSig->IsAbsoluteMaxDlChanged()) {
-		newline = m_aMuleSig->GetAbsoluteMaxDL ();
-		newline += _( " on " );
-		newline += m_aMuleSig->GetAbsoluteMaxDlDate().Format( wxT( "%c" ) );
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		m_absHitLine->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-		//}
+			// Save new records
+			SaveAbsoluteHits();
+		}
 
 #ifdef __LINUX__		// System monitoring on Linux
-
-		newline = _( "System Load Average (1-5-15 min): " ) +
-		          m_sysMonitor->GetSysLoad_1 () + wxT( " " ) +
-		          m_sysMonitor->GetSysLoad_5 () + wxT( " " ) +
-		          m_sysMonitor->GetSysLoad_15 ();
-
+		newline = MakeSysLine_1();
 		m_sysLine_1->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-#endif
 
-#ifdef __LINUX__		// System monitoring on Linux
-
-		newline = _( "System uptime: " );
-		newline += m_sysMonitor->GetUptime ();
-
+		newline = MakeSysLine_2();
 		m_sysLine_2->SetLabel ( newline );
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
@@ -676,41 +630,14 @@ WxCasFrame::UpdateStatsPanel ()
 	}
 	// aMule is stopped
 	else if ( m_aMuleSig->GetAmuleState () == 0 ) {
-		// Stat line 1
-		newline = _( "aMule " );
-		newline += m_aMuleSig->GetVersion ();
-		newline += _( " is STOPPED !" );
-
-		m_statLine_1->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-
 		status = _( "WARNING: aMule is stopped !" );
 	}
 	// aMule is connecting
 	else if ( m_aMuleSig->GetAmuleState () == 2 ) {
-		// Stat line 1
-		newline = _( "aMule " );
-		newline += m_aMuleSig->GetVersion ();
-		newline += _( " is connecting..." );
-
-		m_statLine_1->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-
 		status = _( "aMule is connecting..." );
 	}
 	// aMule status is unknown
 	else {
-		// Stat line 1
-		newline = _( "aMule " );
-		newline += m_aMuleSig->GetVersion ();
-		newline += _( " is doing something strange, check it !" );
-
-		m_statLine_1->SetLabel ( newline );
-
-		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
-
 		status = _( "Oh Oh, aMule status is unknown..." );
 	}
 
@@ -775,4 +702,147 @@ void
 WxCasFrame::SetAmuleSigFile( const wxFileName& file )
 {
 	m_aMuleSig->SetAmuleSig ( file );
+}
+
+wxString
+WxCasFrame::MakeStatLine_1() const
+{
+	wxString newline;
+	if ( m_aMuleSig->GetAmuleState () == 1 ) {
+		newline = _( "aMule " )
+		          + m_aMuleSig->GetVersion ()
+		          + _( " has been running for " )
+		          + m_aMuleSig->GetRunTime ();
+	} else if ( m_aMuleSig->GetAmuleState () == 0 ) {
+
+		newline = _( "aMule " )
+		          + m_aMuleSig->GetVersion ()
+		          + _( " is STOPPED !" );
+	} else if ( m_aMuleSig->GetAmuleState () == 2 ) {
+		newline = _( "aMule " )
+		          + m_aMuleSig->GetVersion ()
+		          + _( " is connecting..." );
+	} else {
+		newline = _( "aMule " )
+		          + m_aMuleSig->GetVersion ()
+		          + _( " is doing something strange, check it !" );
+	}
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_2() const
+{
+	wxString notTooLongName ( m_aMuleSig->GetServerName () );
+	if ( notTooLongName.Length() > 32 ) {
+		notTooLongName = notTooLongName.Left( 32 ) + wxT( "..." );
+	}
+
+	wxString newline = m_aMuleSig->GetUser ()
+	                   + _( " is on " )
+	                   + notTooLongName
+			   + _( " [" )
+			   + m_aMuleSig->GetServerIP ()
+			   + _( ":" )
+			   + m_aMuleSig->GetServerPort ()
+			   + _( "] with " )
+			   + m_aMuleSig->GetConnexionIDType ();
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_3() const
+{
+	wxString newline = _( "Total Download: " )
+	                   + m_aMuleSig->GetConvertedTotalDL ()
+	                   + _( ", Upload: " )
+	                   + m_aMuleSig->GetConvertedTotalUL ();
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_4() const
+{
+	wxString newline = _( "Session Download: " )
+	                   + m_aMuleSig->GetConvertedSessionDL ()
+	                   + _( ", Upload: " )
+	                   + m_aMuleSig->GetConvertedSessionUL ();
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_5() const
+{
+	wxString newline = _( "Download: " )
+	                   + m_aMuleSig->GetDLRate ()
+	                   + _( " kB/s, Upload: " )
+	                   + m_aMuleSig->GetULRate ()
+	                   + _( "kB/s" );
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_6() const
+{
+	wxString newline = _( "Sharing: " )
+	                   + m_aMuleSig->GetSharedFiles ()
+	                   + _( " file(s), Clients on queue: " )
+	                   + m_aMuleSig->GetQueue ();
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeHitsLine_1() const
+{
+	wxString newline = wxString::Format ( _( "%.2f kB/s" ), m_aMuleSig->GetSessionMaxDL () )
+	                   + _( " on " )
+	                   + m_aMuleSig->GetSessionMaxDlDate().Format( wxT( "%c" ) );
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeHitsLine_2() const
+{
+	wxString newline = wxString::Format ( _( "%.2f kB/s" ), m_aMuleSig->GetAbsoluteMaxDL() )
+	                   + _( " on " )
+	                   + m_aMuleSig->GetAbsoluteMaxDlDate().Format( wxT( "%c" ) );
+
+	return ( newline );
+}
+
+#ifdef __LINUX__		// System monitoring on Linux
+wxString
+WxCasFrame::MakeSysLine_1() const
+{
+	wxString newline = _( "System Load Average (1-5-15 min): " )
+	                   + m_sysMonitor->GetSysLoad_1 () + wxT( " " )
+	                   + m_sysMonitor->GetSysLoad_5 () + wxT( " " )
+	                   + m_sysMonitor->GetSysLoad_15 ();
+
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeSysLine_2() const
+{
+	wxString newline = _( "System uptime: " )
+	                   + m_sysMonitor->GetUptime ();
+
+	return ( newline );
+}
+#endif
+
+void WxCasFrame::SaveAbsoluteHits()
+{
+	wxConfigBase * prefs = wxConfigBase::Get();
+	prefs->Write( WxCasCte::ABSOLUTE_MAX_DL_KEY, ( long ) ( 1024.0 * m_aMuleSig->GetAbsoluteMaxDL() ) );
+	prefs->Write( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY, ( long ) ( m_aMuleSig->GetAbsoluteMaxDlDate().GetTicks() ) );
+	prefs->Flush();
 }

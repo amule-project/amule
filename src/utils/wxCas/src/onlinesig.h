@@ -162,7 +162,7 @@ public:
 	wxString GetConnexionIDType () const;
 
 	/// Get max Download rate since wxCas is running
-	wxString GetSessionMaxDL () const;
+	double GetSessionMaxDL () const;
 
 	/// Get max Download date since wxCas is running
 	wxDateTime GetSessionMaxDlDate () const;
@@ -174,7 +174,7 @@ public:
 	void ResetSessionMaxDL ();
 
 	/// Get absolute max Download rate
-	wxString GetAbsoluteMaxDL () const;
+	double GetAbsoluteMaxDL () const;
 
 	/// Get absolute max Download date
 	wxDateTime GetAbsoluteMaxDlDate () const;
