@@ -228,6 +228,7 @@ void* CAICHSyncThread::Entry()
 			}
 
 			CKnownFile* pCurFile = queue.front();
+			queue.pop_front();
 
 			printf("AICH Thread: Hashing file: %s, total files left: %i\n", unicode2char( pCurFile->GetFileName() ), queue.size() - 1 );
 
@@ -238,8 +239,6 @@ void* CAICHSyncThread::Entry()
 			if ( !pCurFile->CreateAICHHashSetOnly() ) {
 				printf("AICH Thread: Failed to create hashset for file %s\n", unicode2char( pCurFile->GetFileName() ) );
 			}
-
-			queue.pop_front();
 		}
 
 		printf("AICH Thread: Hashing completed.\n");
