@@ -1,20 +1,23 @@
-/*
-Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
+//
+// This file is part of aMule Project
+//
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
+// Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-*/
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 // Note To Mods //
 /*
@@ -28,10 +31,8 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#include "stdafx.h"
 #include "IOException.h"
-#include <string.h>
-#include "../../Resource.h"
+#include <wx/string.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,15 +45,15 @@ static char THIS_FILE[] = __FILE__;
 using namespace Kademlia;
 ////////////////////////////////////////
 
-BOOL CIOException::GetErrorMessage(LPTSTR lpszError, UINT nMaxError, PUINT pnHelpContext)
+BOOL CIOException::GetErrorMessage(wxString* lpszError, UINT nMaxError, PUINT pnHelpContext)
 {
-	CString msg = _T("ONLY AVAILABLE WITH EMULE INTEGRATION");
-//	CString msg = GetResString(IOEXCEPTION_ERR_BASE + m_cause);
-	_tcsncpy(lpszError, msg.GetBuffer(0), nMaxError);
-	lpszError[nMaxError-1] = 0;
+	wxString msg = wxT("ONLY AVAILABLE WITH EMULE INTEGRATION");
 
-	if (pnHelpContext != NULL)
+	(*lpszError) = msg.Left(nMaxError);
+
+	if (pnHelpContext != NULL) {
 		*pnHelpContext = 0;
+	}
 
 	return true;
 }

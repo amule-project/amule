@@ -1,1 +1,2 @@
-SUBDIRS = utils io kademlia net routing
+SUBDIRS = io kademlia net routing utils
+

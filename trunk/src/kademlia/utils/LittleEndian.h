@@ -31,7 +31,8 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#pragma once
+#ifndef __KAD_LITTLE_ENDIAN_H
+#define __KAD_LITTLE_ENDIAN_H
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -43,3 +44,5 @@ uint32 le(uint32 val);
 uint64 le(uint64 val);
 
 } // End namespace
+
+#endif // __KAD_LITTLE_ENDIAN_H
