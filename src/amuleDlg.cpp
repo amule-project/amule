@@ -103,7 +103,7 @@ END_EVENT_TABLE()
 CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dlg_size) : wxFrame(
 	pParent, CamuleDlg::IDD, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
-	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX )
+	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
 
 	wxInitAllImageHandlers();
