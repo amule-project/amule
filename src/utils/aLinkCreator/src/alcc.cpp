@@ -64,26 +64,26 @@ int alcc::OnRun ()
         {
           if (m_flagVerbose)
             {
-              printf("Processing file number %u: %s\n",i+1,unicode2char(m_filesToHash[i]));
+              printf(unicode2char(_("Processing file number %u: %s\n")),i+1,unicode2char(m_filesToHash[i]));
               if (m_flagPartHashes)
                 {
-                  printf("You have asked for part hashes (Only used for files > 9.5 MB)\n");
+                  printf(unicode2char(_("You have asked for part hashes (Only used for files > 9.5 MB)\n")));
                 }
             }
 	    
-          printf ("Please wait... ");
+          printf (unicode2char(_("Please wait... ")));
 	    
           if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
             {
-              printf ("Done !\n");
+              printf (unicode2char(_("Done !\n")));
 		    
-              printf ("%s ---> %s\n\n",unicode2char(m_filesToHash[i]),
+              printf (unicode2char(wxT("%s ---> %s\n\n")),unicode2char(m_filesToHash[i]),
                       unicode2char(hash.GetED2KLink(m_flagPartHashes)));
             }
         }
       else
         {
-          printf ("%s ---> Non existant file !\n\n",unicode2char(m_filesToHash[i]));
+          printf (unicode2char(_("%s ---> Non existant file !\n\n")),unicode2char(m_filesToHash[i]));
         }
     }
   return 0;
