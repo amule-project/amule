@@ -113,10 +113,6 @@
 # define RLIMIT_RESOURCE int
 #endif
 
-#ifdef __USE_SPLASH__
-#include "splash.xpm"
-#endif
-
 BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// Socket handlers
@@ -572,38 +568,7 @@ bool CamuleApp::OnInit()
 	// Create Hashing thread
 	CAddFileThread::Setup();
 
-	// Create main dialog
-	// Should default/last-used position be overridden?
-	if (geometry_enabled ) {
-		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)), wxPoint(geometry_x,geometry_y), wxSize( geometry_width, geometry_height - 58 ));
-	} else {
-		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
-	}
 	
-	amuledlg->Show(TRUE);
-
-
-	// Get ready to handle connections from apps like amulecmd
-	ECServerHandler = new ExternalConn();
-
-
-#ifndef __SYSTRAY_DISABLED__
-	amuledlg->CreateSystray(wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
-#endif 
-        
-
-	// splashscreen
-	#ifdef __USE_SPLASH__
-	if (glob_prefs->UseSplashScreen() && !glob_prefs->GetStartMinimized()) {
-		new wxSplashScreen( wxBitmap(splash_xpm),
-		                    wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT,
-		                    5000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-		                    wxSIMPLE_BORDER|wxSTAY_ON_TOP
-		);
-	}
-	#endif
-
-
 	clientlist		= new CClientList();
 	searchlist		= new CSearchList();
 	knownfiles		= new CKnownFileList(glob_prefs->GetAppDir());
@@ -620,15 +585,19 @@ bool CamuleApp::OnInit()
 	clientcredits	= new CClientCreditsList(glob_prefs);
 	downloadqueue	= new CDownloadQueue(glob_prefs, sharedfiles);	// bugfix - do this before creating the uploadqueue
 	uploadqueue		= new CUploadQueue(glob_prefs);
-	ipfilter		= new CIPFilter();
+	ipfilter		= new CIPFilter();	
 	
+	// Create main dialog
+	// Should default/last-used position be overridden?
+	if (geometry_enabled ) {
+		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)), wxPoint(geometry_x,geometry_y), wxSize( geometry_width, geometry_height - 58 ));
+	} else {
+		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
+	}
 
-	// Init statistics stuff, better do it asap
-	amuledlg->statisticswnd->Init();
-	amuledlg->statisticswnd->SetUpdatePeriod();
-
-	// must do initialisations here.. 
-	amuledlg->serverwnd->serverlistctrl->Init(serverlist);
+	// Get ready to handle connections from apps like amulecmd
+	ECServerHandler = new ExternalConn();
+        
 	serverlist->Init();
 
 	// init downloadqueue
@@ -640,18 +609,6 @@ bool CamuleApp::OnInit()
 
 	SetTopWindow(amuledlg);
 
-
-	// Initialize and sort all lists.
-	// FIX: Remove from here and put these back to the OnInitDialog()s
-	// and call the OnInitDialog()s here!
-	amuledlg->transferwnd->downloadlistctrl->InitSort();
-	amuledlg->transferwnd->uploadlistctrl->InitSort();
-	amuledlg->transferwnd->queuelistctrl->InitSort();
-	amuledlg->serverwnd->serverlistctrl->InitSort();
-	amuledlg->sharedfileswnd->sharedfilesctrl->InitSort();
-
-	// call the initializers
-	amuledlg->transferwnd->OnInitDialog();
 
 	// Start the Core Timer
 	
@@ -683,21 +640,6 @@ bool CamuleApp::OnInit()
 	}
 
 
-	// Must we start minimized?
-	if (glob_prefs->GetStartMinimized()) {
-		#ifndef __SYSTRAY_DISABLED__	
-		// Send it to tray?
-		if (glob_prefs->DoMinToTray()) {
-			amuledlg->Hide_aMule();
-		} else {
-			amuledlg->Iconize(TRUE);
-		}
-		#else
-			amuledlg->Iconize(TRUE);
-		#endif
-	}
-	
-	
 	// Autoconnect if that option is enabled 
 	if (glob_prefs->DoAutoConnect()) {
 		wxCommandEvent nullEvt;
@@ -1848,3 +1790,28 @@ void CamuleApp::ShutDown() {
 		
 	}
 #endif
+	
+	
+void CamuleApp::NotifyEvent(GUIEvent event) {
+	
+	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
+		return;
+	}
+	
+	switch (event.ID) {
+		case SHAREDFILES_UPDATEITEM:
+			amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem((CKnownFile*)event.ptr_value);
+			break;
+		case ADDLOGLINE:
+			if (amuledlg) {
+				amuledlg->AddLogLine(event.byte_value,event.string_value);
+			} else {
+				QueueLogLine(event.byte_value,event.string_value);
+			}
+			break;
+		default:
+			printf("Unknown event notified to wxApp\n");
+			wxASSERT(0);
+	}
+	
+};
