@@ -1558,7 +1558,7 @@ void CUpDownClient::ReGetClientSoft()
 					if (GetClientModString().IsEmpty() == false) {
 						m_clientVerString +=  wxString::Format(wxT(" v0.%u - "), nClientMinVersion) + GetClientModString();
 					} else {
-					m_clientVerString +=  wxString::Format(wxT(" v0.%u"), nClientMinVersion);
+						m_clientVerString +=  wxString::Format(wxT(" v0.%u"), nClientMinVersion);
 					}
 					break;
 			}
@@ -1582,6 +1582,9 @@ void CUpDownClient::ReGetClientSoft()
 					break;
 				case SO_LPHANT:
 					m_clientVerString +=  wxString::Format(wxT(" v%u.%.2u%c"), nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);
+					break;
+				case SO_EMULEPLUS:
+					m_clientVerString +=  wxString::Format(wxT(" v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion - 1);
 					break;
 				default:
 					if (GetClientModString().IsEmpty() == false) {
