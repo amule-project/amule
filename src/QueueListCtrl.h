@@ -22,6 +22,7 @@
 
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 #include <wx/imaglist.h>
+#include <wx/timer.h>
 
 class CUpDownClient;
 
