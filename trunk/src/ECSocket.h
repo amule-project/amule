@@ -75,7 +75,10 @@ class ECSocket
 		// Server
 		//
 		wxSocketBase *Accept(bool wait = true) { return ((wxSocketServer *)m_sock)->Accept(wait); }
-
+		bool WaitForAccept(long seconds, long millisecond )
+		{
+			return ((wxSocketServer *)m_sock)->WaitForAccept(seconds, millisecond);
+		}
 		//
 		// Packet I/O
 		//
