@@ -925,10 +925,16 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 }
 
 /*
- * RLE encoder implementation
+ * RLE encoder implementation. This is RLE implementation for very specific
+ * purpose: encode DIFFERENCE between subsequent states of status bar.
+ * 
+ * This difference is calculated by xor-ing with previous data
+ * 
+ * We can't use implementation with "control char" since this encoder
+ * will process binary data - not ascii (or unicode) strings
  */
  
-RLE_String::RLE_String(int len)
+RLE_Data::RLE_Data(int len)
 {
 	// since we using char, length limited to 255
 	wxASSERT(len < 0xff);
@@ -940,13 +946,13 @@ RLE_String::RLE_String(int len)
 	m_enc_buff = new unsigned char[m_len];
 }
 
-RLE_String::~RLE_String()
+RLE_Data::~RLE_Data()
 {
 	delete [] m_buff;
 	delete [] m_enc_buff;
 }
 
-CECTag *RLE_String::Encode(unsigned char *buff)
+CECTag *RLE_Data::Encode(unsigned char *buff)
 {
 	//
 	// calculate difference from prev
@@ -983,7 +989,7 @@ CECTag *RLE_String::Encode(unsigned char *buff)
 	return tag;
 }
 
-const unsigned char *RLE_String::Decode(CECTag *tag)
+const unsigned char *RLE_Data::Decode(CECTag *tag)
 {
 	//
 	// Open RLE
