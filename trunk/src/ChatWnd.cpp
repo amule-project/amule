@@ -100,7 +100,7 @@ void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
 	GetParent()->FindWindow(IDC_CSEND)->Enable(false);
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
 	GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
-	((wxTextCtrl) GetParent()->FindWindow(IDC_CMESSAGE))->Clear();
+	// GetParent()->FindWindow(IDC_CMESSAGE)->Clear();
 }
 
 
