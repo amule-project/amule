@@ -86,8 +86,8 @@ COLORREF crPreset [ 16 ] = {
 	crGrid  = RGB(  0, 255, 255) ;  // see also SetGridColor
 	brushBack=*(wxTheBrushList->FindOrCreateBrush(wxColour(GetRValue(crBackground),GetGValue(crBackground),GetBValue(crBackground)),wxSOLID));
 
-	strXUnits.Format("X") ;  // can also be set with SetXUnits
-	strYUnits.Format("Y") ;  // can also be set with SetYUnits
+	strXUnits.Format(wxT("X")) ;  // can also be set with SetXUnits
+	strYUnits.Format(wxT("Y")) ;  // can also be set with SetYUnits
 
 	bmapOldGrid = NULL ;
 	bmapOldPlot = NULL ;
@@ -237,13 +237,13 @@ void COScopeCtrl::RecreateGrid()
 	}
 
 	// create some fonts (horizontal and vertical)
-	wxFont* axisFont = new wxFont(10,wxSWISS,wxNORMAL,wxNORMAL,FALSE,"Arial");
+	wxFont* axisFont = new wxFont(10,wxSWISS,wxNORMAL,wxNORMAL,FALSE,wxT("Arial"));
 	dcGrid->SetFont(*axisFont);//,this);
 
 	// y max
 	dcGrid->SetTextForeground(wxColour(GetRValue(crGrid),GetGValue(crGrid),GetBValue(crGrid)));
 	if( strYMax.IsEmpty() )
-		strTemp.Format ("%.*lf", nYDecimals, pdsTrends[ 0 ].fUpperLimit) ;
+		strTemp.Format (wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fUpperLimit) ;
 	else
 		strTemp = strYMax;
 	wxCoord sizX,sizY;
@@ -258,7 +258,7 @@ void COScopeCtrl::RecreateGrid()
 */
 	// y min
 	if( strYMin.IsEmpty() )
-		strTemp.Format ("%.*lf", nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
+		strTemp.Format (wxT("%.*lf"), nYDecimals, pdsTrends[ 0 ].fLowerLimit) ;
 	else
 		strTemp = strYMin;
 	dcGrid->GetTextExtent(strTemp,&sizX,&sizY);
@@ -267,7 +267,7 @@ void COScopeCtrl::RecreateGrid()
 	// x units
 	strTemp = CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
-	strXUnits.Format((bStopped ? _("Disabled [%s]") : "%s"), strTemp.GetBuffer());
+	strXUnits.Format((bStopped ? _("Disabled [%s]") : wxT("%s")), unicode2char(strTemp));
 	
 	dcGrid->GetTextExtent(strXUnits,&sizX,&sizY);
 	dcGrid->DrawText(strXUnits,(rectPlot.left+rectPlot.right)/2-sizX/2,rectPlot.bottom+4);

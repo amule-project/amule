@@ -24,6 +24,7 @@
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "CMD4Hash.h"
+#include <ctype.h> 		// needed for toupper in wx-2.5 + unicode
 
 
 // Base 16 chars for encoding and decoding functions

@@ -247,12 +247,12 @@ bool CUpDownClient::IsDifferentPartBlock(void) // [Tarod 12/22/2002]
 			if ( last_done_part != next_requested_part)
 			{ 
 				different_part = true;
-				theApp.amuledlg->AddDebugLogLine(false, "Session ended due to new chunk.");
+				AddDebugLogLineM(false, wxT("Session ended due to new chunk."));
 			}
 			if (memcmp(last_done_block->FileID, next_requested_block->FileID, 16) != 0)
 			{ 
 				different_part = true;
-				theApp.amuledlg->AddDebugLogLine(false, "Session ended due to different file.");
+				AddDebugLogLineM(false, wxT("Session ended due to different file."));
 			}
 		} 
    	}
@@ -305,12 +305,12 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				throw wxString(wxT("requested file not found"));
 
 			if (srcfile->IsPartFile() && ((CPartFile*)srcfile)->GetStatus() != PS_COMPLETE){
-				fullname = nstrdup(((CPartFile*)srcfile)->GetFullName());
+				fullname = nstrdup(unicode2char(((CPartFile*)srcfile)->GetFullName()));
 				fullname[strlen(fullname)-4] = 0;			
 			}
 			else{
-				fullname = new char[strlen(srcfile->GetFilePath())+strlen(srcfile->GetFileName().c_str())+10];
-				sprintf(fullname,"%s/%s",srcfile->GetFilePath().c_str(),srcfile->GetFileName().GetData());
+				fullname = new char[strlen(unicode2char(srcfile->GetFilePath()))+strlen(unicode2char(srcfile->GetFileName()))+10];
+				sprintf(fullname,"%s/%s",unicode2char(srcfile->GetFilePath()),unicode2char(srcfile->GetFileName()));
 			}
 		
 			uint32 togo;
@@ -354,7 +354,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			}
 
 			SetUploadFileID(srcfile);
-			if (m_byDataCompVer == 1 && (!strstr(srcfile->GetFileName().c_str(),".zip")) && (!strstr(srcfile->GetFileName().c_str(),".rar")) && (!strstr(srcfile->GetFileName().c_str(),".ace")))
+			if (m_byDataCompVer == 1 && (!strstr(unicode2char(srcfile->GetFileName()),".zip")) && (!strstr(unicode2char(srcfile->GetFileName()),".rar")) && (!strstr(unicode2char(srcfile->GetFileName()),".ace")))
 				CreatePackedPackets(filedata,togo,currentblock);
 			else
 				CreateStandartPackets(filedata,togo,currentblock);
@@ -505,15 +505,15 @@ void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqf
 			}
 		}
 	} catch (CInvalidPacket InvalidPacket) {
-		wxString error = "CUpDownClient::ProcessExtendedInfo: ";
+		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: ");
 		if (strlen(InvalidPacket.what())) {
-			error += InvalidPacket.what();
+			error += char2unicode(InvalidPacket.what());
 		} else {
-			error += "Unknown InvalidPacket exception";
+			error += wxT("Unknown InvalidPacket exception");
 		}
 		throw(error);
 	} catch (...) {
-		wxString error = "CUpDownClient::ProcessExtendedInfo: Unknown Exception";
+		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: Unknown Exception");
 		throw(error);
 	}
 	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);

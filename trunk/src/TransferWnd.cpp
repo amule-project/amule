@@ -61,9 +61,9 @@ CTransferWnd::CTransferWnd(wxWindow* pParent /*=NULL*/)
 	wxSizer* content=transferDlg(this,TRUE);
 	content->Show(this,TRUE);
 
-	uploadlistctrl=(CUploadListCtrl*)FindWindowByName("uploadList");
-	downloadlistctrl=(CDownloadListCtrl*)FindWindowByName("downloadList");
-	queuelistctrl=(CQueueListCtrl*)FindWindowByName("uploadQueue");
+	uploadlistctrl=(CUploadListCtrl*)FindWindowByName(wxT("uploadList"));
+	downloadlistctrl=(CDownloadListCtrl*)FindWindowByName(wxT("downloadList"));
+	queuelistctrl=(CQueueListCtrl*)FindWindowByName(wxT("uploadQueue"));
 	// let's hide the queue
 	queueSizer->Remove(queuelistctrl);
 	Layout();
@@ -89,8 +89,8 @@ bool CTransferWnd::OnInitDialog()
 	sprintf(theApp.glob_prefs->GetCategory(0)->incomingpath,"%s",theApp.glob_prefs->GetIncomingDir());
 	for (uint32 ix=0;ix<theApp.glob_prefs->GetCatCount();ix++) {
 		wxPanel* nullPanel=new wxPanel(m_dlTab);
-		wxString tmpstrstr(theApp.glob_prefs->GetCategory(ix)->title);
-		m_dlTab->AddPage(nullPanel,"-"); // just temporary string.
+		wxString tmpstrstr(char2unicode(theApp.glob_prefs->GetCategory(ix)->title));
+		m_dlTab->AddPage(nullPanel,wxT("-")); // just temporary string.
 		// for some odd reason, wxwin2.5 and gtk2 will not allow non utf strings for AddPage()
 		// but they will be accepted in SetPageText().. so let's use this as a countermeasure
 		m_dlTab->SetPageText(ix,tmpstrstr);
@@ -102,9 +102,9 @@ bool CTransferWnd::OnInitDialog()
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
 	char buffer[100];
-	wxString fmtstr="%u (%u "+ CString(_("Banned")).MakeLower() +")";
-	sprintf(buffer,fmtstr.GetData(),number,theApp.uploadqueue->GetBanCount());
-	wxStaticCast(FindWindowByName("clientCount"),wxStaticText)->SetLabel(buffer);
+	wxString fmtstr=wxT("%u (%u ")+ CString(_("Banned")).MakeLower() +wxT(")");
+	sprintf(buffer,unicode2char(fmtstr),number,theApp.uploadqueue->GetBanCount());
+	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(char2unicode(buffer));
 	//this->GetDlgItem(IDC_QUEUECOUNT)->SetWindowText(buffer);
 }
 
@@ -118,7 +118,7 @@ void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
 		queueSizer->Add(queuelistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL ,5);
 		queuelistctrl->Show();
 		queueSizer->Layout();
-		wxStaticCast(FindWindowByName("uploadTitle"),wxStaticText)->SetLabel(CString(_("On Queue")));
+		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(CString(_("On Queue")));
 	} else {
 		windowtransferstate=false;
 		// hide the queuelist
@@ -127,7 +127,7 @@ void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
 		queueSizer->Add(uploadlistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL, 5);
 		uploadlistctrl->Show();
 		queueSizer->Layout();
-		wxStaticCast(FindWindowByName("uploadTitle"),wxStaticText)->SetLabel(CString(_("Uploads")));
+		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(CString(_("Uploads")));
 	}
 }
 
@@ -232,7 +232,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			theApp.glob_prefs->SetAllcatType(event.GetId()-MP_CAT_SET0);
 			sprintf(theApp.glob_prefs->GetCategory(0)->title, "%s", GetCatTitle(theApp.glob_prefs->GetAllcatType()).GetBuffer());
 			CString csName;
-			csName.Format("%s", theApp.glob_prefs->GetCategory(0)->title );
+			csName.Format(wxT("%s"), theApp.glob_prefs->GetCategory(0)->title );
 			EditCatTabLabel(0,csName);
 			downloadlistctrl->ChangeCategory(0);
 			downloadlistctrl->InitSort();
@@ -244,7 +244,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			//m_dlTab.InsertItem(newindex,theApp.glob_prefs->GetCatego
 			//	       ry(newindex)->title);
 			wxPanel* nullPanel=new wxPanel(m_dlTab,-1);
-			m_dlTab->AddPage(nullPanel,theApp.glob_prefs->GetCategory(newindex)->title);
+			m_dlTab->AddPage(nullPanel,char2unicode(theApp.glob_prefs->GetCategory(newindex)->title));
 			CCatDialog dialog(this,newindex);
 			dialog.OnInitDialog();
 			dialog.ShowModal();
@@ -259,7 +259,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 			dialog.ShowModal();
 
 			CString csName;
-			csName.Format("%s", theApp.glob_prefs->GetCategory(m_dlTab->GetSelection())->title );
+			csName.Format(wxT("%s"), theApp.glob_prefs->GetCategory(m_dlTab->GetSelection())->title );
 			EditCatTabLabel(m_dlTab->GetSelection(),csName);
 
 			theApp.glob_prefs->SaveCats();
@@ -373,7 +373,7 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
 			}
 		}
 		CString title=newlabel;
-		newlabel.Format("%s (%i/%i)",title.GetData(),dwl,count);
+		newlabel.Format(wxT("%s (%i/%i)"),title.GetData(),dwl,count);
 	}
 	m_dlTab->SetPageText(index,newlabel);
 	theApp.amuledlg->searchwnd->UpdateCatChoice();
@@ -381,7 +381,7 @@ void CTransferWnd::EditCatTabLabel(int index,CString newlabel)
 
 void CTransferWnd::OnSashPositionChanged(wxSplitterEvent& evt)
 {
-	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow("splitterWnd"))->GetSashPosition();
+	theApp.amuledlg->split_pos = ((wxSplitterWindow*)FindWindow(wxT("splitterWnd")))->GetSashPosition();
 }
 
 void CTransferWnd::OnBtnClearDownloads(wxCommandEvent &evt) {
@@ -411,4 +411,3 @@ void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent &evt) {
 		queueSizer->Layout();
 	}
 }
-

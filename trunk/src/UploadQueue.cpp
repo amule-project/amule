@@ -197,24 +197,24 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	(strcmp(newclient->m_pszUsername,"Reverse") == 0) ||
 	(strcmp(newclient->m_pszUsername,"[toXic]") == 0) ||
 	(strcmp(newclient->m_pszUsername,"$WAREZ$") == 0) ||
-	(newclient->m_strModVersion.Cmp("aldo") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("booster") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("darkmule") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("d-unit") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("DM-") == 0 ) ||       
-	(newclient->m_strModVersion.Cmp("dodgethis") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("Dragon") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("egomule") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("eVortex") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("father") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("Freeza") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("gt mod") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("imperator") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("LegoLas") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("Max") == 0 )  ||
-	(newclient->m_strModVersion.Cmp("Mison") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("SpeedLoad") == 0 ) ||
-	(newclient->m_strModVersion.Cmp("|X|") == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("aldo")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("booster")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("darkmule")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("d-unit")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("DM-")) == 0 ) ||       
+	(newclient->m_strModVersion.Cmp(wxT("dodgethis")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("Dragon")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("egomule")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("eVortex")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("father")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("Freeza")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("gt mod")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("imperator")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("LegoLas")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("Max")) == 0 )  ||
+	(newclient->m_strModVersion.Cmp(wxT("Mison")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("SpeedLoad")) == 0 ) ||
+	(newclient->m_strModVersion.Cmp(wxT("|X|")) == 0 ) ||
 	((newclient->m_strModVersion.IsEmpty() == false) && (newclient->GetClientSoft() != SO_EMULE) && (newclient->GetClientSoft() != SO_LXMULE) && (newclient->GetClientSoft() != SO_AMULE) ) ||
  	((!newclient->GetMuleVersion() && (newclient->GetClientSoft()==SO_EMULE || newclient->GetClientSoft()==SO_OLDEMULE)) && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
  	(!newclient->ExtProtocolAvailable() && newclient->GetClientSoft()==SO_EMULE && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||

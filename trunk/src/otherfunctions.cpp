@@ -32,6 +32,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CString.h"		// Needed for CString
+#include <ctype.h>
 
 // Formats a filesize in bytes to make it suitable for displaying
 CString CastItoXBytes( uint64 count )
@@ -39,15 +40,15 @@ CString CastItoXBytes( uint64 count )
 	CString buffer;
 
 	if (count < 1024)
-		buffer.Format( "%.0f %s", (float)count, _("Bytes") );
+		buffer.Format( wxT("%.0f %s"), (float)count, _("Bytes") );
 	else if (count < 1048576)
-		buffer.Format( "%.0f %s", (float)count/1024, _("KB") );
+		buffer.Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
 	else if (count < 1073741824)
-		buffer.Format( "%.2f %s", (float)count/1048576, _("MB") );
+		buffer.Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
 	else if (count < 1099511627776LL)
-		buffer.Format( "%.2f %s", (float)count/1073741824, _("GB") );
+		buffer.Format( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
 	else
-		buffer.Format( "%.3f %s", (float)count/1099511627776LL, _("TB") );
+		buffer.Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
 
 	return buffer;
 }
@@ -58,15 +59,15 @@ CString CastItoIShort(uint64 count)
 	CString output;
 
 	if (count < 1000)
-		output.Format("%i",count);
+		output.Format(wxT("%i"),count);
 	else if (count < 1000000)
-		output.Format("%.0f%s",(float)count/1000, _("K") );
+		output.Format(wxT("%.0f%s"),(float)count/1000, _("K") );
 	else if (count < 1000000000)
-		output.Format("%.2f%s",(float)count/1000000, _("M") );
+		output.Format(wxT("%.2f%s"),(float)count/1000000, _("M") );
 	else if (count < 1000000000000LL)
-		output.Format("%.2f%s",(float)count/1000000000LL, _("G") );
+		output.Format(wxT("%.2f%s"),(float)count/1000000000LL, _("G") );
 	else if (count < 1000000000000000LL)
-		output.Format("%.2f%s",(float)count/1000000000000LL, _("T") );
+		output.Format(wxT("%.2f%s"),(float)count/1000000000000LL, _("T") );
 
 	return output;
 }
@@ -78,15 +79,15 @@ CString CastSecondsToHM(sint32 count)
 	CString buffer;
 	
 	if (count < 0)
-		buffer = "?";
+		buffer = wxT("?");
 	else if (count < 60)
-		buffer.Format( "%02i %s", count, _("secs") );
+		buffer.Format( wxT("%02i %s"), count, _("secs") );
 	else if (count < 3600)
-		buffer.Format( "%i:%02i %s", count/60, (count % 60), _("mins") );
+		buffer.Format( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
 	else if (count < 86400)
-		buffer.Format( "%i:%02i %s", count/3600, (count % 3600)/60, _("h") );
+		buffer.Format( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
 	else
-		buffer.Format( "%i %s %02i %s", count/86400, _("D") , (count % 86400) / 3600, _("h") );
+		buffer.Format( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
 		
 	return buffer;
 }
@@ -100,38 +101,38 @@ FileType GetFiletype(const wxString& filename)
 
 	wxString ext = filename.AfterLast('.').MakeLower();
 
-	if ( ext=="avi"  || ext=="mpg"  || ext=="mpeg" || ext=="ogm"  ||
-		 ext=="ram"  || ext=="rm"   || ext=="asf"  || ext=="vob"  ||
-		 ext=="divx" || ext=="vivo" || ext=="mov"  || ext=="wmv"  ||
-		 ext=="m2v"  || ext=="swf"  || ext=="qt"   || ext=="mkv" )
+	if ( ext==wxT("avi")  || ext==wxT("mpg")  || ext==wxT("mpeg") || ext==wxT("ogm")  ||
+		 ext==wxT("ram")  || ext==wxT("rm")   || ext==wxT("asf")  || ext==wxT("vob")  ||
+		 ext==wxT("divx") || ext==wxT("vivo") || ext==wxT("mov")  || ext==wxT("wmv")  ||
+		 ext==wxT("m2v")  || ext==wxT("swf")  || ext==wxT("qt")   || ext==wxT("mkv") )
 		 return ftVideo;
 		 
-	if ( ext=="cue"  || ext=="bin"  || ext=="iso"  || ext=="ccd"  ||
-		 ext=="sub"  || ext=="nrg"  || ext=="img"  || ext=="bwa"  ||
-		 ext=="bwi"  || ext=="bws"  || ext=="bwt"  || ext=="mds"  ||
-		 ext=="mdf" )
+	if ( ext==wxT("cue")  || ext==wxT("bin")  || ext==wxT("iso")  || ext==wxT("ccd")  ||
+		 ext==wxT("sub")  || ext==wxT("nrg")  || ext==wxT("img")  || ext==wxT("bwa")  ||
+		 ext==wxT("bwi")  || ext==wxT("bws")  || ext==wxT("bwt")  || ext==wxT("mds")  ||
+		 ext==wxT("mdf") )
 	  return ftCDImage;
 		
-	if ( ext=="mpc"  || ext=="mp4"  || ext=="aac"  || ext=="ape"  ||
-	     ext=="mp3"  || ext=="mp2"  || ext=="wav"  || ext=="au"   ||
-		 ext=="ogg"  || ext=="wma"  || ext=="rma"  || ext=="mid" )
+	if ( ext==wxT("mpc")  || ext==wxT("mp4")  || ext==wxT("aac")  || ext==wxT("ape")  ||
+	     ext==wxT("mp3")  || ext==wxT("mp2")  || ext==wxT("wav")  || ext==wxT("au")   ||
+		 ext==wxT("ogg")  || ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid") )
 		 return ftAudio;
 
-	if ( ext=="jpg"  || ext=="jpeg" || ext=="bmp"  || ext=="gif"  ||
-	     ext=="tiff" || ext=="png"  || ext=="rle"  || ext=="psp"  ||
-		 ext=="tga"  || ext=="wmf"  || ext=="xpm"  || ext=="pcx" )
+	if ( ext==wxT("jpg")  || ext==wxT("jpeg") || ext==wxT("bmp")  || ext==wxT("gif")  ||
+	     ext==wxT("tiff") || ext==wxT("png")  || ext==wxT("rle")  || ext==wxT("psp")  ||
+		 ext==wxT("tga")  || ext==wxT("wmf")  || ext==wxT("xpm")  || ext==wxT("pcx") )
 		 return ftPicture;
 
-	if ( ext=="rar"  || ext=="zip"  || ext=="ace"  || ext=="gz"   ||
-	     ext=="bz2"  || ext=="tar"  || ext=="arj"  || ext=="lhz"  ||
-		 ext=="bz" )
+	if ( ext==wxT("rar")  || ext==wxT("zip")  || ext==wxT("ace")  || ext==wxT("gz")   ||
+	     ext==wxT("bz2")  || ext==wxT("tar")  || ext==wxT("arj")  || ext==wxT("lhz")  ||
+		 ext==wxT("bz") )
 		return ftArchive;
 
-	if ( ext=="exe"  || ext=="com" )
+	if ( ext==wxT("exe")  || ext==wxT("com") )
 		return ftProgram;
 
-	if ( ext=="txt"  || ext=="html" || ext=="htm"  || ext=="doc"  ||
-	     ext=="pdf"  || ext=="ps"   || ext=="sxw"  || ext=="log" )
+	if ( ext==wxT("txt")  || ext==wxT("html") || ext==wxT("htm")  || ext==wxT("doc")  ||
+	     ext==wxT("pdf")  || ext==wxT("ps")   || ext==wxT("sxw")  || ext==wxT("log") )
 		return ftText;
 
 	return ftAny;
@@ -163,7 +164,7 @@ wxString GetFiletypeByName(const wxString& filename)
 
 CString MakeStringEscaped(CString in)
 {
-	in.Replace("&","&&");
+	in.Replace(wxT("&"),wxT("&&"));
 	
 	return in;
 }
@@ -261,9 +262,9 @@ wxString URLEncode(wxString sIn)
 		if ( isalnum( curChar ) ) {
 	        sOut += curChar;
 	    } else if( isspace ( curChar ) ) {
-		    sOut += "+";
+		    sOut += wxT("+");
 		} else {
-			sOut += "%";
+			sOut += wxT("%");
 			sOut += base16Chars[ curChar >> 4];
 			sOut += base16Chars[ curChar & 0xf];
 		}
@@ -409,10 +410,10 @@ bool CheckShowItemInGivenCat(CPartFile* file, int inCategory)
 
 
 void MakeFoldername(char* path) {
-	wxString string(path);
-	if ( !string.IsEmpty() && ( string.Right(1) == '\\' ) )
+	wxString string(char2unicode(path));
+	if ( !string.IsEmpty() && ( string.Right(1) == wxT('\\' )) )
 		string = string.Left( string.Length() - 1 );
-	sprintf(path,"%s",string.c_str());
+	sprintf(path,"%s",unicode2char(string));
 }
 
 
@@ -438,7 +439,7 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 {
 
 	if ( !FS_wxCopyFile(filename, filename + appendix) ) {
-		printf("info: Could not create backup of '%s'\n",filename.c_str());
+		printf("info: Could not create backup of '%s'\n",unicode2char(filename));
 		return false;
 	}
 	
