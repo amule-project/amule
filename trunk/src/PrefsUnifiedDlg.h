@@ -96,8 +96,8 @@ private:
 	void OnSpinMaxDLR(wxSpinEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
+	void OnFakeBrowserChange(wxCommandEvent &event);
 	void OnScroll(wxScrollEvent &event);
-	void OnBrowserSelected(wxCommandEvent& evt);
 
 private:
     DECLARE_EVENT_TABLE()
