@@ -210,7 +210,7 @@ CMuleTrayIcon::~CMuleTrayIcon()
 /***************** Public Functions *****************/
 /****************************************************/
 
-void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 WXUNUSED(percent))
+void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 {
 	switch (Icon) {
 		case TRAY_ICON_HIGHID:
@@ -226,13 +226,19 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 WXUNUSED(percent))
 		default:
 			wxASSERT(0);
 	}
+
+	//to debug fast
+	printf("%d\n",percent);
+	if (percent==0) percent=0.7;
+
 	
 #warning speed bar commented out cause it corrupts icons too, need reworking
-#if 0
+
 	// Lookup this values for speed improvement: don't draw if not needed
 	int Bar_ySize = CurrentIcon.GetHeight()-2; 
-	int NewSize = ((Bar_ySize -2) * percent) / 100;
-	
+	int NewSize = ((Bar_ySize -2) * percent) *0.2; //to debug fast
+	// 100;
+	printf("%d\n",NewSize); //to debug fast
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
 		
@@ -241,28 +247,21 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 WXUNUSED(percent))
 		
 		// Do whatever to the icon before drawing it (percent)
 	
-		wxColour temp;
+	//	wxColour temp;
 		
-		IconWithSpeed.SelectObject(CurrentIcon);
+	//	IconWithSpeed.SelectObject(CurrentIcon);
 	
 		// Get the transparency colour.
-		IconWithSpeed.GetPixel(0,0, &temp);
+	//	IconWithSpeed.GetPixel(0,0, &temp);
 	
-		IconWithSpeed.SelectObject(wxNullBitmap);
+	//	IconWithSpeed.SelectObject(wxNullBitmap);
 		
 		// Set a new mask with transparency removed
-		wxMask* new_mask = new wxMask(CurrentIcon, temp);
+	//	wxMask* new_mask = new wxMask(CurrentIcon, temp);
 		
-		CurrentIcon.SetMask(new_mask);
+		//CurrentIcon.SetMask(new_mask);
 		
 		IconWithSpeed.SelectObject(CurrentIcon);
-		
-		// Get the solid background.
-		IconWithSpeed.GetPixel(0,0, &temp);
-		
-		// Set the colour for the traffic bar.
-		IconWithSpeed.SetBrush(*wxTRANSPARENT_BRUSH);
-		IconWithSpeed.SetPen(*wxCYAN_PEN);
 		
 		// Speed bar is: centered, taking 80% of the icon heigh, and 
 		// right-justified taking a 10% of the icon width.
@@ -274,22 +273,19 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 WXUNUSED(percent))
 		// Y
 		int Bar_yPos = 0;
 		 
-		IconWithSpeed.DrawRectangle(Bar_xPos, Bar_yPos, Bar_xSize, Bar_ySize);
-		
 		IconWithSpeed.SetBrush(*wxBLUE_BRUSH);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, (Bar_yPos + 1) + ((Bar_ySize -2) - NewSize), Bar_xSize -2 , NewSize);
-	
-		// Unselect the icon.
-		IconWithSpeed.SelectObject(wxNullBitmap);	
 		
-		new_mask = new wxMask(CurrentIcon, temp);
-	
-		CurrentIcon.SetMask(new_mask);
-#endif
-		UpdateTray();
-	//}
+		// Unselect the icon.
+		IconWithSpeed.SelectObject(wxNullBitmap);
+		//CRAZY USELESS TEST
+/*		wxImage i=CurrentIcon.ConvertToImage();
+		CurrentIcon.SetMask(new wxMask());
+		CurrentIcon.CopyFromBitmap(wxBitmap(i,-1));
+*/		UpdateTray();
+	}
 }
 		
 void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
