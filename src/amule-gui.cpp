@@ -166,6 +166,8 @@ void CamuleGuiApp::ShutDown() {
 
 bool CamuleGuiApp::OnInit()
 {
+	amuledlg = NULL;
+	
 	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
 	// Kry - I love to init the vars on init, even before timer.
 	mytimer = new MyTimer();
