@@ -496,17 +496,27 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data,
 
 bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 {
-	// 0.42e
-	if ( m_OtherNoNeeded_list.Find( file ) ) {
+	if ( m_A4AF_list.find( file ) == m_A4AF_list.end() ) {
+		// When we access a non-existing entry entry, it will be zeroed by default, 
+		// so we have to set NeededParts. All in one go.
+		m_A4AF_list[file].NeededParts = true;
+		file->A4AFsrclist.insert( this );
+		return true;
+	} else {
 		return false;
 	}
-	if ( m_OtherRequests_list.Find( file ) ) {
-		return false;
-	}
-	m_OtherRequests_list.AddTail(file);
-	file->A4AFsrclist.insert(this); // [enkeyDEV(Ottavio84) -A4AF-] 
-	return true;
 }
+
+bool CUpDownClient::DeleteFileRequest(CPartFile* file)
+{
+	return m_A4AF_list.erase( file );
+}
+
+void CUpDownClient::DeleteAllFileRequests()
+{
+	m_A4AF_list.clear();
+}
+
 
 /* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 void CUpDownClient::SetDownloadState(uint8 byNewState)
@@ -1134,115 +1144,55 @@ void CUpDownClient::UpdateDisplayedInfo(bool force)
 	}
 }
 
-// void CUpDownClient::SwapToThisFile(CPartFile* file)
-
-/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN */
-bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
-{
-	if (m_reqfile) {
-		// Dirty fix. Why is m_reqfile NULL?
-		if ( m_reqfile->m_SrcList.erase( this ) ) {
-			// remove this client from the A4AF list of our new m_reqfile
-			if ( SwapTo->A4AFsrclist.erase( this ) ) {
-				Notify_DownloadCtrlRemoveSource(this,SwapTo);
-			}
-
-			m_reqfile->IsCountDirty = true;
-			m_reqfile->RemoveDownloadingSource(this);
-
-			if(!bRemoveCompletely) {
-				m_reqfile->A4AFsrclist.insert(this);
-				if (GetDownloadState() == DS_NONEEDEDPARTS) {
-					m_OtherNoNeeded_list.AddTail(m_reqfile);
-				} else {
-					m_OtherRequests_list.AddTail(m_reqfile);
-				}
-				if (!bRemoveCompletely) {
-					Notify_DownloadCtrlAddSource(m_reqfile,this,true);
-				}
-			}
-			SetDownloadState(DS_NONE);
-			ResetFileStatusInfo();
-			m_nRemoteQueueRank = 0;
-			m_nOldRemoteQueueRank = 0;
-
-			m_reqfile->UpdatePartsInfo();
-			m_reqfile->UpdateAvailablePartsCount();
-			SetRequestFile( SwapTo );
-
-			SwapTo->m_SrcList.insert(this);
-			SwapTo->IsCountDirty = true;
-			Notify_DownloadCtrlAddSource(SwapTo,this,false);
-
-			return true;
-		}
-	}
-	return false;
-}
 
 // IgnoreNoNeeded = will switch to files of which this source has no needed parts (if no better fiels found)
 // ignoreSuspensions = ignore timelimit for A4Af jumping
 // bRemoveCompletely = do not readd the file which the source is swapped from to the A4AF lists (needed if deleting or stopping a file)
 // toFile = Try to swap to this partfile only
 
-// bool CUpDownClient::SwapToAnotherFile()
 bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile)
 {
+	// It would be stupid to swap away a downloading source
 	if (GetDownloadState() == DS_DOWNLOADING) {
 		return false;
 	}
-	CPartFile* SwapTo = NULL;
-	CPartFile* cur_file = NULL;
-	int cur_prio= -1;
-	POSITION finalpos = NULL;
-	CTypedPtrList<CPtrList, CPartFile*>* usedList = NULL;
 
-	if (!m_OtherRequests_list.IsEmpty()) {
-		usedList = &m_OtherRequests_list;
-		for (POSITION pos = m_OtherRequests_list.GetHeadPosition();pos != 0;m_OtherRequests_list.GetNext(pos)) {
-			cur_file = m_OtherRequests_list.GetAt(pos);
-			if (cur_file != m_reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
-			&& (cur_file->GetStatus(false) == PS_READY || cur_file->GetStatus(false) == PS_EMPTY))
-			{
-				if (toFile != NULL) {
-					if (cur_file == toFile) {
-						SwapTo = cur_file;
-						finalpos = pos;
-						break;
-					}
-				} else if ( cur_file->GetDownPriority()>cur_prio 
-				&& (ignoreSuspensions  || (!ignoreSuspensions && !IsSwapSuspended(cur_file))))
-				{
-					SwapTo = cur_file;
-					cur_prio=cur_file->GetDownPriority();
-					finalpos=pos;
-					if (cur_prio==PR_HIGH) {
-						break;
-					}
-				}
+	// The iterator of the final target
+	A4AFList::iterator target = m_A4AF_list.end();
+	
+	// Do we want to swap to a specific file?
+	if ( toFile != NULL ) {
+		A4AFList::iterator it = m_A4AF_list.find( toFile );
+		if ( it != m_A4AF_list.end() ) {
+			if ( IsValidSwapTarget( it, bIgnoreNoNeeded, ignoreSuspensions ) ) {
+				// Set the target
+				target = it;
 			}
 		}
-	}
-	if (!SwapTo && bIgnoreNoNeeded) {
-		usedList = &m_OtherNoNeeded_list;
-		for (POSITION pos = m_OtherNoNeeded_list.GetHeadPosition();pos != 0;m_OtherNoNeeded_list.GetNext(pos)) {
-			cur_file = m_OtherNoNeeded_list.GetAt(pos);
-			if (cur_file != m_reqfile && theApp.downloadqueue->IsPartFile(cur_file) && !cur_file->IsStopped()
-			&& (cur_file->GetStatus(false) == PS_READY || cur_file->GetStatus(false) == PS_EMPTY))
-			{
-				if (toFile != NULL) {
-					if (cur_file == toFile) {
-						SwapTo = cur_file;
-						finalpos = pos;
-						break;
-					}
-				} else if ( cur_file->GetDownPriority()>cur_prio 
-				&& (ignoreSuspensions  || (!ignoreSuspensions && !IsSwapSuspended(cur_file))))
-				{
-					SwapTo = cur_file;
-					cur_prio=cur_file->GetDownPriority();
-					finalpos=pos;
-					if (cur_prio==PR_HIGH) {
+	} else { 
+		// We want highest priority possible, but need to start with 
+		// a value less than any other priority
+		uint8 priority = -1;
+		
+		A4AFList::iterator it = m_A4AF_list.begin();
+		for ( ; it != m_A4AF_list.end(); ++it ) {
+			if ( IsValidSwapTarget( it, bIgnoreNoNeeded, ignoreSuspensions ) ) {
+				uint8 cur_priority = it->first->GetDownPriority();
+
+				// We would prefer to get files with needed parts, thus rate them higher.
+				// However, this really only matters if bIgnoreNoNeeded is true.
+				if ( it->second.NeededParts )
+						cur_priority += 10;
+				
+				// Change target if the current file has a higher rate than the previous
+				if ( cur_priority > priority ) {
+					priority = cur_priority;
+			
+					// Set the new target
+					target = it;
+
+					// Break on the first High-priority file with needed parts
+					if ( priority == PR_HIGH + 10 ) {
 						break;
 					}
 				}
@@ -1250,56 +1200,87 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 		}
 	}
 
-	if (SwapTo) {
-		if (DoSwap(SwapTo,bRemoveCompletely)) {
-			usedList->RemoveAt(finalpos);
-			return true;
+	// Try to swap if we found a valid target
+	if ( target != m_A4AF_list.end() ) {
+		CPartFile* SwapTo = target->first;
+		
+		// We want to swap, even if m_reqfile is NULL
+		if ( m_reqfile && m_reqfile->m_SrcList.erase( this ) ) {
+			m_reqfile->RemoveDownloadingSource( this );
+
+			// Do we want to remove it completly? Say if the old file is getting deleted
+			if ( !bRemoveCompletely ) {
+				m_reqfile->A4AFsrclist.insert( this );
+				
+				// Set the status of the old file
+				m_A4AF_list[m_reqfile].NeededParts = (GetDownloadState() != DS_NONEEDEDPARTS);
+				
+				// Avoid swapping to this file for a while
+				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount(); 
+							
+				Notify_DownloadCtrlAddSource(m_reqfile, this, true);
+			}
+
+			m_reqfile->UpdatePartsInfo();
+			m_reqfile->UpdateAvailablePartsCount();
 		}
+
+		// remove this client from the A4AF list of our new m_reqfile
+		if ( SwapTo->A4AFsrclist.erase( this ) ) {
+			Notify_DownloadCtrlRemoveSource(this, SwapTo);
+		}
+
+		SetDownloadState(DS_NONE);
+		ResetFileStatusInfo();
+		m_nRemoteQueueRank = 0;
+		m_nOldRemoteQueueRank = 0;
+
+		SetRequestFile( SwapTo );
+
+		SwapTo->m_SrcList.insert(this);
+		
+		Notify_DownloadCtrlAddSource(SwapTo, this, false);
+
+		return true;
 	}
 
 	return false;
 }
 
-void CUpDownClient::DontSwapTo(CPartFile* file)
+
+bool CUpDownClient::IsValidSwapTarget( A4AFList::iterator it, bool ignorenoneeded, bool ignoresuspended )
 {
-	DWORD dwNow = ::GetTickCount();
-	std::list<PartFileStamp>::iterator it = m_DontSwap_list.begin();
-	for ( ; it != m_DontSwap_list.end(); ++it ) {
-		if( it->file == file) {
-			it->timestamp = dwNow ;
-			return;
+	wxASSERT( it != m_A4AF_list.end() && it->first );
+		
+	// Check if this file has been suspended
+	if ( !ignoresuspended ) {
+		if ( ::GetTickCount() - it->second.timestamp >= PURGESOURCESWAPSTOP ) {
+			// The wait-time has been exceeded and the file is now a valid target
+			it->second.timestamp = 0;
+		} else {
+			// The file was still suspended and we are not ignoring suspensions
+			return false;
 		}
 	}
-	PartFileStamp newfs = {file, dwNow };
-	m_DontSwap_list.push_front(newfs);
-}
-
-bool CUpDownClient::IsSwapSuspended(const CPartFile* file)
-{
-	if (m_DontSwap_list.empty()) {
+	
+	// Check if the client has needed parts
+	if ( !ignorenoneeded ) {
+		if ( !it->second.NeededParts ) {
+			return false;
+		}
+	}
+	
+	// Final checks to see if the client is a valid target
+	CPartFile* cur_file = it->first;
+	if ( ( cur_file != m_reqfile && !cur_file->IsStopped() ) && 
+	     ( cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY ) )
+	{
+		return true;
+	} else {
 		return false;
 	}
-	std::list<PartFileStamp>::iterator it = m_DontSwap_list.begin();
-	while ( it != m_DontSwap_list.end() ) {
-		if( it->file == file) {
-			if (::GetTickCount() - it->timestamp  >= PURGESOURCESWAPSTOP) {
-				m_DontSwap_list.erase( it );
-				return false;
-			} else {
-				return true;
-			}
-		} else if (it->file == NULL) {
-			// in which cases should this happen ?
-			it = m_DontSwap_list.erase( it );
-			continue;
-		}
-
-		++it;
-	}
-	return false;
 }
 
-/* eMule 0.30c implementation, i give it a try (Creteil) END */
 
 void CUpDownClient::SetRequestFile(CPartFile* reqfile) {
 	if ( m_reqfile != reqfile ) {

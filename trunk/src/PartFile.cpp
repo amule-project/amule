@@ -1672,7 +1672,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 								break; //Johnny-B - nothing more to do here (good eye!)
 							}
 						} else {
-							cur_src->DontSwapTo(this);
 							lastpurgetime = dwCurTick;
 							break;
 						}
@@ -1736,13 +1735,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				uint8 download_state=cur_source->GetDownloadState();
 				if( download_state != DS_DOWNLOADING
 				&& cur_source->GetRequestFile() 
-				&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS)
-				&& !cur_source->IsSwapSuspended(this))
+				&& ((!cur_source->GetRequestFile()->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS))
 				{
-					CPartFile* oldfile = cur_source->GetRequestFile();
-					if (cur_source->SwapToAnotherFile(false, false, false, this)) {
-						cur_source->DontSwapTo(oldfile);
-					}
+					cur_source->SwapToAnotherFile(false, false, false, this);
 				}
 			}
 		}
@@ -2556,16 +2551,8 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	if(!A4AFsrclist.empty()) {
 		for( SourceSet::iterator it = A4AFsrclist.begin(); it != A4AFsrclist.end(); ) {
 			CUpDownClient* cur_src = *it++;
-			POSITION pos3 = cur_src->m_OtherRequests_list.Find(this);
-			if(pos3) {
-				cur_src->m_OtherRequests_list.RemoveAt(pos3);
-				Notify_DownloadCtrlRemoveSource(cur_src,this);
-			} else {
-				pos3 = cur_src->m_OtherNoNeeded_list.Find(this);
-				if(pos3) {
-					cur_src->m_OtherNoNeeded_list.RemoveAt(pos3);
-					Notify_DownloadCtrlRemoveSource(cur_src,this);
-				}
+			if ( cur_src->DeleteFileRequest( this ) ) {
+				Notify_DownloadCtrlRemoveSource(cur_src, this);
 			}
 		}
 		A4AFsrclist.clear();
