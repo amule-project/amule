@@ -978,7 +978,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		
 		if (item == wxT("RELOADIPF")) {
 			theApp.ipfilter->Reload();
-			return("IPFilter Reloaded");
+			return wxT("IPFilter Reloaded");
 		}
 		
 		if (item.Left(12) == wxT("SET IPFILTER")) {
@@ -989,7 +989,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 			wxString msg = wxString::Format(_("IPFilter state set to '%s'."), unicode2char(param));
 			AddLogLineM(true, msg);
-			return unicode2char(msg);
+			return msg;
 		}
 		
 		if (item.Left(5).Cmp( wxT("PAUSE"))==0) { 
