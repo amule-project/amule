@@ -26,22 +26,17 @@
 #include <wx/event.h>		// For ExitCode
 
 #include <map>
+#include <list>
 
 #include "ECSocket.h"
 #include "ECPacket.h"
 
 #include "otherfunctions.h" // for RLE
+#include "otherstructs.h" // for Gap_Struct
 
 class CPartFile;
 class wxSocketServer;
 class wxSocketEvent;
-
-#ifdef AMULE_DAEMON
-#define EXTERNAL_CONN_BASE wxThread
-#else
-#define EXTERNAL_CONN_BASE wxEvtHandler
-#endif
-
 
 /*!
  * PartStatus strings are quite long - RLE encoding will help.
@@ -49,17 +44,47 @@ class wxSocketEvent;
  * Instead of sending each time full part-status string, send
  * RLE encoded difference from previous one.
  * 
- * Container for encoder per CPartFile. Each EC client must have
- * instance of such encoder
+ * However, gap status is different - it's already kind of RLE
+ * encoding, so futher compression will help a litter (Shannon
+ * theorem). Instead, calculate diff between list of gaps.
  */
-class RLE_Encoder {
-		std::map<CPartFile *, otherfunctions::RLE_Data> m_encoders;
-		int m_len;
+class CPartFile_Encoder {
+		otherfunctions::RLE_Data m_part_status;
+
+		//
+		// List of gaps sent to particular client. Since clients
+		// can request lists in different time, they can get
+		// different results
+		std::list<Gap_Struct> m_gap_list;
+
+		CPartFile *m_file;
 	public:
-		RLE_Encoder(int buff_len);
+		// encoder side
+		CPartFile_Encoder(CPartFile *file);
+		// decoder side
+		CPartFile_Encoder(int size);
 		
-		CECTag *EncodePartStatus(CPartFile *file);
+		// encode - take data from m_file
+		CECTag *Encode();
+		// decode - take data from tag
+		void Decode(CECTag *tag);
+		
+		/*!
+		 * Return encoded or decoded data depands on which
+		 * side created
+		 */
+		const unsigned char *GapData();
+		int GapDataSize();
+		
+		const unsigned char *PartStatusData();
+		int PartStatusDataSize();
 };
+
+#ifdef AMULE_DAEMON
+#define EXTERNAL_CONN_BASE wxThread
+#else
+#define EXTERNAL_CONN_BASE wxEvtHandler
+#endif
 
 class ExternalConn : public EXTERNAL_CONN_BASE {
 	public:
@@ -95,6 +120,10 @@ class ExternalConnClientThread : public wxThread {
 		ExitCode Entry();
 
 	private:
+		//
+		// encoder container must be created per EC client
+		std::map<CPartFile *, CPartFile_Encoder> m_encoders;
+
 		ExternalConn *m_owner;
 		wxSocketBase *m_sock;
 };

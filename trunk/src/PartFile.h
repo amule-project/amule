@@ -323,6 +323,7 @@ private:
 	std::list<CUpDownClient *> m_downloadingSourcesList;
 	static	wxMutex m_FileCompleteMutex;
 
+friend class CPartFile_Encoder;
 friend class completingThread;
 };
 

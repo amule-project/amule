@@ -552,6 +552,7 @@ RLE_Data::~RLE_Data()
 	delete [] m_enc_buff;
 }
 
+
 const unsigned char *RLE_Data::Encode(const unsigned char *buff, int &outlen)
 {
 	//
