@@ -104,6 +104,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "packets.h"
+#include "PrefsUnifiedDlg.h"
 
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
 #include "amuleDlg.h"			// Needed for CamuleDlg

@@ -44,6 +44,7 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "otherfunctions.h"
 #include "Friend.h"
+#include "muuli_wdr.h"            // Needed for amuleSpecial
 
 
 

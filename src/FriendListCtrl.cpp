@@ -35,7 +35,7 @@
 #include "CFile.h"		// Needed for CFile
 #include "endianfix.h"
 #include "otherfunctions.h"
-
+#include "muuli_wdr.h"
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnNMRclick)
