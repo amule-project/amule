@@ -542,6 +542,17 @@ protected:
 	static bool	s_autoconnect;
 	static bool	s_autoconnectstaticonly;
 
+////////////// PROXY
+
+	static bool	s_ProxyEnableProxy;
+	static uint16	s_ProxyType;
+	static wxString	s_ProxyName;
+	static uint16	s_ProxyPort;
+	static bool	s_ProxyEnablePassword;
+	static wxString	s_ProxyUser;
+	static wxString	s_ProxyPassword;
+//	static bool	s_Proxy????;
+
 ////////////// SERVERS
 	static bool	s_autoserverlist;
 	static bool	s_deadserver;

@@ -4,19 +4,20 @@
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #include <cstdio>
@@ -63,6 +64,17 @@ CPreferences::CFGMap	CPreferences::s_CfgList;
 CPreferences::CFGList	CPreferences::s_MiscList;
 
 
+/* Proxy */
+bool		CPreferences::s_ProxyEnableProxy;
+uint16		CPreferences::s_ProxyType;
+wxString	CPreferences::s_ProxyName;
+uint16		CPreferences::s_ProxyPort;
+bool		CPreferences::s_ProxyEnablePassword;
+wxString	CPreferences::s_ProxyUser;
+wxString	CPreferences::s_ProxyPassword;
+//bool		CPreferences::s_Proxy????;
+
+/* The rest, organize it! */
 wxString	CPreferences::s_nick;
 uint16		CPreferences::s_maxupload;
 uint16		CPreferences::s_maxdownload;
@@ -197,18 +209,19 @@ wxString	CPreferences::s_OSDirectory;
 wxString	CPreferences::s_SkinFile;
 bool		CPreferences::s_UseSkinFile;
 bool		CPreferences::s_FastED2KLinksHandler;
-int			CPreferences::s_perms_files;
-int			CPreferences::s_perms_dirs;
-bool 			CPreferences::s_AICHTrustEveryHash;
-bool 			CPreferences::s_IPFilterAutoLoad;
-wxString 	CPreferences::s_IPFilterURL;
+int		CPreferences::s_perms_files;
+int		CPreferences::s_perms_dirs;
+bool		CPreferences::s_AICHTrustEveryHash;
+bool		CPreferences::s_IPFilterAutoLoad;
+wxString	CPreferences::s_IPFilterURL;
 CMD4Hash	CPreferences::s_userhash;
 bool		CPreferences::s_MustFilterMessages;
 wxString 	CPreferences::s_MessageFilterString;
-bool 	CPreferences::s_FilterAllMessages;
-bool 	CPreferences::s_FilterSomeMessages;
-bool	CPreferences::s_ShareHiddenFiles;
-bool CPreferences::s_AutoSortDownload;
+bool		CPreferences::s_FilterAllMessages;
+bool		CPreferences::s_FilterSomeMessages;
+bool		CPreferences::s_ShareHiddenFiles;
+bool		CPreferences::s_AutoSortDownload;
+
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -458,8 +471,12 @@ public:
 			// In order to let us update labels on slider-changes, we trigger a event
 			if ( m_widget->IsKindOf(CLASSINFO(wxSlider)) ) {
 				wxSlider *slider = (wxSlider *)m_widget;
-#warning Why doesnt this work?
+#warning Why doesnt this work? Maybe something to do with templates?
 //			wxSlider *slider = wxDynamicCast(m_widget, wxSlider);
+//			if (slider) {
+// The next version compiles, but worries me that wxDynamicCast is still not defined as dynamic_cast,
+// so, lets leave this out for now.
+//			wxSlider *slider = dynamic_cast<wxSlider *>(m_widget);
 //			if (slider) {
 				int id = m_widget->GetId();
 				int pos = slider->GetValue();
@@ -640,22 +657,23 @@ CPreferences::CPreferences()
 	printf("Userhash loaded: %s\n", unicode2char(s_userhash.Encode()));
 }
 
-
-void CPreferences::BuildItemList( const wxString& appdir )  // gets called at init time
+//
+// Gets called at init time
+// 
+void CPreferences::BuildItemList( const wxString& appdir )
 {
-	#ifndef AMULE_DAEMON
-	  #define NewCfgItem(ID, COMMAND)	s_CfgList[ID] = COMMAND
-	#else
+#ifndef AMULE_DAEMON
+	#define NewCfgItem(ID, COMMAND)	s_CfgList[ID] = COMMAND
+#else
 	int current_id = 0;
-	  #define NewCfgItem(ID, COMMAND)	s_CfgList[++current_id] = COMMAND
-	#endif /* AMULE_DAEMON */
+	#define NewCfgItem(ID, COMMAND)	s_CfgList[++current_id] = COMMAND
+#endif /* AMULE_DAEMON */
 	
 	/**
 	 * User settings
 	 **/
 	NewCfgItem(IDC_NICK,		(new Cfg_Str(  wxT("/eMule/Nick"), s_nick, wxT("http://www.aMule.org") )));
 	NewCfgItem(IDC_LANGUAGE,	(MkCfg_Int( wxT("/eMule/Language"), s_languageID, 0 )));
-
 
 	/**
 	 * Misc
@@ -665,13 +683,11 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_FCHECKSELF,	(new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, wxEmptyString )));
 	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 )));
 
-
 	/**
 	 * Debugging
 	 **/
 	NewCfgItem(IDC_VERBOSE,		(new Cfg_Bool( wxT("/eMule/Verbose"), s_bVerbose, false )));
 	NewCfgItem(IDC_VERBOSEPACKETERROR,	(new Cfg_Bool( wxT("/FakeCheck/VerbosePacketError"), s_VerbosePacketError, false )));
-
 
 	/**
 	 * Connection settings
@@ -688,7 +704,19 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_MAXCON5SEC,	(MkCfg_Int( wxT("/eMule/MaxConnectionsPerFiveSeconds"), s_MaxConperFive, 20 )));
 	NewCfgItem(IDC_SAFEMAXCONN,	(new Cfg_Bool( wxT("/FakeCheck/SafeMaxConn"), s_UseSafeMaxConn, false )));
 
-
+	/**
+	 * Proxy
+	 **/
+	NewCfgItem(ID_PROXY_ENABLE_PROXY,	(new Cfg_Bool( wxT("/Proxy/ProxyEnableProxy"), s_ProxyEnableProxy, false )));
+	NewCfgItem(ID_PROXY_TYPE,		(MkCfg_Int( wxT("/Proxy/ProxyType"), s_ProxyType, 0 )));
+	NewCfgItem(ID_PROXY_NAME,		(new Cfg_Str( wxT("/Proxy/ProxyName"), s_ProxyName, wxEmptyString )));
+	NewCfgItem(ID_PROXY_PORT,		(MkCfg_Int( wxT("/Proxy/ProxyPort"), s_ProxyPort, 1080 )));
+	NewCfgItem(ID_PROXY_ENABLE_PASSWORD,	(new Cfg_Bool( wxT("/Proxy/ProxyEnablePassword"), s_ProxyEnablePassword, false )));
+	NewCfgItem(ID_PROXY_USER,		(new Cfg_Str( wxT("/Proxy/ProxyUser"), s_ProxyUser, wxEmptyString )));
+	NewCfgItem(ID_PROXY_PASSWORD,		(new Cfg_Str( wxT("/Proxy/ProxyPassword"), s_ProxyPassword, wxEmptyString )));
+// These were copied from eMule config file, maybe someone with windows can complete this?
+//	NewCfgItem(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY,	(new Cfg_Bool( wxT("/eMule/Proxy/Proxy????"), s_Proxy????, false )));
+	
 	/**
 	 * Servers
 	 **/ 
@@ -703,7 +731,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false )));
 	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false )));
 	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true )));
-
 
 	/**
 	 * Files
@@ -726,8 +753,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_DAP,		(new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true )));
 	NewCfgItem(IDC_UAP,		(new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true )));
 
-
-
 	/**
 	 * External Connections
 	 */
@@ -745,7 +770,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 )));
 	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
 
-
 	/**
 	 * GUI behavoir
 	 **/
@@ -754,7 +778,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_DBLCLICK,	(new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true )));
 	NewCfgItem(IDC_STARTMIN,	(new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false )));
 
-	
 	/**
 	 * GUI appearence
 	 **/
@@ -768,7 +791,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_USESKIN,		(new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFile"), s_UseSkinFile, false )));
 	NewCfgItem(IDC_SKINFILE,	(new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxEmptyString )));
 	NewCfgItem(IDC_SHOWRATEONTITLE,	(new Cfg_Bool( wxT("/eMule/ShowRatesOnTitle"), s_ShowRatesOnTitle, false )));
-
 	
 	/**
 	 * External Apps
@@ -776,7 +798,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_VIDEOPLAYER,	(new Cfg_Str(  wxT("/eMule/VideoPlayer"), s_VideoPlayer, wxEmptyString )));
 	NewCfgItem(IDC_VIDEOBACKUP,	(new Cfg_Bool( wxT("/eMule/VideoPreviewBackupped"), s_moviePreviewBackup, true )));
 
-	
 	/**
 	 * Statistics
 	 **/
@@ -787,7 +808,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_SLIDER3,		(MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 )));
 	NewCfgItem(IDC_SLIDER4,		(MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 )));
 
-	
 	/**
 	 * Sources
 	 **/
@@ -798,7 +818,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	NewCfgItem(IDC_NNS_HANDLING,	(MkCfg_Int( wxT("/Razor_Preferences/NoNeededSourcesHandling"), s_NoNeededSources, 2 )));
 	NewCfgItem(IDC_SRCSEEDS,	(new Cfg_Bool( wxT("/ExternalConnect/UseSrcSeeds"), s_UseSrcSeeds, false )));
 
-	
 	/**
 	 * Security
 	 **/
@@ -828,7 +847,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	/**
 	 * Auto-Sorting of downloads
 	 **/
-	 
 	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( wxT("/eMule/AutoSortDownloads"), s_AutoSortDownload, false )));
 
 	/**
@@ -852,8 +870,6 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
-
-	
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
@@ -907,7 +923,6 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	for ( ; it_b != s_MiscList.end(); ++it_b ) {
 		(*it_b)->LoadFromFile( cfg ); 
 	}
-
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
 	CheckUlDlRatio();
@@ -920,7 +935,6 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 	CFGMap::iterator it_a = s_CfgList.begin();
 	for ( ; it_a != s_CfgList.end(); ++it_a )
 		it_a->second->SaveToFile( cfg );
-
 
 	CFGList::iterator it_b = s_MiscList.begin();
 	for ( ; it_b != s_MiscList.end(); ++it_b )
@@ -976,12 +990,11 @@ void CPreferences::SetDirPermissions( int perms )
 	s_perms_dirs = perms | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
 }
 
+
 void CPreferences::UnsetAutoServerStart()
 {
 	s_autoserverlist = false;
 }
-
-
 
 	
 // Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
@@ -1180,7 +1193,6 @@ void CPreferences::LoadCats() {
 
 		Category_Struct* newcat = new Category_Struct;
 
-
 		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
 		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxEmptyString );
 
@@ -1256,13 +1268,13 @@ const wxString&	CPreferences::GetCatPath(uint8 index)
 	return m_CatList[index]->incomingpath;
 }
 
+
 DWORD CPreferences::CPreferences::GetCatColor(size_t index)
 {
 	wxASSERT( index < m_CatList.size() );
 
 	return m_CatList[index]->color;
 }
-
 
 
 // Jacobo221 - Several issues on the browsers:
@@ -1305,3 +1317,4 @@ wxString CPreferences::GetBrowser()
 	
 	return cmd;
 }
+
