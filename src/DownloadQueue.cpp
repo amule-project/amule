@@ -329,7 +329,7 @@ void CDownloadQueue::AddDownload(CPartFile* newfile, bool paused, uint8 category
 	Notify_DownloadCtrlAddFile(newfile);
 	AddLogLineM(true, wxString::Format(_("Downloading %s"), newfile->GetFileName().c_str()));
 	wxString msgTemp;
-	msgTemp.Printf(wxT("Downloading %s\n"), newfile->GetFileName().c_str());
+	msgTemp.Printf(_("Downloading %s\n"), newfile->GetFileName().c_str());
 	Notify_ShowNotifier(msgTemp, TBN_DLOAD, 0);
 	// Kry - Get sources if not stopped
 	if (!newfile->IsStopped()) {

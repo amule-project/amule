@@ -275,7 +275,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			}
 			break;
 		case CS_SERVERDEAD:
-			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) appears to be dead."),sender->cur_server->GetPort()));			
+			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) appears to be dead."),sender->cur_server->GetPort()));			
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if(update){
 				update->AddFailedCount();
@@ -285,7 +285,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_ERROR:
 			break;
 		case CS_SERVERFULL:
-			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) appears to be full."),sender->cur_server->GetPort()));			
+			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) appears to be full."),sender->cur_server->GetPort()));			
 			break;
 		case CS_NOTCONNECTED:; 
 			break; 
@@ -330,7 +330,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_NOTCONNECTED:{
 			if (!connecting)
 				break;
-			AddLogLineM(false,wxString(_("Connecting to ")) + sender->info + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) failed"),sender->cur_server->GetPort()));			
+			AddLogLineM(false,wxString(_("Connecting to ")) + sender->info + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(_(":%i) failed"),sender->cur_server->GetPort()));			
 		}
 		case CS_SERVERDEAD:
 		case CS_SERVERFULL:{
@@ -384,7 +384,7 @@ void CServerConnect::CheckForTimeout()
 			DWORD key = it->first;
 			CServerSocket* value = it->second;
 			
-			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(wxT(":%i) timed out."),value->cur_server->GetPort()));			
+			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(_(":%i) timed out."),value->cur_server->GetPort()));			
 			
 			it++;
 			connectionattemps.erase( key );

@@ -889,7 +889,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
-		wxMessageBox(wxString(_("Unable to open ")) + m_fullname + wxT("file - using ") + PARTMET_BAK_EXT + wxT(" file.\n"));
+		wxMessageBox(wxString(_("Unable to open ")) + m_fullname + _("file - using ") + PARTMET_BAK_EXT + _(" file.\n"));
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
@@ -898,7 +898,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-			wxMessageBox(m_fullname + wxT("file is 0 size somehow - using ") + PARTMET_BAK_EXT + wxT(" file.\n"));
+			wxMessageBox(m_fullname + _("file is 0 size somehow - using ") + PARTMET_BAK_EXT + _(" file.\n"));
 			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
@@ -2525,7 +2525,7 @@ void CPartFile::Delete()
 	printf("\tClosed\n");
 	
 	if (!wxRemoveFile(m_fullname)) {
-		AddLogLineM(true, wxT("Failed to delete ") + m_fullname);
+		AddLogLineM(true, _("Failed to delete ") + m_fullname);
 		printf("\tFailed to remove .part.met\n");
 	} else {
 		printf("\tRemoved .part.met\n");
@@ -3013,7 +3013,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
-		AddDebugLogLineM( false, wxString::Format(wxT("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
+		AddDebugLogLineM( false, wxString::Format(_("Send:Source User(%s) File(%s) Count(%i)"), forClient->GetUserName().c_str(), GetFileName().c_str(), nCount ));
 	//}
 	return result;
 }
@@ -3114,7 +3114,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineM(false, wxString::Format(wxT("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
+		AddDebugLogLineM(false, wxString::Format(_("File '%s' has already been written from %lu to %lu\n"), GetFileName().c_str(), (long)start, (long)end));
 		return 0;
 	}
 
@@ -3270,7 +3270,7 @@ void CPartFile::FlushBuffer(void)
 					m_iLostDueToCorruption += (partRange + 1);
 				} else {
 					if (!hashsetneeded) {
-						AddDebugLogLineM(false, wxString::Format(wxT("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
+						AddDebugLogLineM(false, wxString::Format(_("Finished part %u of \"%s\""), partNumber, GetFileName().c_str()));
 					}
 					
 					// if this part was successfully completed (although ICH is active), remove from corrupted list

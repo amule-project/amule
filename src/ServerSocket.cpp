@@ -124,7 +124,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				if (pServer) {
 					pServer->SetID(sockAddr.sin_addr.s_addr);
 				} else {
-					AddLogLineM(false,wxT("theApp.serverlist->GetServerByAddress() returned NULL"));
+					AddLogLineM(false,_("theApp.serverlist->GetServerByAddress() returned NULL"));
 					return;
 				}
 			}
