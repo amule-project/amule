@@ -224,15 +224,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 	// must do initialisations here..
 	serverwnd->serverlistctrl->Init(theApp.serverlist);
 
-	// Initialize and sort all lists.
-	// FIX: Remove from here and put these back to the OnInitDialog()s
-	// and call the OnInitDialog()s here!
-	transferwnd->downloadlistctrl->InitSort();
-	transferwnd->uploadlistctrl->InitSort();
-	transferwnd->queuelistctrl->InitSort();
-	serverwnd->serverlistctrl->InitSort();
-	sharedfileswnd->sharedfilesctrl->InitSort();
-
 	// call the initializers
 	transferwnd->OnInitDialog();
 
@@ -254,6 +245,15 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 
 }
 
+void CamuleDlg::InitSort()
+{
+	// Initialize and sort all lists.
+	transferwnd->downloadlistctrl->InitSort();
+	transferwnd->uploadlistctrl->InitSort();
+	transferwnd->queuelistctrl->InitSort();
+	serverwnd->serverlistctrl->InitSort();
+	sharedfileswnd->sharedfilesctrl->InitSort();
+}
 
 // Madcat - Toggles Fast ED2K Links Handler on/off.
 void CamuleDlg::ToggleFastED2KLinksHandler()
