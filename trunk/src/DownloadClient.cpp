@@ -423,7 +423,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 		if (reqfile->GetED2KPartCount() != nED2KPartCount)
 		{
 			CString strError;
-			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), reqfile->GetFileHash());
+			strError.Format(_("ProcessFileStatus - wrong part number recv=%u  expected=%u  %s"), nED2KPartCount, reqfile->GetED2KPartCount(), EncodeBase16(reqfile->GetFileHash(), 16).c_str());
 			m_nPartCount = 0;
 			throw strError;
 		}
