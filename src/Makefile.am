@@ -6,7 +6,7 @@ dist_doc_DATA =
 
 icondir = $(datadir)/pixmaps
 utildir = $(datadir)/applications
-docdir = $(datadir)/doc/$(PACKAGE)-$(VERSION)
+docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)
 
 if GUI
 bin_PROGRAMS += amulecmdDLG
