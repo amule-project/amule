@@ -59,7 +59,6 @@
 #include "Preferences.h"
 #include "muuli_wdr.h"
 
-
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX( IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange )
@@ -89,6 +88,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(ID_DESKTOPMODE, PrefsUnifiedDlg::OnButtonSystray)
 	EVT_BUTTON(IDC_IPFRELOAD, PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON, PrefsUnifiedDlg::OnButtonColorChange)
+	EVT_BUTTON(IDC_IPFILTERUPDATE, PrefsUnifiedDlg::OnButtonIPFilterUpdate)
 	EVT_CHOICE(IDC_COLORSELECTOR, PrefsUnifiedDlg::OnColorCategorySelected)
 	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnFakeBrowserChange)
 	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL, PrefsUnifiedDlg::OnPrefsPageChange)
@@ -610,6 +610,10 @@ void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 	theApp.ipfilter->Reload();
 }
 
+void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
+{
+	theApp.ipfilter->Update();
+}
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 {
@@ -696,4 +700,3 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	if ( widget )
 		widget->SetLabel( label );
 }
-

@@ -129,6 +129,7 @@ protected:
 	void OnButtonEditAddr(wxCommandEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
 	void OnButtonIPFilterReload(wxCommandEvent &event);
+	void OnButtonIPFilterUpdate(wxCommandEvent &event);
 	void OnColorCategorySelected(wxCommandEvent &event);
 	void OnCheckBoxChange(wxCommandEvent &event);
 	void OnFakeBrowserChange(wxCommandEvent &event);
@@ -142,4 +143,3 @@ protected:
 };
 
 #endif
-

@@ -102,6 +102,7 @@ uint8 CServerList::AutoUpdate()
 			int retval=dlg->ShowModal();
 			delete dlg;
 #else
+			#warning Xaignar, please fix auto-update on daemon.
 			int retval=0;
 #endif
 			if(retval==0) {
@@ -903,4 +904,3 @@ void CServerList::RemoveDeadServers()
 		}
 	}
 }
-

@@ -37,15 +37,16 @@ class CIPFilter
 public:
 	CIPFilter();
 	~CIPFilter();
-	void	AddBannedIPRange(uint32 IPstart, uint32 IPend, uint8 AccessLevel, const wxString& Description);
+	void	AddBannedIPRange(uint32 IPstart, uint32 IPend, uint16 AccessLevel, const wxString& Description);
 	void	RemoveAllIPs();
 	bool	ProcessLineOk(const wxString& sLine, unsigned long linecounter);
-	int	LoadFromFile();
+	int	LoadFromFile(wxString file, bool merge);
 	void	SaveToFile();
 	bool	IsFiltered(uint32 IP2test);
 	const wxString& GetLastHit()		{ return lasthit;}
 	uint16	BanCount()			{ return iplist.size(); }
 	void 	Reload();
+	void	Update();
 
 private:
 	bool m_inet_atoh(wxString &s, uint32 *ip);
@@ -55,4 +56,3 @@ private:
 };
 
 #endif // IPFILTER_H
-

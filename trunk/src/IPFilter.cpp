@@ -40,10 +40,15 @@
 #include "otherfunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
+#include "HTTPDownloadDlg.h"
+#include "GetTickCount.h"
 
 CIPFilter::CIPFilter(){
 	lasthit = wxEmptyString;
-	LoadFromFile();
+	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on construction
+	if (theApp.glob_prefs->IPFilterAutoLoad()) {
+		Update();	
+	}
 }
 
 CIPFilter::~CIPFilter(){
@@ -53,17 +58,18 @@ CIPFilter::~CIPFilter(){
 void CIPFilter::Reload(){
 	RemoveAllIPs();
 	lasthit = wxEmptyString;
-	LoadFromFile();
+	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"), false); // No merge on reload.
 }
 
 /* *
  * IPFilter is an map of IPRanges, ordered by IPstart, of banned ranges of IP addresses.
  */
-void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint8 AccessLevel, const wxString& Description)
+void CIPFilter::AddBannedIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
 {
 	IPRange_Struct *newFilter = new IPRange_Struct();
 	newFilter->IPStart	= IPStart;
 	newFilter->IPEnd	= IPEnd;
+	wxASSERT(AccessLevel < 256);
 	newFilter->AccessLevel	= AccessLevel;
 	newFilter->Description	= Description;
 	// iplist is a std::map, key is IPstart.
@@ -141,18 +147,20 @@ bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
 		sAccessLevel.ToLong(&AccessLevel);
 	}
 	// Third Token is description
-	wxString Description = tokens.GetNextToken();
+	wxString Description = tokens.GetNextToken().Strip(wxString::both);
 	// add a filter
 	AddBannedIPRange( IPStart, IPEnd, AccessLevel, Description );
 
 	return true;
 }
 
-int CIPFilter::LoadFromFile()
+int CIPFilter::LoadFromFile(wxString file, bool merge)
 {
 	int filtercounter = 0;
-	RemoveAllIPs();
-	wxTextFile readFile(theApp.ConfigDir + wxT("ipfilter.dat"));
+	if (!merge) {
+		RemoveAllIPs();
+	}
+	wxTextFile readFile(file);
 	if( readFile.Exists() && readFile.Open() ) {
 		// Ok, the file exists and was opened, lets read it
 		
@@ -165,16 +173,71 @@ int CIPFilter::LoadFromFile()
 		// Close it for completeness ;)
 		readFile.Close();
 	}
-	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d IP addresses."), filtercounter));
+	AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
 
+	if (merge) {
+		SaveToFile();
+	}
+	
 	return filtercounter;
 }
 
-/*
- * Not implemented
- */
-void CIPFilter::SaveToFile()
-{
+void CIPFilter::SaveToFile() {
+	wxString IPFilterName = theApp.ConfigDir + wxT("ipfilter.dat");
+	wxTextFile IPFilterFile(IPFilterName + wxT(".new"));
+	if (IPFilterFile.Exists()) {
+		// We're gonna do a new one, baby
+		::wxRemoveFile(IPFilterName + wxT(".new"));
+	}
+	
+	// Create the new ipfilter.
+	IPFilterFile.Create();
+	
+	struct in_addr ip_data;
+	
+	IPListMap::iterator it = iplist.begin();
+	while(it != iplist.end()) {
+		wxString line;
+		// Range Start
+		ip_data.s_addr = htonl(it->second->IPStart);
+		line += char2unicode(inet_ntoa(ip_data));
+		// Make it nice
+		for (uint32 i = line.Len(); i < 15; i++) { // 15 -> "xxx.xxx.xxx.xxx"
+			line += wxT(" ");
+		}
+		// Range Separator
+		line += wxT(" - ");
+		// Range End
+		ip_data.s_addr = htonl(it->second->IPEnd);
+		line += char2unicode(inet_ntoa(ip_data));
+		// Make it nice
+		for (uint32 i = line.Len(); i < 33; i++) { // 33 -> "xxx.xxx.xxx.xxx - yyy.yyy.yyy.yyy"
+			line += wxT(" ");
+		}
+		// Token separator
+		line += wxT(" , ");		
+		// Access level
+		line += wxString::Format("%i",it->second->AccessLevel);
+		// Token separator
+		line += wxT(" , ");		
+		// Description
+		line += it->second->Description;		
+		// Add it to file...
+		IPFilterFile.AddLine(line);
+		// And to next :)
+		it++;
+	}
+
+	// Close & write the file
+	IPFilterFile.Write();
+	IPFilterFile.Close();
+	
+	// Remove old ipfilter
+	::wxRemoveFile(IPFilterName);
+	
+	// Make new ipfilter the default one.
+	wxRenameFile(IPFilterName + wxT(".new"),IPFilterName);
+	
 }
 
 void CIPFilter::RemoveAllIPs()
@@ -210,3 +273,26 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 	return found;
 }
 
+void CIPFilter::Update() {
+	wxString strURL = theApp.glob_prefs->IPFilterURL();
+	if (!strURL.IsEmpty()) {
+		
+		wxString strTempFilename(theApp.ConfigDir + wxString::Format(wxT("temp-%d-ipfilter.dat"), ::GetTickCount()));
+#ifndef AMULE_DAEMON
+		CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.GetTopWindow(),strURL,strTempFilename);
+		int retval=dlg->ShowModal();
+		delete dlg;
+#else
+		#warning Xaignar, please fix auto-update on daemon.
+		int retval=0;
+#endif
+		if(retval==0) {
+			// curl succeeded. proceed with ipfilter loading
+			LoadFromFile(strTempFilename, true); // merge it
+			// So, file is loaded and merged, and also saved to ipfilter.dat
+			wxRemoveFile(strTempFilename);
+		} else {
+			AddLogLineM(true, _("Failed to download the ipfilter from ")+ strURL);
+		}
+	}	
+}
