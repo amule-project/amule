@@ -298,8 +298,13 @@ int CamulewebApp::OnRun() {
 	wxString *temp_wxpasswd;
 
 #ifndef AMULEWEBDLG
-	char *t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
-	if (strlen(t_passwd)>0) {
+	const char *t_passwd;
+	if ( m_HasCommandLinePassword ) {
+		t_passwd = unicode2char(m_CommandLinePassword);
+	} else {
+		t_passwd = getpass("Enter password for mule connection (return if no pass defined): ");
+	}
+	if ( strlen(t_passwd) > 0 ) {
 		temp_wxpasswd = new wxString(MD5Sum(char2unicode(t_passwd)).GetHash());
 #else
 	hostName = wxGetTextFromUser(_T("Enter hostname or ip of the box running aMule"), _T("Enter Hostname"), _T("localhost"));
@@ -370,21 +375,21 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& amuleweb_parser) {
 	
 	bool result = true;
 	
+	// Call base class version to process standard command line options
 	result = wxApp::OnCmdLineParsed(amuleweb_parser);
-	
-	wxString TempStr;
-	TempStr = wxT("rh");
-	if (!amuleweb_parser.Found(TempStr,&hostName)) {
+
+	if ( !amuleweb_parser.Found(wxT("rh"), &hostName) ) {
 		hostName = wxT("localhost");
 	}
 	
 	long port;
-	TempStr = wxT("p");
-	if (!amuleweb_parser.Found(TempStr,&port)) {
-		sPort=wxT("4712"); //get the default port
+	if (!amuleweb_parser.Found(wxT("p"),&port)) {
+		sPort = wxT("4712"); //get the default port
 	} else {
-		sPort=wxString::Format(wxT("%li"), port);
+		sPort = wxString::Format(wxT("%li"), port);
 	}
+
+	m_HasCommandLinePassword = amuleweb_parser.Found(wxT("password"), &m_CommandLinePassword);
 
 	return result;
 }
