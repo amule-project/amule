@@ -406,7 +406,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 
 void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 {
-	CUDPSocket *socket = wxDynamicCast(event.GetSocket(), CUDPSocket);
+	CUDPSocket *socket = dynamic_cast<CUDPSocket *>(event.GetSocket());
 	wxASSERT(socket);
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.
@@ -432,7 +432,7 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 
 void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 {
-	CClientUDPSocket *socket = wxDynamicCast(event.GetSocket(), CClientUDPSocket);
+	CClientUDPSocket *socket = dynamic_cast<CClientUDPSocket *>(event.GetSocket());
 	wxASSERT(socket);
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.

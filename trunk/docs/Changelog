@@ -43,6 +43,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Updated muuli.wdr for wxDesigner version 2.11 -- no more
 		  manual patching for wxFIXED_MINSIZE required.
 		* Fix for rommel's report of IP filter problem.
+		* No more IsKindOf(), all replaced by dynamic_cast<>().
+		* No more wxDynamicCast(), all replaced by dynamic_cast<>().
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
