@@ -441,16 +441,21 @@ dnl --------------------------------------------------------------------------
 
 AC_DEFUN(CHECK_CRYPTO,
 	[
-      AC_MSG_CHECKING([for crypto++ version >= 5.1])
-	OWN_CRYPTO="yes"
+     AC_MSG_CHECKING([for crypto++ version >= 5.1])
 	if test x$crypto_prefix == x ; then
 	crypto_prefix="/usr/include/"
-	OWN_CRYPTO="no"
 	fi
+	CRYPTO_PP_STYLE="gentoo_debian"
 	grep "5.1" $crypto_prefix/crypto++/cryptlib.h > /dev/null 2>&1
 	CRYPTO=$?
 	if test "$CRYPTO" != 0; then
 	grep "5.1" $crypto_prefix/cryptopp/cryptlib.h > /dev/null 2>&1
+	CRYPTO_PP_STYLE="mdk_suse_fc"
+	CRYPTO=$?
+	fi
+	if test "$CRYPTO" != 0; then
+	grep "5.1" $crypto_prefix/crypto-5.1/cryptlib.h > /dev/null 2>&1
+	CRYPTO_PP_STYLE="sources"
 	CRYPTO=$?
 	fi
 	if test "$CRYPTO" != 0; then
@@ -460,8 +465,8 @@ AC_DEFUN(CHECK_CRYPTO,
 	fi
 	AC_MSG_RESULT($result)
 	AC_SUBST(CRYPTO)
-	AC_SUBST(OWN_CRYPTO)
 	AC_SUBST(crypto_prefix)
+	AC_SUBST(CRYPTO_PP_STYLE)
 	])
 
 AC_DEFUN(AM_OPTIONS_CRYPTO,
