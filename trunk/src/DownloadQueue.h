@@ -102,8 +102,6 @@ public:
 	bool	AddED2KLink( const CED2KServerLink* link );
 	bool	AddED2KLink( const CED2KServerListLink* link );
 	
-	void  DisableAllA4AFAuto(void);
-	
 private:
 	bool	SendNextUDPPacket();
 	void	ProcessLocalRequests();
