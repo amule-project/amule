@@ -858,10 +858,13 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//
 	// update status
 	//
-	file->transfered = tag->SizeXfer();
-	file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
-	
-	file->completedsize = tag->SizeDone();
+	file->kBpsDown = tag->Speed() / 1024.0;
+
+	if ( file->kBpsDown > 0 ) {
+		file->transfered = tag->SizeXfer();
+		file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
+		file->completedsize = tag->SizeDone();
+	}
 
 	file->transferingsrc = tag->SourceXferCount();
 	file->m_notCurrentSources = tag->SourceNotCurrCount();
@@ -869,7 +872,6 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	file->m_a4af_source_count = tag->SourceCountA4AF();
     file->status = tag->FileStatus();
 
-	file->kBpsDown = tag->Speed() / 1024.0;
 	
 	//
 	// Copy part/gap status
