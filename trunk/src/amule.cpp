@@ -1608,6 +1608,7 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 		}
 	} else {
 		if (knownfiles->SafeAddKFile(result)) {
+			AddDebugLogLineM(false, logKnownFiles, wxT("Safe adding file to sharedlist: ") + result->GetFileName());			
 			sharedfiles->SafeAddKFile(result);
 
 			filecount++;
@@ -1621,7 +1622,7 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 				}
 			}
 		} else {
-			printf("File not added to sharedlist: %s\n", (const char *)unicode2char(result->GetFileName()));
+			AddDebugLogLineM(false, logKnownFiles, wxT("File not added to sharedlist: ") + result->GetFileName());
 			delete result;
 		}
 	}
