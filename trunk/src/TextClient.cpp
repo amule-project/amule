@@ -23,7 +23,6 @@
 #endif
 
 #if !defined( __WXMSW__ )
-	#include <curses.h>
 	#include <unistd.h>
 #endif
 
