@@ -149,6 +149,9 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 {
+	if ( connect->Busy() ) {
+		return;
+	}
 	// always query connection state
 	serverconnect->ReQuery();
 	if ( theApp.amuledlg->sharedfileswnd->IsShown() ) {
@@ -197,7 +200,7 @@ bool CamuleRemoteGuiApp::OnInit()
 		geometry_enabled = true;
 	}
 
-	CRemoteConnect *connect = new CRemoteConnect;
+	connect = new CRemoteConnect;
 	
 	// Load Preferences
 	glob_prefs = new CPreferencesRem(connect);
@@ -642,6 +645,7 @@ CRemoteConnect::CRemoteConnect()
 {
 	m_ECSocket = new ECSocket;
 	m_isConnected = false;
+	m_busy = false;
 }
 
 bool CRemoteConnect::Connect(const wxString &host, int port,
@@ -698,25 +702,33 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
                 AddLogLineM(true, _("Succeeded! Connection established.\n"));
         }
     }
+    m_isConnected = true;
 	return true;
 }
 
 CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
 {
+	m_busy = true;
     if (! m_ECSocket->WritePacket(packet) ) {
+		m_busy = false;
     	return 0;
     }
     CECPacket *reply = m_ECSocket->ReadPacket();
 
+	m_busy = false;
 	return reply;
 }
 
 void CRemoteConnect::Send(CECPacket *packet)
 {
+	m_busy = true;
     if (! m_ECSocket->WritePacket(packet) ) {
+		m_busy = false;
     	return;
     }
     CECPacket *reply = m_ECSocket->ReadPacket();
+
+	m_busy = false;
     delete reply;
 }
 
@@ -816,10 +828,12 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 void CDownQueueRem::DeleteItem(CPartFile *)
 {
 }
+
 CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
 {
 	return file->GetFileHash();
 }
+
 void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 {
 	//

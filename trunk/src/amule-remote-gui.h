@@ -50,15 +50,17 @@ class CEConnectDlg : public wxDialog {
 class CRemoteConnect {
 		ECSocket *m_ECSocket;
 		bool m_isConnected;
+		bool m_busy;
 	public:
 		CRemoteConnect();
 		~CRemoteConnect();
 		
 		bool Connect(const wxString &host, int port, const wxString& login, const wxString &pass);
 
-
 		CECPacket *SendRecv(CECPacket *);
 		void Send(CECPacket *);
+		
+		bool Busy() { return m_busy; }
 };
 
 class CPreferencesRem : public CPreferences {
