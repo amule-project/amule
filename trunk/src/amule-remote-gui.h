@@ -187,9 +187,14 @@ class CServerConnectRem {
 };
 
 class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> {
+		uint32 m_TotalUser, m_TotalFile;
 	public:
 		CServerListRem(CRemoteConnect *);
-		void GetUserFileStatus(uint32 &total_user, uint32 &total_file);
+		void GetUserFileStatus(uint32 &total_user, uint32 &total_file)
+		{
+			total_user = m_TotalUser;
+			total_file = m_TotalFile;
+		}
 		CServer *GetServerByAddress(const wxString& address, uint16 port);
 
 		//
@@ -279,7 +284,7 @@ class CKnownFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash> {
 	public:
 		CKnownFilesRem(CRemoteConnect *);
 		
-		CKnownFile *FindKnownFileByID(const CMD4Hash& filehash);
+		CKnownFile *FindKnownFileByID(const CMD4Hash& id) { return GetByID(id); }
 
         uint16 requested;
         uint32 transfered;
