@@ -310,22 +310,20 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
-				CECTag *reqTag = NULL;
+				uint8 enabledFlag;
 				if (args.IsSameAs(wxT("ON"), false)) {
-					reqTag = new CECTag(EC_TAG_IPFILTER_ENABLED, (uint8)1);
+					enabledFlag = 1;
 				} else if (args.IsSameAs(wxT("OFF"), false)) {
-					reqTag = new CECTag(EC_TAG_IPFILTER_ENABLED, (uint8)0);
+					enabledFlag = 0;
 				} else {
 					Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
 					return 0;
 				}
-				if (reqTag) {
-					request = new CECPacket(EC_OP_SET_PREFERENCES);
-					CECEmptyTag prefs(EC_TAG_PREFS_SECURITY);
-					prefs.AddTag(*reqTag);
-					request->AddTag(prefs);
-					request_list.push_back(request);
-				}
+				request = new CECPacket(EC_OP_SET_PREFERENCES);
+				CECEmptyTag prefs(EC_TAG_PREFS_SECURITY);
+				prefs.AddTag(CECTag(EC_TAG_IPFILTER_ENABLED, enabledFlag));
+				request->AddTag(prefs);
+				request_list.push_back(request);
 			} else {
 				Show(_("This command requieres an argument. Valid arguments: 'on', 'off'\n"));
 				return 0;
