@@ -159,6 +159,14 @@ public:
 	 * @see CClientList::Process
 	 */	
 	void		Safe_Delete();
+
+	/**
+	 * Specifies if the client has been queued for deletion.
+	 *
+	 * @return True if Safe_Delete has been called, false otherwise.
+	 */
+	bool		HasBeenDeleted();
+	
 	
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
