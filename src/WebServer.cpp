@@ -2651,7 +2651,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 			Entry.sServerDescription = wxEmptyString;
 		}
 
-		Entry.sServerIP = tag->GetIPv4Data().StringIP();
+		Entry.sServerIP = tag->GetIPv4Data().StringIP(false);
 		Entry.nServerIP = tag->GetIPv4Data().IP();
 		Entry.nServerPort = tag->GetIPv4Data().port;
 
