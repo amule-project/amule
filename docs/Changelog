@@ -9,10 +9,10 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 2004-12-XX
 
 	CosmicDJ:
-	    * NetBSD compilation fixes.
+		* NetBSD compilation fixes.
 
 	deltaHF:
-	    * Preferences for auto-sort download queue.
+		* Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
 
@@ -22,12 +22,14 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 			- webserver search results (reported by poulpe)
 			- aMule version on webserver's Statistics page
 		* Endianness fixes in EC.
-	
+
 	Kry:
 
 	Phoenix:
 		* Fixed crash in CClientReqSocket::ProcessExtPacket()
-		processing of OP_COMPRESSEDPART.
+		  processing of OP_COMPRESSEDPART.
+		* Fixed crash in CUpDownClient::SendFileRequest(), short
+		  circuit evaluation was reversed.
 
 --------------------------------------------------------------------------------
 
