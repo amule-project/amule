@@ -230,9 +230,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 			free(m_InputLine);
 			m_InputLine = (char *)NULL;
 		}
-		Unicode2CharBuf buf(unicode2char(prompt + wxT("$ ")));
-		const char *p = (const char *)buf;
-		m_InputLine = readline(p);
+		m_InputLine = readline(unicode2char(prompt + wxT("$ ")));
 		if (m_InputLine && *m_InputLine) {
 			add_history (m_InputLine);
 		}
@@ -444,4 +442,3 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	return result;
 }
-
