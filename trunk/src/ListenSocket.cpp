@@ -141,8 +141,9 @@ void CClientReqSocket::Safe_Delete()
 		}
 		client = NULL;
 		byConnected = ES_DISCONNECTED;
-		deletethis = true;
-		//Destroy();
+		// deletethis = true;
+		OnDestroy = true;
+		Destroy();
 	}
 }
 
@@ -1311,12 +1312,7 @@ void CListenSocket::Process()
 		CClientReqSocket* cur_sock = socket_list.GetAt(pos2);
 		opensockets++;
 
-		if (cur_sock->deletethis) {
-			if (!cur_sock->OnDestroy) {
-				cur_sock->Destroy();
-				cur_sock->OnDestroy= true;
-			}
-		} else {
+		if (!cur_sock->OnDestroy) {
 			cur_sock->CheckTimeOut();
 		}
 	}
