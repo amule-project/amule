@@ -77,7 +77,7 @@ void CUploadListCtrl::Init()
 	InsertColumn(5,_("Upload Time"),wxLIST_FORMAT_LEFT,60);//,6);
 	InsertColumn(6,_("Status"),wxLIST_FORMAT_LEFT,110);//,5);
 	InsertColumn(7,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
-
+    InsertColumn(8,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
 	// not here.. no preferences yet
 	//LoadSettings(CPreferences::tableUpload);
 }
@@ -201,6 +201,7 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 	}
 	SetItem(itemnr,6,status);
 	SetItem(itemnr,7,wxT("Bar is missing :)"));
+	SetItem(itemnr,8,CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal()));
 }
 
 bool CUploadListCtrl::ProcessEvent(wxEvent& evt)
@@ -523,6 +524,13 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					// } else {
 					}
 					break;
+					case 8:
+						if (client->Credits()){
+                        Sbuffer = CastItoXBytes(client->Credits()->GetUploadedTotal()) + wxT("/") + CastItoXBytes(client->Credits()->GetDownloadedTotal());
+                      } else {
+                      Sbuffer.Printf(wxT("? / ?"));
+                      }
+						break;
 			}
 			if( iColumn != 7 && iColumn != 0 ) {
 				//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
@@ -531,6 +539,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 			cur_rec.left += cx;//GetColumnWidth(iColumn);
 			delete clipper;
 		}
+			
 	}
 }
 
