@@ -153,9 +153,10 @@ public:
 	uint16			GetServerPort()				{return m_nServerPort;}
 	void			SetServerPort(uint16 nPort)	{m_nServerPort = nPort;}	
 	uchar*		GetUserHash()				{return (uchar*)m_achUserHash;}
-	void			SetUserHash(unsigned char* achUserHash)		{if(achUserHash) memcpy(m_achUserHash,achUserHash,16); else memset(m_achUserHash,0,16); }
-	bool			HasValidHash()				{return ((int*)m_achUserHash)[0] != 0 || ((int*)m_achUserHash)[1] != 0 ||
-												        ((int*)m_achUserHash)[2] != 0 || ((int*)m_achUserHash)[3] != 0; }
+	void			SetUserHash(unsigned char* achUserHash)		{if(achUserHash) memcpy(m_achUserHash,achUserHash,16); else memset(m_achUserHash,0,16); ValidateHash(); }
+	void			ValidateHash()				{ m_HasValidHash = ((uint32*)m_achUserHash)[0] != 0 || ((uint32*)m_achUserHash)[1] != 0 ||
+										((uint32*)m_achUserHash)[2] != 0 || ((uint32*)m_achUserHash)[3] != 0; }
+	bool			HasValidHash()				{return m_HasValidHash; }
 	uint32			GetVersion()				{return m_nClientVersion;}
 	uint8			GetMuleVersion()			{return m_byEmuleVersion;}
 	bool			ExtProtocolAvailable()		{return m_bEmuleProtocol;}
@@ -398,6 +399,7 @@ private:
 	char*	m_pszUsername;
 	char	m_szFullUserIP[21];
 	uchar	m_achUserHash[16];
+	bool	m_HasValidHash;
 	uint16	m_nUDPPort;
 	uint8	m_byUDPVer;
 	uint8	m_bySourceExchangeVer;
