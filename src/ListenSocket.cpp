@@ -633,7 +633,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					CSafeMemFile tempfile(80);
 					
 					// Shared folders...
-					uint32 uDirs = theApp.glob_prefs->shareddir_list.GetCount();
+					uint32 uDirs = theApp.glob_prefs->shareddir_list.GetCount() + theApp.glob_prefs->GetCatCount();
 					tempfile.Write(uDirs);
 					for (uint32 iDir=0; iDir < uDirs; iDir++) {
 						wxString strDir(theApp.glob_prefs->shareddir_list[iDir]);
@@ -718,7 +718,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 						theApp.uploadqueue->AddUpDataOverheadOther(replypacket->size);
 						SendPacket(replypacket, true, true);
 					}
-					wxASSERT( data.GetPosition() == data.GetLength() );
+					wxASSERT( data.GetPosition() > data.GetLength() );
 					client->SetFileListRequested(uDirs);
 				} /*else {
 						AddLogLine(true,GetResString(IDS_SHAREDANSW2),client->GetUserName(),client->GetUserID());
