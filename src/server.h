@@ -46,7 +46,7 @@ WX_DECLARE_LIST(CTag,TagList);
 class CServer {
 public:
 	CServer(ServerMet_Struct* in_data);
-	CServer(uint16 in_port, char* i_addr);
+	CServer(uint16 in_port, const char* i_addr);
 	CServer(CServer* pOld);
 	~CServer();
 	void	AddTag(CTag* in_tag)					{taglist->Append(in_tag);}

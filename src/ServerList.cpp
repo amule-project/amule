@@ -538,8 +538,8 @@ void CServerList::AddServersFromTextFile(CString strFilename,bool isstaticserver
 		}
 
 		// create server object and add it to the list
-		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), (char*) unicode2char(strHost));
-		nsrv->SetListName((char*) unicode2char(strName));
+		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), unicode2char(strHost));
+		nsrv->SetListName(unicode2char(strName));
 
 		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
 		nsrv->SetIsStaticMember(isstaticserver);

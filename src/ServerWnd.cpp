@@ -118,7 +118,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
   
 	wxString portstr;
 	portstr=((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0);
-	CServer* toadd = new CServer(atoi(unicode2char(portstr.GetData())),((char*) unicode2char(serveraddr)));
+	CServer* toadd = new CServer(atoi(unicode2char(portstr)),(unicode2char(serveraddr)));
 	wxString servername;
 	servername=((wxTextCtrl*)FindWindowById(IDC_SERVERNAME))->GetLineText(0);
 	if (!servername.IsEmpty()) {
