@@ -37,10 +37,12 @@
 #endif
 
 #ifndef WX_PRECOMP
-
-#endif
 #include <wx/log.h>
+#include <wx/filename.h>
+#endif
+
 #include "alcc.h"
+#include "ed2khash.h"
 
 // Application implementation
 IMPLEMENT_APP (alcc)
@@ -52,9 +54,8 @@ int alcc::OnRun ()
       {
         wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP
       },
-      { wxCMD_LINE_SWITCH, _T("v"), _T("verbose"), _T("be verbose") },
-
-      { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link") },
+      
+      { wxCMD_LINE_SWITCH, wxT("p"), wxT("parthashes"), wxT("add part-hashes to ed2k link"), wxCMD_LINE_VAL_NONE,wxCMD_LINE_PARAM_OPTIONAL },
 
       { wxCMD_LINE_PARAM,  NULL, NULL, wxT("input files"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
 
@@ -62,6 +63,7 @@ int alcc::OnRun ()
     };
 
   wxCmdLineParser parser(cmdLineDesc, argc, argv);
+
   switch (parser.Parse())
     {
     case -1: // Exit after giving usage msg
@@ -80,7 +82,21 @@ int alcc::OnRun ()
 
 int alcc::computeEd2kLinks(const wxCmdLineParser& cmdline)
 {
-  wxLogError(wxT("Let me some time to implement it !"));
+  wxFileName filename;
+  size_t i;
+
+  bool flagPartHashes = cmdline.Found(_T("p"));
+
+  for (i = 0; i < cmdline.GetParamCount(); i++)
+    {
+      filename.Assign(cmdline.GetParam(i));
+      Ed2kHash hash;
+
+      if (hash.SetED2KHashFromFile(filename, NULL))
+        {
+          printf (wxT("%s ---> %s\n\n"),filename.GetFullName().c_str(),
+                  hash.GetED2KLink(flagPartHashes).c_str());
+        }
+    }
   return 0;
 }
-
