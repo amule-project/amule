@@ -175,8 +175,9 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 	
 	// Barry - To find out if app is running or shutting/shut down
-	bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
-
+	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
+	const bool IsOnShutDown() const { return (m_app_state != APP_STATE_SHUTINGDOWN); }
+	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
@@ -200,7 +201,6 @@ public:
 
 	// Kry - avoid chmod on win32
 	bool		use_chmod;
-	bool		IsReady;
 	
 	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
 	void		SetPublicIP(const uint32 dwIP);
@@ -337,7 +337,6 @@ class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 
 	int OnExit();
 	bool OnInit();
-
 	
 public:
 
@@ -378,9 +377,10 @@ public:
 
 	void ShutDown();
 
+	bool IsRunning() { return true; }
+
 	uint32 GetUptimeMsecs();
 
-	bool IsReady;
 	CPreferencesRem *glob_prefs;
 	wxString ConfigDir;
 	

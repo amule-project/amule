@@ -137,6 +137,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
+	is_safe_state = false;
+	
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 	
@@ -164,8 +166,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 		printf("ERROR!!! Unable to load Preferences\n");
 		return;
 	}
-
-	is_safe_state = false;
 
 	SetIcon(wxICON(aMule));
 
@@ -430,8 +430,8 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
 	static int lastbutton = ID_BUTTONSERVERS;
 
-	// Kry - just if the app is ready for it
-	if ( theApp.IsReady ) {
+	// Kry - just if the GUI is ready for it
+	if ( is_safe_state ) {
 
 		// Rehide the handler if needed
 		if ( lastbutton == ID_BUTTONSEARCH && !thePrefs::GetFED2KLH() ) {
@@ -512,7 +512,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
 		" Copyright (C) 2003-2005 aMule Team \n");
-	if (theApp.IsReady) {
+	if (is_safe_state) {
 		wxMessageBox(msg);
 	}
 }
@@ -520,7 +520,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
-	if ( theApp.IsReady ) {
+	if ( is_safe_state ) {
 		// Try to create a new dialog-window
 		if (!prefs_dialog) {
 			prefs_dialog = PrefsUnifiedDlg::NewPrefsDialog( this );
