@@ -151,7 +151,7 @@ PrefsUnifiedDlg* PrefsUnifiedDlg::NewPrefsDialog(wxWindow* parent)
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
-		: wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+		: wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
 	s_ID = GetId();
 
@@ -234,6 +234,11 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 
 	// Place the window centrally
 	CentreOnScreen();
+
+	// It must not be resized to something smaller than what it currently is
+	wxSize size = GetClientSize();
+
+	SetSizeHints( size.GetWidth(), size.GetHeight() );
 }
 
 
