@@ -63,24 +63,6 @@
 static wxString crash_name   = wxT("[Invalid User Name]"); 
 static wxString empty_name = wxT("[Empty User Name]");
 
-/*
-// prevent fscking dns queries
-class amuleIPV4Address : public wxIPV4address {
-public:
-	amuleIPV4Address() : wxIPV4address() {};
-#ifndef __WXMSW__
-	virtual bool Hostname(unsigned long addr) {
-		return GAddress_INET_SetHostAddress(m_address,addr)==GSOCK_NOERROR;
-	};
-	virtual bool Hostname(char* addr) {
-		struct in_addr inaddr;
-		inet_aton(addr,&inaddr);
-		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
-	}
-#endif
-};
-*/
-
 //	members of CUpDownClient
 //	which are used by down and uploading functions 
 
