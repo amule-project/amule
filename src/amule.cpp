@@ -172,14 +172,15 @@ int CamuleApp::OnExit()
 
 	delete sharedfiles;
 	sharedfiles = NULL;
-	delete knownfiles; 
-	knownfiles = NULL;
 
 	delete serverconnect; 
 	serverconnect = NULL;
 	
 	delete listensocket;	
 	listensocket = NULL;
+	
+	delete knownfiles; 
+	knownfiles = NULL;
 	
 	delete clientlist; 
 	clientlist = NULL;
