@@ -114,9 +114,11 @@ bool CClientDetailDialog::OnInitDialog() {
 	}
 
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
-
-	if (file) {
-		CastChild(ID_DDOWNLOADING,wxStaticText)->SetLabel(file->GetFileName());
+	
+	if ( file ) {
+		wxString filename = MakeStringEscaped( TruncateFilename( file->GetFileName(), 60 ) );
+	
+		CastChild(ID_DDOWNLOADING,wxStaticText)->SetLabel( filename );
 	} else {
 		CastChild(ID_DDOWNLOADING,wxStaticText)->SetLabel(wxT("-"));
 	}
