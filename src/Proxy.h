@@ -94,6 +94,10 @@ public:
 
 /******************************************************************************/
 
+#if !wxCHECK_VERSION(2,5,1)
+	#define wxIPaddress wxIPV4address
+#endif
+
 class wxProxyEventHandler;
 class wxSocketProxy
 {
