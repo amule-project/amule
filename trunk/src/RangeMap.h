@@ -263,7 +263,6 @@ public:
 				// Never touches the current span, it follows that start < it->first
 				// (it->first) is used to avoid checking against (uint32)-1 by accident
 				if ( end < it->first - 1 && it->first ) {
-					printf("a\n");
 					break;
 				}
 
