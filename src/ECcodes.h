@@ -683,15 +683,13 @@ enum {
 	/*!
 	 * This tag contain info about status of gaps in PartFile and availability of each part.
 	 * 
-	 * Value (string): status of each part
+	 * Value: RLE encoded differential info about availability of each part
 	 */	
 	EC_TAG_PARTFILE_PART_STATUS,
 	
 	/*!
-	 * Info about part status of CPartFile: data inside contains 2 things
-	 * 1. RLE encoded differentian info about availability of each part
-	 * 2. List of differences between previously transmitted gap list and current one
-	 * 
+	 * Info about gaps in CPartFile: data inside contains 2 things
+	 * 1. RLE encoded list of differences between previously transmitted gap list and current one
 	 */
 	EC_TAG_PARTFILE_GAP_STATUS,
 
