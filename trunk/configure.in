@@ -235,15 +235,6 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 # Other tests
 
 # Other tests
-case "${host}" in
-powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
-	USE_GSOCKET="no"
-	USE_USS="no"
-	;;
-i386-unknown-openbsd*) LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
-	;;
-esac
-
 
 case "$USE_DEBUG" in
 yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
@@ -251,6 +242,18 @@ yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
 *)	DEBUG_FLAGS=""
     ;;
 esac
+case "${host}" in
+powerpc-apple-darwin*) LDFLAGS="$LDFLAGS -bind_at_load"
+	USE_GSOCKET="no"
+	USE_USS="no"
+	;;
+i386-unknown-openbsd*) LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  CXXFLAGS=" $CXXFLAGS -D__OPENBSD__" 
+	if test "$DEBUG_FLAGS" != ""; then
+		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
+	fi
+	;;
+esac
+
 
 case "$WX_VERSION" in
 2_5)	USE_24GSOCKET="no"
