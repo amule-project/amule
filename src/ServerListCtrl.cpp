@@ -762,6 +762,13 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 		FILE* staticservers = fopen(StaticFilePath , "r");
 		FILE* statictemp = fopen(StaticTempPath , "w");
 		if ((staticservers == NULL) || (statictemp == NULL)) {
+			if ( staticservers ) {
+				fclose(staticservers);
+			}
+			if ( statictemp ) {
+				fclose(statictemp);
+			}
+		
 			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
 			return false;
 		}
