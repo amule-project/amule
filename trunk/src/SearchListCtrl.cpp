@@ -33,7 +33,7 @@
 #include "amule.h"			// Needed for theApp
 
 #include <wx/menu.h>
-
+#include <wx/settings.h>
 #include <algorithm>
 
 
