@@ -435,7 +435,23 @@ bool CPreferencesRem::LoadRemote()
 	if ( !prefs ) {
 		return false;
 	}
-	
+	CECTag *curr;
+	if ( (curr = prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)) != 0 ) {
+		// start from '1' to skip default category "all"
+		for (int i = 1; i < curr->GetTagCount(); i++) {
+			CECTag *cat_tag = curr->GetTagByIndex(i);
+			Category_Struct *cat = new Category_Struct;
+			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
+			cat->incomingpath = cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData();
+			cat->comment = cat_tag->GetTagByName(EC_TAG_CATEGORY_COMMENT)->GetStringData();
+			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt32Data();
+			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt8Data();
+			theApp.glob_prefs->AddCat(cat);
+			// update gui
+			theApp.amuledlg->transferwnd->AddCategory(cat);
+		}
+	}
+	delete prefs;
 	return true;
 }
 
