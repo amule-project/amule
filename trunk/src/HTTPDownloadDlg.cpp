@@ -25,6 +25,7 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #endif
+
 #include <wx/intl.h>
 #include <wx/sizer.h> 
 
@@ -34,6 +35,7 @@
 #include "inetdownload.h"	// Needed for inetDownload
 #include "otherfunctions.h"	// Needed for unicode2char
 
+
 BEGIN_EVENT_TABLE(CHTTPDownloadDlg,wxDialog)
   EVT_BUTTON(ID_CANCEL,CHTTPDownloadDlg::OnBtnCancel)
 END_EVENT_TABLE()
@@ -42,20 +44,17 @@ END_EVENT_TABLE()
 CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempName)
   : wxDialog(parent,1025,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
-  wxSizer* content=downloadDlg(this,TRUE);
+  downloadDlg(this,TRUE)->Show(this,TRUE);
 
   MuleGifCtrl *ani=(MuleGifCtrl*)FindWindowById(ID_ANIMATE);
   ani->LoadData((char*)inetDownload,sizeof(inetDownload));
   ani->Start();
-
-  content->Show(this,TRUE);
 
   Centre();
 
   thread=new myThread(this,url,tempName);
   thread->Create();
   thread->Run();
-
 
 }
 
