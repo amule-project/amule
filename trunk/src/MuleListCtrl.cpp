@@ -353,7 +353,6 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 		long it_pos = FindItem(-1,item);
 		if (it_pos != -1) {
 			SetItemState(it_pos,wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED & wxLIST_STATE_SELECTED);
-			EnsureVisible(it_pos);
 		}
 	}
 }
