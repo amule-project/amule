@@ -20,7 +20,9 @@
 // QueueListCtrl.cpp : implementation file
 //
 
+#ifdef __WXMAC__
 #include <wx/menu.h>
+#endif
 
 #include "muuli_wdr.h"		// Needed for ID_QUEUELIST
 #include "QueueListCtrl.h"	// Interface declarations
