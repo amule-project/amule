@@ -6,7 +6,7 @@ Version 2.0.1 - The "xx" version.
 
 Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 ----------
-2004-12-XX
+2005-03-XX
 
 	BigBob:
 		* Compilation fix for WebServer.cpp with wx-2.4.2.
@@ -24,9 +24,52 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	GonoszTopi:
 		* Unicode fixes:
-			- UTF-8 conversion (found by littletux)
-			- webserver search results (found by poulpe)
-	
+			- UTF-8 conversion (reported by littletux)
+			- webserver search results (reported by poulpe)
+			- aMule version on webserver's Statistics page
+		* Endianness fixes in EC.
+		* Fixed appearing strange characters at the end of webserver's
+		  log and debug log pages.
+		* Fixed logo.jpg being not installed.
+		* Webserver graphs are now resizable and rescalable.
+		* Removed some unneeded code/data from daemon.
+		* Added gcc #pragmas to reduce executable size.
+		* Several improvements on EC network code:
+			- EC now uses buffered I/O, so most EC transmissions will only
+			  require one socket operation.
+			- Added the ability to compress lagre packets with zlib, thus
+			  reducing network load.
+			- Some (not-so-CPU-consuming) compression is applied to small
+			  packets, too.
+		* A number of i18n fixes, mostly changing debug messages to be
+		  untranslated.
+		* Removed ECv1 compatibility mode. Now all EC communications are
+		  using the new v2 protocol.
+		* Remote applications do not log to core's log anymore.
+		* Fixed the GetLog() function to be compatible with wxWidgets-2.5.4
+		* Reworked template finding - after installation, no more copying
+		  of webserver files are needed.
+		* Added new command 'reloadshared' to amulecmd, to force reloading
+		  of shared files list.
+		* Fixed configure script to use the right arguments with gdlib-config.
+		* Fixed configure script to check for gd in the right order.
+		* Fixed preferences being not saved when set from web interface.
+		* Fix for setting download priorities via web interface.
+		* Added configuration file for remote apps.
+		* Reworked command-line parameters, also added a lot new ones
+		  (for remote apps).
+		* Fixed *.desktop files to be really UTF-8.
+		* Fixed Makefiles to be able to compile alcc without alc.
+		* Added man pages - English only, for this time. Great thanks to
+		  Vollstrecker for his initial work on the man pages!
+		* Fixed pressing the 'Clear Completed' button causes a logout
+		  on the web interface.
+		* Added CVSDATE checks to EC, to make sure that core and remote
+		  apps are from the CVS tarball (for CVS users).
+
+		**** For users, who already got used to amulecmd's or amuleweb's
+		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
+
 	Hetfield:
 		* New popup menu and events management for new wx SysTray
 
