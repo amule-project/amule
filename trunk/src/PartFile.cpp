@@ -1754,7 +1754,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						}
 						case DS_NONEEDEDPARTS: {
 							// we try to purge noneeded source, even without reaching the limit
-							if(download_state == DS_NONEEDEDPARTS && (dwCurTick - lastpurgetime) > 40000) {
+							if((dwCurTick - lastpurgetime) > 40000) {
 								if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
 									//however we only delete them if reaching the limit
 									if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
