@@ -363,7 +363,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 		_("' port:") + wxString::Format(wxT("%d"), addr.Service()) + 
 		wxT("\n") );
 	Show(_("Trying to connect (timeout = 10 sec)...\n"));
-  	m_ECClient->Connect(addr, FALSE);
+  	m_ECClient->Connect(addr, false);
 	m_ECClient->WaitOnConnect(10);
 
 	if (!m_ECClient->IsConnected()) {
