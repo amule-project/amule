@@ -29,6 +29,10 @@
 #include "amuleDlg.h"
 #include "MapKey.h"		// Needed for CCKey
 
+
+#include <wx/listimpl.cpp> // ye old magic incantation
+WX_DEFINE_LIST(KnownFileList);
+
 CKnownFileList::CKnownFileList(char* in_appdir) {
 	appdir = in_appdir;
 	accepted = 0;
@@ -120,7 +124,7 @@ void CKnownFileList::Save() {
 	uint8 ucHeader = MET_HEADER;
 	//theApp.amuledlg->AddLogLine(false,CString(_("Saved MET_HEADER")).GetData());
 	file->Write(&ucHeader, 1);
-	uint32 RecordsNumber = m_map.size();
+	uint32 RecordsNumber = m_map.size() + duplicates.GetCount();
 	//theApp.amuledlg->AddLogLine(false,CString(_("RecordsNumber = %i")).GetData(), RecordsNumber);
 	ENDIAN_SWAP_I_32(RecordsNumber);
 	//theApp.amuledlg->AddLogLine(false,CString(_("Endian RecordsNumber = %i")).GetData(), RecordsNumber);		
@@ -132,6 +136,14 @@ void CKnownFileList::Save() {
 			break;		// TODO: Throw an exception
 		it->second->WriteToFile(file);
 	}
+	// Kry - Duplicates handling.
+	KnownFileList::Node* node = duplicates.GetFirst();
+	while (node) {
+		CKnownFile* duplicate = node->GetData();
+		duplicate->WriteToFile(file);
+		node = node->GetNext();
+	}	
+	
 	file->Flush();
 	file->Close();
 	//theApp.amuledlg->AddLogLine(false,CString(_("KnownFileList Save Ends")).GetData());	
@@ -145,9 +157,19 @@ void CKnownFileList::Clear() {
 	for ( CKnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
 		delete it->second;
 	m_map.clear();
+
+	KnownFileList::Node *node = duplicates.GetFirst();
+	while (node) {
+		CKnownFile* duplicate = node->GetData();
+		delete duplicate;
+		delete node;
+		node = duplicates.GetFirst();
+	}		
+	
 }
 
-CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 in_size) {
+CKnownFile* CKnownFileList::FindKnownFile(const char* filename,uint32 in_date,uint32 in_size) {
+	
 	wxMutexLocker sLock(list_mut);
 	
 	CKnownFile* cur_file;
@@ -158,9 +180,8 @@ CKnownFile* CKnownFileList::FindKnownFile(char* filename,uint32 in_date,uint32 i
 			return cur_file;
 		}
 	}
-	
-	return NULL;	
-	
+
+	return IsOnDuplicates(filename, in_date, in_size);
 }
 
 CKnownFile* CKnownFileList::FindKnownFileByID(const uchar* hash)
@@ -194,13 +215,18 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			m_map[tkey] = Record;			
 			return true;
 		} else {
-			#ifdef __DEBUG__
-			printf("%s is already on list, not added\n",Record->GetFileName().c_str());
-			printf("The Found file: %s\n",m_map[tkey]->GetFileName().c_str());
-			printf("1: %u %u\n",Record->GetFileDate(),Record->GetFileSize());
-			printf("2: %u %u\n",m_map[tkey]->GetFileDate(),m_map[tkey]->GetFileSize());
-			#endif
-			return false;
+			it->second;
+			uint32 in_date =  it->second->GetFileDate();
+			uint32 in_size =  it->second->GetFileSize();
+			const char* filename = it->second->GetFileName().c_str();
+			if (((abs(Record->GetFileDate() - (in_date)) < 20) && Record->GetFileSize() == in_size && !Record->GetFileName().Cmp(filename)) || IsOnDuplicates(filename, in_date, in_size)) {
+				// The file is already on the list, ignore it.
+				return false;
+			} else {
+				// The file is a duplicated hash. Add it to the duplicates list.
+				duplicates.Append(Record);
+				return true;
+			}
 		}
 	} else {
 		#ifdef __DEBUG__
@@ -208,4 +234,18 @@ bool CKnownFileList::Append(CKnownFile* Record)
 		#endif
 		return false;
 	}
+}
+
+CKnownFile* CKnownFileList::IsOnDuplicates(const char* filename,uint32 in_date,uint32 in_size) {
+	CKnownFile* cur_file;
+	KnownFileList::Node* node = duplicates.GetFirst();
+	while (node) {
+		CKnownFile* duplicate = node->GetData();
+		cur_file = duplicate;
+		if ((abs(cur_file->GetFileDate() - in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+			return cur_file;
+		}
+		node = node->GetNext();
+	}	
+	return NULL;
 }
