@@ -81,6 +81,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/url.h>
+#include <wx/wfstream.h>
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -290,11 +291,11 @@ CamuleApp::~CamuleApp()
 		delete localserver;
 		localserver = NULL;
 	}
-	
-	if (applog) {
-		delete applog;
-	}
 
+	if (applog) {
+		delete applog; // deleting a wxFFileOutputStream closes it
+	}
+	
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
@@ -484,10 +485,8 @@ bool CamuleApp::OnInit()
 	}
 
 
-	applog = new wxFile();
-	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
-	                 wxFile::read_write);
-	if ( !applog->IsOpened() ) {
+	applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+	if ( !applog->Ok() ) {
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
 		delete applog;
@@ -1679,28 +1678,21 @@ bool CamuleApp::AddServer(CServer *srv)
 //
 // lfroen: logging is not unicode-aware, and it should not be !
 // Phoenix: You must be joking. :)
+// Kry Yay, unicoding via streams
+#include <wx/sstream.h>
 void CamuleApp::AddLogLine(const wxString &msg)
 {
-	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") + 
-		wxDateTime::Now().FormatTime() + wxT(": ");
-	const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
-	const char *date_str = (const char *)date_str_buf;
-	applog->Write(date_str, strlen(date_str));
-	if ( enable_stdout_log ) {
-		fputs(date_str, stdout);
+	wxString full_line = wxDateTime::Now().FormatISODate() + wxT(" ") + 
+		wxDateTime::Now().FormatISOTime() + wxT(": ") + msg + wxT("\n");
+	
+	wxStringInputStream stream(full_line);
+	
+	(*applog) << stream;
+	
+	if ( enable_stdout_log ) { 
+		puts(unicode2charbuf(full_line));
 	}
 
- 	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
-	const char *c_msg = (const char *)c_msg_buf;
-	if (c_msg != NULL) {
-		applog->Write(c_msg, strlen(c_msg));
-	}
-	applog->Write("\n", 1);
-       	if ( enable_stdout_log ) { 
-		puts(c_msg);
-	}
-
-	applog->Flush();
 }
 
 uint32 CamuleApp::GetPublicIP() const {
@@ -1746,10 +1738,9 @@ wxString CamuleApp::GetLog(bool reset)
 	wxString str(char2unicode(tmp_buffer));
 	delete [] tmp_buffer;
 	if ( reset ) {
-		applog->Close();
-		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"),
-	                 true, wxFile::read_write);
-		if ( applog->IsOpened() ) {
+		delete applog;
+		applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+		if ( applog->Ok() ) {
 			AddLogLine(_("Log has been reset"));
 		} else {
 			delete applog;

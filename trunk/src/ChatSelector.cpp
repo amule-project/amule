@@ -79,7 +79,7 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 		if ( line.IsEmpty() ) {
 			SetDefaultStyle( COLOR_BLACK );
 
-			AppendText( wxT(" [") + wxDateTime::Now().FormatTime() + wxT("] ") );
+			AppendText( wxT(" [") + wxDateTime::Now().FormatISOTime() + wxT("] ") );
 		}
 	}
 		
@@ -122,7 +122,7 @@ CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show)
 
 	wxString text;
 	text += wxString(_(" *** Chat-Session Started: ")) + client->GetUserName() + wxT(" - ");
-	text += wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT("\n");
+	text += wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT("\n");
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client->GetUserName(), show, 0);
