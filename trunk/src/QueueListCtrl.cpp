@@ -307,7 +307,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
     
     for(int iCurrent = 0; iCurrent < iCount; iCurrent++){
       int iColumn = iCurrent;//pHeaderCtrl->OrderToIndex(iCurrent);
-      if( 1 ){ // columns can't be hidden
+      if( GetColumnWidth( iColumn ) ){ // columns can't be hidden
 	wxListItem listitem;
 	GetColumn(iColumn,listitem);
 	int cx=listitem.GetWidth();
