@@ -264,7 +264,7 @@ public:
                                         return temp; }
 	static uint16		GetDeadserverRetries()		{ return s_deadserverretries; }
 	static void		SetDeadserverRetries(uint16 val) { s_deadserverretries = val; }
-	static DWORD		GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
+	static uint32	GetServerKeepAliveTimeout()	{ return s_dwServerKeepAliveTimeoutMins*60000; }
 	static void		SetServerKeepAliveTimeout(uint32 val)	{ s_dwServerKeepAliveTimeoutMins = val/60000; }
 	
 	static WORD		GetLanguageID()			{ return s_languageID; }

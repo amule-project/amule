@@ -34,7 +34,7 @@
 #include "sockets.h"			// Needed for CServerConnect
 #include "Preferences.h"
 #include "BarShader.h"			// Needed for CBarShader
-
+#include "listbase.h"
 
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
@@ -66,7 +66,6 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 END_EVENT_TABLE()
 
 using namespace otherfunctions;
-
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags)
 	: CMuleListCtrl(parent, id, pos, size, flags | wxLC_OWNERDRAW )
 {

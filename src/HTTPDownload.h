@@ -29,7 +29,11 @@
 #include "GuiEvents.h"
 
 class CHTTPDownloadThread;
+#ifdef __WXMSW__
+class wxGauge95;
+#else
 class wxGauge;
+#endif
 
 class MuleGifCtrl;
 
@@ -50,7 +54,11 @@ private:
   
 	CHTTPDownloadThread*	m_parent_thread;
 	MuleGifCtrl* 					m_ani;
+#ifdef __WXMSW__	
+	wxGauge95* 						m_progressbar;
+#else
 	wxGauge* 						m_progressbar;
+#endif
 };
 #endif
 

@@ -632,7 +632,7 @@ wxString  CDirIterator::FindNextFile() {
 		if ((type == CDirIterator::Any)) {
 			// return anything.
 			found = true;
-		} else {		
+		} else {		/*
 			switch (dp->d_type) {
 				case DT_DIR:
 					if (type == CDirIterator::Dir)  {
@@ -649,7 +649,7 @@ wxString  CDirIterator::FindNextFile() {
 					}
 					break;
 				default:
-
+*/
 					// Fallback to stat
 					stat(unicode2char(DirStr + char2unicode(dp->d_name)),buf);
 					if (S_ISREG(buf->st_mode)) {
@@ -671,8 +671,8 @@ wxString  CDirIterator::FindNextFile() {
 							dp = readdir(DirPtr);
 						}
 					}
-					break;
-			}
+/*					break;
+			}*/
 		}
 		if (found) {
 			FoundName = char2unicode(dp->d_name);
