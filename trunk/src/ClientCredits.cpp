@@ -512,7 +512,7 @@ void CClientCreditsList::InitalizeCrypting(){
 			delete m_pSignkey;
 			m_pSignkey = NULL;
 		}
-		theApp.QueueLogLine(false, _("IDS_CRYPT_INITFAILED\n"));
+		AddLogLineM(false, _("IDS_CRYPT_INITFAILED\n"));
 	}
 	//Debug_CheckCrypting();
 }
