@@ -1040,7 +1040,7 @@ void CUpDownClient::UDPReaskForDownload()
 		Packet* response = new Packet(&data, OP_EMULEPROT);
 		response->SetOpCode(OP_REASKFILEPING);
 		theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
-		theApp.clientudp->SendPacket(response,GetIP(),GetUDPPort());
+		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
 	
 	}
 }
