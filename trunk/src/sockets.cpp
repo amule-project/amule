@@ -141,12 +141,8 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	connecting = true;
 	singleconnecting = !multiconnect;
 
-#ifdef TESTING_PROXY
-//	CServerSocket* newsocket = new CServerSocket(this, thePrefs::GetProxyData());
-	CServerSocket* newsocket = new CServerSocket(this);
-#else
-	CServerSocket* newsocket = new CServerSocket(this);
-#endif
+//#ifdef TESTING_PROXY
+	CServerSocket* newsocket = new CServerSocket(this, thePrefs::GetProxyData());
 	m_lstOpenSockets.AddTail(newsocket);
 	newsocket->ConnectToServer(server);
 
@@ -480,12 +476,8 @@ CServerConnect::CServerConnect(CServerList* in_serverlist)
 	tmp.AnyAddress();
 	tmp.Service(thePrefs::GetPort()+3);
 	// initalize socket for udp packets
-#ifdef TESTING_PROXY
+//#ifdef TESTING_PROXY
 	udpsocket = new CUDPSocket(this, tmp, thePrefs::GetProxyData());
-//	udpsocket = new CUDPSocket(this, tmp);
-#else
-	udpsocket = new CUDPSocket(this, tmp);
-#endif
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	lastStartAt=0;	
 	InitLocalIP();	
