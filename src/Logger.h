@@ -159,14 +159,14 @@ namespace CLogger
 		if ( critical || CLogger::IsEnabled( type ) ) { \
 			CLogger::AddDebugLogLine( critical, type, string ); \
 		} \
-	} while ( false );
+	} while ( false )
 #else
 	#define AddDebugLogLineM( critical, type, string ) \
 	do { \
 		if ( critical ) { \
 			CLogger::AddDebugLogLine( critical, type, string ); \
 		} \
-	} while ( false );
+	} while ( false )
 #endif
 
 #define AddLogLineM( critical, string ) \
