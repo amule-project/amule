@@ -67,9 +67,8 @@ public:
 	 * Stops the hasher and all threads.
 	 *
 	 * This function sets the s_running variable and waits for the currently 
-	 * existing threads to die. It will wait at most 20 seconds, after which 
-	 * it will print a warning and return. In most cases it should return 
-	 * almost immediatly.
+	 * existing threads to die. It will only return after all running threads 
+	 * have terminated. In most cases it should return almost immediatly.
 	 */
 	static void		Stop();
 
