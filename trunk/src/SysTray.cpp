@@ -692,7 +692,10 @@ void CSysTray::SetTrayIcon(char** data, int* pVals)
 
 CSysTray::~CSysTray()
 {
-	gtk_widget_destroy(GTK_WIDGET(m_status_docklet));
+	#warning This will stay here (the if) till 2.0.0, after it it can be removed along with '4'
+	if (m_status_docklet) {
+		gtk_widget_destroy(GTK_WIDGET(m_status_docklet));
+	}
 }
 
 #endif // __WXGTK__
