@@ -85,7 +85,7 @@ AC_ARG_ENABLE(profile, [  --enable-profile        enable code profiling],
 AC_ARG_ENABLE(static,  [  --enable-static         produce a statically linked executable],
               USE_DEBUG_STATIC="$enableval", USE_DEBUG_STATIC="no")
 	      
-AC_ARG_ENABLE(embedded_crypto,[  --enable-embedded_crypto  use embedded Crypto code (default)],
+AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded_crypto  do not use embedded Crypto code],
 		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
 	      
 AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd       compile aMule command line client],
