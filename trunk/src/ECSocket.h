@@ -60,7 +60,7 @@ public:
 	inline ECSocket& Read(wxString& v) {
 		uint16 len;
 		Read(len);
-		char *buf = new char[len+1];
+		wxChar *buf = new wxChar[len+1];
 		ReadRaw(buf, len);
 		buf[len] = 0;
 		v = wxString(buf,len);
