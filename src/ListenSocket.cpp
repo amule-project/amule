@@ -2551,9 +2551,12 @@ void *CSocketGlobalThread::Entry()
 		it = socket_list.begin();
 		while (it != socket_list.end()) {
 			CClientReqSocket* cur_sock = *it++;
-			if (cur_sock->deletethis || cur_sock->Error()) {
+			if (cur_sock->deletethis || (cur_sock->Error() && (cur_sock->LastError() != wxSOCKET_WOULDBLOCK))) {
 				socket_list.erase(cur_sock);
 				continue;
+			}
+			if (cur_sock->Error() && (cur_sock->LastError() == wxSOCKET_WOULDBLOCK)) {
+				cur_sock->OnSend(0);
 			}
 			if ( !cur_sock->wxSocketBase::IsConnected() ) {
 				if ( cur_sock->WaitOnConnect(0, 0) ) {
