@@ -286,6 +286,7 @@ public:
 private:
 	wxSocketProxy	m_SocketProxy;
 	bool 		m_UseProxy;
+	bool		m_UDPSocketOk;
 	wxSocketClient	*m_ProxySocket;
 	enum wxUDPOperation m_LastUDPOperation;
 	unsigned int	m_LastUDPOverhead;
