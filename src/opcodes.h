@@ -60,8 +60,7 @@ enum {
 };
 
 // MOD Note: Do not change this part - Merkur
-#define	CURRENT_VERSION_SHORT			0x30
-#define	CURRENT_VERSION_CHECK			0x30C
+#define	CURRENT_VERSION_SHORT			0x43
 #define	EMULE_PROTOCOL				0x01
 // MOD Note: end
 
@@ -77,7 +76,7 @@ enum {
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG				wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG				wxT("aMule with a bugged modversion")
+	#define	MOD_VERSION_LONG				wxT("aMule 2.0.0")
 #endif
 
 #define	VERSION_MJR		0x02
