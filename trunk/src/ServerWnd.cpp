@@ -67,8 +67,8 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/)
 	serverlistctrl=list;
 
 	wxTextCtrl* cv = CastChild( ID_SERVERINFO, wxTextCtrl );
-	cv->AppendText(wxT("This is aMule ") wxT(VERSION) wxT(" (based on eMule)\n"));
-	cv->AppendText(wxT("Visit http://www.amule.org to check if a new version is available.\n"));
+	cv->AppendText(wxString(_("This is aMule ")) + wxString(wxT(VERSION)) + wxString(_(" (based on eMule)\n")));
+	cv->AppendText(_("Visit http://www.amule.org to check if a new version is available.\n"));
 
 	// Insert two columns, currently without a header
 	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
