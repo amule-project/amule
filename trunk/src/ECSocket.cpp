@@ -127,8 +127,8 @@ bool ECSocket::Read(wxSocketBase *sock, wxString& s) {
 	if ( !Read(sock, msgBytes) )
 		return false;
 	
-	// Fail if the string is abnormally large ( > 1kb )
-	if ( msgBytes > 1024 )
+	// Fail if the string is abnormally large ( > 64 kb )
+	if ( msgBytes > 64 * 1024 )
 		return false;
 	
 	char *utf8 = new char[msgBytes+1];
