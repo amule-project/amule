@@ -22,7 +22,7 @@
 #define GUIEVENTS_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in amule.cpp
+// implementation in amule.cpp & amule-remote-gui.cpp
 #pragma interface "GuiEvents.h"
 #endif
 

@@ -3,6 +3,14 @@
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "amule-remote-gui.h"
+// implementations for headers which don't have a corresponding .cpp file
+#pragma implementation "GetTickCount.h"
+#pragma implementation "GuiEvents.h"
+#pragma implementation "updownclient.h"
+#endif
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/msw/winundef.h>
@@ -174,7 +182,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Create main dialog
 	InitGui(0, geom_string);
 
-	connect->Connect("localhost", 4712);
+	connect->Connect(wxT("localhost"), 4712);
 	
 	//m_app_state = APP_STATE_RUNNING;
 	IsReady = true;
@@ -535,7 +543,7 @@ CRemoteConnect::CRemoteConnect()
 	m_isConnected = false;
 }
 
-bool CRemoteConnect::Connect(const char *host, int port)
+bool CRemoteConnect::Connect(const wxString &host, int port)
 {
 	wxIPV4address addr;
 
@@ -552,11 +560,11 @@ bool CRemoteConnect::Connect(const char *host, int port)
     } 
     // Authenticate ourselves
     CECPacket packet(EC_OP_AUTH_REQ);
-    packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString("amule-remote")));
-    packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString("0x0001")));
+    packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
+    packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
     packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)0x01f1));
 
-    wxString pass_hash = "81dc9bdb52d04dc20036dbd8313ed055";
+    wxString pass_hash = wxT("81dc9bdb52d04dc20036dbd8313ed055");
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
 
     if (! m_ECSocket->WritePacket(&packet) ) {

@@ -24,7 +24,7 @@
 #define GETTICKCOUNT_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in amule.cpp & WebServer.cpp
+// implementation in amule.cpp & WebServer.cpp & amule-remote-gui.cpp
 #pragma interface "GetTickCount.h"
 #endif
 
