@@ -306,7 +306,7 @@ uint32 CClientList::GetClientCount() const
 void CClientList::DeleteAll()
 {
 	theApp.uploadqueue->DeleteAll();
-	theApp.downloadqueue->DeleteAll();
+	theApp.downloadqueue->ClearAllSources();
 
 	m_ipList.clear();
 	m_hashList.clear();
