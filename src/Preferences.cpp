@@ -192,7 +192,6 @@ uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
 bool		CPreferences::s_IPFilterOn;
 bool		CPreferences::s_UseSrcSeeds;
-bool		CPreferences::s_VerbosePacketError;
 bool		CPreferences::s_ProgBar;
 bool		CPreferences::s_Percent;	
 bool		CPreferences::s_SecIdent;
@@ -680,8 +679,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Debugging
 	 **/
-	NewCfgItem(IDC_VERBOSE,		(new Cfg_Bool( wxT("/eMule/Verbose"), s_bVerbose, false )));
-	NewCfgItem(IDC_VERBOSEPACKETERROR,	(new Cfg_Bool( wxT("/FakeCheck/VerbosePacketError"), s_VerbosePacketError, false )));
+	NewCfgItem(ID_VERBOSEDEBUG, (new Cfg_Bool( wxT("/eMule/VerboseDebug"), s_bVerbose, false )));
 
 	/**
 	 * Connection settings
@@ -916,6 +914,20 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	for ( ; it_b != s_MiscList.end(); ++it_b ) {
 		(*it_b)->LoadFromFile( cfg ); 
 	}
+
+// Load debug-categories
+#ifdef __VERBOSE_OUTPUT__
+	int count = CLogger::GetDebugCategoryCount();
+
+	for ( int i = 0; i < count; i++ ) {
+		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
+		
+		bool enabled = false;
+		cfg->Read( wxT("/Debug/Cat_") + cat.GetName(), &enabled );
+
+		CLogger::SetEnabled( cat.GetType(), enabled );
+	}	
+#endif
 	
 	// Now do some post-processing / sanity checking on the values we just loaded
 	CheckUlDlRatio();
@@ -933,6 +945,24 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 	CFGList::iterator it_b = s_MiscList.begin();
 	for ( ; it_b != s_MiscList.end(); ++it_b )
 		(*it_b)->SaveToFile( cfg ); 
+
+
+// Save debug-categories
+#ifdef __VERBOSE_OUTPUT__
+	int count = CLogger::GetDebugCategoryCount();
+
+	for ( int i = 0; i < count; i++ ) {
+		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
+
+		wxString entry = wxT("/Debug/Cat_") + cat.GetName();
+		if ( cat.IsEnabled() ) {
+			cfg->Write( entry, true );
+		} else if ( cfg->Exists( entry ) ) {
+			// Avoid a buildup of stale entries
+			cfg->DeleteEntry( entry );
+		}
+	}	
+#endif
 }
 
 void CPreferences::SetMaxUpload(uint16 in)
@@ -990,7 +1020,7 @@ void CPreferences::UnsetAutoServerStart()
 	s_autoserverlist = false;
 }
 
-	
+
 // Here we slightly limit the users' ability to be a bad citizen: for very low upload rates
 // we force a low download rate, so as to discourage this type of leeching.  
 // We're Open Source, and whoever wants it can do his own mod to get around this, but the 
@@ -1046,9 +1076,6 @@ bool CPreferences::Save()
 		preffile.Create( fullpath );
 	
 	if ( preffile.Open(fullpath, CFile::read_write) ) {
-		printf(	"Saving userhash: %s\n",
-			(const char *)unicode2char(s_userhash.Encode()));
-		
 		Preferences_Ext_Struct prefsExt;
 		memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
 		

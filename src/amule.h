@@ -37,6 +37,7 @@
 #include "GuiEvents.h"
 
 #include <deque>
+#include <list>
 
 #include "CTypedPtrList.h"	// Needed for CLis
 
@@ -181,10 +182,6 @@ public:
 	
 	void RunAICHThread();
 	
-	void		QueueLogLine(bool addtostatusbar, const wxString& line, bool debug = false);
-	void		QueueDebugLogLine(bool addtostatusbar, const wxString& line) { QueueLogLine(addtostatusbar, line, true); }
-	void		FlushQueuedLogLines();
-		
 	// Misc functions
 	void		OnlineSig(bool zero = false); 
 	void		Localize_mule();
@@ -250,9 +247,7 @@ protected:
 		//! The text line to be displayed
 		wxString 	line;
 		//! True if the line should be shown on the status bar, false otherwise.
-		bool		addtostatus;
-		//! True if this is a debug message
-		bool		debug;
+		bool		show;
 	};
 
 	void OnUDPDnsDone(wxEvent& evt);
@@ -272,8 +267,7 @@ protected:
 	
 	void SetTimeOnTransfer();
 			
-	wxCriticalSection m_LogQueueLock;
-	std::list<QueuedLogLine> QueuedAddLogLines;
+	std::list<QueuedLogLine> m_logLines;
 	
 	wxLocale m_locale;
 
@@ -407,8 +401,6 @@ public:
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
-	void QueueLogLine(bool addtostatusbar, const wxString& line);
-	void QueueDebugLogLine(bool addtostatusbar, const wxString& line) { QueueLogLine(addtostatusbar, line); }
 	
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 	

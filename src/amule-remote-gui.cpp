@@ -270,11 +270,6 @@ uint32 CamuleRemoteGuiApp::GetPublicIP()
 	return 0;
 }
 
-// remote gui doesn't have it's own log
-void CamuleRemoteGuiApp::QueueLogLine(bool, wxString const&)
-{
-}
-
 wxString CamuleRemoteGuiApp::GetLog(bool)
 {
 	return wxEmptyString;

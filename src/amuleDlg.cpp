@@ -538,14 +538,6 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 }
 
 
-void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxString& line)
-{
-	if (thePrefs::GetVerbose()) {
-		AddLogLine(addtostatusbar, line);
-	}
-}
-
-
 void CamuleDlg::AddServerMessageLine(wxString& message)
 {
 	wxTextCtrl* cv= CastByID( ID_SERVERINFO, serverwnd, wxTextCtrl );

@@ -864,21 +864,23 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 
 			
 		// logging
+		case ADDDEBUGLOGLINE:
 		case ADDLOGLINE:
 			if (amuledlg) {
-				CamuleApp::AddLogLine(event.string_value);
+				while ( !m_logLines.empty() ) {
+					QueuedLogLine entry = m_logLines.front();
+					amuledlg->AddLogLine( entry.show, entry.line );
+					m_logLines.pop_front();
+				}
+				
 				amuledlg->AddLogLine(event.byte_value,event.string_value);
 			} else {
-				QueueLogLine(event.byte_value,event.string_value);
+				QueuedLogLine entry = { event.string_value, event.byte_value };
+				m_logLines.push_back( entry );
 			}
-			break;
-		case ADDDEBUGLOGLINE:
-			if (amuledlg) {
-				amuledlg->AddDebugLogLine(event.byte_value,event.string_value);
-			} else {
-				wxASSERT(0);
-				//QueueLogLine(event.byte_value,event.string_value);
-			}
+					
+			CamuleApp::AddLogLine( event.string_value );
+			
 			break;
 		default:
 			printf("Unknown event notified to wxApp\n");
