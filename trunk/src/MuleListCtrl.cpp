@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule project.
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -45,8 +46,8 @@ IMPLEMENT_DYNAMIC_CLASS(CMuleListCtrl, CMuleListCtrl_Base)
 BEGIN_EVENT_TABLE(CMuleListCtrl, CMuleListCtrl_Base)
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
-	
 	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
+	EVT_MOUSEWHEEL(CMuleListCtrl::OnMouseWheel)
 END_EVENT_TABLE()
 
 
@@ -366,5 +367,13 @@ int CMuleListCtrl::GetSortColumn()
 void CMuleListCtrl::SetSortColumn( int column )
 {
 	m_sort_column = column;
+}
+
+/**
+ * This enables scrolling with the mouse wheel
+ */
+void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
+{
+	event.Skip();
 }
 

@@ -237,6 +237,10 @@ protected:
 	 * Event handler for the hide/show menu items.
 	 */
 	void OnMenuSelected(wxCommandEvent& evt);
+	/**
+	 * Event handler for the mouse wheel.
+	 */
+	void OnMouseWheel(wxMouseEvent &event);
 
 
 private:
