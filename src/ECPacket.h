@@ -22,7 +22,7 @@
 
 #include "types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
-#include "otherfunctions.h"	// Needed for aMuleConv
+#include "StringFunctions.h"	// Needed for aMuleConvToUTF8
 #include "ECcodes.h"	// Needed for EC types
 #include "endianfix.h"	// Needed for ENDIAN_SWAP_* macros
 

@@ -257,7 +257,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 					*pPort = 0;	// terminate ip string
 					pPort++;	// point pPort to port string.
 
-					dwID = StringIPtoUint32(char2unicode(pIP));
+					dwID = CStringIPtoUint32(pIP);
 					ul = atoi(pPort); //tcstoul( pPort, 0, 10 );
 					nPort = static_cast<uint16>(ul);
 					

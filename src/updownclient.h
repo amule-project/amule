@@ -28,7 +28,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
-#include "otherfunctions.h"
+#include "StringFunctions.h"
 
 #include <map>
 #include <vector>

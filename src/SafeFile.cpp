@@ -19,6 +19,8 @@
 
 #include "SafeFile.h"		// Interface declarations.
 #include "otherfunctions.h"
+#include "StringFunctions.h"		// Needed for unicode2char
+
 #include "packets.h"
 #include "kademlia/utils/UInt128.h"
 

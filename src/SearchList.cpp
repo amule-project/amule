@@ -20,6 +20,7 @@
 #include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #include "SearchList.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for GetFiletypeByName
+#include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
@@ -528,4 +529,3 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 		}
 	}
 }
-

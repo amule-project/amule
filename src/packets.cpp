@@ -21,7 +21,7 @@
 #include <zlib.h>		// Needed for uLongf
 
 #include "packets.h"		// Interface declarations
-#include "otherfunctions.h"	// Needed for nstrdup
+#include "StringFunctions.h"	// Needed for nstrdup
 #include "CMemFile.h"		// Needed for CMemFile
 #include "otherstructs.h"	// Needed for Header_Struct
 #include "types.h"		// Needed for wxFileSize_t

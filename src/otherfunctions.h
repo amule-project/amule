@@ -24,38 +24,11 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
-#include <wx/strconv.h>
 
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 
 class CAICHHash;
-
-/*
- * Please, DO NOT store pointers returned by unicode2char(), because they 
- * get free'ed as soon as the return value of cWX2MB gets out of scope.
- * If you need to store a pointer, use unicode2charbuf() instead, which has
- * a return type of wxCharBuffer, and then cast it to a char pointer, e.g.:
- * 
- * const wxCharBuffer buf = unicode2charbuf(aWxString);
- * const char *p = (const char *)buf;
- * 
- * --- Now you can freely use p                              ---
- * --- don't worry about memory allocation, memory will be   ---
- * --- free'ed when buf gets out of scope, i.e., upon return ---
- * 
- */
-static wxCSConv aMuleConv(wxT("iso8859-1"));
-#if wxUSE_UNICODE
-	inline const char *unicode2char(wxString x) { return ((const char *) aMuleConv.cWX2MB(x));};
-	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
-	inline const wxWCharBuffer char2unicode(const char *x) { return aMuleConv.cMB2WX(x); };
-#else
-	inline const char *unicode2char(wxString x) { return ((const char *) x); };
-	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char *)x; };
-	inline const wxCharBuffer char2unicode(const char *x) { return x; };
-#endif
-#define aMuleConvToUTF8(x) (const char*) wxConvUTF8.cWC2MB((wxString(x)).wc_str(aMuleConv))
 
 /**
  * Helper function.
@@ -80,12 +53,6 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 		return  0;
 	}
 }
-
-// This stupid function break minGW 3.3.1, 3.3.3, and 3.4 and it is used
-// Only 1 time ! Removing it !!!
-/*inline void ZeroMemory (void* Ptr, size_t Size) {
-	memset (Ptr,0,Size);
-}*/
 
 
 /**
@@ -183,38 +150,6 @@ bool IsEmptyFile(const wxString& filename);
 int GetMaxConnections();
 // Returns the name assosiated with a category value.
 wxString GetCatTitle(int catid);
-// Checks an ip to see if it is valid, depending on current preferences.
-inline bool IsGoodIP(uint32 nIP)
-{
-	// always filter following IP's
-	// -------------------------------------------
-	//	 0.0.0.0
-	// 127.*.*.*						localhost
-
-	if (nIP==0 || (uint8)nIP==127)
-		return false;
-
-	// filter LAN IP's
-	// -------------------------------------------
-	//	0.*
-	//	10.0.0.0 - 10.255.255.255		class A
-	//	172.16.0.0 - 172.31.255.255		class B
-	//	192.168.0.0 - 192.168.255.255	class C
-
-	uint8 nFirst = (uint8)nIP;
-	uint8 nSecond = (uint8)(nIP >> 8);
-
-	if (nFirst==192 && nSecond==168) // check this 1st, because those LANs IPs are mostly spreaded
-		return false;
-
-	if (nFirst==172 && nSecond>=16 && nSecond<=31)
-		return false;
-
-	if (nFirst==0 || nFirst==10)
-		return false;
-
-	return true;
-}
 
 // Tests if a ID is low (behind firewall/router/...)
 #define HIGHEST_LOWID_HYBRID	16777216
@@ -225,34 +160,6 @@ inline bool IsLowIDHybrid(uint32 id){
 inline bool IsLowIDED2K(uint32 id){
 	return (id < HIGHEST_LOWID_ED2K); //Need to verify what the highest LowID can be returned by the server.
 }
-
-
-// Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
-wxString URLEncode(wxString sIn);
-// Replaces "&" with "&&" in 'in' for use with text-labels
-inline wxString MakeStringEscaped(wxString in) {
-	in.Replace(wxT("&"),wxT("&&"));
-	return in;
-}
-inline wxString MakeFoldername(wxString path) {
-	/*
-	if ( !path.IsEmpty() && ( path.Right(1) == wxT('/' )) ) {
-		path.RemoveLast();
-	}
-	*/
-	return path;
-}
-
-
-/**
- * Truncates a filename to the specified length.
- *
- * @param filename The original filename.
- * @param length The max length of the resulting filename.
- * @param isFilePath If true, then the path will be truncated rather than the filename if possible.
- * @return The truncated filename.
- */
-wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
 
 
 /* Other */
@@ -283,32 +190,6 @@ const uint8 PMT_DEFAULTOLD=1;
 const uint8 PMT_SPLITTED=2;
 const uint8 PMT_NEWOLD=3;
 
-
-// Duplicates a string
-inline char* nstrdup(const char* src)
-{
-	int len = (src ? strlen(src) : 0) + 1;
-	char *res = new char[len];
-	if ( src ) strcpy(res, src);
-	res[len-1] = 0;
-	return res;
-}
-
-
-// Replacements for atoi and atol that removes the need for converting
-// a string to normal chars with unicode2char. The value returned is the
-// value represented in the string or 0 if the conversion failed.
-inline long StrToLong( const wxString& str ) {
-	long value = 0;
-	str.ToLong( &value );
-	return value;
-}
-
-inline unsigned long StrToULong( const wxString& str ) {
-	unsigned long value = 0;
-	str.ToULong( &value );
-	return value;
-}
 
 // md4cmp -- replacement for memcmp(hash1,hash2,16)
 // Like 'memcmp' this function returns 0, if hash1==hash2, and !0, if hash1!=hash2.

@@ -21,6 +21,7 @@
 //
 
 #include "AICHSyncThread.h"
+#include "StringFunctions.h"	// Needed for unicode2char
 #include "SHAHashSet.h"
 #include "SafeFile.h"
 #include "KnownFile.h"
@@ -248,4 +249,3 @@ void* CAICHSyncThread::Entry()
 
 	return 0;
 }
-

@@ -484,7 +484,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 		if (pos == 1) {
 			wxString strPriority = strLine.Left(pos);
 			try {
-				priority = atoi(unicode2char(strPriority));
+				priority = StrToLong(strPriority);
 				if ((priority < 0) || (priority > 2)) {
 					priority = SRV_PR_HIGH;
 				}
@@ -504,7 +504,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 		}
 
 		// create server object and add it to the list
-		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), strHost);
+		CServer* nsrv = new CServer(StrToULong(strPort), strHost);
 		nsrv->SetListName(strName);
 
 		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
@@ -520,7 +520,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 		if (!theApp.AddServer(nsrv))	{
 			delete nsrv;
-			CServer* srvexisting = GetServerByAddress(strHost, atoi(unicode2char(strPort)));
+			CServer* srvexisting = GetServerByAddress(strHost, StrToULong(strPort));
 			if (srvexisting) {
 				srvexisting->SetListName(strName);
 				srvexisting->SetIsStaticMember(true);

@@ -21,9 +21,8 @@
 
 #include <zlib.h>		// Needed for inflateEnd
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/object.h>		// Needed by wx/sckaddr.h
-#include "otherfunctions.h"	// Needed for nstrdup
 
+#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -42,7 +41,6 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
@@ -1251,8 +1249,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	} else {
 		amuleIPV4Address tmp;
-		//tmp.Hostname(GetIP());
-		tmp.Hostname(GetFullIP());
+		tmp.Hostname(GetIP());
 		tmp.Service(GetUserPort());
 		m_socket->Connect(tmp,FALSE);
 		if (!SendHelloPacket()) {

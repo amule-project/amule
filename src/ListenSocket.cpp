@@ -1990,7 +1990,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 			byConnected = ES_DISCONNECTED;
 
 			amuleIPV4Address tmp;
-			tmp.Hostname(m_client->GetFullIP());
+			tmp.Hostname(m_client->GetIP());
 			tmp.Service(m_client->GetUserPort());
 		
 			Connect(tmp,FALSE);			

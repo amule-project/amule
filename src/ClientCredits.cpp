@@ -35,7 +35,9 @@
 #include "ClientCredits.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
 #include "SafeFile.h"		// Needed for CSafeFile
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "StringFunctions.h"	// Needed for unicode2char
+#include "otherfunctions.h" 	// Needed for md4cpy
+
 #include "sockets.h"
 #include "CFile.h"
 
