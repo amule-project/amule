@@ -26,19 +26,8 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CString.h"	// Needed for CString
-#include "resource.h"           // Needed by strings.en
-#include "strings.en"
 #include "amule.h"		// Needed for theApp
 
-CString GetResString(UINT uStringID) {
-  //return GetResString(uStringID,theApp.glob_prefs->GetLanguageID());
-  for(unsigned int i = 0; i < itemsof(_resStrings); ++i) {
-    if(_resStrings[i].id==uStringID) {
-      return CString(wxGetTranslation(_resStrings[i].resstr));
-    }
-  }
-  return "This String is Neat";
-}
 
 // Base chars for encode an decode functions
 static byte base16Chars[17] = "0123456789ABCDEF";

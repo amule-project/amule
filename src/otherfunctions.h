@@ -61,8 +61,6 @@ CString CastItoIShort(uint64 number);
 CString CastSecondsToHM(sint32 seconds); //<<--9/21/02
 CString LeadingZero(uint32 units);
 void ShellOpenFile(CString name); //<<--9/21/02
-CString GetResString(unsigned int uStringID);//<<--10/01/02
-CString GetResString(unsigned int uStringID, WORD languageID);
 void MakeFoldername(char* path);
 /* Creteil BEGIN */
 CString DbgGetFileInfo(const unsigned char* hash);

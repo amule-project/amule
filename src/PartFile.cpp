@@ -649,9 +649,9 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	} catch (CInvalidPacket e) {
 
 		if (metFile.Eof()) {
-			theApp.amuledlg->AddLogLine(true, GetResString(IDS_ERR_METCORRUPT), m_partmetfilename, GetFileName().GetData());
+			theApp.amuledlg->AddLogLine(true, _("Error: %s (%s) is corrupt, unable to load file"), m_partmetfilename, GetFileName().GetData());
 		} else {
-			theApp.amuledlg->AddLogLine(true, GetResString(IDS_ERR_FILEERROR), m_partmetfilename, GetFileName().GetData(), buffer);
+			theApp.amuledlg->AddLogLine(true, _("Unexpected file error while reading server.met: %s, unable to load serverlist"), m_partmetfilename, GetFileName().GetData(), buffer);
 		}
 		printf(" - Catched an error - ");
 		if (metFile.IsOpened()) {
