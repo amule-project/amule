@@ -38,6 +38,7 @@
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/intl.h>		// Needed for _
+#include <wx/filename.h>	// Needed for wxFileName
 
 #include "ServerList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CListenSocket

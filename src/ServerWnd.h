@@ -23,9 +23,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/html/htmlwin.h>	// Needed for wxHtmlWindow
 #include <wx/textctrl.h>	// Needed for wxTextCtrl
-#include <wx/statbmp.h>		// Needed for wxStaticBitmap
 
 #include "resource.h"		// Needed for IDD_SERVER
 
@@ -33,7 +31,6 @@ class CServerListCtrl;
 
 class CServerWnd : public wxPanel //CResizableDialog
 {
-  //DECLARE_DYNAMIC(CServerWnd)
   DECLARE_DYNAMIC_CLASS(CServerWnd)
     
     CServerWnd() {};
@@ -45,28 +42,20 @@ public:
 	void UpdateServerMetFromURL(wxString strURL);
 	void UpdateMyInfo();
 
-	//wxSizer* Create(wxWindow* parent);
-// Dialog Data
 	enum { IDD = IDD_SERVER };
 	CServerListCtrl* serverlistctrl;
 protected:
-	//virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//virtual bool OnInitDialog();
-	//DECLARE_MESSAGE_MAP()
 	void OnSashPositionChanged(wxSplitterEvent& evt);
+	
 public:
-	//CHyperTextCtrl servermsgbox;
-	wxHtmlWindow servermsgbox;
+	
 	wxTextCtrl logbox;
 	void OnBnClickedAddserver(wxCommandEvent& evt);
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
-	//afx_msg void OnBnClickedAddserver();
-	//afx_msg void OnBnClickedUpdateservermetfromurl();
 	void OnBnClickedResetLog(wxCommandEvent& evt);
 	void OnBnClickedResetServerLog(wxCommandEvent& evt);
+	
 private:
-	wxStaticBitmap m_ctrlNewServerFrm;
-	wxStaticBitmap m_ctrlUpdateServerFrm;
 
 	DECLARE_EVENT_TABLE()
 };

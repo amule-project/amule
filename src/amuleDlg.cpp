@@ -25,6 +25,7 @@
 #include <wx/utils.h>
 #include <wx/file.h>
 #include <wx/datetime.h>
+#include <wx/config.h>
 
 #ifndef __SYSTRAY_DISABLED__
 #include "pixmaps/mule_TrayIcon.ico.xpm"

@@ -22,7 +22,6 @@
 #endif
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
-#include <wx/html/htmlwin.h>	// Needed for wxHtmlWindow
 
 #include "ChatWnd.h"		// Interface declarations.
 #include "amule.h"			// Needed for theApp
