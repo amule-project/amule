@@ -187,6 +187,12 @@ CamuleApp::CamuleApp()
 	stat_transferStarttime = 0;
 	stat_serverConnectTime = 0;
 	sTransferDelay = 0.0;
+
+	#ifndef AMULE_DAEMON
+	webserver_pid = 0;
+	#else
+	webserver_thread = NULL;
+	#endif
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
@@ -199,8 +205,6 @@ CamuleApp::~CamuleApp()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown: removing local data.\n");
 	}
-	webserver_pid = 0;
-	
 	
 	// Delete associated objects
 	if (serverlist) {
@@ -275,6 +279,24 @@ CamuleApp::~CamuleApp()
 		delete localserver;
 		localserver = NULL;
 	}
+	
+	// Kill amuleweb if running
+	#ifndef AMULE_DAEMON
+		if (webserver_pid) {
+			printf("Killing amuleweb instance...\n");			
+			wxKillError rc;
+			wxKill(webserver_pid,wxSIGKILL, &rc);
+			printf("Killed!\n");
+		}
+	#else
+		if (webserver_thread) {
+			printf("Killing amuleweb instance...\n");			
+			// We can't use delete...
+			webserver_thread->Kill();
+			printf("Killed!\n");			
+		}
+	#endif
+	
 
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
@@ -306,15 +328,6 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
-	
-	// Kill amuleweb if running
-	if (webserver_pid) {
-		wxKillError rc;
-		printf("Killing amuleweb instance...\n");
-		wxKill(webserver_pid,wxSIGTERM, &rc);
-		printf("Killed!\n");
-	}
-	
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
@@ -330,7 +343,9 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
+#ifndef AMULE_DAEMON
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+#endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.Parse();
@@ -341,9 +356,7 @@ bool CamuleApp::OnInit()
 	wxHandleFatalExceptions(true);
 #endif
 	}
-#ifndef AMULE_DAEMON
 
-#endif
 	if ( cmdline.Found(wxT("log-stdout")) ) {
 		printf("Logging to stdout enabled\n");
 		enable_stdout_log = true;
@@ -352,7 +365,11 @@ bool CamuleApp::OnInit()
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
+#ifndef AMULE_DAEMON		
 		printf("aMule %s\n", unicode2char(GetMuleVersion()));
+#else
+		printf("aMule Daemon %s\n", unicode2char(GetMuleVersion()));
+#endif
 		return false;
 	}
 
@@ -363,15 +380,12 @@ bool CamuleApp::OnInit()
 
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
-#ifndef AMULE_DAEMON		
-
-#else
-		printf("aMule Daemon %s\n", unicode2char(GetMuleVersion()));
-#endif
 	wxString geom_string;
+#ifndef AMULE_DAEMON		
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 		geometry_enabled = true;
 	}
+#endif
 
 	// see if there is another instance running
 	wxString server = ConfigDir + wxFileName::GetPathSeparator() + wxT("muleconn");
@@ -379,7 +393,7 @@ bool CamuleApp::OnInit()
 	wxString IPC = wxT("aMule IPC TESTRUN");
 	wxClient* client = new wxClient();
 	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
-
+	
 	// If the connection failed, conn is NULL
 	if ( conn ) {
 		// An instance is already running!
@@ -387,7 +401,6 @@ bool CamuleApp::OnInit()
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		FILE *ed2kfile;
 		char filename[1024];
-
 		/* Link seemed ok, add it to file. */
 		sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
 		ed2kfile = fopen(filename,"a");
@@ -661,6 +674,21 @@ bool CamuleApp::OnInit()
 		AddLogLineM(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
 	}
+	// Run webserver?
+	if (thePrefs::GetWSIsEnabled()) {
+	#ifndef AMULE_DAEMON
+		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
+		if (!webserver_pid) {
+			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
+		}
+	#else
+		// wxBase has no async wxExecute
+		webserver_thread = new CamuleWebserverThread();
+		webserver_thread->Create();
+		webserver_thread->Run();
+	#endif
+	}
+ 		
 	
 	return true;
 }
@@ -675,19 +703,10 @@ void CamuleApp::UpdateReceivedBytes(int32 bytesToAdd)
 
 // Updates the number of received bytes and marks when transfers first began
 void CamuleApp::UpdateSentBytes(int32 bytesToAdd)
-	// Run webserver?
-	if (thePrefs::GetWSIsEnabled()) {
-		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
-		if (!webserver_pid) {
-			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
-		}
-	}
- 		
 {
 	SetTimeOnTransfer();
 	stat_sessionSentBytes += bytesToAdd;
 }
-
 
 // Saves the time where transfers were started and calucated the time before
 void CamuleApp::SetTimeOnTransfer()

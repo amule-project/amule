@@ -148,6 +148,15 @@ class wxMuleInternalEvent : public wxEvent {
 #define AMULE_APP_BASE wxApp
 #endif
 
+#ifdef AMULE_DAEMON
+// Helper class, there only if we can't use wxExecute with async flag.
+class CamuleWebserverThread : public wxThread {
+		
+	virtual ExitCode 	Entry();
+	
+};
+#endif
+
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
@@ -156,6 +165,7 @@ public:
 	
 	virtual bool	OnInit();
 	int		OnExit();
+
 	void		OnFatalException();
 
 	// derived classes may override those
@@ -217,7 +227,12 @@ public:
 	uint64		stat_serverConnectTime;
 	uint32		stat_filteredclients;
 
-
+	#ifndef AMULE_DAEMON
+		long webserver_pid;
+	#else
+		CamuleWebserverThread* webserver_thread;
+	#endif
+	
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
@@ -328,8 +343,7 @@ public:
 	void ShutDown();
 	virtual void NotifyEvent(GUIEvent event);
 	wxString GetLog(bool reset = false);
-	long webserver_pid;
-	
+
 	wxString GetServerLog(bool reset = false);
 	void AddServerMessageLine(wxString &msg);
 
