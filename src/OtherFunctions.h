@@ -499,20 +499,62 @@ void InitLocale(wxLocale& locale, int language);
 /**
  * Converts a string locale definition to a wxLANGUAGE id.
  */
-inline int StrLang2wx(const wxString& lang)
+inline int StrLang2wx(const wxString& language)
 {
+	// get rid of possible encoding and modifier
+	wxString lang(language.BeforeFirst('.').BeforeFirst('@'));
+
 	if (!lang.IsEmpty()) {
-		const wxLanguageInfo *lng =
 #if wxCHECK_VERSION(2,5,4)
-			wxLocale::FindLanguageInfo(lang);
-#else
-			NULL;
-#endif
+		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
 		if (lng) {
 			return lng->Language;
 		} else {
 			return wxLANGUAGE_DEFAULT;
 		}
+#else
+/*----------------------------------------------------------------------------*\
+ * Replacement implementation for wxLocale::FindLanguageInfo().
+ * Provides the same functionality, but a little slower, and does not have
+ * support for custom languages.
+\*----------------------------------------------------------------------------*/
+		int RetVal = wxLANGUAGE_DEFAULT;
+
+		// Languages are an enum from wxLANGUAGE_DEFAULT to wxLANGUAGE_USER_DEFINED
+		for ( int i = wxLANGUAGE_DEFAULT; i < wxLANGUAGE_USER_DEFINED; i++ ) {
+
+			if ((i == wxLANGUAGE_DEFAULT) || (i == wxLANGUAGE_UNKNOWN)) {
+				continue;
+			}
+
+			const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
+
+			if (!info) {
+				continue;
+			}
+
+			if ( wxStricmp(lang, info->CanonicalName) == 0 || wxStricmp(lang, info->Description) == 0 ) {
+				// exact match, stop searching
+				RetVal = i;
+				break;
+			}
+
+			if ( wxStricmp(lang, info->CanonicalName.BeforeFirst(wxT('_'))) == 0 ) {
+				// a match -- but maybe we'll find an exact one later, so continue
+				// looking
+				//
+				// OTOH, maybe we had already found a language match and in this
+				// case don't overwrite it becauce the entry for the default
+				// country always appears first in ms_languagesDB
+				if ( RetVal == wxLANGUAGE_DEFAULT ) {
+					RetVal = i;
+				}
+			}
+		}
+
+		return RetVal;
+//------------------------------------------------------------------------------
+#endif
 	} else {
 		return wxLANGUAGE_DEFAULT;
 	}
