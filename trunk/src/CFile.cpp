@@ -598,10 +598,16 @@ CDirIterator::CDirIterator(wxString dir) {
 }
 
 CDirIterator::~CDirIterator() {	
-	closedir (DirPtr);
+	if (DirPtr) {
+		closedir (DirPtr);
+	}
 }
 
 wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask) {
+	if (!DirPtr) {
+		wxASSERT(DirPtr);
+		return wxEmptyString;
+	}
 	seekdir(DirPtr, 0);// 2 if we want to skip . and ..
 	FileMask = search_mask;
 	type = search_type;
@@ -609,9 +615,14 @@ wxString CDirIterator::FindFirstFile(FileType search_type, wxString search_mask)
 }
 
 wxString  CDirIterator::FindNextFile() {
+
+	if (!DirPtr) {
+		wxASSERT(DirPtr);
+		return wxEmptyString;
+	}
 	struct dirent *dp;
 	dp = readdir(DirPtr);
-
+	
 	bool found = false;
 	
 	wxString FoundName;
