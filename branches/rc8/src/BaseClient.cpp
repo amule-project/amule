@@ -44,7 +44,7 @@
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 
-#define DEBUG_LOCAL_CLIENT_PROTOCOL
+//#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
 
 // some client testing variables
@@ -79,6 +79,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		}
 	#else
  	if(!HasLowID()) {
+		#warning Kry WHY OH WHY!
 		m_nConnectIP = ENDIAN_SWAP_32(in_userid);
 	}
 	#endif
@@ -353,11 +354,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
 		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
-			CTag temptag(data);
+			CTag temptag(data, true);
 			switch(temptag.tag.specialtag){
 				case CT_NAME:
-					if ( temptag.tag.stringvalue ) {
-						m_Username = char2unicode(temptag.tag.stringvalue);
+					if ( !temptag.tag.stringvalue.IsEmpty() ) {
+						m_Username = temptag.tag.stringvalue;
 					} else {
 						m_Username.Clear();
 					}
@@ -368,7 +369,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					break;
 				case ET_MOD_VERSION:
 					if (temptag.tag.type == 2) {
-						m_strModVersion = char2unicode(temptag.tag.stringvalue);
+						m_strModVersion = temptag.tag.stringvalue;
 					} else if (temptag.tag.type == 3) {
 						m_strModVersion.Printf( wxT("ModID=%u"), temptag.tag.intvalue);
 					} else {
@@ -584,6 +585,7 @@ bool CUpDownClient::SendHelloPacket() {
 	// if IP is filtered, dont greet him but disconnect...
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
+	#warning Kry - why is IPAddress returning wrong endianess?
 	if ( theApp.ipfilter->IsFiltered(ENDIAN_SWAP_32(StringIPtoUint32(address.IPAddress())))) {
 		AddDebugLogLineM(true, wxT("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
@@ -735,7 +737,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 
 			// OS Info supporting clients sending a recycled Mule info packet
 			for (uint32 i = 0;i < tagcount; i++){
-				CTag temptag(data);
+				CTag temptag(data, true);
 				switch(temptag.tag.specialtag){
 					case ET_OS_INFO:
 						// Special tag, only supporting clients (aMule/Hydranode)
@@ -746,7 +748,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						wxASSERT(temptag.tag.type == 2); // tag must be a string
 					
 				
-						m_sClientOSInfo = char2unicode(temptag.tag.stringvalue);
+						m_sClientOSInfo = temptag.tag.stringvalue;
 	
 						break;	
 					
@@ -774,7 +776,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 			}
 			
 			for (uint32 i = 0;i < tagcount; i++){
-				CTag temptag(data);
+				CTag temptag(data, false);
 				switch(temptag.tag.specialtag){
 					case ET_COMPRESSION:
 						// Bits 31- 8: 0 - reserved
@@ -821,7 +823,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						break;
 					case ET_MOD_VERSION:
 						if (temptag.tag.type == 2) {
-							m_strModVersion = char2unicode(temptag.tag.stringvalue);
+							m_strModVersion = temptag.tag.stringvalue;
 						} else if (temptag.tag.type == 3) {
 							m_strModVersion.Printf(wxT("ModID=%u"), temptag.tag.intvalue);
 						} else {
@@ -929,8 +931,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	#endif
 
 
-	CTag tagname(CT_NAME,unicode2char(thePrefs::GetUserNick()));
-	tagname.WriteTagToFile(data);
+	CTag tagname(CT_NAME,thePrefs::GetUserNick());
+	tagname.WriteTagToFile(data, utf8strRaw);
 
 	CTag tagversion(CT_VERSION,EDONKEYVERSION);
 	tagversion.WriteTagToFile(data);
@@ -970,7 +972,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	const UINT uMultiPacket			= 1;
 	const UINT uSupportPreview		= 0; // No network preview at all.
 	const UINT uPeerCache			= 0; // No peercache for aMule, baby
-	const UINT uUnicodeSupport		= 0; // No unicode support yet.
+	const UINT uUnicodeSupport		= 1; // No unicode support yet.
 	const UINT nAICHVer				= 1; // AICH is ENABLED right now.
 
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1,
@@ -1497,7 +1499,7 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientVerString = wxT("lphant");
 				break;
 			case SO_EMULEPLUS:
-				m_clientSoft = SO_EMULE;
+				m_clientSoft = SO_EMULEPLUS;
 				m_clientVerString = wxT("eMule+");
 				break;
 			case SO_HYDRANODE:
@@ -2122,6 +2124,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 	m_dwUserIP = val;
 
+	#warning Kry - WHY OH WHY!!!!!!!
 	m_nConnectIP = ENDIAN_SWAP_32(val);
 }
 
@@ -2133,4 +2136,13 @@ void CUpDownClient::SetUserHash(const CMD4Hash& userhash)
 	m_UserHash = userhash;
 
 	ValidateHash();
+}
+
+EUtf8Str CUpDownClient::GetUnicodeSupport() const
+{
+#ifdef _UNICODE
+	if (m_bUnicodeSupport)
+		return utf8strRaw;
+#endif
+	return utf8strNone;
 }
