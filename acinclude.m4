@@ -177,6 +177,166 @@ AC_SUBST(ZLIB_LIBS)
 ])
 
 dnl ---------------------------------------------------------------------------
+dnl AM_OPTIONS_LIBPNG_CONFIG
+dnl
+dnl adds support for --libpng-prefix and --libpng-config
+dnl command line options
+dnl ---------------------------------------------------------------------------
+
+AC_DEFUN([AM_OPTIONS_LIBPNGCONFIG],
+[
+   AC_ARG_WITH(libpng-prefix, [  --with-libpng-prefix=PREFIX   Prefix where libpng is installed],
+               libpng_config_prefix="$withval", libpng_config_prefix="")
+   AC_ARG_WITH(libpng-exec-prefix,[  --with-libpng-exec-prefix=PREFIX Exec prefix where libpng  is installed],
+               libpng_config_exec_prefix="$withval", libpng_config_exec_prefix="")
+   AC_ARG_WITH(libpng-config,[  --with-libpng-config=CONFIG   libpng-config script to use],
+               libpng_config_name="$withval", libpng_config_name="")
+])
+
+dnl ---------------------------------------------------------------------------
+dnl AM_PATH_LIBPNGCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl Test for libpng, and define LIBPNG*FLAGS, LIBPNG_LIBS and LIBPNG_CONFIG_NAME
+dnl environment variable to override the default name of the libpng-config script
+dnl to use. Set LIBPNG_CONFIG_PATH to specify the full path to libpng-config -
+dnl in this case the macro won't even waste time on tests for its existence.
+dnl ---------------------------------------------------------------------------
+
+dnl
+dnl Get the cflags and libraries from the libpng-config script
+dnl
+
+AC_DEFUN([AM_PATH_LIBPNGCONFIG],
+[
+  dnl do we have libpng-config name: it can be libpng-config or gd-config or ...
+  if test x${LIBPNG_CONFIG_NAME+set} != xset ; then
+     LIBPNG_CONFIG_NAME=libpng-config
+  fi
+  if test "x$libpng_config_name" != x ; then
+     libpng_CONFIG_NAME="$libpng_config_name"
+  fi
+
+  dnl deal with optional prefixes
+  if test x$libpng_config_exec_prefix != x ; then
+     libpng_config_args="$libpng_config_args --exec-prefix=$libpng_config_exec_prefix"
+     LIBPNG_LOOKUP_PATH="$libpng_config_exec_prefix/bin"
+  fi
+  if test x$libpng_config_prefix != x ; then
+     libpng_config_args="$libpng_config_args --prefix=$libpng_config_prefix"
+     LIBPNG_LOOKUP_PATH="$LIBPNG_LOOKUP_PATH:$libpng_config_prefix/bin"
+  fi
+  
+  dnl don't search the PATH if LIBPNG_CONFIG_NAME is absolute filename
+  if test -x "$LIBPNG_CONFIG_NAME" ; then
+     AC_MSG_CHECKING(for libpng-config)
+     LIBPNG_CONFIG_PATH="$LIBPNG_CONFIG_NAME"
+     AC_MSG_RESULT($LIBPNG_CONFIG_PATH)
+  else
+     AC_PATH_PROG(LIBPNG_CONFIG_PATH, $LIBPNG_CONFIG_NAME, no, "$LIBPNG_LOOKUP_PATH:$PATH")
+  fi
+
+  if test "$LIBPNG_CONFIG_PATH" != "no" ; then
+    LIBPNG_VERSION=""
+    no_libpng=""
+
+    min_libpng_version=ifelse([$1], ,1.2.0,$1)
+    AC_MSG_CHECKING(for libpng version >= $min_libpng_version)
+
+    LIBPNG_CONFIG_WITH_ARGS="$LIBPNG_CONFIG_PATH $libpng_config_args"
+
+    LIBPNG_VERSION=`$LIBPNG_CONFIG_WITH_ARGS --version`
+    libpng_config_major_version=`echo $LIBPNG_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    libpng_config_minor_version=`echo $LIBPNG_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    libpng_config_micro_version=`echo $LIBPNG_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+
+    libpng_requested_major_version=`echo $min_libpng_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    libpng_requested_minor_version=`echo $min_libpng_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    libpng_requested_micro_version=`echo $min_libpng_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+
+    libpng_ver_ok=""
+    if test $libpng_config_major_version -gt $libpng_requested_major_version; then
+      libpng_ver_ok=yes
+    else
+      if test $libpng_config_major_version -eq $libpng_requested_major_version; then
+         if test $libpng_config_minor_version -gt $libpng_requested_minor_version; then
+            libpng_ver_ok=yes
+         else
+            if test $libpng_config_minor_version -eq $libpng_requested_minor_version; then
+               if test $libpng_config_micro_version -ge $libpng_requested_micro_version; then
+                  libpng_ver_ok=yes
+               fi
+            fi
+         fi
+      fi
+    fi
+
+    if test "x$libpng_ver_ok" = x ; then
+      no_libpng=yes
+    else
+      LIBPNG_LIBS=`$LIBPNG_CONFIG_WITH_ARGS --libs`
+
+      if test "x$libpng_has_cppflags" = x ; then
+         dnl no choice but to define all flags like CFLAGS
+         LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
+         LIBPNG_CPPFLAGS=$LIBPNG_CFLAGS
+         LIBPNG_CXXFLAGS=$LIBPNG_CFLAGS
+	 LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags`
+         LIBPNG_CFLAGS_ONLY=$LIBPNG_CFLAGS
+         LIBPNG_CXXFLAGS_ONLY=$LIBPNG_CFLAGS
+      else
+         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS -- ??
+         LIBPNG_CPPFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
+         LIBPNG_CXXFLAGS=`$Libpng_CONFIG_WITH_ARGS --cflags`
+         LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
+	 LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags`
+
+         LIBPNG_CFLAGS_ONLY=`echo $LIBPNG_CFLAGS | sed "s@^$LIBPNG_CPPFLAGS *@@"`
+         LIBPNG_CXXFLAGS_ONLY=`echo $LIBPNG_CXXFLAGS | sed "s@^$LIBPNG_CFLAGS *@@"`
+      fi
+    fi
+
+    if test "x$no_libpng" = x ; then
+       AC_MSG_RESULT(yes (version $LIBPNG_VERSION))
+       AC_CHECK_HEADER([gd.h],[$2],[$3])
+    else
+       if test "x$LIBPNG_VERSION" = x; then
+	  dnl no libpng-config at all
+	  AC_MSG_RESULT(no)
+       else
+	  AC_MSG_RESULT(no (version $LIBPNG_VERSION is not new enough))
+       fi
+
+       LIBPNG_CFLAGS=""
+       LIBPNG_CPPFLAGS=""
+       LIBPNG_CXXFLAGS=""
+       LIBPNG_LDFLAGS=""
+       LIBPNG_LIBS=""
+       LIBPNG_LIBS_STATIC=""
+       ifelse([$3], , :, [$3])
+    fi
+  fi
+
+
+  AC_SUBST(LIBPNG_CPPFLAGS)
+  AC_SUBST(LIBPNG_CFLAGS)
+  AC_SUBST(LIBPNG_CXXFLAGS)
+  AC_SUBST(LIBPNG_LDFLAGS)
+  AC_SUBST(LIBPNG_CFLAGS_ONLY)
+  AC_SUBST(LIBPNG_CXXFLAGS_ONLY)
+  AC_SUBST(LIBPNG_LIBS)
+  AC_SUBST(LIBPNG_LIBS_STATIC)
+  AC_SUBST(LIBPNG_VERSION)
+])
+
+dnl END_OF_PNG
+
+dnl ---------------------------------------------------------------------------
 dnl AM_OPTIONS_GDLIBCONFIG
 dnl
 dnl adds support for --gdlib-prefix and --gdlib-config
