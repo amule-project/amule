@@ -446,29 +446,31 @@ wxSizer *MyInfoLog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRU
 #define IDC_SPIN_PERM_DO 10322
 #define IDC_IPFONOFF 10323
 #define IDC_IPFRELOAD 10324
-#define ID_SPINCTRL 10325
-#define IDC_SECIDENT 10326
+#define IDC_AUTOIPFILTER 10325
+#define ID_IPFILTERURL 10326
+#define ID_SPINCTRL 10327
+#define IDC_SECIDENT 10328
 wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-#define IDC_ONLINESIG 10327
-#define IDC_OSDIR 10328
-#define IDC_SELOSDIR 10329
+#define IDC_ONLINESIG 10329
+#define IDC_OSDIR 10330
+#define IDC_SELOSDIR 10331
 wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-#define ID_BUTTONCONNECT 10330
-#define ID_BUTTONSERVERS 10331
-#define ID_BUTTONKAD 10332
-#define ID_BUTTONSEARCH 10333
-#define ID_BUTTONTRANSFER 10334
-#define ID_BUTTONSHARED 10335
-#define ID_BUTTONMESSAGES 10336
-#define ID_BUTTONSTATISTICS 10337
-#define ID_BUTTONNEWPREFERENCES 10338
-#define ID_ABOUT 10339
+#define ID_BUTTONCONNECT 10332
+#define ID_BUTTONSERVERS 10333
+#define ID_BUTTONKAD 10334
+#define ID_BUTTONSEARCH 10335
+#define ID_BUTTONTRANSFER 10336
+#define ID_BUTTONSHARED 10337
+#define ID_BUTTONMESSAGES 10338
+#define ID_BUTTONSTATISTICS 10339
+#define ID_BUTTONNEWPREFERENCES 10340
+#define ID_ABOUT 10341
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
