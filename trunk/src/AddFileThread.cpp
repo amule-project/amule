@@ -126,7 +126,10 @@ wxThread::ExitCode CAddFileThread::Entry()
 				m_lockWaitingForHashList.Unlock();
 				wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
 				wxPostEvent(theApp.amuledlg,evt);
-			  } 
+			  } else {
+				wxYield();
+				wxSleep(1);
+			  }				  
 			  continue;	  
 		  }
 			
