@@ -113,7 +113,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					
 						sender->AddAskedCount();
 						sender->SetUDPPort(port);
-						sender->UDPFileReasked();
+						sender->SetLastUpRequest();
 
 						if (sender->GetUDPVersion() > 3) {
 							sender->ProcessExtendedInfo(&data_in, reqfile);
