@@ -506,13 +506,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), unicode2char(GetUserName()), unicode2char(GetFullIP())));
+			AddDebugLogLineM(false, _("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + _(" Banreason: Userhash changed (Found in TrackedClientsList)"));
 			Ban();
 		}
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed"), unicode2char(GetUserName()), unicode2char(GetFullIP())));
+		AddDebugLogLineM(false, _("Client: ") + GetUserName() + wxT("(") + GetFullIP() + wxT(")") + _(" Banreason: Userhash changed"));
 		Ban();
 	}
 
@@ -1725,24 +1725,20 @@ void CUpDownClient::ResetFileStatusInfo()
 wxString CUpDownClient::GetUploadFileInfo()
 {
 	if(this == NULL) return wxEmptyString;
-	wxString sRet;
-
+	
 	// build info text and display it
-	sRet = _("NickName: ");
+	wxString sRet = _("NickName: ");
 	sRet += GetUserName() + wxString::Format(wxT(" ID: %u "),GetUserID());
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
-		wxString stat;
-		stat.Printf(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
-		m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests(), unicode2char(CastItoXBytes(m_reqfile->statistic.GetTransfered())),
-		m_reqfile->statistic.GetAllTimeAccepts(),
-		m_reqfile->statistic.GetAllTimeRequests(), unicode2char(CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered())));
-		sRet += stat;
+		sRet += wxString::Format(_("Filestats for this session: Accepted %d of %d requests, "),m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests());
+		sRet += CastItoXBytes(m_reqfile->statistic.GetTransfered()) + _(" transferred\n");
+		sRet += wxString::Format(_("Filestats for all sessions: Accepted %d of %d requests, "),m_reqfile->statistic.GetAllTimeAccepts(), m_reqfile->statistic.GetAllTimeRequests());
+		sRet += CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered()) + _(" transferred\n");		
 	} else {
 		sRet += _("Requested unknown file");
 	}
 	return sRet;
-	return wxEmptyString;
 }
 
 // sends a packet, if needed it will establish a connection before
