@@ -451,7 +451,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
 					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
-						AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()), unicode2char(tocheck->GetFullIP()))); 
+						AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()), unicode2char(tocheck->GetFullIP()))); 
 						tocheck->Ban();
 						return false;
 					}
