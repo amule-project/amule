@@ -50,6 +50,7 @@
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
 #include "EndianFix.h"
+#include "Logger.h"
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
@@ -191,9 +192,8 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	m_pAICHHashSet->FreeHashSet();
 	
 	CFile file(GetFilePath() +  wxFileName::GetPathSeparator() + GetFileName(),CFile::read);
-	if (!file.IsOpened()){
-// TODO
-		//theApp.QueueLogLine(false, GetResString(IDS_ERR_FILEOPEN) + _T(" - %hs"), GetFilePath(), _T(""), strerror(errno));
+	if ( !file.IsOpened() ){
+		AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): Failed to open file: ") + file.GetFilePath() );
 		return false;
 	}
 
@@ -224,14 +224,12 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	if ( m_pAICHHashSet->VerifyHashTree(true) ){
 		m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 		if (!m_pAICHHashSet->SaveHashSet()){
-// TODO
-			//theApp.QueueLogLine(true, GetResString(IDS_SAVEACFAILED));
+			AddDebugLogLineM( true, logAICHThread, wxT("Failed to save AICH Hashset!") );
 		}
 	}
 	else{
 		// now something went pretty wrong
-// TODO
-		//theApp.QueueDebugLogLine(true,_T("Failed to calculate AICH Hashset from file %s"), GetFileName());
+		AddDebugLogLineM(true, logAICHThread, wxT("Failed to calculate AICH Hashset from file ") + GetFileName() );
 	}
 	
 	file.Close();	

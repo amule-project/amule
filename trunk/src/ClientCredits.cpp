@@ -40,7 +40,7 @@
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for md4cpy
-#include "Logger.h"
+#include "Logger.h"				// Needed for Add(Debug)LogLine
 #include "ServerConnect.h" // Needed for CServerConnect
 #include "CFile.h"
 
@@ -174,7 +174,7 @@ void CClientCreditsList::LoadList()
 	CSafeFile file;
 	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
-		AddLogLineM(true, _("Failed to load creditfile"));
+		AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile"));
 		return;
 	}	
 	
@@ -185,7 +185,7 @@ void CClientCreditsList::LoadList()
 		uint8 version;
 		file.Read(&version, 1);
 		if ( version != CREDITFILE_VERSION ){
-			AddLogLineM(false, _("Creditfile is out of date and will be replaced"));
+			AddDebugLogLineM( true, logCredits, wxT("Creditfile is out of date and will be replaced") );
 			file.Close();
 			return;
 		}
@@ -209,13 +209,14 @@ void CClientCreditsList::LoadList()
 			file.Close(); // close the file before copying
 			// safe? you bet it is
 			if (!wxCopyFile(strFileName,strBakFileName)) {
-				AddLogLineM(true, _("Could not create backup file ") + strFileName);
+				AddDebugLogLineM( true, logCredits, wxT("Could not create backup file ") + strFileName );
 			}
 			// reopen file
 			if (!file.Open(strFileName, CFile::read)) {
-				AddLogLineM(true, _("Failed to load creditfile"));
+				AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile") );
 				return;
 			}
+
 			file.Seek(1);
 		}	
 	
@@ -279,23 +280,23 @@ void CClientCreditsList::LoadList()
 		theApp.NotifyEvent(event);
 		
 	} catch (wxString error) {
-		AddLogLineM(true, _("Unable to load clients.met file! ") + error);
+		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! ") + error);
 	} catch (...) {
-		AddLogLineM(true, _("Unable to load clients.met file! - Unknown Error"));
+		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! - Unknown Error"));
 	}
 
 }
 
 void CClientCreditsList::SaveList()
 {
-	AddDebugLogLineM(false, wxT("Saved Credit list"));
+	AddDebugLogLineM( false, logCredits, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	CSafeFile file;
 
 	if ( !file.Create(name, true) ) {
-		AddLogLineM(true, _("Failed to create creditfile"));
+		AddDebugLogLineM( true, logCredits, wxT("Failed to create creditfile") );
 		return;
 	}
 	
@@ -324,9 +325,10 @@ void CClientCreditsList::SaveList()
 		file.Flush();
 		file.Close();
 	} else {
-		AddLogLineM(true, _("Failed to open existing creditfile!"));
+		AddDebugLogLineM( true, logCredits, wxT("Failed to open existing creditfile!") );
 	}
 }
+
 
 CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 {
@@ -383,7 +385,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			m_pCredits->nDownloadedLo = 1;
 			m_pCredits->nUploadedHi = 0;
 			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
-			AddDebugLogLineM(false, wxT("Credits deleted due to new SecureIdent"));
+			AddDebugLogLineM( false, logCredits, wxT("Credits deleted due to new SecureIdent") );
 		}
 	}
 	IdentState = IS_IDENTIFIED;
@@ -413,7 +415,8 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 
 #ifndef CLIENT_GUI
 
-bool CClientCreditsList::CreateKeyPair(){
+bool CClientCreditsList::CreateKeyPair()
+{
 	try{
 		CryptoPP::AutoSeededRandomPool rng;
 		CryptoPP::InvertibleRSAFunction privkey;
@@ -426,11 +429,11 @@ bool CClientCreditsList::CreateKeyPair(){
 		
 		privkeysink.MessageEnd();
 
-		AddDebugLogLineM(false, wxT("Created new RSA keypair"));
+		AddDebugLogLineM( true, logCredits, wxT("Created new RSA keypair"));
 	}
 	catch(...)
 	{
-		AddDebugLogLineM(false, wxT("Failed to create new RSA keypair"));
+		AddDebugLogLineM( true, logCredits, wxT("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
 	}
@@ -438,7 +441,8 @@ bool CClientCreditsList::CreateKeyPair(){
 }
 
 
-void CClientCreditsList::InitalizeCrypting(){
+void CClientCreditsList::InitalizeCrypting()
+{
 	m_nMyPublicKeyLen = 0;
 	memset(m_abyMyPublicKey,0,80); // not really needed; better for debugging tho
 	m_pSignkey = NULL;
@@ -487,9 +491,8 @@ void CClientCreditsList::InitalizeCrypting(){
 			delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 			m_pSignkey = NULL;
 		}
-		AddLogLineM(false, wxT("IDS_CRYPT_INITFAILED\n"));
+		AddDebugLogLineM( true, logCredits, wxT("Failed to load encryption-key!") );
 	}
-	//Debug_CheckCrypting();
 }
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey){
@@ -565,7 +568,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachS
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
-						AddDebugLogLineM(false, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+						AddDebugLogLineM( false, logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 						ChallengeIP = theApp.serverconnect->GetLocalIP();
 					}
 					else
@@ -671,6 +674,7 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
 			}
 			else{	// bad boy
 				// this can also happen if the client has not identified himself yet, but will do later - so maybe he is not a bad boy :) .
+				
 				m_dwUnSecureWaitTime = ::GetTickCount();
 				m_dwWaitTimeIP = dwForIP;
 				return m_dwUnSecureWaitTime;
