@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <wx/filename.h>
+#include <wx/textfile.h>
 #include "otherfunctions.h"	// Needed for atoll
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -47,18 +48,18 @@ WX_DEFINE_OBJARRAY(ArrayOfCategory_Struct);
 CPreferences::CPreferences()
 {
 	srand((uint32)time(0)); // we need random numbers sometimes
-	
-	prefs = new Preferences_Struct;	
+
+	prefs = new Preferences_Struct;
 	memset(prefs,0,sizeof(Preferences_Struct));
 	prefsExt=new Preferences_Ext_Struct;
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
 
 	CreateUserHash();
 	md4cpy(&prefs->userhash,&userhash);
-	
+
 	// load preferences.dat or set standart values
 	CString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
-	
+
 	FILE* preffile = fopen(unicode2char(fullpath),"rb");
 
 	if (!preffile) {
@@ -75,17 +76,17 @@ CPreferences::CPreferences()
 		prefs->smartidstate=0;
 	}
 
-	PrefsUnifiedDlg::BuildItemList(prefs, theApp.ConfigDir);	
-	
+	PrefsUnifiedDlg::BuildItemList(prefs, theApp.ConfigDir);
+
 	LoadPreferences();
-	
+
 	wxTextFile sdirfile;
-	
+
 	// shared directories
 	if(sdirfile.Open(theApp.ConfigDir + wxT("shareddir.dat"))) {
 		for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
     			shareddir_list.Add(str);
-		}		
+		}
 		sdirfile.Close();
 	}
 
@@ -94,18 +95,18 @@ CPreferences::CPreferences()
 		if (sdirfile.GetLineCount()) {
 			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
     				adresses_list.Append(new CString(str));
-			}		
+			}
 		}
 		sdirfile.Close();
 	}
 
 	userhash[5] = 14;
 	userhash[14] = 111;
-	
+
 	if (!::wxDirExists(char2unicode(GetIncomingDir()))) {
 		::wxMkdir(char2unicode(GetIncomingDir()),0777);
 	}
-	
+
 	if (!::wxDirExists(char2unicode(GetTempDir()))) {
 		::wxMkdir(char2unicode(GetTempDir()),0777);
 	}
@@ -158,18 +159,18 @@ bool CPreferences::Save()
 	SavePreferences();
 
 	wxString shareddir(theApp.ConfigDir + wxT("shareddir.dat"));
-	
+
 	wxRemoveFile(shareddir);
-	
+
 	wxTextFile sdirfile(shareddir);
-	
+
 	if(sdirfile.Create()) {
 		for(unsigned int ii = 0; ii < shareddir_list.GetCount(); ++ii) {
 			sdirfile.AddLine(shareddir_list[ii]);
 		}
 		sdirfile.Write(),
 		sdirfile.Close();
-	} else {		
+	} else {
 		error = true;
 	}
 
@@ -354,21 +355,21 @@ void CPreferences::SetColumnOrder(Table t, INT *piOrder)
 
 CPreferences::~CPreferences()
 {
-	
+
 	Category_Struct* delcat;
 	while (!catMap.IsEmpty()) {
-		delcat=catMap[0]; 
-		catMap.RemoveAt(0); 
+		delcat=catMap[0];
+		catMap.RemoveAt(0);
 		delete delcat;
 	}
-	
+
 	catMap.Clear();
-	
+
 	if (adresses_list.GetCount()>0) {
 		// the 'true' tells wxList to do 'delete' on the nodes.
-		adresses_list.DeleteContents(true); 
+		adresses_list.DeleteContents(true);
 	}
-	
+
 	delete prefs;
 	delete prefsExt;
 }
@@ -441,15 +442,15 @@ void CPreferences::LoadCats() {
 	AddCat( newcat );
 
 	wxConfigBase* cfg = wxConfig::Get();
-	
+
 	long max = cfg->Read( wxT("/General/Count"), 0l );
-	
+
 	for ( int i = 1; i <= max ; i++ ) {
 		cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
 
 		Category_Struct* newcat = new Category_Struct;
 
-	
+
 		sprintf(newcat->title, "%s", unicode2char( cfg->Read( wxT("Title"), wxT("") )));
 		sprintf(newcat->incomingpath, "%s", unicode2char( cfg->Read( wxT("Incoming"), wxT("") )));
 
