@@ -457,6 +457,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	const int iOffset = 4;
 
 	// The starting end ending position of the tree
+	bool tree_show = false;
 	int tree_start = 0;
 	int tree_end = 0;
 	
@@ -470,6 +471,8 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 		// Make a copy of the current rectangle so we can apply specific tweaks
 		wxRect target_rec = cur_rec;
 		if (iCurrent == 5) {
+			tree_show = ( listitem.GetWidth() > 0 );
+			
 			tree_start = cur_rec.x - iOffset;
 			tree_end   = cur_rec.x + iOffset;
 			
@@ -493,7 +496,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	}
 	 
 	// Draw tree last so it draws over selected and focus (looks better)
-	if ( tree_start < tree_end ) {
+	if ( tree_show ) {
 		// Gather some information
 		const bool notLast = item + 1 != GetItemCount();
 		const bool notFirst = item != 0;
