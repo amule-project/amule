@@ -422,7 +422,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 #endif
 				RemoveFromWaitingQueue(pos2,true);
 				if (!cur_client->socket) {
-					if (cur_client->Disconnected("AddClientToQueue - same userhash 1")) {
+					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 1"))) {
 						delete cur_client;
 					}
 				}
@@ -434,7 +434,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 #endif
 				RemoveFromWaitingQueue(pos2,true);
 				if (!cur_client->socket) {
-					if (cur_client->Disconnected("AddClientToQueue - same userhash 2")) {
+					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 2"))) {
 						delete cur_client;
 					}
 				}
