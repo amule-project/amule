@@ -598,11 +598,11 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
 	
-	toremove->SetRequestFile( NULL );
-
 	// Remove from downloadlist widget
 	Notify_DownloadCtrlRemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
+	toremove->SetRequestFile( NULL );
+	
 	return removed;
 }
 
