@@ -61,12 +61,17 @@
 
 class CPartFile;
 
+
+int CDownloadListCtrl::s_lastOrder;
+int CDownloadListCtrl::s_lastColumn;
+
+
 #define m_ImageList theApp.amuledlg->imagelist
 
 // CDownloadListCtrl
 
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
-	EVT_LIST_COL_END_DRAG(ID_DLOADLIST, CDownloadListCtrl::OnColResize)
+	EVT_LIST_COL_CLICK( -1, 		CDownloadListCtrl::OnColumnLClick)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST, CDownloadListCtrl::OnLvnItemActivate)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnNMRclick)
 	EVT_KEY_UP(CDownloadListCtrl::OnKeyUp)
@@ -91,6 +96,9 @@ CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint &
 	newcol = wxColour(G_BLEND(col.Red(), 125), G_BLEND(col.Green(), 125), G_BLEND(col.Blue(), 125));
 	m_hilightUnfocusBrush = new wxBrush(newcol, wxSOLID);
 	isShift = false;
+
+	s_lastOrder  = ( GetSortAsc() ? 1 : -1 );
+	s_lastColumn = GetSortColumn();
 	
 	Init();
 }
@@ -105,6 +113,23 @@ CDownloadListCtrl::~CDownloadListCtrl()
 	delete m_hilightBrush;
 	delete m_hilightUnfocusBrush;
 }
+
+
+void CDownloadListCtrl::OnColumnLClick(wxListEvent& evt)
+{
+	// Only change the last column if the sorted column has changed
+	if ( GetSortColumn() != evt.GetColumn() ) {
+		s_lastColumn = GetSortColumn();
+		s_lastOrder  = ( GetSortAsc() ? 1 : -1 );
+	} else {
+		// Reverse the last-column order to preserve the sorting
+		s_lastOrder *= -1;
+	}
+		
+	// Let CMuleListCtrl handle the sorting
+	evt.Skip();
+}
+
 
 void CDownloadListCtrl::HideSources(CPartFile * toCollapse, bool isShift, bool isCtrl, bool isAlt)
 {
@@ -375,10 +400,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 	}
 }
 
-void CDownloadListCtrl::OnColResize(wxListEvent& WXUNUSED(evt))
-{
-	return;
-}
 
 void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
@@ -1776,11 +1797,19 @@ int CDownloadListCtrl::Compare(CPartFile* file1, CPartFile* file2, long lParamSo
 			break;
 	}
 
+
 	// We cannot have that two files are equal, since that will screw up 
-	// the placement of sources. So if they are equal, we compare something that 
-	// is bound to be unique and will give a consistant result: Their hashes.
+	// the placement of sources. So if they are equal, we first try to use the 
+	// last sort-type and then fall back on something that is bound to be unique 
+	// and will give a consistant result: Their hashes.
 	if ( !result ) {
-		return CmpAny( file1->GetFileHash(), file2->GetFileHash() );
+		// Try to sort by the last column
+		if ( s_lastColumn != lParamSort )
+			result = s_lastOrder * Compare( file1, file2, s_lastColumn );
+		
+		// If that failed as well, then we sort by hash
+		if ( !result )
+			result = CmpAny( file1->GetFileHash(), file2->GetFileHash() );
 	}
 
 	return result;
