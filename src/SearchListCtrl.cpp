@@ -270,7 +270,7 @@ void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
 	}
 }
 
-void CSearchListCtrl::ShowResults(uint32 nResultsID)
+void CSearchListCtrl::ShowResults(long nResultsID)
 {
 	DeleteAllItems();
 	m_nResultsID = nResultsID;

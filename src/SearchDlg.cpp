@@ -303,7 +303,7 @@ bool CSearchDlg::CheckTabNameExists(wxString searchString)
 }
 
 
-void CSearchDlg::CreateNewTab(wxString searchString, uint32 nSearchID)
+void CSearchDlg::CreateNewTab(wxString searchString, long nSearchID)
 {
     CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
 	
