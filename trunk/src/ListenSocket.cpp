@@ -125,6 +125,7 @@ CClientReqSocketHandler::~CClientReqSocketHandler()
 
 void *CClientReqSocketHandler::Entry()
 {
+	/*
 	if (m_socket->GetClient()) {
 		if (m_socket->GetClient()->HasLowID()) {
 			printf("DL from lowid\n");
@@ -134,11 +135,10 @@ void *CClientReqSocketHandler::Entry()
 	} else {
 		printf("Socket with no client\n");
 	}
-	
+	*/
 	while ( !TestDestroy() ) {
 		if ( m_socket->deletethis ) {
-			printf("CClientReqSocketHandler: socket %p in %ld being deleted\n",
-				m_socket, GetId());
+			//printf("CClientReqSocketHandler: socket %p in %ld being deleted\n",	m_socket, GetId());
 			break;
 		}
 		if ( m_socket->Error()) {
@@ -164,7 +164,7 @@ void *CClientReqSocketHandler::Entry()
 			}
 		}
 	}
-	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), m_socket);
+	//printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), m_socket);
 	m_socket->my_handler = 0;
 	m_socket->Safe_Delete();
 	m_socket = NULL;
@@ -2676,7 +2676,7 @@ void *CSocketGlobalThread::Entry()
 					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
 						// If client is downloading, we create a thread for it.
 						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
-						printf("Socket %p started dload\n", cur_sock);
+						//printf("Socket %p started dload\n", cur_sock);
 						socket_list.erase(cur_sock);
 						t->Run();
 					}
