@@ -98,6 +98,8 @@ void CMemFile::enlargeBuffer(unsigned long size)
   unsigned long newsize=fBufferSize;
 
   // hmm.. mit�h�n jos growbytes==0??
+  // Kry - I can't understand you, traveler from far away,
+  // but I'm kinnda sure of what you mean. Answer is: it hangs.
   while(newsize<size)
     newsize+=fGrowBytes;
 

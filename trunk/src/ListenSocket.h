@@ -82,7 +82,6 @@ public:
 	virtual	bool Close(); /*	{return wxSocketBase::Close();}*/
 	
 	uint32		timeout_timer;
-	bool		OnDestroy;  
 	bool		hotrank;
 	CUpDownClient*	client;
 	CPreferences* 	app_prefs;
