@@ -409,6 +409,24 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_GetWaitQueue(CObjTagMap &tagmap)
+{
+	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
+	
+	POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
+	while (	pos ) {
+
+		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
+
+		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
+		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
+		
+		response->AddTag(cli_tag);
+	}
+
+	return response;
+}
+
 CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_ULOAD_QUEUE);
@@ -1038,10 +1056,18 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:
-			response = Get_EC_Response_GetUpQueue(request);
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetUpQueue(objmap);
+			} else {
+				response = Get_EC_Response_GetUpQueue(request);
+			}
 			break;
 		case EC_OP_GET_WAIT_QUEUE:
-			response = Get_EC_Response_GetWaitQueue(request);
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetWaitQueue(objmap);
+			} else {
+				response = Get_EC_Response_GetWaitQueue(request);
+			}
 			break;
 		case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
 		case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
@@ -1106,7 +1132,11 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		case EC_OP_SEARCH_RESULTS:
-			response = Get_EC_Response_Search_Results(request);
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_Search_Results(objmap);
+			} else {
+				response = Get_EC_Response_Search_Results(request);
+			}
 			break;
 
 		case EC_OP_DOWNLOAD_SEARCH_RESULT:
