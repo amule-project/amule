@@ -6,6 +6,7 @@ Version 2.0.0rc6 - The '???' version.
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
 		  and wx headers checks.
 		* Configure cleanup, safetray remove and nice cosmetics for tools
+
 	phoenix:
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
@@ -64,6 +65,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Added "-fmessage-length=0 -W" flags when --enable-debug.
 		* Changed m4/wxwin.m4 to recognize wx-config --libs base (no
 		  equal sign from 2.5.3 and up)
+		* Unicode fix in SysTray and new compiler wanings fix due to
+		  new compiler debug option -W.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
