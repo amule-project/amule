@@ -514,11 +514,13 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 				source->AddRequestForAnotherFile( sender );
 
 				// And try to swap to sender
-				source->SwapToAnotherFile( false, false, false, sender );
+				source->SwapToAnotherFile( true, true, false, sender );
 			}
 		} else {
 			// Source was known, but reqfile NULL. I'm not sure if this can 
 			// happen, but it's best to be certain, so I handle this case as well
+			source->SetRequestFile( sender );
+			
 			if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
 			}
@@ -529,6 +531,8 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		}
 	} else {
 		// Unknown client, add it to the clients list
+		source->SetRequestFile( sender );
+
 		theApp.clientlist->AddClient(source, true);
 	
 		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
