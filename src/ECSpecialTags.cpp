@@ -374,7 +374,7 @@ void CEC_Prefs_Packet::Apply()
 			thePrefs::SetWSPass(oneTag->GetMD4Data().Encode());
 		}
 		thePrefs::SetWSIsLowUserEnabled(thisTab->GetTagByName(EC_TAG_WEBSERVER_GUEST) != 0);
-		if ((oneTag->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_PASSWD_HASH)) != NULL) {
 			thePrefs::SetWSLowPass(oneTag->GetTagByName(EC_TAG_PASSWD_HASH)->GetMD4Data().Encode());
 		}
 		thePrefs::SetWebUseGzip(thisTab->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != 0);
