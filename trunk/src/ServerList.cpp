@@ -235,6 +235,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 	catch (CInvalidPacket) {
 		AddLogLineM(true,_("Error: the file server.met is corrupted"));
 		servermet.Close();
+		Notify_ServerThaw();
 		return false;
 	}
 	servermet.Close();
