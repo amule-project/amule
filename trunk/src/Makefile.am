@@ -111,6 +111,7 @@ amule_SOURCES = ListenSocket.cpp \
 	DownloadListCtrl.cpp \
 	DownloadQueue.cpp \
 	ED2KLink.cpp \
+	ECSocket.cpp \
 	EditServerListDlg.cpp \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
@@ -162,7 +163,7 @@ amule_SOURCES = ListenSocket.cpp \
 	amuleDlg.cpp 
 
 amuled_SOURCES = ListenSocket.cpp \
-		CryptoPP.cpp \
+	CryptoPP.cpp \
         ECSocket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
@@ -173,6 +174,7 @@ amuled_SOURCES = ListenSocket.cpp \
         ClientUDPSocket.cpp \
         DownloadClient.cpp \
         DownloadQueue.cpp \
+	ECSocket.cpp \
         ED2KLink.cpp \
         ExternalConn.cpp \
         filemem.cpp \

@@ -63,6 +63,7 @@ enum
 	SOCKET_ID
 };
 
+
 #ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
@@ -71,57 +72,44 @@ BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 END_EVENT_TABLE()
 #endif
 
+
 ExternalConn::ExternalConn()
 #ifdef AMULE_DAEMON
  : wxThread(wxTHREAD_JOINABLE) 
 #endif
 {
-	// Are we allowed to accept External Connections
-	if (theApp.glob_prefs->AcceptExternalConnections()) {
-		if (theApp.glob_prefs->ECUseTCPPort()) {
-			int port = theApp.glob_prefs->ECPort();
-			// Create the address - listen on localhost:ECPort
-			wxIPV4address addr;
-			addr.Service(port);
-			// Create the socket
-			m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
-			// We use Ok() here to see if the server is really listening
-			if (! m_ECServer->Ok()) {
-				printf("Could not listen for external connections at port %d!\n\n", port);
-			} else {
-				printf("ECServer listening on port %d.\n\n", port);
-			}
-		} else {
-			// m_ECServer has not been created, this inhibits 
-			// delete in the destructor from doing nasty things
-			m_ECServer = 0;
-			return;
-		}
+	m_ECServer = NULL;
+	// Are we allowed to accept External Connections?
+	if (theApp.glob_prefs->AcceptExternalConnections() &&
+	    theApp.glob_prefs->ECUseTCPPort()) {
+		int port = theApp.glob_prefs->ECPort();
+		// Create the address - listen on localhost:ECPort
+		wxIPV4address addr;
+		addr.Service(port);
+		// Create the socket
+		m_ECServer = new ECSocket(addr, *this, SERVER_ID);
+		if (m_ECServer->Ok()) {
+			printf("ECServer listening on port %d.\n\n", port);
 #ifdef AMULE_DAEMON
-		if ( Create() != wxTHREAD_NO_ERROR ) {
-			AddLogLineM(false, _("ExternalConn: failed to Create thread"));
-			delete m_ECServer;
-			m_ECServer = NULL;
-			return;
-		}
-		Run();
-#else
-			// Setup the event handler and subscribe to connection events
-			m_ECServer->SetEventHandler(*this, SERVER_ID);
-			m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
-			m_ECServer->Notify(TRUE);
+			if ( Create() != wxTHREAD_NO_ERROR ) {
+				AddLogLineM(false, _("ExternalConn: failed to Create thread"));
+				delete m_ECServer;
+				// This prevents the destructor to do nasty things
+				m_ECServer = NULL;
+			} else {
+				Run();
+			}
 #endif
+		} else {
+			printf("Could not listen for external connections at port %d!\n\n", port);
+		}
 	} else {
-		m_ECServer = NULL;
-		printf("External connections disabled in .eMule\n");
-		return;
+		printf("External connections disabled in config file .eMule\n");
 	}
 }
 
 ExternalConn::~ExternalConn() {
-	if (m_ECServer ) {
-		m_ECServer->Destroy();
-	}
+	delete m_ECServer;
 }
 
 #ifdef AMULE_DAEMON
@@ -139,42 +127,53 @@ void *ExternalConn::Entry()
 	return 0;
 }
 #else
+void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
+	wxSocketBase *sock;
+	// Accept new connection if there is one in the pending
+	// connections queue, else exit. We use Accept(FALSE) for
+	// non-blocking accept (although if we got here, there
+	// should ALWAYS be a pending connection).
+	sock = m_ECServer->Accept(false);
+	if (sock) {
+		printf(unicode2char(_("New external connection accepted\n")));
+		sock->SetEventHandler(*this, AUTH_ID);
+		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
+		sock->Notify(true);
+		m_numClients++;
+	} else {
+		printf(unicode2char(_("Error: couldn't accept a new external connection\n\n")));
+	}
+}
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 	wxSocketBase *sock = event.GetSocket();
-
 	wxString request, response;
 	// Now we process the event
 	switch(event.GetSocketEvent()) {
-	    case wxSOCKET_INPUT: {
+	case wxSOCKET_INPUT: {
 		// We disable input events, so that the test doesn't trigger
 		// wxSocketEvent again.
-		sock->SetNotify(wxSOCKET_LOST_FLAG);
-		
-		Read(sock, request);
-		
-		if ( event.GetId() == AUTH_ID ) {
+		sock->SetNotify(wxSOCKET_LOST_FLAG);		
+		m_ECServer->Read(sock, request);		
+		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
-			Write(sock, response);
-			
+			m_ECServer->Write(sock, response);
 			if (response != wxT("Authenticated")) {
-				//
 				// Access denied!
-				//
 				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
 				sock->Destroy();
 				return;
+			} else {
+				// Authenticated => change socket handler
+				sock->SetEventHandler(*this, SOCKET_ID);
 			}
-			//Authenticated => change socket handler
-			sock->SetEventHandler(*this, SOCKET_ID);
 		} else {
 			wxString response = ProcessRequest(request);
-			Write(sock, response);
-		}
-			
+			m_ECServer->Write(sock, response);
+		}		
 		// Re-Enable input events again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG | wxSOCKET_INPUT_FLAG);
-		sock->Notify(TRUE);
+		sock->Notify(true);
 		break;
 	}
 		
@@ -193,81 +192,11 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		sock->Close();
 		break;
 	}
+	
 	default: ;
 	}
 }
-
-void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
-	wxSocketBase *sock;
-
-	// Accept new connection if there is one in the pending
-	// connections queue, else exit. We use Accept(FALSE) for
-	// non-blocking accept (although if we got here, there
-	// should ALWAYS be a pending connection).
-	sock = m_ECServer->Accept(FALSE);
-
-	if (sock) {
-		printf(unicode2char(_("New external connection accepted\n")));
-	} else {
-		printf(unicode2char(_("Error: couldn't accept a new external connection\n\n")));
-    	return;
-	}
-
-	sock->SetEventHandler(*this, AUTH_ID);
-	sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
-	sock->Notify(TRUE);
-
-	m_numClients++;
-}
-
 #endif
-
-void ExternalConn::Read(wxSocketBase *sock, wxString &s) {
-	unsigned int tmp;
-	sock->Read(&tmp, sizeof(unsigned int));
-	unsigned int msgBytes = ENDIAN_SWAP_32(tmp);
-	char *utf8 = new char[msgBytes+1];
-	utf8[msgBytes] = 0;
-	unsigned int msgRemain = msgBytes;
-	unsigned int LastIO;
-	char *iobuf = utf8;
-	int i = 0;
-	while(msgRemain) {
-		sock->Read(iobuf, msgRemain);
-		LastIO = sock->LastCount();
-		msgRemain -= LastIO;
-		iobuf += LastIO;
-		++i;
-	}
-	s = wxString(wxConvUTF8.cMB2WX(utf8));
-// This is debug code, to be removed later
-//printf("read loop=%d, bytes=%d, original=%d\n", i, msgBytes, s.size());
-	delete [] utf8;
-	if(sock->Error()) {
-		printf("Wrong wxString Reading Packet!\n");
-	}
-}
-
-void ExternalConn::Write(wxSocketBase *sock, const wxString &s) {
-	const wxWX2MBbuf buf = wxConvUTF8.cWX2MB(s);
-	const char *utf8 = (const char *)buf;
-	unsigned int msgBytes = strlen(utf8);
-	unsigned int tmp = ENDIAN_SWAP_32(msgBytes);
-	sock->Write(&tmp, sizeof(unsigned int));
-	unsigned int msgRemain = msgBytes;
-	unsigned int LastIO;
-	const char *iobuf = utf8;
-	register int i = 0;
-	while(msgRemain) {
-		sock->Write(iobuf, msgBytes);
-		LastIO = sock->LastCount();
-		msgRemain -= LastIO;
-		iobuf += LastIO;
-		++i;
-	}
-// This is debug code, to be removed later
-//printf("write loop=%d, bytes=%d, original=%d\n", i, msgBytes, s.size());
-}
 
 //
 // Authentication
@@ -286,7 +215,8 @@ wxString ExternalConn::Authenticate(const wxString& item)
 	}
 	return wxT("Access Denied");
 }
-	
+
+
 //TODO: do a function for each command
 wxString ExternalConn::ProcessRequest(const wxString& item) {
 	unsigned int nChars = 0;
@@ -2376,7 +2306,6 @@ wxString ExternalConn::GetDownloadFileInfo(const CPartFile* file)
 	return sRet;
 }
 
-
 ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock) : wxThread()
 {
 	m_owner = owner;
@@ -2395,9 +2324,9 @@ ExternalConnClientThread::~ExternalConnClientThread()
 void *ExternalConnClientThread::Entry()
 {
 	wxString request;
-	m_owner->Read(m_sock, request);
+	m_owner->m_ECServer->Read(m_sock, request);
 	wxString response = m_owner->Authenticate(request);
-	m_owner->Write(m_sock, response);
+	m_owner->m_ECServer->Write(m_sock, response);
 	if (response != wxT("Authenticated")) {
 		//
 		// Access denied!
@@ -2414,7 +2343,7 @@ void *ExternalConnClientThread::Entry()
 			return 0;
 		}
 		if (m_sock->WaitForRead()) {
-			m_owner->Read(m_sock, request);
+			m_owner->m_ECServer->Read(m_sock, request);
 			//
 			// lfroen: this one definitly must NOT be here. It is 'cause somewhere
 			// in ProcessRequest we're going thru X event chain
@@ -2422,11 +2351,9 @@ void *ExternalConnClientThread::Entry()
 			wxMutexGuiEnter();
 			wxString response = m_owner->ProcessRequest(request);
 			wxMutexGuiLeave();
-			m_owner->Write(m_sock, response);
+			m_owner->m_ECServer->Write(m_sock, response);
 		}
 	}
 	return 0;
 }
-
-
 

@@ -282,7 +282,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 		// no connection => close gracefully
 		Show(_("Connection Failed. Unable to connect to the specified host\n"));
 	} else {
-		//Authenticate ourselves
+		// Authenticate ourselves
 		if (m_ECClient->SendRecvMsg(wxString::Format(wxT("AUTH %s"), passwd.GetData())) == wxT("Access Denied")) {
 			Show(_("ExternalConn: Access Denied.\n"));
 		} else {

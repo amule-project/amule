@@ -47,41 +47,37 @@ CWSThread::CWSThread(CWebServer *ws) {
 
 // thread execution starts here
 void *CWSThread::Entry() {
-	wxSocketBase *sock;
-	
 	ws->Print(wxT("\nWSThread: Thread started\n"));
 	// Create the address - listen on localhost:ECPort
 	wxIPV4address addr;
 	addr.AnyAddress();
 	addr.Service(wsport);
 	ws->Print(wxT("WSThread: created service\n"));
-
 	// Create the socket
 	m_WSSocket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
-	
 	wxString msg = addr.Hostname() + wxString::Format(wxT(":%d\n"), addr.Service());
 	// We use Ok() here to see if the server is really listening
 	if (! m_WSSocket->Ok()) {
 		ws->Print(wxT("WSThread: could not create socket on ") + msg);	
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
-
 		while (!TestDestroy()) {
-			//check for incoming connection waiting to be accepted
-			//and returns immediately
+			// check for incoming connection waiting to be accepted
+			// and returns immediately
 			if (m_WSSocket->WaitForAccept(0)) {
-				//Accept the incoming connection and returns immediately
-				//Here we should always have a connection pending.
-				sock = m_WSSocket->Accept(FALSE);
+				// Accept the incoming connection and returns immediately
+				// Here we should always have a connection pending.
+				wxSocketBase *sock = m_WSSocket->Accept(FALSE);
 				if (sock) {
 					CWCThread *wct = new CWCThread(ws, sock);
 					wcThreads.Add(wct);
 					
 					if ( wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
 						ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
-						sock->Destroy(); //destroy the socket
+						// destroy the socket
+						sock->Destroy();
 					} else {
-						//...and run it
+						// ...and run it
 						wcThreads.Last()->Run();
 					}
 				}
@@ -89,12 +85,13 @@ void *CWSThread::Entry() {
 
 			wxThread::Sleep(200);
 		}
-		
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
 		for (size_t i=0; i<wcThreads.GetCount(); i++) {
-				wcThreads.Item(i)->Delete(); //terminate i-th thread
+			// terminate i-th thread
+			wcThreads.Item(i)->Delete();
 		}
-		wcThreads.Clear(); //frees the memory allocated to the array
+		// frees the memory allocated to the array
+		wcThreads.Clear();
 		ws->Print(wxT("done.\n"));
 	}
 	
@@ -102,7 +99,6 @@ void *CWSThread::Entry() {
 	// shakraw - it must return NULL. it is correct now.
 	return NULL;
 }
-
 
 /*** CWCThread ***/
 CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
@@ -126,7 +122,6 @@ void *CWCThread::Entry() {
 #ifdef DEBUG
 	stWebSocket.m_pParent->Print(wxT("WCThread: Started a new WCThread\n"));
 #endif
-
 	//check for connection status and return immediately
 	if (stWebSocket.m_hSocket->WaitForLost(0)) {
 		//stWebSocket.m_pParent->Print(wxT("*** WCThread - WaitForLost\n"));
@@ -154,7 +149,6 @@ void *CWCThread::Entry() {
 			}
 			stWebSocket.OnReceived(pBuf, stWebSocket.m_hSocket->LastCount());
 		}
-		
 		//check for write and return immediately
 		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
 			// send what is left in our tails
@@ -192,14 +186,11 @@ void *CWCThread::Entry() {
 			}
 		}
 	}
-		
 	//destroy the socket
 	stWebSocket.m_hSocket->Destroy();
-	
 #ifdef DEBUG
 	stWebSocket.m_pParent->Print(wxT("WCThread: exited [WebSocket closed]\n"));
 #endif
-
 	// remove ourself from threads array
 	wcThreads.Remove(this);
 		
