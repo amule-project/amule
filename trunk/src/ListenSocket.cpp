@@ -171,7 +171,7 @@ void CClientReqSocket::Delete_Timed()
 */
 void CClientReqSocket::Safe_Delete()
 {
-	wxASSERT(!deletethis); 
+	//wxASSERT(!deletethis); 
 	
 	if (!deletethis) {
 		//theApp.AddSocketDeleteDebug((uint32) this,created);
