@@ -92,7 +92,9 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 		SetItemState(event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
 
-	bool priority_enabled, static_enabled, show_connect;
+	bool priority_enabled = false;
+	bool static_enabled = false;
+	bool show_connect = false;
 
 	// set states
 	CServer* test=NULL;

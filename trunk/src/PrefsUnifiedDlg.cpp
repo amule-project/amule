@@ -1347,7 +1347,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 {
 	wxControl*	pctrl = (wxControl*)event.GetEventObject();
 	int			idButton = pctrl->GetId();
-	Rse*		prse;
+	Rse*		prse = NULL;
 	
 	if (idButton == IDC_SELTEMPDIR)
 		prse = Prse(IDC_TEMPFILES);
