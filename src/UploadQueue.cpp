@@ -95,7 +95,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			// clear dead clients
 			if ( cur_client->IsGPLEvildoer() || (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				cur_client->ClearWaitStartTime();
-				RemoveFromWaitingQueue(pos2,true);	
+				RemoveFromWaitingQueue(pos2);	
 				if (!cur_client->GetSocket()) {
 					if(cur_client->Disconnected(_("AddUpNextClient - purged"))) {
 						cur_client->Safe_Delete();
@@ -135,7 +135,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		}
 		newclient = waitinglist.GetAt(toadd);
 		lastupslotHighID = true; // VQB LowID alternate		
-		RemoveFromWaitingQueue(toadd, true);
+		RemoveFromWaitingQueue(toadd);
 		Notify_ShowQueueCount(waitinglist.GetCount());
 	} else {
 		//prevent another potential access of a suspended upload
@@ -280,9 +280,8 @@ POSITION CUploadQueue::GetDownloadingClient(CUpDownClient* client)
 	return uploadinglist.Find( client );
 }
 
-void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit)
+void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 {
-
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;		
@@ -337,7 +336,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 				if (thePrefs.GetVerbose())
 					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
 #endif
-				RemoveFromWaitingQueue(pos2,true);
+				RemoveFromWaitingQueue(pos2);
 				if (!cur_client->GetSocket()) {
 					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 1"))) {
 						cur_client->Safe_Delete();
@@ -349,7 +348,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 				if (thePrefs.GetVerbose())
 					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),"Both" );
 #endif
-				RemoveFromWaitingQueue(pos2,true);
+				RemoveFromWaitingQueue(pos2);
 				if (!cur_client->GetSocket()) {
 					if (cur_client->Disconnected(wxT("AddClientToQueue - same userhash 2"))) {
 						cur_client->Safe_Delete();
@@ -592,7 +591,7 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewind
 {
 	POSITION pos = waitinglist.Find(client);
 	if (pos) {
-		RemoveFromWaitingQueue(pos,updatewindow);
+		RemoveFromWaitingQueue(pos);
 		if (updatewindow) {
 			Notify_ShowQueueCount(waitinglist.GetCount());
 		}
@@ -602,14 +601,13 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewind
 	}
 }
 
-void CUploadQueue::RemoveFromWaitingQueue(POSITION pos, bool updatewindow)
+void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
 {
 	CUpDownClient* todelete = waitinglist.GetAt(pos);
 	waitinglist.RemoveAt(pos);
 	if( todelete->IsBanned() ) {
 		todelete->UnBan();
 	}
-	//if (updatewindow)
 	Notify_QlistRemoveClient(todelete);
 	todelete->SetUploadState(US_NONE);
 }

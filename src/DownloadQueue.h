@@ -85,8 +85,8 @@ public:
 	void	AddFileLinkToDownload(class CED2KFileLink* pLink, uint8 category);
 	bool	IsFileExisting(const CMD4Hash& fileid) const;
 	bool	IsPartFile(const CKnownFile* totest) const;
-	CPartFile* GetFileByID(const CMD4Hash& filehash) const;
-	CPartFile* GetFileByIndex(unsigned int idx) const;
+	CPartFile *GetFileByID(const CMD4Hash& filehash) const;
+	CPartFile *GetFileByIndex(unsigned int idx) const;
 	void    CheckAndAddSource(CPartFile* sender,CUpDownClient* source);
 	void    CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source);
 	// bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true);

@@ -298,17 +298,19 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					CSafeMemFile data_in((BYTE*)packet,size);
 					CMD4Hash reqfilehash;
 					data_in.ReadHash16(reqfilehash);
-					CKnownFile* reqfile;
-					if ( (reqfile = theApp.sharedfiles->GetFileByID(reqfilehash)) == NULL ){
-						if ( !((reqfile = theApp.downloadqueue->GetFileByID(reqfilehash)) != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
+					CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+					if ( reqfile == NULL ) {
+						reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+						if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 							break;
 						}
 					}
 					// if we are downloading this file, this could be a new source
 					// no passive adding of files with only one part
 					if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
-						if (theApp.glob_prefs->GetMaxSourcePerFile() > ((CPartFile*)reqfile)->GetSourceCount()) {
-								theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
+						if (theApp.glob_prefs->GetMaxSourcePerFile() > 
+							((CPartFile*)reqfile)->GetSourceCount()) {
+							theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
 						}
 					}
 
@@ -362,9 +364,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						m_client->SetWaitStartTime();
 					}
 
-					CKnownFile* reqfile;
-					if ( (reqfile = theApp.sharedfiles->GetFileByID((uchar*)packet)) == NULL ){
-						if ( !((reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet)) != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
+					CKnownFile *reqfile = theApp.sharedfiles->GetFileByID((uchar*)packet);
+					if ( reqfile == NULL ) {
+						reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet);
+						if ( !( reqfile  != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 							// send file request no such file packet (0x48)
 							#ifdef __USE_DEBUG__
 							if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -419,7 +422,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size == 16)
 				{
 					// if that client does not have my file maybe has another different
-					CPartFile* reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet);
+					const CPartFile* reqfile = theApp.downloadqueue->GetFileByID((uchar*)packet);
 					if (!reqfile) {
 						break;
 					}
@@ -450,7 +453,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CSafeMemFile data((BYTE*)packet,size);
 				uchar cfilehash[16];
 				data.ReadHash16(cfilehash);
-				CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
+				const CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
 				m_client->ProcessFileInfo(&data, file);
 				break;
 			}
@@ -465,7 +468,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CSafeMemFile data((BYTE*)packet,size);
 				uchar cfilehash[16];
 				data.ReadHash16(cfilehash);
-				CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
+				const CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
 				m_client->ProcessFileStatus(false, &data, file);
 				break;
 			}
@@ -1177,10 +1180,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				CSafeMemFile data_in((BYTE*)packet,size);
 				CMD4Hash reqfilehash;
 				data_in.ReadHash16(reqfilehash);
-				CKnownFile* reqfile;
-
-				if ( (reqfile = theApp.sharedfiles->GetFileByID(reqfilehash)) == NULL ){
-					if ( !((reqfile = theApp.downloadqueue->GetFileByID(reqfilehash)) != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
+				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+				if ( reqfile == NULL ){
+					reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+					if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 						// send file request no such file packet (0x48)
 						#ifdef __USE_DEBUG__
 						if (thePrefs.GetDebugClientTCPLevel() > 0)
@@ -1306,12 +1309,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				CSafeMemFile data_in((BYTE*)packet,size);
 				CMD4Hash reqfilehash;
 				data_in.ReadHash16(reqfilehash);
-				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+				const CPartFile *reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 				//Make sure we are downloading this file.
-				if (reqfile==NULL) {
+				if ( !reqfile ) {
 					throw wxString(wxT(" Wrong File ID: (OP_MULTIPACKETANSWER; reqfile==NULL)"));
 				}
-				if (m_client->GetRequestFile()==NULL) {
+				if ( !m_client->GetRequestFile() ) {
 					throw wxString(wxT(" Wrong File ID: OP_MULTIPACKETANSWER; client->reqfile==NULL)"));
 				}
 				if (reqfile != m_client->GetRequestFile()) {
@@ -1592,7 +1595,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				CSafeMemFile data((BYTE*)packet,size);
 				uchar hash[16];
 				data.ReadHash16(hash);
-				CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
+				const CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
 				if(file){
 					if (file->IsPartFile()){
 						//set the client's answer time

@@ -292,8 +292,8 @@ public:
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const { return m_bMultiPacket;	}
 
-	void		SetUploadFileID(CKnownFile* newreqfile);
-	void		ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* tempreqfile);
+	void		SetUploadFileID(CKnownFile *newreqfile);
+	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
@@ -320,7 +320,7 @@ public:
 	void		ResetSessionUp()		{ m_nCurSessionUp = m_nTransferedUp; }
 	uint16		GetUpPartCount() const 		{ return m_nUpPartCount; }
 #ifndef AMULE_DAEMON
-	void		DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
+	void		DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect);
 #endif
 	//download
 	void 		SetRequestFile(CPartFile* reqfile); 

@@ -169,11 +169,11 @@ public:
 	
 	// comment 
 #ifdef CLIENT_GUI
-	const wxString&	GetFileComment() { return m_strComment;} 
-	int8	GetFileRate() 			{ return m_iRate;}
+	const wxString&	GetFileComment(){ return m_strComment; }
+	int8	GetFileRate() 		{ return m_iRate; }
 #else
-	const wxString&	GetFileComment() {if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
-	int8	GetFileRate() 			{if (!m_bCommentLoaded) LoadComment(); return m_iRate;}
+	const wxString&	GetFileComment(){ if (!m_bCommentLoaded) LoadComment(); return m_strComment; } 
+	int8	GetFileRate() 		{ if (!m_bCommentLoaded) LoadComment(); return m_iRate; }
 #endif
 	void	SetFileComment(const wxString& strNewComment);
 	void	SetFileRate(int8 iNewRate); 

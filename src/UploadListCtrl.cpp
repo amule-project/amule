@@ -558,7 +558,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 							memdc.SetPen(*wxTRANSPARENT_PEN);
 							memdc.SetBrush(*wxWHITE_BRUSH);
 							memdc.DrawRectangle(wxRect(0,0,iWidth,iHeight));
-							client->DrawUpStatusBar(&memdc,wxRect(0,0,iWidth,iHeight),false,false);
+							client->DrawUpStatusBar(&memdc,wxRect(0,0,iWidth,iHeight),false);
 							dc->Blit(cur_rec.left,cur_rec.top,iWidth,iHeight,&memdc,0,0);
 							memdc.SelectObject(wxNullBitmap);
 						}
