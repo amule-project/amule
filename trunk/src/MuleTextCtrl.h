@@ -1,7 +1,7 @@
 #include <wx/textctrl.h>
 
 
-class wxMenuEvent;
+class wxCommandEvent;
 class wxMouseEvent;
 
 
@@ -49,17 +49,17 @@ protected:
 	 * only one of the already provided commands we need to override, since the 
 	 * others already work just fine.
 	 */
-	void OnPaste( wxMenuEvent& evt );
+	void OnPaste( wxCommandEvent& evt );
 	
 	/**
 	 * This functions takes care of selecting all text.
 	 */
-	void OnSelAll( wxMenuEvent& evt );
+	void OnSelAll( wxCommandEvent& evt );
 	
 	/**
 	 * This functions takes care of clearing the text.
 	 */ 
-	void OnClear( wxMenuEvent& evt );
+	void OnClear( wxCommandEvent& evt );
 
 
 	DECLARE_EVENT_TABLE()

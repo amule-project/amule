@@ -81,13 +81,13 @@ void CMuleTextCtrl::OnRightDown( wxMouseEvent& evt )
 }
 
 
-void CMuleTextCtrl::OnPaste( wxMenuEvent& WXUNUSED(evt) )
+void CMuleTextCtrl::OnPaste( wxCommandEvent& WXUNUSED(evt) )
 {
 	Paste();
 }
 
 
-void CMuleTextCtrl::OnSelAll( wxMenuEvent& WXUNUSED(evt) )
+void CMuleTextCtrl::OnSelAll( wxCommandEvent& WXUNUSED(evt) )
 {
 	// Move the pointer to the front
 	SetInsertionPoint( 0 );
@@ -97,7 +97,7 @@ void CMuleTextCtrl::OnSelAll( wxMenuEvent& WXUNUSED(evt) )
 }
 
 
-void CMuleTextCtrl::OnClear( wxMenuEvent& WXUNUSED(evt) )
+void CMuleTextCtrl::OnClear( wxCommandEvent& WXUNUSED(evt) )
 {
 	Clear();
 }
