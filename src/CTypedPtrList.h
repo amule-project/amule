@@ -218,7 +218,7 @@ public:
 	{
 		MYNODE* n = (MYNODE*)pos;
 		wxASSERT( n );
-		TYPE data = n->data;
+		TYPE& data = n->data;
 		pos = (POSITION)(n->next);
 		return data;
 	}
@@ -238,7 +238,7 @@ public:
 	{
 		MYNODE* n = (MYNODE*)pos;
 		wxASSERT( n );
-		TYPE data = n->data;
+		TYPE& data = n->data;
 		pos = (POSITION)(n->prev);
 		return data;
 	}
