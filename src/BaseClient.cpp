@@ -235,7 +235,13 @@ CUpDownClient::~CUpDownClient()
 	}
 	/* End modif */
 	//printf("1...");
-	theApp.clientlist->RemoveClient(this);
+	
+	// Kry - This 'if' is not really needed because the client list gets 
+	// deleted AFTER all the clients were removed by the listensocket destructor.
+	if (theApp.clientlist) {
+		theApp.clientlist->RemoveClient(this);
+	}
+	
 	if (m_Friend) {
 		m_Friend->m_LinkedClient = NULL;
 		theApp.amuledlg->chatwnd->RefreshFriend(m_Friend);
@@ -243,7 +249,7 @@ CUpDownClient::~CUpDownClient()
 	}
 	//printf("2...");
 	if (socket) {
-		socket->client = 0; // Kry - Wouldn't Safe_Delete() not delete the client then?
+		socket->client = 0; 
 		socket->Safe_Delete();
 	}
 	//printf("3...");
