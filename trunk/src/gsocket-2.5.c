@@ -151,6 +151,8 @@ int _System soclose(int);
 #  include "gsocket.h"
 #endif /* __GSOCKET_STANDALONE__ */
 
+#include <wx/version.h> /* for wxCHECK_VERSION */
+
 /* debugging helpers */
 #ifdef __GSOCKET_DEBUG__
 #  define GSocket_Debug(args) printf args
@@ -1637,7 +1639,12 @@ GSocketError GAddress_INET_SetHostAddress(GAddress *address,
   CHECK_ADDRESS(address, INET);
 
   addr = &(((struct sockaddr_in *)address->m_addr)->sin_addr);
+
+#if wxCHECK_VERSION(2,5,2)
+  addr->s_addr = htonl(hostaddr);
+#else
   addr->s_addr = hostaddr;
+#endif
 
   return GSOCK_NOERROR;
 }
@@ -1728,7 +1735,11 @@ unsigned long GAddress_INET_GetHostAddress(GAddress *address)
 
   addr = (struct sockaddr_in *)address->m_addr;
 
+#if wxCHECK_VERSION(2,5,2)
+  return ntohl(addr->sin_addr.s_addr);
+#else
   return addr->sin_addr.s_addr;
+#endif
 }
 
 unsigned short GAddress_INET_GetPort(GAddress *address)
