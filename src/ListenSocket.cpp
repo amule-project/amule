@@ -1908,7 +1908,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					CSafeMemFile data_out;
 					data_out.WriteHash16(abyHash);
 					pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
-					SendPacket(new Packet(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS));
+					Packet* packet = new Packet(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
+					theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
+					SendPacket(packet);
 				}
 				break;
 			}
