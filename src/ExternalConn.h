@@ -198,7 +198,20 @@ class CObjTagMap {
 			return m_obj_map[object];
 		}
 		
-		void RemoveDeleted(std::set<void *> &current_set);
+		size_t size()
+		{
+			return m_obj_map.size();
+		}
+		
+		void RemoveDeleted(std::set<void *> &current_set)
+		{/*
+			for(std::map<void *, CValueMap>::iterator i = m_obj_map.begin(); i != m_obj_map.end(); i++) {
+				if ( !current_set.count(i->first) ) {
+					m_obj_map.erase(i->first);
+				}
+			}
+			*/
+		}
 };
 
 #ifdef AMULE_DAEMON
