@@ -29,6 +29,35 @@
 
 #include "ECPacket.h"		// Needed for CECPacket
 
+wxString GetSocketError(wxSocketError code)
+{
+	switch(code) {
+		case wxSOCKET_NOERROR:
+			return wxT("No error happened");
+		case wxSOCKET_INVOP:
+			return wxT("Invalid operation");
+		case wxSOCKET_IOERR:
+			return wxT("Input/Output error");
+		case wxSOCKET_INVADDR:
+			return wxT("Invalid address passed to wxSocket");
+		case wxSOCKET_INVSOCK:
+			return wxT("Invalid socket (uninitialized)");
+		case wxSOCKET_NOHOST:
+			return wxT("No corresponding host");
+		case wxSOCKET_INVPORT:
+			return wxT("Invalid port");
+		case wxSOCKET_WOULDBLOCK:
+			return wxT("The socket is non-blocking and the operation would block");
+		case wxSOCKET_TIMEDOUT:
+			return wxT("The timeout for this operation expired");
+		case wxSOCKET_MEMERR:
+			return wxT("Memory exhausted");
+		case wxSOCKET_DUMMY:
+			return wxT("Dummy code - should not happen");
+	}
+	return wxString::Format(wxT("Error code 0x%08x unknown"), code);
+}
+
 ECSocket::ECSocket(void)
 {
 	m_type = AMULE_EC_CLIENT;
@@ -57,14 +86,16 @@ ECSocket::~ECSocket(void)
 
 bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len)
 {
-	sock->Read(buffer, len);
+	if ( !ReadBuffer(sock, buffer, len) ) {
+		return false;
+	}
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
 	switch (len) {
 		case 2: *((uint16 *)buffer) = ntohs(*((uint16 *)buffer)); break;
 		case 4: *((uint32 *)buffer) = ntohl(*((uint32 *)buffer)); break;
 	}
 #endif
-	return (sock->LastCount() == len);
+	return true;
 }
 
 
@@ -94,11 +125,22 @@ bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len)
 	bool error = sock->Error();
 
 	while (msgRemain && !error) {
+		//
+		// Give socket a 10 sec chance to recv more data.
+		if ( !sock->WaitForRead(10, 0) ) {
+			return false;
+		}
 		sock->Read(iobuf, msgRemain);
 		LastIO = sock->LastCount();
 		error = sock->Error();
 		msgRemain -= LastIO;
 		iobuf += LastIO;
+	}
+	if ( error ) {
+		wxString msg = GetSocketError(sock->LastError());
+		//
+		// some better logging must be here
+		printf("ECSocket::ReadBuffer error %s\n", msg.GetData());
 	}
 	return !error;
 }
@@ -112,11 +154,22 @@ bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int 
 	bool error = sock->Error();
 
 	while(msgRemain && !error) {
+		//
+		// Give socket a 10 sec chance to send more data.
+		if ( !sock->WaitForWrite(10, 0) ) {
+			return false;
+		}
 		sock->Write(iobuf, msgRemain);
 		LastIO = sock->LastCount();
 		error = sock->Error();
 		msgRemain -= LastIO;
 		iobuf += LastIO;
+	}
+	if ( error ) {
+		wxString msg = GetSocketError(sock->LastError());
+		//
+		// some better logging must be here
+		printf("ECSocket::WriteBuffer error %s\n", msg.GetData());
 	}
 	return !error;
 }
