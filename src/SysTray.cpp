@@ -334,8 +334,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Total Downloaded
 	{
 		wxString temp = CastItoXBytes( theApp.stat_sessionReceivedBytes + theApp.glob_prefs->GetTotalDownloaded() );
-	
-		info_item=gtk_menu_item_new_with_label( StringToSystray( wxString(_("Total DL: ")) + temp ) );
+		temp = wxString(_("Total DL: ")) + temp;
+		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 	
@@ -343,8 +343,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// Total Uploaded
 	{
 		wxString temp = CastItoXBytes( theApp.stat_sessionSentBytes + theApp.glob_prefs->GetTotalUploaded() );
-		
-		info_item=gtk_menu_item_new_with_label( StringToSystray( wxString(_("Total UL: ")) + temp ) );
+		temp = wxString(_("Total UL: ")) + temp;
+		info_item=gtk_menu_item_new_with_label( StringToSystray( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
 
