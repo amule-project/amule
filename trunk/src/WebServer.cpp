@@ -410,6 +410,14 @@ void CamulewebFrame::OnSize( wxSizeEvent& WXUNUSED(event) ) {
 #include <stdlib.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+
+WX_DEFINE_OBJARRAY(ArrayOfUpDown);
+WX_DEFINE_OBJARRAY(ArrayOfSession);
+WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
+WX_DEFINE_OBJARRAY(ArrayOfSharedFiles);
+WX_DEFINE_OBJARRAY(ArrayOfServerEntry);
+WX_DEFINE_OBJARRAY(ArrayOfDownloadFiles);
 
 #define HTTPInit "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\n"
 #define HTTPInitGZ "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\nContent-Encoding: gzip\r\n"
@@ -853,7 +861,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		isUseGzip = false; // [Julien]
 		if (login) {
 			uint32 ipn=inet_addr( ip) ;
-			for (int i = 0; i < pThis->m_Params.badlogins.GetSize();) {
+			for (int i = 0; i < pThis->m_Params.badlogins.GetCount();) {
 				if (ipn == pThis->m_Params.badlogins[i]->datalen) {
 					pThis->m_Params.badlogins.RemoveAt(i);
 				} else 
@@ -930,7 +938,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		uint32 faults=0;
 
 		// check for bans
-		for (int i = 0; i < pThis->m_Params.badlogins.GetSize();i++)
+		for (int i = 0; i < pThis->m_Params.badlogins.GetCount();i++)
 			if (pThis->m_Params.badlogins[i]->datalen==ip) faults++;
 
 		if (faults>4) {
@@ -1230,7 +1238,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	OutE.Replace("[RemoveServer]", _GetPlainResString(IDS_REMOVETHIS));
 	OutE.Replace("[ConfirmRemove]", _GetPlainResString(IDS_WEB_CONFIRM_REMOVE_SERVER));
 
-	CArray<ServerEntry*, ServerEntry*> ServerArray;
+	ArrayOfServerEntry ServerArray;
 
 	// Populating array
 	wxString sServerList = m_ECClient->SendRecvMsg("SERVER LIST");
@@ -1505,7 +1513,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	wxString OutE2 = pThis->m_Templates.sTransferDownLineGood;
 
 	float fTotalSize = 0, fTotalTransferred = 0, fTotalSpeed = 0;
-	CArray<DownloadFiles*, DownloadFiles*> FilesArray;
+	ArrayOfDownloadFiles FilesArray;
 
 	// Populating array
 	wxString sTransferDLList = m_ECClient->SendRecvMsg("TRANSFER DL_LIST");
@@ -2040,8 +2048,8 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	OutE2.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_UP));
 	OutE2.Replace("[PriorityUp]", _GetPlainResString(IDS_PRIORITY_DOWN));
 
-	CArray<SharedFiles*, SharedFiles*> SharedArray;
-
+	ArrayOfSharedFiles SharedArray;
+	
 	// Populating array
 	// sSharedFilesList as:
 	// %s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
@@ -2737,8 +2745,7 @@ bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 	_RemoveTimeOuts(Data,lSession);
 
 	// find our session
-	// i should have used CMap there, but i like CArray more ;-)
-	for (int i = 0; i < pThis->m_Params.Sessions.GetSize(); i++) {
+	for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			// if found, also reset expiration time
 			pThis->m_Params.Sessions[i]->startTime = time(NULL);
@@ -2761,7 +2768,7 @@ bool CWebServer::_RemoveSession(ThreadData Data, long lSession) {
 		return "";
 
 	// find our session
-	for(int i = 0; i < pThis->m_Params.Sessions.GetSize(); i++) {
+	for(int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 		if (pThis->m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			pThis->m_Params.Sessions.RemoveAt(i);
 			m_ECClient->SendRecvMsg(wxString::Format("LOG ADDLOGLINE %s", getResString(IDS_WEB_SESSIONEND).GetData()));
@@ -2775,9 +2782,9 @@ Session CWebServer::GetSessionByID(ThreadData Data,long sessionID) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	
 	if (pThis != NULL) {
-		for (int i = 0; i < pThis->m_Params.Sessions.GetSize(); i++) {
+		for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 			if (pThis->m_Params.Sessions[i]->lSession == sessionID && sessionID != 0)
-				return *(pThis->m_Params.Sessions.GetAt(i));
+				return *(pThis->m_Params.Sessions[i]);
 		}
 	}
 
@@ -2793,7 +2800,7 @@ bool CWebServer::IsSessionAdmin(ThreadData Data,wxString SsessionID) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
 	
 	if (pThis != NULL) {
-		for (int i = 0; i < pThis->m_Params.Sessions.GetSize(); i++) {
+		for (int i = 0; i < pThis->m_Params.Sessions.GetCount(); i++) {
 			if (pThis->m_Params.Sessions[i]->lSession == sessionID && sessionID != 0)
 				return pThis->m_Params.Sessions[i]->admin;
 		}
@@ -3013,7 +3020,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 int CWebServer::UpdateSessionCount() {
 	// remove old bans
-	for (int i = 0; i < m_Params.badlogins.GetSize();) {
+	for (int i = 0; i < m_Params.badlogins.GetCount();) {
 		uint32 diff= ::GetTickCount() - m_Params.badlogins[i]->timestamp ;
 		if (diff >1000U*60U*15U && (::GetTickCount() > m_Params.badlogins[i]->timestamp)) {
 			m_Params.badlogins.RemoveAt(i);
@@ -3022,8 +3029,7 @@ int CWebServer::UpdateSessionCount() {
 	}
 
 	// count & remove old session
-    m_Params.Sessions.GetSize();
-	for (int i = 0; i < m_Params.Sessions.GetSize();) {
+	for (int i = 0; i < m_Params.Sessions.GetCount();) {
 	  time_t ts=time(NULL)-m_Params.Sessions[i]->startTime;
 	  if (ts > SESSION_TIMEOUT_SECS) {
 	    m_Params.Sessions.RemoveAt(i);

@@ -49,7 +49,7 @@
 #include <zlib.h>		// Needed for Bytef etc.
 #include "types.h"
 
-#include "CArray.h"		// Needed for CArray
+#include <wx/dynarray.h>
 
 class TransferredData;
 class CWebSocket;
@@ -205,6 +205,14 @@ typedef enum {
 	SERVER_SORT_FILES
 } xServerSort;
 
+
+WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
+WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
+WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
+WX_DECLARE_OBJARRAY(SharedFiles*, ArrayOfSharedFiles);
+WX_DECLARE_OBJARRAY(ServerEntry*, ArrayOfServerEntry);
+WX_DECLARE_OBJARRAY(DownloadFiles*, ArrayOfDownloadFiles);
+
 typedef struct {
 	uint32			nUsers;
 	xDownloadSort	DownloadSort;
@@ -215,9 +223,9 @@ typedef struct {
 	bool			bSharedSortReverse;	
 	bool			bShowUploadQueue;
 
-	CArray<UpDown*, UpDown*>		PointsForWeb;
-	CArray<Session*, Session*>	Sessions;
-	CArray<TransferredData*,TransferredData*> badlogins;	//TransferredData= IP : time
+	ArrayOfUpDown PointsForWeb;
+	ArrayOfSession Sessions;
+	ArrayOfTransferredData badlogins;
 	
 	wxString sLastModified;
 	wxString	sETag;
