@@ -353,7 +353,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 	if (masterhash) {
 		wxString strHash = char2unicode(masterhash);
 		if (!strHash.IsEmpty()) {
-			if (DecodeBase32(strHash, m_AICHHash.GetRawHash(), CAICHHash::GetHashSize()) == CAICHHash::GetHashSize()){
+			if (DecodeBase32(masterhash, m_AICHHash.GetRawHash(), CAICHHash::GetHashSize()) == CAICHHash::GetHashSize()){
 				m_bAICHHashValid = true;
 				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
 			} else {
