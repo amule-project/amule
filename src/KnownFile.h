@@ -137,7 +137,7 @@ public:
 
 	// local available part hashs
 	uint16	GetHashCount() const	{return hashlist.GetCount();}
-	const CMD4Hash&	GetPartHash(uint16 part) const;
+	uchar*	GetPartHash(uint16 part) const;
 
 	// nr. of part hashs according the file size wrt ED2K protocol
 	UINT	GetED2KPartHashCount() const { return m_iED2KPartHashCount; }
