@@ -25,8 +25,6 @@
 
 #include <wx/imaglist.h>
 #include "DirectoryTreeCtrl.h"	// Interface declarations
-#warning remove this when finished testing.
-#include "StringFunctions.h" 
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include <wx/event.h>
 
