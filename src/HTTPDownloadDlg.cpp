@@ -59,6 +59,7 @@ CHTTPDownloadDlg::CHTTPDownloadDlg(wxWindow* parent,wxString url,wxString tempNa
 void CHTTPDownloadDlg::OnBtnCancel(wxCommandEvent& evt)
 {
 
+ thread->setDeleteGUI(false);
  EndModal(ID_CANCEL);
 
 }
@@ -66,14 +67,9 @@ void CHTTPDownloadDlg::OnBtnCancel(wxCommandEvent& evt)
 
 CHTTPDownloadDlg::~CHTTPDownloadDlg() {
 
-  //thread deletion needed
-
- if (thread!=NULL) {
-
-	thread->setDeleteGUI(false);
-	thread->Delete();
-
- }
+	if (thread!=NULL) {
+		thread->setDeleteGUI(false);
+	}
 
 }
 
@@ -95,7 +91,7 @@ return delete_gui;
 }
 
 
-void* myThread::Entry() {
+wxThread::ExitCode myThread::Entry() {
 
  CURL *curl_handle;
  FILE *outfile;
@@ -113,17 +109,17 @@ void* myThread::Entry() {
     curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 15);
     curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
     curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
-    if (TestDestroy()) {fclose(outfile); return NULL; }
+    if (TestDestroy()) {fclose(outfile); return 0; }
     if (curl_easy_perform(curl_handle)==CURLE_OK) result=0;
     fclose(outfile);
  }
- return NULL;
+ return 0;
 }
 
 void myThread::OnExit() {
 
-if (myDlg!=NULL && getDeleteGUI() ) {
-myDlg->EndModal(result);
-}
+	if (myDlg!=NULL && getDeleteGUI() ) {
+		myDlg->EndModal(result);
+	}
 
 }
