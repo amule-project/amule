@@ -61,7 +61,11 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 	m_hilightUnfocusBrush=new wxBrush(newcol,wxSOLID);
 
 	Init();
-
+	
+	for (uint32 i=0; i<22; i++) {
+		imagelist.Add(wxBitmap(clientImages(i)));
+	}
+	#if 0
 	// load images
 	imagelist.Add(wxBitmap(clientImages(7)));
 	imagelist.Add(wxBitmap(clientImages(5)));
@@ -77,6 +81,7 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 	imagelist.Add(wxBitmap(clientImages(18)));
 	imagelist.Add(wxBitmap(clientImages(19)));
 	imagelist.Add(wxBitmap(clientImages(20)));
+	#endif
 }
 
 void CUploadListCtrl::Init()
@@ -190,34 +195,7 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 	if (itemnr == (-1)) {
 		return;
 	}
-	uint8 image;
-	if (client->ExtProtocolAvailable() && client->GetClientSoft() == SO_AMULE) {
-		if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-			image = 13;
-		} else {
-			image = 11;
-		}
-	} else if (client->ExtProtocolAvailable()) {
-		if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-			image = 3;
-		} else {
-			image = 1;
-		}
-	} else if (client->GetClientSoft() == SO_AMULE) {
-		if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-			image = 12;
-		} else {
-			image = 10;
-		}
-	} else {
-		if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-			image = 2;
-		} else {
-			image = 0;
-		}
-	}
-	// no images yet
-	// Why would we need to refresh the image anyway. We set it on OnDrawItem
+
 	char buffer[100];
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
@@ -436,55 +414,57 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 			wxDCClipper* clipper=new wxDCClipper(*dc,cur_rec.left,cur_rec.top,cur_rec.right-cur_rec.left,cur_rec.bottom-cur_rec.top);
 			switch(iColumn) {
 				case 0: {
-					uint8 image;
+					
+					
+					uint8 clientImage;
 					if (client->IsFriend()) {
-						image = 4;
-					} else if (client->ExtProtocolAvailable() && client->GetClientSoft() == SO_AMULE) {
-						if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-							image = 13;
-						} else {
-							image = 11;
-						}
-					} else if (client->ExtProtocolAvailable()) {
-						if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-							image = 3;
-						} else {
-							image = 1;
-						}
+						clientImage = 13;
 					} else {
-						if (client->GetClientSoft() == SO_MLDONKEY) {
-							if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-								image = 6;
-							} else {
-								image = 5;
-							}
-						} else if (client->GetClientSoft() == SO_AMULE) {
-							if(client->credits->GetScoreRatio(client->GetIP()) > 1) {
-								image = 12;
-							} else {
-								image = 10;
-							}
-						} else if (client->GetClientSoft() == SO_EDONKEYHYBRID) {
-							if(client->credits->GetScoreRatio(client->GetIP()) > 1) {
-								image = 8;
-							} else {
-								image = 7;
-							}
-						} else {
-							if (client->credits->GetScoreRatio(client->GetIP()) > 1) {
-								image = 2;
-							} else {
-								image = 0;
-							}
-						}
+						switch (client->GetClientSoft()) {
+							case SO_AMULE: 
+								clientImage = 17;
+								break;
+							case SO_MLDONKEY:
+							case SO_NEW_MLDONKEY:
+							case SO_NEW2_MLDONKEY:
+								clientImage = 15;
+								break;
+							case SO_EDONKEY:
+							case SO_EDONKEYHYBRID:
+								// Maybe we would like to make different icons?
+								clientImage = 16;
+								break;
+							case SO_EMULE:
+								clientImage = 14;
+								break;
+							case SO_LPHANT:
+								clientImage = 18;
+								break;
+							case SO_SHAREAZA:
+								clientImage = 19;
+								break;
+							case SO_LXMULE:
+								clientImage = 20;
+								break;
+							default:
+								// cDonkey, Compat Unk
+								// No icon for those yet. Using the eMule one + '?'
+								clientImage = 21;
+								break;
+						}	
 					}
-					// Added Thief icon [BlackRat]
-					if(client->thief) {
-						image = 9;
-					}
-					//POINT point = {cur_rec.left, cur_rec.top+1};
-					//imagelist.Draw(dc,image, point, ILD_NORMAL);
-					imagelist.Draw(image,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
+					
+					imagelist.Draw(clientImage,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
+										
+					if (client->credits->GetScoreRatio(client->GetIP()) > 1) {					
+						// Has credits, draw the gold star
+						// (wtf is the grey star?)
+						imagelist.Draw(11,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);						
+					} else if (client->ExtProtocolAvailable()) {
+						// Ext protocol -> Draw the '+'
+						imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
+					}		
+					
 					Sbuffer.Format("%s", client->GetUserName());
 					cur_rec.left +=20;
 					//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
