@@ -981,7 +981,6 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 		}
 		case EC_DETAIL_INC_UPDATE:
 		case EC_DETAIL_UPDATE:
-		case EC_DETAIL_INC_UPDATE:
 		case EC_DETAIL_CMD:
 			// No graphs
 			break;
