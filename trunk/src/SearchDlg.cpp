@@ -174,7 +174,10 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
 		OnBnClickedStop(nullEvent);
 	}
-
+	CSearchListCtrl *ctrl = (CSearchListCtrl*)m_notebook->GetPage(evt.GetSelection());
+	wxASSERT(ctrl);
+	theApp.searchlist->RemoveResults(ctrl->GetSearchId());
+	
 	// Do cleanups if this was the last tab
 	if ( m_notebook->GetPageCount() == 1 ) {
 		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
