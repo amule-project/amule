@@ -200,7 +200,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
+#ifndef CLIENT_GUI
 	chatwnd->Show(FALSE);
+#endif
 	kadwnd->Show(FALSE);	
 
 	// Create the GUI timer
