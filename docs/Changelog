@@ -2,8 +2,14 @@ Version 2.0.0rc8 - The "last rc" version.
 ----------
 2004-12-21
 
-    deltaHF: 
-	    * Show comments for shared files
+	Baz:
+		* Fix for server stats for users/files not being updated correctly.
+		* Fix for ERROR and WARNING server messages not being shown.
+		* Fixed server / transfers window splitters not being loaded/saved correctly.
+		* Fixed categories on search dialog not being refreshed on category name change.
+		
+	deltaHF: 
+		* Show comments for shared files
 		
 	Hetfield:
 		* Some fix in new Tray system and desktopMode bypass
@@ -45,12 +51,113 @@ Version 2.0.0rc8 - The "last rc" version.
 		  and another hidden bug in global searches' progress bar.
 		  (reported by ecforum)
 		  
+	ken_aMule:
+		* Fixed ipfilter on big endian archs.
+		* Fixed bug where amule would start consuming 100% cpu when it received a 
+		  corrupted EC packet.
+		* Fixed webserver, it wouldn't close connection when it received a POST request.
+		* Fixed webserver crash: added mutex to make variable wcThreads thread-safe.
+		* Fixed webserver <-> amule communication corruption when the webserver 
+		  received simultaneous requests. The problem was that all webserver threads 
+		  were using the same socket for sending/receiving EC packets to/from amule 
+		  without synchronization.
+		  
 	Kry:
-		* Lot of stuff
+		===============::MULTIPLATFORM::===============
+		* When a socket connection error like WOULD_BLOCK happens, aMule retries 
+		   the connection to avoid just-once errors
+		* AICH e-links working now, with masterhash and with hashset
+		* Proper handling of removing -fomit-frame-pointer flag that worls on all platforms.
+		* Initial support for wx-compliant systray. Will be ready for 2.0.0 final release.
+		* aMule no longer crashes on opening a non-existing folder. CDirIterator is safe now.
+		* Fixed crash on app close - never call a pure virtual function from a destructor.
+		* Moved the init/close code of aMule to where they belong: destructor/constructor.
+		* Much more debug info available to debug packets (packet dump and others)
+		* Major network improvements:
+			* Improved the socket processing on CPU usage and performance.
+			* Coded the functions handling the network string/bytes conversion of ips and 
+			   hostnames and the generic hostname solving thread, non dependant from host's 
+			   socket implementation. Less CPU and more reliable on both cases.
+		* Crash fixed on wrong arguments for wxString::Format
+		* New option on right click on downloading or search files for showing eserver's stats for
+		   that filehash. Needs browser correctly configured on preferences.
+		* Implemented messages filtering, from know clients/bogus clients/by words.
+		* Fixed hashing files changing display status.
+		* Fixed crash where transferwnd and clientlistctrl could be accessed before created.
+		* Listen socket on accepting connection no longer uses a blocking socket (CPU improvement).
+		* Not linking anymore to gtk libs if not needed.
+		* "GTK: Not Detected" is now either "Not Detected" or "Not Used" to avoid confusion.
+		* Fix for crashing on 'OK' button on preferences.
+		* Fix for preferences window being unreachable if aMule is minimized while showing it.
+		* Fix for crash on HTTP dialog if StopAnimation() was not called on destructor.
+		* Fixed crash when shutdown and preferences window open.
+		* Implemented OS_Info tag. Broke it 400 times, and fixed it 401 times, so working.
+		* Implemented statistics tree for OS_Info tag.
+		* Fixed several memory corruption issued caused by icons with wrong size.
+		* Fixed several memory corruption bugs on amule init/close.
+		* When aMule crashes, it not longer fails saving:
+			* Preferences (Saved on 'OK')
+			* Categories (Saved on changes)
+			* Total upload / download bytes (saved while running).
+		* Fixed crash on	OP_MULTIPACKETANSWER
+		* Sent wxInt and wxUInt classes usage down the drain for the standard int / uint
+		* Implemented "Share hidden files" checkbox.
+		* Immplemented the CT_EMULECOMPAT_OPTIONS new tag. 
+		  Right now only OS info support capabilities.
+		* Implemented new short tags style for server and client interchange of info.
+		  Fixes not being able to browse eMule >=0.42x shared files.
+		* Fixed aMule daemon compilation to use wxBase headers and libraries.
+		  This fixes amuled not compiling on wxBase only-boxes, thus making it kinnda pointless.
+		* Fixed AMD64 and GCC4.0 compilation/run, closes debian bug #285110
+		* Fixed some performance issues on Log text controls.
+		* Fixed long browsers requests on WebSocket. Buffer is now enlarged accordingly.
+		* Fixed timeout on webserver socket being... 10 minutes!!!
+		* Fixed several 100% cpu errors on WebSocket.
+		* Fixed our source exchange implementation that was... uh... wrong.
+		* Fixed stats tree on webserver.
+		* Misc. work on ECv2 implementation of messages.
+		* aMule can send now RGB encoded images via ECv2
+		* Webserber can read ECv2 Image tags via the new CDynPngImage class.
+		* eMule+ is now recognised under compatible client tag 0x05
+		* Unicode fixes on webserver.
+		* Got rid of almost all wxString::GetData()
+		* Major CPU improvements on WebServer.cpp
+		* otherfunctions.* is now clean from aMule specific stuff. Can be used anywhere.
+		* otherfunctions now have a namespace (surprinsigly named 'otherfunctions')
+		* Changed wxFileStreamInput -> wxFile (less class overhead).
+		* Several speed fixes on Stats code.
+		* Fixed possible crash on search thread creation + verbose on error.
+		* Fixed aMule crashing when local search is not returning and we click stop 
+		  or start another search.
+		* Fixed severeral endianess bugs.
+		* General rewrite of UDP Socket
+			* Received packets when app is not ready are now discarded.
+			* Small fix preventing memleaks and some strange asserts
+			* Fixed a severe memleak if 2 UDP packets are send at the same time, before the 
+			   first one finishes.
+			* Fixed the host solving fail not cleaning the data (another severe memleak)
+			* Fixed sending wrong data to wrong servers and thus not being replied.
+			* Fixed some server udp packets never reaching destination.
+		* Unicode fixes (char*/wxString issues)
+		* General cleaning, bugfixing and documenting.
+		* Added files:
+			StringFunctions.(h/cpp)
+			NetworkFunctions.(h/cpp)
+		
+		==================::MAC::===================
+		* Fixed server connection crashes related to accepting a connection from a being 
+		   destroyed socket. Probably fixes also some random BSD/Linux crashes on conection.
+		* Got rid of all <wx/wx.h> includes, improved compilation speed greatly.
+		* Fixed stats color boxes
+		* Fixed servers saving, not anymore stored wrong internaly.
+		* Coded Mac packager script for releases with included libcurl and wxWidgets.
+		* Included Mac aMule.app bundle on sources.
+		* Fixed sharing /Volumes and other special folders.
+		* Fixed crash on server.met download
 
 	permats:
 		* FIXED: Preferences -> Security -> Permissions wasn't being
-		  correctly saved restored.
+		  correctly saved for directories.
 
 	Phoenix:
 		* Lots of unicode fixes.
@@ -103,6 +210,10 @@ Version 2.0.0rc8 - The "last rc" version.
 		* Fixed buffer overflow problem in ed2k link handler.
 		* Stats bug fixed.
 
+	wizeman:
+		* Helped finding the code snippet where WebSocket was failing on request.
+		* Fixed 'Safe Max connections' code. It's safer to use it now, and it works.
+
 	Special Thanks To:
 
 		* Translators:
@@ -123,7 +234,7 @@ Version 2.0.0rc8 - The "last rc" version.
 
 		* Contributors:
 		  alehack,	alus,
-		  Baz,		boutros,fossybaer,
+		  boutros,	fossybaer,
 		  Frankk,	han,
 		  junaru,	sebaX,
 		  skolnick,	sLiCeR\,
@@ -142,7 +253,7 @@ Version 2.0.0rc8 - The "last rc" version.
 		  plaenky,	realcruncher,
 		  Sir,		Sniffer,
 		  sosonok,	|Syrius|,
-		  xplode_me,	wizeman
+		  xplode_me
 
 		* Everyone at:
 		  #amule	irc.freenode.net
@@ -152,7 +263,8 @@ Version 2.0.0rc8 - The "last rc" version.
 
 		* All aMule users!!!
 
-	Welcome our new aMule team members: lionel77, nachbarnebenan and one2one
+	Welcome our new aMule team members: 
+		lionel77, ken_aMule, nachbarnebenan & one2one
 
 
 --------------------------------------------------------------------------------
