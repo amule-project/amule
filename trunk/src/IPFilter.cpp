@@ -90,18 +90,21 @@ bool CIPFilter::m_inet_atoh(wxString &s, uint32 *ip)
 	return ret;
 }
 
-bool CIPFilter::ProcessLineOk(wxString *sLine, unsigned long linecounter)
+bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
 {
 	// remove spaces from the left and right.
-	sLine->Strip(wxString::both);
+	wxString line = sLine.Strip(wxString::both);
+	
 	// ignore comments & too short lines
-	if( 	sLine->GetChar(0) == '#' ||
-		sLine->GetChar(0) == '/' || 
-		sLine->Length() < 5 )
+	if ( line.GetChar(0) == wxT('#') ||
+		 line.GetChar(0) == wxT('/') || 
+		 line.Length() < 5 )
 		return false;
+	
 	// Create the tokenizer. Fields are separated with commas. 
 	// Returns the empty last token if that is the case
-	wxStringTokenizer tokens( *sLine, wxT(","), wxTOKEN_RET_EMPTY_ALL );
+	wxStringTokenizer tokens( line, wxT(","), wxTOKEN_RET_EMPTY_ALL );
+	
 	// First token is IP Range
 	wxString IPRange = tokens.GetNextToken();
 	if( IPRange.IsEmpty() )
@@ -114,6 +117,7 @@ bool CIPFilter::ProcessLineOk(wxString *sLine, unsigned long linecounter)
 		AddLogLineM(true, wxString::Format(_("Invalid line in file ipfilter.dat(%d)"), linecounter));
 		return false;
 	}
+	
 	// Convert string IP's to host order IP numbers
 	uint32 IPStart, IPEnd;
 	bool ok = 
@@ -150,12 +154,12 @@ int CIPFilter::LoadFromFile()
 			// increment line counter
 			linecounter++;
 			// Process line
-			if( !ProcessLineOk(&sbuffer, linecounter) ) continue;
+			if( !ProcessLineOk(sbuffer, linecounter) ) continue;
 			filtercounter++;
 		}
 		// Last line must be processed after.
 		linecounter++;
-		if( ProcessLineOk(&sbuffer, linecounter) ) filtercounter++;
+		if( ProcessLineOk(sbuffer, linecounter) ) filtercounter++;
 
 		// Close it for completeness ;)
 		readFile.Close();

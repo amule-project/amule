@@ -358,12 +358,10 @@ void CClientList::RemoveBannedClient(uint32 dwIP){
 }
 
 void CClientList::FilterQueues() {
-	POSITION pos;
-	CUpDownClient *client;
 	// Filter client list
-	pos = list.GetHeadPosition();
+	POSITION pos = list.GetHeadPosition();
 	while( pos ) {
-		client = list.GetNext(pos);
+		CUpDownClient* client = list.GetNext(pos);
 		if (theApp.ipfilter->IsFiltered(client->GetIP())) {
 			delete client;
 #warning Xaignar, do not forget to add Safe_Delete here ;)
