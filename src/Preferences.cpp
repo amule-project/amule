@@ -53,8 +53,8 @@ CPreferences::CPreferences()
 	// Use home directory to save preferences 
 	snprintf(buffer,400,"%s/." PACKAGE_NAME,getenv("HOME"));
 
-	if (!wxFileName::wxDirExists(buffer)) {
-		wxMkdir(buffer,0777);
+	if (!wxFileName::DirExists(buffer)) {
+		wxFileName::Mkdir(buffer,0777);
 	}
 	strncat(buffer,"/",1);
 
@@ -180,11 +180,11 @@ CPreferences::CPreferences()
 	fullpath=NULL;
 	userhash[5] = 14;
 	userhash[14] = 111;
-	if (!wxFileName::wxDirExists(GetIncomingDir())) {
-		wxMkdir(GetIncomingDir(),0777);
+	if (!wxFileName::DirExists(GetIncomingDir())) {
+		wxFileName::Mkdir(GetIncomingDir(),0777);
 	}
-	if (!wxFileName::wxDirExists(GetTempDir())) {
-		wxMkdir(GetTempDir(),0777);
+	if (!wxFileName::DirExists(GetTempDir())) {
+		wxFileName::Mkdir(GetTempDir(),0777);
 	}
 
 	if (((int*)prefs->userhash)[0] == 0 && ((int*)prefs->userhash)[1] == 0 && ((int*)prefs->userhash)[2] == 0 && ((int*)prefs->userhash)[3] == 0) {
@@ -245,11 +245,11 @@ bool CPreferences::Save()
 		error = true;
 	}
 	delete[] fullpath;
-	if (!wxFileName::wxDirExists(GetIncomingDir())) {
-		wxMkdir(GetIncomingDir(),0777);
+	if (!wxFileName::DirExists(GetIncomingDir())) {
+		wxFileName::Mkdir(GetIncomingDir(),0777);
 	}
-	if (!wxFileName:wxDirExists(GetTempDir())) {
-		wxMkdir(GetTempDir(),0777);
+	if (!wxFileName::DirExists(GetTempDir())) {
+		wxFileName::Mkdir(GetTempDir(),0777);
 	}
 	return error;
 }
@@ -1109,7 +1109,7 @@ void CPreferences::LoadCats() {
 
 		AddCat(newcat);
 		if (!wxFileName::DirExists(newcat->incomingpath)) {
-			wxMkdir(newcat->incomingpath,0777);
+			wxFileName::Mkdir(newcat->incomingpath,0777);
 		}
 	}
 }
