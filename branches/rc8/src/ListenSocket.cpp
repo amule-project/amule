@@ -2302,8 +2302,12 @@ void *CListenSocket::Entry()
 				}
 				continue;
 			}
-			CALL_APP_DATA_LOCK;
-			OnAccept(0);
+			if ( bListening ) {
+				CALL_APP_DATA_LOCK;
+				OnAccept(0);
+			} else {
+				Sleep(10);
+			}
 		}
 	}
 	return 0;
