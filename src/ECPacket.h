@@ -42,11 +42,6 @@ class ECSocket;
 class wxSocketBase;
 
 
-/**
- * Type of ECTag::m_tagList
- */
-typedef CECTag* (*_taglist_t)[];
-
 
 /**
  * High level EC packet TAGs handler class
@@ -67,7 +62,7 @@ class CECTag {
 				~CECTag(void);
 		bool		AddTag(const CECTag& tag);
 		bool		AddTag(const CECTag *tag);
-		CECTag *	GetTagByIndex(unsigned int index) const { return ((index >= m_tagCount) ? NULL : (*m_tagList)[index]); }
+		CECTag *	GetTagByIndex(unsigned int index) const { return ((index >= m_tagCount) ? NULL : m_tagList[index]); }
 		CECTag *	GetTagByName(ec_tagname_t name) const;
 		uint16		GetTagCount(void) const { return m_tagCount; }
 		const void *	GetTagData(void) const { return m_tagData; }
@@ -93,7 +88,7 @@ class CECTag {
 		unsigned int	m_dataLen;
 		const bool	m_dynamic;
 		uint16		m_listSize;
-		_taglist_t	m_tagList;
+		CECTag **m_tagList;
 };
 
 
