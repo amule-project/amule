@@ -512,9 +512,14 @@ bool CamuleApp::OnInit()
 		}
 	}
 
-
+#if wxCHECK_VERSION(2,5,3)
 	applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !applog->Ok() ) {
+#else
+	applog = new wxFile();
+	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), wxFile::read_write);
+	if ( !applog->IsOpened() ) {
+#endif
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
 		delete applog;
@@ -1720,7 +1725,9 @@ bool CamuleApp::AddServer(CServer *srv)
 //
 // lfroen: logging is not unicode-aware, and it should not be !
 // Phoenix: You must be joking. :)
+// -> Why?
 // Kry Yay, unicoding via streams
+#if wxCHECK_VERSION(2,5,3)
 #include <wx/sstream.h>
 void CamuleApp::AddLogLine(const wxString &msg)
 {
@@ -1736,6 +1743,31 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	}
 
 }
+#else
+void CamuleApp::AddLogLine(const wxString &msg)
+{
+        wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") +
+		wxDateTime::Now().FormatTime() + wxT(": ");
+	const wxCharBuffer date_str_buf = unicode2charbuf(curr_date);
+	const char *date_str = (const char *)date_str_buf;
+	applog->Write(date_str, strlen(date_str));
+	if ( enable_stdout_log ) {
+		fputs(date_str, stdout);
+	}
+	
+	const wxCharBuffer c_msg_buf = unicode2charbuf(msg);
+	const char *c_msg = (const char *)c_msg_buf;
+	if (c_msg != NULL) {
+		applog->Write(c_msg, strlen(c_msg));
+	}
+	applog->Write("\n", 1);
+	if ( enable_stdout_log ) {
+		puts(c_msg);
+	}	
+	
+	applog->Flush();
+}
+#endif
 
 uint32 CamuleApp::GetPublicIP() const {
 	/*
@@ -1780,9 +1812,15 @@ wxString CamuleApp::GetLog(bool reset)
 	wxString str(char2unicode(tmp_buffer));
 	delete [] tmp_buffer;
 	if ( reset ) {
+#if wxCHECK_VERSION(2,5,3)
 		delete applog;
 		applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 		if ( applog->Ok() ) {
+#else
+		applog->Close();
+		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true, wxFile::read_write);
+		if ( applog->IsOpened() ) {
+#endif
 			AddLogLine(_("Log has been reset"));
 		} else {
 			delete applog;

@@ -418,7 +418,11 @@ protected:
 		CamuleWebserverThread* webserver_thread;
 	#endif
 	
+#if wxCHECK_VERSION(2,5,3)
 	wxFFileOutputStream* applog;
+#else
+	wxFile *applog;
+#endif
 	bool enable_stdout_log;
 	wxString server_msg;
 
