@@ -70,8 +70,6 @@
 #include <map>
 #include <algorithm>
 
-#define PROGRESS_HEIGHT 3
-
 
 wxMutex CPartFile::m_FileCompleteMutex; 
 
@@ -1467,17 +1465,16 @@ void CPartFile::DrawShareStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool 
 #endif
 
 #ifndef AMULE_DAEMON
-void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
+void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 {
 	static CBarShader s_ChunkBar(16);
-	static CBarShader s_LoadBar(PROGRESS_HEIGHT);
 	
-	COLORREF crProgress;
 	COLORREF crHave;
 	COLORREF crPending;
+	COLORREF crProgress;
 	COLORREF crMissing = RGB(255, 0, 0);
 
-	if(bFlat) {
+	if ( bFlat ) {
 		crProgress = RGB(0, 150, 0);
 		crHave = RGB(0, 0, 0);
 		crPending = RGB(255,255,100);
@@ -1487,93 +1484,75 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 		crPending = RGB(255, 208, 0);
 	}
 
-	s_ChunkBar.SetHeight(rect.height - rect.y);
-	s_ChunkBar.SetWidth(rect.width - rect.x); 
+	s_ChunkBar.SetHeight(rect.height);
+	s_ChunkBar.SetWidth(rect.width); 
 	s_ChunkBar.SetFileSize(m_nFileSize);
 	s_ChunkBar.Fill(crHave);
 	s_ChunkBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
 
-	uint32 allgaps = 0;
 
-	if(status == PS_COMPLETE || status == PS_COMPLETING) {
-		s_ChunkBar.FillRange(0, m_nFileSize, crProgress);
+	if ( status == PS_COMPLETE || status == PS_COMPLETING ) {
+		s_ChunkBar.Fill( crProgress );
 		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
-		percentcompleted = 100; completedsize=m_nFileSize;
 		return;
 	}
 
-	// red gaps
-	for (POSITION pos = gaplist.GetHeadPosition();pos !=  0; ) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
-		allgaps += cur_gap->end - cur_gap->start + 1;
-		bool gapdone = false;
-		uint32 gapstart = cur_gap->start;
-		uint32 gapend = cur_gap->end;
-		for (uint32 i = 0; i != GetPartCount(); i++) {
-			if (gapstart >= i*PARTSIZE && gapstart <=  (i+1)*PARTSIZE) {
-				// is in this part?
-				if (gapend <= (i+1)*PARTSIZE) {
-					gapdone = true;
-				} else {
-					gapend = (i+1)*PARTSIZE; // and next part
-				}
-				// paint
-				COLORREF color;
-				if (m_SrcpartFrequency.GetCount() >= (size_t)i && m_SrcpartFrequency[i]) {
-					// frequency?
-					color = RGB(0,(210-(22*(m_SrcpartFrequency[i]-1)) <  0)? 0:210-(22*(m_SrcpartFrequency[i]-1)),255);
-				} else {
-					color = crMissing;
-				}
-				s_ChunkBar.FillRange(gapstart, gapend + 1,  color);
+	// Part availability ( of missing parts )
+	for ( POSITION pos = gaplist.GetHeadPosition(); pos; ) {
+		Gap_Struct* gap = gaplist.GetNext( pos );
 
-				if (gapdone) {
-					// finished?
-					break;
-				} else {
-					gapstart = gapend;
-					gapend = cur_gap->end;
-				}
-			}
+		// Start position
+		uint32 start = ( gap->start / PARTSIZE );
+		// End position
+		uint32 end   = ( gap->end / PARTSIZE ) + 1;
+
+		// Avoid going past the filesize. Dunno if this can happen, but the old code did check.
+		if ( end > GetPartCount() )
+			end = GetPartCount();
+
+		// Place each gap, one PART at a time
+		for ( uint32 i = start; i < end; i++ ) {
+			COLORREF color;
+			if ( i < m_SrcpartFrequency.GetCount() && m_SrcpartFrequency[i]) {
+				int blue = 210 - ( 22 * ( m_SrcpartFrequency[i] - 1 ) );
+				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
+			} else {
+				color = crMissing;
+			}	
+		
+			uint32 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
+			uint32 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
+		
+			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}
 	}
-	// yellow pending parts
-	for (POSITION pos = requestedblocks_list.GetHeadPosition();pos !=  0; ) {
-		Requested_Block_Struct* block =  requestedblocks_list.GetNext(pos);
-		s_ChunkBar.FillRange(block->StartOffset, block->EndOffset,  crPending);
+	
+	// Pending parts
+	for ( POSITION pos = requestedblocks_list.GetHeadPosition(); pos; ) {
+		Requested_Block_Struct* block = requestedblocks_list.GetNext( pos );
+		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, crPending );
 	}
-	s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 
-	// green progress
-	float blockpixel = (float)(rect.width)/((float)m_nFileSize);
-	RECT gaprect;
-	gaprect.top = rect.y; 
-	gaprect.bottom = gaprect.top + 4;
-	gaprect.left = rect.x; //->left;
+	// Draw the progress-bar
+	s_ChunkBar.Draw( dc, rect.x, rect.y, bFlat );
 
-	if(!bFlat) {
-		s_LoadBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
-		s_LoadBar.SetWidth((int) ((m_nFileSize - allgaps) * blockpixel));
-		s_LoadBar.Fill(crProgress);
-		s_LoadBar.Draw(dc, gaprect.left, gaprect.top, false);
+	
+	// Green progressbar width
+	int width = (int)(( (float)rect.width / (float)m_nFileSize ) * GetCompletedSize() );
+
+	if ( bFlat ) {
+		dc->SetBrush( wxBrush( crProgress, wxSOLID ) );
+		
+		dc->DrawRectangle( rect.x, rect.y, width, 3 );
 	} else {
-		gaprect.right = rect.x + (int)((m_nFileSize - allgaps) * blockpixel);
-		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour(crProgress),wxSOLID))); //wxBrush(crProgress));
-		dc->DrawRectangle(gaprect.left,gaprect.top,gaprect.right,gaprect.bottom);
-		//dc->FillRect(&gaprect, &CBrush(crProgress));
-		//draw gray progress only if flat
-		gaprect.left = gaprect.right;
-		gaprect.right = rect.width;
-		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour(224,224,224),wxSOLID))); //wxBrush(crPending));
-		dc->DrawRectangle(gaprect.left,gaprect.top,gaprect.right,gaprect.bottom);
-		//dc->FillRect(&gaprect, &CBrush(RGB(224,224,224)));
-	}
-	if ((gaplist.GetCount() || requestedblocks_list.GetCount())) {
-		percentcompleted = ((1.0f-(double)allgaps/m_nFileSize)) * 100;
-		completedsize = m_nFileSize - allgaps;
-	} else {
-		percentcompleted = 100;
-		completedsize=m_nFileSize;
+		// Draw the two black lines for 3d-effect
+		dc->SetPen( wxPen( wxColour( 0, 0, 0 ), 1, wxSOLID ) );
+		dc->DrawLine( rect.x, rect.y + 0, rect.x + width, rect.y + 0 );
+		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
+		
+		// Draw the green line
+		dc->SetPen( wxPen( crProgress, 1, wxSOLID ) );
+		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }
 #endif
@@ -2740,13 +2719,14 @@ bool CPartFile::IsCorruptedPart(uint16 partnumber)
 
 void CPartFile::SetDownPriority(uint8 np, bool bSave, bool bRefresh )
 {
-	m_iDownPriority = np;
-	theApp.downloadqueue->SortByPriority();
- // theApp.downloadqueue->CheckDiskspace();
-	if ( bRefresh )
-	UpdateDisplayedInfo(true);
-	if ( bSave )
-		SavePartFile();
+	if ( m_iDownPriority != np ) {
+		m_iDownPriority = np;
+		theApp.downloadqueue->SortByPriority();
+		if ( bRefresh )
+			UpdateDisplayedInfo(true);
+		if ( bSave )
+			SavePartFile();
+	}
 }
 
 void CPartFile::StopFile(bool bCancel)
@@ -3887,15 +3867,15 @@ void CPartFile::SetStatus(uint8 in)
 {
 	wxASSERT( in != PS_PAUSED && in != PS_INSUFFICIENT );
 	
-	status=in;
-	if (theApp.IsRunning()) {
-		// lfroen - if needed, must be on gui side, not here anyway
-		//if (Notify_DownloadCtrlGetCurrCat()==0) {
-			//Notify_DownloadCtrlChangeCat(0);
-		//}
-		UpdateDisplayedInfo(true);
-		if (theApp.glob_prefs->ShowCatTabInfos()) {
-			Notify_ShowUpdateCatTabTitles();
+	if ( status != in ) {
+		status = in;
+	
+		if (theApp.IsRunning()) {
+			UpdateDisplayedInfo( true );
+		
+			if ( theApp.glob_prefs->ShowCatTabInfos() ) {
+				Notify_ShowUpdateCatTabTitles();
+			}
 		}
 	}
 }
