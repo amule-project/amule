@@ -26,8 +26,9 @@
 #pragma interface "ClientList.h"
 #endif
 
-#include "Types.h"		// Needed for uint16 and uint32
-#include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "Types.h"			// Needed for uint16 and uint32
+#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "DeadSourceList.h"	// Needed for CDeadSourceList
 
 #include <deque>
 #include <map>
@@ -287,7 +288,25 @@ public:
 	 */
 	const IDMap& GetClientList();
 
-	
+
+	/**
+	 * Adds a source to the list of dead sources.
+	 *
+	 * @param client The source to be recorded as dead.
+	 */
+	void		AddDeadSource(const CUpDownClient* client);
+
+	/**
+	 * Checks if a source is recorded as being dead.
+	 *
+	 * @param client The client to evaluate.
+	 * @return True if dead, false otherwise.
+	 *
+	 * Sources that are dead are not to be considered valid
+	 * sources and should not be added to partfiles.
+	 */
+	bool		IsDeadSource(const CUpDownClient* client);
+
 private:
 	/**
 	 * Helperfunction which finds a client matching the specified client.
@@ -344,6 +363,10 @@ private:
 	std::map<uint32, CDeletedClient*> m_trackedClientsList;
 	//! This keeps track of the last time the tracked-list was pruned.
 	uint32	m_dwLastTrackedCleanUp;
+
+
+	//! List of unusable sources.
+	CDeadSourceList	m_deadSources;
 };
 
 #endif

@@ -1158,13 +1158,9 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		// ensure that all possible block requests are removed from the partfile
 		ClearDownloadBlockRequests();
 
-		if(GetDownloadState() == DS_CONNECTED){
-		    // client didn't responsed to our request for some reasons (remotely banned?)
-		    // or it just doesn't has this file, so try to swap first
-		    if (!SwapToAnotherFile(true, true, true, NULL)){
-			    theApp.downloadqueue->RemoveSource(this);
-			    //DEBUG_ONLY(AddDebugLogLine(false, "Removed %s from downloadqueue - didn't responsed to filerequests",GetUserName()));
-		    }
+		if ( GetDownloadState() == DS_CONNECTED ){
+			theApp.clientlist->AddDeadSource(this);
+			theApp.downloadqueue->RemoveSource(this);
 	    }
 	}
 
@@ -1198,20 +1194,18 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 			bDelete = false;
 	};
 
-	// The folowing code is brain damaged in aMule, the original code has
-	// AddDeadSource(this), which adds source to a list for later processing.
 	switch(m_nUploadState){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
-			// theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+			theApp.clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
 	switch(m_nDownloadState){
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
-			// theApp.clientlist->m_globDeadSourceList.AddDeadSource(this);
+			theApp.clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
 

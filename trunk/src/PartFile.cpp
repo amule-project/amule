@@ -3703,3 +3703,16 @@ uint8 CPartFile::GetStatus(bool ignorepause) const
 		return PS_PAUSED;
 	}
 }
+
+
+void CPartFile::AddDeadSource(const CUpDownClient* client)
+{
+	m_deadSources.AddDeadSource( client );
+}
+
+
+bool CPartFile::IsDeadSource(const CUpDownClient* client)
+{
+	return m_deadSources.IsDeadSource( client );
+}
+
