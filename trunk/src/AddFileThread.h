@@ -87,8 +87,10 @@ public:
 	/**
 	 * Speficies the number of existing threads.
 	 *
-	 * @return The current number of existing threads. It is probably safe to
-	 * assume that this reflects the number of files being hashed, as 
+	 * @return The current number of existing threads. 
+	 *
+	 * It is probably safe to assume that this reflects the number of files being
+	 * hashed, as threads with no files to hash die immediatly.
 	 */
 	static uint8	GetThreadCount();
 	
