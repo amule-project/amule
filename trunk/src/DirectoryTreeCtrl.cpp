@@ -135,10 +135,8 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 		wxTreeItemId hChild;
 		wxTreeItemIdValue cookie;
 		hChild = GetFirstChild(hItem,cookie);
-		int i = 1;
 		while (hChild.IsOk()) {
 			MarkChildren(hChild,share_it);
-			i++;
 			hChild=GetNextSibling(hChild);
 		}
 		Toggle(hItem);
