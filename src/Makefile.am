@@ -71,6 +71,7 @@ amule_SOURCES = ListenSocket.cpp \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
+	debugstuff.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadClient.cpp \
 	DownloadListCtrl.cpp \
