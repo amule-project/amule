@@ -1358,7 +1358,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	} else {
 		amuleIPV4Address tmp;
 		//tmp.Hostname(GetIP());
-		tmp.Hostname((char*)unicode2char(GetFullIP()));
+		tmp.Hostname(GetFullIP());
 		tmp.Service(GetUserPort());
 		m_socket->Connect(tmp,FALSE);
 		if (!SendHelloPacket()) {
