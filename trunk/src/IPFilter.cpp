@@ -44,7 +44,7 @@
 
 CIPFilter::CIPFilter()
 {
-	LoadFromDatFile( theApp.ConfigDir + wxT("ipfilter.dat") );
+	LoadFromFile( theApp.ConfigDir + wxT("ipfilter.dat"), false );
 	
 	if (thePrefs::IPFilterAutoLoad()) {
 		Update();
@@ -62,7 +62,7 @@ void CIPFilter::Reload()
 {
 	RemoveAllIPs();
 	
-	LoadFromDatFile( theApp.ConfigDir + wxT("ipfilter.dat") );
+	LoadFromFile( theApp.ConfigDir + wxT("ipfilter.dat"), false );
 }
 
 
