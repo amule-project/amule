@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include "amule.h"			// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
@@ -24,11 +26,33 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFIlter
 #include "ClientCredits.h"
+#include "updownclient.h"	// Needed for CUpDownClient
+#include "opcodes.h"
 #include <wx/intl.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
-#include "opcodes.h"
+#include <wx/dynarray.h>
 
 WX_DEFINE_OBJARRAY(ArrayOfPortAndHash);
+
+//------------CDeletedClient Class----------------------
+// this class / list is a bit overkill, but currently needed to avoid any exploit possibtility
+// it will keep track of certain clients attributes for 2 hours, while the CUpDownClient object might be deleted already
+// currently: IP, Port, UserHash
+class CDeletedClient{
+public:
+	CDeletedClient(CUpDownClient* pClient){
+		m_dwInserted = ::GetTickCount();
+		PORTANDHASH porthash = { pClient->GetUserPort(), pClient->Credits()};
+		m_ItemsList.Add(porthash);
+	}
+	ArrayOfPortAndHash	m_ItemsList;
+	uint32							m_dwInserted;
+};
+
+
+
+
+
 
 CClientList::CClientList()
 {

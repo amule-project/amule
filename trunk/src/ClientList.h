@@ -20,10 +20,8 @@
 #ifndef CLIENTLIST_H
 #define CLIENTLIST_H
 
-#include <wx/dynarray.h>
 #include "types.h"		// Needed for uint16 and uint32
 #include "GetTickCount.h"
-#include "updownclient.h"	// Needed for CUpDownClient
 
 #include <set>
 #include <list>
@@ -35,11 +33,6 @@ class CMD4Hash;
 
 #define BAN_CLEANUP_TIME	1200000 // 20 min
 
-//------------CDeletedClient Class----------------------
-// this class / list is a bit overkill, but currently needed to avoid any exploit possibtility
-// it will keep track of certain clients attributes for 2 hours, while the CUpDownClient object might be deleted already
-// currently: IP, Port, UserHash
-
 
 struct PORTANDHASH{
 	uint16 nPort;
@@ -48,17 +41,8 @@ struct PORTANDHASH{
 
 WX_DECLARE_OBJARRAY(PORTANDHASH, ArrayOfPortAndHash);
 
-class CDeletedClient{
-public:
-	CDeletedClient(CUpDownClient* pClient){
-		m_dwInserted = ::GetTickCount();
-		PORTANDHASH porthash = { pClient->GetUserPort(), pClient->Credits()};
-		m_ItemsList.Add(porthash);
-	}
-	ArrayOfPortAndHash	m_ItemsList;
-//	CArray<PORTANDHASH,PORTANDHASH> m_ItemsList;
-	uint32							m_dwInserted;
-};
+class CDeletedClient;
+
 
 class CClientList
 {
