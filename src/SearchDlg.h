@@ -145,6 +145,7 @@ private:
 
 	void		StartNewSearch();
 	void		OnSearchClosed(wxNotebookEvent& evt);
+	void		OnAllPagesClosed(wxNotebookEvent& evt);
 
 	void		OnBnClickedStart(wxCommandEvent& evt);
 	void		OnBnClickedStop(wxCommandEvent& evt);

@@ -73,6 +73,8 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
 	}
 
+	// Enabling the window controls. Beware, they must also be set in SendMessage(), it is this fucntion
+        // that is called from ClientListCtrl, instead of StartSession()
 	if ( chatselector->GetPageCount() == 1 ) {
 		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
 		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
@@ -100,7 +102,7 @@ void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
 	GetParent()->FindWindow(IDC_CSEND)->Enable(false);
 	GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
 	GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
-	((wxTextCtrl*) GetParent()->FindWindow(IDC_CMESSAGE))->Clear();
+	CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
 }
 
 
@@ -147,6 +149,14 @@ void CChatWnd::SendMessage(const wxString& message, const wxString& client_name,
 	
 	if (chatselector->SendMessage( message, client_name, to_id )) {
 		CastChild(IDC_CMESSAGE, wxTextCtrl)->Clear();
+	}
+
+	// Enabling the window controls. Beware, they must also be set in StartSession(), it is this function
+        // that is called from CFriendLiist, instead of SendMessage()
+	if ( chatselector->GetPageCount() == 1 ) {
+		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
+		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
+		GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
 	}
 
 	CastChild(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
