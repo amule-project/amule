@@ -911,25 +911,15 @@ bool CamuleDlg::SaveGUIPrefs()
 //hides amule
 void CamuleDlg::Hide_aMule(bool iconize)
 {
-
 	if ((!is_hidden) && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
 		is_hidden = true;
 		last_iconizing = GetTickCount();
 		
-		transferwnd->downloadlistctrl->Freeze();
-		transferwnd->uploadlistctrl->Freeze();
-		serverwnd->serverlistctrl->Freeze();
-		sharedfileswnd->sharedfilesctrl->Freeze();
-		transferwnd->downloadlistctrl->Show(FALSE);
-		serverwnd->serverlistctrl->Show(FALSE);
-		transferwnd->uploadlistctrl->Show(FALSE);
-		sharedfileswnd->sharedfilesctrl->Show(FALSE);
-		Freeze();
 		if (iconize) {
 			Iconize(TRUE);
 		}
+		
 		Show(FALSE);
-
 	}
 
 }
@@ -938,22 +928,9 @@ void CamuleDlg::Hide_aMule(bool iconize)
 //shows amule
 void CamuleDlg::Show_aMule(bool uniconize)
 {
-
 	if ((is_hidden) && ((last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
 		is_hidden = false;
 		last_iconizing = GetTickCount();
-		
-		transferwnd->downloadlistctrl->Show(TRUE);
-		transferwnd->uploadlistctrl->Show(TRUE);
-		serverwnd->serverlistctrl->Show(TRUE);
-		sharedfileswnd->sharedfilesctrl->Show(TRUE);
-		transferwnd->downloadlistctrl->Thaw();
-		serverwnd->serverlistctrl->Thaw();
-		transferwnd->uploadlistctrl->Thaw();
-		sharedfileswnd->sharedfilesctrl->Thaw();
-		Thaw();
-		Update();
-		Refresh();
 		
 		if (uniconize) {
 			Show(TRUE);
