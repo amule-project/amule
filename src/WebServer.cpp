@@ -782,7 +782,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 
 	// reverse sort direction in link
-	m_ServersInfo.SetSortOrder(sSort, (sSortRev == wxT("true")));
+	m_ServersInfo.SetSortOrder(sSort, sSortRev);
 
 	wxString Out = m_Templates.sServerList;
 	Out.Replace(wxT("[ConnectedServerData]"), _GetConnectedServer(Data));
@@ -1251,7 +1251,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 
-	m_SharedFilesInfo.SetSortOrder(sSort, (sSortRev == wxT("true")));
+	m_SharedFilesInfo.SetSortOrder(sSort, sSortRev);
 
 	//Name sorting link
 	wxString Out = m_Templates.sSharedList;
