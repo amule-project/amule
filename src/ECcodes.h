@@ -314,6 +314,11 @@ enum {
 	EC_OP_SEARCH_START,
 	
 		/*!
+		 * \brief Command to stop current search
+		 */
+	EC_OP_SEARCH_STOP,
+
+		/*!
 		 * \brief Search results returned to client
 		 */
 	EC_OP_SEARCH_RESULTS,

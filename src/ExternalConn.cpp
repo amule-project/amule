@@ -624,6 +624,13 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Search_Stop(const CECPacket *request)
+{
+	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
+
+	return reply;
+}
+
 CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
 	wxString response;
@@ -1489,6 +1496,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		case EC_OP_SEARCH_START:
 			response = Get_EC_Response_Search(request);
+			break;
+
+		case EC_OP_SEARCH_STOP:
+			response = Get_EC_Response_Search_Stop(request);
 			break;
 
 		case EC_OP_SEARCH_RESULTS:
