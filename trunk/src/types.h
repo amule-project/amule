@@ -23,6 +23,7 @@
 
 #include <wx/defs.h>
 #include <inttypes.h>
+#include <wx/dynarray.h>
 /* 
  * Backwards compatibility with emule.
  * Note that the int* types are indeed unsigned.
@@ -41,6 +42,8 @@ typedef int32_t		sint32;
 typedef int64_t		sint64;
 typedef uint8_t		uchar;
 typedef uint8_t		BYTE;
+
+WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
 #if !defined(__cplusplus)
 	typedef int bool;

@@ -56,8 +56,6 @@ class CFile;
 class Packet;
 class CTag;
 
-WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
-
 WX_DECLARE_OBJARRAY(CMD4Hash, ArrayOfCMD4Hash);
 
 WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
