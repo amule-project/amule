@@ -509,84 +509,98 @@ void CSharedFilesCtrl::OnColumnClick(wxListEvent& evt)
 	SortItems(SortProc, sortItem + adder + (sortAscending ? 0:20));
 }
 
+
 int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CKnownFile* item1 = (CKnownFile*)lParam1;
 	CKnownFile* item2 = (CKnownFile*)lParam2;	
-	switch(lParamSort){
-		case 0: //filename asc
-			return item1->GetFileName().CmpNoCase(item2->GetFileName());
-		case 20: //filename desc
-			return item2->GetFileName().CmpNoCase(item1->GetFileName());
 
-		case 1: //filesize asc
-			return item1->GetFileSize()==item2->GetFileSize()?0:(item1->GetFileSize()>item2->GetFileSize()?1:-1);
-
-		case 21: //filesize desc
-			return item1->GetFileSize()==item2->GetFileSize()?0:(item2->GetFileSize()>item1->GetFileSize()?1:-1);
+	switch (lParamSort) {
+		// Sort by filename. Ascending.
+		case 0:  return item1->GetFileName().CmpNoCase( item2->GetFileName() );
+		// Sort by filename. Decending.
+		case 20: return item2->GetFileName().CmpNoCase( item1->GetFileName() );
 
 
-		case 2: //filetype asc
-			return GetFiletypeByName(item1->GetFileName()).CmpNoCase(GetFiletypeByName( item2->GetFileName()));
-		case 22: //filetype desc
-			return GetFiletypeByName(item2->GetFileName()).CmpNoCase(GetFiletypeByName( item1->GetFileName()));
-
-		case 3: //prio asc
-			if(item1->GetUpPriority() == PR_VERYLOW )
-				return 1;
-			else if (item2->GetUpPriority() == PR_VERYLOW)
-				return 0;
-			else
-				return item2->GetUpPriority()-item1->GetUpPriority();
-		case 23: //prio desc
-			if(item1->GetUpPriority() == PR_VERYLOW )
-				return 0;
-			else if (item2->GetUpPriority() == PR_VERYLOW)
-				return 1;
-			else
-				return item1->GetUpPriority()-item2->GetUpPriority();
-
-		case 4: //permission asc
-			return item2->GetPermissions()-item1->GetPermissions();
-		case 24: //permission desc
-			return item1->GetPermissions()-item2->GetPermissions();
-
-		case 5: //fileID asc
-			return EncodeBase16( item1->GetFileHash(), 16 ).Cmp( EncodeBase16( item2->GetFileHash(), 16 ) );
-		case 25: //fileID desc
-			return EncodeBase16( item2->GetFileHash(), 16 ).Cmp( EncodeBase16( item1->GetFileHash(), 16 ) );
-
-		case 6: //requests asc
-			return item1->statistic.GetRequests() - item2->statistic.GetRequests();
-		case 26: //requests desc
-			return item2->statistic.GetRequests() - item1->statistic.GetRequests();
-		case 7: //acc requests asc
-			return item1->statistic.GetAccepts() - item2->statistic.GetAccepts();
-		case 27: //acc requests desc
-			return item2->statistic.GetAccepts() - item1->statistic.GetAccepts();
-		case 8: //all transferred asc
-			return item1->statistic.GetTransfered()==item2->statistic.GetTransfered()?0:(item1->statistic.GetTransfered()>item2->statistic.GetTransfered()?1:-1);
-		case 28: //all transferred desc
-			return item1->statistic.GetTransfered()==item2->statistic.GetTransfered()?0:(item2->statistic.GetTransfered()>item1->statistic.GetTransfered()?1:-1);
-
-		case 10: //folder asc
-			return item1->GetFilePath().CmpNoCase( item2->GetFilePath() );
-		case 30: //folder desc
-			return item2->GetFilePath().CmpNoCase( item1->GetFilePath() );
+		// Sort by filesize. Ascending.
+		case 1:  return CmpAny( item1->GetFileSize(), item2->GetFileSize() );
+		// Sort by filesize. Decending.
+		case 21: return CmpAny( item2->GetFileSize(), item1->GetFileSize() );
 
 
-		case 106: //all requests asc
-			return item1->statistic.GetAllTimeRequests() - item2->statistic.GetAllTimeRequests();
-		case 126: //all requests desc
-			return item2->statistic.GetAllTimeRequests() - item1->statistic.GetAllTimeRequests();
-		case 107: //all acc requests asc
-			return item1->statistic.GetAllTimeAccepts() - item2->statistic.GetAllTimeAccepts();
-		case 127: //all acc requests desc
-			return item2->statistic.GetAllTimeAccepts() - item1->statistic.GetAllTimeAccepts();
-		case 108: //all transferred asc
-			return item1->statistic.GetAllTimeTransfered()==item2->statistic.GetAllTimeTransfered()?0:(item1->statistic.GetAllTimeTransfered()>item2->statistic.GetAllTimeTransfered()?1:-1);
-		case 128: //all transferred desc
-			return item1->statistic.GetAllTimeTransfered()==item2->statistic.GetAllTimeTransfered()?0:(item2->statistic.GetAllTimeTransfered()>item1->statistic.GetAllTimeTransfered()?1:-1);
+		// Sort by filetype. Ascending.
+		case 2:  return GetFiletypeByName(item1->GetFileName()).CmpNoCase(GetFiletypeByName( item2->GetFileName()) );
+		// Sort by filetype. Decending.
+		case 22: return GetFiletypeByName(item2->GetFileName()).CmpNoCase(GetFiletypeByName( item1->GetFileName()) );
+
+
+		// Sort by priority. Ascending.
+		case 3:
+			{
+				int8 prioA = item1->GetUpPriority();
+				int8 prioB = item2->GetUpPriority();
+			
+				// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
+				return CmpAny( ( prioB != PR_VERYLOW ? prioB : -1 ), ( prioA != PR_VERYLOW ? prioA : -1 ) );
+			}
+		// Sort by priority. Decending.
+		case 23:
+			{
+				int8 prioA = item1->GetUpPriority();
+				int8 prioB = item2->GetUpPriority();
+			
+				// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
+				return CmpAny( ( prioA != PR_VERYLOW ? prioA : -1 ), ( prioB != PR_VERYLOW ? prioB : -1 ) );
+			}
+
+
+		// Sort by permission. Ascending.
+		case 4:  return CmpAny( item2->GetPermissions(), item1->GetPermissions() );
+		// Sort by permission. Decending.
+		case 24: return CmpAny( item1->GetPermissions(), item2->GetPermissions() );
+
+
+		// Sort by fileID. Ascending.
+		case 5:  return item1->GetFileHash().Encode().Cmp( item2->GetFileHash().Encode() );
+		// Sort by fileID. Decending.
+		case 25: return item2->GetFileHash().Encode().Cmp( item1->GetFileHash().Encode() );
+
+
+		// Sort by Requests this session. Ascending.
+		case 6:  return CmpAny( item1->statistic.GetRequests(), item2->statistic.GetRequests() );
+		// Sort by Requests this session. Decending.
+		case 26: return CmpAny( item2->statistic.GetRequests(), item1->statistic.GetRequests() );
+		
+		
+		// Sort by accepted requests. Ascending.
+		case 7:  return CmpAny( item1->statistic.GetAccepts(), item2->statistic.GetAccepts() );
+		// Sort by accepted requests. Decending.
+		case 27: return CmpAny( item2->statistic.GetAccepts(), item1->statistic.GetAccepts() );
+
+
+		// Sort by transferred. Ascending.
+		case 8:  return CmpAny( item1->statistic.GetTransfered(), item2->statistic.GetTransfered() );
+		// Sort by transferred. Decending.
+		case 28: return CmpAny( item2->statistic.GetTransfered(), item1->statistic.GetTransfered() );
+
+
+		// Sort by requests (All). Ascending.
+		case 106: return CmpAny( item1->statistic.GetAllTimeRequests(), item2->statistic.GetAllTimeRequests() );
+		// Sort by requests (All). Descending.
+		case 126: return CmpAny( item2->statistic.GetAllTimeRequests(), item1->statistic.GetAllTimeRequests() );
+
+
+		// Sort by accepted requests (All). Ascending.
+		case 107: return CmpAny( item1->statistic.GetAllTimeAccepts(), item2->statistic.GetAllTimeAccepts() );
+		// Sort by accepted requests (All). Decending.
+		case 127: return CmpAny( item2->statistic.GetAllTimeAccepts(), item1->statistic.GetAllTimeAccepts() );
+
+
+		// Sort by transferred (All). Ascending.
+		case 108: return CmpAny( item1->statistic.GetAllTimeTransfered(), item2->statistic.GetAllTimeTransfered() );
+		// Sort by transferred (All). Decending.
+		case 128: return CmpAny( item2->statistic.GetAllTimeTransfered(), item1->statistic.GetAllTimeTransfered() );
+
 
 		default: 
 			return 0;

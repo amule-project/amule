@@ -1695,7 +1695,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		lParamSort -= 100;
 	}
 
-	int comp;
+	int comp = 0;
 
 	if (item1->type == 1 && item2->type != 1) {
 		if (item1->value == item2->parent->value) {
@@ -1728,124 +1728,117 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			return item1->type - item2->type;
 		}
 
-		comp = Compare(client1, client2, lParamSort, sortMod);
+		comp = Compare(client1, client2, lParamSort);
 	}
 
 	return sortMod * comp;
 }
 
-int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParamSort)
+int CDownloadListCtrl::Compare(CPartFile* file1, CPartFile* file2, long lParamSort)
 {
 	switch (lParamSort) {
-		case 0:	//filename asc
-			return file1->GetFileName().CmpNoCase( file2->GetFileName() );
-		case 1:	//size asc
-			return file1->GetFileSize()==file2->GetFileSize()?0:(file2->GetFileSize()>file1->GetFileSize()?1:-1);
-		case 2:	//transfered asc
-			return file1->GetTransfered()==file2->GetTransfered()?0:(file2->GetTransfered()>file1->GetTransfered()?1:-1);			
-		case 3:	//completed asc
-			return file1->GetCompletedSize()==file2->GetCompletedSize()?0:(file2->GetCompletedSize()>file1->GetCompletedSize()?1:-1);			
-		case 4:	//speed asc
-			return (int)(file1->GetKBpsDown()*1024-file2->GetKBpsDown()*1024);
-		case 5:	//progress asc
-			{
-				float comp = file1->GetPercentCompleted() - file2->GetPercentCompleted();
-				if (comp > 0) {
-					return 1;
-				} else {
-					if (comp < 0) {
-						return -1;
-					} else {
-						return 0;
-					}
-				}
-			}
-		case 6:	//sources asc
-			return file1->GetSourceCount() - file2->GetSourceCount();
-		case 7:	//priority asc
-			//return file1->GetPriority() - file2->GetPriority();
-			return file1->GetDownPriority() - file2->GetDownPriority();
-		case 8:	//Status asc 
-			return file1->getPartfileStatusRang() - file2->getPartfileStatusRang();
-		case 9:	//Remaining Time asc 
-			return file1->getTimeRemaining() - file2->getTimeRemaining();
-		case 10: // Last seen complete - changed by deltaHF *start* (Georg Ludwig fix)
-                                                 {
-            time_t t1 = file1->lastseencomplete;
-            time_t t2 = file2->lastseencomplete;
-
-                return (t1 > t2) ? 1 : (t1 < t2) ? -1 : 0;
-            }
-        case 11: // Last reception
-                                                  {
-            time_t t1 = file1->GetLastChangeDatetime();
-            time_t t2 = file2->GetLastChangeDatetime();
-
-                return (t1 > t2) ? 1 : (t1 < t2) ? -1 : 0; // *end*
-            }
+		// Sort by filename		
+		case 0:	 return file1->GetFileName().CmpNoCase( file2->GetFileName() );
+		// Sort by size
+		case 1:	return CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+		// Sort by transfered
+		case 2:	return CmpAny( file1->GetTransfered(), file2->GetTransfered() );
+		// Sort by completed
+		case 3:	return CmpAny( file1->GetCompletedSize(), file2->GetCompletedSize() );
+		// Sort by speed
+		case 4:	return CmpAny( file1->GetKBpsDown()*1024, file2->GetKBpsDown()*1024 );
+		// Sort by percentage completed
+		case 5: return CmpAny( file1->GetPercentCompleted(), file2->GetPercentCompleted() );
+		// Sort by number of sources		
+		case 6:	return CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
+		// Sort by priority
+		case 7:	return CmpAny( file1->GetDownPriority(), file2->GetDownPriority() );
+		// Sort by status
+		case 8:	return CmpAny( file1->getPartfileStatusRang(), file2->getPartfileStatusRang() );
+		// Sort by remaining time
+		case 9:	return CmpAny( file1->getTimeRemaining(), file2->getTimeRemaining() );
+		// Sort by last seen complete
+		case 10: return CmpAny( file1->lastseencomplete, file2->lastseencomplete );
+		// Sort by last reception
+        case 11: return CmpAny( file1->GetLastChangeDatetime(), file2->GetLastChangeDatetime() ); 
+		
 		default:
 			return 0;
 	}
 }
 
-int CDownloadListCtrl::Compare(const CUpDownClient * client1, const CUpDownClient * client2, long lParamSort, int WXUNUSED(sortMod))
+int CDownloadListCtrl::Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort)
 {
 	switch (lParamSort) {
-		case 0:	//name asc
-			return(client1->GetUserName().CmpNoCase(client2->GetUserName()));
-		case 1:	//size but we use status asc
-			return client1->GetDownloadState() - client2->GetDownloadState();
-		case 2:	//transfered asc
-		case 3:	//completed asc
-			return client1->GetTransferedDown() - client2->GetTransferedDown();
-		case 4:	//speed asc
-			return (int)((client1->GetKBpsDown() - client2->GetKBpsDown())*1024.0);
-		case 5:	//progress asc
-			return client1->GetAvailablePartCount() - client2->GetAvailablePartCount();
+		// Sort by name
+		case 0:	return client1->GetUserName().CmpNoCase( client2->GetUserName() );
+		// Sort by status (size field)
+		case 1:	return CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
+		// Sort by transfered in the following fields
+		case 2:	// Completed field
+		case 3:	// Transfered field
+			return CmpAny( client1->GetTransferedDown(), client2->GetTransferedDown() );
+		// Sort by speed
+		case 4:	return CmpAny( client1->GetKBpsDown(), client2->GetKBpsDown() );
+		// Sort by parts offered (Progress field)
+		case 5:	return CmpAny( client1->GetAvailablePartCount(), client2->GetAvailablePartCount() );
+		// Sort by client version
 		case 6:
-			if (client1->GetClientSoft() == client2->GetClientSoft()) {
-				if (client1->IsEmuleClient()) {
-					return client2->GetMuleVersion() - client1->GetMuleVersion();
+			{
+				if ( client1->GetClientSoft() == client2->GetClientSoft() ) {
+					if (client1->IsEmuleClient()) {
+						return CmpAny( client2->GetMuleVersion(), client1->GetMuleVersion() );
+					} else {
+						return CmpAny( client2->GetVersion(), client1->GetVersion() );
+					}
 				} else {
-					return client2->GetVersion() - client1->GetVersion();
+					return CmpAny( client1->GetClientSoft(), client2->GetClientSoft() );
 				}
 			}
-			return(client1->GetClientSoft() - client2->GetClientSoft());
-		case 7:	//qr asc
-			if (client1->GetRemoteQueueRank() == 0 && client1->GetDownloadState() == DS_ONQUEUE && client1->IsRemoteQueueFull() == true) {
-				return 1;
-			}
-			if (client2->GetRemoteQueueRank() == 0 && client2->GetDownloadState() == DS_ONQUEUE && client2->IsRemoteQueueFull() == true) {
-				return -1;
-			}
-			if (client1->GetRemoteQueueRank() == 0) {
-				return 1;
-			}
-			if (client2->GetRemoteQueueRank() == 0) {
-				return -1;
-			}
-			return client1->GetRemoteQueueRank() - client2->GetRemoteQueueRank();
-		case 8:
-			if (client1->GetDownloadState() == client2->GetDownloadState()) {
-				if (client1->IsRemoteQueueFull()) {
-					return 1;
-				}
-				if (client2->IsRemoteQueueFull()) {
-					return -1;
+		// Sort by Queue-Rank
+		case 7:
+			{
+				// Are both on queue?
+				if ( !client1->IsRemoteQueueFull() && !client2->IsRemoteQueueFull() ) {
+					// Places clients with ranks before clients without or acording to rank if both have ranks
+					if ( client1->GetRemoteQueueRank() && client2->GetRemoteQueueRank() ) {
+						return CmpAny( client1->GetRemoteQueueRank(), client2->GetRemoteQueueRank() );
+					} else if ( client1->GetRemoteQueueRank() ) {
+						return -1;
+					} else if ( client2->GetRemoteQueueRank() ) {
+						return  1;
+					} else {
+						return  0;
+					}
 				} else {
+					if ( client1->IsRemoteQueueFull() && !client2->IsRemoteQueueFull() )
+						return 1;
+
+					if ( client2->IsRemoteQueueFull() && !client1->IsRemoteQueueFull() )
+						return -1;
+						
+					// Both are Full
 					return 0;
 				}
 			}
-			return client1->GetDownloadState() - client2->GetDownloadState();
+		// Sort by state
+		case 8:
+			if (client1->GetDownloadState() == client2->GetDownloadState()) {
+				if (client1->IsRemoteQueueFull())
+					return 1;
+					
+				if (client2->IsRemoteQueueFull())
+					return -1;
+					
+				return 0;
+			} else {
+				return CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
+			}
 		default:
 			return 0;
 	}
 }
 
-
-void CDownloadListCtrl::CreateMenues()
-{
-}
 
 void CDownloadListCtrl::ClearCompleted()
 {

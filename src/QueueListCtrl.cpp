@@ -565,84 +565,86 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CUpDownClient* item1 = (CUpDownClient*)lParam1;
 	CUpDownClient* item2 = (CUpDownClient*)lParam2;
-	CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
-	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
-		switch(lParamSort) {
-		case 0:
-			return item1->GetUserName().CmpNoCase(item2->GetUserName());
-		case 100:
-			return item2->GetUserName().CmpNoCase(item1->GetUserName());
+	
+	// Ascending or decending?
+	int mode = 1;
+	if ( lParamSort >= 100 ) {
+		mode = -1;
+		lParamSort -= 100;
+	}
+	
+	switch(lParamSort) {
+		// Sort by username
+		case 0: return mode * item1->GetUserName().CmpNoCase( item2->GetUserName() );
+		// Sort by filename
 		case 1:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file1->GetFileName().CmpNoCase(file2->GetFileName());
-			} else if(file1 == NULL) {
-				return 1;
-			} else {
-				return 0;
+			{
+				CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+				CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+			
+				if( (file1 != NULL) && (file2 != NULL)) {
+					return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+				} else if (file1 == NULL) {
+					return 1 * mode;
+				} else if (file2 == NULL) {
+					return -1 * mode;
+				} else {
+					return 0;
+				}
 			}
-		case 101:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file2->GetFileName().CmpNoCase(file1->GetFileName());
-			} else if(file1 == NULL) {
-				return 1;
-			} else {
-				return 0;
+		// Sort by client software
+		case 2:
+			{
+				if (item1->GetClientSoft() != item2->GetClientSoft())
+					return mode * CmpAny( item1->GetClientSoft(), item2->GetClientSoft() );
+					
+				if (item1->GetVersion() != item2->GetVersion())
+					return mode * CmpAny( item1->GetVersion(), item2->GetVersion() );
+					
+				return mode * item1->GetClientModString().CmpNoCase( item2->GetClientModString() );
 			}
-		case 2: {
-			if( item1->GetClientSoft() != item2->GetClientSoft() )
-				return item2->GetClientSoft(), item1->GetClientSoft();
-			if (item1->GetVersion() != item2->GetVersion())
-				return item1->GetVersion(), item2->GetVersion();
-			return item1->GetClientModString().CmpNoCase(item2->GetClientModString());
-			}
-		case 102: {
-			if( item1->GetClientSoft() != item2->GetClientSoft() )
-				return item1->GetClientSoft(), item2->GetClientSoft();
-			if (item1->GetVersion() != item2->GetVersion())
-			    return item2->GetVersion(), item1->GetVersion();
-			return item2->GetClientModString().CmpNoCase(item1->GetClientModString());
-			}
+		// Sort by file upload-priority
 		case 3:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file1->GetUpPriority() - file2->GetUpPriority();
-			} else if(file1 == NULL) {
-				return 1;
-			} else {
-				return 0;
+			{
+				CKnownFile* file1 = theApp.sharedfiles->GetFileByID(item1->GetUploadFileID());
+				CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
+	
+				if ((file1 != NULL) && (file2 != NULL)) {
+					int8 prioA = file1->GetUpPriority();
+					int8 prioB = file2->GetUpPriority();
+			
+					// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
+					return mode * CmpAny( ( prioA != PR_VERYLOW ? prioA : -1 ), ( prioB != PR_VERYLOW ? prioB : -1 ) );
+				} else if (file1 == NULL) {
+					return 1 * mode;
+				} else if (file2 == NULL) {
+					return -1 * mode;
+				} else {
+					return 0;
+				}
 			}
-		case 103:
-			if( (file1 != NULL) && (file2 != NULL)) {
-				return file2->GetUpPriority() - file1->GetUpPriority();
-			} else if( file1 == NULL ) {
-				return 1;
-			} else {
-				return 0;
-			}
-		case 4:
-			return (int)((float)item1->GetScore(false,false,true) - (float)item2->GetScore(false,false,true));
-		case 104:
-			return (int)((float)item2->GetScore(false,false,true) - (float)item1->GetScore(false,false,true));
-		case 5:
-			return item1->GetScore(false) - item2->GetScore(false);
-		case 105:
-			return item2->GetScore(false) - item1->GetScore(false);
-		case 6:
-			return item1->GetAskedCount() - item2->GetAskedCount();
-		case 106:
-			return item2->GetAskedCount() - item1->GetAskedCount();
-		case 7:
-			return item1->GetLastUpRequest() - item2->GetLastUpRequest();
-		case 107:
-			return item2->GetLastUpRequest() - item1->GetLastUpRequest();
-		case 8:
-			return item1->GetWaitStartTime() - item2->GetWaitStartTime();
-		case 108:
-			return item2->GetWaitStartTime() - item1->GetWaitStartTime();
+		// Sort by rating
+		case 4: return mode * CmpAny( item1->GetScore(false,false,true), item2->GetScore(false,false,true) );
+		// Sort by score
+		case 5: return mode * CmpAny( item1->GetScore(false), item2->GetScore(false) );
+		// Sort by Asked count
+		case 6: return mode * CmpAny( item1->GetAskedCount(), item2->GetAskedCount() );
+		// Sort by Last seen 
+		case 7: return mode * CmpAny( item1->GetLastUpRequest(), item2->GetLastUpRequest() );
+		// Sort by entered time
+		case 8: return mode * CmpAny( item1->GetWaitStartTime(), item2->GetWaitStartTime() );
 		case 9:
-			return item1->IsBanned() - item2->IsBanned();
-		case 109:
-			return item2->IsBanned() - item1->IsBanned();
+			{
+				if ( item1->IsBanned() || item2->IsBanned() ) {
+					if ( !item1->IsBanned() || item2->IsBanned() )
+						return -1;
 
+					if ( item1->IsBanned() || !item2->IsBanned() )
+						return  1;
+				}
+				
+				return 0;
+			}
 		default:
 			return 0;
 	}
