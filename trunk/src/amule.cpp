@@ -1157,6 +1157,10 @@ void CamuleApp::Localize_mule() {
 			//strcpy(newlang,"hu");
 	        language = wxLANGUAGE_HUNGARIAN;
 		    break;
+		case 27:
+			//strcpy(newlang,"ca_ES");
+	        language = wxLANGUAGE_CATALAN;
+		    break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
 			break;
