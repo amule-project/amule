@@ -756,9 +756,14 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					DebugRecv("OP_SendingPart", m_client);
 				}
 				#endif				
-				if (m_client->GetRequestFile() && !m_client->GetRequestFile()->IsStopped() && (m_client->GetRequestFile()->GetStatus()==PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
+				if (	 m_client->GetRequestFile() && 
+					!m_client->GetRequestFile()->IsStopped() && 
+					(m_client->GetRequestFile()->GetStatus() == PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 					m_client->ProcessBlockPacket(packet,size);
-					if ( m_client && m_client->GetRequestFile()->IsStopped() || m_client->GetRequestFile()->GetStatus()==PS_PAUSED || m_client->GetRequestFile()->GetStatus()==PS_ERROR) {
+					if ( 	m_client && 
+						( m_client->GetRequestFile()->IsStopped() || 
+						  m_client->GetRequestFile()->GetStatus() == PS_PAUSED || 
+						  m_client->GetRequestFile()->GetStatus() == PS_ERROR) ) {
 						if (!m_client->GetSentCancelTransfer()) {
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 							theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
