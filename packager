@@ -1,0 +1,77 @@
+##################################################
+#             aMule.app bundle creator.          #
+##################################################
+
+## This file is part of the aMule Project
+##
+## Copyright (c) 2004      Angel Vidal (Kry) ( kry@amule.org )
+## Copyright (c) 2003-2004 aMule Project     ( http://www.amule-project.net )
+##
+## This program is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation; either
+## version 2 of the License, or (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+
+echo ""
+echo -n "Step 1: Cleaning bundle... "
+rm aMule.app/Contents/Frameworks/* && rm aMule.app/Contents/MacOS/*
+echo "Done"
+echo ""
+echo -n "Step 2: Copying aMule to app bundle... " 
+cp src/amule aMule.app/Contents/MacOS/
+cp src/amuleweb aMule.app/Contents/MacOS/
+echo "Done"
+echo ""
+echo "Step 3: Copying libs to Framework"
+echo "    wxWidgets..."
+# wxWidgets libs to frameworks
+for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libwx_ | cut -d " " -f 1 ); do 
+	cp $i aMule.app/Contents/Frameworks; 
+done
+echo "    Curl..."
+# while we're at it, copy curl too
+for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libcurl | cut -d " " -f 1 ); do
+        cp $i aMule.app/Contents/Frameworks;
+done
+echo "Libs copy done."
+echo ""
+echo "Step 4: Update libs info"
+#then install_name_tool on them to fix the path on the shared lib
+cd aMule.app/Contents/
+for i in $( ls Frameworks ); do
+	echo "    Updating $i"
+	#update library id
+        install_name_tool -id @executable_path/../Frameworks/$i Frameworks/$i
+	#update library links
+	for j in $( otool -L Frameworks/$i | grep libwx_ | cut -d " " -f 1 ); do
+	        install_name_tool -change \
+                $j @executable_path/../Frameworks/`echo $j | rev | cut -d "/" -f 1 | rev` \
+		Frameworks/$i
+
+	done
+	echo "    Updating aMule lib info for $i"
+	#update amule executable
+	install_name_tool -change \
+		`otool -L MacOS/amule | grep $i | cut -d " " -f 1` \
+		@executable_path/../Frameworks/$i MacOS/amule 1> /dev/null 2> /dev/null
+        install_name_tool -change \
+                `otool -L MacOS/amuleweb | grep $i | cut -d " " -f 1` \
+                @executable_path/../Frameworks/$i MacOS/amuleweb 1> /dev/null 2> /dev/null
+done
+echo "Libs info updated, aMule.app is ready to package."
+echo ""
+cd ../..
+echo -n "Creating aMule.zip... "
+zip -9 -r aMule.zip aMule.app/ > /dev/null
+echo "Done"
+echo ""
