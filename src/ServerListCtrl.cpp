@@ -24,6 +24,7 @@
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
+#include <wx/settings.h>
 
 #include "ServerListCtrl.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
