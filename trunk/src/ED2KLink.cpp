@@ -114,7 +114,7 @@ CED2KServerListLink::CED2KServerListLink(const wxString& address)
 
 wxString CED2KServerListLink::GetLink() const
 {
-	return wxString::Format( wxT("ed2k://|serverlist|%s|/"), unicode2char(m_address) );
+	return wxT("ed2k://|serverlist|") + m_address + wxT("|/");
 }
 
 
@@ -143,9 +143,7 @@ CED2KServerLink::CED2KServerLink( const wxString& ip, const wxString& port )
 
 wxString CED2KServerLink::GetLink() const
 {
-	return wxString::Format( wxT("ed2k://|server|%s|%d|/"),
-	                         unicode2char(Uint32toStringIP(m_ip)),
-	                         (int)m_port );
+	return wxT("ed2k://|server|") + Uint32toStringIP(m_ip) + wxString::Format(wxT("|%d|/"), (int)m_port );
 }
 
 
@@ -274,6 +272,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		wxString strHash = masterhash.AfterFirst( wxT('=') );
 
 		if ( !strHash.IsEmpty() ) {
+			#warning this is a removable unicode2char
 			if ( otherfunctions::DecodeBase32( unicode2char(strHash), CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == CAICHHash::GetHashSize()){
 				m_bAICHHashValid = true;
 				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );

@@ -463,6 +463,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data)
 	if ( img ) {
 		int img_size;
 		unsigned char* img_data = img->RequestData(img_size);
+		// This unicode2char is ok.
 		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
 	} else {
 		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
@@ -2795,7 +2796,7 @@ void CAnyImage::SetHttpType(wxString ext)
 	m_Http += wxT("ETag: ") + MD5Sum(char2unicode(tmp)).GetHash() + wxT("\r\n");
 }
 
-CFileImage::CFileImage(const char *name) : CAnyImage(0), m_name(char2unicode(name))
+CFileImage::CFileImage(const wxString& name) : CAnyImage(0), m_name(name)
 {
 	m_size = 0;
 	wxFFile fis(m_name);
@@ -3098,6 +3099,7 @@ wxString CDynImage::GetHTML()
 					}
 				}
 			}
+			// Evil unicode2char, but nothing we ca do against it because of the template.
 			str += wxString::Format(m_template,
 				unicode2char(progresscolor[color_idx]), i - lastindex);
 			lastindex = i;
@@ -3207,7 +3209,7 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 		return img;
 	}
 	wxFileName filename(m_image_dir + name);
-	CFileImage *fimg = new CFileImage(unicode2char(filename.GetFullPath()));
+	CFileImage *fimg = new CFileImage(filename.GetFullPath());
 	if ( fimg->OpenOk() ) {
 		m_image_map[name] = fimg;
 		return fimg;

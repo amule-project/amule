@@ -289,7 +289,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 		}
 	}
 	catch(wxString error){
-		AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' caused error while creating package (%s) - disconnecting client"),unicode2char(GetUserName()), unicode2char(error)));
+		AddDebugLogLineM(false, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -703,7 +703,8 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	
 	CSafeMemFile data;
 	data.WriteUInt8(rating);
-	data.WriteUInt32(desc.Length()); // We can'y use WriteString because len is 32 bits
+	#warning review this
+	data.WriteUInt32(desc.Length()); // We can't use WriteString because len is 32 bits
 	data.Write(unicode2char(desc), desc.Length());
 	
 	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
@@ -727,7 +728,7 @@ void CUpDownClient::Ban(){
 	theApp.clientlist->AddTrackClient(this);
 	theApp.clientlist->AddBannedClient( GetIP() );
 	
-	AddDebugLogLineM(false,wxString::Format(wxT("Client '%s' seems to be an aggressive client and is banned from the uploadqueue"), unicode2char(GetUserName())));
+	AddDebugLogLineM(false,wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
 	
 	SetUploadState(US_BANNED);
 	

@@ -166,7 +166,6 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 		if (sLength == 0) {
 			//wxASSERT(sLength);
 			// Something failed on UTF8 enconding.
-			//printf("Failed UTF8 conversion (WRITE), going for current locale: %s\n",unicode2char(rstr));			
 			wxCharBuffer s2 = aMuleConv.cWX2MB(rstr);
 			sLength = s2 ? strlen(s2) : 0;
 			WriteUInt16(sLength);
@@ -195,23 +194,6 @@ void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 		}
 	}
 
-	//
-	// This avoids a crash in case unicode2char cannot perform the conversion,
-	// e.g., original string is an unicode string that cannot be converted to
-	// the current character set, in which case it will return NULL. Returning
-	// a NULL should not happen if UTF-8 was beeing used.
-	// 
-	// unsigned int sLength = s ? strlen(s) : 0;
-	//
-	// Write the size of the string
-	//
-	// WriteUInt16(sLength);
-	//
-	// If this is a NULL string, there is nothing to write, only the size.
-	// 
-	// if (sLength) {
-	//	Write(s, sLength);
-	// }
 }
 
 
