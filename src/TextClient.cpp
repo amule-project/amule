@@ -482,9 +482,14 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 
 	switch (response->GetOpCode()) {
 		case EC_OP_NOOP:
+			s += _("Operation was successful.");
 			break;
 		case EC_OP_FAILED:
-			s += _("Request failed.");
+			if (response->GetTagCount()) {
+				s += wxString(_("Request failed with the following error: ")) + wxString(wxGetTranslation(response->GetTagByIndex(0)->GetStringData())) + wxT(".");
+			} else {
+				s += _("Request failed with an unknown error.");
+			}
 			break;
 		case EC_OP_PREFERENCES:
 			{

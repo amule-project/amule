@@ -232,6 +232,12 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 						webInterface->Show(tag->GetStringData());
 					}
 				}
+			} else if ( reply->GetOpCode() == EC_OP_FAILED ) {
+				if (reply->GetTagCount()) {
+					webInterface->Show(wxString(_("Request failed with the following error: ")) + wxString(wxGetTranslation(reply->GetTagByIndex(0)->GetStringData())) + wxT("."));
+				} else {
+					webInterface->Show(_("Request failed with an unknown error."));
+				}
 			}
 			delete reply;
 		}
@@ -241,7 +247,7 @@ void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 void CWebServer::ReloadTemplates(void) {
 	time_t t = time(NULL);
 	char *s = new char[255];
-	strftime(s, 255, "%a, %d %b %Y %H:%M:%S GMT", localtime(&t));
+	strftime(s, 255, "%a, %d %b %Y %H:%M:%S GMT", gmtime(&t));
 	m_Params.sLastModified = char2unicode(s);
 	delete[] s;
 	

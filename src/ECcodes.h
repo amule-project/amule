@@ -88,7 +88,10 @@ class EC_IPv4_t {
 enum {
 
 		/*!
-		 * \brief Perform no operation, aka do nothing.
+		 * \brief Perform no operation, just like do nothing.
+		 *
+		 * General server response when the requested operation was
+		 * successful, and no reply needed.
 		 */
 	EC_OP_NOOP = 0x0001,
 
@@ -130,11 +133,14 @@ enum {
 
 		/*!
 		 * \brief General error reply.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_STRING (0-1) An error message.
 		 */
 	EC_OP_FAILED,
 
 		/*!
-		 * \brief Used when need to transfer text message without
+		 * \brief Used when need to transfer text message without any
 		 * particular meaning - like logging message in reply to command
 		 *
 		 * \par Tags:

@@ -233,31 +233,31 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 						response = new CECPacket(EC_OP_AUTH_OK);
 					} else {
 						response = new CECPacket(EC_OP_AUTH_FAIL);
-						response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
+						response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 					}
 				} else if (passwd->GetStringData() == thePrefs::ECPassword()) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
 					response = new CECPacket(EC_OP_AUTH_FAIL);
-					response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 				}
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, _("Invalid protocol version.")));
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.")));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, _("Missing protocol version tag.")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Missing protocol version tag.")));
 		}
 	} else {
 		response = new CECPacket(EC_OP_AUTH_FAIL);
-		response->AddTag(CECTag(EC_TAG_STRING, _("Invalid request, you should first authenticate.")));
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid request, you should first authenticate.")));
 	}
 
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
 		AddLogLineM(false, _("Access granted."));
 	} else {
-		AddLogLineM(false, response->GetTagByIndex(0)->GetStringData());
+		AddLogLineM(false, wxGetTranslation(response->GetTagByIndex(0)->GetStringData()));
 	}
 
 	return response;
@@ -382,7 +382,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 
 CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 {
-	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	CECPacket *response = NULL;
 
 	CPartFile *pfile = 0;
 	CECTag *idtag = request->GetTagByIndex(0);
@@ -400,7 +400,8 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	}
 	if ( !pfile ) {
 		AddLogLineM(false,_("Remote PartFile command failed: id not found"));
-		response->AddTag(CECTag(EC_TAG_STRING, _("ERROR: id not found")));
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("ID not found")));
 		return response;
 	}
 	switch (request->GetOpCode()) {
@@ -461,8 +462,9 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			break;
 		case EC_OP_PARTFILE_PRIO_AUTO:
 			if ( !valtag ) {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: no value tag in EC_OP_PARTFILE_PRIO_AUTO")));
+							wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_AUTO")));
 				return response;
 			}
 			if ( valtag->GetStringData() == wxT("1") ) {
@@ -470,15 +472,17 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			} else if ( valtag->GetStringData() == wxT("0") ) {
 				pfile->SetAutoDownPriority(false);
 			} else {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: value for EC_OP_PARTFILE_PRIO_AUTO is bad")));
+							wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_AUTO is bad")));
 				return response;
 			}
 			break;
 		case EC_OP_PARTFILE_PRIO_SET:
 			if ( !valtag ) {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: no value tag in EC_OP_PARTFILE_PRIO_SET")));
+							wxTRANSLATE("no value tag in EC_OP_PARTFILE_PRIO_SET")));
 				return response;
 			}
 			if ( valtag->GetStringData() == wxT("PR_LOW") ) {
@@ -488,8 +492,9 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			} else if ( valtag->GetStringData() == wxT("PR_HIGH") ) {
 				pfile->SetDownPriority(PR_HIGH);
 			} else {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: value for EC_OP_PARTFILE_PRIO_SET is bad")));
+							wxTRANSLATE("value for EC_OP_PARTFILE_PRIO_SET is bad")));
 				return response;
 			}
 			break;
@@ -501,20 +506,26 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			break;
 		case EC_OP_PARTFILE_SET_CAT:
 			if ( !valtag ) {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: no value tag in EC_OP_PARTFILE_CAT_SET")));
+							wxTRANSLATE("no value tag in EC_OP_PARTFILE_CAT_SET")));
 				return response;
 			}
 			break;
+		default:
+			response = new CECPacket(EC_OP_FAILED);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("OOPS! OpCode processing error!")));
+			break;
 	}
-
-	response->AddTag(CECTag(EC_TAG_STRING, _("OK: PartFile command dispatched")));
+	if (!response) {
+		response = new CECPacket(EC_OP_NOOP);
+	}
 	return response;
 }
 
 CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
-	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+	CECPacket *response = NULL;
 	CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
@@ -529,36 +540,42 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		}
 		// server tag passed, but server not found
 		if ( !srv ) {
+			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING,
-						wxString(_("ERROR: server not found: ")) + srv_tag->GetIPv4Data().StringIP()));
+						wxString(wxTRANSLATE("server not found: ")) + srv_tag->GetIPv4Data().StringIP()));
 			return response;
 		}
 	}
 	switch (request->GetOpCode()) {
 		case EC_OP_SERVER_DISCONNECT:
 			theApp.serverconnect->Disconnect();
-			response->AddTag(CECTag(EC_TAG_STRING,_("OK: disconnected from server")));
+			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_SERVER_REMOVE:
 			if ( srv ) {
 				Notify_ServerRemove(srv);
 				theApp.serverlist->RemoveServer(srv);
-				response->AddTag(CECTag(EC_TAG_STRING, _("OK: server removed")));
+				response = new CECPacket(EC_OP_NOOP);
 			} else {
+				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-							_("ERROR: need to define server to be removed")));
+							wxTRANSLATE("need to define server to be removed")));
 			}
 			break;
 		case EC_OP_SERVER_CONNECT:
 			if ( srv ) {
 				theApp.serverconnect->ConnectToServer(srv);
-				response->AddTag(CECTag(EC_TAG_STRING, _("OK: trying to connect")));
+				response = new CECPacket(EC_OP_NOOP);
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
-				response->AddTag(CECTag(EC_TAG_STRING, _("OK: connecting to a random server")));
+				response = new CECPacket(EC_OP_NOOP);
 			}
 			break;
-	}	
+	}
+	if (!response) {
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("OOPS! OpCode processing error!")));
+	}
 	return response;
 }
 
@@ -1052,8 +1069,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 
 	CECPacket *response = NULL;
 
-	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
-
 	switch (request->GetOpCode()) {
 		//
 		// Misc commands
@@ -1082,7 +1097,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 					Notify_ServerAdd(server);
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
-					AddLogLineM(true, _("ExternalConn: Unable to understand ED2k link '") + link + wxT("'."));
+					AddLogLineM(true, _("ExternalConn: Unable to understand ed2k link '") + link + wxT("'."));
 					response = new CECPacket(EC_OP_FAILED);
 				}
 			}
@@ -1096,7 +1111,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			if (!response) {
 				response = new CECPacket(EC_OP_MISC_DATA);
 			}
-			response->AddTag(CEC_ConnState_Tag(detail_level));
+			response->AddTag(CEC_ConnState_Tag(request->GetDetailLevel()));
 			break;
 		//
 		//
@@ -1143,11 +1158,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		case EC_OP_SERVER_REMOVE:
 			response = Get_EC_Response_Server(request);
 			break;
-		case EC_OP_GET_SERVER_LIST:
-			response = new CECPacket(EC_OP_SERVER_LIST);
-			for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-				response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i), detail_level));
-			}	
+		case EC_OP_GET_SERVER_LIST: {
+				response = new CECPacket(EC_OP_SERVER_LIST);
+				EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
+				for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
+					response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i), detail_level));
+				}
+			}
 			break;
 		case EC_OP_SERVER_UPDATE_FROM_URL:
 			theApp.serverlist->UpdateServerMetFromURL(request->GetTagByIndex(0)->GetStringData());
