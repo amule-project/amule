@@ -636,8 +636,10 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		if ( !srv ) {
 			response->AddTag(CECTag(EC_TAG_STRING,
 						wxString::Format(_("ERROR: server [%d.%d.%d.%d:%d] not found"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port)));
+			delete addr;
 			return response;
 		}
+		delete addr;
 	}
 	switch (request->GetOpCode()) {
 		case EC_OP_SERVER_DISCONNECT:
