@@ -98,6 +98,9 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event) {
 		evt.m_y=event.m_y;
 		wxPostEvent(this->GetMouseListener(),evt);
 	}
+	
+	// Allow the event to propagate further. That way, tabs can be selected with right-click
+	event.Skip();
 }
 
 /**
