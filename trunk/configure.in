@@ -154,8 +154,9 @@ AC_ARG_ENABLE(debug,   [  --disable-debug         Disable additional debugging o
 AC_ARG_ENABLE(optimise,[  --enable-optimise       Enable code optimizing],
 		USE_OPTIMIZE="$enableval", USE_OPTIMIZE="no")
 
+# WARNING: setting last param to default USE_OPTIMIZE value WILL MAKE DEPRECATED --enable-optimise STOP WORKING!!
 AC_ARG_ENABLE(optimize,[  --enable-optimize       Enable code optimizing],
-		USE_OPTIMIZE="$enableval", USE_OPTIMIZE="no")
+		USE_OPTIMIZE="$enableval", )
 
 AC_ARG_ENABLE(profile, [  --enable-profile        Enable code profiling],
 		USE_PROFILE="$enableval", USE_PROFILE="no")
