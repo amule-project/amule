@@ -28,6 +28,7 @@
 #pragma implementation "updownclient.h"
 #endif
 
+#include <math.h>
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
 
@@ -2524,7 +2525,7 @@ void CamuleApp::ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double
 		kBpsRunning = kBpsSession;
 		kBytesTransPrev = kBytesTrans;
 	} else if ((sPeriod=(float)(sTrans-sPrev)) > 0.0) { // then use a first-order low-pass filter
-		float lambda = std::exp(-sPeriod/sAvg);		
+		float lambda = exp(-sPeriod/sAvg);		
 		kBpsRunning = kBpsRunning*lambda + (1.0-lambda)*(float)(kBytesTrans-kBytesTransPrev)/sPeriod;
 		kBytesTransPrev = kBytesTrans;
 	}							// if sPeriod is zero then leave the average unchanged
@@ -2553,7 +2554,7 @@ unsigned CamuleApp::GetHistory(  // Assemble arrays of sample points for a graph
 	if (sFinal >= 0.0)
 		sTarget = sFinal;
 	else
-		sTarget = (sStep==1.0 ? phr->sTimestamp : std::floor(phr->sTimestamp/sStep) * sStep); 
+		sTarget = (sStep==1.0 ? phr->sTimestamp : floor(phr->sTimestamp/sStep) * sStep); 
 
 	HR		**ahr = NULL, **pphr = NULL;
 	bool	bRateGraph = (which_graph != GRAPH_CONN);	// rate graph or connections graph?
@@ -2678,8 +2679,8 @@ void CamuleApp::ComputeAverages(
 	// of the running avg computation will be <1/2 pixel for the first sample point
 	if (posPrev != NULL  &&  sCur > 0.0) {
 		// how long would the low-pass averaging filter need to decay the max to half a pixel
-		//sTarget = max(0.0, sCur - sAvg*std::log((float)(/*pscope->GetPlotHeightPixels()*/*2)));
-		sTarget = max(0.0, sCur - sAvg*std::log((float)((thePrefs::GetMaxGraphDownloadRate()+4)*2)));
+		//sTarget = max(0.0, sCur - sAvg*log((float)(/*pscope->GetPlotHeightPixels()*/*2)));
+		sTarget = max(0.0, sCur - sAvg*log((float)((thePrefs::GetMaxGraphDownloadRate()+4)*2)));
 		
 		for (POSITION *ppos=aposRecycle; ppos<aposRecycle+nHistRanges; ++ppos) {
 			
@@ -2773,7 +2774,7 @@ void CamuleApp::VerifyHistory(bool bMsgIfOk)
 				return;
 			}
 		} else if (sStep>1.0 && cntInRange>1) {
-			float sDelta = std::abs(sPrev-sCur-sStep);
+			double sDelta = fabs(sPrev-sCur-sStep);
 			if (sCur != 0.0  &&  sDelta > sStep*0.5)
 				printf("T=%i History list: gap of %.2f (vs. %i) #%i is %i in range  [%i]t=%.2f [%i]t=%.2f [%i]t=%.2f\n", 
 							(int)round(sStart), sPrev-sCur, (int)round(sStep), cnt, cntInRange,
