@@ -77,6 +77,7 @@ public:
 	virtual void	OnClose(int nErrorCode);
 	uint8	byConnected;
 
+	bool RecievePending() { return (limitenabled && (downloadlimit == 0)); }
 private:
 	void	ClearQueues();	
 	int		Send(char* lpBuf,int nBufLen,int nFlags = 0);

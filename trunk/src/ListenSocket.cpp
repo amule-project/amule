@@ -2121,8 +2121,12 @@ void *CClientReqSocketHandler::Entry()
 		// lfroen: tradeof here - short wait time for high performance on delete
 		// but long wait time for low cpu usage
 		if ( socket->WaitForRead(0, 100) ) {
-			CALL_APP_DATA_LOCK;
-			socket->OnReceive(0);
+	        if ( socket->RecievePending() ) {
+	                Sleep(50);
+	        } else {
+	                CALL_APP_DATA_LOCK;
+	                socket->OnReceive(0);
+	        }
 		}
 	}
 	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), socket);
