@@ -49,11 +49,11 @@ CFormat::Modifiers CFormat::getModifier( const wxString& str )
 
 
 CFormat::CFormat( const wxChar* str )
-	: m_format( str )
 {
 	m_index = 0;
 	m_indexEnd = 0;
 	m_result.Alloc( m_format.Len() * 2 );
+	SetString( str );
 }
 
 
