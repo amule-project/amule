@@ -71,7 +71,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed rare possibility of ending with an unclosed file in CServerListCtrl.
 		* Fixed unsafe parsing of OP_SERVERIDENT type packets.
 		* Fixed unsafe passing of strings as arguments to functions using format-strings.
-		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by              highlighting it.
+		* Changed the chat-dialogs to textctrls, which means that it is now possible to copy text (the unix way) by highlighting it.
 		* Fixed some memleaks.
 		* Fixed "&"s not being escaped on status-bar.
 		* Fixed incorrect source exchange packet format (Many thanks to the eMule Plus team for reporting).
@@ -84,24 +84,33 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* Fixed a number of uninitialized variables.
 		* Fixed several warnings about non-existing files.
 		* Fixes warning about not being able to create dir "" on first run.
-		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when      this version of aMule is first run.
+		* Changed "Extended Drop Sources" preferences, with the result that the option will be reset to "Swap Sources" when this version of aMule is first run.
 		* Got rid of most warnings when compiling.
 		* Lots of work on getting rid of c-strings.
 		* Fixed bug that would cause deleted sources not to be removed from the A4AF lists. This was a major source of crashes.
 		* Improved performance and safety of the source lists used with PartFiles.
 		* Lots of small imports from eMule.
-		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information       getting out of sync.
+		* Made reqfile attribute of CUpDownClient private and added wrapper functions to fix the avilable-part information getting out of sync.
 		* Cleanup of includes.
-		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an                  OP_REASKFILEPING.
+		* Fixed that we were always sending an OP_REASKACK packet and then the correct packet when recieving an OP_REASKFILEPING.
 		* Fixed Bug 45: URLs are now properly escaped when opening browsers for Fake-check and such.
-		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed        after having been hidden.
+		* Fixed Bug 62: aMule will now be brought to front when left-clicking on the tray icon and when it is redisplayed after having been hidden.
 		* Added checks against aggressive clients (clients who reask for files too often).
-		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for        allowing us to use their work ). 
+		* Imported checks for known leech-clients from the BlackRat eMule mod ( Many thanks to Le Rat Noir and inoteb for allowing us to use their work ).
+		* Fixed wrong initialization of headers for some packets ( Thanks to thomas001 for reporting ).
+		* Fixed a delete called on an uninitialized pointer in the statistics dialog and properly initalized serveral other pointers.
+		* Optimizing the Comp(Up/Down)DatarateOverhead functions to something that didn't require traversing a list at each call.
+		* Complete rework of the source-swapping functions.
+		* Fixed the possibility of sources being added to multiple source-lists at the same time (No more mis-matching hashes warnings).
+		* Fixed the new columns added by deltaHF not being displayed and added checks in case the same thing happens again.
+		* Almost completly eleminated flicker on the download list and did a cleanup of the drawing routines associated the the download list widget.
 		* Removed the following files:
 		  - ini2.*
 		  - CString.h
 		  - mfc.h
 		  - position.h
+		  - resource.h
+		  - strings.en
 		* Cleaned up the following files:
 		  - CTypedPtrList.h
 		  - BarShader.*
@@ -111,6 +120,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 	Special thanks to:
 		* Le Rat Noir and Inoteb of the BlackRat eMule mod (http://www.blackrat.fr.tc/) for allowing us to make use of their     work on detecting bad clients.
 		* Optimazer and the eMule Plus team for reporting a bug in source-exchange packets.
+		* thomas001 for reporting a problem with packet headers.
 		* Everaldo (http://www.everaldo.com) for new icons
 		* TheBlackHand and Hawkster eMule mods 
 
