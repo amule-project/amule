@@ -56,6 +56,9 @@
 #include "amuleIPV4Address.h"	// Needed for wxIPV4address
 #include "GetTickCount.h"
 
+#define get_uint32(p)	ENDIAN_SWAP_32(*((uint32*)(p)))
+#define get_uint16(p)	ENDIAN_SWAP_16(*((uint16*)(p)))
+
 class AsyncDNS : public wxThread
 {
 public:
@@ -150,7 +153,8 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
 	  ProcessPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
 	else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1))
-	  ProcessExtPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
+		theApp.downloadqueue->AddDownDataOverheadOther(length-2);
+	  //ProcessExtPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
 }
 
 bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
@@ -248,11 +252,10 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 			}
 
  			case OP_GLOBSERVSTATRES:{
-				// Imported from 0.30
+				// Imported from 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				if( size < 12 || update == NULL )
 					return true;
-#define get_uint32(p)	*((uint32*)(p))
 				uint32 challenge = get_uint32(packet);
 				if( challenge != update->GetChallenge() )
 					return true;
@@ -262,6 +265,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				uint32 cur_softfiles = 0;
 				uint32 cur_hardfiles = 0;
 				uint32 uUDPFlags = 0;
+				uint32 uLowIDUsers = 0;				
 				if( size >= 16 ){
 					cur_maxusers = get_uint32(packet+12);
 				}
@@ -272,6 +276,13 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				if( size >= 28 ){
 					uUDPFlags = get_uint32(packet+24);
 				}
+				if( size >= 32 ){
+					uLowIDUsers = get_uint32(packet+28);
+					/*
+					if (thePrefs.GetDebugServerUDPLevel() > 0)
+						Debug(_T(" LowID users=%u\n"), uLowIDUsers);
+					*/
+				}
 				if( update ){
 					update->SetPing( ::GetTickCount() - update->GetLastPinged() );
 					update->SetUserCount( cur_user );
@@ -281,8 +292,95 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					update->SetHardFiles( cur_hardfiles );
 					//printf("->> reading Stats from server, flags are %i\n",uUDPFlags);
 					update->SetUDPFlags( uUDPFlags );
+					update->SetLowIDUsers( uLowIDUsers );
 					Notify_ServerRefresh( update );
 				}
+				break;
+			}
+ 			case OP_SERVER_DESC_RES:{
+				// 0.43b
+				/*
+				if (thePrefs.GetDebugServerUDPLevel() > 0)
+					Debug(_T("ServerUDPMessage from %s:%u - OP_ServerDescRes\n"), host, nUDPPort-4);
+				*/
+				if (!update)
+					return true;
+
+				// old packet: <name_len 2><name name_len><desc_len 2 desc_en>
+				// new packet: <challenge 4><taglist>
+				//
+				// NOTE: To properly distinguish between the two packets which are both useing the same opcode...
+				// the first two bytes of <challenge> (in network byte order) have to be an invalid <name_len> at least.
+
+				CSafeMemFile srvinfo((BYTE*)packet, size);
+				if (size >= 8 && get_uint16(packet) == INV_SERV_DESC_LEN)
+				{
+					if (update->GetDescReqChallenge() != 0 && get_uint32(packet) == update->GetDescReqChallenge())
+					{
+						update->SetDescReqChallenge(0);
+						uint32 challenge;
+						(void)srvinfo.Read(challenge); // skip challenge
+						
+						uint32 uTags;
+						srvinfo.Read(uTags);
+						for (uint32 i = 0; i < uTags; i++)
+						{
+							CTag tag(srvinfo);
+							if (tag.tag.specialtag == ST_SERVERNAME && tag.tag.type == 2)
+								update->SetListName(char2unicode(tag.tag.stringvalue));
+							else if (tag.tag.specialtag == ST_DESCRIPTION && tag.tag.type == 2)
+								update->SetDescription(char2unicode(tag.tag.stringvalue));
+							else if (tag.tag.specialtag == ST_DYNIP && tag.tag.type == 2)
+								update->SetDynIP(char2unicode(tag.tag.stringvalue));
+							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 2)
+								update->SetVersion(char2unicode(tag.tag.stringvalue));
+							else if (tag.tag.specialtag == ST_VERSION && tag.tag.type == 3){
+								wxString strVersion;
+								strVersion.Printf(_("%u.%u"), tag.tag.intvalue >> 16, tag.tag.intvalue & 0xFFFF);
+								update->SetVersion(strVersion);
+							}
+							else if (tag.tag.specialtag == ST_AUXPORTSLIST && tag.tag.type == 2)
+								// currently not implemented.
+								; // <string> = <port> [, <port>...]
+							else{
+								/*
+								if (thePrefs.GetDebugServerUDPLevel() > 0)
+									Debug(_T("***NOTE: Unknown tag in OP_ServerDescRes: %s\n"), tag.GetFullInfo());
+								*/
+							}
+						}
+					}
+					else
+					{
+						// A server sent us a new server description packet (including a challenge) although we did not
+						// ask for it. This may happen, if there are multiple servers running on the same machine with
+						// multiple IPs. If such a server is asked for a description, the server will answer 2 times,
+						// but with the same IP.
+						/*
+						if (thePrefs.GetDebugServerUDPLevel() > 0)
+							Debug(_T("***NOTE: Received unexpected new format OP_ServerDescRes from %s:%u with challenge %08x (waiting on packet with challenge %08x)\n"), host, nUDPPort-4, PeekUInt32(packet), update->GetDescReqChallenge());
+						*/
+						; // ignore this packet
+						
+					}
+				}
+				else
+				{
+					wxString strName;
+					srvinfo.Read(strName);
+					wxString strDesc;
+					srvinfo.Read(strDesc);
+					update->SetDescription(strDesc);
+					update->SetListName(strName);
+				}
+				/*
+				if (thePrefs.GetDebugServerUDPLevel() > 0){
+					UINT uAddData = srvinfo.GetLength() - srvinfo.GetPosition();
+					if (uAddData)
+						Debug(_T("***NOTE: ServerUDPMessage from %s:%u - OP_ServerDescRes:  ***AddData: %s\n"), host, nUDPPort-4, GetHexDump(packet + srvinfo.GetPosition(), uAddData));
+				}
+				*/
+				Notify_ServerRefresh( update );
 				break;
 			}
 
@@ -299,6 +397,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 	}
 }
 
+#if 0
 bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 	try{
 		switch(opcode){
@@ -316,7 +415,9 @@ bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, const w
 					}
 				}
 				break;
-			}*/
+				*/
+				theApp.downloadqueue->AddDownDataOverheadOther(size);
+			}
 			case OP_UDPVERIFYUPA:{
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				break;
@@ -333,6 +434,7 @@ bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, const w
 		return false;
 	}
 }
+#endif
 
 void CUDPSocket::DnsLookupDone(struct sockaddr_in* inaddr) {
   /* An asynchronous database routine completed. */
