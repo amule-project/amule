@@ -23,25 +23,47 @@
 class CPartFile;
 class wxSocketServer;
 class wxSocketEvent;
+class ExternalConnServerThread;
 
-class ExternalConn : public wxEvtHandler {
+class ExternalConn {
 	public:
 		ExternalConn();
 		~ExternalConn();
 	
-		// event handlers (these functions should _not_ be virtual)
-		void OnServerEvent(wxSocketEvent& event);
-		void OnAuthEvent(wxSocketEvent& event);
-		void OnSocketEvent(wxSocketEvent& event);
 		wxString Authenticate(const wxString& item);
 		wxString ProcessRequest(const wxString& item);
 	
 	private:
 		wxString GetDownloadFileInfo(const CPartFile* file);
+		ExternalConnServerThread *server;
+};
+
+//
+// lfroen: need 2 threads here - 1 listening and 1 per client
+//
+class ExternalConnServerThread : public wxThread {
 		wxSocketServer *m_ECServer;
 		int m_numClients;
-  	
-	DECLARE_EVENT_TABLE()
+		ExternalConn *owner;
+		
+		void *Entry();
+	public:
+		ExternalConnServerThread(ExternalConn *owner);
+		~ExternalConnServerThread();
+		bool Ready()
+		{
+			return ((m_ECServer != 0) && (m_ECServer->Ok())) ? true : false;
+		}
+};
+
+class ExternalConnClientThread : public wxThread {
+		ExternalConn *owner;
+		wxSocketBase *sock;
+		
+		void *Entry();
+	public:
+		ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock);
+		~ExternalConnClientThread();
 };
 
 #endif // EXTERNALCONN_H
