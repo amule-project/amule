@@ -741,7 +741,13 @@ public:
 	CString	ECPassword() { return CString(prefs->ECPassword); }
 	// Madcat - Fast ED2K Links Handler Toggling
 	bool	GetFED2KLH() { return prefs->FastED2KLinksHandler; }
-	bool	BDlgTabsOnTop()	{ return prefs->bDlgTabsOnTop; }
+	bool	BDlgTabsOnTop()	{ 
+		#if defined(__WXMAC__) || defined(__WXMSW__) 
+			return false;
+		#else
+			return prefs->bDlgTabsOnTop; 
+		#endif
+	}
 	
 	// Kry - Ip filter On/Off
 	bool GetIPFilterOn() { return prefs->IPFilterOn; }
