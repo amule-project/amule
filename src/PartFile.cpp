@@ -185,8 +185,8 @@ CPartFile::CPartFile(CString edonkeylink)
 		}
 		InitializeFromLink(pFileLink);
 	} catch (wxString error) {
-		wxString strBuffer = wxString::Format( _("This ed2k link is invalid (%s)"), error.c_str());
-		theApp.amuledlg->AddLogLine(true, _("Invalid link: %s"), strBuffer.c_str());
+		wxString strBuffer =  _("This ed2k link is invalid (") +  error + wxT(")");
+		AddLogLineM(true, _("Invalid link: ") + strBuffer);
 		SetPartFileStatus(PS_ERROR);
 	}
 	delete pLink;
@@ -206,8 +206,8 @@ CPartFile::InitializeFromLink(CED2KFileLink* fileLink)
 			SetPartFileStatus(PS_ERROR);
 		}
 	} catch(wxString error) {
-		wxString strBuffer = wxString::Format( _("This ed2k link is invalid (%s)"), error.c_str());
-		theApp.amuledlg->AddLogLine(true, _("Invalid link: %s"), strBuffer.c_str());
+		wxString strBuffer =  _("This ed2k link is invalid (") + error + wxT(")");
+		AddLogLineM(true, _("Invalid link: ") + strBuffer);
 		SetPartFileStatus(PS_ERROR);
 	}
 }
@@ -336,7 +336,7 @@ void CPartFile::CreatePartFile()
 	} while (wxFileName::FileExists(filename));
 	
 	m_partmetfilename.Printf(wxT("%03i.part.met"), i);
-	m_fullname.Printf(wxT("%s/%s"), theApp.glob_prefs->GetTempDir(), m_partmetfilename.c_str());
+	m_fullname = wxString(char2unicode(theApp.glob_prefs->GetTempDir())) + wxT("/") + m_partmetfilename;
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
 	taglist.Add( new CTag(FT_PARTFILENAME, strPartName ) );
@@ -393,26 +393,26 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	bool load_from_backup = false;
 	// readfile data form part.met file
 	if (!metFile.Open(m_fullname,CFile::read)) {
-		theApp.amuledlg->AddLogLine(false, _("Error: Failed to open part.met file! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
+		AddLogLineM(false, _("Error: Failed to open part.met file! ") + m_partmetfilename + wxT("==>") + m_strFileName);
 		load_from_backup = true;
 	} else {
 		if (!(metFile.Length()>0)) {
-			theApp.amuledlg->AddLogLine(false, _("Error: part.met fileis 0 size! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
+			AddLogLineM(false, _("Error: part.met fileis 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
 			metFile.Close();
 			load_from_backup = true;
 		}
 	}
 
 	if (load_from_backup) {
-		theApp.amuledlg->AddLogLine(false, _("Trying backup of met file on (%s%s)"), m_partmetfilename.c_str(), PARTMET_BAK_EXT);
+		AddLogLineM(false, _("Trying backup of met file on ") + m_partmetfilename + PARTMET_BAK_EXT);
 		wxString BackupFile;
-		BackupFile.Printf(wxT("%s%s"),m_fullname.c_str(),PARTMET_BAK_EXT);
+		BackupFile = m_fullname + PARTMET_BAK_EXT;
 		if (!metFile.Open(BackupFile)) {
-			theApp.amuledlg->AddLogLine(false, _("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"), m_partmetfilename.c_str(), m_strFileName.c_str());				
+			AddLogLineM(false, _("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));				
 			return false;
 		} else {
 			if (!(metFile.Length()>0)) {
-				theApp.amuledlg->AddLogLine(false, _("Error: part.met fileis 0 size! (%s => %s)"), m_partmetfilename.c_str(), m_strFileName.c_str());
+				AddLogLineM(false, _("Error: part.met file is 0 size! ") + m_partmetfilename + wxT("==>") + m_strFileName);
 				metFile.Close();
 				return false;
 			}
@@ -678,7 +678,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
 	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
-		//printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
 		printf("Partfile \"%s\" is too large! Truncating %llu bytes.\n", unicode2char(GetFileName()), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
@@ -905,7 +904,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	wxFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
-		wxMessageBox(wxString::Format(_("Unable to open %s file - using %s file.\n"),m_fullname.c_str(), PARTMET_BAK_EXT));
+		wxMessageBox(wxString(_("Unable to open ")) + m_fullname + wxT("file - using ") + PARTMET_BAK_EXT + wxT(" file.\n"));
 		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
@@ -914,29 +913,11 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-			wxMessageBox(wxString::Format(_("%s file is 0 size somehow - using %s file.\n Please report on http://forum.amule.org\n"),m_fullname.c_str(), PARTMET_BAK_EXT));
+			wxMessageBox(m_fullname + wxT("file is 0 size somehow - using ") + PARTMET_BAK_EXT + wxT(" file.\n"));
 			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
 	
-	/*
-	#ifdef __WXGTK__
-	if (!theApp.use_chmod) {
-		struct stat sbf;
-		// Kry - Set the utime() so that we make sure the file date tag == mtime
-		//printf("Seeting the mtime of %s according to date tag %u... ", fName.c_str(), date);
-		stat(fName.c_str(),&sbf);
-		//printf(" stated...");
-		time_t atime = sbf.st_atime;	
-		struct utimbuf timebuf;
-		timebuf.actime = atime;
-		timebuf.modtime = date;
-		
-		utime(fName.c_str(), &timebuf);
-		//printf(" done.\n");
-	}
-	#endif
-	*/
 	return true;
 }
 
@@ -2427,7 +2408,7 @@ wxThread::ExitCode completingThread::Entry()
 	// Strip the .met
 	wxString partfilename =  Completing_Fullname.Left(Completing_Fullname.Length()-4);
 	
-	Completing_FileName = theApp.StripInvalidFilenameChars(Completing_FileName.c_str());
+	Completing_FileName = theApp.StripInvalidFilenameChars(Completing_FileName);
 
 	newname = new wxString();
 	if(wxFileName::DirExists(char2unicode(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath))) {
@@ -2917,7 +2898,7 @@ void CPartFile::PreviewFile()
 	}
 	
 	command.Append(wxT("\""));
-     wxShell(command.c_str());
+     wxExecute(command);
 }
 
 bool CPartFile::PreviewAvailable()
