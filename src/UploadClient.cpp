@@ -301,7 +301,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 				fullname[strlen(fullname)-4] = 0;			
 			}
 			else{
-				fullname = new char[strlen(srcfile->GetPath())+strlen(srcfile->GetFileName())+10];
+				fullname = new char[strlen(srcfile->GetPath())+strlen(srcfile->GetFileName().c_str())+10];
 				sprintf(fullname,"%s/%s",srcfile->GetPath(),srcfile->GetFileName().GetData());
 			}
 		
@@ -346,7 +346,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 			}
 
 			SetUploadFileID(currentblock->FileID);
-			if (m_byDataCompVer == 1 && (!strstr(srcfile->GetFileName(),".zip")) && (!strstr(srcfile->GetFileName(),".rar")) && (!strstr(srcfile->GetFileName(),".ace")))
+			if (m_byDataCompVer == 1 && (!strstr(srcfile->GetFileName().c_str(),".zip")) && (!strstr(srcfile->GetFileName().c_str(),".rar")) && (!strstr(srcfile->GetFileName().c_str(),".ace")))
 				CreatePackedPackets(filedata,togo,currentblock);
 			else
 				CreateStandartPackets(filedata,togo,currentblock);

@@ -391,7 +391,6 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
-	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
 			client->UnBan();

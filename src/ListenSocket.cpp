@@ -270,8 +270,10 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					client->SetUploadFileID((uchar*)packet);
 					// md4cpy(client->reqfileid,packet);
 					CSafeMemFile* data = new CSafeMemFile (128);
-					data->Write((const uint8*)reqfile->GetFileHash());
-					data->Write((uint16)reqfile->GetFileName().Length());
+					data->WriteRaw(reqfile->GetFileHash(),16);
+					// Kry - Sending the length twice is not a good idea!
+					// File name length is writeen on writing a wxString
+					//data->Write((uint16)reqfile->GetFileName().Length());
 					data->Write(reqfile->GetFileName());
 					// TODO: Don't let 'ProcessUpFileStatus' re-process the entire packet and search the fileid
 					// again in 'sharedfiles' -> waste of time.
@@ -370,8 +372,8 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 			case OP_REQUESTPARTS: {
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				CSafeMemFile data((BYTE*)packet,size);
-				uint8 reqfilehash[16];
-				data.Read(reqfilehash);
+				uchar reqfilehash[16];
+				data.ReadRaw(reqfilehash,16);
 				Requested_Block_Struct* reqblock1 = new Requested_Block_Struct;
 				Requested_Block_Struct* reqblock2 = new Requested_Block_Struct;
 				Requested_Block_Struct* reqblock3 = new Requested_Block_Struct;
@@ -494,12 +496,11 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					//send filestatus
 					client->SetUploadFileID((uchar*)packet);
 					CSafeMemFile data(16+16);
-					data.Write((const uint8*)reqfile->GetFileHash());
+					data.WriteRaw(reqfile->GetFileHash(),16);
 					if (reqfile->IsPartFile()) {
 						((CPartFile*)reqfile)->WritePartStatus(&data);
 					} else {
-						data.Write((uint8)0); // Shouldn't this be a single (uint16)0 ?
-						data.Write((uint8)0);
+						data.Write((uint16)0); // Shouldn't this be a single (uint16)0 ?
 						data.Write((uint8)0);
 					}
 					Packet* packet = new Packet(&data);
@@ -842,6 +843,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 				}
 				uint16 newrank;
 				memcpy(&newrank,packet+0,2);
+				ENDIAN_SWAP_I_16(newrank);
 				client->SetRemoteQueueFull(false);
 				client->SetRemoteQueueRank(newrank);
 				break;
@@ -886,7 +888,7 @@ bool CClientReqSocket::ProcessExtPacket(char* packet, uint32 size, uint8 opcode)
 				theApp.downloadqueue->AddDownDataOverheadSourceExchange(size);
 				CSafeMemFile data((BYTE*)packet,size);
 				uchar hash[16];
-				data.Read(hash);
+				data.ReadRaw(hash,16);
 				CKnownFile* file = theApp.downloadqueue->GetFileByID((uchar*)packet);
 				if(file){
 					if (file->IsPartFile()){

@@ -179,6 +179,7 @@ void CUpDownClient::Init()
 	m_byCompatibleClient = 0;
 	m_bIsHybrid = false;
 	m_bIsNewMLD = false;
+	m_bIsML = false;
 	m_Friend = NULL;
 	m_iRate=0;
 	m_strComment="";

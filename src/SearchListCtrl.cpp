@@ -276,9 +276,9 @@ int CSearchListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CSearchFile* item2 = (CSearchFile*)lParam2;	
 	switch(lParamSort){
 		case 0: //filename asc
-			return strcasecmp(item1->GetFileName(),item2->GetFileName());
+			return strcasecmp(item1->GetFileName().c_str(),item2->GetFileName().c_str());
 		case 10: //filename desc
-			return strcasecmp(item2->GetFileName(),item1->GetFileName());
+			return strcasecmp(item2->GetFileName().c_str(),item1->GetFileName().c_str());
 		case 1: //size asc
 			// Need to avoid nasty bug on files >2.4Gb
 			// return item1->GetIntTagValue(FT_FILESIZE) - item2->GetIntTagValue(FT_FILESIZE);

@@ -509,9 +509,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* item2 = (CKnownFile*)lParam2;	
 	switch(lParamSort){
 		case 0: //filename asc
-			return strcasecmp(item1->GetFileName(),item2->GetFileName());
+			return strcasecmp(item1->GetFileName().c_str(),item2->GetFileName().c_str());
 		case 20: //filename desc
-			return strcasecmp(item2->GetFileName(),item1->GetFileName());
+			return strcasecmp(item2->GetFileName().c_str(),item1->GetFileName().c_str());
 
 		case 1: //filesize asc
 			return item1->GetFileSize()==item2->GetFileSize()?0:(item1->GetFileSize()>item2->GetFileSize()?1:-1);
@@ -521,9 +521,9 @@ int CSharedFilesCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 
 		case 2: //filetype asc
-			return strcasecmp( GetFiletypeByName(item1->GetFileName()),GetFiletypeByName( item2->GetFileName()) );
+			return strcasecmp( GetFiletypeByName(item1->GetFileName()).c_str(),GetFiletypeByName( item2->GetFileName()).c_str() );
 		case 22: //filetype desc
-			return strcasecmp( GetFiletypeByName(item2->GetFileName()),GetFiletypeByName( item1->GetFileName()) );
+			return strcasecmp( GetFiletypeByName(item2->GetFileName()).c_str(),GetFiletypeByName( item1->GetFileName()).c_str() );
 
 		case 3: //prio asc
 			if(item1->GetUpPriority() == PR_VERYLOW )

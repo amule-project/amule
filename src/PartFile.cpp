@@ -2409,7 +2409,7 @@ bool CPartFile::PerformFileComplete()
 	wxMutexLocker sLock(m_FileCompleteMutex);
 	char* partfilename = nstrdup(fullname);
 	partfilename[strlen(fullname)-4] = 0;	// assumes ".met" at the end
-	char* newfilename = nstrdup(GetFileName());
+	char* newfilename = nstrdup(GetFileName().c_str());
 	strcpy(newfilename, theApp.StripInvalidFilenameChars(newfilename));
 	char* newname = new char[strlen(newfilename)+strlen(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)+MAX_PATH*2];   // ???
 	CString indir;
@@ -2683,18 +2683,18 @@ bool CPartFile::IsCorruptedPart(uint16 partnumber)
 bool CPartFile::IsMovie()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(5);
+	wxString extension = GetFileName().Right(5);
 	it_is = ((extension.CmpNoCase(".divx") == 0) || (extension.CmpNoCase(".mpeg") == 0) ||
 	(extension.CmpNoCase(".vivo") == 0));
 
-	extension = wxString(GetFileName()).Right(4);
+	extension = GetFileName().Right(4);
 	it_is = (it_is || (extension.CmpNoCase(".avi") == 0) || (extension.CmpNoCase(".mpg") == 0) ||
 	(extension.CmpNoCase(".m2v") == 0) || (extension.CmpNoCase(".wmv") == 0) ||
 	(extension.CmpNoCase(".asf") == 0) || (extension.CmpNoCase(".mov") == 0) ||
 	(extension.CmpNoCase(".bin") == 0) || (extension.CmpNoCase(".swf") == 0) ||
 	(extension.CmpNoCase(".ogm") == 0));
 
-	extension = wxString(GetFileName()).Right(3);
+	extension = GetFileName().Right(3);
 	it_is = (it_is || (extension.CmpNoCase(".rm") == 0) || (extension.CmpNoCase(".qt") == 0));
 	return (it_is);
 }
@@ -2702,13 +2702,13 @@ bool CPartFile::IsMovie()
 bool CPartFile::IsArchive()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(4);
+	wxString extension = GetFileName().Right(4);
 	it_is = ((extension.CmpNoCase(".zip") == 0) || (extension.CmpNoCase(".rar") == 0) ||
 	(extension.CmpNoCase(".ace") == 0) || (extension.CmpNoCase(".arj") == 0) ||
 	(extension.CmpNoCase(".lhz") == 0) || (extension.CmpNoCase(".tar") == 0) ||
 	(extension.CmpNoCase(".bz2") == 0));
 
-	extension = wxString(GetFileName()).Right(3);
+	extension = GetFileName().Right(3);
 	it_is = (it_is || (extension.CmpNoCase(".gz") == 0) || (extension.CmpNoCase(".bz") == 0));
 	return (it_is);
 }
@@ -2716,7 +2716,7 @@ bool CPartFile::IsArchive()
 bool CPartFile::IsSound()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(4);
+	wxString extension = GetFileName().Right(4);
 	it_is = ((extension.CmpNoCase(".mp3") == 0) || (extension.CmpNoCase(".mp2") == 0) ||
 	(extension.CmpNoCase(".wma") == 0) || (extension.CmpNoCase(".ogg") == 0) ||
 	(extension.CmpNoCase(".rma") == 0) || (extension.CmpNoCase(".wav") == 0) ||
@@ -2727,7 +2727,7 @@ bool CPartFile::IsSound()
 bool CPartFile::IsCDImage()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(4);
+	wxString extension = GetFileName().Right(4);
 	it_is = ((extension.CmpNoCase(".bin") == 0) || (extension.CmpNoCase(".cue") == 0) ||
 	(extension.CmpNoCase(".nrg") == 0) || (extension.CmpNoCase(".ccd") == 0) ||
 	(extension.CmpNoCase(".img") == 0) || (extension.CmpNoCase(".iso") == 0));
@@ -2737,9 +2737,9 @@ bool CPartFile::IsCDImage()
 bool CPartFile::IsImage()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(5);
+	wxString extension = GetFileName().Right(5);
 	it_is = (extension.CmpNoCase(".jpeg") == 0) || (extension.CmpNoCase(".tiff") == 0);
-	extension = wxString(GetFileName()).Right(4);
+	extension = GetFileName().Right(4);
 	it_is = (it_is || (extension.CmpNoCase(".jpg") == 0) || (extension.CmpNoCase(".gif") == 0) ||
 	(extension.CmpNoCase(".bmp") == 0) || (extension.CmpNoCase(".rle") == 0) ||
 	(extension.CmpNoCase(".psp") == 0) || (extension.CmpNoCase(".tga") == 0) ||
@@ -2751,9 +2751,9 @@ bool CPartFile::IsImage()
 bool CPartFile::IsText()
 {
 	bool it_is;
-	wxString extension = wxString(GetFileName()).Right(5);
+	wxString extension = GetFileName().Right(5);
 	it_is = (extension.CmpNoCase(".html") == 0);
-	extension = wxString(GetFileName()).Right(4);
+	extension = GetFileName().Right(4);
 	it_is = (it_is || (extension.CmpNoCase(".doc") == 0) || (extension.CmpNoCase(".txt") == 0) ||
 	(extension.CmpNoCase(".pdf") == 0) || (extension.CmpNoCase(".ps") == 0) ||
 	(extension.CmpNoCase(".htm") == 0) || (extension.CmpNoCase(".sxw") == 0) ||
@@ -3074,7 +3074,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 	CMemFile data;
 	uint16 nCount = 0;
 
-	data.Write((const uint8*)m_abyFileHash);
+	data.WriteRaw(m_abyFileHash,16);
 	data.Write(nCount);
 	bool bNeeded;
 	for (sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty())
@@ -3118,7 +3118,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			data.Write(dwServerIP);
 			data.Write(nServerPort);
 			if (forClient->GetSourceExchangeVersion()>1) {
-				data.Write((const uint8*)cur_src->GetUserHash());
+				data.WriteRaw(cur_src->GetUserHash(),16);
 			}
 			if (nCount > 500) {
 				break;
@@ -3152,13 +3152,13 @@ void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
 		uint16 nPort;
 		uint32 dwServerIP;
 		uint16 nServerPort;
-		uint8 achUserHash[16];
+		uchar achUserHash[16];
 		sources->Read(dwID);
 		sources->Read(nPort);
 		sources->Read(dwServerIP);
 		sources->Read(nServerPort);
 		if (sourceexchangeversion > 1) {
-			sources->Read(achUserHash);
+			sources->ReadRaw(achUserHash,16);
 		}
 		// check first if we are this source
 		if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()) {
