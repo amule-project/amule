@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2005-03-05 02:07+0000\n"
+"PO-Revision-Date: 2005-03-24 01:28+0000\n"
 "Last-Translator: Helder Correia <helder.correia@netcabo.pt>\n"
 "Language-Team: Portuguese <helder.correia@netcabo.pt>\n"
 "MIME-Version: 1.0\n"
@@ -1859,21 +1859,21 @@ msgstr ""
 
 #: src/MuleTrayIcon.cpp:209 src/SysTray.cpp:170
 msgid "UL: None, "
-msgstr "Entrada: nenhum, "
+msgstr "Saída: nenhum, "
 
 #: src/MuleTrayIcon.cpp:211 src/SysTray.cpp:172
 #, c-format
 msgid "UL: %u, "
-msgstr "Entrada: %u, "
+msgstr "Saída: %u, "
 
 #: src/MuleTrayIcon.cpp:217 src/SysTray.cpp:178
 msgid "DL: None"
-msgstr "Saida: nenhum"
+msgstr "Entrada: nenhum"
 
 #: src/MuleTrayIcon.cpp:219 src/SysTray.cpp:180
 #, c-format
 msgid "DL: %u"
-msgstr "Saida: %u"
+msgstr "Entrada: %u"
 
 #: src/MuleTrayIcon.cpp:250 src/SysTray.cpp:429
 msgid "Disconnect from server"
