@@ -874,7 +874,10 @@ IMPLEMENT_DYNAMIC_CLASS(PrefsUnifiedDlg,wxDialog)
 // WDR: event table for PrefsUnifiedDlg
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
-	EVT_SCROLL(PrefsUnifiedDlg::OnScroll)
+	EVT_COMMAND_SCROLL(IDC_SLIDER, PrefsUnifiedDlg::OnScroll)
+	EVT_COMMAND_SCROLL(IDC_SLIDER2, PrefsUnifiedDlg::OnScroll)
+	EVT_COMMAND_SCROLL(IDC_SLIDER3, PrefsUnifiedDlg::OnScroll)
+	EVT_COMMAND_SCROLL(IDC_SLIDER4, PrefsUnifiedDlg::OnScroll)
 	EVT_SPINCTRL(IDC_MAXUP, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_SPINCTRL(IDC_MAXDOWN, PrefsUnifiedDlg::OnSpinMaxDLR)
 	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
