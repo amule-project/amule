@@ -672,6 +672,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseBool(IDC_REMOVEDEAD, prefs->deadserver, "RemoveDeadServer", 1));
 	listRse.Append(new RseInt(IDC_PORT, prefs->port, "Port", 4662));
 	listRse.Append(new RseInt(IDC_UDPPORT, prefs->udpport, "UDPPort", 4672));
+	listRse.Append(new RseBool(IDC_UDPDISABLE, prefs->UDPDisable, "UDPDisable", false)); 		
 	listRse.Append(new RseInt(IDC_MAXSOURCEPERFILE, prefs->maxsourceperfile, "MaxSourcesPerFile", 300));
 	listRse.Append(new RseInt(IDC_LANGUAGE, prefs->languageID, "Language", 0));
 
@@ -1204,6 +1205,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent &event)
 	ForceUlDlRateCorrelation(0);
 	CheckRateUnlimited(prseMaxUp);
 	CheckRateUnlimited(prseMaxDown);
+	Prse(IDC_UDPDISABLE)->SetCtrlValue(!Prse(IDC_UDPPORT)->GetMemValue());
 
 	if (Prse(IDC_FED2KLH)->WasChanged()) 
 		theApp.amuledlg->ToggleFastED2KLinksHandler();
@@ -1268,17 +1270,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxEvent& event)
 	}
 }
 
-void PrefsUnifiedDlg::FixUDPStatus(bool enable_status) {
-	Rse* prse = Prse(IDC_UDPPORT);
-	if (enable_status) {
-		((wxCheckBox*)FindWindowById(IDC_UDPDISABLE))->SetValue(FALSE);
-		prse->SetCtrlRange(1025,65535);
-	} else {
-		((wxCheckBox*)FindWindowById(IDC_UDPDISABLE))->SetValue(TRUE);
-		prse->SetCtrlRange(0,0);		
-	}
-}	
-	
 void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent &event)
 {
 	int index = GetColorIndex();

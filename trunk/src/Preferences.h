@@ -103,6 +103,7 @@ struct Preferences_Struct{
 	uint16	slotallocation;
 	uint16	port;
 	uint16	udpport;
+	bool		UDPDisable;
 	uint16	maxconnections;
 	int8	reconnect;
 	int8	deadserver;

@@ -1202,7 +1202,7 @@ void CamuleDlg::OnMinimize(wxEvent& evt) {
 }
 
 void CamuleDlg::OnBnNewPreferences(wxEvent& ev) {
-	prefsunifiedwnd->FixUDPStatus(theApp.glob_prefs->GetUDPPort());
+
 	if (theApp.IsReady)
 		prefsunifiedwnd->ShowModal();
 }
