@@ -74,6 +74,7 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "filefn.h"
+#include "color.h"              // Needed for RGB, DarkenColour
 
 #include <map>
 #include <algorithm>
