@@ -328,19 +328,13 @@ void CDownloadListCtrl::RemoveFile( CPartFile* file )
 {
 	wxASSERT( file );
 	
-	// Ensure that any assosiated sources are removed
-	ShowSources( file, false );
+	// Ensure that any assosiated sources and list-entries are removed
+	ShowFile( file, false );
 
 	// Find the assosiated list-item
 	ListItems::iterator it = m_ListItems.find( file );
 
 	if ( it != m_ListItems.end() ) {
-		long index = FindItem( -1, (long)it->second );
-		
-		if ( index > -1 ) {
-			DeleteItem( index );
-		}
-
 		delete it->second;
 
 		m_ListItems.erase( it );
