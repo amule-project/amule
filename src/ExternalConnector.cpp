@@ -119,8 +119,10 @@ int CaMuleExternalConnector::GetIDFromString(wxString &buffer, CmdId commands[])
 	
 	m_cmdargs = wxEmptyString;
 	while ( tokens.HasMoreTokens() ) {
-		m_cmdargs += tokens.GetNextToken().MakeLower();
+		m_cmdargs += tokens.GetNextToken().MakeLower() + wxT(" ");
 	}
+	// Remove last space.
+	m_cmdargs.Trim();
 
 	register int i = 0;
 	bool found = false;

@@ -75,7 +75,7 @@ static CmdId commands[] = {
 	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
 	{ wxT("connect"),	CMD_ID_CONN },
 	{ wxT("disconnect"),	CMD_ID_DISCONN },
-	{ wxT("serverconnect"),	CMD_ID_CONN_TO_SRV },
+	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
 	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
 	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
@@ -293,22 +293,24 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 }
 
 void CamulecmdApp::ShowHelp() {
-	Show(_("\n->Help: Avalaible commands (case insensitive):\n\n"));	
-	Show(wxString(wxT("help:\n\t")) + wxString(_("Shows this help.\n")));	
-	Show(wxString(wxT("quit, exit:\n\t")) + wxString(_("Exits Textclient.\n")));	
-	Show(wxString(wxT("stats:\n\t")) + wxString(_("Shows statistics.\n")));	
-	Show(wxString(wxT("show DL:\n\t")) + wxString(_("Shows Download queue.\n")));	
-	Show(wxString(wxT("resume n:\n\t")) + wxString(_("Resume file number n.\n")));
-	Show(wxString(wxT("pause n:\n\t")) + wxString(_("Pauses file number n.\n")));
-	Show(wxString(wxT("ServerStatus:\n\t")) + wxString(_("Tell us if connected/not connected.\n")));
-	Show(wxString(wxT("connect:\n\t")) + wxString(_("Tries to connect to any server. WARNING: Doesn't warn if failed\n")));
-	Show(wxString(wxT("disconnect:\n\t")) + wxString(_("Disconnect from server.\n")));
-	Show(wxString(wxT("server connect 'name' 'port':\n\t")) + wxString(_("Connect to specified server and port.\n")));
-	Show(wxString(wxT("ReloadIPF:\n\t")) + wxString(_("Reload IPFilter table from file.\n")));
-	Show(wxString(wxT("Setipfilter on/off:\n\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
-	Show(wxString(wxT("GetIPLevel:\n\t")) + wxString(_("Shows current IP Filter level.\n")));
-	Show(wxString(wxT("SetIPLevel <new level>:\n\t")) + wxString(_("Changes current IP Filter level.\n")));
-	Show(_("\n->End of listing\n"));
+//                                  1         2         3         4         5         6         7         8
+//                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
+	Show(         _("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));	
+	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
+	Show(wxString(wxT("Quit, Exit:\t\t")) + wxString(_("Exits Textclient.\n")));	
+	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows statistics.\n")));	
+	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));	
+	Show(wxString(wxT("Resume n:\t\t")) + wxString(_("Resume file number n.\n")));
+	Show(wxString(wxT("Pause n:\t\t")) + wxString(_("Pauses file number n.\n")));
+	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
+	Show(wxString(wxT("Connect:\t\t")) + wxString(_("Tries to connect to any server.\n\t\t\tWARNING: Doesn't warn if failed\n")));
+	Show(wxString(wxT("ConnectTo name port:\t")) + wxString(_("Connect to specified server and port.\n")));
+	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
+	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
+	Show(wxString(wxT("Setipfilter on/off:\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
+	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
+	Show(wxString(wxT("SetIPLevel <new level>:\t")) + wxString(_("Changes current IP Filter level.\n")));
+	Show(         _("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
 void CamulecmdApp::ShowGreet() {

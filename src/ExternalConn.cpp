@@ -1667,7 +1667,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					if (server != NULL) {
 						theApp.serverconnect->ConnectToServer(server);
 						theApp.amuledlg->ShowConnectionState(false);
-						return wxT("Connected");
+						return wxT("Connecting...");
 					} else
 						return wxT("Not Connected");
 				} else { //connect to any server
