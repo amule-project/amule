@@ -55,6 +55,7 @@
 #include <wx/slider.h>
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
+#include <wx/choice.h>
 #endif
 
 using namespace otherfunctions;
@@ -118,10 +119,10 @@ uint32		CPreferences::s_maxGraphUploadRate;
 bool		CPreferences::s_confirmExit;
 bool		CPreferences::s_filterBadIP;
 bool		CPreferences::s_onlineSig;
-uint16	CPreferences::s_OSUpdate;
+uint16		CPreferences::s_OSUpdate;
 uint64		CPreferences::s_totalDownloadedBytes;
 uint64		CPreferences::s_totalUploadedBytes;
-uint16		CPreferences::s_languageID;
+wxString	CPreferences::s_languageID;
 bool		CPreferences::s_transferDoubleclick;
 uint8		CPreferences::s_iSeeShares;
 uint8		CPreferences::s_iToolDelayTime;
@@ -326,7 +327,7 @@ public:
 #endif
 
 protected:
-	//! Reference to the assosiated variable
+	//! Reference to the associated variable
 	TYPE&	m_value;
 
 	//! Default variable value
@@ -574,6 +575,171 @@ protected:
 };
 
 
+#ifndef AMULE_DAEMON
+
+typedef struct {
+	int	id;
+	wxString name;
+} LangInfo;
+
+
+/**
+ * The languages aMule has translation for.
+ *
+ * Add new languages here, as this list overrides the one defined in muuli.wdr
+ */
+static LangInfo aMuleLanguages[] = {
+// No need to mess with this one, it's set directly to be always the first
+//	{ wxLANGUAGE_DEFAULT,			wxTRANSLATE("System default") },
+	{ wxLANGUAGE_ARABIC,			wxTRANSLATE("Arabic") },
+	{ wxLANGUAGE_BASQUE,			wxTRANSLATE("Basque") },
+	{ wxLANGUAGE_BULGARIAN,			wxTRANSLATE("Bulgarian") },
+	{ wxLANGUAGE_CATALAN,			wxTRANSLATE("Catalan") },
+	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	wxTRANSLATE("Chinese (Simplified)") },
+	{ wxLANGUAGE_CHINESE_TRADITIONAL,	wxTRANSLATE("Chinese (Traditional)") },
+	{ wxLANGUAGE_CROATIAN,			wxTRANSLATE("Croatian") },
+	{ wxLANGUAGE_DANISH,			wxTRANSLATE("Danish") },
+	{ wxLANGUAGE_DUTCH,			wxTRANSLATE("Dutch") },
+	{ wxLANGUAGE_ENGLISH_UK,		wxTRANSLATE("English (U.K.)") },
+	{ wxLANGUAGE_ENGLISH_US,		wxTRANSLATE("English (U.S.)") },
+	{ wxLANGUAGE_ESTONIAN,			wxTRANSLATE("Estonian") },
+	{ wxLANGUAGE_FINNISH,			wxTRANSLATE("Finnish") },
+	{ wxLANGUAGE_FRENCH,			wxTRANSLATE("French") },
+	{ wxLANGUAGE_GALICIAN,			wxTRANSLATE("Galician") },
+	{ wxLANGUAGE_GERMAN,			wxTRANSLATE("German") },
+	{ wxLANGUAGE_HUNGARIAN,			wxTRANSLATE("Hungarian") },
+	{ wxLANGUAGE_ITALIAN,			wxTRANSLATE("Italian") },
+// Hmm, it_NA.po not present ...
+//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		wxTRANSLATE("Italian (Napolitan)") },
+	{ wxLANGUAGE_ITALIAN_SWISS,		wxTRANSLATE("Italian (Swiss)") },
+	{ wxLANGUAGE_KOREAN,			wxTRANSLATE("Korean") },
+// There is no such file as lt.po
+//	{ wxLANGUAGE_LITHUANIAN,		wxTRANSLATE("Lithuanian") },
+	{ wxLANGUAGE_POLISH,			wxTRANSLATE("Polish") },
+	{ wxLANGUAGE_PORTUGUESE,		wxTRANSLATE("Portuguese") },
+	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	wxTRANSLATE("Portuguese (Brazilian)") },
+	{ wxLANGUAGE_RUSSIAN,			wxTRANSLATE("Russian") },
+	{ wxLANGUAGE_SLOVENIAN,			wxTRANSLATE("Slovenian") },
+	{ wxLANGUAGE_SPANISH,			wxTRANSLATE("Spanish") },
+// Apparently there's no es_CL.po
+//	{ wxLANGUAGE_SPANISH_CHILE,		wxTRANSLATE("Spanish (Chile)") },
+	{ wxLANGUAGE_SPANISH_MEXICAN,		wxTRANSLATE("Spanish (Mexican)") },
+// Turkish had caused problems with the config file, disabled until tested
+//	{ wxLANGUAGE_TURKISH,			wxTRANSLATE("Turkish") },
+// Yet no real support for "custom"
+//	{ wxLANGUAGE_CUSTOM,			wxTRANSLATE("Custom") },
+// Mark end of list
+	{ wxLANGUAGE_UNKNOWN,			wxEmptyString }
+};
+
+
+class Cfg_Lang : public Cfg_Tmpl<int>
+{
+public:
+	Cfg_Lang()
+	 : Cfg_Tmpl<int>( wxEmptyString, m_selection, 0 )
+	{
+		// Count languages
+		for (m_numLangs = 0; aMuleLanguages[m_numLangs].id != wxLANGUAGE_UNKNOWN; m_numLangs++) ;
+
+		m_sortOrder = new int[m_numLangs];
+		// initialize sort order to unsorted
+		for (int i = 0; i < m_numLangs; i++) {
+			m_sortOrder[i] = i;
+		}
+		m_sortOrderValid = false;
+	}
+
+	virtual ~Cfg_Lang()
+	{
+		delete [] m_sortOrder;
+	}
+
+	virtual void LoadFromFile(wxConfigBase* WXUNUSED(cfg)) {}
+	virtual void SaveToFile(wxConfigBase* WXUNUSED(cfg)) {}
+
+
+	virtual bool TransferFromWindow()
+	{
+		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
+
+			// find wx ID of selected language
+			int wxId = wxLANGUAGE_DEFAULT;
+			if (m_selection) {
+				wxId = aMuleLanguages[m_sortOrder[m_selection - 1]].id;
+			}
+
+			// save language selection
+			thePrefs::SetLanguageID(otherfunctions::wxLang2Str(wxId));
+			m_sortOrderValid = ! HasChanged();
+
+			return true;
+		}
+
+		return false;
+	}
+
+
+	virtual bool TransferToWindow()
+	{
+		if (!m_sortOrderValid) {
+			// create sort order - i.e. resort list
+			for (int i = 0; i < m_numLangs - 1; i++) {
+				for (int j = i + 1; j < m_numLangs; j++) {
+					if (wxStricmp(
+						wxGetTranslation(aMuleLanguages[m_sortOrder[i]].name),
+						wxGetTranslation(aMuleLanguages[m_sortOrder[j]].name)) > 0)
+					{
+						int tmp = m_sortOrder[i];
+						m_sortOrder[i] = m_sortOrder[j];
+						m_sortOrder[j] = tmp;
+					}
+				}
+			}
+			// get selected language's number
+			m_selection = 0;
+			int wxId = otherfunctions::StrLang2wx(thePrefs::GetLanguageID());
+			if (wxId != wxLANGUAGE_DEFAULT) {
+				for (int i = 0; i < m_numLangs; i++) {
+					if (aMuleLanguages[m_sortOrder[i]].id == wxId) {
+						m_selection = i + 1;
+						break;
+					}
+				}
+			}
+		}
+
+		wxChoice *langSelector = (wxChoice *)m_widget;
+		// clear existing list
+		langSelector->Clear();
+
+		// add 'System default' to the first place
+		langSelector->Append(_("System default"));
+
+		// add all other languages in alphabetical order
+		for (int i = 0; i < m_numLangs; i++) {
+			langSelector->Append(wxGetTranslation(aMuleLanguages[m_sortOrder[i]].name));
+		}
+
+		if ( Cfg_Tmpl<int>::TransferToWindow() ) {
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+protected:
+	int	m_selection;
+	int	m_numLangs;
+	int *	m_sortOrder;
+	bool	m_sortOrderValid;
+
+};
+
+#endif /* ! AMULE_DAEMON */
+
+
 /// new implementation
 CPreferences::CPreferences()
 {
@@ -673,7 +839,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * User settings
 	 **/
 	NewCfgItem(IDC_NICK,		(new Cfg_Str(  wxT("/eMule/Nick"), s_nick, wxT("http://www.aMule.org") )));
-	NewCfgItem(IDC_LANGUAGE,	(MkCfg_Int( wxT("/eMule/Language"), s_languageID, 0 )));
+#ifndef AMULE_DAEMON
+	NewCfgItem(IDC_LANGUAGE,	(new Cfg_Lang()));
+#endif
 
 	/**
 	 * Misc
@@ -854,8 +1022,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( wxT("/eMule/AutoSortDownloads"), s_AutoSortDownload, false )));
 
 	/**
-	 * The folowing doesn't have an assosiated widget.
+	 * The following doesn't have an associated widget.
 	 **/
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Language"),			s_languageID ) );
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalDownloadedBytes"), s_totalDownloadedBytes ) );
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalUploadedBytes"),	s_totalUploadedBytes ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/SplitterbarPosition"),		s_splitterbarPosition, 75 ) );
