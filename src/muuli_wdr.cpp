@@ -3543,6 +3543,97 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
     return item0;
 }
 
+wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, connButImg( 0 ), wxDefaultPosition, wxDefaultSize );
+    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("General") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+
+    wxFlexGridSizer *item6 = new wxFlexGridSizer( 2, 0, 0 );
+    item6->AddGrowableCol( 1 );
+
+    wxCheckBox *item7 = new wxCheckBox( parent, ID_CHECKBOX, _("Enable Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item6->Add( 20, 20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Proxy type:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxString strs9[] = 
+    {
+        _("Socks5"), 
+        _("Socks4"), 
+        _("HTTP")
+    };
+    wxChoice *item9 = new wxChoice( parent, ID_CHOICE, wxDefaultPosition, wxSize(100,-1), 3, strs9, 0 );
+    item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _("Proxy host:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxTextCtrl *item11 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Proxy port:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxTextCtrl *item13 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item6->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Authentication") );
+    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
+
+    wxCheckBox *item16 = new wxCheckBox( parent, ID_CHECKBOX, _("Enable authentication"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
+    item17->AddGrowableCol( 1 );
+
+    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxTextCtrl *item19 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxTextCtrl *item21 = new wxTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item17->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxCheckBox *item22 = new wxCheckBox( parent, ID_CHECKBOX, _("Automatic server connect without proxy"), wxDefaultPosition, wxSize(350,-1), 0 );
+    item0->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
 // Implement menubar functions
 
 // Implement toolbar functions
