@@ -577,6 +577,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 		// Sort by server-name
 		case COLUMN_SERVER_NAME:
 			{
+			
 				// it shouldn't happen that two servers had the same IP, so no need to check for that
 				if (( server1->GetListName().Cmp(server1->GetFullIP()) == 0 ) && ( server2->GetListName().Cmp(server2->GetFullIP()) == 0 )) {
 					return mode * server1->GetFullIP().CmpNoCase( server2->GetFullIP() );

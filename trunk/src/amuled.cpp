@@ -230,17 +230,7 @@ void CamuleDaemonApp::NotifyEvent(GUIEvent event)
 				}
 			}
 			break;
-		// search
-	        case SEARCH_REQ:
-			statistics->AddUpDataOverheadServer(((CPacket*)event.ptr_value)->GetPacketSize());
-			serverconnect->SendPacket( (CPacket*)event.ptr_value, 0 );
-			if ( event.byte_value ) {
-				searchlist->m_searchpacket = (CPacket*)event.ptr_value;
-			} else {
-				searchlist->m_searchpacket = 0;
-			}
-			break;
-	        case SEARCH_ADD_TO_DLOAD:
+		case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;
 

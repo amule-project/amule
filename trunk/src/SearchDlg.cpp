@@ -35,23 +35,19 @@
 #include <wx/choice.h>
 
 #include "SearchDlg.h"		// Interface declarations.
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "SafeFile.h"		// Needed for CSafeMemFile
-#include "SearchList.h"		// Needed for CSearchList
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "StringFunctions.h"		// Needed for unicode2char
-#include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
-#include "Packet.h"		// Needed for CPacket
-#include "Server.h"			// Needed for CServer
-#include "ServerList.h"		// Needed for CServerList
-#include "ServerConnect.h"		// Needed for CServerConnect
-#include "amule.h"			// Needed for theApp
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "MuleNotebook.h"
 #include "GetTickCount.h"
 #include "Preferences.h"
+#include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
+#include "amule.h"			// Needed for theApp
+
+#ifndef CLIENT_GUI
+#include "SearchList.h"		// Needed for CSearchList
+#endif
 
 #define ID_SEARCHLISTCTRL wxID_HIGHEST+667
 
@@ -88,7 +84,6 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 : wxPanel(pParent, -1)
 {
 	m_last_search_time = 0;
-	m_globalsearch = false;
 
 	wxSizer* content = searchDlg(this, true);
 	content->Show(this, true);
@@ -184,8 +179,6 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 
 	// Do cleanups if this was the last tab
 	if ( m_notebook->GetPageCount() == 1 ) {
-		theApp.searchlist->Clear();
-
 		FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 		FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	}
@@ -315,9 +308,12 @@ void CSearchDlg::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 {
 	m_canceld = true;
 
- 	if ( m_globalsearch ) {
-		theApp.searchlist->StopGlobalSearch();
- 	}
+	#ifndef CLIENT_GUI
+	theApp.searchlist->StopGlobalSearch();
+	#else
+	#warning EC packet for cancelling search
+	#endif
+ 
 	ResetControls();
 }
 
@@ -333,10 +329,8 @@ void CSearchDlg::ResetControls()
 
 void CSearchDlg::LocalSearchEnd()
 {
-	if ( !m_canceld ) {
-		if ( !m_globalsearch ) {
-			ResetControls();
-		}
+	if ( !m_canceld) {
+		ResetControls();
 	}
 }
 
@@ -391,14 +385,6 @@ void CSearchDlg::StartNewSearch()
 	// 0xffff is reserved for websearch
 	m_nSearchID %= 0xfffe; 
 	
-	// No searching if not connected
-	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);
-		dlg->ShowModal();
-		delete dlg;
-		return;
-	}
-
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_SDOWNLOAD)->Disable();
 	FindWindow(IDC_CANCELS)->Enable();
@@ -422,8 +408,8 @@ void CSearchDlg::StartNewSearch()
 			extension = wxT(".") + extension;
 		}		
 
-		uint32 sizemin = GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
-		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
+		uint32 sizemin = otherfunctions::GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
+		uint32 sizemax = otherfunctions::GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
 
 		// Parameter Minimum Size
 		min = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * sizemin;
@@ -469,17 +455,21 @@ void CSearchDlg::StartNewSearch()
 		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
-	theApp.searchlist->NewSearch(typeText, m_nSearchID);
-
-	m_searchtype = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection();
-	m_globalsearch = m_searchtype == 1;
-
+	bool globalsearch = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection() == 1;
+	
 #ifdef CLIENT_GUI
-	// lfroen: implement remote call
+	#warning EC packet for starting search
 #else
-	CPacket* packet = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
-
-	CoreNotify_Search_Req(packet, m_globalsearch);
+	if (!theApp.searchlist->StartNewSearch(m_nSearchID, globalsearch, searchString, typeText, extension, min, max, availability)) {
+		// Search failed (not connected?)
+		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);
+		dlg->ShowModal();
+		delete dlg;
+		FindWindow(IDC_STARTS)->Enable();
+		FindWindow(IDC_SDOWNLOAD)->Enable();
+		FindWindow(IDC_CANCELS)->Disable();
+		return;
+	}	
 #endif
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
@@ -518,7 +508,6 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
 }
 
-
 void CSearchDlg::UpdateCatChoice()
 {
 	wxChoice* c_cat = CastChild( ID_AUTOCATASSIGN, wxChoice );
@@ -529,4 +518,8 @@ void CSearchDlg::UpdateCatChoice()
 	}
 	
 	c_cat->SetSelection( 0 );
+}
+
+void	CSearchDlg::UpdateProgress(uint32 new_value) {
+	m_progressbar->SetValue(new_value);
 }

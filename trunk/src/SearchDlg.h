@@ -36,8 +36,6 @@
 class CMuleNotebook;
 class CSearchListCtrl;
 class CMuleNotebookEvent;
-class CPacket;
-class CServer;
 class wxListEvent;
 class wxNotebookEvent;
 class wxSpinEvent;
@@ -133,10 +131,8 @@ public:
 
 
 	CSearchListCtrl* GetSearchList( long id );
-	int		GetSearchType() { return m_searchtype; };
-	bool		IsGlobalSearch() { return m_globalsearch; };
-
-	wxGauge*	m_progressbar;
+	
+	void	UpdateProgress(uint32 new_value);
 
 private:
 	// Event handlers
@@ -156,11 +152,11 @@ private:
 	void		OnSearchPageChanged(wxNotebookEvent& evt);
 
 	bool		m_canceld;
-	bool		m_globalsearch;
-	int		m_searchtype;
-
+	
 	uint32		m_last_search_time;
 	
+	wxGauge*	m_progressbar;
+
 	CMuleNotebook*	m_notebook;
 
 	DECLARE_EVENT_TABLE()
