@@ -30,6 +30,8 @@
 #include <wx/socket.h>		// Needed for wxSocketEvent
 #include <wx/timer.h>		// Needed for wxTimerEvent
 #include <wx/textctrl.h>	// Needed for wxTextCtrl
+#include <wx/imaglist.h>
+
 
 #include "types.h"			// Needed for uint32
 #include "resource.h"		// Needed for IDD_EMULE_DIALOG
@@ -109,6 +111,8 @@ public:
 
 	int					split_pos;
 	int					srv_split_pos;
+	
+	wxImageList imagelist;
 
 protected:
 	
