@@ -1,8 +1,8 @@
 //
 // This file is part of aMule Project
 //
-// Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ there client on the eMule forum..
 #define __KAD_ENTRY_H__
 
 #include "../utils/UInt128.h"
-#include "../kademlia/tag.h"
+#include "../kademlia/Tag.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -49,7 +49,6 @@ public:
 		ip = 0;
 		tcpport = 0;
 		udpport = 0;
-		(void)fileName;
 		size = 0;
 		lifetime = time(NULL);
 		source = false;

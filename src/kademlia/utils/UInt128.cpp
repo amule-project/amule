@@ -1,8 +1,8 @@
 //
 // This file is part of aMule Project
 //
-// Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
 // This program is free software; you can redistribute it and/or
@@ -132,22 +132,6 @@ CUInt128& CUInt128::setValueRandom(void)
 	setValueBE( randomBytes );
 	return *this;
 }
-
-#warning Whats this?
-/*
-CUInt128& CUInt128::setValueGUID(void)
-{
-	setValue((ULONG)0);
-	GUID guid;
-	if (CoCreateGuid(&guid) != S_OK)
-		return *this;
-	m_data[0] = guid.Data1;
-	m_data[1] = ((ULONG)guid.Data2) << 16 | guid.Data3;
-	m_data[2] = ((ULONG)guid.Data4[0]) << 24 | ((ULONG)guid.Data4[1]) << 16 | ((ULONG)guid.Data4[2]) << 8 | ((ULONG)guid.Data4[3]);
-	m_data[3] = ((ULONG)guid.Data4[4]) << 24 | ((ULONG)guid.Data4[5]) << 16 | ((ULONG)guid.Data4[6]) << 8 | ((ULONG)guid.Data4[7]);
-	return *this;
-}
-*/
 
 UINT CUInt128::getBitNumber(UINT bit) const
 {
