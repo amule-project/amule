@@ -598,7 +598,12 @@ bool CamuleApp::OnInit()
 		// failure to open log is serious problem
 		return false;
 	}
-	
+
+	// Some sanity check
+	if (!thePrefs::UseTrayIcon()) {
+		thePrefs::SetMinToTray(false);
+	}
+
 
 	// Load Preferences
 	CPreferences::BuildItemList( theApp.ConfigDir);
