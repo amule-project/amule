@@ -121,7 +121,6 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 {
 	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
 	// Kry - No more when is down... right click on image will be the way.
-	static int __counter=0;
 	wxTreeItemId hItem = evt.GetItem(); 
 	GetFirstVisibleItem(); // VQB mark initial window position
 	int flags=0;
@@ -132,7 +131,7 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 		CheckChanged(hItem, share_it);
 		Toggle(hItem);
 		wxTreeItemId hChild;
-		long cookie=993+(++__counter);
+		wxTreeItemIdValue cookie;
 		hChild = GetFirstChild(hItem,cookie);
 		int i = 1;
 		while (hChild.IsOk()) {
@@ -149,14 +148,12 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 
 void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
 {
-	static long int __counter=1;
-
 	CheckChanged(hChild, mark);
 
 	Toggle(hChild);
 
 	wxTreeItemId hChild2;
-	long int cookie=++__counter;
+	wxTreeItemIdValue cookie;
 	hChild2 = GetFirstChild(hChild,cookie);
 	int i=0;
 	while(hChild2.IsOk()) {

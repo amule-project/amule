@@ -1,10 +1,18 @@
+Version 2.0.0rc6 - The '???' version.
+----------
+2004-0?-??
+
+	phoenix:
+		* Fixed a compilation warning + appartently useless code in 
+		  DirectoryTree.cpp.
+
 Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 ----------
 2004-07-18
 
-        deltaHF:
+	deltaHF:
 	        * Better sorting of some columns
-		
+
 	Kry:
 		* Some gui design and coding of the upcoming Kad window
 		* Protocol update:
@@ -22,12 +30,12 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 
 	Hetfield:
 		* Some gcc 3.4.x compilation fixes
-		
+	
 	lfroen:
 		* GUIEvents updated 
 		* core2gui events added.
 		* Some gcc 3.4 fixes to GUIEvents
-	
+
 	phoenix:
 		* Added a test with a warning to
 		  CSearchDlg::OnBnClickedSdownload in SearchDlg.cpp. A NULL
@@ -54,7 +62,7 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 		 * Limit the server name length in wxCas to avoid a too large window
 		 * New icon for alc
 		 * Global fr translation
-		 
+
 	Xaignar:
 		* Added the ability to search for "Texts"	
 		* Attempt at fixing both Random Socket Bugs and Random Client Bugs.
