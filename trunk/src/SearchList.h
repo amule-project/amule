@@ -64,12 +64,20 @@ public:
 	
 	virtual ~CSearchFile();
 
+#ifdef CLIENT_GUI
+	uint32	GetSourceCount() { return m_SourceCount; }
+	uint32	GetCompleteSourceCount() { return m_CompleteSourceCount; }
+	uint32  GetFileSize() { return m_nFileSize; }
+#else
+
 	uint32	GetIntTagValue(uint8 tagname);
 	wxString	GetStrTagValue(uint8 tagname);
 	void	AddSources(uint32 count, uint32 count_complete);
 	
 	uint32	GetSourceCount();
 	uint32	GetCompleteSourceCount();
+	uint32  GetFileSize();
+#endif
 	long	GetSearchID() 					{ return m_nSearchID; }
 	uint32	GetClientID() const				{ return m_nClientID; }
 	void	SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
@@ -78,10 +86,13 @@ public:
 	
 private:
 	long		m_nSearchID;
-
+	
+#ifdef CLIENT_GUI
+	uint32 m_SourceCount, m_CompleteSourceCount;
+#else
 	typedef		std::vector<CTag*> TagList;
 	TagList		m_taglist;
-
+#endif
 	uint32		m_nClientID;
 	uint16		m_nClientPort;
 	wxString	m_Directory;

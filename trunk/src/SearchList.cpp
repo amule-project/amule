@@ -270,6 +270,10 @@ uint32 CSearchFile::GetCompleteSourceCount()
 	return GetIntTagValue(FT_COMPLETE_SOURCES);
 }
 
+uint32 CSearchFile::GetFileSize()
+{
+	return GetIntTagValue(FT_FILESIZE);
+}
 
 CSearchList::CSearchList()
 {

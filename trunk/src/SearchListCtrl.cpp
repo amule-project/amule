@@ -120,7 +120,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItemData( newid, (long)toshow );
 
 	// Filesize
-	SetItem(newid, 1, CastItoXBytes( toshow->GetIntTagValue(FT_FILESIZE) ) );
+	SetItem(newid, 1, CastItoXBytes( toshow->GetFileSize() ) );
 
 	// Source count
 	wxString temp = wxString::Format( wxT("%d (%d)"), toshow->GetSourceCount(), toshow->GetCompleteSourceCount() );
@@ -241,7 +241,7 @@ int CSearchListCtrl::SortProc( long item1, long item2, long sortData )
 
 		// Sort file-size
 		case 1:
-			return modifier * CmpAny( file1->GetIntTagValue(FT_FILESIZE), file2->GetIntTagValue(FT_FILESIZE) );
+			return modifier * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
 
 		// Sort by sources
 		case 2:
