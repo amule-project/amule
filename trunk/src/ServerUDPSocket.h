@@ -35,6 +35,7 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #else
+	#include <sys/types.h>	// FreeBSD neededs this here
 	#include <netinet/in.h>	// Needed for struct sockaddr_in
 #endif
 
