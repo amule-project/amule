@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -16,6 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
@@ -457,7 +459,9 @@ bool CServerConnect::Disconnect()
 
 		connected = false;
 
-		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(), connectedsocket->cur_server->GetPort());
+		CServer* update = theApp.serverlist->GetServerByAddress(
+			connectedsocket->cur_server->GetAddress(),
+			connectedsocket->cur_server->GetPort());
 		Notify_ServerHighlight(update, false);
 		theApp.SetPublicIP(0);
 		DestroySocket(connectedsocket);
@@ -513,8 +517,9 @@ CServerConnect::~CServerConnect()
 
 CServer* CServerConnect::GetCurrentServer()
 {
-	if (IsConnected() && connectedsocket)
+	if (IsConnected() && connectedsocket) {
 		return connectedsocket->cur_server;
+	}
 	return NULL;
 }
 
@@ -523,8 +528,9 @@ void CServerConnect::SetClientID(uint32 newid)
 {
 	clientid = newid;
 	
-	if (!IsLowIDED2K(newid))
+	if (!IsLowIDED2K(newid)) {
 		theApp.SetPublicIP(newid);
+	}
 
 	Notify_ShowConnState(IsConnected(),GetCurrentServer()->GetListName());
 }
