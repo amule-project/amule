@@ -30,7 +30,7 @@
 #include "ChatSelector.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
-#include "opcodes.h"		// Needed for OP_MESSAGE
+#include "OPCodes.h"		// Needed for OP_MESSAGE
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #ifdef __WXMSW__
@@ -38,9 +38,9 @@
 #endif
 #include "amule.h"			// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "color.h"			// Needed for RGB
+#include "Color.h"			// Needed for RGB
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "Friend.h"
 #include "muuli_wdr.h"            // Needed for amuleSpecial
 #include "Statistics.h"		// Needed for CStatistics

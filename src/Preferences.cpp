@@ -41,9 +41,9 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for PACKAGE_NAME and PACKAGE_STRING
 #endif
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "StringFunctions.h"
-#include "opcodes.h"		// Needed for PREFFILE_VERSION
+#include "OPCodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"
 #include "MD5Sum.h"

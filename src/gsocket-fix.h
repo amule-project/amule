@@ -20,7 +20,7 @@
 
 #define __GSOCKET_FIX_H__
 
-#include "types.h"	// For wxCHECK_VERSION_FULL
+#include "Types.h"	// For wxCHECK_VERSION_FULL
 
 // This flag is only defined from version 2.5.2.3 and up.
 #if !wxCHECK_VERSION_FULL(2,5,2,3)

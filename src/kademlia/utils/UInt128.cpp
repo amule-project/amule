@@ -39,7 +39,7 @@ there client on the eMule forum..
 #include "UInt128.h"
 
 #include "../../CryptoPP_Inc.h"
-#include "../../endianfix.h"
+#include "../../EndianFix.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

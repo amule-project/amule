@@ -26,7 +26,7 @@
 #pragma implementation "ClientUDPSocket.h"
 #endif
 
-#include "types.h"
+#include "Types.h"
 
 #include <cerrno>
 #ifdef __WXMSW__
@@ -53,10 +53,10 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "opcodes.h"		// Needed for OP_EMULEPROT
+#include "OPCodes.h"		// Needed for OP_EMULEPROT
 #include "Statistics.h"		// Needed for CStatistics
 #include "amule.h"			// Needed for theApp
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "SafeFile.h"
 
 //

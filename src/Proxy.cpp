@@ -34,9 +34,9 @@
 #include <netinet/in.h>		/* for htons()			*/
 
 #include "amule.h"		/* Needed for wxGetApp		*/
-#include "opcodes.h"		/* for PROXY_SOCKET_HANDLER	*/
+#include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for CStringIPtoUint32()	*/
-#include "otherfunctions.h"	/* for EncodeBase64()		*/
+#include "OtherFunctions.h"	/* for EncodeBase64()		*/
 
 
 /**

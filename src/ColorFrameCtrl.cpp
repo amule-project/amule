@@ -19,14 +19,14 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "ColorFrameCtrl.h"
-#pragma implementation "color.h"
+#pragma implementation "Color.h"
 #endif
 
 #include <wx/dcclient.h>
 #include <wx/dc.h>
 
 #include "ColorFrameCtrl.h"	// Interface declarations
-#include "color.h"		// Needed for RGB, GetRValue, GetGValue and GetBValue
+#include "Color.h"		// Needed for RGB, GetRValue, GetGValue and GetBValue
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl

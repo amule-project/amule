@@ -27,7 +27,7 @@
 #endif
 
 #include <wx/panel.h>	// Needed for wxPanel
-#include "types.h"		// Needed for uint32
+#include "Types.h"		// Needed for uint32
 
 
 class Category_Struct;

@@ -36,7 +36,7 @@
 #include "ECPacket.h"
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
-#include "otherfunctions.h"	// for RLE
+#include "OtherFunctions.h"	// for RLE
 
 class CPartFile;
 class wxSocketServer;

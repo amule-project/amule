@@ -22,7 +22,7 @@
 #include <cmath>		// Needed for std::exp
 #include <wx/filename.h>        // Needed for wxFileName::GetPathSeparator()
 
-#include "otherfunctions.h"	// Needed for nstrdup
+#include "OtherFunctions.h"	// Needed for nstrdup
 
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
@@ -31,7 +31,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Preferences.h"	// Needed for CPreferences
-#include "otherstructs.h"	// Needed for Requested_Block_Struct
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "PartFile.h"		// Needed for PR_POWERSHARE
 #include "KnownFile.h"		// Needed for CKnownFile
@@ -39,7 +39,7 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"		// Needed for theApp
-#include "opcodes.h"		// Needed for PARTSIZE
+#include "OPCodes.h"		// Needed for PARTSIZE
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"

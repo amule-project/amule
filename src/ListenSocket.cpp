@@ -26,11 +26,11 @@
 #include "ListenSocket.h"	// Interface declarations
 
 #include "amule.h"		// Needed for theApp
-#include "otherfunctions.h"	// Needed for md4cpy
-#include "server.h"		// Needed for CServer
+#include "OtherFunctions.h"	// Needed for md4cpy
+#include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "opcodes.h"		// Needed for CONNECTION_TIMEOUT
+#include "OPCodes.h"		// Needed for CONNECTION_TIMEOUT
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ClientList.h"		// Needed for CClientList
 #include "IPFilter.h"		// Needed for CIPFilter
@@ -40,7 +40,7 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "Packet.h"		// Needed for CPacket
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "otherstructs.h"	// Needed for Requested_Block_Struct
+#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Statistics.h"
 

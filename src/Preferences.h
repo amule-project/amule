@@ -25,7 +25,7 @@
 #pragma interface "Preferences.h"
 #endif
 
-#include "types.h"				// Needed for ints
+#include "Types.h"				// Needed for ints
 #include "CMD4Hash.h"
 
 #include <wx/string.h>			// Needed for wxString

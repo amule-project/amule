@@ -26,7 +26,7 @@
 
 #include <wx/string.h>		// Needed for wxString
 
-#include "types.h"		// Needed for uint32
+#include "Types.h"		// Needed for uint32
 #include "CMD4Hash.h"
 
 class CUpDownClient;

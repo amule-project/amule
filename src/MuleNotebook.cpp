@@ -30,7 +30,7 @@
 #include <wx/intl.h>
 
 #include "MuleNotebook.h"	// Interface declarations
-#include "opcodes.h"		// Needed for MP_CLOSE_ IDs
+#include "OPCodes.h"		// Needed for MP_CLOSE_ IDs
 
 DEFINE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
 

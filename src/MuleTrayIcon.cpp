@@ -36,15 +36,15 @@
 #include <wx/string.h>
 #include <wx/intl.h>
 
-#include "opcodes.h" 			// Needed for MOD_VERSION_LONG
+#include "OPCodes.h" 			// Needed for MOD_VERSION_LONG
 #include "amule.h" 			// Needed for theApp
 #include "amuleDlg.h" 			// Needed for IsShown
 #include "Preferences.h"		// Needed for glod_prefs
 #include "DownloadQueue.h" 		// Needed for GetKbps
 #include "UploadQueue.h" 		// Needed for GetKbps
 #include "ServerConnect.h"			// Needed for CServerConnect
-#include "otherfunctions.h"		// Needed for CastSecondsToHM
-#include "server.h"			// Needed for CServer
+#include "OtherFunctions.h"		// Needed for CastSecondsToHM
+#include "Server.h"			// Needed for CServer
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "Statistics.h"

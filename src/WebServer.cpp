@@ -51,10 +51,10 @@
 #include "ECSpecialTags.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD5Sum.h"
-#include "otherstructs.h"	// Needed for TransferredData
-#include "otherfunctions.h"	// Needed for atoll, ED2KFT_*
+#include "OtherStructs.h"	// Needed for TransferredData
+#include "OtherFunctions.h"	// Needed for atoll, ED2KFT_*
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
-#include "types.h"
+#include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
 

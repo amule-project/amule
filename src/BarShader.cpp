@@ -25,7 +25,7 @@
 #include <algorithm>		// Needed for std::min
 #include <wx/gdicmn.h>
 #include <wx/dc.h>
-#include "color.h"		// Needed for RGB
+#include "Color.h"		// Needed for RGB
 
 #include "BarShader.h"		// Interface declarations.
 

@@ -27,12 +27,12 @@
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "otherfunctions.h"	// Needed for CastItoXBytes
+#include "OtherFunctions.h"	// Needed for CastItoXBytes
 #include "PartFile.h"		// Needed for CPartFile and CKnownFile
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "opcodes.h"		// Needed for MP_RESUME
+#include "OPCodes.h"		// Needed for MP_RESUME
 #include "amule.h"			// Needed for theApp
 
 #include <wx/menu.h>

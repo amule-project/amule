@@ -70,9 +70,9 @@
 
 #include "amule.h"				// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "server.h"				// Needed for GetListName
+#include "Server.h"				// Needed for GetListName
 #include "CFile.h"				// Needed for CFile
-#include "otherfunctions.h"		// Needed for GetTickCount
+#include "OtherFunctions.h"		// Needed for GetTickCount
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCredits.h"		// Needed for CClientCreditsList

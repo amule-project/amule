@@ -26,7 +26,7 @@
 #pragma interface "DownloadQueue.h"
 #endif
 
-#include "types.h"		// Needed for uint8, uint16, uint32 and uint64
+#include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
 #include <wx/thread.h>	// Needed for wxMutex

@@ -33,11 +33,11 @@
 #include "AddFriend.h"		// Needed for CAddFriend
 #include "ClientList.h"		// Needed for CClientList
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "opcodes.h"		// Needed for MP_DETAIL
+#include "OPCodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
-#include "endianfix.h"
-#include "otherfunctions.h"
+#include "EndianFix.h"
+#include "OtherFunctions.h"
 #include "muuli_wdr.h"
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)

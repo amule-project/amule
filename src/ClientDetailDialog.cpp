@@ -25,14 +25,14 @@
 #endif
 
 #include "ClientDetailDialog.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for CastItoIShort
+#include "OtherFunctions.h"	// Needed for CastItoIShort
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "ClientCredits.h"	// Needed for GetDownloadedTotal
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ServerList.h"		// Needed for CServerList
 #include "amule.h"			// Needed for theApp
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
 #include <wx/stattext.h>

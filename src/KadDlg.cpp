@@ -30,7 +30,7 @@
 #include "muuli_wdr.h"
 
 #include "CMD4Hash.h"
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include <wx/sizer.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>

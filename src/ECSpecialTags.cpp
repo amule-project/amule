@@ -33,7 +33,7 @@
 // removing everything from non-local builds.
 #ifndef EC_REMOTE
 
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "updownclient.h"

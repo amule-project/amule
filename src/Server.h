@@ -23,13 +23,13 @@
 #define SERVER_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "server.h"
+#pragma interface "Server.h"
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/list.h>		// Needed for WX_DECLARE_LIST
 
-#include "types.h"		// Needed for uint8, uint16 and uint32
+#include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "CFile.h"
 
 class CTag;

@@ -26,7 +26,7 @@
 #pragma interface "ClientList.h"
 #endif
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
 #include <deque>

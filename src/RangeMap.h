@@ -27,7 +27,7 @@
 
 #include <wx/defs.h>
 
-#include "types.h"
+#include "Types.h"
 
 
 

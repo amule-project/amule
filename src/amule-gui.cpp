@@ -79,9 +79,9 @@
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "server.h"			// Needed for GetListName
+#include "Server.h"			// Needed for GetListName
 #include "CFile.h"			// Needed for CFile
-#include "otherfunctions.h"		// Needed for GetTickCount
+#include "OtherFunctions.h"		// Needed for GetTickCount
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "ServerWnd.h"			// Needed for CServerWnd

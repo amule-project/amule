@@ -29,7 +29,7 @@
 #include "amule.h"
 #include "UploadQueue.h"
 #include "DownloadQueue.h"
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "ListenSocket.h"
 #include "ServerConnect.h"
 #include "SharedFileList.h"

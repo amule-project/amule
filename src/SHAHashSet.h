@@ -74,7 +74,7 @@ Example
 
 #include <deque>
 #include <list>
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 
 #define HASHSIZE		20
 #define KNOWN2_MET_FILENAME		_T("known2.met")

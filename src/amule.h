@@ -32,7 +32,7 @@
 #include <wx/file.h>
 #include <wx/string.h>
 
-#include "types.h"			// Needed for int32, uint16 and uint64
+#include "Types.h"			// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
 
 #include <deque>

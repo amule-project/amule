@@ -22,7 +22,7 @@
 #endif
 
 #include "SafeFile.h"		// Interface declarations.
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 #include "StringFunctions.h"		// Needed for unicode2char
 
 #include "Packet.h"

@@ -30,7 +30,7 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/timer.h>		// Needed for wxTimer and wxTimerEvent
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 
 
 class CMuleNotebook;

@@ -26,7 +26,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include "types.h"		// Needed for uint16, uint32 and uint64
+#include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"
 

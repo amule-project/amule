@@ -27,7 +27,7 @@
 
 #include <wx/string.h>
 #include <ctype.h>
-#include "types.h"
+#include "Types.h"
 
 #define MD4HASH_LENGTH 16
 

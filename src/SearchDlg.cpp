@@ -40,9 +40,9 @@
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "StringFunctions.h"		// Needed for unicode2char
-#include "otherfunctions.h"	// Needed for URLEncode, GetTypeSize
+#include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "Packet.h"		// Needed for CPacket
-#include "server.h"			// Needed for CServer
+#include "Server.h"			// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "amule.h"			// Needed for theApp

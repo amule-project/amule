@@ -26,7 +26,7 @@
 #pragma interface "GuiEvents.h"
 #endif
 
-#include "types.h"
+#include "Types.h"
 #include  <map>
 #include  <list>
 #include  <set>

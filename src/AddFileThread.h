@@ -28,7 +28,7 @@
 
 #include <list>				// Needed for std::list
 
-#include "types.h"			// Needed for uints
+#include "Types.h"			// Needed for uints
 
 
 class CKnownFile;

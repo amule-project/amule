@@ -24,7 +24,7 @@
 #include <algorithm>
 #include <cstring>
 #include <cmath>			// Needed for std::exp
-#include "types.h"
+#include "Types.h"
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/defs.h>
@@ -39,15 +39,15 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "server.h"			// Needed for CServer
+#include "Server.h"			// Needed for CServer
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "Packet.h"		// Needed for CPacket
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "opcodes.h"		// Needed for MAX_PURGEQUEUETIME
+#include "OPCodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "otherfunctions.h"	// Needed for GetTickCount
+#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"

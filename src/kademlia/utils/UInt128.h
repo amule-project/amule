@@ -38,7 +38,7 @@ there client on the eMule forum..
 #pragma interface "UInt128.h"
 #endif
 
-#include "../../types.h"
+#include "../../Types.h"
 #include <wx/string.h>
 
 ////////////////////////////////////////

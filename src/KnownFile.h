@@ -33,8 +33,8 @@
 
 #include <set>
 
-#include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
-#include "opcodes.h"		// Needed for PARTSIZE
+#include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
+#include "OPCodes.h"		// Needed for PARTSIZE
 
 #define	PS_READY			0
 #define	PS_EMPTY			1

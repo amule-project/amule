@@ -28,9 +28,9 @@
 #endif
 
 #include "ExternalConn.h"	// Interface declarations
-#include "otherfunctions.h"	// Needed for EncodeBase16
+#include "OtherFunctions.h"	// Needed for EncodeBase16
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile

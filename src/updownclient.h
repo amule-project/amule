@@ -29,7 +29,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
-#include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
+#include "Types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"

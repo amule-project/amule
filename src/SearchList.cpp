@@ -22,14 +22,14 @@
 #endif
 
 #include "SearchList.h"		// Interface declarations.
-#include "otherfunctions.h"	// Needed for GetFiletypeByName
+#include "OtherFunctions.h"	// Needed for GetFiletypeByName
 #include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "Packet.h"		// Needed for CTag
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
-#include "server.h"
+#include "Server.h"
 #include "ServerList.h"
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID

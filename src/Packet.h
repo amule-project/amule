@@ -28,10 +28,10 @@
 
 #include <wx/string.h>
 
-#include "types.h"		// Needed for int8, int32, uint8 and uint32
-#include "opcodes.h"		// Needed for OP_EDONKEYPROT
+#include "Types.h"		// Needed for int8, int32, uint8 and uint32
+#include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 #include "SafeFile.h"		// Needed for CFileDataIO
-#include "otherfunctions.h"
+#include "OtherFunctions.h"
 
 class CMemFile;
 class CFile;

@@ -20,60 +20,10 @@
 #ifndef OTHERSTRUCTS_H
 #define OTHERSTRUCTS_H
 
-#include "types.h"		// Needed for int8, int32, uint8, uint16 and uint32
+#include "Types.h"		// Needed for int8, int32, uint8, uint16 and uint32
 
 // Defined in <zlib.h>
 struct z_stream_s;
-
-#if 0
-/* winemaker: #pragma pack(1) */
-//#include <pshpack1.h>
-//			SERVER TO CLIENT
-
-struct Header_Struct{
-	int8	eDonkeyID __attribute__ ((packed));
-	int32	packetlength __attribute__ ((packed));
-	int8	command __attribute__ ((packed));
-};
-struct UDP_Header_Struct{
-	int8	eDonkeyID __attribute__ ((packed));
-	int8	command __attribute__ ((packed));
-};
-
-struct LoginAnswer_Struct {
-	uint32	clientid __attribute__ ((packed));
-};
-
-struct Requested_Block_Struct{
-	uint32	StartOffset __attribute__ ((packed));
-	uint32	EndOffset __attribute__ ((packed));
-	uint32	packedsize __attribute__ ((packed));
-	unsigned char	FileID[16] __attribute__ ((packed));
-};
-
-struct Requested_File_Struct{
-	unsigned char	  fileid[16] __attribute__ ((packed));
-	uint32	  lastasked __attribute__ ((packed));
-	uint8	  badrequests __attribute__ ((packed));
-};
-
-struct Pending_Block_Struct{
-  Requested_Block_Struct*	block __attribute__ ((packed));
-  CMemFile*				buffer __attribute__ ((packed));
-};
-
-struct Gap_Struct{
-	uint32 start __attribute__ ((packed));
-	uint32 end __attribute__ ((packed));
-};
-
-struct ServerMet_Struct {
-	uint32	ip __attribute__ ((packed));
-	uint16	port __attribute__ ((packed));
-	uint32	tagcount __attribute__ ((packed));
-};
-#endif
-
 
 //			SERVER TO CLIENT
 #pragma pack(1)

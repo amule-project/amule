@@ -31,7 +31,7 @@
 #include "IPFilter.h"		// Needed for CIPFIlter
 #include "ClientCredits.h"
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "opcodes.h"
+#include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 
 #include <algorithm>

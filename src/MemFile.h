@@ -26,7 +26,7 @@
 #endif
 
 #include "CFile.h"		// Needed for CFile
-#include "types.h"		// Needed for uint8, uint16, uint32
+#include "Types.h"		// Needed for uint8, uint16, uint32
 
 class CMemFile : public CFile {
 public:  

@@ -30,7 +30,7 @@
 #include "SharedFilesWnd.h"	// Interface declarations
 #include "SharedFilesCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST
-#include "otherfunctions.h"	// Needed for CastItoXBytes
+#include "OtherFunctions.h"	// Needed for CastItoXBytes
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "SharedFileList.h"	// Needed for CSharedFileList

@@ -28,7 +28,7 @@
 #pragma interface "ServerSocket.h"
 #endif
 
-#include "types.h"		// Needed for int8 and int32
+#include "Types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "ServerConnect.h"
 

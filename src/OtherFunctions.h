@@ -23,7 +23,7 @@
 #define OTHERFUNCTIONS_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "otherfunctions.h"
+#pragma interface "OtherFunctions.h"
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
@@ -37,9 +37,9 @@
 	#include <wx/utils.h>
 #endif	
 
-#include "types.h"		// Needed for uint16, uint32 and uint64
-#include "endianfix.h"
-#include "otherstructs.h" // for Gap_Struct
+#include "Types.h"		// Needed for uint16, uint32 and uint64
+#include "EndianFix.h"
+#include "OtherStructs.h" // for Gap_Struct
 
 namespace otherfunctions {
 	

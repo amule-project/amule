@@ -23,7 +23,7 @@
 #endif
 
 #include "SHAHashSet.h"
-#include "opcodes.h"
+#include "OPCodes.h"
 #include "amule.h"
 #include "SafeFile.h"
 #include "KnownFile.h"

@@ -26,7 +26,7 @@
 #pragma interface "SearchList.h"
 #endif
 
-#include "types.h"		// Needed for uint8, uint16 and uint32
+#include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include <wx/thread.h>
 

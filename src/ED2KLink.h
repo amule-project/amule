@@ -29,7 +29,7 @@
 #endif
 
 
-#include "types.h"		// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "SHAHashSet.h"		// 

@@ -43,7 +43,7 @@
 #include "amule.h"			// Needed for theApp
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
-#include "server.h"		// Needed for CServer
+#include "Server.h"		// Needed for CServer
 #include "updownclient.h"
 #include "StringFunctions.h" // Needed for unicode2char
 #include "Statistics.h"		// Needed for CStatistics

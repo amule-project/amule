@@ -28,7 +28,7 @@
 
 #include <map>				// Needed for std::multimap
 
-#include "types.h"			// Needed for uint8
+#include "Types.h"			// Needed for uint8
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 

@@ -30,7 +30,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
 
-#include "types.h"		// Needed for uint16 and uint64
+#include "Types.h"		// Needed for uint16 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 struct UnknownFile_Struct;

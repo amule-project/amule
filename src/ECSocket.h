@@ -29,7 +29,7 @@
 
 #include <wx/string.h>
 #include <wx/socket.h>
-#include "types.h"
+#include "Types.h"
 
 enum aMuleECSocketType {
 	AMULE_EC_CLIENT,

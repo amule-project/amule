@@ -28,8 +28,8 @@
 #include <wx/imaglist.h>		// Needed for wxImageList (at least on wx2.5)
 #include "MuleTextCtrl.h" 
 #include "MuleNotebook.h"
-#include "types.h"				// Needed for uint16
-#include "color.h"				// Needed for COLORREF
+#include "Types.h"				// Needed for uint16
+#include "Color.h"				// Needed for COLORREF
 
 class CUpDownClient;
 class CFriend;

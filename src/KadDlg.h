@@ -27,7 +27,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include "types.h"
+#include "Types.h"
 
 class CMD4Hash;
 class wxListCtrl;	

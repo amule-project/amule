@@ -21,7 +21,7 @@
 #pragma implementation "ServerList.h"
 #endif
 
-#include "types.h"
+#include "Types.h"
 
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -57,10 +57,10 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ServerConnect.h"		// Needed for CServerConnect
-#include "server.h"		// Needed for CServer and SRV_PR_*
-#include "otherstructs.h"	// Needed for ServerMet_Struct
+#include "Server.h"		// Needed for CServer and SRV_PR_*
+#include "OtherStructs.h"	// Needed for ServerMet_Struct
 #include "Packet.h"		// Needed for CInvalidPacket
-#include "opcodes.h"		// Needed for MET_HEADER
+#include "OPCodes.h"		// Needed for MET_HEADER
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "HTTPDownload.h"	// Needed for HTTPThread
 #include "Preferences.h"	// Needed for CPreferences

@@ -79,14 +79,14 @@ amulegui_SOURCES = \
 	KadDlg.cpp \
 	listctrl.cpp \
 	MD5Sum.cpp \
-	MemFile.cpp \	
+	MemFile.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
 	muuli_wdr.cpp \
-	otherfunctions.cpp \
+	OtherFunctions.cpp \
 	DataToText.cpp \
 	OScopeCtrl.cpp \
 	Packet.cpp \
@@ -97,7 +97,7 @@ amulegui_SOURCES = \
 	SafeFile.cpp \
 	SearchDlg.cpp \
 	SearchListCtrl.cpp \
-	server.cpp \
+	Server.cpp \
 	ServerWnd.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
@@ -141,7 +141,7 @@ amule_SOURCES = \
 	filefn.cpp \
 	Friend.cpp \
 	FriendListCtrl.cpp \
-	MemFile.cpp \	
+	MemFile.cpp \
 	MuleGifCtrl.cpp \
 	HTTPDownload.cpp \
 	IPFilter.cpp \
@@ -158,7 +158,7 @@ amule_SOURCES = \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
 	OScopeCtrl.cpp \
-	otherfunctions.cpp \
+	OtherFunctions.cpp \
 	DataToText.cpp \
 	Packet.cpp \
 	PartFile.cpp \
@@ -170,7 +170,7 @@ amule_SOURCES = \
 	SearchDlg.cpp \
 	SearchList.cpp \
 	SearchListCtrl.cpp \
-	server.cpp \
+	Server.cpp \
 	ServerConnect.cpp \
 	ServerList.cpp \
 	ServerListCtrl.cpp \
@@ -220,16 +220,16 @@ amuled_SOURCES = \
         KnownFileList.cpp \
 	ListenSocket.cpp \
         MD5Sum.cpp \
-        MemFile.cpp \	   
+        MemFile.cpp \
 	NetworkFunctions.cpp \
-        otherfunctions.cpp \
+        OtherFunctions.cpp \
         Packet.cpp \
         PartFile.cpp \
         Preferences.cpp \
 	Proxy.cpp \
         SafeFile.cpp \
         SearchList.cpp \
-        server.cpp \
+        Server.cpp \
         ServerConnect.cpp \
         ServerList.cpp \
         ServerSocket.cpp \
@@ -238,7 +238,7 @@ amuled_SOURCES = \
 	StateMachine.cpp \
 	Statistics.cpp \
 	StringFunctions.cpp \
-	timer.cpp \
+	Timer.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
         amule.cpp \
@@ -291,24 +291,24 @@ amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp StringFunctions.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) -DEC_REMOTE
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) -DEC_REMOTE
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS)
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp StringFunctions.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG -DEC_REMOTE
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG  -DEC_REMOTE
 amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
+	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
 amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp otherfunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
+	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp
 amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG -DEC_REMOTE
 amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG  -DEC_REMOTE
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS)
@@ -330,9 +330,8 @@ noinst_HEADERS = AddFileThread.h \
 		 ClientListCtrl.h \
 		 ClientUDPSocket.h \
 		 CMD4Hash.h \
-		 CMemFile.h \
 		 ColorFrameCtrl.h \
-		 color.h \
+		 Color.h \
 		 CommentDialog.h \
 		 CommentDialogLst.h \
 		 CryptoPP.h \
@@ -349,7 +348,7 @@ noinst_HEADERS = AddFileThread.h \
 		 EditServerListDlg.h \
 		 eggtrayicon.h \
 		 EMSocket.h \
-		 endianfix.h \
+		 EndianFix.h \
 		 ExternalConnector.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
@@ -382,10 +381,10 @@ noinst_HEADERS = AddFileThread.h \
 		 MuleTrayIcon.h \
 		 muuli_wdr.h \
 		 NetworkFunctions.h \
-		 opcodes.h \
+		 OPCodes.h \
 		 OScopeCtrl.h \
-		 otherfunctions.h \
-		 otherstructs.h \
+		 OtherFunctions.h \
+		 OtherStructs.h \
 		 Packet.h \
 		 PartFile.h \
 		 Preferences.h \
@@ -396,7 +395,7 @@ noinst_HEADERS = AddFileThread.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \
 		 SearchList.h \
-		 server.h \
+		 Server.h \
 		 ServerConnect.h \
 		 ServerListCtrl.h \
 		 ServerList.h \
@@ -416,7 +415,7 @@ noinst_HEADERS = AddFileThread.h \
 		 TextClient.h \
 		 TransferWnd.h \
 		 tree.hh \
-		 types.h \
+		 Types.h \
 		 updownclient.h \
 		 UploadBandwidthThrottler.h \
 		 UploadQueue.h \
