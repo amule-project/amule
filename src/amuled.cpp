@@ -163,8 +163,14 @@ int CamuleDaemonApp::OnRun()
 		msRun = GetTickCount() - msRun;
 		msWait = uLoop - msRun;
 	}
+	listensocket->Delete();
+	delete listensocket;
+	listensocket = 0;
+
 	clientudp->Delete();
+	delete clientudp;
 	clientudp = 0;
+	
 	ShutDown();
 	return 0;
 }
@@ -182,11 +188,6 @@ int CamuleDaemonApp::OnExit()
 	if (ECServerHandler) {
 		ECServerHandler->Delete();
 		ECServerHandler = 0;
-	}
-
-	if (listensocket) {
-		listensocket->Delete();
-		listensocket = NULL;
 	}
 	
 	return CamuleApp::OnExit();
