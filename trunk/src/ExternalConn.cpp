@@ -618,7 +618,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
-	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request;
+	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
 	theApp.searchlist->RemoveResults(0xffff);
 	theApp.searchlist->NewSearch(search_request->SearchFileType(), 0xffff);
 	
@@ -628,6 +628,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	Packet *packet = CreateSearchPacket(text, file_type, ext,
 		search_request->MinSize(), search_request->MaxSize(), search_request->Avail());
 	
+	CECPacket *response = new CECPacket(EC_OP_FAILED);
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
 	switch(search_type) {
 		case EC_SEARCH_LOCAL:
@@ -642,7 +643,9 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			break;
 	}
 	// no reply - search in progress
-	return 0;
+	response->AddTag(CECTag(EC_TAG_STRING,
+		wxTRANSLATE("Search in progress. Refetch results in a moment!")));
+	return response;
 }
 
 CECPacket *ProcessPreferencesRequest(const CECPacket *request)

@@ -109,6 +109,12 @@ typedef enum {
 	SERVER_SORT_FILES
 } xServerSort;
 
+typedef enum {
+	SEARCH_SORT_NAME,
+	SEARCH_SORT_SIZE,
+	SEARCH_SORT_SOURCES,
+} xSearchSort;
+
 WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
@@ -116,6 +122,7 @@ WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;
 class CEC_UpDownClient_Tag;
+class CEC_SearchFile_Tag;
 class CProgressImage;
 
 class DownloadFiles {
@@ -201,6 +208,19 @@ class UploadFiles {
 		UploadFiles(CEC_UpDownClient_Tag *tag);
 		
 		static class UploadsInfo *GetContainerInstance();
+		CMD4Hash ID() { return nHash; }
+};
+
+class SearchFile {
+	public:
+		wxString sFileName;
+		long lFileSize;
+		CMD4Hash  nHash;
+		long lSourceCount;
+		
+		SearchFile(CEC_SearchFile_Tag *);
+		
+		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
 };
 
@@ -467,12 +487,19 @@ class SharedFilesInfo : public UpdatableItemsContainer<SharedFiles, xSharedSort,
 		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
 };
 
+class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_SearchFile_Tag, CMD4Hash> {
+	public:
+		static SearchInfo *m_This;
+		
+		SearchInfo(CamulewebApp *webApp);
+		
+		virtual bool ReQuery();
+
+		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
+};
+
 class CImageLib;
 class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
-		// need duplicate list with a map, so check "do we already have"
-		// will take O(log(n)) instead of O(n)
-		// map will contain pointers to items in list 
-		std::map<CMD4Hash, DownloadFiles *> m_files;
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images

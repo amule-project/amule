@@ -2059,19 +2059,10 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		}
 		CECPacket search_req(EC_OP_SEARCH_START);
 		search_req.AddTag(CEC_Search_Tag (sToSearch, search_type, type, ext, avail, min_size, max_size));
-		//CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
-		
-		wxString sParams;
-		sParams.Printf(sToSearch+wxT("\n"));
-		sParams.Append(_ParseURL(Data, wxT("type"))+wxT("\n"));
-		sParams.Append(wxString::Format(wxT("%ld\n"), StrToLong(_ParseURL(Data, wxT("min")))*1048576));
-		sParams.Append(wxString::Format(wxT("%ld\n"), StrToLong(_ParseURL(Data, wxT("max")))*1048576));
-		sParams.Append(_ParseURL(Data, wxT("avail"))+wxT("\n"));
-		sParams.Append(_ParseURL(Data, wxT("ext"))+wxT("\n"));
-		sParams.Append(_ParseURL(Data, wxT("method"))+wxT("\n"));
+		CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
 
-		webInterface->SendRecvMsg(wxString::Format(wxT("SEARCH DONEWSEARCH %s"), sParams.GetData()));
-		Out.Replace(wxT("[Message]"),_("Search in progress. Refetch results in a moment!"));
+		Out.Replace(wxT("[Message]"), search_reply->GetTagByIndex(0)->GetStringData());
+		delete search_reply;
 	} else if (!sToSearch.IsEmpty() && !IsSessionAdmin(Data,sSession) ) {
 		Out.Replace(wxT("[Message]"),_("Access denied!"));
 	} else 
@@ -2646,6 +2637,7 @@ bool UploadsInfo::ReQuery()
 	return true;
 }
 
+
 /*!
  * Image classes:
  * 
@@ -2755,11 +2747,9 @@ CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFi
 	m_width = width;
 	m_height = height;
 	m_file = file;
-//	m_file_size = filesize;
 
 	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
 	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
-//	m_Encoder = encoder;
 	
 	m_ColorLine = new uint32[m_width];
 }
