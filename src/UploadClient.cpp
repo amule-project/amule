@@ -613,12 +613,31 @@ void CUpDownClient::FlushSendBlocks()
 }
 
 
-void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(forfileid);
-	if (!file) {
-		AddLogLineM(false, _("requested file not found"));
-		return;
+void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
+{
+	CKnownFile* file = theApp.sharedfiles->GetFileByID( forfileid );
+	if ( !file ) {
+		file = theApp.knownfiles->FindKnownFileByID(forfileid);
+
+		if ( !file ) {
+			AddLogLineM(false, _("Hashset requested for unknown file: ") + forfileid.Encode() );
+		
+			return;
+		} else if ( !file->GetHashCount() ) {
+			AddDebugLogLineM(false, wxT("Requested hashset could not be found"));
+
+			return;
+		}
+	} else if ( !file->GetHashCount() ) {
+		file = theApp.knownfiles->FindKnownFileByID(forfileid);
+		
+		if ( !file || !file->GetHashCount() ) {
+			AddDebugLogLineM(false, wxT("Requested hashset could not be found"));
+
+			return;
+		}
 	}
+	
 
 	CSafeMemFile* data = new CSafeMemFile();
 	data->WriteHash16(file->GetFileHash());
