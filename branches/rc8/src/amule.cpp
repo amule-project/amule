@@ -199,6 +199,8 @@ CamuleApp::~CamuleApp()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown: removing local data.\n");
 	}
+	webserver_pid = 0;
+	
 	
 	// Delete associated objects
 	if (serverlist) {
@@ -304,7 +306,15 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
-
+	
+	// Kill amuleweb if running
+	if (webserver_pid) {
+		wxKillError rc;
+		printf("Killing amuleweb instance...\n");
+		wxKill(webserver_pid,wxSIGTERM, &rc);
+		printf("Killed!\n");
+	}
+	
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
@@ -665,6 +675,14 @@ void CamuleApp::UpdateReceivedBytes(int32 bytesToAdd)
 
 // Updates the number of received bytes and marks when transfers first began
 void CamuleApp::UpdateSentBytes(int32 bytesToAdd)
+	// Run webserver?
+	if (thePrefs::GetWSIsEnabled()) {
+		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
+		if (!webserver_pid) {
+			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
+		}
+	}
+ 		
 {
 	SetTimeOnTransfer();
 	stat_sessionSentBytes += bytesToAdd;

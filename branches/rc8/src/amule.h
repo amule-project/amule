@@ -328,6 +328,8 @@ public:
 	void ShutDown();
 	virtual void NotifyEvent(GUIEvent event);
 	wxString GetLog(bool reset = false);
+	long webserver_pid;
+	
 	wxString GetServerLog(bool reset = false);
 	void AddServerMessageLine(wxString &msg);
 
