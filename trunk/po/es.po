@@ -2177,7 +2177,7 @@ msgstr "Jugle (WWW)"
 
 #: src/muuli_wdr.cpp:249
 msgid "Extended Parameters"
-msgstr "Opciones extendidos"
+msgstr "Opciones extendidas"
 
 #: src/muuli_wdr.cpp:258
 msgid "File Type"
