@@ -101,6 +101,8 @@ DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_CO
 DECLARE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS_DONE)
 DECLARE_EVENT_TYPE(wxEVT_CORE_DNS_DONE, wxEVT_USER_FIRST+DNS_DONE)
 
+DECLARE_EVENT_TYPE(wxEVT_AMULE_TIMER, wxEVT_USER_FIRST+EVENT_TIMER)
+
 class wxMuleInternalEvent : public wxEvent {
 	void *m_ptr;
 	long m_value;
@@ -269,10 +271,10 @@ protected:
 	void OnDnsDone(wxEvent& evt);
 	void OnSourcesDnsDone(wxEvent& evt);
 
-	void OnUDPTimer(wxTimerEvent& evt);
-	void OnTCPTimer(wxTimerEvent& evt);
+	void OnUDPTimer(AMULE_TIMER_EVENT_CLASS& evt);
+	void OnTCPTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
-	void OnCoreTimer(wxTimerEvent& evt);
+	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
 	void OnFinishedHashing(wxEvent& evt);
 	void OnFinishedCompletion(wxEvent& evt);
@@ -280,7 +282,7 @@ protected:
 
 	void SetTimeOnTransfer();
 	
-	wxTimer* core_timer;
+	AMULE_TIMER_CLASS* core_timer;
 		
 	wxCriticalSection m_LogQueueLock;
 	std::list<QueuedLogLine> QueuedAddLogLines;

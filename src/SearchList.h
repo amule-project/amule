@@ -24,12 +24,28 @@
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CTypedPtrList.h"
+#include <wx/thread.h>
 
 #include <map>
 #include <vector>
 
 class CSafeMemFile;
 class CMD4Hash;
+
+Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
+				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
+class CServer;
+// send next request packet each 2 sec to next server from the list
+// update gui (if present) on progress
+class CGlobalSearchThread : public wxThread {
+	// Used to keep track of the servers we have sent UDP packet to
+	std::set<CServer*> askedlist;
+	Packet *packet;
+public:
+	CGlobalSearchThread(Packet *packet);
+	void Cancel();
+	void Start();
+};
 
 class CSearchFile : public CAbstractFile {
 	friend class CPartFile;

@@ -81,7 +81,7 @@ private:
 	CTypedPtrList<CPtrList, CServer*>	list;
 	CPreferences*	app_prefs;
 	//uint32		udp_timer;
-	wxTimer         udp_timer;
+	 AMULE_TIMER_CLASS        udp_timer;
 	POSITION	broadcastpos;
 	Packet*		broadcastpacket;
 	uint32		delservercount;

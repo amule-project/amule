@@ -196,7 +196,6 @@ amuled_SOURCES = ListenSocket.cpp \
         UDPSocket.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
-        wxstubs.cpp \
         amuled.cpp
 
 if ADD_GSOCKET

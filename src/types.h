@@ -111,4 +111,37 @@ typedef uint8_t		BYTE;
 	};
 #endif // __WXMSW__
 
+#ifdef AMULE_DAEMON
+#define AMULE_TIMER_CLASS CTimer
+#define AMULE_TIMER_EVENT_CLASS wxEvent
+class wxEvtHandler;
+
+#include <wx/thread.h>
+
+//
+// replace wxTimer with my own on non-X builds
+//
+class CTimer {
+	wxEvtHandler *owner;
+	int id;
+	class CTimerThread : public wxThread {
+		unsigned long period;
+		public:
+		CTimerThread(CTimer *owner, unsigned long period);
+		int OnRun();
+	};
+	public:
+	CTimer(wxEvtHandler *owner = 0, int timerid = -1);
+	~CTimer();
+	void SetOwner(wxEvtHandler *owner, int id = -1);
+	bool Start(int millisecs = -1, bool oneShot = false);
+	bool IsRunning() const;
+	void Stop();
+};
+
+#else
+#define AMULE_TIMER_CLASS wxTimer
+#define AMULE_TIMER_EVENT_CLASS wxTimerEvent
+#endif
+
 #endif // TYPES_H
