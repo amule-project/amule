@@ -75,6 +75,18 @@ Version 2.0.0
 		
 	deltaHF:
 	        * New toolbar icons (thx to everaldo.com)
+		* Preferences (added/changed):
+		  IP-Filter reload and on/off buttons 
+		  securehash -> secure ident
+		  media info 
+		  max connections: 25-7500
+		  upload queue: 500-1000
+		  max new connections / 5 sec: 5-500
+		  remove dead servers after: 1 >
+		  tcp port: 80 > (for users with bad ISP's .. but remember -> running aMule as root is unsecure !!!)
+		  add new files (dl & share) with auto priority: off by default now (if running aMule for the first time)
+		  
+		* Enabled chinese translation
 		
 	niet:
 	        * Donated amule-project.net :-)
@@ -92,6 +104,8 @@ Version 2.0.0
 		* All the bug-reporters, helpers, translators and users at http://forum.amule.org
 		
 		* eMule developers for their support. Long life to *Mule
+		
+		* FreshIRC & Freenode irc admins
 		
 		* New translators:
 		
