@@ -406,9 +406,8 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 			// Is this filter active with the current access-level?
 			if ( it->second->AccessLevel < theApp.glob_prefs->GetIPFilterLevel() ) {
 				lasthit = it->second->Description;
+				return true;
 			}
-
-			return true;
 		}
 	}
 
