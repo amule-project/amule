@@ -129,7 +129,6 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect){
 
 	CServerSocket* newsocket = new CServerSocket(this);
 	m_lstOpenSockets.AddTail((void*&)newsocket);
-	//newsocket->Create(0,SOCK_STREAM,FD_READ|FD_WRITE|FD_CLOSE|FD_CONNECT,NULL);
 	newsocket->ConnectToServer(server);
 
 	DWORD x=GetTickCount();
