@@ -29,7 +29,33 @@
 #include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "sockets.h"
-class CServerSocketHandler;
+
+/******************************************************************************/
+
+#ifdef AMULE_DAEMON
+#define SERVER_SOCK_HANDLER_BASE wxThread
+#else
+#define SERVER_SOCK_HANDLER_BASE wxEvtHandler
+#endif
+
+class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
+{
+public:
+	CServerSocketHandler(CServerSocket *socket);
+
+private:
+	void ServerSocketHandler(wxSocketEvent& event);
+
+public:	
+#ifdef AMULE_DAEMON
+	void *Entry();
+	CServerSocket *m_socket;
+#else
+	DECLARE_EVENT_TABLE();
+#endif
+};
+
+/******************************************************************************/
 
 class CServer;
 
@@ -79,28 +105,4 @@ private:
 	
 };
 
-#ifdef AMULE_DAEMON
-#define SERVER_SOCK_HANDLER_BASE wxThread
-#else
-#define SERVER_SOCK_HANDLER_BASE wxEvtHandler
-#endif
-
-class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
-{
-public:
-	CServerSocketHandler(CServerSocket* parent);
-
-private:
-	void ServerSocketHandler(wxSocketEvent& event);
-
-public:	
-	CServerSocket* socket;
-	
-#ifdef AMULE_DAEMON
-	void *Entry();
-#else
-	DECLARE_EVENT_TABLE();
-#endif
-
-};
 #endif // SERVERSOCKET_H
