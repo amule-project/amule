@@ -403,6 +403,9 @@ public:
 	static void BuildItemList( const wxString& appdir );
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
+
+	static bool 		GetShowRatesOnTitle()		{ return s_ShowRatesOnTitle; }
+
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();

@@ -670,10 +670,13 @@ bool CamuleApp::OnInit()
 
 	// Create main dialog
 	// Should default/last-used position be overridden?
+	m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT(VERSION));
 	if ( geometry_enabled ) {
-		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)), wxPoint(geometry_x,geometry_y), wxSize( geometry_width, geometry_height - 58 ));
+		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
+			wxPoint(geometry_x,geometry_y),
+			wxSize( geometry_width, geometry_height - 58 ));
 	} else {
-		amuledlg = new CamuleDlg(NULL, wxString::Format(wxT("aMule %s"), wxT(VERSION)));
+		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
 	}
 
 	// Get ready to handle connections from apps like amulecmd

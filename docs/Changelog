@@ -132,6 +132,7 @@ Version 2.0.0rc6 - The '???' version.
 		  include/wx/longlong.h(155): assert "(m_ll >= LONG_MIN) && 
 		  (m_ll <= LONG_MAX)" failed: wxLongLong to long conversion
 		  loss of precision.
+		* Reimplemented "Show Rates On Title" preference.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
