@@ -1912,24 +1912,64 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 
 		// PartFile
 	        case PARTFILE_REMOVE_NO_NEEDED:
+			((CPartFile *)event.ptr_value)->RemoveNoNeededSources();
 			break;
 	        case PARTFILE_REMOVE_FULL_QUEUE:
+			((CPartFile *)event.ptr_value)->RemoveFullQueueSources();
 			break;
 	        case PARTFILE_REMOVE_HIGH_QUEUE:
+			((CPartFile *)event.ptr_value)->RemoveHighQueueRatingSources();
 			break;
 	        case PARTFILE_CLEANUP_SOURCES:
+			((CPartFile *)event.ptr_value)->CleanUpSources();
 			break;
-	        case PARTFILE_SWAP_TO_ANOTHER:
+	        case PARTFILE_SWAP_A4AF_THIS: {
+			CPartFile *file = (CPartFile *)event.ptr_value;
+			if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
+				downloadqueue->DisableAllA4AFAuto();
+
+				CPartFile::SourceSet::iterator it;
+				for ( it = file->A4AFsrclist.begin(); it != file->A4AFsrclist.end(); ) {
+					CUpDownClient *cur_source = *it++;
+					if ((cur_source->GetDownloadState() != DS_DOWNLOADING) && cur_source->GetRequestFile() &&
+					    ( (!cur_source->GetRequestFile()->IsA4AFAuto()) ||
+					      (cur_source->GetDownloadState() == DS_NONEEDEDPARTS))) {
+						cur_source->SwapToAnotherFile(true, false, false, file);
+					}
+				}
+		        }
+		}
+			break;
+        	case PARTFILE_SWAP_A4AF_OTHERS: {
+			CPartFile *file = (CPartFile *)event.ptr_value;
+			if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
+				downloadqueue->DisableAllA4AFAuto();
+
+				CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
+				for( ; it != file->m_SrcList.end(); ++it ) {
+					(*it)->SwapToAnotherFile(false, false, false, NULL);
+				}
+			}
+			break;
+		}
+	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
+			((CPartFile *)event.ptr_value)->SetA4AFAuto(!((CPartFile *)event.ptr_value)->IsA4AFAuto());
 			break;
 	        case PARTFILE_PAUSE:
+			((CPartFile *)event.ptr_value)->PauseFile(event.byte_value);
 			break;
 	        case PARTFILE_RESUME:
+			((CPartFile *)event.ptr_value)->ResumeFile();
 			break;
 	        case PARTFILE_STOP:
+			((CPartFile *)event.ptr_value)->StopFile(event.byte_value);
 			break;
 	        case PARTFILE_PRIO_AUTO:
+			((CPartFile *)event.ptr_value)->SetAutoDownPriority(event.long_value);
 			break;
 	        case PARTFILE_PRIO_SET:
+			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
+									event.longlong_value, event.longlong_value);
 			break;
 	        case PARTFILE_DELETE:
 		// CORE->GUI
