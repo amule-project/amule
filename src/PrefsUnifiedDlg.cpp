@@ -289,12 +289,12 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	wxSize size = GetClientSize();
 	SetSizeHints( size.GetWidth(), size.GetHeight() );
 	
-	#ifdef __SYSTRAY_DISABLED__
+	#if defined(__SYSTRAY_DISABLED__) && !USE_WX_TRAY
 		FindWindow(IDC_ENABLETRAYICON)->Enable(false);
 		FindWindow(IDC_MINTRAY)->Enable(false);
-		#if !USE_WX_TRAY
+		//#if !USE_WX_TRAY
 			FindWindow(IDC_DESKTOPMODE)->Enable(false);
-		#endif
+		//#endif
 	#endif
 	
 }
@@ -695,7 +695,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 		
 		case IDC_ENABLETRAYICON:
-			#ifndef __SYSTRAY_DISABLED__
+			#if !defined(__SYSTRAY_DISABLED__) || USE_WX_TRAY
 			FindWindow(IDC_MINTRAY)->Enable(value);
 			FindWindow(IDC_DESKTOPMODE)->Enable(value);
 			if (value) {
@@ -742,21 +742,22 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
-	#ifndef __SYSTRAY_DISABLED__
-		#if !USE_WX_TRAY
+	#if !defined (__SYSTRAY_DISABLED__) || USE_WX_TRAY
+//		#if !USE_WX_TRAY
 			theApp.amuledlg->changeDesktopMode();
 
 			// Ensure that the dialog is still visible afterwards
 			Raise();
 			SetFocus();
-		#else
+/*		#else
 			// Should never happen, button is not shown.
 			wxASSERT(0);
-		#endif
-	#else
+*/		#endif
+/*	#else
 			// Should never happen, button is not enabled.
 			wxASSERT(0);	
 	#endif
+*/
 }
 
 
