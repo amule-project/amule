@@ -34,40 +34,37 @@
 class CUpDownClient;
 
 
-class CChatItem{
+class CChatSession : public wxHtmlWindow
+{
 public:
-	CChatItem()		{};
-	~CChatItem()	{}
+	CChatSession(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxHW_SCROLLBAR_AUTO, const wxString& name = "htmlWindow");
+
 	CUpDownClient*	client;
-	wxString		log;
 	wxString		messagepending;
+	
+	void SetText( const wxString& text );
+	void AddText( const wxString& text );
+private:
+	wxString		log;
+	
 };
 
 
 class CChatSelector : public wxNotebook
 {
-
 public:
 	CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style);
-	virtual		~CChatSelector() {};
-	CChatItem*	StartSession(CUpDownClient* client, bool show = true);
-	void		EndSession(CUpDownClient* client = 0);
-	int			GetTabByClient(CUpDownClient* client);
-	CChatItem*	GetItemByClient(CUpDownClient* client);
-	void		ProcessMessage(CUpDownClient* sender, char* message);
-	bool		SendMessage(const wxString& message);
-	void		ConnectingResult(CUpDownClient* sender, bool success);
-
-protected:
-	void		OnTabChanged(wxNotebookEvent& evt);
-	DECLARE_EVENT_TABLE();
+	virtual			~CChatSelector() {};
+	CChatSession*	StartSession(CUpDownClient* client, bool show = true);
+	void			EndSession(CUpDownClient* client = 0);
+	CChatSession*	GetPageByClient(CUpDownClient* client);
+	int				GetTabByClient(CUpDownClient* client);
+	void			ProcessMessage(CUpDownClient* sender, char* message);
+	bool			SendMessage(const wxString& message);
+	void			ConnectingResult(CUpDownClient* sender, bool success);
 
 private:
-	CList<CChatItem*, CChatItem*> m_items;
 	wxString ColorText( const wxString& text, COLORREF iColor );
-	
-	
-	void SetChatText( const wxString& text );
 
 	wxImageList	imagelist;
 };

@@ -44,21 +44,36 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 
 
-BEGIN_EVENT_TABLE(CChatSelector, wxNotebook)
-	EVT_NOTEBOOK_PAGE_CHANGED(IDC_CHATSELECTOR, CChatSelector::OnTabChanged) 
-END_EVENT_TABLE()
-
-
-void CChatSelector::OnTabChanged(wxNotebookEvent& evt)
+CChatSession::CChatSession(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name)
+: wxHtmlWindow( parent, id, pos, size, style, name )
 {
-	CChatItem *item = m_items.GetAt( m_items.FindIndex( evt.GetSelection() ) );
-
-	if ( item ) {
-		SetChatText( item->log );
-	} else {
-		SetChatText( "" );
-	}
+	client = NULL;
+	SetBorders(5);
 }
+
+
+void CChatSession::AddText(const wxString& text)
+{
+	log += text;
+	SetText( log );
+}
+
+void CChatSession::SetText(const wxString& text)
+{
+	log = text;
+
+	wxString result = "<html><body>" + text + "</body></html>";
+	result.Replace("\n", "<br>\n");
+	
+	Freeze();
+	SetPage(result);
+	
+	int x, y;
+	GetVirtualSize(&x, &y);
+	Scroll(-1, y);
+	Thaw();
+}
+
 
 
 CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style)
@@ -69,63 +84,53 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 }
 
 
-CChatItem* CChatSelector::StartSession(CUpDownClient* client, bool show) 
+CChatSession* CChatSelector::StartSession(CUpDownClient* client, bool show) 
 {
 	// Check to see if we've already opened a session for this user
-	if ( GetTabByClient( client ) != -1 ) {
-		if ( show ){
-		  SetSelection( GetTabByClient(client) );
-		  SetChatText( GetItemByClient(client)->log );
+	if ( GetPageByClient( client ) ) {
+		if ( show ) {
+		  SetSelection( GetTabByClient( client ) );
 		}
+
 		return NULL;
 	}
 
-	CChatItem* chatitem = new CChatItem();
-	chatitem->client = client;
+	CChatSession* chatsession = new CChatSession(this);
+	chatsession->client = client;
 
-	m_items.AddTail(chatitem);
-
-	wxString sessions = wxString(_("*** Chatsession Start : "))+(client->GetUserName()) + " - "+" (aMule client)\n";
-	chatitem->log = ColorText( sessions, RGB(255, 0, 0) );
+	wxString text = wxString(_("*** Chatsession Start : "))+(client->GetUserName()) + " - "+" (aMule client)\n";
+	chatsession->SetText( ColorText( text, RGB(255, 0, 0) ) );
+	AddPage(chatsession, client->GetUserName(), show, 0);
+	
 	client->SetChatState(MS_CHATTING);
-
-	wxPanel* nullPanel = new wxPanel( this, -1);
-	AddPage(nullPanel, client->GetUserName(), false, 0);
-
-	if ( show ) {
-	  SetSelection( GetPageCount() - 1 );
-	  SetChatText( chatitem->log );
-	}
 
 	(wxButton*)(GetParent()->FindWindow(IDC_CSEND))->Enable(true);
 	(wxButton*)(GetParent()->FindWindow(IDC_CCLOSE))->Enable(true);
 	
-	return chatitem;
+	return chatsession;
 }
 
 
-void CChatSelector::SetChatText(const wxString& text)
+CChatSession* CChatSelector::GetPageByClient(CUpDownClient* client)
 {
-	wxHtmlWindow* wnd = (wxHtmlWindow*)(GetParent()->FindWindow(ID_HTMLWIN));
+	for ( int i = 0; i < GetPageCount(); i++ ) {
+		CChatSession* page = (CChatSession*)GetPage( i );
+		
+		if( page->client == client ) {
+			return page;
+		}
+	}
 	
-	wxString result = "<html><body>" + text + "</body></html>";
-	result.Replace("\n", "<br>\n");
-	
-	wnd->Freeze();
-	wnd->SetPage(result);
-	
-	int x, y;
-	wnd->GetVirtualSize(&x, &y);
-	wnd->Scroll(-1, y);
-	wnd->Thaw();
+	return NULL;
 }
 
 
 int CChatSelector::GetTabByClient(CUpDownClient* client)
 {
 	for ( int i = 0; i < GetPageCount(); i++ ) {
-		CChatItem *item = m_items.GetAt(m_items.FindIndex(i));
-		if(item->client == client) {
+		CChatSession* page = (CChatSession*)GetPage( i );
+		
+		if( page->client == client ) {
 			return i;
 		}
 	}
@@ -134,44 +139,35 @@ int CChatSelector::GetTabByClient(CUpDownClient* client)
 }
 
 
-CChatItem* CChatSelector::GetItemByClient(CUpDownClient* client)
-{
-	for (int i = 0; i < GetPageCount(); i++) {
-		CChatItem* item=m_items.GetAt(m_items.FindIndex(i));
-		if( item->client == client ) {
-			return item;
-		}
-	}
-	
-	return NULL;
-}
-
-
 void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 {
-	CChatItem* ci = GetItemByClient(sender);
+	CChatSession* session = GetPageByClient(sender);
 
-	if ( !ci ) {
-		ci = StartSession(sender, true);
+	if ( !session ) {
+		session = StartSession( sender, true );
 	}
 	
-	ci->log += ColorText( wxString(sender->GetUserName()), RGB(50, 200, 250) );
-	ci->log += wxString(": ") + wxString(message) + wxString("\n");
-	
-	if ( GetSelection() == GetTabByClient(sender) ) {
-		SetChatText(ci->log);
-	}
+	session->AddText( ColorText( wxString(sender->GetUserName()), RGB(0, 0, 255) ) );
+	session->AddText( wxString(": ") + wxString(message) + wxString("\n") );
 }
 
 
-bool CChatSelector::SendMessage(const wxString& message)
+bool CChatSelector::SendMessage( const wxString& message )
 {
-	if (GetSelection() == -1) {
+	int usedtab = GetSelection();
+
+	if (usedtab == -1) {
 		return false;
 	}
+
+	// Workaround for a problem with wxNotebook, where an invalid selection is returned
+	if (usedtab >= GetPageCount()) {
+		usedtab = GetPageCount() - 1;
+	}
+		
 	
-	CChatItem* ci=m_items.GetAt(m_items.FindIndex( GetSelection() ));
-	if (ci->client->GetChatState() == MS_CONNECTING) {
+	CChatSession* ci = (CChatSession*)GetPage( usedtab );
+	if ( ci->client->GetChatState() == MS_CONNECTING ) {
 		return false;
 	}
 	
@@ -182,19 +178,17 @@ bool CChatSelector::SendMessage(const wxString& message)
 		packet->opcode = OP_MESSAGE;
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		ci->client->socket->SendPacket(packet, true, true);
-		ci->log +=  ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(1, 180, 20) );
-		ci->log += ": " + message + "\n";
+		ci->AddText( ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(0, 102, 0) ) );
+		ci->AddText( ": " + message + "\n" );
 	} else {
 		printf("Not connected to Chat. Trying to connect...\n");
-		ci->log += ColorText( wxString("*** ") + wxString(_("Connecting")) , RGB(255, 0, 0) );
+		ci->AddText( ColorText( wxString("*** ") + wxString(_("Connecting")) , RGB(255, 0, 0) ));
 		ci->messagepending = message;
 		ci->client->SetChatState(MS_CONNECTING);
 		ci->client->TryToConnect();
 		printf("Chat Connected\n");
 	}
 	
-	SetChatText(ci->log);
-
 	return true;
 }
 
@@ -217,22 +211,22 @@ bool CChatSelector::SendMessage(const wxString& message)
 
 void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
 {
-	CChatItem* ci = GetItemByClient(sender);
-	if (!ci) {
+	CChatSession* ci = GetPageByClient(sender);
+	if ( !ci ) {
 		return;
 	}
 	
-	ci->client->SetChatState(MS_CHATTING);
-	if (!success) {
+	ci->client->SetChatState( MS_CHATTING );
+	if ( !success ) {
 		if ( !ci->messagepending.IsEmpty() ) {
-			ci->log += ColorText( wxString(" ") + wxString(_("failed")) + wxString("\n"), RGB(255, 0, 0) );
+			ci->AddText( ColorText( wxString(" ") + wxString(_("failed")) + wxString("\n"), RGB(255, 0, 0) ) );
 		} else {
-			ci->log += ColorText( wxString(_("*** Disconnected")) + wxString("\n"), RGB(255, 0, 0) );
+			ci->AddText( ColorText( wxString(_("*** Disconnected")) + wxString("\n"), RGB(255, 0, 0) ) );
 		}
 		
 		ci->messagepending.Clear();
 	} else {
-		ci->log += ColorText( wxString(" ok\n"), RGB(255, 0, 0) );
+		ci->AddText( ColorText( wxString(" ok\n"), RGB(255, 0, 0) ) );
 		
 		CMemFile data;
 		data.Write(wxString(ci->messagepending));
@@ -241,14 +235,12 @@ void CChatSelector::ConnectingResult(CUpDownClient* sender, bool success)
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		ci->client->socket->SendPacket(packet, true, true);
 		
-		ci->log += ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(1, 180, 20) );
-		ci->log += ": " + ci->messagepending + "\n";
+		ci->AddText( ColorText( wxString(theApp.glob_prefs->GetUserNick()), RGB(0, 102, 0) ) );
+		ci->AddText( ": " + ci->messagepending + "\n" );
 		
 		ci->messagepending.Clear();
 	}
 	
-	if ( GetSelection() == GetTabByClient(sender) )	
-		SetChatText(ci->log);
 }
 
 
@@ -260,21 +252,21 @@ void CChatSelector::EndSession(CUpDownClient* client)
 	} else {
 		usedtab = GetSelection();
 	}
-	
-	if (usedtab == -1) {
+
+	if (usedtab == -1)
 		return;
+
+	// Workaround for a problem with wxNotebook, where an invalid selection is returned
+	if (usedtab >= GetPageCount()) {
+		usedtab = GetPageCount() - 1;
 	}
 	
-	if ( usedtab == GetSelection() )
-		SetChatText("");
 	
-	CChatItem* ci = m_items.GetAt(m_items.FindIndex(usedtab));
-	ci->client->SetChatState(MS_NONE);
+	CChatSession* session = (CChatSession*)GetPage(usedtab);
+	session->client->SetChatState(MS_NONE);
 	DeletePage(usedtab);
-	m_items.RemoveAt(m_items.FindIndex(usedtab));
-	
-	delete ci;
-	
+
+
 	(wxButton*)(GetParent()->FindWindow(IDC_CSEND))->Enable(GetPageCount());
 	(wxButton*)(GetParent()->FindWindow(IDC_CCLOSE))->Enable(GetPageCount());
 }
@@ -284,4 +276,3 @@ wxString CChatSelector::ColorText( const wxString& text, COLORREF iColor )
 {
 	return wxString::Format("<font color=\"#%06x\">%s</font>", iColor, text.c_str());
 }
-
