@@ -773,6 +773,18 @@ void wxDatagramSocketProxy::SetProxyData(const wxProxyData *ProxyData)
 	m_SocketProxy.SetProxyData(ProxyData);
 }
 
+static void dump(unsigned char *p, int n)
+{
+	register int lines = n / 16 + 1;
+	register int c = 0;
+	for( int i = 0; i < lines; ++i) {
+		for( int j = 0; j < 16 && c < n; ++j) {
+			printf("0x%02X ", p[c++]);
+		}
+		printf("\n");
+	}
+}
+
 wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 	wxSockAddress &addr, void* buf, wxUint32 nBytes )
 {
@@ -780,12 +792,17 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 	if (m_UseProxy) {
 		if (m_UDPSocketOk) {
 			char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
-			wxDatagramSocket::RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
+			wxDatagramSocket::RecvFrom(
+				m_SocketProxy.GetProxyBoundAddress(),
+				bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
 			unsigned int offset;
-			
 			switch (m_SocketProxy.m_buffer[3]) {
-			case SOCKS5_ATYP_IPV4_ADDRESS:
+			case SOCKS5_ATYP_IPV4_ADDRESS: {
 				offset = wxPROXY_UDP_OVERHEAD_IPV4;
+				wxIPV4address &a = dynamic_cast<wxIPV4address &>(addr);
+				a.Hostname(Uint32toStringIP( *((uint32 *)(m_SocketProxy.m_buffer+4)) ));
+				a.Service(ntohs(             *((uint16 *)(m_SocketProxy.m_buffer+8)) ));
+			}
 				break;
 				
 			case SOCKS5_ATYP_DOMAINNAME:
@@ -802,6 +819,17 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 				break;
 			}
 			memcpy(buf, bufUDP + offset, nBytes);
+printf("RecvFrom\n");
+printf("LastCount:%d\n", wxDatagramSocket::LastCount());
+printf("nbufUDP:\n");
+dump((unsigned char *)bufUDP, wxDatagramSocket::LastCount());
+printf("\n");
+			/* We should use a fixed buffer to avoid new/delete it all the time. I need an upper bound */
+			delete bufUDP;
+			/* There is still one problem pending, fragmentation.
+			 * Either we support it or we have to drop fragmented
+			 * messages.
+			 */
 		}
 	} else {
 		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
@@ -813,6 +841,11 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 	wxIPaddress &addr, const void* buf, wxUint32 nBytes )
 {
+printf("SendTo\n");
+printf("nBytes:%d\n", nBytes);
+printf("buf:\n");
+dump((unsigned char *)buf, nBytes);
+printf("\n");
 	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
 	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
 	if (m_UseProxy) {
@@ -825,8 +858,9 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 			*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
 			memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += wxPROXY_UDP_OVERHEAD_IPV4;
-			
-			wxDatagramSocket::SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
+			wxDatagramSocket::SendTo(
+				m_SocketProxy.GetProxyBoundAddress(),
+				m_SocketProxy.m_buffer, nBytes);
 		}
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);
