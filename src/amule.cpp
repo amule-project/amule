@@ -1276,7 +1276,7 @@ void CamuleApp::Localize_mule()
 			break;
 		case 4:
 			//strcpy(newlang,"zh_CN");
-			language = wxLANGUAGE_CHINESE;
+			language = wxLANGUAGE_CHINESE_SIMPLIFIED;
 			break;
 		case 5:
 			//strcpy(newlang,"da_DK");
@@ -1375,6 +1375,10 @@ void CamuleApp::Localize_mule()
 			//strcpy(newlang,"custom");
 			language = wxLANGUAGE_CUSTOM;
 			break;
+		case 29:
+			//strcpy(newlang,"zh_TW");
+		    language = wxLANGUAGE_CHINESE_TRADITIONAL;
+		    break;
 		default:
 			language = wxLANGUAGE_DEFAULT;
 			break;
