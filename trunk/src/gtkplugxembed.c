@@ -25,17 +25,19 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#include "gtk2-funcs.h"
+#include "xembed.h"
+#include "gtkplugxembed.h"
+
+#if !USE_WX_TRAY
 #ifdef __WXGTK__
 
 #include <gtk/gtk.h>
-#include "gtkplugxembed.h"
 #include <gtk/gtkprivate.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdkx.h>
 
-#include "xembed.h"
-#include "gtk2-funcs.h"
 
 static void            gtk_plug_xembed_class_init            (GtkPlugXEmbedClass *klass);
 static void            gtk_plug_xembed_init                  (GtkPlugXEmbed      *plug);
@@ -1179,3 +1181,4 @@ gtk_plug_xembed_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer da
 
 #endif // __WXGTK__
 
+#endif // USE_WX_TRAY

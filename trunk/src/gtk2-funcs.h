@@ -30,6 +30,10 @@
 #ifndef GTK2_FUNCS_H
 #define GTK2_FUNCS_H
 
+#include "MuleTrayIcon.h"
+
+#if !USE_WX_TRAY
+
 #ifdef __WXGTK__
 
 #include <glib.h>
@@ -45,5 +49,5 @@ extern guint32 gtk2_get_current_event_time (void);
 #endif /* __cplusplus */
 
 #endif // __WXGTK__
-
+#endif // USE_WX_TRAY
 #endif // GTK2_FUNCS_H

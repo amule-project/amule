@@ -18,11 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "eggtrayicon.h"
+
+#if !USE_WX_TRAY
+
 #ifdef __WXGTK__ // Uses GTK headers, don't use this on other platforms.
 
 #include <string.h>
 #include <gdk/gdkx.h>
-#include "eggtrayicon.h"
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 #define SYSTEM_TRAY_BEGIN_MESSAGE   1
@@ -345,4 +348,6 @@ egg_tray_icon_cancel_message (EggTrayIcon *icon,
 				      id, 0, 0);
 }
 
-#endif
+#endif //USE_WX_TRAY
+
+#endif //__WXGTK__

@@ -1,3 +1,7 @@
+#include "gtk2-funcs.h"
+
+#if !USE_WX_TRAY
+
 #ifdef __WXGTK__
 
 #include <gtk/gtk.h>
@@ -5,8 +9,6 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdkx.h>
-
-#include "gtk2-funcs.h"
 
 extern guint32 gtk2_get_current_event_time (void);
 
@@ -25,4 +27,6 @@ gtk2_get_current_event_time (void)
 
 }
 
-#endif
+#endif // __WXGTK__
+
+#endif // USE_WX_TRAY

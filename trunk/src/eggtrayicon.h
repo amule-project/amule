@@ -25,6 +25,10 @@
 #ifndef EGGTRAYICON_H
 #define EGGTRAYICON_H
 
+#include "MuleTrayIcon.h"
+
+#if !USE_WX_TRAY
+
 #ifdef __WXGTK__ // Uses GTK code, don't compile on other platforms.
 
 #include "gtkplugxembed.h"	// Needed for GtkPlugXEmbed
@@ -86,5 +90,7 @@ void         egg_tray_icon_cancel_message (EggTrayIcon *icon,
 #endif /* __cplusplus */
 
 #endif // __WXGTK__
+
+#endif  //USE_WX_TRAY
 
 #endif // EGGTRAYICON_H
