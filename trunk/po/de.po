@@ -2,6 +2,7 @@
 # translation of new_de.po to
 # translation of new_de.po to
 # translation of new_de.po to
+# translation of new_de.po to
 # translation of tmp.po to
 # translation of tmp.po to
 # aMule i18n resource file.
@@ -15,7 +16,7 @@ msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2005-02-12 22:44+0100\n"
+"PO-Revision-Date: 2005-03-23 02:47+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3782,7 +3783,7 @@ msgstr "Datentransfer-Fenster"
 
 #: src/muuli_wdr.cpp:3551
 msgid "SharedFiles"
-msgstr "Freigegebene Dateien"
+msgstr "Freigaben"
 
 #: src/muuli_wdr.cpp:3551
 msgid "Shared Files Window"
