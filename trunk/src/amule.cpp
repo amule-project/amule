@@ -405,7 +405,7 @@ bool CamuleApp::OnInit()
 	}	
 	
 
-	use_chmod = 1;
+	use_chmod = true;
 #ifdef __WXGTK__
 	/* Test to see if the Temp or the Incoming dir is on a vfat partition. If
 	   that is the case, we need to avoid chmoding to avoid lots of warnings.
@@ -423,10 +423,10 @@ bool CamuleApp::OnInit()
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( entries->mnt_dir ) ) {
 					amuledlg->AddLogLine(false, "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
-					use_chmod = 0;
+					use_chmod = false;
 				} else if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
 					amuledlg->AddLogLine(false, "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
-					use_chmod = 0;
+					use_chmod = false;
 				}
 			}
 
