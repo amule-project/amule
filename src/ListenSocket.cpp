@@ -124,13 +124,17 @@ void CClientReqSocket::Delete_Timed()
 	// even if the socket is closed and select(0) is set.
 	// So we need to wait some time to make sure this doesn't happens
 	if (::GetTickCount() - deltimer > 10000) {
-		Destroy();
+		if (!OnDestroy) {
+			Close();		
+			OnDestroy = true;		
+			Destroy();	
+		}		
 	}
 }
 
 void CClientReqSocket::Safe_Delete()
 {
-//	deltimer = ::GetTickCount();
+	deltimer = ::GetTickCount();
 	
 	// if (m_hSocket != INVALID_SOCKET)
 	//  ShutDown(2);
@@ -144,9 +148,7 @@ void CClientReqSocket::Safe_Delete()
 	
 
 	byConnected = ES_DISCONNECTED;
-	
-	Close();
-	
+		
 	deletethis = true;
 
 //	Close();
