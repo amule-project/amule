@@ -21,7 +21,7 @@
 #ifndef G10_BITHELP_H
 #define G10_BITHELP_H
 
-#include <stdint.h>
+#include <inttypes.h>
 
 /****************
  * Rotate the 32 bit unsigned integer X by N bits left/right

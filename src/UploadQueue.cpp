@@ -17,6 +17,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <algorithm>
 #include <cstring>
 #include <cmath>			// Needed for std::exp
 #include "types.h"
@@ -25,9 +26,7 @@
 	#include <wx/defs.h>
 	#include <wx/msw/winundef.h>
 #else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
+        #include <sys/types.h>
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
