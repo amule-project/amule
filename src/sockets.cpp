@@ -488,9 +488,9 @@ void CServerConnect::KeepConnectionAlive()
 	
 		Packet* packet = new Packet(files);
 		packet->SetOpCode(OP_OFFERFILES);
+		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		AddDebugLogLineM(false, wxString::Format(_("Refreshing server connection")));
 		delete files;
  	}
