@@ -386,7 +386,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 			if (reply->GetTagCount() > 0) {
 			    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 			    if (reason != NULL) {
-				Show(wxString::Format(_("ExternalConn: Access denied because: %s\n"), reason->GetStringData().GetData()));
+				Show(wxString(_("ExternalConn: Access denied because: ")) + wxGetTranslation(reason->GetStringData()) + wxT("\n"));
 			    } else {
 				Show(_("ExternalConn: Access denied.\n"));
 			    }
