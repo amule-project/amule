@@ -1834,7 +1834,7 @@ msgstr "Ferma"
 
 #: src/muuli_wdr.cpp:269
 msgid "Show Extended Parameters"
-msgstr "Mostra parametri estesi"
+msgstr "Mostra parametri avanzati"
 
 #: src/muuli_wdr.cpp:277
 msgid "File Type:"
@@ -1886,11 +1886,11 @@ msgstr "Categoria:"
 
 #: src/muuli_wdr.cpp:307
 msgid "Min Size:"
-msgstr "Dimensione minima:"
+msgstr "Dimensione min:"
 
 #: src/muuli_wdr.cpp:316
 msgid "Max Size:"
-msgstr "Dimensione massima:"
+msgstr "Dimensione max:"
 
 #: src/muuli_wdr.cpp:325
 msgid "Availability:"
