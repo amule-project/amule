@@ -24,7 +24,7 @@
 
 echo ""
 echo -n "Step 1: Cleaning bundle... "
-rm aMule.app/Contents/Frameworks/* && rm aMule.app/Contents/MacOS/*
+rm aMule.app/Contents/Frameworks/* 1> /dev/null 2> /dev/null && rm aMule.app/Contents/MacOS/* 1> /dev/null 2> /dev/null
 echo "Done"
 echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
@@ -48,7 +48,7 @@ echo ""
 echo "Step 4: Update libs info"
 #then install_name_tool on them to fix the path on the shared lib
 cd aMule.app/Contents/
-for i in $( ls Frameworks ); do
+for i in $( ls Frameworks | grep -v CVS); do
 	echo "    Updating $i"
 	#update library id
         install_name_tool -id @executable_path/../Frameworks/$i Frameworks/$i
@@ -56,7 +56,7 @@ for i in $( ls Frameworks ); do
 	for j in $( otool -L Frameworks/$i | grep libwx_ | cut -d " " -f 1 ); do
 	        install_name_tool -change \
                 $j @executable_path/../Frameworks/`echo $j | rev | cut -d "/" -f 1 | rev` \
-		Frameworks/$i
+		Frameworks/$i 1> /dev/null 2> /dev/null
 
 	done
 	echo "    Updating aMule lib info for $i"
