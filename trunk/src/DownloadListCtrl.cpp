@@ -1043,6 +1043,11 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 		wxDCClipper clipper(*dc, lpRect->left, lpRect->top, lpRect->right - lpRect->left - 2, lpRect->bottom - lpRect->top);
 		wxString buffer;
 		CUpDownClient *lpUpDownClient = (CUpDownClient *) lpCtrlItem->value;
+		if (!lpUpDownClient->GetRequestFile()) {
+			// This sanity check failed, avoid the crash this time.
+			printf("Source drawn with no reqfile associated, avoided crash this time.\n");
+			return;
+		}
 		switch (nColumn) {
 
 			case 0:	// icon, name, status
