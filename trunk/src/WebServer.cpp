@@ -2389,31 +2389,7 @@ SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) :
 
 bool SharedFilesInfo::ReQuery()
 {
-	CECPacket req_sts(EC_OP_GET_SHARED_FILES, EC_DETAIL_UPDATE);
-
-	//
-	// Phase 1: request status
-	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
-	if ( !reply ) {
-		return false;
-	}
-	
-	//
-	// Phase 2: update status, mark new files for subsequent query
-	CECPacket req_full(EC_OP_GET_SHARED_FILES);
-
-	ProcessUpdate(reply, &req_full, EC_TAG_KNOWNFILE);
-
-	delete reply;
-
-	// Phase 3: request full info about files we don't have yet
-	if ( req_full.GetTagCount() ) {
-		reply = m_webApp->SendRecvMsg_v2(&req_full);
-		if ( !reply ) {
-			return false;
-		}
-		ProcessFull(reply);	
-	}
+	DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 	
 	SortItems();
 
@@ -2492,6 +2468,8 @@ void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 		lFileTransferred = tag->SizeXfer();
 		lFileSpeed = tag->Speed();
 		fCompleted = (100.0*lFileCompleted) / lFileSize;
+	} else {
+		lFileSpeed = 0;
 	}
 	CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
@@ -2566,30 +2544,7 @@ void DownloadFilesInfo::ItemDeleted(DownloadFiles &item)
 
 bool DownloadFilesInfo::ReQuery()
 {
-	CECPacket req_sts(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_UPDATE);
-	//
-	// Phase 1: request status
-	CECPacket *reply = m_webApp->SendRecvMsg_v2(&req_sts);
-	if ( !reply ) {
-		return false;
-	}
-	
-	//
-	// Phase 2: update status, mark new files for subsequent query
-	CECPacket req_full(EC_OP_GET_DLOAD_QUEUE);
-
-	ProcessUpdate(reply, &req_full, EC_TAG_PARTFILE);
-
-	delete reply;
-
-	// Phase 3: request full info about files we don't have yet
-	if ( req_full.GetTagCount() ) {
-		reply = m_webApp->SendRecvMsg_v2(&req_full);
-		if ( !reply ) {
-			return false;
-		}
-		ProcessFull(reply);	
-	}
+	DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 	
 	SortItems();
 
