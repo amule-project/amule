@@ -180,7 +180,6 @@ char* CPacket::GetPacket() {
 	} else {
 		if (tempbuffer){
 			delete [] tempbuffer;
-			#warning Phoenix - why??? Check this info and clean!
 			tempbuffer = NULL; // 'new' may throw an exception
 		}
 		tempbuffer = new char[size+10];
