@@ -194,6 +194,10 @@ void CUpDownClient::Init()
 	m_SafelyDeleted = false;
 	
 	ClearHelloProperties();	
+	
+	m_pReqFileAICHHash = NULL;
+	m_fSupportsAICH = 0;
+	m_fAICHRequested = 0;	
 }
 
 CUpDownClient::~CUpDownClient()
@@ -262,6 +266,11 @@ CUpDownClient::~CUpDownClient()
 
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
 	SetUploadFileID(NULL);
+	
+	if (m_pReqFileAICHHash != NULL) {
+		delete m_pReqFileAICHHash;	
+	}
+	
 #ifdef __DEBUG__
 	//
 	// Swap magic numbers to signal a properly deleted client
@@ -1719,6 +1728,11 @@ void CUpDownClient::ResetFileStatusInfo()
 	m_dwLastAskedTime = 0;
 	m_iRate=0;
 	m_strComment = wxEmptyString;
+	
+	if (m_pReqFileAICHHash != NULL) {
+		delete m_pReqFileAICHHash;
+	}
+
 }
 
 wxString CUpDownClient::GetUploadFileInfo()
