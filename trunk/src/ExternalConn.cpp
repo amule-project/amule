@@ -994,8 +994,8 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			for(int i = 0; i < request->GetTagCount();i++) {
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
-				
-				if ( theApp.downloadqueue->AddED2KLink( link ) ) {
+				int category = tag->GetTagByIndexSafe(0)->GetInt8Data();
+				if ( theApp.downloadqueue->AddED2KLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					AddLogLineM(true, CFormat(_("ExternalConn: Unable to understand ed2k link '%s'.")) % link);
