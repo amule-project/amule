@@ -1312,6 +1312,9 @@ void CDownloadListCtrl::DrawSourceItem(wxDC * dc, int nColumn, LPRECT lpRect, Ct
 					}
 				} else {
 					buffer = _("Asked for another file");
+					if (lpUpDownClient->GetRequestFile() && !lpUpDownClient->GetRequestFile()->GetFileName().IsEmpty())
+						buffer += wxT(" (") + lpUpDownClient->GetRequestFile()->GetFileName() + wxT(")");
+					
 				}
 				dc->DrawText(buffer, lpRect->left, lpRect->top);
 				break;
