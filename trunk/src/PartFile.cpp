@@ -758,6 +758,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 			CAddFileThread::AddFile(directory, partfilename, this);
 			delete[] partfilename;
 		}
+
 		delete[] searchpath;
 
 	}
@@ -1162,6 +1163,11 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	}
 	else{
 		for (size_t i = 0; i < hashlist.GetCount(); i++){
+			// Kry - trel_ar's completed parts check on rehashing.
+			// Very nice feature, if a file is completed but .part.met don't belive it,
+			// update it.
+			
+			/*
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
 					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),result->GetPartHash(i),this->GetPartHash(i));							
@@ -1170,6 +1176,20 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					errorfound = true;
 				}
 			}
+			*/
+			if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
+				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
+					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),result->GetPartHash(i),this->GetPartHash(i));
+					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+					errorfound = true;
+				}
+			} else {
+				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
+					theApp.amuledlg->AddLogLine(false, CString(_("Found completed part (%i) in %s")), i+1, m_strFileName.GetData());
+					FillGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+					RemoveBlockFromList(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+				}
+			}						
 		}
 	}
 	delete result;
@@ -1641,8 +1661,10 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	#ifdef DOWNLOADRATE_FILTERED
 					float kBpsClient = cur_src->CalculateKBpsDown();
 					kBpsDown += kBpsClient;
+//					printf("ReduceDownload %i",reducedownload);
 					if (reducedownload) {
 						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
+//						printf(" Limit %i\n",limit);
 	#else
 					uint32 cur_datarate = cur_src->CalculateDownloadRate();
 					datarate += cur_datarate;
@@ -2093,7 +2115,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 	//
 
 	// Check input parameters
-	if(count == 0) {
+	if(count == NULL) {
 		return false;
 	}
 	if(sender->GetPartStatus() == NULL) {
@@ -2694,6 +2716,22 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (md4cmp(hashresult,GetPartHash(partnumber))) {
+				printf("HashResult:\n");
+				DumpMem(hashresult,16);
+				printf("GetPartHash(%i) :\n",partnumber);
+				DumpMem(GetPartHash(partnumber),16);		
+				/* To output to stdout - we should output to file
+				m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
+				uint32 length = PARTSIZE;
+				if (((ULONGLONG)PARTSIZE*(partnumber+1)) > (ULONGLONG)m_hpartfile.GetLength()){
+					length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*partnumber));
+					wxASSERT( length <= PARTSIZE );
+				}				
+				uchar mychar[length+1];
+				m_hpartfile.Read(mychar,length);
+				printf("Corrupt Data:\n");
+				DumpMem(mychar,length);										
+				*/
 				return false;
 			} else {
 				return true;
@@ -3574,9 +3612,11 @@ void CPartFile::UpdateFileRatingCommentAvail()
 		for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
 			srclists[sl].GetNext(pos1);
 			CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
+/* KRY_TEST	
 			if (cur_src->GetFileComment().GetLength()>0) {
 				hasComment=true;
 			}
+*/
 			if (cur_src->GetFileRate()>0) {
 				ratings++;
 			}
