@@ -2168,6 +2168,9 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		UpdateDisplayedInfo();
 		Notify_DownloadCtrlShowFilesCount();
 
+		// republish that file to the ed2k-server to update the 'FT_COMPLETE_SOURCES' counter on the server.
+		theApp.sharedfiles->RepublishFile(this);		
+		
 		//SHAddToRecentDocs(SHARD_PATH, fullname); // This is a real nasty call that takes ~110 ms on my 1.4 GHz Athlon and isn't really needed afai see...[ozon]
 		// Barry - Just in case
 		transfered = m_nFileSize;
