@@ -2070,28 +2070,33 @@ void CDownloadListCtrl::DrawSourceStatusBar( const CUpDownClient* source, wxDC* 
 void CDownloadListCtrl::PreviewFile(CPartFile* file)
 {
 	wxString command;
-
 	// If no player set in preferences, use mplayer.
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
-		wxMessageBox(_("Please set your prefered video player on preferences.\n Meanwhile, mplayer will be used and you will get this warning on every preview"), _("File preview"),wxOK);
-		command = wxT("mplayer");
+		wxMessageBox(_(
+			"Please set your prefered video player on preferences.\n"
+			" Meanwhile, aMule will attempt to use mplayer"
+			" and you will get this warning on every preview"),
+			_("File preview"), wxOK);
+		// Since newer versions for some reason mplayer does not automatically
+		// select video output decivce and needs a parameter, go figure...
+		command = wxT("mplayer -vo xv");
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
-	
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
-	if ( file->GetStatus() == PS_COMPLETE ) {
+	if (file->GetStatus() == PS_COMPLETE) {
 		command += thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + file->GetFileName();
 	} else {
 		command += file->GetFullName().BeforeLast( wxT('.') );
 	}
-	
 	command += wxT("\"");
-	
-	if ( !wxExecute(command) ) {
+
+	// wxExecute does not work with mplayer, e.g., it needs a shell.
+	if (!wxShell(command)) {
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
 	}
 }
+
