@@ -217,8 +217,16 @@ CPartFile::CPartFile(CED2KFileLink* fileLink)
 	InitializeFromLink(fileLink);
 }
 
+#if defined( __DEBUG__ )
+#define MAGIC_1 1234567890
+#define MAGIC_2 1357924680
+#endif // __DEBUG__
 void CPartFile::Init()
 {
+#if defined( __DEBUG__ )
+	MagicNumber1 = MAGIC_1;
+	MagicNumber2 = MAGIC_2;
+#endif // __DEBUG__
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
@@ -323,6 +331,22 @@ CPartFile::~CPartFile()
 		delete[] item->data;
 		delete item;
 	}	
+}
+
+bool CPartFile::IsASanePartFile() const {
+	int sane;
+	
+	sane = 	MagicNumber1 == MAGIC_1 && 
+		MagicNumber2 == MAGIC_2; 
+#if defined( __DEBUG__ )
+	if( !sane ) {
+		// scream loud!
+		printf("Bogus pointer to newfile detected!\n");
+		printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+	}
+#endif // __DEBUG__
+
+	return sane;
 }
 
 void CPartFile::CreatePartFile()
@@ -942,25 +966,24 @@ void CPartFile::SaveSourceSeeds() {
 	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
 	int n_sources = 0;
 	
-	if (m_downloadingSourcesList.GetCount()>0) {
-		POSITION pos1, pos2;
-		for (pos1 = m_downloadingSourcesList.GetHeadPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
-			CUpDownClient* cur_src = m_downloadingSourcesList.GetNext(pos1);		
-			if (cur_src->HasLowID()) {
-				continue;
-			} else {
-				source_seeds.AddTail(cur_src);
-			}
-			n_sources++;
+	for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+		it != m_downloadingSourcesList.end() && n_sources < 5; 
+		it++ ) {
+		CUpDownClient *cur_src = *it;
+		if (cur_src->HasLowID()) {
+			continue;
+		} else {
+			source_seeds.AddTail(cur_src);
 		}
+		n_sources++;
 	}
 
-	if (n_sources<5) {
+	if (n_sources < 5) {
 		// Not enought downloading sources to fill the list, going to sources list	
-		if (GetSourceCount()>0) {
-			POSITION pos1, pos2;
-			for (pos1 = m_SrcList.GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
-				CUpDownClient* cur_src = m_SrcList.GetPrev(pos1);		
+		if (GetSourceCount() > 0) {
+			POSITION pos1;
+			for (pos1 = m_SrcList.GetTailPosition();((pos1  != NULL) && (n_sources<5));) {
+				CUpDownClient* cur_src = m_SrcList.GetPrev(pos1);
 				if (cur_src->HasLowID()) {
 					continue;
 				} else {
@@ -1548,7 +1571,6 @@ uint8 CPartFile::GetStatus(bool ignorepause) const
 uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 {
 	uint16 old_trans;
-	CUpDownClient* cur_src;
 	DWORD dwCurTick = ::GetTickCount();
 
 	// If buffer size exceeds limit, or if not written within time limit, flush data
@@ -1566,23 +1588,20 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	kBpsDown = 0.0;
 
 	if (m_icounter < 10) {
-		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
-		{
-			cur_src = m_downloadingSourcesList.GetNext(pos);
-			if(cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING))
-			{
+		for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+			it != m_downloadingSourcesList.end(); 
+			it++ ) {
+			CUpDownClient *cur_src = *it;
+			if(cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING)) {
 				wxASSERT( cur_src->socket );
-				if (cur_src->socket)
-				{
+				if (cur_src->socket) {
 					transferingsrc++;
-					
 					float kBpsClient = cur_src->CalculateKBpsDown();
 					kBpsDown += kBpsClient;
 //					printf("ReduceDownload %i",reducedownload);
 					if (reducedownload) {
 						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
 //						printf(" Limit %i\n",limit);
-					
 						if(limit<1000 && reducedownload == 200) {
 							limit +=1000;
 						} else if(limit<1) {
@@ -1596,129 +1615,128 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			}
 		}
 	} else {
-		
+		CUpDownClient* cur_src;
 		POSITION pos1, pos2;
-				for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-					m_SrcList.GetNext(pos1);
-					cur_src = m_SrcList.GetAt(pos2);
-					uint8 download_state=cur_src->GetDownloadState();
-					switch (download_state) {
-						case DS_DOWNLOADING: {
-							transferingsrc++;
-							
-							float kBpsClient = cur_src->CalculateKBpsDown();
-							kBpsDown += kBpsClient;
-							if (reducedownload && download_state == DS_DOWNLOADING) {
-								uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-							
-								if (limit < 1000 && reducedownload == 200) {
-									limit += 1000;
-								} else if (limit < 1) {
-									limit = 1;
-								}
-								if (cur_src->socket) {
-									cur_src->socket->SetDownloadLimit(limit);
-								} else {
-									break;
-								}
-							} else {
-								if (cur_src->socket) {
-									cur_src->socket->DisableDownloadLimit();
-								} else {
-									break;
-								}
-							}
-							cur_src->SetValidSource(true);
+		for (pos1 = m_SrcList.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
+			m_SrcList.GetNext(pos1);
+			cur_src = m_SrcList.GetAt(pos2);
+			uint8 download_state=cur_src->GetDownloadState();
+			switch (download_state) {
+				case DS_DOWNLOADING: {
+					transferingsrc++;
+						
+					float kBpsClient = cur_src->CalculateKBpsDown();
+					kBpsDown += kBpsClient;
+					if (reducedownload && download_state == DS_DOWNLOADING) {
+						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
+						
+						if (limit < 1000 && reducedownload == 200) {
+							limit += 1000;
+						} else if (limit < 1) {
+							limit = 1;
+						}
+						if (cur_src->socket) {
+							cur_src->socket->SetDownloadLimit(limit);
+						} else {
 							break;
 						}
-						case DS_BANNED: {
+					} else {
+						if (cur_src->socket) {
+							cur_src->socket->DisableDownloadLimit();
+						} else {
 							break;
 						}
-						case DS_ERROR: {
+					}
+					cur_src->SetValidSource(true);
+					break;
+				}
+				case DS_BANNED: {
+					break;
+				}
+				case DS_ERROR: {
+					break;
+				}
+				case DS_LOWTOLOWIP: {
+					if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
+						//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
+						if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
+							theApp.downloadqueue->RemoveSource( cur_src );
+							lastpurgetime = dwCurTick;
 							break;
 						}
-						case DS_LOWTOLOWIP: {
-							if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
-								//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
-								if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
-									theApp.downloadqueue->RemoveSource( cur_src );
-									lastpurgetime = dwCurTick;
-									break;
-								}
-								if (theApp.serverconnect->IsLowID()) {
-									break;
-								}
-							} else {
-								cur_src->SetDownloadState(DS_ONQUEUE);
-							}
-						}
-						case DS_NONEEDEDPARTS: {
-							// we try to purge noneeded source, even without reaching the limit
-							if((dwCurTick - lastpurgetime) > 40000) {
-								if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
-									//however we only delete them if reaching the limit
-									if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
-										theApp.downloadqueue->RemoveSource(cur_src);
-										lastpurgetime = dwCurTick;
-										break; //Johnny-B - nothing more to do here (good eye!)
-									}
-								} else {
-									cur_src->DontSwapTo(this);
-									lastpurgetime = dwCurTick;
-									break;
-								}
-							}
-							// doubled reasktime for no needed parts - save connections and traffic
-							if (!((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME*2)) {
-								break;
-							}
-							// Recheck this client to see if still NNP.. Set to DS_NONE so that we force a TCP reask next time..
-							cur_src->SetDownloadState(DS_NONE);						
-						}
-						case DS_ONQUEUE: {
-							cur_src->SetValidSource(true);
-							if( cur_src->IsRemoteQueueFull()) {
-								cur_src->SetValidSource(false);
-								if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
-									theApp.downloadqueue->RemoveSource( cur_src );
-									lastpurgetime = dwCurTick;
-									break; //Johnny-B - nothing more to do here (good eye!)
-								}
-							}
-							//Give up to 1 min for UDP to respond.. If we are within on min on TCP, do not try..
-							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
-								cur_src->UDPReaskForDownload();
-							}
-						}
-						case DS_CONNECTING: 
-						case DS_TOOMANYCONNS: 
-						case DS_NONE: 
-						case DS_WAITCALLBACK: {							
-							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
-								if (!cur_src->AskForDownload()) {
-									break; //I left this break here just as a reminder just in case re rearange things..
-								}
-							}
+						if (theApp.serverconnect->IsLowID()) {
 							break;
 						}
-						// Kry - this extra case is not processed on 0.42e
-						/*
-						case DS_CONNECTED: {
-							if (download_state == DS_CONNECTED) {
-								if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
-									cur_src->SetDownloadState(DS_NONE);
-									break;
-								}
-								if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
-									theApp.downloadqueue->RemoveSource( cur_src );
-									break;
-								}
-							}
-						}
-						*/					
+					} else {
+						cur_src->SetDownloadState(DS_ONQUEUE);
 					}
 				}
-
+				case DS_NONEEDEDPARTS: {
+					// we try to purge noneeded source, even without reaching the limit
+					if((dwCurTick - lastpurgetime) > 40000) {
+						if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
+							//however we only delete them if reaching the limit
+							if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
+								theApp.downloadqueue->RemoveSource(cur_src);
+								lastpurgetime = dwCurTick;
+								break; //Johnny-B - nothing more to do here (good eye!)
+							}
+						} else {
+							cur_src->DontSwapTo(this);
+							lastpurgetime = dwCurTick;
+							break;
+						}
+					}
+					// doubled reasktime for no needed parts - save connections and traffic
+					if (!((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME*2)) {
+						break;
+					}
+					// Recheck this client to see if still NNP.. Set to DS_NONE so that we force a TCP reask next time..
+					cur_src->SetDownloadState(DS_NONE);						
+				}
+				case DS_ONQUEUE: {
+					cur_src->SetValidSource(true);
+					if( cur_src->IsRemoteQueueFull()) {
+						cur_src->SetValidSource(false);
+						if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
+							theApp.downloadqueue->RemoveSource( cur_src );
+							lastpurgetime = dwCurTick;
+							break; //Johnny-B - nothing more to do here (good eye!)
+						}
+					}
+					//Give up to 1 min for UDP to respond.. If we are within on min on TCP, do not try..
+					if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
+						cur_src->UDPReaskForDownload();
+					}
+				}
+				case DS_CONNECTING: 
+				case DS_TOOMANYCONNS: 
+				case DS_NONE: 
+				case DS_WAITCALLBACK: {							
+					if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
+						if (!cur_src->AskForDownload()) {
+							break; //I left this break here just as a reminder just in case re rearange things..
+						}
+					}
+					break;
+				}
+				// Kry - this extra case is not processed on 0.42e
+				/*
+				case DS_CONNECTED: {
+					if (download_state == DS_CONNECTED) {
+						if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
+							cur_src->SetDownloadState(DS_NONE);
+							break;
+						}
+						if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
+							theApp.downloadqueue->RemoveSource( cur_src );
+							break;
+						}
+					}
+				}
+				*/					
+			}
+		}
 
 		/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
@@ -3041,13 +3059,13 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// only send sources which have needed parts for this client
 				#warning Phoenix - hack to see the mixed sources problem - I
 				if ( md4cmp(cur_src->reqfile->GetFileHash(), forClient->reqfile->GetFileHash()) || md4cmp(cur_src->reqfile->GetFileHash(), GetFileHash() ) ) {
-#ifdef __DEBUG__
+#if defined( __DEBUG__ )
 					printf("Mismatching hashes!\n");
-					printf("\tthis: %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
+					printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
 					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
 					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
 					printf("Filenames are: \n");
-					printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+					printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
 #endif // __DEBUG__
@@ -3055,15 +3073,15 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				}
 				if( n != cur_src->m_nPartCount ||
 					cur_src->m_nPartCount != forClient->m_nPartCount ) {
-#ifdef __DEBUG__
+#if defined( __DEBUG__ )
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
 					if ( ( cur_src->reqfile->GetFileHash() != forClient->reqfile->GetFileHash() ) || ( cur_src->reqfile->GetFileHash() != GetFileHash() ) ) {
 						printf("Mismatching hashes!\n");
-						printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
+						printf("\tthis   : %s\n", unicode2char(GetFileHash().Encode().c_str()));
 						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
 						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
 						printf("Filenames are: \n");
-						printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
+						printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 						printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 						printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
 					}
@@ -3081,7 +3099,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// currently a client sends it's file status only after it has at least one complete part,
 				#warning Phoenix - hack to see the mixed sources problem - II
 				if ( md4cmp( cur_src->reqfile->GetFileHash(), cur_src->reqfile->GetFileHash() ) ) {
-#ifdef __DEBUG__
+#if defined( __DEBUG__ )
 					printf("Mismatching hashes!\n");
 					printf("\tthis: %s\n", unicode2char(GetFileHash().Encode().c_str()));
 					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
@@ -3092,7 +3110,7 @@ Packet*	CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 					continue;
 				}
 				if( n != cur_src->m_nPartCount ) {
-#ifdef __DEBUG__
+#if defined( __DEBUG__ )
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
 
 					if ( ( cur_src->reqfile->GetFileHash() != cur_src->reqfile->GetFileHash() ) ) {
@@ -3780,29 +3798,25 @@ void CPartFile::CleanUpSources()
 }
 /* End modif */
 
-/* Razor 1a - Modif by MikaelB
-   AddDownloadingSource function */
-
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
-	POSITION position = m_downloadingSourcesList.Find(client);
-	if (position == NULL) {
-		m_downloadingSourcesList.AddTail(client);
+	std::list<CUpDownClient *>::iterator it = 
+		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
+	if (it == m_downloadingSourcesList.end()) {
+		if(client->IsASaneUpDownClient()) {
+			m_downloadingSourcesList.push_back(client);
+		}
 	}
 }
-/* End modif */
-
-/* Razor 1a - Modif by MikaelB
-   RemoveDownloadingSource function */
 
 void CPartFile::RemoveDownloadingSource(CUpDownClient* client)
 {
-	POSITION position = m_downloadingSourcesList.Find(client); 
-	if (position != NULL) {
-		m_downloadingSourcesList.RemoveAt(position);
+	std::list<CUpDownClient *>::iterator it = 
+		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
+	if (it != m_downloadingSourcesList.end()) {
+		m_downloadingSourcesList.erase(it);
 	}
 }
-/* End modif */
 
 void CPartFile::SetPartFileStatus(uint8 newstatus)
 {

@@ -114,8 +114,16 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	ReGetClientSoft();
 }
 
+#if defined( __DEBUG__ )
+#define MAGIC_1 1234567890
+#define MAGIC_2 1357924680
+#endif // __DEBUG__
 void CUpDownClient::Init()
 {
+#if defined( __DEBUG__ )
+	MagicNumber1 = MAGIC_1;
+	MagicNumber2 = MAGIC_2;
+#endif // __DEBUG__
 
 	credits = 0;
 	//memset(reqfileid, 0, sizeof reqfileid);
@@ -211,10 +219,24 @@ void CUpDownClient::Init()
 	Extended_aMule_SO = 0;
 
 	ClearHelloProperties();	
-	
-	
-}	
+}
 
+bool CUpDownClient::IsASaneUpDownClient() const
+{
+	int sane;
+	
+	sane = 	MagicNumber1 == MAGIC_1 && 
+		MagicNumber2 == MAGIC_2; 
+#if defined( __DEBUG__ )
+	if( !sane ) {
+		// scream loud!
+		printf("Bogus pointer to UpDownClient detected!\n");
+		printf("MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+	}
+#endif // __DEBUG__
+
+	return sane;
+}
 
 CUpDownClient::~CUpDownClient()
 {
