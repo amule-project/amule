@@ -981,7 +981,7 @@ msgstr "Bloqueado"
 #: src/SharedFilesCtrl.cpp:127
 #: src/SharedFilesCtrl.cpp:203
 msgid "Release"
-msgstr "Versión"
+msgstr "Lanzamiento"
 
 #: src/ClientListCtrl.cpp:763
 #: src/SharedFilesCtrl.cpp:126
@@ -1237,7 +1237,7 @@ msgstr "Previsualizar"
 
 #: src/DownloadListCtrl.cpp:306
 msgid "Show file &details"
-msgstr "Mostrar detalles archivo"
+msgstr "Mostrar detalles de archivo"
 
 #: src/DownloadListCtrl.cpp:307
 #: src/muuli_wdr.cpp:810
