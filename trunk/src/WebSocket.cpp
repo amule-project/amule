@@ -147,36 +147,36 @@ void *CWCThread::Entry() {
 		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
 			// send what is left in our tails
 			while (stWebSocket.m_pHead) {
+				stWebSocket.m_hSocket->WaitForWrite();
 				if (stWebSocket.m_pHead->m_pToSend) {
 					//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread write:\n%s\n"), stWebSocket.m_pHead->m_pToSend));
 					//WRITE
 					stWebSocket.m_hSocket->Write(stWebSocket.m_pHead->m_pToSend, stWebSocket.m_pHead->m_dwSize);
 					wxUint32 nRes = stWebSocket.m_hSocket->LastCount();
-					if (nRes != stWebSocket.m_pHead->m_dwSize) {
+					if (nRes == stWebSocket.m_pHead->m_dwSize) {
+						// erase this chunk
+						CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
+						delete stWebSocket.m_pHead;
+						if (!(stWebSocket.m_pHead = pNext)) {
+							stWebSocket.m_pTail = NULL;
+						}
+					} else {
 						if (nRes > 0) {
-							if (/*(nRes > 0) &&*/(nRes < stWebSocket.m_pHead->m_dwSize)) {
-								stWebSocket.m_pHead->m_pToSend += nRes;
-								stWebSocket.m_pHead->m_dwSize -= nRes;
-							}
+							stWebSocket.m_pHead->m_pToSend += nRes;
+							stWebSocket.m_pHead->m_dwSize -= nRes;
 						} else {
 							if (stWebSocket.m_hSocket->Error()) {
 								if (stWebSocket.m_hSocket->LastError() != wxSOCKET_WOULDBLOCK) {
 									//got error
 									stWebSocket.m_pParent->Print(wxT("WCThread: got write error.\n"));
 									stWebSocket.m_bValid = false;
+									break;
 								}
 							}
 						}
-						break;
 					}
 				}
 	
-				// erase this chunk
-				CWebSocket::CChunk* pNext = stWebSocket.m_pHead->m_pNext;
-				delete stWebSocket.m_pHead;
-				if (!(stWebSocket.m_pHead = pNext)) {
-					stWebSocket.m_pTail = NULL;
-				}
 			}
 		}
 	}
@@ -282,8 +282,8 @@ void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
 
 
 void CWebSocket::OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen) {
-	wxString sHeader = sHeader.Format(wxT("%s"), pHeader); sHeader=sHeader.Left(dwHeaderLen);
-	wxString sData = sData.Format(wxT("%s"), pData); sData=sData.Left(dwDataLen);
+	wxString sHeader(pHeader); sHeader=sHeader.Left(dwHeaderLen);
+	wxString sData(pData); sData=sData.Left(dwDataLen);
 	wxString sURL;
 	bool imgreq=false;
 	bool stylereq=false;
@@ -355,7 +355,7 @@ void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
 			// try to send it directly
 			m_hSocket->Write((const char*) pData, dwDataSize);
 			uint32 nRes = m_hSocket->LastCount();
-			if (	(nRes > dwDataSize) && 
+			if ((nRes < dwDataSize) && 
 				m_hSocket->Error() && 
 				(m_hSocket->LastError() != wxSOCKET_WOULDBLOCK)) {
 				m_bValid = false;
@@ -371,6 +371,7 @@ void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
 				pChunk->m_pNext = NULL;
 				pChunk->m_dwSize = dwDataSize;
 				if ((pChunk->m_pData = new char[dwDataSize])) {
+					memcpy(pChunk->m_pData, pData, dwDataSize);
 					// push it to the end of our queue
 					pChunk->m_pToSend = pChunk->m_pData;
 					if (m_pTail) {
