@@ -408,7 +408,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	// if we block loopbacks at this point it should prevent us from connecting to ourself
 	if ( source->HasValidHash() ) {
 		if ( source->GetUserHash() == thePrefs::GetUserHash() ) {
-			AddDebugLogLineM(false, wxT("Tried to add source with matching hash to your own."));
+			AddDebugLogLineM( false, logDownloadQueue, wxT("Tried to add source with matching hash to your own.") );
 			source->Safe_Delete();
 			return;
 		}
@@ -807,7 +807,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				else{
 					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
-					AddDebugLogLineM(false, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
+					AddDebugLogLineM( false, logDownloadQueue, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
 				}
 			}
 

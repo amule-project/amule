@@ -668,9 +668,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
-	if (thePrefs::GetVerbose()) {
-		AddLogLineM(false,_("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
-	}
+	AddDebugLogLineM(false, logServer, _("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
 	SetConnectionState(CS_DISCONNECTED);
 }
 
@@ -683,7 +681,7 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 	try {
 		if (packet->GetProtocol() == OP_PACKEDPROT) {
 			if (!packet->UnPackPacket(250000)){
-				AddDebugLogLineM(false, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+				AddDebugLogLineM(false, logZLib, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 				theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
 				return true;
 			}
@@ -692,11 +690,11 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 		if (packet->GetProtocol() == OP_EDONKEYPROT) {
 			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 		} else {
-			AddDebugLogLineM(false, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+			AddDebugLogLineM(false, logServer, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 			theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
 		}
 	} catch(...) {
-		AddDebugLogLineM(false, wxString::Format(wxT("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+		AddDebugLogLineM(false, logServer, wxString::Format(wxT("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 		wxASSERT(0);
 		return false;		
 	}
@@ -742,7 +740,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		amuleIPV4Address addr;
 		addr.Hostname(ip);
 		addr.Service(cur_server->GetConnPort());
-		AddDebugLogLineM(true, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
+		AddDebugLogLineM(true, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
 		Connect(addr, false);
 	} else {
 		AddLogLineM(true, _("Could not solve dns for server ") + cur_server->GetAddress() + _(" : Unable to connect!"));
