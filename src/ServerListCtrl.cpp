@@ -544,7 +544,7 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 							if (!(tester = ((a & 0x00FF0000) - (b & 0x00FF0000)))) {
 								if (!(tester = ((a & 0xFF000000) - (b & 0xFF000000)))) {
 									// Same ip, different port (Shouldn't happen!)
-									return mode * CmpAny( server1->GetPort(), server2->GetPort() );
+									return mode * otherfunctions::CmpAny( server1->GetPort(), server2->GetPort() );
 								}
 							}
 						}
@@ -555,15 +555,15 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 		// Sort by description
 		case 2: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
 		// Sort by Ping
-		case 3: return mode * CmpAny( server1->GetPing(), server2->GetPing() );
+		case 3: return mode * otherfunctions::CmpAny( server1->GetPing(), server2->GetPing() );
 		// Sort by user-count
-		case 4: return mode * CmpAny( server1->GetUsers(), server2->GetUsers() );
+		case 4: return mode * otherfunctions::CmpAny( server1->GetUsers(), server2->GetUsers() );
 		// Sort by file-count
-		case 5: return mode * CmpAny( server1->GetFiles(), server2->GetFiles() );
+		case 5: return mode * otherfunctions::CmpAny( server1->GetFiles(), server2->GetFiles() );
 		// Sort by preferences
-		case 6: return mode * CmpAny( server1->GetPreferences(), server2->GetPreferences() );
+		case 6: return mode * otherfunctions::CmpAny( server1->GetPreferences(), server2->GetPreferences() );
 		// Sort by failure-count
-		case 7: return mode * CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
+		case 7: return mode * otherfunctions::CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
 		// Sort by static servers
 		case 8: 
 			{

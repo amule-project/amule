@@ -112,6 +112,11 @@ public:
 	uchar*		GetRawHash()						{ return m_abyBuffer; }
 
 	static uint32	GetHashSize()						{ return HASHSIZE;}
+	
+	unsigned int DecodeBase32(const char* base32Buffer) {
+		return otherfunctions::DecodeBase32(base32Buffer, HASHSIZE, m_abyBuffer);	
+	}	
+	
 private:
 	uchar m_abyBuffer[HASHSIZE];
 };

@@ -50,6 +50,8 @@
 #define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.BAK")
 #define CRYPTKEY_FILENAME			wxT("cryptkey.dat")
 
+using namespace otherfunctions;
+
 CClientCredits::CClientCredits(CreditStruct* in_credits)
 {
 	m_pCredits = in_credits;

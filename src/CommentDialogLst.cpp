@@ -32,7 +32,8 @@
 #include "opcodes.h"		// Needed for SOURCESSLOTS
 #include "updownclient.h"	// Needed for CUpDownClient
 
-//IMPLEMENT_DYNAMIC(CCommentDialogLst, CDialog)
+using namespace otherfunctions;
+
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent,CPartFile* file)
 : wxDialog(parent,-1,_("File Comments"),
 wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)

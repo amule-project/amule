@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE(CClientDetailDialog,wxDialog)
 	EVT_BUTTON(ID_CLOSEWND,CClientDetailDialog::OnBnClose)
 END_EVENT_TABLE()
 
-//IMPLEMENT_DYNAMIC(CClientDetailDialog, CDialog)
+using namespace otherfunctions;
 
 CClientDetailDialog::CClientDetailDialog(wxWindow* parent,CUpDownClient* client)
 : wxDialog(parent,9997,_("Client Details"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)

@@ -45,6 +45,7 @@
 #include "StatisticsDlg.h"
 #include "MD5Sum.h"
 
+using namespace otherfunctions;
 
 // Static variables
 COLORREF		CPreferences::s_colors[cntStatColors];
@@ -533,7 +534,7 @@ public:
 	
 		cfg->Read( GetKey(), &buffer, wxT("0") );
 	
-		m_value = atoll(unicode2char(buffer));
+		m_value = StrToLong(buffer);
 	}
 
 	virtual void SaveToFile(wxConfigBase* cfg)

@@ -259,7 +259,7 @@ void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
 			}
 		}
 	}
-	
+
 	if (m_dwHttpHeaderLen && !m_bCanRecv && !m_dwHttpContentLen) {
 		m_dwHttpContentLen = m_dwRecv - m_dwHttpHeaderLen; // of course
 	}
@@ -345,10 +345,10 @@ void CWebSocket::Disconnect() {
 
 
 void CWebSocket::SendContent(LPCSTR szStdResponse, const void* pContent, wxUint32 dwContentSize) {
-    char szBuf[0x1000];
-    int nLen = sprintf(szBuf, "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
-    SendData(szBuf, nLen);
-    SendData(pContent, dwContentSize);
+	char szBuf[0x1000]; // 0x1000 is safe because it's just used for the header
+	int nLen = sprintf(szBuf, "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
+	SendData(szBuf, nLen);
+	SendData(pContent, dwContentSize);
 }
 
 
@@ -390,4 +390,3 @@ void CWebSocket::SendData(const void* pData, wxUint32 dwDataSize) {
 		}
 	}
 }
-

@@ -64,6 +64,7 @@
 
 class CPartFile;
 
+using namespace otherfunctions;
 
 int CDownloadListCtrl::s_lastOrder;
 int CDownloadListCtrl::s_lastColumn;

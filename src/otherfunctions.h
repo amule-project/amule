@@ -28,8 +28,8 @@
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 
-class CAICHHash;
-
+namespace otherfunctions {
+	
 /**
  * Helper function.
  *
@@ -116,7 +116,6 @@ wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
 wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen);
 unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
-unsigned int DecodeBase32(const char* base32Buffer, CAICHHash& Hash);
 wxString EncodeBase64(const char* buffer, unsigned int bufLen);
 unsigned int DecodeBase64(const char *base32Buffer, unsigned int base32BufLen, unsigned char *buffer);
 
@@ -217,5 +216,7 @@ inline void md4cpy(const void* dst, const void* src) {
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size);
+
+} // End namespace
 
 #endif // OTHERFUNCTIONS_H

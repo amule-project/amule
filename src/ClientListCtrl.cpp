@@ -50,6 +50,7 @@ BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 	EVT_MENU_RANGE( MP_SWITCHCTRL_0,	MP_SWITCHCTRL_9,	CClientListCtrl::OnChangeView	)
 END_EVENT_TABLE()
 
+using namespace otherfunctions;
 
 #define imagelist theApp.amuledlg->imagelist
 

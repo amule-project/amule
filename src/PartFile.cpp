@@ -601,7 +601,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 					case FT_AICH_HASH:{
 						//wxASSERT( newtag->IsStr() );
 						CAICHHash hash;
-						if (DecodeBase32(newtag->tag.stringvalue,hash) == CAICHHash::GetHashSize())
+						if (hash.DecodeBase32(newtag->tag.stringvalue) == CAICHHash::GetHashSize())
 							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
 						else
 							wxASSERT( false );
@@ -669,10 +669,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool fro
 			if (m_abyFileHash == checkhash)
 				flag=true;
 			else{
-				/*
-				for (size_t i = 0; i < hashlist.GetCount(); ++i)
-					delete[] hashlist[i];
-				*/
 				hashlist.Clear();
 				flag=false;
 			}
@@ -945,7 +941,6 @@ bool CPartFile::SavePartFile(bool Initial)
 		char* number = &namebuffer[1];
 		uint16 i_pos = 0;
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-			// itoa(i_pos,number,10);
 			sprintf(number,"%d",i_pos);
 			namebuffer[0] = FT_GAPSTART;
 			CTag* gapstarttag = new CTag(namebuffer,gaplist.GetAt(pos)->start);

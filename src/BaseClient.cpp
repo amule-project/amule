@@ -1627,9 +1627,9 @@ wxString CUpDownClient::GetUploadFileInfo()
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
 		wxString stat;
 		stat.Printf(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
-		m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests(), CastItoXBytes(m_reqfile->statistic.GetTransfered()).GetData(),
+		m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests(), unicode2char(CastItoXBytes(m_reqfile->statistic.GetTransfered())),
 		m_reqfile->statistic.GetAllTimeAccepts(),
-		m_reqfile->statistic.GetAllTimeRequests(), CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered()).GetData() );
+		m_reqfile->statistic.GetAllTimeRequests(), unicode2char(CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered())));
 		sRet += stat;
 	} else {
 		sRet += _("Requested unknown file");

@@ -467,7 +467,7 @@ class CWebServer {
 		bool		m_bServerWorking;
 		int		m_iSearchSortby;
 		bool		m_bSearchAsc;
+		static wxString imgs_folder;
 };
 
 #endif // WEBSERVER_H
-

@@ -46,7 +46,7 @@
 #include "Preferences.h"
 #include "ClientList.h"
 
-
+using namespace otherfunctions;
 
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
@@ -487,4 +487,3 @@ void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		}
 	}
 }
-

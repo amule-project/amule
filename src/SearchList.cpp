@@ -502,11 +502,11 @@ wxString CSearchList::GetWebList( const wxString& linePattern, int sortby, bool 
 
 		wxString strHash(EncodeBase16(sf->GetFileHash(),16));
 		wxString temp = wxString::Format(linePattern,
-					wxString(coloraddon + sf->GetFileName() + coloraddonE).GetData(),
-					CastItoXBytes(sf->GetFileSize()).GetData(),
-					strHash.GetData(),
+					unicode2char(coloraddon + sf->GetFileName() + coloraddonE),
+					unicode2char(CastItoXBytes(sf->GetFileSize())),
+					unicode2char(strHash),
 					sf->GetSourceCount(),
-					strHash.GetData());
+					unicode2char(strHash));
 		buffer.Append(temp);
 	}
 	

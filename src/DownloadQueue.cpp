@@ -1124,7 +1124,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 			} else {
 				if (!cur_file->GetInsufficient()) {
 					AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-					AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
+					AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), unicode2char(cur_file->GetFileName()), cur_file->GetNeededSpace()));
 					cur_file->PauseFile(true);
 				}
 			}
@@ -1145,7 +1145,7 @@ void CDownloadQueue::CheckDiskspace(bool bNotEnoughSpaceLeft)
 					if (nSpaceToGrow) {
 						if (!cur_file->GetInsufficient()) {
 							AddLogLineM(false, wxString::Format(_("Free Disk Space (Total): %lli\n"), nTotalAvailableSpace));
-							AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), cur_file->GetFileName().GetData(), cur_file->GetNeededSpace()));
+							AddLogLineM(true, wxString::Format(_("File : %s, Needed Space : %i - PAUSED !!!\n"), unicode2char(cur_file->GetFileName()), cur_file->GetNeededSpace()));
 							// cur_file->PauseFileInsufficient();
 							cur_file->PauseFile(true/*bInsufficient*/);
 						}

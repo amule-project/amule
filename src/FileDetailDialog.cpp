@@ -48,6 +48,8 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 END_EVENT_TABLE()
 
+using namespace otherfunctions;
+
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
 : wxDialog(parent,9998,(_("File Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE)
 {
@@ -92,8 +94,8 @@ void CFileDetailDialog::UpdateData()
 	bufferS.Printf(wxT("%i(%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_TRANSFERED,wxControl)->SetLabel(CastItoXBytes(m_file->GetTransfered()));
-	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()).GetData());
-	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()).GetData());
+	CastChild(IDC_FD_STATS1,wxControl)->SetLabel(CastItoXBytes(m_file->GetLostDueToCorruption()));
+	CastChild(IDC_FD_STATS2,wxControl)->SetLabel(CastItoXBytes(m_file->GetGainDueToCompression()));
 	CastChild(IDC_FD_STATS3,wxControl)->SetLabel(CastItoIShort(m_file->TotalPacketsSavedDueToICH()));
 	CastChild(IDC_COMPLSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetCompletedSize()));
 	bufferS.Printf(wxT("%.2f "),m_file->GetPercentCompleted());

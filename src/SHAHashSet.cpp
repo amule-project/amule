@@ -53,7 +53,7 @@ CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHash
 wxString CAICHHash::GetString() const{
-	return EncodeBase32(m_abyBuffer, HASHSIZE);
+	return otherfunctions::EncodeBase32(m_abyBuffer, HASHSIZE);
 }
 
 void CAICHHash::Read(CFileDataIO* file)	{ 

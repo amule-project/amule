@@ -56,8 +56,9 @@
 	#include "eggtrayicon.h"	// Needed for egg_tray_icon_new
 #endif
 
-#ifdef __WXMSW__
+using namespace otherfunctions;
 
+#ifdef __WXMSW__
 
 CSysTray::CSysTray(wxWindow* WXUNUSED(parent), int WXUNUSED(desktopmode), const wxString& WXUNUSED(title))
 {
