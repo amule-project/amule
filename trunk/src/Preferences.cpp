@@ -193,7 +193,9 @@ bool		CPreferences::s_UseSkinFile;
 bool		CPreferences::s_FastED2KLinksHandler;
 int			CPreferences::s_perms_files;
 int			CPreferences::s_perms_dirs;
-
+bool 			CPreferences::s_AICHTrustEveryHash;
+bool 			CPreferences::s_IPFilterAutoLoad;
+wxString 	CPreferences::s_IPFilterURL;
 
 
 /**
@@ -682,6 +684,7 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_TEMPFILES]	= new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") );
 	s_CfgList[IDC_INCFILES]		= new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, appdir + wxT("Incoming") );
 	s_CfgList[IDC_ICH]		= new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true );
+	s_CfgList[IDC_AICHTRUST]		= new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, true );
 	s_CfgList[IDC_METADATA] 	= new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false );
 	s_CfgList[IDC_CHUNKALLOC]	= new Cfg_Bool( wxT("/ExternalConnect/FullChunkAlloc"), s_AllocFullChunk, false );
 	s_CfgList[IDC_FULLALLOCATE]	= new Cfg_Bool( wxT("/ExternalConnect/FullPartAlloc"), s_AllocFullPart, false );
@@ -775,9 +778,10 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_SEESHARES]	=    MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 );
 	s_CfgList[IDC_SECIDENT]		= new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true );
 	s_CfgList[IDC_IPFONOFF]		= new Cfg_Bool( wxT("/ExternalConnect/IpFilterOn"), s_IPFilterOn, true );
-	s_CfgList[IDC_FILTER]		= new Cfg_Bool( wxT("/eMule/FilterBadIPs"), s_filterBadIP, true );
+	s_CfgList[IDC_FILTER]			= new Cfg_Bool( wxT("/eMule/FilterBadIPs"), s_filterBadIP, true );
+	s_CfgList[IDC_AUTOIPFILTER] = new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true );
+	s_CfgList[IDC_IPFILTERURL]	= new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString );
 
-	
 	/**
 	 * The folowing doesn't have an assosiated widget.
 	 **/
@@ -1237,4 +1241,3 @@ wxString CPreferences::GetBrowser()
 	
 	return cmd;
 }
-

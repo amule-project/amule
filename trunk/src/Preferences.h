@@ -200,6 +200,7 @@ public:
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
+	static bool IsTrustingEveryHash() { return s_AICHTrustEveryHash; }
 	static bool		AutoServerlist()		{ return s_autoserverlist; }
 	static bool		DoMinToTray()			{ return s_mintotray; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
@@ -363,11 +364,13 @@ public:
 	// Madcat - Fast ED2K Links Handler Toggling
 	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
-	// Kry - Ip filter On/Off
+	// Kry - Ip filter 
 	static bool		GetIPFilterOn()			{ return s_IPFilterOn; }
 	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
 	static void		SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
+	static bool		IPFilterAutoLoad() { return s_IPFilterAutoLoad; }
+	static const wxString& IPFilterURL() { return s_IPFilterURL; } 
 
 	// Kry - Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
@@ -403,9 +406,6 @@ public:
 	static void		SetDirPermissions( int perms );
 
 	static void		CheckUlDlRatio();
-	
-	#warning NEED GUI!
-	static bool IsTrustingEveryHash() { return false; }
 	
 	static void BuildItemList( const wxString& appdir );
 	static void EraseItemList();
@@ -464,6 +464,7 @@ protected:
 	static wxString	s_incomingdir;
 	static wxString	s_tempdir;
 	static bool	s_ICH;
+	static bool	s_AICHTrustEveryHash;
 	static int	s_perms_files;
 	static int	s_perms_dirs;
 
@@ -596,9 +597,11 @@ protected:
 	static uint32	s_ECPort;
 	static wxString	s_ECPassword;
 	
-	// Kry - IPFilter On/Off
+	// Kry - IPFilter 
 	static bool	s_IPFilterOn;
 	static uint8	s_filterlevel;
+	static bool	s_IPFilterAutoLoad;
+	static wxString s_IPFilterURL;
 	
 	// Kry - Source seeds on/off
 	static bool	s_UseSrcSeeds;
