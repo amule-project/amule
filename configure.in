@@ -176,7 +176,8 @@ case "$GDLIBFOUND" in
 	gd-lib is needed for fully funtional cas. If you don't have gd-lib,
 	cas will be compiled, but you won't be able to create that cool
 	status image (text mode however will work). Also note that you should
-	upgrade to gd-lib >= 2.0.22 if you intend to use it, other versions have 	not been tested and therefore are unsupported at the moment.
+	upgrade to gd-lib >= 2.0.22 if you intend to use it, other versions have
+	not been tested and therefore are unsupported at the moment.
 	Please check that gdlib-config is in your default path, check out
 	LD_LIBRARY_PATH or equivalent variable.
 	Or this might also be that your gdlib-config has other name.
