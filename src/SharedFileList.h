@@ -49,7 +49,7 @@ class CSharedFileList{
 	friend class CSharedFilesCtrl;
 	friend class CClientReqSocket;
 public:
-	CSharedFileList(CServerConnect* in_server, CKnownFileList* in_filelist);
+	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
 	void	SendListToServer();
 	void 	Reload(bool sendtoserver = true, bool firstload = false);
@@ -67,6 +67,7 @@ public:
 	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
 	void	ClearED2KPublishInfo();
+	void	SetServerConnect(CServerConnect* in_server) { server = in_server; }
 	
 private:
 	void	FindSharedFiles();
