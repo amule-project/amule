@@ -359,26 +359,22 @@ void CDownloadQueue::Process()
 	}
 
 	datarate = 0;
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		CPartFile* cur_file =  filelist.GetAt(pos);
-		if ((cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) && (!cur_file->IsAutoDownPriority() && cur_file->GetDownPriority() == PR_HIGH)) {
-			datarate += cur_file->Process(downspeed);
-		}
-	}
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		CPartFile* cur_file =  filelist.GetAt(pos);
-		if ((cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) && (!cur_file->IsAutoDownPriority() && cur_file->GetDownPriority() == PR_NORMAL)) {
-			datarate += cur_file->Process(downspeed);
-		}
-	}
-	for (POSITION pos =filelist.GetHeadPosition();pos != 0;filelist.GetNext(pos)){
-		CPartFile* cur_file =  filelist.GetAt(pos);
-		if ((cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) && (cur_file->GetDownPriority() == PR_LOW || cur_file->IsAutoDownPriority())) {
-			datarate += cur_file->Process(downspeed);
-		}
-	}
-
 	udcounter++;
+	
+	// Since we imported the SortByPriority, there's no point on having separate loops
+	for (POSITION pos = filelist.GetHeadPosition();pos != 0;){
+		CPartFile* cur_file = filelist.GetNext(pos);
+		if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY){
+			datarate += cur_file->Process(downspeed, udcounter);
+		}
+		// Kry - I think I did it on the sources adding ;)
+//		else{
+//			//This will make sure we don't keep old sources to paused and stoped files..
+//			cur_file->StopPausedFile();
+//		}
+	}
+	
+	
 	if (udcounter == 5) {
 		if (theApp.serverconnect->IsUDPSocketAvailable()) {
 			if((!lastudpstattime) || (::GetTickCount() - lastudpstattime) > UDPSERVERSTATTIME) {
@@ -387,6 +383,7 @@ void CDownloadQueue::Process()
 			}
 		}
 	}
+	
 	if (udcounter == 10) {
 		udcounter = 0;
 		if (theApp.serverconnect->IsUDPSocketAvailable()) {
@@ -1138,13 +1135,9 @@ void CDownloadQueue::SetCatPrio(int cat, uint8 newprio)
 		CPartFile* cur_file = filelist.GetAt(pos);
 		if (cat==0 || cur_file->GetCategory()==cat) {
 			if (newprio==PR_AUTO) {
-				//cur_file->SetAutoPriority(true);
-				//cur_file->SetPriority(PR_HIGH);
 				cur_file->SetAutoDownPriority(true);
 				cur_file->SetDownPriority(PR_HIGH);
 			} else {
-				//cur_file->SetAutoPriority(false);
-				//cur_file->SetPriority(newprio);
 				cur_file->SetAutoDownPriority(false);
 				cur_file->SetDownPriority(newprio);
 			}

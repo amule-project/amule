@@ -1601,9 +1601,10 @@ uint8 CPartFile::GetStatus(bool ignorepause)
 	}
 }
 
-uint32 CPartFile::Process(uint32 reducedownload/*in percent*/)
+uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 {
 	uint16 old_trans;
+	CUpDownClient* cur_src;
 	DWORD dwCurTick = ::GetTickCount();
 
 	// If buffer size exceeds limit, or if not written within time limit, flush data
@@ -1622,187 +1623,226 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/)
 #else
 	datarate = 0;  
 #endif
-	POSITION pos1, pos2;
-	for (uint32 sl = 0; sl < SOURCESSLOTS; sl++) {
-		if (!srclists[sl].IsEmpty()) {
-			for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
-				srclists[sl].GetNext(pos1);
-				CUpDownClient* cur_src = srclists[sl].GetAt(pos2);
-				uint8 download_state=cur_src->GetDownloadState();
-				switch (download_state) {
-					case DS_DOWNLOADING: {
-						transferingsrc++;
-#ifdef DOWNLOADRATE_FILTERED
-						float kBpsClient = cur_src->CalculateKBpsDown();
-						kBpsDown += kBpsClient;
-						if (reducedownload && download_state == DS_DOWNLOADING) {
-							uint32 limit = (uint32)((float)reducedownload*kBpsClient);
-#else
-						uint32 cur_datarate = cur_src->CalculateDownloadRate();
-						datarate += cur_datarate;
-						if (reducedownload && download_state == DS_DOWNLOADING) {
-							uint32 limit = reducedownload*cur_datarate/1000;
-#endif
-							if (limit < 1000 && reducedownload == 200) {
-								limit += 1000;
-							} else if (limit < 1) {
-								limit = 1;
-							}
-							if (cur_src->socket) {
-								cur_src->socket->SetDownloadLimit(limit);
-							} else {
-								break;
-							}
-						} else {
-							if (cur_src->socket) {
-								cur_src->socket->DisableDownloadLimit();
-							} else {
-								break;
-							}
-						}
-						cur_src->SetValidSource(true);
-						break;
+
+	if (m_icounter < 10) {
+		uint32 cur_datarate;
+		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
+		{
+			cur_src = m_downloadingSourcesList.GetNext(pos);
+			if(cur_src && cur_src->GetDownloadState() == DS_DOWNLOADING)
+			{
+				wxASSERT( cur_src->socket );
+				if (cur_src->socket)
+				{
+					transferingsrc++;
+	#ifdef DOWNLOADRATE_FILTERED
+					float kBpsClient = cur_src->CalculateKBpsDown();
+					kBpsDown += kBpsClient;
+					if (reducedownload) {
+						uint32 limit = (uint32)((float)reducedownload*kBpsClient);
+	#else
+					uint32 cur_datarate = cur_src->CalculateDownloadRate();
+					datarate += cur_datarate;
+					if (reducedownload) {
+						uint32 limit = reducedownload*cur_datarate/1000;
+	#endif
+						if(limit<1000 && reducedownload == 200)
+							limit +=1000;
+						else if(limit<1)
+							limit = 1;
+						cur_src->socket->SetDownloadLimit(limit);
 					}
-					case DS_BANNED: {
-						break;
-					}
-					case DS_ERROR: {
-						break;
-					}
-					case DS_LOWTOLOWIP: {
-						// if we now have a high ip we can ask
-						if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
-							theApp.downloadqueue->RemoveSource( cur_src );
-							lastpurgetime = dwCurTick;
-							break;
-						}
-						if (theApp.serverconnect->IsLowID()) {
-							break;
-						}
-					}
-					case DS_NONEEDEDPARTS: {
-						// we try to purge noneeded source, even without reaching the limit
-						if(download_state == DS_NONEEDEDPARTS && (dwCurTick - lastpurgetime) > 40000) {
-							if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
-								//however we only delete them if reaching the limit
-								if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
-									theApp.downloadqueue->RemoveSource(cur_src);
-									lastpurgetime = dwCurTick;
-									break; //Johnny-B - nothing more to do here (good eye!)
+				}
+			}
+		}
+	} else {
+		
+		POSITION pos1, pos2;
+		for (uint32 sl = 0; sl < SOURCESSLOTS; sl++) {
+			if (!srclists[sl].IsEmpty()) {
+				for (pos1 = srclists[sl].GetHeadPosition();( pos2 = pos1 ) != NULL;) {
+					srclists[sl].GetNext(pos1);
+					cur_src = srclists[sl].GetAt(pos2);
+					uint8 download_state=cur_src->GetDownloadState();
+					switch (download_state) {
+						case DS_DOWNLOADING: {
+							transferingsrc++;
+	#ifdef DOWNLOADRATE_FILTERED
+							float kBpsClient = cur_src->CalculateKBpsDown();
+							kBpsDown += kBpsClient;
+							if (reducedownload && download_state == DS_DOWNLOADING) {
+								uint32 limit = (uint32)((float)reducedownload*kBpsClient);
+	#else
+							uint32 cur_datarate = cur_src->CalculateDownloadRate();
+							datarate += cur_datarate;
+							if (reducedownload && download_state == DS_DOWNLOADING) {
+								uint32 limit = reducedownload*cur_datarate/1000;
+	#endif
+								if (limit < 1000 && reducedownload == 200) {
+									limit += 1000;
+								} else if (limit < 1) {
+									limit = 1;
+								}
+								if (cur_src->socket) {
+									cur_src->socket->SetDownloadLimit(limit);
+								} else {
+									break;
 								}
 							} else {
-								cur_src->DontSwapTo(this);
+								if (cur_src->socket) {
+									cur_src->socket->DisableDownloadLimit();
+								} else {
+									break;
+								}
+							}
+							cur_src->SetValidSource(true);
+							break;
+						}
+						case DS_BANNED: {
+							break;
+						}
+						case DS_ERROR: {
+							break;
+						}
+						case DS_LOWTOLOWIP: {
+							// if we now have a high ip we can ask
+							if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
+								theApp.downloadqueue->RemoveSource( cur_src );
 								lastpurgetime = dwCurTick;
 								break;
 							}
+							if (theApp.serverconnect->IsLowID()) {
+								break;
+							}
 						}
-						// doubled reasktime for no needed parts - save connections and traffic
-						if (!((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME*2)) {
-							break;
-						}
-					}
-					case DS_ONQUEUE: {
-						cur_src->SetValidSource(true);
-						if( cur_src->IsRemoteQueueFull()) {
-							cur_src->SetValidSource(false);
-						}
-						if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
-							theApp.downloadqueue->RemoveSource( cur_src );
-							lastpurgetime = dwCurTick;
-							break; //Johnny-B - nothing more to do here (good eye!)
-						}
-						if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
-							cur_src->UDPReaskForDownload();
-						}
-					}
-					case DS_CONNECTING: {
-					}
-					case DS_TOOMANYCONNS: {
-					}
-					case DS_CONNECTED: {
-						if (download_state == DS_CONNECTED){
-								if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
-									cur_src->SetDownloadState(DS_NONE);
-									break;
-								}
-								if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
-									theApp.downloadqueue->RemoveSource( cur_src );
+						case DS_NONEEDEDPARTS: {
+							// we try to purge noneeded source, even without reaching the limit
+							if(download_state == DS_NONEEDEDPARTS && (dwCurTick - lastpurgetime) > 40000) {
+								if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
+									//however we only delete them if reaching the limit
+									if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
+										theApp.downloadqueue->RemoveSource(cur_src);
+										lastpurgetime = dwCurTick;
+										break; //Johnny-B - nothing more to do here (good eye!)
+									}
+								} else {
+									cur_src->DontSwapTo(this);
+									lastpurgetime = dwCurTick;
 									break;
 								}
 							}
+							// doubled reasktime for no needed parts - save connections and traffic
+							if (!((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME*2)) {
+								break;
+							}
 						}
-					case DS_NONE: {
-					}
-					case DS_WAITCALLBACK: {
-						if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
-							cur_src->AskForDownload();
+						case DS_ONQUEUE: {
+							cur_src->SetValidSource(true);
+							if( cur_src->IsRemoteQueueFull()) {
+								cur_src->SetValidSource(false);
+							}
+							if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
+								theApp.downloadqueue->RemoveSource( cur_src );
+								lastpurgetime = dwCurTick;
+								break; //Johnny-B - nothing more to do here (good eye!)
+							}
+							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
+								cur_src->UDPReaskForDownload();
+							}
 						}
-						break;
+						case DS_CONNECTING: {
+						}
+						case DS_TOOMANYCONNS: {
+						}
+						case DS_CONNECTED: {
+							if (download_state == DS_CONNECTED){
+									if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
+										cur_src->SetDownloadState(DS_NONE);
+										break;
+									}
+									if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
+										theApp.downloadqueue->RemoveSource( cur_src );
+										break;
+									}
+								}
+							}
+						case DS_NONE: {
+						}
+						case DS_WAITCALLBACK: {
+							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
+								cur_src->AskForDownload();
+							}
+							break;
+						}
 					}
 				}
 			}
 		}
-	}
-	/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
-	if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
-		m_LastNoNeededCheck = dwCurTick;
-		POSITION pos1, pos2;
-		for (pos1 = A4AFsrclist.GetHeadPosition();(pos2=pos1)!=NULL;) {
-			A4AFsrclist.GetNext(pos1);
-			CUpDownClient *cur_source = A4AFsrclist.GetAt(pos2);
-			uint8 download_state=cur_source->GetDownloadState();
-			if( download_state != DS_DOWNLOADING
-			&& cur_source->reqfile 
-			&& ((!cur_source->reqfile->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS)
-			&& !cur_source->IsSwapSuspended(this))
-			{
-				CPartFile* oldfile = cur_source->reqfile;
-				if (cur_source->SwapToAnotherFile(false, false, false, this)) {
-					cur_source->DontSwapTo(oldfile);
+
+		/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
+		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
+			m_LastNoNeededCheck = dwCurTick;
+			POSITION pos1, pos2;
+			for (pos1 = A4AFsrclist.GetHeadPosition();(pos2=pos1)!=NULL;) {
+				A4AFsrclist.GetNext(pos1);
+				CUpDownClient *cur_source = A4AFsrclist.GetAt(pos2);
+				uint8 download_state=cur_source->GetDownloadState();
+				if( download_state != DS_DOWNLOADING
+				&& cur_source->reqfile 
+				&& ((!cur_source->reqfile->IsA4AFAuto()) || download_state == DS_NONEEDEDPARTS)
+				&& !cur_source->IsSwapSuspended(this))
+				{
+					CPartFile* oldfile = cur_source->reqfile;
+					if (cur_source->SwapToAnotherFile(false, false, false, this)) {
+						cur_source->DontSwapTo(oldfile);
+					}
 				}
 			}
 		}
-	}
-	/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
-	// swap No needed partfiles if possible
-	/* Sources droping engine. Auto drop allowed type of sources at interval. */
-	if (dwCurTick > m_LastSourceDropTime + theApp.glob_prefs->GetAutoDropTimer() * 1000) {
-		m_LastSourceDropTime = dwCurTick;
-		/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
-		if (theApp.glob_prefs->DropNoNeededSources() && theApp.glob_prefs->DropFullQueueSources() && theApp.glob_prefs->DropHighQueueRankingSources()) {
-			//printf("Cleaning up sources.\n");
-			CleanUpSources();
-		} else {
-			/* Then check separately for each of them, and act accordingly. */
-			if (theApp.glob_prefs->DropNoNeededSources()) {
-				//printf("Dropping No Needed Sources.\n");
-				RemoveNoNeededSources();
-			}
-			if (theApp.glob_prefs->DropFullQueueSources()) {
-				//printf("Dropping Full Queue Sources.\n");
-				RemoveFullQueueSources();
-			}
-			if (theApp.glob_prefs->DropHighQueueRankingSources()) {
-				//printf("Dropping High Queue Rating Sources.\n");
-				RemoveHighQueueRatingSources();
+		/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
+		// swap No needed partfiles if possible
+		/* Sources droping engine. Auto drop allowed type of sources at interval. */
+		if (dwCurTick > m_LastSourceDropTime + theApp.glob_prefs->GetAutoDropTimer() * 1000) {
+			m_LastSourceDropTime = dwCurTick;
+			/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
+			if (theApp.glob_prefs->DropNoNeededSources() && theApp.glob_prefs->DropFullQueueSources() && theApp.glob_prefs->DropHighQueueRankingSources()) {
+				//printf("Cleaning up sources.\n");
+				CleanUpSources();
+			} else {
+				/* Then check separately for each of them, and act accordingly. */
+				if (theApp.glob_prefs->DropNoNeededSources()) {
+					//printf("Dropping No Needed Sources.\n");
+					RemoveNoNeededSources();
+				}
+				if (theApp.glob_prefs->DropFullQueueSources()) {
+					//printf("Dropping Full Queue Sources.\n");
+					RemoveFullQueueSources();
+				}
+				if (theApp.glob_prefs->DropHighQueueRankingSources()) {
+					//printf("Dropping High Queue Rating Sources.\n");
+					RemoveHighQueueRatingSources();
+				}
 			}
 		}
-	}
+	
+		if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
+			SetPartFileStatus(status);
+		}
+	
+		// check if we want new sources from server
+		if ( !m_bLocalSrcReqQueued && ((!lastsearchtime) || (dwCurTick - lastsearchtime) > SERVERREASKTIME) && theApp.serverconnect->IsConnected()
+		&& theApp.glob_prefs->GetMaxSourcePerFileSoft() > GetSourceCount() && !stopped ) {
+			m_bLocalSrcReqQueued = true;
+			theApp.downloadqueue->SendLocalSrcRequest(this);
+		}
+	
+		// calculate datarate, set limit etc.
+		
+	}			
 
-	if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
-		SetPartFileStatus(status);
-	}
-
-	// check if we want new sources from server
-	if ( !m_bLocalSrcReqQueued && ((!lastsearchtime) || (dwCurTick - lastsearchtime) > SERVERREASKTIME) && theApp.serverconnect->IsConnected()
-	&& theApp.glob_prefs->GetMaxSourcePerFileSoft() > GetSourceCount() && !stopped ) {
-		m_bLocalSrcReqQueued = true;
-		theApp.downloadqueue->SendLocalSrcRequest(this);
-	}
-
-	// calculate datarate, set limit etc.
 	count++;
-	if (count == 30) {
+	
+	if (count > 30) {
 		count = 0;
 		UpdateAutoDownPriority();
 		UpdateDisplayedInfo();
@@ -1811,6 +1851,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/)
 		}
 		m_bPercentUpdated = false;
 	}
+	
+	
 #ifdef DOWNLOADRATE_FILTERED
 	return (uint32)(kBpsDown*1024.0);
 #else
@@ -2334,15 +2376,42 @@ completingThread::~completingThread()
 {
 	//maybe a thread deletion needed
 }
-
+#define UNEXP_FILE_ERROR		1
+#define DELETE_FAIL_MET 		2
+#define DELETE_FAIL_MET_BAK	4
+#define SAME_NAME_RENAMED 	8
+// Kry - Anything to declare? ;)
+// Free for new errors / messages
+//#define SAME_NAME_RENAMED 	16
+//#define UNEXP_FILE_ERROR 32
+//#define UNEXP_FILE_ERROR 64
+//#define UNEXP_FILE_ERROR 128
 
 void* completingThread::Entry()
 {
 	if (completing==NULL) {
 		printf("NOT completing !!!\n");
 	} else {
-		printf("completing->PerformFileComplete(NULL); !!!\n");
-   		completing->PerformFileComplete();
+		printf("completing->PerformFileComplete(%s); !!!\n",completing->GetFileName().GetData());
+   		uint8 completing_result = completing->PerformFileComplete();
+		wxMutexGuiEnter();
+		if (completing_result & UNEXP_FILE_ERROR) {
+			theApp.amuledlg->AddLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),completing->GetFileName().GetData());
+		}	
+		if (completing_result & DELETE_FAIL_MET) {
+			theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s")),completing->fullname);		
+		}	
+		if (completing_result & DELETE_FAIL_MET_BAK) {
+			theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s%s")), completing->fullname, PARTMET_BAK_EXT);				
+		}	
+		if (completing_result & SAME_NAME_RENAMED) {
+			theApp.amuledlg->AddLogLine(true, CString(_("A file with that name already exists, the file has been renamed")));
+		}		
+
+		theApp.amuledlg->AddLogLine(true,CString(_("Finished downloading %s :-)")),completing->GetFileName().GetData());
+		theApp.amuledlg->ShowNotifier(CString(_("Downloaded:"))+"\n"+completing->GetFileName(), TBN_DLOAD);
+		
+		wxMutexGuiLeave();
 	}
 	return NULL;
 }
@@ -2376,9 +2445,12 @@ UINT CPartFile::CompleteThreadProc(CPartFile* pFile)
 }
 */
 
+
 // Lord KiRon - using threads for file completion
-bool CPartFile::PerformFileComplete()
+uint8 CPartFile::PerformFileComplete()
 {
+	uint8 completed_errno = 0;
+	
 	//CSingleLock(&m_FileCompleteMutex,TRUE); // will be unlocked on exit
 	wxMutexLocker sLock(m_FileCompleteMutex);
 	char* partfilename = nstrdup(fullname);
@@ -2403,9 +2475,9 @@ bool CPartFile::PerformFileComplete()
 	// close permanent handle
 	m_hpartfile.Close();
 
-	bool renamed = false;
 	if(wxFileName::FileExists(newname)) {
-		renamed = true;
+		completed_errno | SAME_NAME_RENAMED;
+
 		int namecount = 0;
 
 		size_t length = strlen(newfilename);
@@ -2453,9 +2525,7 @@ bool CPartFile::PerformFileComplete()
 		if (!FS_wxCopyFile(partfilename, newname)) {
 			delete[] partfilename;
 			delete[] newname;
-			wxMutexGuiEnter();
-			theApp.amuledlg->AddLogLine(true,CString(_("Unexpected file error while completing %s. File paused")),GetFileName().GetData());
-			wxMutexGuiLeave();
+			completed_errno | UNEXP_FILE_ERROR;
 			paused = true;
 			SetPartFileStatus(PS_ERROR);
 			wxMutexGuiEnter();
@@ -2468,16 +2538,12 @@ bool CPartFile::PerformFileComplete()
 		}
 	}
 	if (!wxRemoveFile(fullname)) {
-		wxMutexGuiEnter();
-		theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s")),fullname);
-		wxMutexGuiLeave();
+		completed_errno | DELETE_FAIL_MET;
 	}
 	CString BAKName(fullname);
 	BAKName.Append(PARTMET_BAK_EXT);
 	if (!wxRemoveFile(BAKName)) {
-		wxMutexGuiEnter();
-		theApp.amuledlg->AddLogLine(true,CString(_("Failed to delete %s")), BAKName.GetData());
-		wxMutexGuiLeave();
+		completed_errno | DELETE_FAIL_MET_BAK;
 	}
 	delete[] partfilename;
 	delete [] fullname;
@@ -2486,15 +2552,6 @@ bool CPartFile::PerformFileComplete()
 	directory = nstrdup(theApp.glob_prefs->GetCategory(m_category)->incomingpath);
 	SetPartFileStatus(PS_COMPLETE);
 	paused = false;
-	wxMutexGuiEnter();
-	theApp.amuledlg->AddLogLine(true,CString(_("Finished downloading %s :-)")),GetFileName().GetData());
-	theApp.amuledlg->ShowNotifier(CString(_("Downloaded:"))+"\n"+GetFileName(), TBN_DLOAD);
-	wxMutexGuiLeave();
-	if (renamed) {
-		wxMutexGuiEnter();
-		theApp.amuledlg->AddLogLine(true, CString(_("A file with that name already exists, the file has been saved as %s")), (strrchr(newname, '/') ? strrchr(newname, '/') + 1 : newname) );
-		wxMutexGuiLeave();
-	}
 	// TODO: What the f*** if it is already known?
 	theApp.knownfiles->SafeAddKFile(this);
 	// remove the file from the suspended uploads list
@@ -2507,13 +2564,13 @@ bool CPartFile::PerformFileComplete()
 	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
 	wxMutexGuiLeave();
 	//SHAddToRecentDocs(SHARD_PATH, fullname); // This is a real nasty call that takes ~110 ms on my 1.4 GHz Athlon and isn't really needed afai see...[ozon]
-
 	// Barry - Just in case
 	//		transfered = m_nFileSize;
 	wxMutexGuiEnter();
 	theApp.downloadqueue->StartNextFile();
 	wxMutexGuiLeave();
-	return TRUE;
+	
+	return completed_errno;
 }
 
 void  CPartFile::RemoveAllSources(bool bTryToSwap)
@@ -3844,9 +3901,8 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 			theApp.amuledlg->transferwnd->downloadlistctrl->ShowFile(this);
 		}
 		
-		if (!theApp.amuledlg->transfers_frozen) {
-			theApp.amuledlg->transferwnd->downloadlistctrl->Thaw();
-		}
+		theApp.amuledlg->transferwnd->downloadlistctrl->Thaw();
+
 		theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
 	}
 	theApp.amuledlg->transferwnd->downloadlistctrl->InitSort();
