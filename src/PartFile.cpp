@@ -2351,7 +2351,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		AddLogLineM(true, _("WARNING: A file with that name already exists, the file has been renamed"));
 	}		
 
-	if (completing_result & DELETE_FAIL_MET) {
+	if (completing_result & DELETE_FAIL_PART) {
 		AddLogLineM(true, wxString::Format(_("WARNING: could not remove original '%s' after creating backup\n"), m_partmetfilename.Left(m_partmetfilename.Length()-4).c_str()));
 	}	
 	
