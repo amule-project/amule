@@ -37,7 +37,7 @@ class CServerConnect;
 class CSafeMemFile;
 class CMD4Hash;
 
-typedef std::map<const CMD4Hash,CKnownFile*> CKnownFileMap;
+typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
 
 class CSharedFileList{
 	friend class CSharedFilesCtrl;
