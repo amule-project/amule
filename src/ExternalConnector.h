@@ -80,6 +80,7 @@ public:
 	virtual void TextShell(const wxString &prompt, CmdId *commands);
 	virtual void LoadConfigFile();
 	virtual void SaveConfigFile();
+	virtual void LoadAmuleConfig(CECFileConfig& cfg);
 
 	//
 	// Other functions
@@ -112,7 +113,7 @@ protected:
 	bool		m_Verbose;
 
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[10];
+	static const wxCmdLineEntryDesc cmdLineDesc[11];
 	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
