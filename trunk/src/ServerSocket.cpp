@@ -463,9 +463,11 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				int addcount = 0;
 				while(count) {
+					uint16 port = servers->ReadUInt16();
+					uint32 ip	= servers->ReadUInt32();
 					CServer* srv = new CServer(
-								servers->ReadUInt16() ,				// Port
-								Uint32toStringIP(servers->ReadUInt32())); 	// Ip
+								port ,				// Port
+								Uint32toStringIP(ip)); 	// Ip
 					srv->SetListName(srv->GetFullIP());
 					if (!theApp.AddServer(srv)) {
 						delete srv;
