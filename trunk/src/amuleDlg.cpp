@@ -1053,8 +1053,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		msPrev5 = msCur;
 		ShowTransferRate();
 		if (theApp.glob_prefs->ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
-						theApp.amuledlg->transferwnd->UpdateCatTabTitles();
+			theApp.amuledlg->transferwnd->UpdateCatTabTitles();
 		}
+		//transfer_top_boxsizer->Fit(theApp.amuledlg->transferwnd->);
 	}
 
 }
