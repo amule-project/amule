@@ -137,6 +137,16 @@ WxCasFrame::WxCasFrame (const wxString & title):
   m_toolBarBitmaps[4] = wxBITMAP (stop);
   m_toolBarBitmaps[5] = wxBITMAP (prefs);
 
+#ifdef __WXMSW__ // Set transparency on BMP
+
+  m_toolBarBitmaps[0].SetMask(new wxMask(m_toolBarBitmaps[0], *wxBLACK));
+  m_toolBarBitmaps[1].SetMask(new wxMask(m_toolBarBitmaps[1], *wxBLACK));
+  m_toolBarBitmaps[2].SetMask(new wxMask(m_toolBarBitmaps[2], *wxBLACK));
+  m_toolBarBitmaps[3].SetMask(new wxMask(m_toolBarBitmaps[3], *wxBLACK));
+  m_toolBarBitmaps[4].SetMask(new wxMask(m_toolBarBitmaps[4], *wxBLACK));
+  m_toolBarBitmaps[5].SetMask(new wxMask(m_toolBarBitmaps[5], *wxBLACK));
+#endif
+
   // Constructing toolbar
   m_toolbar =
     new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
