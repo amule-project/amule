@@ -58,7 +58,7 @@ bin_PROGRAMS += amule
 DEFS = -DHAVE_CONFIG_H
 
 BUILT_SOURCES =
-EXTRA_DIST =  strings.en *.h pixmaps bitmaps Makengfile
+EXTRA_DIST =  strings.en *.h pixmaps Makengfile
 
 LIBS = @LIBS@ 
 amule_SOURCES = ListenSocket.cpp \
