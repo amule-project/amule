@@ -263,10 +263,13 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 {
 	thePrefs::SetAllcatType( event.GetId() - MP_CAT_SET0 );
 	theApp.glob_prefs->GetCategory(0)->title = GetCatTitle( thePrefs::GetAllcatType() );
-
+	
 	UpdateCategory( 0 );
 	
 	downloadlistctrl->ChangeCategory( 0 );
+	
+	theApp.glob_prefs->SaveCats();
+	
 	downloadlistctrl->SortList();
 }
 
