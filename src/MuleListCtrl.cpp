@@ -314,6 +314,12 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	SortList();		
 }
 
+
+bool CMuleListCtrl::IsOffsetDec( long offset )
+{
+	return ( ( offset >= SORT_OFFSET_DEC ) && ( offset < SORT_OFFSET_ALT_ASC ) ) || ( offset >= SORT_OFFSET_ALT_DEC );
+}
+
 	
 void CMuleListCtrl::SetTableName( const wxString& name )
 {

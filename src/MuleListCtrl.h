@@ -123,6 +123,20 @@ public:
 	 * perform the sort.
 	 */
 	virtual void SortList();
+
+	/**
+	 * Helper-function which returns true if the offset is for sorting descending.
+	 *
+	 * @param offset The userdata given to the sorter-functions.
+	 *
+	 * This function examines the user-data given to the sorter-functions and returns
+	 * true if the sorting is descending. It does not care if the sorting is alternate
+	 * or not, and will return true in either case, provided that the sorting given 
+	 * is descending.
+	 *
+	 * Use this function in the Sorter functions to cut the cases in half.
+	 */
+	static bool IsOffsetDec( long offset );
 	
 	
 protected:
