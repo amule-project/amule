@@ -26,7 +26,6 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"
 
-#include <deque>
 #include <list>
 
 class CPreferences;
@@ -80,7 +79,7 @@ waitinglist.GetHeadPosition();}
 	void	AddUpDataOverheadOther(uint32 data)				{ m_nUpDataRateMSOverhead += data;
 															  m_nUpDataOverheadOther += data;
 															  m_nUpDataOverheadOtherPackets++;}
-	uint32	GetUpDatarateOverhead()						{return m_nUpDatarateOverhead;}
+	double	GetUpDatarateOverhead()						{return m_nUpDatarateOverhead;}
 	uint64	GetUpDataOverheadSourceExchange()			{return m_nUpDataOverheadSourceExchange;}
 	uint64	GetUpDataOverheadFileRequest()				{return m_nUpDataOverheadFileRequest;}
 	uint64	GetUpDataOverheadServer()					{return m_nUpDataOverheadServer;}
@@ -112,7 +111,7 @@ private:
 	uint32	failedupcount;
 	uint32	totaluploadtime;
 	uint32	m_nLastStartUpload;
-	uint32	m_nUpDatarateOverhead;
+	double	m_nUpDatarateOverhead;
 	uint32	m_nUpDataRateMSOverhead;
 	uint64	m_nUpDataOverheadSourceExchange;
 	uint64	m_nUpDataOverheadFileRequest;
@@ -123,7 +122,7 @@ private:
 	uint64	m_nUpDataOverheadServerPackets;
 	uint64	m_nUpDataOverheadOtherPackets;
 	bool	lastupslotHighID; // VQB lowID alternation
-	std::deque<int>	m_AvarageUDRO_list;
+	std::list<int>	m_AvarageUDRO_list;
 
 };
 

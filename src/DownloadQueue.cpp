@@ -58,6 +58,7 @@
 #include "opcodes.h"		// Needed for MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include <algorithm>
+#include <numeric>
 
 // Max. file IDs per UDP packet
 // ----------------------------
@@ -121,24 +122,34 @@ void CDownloadQueue::AddPartFilesToShare()
 
 void CDownloadQueue::CompDownDatarateOverhead()
 {
-	m_AvarageDDRO_list.push_back(m_nDownDataRateMSOverhead);
+	m_AvarageDDRO_list.push_back( m_nDownDataRateMSOverhead * 10 );
 	m_nDownDataRateMSOverhead = 0;
+	
+	// We want at least 11 elements before we will start doing averages
+	if ( m_AvarageDDRO_list.size() > 10 ) {
+		// Add the difference between (sum)/(number) and (sum + to_add)/(number + 1)
+		// Note that I do not add 1 to size(), because we've already added the item, 
+		// and thus the size is already the correct value.
+		m_nDownDatarateOverhead += ( m_AvarageDDRO_list.back() - m_nDownDatarateOverhead ) / (double)m_AvarageDDRO_list.size();
 
-	if(m_AvarageDDRO_list.size() <= 10) {
-		m_nDownDatarateOverhead = 0;
-	} else {
-		if (m_AvarageDDRO_list.size() > 150) {
+		// Remove the first element untill we have exactly 150 
+		while ( m_AvarageDDRO_list.size() > 150 ) {
+			// Add the difference between (sum)/(number) and (sum - to_remove)/(number - 1)
+			m_nDownDatarateOverhead += ( m_nDownDatarateOverhead - m_AvarageDDRO_list.front() ) / ( (double)m_AvarageDDRO_list.size() - 1 );
+			
 			m_AvarageDDRO_list.pop_front();
 		}
 
+	} else if ( m_AvarageDDRO_list.size() == 10 ) {
+		// Create the starting average once we have 10 items
+		m_nDownDatarateOverhead = std::accumulate( m_AvarageDDRO_list.begin(),
+		                                           m_AvarageDDRO_list.end(), 0 );
+	
+		m_nDownDatarateOverhead = m_nDownDatarateOverhead / 10.0;
+		
+	} else {
 		m_nDownDatarateOverhead = 0;
-		for (int i = 0, size = m_AvarageDDRO_list.size(); i < size; i++) {
-			m_nDownDatarateOverhead += m_AvarageDDRO_list[i];
-		}
-
-		m_nDownDatarateOverhead = 10*m_nDownDatarateOverhead/m_AvarageDDRO_list.size();;
 	}
-	return;
 }
 
 void CDownloadQueue::Init()

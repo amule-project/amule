@@ -51,6 +51,8 @@
 #include "Preferences.h"
 #include "ClientList.h"
 
+#include <numeric>
+
 //TODO rewrite the whole networkcode, use overlapped sockets
 
 CUploadQueue::CUploadQueue(CPreferences* in_prefs){
@@ -509,20 +511,31 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 
 void CUploadQueue::CompUpDatarateOverhead()
 {
-	m_AvarageUDRO_list.push_back(m_nUpDataRateMSOverhead);
-	m_nUpDatarateOverhead = 0;
-	m_nUpDataRateMSOverhead = 0;	
+	m_AvarageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
+	m_nUpDataRateMSOverhead = 0;
 	
-	if(m_AvarageUDRO_list.size() > 10) {
-		if (m_AvarageUDRO_list.size() > 150) {
+	// We want at least 11 elements before we will start doing averages
+	if ( m_AvarageUDRO_list.size() > 10 ) {
+		// Add the difference between (sum)/(number) and (sum + to_add)/(number + 1)
+		// Note that I do not add 1 to size(), because we've already added the item, 
+		// and thus the size is already the correct value.
+		m_nUpDatarateOverhead += ( m_AvarageUDRO_list.back() - m_nUpDatarateOverhead ) / (double)m_AvarageUDRO_list.size();
+
+		// Remove the first element untill we have exactly 150 
+		while ( m_AvarageUDRO_list.size() > 150 ) {
+			// Add the difference between (sum)/(number) and (sum - to_remove)/(number - 1)
+			m_nUpDatarateOverhead += ( m_nUpDatarateOverhead - m_AvarageUDRO_list.front() ) / ( (double)m_AvarageUDRO_list.size() - 1 );
+			
 			m_AvarageUDRO_list.pop_front();
 		}
 
-		for ( int i = 0,  size = m_AvarageUDRO_list.size(); i < size; i++ ) {
-			m_nUpDatarateOverhead += m_AvarageUDRO_list.at(i);
-		}
+	} else if ( m_AvarageUDRO_list.size() == 10 ) {
+		// Create the starting average once we have 10 items
+		m_nUpDatarateOverhead = std::accumulate( m_AvarageUDRO_list.begin(),
+		                                           m_AvarageUDRO_list.end(), 0 );
+	
+		m_nUpDatarateOverhead = m_nUpDatarateOverhead / 10.0;
 		
-		m_nUpDatarateOverhead = 10*m_nUpDatarateOverhead/m_AvarageUDRO_list.size();
 	} else {
 		m_nUpDatarateOverhead = 0;
 	}
