@@ -168,11 +168,15 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
 
 bool CKnownFileList::Append(CKnownFile* Record)
 {
-	wxString HashString = KnownFileHash(Record);
-	KnownFileMap::iterator it = m_map.find(HashString);
-	if ( it == m_map.end() ) {
-		m_map[HashString] = Record;
-		return true;
+	if (Record->GetFileSize() > 0) {
+		wxString HashString = KnownFileHash(Record);
+		KnownFileMap::iterator it = m_map.find(HashString);
+		if ( it == m_map.end() ) {
+			m_map[HashString] = Record;
+			return true;
+		} else {
+			return false;
+		}
 	} else {
 		return false;
 	}
