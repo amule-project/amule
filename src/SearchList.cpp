@@ -528,7 +528,7 @@ CString CSearchList::GetWebList(CString linePattern,int sortby,bool asc) const {
 			switch (sortby) {
 				case 0: swap=CString(sf1->GetFileName()).CmpNoCase(sf2->GetFileName()); break;
 				case 1: swap=sf1->GetFileSize()-sf2->GetFileSize();break;
-				case 2: swap=CString((char*)sf1->GetFileHash()).CmpNoCase((char*)sf2->GetFileHash()); break;
+				case 2: swap=EncodeBase16(sf1->GetFileHash(), 16).Cmp( EncodeBase16(sf2->GetFileHash(), 16) ); break;
 				case 3: swap=sf1->GetSourceCount()-sf2->GetSourceCount(); break;
 			}
 			if (!asc) swap=0-swap;
