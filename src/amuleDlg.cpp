@@ -496,37 +496,40 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
 	// Max 1000 chars
 	wxString bufferline = line.Left(1000);
+	
 	// Remove newlines at end, they cause problems with the layout...
 	// You should not call Last() in an empty string.
 	while ( !bufferline.IsEmpty() && bufferline.Last() == wxT('\n') ) {
 		bufferline.RemoveLast();
 	}
-	// Escape "&"s, which would otherwise not show up
-	bufferline.Replace(wxT("&"), wxT("&&"));
-	if (addtostatusbar) {
+
+	// Create the timestamp
+	wxString stamp = wxDateTime::Now().FormatDate() + wxT(" ") + wxDateTime::Now().FormatTime() + wxT(": ");
+
+	// Add the message to the log-view
+	wxTextCtrl* ct = (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
+	if ( ct ) {
+		ct->AppendText( stamp + bufferline + wxT("\n") );
+		ct->ShowPosition( ct->GetValue().Length() - 1 );
+	}
+	
+	// Write into log file
+	wxTextFile file( theApp.ConfigDir + wxT("logfile") );
+	if ( file.Open() ) {
+		file.AddLine( stamp + bufferline );
+		file.Write();
+		file.Close();
+	}
+
+	// Set the status-bar if the event warrents it
+	if ( addtostatusbar ) {
+		// Escape "&"s, which would otherwise not show up
+		bufferline.Replace( wxT("&"), wxT("&&") );
 		wxStaticText* text = (wxStaticText *)FindWindow(wxT("infoLabel"));
 		text->SetLabel(bufferline);
 		Layout();
 	}
-	bufferline = wxDateTime::Now().FormatDate() + wxT(" ")
-		+ wxDateTime::Now().FormatTime() + wxT(": ")
-		+ bufferline + wxT("\n");
-	wxTextCtrl* ct = (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
-	if ( ct ) {
-		ct->AppendText(bufferline);
-		ct->ShowPosition(ct->GetValue().Length()-1);
-	}
-	// Write into log file
-	wxString filename = theApp.ConfigDir + wxT("logfile");
-	wxTextFile file(filename);
-	if (!file.Open()) {
-		printf("Error opening log file!\n");
-	}
-
-	// wxTextFile already adds newlines
-	file.AddLine( bufferline.BeforeLast( wxT('\n') ) );
-	file.Write();
-	file.Close();
+	
 }
 
 
