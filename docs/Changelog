@@ -69,6 +69,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Improved filename cleanup.
 		* Fixed setting priorities via web interface on both downloads
 		  and shared files.
+		* Enabled translations on amuleweb and amulecmd.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!

@@ -220,11 +220,11 @@ void CamulecmdApp::LocalShow(const wxString &s)
 	frame->log_text->AppendText(s);
 }
 #else
-void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
+void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	CaMuleExternalConnector::OnInitCmdLine(amuleweb_parser);
-	amuleweb_parser.AddOption(wxT("c"), wxT("command"), 
-		wxT("execute <str> and exit"), 
+	CaMuleExternalConnector::OnInitCmdLine(parser);
+	parser.AddOption(wxT("c"), wxT("command"), 
+		_("Execute <str> and exit."), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 }
 

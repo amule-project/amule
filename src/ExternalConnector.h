@@ -114,8 +114,6 @@ protected:
 	bool		m_Verbose;
 
 private:
-	static const wxCmdLineEntryDesc cmdLineDesc[12];
-	
 	wxString	m_cmdargs;
 	ECSocket* 	m_ECClient;
 	bool 		m_isConnected;
