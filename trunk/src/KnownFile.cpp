@@ -205,7 +205,6 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	}
 	
 	SetFileSize(file_stats.st_size);
-	printf("While creating hashset for file %s/%s the length found is %u\n",in_directory,in_filename,(uint64)file_stats.st_size);
 	
 	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
 	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);

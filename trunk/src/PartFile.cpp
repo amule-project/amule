@@ -744,7 +744,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	// Goes both ways - Partfile should never be too large
 	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
 		//printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), (uint64) (m_hpartfile.GetLength() - m_nFileSize));
-		printf("Partfile \"%s\" is too large! Truncating %I64u bytes.\n", GetFileName().c_str(), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
+		printf("Partfile \"%s\" is too large! Truncating %llu bytes.\n", GetFileName().c_str(), ((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
@@ -1552,11 +1552,11 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 	gaprect.left = rect.x; //->left;
 
 	if(!bFlat) {
-		s_LoadBar.SetWidth((m_nFileSize - allgaps) * blockpixel);
+		s_LoadBar.SetWidth((int) ((m_nFileSize - allgaps) * blockpixel));
 		s_LoadBar.Fill(crProgress);
 		s_LoadBar.Draw(dc, gaprect.left, gaprect.top, false);
 	} else {
-		gaprect.right = rect.x + ((m_nFileSize - allgaps) * blockpixel);
+		gaprect.right = rect.x + (int)((m_nFileSize - allgaps) * blockpixel);
 		dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(wxColour(crProgress),wxSOLID))); //wxBrush(crProgress));
 		dc->DrawRectangle(gaprect.left,gaprect.top,gaprect.right,gaprect.bottom);
 		//dc->FillRect(&gaprect, &CBrush(crProgress));
@@ -1671,7 +1671,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		for(POSITION pos = m_downloadingSourcesList.GetHeadPosition();pos!=0;)
 		{
 			cur_src = m_downloadingSourcesList.GetNext(pos);
-			if(cur_src && cur_src->GetDownloadState() == DS_DOWNLOADING)
+			if(cur_src && (cur_src->GetDownloadState() == DS_DOWNLOADING))
 			{
 				wxASSERT( cur_src->socket );
 				if (cur_src->socket)
@@ -1690,11 +1690,14 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					if (reducedownload) {
 						uint32 limit = reducedownload*cur_datarate/1000;
 	#endif
-						if(limit<1000 && reducedownload == 200)
+						if(limit<1000 && reducedownload == 200) {
 							limit +=1000;
-						else if(limit<1)
+						} else if(limit<1) {
 							limit = 1;
+						}
 						cur_src->socket->SetDownloadLimit(limit);
+					} else { // Kry - Is this needed?
+						cur_src->socket->DisableDownloadLimit();
 					}
 				}
 			}
@@ -1749,14 +1752,18 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 							break;
 						}
 						case DS_LOWTOLOWIP: {
-							// if we now have a high ip we can ask
-							if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
-								theApp.downloadqueue->RemoveSource( cur_src );
-								lastpurgetime = dwCurTick;
-								break;
-							}
-							if (theApp.serverconnect->IsLowID()) {
-								break;
+							if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
+								//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
+								if( ((dwCurTick - lastpurgetime) > 30000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
+									theApp.downloadqueue->RemoveSource( cur_src );
+									lastpurgetime = dwCurTick;
+									break;
+								}
+								if (theApp.serverconnect->IsLowID()) {
+									break;
+								}
+							} else {
+								cur_src->SetDownloadState(DS_ONQUEUE);
 							}
 						}
 						case DS_NONEEDEDPARTS: {
@@ -1779,45 +1786,50 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 							if (!((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME*2)) {
 								break;
 							}
+							// Recheck this client to see if still NNP.. Set to DS_NONE so that we force a TCP reask next time..
+							cur_src->SetDownloadState(DS_NONE);						
 						}
 						case DS_ONQUEUE: {
 							cur_src->SetValidSource(true);
 							if( cur_src->IsRemoteQueueFull()) {
 								cur_src->SetValidSource(false);
+								if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
+									theApp.downloadqueue->RemoveSource( cur_src );
+									lastpurgetime = dwCurTick;
+									break; //Johnny-B - nothing more to do here (good eye!)
+								}
 							}
-							if( ((dwCurTick - lastpurgetime) > 60000) && (this->GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
-								theApp.downloadqueue->RemoveSource( cur_src );
-								lastpurgetime = dwCurTick;
-								break; //Johnny-B - nothing more to do here (good eye!)
-							}
+							//Give up to 1 min for UDP to respond.. If we are within on min on TCP, do not try..
 							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
 								cur_src->UDPReaskForDownload();
 							}
 						}
-						case DS_CONNECTING: {
-						}
-						case DS_TOOMANYCONNS: {
-						}
-						case DS_CONNECTED: {
-							if (download_state == DS_CONNECTED){
-									if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
-										cur_src->SetDownloadState(DS_NONE);
-										break;
-									}
-									if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
-										theApp.downloadqueue->RemoveSource( cur_src );
-										break;
-									}
-								}
-							}
-						case DS_NONE: {
-						}
-						case DS_WAITCALLBACK: {
+						case DS_CONNECTING: 
+						case DS_TOOMANYCONNS: 
+						case DS_NONE: 
+						case DS_WAITCALLBACK: {							
 							if (theApp.serverconnect->IsConnected() && ((!cur_src->GetLastAskedTime()) || (dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
-								cur_src->AskForDownload();
+								if (!cur_src->AskForDownload()) {
+									break; //I left this break here just as a reminder just in case re rearange things..
+								}
 							}
 							break;
 						}
+						// Kry - this extra case is not processed on 0.42e
+						/*
+						case DS_CONNECTED: {
+							if (download_state == DS_CONNECTED) {
+								if( !(cur_src->socket && cur_src->socket->IsConnected()) ){
+									cur_src->SetDownloadState(DS_NONE);
+									break;
+								}
+								if (dwCurTick - cur_src->GetEnteredConnectedState() > CONNECTION_TIMEOUT + 20000){
+									theApp.downloadqueue->RemoveSource( cur_src );
+									break;
+								}
+							}
+						}
+						*/					
 					}
 				}
 			}
@@ -1886,7 +1898,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 
 	count++;
 	
-	if (count > 30) {
+	// Kry - does the 3 / 30 difference produce too much flickering or CPU?
+	if (count >= 30) {
 		count = 0;
 		UpdateAutoDownPriority();
 		UpdateDisplayedInfo();
