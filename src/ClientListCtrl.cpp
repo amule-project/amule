@@ -683,9 +683,9 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 }
 
 
-void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect &rect1 )
+void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect& rect1 )
 {
-	wxRect rect(rect1);
+	wxRect rect = rect1;
 	rect.y		+= 2;
 	rect.height	-= 2;
 
@@ -696,17 +696,17 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 	dc->SetBrush( wxBrush( wxColour(220,220,220), wxSOLID ) );
 	
 	dc->DrawRectangle( rect );
-	
 	dc->SetBrush(*wxBLACK_BRUSH);
 
-	float pixelsPerPart = (float)rect.width/(float)client->GetUpPartCount();
-	rect.width = (int)pixelsPerPart;
+	uint32 partCount = client->GetUpPartCount();
 
-	for ( uint32 i = 0; i < client->GetUpPartCount(); i++ ) {
-		rect.x += (int)pixelsPerPart;
-		
+	float blockpixel = (float)(rect.width)/((float)(PARTSIZE*partCount)/1024);
+	for ( uint32 i = 0; i < partCount; i++ ) {
 		if ( client->IsUpPartAvailable( i ) ) { 
-			dc->DrawRectangle( rect );
+			int right = rect.x + (uint32)(((float)PARTSIZE*i/1024)*blockpixel);
+			int left  = rect.x + (uint32)((float)((float)PARTSIZE*(i+1)/1024)*blockpixel);
+
+			dc->DrawRectangle( (int)left, rect.y, right - left, rect.height );					
 		}
 	}
 
