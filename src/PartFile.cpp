@@ -2236,7 +2236,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				const uint16 rareBound = 2*limit;
 
 				// Cache Preview state (Criterion 2)
-				const bool isPreviewEnable = theApp.glob_prefs->GetPreviewPrio() && (IsArchive() || IsMovie());
+				FileType type = GetFiletype(GetFileName());
+				const bool isPreviewEnable = theApp.glob_prefs->GetPreviewPrio() && (type == ftArchive || type == ftVideo);
 					
 				node = chunksList.GetFirst();
 				// Collect and calculate criteria for all chunks
@@ -2854,88 +2855,6 @@ bool CPartFile::IsCorruptedPart(uint16 partnumber)
 	return corrupted_list.Find(partnumber);
 }
 
-bool CPartFile::IsMovie()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(5);
-	it_is = ((extension.CmpNoCase(".divx") == 0) || (extension.CmpNoCase(".mpeg") == 0) ||
-	(extension.CmpNoCase(".vivo") == 0));
-
-	extension = GetFileName().Right(4);
-	it_is = (it_is || (extension.CmpNoCase(".avi") == 0) || (extension.CmpNoCase(".mpg") == 0) ||
-	(extension.CmpNoCase(".m2v") == 0) || (extension.CmpNoCase(".wmv") == 0) ||
-	(extension.CmpNoCase(".asf") == 0) || (extension.CmpNoCase(".mov") == 0) ||
-	(extension.CmpNoCase(".bin") == 0) || (extension.CmpNoCase(".swf") == 0) ||
-	(extension.CmpNoCase(".ogm") == 0));
-
-	extension = GetFileName().Right(3);
-	it_is = (it_is || (extension.CmpNoCase(".rm") == 0) || (extension.CmpNoCase(".qt") == 0));
-	return (it_is);
-}
-
-bool CPartFile::IsArchive()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(4);
-	it_is = ((extension.CmpNoCase(".zip") == 0) || (extension.CmpNoCase(".rar") == 0) ||
-	(extension.CmpNoCase(".ace") == 0) || (extension.CmpNoCase(".arj") == 0) ||
-	(extension.CmpNoCase(".lhz") == 0) || (extension.CmpNoCase(".tar") == 0) ||
-	(extension.CmpNoCase(".bz2") == 0));
-
-	extension = GetFileName().Right(3);
-	it_is = (it_is || (extension.CmpNoCase(".gz") == 0) || (extension.CmpNoCase(".bz") == 0));
-	return (it_is);
-}
-
-bool CPartFile::IsSound()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(4);
-	it_is = ((extension.CmpNoCase(".mp3") == 0) || (extension.CmpNoCase(".mp2") == 0) ||
-	(extension.CmpNoCase(".wma") == 0) || (extension.CmpNoCase(".ogg") == 0) ||
-	(extension.CmpNoCase(".rma") == 0) || (extension.CmpNoCase(".wav") == 0) ||
-	(extension.CmpNoCase(".mid") == 0));
-	return (it_is);
-}
-
-bool CPartFile::IsCDImage()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(4);
-	it_is = ((extension.CmpNoCase(".bin") == 0) || (extension.CmpNoCase(".cue") == 0) ||
-	(extension.CmpNoCase(".nrg") == 0) || (extension.CmpNoCase(".ccd") == 0) ||
-	(extension.CmpNoCase(".img") == 0) || (extension.CmpNoCase(".iso") == 0));
-	return (it_is);
-}
-
-bool CPartFile::IsImage()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(5);
-	it_is = (extension.CmpNoCase(".jpeg") == 0) || (extension.CmpNoCase(".tiff") == 0);
-	extension = GetFileName().Right(4);
-	it_is = (it_is || (extension.CmpNoCase(".jpg") == 0) || (extension.CmpNoCase(".gif") == 0) ||
-	(extension.CmpNoCase(".bmp") == 0) || (extension.CmpNoCase(".rle") == 0) ||
-	(extension.CmpNoCase(".psp") == 0) || (extension.CmpNoCase(".tga") == 0) ||
-	(extension.CmpNoCase(".wmf") == 0) || (extension.CmpNoCase(".xpm") == 0) ||
-	(extension.CmpNoCase(".png") == 0) || (extension.CmpNoCase(".pcx") == 0));
-	return (it_is);
-}
-
-bool CPartFile::IsText()
-{
-	bool it_is;
-	wxString extension = GetFileName().Right(5);
-	it_is = (extension.CmpNoCase(".html") == 0);
-	extension = GetFileName().Right(4);
-	it_is = (it_is || (extension.CmpNoCase(".doc") == 0) || (extension.CmpNoCase(".txt") == 0) ||
-	(extension.CmpNoCase(".pdf") == 0) || (extension.CmpNoCase(".ps") == 0) ||
-	(extension.CmpNoCase(".htm") == 0) || (extension.CmpNoCase(".sxw") == 0) ||
-	(extension.CmpNoCase(".log") == 0));
-	return (it_is);
-}
-
-
 void CPartFile::SetDownPriority(uint8 np, bool bSave )
 {
 	m_iDownPriority = np;
@@ -3149,7 +3068,7 @@ void CPartFile::PreviewFile()
 
 bool CPartFile::PreviewAvailable()
 {
-	return (IsMovie() && IsComplete(0, 256*1024));
+	return (( GetFiletype(GetFileName()) == ftVideo ) && IsComplete(0, 256*1024));
 }
 
 #if 0

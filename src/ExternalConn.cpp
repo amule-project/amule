@@ -849,8 +849,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
 					buffer.Append((cur_file->IsPartFile()) ? "Is PartFile\t" : "Is Not PartFile\t");
 					buffer.Append((cur_file->IsStopped()) ? "Is Stopped\t" : "Is Not Stopped\t");
-					buffer.Append((cur_file->IsMovie()) ? "Is Movie\t" : "Is Not Movie\t");
-					buffer.Append((cur_file->IsArchive()) ? "Is Archive" : "Is Not Archive");
+					buffer.Append(( GetFiletype(cur_file->GetFileName()) == ftVideo ) ? "Is Movie\t" : "Is Not Movie\t");
+					buffer.Append(( GetFiletype(cur_file->GetFileName()) == ftArchive ) ? "Is Archive" : "Is Not Archive");
 					return((wxChar*) buffer.GetData());
 				}
 			}

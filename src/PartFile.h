@@ -117,13 +117,6 @@ public:
 	uint16  GetNotCurrentSourcesCount();
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
-	bool	IsMovie();
-	bool	IsSound();
-	bool	IsArchive(); 
-	bool	IsCDImage(); 
-	bool 	IsImage();
-	bool 	IsText();
-	
 	
 	CString CPartFile::getPartfileStatus(); //<<--9/21/02
 	sint32	CPartFile::getTimeRemaining(); //<<--9/21/02
