@@ -754,6 +754,9 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient,
 POSITION CUpQueueRem::GetFirstFromUploadList()
 {
 	it = m_items.begin();
+	if ( it == m_items.end() ) {
+		return 0;
+	}
 	POSITION pos;
 	pos.m_ptr = (void *)&it;
 	return pos;
