@@ -32,11 +32,11 @@ ordinal	content
   8	0		as online	number of clients waiting for upload
   9	0		as online	number of shared files
  10	as online	as online	nick used on the ed2k network
- 11	as online	as online	total download in GB
- 12	as online	as online	total upload in GB
+ 11	as online	as online	total download in bytes 
+ 12	as online	as online	total upload in bytes
  13	as online	as online	aMule version
- 14     as online	as online	Total Downloaded in Session
- 15	as online	as online	Total Uploaded in Session
+ 14     as online	as online	Total Downloaded in Session in bytes
+ 15	as online	as online	Total Uploaded in Session in bytes
  16	as online	as online	aMule Uptime
 
 For comments and additions on this format please contact
