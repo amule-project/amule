@@ -551,7 +551,7 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	until there is a little pause and OnTimer actually gets called and does its work.
 */
 {
-	if(!theApp.amuledlg->SafeState()) {
+	if( !theApp.amuledlg || !theApp.amuledlg->SafeState()) {
     		return;
 	}
 	timerRedraw.Stop();
