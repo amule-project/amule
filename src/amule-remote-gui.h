@@ -132,6 +132,13 @@ class CRemoteContainer {
 			return ( (index >= 0) && (index < m_item_count) ) ? m_idx_items[index] : NULL;
 		}
 		
+		void Flush()
+		{
+			m_items.erase(this->m_items.begin(), this->m_items.end());
+			m_items_hash.erase(this->m_items_hash.begin(), this->m_items_hash.end());
+			m_item_count = 0;
+		}
+				
 		//
 		// Flush & reload
 		//
@@ -146,11 +153,11 @@ class CRemoteContainer {
 			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
 				this->DeleteItem(*j);
 			}
-			// flush list
-			m_items.erase(this->m_items.begin(), this->m_items.end());
-			m_items_hash.erase(this->m_items_hash.begin(), this->m_items_hash.end());
-			m_item_count = 0;
+			
+			Flush();
+			
 			ProcessFull(reply);
+			
 			delete reply;
 			return true;
 		}
@@ -170,6 +177,10 @@ class CRemoteContainer {
 				return false;
 			}
 			
+			if ( !this->Phase1Done(reply) ) {
+				// if derived class choose not to proceed, retrun - but with good status
+				return true;
+			}
 			//
 			// Phase 2: update status, mark new files for subsequent query
 			CECPacket req_full(cmd);
@@ -261,6 +272,10 @@ class CRemoteContainer {
 		{
 		}
 
+		virtual bool Phase1Done(CECPacket *)
+		{
+			return true;
+		}
 };
 
 class CServerConnectRem {
@@ -390,6 +405,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		void DeleteItem(CPartFile *);
 		CMD4Hash GetItemID(CPartFile *);
 		void ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *);
+		bool Phase1Done(CECPacket *);
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
@@ -478,7 +494,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 	public:
 		CSearchListRem(CRemoteConnect *);
 		
-		uint32 m_curr_search;
+		int m_curr_search;
 		std::map<long, std::vector<CSearchFile *> > m_Results;
 		//
 		// Actions
@@ -497,6 +513,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		void DeleteItem(CSearchFile *);
 		CMD4Hash GetItemID(CSearchFile *);
 		void ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *);
+		bool Phase1Done(CECPacket *);
 };
 
 class CListenSocketRem {
