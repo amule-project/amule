@@ -49,7 +49,7 @@ public:
 	bool	IsBusy()	{return m_bWouldBlock;}
 	bool	Create();
 protected:
-	bool	ProcessPacket(char* packet, int16 size, int8 opcode, char* host, uint16 port);
+	bool	ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 	
  public:
 	virtual void	OnSend(int nErrorCode);	
