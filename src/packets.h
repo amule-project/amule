@@ -71,14 +71,6 @@ private:
 	int			m_bFromPF;
 };
 
-struct Tag_Struct {
-	int8		type;
-	char*		tagname;
-	char*		stringvalue;
-	uint32		intvalue;
-	int8		specialtag;
-};
-
 class CInvalidPacket : public std::exception
 {
 public:
@@ -99,7 +91,6 @@ public:
 	CStrangePacket(const char* w = "not specified") : CInvalidPacket(w) { }
 	
 };
-
 
 struct STag{
 	STag();
