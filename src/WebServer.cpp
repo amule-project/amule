@@ -463,7 +463,7 @@ void CWebServer::ProcessImgFileReq(ThreadData Data)
 	if ( img ) {
 		int img_size;
 		unsigned char* img_data = img->RequestData(img_size);
-		Data.pSocket->SendContent(img->GetHTTP(), img_data, img_size);
+		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
 	} else {
 		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
 	}	

@@ -547,7 +547,7 @@ class CAnyImage {
 		CAnyImage(int size);
 		virtual ~CAnyImage();
 
-		char *GetHTTP() { return (char *)unicode2char(m_Http); }
+		const wxString& GetHTTP() const { return m_Http; }
 		
 		virtual unsigned char *RequestData(int &size);
 };
