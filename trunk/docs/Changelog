@@ -72,6 +72,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 
 	Hetfield:
 		* New popup menu and events management for new wx SysTray
+
+	Kry:
+		* A lot
 		
 	lfroen:
 		* Amule remote gui implementation
