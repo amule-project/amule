@@ -101,11 +101,17 @@ CServer::CServer(CEC_Server_Tag *tag)
 	} else {
 		users = 0;
 	}
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
-		files = tmpTag->GetInt32Data();
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_PING)) != NULL) {
+		ping = tmpTag->GetInt32Data();
 	} else {
-		files = 0;
+		ping = 0;
 	}
+	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FAILED)) != NULL) {
+		failedcount = tmpTag->GetInt8Data();
+	} else {
+		failedcount = 0;
+	}
+	
 }
 #endif
 
