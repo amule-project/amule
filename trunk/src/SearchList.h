@@ -24,9 +24,9 @@
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
 #include "CMemFile.h"		// Needed for CMemFile
-#include "CArray.h"
 
 #include <map>
+#include <vector>
 
 class CSafeMemFile;
 
@@ -55,7 +55,6 @@ public:
 	void		SetClientServerIP(uint32 uIP)   	{ m_nClientServerIP = uIP; }
 	uint16	GetClientServerPort() const		{ return m_nClientServerPort; }
 	void		SetClientServerPort(uint16 nPort) { m_nClientServerPort = nPort; }
-	int		GetClientsCount() const		{ return ((GetClientID() && GetClientPort()) ? 1 : 0) + m_aClients.GetSize(); }
 	
 	CSearchFile* GetListParent() const		{ return m_list_parent; }
 	
@@ -74,8 +73,7 @@ public:
 		uint16 m_nPort;
 		uint16 m_nServerPort;
 	};
-	void AddClient(SClient* client) { m_aClients.Add(client); }
-	const CArray<SClient*,SClient*>& GetClients() { return m_aClients; }
+
 
 	struct SServer {
 		SServer() {
@@ -91,28 +89,27 @@ public:
 		uint16 m_nPort;
 		unsigned int m_uAvail;
 	};
-	void AddServer(SServer* server) { m_aServers.Add(server); }
-	const CArray<SServer*,SServer*>& GetServers() const { return m_aServers; }
-	SServer* GetServer(int iServer) { return m_aServers[iServer]; }
+	void AddServer(const SServer& server) { m_aServers.push_back(server); }
+
+	const std::vector<SServer>& GetServers() const { return m_aServers; }
+	SServer& GetServer(int iServer) { return m_aServers[iServer]; }
 
 
 private:
 	uint8	clientip[4];
 	uint16	clientport;
 	uint32	m_nSearchID;
-	CArray<CTag*,CTag*> taglist;
+	std::vector<CTag*> taglist;
 
 	uint32	m_nClientID;
 	uint16	m_nClientPort;
 	uint32	m_nClientServerIP;
 	uint16	m_nClientServerPort;
-	CArray<SClient*,SClient*> m_aClients;
-	CArray<SServer*,SServer*> m_aServers;
+	std::vector<SServer> m_aServers;
 	bool		 m_list_bExpanded;
 	uint16	 m_list_childcount;
 	CSearchFile* m_list_parent;
 	bool		 m_bPreviewPossible;
-	//CArray<CxImage*,CxImage*> m_listImages;
 	LPSTR m_pszDirectory;
 };
 

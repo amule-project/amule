@@ -82,7 +82,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
 	md4cpy(m_abyFileHash, searchresult->GetFileHash());
-	for (int i = 0; i < searchresult->taglist.GetCount();i++){
+	for (int i = 0; i < searchresult->taglist.size();i++){
 		const CTag* pTag = searchresult->taglist[i];
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{

@@ -1279,33 +1279,38 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 void CUpDownClient::DontSwapTo(CPartFile* file)
 {
 	DWORD dwNow = ::GetTickCount();
-	for (POSITION pos = m_DontSwap_list.GetHeadPosition(); pos != 0; m_DontSwap_list.GetNext(pos)) {
-		if(m_DontSwap_list.GetAt(pos).file == file) {
-			m_DontSwap_list.GetAt(pos).timestamp = dwNow ;
+	std::list<PartFileStamp>::iterator it = m_DontSwap_list.begin();
+	for ( ; it != m_DontSwap_list.end(); ++it ) {
+		if( it->file == file) {
+			it->timestamp = dwNow ;
 			return;
 		}
 	}
 	PartFileStamp newfs = {file, dwNow };
-	m_DontSwap_list.AddHead(newfs);
+	m_DontSwap_list.push_front(newfs);
 }
 
 bool CUpDownClient::IsSwapSuspended(CPartFile* file)
 {
-	if (m_DontSwap_list.GetCount()==0) {
+	if (m_DontSwap_list.empty()) {
 		return false;
 	}
-	for (POSITION pos = m_DontSwap_list.GetHeadPosition(); pos != 0 && m_DontSwap_list.GetCount()>0; m_DontSwap_list.GetNext(pos)) {
-		if(m_DontSwap_list.GetAt(pos).file == file) {
-			if (::GetTickCount() - m_DontSwap_list.GetAt(pos).timestamp  >= PURGESOURCESWAPSTOP) {
-				m_DontSwap_list.RemoveAt(pos);
+	std::list<PartFileStamp>::iterator it = m_DontSwap_list.begin();
+	while ( it != m_DontSwap_list.end() ) {
+		if( it->file == file) {
+			if (::GetTickCount() - it->timestamp  >= PURGESOURCESWAPSTOP) {
+				m_DontSwap_list.erase( it );
 				return false;
 			} else {
 				return true;
 			}
-		} else if (m_DontSwap_list.GetAt(pos).file == NULL) {
+		} else if (it->file == NULL) {
 			// in which cases should this happen ?
-			m_DontSwap_list.RemoveAt(pos);
+			it = m_DontSwap_list.erase( it );
+			continue;
 		}
+
+		++it;
 	}
 	return false;
 }

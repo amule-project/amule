@@ -28,6 +28,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "otherfunctions.h"
+#include <list>
 
 class CPartFile;
 class CClientReqSocket;
@@ -432,7 +433,7 @@ private:
 	
 	uint32	m_byCompatibleClient;
 	CTypedPtrList<CPtrList, Packet*>				m_WaitingPackets_list;
-	CList<PartFileStamp, PartFileStamp>				m_DontSwap_list;
+	std::list<PartFileStamp>				m_DontSwap_list;
 	DWORD	m_lastRefreshedDLDisplay;
 
 	//upload

@@ -107,7 +107,11 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 				}
 				continue;
 			} 
-			if (cur_client->IsBanned() || suspended_uploads_list.Find(cur_client->GetUploadFileID())) { // Banned client or suspended upload ?
+			
+			suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
+			                                      suspended_uploads_list.end(),
+			                                      CMD4Hash(cur_client->GetUploadFileID()) );
+			if (cur_client->IsBanned() || it != suspended_uploads_list.end() ) { // Banned client or suspended upload ?
 			        continue;
 			} 
 			// finished clearing
@@ -138,7 +142,11 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		theApp.amuledlg->transferwnd->ShowQueueCount(waitinglist.GetCount());
 	} else {
 		//prevent another potential access of a suspended upload
-		if (suspended_uploads_list.Find(directadd->GetUploadFileID())) {
+	
+		suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
+		                                      suspended_uploads_list.end(),
+		                                      CMD4Hash(directadd->GetUploadFileID()) );		
+		if ( it != suspended_uploads_list.end() ) {
 			return;
 		} else {
 			newclient = directadd;
@@ -574,9 +582,14 @@ void CUploadQueue::CompUpDatarateOverhead()
 void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 {
 	//Find the position of the filehash in the list and remove it.
-	suspended_uploads_list.RemoveAt( suspended_uploads_list.Find(filehash) );
-	printf("%s: Resuming uploads of file.\n", unicode2char(EncodeBase16(filehash, 16)));
+	suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
+			                              suspended_uploads_list.end(),
+			                              filehash );
+	if ( it != suspended_uploads_list.end() )
+		suspended_uploads_list.erase( it );
+
 	
+	printf("%s: Resuming uploads of file.\n", unicode2char(EncodeBase16(filehash, 16)));
 }
 
 /*
@@ -585,7 +598,7 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
 	//Append the filehash to the list.
-	suspended_uploads_list.AddTail(filehash);
+	suspended_uploads_list.push_back(filehash);
 	wxString base16hash = EncodeBase16(filehash, 16);
 	
 	printf("%s: Suspending uploads of file.\n", unicode2char(base16hash));
