@@ -484,6 +484,7 @@ bool CamuleApp::OnInit()
 		close(0);
 	}
 
+
 	/* If no aMule configuration files exist, see if either lmule or xmule config
 	   exists, so that we can use those. */
 	wxString lMulePrefDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".lmule");
@@ -520,6 +521,28 @@ bool CamuleApp::OnInit()
 			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
 		}
 	}
+
+	
+// For wxGTK we manually specify the placement of the config-file
+#if __WXGTK__
+	// Backwards compatibility, check for the .eMule file if our amule.conf file doesn't exist
+	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
+	if ( !wxFileExists( ConfigDir + wxT("amule.conf") ) ) {
+		// Check if an old (.eMule) config file exists
+		if ( wxFileExists( homeDir + wxT(".eMule") ) ) {
+			wxCopyFile( homeDir + wxT(".eMule"), ConfigDir + wxT("amule.conf") );
+ 		}
+ 	}
+	
+	// This creates the CFG file we shall use
+	wxConfigBase* cfg = new wxConfig( wxEmptyString, wxEmptyString, wxT(".aMule/amule.conf") );
+	
+	// Set the config object as the global cfg file
+	wxConfig::Set( cfg );
+#elif defined( __WXMAC__ )
+	#warning CFG-File needs to be teletransmogrified for Mac! Once done, change appname to aMule!
+#endif	
+
 
 #if wxCHECK_VERSION(2,5,3)
 	applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
