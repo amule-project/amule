@@ -226,6 +226,7 @@ int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 ///////////////////////////////////////////////////////////////////////////////
 // ED2K File Type
 //
+
 enum EED2KFileType
 {
 	ED2KFT_ANY,
@@ -238,13 +239,31 @@ enum EED2KFileType
 	ED2KFT_CDIMAGE
 };
 
-#if 0
-// Need a lot of work and I run out of time.
-wxString GetFileTypeByName(char* pszFileName);
-wxString GetFileTypeDisplayStrFromED2KFileType(char* pszED2KFileType);
-char* GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
-EED2KFileType GetED2KFileTypeID(char* pszFileName);
-#endif
+class EED2KFileTypeClass
+{
+public:
+	EED2KFileTypeClass()
+	{
+		s_t = ED2KFT_ANY;
+	}
+	EED2KFileTypeClass(EED2KFileType t)
+	{
+		s_t = t;
+	}
+	EED2KFileType GetType() const
+	{
+		return s_t;
+	}
+	
+private:
+	EED2KFileType s_t;
+};
+
+EED2KFileType GetED2KFileTypeID(const wxString &strFileName);
+wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
+wxString GetFileTypeByName(const wxString &strFileName);
+///////////////////////////////////////////////////////////////////////////////
+
 
 const uint8 PMT_UNKNOWN=0;
 const uint8 PMT_DEFAULTOLD=1;

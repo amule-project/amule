@@ -39,7 +39,7 @@
 #endif
 
 #include <cctype>
-#include <algorithm>
+#include <map>
 
 #include "OPCodes.h"
 
@@ -746,200 +746,167 @@ int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
 	   return (((int)*first) - ((int)*second)) ;
 }	  
 
-class SED2KFileType
-{
-public:
-	SED2KFileType(const wxString &ext, EED2KFileType iFileType)
-	: m_ext(ext), m_iFileType(iFileType) {}
-	const wxString &GetExt() const		{ return m_ext; }
-	EED2KFileType GetFileType() const	{ return m_iFileType; }
-	
-private:
-	wxString	m_ext;
-	EED2KFileType	m_iFileType;
-};
-
-static SED2KFileType _aED2KFileTypes[] =
-{
-	SED2KFileType(wxT(".669"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".aac"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".aif"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".aiff"),  ED2KFT_AUDIO),
-	SED2KFileType(wxT(".amf"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ams"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ape"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".au"),    ED2KFT_AUDIO),
-	SED2KFileType(wxT(".dbm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".dmf"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".dsm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".far"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".flac"),  ED2KFT_AUDIO),
-	SED2KFileType(wxT(".it"),    ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mdl"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".med"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mid"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".midi"),  ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mod"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mol"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mp1"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mp2"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mp3"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mp4"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mpa"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mpc"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mpp"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".mtm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".nst"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ogg"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".okt"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".psm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ptm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ra"),    ED2KFT_AUDIO),
-	SED2KFileType(wxT(".rmi"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".s3m"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".stm"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".ult"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".umx"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".wav"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".wma"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".wow"),   ED2KFT_AUDIO),
-	SED2KFileType(wxT(".xm"),    ED2KFT_AUDIO),
-
-	SED2KFileType(wxT(".asf"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".avi"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".divx"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".m1v"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".m2v"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mkv"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mov"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mp1v"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mp2v"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpe"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpeg"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpg"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mps"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpv"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpv1"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".mpv2"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".ogm"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".qt"),    ED2KFT_VIDEO),
-	SED2KFileType(wxT(".ram"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".rm"),    ED2KFT_VIDEO),
-	SED2KFileType(wxT(".rv"),    ED2KFT_VIDEO),
-	SED2KFileType(wxT(".rv9"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".ts"),    ED2KFT_VIDEO),
-	SED2KFileType(wxT(".vivo"),  ED2KFT_VIDEO),
-	SED2KFileType(wxT(".vob"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".wmv"),   ED2KFT_VIDEO),
-	SED2KFileType(wxT(".xvid"),  ED2KFT_VIDEO),
-
-	SED2KFileType(wxT(".bmp"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".dcx"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".emf"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".gif"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".ico"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".jpeg"),  ED2KFT_IMAGE),
-	SED2KFileType(wxT(".jpg"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".pct"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".pcx"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".pic"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".pict"),  ED2KFT_IMAGE),
-	SED2KFileType(wxT(".png"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".psd"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".psp"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".tga"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".tif"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".tiff"),  ED2KFT_IMAGE),
-	SED2KFileType(wxT(".wmf"),   ED2KFT_IMAGE),
-	SED2KFileType(wxT(".xif"),   ED2KFT_IMAGE),
-
-	SED2KFileType(wxT(".7z"),    ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".ace"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".arj"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".bz2"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".cab"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".gz"),    ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".hqx"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".lha"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".msi"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".rar"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".sea"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".sit"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".tar"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".tgz"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".uc2"),   ED2KFT_ARCHIVE),
-	SED2KFileType(wxT(".zip"),   ED2KFT_ARCHIVE),
-
-	SED2KFileType(wxT(".bat"),   ED2KFT_PROGRAM),
-	SED2KFileType(wxT(".cmd"),   ED2KFT_PROGRAM),
-	SED2KFileType(wxT(".com"),   ED2KFT_PROGRAM),
-	SED2KFileType(wxT(".exe"),   ED2KFT_PROGRAM),
-
-	SED2KFileType(wxT(".bin"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".bwa"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".bwi"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".bws"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".bwt"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".ccd"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".cue"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".dmg"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".dmz"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".img"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".iso"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".mdf"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".mds"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".nrg"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".sub"),   ED2KFT_CDIMAGE),
-	SED2KFileType(wxT(".toast"), ED2KFT_CDIMAGE),
-
-	SED2KFileType(wxT(".chm"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".css"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".diz"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".doc"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".dot"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".hlp"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".htm"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".html"),  ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".nfo"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".pdf"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".pps"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".ppt"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".ps"),    ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".rtf"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".wri"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".txt"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".xls"),   ED2KFT_DOCUMENT),
-	SED2KFileType(wxT(".xlt"),   ED2KFT_DOCUMENT),
-};
-
-bool CompareE2DKFileType(const SED2KFileType &p1, const SED2KFileType &p2)
-{
-	return p1.GetExt().CmpNoCase(p2.GetExt()) < 0;
-}
+typedef std::map<wxString, EED2KFileTypeClass> SED2KFileTypeMap;
+typedef SED2KFileTypeMap::value_type SED2KFileTypeMapElement;
+static SED2KFileTypeMap ED2KFileTypesMap;
 
 class CED2KFileTypes{
 public:
-	CED2KFileTypes() {
-		std::sort(_aED2KFileTypes,
-			_aED2KFileTypes + ARRSIZE(_aED2KFileTypes),
-			CompareE2DKFileType);
-#ifdef __DEBUG__
-		// check for duplicate entries
-		wxString strLast = _aED2KFileTypes[0].GetExt();
-		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
-			bool duplicates = strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) == 0;
-			if (duplicates) {
-				printf("Ooops! duplicated string:(%d)%s-%s.\n", i,
-					(const char *)strLast.mb_str(),
-					(const char *)_aED2KFileTypes[i].GetExt().mb_str());
-			}
-			wxASSERT(!duplicates);
-			strLast = _aED2KFileTypes[i].GetExt();
-		}
-#endif
+	CED2KFileTypes()
+	{
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".669"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aac"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aif"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".aiff"),  ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".amf"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ams"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ape"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".au"),    ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dbm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmf"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dsm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".far"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".flac"),  ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".it"),    ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdl"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".med"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mid"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".midi"),  ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mod"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mol"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp3"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp4"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpa"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpc"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpp"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mtm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nst"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogg"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".okt"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ptm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ra"),    ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rmi"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".s3m"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".stm"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ult"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".umx"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wav"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wma"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wow"),   ED2KFT_AUDIO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xm"),    ED2KFT_AUDIO));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".asf"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".avi"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".divx"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m1v"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".m2v"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mkv"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mov"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp1v"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mp2v"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpe"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpeg"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpg"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mps"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv1"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mpv2"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ogm"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".qt"),    ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ram"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rm"),    ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rv"),    ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rv9"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ts"),    ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vivo"),  ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".vob"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmv"),   ED2KFT_VIDEO));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xvid"),  ED2KFT_VIDEO));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bmp"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dcx"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".emf"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gif"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ico"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpeg"),  ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".jpg"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pct"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pcx"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pic"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pict"),  ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".png"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psd"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".psp"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tga"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tif"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tiff"),  ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wmf"),   ED2KFT_IMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xif"),   ED2KFT_IMAGE));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".7z"),    ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ace"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".arj"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bz2"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cab"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".gz"),    ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hqx"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".lha"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".msi"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rar"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sea"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sit"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tar"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".tgz"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".uc2"),   ED2KFT_ARCHIVE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".zip"),   ED2KFT_ARCHIVE));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bat"),   ED2KFT_PROGRAM));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cmd"),   ED2KFT_PROGRAM));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".com"),   ED2KFT_PROGRAM));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".exe"),   ED2KFT_PROGRAM));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bin"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwa"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwi"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bws"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".bwt"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ccd"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".cue"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmg"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dmz"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".img"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".iso"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mdf"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".mds"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nrg"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".sub"),   ED2KFT_CDIMAGE));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".toast"), ED2KFT_CDIMAGE));
+
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".chm"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".css"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".diz"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".doc"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".dot"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".hlp"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".htm"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".html"),  ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".nfo"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pdf"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".pps"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ppt"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".ps"),    ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".rtf"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".wri"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".txt"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xls"),   ED2KFT_DOCUMENT));
+		ED2KFileTypesMap.insert(SED2KFileTypeMapElement(wxT(".xlt"),   ED2KFT_DOCUMENT));
 	}
 };
-// get the list sorted *before* any code is accessing it
+
+// get the list initialized *before* any code is accessing it
 CED2KFileTypes theED2KFileTypes;
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
@@ -951,17 +918,9 @@ EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 	
 	wxString strExt(strFileName.Mid(i));
 	strExt.MakeLower();
-
-	SED2KFileType ft(strExt, ED2KFT_ANY);
-	SED2KFileType *last = _aED2KFileTypes + ARRSIZE(_aED2KFileTypes);
-	SED2KFileType *result =
-		std::lower_bound(_aED2KFileTypes, last, ft, CompareE2DKFileType);
-	bool pFound = result != last && result->GetExt() == ft.GetExt();
-	if (pFound) {
-		return result->GetFileType();
-	} else {	
-		return ED2KFT_ANY;
-	}
+	// If the extension is not in the map, this returns
+	// EED2KFileTypeClass(), which is ED2KFT_ANY
+	return ED2KFileTypesMap[strExt].GetType();
 }
 
 // Retuns the ed2k file type term which is to be used in server searches
