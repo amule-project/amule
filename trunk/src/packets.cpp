@@ -126,7 +126,7 @@ Packet::Packet(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 }
 
 // only used for splitted packets!
-Packet::Packet(char* pPacketPart, wxUint32 nSize, bool bLast, bool bFromPF)
+Packet::Packet(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 {
 	size		= nSize - 6;
 	opcode		= 0;
@@ -255,7 +255,7 @@ void Packet::PackPacket() {
 bool Packet::UnPackPacket(UINT uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT );
 
-	wxUint32 nNewSize = size * 10 + 300;
+	uint32 nNewSize = size * 10 + 300;
 
 	if (nNewSize > uMaxDecompressedSize){
 		//ASSERT(0);
@@ -264,7 +264,7 @@ bool Packet::UnPackPacket(UINT uMaxDecompressedSize) {
 
 	BYTE* unpack = new BYTE[nNewSize];
 	uLongf unpackedsize = nNewSize;
-	wxUint16 result = uncompress(unpack, &unpackedsize, (BYTE *) pBuffer, size);
+	uint16 result = uncompress(unpack, &unpackedsize, (BYTE *) pBuffer, size);
 
 	if (result == Z_OK) {
 		wxASSERT( completebuffer == NULL );

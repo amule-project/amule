@@ -34,11 +34,11 @@ class CWebServer;
 
 class CWebSocket {
 	public:
-		void OnReceived(char* pData, wxUint32 dwDataSize);
-		void OnRequestReceived(char* pHeader, wxUint32 dwHeaderLen, char* pData, wxUint32 dwDataLen);
+		void OnReceived(char* pData, uint32 dwDataSize);
+		void OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen);
 		void Disconnect();
-		void SendContent(LPCSTR szStdResponse, const void* pContent, wxUint32 dwContentSize);
-		void SendData(const void* pData, wxUint32 dwDataSize);
+		void SendContent(LPCSTR szStdResponse, const void* pContent, uint32 dwContentSize);
+		void SendData(const void* pData, uint32 dwDataSize);
 	
 		CWebServer *m_pParent;
 		wxSocketBase *m_hSocket;
@@ -47,7 +47,7 @@ class CWebSocket {
 			public:
 				char* m_pData;
 				char* m_pToSend;
-				wxUint32 m_dwSize;
+				uint32 m_dwSize;
 			
 				CChunk* m_pNext;
 				~CChunk() { if (m_pData) delete[] m_pData; }
@@ -57,10 +57,10 @@ class CWebSocket {
 		CChunk *m_pTail;
 		
 		char *m_pBuf;
-		wxUint32 m_dwBufSize;
-		wxUint32 m_dwRecv;
-		wxUint32 m_dwHttpHeaderLen;
-		wxUint32 m_dwHttpContentLen;
+		uint32 m_dwBufSize;
+		uint32 m_dwRecv;
+		uint32 m_dwHttpHeaderLen;
+		uint32 m_dwHttpContentLen;
 		bool m_bValid;
 		bool m_bCanRecv;
 		bool m_bCanSend;
