@@ -128,7 +128,7 @@ public:
 	
 protected:
 	enum wxcType { wxcNone, wxcCheck, wxcSlider, wxcSpin, wxcText, wxcChoice, wxcStatic, 
-					wxcButton, wxcRadioButton };	
+					wxcButton, wxcRadioButton, wxcRadioBox };	
 
 	Rse()  {}
 
@@ -252,6 +252,7 @@ public:
 			case wxcChoice:		return ((wxChoice*)pctrl)->GetSelection();
 			case wxcSlider:		return ((wxSlider *)pctrl)->GetValue(); 
 			case wxcSpin:		return ((wxSpinCtrl *)pctrl)->GetValue(); 
+			case wxcRadioBox:	return ((wxRadioBox *)pctrl)->GetSelection();
 			case wxcRadioButton: {
 				int val = 0;
 				for (Rse* prse=this; prse!=NULL; prse=prse->prseLink) {
@@ -280,6 +281,9 @@ public:
 			case wxcSpin:	
 				((wxSpinCtrl*)pctrl)->SetValue(val);
 				break;
+			case wxcRadioBox:
+				((wxRadioBox*)pctrl)->SetSelection(val);
+				break;				
 			case wxcRadioButton: 	
 				for (Rse* prse=this; prse!=NULL; prse=prse->prseLink)
 					((wxRadioButton*)(prse->pctrl))->SetValue((val-- == 0));
@@ -310,7 +314,9 @@ public:
 		else if (pctrl->IsKindOf(CLASSINFO(wxRadioButton))) 
 			wxc = wxcRadioButton;
 		else if (pctrl->IsKindOf(CLASSINFO(wxChoice))) 
-			wxc = wxcChoice; 
+			wxc = wxcChoice;
+		else if (pctrl->IsKindOf(CLASSINFO(wxRadioBox)))
+			wxc = wxcRadioBox;
 		wxASSERT(wxc != wxcNone);
 	}
 
