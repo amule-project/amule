@@ -371,7 +371,7 @@ void CWebServer::ReloadTemplates(void) {
 	// Left here just for sanity, if template is removed while running amuleweb
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		webInterface->Show(CFormat(_("Can't load templates: Can't open file %s") % sFile));
+		webInterface->Show(CFormat(_("Can't load templates: Can't open file %s")) % sFile);
 		return;
 	}
 
@@ -386,7 +386,7 @@ void CWebServer::ReloadTemplates(void) {
 		wxString sVersion = _LoadTemplate(sAll,wxT("TMPL_VERSION"));
 		long lVersion = StrToLong(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			webInterface->Show(CFormat(_("Can't load templates: Can't open file %s") % sFile));
+			webInterface->Show(CFormat(_("Can't load templates: Can't open file %s")) % sFile);
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,wxT("TMPL_HEADER"));
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,wxT("TMPL_HEADER_META_REFRESH"));
@@ -440,7 +440,7 @@ void CWebServer::ReloadTemplates(void) {
 				
 		}
 	} else {
-		webInterface->Show(CFormat(_("Can't load templates: Can't open file ") % sFile));
+		webInterface->Show(CFormat(_("Can't load templates: Can't open file ")) % sFile);
 	}
 }
 
@@ -458,7 +458,7 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 	if (sRet.IsEmpty()) {
 		if (sTemplateName==wxT("TMPL_VERSION"))
 			webInterface->Show(_("Can't find template version number!\nPlease replace aMule.tmpl with a newer version!"));
-		webInterface->Show(CFormat(_("Failed to load template %s\n") % sTemplateName ));
+		webInterface->Show(CFormat(_("Failed to load template %s\n")) % sTemplateName );
 	}
 	return sRet;
 }
@@ -957,7 +957,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 		if (response) {
 			if ( response->GetOpCode() == EC_OP_FAILED) {
-				wxString HTTPTempC = CFormat(_("This ed2k link is invalid (%s)") % HTTPTemp );
+				wxString HTTPTempC = CFormat(_("This ed2k link is invalid (%s)")) % HTTPTemp;
 				Out = m_Templates.sTransferBadLink;
 				Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
 				Out.Replace(wxT("[Link]"), HTTPTemp);
