@@ -125,7 +125,7 @@ bool wxSocketProxy::Start(wxIPaddress &address, enum wxProxyCommand cmd, wxSocke
 	bool ok = false;
 
 	m_ProxyBoundAddress = NULL;
-printf("wxSocketClientProxy\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
+printf("wxSocketProxy::Start\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
 unicode2char(address.Hostname()),
 unicode2char(address.IPAddress()),
 address.Service());
@@ -174,6 +174,8 @@ if (m_ProxyBoundAddress) {
 printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
 unicode2char(GetProxyBoundAddress().IPAddress()),
 GetProxyBoundAddress().Service(), ok);
+} else {
+printf("Failed to bind proxy address, ok=%d\n", ok);
 }
 	
 	return ok;
@@ -776,33 +778,36 @@ wxDatagramSocket &wxDatagramSocketProxy::RecvFrom(
 {
 	m_LastUDPOperation = wxUDP_OPERATION_RECV_FROM;
 	if (m_UseProxy) {
-		char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
-		wxDatagramSocket &ret = wxDatagramSocket::RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
-		unsigned int offset;
-		
-		switch (m_SocketProxy.m_buffer[3]) {
-		case SOCKS5_ATYP_IPV4_ADDRESS:
-			offset = wxPROXY_UDP_OVERHEAD_IPV4;
-			break;
+		if (m_UDPSocketOk) {
+			char *bufUDP = new char[nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD];
+			wxDatagramSocket::RecvFrom(m_SocketProxy.GetProxyBoundAddress(), bufUDP, nBytes + wxPROXY_UDP_MAXIMUM_OVERHEAD);
+			unsigned int offset;
 			
-		case SOCKS5_ATYP_DOMAINNAME:
-			offset = wxPROXY_UDP_OVERHEAD_DOMAIN_NAME;
-			break;
-			
-		case SOCKS5_ATYP_IPV6_ADDRESS:
-			offset = wxPROXY_UDP_OVERHEAD_IPV6;
-			break;
-			
-		default:
-			/* Error! */
-			offset = 0;
-			break;
+			switch (m_SocketProxy.m_buffer[3]) {
+			case SOCKS5_ATYP_IPV4_ADDRESS:
+				offset = wxPROXY_UDP_OVERHEAD_IPV4;
+				break;
+				
+			case SOCKS5_ATYP_DOMAINNAME:
+				offset = wxPROXY_UDP_OVERHEAD_DOMAIN_NAME;
+				break;
+				
+			case SOCKS5_ATYP_IPV6_ADDRESS:
+				offset = wxPROXY_UDP_OVERHEAD_IPV6;
+				break;
+				
+			default:
+				/* Error! */
+				offset = 0;
+				break;
+			}
+			memcpy(buf, bufUDP + offset, nBytes);
 		}
-		memcpy(buf, bufUDP + offset, nBytes);
-		return ret;
 	} else {
-		return wxDatagramSocket::RecvFrom(addr, buf, nBytes);
+		wxDatagramSocket::RecvFrom(addr, buf, nBytes);
 	}
+	
+	return *this;
 }
 
 wxDatagramSocket &wxDatagramSocketProxy::SendTo(
@@ -811,18 +816,23 @@ wxDatagramSocket &wxDatagramSocketProxy::SendTo(
 	m_LastUDPOperation = wxUDP_OPERATION_SEND_TO;
 	m_LastUDPOverhead = wxPROXY_UDP_OVERHEAD_IPV4;
 	if (m_UseProxy) {
-		m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
-		m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
-		m_SocketProxy.m_buffer[2] = 0;		// FRAG
-		m_SocketProxy.m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
-		*((uint32 *)(m_SocketProxy.m_buffer+4)) = StringIPtoUint32(addr.IPAddress());
-		*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
-		memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
-		nBytes += wxPROXY_UDP_OVERHEAD_IPV4;
-		return wxDatagramSocket::SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
+		if (m_UDPSocketOk) {
+			m_SocketProxy.m_buffer[0] = SOCKS5_RSV;	// Reserved
+			m_SocketProxy.m_buffer[1] = SOCKS5_RSV;	// Reserved
+			m_SocketProxy.m_buffer[2] = 0;		// FRAG
+			m_SocketProxy.m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
+			*((uint32 *)(m_SocketProxy.m_buffer+4)) = StringIPtoUint32(addr.IPAddress());
+			*((uint16 *)(m_SocketProxy.m_buffer+8)) = htons(addr.Service());
+			memcpy(m_SocketProxy.m_buffer + wxPROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
+			nBytes += wxPROXY_UDP_OVERHEAD_IPV4;
+			
+			wxDatagramSocket::SendTo(m_SocketProxy.GetProxyBoundAddress(), m_SocketProxy.m_buffer, nBytes);
+		}
 	} else {
-		return wxDatagramSocket::SendTo(addr, buf, nBytes);
+		wxDatagramSocket::SendTo(addr, buf, nBytes);
 	}
+	
+	return *this;
 }
 
 wxUint32 wxDatagramSocketProxy::LastCount(void) const
@@ -833,7 +843,7 @@ wxUint32 wxDatagramSocketProxy::LastCount(void) const
 		switch (m_LastUDPOperation) {
 		case wxUDP_OPERATION_RECV_FROM:
 		case wxUDP_OPERATION_SEND_TO:
-			ret = wxDatagramSocket::LastCount() - m_LastUDPOverhead;
+			ret = Ok() ? wxDatagramSocket::LastCount() - m_LastUDPOverhead : 0;
 			break;
 			
 		case wxUDP_OPERATION_NONE:
