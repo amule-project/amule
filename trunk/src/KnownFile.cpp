@@ -298,29 +298,6 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		printf("Error opening %s !\n",namebuffer.c_str());
 		return false;
 	}
-	#if defined(__WXGTK__) 
-	#ifndef __OPENBSD__
-	struct stat64 file_stats_long;
-	if (fstat64(fileno(file),&file_stats_long)) {
-		printf("ERROR ON STAT64!!!\n");
-		fclose(file);
-		return false;		
-	}
-	
-	if (file_stats_long.st_size >= (off64_t)(4294967295U)){
-		fclose(file);
-		return false; // not supported by network
-	}
-	#endif /* __OPENBSD__ */
-	#endif	
-	#if defined(__WXMSW__) 
-	// set filesize
-	if (_filelengthi64(file->_file)>=4294967296){
-		fclose(file);
-		return false; // not supported by network
-	}	
-	#endif
-	
 	
 	struct stat file_stats;
 	if (fstat(fileno(file),&file_stats)) {
@@ -328,6 +305,12 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		fclose(file);
 		return false;		
 	}
+
+	if (file_stats.st_size >= (off64_t)(4294967295U)){
+		fclose(file);
+		return false; // not supported by network
+	}
+	
 	SetFileSize(file_stats.st_size);
 	printf("While creating hashset for file %s/%s the length found is %u\n",in_directory,in_filename,(uint64)file_stats.st_size);
 	
