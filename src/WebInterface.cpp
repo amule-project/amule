@@ -430,17 +430,17 @@ void CamulewebApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(         _("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));	
-	Show(wxT("Help:\t\t\t") + _("Shows this help.\n"));
+	Show(wxT("Help:\t\t\t") + wxString(_("Shows this help.\n")));
 	//Show(wxT("Start:\t\t\t) + _("Start web server.\n"));
 	//Show(wxT("Stop:\t\t\t)  + _("Stop web server.\n"));
 	//Show(wxT("Restart:\t\t\t) + _("Restart web server.\n"));
-	Show(wxT("Quit, Exit:\t\t") + _("Exits aMuleWeb.\n"));
+	Show(wxT("Quit, Exit:\t\t") + wxString(_("Exits aMuleWeb.\n")));
 	Show(         _("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
 void CamulewebApp::ShowGreet() {
 	Show(wxT("\n---------------------------------\n"));
-	Show(wxT("|       ")) + wxString(_("aMule Web Server") + wxT("        |\n"));
+	Show(wxT("|       ") + wxString(_("aMule Web Server")) + wxT("        |\n"));
 	Show(wxT("---------------------------------\n\n"));
 	Show(_("\nUse 'Help' for command list\n\n"));
 }
