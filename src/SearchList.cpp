@@ -102,88 +102,13 @@ void *CGlobalSearchThread::Entry()
 		}
 	}
 	
-	
+	// Global search ended, reset progress and controls
 	CoreNotify_Search_Update_Progress(0xffff);
+	
 	theApp.searchlist->ClearThreadData();
-
 	
 	return NULL;
 }
-
-
-CPacket* CreateSearchPacket(wxString &searchString, wxString& typeText,
-				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
-{
-	// Count the number of used parameters
-	int parametercount = 0;
-	if ( !searchString.IsEmpty() )	++parametercount;
-	if ( !typeText.IsEmpty() )	++parametercount;
-	if ( min > 0 )			++parametercount;
-	if ( max > 0 ) 			++parametercount;
-	if ( avaibility > 0 )		++parametercount;
-	if ( !extension.IsEmpty() )	++parametercount;
-	
-	// Must write parametercount - 1 parameter headers
-	CSafeMemFile* data = new CSafeMemFile(100);
-	
-	const byte stringParameter = 1;
-	const byte typeParameter = 2;
-	const byte numericParameter = 3;
-	const uint16 andParameter = 0x0000;	
-	// Kry - sadly, it has to keep like this, It's 3 bytes, god knows why.
-	// So we can't use any WriteUInt*
-	const char typeNemonic[3] = {0x01,0x00,0x03};
-	const char extensionNemonic[3] = {0x01,0x00,0x04};
-	const uint32 minNemonic = 0x02000101;
-	const uint32 maxNemonic = 0x02000102;
-	const uint32 avaibilityNemonic = 0x15000101;
-	
-	for ( int i = 0; i < parametercount - 1; ++i )
-		data->WriteUInt16(andParameter);
-
-	// Packet body:
-	if ( !searchString.IsEmpty() ) {
-		data->WriteUInt8( stringParameter ); // Search-String is a string parameter type
-		data->WriteString( searchString/*, utf8strRaw*/ );   // Write the value of the string
-	}
-	
-	if ( !typeText.IsEmpty() ) {
-		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
-		data->WriteString( typeText ); 			// Write the parameter
-		data->Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
-	}
-	
-	if ( min > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( min );		// Write the parameter
-		data->WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( max > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( max );		// Write the parameter
-		data->WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( avaibility > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( avaibility );	// Write the parameter
-		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( !extension.IsEmpty() ) {
-		data->WriteUInt8( stringParameter );	// Write the parameter type
-		data->WriteString( extension );			// Write the parameter
-		data->Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
-	}
-
-	CPacket* packet = new CPacket(data);
-	packet->SetOpCode(OP_SEARCHREQUEST);
-	delete data;
-	
-	return packet;
-}
-
 
 CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), wxString pszDirectory)
 {
@@ -292,6 +217,7 @@ CSearchList::CSearchList()
 	m_CurrentSearch = 0;
 	m_searchpacket = NULL;
 	m_searchthread = NULL;
+	m_globalsearch = false;
 }
 
 
@@ -335,10 +261,33 @@ void CSearchList::RemoveResults(long nSearchID)
 }
 
 
-void CSearchList::NewSearch(const wxString& resTypes, long nSearchID)
+bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &searchString, wxString& typeText, 
+											wxString &extension, uint32 min, uint32 max, uint32 availability)
 {
-	m_resultType = resTypes;
+	// New search, kill the previous ones.
+	Clear();
+	
+	if(!theApp.serverconnect->IsConnected()) {
+		// Failed!
+		return false;
+	}
+	
+	m_resultType = typeText;
 	m_CurrentSearch = nSearchID;
+	m_globalsearch = global_search;
+
+	CPacket* searchpacket = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
+
+	theApp.statistics->AddUpDataOverheadServer(searchpacket->GetPacketSize());
+	// Send packet. If it's not a global search, delete it after sending.
+	theApp.serverconnect->SendPacket(searchpacket, !global_search ); 
+	if ( global_search ) {
+		m_searchpacket = searchpacket;
+	} else {
+		m_searchpacket = NULL;
+	}
+	
+	return true;
 }
 
 
@@ -365,7 +314,10 @@ void CSearchList::LocalSearchEnd()
 		}
 		m_searchpacket = NULL;
 	}
-	Notify_SearchLocalEnd();
+	if (!IsGlobalSearch()) {
+		// On global search, we must not reset the GUI controls.
+		Notify_SearchLocalEnd();
+	}
 }
 
 
@@ -514,57 +466,6 @@ const std::vector<CSearchFile*> CSearchList::GetSearchResults(long nSearchID)
 	return std::vector<CSearchFile*>();
 }
 
-wxString CSearchList::GetWebList( const wxString& linePattern, int sortby, bool asc ) const
-{
-	wxString buffer;
-
-	SearchList list;
-
-	ResultMap::const_iterator rit = m_Results.find( 0xffff );
-		
-	if ( rit != m_Results.end() ) {
-		list = rit->second;
-	} 
-	
-	// Sorts the entire list using the specified parameters
-	std::sort( list.begin(), list.end(), CmpFiles( sortby, asc ) );
-	
-	SearchList::iterator it = list.begin();
-	for ( ; it != list.end(); ++it ) {
-		CSearchFile* sf = (*it);
-
-		// colorize
-		wxString coloraddon;
-		wxString coloraddonE;
-		CKnownFile* sameFile = theApp.sharedfiles->GetFileByID(sf->GetFileHash());
-		CPartFile* samePFile = NULL;
-		
-		if (!sameFile)
-			samePFile = theApp.downloadqueue->GetFileByID(sf->GetFileHash());
-
-		if (sameFile) 
-			coloraddon = wxT("<font color=\"#00FF00\">");
-		else
-			coloraddon = wxT("<font color=\"#FF0000\">");
-		
-		
-		if (coloraddon.Length()>0)
-			coloraddonE = wxT("</font>");
-
-		wxString strHash(EncodeBase16(sf->GetFileHash(),16));
-		wxString temp = wxString::Format(linePattern,
-					wxString(coloraddon + sf->GetFileName() + coloraddonE).GetData(),
-					CastItoXBytes(sf->GetFileSize()).GetData(),
-					strHash.GetData(),
-					sf->GetSourceCount(),
-					strHash.GetData());
-		buffer.Append(temp);
-	}
-	
-	return buffer;
-}
-
-
 void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 {
 	ResultMap::iterator it = m_Results.begin();
@@ -583,8 +484,81 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 
 void CSearchList::StopGlobalSearch()
 {
- 	if (m_searchthread) {
+ 	if (m_globalsearch && m_searchthread) {
 		m_searchthread->Delete();
 		m_searchthread = NULL;
  	}
+}
+
+
+CPacket* CSearchList::CreateSearchPacket(wxString &searchString, wxString& typeText,
+				wxString &extension, uint32 min, uint32 max, uint32 avaibility)
+{
+	// Count the number of used parameters
+	int parametercount = 0;
+	if ( !searchString.IsEmpty() )	++parametercount;
+	if ( !typeText.IsEmpty() )	++parametercount;
+	if ( min > 0 )			++parametercount;
+	if ( max > 0 ) 			++parametercount;
+	if ( avaibility > 0 )		++parametercount;
+	if ( !extension.IsEmpty() )	++parametercount;
+	
+	// Must write parametercount - 1 parameter headers
+	CSafeMemFile data(100);
+	
+	const byte stringParameter = 1;
+	const byte typeParameter = 2;
+	const byte numericParameter = 3;
+	const uint16 andParameter = 0x0000;	
+	// Kry - sadly, it has to keep like this, It's 3 bytes, god knows why.
+	// So we can't use any WriteUInt*
+	const char typeNemonic[3] = {0x01,0x00,0x03};
+	const char extensionNemonic[3] = {0x01,0x00,0x04};
+	const uint32 minNemonic = 0x02000101;
+	const uint32 maxNemonic = 0x02000102;
+	const uint32 avaibilityNemonic = 0x15000101;
+	
+	for ( int i = 0; i < parametercount - 1; ++i )
+		data.WriteUInt16(andParameter);
+
+	// Packet body:
+	if ( !searchString.IsEmpty() ) {
+		data.WriteUInt8( stringParameter ); // Search-String is a string parameter type
+		data.WriteString( searchString/*, utf8strRaw*/ );   // Write the value of the string
+	}
+	
+	if ( !typeText.IsEmpty() ) {
+		data.WriteUInt8( typeParameter );		// Search-Type is a type parameter type
+		data.WriteString( typeText ); 			// Write the parameter
+		data.Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
+	}
+	
+	if ( min > 0 ) {
+		data.WriteUInt8( numericParameter );	// Write the parameter type
+		data.WriteUInt32( min );		// Write the parameter
+		data.WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( max > 0 ) {
+		data.WriteUInt8( numericParameter );	// Write the parameter type
+		data.WriteUInt32( max );		// Write the parameter
+		data.WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( avaibility > 0 ) {
+		data.WriteUInt8( numericParameter );	// Write the parameter type
+		data.WriteUInt32( avaibility );	// Write the parameter
+		data.WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
+	}
+	
+	if ( !extension.IsEmpty() ) {
+		data.WriteUInt8( stringParameter );	// Write the parameter type
+		data.WriteString( extension );			// Write the parameter
+		data.Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+	}
+
+	CPacket* packet = new CPacket(&data);
+	packet->SetOpCode(OP_SEARCHREQUEST);
+	
+	return packet;
 }

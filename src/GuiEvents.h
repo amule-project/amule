@@ -117,7 +117,6 @@ enum GUI_Event_ID {
 	KNOWNFILE_SET_UP_PRIO_AUTO,
 	KNOWNFILE_SET_COMMENT,
 	// search
-	SEARCH_REQ,
 	SEARCH_ADD_TO_DLOAD,
 	SEARCH_ADD_RESULT,
 	SEARCH_UPDATE_SOURCES,
@@ -385,7 +384,6 @@ class GUIEvent : public wxEvent {
 #define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_COMMENT,(CKnownFile *)ptr, val);
 
 // Search
-#define CoreNotify_Search_Req(ptr, global)          Notify_2_ValEvent(SEARCH_REQ,(CPacket*)ptr, (uint8)global);
 
 #define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
 

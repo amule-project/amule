@@ -38,7 +38,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
-#include "SearchList.h"		// Needed for GetWebList
+#include "SearchList.h"		// Needed for GetSearchResults
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
 #include "Preferences.h"	// Needed for CPreferences
@@ -621,34 +621,38 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Search(const CECPacket *request)
 {
+	wxString response;
+	
 	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
 	theApp.searchlist->RemoveResults(0xffff);
-	theApp.searchlist->NewSearch(search_request->SearchFileType(), 0xffff);
-	
+
 	wxString text = search_request->SearchText();
 	wxString file_type = search_request->SearchFileType();
 	wxString ext = search_request->SearchExt();
-	CPacket *packet = CreateSearchPacket(text, file_type, ext,
-		search_request->MinSize(), search_request->MaxSize(), search_request->Avail());
-	
-	CECPacket *response = new CECPacket(EC_OP_FAILED);
+		
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
+	bool global_search = false;
 	switch(search_type) {
-		case EC_SEARCH_LOCAL:
-			// this is internal core call, but macro is useful anyway
-			CoreNotify_Search_Req(packet, false);
-			break;
 		case EC_SEARCH_GLOBAL:
-			// this is internal core call, but macro is useful anyway
-			CoreNotify_Search_Req(packet, true);
+			global_search = true;
+		case EC_SEARCH_LOCAL:
+			if (!theApp.searchlist->StartNewSearch(0xffff, global_search, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
+				// Not connected?
+				response = _("aMule is not connected! Cannot do search.");
+			} else {
+				response = _("Search in progress. Refetch results in a moment!");			
+			}
 			break;
 		case EC_SEARCH_WEB:
+				response = _("WebSearch from remote interface makes no sense.");
 			break;
 	}
+	
+	CECPacket *reply = new CECPacket(EC_OP_FAILED);
 	// no reply - search in progress
-	response->AddTag(CECTag(EC_TAG_STRING,
-		wxTRANSLATE("Search in progress. Refetch results in a moment!")));
-	return response;
+	reply->AddTag(CECTag(EC_TAG_STRING, response));
+		
+	return reply;
 }
 
 CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)

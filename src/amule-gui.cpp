@@ -501,15 +501,6 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 
 		
 		// search
-		case SEARCH_REQ:
-			statistics->AddUpDataOverheadServer(((CPacket*)event.ptr_value)->GetPacketSize());
-			serverconnect->SendPacket( (CPacket*)event.ptr_value, 0 );
-			if ( event.byte_value ) {
-				searchlist->m_searchpacket = (CPacket*)event.ptr_value;
-			} else {
-				searchlist->m_searchpacket = NULL;
-			}
-			break;
 		case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;
@@ -829,14 +820,13 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			break;
 		case SEARCH_UPDATE_PROGRESS:
 			if ( amuledlg->searchwnd ) {
-				if ( event.long_value == 0xffff ) {
-					if (amuledlg->searchwnd->IsGlobalSearch()) {
-						amuledlg->searchwnd->m_progressbar->SetValue(0);
-					} else {
+				switch (event.long_value) {
+					case 0xffff:
+						// Global search ended
 						amuledlg->searchwnd->ResetControls();
-					}
-				} else {
-					amuledlg->searchwnd->m_progressbar->SetValue(event.long_value);
+						break;
+					default:
+						amuledlg->searchwnd->UpdateProgress(event.long_value);
 				}
 			}
 			break;

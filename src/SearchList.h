@@ -38,11 +38,6 @@ class CMD4Hash;
 class CServer;
 class CSearchList;
 
-
-CPacket *CreateSearchPacket(wxString &searchString, wxString& typeText,
-				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
-
-
 class CGlobalSearchThread : public wxThread 
 {	
 public:
@@ -102,32 +97,47 @@ private:
 class CSearchList
 {
 friend class CSearchListCtrl;
+typedef std::vector<CSearchFile*> SearchList;
+
 public:
 	CSearchList();
 	~CSearchList();
 	void	Clear();
 
-	void	NewSearch(const wxString& resTypes, long nSearchID);
+	bool	StartNewSearch(long nSearchID, 
+								bool global_search, 
+								wxString &searchString, 
+								wxString& typeText,
+								wxString &extension, 
+								uint32 min, 
+								uint32 max, 
+								uint32 availability);
 	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, wxString& pszDirectory);
 	void	ProcessSearchanswer(const char* packet, uint32 size, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);
 	void	ProcessUDPSearchanswer(const CSafeMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);	
 
 	void	RemoveResults(long nSearchID);
 	void	ShowResults(long nSearchID);
-	const std::vector<CSearchFile*> GetSearchResults(long nSearchID);
-	
-	wxString GetWebList(const wxString& linePattern,int sortby,bool asc) const;
-	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
-	void LocalSearchEnd();
 
-	CPacket* 	m_searchpacket;
+	const SearchList GetSearchResults(long nSearchID);
+	
+	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
+	void	LocalSearchEnd();
+
 	void StopGlobalSearch();
 	void ClearThreadData() { m_searchthread = NULL; };
+	
+	bool		IsGlobalSearch() { return m_globalsearch; };
 
 private:
+
+	CPacket *CreateSearchPacket(wxString &searchString, wxString& typeText,
+				wxString &extension, uint32 min, uint32 max, uint32 avaibility);
+
+	CPacket* m_searchpacket;
+
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 
-	typedef std::vector<CSearchFile*> SearchList;
 	typedef std::map<long, SearchList> ResultMap;
 	
 	ResultMap	m_Results;
@@ -137,6 +147,8 @@ private:
 	long		m_CurrentSearch;
 
 	CGlobalSearchThread* m_searchthread;
+	bool		m_globalsearch;
+
 };
 
 #endif // SEARCHLIST_H
