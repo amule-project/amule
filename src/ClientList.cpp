@@ -90,8 +90,7 @@ void CClientList::AddClient( CUpDownClient* toadd )
 		// Update the client-state
 		toadd->m_clientState = CS_LISTED;
 	
-		#warning needs more code
-		//theApp.amuledlg->transferwnd->clientlistctrl->AddClient(toadd);
+ 		Notify_ClientCtrlAddClient( toadd );
 	
 		// We always add the ID/ptr pair, regardles of the actual ID value
 		m_clientList.insert( IDMapPair( toadd->GetUserID(), toadd ) );
@@ -568,8 +567,7 @@ void CClientList::Process()
 		theApp.uploadqueue->RemoveFromWaitingQueue( toremove );
 		theApp.downloadqueue->RemoveSource( toremove );
 	
-		#warning needs more code
-		//theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(toremove);
+		Notify_ClientCtrlRemoveClient( toremove );
 				
 		delete toremove;
 	}
@@ -674,5 +672,11 @@ CClientList::SourceList	CClientList::GetClientsByIP( unsigned long ip )
 	}
 	
 	return results;
+}
+
+
+const CClientList::IDMap& CClientList::GetClientList()
+{
+	return m_clientList;
 }
 
