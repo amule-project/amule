@@ -35,7 +35,7 @@ public:
 	BYTE* Detach();	
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
-	virtual bool GetStatus(unsigned long none) const 	{ return true; };
+	virtual bool GetStatus(unsigned long) const 	{ return true; };
 	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
