@@ -149,6 +149,8 @@ void CKnownFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bo
    s_ShareStatusBar.Draw(dc, rect.GetLeft(), rect.GetTop(), bFlat);
 }
 
+#warning DEPRECATED & REMOVED
+#if 0
 void CKnownFile::NewAvailPartsInfo(){
 	
 	// Cache part count
@@ -257,7 +259,7 @@ void CKnownFile::NewAvailPartsInfo(){
 		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
 	}
 }
-
+#endif
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
 	POSITION pos = m_ClientUploadList.Find(client); // to be sure
@@ -265,6 +267,9 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client){
 		m_ClientUploadList.AddTail(client);
 	}
 }
+
+
+
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
 	POSITION pos = m_ClientUploadList.Find(client); // to be sure
@@ -1234,4 +1239,114 @@ void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 void CKnownFile::SetPublishedED2K(bool val){
 	m_PublishedED2K = val;
 	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+}
+
+
+void CKnownFile::UpdatePartsInfo()
+{
+	// Cache part count
+	uint16 partcount = GetPartCount();
+	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
+
+	// Reset Part Count and allocate it with 0es
+	
+	m_AvailPartFrequency.Clear();
+	m_AvailPartFrequency.Alloc(partcount);
+	
+	m_AvailPartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
+
+	ArrayOfUInts16 count;	
+	
+	if (flag) {
+		count.Alloc(m_ClientUploadList.GetCount());	
+	}
+
+	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; ) {
+		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
+		//This could be a partfile that just completed.. Many of these clients will not have this information.
+		if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount ) {
+			for (uint16 i = 0; i < partcount; i++) {
+				if (cur_src->IsUpPartAvailable(i)) {
+					m_AvailPartFrequency[i] += 1;
+				}
+			}
+			if ( flag ) {
+				count.Add(cur_src->GetUpCompleteSourcesCount());
+			}
+		}
+	}
+
+	if (flag) {
+		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
+
+		if( partcount > 0) {
+			m_nCompleteSourcesCount = m_AvailPartFrequency[0];
+		}
+		for (uint16 i = 1; i < partcount; i++) {
+			if( m_nCompleteSourcesCount > m_AvailPartFrequency[i]) {
+				m_nCompleteSourcesCount = m_AvailPartFrequency[i];
+			}
+		}
+	
+		count.Add(m_nCompleteSourcesCount);
+		
+		count.Shrink();
+	
+		int32 n = count.GetCount();	
+
+		if (n > 0) {
+			
+			// Kry - Native wx functions instead
+			count.Sort(Uint16CompareValues);
+			
+			// calculate range
+			int i = n >> 1;			// (n / 2)
+			int j = (n * 3) >> 2;	// (n * 3) / 4
+			int k = (n * 7) >> 3;	// (n * 7) / 8
+
+			//For complete files, trust the people your uploading to more...
+
+			//For low guess and normal guess count
+			//	If we see more sources then the guessed low and normal, use what we see.
+			//	If we see less sources then the guessed low, adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
+			//For high guess
+			//  Adjust 100% network and 0% what we see.
+			if (n < 20) {
+				if ( count[i] < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+				} else {
+					m_nCompleteSourcesCountLo = count[i];
+				}
+				m_nCompleteSourcesCount= m_nCompleteSourcesCountLo;
+				m_nCompleteSourcesCountHi = count[j];
+				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+				}
+			} else {
+			//Many sources..
+			//For low guess
+			//	Use what we see.
+			//For normal guess
+			//	Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the low.
+			//For high guess
+			//  Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
+
+				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+				m_nCompleteSourcesCount = count[j];
+				if( m_nCompleteSourcesCount < m_nCompleteSourcesCountLo ) {
+					m_nCompleteSourcesCount = m_nCompleteSourcesCountLo;
+				}
+				m_nCompleteSourcesCountHi= count[k];
+				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
+					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
+				}
+			}
+		}
+		m_nCompleteSourcesTime = time(NULL) + (60);
+	}
+	
+	if (theApp.amuledlg->sharedfileswnd->GetHandle()) {
+		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(this);
+	}
+	
 }

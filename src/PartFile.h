@@ -100,7 +100,7 @@ public:
 	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
 	void	AddSources(CMemFile* sources,uint32 serverip, uint16 serverport);
 	uint8	GetStatus(bool ignorepause = false);
-	void	NewSrcPartsInfo();	
+	void	UpdatePartsInfo();	
 	char*	GetPartMetFileName()							{return m_partmetfilename;}
 	uint32	GetTransfered()								{return transfered;}
 	char*	GetFullName()								{return fullname;}

@@ -309,7 +309,7 @@ CUpDownClient::~CUpDownClient()
 	m_AvarageDDR_list.RemoveAll();
 #endif
 	//DEBUG_ONLY (theApp.listensocket->Debug_ClientDeleted(this));
-	SetUploadFileID(NULL);
+	SetUploadFileID((uchar*)NULL);
 	//printf("END\n");
 }
 
@@ -1608,8 +1608,8 @@ wxString CUpDownClient::GetUploadFileInfo()
 void CUpDownClient::Destroy()
 {
 	if (socket) {
-		delete socket;
-		//socket->Destroy();
+		//delete socket;
+		socket->Destroy();
 	}
 }
 

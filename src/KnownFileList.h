@@ -43,7 +43,7 @@ public:
 	void	Save();
 	void	Clear();
 	CKnownFile*	FindKnownFile(char* filename,uint32 in_date,uint32 in_size);
-
+	CKnownFile*   FindKnownFileByID(const uchar* hash);
 
 	uint16 requested;
 	uint32 transfered;

@@ -80,7 +80,7 @@ public:
 	uint16	GetAllTimeAccepts()			{return alltimeaccepted;}
 	uint64	GetAllTimeTransfered()		{return alltimetransferred;}
 	CKnownFile* fileParent;
-
+	
 private:
 	uint16 requested;
 	uint64 transfered;
@@ -202,6 +202,8 @@ public:
 	
 	// file sharing
 	virtual	Packet*	CreateSrcInfoPacket(CUpDownClient* forClient);
+	
+	void	UpdatePartsInfo();	
 	
 protected:
 	bool	LoadTagsFromFile(CFile* file);

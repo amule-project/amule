@@ -231,6 +231,14 @@ public:
 	void			SetWaitStartTime(uint32 dwTime = 0);
 	void			SendHashsetPacket(char* forfileid);
 	void			SetUploadFileID(unsigned char* tempreqfileid);
+	bool			SupportMultiPacket() const { return m_bMultiPacket;	}	
+	#warning New from 0.42x, the old versions are DEPRECATED!
+	
+	void			SetUploadFileID(CKnownFile* newreqfile);
+	void			ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile);
+	void			ProcessFileInfo(CSafeMemFile* data, CPartFile* file);
+	void			ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPartFile* file);
+	
 	unsigned char*			GetUploadFileID()       {return requpfileid;}
 	CPartFile*		GetDownloadFile()	{return reqfile;}
 	uint32			SendBlockData(float kBpsToSend);

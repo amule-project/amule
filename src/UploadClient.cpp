@@ -29,12 +29,14 @@
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SafeFile.h"		// Needed for CSafeMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
+#include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Preferences.h"	// Needed for CPreferences
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
 #include "PartFile.h"		// Needed for PR_POWERSHARE
 #include "KnownFile.h"		// Needed for CKnownFile
+#include "KnownFileList.h"		// Needed for CKnownFileLists
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"		// Needed for theApp
@@ -437,7 +439,7 @@ void CUpDownClient::ProcessUpFileStatus(char* packet,uint32 size){
 			data.Read(nCompleteCountNew);
 			SetUpCompleteSourcesCount(nCompleteCountNew);
 			if (nCompleteCountLast != nCompleteCountNew)	{
-				tempreqfile->NewAvailPartsInfo();
+				tempreqfile->UpdatePartsInfo();
 			}
 		}
 	}
@@ -506,6 +508,7 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 	delete[] output;
 }
 
+#warning - DEPRECATED
 void CUpDownClient::SetUploadFileID(uchar* tempreqfileid){
 	CKnownFile* newreqfile = NULL;
 	if( tempreqfileid )
@@ -526,6 +529,99 @@ void CUpDownClient::SetUploadFileID(uchar* tempreqfileid){
 		oldreqfile->RemoveUploadingClient(this);
 	}
 }
+
+
+void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile)
+{
+	if (m_abyUpPartStatus) 
+	{
+		delete[] m_abyUpPartStatus;
+		m_abyUpPartStatus = NULL;	// added by jicxicmic
+	}
+	m_nUpPartCount = 0;
+	m_nUpCompleteSourcesCount= 0;
+	if( GetExtendedRequestsVersion() == 0 )
+		return;
+	if (data->GetLength() == 16){
+		return;
+		// to all developers: in the next version the client will be disconnected when causing this error!
+		//please fix your protocol implementation (shareaza, xmule, etc)!
+	}
+	uint16 nED2KUpPartCount;
+	data->Read(nED2KUpPartCount);
+	if (!nED2KUpPartCount)
+	{
+		m_nUpPartCount = tempreqfile->GetPartCount();
+		m_abyUpPartStatus = new uint8[m_nUpPartCount];
+		memset(m_abyUpPartStatus,0,m_nUpPartCount);
+	}
+	else
+	{
+		if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount)
+		{
+			//We already checked if we are talking about the same file.. So if we get here, something really strange happened!
+			m_nUpPartCount = 0;
+			return;
+		}
+		m_nUpPartCount = tempreqfile->GetPartCount();
+		m_abyUpPartStatus = new uint8[m_nUpPartCount];
+		uint16 done = 0;
+		while (done != m_nUpPartCount)
+		{
+			uint8 toread;
+			data->Read(toread);
+			for (sint32 i = 0;i != 8;i++){
+				m_abyUpPartStatus[done] = ((toread>>i)&1)? 1:0;
+//				We may want to use this for another feature..
+//				if (m_abyUpPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
+//					bPartsNeeded = true;
+				done++;
+				if (done == m_nUpPartCount)
+					break;
+			}
+		}
+		if (GetExtendedRequestsVersion() > 1)
+		{
+			uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
+			uint16 nCompleteCountNew;
+			data->Read(nCompleteCountNew);
+			SetUpCompleteSourcesCount(nCompleteCountNew);
+			if (nCompleteCountLast != nCompleteCountNew)
+			{
+				tempreqfile->UpdatePartsInfo();
+			}
+		}
+	}
+	theApp.amuledlg->transferwnd->queuelistctrl->RefreshClient(this);
+}
+
+
+void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
+{
+	CKnownFile* oldreqfile;
+	//We use the knownfilelist because we may have unshared the file..
+	//But we always check the download list first because that person may have decided to redownload that file.
+	//Which will replace the object in the knownfilelist if completed.
+	if ((oldreqfile = theApp.downloadqueue->GetFileByID(requpfileid)) == NULL ) {
+		oldreqfile = theApp.knownfiles->FindKnownFileByID(requpfileid);
+	}
+
+	if (newreqfile == oldreqfile) {
+		return;
+	}
+
+	if (newreqfile){
+		newreqfile->AddUploadingClient(this);
+		md4cpy(requpfileid, newreqfile->GetFileHash());
+	}
+	else {
+		md4clr(requpfileid);
+	}
+
+	if (oldreqfile)
+		oldreqfile->RemoveUploadingClient(this);
+}
+
 
 void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock){
 	//printf("entered in : CUpDownClient::AddReqBlock\n");

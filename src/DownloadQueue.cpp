@@ -414,10 +414,10 @@ void CDownloadQueue::Process()
 
 CPartFile* CDownloadQueue::GetFileByID(uchar* filehash){
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		if (!memcmp(filehash,filelist[i]->GetFileHash(),16))
+		if (!md4cmp(filehash,filelist[i]->GetFileHash()))
 			return filelist[i];
 	}
-	return 0;
+	return NULL;
 }
 
 CPartFile* CDownloadQueue::GetFileByIndex(int index){
@@ -425,16 +425,20 @@ CPartFile* CDownloadQueue::GetFileByIndex(int index){
 	int count=0;
 
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		if (count==index) return filelist[i];
+		if (count==index) {
+			return filelist[i];
+		}
 		count++;
 	}
-	return 0;
+	return NULL;
 }
 
 bool CDownloadQueue::IsPartFile(void* totest){
-	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) 
-		if (totest == filelist[i])
+	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
+		if (totest == filelist[i]) {
 			return true;
+		}
+	}
 	return false;
 }
 
@@ -567,7 +571,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	updatewindow, bo
 					removed = true;
 					if ( bDoStatsUpdate ){
 						cur_file->RemoveDownloadingSource(toremove);
-						cur_file->NewSrcPartsInfo();
+						cur_file->UpdatePartsInfo();
 					}
 					#if 0
 					/* Razor 1a - Modif by MikaelB */
@@ -1072,7 +1076,7 @@ void CDownloadQueue::RemoveSourceFromPartFile(CPartFile* file, CUpDownClient* cl
 {
 	file->srclists[client->sourcesslot].RemoveAt(position);
 	file->IsCountDirty = true;
-	file->NewSrcPartsInfo();
+	file->UpdatePartsInfo();
 	file->UpdateAvailablePartsCount();
 	client->SetDownloadState(DS_NONE);
 	client->SetValidSource(false);
