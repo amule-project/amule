@@ -36,6 +36,8 @@
 #include "UploadQueue.h"	// Needed for AddUpDataOverheadServer
 #include "Statistics.h"		// Needed for CStatistics
 #include "ObservableQueue.h"		// Needed for CQueueObserver
+#include "Format.h"
+#include "Logger.h"
 
 #include <algorithm>
 
@@ -403,10 +405,12 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	if (	!bClientResponse &&
 		!(m_resultType == wxString(wxT("Any")) ||
 		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
-		printf(	"Dropped result type %s != %s, file %s\n",
-			(const char *)unicode2char(GetFiletypeByName(toadd->GetFileName(),false)),
-			(const char *)unicode2char(m_resultType),
-			(const char *)unicode2char(toadd->GetFileName()));
+		AddDebugLogLineM( false, logSearch,
+			CFormat( wxT("Dropped result type %s != %s, file %s\n") )
+				% GetFiletypeByName(toadd->GetFileName(),false)
+				% m_resultType
+				% toadd->GetFileName() 
+		);
 		delete toadd;
 		return false;
 	}

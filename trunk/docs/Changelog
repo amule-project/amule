@@ -200,6 +200,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
 
 	Xaignar:
+		* Avoid flooding the console when searching for filetypes,
+		  mismatches are now logged as debugloglines instead.
 		* The "Clear" button on the search page now also clears the
 		  search text.
 		* Better handling of multi-line chat messages: The complete
