@@ -656,18 +656,18 @@ wxString CEC_PartFile_Tag::GetFileStatusString()
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
 {
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered(), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
 		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
 		(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
@@ -675,14 +675,14 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
 {
-	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests()));
-	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT, file->statistic.GetRequests()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests()));
 	
-	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts()));
-	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts()));
 
-	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, (uint32)file->statistic.GetTransfered()));
-	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, (uint32)file->statistic.GetAllTimeTransfered()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransfered()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered()));
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 		(uint32)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
@@ -693,7 +693,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,

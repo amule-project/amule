@@ -239,26 +239,26 @@ class CEC_SharedFile_Tag : public CECTag {
  		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
-  		uint32		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
- 		uint32		GetRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
- 		uint32		GetAllRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
+  		uint8		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt8Data(); }
+ 		uint16		GetRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt16Data(); }
+ 		uint16		GetAllRequests()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt16Data(); }
 
- 		uint32		GetAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
- 		uint32		GetAllAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
+ 		uint16		GetAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt16Data(); }
+ 		uint16		GetAllAccepts()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt16Data(); }
 
- 		uint32		GetXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
- 		uint32		GetAllXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
+ 		uint64		GetXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt64Data(); }
+ 		uint64		GetAllXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt64Data(); }
  		
- 		void SetPrio(uint32 &val) { AssignIfExist(EC_TAG_PARTFILE_PRIO, val); }
+ 		void SetPrio(uint8 &val) { AssignIfExist(EC_TAG_PARTFILE_PRIO, val); }
  		
- 		void SetRequests(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, val); }
+ 		void SetRequests(uint16 &val) { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT, val); }
  		void SetAllRequests(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, val); }
  		
- 		void SetAccepts(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, val); }
+ 		void SetAccepts(uint16 &val) { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT, val); }
  		void SetAllAccepts(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, val); }
  		
- 		void SetXferred(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, val); }
- 		void SetAllXferred(uint32 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, val); }
+ 		void SetXferred(uint64 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED, val); }
+ 		void SetAllXferred(uint64 &val) { AssignIfExist(EC_TAG_KNOWNFILE_XFERRED_ALL, val); }
 };
 
 class CEC_UpDownClient_Tag : public CECTag {
