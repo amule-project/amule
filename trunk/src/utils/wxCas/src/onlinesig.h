@@ -64,7 +64,7 @@ class OnLineSig
     wxString m_sessionDL;
     wxString m_runTime;
 
-    wxFileName *m_amulesig;
+    wxFileName m_amulesig;
 
     wxString BytesConvertion (const wxString& bytes);
 
@@ -74,13 +74,13 @@ class OnLineSig
     OnLineSig ();
 
     /// Constructor
-    OnLineSig (wxFileName * file);
+    OnLineSig (const wxFileName& file);
 
     /// Destructor
     ~OnLineSig ();
 
     /// Set amulesig.dat file name and path
-    void SetAmuleSig (wxFileName * file);
+    void SetAmuleSig (const wxFileName& file);
 
     /// Refresh stored informations
     void Refresh ();

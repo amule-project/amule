@@ -407,14 +407,14 @@ WxCasPrefs::OnValidateButton (wxCommandEvent & event)
       m_osPathTextCtrl->GetValue ())
     {
       // Reload amulesig.dat
-      /*wxFileName *amulesig = new wxFileName (m_osPathTextCtrl->GetValue (),
-                                             WxCasCte::AMULESIG_FILENAME);
+      wxFileName amulesig(m_osPathTextCtrl->GetValue (),
+                          WxCasCte::AMULESIG_FILENAME);
       ((WxCasFrame*)GetParent())->SetAmuleSigFile(amulesig);
-      delete amulesig;*/
 
       prefs->Write (WxCasCte::AMULESIG_PATH_KEY,
                     m_osPathTextCtrl->GetValue ());
     }
+
   // Restart timer if refresh interval has changed
   if (prefs->Read (WxCasCte::REFRESH_RATE_KEY,WxCasCte::DEFAULT_REFRESH_RATE)	!=
       m_refreshSpinButton->GetValue ())

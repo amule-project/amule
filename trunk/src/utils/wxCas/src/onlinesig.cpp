@@ -68,15 +68,15 @@ OnLineSig::OnLineSig ()
 
   m_maxDL = 0.0;
 
-  m_amulesig =
-    new wxFileName (wxConfigBase::Get()->
-                    Read (WxCasCte::AMULESIG_PATH_KEY,
-                          WxCasCte::DEFAULT_AMULESIG_PATH),
-                    WxCasCte::AMULESIG_FILENAME);
+  m_amulesig=
+    wxFileName (wxConfigBase::Get()->
+                Read (WxCasCte::AMULESIG_PATH_KEY,
+                      WxCasCte::DEFAULT_AMULESIG_PATH),
+                WxCasCte::AMULESIG_FILENAME);
 }
 
 // Constructor 2
-OnLineSig::OnLineSig (wxFileName * file)
+OnLineSig::OnLineSig (const wxFileName& file)
 {
   m_amulesig = file;
   Refresh ();
@@ -84,13 +84,11 @@ OnLineSig::OnLineSig (wxFileName * file)
 
 // Destructor
 OnLineSig::~OnLineSig ()
-{
-  delete m_amulesig;
-}
+{}
 
 // Accessors
 void
-OnLineSig::SetAmuleSig (wxFileName * file)
+OnLineSig::SetAmuleSig (const wxFileName& file)
 {
   m_amulesig = file;
   Refresh ();
@@ -99,7 +97,7 @@ OnLineSig::SetAmuleSig (wxFileName * file)
 void
 OnLineSig::Refresh ()
 {
-  wxFileInputStream input (m_amulesig->GetFullPath ());
+  wxFileInputStream input (m_amulesig.GetFullPath ());
 
   wxTextInputStream text (input);
   text.SetStringSeparators (wxT("\n"));
