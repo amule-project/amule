@@ -25,6 +25,7 @@
 #include "endianfix.h"		// For EndianSwap
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
+#include "ECPacket.h"		// Needed for CECPacket
 
 ECSocket::ECSocket()
 {
@@ -113,8 +114,8 @@ void ECSocket::Write(wxSocketBase *sock, const uint64& v)
 };
 #endif
 
-
-static wxCSConv aMuleConv(wxT("iso8859-1"));
+// Already included via ECPacket.h <- otherfunctions.h
+//static wxCSConv aMuleConv(wxT("iso8859-1"));
 
 
 bool ECSocket::Read(wxSocketBase *sock, wxString& s)
@@ -196,7 +197,7 @@ bool ECSocket::Write(wxSocketBase *sock, const wxString& s)
 	bool error = sock->Error();	// We might had an error sending the length !
 
 	while(msgRemain && !error) {
-		sock->Write(iobuf, msgBytes);
+		sock->Write(iobuf, msgRemain);
 		LastIO = sock->LastCount();
 		error = sock->Error();
 		msgRemain -= LastIO;
@@ -205,6 +206,73 @@ bool ECSocket::Write(wxSocketBase *sock, const wxString& s)
 
 	return !error;
 };
+
+
+bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len)
+{
+    sock->Read(buffer, len);
+#if wxBYTE_ORDER != wxLITTLE_ENDIAN
+    switch (len) {
+	case 2: ENDIAN_SWAP_I_16(buffer); break;
+	case 4: ENDIAN_SWAP_I_32(buffer); break;
+    }
+#endif
+    return (sock->LastCount() == len);
+}
+
+
+bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len)
+{
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+    sock->Write(buffer, len);
+#else
+    char tmp[8];
+
+    switch (len) {
+	case 1: *((int8 *)tmp) = *((int8 *)buffer); break;
+	case 2: *((int16 *)tmp) = ENDIAN_SWAP_16(*((int16 *)buffer));
+	case 4: *((int32 *)tmp) = ENDIAN_SWAP_32(*((int32 *)buffer));
+    }
+    sock->Write(tmp, len);
+#endif
+    return (sock->LastCount() == len);
+}
+
+
+bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len)
+{
+    unsigned int msgRemain = len;
+    unsigned int LastIO;
+    char *iobuf = (char *)buffer;
+    bool error = sock->Error();
+
+    while (msgRemain && !error) {
+	sock->Read(iobuf, msgRemain);
+	LastIO = sock->LastCount();
+	error = sock->Error();
+	msgRemain -= LastIO;
+	iobuf += LastIO;
+    }
+    return !error;
+}
+
+
+bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len)
+{
+    unsigned int msgRemain = len;
+    unsigned int LastIO;
+    const char *iobuf = (const char *)buffer;
+    bool error = sock->Error();
+
+    while(msgRemain && !error) {
+	sock->Write(iobuf, msgRemain);
+	LastIO = sock->LastCount();
+	error = sock->Error();
+	msgRemain -= LastIO;
+	iobuf += LastIO;
+    }
+    return !error;
+}
 
 
 //
@@ -234,3 +302,28 @@ wxString ECSocket::SendRecvMsg(wxSocketBase *sock, const wxString &msg)
 }
 
 
+bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
+{
+    uint8 flags = 0x20;
+
+    // TODO: Compression not yet implemented !
+    // if (packet.GetPacketLength() > 1024) flags |= 0x01;
+    
+    if (!WriteNumber(sock, &flags, 1)) return false;
+    return packet->WritePacket(sock, *this);
+}
+
+CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
+{
+    uint8 flags;
+    
+    if (!ReadNumber(sock, &flags, 1)) return NULL;
+    if ((flags & 0x60) != 0x20) {
+	// Protocol error - other end might use an older protocol
+	return NULL;
+    }
+    if ((flags & 0x01) != 0) {
+	// TODO: compression not implemented yet !
+    }
+    return new CECPacket(sock, *this);
+}

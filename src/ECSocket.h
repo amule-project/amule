@@ -32,6 +32,8 @@ enum aMuleECSocketType {
 	AMULE_EC_SERVER
 };
 
+class CECPacket;
+
 #ifdef AMULE_DAEMON
 class ECSocket : public wxEvtHandler
 #else
@@ -90,6 +92,41 @@ public:
 		return ((wxSocketServer *)m_sock)->Accept(wait);
 	}
 	
+
+public:
+/**
+ * Reads a packet from the socket.
+ *
+ * The packet must later be deleted by `delete packet;`
+ */
+	CECPacket * ReadPacket(wxSocketBase *sock);
+	// TODO: implement this
+//	bool ReadData(void *buffer, unsigned int buflen);
+
+/**
+ * Writes a packet to the socket
+ */
+	bool WritePacket(wxSocketBase *sock, const CECPacket *packet);
+	// TODO implement this
+//	bool WriteData(void *buffer, unsigned int len);
+
+	// These 4 methods are to be used by CECPacket & CECTag
+	bool ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len);
+	bool ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len);
+
+	bool WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len);
+	bool WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len);
+
+	// Wrapper functions for client sockets
+	CECPacket * ReadPacket(void) { return ReadPacket(m_sock); }
+	bool WritePacket(const CECPacket *packet) { return WritePacket(m_sock, packet); }
+
+	bool ReadNumber(void *buffer, unsigned int len) { return ReadNumber(m_sock, buffer, len); }
+	bool ReadBuffer(void *buffer, unsigned int len) { return ReadBuffer(m_sock, buffer, len); }
+
+	bool WriteNumber(const void *buffer, unsigned int len) { return WriteNumber(m_sock, buffer, len); }
+	bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
+
 private:
 	// 8 bits
 	void Read(wxSocketBase *sock, uint8& i);
@@ -116,6 +153,7 @@ private:
 	aMuleECSocketType m_type;
 	wxSocketBase *m_sock;
 	bool m_firstMessage;
+
 };
 
 #endif // ECSOCKET_H
