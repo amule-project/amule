@@ -475,7 +475,7 @@ echo "  Should C aMule Statistics (CAS) be built?                ${CAS:-no}"
 echo "  Should aMule GUI Statistics (wxCas) be built?            ${WXCAS:-no}"
 echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
 echo
-echo "  Which libraries should aMule use?"
+echo "  Libraries aMule will use to build:"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"
 
