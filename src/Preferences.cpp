@@ -1314,3 +1314,15 @@ wxString CPreferences::GetBrowser()
 	return cmd;
 }
 
+
+#include "ClientList.h"
+void CPreferences::SetIPFilterLevel(uint8 level)
+{
+	if (level != s_filterlevel) {
+		if (level > s_filterlevel) {
+			theApp.clientlist->FilterQueues();
+		}
+		s_filterlevel = level;
+	}
+}
+
