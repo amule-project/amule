@@ -40,6 +40,7 @@
 #include <wx/colordlg.h>
 #include <wx/button.h>
 #include <wx/filedlg.h>
+#include <wx/dirdlg.h>
 
 #include "ini2.h"			// Needed for CIni
 #include "amule.h"			// Needed for theApp
@@ -593,7 +594,7 @@ public:
 	
 	void SelectDir()
 	{
-		wxString str = wxDirSelector(_("Choose a folder for ")+wxString(szDef), "");
+		wxString str = wxDirSelector(_("Choose a folder for ") + wxString (szDef), "");
 		if (!str.IsEmpty())
 			SetCtrlValue(str);
 	}
@@ -929,6 +930,7 @@ void PrefsUnifiedDlg::BuildItemList(Preferences_Struct *prefs, char * appdir)  /
 	listRse.Append(new RseInt(IDC_FCHECK, prefs->Browser, "Browser", 0));	
 	listRse.Append(new RseBool(IDC_SAFEMAXCONN, prefs->UseSafeMaxConn, "SafeMaxConn", false)); 		
 	listRse.Append(new RseBool(IDC_VERBOSEPACKETERROR, prefs->VerbosePacketError, "VerbosePacketError", false)); 
+	listRse.Append(new RseDirAssured(IDC_OSDIR, prefs->OSDirectory, appdir, "OSDirectory", ""));	
 }
 
 //==============================================================================
@@ -961,6 +963,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	
 	EVT_BUTTON(IDC_SELTEMPDIR, PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELINCDIR,  PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELOSDIR,  PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV, PrefsUnifiedDlg::OnButtonBrowseWav)
 	EVT_BUTTON(IDC_BROWSEV, PrefsUnifiedDlg::OnButtonBrowseVideoplayer)
 	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
@@ -1339,6 +1342,8 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		prse = Prse(IDC_TEMPFILES);
 	else if (idButton == IDC_SELINCDIR)
 		prse = Prse(IDC_INCFILES);
+	else if (idButton == IDC_SELINCDIR)
+		prse = Prse(IDC_OSDIR);
 	else
 		wxASSERT(false);
 	((RseDirAssured*)prse)->SelectDir();

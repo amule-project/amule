@@ -2857,6 +2857,17 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
     item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
+    wxStaticBox *item28 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
+    wxStaticBoxSizer *item27 = new wxStaticBoxSizer( item28, wxHORIZONTAL );
+
+    wxTextCtrl *item29 = new wxTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item27->Add( item29, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxButton *item30 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->Add( item30, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    item0->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
+
     if (set_sizer)
     {
         parent->SetSizer( item0 );
