@@ -101,7 +101,7 @@ void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 		
 		SetDefaultStyle(style);
 	
-		AppendText( tokens.GetNextToken() );
+		AppendText( tokens.GetNextToken() + wxT("\n") );
 	}
 }
 
