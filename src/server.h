@@ -26,6 +26,7 @@
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "CFile.h"
+#include "StringFunctions.h"	// Needed for char2unicode()
 
 class CTag;
 class TagList;
@@ -57,12 +58,12 @@ public:
 	CServer(CServer* pOld);
 	~CServer();
 	void	AddTag(CTag* in_tag)					{taglist->Append(in_tag);}
-	const wxString&	GetListName()	const		{return listname;}
+	const wxString	GetListName()	const		{return char2unicode(listname);}
 	const wxString&	GetFullIP()		const		{return ipfull;}
 	
-	const wxString& GetAddress() const {
+	const wxString GetAddress() const {
 		if (!dynip.IsEmpty()) {
-			return dynip;
+			return char2unicode(dynip);
 		} else {
 			return ipfull;
 		}
@@ -75,7 +76,7 @@ public:
 	uint32	GetIP()		const			{return ip;}
 	uint32	GetFiles()	const			{return files;} 
 	uint32	GetUsers()	const			{return users;} 
-	const wxString&	GetDescription()	const	{return description;} 
+	const wxString	GetDescription()	const	{return char2unicode(description);} 
 	uint32	GetPing()			const	{return ping;} 
 	uint32	GetPreferences()	const	{return preferences;} 
 	uint32	GetMaxUsers()		const	{return maxusers;}
@@ -101,7 +102,7 @@ public:
 	void	SetSoftFiles(uint32 in_softfiles)			{softfiles = in_softfiles;}
 	uint32	GetHardFiles()		const		{return hardfiles;}
 	void	SetHardFiles(uint32 in_hardfiles)			{hardfiles = in_hardfiles;}
-	const	wxString& GetVersion() const				{return m_strVersion;}
+	const	wxString GetVersion() const				{return char2unicode(m_strVersion);}
 	void	SetVersion(wxString pszVersion)				{m_strVersion = pszVersion;}
 	void	SetTCPFlags(uint32 uFlags)				{m_uTCPFlags = uFlags;}
 	uint32	GetTCPFlags() const					{return m_uTCPFlags;}
