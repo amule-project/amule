@@ -91,8 +91,9 @@ uint32 CDataIO::readUInt32()
 
 void CDataIO::readUInt128(CUInt128* value)
 {
-	#warning NOT ENDIAN SAFE!
-	readArray(value->getDataPtr(), sizeof(uint32)*4);
+	uint32* data = (uint32*) value->getDataPtr();
+	for (int i = 0; i < 4; i++)
+		data[i] = readUInt32();
 }
 
 float CDataIO::readFloat()
@@ -285,8 +286,8 @@ void CDataIO::writeUInt32(uint32 val)
 
 void CDataIO::writeUInt128(const CUInt128& val)
 {
-	#warning NOT ENDIAN SAFE!
-	writeArray(val.getData(), sizeof(uint32)*4);
+	for (int i = 0; i < 4; i++)
+		writeUInt32(val.get32BitChunk(i));
 }
 
 void CDataIO::writeFloat(float val)
