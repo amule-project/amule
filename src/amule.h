@@ -26,6 +26,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/event.h>	
 #include <wx/socket.h>
+#include <wx/timer.h>		// Needed for wxTimerEvent
 
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
@@ -146,6 +147,8 @@ protected:
 	void OnDnsDone(wxCommandEvent& evt);
 	void OnSourcesDnsDone(wxCommandEvent& evt);
 
+	void OnUDPTimer(wxTimerEvent& evt);
+	void OnTCPTimer(wxTimerEvent& evt);
 
 	void 			SetTimeOnTransfer();
 	wxCriticalSection m_LogQueueLock;

@@ -51,12 +51,6 @@ class CSysTray;
 #define MP_DISCONNECT	4003
 #define MP_EXIT			4004
 
-#define ID_UQTIMER		59742
-#define TM_TCPSOCKET	4333
-// Kry - Not used??
-#define TM_UDPSOCKET	4322
-
-
 enum APPState {
 	APP_STATE_RUNNING = 0,
 	APP_STATE_SHUTINGDOWN,
@@ -125,8 +119,7 @@ public:
 protected:
 
 	void OnUQTimer(wxTimerEvent& evt);
-	void OnUDPTimer(wxTimerEvent& evt);
-	void OnSocketTimer(wxTimerEvent& evt);
+
 	
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
