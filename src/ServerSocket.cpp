@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
@@ -65,17 +67,109 @@
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for CStatistics
 
-//#define DEBUG_SERVER_PROTOCOL
+#define DEBUG_SERVER_PROTOCOL
 
 #ifndef AMULE_DAEMON
-
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
+#endif
 
+
+/******************************************************************************/
+
+#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
+
+CServerSocketHandler::CServerSocketHandler(CServerSocket *)
+{
+}
+#else
+CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
+:
+wxThread(wxTHREAD_JOINABLE)
+{
+	m_socket = socket;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
+	}
+}
 #endif
+
+void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
+{
+	CServerSocket *socket = dynamic_cast<CServerSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	if (!socket) {
+		return;
+	}
+
+	if (socket->OnDestroy()) {
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnConnect(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_LOST:
+			socket->OnError(socket->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			socket->OnReceive(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(wxSOCKET_NOERROR);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+	
+	
+}
+
+#ifdef AMULE_DAEMON
+void *CServerSocketHandler::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( m_socket->WaitOnConnect(1,0) ) {
+			break;
+		}
+	}
+	if ( !m_socket->wxSocketClient::IsConnected() ) {
+		printf("CServerSocket: connection refused or timed out\n");
+	}
+	if ( TestDestroy() ) {
+		return 0;
+	}
+	m_socket->OnConnect(wxSOCKET_NOERROR);
+	m_socket->OnSend(wxSOCKET_NOERROR);
+	while ( !TestDestroy() ) {
+		if ( m_socket->WaitForLost(0, 0) ) {
+			m_socket->OnError(m_socket->LastError());
+			printf("CServerSocket: connection closed\n");
+			return 0;
+		}
+		// lfroen: setting timeout to give app a chance gracefully destroy
+		// thread before deleting object
+		if ( m_socket->WaitForRead(1, 0) ) {
+			m_socket->OnReceive(wxSOCKET_NOERROR);
+		}
+	}
+	printf("CServerSocket: terminated\n");
+	return 0;
+
+}
+#endif
+
+//
+// There can be only one. :)
+//
+static CServerSocketHandler TheServerSocketHandler(NULL);
+
+/******************************************************************************/
 
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
@@ -83,18 +177,18 @@ CServerSocket::CServerSocket(CServerConnect* in_serverconnect, const wxProxyData
 :
 CEMSocket(ProxyData)
 {
-	// AddLogLine(true,"Serversocket: size %d\n",sizeof(CServerSocket));
-
 	serverconnect = in_serverconnect;
 	connectionstate = 0;
 	cur_server = 0;
-	info= wxEmptyString;
+	info.Clear();
 	m_bIsDeleting = false;
-	my_handler = new CServerSocketHandler(this);
 #ifndef AMULE_DAEMON	
+	my_handler = &TheServerSocketHandler;
 	SetEventHandler(*my_handler,SERVERSOCKET_HANDLER);
 	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
 	Notify(TRUE);
+#else
+	my_handler = new CServerSocketHandler(this);
 #endif
 	m_dwLastTransmission = 0;	
 }
@@ -112,8 +206,6 @@ CServerSocket::~CServerSocket()
 #ifdef AMULE_DAEMON
 	printf("CServerSocket: destroying socket %p\n", this);
 	my_handler->Delete();
-#else
-	delete my_handler;
 #endif
 }
 
@@ -632,90 +724,11 @@ bool CServerSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacke
 	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
 }
 
-CServerSocketHandler::CServerSocketHandler(CServerSocket* parent)
-#ifdef AMULE_DAEMON
- : wxThread(wxTHREAD_JOINABLE)
-#endif
-{
-	socket = parent;
-#ifdef AMULE_DAEMON
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
-	}
-#endif
-}
-
 #ifdef AMULE_DAEMON
 bool CServerSocket::Connect(wxIPV4address &addr, bool wait)
 {
 	bool res = CEMSocket::Connect(addr, wait);
 	my_handler->Run();
 	return res;
-}
-#endif
-
-void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event) {
-	
-	if (!socket) {
-		return;
-	}
-
-	if (socket->OnDestroy()) {
-		return;
-	}
-	
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnConnect(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(wxSOCKET_NOERROR);
-			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-	
-	
-}
-
-#ifdef AMULE_DAEMON
-void *CServerSocketHandler::Entry()
-{
-	while ( !TestDestroy() ) {
-		if ( socket->WaitOnConnect(1,0) ) {
-			break;
-		}
-	}
-	if ( !socket->wxSocketClient::IsConnected() ) {
-		printf("CServerSocket: connection refused or timed out\n");
-	}
-	if ( TestDestroy() ) {
-		return 0;
-	}
-	socket->OnConnect(wxSOCKET_NOERROR);
-	socket->OnSend(wxSOCKET_NOERROR);
-	while ( !TestDestroy() ) {
-		if ( socket->WaitForLost(0, 0) ) {
-			socket->OnError(socket->LastError());
-
-			printf("CServerSocket: connection closed\n");
-			return 0;
-		}
-		// lfroen: setting timeout to give app a chance gracefully destroy
-		// thread before deleting object
-		if ( socket->WaitForRead(1, 0) ) {
-			socket->OnReceive(wxSOCKET_NOERROR);
-		}
-	}
-	printf("CServerSocket: terminated\n");
-	return 0;
-
 }
 #endif
