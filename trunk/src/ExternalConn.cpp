@@ -386,6 +386,10 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 			encoders[cur_file] = CPartFile_Encoder(cur_file);
 		}
 	}
+	//
+	// curr_files set is created to minimize lookup time in download queue,
+	// since GetFileByID have loop inside leading to O(n), in this case
+	// it will mean O(n^2)
 	for(CPartFile_Encoder_Map::iterator i = encoders.begin(); i != encoders.end(); i++) {
 		if ( curr_files.count(i->first) == 0 ) {
 			dead_files.insert(i->first);
