@@ -414,8 +414,10 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 	return false;
 }
 
-void CIPFilter::Update() {
-	wxString strURL = theApp.glob_prefs->IPFilterURL();
+void CIPFilter::Update(wxString strURL) {
+	if (strURL.IsEmpty()) {
+		strURL = theApp.glob_prefs->IPFilterURL();
+	}
 	if (!strURL.IsEmpty()) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("ipfilter.dat.download"));
 		HTTPThread *downloader = new HTTPThread(strURL,strTempFilename, HTTP_IPFilter);

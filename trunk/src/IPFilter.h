@@ -46,7 +46,7 @@ public:
 	const wxString& GetLastHit()		{ return lasthit;}
 	uint16	BanCount()			{ return iplist.size(); }
 	void 	Reload();
-	void	Update();
+	void	Update(wxString strURL = wxEmptyString);
 	void	DownloadFinished(uint32 result);
 	
 private:

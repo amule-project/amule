@@ -614,7 +614,7 @@ void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 
 void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
 {
-	theApp.ipfilter->Update();
+	theApp.ipfilter->Update(((wxTextCtrl*)FindWindow(IDC_IPFILTERURL))->GetValue());
 }
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
