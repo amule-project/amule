@@ -399,7 +399,9 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 					break;
 				}
 				case FT_ATTRANSFEREDHI:{
-					statistic.alltimetransferred = (((uint64)newtag.GetInt()) << 32) + ((uint64)statistic.alltimetransferred);
+					statistic.alltimetransferred =
+						(((uint64)newtag.GetInt()) << 32) +
+						((uint64)statistic.alltimetransferred);
 					break;
 				}
 				case FT_ATREQUESTED:{
@@ -417,7 +419,12 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 						m_bAutoUpPriority = true;
 					}
 					else {
-						if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH && m_iUpPriority != PR_POWERSHARE) {
+						if (	m_iUpPriority != PR_VERYLOW &&
+							m_iUpPriority != PR_LOW &&
+							m_iUpPriority != PR_NORMAL &&
+							m_iUpPriority != PR_HIGH &&
+							m_iUpPriority != PR_VERYHIGH &&
+							m_iUpPriority != PR_POWERSHARE) {
 							m_iUpPriority = PR_NORMAL;
 						}					
 						m_bAutoUpPriority = false;
@@ -430,10 +437,11 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				}
 				case FT_AICH_HASH: {
 					CAICHHash hash;
-					if (hash.DecodeBase32(unicode2char(newtag.GetStr())) == CAICHHash::GetHashSize()) {
+					bool hashSizeOk =
+						hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+					wxASSERT(hashSizeOk);
+					if (hashSizeOk) {
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
-					} else {
-						wxASSERT( false );
 					}
 					break;
 				}				

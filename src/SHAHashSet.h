@@ -118,7 +118,7 @@ public:
 
 	static uint32	GetHashSize()						{ return HASHSIZE;}
 	
-	unsigned int DecodeBase32(const char *base32) {
+	unsigned int DecodeBase32(const wxString &base32) {
 		return otherfunctions::DecodeBase32(base32, HASHSIZE, m_abyBuffer);	
 	}	
 	

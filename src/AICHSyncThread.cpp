@@ -39,7 +39,7 @@
 #include <algorithm>
 
 
-wxMutex				CAICHSyncThread::s_thread_mutex;
+wxMutex			CAICHSyncThread::s_thread_mutex;
 CAICHSyncThread*	CAICHSyncThread::s_thread;
 
 
