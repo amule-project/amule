@@ -5,6 +5,7 @@ Version 2.0.0rc4 - The 'Target: REAL Stability' version.
 		* deleted separated i18n stuff from SysTray, now uses global one
 		* fixed 2 memory leaks in SysTray
 		* updated italian and napoletanean translations
+		* fixed unicode issues in serverlist updates and download tab
 
 Version 2.0.0rc3 - The 'Target: Stability' version.
 -------------
