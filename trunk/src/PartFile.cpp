@@ -3043,39 +3043,56 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 bool CPartFile::IsASaneFileClientCombination(
 	bool verbose, const CUpDownClient* cur_src, const CUpDownClient* forClient) const
 {
-	int n = GetPartCount();	
-	bool sane = (GetFileHash() == cur_src->reqfile->GetFileHash());
-	if (forClient) sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
-#if defined( __DEBUG__ )
-	if (!sane && verbose) {
-		printf("Mismatching hashes!\n");
-		printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
-		printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
-		if (forClient)
-			printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-		printf("Filenames are: \n");
-		printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
-		printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
-		if (forClient)
-			printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-#endif // __DEBUG__
-	} else {
-		sane = (n == cur_src->m_nPartCount);
-		if (forClient) sane = sane && (n == forClient->m_nPartCount);
+	bool sane_this = (this != NULL);
+	bool sane = sane_this;
+	
+	bool sane_cur_src = 
+		cur_src->IsASaneUpDownClient("IsASaneFileClientCombination", __FILE__, __LINE__);
+	
+	bool sane_forClient;
+	if (forClient) {
+		sane_forClient =
+			forClient->IsASaneUpDownClient("IsASaneFileClientCombination", __FILE__, __LINE__);
+	}
+	if (sane_this) {
+		if (sane_cur_src) {
+			sane = sane && (GetFileHash() == cur_src->reqfile->GetFileHash());
+		}
+		if (sane_forClient) {
+			sane = sane && (GetFileHash() == forClient->reqfile->GetFileHash());
+		}
 #if defined( __DEBUG__ )
 		if (!sane && verbose) {
-			printf("Mismatching Part Counts!\n");
-			printf("CPartFile->GetPartStatus() = %d\n", n);
-			printf("cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
+			printf("Mismatching hashes!\n");
+			printf("\tthis   : %s\n", 	unicode2char(GetFileHash().Encode().c_str()));
+			printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
 			if (forClient)
-				printf("forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
+				printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
 			printf("Filenames are: \n");
 			printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 			printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 			if (forClient)
 				printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-		}
 #endif // __DEBUG__
+		} else if (this != NULL) {
+			int n = GetPartCount();
+			sane = (n == cur_src->m_nPartCount);
+			if (forClient) sane = sane && (n == forClient->m_nPartCount);
+#if defined( __DEBUG__ )
+			if (!sane && verbose) {
+				printf("Mismatching Part Counts!\n");
+				printf("CPartFile->GetPartStatus() = %d\n", n);
+				printf("cur_src->m_nPartCount      = %d\n", cur_src->m_nPartCount);
+				if (forClient)
+					printf("forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
+				printf("Filenames are: \n");
+				printf("\tthis   : %s\n", unicode2char(GetFileName().c_str()));
+				printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
+				if (forClient)
+					printf("\tfor_clt: %s\n", 	unicode2char(forClient->reqfile->GetFileName().c_str()));
+			}
+#endif // __DEBUG__
+		}
 	}
 	
 	return sane;
