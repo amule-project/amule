@@ -986,7 +986,6 @@ void CUpDownClient::UDPReaskForDownload()
 		response->SetOpCode(OP_REASKFILEPING);
 		theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
-		delete response;
 	}
 }
 
