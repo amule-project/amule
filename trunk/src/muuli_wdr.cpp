@@ -1644,9 +1644,9 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item17->SetToolTip( _("The delay before showing tool-tips.") );
     item16->Add( item17, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxSpinCtrl *item18 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(30,-1), 0, 0, 30, 1 );
+    wxSpinCtrl *item18 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
     item18->SetToolTip( _("The delay before showing tool-tips.") );
-    item16->Add( item18, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    item16->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
     item11->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1926,7 +1926,7 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxCheckBox *item7 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(30,-1), 0, 1, 10, 2 );
+    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(40,-1), 0, 1, 10, 2 );
     item6->Add( item8, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item9 = new wxStaticText( parent, IDC_RETRIES_LBL, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3276,15 +3276,15 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item12 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FU, wxT("6"), wxDefaultPosition, wxSize(35,-1), 0, 6, 7, 6 );
+    wxSpinCtrl *item12 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FU, wxT("6"), wxDefaultPosition, wxSize(40,-1), 0, 6, 7, 6 );
     item12->SetToolTip( _("Owner permissions, must at least be read/write'able.") );
-    item11->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+    item11->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FG, wxT("4"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 4 );
+    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FG, wxT("4"), wxDefaultPosition, wxSize(40,-1), 0, 0, 7, 4 );
     item13->SetToolTip( _("Group permissions.") );
-    item11->Add( item13, 0, wxALIGN_CENTER|wxALL, 5 );
+    item11->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FO, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
+    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_SPIN_PERM_FO, wxT("0"), wxDefaultPosition, wxSize(40,-1), 0, 0, 7, 0 );
     item14->SetToolTip( _("Other permissions.") );
     item11->Add( item14, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -3295,15 +3295,15 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DU, wxT("7"), wxDefaultPosition, wxSize(35,-1), 0, 7, 7, 7 );
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DU, wxT("7"), wxDefaultPosition, wxSize(40,-1), 0, 7, 7, 7 );
     item17->SetToolTip( _("Owner permissions, must at least be read/write'able.") );
-    item16->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
+    item16->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item18 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DG, wxT("5"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 5 );
+    wxSpinCtrl *item18 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DG, wxT("5"), wxDefaultPosition, wxSize(40,-1), 0, 0, 7, 5 );
     item18->SetToolTip( _("Group permissions.") );
-    item16->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
+    item16->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item19 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DO, wxT("0"), wxDefaultPosition, wxSize(35,-1), 0, 0, 7, 0 );
+    wxSpinCtrl *item19 = new wxSpinCtrl( parent, IDC_SPIN_PERM_DO, wxT("0"), wxDefaultPosition, wxSize(40,-1), 0, 0, 7, 0 );
     item19->SetToolTip( _("Other permissions.") );
     item16->Add( item19, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -3415,7 +3415,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(100,-1), 0, 0, 100, 5 );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(60,-1), 0, 0, 100, 5 );
     item9->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
     item9->Enable( false );
     item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
