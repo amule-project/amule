@@ -46,7 +46,7 @@ public:
 	CServerList();
 	~CServerList();
 	bool		Init();
-	bool		AddServer(CServer* in_server );
+	bool		AddServer(CServer* in_server, bool fromUser = false);
 	void		RemoveServer(CServer* out_server);
 	void		RemoveAllServers();
 	void		RemoveDeadServers();	

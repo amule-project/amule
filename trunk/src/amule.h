@@ -224,7 +224,7 @@ public:
 	wxString GetServerLog(bool reset = false);
 	wxString GetDebugLog(bool reset = false);
 	
-	bool AddServer(CServer *srv);
+	bool AddServer(CServer *srv, bool fromUser = false);
 	void AddServerMessageLine(wxString &msg);
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
@@ -392,7 +392,7 @@ public:
 	CStatistics *statistics;
 	CStatisticsRem *rem_stat_updater;
 	
-	bool AddServer(CServer *srv);
+	bool AddServer(CServer *srv, bool fromUser = false);
 	
 	uint32 GetPublicIP();
 	wxString CreateED2kLink(const CAbstractFile* f);

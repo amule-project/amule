@@ -112,10 +112,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	} else {
 		toadd->SetListName(servername);		
 	}
-	if (theApp.AddServer(toadd)) {
-		AddLogLineM(true, _("Server added: ") + toadd->GetListName());
-	} else {
-		AddLogLineM(true, _("Server not added!"));
+	if ( !theApp.AddServer(toadd, true ) ) {
 		// Remove data
 		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
 		if(update) {
