@@ -69,12 +69,14 @@ inline ECSocket& ECSocket::Read(uint32& v)
 	return *this;
 }
 
+#ifndef __WXMAC__
 inline ECSocket& ECSocket::Read(uint64& v)
 {
 	ReadRaw(&v, 8);
 	ENDIAN_SWAP_I_64(v);
 	return *this;
 }
+#endif
 
 inline ECSocket& ECSocket::Read(wxString& v)
 {
@@ -104,12 +106,14 @@ inline ECSocket& ECSocket::Write(const uint32& v)
 	int32 tmp = ENDIAN_SWAP_32(v);
 	return WriteRaw(&tmp, 4);
 }
-	
+
+#ifndef __WXMAC__	
 inline ECSocket& ECSocket::Write(const uint64& v)
 {
 	int64 tmp = ENDIAN_SWAP_32(v);
 	return WriteRaw(&tmp, 8);
 }
+#endif
 
 inline ECSocket& ECSocket::Write(const wxString& v)
 {
