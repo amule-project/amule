@@ -950,7 +950,9 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	char buffer[256];
 
 	if (zero) {
-		emulesig_out.Write("0\n0.0|0.0|0", 11);
+		sprintf(buffer, "0\xA");
+		strcat(buffer, "0.0|0.0|0");
+		emulesig_out.Write(buffer, strlen(buffer));
 		amulesig_out.Write("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0\n", 22);
 	} else {
 		if (serverconnect->IsConnected()) {
@@ -998,7 +1000,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			emulesig_out.Write("0",1);
 			amulesig_out.Write("0\n0\n0\n0\n0\n",10);
 		}
-		emulesig_out.Write("\n",1);
+		emulesig_out.Write("\xA",1);
 
 		// Datarate for downloads
 		sprintf(buffer,"%.1f",downloadqueue->GetKBps());
