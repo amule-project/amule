@@ -2538,6 +2538,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 			HTTPTemp = HTTPTemp.Format(wxT("%s"), HTTPTempC);
 			OutS.Replace(wxT("[3]"), HTTPTemp);
 	}
+	delete sServerStat;
 	return OutS;
 }
 
