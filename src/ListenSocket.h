@@ -168,7 +168,7 @@ public:
 	void	Process();
 	void	RemoveSocket(CClientReqSocket* todel);
 	void	AddSocket(CClientReqSocket* toadd);
-	uint16	GetOpenSockets()		{return socket_list.size();}
+	uint32	GetOpenSockets()		{return socket_list.size();}
 	void	KillAllSockets();
 	bool	TooManySockets(bool bIgnoreInterval = false);
 	uint32	GetMaxConnectionReached()	{return maxconnectionreached;}
