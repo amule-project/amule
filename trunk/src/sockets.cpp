@@ -461,7 +461,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist)
 	connected = false;
 	clientid = 0;
 	singleconnecting = false;
-	wxIPV4address tmp;
+	amuleIPV4Address tmp;
 	tmp.AnyAddress();
 	tmp.Service(thePrefs::GetPort()+3);
 	udpsocket = new CUDPSocket(this,tmp); // initalize socket for udp packets

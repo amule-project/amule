@@ -24,18 +24,7 @@
 #if defined(__WXMAC__) || defined(__WXCOCOA__)
 	#include <wx/wx.h>
 #endif
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
 
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-	#include <netdb.h>
-#endif
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastItoIShort
 #include "ClientCredits.h"	// Needed for GetDownloadedTotal
@@ -92,8 +81,6 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DRATING,wxStaticText)->SetLabel(wxT("Unknown"));;
 	}	
 
-	printf("ClientSoftware ->%.2x<- ClientVersion ->v%.2x<- ClientModString ->%s\n",m_client->GetClientSoft(), m_client->GetMuleVersion(), unicode2char(m_client->GetClientModString()));
-
 	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
 	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
@@ -102,9 +89,8 @@ bool CClientDetailDialog::OnInitDialog() {
 	CastChild(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 
 	if (m_client->GetServerIP()) {
-		in_addr server;
-		server.s_addr = m_client->GetServerIP();
-		wxString srvaddr = char2unicode(inet_ntoa(server));
+		
+		wxString srvaddr = Uint32toStringIP(m_client->GetServerIP());
 		CastChild(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
 		
 		CServer* cserver = theApp.serverlist->GetServerByAddress(srvaddr, m_client->GetServerPort()); 
@@ -137,31 +123,24 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->Credits()->GetScoreRatio(m_client->GetIP())));
 		
 		if (theApp.clientcredits->CryptoAvailable()){
-			printf("Crypto available\n");
 			switch(m_client->Credits()->GetCurrentIdentState(m_client->GetIP())){
 				case IS_NOTAVAILABLE:
-					printf("CurrentIdentState not available\n");
 					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Supported"));
 					break;
 				case IS_IDFAILED:
-					printf("CurrentIdentState failed\n");
 					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Failed"));
 					break;
 				case IS_IDNEEDED:
-					printf("CurrentIdentState needed\n");
 					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not complete"));
 					break;
 				case IS_IDBADGUY:
-					printf("CurrentIdentState badguy\n");
 					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Bad Guy"));
 					break;
 				case IS_IDENTIFIED:
-					printf("CurrentIdentState Ident OK\n");
 					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Verified - OK"));
 					break;
 			}
 		} else {
-			printf("Crypto not available\n");
 			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(wxT("Not Available"));
 		}
 		

@@ -18,26 +18,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "types.h" 
-
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
-#else
-	#ifdef __BSD__
-     	#include <sys/types.h>
-	#endif /* __BSD__ */
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-/*
- * INADDR_BROADCAST is identical to INADDR_NONE which is not defined
- * on all systems. INADDR_BROADCAST should be fine to indicate an error.
- */
-#ifndef INADDR_NONE
-#define INADDR_NONE INADDR_BROADCAST
-#endif
-
 #include "server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "otherfunctions.h"	// Needed for nstrdup
@@ -59,12 +39,12 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 {
 
 	port = in_port;
-	if (inet_addr(unicode2char(i_addr)) == INADDR_NONE) {
+	ip = StringIPtoUint32(i_addr);
+	if (!ip) {
+		// If ip == 0, the address is a hostname
 		dynip = i_addr;
-		ip = 0;
 	} else {
-		ip = inet_addr(unicode2char(i_addr));
-		dynip = wxEmptyString;
+		dynip.Clear();
 	}
 	
 	Init();
@@ -132,9 +112,7 @@ CServer::~CServer()
 
 void CServer::Init() {
 	
-	in_addr host;
-	host.s_addr = ip;
-	ipfull = char2unicode(inet_ntoa(host));
+	ipfull = Uint32toStringIP(ip);
 	
 	taglist = new TagList;
 	tagcount = 0;
@@ -289,9 +267,7 @@ void CServer::SetDescription(const wxString& newname)
 void CServer::SetID(uint32 newip)
 {
 	ip = newip;
-	in_addr host;
-	host.s_addr = ip;
-	ipfull = char2unicode(inet_ntoa(host));
+	ipfull = Uint32toStringIP(ip);
 }
 
 void CServer::SetDynIP(const wxString& newdynip)

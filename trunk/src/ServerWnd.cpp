@@ -109,24 +109,24 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	CServer* toadd = new CServer(atoi(unicode2char(portstr)),serveraddr);
 	wxString servername;
 	servername = CastChild( IDC_SERVERNAME, wxTextCtrl )->GetValue();
-	if (!servername.IsEmpty()) {
-		toadd->SetListName(servername);
-	} else {
+	if (servername.IsEmpty()) {
 		toadd->SetListName(serveraddr);
+	} else {
+		toadd->SetListName(servername);		
 	}
-	if (!theApp.AddServer(toadd)) {
+	if (theApp.AddServer(toadd)) {
+		AddLogLineM(true, _("Server added: ") + toadd->GetListName());
+	} else {
+		AddLogLineM(true, _("Server not added!"));
+		// Remove data
 		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
 		if(update) {
 			update->SetListName(toadd->GetListName());
 			serverlistctrl->RefreshServer(update);
 		}
 		delete toadd;
-		AddLogLineM(true, _("Server not added!"));
-	} else {
-		AddLogLineM(true, _("Server added: ") + toadd->GetListName());
 	}
 	theApp.serverlist->SaveServermetToFile();
-	printf("Saving of server.met file Done !!!\n");
 
 	CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
 	CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
@@ -153,43 +153,35 @@ void CServerWnd::UpdateMyInfo()
 {
 	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
 	
-	wxString buffer;
-
 	MyInfoList->DeleteAllItems();
 	MyInfoList->InsertItem(0, _("Status:"));
+
 	if (theApp.serverconnect->IsConnected()) {
 		MyInfoList->SetItem(0, 1, _("Connected"));
-	}	else {
-		MyInfoList->SetItem(0, 1, _("Disconnected"));
-	}
 
-	if (theApp.serverconnect->IsConnected()) {
+		// Connection data		
+		
 		MyInfoList->InsertItem(1, _("IP:Port"));
-		if (theApp.serverconnect->IsLowID()) {
-			buffer = _("Unknown"); 
-		} else {
-			uint32 myid = theApp.serverconnect->GetClientID();
-			uint8 a = ( myid       ) & 0xFF;
-			uint8 b = ( myid >>  8 ) & 0xFF;
-			uint8 c = ( myid >> 16 ) & 0xFF;
-			uint8 d = ( myid >> 24 ) & 0xFF;
-			buffer.Printf(wxT("%i.%i.%i.%i:%i"),
-				a, b, c, d, thePrefs::GetPort());
-		}
-		MyInfoList->SetItem(1, 1, buffer);
+		MyInfoList->SetItem(1, 1, theApp.serverconnect->IsLowID() ? 
+			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
 
-		buffer.Printf(wxT("%u"), theApp.serverconnect->GetClientID());
 		MyInfoList->InsertItem(2, _("ID"));
-		if (theApp.serverconnect->IsConnected()) {
-			MyInfoList->SetItem(2, 1, buffer);
-		}
+		// No need to test the server connect, it's already true
+		MyInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.serverconnect->GetClientID()));
+		
+		MyInfoList->InsertItem(3, wxEmptyString);		
 
-		MyInfoList->InsertItem(3, wxEmptyString);
 		if (theApp.serverconnect->IsLowID()) {
-			MyInfoList->SetItem(3, 1,_("Low ID"));
+			MyInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
+			MyInfoList->SetItem(3, 1, _("LowID"));
 		} else {
-			MyInfoList->SetItem(3, 1,_("High ID"));
+			MyInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
+			MyInfoList->SetItem(3, 1, _("HighID"));
 		}
+		
+	} else {
+		// No data
+		MyInfoList->SetItem(0, 1, _("Disconnected"));
 	}
 
 	// Fit the width of the columns

@@ -17,8 +17,6 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -26,7 +24,7 @@
 #else
 	#include <netdb.h>		// Needed for gethostbyname_r
 	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// These three are needed for inet_ntoa
+	#include <netinet/in.h>		// These three are needed for inet_*
 	#include <arpa/inet.h>		//
 #endif
 #ifdef __WXMAC__
@@ -1307,8 +1305,7 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	Hostname_Entry* resolved = m_toresolve.front();
 	m_toresolve.pop_front();
 
-	if (resolved) {
-		printf(unicode2char(wxString(wxT("Thread finished, Hostname ")) + resolved->strHostname + wxString::Format(wxT(" resolved to %s\n"), inet_ntoa(inaddr->sin_addr))));
+	if (resolved) {		
 		if (inaddr!=NULL) {
 			CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
 			if (file) {

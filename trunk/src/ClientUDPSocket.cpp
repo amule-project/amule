@@ -89,19 +89,19 @@ CClientUDPSocket::~CClientUDPSocket()
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
 	wxUint32 length = LastCount();
 
 	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<wxUint32>(-1)) {
-		ProcessPacket(buffer+2,length-2,buffer[1],inet_addr(unicode2char(addr.IPAddress())),addr.Service());
+		ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
 	}
 }
 
 void CClientUDPSocket::ReceiveAndDiscard() {
 	
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);	
 	// And the discard.
 }
@@ -224,40 +224,6 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 	return false;
 }
 
-/*
-void CClientUDPSocket::OnSend(int nErrorCode)
-{
-	if (nErrorCode) {
-		return;
-	}
-
-	m_bWouldBlock = false;
-	CTypedPtrList<CPtrList, UDPPack*> failed_packets;
-
-	while (controlpacket_queue.GetHeadPosition() != 0 && !IsBusy()) {
-		UDPPack* cur_packet = controlpacket_queue.RemoveHead();
-		char* sendbuffer = new char[cur_packet->packet->size+2];
-		memcpy(sendbuffer,cur_packet->packet->GetUDPHeader(),2);
-		memcpy(sendbuffer+2,cur_packet->packet->pBuffer,cur_packet->packet->size);
-		if (SendTo(sendbuffer, cur_packet->packet->size+2, cur_packet->dwIP, cur_packet->nPort) ) {
-			delete cur_packet->packet;
-			delete cur_packet;
-		} else if ( ++cur_packet->trial < 3 ) {
-			failed_packets.AddTail(cur_packet);
-		} else {
-			delete cur_packet->packet;
-			delete cur_packet;
-		}
-		delete[] sendbuffer;
-	}
-
-	for (POSITION pos = failed_packets.GetHeadPosition(); pos; ) {
-		UDPPack* packet = failed_packets.GetNext(pos);
-		controlpacket_queue.AddTail(packet);
-	}
-	failed_packets.RemoveAll();
-}
-*/
 
 void CClientUDPSocket::OnSend(int nErrorCode)
 {
@@ -282,17 +248,11 @@ void CClientUDPSocket::OnSend(int nErrorCode)
 
 bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 {
-	in_addr host;
-	//host.S_un.S_addr = dwIP;
-	host.s_addr=dwIP;
 
 	amuleIPV4Address addr;
-	struct in_addr tmpa;
-	tmpa.s_addr=dwIP;//m_SaveAddr.sin_addr.s_addr;
-	addr.Hostname(tmpa.s_addr);
+	addr.Hostname(dwIP);
 	addr.Service(nPort);
 
-	//uint32 result = CAsyncSocket::SendTo(lpBuf,nBufLen,nPort,inet_ntoa(host));
 	if(Ok()) {
 		wxDatagramSocket::SendTo(addr,lpBuf,nBufLen);
 	} else {
@@ -300,9 +260,8 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 		return false;
 	}
 
-	//if (result == (uint32)SOCKET_ERROR){
 	if(Error()) {
-		uint32 error = LastError();//GetLastError();
+		uint32 error = LastError();
 		if (error == wxSOCKET_WOULDBLOCK) {
 			m_bWouldBlock = true;
 			return false;

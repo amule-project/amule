@@ -116,21 +116,17 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
-				struct sockaddr_in sockAddr;
-				memset(&sockAddr, 0, sizeof(sockAddr));
-				wxIPV4address tmpaddr;
+				amuleIPV4Address tmpaddr;
 				GetPeer(tmpaddr);
-				/*printf("Connection Event from %s : %u\n",
-					unicode2char(tmpaddr.IPAddress()),cur_server->GetPort());*/
-				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
-				cur_server->SetID(sockAddr.sin_addr.s_addr);
+				uint32 server_ip = StringIPtoUint32(tmpaddr.IPAddress());
+				cur_server->SetID(server_ip);
 				// GetServerByAddress may return NULL, so we must test!
 				// This was the reason why amule would crash when trying to
 				// connect in wxWidgets 2.5.2
 				CServer *pServer = theApp.serverlist->GetServerByAddress(
 					cur_server->GetAddress(), cur_server->GetPort());
 				if (pServer) {
-					pServer->SetID(sockAddr.sin_addr.s_addr);
+					pServer->SetID(server_ip);
 				} else {
 					AddLogLineM(false,_("theApp.serverlist->GetServerByAddress() returned NULL"));
 					return;
@@ -456,11 +452,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				int addcount = 0;
 				while(count) {
-					uint32 ip   = servers->ReadUInt32();
-					uint16 port = servers->ReadUInt16();
-					in_addr host;
-					host.s_addr=ip;
-					CServer* srv = new CServer(port, char2unicode(inet_ntoa(host)));
+					CServer* srv = new CServer(
+														servers->ReadUInt16() ,  						// Port
+														Uint32toStringIP(servers->ReadUInt32())); 	// Ip
 					srv->SetListName(srv->GetFullIP());
 					if (!theApp.AddServer(srv)) {
 						delete srv;
