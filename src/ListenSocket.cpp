@@ -163,8 +163,6 @@ void CClientReqSocket::Safe_Delete()
 		//deltimer = ::GetTickCount();
 		// if (m_hSocket != INVALID_SOCKET)
 		//  ShutDown(2);
-		SetNotify(0);
-		Notify(FALSE);
 		if (client) {
 			client->socket = NULL;
 		}
