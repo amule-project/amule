@@ -40,21 +40,19 @@
 	#ifdef __BSD__
      	#include <sys/param.h>
        	#include <sys/mount.h>
-	#else 
+	#else
 		#include <execinfo.h>
 		#include <mntent.h>
 	#endif /* __BSD__ */
 
-	#include <X11/Xlib.h>		// Needed for XParseGeometry
+#include <X11/Xlib.h>		// Needed for XParseGeometry
 	#include <gdk/gdk.h>
 	#include <gtk/gtk.h>
-	
+
 #endif
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, LOCALEDIR, PACKAGE, 
-					//   PACKAGE_STRING and VERSION
+	#include "config.h"			//   VERSION
 #endif
 
 #include <wx/filefn.h>
@@ -121,42 +119,42 @@
 BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// Socket handlers
-		// Listen Socket
-		EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleGuiApp::ListenSocketHandler)
+	// Listen Socket
+	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleGuiApp::ListenSocketHandler)
 
-		// UDP Socket (servers)
-		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
-		// UDP Socket (clients)
-		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::ClientUDPSocketHandler)
+	// UDP Socket (servers)
+	EVT_SOCKET(UDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
+	// UDP Socket (clients)
+	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::ClientUDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
-		EVT_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
+	EVT_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
 
 	// Core timer
-		EVT_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
-		
-		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
-		
+	EVT_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
+
+	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
+
 	// Async dns handling
-		EVT_CUSTOM(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
-		
-		EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleGuiApp::OnSourceDnsDone)
-		
-		EVT_CUSTOM(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)		
-		
+	EVT_CUSTOM(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
+
+	EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleGuiApp::OnSourceDnsDone)
+
+	EVT_CUSTOM(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)
+
 	// Hash ended notifier
 
-		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleGuiApp::OnFinishedHashing)
-		
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleGuiApp::OnFinishedHashing)
+
 	// Hashing thread finished and dead
 
-		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleGuiApp::OnHashingShutdown)
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleGuiApp::OnHashingShutdown)
 
 	// File completion ended notifier
-		EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleGuiApp::OnFinishedCompletion)
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleGuiApp::OnFinishedCompletion)
 
 	// HTTPDownload finished
-		EVT_CUSTOM(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)
 
 END_EVENT_TABLE()
 
@@ -165,12 +163,15 @@ IMPLEMENT_APP(CamuleGuiApp)
 
 #endif // CLIENT_GUI
 
+
 // Initialization of the static MyTimer member variables.
 uint32 MyTimer::tic32 = 0;
 uint64 MyTimer::tic64 = 0;
-	
+
+
 // Global timer. Used to cache GetTickCount() results for better performance.
 class MyTimer* mytimer = NULL;
+
 
 CamuleGuiBase::CamuleGuiBase()
 {
@@ -179,14 +180,18 @@ CamuleGuiBase::CamuleGuiBase()
 	mytimer = new MyTimer();
 }
 
+
 CamuleGuiBase::~CamuleGuiBase()
 {
+
 }
+
 
 void CamuleGuiBase::ShowAlert(wxString msg, wxString title, int flags)
 {
 	wxMessageBox(msg, title, flags);
 }
+
 
 int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 {
@@ -196,7 +201,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	unsigned int geometry_width = 800;
 	unsigned int geometry_height = 600;
 
-	if ( geometry_enabled ) {	
+	if ( geometry_enabled ) {
 		// I plan on moving this to a seperate function, as it just clutters up OnInit()
 #ifdef __WXGTK__
 		// Nothing we can do against this unicode2char either.
@@ -204,8 +209,8 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		geometry_enabled = true;
 #elif defined (__WXMSW__)
 		/*
-			This implementation might work with mac, provided that the
-			SetSize() function works as expected.
+		This implementation might work with mac, provided that the
+		SetSize() function works as expected.
 		*/
 
 		// Remove possible prefix
@@ -262,18 +267,20 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 #endif
 		printf("geometry:  x: %d y: %d width: %d height: %d\n", geometry_x, geometry_y, geometry_width, geometry_height);
 	}
+	
 	// Should default/last-used position be overridden?
 	m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT(VERSION));
 	if ( geometry_enabled ) {
 		amuledlg = new CamuleDlg(NULL, m_FrameTitle,
-			wxPoint(geometry_x,geometry_y),
-			wxSize( geometry_width, geometry_height - 58 ));
+		                         wxPoint(geometry_x,geometry_y),
+		                         wxSize( geometry_width, geometry_height - 58 ));
 	} else {
 		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
 	}
 
 	return 0;
 }
+
 
 // Sets the contents of the clipboard. Prior content  erased.
 bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
@@ -284,13 +291,16 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 		wxTheClipboard->SetData(new wxTextDataObject(strText));
 		wxTheClipboard->Close();
 	}
+	
 	return ClipBoardOpen;
 }
 
 
 void CamuleGuiBase::NotifyEvent(GUIEvent WXUNUSED(event))
 {
+
 }
+
 
 #ifndef CLIENT_GUI
 
@@ -301,10 +311,12 @@ int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
 	return 0;
 }
 
+
 void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	CamuleGuiBase::ShowAlert(msg, title, flags);
 }
+
 
 int CamuleGuiApp::OnExit()
 {
@@ -315,7 +327,9 @@ int CamuleGuiApp::OnExit()
 	return CamuleApp::OnExit();
 }
 
-void CamuleGuiApp::ShutDown() {
+
+void CamuleGuiApp::ShutDown()
+{
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
 	if (mytimer) {
@@ -324,14 +338,15 @@ void CamuleGuiApp::ShutDown() {
 	}
 }
 
+
 bool CamuleGuiApp::OnInit()
 {
 	amuledlg = NULL;
-	
+
 	if ( !CamuleApp::OnInit() ) {
 		return false;
 	}
-	
+
 	// Create the Core timer
 	core_timer=new wxTimer(this,ID_CORETIMER);
 	if (!core_timer) {
@@ -349,10 +364,10 @@ bool CamuleGuiApp::OnInit()
 	// The upload queue process loop has now been rewritten to compensate for timer errors.
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
-	core_timer->Start(100);	
+	core_timer->Start(100);
 
 	// Start the Gui Timer
-	
+
 	// Note: wxTimer can be off by more than 10% !!!
 	// In addition to the systematic error introduced by wxTimer, we are losing
 	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
@@ -364,8 +379,8 @@ bool CamuleGuiApp::OnInit()
 	amuledlg->StartGuiTimer();
 
 	return true;
-
 }
+
 
 void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 {
@@ -375,7 +390,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 	//
 	// CListenSocket *socket = (CListenSocket *) event.GetSocket();
 	//
-	// Also, now with proxy, CListenSocket is no longer derived from 
+	// Also, now with proxy, CListenSocket is no longer derived from
 	// wxSocketServer, so event.GetSocket() is actually
 	// theApp.listensocket->m_SocketServer
 	//
@@ -385,6 +400,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 		wxASSERT(0);
 		return;
 	}
+	
 	if (!IsReady) {
 		// Even if we are not ready to start listening, we must
 		// accept the connection, otherwise no other connection
@@ -395,6 +411,7 @@ void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 		// Kry - Woops, we don't want to accept a destroying socket
 		return;
 	}
+	
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_CONNECTION:
 			socket->OnAccept(0);
@@ -410,6 +427,7 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
 	wxASSERT(socket);
+	
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.
 		return;
@@ -420,8 +438,8 @@ void CamuleGuiApp::UDPSocketHandler(wxSocketEvent& event)
 		// flush the buffer
 		socket->ReceiveAndDiscard();
 		return;
-	}	
-	
+	}
+
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
@@ -446,7 +464,7 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 		// flush the buffer
 		socket->ReceiveAndDiscard();
 		return;
-	}	
+	}
 
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_INPUT:
@@ -461,6 +479,7 @@ void CamuleGuiApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
+
 CFriend *CamuleGuiApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
 {
 	if ( amuledlg && amuledlg->chatwnd ) {
@@ -469,17 +488,20 @@ CFriend *CamuleGuiApp::FindFriend(CMD4Hash *hash, uint32 ip, uint16 port)
 	return NULL;
 }
 
+
 void CamuleGuiApp::NotifyEvent(GUIEvent event)
 {
 	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
 		return;
 	}
+	
 	switch (event.ID) {
 		// GUI->CORE events
 		// no need to check pointers: if event is here, gui must be running
+
 		
 		// search
-	        case SEARCH_REQ:
+		case SEARCH_REQ:
 			statistics->AddUpDataOverheadServer(((CPacket*)event.ptr_value)->GetPacketSize());
 			serverconnect->SendPacket( (CPacket*)event.ptr_value, 0 );
 			if ( event.byte_value ) {
@@ -488,98 +510,101 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				searchlist->m_searchpacket = NULL;
 			}
 			break;
-	        case SEARCH_ADD_TO_DLOAD:
+		case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;
 
+			
 		// PartFile
-	        case PARTFILE_REMOVE_NO_NEEDED:
+		case PARTFILE_REMOVE_NO_NEEDED:
 			((CPartFile *)event.ptr_value)->CleanUpSources( true,  false, false );
 			break;
-	        case PARTFILE_REMOVE_FULL_QUEUE:
+		case PARTFILE_REMOVE_FULL_QUEUE:
 			((CPartFile *)event.ptr_value)->CleanUpSources( false, true,  false );
 			break;
-	        case PARTFILE_REMOVE_HIGH_QUEUE:
+		case PARTFILE_REMOVE_HIGH_QUEUE:
 			((CPartFile *)event.ptr_value)->CleanUpSources( false, false, true  );
 			break;
-	        case PARTFILE_CLEANUP_SOURCES:
+		case PARTFILE_CLEANUP_SOURCES:
 			((CPartFile *)event.ptr_value)->CleanUpSources( true,  true,  true  );
 			break;
-	        case PARTFILE_SWAP_A4AF_THIS: {
+		case PARTFILE_SWAP_A4AF_THIS: {
 				CPartFile *file = (CPartFile *)event.ptr_value;
 				if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
 					CPartFile::SourceSet::iterator it = file->A4AFsrclist.begin();
 					for ( ; it != file->A4AFsrclist.end(); ) {
 						CUpDownClient *cur_source = *it++;
-					
+
 						cur_source->SwapToAnotherFile(true, false, false, file);
 					}
 				}
 			}
 			break;
-        	case PARTFILE_SWAP_A4AF_OTHERS: {
+		case PARTFILE_SWAP_A4AF_OTHERS: {
 				CPartFile *file = (CPartFile *)event.ptr_value;
 				if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
 					CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
 					for( ; it != file->m_SrcList.end(); ) {
 						CUpDownClient* cur_source = *it++;
-					
+
 						cur_source->SwapToAnotherFile(false, false, false, NULL);
 					}
 				}
 			}
 			break;
-	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
+		case PARTFILE_SWAP_A4AF_THIS_AUTO:
 			((CPartFile *)event.ptr_value)->SetA4AFAuto(!((CPartFile *)event.ptr_value)->IsA4AFAuto());
 			break;
-	        case PARTFILE_PAUSE:
+		case PARTFILE_PAUSE:
 			((CPartFile *)event.ptr_value)->PauseFile();
 			break;
-	        case PARTFILE_RESUME:
+		case PARTFILE_RESUME:
 			((CPartFile *)event.ptr_value)->ResumeFile();
 			((CPartFile *)event.ptr_value)->SavePartFile();
 			break;
-	        case PARTFILE_STOP:
+		case PARTFILE_STOP:
 			((CPartFile *)event.ptr_value)->StopFile();
 			break;
-	        case PARTFILE_PRIO_AUTO:
+		case PARTFILE_PRIO_AUTO:
 			((CPartFile *)event.ptr_value)->SetAutoDownPriority(event.long_value);
 			break;
-	        case PARTFILE_PRIO_SET:
+		case PARTFILE_PRIO_SET:
 			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
-									event.longlong_value);
+					event.longlong_value);
 			break;
-	        case PARTFILE_SET_CAT:
+		case PARTFILE_SET_CAT:
 			((CPartFile *)event.ptr_value)->SetCategory(event.byte_value);
 			break;
-	        case PARTFILE_DELETE:
+		case PARTFILE_DELETE:
 			if ( thePrefs::StartNextFile() &&
-			     (((CPartFile *)event.ptr_value)->GetStatus() == PS_PAUSED) ) {
+					(((CPartFile *)event.ptr_value)->GetStatus() == PS_PAUSED) ) {
 				downloadqueue->StartNextFile();
 			}
 			((CPartFile *)event.ptr_value)->Delete();
 			break;
-	        case KNOWNFILE_SET_UP_PRIO:
+		case KNOWNFILE_SET_UP_PRIO:
 			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(false);
 			((CKnownFile *)event.ptr_value)->SetUpPriority(event.byte_value);
 			break;
-	        case KNOWNFILE_SET_UP_PRIO_AUTO:
+		case KNOWNFILE_SET_UP_PRIO_AUTO:
 			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(true);
 			((CKnownFile *)event.ptr_value)->UpdateAutoUpPriority();
 			break;
-	        case KNOWNFILE_SET_COMMENT:
+		case KNOWNFILE_SET_COMMENT:
 			((CKnownFile *)event.ptr_value)->SetFileComment(event.string_value);
 			break;
-			// download queue
-	        case DLOAD_SET_CAT_PRIO:
+		
+			
+		// download queue
+		case DLOAD_SET_CAT_PRIO:
 			downloadqueue->SetCatPrio(event.long_value, event.short_value);
 			break;
-	        case DLOAD_SET_CAT_STATUS:
+		case DLOAD_SET_CAT_STATUS:
 			downloadqueue->SetCatStatus(event.long_value, event.short_value);
 			break;
-		
-		// CORE->GUI
-		// queue list
+
+			// CORE->GUI
+			// queue list
 		case QLIST_CTRL_ADD_CLIENT:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
 				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtQueued);
@@ -595,6 +620,8 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtQueued);
 			}
 			break;
+
+		
 		// shared files
 		case SHAREDFILES_UPDATE_ITEM:
 			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
@@ -606,7 +633,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile((CKnownFile*)event.ptr_value);
 			}
 			break;
-		
+
 		case SHAREDFILES_REMOVE_ITEM:
 			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
 				amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile((CKnownFile*)event.ptr_value);
@@ -642,11 +669,11 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		case DOWNLOAD_CTRL_ADD_SOURCE:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
 				CPartFile* file = (CPartFile*)event.ptr_value;
-				
+
 				if ( file->ShowSources() ) {
 					amuledlg->transferwnd->downloadlistctrl->AddSource( file,
-											   (CUpDownClient*)event.ptr_aux_value,
-											   event.byte_value);
+							(CUpDownClient*)event.ptr_aux_value,
+							event.byte_value);
 				}
 			}
 			break;
@@ -661,22 +688,14 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 
 				if ( !file || file->ShowSources() ) {
 					amuledlg->transferwnd->downloadlistctrl->RemoveSource((CUpDownClient*)event.ptr_value,
-										      file );
+							file );
 				}
 			}
 			break;
 
-		case DOWNLOAD_CTRL_SHOW_HIDE_FILE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				// for remote gui just send message
-				bool show = !((CPartFile*)event.ptr_value)->CheckShowItemInGivenCat( amuledlg->transferwnd->downloadlistctrl->GetCategory() );
-				amuledlg->transferwnd->downloadlistctrl->ShowFile( (CPartFile*)event.ptr_value, show );
-			}
-			break;
-
 		case DOWNLOAD_CTRL_HIDE_SOURCE:
-		if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-					amuledlg->transferwnd->downloadlistctrl->ShowSources((CPartFile*)event.ptr_value, false);
+			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
+				amuledlg->transferwnd->downloadlistctrl->ShowSources((CPartFile*)event.ptr_value, false);
 			}
 			break;
 		case DOWNLOAD_CTRL_SORT:
@@ -684,13 +703,10 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->transferwnd->downloadlistctrl->SortList();
 			}
 			break;
-		case DOWNLOAD_CTRL_SHOW_FILES_COUNT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
-			}
-			break;
+
+		
 		// upload ctrl
-			case UPLOAD_CTRL_ADD_CLIENT:
+		case UPLOAD_CTRL_ADD_CLIENT:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
 				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtUploading);
 			}
@@ -705,8 +721,8 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtUploading);
 			}
 			break;
-		// client ctrl
-			case CLIENT_CTRL_ADD_CLIENT:
+			// client ctrl
+		case CLIENT_CTRL_ADD_CLIENT:
 			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
 				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtClients);
 			}
@@ -721,6 +737,8 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtClients);
 			}
 			break;
+		
+			
 		// server
 		case SERVER_ADD:
 			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
@@ -745,7 +763,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		case SERVER_HIGHLIGHT:
 			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
 				amuledlg->serverwnd->serverlistctrl->HighlightServer((CServer*)event.ptr_value,
-										     event.byte_value);
+						event.byte_value);
 			}
 			break;
 		case SERVER_REFRESH:
@@ -769,6 +787,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			}
 			break;
 
+		
 		// notification
 		case SHOW_NOTIFIER:
 			amuledlg->ShowNotifier(event.string_value,event.long_value,event.byte_value);
@@ -788,13 +807,14 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 			break;
 		case SHOW_USER_COUNT:
 			amuledlg->ShowUserCount(((CServer*)event.ptr_value)->GetUsers(),
-						((CServer*)event.ptr_value)->GetFiles());
+									((CServer*)event.ptr_value)->GetFiles());
 			amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
 			break;
 		case SHOW_GUI:
 			amuledlg->Show_aMule(true);
 			break;
-			
+
+		
 		// search window
 		case SEARCH_CANCEL:
 			if ( amuledlg->searchwnd ) {
@@ -820,17 +840,19 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				}
 			}
 			break;
-	        case SEARCH_UPDATE_SOURCES:
-				amuledlg->searchwnd->UpdateResult( (CSearchFile *)event.ptr_value );
+		case SEARCH_UPDATE_SOURCES:
+			amuledlg->searchwnd->UpdateResult( (CSearchFile *)event.ptr_value );
 			break;
-	        case SEARCH_ADD_RESULT:
-				amuledlg->searchwnd->AddResult( (CSearchFile *)event.ptr_value );
+		case SEARCH_ADD_RESULT:
+			amuledlg->searchwnd->AddResult( (CSearchFile *)event.ptr_value );
 			break;
+
+			
 #ifndef CLIENT_GUI
-/*!
- * lfroen: chat doesnt work in core. So remote gui will not have chat page at all
- */
-		// chat window
+			/*!
+			 * lfroen: chat doesnt work in core. So remote gui will not have chat page at all
+			 */
+			// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {
 				amuledlg->chatwnd->RefreshFriend((CFriend *)event.ptr_value);
@@ -849,10 +871,12 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		case CHAT_PROCESS_MSG:
 			if ( amuledlg->chatwnd ) {
 				amuledlg->chatwnd->ProcessMessage((CUpDownClient *)event.ptr_value,
-								event.string_value);
+												  event.string_value);
 			}
 			break;
 #endif
+
+			
 		// logging
 		case ADDLOGLINE:
 			if (amuledlg) {
@@ -876,21 +900,24 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 	}
 };
 
+
 wxString CamuleGuiApp::GetLog(bool reset)
 {
-    if ( reset ) {
-            amuledlg->ResetLog(ID_LOGVIEW);
-    }
+	if ( reset ) {
+		amuledlg->ResetLog(ID_LOGVIEW);
+	}
 	return CamuleApp::GetLog(reset);
 }
 
+
 wxString CamuleGuiApp::GetServerLog(bool reset)
 {
-    if ( reset ) {
-            amuledlg->ResetLog(ID_SERVERINFO);
-    }
+	if ( reset ) {
+		amuledlg->ResetLog(ID_SERVERINFO);
+	}
 	return CamuleApp::GetServerLog(reset);
 }
+
 
 void CamuleGuiApp::AddServerMessageLine(wxString &msg)
 {

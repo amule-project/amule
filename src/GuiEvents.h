@@ -55,10 +55,8 @@ enum GUI_Event_ID {
 	DOWNLOAD_CTRL_ADD_SOURCE,
 	DOWNLOAD_CTRL_RM_FILE,
 	DOWNLOAD_CTRL_RM_SOURCE,
-	DOWNLOAD_CTRL_SHOW_HIDE_FILE,
 	DOWNLOAD_CTRL_HIDE_SOURCE,
 	DOWNLOAD_CTRL_SORT,
-	DOWNLOAD_CTRL_SHOW_FILES_COUNT,
 	// upload control
 	UPLOAD_CTRL_ADD_CLIENT,
 	UPLOAD_CTRL_REFRESH_CLIENT,
@@ -310,10 +308,8 @@ class GUIEvent : public wxEvent {
 #define Notify_DownloadCtrlAddSource(p0, p1, val)   Notify_3_ValEvent(DOWNLOAD_CTRL_ADD_SOURCE, p0, p1, val)
 #define Notify_DownloadCtrlRemoveFile(ptr0)         Notify_1_ValEvent(DOWNLOAD_CTRL_RM_FILE, ptr0)
 #define Notify_DownloadCtrlRemoveSource(ptr0, ptr1) Notify_2_ValEvent(DOWNLOAD_CTRL_RM_SOURCE, (void *)ptr0, (void *)ptr1)
-#define Notify_DownloadCtrlShowHideFileStatus(ptr)  Notify_1_ValEvent(DOWNLOAD_CTRL_SHOW_HIDE_FILE, ptr)
 #define Notify_DownloadCtrlHideSource(ptr)          Notify_1_ValEvent(DOWNLOAD_CTRL_HIDE_SOURCE, ptr)
 #define Notify_DownloadCtrlSort()                   Notify_0_ValEvent(DOWNLOAD_CTRL_SORT)
-#define Notify_DownloadCtrlShowFilesCount()         Notify_0_ValEvent(DOWNLOAD_CTRL_SHOW_FILES_COUNT)
 
 // upload ctrl
 #define Notify_UploadCtrlAddClient(ptr)             Notify_1_ValEvent(UPLOAD_CTRL_ADD_CLIENT, ptr)
