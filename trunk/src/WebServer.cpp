@@ -1015,8 +1015,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData.Replace(wxT("[4]"), wxT("-"));
 		}
 		
-		HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
-		/*
+		//HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
 		int complx = (int)(m_Templates.iProgressbarWidth*i->fCompleted/100);
 		if ( complx ) {
 			HTTPProcessData.Replace(wxT("[DownloadBar]"), 
@@ -1025,7 +1024,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else {
 			HTTPProcessData.Replace(wxT("[DownloadBar]"), i->m_Image->GetHTML());
 		}
-		*/
 
 		if (i->lFileSpeed > 0.0f) {
 			fTotalSpeed += i->lFileSpeed;
@@ -2485,8 +2483,18 @@ bool DownloadFilesInfo::ReQuery()
 				file->fCompleted = (100.0*file->lFileCompleted) / file->lFileSize;
 			}
 			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-			if ( gaptag ) {
-				file->m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+			CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+			CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
+			if ( gaptag && parttag && reqtag) {
+				file->m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
+					(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
+
+				const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
+				int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+				file->m_ReqParts.resize(reqcount);
+				for (int i = 0; i < reqcount;i++) {
+					file->m_ReqParts[i] = reqparts[i];
+				}
 			}
 		} else {
 			// don't have it - prepare to request full info
@@ -2540,8 +2548,10 @@ bool DownloadFilesInfo::ReQuery()
 			file.m_Encoder = PartFileEncoderData( (file.lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
 
 			CECTag *gaptag = tag->GetTagByName(EC_TAG_PARTFILE_GAP_STATUS);
-			if ( gaptag ) {
-				file.m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen());
+			CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
+			if ( gaptag && parttag ) {
+				file.m_Encoder.Decode((unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
+					(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
 			}
 			
 			//
@@ -2551,8 +2561,9 @@ bool DownloadFilesInfo::ReQuery()
 			DownloadFiles *real_ptr = &(m_items.back());
 			m_files[file.file_id] = real_ptr;
 			
-			real_ptr->m_Image = new CDynImage(file.file_id, m_width, m_height,
-				file.lFileSize, m_Template, &real_ptr->m_Encoder);
+//			real_ptr->m_Image = new CDynImage(file.file_id, m_width, m_height,
+//				file.lFileSize, m_Template, &real_ptr->m_Encoder);
+			real_ptr->m_Image = new CDynImage(m_width, m_height, m_Template, real_ptr);
 
 #ifdef WITH_LIBPNG
 			m_ImageLib->AddImage(real_ptr->m_Image, wxT("/") + real_ptr->m_Image->Name());
@@ -2700,17 +2711,17 @@ CImage3D_Modifiers::~CImage3D_Modifiers()
 	delete [] m_modifiers;
 }
 
-CProgressImage::CProgressImage(int width, int height, uint32 filesize, wxString &tmpl,
-	otherfunctions::PartFileEncoderData *encoder) :
+CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
 		CAnyImage(width * height * sizeof(uint32)), m_template(tmpl)
 {
 	m_width = width;
 	m_height = height;
-	m_file_size = filesize;
+	m_file = file;
+//	m_file_size = filesize;
 
-	m_gap_buf_size = m_gap_alloc_size = encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
 	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
-	m_Encoder = encoder;
+//	m_Encoder = encoder;
 	
 	m_ColorLine = new uint32[m_width];
 }
@@ -2723,7 +2734,7 @@ CProgressImage::~CProgressImage()
 
 void CProgressImage::ReallocGapBuffer()
 {
-	int size = m_Encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	int size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
 	if ( size == m_gap_alloc_size ) {
 		return;
 	}
@@ -2740,8 +2751,8 @@ void CProgressImage::InitSortedGaps()
 {
 	ReallocGapBuffer();
 
-	const uint32 *gap_info = (const uint32 *)m_Encoder->m_gap_status.Buffer();
-	m_gap_buf_size = m_Encoder->m_gap_status.Size() / (2 * sizeof(uint32));
+	const uint32 *gap_info = (const uint32 *)m_file->m_Encoder.m_gap_status.Buffer();
+	m_gap_buf_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
 	
 	//memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
 	for (int j = 0; j < m_gap_buf_size;j++) {
@@ -2761,11 +2772,11 @@ void CProgressImage::CreateSpan()
 	InitSortedGaps();
 	
 	// allocate for worst case !
-	int color_gaps_alloc = 2 * (2*m_gap_buf_size + m_file_size / PARTSIZE + 1);
+	int color_gaps_alloc = 2 * (2*m_gap_buf_size + m_file->lFileSize / PARTSIZE + 1);
 	Color_Gap_Struct *colored_gaps = new Color_Gap_Struct[color_gaps_alloc];
 	
 	// Step 2: combine gap and part status information
-	const unsigned char *part_info = m_Encoder->m_part_status.Buffer();
+	const unsigned char *part_info = m_file->m_Encoder.m_part_status.Buffer();
 	
 	// Init first item to dummy info, so we will always have "previous" item
 	int colored_gaps_size = 0;
@@ -2813,12 +2824,20 @@ void CProgressImage::CreateSpan()
 		m_ColorLine[i] = 0x0;
 	}
 	
-	uint32 factor = m_file_size / m_width;
+	uint32 factor = m_file->lFileSize / m_width;
 	for(int i = 1; i <= colored_gaps_size;i++) {
 		uint32 start = colored_gaps[i].start / factor;
 		uint32 end = colored_gaps[i].end / factor;
 		for(uint32 j = start; j < end; j++) {
 			m_ColorLine[j] = colored_gaps[i].color;
+		}
+	}
+	// overwrite requested parts
+	for(int i = 0; i < m_file->m_ReqParts.size(); i++) {
+		uint32 start = m_file->m_ReqParts[i].start / factor;
+		uint32 end = m_file->m_ReqParts[i].end / factor;
+		for(uint32 j = start; j < end; j++) {
+			m_ColorLine[j] = RGB(255, 208, 0);
 		}
 	}
 	delete [] colored_gaps;
@@ -2831,11 +2850,10 @@ int CProgressImage::compare_gaps(const void *g1, const void *g2)
 
 #ifdef WITH_LIBPNG
 
-CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder) :
-	CProgressImage(width, height, file_size, tmpl, encoder), m_modifiers(height)
+CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
+	CProgressImage(width, height, tmpl, file), m_modifiers(height)
 {
-	m_id = id;
-	m_name = wxString::Format(wxT("dyn_%d.png"), id);
+	m_name = wxString::Format(wxT("dyn_%d.png"), m_file->file_id);
 	
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
@@ -2920,11 +2938,10 @@ unsigned char *CDynImage::RequestData(int &size)
 
 #else
 
-CDynImage::CDynImage(uint32 id, int width, int height, uint32 file_size, wxString &tmpl, otherfunctions::PartFileEncoderData *encoder) :
-	CProgressImage(width, height, file_size, tmpl, encoder)
+CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
+	CProgressImage(width, height, tmpl, file)
 {
-	m_id = id;
-	m_name = wxString::Format(wxT("dyn_%d.png"), id);
+	m_name = wxString::Format(wxT("dyn_%d.png"), m_file->file_id);
 	
 }
 
