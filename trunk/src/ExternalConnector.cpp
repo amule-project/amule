@@ -324,6 +324,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 	CECPacket packet(EC_OP_AUTH_REQ);
 	CECTag *tag = new CECTag(EC_TAG_CLIENT_NAME, ProgName);
 	packet.AddTag(*tag);
+	delete tag;
 	EC_Version_t proto_version = { 0x02, 0x00 };
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, 2, &proto_version));
 
@@ -337,9 +338,12 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 		pass_hash = eMuleIni.Read(wxT("/ExternalConnect/ECPassword"));
 	} else if ( !pass_plain.IsEmpty() ) {
 		pass_hash = MD5Sum(pass_plain).GetHash();
+	}
+
+	if (!pass_hash.IsEmpty()) {
 		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, pass_hash));
 	}
-	
+
 	// Clear passwords
 	m_CommandLinePassword	= wxT("01234567890123456789");
 	pass_plain		= wxT("01234567890123456789");
