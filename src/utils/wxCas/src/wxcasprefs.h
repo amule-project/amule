@@ -62,6 +62,22 @@ class WxCasPrefs:public wxDialog
     wxButton *m_autoStatImgButton;
     wxComboBox *m_autoStatImgCombo;
 
+    wxStaticBox *m_ftpUpdateSBox;
+    wxStaticBoxSizer *m_ftpUpdateSBoxSizer;
+    wxSpinCtrl *m_ftpUpdateSpinButton;
+    wxStaticText *m_ftpUpdateStaticText;
+    wxBoxSizer *m_ftpRateHBoxSizer;
+    wxCheckBox *m_ftpUpdateCheck;
+    wxGridSizer *m_ftpUpdateGridSizer;
+    wxTextCtrl *m_ftpUrlTextCtrl;
+    wxStaticText *m_ftpUrlStaticText;
+    wxTextCtrl *m_ftpPathTextCtrl;
+    wxStaticText *m_ftpPathStaticText;
+    wxTextCtrl *m_ftpUserTextCtrl;
+    wxStaticText *m_ftpUserStaticText;
+    wxTextCtrl *m_ftpPasswdTextCtrl;
+    wxStaticText *m_ftpPasswdStaticText;
+
     wxStaticText *m_noteStaticText;
 
     wxStaticLine *m_staticLine;
@@ -70,12 +86,16 @@ class WxCasPrefs:public wxDialog
     wxButton *m_validateButton;
     wxButton *m_cancelButton;
 
+    void EnableAutoStatImgCtrls(bool state);
+    void EnableFtpUpdateCtrls(bool state);
+
     enum
     {
       ID_OSPATH_BROWSE_BUTTON = 100,
-      ID_AUTOSTATIMG_RADIO,
+      ID_AUTOSTATIMG_CHECK,
       ID_AUTOSTATIMG_COMBO,
       ID_AUTOSTATIMG_BROWSE_BUTTON,
+      ID_FTP_UPDATE_CHECK,
       ID_VALIDATE_BUTTON,
       ID_CANCEL_BUTTON
     };
@@ -84,7 +104,8 @@ class WxCasPrefs:public wxDialog
     void OnOSPathBrowseButton (wxCommandEvent & event);
     void OnValidateButton (wxCommandEvent & event);
     void OnAutoStatImgBrowseButton (wxCommandEvent & event);
-    void OnAutoStatImgRadio (wxCommandEvent & event);
+    void OnAutoStatImgCheck (wxCommandEvent & event);
+    void OnFtpUpdateCheck (wxCommandEvent & event);
 
     DECLARE_EVENT_TABLE ();
 

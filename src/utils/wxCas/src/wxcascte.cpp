@@ -49,17 +49,38 @@ WxCasCte::MIN_REFRESH_RATE = 1;
 const wxUint32
 WxCasCte::MAX_REFRESH_RATE = 3600;
 
+// FTP update limits
+const wxUint32
+WxCasCte::MIN_FTP_RATE = 1;
+const wxUint32
+WxCasCte::MAX_FTP_RATE = 1440;
+
+
 // Key config names
 const wxString
 WxCasCte::AMULESIG_DIR_KEY (wxT("OSDirectory"));
 const wxString
 WxCasCte::REFRESH_RATE_KEY (wxT("RefreshRate"));
+
 const wxString
 WxCasCte::ENABLE_AUTOSTATIMG_KEY (wxT("EnableAutoStatImg"));
 const wxString
 WxCasCte::AUTOSTATIMG_DIR_KEY (wxT("StatImgDirectory"));
 const wxString
 WxCasCte::AUTOSTATIMG_TYPE_KEY (wxT("StatImgType"));
+
+const wxString
+WxCasCte::ENABLE_FTP_UPDATE_KEY(wxT("EnableFtpUpdate"));
+const wxString
+WxCasCte::FTP_UPDATE_RATE_KEY (wxT("FtpUpdateRate"));
+const wxString
+WxCasCte::FTP_URL_KEY (wxT("FtpUrl"));
+const wxString
+WxCasCte::FTP_PATH_KEY (wxT("FtpPath"));
+const wxString
+WxCasCte::FTP_USER_KEY (wxT("FtpUser"));
+const wxString
+WxCasCte::FTP_PASSWD_KEY (wxT("FtpPasswd"));
 
 
 // Default config parameters
@@ -68,9 +89,23 @@ WxCasCte::DEFAULT_AMULESIG_PATH (wxFileName::GetHomeDir () +
                                  wxFileName::GetPathSeparator () + wxT(".aMule"));
 const wxUint32
 WxCasCte::DEFAULT_REFRESH_RATE = 5;
+
 const bool
 WxCasCte::DEFAULT_AUTOSTATIMG_ISENABLED = FALSE;
 const wxString
 WxCasCte::DEFAULT_AUTOSTATIMG_PATH (wxFileName::GetHomeDir ());
 const wxString
 WxCasCte::DEFAULT_AUTOSTATIMG_TYPE (wxT("PNG"));
+
+const bool
+WxCasCte::DEFAULT_FTP_UPDATE_ISENABLED = FALSE;
+const wxUint32
+WxCasCte::DEFAULT_FTP_UPDATE_RATE = 10;
+const wxString
+WxCasCte::DEFAULT_FTP_URL(wxT("ftp.myftp.cx"));
+const wxString
+WxCasCte::DEFAULT_FTP_PATH(wxT("/pub/myamuledir"));
+const wxString
+WxCasCte::DEFAULT_FTP_USER(wxT("anonymous"));
+const wxString
+WxCasCte::DEFAULT_FTP_PASSWD(wxT("whiterabit@here"));

@@ -244,11 +244,11 @@ wxString OnLineSig::GetConnexionIDType () const
   {
     if (m_connexionID == wxT("H"))
       {
-        return (wxString (wxT("HighID")));
+        return (wxString (_("HighID")));
       }
     else
       {
-        return (wxString (wxT("LowID")));
+        return (wxString (_("LowID")));
       }
   }
 
@@ -278,19 +278,19 @@ wxString OnLineSig::BytesConvertion (const wxString & bytes)
   switch (i)
     {
     case 0:
-        c_bytes = wxString::Format (wxT("%.0f B"), d_bytes);
+        c_bytes = wxString::Format (_("%.0f B"), d_bytes);
       break;
     case 1:
-      c_bytes = wxString::Format (wxT("%.2f KB"), d_bytes);
+      c_bytes = wxString::Format (_("%.2f KB"), d_bytes);
       break;
     case 2:
-      c_bytes = wxString::Format (wxT("%.2f MB"), d_bytes);
+      c_bytes = wxString::Format (_("%.2f MB"), d_bytes);
       break;
     case 3:
-      c_bytes = wxString::Format (wxT("%.2f GB"), d_bytes);
+      c_bytes = wxString::Format (_("%.2f GB"), d_bytes);
       break;
     default:
-      c_bytes = wxString::Format (wxT("%.2f TB"), d_bytes);
+      c_bytes = wxString::Format (_("%.2f TB"), d_bytes);
       break;
     }
   return c_bytes;

@@ -44,20 +44,40 @@ struct WxCasCte
     static const wxUint32 MIN_REFRESH_RATE;
     static const wxUint32 MAX_REFRESH_RATE;
 
+    // FTP update limits
+    static const wxUint32 MIN_FTP_RATE;
+    static const wxUint32 MAX_FTP_RATE;
+
     // Key config names
     static const wxString AMULESIG_DIR_KEY;
     static const wxString REFRESH_RATE_KEY;
+
     static const wxString ENABLE_AUTOSTATIMG_KEY;
     static const wxString AUTOSTATIMG_DIR_KEY;
     static const wxString AUTOSTATIMG_TYPE_KEY;
+
+    static const wxString ENABLE_FTP_UPDATE_KEY;
+    static const wxString FTP_UPDATE_RATE_KEY;
+    static const wxString FTP_URL_KEY;
+    static const wxString FTP_PATH_KEY;
+    static const wxString FTP_USER_KEY;
+    static const wxString FTP_PASSWD_KEY;
 
 
     // Default config parameters
     static const wxString DEFAULT_AMULESIG_PATH;
     static const wxUint32 DEFAULT_REFRESH_RATE;
+
     static const bool DEFAULT_AUTOSTATIMG_ISENABLED;
     static const wxString DEFAULT_AUTOSTATIMG_PATH;
     static const wxString DEFAULT_AUTOSTATIMG_TYPE;
+
+    static const bool DEFAULT_FTP_UPDATE_ISENABLED;
+    static const wxUint32 DEFAULT_FTP_UPDATE_RATE;
+    static const wxString DEFAULT_FTP_URL;
+    static const wxString DEFAULT_FTP_PATH;
+    static const wxString DEFAULT_FTP_USER;
+    static const wxString DEFAULT_FTP_PASSWD;
   };
 
 #endif /* _WXCASCTE_H */

@@ -74,7 +74,8 @@ class WxCasFrame:public wxFrame
     wxStaticText *m_statLine_6;
     wxStaticText *m_statLine_7;
 
-    wxTimer * m_timer;
+    wxTimer * m_refresh_timer;
+    wxTimer * m_ftp_timer;
     WxCasCanvas *m_imgPanel;
     OnLineSig *m_aMuleSig;
     wxUint32 m_maxLineCount;
@@ -93,7 +94,8 @@ class WxCasFrame:public wxFrame
       ID_BAR_PRINT,
       ID_BAR_PREFS,
       ID_BAR_ABOUT,
-      ID_TIMER
+      ID_REFRESH_TIMER,
+      ID_FTP_TIMER
     };
 
   protected:
@@ -105,7 +107,8 @@ class WxCasFrame:public wxFrame
     void OnBarSave (wxCommandEvent & event);
     void OnBarPrint (wxCommandEvent & event);
     void OnBarPrefs (wxCommandEvent & event);
-    void OnTimer (wxTimerEvent & event);
+    void OnRefreshTimer (wxTimerEvent & event);
+    void OnFtpTimer (wxTimerEvent & event);
 
     DECLARE_EVENT_TABLE ();
 
