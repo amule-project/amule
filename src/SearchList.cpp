@@ -351,6 +351,7 @@ void CSearchList::LocalSearchEnd()
 					break;
 			}
 		}
+		m_searchpacket = NULL;
 	}
 	Notify_SearchLocalEnd();
 }
