@@ -1209,7 +1209,7 @@ wxThread::ExitCode SourcesAsyncDNS::Entry()
 #elif defined(__WXMSW__)
 	result = gethostbyname(ipName.GetData());
 #else
-	result = gethostbyname_r(ipName.GetData(),&ret,dataBuf,sizeof(dataBuf),&errorno);
+	result = gethostbyname_r(unicode2char(ipName.GetData()),&ret,dataBuf,sizeof(dataBuf),&errorno);
 #endif
 
 	if(result) {
