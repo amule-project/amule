@@ -153,7 +153,7 @@ class wxSocketClientProxy : public wxSocketClient
 		const wxProxyData *ProxyData = NULL);
 
 	/* Interface */
-	bool Connect(wxIPaddress& address, bool wait);
+	virtual bool Connect(wxIPaddress& address, bool wait);
 	
 private:
 	wxSocketProxy	m_SocketProxy;
