@@ -128,7 +128,11 @@ void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uin
 {
 	CDlgFriend* toupdate = friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort);
 	if (toupdate) {
-		toupdate->m_name = name;
+		if (!name.IsEmpty()) {
+			toupdate->m_name = name;	
+		} 
+		// If name is empty, this is a disconnection/deletion event
+		toupdate->islinked = !name.IsEmpty();
 		friendlistctrl->RefreshFriend(toupdate);
 		chatselector->RefreshFriend(GUI_ID(toupdate->m_ip, toupdate->m_port),name);
 	}
