@@ -43,23 +43,8 @@
 //-------------------------------------------------------------------
 
 #include "otherfunctions.h"
-
-//-------------------------------------------------------------------
-#define CMD_ID_HELP		1
-#define CMD_ID_STATS		2
-#define CMD_ID_SHOW		3
-#define CMD_ID_RESUME		4
-#define CMD_ID_PAUSE		5
-#define CMD_ID_SRVSTAT		6
-#define CMD_ID_CONN		7
-#define CMD_ID_DISCONN		8
-#define CMD_ID_CONN_TO_SRV	9
-#define CMD_ID_RELOAD_IPFILTER	10
-#define CMD_ID_SET_IPFILTER	11
-#define CMD_ID_GET_IPLEVEL	12
-#define CMD_ID_SET_IPLEVEL	13
-#define CMD_ID_IPLEVEL		14
-#define CMD_ID_CMDSEARCH	15
+#include "ECcodes.h"
+#include "ECPacket.h"
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -90,7 +75,7 @@ static CmdId commands[] = {
 };
 
 //-------------------------------------------------------------------
-IMPLEMENT_APP(CamulecmdApp)
+IMPLEMENT_APP (CamulecmdApp);
 //-------------------------------------------------------------------
 
 //-------------------------------------------------------------------
@@ -249,13 +234,14 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	long FileId;
 	wxString msg;
 	wxString args = GetCmdArgs();
+	CECPacket *request = 0;
 	switch (CmdId) {
 		case CMD_ID_HELP:
 			ShowHelp();
 			return 0; // No need to contact core to display help ;)
 			
 		case CMD_ID_STATS:
-			msg = wxT("STATS");
+			request = new CECPacket(EC_OP_STAT_REQ);
 			break;
 			
  		case CMD_ID_SRVSTAT:
@@ -281,12 +267,14 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_RELOAD_IPFILTER:
-			msg = wxT("RELOADIPF");
+			request = new CECPacket(EC_OP_IPFILTER_CMD);
+			request->AddTag(CECTag(EC_TAG_STRING, wxT("RELOAD"));
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
-				msg = wxT("SET IPFILTER ") + args;
+				request = new CECPacket(EC_OP_IPFILTER_CMD);
+				request->AddTag(CECTag(EC_TAG_STRING, args));
 			} else {
 				Show(_("This command requieres an argument. Valid arguments: 'yes', 'no'\n"));
 				return 0;
@@ -304,6 +292,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			} else if (args.IsNumber()) {
 				args.ToLong(&FileId);
 				msg.Printf(wxT("PAUSE%li"), FileId);
+				//request = new CEECPacket(EC_OP_Q_FILE_CMD);
+				//request->AddTag(CECTag(EC_TAG_PARTFILE, args));
 			} else if ( args.Left(3) == wxT("all") ) {
 				msg = wxT("PAUSEALL");
 			} else {
@@ -330,7 +320,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SHOW:
 		// kept for backwards compatibility. Now 'list'
 			if ( args.Left(2) == wxT("dl") ) {
-				msg = wxT("DL_QUEUE");
+				request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
 			} else if ( args.Left(2) == wxT("ul") ) {
 				msg = wxT("UL_QUEUE");
 			} else {
@@ -340,22 +330,22 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_IPLEVEL:
-			if ( args.IsEmpty() ) {
-				msg = wxT("GETIPLEVEL");
-			} else {
-				msg = wxT("SETIPLEVEL ") + args;
+			if ( !args.IsEmpty() ) {
+				request = new CECPacket(EC_OP_IPFILTER_CMD);
+				request->AddTag(CECTag(EC_TAG_STRING, args));
 			}
 			break;
 
 		case CMD_ID_GET_IPLEVEL:
 		// kept for backwards compatibility only
-			msg = wxT("GETIPLEVEL");
+			request = new CECPacket(EC_OP_IPFILTER_CMD);
 			break;
 
 		case CMD_ID_SET_IPLEVEL:
 		// kept for backwards compatibility only
 			if ( ! args.IsEmpty() ) {
-				msg = wxT("SETIPLEVEL ") + args;
+				request = new CECPacket(EC_OP_IPFILTER_CMD);
+				request->AddTag(CECTag(EC_TAG_STRING, args));
 			} else {
 				Show(_("This command requieres an argument. Valid arguments: 0 - 255\n"));
 				return 0;
@@ -365,10 +355,60 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		default:
 			return -1;
 	}
-	Process_Answer(SendRecvMsg(msg));
+	
+	// v1 or v2 command format
+	if ( request ) {
+		wxString answer;
+		CECPacket *reply = SendRecvMsg_v2(request);
+		if ( reply ) {
+			answer = ECv2_Response2String(reply);
+			delete reply;
+		}
+		Process_Answer(answer);
+	} else {
+		Process_Answer(SendRecvMsg(msg));
+	}
 	
 	return 0;
 }
+
+/*
+ * Format EC packet into text form for output to consol
+ * 
+ */
+wxString ECv2_Response2String(CECPacket *response)
+{
+	wxString s;
+	if ( !response ) {
+		return wxEmptyString;
+	}
+	switch(response->GetOpCode()) {
+		case EC_OP_STRINGS:
+			s = response->GetTagByIndex(0)->GetTagString();
+			break;
+		case EC_OP_DLOAD_QUEUE:
+			for(int i = 0; i < response->GetTagCount(); i ++) {
+				CECTag *tag = response->GetTagByIndex(i);
+				unsigned long filesize, donesize, src_count, src_xfer_count;
+				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetTagString().ToULong(&filesize);
+				tag->GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetTagString().ToULong(&donesize);
+				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetTagString().ToULong(&src_count);
+				tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetTagString().ToULong(&src_xfer_count);
+					
+				s += tag->GetTagByName(EC_TAG_ITEM_ID)->GetTagString() + _(" ") +
+					tag->GetTagString () +
+					wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
+						((float)donesize) / ((float)filesize)*100.0, (int)src_xfer_count, (int)src_count) +
+					tag->GetTagByName(EC_TAG_PARTFILE_STATUS)->GetTagString();
+					
+				s += _("\n");
+			}
+			break;
+			
+	}
+	return s;
+}
+
 
 void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8

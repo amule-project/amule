@@ -302,6 +302,46 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_IPFilter(const CECPacket *request)
+{
+	wxASSERT(request->GetOpCode() == EC_OP_IPFILTER_CMD);
+	
+	CECPacket *response = new CECPacket(EC_OP_STRINGS);
+
+	wxString msg;
+	if ( request->GetTagCount() ) {
+		wxString cmd = request->GetTagByIndex(0)->GetTagString();
+		if ( cmd == wxT("ON") ) {
+			thePrefs::SetIPFilterOn(true);
+		} else if ( cmd == wxT("OFF") ) {
+			thePrefs::SetIPFilterOn(false);
+		} else if ( cmd == wxT("RELOAD") ) {
+			theApp.ipfilter->Reload();
+		} else if ( cmd.IsNumber() ) {
+			long level;
+			cmd.ToLong(&level);
+			long oldlevel = thePrefs::GetIPFilterLevel();
+			if ( level <= 255 ) {
+				if ( level != oldlevel ) {
+					thePrefs::SetIPFilterLevel(level);
+					msg = wxString::Format(_("aMule IP Filter level is %d."), level);
+				} else {
+					msg = wxString::Format(_("aMule IP Filter level is already %d."), level);
+				}
+			} else {
+				msg = wxString::Format(_("Invalid IP Filter level entered: %d"), level);
+			}
+		} else {
+				msg = wxT("Invalid command in EC_IPLEVEL_CMD: ") + cmd;
+		}
+	} else {
+		msg = wxString::Format(_("aMule IP Filter level is %d."),
+			thePrefs::GetIPFilterLevel());
+	}
+	response->AddTag(CECTag(EC_TAG_STRING, msg));
+	return response;
+}
+
 CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_DLOAD_QUEUE);
@@ -310,8 +350,10 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 	
 	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
 		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
-		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFullName());
+		CECTag filetag(EC_TAG_PARTFILE, cur_file->GetFileName());
 
+		filetag.AddTag(CECTag(EC_TAG_ITEM_ID,
+			wxString::Format("%lx", (unsigned long)(cur_file))));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL,
 			wxString::Format(wxT("%ul"),cur_file->GetFileSize())));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER,
@@ -321,7 +363,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_DOWN_SPEED,
 			wxString::Format(wxT("%li"),(long)(cur_file->GetKBpsDown()*1024))));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_STATUS,
-			wxString::Format(wxT("%d"),cur_file->GetStatus())));
+			cur_file->getPartfileStatus()));
 		filetag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 			wxString::Format(wxT("%d"),cur_file->IsAutoDownPriority() ? 
 							cur_file->GetDownPriority() + 10 :
@@ -336,6 +378,8 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 					(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
 						theApp.CreateED2kSourceLink(cur_file) :
 						theApp.CreateED2kLink(cur_file)));
+						
+		response->AddTag(filetag);
 	}
 
 	return 	response;
@@ -343,6 +387,10 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request)
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
+	if ( !request ) {
+		return 0;
+	}
+	
 	CECPacket *response = NULL;
 
 	switch (request->GetOpCode()) {
@@ -357,6 +405,12 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_STAT_REQ:
 			response = Get_EC_Response_StatRequest(request);
+			break;
+		case EC_OP_GET_DLOAD_QUEUE:
+			response = Get_EC_Response_GetDownloadQueue(request);
+			break;
+		case EC_OP_IPFILTER_CMD:
+			response = Get_EC_Response_IPFilter(request);
 			break;
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {

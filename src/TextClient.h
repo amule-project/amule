@@ -26,11 +26,31 @@
 #endif
 
 //-------------------------------------------------------------------
+enum {
+	CMD_ID_HELP	= 1,
+	CMD_ID_STATS,
+	CMD_ID_SHOW	,
+	CMD_ID_RESUME,
+	CMD_ID_PAUSE,
+	CMD_ID_SRVSTAT,
+	CMD_ID_CONN,
+	CMD_ID_DISCONN,
+	CMD_ID_CONN_TO_SRV,
+	CMD_ID_RELOAD_IPFILTER,
+	CMD_ID_SET_IPFILTER,
+	CMD_ID_GET_IPLEVEL,
+	CMD_ID_SET_IPLEVEL,
+	CMD_ID_IPLEVEL,
+	CMD_ID_CMDSEARCH,
+};
+//-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include
 // 
 #include "ExternalConnector.h"
 //-------------------------------------------------------------------
+
+wxString ECv2_Response2String(CECPacket *response);
 
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl
