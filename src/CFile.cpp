@@ -262,18 +262,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 	    Close();	
     }
 
-	// if bOverwrite we create a new file or truncate the existing one,
-	// otherwise we only create the new file and fail if it already exists
-#if defined(__WXMAC__) && !defined(__UNIX__)
-	// Dominic Mazzoni [dmazzoni+@cs.cmu.edu] reports that open is still broken on the mac, so we replace
-	// int fd = open(wxUnix2MacFilename( szFileName ), O_CREAT | (bOverwrite ? O_TRUNC : O_EXCL), access);
 	m_fd = creat( szFileName , accessMode);
-#else
-	m_fd = wxOpen( szFileName,
-			O_BINARY | O_WRONLY | O_CREAT |
-			(bOverwrite ? O_TRUNC : O_EXCL)
-			ACCESS(accessMode) );
-#endif
 	
 	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
@@ -295,7 +284,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 	if ( accessMode == -1 )
 		accessMode = CPreferences::GetFilePermissions();
 
-    int flags = O_BINARY;
+    int flags = O_BINARY | O_LARGEFILE;
 
     fFilePath=szFileName;
 
@@ -339,7 +328,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 	    Close();	
     }
 
-    m_fd = wxOpen( szFileName, flags ACCESS(accessMode));
+    m_fd = open( unicode2char(szFileName), flags ACCESS(accessMode));
       
 	#ifdef FILE_TRACKER
 		theApp.QueueLogLine(false,wxString(_("Opened file ")) + fFilePath  + wxString::Format(_(" with file descriptor %i"),m_fd));
