@@ -2388,7 +2388,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item6->SetForegroundColour( *wxRED );
     item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 0 );
 
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Advanced Settings") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
@@ -2427,7 +2427,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxSlider *item19 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item7->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item7, 1, wxGROW|wxALL, 5 );
+    item0->Add( item7, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3342,7 +3342,6 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxTextCtrl *item29 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item29->Enable( false );
     item27->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
     wxButton *item30 = new wxButton( parent, IDC_IPFILTERUPDATE, _("Update now"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3360,7 +3359,6 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item31->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxSpinCtrl *item33 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 100, 0 );
-    item33->Enable( false );
     item31->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item20->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
@@ -3409,13 +3407,14 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     item6->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
     item4->Add( item6, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Update Frequency (Secs):") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
     wxSpinCtrl *item9 = new wxSpinCtrl( parent, ID_SPINCTRL, wxT("5"), wxDefaultPosition, wxSize(100,-1), 0, 0, 100, 5 );
     item9->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
+    item9->Enable( false );
     item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );

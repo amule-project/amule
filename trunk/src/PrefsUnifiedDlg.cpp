@@ -67,7 +67,8 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX( IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange )
-	
+	EVT_CHECKBOX( IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange )
+
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK, PrefsUnifiedDlg::OnOk)
 
@@ -299,7 +300,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_UDPPORT )->Enable( !CPreferences::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( CPreferences::DeadServer() );
 	FindWindow( IDC_HQR_VALUE )->Enable( CPreferences::DropHighQueueRankingSources() );
-
+	FindWindow( IDC_IPFILTERURL )->Enable( CPreferences::IPFilterAutoLoad() );
 
 	// Set the permissions scrollers for files
 	int perms = CPreferences::GetFilePermissions();
@@ -466,6 +467,10 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_ENABLE_AUTO_HQRS:
 			widget = FindWindow( IDC_HQR_VALUE );
+			break;
+
+		case IDC_AUTOIPFILTER:
+			widget = FindWindow( IDC_IPFILTERURL );
 			break;
 	}
 
