@@ -275,20 +275,18 @@ END_EVENT_TABLE()
 
 void CamuleDlg::changeDesktopMode()
 {
-	static int mID[] = { 0, ID_GNOME2, ID_KDE3, ID_KDE2, ID_NOSYSTRAY };
-	int mode;
-
 	QueryDlg query(this);
-	if (query.FindWindowById(mID[theApp.glob_prefs->GetDesktopMode()])) {
-		wxStaticCast(query.FindWindowById(mID[theApp.glob_prefs->GetDesktopMode()]), wxRadioButton)->SetValue(true);
-	}
+
+	wxRadioBox* radiobox = (wxRadioBox*)query.FindWindow(ID_SYSTRAYSELECT);
+	
+	if ( theApp.glob_prefs->GetDesktopMode() )
+		radiobox->SetSelection( theApp.glob_prefs->GetDesktopMode() - 1 );
+	else
+		radiobox->SetSelection( 0 );
+	
 	query.ShowModal();
-	for (mode=1; mode<=3; mode++) {
-		if (query.FindWindowById(mID[mode]) && wxStaticCast(query.FindWindowById(mID[mode]), wxRadioButton)->GetValue() != 0) {
-			break;
-		}
-	}
-	theApp.glob_prefs->SetDesktopMode(mode);
+	
+	theApp.glob_prefs->SetDesktopMode( radiobox->GetSelection() + 1 );
 }
 
 
