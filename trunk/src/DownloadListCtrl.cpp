@@ -29,6 +29,7 @@
 	#include <wx/wx.h>
 #endif
 
+#include <cmath>			// Needed for fmod
 #include <algorithm>		// Needed for std::min
 #include <wx/event.h>
 #include <wx/font.h>
@@ -820,10 +821,13 @@ void CDownloadListCtrl::DrawFileItem(wxDC* dc, int nColumn, const wxRect& rect, 
 						dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 						cdcStatus.SelectObject(wxNullBitmap);
 					}
-					if (theApp.glob_prefs->ShowPercent()) {					
-						// ts: Percentage of completing
-						// Kry - Modified for speed
-						wxString buffer = wxString::Format(wxT("%.1f %%"), lpPartFile->GetPercentCompleted());
+					if (theApp.glob_prefs->ShowPercent()) {
+						// Percentage of completing
+						float percent = lpPartFile->GetPercentCompleted();
+						// We strip anything below the first decimal point, to avoid Format doing roundings
+						percent -= fmod( percent, 0.1f );
+						
+						wxString buffer = wxString::Format( wxT("%.1f%%"), percent );
 						int middlex = (2*rect.GetX() + rect.GetWidth()) >> 1;
 						int middley = (2*rect.GetY() + rect.GetHeight()) >> 1;
 						dc->GetTextExtent(buffer, &textwidth, &textheight);
