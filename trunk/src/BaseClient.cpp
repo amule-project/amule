@@ -1105,7 +1105,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	//theApp.amuledlg->transferwnd->clientlistctrl.RefreshClient(this);
 
 	if (bDelete){
-		#ifdef __USE_DEBUG__
+		#ifdef __DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0) {
 			Debug("--- Deleted client            %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
 		}
@@ -1113,7 +1113,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		return true;
 	}
 	else{
-		#ifdef __USE_DEBUG__
+		#ifdef __DEBUG__
 		if (thePrefs.GetDebugClientTCPLevel() > 0) {
 			Debug("--- Disconnected client       %s; Reason=%s\n", DbgGetClientInfo(true), strReason);
 		}
