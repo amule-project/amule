@@ -530,7 +530,7 @@ bool CamuleApp::OnInit()
 				file = wxFindNextFile();
   			}
 
-			wxMessageBox(wxT("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), wxT("Info"), wxOK);
+			wxMessageBox(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);
 		} else {
 			// No settings to import, new to build.
 			wxMkdir(ConfigDir);
@@ -607,11 +607,11 @@ bool CamuleApp::OnInit()
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
 					// Kry - We cannot addlogline because there's no GUI yet!
-					AddLogLineM(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+					AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
 				if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
-					AddLogLineM(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+					AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 					use_chmod = false;
 				}
 				if (!use_chmod) {
@@ -635,11 +635,11 @@ bool CamuleApp::OnInit()
 		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
 			if ( tempdir.StartsWith( char2unicode( mntbuf[i].f_mntonname )) ) {
 				// Kry - We cannot addlogline because there's no GUI yet!
-      			AddLogLineM(false,wxT("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+      			AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
                     use_chmod = false;
 			}
 			if ( incomingdir.StartsWith( char2unicode( mntbuf[i].f_mntonname ) ) ) {
-				AddLogLineM(false,wxT("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
+				AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
 				use_chmod = false;
 			}
 			if (!use_chmod) {
@@ -1387,7 +1387,7 @@ void CamuleApp::Localize_mule()
 	}
 	
 	if ((!m_locale.Init(language,language_flags)) && (language != wxLANGUAGE_DEFAULT) && (language != wxLANGUAGE_CUSTOM)) {
-		AddLogLineM(false,wxT("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
+		AddLogLineM(false,_("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
 	
 	if (language != wxLANGUAGE_CUSTOM) {
@@ -1411,23 +1411,23 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 	info.Replace( wxT("%s"), new_version );
 
 	if (new_version == wxT("CVS")) {
-		info += wxT("This version is a testing version, updated daily, and \n");
-		info += wxT("we give no warranty it won't break anything, burn your house,\n");
-		info += wxT("or kill your dog. But it *should* be safe to use anyway. \n");
+		info += _("This version is a testing version, updated daily, and \n");
+		info += _("we give no warranty it won't break anything, burn your house,\n");
+		info += _("or kill your dog. But it *should* be safe to use anyway. \n");
 	} else if (old_version == wxT("1.2.6")) {
-		info += wxT("This version has new SecureIdent support, so your \n");
-		info += wxT("client credits will be lost on this first run. \n");
-		info += wxT("There is no way to fix that, and eMule did the same.\n");
-		info += wxT("But your hash will be safe against stealers now, and your\n");
-		info += wxT("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n");
-		info += wxT("Just take them from your eMule config dir and put then on ~/.aMule.\n");
+		info += _("This version has new SecureIdent support, so your \n");
+		info += _("client credits will be lost on this first run. \n");
+		info += _("There is no way to fix that, and eMule did the same.\n");
+		info += _("But your hash will be safe against stealers now, and your\n");
+		info += _("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n");
+		info += _("Just take them from your eMule config dir and put then on ~/.aMule.\n");
 	} else if (old_version == wxT("2.0.0-rc1")) {
-		info += wxT("This rc2 version fixes most of the rc1 version bugs and adds new features.\n");
-		info += wxT("A full changelog can be found in the Changelog file or at www.amule.org.\n");
+		info += _("This rc2 version fixes most of the rc1 version bugs and adds new features.\n");
+		info += _("A full changelog can be found in the Changelog file or at www.amule.org.\n");
 	}
 
-	info += wxT("Your locale has been changed to System Default due to a version change. Sorry.\n");
-	info += wxT("Feel free to report any bugs to forum.amule.org");
+	info += _("Your locale has been changed to System Default due to a version change. Sorry.\n");
+	info += _("Feel free to report any bugs to forum.amule.org");
 
 
 	wxMessageBox(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
@@ -1475,7 +1475,7 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 		emulesig_path = new_path + wxT("/onlinesig.dat");
 		amulesig_path = new_path + wxT("/amulesig.dat");
 	} else {
-		::wxMessageBox(wxT("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
+		::wxMessageBox(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
 		emulesig_path = wxEmptyString;
 		amulesig_path = wxEmptyString;
 	}

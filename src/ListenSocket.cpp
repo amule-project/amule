@@ -117,7 +117,7 @@ bool CClientReqSocket::CheckTimeOut()
 	
 	if (::GetTickCount() - timeout_timer > uTimeout){
 		timeout_timer = ::GetTickCount();
-		Disconnect(wxT("Timeout"));
+		Disconnect(_("Timeout"));
 		return true;
 	}
 	return false;	
@@ -130,10 +130,10 @@ void CClientReqSocket::OnClose(int nErrorCode)
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode > 0) {
 		wxString strError;
-		strError.Printf(wxT("Closed: %u"),nErrorCode);
+		strError.Printf(_("Closed: %u"),nErrorCode);
 		Disconnect(strError);
 	} else {
-		Disconnect(wxT("Close"));
+		Disconnect(_("Close"));
 	}
 }
 
@@ -191,7 +191,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 {
 	try{
 		if (!client && opcode != OP_HELLO) {
-			throw wxString(wxT("Asks for something without saying hello"));
+			throw wxString(_("Asks for something without saying hello"));
 		} else if (client && opcode != OP_HELLO && opcode != OP_HELLOANSWER)
 			client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode);
 		
@@ -245,7 +245,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						client->Safe_Delete();
 						client = NULL;
 					}
-					Disconnect(wxT("IPFilter"));
+					Disconnect(_("IPFilter"));
 					return false;
 				}
 						
@@ -335,7 +335,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					client->SendCommentInfo(reqfile);
 					break;
 				}
-				throw wxString(wxT("Invalid OP_REQUESTFILENAME packet size"));
+				throw wxString(_("Invalid OP_REQUESTFILENAME packet size"));
 				break;  
 			}
 			case OP_SETREQFILEID: {
@@ -399,7 +399,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					SendPacket(packet, true);
 					break;
 				}
-				throw wxString(wxT("Invalid OP_FILEREQUEST packet size"));
+				throw wxString(_("Invalid OP_FILEREQUEST packet size"));
 				break;
 				// DbT:End
 			}			
@@ -431,7 +431,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 					break;
 				}
-				throw wxString(wxT("Invalid OP_FILEREQUEST packet size"));
+				throw wxString(_("Invalid OP_FILEREQUEST packet size"));
 				break;
 			}
 			case OP_REQFILENAMEANSWER: {
@@ -590,7 +590,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if (theApp.glob_prefs->GetVerbose()) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									AddLogLineM(false,wxString::Format(wxT("Client requests invalid %u. file block %u-%u (%d bytes): "), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])  + client->GetFullIP());
+									AddLogLineM(false,wxString::Format(_("Client requests invalid %u. file block %u-%u (%d bytes): "), i, auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])  + client->GetFullIP());
 								}
 							}
 						}
@@ -607,7 +607,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				theApp.uploadqueue->RemoveFromUploadQueue(client);
 				if (theApp.glob_prefs->GetVerbose()) {
-					AddDebugLogLineM(false, client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
+					AddDebugLogLineM(false, client->GetUserName() + _(": Upload session ended due canceled transfer."));
 				}
 				break;
 			}
@@ -622,7 +622,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (size>=16 && !md4cmp(client->GetUploadFileID(),packet)) {
 					theApp.uploadqueue->RemoveFromUploadQueue(client);
 					if (theApp.glob_prefs->GetVerbose()) {
-						AddDebugLogLineM(false, client->GetUserName() + wxT(": Upload session ended due ended transfer."));
+						AddDebugLogLineM(false, client->GetUserName() + _(": Upload session ended due ended transfer."));
 					}
 				} else {
 					// client->CheckFailedFileIdReqs((uchar*)packet);
@@ -638,7 +638,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
 				if (size != 16) {
-					throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
+					throw wxString(_("Invalid OP_HASHSETREQUEST packet size"));
 				}
 				client->SendHashsetPacket((uchar*)packet);
 				break;
@@ -763,7 +763,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					DebugRecv("OP_Message", client, size>=16 ? packet : NULL);
 				}
 				#endif
-				AddLogLineM(true,wxString(wxT("New message from '")) + client->GetUserName() + wxT("' (IP:") + client->GetFullIP() + wxT(")"));
+				AddLogLineM(true,wxString(_("New message from '")) + client->GetUserName() + _("' (IP:") + client->GetFullIP() + wxT(")"));
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				
 				CSafeMemFile message_file((BYTE*)packet,size);
@@ -774,7 +774,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					 (theApp.glob_prefs->MsgOnlySecure() && client->GetUserName()==wxEmptyString) ) {
 					#if 0
 					if (!client->m_bMsgFiltered) {
-						AddLogLineM(true,wxString(wxT("Message filtered from '")) + client->GetUserName() + wxT("' (IP:") + client->GetFullIP() + wxT(")"));
+						AddLogLineM(true,wxString(_("Message filtered from '")) + client->GetUserName() + _("' (IP:") + client->GetFullIP() + wxT(")"));
 					}
 					client->m_bMsgFiltered=true;
 					#endif
@@ -803,9 +803,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Accepted")));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Accepted")));
 				} else {
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Denied")));
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list -> %s"),client->GetUserID(),_("Denied")));
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -852,7 +852,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 				}
 				if ((theApp.glob_prefs->CanSeeShares()==vsfaEverybody) || ((theApp.glob_prefs->CanSeeShares()==vsfaFriends) && client->IsFriend())) {
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("accepted"));			
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("accepted"));			
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					
@@ -919,7 +919,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						DebugSend("OP__AskSharedDirsDeniedAnswer", client);
 					}
 					#endif
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("denied"));			
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your shareddirectories-list -> "),client->GetUserID()) + _("denied"));			
 					Packet* replypacket = new Packet(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
@@ -943,7 +943,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString();
 				if (theApp.glob_prefs->CanSeeShares()==vsfaEverybody || (theApp.glob_prefs->CanSeeShares()==vsfaFriends && client->IsFriend())) {
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("accepted"));			
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -978,7 +978,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.uploadqueue->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(wxT(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("denied"));			
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) requested your sharedfiles-list for directory "),client->GetUserID()) + strReqDir + wxT(" -> ") + _("denied"));			
 					#ifdef __USE_DEBUG__
 					if (thePrefs.GetDebugClientTCPLevel() > 0) {
 						DebugSend("OP__AskSharedDeniedAnswer", client);
@@ -1065,7 +1065,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				AddDebugLogLineM(false,wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x"),opcode,opcode));
+				AddDebugLogLineM(false,wxString::Format(_("Edonkey packet: unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	}
@@ -1088,7 +1088,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 			}
 		}
-		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
+		Disconnect(_("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	}
 	catch(wxString error) {
@@ -1113,10 +1113,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			AddDebugLogLineM(false,wxString(_("A unknown client caused an error or did something bad: ")) + error + _(". Disconnecting client!"));
 		}
-		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
+		Disconnect(_("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
 	} catch (...) {
-		Disconnect(wxT("Unknown exception on ListenSocket::ProcessPacket"));
+		Disconnect(_("Unknown exception on ListenSocket::ProcessPacket"));
 	}
 	return true;
 }
@@ -1126,13 +1126,13 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	// 0.42e - except the catchs on mem exception and file exception
 	try{
 		if (!client) {
-			throw wxString(wxT("Unknown clients sends extended protocol packet"));
+			throw wxString(_("Unknown clients sends extended protocol packet"));
 		}
 		/*
 		if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 			// Here comes a extended packet without finishing the hanshake.
 			// IMHO, we should disconnect the client.
-			throw wxString(wxT("Client send extended packet before finishing handshake"));
+			throw wxString(_("Client send extended packet before finishing handshake"));
 		}
 		*/
 		switch(opcode) {
@@ -1151,7 +1151,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_MULTIPACKET before finishing handshake"));
+					throw wxString(_("Client send OP_MULTIPACKET before finishing handshake"));
 				}
 
 				CSafeMemFile data_in((BYTE*)packet,size);
@@ -1243,7 +1243,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									}
 								} //else {
 								//	if (theApp.glob_prefs->GetVerbose()) {
-								//		AddLogLineM(false, wxT("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
+								//		AddLogLineM(false, _("RCV: Source Request to fast. (This is testing the new timers to see how much older client will not receive this)"));
 								//	}
 								//}
 							}
@@ -1280,7 +1280,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_MULTIPACKETANSWER before finishing handshake"));
+					throw wxString(_("Client send OP_MULTIPACKETANSWER before finishing handshake"));
 				}
 				
 				CSafeMemFile data_in((BYTE*)packet,size);
@@ -1364,7 +1364,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_SECIDENTSTATE before finishing handshake"));
+					throw wxString(_("Client send OP_SECIDENTSTATE before finishing handshake"));
 				}
 								
 				client->ProcessSecIdentStatePacket((uchar*)packet,size);
@@ -1390,7 +1390,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_PUBLICKEY before finishing handshake"));
+					throw wxString(_("Client send OP_PUBLICKEY before finishing handshake"));
 				}
 												
 				client->ProcessPublicKeyPacket((uchar*)packet,size);
@@ -1407,7 +1407,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
+					throw wxString(_("Client send OP_COMPRESSEDPART before finishing handshake"));
 				}
 												
 				client->ProcessSignaturePacket((uchar*)packet,size);
@@ -1424,7 +1424,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
+					throw wxString(_("Client send OP_COMPRESSEDPART before finishing handshake"));
 				}
 												
 				if (client->GetRequestFile() && !client->GetRequestFile()->IsStopped() && (client->GetRequestFile()->GetStatus()==PS_READY || client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
@@ -1471,11 +1471,11 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_QUEUERANKING before finishing handshake"));
+					throw wxString(_("Client send OP_QUEUERANKING before finishing handshake"));
 				}
 				
 				if (size != 12) {
-					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
+					throw wxString(_("Invalid size (OP_QUEUERANKING)"));
 				}
 
 				uint16 newrank = ENDIAN_SWAP_16(PeekUInt16(packet));
@@ -1499,12 +1499,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_REQUESTSOURCES before finishing handshake"));
+					throw wxString(_("Client send OP_REQUESTSOURCES before finishing handshake"));
 				}
 				
 				if (client->GetSourceExchangeVersion() >= 1) {
 					if(size != 16) {
-						throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
+						throw wxString(_("Invalid size (OP_QUEUERANKING)"));
 					}
 					//first check shared file list, then download list
 					CKnownFile* file = theApp.sharedfiles->GetFileByID((uchar*)packet);
@@ -1534,7 +1534,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 									DebugSend("OP__AnswerSources", client, (char*)file->GetFileHash());
 								}
 								if (thePrefs.GetDebugSourceExchange()) {
-									AddDebugLogLineM(false, wxString::Format(wxT("RCV:Source Request User(%s) File(%s)"), client->GetUserName().c_str(), file->GetFileName().c_str()));
+									AddDebugLogLineM(false, wxString::Format(_("RCV:Source Request User(%s) File(%s)"), client->GetUserName().c_str(), file->GetFileName().c_str()));
 								}
 								#endif
 							}
@@ -1555,7 +1555,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_ANSWERSOURCES before finishing handshake"));
+					throw wxString(_("Client send OP_ANSWERSOURCES before finishing handshake"));
 				}
 				
 				CSafeMemFile data((BYTE*)packet,size);
@@ -1586,7 +1586,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_FILEDESC before finishing handshake"));
+					throw wxString(_("Client send OP_FILEDESC before finishing handshake"));
 				}
 				
 				client->ProcessMuleCommentPacket(packet,size);
@@ -1603,7 +1603,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_REQUESTPREVIEW before finishing handshake"));
+					throw wxString(_("Client send OP_REQUESTPREVIEW before finishing handshake"));
 				}
 				
 				// IP banned, no answer for this request
@@ -1632,7 +1632,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 					// Here comes a extended packet without finishing the hanshake.
 					// IMHO, we should disconnect the client.
-					throw wxString(wxT("Client send OP_PREVIEWANSWER before finishing handshake"));
+					throw wxString(_("Client send OP_PREVIEWANSWER before finishing handshake"));
 				}			
 
 				client->ProcessPreviewAnswer(packet, size);
@@ -1665,7 +1665,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			
 			default:
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				AddDebugLogLineM(false,wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
+				AddDebugLogLineM(false,wxString::Format(_("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 				break;
 		}
 	} catch(CInvalidPacket ErrorPacket) {
@@ -1687,7 +1687,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 			}
 		}
-		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
+		Disconnect(_("UnCaught invalid packet exception On ProcessPacket\n"));
 		return false;
 	} catch(wxString error) {
 		AddDebugLogLineM(false, wxString::Format(_("A client caused an error or did something bad: %s. Disconnecting client!"), error.c_str()));
@@ -1709,10 +1709,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 			}
 		}
-		Disconnect(wxT("Client error on ListenSocket::ProcessExtPacket: ") + error);
+		Disconnect(_("Client error on ListenSocket::ProcessExtPacket: ") + error);
 		return false;
 	} catch (...) {
-		Disconnect(wxT("Unknown exception on ListenSocket::ProcessExtPacket"));
+		Disconnect(_("Unknown exception on ListenSocket::ProcessExtPacket"));
 	}
 
 	return true;
@@ -1763,7 +1763,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 		}
 		AddLogLineM(false,strError);
 	} else {
-		strError = wxT("No error or error 107 (Transport endpoint is not connected)");
+		strError = _("No error or error 107 (Transport endpoint is not connected)");
 	}
 	
 	Disconnect(strError);
@@ -1791,7 +1791,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 		
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
-				AddDebugLogLineM(false, wxString::Format(wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
+				AddDebugLogLineM(false, wxString::Format(_("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
 				bResult = false;
 				break;
 			}
@@ -1803,7 +1803,7 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 			if (client) {
 				client->SetDownloadState(DS_ERROR);
 			}
-			Disconnect(wxT("Unknown protocol"));
+			Disconnect(_("Unknown protocol"));
 			bResult = false;
 		}
 	}
