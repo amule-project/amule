@@ -475,19 +475,17 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	gtk_object_set_data_full(GTK_OBJECT(up_item), "label", temp, NULL);
 	gtk_signal_connect (GTK_OBJECT(up_item), "activate",GTK_SIGNAL_FUNC (set_up_speed),up_item);
 
-	//show item
-	item=gtk_menu_item_new_with_label(_("Show"));
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_show),NULL);
-
-	//separator
-	item=gtk_menu_item_new();
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-
-	//hide item
-	item=gtk_menu_item_new_with_label(_("Hide"));
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_hide),NULL);
+	if (theApp.amuledlg->IsShown()) {
+		//hide item
+		item=gtk_menu_item_new_with_label(_("Hide"));
+		gtk_container_add (GTK_CONTAINER (status_menu), item);
+		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_hide),NULL);
+	} else {
+		//show item
+		item=gtk_menu_item_new_with_label(_("Show"));
+		gtk_container_add (GTK_CONTAINER (status_menu), item);
+		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (do_show),NULL);
+	}
 
 	//separator
 	item=gtk_menu_item_new();
@@ -529,19 +527,17 @@ tray_menu (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	item=gtk_menu_item_new();
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
-	//Connect item
-	item=gtk_menu_item_new_with_label(_("Connect to any server"));
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (connect_any_server),NULL);
-
-	//separator
-	item=gtk_menu_item_new();
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-
-	//Disconnection Speed item
-	item=gtk_menu_item_new_with_label(_("Disconnect from server"));
-	gtk_container_add (GTK_CONTAINER (status_menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (disconnect),NULL);
+	if (theApp.serverconnect->IsConnected()) {
+		//Disconnection Speed item
+		item=gtk_menu_item_new_with_label(_("Disconnect from server"));
+		gtk_container_add (GTK_CONTAINER (status_menu), item);
+		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (disconnect),NULL);
+	} else {
+		//Connect item
+		item=gtk_menu_item_new_with_label(_("Connect to any server"));
+		gtk_container_add (GTK_CONTAINER (status_menu), item);
+		gtk_signal_connect (GTK_OBJECT (item), "activate",GTK_SIGNAL_FUNC (connect_any_server),NULL);
+	}
 
 	//separator
 	item=gtk_menu_item_new();
