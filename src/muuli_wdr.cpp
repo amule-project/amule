@@ -1638,20 +1638,23 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxGridSizer *item1 = new wxGridSizer( 2, 0, 0 );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 10 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Nick") );
-    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
+    wxGridSizer *item2 = new wxGridSizer( 2, 0, 0 );
 
-    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the Linux Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
-    item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, _("Nick") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
 
-    item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxTOP, 5 );
+    wxTextCtrl *item5 = new wxTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the Linux Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
+    item3->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Language") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    item2->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxTOP, 5 );
 
-    wxString strs7[] = 
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Language") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
+
+    wxString strs8[] = 
     {
         _("System default"), 
         _("Arabic"), 
@@ -1683,94 +1686,94 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Italian (Napoletan)"), 
         _("Custom")
     };
-    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 29, strs7, 0 );
-    item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxChoice *item8 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 29, strs8, 0 );
+    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );
+    item2->Add( item6, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Misc Options") );
-    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("Misc Options") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_BEEPER, _("Beep on errors"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_BEEPER, _("Beep on errors"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_BRINGTOFOREGROUND, _("Bring to front on link click"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetValue( TRUE );
-    item8->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_DBLCLICK, _("Downloadlist doubleclick to expand"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_BRINGTOFOREGROUND, _("Bring to front on link click"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetValue( TRUE );
-    item8->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item9->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to trayicon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_DBLCLICK, _("Downloadlist doubleclick to expand"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetValue( TRUE );
+    item9->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetValue( TRUE );
-    item8->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to trayicon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
     item15->SetValue( TRUE );
-    item8->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item9->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetValue( TRUE );
+    item9->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item17 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs (1s to 5s)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item17, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item18 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(30,-1), 0, 1, 5, 1 );
-    item16->Add( item18, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs (1s to 5s)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item18, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item8->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item19 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(30,-1), 0, 1, 5, 1 );
+    item17->Add( item19, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxButton *item19 = new wxButton( parent, ID_DESKTOPMODE, _("Systray Integration"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item9->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item20 = new wxButton( parent, ID_DESKTOPMODE, _("Systray Integration"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item21 = new wxStaticBox( parent, -1, _("Startup") );
-    wxStaticBoxSizer *item20 = new wxStaticBoxSizer( item21, wxVERTICAL );
+    item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item22 = new wxBoxSizer( wxVERTICAL );
+    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Startup") );
+    wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
-    wxFlexGridSizer *item23 = new wxFlexGridSizer( 2, 0, 0 );
-    item23->AddGrowableCol( 0 );
+    wxBoxSizer *item23 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item24, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxFlexGridSizer *item24 = new wxFlexGridSizer( 2, 0, 0 );
+    item24->AddGrowableCol( 0 );
 
-    wxBoxSizer *item25 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item25 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item26 = new wxStaticText( parent, IDC_DAYS, _("5 Days"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
 
-    item23->Add( item25, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item27 = new wxStaticText( parent, IDC_DAYS, _("5 Days"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item27 = new wxCheckBox( parent, IDC_CHECK4UPDATE, _("Check for new version"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item27, 0, 0, 5 );
+    item24->Add( item26, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxSlider *item28 = new wxSlider( parent, IDC_CHECKDAYS, 5, 2, 7, wxDefaultPosition, wxSize(100,10), wxSL_HORIZONTAL );
-    item23->Add( item28, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item28 = new wxCheckBox( parent, IDC_CHECK4UPDATE, _("Check for new version"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item28, 0, 0, 5 );
 
-    item22->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item29 = new wxSlider( parent, IDC_CHECKDAYS, 5, 2, 7, wxDefaultPosition, wxSize(100,10), wxSL_HORIZONTAL );
+    item24->Add( item29, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item23->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_SPLASHON, _("Show Splashscreen"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->SetValue( TRUE );
-    item20->Add( item29, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->Add( item30, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item30 = new wxCheckBox( parent, IDC_SPLASHON, _("Show Splashscreen"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->SetValue( TRUE );
+    item21->Add( item30, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item31 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->Add( item31, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Fake Check") );
-    wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxVERTICAL );
+    item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxString strs33[] = 
+    wxStaticBox *item33 = new wxStaticBox( parent, -1, _("Fake Check") );
+    wxStaticBoxSizer *item32 = new wxStaticBoxSizer( item33, wxVERTICAL );
+
+    wxString strs34[] = 
     {
         _("Konqueror"), 
         _("Mozilla"), 
@@ -1782,28 +1785,28 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Epiphany"), 
         _("User Defined")
     };
-    wxChoice *item33 = new wxChoice( parent, IDC_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs33, 0 );
-    item33->SetToolTip( _("Select your browser here") );
-    item31->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxChoice *item34 = new wxChoice( parent, IDC_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs34, 0 );
+    item34->SetToolTip( _("Select your browser here") );
+    item32->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxGridSizer *item34 = new wxGridSizer( 2, 0, 0 );
+    wxGridSizer *item35 = new wxGridSizer( 2, 0, 0 );
 
-    wxStaticText *item35 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item36 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item36, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item36 = new wxTextCtrl( parent, IDC_FCHECKSELF, _("my browser"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item36->SetToolTip( _("Enter your browser name here") );
-    item36->Enable( false );
-    item34->Add( item36, 0, wxGROW|wxALL, 5 );
+    wxTextCtrl *item37 = new wxTextCtrl( parent, IDC_FCHECKSELF, _("my browser"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item37->SetToolTip( _("Enter your browser name here") );
+    item37->Enable( false );
+    item35->Add( item37, 0, wxGROW|wxALL, 5 );
 
-    item31->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item32->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item37 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item37->SetValue( TRUE );
-    item37->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item31->Add( item37, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxCheckBox *item38 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item38->SetValue( TRUE );
+    item38->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item32->Add( item38, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    item0->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -1820,221 +1823,224 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 11 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Line Capacities") );
-    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
+    wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, _("Line Capacities") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
 
-    wxBoxSizer *item5 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item6 = new wxStaticText( parent, IDC_DCAP_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item6 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item7 = new wxStaticText( parent, IDC_DCAP_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
-    item7->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item9 = new wxStaticText( parent, IDC_KBS2, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    item8->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item7, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item10 = new wxStaticText( parent, IDC_KBS2, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item10 = new wxStaticText( parent, IDC_UCAP_LBL, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item6->Add( item8, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item11 = new wxStaticText( parent, IDC_UCAP_LBL, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item12 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
-    item11->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item12 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item13 = new wxStaticText( parent, IDC_KBS3, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    item12->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item11, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item14 = new wxStaticText( parent, IDC_KBS3, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item4->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
+    item6->Add( item12, 0, wxALIGN_CENTER, 5 );
 
-    item2->Add( item4, 1, wxALIGN_CENTER|wxALL, 5 );
+    item5->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item3->Add( item5, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Bandwith Limits") );
-    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
+    item2->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Bandwith Limits") );
+    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
 
-    wxBoxSizer *item17 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item18 = new wxStaticText( parent, IDC_DLIMIT_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item18 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item19 = new wxStaticText( parent, IDC_DLIMIT_LBL, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item20 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
-    item19->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item21 = new wxStaticText( parent, IDC_KBS1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item21 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
+    item20->Add( item21, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item17->Add( item19, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item22 = new wxStaticText( parent, IDC_KBS1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item22 = new wxStaticText( parent, IDC_ULIMIT_LBL, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item18->Add( item20, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item23 = new wxStaticText( parent, IDC_ULIMIT_LBL, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item23, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
-    item23->Add( item24, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item25 = new wxStaticText( parent, IDC_KBS4, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item25, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item25 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
+    item24->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item17->Add( item23, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item26 = new wxStaticText( parent, IDC_KBS4, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item26, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item26 = new wxStaticText( parent, ID_TEXT, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item26, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item18->Add( item24, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item27 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item27 = new wxStaticText( parent, ID_TEXT, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item28 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("2"), wxDefaultPosition, wxSize(100,-1), 0, 1, 30, 2 );
-    item27->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item28 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item29 = new wxStaticText( parent, ID_TEXT, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item29 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("2"), wxDefaultPosition, wxSize(100,-1), 0, 1, 30, 2 );
+    item28->Add( item29, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item17->Add( item27, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item30 = new wxStaticText( parent, ID_TEXT, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item28->Add( item30, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item16->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
+    item18->Add( item28, 0, wxALIGN_CENTER, 5 );
 
-    item14->Add( item16, 1, wxALIGN_CENTER|wxALL, 5 );
+    item17->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item1->Add( item14, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item15->Add( item17, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item2->Add( item15, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxBoxSizer *item30 = new wxBoxSizer( wxHORIZONTAL );
+    item0->Add( item2, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Clientport") );
-    wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxVERTICAL );
+    wxBoxSizer *item31 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxGridSizer *item33 = new wxGridSizer( 3, 0, 20 );
+    wxStaticBox *item33 = new wxStaticBox( parent, -1, _("Clientport") );
+    wxStaticBoxSizer *item32 = new wxStaticBoxSizer( item33, wxVERTICAL );
 
-    wxBoxSizer *item34 = new wxBoxSizer( wxVERTICAL );
+    wxGridSizer *item34 = new wxGridSizer( 3, 0, 20 );
 
-    wxStaticText *item35 = new wxStaticText( parent, ID_TEXT, _("TCP"), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->Add( item35, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item35 = new wxBoxSizer( wxVERTICAL );
 
-    wxSpinCtrl *item36 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 80, 65535, 4662 );
-    item34->Add( item36, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item36 = new wxStaticText( parent, ID_TEXT, _("TCP"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item36, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item33->Add( item34, 0, wxALIGN_CENTER, 5 );
+    wxSpinCtrl *item37 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 80, 65535, 4662 );
+    item35->Add( item37, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item37 = new wxBoxSizer( wxVERTICAL );
+    item34->Add( item35, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item38 = new wxStaticText( parent, ID_TEXT, _("UDP"), wxDefaultPosition, wxDefaultSize, 0 );
-    item37->Add( item38, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item38 = new wxBoxSizer( wxVERTICAL );
 
-    wxSpinCtrl *item39 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 4672 );
-    item37->Add( item39, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item39 = new wxStaticText( parent, ID_TEXT, _("UDP"), wxDefaultPosition, wxDefaultSize, 0 );
+    item38->Add( item39, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item33->Add( item37, 0, wxALIGN_CENTER, 5 );
+    wxSpinCtrl *item40 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 4672 );
+    item38->Add( item40, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item40 = new wxBoxSizer( wxVERTICAL );
+    item34->Add( item38, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item41 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item40->Add( item41, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item41 = new wxBoxSizer( wxVERTICAL );
 
-    item33->Add( item40, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxCheckBox *item42 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item41->Add( item42, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item31->Add( item33, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item34->Add( item41, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item30->Add( item31, 1, wxALIGN_CENTER, 5 );
+    item32->Add( item34, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item31->Add( item32, 1, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item42 = new wxBoxSizer( wxHORIZONTAL );
+    item0->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item44 = new wxStaticBox( parent, -1, _("Max Sources per File") );
-    wxStaticBoxSizer *item43 = new wxStaticBoxSizer( item44, wxVERTICAL );
+    wxBoxSizer *item43 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item45 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item45 = new wxStaticBox( parent, -1, _("Max Sources per File") );
+    wxStaticBoxSizer *item44 = new wxStaticBoxSizer( item45, wxVERTICAL );
 
-    wxBoxSizer *item46 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item46 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item47 = new wxStaticText( parent, IDC_MAXSRCHARD_LBL, _("Hard Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item46->Add( item47, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item47 = new wxBoxSizer( wxVERTICAL );
 
-    wxSpinCtrl *item48 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
-    item46->Add( item48, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item48 = new wxStaticText( parent, IDC_MAXSRCHARD_LBL, _("Hard Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+    item47->Add( item48, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item45->Add( item46, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxSpinCtrl *item49 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
+    item47->Add( item49, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item43->Add( item45, 0, wxALIGN_CENTER, 5 );
+    item46->Add( item47, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item42->Add( item43, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item44->Add( item46, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticBox *item50 = new wxStaticBox( parent, -1, _("Connection Limits") );
-    wxStaticBoxSizer *item49 = new wxStaticBoxSizer( item50, wxVERTICAL );
+    item43->Add( item44, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item51 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item51 = new wxStaticBox( parent, -1, _("Connection Limits") );
+    wxStaticBoxSizer *item50 = new wxStaticBoxSizer( item51, wxVERTICAL );
 
-    wxBoxSizer *item52 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item52 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item53 = new wxStaticText( parent, IDC_MAXCONLABEL, _("Max Connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item53, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item53 = new wxBoxSizer( wxVERTICAL );
 
-    wxSpinCtrl *item54 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 25, 7500, 500 );
-    item52->Add( item54, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item54 = new wxStaticText( parent, IDC_MAXCONLABEL, _("Max Connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item53->Add( item54, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item51->Add( item52, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxSpinCtrl *item55 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 25, 7500, 500 );
+    item53->Add( item55, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item49->Add( item51, 0, wxALIGN_CENTER, 5 );
+    item52->Add( item53, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item42->Add( item49, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item50->Add( item52, 0, wxALIGN_CENTER, 5 );
 
-    item0->Add( item42, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item43->Add( item50, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item55 = new wxBoxSizer( wxVERTICAL );
+    item0->Add( item43, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item57 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item56 = new wxStaticBoxSizer( item57, wxVERTICAL );
+    wxBoxSizer *item56 = new wxBoxSizer( wxVERTICAL );
 
-    wxCheckBox *item58 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item56->Add( item58, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    wxStaticBox *item58 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item57 = new wxStaticBoxSizer( item58, wxVERTICAL );
 
-    wxCheckBox *item59 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
-    item59->SetValue( TRUE );
-    item56->Add( item59, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    wxCheckBox *item59 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item57->Add( item59, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    wxCheckBox *item60 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item60 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
     item60->SetValue( TRUE );
-    item56->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item57->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    wxCheckBox *item61 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Ident"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item61 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
     item61->SetValue( TRUE );
-    item56->Add( item61, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item57->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item55->Add( item56, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item62 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Ident"), wxDefaultPosition, wxDefaultSize, 0 );
+    item62->SetValue( TRUE );
+    item57->Add( item62, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item63 = new wxStaticBox( parent, -1, _("IP-Filter") );
-    wxStaticBoxSizer *item62 = new wxStaticBoxSizer( item63, wxHORIZONTAL );
-    IDC_IPF_0 = item62;
+    item56->Add( item57, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item64 = new wxCheckBox( parent, IDC_IPFONOFF, _("IP-Filter ON / OFF"), wxDefaultPosition, wxDefaultSize, 0 );
-    item64->SetValue( TRUE );
-    item62->Add( item64, 0, wxADJUST_MINSIZE|wxGROW, 0 );
+    wxStaticBox *item64 = new wxStaticBox( parent, -1, _("IP-Filter") );
+    wxStaticBoxSizer *item63 = new wxStaticBoxSizer( item64, wxHORIZONTAL );
+    IDC_IPF_0 = item63;
 
-    item62->Add( 30, 20, 0, wxALIGN_CENTER, 5 );
+    wxCheckBox *item65 = new wxCheckBox( parent, IDC_IPFONOFF, _("IP-Filter ON / OFF"), wxDefaultPosition, wxDefaultSize, 0 );
+    item65->SetValue( TRUE );
+    item63->Add( item65, 0, wxADJUST_MINSIZE|wxGROW, 0 );
 
-    wxButton *item65 = new wxButton( parent, IDC_IPFRELOAD, _("Reload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item62->Add( item65, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
+    item63->Add( 30, 20, 0, wxALIGN_CENTER, 5 );
 
-    item55->Add( item62, 0, wxGROW|wxALL, 5 );
+    wxButton *item66 = new wxButton( parent, IDC_IPFRELOAD, _("Reload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item63->Add( item66, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item56->Add( item63, 0, wxGROW|wxALL, 5 );
+
+    item0->Add( item56, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2050,66 +2056,69 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 12 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxCheckBox *item4 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
+    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(30,-1), 0, 1, 10, 2 );
-    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item5 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, IDC_RETRIES_LBL, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxSpinCtrl *item6 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(30,-1), 0, 1, 10, 2 );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item3, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item7 = new wxStaticText( parent, IDC_RETRIES_LBL, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    item2->Add( item4, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item8 = new wxCheckBox( parent, IDC_AUTOSERVER, _("Auto-update serverlist at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item9 = new wxBoxSizer( wxVERTICAL );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_AUTOSERVER, _("Auto-update serverlist at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item10 = new wxButton( parent, IDC_EDITADR, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Add( item10, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item10 = new wxBoxSizer( wxVERTICAL );
 
-    item7->Add( item9, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxButton *item11 = new wxButton( parent, IDC_EDITADR, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item11, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item7, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item8->Add( item10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_FILTER, _("Always filter bad IPs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetValue( TRUE );
-    item1->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    item2->Add( item8, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update serverlist when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_FILTER, _("Always filter bad IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetValue( TRUE );
+    item2->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update serverlist when a client connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update serverlist when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetValue( TRUE );
-    item1->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update serverlist when a client connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
     item15->SetValue( TRUE );
-    item1->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->SetValue( TRUE );
-    item1->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
+    item2->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetValue( TRUE );
-    item1->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->SetValue( TRUE );
+    item2->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2125,101 +2134,104 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxString strs1[] = 
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 13 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxString strs2[] = 
     {
         _("Everybody"), 
         _("Friends"), 
         _("No One")
     };
-    wxRadioBox *item1 = new wxRadioBox( parent, IDC_SEESHARES, _("See my shares"), wxDefaultPosition, wxDefaultSize, 3, strs1, 1, wxRA_SPECIFY_COLS );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxRadioBox *item2 = new wxRadioBox( parent, IDC_SEESHARES, _("See my shares"), wxDefaultPosition, wxDefaultSize, 3, strs2, 1, wxRA_SPECIFY_COLS );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
-    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
 
-    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ICH, _("I.C.H. active"), wxDefaultPosition, wxSize(160,-1), 0 );
-    item4->SetValue( TRUE );
-    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item5 = new wxCheckBox( parent, IDC_ICH, _("I.C.H. active"), wxDefaultPosition, wxSize(160,-1), 0 );
+    item5->SetValue( TRUE );
+    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_ADDNEWFILESPAUSED, _("Add files to download in pause mode"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetValue( TRUE );
-    item5->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_ADDNEWFILESPAUSED, _("Add files to download in pause mode"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetValue( TRUE );
+    item6->Add( item8, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item8 = new wxCheckBox( parent, IDC_DAP, _("Add files to download with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item8, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_DAP, _("Add files to download with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item9 = new wxCheckBox( parent, IDC_PREVIEWPRIO, _("Try to download first and last chunks first"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->SetValue( TRUE );
-    item5->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_PREVIEWPRIO, _("Try to download first and last chunks first"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetValue( TRUE );
+    item6->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_FULLCHUNKTRANS, _("Try to transfer full chunks to all uploads"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetValue( TRUE );
-    item5->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
-
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_STARTNEXTFILE, _("Start next paused file when a file completed"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_FULLCHUNKTRANS, _("Try to transfer full chunks to all uploads"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetValue( TRUE );
-    item5->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item6->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 5 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_STARTNEXTFILE, _("Start next paused file when a file completed"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->SetValue( TRUE );
-    item5->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item6->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_METADATA, _("Extract Meta Data Tags"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Enable( false );
-    item5->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 5 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetValue( TRUE );
+    item6->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_METADATA, _("Extract Meta Data Tags"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->Enable( false );
+    item6->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Reduce Fragmentation") );
-    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
+    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0, 0 );
+    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Reduce Fragmentation") );
+    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
 
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_FULLALLOCATE, _("Allocate full disk space for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetToolTip( _("This option reduces fragmentation but slows down the part file creation and will disable sparse files") );
-    item18->Enable( false );
-    item17->Add( item18, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxFlexGridSizer *item18 = new wxFlexGridSizer( 2, 0, 0, 0 );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chunks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_FULLALLOCATE, _("Allocate full disk space for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->SetToolTip( _("This option reduces fragmentation but slows down the part file creation and will disable sparse files") );
     item19->Enable( false );
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item18->Add( item19, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item15->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_CHUNKALLOC, _("Allocate full chunks for .part files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->SetToolTip( _("Select this to allocate a full chunk each time data is received for it.") );
+    item20->Enable( false );
+    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item16->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item21 = new wxStaticBox( parent, -1, _("Disk Space") );
-    wxStaticBoxSizer *item20 = new wxStaticBoxSizer( item21, wxVERTICAL );
+    item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item22 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check Disk Space"), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->SetToolTip( _("Select this if you want aMule to check your Disk Space") );
-    item20->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Disk Space") );
+    wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
-    wxFlexGridSizer *item23 = new wxFlexGridSizer( 3, 0, 0 );
-    item23->AddGrowableCol( 1 );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check Disk Space"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetToolTip( _("Select this if you want aMule to check your Disk Space") );
+    item21->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticText *item24 = new wxStaticText( parent, ID_MINDISKTEXT, _("    Min Disk Space:    "), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item24, 0, wxALIGN_CENTER|wxALL, 0 );
+    wxFlexGridSizer *item24 = new wxFlexGridSizer( 3, 0, 0 );
+    item24->AddGrowableCol( 1 );
 
-    wxSpinCtrl *item25 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(150,-1), 0, 1, 1000000, 1 );
-    item25->SetToolTip( _("Enter here the min disk space desired.") );
-    item23->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxStaticText *item25 = new wxStaticText( parent, ID_MINDISKTEXT, _("    Min Disk Space:    "), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item25, 0, wxALIGN_CENTER|wxALL, 0 );
 
-    wxStaticText *item26 = new wxStaticText( parent, ID_TEXT, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item26, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSpinCtrl *item26 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(150,-1), 0, 1, 1000000, 1 );
+    item26->SetToolTip( _("Enter here the min disk space desired.") );
+    item24->Add( item26, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticText *item27 = new wxStaticText( parent, ID_TEXT, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item27, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item21->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2235,62 +2247,65 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Incoming Directory :") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxHORIZONTAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 14 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxTextCtrl *item3 = new wxTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Incoming Directory :") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxHORIZONTAL );
 
-    wxButton *item4 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item5 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Temporary Directory :") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxHORIZONTAL );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxTextCtrl *item7 = new wxTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Temporary Directory :") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxHORIZONTAL );
 
-    wxButton *item8 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item8, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item8 = new wxTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item6->Add( item8, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item9 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("Shared Directories") );
-    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxHORIZONTAL );
+    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item11 = new wxBoxSizer( wxVERTICAL );
+    wxStaticBox *item11 = new wxStaticBox( parent, -1, _("Shared Directories") );
+    wxStaticBoxSizer *item10 = new wxStaticBoxSizer( item11, wxHORIZONTAL );
 
-    CDirectoryTreeCtrl *item12 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
-    wxASSERT( item12 );
-    item11->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item12 = new wxBoxSizer( wxVERTICAL );
 
-    item9->Add( item11, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CDirectoryTreeCtrl *item13 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE);
+    wxASSERT( item13 );
+    item12->Add( item13, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item10->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Video Player") );
-    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
+    item0->Add( item10, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item15 = new wxBoxSizer( wxVERTICAL );
+    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Video Player") );
+    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
 
-    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item16 = new wxBoxSizer( wxVERTICAL );
 
-    wxTextCtrl *item17 = new wxTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item16->Add( item17, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item18 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item18 = new wxTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item17->Add( item18, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item15->Add( item16, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxButton *item19 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item16->Add( item17, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup to preview"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2306,33 +2321,36 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Graphs") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 15 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, IDC_SLIDERINFO, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Graphs") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxSlider *item4 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item4 = new wxStaticText( parent, IDC_SLIDERINFO, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item4, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, IDC_SLIDERINFO3, _("Time for average graph: 100 mins"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item5, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxSlider *item5 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item6 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, IDC_SLIDERINFO3, _("Time for average graph: 100 mins"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item6, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item7, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxSlider *item7 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item8 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item8 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item8, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item9 = new wxStaticText( parent, IDC_PREFCOLORS, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxSlider *item9 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item10 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item10 = new wxStaticText( parent, IDC_PREFCOLORS, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxString strs11[] = 
+    wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxString strs12[] = 
     {
         _("Background"), 
         _("Grid"), 
@@ -2347,26 +2365,26 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
         _("Active uploads"), 
         _("Systray Icon Speedbar")
     };
-    wxChoice *item11 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 12, strs11, 0 );
-    item10->Add( item11, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
+    wxChoice *item12 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 12, strs12, 0 );
+    item11->Add( item12, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
-    wxButton *item12 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->Add( item12, 0, wxGROW|wxLEFT, 5 );
+    wxButton *item13 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item13, 0, wxGROW|wxLEFT, 5 );
 
-    item1->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Statistics Tree") );
-    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
+    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Statistics Tree") );
+    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
 
-    wxStaticText *item15 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxSlider *item16 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item13->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item17 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2382,86 +2400,89 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Messages popup") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 16 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxCheckBox *item3 = new wxCheckBox( parent, IDC_CB_TBN_USESOUND, _("Use sound"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->Enable( false );
-    item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Messages popup") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_CB_TBN_USESOUND, _("Use sound"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Enable( false );
+    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item5 = new wxTextCtrl( parent, IDC_EDIT_TBN_WAVFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item5->Enable( false );
-    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxTOP, 5 );
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxButton *item6 = new wxButton( parent, IDC_BTN_BROWSE_WAV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxTextCtrl *item6 = new wxTextCtrl( parent, IDC_EDIT_TBN_WAVFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item6->Enable( false );
-    item4->Add( item6, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxTOP, 5 );
+    item5->Add( item6, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxTOP, 5 );
 
-    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item7 = new wxButton( parent, IDC_BTN_BROWSE_WAV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Enable( false );
+    item5->Add( item7, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxTOP, 5 );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxVERTICAL );
+    item2->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Pop out when :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
+    wxBoxSizer *item8 = new wxBoxSizer( wxVERTICAL );
 
-    wxCheckBox *item9 = new wxCheckBox( parent, IDC_CB_TBN_ONLOG, _("New entry on log"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->Enable( false );
-    item7->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Pop out when :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_CB_TBN_ONCHAT, _("Starts a new chat session"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_CB_TBN_ONLOG, _("New entry on log"), wxDefaultPosition, wxDefaultSize, 0 );
     item10->Enable( false );
-    item7->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item8->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_CB_TBN_POP_ALWAYS, _("A new chat message is received"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_CB_TBN_ONCHAT, _("Starts a new chat session"), wxDefaultPosition, wxDefaultSize, 0 );
     item11->Enable( false );
-    item7->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item8->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_CB_TBN_ONDOWNLOAD, _("A download is added or finished"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_CB_TBN_POP_ALWAYS, _("A new chat message is received"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->Enable( false );
-    item7->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item8->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_CB_TBN_ONNEWVERSION, _("New aMule version detected"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_CB_TBN_ONDOWNLOAD, _("A download is added or finished"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Enable( false );
-    item7->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item8->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_CB_TBN_IMPORTATNT, _("Urgent OOD, serverconnection lost"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetForegroundColour( *wxRED );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_CB_TBN_ONNEWVERSION, _("New aMule version detected"), wxDefaultPosition, wxDefaultSize, 0 );
     item14->Enable( false );
-    item7->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item8->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_CB_TBN_IMPORTATNT, _("Urgent OOD, serverconnection lost"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetForegroundColour( *wxRED );
+    item15->Enable( false );
+    item8->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item2->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Notify by Mail") );
-    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SENDMAIL, _("Send an Email when transfer complete."), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Enable( false );
-    item15->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Notify by Mail") );
+    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
 
-    wxFlexGridSizer *item18 = new wxFlexGridSizer( 2, 0, 0 );
-    item18->AddGrowableCol( 1 );
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_SENDMAIL, _("Send an Email when transfer complete."), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Enable( false );
+    item16->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("SMTP server :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxFlexGridSizer *item19 = new wxFlexGridSizer( 2, 0, 0 );
+    item19->AddGrowableCol( 1 );
 
-    wxTextCtrl *item20 = new wxTextCtrl( parent, IDC_SMTP, wxT(""), wxDefaultPosition, wxDefaultSize, wxVSCROLL );
-    item20->Enable( false );
-    item18->Add( item20, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("SMTP server :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Email Address :"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item21, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxTextCtrl *item21 = new wxTextCtrl( parent, IDC_SMTP, wxT(""), wxDefaultPosition, wxDefaultSize, wxVSCROLL );
+    item21->Enable( false );
+    item19->Add( item21, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxTextCtrl *item22 = new wxTextCtrl( parent, IDC_EMAIL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item22->Enable( false );
-    item18->Add( item22, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxStaticText *item22 = new wxStaticText( parent, ID_TEXT, _("Email Address :"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item22, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    item15->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item23 = new wxTextCtrl( parent, IDC_EMAIL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item23->Enable( false );
+    item19->Add( item23, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item16->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2477,21 +2498,24 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("aMule Tweaks Advertisements && Parameters") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 20 ), wxDefaultPosition, wxDefaultSize );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("aMule Tweaks Advertisements && Parameters") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxStaticText *item5 = new wxStaticText( parent, IDC_WARNING, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->SetForegroundColour( *wxRED );
-    item5->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+
+    wxStaticText *item6 = new wxStaticText( parent, IDC_WARNING, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetForegroundColour( *wxRED );
+    item6->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
 #if defined(__WXMSW__) && !(wxCHECK_VERSION(2,3,0))
-    item5->SetSize( item5->GetBestSize() );
+    item6->SetSize( item6->GetBestSize() );
 #endif
-    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, IDC_STATIC, 
+    wxStaticText *item7 = new wxStaticText( parent, IDC_STATIC, 
         _("Do not change these setting unless you know\n"
           "what you are doing, otherwise you can easily\n"
           "make things worse for yourself.\n"
@@ -2499,54 +2523,54 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
           "aMule will run fine without adjusting any of\n"
           "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-    item6->SetForegroundColour( *wxRED );
-    item3->Add( item6, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item7->SetForegroundColour( *wxRED );
+    item4->Add( item7, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, IDC_MAXCON5SECLABEL, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item8 = new wxStaticText( parent, IDC_MAXCON5SECLABEL, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item8, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
-    item1->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
+    item2->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item9 = new wxCheckBox( parent, IDC_SAFEMAXCONN, _("Use Safe Max Connections code"), wxDefaultPosition, wxDefaultSize, 0 );
-    item9->SetToolTip( _("This code use an average calc. to avoid breaking usb modems, etc") );
-    item1->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_SAFEMAXCONN, _("Use Safe Max Connections code"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetToolTip( _("This code use an average calc. to avoid breaking usb modems, etc") );
+    item2->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_AUTOTAKEED2KLINKS, _("Autotake ED2K Links only during runtime"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetValue( TRUE );
-    item1->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_AUTOTAKEED2KLINKS, _("Autotake ED2K Links only during runtime"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->SetValue( TRUE );
-    item1->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetValue( TRUE );
+    item2->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item15 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item16 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item17 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item17 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item18 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item18 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item19 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item1->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item19 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSlider *item20 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item2->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item2, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     if (set_sizer)
     {
@@ -2562,105 +2586,108 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Arrange Downloads") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 19 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxCheckBox *item3 = new wxCheckBox( parent, IDC_ENABLE_AUTO_ARRANGING, _("Enable auto-arranging download list "), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Arrange Downloads") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxString strs4[] = 
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ENABLE_AUTO_ARRANGING, _("Enable auto-arranging download list "), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxString strs5[] = 
     {
         _("Download Speed"), 
         _("Number of Sources"), 
         _("Status")
     };
-    wxRadioBox *item4 = new wxRadioBox( parent, ID_RADIOBOX, wxT(""), wxDefaultPosition, wxDefaultSize, 3, strs4, 1, wxNO_BORDER|wxRA_SPECIFY_COLS );
-    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxRadioBox *item5 = new wxRadioBox( parent, ID_RADIOBOX, wxT(""), wxDefaultPosition, wxDefaultSize, 3, strs5, 1, wxNO_BORDER|wxRA_SPECIFY_COLS );
+    item2->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item0->Add( item2, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetValue( TRUE );
-    item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxCheckBox *item8 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
     item8->SetValue( TRUE );
-    item5->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxFlexGridSizer *item9 = new wxFlexGridSizer( 2, 0, 0 );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->SetValue( TRUE );
+    item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxBoxSizer *item10 = new wxBoxSizer( wxVERTICAL );
+    wxFlexGridSizer *item10 = new wxFlexGridSizer( 2, 0, 0 );
 
-    wxStaticText *item11 = new wxStaticText( parent, IDC_3DDEP, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->Add( item11, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item11 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, IDC_3DDEP, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item12, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item9->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item13 = new wxBoxSizer( wxVERTICAL );
+    item10->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxSlider *item14 = new wxSlider( parent, IDC_3DDEPTH, 10, 0, 20, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
-    item13->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item14 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item15 = new wxBoxSizer( wxVERTICAL );
+    wxSlider *item15 = new wxSlider( parent, IDC_3DDEPTH, 10, 0, 20, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    item14->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxGridSizer *item16 = new wxGridSizer( 1, 0, 0, 0 );
+    wxBoxSizer *item16 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticText *item17 = new wxStaticText( parent, IDC_FLAT, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxGridSizer *item17 = new wxGridSizer( 1, 0, 0, 0 );
 
-    wxStaticText *item18 = new wxStaticText( parent, IDC_ROUND, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item18, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, IDC_FLAT, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item15->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item19 = new wxStaticText( parent, IDC_ROUND, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item19, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item13->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item16->Add( item17, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item9->Add( item13, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item10->Add( item14, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item6->Add( item10, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Skin Support") );
-    wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
+    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item21 = new wxCheckBox( parent, IDC_USESKIN, _("Use skin file to set aMule bitmaps."), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticBox *item21 = new wxStaticBox( parent, -1, _("Skin Support") );
+    wxStaticBoxSizer *item20 = new wxStaticBoxSizer( item21, wxVERTICAL );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Skin file:") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxHORIZONTAL );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_USESKIN, _("Use skin file to set aMule bitmaps."), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxTextCtrl *item24 = new wxTextCtrl( parent, IDC_SKINFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item22->Add( item24, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Skin file:") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxHORIZONTAL );
 
-    wxButton *item25 = new wxButton( parent, IDC_SELSKINFILE, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item25 = new wxTextCtrl( parent, IDC_SKINFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item23->Add( item25, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item19->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxButton *item26 = new wxButton( parent, IDC_SELSKINFILE, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxStaticBox *item27 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
-    wxStaticBoxSizer *item26 = new wxStaticBoxSizer( item27, wxVERTICAL );
+    item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticBox *item28 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBoxSizer *item27 = new wxStaticBoxSizer( item28, wxVERTICAL );
 
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->SetValue( TRUE );
-    item26->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_NEWSTYLETABS, _("Use old style tabs on preferences"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item30 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
     item30->SetValue( TRUE );
-    item26->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item27->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item0->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item31 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item31->SetValue( TRUE );
+    item27->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    item0->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     if (set_sizer)
     {
@@ -2676,63 +2703,66 @@ wxSizer *PreferencesSourcesDroppingTab( wxWindow *parent, bool call_fit, bool se
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxString strs1[] = 
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 18 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxString strs2[] = 
     {
         _("Keep sources"), 
         _("Drop sources"), 
         _("Send sources to any other file before dropping (High CPU)")
     };
-    wxRadioBox *item1 = new wxRadioBox( parent, IDC_NNS_HANDLING, _("Sources with no needed file-parts."), wxDefaultPosition, wxDefaultSize, 3, strs1, 1, wxRA_SPECIFY_COLS );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxRadioBox *item2 = new wxRadioBox( parent, IDC_NNS_HANDLING, _("Sources with no needed file-parts."), wxDefaultPosition, wxDefaultSize, 3, strs2, 1, wxRA_SPECIFY_COLS );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Full Queue Sources Handling") );
-    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, _("Full Queue Sources Handling") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
 
-    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ENABLE_AUTO_FQS, _("Enable auto drop Full Queue Sources"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->SetValue( TRUE );
-    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item5 = new wxCheckBox( parent, IDC_ENABLE_AUTO_FQS, _("Enable auto drop Full Queue Sources"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetValue( TRUE );
+    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item0->Add( item2, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    item0->Add( item3, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("High Queue Rating Sources Handling") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("High Queue Rating Sources Handling") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_ENABLE_AUTO_HQRS, _("Enable auto drop High Queue Rating Sources"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetValue( TRUE );
-    item5->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_ENABLE_AUTO_HQRS, _("Enable auto drop High Queue Rating Sources"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetValue( TRUE );
+    item6->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxFlexGridSizer *item8 = new wxFlexGridSizer( 4, 0, 0 );
+    wxFlexGridSizer *item9 = new wxFlexGridSizer( 4, 0, 0 );
 
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("High Queue Rating value"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _("High Queue Rating value"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_HQR_VALUE, wxT("1200"), wxDefaultPosition, wxSize(100,-1), 0, 300, 3000, 1200 );
-    item8->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item11 = new wxSpinCtrl( parent, IDC_HQR_VALUE, wxT("1200"), wxDefaultPosition, wxSize(100,-1), 0, 300, 3000, 1200 );
+    item9->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("(Min 300 / Max 3000)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("(Min 300 / Max 3000)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    item5->Add( item8, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item6->Add( item9, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item5, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    item0->Add( item6, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
-    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Auto Drop Sources Timer") );
-    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
+    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Auto Drop Sources Timer") );
+    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
 
-    wxFlexGridSizer *item14 = new wxFlexGridSizer( 4, 0, 0 );
+    wxFlexGridSizer *item15 = new wxFlexGridSizer( 4, 0, 0 );
 
-    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("Timer (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Timer (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_AUTO_DROP_TIMER, wxT("240"), wxDefaultPosition, wxSize(100,-1), 0, 60, 3600, 240 );
-    item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_AUTO_DROP_TIMER, wxT("240"), wxDefaultPosition, wxSize(100,-1), 0, 60, 3600, 240 );
+    item15->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item17 = new wxStaticText( parent, ID_TEXT, _("(Min 60 / 3600 Max)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("(Min 60 / 3600 Max)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    item12->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item13->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item12, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    item0->Add( item13, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2748,99 +2778,102 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Webserver Parameters") );
-    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    wxStaticBitmap *item1 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 17 ), wxDefaultPosition, wxSize(16,16) );
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxCheckBox *item3 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Enable Webserver"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Webserver Parameters") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Enable Webserver"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Webserver port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item5, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item6 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item4->Add( item6, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Webserver port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item6, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item7 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item5->Add( item7, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    item2->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item8, 1, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
-    item7->Add( item9, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item9, 1, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
 
-    item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
+    item8->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->SetValue( TRUE );
-    item1->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
     item11->SetValue( TRUE );
-    item1->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxGridSizer *item12 = new wxGridSizer( 2, 0, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetValue( TRUE );
+    item2->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxGridSizer *item13 = new wxGridSizer( 2, 0, 0 );
 
-    wxTextCtrl *item14 = new wxTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item12->Add( item14, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxTextCtrl *item15 = new wxTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item13->Add( item15, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
-    wxTextCtrl *item16 = new wxTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item12->Add( item16, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    item1->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxTextCtrl *item17 = new wxTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item13->Add( item17, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item2->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
-    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
+    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_EXT_CONN_USETCP, _("Use TCP ports instead of unix local sockets"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item21 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item21 = new wxCheckBox( parent, IDC_EXT_CONN_USETCP, _("Use TCP ports instead of unix local sockets"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item22 = new wxStaticText( parent, ID_TEXT, _("External TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item22, 1, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxBoxSizer *item22 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item23 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item21->Add( item23, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item23 = new wxStaticText( parent, ID_TEXT, _("External TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->Add( item23, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    item17->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item22->Add( item24, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
+    item18->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item25 = new wxCheckBox( parent, IDC_EXT_CONN_PASSWD_ENABLE, _("Enable password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item25, 1, wxALIGN_CENTER, 5 );
+    wxBoxSizer *item25 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxTextCtrl *item26 = new wxTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-    item24->Add( item26, 1, wxALIGN_CENTER, 5 );
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_EXT_CONN_PASSWD_ENABLE, _("Enable password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item26, 1, wxALIGN_CENTER, 5 );
 
-    item17->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item27 = new wxTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+    item25->Add( item27, 1, wxALIGN_CENTER, 5 );
 
-    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item18->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item28 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
-    wxStaticBoxSizer *item27 = new wxStaticBoxSizer( item28, wxHORIZONTAL );
+    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item29 = new wxTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item27->Add( item29, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item29 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
+    wxStaticBoxSizer *item28 = new wxStaticBoxSizer( item29, wxHORIZONTAL );
 
-    wxButton *item30 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item30, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxTextCtrl *item30 = new wxTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item28->Add( item30, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item31 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item28->Add( item31, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    item0->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -4753,40 +4786,40 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            255,141,0,255,155,44,255,147,40,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,213,219,245,167,180,221,66,103,148,255,159,16,255,220,
-            149,239,211,89,245,145,4,189,84,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,194,198,216,255,255,255,255,255,255,230,238,255,234,172,96,214,187,56,225,
-            170,5,250,142,11,227,100,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,196,203,220,255,255,255,239,245,255,242,179,122,245,167,91,250,230,153,253,225,119,230,203,108,
-            245,132,36,252,110,0,130,51,0,66,103,148,66,103,148,66,103,148,66,103,148,200,205,219,255,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            255,141,0,255,155,44,255,147,40,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,213,219,245,167,180,221,221,221,221,255,159,16,255,220,
+            149,239,211,89,245,145,4,189,84,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,194,198,216,255,255,255,255,255,255,230,238,255,234,172,96,214,187,56,225,
+            170,5,250,142,11,227,100,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,196,203,220,255,255,255,239,245,255,242,179,122,245,167,91,250,230,153,253,225,119,230,203,108,
+            245,132,36,252,110,0,130,51,0,221,221,221,221,221,221,221,221,221,221,221,221,200,205,219,255,
             255,255,253,185,116,254,179,95,250,244,177,247,245,142,244,224,119,242,214,111,253,188,83,250,132,
-            38,255,104,0,189,84,0,66,103,148,66,103,148,66,103,148,203,206,211,255,255,255,255,150,34,
+            38,255,104,0,189,84,0,221,221,221,221,221,221,221,221,221,203,206,211,255,255,255,255,150,34,
             253,255,190,249,255,151,247,252,149,247,235,133,243,225,123,249,198,94,251,153,56,248,121,19,255,
-            101,0,233,100,0,66,103,148,66,103,148,240,240,240,255,255,255,255,255,255,254,179,95,253,255,
+            101,0,233,100,0,221,221,221,221,221,221,240,240,240,255,255,255,255,255,255,254,179,95,253,255,
             179,249,251,148,246,246,149,247,235,133,251,203,98,254,177,78,248,149,44,255,129,16,255,92,0,
-            255,116,0,156,66,16,66,103,148,231,235,238,205,219,234,238,252,255,255,242,232,251,205,129,249,
+            255,116,0,156,66,16,221,221,221,231,235,238,205,219,234,238,252,255,255,242,232,251,205,129,249,
             255,151,246,246,149,253,225,119,255,202,98,247,168,64,255,145,20,255,140,8,219,182,134,176,206,
-            253,179,98,50,66,103,148,66,103,148,255,145,7,224,155,85,190,200,229,236,166,101,255,255,173,
+            253,179,98,50,221,221,221,221,221,221,255,145,7,224,155,85,190,200,229,236,166,101,255,255,173,
             253,250,143,255,222,113,248,185,75,255,175,41,235,203,147,202,219,255,195,204,231,190,200,229,181,
-            156,152,130,44,0,66,103,148,255,186,58,255,228,152,255,240,45,237,160,33,237,219,156,249,244,
+            156,152,130,44,0,221,221,221,255,186,58,255,228,152,255,240,45,237,160,33,237,219,156,249,244,
             126,244,212,104,249,227,169,232,244,255,217,224,240,217,224,240,208,221,241,176,134,112,186,103,52,
-            68,15,0,66,103,148,66,103,148,255,134,20,253,199,136,255,230,42,231,160,70,255,255,198,255,
-            255,255,255,255,255,245,250,255,245,250,255,209,176,158,196,109,50,130,44,0,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,236,115,12,243,182,123,237,160,33,255,255,255,255,255,255,
-            255,255,255,247,228,215,213,127,62,167,70,10,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,211,95,0,226,149,83,233,186,137,255,255,255,226,149,
-            83,195,91,19,0,0,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,250,175,112,206,91,10,0,0,0,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,0,0,0,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148
+            68,15,0,221,221,221,221,221,221,255,134,20,253,199,136,255,230,42,231,160,70,255,255,198,255,
+            255,255,255,255,255,245,250,255,245,250,255,209,176,158,196,109,50,130,44,0,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,236,115,12,243,182,123,237,160,33,255,255,255,255,255,255,
+            255,255,255,247,228,215,213,127,62,167,70,10,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,211,95,0,226,149,83,233,186,137,255,255,255,226,149,
+            83,195,91,19,0,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,250,175,112,206,91,10,0,0,0,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,0,0,0,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 66, 103, 148);
+        image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
         return bitmap;
     }
@@ -4794,40 +4827,40 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            255,79,1,252,57,48,252,49,44,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,250,204,254,228,137,251,66,103,148,252,85,20,251,153,
-            190,251,118,77,249,71,1,190,18,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,242,161,249,255,255,255,255,255,255,253,233,253,252,78,135,245,77,25,226,
-            98,4,254,66,8,228,32,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,243,166,250,255,255,255,253,241,253,253,111,181,253,83,135,252,152,171,252,145,120,249,89,112,
-            253,29,34,252,42,0,130,6,0,66,103,148,66,103,148,66,103,148,66,103,148,245,170,250,255,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            255,79,1,252,57,48,252,49,44,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,250,204,254,228,137,251,221,221,221,252,85,20,251,153,
+            190,251,118,77,249,71,1,190,18,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,242,161,249,255,255,255,255,255,255,253,233,253,252,78,135,245,77,25,226,
+            98,4,254,66,8,228,32,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,243,166,250,255,255,255,253,241,253,253,111,181,253,83,135,252,152,171,252,145,120,249,89,112,
+            253,29,34,252,42,0,130,6,0,221,221,221,221,221,221,221,221,221,221,221,221,245,170,250,255,
             255,255,253,117,171,253,97,137,250,178,178,251,205,139,252,135,112,252,105,102,253,83,91,253,35,
-            40,255,43,1,190,18,0,66,103,148,66,103,148,66,103,148,245,166,248,255,255,255,252,63,38,
+            40,255,43,1,190,18,0,221,221,221,221,221,221,221,221,221,245,166,248,255,255,255,252,63,38,
             249,253,193,250,254,152,251,238,151,252,166,128,252,134,114,253,91,99,253,55,69,254,31,14,255,
-            37,1,234,33,0,66,103,148,66,103,148,253,227,252,255,255,255,255,255,255,253,97,137,249,253,
+            37,1,234,33,0,221,221,221,221,221,221,253,227,252,255,255,255,255,255,255,253,97,137,249,253,
             181,251,233,149,251,207,145,252,166,128,252,98,98,253,79,95,253,39,39,252,53,20,255,31,1,
-            255,49,1,162,10,25,66,103,148,251,217,253,246,187,253,251,243,250,253,235,253,253,127,171,250,
+            255,49,1,162,10,25,221,221,221,251,217,253,246,187,253,251,243,250,253,235,253,253,127,171,250,
             254,152,251,207,145,252,145,120,251,103,106,253,59,68,252,67,24,253,68,11,249,105,190,235,176,
-            254,210,20,74,66,103,148,66,103,148,253,78,9,250,60,123,241,168,252,252,86,152,247,253,175,
+            254,210,20,74,221,221,221,221,221,221,253,78,9,250,60,123,241,168,252,252,86,152,247,253,175,
             251,230,145,251,143,117,253,75,71,252,93,44,252,130,199,247,205,253,244,174,252,241,168,252,235,
-            99,218,130,3,0,66,103,148,252,98,62,250,158,182,252,221,48,252,62,18,251,143,196,252,208,
+            99,218,130,3,0,221,221,221,252,98,62,250,158,182,252,221,48,252,62,18,251,143,196,252,208,
             124,252,107,96,252,166,211,253,235,253,250,205,253,250,205,253,247,197,253,230,58,171,220,18,75,
-            68,0,0,66,103,148,66,103,148,252,56,24,253,137,194,252,196,46,251,51,84,244,253,201,255,
-            255,255,255,255,255,254,246,253,254,246,253,247,121,222,232,14,65,130,3,0,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,246,25,2,253,113,182,252,62,18,255,255,255,255,255,255,
-            255,255,255,254,208,249,248,28,85,166,12,15,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,212,25,0,251,59,122,252,118,197,255,255,255,251,59,
-            122,202,12,21,0,0,0,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,254,108,173,208,18,8,0,0,0,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,0,0,0,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148
+            68,0,0,221,221,221,221,221,221,252,56,24,253,137,194,252,196,46,251,51,84,244,253,201,255,
+            255,255,255,255,255,254,246,253,254,246,253,247,121,222,232,14,65,130,3,0,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,246,25,2,253,113,182,252,62,18,255,255,255,255,255,255,
+            255,255,255,254,208,249,248,28,85,166,12,15,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,212,25,0,251,59,122,252,118,197,255,255,255,251,59,
+            122,202,12,21,0,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,254,108,173,208,18,8,0,0,0,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,0,0,0,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 66, 103, 148);
+        image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
         return bitmap;
     }
@@ -4871,23 +4904,23 @@ wxBitmap amuleSpecial( size_t index )
         "  c None",
         "a c #FFFFFF",
         "b c #000080",
-        "d c #E2D704",
+        "c c #E2D704",
         "e c #BFBFDF",
         /* pixels */
         "                ",
         "  bbbbbbbbbbbb  ",
-        " bddddddddddddb ",
-        " bdaaaaaaaaaadb ",
-        " bdabbeaaebbadb ",
-        " bdabbbeebbbadb ",
-        " bdaebbbbbbeadb ",
-        " bdaaebbbbeaadb ",
-        " bdaaebbbbeaadb ",
-        " bdaebbbbbbeadb ",
-        " bdabbbeebbbadb ",
-        " bdabbeaaebbadb ",
-        " bdaaaaaaaaaadb ",
-        " bddddddddddddb ",
+        " bccccccccccccb ",
+        " bcaaaaaaaaaacb ",
+        " bcabbeaaebbacb ",
+        " bcabbbeebbbacb ",
+        " bcaebbbbbbeacb ",
+        " bcaaebbbbeaacb ",
+        " bcaaebbbbeaacb ",
+        " bcaebbbbbbeacb ",
+        " bcabbbeebbbacb ",
+        " bcabbeaaebbacb ",
+        " bcaaaaaaaaaacb ",
+        " bccccccccccccb ",
         "  bbbbbbbbbbbb  ",
         "                "
         };
@@ -4898,40 +4931,40 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,100,41,9,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,100,41,9,100,41,9,128,63,18,66,103,148,100,41,9,100,41,9,100,41,9,100,41,
-            9,100,41,9,100,41,9,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
+            221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,100,41,9,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,100,41,9,100,41,9,128,63,18,221,221,221,100,41,9,100,41,9,100,41,9,100,41,
+            9,100,41,9,100,41,9,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
             100,41,9,188,109,45,128,63,18,100,41,9,242,220,175,233,195,143,223,170,110,206,130,64,172,
-            98,38,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,127,62,
+            98,38,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,127,62,
             19,165,92,35,100,41,9,242,220,175,223,170,110,214,148,85,188,109,45,100,41,9,100,41,9,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,142,74,25,206,
-            130,64,223,170,110,214,148,85,149,79,29,100,41,9,100,41,9,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,199,118,49,188,109,45,
-            168,94,37,134,69,27,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,100,41,9,100,41,9,188,109,45,188,109,45,93,45,
-            14,222,170,125,180,123,80,128,64,23,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,203,124,57,188,109,45,223,174,133,255,
-            255,255,66,103,148,147,106,72,167,96,42,50,55,62,50,55,62,50,55,62,66,103,148,66,103,
-            148,66,103,148,66,103,148,100,41,9,100,41,9,210,138,74,217,154,92,217,154,92,235,235,234,
-            65,64,65,194,119,57,204,145,78,230,210,186,255,255,255,197,197,193,50,55,62,66,103,148,66,
-            103,148,66,103,148,66,103,148,100,41,9,223,170,110,242,220,175,223,170,110,217,154,92,180,104,
-            44,191,119,50,193,140,87,107,108,111,23,22,20,255,255,255,50,55,62,66,103,148,66,103,148,
-            66,103,148,100,41,9,110,49,12,217,154,92,223,170,110,223,170,110,210,138,74,180,104,44,168,
-            94,37,193,160,128,197,197,193,160,160,158,235,235,234,50,55,62,66,103,148,66,103,148,66,103,
-            148,100,41,9,110,49,12,168,94,37,210,138,74,210,138,74,199,118,49,172,98,38,168,94,37,
-            197,179,159,229,229,226,229,229,226,229,229,226,50,55,62,66,103,148,66,103,148,66,103,148,100,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,142,74,25,206,
+            130,64,223,170,110,214,148,85,149,79,29,100,41,9,100,41,9,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,199,118,49,188,109,45,
+            168,94,37,134,69,27,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,100,41,9,100,41,9,188,109,45,188,109,45,93,45,
+            14,222,170,125,180,123,80,128,64,23,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,203,124,57,188,109,45,223,174,133,255,
+            255,255,221,221,221,147,106,72,167,96,42,50,55,62,50,55,62,50,55,62,221,221,221,221,221,
+            221,221,221,221,221,221,221,100,41,9,100,41,9,210,138,74,217,154,92,217,154,92,235,235,234,
+            65,64,65,194,119,57,204,145,78,230,210,186,255,255,255,197,197,193,50,55,62,221,221,221,221,
+            221,221,221,221,221,221,221,221,100,41,9,223,170,110,242,220,175,223,170,110,217,154,92,180,104,
+            44,191,119,50,193,140,87,107,108,111,23,22,20,255,255,255,50,55,62,221,221,221,221,221,221,
+            221,221,221,100,41,9,110,49,12,217,154,92,223,170,110,223,170,110,210,138,74,180,104,44,168,
+            94,37,193,160,128,197,197,193,160,160,158,235,235,234,50,55,62,221,221,221,221,221,221,221,221,
+            221,100,41,9,110,49,12,168,94,37,210,138,74,210,138,74,199,118,49,172,98,38,168,94,37,
+            197,179,159,229,229,226,229,229,226,229,229,226,50,55,62,221,221,221,221,221,221,221,221,221,100,
             41,9,128,63,18,100,41,9,100,41,9,100,41,9,100,41,9,100,41,9,114,116,118,160,160,
-            158,170,170,166,164,165,162,50,55,62,66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,
-            142,74,25,172,98,38,165,92,35,127,62,19,100,41,9,66,103,148,50,55,62,50,55,62,50,
-            55,62,50,55,62,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,100,41,9,142,74,
-            25,193,116,45,188,109,45,154,83,30,100,41,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148
+            158,170,170,166,164,165,162,50,55,62,221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,
+            142,74,25,172,98,38,165,92,35,127,62,19,100,41,9,221,221,221,50,55,62,50,55,62,50,
+            55,62,50,55,62,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,100,41,9,142,74,
+            25,193,116,45,188,109,45,154,83,30,100,41,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 66, 103, 148);
+        image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
         return bitmap;
     }
@@ -4939,40 +4972,40 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,59,59,59,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,59,59,59,59,59,59,82,82,82,66,103,148,59,59,59,59,59,59,59,59,59,59,59,
-            59,59,59,59,59,59,59,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
+            221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,59,59,59,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,59,59,59,59,59,59,82,82,82,221,221,221,59,59,59,59,59,59,59,59,59,59,59,
+            59,59,59,59,59,59,59,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
             59,59,59,131,131,131,82,82,82,59,59,59,223,223,223,201,201,201,180,180,180,148,148,148,115,
-            115,115,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,82,82,
+            115,115,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,82,82,
             82,109,109,109,59,59,59,223,223,223,180,180,180,164,164,164,131,131,131,59,59,59,59,59,59,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,93,93,93,148,
-            148,148,180,180,180,164,164,164,100,100,100,59,59,59,59,59,59,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,137,137,137,131,131,131,
-            109,109,109,93,93,93,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,59,59,59,59,59,59,131,131,131,131,131,131,59,59,
-            59,185,185,185,131,131,131,82,82,82,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,148,148,148,131,131,131,185,185,185,255,
-            255,255,66,103,148,115,115,115,115,115,115,54,54,54,54,54,54,54,54,54,66,103,148,66,103,
-            148,66,103,148,66,103,148,59,59,59,59,59,59,156,156,156,168,168,168,168,168,168,235,235,235,
-            66,66,66,137,137,137,164,164,164,213,213,213,255,255,255,196,196,196,54,54,54,66,103,148,66,
-            103,148,66,103,148,66,103,148,59,59,59,180,180,180,223,223,223,180,180,180,164,164,164,125,125,
-            125,137,137,137,148,148,148,109,109,109,23,23,23,255,255,255,54,54,54,66,103,148,66,103,148,
-            66,103,148,59,59,59,66,66,66,168,168,168,180,180,180,180,180,180,156,156,156,131,131,131,115,
-            115,115,164,164,164,196,196,196,164,164,164,235,235,235,54,54,54,66,103,148,66,103,148,66,103,
-            148,59,59,59,66,66,66,109,109,109,156,156,156,156,156,156,137,137,137,115,115,115,109,109,109,
-            180,180,180,228,228,228,223,223,223,235,235,235,59,59,59,66,103,148,66,103,148,66,103,148,59,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,93,93,93,148,
+            148,148,180,180,180,164,164,164,100,100,100,59,59,59,59,59,59,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,137,137,137,131,131,131,
+            109,109,109,93,93,93,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,59,59,59,59,59,59,131,131,131,131,131,131,59,59,
+            59,185,185,185,131,131,131,82,82,82,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,148,148,148,131,131,131,185,185,185,255,
+            255,255,221,221,221,115,115,115,115,115,115,54,54,54,54,54,54,54,54,54,221,221,221,221,221,
+            221,221,221,221,221,221,221,59,59,59,59,59,59,156,156,156,168,168,168,168,168,168,235,235,235,
+            66,66,66,137,137,137,164,164,164,213,213,213,255,255,255,196,196,196,54,54,54,221,221,221,221,
+            221,221,221,221,221,221,221,221,59,59,59,180,180,180,223,223,223,180,180,180,164,164,164,125,125,
+            125,137,137,137,148,148,148,109,109,109,23,23,23,255,255,255,54,54,54,221,221,221,221,221,221,
+            221,221,221,59,59,59,66,66,66,168,168,168,180,180,180,180,180,180,156,156,156,131,131,131,115,
+            115,115,164,164,164,196,196,196,164,164,164,235,235,235,54,54,54,221,221,221,221,221,221,221,221,
+            221,59,59,59,66,66,66,109,109,109,156,156,156,156,156,156,137,137,137,115,115,115,109,109,109,
+            180,180,180,228,228,228,223,223,223,235,235,235,59,59,59,221,221,221,221,221,221,221,221,221,59,
             59,59,82,82,82,59,59,59,59,59,59,59,59,59,59,59,59,59,59,59,115,115,115,164,164,
-            164,168,168,168,164,164,164,54,54,54,66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,
-            93,93,93,115,115,115,109,109,109,82,82,82,59,59,59,66,103,148,54,54,54,54,54,54,54,
-            54,54,54,54,54,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,59,59,59,100,100,
-            100,137,137,137,137,137,137,100,100,100,59,59,59,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148
+            164,168,168,168,164,164,164,54,54,54,221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,
+            93,93,93,115,115,115,109,109,109,82,82,82,59,59,59,221,221,221,54,54,54,54,54,54,54,
+            54,54,54,54,54,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,59,59,59,100,100,
+            100,137,137,137,137,137,137,100,100,100,59,59,59,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 66, 103, 148);
+        image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
         return bitmap;
     }
@@ -4980,40 +5013,40 @@ wxBitmap amuleSpecial( size_t index )
     {
         static const unsigned char data[] = 
         {
-            66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,98,78,9,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,98,78,9,98,78,9,127,111,18,66,103,148,98,78,9,98,78,9,98,78,9,98,78,
-            9,98,78,9,98,78,9,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,
+            221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,98,78,9,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,98,78,9,98,78,9,127,111,18,221,221,221,98,78,9,98,78,9,98,78,9,98,78,
+            9,98,78,9,98,78,9,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
             98,78,9,186,171,45,127,111,18,98,78,9,234,241,174,231,232,143,222,218,109,205,190,64,171,
-            157,38,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,126,107,
+            157,38,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,126,107,
             19,164,147,35,98,78,9,234,241,174,222,218,109,213,202,84,186,171,45,98,78,9,98,78,9,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,140,123,25,205,
-            190,64,222,218,109,213,202,84,148,130,29,98,78,9,98,78,9,66,103,148,66,103,148,66,103,
-            148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,198,183,49,186,171,45,
-            166,150,37,133,114,26,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,
-            103,148,66,103,148,66,103,148,66,103,148,98,78,9,98,78,9,186,171,45,186,171,45,92,78,
-            13,221,211,124,179,166,80,127,108,22,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,202,187,57,186,171,45,222,213,133,255,
-            255,255,150,8,249,146,138,71,165,149,42,50,55,61,50,55,61,50,55,61,66,103,148,66,103,
-            148,66,103,148,66,103,148,98,78,9,98,78,9,209,198,74,216,208,91,216,208,91,234,234,233,
-            64,63,64,193,178,56,203,199,78,229,229,186,255,255,255,195,196,193,50,55,61,66,103,148,66,
-            103,148,66,103,148,66,103,148,98,78,9,222,218,109,234,241,174,222,218,109,216,208,91,179,162,
-            44,190,178,49,192,186,87,107,108,110,22,22,19,255,255,255,50,55,61,66,103,148,66,103,148,
-            66,103,148,98,78,9,109,92,12,216,208,91,222,218,109,222,218,109,209,198,74,179,162,44,166,
-            150,37,192,187,127,195,196,193,159,159,158,234,234,233,50,55,61,66,103,148,66,103,148,66,103,
-            148,98,78,9,109,92,12,166,150,37,209,198,74,209,198,74,198,183,49,171,157,38,166,150,37,
-            196,195,159,227,228,225,227,228,225,227,228,225,50,55,61,66,103,148,66,103,148,66,103,148,98,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,140,123,25,205,
+            190,64,222,218,109,213,202,84,148,130,29,98,78,9,98,78,9,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,198,183,49,186,171,45,
+            166,150,37,133,114,26,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,98,78,9,98,78,9,186,171,45,186,171,45,92,78,
+            13,221,211,124,179,166,80,127,108,22,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,202,187,57,186,171,45,222,213,133,255,
+            255,255,150,8,249,146,138,71,165,149,42,50,55,61,50,55,61,50,55,61,221,221,221,221,221,
+            221,221,221,221,221,221,221,98,78,9,98,78,9,209,198,74,216,208,91,216,208,91,234,234,233,
+            64,63,64,193,178,56,203,199,78,229,229,186,255,255,255,195,196,193,50,55,61,221,221,221,221,
+            221,221,221,221,221,221,221,221,98,78,9,222,218,109,234,241,174,222,218,109,216,208,91,179,162,
+            44,190,178,49,192,186,87,107,108,110,22,22,19,255,255,255,50,55,61,221,221,221,221,221,221,
+            221,221,221,98,78,9,109,92,12,216,208,91,222,218,109,222,218,109,209,198,74,179,162,44,166,
+            150,37,192,187,127,195,196,193,159,159,158,234,234,233,50,55,61,221,221,221,221,221,221,221,221,
+            221,98,78,9,109,92,12,166,150,37,209,198,74,209,198,74,198,183,49,171,157,38,166,150,37,
+            196,195,159,227,228,225,227,228,225,227,228,225,50,55,61,221,221,221,221,221,221,221,221,221,98,
             78,9,127,111,18,98,78,9,98,78,9,98,78,9,98,78,9,98,78,9,114,116,117,159,159,
-            158,168,169,166,163,164,161,50,55,61,66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,
-            140,123,25,171,157,38,164,147,35,126,107,19,98,78,9,66,103,148,50,55,61,50,55,61,50,
-            55,61,50,55,61,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,98,78,9,140,123,
-            25,192,180,45,186,171,45,153,137,30,98,78,9,66,103,148,66,103,148,66,103,148,66,103,148,
-            66,103,148,66,103,148,66,103,148,66,103,148,66,103,148,66,103,148
+            158,168,169,166,163,164,161,50,55,61,221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,
+            140,123,25,171,157,38,164,147,35,126,107,19,98,78,9,221,221,221,50,55,61,50,55,61,50,
+            55,61,50,55,61,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,98,78,9,140,123,
+            25,192,180,45,186,171,45,153,137,30,98,78,9,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
         };
         wxImage image( 16, 16, (unsigned char*)data, TRUE );
-        image.SetMaskColour( 66, 103, 148);
+        image.SetMaskColour( 221, 221, 221);
         wxBitmap bitmap( image );
         return bitmap;
     }
@@ -5057,6 +5090,467 @@ wxBitmap amuleSpecial( size_t index )
         "baaaaaaaaaaaa"
         };
         wxBitmap bitmap( xpm_data );
+        return bitmap;
+    }
+    if (index == 10)
+    {
+        static const unsigned char data[] = 
+        {
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,156,82,0,156,82,0,156,82,0,221,221,221,156,82,0,
+            156,82,0,140,74,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,156,82,0,255,163,8,255,163,8,255,163,8,156,82,0,211,129,1,255,163,
+            8,255,168,13,140,74,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,156,82,0,255,176,41,255,176,41,255,163,8,255,163,8,255,163,8,255,163,8,255,
+            163,8,140,74,0,115,57,0,115,57,0,221,221,221,221,221,221,221,221,221,156,82,0,156,82,
+            0,156,82,0,255,176,41,255,176,41,255,176,41,255,176,41,255,176,41,255,163,8,255,163,8,
+            241,152,7,185,110,4,255,163,8,115,57,0,221,221,221,156,82,0,255,194,88,255,192,84,255,
+            176,41,255,176,41,230,153,31,156,82,0,156,82,0,140,74,0,140,74,0,197,125,20,255,163,
+            8,255,163,8,255,163,8,211,129,1,115,57,0,156,82,0,255,200,103,255,211,135,255,189,74,
+            255,182,57,156,82,0,188,93,0,222,132,0,248,140,0,195,98,0,140,74,0,181,116,20,255,
+            163,8,255,163,8,255,163,8,115,57,0,156,82,0,255,142,0,253,173,42,255,194,88,255,189,
+            74,148,78,0,140,74,0,140,74,0,123,66,0,178,96,0,153,67,0,107,57,0,255,176,41,
+            246,156,8,115,51,0,221,221,221,221,221,221,156,82,0,206,112,0,255,209,129,255,194,88,140,
+            82,0,221,221,221,221,221,221,221,221,221,123,66,0,153,67,0,107,57,0,255,176,41,255,176,
+            41,206,123,3,115,57,0,221,221,221,156,82,0,156,82,0,255,228,182,255,207,123,197,135,37,
+            107,57,0,221,221,221,221,221,221,221,221,221,123,66,0,107,57,0,255,176,41,255,176,41,255,
+            176,41,115,57,0,156,82,0,198,109,0,255,188,72,255,255,255,255,228,182,255,200,103,218,156,
+            56,107,57,0,107,57,0,107,57,0,107,57,0,218,146,31,255,176,41,255,176,41,255,176,41,
+            115,57,0,156,82,0,239,136,0,252,139,0,254,186,78,255,200,103,255,182,57,255,215,147,255,
+            207,125,255,200,103,255,200,103,255,191,80,255,191,80,255,191,80,142,58,0,181,90,0,221,221,
+            221,221,221,221,156,82,0,243,121,0,221,110,0,140,74,0,205,128,28,255,215,147,255,228,182,
+            255,215,147,255,210,132,255,210,132,255,199,103,255,191,80,240,159,37,115,57,0,221,221,221,221,
+            221,221,221,221,221,156,82,0,140,74,0,221,221,221,140,74,0,253,164,37,254,174,51,254,185,
+            68,249,127,0,206,112,0,254,174,51,235,137,18,218,116,0,115,57,0,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,140,74,0,255,132,0,252,139,0,201,126,18,142,
+            70,0,115,57,0,249,127,0,190,85,0,115,57,0,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,140,74,0,115,57,0,115,57,0,115,57,0,115,57,0,
+            221,221,221,115,57,0,115,57,0,221,221,221,221,221,221,221,221,221
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 221, 221, 221);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 11)
+    {
+        static const unsigned char data[] = 
+        {
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,86,102,117,65,77,88,221,221,221,221,
+            221,221,221,221,221,86,102,117,65,77,88,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,86,102,117,170,178,186,65,77,88,221,221,221,221,221,221,
+            86,102,117,170,178,186,65,77,88,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,86,102,117,255,255,255,65,77,88,221,221,221,221,221,221,86,102,
+            117,255,255,255,65,77,88,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,86,102,117,234,237,240,65,77,88,221,221,221,221,221,221,86,102,117,234,
+            237,240,65,77,88,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,162,0,0,86,102,117,212,218,224,65,77,88,45,0,0,90,0,0,86,102,117,212,218,224,
+            65,77,88,45,0,0,90,0,0,90,0,0,221,221,221,221,221,221,221,221,221,162,0,0,236,
+            33,33,150,89,98,212,218,224,136,73,80,131,0,0,218,0,0,150,89,98,212,218,224,136,73,
+            80,131,0,0,131,0,0,90,0,0,90,0,0,221,221,221,162,0,0,236,33,33,255,86,86,
+            236,33,33,225,114,117,208,20,20,208,20,20,255,67,67,236,33,33,225,114,117,208,20,20,165,
+            10,10,122,0,0,138,0,0,90,0,0,221,221,221,162,0,0,162,0,0,162,0,0,162,0,
+            0,151,0,0,151,0,0,140,0,0,140,0,0,140,0,0,140,0,0,140,0,0,122,0,0,
+            146,0,0,154,0,0,90,0,0,221,221,221,162,0,0,255,86,86,255,86,86,255,86,86,255,
+            67,67,255,67,67,243,58,58,237,54,54,231,50,50,231,50,50,231,50,50,122,0,0,170,0,
+            0,154,0,0,90,0,0,221,221,221,162,0,0,255,86,86,255,112,112,255,132,132,255,149,149,
+            255,149,149,255,149,149,255,149,149,255,132,132,243,97,97,231,50,50,122,0,0,170,0,0,154,
+            0,0,90,0,0,221,221,221,162,0,0,255,86,86,236,45,45,208,0,0,179,0,0,179,0,
+            0,179,0,0,179,0,0,208,0,0,229,25,25,231,50,50,122,0,0,162,0,0,154,0,0,
+            90,0,0,221,221,221,162,0,0,255,86,86,255,115,115,255,138,138,255,161,161,255,161,161,255,
+            161,161,255,161,161,255,138,138,243,100,100,231,50,50,122,0,0,154,0,0,138,0,0,90,0,
+            0,221,221,221,162,0,0,208,33,33,237,54,54,208,0,0,179,0,0,179,0,0,179,0,0,
+            179,0,0,208,0,0,229,25,25,188,33,33,122,0,0,138,0,0,90,0,0,221,221,221,221,
+            221,221,221,221,221,162,0,0,208,33,33,255,86,86,255,67,67,255,67,67,243,58,58,237,54,
+            54,231,50,50,188,33,33,122,0,0,134,0,0,90,0,0,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,140,0,0,140,0,0,135,0,0,135,0,0,135,0,0,122,0,0,122,
+            0,0,122,0,0,122,0,0,90,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,75,89,102,196,201,206,170,177,184,134,145,156,65,77,88,
+            48,57,65,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 221, 221, 221);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 12)
+    {
+        static const unsigned char data[] = 
+        {
+            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,80,95,109,80,95,109,75,89,102,75,
+            89,102,65,77,88,65,77,88,65,77,88,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,86,102,117,86,102,117,86,102,117,100,115,128,100,115,128,95,110,122,95,110,122,
+            95,110,122,87,101,113,80,93,105,65,77,88,65,77,88,65,77,88,1,0,0,1,0,0,86,
+            102,117,143,156,166,125,139,150,106,121,134,106,121,134,106,121,134,103,118,131,102,117,130,100,115,
+            128,97,112,125,95,110,122,88,102,113,76,89,100,48,57,65,1,0,0,1,0,0,86,102,117,
+            255,255,255,204,212,219,180,190,198,141,153,164,119,133,145,106,121,134,106,121,134,106,121,134,103,
+            118,131,90,105,118,73,86,97,63,75,86,48,57,65,1,0,0,1,0,0,80,95,109,255,255,
+            255,229,233,237,192,201,211,181,190,200,161,173,185,124,136,149,98,113,126,126,141,154,113,128,141,
+            76,90,102,69,82,94,63,75,86,48,57,65,1,0,0,1,0,0,80,95,109,243,245,246,229,
+            233,237,192,201,211,181,190,200,161,173,185,124,136,149,90,105,118,161,172,182,113,128,141,76,90,
+            102,69,82,94,63,75,86,48,57,65,1,0,0,1,0,0,80,95,109,243,245,246,197,204,210,
+            192,201,211,181,190,200,161,173,185,124,136,149,78,93,106,212,219,225,126,141,154,76,90,102,69,
+            82,94,63,75,86,48,57,65,1,0,0,1,0,0,80,95,109,230,234,237,79,91,100,224,228,
+            233,169,179,189,161,173,185,124,136,149,74,88,101,212,219,225,113,128,141,76,90,102,69,82,94,
+            63,75,86,48,57,65,1,0,0,1,0,0,75,89,102,230,234,237,177,185,193,192,201,211,67,
+            79,88,208,214,220,76,146,96,21,198,29,175,228,185,106,121,134,76,90,102,69,82,94,63,75,
+            86,48,57,65,1,0,0,1,0,0,75,89,102,217,223,228,58,70,79,216,221,227,158,168,178,
+            161,173,185,63,167,81,65,255,65,148,204,165,106,121,134,76,90,102,69,82,94,63,75,86,48,
+            57,65,1,0,0,1,0,0,75,89,102,217,223,228,177,185,193,192,201,211,45,53,61,196,204,
+            211,65,146,87,48,143,65,106,175,126,106,121,134,76,90,102,69,82,94,63,75,86,48,57,65,
+            1,0,0,1,0,0,75,89,102,217,223,228,45,53,61,210,216,223,158,168,178,161,173,185,114,
+            105,105,202,79,85,188,159,170,99,114,127,76,90,102,69,82,94,63,75,86,48,57,65,1,0,
+            0,1,0,0,75,89,102,171,181,189,204,212,219,192,201,211,45,53,61,187,196,204,126,88,99,
+            255,0,10,151,130,142,99,114,127,76,90,102,69,82,94,58,69,78,48,57,65,1,0,0,1,
+            0,0,75,89,102,75,89,102,109,121,132,143,153,163,166,175,185,161,173,185,114,105,105,138,84,
+            93,144,108,119,99,114,127,76,90,102,64,76,87,48,57,65,1,0,0,1,0,0,1,0,0,
+            1,0,0,1,0,0,65,77,88,65,77,88,65,77,88,101,113,124,118,130,143,74,88,101,118,
+            133,147,99,114,127,69,82,93,48,57,65,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,1,0,0,1,0,0,1,0,0,65,77,88,65,77,88,65,77,88,65,77,88,
+            65,77,88,48,57,65,1,0,0,1,0,0,1,0,0,1,0,0
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 1, 0, 0);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 13)
+    {
+        static const unsigned char data[] = 
+        {
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,1,90,147,1,90,147,1,82,135,
+            1,74,123,1,74,123,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,1,90,147,26,133,165,22,186,232,59,194,185,87,193,
+            138,48,147,104,1,66,111,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,1,90,147,46,146,149,0,231,255,1,200,235,43,193,216,92,214,140,63,
+            202,60,22,135,110,1,70,117,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,1,90,147,91,210,218,165,247,255,0,231,255,110,237,193,49,239,99,41,181,97,
+            23,150,124,1,66,111,98,52,20,99,47,0,221,221,221,221,221,221,221,221,221,221,221,221,107,
+            57,0,0,57,99,2,176,232,0,231,255,101,244,194,49,239,99,24,170,165,0,117,219,1,90,
+            147,58,63,66,163,116,73,199,142,83,99,47,0,221,221,221,221,221,221,107,57,0,66,50,35,
+            10,73,65,12,130,141,3,148,209,6,159,186,8,142,132,3,110,159,1,77,163,78,65,55,163,
+            116,73,226,178,125,190,133,75,99,47,0,221,221,221,107,57,0,166,110,54,166,110,54,166,110,
+            54,166,110,54,166,110,54,166,110,54,166,110,54,166,110,54,132,79,23,163,116,73,237,194,147,
+            205,149,91,99,47,0,221,221,221,107,57,0,222,173,115,245,193,137,248,212,174,252,236,218,247,
+            208,166,246,201,152,234,187,134,222,173,115,205,139,71,107,57,0,157,102,47,211,151,85,107,57,
+            0,221,221,221,221,221,221,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,
+            107,57,0,107,57,0,107,57,0,107,57,0,156,101,47,107,57,0,107,57,0,92,37,0,221,
+            221,221,221,221,221,221,221,221,221,221,221,107,57,0,199,142,83,199,142,83,199,142,83,199,142,
+            83,199,142,83,199,142,83,199,142,83,169,113,58,136,82,28,142,87,34,92,37,0,221,221,221,
+            221,221,221,221,221,221,221,221,221,107,57,0,226,168,106,236,181,122,226,168,106,226,168,106,226,
+            168,106,226,168,106,212,155,94,170,114,59,154,98,44,151,94,41,92,37,0,221,221,221,221,221,
+            221,221,221,221,221,221,221,107,57,0,235,180,121,240,187,129,235,180,121,231,174,114,226,168,106,
+            226,168,106,212,155,94,171,115,60,154,98,44,135,80,31,92,37,0,221,221,221,221,221,221,221,
+            221,221,221,221,221,107,57,0,245,193,137,244,225,197,239,193,142,235,180,121,231,174,114,226,168,
+            106,212,155,94,173,117,62,141,84,35,92,37,0,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,107,57,0,245,193,137,244,209,167,240,187,129,235,180,121,235,180,121,226,168,106,212,
+            155,94,155,98,48,92,37,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,107,57,0,
+            92,37,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 221, 221, 221);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 14)
+    {
+        static const unsigned char data[] = 
+        {
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,57,90,8,57,90,8,57,90,8,57,90,8,57,90,8,57,90,8,
+            57,90,8,57,90,8,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,57,90,8,78,119,12,99,148,16,99,148,16,99,148,16,99,148,16,95,143,15,84,127,
+            13,71,109,11,49,78,8,49,78,8,49,78,8,49,78,8,221,221,221,221,221,221,221,221,221,
+            57,90,8,93,140,16,93,140,16,93,140,16,93,140,16,93,140,16,93,140,16,93,140,16,93,
+            140,16,96,144,16,96,144,16,96,144,16,69,107,11,41,66,8,221,221,221,221,221,221,57,90,
+            8,76,119,15,76,119,15,76,119,15,76,119,15,76,119,15,76,119,15,76,119,15,76,119,15,
+            76,119,15,85,130,16,91,137,16,91,137,16,41,66,8,221,221,221,41,66,8,41,66,8,41,
+            66,8,41,66,8,41,66,8,41,66,8,41,66,8,41,66,8,41,66,8,51,84,10,71,114,
+            14,71,114,14,71,114,14,82,126,16,41,66,8,41,66,8,120,152,72,183,234,107,183,234,107,
+            183,234,107,183,234,107,183,234,107,183,234,107,162,208,92,99,141,42,41,66,8,51,84,10,62,
+            103,13,71,114,14,71,114,14,41,66,8,41,66,8,92,124,46,215,247,167,224,249,188,255,255,
+            255,255,255,255,241,253,224,226,250,192,202,243,140,175,220,110,95,135,39,41,66,8,41,66,8,
+            51,84,10,62,103,13,41,66,8,221,221,221,41,66,8,143,194,69,185,235,110,184,234,108,183,
+            234,107,183,234,107,188,237,116,193,239,125,214,244,170,226,245,199,202,234,157,112,157,45,41,66,
+            8,54,84,11,41,66,8,221,221,221,41,66,8,84,126,25,157,227,55,157,227,55,158,227,55,
+            158,227,55,159,227,56,165,229,67,170,231,78,177,234,91,183,238,102,183,238,102,111,163,34,41,
+            66,8,41,66,8,221,221,221,221,221,221,41,66,8,114,175,24,141,215,29,140,215,29,141,215,
+            29,141,215,29,141,215,30,140,215,28,139,214,25,138,214,24,138,214,24,126,191,29,41,66,8,
+            41,66,8,221,221,221,221,221,221,41,66,8,88,136,19,122,186,27,136,207,30,135,206,30,135,
+            205,30,135,205,30,135,205,30,135,205,30,135,205,30,135,205,30,135,205,30,94,132,39,41,66,
+            8,221,221,221,221,221,221,221,221,221,41,66,8,79,123,17,93,144,20,109,167,23,122,186,26,
+            122,186,26,122,186,26,122,186,26,122,186,26,122,186,26,122,186,26,125,187,32,41,66,8,221,
+            221,221,221,221,221,221,221,221,221,221,221,41,66,8,41,66,8,41,66,8,41,66,8,78,121,
+            16,92,141,19,107,163,23,107,163,23,107,163,23,107,163,23,88,135,19,41,66,8,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,41,66,8,41,
+            66,8,41,66,8,41,66,8,41,66,8,41,66,8,41,66,8,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 221, 221, 221);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 15)
+    {
+        static const unsigned char data[] = 
+        {
+            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,
+            0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,108,95,87,108,95,87,108,95,87,108,95,87,108,95,87,108,95,87,108,95,87,
+            108,95,87,108,95,87,108,95,87,108,95,87,108,95,87,1,0,0,1,0,0,1,0,0,108,
+            95,87,188,169,151,231,208,185,221,199,177,221,199,177,210,189,168,210,189,168,196,177,157,196,177,
+            157,183,165,146,183,165,146,183,165,146,158,142,126,81,72,72,1,0,0,108,95,87,188,169,151,
+            231,208,185,123,140,99,71,89,63,71,89,63,72,93,62,72,93,62,72,93,62,72,93,62,72,
+            93,62,72,93,62,135,135,107,183,165,146,149,134,121,81,72,72,108,95,87,231,208,185,123,137,
+            100,71,89,63,47,117,45,51,127,42,51,127,42,51,127,42,51,127,42,51,127,42,51,127,42,
+            59,113,50,66,99,57,123,137,100,183,165,146,81,72,72,108,95,87,231,208,185,71,89,63,44,
+            108,48,35,132,37,88,195,61,20,152,25,20,152,25,20,152,25,20,152,25,20,152,25,20,152,
+            25,47,122,43,57,99,56,183,165,146,81,72,72,108,95,87,210,189,168,69,84,64,44,108,48,
+            74,175,57,183,255,119,85,186,64,16,140,28,16,140,28,16,140,28,16,140,28,16,140,28,78,
+            181,61,56,96,56,175,157,139,81,72,72,108,95,87,210,189,168,69,82,65,62,138,55,155,235,
+            99,58,163,50,183,255,119,59,165,51,12,129,31,12,129,31,12,129,31,50,158,47,183,255,119,
+            56,93,57,175,157,139,81,72,72,108,95,87,196,177,157,68,81,65,103,172,72,45,149,47,10,
+            121,33,57,158,51,157,237,101,45,150,47,10,121,33,39,145,44,155,234,99,45,149,47,55,90,
+            58,175,157,139,81,72,72,108,95,87,196,177,157,68,80,66,54,121,55,8,114,35,8,114,35,
+            8,114,35,45,146,49,133,219,87,52,152,52,132,217,86,44,144,48,8,114,35,54,88,59,166,
+            149,132,81,72,72,108,95,87,183,165,146,67,78,66,38,92,52,5,108,36,5,108,36,5,108,
+            36,5,108,36,36,135,47,109,198,76,36,136,47,5,108,36,5,108,36,53,85,59,166,149,132,
+            81,72,72,108,95,87,183,165,146,118,124,103,64,79,65,3,102,39,3,102,39,3,102,39,3,
+            102,39,3,102,39,28,124,47,3,102,39,3,102,39,38,88,53,118,124,103,166,149,132,81,72,
+            72,108,95,87,149,134,119,183,165,146,117,123,103,51,81,60,51,81,60,51,81,60,51,81,60,
+            51,81,60,51,81,60,51,81,60,51,81,60,117,123,103,166,149,132,137,123,113,81,72,72,1,
+            0,0,81,72,72,137,123,113,183,165,146,183,165,146,183,165,146,183,165,146,175,157,139,175,157,
+            139,175,157,139,166,149,132,166,149,132,166,149,132,137,123,113,81,72,72,1,0,0,1,0,0,
+            1,0,0,81,72,72,81,72,72,81,72,72,81,72,72,81,72,72,81,72,72,81,72,72,81,
+            72,72,81,72,72,81,72,72,81,72,72,81,72,72,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,
+            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 1, 0, 0);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 16)
+    {
+        static const unsigned char data[] = 
+        {
+            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,
+            0,0,1,0,0,158,11,14,158,11,14,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,
+            158,11,14,255,255,255,248,166,144,121,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,
+            0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,158,11,
+            14,251,203,188,245,137,111,121,0,0,1,0,0,1,0,0,1,0,0,212,208,200,212,208,200,
+            212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,158,11,14,246,
+            150,121,243,112,90,121,0,0,212,208,200,212,208,200,138,136,132,212,208,200,64,64,64,64,64,
+            64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,158,11,14,244,129,100,
+            240,77,63,121,0,0,64,64,64,212,208,200,64,64,64,212,208,200,64,64,64,51,93,118,51,
+            93,118,51,93,118,51,93,118,51,93,118,51,93,118,51,93,118,158,11,14,240,88,68,237,28,
+            36,121,0,0,51,93,118,212,208,200,64,64,64,212,208,200,64,64,64,51,93,118,17,126,193,
+            17,126,193,17,126,193,17,126,193,17,126,193,17,126,193,158,11,14,239,68,57,237,28,36,121,
+            0,0,17,126,193,212,208,200,64,64,64,212,208,200,64,64,64,51,94,121,17,129,197,17,129,
+            197,17,129,197,17,129,197,17,129,197,17,129,197,17,129,197,121,0,0,121,0,0,17,129,197,
+            17,129,197,212,208,200,64,64,64,212,208,200,64,64,64,52,96,122,18,133,202,137,194,229,196,
+            225,242,196,225,242,137,194,229,137,194,229,18,133,202,18,133,202,18,133,202,18,133,202,18,133,
+            202,212,208,200,64,64,64,212,208,200,64,64,64,52,97,124,19,134,206,19,134,206,19,134,206,
+            19,134,206,19,134,206,19,134,206,19,134,206,158,11,14,158,11,14,19,134,206,19,134,206,212,
+            208,200,64,64,64,212,208,200,64,64,64,53,100,129,19,141,217,137,198,236,197,227,246,137,198,
+            236,19,141,217,19,141,217,158,11,14,251,203,188,244,123,95,121,0,0,19,141,217,212,208,200,
+            64,64,64,212,208,200,64,64,64,54,104,134,20,148,228,20,148,228,20,148,228,20,148,228,20,
+            148,228,20,148,228,158,11,14,245,137,112,237,28,36,121,0,0,20,148,228,212,208,200,64,64,
+            64,212,208,200,64,64,64,59,108,138,31,158,235,31,158,235,31,158,235,31,158,235,31,158,235,
+            29,157,235,29,157,235,121,0,0,121,0,0,29,157,235,29,157,235,212,208,200,64,64,64,212,
+            208,200,64,64,64,64,111,139,42,163,236,42,163,236,42,163,236,42,163,236,42,163,236,39,161,
+            236,39,161,236,39,161,236,39,161,236,39,161,236,39,161,236,212,208,200,64,64,64,212,208,200,
+            212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,
+            208,200,212,208,200,212,208,200,212,208,200,212,208,200,212,208,200,64,64,64,138,136,132,64,64,
+            64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,
+            65,65,65,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 1, 0, 0);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 17)
+    {
+        static const unsigned char data[] = 
+        {
+            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,53,136,37,53,136,37,51,
+            130,36,51,130,36,47,116,33,47,116,33,38,92,28,38,92,28,1,0,0,1,0,0,1,0,
+            0,1,0,0,1,0,0,1,0,0,1,0,0,53,136,37,69,175,50,69,175,50,69,175,50,
+            69,175,50,69,175,50,69,175,50,69,175,50,38,92,28,1,0,0,1,0,0,1,0,0,1,
+            0,0,1,0,0,1,0,0,53,136,37,106,194,89,106,194,89,106,194,89,106,194,89,106,194,
+            89,106,194,89,106,194,89,69,175,50,38,92,28,1,0,0,1,0,0,1,0,0,1,0,0,
+            1,0,0,53,136,37,123,202,107,134,207,119,134,207,119,134,207,119,134,207,119,134,207,119,134,
+            207,119,92,187,75,59,157,42,38,92,28,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,53,136,37,202,235,194,202,235,194,202,235,194,202,235,194,202,235,194,202,235,194,119,200,104,
+            69,175,50,54,138,38,38,92,28,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,53,
+            136,37,202,235,194,255,255,255,255,255,255,212,239,207,202,235,194,202,235,194,119,200,104,54,138,
+            38,92,92,92,30,71,22,1,0,0,1,0,0,1,0,0,1,0,0,104,104,104,53,136,37,
+            202,235,194,255,255,255,158,217,146,255,255,255,212,239,207,202,235,194,119,200,104,54,138,38,181,
+            181,181,104,104,104,104,104,104,104,104,104,104,104,104,104,104,104,220,220,220,51,130,36,202,235,
+            194,232,247,229,51,133,37,158,217,146,233,247,231,210,238,203,119,200,104,54,138,38,181,181,181,
+            220,220,220,255,255,255,238,238,238,238,238,238,255,255,255,220,220,220,51,130,36,191,231,182,212,
+            239,206,38,92,28,51,133,37,158,217,146,212,239,207,119,200,104,54,138,38,151,151,151,158,158,
+            158,174,174,174,186,186,186,177,177,177,158,158,158,181,181,181,51,130,36,181,227,171,191,231,182,
+            38,92,28,38,92,28,51,133,37,175,224,163,119,200,104,54,138,38,133,133,133,61,61,61,61,
+            61,61,61,61,61,61,61,61,61,61,61,158,158,158,47,116,33,175,224,165,181,227,171,28,63,
+            20,28,63,20,80,168,64,205,236,198,119,200,104,54,138,38,61,61,61,30,71,22,1,0,0,
+            1,0,0,1,0,0,1,0,0,61,61,61,47,116,33,171,223,160,171,223,160,28,63,20,64,
+            154,48,214,240,209,171,223,160,119,200,104,59,156,42,46,115,33,30,71,22,1,0,0,1,0,
+            0,1,0,0,1,0,0,1,0,0,47,116,33,156,216,143,156,216,143,55,143,39,198,234,191,
+            171,223,160,156,216,143,119,200,104,67,173,49,54,138,38,30,71,22,1,0,0,1,0,0,1,
+            0,0,1,0,0,1,0,0,38,92,28,156,216,143,156,216,143,171,223,160,164,220,152,156,216,
+            143,156,216,143,119,200,104,67,173,49,30,71,22,1,0,0,1,0,0,1,0,0,1,0,0,
+            1,0,0,1,0,0,38,92,28,142,211,128,142,211,128,142,211,128,142,211,128,142,211,128,142,
+            211,128,106,194,89,30,71,22,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,
+            0,1,0,0,38,92,28,38,92,28,38,92,28,30,71,22,30,71,22,30,71,22,30,71,22,
+            30,71,22,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 1, 0, 0);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 18)
+    {
+        /* XPM */
+        static const char *xpm_data[] = {
+        /* columns rows colors chars-per-pixel */
+        "16 16 24 1",
+        "  c None",
+        "a c #E1DED9",
+        "b c #FFFFFF",
+        "c c #808080",
+        "d c #5096FC",
+        "e c #ECEAE7",
+        "f c #00204D",
+        "g c #0B326A",
+        "h c #AAA8A4",
+        "i c #7EB2FF",
+        "j c #6C6C6C",
+        "l c #BFBFBF",
+        "m c #404040",
+        "n c #9FA4A9",
+        "o c #F2F7FF",
+        "p c #D4D0C8",
+        "q c #F7F5F5",
+        "r c #DFDCD6",
+        "s c #606060",
+        "t c #164386",
+        "u c #2D75DD",
+        "v c #A4ADB7",
+        "w c #8B8A89",
+        "x c #707070",
+        /* pixels */
+        "                ",
+        "cccccccccccccccs",
+        "cbbbbbbbbbbbbelm",
+        " cbrpppvppppppcm",
+        "  cbrpvtvpppppcm",
+        " cbrpvtignppppcm",
+        "cbrpvtodufnpppcm",
+        " xbvttggfffnppcm",
+        "  xbrpppppppppcm",
+        " jbrpvttggfffncm",
+        "jbrpppvtodufnpcm",
+        " sbrpppvtignppcm",
+        "  sbapppvtvpppcm",
+        " sqrpppppvppppcm",
+        "shwccccccccccccm",
+        "smmmmmmmmmmmmmmm"
+        };
+        wxBitmap bitmap( xpm_data );
+        return bitmap;
+    }
+    if (index == 19)
+    {
+        static const unsigned char data[] = 
+        {
+            64,163,218,64,163,218,64,171,224,64,171,224,64,180,232,64,180,232,64,191,243,64,191,243,64,
+            203,255,64,203,255,64,210,255,64,210,255,64,216,255,64,216,255,75,198,230,106,144,154,64,163,
+            218,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,120,120,120,177,177,177,
+            177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,120,120,120,75,75,75,64,163,218,177,
+            177,177,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,75,75,75,177,177,177,255,255,
+            255,252,252,252,252,252,252,252,252,252,252,252,252,75,75,75,75,75,75,64,163,218,177,177,177,
+            248,248,248,248,248,248,248,248,248,248,248,248,248,248,248,75,75,75,177,177,177,248,248,248,0,
+            0,0,230,230,230,0,0,0,248,248,248,75,75,75,75,75,75,64,163,218,177,177,177,241,241,
+            241,241,241,241,241,241,241,241,241,241,241,241,241,75,75,75,177,177,177,241,241,241,216,216,216,
+            0,0,0,216,216,216,241,241,241,75,75,75,75,75,75,64,163,218,177,177,177,227,227,227,0,
+            0,0,0,0,0,0,0,0,227,227,227,75,75,75,177,177,177,227,227,227,0,0,0,180,180,
+            180,0,0,0,227,227,227,75,75,75,75,75,75,64,163,218,177,177,177,205,205,205,205,205,205,
+            205,205,205,205,205,205,205,205,205,75,75,75,177,177,177,205,205,205,205,205,205,205,205,205,205,
+            205,205,205,205,205,75,75,75,75,75,75,64,163,218,120,120,120,75,75,75,75,75,75,75,75,
+            75,75,75,75,75,75,75,75,75,75,120,120,120,75,75,75,75,75,75,75,75,75,75,75,75,
+            75,75,75,75,75,75,75,75,75,64,163,218,16,168,234,16,168,234,16,168,234,16,168,234,16,
+            168,234,16,172,238,16,172,238,16,178,243,16,178,243,16,183,243,16,183,243,16,188,243,16,188,
+            243,31,160,201,75,75,75,50,106,137,43,76,94,43,76,94,43,76,94,43,76,94,43,76,94,
+            43,76,94,43,76,94,43,76,94,43,76,94,43,76,94,43,76,94,43,76,94,43,76,94,43,
+            76,94,75,75,75,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,
+            114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,114,
+            75,75,75,156,156,156,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,
+            192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,192,163,163,163,75,75,
+            75,156,156,156,241,241,241,241,241,241,241,241,241,208,208,208,241,241,241,241,241,241,241,241,241,
+            203,203,203,241,241,241,241,241,241,241,241,241,192,192,192,230,230,230,199,199,199,75,75,75,156,
+            156,156,222,222,222,255,255,255,219,219,219,136,136,136,202,202,202,255,255,255,208,208,208,116,116,
+            116,193,193,193,255,255,255,203,203,203,86,86,86,182,182,182,199,199,199,75,75,75,1,0,0,
+            153,153,153,219,219,219,146,146,146,1,0,0,126,126,126,205,205,205,116,116,116,1,0,0,106,
+            106,106,198,198,198,96,96,96,1,0,0,78,78,78,179,179,179,75,75,75,1,0,0,1,0,
+            0,151,151,151,1,0,0,1,0,0,1,0,0,116,116,116,1,0,0,1,0,0,1,0,0,
+            96,96,96,1,0,0,1,0,0,1,0,0,75,75,75,75,75,75
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 1, 0, 0);
+        wxBitmap bitmap( image );
+        return bitmap;
+    }
+    if (index == 20)
+    {
+        static const unsigned char data[] = 
+        {
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,255,0,0,255,0,0,255,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,255,0,0,221,221,221,221,221,221,129,
+            0,0,255,0,0,255,0,0,254,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,255,0,0,121,0,0,221,221,221,221,221,221,221,221,221,
+            173,0,0,255,0,0,151,0,0,151,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,90,0,0,142,0,0,0,0,0,221,221,221,221,221,221,221,221,221,221,221,
+            221,189,0,0,236,0,0,253,0,0,207,0,0,221,221,221,221,221,221,221,221,221,221,221,221,
+            135,0,0,130,0,0,0,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,197,33,33,230,162,162,248,170,170,143,26,26,221,221,221,181,52,52,223,128,128,215,75,
+            75,85,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,140,27,27,
+            255,245,245,255,255,255,255,255,255,231,161,163,179,47,47,255,255,255,255,255,255,255,255,255,235,
+            159,160,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,230,149,150,255,255,
+            255,255,211,215,255,55,55,221,70,73,197,121,122,255,114,114,255,47,48,245,255,255,241,255,255,
+            162,65,69,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,222,171,177,228,255,255,225,
+            195,205,253,61,67,205,44,48,193,31,32,236,106,112,251,74,77,205,255,255,200,255,255,159,80,
+            87,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,139,51,55,190,232,242,189,247,255,
+            154,129,140,116,0,0,255,0,0,186,55,59,165,193,201,161,232,243,161,149,162,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,163,2,4,91,8,10,24,0,
+            0,221,221,221,142,0,0,255,0,0,208,0,0,193,0,0,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,217,0,0,30,0,0,0,0,0,221,221,221,221,
+            221,221,221,221,221,186,0,0,255,0,0,255,0,0,231,0,0,221,221,221,221,221,221,221,221,
+            221,221,221,221,148,0,0,231,0,0,36,0,0,0,0,0,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,230,0,0,255,0,0,255,0,0,230,0,0,221,221,221,221,221,221,247,
+            0,0,255,0,0,55,0,0,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,255,0,0,255,0,0,208,0,0,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,
+            221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221,221
+        };
+        wxImage image( 16, 16, (unsigned char*)data, TRUE );
+        image.SetMaskColour( 221, 221, 221);
+        wxBitmap bitmap( image );
         return bitmap;
     }
     return wxNullBitmap;
