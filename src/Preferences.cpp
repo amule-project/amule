@@ -208,6 +208,7 @@ wxString 	CPreferences::s_MessageFilterString;
 bool 	CPreferences::s_FilterAllMessages;
 bool 	CPreferences::s_FilterSomeMessages;
 bool	CPreferences::s_ShareHiddenFiles;
+bool CPreferences::s_AutoSortDownload;
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -821,6 +822,12 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	 * Hidden files sharing
 	 **/	  
 	NewCfgItem(IDC_SHAREHIDDENFILES,	(new Cfg_Bool( wxT("/eMule/ShareHiddenFiles"), s_ShareHiddenFiles, false )));
+
+	/**
+	 * Auto-Sorting of downloads
+	 **/
+	 
+	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( wxT("/eMule/AutoSortDownloads"), s_AutoSortDownload, false )));
 
 	/**
 	 * The folowing doesn't have an assosiated widget.
