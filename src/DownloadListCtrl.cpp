@@ -49,7 +49,6 @@
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
 
 #define DLC_BARUPDATE 512
-#define strcmpi strcasecmp
 
 class CPartFile;
 
@@ -1859,7 +1858,7 @@ int CDownloadListCtrl::Compare(CPartFile * file1, CPartFile * file2, long lParam
 {
 	switch (lParamSort) {
 		case 0:	//filename asc
-			return strcmpi(unicode2char(file1->GetFileName()), unicode2char(file2->GetFileName()));
+			return file1->GetFileName().CmpNoCase( file2->GetFileName() );
 		case 1:	//size asc
 			return file1->GetFileSize()==file2->GetFileSize()?0:(file2->GetFileSize()>file1->GetFileSize()?1:-1);
 		case 2:	//transfered asc
