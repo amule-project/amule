@@ -253,8 +253,15 @@ bool CUpDownClient::CreateNextBlockPackage()
 				throw wxString(wxT("Client requested too large of a block."));
 			
 			if (!srcfile->IsPartFile()){
-			  if (!file.Open(fullname,CFile::read)) //CFile::modeRead|CFile::osSequentialScan|CFile::shareDenyNone))
-					throw wxString(wxT("Failed to open requested file"));
+				if ( !file.Open(fullname,CFile::read) ) {
+					// The file was most likely moved/deleted. However it is likely that the
+					// same is true for other files, so we recheck all shared files. 
+					AddLogLineM( false, CFormat( _("Failed to open shared file (%s), rechecking list of shared files.") ) % srcfile->GetFileName() );
+					theApp.sharedfiles->Reload();
+					
+					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
+				}
+			
 				file.Seek(currentblock->StartOffset);
 				
 				filedata = new byte[togo+500];
