@@ -2647,31 +2647,22 @@ void CListenSocket::UpdateConnectionsStatus()
 	}
 }
 
-float CListenSocket::GetMaxConperFiveModifier(){
-	// 0.42e + Kry
-	
-	// Kry - I'm making a preferences option for this.
-	// It seem to slow down A LOT the sources getting on my box
-	// But otoh it might help a lot on users with crappy modems 
-	// or routers. Will be called 'Safe Max Connections Calculation"
-	
-	if (thePrefs::GetSafeMaxConn()) {
-		//This is a alpha test.. Will clean up for b version.
-		float SpikeSize = GetOpenSockets() - averageconnections ;
-		if ( SpikeSize < 1 ) {
-			return 1;
-		}
-		float SpikeTolerance = 25.0f*(float)thePrefs::GetMaxConperFive()/10.0f;
-		if ( SpikeSize > SpikeTolerance ) {
-			return 0;
-		}
-		float Modifier = (1.0f-(SpikeSize/SpikeTolerance));
-		return Modifier;
-	} else {
-		// No modifier.
+
+float CListenSocket::GetMaxConperFiveModifier()
+{
+	float SpikeSize = GetOpenSockets() - averageconnections;
+	if ( SpikeSize < 1 ) {
 		return 1;
 	}
+
+	float SpikeTolerance = 2.5f*thePrefs::GetMaxConperFive();
+	if ( SpikeSize > SpikeTolerance ) {
+		return 0;
+	}
+	
+	return 1.0f - (SpikeSize/SpikeTolerance);
 }
+
 
 #ifdef AMULE_DAEMON
 

@@ -2440,33 +2440,29 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
     item7->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_SAFEMAXCONN, _("Use Safe Max Connections code"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetToolTip( _("This code use an average calc. to avoid breaking usb modems, etc") );
-    item7->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback - HIGH CPU!!!)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback - HIGH CPU!!!)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug - HIGH CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug - HIGH CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticText *item13 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item14 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item7->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item15 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item16 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item7->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item17 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item17 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item18 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxSlider *item19 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item18 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item7->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item7, 0, wxGROW|wxALL, 5 );
 
