@@ -50,7 +50,7 @@ BEGIN_EVENT_TABLE(CTransferWnd,wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_SPLITTER_SASH_POS_CHANGED(ID_SPLATTER, CTransferWnd::OnSashPositionChanged)
 	EVT_BUTTON(ID_BTNCLRCOMPL, CTransferWnd::OnBtnClearDownloads)
-	EVT_BUTTON(ID_BTNSWITCHUP, CTransferWnd::OnBtnSwitchUpload)
+	EVT_BUTTON(ID_BTNSWITCHUP, CTransferWnd::SwitchUploadList)
 END_EVENT_TABLE()
 
 
@@ -387,6 +387,7 @@ void CTransferWnd::OnBtnClearDownloads(wxCommandEvent& WXUNUSED(evt)) {
     downloadlistctrl->Thaw();
 }
 
+/*
 void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent& WXUNUSED(evt)) {
 	
 	if( windowtransferstate == false) {
@@ -407,6 +408,7 @@ void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent& WXUNUSED(evt)) {
 		queueSizer->Layout();
 	}
 }
+*/
 
 void CTransferWnd::UpdateCatTabTitles() {
 	for (uint8 i=0;i<m_dlTab->GetPageCount();i++) {
