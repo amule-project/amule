@@ -60,6 +60,16 @@ void wxProxyEventHandler::m_ProxySocketHandler(wxSocketEvent& event)
 
 /******************************************************************************/
 
+void wxProxyData::Empty() {
+	ProxyHostName.Clear();
+	ProxyPort = 0;
+	ProxyType = wxPROXY_NONE;
+	Username.Clear();
+	Password.Clear();
+}
+
+/******************************************************************************/
+
 wxSocketProxy::wxSocketProxy(const wxProxyData *ProxyData)
 {
 	m_ProxyClientSocket = new wxSocketClient();
