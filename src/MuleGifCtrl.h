@@ -21,7 +21,7 @@
 #define MULEGIFCTRL_H
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma imterface "MuleGifCtrl.h"
+#pragma interface "MuleGifCtrl.h"
 #endif
 
 #include <wx/control.h>
