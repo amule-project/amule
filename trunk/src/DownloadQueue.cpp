@@ -588,7 +588,6 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		
 		// Remove from source-list
 		if ( cur_file->m_SrcList.erase( toremove ) ) {
-#warning WARNING! EXPERIMENTAL FIX! PLEASE TEST AND/OR KILL ME IF IT BREAKS! -- Xaignar
 			cur_file->RemoveDownloadingSource(toremove);
 			cur_file->IsCountDirty = true;
 			removed = true;
@@ -611,7 +610,6 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	// Remove from downloadlist widget
 	Notify_DownloadCtrlRemoveSource(toremove,0);
 	toremove->ResetFileStatusInfo();
-	#warning Kry test - remove asap	
 	toremove->SetRequestFile( NULL );
 	return removed;
 }
