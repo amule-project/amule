@@ -117,7 +117,8 @@
 	#include <wx/gauge.h>
 	#include <wx/textctrl.h>
 	#include <wx/clipbrd.h>			// Needed for wxClipBoard	
-	
+	#include <wx/msgdlg.h>			// Needed for wxMessageBox
+
 	#include "TransferWnd.h"		// Needed for CTransferWnd
 	#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 	#include "ServerWnd.h"			// Needed for CServerWnd
@@ -167,18 +168,27 @@ CamuleApp::CamuleApp()
 	// Initialization	
 	printf("Initialising aMule\n");
 
-#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
-	printf("FATAL ERROR! You have attempted to use a version of wxGTK older than\n");
-	printf("the 2.5.1 release, compiled against GTK2! This combination is not\n");
-	printf("supported by aMule due to many known problems. If you wish to use\n");
-	printf("wxGTK compiled against GTK2, please upgrade to a more recent version\n");
-	printf("of wxGTK.\n\n");
+//#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
+#if 1
+	wxString msg;
+	
+	msg << wxT("You have attempted to use a version of wxGTK older than\n")
+		<< wxT("the 2.5.1 release, compiled against GTK2! This combination is not\n")
+		<< wxT("supported by aMule due to many known problems. If you wish to use\n")
+		<< wxT("wxGTK compiled against GTK2, please upgrade to a more recent version\n")
+		<< wxT("of wxGTK.\n\n")
 
-	printf("More information can be found at:\n");
-	printf("\t- http://www.amule.org\n");
-	printf("\t- http://wiki.amule.org\n\n");
+		<< wxT("More information can be found at:\n")
+		<< wxT(" - http://www.amule.org\n")
+		<< wxT(" - http://wiki.amule.org\n\n")
 
-	printf("Current version is: aMule %s\n", unicode2char(GetMuleVersion()));
+		<< wxT("Current version is: aMule ") << GetMuleVersion() << "\n";
+
+#ifdef AMULE_DAEMON
+	printf("FATAL ERROR! %s\n", unicode2char(msg));
+#else
+	wxMessageBox( msg, "FATAL ERROR!", wxICON_ERROR );
+#endif	
 
 	exit(1);
 #endif
