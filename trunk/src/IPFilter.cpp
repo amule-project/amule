@@ -351,7 +351,7 @@ int CIPFilter::LoadFromZipFile( const wxString& file )
 	
 		// Try to load every file in the archive
 		wxZipFSHandler archive; 
-		wxString filename = archive.FindFirst( file + "#file:/*", wxFILE );
+		wxString filename = archive.FindFirst( file + wxT("#file:/*"), wxFILE );
 
 		while ( !filename.IsEmpty() ) {
 			// Extract the filename part of the URI
