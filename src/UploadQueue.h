@@ -29,6 +29,7 @@
 #include "CMD4Hash.h"
 
 #include <deque>
+#include <list>
 
 class CPreferences;
 class CUpDownClient;
@@ -106,7 +107,8 @@ protected:
 private:
 	CTypedPtrList<CPtrList, CUpDownClient*> waitinglist;
 	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;
-	CList<CMD4Hash> suspended_uploads_list;  //list for suspended uploads
+	typedef std::list<CMD4Hash> suspendlist;
+	suspendlist suspended_uploads_list;  //list for suspended uploads
 	uint32	msPrevProcess;
 	float	kBpsUp;
 	float	kBpsEst;

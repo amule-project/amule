@@ -55,7 +55,7 @@ static CSearchListCtrl* GetSearchListControl(uint32 nSearchID)
 
 	nb->m_LockTabs.Lock();
 
-	for (unsigned int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
+	for (int tabCounter=0; tabCounter < nb->GetPageCount(); tabCounter++) {
 		if(nb->GetUserData(tabCounter)==nSearchID) {
 			return (CSearchListCtrl*)(nb->GetPage(tabCounter)->FindWindow(ID_SEARCHLISTCTRL));
 		}
@@ -78,8 +78,6 @@ static void UngetSearchListControl(CSearchListCtrl* ctrl)
 	
 CSearchFile::CSearchFile(CSearchFile* copyfrom)
 {
-	int i;
-	
 	md4cpy(m_abyFileHash, copyfrom->GetFileHash());
 	SetFileSize(copyfrom->GetIntTagValue(FT_FILESIZE));
 	SetFileName(char2unicode(copyfrom->GetStrTagValue(FT_FILENAME)));
@@ -89,12 +87,11 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 	m_nClientServerPort = copyfrom->GetClientServerPort();
 	m_pszDirectory = copyfrom->m_pszDirectory ? nstrdup(copyfrom->m_pszDirectory) : NULL;
 	m_nSearchID = copyfrom->GetSearchID();
-	for (i = 0; i < copyfrom->taglist.GetCount(); i++)
-		taglist.Add(new CTag(*copyfrom->taglist.GetAt(i)));
-	for (i = 0; i < copyfrom->GetServers().GetSize(); i++){
-		SServer server = *copyfrom->GetServer(i);
-		AddServer(&server);
-	}
+	for (unsigned int i = 0; i < copyfrom->taglist.size(); i++)
+		taglist.push_back(new CTag(*copyfrom->taglist.at(i)));
+
+	m_aServers.insert( m_aServers.end(), copyfrom->GetServers().begin(), 
+	                                     copyfrom->GetServers().end() );
 
 	m_list_bExpanded = false;
 	m_list_parent = copyfrom;
@@ -118,7 +115,7 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 
 	for (unsigned int i = 0; i != tagcount; ++i){
 		CTag* toadd = new CTag(in_data);
-		taglist.Add(toadd);
+		taglist.push_back(toadd);
 	}
 
 	// here we have two choices
@@ -139,8 +136,8 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 	m_nClientServerIP = nServerIP;
 	m_nClientServerPort = nServerPort;
 	if (m_nClientServerIP && m_nClientServerPort){
-		SServer* server = new SServer(m_nClientServerIP, m_nClientServerPort);
-		server->m_uAvail = GetIntTagValue(FT_SOURCES);
+		SServer server(m_nClientServerIP, m_nClientServerPort);
+		server.m_uAvail = GetIntTagValue(FT_SOURCES);
 		AddServer(server);
 	}
 
@@ -156,9 +153,9 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 {
 	m_nSearchID = nSearchID;
 	md4cpy(m_abyFileHash, pucFileHash);
-	taglist.Add(new CTag(FT_FILESIZE, uFileSize));
-	taglist.Add(new CTag(FT_FILENAME, pszFileName));
-	taglist.Add(new CTag(FT_SOURCES, iAvailability));
+	taglist.push_back(new CTag(FT_FILESIZE, uFileSize));
+	taglist.push_back(new CTag(FT_FILENAME, pszFileName));
+	taglist.push_back(new CTag(FT_SOURCES, iAvailability));
 	printf("Filename2: %s\n",pszFileName);
 	SetFileName(char2unicode(pszFileName));
 	SetFileSize(uFileSize);
@@ -177,22 +174,17 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 
 CSearchFile::~CSearchFile(){
 	
-	for (int i = 0; i < m_aServers.GetCount(); i++) {
-		delete m_aServers.GetAt(i);
-	}
-	
-	for (int i = 0; i != taglist.GetSize();i++) {
+	for (unsigned int i = 0; i != taglist.size();i++) {
 		delete taglist[i];
 	}
-	taglist.RemoveAll();
-	taglist.SetSize(0);
+	taglist.clear();
 
 	if (m_pszDirectory)
 		delete[] m_pszDirectory;
 }
 
 uint32 CSearchFile::GetIntTagValue(uint8 tagname){
-	for (int i = 0; i != taglist.GetSize(); i++){
+	for (unsigned int i = 0; i != taglist.size(); i++){
 		if (taglist[i]->tag.specialtag == tagname)
 			return taglist[i]->tag.intvalue;
 	}
@@ -200,7 +192,7 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname){
 }
 
 char* CSearchFile::GetStrTagValue(uint8 tagname){
-	for (int i = 0; i != taglist.GetSize(); i++){
+	for (unsigned int i = 0; i != taglist.size(); i++){
 		if (taglist[i]->tag.specialtag == tagname)
 			return taglist[i]->tag.stringvalue;
 	}
@@ -208,7 +200,7 @@ char* CSearchFile::GetStrTagValue(uint8 tagname){
 }
 
 uint32 CSearchFile::AddSources(uint32 count, uint32 count_complete){
-	for (int i = 0; i != taglist.GetSize(); i++){
+	for (unsigned int i = 0; i != taglist.size(); i++){
 		if (taglist[i]->tag.specialtag == FT_SOURCES){
 			taglist[i]->tag.intvalue += count;
 			return taglist[i]->tag.intvalue;
@@ -359,8 +351,8 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 			toadd->SetClientServerIP(Sender->GetServerIP());
 			toadd->SetClientServerPort(Sender->GetServerPort());
 			if (Sender->GetServerIP() && Sender->GetServerPort()){
-	   			CSearchFile::SServer* server = new CSearchFile::SServer(Sender->GetServerIP(), Sender->GetServerPort());
-				server->m_uAvail = 1;
+	   			CSearchFile::SServer server(Sender->GetServerIP(), Sender->GetServerPort());
+				server.m_uAvail = 1;
 				toadd->AddServer(server);
 			}			
 			// Well, preview is not available yet.
@@ -409,8 +401,8 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, uint32 nSe
 		toadd->SetClientServerIP(nServerIP);
 		toadd->SetClientServerPort(nServerPort);
 		if (nServerIP && nServerPort){
-   			CSearchFile::SServer* server = new CSearchFile::SServer(nServerIP, nServerPort);
-			server->m_uAvail = toadd->GetIntTagValue(FT_SOURCES);
+   			CSearchFile::SServer server(nServerIP, nServerPort);
+			server.m_uAvail = toadd->GetIntTagValue(FT_SOURCES);
 			toadd->AddServer(server);
 		}
 		AddToList(toadd, false);
@@ -503,9 +495,9 @@ uint16 CSearchList::GetFoundFiles(uint32 searchID) {
 wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc) const {
 	wxString buffer;
 	wxString temp;
-	CArray<CSearchFile*, CSearchFile*> sortarray;
-	int swap;
-	bool inserted;
+	std::list<CSearchFile*> sortarray;
+	int swap = 0;
+	bool inserted = false;
 
 	// insertsort
 	CSearchFile* sf1;
@@ -516,8 +508,9 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 		
 		if (sf1->GetListParent()!=NULL) continue;
 		
-		for (uint16 i1=0;i1<sortarray.GetCount();++i1) {
-			sf2 = sortarray.GetAt(i1);
+		std::list<CSearchFile*>::iterator it = sortarray.begin();
+		for ( ; it != sortarray.end(); ++it ) {
+			sf2 = (*it);
 			
 			switch (sortby) {
 				case 0: swap=sf1->GetFileName().CmpNoCase(sf2->GetFileName()); break;
@@ -526,13 +519,14 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 				case 3: swap=sf1->GetSourceCount()-sf2->GetSourceCount(); break;
 			}
 			if (!asc) swap=0-swap;
-			if (swap<0) {inserted=true; sortarray.InsertAt(i1,sf1);break;}
+			if (swap<0) {inserted=true; sortarray.insert(it, sf1);break;}
 		}
-		if (!inserted) sortarray.Add(sf1);
+		if (!inserted) sortarray.push_back(sf1);
 	}
 	
-	for (uint16 i=0;i<sortarray.GetCount();++i) {
-		/*const*/ CSearchFile* sf = sortarray.GetAt(i);
+	std::list<CSearchFile*>::iterator it = sortarray.begin();
+	for ( ; it != sortarray.end(); ++it ) {
+		/*const*/ CSearchFile* sf = (*it);
 
 		// colorize
 		wxString coloraddon;
