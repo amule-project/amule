@@ -319,13 +319,19 @@ public:
 	
 #ifdef CLIENT_GUI
 	uint32 m_base_score, m_score;
-	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const
+	uint32		GetScore(
+				bool WXUNUSED(sysvalue),
+				bool WXUNUSED(isdownloading) = false,
+				bool WXUNUSED(onlybasevalue) = false) const
 	{
 		// lfroen:it's calculated
 		return 0;
 	}
 #else
-	uint32		GetScore(bool sysvalue, bool isdownloading = false, bool onlybasevalue = false) const;
+	uint32		GetScore(
+				bool sysvalue,
+				bool isdownloading = false,
+				bool onlybasevalue = false) const;
 #endif
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
