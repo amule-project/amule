@@ -432,7 +432,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const
 	}
 
 	// Various constant values we use
-	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() + 1) / 2;
+	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
 	const int iOffset = 4;
 
 	// The starting end ending position of the tree
