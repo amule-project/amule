@@ -745,7 +745,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 		delete data;
 
 		// Check that packet size matches the declared data size + header size (24)
-		if ( size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
+		if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
 			throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
 		}
 		// Move end back one, should be inclusive
@@ -1059,13 +1059,17 @@ void CUpDownClient::UDPReaskACK(uint16 nNewQR)
 
 void CUpDownClient::UDPReaskFNF()
 {
-	// 0.42e
-	m_bUDPPending = false;
-	theApp.downloadqueue->RemoveSource(this);
-	if (!socket) {
-		if (Disconnected(wxT("UDPReaskFNF socket=NULL"))) {
-			delete this;
+	if (GetDownloadState()!=DS_DOWNLOADING){ // avoid premature deletion of 'this' client
+		// 0.42e
+		m_bUDPPending = false;
+		theApp.downloadqueue->RemoveSource(this);
+		if (!socket) {
+			if (Disconnected(wxT("UDPReaskFNF socket=NULL"))) {
+				delete this;
+			}
 		}
+	} else {
+		AddDebugLogLineM(false,wxString::Format(wxT("UDP ANSWER FNF : %s - did not remove client because of current download state"),unicode2char(GetUserName())));
 	}
 }
 
@@ -1202,7 +1206,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 	CPartFile* cur_file = NULL;
 	int cur_prio= -1;
 	POSITION finalpos = NULL;
-	CTypedPtrList<CPtrList, CPartFile*>* usedList;
+	CTypedPtrList<CPtrList, CPartFile*>* usedList = NULL;
 
 	if (!m_OtherRequests_list.IsEmpty()) {
 		usedList = &m_OtherRequests_list;
