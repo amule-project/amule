@@ -288,7 +288,7 @@ esac
 
 case "$GDLIBFOUND" in
 1)	CAS="yes"
-	GDLIB_LIBS="$GDLIB_LIBS $GDLIB_LDFLAGS -lgd"
+	
 	;;
 *)	CAS="no"
 	;;
