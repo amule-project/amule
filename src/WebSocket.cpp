@@ -86,7 +86,7 @@ void *CWSThread::Entry() {
 			wxThread::Sleep(200);
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
-		for (size_t i=0; i<wcThreads.GetCount(); i++) {
+		for (size_t i=0; i<wcThreads.GetCount(); ++i) {
 			// terminate i-th thread
 			wcThreads.Item(i)->Delete();
 		}
@@ -227,7 +227,7 @@ void CWebSocket::OnReceived(char* pData, wxUint32 dwSize) {
 		// try to find it
 		bool bPrevEndl = false;
 		
-		for (wxUint32 dwPos = 0; dwPos < m_dwRecv; dwPos++) {
+		for (wxUint32 dwPos = 0; dwPos < m_dwRecv; ++dwPos) {
 			if ('\n' == m_pBuf[dwPos]) {
 				if (bPrevEndl) {
 					// We just found the end of the http header

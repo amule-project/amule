@@ -81,7 +81,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
 	m_abyFileHash = searchresult->GetFileHash();
-	for (unsigned int i = 0; i < searchresult->m_taglist.size();i++){
+	for (unsigned int i = 0; i < searchresult->m_taglist.size();++i){
 		const CTag* pTag = searchresult->m_taglist[i];
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{
@@ -112,7 +112,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 						{ FT_MEDIA_BITRATE, 3 },
 						{ FT_MEDIA_CODEC,   2 }
 					};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); t++)
+					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t)
 					{
 						if (pTag->tag.type == _aMetaTags[t].nType && !strcasecmp(pTag->tag.tagname, _aMetaTags[t].pszName))
 						{
@@ -147,7 +147,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 						{ FT_FILETYPE,		2 },
 						{ FT_FILEFORMAT,	2 }
 					};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); t++)
+					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t)
 					{
 						if (pTag->tag.type == _aMetaTags[t].nType && pTag->tag.specialtag == _aMetaTags[t].nID)
 						{
@@ -341,7 +341,7 @@ void CPartFile::CreatePartFile()
 	// use lowest free partfilenumber for free file (InterCeptor)
 	int i = 0; 
 	do { 
-		i++; 
+		++i; 
 		m_partmetfilename = wxString::Format(wxT("%03i.part.met"), i);
 		m_fullname = thePrefs::GetTempDir() + wxFileName::GetPathSeparator() + m_partmetfilename;
 	} while (wxFileName::FileExists(m_fullname));
@@ -475,7 +475,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		metFile.Read(&tagcount,4);
 		ENDIAN_SWAP_I_32(tagcount);
 
-		for (uint32 j = 0; j < tagcount;j++) {
+		for (uint32 j = 0; j < tagcount;++j) {
 			CTag* newtag = new CTag(metFile);
 			if (!getsizeonly || (getsizeonly && (newtag->tag.specialtag==FT_FILESIZE || newtag->tag.specialtag==FT_FILENAME))) {
 				switch(newtag->tag.specialtag) {
@@ -643,7 +643,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 			
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
-			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.Length()); i++){
+			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.Length()); ++i){
 				CMD4Hash cur_hash;
 				metFile.Read(cur_hash, 16);
 				hashlist.Add(cur_hash);
@@ -652,7 +652,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 			CMD4Hash checkhash;
 			if (!hashlist.IsEmpty()){
 				uchar* buffer = new uchar[hashlist.GetCount()*16];
-				for (size_t i = 0; i < hashlist.GetCount(); i++)
+				for (size_t i = 0; i < hashlist.GetCount(); ++i)
 					md4cpy(buffer+(i*16), hashlist[i]);
 				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash);
 				delete[] buffer;
@@ -662,7 +662,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 				flag=true;
 			else{
 				/*
-				for (size_t i = 0; i < hashlist.GetCount(); i++)
+				for (size_t i = 0; i < hashlist.GetCount(); ++i)
 					delete[] hashlist[i];
 				*/
 				hashlist.Clear();
@@ -763,7 +763,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		return true;
 	} else {
 		hashsetneeded = false;
-		for (size_t i = 0; i < hashlist.GetCount(); i++) {
+		for (size_t i = 0; i < hashlist.GetCount(); ++i) {
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 				SetPartFileStatus(PS_READY);
 			}
@@ -848,17 +848,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		uint16 parts = ENDIAN_SWAP_16(hashlist.GetCount());
 		file.Write(&parts,2);
 		parts = hashlist.GetCount();
-		for (int x = 0; x != parts; x++) {
+		for (int x = 0; x != parts; ++x) {
 			file.Write(hashlist[x],16);
 		}
 		// tags		
 		#define FIXED_TAGS 10
 		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(gaplist.GetCount()*2);
 		if (corrupted_list.GetHeadPosition()) {			
-			tagcount++;
+			++tagcount;
 		}
 		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
-			tagcount++;
+			++tagcount;
 		}
 		uint32 endian_tagcount = ENDIAN_SWAP_32(tagcount);
 		file.Write(&endian_tagcount,4);
@@ -934,7 +934,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 		
 		
-		for (uint32 j = 0; j != (uint32)taglist.GetCount();j++) {
+		for (uint32 j = 0; j != (uint32)taglist.GetCount();++j) {
 			taglist[j]->WriteTagToFile(&file);
 		}
 		// gaps
@@ -954,7 +954,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			gapendtag->WriteTagToFile(&file);
 			delete gapstarttag;
 			delete gapendtag;
-			i_pos++;
+			++i_pos;
 		}
 		delete[] namebuffer;
 		
@@ -1035,14 +1035,14 @@ void CPartFile::SaveSourceSeeds() {
 	int n_sources = 0;
 	
 	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
-	for( ; it != m_downloadingSourcesList.end() && n_sources < 5; it++) {
+	for( ; it != m_downloadingSourcesList.end() && n_sources < 5; ++it) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->HasLowID()) {
 			continue;
 		} else {
 			source_seeds.AddTail(cur_src);
 		}
-		n_sources++;
+		++n_sources;
 	}
 
 	if (n_sources < 5) {
@@ -1056,7 +1056,7 @@ void CPartFile::SaveSourceSeeds() {
 				} else {
 					source_seeds.AddTail(cur_src);
 				}
-				n_sources++;
+				++n_sources;
 			}
 		}
 	}	
@@ -1123,7 +1123,7 @@ void CPartFile::LoadSourceSeeds() {
 	
 	sources_data.WriteUInt16(src_count);
 
-	for (int i=0;i<src_count;i++) {
+	for (int i=0;i<src_count;++i) {
 	
 		uint32 dwID;
 		uint16 nPort;
@@ -1158,7 +1158,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 		}
 	}
 	else{
-		for (size_t i = 0; i < hashlist.GetCount(); i++){
+		for (size_t i = 0; i < hashlist.GetCount(); ++i){
 			// Kry - trel_ar's completed parts check on rehashing.
 			// Very nice feature, if a file is completed but .part.met don't belive it,
 			// update it.
@@ -1482,7 +1482,7 @@ void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 			end = GetPartCount();
 
 		// Place each gap, one PART at a time
-		for ( uint32 i = start; i < end; i++ ) {
+		for ( uint32 i = start; i < end; ++i ) {
 			COLORREF color;
 			if ( i < m_SrcpartFrequency.GetCount() && m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( m_SrcpartFrequency[i] - 1 ) );
@@ -1535,11 +1535,11 @@ void CPartFile::WritePartStatus(CSafeMemFile* file)
 	uint16 done = 0;
 	while (done != parts){
 		uint8 towrite = 0;
-		for (uint32 i = 0;i != 8;i++) {
+		for (uint32 i = 0;i != 8;++i) {
 			if (IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1)) {
 				towrite |= (1<<i);
 			}
-			done++;
+			++done;
 			if (done == parts) {
 				break;
 			}
@@ -1592,7 +1592,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				wxASSERT( cur_src->GetSocket() );
 #endif
 				if (cur_src->GetSocket()) {
-					transferingsrc++;
+					++transferingsrc;
 					float kBpsClient = cur_src->CalculateKBpsDown();
 					kBpsDown += kBpsClient;
 					if (reducedownload) {
@@ -1616,7 +1616,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			uint8 download_state=cur_src->GetDownloadState();
 			switch (download_state) {
 				case DS_DOWNLOADING: {
-					transferingsrc++;
+					++transferingsrc;
 						
 					float kBpsClient = cur_src->CalculateKBpsDown();
 					kBpsDown += kBpsClient;
@@ -1753,7 +1753,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		
 	}			
 
-	count++;
+	++count;
 	
 	// Kry - does the 3 / 30 difference produce too much flickering or CPU?
 	if (count >= 30) {
@@ -1789,7 +1789,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		return false;
 	} else if (userid < 16777216 && !theApp.serverconnect->IsLocalServer(serverip,serverport)) {
 		if (pdebug_lowiddropped) {
-			(*pdebug_lowiddropped)++;
+			++(*pdebug_lowiddropped);
 		}
 		return false;
 	}
@@ -1809,7 +1809,7 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 		return;
 	}
 
-	for (int i = 0;i != count;i++) {
+	for (int i = 0;i != count;++i) {
 		uint32 userid = sources->ReadUInt32();
 		uint16 port   = sources->ReadUInt16();
 		
@@ -1831,7 +1831,7 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 			continue;
 		}
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
-			debug_possiblesources++;
+			++debug_possiblesources;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
@@ -1868,7 +1868,7 @@ void CPartFile::UpdatePartsInfo() {
 	
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
-		for (uint16 i = 0; i < partcount; i++)	{
+		for (uint16 i = 0; i < partcount; ++i)	{
 			if (cur_src->IsPartAvailable(i)) {
 				m_SrcpartFrequency[i] +=1;
 			}
@@ -1880,9 +1880,9 @@ void CPartFile::UpdatePartsInfo() {
 
 	// Find number of available parts
 	uint16 availablecounter = 0;
-	for ( uint16 i = 0; i < partcount; i++ ) {		
+	for ( uint16 i = 0; i < partcount; ++i ) {		
 		if ( m_SrcpartFrequency[i] )
-			availablecounter++;
+			++availablecounter;
 	}
 	
 	if ( ( availablecounter == partcount ) && ( m_availablePartsCount < partcount ) ) {
@@ -1894,7 +1894,7 @@ void CPartFile::UpdatePartsInfo() {
 	if( flag ) {
 		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 	
-		for (uint16 i = 0; i < partcount; i++)	{
+		for (uint16 i = 0; i < partcount; ++i)	{
 			if( !i )	{
 				m_nCompleteSourcesCount = m_SrcpartFrequency[i];
 			}
@@ -2062,7 +2062,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 			// This is done only one time and only if it is necessary (=> CPU load)
 			if(chunksList.IsEmpty() == TRUE) {
 				// Indentify the locally missing part(s) that this source has
-				for(uint16 i=0; i < partCount; i++) {
+				for(uint16 i=0; i < partCount; ++i) {
 					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL) == true) {
 						// Create a new entry for this chunk and add it to the list
 						Chunk newEntry;
@@ -2197,7 +2197,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 						count = 1;
 						rank = cur_chunk.rank;
 					} else if(cur_chunk.rank == rank) {
-						count++;
+						++count;
 					}
 				}
 
@@ -2416,7 +2416,7 @@ wxThread::ExitCode completingThread::Entry()
 
 		wxString strTestName;
 		do {
-			namecount++;
+			++namecount;
 			if (ext.IsEmpty()) {
 				strTestName = thePrefs::GetIncomingDir(); 
 				strTestName += wxFileName::GetPathSeparator();
@@ -2847,7 +2847,7 @@ void CPartFile::PreviewFile()
 	
 	if (!(GetStatus() == PS_COMPLETE)) {
 		// Remove the .met from filename.
-		for (int i=0;i<4;i++) {
+		for (int i=0;i<4;++i) {
 			command.RemoveLast();
 		}
 	}
@@ -2996,7 +2996,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
-				for (int x = 0; x < n; x++) {
+				for (int x = 0; x < n; ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
 						break;
@@ -3006,7 +3006,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// if we don't know the need parts for this client, 
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
-				for (int x = 0; x < GetPartCount(); x++){
+				for (int x = 0; x < GetPartCount(); ++x){
 					if (srcstatus[x]) {
 						bNeeded = true;
 						break;
@@ -3015,7 +3015,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			}
 		}
 		if(bNeeded) {
-			nCount++;
+			++nCount;
 			uint32 dwID;
 			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
@@ -3059,7 +3059,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 		return;
 	}
 	uint16 nCount = sources->ReadUInt16();
-	for (int i = 0;i != nCount;i++) {
+	for (int i = 0;i != nCount;++i) {
 		uint32 dwID = sources->ReadUInt32();
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
@@ -3229,7 +3229,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 	
 	try {
 		// Remember which parts need to be checked at the end of the flush
-		for (int partNumber=0; (uint32)partNumber<partCount; partNumber++) {
+		for (int partNumber=0; (uint32)partNumber<partCount; ++partNumber) {
 			changedPart[partNumber] = false;
 		}
 
@@ -3292,7 +3292,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 			uint32 lenData = item->end - item->start + 1;
 
 			// SLUGFILLER: SafeHash - could be more than one part
-			for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; curpart++)
+			for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart)
 				changedPart[curpart] = true;
 			// SLUGFILLER: SafeHash		
 			
@@ -3371,7 +3371,7 @@ void CPartFile::FlushBuffer(bool forcewait, bool bForceICH, bool bNoAICH)
 			} else if ( IsCorruptedPart(partNumber) && (thePrefs::IsICHEnabled() || bForceICH)) {
 				// Try to recover with minimal loss
 				if (HashSinglePart(partNumber)) {
-					m_iTotalPacketsSavedDueToICH++;
+					++m_iTotalPacketsSavedDueToICH;
 					
 					uint32 uMissingInPart = GetTotalGapSizeInPart(partNumber);					
 					FillGap(PARTSIZE*partNumber,(PARTSIZE*partNumber+partRange));
@@ -3518,10 +3518,10 @@ void CPartFile::UpdateFileRatingCommentAvail()
 		}
 
 		if (cur_src->GetFileRate()>0) {
-			ratings++;
+			++ratings;
 		}
 		if (cur_src->GetFileRate()==1) {
-			badratings++;
+			++badratings;
 		}
 	}
 	hasBadRating=(badratings> (ratings/3));
@@ -3591,7 +3591,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 
 	wxString my_ChunkBar=wxEmptyString;
 
-	for (uint16 i=0;i<=size+1;i++) {
+	for (uint16 i=0;i<=size+1;++i) {
 		my_ChunkBar.Append(crHave,1); //.AppendChar(crHave);
 	}
 	// one more for safety
@@ -3609,7 +3609,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 			bool gapdone = false;
 			uint32 gapstart = cur_gap->start;
 			uint32 gapend = cur_gap->end;
-			for (uint32 i = 0; i < GetPartCount(); i++){
+			for (uint32 i = 0; i < GetPartCount(); ++i){
 				if (gapstart >= i*PARTSIZE && gapstart <=  (i+1)*PARTSIZE) { // is in this part?
 					if (gapend <= (i+1)*PARTSIZE) {
 						gapdone = true;
@@ -3647,7 +3647,7 @@ wxString CPartFile::GetProgressString(uint16 size)
                                                                                 
 void CPartFile::CharFillRange(wxString* buffer,uint32 start, uint32 end, char color)
 {
-	for (uint32 i = start;i <= end;i++) {
+	for (uint32 i = start;i <= end;++i) {
 		buffer->SetChar(i,color);
 	}
 }
@@ -3899,9 +3899,9 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 			&& (*pCurClient->GetReqFileAICHHash()) == m_pAICHHashSet->GetMasterHash())
 		{
 			if (pCurClient->HasLowID())
-				cAICHLowIDClients++;
+				++cAICHLowIDClients;
 			else
-				cAICHClients++;
+				++cAICHClients;
 		}
 	}
 	if ((cAICHClients | cAICHLowIDClients) == 0){
@@ -4072,13 +4072,13 @@ void CPartFile::ClientStateChanged( int oldState, int newState )
 	if ( newState != -1 ) {
 		// Was the old state a valid state?
 		if ( newState == DS_ONQUEUE || newState == DS_DOWNLOADING ) {
-			m_validSources++;
+			++m_validSources;
 		} else {
 			if ( newState == DS_CONNECTED /* || newState == DS_REMOTEQUEUEFULL  */ ) {
-				m_validSources++;
+				++m_validSources;
 			}
 
-			m_notCurrentSources++;
+			++m_notCurrentSources;
 		}
 	}
 }

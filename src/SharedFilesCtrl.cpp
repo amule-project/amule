@@ -157,7 +157,7 @@ void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
 	DeleteAllItems();
 
 	CKnownFileMap::iterator it = list->m_Files_map.begin();
-	for ( ; it != list->m_Files_map.end(); it++ ) {
+	for ( ; it != list->m_Files_map.end(); ++it ) {
 		ShowFile( it->second );
 	}
 }
@@ -537,7 +537,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 
 	columnRect.SetLeft( columnRect.GetLeft() + SPARE_PIXELS_HORZ );
 	columnRect.SetWidth( columnRect.GetWidth()-2*SPARE_PIXELS_HORZ);
-	for ( int i = 0; i < GetColumnCount(); i++ ) {
+	for ( int i = 0; i < GetColumnCount(); ++i ) {
 		wxListItem columnItem;
 		GetColumn(i, columnItem);
 		int width = columnItem.GetWidth();
@@ -549,11 +549,11 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 			switch ( i ) {
 				case 9: {
 					if ( file->GetPartCount() ) {
-						columnRect.height--;
-						columnRect.y++;
+						--columnRect.height;
+						++columnRect.y;
 						DrawAvailabilityBar(file, dc, columnRect );
-						columnRect.height++;
-						columnRect.y--;
+						++columnRect.height;
+						--columnRect.y;
 					}
 					break;
 				}
@@ -600,7 +600,7 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, wxRect re
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	s_ChunkBar.Fill( RGB(255, 0, 0) );
 
-	for ( unsigned int i = 0; i < list.GetCount(); i++ ) {
+	for ( unsigned int i = 0; i < list.GetCount(); ++i ) {
 		if ( list[i] ) {
 			COLORREF color = RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255);
 			s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);

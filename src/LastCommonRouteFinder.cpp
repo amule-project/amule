@@ -1,21 +1,21 @@
-// this file is part of aMule
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include "amule.h"
 #include "LastCommonRouteFinder.h"
@@ -74,7 +74,7 @@ bool LastCommonRouteFinder::AddHostsToCheck(CTypedPtrList<CPtrList, CServer*> &l
                 uint32 startPos = rand()/(RAND_MAX/list.GetCount());
 
                 POSITION pos = list.GetHeadPosition();
-                for(uint32 skipCounter = startPos; skipCounter < (uint32)list.GetCount() && pos != NULL; skipCounter++) {
+                for(uint32 skipCounter = startPos; skipCounter < (uint32)list.GetCount() && pos != NULL; ++skipCounter) {
                     list.GetNext(pos);
                 }
 
@@ -127,7 +127,7 @@ bool LastCommonRouteFinder::AddHostsToCheck(CUpDownClientPtrList &list) {
                 uint32 startPos = rand()/(RAND_MAX/list.GetCount());
 
                 POSITION pos = list.GetHeadPosition();
-                for(uint32 skipCounter = startPos; skipCounter < (uint32)list.GetCount() && pos != NULL; skipCounter++) {
+                for(uint32 skipCounter = startPos; skipCounter < (uint32)list.GetCount() && pos != NULL; ++skipCounter) {
                     list.GetNext(pos);
                 }
 
@@ -372,7 +372,7 @@ UINT LastCommonRouteFinder::RunInternal() {
                     bool failed = false;
 
                     uint32 curHost = 0;
-                    for(uint32 ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 5) && foundLastCommonHost == false && failed == false; ttl++) {
+                    for(uint32 ttl = 1; doRun && enabled && (curHost != 0 && ttl <= 64 || curHost == 0 && ttl < 5) && foundLastCommonHost == false && failed == false; ++ttl) {
                         theApp.emuledlg->QueueDebugLogLine(false,"UploadSpeedSense: Pinging for TTL %i...", ttl);
                         curHost = 0;
 						PingStatus pingStatus = {0};
@@ -405,7 +405,7 @@ UINT LastCommonRouteFinder::RunInternal() {
                             uint32 curAddress = hostsToTraceRoute.GetNext(pos);
 
                             pingStatus.success = false;
-                            for(int counter = 0; doRun && enabled && counter < 3 && pingStatus.success == false; counter++) {
+                            for(int counter = 0; doRun && enabled && counter < 3 && pingStatus.success == false; ++counter) {
                                 pingStatus = pinger.Ping(curAddress, ttl, true);
                                 if(doRun && enabled && pingStatus.success == false && counter < 3-1) {
                                     IN_ADDR stDestAddr;
@@ -526,7 +526,7 @@ UINT LastCommonRouteFinder::RunInternal() {
             //uploadLocker.Lock();
 
             // finding lowest ping
-            for(int initialPingCounter = 0; doRun && enabled && initialPingCounter < 10; initialPingCounter++) {
+            for(int initialPingCounter = 0; doRun && enabled && initialPingCounter < 10; ++initialPingCounter) {
                 Sleep(200);
 
                 PingStatus pingStatus = pinger.Ping(hostToPing, lastCommonTTL, true);
@@ -626,7 +626,7 @@ UINT LastCommonRouteFinder::RunInternal() {
                 uint32 raw_ping = soll_ping; // this value will cause the upload speed not to change at all.
 
                 bool pingFailure = false;        
-                for(int pingTries = 0; doRun && enabled && (pingTries == 0 || pingFailure) && pingTries < 2; pingTries++) {
+                for(int pingTries = 0; doRun && enabled && (pingTries == 0 || pingFailure) && pingTries < 2; ++pingTries) {
                     // ping the host to ping
                     PingStatus pingStatus = pinger.Ping(hostToPing, lastCommonTTL);
 

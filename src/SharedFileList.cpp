@@ -1,22 +1,21 @@
-// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include <ctime>
 #include <sys/types.h>
@@ -70,7 +69,7 @@ void CSharedFileList::FindSharedFiles() {
 	/* Global incoming dir and all category incoming directories are automatically shared. */
 
 	AddFilesFromDirectory(thePrefs::GetIncomingDir());
-	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount();i++) {
+	for (uint32 i = 1;i < theApp.glob_prefs->GetCatCount(); ++i) {
 		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
 	}
 
@@ -79,7 +78,7 @@ void CSharedFileList::FindSharedFiles() {
 		if(!wxFileName::DirExists(theApp.glob_prefs->shareddir_list.Item(i))) {
 			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		} else {
-			i++;
+			++i;
 		}
 	}
 
@@ -283,7 +282,7 @@ void CSharedFileList::SendListToServer(){
 	files->WriteUInt32(m_Files_map.size());
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); pos++ ) {
+	     pos != m_Files_map.end(); ++pos ) {
 		CreateOfferedFilePacket(pos->second,files,true);
 	}
 	Packet* packet = new Packet(files);
@@ -367,11 +366,11 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 	uint32 uTagCount = 0; // File name and size right now
 
 	if (cur_file->GetFileName()) {
-		uTagCount++;
+		++uTagCount;
 	}
 
 	if (cur_file->GetFileSize()>0) {
-		uTagCount++;
+		++uTagCount;
 	}
 
 	files->WriteUInt32(uTagCount);
@@ -399,7 +398,7 @@ uint64 CSharedFileList::GetDatasize() {
 	fsize=0;
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); pos++ ) {
+	     pos != m_Files_map.end(); ++pos ) {
 		fsize+=pos->second->GetFileSize();
 	}
 	return fsize;
@@ -435,7 +434,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
                             CTypedPtrList<CPtrList, CKnownFile*>& list)
 {
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); pos++ ) {
+	     pos != m_Files_map.end(); ++pos ) {
 		CKnownFile *cur_file = pos->second;
 
 		if (directory.CompareTo(cur_file->GetFilePath())) {
@@ -449,7 +448,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
 void CSharedFileList::ClearED2KPublishInfo(){
 	CKnownFile* cur_file;
 
-	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); pos++ ) {
+	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
 		cur_file = pos->second;
 		cur_file->SetPublishedED2K(false);
 	}

@@ -57,7 +57,7 @@ public:
 	~CEntry()
 	{
 		TagList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); it++)
+		for (it = taglist.begin(); it != taglist.end(); ++it)
 			delete *it;
 	}
 	uint32 ip;

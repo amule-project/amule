@@ -1,21 +1,21 @@
-// this file is part of aMule
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #include "amule.h"
 #include "UploadBandwidthThrottler.h"
@@ -389,7 +389,7 @@ UINT UploadBandwidthThrottler::RunInternal() {
         }
 
         // Check if any sockets haven't gotten data for a long time. Then trickle them a package.
-        for(uint32 slotCounter = 0; slotCounter < (uint32)m_StandardOrder_list.GetSize(); slotCounter++) {
+        for(uint32 slotCounter = 0; slotCounter < (uint32)m_StandardOrder_list.GetSize(); ++slotCounter) {
             CEMSocket* socket = m_StandardOrder_list.GetAt(slotCounter);
 
             if(socket != NULL) {
@@ -427,7 +427,7 @@ UINT UploadBandwidthThrottler::RunInternal() {
             }
 
             // "Full" speed sockets
-            for(uint32 slotCounter = 0; slotCounter < (uint32)m_StandardOrder_list.GetSize() &&  bytesToSpend > leftoverDueToRounding && spentBytes <= (uint64)bytesToSpend-leftoverDueToRounding; slotCounter++) {
+            for(uint32 slotCounter = 0; slotCounter < (uint32)m_StandardOrder_list.GetSize() &&  bytesToSpend > leftoverDueToRounding && spentBytes <= (uint64)bytesToSpend-leftoverDueToRounding; ++slotCounter) {
                 CEMSocket* socket = m_StandardOrder_list.GetAt(slotCounter);
 
                 if(socket != NULL) {
@@ -441,7 +441,7 @@ UINT UploadBandwidthThrottler::RunInternal() {
 
             // Any data that is left over at this point is given to any slot that wants it. First come first serve.
             uint32 saturatedSlotCounter = 0;
-            for(saturatedSlotCounter = 0; saturatedSlotCounter < (uint32)m_StandardOrder_list.GetSize() && bytesToSpend > leftoverDueToRounding+minFragSize && spentBytes <= (uint64)bytesToSpend-(leftoverDueToRounding+minFragSize); saturatedSlotCounter++) {
+            for(saturatedSlotCounter = 0; saturatedSlotCounter < (uint32)m_StandardOrder_list.GetSize() && bytesToSpend > leftoverDueToRounding+minFragSize && spentBytes <= (uint64)bytesToSpend-(leftoverDueToRounding+minFragSize); ++saturatedSlotCounter) {
                 CEMSocket* socket = m_StandardOrder_list.GetAt(saturatedSlotCounter);
 
                 if(socket != NULL) {

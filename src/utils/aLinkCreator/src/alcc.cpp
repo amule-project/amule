@@ -65,7 +65,7 @@ int alcc::OnRun ()
 
   Ed2kHash hash;
   size_t i;
-  for (i=0;i<(m_filesToHash.GetCount());i++)
+  for (i=0;i<(m_filesToHash.GetCount());++i)
     {
       if (wxFileExists(m_filesToHash[i]))
         {
@@ -120,7 +120,7 @@ bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
   m_flagPartHashes = cmdline.Found(wxT("p"));
 
   m_filesToHash.Clear();
-  for (i = 0; i < cmdline.GetParamCount(); i++)
+  for (i = 0; i < cmdline.GetParamCount(); ++i)
     {
       filename.Assign(cmdline.GetParam(i));
       m_filesToHash.Add(filename.GetFullPath());

@@ -1,4 +1,3 @@
-// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
@@ -63,7 +62,7 @@ void *CGlobalSearchThread::Entry()
 	CServer* current = theApp.serverconnect->GetCurrentServer();
 	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
 	
-	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); i++ ) {
+	for ( uint16 i = 0; i < theApp.serverlist->GetServerCount(); ++i ) {
 		if ( TestDestroy() )
 			break;
 		
@@ -89,12 +88,12 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 {
 	// Count the number of used parameters
 	int parametercount = 0;
-	if ( !searchString.IsEmpty() )	parametercount++;
-	if ( !typeText.IsEmpty() )		parametercount++;
-	if ( min > 0 )					parametercount++;
-	if ( max > 0 ) 					parametercount++;
-	if ( avaibility > 0 )			parametercount++;
-	if ( !extension.IsEmpty() )		parametercount++;
+	if ( !searchString.IsEmpty() )	++parametercount;
+	if ( !typeText.IsEmpty() )	++parametercount;
+	if ( min > 0 )			++parametercount;
+	if ( max > 0 ) 			++parametercount;
+	if ( avaibility > 0 )		++parametercount;
+	if ( !extension.IsEmpty() )	++parametercount;
 	
 	// Must write parametercount - 1 parameter headers
 	CSafeMemFile* data = new CSafeMemFile(100);
@@ -109,7 +108,7 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 	const uint32 avaibilityNemonic = 0x15000101;
 	const uint32 extensionNemonic = 0x00040001;
 	
-	for ( int i = 0; i < parametercount - 1; i++ )
+	for ( int i = 0; i < parametercount - 1; ++i )
 		data->WriteUInt16(andParameter);
 
 	// Packet body:
@@ -207,7 +206,7 @@ CSearchFile::CSearchFile(const CSafeMemFile* in_data, long nSearchID, uint32 WXU
 
 CSearchFile::~CSearchFile()
 {	
-	for ( unsigned int i = 0; i < m_taglist.size(); i++ )
+	for ( unsigned int i = 0; i < m_taglist.size(); ++i )
 		delete m_taglist[i];
 	
 	m_taglist.clear();
@@ -216,7 +215,7 @@ CSearchFile::~CSearchFile()
 
 uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 {
-	for (unsigned int i = 0; i != m_taglist.size(); i++) {
+	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
 		if ( m_taglist[i]->tag.specialtag == tagname )
 			return m_taglist[i]->tag.intvalue;
 	}
@@ -227,7 +226,7 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 
 char* CSearchFile::GetStrTagValue(uint8 tagname)
 {
-	for (unsigned int i = 0; i != m_taglist.size(); i++) {
+	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
 		if ( m_taglist[i]->tag.specialtag == tagname )
 			return m_taglist[i]->tag.stringvalue;
 	}
@@ -238,7 +237,7 @@ char* CSearchFile::GetStrTagValue(uint8 tagname)
 
 void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 {
-	for ( unsigned int i = 0; i < m_taglist.size(); i++ ) {
+	for ( unsigned int i = 0; i < m_taglist.size(); ++i ) {
 		STag& tag = m_taglist[i]->tag;
 	
 		switch ( tag.specialtag ) {
@@ -287,7 +286,7 @@ void CSearchList::Clear()
 	for ( ; it != m_Results.end(); ++it ) {
 		SearchList& list = it->second;
 	
-		for ( unsigned int i = 0; i < list.size(); i++ ) 
+		for ( unsigned int i = 0; i < list.size(); ++i ) 
 			delete list[i];
 	}
 		
@@ -302,7 +301,7 @@ void CSearchList::RemoveResults(long nSearchID)
 	if ( it != m_Results.end() ) {
 		SearchList& list = it->second;
 	
-		for ( unsigned int i = 0; i < list.size(); i++ ) 
+		for ( unsigned int i = 0; i < list.size(); ++i ) 
 			delete list[i];
 	
 		m_Results.erase( it );
@@ -343,7 +342,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	const CSafeMemFile packet((BYTE*)in_packet, size);
 	uint32 results = packet.ReadUInt32();
 
-	for (unsigned int i = 0; i != results; i++){
+	for (unsigned int i = 0; i != results; ++i){
 		CSearchFile* toadd = new CSearchFile(&packet, nSearchID, 0, 0, pszDirectory);
 		if (Sender){
 			toadd->SetClientID(Sender->GetUserID());
@@ -409,7 +408,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	if ( it != m_Results.end() ) {
 		SearchList& list = it->second;
 	
-		for ( unsigned int i = 0; i < list.size(); i++ ) {
+		for ( unsigned int i = 0; i < list.size(); ++i ) {
 			if ( toadd->GetFileHash() == list[i]->GetFileHash() ) {
 				list[i]->AddSources( toadd->GetSourceCount(), toadd->GetCompleteSourceCount() );
 				
@@ -520,7 +519,7 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 	for ( ; it != m_Results.end(); ++it ) {
 		SearchList& list = it->second;
 	
-		for ( unsigned int i = 0; i < list.size(); i++ ) {
+		for ( unsigned int i = 0; i < list.size(); ++i ) {
 			if ( list[i]->GetFileHash() == hash ) {
 				CoreNotify_Search_Add_Download( list[i], cat );
 
