@@ -78,7 +78,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		}
 	#else
  	if(!HasLowID()) {
-		m_nConnectIP = in_userid;
+		m_nConnectIP = ENDIAN_SWAP_32(in_userid);
 	}
 	#endif
 	
