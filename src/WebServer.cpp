@@ -1363,7 +1363,11 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
 
 	//sGraphs formatted as: %d\t%d\t%d\t%d
-	wxString sGraphs = webInterface->SendRecvMsg(wxT("WEBPAGE GETGRAPH"));
+	CECPacket req(EC_OP_STATSGRAPHS);
+	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	wxString sGraphs =  response->GetTagByIndex(0)->GetStringData();	
+	delete response;
+	
 	int brk = sGraphs.First(wxT("\t"));
 	
 	wxString sScale;
@@ -1548,7 +1552,11 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	
 	wxString Out = m_Templates.sStats;
 	
-	wxString sStats = webInterface->SendRecvMsg(wxT("WEBPAGE STATISTICS"));
+	CECPacket req(EC_OP_STATSTREE);
+	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	wxString sStats =  response->GetTagByIndex(0)->GetStringData();
+	delete response;
+	
 	int brk = sStats.First(wxT("\t"));
 	
 	Out.Replace(wxT("[STATSDATA]"), sStats.Left(brk));
@@ -3046,4 +3054,3 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 		return 0;
 	}
 }
-

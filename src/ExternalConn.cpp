@@ -1423,6 +1423,30 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 			theApp.GetServerLog(true);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+
+		//
+		// Statistics
+		//
+		
+		case EC_OP_STATSGRAPHS:
+			response = new CECPacket(EC_OP_STATSGRAPHS);
+			response->AddTag(CECTag(EC_TAG_STRING,
+													wxString::Format(wxT("%d\t%d\t%d\t%d"), 
+													thePrefs::GetTrafficOMeterInterval(),
+													thePrefs::GetMaxGraphDownloadRate(),
+													thePrefs::GetMaxGraphUploadRate(),
+													thePrefs::GetMaxConnections())));
+			break;
+		
+		case EC_OP_STATSTREE:
+			response = new CECPacket(EC_OP_STATSGRAPHS);
+			#ifdef AMULE_DAEMON
+			response->AddTag(CECTag(EC_TAG_STRING, wxT("FIXME: remove code from gui")));
+			#else
+			response->AddTag(CECTag(EC_TAG_STRING, theApp.amuledlg->statisticswnd->GetHTML()));
+			#endif				
+			break;		
+		
 		default:
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
 			break;
@@ -1440,40 +1464,6 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 
 	AddLogLineM(false, wxT("Remote command: ") + item);
 
-	//---------------------------------------------------------------------
-	// WEBPAGE
-	//---------------------------------------------------------------------
-	if (item == wxT("WEBPAGE GETGRAPH")) {
-		//returns one string formatted as:
-		//%d\t%d\t%d\t%d
-		buffer = wxString::Format(wxT("%d\t%d\t%d\t%d"), 
-			thePrefs::GetTrafficOMeterInterval(),
-			thePrefs::GetMaxGraphDownloadRate(),
-			thePrefs::GetMaxGraphUploadRate(),
-			thePrefs::GetMaxConnections());
-		return buffer;
-	}
-	if (item == wxT("WEBPAGE STATISTICS")) {
-#ifdef AMULE_DAEMON
-		return wxT("FIXME: remove code from gui");
-#else
-		int filecount = theApp.downloadqueue->GetFileCount();
-		uint32 stats[2]; // get the source count
-		theApp.downloadqueue->GetDownloadStats(stats);
-		buffer = theApp.amuledlg->statisticswnd->GetHTML() +
-			wxString::Format(wxT(
-			"\tStatistics: \n"
-			"\t\tDownloading files: %d\n"
-			"\t\tFound sources: %d\n"
-			"\t\tActive downloads: %d\n"
-			"\t\tActive Uploads: %d\n"
-			"\t\tUsers on upload queue: %d"),
-			filecount, stats[0], stats[1], 
-			theApp.uploadqueue->GetUploadQueueLength(), 
-			theApp.uploadqueue->GetWaitingUserCount());
-		return buffer;
-#endif
-	}
 	//---------------------------------------------------------------------
 	// TRANSFER
 	//---------------------------------------------------------------------
