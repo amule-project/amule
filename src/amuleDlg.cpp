@@ -184,8 +184,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
-	AddLogLineM(false, _("This is aMule ") + GetMuleVersion() + _(" (based on eMule)"));
-	AddLogLineM(false, _("Visit http://www.amule.org to check if a new version is available."));
+	AddLogLineM(false, wxEmptyString);
+	AddLogLineM(false, _(" - This is aMule ") + GetMuleVersion() + _(" (based on eMule)"));
+	AddLogLineM(false, _("   Running on ") + wxGetOsDescription());
+	AddLogLineM(false, _(" - Visit http://www.amule.org to check if a new version is available."));
+	AddLogLineM(false, wxEmptyString);
 
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
@@ -590,7 +593,10 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	// Add the message to the log-view
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 	if ( ct ) {
-		ct->AppendText( stamp + bufferline + wxT("\n") );
+		if (!bufferline.IsEmpty()) {
+			bufferline = stamp + bufferline;
+		} // If it's empty we just write a blank line with no timestamp.
+		ct->AppendText( bufferline + wxT("\n") );
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	
