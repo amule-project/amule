@@ -980,7 +980,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		int w = 0, h = 0;
 
 		for (int i = 0; i < 11; i++) {
-			prefs_sizer->Add(PrefsPanels[i]);
+			prefs_sizer->Add(PrefsPanels[i],0,wxGROW);
 			
 			// Calc. max size of the panel
 			prefs_sizer->Show(PrefsPanels[i], TRUE);
