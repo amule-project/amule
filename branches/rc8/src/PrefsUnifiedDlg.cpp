@@ -314,7 +314,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
-#warning UDPDisable isnt implemented!
 	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
