@@ -518,7 +518,7 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		bufferline.Replace( wxT("&"), wxT("&&") );
 		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
 		text->SetLabel(bufferline);
-		Layout();
+		text->GetParent()->Layout();
 	}
 	
 }
@@ -626,9 +626,10 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) +
 		wxT(")");
 
-	CastChild( wxT("userLabel"), wxStaticText )->SetLabel(buffer);
+	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
 
-	Layout();
+	label->SetLabel(buffer);
+	label->GetParent()->Layout();
 }
 
 void CamuleDlg::ShowTransferRate()
@@ -646,8 +647,9 @@ void CamuleDlg::ShowTransferRate()
 	}
 	buffer.Truncate(50); // Max size 50
 
-	CastChild( wxT("speedLabel"), wxStaticText )->SetLabel(buffer);
-	Layout();
+	wxStaticText* label = CastChild( wxT("speedLabel"), wxStaticText );
+	label->SetLabel(buffer);
+	label->GetParent()->Layout();
 
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
