@@ -88,7 +88,7 @@ CDownloadQueue::~CDownloadQueue()
 {
 	if ( !m_filelist.empty() ) {
 		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
-			printf("\rSaving PartFile: %u of %u", i + 1, m_filelist.size());
+			printf("\rSaving PartFile: %u of %u", i + 1, (unsigned int)m_filelist.size());
 			fflush(stdout);
 			delete m_filelist[i];
 		}
