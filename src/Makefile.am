@@ -118,9 +118,6 @@ amule_SOURCES = ListenSocket.cpp \
 
 if USE_MINGW
 amule_SOURCES += ../amule.rc
-
-../amule.rc.$(OBJEXT): ../amule.rc
-	$(WINDRES) -i $< -o $@
 endif
 
 if ADD_GSOCKET
@@ -231,6 +228,7 @@ noinst_HEADERS = AddFileThread.h \
 		 gsocket.h \
 		 gtk2-funcs.h \
 		 gtkplugxembed.h \
+		 GuiEvents.h \
 		 HTTPDownloadDlg.h \
 		 inetdownload.h \
 		 IPFilter.h \
