@@ -24,7 +24,6 @@
 
 #include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
-#include "CString.h"		// Needed for CString
 class CServerSocketHandler;
 
 class CServer;
@@ -42,7 +41,7 @@ public:
 	void	ConnectToServer(CServer* server);
 	sint8	GetConnectionState()	{return connectionstate;} 
  	DWORD   GetLastTransmission() const { return m_dwLastTransmission; }
-	CString info;
+	wxString info;
 
  public:
 	void	OnClose(wxSocketError nErrorCode);

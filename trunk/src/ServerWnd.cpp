@@ -35,7 +35,6 @@
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "CString.h"		// Needed for CString
 #include "amule.h"			// Needed for theApp
 
 #ifdef HAVE_CONFIG_H
@@ -77,7 +76,7 @@ CServerWnd::~CServerWnd()
 void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 {
 	if (strURL.Find(wxT("://")) == -1) {
-		theApp.amuledlg->AddLogLine(true, CString(_("Invalid URL")));
+		theApp.amuledlg->AddLogLine(true, _("Invalid URL"));
 		return;
 	}
 	wxString strTempFilename(theApp.ConfigDir + wxString::Format(wxT("temp-%d-server.met"), ::GetTickCount()));
@@ -90,7 +89,7 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 		theApp.serverlist->SaveServermetToFile();
 		printf("Saving of server.met file Done !!!\n");
 	} else {
-		theApp.amuledlg->AddLogLine(true, CString(_("Failed to download the serverlist from %s")).GetData(), strURL.GetData());
+		theApp.amuledlg->AddLogLine(true, _("Failed to download the serverlist from %s"), strURL.GetData());
 	}
 	delete dlg;
 }
@@ -105,13 +104,13 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
 {
 	wxString serveraddr;
 	if(((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0).IsEmpty()) {
-		theApp.amuledlg->AddLogLine(true, CString(_("Please enter a serveraddress")) );
+		theApp.amuledlg->AddLogLine(true, _("Please enter a serveraddress"));
 		return;
 	} else {
 		serveraddr=((wxTextCtrl*)FindWindowById(IDC_IPADDRESS))->GetLineText(0);
 	}
 	if (((wxTextCtrl*)FindWindowById(IDC_SPORT))->GetLineText(0).IsEmpty()) {
-		theApp.amuledlg->AddLogLine(true, CString(_("Incomplete serverport: Please enter a serverport")) );
+		theApp.amuledlg->AddLogLine(true, _("Incomplete serverport: Please enter a serverport"));
 		return;
 	}
   
@@ -132,9 +131,9 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& evt)
 			serverlistctrl->RefreshServer(update);
 		}
 		delete toadd;
-		theApp.amuledlg->AddLogLine(true, CString(_("Server not added!")));
+		theApp.amuledlg->AddLogLine(true, _("Server not added!"));
 	} else {
-		theApp.amuledlg->AddLogLine(true, CString(_("Server added: ")) + wxT("%s"), toadd->GetListName());
+		theApp.amuledlg->AddLogLine(true, wxString(_("Server added: ")) + wxT("%s"), toadd->GetListName());
 	}
 	theApp.serverlist->SaveServermetToFile();
 	printf("Saving of server.met file Done !!!\n");
@@ -163,40 +162,40 @@ void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& evt)
 void CServerWnd::UpdateMyInfo()
 {
 	#if 0
-	CString buffer;
+	wxString buffer;
 
 	MyInfoList->DeleteAllItems();
-	MyInfoList->InsertItem(0, CString(_("Status"))+":");
+	MyInfoList->InsertItem(0, wxString(_("Status"))+":");
 	if (theApp.serverconnect->IsConnected()) {
-		MyInfoList->SetItemText(0, 1, CString(_("Connected")));
+		MyInfoList->SetItemText(0, 1, _("Connected"));
 	}	else {
-		MyInfoList->SetItemText(0, 1, CString(_("Disconnected")));
+		MyInfoList->SetItemText(0, 1, _("Disconnected"));
 	}
 
 	if (theApp.serverconnect->IsConnected()) {
-		MyInfoList->InsertItem(1, CString(_("IP")) +":"+ CString(_("Port")));
+		MyInfoList->InsertItem(1, wxString(_("IP")) +":"+ wxString(_("Port")));
 		if (theApp.serverconnect->IsLowID()) {
-			buffer=CString(_("Unknown")); 
+			buffer=_("Unknown"); 
 		} else {
 			uint32 myid=theApp.serverconnect->GetClientID();
 			uint8 d=myid/(256*256*256);myid-=d*(256*256*256);
 			uint8 c=myid/(256*256);myid-=c*256*256;
 			uint8 b=myid/(256);myid-=b*256;
-			buffer.Format("%i.%i.%i.%i:%i",myid,b,c,d,theApp.glob_prefs->GetPort());
+			buffer.Printf("%i.%i.%i.%i:%i",myid,b,c,d,theApp.glob_prefs->GetPort());
 		}
 		MyInfoList->SetItemText(1,1,buffer);
 
-		buffer.Format("%u",theApp.serverconnect->GetClientID());
-		MyInfoList->InsertItem(2,CString(_("ID")));
+		buffer.Printf("%u",theApp.serverconnect->GetClientID());
+		MyInfoList->InsertItem(2,_("ID"));
 		if (theApp.serverconnect->IsConnected()) {
 			MyInfoList->SetItemText(2, 1, buffer);
 		}
 
 		MyInfoList->InsertItem(3,"");
 		if (theApp.serverconnect->IsLowID()) {
-			MyInfoList->SetItemText(3, 1,CString(_("Low ID")));
+			MyInfoList->SetItemText(3, 1,_("Low ID"));
 		}	else {
-			MyInfoList->SetItemText(3, 1,CString(_("High ID")));
+			MyInfoList->SetItemText(3, 1,_("High ID"));
 		}
 	}
 	#endif

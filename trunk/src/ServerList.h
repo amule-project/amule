@@ -29,7 +29,6 @@
 
 class CPreferences;
 class CServer;
-class CString;
 class Packet;
 
 class CServerList
@@ -42,7 +41,7 @@ public:
 	bool		AddServer(CServer* in_server );
 	void		RemoveServer(CServer* out_server);
 	void		RemoveAllServers(void);
-	bool		AddServermetToList(CString strFile, bool merge = true);
+	bool		AddServermetToList(const wxString& strFile, bool merge = true);
 	void		AddServersFromTextFile(wxString strFilename,bool isstaticserver=true, bool writetolog = false);// emanuelw(20030924) added writetolog
 	bool		SaveServermetToFile(); //<<--9/22/02
 	void		ServerStats();

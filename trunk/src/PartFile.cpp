@@ -173,7 +173,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 	CreatePartFile();
 }
 
-CPartFile::CPartFile(CString edonkeylink)
+CPartFile::CPartFile(const wxString& edonkeylink)
 {
 	CED2KLink* pLink = 0;
 	try {
@@ -1080,8 +1080,8 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			/*
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
-					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),this->GetPartHash(i));							
-//					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %s")), i+1, m_strFileName.c_str());		
+					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|"), i+1, GetED2KPartHashCount(), m_strFileName.c_str(),result->GetPartHash(i),this->GetPartHash(i));							
+//					theApp.amuledlg->AddLogLine(false, _("Found corrupted part (%i) in %s"), i+1, m_strFileName.c_str());		
 					AddGap(i*PARTSIZE,((((i+1)*PARTSIZE)-1) >= m_nFileSize) ? m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
@@ -2810,9 +2810,9 @@ void CPartFile::ResumeFile()
 	
 }
 
-CString CPartFile::getPartfileStatus()
+wxString CPartFile::getPartfileStatus()
 {
-	CString mybuffer=""; 
+	wxString mybuffer=""; 
 	if (GetTransferingSrcCount()>0) {
 		mybuffer=_("Downloading");
 	}	else {
@@ -2961,7 +2961,7 @@ bool CPartFile::PreviewAvailable()
 			bool bMPEG = false;
 			LPCTSTR pszExt = _tcsrchr(GetFileName(), _T('.'));
 			if (pszExt != NULL) {
-				CString strExt(pszExt);
+				wxString strExt(pszExt);
 				strExt.MakeLower();
 				bMPEG = (strExt==_T(".mpg") || strExt==_T(".mpeg") || strExt==_T(".mpe") || strExt==_T(".mp3") || strExt==_T(".mp2") || strExt==_T(".mpa"));
 			}

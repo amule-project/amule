@@ -176,23 +176,23 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				memcpy(buffer,&packet[2],size-2);
 				buffer[size-2] = 0;
 
-				CString strMessages(buffer);
+				wxString strMessages(buffer);
 
 				delete[] buffer;
 				
 				// 16.40 servers do not send separate OP_SERVERMESSAGE packets for each line;
 				// instead of this they are sending all text lines with one OP_SERVERMESSAGE packet.
-				//CString message = strMessages.Tokenize("\r\n", iPos);
+				//wxString message = strMessages.Tokenize("\r\n", iPos);
 
 				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
 				while (token.HasMoreTokens()) {
 					wxString wxMessage = token.GetNextToken();
-					CString message = wxMessage.GetData();
+					wxString message = wxMessage.GetData();
 
 					bool bOutputMessage = true;
 					if (strncmp(unicode2char(message.GetData()), "server version", 14) == 0) {
-						CString strVer = message.Mid(15,64); // truncate string to avoid misuse by servers in showing ads
+						wxString strVer = message.Mid(15,64); // truncate string to avoid misuse by servers in showing ads
 						strVer.Trim();
 						CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						if (eserver) {
@@ -232,9 +232,9 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 					/* Give it a try ... (Creteil) END */
 
 					if (message.Find("[emDynIP: ") != (-1) && message.Find("]") != (-1) && message.Find("[emDynIP: ") < message.Find("]")){
-						CString dynip = message.Mid(message.Find("[emDynIP: ")+10,message.Find("]") - (message.Find("[emDynIP: ")+10));
+						wxString dynip = message.Mid(message.Find("[emDynIP: ")+10,message.Find("]") - (message.Find("[emDynIP: ")+10));
 						dynip.Trim(" ");
-						if ( dynip.GetLength() && dynip.GetLength() < 51){
+						if ( dynip.Length() && dynip.Length() < 51){
 							CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 							if (eserver){
 								eserver->SetDynIP(unicode2char(dynip));
@@ -315,7 +315,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 					theApp.OnlineSig();       // Added By Bouc7
 				}
 				serverconnect->SetClientID(la->clientid);
-				theApp.amuledlg->AddLogLine(false,CString(_("New clientid is %u")),la->clientid);
+				theApp.amuledlg->AddLogLine(false,_("New clientid is %u"),la->clientid);
 				
 				
 				// Kry - No need for this. eMule doesn't do it either.
@@ -385,7 +385,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size<38) {
-					theApp.amuledlg->AddLogLine(false, CString(_("Unknown server info received !")));
+					theApp.amuledlg->AddLogLine(false, _("Unknown server info received !"));
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
 				}
@@ -450,7 +450,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				}
 				delete servers;
 				if (addcount) {
-					theApp.amuledlg->AddLogLine(false,CString(_("Received %d new servers")), addcount);
+					theApp.amuledlg->AddLogLine(false,_("Received %d new servers"), addcount);
 				}
 				theApp.serverlist->SaveServermetToFile();
 				theApp.amuledlg->AddLogLine(true,wxT("Saving of server.met file Done !!!\n"));
@@ -487,7 +487,7 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				#ifdef SERVER_NET_TEST
 				theApp.amuledlg->AddLogLine(true,"ServerMsg - OP_Reject\n");
 				#endif
-				theApp.amuledlg->AddLogLine(false, CString(_("Server rejected last command")));
+				theApp.amuledlg->AddLogLine(false, _("Server rejected last command"));
 				break;
 			}
 			default:
@@ -524,7 +524,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
 	if (theApp.glob_prefs->GetVerbose()) {
-		theApp.amuledlg->AddLogLine(false,CString(_("Error in serversocket: %s (%s:%i): %u")),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), (int)nErrorCode);
+		theApp.amuledlg->AddLogLine(false,_("Error in serversocket: %s (%s:%i): %u"),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), (int)nErrorCode);
 	}
 	SetConnectionState(CS_DISCONNECTED);
 }

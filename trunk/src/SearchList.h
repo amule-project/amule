@@ -122,7 +122,7 @@ public:
 	CSearchList();
 	~CSearchList();
 	void	Clear();
-	void	NewSearch(CString resTypes, uint16 nSearchID);
+	void	NewSearch(const wxString& resTypes, uint16 nSearchID);
 	uint16	ProcessSearchanswer(char* packet, uint32 size, CUpDownClient* Sender = NULL);
 	uint16	ProcessSearchanswer(char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
 	uint16	ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
@@ -134,7 +134,7 @@ public:
 	void	RemoveResults(  uint32 nSearchID );
 	void	RemoveResults( CSearchFile* todel );
 	void	ShowResults(uint32 nSearchID);
-	CString GetWebList(CString linePattern,int sortby,bool asc) const;
+	wxString GetWebList(const wxString& linePattern,int sortby,bool asc) const;
 	void	AddFileToDownloadByHash(const uchar* hash)		{AddFileToDownloadByHash(hash,0);}
 	void	AddFileToDownloadByHash(const uchar* hash, uint8 cat);
 	uint16	GetFoundFiles(uint32 searchID);
@@ -144,8 +144,8 @@ private:
 	CTypedPtrList<CPtrList, CSearchFile*> list;
 	CMap<uint32, uint32, uint16, uint16> foundFilesCount;
 
-	CString myHashList;
-	CString resultType;
+	wxString myHashList;
+	wxString resultType;
 	
 	uint32	m_nCurrentSearch;
 };

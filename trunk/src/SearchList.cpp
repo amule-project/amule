@@ -270,7 +270,7 @@ void CSearchList::ShowResults( uint32 nSearchID){
 	UngetSearchListControl(outputwnd);
 }
 
-void CSearchList::NewSearch(CString resTypes, uint16 nSearchID){
+void CSearchList::NewSearch(const wxString& resTypes, uint16 nSearchID){
 	resultType=resTypes;
 	m_nCurrentSearch = nSearchID;
 	myHashList="";
@@ -453,7 +453,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse){
 	}
 	
 	// If the result was not the type user wanted, drop it.
-	if (!bClientResponse && !(resultType == CString(_("Any")) || GetFiletypeByName(toadd->GetFileName())==resultType)){
+	if (!bClientResponse && !(resultType == wxString(_("Any")) || GetFiletypeByName(toadd->GetFileName())==resultType)){
 		delete toadd;
 		return false;
 	}
@@ -504,9 +504,9 @@ uint16 CSearchList::GetFoundFiles(uint32 searchID) {
 	return returnVal;
 }
 
-CString CSearchList::GetWebList(CString linePattern,int sortby,bool asc) const {
-	CString buffer;
-	CString temp;
+wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc) const {
+	wxString buffer;
+	wxString temp;
 	CArray<CSearchFile*, CSearchFile*> sortarray;
 	int swap;
 	bool inserted;
@@ -524,7 +524,7 @@ CString CSearchList::GetWebList(CString linePattern,int sortby,bool asc) const {
 			sf2 = sortarray.GetAt(i1);
 			
 			switch (sortby) {
-				case 0: swap=CString(sf1->GetFileName()).CmpNoCase(sf2->GetFileName()); break;
+				case 0: swap=sf1->GetFileName().CmpNoCase(sf2->GetFileName()); break;
 				case 1: swap=sf1->GetFileSize()-sf2->GetFileSize();break;
 				case 2: swap=EncodeBase16(sf1->GetFileHash(), 16).Cmp( EncodeBase16(sf2->GetFileHash(), 16) ); break;
 				case 3: swap=sf1->GetSourceCount()-sf2->GetSourceCount(); break;
@@ -539,8 +539,8 @@ CString CSearchList::GetWebList(CString linePattern,int sortby,bool asc) const {
 		/*const*/ CSearchFile* sf = sortarray.GetAt(i);
 
 		// colorize
-		CString coloraddon;
-		CString coloraddonE;
+		wxString coloraddon;
+		wxString coloraddonE;
 		CKnownFile* sameFile = theApp.sharedfiles->GetFileByID(sf->GetFileHash());
 		CPartFile* samePFile = NULL;
 		
@@ -562,13 +562,13 @@ CString CSearchList::GetWebList(CString linePattern,int sortby,bool asc) const {
 			coloraddon = _T("<font color=\"#FF0000\">");
 		
 		
-		if (coloraddon.GetLength()>0)
+		if (coloraddon.Length()>0)
 			coloraddonE = _T("</font>");
 
-		CString strHash(EncodeBase16(sf->GetFileHash(),16));
-		temp.Format(linePattern,
+		wxString strHash(EncodeBase16(sf->GetFileHash(),16));
+		temp.Printf(linePattern,
 					//coloraddon + StringLimit(sf->GetFileName(),70) + coloraddonE,
-					CString(coloraddon + sf->GetFileName() + coloraddonE).GetData(),
+					wxString(coloraddon + sf->GetFileName() + coloraddonE).GetData(),
 					CastItoXBytes(sf->GetFileSize()).GetData(),
 					strHash.GetData(),
 					sf->GetSourceCount(),

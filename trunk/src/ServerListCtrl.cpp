@@ -112,7 +112,7 @@ void CServerListCtrl::OnRclickServlist(wxListEvent& event)
 
 		m_ServerMenu->Append(999999,_("Priority"),m_ServerPrioMenu);
 		m_ServerMenu->Append(MP_ADDTOSTATIC,_("Add to static"));
-		m_ServerMenu->Append(MP_REMOVEFROMSTATIC, CString(_("Remove from static server list")));
+		m_ServerMenu->Append(MP_REMOVEFROMSTATIC, _("Remove from static server list"));
 		m_ServerMenu->AppendSeparator();
 		m_ServerMenu->Append(MP_REMOVE,_("Remove server"));
 		m_ServerMenu->Append(MP_REMOVEALL,_("Remove all servers"));
@@ -385,19 +385,19 @@ void CServerListCtrl::RefreshServer(CServer* server)
 	}
 	switch(server->GetPreferences()) {
 		case SRV_PR_LOW:
-			temp.Printf( CString(_("Low")));
+			temp.Printf( _("Low"));
 			SetItem(itemnr,6,temp);
 			break;
 		case SRV_PR_NORMAL:
-			temp.Printf( CString(_("Normal")));
+			temp.Printf( _("Normal"));
 			SetItem(itemnr,6,temp);
 			break;
 		case SRV_PR_HIGH:
-			temp.Printf( CString(_("High")));
+			temp.Printf( _("High"));
 			SetItem(itemnr,6,temp);
 			break;
 		default:
-			temp.Format( CString(_("No Pref")));
+			temp.Printf( _("No Pref"));
 			SetItem(itemnr,6,temp);
 	}
 	if(server->GetFailedCount() < 0) {
@@ -564,7 +564,7 @@ bool CServerListCtrl::ProcessEvent(wxEvent& evt)
 bool CServerListCtrl::AddServermetToList(wxString strFile)
 {
 	Freeze();
-	bool flag=server_list->AddServermetToList(CString(strFile.GetData()));
+	bool flag=server_list->AddServermetToList(strFile.GetData());
 	RemoveDeadServer();
 	ShowFilesCount();
 	Thaw();
@@ -600,18 +600,18 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	int counter2;
 	switch(lParamSort) {
 		case 0: //(List) Server-name asc
-			return CString(char2unicode(item1->GetListName())).CmpNoCase(char2unicode(item2->GetListName()));
+			return wxString(char2unicode(item1->GetListName())).CmpNoCase(char2unicode(item2->GetListName()));
 		case 100: //(List) Server-name desc
-			return CString(char2unicode(item2->GetListName())).CmpNoCase(char2unicode(item1->GetListName()));
+			return wxString(char2unicode(item2->GetListName())).CmpNoCase(char2unicode(item1->GetListName()));
 		case 1: { //IP asc
 			if (item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(char2unicode(item1->GetDynIP())).CmpNoCase(char2unicode(item2->GetDynIP()));
+				return wxString(char2unicode(item1->GetDynIP())).CmpNoCase(char2unicode(item2->GetDynIP()));
 			} else if (item1->HasDynIP()) {
 				return 1;
 			} else if (item2->HasDynIP()) {
 				return 0;
 			} else {
-				CString sIP1, sIP2, sTemp1, sTemp2;
+				wxString sIP1, sIP2, sTemp1, sTemp2;
 				counter1 = counter2 = iTemp = 0;
 				sIP1 = item2->GetFullIP();
 				sIP2 = item1->GetFullIP();
@@ -629,13 +629,13 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		}
 		case 101: { //IP desc
 			if(item1->HasDynIP() && item2->HasDynIP()) {
-				return CString(char2unicode(item2->GetDynIP())).CmpNoCase(char2unicode(item1->GetDynIP()));
+				return wxString(char2unicode(item2->GetDynIP())).CmpNoCase(char2unicode(item1->GetDynIP()));
 			} else if(item1->HasDynIP()) {
 				return 0;
 			} else if(item2->HasDynIP()) {
 				return 1;
 			} else {
-				CString s2IP1, s2IP2, s2Temp1, s2Temp2;
+				wxString s2IP1, s2IP2, s2Temp1, s2Temp2;
 				counter1 = counter2 = iTemp = 0;
 				s2IP1 = item2->GetFullIP();
 				s2IP2 = item1->GetFullIP();
@@ -655,7 +655,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
 				//the 'if' is necessary, because the Description-String is not
 				//always initialisized in server.cpp
-				return CString(char2unicode(item2->GetDescription())).CmpNoCase(char2unicode(item1->GetDescription()));
+				return wxString(char2unicode(item2->GetDescription())).CmpNoCase(char2unicode(item1->GetDescription()));
 			} else if (item1->GetDescription() == NULL) {
 				return 1;
 			} else {
@@ -664,7 +664,7 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		}
 		case 102: { //Desciption desc
 			if((item1->GetDescription() != NULL) && (item2->GetDescription() != NULL)) {
-				return CString(char2unicode(item1->GetDescription())).CmpNoCase(char2unicode(item2->GetDescription()));
+				return wxString(char2unicode(item1->GetDescription())).CmpNoCase(char2unicode(item2->GetDescription()));
 			} else if (item1->GetDescription() == NULL) {
 				return 1;
 			} else {
@@ -696,9 +696,9 @@ int CServerListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 		case 108: //staticservers-
 			return item1->IsStaticMember() - item2->IsStaticMember();
 		case 9: // version
-			return CString(item1->GetVersion()).CmpNoCase(item2->GetVersion());
+			return wxString(item1->GetVersion()).CmpNoCase(item2->GetVersion());
 		case 109: //version-
-			return CString(item2->GetVersion()).CmpNoCase(item1->GetVersion());
+			return wxString(item2->GetVersion()).CmpNoCase(item1->GetVersion());
 		default:
 			return 0;
 	}
@@ -718,11 +718,11 @@ bool CServerListCtrl::StaticServerFileAppend(CServer *server)
 			error = staticservers.Create();
 		}
 		if (error) {
-			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
+			theApp.amuledlg->AddLogLine( false, wxString(_("Failed to open staticservers.dat")));
 			return false;
 		}
 		staticservers.AddLine(wxString::Format(wxT("%s:%i,%i,%s"),server->GetAddress(),server->GetPort(), server->GetPreferences(),server->GetListName()));
-		theApp.amuledlg->AddLogLine(false, CString(wxT("'%s:%i,%s' %s")), server->GetAddress(), server->GetPort(), server->GetListName(), CString(_("Added to static server list")).GetData());
+		theApp.amuledlg->AddLogLine(false, wxT("'%s:%i,%s' %s"), server->GetAddress(), server->GetPort(), server->GetListName(), _("Added to static server list"));
 		server->SetIsStaticMember(true);
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(server);
 		staticservers.Write();
@@ -760,7 +760,7 @@ bool CServerListCtrl::StaticServerFileRemove(CServer *server)
 				statictemp.Close();
 			}
 
-			theApp.amuledlg->AddLogLine( false, CString(_("Failed to open staticservers.dat")));
+			theApp.amuledlg->AddLogLine( false, _("Failed to open staticservers.dat"));
 			return false;
 		}
 		for (wxString strLine = staticservers.GetFirstLine(); !staticservers.Eof(); strLine = staticservers.GetNextLine() ) {
