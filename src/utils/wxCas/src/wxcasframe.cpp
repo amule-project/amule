@@ -243,7 +243,7 @@ void
 WxCasFrame::OnBarAbout (wxCommandEvent & event)
 {
   wxMessageBox (_
-		("wxCas, aMule OnLigne Signature Statistics\n\n"
+		("wxCas, aMule OnLine Signature Statistics\n\n"
 		 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
 		 "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
 		 "Distributed under GPL"),
