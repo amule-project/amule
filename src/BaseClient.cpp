@@ -490,7 +490,12 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
 		if ( data.Length() - data.GetPosition() == sizeof(uint32) ) {
 			uint32 test = data.ReadUInt32();
-			if (test == 'KDLM') {
+			/*if (test == 'KDLM') below kdlm is converted to ascii values.
+			this fix a warning with gcc 3.4.
+			K=4b D=44 L=4c M=4d
+			i putted that reversed as u can see. please check if works or put plain (0x4b444c4d)
+			*/
+			if (test == 0x4d4c444b)	{ //if it's == "KDLM"
 				m_bIsML=true;
 			} else{
 				m_bIsHybrid = true;
