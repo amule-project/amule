@@ -38,7 +38,7 @@ there client on the eMule forum..
 #include "../utils/UInt128.h"
 #include "IOException.h"
 #include "../../SafeFile.h"
-#include "../../EndianFix.h"
+#include "../../ArchSpecific.h"
 #include "../../StringFunctions.h"
 //#include "../../Log.h"
 
