@@ -52,7 +52,9 @@ public:
 	uint8	GetConState()	{return byConnected;}
 	void	SetDownloadLimit(uint32 limit);
 	void	DisableDownloadLimit();
+	void	Destroy();
 	bool	AsyncSelect(long lEvent);
+	bool OnDestroy() { return DoingDestroy; };
 	//protected:
 	// this functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int nErrorCode) { };
@@ -91,6 +93,11 @@ private:
 	uint32	sendblen;
 	uint32	sent;
 	bool	m_bLinkedPackets;
+	bool		DoingDestroy;  	
+	
+	#ifdef __DEBUG__
+	bool from_destroy;
+	#endif
 
 	CList<Packet*, Packet*> controlpacket_queue;
 	CList<Packet*, Packet*> standartpacket_queue;
