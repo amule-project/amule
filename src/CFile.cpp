@@ -593,7 +593,7 @@ CDirIterator::CDirIterator(wxString dir) {
 	}
 	
 	if (((DirPtr = opendir(unicode2char(dir)))) == NULL) {
-		theApp.QueueLogLine(true, wxT("Error enumerating files for dir ")+dir);
+		AddDebugLogLineM(false, wxT("Error enumerating files for dir ")+dir);
     }
 }
 
