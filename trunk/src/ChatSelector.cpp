@@ -166,7 +166,7 @@ bool CChatSelector::SendMessage( const wxString& message )
 	// Dont let the user send empty messages
 	// This is also a user-fix for people who mash the enter-key ...
 	if ( message.IsEmpty() )
-		return;
+		return false;
 
 	int usedtab = GetSelection();
 
