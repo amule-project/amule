@@ -78,7 +78,7 @@ bool CLogger::IsEnabled( DebugType type )
 #ifdef __VERBOSE_OUTPUT__
 	int index = (int)type;
 	
-	if ( index >= 0 && index <= categoryCount ) {
+	if ( index >= 0 && index < categoryCount ) {
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT( type == cat.GetType() );
 
@@ -95,7 +95,7 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 {
 	int index = (int)type;
 	
-	if ( index >= 0 && index <= categoryCount ) {
+	if ( index >= 0 && index < categoryCount ) {
 		CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT( type == cat.GetType() );
 
@@ -122,7 +122,7 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 {
 	int index = (int)type;
 	
-	if ( index >= 0 && index <= categoryCount ) {
+	if ( index >= 0 && index < categoryCount ) {
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT( type == cat.GetType() );
 
@@ -147,7 +147,7 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 
 const CDebugCategory& CLogger::GetDebugCategory( int index )
 {
-	wxASSERT( index >= 0 && index <= categoryCount );
+	wxASSERT( index >= 0 && index < categoryCount );
 
 	return g_debugcats[ index ];
 }
