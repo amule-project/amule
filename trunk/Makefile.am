@@ -2,7 +2,8 @@ SUBDIRS = m4 intl po docs src
 
 EXTRA_DIST = ABOUT-NLS config.rpath mkinstalldirs \
 	config.h.in Compilation.flags.in acinclude.m4 \
-	amule.rc
+	amule.rc MakefileWIN32 configWIN32.h amule.msp \
+	amule.ico
 
 dist_icon_DATA = amule.xpm
 icondir = $(datadir)/pixmaps
