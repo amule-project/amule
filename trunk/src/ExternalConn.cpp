@@ -710,7 +710,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}					
 				CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
 				buffer +=
-					file ? cur_client->GetDownloadFile()->GetFileName() : wxT("?") +
+					file ? cur_client->GetRequestFile()->GetFileName() : wxT("?") +
 					wxString::Format(wxT("\t%d\t"), cur_client->GetScore(false)) +
 					( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 			}
@@ -2129,7 +2129,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(
 							cur_client->GetRequestFile()->GetFileHash());
 						buffer +=
-							( file ? cur_client->GetDownloadFile()->GetFileName() : wxString(wxT("?")) ) + wxT("\t") +
+							( file ? cur_client->GetRequestFile()->GetFileName() : wxString(wxT("?")) ) + wxT("\t") +
 							wxString::Format(wxT("%i\t"), cur_client->GetScore(false)) +
 							( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 					}

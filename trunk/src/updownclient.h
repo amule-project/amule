@@ -315,7 +315,6 @@ public:
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
 	const CMD4Hash&	GetUploadFileID() const	{ return m_requpfileid; }
-	CPartFile*	GetDownloadFile()				{ return m_reqfile; } 
 	uint32		SendBlockData(float kBpsToSend);
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
