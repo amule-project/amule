@@ -52,31 +52,24 @@ wxSizer *desktopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
         wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Desktop") );
-    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
+    wxString strs2[] = 
+    {
+        _("Gnome 2.x (or other XEMBED compatible)"), 
+        _("KDE 3.x"), 
+        _("KDE 2.x / Gnome 1.2 "), 
+        _("No systray integration, please")
+    };
+    wxRadioBox *item2 = new wxRadioBox( parent, ID_SYSTRAYSELECT, _("Desktop"), wxDefaultPosition, wxDefaultSize, 4, strs2, 1, wxRA_SPECIFY_COLS );
+    item0->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxRadioButton *item4 = new wxRadioButton( parent, ID_GNOME2, _("Gnome 2.x (or other XEMBED compatible)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item4, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxVERTICAL );
 
-    wxRadioButton *item5 = new wxRadioButton( parent, ID_KDE3, _("KDE 3.x"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item5, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxButton *item5 = new wxButton( parent, ID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetDefault();
+    item3->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxRadioButton *item6 = new wxRadioButton( parent, ID_KDE2, _("KDE 2.x / Gnome 1.2 "), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxRadioButton *item7 = new wxRadioButton( parent, ID_NOSYSTRAY, _("No systray integration, please"), wxDefaultPosition, wxDefaultSize, 0 );
-    item2->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
-
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
-
-    wxButton *item10 = new wxButton( parent, ID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->SetDefault();
-    item8->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 
     if (set_sizer)
     {
