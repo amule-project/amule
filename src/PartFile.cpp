@@ -2289,6 +2289,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		theApp.uploadqueue->ResumeUpload(GetFileHash());
 		SetAutoUpPriority(false);
 		theApp.downloadqueue->RemoveFile(this);
+		theApp.sharedfiles->SafeAddKFile(this);
 		UpdateDisplayedInfo();
 		Notify_DownloadCtrlShowFilesCount();
 
