@@ -445,7 +445,7 @@ void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 	
 		// Add the height of the listctrl to the top-window
 		int height  = clientlistctrl->GetSize().GetHeight();
-		    height += splitter->GetWindow1()->GetSize().GetHeight();
+		height += splitter->GetWindow1()->GetSize().GetHeight();
 	
 		splitter->SetSashPosition( height );
 		

@@ -424,9 +424,18 @@ public:
 	
 	// Message Filters
 	
-	static bool		MustFilterMessages()	{ return s_MustFilterMessages; }
-	static wxString 	MessageFilter() {	return s_MessageFilterString; }
-	
+	static bool	MustFilterMessages()	{ return s_MustFilterMessages; }
+	static wxString 	MessageFilter() { 
+		if (s_FilterAllMessages) { 
+			return wxT("*");
+		} else {
+			if (s_FilterSomeMessages) {
+				return s_MessageFilterString;
+			} else {
+				return wxEmptyString;
+			}
+		}
+	}
 
 protected:
 	void	CreateUserHash();
@@ -650,6 +659,8 @@ protected:
 	// Message Filtering
 	static bool 		s_MustFilterMessages;
 	static wxString 	s_MessageFilterString;
+	static bool		s_FilterAllMessages;
+	static bool		s_FilterSomeMessages;
 };
 
 

@@ -111,6 +111,8 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	
 
 	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
+	
+	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
 
 END_EVENT_TABLE()
 
@@ -124,7 +126,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
 	last_iconizing = 0;
-
+	
 	wxInitAllImageHandlers();
 	curl_global_init(CURL_GLOBAL_ALL);
 	imagelist.Create(16,16);
@@ -147,7 +149,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	}
 
 	is_safe_state = false;
-//	is_hidden = false;
 
 	SetIcon(wxICON(aMule));
 
@@ -171,9 +172,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	Create_Toolbar(wxEmptyString);
 
-	serverwnd = new CServerWnd(p_cnt);
+	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
-	AddLogLine(true, GetMuleVersion());
+	AddLogLineM(false, _("This is aMule ") + GetMuleVersion() + _(" (based on eMule)"));
+	AddLogLineM(false, _("Visit http://www.amule.org to check if a new version is available."));
+
 // GTK2 doesn't play nice with wxWidget versions earlier than 2.5.1, so warn the user
 #if !wxCHECK_VERSION(2, 5, 1)
 	#ifdef __WXGTK20__
@@ -1363,4 +1366,20 @@ void CamuleDlg::Create_Toolbar(wxString skinfile) {
 	} else {
 		muleToolbar( m_wndToolbar );		
 	}
+}
+
+void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
+	
+	wxFrame::OnSize(evt);	
+	
+	// Transfer window's splitter set again if it's hidden.
+	if ( transferwnd->clientlistctrl->GetListView() == vtNone ) {
+		int height  = transferwnd->clientlistctrl->GetSize().GetHeight();
+		
+		wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+		height += splitter->GetWindow1()->GetSize().GetHeight();
+		
+		splitter->SetSashPosition( height );
+	}
+	
 }

@@ -69,6 +69,10 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX( IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange )
 	EVT_CHECKBOX( IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_MSGFILTER,			PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_MSGFILTER_ALL,	PrefsUnifiedDlg::OnCheckBoxChange )
+	EVT_CHECKBOX( IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange )
+
 
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK, PrefsUnifiedDlg::OnOk)
@@ -131,21 +135,21 @@ struct PrefsPage
 
 PrefsPage pages[] =
     {
-        { _("General"),				PreferencesGeneralTab,			13,	NULL },
-        { _("Connection"),			PreferencesConnectionTab,		14,	NULL },
+		{ _("General"),				PreferencesGeneralTab,			13,	NULL },
+		{ _("Connection"),			PreferencesConnectionTab,		14,	NULL },
 		{ _("Message Filter"),      PreferencesMessagesTab,         23, NULL },
-        { _("Remote Controls"),		PreferencesRemoteControlsTab,	11,	NULL },
-        { _("Online Signature"),	PreferencesOnlineSigTab,	 	21,	NULL },
-        { _("Server"),				PreferencesServerTab,			15,	NULL },
-        { _("Files"),				PreferencesFilesTab,			16,	NULL },
-        { _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20,	NULL },
-        { _("Directories"),			PreferencesDirectoriesTab,		17,	NULL },
-        { _("Statistics"),			PreferencesStatisticsTab,		10,	NULL },
-        { _("Security"),			PreferencesSecurityTab,		 	22,	NULL },
-        //	Notications are disabled since they havent been implemented
-        //	{ _("Notifications"),	PreferencesNotifyTab,			18,	NULL },
-        { _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL },
-        { _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL }
+		{ _("Remote Controls"),		PreferencesRemoteControlsTab,	11,	NULL },
+		{ _("Online Signature"),	PreferencesOnlineSigTab,	 	21,	NULL },
+		{ _("Server"),				PreferencesServerTab,			15,	NULL },
+		{ _("Files"),				PreferencesFilesTab,			16,	NULL },
+		{ _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20,	NULL },
+		{ _("Directories"),			PreferencesDirectoriesTab,		17,	NULL },
+		{ _("Statistics"),			PreferencesStatisticsTab,		10,	NULL },
+		{ _("Security"),			PreferencesSecurityTab,		 	22,	NULL },
+		//	Notications are disabled since they havent been implemented
+		//	{ _("Notifications"),	PreferencesNotifyTab,			18,	NULL },
+		{ _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL },
+		{ _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL }
     };
 
 
@@ -251,6 +255,10 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 	wxSize size = GetClientSize();
 
 	SetSizeHints( size.GetWidth(), size.GetHeight() );
+	
+	
+	
+	
 }
 
 
@@ -307,6 +315,22 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
 	FindWindow( IDC_IPFILTERURL )->Enable( thePrefs::IPFilterAutoLoad() );
 
+	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
+		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);		
+		FindWindow(IDC_MSGWORD)->Enable(false);
+	} else if (CastChild(IDC_MSGFILTER_ALL, wxCheckBox)->IsChecked()) {
+		FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(false);
+		FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(false);
+		FindWindow(IDC_MSGFILTER_WORD)->Enable(false);		
+		FindWindow(IDC_MSGWORD)->Enable(false);	
+	}
+
+	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());	
+	
+	
 	// Set the permissions scrollers for files
 	int perms = thePrefs::GetFilePermissions();
 	CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->SetValue( perms / 0100 );
@@ -319,6 +343,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
 	CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
 	
+
+
 	return true;
 }
 
@@ -511,6 +537,36 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_AUTOIPFILTER:
 			widget = FindWindow( IDC_IPFILTERURL );
+			break;
+		
+		case IDC_MSGFILTER:
+			// Toogle All filter options
+			FindWindow(IDC_MSGFILTER_ALL)->Enable(value);
+			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(value);
+			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(value);
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(value);		
+			if (value) {
+				FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+			} else {
+				FindWindow(IDC_MSGWORD)->Enable(false);
+			}
+			break;
+		
+		case IDC_MSGFILTER_ALL:
+			// Toogle filtering by data.
+			FindWindow(IDC_MSGFILTER_NONSECURE)->Enable(!value);
+			FindWindow(IDC_MSGFILTER_NONFRIENDS)->Enable(!value);
+			FindWindow(IDC_MSGFILTER_WORD)->Enable(!value);		
+			if (!value) {
+				FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+			} else {
+				FindWindow(IDC_MSGWORD)->Enable(false);
+			}
+			break;
+		
+		case IDC_MSGFILTER_WORD:
+			// Toogle filter word list.
+			FindWindow(IDC_MSGWORD)->Enable(value);
 			break;
 	}
 

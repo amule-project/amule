@@ -42,7 +42,7 @@
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
-
+#include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
 
 //#define DEBUG_REMOTE_CLIENT_PROTOCOL
 //#define __PACKET_RECV_DUMP__
@@ -875,24 +875,16 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				CSafeMemFile message_file((BYTE*)packet,size);
 
-				#warning TODO: CHECK MESSAGE FILTERING!
 				//filter me?
 				wxString message = message_file.ReadString();
-				if ( (thePrefs::MsgOnlyFriends() && !m_client->IsFriend()) ||
-					(thePrefs::MsgOnlySecure() && m_client->GetUserName()==wxEmptyString) ||
-					(thePrefs::MustFilterMessages() && (
-							#warning Check if any chat open
-							thePrefs::MessageFilter().IsSameAs(wxT("*")) ||  // Filter anything
-							#warning Apply message filtering here
-							false))
-				) {
+				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
 						AddLogLineM(true,wxString(_("Message filtered from '")) + m_client->GetUserName() + _("' (IP:") + m_client->GetFullIP() + wxT(")"));
 					}
 					m_client->m_bMsgFiltered=true;
-					break;
+				} else {
+					Notify_ChatProcessMsg(m_client, message);
 				}
-				Notify_ChatProcessMsg(m_client, message);
 				break;
 			}
 			case OP_ASKSHAREDFILES:	{
@@ -2076,6 +2068,33 @@ void CClientReqSocket::OnReceive(int nErrorCode)
 	CEMSocket::OnReceive(nErrorCode);
 }
 
+
+bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client) {
+	
+	bool filtered = false;
+	// If we're chatting to the guy, we don't want to filter!
+	if (client->GetChatState() != MS_CHATTING) {
+		if (thePrefs::MsgOnlyFriends() && !client->IsFriend()) {
+			filtered = true;
+		} else if (thePrefs::MsgOnlySecure() && client->GetUserName()==wxEmptyString) {
+			filtered = true;
+		} else if (thePrefs::MustFilterMessages()) {
+			if (thePrefs::MessageFilter().IsSameAs(wxT("*"))){  
+				// Filter anything
+				filtered = true;
+			} else {
+				wxStringTokenizer tokenizer( thePrefs::MessageFilter(), wxT(",") );
+				while (tokenizer.HasMoreTokens() && !filtered) {
+					if (Message.MakeLower().Contains(tokenizer.GetNextToken().MakeLower())) {
+						filtered = true;
+					}
+				}
+			}
+		}
+	}
+}
+
+
 //-----------------------------------------------------------------------------
 // CClientReqSocketHandler
 //-----------------------------------------------------------------------------
@@ -2479,6 +2498,7 @@ float CListenSocket::GetMaxConperFiveModifier(){
 		return 1;
 	}
 }
+
 #ifdef AMULE_DAEMON
 
 CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)

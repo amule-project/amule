@@ -201,7 +201,8 @@ wxString 	CPreferences::s_IPFilterURL;
 CMD4Hash	CPreferences::s_userhash;
 bool		CPreferences::s_MustFilterMessages;
 wxString 	CPreferences::s_MessageFilterString;
-
+bool 	CPreferences::s_FilterAllMessages;
+bool 	CPreferences::s_FilterSomeMessages;
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -786,6 +787,17 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_AUTOIPFILTER] = new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true );
 	s_CfgList[IDC_IPFILTERURL]	= new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString );
 	s_CfgList[ID_IPFILTERLEVEL]	= MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 );
+	
+	/** 
+	 * Message Filter 
+	 **/
+	s_CfgList[IDC_MSGFILTER] = new Cfg_Bool( wxT("/eMule/FilterMessages"), s_MustFilterMessages, false );
+	s_CfgList[IDC_MSGFILTER_ALL] = new Cfg_Bool( wxT("/eMule/FilterAllMessages"), s_FilterAllMessages, false );
+	s_CfgList[IDC_MSGFILTER_NONFRIENDS] =  new Cfg_Bool( wxT("/eMule/MessagesFromFriendsOnly"),	s_msgonlyfriends, false );
+	s_CfgList[IDC_MSGFILTER_NONSECURE] = new Cfg_Bool( wxT("/eMule/MessageFromValidSourcesOnly"),	s_msgsecure, true );
+	s_CfgList[IDC_MSGFILTER_WORD] = new Cfg_Bool( wxT("/eMule/FilterWordMessages"), s_FilterSomeMessages, false );
+	s_CfgList[IDC_MSGWORD]	= new Cfg_Str(  wxT("/eMule/MessageFilter"), s_MessageFilterString, wxEmptyString );
+	 
 
 	/**
 	 * The folowing doesn't have an assosiated widget.
@@ -804,14 +816,14 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DontRecreateStatGraphsOnResize"),s_resumeSameCat, false ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableKnownClientList"),	s_bDisableKnownClientList, false ) );
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),		s_bDisableQueueList, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessagesFromFriendsOnly"),	s_msgonlyfriends, false ) );
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/MessageFromValidSourcesOnly"),	s_msgsecure, true ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/WebTemplateFile"),		s_sTemplateFile, wxT("eMule.tmpl") ) );
 
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
+
+	
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
