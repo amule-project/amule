@@ -44,6 +44,9 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 
 
+#define DEBUG_REMOTE_CLIENT_PROTOCOL
+
+
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
 	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
 END_EVENT_TABLE()
@@ -193,6 +196,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		
 		switch(opcode) {
 			case OP_HELLOANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_HELLOANSWER\n"));
+				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				m_client->ProcessHelloAnswer(packet,size);
@@ -212,6 +218,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_HELLO: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_HELLO\n"));
+				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				bool bNewClient = !m_client;				
@@ -280,6 +289,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQUESTFILENAME: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_REQUESTFILENAME\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -346,6 +358,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;  
 			}
 			case OP_SETREQFILEID: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_SETREQFILEID\n"));
+				#endif
 				// 0.43b EXCEPT track of bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -412,6 +427,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// DbT:End
 			}			
 			case OP_FILEREQANSNOFIL: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_FILEREQANSNOFIL\n"));
+				#endif
 				// 0.43b protocol, lacks ZZ's download manager on swap
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -443,6 +461,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQFILENAMEANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_REQFILENAMEANSWER\n"));
+				#endif
 				// 0.43b except check for bad clients
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -458,6 +479,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_FILESTATUS: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_FILESTATUS\n"));
+				#endif
 				// 0.43b except check for bad clients
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -473,6 +497,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_STARTUPLOADREQ: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_STARTUPLOADREQ\n"));
+				#endif
 				// 0.43b except check for bad clients. Xaignar please review.
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -507,6 +534,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_QUEUERANK: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_QUEUERANK\n"));
+				#endif
 				// 0.43b 
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -525,6 +555,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ACCEPTUPLOADREQ: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ACCEPTUPLOADREQ\n"));
+				#endif
 				// 0.42e (xcept khaos stats)
 				#ifdef __USE__DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0){
@@ -563,6 +596,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_REQUESTPARTS: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_REQUESTPARTS\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -614,6 +650,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					break;
 			}
 			case OP_CANCELTRANSFER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_CANCELTRANSFER\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -628,6 +667,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_END_OF_DOWNLOAD: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_END_OF_DOWNLOAD\n"));
+				#endif
 				// 0.43b except check for bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -646,6 +688,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_HASHSETREQUEST: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_HASHSETREQUEST\n"));
+				#endif
 				// 0.43b except check for bad clients
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -660,6 +705,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_HASHSETANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_HASHSETANSWER\n"));
+				#endif
 				// 0.43b 
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -671,6 +719,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_SENDINGPART: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_SENDINGPART\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -707,6 +758,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_OUTOFPARTREQS: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_OUTOFPARTREQS\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -720,6 +774,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_CHANGE_CLIENT_ID:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_CHANGE_CLIENT_ID\n"));
+				#endif
 				// 0.43b (xcept the IDHybrid)
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -768,6 +825,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}					
 			case OP_CHANGE_SLOT:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_CHANGE_SLOT\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -779,6 +839,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}			
 			case OP_MESSAGE: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_MESSAGE\n"));
+				#endif
 				// 0.43b
 				// But anyway we changed all this to a simple Read on a mem file.
 				#ifdef __USE_DEBUG__
@@ -808,6 +871,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDFILES:	{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDFILES\n"));
+				#endif
 				// 0.43b (well, er, it does the same, but in our own way)
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -850,6 +916,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDFILESANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDFILESANSWER\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -861,6 +930,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDDIRS: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDDIRS\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -951,6 +1023,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDFILESDIR: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDFILESDIR\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1015,6 +1090,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}		
 			
 			case OP_ASKSHAREDDIRSANS:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDDIRSANS\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1051,6 +1129,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
       		}
       
 			case OP_ASKSHAREDFILESDIRANS: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDFILESDIRANS\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1075,6 +1156,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			case OP_ASKSHAREDDENIEDANS:
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ASKSHAREDDENIEDANS\n"));
+				#endif
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
 					DebugRecv("OP_AskSharedDeniedAnswer", m_client);
@@ -1160,7 +1244,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		*/
 		switch(opcode) {
 			case OP_MULTIPACKET: {
-				 // 0.43b
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_MULTIPACKET\n"));
+				#endif
+				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_MultiPacket", m_client);
@@ -1289,6 +1376,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 
 			case OP_MULTIPACKETANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_MULTIPACKETANSWER\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (theApp.glob_prefs->GetDebugClientTCPLevel() > 0)
@@ -1341,6 +1431,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 		
 			case OP_EMULEINFO: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_EMULEINFO\n"));
+				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				m_client->ProcessMuleInfoPacket(packet,size);
@@ -1360,6 +1453,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_EMULEINFOANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_EMULEINFOANSWER\n"));
+				#endif
 				// 0.43b
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				m_client->ProcessMuleInfoPacket(packet,size);
@@ -1377,6 +1473,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_SECIDENTSTATE:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_SECIDENTSTATE\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1403,6 +1502,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_PUBLICKEY:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_PUBLICKEY\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1423,6 +1525,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_SIGNATURE:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_SIGNATURE\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1440,6 +1545,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}		
 			case OP_COMPRESSEDPART: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_COMPRESSEDPART\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1494,6 +1602,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_QUEUERANKING: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_QUEUERANKING\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1522,6 +1633,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_REQUESTSOURCES:{
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_REQUESTSOURCES\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1578,6 +1692,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
  			case OP_ANSWERSOURCES: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_ANSWERSOURCES\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1609,6 +1726,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_FILEDESC: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_FILEDESC\n"));
+				#endif
 				// 0.43b
 				#ifdef __USE_DEBUG__
 				if (thePrefs.GetDebugClientTCPLevel() > 0) {
@@ -1626,10 +1746,13 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				m_client->ProcessMuleCommentPacket(packet,size);
 				break;
 			}
-			#if 0
 			// Kry - If we ever import the preview capabilities, this is from 0.42e
 			// Is raw c/p, unformatted, and with the emule functions.
 			case OP_REQUESTPREVIEW: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_REQUESTPREVIEW\n"));
+				#endif
+			#if 0
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_RequestPreView", client);
 				theApp.downloadqueue->AddDownDataOverheadOther(uRawSize);
@@ -1656,9 +1779,13 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						AddDebugLogLine(true,"Client '%s' (%s) requested Preview - denied", client->GetUserName(), ipstr(client->GetConnectIP()));
 				}
 				break;
+			#endif
 			}
-			case OP_PREVIEWANSWER:
-			{
+			case OP_PREVIEWANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_PREVIEWANSWER\n"));
+				#endif
+			#if 0
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
 					DebugRecv("OP_PreviewAnswer", client);
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
@@ -1671,9 +1798,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 
 				client->ProcessPreviewAnswer(packet, size);
 				break;
-			}			
 			#endif
+			}
 			case OP_PUBLICIP_ANSWER: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_PUBLICIP_ANSWER\n"));
+				#endif
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				/*
 				if (thePrefs.GetDebugClientTCPLevel() > 0)
@@ -1683,6 +1813,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			case OP_PUBLICIP_REQ: {
+				#ifdef DEBUG_REMOTE_CLIENT_PROTOCOL
+				AddLogLineM(true,wxT("Remote Client: OP_PUBLICIP_REQ\n"));
+				#endif
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				/*
 				if (thePrefs.GetDebugClientTCPLevel() > 0)

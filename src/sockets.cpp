@@ -3,19 +3,20 @@
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
 
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -44,9 +45,10 @@
 #include "amule.h"		// Needed for theApp
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
-#include "updownclient.h" // for SO_AMULE
+#include "updownclient.h"	// for SO_AMULE
 
-// CServerConnect
+
+#define DEBUG_CLIENT_PROTOCOL
 
 
 void CServerConnect::TryAnotherConnectionrequest()
@@ -190,6 +192,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		
 		CSafeMemFile data(256);
 		data.WriteHash16(theApp.glob_prefs->GetUserHash());
+		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
 		data.WriteUInt16(app_prefs->GetPort());
 		data.WriteUInt32(5); // tagcount
@@ -209,14 +212,22 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
 		// to send an Hello packet to the server during the callback test))
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
-							(SO_AMULE				<< 24) |
-							(VERSION_MJR			<< 17) |
-							(VERSION_MIN			<< 10) |
-							(VERSION_UPDATE		<<  7) );
+			(SO_AMULE	<< 24) |
+			(VERSION_MJR	<< 17) |
+			(VERSION_MIN	<< 10) |
+			(VERSION_UPDATE	<<  7) );
 		tagMuleVersion.WriteTagToFile(&data);
 
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_LOGINREQUEST);
+		#ifdef DEBUG_CLIENT_PROTOCOL
+		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST\n"));
+		AddLogLineM(true,wxString(wxT("        Hash     : ")) << theApp.glob_prefs->GetUserHash().Encode() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        ClientID : ")) << GetClientID() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        Port     : ")) << app_prefs->GetPort() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        User Nick: ")) << app_prefs->GetUserNick() << wxT("\n"));
+		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION << wxT("\n"));
+		#endif
 		SendPacket(packet, true, sender);
 	} else if (sender->GetConnectionState() == CS_CONNECTED){
 		theApp.stat_reconnects++;
@@ -241,6 +252,9 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		{
 			Packet* packet = new Packet(OP_GETSERVERLIST,0);
 			SendPacket(packet, true);
+			#ifdef DEBUG_CLIENT_PROTOCOL
+			AddLogLineM(true,_("Client: OP_GETSERVERLIST\n"));
+			#endif
 		}
 	}
 	Notify_ShowConnState(false,wxT(""),true);
@@ -532,6 +546,9 @@ void CServerConnect::KeepConnectionAlive()
 	
 		Packet* packet = new Packet(files);
 		packet->SetOpCode(OP_OFFERFILES);
+		#ifdef DEBUG_CLIENT_PROTOCOL
+		AddLogLineM(true,_("Client: OP_OFFERFILES\n"));
+		#endif
 		// compress packet
 		//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
 		//   - the min. amount of data needed for one published file is ~100 bytes

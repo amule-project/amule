@@ -73,6 +73,11 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed Resume/Pause bug in amulecmd/amule. Now Resume/Pause
 		  argument starts at zero.
 		* More gsocket.h update.
+		* Debug protocol options. Comment/Uncomment:
+		    #define DEBUG_LOCAL_CLIENT_PROTOCOL in BaseClient.cpp
+		    #define DEBUG_REMOTE_CLIENT_PROTOCOL in ListenSocket.cpp
+		    #define DEBUG_SERVER_PROTOCOL in ServerSocket.cpp
+		    #define DEBUG_CLIENT_PROTOCOL in sockets.cpp
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
