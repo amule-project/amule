@@ -3282,11 +3282,14 @@ void CPartFile::UpdateAutoDownPriority()
 		return;
 	}
 	if (GetSourceCount() <= RARE_FILE) {
-		SetDownPriority(PR_VERYHIGH, false);
+		if ( GetDownPriority() != PR_HIGH )
+			SetDownPriority(PR_HIGH, false);
 	} else if (GetSourceCount() < 100) {
-		SetDownPriority(PR_HIGH, false);
+		if ( GetDownPriority() != PR_NORMAL )
+			SetDownPriority(PR_NORMAL, false);
 	} else {
-		SetDownPriority(PR_NORMAL, false);
+		if ( GetDownPriority() != PR_LOW )
+			SetDownPriority(PR_LOW, false);
 	}
 }
 
