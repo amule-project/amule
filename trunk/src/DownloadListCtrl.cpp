@@ -1269,6 +1269,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 		return CMuleListCtrl::ProcessEvent(evt);
 	}
 	
+	bool done = false;
+	
 	wxCommandEvent & event = (wxCommandEvent &) evt;
 	long item = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	if (item != (-1)) {
@@ -1308,7 +1310,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
-					return true;					
+					done = true;
 					break;
 					/* End modif */
 
@@ -1322,7 +1324,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
-					return true;
+					done = true;
 					break;
 					/* End modif */
 
@@ -1336,7 +1338,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
-					return true;					
+					done = true;
 					break;
 					/* End modif */
 
@@ -1350,7 +1352,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						// Remove this item from the selected items list
 						selectedList.RemoveHead();
 					}
-					return true;					
+					done = true;
 					break;
 					/* End modif */
 				case MP_SWAP_A4AF_TO_THIS: {
@@ -1359,21 +1361,21 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						CoreNotify_PartFile_Swap_A4AF(file);
 					}
 					Thaw();
-					this->UpdateItem(file);						
-					return true;					
+					UpdateItem(file);						
+					done = true;
 					break;
 				}
 				case MP_SWAP_A4AF_TO_THIS_AUTO:
 					CoreNotify_PartFile_Swap_A4AF_Auto(file);
-					return true;				
-					break;
+					done = true;
+					break;		
 				case MP_SWAP_A4AF_TO_ANY_OTHER: {
 					Freeze();
 					if (selectedCount == 1) {
 						CoreNotify_PartFile_Swap_A4AF_Others(file);
 					}
 					Thaw();
-					return true;					
+					done = true;
 					break;
 				}
 				case MP_CANCEL:	{
@@ -1421,8 +1423,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						}
 						Thaw();
 					}
-					return true;					
-					break;
+					done = true;
+					break;			
 				}
 				case MP_PRIOHIGH:
 					if (selectedCount > 1) {
@@ -1433,12 +1435,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_PrioAuto(file, false);
+						CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
 					}
-					CoreNotify_PartFile_PrioAuto(file, false);
-					CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
-					return true;					
+					done = true;
 					break;
 				case MP_PRIOLOW:
 					if (selectedCount > 1) {
@@ -1449,12 +1450,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_PrioAuto(file, false);
+						CoreNotify_PartFile_PrioSet(file, PR_LOW, true);
 					}
-					CoreNotify_PartFile_PrioAuto(file, false);
-					CoreNotify_PartFile_PrioSet(file, PR_LOW, true);
-					return true;					
+					done = true;
 					break;
 				case MP_PRIONORMAL:
 					if (selectedCount > 1) {
@@ -1465,12 +1465,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_PrioAuto(file, false);
+						CoreNotify_PartFile_PrioSet(file, PR_NORMAL, true);
 					}
-					CoreNotify_PartFile_PrioAuto(file, false);
-					CoreNotify_PartFile_PrioSet(file, PR_NORMAL, true);
-					return true;					
+					done = true;
 					break;
 				case MP_PRIOAUTO:
 					if (selectedCount > 1) {
@@ -1481,12 +1480,11 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_PrioAuto(file, true);
+						CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
 					}
-					CoreNotify_PartFile_PrioAuto(file, true);
-					CoreNotify_PartFile_PrioSet(file, PR_HIGH, true);
-					return true;					
+					done = true;
 					break;
 				case MP_PAUSE:
 					if (selectedCount > 1) {
@@ -1496,11 +1494,10 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_Pause(file);
 					}
-					CoreNotify_PartFile_Pause(file);
-					return true;					
+					done = true;
 					break;
 				case MP_RESUME:
 					if (selectedCount > 1) {
@@ -1510,11 +1507,10 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						CoreNotify_PartFile_Resume(file);
 					}
-					CoreNotify_PartFile_Resume(file);
-					return true;					
+					done = true;
 					break;
 				case MP_STOP:
 					if (selectedCount > 1) {
@@ -1526,33 +1522,35 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						Thaw();
-						return true;						
-						break;
+					} else {
+						HideSources(file);
+						CoreNotify_PartFile_Stop(file);
 					}
-					HideSources(file);
-					CoreNotify_PartFile_Stop(file);
-					return true;					
+					done = true;
 					break;
 				case MP_RAZORSTATS:
 					theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+					done = true;
 					break;
 				case MP_FAKECHECK1:	// deltahf -> fakecheck
 					theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
+					done = true;
 					break;
 				case MP_FAKECHECK2:
 					theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
-					break;				
+					done = true;
+					break;
 				case MP_CLEARCOMPLETED:
 					Freeze();
 					ClearCompleted();
 					Thaw();
-					return true;				
+					done = true;
 					break;
 				case MP_METINFO: {
 					CFileDetailDialog *dialog = new CFileDetailDialog(this, file);
 					dialog->ShowModal();
 					delete dialog;
-					return true;
+					done = true;
 					break;
 				}
 				case MP_GETED2KLINK:
@@ -1563,11 +1561,10 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						theApp.CopyTextToClipboard(str);
-						return true;
-						break;
+					} else {
+						theApp.CopyTextToClipboard(theApp.CreateED2kLink(file));
 					}
-					theApp.CopyTextToClipboard(theApp.CreateED2kLink(file));
-					return true;					
+					done = true;
 					break;
 				case MP_GETHTMLED2KLINK:
 					if (selectedCount > 1) {
@@ -1577,11 +1574,10 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							selectedList.RemoveHead();
 						}
 						theApp.CopyTextToClipboard(str);
-						return true;						
-						break;
+					} else {
+						theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
 					}
-					theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
-					return true;					
+					done = true;
 					break;
 				case MP_WS :{
 					wxString feed = wxEmptyString;
@@ -1593,6 +1589,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					feed += wxString::Format(_("Sources: %i"), file->GetSourceCount()) + wxString(wxT("\r\n"));; 
 					feed += wxString::Format(_("Complete Sources: %i"), file->m_nCompleteSourcesCount) + wxString(wxT("\r\n"));; 
                                         theApp.CopyTextToClipboard(feed);
+					done = true;
 					break;
 				}
 				/*case MP_OPEN:{
@@ -1609,24 +1606,22 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						break;
 					}*/
 				case MP_VIEW:{
-						if (selectedCount > 1) {
-							return true;
-							break;
-						}
+					if (selectedCount == 1) {
 						if ( file->GetStatus() == PS_COMPLETE ) {
 							file->PreviewFile();
 						} else {
 							file->PreviewFile();
 						}
-						return true;						
-						break;
 					}
-				case MP_VIEWFILECOMMENTS:{
-						CCommentDialogLst dialog(this, file);
-						dialog.ShowModal();
-						return true;					
-						break;
-					}
+					done = true;
+					break;
+				}
+				case MP_VIEWFILECOMMENTS: {
+					CCommentDialogLst dialog(this, file);
+					dialog.ShowModal();
+					done = true;
+					break;
+				}
 			}
 		} else {
 			CUpDownClient *client = (CUpDownClient*)content->value;
@@ -1634,15 +1629,15 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 			switch (event.GetId()) {
 				case MP_CHANGE2FILE:
 					client->SwapToAnotherFile(true,false,false,file);
-					
-					return true;
+					done = true;
+					break;
 				case MP_SHOWLIST:
 					client->RequestSharedFileList();
-					return true;				
+					done = true;
 					break;
 				case MP_ADDFRIEND:
 					theApp.amuledlg->chatwnd->AddFriend(client);
-					return true;				
+					done = true;
 					break;
 				case MP_SENDMESSAGE: {
 					wxString message = ::wxGetTextFromUser(_("Send message to user"),_("Message to send:"));
@@ -1651,15 +1646,14 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						theApp.amuledlg->chatwnd->StartSession(client, false);
 						theApp.amuledlg->chatwnd->SendMessage(message);
 					}
-					return true;				
+					done = true;
 					break;
 				}
 				case MP_DETAIL:
 					CClientDetailDialog * dialog = new CClientDetailDialog(this, client);
 					dialog->ShowModal();
 					delete dialog;
-					//dialog.DoModal();
-					return true;				
+					done = true;
 					break;
 			}
 		}
@@ -1670,15 +1664,19 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 		switch (event.GetId()) {
 			case MP_CLEARCOMPLETED:
 				ClearCompleted();
-				return true;			
+				done = true;
 				break;
 		}
 	}
 
-	// should we call this? (no!)
-	evt.Skip();
-	// Column hiding & misc events
-	return CMuleListCtrl::ProcessEvent(evt);
+	if (done) {
+		return true;
+	} else {
+		// should we call this? (no!)
+		evt.Skip();
+		// Column hiding & misc events
+		return CMuleListCtrl::ProcessEvent(evt);
+	}
 }
 
 
