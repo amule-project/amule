@@ -1,0 +1,51 @@
+	-= aMule compilation HOWTO on Microsoft Windows platform =-
+		Written by Madcat <madcat@amule.org>
+
+This document describes the neccesery steps to compile aMule on windows platform.
+This is intendended to be a reference for developers/testers, not for end-users, thus
+I'm not going to go into details on how to install this or that. Use your imagination.
+
+Section 1: List of things you need to compile aMule:
+	Note: Some of these require manually moving includes/libs into right directories.
+
+	* Windows port of GNU C compiler:
+		http://prdownloads.sf.net/mingw/MinGW-3.1.0-1.exe?download
+
+	* Minimal GNU shell for Windows:
+		http://prdownloads.sf.net/mingw/MSYS-1.0.10.exe?download
+
+	* Developer toolkit for MSys (for CVS & co):
+		http://prdownloads.sf.net/mingw/msysDTK-1.0.1.exe?download
+
+	* LibIConv (required by gettext)
+		http://prdownloads.sf.net/mingw/libiconv-1.8.0-2003.02.01-1.exe?download
+
+	* GetText (for po files, autogen.sh etc):
+		http://prdownloads.sf.net/mingw/gettext-0.11.5-2003.02.01-1.exe?download
+
+	* Curl library (compile w/o ssl support)
+		http://curl.haxx.se/download/curl-7.11.1.tar.gz
+
+	* Zlib compression library
+		http://ftp.lug.udel.edu/pub/cygwin/release/mingw/mingw-zlib/mingw-zlib-1.2.1-1.tar.bz2
+
+	* Crypto++ encryption library
+		http://www.eskimo.com/~weidai/crypto51.zip
+
+	* Windows port of wxWidgets library:
+		http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.4.2.zip
+
+Section 2: Common guidelines, issues, solutions:
+
+	* Generally, compile wxMSW as static library. This avoids several linker issues,
+		and provides you with static binary.
+
+	* Link statically against zlib, crypto, curl and wxMSW to avoid distributing 
+		extranous dlls (and generally make life simpler). At this point, this 
+		requires manually hacking src/Makefile (after running configure) and 
+		changing the neccesery -l*** places to paths to static libraries.
+
+	* You need to modify wx/setup.h file by hand (after installing wx) and change
+		wxCheckListBox to 0 (or, alternativly, configure wx with 
+		--without-checklistbox). Probably there's a better way around this, but
+		I can't think of any right now.
