@@ -577,7 +577,6 @@ public:
 	BitVector	m_upPartStatus;
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
-	bool			sent_OSInfo;
 	
 	CList<Packet*>		 			m_BlockSend_queue;
 	CList<Requested_Block_Struct*>	m_BlockRequests_queue;
@@ -621,6 +620,9 @@ public:
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
 		m_fAICHRequested     : 1; 
+		
+	unsigned int 
+		m_fOsInfoSupport : 1;
 		 
 	/* Razor 1a - Modif by MikaelB */
 	
