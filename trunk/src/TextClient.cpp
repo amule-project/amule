@@ -548,13 +548,13 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					if ( tag->SourceXferCount() > 0) {
 						s += wxT(" ") + CastItoXBytes(tag->Speed()) + _("/sec");
 					}
-				s += _("\n");
+				s += wxT("\n");
 			}
 			break;
 		case EC_OP_ULOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
-				s += _("\n");
+				s += wxT("\n");
 				s += wxString::Format(wxT("%08x "), tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data()) +
 					tag->GetStringData() + wxT(" ") +
 					tag->GetTagByName(EC_TAG_PARTFILE)->GetStringData() + wxT(" ") +
