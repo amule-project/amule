@@ -396,7 +396,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
-
+			
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
 			client->UnBan();
@@ -753,6 +753,8 @@ void TimerProc()
 		theApp.listensocket->Process();
 		theApp.OnlineSig(); // Added By Bouc7
 		theApp.amuledlg->ShowTransferRate();
+		// Kry - Log lines flush
+		theApp.FlushQueuedLogLines();
 	}
 	if (msCur-msPrevSave >= 60000) {
 		msPrevSave = msCur;
@@ -770,5 +772,6 @@ void TimerProc()
 	}
 	// Recomended by lugdunummaster himself - from emule 0.30c
 	theApp.serverconnect->KeepConnectionAlive();
+	
 
 }

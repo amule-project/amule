@@ -432,10 +432,10 @@ bool CamuleApp::OnInit()
 		while ( entries ) {
 			if ( strncmp(entries->mnt_type, "vfat",4) == 0 ) {
 				if ( tempdir.StartsWith( entries->mnt_dir ) ) {
-					printf("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+					QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
 				} else if ( incomingdir.StartsWith( entries->mnt_dir ) ) {
-					printf("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+					QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 					use_chmod = false;
 				}
 			}
@@ -456,10 +456,10 @@ bool CamuleApp::OnInit()
 		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
 			if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
 				// Kry - We cannot addlogline because there's no GUI yet!
-      			printf("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+      			QueueLogLine(false,"Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
                     use_chmod = false;
 			} else if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
-				printf("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+				QueueLogLine(false,"Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
 				use_chmod = false;
 			}     
 		}
@@ -1183,7 +1183,7 @@ void CamuleApp::Localize_mule()
 	}
 
 	if ((!m_locale.Init(language)) && (language != wxLANGUAGE_DEFAULT)) {	
-		printf("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
+		QueueLogLine(false,"The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)");
 	}
 	
 	m_locale.AddCatalogLookupPathPrefix(LOCALEDIR);
@@ -1325,4 +1325,41 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		
 	glob_prefs->SetLanguageID(0);
 	
+}
+
+void CamuleApp::QueueLogLine(bool addtostatusbar, const wxChar* line, ...)
+{
+	m_LogQueueLock.Enter();
+	
+	QueuedLogLine new_line_to_log;
+	
+	va_list argptr;
+	va_start(argptr, line);
+	wxString bufferline = wxString::FormatV( line, argptr );
+	bufferline.Truncate(1000); // Max size 1000 chars
+	va_end(argptr);
+	
+	new_line_to_log.line = bufferline;
+	new_line_to_log.addtostatus = addtostatusbar;
+	
+	QueuedAddLogLines.AddTail(new_line_to_log);
+
+	m_LogQueueLock.Leave();
+}
+
+
+void CamuleApp::FlushQueuedLogLines() {
+		
+	QueuedLogLine line_to_add;
+	
+	m_LogQueueLock.Enter();
+	
+	wxASSERT(theApp.amuledlg);
+	
+	while (!QueuedAddLogLines.IsEmpty()) {
+		line_to_add = QueuedAddLogLines.RemoveHead();
+		theApp.amuledlg->AddLogLine(line_to_add.addtostatus,line_to_add.line.c_str());
+	}
+	
+	m_LogQueueLock.Leave();
 }
