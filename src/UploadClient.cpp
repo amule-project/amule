@@ -45,6 +45,7 @@
 #include "ClientList.h"
 #include "Statistics.h"
 #include "Logger.h"
+#include "Format.h"
 
 #ifndef AMULE_DAEMON
 	#include "TransferWnd.h"	// Needed for CTransferWnd
@@ -178,13 +179,13 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 		if ( last_done_part != next_requested_part)
 		{ 
 			different_part = true;
-			AddDebugLogLineM(false, wxT("Session ended due to new chunk."));
+			AddDebugLogLineM(false, logClient, wxT("Session ended due to new chunk."));
 		}
 	
 		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
 		{ 
 			different_part = true;
-			AddDebugLogLineM(false, wxT("Session ended due to different file."));
+			AddDebugLogLineM(false, logClient, wxT("Session ended due to different file."));
 		}
 	} 
 
@@ -290,7 +291,7 @@ bool CUpDownClient::CreateNextBlockPackage()
 		}
 	}
 	catch(wxString error){
-		AddDebugLogLineM(false, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
+		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		if (filedata)
 			delete[] filedata;
@@ -625,7 +626,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 		
 			return;
 		} else if ( !file->GetHashCount() ) {
-			AddDebugLogLineM(false, wxT("Requested hashset could not be found"));
+			AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));
 
 			return;
 		}
@@ -633,7 +634,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 		file = theApp.downloadqueue->GetFileByID(forfileid);
 		
 		if ( !file || !file->GetHashCount() ) {
-			AddDebugLogLineM(false, wxT("Requested hashset could not be found"));
+			AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));
 
 			return;
 		}
@@ -727,7 +728,7 @@ void CUpDownClient::Ban(){
 	theApp.clientlist->AddTrackClient(this);
 	theApp.clientlist->AddBannedClient( GetIP() );
 	
-	AddDebugLogLineM(false,wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
+	AddDebugLogLineM( false, logClient, wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
 	
 	SetUploadState(US_BANNED);
 	
@@ -756,13 +757,11 @@ void CUpDownClient::CheckForAggressive()
 		
 		// Is the client EVIL?
 		if ( m_Aggressiveness >= 10 && (!IsBanned() && m_nDownloadState != DS_DOWNLOADING )) {
-#ifdef __VERBOSE_OUTPUT__
-			printf(	"Aggressive client banned (score: %d): %s -- %s -- %s\n",
-				m_Aggressiveness,
-				(const char *)unicode2char(m_Username),
-				(const char *)unicode2char(m_strModVersion),
-				(const char *)unicode2char(m_clientVerString));
-#endif
+			AddDebugLogLineM( false, logClient, CFormat( wxT("Aggressive client banned (score: %d): %s -- %s -- %s\n") ) 
+				% m_Aggressiveness
+				% m_Username
+				% m_strModVersion
+				% m_clientVerString );
 			Ban();
 		}
 	} else {

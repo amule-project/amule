@@ -69,6 +69,7 @@
 #include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
+#include "Format.h"
 
 #include <map>
 #include <algorithm>
@@ -204,7 +205,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 								break;
 							}
 
-							AddDebugLogLineM( false,
+							AddDebugLogLineM( false, logPartFile,
 								wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
 								pTag.GetFullInfo() );
 							taglist.Add(new CTag(pTag));
@@ -228,7 +229,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 								break;
 							}
 
-							AddDebugLogLineM( false,
+							AddDebugLogLineM( false, logPartFile,
 								wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
 								pTag.GetFullInfo() );
 							taglist.Add(new CTag(pTag));
@@ -239,7 +240,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 				}
 
 				if (!bTagAdded) {
-					AddDebugLogLineM( false,
+					AddDebugLogLineM( false, logPartFile,
 						wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") +
 						pTag.GetFullInfo() );
 				}
@@ -367,8 +368,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 	if (!metFile.Open(file_to_open,CFile::read)) {
 		if (from_backup) {
-			AddLogLineM(false, _(
-				"Error: Failed to load backup file. "
+			AddLogLineM(false, 
+				_("Error: Failed to load backup file. "
 				"Search http://forum.amule.org for .part.met recovery solutions"));
 		} else {
 			AddLogLineM(false, _("Error: Failed to open part.met file! ") +
@@ -470,15 +471,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
-							printf(	" - filename (u) %s - ",
-								(const char *)unicode2UTF8(newtag.GetStr()));
 							SetFileName(newtag.GetStr());
 						}
 						#else
-							printf(	" - filename %s - ",
-								(const char *)unicode2char(newtag.GetStr()));
 							SetFileName(newtag.GetStr());
 						#endif
+	
 						break;
 					}
 					case FT_LASTSEENCOMPLETE: {
@@ -742,9 +740,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
 	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
-		printf(	"Partfile \"%s\" is too large! Truncating %llu bytes.\n",
-			(const char *)unicode2char(GetFileName()),
-			((ULONGLONG)m_hpartfile.GetLength() - m_nFileSize));
+		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % ((uint64)m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
@@ -954,8 +950,8 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (file.IsOpened()) {
 			file.Close();
 		}	
-		
-		printf("Uncaught exception in CPartFile::SavePartFile!!!\n"); 
+	
+		AddDebugLogLineM( true, logPartFile, wxT("Uncaught exception in SavePartFile()!") );
 	}
 	
 	file.Close();
@@ -1203,7 +1199,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 		m_pAICHHashSet->SetOwner(this); 
 	}
 	else if (status == PS_COMPLETING) {
-		AddDebugLogLineM(false,
+		AddDebugLogLineM(false, logPartFile,
 			wxT("Failed to store new AICH Hashset for completed file: ") +
 			GetFileName());
 	}
@@ -1692,7 +1688,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 
 	if (m_stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
-		AddDebugLogLineM(false,wxT("Trying to add sources for a stopped file\n"));
+		AddDebugLogLineM(false, logPartFile, wxT("Trying to add sources for a stopped file"));
 		sources.Seek(count*(4+2), wxFromCurrent);
 		return;
 	}
@@ -1721,7 +1717,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
-			AddDebugLogLineM(false,wxT("Consuming a packet because of max sources reached\n"));
+			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
 			// Since we may receive multiple search source UDP results we have to "consume" all data of that packet
 			// This '+1' is added because 'i' counts from 0.
 			sources.Seek((count-(i+1))*(4+2), wxFromCurrent);
@@ -2145,10 +2141,9 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 {
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
+	AddDebugLogLineM( false, logPartFile, wxString( wxT("CPartFile::CompleteFile: Hash ") ) + ( bIsHashingDone ? wxT("done") : wxT("not done") ) );
+			  
 	if (!bIsHashingDone) {
-#ifdef DEBUG
-		printf("HashNotDone\n");
-#endif
 		SetPartFileStatus(PS_COMPLETING);
 		kBpsDown = 0.0;
 
@@ -2156,9 +2151,6 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		CAddFileThread::AddFile( GetFilePath(), strPartFile, this );
 		return;
 	} else {
-#ifdef DEBUG
-		printf("HashDone\n");		
-#endif
 		StopFile();
 		m_is_A4AF_auto=false;
 		SetPartFileStatus(PS_COMPLETING);
@@ -2876,7 +2868,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineM(false, wxT("File '") + m_strFileName +
+		AddDebugLogLineM(false, logPartFile, wxT("File '") + m_strFileName +
 			wxString::Format(wxT("' has already been written from %lu to %lu\n"),
 				(long)start, (long)end));
 		return 0;
@@ -3039,7 +3031,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				m_iLostDueToCorruption += (partRange + 1);
 			} else {
 				if (!hashsetneeded) {
-					AddDebugLogLineM(false, wxString::Format(
+					AddDebugLogLineM(false, logPartFile, wxString::Format(
 						wxT("Finished part %u of "), partNumber) + m_strFileName);
 				}
 				
@@ -3343,27 +3335,24 @@ uint32 CPartFile::GetTotalGapSizeInPart(UINT uPart) const
 }
 
 
-
-void CPartFile::RequestAICHRecovery(uint16 nPart){
+void CPartFile::RequestAICHRecovery(uint16 nPart)
+{
 
 	if (	!m_pAICHHashSet->HasValidMasterHash() ||
 		(m_pAICHHashSet->GetStatus() != AICH_TRUSTED && m_pAICHHashSet->GetStatus() != AICH_VERIFIED)){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because we have no trusted Masterhash"));
+		AddDebugLogLineM( false, logAICHRecovery, wxT("Unable to request AICH Recoverydata because we have no trusted Masterhash") );
 		return;
 	}
 	if (GetFileSize() <= EMBLOCKSIZE || GetFileSize() - PARTSIZE*nPart <= EMBLOCKSIZE)
 		return;
 	if (CAICHHashSet::IsClientRequestPending(this, nPart)){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false, _T("RequestAICHRecovery: Already a request for this part pending"));
+		AddDebugLogLineM( false, logAICHRecovery, wxT("RequestAICHRecovery: Already a request for this part pending"));
 		return;
 	}
 
 	// first check if we have already the recoverydata, no need to rerequest it then
 	if (m_pAICHHashSet->IsPartDataAvailable(nPart*PARTSIZE)){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false, _T("Found PartRecoveryData in memory"));
+		AddDebugLogLineM( false, logAICHRecovery, wxT("Found PartRecoveryData in memory"));
 		AICHRecoveryDataAvailable(nPart);
 		return;
 	}
@@ -3388,8 +3377,7 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 		}
 	}
 	if ((cAICHClients | cAICHLowIDClients) == 0){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false, _T("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
+		AddDebugLogLineM( false, logAICHRecovery, wxT("Unable to request AICH Recoverydata because found no client who supports it and has the same hash as the trusted one"));
 		return;
 	}
 	uint32 nSeclectedClient;
@@ -3422,8 +3410,8 @@ void CPartFile::RequestAICHRecovery(uint16 nPart){
 		wxASSERT( false );
 		return;
 	}
-// TODO		
-//	AddDebugLogLine(DLP_DEFAULT, false, _T("Requesting AICH Hash (%s) form client %s"),cAICHClients? _T("HighId"):_T("LowID"), pClient->DbgGetClientInfo());
+
+	AddDebugLogLineM( false, logAICHRecovery, CFormat( wxT("Requesting AICH Hash (%s) form client %s") ) % ( cAICHClients ? wxT("HighId") : wxT("LowID") ) % pClient->GetClientFullInfo() );
 	pClient->SendAICHRequest(this, nPart);
 	
 }
@@ -3443,9 +3431,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}	
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false,
-//			_T("Processing AICH Recovery data: The part (%u) is already complete, canceling"));
+		AddDebugLogLineM( false, logAICHRecovery,
+			wxString::Format( wxT("Processing AICH Recovery data: The part (%u) is already complete, canceling"), nPart ) );
 		return;
 	}
 	
@@ -3453,9 +3440,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 
 	CAICHHashTree* pVerifiedHash = m_pAICHHashSet->m_pHashTree.FindHash(nPart*PARTSIZE, length);
 	if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false,
-//			_T("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)"));
+		AddDebugLogLineM( true, logAICHRecovery, wxT("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)") );
 		wxASSERT( false );
 		return;
 	}
@@ -3469,9 +3454,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 	if (!htOurHash.m_bHashValid){
-// TODO		
-//		AddDebugLogLine(DLP_DEFAULT, false,
-//			_T("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part"));
+		AddDebugLogLineM( false, logAICHRecovery, wxT("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part") );
 		wxASSERT( false );
 		return;
 	}
@@ -3498,10 +3481,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		// this is a bad, but it could probably happen under some rare circumstances
 		// make sure that MD4 agrres to this fact too
 		if (!HashSinglePart(nPart)){
-// TODO		
-//			AddDebugLogLine(DLP_DEFAULT, false,
-//				_T("Processing AICH Recovery data: The part (%u) got completed while recovering "
-//				"- but MD4 says it corrupt! Setting hashset to error state, deleting part"));
+			AddDebugLogLineM( false, logAICHRecovery, 
+				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering "
+				"- but MD4 says it corrupt! Setting hashset to error state, deleting part"));
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(PARTSIZE*nPart, ((nPart*PARTSIZE)+length)-1);
@@ -3509,10 +3491,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			return;
 		}
 		else{
-// TODO		
-//			AddDebugLogLine(DLP_DEFAULT, false,
-//				_T("Processing AICH Recovery data: The part (%u) "
-//				"got completed while recovering and MD4 agrees"));
+			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
+				wxT("Processing AICH Recovery data: The part (%u) "
+				"got completed while recovering and MD4 agrees") ) );
 			// alrighty not so bad
 			POSITION posCorrupted = corrupted_list.Find(nPart);
 			if (posCorrupted)
@@ -3534,10 +3515,14 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	} // end sanity check
 	// Update met file
 	SavePartFile();
+	
 	// make sure the user appreciates our great recovering work :P
-// TODO		
-//	AddLogLine(true, IDS_AICH_WORKED, CastItoXBytes(nRecovered), CastItoXBytes(length), nPart, GetFileName());
-	//AICH successfully recovered %s of %s from part %u for %s
+	AddDebugLogLineM( false, logAICHRecovery, CFormat( 
+		wxT("AICH successfully recovered %s of %s from part %u for %s") )
+		% CastItoXBytes(nRecovered) 
+		% CastItoXBytes(length)
+		% nPart
+		% GetFileName() );
 }
 
 
