@@ -250,7 +250,7 @@ public:
 	wxString ConfigDir;
 	
 	wxMutex data_mutex;
-	static wxMutex hashing_mut;
+	wxMutex hashing_mut;
 
 protected:
 	/**
