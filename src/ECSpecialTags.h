@@ -160,7 +160,7 @@ class CEC_UpDownClient_Tag : public CECTag {
  		
  		uint8 ClientSoftware() { return GetTagByNameSafe(EC_TAG_CLIENT_SOFTWARE)->GetInt8Data(); }
  		
- 		uint8 ClientState() { return GetTagByNameSafe(EC_TAG_CLIENT_STATE)->GetInt8Data(); }
+ 		uint8 ClientState() { return GetTagByNameSafe(EC_TAG_CLIENT_STATE)->GetInt16Data(); }
  		
  		uint32 WaitTime() { return GetTagByNameSafe(EC_TAG_CLIENT_WAIT_TIME)->GetInt32Data(); }
  		uint32 XferTime() { return GetTagByNameSafe(EC_TAG_CLIENT_XFER_TIME)->GetInt32Data(); }
