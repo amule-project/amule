@@ -71,7 +71,12 @@ bool CAICHSyncThread::Stop()
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
 			// By doing this we ensure that this function only returns
 			// once the thread has died.
+#if wxCHECK_VERSION(2, 5, 3)
+			// wxUsleep has been deprecated in 2.5.3 and above
+			wxMilliSleep(10);
+#else
 			wxUsleep(10);
+#endif
 		}
 
 		return true;

@@ -178,23 +178,20 @@ void CAddFileThread::Stop()
 		
 			SetRunning( false );
 
-			wxStopWatch timer;
-	
 			// Wait for all threads to die
 			while ( GetThreadCount() ) {
 				// Sleep for 1/100 of a second to avoid clobbering the mutex
-				// Termination only takes about 3ms on my system, but I'm taking 
-				// slower systems into consideration.
+				// By doing this we ensure that this function only returns
+				// once the thread has died.
+#if wxCHECK_VERSION(2, 5, 3)
+				// wxUsleep has been deprecated in 2.5.3 and above
+				wxMilliSleep(10);
+#else
 				wxUsleep(10);
-
-				// Check for timeouts after 20 seconds
-				if ( timer.Time() > 20000 ) {
-					printf("Hasher: Threads have timed out!\n");
-					break;
-				}
+#endif
 			}
 			
-			printf("Hasher: Threads died after %lu millie-seconds\n", timer.Time());
+			printf("Hasher: Threads terminated.\n");
 		} else {
 			// No threads to kill, just stay quiet.
 			SetRunning( false );
