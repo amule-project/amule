@@ -85,7 +85,6 @@ void *CGlobalSearchThread::Entry()
 	theApp.serverlist->AddObserver( &queue );
 
 	while ( !TestDestroy() ) {
-		Sleep(750);
 		
 		if ( !queue.GetRemaining() ) {
 			break;
@@ -101,6 +100,9 @@ void *CGlobalSearchThread::Entry()
 				CoreNotify_Search_Update_Progress( percentage );
 			}	
 		}
+		
+		Sleep(750);
+		
 	}
 	
 	// Global search ended, reset progress and controls
@@ -279,7 +281,7 @@ bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &s
 	// Send packet. If it's not a global search, delete it after sending.
 	theApp.serverconnect->SendPacket(searchpacket, !global_search ); 
 	
-	wxASSERT(m_searchpacket == NULL);
+	wxASSERT(m_searchthread == NULL);
 	
 	if (m_searchthread) {
 		m_searchthread->Delete();
