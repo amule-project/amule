@@ -110,7 +110,7 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 			}
 
 			// Covers part of the current span (maybe entire span)
-			else if ( end > it->start - 1 ) {
+			else {
 				// If it only covers part of the span
 				if ( end < it->end ) {
 					// Same color?
@@ -128,7 +128,6 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 					continue;
 				}
 			}
-
 		}
 		// It starts at the current span
 		else if ( start == it->start ) {
@@ -137,51 +136,71 @@ void CBarShader::FillRange(uint32 start, uint32 end, const DWORD color)
 				// Same color, nothing to do
 				if ( color == it->color ) {
 					return;
-				} else {
-					it->start = end + 1;
-				}
-
+				} 
+				
+				it->start = end + 1;
+				
 				break;
-
 			} else {
 				// Covers the entire span
-				it = m_spanlist.erase( it );
+				it = m_spanlist.erase( it );					
 				continue;
 			}
 		}
 
 		// Starts inside the current span or after the current span
-		else if ( start > it->start  && start <= it->end + 1 ) {
-			// Covers only a slice of the current span
-			if ( end < it->end ) {
-				// Same color, nothing to do
-				if ( color == it->color ) {
-					return;
-				} else {
-					// Remember the old end-position
+		else if ( start > it->start ) {
+			// Starts inside the current span
+			if ( start < it->end ) {
+				// Ends inside the current span
+				if ( end < it->end ) {
+					// Adding a span with same color inside a existing span is fruitless
+					if ( color == it->color ) {
+						return;
+					}
+				
+					// Split the currens span and stop
 					uint32 oldend = it->end;
 					// Resize the current span to fit before the new span
 					it->end = start - 1;
-					// Insert the second part of the old span behind where the new span is supposed to be placed
+
+					// Create a new span to cover the second block
 					it = m_spanlist.insert( ++it, BarSpan( end + 1, oldend, it->color ) );
+				
 					break;
+				} else {
+					// If access-level is the same, then we remove the current and
+					// resize the new span
+					if ( color == it->color ) {
+						start = it->start;
+						
+						it = m_spanlist.erase( it );
+						continue;
+					} else {
+						// Continues past the end of the current span, resize current span
+						it->end = start - 1;
+					}
 				}
-			} else {
-				// Completly covers a side of the span
+			} else if ( start == it->end ) {
+			// If access-level is the same, then we remove the current and
+			// resize the new span
 				if ( color == it->color ) {
-					// Same color, delete old and update start position
 					start = it->start;
+					
 					it = m_spanlist.erase( it );
 					continue;
-
 				} else {
+					// Continues past the end of the current span, resize current span
 					it->end = start - 1;
 				}
+			} else {
+				// Starts after the current span, nothing to do
 			}
 		}
 
 		it++;
 	}
+
 
 
 	m_spanlist.insert( it, BarSpan( start, end, color ) );
