@@ -2453,6 +2453,7 @@ DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
 
 void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 {
+	lFilePrio = tag->Prio();
 	nFileStatus = tag->FileStatus();
 	sFileStatus = tag->GetFileStatusString();
 	lSourceCount = tag->SourceCount();
