@@ -57,8 +57,9 @@ CAICHSyncThread::CAICHSyncThread()
 
 bool CAICHSyncThread::InitInstance()
 {
-	#warning NET_UNICODE
-	//InitThreadLocale();
+#ifdef __NET_UNICODE__
+	InitThreadLocale();
+#endif
 	return TRUE;
 }
 
