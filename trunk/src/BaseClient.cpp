@@ -79,7 +79,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		}
 	#else
  	if(!HasLowID()) {
-		m_nConnectIP = in_userid;
+		m_nConnectIP = ENDIAN_SWAP_32(in_userid);
 	}
 	#endif
 
@@ -2122,7 +2122,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 	m_dwUserIP = val;
 
-	m_nConnectIP = val;
+	m_nConnectIP = ENDIAN_SWAP_32(val);
 }
 
 
