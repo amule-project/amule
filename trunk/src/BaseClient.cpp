@@ -473,7 +473,6 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 			// lemonfan - this is not an "normal" string, so wxString cant be used
 			data->ReadRaw(&test, 4);
 			if ((test[0]=='M') && (test[1]=='L') && (test[2]=='D') && (test[3]=='K')) {
-				printf("MLdonkey detected\n");
 				m_bIsML=true;
 			} else{
 				m_bIsHybrid = true;
