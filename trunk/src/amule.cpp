@@ -211,7 +211,7 @@ CamuleApp::~CamuleApp()
 {
 	
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("aMule shutdown: removing local data.\n");
+		printf("aMule shutdown: Terminating core.\n");
 	}
 	
 	// Delete associated objects
