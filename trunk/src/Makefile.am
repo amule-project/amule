@@ -189,6 +189,7 @@ amuled_SOURCES = ListenSocket.cpp \
         filemem.cpp \
         filefn.cpp \
         Friend.cpp \
+	HTTPDownload.cpp \
         IPFilter.cpp \
         KnownFile.cpp \
         KnownFileList.cpp \
@@ -247,7 +248,7 @@ amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON
 amuled_CXXFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
-amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS)
+amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =

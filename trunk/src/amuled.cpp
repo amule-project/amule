@@ -125,10 +125,16 @@ BEGIN_EVENT_TABLE(CamuleApp, wxAppConsole)
 
 	// Hash ended notifier
 	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleApp::OnFinishedHashing)
+
 	// Hashing thread finished and dead
 	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleApp::OnHashingShutdown)
+
 	// File completion ended notifier
 	EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleApp::OnFinishedCompletion)
+
+	// HTTPDownload finished
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleApp::OnFinishedHTTPDownload)
+	
 END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleApp)
@@ -1696,12 +1702,25 @@ void CamuleApp::RunAICHThread()
 		CAICHSyncThread::Start();	
 }
 
+void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
+{
+	wxMuleInternalEvent& event = *((wxMuleInternalEvent*)&evt);
+	switch (event.GetInt()) {
+		case HTTP_IPFilter:
+			ipfilter->DownloadFinished(event.GetExtraLong());
+			break;
+		case HTTP_ServerMet:
+			// not implemented
+			break;
+	}
+}
+
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
 DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
-
+DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_EVENT_TYPE(wxEVT_CORE_DNS_DONE)
 

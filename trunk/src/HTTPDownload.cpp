@@ -27,6 +27,8 @@
 #include <wx/intl.h>
 
 #include <curl/curl.h>
+
+#include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
 #include "inetdownload.h"	// Needed for inetDownload
 #include "otherfunctions.h"	// Needed for unicode2char
@@ -34,12 +36,12 @@
 #ifndef AMULE_DAEMON 
 	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
 	#include "MuleGifCtrl.h"
-	#include "amule.h"
 	#include <wx/sizer.h> 
 #endif
 
 
 
+#ifndef AMULE_DAEMON 
 BEGIN_EVENT_TABLE(CHTTPThreadDlg,wxDialog)
   EVT_BUTTON(ID_CANCEL,CHTTPThreadDlg::OnBtnCancel)
 END_EVENT_TABLE()
@@ -65,10 +67,10 @@ void CHTTPThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
   // TODO
 }
 
-
 CHTTPThreadDlg::~CHTTPThreadDlg() {
 	ani->Stop();
 }
+#endif
 
 HTTPThread::HTTPThread(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) {
   	url= urlname;
@@ -81,42 +83,49 @@ HTTPThread::HTTPThread(wxString urlname, wxString filename,HTTP_Download_File fi
 	#endif
 };
 
-
 HTTPThread::~HTTPThread()
 {
 //maybe a thread deletion needed
 }
 
-wxThread::ExitCode HTTPThread::Entry() {
+wxThread::ExitCode HTTPThread::Entry()
+{
+	CURL *curl_handle;
+	FILE *outfile;
+	char* tempurl;
 
- CURL *curl_handle;
- FILE *outfile;
- char* tempurl;
- 
- if (TestDestroy()) return NULL;
- curl_handle = curl_easy_init();
- outfile = fopen(unicode2char(tempfile), "w");
- if (TestDestroy()) {fclose(outfile); return NULL; }
- if (outfile!=NULL) {
- 	if (!url) {fclose(outfile); return NULL; }
-    tempurl=strdup((char*)unicode2char(url));
-  
-    curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
-    curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
-    curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
-    curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
-//    curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 15);
-    curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
-    curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
-    
-    if (TestDestroy()) {fclose(outfile); free(tempurl); return 0; }
-    if (curl_easy_perform(curl_handle)==CURLE_OK) result=0;
-    fclose(outfile);
-    free(tempurl);
- }
- curl_easy_cleanup(curl_handle);
- printf("HTTP download thread end\n");
- return 0;
+	if (TestDestroy()) return NULL;
+	curl_handle = curl_easy_init();
+	outfile = fopen(unicode2char(tempfile), "w");
+	if (TestDestroy()) {fclose(outfile); return NULL; }
+	if (outfile!=NULL) {
+ 		if (!url) {
+			fclose(outfile);
+			return NULL;
+		}
+		tempurl = strdup((char*)unicode2char(url));
+
+		curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
+		curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
+		curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
+		curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
+//		curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT , 15);
+		curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
+		curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
+
+		if (TestDestroy()) {
+			fclose(outfile);
+			free(tempurl);
+			return 0;
+		}
+		if (curl_easy_perform(curl_handle)==CURLE_OK) result = 0;
+		fclose(outfile);
+		free(tempurl);
+	}
+	curl_easy_cleanup(curl_handle);
+	printf("HTTP download thread end\n");
+	
+	return 0;
 }
 
 void HTTPThread::OnExit() {
@@ -126,11 +135,10 @@ void HTTPThread::OnExit() {
 		delete myDlg;
 	}
 #endif
-	
 	// Kry - Notice the app that the file finished download
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)file_type);
 	evt.SetExtraLong((long)result);
 	wxPostEvent(&theApp,evt);		
-	
 }
+
