@@ -90,7 +90,9 @@ void ECSocket::Write(wxSocketBase *sock, const uint64& v) {
 };
 #endif
 
-void ECSocket::Read(wxSocketBase *sock, wxString& s) {
+static wxCSConv aMuleConv(wxT("iso8859-1"));
+
+bool ECSocket::Read(wxSocketBase *sock, wxString& s) {
 	unsigned int msgBytes;
 	Read(sock, msgBytes);
 	char *utf8 = new char[msgBytes+1];
@@ -108,17 +110,27 @@ void ECSocket::Read(wxSocketBase *sock, wxString& s) {
 		iobuf += LastIO;
 		++i;
 	}
-	s = wxString(wxConvUTF8.cMB2WX(utf8));
+	// Converts an UTF-8 string to ISO-8859-1
+	s = wxString(wxConvUTF8.cMB2WC(utf8), aMuleConv);
 //printf("ECSocket::Read: loop=%d, bytes=%d, original=%d, msg=%s\n", i, msgBytes, s.size(), wxConvUTF8.cWX2MB(s.Left(40)));
 	delete [] utf8;
-	if(sock->Error()) {
-		printf("Wrong wxString Reading Packet!\n");
+	if(error) {
+		printf("ECSocket::Read:Error reading wxString Packet!\n");
 	}
+	
+	return !error;
 };
 
-void ECSocket::Write(wxSocketBase *sock, const wxString& s) {
-	const wxWX2MBbuf buf = wxConvUTF8.cWX2MB(s);
+bool ECSocket::Write(wxSocketBase *sock, const wxString& s) {
+	// Converts a string in ISO-8859-1 to wide char, and then
+	// converts it to to multi-byte (encoded) UTF-8
+	const wxCharBuffer buf = wxConvUTF8.cWC2MB(s.wc_str(aMuleConv));
 	const char *utf8 = (const char *)buf;
+	// strlen does not like NULL pointers, so we test.
+	if (!utf8) {
+		printf("ECSocket::Write: Error converting string.\n");
+		return false;
+	}
 	unsigned int msgBytes = strlen(utf8);
 //printf("ECSocket::Write bytes=%d, original=%d, msg=%s\n", msgBytes, s.size(), wxConvUTF8.cWX2MB(s.Left(40)));
 	Write(sock, msgBytes);
@@ -137,6 +149,8 @@ void ECSocket::Write(wxSocketBase *sock, const wxString& s) {
 //printf("i=%d, LastIO=%u, msgRemain=%u\n", i, LastIO, msgRemain);
 //if(i > 5) break;
 	}
+	
+	return !error;
 };
 	
 //
@@ -150,9 +164,9 @@ wxString ECSocket::SendRecvMsg(const wxString &msg) {
 // Server SendRecvMsg()
 //
 wxString ECSocket::SendRecvMsg(wxSocketBase *sock, const wxString &msg) {
-	Write(sock, msg);
+	bool WriteOK = Write(sock, msg);
 	wxString response;
-	if (!sock->Error()) {
+	if (WriteOK) {
 		// Wait until data available (will also return if the connection is lost)
 		sock->WaitForRead(10);
 		if (sock->IsData()) {

@@ -109,8 +109,8 @@ private:
 #endif
 	// String
 public:
-	void Read(wxSocketBase *sock, wxString& s);
-	void Write(wxSocketBase *sock, const wxString& s);
+	bool Read(wxSocketBase *sock, wxString& s);
+	bool Write(wxSocketBase *sock, const wxString& s);
 	
 private:
 	aMuleECSocketType m_type;

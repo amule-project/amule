@@ -114,6 +114,12 @@ Version 2.0.0rc6 - The '???' version.
 		  replicated code in ExternalConn.cpp.
 		* Fixed a bug in ListenSocket.cpp, m_client can be null after
 		  ProcessSecIdentStatePacket(), so, we must check.
+		* Fixed conversion problems in ECSocket.cpp. Now external
+		  connections in UTF-8 are really working, and
+		  amuleweb/amulecmd (unicoded or not) can connect to amule
+		  (unicoded or not).
+		* Fixed an unprotected call to strlen() in ECSockets.cpp, if 
+		  you pass a NULL pointer to it, the program segfaults.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
