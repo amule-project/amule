@@ -35,11 +35,9 @@
 #endif
 
 // Include wxWindows' headers
-#ifndef WX_PRECOMP
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/progdlg.h>
-#endif
 
 
 // Compute and display md4sum or not
