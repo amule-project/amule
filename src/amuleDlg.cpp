@@ -1,4 +1,4 @@
-	// This file is part of the aMule Project
+// This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
@@ -499,55 +499,44 @@ void CamuleDlg::ResetDebugLog()
 
 void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
-
-	wxString bufferline = line.Left(1000); // Max length 1000 chars
-
+	// Max 1000 chars
+	wxString bufferline = line.Left(1000);
 	// Remove newlines at end, they cause problems with the layout...
 	// You should not call Last() in an empty string.
 	while ( !bufferline.IsEmpty() && bufferline.Last() == wxT('\n') ) {
 		bufferline.RemoveLast();
 	}
-
 	// Escape "&"s, which would otherwise not show up
 	bufferline.Replace(wxT("&"), wxT("&&"));
-
 	if (addtostatusbar) {
-		wxStaticText* text=(wxStaticText*)FindWindow(wxT("infoLabel"));
+		wxStaticText* text = (wxStaticText *)FindWindow(wxT("infoLabel"));
 		text->SetLabel(bufferline);
 		Layout();
 	}
-
 	bufferline = wxDateTime::Now().FormatDate() + wxT(" ")
 		+ wxDateTime::Now().FormatTime() + wxT(": ")
 		+ bufferline + wxT("\n");
-
-	wxTextCtrl* ct= (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
-	if(ct) {
+	wxTextCtrl* ct = (wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
+	if ( ct ) {
 		ct->AppendText(bufferline);
 		ct->ShowPosition(ct->GetValue().Length()-1);
 	}
-
 	// Write into log file
 	wxString filename = theApp.ConfigDir + wxT("logfile");
 	wxTextFile file(filename);
-
 	if (!file.Open()) {
 		printf("Error opening log file!\n");
 	}
-
 	file.AddLine(bufferline);
 	file.Write();
 	file.Close();
-
 }
 
 
 void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxString& line)
 {
 	if (theApp.glob_prefs->GetVerbose()) {
-		wxString bufferline = line.Left(1000); // Max size 1000 chars
-
-		AddLogLine(addtostatusbar, bufferline);
+		AddLogLine(addtostatusbar, line);
 	}
 }
 
