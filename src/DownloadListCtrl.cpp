@@ -1603,17 +1603,16 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
 					return true;					
 					break;
-				case MP_WS :
-					{
+				case MP_WS :{
 					wxString feed = wxEmptyString;
-                    feed += wxString::Format(_("Feedback from: %s \r\n"), theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat
-					feed += wxString::Format(wxT("Client: aMule %s \r\n"), wxT(VERSION));
-					feed += wxString::Format(_("File Name: %s \r\n"), file->GetFileName().c_str());  
-					feed += wxString::Format(_("File size: %i MB\r\n"), file->GetFileSize()/1048576).c_str(); 
-					feed += wxString::Format(_("Download: %i MB\r\n"), file->GetCompletedSize()/1048576).c_str(); 
-					feed += wxString::Format(_("Sources: %i \r\n"), file->GetSourceCount()); 
-					feed += wxString::Format(_("Complete Sources: %i \r\n"), file->m_nCompleteSourcesCount).c_str(); 
-                    theApp.CopyTextToClipboard(feed);
+					feed += wxString(_("Feedback from: ")) + theApp.glob_prefs->GetUserNick() + wxString(wxT("\r\n"));
+					feed += wxString(_("Client: aMule ")) +  wxString(wxT(VERSION)) + wxString(wxT("\r\n"));
+					feed += wxString(_("File Name: ")) + file->GetFileName() + wxString(wxT("\r\n"));
+					feed += wxString::Format(_("File size: %i MB"), file->GetFileSize()/1048576) + wxString(wxT("\r\n"));; 
+					feed += wxString::Format(_("Download: %i MB"), file->GetCompletedSize()/1048576) + wxString(wxT("\r\n"));; 
+					feed += wxString::Format(_("Sources: %i"), file->GetSourceCount()) + wxString(wxT("\r\n"));; 
+					feed += wxString::Format(_("Complete Sources: %i"), file->m_nCompleteSourcesCount) + wxString(wxT("\r\n"));; 
+                                        theApp.CopyTextToClipboard(feed);
 					break;
 				}
 				case MP_OPEN:{
