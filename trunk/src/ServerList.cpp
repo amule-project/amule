@@ -176,9 +176,8 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 		if (4 != servermet.Read(&fservercount,4)) {
 			throw CInvalidPacket();
 		}
-		printf("Save ServerCount = %i /0x%X/\n",fservercount, fservercount);
+
 		ENDIAN_SWAP_I_32(fservercount);			
-		printf("Saved ServerCount endian = %i /0x%X/\n",fservercount, fservercount);
 
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
@@ -881,7 +880,6 @@ void CServerList::Process()
 		if (wxFile::Exists(filename)) {
 			AddServersFromTextFile(strPath, false, true);
 			this->SaveServermetToFile();
-			printf("Saving of server.met file Done !!!\n");
 			wxRemoveFile(filename);
 		}
 		m_nLastED2KServerLinkCheck = ::GetTickCount();
