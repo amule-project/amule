@@ -546,10 +546,29 @@ RLE_Data::RLE_Data(int len, bool use_diff)
 	m_enc_buff = new unsigned char[m_len*4/3 + 1];
 }
 
+RLE_Data::RLE_Data()
+{
+	m_buff = 0;
+	m_enc_buff = 0;
+	m_len = 0;
+}
+
+RLE_Data::RLE_Data(const RLE_Data &obj)
+{
+	m_len = obj.m_len;
+
+	m_buff = new unsigned char[m_len];
+	m_enc_buff = new unsigned char[m_len*4/3 + 1];
+}
+
 RLE_Data::~RLE_Data()
 {
-	delete [] m_buff;
-	delete [] m_enc_buff;
+	if ( m_buff ) {
+		delete [] m_buff;
+	}
+	if ( m_enc_buff ) {
+		delete [] m_enc_buff;
+	}
 }
 
 const unsigned char *RLE_Data::Decode(const unsigned char *buff)
