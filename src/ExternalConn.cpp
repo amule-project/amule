@@ -259,7 +259,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					buffer+=wxString(wxT("High ID\t"));
 				
 				if (theApp.serverconnect->IsConnected()) {
-					buffer+=wxString::Format(wxT("%s\t"), theApp.serverconnect->GetCurrentServer()->GetListName());
+					buffer+= theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
 					buffer+=wxString::Format(wxT("%d\t"), theApp.serverconnect->GetCurrentServer()->GetUsers());
 				}
 			}
@@ -424,20 +424,18 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			// returns one string where each line is formatted 
 			// as: %s\t%s\t%d\t%s\t%d\t%d\t%d\n
 			wxString buffer(wxT(""));
-			wxString tempBuf(wxT(""));
 			for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
 				CServer *server = theApp.serverlist->GetServerAt(i);
 				if (server) {
-					tempBuf.Printf(wxString::Format(wxT("%s\t%s\t%d\t%s\t%d\t%d\t%d\n"),
-						server->GetListName(),
-						server->GetDescription(),
-						server->GetPort(),
-						server->GetAddress(),
-						server->GetUsers(),
-						server->GetMaxUsers(),
-						server->GetFiles()
-					));
-					buffer.Append(tempBuf);
+					buffer.Append(
+						server->GetListName() + wxT("\t") +
+						server->GetDescription() + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
+						server->GetAddress() + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")					
+					);
 				}
 			}
 			return((wxChar *)buffer.GetData());
@@ -450,7 +448,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				wxString sPort = item.Mid(11+idx1+1,idx2);
 				wxString sName = item.Mid(11+idx1+idx2+2);
 					
-				CServer *nsrv = new CServer(atoi(unicode2char(sPort)), (char*)sIP.GetData());
+				CServer *nsrv = new CServer(atoi(unicode2char(sPort)), sIP);
 				nsrv->SetListName((char*)sName.GetData());
 				theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
 			}
@@ -470,7 +468,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (theApp.serverconnect->IsConnected()) {
 				buffer.Append(wxT("Connected\t"));
 				theApp.serverconnect->IsLowID() ? buffer.Append(wxT("Low ID\t")) : buffer.Append(wxT("High ID\t"));
-				buffer+=wxString::Format(wxT("%s\t"), theApp.serverconnect->GetCurrentServer()->GetListName());
+				buffer+=theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
 				buffer+=wxString::Format(wxT("%ld"), (long)theApp.serverconnect->GetCurrentServer()->GetUsers());
 			} else if (theApp.serverconnect->IsConnecting())
 				buffer.Append(wxT("Connecting\t"));
@@ -1577,20 +1575,18 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				// shakraw - return a unique string where each line is formatted 
 				// as: wxString\twxString\tint\twxString\tint\tint\tint\n
 				wxString buffer(wxT(""));
-				wxString tempBuf(wxT(""));
 				for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
 					CServer *server = theApp.serverlist->GetServerAt(i);
 					if (server) {
-						tempBuf.Printf(wxT("%s\t%s\t%d\t%s\t%d\t%d\t%d\n"),
-							server->GetListName(),
-							server->GetDescription(),
-							server->GetPort(),
-							server->GetAddress(),
-							server->GetUsers(),
-							server->GetMaxUsers(),
-							server->GetFiles()
+						buffer.Append(
+							server->GetListName() + wxT("\t") +
+							server->GetDescription() + wxT("\t") +
+							wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
+							server->GetAddress() + wxT("\t") +
+							wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
+							wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
+							wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
 						);
-						buffer.Append(tempBuf);
 					}
 				}
 				return((wxChar *)buffer.GetData());
@@ -1605,9 +1601,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(7,4).Cmp (wxT("NAME")) == 0) { // get server name
 				if ((item.Length() > 11) && (item.Mid(12).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(12))));
-					return(char2unicode(server->GetListName()));
+					return(server->GetListName());
 				} else if (theApp.serverconnect->IsConnected()) {
-					return(char2unicode(theApp.serverconnect->GetCurrentServer()->GetListName()));
+					return(theApp.serverconnect->GetCurrentServer()->GetListName());
 				} else
 					return wxT("");
 			}
@@ -1615,11 +1611,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(7,4).Cmp(wxT("DESC")) == 0) { // get the server description
 				if ((item.Length() > 11) && (item.Mid(12).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(12))));
-					return(char2unicode(server->GetDescription()));
+					return(server->GetDescription());
 				} else if (theApp.serverconnect->IsConnected())
-					return(char2unicode(theApp.serverconnect->GetCurrentServer()->GetDescription()));
+					return(theApp.serverconnect->GetCurrentServer()->GetDescription());
 				else
-					return wxT("");
+					return wxEmptyString;
 			}
 
 			if (item.Mid(7,4).Cmp(wxT("PORT")) == 0) { // get the server port
@@ -1638,11 +1634,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (item.Mid(7,2).Cmp(wxT("IP")) == 0) { // get the server address
 				if ((item.Length() > 9) && (item.Mid(10).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(10))));
-					return(char2unicode(server->GetAddress()));
+					return(server->GetAddress());
 				} else if (theApp.serverconnect->IsConnected())
-					return(char2unicode(theApp.serverconnect->GetCurrentServer()->GetAddress()));
+					return(theApp.serverconnect->GetCurrentServer()->GetAddress());
 				else	
-					return(wxT(""));
+					return(wxEmptyString);
 			}
 			
 			if (item.Mid(7,5).Cmp(wxT("USERS")) == 0) { //get the number of users in the server we are connected to
@@ -1672,16 +1668,16 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			}
 
 			if (item.Mid(7,5).Cmp(wxT("FILES")) == 0) { // get the number of file shared in a server
-				static char buffer[1024];
+				static wxString buffer;
 				if ((item.Length() > 12) && (item.Mid(13).IsNumber())) {
 					CServer* server = theApp.serverlist->GetServerAt(atoi(unicode2char(item.Mid(13))));
-					sprintf(buffer, "%i", server->GetFiles());
+					buffer = wxString::Format(wxT("%i"), server->GetFiles());
 				} else if (theApp.serverconnect->IsConnected())
-					sprintf(buffer, "%s", theApp.serverconnect->GetCurrentServer()->GetListName());
+					buffer = theApp.serverconnect->GetCurrentServer()->GetListName();
 				else
-					*buffer = 0;
+					buffer = wxEmptyString;
 
-				return(char2unicode(buffer));
+				return(buffer);
 			}
 			
 			if (item.Mid(7,7).Cmp(wxT("CONNECT")) == 0) { //Connect to a server (if specified) or to any server
@@ -1689,7 +1685,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					int separator = item.Mid(15).Find(wxT(" "));
 					wxString sIP = item.Mid(15,separator);
 					wxString sPort = item.Mid(15+separator+1);
-					CServer* server = theApp.serverlist->GetServerByAddress((char*)sIP.GetData(), atoi(unicode2char(sPort)));
+					CServer* server = theApp.serverlist->GetServerByAddress(sIP, atoi(unicode2char(sPort)));
 					if (server != NULL) {
 						theApp.serverconnect->ConnectToServer(server);
 						theApp.amuledlg->ShowConnectionState(false);
@@ -1715,7 +1711,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					wxString sPort = item.Mid(11+separator1+1,separator2);
 					wxString sName = item.Mid(11+separator1+separator2+2);
 					
-					CServer *nsrv = new CServer(atoi(unicode2char(sPort)), (char*)sIP.GetData());
+					CServer *nsrv = new CServer(atoi(unicode2char(sPort)), sIP);
 					nsrv->SetListName((char*)sName.GetData());
 					theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true);
 					return wxT("Server Added");
@@ -1728,7 +1724,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					int separator = item.Mid(14).Find(wxT(" "));
 					wxString sIP = item.Mid(14, separator);
 					wxString sPort = item.Mid(14+separator+1);
-					CServer* server = theApp.serverlist->GetServerByAddress((char*)sIP.GetData(), atoi(unicode2char(sPort)));
+					CServer* server = theApp.serverlist->GetServerByAddress(sIP, atoi(unicode2char(sPort)));
 					if (server != NULL) {
 						theApp.serverlist->RemoveServer(server);
 						return wxT("Removed");

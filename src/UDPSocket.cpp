@@ -134,15 +134,6 @@ CUDPSocket::~CUDPSocket(){
 	//m_udpwnd.DestroyWindow();
 }
 
-#if 0
-bool  CUDPSocket::Create(){
-  //VERIFY( m_udpwnd.CreateEx(0, AfxRegisterWndClass(0),_T("Emule Socket Wnd"),WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL));
-  //m_hWndResolveMessage = m_udpwnd.m_hWnd;
-  //m_udpwnd.m_pOwner = this;
-  return 1; //CAsyncSocket::Create(0,SOCK_DGRAM,FD_READ);
-}
-#endif
-
 void CUDPSocket::OnReceive(int nErrorCode){
 	char buffer[5000];
 	wxString serverbuffer;
@@ -152,17 +143,14 @@ void CUDPSocket::OnReceive(int nErrorCode){
 	RecvFrom(addr,buffer,5000);
 	wxUint32 length = LastCount();
 	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
-	struct in_addr addr_in;
-	addr_in.s_addr = inet_addr(unicode2char(addr.IPAddress()));
-	char* fromIP=inet_ntoa(addr_in);
 
 	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
-	  ProcessPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); 
+	  ProcessPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
 	else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1))
-	  ProcessExtPacket(buffer+2,length-2,buffer[1],fromIP,addr.Service()); 
+	  ProcessExtPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
 }
 
-bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host, uint16 port){
+bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 	try{
 		CServer* update;
 		update = theApp.serverlist->GetServerByAddress( host, port-4 );
@@ -180,7 +168,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				// process all search result packets
 				int iLeft;
 				do{
-					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(host), port-4);
+					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(unicode2char(host)), port-4);
 					// There is no need because we don't limit the global results
 					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
@@ -308,7 +296,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 	}
 }
 
-bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, char* host, uint16 port){
+bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 	try{
 		switch(opcode){
 			/*
@@ -342,52 +330,6 @@ bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, char* h
 		return false;
 	}
 }
-
-#if 0
-void CUDPSocket::AsyncResolveDNS(LPCTSTR lpszHostAddress, UINT nHostPort){
-	m_lpszHostAddress = lpszHostAddress;
-	m_nHostPort = nHostPort;
-	//if (DnsTaskHandle)
-	//	WSACancelAsyncRequest(DnsTaskHandle);
-	//DnsTaskHandle = NULL;
-	// see if we have a ip already
-	USES_CONVERSION;
-	SOCKADDR_IN sockAddr;
-	memset(&sockAddr,0,sizeof(sockAddr));
-	LPSTR lpszAscii = T2A((LPTSTR)m_lpszHostAddress);
-	sockAddr.sin_family = AF_INET;
-	sockAddr.sin_addr.s_addr = inet_addr(lpszAscii);
-	sockAddr.sin_port = m_nHostPort; //htons((u_short)m_nHostPort);
-
-	// backup for send socket
-	m_SaveAddr = sockAddr;
-
-	if (sockAddr.sin_addr.s_addr == INADDR_NONE){
-		/* Resolve hostname "hostname" asynchronously */
-		memset(DnsHostBuffer, 0, sizeof(DnsHostBuffer));
-
-		DnsTaskHandle = WSAAsyncGetHostByName(
-			m_hWndResolveMessage,
-			WM_DNSLOOKUPDONE,
-			lpszHostAddress,
-			DnsHostBuffer,
-			MAXGETHOSTSTRUCT);
-
-		if (DnsTaskHandle == 0){
-			delete[] sendbuffer;
-			sendbuffer = 0;
-			delete cur_server;
-			cur_server = 0;
-#ifdef __DEBUG__
-			AfxMessageBox("LOOKUPERROR DNSTASKHANDLE = 0");
-#endif
-		}
-	}
-	else{
-		SendBuffer();
-	}
-}
-#endif
 
 void CUDPSocket::DnsLookupDone(struct sockaddr_in* inaddr) {
   /* An asynchronous database routine completed. */
@@ -449,7 +391,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	sockAddr.sin_family=AF_INET;
         // inet_addr is obsolete
 #ifndef __WXMSW__
-        if (!(ret = inet_aton(cur_server->GetAddress(), &sockAddr.sin_addr))) {
+        if (!(ret = inet_aton(unicode2char(cur_server->GetAddress()), &sockAddr.sin_addr))) {
 		sockAddr.sin_addr.s_addr = INADDR_NONE;
 	  }
 #endif
@@ -466,7 +408,7 @@ void CUDPSocket::SendPacket(Packet* packet,CServer* host){
 	    // uh?
 	    return;
 	  }
-	  dns->ipName=char2unicode(cur_server->GetAddress());
+	  dns->ipName=cur_server->GetAddress();
 	  dns->socket=this;
 	  dns->Run();
 	} else {

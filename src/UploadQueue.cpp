@@ -392,10 +392,9 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 
 	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
-		return;
+		return;	
 	}
 
-	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
 			client->UnBan();
@@ -452,11 +451,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
 			delete srv;
 		}
-		/*
-		} else {
-			theApp.amuledlg->AddLogLine(false, _("Added new server: %s:%d"), srv->GetFullIP(), srv->GetPort());
-		}
-		*/
+		
 	}
 
 	// statistic values

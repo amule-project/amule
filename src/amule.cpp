@@ -954,10 +954,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			emulesig_out.Write("1",1);
 			emulesig_out.Write("|",1);
 			// Name of server (Do not use GetRealName()!)
-			emulesig_out.Write(serverconnect->GetCurrentServer()->GetListName(),strlen(serverconnect->GetCurrentServer()->GetListName()));
+			emulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetListName()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetListName())));
 			emulesig_out.Write("|",1);
 			// IP and port of the server
-			emulesig_out.Write(serverconnect->GetCurrentServer()->GetFullIP(),strlen(serverconnect->GetCurrentServer()->GetFullIP()));
+			emulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetFullIP()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetFullIP())));
 			emulesig_out.Write("|",1);
 			sprintf(buffer,"%d",serverconnect->GetCurrentServer()->GetPort());
 			emulesig_out.Write(buffer,strlen(buffer));
@@ -965,9 +965,9 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			// Now for amule sig
 			amulesig_out.Write("1",1);
 			amulesig_out.Write("\n",1);
-			amulesig_out.Write(serverconnect->GetCurrentServer()->GetListName(),strlen(serverconnect->GetCurrentServer()->GetListName()));
+			amulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetListName()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetListName())));
 			amulesig_out.Write("\n",1);
-			amulesig_out.Write(serverconnect->GetCurrentServer()->GetFullIP(),strlen(serverconnect->GetCurrentServer()->GetFullIP()));
+			amulesig_out.Write(unicode2char(serverconnect->GetCurrentServer()->GetFullIP()),strlen(unicode2char(serverconnect->GetCurrentServer()->GetFullIP())));
 			amulesig_out.Write("\n",1);
 			amulesig_out.Write(buffer,strlen(buffer));
 			amulesig_out.Write("\n",1);

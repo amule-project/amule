@@ -205,12 +205,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						wxString servername;
 						if (pServer) {
-							servername	= char2unicode(pServer->GetListName());	
+							servername	= pServer->GetListName();	
 						} else {	
 							servername = _("Server");
 						}
 						AddDebugLogLineM(false, _("Error ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "),cur_server->GetAddress(), cur_server->GetPort()) 
+														wxString::Format(wxT(" (%s:%u) - "),unicode2char(cur_server->GetAddress()), cur_server->GetPort()) 
 														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 						bOutputMessage = false;
 
@@ -219,12 +219,12 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						CServer* pServer = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 						wxString servername;
 						if (pServer) {
-							servername	= char2unicode(pServer->GetListName());	
+							servername	= pServer->GetListName();	
 						} else {	
 							servername = _("Server");
 						}
 						AddDebugLogLineM(false, _("Warning ") + servername +
-														wxString::Format(wxT(" (%s:%u) - "),cur_server->GetAddress(), cur_server->GetPort()) 
+														wxString::Format(wxT(" (%s:%u) - "),unicode2char(cur_server->GetAddress()), cur_server->GetPort()) 
 														+ message.Mid(5,message.Len()).Trim(_T(" :")))
 
 						bOutputMessage = false;
@@ -237,8 +237,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						if ( dynip.Length() && dynip.Length() < 51){
 							CServer* eserver = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 							if (eserver){
-								eserver->SetDynIP(unicode2char(dynip));
-								cur_server->SetDynIP(unicode2char(dynip));
+								eserver->SetDynIP(dynip);
+								cur_server->SetDynIP(dynip);
 								theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(eserver);
 							}
 						}
@@ -411,7 +411,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				memcpy (temp,&buffer[num+8],num2);
 				temp[num2]=0; //close the string
 				update->SetDescription(temp);
-				theApp.amuledlg->ShowConnectionState(true,char2unicode(update->GetListName()));
+				theApp.amuledlg->ShowConnectionState(true,update->GetListName());
 				theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
 				delete[] temp;
 				delete[] buffer;
@@ -439,7 +439,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 					in_addr host;
 					host.s_addr=ip;
-					CServer* srv = new CServer(port, inet_ntoa(host));
+					CServer* srv = new CServer(port, char2unicode(inet_ntoa(host)));
 					srv->SetListName(srv->GetFullIP());
 					if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
 						delete srv;
@@ -508,23 +508,23 @@ void CServerSocket::ConnectToServer(CServer* server)
 	theApp.amuledlg->AddLogLine(true,"Trying to connect\n");
 	#endif
 	cur_server = new CServer(server);
-	theApp.amuledlg->AddLogLine(false, _("Connecting to ") + wxString(char2unicode(cur_server->GetListName())) + wxT(" (") + wxString(char2unicode(cur_server->GetFullIP())) + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
+	theApp.amuledlg->AddLogLine(false, _("Connecting to ") + cur_server->GetListName() + wxT(" (") + server->GetAddress() + wxT(" - ") + cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),cur_server->GetPort()));
 	SetConnectionState(CS_CONNECTING);
 	wxIPV4address addr;
-	addr.Hostname(char2unicode(server->GetAddress()));
+	addr.Hostname(server->GetAddress());
 	addr.Service(server->GetPort());
-	AddDebugLogLineM(true, wxString(_("Server ")) + char2unicode(server->GetAddress()) + wxString::Format(_(" Port %i"),server->GetPort()));
-	AddDebugLogLineM(true, wxString(_("Addr ")) + addr.Hostname() + wxString::Format(_(" Port %i"),server->GetPort()));
+	AddDebugLogLineM(true, _("Server ") + server->GetAddress() + wxString::Format(_(" Port %i"),server->GetPort()));
+	AddDebugLogLineM(true, _("Addr ") + addr.Hostname() + wxString::Format(_(" Port %i"),server->GetPort()));
 	this->Connect(addr,FALSE);
 
-	info=server->GetListName();
+	info = server->GetListName();
 	SetConnectionState(CS_CONNECTING);
 }
 
 void CServerSocket::OnError(wxSocketError nErrorCode)
 {
 	if (theApp.glob_prefs->GetVerbose()) {
-		theApp.amuledlg->AddLogLine(false,_("Error in serversocket: %s (%s:%i): %u"),cur_server->GetListName(),cur_server->GetFullIP(),cur_server->GetPort(), (int)nErrorCode);
+		AddLogLineM(false,_("Error in serversocket: ") + cur_server->GetListName() + wxT("(") + cur_server->GetFullIP() + wxString::Format(wxT(":%i): %u"),cur_server->GetPort(), (int)nErrorCode));
 	}
 	SetConnectionState(CS_DISCONNECTED);
 }

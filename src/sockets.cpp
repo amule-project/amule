@@ -173,7 +173,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 	InitLocalIP();
 	
 	if (sender->GetConnectionState() == CS_WAITFORLOGIN){
-		AddLogLineM(false,wxString(_("Connected to ")) + char2unicode(sender->cur_server->GetListName()) + wxT(" (") + char2unicode(sender->cur_server->GetFullIP()) + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
+		AddLogLineM(false,_("Connected to ") + sender->cur_server->GetListName() + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
 		//send loginpacket
 		CServer* update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 		if (update){
@@ -216,9 +216,9 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		theApp.stat_reconnects++;
 		theApp.stat_serverConnectTime=GetTickCount64();
 		connected = true;
-		AddLogLineM(true, wxString(_("Connection established on: ")) + char2unicode(sender->cur_server->GetListName()));
+		AddLogLineM(true, _("Connection established on: ") + sender->cur_server->GetListName());
 		connectedsocket = sender;
-		theApp.amuledlg->ShowConnectionState(true,char2unicode(connectedsocket->cur_server->GetListName()));
+		theApp.amuledlg->ShowConnectionState(true,connectedsocket->cur_server->GetListName());
 		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
 		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, true);
 		StopConnectionTry();
@@ -270,11 +270,11 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			break;
 		case CS_DISCONNECTED:
 			theApp.sharedfiles->ClearED2KPublishInfo();
-			AddLogLineM(false,wxString(_("Lost connection to ")) + char2unicode(sender->cur_server->GetListName()) + wxT("(") + char2unicode(sender->cur_server->GetFullIP()) + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
+			AddLogLineM(false,_("Lost connection to ") + sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i)"),sender->cur_server->GetPort()));
 			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(update, false);		
 			break;
 		case CS_SERVERDEAD:
-			AddLogLineM(false,wxString(char2unicode(sender->cur_server->GetListName())) + wxT("(") + char2unicode(sender->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) appears to be dead."),sender->cur_server->GetPort()));			
+			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) appears to be dead."),sender->cur_server->GetPort()));			
 			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if(update){
 				update->AddFailedCount();
@@ -284,7 +284,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_ERROR:
 			break;
 		case CS_SERVERFULL:
-			AddLogLineM(false,wxString(char2unicode(sender->cur_server->GetListName())) + wxT("(") + char2unicode(sender->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) appears to be full."),sender->cur_server->GetPort()));			
+			AddLogLineM(false,sender->cur_server->GetListName() + wxT("(") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) appears to be full."),sender->cur_server->GetPort()));			
 			break;
 		case CS_NOTCONNECTED:; 
 			break; 
@@ -329,7 +329,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 		case CS_NOTCONNECTED:{
 			if (!connecting)
 				break;
-			AddLogLineM(false,wxString(_("Connecting to ")) + sender->info + wxT(" (") + char2unicode(sender->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) failed"),sender->cur_server->GetPort()));			
+			AddLogLineM(false,wxString(_("Connecting to ")) + sender->info + wxT(" (") + sender->cur_server->GetFullIP() + wxString::Format(wxT(":%i) failed"),sender->cur_server->GetPort()));			
 		}
 		case CS_SERVERDEAD:
 		case CS_SERVERFULL:{
@@ -383,7 +383,7 @@ void CServerConnect::CheckForTimeout()
 			DWORD key = it->first;
 			CServerSocket* value = it->second;
 			
-			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + char2unicode(value->cur_server->GetFullIP()) + wxString::Format(wxT(":%i) timed out."),value->cur_server->GetPort()));			
+			AddLogLineM(false,wxString(_("Connection attempt to ")) + value->info + wxT(" (") + value->cur_server->GetFullIP() + wxString::Format(wxT(":%i) timed out."),value->cur_server->GetPort()));			
 			
 			it++;
 			connectionattemps.erase( key );
@@ -450,7 +450,7 @@ CServer* CServerConnect::GetCurrentServer(){
 
 void CServerConnect::SetClientID(uint32 newid){
 	clientid = newid;
-	theApp.amuledlg->ShowConnectionState(IsConnected(),char2unicode(GetCurrentServer()->GetListName()) );
+	theApp.amuledlg->ShowConnectionState(IsConnected(),GetCurrentServer()->GetListName());
 }
 
 void CServerConnect::DestroySocket(CServerSocket* pSck){

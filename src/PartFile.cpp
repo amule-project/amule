@@ -1805,7 +1805,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	// MOD Note: Do not change this part - Merkur
 	// check first if we are this source
 	if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()){
-		if ((theApp.serverconnect->GetClientID() == userid) && inet_addr(theApp.serverconnect->GetCurrentServer()->GetFullIP())  == serverip) {
+		if ((theApp.serverconnect->GetClientID() == userid) && inet_addr(unicode2char(theApp.serverconnect->GetCurrentServer()->GetFullIP()))  == serverip) {
 			return false;
 		}
 	} else if (theApp.serverconnect->GetClientID() == userid) {

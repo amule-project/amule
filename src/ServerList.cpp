@@ -198,17 +198,14 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 				newserver->AddTagFromFile(&servermet);
 			}
 			// set listname for server
-			if (!newserver->GetListName()) {
-				char* listname = new char[strlen(newserver->GetAddress())+8];
-				sprintf(listname,"Server %s",newserver->GetAddress());
-				newserver->SetListName(listname);
-				delete[] listname;
+			if (newserver->GetListName().IsEmpty()) {
+				newserver->SetListName(wxT("Server ") +newserver->GetAddress());
 			}
 			if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(newserver,true)) {
 				CServer* update = theApp.serverlist->GetServerByAddress(newserver->GetAddress(), newserver->GetPort());
 				if(update) {
 					update->SetListName( newserver->GetListName());
-					if(newserver->GetDescription()) {
+					if(!newserver->GetDescription().IsEmpty()) {
 						update->SetDescription( newserver->GetDescription());
 					}
 					theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(update);
@@ -537,7 +534,7 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 		}
 
 		// create server object and add it to the list
-		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), unicode2char(strHost));
+		CServer* nsrv = new CServer(atoi(unicode2char(strPort)), strHost);
 		nsrv->SetListName((char*) unicode2char(strName));
 
 		// emanuelw(20030924) fix: isstaticserver now is used! before it was always true
@@ -548,12 +545,12 @@ void CServerList::AddServersFromTextFile(wxString strFilename,bool isstaticserve
 
 		// emanuelw(20030924) added: create log entry
 		if(writetolog == true) {
-			theApp.amuledlg->AddLogLine(true,wxString(_("Server added: "))+wxString(nsrv->GetAddress())); 
+			theApp.amuledlg->AddLogLine(true,wxString(_("Server added: "))+nsrv->GetAddress()); 
 		}
 
 		if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(nsrv, true))	{
 			delete nsrv;
-			CServer* srvexisting = GetServerByAddress((char*)strHost.GetData(), atoi(unicode2char(strPort)));
+			CServer* srvexisting = GetServerByAddress(strHost, atoi(unicode2char(strPort)));
 			if (srvexisting) {
 				srvexisting->SetListName((char*)strName.GetData());
 				srvexisting->SetIsStaticMember(true);
@@ -746,11 +743,11 @@ CServer* CServerList::GetNextServer(CServer* lastserver)
 	}
 }
 
-CServer* CServerList::GetServerByAddress(char* address, uint16 port)
+CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 {
 	for (POSITION pos = list.GetHeadPosition();pos != 0;) {
 		CServer *s = list.GetNext(pos); // i_a: small speed optimization
-		if (port == s->GetPort() && !strcmp(s->GetAddress(),address)) {
+		if (port == s->GetPort() && s->GetAddress() == address) {
 			return s;
 		}
 	}
@@ -801,24 +798,24 @@ bool CServerList::SaveServermetToFile()
 			sbuffer.ip = ENDIAN_SWAP_32(nextserver->GetIP());
 			sbuffer.port = ENDIAN_SWAP_32(nextserver->GetPort());
 			uint16 tagcount = 11;
-			if (nextserver->GetListName() && nextserver->GetListName()[0] != '\0') 
+			if (!nextserver->GetListName().IsEmpty()) 
 				tagcount++;
-			if (nextserver->GetDynIP() && nextserver->GetDynIP()[0] != '\0')
+			if (!nextserver->GetDynIP().IsEmpty())
 				tagcount++;
-			if (nextserver->GetDescription() && nextserver->GetDescription()[0] != '\0')
+			if (!nextserver->GetDescription().IsEmpty())
 				tagcount++;
 			sbuffer.tagcount = ENDIAN_SWAP_32(tagcount);
-			servermet.Write(&sbuffer, sizeof(ServerMet_Struct));
-		
-			if( nextserver->GetListName() && nextserver->GetListName()[0] != '\0' ){
+			servermet.Write(&sbuffer, sizeof(ServerMet_Struct));	
+						
+			if (!nextserver->GetListName().IsEmpty()) {
 				CTag servername( ST_SERVERNAME, nextserver->GetListName() );
 				servername.WriteTagToFile(&servermet);
 			}
-			if( nextserver->GetDynIP() && nextserver->GetDynIP()[0] != '\0' ){
+			if (!nextserver->GetDynIP().IsEmpty()) {
 				CTag serverdynip( ST_DYNIP, nextserver->GetDynIP() );
 				serverdynip.WriteTagToFile(&servermet);
 			}
-			if( nextserver->GetDescription() && nextserver->GetDescription()[0] != '\0' ){
+			if (!nextserver->GetDescription().IsEmpty()) {
 				CTag serverdesc( ST_DESCRIPTION, nextserver->GetDescription() );
 				serverdesc.WriteTagToFile(&servermet);
 			}
@@ -840,7 +837,7 @@ bool CServerList::SaveServermetToFile()
 			softfiles.WriteTagToFile(&servermet);
 			CTag hardfiles(ST_HARDFILES, nextserver->GetHardFiles() );
 			hardfiles.WriteTagToFile(&servermet);
-			CTag version(ST_VERSION, unicode2char(nextserver->GetVersion()));
+			CTag version(ST_VERSION, nextserver->GetVersion());
 			version.WriteTagToFile(&servermet);
 			CTag tagUDPFlags(ST_UDPFLAGS, nextserver->GetUDPFlags() );
 			tagUDPFlags.WriteTagToFile(&servermet);
