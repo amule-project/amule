@@ -125,7 +125,11 @@ class CEC_UpDownClient_Tag : public CECTag {
 	public:
 		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
 
- 		CMD4Hash FileID() { return GetTagByName(EC_TAG_KNOWNFILE)->GetMD4Data(); }
+ 		CMD4Hash FileID()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE);
+			return tag ? tag->GetMD4Data() : CMD4Hash();
+		}
  		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
 
  		wxString ClientName() { return GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData(); }

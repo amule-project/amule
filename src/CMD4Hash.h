@@ -45,9 +45,9 @@ class CMD4Hash
 {
 public:
 	/**
-	 * Default contructor.
+	 * Default constructor.
 	 *
-	 * The default contructor creates an empty hash of length 16.
+	 * The default constructor creates an empty hash of length 16.
 	 * Each field of the char array has an initial value of zero.
 	 */
 	CMD4Hash() {
