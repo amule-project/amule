@@ -75,7 +75,9 @@
 #endif
 
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// CServerSocketHandler
+//------------------------------------------------------------------------------
 
 #ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
@@ -85,17 +87,6 @@ END_EVENT_TABLE()
 CServerSocketHandler::CServerSocketHandler(CServerSocket *)
 {
 }
-#else
-CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
-:
-wxThread(wxTHREAD_JOINABLE)
-{
-	m_socket = socket;
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
-	}
-}
-#endif
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 {
@@ -129,8 +120,17 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 	
 	
 }
+#else
+CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
+:
+wxThread(wxTHREAD_JOINABLE)
+{
+	m_socket = socket;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
+	}
+}
 
-#ifdef AMULE_DAEMON
 void *CServerSocketHandler::Entry()
 {
 	while ( !TestDestroy() ) {
@@ -169,7 +169,9 @@ void *CServerSocketHandler::Entry()
 //
 static CServerSocketHandler TheServerSocketHandler;
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// CServerSocket
+//------------------------------------------------------------------------------
 
 IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
 
