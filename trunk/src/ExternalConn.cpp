@@ -596,6 +596,10 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 			queryitems.insert(tag->GetMD4Data());
 		}
 	}
+	//
+	// If there's no search in progress - notify client, he may stop asking
+	response->AddTag(CECTag(EC_TAG_SEARCH_STATUS, (uint8)theApp.searchlist->SearchInProgress()));
+
 	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();
 	while (it != list.end()) {
@@ -604,7 +608,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 			continue;
 		}
 		response->AddTag(CEC_SearchFile_Tag(sf, detail_level));
-	}	
+	}
 	return response;
 }
 

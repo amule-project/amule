@@ -868,7 +868,7 @@ enum {
 		/*!
 		 * \brief Info about file found in search
 		 */
-		 EC_TAG_SEARCHFILE,
+	EC_TAG_SEARCHFILE,
 		 
 		/*!
 		 * \brief Type of search requested
@@ -881,7 +881,6 @@ enum {
 		 * \brief Search parameters
 		 */
 	EC_TAG_SEARCH_NAME,
-	
 	EC_TAG_SEARCH_MIN_SIZE,
 	EC_TAG_SEARCH_MAX_SIZE,
 	EC_TAG_SEARCH_FILE_TYPE,
@@ -889,6 +888,11 @@ enum {
 	EC_TAG_SEARCH_AVAILABILITY,
 
 
+	/*!
+	 * \brief Status of search in core
+	 */
+	 EC_TAG_SEARCH_STATUS,
+	 
 	//
 	// Preferences
 	//

@@ -134,10 +134,14 @@ public:
 		if (!thread || (thread == m_searchthread)) {
 			m_searchthread = NULL; 
 		}
+		
+		m_SearchInProgress = false;
+		
 	};
 	
-	bool		IsGlobalSearch() { return m_searchthread != NULL; };
+	bool IsGlobalSearch() { return m_searchthread != NULL; };
 
+	bool SearchInProgress() { return m_SearchInProgress; }
 private:
 
 	CPacket *CreateSearchPacket(wxString &searchString, wxString& typeText,
@@ -157,6 +161,7 @@ private:
 
 	CGlobalSearchThread* m_searchthread;
 
+	bool m_SearchInProgress;
 };
 
 #endif // SEARCHLIST_H

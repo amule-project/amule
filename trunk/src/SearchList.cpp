@@ -219,6 +219,7 @@ CSearchList::CSearchList()
 	m_CurrentSearch = 0;
 	m_searchpacket = NULL;
 	m_searchthread = NULL;
+	m_SearchInProgress = false;
 }
 
 
@@ -290,6 +291,8 @@ bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &s
 		m_searchpacket = searchpacket;
 	}
 	
+	m_SearchInProgress = true;
+	
 	return true;
 }
 
@@ -321,6 +324,7 @@ void CSearchList::LocalSearchEnd()
 		m_searchpacket = NULL;
 	}
 	if (!IsGlobalSearch()) {
+		m_SearchInProgress = true;
 		// On global search, we must not reset the GUI controls.
 		Notify_SearchLocalEnd();
 	}
