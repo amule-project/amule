@@ -932,6 +932,7 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			theApp.amuledlg->AddLogLine( true, _("Invalid link: %s"), msg.c_str());
 		}
 	}
+ctl->SetValue("");
 }
 
 
