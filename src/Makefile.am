@@ -173,6 +173,8 @@ amuled_SOURCES = ListenSocket.cpp \
         EMSocket.cpp \
         AddFileThread.cpp \
         BaseClient.cpp \
+        SHA.cpp \
+        SHAHashSet.cpp \
         CFile.cpp \
         ClientCredits.cpp \
         ClientList.cpp \
@@ -240,8 +242,8 @@ amulegui_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFL
 amulegui_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
-amuled_CFLAGS = $(WX_CFLAGS) -DAMULE_DAEMON
-amuled_CXXFLAGS = $(WX_CFLAGS) -DAMULE_DAEMON 
+amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON
+amuled_CXXFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
 amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
