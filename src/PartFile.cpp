@@ -331,7 +331,7 @@ void CPartFile::CreatePartFile()
 	do { 
 		i++; 
 		m_partmetfilename = wxString::Format(wxT("%03i.part.met"), i);
-		m_fullname = theApp.glob_prefs->GetTempDir() + wxT("/") + m_partmetfilename;
+		m_fullname = theApp.glob_prefs->GetTempDir() + wxFileName::GetPathSeparator() + m_partmetfilename;
 	} while (wxFileName::FileExists(m_fullname));
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
@@ -383,7 +383,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	
 	m_partmetfilename = filename;
 	m_strFilePath = in_directory;
-	m_fullname = m_strFilePath + wxT("/") + m_partmetfilename;
+	m_fullname = m_strFilePath + wxFileName::GetPathSeparator() + m_partmetfilename;
 	
 	CSafeFile metFile;
 	bool load_from_backup = false;
@@ -2367,7 +2367,7 @@ wxThread::ExitCode completingThread::Entry()
 	} else {
 		(*newname) =  theApp.glob_prefs->GetIncomingDir();
 	}	
-	(*newname) += wxT("/");
+	(*newname) += wxFileName::GetPathSeparator();
 	(*newname) += Completing_FileName;
 	
 	if(wxFileName::FileExists(*newname)) {
@@ -2384,11 +2384,11 @@ wxThread::ExitCode completingThread::Entry()
 			namecount++;
 			if (ext.IsEmpty()) {
 				strTestName = theApp.glob_prefs->GetIncomingDir(); 
-				strTestName += wxT("/");
+				strTestName += wxFileName::GetPathSeparator();
 				strTestName += filename + wxString::Format(wxT("(%d)"), namecount);
 			} else {
 				strTestName = theApp.glob_prefs->GetIncomingDir(); 
-				strTestName += wxT("/");
+				strTestName += wxFileName::GetPathSeparator();
 				strTestName += filename + wxString::Format(wxT("(%d)."), namecount);
 				strTestName += ext;
 			}

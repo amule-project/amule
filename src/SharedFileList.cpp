@@ -101,8 +101,8 @@ void CSharedFileList::FindSharedFiles() {
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
 
-	if (directory.Last() != wxT('/')) {
-		directory += wxT("/");
+	if (directory.Last() != wxFileName::GetPathSeparator()) {
+		directory += wxFileName::GetPathSeparator();
 	}
 
 	wxString fname=::wxFindFirstFile(directory,wxFILE);
@@ -119,9 +119,9 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		wxASSERT(new_file.IsOpened());
 
-		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
+		if(fname.Find(wxFileName::GetPathSeparator(),TRUE) != -1) {  // starts at end
 			// Take just the file from the path
-			fname=fname.Mid(fname.Find('/',TRUE)+1);
+			fname=fname.Mid(fname.Find(wxFileName::GetPathSeparator(),TRUE)+1);
 		}
 
 		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());

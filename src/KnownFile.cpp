@@ -168,7 +168,7 @@ bool CKnownFile::CreateFromFile(const wxString& in_directory, const wxString& in
 	m_strFileName = in_filename;
 	
 	// open file
-	wxString namebuffer = in_directory + wxT("/") + in_filename;
+	wxString namebuffer = in_directory + wxFileName::GetPathSeparator() + in_filename;
 	//SetFilePath(namebuffer); ??
 	CFile file;
 	if ( !file.Open(namebuffer, CFile::read ) ) {
