@@ -280,9 +280,6 @@ CMuleListCtrl::ItemDataList CMuleListCtrl::GetSelectedItems() const
 
 		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
-
-	// Erase empty positions left by items with zero-value userdata.
-	list.resize( current );
 	
 	return list;
 }
