@@ -925,8 +925,18 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		}
 	}
 
+#if wxCHECK_VERSION(2,5,3)
 	emulesig_out.Clear();
 	amulesig_out.Clear();
+#else
+	unsigned int i;
+	for( i = 1; i <= emulesig_out.GetLineCount(); ++i) {
+		emulesig_out.RemoveLine(1);
+	}
+	for( i = 1; i <= amulesig_out.GetLineCount(); ++i) {
+		amulesig_out.RemoveLine(1);
+	}
+#endif
 	
 	wxString emulesig_string;
 	
