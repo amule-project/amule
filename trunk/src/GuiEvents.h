@@ -252,7 +252,7 @@ class GUIEvent {
 #define Notify_QlistThaw()                          Notify_0_ValEvent()
 
 // search
-#define Notify_SearchCancel(ptr)                    Notify_1_ValEvent(SEARCH_CANCEL, ptr)
+#define Notify_SearchCancel()                       Notify_0_ValEvent(SEARCH_CANCEL)
 #define Notify_SearchLocalEnd()                     Notify_0_ValEvent(SEARCH_LOCAL_END)
 
 // chat
