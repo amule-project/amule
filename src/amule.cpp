@@ -198,7 +198,7 @@ CamuleApp::CamuleApp()
 
 		<< wxT("Current version is: aMule ") << GetMuleVersion() << wxT("\n");
 
-	printf("FATAL ERROR! %s\n", (const char*)unicode2char(message));
+	printf("FATAL ERROR! %s\n", (const char*)unicode2char(msg));
 
 	exit(1);
 #endif
