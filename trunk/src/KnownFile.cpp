@@ -68,6 +68,7 @@ CFileStatistic::CFileStatistic() :
 {
 }
 
+#ifndef CLIENT_GUI
 
 void CFileStatistic::AddRequest(){
 	requested++;
@@ -90,6 +91,7 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 	theApp.sharedfiles->UpdateItem(fileParent);
 }
 
+#endif // CLIENT_GUI
 
 CAbstractFile::CAbstractFile() :
 	m_nFileSize(0),
@@ -122,6 +124,16 @@ CKnownFile::CKnownFile() :
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
 }
+
+#ifdef CLIENT_GUI
+
+CKnownFile::~CKnownFile()
+{
+	hashlist.Clear();
+	delete m_pAICHHashSet;
+}
+
+#else // ! CLIENT_GUI
 
 CKnownFile::~CKnownFile(){
 	
@@ -954,3 +966,5 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 		}
 	}
 }
+
+#endif // CLIENT_GUI
