@@ -2807,9 +2807,9 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint32)file->GetNotCurrentSourcesCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetTransferingSrcCount()));
+	AddTag(CEC_PartStatus_Tag(file, 200));
 
 	if ( (file->getPartfileStatus() == wxT("Downloading")) || (detail_level != EC_DETAIL_UPDATE) ) {
-		AddTag(CEC_PartStatus_Tag(file, 200));
 		
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)file->GetTransfered()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, (uint32)file->GetCompletedSize()));
@@ -2837,4 +2837,29 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 CEC_PartStatus_Tag::CEC_PartStatus_Tag(CPartFile *file, int size) : CECTag(EC_TAG_PARTFILE_PART_STATUS,
 	file->GetProgressString(size))
 {
+}
+
+CEC_SharedFile_Tag::CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, PTR_2_ID(file))
+{
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT, (uint32)file->statistic.GetRequests()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, (uint32)file->statistic.GetAllTimeRequests()));
+	
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, (uint32)file->statistic.GetAccepts()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, (uint32)file->statistic.GetAllTimeAccepts()));
+
+	if (detail_level == EC_DETAIL_UPDATE) {
+			return;
+	}
+	
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
+
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
+
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+		(uint32)(file->IsAutoUpPriority() ? 
+						file->GetUpPriority() + 10 : file->GetUpPriority())));
+
+	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
+				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }

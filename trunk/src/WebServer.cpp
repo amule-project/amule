@@ -89,9 +89,6 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 	
 	m_Params.bShowUploadQueue = false;
 
-	m_Params.DownloadSort = DOWN_SORT_NAME;
-	m_Params.bDownloadSortReverse = false;
-		
 	m_Params.sLastModified = wxEmptyString;
 	m_Params.sETag = wxEmptyString;
 	m_iSearchSortby = 3;
@@ -2392,27 +2389,27 @@ bool SharedFilesInfo::ReQuery()
 		//%s\t%ld\t%s\t%ld\t%ll\t%d\t%d\t%d\t%d\t%s\t%s\t%d\t%d\n
 		brk=sEntry.First(wxT("\t"));
 		dFile.sFileName = _SpecialChars(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.lFileSize = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.sED2kLink = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileTransferred = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileAllTimeTransferred = atoll(unicode2char(sEntry.Left(brk)));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileRequests = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileAllTimeRequests = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileAccepts = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFileAllTimeAccepts = StrToLong(sEntry.Left(brk));
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.sFileHash = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.sFilePriority = sEntry.Left(brk);
-		sEntry=sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
+
 		dFile.nFilePriority = StrToLong(sEntry.Left(brk));
 		sEntry=sEntry.Mid(brk+1);
 		if (StrToLong(sEntry.Left(brk))==0) {
@@ -2526,8 +2523,8 @@ bool DownloadFilesInfo::ReQuery()
 			file->lSourceCount = tag->SourceCount();
 			file->lNotCurrentSourceCount = tag->SourceNotCurrCount();
 			file->sFileStatus = tag->FileStatus();
+			file->sPartStatus = tag->PartStatus();
 			if ( file->sPartStatus == wxT("Downloading") ) {
-				file->sPartStatus = tag->PartStatus();
 				file->lFileCompleted = tag->SizeDone();
 				file->lFileTransferred = tag->SizeXfer();
 				file->lFileSpeed = tag->Speed();

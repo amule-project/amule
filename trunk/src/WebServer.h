@@ -328,8 +328,6 @@ class DownloadFilesInfo : public ItemsContainer<DownloadFiles, xDownloadSort> {
 
 typedef struct {
 	uint32		nUsers;
-	xDownloadSort	DownloadSort;
-	bool		bDownloadSortReverse;
 	bool		bShowUploadQueue;
 
 	ArrayOfUpDown		PointsForWeb;
