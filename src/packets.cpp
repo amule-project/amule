@@ -241,10 +241,12 @@ STag::STag(const STag& in)
 
 STag::~STag()
 {
-	if (tagname)
+	if (tagname) {
 		delete[] tagname;
-	if (type == 2 && stringvalue)
+	}
+	if (type == 2 && stringvalue) {
 		delete[] stringvalue;
+	}
 }
 
 
