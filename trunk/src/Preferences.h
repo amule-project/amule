@@ -400,6 +400,9 @@ public:
 
 	static void		CheckUlDlRatio();
 	
+	#warning NEED GUI!
+	static bool IsTrustingEveryHash() { return false; }
+	
 	static void BuildItemList( const wxString& appdir );
 	static void LoadAllItems(wxConfigBase* cfg);
 	static void SaveAllItems(wxConfigBase* cfg);
@@ -622,4 +625,3 @@ protected:
 };
 
 #endif // PREFERENCES_H
-

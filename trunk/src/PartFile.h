@@ -184,6 +184,9 @@ public:
 
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
 
+	void	RequestAICHRecovery(uint16 nPart);
+	void	AICHRecoveryDataAvailable(uint16 nPart);	
+	
 protected:
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint32 start, uint32 end);

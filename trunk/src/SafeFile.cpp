@@ -175,6 +175,122 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// CSafeMemFile
+
+uint8 CSafeMemFile::ReadUInt8() const
+{
+	
+	if (m_position + sizeof(uint8) > m_FileSize)
+		throw wxT("EOF");
+	return *(m_buffer + m_position++);
+}
+
+uint16 CSafeMemFile::ReadUInt16() const
+{
+	if (m_position + sizeof(uint16) > m_FileSize)
+		throw wxT("EOF");
+	uint16 nResult = *((uint16*)(m_buffer + m_position));
+	m_position += sizeof(uint16);
+	return nResult;
+}
+
+uint32 CSafeMemFile::ReadUInt32() const
+{
+	if (m_position + sizeof(uint32) > m_FileSize)
+		throw wxT("EOF");
+	uint32 nResult = *((uint32*)(m_buffer + m_position));
+	m_position += sizeof(uint32);
+	return nResult;
+}
+/*
+void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
+{
+	if (m_position + sizeof(uint32)*4 > m_nFileSize)
+		throw wxT("EOF");
+	uint32* pUInt32Val = (uint32*)pVal->getDataPtr();
+	const uint32* pUInt32 = (uint32*)(m_buffer + m_position);
+	pUInt32Val[0] = pUInt32[0];
+	pUInt32Val[1] = pUInt32[1];
+	pUInt32Val[2] = pUInt32[2];
+	pUInt32Val[3] = pUInt32[3];
+	m_position += sizeof(uint32)*4;
+}
+*/
+void CSafeMemFile::ReadHash16(uchar* pVal) const
+{
+	if (m_position + sizeof(uint32)*4 /*16 bytes*/ > m_FileSize)
+		throw wxT("EOF");
+	const uint32* pUInt32 = (uint32*)(m_buffer + m_position);
+	((uint32*)pVal)[0] = pUInt32[0];
+	((uint32*)pVal)[1] = pUInt32[1];
+	((uint32*)pVal)[2] = pUInt32[2];
+	((uint32*)pVal)[3] = pUInt32[3];
+	m_position += sizeof(uint32)*4;
+}
+
+void CSafeMemFile::WriteUInt8(uint8 nVal)
+{
+	if (m_position + sizeof(uint8) > m_BufferSize)
+		enlargeBuffer(m_position + sizeof(uint8));
+	*(m_buffer + m_position++) = nVal;
+	if (m_position > m_FileSize)
+		m_FileSize = m_position;
+}
+
+void CSafeMemFile::WriteUInt16(uint16 nVal)
+{
+	if (m_position + sizeof(uint16) > m_BufferSize)
+		enlargeBuffer(m_position + sizeof(uint16));
+	*((uint16*)(m_buffer + m_position)) = nVal;
+	m_position += sizeof(uint16);
+	if (m_position > m_FileSize)
+		m_FileSize = m_position;
+}
+
+void CSafeMemFile::WriteUInt32(uint32 nVal)
+{
+	if (m_position + sizeof(uint32) > m_BufferSize)
+		enlargeBuffer(m_position + sizeof(uint32));
+	*((uint32*)(m_buffer + m_position)) = nVal;
+	m_position += sizeof(uint32);
+	if (m_position > m_FileSize)
+		m_FileSize = m_position;
+}
+
+/*
+void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
+{
+	if (m_position + sizeof(uint32)*4 > m_BufferSize)
+		enlargeBuffer(m_position + sizeof(uint32)*4);
+	
+	uint32* pUInt32 = (uint32*)(m_buffer + m_position);
+	const uint32* pUInt32Val = (uint32*)pVal->getData();
+	pUInt32[0] = pUInt32Val[0];
+	pUInt32[1] = pUInt32Val[1];
+	pUInt32[2] = pUInt32Val[2];
+	pUInt32[3] = pUInt32Val[3];
+	m_position += sizeof(uint32)*4;
+	if (m_position > m_nFileSize)
+		m_nFileSize = m_position;
+}
+*/
+
+void CSafeMemFile::WriteHash16(const uchar* pVal)
+{
+	if (m_position + sizeof(uint32)*4 /* 16 bytes */> m_BufferSize)
+		enlargeBuffer(m_position + sizeof(uint32)*4);
+
+	uint32* pUInt32 = (uint32*)(m_buffer + m_position);
+	pUInt32[0] = ((uint32*)pVal)[0];
+	pUInt32[1] = ((uint32*)pVal)[1];
+	pUInt32[2] = ((uint32*)pVal)[2];
+	pUInt32[3] = ((uint32*)pVal)[3];
+	m_position += sizeof(uint32)*4;
+	if (m_position > m_FileSize)
+		m_FileSize = m_position;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // CSafeBufferedFile
 
 off_t CSafeBufferedFile::Read(void *pBuf, off_t nCount) const
@@ -190,4 +306,3 @@ size_t CSafeBufferedFile::Write(const void *pBuf, size_t nCount)
 {
 	return CFile::Write( pBuf, nCount );
 }
-

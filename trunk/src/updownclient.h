@@ -45,7 +45,8 @@ class CSafeMemFile;
 class CMemFile;
 class Requested_File_Struct;
 class TransferredData;
-
+class CAICHHash;
+	
 // uploadstate
 #define	US_UPLOADING		0
 #define	US_ONUPLOADQUEUE	1
@@ -398,6 +399,17 @@ public:
 
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
+
+	// Kry - AICH import
+	#warning AICH  TODO
+	void			SetReqFileAICHHash(CAICHHash* val);
+	CAICHHash*		GetReqFileAICHHash() const					{return m_pReqFileAICHHash;}
+	bool			IsSupportingAICH() const					{return m_fSupportsAICH & 0x01;}
+//	void			SendAICHRequest(CPartFile* pForFile, uint16 nPart);
+	bool			IsAICHReqPending() const					{return m_fAICHRequested; }
+//	void			ProcessAICHAnswer(char* packet, UINT size);
+//	void			ProcessAICHRequest(char* packet, UINT size);
+//	void			ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file);	
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);
@@ -626,8 +638,11 @@ public:
 					  // for sure if it is enabled
 		m_fSupportsPreview   : 1,
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
-		m_fSharedDirectories : 1; // client supports OP_ASKSHAREDIRS opcodes
-		
+		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
+		// Kry - AICH import
+		m_fSupportsAICH	  : 3,
+		m_fAICHRequested     : 1; 
+		 
 	/* Razor 1a - Modif by MikaelB */
 	
 	int		GetHashType() const;
@@ -642,7 +657,9 @@ public:
 	uint8		Extended_aMule_SO;
 	
 	uint8*		m_abyPartStatus;
-
+	
+	CAICHHash*  m_pReqFileAICHHash; 
+	
 public:
 	bool IsValidSource() const	{ return m_ValidSource; };
 	void SetValidSource(bool in)	{ m_ValidSource = in; };

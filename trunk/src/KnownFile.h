@@ -21,7 +21,7 @@
 #define KNOWNFILE_H
 
 #include "CMD4Hash.h"
-
+#include "SHAHashSet.h"
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dynarray.h>
 
@@ -199,6 +199,11 @@ public:
 	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
+	bool	CreateAICHHashSetOnly();
+	// aich
+	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
+	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		
+	
 protected:
 	bool	LoadTagsFromFile(const CFile* file);
 	bool	LoadDateFromFile(const CFile* file);
@@ -209,7 +214,7 @@ protected:
 	ArrayOfCMD4Hash hashlist;
 	ArrayOfCTag taglist;
 	wxString m_strFilePath;	
-
+	CAICHHashSet*			m_pAICHHashSet;
 private:
 	void	CreateHashFromInput(CFile* file, int Length, unsigned char* Output, unsigned char* = 0);
 	bool	m_bCommentLoaded;

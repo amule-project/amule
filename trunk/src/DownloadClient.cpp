@@ -38,7 +38,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h" // md4hash
-
+#include "SHAHashSet.h"
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
@@ -1317,4 +1317,10 @@ void CUpDownClient::SetRequestFile(CPartFile* reqfile)
 			m_nPartCount = reqfile->GetPartCount();
 		}
 	}
+}
+
+void CUpDownClient::SetReqFileAICHHash(CAICHHash* val){
+	if(m_pReqFileAICHHash != NULL && m_pReqFileAICHHash != val)
+		delete m_pReqFileAICHHash;
+	m_pReqFileAICHHash = val;
 }

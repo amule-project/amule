@@ -446,7 +446,7 @@ bool CFile::Flush()
 #include <cstring>
 
 // seek
-off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
+off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 {
 	wxASSERT( IsOpened() );
 
