@@ -53,24 +53,30 @@ typedef uint8_t		BYTE;
 #else 
 	typedef uint32_t	UINT;
 	typedef uint32_t*	UINT_PTR;
-	typedef char*		LPCSTR;
-	typedef char*		LPSTR;
-	typedef char*		LPCTSTR;
 	typedef uint8_t		byte;
 	typedef uint32_t	DWORD;
 	typedef int32_t		LONG;
 	typedef uint64_t	ULONGLONG;
-	typedef char*		LPBYTE;
+	typedef char*   	LPBYTE;
 	typedef int32_t		INT;
 	typedef uint16_t	WORD;
 	typedef uint16_t	word;
-	typedef void		VOID;
-	typedef void*		LPVOID;
-	typedef void*		PVOID;
-	typedef char		TCHAR;
+	
+	typedef void       	VOID;
+	typedef VOID*      	PVOID;
+	typedef VOID*      	LPVOID;
+	typedef const VOID*	LPCVOID;
+
+	typedef char        	CHAR;
+	typedef CHAR*       	LPSTR;
+	typedef const CHAR* 	LPCSTR;
+	typedef char        	TCHAR;
+	typedef TCHAR*      	LPTSTR;
+	typedef const TCHAR*	LPCTSTR;
+
 	typedef uint32_t	COLORREF;
-	typedef int16_t		WPARAM;
-	typedef int32_t		LPARAM;
+	typedef int16_t 	WPARAM;
+	typedef int32_t 	LPARAM;
 
 	struct POINT {
 	  UINT x;
