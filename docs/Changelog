@@ -61,6 +61,7 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed a problem with Server Connect command in amulecmd, it
 		  was not working. It has been renamed to ConnectTo. Also
 		  fixed help command output, should look better now.
+		* Added "-fmessage-length=0 -W" flags when --enable-debug.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
