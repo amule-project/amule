@@ -27,11 +27,10 @@
 
 #include "ECPacket.h"		// Needed for CECPacket
 
-ECSocket::ECSocket()
+ECSocket::ECSocket(void)
 {
 	m_type = AMULE_EC_CLIENT;
 	m_sock = new wxSocketClient();
-	m_firstMessage = true;
 }
 
 
@@ -45,11 +44,10 @@ ECSocket::ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id)
 		m_sock->SetNotify(wxSOCKET_CONNECTION_FLAG);
 		m_sock->Notify(true);
 	}
-	m_firstMessage = true;
 }
 
 
-ECSocket::~ECSocket()
+ECSocket::~ECSocket(void)
 {
 	delete m_sock;
 }
@@ -121,7 +119,17 @@ bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int 
 	return !error;
 }
 
-
+/**
+ * Writes \e packet to \e sock.
+ *
+ * Writes a given packet to given socket, taking care of
+ * all transmission aspects (e.g. compression).
+ *
+ * @param sock socket to use.
+ * @param packet CECPacket class instance to be written.
+ *
+ * @return \b true on success, \b false on failure.
+ */
 bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
 {
 	uint8 flags = 0x20;
@@ -133,7 +141,19 @@ bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
 	return packet->WritePacket(sock, *this);
 }
 
-
+/**
+ * Reads a CECPacket packet from \e sock.
+ *
+ * Reads a packet from the given socket, taking care of
+ * all transmission aspects (e.g. compression).
+ *
+ * @param sock socket to use.
+ *
+ * @return A pointer to a CECPacket class instance.
+ *
+ * \note You must later free the packet by calling
+ * \b \c delete on the returned pointer.
+ */
 CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 {
 	uint8 flags;
@@ -164,22 +184,29 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 	return p;
 }
 
-/*
-#warning TODO: implement this
-const uint8 *ECSocket::ReadData(wxSocketBase *sock)
-{
-	return NULL;
-}
+/*! 
+ * \fn ECSocket::WritePacket(const CECPacket *packet)
+ *
+ * \brief Writes \e packet to the m_sock member of the class.
+ *
+ * Writes a given packet to given socket, taking care of
+ * all transmission aspects (e.g. compression).
+ *
+ * \param packet CECPacket class instance to be written.
+ *
+ * \return \b true on success, \b false on failure.
+ */
 
-
-bool ECSocket::WriteData(wxSocketBase *sock, const void *buffer, unsigned int len)
-{
-	uint8 flags = 0x20;
-
-	// TODO: Compression not implemented!
-	// if (packet.GetPacketLength() > 1024) flags |= 0x01;
-
-	if (!WriteNumber(sock, &flags, 1)) return false;
-	return WriteBuffer(sock, buffer, len);
-}
-*/
+/*!
+ * \fn CECPacket * ECSocket::ReadPacket(void)
+ *
+ * \brief Reads a CECPacket packet from the m_sock member of the class.
+ *
+ * Reads a packet from the given socket, taking care of
+ * all transmission aspects (e.g. compression).
+ *
+ * \return A pointer to a CECPacket class instance.
+ *
+ * \note You must later free the packet by calling
+ * \c delete on the returned pointer.
+1;5A */
