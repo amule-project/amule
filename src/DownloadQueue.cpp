@@ -56,6 +56,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <vector>
 
 
 // Max. file IDs per UDP packet
@@ -89,7 +90,7 @@ CDownloadQueue::~CDownloadQueue()
 {
 	if ( !m_filelist.empty() ) {
 		for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
-			printf("\rSaving PartFile: %u of %u", i + 1, (unsigned int)m_filelist.size());
+			printf("\rSaving PartFile %u of %u", i + 1, (unsigned int)m_filelist.size());
 			fflush(stdout);
 			delete m_filelist[i];
 		}
@@ -104,12 +105,22 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 		(const char *)unicode2char(path));
 	
 	CDirIterator TempDir( path );
+	std::vector<wxString> files;
+
+	// Locate part-files to be loaded
 	wxString fileName = TempDir.FindFirstFile( CDirIterator::File, wxT("*.part.met") );
-	
 	while ( !fileName.IsEmpty() ) {
-		fileName = wxFileName( fileName ).GetFullName();
-		
-		printf("\t- %s: ", (const char *)unicode2char(fileName));
+		files.push_back( fileName );
+
+		fileName = TempDir.FindNextFile();
+	}
+	std::sort( files.begin(), files.end() );
+
+	// Load part-files	
+	for ( size_t i = 0; i < files.size(); i++ ) {
+		printf("\rLoading PartFile %u of %u", i + 1, (unsigned)files.size());
+			
+		fileName = wxFileName( files[i] ).GetFullName();
 		
 		CPartFile* toadd = new CPartFile();
 		bool result = toadd->LoadPartFile(path, fileName);
@@ -119,8 +130,6 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 		}
 		
 		if (result) {
-			printf("Success.\n");
-		
 			m_mutex.Lock();
 			m_filelist.push_back(toadd);
 			m_mutex.Unlock();
@@ -133,13 +142,13 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			
 			Notify_DownloadCtrlAddFile(toadd);
 		} else {
-			printf("FAILED!\n");
+			// Newline so that the error stays visible.
+			printf(": Failed to load PartFile '%s'\n", (const char*)unicode2char(fileName));
 			delete toadd;
 		}
-		
-		fileName = TempDir.FindNextFile();
 	}
 
+	printf("\nAll PartFiles Loaded.\n");
 	
 	if ( GetFileCount() == 0 ) {
 		AddLogLineM(false, _("No part files found"));
