@@ -265,7 +265,7 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
 	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theApp.clientlist->GetBannedCount(), _("Banned") );
-	CastChild( wxT("clientCount"), wxStaticText )->SetLabel( str );
+	CastChild( ID_CLIENTCOUNT, wxStaticText )->SetLabel( str );
 }
 
 
