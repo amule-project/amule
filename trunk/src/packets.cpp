@@ -248,6 +248,8 @@ void Packet::PackPacket() {
 	memcpy(pBuffer, output, newsize);
 	delete[] output;
 	m_bPacked = true;
+	
+	size = newsize;
 }
 
 bool Packet::UnPackPacket(UINT uMaxDecompressedSize) {
