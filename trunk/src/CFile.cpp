@@ -643,7 +643,7 @@ wxString  CDirIterator::FindNextFile() {
 			switch (dp->d_type) {
 				case DT_DIR:
 					if (is_volumes) {
-						printf("Is a dir\n",);
+						printf("Is a dir\n");
 					}
 					if (type == CDirIterator::Dir)  {
 						found = true;
@@ -653,7 +653,7 @@ wxString  CDirIterator::FindNextFile() {
 					break;
 				case DT_REG:
 					if (is_volumes) {
-						printf("Is a file\n",);
+						printf("Is a file\n");
 					}
 					if (type == CDirIterator::File)  {
 						found = true;
@@ -663,14 +663,14 @@ wxString  CDirIterator::FindNextFile() {
 					break;
 				default:
 					if (is_volumes) {
-						printf("Is a... uh... ",);
+						printf("Is a... uh... ");
 					}
 
 					// Fallback to stat
 					stat(unicode2char(DirStr + char2unicode(dp->d_name)),buf);
 					if (S_ISREG(buf->st_mode)) {
 						if (is_volumes) {
-							printf("file?\n",);
+							printf("file?\n");
 						}
 						if (type == CDirIterator::File) { 
 							found = true; 
@@ -680,7 +680,7 @@ wxString  CDirIterator::FindNextFile() {
 					} else {
 						if (S_ISDIR(buf->st_mode)) {
 							if (is_volumes) {
-								printf("dir?\n",);
+								printf("dir?\n");
 							}
 							
 							if (type == CDirIterator::Dir) {
@@ -690,7 +690,7 @@ wxString  CDirIterator::FindNextFile() {
 							}
 						} else {				
 							if (is_volumes) {
-								printf("I give up, I dunno\n",);
+								printf("I give up, I dunno\n");
 							}
 							// unix socket, block device, etc
 							printf("Strange file -> %s\n",dp->d_name);
