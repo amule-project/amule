@@ -63,7 +63,7 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 	}
 }
 
-void ZeroMemory(void* Ptr, size_t Size) {
+inline void ZeroMemory(void* Ptr, size_t Size) {
 	memset(Ptr,0,Size);
 }
 
