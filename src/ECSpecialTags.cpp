@@ -2,7 +2,6 @@
 // This file is part of the aMule Project
 //
 // aMule Copyright (C) 2003 aMule Team ( http://www.amule-project.net )
-// This file Copyright (C) 2003 Kry (elkry@sourceforge.net  http://www.amule-project.net )
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
