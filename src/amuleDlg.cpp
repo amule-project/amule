@@ -122,6 +122,9 @@ void CamuleDlg::OnSourcesDnsDone(wxCommandEvent& evt)
 
 void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
 {
+	static int filecount = 0;
+	static int bytecount = 0;
+
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
 	printf("Finished Hashing %s\n",result->GetFileName().c_str());
 	if (evt.GetExtraLong()) {
@@ -130,8 +133,19 @@ void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
 			requester->PartFileHashFinished(result);
 		}
 	} else {
-		if(theApp.sharedfiles->filelist->SafeAddKFile(result)) {
+		if (theApp.knownfiles->SafeAddKFile(result)) {
 			theApp.sharedfiles->SafeAddKFile(result);
+			
+			filecount++;
+			bytecount += result->GetFileSize();
+			// If we have added 30 files or files with a total size of ~300mb
+			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
+				if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
+					theApp.knownfiles->Save();
+					filecount = 0;
+					bytecount = 0;
+				}
+			}
 		} else {
 			delete result;
 		}
@@ -763,6 +777,8 @@ void CamuleDlg::OnHashingShutdown(wxCommandEvent& evt)
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
 		printf("Hashing thread ended\n");
 		// CAddFileThread::Setup();
+		// Save the known.met file
+		theApp.knownfiles->Save();
 	} else {
 		printf("Hashing thread terminated, ready to shutdown\n");
 		Destroy();
@@ -772,6 +788,10 @@ void CamuleDlg::OnHashingShutdown(wxCommandEvent& evt)
 
 void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
+	// Are we already shutting down?
+	if ( m_app_state == APP_STATE_SHUTINGDOWN )
+		return;
+
 	if (evt.CanVeto() && theApp.glob_prefs->IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO)) {
 			evt.Veto();
