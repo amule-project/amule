@@ -590,7 +590,7 @@ CSysTray::CSysTray(wxWindow* parent, DesktopMode desktopmode, const wxString& ti
 	gtk_widget_show(GTK_WIDGET(m_status_docklet));
 	gtk_widget_show_all (GTK_WIDGET (m_status_docklet));
 
-	g_signal_connect(GTK_OBJECT(m_status_docklet), "delete-event", GTK_SIGNAL_FUNC(on_delete), NULL);
+	gtk_signal_connect(GTK_OBJECT(m_status_docklet), "delete-event", GTK_SIGNAL_FUNC(on_delete), NULL);
 	
 }
 
