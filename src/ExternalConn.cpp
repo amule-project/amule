@@ -951,8 +951,16 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			unsigned int filecount = theApp.downloadqueue->GetFileCount();
 			// get the source count
 			uint32 stats[2];
+			wxString ServerStatus;
+			if (theApp.serverconnect->IsConnected())
+				ServerStatus = wxT("Connected");
+			else if (theApp.serverconnect->IsConnecting())
+				ServerStatus = wxT("Connecting");
+			else
+				ServerStatus = wxT("Not Connected");
 			theApp.downloadqueue->GetDownloadStats(stats);
 			return wxString::Format( wxT(
+				"Server: " + ServerStatus + "\n"
 				"Statistics: \n"
 				" Downloading files: %u\n"
 				" Found sources: %d\n"
@@ -973,6 +981,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		}
 		
 		if (item == wxT("CONNSTAT")) {
+		// kept for backwards compatibility. Now in "Stats"
 			if (theApp.serverconnect->IsConnected()) {
 				return wxT("Connected");
 			//Start - Added by shakraw
@@ -1055,6 +1064,14 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						return theApp.downloadqueue->getTextList();
 					} else return wxT("Not part file");
 				} else return wxT("Out of range");
+			} else if ( item.Mid(5) == wxT("ALL") ) {
+				for ( unsigned int fileID = ((unsigned) theApp.downloadqueue->GetFileCount()); fileID ; fileID-- ) {
+					if (theApp.downloadqueue->GetFileByIndex(fileID-1)->IsPartFile()) {
+						theApp.downloadqueue->GetFileByIndex(fileID-1)->PauseFile();
+					}
+				}
+				printf("Paused all\n");
+				return theApp.downloadqueue->getTextList();
 			} else return wxT("Not a number");
 		} 
 		
@@ -1068,10 +1085,19 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						printf("Resumed\n");
 						return theApp.downloadqueue->getTextList();
 					} else return wxT("Not part file");
-				} else return wxT("Out of range");				
+				} else return wxT("Out of range");
+			} else if ( item.Mid(6) == wxT("ALL") ) {
+				for ( unsigned int fileID = ((unsigned) theApp.downloadqueue->GetFileCount()); fileID ; fileID-- ) {
+					if (theApp.downloadqueue->GetFileByIndex(fileID-1)->IsPartFile()) {
+						theApp.downloadqueue->GetFileByIndex(fileID-1)->ResumeFile();
+						theApp.downloadqueue->GetFileByIndex(fileID-1)->SavePartFile();
+					}
+				}
+				printf("Resumed all\n");
+				return theApp.downloadqueue->getTextList();
 			} else return wxT("Not a number");
 		} 
-		
+
 		//shakraw, amuleweb protocol communication start
 		// PREFERENCES
 		if (item.Left(11).Cmp(wxT("PREFERENCES")) == 0) {

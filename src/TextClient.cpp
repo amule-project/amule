@@ -58,6 +58,7 @@
 #define CMD_ID_SET_IPFILTER	11
 #define CMD_ID_GET_IPLEVEL	12
 #define CMD_ID_SET_IPLEVEL	13
+#define CMD_ID_IPLEVEL		14
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -69,17 +70,19 @@ static CmdId commands[] = {
 	{ wxT("exit"),		CMD_ID_QUIT },
 	{ wxT("help"),		CMD_ID_HELP },
 	{ wxT("stats"),		CMD_ID_STATS },
+	{ wxT("status"),	CMD_ID_STATS },
 	{ wxT("show"),		CMD_ID_SHOW },
 	{ wxT("pause"),		CMD_ID_PAUSE },
 	{ wxT("resume"),	CMD_ID_RESUME },
 	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
 	{ wxT("connect"),	CMD_ID_CONN },
-	{ wxT("disconnect"),	CMD_ID_DISCONN },
 	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
+	{ wxT("disconnect"),	CMD_ID_DISCONN },
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
 	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
 	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
 	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
+	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
 	{ wxEmptyString,	0 },
 };
 
@@ -253,11 +256,16 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
  		case CMD_ID_SRVSTAT:
+		// kept for backwards compatibility only (now in Stats)
 			msg = wxT("CONNSTAT");
 			break;
 			
  		case CMD_ID_CONN:
-			msg = wxT("RECONN");
+			if ( ! args.IsEmpty() ) {
+				msg = wxT("SERVER CONNECT ") + args;
+			} else {
+				msg = wxT("RECONN");
+			}
 			break;
 			
  		case CMD_ID_DISCONN:
@@ -265,6 +273,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_CONN_TO_SRV:
+		// kept for backwards compatibility only
 			msg = wxT("SERVER CONNECT ") + args;
 			break;
 			
@@ -273,13 +282,21 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_SET_IPFILTER:
-			msg = wxT("SET IPFILTER ") + args;
+			if ( ! args.IsEmpty() ) {
+				msg = wxT("SET IPFILTER ") + args;
+			} else {
+				Show(_("This command requieres an argument. Valid arguments: 'yes', 'no'\n"));
+			}
 			break;
 			
 		case CMD_ID_PAUSE:
-			if (args.IsNumber()) {
+			if ( args.IsEmpty() ) {
+				Show(_("This command requieres an argument. Valid arguments: 'all', a number.\n"));
+			} else if (args.IsNumber()) {
 				args.ToLong(&FileId);
 				msg.Printf(wxT("PAUSE%li"), FileId);
+			} else if ( args.Left(3) == wxT("all") ) {
+				msg = wxT("PAUSEALL");
 			} else {
 				Show(_("Not a valid number\n"));
 				return 0;
@@ -287,9 +304,13 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_RESUME:
-			if (args.IsNumber()) {
+			if ( args.IsEmpty() ) {
+				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
+			} else if (args.IsNumber()) {
 				args.ToLong(&FileId);
 				msg.Printf(wxT("RESUME%li"), FileId);
+			} else if ( args.Left(3) == wxT("all") ) {
+				msg = wxT("RESUMEALL");
 			} else {
 				Show(_("Not a valid number\n"));
 				return 0;
@@ -307,12 +328,26 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 			break;
 
+		case CMD_ID_IPLEVEL:
+			if ( args.IsEmpty() ) {
+				msg = wxT("GETIPLEVEL");
+			} else {
+				msg = wxT("SETIPLEVEL ") + args;
+			}
+			break;
+
 		case CMD_ID_GET_IPLEVEL:
+		// kept for backwards compatibility only
 			msg = wxT("GETIPLEVEL");
 			break;
 
 		case CMD_ID_SET_IPLEVEL:
-			msg = wxT("SETIPLEVEL ") + args;
+		// kept for backwards compatibility only
+			if ( ! args.IsEmpty() ) {
+				msg = wxT("SETIPLEVEL ") + args;
+			} else {
+				Show(_("This command requieres an argument. Valid arguments: 0 - 255\n"));
+			}
 			break;
 			
 		default:
@@ -327,20 +362,21 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(         _("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));
+	Show(wxString(wxT("Connect [ip] [port]:\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
+//	Show(wxString(wxT("ConnectTo [name] [port]:\t")) + wxString(_("Connect to specified server and port.\n")));
+	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
+//	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
+	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows status and statistics.\n")));
+	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));
+	Show(wxString(wxT("Resume [n | all]:\t")) + wxString(_("Resume file number n (or 'all').\n")));
+	Show(wxString(wxT("Pause [n | all]:\t")) + wxString(_("Pauses file number n (or 'all').\n")));
+	Show(wxString(wxT("Setipfilter <on | off>:\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
+	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
+//	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
+//	Show(wxString(wxT("SetIPLevel <new level>:\t")) + wxString(_("Changes current IP Filter level.\n")));
+	Show(wxString(wxT("IPLevel [level]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit, Exit:\t\t")) + wxString(_("Exits Textclient.\n")));
-	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows statistics.\n")));
-	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));
-	Show(wxString(wxT("Resume n:\t\t")) + wxString(_("Resume file number n.\n")));
-	Show(wxString(wxT("Pause n:\t\t")) + wxString(_("Pauses file number n.\n")));
-	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
-	Show(wxString(wxT("Connect:\t\t")) + wxString(_("Tries to connect to any server.\n\t\t\tWARNING: Doesn't warn if failed\n")));
-	Show(wxString(wxT("ConnectTo name port:\t")) + wxString(_("Connect to specified server and port.\n")));
-	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
-	Show(wxString(wxT("ReloadIPF:\t\t")) + wxString(_("Reload IPFilter table from file.\n")));
-	Show(wxString(wxT("Setipfilter on/off:\t")) + wxString(_("Turn on/of amule IPFilter.\n")));
-	Show(wxString(wxT("GetIPLevel:\t\t")) + wxString(_("Shows current IP Filter level.\n")));
-	Show(wxString(wxT("SetIPLevel <new level>:\t")) + wxString(_("Changes current IP Filter level.\n")));
 	Show(         _("\n----------------------------> End of listing <----------------------------------\n"));
 }
 
