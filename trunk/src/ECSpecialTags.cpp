@@ -26,7 +26,7 @@
 
 // Since there are only constructors defined here,
 // removing everything from non-local builds.
-#ifndef __EC_REMOTE__
+#ifndef EC_REMOTE
 
 #include "server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
@@ -154,4 +154,4 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(CKnownFile *file, EC_DETAIL_LEVEL detail_
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
-#endif /* ! __EC_REMOTE__ */
+#endif /* ! EC_REMOTE */
