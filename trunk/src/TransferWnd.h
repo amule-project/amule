@@ -74,7 +74,7 @@ protected:
     void OnSashPositionChanged(wxSplitterEvent& evt);
 
 	int AddCategorie(wxString newtitle,wxString newincoming,wxString newcomment,bool addTab);
-	void EditCatTabLabel(int index,wxString newlabel);
+	void EditCatTabLabel(int index,wxString newlabel, bool updateSearchWnd = true );
 
 	CMuleNotebook* m_dlTab;
 
