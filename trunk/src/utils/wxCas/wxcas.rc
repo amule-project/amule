@@ -1,0 +1,11 @@
+wxcas    ICON    "pixmaps/wxcas.ico"
+
+amule    BITMAP  "pixmaps/amule.bmp"
+refresh  BITMAP  "pixmaps/refresh.bmp"
+stop     BITMAP  "pixmaps/stop.bmp"
+save     BITMAP  "pixmaps/save.bmp"
+print    BITMAP  "pixmaps/print.bmp"
+about    BITMAP  "pixmaps/about.bmp"
+stat     BITMAP  "pixmaps/stat.bmp"
+
+#include "wx/msw/wx.rc"
