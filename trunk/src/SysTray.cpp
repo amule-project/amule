@@ -154,7 +154,7 @@ void set_dl_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 	}
 
 	// The parameter "1" is needed to signify that the perferences has been created at this point
-	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 1 );
+	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 0 );
 }
 
 
@@ -170,7 +170,7 @@ void set_ul_speed(GtkWidget* widget, GdkEventButton* WXUNUSED(event), gpointer W
 	}
 
 	// The parameter "1" is needed to signify that the perferences has been created at this point
-	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 1 );
+	PrefsUnifiedDlg::ForceUlDlRateCorrelation( 0 );
 }
 
 

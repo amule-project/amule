@@ -433,6 +433,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( theApp.IsReady ) {
+		prefsunifiedwnd->TransferDataToWindow();
 		prefsunifiedwnd->ShowModal();
 	}
 }
