@@ -606,6 +606,7 @@ CPreferences::CPreferences()
 	
 	LoadPreferences();
 
+#ifndef CLIENT_GUI
 	// shared directories
 	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
 	if( sdirfile.Exists() && sdirfile.Open() ) {
@@ -645,6 +646,8 @@ CPreferences::CPreferences()
 	
 	printf(	"Userhash loaded: %s\n",
 		(const char *)unicode2char(s_userhash.Encode()));
+#endif
+
 }
 
 //
