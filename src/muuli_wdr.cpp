@@ -2633,7 +2633,7 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 
     wxBoxSizer *item14 = new wxBoxSizer( wxVERTICAL );
 
-    wxSlider *item15 = new wxSlider( parent, IDC_3DDEPTH, 10, 0, 20, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    wxSlider *item15 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
     item14->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item16 = new wxBoxSizer( wxVERTICAL );
