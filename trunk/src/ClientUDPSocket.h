@@ -40,7 +40,7 @@ struct UDPPack {
 
 class CClientUDPSocket : public wxDatagramSocket
 #ifdef AMULE_DAEMON
-, wxThread
+, public wxThread
 #endif
 {
   DECLARE_DYNAMIC_CLASS(CClientUDPSocket)
