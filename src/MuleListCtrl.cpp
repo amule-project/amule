@@ -228,6 +228,7 @@ long CMuleListCtrl::GetInsertPos( long data )
 	return Max;
 }
 
+
 void CMuleListCtrl::SortList()
 {
 	// Stop if no sort-function has been defined
@@ -260,6 +261,30 @@ void CMuleListCtrl::SortList()
 
 	
 	SortItems( GetSortFunc(), sortby );
+}
+
+
+CMuleListCtrl::ItemDataList CMuleListCtrl::GetSelectedItems() const
+{
+	// Create the initial vector with as many items as are selected
+	ItemDataList list( GetSelectedItemCount() );
+	
+	// Current item being located
+	int current = 0;
+	
+	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	while ( pos != -1 ) {
+		wxASSERT( current < list.size() );
+	
+		list[ current++ ] = GetItemData( pos );
+
+		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}
+
+	// Erase empty positions left by items with zero-value userdata.
+	list.resize( current );
+	
+	return list;
 }
 
 
