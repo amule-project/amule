@@ -325,7 +325,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 				//cur_client has a valid secure hash, don't remove him
 #ifdef __USE_DEBUG__
 				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),client->GetUserName() );
+					AddDebugLogLine(false, wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),client->GetUserName() );
 #endif
 				return;
 			}
@@ -335,7 +335,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 				//client has a valid secure hash, add him remove other one
 #ifdef __ENABLE_DEBUG__
 				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
+					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),cur_client->GetUserName() );
 #endif
 				RemoveFromWaitingQueue(pos2,true);
 				if (!cur_client->socket) {
@@ -347,7 +347,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 				// remove both since we dont know who the bad on is
 #ifdef __ENABLE_DEBUG__
 				if (thePrefs.GetVerbose())
-					AddDebugLogLine(false,CString(GetResString(IDS_SAMEUSERHASH)),client->GetUserName(),cur_client->GetUserName(),"Both" );
+					AddDebugLogLine(false,wxT("Client '%s' and '%s' have the same userhash or IP - removed '%s'"),client->GetUserName(),cur_client->GetUserName(),"Both" );
 #endif
 				RemoveFromWaitingQueue(pos2,true);
 				if (!cur_client->socket) {
