@@ -1,4 +1,4 @@
-SUBDIRS = src doc
+SUBDIRS = src docs
 
 EXTRA_DIST =  alcc.msp alc.msp alc.rc alc.ico alc.iss
 
