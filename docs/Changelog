@@ -34,6 +34,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  circuit evaluation was reversed.
 		* One UNICODE fix in UDPSocket.cpp:283.
 		* Fix for rommel's report of IP filter problem.
+		* Backport of SetIPFilterLevel fix, thanks to geeko for
+		  reporting.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart.
@@ -44,6 +46,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 	Special Thanks To:
 		* Bug and feature reporters:
 		rommel
+		geeko
 
 --------------------------------------------------------------------------------
 
