@@ -204,6 +204,7 @@ bool		CPreferences::s_MustFilterMessages;
 wxString 	CPreferences::s_MessageFilterString;
 bool 	CPreferences::s_FilterAllMessages;
 bool 	CPreferences::s_FilterSomeMessages;
+bool	CPreferences::s_ShareHiddenFiles;
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -799,6 +800,10 @@ void CPreferences::BuildItemList( const wxString& appdir )  // gets called at in
 	s_CfgList[IDC_MSGFILTER_WORD] = new Cfg_Bool( wxT("/eMule/FilterWordMessages"), s_FilterSomeMessages, false );
 	s_CfgList[IDC_MSGWORD]	= new Cfg_Str(  wxT("/eMule/MessageFilter"), s_MessageFilterString, wxEmptyString );
 	 
+	/**
+	 * Hidden files sharing
+	 **/	  
+	s_CfgList[IDC_SHAREHIDDENFILES] = new Cfg_Bool( wxT("/eMule/ShareHiddenFiles"), s_ShareHiddenFiles, false );
 
 	/**
 	 * The folowing doesn't have an assosiated widget.

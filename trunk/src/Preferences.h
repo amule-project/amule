@@ -464,6 +464,10 @@ public:
 			}
 		}
 	}
+	
+	// Hidden files
+	
+	static bool ShareHiddenFiles() { return s_ShareHiddenFiles; }
 
 protected:
 	void	CreateUserHash();
@@ -689,6 +693,9 @@ protected:
 	static wxString 	s_MessageFilterString;
 	static bool		s_FilterAllMessages;
 	static bool		s_FilterSomeMessages;
+	
+	// Hidden files sharing
+	static bool	s_ShareHiddenFiles;
 };
 
 
