@@ -273,7 +273,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 {
 	m_nActiveDialog = type;
 	
-	if ( type = TransferWnd ) {
+	if ( type == TransferWnd ) {
 		if (theApp.glob_prefs->ShowCatTabInfos()) {
 			transferwnd->UpdateCatTabTitles();
 		}
