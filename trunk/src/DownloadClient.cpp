@@ -696,6 +696,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 						// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
 						// valid again. Just ignore all further blocks for the current zstream.
 						cur_block->bZStreamError = true;
+						cur_block->totalUnzipped = 0; // bluecow's fix
 					}
 					delete [] unzipped;
 				}
