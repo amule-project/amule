@@ -259,7 +259,7 @@ void CPartFile::Init()
 	completedsize=0;
 	m_bPreviewing = false;
 	lastseencomplete = 0;
-	availablePartsCount=0;
+	m_availablePartsCount=0;
 	m_ClientSrcAnswered = 0;
 	m_LastNoNeededCheck = 0;
 	m_iRate = 0;
@@ -1791,24 +1791,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		if (dwCurTick > m_LastSourceDropTime + theApp.glob_prefs->GetAutoDropTimer() * 1000) {
 			m_LastSourceDropTime = dwCurTick;
 			/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
-			if (theApp.glob_prefs->DropNoNeededSources() && theApp.glob_prefs->DropFullQueueSources() && theApp.glob_prefs->DropHighQueueRankingSources()) {
-				//printf("Cleaning up sources.\n");
-				CleanUpSources();
-			} else {
-				/* Then check separately for each of them, and act accordingly. */
-				if (theApp.glob_prefs->DropNoNeededSources()) {
-					//printf("Dropping No Needed Sources.\n");
-					RemoveNoNeededSources();
-				}
-				if (theApp.glob_prefs->DropFullQueueSources()) {
-					//printf("Dropping Full Queue Sources.\n");
-					RemoveFullQueueSources();
-				}
-				if (theApp.glob_prefs->DropHighQueueRankingSources()) {
-					//printf("Dropping High Queue Rating Sources.\n");
-					RemoveHighQueueRatingSources();
-				}
-			}
+			
+			bool noNeeded  = theApp.glob_prefs->DropNoNeededSources();
+			bool fullQueue = theApp.glob_prefs->DropFullQueueSources();
+			bool highQueue = theApp.glob_prefs->DropHighQueueRankingSources();
+			
+			if ( noNeeded || fullQueue || highQueue )
+				CleanUpSources( noNeeded, fullQueue, highQueue );
 		}
 	
 		if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
@@ -1950,6 +1939,19 @@ void CPartFile::UpdatePartsInfo() {
 			count.Add(cur_src->GetUpCompleteSourcesCount());
 		}
 	}
+
+	// Find number of available parts
+	uint16 availablecounter = 0;
+	for ( uint16 i = 0; i < partcount; i++ ) {		
+		if ( m_SrcpartFrequency[i] )
+			availablecounter++;
+	}
+	
+	if ( ( availablecounter == partcount ) && ( m_availablePartsCount < partcount ) ) {
+		lastseencomplete = time(NULL);
+	}
+	m_availablePartsCount = availablecounter;
+	
 
 	if( flag ) {
 		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
@@ -2575,7 +2577,6 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	}
 
 	UpdatePartsInfo(); 
-	UpdateAvailablePartsCount();
 	
 	/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 	// remove all links A4AF in sources to this file
@@ -3006,24 +3007,6 @@ bool CPartFile::PreviewAvailable()
 }
 #endif
 
-void CPartFile::UpdateAvailablePartsCount()
-{
-	uint8 availablecounter = 0;
-	uint16 iPartCount = GetPartCount();
-	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {		
-		for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {
-			CUpDownClient *cur_src = *it;
-			if (cur_src->IsPartAvailable(ixPart)) {
-				availablecounter++;
-				break;
-			}
-		}
-	}
-	if (iPartCount == availablecounter && availablePartsCount < iPartCount) {
-		lastseencomplete = time(NULL);//CTime::GetCurrentTime();
-	}
-	availablePartsCount = availablecounter;
-}
 
 void CPartFile::SetLastAnsweredTime()
 {
@@ -3741,76 +3724,34 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 	return result;
 }
 
-/* Razor 1a - Modif by MikaelB
-   RemoveNoNeededSources function */
 
-void CPartFile::RemoveNoNeededSources()
+void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 {
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
+	SourceSet::iterator it = m_SrcList.begin();
+	for ( ; it != m_SrcList.end(); ) {
 		CUpDownClient* client = *it++;
-		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
-			/* If allowed, try to swap to other file. If swapping fails, remove from this one. */
-			if (theApp.glob_prefs->SwapNoNeededSources()) {
-				if (!client->SwapToAnotherFile(true, true, true, NULL)) {
-					RemoveSource( client );
-				}
-			/* If not allowed to swap, simply remove from this one. */
+
+		bool remove = false;
+	
+		// Using val = val || <blah>, to avoid unnescesarry evaluations
+		if ( noNeeded && ( client->GetDownloadState() == DS_NONEEDEDPARTS ) ) {
+			if ( client->SwapToAnotherFile(true, true, true) ) {
+				continue;
 			} else {
-				RemoveSource( client );
+				remove = true;
 			}
+		} 
+		
+		if ( client->GetDownloadState() == DS_ONQUEUE ) {
+			remove = remove || ( fullQueue && ( client->IsRemoteQueueFull() ) );
+			remove = remove || ( highQueue && ( client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking() ) );
 		}
+
+		if ( remove )
+			RemoveSource( client );
 	}
 }
-/* End modif */
 
-/* Razor 1a - Modif by MikaelB
-   RemoveFullQueueSources function */
-
-void CPartFile::RemoveFullQueueSources()
-{
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-		CUpDownClient* client = *it++;
-		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			RemoveSource( client );
-		}
-	}
-}
-/* End modif */
-
-/* Razor 1a - Modif by MikaelB
-   RemoveHighQueueRatingSources function */
-
-void CPartFile::RemoveHighQueueRatingSources()
-{
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-		CUpDownClient* client = *it++;
-		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			RemoveSource( client );
-		}
-	}
-}
-/* End modif */
-
-/* Razor 1a - Modif by MikaelB
-   CleanUpSources function */
-
-void CPartFile::CleanUpSources()
-{
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
-		CUpDownClient* client = *it++;
-		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
-			if ((theApp.glob_prefs->DropNoNeededSources()) && (!client->SwapToAnotherFile(true, true, true, NULL))) {
-				RemoveSource( client );
-			}
-		}
-		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			RemoveSource( client );
-		} else if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			RemoveSource( client );
-		}
-	}
-}
-/* End modif */
 
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
