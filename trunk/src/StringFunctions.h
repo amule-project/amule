@@ -61,14 +61,14 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	//inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
 	inline const wxWCharBuffer char2unicode(const char* x) { return aMuleConv.cMB2WX(x); };
-	inline const wxWCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WC(x); };
+	inline const wxWCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WX(x); };
 
 #else
 	inline const char* unicode2char(wxString x) { return ((const char*) x); };
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return (const char*)x; };
 	inline const wxCharBuffer char2unicode(const char* x) { return x; };
 	
-	inline const wxCharBuffer UTF82unicode (const char* x) { return wxString(wxConvUTF8.cMB2WC(x)).c_str(); };
+	inline const wxCharBuffer UTF82unicode (const char* x) { return wxConvUTF8.cMB2WX(x); };
 
 #endif
 
