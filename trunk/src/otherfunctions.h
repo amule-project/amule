@@ -30,12 +30,12 @@
 
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
-#ifdef wxUSE_UNICODE
+#if wxUSE_UNICODE
 	#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
 	#define char2unicode(x) aMuleConv.cMB2WX(x)
 #else
-	#define unicode2char(x) x.c_str()
-	#define char2unicode(x) x
+	#define unicode2char(x) (const char*)( x )
+	#define char2unicode(x) (x)
 #endif
 
 
