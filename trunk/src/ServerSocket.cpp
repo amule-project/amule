@@ -367,9 +367,8 @@ bool CServerSocket::ProcessPacket(char* packet, uint32 size, int8 opcode)
 				theApp.amuledlg->AddLogLine(true,"ServerMsg - OP_ServerIdent\n");
 				#endif
 
-				// if (size<38) {
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
-				if (size<26) {
+				if (size<38) {
 					theApp.amuledlg->AddLogLine(false, CString(_("Unknown server info received !")));
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
