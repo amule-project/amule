@@ -31,30 +31,17 @@
 #include <wx/socket.h>		// Needed for wxDatagramSocket
 
 #include "types.h"		// Needed for uint16 and uint32
+#include "amuleIPV4Address.h"	// Needed for wxIPV4address
 
 class Packet;
 class CServer;
+
 
 #define WM_DNSLOOKUPDONE WM_USER+280
 
 // Client to Server communication
 
-#if 0
-class CUDPSocketWnd : public CWnd {
-  
-// Construction
-public:
-	CUDPSocketWnd();
-	CUDPSocket* m_pOwner;
-protected:
-	DECLARE_MESSAGE_MAP()
-	afx_msg LRESULT OnDNSLookupDone(WPARAM wParam,LPARAM lParam);
-private:
-	
-};
-#endif
-
-class CUDPSocket : public wxDatagramSocket //CAsyncSocket
+class CUDPSocket : public wxDatagramSocket 
 #ifdef AMULE_DAEMON
 , wxThread
 #endif
@@ -64,15 +51,14 @@ class CUDPSocket : public wxDatagramSocket //CAsyncSocket
 
 	CUDPSocket():wxDatagramSocket(useless) {};
 public:
-	CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& addr);
+	CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addr);
 	~CUDPSocket();
-	//bool	Create();
+
 	void	SendPacket(Packet* packet,CServer* host);
-	void DnsLookupDone(struct sockaddr_in* addr);
-	//void	DnsLookupDone(WPARAM wp, LPARAM lp);
+	void DnsLookupDone(uint32 ip);
+
 protected:
 	void	AsyncResolveDNS(LPCTSTR lpszHostAddress, unsigned int nHostPort);
-	//HANDLE	DnsTaskHandle;					// dns lookup handle
 	
  public:
 	virtual void OnReceive(int nErrorCode);
@@ -80,19 +66,17 @@ protected:
 private:
 	LPCTSTR m_lpszHostAddress;
 	unsigned int m_nHostPort;
-	//HWND m_hWndResolveMessage;	// where to send WM_DNSRESOLVED
-	//SOCKADDR_IN m_SaveAddr;
-	struct sockaddr_in m_SaveAddr;
-	//CUDPSocketWnd m_udpwnd;
 
+	amuleIPV4Address m_SaveAddr;
+	
 	void SendBuffer();
 	bool	ProcessPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
-	//bool	ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port);
+	
 	CServerConnect*	serverconnect;
 	char*	sendbuffer;
 	uint32	sendblen;
 	CServer* cur_server;
-	char	DnsHostBuffer[1024]; //MAXGETHOSTSTRUCT];	// dns lookup structure
+	char	DnsHostBuffer[1024]; 
 	wxIPV4address useless;
 #ifdef AMULE_DAEMON
 	void *Entry();

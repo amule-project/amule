@@ -26,10 +26,9 @@
 	#include <winsock.h>
 #else
 	#include <sys/socket.h>		// 
-	#include <netinet/in.h>		// Those three are for 'struct in_addr' and 'inet_aton'.
+	#include <netinet/in.h>		// Those three are for htonl
 	#include <arpa/inet.h>		//
 #endif
-
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/object.h>		// Needed by wx/sckaddr.h
@@ -46,47 +45,32 @@ class amuleIPV4Address : public wxIPV4address {
   public:
   amuleIPV4Address(void) { }
 #ifndef __WXMSW__  
+
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fool.
-		if (name == wxT(""))
-		{
-			wxLogWarning( _("Trying to solve a NULL hostname: giving up") );
+		if (name.IsEmpty()) {
+			wxLogWarning(wxT("Trying to set a NULL host: giving up") );
 			return FALSE;
 		}
-		// m_origHostname is private in wxIPV4address, so, we must put this out.
-		//m_origHostname = name;
+		return Hostname(StringIPtoUint32(name));
+	}
 
-		// wxWidgets original implementation
-		//return (GAddress_INET_SetHostName(m_address, name.mb_str()) == GSOCK_NOERROR);
-
-		// aMule no-dns implementation
-		struct in_addr inaddr;
-		inet_aton(unicode2char(name),&inaddr);
-
-		// Starting with wx-2.5.2, this has changed
+	virtual bool Hostname(uint32 ip) {
+		// Some people are sometimes fool.
+		if (!ip) {
+			wxLogWarning(wxT("Trying to set a wrong ip: giving up") );
+			return FALSE;
+		}
+		// We have to take care that wxIPV4address's internals changed on 2.5.2
 		#if wxCHECK_VERSION(2,5,2)
-		inaddr.s_addr = ntohl(inaddr.s_addr);
+			return GAddress_INET_SetHostAddress(m_address,ntohl(ip))==GSOCK_NOERROR;
+		#else
+			return GAddress_INET_SetHostAddress(m_address,ip)==GSOCK_NOERROR;
 		#endif
-		return GAddress_INET_SetHostAddress(m_address,inaddr.s_addr)==GSOCK_NOERROR;
 	}
 	
-	// addr should be in network byte order from wx-2.5.2 and up.
-  	virtual bool Hostname(unsigned long addr) {
-		bool rv = (GAddress_INET_SetHostAddress(m_address, addr) == GSOCK_NOERROR);
-
-		// m_origHostname is private in wxIPV4address, so, we must put this out.
-#if 0
-		if (rv)
-			// No-DNS, please
-			//m_origHostname = Hostname();
-		else
-			m_origHostname = wxEmptyString;
-#endif
-		return rv;
-	};
 #endif
 
 };
 
 #endif // AMULEIPV4ADDRESS_H
-

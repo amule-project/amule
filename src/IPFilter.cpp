@@ -366,14 +366,11 @@ void CIPFilter::SaveToFile() {
 	// Create the new ipfilter.
 	IPFilterFile.Create();
 	
-	struct in_addr ip_data;
-	
 	IPListMap::iterator it = iplist.begin();
 	while(it != iplist.end()) {
 		wxString line;
 		// Range Start
-		ip_data.s_addr = htonl(it->second->IPStart);
-		line += char2unicode(inet_ntoa(ip_data));
+		line += Uint32toStringIP(it->second->IPStart);
 		// Make it nice
 		for (uint32 i = line.Len(); i < 15; i++) { // 15 -> "xxx.xxx.xxx.xxx"
 			line += wxT(" ");
@@ -381,8 +378,7 @@ void CIPFilter::SaveToFile() {
 		// Range Separator
 		line += wxT(" - ");
 		// Range End
-		ip_data.s_addr = htonl(it->second->IPEnd);
-		line += char2unicode(inet_ntoa(ip_data));
+		line += Uint32toStringIP(it->second->IPEnd);
 		// Make it nice
 		for (uint32 i = line.Len(); i < 33; i++) { // 33 -> "xxx.xxx.xxx.xxx - yyy.yyy.yyy.yyy"
 			line += wxT(" ");

@@ -144,7 +144,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			if (sizeof(ServerMet_Struct) != servermet.Read(&sbuffer,sizeof(ServerMet_Struct))) {
 				throw CInvalidPacket();
 			}
-			// ENDIAN_SWAP_I_32(sbuffer.ip);	there is a ntoa somewhere
+			ENDIAN_SWAP_I_32(sbuffer.ip);
 			ENDIAN_SWAP_I_16(sbuffer.port);			
 			ENDIAN_SWAP_I_32(sbuffer.tagcount);
 			
@@ -317,7 +317,8 @@ bool CServerList::IsGoodServerIP(CServer* in_server)
 			char* ipmask = strdup(filtered_blocks[i]);
 			char* addr = strtok(ipmask, "/");
 			char* n = strtok(NULL, "/");
-			filters[i].addr = inet_addr(addr);
+			filters[i].addr = StringIPtoUint32(addr);
+			#warning ENDIANESS -> Take care of this htonl
 			filters[i].mask = htonl((1 << (32 - atoi(n))) - 1);
 			free(ipmask);
 		}

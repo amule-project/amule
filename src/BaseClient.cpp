@@ -19,21 +19,9 @@
 
 #include "types.h"
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-
 #include <zlib.h>		// Needed for inflateEnd
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/object.h>		// Needed by wx/sckaddr.h
-#include <wx/sckaddr.h>		// Needed for wxIPV4address
 #include "otherfunctions.h"	// Needed for nstrdup
 
 #include "SearchList.h"		// Needed for CSearchList
@@ -81,7 +69,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	m_nUserPort = in_port;
 	
 	if (!HasLowID()) {
-		m_FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
+		m_FullUserIP = Uint32toStringIP(m_nUserID);
 	}
 	#ifdef __USE_KAD__
 	if (!HasLowID()) {
@@ -194,10 +182,10 @@ void CUpDownClient::Init()
 
 
 	if (m_socket) {
-		wxIPV4address address;
+		amuleIPV4Address address;
 		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
-		SetIP(inet_addr(unicode2char(m_FullUserIP)));
+		SetIP(StringIPtoUint32(m_FullUserIP));
 	} else {
 		SetIP(0);
 	}
@@ -493,18 +481,16 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	
 
 	if (m_socket) {
-		wxIPV4address address;
+		amuleIPV4Address address;
 		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
-		SetIP(inet_addr(unicode2char(m_FullUserIP)));
+		SetIP(StringIPtoUint32(m_FullUserIP));
 	} else {
 		throw wxString(wxT("Huh, socket failure. Avoided crash this time.\n"));
 	}
 	
 	if (thePrefs::AddServersFromClient()) {
-		in_addr addhost;
-		addhost.s_addr = m_dwServerIP;
-		CServer* addsrv = new CServer(m_nServerPort, char2unicode(inet_ntoa(addhost)));
+		CServer* addsrv = new CServer(m_nServerPort, Uint32toStringIP(m_dwServerIP));
 		addsrv->SetListName(addsrv->GetAddress());
 		if (!theApp.AddServer(addsrv)) {
 				delete addsrv;
@@ -590,9 +576,9 @@ bool CUpDownClient::SendHelloPacket() {
 	}
 	
 	// if IP is filtered, dont greet him but disconnect...
-	wxIPV4address address;
+	amuleIPV4Address address;
 	m_socket->GetPeer(address);
-	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
+	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
 		AddDebugLogLineM(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {

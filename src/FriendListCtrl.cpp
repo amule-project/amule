@@ -322,9 +322,10 @@ void CFriendListCtrl::OnPopupMenu(wxCommandEvent& evt)
 		
 		case MP_ADDFRIEND: {
 			CAddFriend* dialog2 = new CAddFriend(this); 
-			dialog2->ShowModal();
-			delete dialog2;
-			SaveList();
+			if (dialog2->ShowModal()) {
+				SaveList();
+			}
+			delete dialog2;			
 			break;
 		}
 		

@@ -26,7 +26,6 @@
 
 	#include <cstddef>			// Needed for NULL. Must be BEFORE gtk/gdk headers!
 	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// Needed for inet_ntoa
 	#include <net/if.h>			// Needed for struct ifreq
 	#include <arpa/inet.h>		//
 	#include <gtk/gtk.h>		// Needed for gtk_object_get_data
@@ -256,10 +255,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = wxT("IP: ");
 		if ( theApp.GetPublicIP() ) {
-			in_addr IP;
-			IP.s_addr = theApp.GetPublicIP();
-
-			temp += char2unicode(inet_ntoa(IP)); 
+			temp += Uint32toStringIP(theApp.GetPublicIP()); 
 		} else {
 			temp += _("Unknown");
 		}

@@ -303,6 +303,7 @@ inline long StrToLong( const wxString& str ) {
 	str.ToLong( &value );
 	return value;
 }
+
 inline unsigned long StrToULong( const wxString& str ) {
 	unsigned long value = 0;
 	str.ToULong( &value );
@@ -336,6 +337,24 @@ inline void md4cpy(const void* dst, const void* src) {
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size);
+
+inline wxString Uint32toStringIP(uint32 ip) {
+	return wxString::Format(wxT("%u.%u.%u.%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24));	
+}
+
+inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port) {
+	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
+}
+
+inline uint32 StringIPtoUint32(wxString str_ip) {
+	uint32 ip[4];
+	int result = sscanf(unicode2char(str_ip),"%d.%d.%d.%d",&ip[0],&ip[1],&ip[2],&ip[3]);
+	if (result==4) {
+		return (ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24));	
+	} else {
+		return 0; // Error on ip format.
+	}
+}
 
 #ifdef __FreeBSD__
 inline long long atoll(char const* s) {

@@ -580,7 +580,7 @@ bool CamuleApp::OnInit()
 	sharedfiles->Reload(true, true);
 
 	// Temp addr
-	wxIPV4address myaddr;
+	amuleIPV4Address myaddr;
 	myaddr.AnyAddress();
 
 	// Create listen socket 
@@ -1314,9 +1314,8 @@ void CamuleApp::SetOSFiles(const wxString new_path) {
 void CamuleApp::OnDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();
-	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
-	socket->DnsLookupDone(si);
+	CUDPSocket* socket=(CUDPSocket*)evt.GetClientData();	
+	socket->DnsLookupDone(evt.GetExtraLong());
 }
 
 void CamuleApp::OnNotifyEvent(wxEvent& e)

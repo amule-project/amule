@@ -535,16 +535,12 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 				} else if (server2->HasDynIP()) {
 					return mode * 1;
 				} else {
-					int a[4], b[4];
-					sscanf(unicode2char(server1->GetFullIP()),"%d.%d.%d.%d",&a[0],&a[1],&a[2],&a[3]);
-					sscanf(unicode2char(server2->GetFullIP()),"%d.%d.%d.%d",&b[0],&b[1],&b[2],&b[3]);
-				
-					for (int i = 0; i < 3; ++i) {
-						if ( b[i] - a[i] ) 
-							return mode * ( b[i] - a[i] );
+					if (int bigger = (server1->GetIP() - server2->GetIP())) {
+						return (mode * bigger);
+					} else {
+						// Same ip, different port (Shouldn't happen!)
+						return mode * CmpAny( server1->GetPort(), server2->GetPort() );
 					}
-
-					return mode * CmpAny( server1->GetPort(), server2->GetPort() );
 				}
 			}
 		// Sort by description
@@ -579,5 +575,3 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 			return 0;
 	}
 }
-
-

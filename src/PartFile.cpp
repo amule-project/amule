@@ -1765,7 +1765,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	// MOD Note: Do not change this part - Merkur
 	// check first if we are this source
 	if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()){
-		if ((theApp.serverconnect->GetClientID() == userid) && inet_addr(unicode2char(theApp.serverconnect->GetCurrentServer()->GetFullIP()))  == serverip) {
+		if ((theApp.serverconnect->GetClientID() == userid) && StringIPtoUint32(theApp.serverconnect->GetCurrentServer()->GetFullIP())  == serverip) {
 			return false;
 		}
 	} else if (theApp.serverconnect->GetClientID() == userid) {
@@ -1805,12 +1805,10 @@ void CPartFile::AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverp
 		if (userid >= 16777216) {
 			if (thePrefs::FilterBadIPs()) {
 				if (!IsGoodIP(userid)) { // check for 0-IP, localhost and optionally for LAN addresses
-					//AddDebugLogLineM(false, _T("Ignored source (IP=%s) received from server"), inet_ntoa(*(in_addr*)&userid));
 					continue;
 				}
 			}
 			if (theApp.ipfilter->IsFiltered(userid)) {
-				//AddDebugLogLineM(false, _T("IPfiltered source IP=%s (%s) received from server"), inet_ntoa(*(in_addr*)&userid), theApp.ipfilter->GetLastHit());
 				continue;
 			}
 		}
@@ -3040,6 +3038,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 	uint16 nCount = sources->ReadUInt16();
 	for (int i = 0;i != nCount;++i) {
 		uint32 dwID = sources->ReadUInt32();
+//		printf("Added source exchange v%u: %u(%s)\n",sourceexchangeversion,dwID,unicode2char(Uint32toStringIP(dwID)));
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
@@ -4111,4 +4110,3 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 		}
 	}
 }
-	

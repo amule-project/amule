@@ -28,13 +28,6 @@
 	#include <netinet/in.h>
 	#include <arpa/inet.h>
 #endif
-/*
- * INADDR_BROADCAST is identical to INADDR_NONE which is not defined
- * on all systems. INADDR_BROADCAST should be fine to indicate an error.
- */
-#ifndef INADDR_NONE
-#define INADDR_NONE INADDR_BROADCAST
-#endif
 
 //#include <pthread.h> aquatroll - think somebody forgot to delete the line, if it breaks: uncomment it
 #include <wx/intl.h>		// Needed for _
@@ -53,7 +46,6 @@
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
 #include "server.h"		// Needed for CServer
 #include "amule.h"			// Needed for theApp
-#include "amuleIPV4Address.h"	// Needed for wxIPV4address
 #include "GetTickCount.h"
 
 #define get_uint32(p)	ENDIAN_SWAP_32(*((uint32*)(p)))
@@ -97,7 +89,7 @@ wxThread::ExitCode AsyncDNS::Entry()
     #else
     unsigned long addr=*(unsigned long*)ret.h_addr;
     #endif
-    struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));//new struct sockaddr_in;
+    struct sockaddr_in* newsi=(struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
     // addr is in network byte order
     newsi->sin_addr.s_addr = addr;
 
@@ -107,16 +99,12 @@ wxThread::ExitCode AsyncDNS::Entry()
     wxPostEvent(&theApp,evt);
   }
 
-
-
   return result;
 }
 
 IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocket)
 
-//static wxIPV4address tmpaddress;
-
-CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect,wxIPV4address& address)
+CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address)
 : wxDatagramSocket(address,wxSOCKET_NOWAIT)
 #ifdef AMULE_DAEMON
 	, wxThread(wxTHREAD_JOINABLE)
@@ -157,23 +145,22 @@ CUDPSocket::~CUDPSocket(){
 void CUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 	char buffer[SERVER_UDP_BUFFER_SIZE];
 
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
 	wxUint32 length = LastCount();
-	// strip IP address from wxSockAddress (do not call Hostname(). we do not want DNS)
 
-	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1))
+	if (buffer[0] == (char)OP_EDONKEYPROT && length != static_cast<wxUint32>(-1)) {
 	  ProcessPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
-	else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1))
+	} else if ((buffer[0] == (char)OP_EMULEPROT) && length != static_cast<wxUint32>(-1)) {
 		theApp.downloadqueue->AddDownDataOverheadOther(length-2);
-	  //ProcessExtPacket(buffer+2,length-2,buffer[1],addr.IPAddress(),addr.Service()); 
+	}
 }
 
 
 void CUDPSocket::ReceiveAndDiscard() {
 	char buffer[SERVER_UDP_BUFFER_SIZE];
 	
-	wxIPV4address addr;
+	amuleIPV4Address addr;
 	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
 	// And just discard it :)	
 };
@@ -189,7 +176,6 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSORUCES (yes, soruces)  & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
-//		printf("UDP packet processing\n");
 		switch(opcode){
 			case OP_GLOBSEARCHRES: {
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
@@ -197,7 +183,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				// process all search result packets
 				int iLeft;
 				do{
-					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(unicode2char(host)), port-4);
+					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(data, StringIPtoUint32(host), port-4);
 					// There is no need because we don't limit the global results
 					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
@@ -228,7 +214,6 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				break;
 			}
 			case OP_GLOBFOUNDSORUCES:{
-//				printf("Sources coming...\n");
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				CSafeMemFile* data = new CSafeMemFile((BYTE*)packet,size);
 				// process all source packets
@@ -237,7 +222,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					uint8 fileid[16];
 					data->ReadHash16(fileid);
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid))
-						file->AddSources(data, inet_addr(unicode2char(host)), port-4);
+						file->AddSources(data, StringIPtoUint32(host), port-4);
 					else{
 						// skip sources for that file
 						uint8 count = data->ReadUInt8();
@@ -296,10 +281,6 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 				}
 				if( size >= 32 ){
 					uLowIDUsers = get_uint32(packet+28);
-					/*
-					if (thePrefs.GetDebugServerUDPLevel() > 0)
-						Debug(_T(" LowID users=%u\n"), uLowIDUsers);
-					*/
 				}
 				if( update ){
 					update->SetPing( ::GetTickCount() - update->GetLastPinged() );
@@ -308,7 +289,6 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					update->SetMaxUsers( cur_maxusers );
 					update->SetSoftFiles( cur_softfiles );
 					update->SetHardFiles( cur_hardfiles );
-					//printf("->> reading Stats from server, flags are %i\n",uUDPFlags);
 					update->SetUDPFlags( uUDPFlags );
 					update->SetLowIDUsers( uLowIDUsers );
 					Notify_ServerRefresh( update );
@@ -317,12 +297,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 			}
  			case OP_SERVER_DESC_RES:{
 				// 0.43b
-				/*
-				if (thePrefs.GetDebugServerUDPLevel() > 0)
-					Debug(_T("ServerUDPMessage from %s:%u - OP_ServerDescRes\n"), host, nUDPPort-4);
-				*/
-				if (!update)
+				if (!update) {
 					return true;
+				}
 
 				// old packet: <name_len 2><name name_len><desc_len 2 desc_en>
 				// new packet: <challenge 4><taglist>
@@ -374,11 +351,7 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 						// ask for it. This may happen, if there are multiple servers running on the same machine with
 						// multiple IPs. If such a server is asked for a description, the server will answer 2 times,
 						// but with the same IP.
-						/*
-						if (thePrefs.GetDebugServerUDPLevel() > 0)
-							Debug(_T("***NOTE: Received unexpected new format OP_ServerDescRes from %s:%u with challenge %08x (waiting on packet with challenge %08x)\n"), host, nUDPPort-4, PeekUInt32(packet), update->GetDescReqChallenge());
-						*/
-						; // ignore this packet
+						// ignore this packet
 						
 					}
 				}
@@ -407,138 +380,73 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 		return true;
 	}
 	catch(...){
-	  //OUTPUT_DEBUG_TRACE();
 		AddDebugLogLineM(false,_("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 		return false;
 	}
 }
 
-#if 0
-bool CUDPSocket::ProcessExtPacket(char* packet, int16 size, int8 opcode, const wxString& host, uint16 port){
-	try{
-		switch(opcode){
-			/*
-			case OP_UDPVERIFYUPREQ:{
-				ASSERT (size == 6);
-				if (size == 6){
-					uint32 checkclientip = 0;
-					uint16 checkclientport = 0;
-					memcpy(&checkclientip,packet,4);
-					memcpy(&checkclientport,packet,2);
-					if (theApp.clientlist->VerifyUpload(checkclientip,checkclientport)){
-						Packet answer(OP_UDPVERIFYUPA,0,OP_EMULEPROT);
-						SendTo(answer.GetUDPHeader(),2,port,host);
-					}
-				}
-				break;
-				*/
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
-			}
-			case OP_UDPVERIFYUPA:{
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				break;
-			}
-			default:
-				theApp.downloadqueue->AddDownDataOverheadOther(size);
-				return false;
-		}
-		return true;
-	}
-	catch(...){
-	  //OUTPUT_DEBUG_TRACE();
-		AddDebugLogLineM(false,_("Error while processing incoming extended protocol UDP Packet"));
-		return false;
-	}
-}
-#endif
-
-void CUDPSocket::DnsLookupDone(struct sockaddr_in* inaddr) {
+void CUDPSocket::DnsLookupDone(uint32 ip) {
   /* An asynchronous database routine completed. */
-  if (inaddr==NULL) { /*WSAGETASYNCERROR(lp) != 0){*/
-    if (sendbuffer)
+  if (!ip) { 
+    if (sendbuffer) {
       delete[] sendbuffer;
+    }
     sendbuffer = 0;
-    if (cur_server)
+    if (cur_server) {
       delete cur_server;
-    cur_server = 0;
+    }
+    cur_server = NULL;
     return;
   }
+ 
+    m_SaveAddr.Hostname(ip);
 
-  if (m_SaveAddr.sin_addr.s_addr == INADDR_NONE){
-    m_SaveAddr.sin_addr.s_addr = inaddr->sin_addr.s_addr;
-  }
   if (cur_server){
     CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-    if (update)
-      update->SetID(m_SaveAddr.sin_addr.s_addr);
+    if (update) {
+      update->SetID(ip);
+    }
     SendBuffer();
   }
-  if(inaddr) {
-    // must free it
-    //delete inaddr;
-    free(inaddr);
-  }
+  
 }
 
 void CUDPSocket::SendBuffer(){
 	if(cur_server && sendbuffer){
-		//SendTo(sendbuffer,sendblen,(SOCKADDR*)&m_SaveAddr, sizeof(m_SaveAddr));
-		//wxIPV4address addr;
-		amuleIPV4Address addr;
-		struct in_addr tmpa;
-		tmpa.s_addr = m_SaveAddr.sin_addr.s_addr;
-#if wxCHECK_VERSION(2,5,2)
-		addr.Hostname(ntohl(m_SaveAddr.sin_addr.s_addr));
-#else
-		addr.Hostname(m_SaveAddr.sin_addr.s_addr);
-#endif
-		addr.Service(m_SaveAddr.sin_port);
 		// don't send if socket isn't there
 		if ( Ok() ) 
-			SendTo(addr,sendbuffer,sendblen);
+			SendTo(m_SaveAddr,sendbuffer,sendblen);
 		delete[] sendbuffer;
 		sendbuffer = 0;
 		delete cur_server;
-		cur_server = 0;
+		cur_server = NULL;
 	}
 }
 
 void CUDPSocket::SendPacket(Packet* packet,CServer* host){
-        int ret = 0;
+	wxASSERT(!cur_server);
 	cur_server = new CServer(host);
 	sendbuffer = new char[packet->GetPacketSize()+2];
 	memcpy(sendbuffer,packet->GetUDPHeader(),2);
 	memcpy(sendbuffer+2,packet->GetDataBuffer(),packet->GetPacketSize());
 	sendblen = packet->GetPacketSize()+2;
 
+	m_SaveAddr.Service(cur_server->GetPort()+4); 
+
 	// see if we need to dns()
-	struct sockaddr_in sockAddr;
-	memset(&sockAddr,0,sizeof(sockAddr));
-	sockAddr.sin_family=AF_INET;
-        // inet_addr is obsolete
-#ifndef __WXMSW__
-        if (!(ret = inet_aton(unicode2char(cur_server->GetAddress()), &sockAddr.sin_addr))) {
-		sockAddr.sin_addr.s_addr = INADDR_NONE;
-	  }
-#endif
-	sockAddr.sin_port=cur_server->GetPort()+4; //htons(cur_server->GetPort()+4);
-	m_SaveAddr=sockAddr;
-
-	//AsyncResolveDNS(cur_server->GetAddress(),cur_server->GetPort()+4);
-	// Done using threads
-
-        // don't resolve IPs
-	if (!ret) {
-	  AsyncDNS* dns=new AsyncDNS();
-	  if(dns->Create()!=wxTHREAD_NO_ERROR) {
-	    // uh?
-	    return;
-	  }
-	  dns->ipName=cur_server->GetAddress();
-	  dns->socket=this;
-	  dns->Run();
+	if (cur_server->HasDynIP()) {
+		// This not an ip but a hostname. Resolve it.
+		AsyncDNS* dns=new AsyncDNS();
+		if(dns->Create()!=wxTHREAD_NO_ERROR) {
+			// uh?
+			return;
+		}
+		dns->ipName=cur_server->GetDynIP();
+		dns->socket=this;
+		dns->Run();
 	} else {
-	  SendBuffer();
+		m_SaveAddr.Hostname(cur_server->GetIP());
+		SendBuffer();
 	}
 }
 

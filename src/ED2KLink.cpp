@@ -18,31 +18,11 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-/*
- * INADDR_BROADCAST is identical to INADDR_NONE which is not defined
- * on all systems. INADDR_BROADCAST should be fine to indicate an error.
- */
-#ifndef INADDR_NONE
-#define INADDR_NONE INADDR_BROADCAST
-#endif
-
 #include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "ED2KLink.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CSafeMemFile
 
-#if 1
 namespace {
 	struct autoFree {
 		autoFree(TCHAR* p) : m_p(p) {}
@@ -78,7 +58,6 @@ namespace {
 		}
 	}
 }
-#endif
 
 CED2KLink::~CED2KLink()
 {
@@ -133,13 +112,12 @@ CED2KServerListLink::GetKind() const
 /////////////////////////////////////////////
 CED2KServerLink::CED2KServerLink(const TCHAR* ip,const TCHAR* port)
 {
-	m_ip = inet_addr(ip);
-	unsigned long ul = atoi(port); //_tcstoul(port,0,10);
+	unsigned long ul = atoi(port); 
 	if ( ul > 0xFFFF )
 		throw wxString(wxT("bad port number"));
 	m_port = static_cast<uint16>(ul);
 	m_defaultName = wxT("Server ");
-	m_defaultName += char2unicode(ip);
+	m_defaultName += Uint32toStringIP(m_ip);
 	m_defaultName += wxT(":");
 	m_defaultName += char2unicode(port);
 }
@@ -152,11 +130,9 @@ CED2KServerLink::~CED2KServerLink()
 void 
 CED2KServerLink::GetLink(wxString& lnk)
 {
-	in_addr adr;
 	char buffer[32];
 	lnk = (wxT("ed2k://|server|"));
-	adr.s_addr = m_ip;
-	lnk += char2unicode(inet_ntoa(adr));
+	lnk += Uint32toStringIP(m_ip);
 	lnk += (wxT("|"));
 	sprintf(buffer,"%d",static_cast<int>(m_port));
 	lnk += char2unicode(buffer);
@@ -278,7 +254,7 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 					*pPort = 0;	// terminate ip string
 					pPort++;	// point pPort to port string.
 
-					dwID = inet_addr( pIP );
+					dwID = StringIPtoUint32(pIP);
 					ul = atoi(pPort); //tcstoul( pPort, 0, 10 );
 					nPort = static_cast<uint16>(ul);
 					
@@ -288,9 +264,11 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 					if (ul > 0xFFFF || ul == 0 )	// port
 					{	nInvalid++;	continue;	}
 					
-					if( dwID == INADDR_NONE) {	// hostname?
-						if (strlen(pIP) > 512)
-						{	nInvalid++;	continue;	}
+					if(!dwID) {	// hostname?
+						if (strlen(pIP) > 512) {
+							nInvalid++;	
+							continue;	
+						}
 						SUnresolvedHostname* hostname = new SUnresolvedHostname;
 						hostname->nPort = nPort;
 						hostname->strHostname = char2unicode(pIP);
