@@ -3023,8 +3023,10 @@ void CPartFile::UpdateAvailablePartsCount()
 				debugprintf(true,"\tcontinue4\n");
 				continue;
 			}
-#endif __DEBUG__
 			if (cur_src->IsPartAvailable(ixPart)) {
+#else // __DEBUG__
+			if (m_SrcList.GetNext(pos)->IsPartAvailable(ixPart)) {
+#endif // __DEBUG__
 				availablecounter++;
 				break;
 			}
