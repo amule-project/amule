@@ -131,7 +131,7 @@ void CServerUDPSocket::ReceiveAndDiscard() {
 
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 
-	CServer* update = theApp.serverlist->GetServerByAddress( host, port-4 );
+	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
 	
