@@ -247,7 +247,7 @@ void CWebServer::Print(char *sFormat, ...) {
 	vsnprintf(buffer, 5000, sFormat, argptr);
 	va_end(argptr);
 	
-	webInterface->Print(buffer);
+	webInterface->Print("%s", buffer);
 }
 
 //reload template file
