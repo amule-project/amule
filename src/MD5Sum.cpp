@@ -38,7 +38,7 @@ void MD5Final (unsigned char [16], MD5_CTX *);
 
 MD5Sum::MD5Sum()
 {
-	m_sHash = wxT("");
+	m_sHash = wxEmptyString;
 }
 
 MD5Sum::MD5Sum(wxString sSource)
@@ -55,7 +55,7 @@ wxString MD5Sum::Calculate(wxString sSource)
 	MD5Update (&context, (unsigned char *)sSource.GetData(), sSource.Length());
 	MD5Final (digest, &context);
 
-	m_sHash = wxT("");
+	m_sHash = wxEmptyString;
 	for (int i = 0; i < 16; i++)
 	{
 		wxString sT;

@@ -133,7 +133,7 @@ void CStatisticsDlg::InitGraphs()
 	pscopeUL->SetRanges(0.0, (float)(theApp.glob_prefs->GetMaxGraphUploadRate()+4));
 	pscopeUL->SetYUnits(_("kB/s"));
 	pscopeConn->SetRanges(0.0, (float)(theApp.glob_prefs->GetStatsMax()));
-	pscopeConn->SetYUnits(wxT(""));
+	pscopeConn->SetYUnits(wxEmptyString);
 }
 
 

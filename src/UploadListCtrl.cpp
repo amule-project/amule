@@ -492,7 +492,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 				case 3:
 					// lagloose
 					if (client->GetDownloadState() == DS_DOWNLOADING) {
-						Sbuffer = wxT("");
+						Sbuffer = wxEmptyString;
 						rbuffer.Printf(wxT("%.1f"),client->GetKBpsUp());
 						Sbuffer.Append(rbuffer);
 						Sbuffer.Append(wxT("/"));

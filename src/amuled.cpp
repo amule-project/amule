@@ -773,7 +773,7 @@ wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile* f)
 {
 	if ( !serverconnect->IsConnected() || serverconnect->IsLowID() ) {
 		//wxMessageBox(_("You need a HighID to create a valid sourcelink"));
-		return wxT("");
+		return wxEmptyString;
 	}
 
 	uint32 clientID = serverconnect->GetClientID();
@@ -1608,7 +1608,7 @@ void CamuleApp::ShutDown() {
 	
 			current_socket.socket_n = socket_pointer;
 			current_socket.creation_time = creation_time;
-			current_socket.backtrace = wxT("");
+			current_socket.backtrace = wxEmptyString;
 	
 			void *bt_array[6];	// 6 should be enough ?!?
 			char **bt_strings;

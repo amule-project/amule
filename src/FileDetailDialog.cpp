@@ -227,12 +227,12 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
 
 	// Barry - Some additional formatting
 	filename.MakeLower();
-	filename.Replace(wxT("sharereactor"), wxT(""));
-	filename.Replace(wxT("deviance"), wxT(""));
-	filename.Replace(wxT("-ftv"), wxT(""));
-	filename.Replace(wxT("flt"), wxT(""));
-	filename.Replace(wxT("[]"), wxT(""));
-	filename.Replace(wxT("()"), wxT(""));
+	filename.Replace(wxT("sharereactor"), wxEmptyString);
+	filename.Replace(wxT("deviance"), wxEmptyString);
+	filename.Replace(wxT("-ftv"), wxEmptyString);
+	filename.Replace(wxT("flt"), wxEmptyString);
+	filename.Replace(wxT("[]"), wxEmptyString);
+	filename.Replace(wxT("()"), wxEmptyString);
 	filename.Replace(wxT("  "), wxT("-"));
 
 	// Make leading Caps 

@@ -167,7 +167,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	SetSizer( s_main, true );
 
-	Create_Toolbar(wxT(""));
+	Create_Toolbar(wxEmptyString);
 
 	serverwnd = new CServerWnd(p_cnt);
 
@@ -507,7 +507,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 	}
 
 	if(ct) {
-		ct->SetValue(wxT(""));
+		ct->SetValue(wxEmptyString);
 	}
 }
 
@@ -843,7 +843,7 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			AddLogLineM( true, _("Invalid link: ") + msg);
 		}
 	}
-ctl->SetValue(wxT(""));
+ctl->SetValue(wxEmptyString);
 }
 
 

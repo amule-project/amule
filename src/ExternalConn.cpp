@@ -417,7 +417,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				theApp.serverconnect->Disconnect();
 			}
 			theApp.serverconnect->ConnectToAnyServer();
-			Notify_ShowConnState(false,wxT(""));
+			Notify_ShowConnState(false,wxEmptyString);
 			return wxEmptyString;
 		}
 		if (item == wxT("SERVER DISCONNECT")) {
@@ -429,7 +429,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		if (item == wxT("SERVER LIST")) {
 			// returns one string where each line is formatted 
 			// as: %s\t%s\t%d\t%s\t%d\t%d\t%d\n
-			wxString buffer(wxT(""));
+			wxString buffer(wxEmptyString);
 			for (uint i=0; i < theApp.serverlist->GetServerCount(); i++) {
 				CServer *server = theApp.serverlist->GetServerAt(i);
 				if (server) {
@@ -986,7 +986,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				return wxT("Already Connected");
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
-				Notify_ShowConnState(false,wxT(""));
+				Notify_ShowConnState(false,wxEmptyString);
 				return wxT("Reconected");
 			}
 		}
@@ -1686,7 +1686,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					CServer* server = theApp.serverlist->GetServerByAddress(sIP, StrToLong(sPort) );
 					if (server != NULL) {
 						theApp.serverconnect->ConnectToServer(server);
-						Notify_ShowConnState(false,wxT(""));
+						Notify_ShowConnState(false,wxEmptyString);
 						return wxT("Connecting...");
 					} else
 						return wxT("Not Connected");
@@ -1695,7 +1695,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						return wxT("Already connected");
 					} else {
 						theApp.serverconnect->ConnectToAnyServer();
-						Notify_ShowConnState(false,wxT(""));
+						Notify_ShowConnState(false,wxEmptyString);
 						return wxT("Connected");
 					}
 				}

@@ -358,7 +358,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-	cmdline.AddOption(wxT("geometry"), wxT(""), wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 	cmdline.Parse();
 
 	if ( cmdline.Found(wxT("version")) ) {
@@ -1665,7 +1665,7 @@ void CamuleApp::ShutDown() {
 	
 			current_socket.socket_n = socket_pointer;
 			current_socket.creation_time = creation_time;
-			current_socket.backtrace = wxT("");
+			current_socket.backtrace = wxEmptyString;
 	
 			void *bt_array[6];	// 6 should be enough ?!?
 			char **bt_strings;

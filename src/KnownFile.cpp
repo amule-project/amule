@@ -791,7 +791,7 @@ void CKnownFile::LoadComment()
 
 	wxConfigBase* cfg = wxConfig::Get();
 	
-	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxT(""));
+	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
 	m_iRate = cfg->Read( strCfgPath + wxT("Rate"), 0l);
 	m_bCommentLoaded = true;
 }    
