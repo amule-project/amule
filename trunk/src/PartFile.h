@@ -86,7 +86,7 @@ public:
 	void	AddGap(uint32 start, uint32 end);
 	void	FillGap(uint32 start, uint32 end);
 	void	DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat);
-	void    DrawShareStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool bFlat);
+	virtual void DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const;
 	bool	IsComplete(uint32 start, uint32 end);
 	bool	IsPureGap(uint32 start, uint32 end);
 	bool	IsCorruptedPart(uint16 partnumber);

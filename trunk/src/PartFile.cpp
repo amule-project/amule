@@ -1432,41 +1432,36 @@ void CPartFile::UpdateCompletedInfos()
 	}
 }
 
-#if 0
-#warning work in progress
-void CPartFile::DrawShareStatusBar(CDC* dc, RECT* rect, bool onlygreyrect, bool  bFlat){ 
-	COLORREF crProgress;
-	COLORREF crHave;
-	COLORREF crPending;
-	COLORREF crMissing = RGB(255, 0, 0);
-
-	if(bFlat) { 
-		crProgress = RGB(0, 150, 0);
-		crHave = RGB(0, 0, 0);
-		crPending = RGB(255,208,0);
-	} else { 
-		crProgress = RGB(0, 224, 0);
-		crHave = RGB(104, 104, 104);
-		crPending = RGB(255, 208, 0);
-	} 
-
-	s_ChunkBar.SetFileSize(GetFileSize()); 
-	s_ChunkBar.SetHeight(rect->bottom - rect->top); 
-	s_ChunkBar.SetWidth(rect->right - rect->left); 
-	s_ChunkBar.Fill(crMissing); 
-	COLORREF color;
-	if (!onlygreyrect && !m_SrcpartFrequency.IsEmpty()) { 
-		for (int i = 0;i < GetPartCount();i++)
-			if(m_SrcpartFrequency[i] > 0 ){
-				color = RGB(0, (210-(22*(m_SrcpartFrequency[i]-1)) <  0)? 0:210-(22*(m_SrcpartFrequency[i]-1)), 255);
-				s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
-			}
-	}
-   	s_ChunkBar.Draw(dc, rect->left, rect->top, bFlat); 
-} 
-#endif
 
 #ifndef AMULE_DAEMON
+void CPartFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const
+{
+	if ( !IsPartFile() ) {
+		CKnownFile::DrawShareStatusBar( dc, rect, onlygreyrect, bFlat );
+		return;
+	}
+	
+	static CBarShader s_ChunkBar;
+
+	s_ChunkBar.SetFileSize(GetFileSize());
+	s_ChunkBar.SetHeight( rect.GetHeight() );
+	s_ChunkBar.SetWidth( rect.GetWidth() );
+	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
+	s_ChunkBar.Fill( RGB(255, 0, 0) );
+
+	if (!onlygreyrect && !m_SrcpartFrequency.IsEmpty()){
+		for (int i = 0; i < GetPartCount(); i++){
+			if(m_SrcpartFrequency[i] > 0 ){
+				COLORREF color = RGB(0, (210-(22*(m_SrcpartFrequency[i]-1)) < 0) ? 0 : 210-(22*(m_SrcpartFrequency[i]-1)), 255);
+				s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
+			}
+		}
+	}
+
+   	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), bFlat); 
+} 
+
+
 void CPartFile::DrawStatusBar( wxMemoryDC* dc, wxRect rect, bool bFlat )
 {
 	static CBarShader s_ChunkBar(16);
