@@ -348,7 +348,7 @@ bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid) const
 		}
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineM(true, _("You are already trying to download the file %s") + file->GetFileName());
+		AddLogLineM(true, _("You are already trying to download the file ") + file->GetFileName());
 		return true;
 	}
 	return false;
