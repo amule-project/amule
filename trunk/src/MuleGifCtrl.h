@@ -22,6 +22,7 @@
 
 #include <wx/control.h>
 #include <wx/timer.h>
+#include <wx/bitmap.h>
 
 const int GIFTIMERID = 271283;
 
@@ -112,7 +113,7 @@ private:
 	/**
 	 * This function is used to avoid flicker when redrawing.
 	 */
-	void OnErase( wxPaintEvent& WXUNUSED(event) ) {}
+	void OnErase( wxEraseEvent& WXUNUSED(event) ) {}
 
 	//! A pointer to the current gif-animation.
 	wxGIFDecoder*	m_decoder;
