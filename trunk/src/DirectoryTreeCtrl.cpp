@@ -268,7 +268,7 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 	wxString tStrDir = strDir;
 	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
 		tStrDir.RemoveLast();						// Minus possible trailing slashes.
-	tStrDir += wxT("/"); // last char always a / 
+	tStrDir += wxT("/"); // last char always a /
 	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
@@ -277,9 +277,13 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(wxString const& strDir)
 		{
 			if (
 #ifdef __UNIX__
-			    str.StartsWith(tStrDir) 
+                str.StartsWith(tStrDir)
 #else
-			    str.MakeLower().StartsWith(tStrDir.MakeLower())
+    #ifdef __WXMSW__
+                str.StartsWith(tStrDir)
+    #else
+	            str.MakeLower().StartsWith(tStrDir.MakeLower())
+    #endif
 #endif
 				) {
 					return true;
@@ -312,7 +316,7 @@ bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 	wxString tStrDir = strDir;
 	while(tStrDir.Len() > 0 && tStrDir.Last() == wxT('/'))
 		tStrDir.RemoveLast();						// Minus possible trailing slashes.
-	tStrDir += wxT("/"); // last char always a / 
+	tStrDir += wxT("/"); // last char always a /
 	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
 	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
 	{
@@ -330,8 +334,8 @@ bool CDirectoryTreeCtrl::IsShared(wxString const& strDir)
 				}
 		}
 	}
-	return false;	
-	
+	return false;
+
 }
 
 void CDirectoryTreeCtrl::AddShare(wxString strDir)
