@@ -1040,7 +1040,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString strDir = data.ReadString();
 
 				if (client->GetFileListRequested() > 0){
-					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory %s"),client->GetUserID()) + strDir);
+					AddLogLineM(true,wxString(_("User ")) + client->GetUserName() + wxString::Format(_(" (%u) sent sharedfiles-list for directory "),client->GetUserID()) + strDir);
 					#warning We need a new ProcessSharedFileList that can handle dirs. ___UNICODE___
 					client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), unicode2char(strDir));
 					if (client->GetFileListRequested() == 0) {
