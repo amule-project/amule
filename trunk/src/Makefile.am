@@ -107,6 +107,7 @@ amulegui_SOURCES = \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
+	Format.cpp \
 	Logger.cpp \
 	TransferWnd.cpp
 
@@ -195,6 +196,7 @@ amule_SOURCES = \
 	StatisticsDlg.cpp \
 	StateMachine.cpp \
 	StringFunctions.cpp \
+	Format.cpp \
 	Logger.cpp \
 	TransferWnd.cpp \
 	UploadClient.cpp \
@@ -249,6 +251,7 @@ amuled_SOURCES = \
 	StateMachine.cpp \
 	Statistics.cpp \
 	StringFunctions.cpp \
+	Format.cpp \
 	Logger.cpp \
 	Timer.cpp \
         UploadClient.cpp \
@@ -419,6 +422,7 @@ noinst_HEADERS = AddFileThread.h \
 		 StatisticsDlg.h \
 		 StateMachine.h \
 		 StringFunctions.h \
+		 Format.h \
 		 Logger.h \
 		 SysTray.h \
 		 TextClient.h \
