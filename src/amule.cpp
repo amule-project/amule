@@ -199,8 +199,11 @@ CamuleApp::CamuleApp()
 	sTransferDelay = 0.0;
 	m_ilastMaxConnReached = 0;
 	
+	#ifndef AMULE_DAEMON
 	webserver_pid = 0;
-	
+	#else
+	webserver_thread = NULL;
+	#endif
 	// Apprently needed for *BSD
 	SetResourceLimits();
 	InitStatsTree();
@@ -311,12 +314,21 @@ int CamuleApp::OnExit()
 	ipfilter->SaveToFile();
 	
 	// Kill amuleweb if running
-	if (webserver_pid) {
-		wxKillError rc;
-		printf("Killing amuleweb instance...\n");
-		wxKill(webserver_pid,wxSIGTERM, &rc);
-		printf("Killed!\n");
-	}
+	#ifndef AMULE_DAEMON
+		if (webserver_pid) {
+			printf("Killing amuleweb instance...\n");			
+			wxKillError rc;
+			wxKill(webserver_pid,wxSIGKILL, &rc);
+			printf("Killed!\n");
+		}
+	#else
+		if (webserver_thread) {
+			printf("Killing amuleweb instance...\n");			
+			// We can't use delete...
+			webserver_thread->Kill();
+			printf("Killed!\n");			
+		}
+	#endif
 	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
@@ -380,14 +392,15 @@ bool CamuleApp::OnInit()
 		cmdline.Usage();
 		return false;
 	}
-
+	
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
-
 	wxString geom_string;
+	#ifndef AMULE_DAEMON
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 		geometry_enabled = true;
 	}
+	#endif
 
 	// see if there is another instance running
 	wxString server = ConfigDir + wxFileName::GetPathSeparator() + wxT("muleconn");
@@ -680,10 +693,17 @@ bool CamuleApp::OnInit()
 	
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
+		#ifndef AMULE_DAEMON
 		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
 		if (!webserver_pid) {
 			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
 		}
+		#else
+		// wxBase has no async wxExecute
+		webserver_thread = new CamuleWebserverThread();
+		webserver_thread->Create();
+		webserver_thread->Run();
+		#endif
 	}
  		
 	return true;
