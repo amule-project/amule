@@ -89,7 +89,6 @@ public:
 	bool	IsSolving() const { return m_IsSolving;};
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
-	CServerSocketHandler *GetEventHandler(void) const { return my_handler; }
 	
 #ifdef AMULE_DAEMON
 	bool Connect(wxIPV4address &addr, bool wait);

@@ -124,7 +124,6 @@ public:
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
-	CClientReqSocketHandler *GetEventHandler(void) const { return my_handler; }
 #ifdef AMULE_DAEMON
 	void Destroy();
 #endif
