@@ -302,11 +302,6 @@ void CDownloadListCtrl::RemoveSource( const CUpDownClient* source, const CPartFi
 {
 	wxASSERT( source );
 	
-	// Check if we need to search for the sources
-	if ( owner && !owner->ShowSources() ) {
-		return;
-	}
-	
 	// Retrieve all entries matching the source
 	ListIteratorPair rangeIt = m_ListItems.equal_range(source);
 	
