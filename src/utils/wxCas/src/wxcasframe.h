@@ -69,6 +69,7 @@ protected:
   void OnBarAbout (wxCommandEvent & event);
   void OnBarSave (wxCommandEvent & event);
   void OnBarPrint (wxCommandEvent & event);
+  void OnBarPrefs (wxCommandEvent & event);
   void OnTimer (wxTimerEvent & event);
 
     DECLARE_EVENT_TABLE ();
@@ -77,7 +78,7 @@ private:
 	
   wxToolBar *m_toolbar;
   
-  wxBitmap m_toolBarBitmaps[5];
+  wxBitmap m_toolBarBitmaps[6];
 
   wxBoxSizer *m_frameVBox;
   wxBoxSizer *m_mainPanelVBox;
@@ -112,9 +113,10 @@ private:
   enum
   {
     ID_BAR_REFRESH = 1000,
-    ID_BAR_ABOUT,
+	ID_BAR_SAVE,
     ID_BAR_PRINT,
-    ID_BAR_SAVE,
+	ID_BAR_PREFS,
+	ID_BAR_ABOUT,
     ID_TIMER
   };
 

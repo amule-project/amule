@@ -38,6 +38,9 @@
 
 #include "wxcasframe.h"
 #include "wxcasprint.h"
+#include "wxcasprefs.h"
+#include "wxcascte.h"
+#include "wxcas.h"
 
 #ifndef __WXMSW__
 #include "../pixmaps/wxcas.xpm"
@@ -46,6 +49,7 @@
 #include "../pixmaps/save.xpm"
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
+#include "../pixmaps/prefs.xpm"
 #include "../pixmaps/stat.xpm"
 #endif
 
@@ -138,6 +142,7 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_toolBarBitmaps[2] = wxBITMAP (print);
   m_toolBarBitmaps[3] = wxBITMAP (about);
   m_toolBarBitmaps[4] = wxBITMAP (stop);
+  m_toolBarBitmaps[5] = wxBITMAP (prefs);
 
   // Constructing toolbar
   m_toolbar =
@@ -156,6 +161,9 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", m_toolBarBitmaps[2],
 		      _("Print Online Statistics image"));
+			  
+  m_toolbar->AddTool (ID_BAR_PREFS, "Prefs", m_toolBarBitmaps[5],
+		      _("Preferences setting"));
 
   m_toolbar->AddSeparator ();
 
@@ -172,7 +180,10 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 
   // Add timer
   m_timer = new wxTimer (this, ID_TIMER);
-  m_timer->Start (5000);
+  wxInt32 refresh;
+  wxGetApp ().GetConfig ()->Read (WxCasCte::REFRESH_RATE_KEY, &refresh,
+				  WxCasCte::DEFAULT_REFRESH_RATE);
+  m_timer->Start (refresh*1000); // s to ms
 }
 
 // Destructor
@@ -190,6 +201,7 @@ BEGIN_EVENT_TABLE (WxCasFrame, wxFrame)
 EVT_TOOL (ID_BAR_REFRESH, WxCasFrame::OnBarRefresh)
 EVT_TOOL (ID_BAR_SAVE, WxCasFrame::OnBarSave)
 EVT_TOOL (ID_BAR_PRINT, WxCasFrame::OnBarPrint)
+EVT_TOOL (ID_BAR_PREFS, WxCasFrame::OnBarPrefs)
 EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
 EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer) 
 END_EVENT_TABLE ()
@@ -300,6 +312,18 @@ WxCasFrame::OnBarPrint (wxCommandEvent & event)
 			_("Printing"), wxOK);
 	}
     }
+}
+
+// Prefs button
+void
+WxCasFrame::OnBarPrefs (wxCommandEvent & event)
+{
+	WxCasPrefs *dlg = new WxCasPrefs(this);
+        if ( dlg->ShowModal() == wxID_OK )
+		{
+		}
+
+        dlg->Destroy();
 }
 
 // About button

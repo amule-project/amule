@@ -23,11 +23,11 @@
 // 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WXCAS_H
-#define _WXCAS_H
+#ifndef _WXCASCTE_H
+#define _WXCASCTE_H
 
 #ifdef __GNUG__
-#pragma interface "wxcas.h"
+#pragma interface "wxcascte.h"
 #endif
 
 // Include wxWindows' headers
@@ -35,23 +35,23 @@
 #include <wx/wx.h>
 #endif
 
-#include <wx/config.h>
-#include "wxcasframe.h"
-
-// Application
-class WxCas:public wxApp
+class WxCasCte
 {
-private:
-  WxCasFrame * m_frame;
-  wxConfig *m_config;
-	
 public:
-  virtual bool OnInit ();
-  virtual int OnExit();
-  WxCasFrame *GetMainFrame ();
-  wxConfig *GetConfig ();
+
+  static const wxString AMULESIG_NAME;
+
+  // Refresh rate limits
+  static const wxUint32 MIN_REFRESH_RATE;
+  static const wxUint32 MAX_REFRESH_RATE;
+
+  // Key config names
+  static const wxString AMULESIG_KEY;
+  static const wxString REFRESH_RATE_KEY;
+
+  // Default config parameters
+  static const wxString AMULESIG_DEFAULT_PATH;
+  static const wxUint32 DEFAULT_REFRESH_RATE;
 };
 
-DECLARE_APP (WxCas);
-
-#endif /* _WXCAS_H */
+#endif /* _WXCASCTE_H */

@@ -62,6 +62,9 @@ WxCas::OnInit ()
   SetPrintMode (wxPRINT_POSTSCRIPT);
 #endif
 
+  m_config = new wxConfig(GetAppName());
+  m_config->Get(TRUE);
+
   m_frame = new WxCasFrame (_("wxCas, aMule Online Statistics"));
 
   // Show all
@@ -70,8 +73,22 @@ WxCas::OnInit ()
   return true;
 }
 
+int 
+WxCas::OnExit()
+{
+	m_config->Set(NULL);
+	delete m_config;
+	return 0;
+}
+
 WxCasFrame *
 WxCas::GetMainFrame ()
 {
   return m_frame;
+}
+
+wxConfig *
+WxCas::GetConfig ()
+{
+	return m_config;
 }
