@@ -156,7 +156,6 @@ wxString castSecondsToHM(sint32 count) {
 //common functions -- end
 
 
-
 CWebServer::CWebServer(CamulewebApp *webApp) {
 	webInterface = webApp;
 	
@@ -243,6 +242,15 @@ int CWebServer::GetWSPort(void) {
 //sends output to web interface
 void CWebServer::Print(const wxString &s) {
 	webInterface->Show(s);
+}
+
+// send EC request and discard output
+void CWebServer::Send_Discard_V2_Request(CECPacket *request)
+{
+		CECPacket *reply = webInterface->SendRecvMsg_v2(request);
+		if ( reply ) {
+			delete reply;
+		}
 }
 
 //reload template file
@@ -820,22 +828,24 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 
 	wxString sCmd = _ParseURL(Data, wxT("c"));
 	if (sCmd == wxT("connect") && IsSessionAdmin(Data,sSession) ) {
-		wxString sIP = _ParseURL(Data, wxT("ip"));
-		if (sIP.IsEmpty()) {
-			pThis->webInterface->SendRecvMsg(wxT("SERVER RE-CONNECT"));
-		} else {
-			wxString sPort = _ParseURL(Data, wxT("port"));
-			if (sPort.IsEmpty()) sPort = wxT("4661"); //try default port
-			_ConnectToServer(pThis, sIP, sPort);
+		wxString sID = _ParseURL(Data, wxT("id"));
+		uint32 id;
+		CECPacket req(EC_OP_SERVER_CONNECT);
+		if ( sID.ToULong((unsigned long *)&id, 16) ) {
+			req.AddTag(CECTag(EC_TAG_ITEM_ID, id));
 		}
+		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
-		pThis->webInterface->SendRecvMsg(wxT("SERVER DISCONNECT"));
+		CECPacket req(EC_OP_SERVER_DISCONNECT);
+		pThis->Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("remove") && IsSessionAdmin(Data,sSession)) {
-		wxString sIP = _ParseURL(Data, wxT("ip"));
-		if (!sIP.IsEmpty()) {
-			wxString sPort = _ParseURL(Data, wxT("port"));
-			if (sPort.IsEmpty()) sPort = wxT("4661"); //try default port
-			_RemoveServer(pThis, sIP, sPort);
+		wxString sID = _ParseURL(Data, wxT("id"));
+		uint32 id;
+		CECPacket req(EC_OP_SERVER_CONNECT);
+		if ( sID.ToULong((unsigned long *)&id, 16) ) {
+			CECPacket req(EC_OP_SERVER_REMOVE);
+			req.AddTag(CECTag(EC_TAG_ITEM_ID, id));
+			pThis->Send_Discard_V2_Request(&req);
 		}
 	} else if (sCmd == wxT("options")) {
 		sAddServerBox = _GetAddServerBox(Data);
@@ -916,34 +926,22 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	ArrayOfServerEntry ServerArray;
 
 	// Populating array
-	wxString sServerList = pThis->webInterface->SendRecvMsg(wxT("SERVER LIST"));
-	wxString sEntry;
-	int brk=0, newLinePos;
-	while (sServerList.Length() > 0) {
-		newLinePos=sServerList.Find(wxT("\n"));
+	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
+	CECPacket *srv_reply = pThis->webInterface->SendRecvMsg_v2(&srv_req);
+	for(int i = 0; i < srv_reply->GetTagCount(); i ++) {
+		CECTag *tag = srv_reply->GetTagByIndex(i);
 		
-		sEntry = sServerList.Left(newLinePos);
-		sServerList = sServerList.Mid(newLinePos+1);
-
 		ServerEntry* Entry = new ServerEntry;
-
-		brk=sEntry.First(wxT("\t"));
-		Entry->sServerName = _SpecialChars(sEntry.Left(brk));
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		Entry->sServerDescription = _SpecialChars(sEntry.Left(brk));
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		Entry->nServerPort = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		Entry->sServerIP = sEntry.Left(brk);
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		Entry->nServerUsers = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1); brk=sEntry.First(wxT("\t"));
-		Entry->nServerMaxUsers = atoi((char*) sEntry.Left(brk).GetData());
-		sEntry = sEntry.Mid(brk+1);
-		Entry->nServerFiles = atoi((char*) sEntry.GetData());
-		
+		Entry->sServerName = tag->GetStringData();
+		Entry->sServerDescription = tag->GetTagByName(EC_TAG_SERVER_DESC)->GetStringData();
+		Entry->sServerIP = tag->GetTagByName(EC_TAG_SERVER_ADDRESS)->GetStringData();
+		Entry->nServerUsers = tag->GetTagByName(EC_TAG_SERVER_USERS)->GetInt32Data();
+		Entry->nServerMaxUsers = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)->GetInt32Data();
+		Entry->nServerFiles = tag->GetTagByName(EC_TAG_SERVER_FILES)->GetInt32Data();
+		Entry->nServerID = tag->GetTagByName(EC_TAG_ITEM_ID)->GetInt32Data();
 		ServerArray.Add(Entry);
 	}
+	delete srv_reply;
 
 	// Sorting (simple bubble sort, we don't have tons of data here)
 	bool bSorted = true;
@@ -988,8 +986,7 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 		wxString HTTPProcessData = OutE; // Copy Entry Line to Temp
 		HTTPProcessData.Replace(wxT("[1]"), ServerArray[i]->sServerName);
 		HTTPProcessData.Replace(wxT("[2]"), ServerArray[i]->sServerDescription);
-		wxString sPort = sPort.Format(wxT(":%d"), ServerArray[i]->nServerPort);
-		HTTPProcessData.Replace(wxT("[3]"), ServerArray[i]->sServerIP + sPort);
+		HTTPProcessData.Replace(wxT("[3]"), ServerArray[i]->sServerIP );
 		
 		wxString sT;
 		if (ServerArray[i]->nServerUsers > 0) {
@@ -1005,11 +1002,17 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 			sT.Printf(wxT("%d"), ServerArray[i]->nServerFiles);
 		
 		HTTPProcessData.Replace(wxT("[5]"), sT);
-		
-		wxString sServerPort = sServerPort.Format(wxT("%d"), ServerArray[i]->nServerPort);
-		
-		HTTPProcessData.Replace(wxT("[6]"), IsSessionAdmin(Data,sSession) ? wxString::Format(wxT("?ses=%s&w=server&c=connect&ip=%s&port=%s"), sSession.GetData(), ServerArray[i]->sServerIP.GetData(), sServerPort.GetData()) : GetPermissionDenied());
-		HTTPProcessData.Replace(wxT("[LinkRemove]"), IsSessionAdmin(Data,sSession) ? wxString::Format(wxT("?ses=%s&w=server&c=remove&ip=%s&port=%s"), sSession.GetData(), ServerArray[i]->sServerIP.GetData(), sServerPort.GetData()) : GetPermissionDenied());
+		if ( IsSessionAdmin(Data,sSession) ) {
+			HTTPProcessData.Replace(wxT("[6]"),
+						wxString::Format(wxT("?ses=%s&w=server&c=connect&id=%08x"),
+								 sSession.GetData(), ServerArray[i]->nServerID));
+			HTTPProcessData.Replace(wxT("[LinkRemove]"),
+						wxString::Format(wxT("?ses=%s&w=server&c=remove&id=%08x"),
+								 sSession.GetData(), ServerArray[i]->nServerID));
+		} else {
+			HTTPProcessData.Replace(wxT("[6]"), GetPermissionDenied());
+			HTTPProcessData.Replace(wxT("[LinkRemove]"), GetPermissionDenied());
+		}
 
 		sList += HTTPProcessData;
 	}

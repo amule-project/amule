@@ -124,7 +124,7 @@ typedef enum {
 typedef struct {
 	wxString	sServerName;
 	wxString	sServerDescription;
-	int		nServerPort;
+	uint32		nServerID;
 	wxString	sServerIP;
 	int		nServerUsers;
 	int		nServerMaxUsers;
@@ -234,7 +234,8 @@ class CWebServer {
 		bool 	IsRunning()	{ return true /*m_bServerWorking*/;}  //shakraw, useless now
 		int 	GetWSPort(); //shakraw
 		void	Print(const wxString &s);
-		
+		void	Send_Discard_V2_Request(CECPacket *request);
+
 	protected:
 		static void	ProcessURL(ThreadData);
 		static void	ProcessFileReq(ThreadData);
