@@ -295,11 +295,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	Show(         _("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));	
+	Show(         _("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
-	Show(wxString(wxT("Quit, Exit:\t\t")) + wxString(_("Exits Textclient.\n")));	
-	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows statistics.\n")));	
-	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));	
+	Show(wxString(wxT("Quit, Exit:\t\t")) + wxString(_("Exits Textclient.\n")));
+	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows statistics.\n")));
+	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));
 	Show(wxString(wxT("Resume n:\t\t")) + wxString(_("Resume file number n.\n")));
 	Show(wxString(wxT("Pause n:\t\t")) + wxString(_("Pauses file number n.\n")));
 	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
