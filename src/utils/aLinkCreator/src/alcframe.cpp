@@ -517,7 +517,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & event)
           m_e2kHashTextCtrl->SetValue(ed2kHash.Last());
 
           // Ed2k link
-          m_ed2kTextCtrl->SetValue(hash.GetED2KLink(arrayOfUrls,m_parthashesCheck->IsChecked()));
+          m_ed2kTextCtrl->SetValue(hash.GetED2KLink(m_parthashesCheck->IsChecked(), arrayOfUrls));
         }
       else
         {

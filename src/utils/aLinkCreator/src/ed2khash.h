@@ -70,7 +70,7 @@ class Ed2kHash:public MD4
     wxArrayString GetED2KHash();
 
     /// Get Ed2k link
-    wxString GetED2KLink(const wxArrayString& arrayOfUrls=0, const bool addPartHashes=false);
+    wxString GetED2KLink(const bool addPartHashes=false, const wxArrayString& arrayOfUrls=0);
   };
 
 #endif /* _ED2KHASH_H */
