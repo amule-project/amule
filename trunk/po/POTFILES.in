@@ -16,6 +16,7 @@ src/CryptoPP.cpp
 src/DownloadClient.cpp
 src/DownloadListCtrl.cpp
 src/DownloadQueue.cpp
+src/ECSpecialTags.cpp
 src/EditServerListDlg.cpp
 src/ExternalConn.cpp
 src/ExternalConnector.cpp
