@@ -27,6 +27,7 @@
 
 #include "EMSocket.h"		// Interface declarations.
 #include "Packet.h"		// Needed for CPacket
+#include "amule.h"
 #include "GetTickCount.h"
 
 #define MAX_SIZE 2000000
