@@ -103,6 +103,8 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 	CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(0);
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
+	CastChild( IDC_SEARCHMINSIZE, wxChoice )->SetSelection(2);
+	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
 	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
@@ -418,11 +420,15 @@ void CSearchDlg::StartNewSearch()
 
 		typeText = CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection();
 
+		uint32 sizemin = GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
+		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
+		if ( sizemin == -1 || sizemax == -1 ) printf("Warning! Unknown SizeType selected!\n");
+
 		// Parameter Minimum Size
-		min = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * 1048576;
+		min = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * sizemin;
 
 		// Parameter Maximum Size
-		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * 1048576;
+		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
 		if ( max < min ) max = 0;
 
