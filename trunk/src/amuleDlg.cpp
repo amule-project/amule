@@ -191,22 +191,23 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	wxFlexGridSizer *s_main = new wxFlexGridSizer(1);
 	s_main->AddGrowableCol(0);
 	s_main->AddGrowableRow(0);
-	s_main->Add(this, 0, wxGROW|wxEXPAND, 0);
-	muleDlg(this, false, true);
+	p_cnt = new wxPanel(this, -1, wxDefaultPosition, wxDefaultSize);
+	s_main->Add(p_cnt, 0, wxGROW|wxEXPAND, 0);
+	muleDlg(p_cnt, false, true);
 
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
 	CreateMuleToolBar();
 
-	serverwnd=new CServerWnd(this);
-	searchwnd=new CSearchDlg(this);
-	transferwnd=new CTransferWnd(this);
+	serverwnd=new CServerWnd(p_cnt);
+	searchwnd=new CSearchDlg(p_cnt);
+	transferwnd=new CTransferWnd(p_cnt);
 #ifndef DISABLE_OLDPREFS
-	preferenceswnd=new CPreferencesDlg(this,theApp.glob_prefs);
+	preferenceswnd=new CPreferencesDlg(p_cnt,theApp.glob_prefs);
 #endif
-	prefsunifiedwnd=new PrefsUnifiedDlg(this);
-	sharedfileswnd=new CSharedFilesWnd(this);
-	statisticswnd=new CStatisticsDlg(this);
-	chatwnd=new CChatWnd(this);
+	prefsunifiedwnd=new PrefsUnifiedDlg(p_cnt);
+	sharedfileswnd=new CSharedFilesWnd(p_cnt);
+	statisticswnd=new CStatisticsDlg(p_cnt);
+	chatwnd=new CChatWnd(p_cnt);
 
 	transicons[0]=dlStatusImages(0);
 	transicons[1]=dlStatusImages(1);
