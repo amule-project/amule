@@ -91,6 +91,11 @@ Version 2.0.0rc6 - The '???' version.
 		* Removed bubble sort code in download queue from amuleweb.
 		  This code did not scale for large number of files, like
 		  hundreds. There is still room for improovement here.
+		* Fixed a bug in SafeFile.cpp. wxString.Length() returns the
+		  number of codes in the string, which is less than or equal
+		  to the number of bytes in a multibyte encoded string. This way, 
+		  amule will also not crash with locale search strings like korean,
+		  japanese and chinese.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

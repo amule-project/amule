@@ -127,9 +127,28 @@ void CFileDataIO::WriteHash16(const uchar* pVal)
 
 void CFileDataIO::WriteString(const wxString& rstr)
 {
+	//
 	// We dont include the NULL terminator. Dont know why.
-	WriteUInt16( rstr.Length() );
-	Write( unicode2char(rstr), rstr.Length() );
+	// It is because we write the size, so the NULL is not necessary.
+	// 
+	const char *s = unicode2char(rstr);
+	//
+	// This avoids a crash in case unicode2char cannot perform the conversion,
+	// e.g., original string is an unicode string that cannot be converted to
+	// the current character set, in which case it will return NULL. Returning
+	// a NULL should not happen if UTF-8 was beeing used.
+	// 
+	unsigned int sLength = s ? strlen(s) : 0;
+	//
+	// Write the size of the string
+	//
+	WriteUInt16(sLength);
+	//
+	// If this is a NULL string, there is nothing to write, only the size.
+	// 
+	if (sLength) {
+		Write(s, sLength);
+	}
 }
 
 
