@@ -41,6 +41,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/filename.h>	// Needed for wxFileName
 
 #include "DownloadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CheckShowItemInGivenCat
@@ -246,12 +247,8 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 	}
 
-	item = -1;
-	for (;;) {
-		item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		if (item == -1) {
-			break;
-		}
+	item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	if (item != -1) {
 		CtrlItem_Struct *content = (CtrlItem_Struct *) this->GetItemData(item);
 		if (content->type == 1) {
 			CPartFile *file = (CPartFile *) content->value;
@@ -264,13 +261,14 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				m_PrioMenu = priomenu;
 
 				wxMenu *menu = new wxMenu(_("Downloads"));
-				menu->Append(999989, _("Priority"), priomenu);
+				menu->Append(MP_MENU_PRIO, _("Priority"), priomenu);
 				menu->Append(MP_CANCEL, _("Cancel"));
 				menu->Append(MP_STOP, _("&Stop"));
 				menu->Append(MP_PAUSE, _("&Pause"));
 				menu->Append(MP_RESUME, _("&Resume"));
 				menu->Append(MP_CLEARCOMPLETED, _("C&lear completed"));
 				menu->AppendSeparator();
+
 				/* Razor 1a - Modif by MikaelB
 				   Menu items for :
 				   - Drop No Needed Sources now
@@ -290,19 +288,17 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES, _("Drop Full Queue Sources now"));
 				extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES, _("Drop High Queue Rating Sources now"));
 				extendedmenu->Append(MP_CLEAN_UP_SOURCES, _("Clean Up Sources now (NNS, FQS && HQRS)"));
-
-				menu->Append(999989, _("Extended Options"), extendedmenu);
-				/* End Modif */
+				menu->Append(MP_MENU_EXTD, _("Extended Options"), extendedmenu);
 				menu->AppendSeparator();
+
 				wxMenu *fakecheckmenu = new wxMenu();
-				menu->Append(999989, _("FakeCheck"), fakecheckmenu);
 				fakecheckmenu->Append(MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
 				fakecheckmenu->Append(MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
+				menu->Append(MP_MENU_FAKE, _("FakeCheck"), fakecheckmenu);
 				menu->AppendSeparator();
 				
 				menu->Append(MP_OPEN, _("&Open the file"));
 				menu->Append(MP_PREVIEW, _("Preview"));
-
 				menu->Append(MP_METINFO, _("Show file &details"));
 				menu->Append(MP_VIEWFILECOMMENTS, _("Show all comments"));
 				menu->AppendSeparator();
@@ -314,7 +310,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 
 			} else {
 				// Remove dynamic entries
-				m_FileMenu->Remove(432843);	// Assign category
+				m_FileMenu->Remove(MP_MENU_CATS);	// Assign category
 			}
 			
 			// Add dinamic entries 
@@ -324,20 +320,23 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 					cats->Append(MP_ASSIGNCAT + i, (i == 0) ? wxString(_("unassign")) : theApp.glob_prefs->GetCategory(i)->title);
 				}
 			}
-
-			m_FileMenu->Append(432843, _("Assign to category"), cats);
-			if (theApp.glob_prefs->GetCatCount() == 1) {
-				m_FileMenu->Enable(432843, MF_GRAYED);
-			} else {
-				m_FileMenu->Enable(432843, MF_ENABLED);
-			}
+			m_FileMenu->Append(MP_MENU_CATS, _("Assign to category"), cats);
+			m_FileMenu->Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() == 1) ? MF_GRAYED : MF_ENABLED);
 			
 			// then set state
 			wxMenu *menu = m_FileMenu;
+<<<<<<< DownloadListCtrl.cpp
+			menu->Enable(MP_CANCEL, ((file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
+			menu->Enable(MP_CLEARCOMPLETED, ((theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED));
+=======
 			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_CLEARCOMPLETED, (theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED);
+>>>>>>> 1.106
 			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
 			
 			wxString preview(_("Preview"));
@@ -347,7 +346,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				preview += wxT("]");
 			}
 			menu->SetLabel(MP_PREVIEW, preview);			
-			
 			menu->Enable(MP_PREVIEW, ((file->PreviewAvailable())? MF_ENABLED : MF_GRAYED));
 
 			/* Razor 1a - Modif by MikaelB
@@ -360,7 +358,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			   - Swap every A4AF to this file ( AUTO )
 			   - Swap every A4AF to any other file now
 			   */
-
 			menu->Enable(MP_DROP_NO_NEEDED_SOURCES, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_DROP_FULL_QUEUE_SOURCES, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_DROP_HIGH_QUEUE_RATING_SOURCES, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
@@ -368,16 +365,16 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			menu->Enable(MP_SWAP_A4AF_TO_THIS_AUTO, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
 			menu->Check(MP_SWAP_A4AF_TO_THIS_AUTO, file->IsA4AFAuto()? MF_CHECKED : MF_UNCHECKED);
 			menu->Enable(MP_SWAP_A4AF_TO_ANY_OTHER, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
-			/* End modif */
-
-			menu->Enable(MP_CANCEL, MF_ENABLED);
 
 			wxMenu *priomenu = m_PrioMenu;
 			priomenu->Check(MP_PRIOHIGH, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_HIGH)) ? MF_CHECKED : MF_UNCHECKED);
 			priomenu->Check(MP_PRIONORMAL, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_NORMAL)) ? MF_CHECKED : MF_UNCHECKED);
 			priomenu->Check(MP_PRIOLOW, (!file->IsAutoDownPriority() && (file->GetDownPriority() == PR_LOW)) ? MF_CHECKED : MF_UNCHECKED);
-			priomenu->Check(MP_PRIOAUTO, file->IsAutoDownPriority() ? MF_CHECKED : MF_UNCHECKED);
+			priomenu->Check(MP_PRIOAUTO, (file->IsAutoDownPriority()) ? MF_CHECKED : MF_UNCHECKED);
 
+			menu->Enable(MP_MENU_PRIO, (file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED);
+			menu->Enable(MP_MENU_EXTD, (file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED);
+			menu->Enable(MP_MENU_FAKE, (file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED);
 
 			PopupMenu(m_FileMenu, evt.GetPoint());
 		} else {
@@ -396,8 +393,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			PopupMenu(m_ClientMenu, evt.GetPoint());
 		}
-		// make sure that we terminate
-		break;
 	}
 	if (item == -1) {
 		// no selection.. actually this event won't get fired in this case so 
@@ -1603,7 +1598,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 							break;
 						}
 						char *buffer = new char[250];
-						sprintf(buffer, "%s/%s", unicode2char(thePrefs::GetIncomingDir()), unicode2char(file->GetFileName()));
+						sprintf(buffer, "%s%s", unicode2char(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator()), unicode2char(file->GetFileName()));
 						//ShellOpenFile(buffer);
 						printf("===> open %s\n", buffer);
 						delete[] buffer;
