@@ -572,28 +572,34 @@ bool CamuleApp::OnInit()
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
-	if ( wxFileExists( vfile.GetName() ) && vfile.Open() && !vfile.Eof() ) {
-		if ( vfile.GetFirstLine() != newMule ) {
-			Trigger_New_version( vfile.GetFirstLine(), newMule );
 
-			// Remove prior version
-			while ( vfile.GetLineCount() ) {
-				vfile.RemoveLine(0);
+	if ( !wxFileExists( vfile.GetName() ) )
+		vfile.Create();
+	
+	if ( vfile.Open() ) {
+		
+		// Check if this version has been run before
+		bool found = false;
+		for ( size_t i = 0; i < vfile.GetLineCount(); i++ ) {
+			// Check if this version has been run before
+			if ( vfile.GetLine(i) == newMule ) {
+				found = true;
+				break;
 			}
-
-			vfile.AddLine(newMule);
-			vfile.Write();
 		}
 
-		vfile.Close();
-	} else {
-		Trigger_New_version( wxT("pre_2.0.0rc1"), newMule );
-
-		// If we failed to open the file, create it
-		if ( !vfile.IsOpened() )
-			vfile.Create();
-
-		vfile.AddLine(wxT(VERSION));
+		// We havent run this version before?
+		if ( !found ) {
+			// Insert new at top to provide faster searches
+			vfile.InsertLine( newMule, 0 );
+			
+			Trigger_New_version( newMule );
+		}
+		
+		// Keep at most 10 entires
+		while ( vfile.GetLineCount() > 10 )
+			vfile.RemoveLine( vfile.GetLineCount() - 1 );
+			
 		vfile.Write();
 		vfile.Close();
 	}
@@ -1412,32 +1418,29 @@ void CamuleApp::Localize_mule()
 
 // Displays information related to important changes in aMule.
 // Is called when the user runs a new version of aMule
-void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
+void CamuleApp::Trigger_New_version(wxString new_version)
 {
 	wxString info;
 
 	info = _(" --- This is the first time you run aMule %s ---\n\n");
 	info.Replace( wxT("%s"), new_version );
 
+
 	if (new_version == wxT("CVS")) {
 		info += _("This version is a testing version, updated daily, and \n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
 		info += _("or kill your dog. But it *should* be safe to use anyway. \n");
-	} else if (old_version == wxT("1.2.6")) {
-		info += _("This version has new SecureIdent support, so your \n");
-		info += _("client credits will be lost on this first run. \n");
-		info += _("There is no way to fix that, and eMule did the same.\n");
-		info += _("But your hash will be safe against stealers now, and your\n");
-		info += _("cryptkey.dat, clients.met and preferences.dat are eMule compatible now.\n");
-		info += _("Just take them from your eMule config dir and put then on ~/.aMule.\n");
-	} else if (old_version == wxT("2.0.0-rc1")) {
-		info += _("This rc2 version fixes most of the rc1 version bugs and adds new features.\n");
-		info += _("A full changelog can be found in the Changelog file or at www.amule.org.\n");
-	}
-
+	} 
+	
+	// General info
+	info += wxT("\n");
+	info += _("More information, support and new releases can found at our homepage, \n");
+	info += _("at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net. \n");
+	info += wxT("\n");
+	
+	
 	info += _("Your locale has been changed to System Default due to a version change. Sorry.\n");
 	info += _("Feel free to report any bugs to forum.amule.org");
-
 
 	wxMessageBox(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 
