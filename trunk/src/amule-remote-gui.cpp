@@ -149,6 +149,8 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 {
+	// always query connection state
+	serverconnect->ReQuery();
 	if ( theApp.amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 		sharedfiles->ReloadControl();
@@ -450,6 +452,42 @@ CServer *CServerConnectRem::GetCurrentServer()
 	return 0;
 }
 
+bool CServerConnectRem::ReQuery()
+{
+	CECPacket stat_req(EC_OP_STAT_REQ);
+	CECPacket *stats = m_Conn->SendRecv(&stat_req);
+	if ( !stats ) {
+		return false;
+	}
+	CECTag *tag = stats->GetTagByName(EC_TAG_CONNSTATE);
+    if (!tag) {
+            return false;
+    }
+    CServer *server;
+	switch (tag->GetInt8Data()) {
+		case 0: m_ID = 0; // not connected
+			break;
+	    case 1: m_ID = 0xffffffff; // connecting
+	    	break;
+	    case 2: // connected with low id
+	    case 3: // connected with high id
+	    	m_ID = 3336024912;
+	    	tag = tag->GetTagByIndex(0);
+	    	if ( !tag ) {
+	    		return false;
+	    	}
+	    	server = theApp.serverlist->GetByID(tag->GetIPv4Data().IP());
+	    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
+	    	
+			theApp.amuledlg->ShowConnectionState(true,
+				server->GetListName() + wxT(" ") + server->GetAddress());
+	    	break;
+		default:
+			return false;
+	}
+	return true;
+}
+
 CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
 {
 }
@@ -488,9 +526,9 @@ void CServerListRem::DeleteItem(CServer *)
 {
 }
 
-uint32 CServerListRem::GetItemID(CServer *)
+uint32 CServerListRem::GetItemID(CServer *server)
 {
-	return 0;
+	return server->GetIP();
 }
 
 void CServerListRem::ProcessItemUpdate(CEC_Server_Tag *, CServer *)
