@@ -59,8 +59,10 @@
 
 #ifdef __WXMSW__
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
+#elif defined(__WXMAC__) 
+BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)	
 #else
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
+BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxListCtrl)
 #endif
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
@@ -70,10 +72,12 @@ END_EVENT_TABLE()
 
 
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
-#ifdef __WXMSW__
+#if defined(__WXMSW__) 
 	: wxListCtrl( parent, winid, pos, size, style, validator, name )
-#else
+#elif defined(__WXMAC__)
 	: wxODListCtrl( parent, winid, pos, size, style, validator, name )
+#else
+	: MuleExtern::wxListCtrl( parent, winid, pos, size, style, validator, name )
 #endif
 {
 	m_sort_func = NULL;
