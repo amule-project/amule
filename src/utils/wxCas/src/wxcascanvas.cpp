@@ -34,6 +34,8 @@
 #pragma hdrstop
 #endif
 
+#include <wx/image.h>
+
 #include "wxcascanvas.h"
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || wxUSE_XPM_IN_MSW
