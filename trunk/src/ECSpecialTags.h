@@ -31,6 +31,7 @@
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
+#include <map>
 #include <vector>
 
 #ifndef EC_REMOTE
