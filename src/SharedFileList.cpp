@@ -74,7 +74,16 @@ void CSharedFileList::FindSharedFiles() {
 		list_mut.Lock();
 		m_Files_map.clear();
 		list_mut.Unlock();
-		theApp.downloadqueue->AddPartFilesToShare();
+
+		for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
+			CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
+			
+			if ( file->GetStatus(true) == PS_READY ) {
+				printf("Adding file %s to shares\n", unicode2char( file->GetFullName() ) );
+				
+				SafeAddKFile( file, true );
+			}
+		}
 	}
 
 	/* Global incoming dir and all category incoming directories are automatically shared. */
@@ -133,6 +142,7 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 
 	return false;
 }
+		
 
 void CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
