@@ -66,7 +66,6 @@ amulegui_SOURCES = \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
-	CFile.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadListCtrl.cpp \
 	ED2KLink.cpp \
