@@ -70,7 +70,6 @@
 #include <wx/ffile.h>
 #include "md4.h"
 #include "bithelp.h"
-#include "../../../otherfunctions.h"	// char2unicode
 
 /*
  * The algorithm is due to Ron Rivest.  This code is based on code
@@ -81,9 +80,7 @@
  * This code implements the MD4 message-digest algorithm.
  */
 
-#ifndef BIG_ENDIAN_HOST
-#define byteReverse(buf, len)	do { } while (0)
-#else
+#if wxBYTE_ORDER == wxBIG_ENDIAN
 /* Note: this code is harmless on little-endian machines.
 */
 void MD4::byteReverse(unsigned char *buf, unsigned longs)
@@ -98,6 +95,8 @@ void MD4::byteReverse(unsigned char *buf, unsigned longs)
     }
   while (--longs);
 }
+#else
+#define byteReverse(buf, len)	do { } while (0)
 #endif
 
 /*
@@ -391,25 +390,12 @@ wxString MD4::calcMd4FromFile(const wxString &filename)
 
 wxString MD4::charToHex(const char *buf, unsigned int len)
 {
-  // Hm, can be optimized... :)
   unsigned int i;
-  wxString ret;
-  char tmp[3], cur;
+  wxString ret(wxEmptyString);
 
   for (i = 0; i < len; ++i)
     {
-      cur = *(buf + i);
-      if (cur == 0)
-        {
-          ret += wxT("00");
-        }
-      else
-        {
-          sprintf(tmp, "%x", 0xFF & *(buf + i));
-          if (strlen(tmp) == 1)
-            ret += '0';
-          ret += char2unicode(tmp);
-        }
+      ret += wxString::Format(wxT("%.2x"), 0xFF & *(buf + i));
     }
 
   return ret;
@@ -421,9 +407,13 @@ unsigned int MD4::calcBufSize(size_t filesize)
 
   ret = filesize;
   if (ret < 100000)
-    ret = 100000;
+    {
+      ret = 100000;
+    }
   else if (ret > 200000)
-    ret = 200000;
+    {
+      ret = 200000;
+    }
 
   return ret;
 }
