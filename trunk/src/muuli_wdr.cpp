@@ -407,7 +407,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
     item4->SetToolTip( _("Clears completed downloads") );
     item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize( -1, 32 ), 0 );
+    CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
     item1->Add( item5, 1, wxALIGN_CENTER, 5 );
 
