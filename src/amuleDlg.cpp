@@ -445,11 +445,19 @@ void CamuleDlg::ResetLog(uint8 whichone)
 	wxTextCtrl* ct = NULL;
 
 	switch (whichone){
-		case 1:
+		case 1: {
 			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_LOGVIEW);
 			// Delete log file aswell.
-			wxRemoveFile(wxString::Format(wxT("%s/.aMule/logfile"), getenv("HOME")));
+			wxString logname(theApp.ConfigDir + wxT("logfile"));
+			wxRemoveFile(logname);
+			wxTextFile file(logname);
+			if (!file.Create()) {
+				printf("Error creating log file!\n");
+				return;
+			}
+			file.Close();
 			break;
+		}
 		case 2:
 			ct=(wxTextCtrl*)serverwnd->FindWindow(ID_SERVERINFO);
 			break;
@@ -504,12 +512,9 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxChar* line, ...)
 	// Write into log file
 	wxString filename = theApp.ConfigDir + wxT("logfile");
 	wxTextFile file(filename);
-	
+		
 	if (!file.Open()) {
-		if (!file.Create()) {
-			printf("Error creating log file!\n");
-			return;
-		}
+		printf("Error opening log file!\n");
 	}
 
 	file.AddLine(bufferline);

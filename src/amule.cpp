@@ -465,8 +465,13 @@ bool CamuleApp::OnInit()
 
 
 	// Delete old log file.
-	wxRemoveFile(ConfigDir + wxT("logfile"));
-
+	wxString logname(ConfigDir + wxT("logfile"));
+	wxRemoveFile(logname);
+	wxTextFile file(logname);
+	if (!file.Create()) {
+		printf("Error creating log file!\n");
+	}
+	file.Close();
 	// Load Preferences
 	glob_prefs = new CPreferences();
 
