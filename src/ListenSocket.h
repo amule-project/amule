@@ -75,7 +75,6 @@ public:
 	bool		CheckTimeOut();
 	void		Safe_Delete();
 
-	// long		deletethis;
 	bool		deletethis; // 0.30c (Creteil), set as bool
 
 	bool		Create();
