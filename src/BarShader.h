@@ -79,12 +79,12 @@ public:
 
 	// Returns the height of the bar
 	int GetHeight() const {
-		return m_used3dlevel;
+		return m_Height;
 	}
 
 	// Returns the (3d) depth of the bar
 	int Get3dDepth() const {
-		return m_Height;
+		return m_used3dlevel;
 	}
 	
 	
