@@ -598,7 +598,7 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, wxRect re
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	s_ChunkBar.Fill( RGB(255, 0, 0) );
 
-	for ( int i = 0; i < list.GetCount(); i++ ) {
+	for ( unsigned int i = 0; i < list.GetCount(); i++ ) {
 		if ( list[i] ) {
 			COLORREF color = RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255);
 			s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
