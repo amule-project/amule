@@ -153,8 +153,10 @@ public:
 #ifdef AMULE_DAEMON
 	virtual int	OnRun();
 #endif
-
-	bool	OnInit();
+	CamuleApp() {}
+	virtual		~CamuleApp() {}
+	
+	virtual bool	OnInit();
 	int		OnExit();
 	void		OnFatalException();
 
