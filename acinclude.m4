@@ -557,11 +557,23 @@ AC_DEFUN([AM_PATH_CURLCONFIG],[
   CURL_FLAGS="`$CURL_CONFIG_NAME --cflags`"
 
  if eval $CURL_CONFIG_NAME --version 2>/dev/null >/dev/null; then
+   # Since bc isn't a core app, we can't count on it existing on the system
+   #   ver=`$CURL_CONFIG_NAME --version | sed -e "s/libcurl //g"`
+   #   hex_ver=`$CURL_CONFIG_NAME --vernum | tr 'a-f' 'A-F'`
+   #   ok=`echo "ibase=16; if($hex_ver>=$check_hex) $hex_ver else 0" | bc`
+   # So instead of the code above, we use this other code
    ver=`$CURL_CONFIG_NAME --version | sed -e "s/libcurl //g"`
-   hex_ver=`$CURL_CONFIG_NAME --vernum | tr 'a-f' 'A-F'`
-   ok=`echo "ibase=16; if($hex_ver>=$check_hex) $hex_ver else 0" | bc`
+   check_ver=`echo "$check" | tr . ' '`
+   count=0
+   for ver_part in $(echo "$ver" | tr . ' '); do
+	count=$(expr $count + 1)
+        check_part=$(echo $check_ver | cut -d ' ' -f $count)
+	if test "0$ver_part" -lt "0$check_part"; then ver=0 && break
+        elif test "0$ver_part" -gt "0$check_part"; then break
+        fi
+   done
 
-   if test x$ok != x0; then
+   if test x$ver != x0; then
      my_cv_curl_vers="$ver"
      AC_MSG_RESULT(yes (version $my_cv_curl_vers))
      CURLFOUND=1
