@@ -1397,6 +1397,9 @@ void CUpDownClient::ReGetClientSoft()
 			case SO_NEW_MLDONKEY:
 				m_clientVerString = _("New MlDonkey");
 				break;		
+			case SO_LPHANT:
+				m_clientVerString = _("lphant");
+				break;					
 			default:
 				if (m_bIsML){
 					m_clientSoft = SO_MLDONKEY;
