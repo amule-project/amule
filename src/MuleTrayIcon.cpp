@@ -194,9 +194,9 @@ CMuleTrayIcon::CMuleTrayIcon()
 	Old_Icon = -1;
 	Old_SpeedSize = 0xFFFF; // must be > any possible one.
 	// Create the background icons (speed improvement)
-	HighId_Icon_size = wxIcon(mule_TrayIcon_big_ico_xpm).GetHeight()-2;
-	LowId_Icon_size = wxIcon(mule_Tr_yellow_big_ico_xpm).GetHeight()-2;
-	Disconnected_Icon_size = wxIcon(mule_Tr_grey_big_ico_xpm).GetHeight()-2;
+	HighId_Icon_size = wxIcon(mule_TrayIcon_big_ico_xpm).GetHeight();
+	LowId_Icon_size = wxIcon(mule_Tr_yellow_big_ico_xpm).GetHeight();
+	Disconnected_Icon_size = wxIcon(mule_Tr_grey_big_ico_xpm).GetHeight();
 }
 
 CMuleTrayIcon::~CMuleTrayIcon() 
@@ -230,7 +230,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 			wxASSERT(0);
 	}
 	// Lookup this values for speed improvement: don't draw if not needed
-	int NewSize = ((Bar_ySize -2) * percent) / 100;
+	int NewSize = (Bar_ySize * percent) / 100;
 	
 	if ((Old_Icon != Icon) || (Old_SpeedSize != NewSize)) {
 
@@ -267,13 +267,10 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		int Bar_xSize = (CurrentIcon.GetWidth() / 4); 
 		int Bar_xPos = CurrentIcon.GetWidth() - Bar_xSize -1; 
 			
-		// Y
-		int Bar_yPos = 0;
-		 
 		IconWithSpeed.SetBrush(*wxBLUE_BRUSH);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
-		IconWithSpeed.DrawRectangle(Bar_xPos + 1, (Bar_yPos + 1) + ((Bar_ySize -2) - NewSize), Bar_xSize -2 , NewSize);
+		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
 		
 		// Unselect the icon.
 		IconWithSpeed.SelectObject(wxNullBitmap);
