@@ -131,8 +131,8 @@ public:
 	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
-	uint16  	GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	int			GetValidSourcesCount()			const	{ return m_validSources; };
+	uint32  	GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	uint32		GetValidSourcesCount()			const	{ return m_validSources; };
 	
 	uint32	GetNeededSpace();
 	
