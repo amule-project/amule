@@ -47,6 +47,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* No more wxDynamicCast(), all replaced by dynamic_cast<>().
 		* Fixed multiple instances of event handlers in CClientReqSocketHandler
 		  and CServerSocketHandler.
+		* In StateMachine.cpp, m_state is now private and state machine code 
+		  is now thread safe.
 		
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart

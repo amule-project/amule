@@ -2,6 +2,7 @@
 // This file is part of the aMule Project
 //
 // Copyright (c) 2005 aMule Project ( http://www.amule.org )
+// Copyright (C) 2004-2005 Marcelo Jimenez (phoenix@amule.org)
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,9 +28,9 @@
 #define STATE_MACHINE_H
 
 #include <queue>
-#include <vector>
 
-#include <wx/string.h>
+#include <wx/thread.h>		/* For wxMutex, wxMutexLocker	*/
+#include <wx/string.h>		/* For wxString			*/
 
 typedef unsigned int t_sm_state;
 
@@ -45,23 +46,24 @@ public:
 	virtual ~StateMachine() = 0;
 	void Clock();
 	void Schedule(t_sm_event event);
-	t_sm_state GetState() const { return m_state; }
-	unsigned int GetClocksInCurrentState() const { return m_clocks_in_current_state; }
+	t_sm_state GetState() const			{ return m_state; }
+	unsigned int GetClocksInCurrentState() const	{ return m_clocks_in_current_state; }
 	virtual t_sm_state next_state(t_sm_event event) = 0;
 	virtual void process_state(t_sm_state state, bool entry) = 0;
-	
-protected:
-	t_sm_state			m_state;
 	
 private:
 	void flush_queue();
 
+	t_sm_state			m_state;
+	wxMutex				m_state_mutex;
+	std::queue <t_sm_event>		m_queue;
+	wxMutex				m_queue_mutex;
+	
 	const wxString			m_name;
 	const unsigned int		m_max_states;
 	const unsigned int		m_initial_state;
 	unsigned int			m_clock_counter;
 	unsigned int			m_clocks_in_current_state;
-	std::queue <t_sm_event>		m_queue;
 };
 
 #endif // STATE_MACHINE_H

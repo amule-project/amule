@@ -216,7 +216,7 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 {
 	// Default is stay in current state	
-	t_sm_state ret = m_state;
+	t_sm_state ret = GetState();
 	switch(event)
 	{
 	case wxSOCKET_CONNECTION:
@@ -387,7 +387,7 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 {
 	// Default is stay in current state
 	t_sm_state ret = HandleEvent(event);
-	switch (m_state) {
+	switch (GetState()) {
 	case SOCKS5_STATE_START:
 		if (m_IsConnected && !m_IsLost && CanSend()) {
 			ret = SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD;
@@ -775,7 +775,7 @@ t_sm_state Socks4StateMachine::next_state(t_sm_event event)
 {
 	// Default is stay in current state
 	t_sm_state ret = HandleEvent(event);
-	switch (m_state) {
+	switch (GetState()) {
 	case SOCKS4_STATE_START:
 		if (m_IsConnected && !m_IsLost && CanSend()) {
 			ret = SOCKS4_STATE_SEND_COMMAND_REQUEST;
@@ -924,7 +924,7 @@ t_sm_state HttpStateMachine::next_state(t_sm_event event)
 {
 	// Default is stay in current state
 	t_sm_state ret = HandleEvent(event);
-	switch (m_state) {
+	switch (GetState()) {
 	case HTTP_STATE_START:
 		if (m_IsConnected && !m_IsLost && CanSend()) {
 			ret = HTTP_STATE_SEND_COMMAND_REQUEST;
