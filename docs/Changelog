@@ -63,6 +63,10 @@ Version 2.0.0rc8 - The "???????????" version.
 		  be explicitly called in code instead of _().
 		* Fixed a bug in WebServer.cpp:CWebServer::GetStatusBox():
 		  return value was missing end tags.
+		* Changed back to macro the inline function version of
+		  unicode2char() when using UNICODE. Unfortunately, when the
+		  fucntion returns, the string object gets out of scope, so we
+		  stick to the macro version for now.
 
 	GonoszTopi:
 		* Initial work on EC protocol version 2.0.

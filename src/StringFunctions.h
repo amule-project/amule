@@ -48,7 +48,13 @@
  */
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #if wxUSE_UNICODE
-	inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
+	/* 
+	 * Unfortunately, unicode2char() cannot be a function, because upon function
+	 * return the object to which the returned (const char *) pointer points to
+	 * gets out of scope. So, we stick to the macro version for now.
+	 */
+	#define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
+	//inline const char* unicode2char(wxString x) { return ((const char*) aMuleConv.cWX2MB(x));};
 	inline const wxCharBuffer unicode2charbuf(wxString x) { return aMuleConv.cWX2MB(x); };
 	inline const wxWCharBuffer char2unicode(const char* x) { return aMuleConv.cMB2WX(x); };
 #else
