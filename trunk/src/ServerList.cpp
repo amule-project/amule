@@ -189,7 +189,7 @@ bool CServerList::AddServermetToList(CString strFile, bool merge)
 			if (sizeof(ServerMet_Struct) != servermet.Read(&sbuffer,sizeof(ServerMet_Struct))) {
 				throw CInvalidPacket();
 			}
-			ENDIAN_SWAP_I_32(sbuffer.ip);			
+			// ENDIAN_SWAP_I_32(sbuffer.ip);	there is a ntoa somewhere
 			ENDIAN_SWAP_I_16(sbuffer.port);			
 			ENDIAN_SWAP_I_32(sbuffer.tagcount);
 			
