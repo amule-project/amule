@@ -514,153 +514,105 @@ unsigned int DecodeBase32(const char *base32Buffer, unsigned int base32BufLen, u
  * Base64 encoding/decoding command line filter
  *
  * Copyright (c) 2002 Matthias Gaertner 29.06.2002
- * Adapted by Phoenix.
+ * Adapted by (c) 2005 Phoenix to use wxWidgets.
  *
  */
-#define B64_OK             0
-#define B64_ERR_CMDLINE    1
-#define B64_ERR_INPUT      2
-#define B64_ERR_OUTPUT     3
-#define B64_ERR_MEMORY     4
-#define B64_ERR_READING    5
-#define B64_ERR_WRITING    6
-#define B64_ERR_SYNTAX     7
-
-#define ENCODE_BUFFER_SIZE_IN (8192*3)
-#define ENCODE_BUFFER_SIZE_OUT (8192*6)
-
-#define DECODE_BUFFER_SIZE_IN (8192*4)
-#define DECODE_BUFFER_SIZE_OUT (8192*3)
-
-static const char* to_b64 =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const wxString to_b64(
+	/*   0000000000111111111122222222223333333333444444444455555555556666 */
+	/*   0123456789012345678901234567890123456789012345678901234567890123 */
+	wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"));
 
 /* Option variables */
-static int g_fUseCRLF = FALSE;
-static unsigned int g_nCharsPerLine = 64;
-
+static bool g_fUseCRLF = false;
+static unsigned int g_nCharsPerLine = 72;
 static wxString strHeaderLine;
 
 wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 {
 	wxString pbBufferOut;
+	wxString strHeader;
+	
+	if( !strHeaderLine.IsEmpty() ) {
+		strHeader = wxT("-----BEGIN ") + strHeaderLine + wxT("-----");
+		if( g_fUseCRLF ) {
+			strHeader += wxT("\r");
+		}
+		strHeader += wxT("\n");
+	}
 
-	for(;;)
-	{
-		if( !strHeaderLine.IsEmpty() )
-		{
-			pbBufferOut = wxT("-----BEGIN ") + strHeaderLine + wxT("-----");
-			if( g_fUseCRLF )
-			{
+	unsigned long nDiv = ((unsigned long)bufLen) / 3;
+	unsigned long nRem = ((unsigned long)bufLen) % 3;
+	unsigned int NewLineSize = g_fUseCRLF ? 2 : 1;
+	
+	// Allocate enough space in the output buffer to speed up things
+	pbBufferOut.Alloc(
+		strHeader.Len() * 2 +		// header/footer
+		(bufLen * 4) / 3 + 1 + 		// Number of codes
+		nDiv           * NewLineSize + 	// Number of new lines
+		(nRem ? 1 : 0) * NewLineSize );	// Last line
+	pbBufferOut = strHeader;
+
+	unsigned long nChars = 0;
+	const unsigned char *pIn = (unsigned char*)pbBufferIn;
+	while( nDiv > 0 ) {
+		pbBufferOut += to_b64[ (pIn[0] >> 2) & 0x3f];
+		pbBufferOut += to_b64[((pIn[0] << 4) & 0x30) | ((pIn[1] >> 4) & 0xf)];
+		pbBufferOut += to_b64[((pIn[1] << 2) & 0x3c) | ((pIn[2] >> 6) & 0x3)];
+		pbBufferOut += to_b64[  pIn[2] & 0x3f];
+		pIn += 3;
+		nDiv--;
+		nChars += 4;
+		if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 ) {
+			nChars = 0;
+			if( g_fUseCRLF ) {
 				pbBufferOut += wxT("\r");
 			}
 			pbBufferOut += wxT("\n");
 		}
-
-		for(;;)
-		{
-			unsigned long nDiv = 0;
-			unsigned long nRem = 0;
-			unsigned long nChars = 0;
-			unsigned char* pIn = (unsigned char*) pbBufferIn;
-			unsigned int nOut = 0;
-			size_t nWritten = 0;
-
-			nDiv = ((unsigned long)bufLen) / 3;
-			nRem = ((unsigned long)bufLen) % 3;
+	}
+	switch( nRem ) {
+	case 2:
+		pbBufferOut += to_b64[ (pIn[0] >> 2) & 0x3f];
+		pbBufferOut += to_b64[((pIn[0] << 4) & 0x30) | ((pIn[1] >> 4) & 0xf)];
+		pbBufferOut += to_b64[ (pIn[1] << 2) & 0x3c];
+		pbBufferOut += wxT("=");
+		nChars += 4;
+		if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 ) {
 			nChars = 0;
-
-			while( nDiv > 0 )
-			{
-				pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
-				pbBufferOut[nOut+1] = to_b64[((pIn[0] << 4) & 0x30) + ((pIn[1] >> 4) & 0xf)];
-				pbBufferOut[nOut+2] = to_b64[((pIn[1] << 2) & 0x3c) + ((pIn[2] >> 6) & 0x3)];
-				pbBufferOut[nOut+3] = to_b64[  pIn[2] & 0x3f];
-				pIn += 3;
-				nOut += 4;
-				nDiv--;
-				nChars += 4;
-				if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
-				{
-					nChars = 0;
-					if( g_fUseCRLF )
-					{
-						pbBufferOut[nOut++] = '\r';
-					}
-					pbBufferOut[nOut++] = '\n';
-				}
+			if( g_fUseCRLF ) {
+				pbBufferOut += wxT("\r");
 			}
-
-			switch( nRem )
-			{
-				case 2:
-					pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
-					pbBufferOut[nOut+1] = to_b64[((pIn[0] << 4) & 0x30) + ((pIn[1] >> 4) & 0xf)];
-					pbBufferOut[nOut+2] = to_b64[ (pIn[1] << 2) & 0x3c];
-					pbBufferOut[nOut+3] = '=';
-					nOut += 4;
-					nChars += 4;
-					if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
-					{
-						nChars = 0;
-						if( g_fUseCRLF )
-						{
-							pbBufferOut[nOut++] = '\r';
-						}
-						pbBufferOut[nOut++] = '\n';
-					}
-					break;
-				case 1:
-					pbBufferOut[nOut+0] = to_b64[ (pIn[0] >> 2) & 0x3f];
-					pbBufferOut[nOut+1] = to_b64[ (pIn[0] << 4) & 0x30];
-					pbBufferOut[nOut+2] = '=';
-					pbBufferOut[nOut+3] = '=';
-					nOut += 4;
-					nChars += 4;
-					if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 )
-					{
-						nChars = 0;
-						if( g_fUseCRLF )
-						{
-							pbBufferOut[nOut++] = '\r';
-						}
-						pbBufferOut[nOut++] = '\n';
-					}
-					break;
+			pbBufferOut += wxT("\n");
+		}
+		break;
+	case 1:
+		pbBufferOut += to_b64[ (pIn[0] >> 2) & 0x3f];
+		pbBufferOut += to_b64[ (pIn[0] << 4) & 0x30];
+		pbBufferOut += wxT("=");
+		pbBufferOut += wxT("=");
+		nChars += 4;
+		if( nChars >= g_nCharsPerLine && g_nCharsPerLine != 0 ) {
+			nChars = 0;
+			if( g_fUseCRLF ) {
+				pbBufferOut += wxT("\r");
 			}
-
-			if( nRem > 0 )
-			{
-				if( nChars > 0 )
-				{
-					nChars = 0;
-					if( g_fUseCRLF )
-					{
-						pbBufferOut[nOut++] = '\r';
-					}
-					pbBufferOut[nOut++] = '\n';
-				}
-			}
-
-			nWritten = (size_t) (nOut);
-			if( nWritten > 0 )
-			{
-//				size_t n = fwrite( (void*)pbBufferOut, 1, nWritten, g_fOut );
-			}
-
-			if( nRem > 0 )
-			{
-				break;
-			}
+			pbBufferOut += wxT("\n");
 		}
 		break;
 	}
 
-	if( !strHeaderLine.IsEmpty() )
-	{
+	if( nRem > 0 ) {
+		if( nChars > 0 ) {
+			if( g_fUseCRLF ) {
+				pbBufferOut += wxT("\r");
+			}
+			pbBufferOut += wxT("\n");
+		}
+	}
+
+	if( !strHeaderLine.IsEmpty() ) {
 		pbBufferOut = wxT("-----END ") + strHeaderLine + wxT("-----");
-		if( g_fUseCRLF )
-		{
+		if( g_fUseCRLF ) {
 			pbBufferOut += wxT("\r");
 		}
 		pbBufferOut += wxT("\n");
@@ -670,112 +622,86 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 }
 
 unsigned int DecodeBase64(
-	const char *base32Buffer,
-	unsigned int base32BufLen,
+	const char *base64Buffer,
+	unsigned int base64BufLen,
 	unsigned char *buffer)
 {
-	int r = B64_OK;
 	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
-	char c = '\0';
-	unsigned char data[3];
 	unsigned int nData = 0;
+	unsigned int i = 0;
 
-	for(;;)
-	{
+	if( base64BufLen == 0 ) {
+		*buffer = 0;
+		nData = 1;
+	}
+	
+	for( char c = *base64Buffer; base64BufLen--; c = *++base64Buffer ) {
 		unsigned char bits = 'z';
-//		size_t nRead = fread( (void*)&c, 1, 1, g_fIn );
-//		if( nRead == 0 )
-		{
-			break;
-		}
-
-		if( z > 0 )
-		{
-			if( c == '\n' )
-			{
+		if( z > 0 ) {
+			if( c == '\n' ) {
 				z = 0;
 			}
 		}
-		else if( c >= 'A' && c <= 'Z' )
-		{
+		else if( c >= 'A' && c <= 'Z' ) {
 			bits = (unsigned char) (c - 'A');
 		}
-		else if( c >= 'a' && c <= 'z' )
-		{
+		else if( c >= 'a' && c <= 'z' ) {
 			bits = (unsigned char) (c - 'a' + (char)26);
 		}
-		else if( c >= '0' && c <= '9' )
-		{
+		else if( c >= '0' && c <= '9' ) {
 			bits = (unsigned char) (c - '0' + (char)52);
 		}
-		else if( c == '+' )
-		{
+		else if( c == '+' ) {
 			bits = (unsigned char) 62;
 		}
-		else if( c == '/' )
-		{
+		else if( c == '/' ) {
 			bits = (unsigned char) 63;
 		}
-		else if( c == '-' )
-		{
+		else if( c == '-' ) {
 			z = 1;
 		}
-		else if( c == '=' )
-		{
+		else if( c == '=' ) {
 			break;
-		}
-		else
-		{
+		} else {
 			bits = (unsigned char) 'y';
 		}
 
-		if( bits < (unsigned char) 64 )
-		{
-			switch(nData++)
-			{
-				case 0:
-					data[0] = (bits << 2) & 0xfc;
-					break;
-				case 1:
-					data[0] |= (bits >> 4) & 0x03;
-					data[1] = (bits << 4) & 0xf0;
-					break;
-				case 2:
-					data[1] |= (bits >> 2) & 0x0f;
-					data[2] = (bits << 6) & 0xc0;
-					break;
-				case 3:
-					data[2] |= bits & 0x3f;
-					break;
+		// Skips anything that was not recognized
+		// as a base64 valid char ('y' or 'z')
+		if (bits < (unsigned char)64) {
+			switch (nData++) {
+			case 0:
+				buffer[i+0] = (bits << 2) & 0xfc;
+				break;
+			case 1:
+				buffer[i+0] |= (bits >> 4) & 0x03;
+				buffer[i+1] = (bits << 4) & 0xf0;
+				break;
+			case 2:
+				buffer[i+1] |= (bits >> 2) & 0x0f;
+				buffer[i+2] = (bits << 6) & 0xc0;
+				break;
+			case 3:
+				buffer[i+2] |= bits & 0x3f;
+				break;
 			}
-
-			if( nData == 4 )
-			{
+			if (nData == 4) {
 				nData = 0;
-			}
-		}
-
-//		if( feof( g_fIn ) )
-		{
-			break;
-		}
-	}
-	if( r == B64_OK && nData > 0 )
-	{
-		if( nData == 1 )
-		{
-			r = B64_ERR_SYNTAX;
-		}
-		else
-		{
-//			size_t n = fwrite( (void*)data, 1, nData-1, g_fOut );
-//			if( ferror( g_fOut ) || n < (nData-1) )
-			{
-				r = B64_ERR_WRITING;
+				i += 3;
 			}
 		}
 	}
-	return r;
+	
+	if (nData == 1) {
+		// Syntax error or buffer was empty
+		*buffer = 0;
+		nData = 0;
+		i = 0;
+	} else {
+		buffer[i+nData] = 0;
+	}
+	
+	return i + nData;
 }
 
 // Returns the text assosiated with a category type
