@@ -821,11 +821,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			break;
 
 			
-#ifndef CLIENT_GUI
-			/*!
-			 * lfroen: chat doesnt work in core. So remote gui will not have chat page at all
-			 */
-			// chat window
+		// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {
 				amuledlg->chatwnd->RefreshFriend(NULL, event.string_value, event.long_value, event.short_value);
@@ -841,8 +837,6 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 				amuledlg->chatwnd->ProcessMessage(event.longlong_value, event.string_value);
 			}
 			break;
-#endif
-
 			
 		// logging
 		case ADDDEBUGLOGLINE:

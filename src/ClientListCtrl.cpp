@@ -253,7 +253,6 @@ void CClientListCtrl::OnChangeView( wxCommandEvent& event )
 	
 void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 {
-#ifndef CLIENT_GUI
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
@@ -261,7 +260,6 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 		
 		theApp.amuledlg->chatwnd->AddFriend( client );
 	}
-#endif
 }
 
 
@@ -293,7 +291,6 @@ void CClientListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 
 void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 {
-#ifndef CLIENT_GUI
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
@@ -305,7 +302,6 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 			theApp.amuledlg->chatwnd->SendMessage(message, client->GetUserName(),GUI_ID(client->GetIP(),client->GetUserPort()));
 		}
 	}
-#endif
 }
 
 		

@@ -53,6 +53,7 @@ amulegui_SOURCES = \
 	amule-gui.cpp \
 	amule-remote-gui.cpp \
 	amuleDlg.cpp \
+	AddFriend.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
 	CFile.cpp \
