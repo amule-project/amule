@@ -1723,23 +1723,16 @@ void CClientReqSocket::OnInit()
 	// SetSockOpt(SO_DONTLINGER,&tv,sizeof(bool));
 }
 
-#warning OnConnect? ;)
-#if 0
 void CClientReqSocket::OnConnect(int nErrorCode)
 {
-	CEMSocket::OnConnect(nErrorCode);
-	if (nErrorCode)
-	{
-	    wxString strTCPError;
-		if (thePrefs.GetVerbose())
-		{
-		    strTCPError = GetErrorMessage(nErrorCode, 1);
-		    if (nErrorCode != WSAECONNREFUSED && nErrorCode != WSAETIMEDOUT)
-			    AddDebugLogLine(false, _T("Client TCP socket error (OnConnect): %s; %s"), strTCPError, DbgGetClientInfo());
-		}
+	//CEMSocket::OnConnect(nErrorCode);
+	if (nErrorCode) {
+		wxString error = wxString::Format(_("Client TCP socket error (OnConnect): %u"),nErrorCode);
+		AddDebugLogLineM(false, error);
+		Disconnect(error);
 	}
 }
-#endif
+
 
 
 void CClientReqSocket::OnSend(int nErrorCode)
@@ -1856,6 +1849,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event) {
 			break;
 		case wxSOCKET_CONNECTION:
 			// connection stablished, nothing to do about it?
+			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
 			break;
 		default:
 			// connection requests should not arrive here..

@@ -83,6 +83,7 @@ public:
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
 	void		OnError(int nErrorCode);
+	void		OnConnect(int nErrorCode);
 	virtual	void OnInit();
 	virtual	bool Close(); /*	{return wxSocketBase::Close();}*/
 	
