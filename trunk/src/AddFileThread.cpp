@@ -32,7 +32,7 @@ struct UnknownFile_Struct
 {
 	wxString		name;
 	wxString		directory;
-	CPartFile*	owner;
+	const CPartFile*	owner;
 };
 
 wxMutex CAddFileThread::m_lockWaitingForHashList;
@@ -87,7 +87,7 @@ void CAddFileThread::Shutdown()
 
 }
 
-void CAddFileThread::AddFile(const wxString path, const wxString name, CPartFile* part)
+void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
 {
 	dwLastAddTime = GetTickCount();
 	if (m_endWaitingForHashList) {

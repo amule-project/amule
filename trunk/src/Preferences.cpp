@@ -133,11 +133,6 @@ void CPreferences::SetStandartValues()
 	Save();
 }
 
-uint16 CPreferences::GetMaxDownload()
-{
-	return prefs->maxdownload;
-}
-
 bool CPreferences::Save()
 {
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
@@ -589,7 +584,7 @@ void CPreferences::RemoveCat(size_t index)
 // Niether Galeon tabs nor epiphany tabs have been tested
 // Konqueror alternatives is (Open on current window, fails if no konq already open):
 //	dcop `dcop konqueror-* | head -n1` konqueror-mainwindow#1 openURL '%s'
-wxString CPreferences::GetBrowser()
+wxString CPreferences::GetBrowser() const
 {
 	wxString cmd;
 	if( prefs->BrowserTab )

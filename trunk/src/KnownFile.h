@@ -110,7 +110,7 @@ protected:
 	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
-	wxString		m_strComment;
+	wxString	m_strComment;
 	int8		m_iRate;
 };
 
@@ -118,18 +118,18 @@ class CKnownFile : public CAbstractFile
 {
 public:
 	CKnownFile();
-	~CKnownFile();
+	virtual ~CKnownFile();
 
 	virtual bool	CreateFromFile(const wxString& directory, const wxString& filename, volatile int const * notify); // create date, hashset and tags from a file
 	
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
-	virtual	bool	IsPartFile()	{return false;}
-	virtual bool	LoadFromFile(CFile* file);	//load date, hashset and tags from a .met file
-	virtual uint8	GetStatus(bool ignorepause = false);
+	virtual	bool	IsPartFile() const	{return false;}
+	virtual bool	LoadFromFile(const CFile* file);	//load date, hashset and tags from a .met file
+	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFile* file);	
-	uint32	GetFileDate()	{return date;}
+	uint32	GetFileDate() const	{return date;}
 
 		
 	void SetFileSize(uint32 nFileSize);
@@ -148,34 +148,34 @@ public:
 	inline uint16 GetED2KPartCount() const { return m_iED2KPartCount; }
 	
 	// file upload priority
-	uint8	GetUpPriority()			{return m_iUpPriority;}
+	uint8	GetUpPriority()	 const		{return m_iUpPriority;}
 	void	SetUpPriority(uint8 newUpPriority, bool bSave=true);
-	bool	IsAutoUpPriority()		{return m_bAutoUpPriority;}
+	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
 	void	AddQueuedCount() {m_iQueuedCount++; UpdateAutoUpPriority();};
 	void	SubQueuedCount() {if(m_iQueuedCount) m_iQueuedCount--; UpdateAutoUpPriority();}
-	uint32	GetQueuedCount() {return m_iQueuedCount;}
+	uint32	GetQueuedCount() const {return m_iQueuedCount;}
 
 	// shared file view permissions (all, only friends, no one)
-	uint8	GetPermissions(void)	{ return m_iPermissions; };
+	uint8	GetPermissions() const	{ return m_iPermissions; };
 	void	SetPermissions(uint8 iNewPermissions) {m_iPermissions = iNewPermissions;};
 
-	bool	LoadHashsetFromFile(CFile* file, bool checkhash);
+	bool	LoadHashsetFromFile(const CFile* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
 	void	NewAvailPartsInfo();
 	
 	// comment 
-	const wxString&	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
+	const wxString&	GetFileComment() {if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
 	void	SetFileComment(const wxString& strNewComment);
 	void	SetFileRate(int8 iNewRate); 
-	int8	GetFileRate()			{if (!m_bCommentLoaded) LoadComment(); return m_iRate;}
+	int8	GetFileRate() 			{if (!m_bCommentLoaded) LoadComment(); return m_iRate;}
 	void	SetPublishedED2K( bool val );
-	bool	GetPublishedED2K()	{return m_PublishedED2K;}
+	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
 	
 	// file sharing
-	virtual	Packet*	CreateSrcInfoPacket(CUpDownClient* forClient);
+	virtual	Packet*	CreateSrcInfoPacket(const CUpDownClient* forClient);
 	
 	virtual void	UpdatePartsInfo();	
 
@@ -191,8 +191,8 @@ public:
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
 protected:
-	bool	LoadTagsFromFile(CFile* file);
-	bool	LoadDateFromFile(CFile* file);
+	bool	LoadTagsFromFile(const CFile* file);
+	bool	LoadDateFromFile(const CFile* file);
 	void	CreateHashFromFile(FILE* file, int Length, unsigned char* Output)	{CreateHashFromInput(file,0,Length,Output,0);}
 	void	CreateHashFromFile(CFile* file, int Length, unsigned char* Output)	{CreateHashFromInput(0,file,Length,Output,0);}
 	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,0,Length,Output,in_string);}
@@ -203,7 +203,7 @@ protected:
 	wxString m_strFilePath;	
 
 private:
-	void	CreateHashFromInput(FILE* file,CFile* file2, int Length, unsigned char* Output, unsigned char* = 0);
+	void	CreateHashFromInput(FILE* file, CFile* file2, int Length, unsigned char* Output, unsigned char* = 0);
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;

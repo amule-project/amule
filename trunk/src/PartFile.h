@@ -72,7 +72,7 @@ public:
 	bool	CreateFromFile(char* directory,char* filename)	{return false;}// not supported in this class
 	bool	LoadFromFile(FILE* file)						{return false;}
 	bool	WriteToFile(FILE* file)							{return false;}
-	bool	IsPartFile()									{return !(status == PS_COMPLETE);}
+	bool	IsPartFile() const								{return !(status == PS_COMPLETE);}
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
 	uint8	LoadPartFile(wxString in_directory, wxString filename, bool getsizeonly=false);
 	bool	SavePartFile(bool Initial=false);
@@ -98,24 +98,24 @@ public:
 	void	WriteCompleteSourcesCount(CMemFile* file);
 	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
 	void	AddSources(CMemFile* sources,uint32 serverip, uint16 serverport);
-	uint8	GetStatus(bool ignorepause = false);
+	uint8	GetStatus(bool ignorepause = false) const;
 	virtual void	UpdatePartsInfo();	
-	const wxString& GetPartMetFileName()							{return m_partmetfilename;}
-	uint32	GetTransfered()								{return transfered;}
-	const wxString& GetFullName()								{return m_fullname;}
-	uint16	GetSourceCount();
-	uint16	GetSrcA4AFCount()							{return A4AFsrclist.GetCount();}
-	uint16	GetTransferingSrcCount()						{return transferingsrc;}
-	float	GetKBpsDown()									{ return kBpsDown; }
-	float	GetPercentCompleted()							{return percentcompleted;}
+	const wxString& GetPartMetFileName() const				{return m_partmetfilename;}
+	uint32	GetTransfered() const							{return transfered;}
+	const wxString& GetFullName() const						{return m_fullname;}
+	uint16	GetSourceCount() const							{return m_SrcList.GetCount();}
+	uint16	GetSrcA4AFCount() const							{return A4AFsrclist.GetCount();}
+	uint16	GetTransferingSrcCount() const					{return transferingsrc;}
+	float	GetKBpsDown() const								{return kBpsDown; }
+	float	GetPercentCompleted() const						{return percentcompleted;}
 	uint16  GetNotCurrentSourcesCount();
 	int	GetValidSourcesCount();
 	uint32	GetNeededSpace();
 	
-	wxString CPartFile::getPartfileStatus(); //<<--9/21/02
-	sint32	CPartFile::getTimeRemaining(); //<<--9/21/02
+	wxString CPartFile::getPartfileStatus() const; //<<--9/21/02
+	sint32	CPartFile::getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;
-	int		getPartfileStatusRang();
+	int		getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, BYTE *data, uint32 start, uint32 end, Requested_Block_Struct *block);
@@ -145,19 +145,19 @@ public:
 
 	void	PreviewFile();
 	bool	PreviewAvailable();
-	uint8   GetAvailablePartCount()			{return availablePartsCount;}
+	uint8   GetAvailablePartCount() const		{return availablePartsCount;}
 	void	UpdateAvailablePartsCount();
 
-	uint32	GetLastAnsweredTime()			{ return m_ClientSrcAnswered; }
+	uint32	GetLastAnsweredTime() const			{ return m_ClientSrcAnswered; }
 	void	SetLastAnsweredTime();
 	void	SetLastAnsweredTimeTimeout();
-	uint64	GetLostDueToCorruption()		{return m_iLostDueToCorruption;}
-	uint64	GetGainDueToCompression()		{return m_iGainDueToCompression;}
-	uint32	TotalPacketsSavedDueToICH()		{return m_iTotalPacketsSavedDueToICH;}
-	bool	IsStopped() 				{return stopped;}
-	bool	HasComment()				{return hasComment;}
-	bool	HasRating()				{return hasRating;}
-	bool	HasBadRating()				{return hasBadRating;}
+	uint64	GetLostDueToCorruption() const		{return m_iLostDueToCorruption;}
+	uint64	GetGainDueToCompression() const		{return m_iGainDueToCompression;}
+	uint32	TotalPacketsSavedDueToICH() const	{return m_iTotalPacketsSavedDueToICH;}
+	bool	IsStopped() const	 				{return stopped;}
+	bool	HasComment() const					{return hasComment;}
+	bool	HasRating() const					{return hasRating;}
+	bool	HasBadRating() const				{return hasBadRating;}
 	void	SetHasComment(bool in)			{hasComment=in;}
 	void	SetHasRating(bool in)			{hasRating=in;}
 	void	UpdateFileRatingCommentAvail();
@@ -174,10 +174,10 @@ public:
 	volatile bool m_bPreviewing;
 	CTypedPtrList<CPtrList, CUpDownClient*> A4AFsrclist; //<<-- enkeyDEV(Ottavio84) -A4AF-
 	void	SetDownPriority(uint8 newDownPriority, bool bSave = true, bool bRefresh = true);
-	bool	IsAutoDownPriority()	{ return m_bAutoDownPriority; }
+	bool	IsAutoDownPriority() const	{ return m_bAutoDownPriority; }
 	void	SetAutoDownPriority(bool flag) { m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
-	uint8	GetDownPriority()	{ return m_iDownPriority; }
+	uint8	GetDownPriority() const	{ return m_iDownPriority; }
 	completingThread* cthread;
 	bool GetInsufficient() { return insufficient; }
 	
@@ -251,7 +251,7 @@ public:
 	bool	srcarevisible;		// used for downloadlistctrl
 	bool	m_bShowOnlyDownloading;	// used for downloadlistctrl
 	bool	hashsetneeded;
-	uint32  GetCompletedSize()   {return completedsize;}
+	uint32  GetCompletedSize() const	{return completedsize;}
 
 	uint32	lastsearchtime;
 	bool	m_bLocalSrcReqQueued;

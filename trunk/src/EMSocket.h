@@ -51,7 +51,7 @@ class CEMSocket :
     
 public:
 	CEMSocket(void);
-	~CEMSocket(void);
+	virtual ~CEMSocket(void);
 	bool	SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);// controlpackets have a higher priority
 	bool	IsBusy()	{return sendbuffer;}
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};

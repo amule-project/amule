@@ -257,7 +257,7 @@ void CClientList::Debug_SocketDeleted(CClientReqSocket* deleted){
 	}
 }
 
-bool CClientList::Debug_IsValidClient(CUpDownClient* tocheck){
+bool CClientList::Debug_IsValidClient(CUpDownClient* tocheck) const {
 	return list.Find(tocheck);
 }
 

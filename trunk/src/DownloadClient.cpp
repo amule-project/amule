@@ -105,7 +105,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
 
-bool CUpDownClient::Compare(CUpDownClient* tocomp, bool bIgnoreUserhash){
+bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
 	    return (this->GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
@@ -298,7 +298,7 @@ void CUpDownClient::SendFileRequest()
 	}
 }
 
-void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
+void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file)
 {
 	// 0.42e
 	if (file==NULL) {
@@ -369,7 +369,7 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 	}
 }
 
-void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPartFile* file)
+void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file)
 {
 	// 0.42e
 	
@@ -1032,7 +1032,7 @@ float CUpDownClient::CalculateKBpsDown() {
 	return kBpsDown;
 }
 
-uint16 CUpDownClient::GetAvailablePartCount()
+uint16 CUpDownClient::GetAvailablePartCount() const
 {
 	uint16 result = 0;
 	for (int i = 0;i != m_nPartCount;i++){
@@ -1281,7 +1281,7 @@ void CUpDownClient::DontSwapTo(CPartFile* file)
 	m_DontSwap_list.push_front(newfs);
 }
 
-bool CUpDownClient::IsSwapSuspended(CPartFile* file)
+bool CUpDownClient::IsSwapSuspended(const CPartFile* file)
 {
 	if (m_DontSwap_list.empty()) {
 		return false;

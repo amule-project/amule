@@ -36,7 +36,7 @@ class CServerSocket : public CEMSocket
     CServerSocket() {};
 public:
 	CServerSocket(CServerConnect* in_serverconnect);
-	~CServerSocket();
+	virtual ~CServerSocket();
 
 	void	ConnectToServer(CServer* server);
 	sint8	GetConnectionState()	{return connectionstate;} 

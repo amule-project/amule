@@ -63,7 +63,7 @@ public:
 		m_listener=NULL;
 	};
 
-	~CMuleNotebook();
+	virtual ~CMuleNotebook();
 
 	// wxNotebook
 

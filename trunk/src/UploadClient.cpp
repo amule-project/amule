@@ -82,7 +82,7 @@ void CUpDownClient::DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyre
 	}
 }
 
-uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue)
+uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
 	if (m_Username.IsEmpty()) {
@@ -185,7 +185,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 // [Returns] 
 //   true : Next requested block is from another different chunk or file than last downloaded block 
 //   false: Next requested block is from same chunk that last downloaded block 
-bool CUpDownClient::IsDifferentPartBlock(void) // [Tarod 12/22/2002] 
+bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002] 
 { 
 	//printf("entered in : CUpDownClient::IsDifferentPartBlock\n");
 	Requested_Block_Struct* last_done_block;
@@ -346,7 +346,7 @@ bool CUpDownClient::CreateNextBlockPackage(){
 
 }
 
-void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock){
+void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
 	//printf("entered in : CUpDownClient::CreateStandartPackets\n");
 	uint32 nPacketSize;
 
@@ -374,7 +374,7 @@ void CUpDownClient::CreateStandartPackets(byte* data,uint32 togo, Requested_Bloc
 	}
 }
 
-void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_Struct* currentblock){
+void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
 	//printf("entered in : CUpDownClient::CreatePackedPackets\n");
 	BYTE* output = new BYTE[togo+300];
 	uLongf newsize = togo+300;
@@ -413,7 +413,7 @@ void CUpDownClient::CreatePackedPackets(byte* data,uint32 togo, Requested_Block_
 	delete[] output;
 }
 
-void CUpDownClient::ProcessExtendedInfo(CSafeMemFile* data, CKnownFile* tempreqfile)
+void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile* data, CKnownFile* tempreqfile)
 {
 	try {
 		if (m_abyUpPartStatus)  {
@@ -694,7 +694,7 @@ void CUpDownClient::SendRankingInfo(){
 	socket->SendPacket(packet,true,true);
 }
 
-void CUpDownClient::SendCommentInfo(CKnownFile *file)
+void CUpDownClient::SendCommentInfo(CKnownFile* file)
 {
 	if (!m_bCommentDirty || file == NULL || !ExtProtocolAvailable() || m_byAcceptCommentVer < 1) {
 		return;

@@ -134,11 +134,11 @@ void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP) {
 	m_pCredits->nUploadedHi=(uint32)(current>>32);
 }
 
-uint64	CClientCredits::GetUploadedTotal(){
+uint64	CClientCredits::GetUploadedTotal() const {
 	return ( (uint64)m_pCredits->nUploadedHi<<32)+m_pCredits->nUploadedLo;
 }
 
-uint64	CClientCredits::GetDownloadedTotal(){
+uint64	CClientCredits::GetDownloadedTotal() const {
 	return ( (uint64)m_pCredits->nDownloadedHi<<32)+m_pCredits->nDownloadedLo;
 }
 
@@ -384,7 +384,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 	IdentState = IS_IDENTIFIED;
 }
 
-bool CClientCredits::SetSecureIdent(uchar* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
+bool CClientCredits::SetSecureIdent(const uchar* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
 	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 )
 		return false;
 	memcpy(m_abyPublicKey,pachIdent, nIdentLen);
@@ -393,7 +393,7 @@ bool CClientCredits::SetSecureIdent(uchar* pachIdent, uint8 nIdentLen){ // verif
 	return true;
 }
 
-EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP){
+EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 	if (IdentState != IS_IDENTIFIED)
 		return IdentState;
 	else{
@@ -558,7 +558,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, uchar* pachOu
 	return nResult;
 }
 
-bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind){
+bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const uchar* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind){
 	wxASSERT( pTarget );
 	wxASSERT( pachSignature );
 	if ( !CryptoAvailable() ){
@@ -625,7 +625,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, uchar* pachSignatu
 	return bResult;
 }
 
-bool CClientCreditsList::CryptoAvailable(){
+bool CClientCreditsList::CryptoAvailable() const {
 	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && m_pAppPrefs->IsSecureIdentEnabled());
 }
 
