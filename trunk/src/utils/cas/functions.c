@@ -170,7 +170,7 @@ char *replace(char *search, char *replace, char *template, int size)
 	}
 
 //	printf("%s",output);
-	printf("hy\n");
+//	printf("hy\n");
 	return output;
 }
 
