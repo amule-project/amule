@@ -1250,7 +1250,7 @@ void CamuleApp::OnFatalException()
 #else
 
 	fprintf(stderr, "\nOOPS! - Seems like aMule crashed.\n");
-	fprintf(stderr, "aMule version is: %s\n", unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n", (const char*) unicode2char(GetMuleVersion()));
 	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
 #endif // not linux
 }
