@@ -67,55 +67,22 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 #ifdef CLIENT_GUI
 CServer::CServer(CEC_Server_Tag *tag)
 {
-	CECTag *tmpTag;
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_NAME)) != NULL) {
-		listname = tmpTag->GetStringData();
-	}
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_DESC)) != NULL) {
-	    description = tmpTag->GetStringData();
-	}
 	ip = tag->GetIPv4Data().IP();
 	ipfull = Uint32toStringIP(ip);
 	port = tag->GetIPv4Data().port;
-    if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS_MAX)) != NULL) {
-        maxusers = tmpTag->GetInt32Data();
-    } else {
-        maxusers = 0;
-    }
-    if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FILES)) != NULL) {
-        hardfiles = tmpTag->GetInt32Data();
-    } else {
-	    hardfiles = 0;
-    }
+
+	listname = tag->ServerName();
+	description = tag->ServerDesc();
+	maxusers = tag->GetMaxUsers();
+	
+	files = tag->GetFiles();
+	users = tag->GetUsers();
    
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_PRIO)) != NULL) {
-    	preferences = tmpTag->GetInt8Data();
-    } else {
-	    preferences = SRV_PR_NORMAL;
-    }
-    
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_STATIC)) != NULL) {
-		staticservermember = tmpTag->GetInt8Data();
-	} else {
-	    staticservermember = 0;
-	}
-	
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_USERS)) != NULL) {
-		users = tmpTag->GetInt32Data();
-	} else {
-		users = 0;
-	}
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_PING)) != NULL) {
-		ping = tmpTag->GetInt32Data();
-	} else {
-		ping = 0;
-	}
-	if ((tmpTag = tag->GetTagByName(EC_TAG_SERVER_FAILED)) != NULL) {
-		failedcount = tmpTag->GetInt8Data();
-	} else {
-		failedcount = 0;
-	}
-	
+	preferences = tag->GetPrio(); // SRV_PR_NORMAL = 0, so it's ok
+    staticservermember = tag->GetStatic();
+
+	ping = tag->GetPing();
+	failedcount = tag->GetFailed();	
 }
 #endif
 

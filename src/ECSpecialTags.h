@@ -61,6 +61,19 @@ class CUpDownClient;
 class CEC_Server_Tag : public CECTag {
  	public:
  		CEC_Server_Tag(CServer *, EC_DETAIL_LEVEL);
+ 		
+ 		wxString ServerName() { return GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData(); }
+ 		wxString ServerDesc() { return GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData(); }
+
+ 		uint8 GetPrio() { return GetTagByNameSafe(EC_TAG_SERVER_PRIO)->GetInt8Data(); }
+ 		uint8 GetStatic() { return GetTagByNameSafe(EC_TAG_SERVER_STATIC)->GetInt8Data(); }
+
+ 		uint32 GetPing() { return GetTagByNameSafe(EC_TAG_SERVER_PING)->GetInt32Data(); }
+ 		uint8 GetFailed() { return GetTagByNameSafe(EC_TAG_SERVER_FAILED)->GetInt8Data(); }
+
+ 		uint32 GetFiles() { return GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt32Data(); }
+ 		uint32 GetUsers() { return GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt32Data(); }
+ 		uint32 GetMaxUsers() { return GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt32Data(); }
 };
 
 
@@ -85,6 +98,8 @@ class CEC_Stats_Tag : public CECTag {
 		uint32 UpSpeed() { return GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt32Data(); }
 		uint32 DownSpeed() { return GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt32Data(); }
 		
+		uint32 ClientsInQueue() { return GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data(); }
+		uint32 UsersOnServer() { return GetTagByNameSafe(EC_TAG_STATS_USERS_ON_SERVER)->GetInt32Data(); }
 };
 
 class CEC_PartFile_Tag : public CECTag {
