@@ -753,7 +753,7 @@ void CSocks5StateMachine::process_send_command_request(bool entry)
 		m_buffer[3] = SOCKS5_ATYP_IPV4_ADDRESS;
 		*((uint32 *)(m_buffer+4)) =
 			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
-		*((uint16 *)(m_buffer+8)) = htons(m_peerAddress->Service());
+		*((uint16 *)(m_buffer+8)) = ENDIAN_HTONS(m_peerAddress->Service());
 		
 		// Send the command packet
 		m_packetLenght = 10;
@@ -822,7 +822,7 @@ void CSocks5StateMachine::process_process_command_reply(bool entry)
 			// Set the packet length at last
 			m_packetLenght = portOffset + 2;
 			// Read BND.PORT
-			m_proxyBoundAddress->Service(ntohs(
+			m_proxyBoundAddress->Service(ENDIAN_NTOHS(
 				*((uint16 *)(m_buffer+portOffset)) ));
 		}
 	}
@@ -952,7 +952,7 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			return;
 			break;
 		}
-		*((uint16 *)(m_buffer+2)) = htons(m_peerAddress->Service());
+		*((uint16 *)(m_buffer+2)) = ENDIAN_HTONS(m_peerAddress->Service());
 		*((uint32 *)(m_buffer+4)) =
 			ENDIAN_SWAP_32(StringIPtoUint32(m_peerAddress->IPAddress()));
 		unsigned int offsetUser = 8;
@@ -988,7 +988,7 @@ void CSocks4StateMachine::process_process_command_reply(bool entry)
 		if (m_ok) {
 			// Read BND.PORT
 			const unsigned int portOffset = 2;
-			m_ok = m_proxyBoundAddressIPV4.Service(ntohs(
+			m_ok = m_proxyBoundAddressIPV4.Service(ENDIAN_NTOHS(
 				*((uint16 *)(m_buffer+portOffset)) ));
 			// Read BND.ADDR
 			const unsigned int addrOffset = 4;
@@ -1391,7 +1391,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 					amuleIPV4Address &a = dynamic_cast<amuleIPV4Address &>(addr);
 					a.Hostname(ENDIAN_SWAP_32(
 						*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) ));
-					a.Service(ntohs(
+					a.Service(ENDIAN_NTOHS(
 						*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) ));
 				} catch (std::bad_cast e) {
 					printf("(2)bad_cast exception!\n");
@@ -1449,7 +1449,7 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 			m_proxyTCPSocket.GetBuffer()[3] = SOCKS5_ATYP_IPV4_ADDRESS;
 			*((uint32 *)(m_proxyTCPSocket.GetBuffer()+4)) =
 				ENDIAN_SWAP_32(StringIPtoUint32(addr.IPAddress()));
-			*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) = htons(addr.Service());
+			*((uint16 *)(m_proxyTCPSocket.GetBuffer()+8)) = ENDIAN_HTONS(addr.Service());
 			memcpy(m_proxyTCPSocket.GetBuffer() + PROXY_UDP_OVERHEAD_IPV4, buf, nBytes);
 			nBytes += PROXY_UDP_OVERHEAD_IPV4;
 			wxDatagramSocket::SendTo(

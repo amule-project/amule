@@ -23,18 +23,6 @@
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-	#ifdef __BSD__
-		#include <sys/types.h>
-	#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-
 #ifdef __WXGTK__
 
 	#ifdef __BSD__

@@ -100,7 +100,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 	m_tagData = malloc(sizeof(EC_IPv4_t));
 	if (m_tagData != NULL) {
 		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data.ip));
-		((EC_IPv4_t *)m_tagData)->port = htons(data.port);
+		((EC_IPv4_t *)m_tagData)->port = ENDIAN_HTONS(data.port);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -227,7 +227,7 @@ CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true
 	m_dataLen = 2;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint16 *)m_tagData) = htons(data);
+		*((uint16 *)m_tagData) = ENDIAN_HTONS(data);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -249,7 +249,7 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
 	m_dataLen = 4;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		*((uint32 *)m_tagData) = htonl(data);
+		*((uint32 *)m_tagData) = ENDIAN_HTONL(data);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -508,7 +508,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 	EC_IPv4_t p;
 
 	*((uint32 *)(p.ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
-	p.port = ntohs(((EC_IPv4_t *)m_tagData)->port);
+	p.port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->port);
 
 	return p;
 }

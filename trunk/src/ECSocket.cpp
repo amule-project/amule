@@ -25,13 +25,8 @@
 
 #include "ECSocket.h"
 
-#ifndef __WXMSW__
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#endif
-
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
+#include "EndianFix.h" // Needed for ENDIAN_NTOHL
 
 #include "ECcodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
@@ -452,12 +447,10 @@ bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, vo
 		if ( !ReadBuffer(sock, buffer, len, opaque) ) {
 			return false;
 		}
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
 		switch (len) {
-			case 2: *((uint16 *)buffer) = ntohs(*((uint16 *)buffer)); break;
-			case 4: *((uint32 *)buffer) = ntohl(*((uint32 *)buffer)); break;
+			case 2: *((uint16 *)buffer) = ENDIAN_NTOHS(*((uint16 *)buffer)); break;
+			case 4: *((uint32 *)buffer) = ENDIAN_NTOHL(*((uint32 *)buffer)); break;
 		}
-#endif
 	}
 	return true;
 }
@@ -477,18 +470,14 @@ bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int 
 		if ((mb_len = utf8_wctomb(mb, wc, 6)) == -1) return false;	// Something is terribly wrong...
 		return WriteBuffer(sock, mb, mb_len, opaque);
 	} else {
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
 		char tmp[8];
 
 		switch (len) {
 			case 1: *((uint8 *)tmp) = *((uint8 *)buffer); break;
-			case 2: *((uint16 *)tmp) = htons(*((uint16 *)buffer)); break;
-			case 4: *((uint32 *)tmp) = htonl(*((uint32 *)buffer)); break;
+			case 2: *((uint16 *)tmp) = ENDIAN_NTOHS(*((uint16 *)buffer)); break;
+			case 4: *((uint32 *)tmp) = ENDIAN_NTOHL(*((uint32 *)buffer)); break;
 		}
 		return WriteBuffer(sock, tmp, len, opaque);
-#else
-		return WriteBuffer(sock, buffer, len, opaque);
-#endif
 	}
 }
 
@@ -848,4 +837,3 @@ CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
  * \note You must later free the packet by calling
  * \c delete on the returned pointer.
  */
-

@@ -34,9 +34,8 @@
      	  #include <sys/types.h>
 	#endif /* __BSD__ */
 	
-	#include <netdb.h>
 	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// Needed for inet_addr, htonl
+	#include <netinet/in.h>		// Needed for inet_addr
 	#include <arpa/inet.h>		//
 #endif
 	

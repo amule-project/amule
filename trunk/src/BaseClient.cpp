@@ -82,7 +82,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		if (ed2kID) {
 			m_nConnectIP = in_userid;
 		} else {
-			m_nConnectIP = ntohl(in_userid);
+			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
 	#else
  	if(!HasLowID()) {

@@ -27,24 +27,6 @@
 #include <ctime>
 #include <cerrno>
 #include "Types.h"
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
-	#define EINPROGRESS WSAEINPROGRESS
-	#define EADDRNOTAVAIL WSAEADDRNOTAVAIL
-	#define ECONNREFUSED WSAECONNREFUSED
-	#define ENETUNREACH WSAENETUNREACH
-	#define ETIMEDOUT WSAETIMEDOUT
-	#define EADDRINUSE WSAEADDRINUSE
-#else
-#ifdef __BSD__
-       #include <sys/types.h>
-#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
 #include <wx/tokenzr.h>
 
 #include "ServerSocket.h"	// Interface declarations

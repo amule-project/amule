@@ -1255,8 +1255,8 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	GapBuffer::iterator it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
-		*it++ = htonl(curr->start);
-		*it++ = htonl(curr->end);
+		*it++ = ENDIAN_HTONL(curr->start);
+		*it++ = ENDIAN_HTONL(curr->end);
 //		printf("GAP to buffer [%08x %08x]\n", curr->start, curr->end);
 	}
 
@@ -1287,7 +1287,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		sizeof(uint32) + gap_enc_size, (void **)&tagdata);
 
 	// real number of gaps - so remote size can realloc
-	*((uint32 *)tagdata) = htonl(gap_list_size);
+	*((uint32 *)tagdata) = ENDIAN_HTONL(gap_list_size);
 	tagdata += sizeof(uint32);
 	memcpy(tagdata, gap_enc_data, gap_enc_size);
 
@@ -1299,8 +1299,8 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Requested_Block_Struct* block = m_file->requestedblocks_list.GetNext(curr_pos);
-		*it++ = htonl(block->StartOffset);
-		*it++ = htonl(block->EndOffset);
+		*it++ = ENDIAN_HTONL(block->StartOffset);
+		*it++ = ENDIAN_HTONL(block->EndOffset);
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
