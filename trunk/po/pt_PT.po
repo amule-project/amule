@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2005-02-13 03:34+0000\n"
+"PO-Revision-Date: 2005-03-05 02:07+0000\n"
 "Last-Translator: Helder Correia <helder.correia@netcabo.pt>\n"
 "Language-Team: Portuguese <helder.correia@netcabo.pt>\n"
 "MIME-Version: 1.0\n"
@@ -713,12 +713,12 @@ msgstr "Baixa"
 #: src/ServerListCtrl.cpp:386 src/SharedFilesCtrl.cpp:125
 #: src/SharedFilesCtrl.cpp:201 src/WebServer.cpp:1100
 msgid "High"
-msgstr "Alta identidade"
+msgstr "Alta"
 
 #: src/ClientDetailDialog.cpp:118 src/ClientDetailDialog.cpp:119
 #, c-format
 msgid "%.1f kB/s"
-msgstr "%.1f KB/s"
+msgstr "%.1f kB/s"
 
 #: src/ClientDetailDialog.cpp:129
 msgid "Not Supported"
@@ -857,7 +857,7 @@ msgstr "Estado remoto"
 #: src/WebServer.cpp:1082 src/WebServer.cpp:1124 src/WebServer.cpp:1419
 #: src/WebServer.cpp:1739
 msgid "kB/s"
-msgstr "KB/s"
+msgstr "kB/s"
 
 #: src/ClientListCtrl.cpp:564 src/ClientListCtrl.cpp:950
 #: src/DownloadListCtrl.cpp:1175
@@ -2104,7 +2104,7 @@ msgstr "B"
 #: src/muuli_wdr.cpp:305 src/muuli_wdr.cpp:328 src/otherfunctions.cpp:75
 #: src/TextClient.cpp:462
 msgid "KB"
-msgstr "KB"
+msgstr "kB"
 
 #: src/muuli_wdr.cpp:306 src/muuli_wdr.cpp:329 src/otherfunctions.cpp:77
 #: src/TextClient.cpp:464 src/WebServer.cpp:2150
@@ -3844,15 +3844,15 @@ msgstr "k"
 
 #: src/otherfunctions.cpp:95
 msgid "M"
-msgstr "m"
+msgstr "M"
 
 #: src/otherfunctions.cpp:97
 msgid "G"
-msgstr "g"
+msgstr "G"
 
 #: src/otherfunctions.cpp:99
 msgid "T"
-msgstr "t"
+msgstr "T"
 
 #: src/otherfunctions.cpp:112
 msgid "secs"
@@ -4833,22 +4833,22 @@ msgstr "Tempo médio de envio: "
 #: src/StatisticsDlg.cpp:791
 #, c-format
 msgid "Average Downloadrate (Session): %.2f kB/s"
-msgstr "Tempo médio de entrada (sessão): %.2f KB/s"
+msgstr "Tempo médio de entrada (sessão): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:794
 #, c-format
 msgid "Average Uploadrate (Session): %.2f kB/s"
-msgstr "Tempo médio de envio (sessão): %.2f KB/s"
+msgstr "Tempo médio de envio (sessão): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:797
 #, c-format
 msgid "Max Downloadrate Average (Session): %.2f kB/s"
-msgstr "Taxa média de entrada (sessão): %.2f KB/s"
+msgstr "Taxa média de entrada (sessão): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:799
 #, c-format
 msgid "Max Downloadrate (Session): %.2f kB/s"
-msgstr "Taxa máxima de entrada (sessão): %.2f KB/s"
+msgstr "Taxa máxima de entrada (sessão): %.2f kB/s"
 
 #: src/StatisticsDlg.cpp:803 src/StatisticsDlg.cpp:805
 #, c-format
@@ -5588,7 +5588,7 @@ msgstr "%.0f B"
 #: src/utils/wxCas/src/onlinesig.cpp:325
 #, c-format
 msgid "%.2f KB"
-msgstr "%.2f KB"
+msgstr "%.2f kB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:328
 #, c-format
@@ -5777,7 +5777,7 @@ msgstr "Recebido: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:782
 msgid " kB/s, Upload: "
-msgstr " KB/s, enviado: "
+msgstr " kB/s, enviado: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:792
 msgid "Sharing: "
@@ -5791,7 +5791,7 @@ msgstr " ficheiro(s). Clientes na fila de espera: "
 #: src/utils/wxCas/src/wxcasframe.cpp:813
 #, c-format
 msgid "%.2f kB/s"
-msgstr "%.2f KB/s"
+msgstr "%.2f kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:804
 #: src/utils/wxCas/src/wxcasframe.cpp:814
