@@ -63,7 +63,9 @@
 #endif
 
 #include <wx/filefn.h>
-#include <wx/config.h>		// For wxConfig
+#if wxCHECK_VERSION(2,4,2)
+	#include <wx/config.h>	// For wxFileConfig in wx-2.4.2
+#endif
 #include <wx/fileconf.h>	// For wxFileConfig
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
