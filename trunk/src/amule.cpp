@@ -285,6 +285,10 @@ CamuleApp::~CamuleApp()
 		delete localserver;
 		localserver = NULL;
 	}
+	
+	if (applog) {
+		delete applog;
+	}
 
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
