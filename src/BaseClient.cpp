@@ -92,7 +92,7 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 
 CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile)
 {
-	socket = 0;
+	socket = NULL;
 	Init();
 	m_nUserID = in_userid;
 	m_nUserPort = in_port;
@@ -198,11 +198,11 @@ void CUpDownClient::Init()
 		socket->GetPeer(address);
 		//uint32 nSockAddrLen = sizeof(sockAddr);
 		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-		#ifdef __WXMSW__
+//		#ifdef __WXMSW__
 		sockAddr.sin_addr.s_addr = inet_addr(address.IPAddress().c_str());
-		#else
-		sockAddr.sin_addr.s_addr=GAddress_INET_GetHostAddress(address.GetAddress());
-		#endif
+//		#else
+//		sockAddr.sin_addr.s_addr=GAddress_INET_GetHostAddress(address.GetAddress());
+//		#endif
 		m_dwUserIP = sockAddr.sin_addr.s_addr;
 		strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
 	}
