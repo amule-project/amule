@@ -130,13 +130,15 @@ void* CAICHSyncThread::Entry()
 				{
 					if (*(it) == pCurFile->GetAICHHashset()->GetMasterHash()){
 						bFound = true;
-//#ifdef _DEBUG_
+#ifdef _DEBUG_
 						// in debugmode we load and verify all hashsets
+						printf("\tLoading hashset for %s\n",unicode2char(pCurFile->GetFileName()));
 						wxASSERT( pCurFile->GetAICHHashset()->LoadHashSet() );
-						printf("Testing hashset for %s\n",unicode2char(pCurFile->GetFileName()));
+						printf("\tTesting hashset for %s\n",unicode2char(pCurFile->GetFileName()));
 			 			pCurFile->GetAICHHashset()->DbgTest();						
+						printf("\tVerified\n");						
 						pCurFile->GetAICHHashset()->FreeHashSet();
-//#endif
+#endif
 						break;
 					}
 				}
