@@ -24,6 +24,7 @@
 
 #include "types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
+#include "sockets.h"
 class CServerSocketHandler;
 
 class CServer;
@@ -50,6 +51,7 @@ public:
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(Packet* packet);
 	bool   SendPacket(Packet* packet, bool delpacket = true,bool controlpacket = true);
+ 	CServer*	GetServerConnected() const { return serverconnect->GetCurrentServer(); }
 private:
 	bool	ProcessPacket(const char* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
