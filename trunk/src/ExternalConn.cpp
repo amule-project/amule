@@ -274,33 +274,39 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
 	
-	unsigned int filecount = theApp.downloadqueue->GetFileCount();
-	wxString ServerStatus;
-	if (theApp.serverconnect->IsConnected()) {
-		ServerStatus = wxString(_("Connected"));
+	CECPacket *response = new CECPacket(EC_OP_STATS);
+	if ( theApp.serverconnect->IsConnected() ) {
+		response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)theApp.serverconnect->clientid));
+		response->AddTag(CECTag(EC_TAG_STATS_SERVER,
+			theApp.serverconnect->GetCurrentServer()->GetListName()));
 	} else {
 		if (theApp.serverconnect->IsConnecting()) {
-			ServerStatus = wxString(_("Connecting"));
+			response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)0xffffffff));
+			response->AddTag(CECTag(EC_TAG_STATS_SERVER, _("connecting")));
 		} else {
-			ServerStatus = wxString(_("Not connected"));
+			response->AddTag(CECTag(EC_TAG_STATS_ED2K_ID, (uint32)0));
+			response->AddTag(CECTag(EC_TAG_STATS_SERVER, _("disconnected")));
 		}
 	}
+	//
+	// ul/dl speeds
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theApp.uploadqueue->GetKBps()));
+	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)theApp.downloadqueue->GetKBps()));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)thePrefs::GetMaxUpload()));
+	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)thePrefs::GetMaxDownload()));
+	
+	response->AddTag(CECTag(EC_TAG_STATS_CURR_UL_COUNT,
+		(uint32)theApp.uploadqueue->GetUploadQueueLength()));
 	// get the source count
 	uint32 stats[2];
 	theApp.downloadqueue->GetDownloadStats(stats);
-	CECPacket *response = new CECPacket(EC_OP_STRINGS);
-	response->AddTag(CECTag(EC_TAG_STRING, 
-		wxString::Format(_("Server: ") + ServerStatus +
-		_("\n"
-		"Statistics: \n"
-		" Downloading files: %u\n"
-		" Found sources: %d\n"
-		" Active downloads: %d\n"
-		" Active Uploads: %d\n"
-		" Users on upload queue: %d"), 
-			filecount, stats[0], stats[1],
-			theApp.uploadqueue->GetUploadQueueLength(),
-			theApp.uploadqueue->GetWaitingUserCount())));
+	response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SRC_COUNT, stats[0]));
+	response->AddTag(CECTag(EC_TAG_STATS_CURR_DL_COUNT, stats[1]));
+	response->AddTag(CECTag(EC_TAG_STATS_TOTAL_DL_COUNT,
+		(uint32)theApp.downloadqueue->GetFileCount()));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_QUEUE_LEN,
+		(uint32)theApp.uploadqueue->GetWaitingUserCount()));
+
 	return response;
 }
 

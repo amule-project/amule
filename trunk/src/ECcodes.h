@@ -144,6 +144,16 @@ enum {
 		 *	(none)
 		 */
 	EC_OP_STAT_REQ,
+	
+		/*!
+		 * \brief Reply to stats request
+		 * 
+		 * Status information about files/users/limits/speeds etc
+		 * 
+		 * \par Tags:
+		 *  \b ::EC_TAG_STATS_*
+		 */
+	EC_OP_STATS,
 
 		/*!
 		 * \brief Handle ED2k link.
@@ -260,6 +270,8 @@ enum {
 	 */
 	EC_OP_SERVER_CONNECT,
 
+	EC_OP_SERVER_REMOVE,
+
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
@@ -345,11 +357,54 @@ enum {
 	EC_TAG_PROTOCOL_VERSION,
 
 	EC_TAG_ITEM_ID,
-	//
-	// tags for partfile info
 
+	/*!
+	 * \brief Tags for status (or stats) info
+	 */
+	/*!
+	 * \brief Connection status: high/low id or disconnected
+	 * 
+	 * Values (uin32): ed2k ID, 0 if disconnected, 0xffffffff if connection in progress
+	 */
+	EC_TAG_STATS_ED2K_ID,
+	EC_TAG_STATS_SERVER,
+	EC_TAG_STATS_UL_SPEED,
+	EC_TAG_STATS_DL_SPEED,
+	/*!
+	 *  \brief Up/Down speed/limit
+	 * 
+	 * Values (uint32): speed in bps
+	 */
+	EC_TAG_STATS_UL_SPEED_LIMIT,
+	EC_TAG_STATS_DL_SPEED_LIMIT,
+	/*!
+	 * \brief Number of activel up/downloads
+	 * 
+	 */
+	EC_TAG_STATS_CURR_UL_COUNT,
+	EC_TAG_STATS_CURR_DL_COUNT,
+	/*!
+	 * \brief Total number of file in download queue
+	 */
+	EC_TAG_STATS_TOTAL_DL_COUNT,
+	/*!
+	 * \brief Total number of sources found
+	 */
+	EC_TAG_STATS_TOTAL_SRC_COUNT,
+	/*!
+	 * \brief Number of users in upload queue
+	 */
+	EC_TAG_STATS_UL_QUEUE_LEN,
+	
+	/*!
+	 * \brief Info about CPartFile
+	 * 
+	 * Value (string): file name (the full one)
+	 * 
+	 * \par Chld TAGs:
+	 *  ::EC_TAG_PARTFILE_*
+	 */
 	EC_TAG_PARTFILE,
-	EC_TAG_PARTFILE_COMMAND,
 
 	EC_TAG_PARTFILE_SIZE_FULL,
 	EC_TAG_PARTFILE_SIZE_XFER,
@@ -372,8 +427,20 @@ enum {
 	 *  ::EC_TAG_SERVER_ADDRESS
 	 */
 	EC_TAG_SERVER,
+	/*!
+	 * \brief server description
+	 * 
+	 * Value (string)
+	*/	
+	EC_TAG_SERVER_DESC,
+	/*!
+	 * \brief server IP address in format xx.xx.xx.xx:port
+	 * 
+	 * Value (string)
+	*/	
 	EC_TAG_SERVER_ADDRESS,
 	EC_TAG_SERVER_USERS,
+	EC_TAG_SERVER_USERS_MAX,
 	EC_TAG_SERVER_FILES,
 
 	/*!

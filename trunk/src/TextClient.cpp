@@ -459,6 +459,28 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s += response->GetTagByIndex(i)->GetStringData();
 			}
 			break;
+		case EC_OP_STATS: {
+				uint32 id = response->GetTagByName(EC_TAG_STATS_ED2K_ID)->GetInt32Data();
+				if ( id >= 16777216 ) {
+					s = wxString::Format(wxT("Connected with HIGH ID %u to "), id) + 
+						response->GetTagByName(EC_TAG_STATS_SERVER)->GetStringData();
+				} else if ( id == 0 ) {
+					s = _("Disconnected");
+				} else if ( id == 0xffffffff) {
+					s = _("Now connecting");
+				} else {
+					s = wxString::Format(wxT("Connected with LOW ID %u to "), id) + 
+						response->GetTagByName(EC_TAG_STATS_SERVER)->GetStringData();
+				}
+				s += wxT("\nDownload:\t") +
+					CastItoXBytes(response->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data()) + wxT("/sec");
+				s += wxT("\nUpload:\t") +
+					CastItoXBytes(response->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data()) + wxT("/sec");
+				
+				s += wxString::Format(wxT("\nClients in queue: \t%d\n"),
+					response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data());
+			}
+			break;
 		case EC_OP_DLOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
