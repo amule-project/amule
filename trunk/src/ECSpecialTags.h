@@ -101,24 +101,64 @@ class CEC_SharedFile_Tag : public CECTag {
 		CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level);
 
 		// template needs it
- 		CMD4Hash		ID()	{ return GetMD4Data(); }
-
+ 		CMD4Hash	ID()		{ return GetMD4Data(); }
+		
  		CMD4Hash	FileHash()	{ return GetMD4Data(); }
-		wxString	FileHashString() { return GetMD4Data().Encode(); }
+		wxString	FileHashString(){ return GetMD4Data().Encode(); }
 
- 		wxString	FileName()	{ return GetTagByName(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
-  		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
- 		wxString	FileEd2kLink()	{ return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
+ 		wxString	FileName()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_NAME);
+			return tag ? tag->GetStringData() : wxT("");
+		}
+ 		uint32		SizeFull()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_SIZE_FULL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+  		uint32		Prio()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_PRIO);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		wxString	FileEd2kLink()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_PARTFILE_ED2K_LINK);
+			return tag ? tag->GetStringData() : wxT("");
+		}
 
- 		uint32		GetRequests()	{ return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT)->GetInt32Data(); }
- 		uint32		GetAllRequests()	{ return GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT_ALL)->GetInt32Data(); }
+ 		uint32		GetRequests()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32		GetAllRequests()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_REQ_COUNT_ALL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
 
- 		uint32		GetAccepts()	{ return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT)->GetInt32Data(); }
- 		uint32		GetAllAccepts()	{ return GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL)->GetInt32Data(); }
+ 		uint32		GetAccepts()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32		GetAllAccepts()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
 
- 		uint32		GetXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
- 		uint32		GetAllXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
+ 		uint32		GetXferred()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_XFERRED);
+			return tag ? tag->GetInt32Data() : 0;
+		}
+ 		uint32		GetAllXferred()
+		{
+			CECTag *tag =  GetTagByName(EC_TAG_KNOWNFILE_XFERRED_ALL);
+			return tag ? tag->GetInt32Data() : 0;
+		}
 };
 
 class CEC_UpDownClient_Tag : public CECTag {
@@ -135,7 +175,7 @@ class CEC_UpDownClient_Tag : public CECTag {
  		wxString ClientName()
 		{
 			CECTag *tag =  GetTagByName(EC_TAG_CLIENT_NAME);
-			return tag ? tag->GetStringData() : wxString();
+			return tag ? tag->GetStringData() : wxT("");
 		}
  		uint32 Speed()
 		{
