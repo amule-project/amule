@@ -68,18 +68,12 @@ CQueueListCtrl::CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSiz
   Init();
 
   // load images
-
-  imagelist.Add(wxBitmap(clientImages(7)));
-  imagelist.Add(wxBitmap(clientImages(5)));
-  imagelist.Add(wxBitmap(clientImages(12)));
-  imagelist.Add(wxBitmap(clientImages(13)));
-  imagelist.Add(wxBitmap(clientImages(6)));
-  imagelist.Add(wxBitmap(clientImages(8)));
-  imagelist.Add(wxBitmap(clientImages(14)));
-  imagelist.Add(wxBitmap(clientImages(11)));
-  imagelist.Add(wxBitmap(clientImages(15)));
-  imagelist.Add(wxBitmap(clientImages(16)));
-  
+#warning As with uploadlistctrl and downloadlistctrl, this list should be centralised on amuleDlg, or even better, not used at all.
+	
+	for (uint32 i=0; i<22; i++) {
+		imagelist.Add(wxBitmap(clientImages(i)));
+	}
+	
   m_hTimer.SetOwner(this,2349);
   m_hTimer.Start(10000);
 }
@@ -159,30 +153,41 @@ CQueueListCtrl::~CQueueListCtrl(){
 
 void CQueueListCtrl::OnNMRclick(wxMouseEvent& evt)
 {
-  // Check if clicked item is selected. If not, unselect all and select it.
-  long item=-1;
-  int lips=0;
-  int index=HitTest(evt.GetPosition(), lips);
-  if (!GetItemState(index, wxLIST_STATE_SELECTED)) {
-    for (;;) {
-      item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
-      if (item==-1) break;
-      SetItemState(item, 0, wxLIST_STATE_SELECTED);
-    }
-    SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-  }
+	// Check if clicked item is selected. If not, unselect all and select it.
+	long item=-1;
+	int lips=0;
+	int index=HitTest(evt.GetPosition(), lips);
 
-  if(m_ClientMenu==NULL) {
-    wxMenu* menu=new wxMenu(CString(_("Clients")));
-    menu->Append(MP_DETAIL,CString(_("Show &Details")));
-    menu->Append(MP_ADDFRIEND,CString(_("Add to Friends")));
-    menu->Append(MP_UNBAN,CString(_("Unban")));
-    menu->Append(MP_SHOWLIST,CString(_("View Files")));
-    menu->AppendSeparator();
-    menu->Append(MP_SWITCHCTRL,CString(_("Show Uploads")));
-    m_ClientMenu=menu;
-  } 
-  PopupMenu(m_ClientMenu,evt.GetPosition());
+	if (index != -1) {
+		if (!GetItemState(index, wxLIST_STATE_SELECTED)) {
+			for (;;) {
+				item = GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
+				if (item==-1) {
+					break;
+				}
+				SetItemState(item, 0, wxLIST_STATE_SELECTED);
+			}
+			SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+		}
+	}
+
+	if(m_ClientMenu==NULL) {
+		wxMenu* menu=new wxMenu(CString(_("Clients")));
+		menu->Append(MP_DETAIL,CString(_("Show &Details")));
+		menu->Append(MP_ADDFRIEND,CString(_("Add to Friends")));
+		menu->Append(MP_UNBAN,CString(_("Unban")));
+		menu->Append(MP_SHOWLIST,CString(_("View Files")));
+		menu->AppendSeparator();
+		menu->Append(MP_SWITCHCTRL,CString(_("Show Uploads")));
+		m_ClientMenu=menu;
+	} 
+
+	m_ClientMenu->Enable(MP_DETAIL,(index!=-1));
+	m_ClientMenu->Enable(MP_ADDFRIEND,(index!=-1));
+	m_ClientMenu->Enable(MP_SHOWLIST,(index!=-1));	
+	m_ClientMenu->Enable(MP_UNBAN,(index!=-1));	// Need to check if it's banned next time
+	
+	PopupMenu(m_ClientMenu,evt.GetPosition());
 }
 
 void CQueueListCtrl::Localize() {
@@ -350,48 +355,61 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 					     cur_rec.bottom-cur_rec.top);
 	switch(iColumn){
 	case 0:{
-	  uint8 image;
-	  if (client->IsFriend())
-	    image = 4;
-	  else if (client->ExtProtocolAvailable()){
-	    if (client->credits->GetScoreRatio(client->GetIP()) > 1)
-	      image = 3;
-	    else
-	      image = 1;
-	  }
-	  else{
-	    if (client->GetClientSoft() == SO_MLDONKEY || client->GetClientSoft() == SO_NEW_MLDONKEY ){
-	      if (client->credits->GetScoreRatio(client->GetIP()) > 1)
-		image = 6;
-	      else
-		image = 5;
-	    }
-	    else if (client->GetClientSoft() == SO_EDONKEYHYBRID ){
-	      if(client->credits->GetScoreRatio(client->GetIP()) > 1)
-		image = 8;
-	      else
-		image = 7;
-	    }
-	    else{
-	      if (client->credits->GetScoreRatio(client->GetIP()) > 1)
-		image = 2;
-	      else
-		image = 0;
-	    }
-	  }
-	  
-	  // Added Thief Icon [BlackRat]
-	  if(client->thief) 
-		  image = 9;
-						
-	  //POINT point = {cur_rec.left, cur_rec.top+1};
-	  //imagelist.Draw(dc,image, point, ILD_NORMAL);
-	  imagelist.Draw(image,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
-	  Sbuffer.Format("%s", client->GetUserName());
-	  cur_rec.left +=20;
-	  dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
-	  cur_rec.left -=20;
-	  break;
+		
+		uint8 clientImage;
+		if (client->IsFriend()) {
+			clientImage = 13;
+		} else {
+			switch (client->GetClientSoft()) {
+				case SO_AMULE: 
+					clientImage = 17;
+					break;
+				case SO_MLDONKEY:
+				case SO_NEW_MLDONKEY:
+				case SO_NEW2_MLDONKEY:
+					clientImage = 15;
+					break;
+				case SO_EDONKEY:
+				case SO_EDONKEYHYBRID:
+					// Maybe we would like to make different icons?
+					clientImage = 16;
+					break;
+				case SO_EMULE:
+					clientImage = 14;
+					break;
+				case SO_LPHANT:
+					clientImage = 18;
+					break;
+				case SO_SHAREAZA:
+					clientImage = 19;
+					break;
+				case SO_LXMULE:
+					clientImage = 20;
+					break;
+				default:
+					// cDonkey, Compat Unk
+					// No icon for those yet. Using the eMule one + '?'
+					clientImage = 21;
+					break;
+			}	
+		}
+		
+		imagelist.Draw(clientImage,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
+							
+		if (client->credits->GetScoreRatio(client->GetIP()) > 1) {					
+			// Has credits, draw the gold star
+			// (wtf is the grey star?)
+			imagelist.Draw(11,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);						
+		} else if (client->ExtProtocolAvailable()) {
+			// Ext protocol -> Draw the '+'
+			imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
+		}		
+		
+		Sbuffer.Format("%s", client->GetUserName());
+		cur_rec.left +=20;
+		dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
+		cur_rec.left -=20;
+		break;
 	}
 	case 1:
 	  if(file)
