@@ -872,7 +872,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			}
 		}
  	} catch (...) {
-		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("%s\""));
+		AddDebugLogLineM(false,wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxString(wxT("%s\"")));
 	}
 }
 
@@ -967,14 +967,14 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZi
 				strZipError.Printf(_T(" %d '%s'"), err, zS->msg);
 			else if (err != Z_OK)
 				strZipError.Printf(_T(" %d"), err);
-			AddDebugLogLineM(false, wxString(wxT("Unexpected zip error ")) +  strZipError + wxT("in file \"") + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
+			AddDebugLogLineM(false, wxString(wxT("Unexpected zip error ")) +  strZipError + wxString(wxT("in file \"")) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxString(wxT("\"")));
 		}
 
 		if (err != Z_OK) {
 			(*lenUnzipped) = 0;
 		}
 	} catch (...) {
-		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxT("?")) + wxT("\""));
+		AddDebugLogLineM(false, wxString::Format(wxT("Unknown exception in %s: file \""), __FUNCTION__) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxString(wxT("\"")));
 		err = Z_DATA_ERROR;
 	}
 	return err;
