@@ -195,7 +195,6 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, char* host
 				int iLeft;
 				do{
 					uint16 uResultCount = theApp.searchlist->ProcessUDPSearchanswer(data, inet_addr(host), port-4);
-					theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 
 					// check if there is another source packet
 					iLeft = (int)(data->GetLength() - data->GetPosition());
