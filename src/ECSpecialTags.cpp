@@ -107,7 +107,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level)
-	: CECTag(EC_TAG_PARTFILE, PTR_2_ID(file))
+	: CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
