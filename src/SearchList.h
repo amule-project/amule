@@ -60,6 +60,8 @@ public:
 	virtual ~CSearchFile();
 
 #ifdef CLIENT_GUI
+	CSearchFile(class CEC_SearchFile_Tag *);
+	
 	uint32	GetSourceCount() { return m_SourceCount; }
 	uint32	GetCompleteSourceCount() { return m_CompleteSourceCount; }
 	uint32  GetFileSize() { return m_nFileSize; }

@@ -80,6 +80,7 @@
 #include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
+#include "SearchList.h"			// Needed for CSearchFile
 #include "SearchDlg.h"			// Needed for CSearchDlg
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
@@ -164,6 +165,10 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	} else if ( theApp.amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 		//downloadqueue->ReloadControl();
+	} else if ( theApp.amuledlg->searchwnd->IsShown() ) {
+		if ( searchlist->m_curr_search != 0 ) {
+			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
+		}
 	}
 }
 
@@ -889,6 +894,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	file->m_a4af_source_count = tag->SourceCountA4AF();
     file->status = tag->FileStatus();
 
+	file->m_category = tag->FileCat();
 	
 	//
 	// Copy part/gap status
@@ -946,7 +952,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	} else {
 		printf("ERROR: %p %p %p\n", gaptag, parttag, reqtag);
 	}
-	//theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
+	theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
 void CDownQueueRem::Pause(CPartFile *file)
@@ -1005,6 +1011,7 @@ void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
 void CDownQueueRem::Category(CPartFile *file, uint8 cat)
 {
 	CECPacket req(EC_OP_PARTFILE_SET_CAT);
+	file->m_category = cat;
 	
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
@@ -1026,6 +1033,7 @@ void CClientListRem::FilterQueues()
 
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
 {
+	m_curr_search = 0;
 }
 
 void CSearchListRem::Clear()
@@ -1035,15 +1043,59 @@ void CSearchListRem::Clear()
 }
 
 bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString &searchString,
-	wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability)
+	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
 {
-	return false;
+	CECPacket search_req(EC_OP_SEARCH_START);
+	search_req.AddTag(CEC_Search_Tag (searchString,
+		global_search ? EC_SEARCH_GLOBAL : EC_SEARCH_LOCAL, typeText,
+		extension, availability, min_size, max_size));
+		
+	m_conn->Send(&search_req);
+	m_curr_search = nSearchID;
+	return true;
 }
 
 void CSearchListRem::StopGlobalSearch()
 {
-	// FIXME: add code
-	wxASSERT(0);
+	//CECPacket search_req(EC_OP_SEARCH_STOP);
+	//m_conn->Send(&search_req);
+}
+
+CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
+{
+	m_strFileName = tag->FileName();
+	m_abyFileHash = tag->ID();
+	m_nFileSize = tag->SizeFull();
+
+	m_nSearchID = theApp.searchlist->m_curr_search;
+
+}
+
+// dtor is virtual - must be implemented
+CSearchFile::~CSearchFile()
+{	
+}
+
+CSearchFile *CSearchListRem::CreateItem(CEC_SearchFile_Tag *tag)
+{
+	CSearchFile *file = new CSearchFile(tag);
+
+	theApp.amuledlg->searchwnd->AddResult(file);
+	
+	return file;
+}
+
+void CSearchListRem::DeleteItem(CSearchFile *)
+{
+}
+
+CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
+{
+	return file->GetFileHash();
+}
+
+void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *)
+{
 }
 
 bool CUpDownClient::IsBanned() const
