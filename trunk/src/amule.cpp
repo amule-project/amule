@@ -229,21 +229,21 @@ CamuleApp::~CamuleApp()
 		printf("aMule shutdown: Terminating core.\n");
 	}
 	
-	// Close OS files.
-	amulesig_out.Close();
-	emulesig_out.Close();
+	//printf("Cleaning associated objects: ");
 	
-	// Delete associated objects
+	//printf("ServerList... ");
 	if (serverlist) {
 		delete serverlist;
 		serverlist = NULL;
 	}
 	
+	//printf("SearchList... ");
 	if (searchlist) {
 		delete searchlist;
 		searchlist = NULL;
 	}
 	
+	//printf("ClientCredits... ");
 	if (clientcredits) {
 		delete clientcredits;
 		clientcredits = NULL;
@@ -251,70 +251,84 @@ CamuleApp::~CamuleApp()
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
+	//printf("SharedFiles... ");
 	if (sharedfiles) {
 		delete sharedfiles;
 		sharedfiles = NULL;
 	}
-
+	
+	//printf("SeverConnect... ");
 	if (serverconnect) {
 		delete serverconnect;
 		serverconnect = NULL;
 	}
-
+	
+	//printf("ListenSocket... ");
 	if (listensocket) {
 		delete listensocket;
 		listensocket = NULL;
 	}
-
+	
+	//printf("KnownFiles... ");
 	if (knownfiles) {
 		delete knownfiles;
 		knownfiles = NULL;
 	}
-
+	
+	//printf("ClientList... ");
 	if (clientlist) {
 		delete clientlist;
 		clientlist = NULL;
 	}
-
+	
+	//printf("UploadQueue... ");
 	if (uploadqueue) {
 		delete uploadqueue;
 		uploadqueue = NULL;
 	}
-
+	
+	//printf("DownloadQueue... ");
 	if (downloadqueue) {
 		delete downloadqueue;
 		downloadqueue = NULL;
 	}
-
+	
+	//printf("IPFilter... ");
 	if (ipfilter) {
 		delete ipfilter;
 		ipfilter = NULL;
 	}
 	
+	//printf("ECServerHandler... ");
 	if (ECServerHandler) {
 		delete ECServerHandler;
 		ECServerHandler = NULL;
 	}
 
+	//printf("Statistics... ");
 	if (statistics) {
 		delete statistics;		
 	}		
 
+	//printf("Preferences... ");
 	if (glob_prefs) {
 		delete glob_prefs;
 		glob_prefs = NULL;
 		CPreferences::EraseItemList();
 	}
 
+	//printf("LocalServer... ");
 	if (localserver) {
 		delete localserver;
 		localserver = NULL;
 	}
 
+	//printf("AppLog... ");
 	if (applog) {
 		delete applog; // deleting a wxFFileOutputStream closes it
 	}
 	
+	//printf("Done! ");
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
@@ -646,7 +660,7 @@ bool CamuleApp::OnInit()
 	knownfiles	= new CKnownFileList();
 	serverlist	= new CServerList();
 	
-	sharedfiles	= new CSharedFileList(serverconnect, knownfiles);
+	sharedfiles	= new CSharedFileList(knownfiles);
 	clientcredits	= new CClientCreditsList();
 	
 	// bugfix - do this before creating the uploadqueue
@@ -662,11 +676,6 @@ bool CamuleApp::OnInit()
 	// init downloadqueue
 	downloadqueue->LoadMetFiles( thePrefs::GetTempDir() );
 
-	m_app_state = APP_STATE_RUNNING;
-
-	// reload shared files
-	sharedfiles->Reload(true, true);
-
 	// Creates all needed listening sockets
 	wxString msg;
 	bool ok;
@@ -674,6 +683,11 @@ bool CamuleApp::OnInit()
 	if (!msg.IsEmpty()) {
 		printf("%s", unicode2char(msg));
 	}
+
+	m_app_state = APP_STATE_RUNNING;
+
+	// reload shared files
+	sharedfiles->Reload(true, true);
 	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
@@ -757,10 +771,10 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg << wxT("*** UDP socket (extended eMule) at ") <<
+		*msg << wxT("*** Client UDP socket (extended eMule) at ") <<
 			ip << wxT(":") << thePrefs::GetUDPPort() << wxT("\n");
 	} else {
-		*msg << wxT("*** UDP socket (extended eMule) disabled on preferences\n");
+		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences\n");
 		clientudp = NULL;
 	}
 	
@@ -768,7 +782,10 @@ bool CamuleApp::ReinitializeNetwork(wxString *msg)
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
-	*msg << wxT("*** UDP socket (TCP+3) at ") << 
+	// Whenever we change serverconnect, we have to update the SharedFileList.
+	sharedfiles->SetServerConnect(serverconnect);
+	
+	*msg << wxT("*** Server UDP socket (TCP+3) at ") << 
 		ip << wxT(":") << thePrefs::GetPort() + 3 << wxT("\n");
 	
 	// Create the ListenSocket (aMule TCP socket).

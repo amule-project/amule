@@ -54,8 +54,8 @@
 #endif
 
 
-CSharedFileList::CSharedFileList(CServerConnect* in_server,CKnownFileList* in_filelist){
-	server = in_server;
+CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
+	server = NULL;
 	filelist = in_filelist;
 	reloading = false;
 	FindSharedFiles();
@@ -192,8 +192,6 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		if (!new_file.IsOpened()) {
 			printf("No permisions to open %s, skipping\n",unicode2char(fname));
-			// Kry - Return? WTF? What about the other files?
-			//return;
 			fname = SharedDir.FindNextFile();
 			continue;
 		}
@@ -232,6 +230,8 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	// TODO: Check if the file is already known - only with another date
+	wxASSERT(server); // Server must NEVER be null when reaching here.
+	
 	//CSingleLock sLock(&list_mut,true);
 	list_mut.Lock();
 	if ( m_Files_map.find(toadd->GetFileHash()) != m_Files_map.end() )
@@ -250,9 +250,10 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	Notify_SharedFilesShowFile(toadd);
 
 	// offer new file to server
-	if (!server || !server->IsConnected()) {
+	if (!server->IsConnected()) {
 		return;
 	}
+	
 	CSafeMemFile* files = new CSafeMemFile(100);
 
 	files->WriteUInt32(1); // filecount
@@ -300,7 +301,8 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 }
 
 void CSharedFileList::SendListToServer(){
-	if (m_Files_map.empty() || !server || !server->IsConnected() )
+	wxASSERT(server); // Server must NEVER be null when reaching here.
+	if (m_Files_map.empty() || !server->IsConnected() )
 		return;
 	CSafeMemFile* files = new CSafeMemFile();
 
