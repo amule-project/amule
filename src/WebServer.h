@@ -191,6 +191,18 @@ class ServerEntry {
 		uint32 ID() { return nServerIP; }
 };
 
+class UploadFiles {
+		wxString  sUserName;
+		uint32 nTransferred;
+		uint32 nSpeed;
+		//
+		// Don't need filename - sharedfiles already have it
+		CMD4Hash  nHash;
+
+		static class UploadsInfo *GetContainerInstance();
+		CMD4Hash ID() { return nHash; }
+};
+
 /*!
  * Each item of type T must implement GetContainerInstance(T) to return ptr
  * to container holding such items.
@@ -376,8 +388,44 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 				this->ItemInserted(*real_ptr);
 			}
 		}
+		
+		bool DoRequery(int cmd, int tag)
+		{
+			CECPacket req_sts(cmd, EC_DETAIL_UPDATE);
+		
+			//
+			// Phase 1: request status
+			CECPacket *reply = this->m_webApp->SendRecvMsg_v2(&req_sts);
+			if ( !reply ) {
+				return false;
+			}
+			
+			//
+			// Phase 2: update status, mark new files for subsequent query
+			CECPacket req_full(cmd);
+		
+			ProcessUpdate(reply, &req_full, tag);
+		
+			delete reply;
+		
+			// Phase 3: request full info about files we don't have yet
+			if ( req_full.GetTagCount() ) {
+				reply = this->m_webApp->SendRecvMsg_v2(&req_full);
+				if ( !reply ) {
+					return false;
+				}
+				ProcessFull(reply);	
+			}
+			return true;
+		}
+		
 		virtual void ItemDeleted(T &) { }
 		virtual void ItemInserted(T &) { }
+};
+
+class UploadsInfo : public ItemsContainer<UploadFiles, int> {
+	public:
+		UploadsInfo(CamulewebApp *webApp);
 };
 
 class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
