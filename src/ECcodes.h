@@ -598,7 +598,7 @@ enum {
 		/*!
 		 * \brief MD4 password hash.
 		 *
-		 * An ::EC_TAG_STRING, dedicated to hold the password hash.
+		 * A \c hash type tag, dedicated to hold password hashes.
 		 *
 		 * \par Child TAGs:
 		 *	(none)
@@ -649,7 +649,7 @@ enum {
 		/*!
 		 * \brief CVS checkout date
 		 *
-		 * Used with scripted checkouts (in out CVS tarballs)
+		 * Used with scripted checkouts (in our CVS tarballs)
 		 * to ensure that core & remote are from the same
 		 * CVS version.
 		 *

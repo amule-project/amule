@@ -39,6 +39,7 @@
 	#include <list>		// For std::list
 #endif
 
+#include "CMD4Hash.h"
 #include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECcodes.h"
@@ -106,7 +107,7 @@ public:
 protected:
 	long	 	m_port;
 	wxString 	m_host;
-	wxString	m_password;
+	CMD4Hash	m_password;
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
 

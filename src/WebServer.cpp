@@ -276,12 +276,12 @@ long CWebServer::GetWSPrefs(void)
 	unsigned int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
 
 	if (webInterface->m_LoadSettingsFromAmule) {
-		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
+		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
 
 		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
 		if (webserverGuest) {
 			webInterface->m_AllowGuest = true;
-			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetStringData();
+			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
 		} else {
 			webInterface->m_AllowGuest = false;
 		}
@@ -474,7 +474,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	wxString sW = _ParseURL(Data, wxT("w"));
 	if (sW == wxT("password")) {
 		wxString PwStr = _ParseURL(Data, wxT("p"));
-		wxString PwHash = MD5Sum(PwStr).GetHash();
+		CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 		bool login = false;
 		wxString ip = char2unicode(inet_ntoa(Data.inadr));
 		if ( (PwHash == webInterface->m_AdminPass) || (PwStr.IsEmpty() && webInterface->m_AdminPass.IsEmpty()) ) {
