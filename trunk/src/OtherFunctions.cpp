@@ -40,6 +40,8 @@
 
 #include <cctype>
 
+#include "OPCodes.h"
+
 namespace otherfunctions {
 
 wxString GetMuleVersion()
@@ -730,199 +732,207 @@ wxString GetCatTitle(int catid)
 	}
 }
 
-
-
-
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
 	   return (((int)*first) - ((int)*second)) ;
 }	  
 
-
-struct SED2KFileType
+class SED2KFileType
 {
-	wxChar* pszExt;
-	EED2KFileType iFileType;
-} _aED2KFileTypes[] = 
-{
-    { wxT(".669"),   ED2KFT_AUDIO },
-    { wxT(".aac"),   ED2KFT_AUDIO },
-    { wxT(".aif"),   ED2KFT_AUDIO },
-    { wxT(".aiff"),  ED2KFT_AUDIO },
-    { wxT(".amf"),   ED2KFT_AUDIO },
-    { wxT(".ams"),   ED2KFT_AUDIO },
-    { wxT(".ape"),   ED2KFT_AUDIO },
-    { wxT(".au"),    ED2KFT_AUDIO },
-    { wxT(".dbm"),   ED2KFT_AUDIO },
-    { wxT(".dmf"),   ED2KFT_AUDIO },
-    { wxT(".dsm"),   ED2KFT_AUDIO },
-    { wxT(".far"),   ED2KFT_AUDIO },
-    { wxT(".flac"),  ED2KFT_AUDIO },
-    { wxT(".it"),    ED2KFT_AUDIO },
-    { wxT(".mdl"),   ED2KFT_AUDIO },
-    { wxT(".med"),   ED2KFT_AUDIO },
-    { wxT(".mid"),   ED2KFT_AUDIO },
-    { wxT(".midi"),  ED2KFT_AUDIO },
-    { wxT(".mod"),   ED2KFT_AUDIO },
-    { wxT(".mol"),   ED2KFT_AUDIO },
-    { wxT(".mp1"),   ED2KFT_AUDIO },
-    { wxT(".mp2"),   ED2KFT_AUDIO },
-    { wxT(".mp3"),   ED2KFT_AUDIO },
-    { wxT(".mp4"),   ED2KFT_AUDIO },
-    { wxT(".mpa"),   ED2KFT_AUDIO },
-    { wxT(".mpc"),   ED2KFT_AUDIO },
-    { wxT(".mpp"),   ED2KFT_AUDIO },
-    { wxT(".mtm"),   ED2KFT_AUDIO },
-    { wxT(".nst"),   ED2KFT_AUDIO },
-    { wxT(".ogg"),   ED2KFT_AUDIO },
-    { wxT(".okt"),   ED2KFT_AUDIO },
-    { wxT(".psm"),   ED2KFT_AUDIO },
-    { wxT(".ptm"),   ED2KFT_AUDIO },
-    { wxT(".ra"),    ED2KFT_AUDIO },
-    { wxT(".rmi"),   ED2KFT_AUDIO },
-    { wxT(".s3m"),   ED2KFT_AUDIO },
-    { wxT(".stm"),   ED2KFT_AUDIO },
-    { wxT(".ult"),   ED2KFT_AUDIO },
-    { wxT(".umx"),   ED2KFT_AUDIO },
-    { wxT(".wav"),   ED2KFT_AUDIO },
-    { wxT(".wma"),   ED2KFT_AUDIO },
-    { wxT(".wow"),   ED2KFT_AUDIO },
-    { wxT(".xm"),    ED2KFT_AUDIO },
-
-    { wxT(".asf"),   ED2KFT_VIDEO },
-    { wxT(".avi"),   ED2KFT_VIDEO },
-    { wxT(".divx"),  ED2KFT_VIDEO },
-    { wxT(".m1v"),   ED2KFT_VIDEO },
-    { wxT(".m2v"),   ED2KFT_VIDEO },
-    { wxT(".mkv"),   ED2KFT_VIDEO },
-    { wxT(".mov"),   ED2KFT_VIDEO },
-    { wxT(".mp1v"),  ED2KFT_VIDEO },
-    { wxT(".mp2v"),  ED2KFT_VIDEO },
-    { wxT(".mpe"),   ED2KFT_VIDEO },
-    { wxT(".mpeg"),  ED2KFT_VIDEO },
-    { wxT(".mpg"),   ED2KFT_VIDEO },
-    { wxT(".mps"),   ED2KFT_VIDEO },
-    { wxT(".mpv"),   ED2KFT_VIDEO },
-    { wxT(".mpv1"),  ED2KFT_VIDEO },
-    { wxT(".mpv2"),  ED2KFT_VIDEO },
-    { wxT(".ogm"),   ED2KFT_VIDEO },
-    { wxT(".qt"),    ED2KFT_VIDEO },
-    { wxT(".ram"),   ED2KFT_VIDEO },
-    { wxT(".rm"),    ED2KFT_VIDEO },
-    { wxT(".rv"),    ED2KFT_VIDEO },
-    { wxT(".rv9"),   ED2KFT_VIDEO },
-    { wxT(".ts"),    ED2KFT_VIDEO },
-    { wxT(".vivo"),  ED2KFT_VIDEO },
-    { wxT(".vob"),   ED2KFT_VIDEO },
-    { wxT(".wmv"),   ED2KFT_VIDEO },
-    { wxT(".xvid"),  ED2KFT_VIDEO },
-
-    { wxT(".bmp"),   ED2KFT_IMAGE },
-    { wxT(".dcx"),   ED2KFT_IMAGE },
-    { wxT(".emf"),   ED2KFT_IMAGE },
-    { wxT(".gif"),   ED2KFT_IMAGE },
-    { wxT(".ico"),   ED2KFT_IMAGE },
-    { wxT(".jpeg"),  ED2KFT_IMAGE },
-    { wxT(".jpg"),   ED2KFT_IMAGE },
-    { wxT(".pct"),   ED2KFT_IMAGE },
-    { wxT(".pcx"),   ED2KFT_IMAGE },
-    { wxT(".pic"),   ED2KFT_IMAGE },
-    { wxT(".pict"),  ED2KFT_IMAGE },
-    { wxT(".png"),   ED2KFT_IMAGE },
-    { wxT(".psd"),   ED2KFT_IMAGE },
-    { wxT(".psp"),   ED2KFT_IMAGE },
-    { wxT(".tga"),   ED2KFT_IMAGE },
-    { wxT(".tif"),   ED2KFT_IMAGE },
-    { wxT(".tiff"),  ED2KFT_IMAGE },
-    { wxT(".wmf"),   ED2KFT_IMAGE },
-    { wxT(".xif"),   ED2KFT_IMAGE },
-
-    { wxT(".7z"),	ED2KFT_ARCHIVE },
-    { wxT(".ace"),   ED2KFT_ARCHIVE },
-    { wxT(".arj"),   ED2KFT_ARCHIVE },
-    { wxT(".bz2"),   ED2KFT_ARCHIVE },
-    { wxT(".cab"),   ED2KFT_ARCHIVE },
-    { wxT(".gz"),    ED2KFT_ARCHIVE },
-    { wxT(".hqx"),   ED2KFT_ARCHIVE },
-    { wxT(".lha"),   ED2KFT_ARCHIVE },
-    { wxT(".msi"),   ED2KFT_ARCHIVE },
-    { wxT(".rar"),   ED2KFT_ARCHIVE },
-    { wxT(".sea"),   ED2KFT_ARCHIVE },
-    { wxT(".sit"),   ED2KFT_ARCHIVE },
-    { wxT(".tar"),   ED2KFT_ARCHIVE },
-    { wxT(".tgz"),   ED2KFT_ARCHIVE },
-    { wxT(".uc2"),   ED2KFT_ARCHIVE },
-    { wxT(".zip"),   ED2KFT_ARCHIVE },
-
-    { wxT(".bat"),   ED2KFT_PROGRAM },
-    { wxT(".cmd"),   ED2KFT_PROGRAM },
-    { wxT(".com"),   ED2KFT_PROGRAM },
-    { wxT(".exe"),   ED2KFT_PROGRAM },
-
-    { wxT(".bin"),   ED2KFT_CDIMAGE },
-    { wxT(".bwa"),   ED2KFT_CDIMAGE },
-    { wxT(".bwi"),   ED2KFT_CDIMAGE },
-    { wxT(".bws"),   ED2KFT_CDIMAGE },
-    { wxT(".bwt"),   ED2KFT_CDIMAGE },
-    { wxT(".ccd"),   ED2KFT_CDIMAGE },
-    { wxT(".cue"),   ED2KFT_CDIMAGE },
-    { wxT(".dmg"),   ED2KFT_CDIMAGE },
-    { wxT(".dmz"),   ED2KFT_CDIMAGE },
-    { wxT(".img"),   ED2KFT_CDIMAGE },
-    { wxT(".iso"),   ED2KFT_CDIMAGE },
-    { wxT(".mdf"),   ED2KFT_CDIMAGE },
-    { wxT(".mds"),   ED2KFT_CDIMAGE },
-    { wxT(".nrg"),   ED2KFT_CDIMAGE },
-    { wxT(".sub"),   ED2KFT_CDIMAGE },
-    { wxT(".toast"), ED2KFT_CDIMAGE },
-
-    { wxT(".chm"),   ED2KFT_DOCUMENT },
-    { wxT(".css"),   ED2KFT_DOCUMENT },
-    { wxT(".diz"),   ED2KFT_DOCUMENT },
-    { wxT(".doc"),   ED2KFT_DOCUMENT },
-    { wxT(".dot"),   ED2KFT_DOCUMENT },
-    { wxT(".hlp"),   ED2KFT_DOCUMENT },
-    { wxT(".htm"),   ED2KFT_DOCUMENT },
-    { wxT(".html"),  ED2KFT_DOCUMENT },
-    { wxT(".nfo"),   ED2KFT_DOCUMENT },
-    { wxT(".pdf"),   ED2KFT_DOCUMENT },
-    { wxT(".pps"),   ED2KFT_DOCUMENT },
-    { wxT(".ppt"),   ED2KFT_DOCUMENT },
-    { wxT(".ps"),    ED2KFT_DOCUMENT },
-    { wxT(".rtf"),   ED2KFT_DOCUMENT },
-    { wxT(".wri"),   ED2KFT_DOCUMENT },
-    { wxT(".txt"),   ED2KFT_DOCUMENT },
-    { wxT(".xls"),   ED2KFT_DOCUMENT },
-    { wxT(".xlt"),   ED2KFT_DOCUMENT }
+public:
+	SED2KFileType(const wxString &ext, EED2KFileType iFileType)
+	: m_ext(ext), m_iFileType(iFileType) {}
+	const wxString &GetExt() const		{ return m_ext; }
+	EED2KFileType GetFileType() const	{ return m_iFileType; }
+	
+private:
+	const wxString	&m_ext;
+	EED2KFileType	m_iFileType;
 };
 
-#if 0
-// Needs a lot of work and I ahve to go to work NOW
+static SED2KFileType _aED2KFileTypes[] =
+{
+	SED2KFileType(wxT(".669"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".aac"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".aif"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".aiff"),  ED2KFT_AUDIO),
+	SED2KFileType(wxT(".amf"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ams"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ape"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".au"),    ED2KFT_AUDIO),
+	SED2KFileType(wxT(".dbm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".dmf"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".dsm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".far"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".flac"),  ED2KFT_AUDIO),
+	SED2KFileType(wxT(".it"),    ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mdl"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".med"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mid"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".midi"),  ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mod"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mol"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mp1"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mp2"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mp3"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mp4"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mpa"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mpc"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mpp"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".mtm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".nst"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ogg"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".okt"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".psm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ptm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ra"),    ED2KFT_AUDIO),
+	SED2KFileType(wxT(".rmi"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".s3m"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".stm"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".ult"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".umx"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".wav"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".wma"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".wow"),   ED2KFT_AUDIO),
+	SED2KFileType(wxT(".xm"),    ED2KFT_AUDIO),
+
+	SED2KFileType(wxT(".asf"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".avi"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".divx"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".m1v"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".m2v"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mkv"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mov"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mp1v"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mp2v"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpe"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpeg"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpg"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mps"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpv"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpv1"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".mpv2"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".ogm"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".qt"),    ED2KFT_VIDEO),
+	SED2KFileType(wxT(".ram"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".rm"),    ED2KFT_VIDEO),
+	SED2KFileType(wxT(".rv"),    ED2KFT_VIDEO),
+	SED2KFileType(wxT(".rv9"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".ts"),    ED2KFT_VIDEO),
+	SED2KFileType(wxT(".vivo"),  ED2KFT_VIDEO),
+	SED2KFileType(wxT(".vob"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".wmv"),   ED2KFT_VIDEO),
+	SED2KFileType(wxT(".xvid"),  ED2KFT_VIDEO),
+
+	SED2KFileType(wxT(".bmp"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".dcx"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".emf"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".gif"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".ico"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".jpeg"),  ED2KFT_IMAGE),
+	SED2KFileType(wxT(".jpg"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".pct"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".pcx"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".pic"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".pict"),  ED2KFT_IMAGE),
+	SED2KFileType(wxT(".png"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".psd"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".psp"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".tga"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".tif"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".tiff"),  ED2KFT_IMAGE),
+	SED2KFileType(wxT(".wmf"),   ED2KFT_IMAGE),
+	SED2KFileType(wxT(".xif"),   ED2KFT_IMAGE),
+
+	SED2KFileType(wxT(".7z"),    ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".ace"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".arj"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".bz2"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".cab"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".gz"),    ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".hqx"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".lha"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".msi"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".rar"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".sea"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".sit"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".tar"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".tgz"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".uc2"),   ED2KFT_ARCHIVE),
+	SED2KFileType(wxT(".zip"),   ED2KFT_ARCHIVE),
+
+	SED2KFileType(wxT(".bat"),   ED2KFT_PROGRAM),
+	SED2KFileType(wxT(".cmd"),   ED2KFT_PROGRAM),
+	SED2KFileType(wxT(".com"),   ED2KFT_PROGRAM),
+	SED2KFileType(wxT(".exe"),   ED2KFT_PROGRAM),
+
+	SED2KFileType(wxT(".bin"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".bwa"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".bwi"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".bws"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".bwt"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".ccd"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".cue"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".dmg"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".dmz"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".img"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".iso"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".mdf"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".mds"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".nrg"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".sub"),   ED2KFT_CDIMAGE),
+	SED2KFileType(wxT(".toast"), ED2KFT_CDIMAGE),
+
+	SED2KFileType(wxT(".chm"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".css"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".diz"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".doc"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".dot"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".hlp"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".htm"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".html"),  ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".nfo"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".pdf"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".pps"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".ppt"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".ps"),    ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".rtf"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".wri"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".txt"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".xls"),   ED2KFT_DOCUMENT),
+	SED2KFileType(wxT(".xlt"),   ED2KFT_DOCUMENT),
+};
 
 int CompareE2DKFileType(const void* p1, const void* p2)
 {
-	return strncmp( ((const SED2KFileType*)p1)->pszExt, ((const SED2KFileType*)p2)->pszExt );
+	return
+		((const SED2KFileType*)p1)->GetExt().CmpNoCase(
+		((const SED2KFileType*)p2)->GetExt());
 }
 
-EED2KFileType GetED2KFileTypeID(LPCTSTR pszFileName)
+EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 {
-	LPCTSTR pszExt = _tcsrchr(pszFileName, wxT('.'));
-	if (pszExt == NULL) {
+	int i = strFileName.Find(wxT('.'));
+	if (i == -1) {
 		return ED2KFT_ANY;
 	}
-	wxString strExt(pszExt);
+	
+	wxString strExt(strFileName.Mid(i));
 	strExt.MakeLower();
 
-	SED2KFileType ft;
-	ft.pszExt = strExt;
-	ft.iFileType = ED2KFT_ANY;
-	const SED2KFileType* pFound = (SED2KFileType*)bsearch(&ft, _aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
-	if (pFound != NULL)
-		return pFound->iFileType;
-	return ED2KFT_ANY;
+	SED2KFileType ft(strExt, ED2KFT_ANY);
+	const SED2KFileType *pFound =
+		(SED2KFileType *)bsearch(&ft, _aED2KFileTypes,
+			ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0],
+			CompareE2DKFileType);
+	if (pFound) {
+		return pFound->GetFileType();
+	} else {	
+		return ED2KFT_ANY;
+	}
 }
 
 // Retuns the ed2k file type term which is to be used in server searches
-LPCSTR GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
+wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
 {
 	if (iFileID == ED2KFT_AUDIO)		return ED2KFTSTR_AUDIO;
 	if (iFileID == ED2KFT_VIDEO)		return ED2KFTSTR_VIDEO;
@@ -932,60 +942,61 @@ LPCSTR GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
 	// NOTE: Archives and CD-Images are published with file type "Pro"
 	if (iFileID == ED2KFT_ARCHIVE)		return ED2KFTSTR_PROGRAM;
 	if (iFileID == ED2KFT_CDIMAGE)		return ED2KFTSTR_PROGRAM;
-	return NULL;
+
+	return wxEmptyString;
 }
 
 // Returns a file type which is used eMule internally only, examining the extention of the given filename
-CString GetFileTypeByName(LPCTSTR pszFileName)
+wxString GetFileTypeByName(const wxString &strFileName)
 {
-	EED2KFileType iFileType = GetED2KFileTypeID(pszFileName);
+	EED2KFileType iFileType = GetED2KFileTypeID(strFileName);
 	switch (iFileType) {
-		case ED2KFT_AUDIO:		return wxT(ED2KFTSTR_AUDIO);
-		case ED2KFT_VIDEO:		return wxT(ED2KFTSTR_VIDEO);
-		case ED2KFT_IMAGE:		return wxT(ED2KFTSTR_IMAGE);
-		case ED2KFT_DOCUMENT:	return wxT(ED2KFTSTR_DOCUMENT);
-		case ED2KFT_PROGRAM:	return wxT(ED2KFTSTR_PROGRAM);
-		case ED2KFT_ARCHIVE:	return wxT(ED2KFTSTR_ARCHIVE);
-		case ED2KFT_CDIMAGE:	return wxT(ED2KFTSTR_CDIMAGE);
-		default:				return wxT("");
+		case ED2KFT_AUDIO:	return ED2KFTSTR_AUDIO;
+		case ED2KFT_VIDEO:	return ED2KFTSTR_VIDEO;
+		case ED2KFT_IMAGE:	return ED2KFTSTR_IMAGE;
+		case ED2KFT_DOCUMENT:	return ED2KFTSTR_DOCUMENT;
+		case ED2KFT_PROGRAM:	return ED2KFTSTR_PROGRAM;
+		case ED2KFT_ARCHIVE:	return ED2KFTSTR_ARCHIVE;
+		case ED2KFT_CDIMAGE:	return ED2KFTSTR_CDIMAGE;
+		default:		return wxEmptyString;
 	}
 }
 
+#warning #############################################################################
+#warning # Kry, I doubt we are using this function, so please delete if you think so.#
+#warning #############################################################################
+#if 0
 // Returns a file type which is used eMule internally only (GUI)
-CString GetFileTypeDisplayStrFromED2KFileType(LPCTSTR pszED2KFileType)
+wxString GetFileTypeDisplayStrFromED2KFileType(const wxString &strED2KFileType)
 {
-	ASSERT( pszED2KFileType != NULL );
-	if (pszED2KFileType != NULL)
-	{
-		if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_AUDIO)) == 0)			return GetResString(IDS_SEARCH_AUDIO);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_VIDEO)) == 0)    return GetResString(IDS_SEARCH_VIDEO);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_IMAGE)) == 0)    return GetResString(IDS_SEARCH_PICS);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_DOCUMENT)) == 0)	return GetResString(IDS_SEARCH_DOC);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_PROGRAM)) == 0)  return GetResString(IDS_SEARCH_PRG);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_ARCHIVE)) == 0)	return GetResString(IDS_SEARCH_ARC);
-		else if (_tcscmp(pszED2KFileType, wxT(ED2KFTSTR_CDIMAGE)) == 0)  return GetResString(IDS_SEARCH_CDIMG);
-	}
-	return wxT("");
+	if      (strED2KFileType.CmpNoCase(ED2KFTSTR_AUDIO) == 0)	return GetResString(IDS_SEARCH_AUDIO);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_VIDEO) == 0)	return GetResString(IDS_SEARCH_VIDEO);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_IMAGE) == 0)	return GetResString(IDS_SEARCH_PICS);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_DOCUMENT) == 0)	return GetResString(IDS_SEARCH_DOC);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_PROGRAM) == 0)	return GetResString(IDS_SEARCH_PRG);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_ARCHIVE) == 0)	return GetResString(IDS_SEARCH_ARC);
+	else if (strED2KFileType.CmpNoCase(ED2KFTSTR_CDIMAGE) == 0)	return GetResString(IDS_SEARCH_CDIMG);
+
+	return wxEmptyString;
 }
+#endif
 
 class CED2KFileTypes{
 public:
 	CED2KFileTypes(){
 		qsort(_aED2KFileTypes, ARRSIZE(_aED2KFileTypes), sizeof _aED2KFileTypes[0], CompareE2DKFileType);
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		// check for duplicate entries
-		LPCTSTR pszLast = _aED2KFileTypes[0].pszExt;
-		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); i++){
-			ASSERT( _tcscmp(pszLast, _aED2KFileTypes[i].pszExt) != 0 );
-			pszLast = _aED2KFileTypes[i].pszExt;
+		wxString strLast = _aED2KFileTypes[0].GetExt();
+		for (int i = 1; i < ARRSIZE(_aED2KFileTypes); ++i) {
+			wxASSERT( strLast.CmpNoCase(_aED2KFileTypes[i].GetExt()) != 0 );
+			strLast = _aED2KFileTypes[i].GetExt();
 		}
-#endif
+//#endif
 	}
 };
-CED2KFileTypes theED2KFileTypes; // get the list sorted *before* any code is accessing it
-
-
-#endif
+// get the list sorted *before* any code is accessing it
+CED2KFileTypes theED2KFileTypes;
 
 // DumpMem ... Dumps mem ;)
 void DumpMem(const void* where, uint32 size) {
