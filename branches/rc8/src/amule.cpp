@@ -1725,8 +1725,9 @@ wxString CamuleApp::GetLog(bool reset)
 	if ( len == 0 ) {
 		return wxT("WARNING: logfile is empty. Something wrong");
 	}
-	char *tmp_buffer = new char[len];
+	char *tmp_buffer = new char[len + 1];
 	logfile->Read(tmp_buffer, len);
+	tmp_buffer[len] = '\0';
 	wxString str(char2unicode(tmp_buffer));
 	delete [] tmp_buffer;
 	if ( reset ) {
