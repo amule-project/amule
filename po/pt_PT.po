@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-16 23:38+0100\n"
-"PO-Revision-Date: 2005-02-03 04:57+0000\n"
+"PO-Revision-Date: 2005-02-13 03:34+0000\n"
 "Last-Translator: Helder Correia <helder.correia@netcabo.pt>\n"
 "Language-Team: Portuguese <helder.correia@netcabo.pt>\n"
 "MIME-Version: 1.0\n"
@@ -41,9 +41,8 @@ msgstr "Processo leve AICH: erro, fim de ficheiro ao ler a lista de chaves!"
 
 #: src/AICHSyncThread.cpp:178
 msgid "AICH Thread: Error, Corrupt file encountered while reading hashlist!"
-msgstr ""
-"Processo leve AICH: erro, encontrado ficheiro corrompido ao ler a lista de "
-"chaves"
+msgstr "Processo leve AICH: erro, encontrado ficheiro corrompido ao ler a "
+"lista de chaves"
 
 #: src/amule.cpp:425
 msgid ""
@@ -225,7 +224,7 @@ msgstr "Isto é o aMule "
 
 #: src/amuleDlg.cpp:177
 msgid " (based on eMule)"
-msgstr " (baseado na eMule)"
+msgstr " (baseado no eMule)"
 
 #: src/amuleDlg.cpp:178
 msgid "Visit http://www.amule.org to check if a new version is available."
@@ -714,7 +713,7 @@ msgstr "Baixa"
 #: src/ServerListCtrl.cpp:386 src/SharedFilesCtrl.cpp:125
 #: src/SharedFilesCtrl.cpp:201 src/WebServer.cpp:1100
 msgid "High"
-msgstr "alta identidade"
+msgstr "Alta identidade"
 
 #: src/ClientDetailDialog.cpp:118 src/ClientDetailDialog.cpp:119
 #, c-format
@@ -906,7 +905,7 @@ msgstr "Lista de Espera"
 
 #: src/ClientListCtrl.cpp:734 src/TransferWnd.cpp:267 src/WebServer.cpp:1188
 msgid "Banned"
-msgstr "Banido"
+msgstr "banidos"
 
 #: src/ClientListCtrl.cpp:762 src/SharedFilesCtrl.cpp:127
 #: src/SharedFilesCtrl.cpp:203
@@ -921,7 +920,7 @@ msgstr "Muito Alta"
 #: src/ClientListCtrl.cpp:766 src/SharedFilesCtrl.cpp:122
 #: src/SharedFilesCtrl.cpp:198
 msgid "Very low"
-msgstr "Muito baixo"
+msgstr "Muito baixa"
 
 #: src/ClientListCtrl.cpp:767 src/DownloadListCtrl.cpp:259
 #: src/DownloadListCtrl.cpp:904 src/muuli_wdr.cpp:2862
@@ -2037,11 +2036,11 @@ msgstr "Pesquisa global"
 
 #: src/muuli_wdr.cpp:240
 msgid "FileHash (WWW)"
-msgstr "Chave de ficheiro (WWW)"
+msgstr "Chave de ficheiro"
 
 #: src/muuli_wdr.cpp:241
 msgid "Jugle (WWW)"
-msgstr "Jugle (grande teia mundial)"
+msgstr "Jugle"
 
 #: src/muuli_wdr.cpp:249
 msgid "Extended Parameters"
@@ -2058,7 +2057,7 @@ msgstr "Qualquer"
 
 #: src/muuli_wdr.cpp:264 src/otherfunctions.cpp:176
 msgid "Archives"
-msgstr "Arquivos"
+msgstr "Arquivo"
 
 #: src/muuli_wdr.cpp:265 src/otherfunctions.cpp:175 src/otherfunctions.cpp:481
 #: src/TransferWnd.cpp:312 src/WebServer.cpp:1520 src/WebServer.cpp:2129
@@ -2087,7 +2086,7 @@ msgstr "Texto"
 
 #: src/muuli_wdr.cpp:270 src/otherfunctions.cpp:174
 msgid "Videos"
-msgstr "Vídeos"
+msgstr "Vídeo"
 
 #: src/muuli_wdr.cpp:288 src/WebServer.cpp:2148
 msgid "Extension"
@@ -2115,7 +2114,7 @@ msgstr "MB"
 #: src/muuli_wdr.cpp:307 src/muuli_wdr.cpp:330 src/otherfunctions.cpp:79
 #: src/TextClient.cpp:466
 msgid "GB"
-msgstr "gB"
+msgstr "GB"
 
 #: src/muuli_wdr.cpp:317 src/WebServer.cpp:2146
 msgid "Max Size"
@@ -2138,7 +2137,7 @@ msgstr "Parar"
 #: src/SearchListCtrl.cpp:328 src/WebServer.cpp:1415 src/WebServer.cpp:1754
 #: src/WebServer.cpp:1757 src/WebServer.cpp:2137
 msgid "Download"
-msgstr "Entrada"
+msgstr "Transferir"
 
 #: src/muuli_wdr.cpp:379
 msgid "Results"
@@ -2325,8 +2324,8 @@ msgstr "Renomear"
 
 #: src/muuli_wdr.cpp:829
 msgid "Comment this file (this text will be show by all users)"
-msgstr ""
-"Comente este ficheiro (este texto será mostrado por todos os utilizadores)"
+msgstr "Comente este ficheiro (este texto será mostrado por todos os "
+"utilizadores)"
 
 #: src/muuli_wdr.cpp:843
 msgid ""
@@ -2366,8 +2365,7 @@ msgstr "Excelente"
 
 #: src/muuli_wdr.cpp:867
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Escolha a classificação ou avise os utilizadores se o ficheiro for "
+msgstr "Escolha a classificação ou avise os utilizadores se o ficheiro for "
 "inválido..."
 
 #: src/muuli_wdr.cpp:872 src/WebServer.cpp:1491 src/WebServer.cpp:1763
@@ -2451,7 +2449,7 @@ msgstr "Saídas activas :"
 
 #: src/muuli_wdr.cpp:1171
 msgid "Download-Speed"
-msgstr "Velocidade de entrada"
+msgstr "Veloc. de entrada"
 
 #: src/muuli_wdr.cpp:1180 src/muuli_wdr.cpp:1301
 msgid "Current"
@@ -2479,7 +2477,7 @@ msgstr "Saídas activas"
 
 #: src/muuli_wdr.cpp:1292
 msgid "Upload-Speed"
-msgstr "Velocidade de saída"
+msgstr "Veloc. de saída"
 
 #: src/muuli_wdr.cpp:1389
 msgid "Clientsoftware :"
@@ -3887,7 +3885,7 @@ msgstr "Incompleto"
 #: src/otherfunctions.cpp:475 src/PartFile.cpp:2789 src/TransferWnd.cpp:303
 #: src/WebServer.cpp:2198
 msgid "Waiting"
-msgstr "à espera"
+msgstr "À espera"
 
 #: src/otherfunctions.cpp:476 src/PartFile.cpp:2787 src/TransferWnd.cpp:304
 #: src/WebServer.cpp:2198
@@ -4067,8 +4065,8 @@ msgid ""
 "Found corrupted part (%i) in 0 parts file %s - FileResultHash |%s| FileHash |"
 "%s|"
 msgstr ""
-"Encontrada parte (%i) corrompida no ficheiro %s com 0 partes - FileResultHash "
-"|%s| FileHash |%s|"
+"Encontrada parte (%i) corrompida no ficheiro %s com 0 partes - "
+"FileResultHash |%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1180
 #, c-format
@@ -4308,7 +4306,7 @@ msgstr "Não há conexão!"
 
 #: src/SearchListCtrl.cpp:70 src/SharedFilesCtrl.cpp:85
 msgid "FileID"
-msgstr "Chave (FileID)"
+msgstr "Chave"
 
 #: src/SearchListCtrl.cpp:329
 msgid "Copy ED2k link to clipboard"
@@ -5555,7 +5553,7 @@ msgstr "Não é possível abrir %s"
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
 msgstr ""
-"O file %s é muito grande para a rede Donkey: o limite máximo permitido é 4 gB"
+"O file %s é muito grande para a rede Donkey: o limite máximo permitido é 4 GB"
 
 #: src/utils/wxCas/src/linuxmon.cpp:92
 #, c-format
@@ -5600,7 +5598,7 @@ msgstr "%.2f MB"
 #: src/utils/wxCas/src/onlinesig.cpp:331
 #, c-format
 msgid "%.2f GB"
-msgstr "%.2f gB"
+msgstr "%.2f GB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:334
 #, c-format
@@ -5617,13 +5615,12 @@ msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:121
 msgid "Maximum DL rate since wxCas is running"
-msgstr ""
-"Taxa máxima de transferência (entrada) desde que o wxCas está em execução"
+msgstr "Taxa máxima de transferência (entrada) desde que o wxCas está em "
+"execução"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:125
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr ""
-"Taxa máxima absoluta de transferência (entrada) durante as execuções "
+msgstr "Taxa máxima absoluta de transferência (entrada) durante as execuções "
 "anteriores do wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
@@ -5847,8 +5844,8 @@ msgstr "Insira o RUL do seu servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Insira a pasta do serviro FTP onde deseja colocar a sua imagem estatística"
+msgstr "Insira a pasta do serviro FTP onde deseja colocar a sua imagem "
+"estatística"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "User"
