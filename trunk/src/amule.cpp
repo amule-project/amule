@@ -1336,10 +1336,10 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		info += wxT(_("Just take them from your eMule config dir and put then on ~/.aMule.\n"));
 	} else if (old_version == wxT("2.0.0-rc1")) {
 		info += wxT(_("This rc2 version fixes most of the rc1 version bugs and adds new features.\n"));
-		info += wxT(_("For a full changes review, check Changelog file or www.amule.org, section Changelog.\n"));
+		info += wxT(_("A full changelog can be found in the Changelog file or at www.amule.org.\n"));
 	}
 	
-	info += wxT(_("You locale has been changed to System Default due to version change. Sorry.\n"));
+	info += wxT(_("Your locale has been changed to System Default due to a version change. Sorry.\n"));
 	info += wxT(_("Feel free to report any bugs to forum.amule.org"));
 	
 		
