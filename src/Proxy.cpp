@@ -209,7 +209,7 @@ bool ProxyStateMachine::Start(const wxIPaddress &PeerAddress, wxSocketClient *Pr
 	m_ProxyClientSocket = ProxyClientSocket;
 	try {
 		const wxIPV4address &peer = dynamic_cast<const wxIPV4address &>(PeerAddress);
-		m_PeerAddress = new wxIPV4address(peer);
+		m_PeerAddress = new amuleIPV4Address(peer);
 	} catch (std::bad_cast e) {
 		// Should process other types of wxIPAddres before quitting
 		printf("bad_cast exception!\n");

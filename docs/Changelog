@@ -53,6 +53,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* HTTP proxy support is working now.
 		* Changed the output of the "Oops" to give better instructions
 		to the user.
+		* Fixed a bug in proxy code that was making gui too slow. Code was 
+		performing unnecessary DNS.
 
 	Ken:
 		* Fixed Mac bug: window was a little larger each restart
