@@ -53,16 +53,18 @@ BUILT_SOURCES =
 #LIBS = @LIBS@ 
 amulegui_SOURCES = \
 	amule-gui.cpp \
+	amuleDlg.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
-	CFile.cpp \
 	ChatSelector.cpp \
 	ChatWnd.cpp \
 	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
+	ClientListCtrl.cpp \
 	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
+	CFile.cpp \
 	DirectoryTreeCtrl.cpp \
 	DownloadListCtrl.cpp \
 	filemem.cpp \
@@ -71,10 +73,10 @@ amulegui_SOURCES = \
 	FriendListCtrl.cpp \
 	listctrl.cpp \
 	muuli_wdr.cpp \
-	MuleListCtrl.cpp \
-	MuleTextCtrl.cpp \
-	MuleNotebook.cpp \
 	MuleGifCtrl.cpp \
+	MuleListCtrl.cpp \
+	MuleNotebook.cpp \
+	MuleTextCtrl.cpp \
 	MuleTrayIcon.cpp \
 	otherfunctions.cpp \
 	OScopeCtrl.cpp \
@@ -88,10 +90,8 @@ amulegui_SOURCES = \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
-	StringFunctions.cpp \
-	TransferWnd.cpp \
-	ClientListCtrl.cpp \
-	amuleDlg.cpp 
+	StringFunctions.cpp 
+	TransferWnd.cpp 
 
 amule_SOURCES = ListenSocket.cpp \
 	EMSocket.cpp \
@@ -251,11 +251,16 @@ endif
 
 amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS)
-amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
+amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 
 amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI -DEC_REMOTE
 amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI -DEC_REMOTE
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
+
+if HAVE_GTK
+amule_LDADD += $(GTK_LIBS) 
+amulegui_LDADD += $(GTK_LIBS) 
+endif
 
 amuled_CFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
 amuled_CXXFLAGS = $(WX_CFLAGS) $(WX_CXXFLAGS) -DAMULE_DAEMON 
@@ -398,4 +403,3 @@ noinst_HEADERS = AddFileThread.h \
 
 
 MAINTAINERCLEANFILES = Makefile.in
-
