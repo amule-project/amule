@@ -993,7 +993,7 @@ void CKnownFile::LoadComment()
 {
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 	
 	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
 	m_iRate = cfg->Read( strCfgPath + wxT("Rate"), 0l);
@@ -1004,7 +1004,7 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 { 
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 	cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
      
 	m_strComment = strNewComment;
@@ -1020,7 +1020,7 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 void CKnownFile::SetFileRate(int8 iNewRate)
 { 
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 	cfg->Write( strCfgPath + wxT("Rate"), iNewRate);
 	m_iRate = iNewRate; 
 

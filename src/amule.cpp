@@ -443,7 +443,7 @@ bool CamuleApp::OnInit()
 
 	// Load Preferences
 	CPreferences::BuildItemList( theApp.ConfigDir);
-	CPreferences::LoadAllItems( wxConfig::Get() );
+	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 	
 	// Build the filenames for the two OS files
@@ -1404,7 +1404,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		msPrevSave = msCur;
 		wxString buffer;
 		
-		wxConfigBase* cfg = wxConfig::Get();
+		wxConfigBase* cfg = wxConfigBase::Get();
 		buffer.Printf(wxT("%llu"),stat_sessionReceivedBytes+thePrefs::GetTotalDownloaded());
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 

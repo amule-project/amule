@@ -181,6 +181,8 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 	if ( titleChanged ) {
 		theApp.amuledlg->searchwnd->UpdateCatChoice();
 	}
+	
+	theApp.glob_prefs->SaveCats();
 }
 
 
@@ -238,6 +240,7 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 		theApp.glob_prefs->SaveCats();
 
 		theApp.amuledlg->searchwnd->UpdateCatChoice();
+		
 	}
 }
 

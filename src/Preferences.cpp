@@ -1090,7 +1090,7 @@ int32 CPreferences::GetRecommendedMaxConnections()
 
 void CPreferences::SavePreferences()
 {
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 
 	cfg->Write( wxT("/eMule/AppVersion"), wxT(PACKAGE_STRING) );
 
@@ -1105,7 +1105,7 @@ void CPreferences::SavePreferences()
 void CPreferences::SaveCats()
 {
 	if ( GetCatCount() ) {
-		wxConfigBase* cfg = wxConfig::Get();
+		wxConfigBase* cfg = wxConfigBase::Get();
 
 		// The first category is the default one and should not be counte
 
@@ -1120,6 +1120,8 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Color"),		wxString::Format(wxT("%u"), m_CatList[i]->color) );
 			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
 		}
+		
+		cfg->Flush();
 	}
 }
 
@@ -1140,7 +1142,7 @@ void CPreferences::LoadCats() {
 	newcat->color=0;
 	AddCat( newcat );
 
-	wxConfigBase* cfg = wxConfig::Get();
+	wxConfigBase* cfg = wxConfigBase::Get();
 
 	long max = cfg->Read( wxT("/General/Count"), 0l );
 
