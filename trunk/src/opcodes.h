@@ -139,7 +139,7 @@ enum {
 // you shouldn't change anything here if you are not really sure, or amule will probaly not work
 #define	MAXFRAGSIZE				1300
 #define	PARTSIZE				9728000
-#define	BLOCKSIZE				184320
+const int	BLOCKSIZE =			184320;
 #define	OP_EDONKEYHEADER			0xE3
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER
 #define	OP_PACKEDPROT				0xD4
