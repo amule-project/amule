@@ -30,6 +30,7 @@
 #include <wx/msgdlg.h>
 #include <wx/menu.h>
 #include <wx/checkbox.h>
+#include <wx/statbox.h>
 
 #include "SearchDlg.h"		// Interface declarations.
 #include "UploadQueue.h"	// Needed for CUploadQueue

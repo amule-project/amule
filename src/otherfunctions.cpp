@@ -30,6 +30,13 @@
 
 #include "otherfunctions.h"	// Interface declarations
 
+
+//#include <cstdio>
+//#include <cstdlib>
+//#include <cstring>
+#include <cctype>
+
+
 wxString ConvertChar2Unicode(const char* c_string) {
 	 return wxConvLocal.cMB2WX(c_string);
 }
