@@ -67,6 +67,18 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 	}
 }
 
+//! Overloaded version of CmpAny for use with wxStrings.
+inline int CmpAny(const wxString& ArgA, const wxString& ArgB)
+{
+	return ArgA.CmpNoCase( ArgB );
+}
+
+//! Overloaded version of CmpAny for use with C-Strings (Unicoded).
+inline int CmpAny(const wxChar* ArgA, const wxChar* ArgB)
+{
+	return wxString( ArgA ).CmpNoCase( ArgB );
+}
+
 
 /**
  * Returns a description of the version of aMule being used.
