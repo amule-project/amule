@@ -1175,7 +1175,6 @@ bool CUpDownClient::DoSwap(CPartFile* SwapTo, bool bRemoveCompletely)
 			SwapTo->IsCountDirty = true;
 			theApp.amuledlg->transferwnd->downloadlistctrl->AddSource(SwapTo,this,false);
 
-
 			return true;
 		}
 	}

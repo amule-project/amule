@@ -557,6 +557,11 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	toremove->m_OtherNoNeeded_list.RemoveAll();
 	
 	bool removed = false;
+#ifdef __DEBUG__
+	if (toremove->IsASaneUpDownClient(true, "CDownloadQueue::RemoveSource", __FILE__, __LINE__)) {
+		return removed;
+	}
+#endif
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
 		CPartFile* cur_file = filelist[i];
 		
@@ -882,7 +887,7 @@ void CDownloadQueue::GetDownloadStats(uint32 results[])
 	results[1]=0;
 
 	for ( uint16 i = 0, size = filelist.size(); i < size; i++ ) {
-		CPartFile* cur_file =  filelist[i];
+		CPartFile *cur_file = filelist[i];
 		results[0]+=cur_file->GetSourceCount();
 		results[1]+=cur_file->GetTransferingSrcCount();
 	}
