@@ -116,7 +116,11 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	while(!fname.IsEmpty()) {  
 
 		uint32 fdate=wxFileModificationTime(fname);
+		#ifndef __WXMSW__
 		int b = open(unicode2char(fname), O_RDONLY | O_LARGEFILE);
+		#else
+		int b = open(unicode2char(fname), O_RDONLY);
+		#endif
 		wxASSERT(b!=-1);
 		wxFile new_file(b);
 		wxASSERT(new_file.IsOpened());
