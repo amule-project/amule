@@ -788,7 +788,8 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 		case 6:
 			buffer = wxString::Format( wxT("%i"), client->GetAskedCount() );
 			break;
-		
+			
+#ifndef CLIENT_GUI
 		case 7:
 			buffer = CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000);
 			break;
@@ -796,7 +797,15 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 		case 8:
 			buffer = CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000);
 			break;
+#else
+		case 7:
+			buffer = CastSecondsToHM(client->GetLastUpRequest()/1000);
+			break;
 		
+		case 8:
+			buffer = CastSecondsToHM(client->GetWaitStartTime()/1000);
+			break;
+#endif
 		case 9:
 			if ( client->IsBanned() ) {
 				buffer = _("Yes");
