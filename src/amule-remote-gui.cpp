@@ -206,8 +206,18 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		//serverlist->ReloadControl();
 	} else if ( amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-		uploadqueue->ReQueryUp();
-		uploadqueue->ReQueryWait();
+		switch(amuledlg->transferwnd->clientlistctrl->GetListView()) {
+			case vtUploading:
+				uploadqueue->ReQueryUp();
+				break;
+			case vtQueued:
+				uploadqueue->ReQueryWait();
+				break;
+			case vtClients:
+				break;
+			case vtNone:
+				break;
+		}
 		amuledlg->transferwnd->ShowQueueCount(uploadqueue->GetWaitingUserCount());
 	} else if ( amuledlg->searchwnd->IsShown() ) {
 		if ( searchlist->m_curr_search != -1 ) {
