@@ -1063,7 +1063,7 @@ void CamuleApp::Localize_mule() {
 			language = wxLANGUAGE_CATALAN;
 			break;
 		case 5:
-			//strcpy(newlang,"???");
+			//strcpy(newlang,"zh_CN");
 			language = wxLANGUAGE_CHINESE;
 			break;		
 		case 6:
