@@ -2650,7 +2650,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		uchar hashresult[16];
-		m_hpartfile.Seek((off_t)(PARTSIZE*partnumber),wxFromStart);
+		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
 		uint32 length = PARTSIZE;
 		if (((ULONGLONG)PARTSIZE*(partnumber+1)) > (ULONGLONG)m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - ((ULONGLONG)PARTSIZE*partnumber));
