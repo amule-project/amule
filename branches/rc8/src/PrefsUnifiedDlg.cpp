@@ -707,6 +707,7 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
 	theApp.ipfilter->Reload();
+	theApp.clientlist->FilterQueues();
 }
 
 void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
