@@ -1061,9 +1061,19 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData.Replace(wxT("[5]"), wxT("-"));
 		
 		if (i->lSourceCount > 0) {
-			HTTPProcessData.Replace(wxT("[6]"), wxString::Format(wxT("%li&nbsp;/&nbsp;%8li&nbsp;(%li)"),
-				i->lSourceCount - i->lNotCurrentSourceCount,
-				i->lSourceCount, i->lTransferringSourceCount));
+			wxString srcstring;
+			if ( i->lNotCurrentSourceCount ) {
+				srcstring = wxString::Format(wxT("%li&nbsp;/&nbsp;%8li&nbsp;(%li)"),
+					i->lSourceCount - i->lNotCurrentSourceCount,
+					i->lSourceCount, i->lTransferringSourceCount);
+			} else {
+				srcstring = wxString::Format(wxT("%li&nbsp;(%li)"),
+					i->lSourceCount, i->lTransferringSourceCount);
+			}
+			if ( i->lSourceCountA4AF ) {
+				srcstring += wxString::Format(wxT("+%i"), i->lSourceCountA4AF);
+			}
+			HTTPProcessData.Replace(wxT("[6]"), srcstring);
 		} else
 			HTTPProcessData.Replace(wxT("[6]"), wxT("-"));
 		
@@ -2468,6 +2478,7 @@ void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 	lSourceCount = tag->SourceCount();
 	lNotCurrentSourceCount = tag->SourceNotCurrCount();
 	lTransferringSourceCount = tag->SourceXferCount();
+	lSourceCountA4AF = tag->SourceCountA4AF();
 	if ( lTransferringSourceCount > 0 ) {
 		lFileCompleted = tag->SizeDone();
 		lFileTransferred = tag->SizeXfer();

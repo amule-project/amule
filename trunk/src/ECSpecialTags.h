@@ -80,6 +80,7 @@ class CEC_PartFile_Tag : public CECTag {
   		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
   		uint32		SourceNotCurrCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
   		uint32		SourceXferCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
+  		uint32		SourceCountA4AF()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt32Data(); }
   		uint32		Speed()		{ return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
   		uint32		Prio()		{ return GetTagByName(EC_TAG_PARTFILE_PRIO)->GetInt32Data(); }
   		wxString	PartStatus()	{ return GetTagByName(EC_TAG_PARTFILE_PART_STATUS)->GetStringData(); }
