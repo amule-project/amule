@@ -172,7 +172,20 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	serverwnd = new CServerWnd(p_cnt);
 
-	AddLogLine(true, wxT(PACKAGE_STRING));
+	AddLogLine(true, GetMuleVersion());
+// GTK2 doesn't play nice with wxWidget versions earlier than 2.5.1, so warn the user
+#if !wxCHECK_VERSION(2, 5, 1)
+	#ifdef __WXGTK20__
+		AddLogLine(false, _("WARNING!"));
+		AddLogLine(false, _("\tYou are running aMule linked against GTK2!"));
+		AddLogLine(false, _("\tThis is known to cause problems, with the version of wxWidgets that you are using,"));
+		AddLogLine(false, _("\tso it is recommended that that you recompile the nescesarry packages."));
+		AddLogLine(false, _("\tPlease refer to the following websites for more information:"));
+		AddLogLine(false, _("\t\thttp://wiki.amule.org"));
+		AddLogLine(false, _("\t\thttp://www.amule.org"));
+		AddLogLine(false, _("WARNING!"));
+	#endif
+#endif
 
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);

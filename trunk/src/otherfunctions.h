@@ -28,7 +28,6 @@
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "endianfix.h"
 
-class CPartFile;
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #ifdef wxUSE_UNICODE
@@ -39,13 +38,18 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	#define char2unicode(x) x
 #endif
 
+
 /**
  * Helper function.
- * Safely compares two arguments of a type that supports the "<" operator.
  *
- * Returns -1 if ArgA is less than ArgB.
- * Returns  0 if ArgA is equal to ArgB.
- * Returns  1 if ArgB is greater than ArgB.
+ * @param ArgA The base value.
+ * @param ArgB The value to compare ArgA against.
+ * @return See below.
+ *
+ * Use this function to safely compare two arguments of a type that supports 
+ * the "<" operator. It works like strcmp and returns a negative value if ArgA
+ * is less than ArgB, zero if ArgA is equal to ArgB and a positive value if 
+ * ArgA is greater than ArgB.
  */
 template <class TYPE>
 int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
@@ -58,6 +62,19 @@ int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
 		return  0;
 	}
 }
+
+
+/**
+ * Returns a description of the version of aMule being used.
+ *
+ * @return A detailed description of the aMule version, including wx information.
+ *
+ * Use this rather than just using the VERSION or CURRENT_VERSION_LONG
+ * constants, when displaying information to the user. The purpose is to
+ * help with debugging.
+ */
+wxString GetMuleVersion();
+
 
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a wxString
@@ -150,6 +167,7 @@ inline wxString MakeFoldername(wxString path) {
 	*/
 	return path;
 }
+
 
 /**
  * Truncates a filename to the specified length.

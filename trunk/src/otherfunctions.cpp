@@ -29,21 +29,37 @@
 #endif
 
 #include "otherfunctions.h"	// Interface declarations
+#include "config.h"			// Needed for VERSION
 
-
-//#include <cstdio>
-//#include <cstdlib>
-//#include <cstring>
 #include <cctype>
 
 
-wxString ConvertChar2Unicode(const char* c_string) {
-	 return wxConvLocal.cMB2WX(c_string);
+
+wxString GetMuleVersion()
+{
+	wxString ver;
+	
+	ver += wxString::Format(wxT("aMule %s using "), wxT(VERSION));
+
+	// Figure out the wx build-type
+	#ifdef __WXGTK__
+		#ifdef __WXGTK20__
+			ver += wxT("wxGTK2");
+		#else
+			ver += wxT("wxGTK1");
+		#endif
+	#elif defined(__WXMAC__)
+		ver += wxT("wxMac");
+	#elif defined(__WXMSW__)
+		ver += wxT("wxWin");
+	#endif
+
+	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
+
+	return ver;
 }
 
-const char* ConvertUnicode2Char(wxString unic_string) {
-	return (const char*)wxConvLocal.cWX2MB(unic_string);
-}
+
 
 // Formats a filesize in bytes to make it suitable for displaying
 wxString CastItoXBytes( uint64 count )
