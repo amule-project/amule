@@ -55,6 +55,8 @@ Version 2.0.0-rc2 - The Unnamed version.
 	Hetfield:
 		* Added new inclusion path if distro in not detected
 		* fixed wrong and duplicated inclusion in ClientCredits.*
+		* Modified configure scripts, only amule is compiled by default
+		* Added cas, ed2k, amulecmd, amulegui, amule webserver, amule webserver gui
     
 	shakraw:
 		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
