@@ -35,13 +35,22 @@
 
 BEGIN_DECLARE_EVENT_TYPES()
 	DECLARE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED, 4804)
+	DECLARE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, 4805)
 END_DECLARE_EVENT_TYPES()
 
-#define EVT_MULENOTEBOOK_PAGE_CLOSED(id, fn)		\
-	DECLARE_EVENT_TABLE_ENTRY(						\
-		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED,		\
-		id,											\
-		-1,											\
+#define EVT_MULENOTEBOOK_PAGE_CLOSED(id, fn)						\
+	DECLARE_EVENT_TABLE_ENTRY(							\
+		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED,					\
+		id,									\
+		-1,									\
+		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
+		NULL                                                                    \
+	),
+#define EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(id, fn)					\
+	DECLARE_EVENT_TABLE_ENTRY(							\
+		wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED,				\
+		id,									\
+		-1,									\
 		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
 		NULL                                                                    \
 	),

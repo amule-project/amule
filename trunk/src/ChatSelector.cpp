@@ -63,8 +63,6 @@
 #define COLOR_GREEN wxTextAttr( wxColor(   0, 102,   0 ) )
 #define COLOR_RED   wxTextAttr( wxColor( 255,   0,   0 ) )
 
-
-
 CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 : CMuleTextCtrl( parent, id, value, pos, size, style | wxTE_READONLY | wxTE_RICH | wxTE_MULTILINE, validator, name )
 {
@@ -143,9 +141,6 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);
-	
-	GetParent()->FindWindow(IDC_CSEND)->Enable(true);
-	GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
 	
 	return chatsession;
 }
@@ -314,10 +309,8 @@ void CChatSelector::EndSession(uint64 client_id)
 	}
 
 	DeletePage(usedtab);
-
-	GetParent()->FindWindow(IDC_CSEND)->Enable(GetPageCount());
-	GetParent()->FindWindow(IDC_CCLOSE)->Enable(GetPageCount());
 }
+
 
 // Refresh the tab assosiated with a client
 void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)

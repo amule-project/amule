@@ -34,20 +34,22 @@
 #include <wx/menu.h>
 #include <wx/accel.h>
 #include "ChatWnd.h"		// Interface declarations.
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
-#include "Color.h"			// Needed for GetColour
+#include "Color.h"		// Needed for GetColour
+#include "MuleNotebook.h"	// Needed for EMULENOTEBOOK events
 #include "OPCodes.h"
 #include "OtherFunctions.h"
 
 BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
+	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
-	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
+	EVT_MULENOTEBOOK_ALL_PAGES_CLOSED(IDC_CHATSELECTOR, CChatWnd::OnAllPagesClosed)
 END_EVENT_TABLE()
 
 
@@ -58,16 +60,23 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 	content->Show(this, true);
 
 	chatselector = CastChild( IDC_CHATSELECTOR, CChatSelector );
-	friendlistctrl   = CastChild( ID_FRIENDLIST, CFriendListCtrl );
+	friendlistctrl = CastChild( ID_FRIENDLIST, CFriendListCtrl );
 }
 
 void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 {
+
 	if ( !friend_client->m_name.IsEmpty() ) {
 		if (setfocus) {
 			theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
 		}
 		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
+	}
+
+	if ( !chatselector->GetPageCount() ) {
+		GetParent()->FindWindow(IDC_CSEND)->Enable(true);
+		GetParent()->FindWindow(IDC_CCLOSE)->Enable(true);
+		GetParent()->FindWindow(IDC_CMESSAGE)->Enable(true);
 	}
 }
 
@@ -83,6 +92,15 @@ void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 void CChatWnd::OnBnClickedCclose(wxCommandEvent& WXUNUSED(evt))
 {
 	chatselector->EndSession();
+}
+
+
+void CChatWnd::OnAllPagesClosed(wxNotebookEvent& WXUNUSED(evt))
+{
+	GetParent()->FindWindow(IDC_CSEND)->Enable(false);
+	GetParent()->FindWindow(IDC_CCLOSE)->Enable(false);
+	GetParent()->FindWindow(IDC_CMESSAGE)->Enable(false);
+	GetParent()->FindWindow(IDC_CMESSAGE)->Clear();
 }
 
 
