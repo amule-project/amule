@@ -52,7 +52,7 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ListenSocket.h"	// Needed for CClientReqSocket
-#include "opcodes.h"		// Needed for SOURCESSLOTS
+#include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
@@ -79,10 +79,24 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 	Init();
 	m_nUserID = in_userid;
 	m_nUserPort = in_port;
-	sourcesslot=m_nUserID%SOURCESSLOTS;
+	// not anymore.
+	//	sourcesslot=m_nUserID%SOURCESSLOTS;
 	if (!HasLowID()) {
 		m_FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
 	}
+	#ifdef __USE_KAD__
+	if (!HasLowID()) {
+		if (ed2kID) {
+			m_nConnectIP = in_userid;
+		} else {
+			m_nConnectIP = ntohl(in_userid);
+		}
+	#else
+ 	if(!HasLowID()) {
+		m_nConnectIP = in_userid;
+	}
+	#endif
+	
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
 	SetRequestFile( in_reqfile );
@@ -113,7 +127,6 @@ void CUpDownClient::Init()
 	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
-	m_dwUserIP = 0;
 	m_nUserID = 0;
 	m_nServerPort = 0;
 	//m_bFileListRequested = false;
@@ -141,7 +154,7 @@ void CUpDownClient::Init()
 	m_dwLastBlockReceived = 0;
 
 	m_ValidSource = false;
-
+	m_bUnicodeSupport = false;
 
 	m_nRemoteQueueRank = 0;
 	m_nOldRemoteQueueRank = 0;
@@ -169,7 +182,9 @@ void CUpDownClient::Init()
 		wxIPV4address address;
 		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
-		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
+		SetIP(inet_addr(unicode2char(m_FullUserIP)));
+	} else {
+		SetIP(0);
 	}
 	sourcesslot=0;
 	m_fHashsetRequesting = 0;
@@ -202,6 +217,12 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
+	
+	if (IsAICHReqPending()){
+		m_fAICHRequested = FALSE;
+		CAICHHashSet::ClientAICHRequestFailed(this);
+	}
+	
 	if (m_Friend) {
 		m_Friend->m_LinkedClient = NULL;
 		Notify_ChatRefreshFriend(m_Friend);
@@ -363,6 +384,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	m_bIsHybrid = false;
 	m_bIsML = false;
 	m_fNoViewSharedFiles = 0;
+	m_bUnicodeSupport = false;
 	DWORD dwEmuleTags = 0;
 	
 	try {	
@@ -456,17 +478,20 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					#endif
 					break;				
 				case CT_EMULE_MISCOPTIONS1:
-					//  4 --Reserved for future use--
+					//  3 AICH Version (0 = not supported)
+					//  1 Unicode
 					//  4 UDP version
 					//  4 Data compression version
 					//  4 Secure Ident
 					//  4 Source Exchange
 					//  4 Ext. Requests
 					//  4 Comments
-					//	1 --Reserved for future use--
-					//	1 No 'View Shared Files' supported
-					//	1 MultiPacket
+					//	 1 PeerChache supported
+					//	 1 No 'View Shared Files' supported
+					//	 1 MultiPacket
 					//  1 Preview
+					m_fSupportsAICH			= (temptag.tag.intvalue >> (4*7+1)) & 0x07;
+					m_bUnicodeSupport		= (temptag.tag.intvalue >> 4*7) & 0x01;
 					m_byUDPVer				= (temptag.tag.intvalue >> 4*6) & 0x0f;
 					m_byDataCompVer			= (temptag.tag.intvalue >> 4*5) & 0x0f;
 					m_bySupportSecIdent		= (temptag.tag.intvalue >> 4*4) & 0x0f;
@@ -541,16 +566,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
-	/* Kry - Added the CT_EMULE_VERSION tag - probably no more need for this
-	
-	if( m_nClientVersion > 10000 && m_nClientVersion < 100000 )
-		m_nClientVersion = m_nClientVersion - (m_nClientVersion/10000)*10000;
-	if( m_nClientVersion > 1000 )
-		m_nClientVersion = m_nClientVersion - (m_nClientVersion/1000)*1000;
-	if( m_nClientVersion < 100 )
-		m_nClientVersion *= 10;
-	
-	*/
 	
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
@@ -558,9 +573,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		wxIPV4address address;
 		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
-		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
+		SetIP(inet_addr(unicode2char(m_FullUserIP)));
 	} else {
-		printf("Huh, socket failure. Avoided crash this time.\n");
+		throw wxString(wxT("Huh, socket failure. Avoided crash this time.\n"));
 	}
 	
 	if (theApp.glob_prefs->AddServersFromClient()) {
@@ -1195,6 +1210,12 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	    }
 	}
 		
+	// we had still an AICH request pending, handle it
+	if (IsAICHReqPending()){
+		m_fAICHRequested = FALSE;
+		CAICHHashSet::ClientAICHRequestFailed(this);
+	}	
+	
 	// The remote client does not have to answer with OP_HASHSETANSWER *immediatly* 
 	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client 
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.

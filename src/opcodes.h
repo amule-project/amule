@@ -232,18 +232,6 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_ASKSHAREDDIRSANS		0x5F	// <count 4>(<len 2><Directory len>)[count]
 #define	OP_ASKSHAREDFILESDIRANS	0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
 #define	OP_ASKSHAREDDENIEDANS	0x61	// (null)
-#define	OP_PUBLICKEY					0x85	// <len 1><pubkey len>
-#define	OP_SIGNATURE					0x86	// v1: <len 1><signature len>  v2:<len 1><signature len><sigIPused 1>
-#define	OP_SECIDENTSTATE			0x87	// <state 1><rndchallenge 4>
-#define	OP_REQUESTPREVIEW			0x90	// <HASH 16>
-#define	OP_PREVIEWANSWER			0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
-#define	OP_MULTIPACKET				0x92
-#define	OP_MULTIPACKETANSWER		0x93
-#define	OP_PEERCACHE_QUERY		0x94
-#define	OP_PEERCACHE_ANSWER		0x95
-#define	OP_PEERCACHE_ACK			0x96
-#define	OP_PUBLICIP_REQ				0x97
-#define	OP_PUBLICIP_ANSWER			0x98
 
 // this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
@@ -261,6 +249,24 @@ const unsigned int UNLIMITED	= 	0;
 #define	OP_UDPVERIFYUPA				0x74	// (never used)
 #define	OP_REQUESTSOURCES			0x81	// <HASH 16>
 #define	OP_ANSWERSOURCES			0x82	//
+#define OP_PUBLICKEY			0x85	// <len 1><pubkey len>
+#define OP_SIGNATURE			0x86	// v1: <len 1><signature len>  v2:<len 1><signature len><sigIPused 1>
+#define OP_SECIDENTSTATE		0x87	// <state 1><rndchallenge 4>
+#define OP_REQUESTPREVIEW		0x90	// <HASH 16>
+#define OP_PREVIEWANSWER		0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
+#define OP_MULTIPACKET			0x92
+#define OP_MULTIPACKETANSWER	0x93
+#define	OP_PEERCACHE_QUERY		0x94
+#define	OP_PEERCACHE_ANSWER		0x95
+#define	OP_PEERCACHE_ACK		0x96
+#define	OP_PUBLICIP_REQ			0x97
+#define	OP_PUBLICIP_ANSWER		0x98
+#define OP_CALLBACK				0x99	// <HASH 16><HASH 16><uint 16>
+#define OP_REASKCALLBACKTCP		0x9A
+#define OP_AICHREQUEST			0x9B	// <HASH 16><uint16><HASH aichhashlen>
+#define OP_AICHANSWER			0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
+#define OP_AICHFILEHASHANS		0x9D	  
+#define OP_AICHFILEHASHREQ		0x9E
 
 // extened prot client <-> extened prot client UDP
 #define	OP_REASKFILEPING			0x90	// <HASH 16>

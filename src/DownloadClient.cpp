@@ -39,6 +39,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "otherfunctions.h" // md4hash
 #include "SHAHashSet.h"
+#include "SharedFileList.h"
 
 // members of CUpDownClient
 // which are mainly used for downloading functions
@@ -1323,4 +1324,133 @@ void CUpDownClient::SetReqFileAICHHash(CAICHHash* val){
 	if(m_pReqFileAICHHash != NULL && m_pReqFileAICHHash != val)
 		delete m_pReqFileAICHHash;
 	m_pReqFileAICHHash = val;
+}
+
+void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
+	CAICHRequestedData request;
+	request.m_nPart = nPart;
+	request.m_pClient = this;
+	request.m_pPartFile = pForFile;
+	CAICHHashSet::m_liRequestedData.push_back(request);
+	m_fAICHRequested = TRUE;
+	CSafeMemFile data;
+	data.WriteHash16(pForFile->GetFileHash());
+	data.WriteUInt16(nPart);
+	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
+	Packet* packet = new Packet(&data, OP_EMULEPROT, OP_AICHREQUEST);
+	SafeSendPacket(packet);
+}
+
+void CUpDownClient::ProcessAICHAnswer(char* packet, UINT size)
+{
+	if (m_fAICHRequested == FALSE){
+		throw wxString(_("Received unrequested AICH Packet"));
+	}
+	m_fAICHRequested = FALSE;
+
+	CSafeMemFile data((BYTE*)packet, size);
+	if (size <= 16){	
+		CAICHHashSet::ClientAICHRequestFailed(this);
+		return;
+	}
+	uchar abyHash[16];
+	data.ReadHash16(abyHash);
+	CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+	CAICHRequestedData request = CAICHHashSet::GetAICHReqDetails(this);
+	uint16 nPart = data.ReadUInt16();
+	if (pPartFile != NULL && request.m_pPartFile == pPartFile && request.m_pClient == this && nPart == request.m_nPart){
+		CAICHHash ahMasterHash(&data);
+		if ( (pPartFile->GetAICHHashset()->GetStatus() == AICH_TRUSTED || pPartFile->GetAICHHashset()->GetStatus() == AICH_VERIFIED)
+			 && ahMasterHash == pPartFile->GetAICHHashset()->GetMasterHash())
+		{
+			if(pPartFile->GetAICHHashset()->ReadRecoveryData(request.m_nPart*PARTSIZE, &data)){
+				// finally all checks passed, everythings seem to be fine
+// TODO
+				//AddDebugLogLine(DLP_DEFAULT, false, _T("AICH Packet Answer: Succeeded to read and validate received recoverydata"));
+				CAICHHashSet::RemoveClientAICHRequest(this);
+				pPartFile->AICHRecoveryDataAvailable(request.m_nPart);
+				return;
+			}
+			else
+				{}
+// TODO				
+//				AddDebugLogLine(DLP_DEFAULT, false, _T("AICH Packet Answer: Succeeded to read and validate received recoverydata"));
+		}
+		else
+// TODO							
+			{}
+//			AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Answer: Masterhash differs from packethash or hashset has no trusted Masterhash"));
+	}
+	else
+// TODO							
+			{}
+//		AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Answer: requested values differ from values in packet"));
+
+	CAICHHashSet::ClientAICHRequestFailed(this);
+}
+
+void CUpDownClient::ProcessAICHRequest(char* packet, UINT size){
+	if (size != 16 + 2 + CAICHHash::GetHashSize())
+		throw wxString(_T("Received AICH Request Packet with wrong size"));
+	
+	CSafeMemFile data((BYTE*)packet, size);
+	uchar abyHash[16];
+	data.ReadHash16(abyHash);
+	uint16 nPart = data.ReadUInt16();
+	CAICHHash ahMasterHash(&data);
+	CKnownFile* pKnownFile = theApp.sharedfiles->GetFileByID(abyHash);
+	if (pKnownFile != NULL){
+		if (pKnownFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE && pKnownFile->GetAICHHashset()->HasValidMasterHash()
+			&& pKnownFile->GetAICHHashset()->GetMasterHash() == ahMasterHash && pKnownFile->GetPartCount() > nPart
+			&& pKnownFile->GetFileSize() > EMBLOCKSIZE && pKnownFile->GetFileSize() - PARTSIZE*nPart > EMBLOCKSIZE)
+		{
+			CSafeMemFile fileResponse;
+			fileResponse.WriteHash16(pKnownFile->GetFileHash());
+			fileResponse.WriteUInt16(nPart);
+			pKnownFile->GetAICHHashset()->GetMasterHash().Write(&fileResponse);
+			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
+// TODO							
+//				AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Sucessfully created and send recoverydata for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+				Packet* packAnswer = new Packet(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);
+				SafeSendPacket(packAnswer);
+				return;
+			}
+			else
+// TODO				
+				{}								
+//				AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to create recoverydata for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+		}
+		else{
+// TODO				
+				{}								
+//			AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to create ecoverydata - Hashset not ready or requested Hash differs from Masterhash for %s to %s"), pKnownFile->GetFileName(), DbgGetClientInfo());
+		}
+
+	}
+	else
+// TODO				
+				{}								
+//		AddDebugLogLine(DLP_HIGH, false, _T("AICH Packet Request: Failed to find requested shared file -  %s"), DbgGetClientInfo());
+	
+	Packet* packAnswer = new Packet(OP_AICHANSWER, 16, OP_EMULEPROT);
+	packAnswer->Copy16ToDataBuffer((char*)abyHash);
+	SafeSendPacket(packAnswer);
+}
+
+void CUpDownClient::ProcessAICHFileHash(CSafeMemFile* data, CPartFile* file){
+	CPartFile* pPartFile = file;
+	if (pPartFile == NULL){
+		uchar abyHash[16];
+		data->ReadHash16(abyHash);
+		pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+	}
+	CAICHHash ahMasterHash(data);
+	if(pPartFile != NULL && pPartFile == GetRequestFile()){
+		SetReqFileAICHHash(new CAICHHash(ahMasterHash));
+		pPartFile->GetAICHHashset()->UntrustedHashReceived(ahMasterHash, GetConnectIP());
+	}
+	else
+// TODO				
+				{}								
+//		AddDebugLogLine(DLP_HIGH, false, _T("ProcessAICHFileHash(): PartFile not found or Partfile differs from requested file, %s"), DbgGetClientInfo());
 }
