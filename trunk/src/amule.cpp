@@ -2135,6 +2135,7 @@ bool CamuleApp::AddServer(CServer *srv)
 	if ( serverlist->AddServer(srv) ) {
 		if ( amuledlg && amuledlg->serverwnd ) {
 			amuledlg->serverwnd->serverlistctrl->AddServer(srv, true);
+			ProcessPendingEvents();
 			return 1;
 		} else {
 			return 0;
