@@ -73,6 +73,7 @@ public:
 	// Other functions
 	// 
 	void Show(const wxString &s);
+	void Dump(const wxString &s);
 	void MainThreadIdleNow();
 	const wxString& GetCmdArgs() const { return m_cmdargs; }
 	int GetIDFromString(wxString &buffer, CmdId *commands);

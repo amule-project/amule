@@ -104,6 +104,13 @@ void CaMuleExternalConnector::Show(const wxString &s)
 	}
 }
 
+void CaMuleExternalConnector::Dump(const wxString &s)
+{
+	FILE *fp = fopen("x.txt", "a");
+	fprintf(fp, "%s", unicode2char(s));
+	fclose(fp);
+}
+
 #if wxUSE_GUI
 void CaMuleExternalConnector::MainThreadIdleNow()
 {
