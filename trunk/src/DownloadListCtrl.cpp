@@ -251,6 +251,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				menu->Append(MP_STOP, CString(_("&Stop")));
 				menu->Append(MP_PAUSE, CString(_("&Pause")));
 				menu->Append(MP_RESUME, CString(_("&Resume")));
+				menu->Append(MP_CLEARCOMPLETED, CString(_("C&lear completed")));
 				menu->AppendSeparator();
 				/* Razor 1a - Modif by MikaelB
 				   Menu items for :
@@ -274,17 +275,19 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				menu->Append(999989, CString(_("Extended Options")), extendedmenu);
 				/* End Modif */
 				menu->AppendSeparator();
+				wxMenu *fakecheckmenu = new wxMenu();
+				menu->Append(999989, CString(_("FakeCheck")), fakecheckmenu);
+				fakecheckmenu->Append(MP_FAKECHECK2, CString(_("jugle.net Fake Check"))); // deltahf -> fakecheck
+				fakecheckmenu->Append(MP_FAKECHECK1, CString(_("'Donkey Fakes' Fake Check")));
+				menu->AppendSeparator();
+				
 				menu->Append(MP_OPEN, CString(_("&Open the file")));
 				menu->Append(MP_PREVIEW, CString(_("Preview")));
 
 				menu->Append(MP_METINFO, CString(_("Show file &details")));
 				menu->Append(MP_VIEWFILECOMMENTS, CString(_("Show all comments")));
 				menu->AppendSeparator();
-				menu->Append(MP_FAKECHECK2, CString(_("jugle.net Fake Check"))); // deltahf -> fakecheck
-				menu->Append(MP_FAKECHECK1, CString(_("'Donkey Fakes' Fake Check")));// deltahf -> fakecheck
-				menu->AppendSeparator();
-				menu->Append(MP_CLEARCOMPLETED, CString(_("C&lear completed")));
-			
+				
 				menu->Append(MP_GETED2KLINK, CString(_("Copy ED2k &link to clipboard")));
 				menu->Append(MP_GETHTMLED2KLINK, CString(_("Copy ED2k link to clipboard (&HTML)")));
 				m_FileMenu = menu;
