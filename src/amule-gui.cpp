@@ -329,8 +329,17 @@ int CamuleGuiApp::InitGui(bool geometry_enabled, wxString &geom_string)
 
 void CamuleGuiApp::ListenSocketHandler(wxSocketEvent& event)
 {
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CListenSocket)));
-	CListenSocket *socket = (CListenSocket *) event.GetSocket();
+	//
+	// There is only one ListenSocket in the whole application,
+	// so there is no need to discover on the fly with:
+	//
+	// CListenSocket *socket = (CListenSocket *) event.GetSocket();
+	//
+	// Also, now with proxy, CListenSocket is no longer derived from 
+	// wxSocketServer, so event.GetSocket() is actually
+	// theApp.listensocket->m_SocketServer
+	//
+	CListenSocket *socket = theApp.listensocket;
 	if(!socket) {
 		// This should never happen, anyway, there is nothing to do.
 		wxASSERT(0);
