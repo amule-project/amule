@@ -77,7 +77,7 @@ class CEC_PartFile_Tag : public CECTag {
  		uint32		SizeXfer()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
   		uint32		SizeDone()	{ return GetTagByName(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByName(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
- 		wxString	FileStatus()	{ return GetTagByName(EC_TAG_PARTFILE_STATUS)->GetStringData(); }
+ 		uint8		FileStatus()	{ return GetTagByName(EC_TAG_PARTFILE_STATUS)->GetInt8Data(); }
   		uint32		SourceCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
   		uint32		SourceNotCurrCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
   		uint32		SourceXferCount()	{ return GetTagByName(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
