@@ -78,7 +78,7 @@ public:
 	void			EndSession(uint64 client_id = 0);
 	CChatSession*	GetPageByClientID(uint64 client_id);
 	int				GetTabByClientID(uint64 client_id);
-	void			ProcessMessage(uint64 sender_id, const wxString& message);
+	bool			ProcessMessage(uint64 sender_id, const wxString& message);
 	bool			SendMessage(const wxString& message, const wxString& client_name = wxEmptyString, uint64 to_id = 0);
 	void			ConnectionResult(bool success, const wxString& message, uint64 id);
 	void			RefreshFriend(uint64 toupdate_id, const wxString& new_name);
