@@ -552,15 +552,15 @@ RLE_Data::~RLE_Data()
 	delete [] m_enc_buff;
 }
 
-
-const unsigned char *RLE_Data::Encode(const unsigned char *buff, int &outlen)
+template <class T>
+const unsigned char *RLE_Data::EncodeT(T &buff, int &outlen)
 {
 	//
 	// calculate difference from prev
 	//
 	if ( m_use_diff ) {
 		for (int i = 0; i < m_len; i++) {
-			m_buff[i] ^= buff[i];
+			m_buff[i] ^= (unsigned char)buff[i];
 		}
 	}
 		
@@ -591,7 +591,12 @@ const unsigned char *RLE_Data::Encode(const unsigned char *buff, int &outlen)
 	// If using differential encoder, remember current data for
 	// later use
 	if ( m_use_diff ) {
-		memcpy(m_buff, buff, m_len);
+		//
+		// can't use memcpy - in case of generic class T this
+		// will rely on "operator []" implementation
+		for(int i = 0; i < m_len;i++) {
+			m_buff[i] = (unsigned char)buff[i];
+		}
 	}
 	
 	return m_enc_buff;

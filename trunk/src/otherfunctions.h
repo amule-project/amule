@@ -226,12 +226,21 @@ class RLE_Data {
 		unsigned char *m_buff, *m_enc_buff;
 		bool m_use_diff;
 		int m_len, m_enc_len;
+		
+		template <class T> const unsigned char *EncodeT(T &data, int &outlen);
 	public:
 		RLE_Data(int len, bool use_diff);
 		~RLE_Data();
 		
-		const unsigned char *Encode(const unsigned char *data, int &outlen);
-		const unsigned char *Encode(const wxArrayShort &data, int &outlen);
+		const unsigned char *Encode(unsigned char *data, int &outlen)
+		{
+			return EncodeT<unsigned char *>(data, outlen);
+		}
+		const unsigned char *Encode(ArrayOfUInts16 &data, int &outlen)
+		{
+			return EncodeT<ArrayOfUInts16>(data, outlen);
+		}
+		
 		const unsigned char *Decode(const unsigned char *data);	
 };
 
