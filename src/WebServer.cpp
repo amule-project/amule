@@ -107,6 +107,11 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 	m_bSearchAsc = 0;
 
 	m_bServerWorking = false; // not running (listening) yet
+
+	// Graph defaults
+	m_nGraphHeight = 149;
+	m_nGraphWidth = 500;
+	m_nGraphScale = 3;
 }
 
 CWebServer::~CWebServer(void) {
@@ -381,15 +386,6 @@ void CWebServer::_SetSharedFilePriority(wxString hash, uint8 priority) {
 	} else if (prio == 5) {
 		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES SETAUTOUPPRIORITY %s %d"), hash.GetData(), 1));
 		webInterface->SendRecvMsg(wxString::Format(wxT("SHAREDFILES UPDATEAUTOUPPRIORITY %s"), hash.GetData()));
-	}
-}
-
-
-void CWebServer::AddStatsLine(UpDown* line) {
-	m_Params.PointsForWeb.Add(line);
-	if (m_Params.PointsForWeb.GetCount() > WEB_GRAPH_WIDTH) {
-		delete m_Params.PointsForWeb[0];
-		m_Params.PointsForWeb.RemoveAt(0);
 	}
 }
 
@@ -1328,17 +1324,20 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	}
 	Out.Replace(wxT("[SharedFilesList]"), sSharedList);
 	Out.Replace(wxT("[Session]"), sSession);
+	Out.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
+	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
 
 	return Out;
 }
 
 
-wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
+wxString CWebServer::_GetGraphs(ThreadData Data) {
 	
 	wxString Out = m_Templates.sGraphs;	
 	wxString sGraphDownload, sGraphUpload, sGraphCons;
 	wxString sTmp;	
-
+	wxString sSession = _ParseURL(Data, wxT("ses"));
+    
 	CECPacket *request = new CECPacket(EC_OP_GET_PREFERENCES);
 	request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
 	CECPacket *response = webInterface->SendRecvMsg_v2(request);
@@ -1348,13 +1347,13 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	delete response;
 	delete request;
 
-	uint16 nScale = 3;	// default graph update delay
-
 	request = new CECPacket(EC_OP_GET_STATSGRAPHS, EC_DETAIL_WEB);
-	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)WEB_GRAPH_WIDTH));
-	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, nScale));
-	if (!m_sLastHistoryTimeStamp.IsEmpty()) {
-		request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_sLastHistoryTimeStamp));
+	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, m_nGraphWidth));
+	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
+	if (_ParseURL(Data, wxT("refetch")) != wxT("yes")) {
+		if (!m_sLastHistoryTimeStamp.IsEmpty()) {
+			request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_sLastHistoryTimeStamp));
+		}
 	}
 	response = webInterface->SendRecvMsg_v2(request);
 	delete request;
@@ -1364,17 +1363,30 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 		CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 		const uint32 *data = (const uint32 *)dataTag->GetTagData();
 		unsigned int numItems = dataTag->GetTagDataLen() / sizeof(uint32);
+		if (_ParseURL(Data, wxT("refetch")) == wxT("yes")) {
+			if (numItems / 3 < m_nGraphWidth) {
+				while (m_Params.PointsForWeb.GetCount() > 0) {
+					delete m_Params.PointsForWeb[0];
+					m_Params.PointsForWeb.RemoveAt(0);
+				}
+			}
+		}
 		for (unsigned int i = 0; i < numItems;) {
 			UpDown *dataLine = new UpDown;
 			dataLine->download = data[i++];
 			dataLine->upload = data[i++];
 			dataLine->connections = data[i++];
-			AddStatsLine(dataLine);
+			m_Params.PointsForWeb.Add(dataLine);
+			while (m_Params.PointsForWeb.GetCount() > m_nGraphWidth) {
+				delete m_Params.PointsForWeb[0];
+				m_Params.PointsForWeb.RemoveAt(0);
+			}
+
 		}
 	}
 	delete response;
 
-	for (size_t i = 0; i < WEB_GRAPH_WIDTH; ++i) {
+	for (size_t i = 0; i < m_nGraphWidth; ++i) {
 		if (i < m_Params.PointsForWeb.GetCount()) {
 			if (i != 0) {
 				sGraphDownload.Append(wxT(","));
@@ -1405,7 +1417,7 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[TxtTime]"), _("Time"));
 
 	wxString sScale;
-	sScale = CastSecondsToHM(nScale * WEB_GRAPH_WIDTH);
+	sScale = CastSecondsToHM(m_nGraphScale * m_nGraphWidth);
 
 	wxString s1, s2, s3;
 	s1.Printf(wxT("%u"), max_dl + 4);
@@ -1416,6 +1428,12 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 	Out.Replace(wxT("[MaxDownload]"), s1);
 	Out.Replace(wxT("[MaxUpload]"), s2);
 	Out.Replace(wxT("[MaxConnections]"), s3);
+
+	Out.Replace(wxT("[GraphHeight]"), wxString::Format(wxT("%u"), m_nGraphHeight));
+	Out.Replace(wxT("[GraphWidth]"), wxString::Format(wxT("%u"), m_nGraphWidth));
+
+	Out.Replace(wxT("[Session]"), sSession);
+	Out.Replace(wxT("[Refetch]"), _("Refetch graph data"));
 
 	return Out;
 }
@@ -1644,6 +1662,15 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 			twPrefs.AddTag(CECTag(EC_TAG_CORETW_MAX_CONN_PER_FIVE, (uint16)StrToLong(_ParseURL(Data, wxT("maxconnectionsperfive")))));
 			prefs.AddTag(twPrefs);
 		}
+		if (_ParseURL(Data, wxT("gwidth")) != wxEmptyString) {
+			m_nGraphWidth = (uint16)StrToLong(_ParseURL(Data, wxT("gwidth")));
+		}
+		if (_ParseURL(Data, wxT("gheight")) != wxEmptyString) {
+			m_nGraphHeight = (uint16)StrToLong(_ParseURL(Data, wxT("gheight")));
+		}
+		if (_ParseURL(Data, wxT("gscale")) != wxEmptyString) {
+			m_nGraphScale = (uint16)StrToLong(_ParseURL(Data, wxT("gscale")));
+		}
 
 		filePrefs.AddTag(CECTag(EC_TAG_FILES_UL_FULL_CHUNKS, (uint8)((_ParseURL(Data, wxT("fullchunks")).MakeLower() == wxT("on")) ? 1 : 0)));
 		filePrefs.AddTag(CECTag(EC_TAG_FILES_PREVIEW_PRIO, (uint8)((_ParseURL(Data, wxT("firstandlast")).MakeLower() == wxT("on")) ? 1 : 0)));
@@ -1692,12 +1719,12 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
 
 	wxString colon(wxT(":"));
-	Out.Replace(wxT("[KBS]"), _("kB/s")+colon);
-	Out.Replace(wxT("[FileSettings]"), _("File Settings")+colon);
-	Out.Replace(wxT("[LimitForm]"), _("Connection Limits")+colon);
+	Out.Replace(wxT("[KBS]"), _("kB/s"));
+	Out.Replace(wxT("[FileSettings]"), _("File Settings"));
+	Out.Replace(wxT("[LimitForm]"), _("Connection Limits"));
 	Out.Replace(wxT("[MaxSources]"), _("Max Sources Per File")+colon);
 	Out.Replace(wxT("[MaxConnections]"), _("Max. Connections")+colon);
-	Out.Replace(wxT("[MaxConnectionsPer5]"), _("max. new connections / 5secs")+colon);
+	Out.Replace(wxT("[MaxConnectionsPer5]"), _("Max. new connections / 5secs")+colon);
 	Out.Replace(wxT("[UseGzipForm]"), _("Gzip Compression"));
 	Out.Replace(wxT("[UseGzipComment]"), _("Save traffic, especially in graphs."));
 	Out.Replace(wxT("[ShowUploadQueueForm]"), _("Show Queue"));
@@ -1716,6 +1743,15 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[FirstAndLast]"), _("Try to download first and last chunks first"));
 	Out.Replace(wxT("[WebControl]"), _("Web Control Panel"));
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
+	Out.Replace(wxT("[GraphSettings]"), _("Statistics graphs' settings"));
+	Out.Replace(wxT("[GraphHeightText]"), _("Graph height")+colon);
+	Out.Replace(wxT("[GraphWidthText]"), _("Graph width")+colon);
+	Out.Replace(wxT("[pixels]"), _("pixels"));
+	Out.Replace(wxT("[GraphHeight]"), wxString::Format(wxT("%u"), m_nGraphHeight));
+	Out.Replace(wxT("[GraphWidth]"), wxString::Format(wxT("%u"), m_nGraphWidth));
+	Out.Replace(wxT("[GraphScaleText]"), _("In the graph, each pixel represents"));
+	Out.Replace(wxT("[seconds]"), _("seconds"));
+	Out.Replace(wxT("[GraphScale]"), wxString::Format(wxT("%u"), m_nGraphScale));
 	Out.Replace(wxT("[Apply]"), _("Apply"));
 
 	int n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data();
