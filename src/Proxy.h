@@ -178,7 +178,7 @@ private:
 
 /******************************************************************************/
 
-class wxSocketClientProxy
+class wxSocketClientProxy : public wxSocketClient
 {
 public:
 	/* Constructor */
@@ -186,16 +186,12 @@ public:
 		wxSocketFlags flags = wxSOCKET_NONE,
 		const wxProxyData *ProxyData = NULL);
 		
-	/* Destructor */
-	~wxSocketClientProxy();
-	
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait, bool UseProxy = false);
 	
 private:
 	wxSocketProxy	m_SocketProxy;
 	bool 		m_UseProxy;
-	wxSocketClient	*m_SocketClient;
 };
 
 /******************************************************************************/
