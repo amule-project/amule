@@ -104,7 +104,7 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
 {
 	m_nSearchID = nSearchID;
-	in_data->Read(m_abyFileHash);
+	in_data->ReadRaw(m_abyFileHash,16);
 	in_data->Read(m_nClientID);
 	in_data->Read(m_nClientPort);
 	if ((m_nClientID || m_nClientPort) && !IsValidClientIPPort(m_nClientID, m_nClientPort)){
@@ -113,8 +113,11 @@ CSearchFile::CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, 
 	}
 	uint32 tagcount;
 	in_data->Read(tagcount);
+//	printf("tagcount %i\n",tagcount);
 
 	for (unsigned int i = 0; i != tagcount; ++i){
+//		printf("tag %i\n",i);
+//		DumpMem(in_data->GetCurrentBuffer(),32);
 		CTag* toadd = new CTag(in_data);
 		taglist.Add(toadd);
 	}
@@ -169,6 +172,7 @@ CSearchFile::CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFil
 	m_list_parent = NULL;
 	m_list_childcount = 0;
 	m_bPreviewPossible = false;
+
 }
 
 CSearchFile::~CSearchFile(){
@@ -377,7 +381,6 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, CUpDownCli
 	return GetResultCount(nSearchID);
 }
 
-
 uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, uint32 nServerIP, uint16 nServerPort){
 
 	//CSafeMemFile packet((BYTE*)in_packet,size);
@@ -386,7 +389,17 @@ uint16 CSearchList::ProcessSearchanswer(char* in_packet, uint32 size, uint32 nSe
 	uint32 results;
 	packet->Read(results);
 
+	
+//	in_addr server;
+//	server.s_addr = nServerIP;
+//	printf("ip %s siz %i rslt %i\n",inet_ntoa(server), size, results);
+
+	//DumpMem(in_packet,64);
+
+	
 	for (unsigned int i = 0; i != results; ++i){
+//		printf("Result %i\n",i);
+//		DumpMem(packet->GetCurrentBuffer(),64);
 		CSearchFile* toadd = new CSearchFile(packet, m_nCurrentSearch);
 		toadd->SetClientServerIP(nServerIP);
 		toadd->SetClientServerPort(nServerPort);
