@@ -685,7 +685,7 @@ bool CamuleApp::OnInit()
 		#ifndef AMULE_DAEMON
 		webserver_pid = wxExecute(wxString::Format(wxT("amuleweb -f -p %d"),thePrefs::GetWSPort()));
 		if (!webserver_pid) {
-			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binnary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-amule-webserver and run make install"));
+			AddLogLineM(false, _("You requested to run webserver from startup, but the amuleweb binary cannot be run. Please install the package containing aMule webserver, or compile aMule using --enable-webserver and run make install"));
 		}
 		#else
 		// wxBase has no async wxExecute
