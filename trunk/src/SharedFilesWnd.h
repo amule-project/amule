@@ -24,7 +24,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 
-#include "resource.h"		// Needed for IDD_FILES
 #include "CMD4Hash.h"
 
 class CKnownFile;
@@ -41,8 +40,6 @@ public:
 	virtual ~CSharedFilesWnd();
 	void Localize();
 	void Check4StatUpdate(CKnownFile* file);
-// Dialog Data
-	enum { IDD = IDD_FILES };
 	CSharedFilesCtrl* sharedfilesctrl;
 
 protected:

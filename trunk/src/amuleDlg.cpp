@@ -112,7 +112,7 @@ END_EVENT_TABLE()
 #endif
 
 CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dlg_size) : wxFrame(
-	pParent, CamuleDlg::IDD, title, where, dlg_size,
+	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
 {
@@ -193,7 +193,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title, wxPoint where, wxSize dl
 
 	// Set Serverlist as active window
 	activewnd=NULL;
-	SetActiveDialog(serverwnd);
+	SetActiveDialog(ServerWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
 
 	ToggleFastED2KLinksHandler();
@@ -269,27 +269,16 @@ void CamuleDlg::ToggleFastED2KLinksHandler()
 }
 
 
-void CamuleDlg::SetActiveDialog(wxWindow* dlg)
+void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 {
-	switch ( dlg->GetId() ) {
-		case IDD_TRANSFER:
-			if (theApp.glob_prefs->ShowCatTabInfos()) {
-				transferwnd->UpdateCatTabTitles();
-			}
-		case IDD_SERVER:
-		case IDD_SEARCH:
-		case IDD_FILES:
-		case IDD_CHAT:
-		case IDD_STATISTICS:
-			m_nActiveDialog = dlg->GetId();
-			break;
-
-
-		default:
-			printf("Unknown window passed to SetActiveDialog!\n");
-			return;
+	m_nActiveDialog = type;
+	
+	if ( type = TransferWnd ) {
+		if (theApp.glob_prefs->ShowCatTabInfos()) {
+			transferwnd->UpdateCatTabTitles();
+		}
 	}
-
+	
 	if ( activewnd ) {
 		activewnd->Show(FALSE);
 		contentSizer->Remove(activewnd);
@@ -371,31 +360,31 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 		if ( lastbutton != ev.GetId() ) {
 			switch ( ev.GetId() ) {
 				case ID_BUTTONSERVERS:
-					SetActiveDialog(serverwnd);
+					SetActiveDialog(ServerWnd, serverwnd);
 					// Set serverlist splitter position
 					((wxSplitterWindow*)FindWindow(wxT("SrvSplitterWnd")))->SetSashPosition(srv_split_pos, true);
 					break;
 
 				case ID_BUTTONSEARCH:
-					SetActiveDialog(searchwnd);
+					SetActiveDialog(SearchWnd, searchwnd);
 					break;
 
 				case ID_BUTTONTRANSFER:
-					SetActiveDialog(transferwnd);
+					SetActiveDialog(TransferWnd, transferwnd);
 					// Set splitter position
 					((wxSplitterWindow*)FindWindow(wxT("splitterWnd")))->SetSashPosition(split_pos, true);
 					break;
 
 				case ID_BUTTONSHARED:
-					SetActiveDialog(sharedfileswnd);
+					SetActiveDialog(SharedWnd, sharedfileswnd);
 					break;
 
 				case ID_BUTTONMESSAGES:
-					SetActiveDialog(chatwnd);
+					SetActiveDialog(ChatWnd, chatwnd);
 					break;
 
 				case ID_BUTTONSTATISTICS:
-					SetActiveDialog(statisticswnd);
+					SetActiveDialog(StatsWnd, statisticswnd);
 					break;
 
 				// This shouldn't happen, but just in case

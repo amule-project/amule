@@ -61,7 +61,7 @@ END_EVENT_TABLE()
 
 
 CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
-: wxPanel(pParent,CStatisticsDlg::IDD)
+: wxPanel(pParent, -1)
 {
 	wxSizer* content=statsDlg(this,TRUE);
 	content->Show(this,TRUE);

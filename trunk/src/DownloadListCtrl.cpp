@@ -391,7 +391,7 @@ void CDownloadListCtrl::OnColResize(wxListEvent& WXUNUSED(evt))
 void CDownloadListCtrl::OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
 	/* Don't do any drawing if there's nobody to see it. */
-	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
+	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->GetActiveDialog() != CamuleDlg::TransferWnd)) {
 		return;
 	}
 

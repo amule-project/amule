@@ -12,7 +12,7 @@ endif
 
 SUBDIRS = utils pixmaps $(OPT_WEB)
 
-EXTRA_DIST = strings.en Makengfile aMule.xpm aMule.tmpl
+EXTRA_DIST = Makengfile aMule.xpm aMule.tmpl
 
 bin_PROGRAMS = 
 
@@ -253,7 +253,6 @@ noinst_HEADERS = AddFileThread.h \
 		 PrefsUnifiedDlg.h \
 		 Preview.h \
 		 QueueListCtrl.h \
-		 resource.h \
 		 SafeFile.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \

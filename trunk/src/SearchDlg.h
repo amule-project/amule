@@ -26,7 +26,6 @@
 #include <wx/timer.h>		// Needed for wxTimer and wxTimerEvent
 
 #include "types.h"		// Needed for uint16 and uint32
-#include "resource.h"		// Needed for IDD_SEARCH
 
 #include <set>
 
@@ -42,8 +41,6 @@ class wxGauge;
 
 class CSearchDlg : public wxPanel {
 public:
-	enum { IDD = IDD_SEARCH };
-	
 	CSearchDlg(wxWindow* pParent);   
 	~CSearchDlg() {};
 

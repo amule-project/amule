@@ -47,7 +47,7 @@ END_EVENT_TABLE()
 
 //IMPLEMENT_DYNAMIC(CSharedFilesWnd, CDialog)
 CSharedFilesWnd::CSharedFilesWnd(wxWindow* pParent /*=NULL*/)
-: wxPanel(pParent,CSharedFilesWnd::IDD)
+: wxPanel(pParent, -1)
 {
 	wxSizer* content=sharedfilesDlg(this,TRUE);
 	content->Show(this,TRUE);

@@ -24,7 +24,6 @@
 #include <wx/panel.h>		// Needed for wxPanel
 
 #include "types.h"		// Needed for uint32
-#include "resource.h"		// Needed for IDD_TRANSFER
 
 class CUploadListCtrl;
 class CDownloadListCtrl;
@@ -52,8 +51,6 @@ public:
 	void	Localize();
 	void	UpdateCatTabTitles();
 	bool	OnInitDialog();
-// Dialog Data
-	enum { IDD = IDD_TRANSFER };
 	CUploadListCtrl*		uploadlistctrl;
 	CDownloadListCtrl*	downloadlistctrl;
 	CQueueListCtrl*		queuelistctrl;

@@ -24,8 +24,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/choice.h>		// Needed for wxChoice
 
-#include "resource.h"		// Needed for IDD_COMMENT
-
 class CKnownFile;
 
 // CCommentDialog dialog 
@@ -36,8 +34,6 @@ public:
 	CCommentDialog(wxWindow* pParent, CKnownFile* file);   // standard constructor
 	virtual ~CCommentDialog();
 	virtual bool OnInitDialog();
-	enum { IDD = IDD_COMMENT };
-
 protected:
 	DECLARE_EVENT_TABLE()
 public:

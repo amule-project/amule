@@ -54,7 +54,7 @@
 IMPLEMENT_DYNAMIC_CLASS(CCatDialog, wxDialog)
 
 CCatDialog::CCatDialog(wxWindow* parent,int index)
-	: wxDialog(parent,CCatDialog::IDD,_("Category"),
+	: wxDialog(parent,-1,_("Category"),
 	wxDefaultPosition,wxDefaultSize,
 	wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {

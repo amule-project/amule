@@ -23,7 +23,6 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/bitmap.h>		// Needed for wxBitmap
-#include "resource.h"		// Needed for IDD_CAT
 
 #include "types.h"		// Needed for DWORD
 
@@ -41,7 +40,6 @@ public:
 	CCatDialog(wxWindow* parent,int catindex); // standard constructor
 	virtual ~CCatDialog();
 	virtual bool OnInitDialog();
-	enum { IDD = IDD_CAT }; // Dialog Data
 
 protected:
 	DECLARE_EVENT_TABLE()

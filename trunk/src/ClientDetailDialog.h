@@ -27,8 +27,6 @@
 #endif
 #include <wx/dialog.h>		// Needed for wxDialog
 
-#include "resource.h"		// Needed for IDD_SOURCEDETAILWND
-
 class CUpDownClient;
 
 // CClientDetailDialog dialog
@@ -39,7 +37,6 @@ public:
 	CClientDetailDialog(wxWindow*parent,CUpDownClient* client);   // standard constructor
 	virtual ~CClientDetailDialog();
 	virtual bool OnInitDialog();
-	enum { IDD = IDD_SOURCEDETAILWND };
 
 protected:
 	void OnBnClose(wxCommandEvent& evt);

@@ -251,7 +251,7 @@ void CQueueListCtrl::RefreshClient(CUpDownClient* client) {
 void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted)
 {
 	/* Don't do any drawing if there's nobody watching. */
-	if ((!theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
+	if ((!theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != CamuleDlg::TransferWnd)) {
 		return;
 	}
 
