@@ -30,9 +30,14 @@
 #endif
 
 #include <algorithm>		// Needed for std::min
+#include <wx/event.h>
 #include <wx/font.h>
 #include <wx/dcmemory.h>
 #include <wx/datetime.h>
+#include <wx/stattext.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 
 #include "DownloadListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CheckShowItemInGivenCat
@@ -49,10 +54,8 @@
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
 #include "Preferences.h"
-#include <wx/stattext.h>
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
+#include "listbase.h"		// Needed for wxLC_OWNERDRAW
+
 #define DLC_BARUPDATE 512
 
 class CPartFile;
