@@ -78,6 +78,7 @@ private:
 	void		OnBnClickedSearchReset(wxCommandEvent& ev);
 	void		OnBnClickedClearall(wxCommandEvent& ev);
 	void		OnRMButton(wxMouseEvent& evt);
+	void        OnBtnWebSearch(wxCommandEvent &evt);
 
 	void		StartNewSearch();
 	void		OnSearchClosed(wxNotebookEvent& evt);

@@ -884,6 +884,15 @@ wxString CamuleApp::GenFakeCheckUrl2(CAbstractFile *f)
 	return strURL;
 }
 
+// filedonkey.com web search
+wxString CamuleApp::GenWebSearchUrl(const wxString &filename) {
+    
+	wxString url = wxT("http://www.filedonkey.com/search.html?pattern=FILENAME&min_size=&max_size=&scope=&submit=Find");
+    url.Replace(wxT("FILENAME"), filename);
+    
+	return url;
+}
+
 // Sets the contents of the clipboard. Prior content  erased.
 bool CamuleApp::CopyTextToClipboard(wxString strText)
 {
