@@ -1580,6 +1580,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				if (cur_src->socket) {
 					transferingsrc++;
 					float kBpsClient = cur_src->CalculateKBpsDown();
+					if (!cur_src->socket) {
+#ifdef __DEBUG__
+						debugprintf(true, "NULL socket detected in CPartFile::Process()\n");
+#endif
+						AddLogLineM(false,wxT("NULL socket detected in CPartFile::Process()\n"));
+						continue;
+					}
 					kBpsDown += kBpsClient;
 //					printf("ReduceDownload %i",reducedownload);
 					if (reducedownload) {
