@@ -19,6 +19,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "UDPSocket.h"
 #endif
@@ -42,7 +43,6 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include <sys/types.h>
 
-IMPLEMENT_DYNAMIC_CLASS(CUDPSocket,wxDatagramSocketProxy)
 
 CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address, const wxProxyData *ProxyData)
 :
