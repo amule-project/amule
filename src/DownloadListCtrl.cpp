@@ -602,7 +602,6 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 					break;
 				default:
 					CoreNotify_PartFile_Delete(file);
-					ShowFilesCount(-1);
 				}
 			}
 		}
