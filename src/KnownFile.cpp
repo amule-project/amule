@@ -47,9 +47,6 @@
 #include "PartFile.h"		// Needed for SavePartFile
 #include "endianfix.h"
 
-#include "BarShader.h"		// Needed for CBarShader
-#include "color.h"			// Needed for RGB
-
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
@@ -1119,29 +1116,4 @@ void CKnownFile::UpdatePartsInfo()
 	Notify_SharedFilesUpdateItem(this);
 }
 
-
-#ifndef AMULE_DAEMON
-void CKnownFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat) const
-{
-	static CBarShader s_ShareStatusBar;
-
-	s_ShareStatusBar.SetFileSize(GetFileSize());
-	s_ShareStatusBar.SetHeight( rect.GetHeight() );
-	s_ShareStatusBar.SetWidth( rect.GetWidth() );
-	s_ShareStatusBar.Set3dDepth( CPreferences::Get3DDepth() );
-	s_ShareStatusBar.Fill( RGB(255, 0, 0) );
-
-	if (!onlygreyrect && !m_AvailPartFrequency.IsEmpty()) {
-		for (int i = 0; i < GetPartCount(); i++){
-			if(m_AvailPartFrequency[i] > 0 ){
-				COLORREF color = RGB(0, (210-(22*(m_AvailPartFrequency[i]-1)) <	0)? 0:210-(22*(m_AvailPartFrequency[i]-1)), 255);
-				
-				s_ShareStatusBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
-			}
-		}
-	}
-	
-   	s_ShareStatusBar.Draw(dc, rect.GetLeft(), rect.GetTop(), bFlat); 
-}
-#endif
 
