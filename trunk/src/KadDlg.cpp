@@ -27,6 +27,7 @@
 
 #include "CMD4Hash.h"
 #include "otherfunctions.h"
+#include <wx/sizer.h>
 
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	
