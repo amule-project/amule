@@ -1043,7 +1043,6 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 			HTTPProcessData.Replace(wxT("[4]"), wxT("-"));
 		}
 		
-		//HTTPProcessData.Replace(wxT("[DownloadBar]"), _GetDownloadGraph(Data, (int)i->fCompleted, i->sPartStatus));
 		int complx = (int)(m_Templates.iProgressbarWidth*i->fCompleted/100);
 		if ( complx ) {
 			HTTPProcessData.Replace(wxT("[DownloadBar]"), 
@@ -1990,43 +1989,6 @@ bool CWebServer::_GetFileHash(wxString sHash, uchar *FileHash) {
 }
 
 
-// Ornis: creating the progressbar. colored if ressources are given/available
-wxString CWebServer::_GetDownloadGraph(ThreadData WXUNUSED(Data), int percent, wxString &s_ChunkBar) {
-	
-	// cool style
-	wxString progresscolor[12] = {
-		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
-		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
-		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
-
-	wxString Out = wxEmptyString;
-
-	// and now make a graph out of the array - need to be in a progressive way
-	uint8 lastcolor = StrToLong(s_ChunkBar.Left(1));
-	uint16 lastindex=0;
-	
-	for (uint16 i = 0; i < s_ChunkBar.Length(); i++) {
-		if ( (lastcolor!= StrToLong(s_ChunkBar.Mid(i,1))) || (i == s_ChunkBar.Length()-1) ) {
-				Out += wxString::Format(m_Templates.sProgressbarImgs,
-					unicode2char(progresscolor[lastcolor]), i - lastindex);
-
-			lastcolor = StrToLong(s_ChunkBar.Mid(i,1));
-			lastindex = i;
-		}
-	}
-
-	int complx = m_Templates.iProgressbarWidth*percent/100;
-	if ( complx ) {
-		Out = wxString::Format((m_Templates.sProgressbarImgsPercent+wxT("<br>")),
-			unicode2char(progresscolor[11]),complx) + Out;
-	} else {
-		Out = wxString::Format((m_Templates.sProgressbarImgsPercent+wxT("<br>")),
-			unicode2char(progresscolor[0]),5) + Out;
-	}
-	return Out;
-}
-
-
 wxString CWebServer::_GetSearch(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
@@ -2097,7 +2059,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 			line.Replace(wxT("[FILENAME]"), i->sFileName);
 		}
 		line.Replace(wxT("[FILESIZE]"), CastItoXBytes(i->lFileSize));
-		line.Replace(wxT("[SOURCECOUNT]"), wxString::Format(wxT("%u"), i->lSourceCount));
+		line.Replace(wxT("[SOURCECOUNT]"), wxString::Format(wxT("%lu"), i->lSourceCount));
 		line.Replace(wxT("[FILEHASH]"), i->nHash.Encode());
 		
 		result += line;
