@@ -308,6 +308,10 @@ class RLE_Data {
 		
 		// change size of internal buffers
 		void Realloc(int size);
+		
+		// decoder will need access to data
+		const unsigned char *Buffer() { return m_buff; }
+		int Size() { return m_len; }
 };
 
 /*!
