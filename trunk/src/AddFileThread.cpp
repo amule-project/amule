@@ -53,6 +53,7 @@ const int MAXTHREADCOUNT = 1;
 
 struct QueuedFile
 {
+	bool				m_busy;
 	wxString			m_path;
 	wxString			m_name;
 	const CPartFile*	m_owner;
@@ -149,9 +150,10 @@ void CAddFileThread::Start()
 	} else {
 		SetRunning(true);
 
-		// Start as many threads as needed
-		while ( ( GetThreadCount() < MAXTHREADCOUNT ) && ( GetFileCount() > 0 ) )
+		// Start as many threads as needed, but avoid looping
+		for ( int i = GetThreadCount(); i < MAXTHREADCOUNT; i++ ) {
 			CreateNewThread();
+		}
 	}
 }
 
@@ -193,48 +195,79 @@ int	CAddFileThread::GetFileCount()
 }
 
 
-QueuedFile* CAddFileThread::PopQueuedFile()
+QueuedFile* CAddFileThread::PopQueuedFile(QueuedFile* remove)
 {
 	wxMutexLocker lock( s_queue_lock );
 	
 	QueuedFile* file = NULL;
 
 	if ( !s_queue.empty() ) {
-		file = s_queue.front();
-		s_queue.pop_front();
+		if ( remove ) {
+			// Remove a queued file which has been completed
+			FileQueue::iterator it = std::find( s_queue.begin(), s_queue.end(), remove );
+			
+			if ( it != s_queue.end() ) {
+				s_queue.erase( it );
+			} else {
+				// Some debug info
+				printf("Hasher: Warning, attempted to remove file from queue, but didn't find it.\n");
+			}
+			
+			delete remove;
+		} else {
+			// Get the first non-busy file
+			FileQueue::iterator it = s_queue.begin();
+			for ( ; it != s_queue.end(); ++it ) {
+				if ( !(*it)->m_busy ) {
+					file = (*it);
+					file->m_busy = true;
+					break;					
+				}
+			}
+		}
 	}
 
 	return file;
 }
 
 
-void CAddFileThread::PushQueuedFile(QueuedFile* file, bool addLast)
+bool CAddFileThread::PushQueuedFile(QueuedFile* file, bool addLast)
 {
 	wxMutexLocker lock( s_queue_lock );
+
+
+	// Avoid duplicate files
+	FileQueue::iterator it = s_queue.begin();
+	for ( ; it != s_queue.end(); ++it )
+		if ( ( file->m_name == (*it)->m_name ) && ( file->m_path == (*it)->m_path ) )
+			return false;
+
 
 	if ( addLast ) {
 		s_queue.push_back( file );
 	} else {
 		s_queue.push_front( file );
 	}
+
+	return true;
 }
 
 
 void CAddFileThread::AddFile(const wxString& path, const wxString& name, const CPartFile* part)
 {
-
 	QueuedFile* hashfile = new QueuedFile;
+	hashfile->m_busy = false;
 	hashfile->m_path = path;
 	hashfile->m_name = name;
 	hashfile->m_owner = part;
 
 	// Add the file to the queue first. If it's a partfile (part != NULL), 
 	// then add it to the front so that it gets hashed sooner
-	PushQueuedFile( hashfile, ( part == NULL ) );
-
-	// Should we start another thread?
-	if ( GetThreadCount() < MAXTHREADCOUNT )
-		CreateNewThread();	
+	if ( PushQueuedFile( hashfile, ( part == NULL ) ) ) {
+		// Should we start another thread?
+		if ( GetThreadCount() < MAXTHREADCOUNT )
+			CreateNewThread();
+	}
 }
 
 
@@ -268,7 +301,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			
 			if ( !current ) {
 				// Nothing to do, break
-				printf("Hasher: Queue is empty, stopping thread.\n");
+				printf("Hasher: No non-busy files on queue, stopping thread.\n");
 				
 				break;
 			}
@@ -398,7 +431,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			printf("Hasher: Finished hashing file: %s\n", unicode2char(current->m_name));
 			
 			knownfile = NULL;
-			delete current;
+			PopQueuedFile( current );
 			current = NULL;
 		
 			wxPostEvent(&theApp, evt);
@@ -409,8 +442,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 	if ( current ) {
 		delete knownfile;
 
-		// Re-add the current file to the front of the queue
-		PushQueuedFile( current, false );
+		// Reset the busy-flag so the file will be hashed again
+		current->m_busy = false;
 	}
 	
 	// Notify that the thread has died
