@@ -17,10 +17,11 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pkcs12.h>
+#ifdef USE_OPENSSL
+	#include <openssl/rsa.h>
+	#include <openssl/evp.h>
+	#include <openssl/pkcs12.h>
+#else
 
 #ifdef __CRYPTO_DEBIAN_GENTOO__
 //	#include <crypto++/config.h>
@@ -52,6 +53,7 @@
 	#endif
 #endif
 
+#endif
 
 #include <cmath>
 #include <ctime>
