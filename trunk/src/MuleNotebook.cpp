@@ -40,8 +40,7 @@ BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 END_EVENT_TABLE()
 
 CMuleNotebook::~CMuleNotebook() {
-	// The destructor of wxObjArray deletes the elements already.
-	// tab_data_array.Clear();
+	DeleteAllPages();
 }
 
 bool CMuleNotebook::DeletePage(int nPage) {
@@ -60,11 +59,14 @@ bool CMuleNotebook::DeletePage(int nPage) {
 
 bool CMuleNotebook::DeleteAllPages() {
 	
-	if (!tab_data_array.IsEmpty()) {
-		tab_data_array.Clear();
+	bool all_ok = true;
+	unsigned int  n_pages = (unsigned int) GetPageCount();
+	
+	for (unsigned int i = 0; i< n_pages; i++) {
+		all_ok |= DeletePage(0);
 	}
 
-	return(wxNotebook::DeleteAllPages());
+	return(all_ok);
 }
 
 // Specific for CMuleNotebook
