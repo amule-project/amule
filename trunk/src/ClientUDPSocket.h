@@ -28,7 +28,7 @@
 
 #include "types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "Proxy.h"		// Needed for wxDatagramSocketProxy and amuleIPV4Address
+#include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
 
 class Packet;
 
@@ -43,16 +43,16 @@ struct UDPPack {
 
 // CClientUDPSocket command target
 
-class CClientUDPSocket : public wxDatagramSocketProxy
+class CClientUDPSocket : public CDatagramSocketProxy
 #ifdef AMULE_DAEMON
 , public wxThread
 #endif
 {
 	DECLARE_DYNAMIC_CLASS(CClientUDPSocket)
-	CClientUDPSocket() : wxDatagramSocketProxy(useless2) {};
+	CClientUDPSocket() : CDatagramSocketProxy(useless2) {};
 	
 public:
-	CClientUDPSocket(amuleIPV4Address &address, const wxProxyData *ProxyData = NULL);
+	CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData = NULL);
 	virtual ~CClientUDPSocket();
 	bool	SendPacket(Packet* packet, uint32 dwIP, uint16 nPort);
 	bool	IsBusy()	{return m_bWouldBlock;}

@@ -105,7 +105,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 //
 // There can be only one. :)
 //
-static CClientReqSocketHandler TheClientReqSocketHandler;
+static CClientReqSocketHandler g_clientReqSocketHandler;
 
 #else
 CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
@@ -181,7 +181,7 @@ WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
-CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const wxProxyData *ProxyData)
+CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *ProxyData)
 :
 CEMSocket(ProxyData)
 {
@@ -194,7 +194,7 @@ CEMSocket(ProxyData)
 	connection_retries = 0;
 	last_action = ACTION_NONE;
 #ifndef AMULE_DAEMON
-	my_handler = &TheClientReqSocketHandler;
+	my_handler = &g_clientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
@@ -2322,15 +2322,15 @@ void CClientReqSocket::Destroy()
 // CClientReqSocket to handle (accept) the connection.
 // 
 
-CListenSocket::CListenSocket(wxIPaddress &addr, const wxProxyData *ProxyData)
+CListenSocket::CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
 #ifdef AMULE_DAEMON
-wxSocketServerProxy(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR, ProxyData),
+CSocketServerProxy(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR, ProxyData),
 wxThread(wxTHREAD_JOINABLE) 
 #else
-wxSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
+CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 #endif
 {
 	// 0.42e - vars not used by us

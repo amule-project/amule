@@ -495,7 +495,7 @@ public:
 		}
 	}
 	// I cant have it return a reference, I'll need a pointer later.
-	static const wxProxyData *GetProxyData()		{ return &s_ProxyData; }
+	static const CProxyData *GetProxyData()			{ return &s_ProxyData; }
 	
 	// Hidden files
 	
@@ -545,8 +545,7 @@ protected:
 	static bool	s_autoconnectstaticonly;
 
 ////////////// PROXY
-//	static bool	s_Proxy????;
-	static wxProxyData s_ProxyData;
+	static CProxyData s_ProxyData;
 
 ////////////// SERVERS
 	static bool	s_autoserverlist;

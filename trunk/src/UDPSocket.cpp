@@ -50,9 +50,9 @@
 CUDPSocket::CUDPSocket(
 	CServerConnect* in_serverconnect,
 	amuleIPV4Address &address,
-	const wxProxyData *ProxyData)
+	const CProxyData *ProxyData)
 :
-wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
 , wxThread(wxTHREAD_JOINABLE)
 #endif

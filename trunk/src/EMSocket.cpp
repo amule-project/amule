@@ -35,8 +35,8 @@
 
 IMPLEMENT_DYNAMIC_CLASS(CEMSocket,wxSocketClient)
 
-CEMSocket::CEMSocket(const wxProxyData *ProxyData)
-  : wxSocketClientProxy(wxSOCKET_NOWAIT/*wxSOCKET_BLOCK*/, ProxyData)
+CEMSocket::CEMSocket(const CProxyData *ProxyData)
+  : CSocketClientProxy(wxSOCKET_NOWAIT/*wxSOCKET_BLOCK*/, ProxyData)
 {
 	#ifdef __DEBUG__
 	from_destroy =  false;
