@@ -667,6 +667,7 @@ wxString  CDirIterator::FindNextFile() {
 							}
 						} else {						
 							// unix socket, block device, etc
+							printf("Strange file -> %s\n",dp->d_name);
 							dp = readdir(DirPtr);
 						}
 					}
