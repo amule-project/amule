@@ -382,7 +382,7 @@ void CServerListCtrl::OnItemRightClicked( wxListEvent& event )
 	serverPrioMenu->Append( MP_PRIONORMAL, _("Normal") );
 	serverPrioMenu->Append( MP_PRIOHIGH, _("High") );
 	serverMenu->Append( MP_CONNECTTO, _("Connect to server") );
-	serverMenu->Append( -1, _("Priority"), serverPrioMenu );
+	serverMenu->Append( 12345, _("Priority"), serverPrioMenu );
 	
 	serverMenu->AppendSeparator();
 
