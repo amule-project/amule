@@ -1763,7 +1763,7 @@ void CamuleApp::ShutDown() {
 				} else {
 					n = 5;
 				}
-				for (int i = n; i > 0; i--) {
+				for (int i = n - 1; i >= 0; i--) {
 					current_socket.backtrace += wxString::Format("[%d] %s | ", i, bt_strings[i]);
 				}
 				current_socket.backtrace += "END";
