@@ -70,7 +70,8 @@ public:
 	bool		CheckTimeOut();
 	void		Safe_Delete();
 
-	bool		deleted;
+	// long		deletethis;
+	bool		deletethis; // 0.30c (Creteil), set as bool
 
 	bool		Create();
 	void		OnClose(int nErrorCode);
@@ -81,6 +82,7 @@ public:
 	virtual	bool Close(); /*	{return wxSocketBase::Close();}*/
 	
 	uint32		timeout_timer;
+	bool		OnDestroy;  
 	bool		hotrank;
 	CUpDownClient*	client;
 	CPreferences* 	app_prefs;
