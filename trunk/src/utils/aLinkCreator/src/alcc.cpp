@@ -57,7 +57,7 @@ int alcc::OnRun ()
         {
           if (m_flagVerbose)
             {
-              printf(_("Processing file n°%u: %s\n"),i+1,m_filesToHash[i].c_str());
+              printf(_("Processing file number %u: %s\n"),i+1,m_filesToHash[i].c_str());
               if (m_flagPartHashes)
                 {
                   printf(_("You have asked for part hashes (Only used for files > 9.5 MB)\n"));
