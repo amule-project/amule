@@ -218,11 +218,11 @@ AC_DEFUN([AM_PATH_LIBPNGCONFIG],
 
   dnl deal with optional prefixes
   if test x$libpng_config_exec_prefix != x ; then
-     libpng_config_args="$libpng_config_args --exec-prefix=$libpng_config_exec_prefix"
+     dnl libpng_config_args="$libpng_config_args --exec-prefix=$libpng_config_exec_prefix"
      LIBPNG_LOOKUP_PATH="$libpng_config_exec_prefix/bin"
   fi
   if test x$libpng_config_prefix != x ; then
-     libpng_config_args="$libpng_config_args --prefix=$libpng_config_prefix"
+     dnl libpng_config_args="$libpng_config_args --prefix=$libpng_config_prefix"
      LIBPNG_LOOKUP_PATH="$LIBPNG_LOOKUP_PATH:$libpng_config_prefix/bin"
   fi
   
@@ -377,11 +377,13 @@ AC_DEFUN([AM_PATH_GDLIBCONFIG],
 
   dnl deal with optional prefixes
   if test x$gdlib_config_exec_prefix != x ; then
-     gdlib_config_args="$gdlib_config_args --exec-prefix=$gdlib_config_exec_prefix"
+     dnl gdlib-config doesn't accept --exec-prefix
+     dnl gdlib_config_args="$gdlib_config_args --exec-prefix=$gdlib_config_exec_prefix"
      GDLIB_LOOKUP_PATH="$gdlib_config_exec_prefix/bin"
   fi
   if test x$gdlib_config_prefix != x ; then
-     gdlib_config_args="$gdlib_config_args --prefix=$gdlib_config_prefix"
+     dnl gdlib-config doesn't accept --prefix
+     dnl gdlib_config_args="$gdlib_config_args --prefix=$gdlib_config_prefix"
      GDLIB_LOOKUP_PATH="$GDLIB_LOOKUP_PATH:$gdlib_config_prefix/bin"
   fi
   
@@ -540,7 +542,7 @@ AC_DEFUN([AM_PATH_CURLCONFIG],[
   fi
 
   if test x$curl_config_prefix != x ; then
-     curl_config_args="$curl_config_args --prefix=$curl_config_prefix"
+     dnl curl_config_args="$curl_config_args --prefix=$curl_config_prefix"
      if test x${CURL_CONFIG_NAME+set} != xset ; then
         CURL_CONFIG_NAME="$curl_config_prefix/bin/curl-config"
      fi
