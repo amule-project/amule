@@ -71,6 +71,7 @@ static CmdId commands[] = {
 	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
 	{ wxT("list"),		CMD_ID_CMDSEARCH },
 	{ wxT("find"),		CMD_ID_CMDSEARCH },
+	{ wxT("shutdown"),		CMD_ID_SHUTDOWN },
 	{ wxEmptyString,	0 },
 };
 
@@ -274,7 +275,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 			
 		case CMD_ID_SHUTDOWN:
-			request = new CECPacket(CMD_ID_SHUTDOWN);
+			request = new CECPacket(EC_OP_SHUTDOWN);
 			break;
 
  		case CMD_ID_SRVSTAT:
