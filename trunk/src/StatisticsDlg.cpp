@@ -1255,3 +1255,41 @@ wxString CStatisticsDlg::GetHTML() {
 	// return the string
 	return(strBuffer);
 }
+
+void CStatisticsDlg::ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans)
+{
+	if (theApp.sTransferDelay == 0.0  ||  sCur <= theApp.sTransferDelay) {
+		sTrans = 0.0;
+		kBpsSession = 0.0;
+	} else {
+		sTrans = sCur - theApp.sTransferDelay;
+		kBpsSession = kBytesTrans / sTrans;
+		if (sTrans < 10.0  &&  kBpsSession > kBpsCur) 
+			kBpsSession = kBpsCur;	// avoid spiking of the first few values due to small sTrans
+	}
+}
+
+void CStatisticsDlg::ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
+						double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg)
+{
+	float sPeriod;
+	if ((float)sTrans < sAvg) {		// startup: just track session average
+		kBpsRunning = kBpsSession;
+		kBytesTransPrev = kBytesTrans;
+	} else if ((sPeriod=(float)(sTrans-sPrev)) > 0.0) { // then use a first-order low-pass filter
+		float lambda = std::exp(-sPeriod/sAvg);		
+		kBpsRunning = kBpsRunning*lambda + (1.0-lambda)*(float)(kBytesTrans-kBytesTransPrev)/sPeriod;
+		kBytesTransPrev = kBytesTrans;
+	}							// if sPeriod is zero then leave the average unchanged
+}
+
+
+void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)
+{
+	if ( SetDownload ) {
+		pscopeDL->SetRanges( 0, maxValue + 4 );
+	} else {
+		pscopeUL->SetRanges( 0, maxValue + 4 );
+	}
+}
+

@@ -48,7 +48,6 @@ public:
 protected:
 	DECLARE_EVENT_TABLE()
 
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableNone; }
 	void	OnNMRclick(wxMouseEvent& evt);
 	void	OnPopupMenu(wxCommandEvent& evt);
 		

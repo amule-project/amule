@@ -19,8 +19,6 @@
 
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
-#include <wx/textctrl.h>
-#include <wx/gauge.h>
 
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -108,9 +106,9 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "packets.h"
-#include "PrefsUnifiedDlg.h"
 
 #warning This ones must be removed ASAP - exception: amuledlg, will be the LAST one.
+#include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg
 #include "SearchListCtrl.h"

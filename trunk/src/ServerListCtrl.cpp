@@ -42,6 +42,7 @@
 #include "opcodes.h"		// Needed for MP_PRIOLOW
 #include "muuli_wdr.h"		// Needed for ID_SERVERLIST
 #include "otherfunctions.h"
+#include "Preferences.h"
 
 // CServerListCtrl
 
@@ -224,8 +225,8 @@ void CServerListCtrl::InitSort()
 	LoadSettings();
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableServer);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableServer);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Server);
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Server);
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
 	ShowFilesCount();
@@ -249,7 +250,7 @@ bool CServerListCtrl::Init(CServerList* in_list)
 
 	asc_sort[3]=true;asc_sort[4]=true;asc_sort[5]=true;asc_sort[7]=true;
 	// perhaps not yet
-	//LoadSettings(CPreferences::tableServer);
+	//LoadSettings(TP_Server);
 	return true;
 }
 
@@ -575,14 +576,14 @@ void CServerListCtrl::OnLvnColumnclickServlist(wxListEvent& evt) //NMHDR *pNMHDR
 {
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableServer);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableServer);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Server);
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Server);
 	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableServer, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableServer, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem(TP_Server, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending(TP_Server, sortAscending);
 	// Sort table
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:100));
@@ -761,3 +762,9 @@ void CServerListCtrl::ShowFilesCount()
 	wxString fmtstr = wxString::Format(_("Servers (%i)"), GetItemCount());
 	wxStaticCast(FindWindowByName(wxT("serverListLabel")),wxStaticText)->SetLabel(fmtstr);
 }
+
+int CServerListCtrl::TablePrefs()
+{
+	return TP_Server;
+}
+

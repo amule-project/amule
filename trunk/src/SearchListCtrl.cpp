@@ -31,9 +31,10 @@
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "opcodes.h"		// Needed for MP_RESUME
-#include "amule.h"		// Needed for theApp
-#include "color.h"		// Needed for SYSCOLOR
+#include "amule.h"			// Needed for theApp
+#include "color.h"			// Needed for SYSCOLOR
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
+#include "Preferences.h"	// Needed for CPreferences
 
 #include <wx/menu.h>
 
@@ -110,8 +111,8 @@ void CSearchListCtrl::Init(CSearchList* in_searchlist)
 	LoadSettings();
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableSearch);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableSearch);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:10));
 }
@@ -124,16 +125,16 @@ void CSearchListCtrl::OnColumnClick(wxListEvent& evt)
 {
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableSearch);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableSearch);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
 	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
 
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableSearch, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableSearch, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem(TP_Search, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending(TP_Search, sortAscending);
 
 	// Sort table
 	SetSortArrow(sortItem, sortAscending);
@@ -217,8 +218,8 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	// set color
 	UpdateColor(newid,toshow->GetIntTagValue(FT_SOURCES));
 	// Re-sort the items after each added item to keep the sort order.
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableSearch);
-	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableSearch);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
+	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
 	SortItems(SortProc, sortItem + (SortAscending ? 0:10));
 }
 
@@ -283,8 +284,8 @@ void CSearchListCtrl::UpdateSources(CSearchFile* toupdate)
 	}
   
 	// Re-sort the items after each added source to keep the sort order.
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableSearch);
-	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableSearch);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Search);
+	bool SortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Search);
 	SortItems(SortProc, sortItem + (SortAscending ? 0:10));
 }
 
@@ -461,3 +462,10 @@ bool CSearchListCtrl::ProcessEvent(wxEvent& evt)
 	// return CMuleListCtrl::ProcessEvent(evt);
 	return true;
 }
+
+
+int CSearchListCtrl::TablePrefs()
+{
+	return TP_Search;
+}
+

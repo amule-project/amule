@@ -24,6 +24,7 @@
 #include <wx/msgdlg.h>
 
 #include "MuleListCtrl.h"	// Interface declarations
+#include "Preferences.h"	// Needed for CPreferences
 #include "otherfunctions.h"
 #include "opcodes.h"		// Needed for MP_LISTCOL_1
 #include "amule.h"			// Needed for theApp
@@ -235,7 +236,6 @@ void CMuleListCtrl::ShowColumn(int iColumn)
 
 void CMuleListCtrl::SaveSettings()
 {
-	CPreferences::Table tID = TablePrefs();
 	int colTrack=GetColumnCount();
 
 	INT *piArray = new INT[colTrack];
@@ -243,55 +243,36 @@ void CMuleListCtrl::SaveSettings()
 	for(int i = 0; i < colTrack; i++) {
 		wxListItem mycol;
 		GetColumn(i,mycol);
-		// wxMessageBox(wxString::Format("%s - %i",mycol.GetText().c_str(), mycol.GetWidth()));
-		theApp.glob_prefs->SetColumnWidth(tID, i, mycol.GetWidth());
-		//theApp.glob_prefs->SetColumnHidden(tID, i, IsColumnHidden(i));
-		//piArray[i] = m_aColumns[i].iLocation;
+		theApp.glob_prefs->SetColumnWidth((TablePreference)TablePrefs(), i, mycol.GetWidth());
 	}
 
-	//theApp.glob_prefs->SetColumnOrder(tID, piArray);
 	delete[] piArray;
 }
 
 void CMuleListCtrl::LoadSettings()
 {
-	//CHeaderCtrl* pHeaderCtrl = GetHeaderCtrl();
 
-	CPreferences::Table tID = TablePrefs();
 	int colTrack=GetColumnCount();
 
 	INT *piArray = new INT[colTrack];
 	for(int i = 0; i < colTrack; i++) {
-		int iWidth = theApp.glob_prefs->GetColumnWidth(tID, i);
+		int iWidth = theApp.glob_prefs->GetColumnWidth((TablePreference)TablePrefs(), i);
 		if(iWidth != DEFAULT_COL_SIZE) {
 			SetColumnWidth(i, iWidth);
-			//wxListItem mycol;
-			//mycol.SetWidth(iWidth);
-			//SetColumn(i,mycol);
 		}
 		if(i == 0) {
 			piArray[0] = 0;
 		} else {
-			int iOrder = theApp.glob_prefs->GetColumnOrder(tID, i);
+			int iOrder = theApp.glob_prefs->GetColumnOrder((TablePreference)TablePrefs(), i);
 			if(iOrder == 0) {
 				piArray[i] = i;
 			} else {
 				piArray[i] = iOrder;
 			}
 		}
-		//m_aColumns[i].iLocation = piArray[i];
 	}
 
-	//pHeaderCtrl->SetOrderArray(m_iColumnsTracked, piArray);
 	delete[] piArray;
-
-	#if 0
-	for(int i = 1; i < m_iColumnsTracked; i++) {
-		if(theApp.glob_prefs->GetColumnHidden(tID, i)) {
-			HideColumn(i);
-		}
-	}
-	#endif
 }
 
 void CMuleListCtrl::SetColors()
@@ -804,6 +785,13 @@ void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
 {
 	event.Skip();
 }
+
+
+int CMuleListCtrl::TablePrefs()
+{
+	return TP_None;
+}
+
 
 #ifdef __WXMSW__
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)

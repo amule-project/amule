@@ -52,7 +52,7 @@ public:
 	void    InvalidateSearchId() { m_nResultsID = (uint32)-1; }
 
 protected:
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableSearch; }
+	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lParam1, long lParam2, long lParamSort);
 	void OnColumnClick(wxListEvent& evt);
 

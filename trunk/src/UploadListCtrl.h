@@ -51,7 +51,7 @@ public:
 	virtual void	OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 	void		ShowSelectedUserDetails();
 private:
-	CPreferences::Table TablePrefs() { return CPreferences::tableUpload; }
+	virtual int TablePrefs();
 	static int wxCALLBACK SortProc(long lp1,long lp2,long lpSort);
 
 	void		OnColumnClick(wxListEvent& evt);

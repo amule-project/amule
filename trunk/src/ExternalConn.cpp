@@ -46,6 +46,7 @@
 #include "SearchList.h"		// Needed for GetWebList
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
+#include "Preferences.h"	// Needed for CPreferences
 
 #ifndef AMULE_DAEMON
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg

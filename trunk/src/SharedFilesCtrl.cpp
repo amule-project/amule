@@ -34,6 +34,7 @@
 #include "amule.h"		// Needed for theApp
 #include "color.h"		// Needed for SYSCOLOR
 #include "sockets.h"		// Needed for CServerConnect
+#include "Preferences.h"
 #include "BarShader.h"
 
 #include <wx/msgdlg.h>
@@ -72,8 +73,8 @@ void CSharedFilesCtrl::InitSort()
 	LoadSettings();
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableShared);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableShared);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Shared);
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Shared);
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0:20));
 }
@@ -481,16 +482,16 @@ void CSharedFilesCtrl::OnColumnClick(wxListEvent& evt)
 {
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableShared);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableShared);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Shared);
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Shared);
 	bool sortAscending = (sortItem != evt.GetColumn()) ? true : !m_oldSortAscending;
 
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableShared, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableShared, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem(TP_Shared, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending(TP_Shared, sortAscending);
 
         // Ornis 4-way-sorting
 	int adder=0;
@@ -711,3 +712,9 @@ void CSharedFilesCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxR
 		columnRect.SetLeft(columnRect.GetLeft()+width);
 	}
 }
+
+int CSharedFilesCtrl::TablePrefs()
+{
+	return TP_Shared;
+}
+

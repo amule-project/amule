@@ -21,9 +21,8 @@
 
 
 #include "PrefsUnifiedDlg.h"
-#include <wx/dirdlg.h>
-#include <wx/msgdlg.h>
-#include <wx/textctrl.h>
+
+
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/colordlg.h>
@@ -39,12 +38,11 @@
 #endif
 
 
-#include "Preferences.h"
 #include "amule.h"			// Needed for theApp
-#include "otherfunctions.h"		// Needed for MakeFoldername
-#include "CTypedPtrList.h"		// Needed for CList
-#include "EditServerListDlg.h"
 #include "amuleDlg.h"
+#include "color.h"
+#include "otherfunctions.h"		// Needed for MakeFoldername
+#include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
 #include "IPFilter.h"			// Needed for CIPFilter
@@ -52,18 +50,19 @@
 #include "DownloadQueue.h"
 #include "ClientList.h"
 #include "DirectoryTreeCtrl.h"		// Needed for CDirectoryTreeCtrl
-#include "MD5Sum.h"
+#include "Preferences.h"
+#include "muuli_wdr.h"
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_UDPDISABLE, PrefsUnifiedDlg::OnCheckBoxChange)
-	
+
 	EVT_BUTTON(ID_PREFS_OK_TOP, PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK, PrefsUnifiedDlg::OnOk)
-	
+
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP, PrefsUnifiedDlg::OnCancel)
 	EVT_BUTTON(ID_CANCEL, PrefsUnifiedDlg::OnCancel)
-	
+
 	// Browse buttons
 	EVT_BUTTON(IDC_SELSKINFILE,  PrefsUnifiedDlg::OnButtonBrowseSkin)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV, PrefsUnifiedDlg::OnButtonBrowseWav)
@@ -71,7 +70,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_SELTEMPDIR, PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELINCDIR,  PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELOSDIR,  PrefsUnifiedDlg::OnButtonDir)
-	
+
 	EVT_SPINCTRL( IDC_TOOLTIPDELAY, PrefsUnifiedDlg::OnToolTipDelayChange)
 
 	EVT_BUTTON(IDC_EDITADR, PrefsUnifiedDlg::OnButtonEditAddr)
@@ -82,8 +81,20 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHOICE(IDC_FCHECK, PrefsUnifiedDlg::OnFakeBrowserChange)
 	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL, PrefsUnifiedDlg::OnPrefsPageChange)
 
-    EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)	
+	EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)
+
+	EVT_COMMAND_SCROLL(IDC_SLIDER,			PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER3,			PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER4,			PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SLIDER2,			PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_FILEBUFFERSIZE,	PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_QUEUESIZE,		PrefsUnifiedDlg::OnScrollBarChange)
+	EVT_COMMAND_SCROLL(IDC_SERVERKEEPALIVE,	PrefsUnifiedDlg::OnScrollBarChange)
 END_EVENT_TABLE()
+
+
+// Static vars
+int PrefsUnifiedDlg::s_ID;
 
 
 /**
@@ -94,7 +105,7 @@ struct PrefsPage
 	//! The title of the page, used on the listctrl.
 	wxString	m_title;
 	//! Function pointer to the wxDesigner function creating the dialog.
-	wxSizer*	(*m_function)(wxWindow*, bool , bool );
+	wxSizer*	(*m_function)(wxWindow*, bool, bool );
 	//! The index of the image used on the list.
 	int 		m_imageidx;
 	//! The actual widget, to be set later.
@@ -103,52 +114,64 @@ struct PrefsPage
 
 
 PrefsPage pages[] =
+    {
+        { _("General"),				PreferencesGeneralTab,			13,	NULL },
+        { _("Connection"),			PreferencesConnectionTab,		14,	NULL },
+        { _("Remote Controls"),		PreferencesRemoteControlsTab,	11,	NULL },
+        { _("Online Signature"),	PreferencesOnlineSigTab,	 	0,	NULL },
+        { _("Server"),				PreferencesServerTab,			15,	NULL },
+        { _("Files"),				PreferencesFilesTab,			16,	NULL },
+        { _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20,	NULL },
+        { _("Directories"),			PreferencesDirectoriesTab,		17,	NULL },
+        { _("Statistics"),			PreferencesStatisticsTab,		10,	NULL },
+        { _("Security"),			PreferencesSecurityTab,		 	0,	NULL },
+        //	Notications are disabled since they havent been implemented
+        //	{ _("Notifications"),	PreferencesNotifyTab,			18,	NULL },
+        { _("Core Tweaks"),			PreferencesaMuleTweaksTab,		12,	NULL },
+        { _("Gui Tweaks"),			PreferencesGuiTweaksTab,		19,	NULL }
+    };
+
+
+
+
+PrefsUnifiedDlg* PrefsUnifiedDlg::NewPrefsDialog(wxWindow* parent)
 {
-	{ _("General"),			PreferencesGeneralTab,		13, NULL },
-	{ _("Connection"),		PreferencesConnectionTab,	14, NULL },
-	{ _("Remote Controls"),		PreferencesRemoteControlsTab,	11, NULL },
-	{ _("Online Signature"),	PreferencesOnlineSigTab,	 0, NULL },
-	{ _("Server"),			PreferencesServerTab,		15, NULL },
-	{ _("Files"),			PreferencesFilesTab,		16, NULL },
-	{ _("Sources Dropping"),	PreferencesSourcesDroppingTab,	20, NULL },
-	{ _("Directories"),		PreferencesDirectoriesTab,	17, NULL },
-	{ _("Statistics"),		PreferencesStatisticsTab,	10, NULL },
-	{ _("Security"),		PreferencesSecurityTab,		 0, NULL },
-//	Notications are disabled since they havent been implemented
-//	{ _("Notifications"),		PreferencesNotifyTab,		18, NULL },
-	{ _("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL },
-	{ _("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL }
-};
+	// Do not allow multiple dialogs
+	if ( s_ID )
+		return NULL;
+
+	return new PrefsUnifiedDlg( parent );
+}
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
-	: wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+		: wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
-	CPreferences::SetPrefsID( GetId() );
+	s_ID = GetId();
 
 	preferencesDlgTop( this, FALSE );
 	wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
-	
+
 	PrefsIcons->SetSize(wxSize(150,-1));
-	
+
 	wxImageList* icon_list = new wxImageList(16, 16);
 	PrefsIcons->AssignImageList( icon_list, wxIMAGE_LIST_SMALL);
 
 	// Add the single column used
 	PrefsIcons->InsertColumn(0, wxEmptyString, wxLIST_FORMAT_LEFT, PrefsIcons->GetSize().GetWidth()-5);
 
-	// Temp variables for finding the smallest height and width needed 
+	// Temp variables for finding the smallest height and width needed
 	int width = 0;
 	int height = 0;
-	
+
 	// Create and add each page
 	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
 		// Add the icon and label assosiated with the page
 		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
 		PrefsIcons->InsertItem(i, pages[i].m_title, i);
-		
-		// Create a container widget and the contents of the page 
-		pages[i].m_widget = new wxPanel( this, -1 );	
+
+		// Create a container widget and the contents of the page
+		pages[i].m_widget = new wxPanel( this, -1 );
 		pages[i].m_function( pages[i].m_widget, true, true );
 
 		// Add it to the sizer
@@ -157,12 +180,12 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow* parent)
 		// Align and resize the page
 		Fit();
 		Layout();
-		
+
 		// Find the greatest sizes
 		wxSize size = prefs_sizer->GetSize();
-		if ( size.GetWidth() > width ) 
+		if ( size.GetWidth() > width )
 			width = size.GetWidth();
-	
+
 		if ( size.GetHeight() > height )
 			height = size.GetHeight();
 
@@ -219,7 +242,7 @@ Cfg_Base* PrefsUnifiedDlg::GetCfg(int id)
 		return it->second;
 
 	return NULL;
-}	
+}
 
 
 bool PrefsUnifiedDlg::TransferToWindow()
@@ -232,10 +255,10 @@ bool PrefsUnifiedDlg::TransferToWindow()
 			printf("Failed to transfer data from Cfg to Widget with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));
 		}
 	}
-	
+
 	m_ShareSelector->SetSharedDirectories(&theApp.glob_prefs->shareddir_list);
-	
-	
+
+
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		CPreferences::s_colors[i] = CStatisticsDlg::acrStat[i];
 		CPreferences::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
@@ -243,8 +266,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 	// Enable/Disable some controls
 	FindWindow( IDC_FCHECKSELF )->Enable( ((wxChoice*)FindWindow( IDC_FCHECK ))->GetSelection() == 8 );
-	
-    return true;
+
+	return true;
 }
 
 
@@ -255,19 +278,19 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	for ( ; it != CPreferences::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		if ( !it->second->TransferFromWindow() ) {
-			printf("Failed to transfer data from Widget to Cfg with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));		 
+			printf("Failed to transfer data from Widget to Cfg with the ID %d and key %s\n", it->first, unicode2char(it->second->GetKey()));
 		}
 	}
 
 	theApp.glob_prefs->shareddir_list.Clear();
 	m_ShareSelector->GetSharedDirectories(&theApp.glob_prefs->shareddir_list);
-	
+
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		if ( CPreferences::s_colors[i] != CPreferences::s_colors_ref[i] ) {
 			CStatisticsDlg::acrStat[i] = CPreferences::s_colors[i];
-			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);	
+			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);
 		}
-			
+
 	}
 
 	return true;
@@ -288,18 +311,18 @@ bool PrefsUnifiedDlg::CfgChanged(int ID)
 void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
 	TransferFromWindow();
-	
+
 	// do sanity checking, special processing, and user notifications here
 	theApp.glob_prefs->CheckUlDlRatio();
-	
+
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
-	
-	
-	if ( CfgChanged(IDC_FED2KLH) ) 
+
+
+	if ( CfgChanged(IDC_FED2KLH) )
 		theApp.amuledlg->ToggleFastED2KLinksHandler();
-	
-	
+
+
 	if ( CfgChanged(IDC_LANGUAGE) )
 		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")));
 
@@ -308,26 +331,26 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.sharedfiles->Reload(true, false);
 
 
-	if ( CfgChanged(IDC_PERCENT) || CfgChanged(IDC_PROGBAR) ) {		
-		// Force upload of the donwload queue 
+	if ( CfgChanged(IDC_PERCENT) || CfgChanged(IDC_PROGBAR) ) {
+		// Force upload of the donwload queue
 		theApp.downloadqueue->UpdateDisplayedInfo( true );
 	}
 
 	if ( CfgChanged(IDC_OSDIR) ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_OSDIR );
-	
+
 		// Build the filenames for the two OS files
 		theApp.SetOSFiles( widget->GetValue() );
 	}
 
-	
+
 	if ( theApp.glob_prefs->GetIPFilterOn() )
 		theApp.clientlist->FilterQueues();
-	
-	
+
+
 	// Final actions:
 	// Reset the ID so that a new dialog can be created
-	CPreferences::SetPrefsID( 0 );
+	s_ID = 0;
 
 	// Hide the dialog since Destroy isn't instant
 	Show( false );
@@ -341,7 +364,7 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Final actions:
 	// Reset the ID so that a new dialog can be created
-	CPreferences::SetPrefsID( 0 );
+	s_ID = 0;
 
 	// Hide the dialog since Destroy isn't instant
 	Show( false );
@@ -357,7 +380,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	wxWindow*	widget = NULL;
 
 	widget = FindWindow( IDC_UDPPORT );
-	if ( widget ) 
+	if ( widget )
 		widget->Enable( !value );
 }
 
@@ -392,7 +415,7 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 {
 	theApp.amuledlg->changeDesktopMode();
-	
+
 	// Ensure that the dialog is still visible afterwards
 	Raise();
 	SetFocus();
@@ -402,32 +425,32 @@ void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 {
 	wxString type = _("Choose a folder for ");
-	
+
 	int id = 0;
 	switch ( event.GetId() ) {
-		case IDC_SELTEMPDIR:
-			id = IDC_TEMPFILES;
-			type += _("Temporary files");			
-			break;
-			
-		case IDC_SELINCDIR:
-			id = IDC_INCFILES;
-			type += _("Incomming files");			
-			break;
-			
-		case IDC_SELOSDIR:
-			id = IDC_OSDIR;
-			type += _("Online Signatures");			
-			break;
-		
-		default:
-			wxASSERT( false );
-			return;
+	case IDC_SELTEMPDIR:
+		id = IDC_TEMPFILES;
+		type += _("Temporary files");
+		break;
+
+	case IDC_SELINCDIR:
+		id = IDC_INCFILES;
+		type += _("Incomming files");
+		break;
+
+	case IDC_SELOSDIR:
+		id = IDC_OSDIR;
+		type += _("Online Signatures");
+		break;
+
+	default:
+		wxASSERT( false );
+		return;
 	}
 
 	wxTextCtrl* widget	= (wxTextCtrl*)FindWindow( id );
 	wxString dir		= widget->GetValue();
-	
+
 	wxString str = wxDirSelector( type, dir );
 
 	if ( !str.IsEmpty() ) {
@@ -443,7 +466,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 	
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_EDIT_TBN_WAVFILE );
-		
+
 		widget->SetValue( str );
 	}
 }
@@ -455,7 +478,7 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_SKINFILE );
-		
+
 		widget->SetValue( str );
 	}
 }
@@ -463,12 +486,12 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 {
-	wxString str = wxFileSelector( _("Browse for videoplayer"), wxEmptyString, wxEmptyString,
-		wxEmptyString, _("Executable (*)|*||") );
+	wxString str = wxFileSelector( _("Browse for videoplayer"), wxT(""), wxT(""),
+	                               wxT(""), _("Executable (*)|*||") );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = (wxTextCtrl*)FindWindow( IDC_VIDEOPLAYER );
-		
+
 		widget->SetValue( str );
 	}
 }
@@ -477,13 +500,13 @@ void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fullpath( theApp.ConfigDir + wxT("addresses.dat") );
-	
+
 	EditServerListDlg* test = new EditServerListDlg(this, _("Edit Serverlist"),
-		_("Add here URL's to download server.met files.\nOnly one url on each line."),
-		fullpath );
-	
+	                          _("Add here URL's to download server.met files.\nOnly one url on each line."),
+	                          fullpath );
+
 	test->ShowModal();
-  
+
 	delete test;
 }
 
@@ -491,34 +514,92 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
 	theApp.ipfilter->Reload();
-}	
+}
 
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 {
 	prefs_sizer->Remove( m_CurrentPanel );
 	m_CurrentPanel->Show( false );
-	
+
 	m_CurrentPanel = pages[ event.GetIndex() ].m_widget;
-	
+
 	prefs_sizer->Add( m_CurrentPanel, 0, wxGROW|wxEXPAND );
 	m_CurrentPanel->Show( true );
-	
+
 	Layout();
 }
 
 
 void PrefsUnifiedDlg::OnToolTipDelayChange(wxSpinEvent& event)
 {
-	#ifdef __WXGTK__
-		wxToolTip::SetDelay( event.GetPosition() * 1000 );
-	#else
-		#warning NO TOOLTIPS FOR NON-GTK!
-	#endif
+#ifdef __WXGTK__
+	wxToolTip::SetDelay( event.GetPosition() * 1000 );
+#else
+	#warning NO TOOLTIPS FOR NON-GTK!
+#endif
 }
 
 
 void PrefsUnifiedDlg::OnInitDialog( wxInitDialogEvent& WXUNUSED(evt) )
 {
+// This function exists solely to avoid automatic transfer-to-widget calls
+}
+
+
+void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
+{
+	int id = 0;
+	wxString label;
+
+	switch ( event.GetId() ) {
+	case IDC_SLIDER:
+		id = IDC_SLIDERINFO;
+		label.Printf( _("Update delay: %d secs"), event.GetPosition() );
+		break;
+
+	case IDC_SLIDER3:
+		id = IDC_SLIDERINFO3;
+		label.Printf( _("Time for average graph: %d mins"), event.GetPosition() );
+		break;
+
+	case IDC_SLIDER4:
+		id = IDC_SLIDERINFO4;
+		label.Printf( _("Connections Graph Scale: %d"), event.GetPosition() );
+		break;
+
+	case IDC_SLIDER2:
+		id = IDC_SLIDERINFO2;
+		label.Printf( _("Update delay : %d secs"), event.GetPosition() );
+		break;
+
+	case IDC_FILEBUFFERSIZE:
+		id = IDC_FILEBUFFERSIZE_STATIC;
+		label.Printf( _("File Buffer Size: %d bytes"), event.GetPosition() * 15000 );
+		break;
+
+	case IDC_QUEUESIZE:
+		id = IDC_QUEUESIZE_STATIC;
+		label.Printf( _("Upload Queue Size: %d clients"), event.GetPosition() * 100 );
+		break;
+
+	case IDC_SERVERKEEPALIVE:
+		id = IDC_SERVERKEEPALIVE_LABEL;
+
+		if ( event.GetPosition() )
+			label.Printf( _("Server connection refresh interval: %d minutes"), event.GetPosition() );
+		else
+			label.Printf( _("Server connection refresh interval: Disabled") );
+
+		break;
+
+	default:
+		return;
+	}
+
+	wxStaticText* widget = (wxStaticText*)FindWindow( id );
+
+	if ( widget )
+		widget->SetLabel( label );
 }
 

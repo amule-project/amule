@@ -48,6 +48,7 @@
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "color.h"		// Needed for G_BLEND and SYSCOLOR
 #include "ClientCredits.h"		// Needed for GetCurrentIdentState
+#include "Preferences.h"
 #include <wx/stattext.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
@@ -99,8 +100,8 @@ void CDownloadListCtrl::InitSort()
 {
 
 	// Barry - Use preferred sort order from preferences
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableDownload);
-	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableDownload);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Download);
+	bool sortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Download);
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0 : 100));
 	isShift = false;
@@ -1671,14 +1672,14 @@ void CDownloadListCtrl::OnColumnClick(wxListEvent & evt)
 
 	// Barry - Store sort order in preferences
 	// Determine ascending based on whether already sorted on this column
-	int sortItem = theApp.glob_prefs->GetColumnSortItem(CPreferences::tableDownload);
-	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(CPreferences::tableDownload);
+	int sortItem = theApp.glob_prefs->GetColumnSortItem(TP_Download);
+	bool m_oldSortAscending = theApp.glob_prefs->GetColumnSortAscending(TP_Download);
 	bool sortAscending = (sortItem != evt.GetColumn())? true : !m_oldSortAscending;
 	// Item is column clicked
 	sortItem = evt.GetColumn();
 	// Save new preferences
-	theApp.glob_prefs->SetColumnSortItem(CPreferences::tableDownload, sortItem);
-	theApp.glob_prefs->SetColumnSortAscending(CPreferences::tableDownload, sortAscending);
+	theApp.glob_prefs->SetColumnSortItem(TP_Download, sortItem);
+	theApp.glob_prefs->SetColumnSortAscending(TP_Download, sortAscending);
 	// Sort table
 	SetSortArrow(sortItem, sortAscending);
 	SortItems(SortProc, sortItem + (sortAscending ? 0 : 100));
@@ -2051,3 +2052,10 @@ void CDownloadListCtrl::SetCatStatus(int cat, int newstatus)
 		}		
 	}
 }
+
+
+int CDownloadListCtrl::TablePrefs()
+{
+	return TP_Download;
+}
+

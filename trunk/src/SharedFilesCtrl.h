@@ -53,7 +53,7 @@ private:
 	void		OnColumnClick(wxListEvent& evt);
 	void		OnNMRclick(wxListEvent& evt);
 	virtual bool ProcessEvent(wxEvent& evt);
-	CPreferences::Table TablePrefs()	{ return CPreferences::tableShared; }
+	int TablePrefs();
 
 	CBarShader s_ShareStatusBar;
 

@@ -21,7 +21,6 @@
 #include <wx/utils.h>
 
 #include "KnownFileList.h"	// Interface declarations
-#include "Preferences.h"	// Needed for MAX_PATH
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "otherfunctions.h" // md4cmp
