@@ -96,6 +96,7 @@ class CPreferencesRem : public CPreferences {
 		CPreferencesRem(CRemoteConnect *);
 		
 		bool LoadRemote();
+		void SendToRemote();
 };
 
 //
