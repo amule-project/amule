@@ -38,6 +38,7 @@ endif
 
 if CORE_GUI
 bin_PROGRAMS += amulegui
+bin_PROGRAMS += amuled
 endif
 
 bin_PROGRAMS += amule
@@ -157,12 +158,52 @@ amule_SOURCES = ListenSocket.cpp \
 	amule.cpp \
 	amuleDlg.cpp 
 
+amuled_SOURCES = ListenSocket.cpp \
+        ECSocket.cpp \
+        EMSocket.cpp \
+        AddFileThread.cpp \
+        BaseClient.cpp \
+        CFile.cpp \
+        ClientCredits.cpp \
+        ClientList.cpp \
+        ClientUDPSocket.cpp \
+        DownloadClient.cpp \
+        DownloadQueue.cpp \
+        ED2KLink.cpp \
+        ExternalConn.cpp \
+        filemem.cpp \
+        filefn.cpp \
+        Friend.cpp \
+        IPFilter.cpp \
+        KnownFile.cpp \
+        KnownFileList.cpp \
+        MD5Sum.cpp \
+        otherfunctions.cpp \
+        packets.cpp \
+        PartFile.cpp \
+        Preferences.cpp \
+        Preview.cpp \
+        SafeFile.cpp \
+        SearchList.cpp \
+        server.cpp \
+        ServerList.cpp \
+        ServerSocket.cpp \
+        SharedFileList.cpp \
+        sockets.cpp \
+        timer.cpp \
+        UDPSocket.cpp \
+        UploadClient.cpp \
+        UploadQueue.cpp \
+        wxstubs.cpp \
+        amuled.cpp
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
-amule_SOURCES += gsocket.c
+amule_SOURCES += gsocket.c 
+amuled_SOURCES += gsocket.c
 else
 amule_SOURCES += gsocket-2.5.c
+amuled_SOURCES += gsocket-2.5.c 
 endif
 endif
 
@@ -187,6 +228,10 @@ amule_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 amulegui_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI
 amulegui_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(CURL_FLAGS) -DCLIENT_GUI
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
+
+amuled_CFLAGS = $(WX_CFLAGS) -DAMULE_DAEMON
+amuled_CXXFLAGS = $(WX_CFLAGS) -DAMULE_DAEMON 
+amuled_LDADD = $(WXBASE_LIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
