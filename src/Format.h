@@ -56,7 +56,6 @@ public:
 	 */
 	// \{
 	CFormat& operator%( wxChar value );
-	CFormat& operator%( wxSChar value );
 	CFormat& operator%( signed short value );
 	CFormat& operator%( unsigned short value );
 	CFormat& operator%( signed int value );
@@ -294,12 +293,6 @@ inline CFormat& CFormat::FormatFloat( ValueType value )
 inline CFormat& CFormat::operator%( wxChar value )
 {
 	return FormatInteger( value );
-}
-
-
-inline CFormat& CFormat::operator%( wxSChar value )
-{
-	return FormatInteger( (signed wxChar)value );
 }
 
 
