@@ -60,10 +60,8 @@ struct PartFileBufferedData
 };
 
 class CPartFile : public CKnownFile {
-#if defined( __DEBUG__ )
 private:
 	unsigned int	MagicNumber1;
-#endif // __DEBUG__
 public:
 	CPartFile();
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
@@ -72,9 +70,7 @@ public:
 	void InitializeFromLink(CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
-#if defined( __DEBUG__ )
 	bool	IsASanePartFile() const;
-#endif // __DEBUG__
 	void 	SetPartFileStatus(uint8 newstatus);
 	virtual bool CreateFromFile(
 		const wxString& WXUNUSED(directory), const wxString& WXUNUSED(filename), 
@@ -301,9 +297,7 @@ private:
 	/* downloading sources list */
 	std::list<CUpDownClient *> m_downloadingSourcesList;
 	static	wxMutex m_FileCompleteMutex;
-#if defined( __DEBUG__ )
 	unsigned int	MagicNumber2;
-#endif // __DEBUG__
 
 friend class completingThread;
 };
