@@ -509,10 +509,17 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 
 void CSearchList::StopGlobalSearch()
 {
- 	if (IsGlobalSearch() && m_searchthread) {
+ 	if (IsGlobalSearch()) {
 		m_searchthread->Delete();
 		ClearThreadData();
- 	}
+ 	} else {
+		// Maybe this was a global search that didn't
+		// get a reply from local server yet.
+		if (m_searchpacket) {
+			delete m_searchpacket;
+			m_searchpacket = NULL;
+		}
+	}
 }
 
 
