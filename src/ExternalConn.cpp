@@ -1254,6 +1254,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 				ProcessRequest(request->GetTagByIndex(0)->GetStringData())));
 			break;
 		case EC_OP_SHUTDOWN:
+			response = new CECPacket(EC_OP_NOOP);
 			AddLogLineM(true, _("ExternalConn: shutdown requested"));
 			theApp.ExitMainLoop();
 			break;
