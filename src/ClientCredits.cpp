@@ -18,18 +18,28 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-#include <cryptopp/config.h>
-
-#ifdef __OWN_CRYPTO__
-#include <cryptopp/base64.h>
-#include <cryptopp/osrng.h>
-#include <cryptopp/files.h>
-#include <cryptopp/sha.h>
+#ifdef __CRYPTO_DEBIAN_GENTOO__
+	#include <crypto++/config.h>
+	#include <crypto++/base64.h>
+	#include <crypto++/osrng.h>
+	#include <crypto++/files.h>
+	#include <crypto++/sha.h>
 #else
-#include <crypto++/base64.h>
-#include <crypto++/osrng.h>
-#include <crypto++/files.h>
-#include <crypto++/sha.h>
+	#ifdef __CRYPTO_MDK_SUSE_FC__
+		#include <cryptopp/config.h>
+		#include <cryptopp/base64.h>
+		#include <cryptopp/osrng.h>
+		#include <cryptopp/files.h>
+		#include <cryptopp/sha.h>
+	#else
+		#ifdef __CRYPTO_SOURCE__
+			#include <crypto-5.1/config.h>
+			#include <crypto-5.1/base64.h>
+			#include <crypto-5.1/osrng.h>
+			#include <crypto-5.1/files.h>
+			#include <crypto-5.1/sha.h>
+		#endif
+	#endif
 #endif
 
 #include <cmath>

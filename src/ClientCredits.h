@@ -23,11 +23,19 @@
 #include <cstddef>		// Needed for NULL
 #include <ctime>		// Needed for time(2)
 
-#include <cryptopp/config.h>
-#ifdef __OWN_CRYPTO__
-#include <cryptopp/rsa.h>
+#ifdef __CRYPTO_DEBIAN_GENTOO__
+	#include <crypto++/config.h>
+	#include <crypto++/rsa.h>
 #else
-#include <cryptopp/rsa.h>
+	#ifdef __CRYPTO_MDK_SUSE_FC__
+		#include <cryptopp/config.h>
+		#include <cryptopp/rsa.h>
+	#else
+		#ifdef __CRYPTO_SOURCE__
+			#include <crypto-5.1/config.h>
+			#include <crypto-5.1/rsa.h>
+		#endif
+	#endif
 #endif
 
 #include "types.h"		// Needed for uint16 and uint32
