@@ -797,10 +797,20 @@ void CMuleListCtrl::OnColumnRclick(wxListEvent& evt)
 	PopupMenu(m_ColumnMenu, evt.GetPoint());
 }
 
+/**
+ * This enables scrolling with the mouse wheel 
+ */
+void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
+{
+	event.Skip();
+}
+
 #ifdef __WXMSW__
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
 #else
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)
 #endif
 	EVT_LIST_COL_RIGHT_CLICK(-1, CMuleListCtrl::OnColumnRclick)
+	EVT_MOUSEWHEEL(CMuleListCtrl::OnMouseWheel)
 END_EVENT_TABLE()
+

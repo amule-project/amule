@@ -123,10 +123,10 @@ protected:
 	afx_msg bool OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSysColorChange();
 #endif
-
-	void         SetColors();
-	void         SetSortArrow(int iColumn, ArrowType atType);
-	void         SetSortArrow(int iColumn, bool bAscending) {
+	void OnMouseWheel(wxMouseEvent &event);
+	void SetColors();
+	void SetSortArrow(int iColumn, ArrowType atType);
+	void SetSortArrow(int iColumn, bool bAscending) {
 		SetSortArrow(iColumn, bAscending ? arrowUp : arrowDown);
 	}
 #if 0
