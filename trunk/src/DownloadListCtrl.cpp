@@ -32,10 +32,11 @@
 #pragma implementation "DownloadListCtrl.h"
 #endif
 
-
+/*
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for DISABLE_PROGRESS
 #endif
+*/
 
 #include <cmath>		// Needed for floor
 
@@ -1345,7 +1346,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		}
 		break;
 	
-#ifndef DISABLE_PROGRESS
+//#ifndef DISABLE_PROGRESS
 	case 5:	// progress
 	{
 		if (thePrefs::ShowProgBar())
@@ -1404,7 +1405,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		}
 	}
 	break;
-#endif
+//#endif
 
 	// Sources
 	case 6:	{
@@ -1626,7 +1627,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-#ifndef DISABLE_PROGRESS
+//#ifndef DISABLE_PROGRESS
 		case 5:	// file info
 			{
 				if ( thePrefs::ShowProgBar() && (item->type == AVAILABLE_SOURCE) )
@@ -1666,7 +1667,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			break;
 
-#endif
+//#endif
 
 		case 6: {
 				// Version

@@ -121,16 +121,16 @@ AC_ARG_ENABLE(alc,  [  --enable-alc               compile aMuleLinkCreator GUI v
 AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for console],
               ALCC="$enableval", ALCC="no")
 
-AC_ARG_ENABLE(systray, [  --disable-systray          disable SysTray compilation],
+AC_ARG_ENABLE(systray, [  --disable-systray          disable GTK SysTray compilation (for wx 2.4.x only)],
 			systray="$enableval", systray="yes")
 
-AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in the systray],
+AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in the GTK SysTray (wx 2.4.x only)],
 		utf8_systray="$enableval", utf8_systray="no")
 
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded_crypto  do not use embedded Crypto code],
 		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
 
-AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable gsocket.c linking],
+AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable patched gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
 
 # Checking for libs before all other stuff to break
@@ -286,7 +286,7 @@ else
   AC_SUBST(GTK_LIBS)
   havegtk="not_needed"
   if test "x${systray}" = "xyes" ; then
-    AC_MSG_WARN([Disabling systray as we have no GUI.])
+    AC_MSG_WARN([Disabling GTK SysTray as we have no GUI.])
   fi
   systray=no
   utf8_systray=no
@@ -298,6 +298,8 @@ CHECK_WX_PARTIAL_VERSION
 
 if test x"$WX_PARTIAL_VERSION" = x"5"; then
   WX_VERSION="2_5"
+  systray=no
+  utf8_systray=no
 else
   WX_VERSION="any"
 fi
@@ -402,7 +404,7 @@ AC_CACHE_SAVE
 # aMule options
 
 # systray disable
-AC_MSG_CHECKING([whether SysTray should be compiled])
+AC_MSG_CHECKING([whether GTK SysTray (wx 2.4.x only) should be used/compiled])
 AC_MSG_RESULT($systray)
 
 case "$systray" in
@@ -414,7 +416,7 @@ esac
 AC_SUBST(TRAY_FLAGS)
 
 # utf8_systray enable
-AC_MSG_CHECKING([whether SysTray should use UTF-8 strings])
+AC_MSG_CHECKING([whether GTK SysTray should use UTF-8 strings])
 AC_MSG_RESULT($utf8_systray)
 
 case "$utf8_systray" in
@@ -423,7 +425,12 @@ yes)
 		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
 		USE_UTF8_SYSTRAY="yes"
 	else
-		echo "***** Warning if you want to enable UTF-8 systray, --enable-systray must be active"
+		
+		if test "$WX_VERSION" = "2_5"; then
+			echo "UTF-8 GTK SysTray disabled, wx native settings will be used"
+		else
+			echo "***** Warning if you want to enable UTF-8 GTK SysTray, --enable-systray must be active"
+		fi
 		utf8_systray="no"		
 	fi
 	;;
@@ -432,9 +439,7 @@ esac
 AC_SUBST(UTF8_SYSTRAY_FLAGS)
 
 # gtk code strip
-if test x"$systray" != xyes -a
-	x"$WXGTK_VERSION" != x"2.4.2" -a
-	x"$havegtk" != x"not_needed"; then
+if test x"$systray" != xyes -a x"$WXGTK_VERSION" != x"2.4.2" -a x"$havegtk" != x"not_needed"; then
 	  GTK_DEFS="$GTK_DEFS -D__NOGTK__"
 fi
 
@@ -520,11 +525,11 @@ yes)	LDFLAGS="$LDFLAGS -static"
 	;;
 esac
 
-case "$DISABLE_PROGRESS" in
-yes)     AC_DEFINE_UNQUOTED(DISABLE_PROGRESS, 1,
-      [Define if progress bar drawing should be disabled.])
-  ;;
-esac
+dnl case "$DISABLE_PROGRESS" in
+dnl yes)     AC_DEFINE_UNQUOTED(DISABLE_PROGRESS, 1,
+dnl      [Define if progress bar drawing should be disabled.])
+dnl  ;;
+dnl esac
 
 if test "x$prefix" != "xNONE"; then
 	aMuleInstallPrefix=$prefix
@@ -653,8 +658,8 @@ echo "  Prefix where aMule should be installed?                  ${prefix:-none}
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
-echo "  Should aMule be compiled with systray?                   ${systray}"
-echo "  Should aMule be compiled with UTF-8 systray?             ${utf8_systray}"
+echo "  Should aMule be compiled with GTK SysTray?               ${systray}"
+echo "  Should aMule be compiled with UTF-8 GTK SysTray?         ${utf8_systray}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
 echo "  Should aMule monolithic application be built?            ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built? (EXPERIMENTAL)     ${AMULE_DAEMON:-no}"
