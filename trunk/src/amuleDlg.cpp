@@ -253,7 +253,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 }
 
 
-// Madcat - Toggles Fast ED2K Links Handler on/off.
+// Madcat - Sets Fast ED2K Links Handler on/off.
 void CamuleDlg::ShowED2KLinksHandler( bool show )
 {
 	// Errorchecking in case the pointer becomes invalid ...
@@ -261,10 +261,21 @@ void CamuleDlg::ShowED2KLinksHandler( bool show )
 		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted."));
 		return;
 	}
+	s_fed2klh->Show(show);
 	s_dlgcnt->Show( s_fed2klh, show );
 	s_dlgcnt->Layout();
 }
 
+// Toogles ed2k link handler.
+void CamuleDlg::ToogleED2KLinksHandler()
+{
+	// Errorchecking in case the pointer becomes invalid ...
+	if (s_fed2klh == NULL) {
+		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Toogling FED2KLH aborted."));
+		return;
+	}
+	ShowED2KLinksHandler(!s_fed2klh->IsShown());
+}
 
 void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 {
@@ -418,8 +429,14 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 	if ( theApp.IsReady ) {
 
 		// Rehide the handler if needed
-		if ( lastbutton == ID_BUTTONSEARCH && !thePrefs::GetFED2KLH() )
-			ShowED2KLinksHandler( false );
+		if ( lastbutton == ID_BUTTONSEARCH && !thePrefs::GetFED2KLH() ) {
+			if (ev.GetId() != ID_BUTTONSEARCH) {
+				ShowED2KLinksHandler( false );
+			} else {
+				// Toogle ED2K handler.
+				ToogleED2KLinksHandler();
+			}
+		}
 
 		if ( lastbutton != ev.GetId() ) {
 			switch ( ev.GetId() ) {

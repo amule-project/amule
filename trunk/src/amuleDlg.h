@@ -197,6 +197,8 @@ private:
 	void Apply_Clients_Skin(wxString file);
 	
 	void Create_Toolbar(wxString skinfile);
+	
+	void ToogleED2KLinksHandler();
 
 	DECLARE_EVENT_TABLE()
 };
