@@ -122,6 +122,7 @@ ProxyStateMachine::ProxyStateMachine(
 StateMachine(name, max_states, initial_state),
 m_ProxyData(ProxyData)
 {
+	m_IsLost = false;
 	m_IsConnected = false;
 	m_CanReceive = false;
 	m_CanSend = false;
@@ -165,7 +166,7 @@ m_PeerAddress->Service());
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	m_ProxyClientSocket->Notify(true);
-//	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
+	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
 //	m_ProxyClientSocket->SetFlags(wxSOCKET_WAITALL);
 	while (!IsEndState() ) {
 		wxGetApp().Yield();
@@ -218,28 +219,39 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 	switch(event)
 	{
 	case wxSOCKET_CONNECTION:
+		printf("Connection event\n");
 		m_IsConnected = true;
 		break;
 		
 	case wxSOCKET_INPUT:
+		printf("Input event\n");
 		m_CanReceive = true;
 		break;
 		
 	case wxSOCKET_OUTPUT:
+		printf("Output event\n");
 		m_CanSend = true;
 		break;
 		
 	case wxSOCKET_LOST:
-		m_IsConnected = false;
+		printf("Lost connection vent\n");
+		m_IsLost = true;
 		break;
 		
 	default:
+		printf("No event\n");
 		break;
+	}
+	
+	if (m_IsLost) {
+		ret = SOCKS5_STATE_END;
+		
+		return ret;
 	}
 	
 	switch (m_state) {
 	case SOCKS5_STATE_START:
-		if (m_IsConnected && CanSend()) {
+		if (m_IsConnected && !m_IsLost && CanSend()) {
 			m_CanSend = false;
 			ret = SOCKS5_STATE_SEND_QUERY_AUTHENTICATION_METHOD;
 		}
@@ -274,6 +286,8 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 					ret = SOCKS5_STATE_END;
 					break;
 				}
+			} else {
+				printf("Cant send\n");
 			}
 		} else {
 			ret = SOCKS5_STATE_END;
@@ -340,10 +354,11 @@ t_sm_state Socks5StateMachine::next_state(t_sm_event event)
 void Socks5StateMachine::process_start(bool entry)
 {
 	if (entry) {
-		m_ProxyClientSocket->Connect(m_ProxyAddress, false);
+//		m_ProxyClientSocket->Connect(m_ProxyAddress, false);
+//		m_ProxyClientSocket->WaitOnConnect(10);
 dump("process_start", m_ok, NULL, 0);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_start\n");
 	}
 }
 
@@ -367,7 +382,7 @@ void Socks5StateMachine::process_send_query_authentication_method(bool entry)
 			m_ProxyClientSocket->LastCount() == LenPacket;
 dump("process_send_query_authentication_method", m_ok, m_buffer, LenPacket);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_send_query_authentication_method\n");
 	}
 }
 
@@ -383,7 +398,8 @@ void Socks5StateMachine::process_receive_authentication_method(bool entry)
 			m_buffer[0] == SOCKS5_VERSION;
 dump("process_receive_authentication_method", m_ok, m_buffer, LenPacket);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_receive_authentication_method\n");
+		if (GetClocksInCurrentState() > 5) m_CanSend = true;
 	}
 }
 
@@ -422,7 +438,7 @@ void Socks5StateMachine::process_send_authentication_username_password(bool entr
 			m_ProxyClientSocket->LastCount() == LenPacket;
 dump("process_send_authentication_username_password", m_ok, m_buffer, LenPacket);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_send_authentication_username_password\n");
 	}
 }
 
@@ -441,7 +457,7 @@ void Socks5StateMachine::process_receive_authentication_username_password(bool e
 			m_buffer[1] == SOCKS5_REPLY_SUCCEED;
 dump("process_receive_authentication_username_password", m_ok, m_buffer, LenPacket);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_receive_authentication_username_password\n");
 	}
 }
 
@@ -477,7 +493,7 @@ void Socks5StateMachine::process_send_command_request(bool entry)
 			m_ProxyClientSocket->LastCount() == LenPacket;
 dump("process_send_command_request", m_ok, m_buffer, LenPacket);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_send_command_request\n");
 	}
 }
 
@@ -576,7 +592,7 @@ void Socks5StateMachine::process_receive_command_reply(bool entry)
 		}
 dump("process_receive_command_reply", m_ok, m_buffer, TotalLen);
 	} else {
-printf("wait state\n");
+printf("wait state -- process_receive_command_reply\n");
 	}
 }
 

@@ -64,9 +64,11 @@ void StateMachine::Clock()
 	state_entry = ( m_state != old_state ) || ( m_clock_counter == 1 );
 	if( state_entry )
 	{
+		m_clocks_in_current_state = 0;
 		printf( "%s(%04d): %d -> %d\n",
 			unicode2char(m_name), m_clock_counter, old_state, m_state);
 	}
+	m_clocks_in_current_state++;
 //#endif
 
 	/* Process new state entry */

@@ -46,6 +46,7 @@ public:
 	void Clock();
 	void Schedule(t_sm_event event);
 	t_sm_state GetState() const { return m_state; }
+	unsigned int GetClocksInCurrentState() const { return m_clocks_in_current_state; }
 	virtual t_sm_state next_state(t_sm_event event) = 0;
 	virtual void process_state(t_sm_state state, bool entry) = 0;
 	
@@ -59,6 +60,7 @@ private:
 	const unsigned int		m_max_states;
 	const unsigned int		m_initial_state;
 	unsigned int			m_clock_counter;
+	unsigned int			m_clocks_in_current_state;
 	std::queue <t_sm_event>		m_queue;
 };
 
