@@ -140,7 +140,7 @@ void CChatSelector::SetHyperText(CPreparedHyperText* htxt)
 	m_curText=htxt;
 
 	wxHtmlWindow* wnd=(wxHtmlWindow*)theApp.amuledlg->chatwnd->FindWindowById(ID_HTMLWIN);
-
+	
 	if(htxt==NULL) {
 		wnd->SetPage("<html><body></body></html>");
 		return;
@@ -170,6 +170,11 @@ void CChatSelector::SetHyperText(CPreparedHyperText* htxt)
 	}
 	text+="</body></html>";
 	wnd->SetPage(text);
+	
+	int x,y;
+	wnd->GetVirtualSize(&x,&y);
+	wnd->Scroll(0,y);
+
 }
 
 uint16 CChatSelector::GetTabByClient(CUpDownClient* client)
@@ -230,7 +235,6 @@ void CChatSelector::ProcessMessage(CUpDownClient* sender, char* message)
 
 bool CChatSelector::SendMessage(char* message)
 {
-	chatout->EnableScrolling(false,false);
 	
 	sint16 to = GetSelection();
 	if (to == (-1)) {
@@ -287,12 +291,7 @@ bool CChatSelector::SendMessage(char* message)
 	//  //chatout.UpdateSize(true);
 	//}
 
-	/*	
-	int x,y;
-	chatout.GetVirtualSize(&x,&y);
-	chatout.Scroll(0,y);
-	*/
-	chatout->EnableScrolling(true,true);
+
 	return true;
 }
 
