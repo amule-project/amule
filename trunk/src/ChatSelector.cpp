@@ -327,9 +327,10 @@ void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 	int tab = GetTabByClientID(toupdate_id); 
 	
 	if (tab != -1) {
-		// this client has a tab.
+		// This client has a tab.
 		SetPageText(tab,new_name);
 	} else {
-		wxASSERT(0);
+		// This client has no tab (friend disconnecting, etc)
+		// Nothing to be done here.
 	}
 }
