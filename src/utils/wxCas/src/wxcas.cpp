@@ -58,6 +58,10 @@ IMPLEMENT_APP (WxCas);
 bool
 WxCas::OnInit ()
 {
+  // Used to tell wxCas to use aMule catalog
+  m_locale.Init();
+  m_locale.AddCatalog(wxT("amule"));
+
 #if wxUSE_LIBPNG
   wxImage::AddHandler (new wxPNGHandler);
 #endif
@@ -80,7 +84,7 @@ WxCas::OnInit ()
 
   // Main Frame
   m_frame = new WxCasFrame (_("wxCas, aMule Online Statistics"));
-
+  
   // Show all
   m_frame->Show (TRUE);
   SetTopWindow (m_frame);
