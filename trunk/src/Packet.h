@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef PACKET_H
 #define PACKET_H
@@ -106,11 +108,13 @@ private:
 
 };
 
+
 class CStrangePacket : public CInvalidPacket
 {
 public:
 	CStrangePacket(const char* w = "not specified") : CInvalidPacket(w) { }
 };
+
 
 struct STag{
 	STag();
@@ -126,6 +130,7 @@ struct STag{
 	wxString	stringvalue;	
 	uint8	specialtag;
 };
+
 
 class CTag {
 public:
@@ -146,5 +151,15 @@ public:
 	STag tag;
 	wxString GetFullInfo() const;
 };
+
+
+/**
+ * Helper-function for writing CTags to files.
+ */
+template <typename TypeName, typename ValueType>
+bool WriteCTagToFile( TypeName name, ValueType value, CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone )
+{
+	return CTag( name, value ).WriteTagToFile( file, eStrEncode );
+}
 
 #endif // PACKET_H
