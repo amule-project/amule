@@ -74,6 +74,7 @@ const int categoryCount = sizeof( g_debugcats ) / sizeof( g_debugcats[0] );
 
 bool CLogger::IsEnabled( DebugType type )
 {
+#if __VERBOSE_OUTPUT__
 	int index = (int)type;
 	
 	if ( index >= 0 && index <= categoryCount ) {
@@ -84,6 +85,7 @@ bool CLogger::IsEnabled( DebugType type )
 	} 
 
 	wxASSERT( false );
+#endif
 	return false;
 }
 
