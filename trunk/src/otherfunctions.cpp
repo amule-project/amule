@@ -37,7 +37,7 @@ CString CastItoXBytes( uint64 count )
 	CString buffer;
 
 	if (count < 1024)
-		buffer.Format( "%.0f %s", count, _("Bytes") );
+		buffer.Format( "%.0f %s", (float)count, _("Bytes") );
 	else if (count < 1048576)
 		buffer.Format( "%.0f %s", (float)count/1024, _("KB") );
 	else if (count < 1073741824)
@@ -616,4 +616,3 @@ struct hostent *gethostbyname_r (const char *name, struct hostent *result, char 
 }
 
 #endif /* __FreeBSD__ */
-
