@@ -33,16 +33,17 @@
 		#endif
 	#endif
 #endif
+#include <wx/filefn.h>
 
 #include <wx/file.h>
+#include <wx/ffile.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/string.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
+//#include <wx/filefn.h>
 #include <wx/filename.h>
-#include <wx/config.h>
+//#include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
