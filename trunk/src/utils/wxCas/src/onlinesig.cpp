@@ -58,29 +58,36 @@ OnLineSig::OnLineSig ()
   m_sessionDL = "0";
   m_sessionUL = "0";
   m_runTime = "0";
-  Default_aMule_onlinesig =new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
-  Default_aMule_onlinesig->AppendDir(".aMule");
+
+  m_amulesig = new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
+  m_amulesig->AppendDir (".aMule");
 }
 
 // Constructor 2
 OnLineSig::OnLineSig (wxFileName * file)
 {
-  Default_aMule_onlinesig =new wxFileName (wxFileName::GetHomeDir (), "amulesig.dat");
-  Default_aMule_onlinesig->AppendDir(".aMule");	
-  SetFromAmuleSig (file);
+  m_amulesig = file;
+  Refresh ();
 }
 
 // Destructor
 OnLineSig::~OnLineSig ()
 {
-	delete Default_aMule_onlinesig;
+  delete m_amulesig;
 }
 
 // Accessors
 void
-OnLineSig::SetFromAmuleSig (wxFileName * file)
+OnLineSig::SetAmuleSig (wxFileName * file)
 {
-  wxFileInputStream input (file->GetFullPath ());
+  m_amulesig = file;
+  Refresh ();
+}
+
+void
+OnLineSig::Refresh ()
+{
+  wxFileInputStream input (m_amulesig->GetFullPath ());
 
   wxTextInputStream text (input);
   text.SetStringSeparators ("\n");
@@ -103,18 +110,159 @@ OnLineSig::SetFromAmuleSig (wxFileName * file)
   text >> m_runTime;
 }
 
-// Private use
-wxString OnLineSig::BytesConvertion (wxString bytes)
+bool
+OnLineSig::IsRunning ()
 {
-  double
-    d_bytes;
-  wxString
-    c_bytes;
+  if (m_isRunning == "1")
+    {
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
+wxString
+OnLineSig::GetServerName ()
+{
+  return m_serverName;
+}
+
+wxString
+OnLineSig::GetServerIP ()
+{
+  return m_serverIP;
+}
+
+wxString
+OnLineSig::GetServerPort ()
+{
+  return m_serverPort;
+}
+
+wxString
+OnLineSig::GetConnexionID ()
+{
+  return m_connexionID;
+}
+
+wxString
+OnLineSig::GetULRate ()
+{
+  return m_ULRate;
+}
+
+wxString
+OnLineSig::GetDLRate ()
+{
+  return m_DLRate;
+}
+
+wxString
+OnLineSig::GetQueue ()
+{
+  return m_queue;
+}
+
+wxString
+OnLineSig::GetSharedFiles ()
+{
+  return m_sharedFiles;
+}
+
+wxString
+OnLineSig::GetUser ()
+{
+  return m_user;
+}
+
+wxString
+OnLineSig::GetTotalUL ()
+{
+  return m_totalUL;
+}
+
+
+wxString
+OnLineSig::GetTotalDL ()
+{
+  return m_totalDL;
+}
+
+wxString
+OnLineSig::GetVersion ()
+{
+  return m_version;
+}
+
+wxString
+OnLineSig::GetSessionUL ()
+{
+  return m_sessionUL;
+}
+
+
+wxString
+OnLineSig::GetSessionDL ()
+{
+  return m_sessionDL;
+}
+
+wxString
+OnLineSig::GetRunTime ()
+{
+  return m_runTime;
+}
+
+wxString
+OnLineSig::GetConvertedTotalUL ()
+{
+  return (BytesConvertion (m_totalUL));
+}
+
+wxString
+OnLineSig::GetConvertedTotalDL ()
+{
+  return (BytesConvertion (m_totalDL));
+}
+
+wxString
+OnLineSig::GetConvertedSessionUL ()
+{
+  return (BytesConvertion (m_sessionUL));
+}
+
+wxString
+OnLineSig::GetConvertedSessionDL ()
+{
+  return (BytesConvertion (m_sessionDL));
+}
+
+wxString
+OnLineSig::GetConnexionIDType ()
+{
+  if (m_connexionID == "H")
+    {
+      return (wxString ("HighID"));
+    }
+  else
+    {
+      return (wxString ("LowID"));
+    }
+}
+
+
+// Private use
+wxString
+OnLineSig::BytesConvertion (wxString bytes)
+{
+  double d_bytes;
+  wxString c_bytes;
 
   bytes.ToDouble (&d_bytes);
 
-  wxInt32
-    i = 0;
+  wxInt32 i = 0;
   while (d_bytes > 1024)
     {
       d_bytes /= 1024;

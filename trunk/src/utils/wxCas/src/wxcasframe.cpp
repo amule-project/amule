@@ -35,16 +35,15 @@
 #endif
 
 #include "wxcasframe.h"
-#include "onlinesig.h"
 
 #ifdef __WXMSW__
-    #define USE_XPM_BITMAPS 0
+#define USE_XPM_BITMAPS 0
 #else
-    #define USE_XPM_BITMAPS 1
+#define USE_XPM_BITMAPS 1
 #endif
 
 #if USE_XPM_BITMAPS && defined(__WXMSW__) && !wxUSE_XPM_IN_MSW
-    #error You need to enable XPM support to use XPM bitmaps with toolbar!
+#error You need to enable XPM support to use XPM bitmaps with toolbar!
 #endif // USE_XPM_BITMAPS
 
 #if USE_XPM_BITMAPS
@@ -66,8 +65,8 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Give it an icon
   SetIcon (wxICON (wxcas));
 
- MaxLineCount = 0;
-	
+  MaxLineCount = 0;
+
   // Status Bar
   CreateStatusBar ();
   SetStatusText (_("Welcome!"));
@@ -95,6 +94,8 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_statLine_5 = new wxStaticText (m_sigPanel, -1, "");
   m_statLine_6 = new wxStaticText (m_sigPanel, -1, "");
 
+  // Add Online Sig file
+  aMuleSig = new OnLineSig();
   SetFromDefaultAmuleFile ();
 
   m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxADJUST_MINSIZE, 5);
@@ -143,10 +144,12 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   m_toolbar->AddSeparator ();
 
   m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
-		      _("Save Online Statistics image (NOT implemented Yet)"));
+		      _
+		      ("Save Online Statistics image (NOT implemented Yet)"));
 
   m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
-		      _("Print Online Statistics image (NOT implemented Yet)"));
+		      _
+		      ("Print Online Statistics image (NOT implemented Yet)"));
 
   m_toolbar->AddSeparator ();
 
@@ -159,16 +162,16 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Frame Layout
   SetAutoLayout (TRUE);
   SetSizerAndFit (m_frameVBox);
-  
-  // Add time
+ 
+  // Add timer
   m_timer = new wxTimer (this, ID_TIMER);
   m_timer->Start (5000);
-  
 }
 
 // Destructor
 WxCasFrame::~WxCasFrame ()
 {
+	delete aMuleSig;
 }
 
 // Events table
@@ -244,102 +247,105 @@ void
 WxCasFrame::SetFromDefaultAmuleFile ()
 {
   // Set labels
-  OnLineSig aMuleSig;
-  aMuleSig.SetFromDefaultAmuleSig ();
+  aMuleSig->Refresh ();
 
-	Freeze();
-	
-	int NewMaxLineCount = 0;
-	wxString newline;
-	
-	newline = "aMule ";
-	newline += aMuleSig.GetVersion ();
-	newline += _(" has been running for ");
-	newline += aMuleSig.GetRunTime ();
-  
-	m_statLine_1->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
+  Freeze ();
 
-  	newline = aMuleSig.GetUser();
-	newline +=  _(" is on ");
-	newline +=  aMuleSig.GetServerName();
-	newline +=  " [" ;
-	newline += aMuleSig.GetServerIP();
-	newline += ":";
-	newline += aMuleSig.GetServerPort();
-	newline +=  _("] with ");
-	newline +=	aMuleSig.GetConnexionIDType();;
+  wxString newline;
 
-	m_statLine_2->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
-	
-	newline =  _("Total Download: ");
-	newline +=  aMuleSig.GetConvertedTotalDL();
-	newline +=  _(", Upload: ");
-	newline += aMuleSig.GetConvertedTotalUL ();
-	
-	m_statLine_3->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
+  newline = "aMule ";
+  newline += aMuleSig->GetVersion ();
+  newline += _(" has been running for ");
+  newline += aMuleSig->GetRunTime ();
 
-	newline = _("Session Download: ");
-	newline +=  aMuleSig.GetConvertedSessionDL();
-	newline +=  _(", Upload: ");
-	newline += aMuleSig.GetConvertedSessionUL ();
+  wxUint32 NewMaxLineCount = newline.Length ();
 	
-	m_statLine_4->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
+  m_statLine_1->SetLabel (newline);
 
-	newline = _("Download: ");
-	newline += aMuleSig.GetDLRate();
-	newline += _(" kB/s, Upload: ");
-	newline += aMuleSig.GetULRate();
-	newline += _("kB/s");
-	
-	m_statLine_5->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
 
-	newline =_("Sharing: ");
-	newline += aMuleSig.GetSharedFiles();
-	newline += _(" file(s), Clients on queue: ");
-	newline += aMuleSig.GetQueue ();
-	
-	m_statLine_6->SetLabel (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
-	
-  // Set status bar
-  if (aMuleSig.IsRunning ())
+  newline = aMuleSig->GetUser ();
+  newline += _(" is on ");
+  newline += aMuleSig->GetServerName ();
+  newline += " [";
+  newline += aMuleSig->GetServerIP ();
+  newline += ":";
+  newline += aMuleSig->GetServerPort ();
+  newline += _("] with ");
+  newline += aMuleSig->GetConnexionIDType ();;
+
+  m_statLine_2->SetLabel (newline);
+  if (newline.Length () > NewMaxLineCount)
     {
-	    newline =_("aMule is running");
+      NewMaxLineCount = newline.Length ();
+    }
+
+  newline = _("Total Download: ");
+  newline += aMuleSig->GetConvertedTotalDL ();
+  newline += _(", Upload: ");
+  newline += aMuleSig->GetConvertedTotalUL ();
+
+  m_statLine_3->SetLabel (newline);
+  if (newline.Length () > NewMaxLineCount)
+    {
+      NewMaxLineCount = newline.Length ();
+    }
+
+  newline = _("Session Download: ");
+  newline += aMuleSig->GetConvertedSessionDL ();
+  newline += _(", Upload: ");
+  newline += aMuleSig->GetConvertedSessionUL ();
+
+  m_statLine_4->SetLabel (newline);
+  if (newline.Length () > NewMaxLineCount)
+    {
+      NewMaxLineCount = newline.Length ();
+    }
+
+  newline = _("Download: ");
+  newline += aMuleSig->GetDLRate ();
+  newline += _(" kB/s, Upload: ");
+  newline += aMuleSig->GetULRate ();
+  newline += _("kB/s");
+
+  m_statLine_5->SetLabel (newline);
+  if (newline.Length () > NewMaxLineCount)
+    {
+      NewMaxLineCount = newline.Length ();
+    }
+
+  newline = _("Sharing: ");
+  newline += aMuleSig->GetSharedFiles ();
+  newline += _(" file(s), Clients on queue: ");
+  newline += aMuleSig->GetQueue ();
+
+  m_statLine_6->SetLabel (newline);
+  if (newline.Length () > NewMaxLineCount)
+    {
+      NewMaxLineCount = newline.Length ();
+    }
+
+  // Set status bar
+  if (aMuleSig->IsRunning ())
+    {
+      newline = _("aMule is running");
     }
   else
     {
-     	newline = _("WARNING: aMule is NOT running");
+      newline = _("WARNING: aMule is NOT running");
     }
-	SetStatusText (newline);
-	if (newline.Length() > NewMaxLineCount ) {
-		NewMaxLineCount = newline.Length();
-	}
-    
-	Thaw();
-    
-    if (MaxLineCount != NewMaxLineCount) {
-  		// Fit to new lable size
-  		Layout ();
-  		Fit ();
-	    MaxLineCount = NewMaxLineCount;
+  SetStatusText (newline);
+  if (newline.Length () > NewMaxLineCount)
+    {
+      NewMaxLineCount = newline.Length ();
     }
-    
-    
+
+  Thaw ();
+
+  if (MaxLineCount != NewMaxLineCount)
+    {
+      // Fit to new lable size
+      Layout ();
+      Fit ();
+      MaxLineCount = NewMaxLineCount;
+    }
 }
