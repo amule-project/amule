@@ -97,7 +97,13 @@ class wxMuleInternalEvent : public wxEvent {
 	long m_value;
 	int  m_commandInt;
 	public:
-	wxMuleInternalEvent(int id, void *ptr = 0, long value = 0) : wxEvent(-1, id)
+	wxMuleInternalEvent(int id, int event_id) : wxEvent(event_id, id)
+	{
+	}
+	wxMuleInternalEvent(int id) : wxEvent(-1, id)
+	{
+	}
+	wxMuleInternalEvent(int id, void *ptr, long value) : wxEvent(-1, id)
 	{
 		m_ptr = ptr;
 		m_value = value;
@@ -243,7 +249,7 @@ public:
 	
 	wxString ConfigDir;
 	
-	
+	wxMutex data_mutex;
 	static wxMutex hashing_mut;
 
 protected:
@@ -304,5 +310,13 @@ protected:
 };
 
 DECLARE_APP(CamuleApp)
+
+#ifdef AMULE_DAEMON
+#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+//#define CALL_APP_DATA_LOCK
+
+#else
+#define CALL_APP_DATA_LOCK
+#endif
 
 #endif // AMULE_H
