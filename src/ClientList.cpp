@@ -451,13 +451,13 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
 					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
-						AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash invalid"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str())); 
+						AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash invalid"), unicode2char(tocheck->GetUserName()), unicode2char(tocheck->GetFullIP()))); 
 						tocheck->Ban();
 						return false;
 					}
 	
 					//IDS_CLIENTCOL Warning: Found matching client, to a currently connected client: %s (%s) and %s (%s)
-					AddDebugLogLineM(true, wxString::Format(wxT("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"), tocheck->GetUserName().c_str(), tocheck->GetFullIP().c_str(), found_client->GetUserName().c_str(), found_client->GetFullIP().c_str()));
+					AddDebugLogLineM(true, wxString::Format(wxT("WARNING! Found matching client, to a currently connected client: %s (%s) and %s (%s)"), unicode2char(tocheck->GetUserName()), unicode2char(tocheck->GetFullIP()), unicode2char(found_client->GetUserName()), unicode2char(found_client->GetFullIP())));
 					return false;
 				}
 				found_client->GetSocket()->SetClient( NULL );
@@ -679,4 +679,3 @@ const CClientList::IDMap& CClientList::GetClientList()
 {
 	return m_clientList;
 }
-
