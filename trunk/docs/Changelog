@@ -17,6 +17,9 @@ Version 2.0.0rc6 - The '???' version.
 	Jacobo:
 		* Fixed issue on the About button.
 
+	Kry:
+		* Got back from hell.
+
 	phoenix:
 		* Fixed a compilation warning + appartently useless code in 
 		  DirectoryTree.cpp.
