@@ -44,6 +44,7 @@
 #ifndef AMULE_DAEMON
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
+#include "OScopeCtrl.h"
 #endif
 
 #include "GuiEvents.h"		// Needed for Notify_* macros
@@ -1431,7 +1432,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 		// Statistics
 		//
 		
-		case EC_OP_GET_STATSGRAPHS:
+		case EC_OP_GET_STATSGRAPHS: {
 			response = new CECPacket(EC_OP_STATSGRAPHS);
 			response->AddTag(CECTag(EC_TAG_STRING,
 													wxString::Format(wxT("%d\t%d\t%d\t%d"), 
@@ -1439,8 +1440,22 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request, CPartFile_Enc
 													thePrefs::GetMaxGraphDownloadRate(),
 													thePrefs::GetMaxGraphUploadRate(),
 													thePrefs::GetMaxConnections())));
+			
+			#ifndef AMULE_DAEMON
+			/*
+			wxImage DLImage = theApp.amuledlg->statisticswnd->GetDLScope()->GetBitmapPlot()->ConvertToImage();
+			CECEmptyTag ImageTag(EC_TAG_IMAGE);
+			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_X,(unsigned int)DLImage.GetWidth()));
+			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_Y,(unsigned int)DLImage.GetHeight()));
+			ImageTag.AddTag(CECTag(EC_TAG_IMAGE_DATA,
+													DLImage.GetWidth()*DLImage.GetHeight()*3, // It's RGB
+													(void*)DLImage.GetData()));
+			response->AddTag(ImageTag);
+			*/
+			#endif
+			
 			break;
-		
+		}
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSGRAPHS);
 			#ifdef AMULE_DAEMON

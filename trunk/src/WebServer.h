@@ -36,6 +36,8 @@
 #endif
 #include <zlib.h>		// Needed for Bytef etc.
 
+//#define WITH_LIBPNG	1
+
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
@@ -536,6 +538,32 @@ class CDynImage : public CProgressImage {
 		CDynImage(int w, int h,	wxString &tmpl, DownloadFiles *file);
 
 		virtual wxString GetHTML();
+};
+
+#endif
+
+#ifdef WITH_LIBPNG
+
+//
+// Dynamic png image generation from aMule data.
+
+class CDynPngImage : public CAnyImage {
+		
+	public:
+		CDynPngImage(int w, int h, const unsigned char* Data, wxString name);
+		~CDynPngImage();
+		
+		virtual unsigned char *RequestData(int &size);
+		virtual wxString GetHTML();
+		const wxString &Name() { return m_name; }
+	
+	private:
+		int m_width, m_height;
+		wxString m_name;
+		png_bytep *m_row_ptrs;
+		
+		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
+		
 };
 
 #endif

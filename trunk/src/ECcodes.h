@@ -529,8 +529,7 @@ enum {
 		 */	
 	
 	EC_OP_STATSTREE,
-
-
+	
 	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
@@ -1184,6 +1183,11 @@ enum {
 		 * to statusline.
 		 */
 	EC_TAG_LOG_TO_STATUS,
+	
+	EC_TAG_IMAGE,
+	EC_TAG_IMAGE_X,
+	EC_TAG_IMAGE_Y,
+	EC_TAG_IMAGE_DATA,
 };
 
 

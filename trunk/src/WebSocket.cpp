@@ -127,7 +127,7 @@ void *CWCThread::Entry() {
 			return 0;
 		}
 		if (stWebSocket.m_hSocket->WaitForRead(0)) {
-			stWebSocket.m_hSocket->Read(stWebSocket.m_pBuf, stWebSocket.m_dwBufSize - stWebSocket.m_dwRecv);
+			stWebSocket.m_hSocket->Read(stWebSocket.m_pBuf+stWebSocket.m_dwRecv, stWebSocket.m_dwBufSize - stWebSocket.m_dwRecv);
 			stWebSocket.m_dwRecv += stWebSocket.m_hSocket->LastCount();
 			while ((stWebSocket.m_dwRecv == stWebSocket.m_dwBufSize) && (stWebSocket.m_hSocket->LastCount()!=0) && (!stWebSocket.m_hSocket->Error())) {
 					// Buffer is too small. Make it bigger.
