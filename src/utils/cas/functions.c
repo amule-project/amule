@@ -16,7 +16,7 @@ char *get_path(char *file)
 	char *ret, *home;	/* caller should free return value */
 	static char *saved_home = NULL;
 	static size_t home_len = 0;
-	static size_t total_len = 0
+	static size_t total_len = 0;
 	
 	if (saved_home == NULL) {
 		/* get home directory */
