@@ -41,16 +41,6 @@ wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
 	wxSizer* content=addFriendDlg(this,TRUE);
 	content->Show(this,TRUE);
-	OnInitDialog();
-}
-
-CAddFriend::~CAddFriend()
-{
-}
-
-bool CAddFriend::OnInitDialog()
-{
-	return true;
 }
 
 BEGIN_EVENT_TABLE(CAddFriend,wxDialog)
@@ -64,31 +54,53 @@ END_EVENT_TABLE()
 
 void CAddFriend::OnAddBtn(wxEvent& evt)
 {
-	CString name,userhash, fullip;
-	uint32 ip;
-	uint16 port;
-	ip=port=0;
-	if( GetDlgItem(ID_USERNAME,wxTextCtrl)->GetValue().Length() ) {
-		name.Format("%s",GetDlgItem(ID_USERNAME,wxTextCtrl)->GetValue().GetData());
-	}
-	if(GetDlgItem(ID_IPADDRESS,wxTextCtrl)->GetValue().Length()) {
-		fullip.Format("%s", GetDlgItem(ID_IPADDRESS,wxTextCtrl)->GetValue().GetData());
-	} else {
+	int a, b, c, d, scancount;
+	CString name, fullip, hash;
+	uint32 ip = 0;
+	uint16 port = 0;
+	
+	name = GetDlgItem(ID_USERNAME,wxTextCtrl)->GetValue();
+	hash = GetDlgItem(ID_USERHASH,wxTextCtrl)->GetValue();
+	fullip = GetDlgItem(ID_IPADDRESS,wxTextCtrl)->GetValue();
+	port = atoi( GetDlgItem(ID_IPORT,wxTextCtrl)->GetValue().GetData() );
+
+	scancount = sscanf(fullip.GetData(),"%d.%d.%d.%d",&a,&b,&c,&d);
+	if ( scancount != 4 || port <= 0 ) {
 		wxMessageBox(_("You have to enter a valid IP and port!"));
 		return;
-	}
-	if(GetDlgItem(ID_IPORT,wxTextCtrl)->GetValue().Length()) {
-		wxString buff=GetDlgItem(ID_IPORT,wxTextCtrl)->GetValue();
-		port = (atoi(buff.GetData())) ? atoi(buff.GetData()) : 0;
-	} else {
-		wxMessageBox(_("You have to enter a valid IP and port!"));
+	};
+	
+	if ( hash.Length() != 0 && hash.Length() != 32 ) {
+		wxMessageBox(_("The specified userhash is not valid!"));
 		return;
-	}
-	int a,b,c,d;
-	a=b=c=d=0;
-	sscanf(fullip.GetData(),"%d.%d.%d.%d",&a,&b,&c,&d);
-	ip=a|(b<<8)|(c<<16)|(d<<24);
-	theApp.friendlist->AddFriend(NULL, 0, ip, port, 0, name, 0 );
+	};
+
+	ip = a | (b << 8) | (c << 16) | (d << 24);
+
+	// Better than nothing at all...
+	if ( name.IsEmpty() )
+		name = fullip;
+
+	if ( hash.IsEmpty() ) {
+		theApp.friendlist->AddFriend( NULL, 0, ip, port, 0, name, 0 );
+	} else {
+		unsigned char userhash[16];
+		char temp[2];
+		int store;
+		
+		// Convert userhash to usable form
+		for ( int i = 0; i <= 15; i++ ) {
+			temp[0] = hash.GetData()[ i*2 ];
+			temp[1] = hash.GetData()[ i*2 + 1 ];
+
+			sscanf( temp, "%2x", &store );
+
+			userhash[i] = (char)store;
+		};
+		
+		theApp.friendlist->AddFriend( userhash, 0, ip, port, 0, name, 1 );
+	};
+	
 	EndModal(1);
 }
 
@@ -96,3 +108,4 @@ void CAddFriend::OnCloseBtn(wxEvent& evt)
 {
 	EndModal(0);
 }
+
