@@ -1,6 +1,6 @@
 SUBDIRS = src
 
-EXTRA_DIST =  alcc.msp alc.msp alc.rc alc.ico
+EXTRA_DIST =  alcc.msp alc.msp alc.rc alc.ico alc.iss
 
 dist_icon_DATA = alc.xpm
 icondir = $(datadir)/pixmaps

@@ -1,6 +1,6 @@
 SUBDIRS = src
 
-EXTRA_DIST =  wxcas.msp wxcas.rc wxcas.ico
+EXTRA_DIST =  wxcas.msp wxcas.rc wxcas.ico wxcas.iss
 
 dist_icon_DATA = wxcas.xpm
 icondir = $(datadir)/pixmaps

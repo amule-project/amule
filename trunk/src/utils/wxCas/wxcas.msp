@@ -10,8 +10,8 @@ arguments=
 intermediateFilesDirectory=Debug
 outputFilesDirectory=Debug
 compilerPreprocessor=_X86_=1, WIN32,_WIN32,WINVER=0x0400,__WIN95__,__GNUWIN32__,__WIN32__,STRICT,__WXMSW__,__WINDOWS__,__WXDEBUG__
-extraCompilerOptions=-DHAVE_CONFIG_H
-compilerIncludeDirectory=..\..\..\
+extraCompilerOptions=-DHAVE_CONFIG_H -march=i686 -fomit-frame-pointer  -D__WXMSW__ -mthreads -DNO_GCC_PRAGMA
+compilerIncludeDirectory=..\..\..\,C:\MinGWStudio\lib\wx\include\msw-unicode-release-static-2.5, C:\MinGWStudio\include\wx-2.5
 noWarning=0
 defaultWarning=0
 allWarning=1
@@ -27,8 +27,8 @@ optimizeLevel=0
 // linker
 libraryPath=
 outputFilename=Debug\wxcas.exe
-libraries=wx_msw_core-2.5, wx_msw_adv-2.5, wx_msw_html-2.5, wx_msw_xrc-2.5, wx_base-2.5, wx_base_net-2.5, wx_base_xml-2.5, wxjpeg-2.5, wxpng-2.5, wxtiff-2.5, wxzlib-2.5, wxexpat-2.5, wxregex-2.5, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32 , ctl3d32 , odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
-extraLinkerOptions=
+libraries=wx_mswu_xrc-2.5, wx_mswu_html-2.5, wx_mswu_adv-2.5, wx_mswu_core-2.5, wx_baseu_xml-2.5, wx_baseu_net-2.5, wx_baseu-2.5, rpcrt4, oleaut32, ole32, uuid, winspool, winmm, shell32, comctl32, comdlg32, ctl3d32, advapi32, wsock32, gdi32, wxregexu-2.5, wxexpat-2.5, wxtiff-2.5, wxjpeg-2.5, wxpng-2.5, wxzlib-2.5
+extraLinkerOptions=-mthreads  -Wl,--subsystem,windows -mwindows
 ignoreStartupFile=0
 ignoreDefaultLibs=0
 stripExecutableFile=0
@@ -38,7 +38,7 @@ extraArchiveOptions=
 
 //resource
 resourcePreprocessor=__WIN32__,__WIN95__,__GNUWIN32__
-resourceIncludeDirectory=
+resourceIncludeDirectory=C:\MinGWStudio\Include\wx-2.5
 extraResourceOptions=
 
 [Release]
@@ -48,8 +48,8 @@ arguments=
 intermediateFilesDirectory=Release
 outputFilesDirectory=Release
 compilerPreprocessor=_X86_=1, WIN32,_WIN32,WINVER=0x0400,__WIN95__,__GNUWIN32__,__WIN32__,STRICT,__WXMSW__,__WINDOWS__
-extraCompilerOptions=-DHAVE_CONFIG_H
-compilerIncludeDirectory=..\..\..\
+extraCompilerOptions=-DHAVE_CONFIG_H -march=i686 -fomit-frame-pointer  -D__WXMSW__ -mthreads -DNO_GCC_PRAGMA
+compilerIncludeDirectory=..\..\..\,C:\MinGWStudio\lib\wx\include\msw-unicode-release-static-2.5, C:\MinGWStudio\include\wx-2.5
 noWarning=0
 defaultWarning=0
 allWarning=1
@@ -65,8 +65,8 @@ optimizeLevel=2
 // linker
 libraryPath=
 outputFilename=Release\wxcas.exe
-libraries=wx_msw_core-2.5, wx_msw_adv-2.5, wx_msw_html-2.5, wx_msw_xrc-2.5, wx_base-2.5, wx_base_net-2.5, wx_base_xml-2.5, wxjpeg-2.5, wxpng-2.5, wxtiff-2.5, wxzlib-2.5, wxexpat-2.5, wxregex-2.5, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
-extraLinkerOptions=
+libraries=wx_mswu_xrc-2.5, wx_mswu_html-2.5, wx_mswu_adv-2.5, wx_mswu_core-2.5, wx_baseu_xml-2.5, wx_baseu_net-2.5, wx_baseu-2.5, rpcrt4, oleaut32, ole32, uuid, winspool, winmm, shell32, comctl32, comdlg32, ctl3d32, advapi32, wsock32, gdi32, wxregexu-2.5, wxexpat-2.5, wxtiff-2.5, wxjpeg-2.5, wxpng-2.5, wxzlib-2.5
+extraLinkerOptions=-mthreads  -Wl,--subsystem,windows -mwindows
 ignoreStartupFile=0
 ignoreDefaultLibs=0
 stripExecutableFile=1
@@ -76,7 +76,7 @@ extraArchiveOptions=
 
 //resource
 resourcePreprocessor=__WIN32__,__WIN95__,__GNUWIN32__
-resourceIncludeDirectory=
+resourceIncludeDirectory=C:\MinGWStudio\Include\wx-2.5
 extraResourceOptions=
 
 [Source]
