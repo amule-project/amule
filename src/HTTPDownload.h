@@ -27,6 +27,7 @@
 #include "GuiEvents.h"
 
 class HTTPThread;
+class wxGauge;
 
 class MuleGifCtrl;
 
@@ -36,6 +37,9 @@ public:
 	CHTTPThreadDlg(wxWindow*parent, HTTPThread* thread);
 	~CHTTPThreadDlg();
 
+	void StopAnimation(); 
+	void UpdateGauge(int dltotal,int dlnow);
+
 private:
 	DECLARE_EVENT_TABLE()
 
@@ -43,6 +47,7 @@ private:
   
 	HTTPThread* parent_thread;
 	MuleGifCtrl* ani;
+	wxGauge* 	m_progressbar;
 };
 
 class HTTPThread : public wxThread
@@ -68,4 +73,3 @@ private:
 };
 
 #endif // HTTPDOWNLOAD_H
-
