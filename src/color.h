@@ -1,7 +1,6 @@
+//
 // This file is part of the aMule project.
 //
-// color.h - color related stuff.
-// 
 // Copyright (c) 2004 aMule Project ( http://www.amule-project.net )
 // Copyright (c) 2004, Carlo Wood <carlo@alinoe.com>
 //
@@ -28,33 +27,73 @@
 #include <wx/settings.h>        // Needed for wxSystemColour
 #include "types.h"
 
+
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
 typedef uint32_t		COLORREF;
 #endif
 
-inline int
-G_BLEND(int a, int percentage)
+
+inline int G_BLEND(int a, int percentage)
 {
-  int result = a * percentage / 100;
-  return (result > 255) ? 255 : result;
+	int result = a * percentage / 100;
+	return (result > 255) ? 255 : result;
 }
+
+
+inline wxColour BLEND( wxColour colour, int percentage )
+{
+	int red   = G_BLEND( colour.Red(),   percentage );
+	int green = G_BLEND( colour.Green(), percentage );
+	int blue  = G_BLEND( colour.Blue(),  percentage );
+
+	return wxColour( red, green, blue );
+}
+
+
 #ifndef __WXMSW__
-inline COLORREF RGB(int a, int b, int c) {
-  COLORREF result;
-  result = (a & 0xff) << 16;
-  result |= (b & 0xff) << 8;
-  result |= (c & 0xff);
-  return result;
+inline COLORREF RGB(int a, int b, int c)
+{
+	COLORREF result;
+	result = (a & 0xff) << 16;
+	result |= (b & 0xff) << 8;
+	result |= (c & 0xff);
+	return result;
 }
-inline int GetRValue(COLORREF rgb) { return (rgb >> 16) & 0xff; }
-inline int GetGValue(COLORREF rgb) { return (rgb >> 8) & 0xff; }
-inline int GetBValue(COLORREF rgb) { return rgb & 0xff; }
+
+
+inline int GetRValue(COLORREF rgb)
+{
+	return (rgb >> 16) & 0xff;
+}
+
+
+inline int GetGValue(COLORREF rgb)
+{
+	return (rgb >> 8) & 0xff;
+}
+
+
+inline int GetBValue(COLORREF rgb)
+{
+	return rgb & 0xff;
+}
 #endif
 
-inline wxColour WxColourFromCr(COLORREF cr)  { return wxColour(GetRValue(cr),GetGValue(cr),GetBValue(cr)); }
-inline COLORREF CrFromWxColour(wxColour col)  { return RGB(col.Red(), col.Green(), col.Blue()); }
 
-wxColour GetColour(wxSystemColour what);
+inline wxColour WxColourFromCr(COLORREF cr)
+{
+	return wxColour(GetRValue(cr),GetGValue(cr),GetBValue(cr));
+}
+
+
+inline COLORREF CrFromWxColour(wxColour col)
+{
+	return RGB(col.Red(), col.Green(), col.Blue());
+}
+
+
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
 
-#endif // COLOR_H
+
+#endif
+

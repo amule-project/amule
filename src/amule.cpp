@@ -1187,29 +1187,6 @@ static bool GetColourWidget(int &red, int &green, int &blue, int type)
 }
 
 
-// external helper function
-wxColour GetColour(wxSystemColour what)
-{
-	static wxColour *_systemWindowColour = NULL;
-
-	switch (what) {
-		case wxSYS_COLOUR_WINDOW:
-			if (!_systemWindowColour) {
-				int red, green, blue;
-				if (!GetColourWidget(red, green, blue, wxGTK_WINDOW)) {
-					red = green = blue = 0x9c40;
-				}
-				_systemWindowColour = new wxColour(red >> SHIFT, green >> SHIFT, blue >> SHIFT);
-			}
-			return *_systemWindowColour;
-			break;
-		default:
-			break;
-	}
-	return true;
-}
-
-
 // Sets the localization of aMule
 void CamuleApp::Localize_mule()
 {
