@@ -241,6 +241,7 @@ wxString GetRateString(uint16 rate)
 
 // Base16 chars for encode an decode functions
 static byte base16Chars[17] = "0123456789ABCDEF";
+static byte base32Chars[33] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 #define BASE16_LOOKUP_MAX 23
 static byte base16Lookup[BASE16_LOOKUP_MAX][2] = {
 	{ '0', 0x0 },
@@ -339,6 +340,45 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 	return file;
 }
 
+
+// Returns a BASE32 encoded byte array
+//
+// [In]
+//   buffer: Pointer to byte array
+//   bufLen: Lenght of buffer array
+//
+// [Return]
+//   wxString object with BASE32 encoded byte array
+wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
+{
+	wxString Base32Buff;
+    
+	unsigned int i, index;
+    unsigned char word;
+
+    for(i = 0, index = 0; i < bufLen;) {
+
+		// Is the current word going to span a byte boundary?
+        if (index > 3) {
+            word = (buffer[i] & (0xFF >> index));
+            index = (index + 5) % 8;
+            word <<= index;
+            if (i < bufLen - 1)
+                word |= buffer[i + 1] >> (8 - index);
+
+            i++;
+        } else {
+            word = (buffer[i] >> (8 - (index + 5))) & 0x1F;
+            index = (index + 5) % 8;
+            if (index == 0)
+               i++;
+        }
+
+		Base32Buff += (char) base32Chars[word];
+    }
+
+    return Base32Buff;
+}
 
 // Returns a BASE16 encoded byte array
 //

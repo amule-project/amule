@@ -42,19 +42,28 @@ public:
 		intArr.Empty();
 	}
 	
-	int GetSize() const {
+	void Copy(const CArray& src) {
+		RemoveAll();
+		size_t newsize = src.GetSize();
+		SetSize(newsize); // to avoid too many mallocs.
+		for (uint32 i = 0; i < newsize; i++) {
+			Add(src[i]);
+		}
+	}
+	
+	size_t GetSize() const {
 		return intArr.GetCount();   
 	};
 	
-	int GetCount() const {
+	size_t GetCount() const {
 		return intArr.GetCount();
 	};
 	
-	int GetUpperBound() const {
+	size_t GetUpperBound() const {
 		return intArr.GetCount()+1;
 	};
 	
-	void SetSize(uint32 newsiz,int growby=-1) {
+	void SetSize(size_t newsiz,int growby=-1) {
 		intArr.Alloc(newsiz);
 		if (newsiz > intArr.GetCount()) {
 			intArr.Add(NULL, newsiz - intArr.GetCount());
@@ -73,19 +82,19 @@ public:
 		intArr.Shrink();
 	};
 	
-	void RemoveAt(int nIndex) {
+	void RemoveAt(size_t nIndex) {
 		intArr.RemoveAt(nIndex);
 	};
 
-	TYPE GetAt(int nIndex) const {
+	TYPE GetAt(size_t nIndex) const {
 		return (TYPE)intArr.Item(nIndex);
 	};
 	
-	void SetAt(int nIndex,ARG_TYPE newElem) {
+	void SetAt(size_t nIndex,ARG_TYPE newElem) {
 		intArr[nIndex]=(void*)((unsigned long)newElem);
 	};
 	
-	TYPE& ElementAt(int nIndex) {
+	TYPE& ElementAt(size_t nIndex) {
 		return (TYPE&)intArr.Item(nIndex);
 	};
 	
@@ -94,7 +103,7 @@ public:
 		return 0;
 	};
 	
-	void InsertAt(int nIndex,ARG_TYPE newElem) {
+	void InsertAt(size_t nIndex,ARG_TYPE newElem) {
 		intArr.Insert((void*)((unsigned long)newElem),nIndex,1);
 	}
 
@@ -102,11 +111,11 @@ public:
 		intArr.Sort(compareFunction);
 	}
 	
-	TYPE operator[](int nIndex) const {
+	TYPE operator[](size_t nIndex) const {
 		return (TYPE)intArr[nIndex];
 	};
 	
-	TYPE& operator[](int nIndex) {
+	TYPE& operator[](size_t nIndex) {
 		return (TYPE&)intArr[nIndex];
 	};
 	

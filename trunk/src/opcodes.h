@@ -92,6 +92,8 @@ enum {
 
 #define RSAKEYSIZE                         384             //384 bits
 
+#define EMBLOCKSIZE                               184320
+
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
 #define EMULE_GUID				"EMULE-{4EADC6FC-516F-4b7c-9066-97D893649569}"
