@@ -340,7 +340,9 @@ CPartFile::~CPartFile()
 	if (m_partmetfilename) {
 		delete[] m_partmetfilename;
 	}
-	m_SrcpartFrequency.RemoveAll();
+	
+	m_SrcpartFrequency.Clear();
+	
 	POSITION pos;
 	for (pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
 		delete gaplist.GetAt(pos);
@@ -399,10 +401,11 @@ void CPartFile::CreatePartFile()
 	if (GetED2KPartHashCount() == 0)
 		hashsetneeded = false;
 	
-	m_SrcpartFrequency.SetSize(GetPartCount());
-	for (uint32 i = 0; i < GetPartCount();i++) {
-		m_SrcpartFrequency.Add(0);
-	}
+	m_SrcpartFrequency.Clear();
+	m_SrcpartFrequency.Alloc(GetPartCount());
+	
+	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, GetPartCount());
+	
 	paused = false;
 	SavePartFile(true);
 }
@@ -622,7 +625,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 			uchar* checkhash= new uchar[16];
 			if (!hashlist.IsEmpty()){
 				uchar* buffer = new uchar[hashlist.GetCount()*16];
-				for (int i = 0; i < hashlist.GetCount(); i++)
+				for (size_t i = 0; i < hashlist.GetCount(); i++)
 					md4cpy(buffer+(i*16), hashlist[i]);
 				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash);
 				delete[] buffer;
@@ -631,9 +634,11 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 			if (!md4cmp(m_abyFileHash, checkhash))
 				flag=true;
 			else{
-				for (int i = 0; i < hashlist.GetSize(); i++)
+				/*
+				for (size_t i = 0; i < hashlist.GetCount(); i++)
 					delete[] hashlist[i];
-				hashlist.RemoveAll();
+				*/
+				hashlist.Clear();
 				flag=false;
 			}
 			delete[] checkhash;
@@ -707,12 +712,11 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 	}
 	// SLUGFILLER: SafeHash
 
+	m_SrcpartFrequency.Clear();
+	m_SrcpartFrequency.Alloc(GetPartCount());
 	
-	m_SrcpartFrequency.SetSize(GetPartCount());
-	for (uint32 i = 0; i < GetPartCount();i++) {
-		m_SrcpartFrequency.Add(0);
-	}
-
+	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, GetPartCount());
+	
 	SetPartFileStatus(PS_EMPTY);
 	
 	// check hashcount, file status etc
@@ -721,7 +725,7 @@ uint8 CPartFile::LoadPartFile(LPCTSTR in_directory, LPCTSTR filename, bool getsi
 		return true;
 	} else {
 		hashsetneeded = false;
-		for (int i = 0; i < hashlist.GetSize(); i++) {
+		for (size_t i = 0; i < hashlist.GetCount(); i++) {
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 				SetPartFileStatus(PS_READY);
 			}
@@ -1007,7 +1011,7 @@ void CPartFile::SaveSourceSeeds() {
 		if (GetSourceCount()>0) {
 			// Random first slot to avoid flooding same sources always
 			uint32 fst_slot = (uint32)(rand()/(RAND_MAX/(SOURCESSLOTS-1)));
-			for (int sl=fst_slot;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
+			for (uint32 sl=fst_slot;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty()) {
 				POSITION pos1, pos2;
 				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
 					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
@@ -1020,7 +1024,7 @@ void CPartFile::SaveSourceSeeds() {
 				}		
 			}
 			// Not yet? wrap around
-			for (int sl=0;sl<fst_slot-1;sl++) if (!srclists[sl].IsEmpty()) {
+			for (uint32 sl=0;sl<fst_slot-1;sl++) if (!srclists[sl].IsEmpty()) {
 				POSITION pos1, pos2;
 				for (pos1 = srclists[sl].GetTailPosition();(((pos2 = pos1)  != NULL) && (n_sources<5));) {
 					CUpDownClient* cur_src = srclists[sl].GetPrev(pos1);		
@@ -1152,7 +1156,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 		}
 	}
 	else{
-		for (uint32 i = 0; i < (uint32)hashlist.GetSize(); i++){
+		for (size_t i = 0; i < hashlist.GetCount(); i++){
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),this->GetPartHash(i)))){
 					theApp.amuledlg->AddLogLine(false, CString(_("Found corrupted part (%i) in %i parts file %s - FileResultHash |%s| FileHash |%s|")), i+1, GetED2KPartHashCount(), m_strFileName.GetData(),result->GetPartHash(i),this->GetPartHash(i));							
@@ -1473,7 +1477,7 @@ void CPartFile::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool bFlat)
 				}
 				// paint
 				COLORREF color;
-				if (m_SrcpartFrequency.GetCount() >= (int)i && m_SrcpartFrequency[i]) {
+				if (m_SrcpartFrequency.GetCount() >= (size_t)i && m_SrcpartFrequency[i]) {
 					// frequency?
 					color = RGB(0,(210-(22*(m_SrcpartFrequency[i]-1)) <  0)? 0:210-(22*(m_SrcpartFrequency[i]-1)),255);
 				} else {
@@ -1885,45 +1889,22 @@ void CPartFile::AddSources(CMemFile* sources,uint32 serverip, uint16 serverport)
 	}
 }
 
-// SLUGFILLER: heapsortCompletesrc
-static void HeapSort(CArray<uint16,uint16> &count, int32 first, int32 last){
-	int32 r;
-	for ( r = first; !(r & 0x80000000) && (r<<1) < last; ){
-		uint32 r2 = (r<<1)+1;
-		if (r2 != (unsigned)last)
-			if (count[r2] < count[r2+1])
-				r2++;
-		if (count[r] < count[r2]){
-			uint16 t = count[r2];
-			count[r2] = count[r];
-			count[r] = t;
-			r = r2;
-		}
-		else
-			break;
-	}
-}
-// SLUGFILLER: heapsortCompletesrc
-
-
 void CPartFile::NewSrcPartsInfo(){
 	// Cache part count
 	uint16 partcount = GetPartCount();
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
+	
+	ArrayOfUInts16 count;	
+	
+	count.Alloc(m_ClientUploadList.GetCount());	
 
-	CArray<uint16,uint16> count;	// SLUGFILLER: heapsortCompletesrc
-	count.SetSize(0, m_ClientUploadList.GetSize());
+	// Reset Part Count and allocate it with 0es
+	
+	m_SrcpartFrequency.Clear();
+	m_SrcpartFrequency.Alloc(partcount);
+	
+	m_SrcpartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
 
-	// Increase size if necessary
-	if(m_SrcpartFrequency.GetSize() < partcount)
-	{
-		m_SrcpartFrequency.SetSize(partcount);
-	}
-	// Reset part counters
-	for(int i = 0; i < partcount; i++)
-	{
-		m_SrcpartFrequency[i] = 0;
-	}
 	CUpDownClient* cur_src;
 	
 	uint16 cur_count = 0;
@@ -1934,7 +1915,7 @@ void CPartFile::NewSrcPartsInfo(){
 			for (POSITION pos = srclists[sl].GetHeadPosition(); pos != 0; )
 			{
 				cur_src = srclists[sl].GetNext(pos);
-				for (int i = 0; i < partcount; i++)
+				for (uint16 i = 0; i < partcount; i++)
 				{
 					if (cur_src->IsPartAvailable(i))
 					{
@@ -1971,49 +1952,42 @@ void CPartFile::NewSrcPartsInfo(){
 			count.Add(m_nCompleteSourcesCount);
 		}
 	
-		count.FreeExtra();
+		count.Shrink();
 	
-		int32 n = count.GetSize();
+		int32 n = count.GetCount();
 		if (n > 0)
 		{
-			// SLUGFILLER: heapsortCompletesrc
-			int32 r;
-			for (r = n/2; r--; )
-				HeapSort(count, r, n-1);
-			for (r = n; --r; ){
-				uint16 t = count[r];
-				count[r] = count[0];
-				count[0] = t;
-				HeapSort(count, 0, r-1);
-			}
-			// SLUGFILLER: heapsortCompletesrc
+
+			// Kry - Native wx functions instead
+			count.Sort(Uint16CompareValues);
+			
 			// calculate range
 			int32 i= n >> 1;		// (n / 2)
 			int32 j= (n * 3) >> 2;	// (n * 3) / 4
 			int32 k= (n * 7) >> 3;	// (n * 7) / 8
 			if (n < 5)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= 0;
-				m_nCompleteSourcesCountHi= m_nCompleteSourcesCount;
+				m_nCompleteSourcesCount   = count[i];
+				m_nCompleteSourcesCountLo = 0;
+				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 			}
 			else if (n < 10)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= count.GetAt(i - 1);
-				m_nCompleteSourcesCountHi= count.GetAt(i + 1);
+				m_nCompleteSourcesCount   = count[i];
+				m_nCompleteSourcesCountLo = count[i-1];
+				m_nCompleteSourcesCountHi = count[i+1];
 			}
 			else if (n < 20)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= count.GetAt(i);
-				m_nCompleteSourcesCountHi= count.GetAt(j);
+				m_nCompleteSourcesCount   = count[i];
+				m_nCompleteSourcesCountLo = count[i];
+				m_nCompleteSourcesCountHi = count[j];
 			}
 			else
 			{
-				m_nCompleteSourcesCount= count.GetAt(j);
-				m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
-				m_nCompleteSourcesCountHi= count.GetAt(k);
+				m_nCompleteSourcesCount   = count[j];
+				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
+				m_nCompleteSourcesCountHi = count[k];
 			}
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
@@ -3693,7 +3667,7 @@ wxString CPartFile::GetProgressString(uint16 size)
 					}
 					// paint
 					uint8 color;
-					if (m_SrcpartFrequency.GetCount() >= (int)i && m_SrcpartFrequency[i]) {  // frequency?
+					if (m_SrcpartFrequency.GetCount() >= (size_t)i && m_SrcpartFrequency[i]) {  // frequency?
 						//color = crWaiting;
 						//added lemonfan's progressbar patch
 						color = m_SrcpartFrequency[i] < 10 ? crWaiting[m_SrcpartFrequency[i]/2]:crWaiting[5];

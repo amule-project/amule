@@ -20,8 +20,8 @@
 
 #include "types.h"		// Needed for uint8, uint16 and uint32
 #include "CString.h"		// Needed for CString
-#include "CArray.h"		// Needed for CArray
 #include <wx/thread.h>
+#include <wx/dynarray.h>
 
 struct IPRange_Struct {
    uint32           IPstart;
@@ -30,6 +30,8 @@ struct IPRange_Struct {
    CString			description;
    ~IPRange_Struct() {  }
 };
+
+WX_DECLARE_OBJARRAY(IPRange_Struct*, ArrayOfIPRange_Struct);
 
 static wxMutex s_IPfilter_Data_mutex;
 
@@ -49,7 +51,7 @@ public:
 	void 	Reload();
 private: 
 	CString lasthit;
-	CArray<IPRange_Struct*,IPRange_Struct*> iplist;
+	ArrayOfIPRange_Struct iplist;
 };
 
 #endif // IPFILTER_H

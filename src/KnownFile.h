@@ -21,11 +21,12 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dc.h>		// Needed for wxDC
 #include <wx/gdicmn.h>		// Needed for wxRect
+#include <wx/dynarray.h>
 
 #include "types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "CString.h"		// Needed for CString
 #include "opcodes.h"		// Needed for PARTSIZE
-#include "CArray.h"		// Needed for CArray
+#include "CArray.h"
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 class CUpDownClient;
@@ -33,6 +34,12 @@ class CFile;
 class Packet;
 class CTag;
 class CBarShader;
+
+WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
+
+WX_DECLARE_OBJARRAY(unsigned char*, ArrayOfUCharPtr);
+
+WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
 
 class CFileStatistic {
 	friend class CKnownFile;
@@ -170,10 +177,6 @@ public:
 	// file sharing
 	virtual	Packet*	CreateSrcInfoPacket(CUpDownClient* forClient);
 	
-	#ifdef RELEASE_GROUP_MODE
-	uint32	totalupload;
-	#endif	
-	
 protected:
 	bool	LoadTagsFromFile(CFile* file);
 	bool	LoadDateFromFile(CFile* file);
@@ -182,8 +185,8 @@ protected:
 	void	CreateHashFromString(unsigned char* in_string, int Length, unsigned char* Output)	{CreateHashFromInput(0,0,Length,Output,in_string);}
 	void	LoadComment();//comment
 	void GetMetaDataTags();
-	CArray<unsigned char*,unsigned char*> hashlist;
-	CArray<CTag*,CTag*> taglist;
+	ArrayOfUCharPtr hashlist;
+	ArrayOfCTag taglist;
 	char*	directory;
 	CString m_strFilePath;	
 
@@ -200,7 +203,7 @@ private:
 	static	CBarShader s_ShareStatusBar;
 	bool	m_PublishedED2K;
 
-	CArray<uint16,uint16> m_AvailPartFrequency;
+	ArrayOfUInts16 m_AvailPartFrequency;
 
 /* Creteil Begin */
 public:

@@ -21,11 +21,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <wx/ffile.h>
-	
+
 #include "KnownFile.h"		// Interface declarations.
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "otherfunctions.h"	// Needed for nstrdup
-#include "ini2.h"		// Needed for CIni
+#include "ini2.h"			// Needed for CIni
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "CMemFile.h"		// Needed for CMemFile
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
@@ -37,29 +37,14 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "CamuleAppBase.h"	// Needed for theApp
+#include "amule.h"			// Needed for theApp
+
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+
+WX_DEFINE_OBJARRAY(ArrayOfUCharPtr);
+WX_DEFINE_OBJARRAY(ArrayOfCTag);
 
 static void MD4Transform(uint32 Hash[4], uint32 x[16]);
-
-// SLUGFILLER: heapsortCompletesrc
-static void HeapSort(CArray<uint16,uint16> &count, int32 first, int32 last){
-	int32 r;
-	for ( r = first; !(r & 0x80000000) && (r<<1) < last; ){
-		uint32 r2 = (r<<1)+1;
-		if (r2 != last)
-			if (count[r2] < count[r2+1])
-				r2++;
-		if (count[r] < count[r2]){
-			uint16 t = count[r2];
-			count[r2] = count[r];
-			count[r] = t;
-			r = r2;
-		}
-		else
-			break;
-	}
-}
-// SLUGFILLER: heapsortCompletesrc
 
 CAbstractFile::CAbstractFile()
 {
@@ -123,16 +108,21 @@ CKnownFile::CKnownFile(){
 }
 
 CKnownFile::~CKnownFile(){
-	for (int i = 0; i != hashlist.GetSize(); i++)
+	hashlist.Clear();
+	taglist.Clear();
+	/*
+	for (int i = 0; i != hashlist.GetCount(); i++)
 		if (hashlist[i])
 			delete[] hashlist[i];
-	for (int i = 0; i != taglist.GetSize(); i++)
+	for (int i = 0; i != taglist.GetCount(); i++)
 		delete taglist[i];
+	*/
 //	if (filename)	// done by CAbstractFile destructor
 //		delete[] filename;
 	if (directory)
 		delete[] directory;
-	m_AvailPartFrequency.RemoveAll();
+	
+	m_AvailPartFrequency.Clear();
 }
 
 CBarShader CKnownFile::s_ShareStatusBar(16);
@@ -157,23 +147,23 @@ void CKnownFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bo
 void CKnownFile::NewAvailPartsInfo(){
 	
 	// Cache part count
-	uint16 partcount = GetPartCount();
+	size_t partcount = GetPartCount();
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
 	
-	CArray<uint16,uint16> count;	// SLUGFILLER: heapsortCompletesrc
-	count.SetSize(0, m_ClientUploadList.GetSize());
+	ArrayOfUInts16 count;	
+	
+	count.Alloc(m_ClientUploadList.GetCount());
 
-	if(m_AvailPartFrequency.GetSize() < partcount)
-	{
-		m_AvailPartFrequency.SetSize(partcount);
-	}
-
-	// Reset part counters
-	for(int i = 0; i < partcount; i++)
-	{
-		m_AvailPartFrequency[i] = 0;
-	}
+	
+	// Reset Part Count and allocate it with 0es
+	
+	m_AvailPartFrequency.Clear();
+	m_AvailPartFrequency.Alloc(partcount);
+	
+	m_AvailPartFrequency.Insert(/*Item*/0, /*pos*/0, partcount);
+	
 	CUpDownClient* cur_src;
+	
 	if(this->IsPartFile())
 	{
 		cur_src = NULL;
@@ -218,49 +208,42 @@ void CKnownFile::NewAvailPartsInfo(){
 			count.Add(m_nCompleteSourcesCount);
 		}
 	
-		count.FreeExtra();
+		count.Shrink();
 	
-		int32 n = count.GetSize();
+		int32 n = count.GetCount();
 		if (n > 0)
 		{
-			// SLUGFILLER: heapsortCompletesrc
-			int32 r;
-			for (r = n/2; r--; )
-				HeapSort(count, r, n-1);
-			for (r = n; --r; ){
-				uint16 t = count[r];
-				count[r] = count[0];
-				count[0] = t;
-				HeapSort(count, 0, r-1);
-			}
-			// SLUGFILLER: heapsortCompletesrc
+			
+			// Kry - Native wx functions instead
+			count.Sort(Uint16CompareValues);
+			
 			// calculate range
 			int32 i= n >> 1;		// (n / 2)
 			int32 j= (n * 3) >> 2;	// (n * 3) / 4
 			int32 k= (n * 7) >> 3;	// (n * 7) / 8
 			if (n < 5)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= 0;
-				m_nCompleteSourcesCountHi= m_nCompleteSourcesCount;
+				m_nCompleteSourcesCount = count[i];
+				m_nCompleteSourcesCountLo = 0;
+				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 			}
 			else if (n < 10)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= count.GetAt(i - 1);
-				m_nCompleteSourcesCountHi= count.GetAt(i + 1);
+				m_nCompleteSourcesCount = count[i];
+				m_nCompleteSourcesCountLo = count[i-1];
+				m_nCompleteSourcesCountHi = count[i+1];
 			}
 			else if (n < 20)
 			{
-				m_nCompleteSourcesCount= count.GetAt(i);
-				m_nCompleteSourcesCountLo= count.GetAt(i);
-				m_nCompleteSourcesCountHi= count.GetAt(j);
+				m_nCompleteSourcesCount= count[i];
+				m_nCompleteSourcesCountLo= count[i];
+				m_nCompleteSourcesCountHi= count[j];
 			}
 			else
 			{
-				m_nCompleteSourcesCount= count.GetAt(j);
+				m_nCompleteSourcesCount= count[j];
 				m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
-				m_nCompleteSourcesCountHi= count.GetAt(k);
+				m_nCompleteSourcesCountHi= count[k];
 			}
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
@@ -342,10 +325,10 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 	// we are reading the file data later in 8K blocks, adjust the internal file stream buffer accordingly
 	//	setvbuf(file, NULL, _IOFBF, 1024*8*2);
 	
-	m_AvailPartFrequency.SetSize(GetPartCount());
-	for (uint32 i = 0; i != GetPartCount();i++) {
-		m_AvailPartFrequency.Add(0);
-	}
+	m_AvailPartFrequency.Clear();
+	m_AvailPartFrequency.Alloc(GetPartCount());
+	m_AvailPartFrequency.Insert(/*Item*/0,/*pos*/0, GetPartCount());
+
 	// create hashset
 	uint32 togo = m_nFileSize;
 	uint16 hashcount;
@@ -388,7 +371,7 @@ bool CKnownFile::CreateFromFile(char* in_directory,char* in_filename, volatile i
 		printf("  HC ");
 		hashlist.Add(lasthash);		
 		uchar* buffer = new uchar[hashlist.GetCount()*16];
-		for (int i = 0; i < hashlist.GetCount(); i++) {
+		for (size_t i = 0; i < hashlist.GetCount(); i++) {
 			printf("CP%i",i);
 			md4cpy(buffer+(i*16), hashlist[i]);
 		}
@@ -761,7 +744,7 @@ bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
 
 	if (!hashlist.IsEmpty()){
 		uchar* buffer = new uchar[hashlist.GetCount()*16];
-		for (int i = 0;i != hashlist.GetCount();i++) {
+		for (size_t i = 0;i != hashlist.GetCount();i++) {
 			md4cpy(buffer+(i*16),hashlist[i]);
 		}
 		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid);
@@ -770,10 +753,13 @@ bool CKnownFile::LoadHashsetFromFile(CFile* file, bool checkhash){
 	if (!md4cmp(m_abyFileHash, checkid)) {
 		return true;
 	} else {
-		for (int i = 0; i < hashlist.GetSize(); i++) {
+		hashlist.Clear();
+		/*
+		for (int i = 0; i < hashlist.GetCount(); i++) {
 			delete[] hashlist[i];
 		}
 		hashlist.RemoveAll();
+		*/
 		return false;
 	}
 }
@@ -792,7 +778,7 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 			}
 			case FT_FILESIZE:{
 				SetFileSize(newtag->tag.intvalue);
-				m_AvailPartFrequency.SetSize(GetPartCount());
+				m_AvailPartFrequency.Alloc(GetPartCount());
 				for (uint32 i = 0; i < GetPartCount();i++) {
 					m_AvailPartFrequency.Add(0);
 				}
@@ -887,7 +873,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	// 
 	// The code for writing the float tags SHOULD BE ENABLED in SOME MONTHS (after most 
 	// people are using the newer eMule versions which do not write broken float tags).	
-	for (int j = 0; j < taglist.GetCount(); j++){
+	for (size_t j = 0; j < taglist.GetCount(); j++){
 		if (taglist[j]->tag.type == 2 || taglist[j]->tag.type == 3)
 			tagcount++;
 	}
@@ -924,7 +910,7 @@ bool CKnownFile::WriteToFile(CFile* file){
 	permtag.WriteTagToFile(file);
 
 	//other tags
-	for (int j = 0; j < taglist.GetCount(); j++){
+	for (size_t j = 0; j < taglist.GetCount(); j++){
 		if (taglist[j]->tag.type == 2 || taglist[j]->tag.type == 3)
 			taglist[j]->WriteTagToFile(file);
 	}

@@ -731,6 +731,10 @@ bool IsGoodIPPort(uint32 nIP, uint16 nPort)
 	return IsGoodIP(nIP) && nPort!=0;
 }
 
+int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
+	return (((int)*first) - ((int)*second))	;
+}	
+
 /*         BSD based OS support for gethostname_r       */
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)  || defined(__DARWIN__)

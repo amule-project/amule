@@ -29,8 +29,8 @@
 
 #include "CString.h"		// Needed for CStringList
 #include "MD5Sum.h"		// Needed for MD5Sum
-#include "CArray.h"		// Needed for CArray
 #include "PrefsUnifiedDlg.h"			// Needed for UNIFIED_PREF_HANDLING
+#include <wx/dynarray.h>
 
 class CString;
 class Rse;
@@ -417,6 +417,8 @@ struct Preferences_Import20b_Struct{
 };
 #pragma pack()
 
+WX_DECLARE_OBJARRAY(Category_Struct*, ArrayOfCategory_Struct);
+
 class CPreferences{
 public:
 	enum Table { tableDownload, tableUpload, tableQueue, tableSearch,
@@ -644,11 +646,11 @@ public:
 	CString	GetDateTimeFormat()		{ return CString(prefs->datetimeformat);}
 	// Download Categories (Ornis)
 	int32	AddCat(Category_Struct* cat) 	{ catMap.Add(cat); return catMap.GetCount()-1;}
-	void	RemoveCat(int index);
+	void	RemoveCat(size_t index);
 	uint32	GetCatCount()			{ return catMap.GetCount();}
-	Category_Struct* GetCategory(int index) { if (index>=0 && index<catMap.GetCount()) return catMap.GetAt(index); else return NULL;}
-	char*	GetCatPath(uint8 index)		{ return catMap.GetAt(index)->incomingpath;}
-	DWORD	GetCatColor(int index)		{ if ((int)index>=0 && (int)index<(int)catMap.GetCount()) return catMap.GetAt(index)->color; else return 0;}
+	Category_Struct* GetCategory(size_t index) { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
+	char*	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
+	DWORD	GetCatColor(size_t index)		{ if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
 	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}
 	int32	GetAllcatType()			{ return prefs->allcatType;}
@@ -766,7 +768,7 @@ private:
 	void LoadPreferences();
 	void SavePreferences();
 
-	CArray<Category_Struct*,Category_Struct*> catMap;
+	ArrayOfCategory_Struct catMap;
 
 	// deadlake PROXYSUPPORT
 	bool m_UseProxyListenPort;

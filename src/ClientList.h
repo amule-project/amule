@@ -22,7 +22,6 @@
 #include "types.h"		// Needed for uint16 and uint32
 #include "MapKey.h"		// Needed for CMap
 #include "CTypedPtrList.h"	// Needed for CPtrList
-#include "CArray.h"
 #include "GetTickCount.h"
 #include "updownclient.h"	// Needed for CUpDownClient
 
