@@ -23,11 +23,11 @@
 // 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _ONLINESIG_H
-#define _ONLINESIG_H
+#ifndef _LINUXMON_H
+#define _LINUXMON_H
 
 #ifdef __GNUG__
-#pragma interface "onlinesig.h"
+#pragma interface "linuxmon.h"
 #endif
 
 // Include wxWindows' headers
@@ -37,67 +37,33 @@
 
 #include <wx/filename.h>
 
-// OnLineSig Class
-class OnLineSig
+// LinuxMon Class
+class LinuxMon
 {
 private:
 
-  wxString m_isRunning;
-  wxString m_serverName;
-  wxString m_serverIP;
-  wxString m_serverPort;
-  wxString m_connexionID;
-  wxString m_ULRate;
-  wxString m_DLRate;
-  wxString m_queue;
-  wxString m_sharedFiles;
-  wxString m_user;
-  wxString m_totalUL;
-  wxString m_totalDL;
-  wxString m_version;
-  wxString m_sessionUL;
-  wxString m_sessionDL;
-  wxString m_runTime;
+  wxString m_uptime;
+  float m_sysLoad_1;
+  float m_sysLoad_5;
+  float m_sysLoad_15;
 
-  wxFileName *m_amulesig;
-
-  wxString BytesConvertion (wxString bytes);
-
+  static const wxFileName UPTIME_FILE;
+  static const wxFileName LOADAVG_FILE;
 
 public:
 
-  // Constructors
-    OnLineSig ();
-
-    OnLineSig (wxFileName * file);
+  // Constructor
+    LinuxMon ();
 
   // Destructor
-   ~OnLineSig ();
+   ~LinuxMon ();
 
-  // Accessor
-  void SetAmuleSig (wxFileName * file);
+  // Accessors
   void Refresh ();
-  bool IsRunning ();
-  wxString GetServerName ();
-  wxString GetServerIP ();
-  wxString GetServerPort ();
-  wxString GetConnexionID ();
-  wxString GetULRate ();
-  wxString GetDLRate ();
-  wxString GetQueue ();
-  wxString GetSharedFiles ();
-  wxString GetUser ();
-  wxString GetTotalUL ();
-  wxString GetTotalDL ();
-  wxString GetVersion ();
-  wxString GetSessionUL ();
-  wxString GetSessionDL ();
-  wxString GetRunTime ();
-  wxString GetConvertedTotalUL ();
-  wxString GetConvertedTotalDL ();
-  wxString GetConvertedSessionUL ();
-  wxString GetConvertedSessionDL ();
-  wxString GetConnexionIDType ();
+  wxString GetUptime ();
+  float GetSysLoad_1 ();
+  float GetSysLoad_5 ();
+  float GetSysLoad_15 ();
 };
 
-#endif /* _ONLINESIG_H */
+#endif /* _LINUXMON_H */

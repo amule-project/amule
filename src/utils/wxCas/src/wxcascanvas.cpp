@@ -97,8 +97,8 @@ WxCasCanvas::Update ()
     {
       DrawImg ();
     }
-}    
-    
+}
+
 // Draw image
 void
 WxCasCanvas::DrawImg ()

@@ -110,8 +110,7 @@ OnLineSig::Refresh ()
   text >> m_runTime;
 }
 
-bool
-OnLineSig::IsRunning ()
+bool OnLineSig::IsRunning ()
 {
   if (m_isRunning == "1")
     {
@@ -123,124 +122,104 @@ OnLineSig::IsRunning ()
     }
 }
 
-wxString
-OnLineSig::GetServerName ()
+wxString OnLineSig::GetServerName ()
 {
   return m_serverName;
 }
 
-wxString
-OnLineSig::GetServerIP ()
+wxString OnLineSig::GetServerIP ()
 {
   return m_serverIP;
 }
 
-wxString
-OnLineSig::GetServerPort ()
+wxString OnLineSig::GetServerPort ()
 {
   return m_serverPort;
 }
 
-wxString
-OnLineSig::GetConnexionID ()
+wxString OnLineSig::GetConnexionID ()
 {
   return m_connexionID;
 }
 
-wxString
-OnLineSig::GetULRate ()
+wxString OnLineSig::GetULRate ()
 {
   return m_ULRate;
 }
 
-wxString
-OnLineSig::GetDLRate ()
+wxString OnLineSig::GetDLRate ()
 {
   return m_DLRate;
 }
 
-wxString
-OnLineSig::GetQueue ()
+wxString OnLineSig::GetQueue ()
 {
   return m_queue;
 }
 
-wxString
-OnLineSig::GetSharedFiles ()
+wxString OnLineSig::GetSharedFiles ()
 {
   return m_sharedFiles;
 }
 
-wxString
-OnLineSig::GetUser ()
+wxString OnLineSig::GetUser ()
 {
   return m_user;
 }
 
-wxString
-OnLineSig::GetTotalUL ()
+wxString OnLineSig::GetTotalUL ()
 {
   return m_totalUL;
 }
 
 
-wxString
-OnLineSig::GetTotalDL ()
+wxString OnLineSig::GetTotalDL ()
 {
   return m_totalDL;
 }
 
-wxString
-OnLineSig::GetVersion ()
+wxString OnLineSig::GetVersion ()
 {
   return m_version;
 }
 
-wxString
-OnLineSig::GetSessionUL ()
+wxString OnLineSig::GetSessionUL ()
 {
   return m_sessionUL;
 }
 
 
-wxString
-OnLineSig::GetSessionDL ()
+wxString OnLineSig::GetSessionDL ()
 {
   return m_sessionDL;
 }
 
-wxString
-OnLineSig::GetRunTime ()
+wxString OnLineSig::GetRunTime ()
 {
   return m_runTime;
 }
 
-wxString
-OnLineSig::GetConvertedTotalUL ()
+wxString OnLineSig::GetConvertedTotalUL ()
 {
   return (BytesConvertion (m_totalUL));
 }
 
-wxString
-OnLineSig::GetConvertedTotalDL ()
+wxString OnLineSig::GetConvertedTotalDL ()
 {
   return (BytesConvertion (m_totalDL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionUL ()
+wxString OnLineSig::GetConvertedSessionUL ()
 {
   return (BytesConvertion (m_sessionUL));
 }
 
-wxString
-OnLineSig::GetConvertedSessionDL ()
+wxString OnLineSig::GetConvertedSessionDL ()
 {
   return (BytesConvertion (m_sessionDL));
 }
 
-wxString
-OnLineSig::GetConnexionIDType ()
+wxString OnLineSig::GetConnexionIDType ()
 {
   if (m_connexionID == "H")
     {
@@ -254,15 +233,17 @@ OnLineSig::GetConnexionIDType ()
 
 
 // Private use
-wxString
-OnLineSig::BytesConvertion (wxString bytes)
+wxString OnLineSig::BytesConvertion (wxString bytes)
 {
-  double d_bytes;
-  wxString c_bytes;
+  double
+    d_bytes;
+  wxString
+    c_bytes;
 
   bytes.ToDouble (&d_bytes);
 
-  wxInt32 i = 0;
+  wxInt32
+    i = 0;
   while (d_bytes > 1024)
     {
       d_bytes /= 1024;

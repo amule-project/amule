@@ -42,6 +42,11 @@
 #include "wxcascanvas.h"
 #include "onlinesig.h"
 
+
+#ifdef __LINUX__		// System monitoring on Linux
+#include "linuxmon.h"
+#endif
+
 // wxCas Frame
 class WxCasFrame:public wxFrame
 {
@@ -55,7 +60,7 @@ public:
 
 protected:
 
-  void SetFromAmuleFile ();
+  void UpdateStatsPanel ();
 
   void OnBarRefresh (wxCommandEvent & event);
   void OnBarAbout (wxCommandEvent & event);
@@ -66,8 +71,8 @@ protected:
     DECLARE_EVENT_TABLE ();
 
 private:
-	
-  wxTimer * m_timer;
+
+    wxTimer * m_timer;
 
   wxUint32 m_maxLineCount;
 
@@ -90,10 +95,17 @@ private:
   wxStaticText *m_statLine_5;
   wxStaticText *m_statLine_6;
 
+
+#ifdef __LINUX__		// System monitoring on Linux
+  wxStaticText *m_sysLine_1;
+  wxStaticText *m_sysLine_2;
+  LinuxMon *m_sysMonitor;
+#endif
+
   WxCasCanvas *m_imgPanel;
-  
-  OnLineSig *aMuleSig;
-  
+
+  OnLineSig *m_aMuleSig;
+
 
   enum
   {
