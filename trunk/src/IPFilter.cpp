@@ -189,11 +189,7 @@ int CIPFilter::LoadFromFile(){
 		fclose(readFile);
 	}
 
-	GUIEvent event(ADDLOGLINE);
-	event.string_value = wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter);	
-	event.byte_value = true;
-	
-	theApp.NotifyEvent(event);	
+	AddLogLineM(true,wxString::Format(_("Loaded ipfilter with %d IP addresses."),filtercounter));	
 	
 	return filtercounter;
 }
