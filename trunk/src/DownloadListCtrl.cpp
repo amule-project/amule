@@ -290,6 +290,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				
 				menu->Append(MP_GETED2KLINK, _("Copy ED2k &link to clipboard"));
 				menu->Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (&HTML)"));
+				menu->Append(MP_WS, _("Copy feedback to clipboard"));
 				m_FileMenu = menu;
 
 			} else {
@@ -1721,6 +1722,18 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					theApp.CopyTextToClipboard(theApp.CreateHTMLED2kLink(file));
 					return true;					
 					break;
+				case MP_WS :
+					{
+					wxString feed = wxEmptyString;
+                    feed += wxString::Format("Feedback from: %s \r\n", theApp.glob_prefs->GetUserNick().c_str()); // edited by madcat	
+					feed += wxString::Format("File Name: %s \r\n", file->GetFileName().c_str());  
+					feed += wxString::Format("File size: %i MB\r\n", file->GetFileSize()/1048576).c_str(); 
+					feed += wxString::Format("Download: %i MB\r\n", file->GetCompletedSize()/1048576).c_str(); 
+					feed += wxString::Format("Sources: %i \r\n", file->GetSourceCount()); 
+					feed += wxString::Format("Complete Sources: %i \r\n", file->m_nCompleteSourcesCount).c_str(); 
+                    theApp.CopyTextToClipboard(feed);
+					break;
+				}
 				case MP_OPEN:{
 						if (selectedCount > 1) {
 							break;
