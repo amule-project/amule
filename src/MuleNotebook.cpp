@@ -38,6 +38,7 @@
 
 
 DEFINE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
+DEFINE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
 
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
@@ -80,6 +81,13 @@ bool CMuleNotebook::DeletePage(int nPage)
 	// Ensure a valid selection
 	if ( GetPageCount() && (int)GetSelection() >= (int)GetPageCount() ) {
 		SetSelection( GetPageCount() - 1 );
+	}
+
+	// Send an event when no pages are left open
+	if ( !GetPageCount() ) {
+		wxNotebookEvent event( wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED, GetId() );
+		event.SetEventObject(this);
+		ProcessEvent( event );
 	}
 
 	return result;
