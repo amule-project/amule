@@ -149,7 +149,14 @@ wxString GetFiletypeByName(wxString infile);
 int GetMaxConnections();
 CString GetCatTitle(int catid);
 bool IsGoodIP(uint32 nIP);
-
+#define HIGHEST_LOWID_HYBRID	16777216
+#define HIGHEST_LOWID_ED2K		16777216
+inline bool IsLowIDHybrid(uint32 id){
+	return (id < HIGHEST_LOWID_HYBRID);
+}
+inline bool IsLowIDED2K(uint32 id){
+	return (id < HIGHEST_LOWID_ED2K); //Need to verify what the highest LowID can be returned by the server.
+}
 
 /* String manipulation */
 wxString URLEncode(wxString sIn);

@@ -130,7 +130,7 @@ struct Preferences_Struct{
 	int16	maxsourceperfile;
 	int16	trafficOMeterInterval;
 	int16	statsInterval;
-	unsigned char	userhash[16];
+	uchar	userhash[16];
 	WINDOWPLACEMENT EmuleWindowPlacement;
 	int	maxGraphDownloadRate;
 	int	maxGraphUploadRate;
@@ -309,6 +309,9 @@ struct Preferences_Struct{
 	
 	// Kry - Source seeds on/off
 	bool		UseSrcSeeds;
+	
+	// Kry - Safe Max Connections
+	bool		UseSafeMaxConn;
 
 	bool		ProgBar;
 	bool		Percent;	
@@ -472,7 +475,7 @@ public:
 	uint16	GetUDPPort()			{return prefs->udpport;}
 	char*	GetIncomingDir()		{return prefs->incomingdir;}
 	char*	GetTempDir()			{return prefs->tempdir;}
-	char*	GetUserHash()			{return userhash;}
+	uchar*	GetUserHash()			{return (uchar*)userhash;}
 	uint16	GetMaxUpload()			{return	prefs->maxupload;}
 	uint16	GetSlotAllocation()		{return	prefs->slotallocation;}
 	bool	IsICHEnabled()			{return prefs->ICH;}
@@ -743,6 +746,9 @@ public:
 
 	// Kry - Source seeds On/Off
 	bool GetSrcSeedsOn() { return prefs->UseSrcSeeds; }
+	
+	// Kry - Safe Max Connections
+	bool GetSafeMaxConn() { return prefs->UseSafeMaxConn; }
 	
 	bool IsSecureIdentEnabled() { return prefs->SecIdent; }
 	

@@ -3249,17 +3249,17 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 	int sl;
 	for (sl=0;sl<SOURCESSLOTS;sl++) if (srclists[sl].IsEmpty()) return 0;
 
-	CMemFile data;
+	CSafeMemFile data(1024);
 	uint16 nCount = 0;
 
-	data.WriteRaw(m_abyFileHash,16);
+	data.WriteHash16(m_abyFileHash);
 	data.Write(nCount);
 	bool bNeeded;
 	for (sl=0;sl<SOURCESSLOTS;sl++) if (!srclists[sl].IsEmpty())
 	for (POSITION pos = srclists[sl].GetHeadPosition();pos != 0;srclists[sl].GetNext(pos)) {
 		bNeeded = false;
 		CUpDownClient* cur_src = srclists[sl].GetAt(pos);
-		if (cur_src->HasLowID()) {
+		if (cur_src->HasLowID() || !cur_src->IsValidSource()) {
 			continue;
 		}
 		// only send source which have needed parts for this client if possible
@@ -3287,16 +3287,19 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 		}
 		if(bNeeded) {
 			nCount++;
-			uint32 dwID = cur_src->GetUserID();
-			uint16 nPort = cur_src->GetUserPort();
-			uint32 dwServerIP = cur_src->GetServerIP();
-			uint16 nServerPort = cur_src->GetServerPort();
+			uint32 dwID;
+			#warning We should use the IDHybrid here... but is not implemented yet
+			if(forClient->GetSourceExchangeVersion() > 2) {
+				dwID = cur_src->GetUserID();
+			} else {
+				dwID = ntohl(cur_src->GetUserID());
+			}
 			data.Write(dwID);
-			data.Write(nPort);
-			data.Write(dwServerIP);
-			data.Write(nServerPort);
+			data.Write((uint16)cur_src->GetUserPort());
+			data.Write((uint32)cur_src->GetServerIP());
+			data.Write((uint16)cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion()>1) {
-				data.WriteRaw(cur_src->GetUserHash(),16);
+				data.WriteHash16(cur_src->GetUserHash());
 			}
 			if (nCount > 500) {
 				break;
@@ -3306,15 +3309,18 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 	if (!nCount) {
 		return 0;
 	}
-	data.Seek(16);
+	data.Seek(16,wxFromStart);
 	data.Write(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
 	result->opcode = OP_ANSWERSOURCES;
-	if (nCount > 28) {
+	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
+	if (result->size > 354) {
 		result->PackPacket();
 	}
-	theApp.amuledlg->AddDebugLogLine( false, "Send:Source User(%s) File(%s) Count(%i)", forClient->GetUserName(), GetFileName().GetData(), nCount );
+	//if (thePrefs.GetDebugSourceExchange()) {
+		theApp.amuledlg->AddDebugLogLine( false, "Send:Source User(%s) File(%s) Count(%i)", forClient->GetUserName(), GetFileName().GetData(), nCount );
+	//}
 	return result;
 }
 

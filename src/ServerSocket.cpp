@@ -531,39 +531,44 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 	SetConnectionState(CS_DISCONNECTED);
 }
 
-void CServerSocket::PacketReceived(Packet* packet)
+bool CServerSocket::PacketReceived(Packet* packet)
 {
 	#ifdef SERVER_NET_TEST
 	theApp.amuledlg->AddLogLine(true,"Server Packet Received:  ");
 	#endif
-
-	if (packet->prot == OP_PACKEDPROT) {
-		#ifdef SERVER_NET_TEST
-		theApp.amuledlg->AddLogLine(true,"Compressed packet, uncompressing... ");
-		#endif
-		if (!packet->UnPackPacket(250000)){
+	try {
+		if (packet->prot == OP_PACKEDPROT) {
 			#ifdef SERVER_NET_TEST
-			theApp.amuledlg->AddLogLine(true,"FAILED\n");
+			theApp.amuledlg->AddLogLine(true,"Compressed packet, uncompressing... ");
 			#endif
-			theApp.amuledlg->AddDebugLogLine(false,_T("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
-			theApp.downloadqueue->AddDownDataOverheadServer(packet->size);
-			return;
+			if (!packet->UnPackPacket(250000)){
+				#ifdef SERVER_NET_TEST
+				theApp.amuledlg->AddLogLine(true,"FAILED\n");
+				#endif
+				theApp.amuledlg->AddDebugLogLine(false,_T("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
+				theApp.downloadqueue->AddDownDataOverheadServer(packet->size);
+				return true;
+			}
+			#ifdef SERVER_NET_TEST
+			theApp.amuledlg->AddLogLine(true,"SUCCESS\n");
+			#endif
+			packet->prot = OP_EDONKEYPROT;
 		}
-		#ifdef SERVER_NET_TEST
-		theApp.amuledlg->AddLogLine(true,"SUCCESS\n");
-		#endif
-		packet->prot = OP_EDONKEYPROT;
+		if (packet->prot == OP_EDONKEYPROT) {
+			#ifdef SERVER_NET_TEST
+			theApp.amuledlg->AddLogLine(true,"Uncompressed packet\n");
+			#endif
+			ProcessPacket(packet->pBuffer,packet->size,packet->opcode);
+		} else {
+			theApp.amuledlg->AddDebugLogLine(false,_T("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
+			theApp.downloadqueue->AddDownDataOverheadServer(packet->size);
+		}
+	} catch(...) {
+		theApp.amuledlg->AddDebugLogLine(false,_T("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
+		wxASSERT(0);
+		return false;		
 	}
-	if (packet->prot == OP_EDONKEYPROT) {
-	#ifdef SERVER_NET_TEST
-	theApp.amuledlg->AddLogLine(true,"Uncompressed packet\n");
-	#endif
-		ProcessPacket(packet->pBuffer,packet->size,packet->opcode);
-	} else {
-		theApp.amuledlg->AddDebugLogLine(false,_T("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
-		theApp.downloadqueue->AddDownDataOverheadServer(packet->size);
-	}
-
+	return true;
 }
 
 void CServerSocket::OnClose(wxSocketError nErrorCode)

@@ -54,15 +54,18 @@ public:
 	void	DisableDownloadLimit();
 	bool	AsyncSelect(long lEvent);
 	//protected:
- public:
-	virtual void	PacketReceived(Packet* packet)		{}
-	virtual void	OnError(int nErrorCode)				{}
-	virtual void	OnClose(int nErrorCode);
+	// this functions are public on our code because of the amuleDlg::socketHandler
+	virtual void	OnError(int nErrorCode) { };
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
+	
+ protected:
+	virtual bool	PacketReceived(Packet* packet) { return false; };
+
+	virtual void	OnClose(int nErrorCode);
 	uint8	byConnected;
 
-	private:
+private:
 	void	ClearQueues();	
 	int		Send(char* lpBuf,int nBufLen,int nFlags = 0);
 

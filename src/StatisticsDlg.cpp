@@ -656,6 +656,7 @@ void  CStatisticsDlg::InitTree()
 	con9= stattree->AppendItem(h_connection,_("Waiting..."));
 
 	h_clients = stattree->AppendItem(root,CString(_("Clients")));
+	cli15= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli1= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli_versions[0]= stattree->AppendItem(cli1,_("Waiting..."));
 	cli_versions[1]= stattree->AppendItem(cli1,_("Waiting..."));
@@ -679,7 +680,10 @@ void  CStatisticsDlg::InitTree()
 	cli11= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli12= stattree->AppendItem(h_clients,_("Waiting..."));
 	cli6= stattree->AppendItem(h_clients,_("Waiting..."));
-	cli7= stattree->AppendItem(h_clients,CString(_("Filtered: %i")));
+	cli13= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli14= stattree->AppendItem(h_clients,_("Waiting..."));
+	cli7= stattree->AppendItem(h_clients,_("Filtered: %i"));
+
 
 	h_servers = stattree->AppendItem(root,CString(_("Servers")));
 	srv1= stattree->AppendItem(h_servers,_("Waiting..."));
@@ -842,18 +846,37 @@ void CStatisticsDlg::ShowStatistics()
 	if( !totalclient ) {
 		totalclient = 1;
 	}
-	cbuffer.Format(_("eMule: %i (%1.1f%%)"),myStats[2],(double)100*myStats[2]/totalclient);stattree->SetItemText(cli1, cbuffer);
-	cbuffer.Format(_("aMule: %i (%1.1f%%)"),myStats[8],(double)100*myStats[8]/totalclient);stattree->SetItemText(cli10, cbuffer);
-	cbuffer.Format(_("lMule/xMule: %i (%1.1f%%)"),myStats[6],(double)100*myStats[6]/totalclient);stattree->SetItemText(cli8, cbuffer);
-	cbuffer.Format(_("eDonkeyHybrid: %i (%1.1f%%)"),myStats[4],(double)100*myStats[4]/totalclient);stattree->SetItemText(cli2, cbuffer);
-	cbuffer.Format(_("eDonkey: %i (%1.1f%%)"),myStats[1],(double)100*myStats[1]/totalclient);stattree->SetItemText(cli3, cbuffer);
-	cbuffer.Format(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);stattree->SetItemText(cli4, cbuffer);
-	cbuffer.Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);stattree->SetItemText(cli5, cbuffer);
-	cbuffer.Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);stattree->SetItemText(cli9, cbuffer);
-	cbuffer.Format(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);stattree->SetItemText(cli12, cbuffer);
-	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);stattree->SetItemText(cli11, cbuffer);
-	cbuffer.Format(_("Unknown: %i"),myStats[0]);stattree->SetItemText(cli6, cbuffer);	
-	cbuffer.Format(_("Filtered: %i"),theApp.stat_filteredclients);stattree->SetItemText(cli7, cbuffer);
+	
+	cbuffer.Format(_("Total: %i"),totalclient);
+	stattree->SetItemText(cli15, cbuffer);
+	cbuffer.Format(_("eMule: %i (%1.1f%%)"),myStats[2],(double)100*myStats[2]/totalclient);
+	stattree->SetItemText(cli1, cbuffer);
+	cbuffer.Format(_("aMule: %i (%1.1f%%)"),myStats[8],(double)100*myStats[8]/totalclient);
+	stattree->SetItemText(cli10, cbuffer);
+	cbuffer.Format(_("lMule/xMule: %i (%1.1f%%)"),myStats[6],(double)100*myStats[6]/totalclient);
+	stattree->SetItemText(cli8, cbuffer);
+	cbuffer.Format(_("eDonkeyHybrid: %i (%1.1f%%)"),myStats[4],(double)100*myStats[4]/totalclient);
+	stattree->SetItemText(cli2, cbuffer);
+	cbuffer.Format(_("eDonkey: %i (%1.1f%%)"),myStats[1],(double)100*myStats[1]/totalclient);
+	stattree->SetItemText(cli3, cbuffer);
+	cbuffer.Format(_("cDonkey: %i (%1.1f%%)"),myStats[5],(double)100*myStats[5]/totalclient);
+	stattree->SetItemText(cli4, cbuffer);
+	cbuffer.Format(_("Old MLDonkey: %i (%1.1f%%)"),myStats[3],(double)100*myStats[3]/totalclient);
+	stattree->SetItemText(cli5, cbuffer);
+	cbuffer.Format(_("New MLDonkey: %i (%1.1f%%)"),myStats[7],(double)100*myStats[7]/totalclient);
+	stattree->SetItemText(cli9, cbuffer);
+	cbuffer.Format(_("lphant: %i (%1.1f%%)"),myStats[10],(double)100*myStats[10]/totalclient);
+	stattree->SetItemText(cli12, cbuffer);
+	cbuffer.Format(_("Compatible: %i (%1.1f%%)"),myStats[9],(double)100*myStats[9]/totalclient);
+	stattree->SetItemText(cli11, cbuffer);
+	cbuffer.Format(_("Unknown: %i"),myStats[0]);
+	stattree->SetItemText(cli6, cbuffer);	
+	cbuffer.Format(_("Filtered: %i"),theApp.stat_filteredclients);
+	stattree->SetItemText(cli7, cbuffer);
+	cbuffer.Format(_("LowID: %u (%.2f%%)"),myStats[11] , (totalclient>0)?((double)100*myStats[11] / totalclient):0);
+	stattree->SetItemText(cli13, cbuffer);
+	cbuffer.Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), myStats[12] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[12] / (myStats[2]+myStats[8])):0, myStats[13] , ((myStats[2]+myStats[8])>0)?((double)100*myStats[13] /(myStats[2]+myStats[8]) ):0);
+	stattree->SetItemText(cli14, cbuffer);
 	
 	if(stattree->IsExpanded(cli3)) {
 
