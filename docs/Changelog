@@ -119,8 +119,10 @@ Version 2.0.0-rc2 - The 'white rabbit' version.
 
 	shakraw:
 	
-		* rewrote WebSocket.* and modified WebServer.*: they use wxThreads and
-		  wxSockets to be used on other platform too.
+		* WebSocket.* & WebServer.*: now uses wxThreads and
+		  wxSockets to be cross platform.
+		* Better threads' array remove in WebSocket
+		* WebServer cleanly stopped before exit
 		  
 	thepolish:
 	
