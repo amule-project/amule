@@ -1050,7 +1050,7 @@ void CamuleApp::OnFatalException()
 		fprintf(stderr, "\n--------------------------------------------------------------------------------\n");
 		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
 	}
-	fprintf(stderr, "Please, post these lines on the backtrace forum on http:\\\\www.amule.org\n");
+	fprintf(stderr, "Please, post these lines on the backtrace forum on http://www.amule.org/\n");
 	fprintf(stderr, "Program version is: %s\n", unicode2char(GetMuleVersion()));
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
 	
