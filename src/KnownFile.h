@@ -31,6 +31,29 @@
 #include "CArray.h"
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
+
+#define	PS_READY			0
+#define	PS_EMPTY			1
+#define PS_WAITINGFORHASH		2
+#define PS_HASHING			3
+#define PS_ERROR			4
+#define	PS_INSUFFICIENT			5
+#define	PS_UNKNOWN			6
+#define PS_PAUSED			7
+#define PS_COMPLETING			8
+#define PS_COMPLETE			9
+
+#define PR_VERYLOW			4 // I Had to change this because it didn't save negative number correctly.. Had to modify the sort function for this change..
+#define PR_LOW				0 //*
+#define PR_NORMAL			1 // Don't change this - needed for edonkey clients and server!
+#define	PR_HIGH				2 //*
+#define PR_VERYHIGH			3
+#define PR_AUTO				5
+#define PR_POWERSHARE                   6 //added for powershare (deltaHF)
+#define SRV_PR_LOW			2
+#define SRV_PR_NORMAL			0
+#define SRV_PR_HIGH			1
+
 class CUpDownClient;
 class CFile;
 class Packet;
@@ -121,6 +144,7 @@ public:
 	
 	virtual	bool	IsPartFile()	{return false;}
 	virtual bool	LoadFromFile(CFile* file);	//load date, hashset and tags from a .met file
+	virtual uint8	GetStatus(bool ignorepause = false) {return PS_COMPLETE;}
 	bool	WriteToFile(CFile* file);	
 	uint32	GetFileDate()	{return date;}
 	time_t*	GetCFileDate()	{return (time_t*)&date;}

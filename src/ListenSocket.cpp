@@ -599,7 +599,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				CSafeMemFile tempfile(80);
 				tempfile.Write((uint32)list.GetCount());
 				while (list.GetCount()) {
-					theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile);
+					theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile, false);
 					list.RemoveHead();
 				}
 				// create a packet and send it
@@ -683,7 +683,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					tempfile.Write(strReqDir);
 					tempfile.Write((uint32)list.GetCount());
 					while (list.GetCount()) {
-						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile);
+						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, false);
 						list.RemoveHead();
 					}
 
@@ -763,9 +763,7 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 		}*/
 	}
 	catch(CInvalidPacket) {
-		#if 0
-		printf("Uncatched invalid packet exception\n");
-		#endif
+		printf("Uncatched invalid packet exception - done on ProcessPacket\n");
 		client->SetDownloadState(DS_ERROR);
 		Disconnect();
 		return false;
