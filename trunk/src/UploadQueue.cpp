@@ -64,6 +64,7 @@ CUploadQueue::CUploadQueue(CPreferences* in_prefs){
 	successfullupcount = 0;
 	failedupcount = 0;
 	totaluploadtime = 0;
+	m_nUpDaterateTotal = 0;
 	m_nUpDataRateMSOverhead = 0;
 	m_nUpDatarateOverhead = 0;
 	m_nUpDataOverheadSourceExchange = 0;
@@ -502,30 +503,31 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 
 void CUploadQueue::CompUpDatarateOverhead()
 {
+	// Adding the new overhead
+	m_nUpDaterateTotal += m_nUpDataRateMSOverhead * 10;
 	m_AvarageUDRO_list.push_back( m_nUpDataRateMSOverhead * 10 );
+	
+	// Reset the overhead count
 	m_nUpDataRateMSOverhead = 0;
 	
 	// We want at least 11 elements before we will start doing averages
 	if ( m_AvarageUDRO_list.size() > 10 ) {
-		// Add the difference between (sum)/(number) and (sum + to_add)/(number + 1)
-		// Note that I do not add 1 to size(), because we've already added the item, 
-		// and thus the size is already the correct value.
-		m_nUpDatarateOverhead += ( m_AvarageUDRO_list.back() - m_nUpDatarateOverhead ) / (double)m_AvarageUDRO_list.size();
-
-		// Remove the first element untill we have exactly 150 
+		
+		// Remove the first element untill we have at most 150 items
 		while ( m_AvarageUDRO_list.size() > 150 ) {
-			// Add the difference between (sum)/(number) and (sum - to_remove)/(number - 1)
-			m_nUpDatarateOverhead += ( m_nUpDatarateOverhead - m_AvarageUDRO_list.front() ) / ( (double)m_AvarageUDRO_list.size() - 1 );
-			
+			m_nUpDaterateTotal -= m_AvarageUDRO_list.front();
+		
 			m_AvarageUDRO_list.pop_front();
 		}
 
+		m_nUpDatarateOverhead = m_nUpDaterateTotal / (double)m_AvarageUDRO_list.size();
+
 	} else if ( m_AvarageUDRO_list.size() == 10 ) {
 		// Create the starting average once we have 10 items
-		m_nUpDatarateOverhead = std::accumulate( m_AvarageUDRO_list.begin(),
-		                                           m_AvarageUDRO_list.end(), 0 );
+		m_nUpDaterateTotal = std::accumulate( m_AvarageUDRO_list.begin(),
+		                                      m_AvarageUDRO_list.end(), 0 );
 	
-		m_nUpDatarateOverhead = m_nUpDatarateOverhead / 10.0;
+		m_nUpDatarateOverhead = m_nUpDaterateTotal / 10.0;
 		
 	} else {
 		m_nUpDatarateOverhead = 0;

@@ -112,6 +112,7 @@ private:
 	uint32	failedupcount;
 	uint32	totaluploadtime;
 	uint32	m_nLastStartUpload;
+	long	m_nUpDaterateTotal;
 	double	m_nUpDatarateOverhead;
 	uint32	m_nUpDataRateMSOverhead;
 	uint64	m_nUpDataOverheadSourceExchange;
