@@ -188,7 +188,7 @@ void CChatSelector::ProcessMessage(uint64 sender_id, const wxString& message)
 	wxString client_name;
 	wxString client_message;
 	if (separator != -1) {
-		client_name = message.Left(separator-1);
+		client_name = message.Left(separator);
 		client_message = message.Mid(separator+1);
 	} else {
 		// No need to define client_name. If needed, will be build on tab creation.
