@@ -123,9 +123,12 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	file->WriteUInt16(m_nLastUsedPort);
 	file->WriteUInt32(m_dwLastSeen);
 	file->WriteUInt32(m_dwLastChatted);
-	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 1 );
+	
+	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 
 	#if wxUSE_UNICODE
-		tagcount++;
+		2 );
+	#else
+		1 );
 	#endif
 	file->WriteUInt32(tagcount);			
 	if ( !m_strName.IsEmpty() ) {
