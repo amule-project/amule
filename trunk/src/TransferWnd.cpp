@@ -348,23 +348,21 @@ int CTransferWnd::AddCategorie(wxString newtitle,wxString newincoming,wxString n
 void CTransferWnd::EditCatTabLabel(int index,wxString newlabel)
 {
 	if (theApp.glob_prefs->ShowCatTabInfos()) {
-		CPartFile* cur_file;
-		uint16 count,dwl;
-		count=dwl=0;
-		for (int i=0;i<theApp.downloadqueue->GetFileCount();i++) {
-			cur_file=theApp.downloadqueue->GetFileByIndex(i);
-			if (cur_file==0) {
+		uint16 count, dwl;
+		count = dwl = 0;
+		for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); ++i) {
+			CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+			if ( !cur_file ) {
 				continue;
 			}
 			if (cur_file->CheckShowItemInGivenCat(index)) {
-				count++;
+				++count;
 				if (cur_file->GetTransferingSrcCount()>0) {
-					dwl++;
+					++dwl;
 				}
 			}
 		}
-		
-		newlabel += wxString::Format(wxT(" (%i/%i)"),dwl,count);
+		newlabel += wxString::Format(wxT(" (%i/%i)"), dwl, count);
 	}
 	m_dlTab->SetPageText(index,newlabel);
 	theApp.amuledlg->searchwnd->UpdateCatChoice();
