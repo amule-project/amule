@@ -65,7 +65,7 @@ optimizeLevel=2
 // linker
 libraryPath=
 outputFilename=Release\amule.exe
-libraries=cryptopp,curl,z,ws2_32,wxmsw, regex, png, jpeg, zlib, tiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
+libraries=stdc++,cryptopp,curl,z,ws2_32,wxmsw, regex, png, jpeg, zlib, tiff, stdc++, gcc, odbc32, wsock32, winspool, winmm, shell32, comctl32, ctl3d32, odbc32, advapi32, odbc32, wsock32, opengl32, glu32, ole32, oleaut32, uuid
 extraLinkerOptions=
 ignoreStartupFile=0
 ignoreDefaultLibs=0
@@ -153,8 +153,19 @@ extraResourceOptions=
 71=src\KnownFile.cpp
 72=src\amuleDlg.cpp
 73=src\ECSocket.cpp
+74=src\SHA.cpp
+75=src\SHAHashSet.cpp
 [Header]
 [Resource]
 1=amule.rc
 [Other]
 [History]
+src\otherfunctions.h,1526
+..\..\..\..\..\MinGWStudio\Include\wx\region.h,82
+src\SharedFilesCtrl.cpp,1633
+src\QueueListCtrl.h,1050
+..\..\..\..\..\MinGWStudio\Include\wx\listctrl.h,627
+src\MuleListCtrl.h,989
+src\UploadListCtrl.h,1002
+src\UploadListCtrl.cpp,1754
+..\..\..\..\..\MinGWStudio\Include\wx\listbase.h,604
