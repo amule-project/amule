@@ -39,6 +39,26 @@ static wxCSConv aMuleConv(wxT("iso8859-1"));
 	#define char2unicode(x) x
 #endif
 
+/**
+ * Helper function.
+ * Safely compares two arguments of a type that supports the "<" operator.
+ *
+ * Returns -1 if ArgA is less than ArgB.
+ * Returns  0 if ArgA is equal to ArgB.
+ * Returns  1 if ArgB is greater than ArgB.
+ */
+template <class TYPE>
+int CmpAny(const TYPE& ArgA, const TYPE& ArgB)
+{
+	if ( ArgA < ArgB ) {
+		return -1;
+	} else if ( ArgB < ArgA ) {
+		return  1;
+	} else {
+		return  0;
+	}
+}
+
 // From Gnucleus project [found by Tarod]
 // Converts 'buffer' with length 'bufLen' to a wxString
 wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
