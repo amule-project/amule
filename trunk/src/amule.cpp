@@ -717,7 +717,7 @@ bool CamuleApp::OnInit()
 	wxString incomingdir = thePrefs::GetIncomingDir();
 	wxString tempdir = thePrefs::GetTempDir();
 	long size, i;
-#ifdef HAVE_SYS_STATVFS_H
+#if defined(HAVE_SYS_STATVFS_H) && !defined(__FREEBSD__)	
 	struct statvfs *mntbuf;
 #else
 	struct statfs *mntbuf;
