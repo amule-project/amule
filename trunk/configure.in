@@ -186,13 +186,6 @@ AC_ARG_ENABLE(systray, [  --disable-systray       Disable SysTray compilation],
 AC_MSG_RESULT($systray)
 AC_SUBST(systray)
 
-# safe systray
-AC_MSG_CHECKING([whether SysTray should be compiled in safe mode])
-AC_ARG_ENABLE(safetray,[  --enable-safetray       Enable SysTray in safe mode only],
-               USE_SAFE_TRAY="$enableval", USE_SAFE_TRAY="no")
-AC_MSG_RESULT($USE_SAFE_TRAY)
-AC_SUBST(USE_SAFE_TRAY)
-
 # gtk code strip
 AC_MSG_CHECKING([whether pure GTK code should be compiled])
 AC_ARG_ENABLE(gtk, [  --disable-gtk           Disable pure GTK code in amule], gtk="$enableval", gtk="yes")
@@ -312,13 +305,6 @@ yes)	OPTIMISE_FLAGS="-O2"
 	;;
 esac
 
-case "$USE_SAFE_TRAY" in
-yes) TRAY_FLAGS="-D__SAFE_TRAY__"
-    ;;
-*) TRAY_FLAGS=""
-    ;;
-esac
-
 case "$USE_PROFILE" in
 yes)	PROFILE_FLAGS="-pg"
 	;;
@@ -400,7 +386,6 @@ AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AM_CONDITIONAL(VERBOSE_OUTPUT, test x$USE_DEBUG = xyes -a x$VERBOSE_OUTPUT = xyes)
 
-
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
@@ -447,33 +432,46 @@ echo "  Configure script has finished system check."
 echo
 echo "  Configured aMule ${PACKAGE_VERSION} for '${host}'."
 echo
+echo "  aMule enabled options:"
+echo 
+echo "  **** aMule Core ****" 
 echo "  Should aMule be compiled in debug mode?                  ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with verbose console output?    ${VERBOSE_OUTPUT:-no}"
 echo "  Should aMule be compiled with upload speed sense?        ${USE_USS:-no}"
 echo "  Should aMule be compiled with profiling?                 ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?             ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with systray?                   ${systray}"
-echo "  Should aMule be compiled with safe systray?              ${USE_SAFE_TRAY:-no}"
 echo "  Should aMule be compiled with pure GTK code?             ${gtk}"
-echo "  Should aMule be compiled without bar drawing?            ${DISABLE_PROGRESS:-no}"
 echo "  Should aMule be linked against patched gsocket?          ${USE_GSOCKET:-no}"
+echo "  Should aMule core-gui version be built? (EXPERIMENTAL)   ${CORE_GUI:-no}"
+echo
+echo "  **** aMule TextClient ****"
 case "$BUILDAMULECMD" in
 yes)	echo "  Should amulecmd (TextClient) be linked against wxbase?   ${HAVE_AMULECMD:-no}"
 	;;
 esac
-echo "  Should ccache support be enabled?                        ${ccache:-no}"
-echo "  Should aMule command line client be built?               ${BUILD_AMULECMD:-no}"
-echo "  Should aMule GUI client be built?                        ${GUI:-no}"
-echo "  Should aMule core-gui version be built? (EXPERIMENTAL)   ${CORE_GUI:-no}"
+echo "  Should aMule Command Line Client be built?               ${BUILD_AMULECMD:-no}"
+echo "  Should aMule GUI Client be built?                        ${GUI:-no}"
+echo
+echo "  **** aMule WebServer ****"
 echo "  Should aMule WebServer be built?                         ${WEB:-no}"
 echo "  Should aMule WebServer GUI be built?                     ${WEBGUI:-no}"
-echo "  Should aMule ed2k links handler be built?                ${ED2K:-no}"
+echo
+echo "  **** aMule ED2K Links Handler ****"
+echo "  Should aMule ED2K Links Handler be built?                ${ED2K:-no}"
+echo
+echo "  **** aMuleLinkCreator ****"
 echo "  Should aMuleLinkCreator GUI version (alc) be built?      ${ALC:-no}"
 echo "  Should aMuleLinkCreator for console (alcc) be built?     ${ALCC:-no}"
+echo
+echo "  **** aMule Statistics ****"
 echo "  Should C aMule Statistics (CAS) be built?                ${CAS:-no}"
 echo "  Should aMule GUI Statistics (wxCas) be built?            ${WXCAS:-no}"
-echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
+
 echo
+echo "  **** General Libraries and Tools ****"
+echo "  Should ccache support be enabled?                        ${ccache:-no}"
+echo "  Crypto++ library/headers style?                          ${CRYPTO_PP_STYLE}"
 echo "  Libraries aMule will use to build:"
 echo "                                       wxWidgets          ${WXGTK_VERSION:-Not detected}"
 echo "                                       GTK                ${GTK_VERSION:-Not detected}"
