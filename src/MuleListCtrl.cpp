@@ -59,7 +59,7 @@
 
 #ifdef __WXMSW__
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
-#elif defined(__WXMAC__) 
+#elif defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)	
 #else
 BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxListCtrl)
@@ -74,7 +74,7 @@ END_EVENT_TABLE()
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 #if defined(__WXMSW__) 
 	: wxListCtrl( parent, winid, pos, size, style, validator, name )
-#elif defined(__WXMAC__)
+#elif defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
 	: wxODListCtrl( parent, winid, pos, size, style, validator, name )
 #else
 	: MuleExtern::wxListCtrl( parent, winid, pos, size, style, validator, name )
