@@ -20,6 +20,8 @@
 // QueueListCtrl.cpp : implementation file
 //
 
+#include <wx/menu.h>
+
 #include "muuli_wdr.h"		// Needed for ID_QUEUELIST
 #include "QueueListCtrl.h"	// Interface declarations
 #include "otherfunctions.h"	// Needed for CastSecondsToHM
