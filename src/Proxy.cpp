@@ -1,7 +1,8 @@
 /*
  * This file is part of the aMule project.
  *
- * Copyright (C) 2004 aMule Team (http://www.amule.org)
+ * Copyright (C) 2004-2005 aMule Team (http://www.amule.org)
+ * Copyright (C) 2004-2005 Marcelo Jimenez (phoenix@amule.org)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,7 +57,9 @@ static void dump(char *s, bool ok, const void *v, int n)
 	printf("\n");
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxProxyData
+//------------------------------------------------------------------------------
 
 wxProxyData::wxProxyData()
 {
@@ -98,7 +101,9 @@ void wxProxyData::Empty()
 	m_Password.Clear();
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// ProxyEventHandler
+//------------------------------------------------------------------------------
 
 ProxyEventHandler::ProxyEventHandler()
 {
@@ -108,6 +113,22 @@ ProxyEventHandler::ProxyEventHandler()
 BEGIN_EVENT_TABLE(ProxyEventHandler, wxEvtHandler)
 	EVT_SOCKET(PROXY_SOCKET_HANDLER, ProxyEventHandler::ProxySocketHandler)
 END_EVENT_TABLE()
+
+void ProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
+{
+	amuleProxyClientSocket *sock = dynamic_cast<amuleProxyClientSocket *>(event.GetSocket());
+	if (sock) {
+		sock->m_ProxyStateMachine->Schedule(event.GetSocketEvent());
+	} else {
+		// we're doomed :)
+	}
+}
+
+//
+// THE one and only Event Handler
+//
+static ProxyEventHandler TheProxyEventHandler;
+
 #else
 // TODO -- amuled
 ProxyEventHandler::~ProxyEventHandler()
@@ -120,20 +141,9 @@ void *ProxyEventHandler::Entry()
 }
 #endif
 
-void ProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
-{
-	amuleProxyClientSocket *sock = dynamic_cast<amuleProxyClientSocket *>(event.GetSocket());
-	if (sock) {
-		sock->m_ProxyStateMachine->Schedule(event.GetSocketEvent());
-	} else {
-		// we're doomed :)
-	}
-}
-
-// THE one and only Event Handler
-static ProxyEventHandler TheProxyEventHandler;
-
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// ProxyStateMachine
+//------------------------------------------------------------------------------
 
 ProxyStateMachine::ProxyStateMachine(
 		const wxString &name,
@@ -231,12 +241,11 @@ t_sm_state ProxyStateMachine::HandleEvent(t_sm_event event)
 		break;
 	}
 	
-	if (m_IsLost) {
-		ret = PROXY_STATE_END;
-	}
-	
-	// Should not last too long, something is wrong, abort.
-	if (GetClocksInCurrentState() > 10) {
+	// Aborting conditions:
+	// - wxSOCKET_LOST event
+	// - More than 10 times on the same state
+	if (	m_IsLost ||
+		GetClocksInCurrentState() > 10) {
 		ret = PROXY_STATE_END;
 	}
 	
@@ -821,168 +830,166 @@ printf("wait state -- process_receive_command_reply\n");
 }
 
 //------------------------------------------------------------------------------
-// amuleProxy
+// HttpStateMachine
 //------------------------------------------------------------------------------
 
-amuleProxy::amuleProxy(
-	const wxProxyData *ProxyData,
-	wxProxyCommand )
+HttpStateMachine::HttpStateMachine(
+	const wxProxyData &ProxyData,
+	wxProxyCommand ProxyCommand)
+:
+ProxyStateMachine(
+	wxString(wxT("Http")), HTTP_MAX_STATES, ProxyData, ProxyCommand)
 {
-	SetProxyData(ProxyData);
+	m_process_state[0] = &HttpStateMachine::process_start;
+	m_process_state[1] = &HttpStateMachine::process_end;
+	m_process_state[2] = &HttpStateMachine::process_send_command_request;
+	m_process_state[3] = &HttpStateMachine::process_receive_command_reply;
+	m_process_state[4] = &HttpStateMachine::process_process_command_reply;
 }
 
-amuleProxy::~amuleProxy()
+void HttpStateMachine::process_state(t_sm_state state, bool entry)
 {
+	(this->*m_process_state[state])(entry);
 }
 
-void amuleProxy::SetProxyData(const wxProxyData *ProxyData)
+t_sm_state HttpStateMachine::next_state(t_sm_event event)
 {
-	m_UseProxy = ProxyData != NULL && ProxyData->m_ProxyEnable;
-	if (ProxyData) {
-		m_ProxyData = *ProxyData;
-		m_ProxyAddress.Hostname(m_ProxyData.m_ProxyHostName);
-		m_ProxyAddress.Service(m_ProxyData.m_ProxyPort);
-	} else {
-		m_ProxyData.Empty();
-	}
-}
-
-bool amuleProxy::Start(wxIPaddress &address, wxProxyCommand cmd, wxSocketClient *socket)
-{
-	bool ok = false;
-
-	m_ProxyBoundAddress = NULL;
-printf("amuleProxy::Start\nHostname Orig:%s, IPAddr:%s, Port:%d\n",
-unicode2char(address.Hostname()),
-unicode2char(address.IPAddress()),
-address.Service());
-	m_ProxyClientSocket = socket;
-	m_ProxyClientSocket->SaveState();
-	m_ProxyClientSocket->Notify(false);
-	m_ProxyClientSocket->Connect(m_ProxyAddress, false);
-	if (m_ProxyClientSocket->WaitOnConnect(10,0) )
-	{
-		if (m_ProxyClientSocket->IsConnected()) {
-			// Prepare for transmition
-			m_ProxyClientSocket->SetFlags(wxSOCKET_WAITALL);
-			/* Call the proxy stuff routine */
-			switch(m_ProxyData.m_ProxyType)
-			{
-			case wxPROXY_NONE:
-				ok = false;
-				break;
-				
-			case wxPROXY_SOCKS4:
-				//ok = DoSocks4(address, cmd);
-				ok = false;
-				break;
-				
-			case wxPROXY_SOCKS5:
-				//ok = DoSocks5(address, cmd);
-				ok = false;
-				break;
-				
-			case wxPROXY_HTTP:
-				ok = DoHttp(address, cmd);
-				break;
-			}
+	// Default is stay in current state
+	t_sm_state ret = HandleEvent(event);
+	switch (m_state) {
+	case HTTP_STATE_START:
+		if (m_IsConnected && !m_IsLost && CanSend()) {
+			ret = HTTP_STATE_SEND_COMMAND_REQUEST;
 		}
-	}
-	m_ProxyClientSocket->RestoreState();
-if (m_ProxyBoundAddress) {
-printf("Proxy Bound Address: IP:%s, Port:%u, ok:%d\n",
-unicode2char(GetProxyBoundAddress().IPAddress()),
-GetProxyBoundAddress().Service(), ok);
-} else {
-printf("Failed to bind proxy address, ok=%d\n", ok);
-}
-	
-	return ok;
-}
-
-bool amuleProxy::DoHttp(wxIPaddress &address, wxProxyCommand cmd)
-{
-	// Use the short circuit evaluation
-	int ok = 
-		DoHttpRequest(address, cmd) &&
-		DoHttpReply();
-	if (ok) {
-		switch(cmd)
-		{
-		case wxPROXY_CMD_CONNECT:
-			ok = DoHttpCmdConnect();
-			break;
-		
-		case wxPROXY_CMD_BIND:
-			ok = false;
-			break;
-		
-		case wxPROXY_CMD_UDP_ASSOCIATE:
-			ok = false;
-			break;
-		}
-	}
-
-	return ok;
-}
-
-bool amuleProxy::DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd)
-{
-	// Prepare the request command buffer
-	wxCharBuffer buf(unicode2charbuf(address.IPAddress()));
-	const char *host = (const char *)buf;
-	uint16 port = address.Service();
-	wxString UserPass = m_ProxyData.m_UserName + wxT(":") + m_ProxyData.m_Password;
-	wxString UserPassEncoded =
-		otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
-	wxString msg;
-	switch (cmd) {
-	case wxPROXY_CMD_CONNECT:
-		msg = wxString::Format(
-			wxT(
-			"CONNECT %s:%d HTTP/1.1\r\n"
-			"Host: %s:%d\r\n"
-			"Proxy-Authorization: Basic %s\r\n"),
-			host, port, host, port, unicode2char(UserPassEncoded));
 		break;
 		
-	case wxPROXY_CMD_BIND:
-		/* This is not possible */
-		return false;
+	case HTTP_STATE_SEND_COMMAND_REQUEST:
+		if (m_ok) {
+			if (CanReceive()) {
+				ret = HTTP_STATE_RECEIVE_COMMAND_REPLY;
+			}
+		} else {
+			ret = HTTP_STATE_END;
+		}
+		break;
 		
-	case wxPROXY_CMD_UDP_ASSOCIATE:
-		/* This is not possible */
-		return false;
+	case HTTP_STATE_RECEIVE_COMMAND_REPLY:
+		if (CanReceive()) {
+			ret = HTTP_STATE_PROCESS_COMMAND_REPLY;
+		}
+		break;
+		
+	case HTTP_STATE_PROCESS_COMMAND_REPLY:
+		ret = HTTP_STATE_END;
+		break;
+		
+	case HTTP_STATE_END:
+	default:
+		break;
 	}
 	
-	// Send the command packet
-	unsigned int LenPacket = msg.Len();
-	memcpy(m_buffer, unicode2char(msg), LenPacket+1);
-	m_ProxyClientSocket->Write(m_buffer, LenPacket);
-
-	// Check the if the write operation succeded
-	bool ok =
-		!m_ProxyClientSocket->Error() &&
-		m_ProxyClientSocket->LastCount() == LenPacket;
-
-	return ok;
+	return ret;
 }
 
-bool amuleProxy::DoHttpReply(void)
+void HttpStateMachine::process_start(bool entry)
 {
-	// TODO
-	
-	return false;
+	if (entry) {
+dump("process_start", m_ok, NULL, 0);
+	} else {
+printf("wait state -- process_start\n");
+	}
 }
 
-bool amuleProxy::DoHttpCmdConnect(void)
+void HttpStateMachine::process_end(bool)
 {
-	// Nothing to do here.
-	
-	return true;
+dump("process_end", m_ok, NULL, 0);
 }
 
-/******************************************************************************/
+void HttpStateMachine::process_send_command_request(bool entry)
+{
+	if (entry) {
+		// Prepare the request command buffer
+		wxCharBuffer buf(unicode2charbuf(m_PeerAddress->IPAddress()));
+		const char *host = (const char *)buf;
+		uint16 port = m_PeerAddress->Service();
+		wxString UserPass = m_ProxyData.m_UserName + wxT(":") + m_ProxyData.m_Password;
+		wxString UserPassEncoded =
+			otherfunctions::EncodeBase64(m_buffer, wxPROXY_BUFFER_SIZE);
+		wxString msg;
+		
+		switch (m_ProxyCommand) {
+		case wxPROXY_CMD_CONNECT:
+			msg = wxString::Format(
+				wxT(
+				"CONNECT %s:%d HTTP/1.1\r\n"
+				"Host: %s:%d\r\n"
+				"Proxy-Authorization: Basic %s\r\n"),
+				host, port, host, port, unicode2char(UserPassEncoded));
+			break;
+			
+		case wxPROXY_CMD_BIND:
+			m_ok = false;	
+			break;
+			
+		case wxPROXY_CMD_UDP_ASSOCIATE:
+			m_ok = false;
+			return;
+			break;
+		}
+		// Send the command packet
+		m_PacketLenght = msg.Len();
+		memcpy(m_buffer, unicode2char(msg), m_PacketLenght+1);
+		ProxyWrite(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+dump("process_send_command_request", m_ok, m_buffer, m_PacketLenght);
+	} else {
+printf("wait state -- process_send_command_request\n");
+	}
+}
+
+void HttpStateMachine::process_receive_command_reply(bool entry)
+{
+// TODO - still using socks4 code
+	if (entry) {
+		// Receive the server's reply
+		m_PacketLenght = 8;
+		ProxyRead(*m_ProxyClientSocket, m_buffer, m_PacketLenght);
+dump("process_receive_command_reply", m_ok, m_buffer, 0);
+	} else {
+printf("wait state -- process_receive_command_reply\n");
+	}
+}
+
+void HttpStateMachine::process_process_command_reply(bool entry)
+{
+// TODO - still using socks4 code
+	if (entry) {
+		m_LastReply = m_buffer[1];
+		
+		// Process the server's reply
+		m_ok = m_ok &&
+			m_buffer[0] == SOCKS4_VERSION &&
+			m_buffer[1] == SOCKS4_REPLY_GRANTED;
+		if (m_ok) {
+			// Read BND.PORT
+			const unsigned int Port_offset = 2;
+			m_ok = m_ProxyBoundAddressIPV4.Service(ntohs(
+				*((uint16 *)(m_buffer+Port_offset)) ));
+			// Read BND.ADDR
+			const unsigned int Addr_offset = 4;
+			m_ok = m_ok &&
+				m_ProxyBoundAddressIPV4.Hostname(Uint32toStringIP(
+					*((uint32 *)(m_buffer+Addr_offset)) ));
+			m_ProxyBoundAddress = &m_ProxyBoundAddressIPV4;
+		}
+dump("process_process_command_reply", m_ok, m_buffer, m_PacketLenght);
+	} else {
+printf("wait state -- process_receive_command_reply\n");
+	}
+}
+
+//------------------------------------------------------------------------------
+// amuleProxyClientSocket
+//------------------------------------------------------------------------------
 
 amuleProxyClientSocket::amuleProxyClientSocket(
 	wxSocketFlags flags,
@@ -1009,6 +1016,8 @@ wxSocketClient(flags)
 			break;
 		
 		case wxPROXY_HTTP:
+			m_ProxyStateMachine =
+				new HttpStateMachine(*ProxyData, ProxyCommand);
 			break;
 		
 		default:
@@ -1039,13 +1048,15 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	SaveState();
 #ifndef AMULE_DAEMON
 	SetEventHandler(TheProxyEventHandler, PROXY_SOCKET_HANDLER);
-#endif
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
+#else
+	Notify(false);
+#endif
 	Connect(m_ProxyAddress, false);
 	// Without this flag, we would end up with more states, 
 	// because we can't test the read buffer until we get 
@@ -1060,7 +1071,9 @@ bool amuleProxyClientSocket::Start(const wxIPaddress &PeerAddress)
 	return ok;
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxSocketClientProxy
+//------------------------------------------------------------------------------
 
 wxSocketClientProxy::wxSocketClientProxy(
 	wxSocketFlags flags,
@@ -1129,22 +1142,23 @@ end:
 	return ok;
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxSocketServerProxy
+//------------------------------------------------------------------------------
 
 wxSocketServerProxy::wxSocketServerProxy(
 	wxIPaddress &address,
 	wxSocketFlags flags,
-	const wxProxyData *ProxyData)
+	const wxProxyData *)
 :
-wxSocketServer(address, flags),
-m_SocketProxy(ProxyData, wxPROXY_CMD_BIND)
+wxSocketServer(address, flags)
 {
-	if (m_SocketProxy.GetUseProxy()) {
-		/* Maybe some day when socks6 is out... :) */
-	}
+	/* Maybe some day when socks6 is out... :) */
 }
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxDatagramSocketProxy
+//------------------------------------------------------------------------------
 
 #if !wxCHECK_VERSION(2,5,3)
 IMPLEMENT_ABSTRACT_CLASS(wxDatagramSocketProxy,wxDatagramSocket)

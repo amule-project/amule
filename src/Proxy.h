@@ -1,7 +1,8 @@
 /*
  * This file is part of the aMule project.
  *
- * Copyright (C) 2004 aMule Team (http://www.amule.org)
+ * Copyright (C) 2004-2005 aMule Team (http://www.amule.org)
+ * Copyright (C) 2004-2005 Marcelo Jimenez (phoenix@amule.org)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -154,9 +155,6 @@ public wxThread
 public:
 	ProxyEventHandler();
 
-private:
-	void ProxySocketHandler(wxSocketEvent &event);
-	
 #ifdef AMULE_DAEMON
 public:
 	~ProxyEventHandler();
@@ -164,6 +162,8 @@ public:
 private:
 	void *Entry();
 #else
+private:
+	void ProxySocketHandler(wxSocketEvent &event);
 	DECLARE_EVENT_TABLE();
 #endif
 };
@@ -333,49 +333,45 @@ private:
 };
 
 //------------------------------------------------------------------------------
-// amuleProxy
+// HttpStateMachine
 //------------------------------------------------------------------------------
-
-class amuleProxy
+class HttpStateMachine;
+typedef void (HttpStateMachine::*HttpStateProcessor)(bool entry);
+class HttpStateMachine : public ProxyStateMachine
 {
+private:
+	static const unsigned int HTTP_MAX_STATES = 5;
+
+	enum HttpState {
+		HTTP_STATE_START = PROXY_STATE_START,
+		HTTP_STATE_END = PROXY_STATE_END,
+		HTTP_STATE_SEND_COMMAND_REQUEST,
+		HTTP_STATE_RECEIVE_COMMAND_REPLY,
+		HTTP_STATE_PROCESS_COMMAND_REPLY
+	};
+
 public:
 	/* Constructor */
-	amuleProxy(
-		const wxProxyData *ProxyData,
+	HttpStateMachine(
+		const wxProxyData &ProxyData,
 		wxProxyCommand ProxyCommand);
-	
-	/* Destructor */
-	~amuleProxy();
-	
-	/* Interface */
-	void		SetProxyData(const wxProxyData *ProxyData);
-	bool		GetUseProxy() const			{ return m_UseProxy; }
-	bool		Start(wxIPaddress &address, wxProxyCommand cmd, wxSocketClient *socket);
-	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_ProxyBoundAddress; }
-	unsigned char	GetLastReply(void) const		{ return m_LastReply; }
-
-private:
-	/* HTTP */
-	bool DoHttp(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoHttpRequest(wxIPaddress &address, wxProxyCommand cmd);
-	bool DoHttpReply(void);
-	bool DoHttpCmdConnect(void);
-	
-public:
-	char			m_buffer[wxPROXY_BUFFER_SIZE];
+	void process_state(t_sm_state state, bool entry);
+	t_sm_state next_state(t_sm_event event);
 	
 private:
-	bool			m_UseProxy;
-	wxProxyData		m_ProxyData;
-	amuleIPV4Address	m_ProxyAddress;
-	wxSocketClient		*m_ProxyClientSocket;
-	wxIPaddress		*m_ProxyBoundAddress;
-	amuleIPV4Address	m_ProxyBoundAddressIPV4;
-	//wxIPV6address		m_ProxyBoundAddressIPV6;
-	unsigned char		m_LastReply;
+	/* State Processors */
+	void process_start(bool entry);
+	void process_send_command_request(bool entry);
+	void process_receive_command_reply(bool entry);
+	void process_process_command_reply(bool entry);
+	void process_end(bool entry);
+	/* Private Vars */
+	HttpStateProcessor m_process_state[HTTP_MAX_STATES];
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// amuleProxyClientSocket
+//------------------------------------------------------------------------------
 
 class amuleProxyClientSocket : public wxSocketClient
 {
@@ -405,7 +401,9 @@ private:
 	ProxyStateMachine	*m_ProxyStateMachine;
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxSocketClientProxy
+//------------------------------------------------------------------------------
 
 class wxSocketClientProxy : public amuleProxyClientSocket
 {
@@ -419,7 +417,9 @@ public:
 	bool Connect(wxIPaddress &address, bool wait);
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxSocketServerProxy
+//------------------------------------------------------------------------------
 
 class wxSocketServerProxy : public wxSocketServer
 {
@@ -433,10 +433,11 @@ public:
 	/* Interface */
 	
 private:
-	amuleProxy	m_SocketProxy;
 };
 
-/******************************************************************************/
+//------------------------------------------------------------------------------
+// wxDatagramSocketProxy
+//------------------------------------------------------------------------------
 
 enum wxUDPOperation {
 	wxUDP_OPERATION_NONE,
