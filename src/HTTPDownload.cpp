@@ -77,7 +77,7 @@ CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadTh
 	m_ani->LoadData((char*)inetDownload,sizeof(inetDownload));
 	m_ani->Start();
 
-	Centre();
+	CentreOnScreen();
 	
 	m_parent_thread = thread;
 

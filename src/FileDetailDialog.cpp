@@ -66,7 +66,7 @@ END_EVENT_TABLE()
 using namespace otherfunctions;
 
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
-: wxDialog(parent,9998,(_("File Details")),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
+: wxDialog(parent,-1,_("File Details"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
 {
 	m_file = file;
 	m_timer.SetOwner(this,ID_MY_TIMER);
@@ -75,7 +75,7 @@ CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
 	UpdateData();
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
-	Centre();
+	CentreOnScreen();	
 }
 
 CFileDetailDialog::~CFileDetailDialog()

@@ -50,7 +50,7 @@ wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 	wxSizer* content=commentLstDlg(this,TRUE);
 	content->Show(this,TRUE);
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME));
-	Centre();
+	CentreOnScreen();	
 	pmyListCtrl = CastChild( IDC_LST, wxListCtrl );
 	OnInitDialog();
 }

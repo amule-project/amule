@@ -63,7 +63,7 @@ CClientDetailDialog::CClientDetailDialog(wxWindow* parent,CUpDownClient* client)
 	OnInitDialog();
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
-	Centre();
+	CentreOnScreen();	
 }
 
 CClientDetailDialog::~CClientDetailDialog()
