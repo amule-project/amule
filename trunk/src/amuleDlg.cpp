@@ -434,6 +434,8 @@ CamuleDlg::~CamuleDlg()
 
 	theApp.OnlineSig(true);
 
+	theApp.amuledlg = NULL;
+	
 	printf("aMule dialog destroyed\n");
 }
 
