@@ -70,6 +70,7 @@ private:
 	void		OnListItemSelected(wxListEvent& ev);
 	void		OnBnClickedSearchReset(wxCommandEvent& ev);
 	void		OnBnClickedClearall(wxCommandEvent& ev);
+	void		OnExtendedSearchChange(wxCommandEvent& ev);
 	void		OnRMButton(wxMouseEvent& evt);
 	void        OnBtnWebSearch(wxCommandEvent &evt);
 
