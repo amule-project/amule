@@ -40,6 +40,14 @@ public:
 	int GetLength() const {
 		return Length();
 	};
+     
+	int Find(CString what) const {
+		return wxString::Find(what);
+	};
+       
+	CString Mid(int from,int len) {
+		return CString(wxString::Mid(from,len).GetData());
+	}	
 	
 	void Format(const wxChar* pszFormat,...) {
 		va_list argptr;

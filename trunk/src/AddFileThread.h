@@ -39,7 +39,7 @@ public:
 	static void		Setup();
 	static void		Shutdown();
 
-	static void		AddFile(const char *path, const char *name, CPartFile* = NULL);
+	static void		AddFile(const wxString path, const wxString name, CPartFile* = NULL);
 	static int		GetCount();
 	static bool		IsRunning() { return !DeadThread; }
 

@@ -30,8 +30,8 @@
 
 struct UnknownFile_Struct
 {
-	char*		name;
-	char*		directory;
+	wxString		name;
+	wxString		directory;
 	CPartFile*	owner;
 };
 
@@ -87,15 +87,15 @@ void CAddFileThread::Shutdown()
 
 }
 
-void CAddFileThread::AddFile(const char *path, const char *name, CPartFile* part)
+void CAddFileThread::AddFile(const wxString path, const wxString name, CPartFile* part)
 {
 	dwLastAddTime = GetTickCount();
 	if (m_endWaitingForHashList) {
 		Setup();
 	}
 	UnknownFile_Struct* hashfile = new UnknownFile_Struct;
-	hashfile->directory = nstrdup(path);
-	hashfile->name = nstrdup(name);
+	hashfile->directory = path;
+	hashfile->name = name;
 	hashfile->owner = part;
 
 	wxMutexLocker sLock(m_lockWaitingForHashList);
@@ -128,7 +128,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		m_lockWaitingForHashList.Unlock();
 	
 		CKnownFile* newrecord = new CKnownFile();
-		printf("Sharing %s/%s\n",hashfile->directory,hashfile->name);
+		printf("Sharing %s/%s\n",unicode2char(hashfile->directory),unicode2char(hashfile->name));
 	
 		// TODO: What we are supposed to do if the following does fail?
 		// Kry - Exit, afaik
