@@ -33,6 +33,7 @@
 #include <wx/setup.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/utils.h>
+#include <wx/tokenzr.h> // Needed for wxStringTokenizer
 
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
@@ -559,25 +560,21 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					case FT_KADLASTPUBLISHKEY:
 						break;
 					case FT_CORRUPTEDPARTS:
-						//wxASSERT( newtag->IsStr() );
-//						if (newtag->IsStr())
-						#warning TODO RIGHT NOW!
-						/*{
+						wxASSERT( newtag.IsStr() );
+						if (newtag.IsStr()) {
 							wxASSERT( corrupted_list.GetHeadPosition() == NULL );
-							wxString strCorruptedParts(newtag->tag.stringvalue);
-							int iPos = 0;
-							wxString strPart = Tokenize(_T(","), iPos);
-							while (!strPart.IsEmpty())
-							{
-								UINT uPart;
-								if (_stscanf(strPart, _T("%u"), &uPart) == 1)
-								{
-									if (uPart < GetPartCount() && !IsCorruptedPart(uPart))
+							wxString strCorruptedParts(newtag.GetStr());
+							wxStringTokenizer tokenizer(strCorruptedParts, wxT(","));
+							while ( tokenizer.HasMoreTokens() ) {
+								wxString token = tokenizer.GetNextToken();
+								unsigned long uPart;
+								if (token.ToULong(&uPart)) {
+									if (uPart < GetPartCount() && !IsCorruptedPart(uPart)) {
 										corrupted_list.AddTail(uPart);
+									}
 								}
-								strPart = strCorruptedParts.Tokenize(_T(","), iPos);
 							}
-						}*/
+						}
 						break;
 					case FT_AICH_HASH:{
 						wxASSERT( newtag.IsStr() );
