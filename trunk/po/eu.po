@@ -5680,3 +5680,4 @@ msgstr "Orokorra (zerbitzaria)"
 #~ "Izen honetako fitxategi bat badago dagoeneko, fitxategia berrizendatua "
 #~ "izan da."
 
+

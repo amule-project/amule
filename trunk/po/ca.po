@@ -5199,3 +5199,4 @@ msgstr "Global (Servidor)"
 
 #~ msgid "Invalid versiontag in server.met (0x%X)!"
 #~ msgstr "versiontag no vàlida al server.met (0x%X)!"
+

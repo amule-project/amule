@@ -4411,3 +4411,4 @@ msgstr "Exibir todos os comentários"
 #: src/FileDetailDialog.cpp:49
 msgid "File Details"
 msgstr "Detalhes do Arquivo"
+

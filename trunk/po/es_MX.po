@@ -2152,3 +2152,4 @@ msgstr "Intento de conexión a %s (%s:%i) imposible: tiempo excedido"
 #: src/sockets.cpp:470
 msgid "Refreshing server connection"
 msgstr ""
+
