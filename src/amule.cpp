@@ -1013,75 +1013,99 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_DEFAULT;
 			break;
 		case 1:
+			//strcpy(newlang,"ar");
 			language = wxLANGUAGE_ARABIC;
 			break;			
 		case 2:
+			//strcpy(newlang,"eu_ES");
 			language = wxLANGUAGE_BASQUE;
 			break;
 		case 3:
+			//strcpy(newlang,"bg_BG");
 			language = wxLANGUAGE_BULGARIAN;
 			break;
 		case 4:
+			//strcpy(newlang,"ca_ES")
 			language = wxLANGUAGE_CATALAN;
 			break;
 		case 5:
+			//strcpy(newlang,"zh_CN");
 			language = wxLANGUAGE_CHINESE;
 			break;		
 		case 6:
+			//strcpy(newlang,"da_DK");
 			language = wxLANGUAGE_DANISH;
 			break;
 		case 7:
+			//strcpy(newlang,"nl_NL");
 			language = wxLANGUAGE_DUTCH;
 			break;
 		case 8:
+			//strcpy(newlang,"en_EN");
 			language = wxLANGUAGE_ENGLISH;
 			break;
 		case 9:
+			//strcpy(newlang,"et_EE");
 			language = wxLANGUAGE_ESTONIAN;
 			break;
 		case 10:
+			//strcpy(newlang,"fi");
 			language = wxLANGUAGE_FINNISH;
 			break;
 		case 11:
+			//strcpy(newlang,"fr_FR");
 			language = wxLANGUAGE_FRENCH;
 			break;
 		case 12:
+			//strcpy(newlang,"gl_ES");
 			language = wxLANGUAGE_GALICIAN;
 			break;
 		case 13:
+			//strcpy(newlang,"de_DE");
 			language = wxLANGUAGE_GERMAN;
 			break;
 		case 14:
+			//strcpy(newlang,"de_CH");
 			language = wxLANGUAGE_GERMAN_SWISS;
 			break;
 		case 15:
+			//strcpy(newlang,"it_IT");
 			language = wxLANGUAGE_ITALIAN;
 			break;
 		case 16:
+			//strcpy(newlang,"ko_KR");
 			language = wxLANGUAGE_KOREAN;
 			break;
 		case 17:
+			//strcpy(newlang,"lt_LT");
 			language = wxLANGUAGE_LITHUANIAN;
 			break;
 		case 18:
+			//strcpy(newlang,"pl_PL");
 			language = wxLANGUAGE_POLISH;
 			break;
 		case 19:
+			//strcpy(newlang,"pt_PT");
 			language = wxLANGUAGE_PORTUGUESE;
 			break;
 		case 20:
+			//strcpy(newlang,"pt_BR");
 			language = wxLANGUAGE_PORTUGUESE_BRAZILIAN;
 			break;
 		case 21:
+			//strcpy(newlang,"ru_RU");
 			language = wxLANGUAGE_RUSSIAN;
 			break;
 		case 22:
+			//strcpy(newlang,"es_ES");
 			language = wxLANGUAGE_SPANISH;
 			break;
 		case 23:
+			//strcpy(newlang,"es_CH");
 			language = wxLANGUAGE_SPANISH_CHILE;
 			break;
 		case 24:
+			//strcpy(newlang,"es_MX");
 			language = wxLANGUAGE_SPANISH_MEXICAN;
 			break;
 		case 25:
@@ -1090,9 +1114,11 @@ void CamuleApp::Localize_mule()
 			language = wxLANGUAGE_DEFAULT;
 			break;
 		case 26:
+			//strcpy(newlang,"hu");
 			language = wxLANGUAGE_HUNGARIAN;
 			break;
 		case 27:
+			//strcpy(newlang,"ca_ES");
 			language = wxLANGUAGE_CATALAN;
 			break;
 		default:
