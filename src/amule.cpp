@@ -204,8 +204,6 @@ extern void InitXmlResource();
 
 bool CamuleApp::OnInit()
 {
-	wxTimer t;
-	t.Start(10);
 	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
 	mytimer = new MyTimer();
 
