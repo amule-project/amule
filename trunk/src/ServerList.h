@@ -71,11 +71,13 @@ public:
 	void		SendNextPacket();
 	void 		UpdateServerMetFromURL(wxString strURL);	
 	void		DownloadFinished(uint32 result);	
-
+	void		AutoDownloadFinished(uint32 result);	
+	
 	//void static CALLBACK UDPTimerProc(HWND hwnd, unsigned int uMsg,unsigned int* idEvent,DWORD dwTime);
 protected:
-	uint8		AutoUpdate();
+	void			AutoUpdate();
 private:
+	uint8			current_url_index;
 	uint32		serverpos;
 	uint32		searchserverpos;
 	uint32		statserverpos;
@@ -91,6 +93,7 @@ private:
 	uint32		m_nLastSaved;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
 	wxString		URLUpdate;
+	wxString		URLAutoUpdate;
 };
 
 #endif // SERVERLIST_H

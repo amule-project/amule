@@ -2225,6 +2225,9 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 		case HTTP_ServerMet:
 			serverlist->DownloadFinished(event.GetExtraLong());
 			break;
+		case HTTP_ServerMetAuto:
+			serverlist->AutoDownloadFinished(event.GetExtraLong());
+			break;
 	}
 }
 

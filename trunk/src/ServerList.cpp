@@ -52,7 +52,6 @@
 #include "opcodes.h"		// Needed for MET_HEADER
 #include "SafeFile.h"		// Needed for CSafeFile
 #include "HTTPDownload.h"	// Needed for HTTPThread
-#include "HTTPDownloadDlg.h"	// Needed for CHTTPDownloadDlg
 #include "Preferences.h"	// Needed for CPreferences
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "amule.h"			// Needed for theApp
@@ -77,74 +76,24 @@ list(wxKEY_NONE)
 	broadcastpacket = NULL;
 }
 
-uint8 CServerList::AutoUpdate()
-{
-	uint8 url_count = app_prefs->adresses_list.GetCount();
-	
-	if (!url_count) {
-		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
-		return 0;
-	}
-	
-	wxString strURLToDownload; 
-	wxString strTempFilename;
-
-	uint8 temp_count =0;	
-	for ( uint8 i = 0; i < url_count; i++ ) {
-		strURLToDownload = app_prefs->adresses_list[i]; 
-		if (strURLToDownload.Find(wxT("://")) == -1) {
-			AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
-		} else {
-			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), temp_count);
-
-			// lfroen - this must go to the gui side. By now, avoid to reference gui members of CamuleApp
-#ifndef AMULE_DAEMON
-			CHTTPDownloadDlg *dlg=new CHTTPDownloadDlg(theApp.GetTopWindow(),strURLToDownload,strTempFilename);
-			int retval=dlg->ShowModal();
-			delete dlg;
-#else
-			#warning Xaignar, please fix auto-update on daemon.
-			int retval=0;
-#endif
-			if(retval==0) {
-				temp_count++;		
-			} else {
-				AddLogLineM(true, wxString::Format(_("Failed to download the serverlist from %s"), strURLToDownload.c_str()));
-			}
-		}
-	}
-
-	wxASSERT(temp_count <= url_count);
-	if (temp_count < url_count) {
-		AddLogLineM(true, wxString::Format(_("%u auto-update serverlist entries failed loading"), (url_count - temp_count)));
-	}
-	
-	return temp_count;
-}
-
 bool CServerList::Init()
 {
-	uint8 auto_count = false;
-	// auto update the list by using an url
-	if (app_prefs->AutoServerlist()) {
-		auto_count=AutoUpdate();
-	}
 	// Load Metfile
 	wxString strTempFilename;
 	printf("*** reading servers\n");
 	strTempFilename = theApp.ConfigDir + wxT("server.met");
 	bool bRes = AddServermetToList(strTempFilename, false);
-	if(theApp.glob_prefs->AutoServerlist()) {
-		for (uint8 i=1; i<=auto_count;i++) {
-			strTempFilename =  theApp.ConfigDir + wxString::Format(wxT("server_auto%u.met"), i);
-			bool bRes2 = AddServermetToList(strTempFilename);
-			if( !bRes && bRes2 )
-				bRes = true;
-		}
-	}
+
 	// insert static servers from textfile
 	strTempFilename=  theApp.ConfigDir + wxT("staticservers.dat");
 	AddServersFromTextFile(strTempFilename);
+	
+	// Send the auto-update of server.met via HTTPThread requests
+	current_url_index = 0;
+	if (app_prefs->AutoServerlist()) {
+		AutoUpdate();
+	}	
+	
 	return bRes;
 }
 
@@ -930,4 +879,61 @@ void CServerList::DownloadFinished(uint32 result) {
 	} else {
 		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
 	}
+}
+
+void CServerList::AutoUpdate() {
+	
+	uint8 url_count = app_prefs->adresses_list.GetCount();
+	
+	if (!url_count) {
+		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
+		return;
+	}
+	
+	wxString strURLToDownload; 
+	wxString strTempFilename;
+
+	// Do current URL. Callback function will take care of the others.
+
+	strURLToDownload = app_prefs->adresses_list[current_url_index]; 
+	
+	while ((strURLToDownload.Find(wxT("://")) == -1) && (current_url_index<url_count)) {
+		AddLogLineM(true, _("Invalid URL ") + strURLToDownload);
+		current_url_index++;
+		strURLToDownload = app_prefs->adresses_list[current_url_index]; 
+	}
+	
+	if (current_url_index < url_count) {
+		// A valid url was found
+		URLAutoUpdate = strURLToDownload;
+		strTempFilename =  theApp.ConfigDir + wxT("server_auto.met");
+		HTTPThread *downloader = new HTTPThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
+		downloader->Create();
+		downloader->Run();
+	} else {
+		AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat "));
+	}
+
+}
+
+void CServerList::AutoDownloadFinished(uint32 result) {
+	if(result==1) {
+		wxString strTempFilename(theApp.ConfigDir + wxT("server_auto.met"));
+		// curl succeeded. proceed with server.met loading
+		theApp.serverlist->AddServermetToList(strTempFilename);
+		theApp.serverlist->SaveServermetToFile();
+		// So, file is loaded and merged, and also saved
+		wxRemoveFile(strTempFilename);
+	} else {
+		AddLogLineM(true, _("Failed to download the server list from ") + URLUpdate);
+	}
+	
+	current_url_index++;
+	
+
+	if (current_url_index < app_prefs->adresses_list.GetCount()) {		
+		// Next!	
+		AutoUpdate();
+	}
+	
 }

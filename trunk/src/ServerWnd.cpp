@@ -32,7 +32,6 @@
 #include "server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "HTTPDownloadDlg.h"	// Needed for CHTTPDownloadDlg
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
 #include "sockets.h"
