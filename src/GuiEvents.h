@@ -259,7 +259,7 @@ class GUIEvent : public wxEvent {
 		} else { \
 			wxPostEvent(&theApp,e); \
 		} \
-	} while (0);
+	} while (0)
 	
 #define Notify_1_ValEvent(id, val) \
 	do { \
@@ -269,7 +269,7 @@ class GUIEvent : public wxEvent {
 		} else { \
 			wxPostEvent(&theApp,e); \
 		} \
-	} while (0);
+	} while (0)
 	
 #define Notify_2_ValEvent(id, val0, val1) \
 	do { \
@@ -279,7 +279,7 @@ class GUIEvent : public wxEvent {
 		} else { \
 			wxPostEvent(&theApp,e); \
 		} \
-	} while (0);
+	} while (0)
 	
 #define Notify_3_ValEvent(id, val0, val1, val2) \
 	do { \
@@ -289,7 +289,7 @@ class GUIEvent : public wxEvent {
 		} else { \
 			wxPostEvent(&theApp,e); \
 		} \
-	} while (0);
+	} while (0)
 
 #define Notify_SharedFilesShowFile(file)            Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM, file)
 #define Notify_SharedFilesRemoveFile(file)          Notify_1_ValEvent(SHAREDFILES_REMOVE_ITEM, file)
