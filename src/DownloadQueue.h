@@ -28,6 +28,7 @@
 
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "ObservableQueue.h"	// Needed for CObservableQueue
 
 #include <wx/thread.h>	// Needed for wxMutex
 
@@ -55,7 +56,7 @@ class CED2KServerListLink;
  * 
  * This class should be thread-safe.
  */
-class CDownloadQueue
+class CDownloadQueue : public CObservableQueue<CPartFile*>
 {
 public:
 	/**
@@ -292,6 +293,12 @@ public:
 	void	StopUDPRequests();
 	
 private:
+	/**
+	 * This function initializes new observers with the current contents of the queue.
+	 */
+	virtual void ObserverAdded( ObserverType* o );
+	
+
 	/**
 	 * Helper-function, sorts the filelist so that high-priority files are first.
 	 */

@@ -118,6 +118,8 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			m_filelist.push_back(toadd);
 			m_mutex.Unlock();
 			
+			NotifyObservers( EventType( EventType::INSERTED, toadd ) );
+			
 			if ( toadd->GetStatus(true) == PS_READY ) {
 				theApp.sharedfiles->SafeAddKFile( toadd, true ); 
 			}
@@ -244,6 +246,8 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 	
 	DoSortByPriority();
 	m_mutex.Unlock();
+
+	NotifyObservers( EventType( EventType::INSERTED, file ) );
 
 	
 	// Ask for sources if we are not stopped
@@ -559,6 +563,8 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 void CDownloadQueue::RemoveFile(CPartFile* file)
 {
 	RemoveLocalServerRequest( file );
+
+	NotifyObservers( EventType( EventType::REMOVED, file ) );
 
 	wxMutexLocker lock( m_mutex );
 
@@ -1295,3 +1301,20 @@ bool CDownloadQueue::AddED2KLink( const CED2KServerListLink* link )
 
 	return true;
 }
+
+
+void CDownloadQueue::ObserverAdded( ObserverType* o )
+{
+	CObservableQueue<CPartFile*>::ObserverAdded( o );
+	
+	m_mutex.Lock();
+	EventType::ValueList list;
+	list.reserve( m_filelist.size() );
+	
+	list.insert( list.begin(), m_filelist.begin(), m_filelist.end() );
+	m_mutex.Unlock();
+
+	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
+}
+
+
