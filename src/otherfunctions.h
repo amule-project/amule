@@ -24,14 +24,6 @@
 #include "types.h"		// Needed for uint16, uint32 and uint64
 #include "filefn.h"		// Needed for wxCopyFile_fat32
 
-#ifdef __WXMAC__
-	#define __BIG_ENDIAN wxBIG_ENDIAN
-	#define __LITTLE_ENDIAN wxLITTLE_ENDIAN
-	#define __BYTE_ORDER wxBIG_ENDIAN
-#elif defined(__WXGTK__)
-	#include <endian.h>
-#endif
-
 class CString;
 class CPartFile;
 
@@ -63,7 +55,7 @@ const uint8 PMT_NEWOLD=3;
 #define _WINVER_2K_	0x0005
 #define _WINVER_XP_	0x0105
 
-#if __BYTE_ORDER == __LITTLE_ENDIAN
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
 	#define ENDIAN_SWAP_16(x) (x)
 	#define ENDIAN_SWAP_I_16(x) {}
 	#define ENDIAN_SWAP_32(x) (x)
