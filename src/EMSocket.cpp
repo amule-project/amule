@@ -82,6 +82,7 @@ void CEMSocket::Destroy() {
 	if (!DoingDestroy) {		
 		DoingDestroy = true;
 #ifdef AMULE_DAEMON
+		Close();
 		delete this;
 #else
 		wxSocketClient::Destroy();
@@ -143,10 +144,9 @@ void CEMSocket::OnReceive(int nErrorCode){
 	}
 	
 	// Check current connection state
-	if(byConnected == ES_DISCONNECTED){
+	if(byConnected == ES_DISCONNECTED) {
 		return;
-	}
-	else {	
+	} else {	
 		byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
 	}
 
