@@ -913,6 +913,21 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.Write(buffer, strlen(buffer));
 	amulesig_out.Write("\n",1);
 
+        // Total received in MB in session
+        sprintf(buffer, "%.2f", (float)(stat_sessionReceivedBytes) / 1048576);
+        amulesig_out.Write(buffer, strlen(buffer));
+        amulesig_out.Write("\n",1);
+				
+        // Total sent in GB in session
+        sprintf(buffer, "%.2f", (float)(stat_sessionSentBytes) / 1048576);
+        amulesig_out.Write(buffer, strlen(buffer));
+        amulesig_out.Write("\n",1);
+
+	// Uptime
+	sprintf(buffer,"%s",CastSecondsToHM(theApp.GetUptimeSecs()).GetData());
+	amulesig_out.Write(buffer, strlen(buffer));
+	amulesig_out.Write("\n",1);
+					
 	// Close the files
 	emulesig_out.Close();
 	amulesig_out.Close();
