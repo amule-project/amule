@@ -482,20 +482,17 @@ uint32 CECTag::GetTagLen(void) const
  *
  * This function takes care of the enadianness of the port number.
  *
- * @return A pointer to an EC_IPv4_t structure.
- *
- * \note You must free the returned structure with \b delete.
+ * @return EC_IPv4_t structure.
  *
  * \sa CECTag(ec_tagname_t, const EC_IPv4_t *)
  */
-EC_IPv4_t *CECTag::GetIPv4Data(void) const
+EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
-	EC_IPv4_t *p = new EC_IPv4_t;
+	EC_IPv4_t p;
 
-	if (p != NULL) {
-		*((uint32 *)(p->ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
-		p->port = ENDIAN_SWAP_16(((EC_IPv4_t *)m_tagData)->port);
-	}
+	*((uint32 *)(p.ip)) = *((uint32 *)(((EC_IPv4_t *)m_tagData)->ip));
+	p.port = ENDIAN_SWAP_16(((EC_IPv4_t *)m_tagData)->port);
+
 	return p;
 }
 

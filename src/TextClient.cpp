@@ -487,12 +487,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				case 2:
 				case 3: {
 						CECTag *server = response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
-						EC_IPv4_t * addr = server->GetIPv4Data();
 						s = _("Connected to ");
 						s += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
-						s += wxString::Format(wxT(" [%d.%d.%d.%d:%d] "), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
+						s += server->GetIPv4Data().StringIP();
 						s += response->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
-						delete addr;
 					}
 					break;
 			}
@@ -538,9 +536,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 		case EC_OP_SERVER_LIST:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				CECTag *tag = response->GetTagByIndex(i);
-				EC_IPv4_t * addr = tag->GetIPv4Data();
-				wxString ip = wxString::Format(wxT("[%d.%d.%d.%d:%d]"), addr->ip[0], addr->ip[1], addr->ip[2], addr->ip[3], addr->port);
-				delete addr;
+				wxString ip = tag->GetIPv4Data().StringIP();
 				ip.Append(' ', 24 - ip.Length());
 				s += ip;
 				s += tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
