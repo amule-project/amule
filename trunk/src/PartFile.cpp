@@ -2855,7 +2855,7 @@ void CPartFile::ResumeFile()
 
 wxString CPartFile::getPartfileStatus() const
 {
-	wxString mybuffer=""; 
+	wxString mybuffer=wxEmptyString; 
 	if (GetTransferingSrcCount()>0) {
 		mybuffer=_("Downloading");
 	}	else {
