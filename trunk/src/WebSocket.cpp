@@ -101,6 +101,7 @@ void *CWSThread::Entry() {
 CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
     stWebSocket.m_pParent = ws;
     stWebSocket.m_hSocket = sock;
+    stWebSocket.m_hSocket->SetTimeout(10);
     stWebSocket.m_pHead = NULL;
     stWebSocket.m_pTail = NULL;
     stWebSocket.m_pBuf = new char [4096];
@@ -220,7 +221,11 @@ void *CWCThread::Entry() {
 		if (stWebSocket.m_hSocket->WaitForWrite(0)) {
 			// send what is left in our tails
 			while (stWebSocket.m_pHead) {
-				stWebSocket.m_hSocket->WaitForWrite();
+				if (!stWebSocket.m_hSocket->WaitForWrite()) {
+					stWebSocket.m_pParent->Print(wxT("WCThread: got timeout on socket.\n"));
+					stWebSocket.m_bValid = false;
+					break;				
+				}
 				if (stWebSocket.m_pHead->m_pToSend) {
 					//stWebSocket.m_pParent->Print(wxString::Format(wxT("*** WCThread write:\n%s\n"), stWebSocket.m_pHead->m_pToSend));
 					//WRITE
@@ -234,7 +239,7 @@ void *CWCThread::Entry() {
 							stWebSocket.m_pTail = NULL;
 						}
 					} else {
-						if (nRes > 0) {
+						if ((nRes > 0) && (!stWebSocket.m_hSocket->Error())) {
 							stWebSocket.m_pHead->m_pToSend += nRes;
 							stWebSocket.m_pHead->m_dwSize -= nRes;
 						} else {
