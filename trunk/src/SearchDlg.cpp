@@ -59,10 +59,8 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHMAX, CSearchDlg::OnBnClickedStarts)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnBnClickedStarts)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHAVAIBILITY, CSearchDlg::OnBnClickedStarts)
-	EVT_TEXT_ENTER(IDC_SEARCHWEBNAME, CSearchDlg::OnBtnWebSearch)
 	
 	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnFieldsChange)
-	EVT_TEXT(IDC_SEARCHWEBNAME, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHMIN, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHMAX, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldsChange)
@@ -83,6 +81,9 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_MENU(MP_CLOSE_TAB, CSearchDlg::OnPopupClose)
 	EVT_MENU(MP_CLOSE_ALL_TABS, CSearchDlg::OnPopupCloseAll)
 	EVT_MENU(MP_CLOSE_OTHER_TABS, CSearchDlg::OnPopupCloseOthers)
+	
+	EVT_CHECKBOX(ID_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
+	
 END_EVENT_TABLE()
 
 
@@ -113,6 +114,10 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 
 	// allow notebook to dispatch right mouse clicks to us
 	notebook->SetMouseListener(GetEventHandler());
+	
+	// Not there initially.
+	IDC_SEARCH_FRM->Show(ExtendedSearchSizer,FALSE);
+	IDC_SEARCH_FRM->Layout();
 
 	ToggleLinksHandler();
 }
@@ -123,6 +128,15 @@ void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 {
 	FindWindowById(IDC_SDOWNLOAD)->Enable(true);
 }
+
+// Enable the extended options 
+void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
+{
+	IDC_SEARCH_FRM->Show(ExtendedSearchSizer, event.IsChecked());
+	IDC_SEARCH_FRM->Layout();
+	Search_Main_sizer->Layout();
+}
+
 
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
@@ -151,21 +165,23 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 void CSearchDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
 	// These are the IDs of the search-fields 
-	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY, IDC_SEARCHWEBNAME};
+	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHMIN, IDC_EDITSEARCHMAX, IDC_EDITSEARCHEXTENSION, IDC_EDITSEARCHAVAIBILITY};
 
 	bool enable = false;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
 		enable |= ((wxTextCtrl*)FindWindowById( textfields[i] ))->GetLineLength(0);
 	}
 	
-	// Enable the Reset button if any fields contain text
+	// Enable the Clear button if any fields contain text
 	FindWindowById(IDC_SEARCH_RESET)->Enable( enable );
 	
-	// enable web search button
+	enable = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0);
+	
+	// enable web search button if the Name field contains text
 	FindWindowById(ID_WEBSEARCH_SUBMIT)->Enable( enable );
 	
-	// Enable the Start button if the Name field contains text
-	FindWindowById(IDC_STARTS)->Enable( ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetLineLength(0) );
+	// Enable the Server Search button if the Name field contains text
+	FindWindowById(IDC_STARTS)->Enable( enable );
 }
 
 
@@ -297,7 +313,7 @@ void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while ( index > -1 ) {
+	while ( (index > -1) ) {
 		theApp.downloadqueue->AddSearchToDownload( (CSearchFile*)searchlistctrl->GetItemData(index), GetCatChoice());
 		FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
 
@@ -518,7 +534,6 @@ void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHEXTENSION))->Clear();
 	((wxTextCtrl*)FindWindowById(IDC_EDITSEARCHAVAIBILITY))->Clear();
 	((wxTextCtrl*)FindWindowById(ID_ED2KLINKHANDLER))->Clear();
-	((wxTextCtrl*)FindWindowById(IDC_SEARCHWEBNAME))->Clear();
 	
 	wxChoice* Stypebox = (wxChoice*)FindWindowById(IDC_TypeSearch);
 	Stypebox->SetSelection(Stypebox->FindString(wxString(_("Any"))));
@@ -638,7 +653,13 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 
 
 void CSearchDlg::OnBtnWebSearch(wxCommandEvent& WXUNUSED(evt))
-{
-	wxTextCtrl* txtctrl = (wxTextCtrl*)FindWindow(IDC_SEARCHWEBNAME);
-    theApp.LaunchUrl(theApp.GenWebSearchUrl(txtctrl->GetValue()));
+{	
+	wxString searchString = ((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue();
+	searchString.Trim(true);
+	searchString.Trim(false);	
+	if ( searchString.IsEmpty() ) {
+		return;
+	}
+	
+    theApp.LaunchUrl(theApp.GenWebSearchUrl(searchString));
 }
