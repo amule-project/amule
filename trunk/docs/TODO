@@ -1,6 +1,4 @@
 - Hetfield
-	- If we use CXX & CC vars then disable -O2 default flag overriding.
-	(should check for gcc optimizations...i've a different idea)
 	- Add proxy support for server list fetching (when global proxy support enabled)
 	- Add a script that updates server list from all urls in address.dat
 	- Implement some features in the Preferences but not implemented:
@@ -8,23 +6,19 @@
 	  beep on errors
 	  bring to front on link click
 	  autoupdateserverlist at start
-	  all notify events...mail too (should set mail app??) (assigned to Creteil yet)
-
+	  all notify events...mail too (should set mail app??)
+        -
 - Kry
 	- Fix internal sources handling to avoid too much CPU use.
 	- Add ed2k server adding
 
-- BigBob
-	- Continue to put all GUI Layout related in a single file.
-	- Rewrite entirely the preferences.
-	- Add an option to create internationnalisation in Preferences.
+- Team
 	- Add an option "Send a mail when transfert complete"
 	- Add an option "Change U/L & D/L Speed from time to time"
 	  (example change U/L & D/L Speed to max From 11h00s00 pm to 7h59m59s am and
 	  change U/L & D/L to 4/4 from 8h00m00s am to 10h59m59s pm.
 	- Change Preferences dialog to vertical one and add more tabs.
 
-	- Add new preferences dialog/tabs from emule 30d:
 	- Aspect tab
 	  + add cpu and ram optmizations
 	- Directory tab
