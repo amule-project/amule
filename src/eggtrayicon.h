@@ -1,6 +1,6 @@
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2005 aMule Team ( http://www.amule.org )
+// Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /* eggtrayicon.h

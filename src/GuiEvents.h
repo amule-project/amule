@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2005 aMule Team ( http://www.amule.org )
+// Copyright (c) 2004-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2004-2005 Angel Vidal Veiga (kry@users.sourceforge.net)
 // Copyright (c) 2004-2005 Froenchenko Leonid (lfroen@users.sourceforge.net)
 //
