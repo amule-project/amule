@@ -27,6 +27,7 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+#include <vector>
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "ECSpecialTags.h"
