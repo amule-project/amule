@@ -671,7 +671,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 			wxSocketEvent e(SERVERSOCKET_HANDLER);
 			e.m_event = wxSOCKET_CONNECTION;
 			e.SetEventObject(this);
-			CClientReqSocket *s1 = wxDynamicCastThis(CClientReqSocket);
+			CClientReqSocket *s1 = dynamic_cast<CClientReqSocket *>(this);
 			if (s1) {
 				CClientReqSocketHandler *h = s1->GetEventHandler();
 				h->AddPendingEvent(e);
@@ -679,7 +679,7 @@ bool wxSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 				h->AddPendingEvent(e);
 				goto end;
 			}
-			CServerSocket *s2 = wxDynamicCastThis(CServerSocket);
+			CServerSocket *s2 = dynamic_cast<CServerSocket *>(this);
 			if (s2) {
 				CServerSocketHandler *h = s2->GetEventHandler();
 				h->AddPendingEvent(e);
@@ -761,6 +761,7 @@ wxDatagramSocketProxy::~wxDatagramSocketProxy()
 #ifndef AMULE_DAEMON
 		m_ProxySocket->Destroy();
 #else
+		m_ProxySocket->Close();
 		delete m_ProxySocket;
 #endif
 	} else {
