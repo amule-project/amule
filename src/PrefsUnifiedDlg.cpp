@@ -525,6 +525,9 @@ public:
 	RseStringEncrypted(int ID, char * pchSetting, int cchMax, char * szIniName, char *szIniSection=NULL)
 		: RseString(ID, pchSetting, cchMax, szIniName, "", szIniSection)  {}
 
+	//shakraw, sorry for touching that.
+	//we could use the one from RseString
+	/*
 	virtual void LoadFromFile(CIni &ini)	
 	{ 
 		char buffer[cch];
@@ -534,10 +537,24 @@ public:
 	
 	virtual void SaveToFile(CIni &ini)		
 	{ 
+
 		char buffer[cch];
 		buffer[0]=0; // call your en-cryption routine here, with "pchSet" as input and "buffer" as "output"
 		ini.WriteString(strName, buffer, szSection); 
 	}	
+	*/
+
+	//shakraw, when storing value, store it encrypted here (only if changed in prefs)
+	virtual void StoreDlgValue()
+	{
+		const char * sz = ((wxTextCtrl*)pctrl)->GetValue().c_str();
+		bWasChanged = (strcmp(pchSet, sz) != 0);
+		if ((wxc==wxcText) && (bWasChanged))
+			snprintf(pchSet, cch, "%s", MD5Sum(wxT(sz)).GetHash().GetData());
+	}
+	
+private:
+	bool	bWasChanged;
 };
 
 
