@@ -190,15 +190,10 @@ void CUpDownClient::Init()
 	memset( m_achUserHash, 0, 16);
 	SetWaitStartTime();
 	if (socket) {
-		struct sockaddr_in sockAddr;
-		memset(&sockAddr, 0, sizeof(sockAddr));
 		wxIPV4address address;
 		socket->GetPeer(address);
-		//uint32 nSockAddrLen = sizeof(sockAddr);
-		//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
-		sockAddr.sin_addr.s_addr = inet_addr(unicode2char(address.IPAddress()));
-		m_dwUserIP = sockAddr.sin_addr.s_addr;
-		strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
+		strcpy(m_szFullUserIP,unicode2char(address.IPAddress()));
+		m_dwUserIP = inet_addr(m_szFullUserIP);
 	}
 	sourcesslot=0;
 	m_fHashsetRequesting = 0;
@@ -244,7 +239,7 @@ CUpDownClient::~CUpDownClient()
 	}
 	//printf("2...");
 	if (socket) {
-		socket->client = 0; 
+		socket->client = NULL; 
 		socket->Safe_Delete(); 
 		// We're going down anyway....
 		socket->Destroy();
@@ -513,13 +508,10 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
 	if (socket) {
-		struct sockaddr_in sockAddr;
-		memset(&sockAddr, 0, sizeof(sockAddr));
 		wxIPV4address address;
 		socket->GetPeer(address);
-		sockAddr.sin_addr.s_addr=inet_addr(unicode2char(address.IPAddress()));
-		m_dwUserIP = sockAddr.sin_addr.s_addr;
-		strcpy(m_szFullUserIP,inet_ntoa(sockAddr.sin_addr));
+		strcpy(m_szFullUserIP,unicode2char(address.IPAddress()));
+		m_dwUserIP = inet_addr(m_szFullUserIP);
 	} else {
 		printf("Huh, socket failure. Avoided crash this time.\n");
 	}
@@ -623,14 +615,9 @@ bool CUpDownClient::SendHelloPacket() {
 	}
 	
 	// if IP is filtered, dont greet him but disconnect...
-	struct sockaddr_in sockAddr;
-	memset(&sockAddr, 0, sizeof(sockAddr));
-	//uint32 nSockAddrLen = sizeof(sockAddr);
-	//socket->GetPeerName((SOCKADDR*)&sockAddr,(int*)&nSockAddrLen);
 	wxIPV4address address;
 	socket->GetPeer(address);
-	sockAddr.sin_addr.s_addr = inet_addr(unicode2char(address.IPAddress()));
-	if ( theApp.ipfilter->IsFiltered(sockAddr.sin_addr.s_addr)) {
+	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
 		theApp.amuledlg->AddDebugLogLine(true,CString(_("Filtered IP: %s (%s)")).GetData(),GetFullIP(),theApp.ipfilter->GetLastHit().GetData());
 		theApp.stat_filteredclients++;
 		if (Disconnected("IPFilter")) {

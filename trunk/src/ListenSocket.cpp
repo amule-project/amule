@@ -137,21 +137,20 @@ void CClientReqSocket::OnClose(int nErrorCode)
 void CClientReqSocket::Disconnect(CString strReason){
 	//AsyncSelect(0);
 
-		byConnected = ES_DISCONNECTED;
-		if (!client) {
-			Safe_Delete();
-		} else {
-			if(client->Disconnected(strReason, true)){
-				CUpDownClient* temp = client;
-				client->socket = NULL;
-				client = NULL;
-				delete temp;
-				Safe_Delete();
-			} else {
-				client = NULL;
-				Safe_Delete();
-			}
-		}
+	byConnected = ES_DISCONNECTED;
+
+	if (client) {
+		if(client->Disconnected(strReason, true)){
+			CUpDownClient* temp = client;
+			client->socket = NULL;
+			delete temp;
+		} 
+		client = NULL;
+	}
+		
+	if (!OnDestroy()) {
+		Safe_Delete();
+	}
 
 };
 
@@ -169,6 +168,9 @@ void CClientReqSocket::Delete_Timed()
 */
 void CClientReqSocket::Safe_Delete()
 {
+	wxASSERT(!deletethis); 
+	
+	if (!deletethis) {
 		theApp.AddSocketDeleteDebug((uint32) this,created);
 		// Paranoia is back.
 		SetNotify(0);
@@ -181,6 +183,7 @@ void CClientReqSocket::Safe_Delete()
 		byConnected = ES_DISCONNECTED;
 		deletethis = true;
 		Close();
+	}
 }
 
 bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
