@@ -44,6 +44,22 @@
 #include "SafeFile.h"		// Needed for CSafeMemFile
 
 
+BEGIN_EVENT_TABLE(CChatSelector, wxNotebook)
+	EVT_NOTEBOOK_PAGE_CHANGED(IDC_CHATSELECTOR, CChatSelector::OnTabChanged) 
+END_EVENT_TABLE()
+
+
+void CChatSelector::OnTabChanged(wxNotebookEvent& evt)
+{
+	CChatItem *item = m_items.GetAt( m_items.FindIndex( evt.GetSelection() ) );
+
+	if ( item ) {
+		SetChatText( item->log );
+	} else {
+		SetChatText( "" );
+	}
+}
+
 
 CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos, wxSize siz, long style)
 : wxNotebook(parent, id, pos, siz, style)

@@ -58,6 +58,10 @@ public:
 	bool		SendMessage(const wxString& message);
 	void		ConnectingResult(CUpDownClient* sender, bool success);
 
+protected:
+	void		OnTabChanged(wxNotebookEvent& evt);
+	DECLARE_EVENT_TABLE();
+
 private:
 	CList<CChatItem*, CChatItem*> m_items;
 	wxString ColorText( const wxString& text, COLORREF iColor );
