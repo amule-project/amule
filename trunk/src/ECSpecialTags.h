@@ -45,7 +45,7 @@
 class CServer;
 class CKnownFile;
 class CPartFile;
-
+class CUpDownClient;
 
 class CEC_Server_Tag : public CECTag {
  	public:
@@ -110,6 +110,19 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		uint32		GetXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED)->GetInt32Data(); }
  		uint32		GetAllXferred()	{ return GetTagByName(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt32Data(); }
+};
+
+class CEC_UpDownClient_Tag : public CECTag {
+	public:
+		CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level);
+
+ 		CMD4Hash FileID() { return GetTagByName(EC_TAG_KNOWNFILE)->GetMD4Data(); }
+ 		bool HaveFile() { return GetTagByName(EC_TAG_KNOWNFILE) != NULL; }
+
+ 		wxString ClientName() { return GetTagByName(EC_TAG_CLIENT_NAME)->GetStringData(); }
+ 		uint32 Speed() { return GetTagByName(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
+ 		uint32 XferUp() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
+ 		uint32 XferDown() { return GetTagByName(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
 };
 
 #endif /* ECSPEACIALTAGS_H */
