@@ -219,14 +219,15 @@ void CSearchDlg::FieldsChanged()
 	int textfields[] = { IDC_SEARCHNAME, IDC_EDITSEARCHEXTENSION };
 
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
-		enable |= ((wxTextCtrl*)FindWindow( textfields[i] ))->GetLineLength(0);
+		enable |= !((wxTextCtrl*)FindWindowById( textfields[i] ))->GetValue().IsEmpty();
 	}
+
 
 	// These are the IDs of the search-fields
 	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
 
 	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
-		enable |= ((wxSpinCtrl*)FindWindow( spinfields[i] ))->GetValue();
+		enable |= ((wxSpinCtrl*)FindWindowById( spinfields[i] ))->GetValue();
 	}
 
 	// Enable the Clear and Clear-All button if any fields contain text
@@ -235,8 +236,8 @@ void CSearchDlg::FieldsChanged()
 
 	
 	// Enable the Server Search button if the Name field contains text
-	enable = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetLineLength(0);
-	FindWindow(IDC_STARTS)->Enable( enable );
+	enable = !((wxTextCtrl*)FindWindowById(IDC_SEARCHNAME))->GetValue().IsEmpty();
+	FindWindowById(IDC_STARTS)->Enable( enable );
 }
 
 // Enables or disables the Reset and Start button depending on the conents of the text fields
