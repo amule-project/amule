@@ -1127,13 +1127,6 @@ bool CamuleDlg::LoadRazorPrefs() {
 		srv_split_pos = 463;
 	}
 
-	// eagle: if --geometry was set, overwrite the positions and sizes
-	if (theApp.geometry_is_set == 1) {
-		x1 = theApp.geometry_x;
-		y1 = theApp.geometry_y;
-		x2 = theApp.geometry_width;
-		y2 = theApp.geometry_height;
-	}
 
 	// If x1 and y1 != 0 Redefine location
 	if((x1 != -1) && (y1 != -1)) {	// if((x1 != 0) && (y1 != 0))
