@@ -1,6 +1,7 @@
 Version 2.0.0rc6 - The '???' version.
 ----------
 2004-0?-??
+
 	Hetfield:
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
 		  and wx headers checks.
@@ -31,6 +32,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Improoved wxSting usage in ExternalConn.cpp.
 		* Yielding in DownloadQueue.cpp Init() so that gui is not 
 		  blank when loading lots of files.
+		* A little better font/color handling in amulewebDLG and 
+		  amulecmdDLG.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf
@@ -60,7 +63,7 @@ Version 2.0.0rc5 - The 'Let's recover our release speed' version.
 
 	Hetfield:
 		* Some gcc 3.4.x compilation fixes
-	
+
 	lfroen:
 		* GUIEvents updated 
 		* core2gui events added.
