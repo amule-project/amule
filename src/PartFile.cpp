@@ -2053,16 +2053,6 @@ void CPartFile::UpdatePartsInfo() {
 				// m_nCompleteSourcesCount; 
 				m_nCompleteSourcesCountLo= m_nCompleteSourcesCount;
 				m_nCompleteSourcesCountHi= m_nCompleteSourcesCount;
-/*				
-				m_nCompleteSourcesCount   = count[i];
-				m_nCompleteSourcesCountLo = 0;
-				m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
-			} else if (n < 10)	{
-				
-				m_nCompleteSourcesCount   = count[i];
-				m_nCompleteSourcesCountLo = count[i-1];
-				m_nCompleteSourcesCountHi = count[i+1];
-*/				
 			} else if (n < 20) {
 				// For low guess and normal guess count
 				//	 If we see more sources then the guessed low and normal, use what we see.
@@ -2080,11 +2070,6 @@ void CPartFile::UpdatePartsInfo() {
 				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
 					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;	
 				}					
-				/*
-				m_nCompleteSourcesCount   = count[i];
-				m_nCompleteSourcesCountLo = count[i];
-				m_nCompleteSourcesCountHi = count[j];
-				*/
 			} else {
 				// Many sources
 				// ------------
@@ -2106,11 +2091,6 @@ void CPartFile::UpdatePartsInfo() {
 				if( m_nCompleteSourcesCountHi < m_nCompleteSourcesCount ) {
 					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 				}
-				/*
-				m_nCompleteSourcesCount   = count[j];
-				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
-				m_nCompleteSourcesCountHi = count[k];
-				*/
 			}
 		}
 		m_nCompleteSourcesTime = time(NULL) + (60);
