@@ -1,26 +1,30 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Name:        wxCas
-// Purpose:    Display aMule Online Statistics
-// Author:       ThePolish <thepolish@vipmail.ru>
-// Copyright (C) 2004 by ThePolish
-//
-// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
-// Pixmats from aMule http://www.amule.org
-//
-// This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the
-// Free Software Foundation, Inc.,
-// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+/// Name:         OnLineSig Class
+///
+/// Purpose:      Monitor aMule Online Statistics by reading amulesig.dat file
+///
+/// Author:       ThePolish <thepolish@vipmail.ru>
+///
+/// Copyright (C) 2004 by ThePolish
+///
+/// Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
+///
+/// Pixmats from aMule http://www.amule.org
+///
+/// This program is free software; you can redistribute it and/or modify
+///  it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation; either version 2 of the License, or
+/// (at your option) any later version.
+///
+/// This program is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+///
+/// You should have received a copy of the GNU General Public License
+/// along with this program; if not, write to the
+/// Free Software Foundation, Inc.,
+/// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __GNUG__
@@ -45,28 +49,28 @@
 OnLineSig::OnLineSig ()
 {
 
-  m_isRunning = _("0");
+  m_isRunning = wxT("0");
   m_serverName = _("Unknown");
-  m_serverIP = _("0.0.0.0");
-  m_serverPort = _("00");
-  m_connexionID = _("?");
-  m_DLRate = _("0.00");
-  m_ULRate = _("0.00");
-  m_queue = _("0");
-  m_sharedFiles = _("0");
-  m_user = _("Unknown");
-  m_totalDL = _("0");
-  m_totalUL = _("0");
-  m_version = _("0");
-  m_sessionDL = _("0");
-  m_sessionUL = _("0");
-  m_runTime = _("0");
+  m_serverIP = wxT("0.0.0.0");
+  m_serverPort = wxT("00");
+  m_connexionID = wxT("?");
+  m_DLRate = wxT("0.00");
+  m_ULRate = wxT("0.00");
+  m_queue = wxT("0");
+  m_sharedFiles = wxT("0");
+  m_user = _("Someone");
+  m_totalDL = wxT("0");
+  m_totalUL = wxT("0");
+  m_version = wxT("0");
+  m_sessionDL = wxT("0");
+  m_sessionUL = wxT("0");
+  m_runTime = wxT("0");
 
   m_maxDL = 0.0;
 
   m_amulesig =
     new wxFileName (wxConfigBase::Get()->
-                    Read (WxCasCte::AMULESIG_DIR_KEY,
+                    Read (WxCasCte::AMULESIG_PATH_KEY,
                           WxCasCte::DEFAULT_AMULESIG_PATH),
                     WxCasCte::AMULESIG_FILENAME);
 }
