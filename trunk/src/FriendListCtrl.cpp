@@ -141,6 +141,10 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(evt))
 	
 	CFriend* cur_friend = (CFriend*)GetItemData(cursel);
 	
+	/* ignore this one, it is not activated anymore :) */
+	if (cur_friend == NULL)
+		return NULL;
+
 	if (cur_friend->m_LinkedClient) {
 		theApp.amuledlg->chatwnd->StartSession(cur_friend->m_LinkedClient);
 	} else {
