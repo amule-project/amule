@@ -54,7 +54,7 @@ class OnLineSig
   private:
     double m_maxDL;
 
-    wxInt32  m_amuleState;
+    int  m_amuleState;
     wxString m_serverName;
     wxString m_serverIP;
     wxString m_serverPort;
@@ -69,11 +69,12 @@ class OnLineSig
     wxString m_version;
     wxString m_sessionUL;
     wxString m_sessionDL;
-    wxString m_runTime;
+    unsigned int m_runTimeS;
 
     wxFileName m_amulesig;
 
     wxString BytesConvertion (const wxString& bytes);
+    unsigned int PullCount (unsigned int *runtime, const unsigned int count);
 
 
   public:
@@ -93,7 +94,7 @@ class OnLineSig
     void Refresh ();
 
     /// Return TRUE if aMule is running
-    wxInt32 GetAmuleState () const;
+    int GetAmuleState () const;
 
     /// Get server name
     wxString GetServerName () const;
@@ -138,7 +139,7 @@ class OnLineSig
     wxString GetSessionDL () const;
 
     /// Get aMule runtime
-    wxString GetRunTime () const;
+    wxString GetRunTime ();
 
     /// Get total Upload in the best representative unit
     wxString GetConvertedTotalUL ();
