@@ -29,7 +29,7 @@
 
 
 #include <typeinfo>		/* For bad_cast			*/
-
+#include <cctype>		/* For isspace() and isgraph()	*/
 
 #include <netinet/in.h>		/* for htons()			*/
 
