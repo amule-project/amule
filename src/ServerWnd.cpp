@@ -88,10 +88,6 @@ void CServerWnd::UpdateServerMetFromURL(wxString strURL)
 	theApp.serverlist->UpdateServerMetFromURL(strURL);
 }
 
-void CServerWnd::Localize()
-{
-}
-
 // CServerWnd message handlers
 
 void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))

@@ -40,7 +40,7 @@ class CServerWnd : public wxPanel //CResizableDialog
 public:
 	CServerWnd(wxWindow* pParent, int splitter_pos);   // standard constructor
 	virtual ~CServerWnd();
-	void Localize();
+
 	void UpdateServerMetFromURL(wxString strURL);
 	void UpdateMyInfo();
 

@@ -42,6 +42,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "otherstructs.h"	// Needed for Requested_Block_Struct
 #include "sockets.h"		// Needed for CServerConnect
+#include "Statistics.h"
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
@@ -287,7 +288,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// if IP is filtered, dont reply but disconnect...
 				if (theApp.ipfilter->IsFiltered(m_client->GetIP())) {
 					AddDebugLogLineM(true,wxT("Filtered IP: ") + m_client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
-					theApp.stat_filteredclients++;
+					theApp.statistics->AddFilteredClient();
 					if (bNewClient) {
 						m_client->Safe_Delete();
 						m_client = NULL;

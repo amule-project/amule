@@ -34,7 +34,6 @@
 
 #include "types.h"			// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"
-#include "tree.hh"
 
 #include <deque>
 
@@ -65,6 +64,7 @@ class CSearchList;
 class CClientCreditsList;
 class CClientUDPSocket;
 class CIPFilter;
+class CStatistics;
 class wxServer;
 class wxString;
 class wxSocketEvent;
@@ -165,62 +165,7 @@ class CamuleWebserverThread : public wxThread {
 #define AMULE_APP_BASE wxApp
 #endif
 
-typedef tree<wxString> StatsTree;
-typedef StatsTree::iterator StatsTreeNode;
-typedef StatsTree::sibling_iterator StatsTreeSiblingIterator;	
-
-typedef struct {
-	StatsTreeNode TreeItem;
-	bool active;
-} StatsTreeVersionItem;
-	
-enum StatsGraphType {
-	GRAPH_INVALID = 0,
-	GRAPH_DOWN,
-	GRAPH_UP,
-	GRAPH_CONN
-};
-
-typedef struct HistoryRecord {
-	double		kBytesSent;
-	double		kBytesReceived;
-	float		kBpsUpCur;
-	float		kBpsDownCur;
-	double		sTimestamp;
-	uint16		cntDownloads;
-	uint16		cntUploads;
-	uint16		cntConnections;
-} HR;
-
-class CStatsBase {
-public:
-	// Statistic variables. I plan on moving these to a class of their own -- Xaignar
-	uint64		Start_time;
-	double		sTransferDelay;
-	uint64		stat_sessionReceivedBytes;
-	uint64		stat_sessionSentBytes;
-	uint32		stat_reconnects;
-	uint64		stat_transferStarttime;
-	uint64		stat_serverConnectTime;
-	uint32		stat_filteredclients;
-	uint32		m_ilastMaxConnReached;
-
-	// Statistics tree
-	StatsTree statstree;
-
-	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
-	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
-	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
-	StatsTreeNode tran0;
-	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
-	StatsTreeNode shar1,shar2,shar3;
-	StatsTreeNode cli1,cli2,cli3,cli4,cli5,cli6,cli7,cli8,cli9,cli10, cli10_1, cli10_2, cli11, cli12,cli13,cli14,cli15,cli16,cli17;	
-	StatsTreeNode srv1,srv2,srv3,srv4,srv5,srv6,srv7,srv8,srv9;
-	
-	StatsTreeVersionItem cli_versions[18];
-};
-
-class CamuleApp : public CStatsBase, public AMULE_APP_BASE
+class CamuleApp : public AMULE_APP_BASE
 {
 public:
 	CamuleApp();
@@ -271,69 +216,6 @@ public:
 	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
 	void		SetPublicIP(const uint32 dwIP);
 
-	/* STAT FUNCTIONS */
-
-	// Statistic functions. I plan on moving these to a class of their own -- Xaignar
-	void		UpdateReceivedBytes(int32 bytesToAdd);
-	uint64	GetUptimeMsecs();
-	uint32	GetUptimeSecs();
-	uint32	GetTransferSecs();
-	uint32	GetServerSecs();
-	void		UpdateSentBytes(int32 bytesToAdd);	
-
-	void		RecordHistory();
-	// ComputeSessionAvg and ComputeRunningAvg are used to assure consistent computations across
-	// RecordHistory and ComputeAverages; see note in RecordHistory on the use of double and float 
-	void ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans);
-
-	void ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
-							double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg);
-	
-	float GetKBpsUpCurrent()		{return kBpsUpCur;}
-	float GetKBpsUpRunningAvg()		{return kBpsUpAvg;}
-	float GetKBpsUpSession()		{return kBpsUpSession;}
-	float GetKBpsDownCurrent()		{return kBpsDownCur;}
-	float GetKBpsDownRunningAvg()	{return kBpsDownAvg;}
-	float GetKBpsDownSession()		{return kBpsDownSession;}
-
-	virtual int GetPointsPerRange(){
-		return (1280/2) - 80; // This used to be a calc. based on GUI width
-	};
-
-
-	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, uint32 **graphData);
-	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, StatsGraphType which_graph);
-	void VerifyHistory(bool bMsgIfOk = false);
-	void ComputeAverages(HR **pphr, POSITION pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
-	
-	/* Kry - Statistics tree */
-	
-	void InitStatsTree();
-	void UpdateStatsTree();
-	void ShowStatsTree();
-
-	/* STAT VARS */
-	
-	float kBpsUpCur;
-	float kBpsUpAvg;
-	float kBpsUpSession;
-	float kBpsDownCur;
-	float kBpsDownAvg;
-	float kBpsDownSession;
-	float maxDownavg;
-	float maxDown;
-
- 	CList<HR,HR>	listHR;	
-	int				nHistRanges;
-	int				bitsHistClockMask;
-	POSITION*		aposRecycle;	
-
-	HR hrInit;
-
-	int				nPointsPerRange;
-
-	/* END STATS */
-	
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;
 	CDownloadQueue*		downloadqueue;
@@ -347,6 +229,7 @@ public:
 	CSearchList*		searchlist;
 	CClientCreditsList*	clientcredits;
 	CClientUDPSocket*	clientudp;
+	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
 
 	void ShutDown();
@@ -481,7 +364,7 @@ DECLARE_APP(CamuleGuiApp)
 
 #include "amule-remote-gui.h"
 
-class CamuleRemoteGuiApp : public wxApp, public CStatsBase, public CamuleGuiBase {
+class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	AMULE_TIMER_CLASS* core_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
@@ -520,7 +403,6 @@ public:
 	bool AddServer(CServer *srv);
 	
 	uint32 GetPublicIP();
-	uint32 GetUptimeSecs();
 	wxString CreateED2kLink(const CAbstractFile* f);
 	wxString CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);

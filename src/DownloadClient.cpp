@@ -40,6 +40,7 @@
 #include "otherfunctions.h" // md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
+#include "Statistics.h"
 
 
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
@@ -619,7 +620,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
 		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
 	}
-	theApp.UpdateReceivedBytes(size - HEADER_SIZE);
+	theApp.statistics->UpdateReceivedBytes(size - HEADER_SIZE);
 	bytesReceivedCycle += size - HEADER_SIZE;
 
 	credits->AddDownloaded(size - HEADER_SIZE, GetIP());

@@ -39,7 +39,6 @@ public:
 	CFileDetailDialog(wxWindow* parent, CPartFile* file);   // standard constructor
 	virtual ~CFileDetailDialog();
 	//virtual bool OnInitDialog();
-	void Localize();
 
 protected:
 	void OnTimer(wxTimerEvent& evt);
