@@ -173,7 +173,7 @@ void CSearchDlg::OnTimer(wxTimerEvent& evt) {
 			theApp.serverconnect->SendUDPPacket(searchpacket,toask,false);
 			// Only update progress if we have any tabs around...
 			// Kry - And if we're on search dialog actually.
-			if ((((CMuleNotebook*)FindWindowById(ID_NOTEBOOK))->GetPageCount() > 0) && (theApp.amuledlg->GetActiveDialog() == 3) && (searchprogress->GetValue() < searchprogress->GetRange())) {
+			if ((((CMuleNotebook*)FindWindowById(ID_NOTEBOOK))->GetPageCount() > 0) && (theApp.amuledlg->GetActiveDialog() == IDD_SEARCH) && (searchprogress->GetValue() < searchprogress->GetRange())) {
 				searchprogress->SetValue(searchprogress->GetValue()+1);}
 		} else {
 			OnBnClickedCancels(nullEvent);

@@ -407,7 +407,7 @@ void CDownloadListCtrl::OnDrawItem(int item, wxDC * dc, const wxRect & rect, con
 {
 	/* Don't do any drawing if there's nobody to see it. */
 
-	if (!theApp.amuledlg->IsRunning() || (theApp.amuledlg->GetActiveDialog() != 2)) {
+	if (!theApp.amuledlg->IsRunning() || (theApp.amuledlg->GetActiveDialog() != IDD_TRANSFER)) {
 		return;
 	}
 	
