@@ -169,7 +169,6 @@ public:
 	void ShutDown();
 	
 	void NotifyEvent(GUIEvent event);
-	void CoreNotifyEvent(GUIEvent event);
 
 	bool AddServer(CServer *srv);
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
