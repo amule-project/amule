@@ -320,7 +320,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			std::cerr << "FATAL ERROR: "  << (const char *)unicode2char(aMuleConfigFile) << " does not exist.\n";
 			exit(1);
 		}
-		wxFileConfig cfg(wxEmptyString, wxEmptyString, wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".eMule"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		wxFileConfig cfg(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
 		m_host = wxT("localhost");
 		m_port = cfg.Read(wxT("/ExternalConnect/ECPort"), 4712l);
 		cfg.Read(wxT("/ExternalConnect/ECPassword"), &m_password);
