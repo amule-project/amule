@@ -553,7 +553,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 		case PARTFILE_DELETE:
 			if ( thePrefs::StartNextFile() &&
 					(((CPartFile *)event.ptr_value)->GetStatus() == PS_PAUSED) ) {
-				downloadqueue->StartNextFile();
+				downloadqueue->StartNextFile((CPartFile *)event.ptr_value);
 			}
 			((CPartFile *)event.ptr_value)->Delete();
 			break;

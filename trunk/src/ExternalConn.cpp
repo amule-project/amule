@@ -506,7 +506,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				break;
 			case EC_OP_PARTFILE_DELETE:
 				if ( thePrefs::StartNextFile() && (pfile->GetStatus() == PS_PAUSED) ) {
-					theApp.downloadqueue->StartNextFile();
+					theApp.downloadqueue->StartNextFile(pfile);
 				}
 				pfile->Delete();
 				break;

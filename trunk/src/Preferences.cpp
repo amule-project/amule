@@ -117,6 +117,7 @@ uint32		CPreferences::s_maxGraphUploadRate;
 bool		CPreferences::s_confirmExit;
 bool		CPreferences::s_filterBadIP;
 bool		CPreferences::s_onlineSig;
+uint16	CPreferences::s_OSUpdate;
 uint64		CPreferences::s_totalDownloadedBytes;
 uint64		CPreferences::s_totalUploadedBytes;
 uint16		CPreferences::s_languageID;
@@ -151,6 +152,7 @@ bool		CPreferences::s_bupdatequeuelist;
 bool		CPreferences::s_bmanualhighprio;
 bool		CPreferences::s_btransferfullchunks;
 bool		CPreferences::s_bstartnextfile;
+bool		CPreferences::s_bstartnextfilesame;
 bool		CPreferences::s_bshowoverhead;
 bool		CPreferences::s_bDAP;
 bool		CPreferences::s_bUAP;
@@ -748,6 +750,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MANUALSERVERHIGHPRIO,	(new Cfg_Bool( wxT("/eMule/ManualHighPrio"), s_bmanualhighprio, false )));
 	NewCfgItem(IDC_FULLCHUNKTRANS,	(new Cfg_Bool( wxT("/eMule/FullChunkTransfers"), s_btransferfullchunks, true )));
 	NewCfgItem(IDC_STARTNEXTFILE,	(new Cfg_Bool( wxT("/eMule/StartNextFile"), s_bstartnextfile, false )));
+	NewCfgItem(IDC_STARTNEXTFILE_SAME,	(new Cfg_Bool( wxT("/eMule/StartNextFileSameCat"), s_bstartnextfilesame, false )));
 	NewCfgItem(IDC_FILEBUFFERSIZE,	(MkCfg_Int( wxT("/eMule/FileBufferSizePref"), s_iFileBufferSize, 16 )));
 	NewCfgItem(IDC_DAP,		(new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true )));
 	NewCfgItem(IDC_UAP,		(new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true )));
@@ -757,6 +760,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 */
 	NewCfgItem(IDC_OSDIR,		(new Cfg_Str(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir )));
 	NewCfgItem(IDC_ONLINESIG,	(new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false )));
+	NewCfgItem(IDC_OSUPDATE,	(MkCfg_Int( wxT("/eMule/OnlineSignatureUpdate"), s_OSUpdate, 5 )));
 	NewCfgItem(IDC_ENABLE_WEB,	(new Cfg_Bool( wxT("/WebServer/Enabled"), s_bWebEnabled, false )));
 	NewCfgItem(IDC_WEB_PASSWD,	(new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword )));
 	NewCfgItem(IDC_WEB_PASSWD_LOW,	(new Cfg_Str_Encrypted( wxT("/WebServer/PasswordLow"), s_sWebLowPassword )));

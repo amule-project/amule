@@ -1461,9 +1461,8 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	static uint32	msPrev1, msPrev5, msPrevSave;
+	static uint32	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS;
 	uint32 msCur = statistics->GetUptimeMsecs();
-	static uint32	msPrevHist;
 
 	// can this actually happen under wxwin ?
 	if (!IsRunning() || !IsReady) {
@@ -1513,7 +1512,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		listensocket->Process();
-		OnlineSig(); // Added By Bouc7
 		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
 		statistics->UpdateStatsTree();
 	}
@@ -1530,6 +1528,12 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 	}
 
+	// Special
+	if (msCur-msPrevOS >= thePrefs::GetOSUpdate) {
+		OnlineSig(); // Added By Bouc7		
+		msPrevOS = msCur;
+	}
+	
 	// Recomended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
 
