@@ -325,18 +325,11 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			// then set state
 			wxMenu *menu = m_FileMenu;
-<<<<<<< DownloadListCtrl.cpp
 			menu->Enable(MP_CANCEL, ((file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED && file->GetStatus() != PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));
 			menu->Enable(MP_CLEARCOMPLETED, ((theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED));
-=======
-			menu->Enable(MP_PAUSE, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
-			menu->Enable(MP_STOP, ((file->GetStatus() != PS_PAUSED && file->GetStatus() != PS_ERROR) ? MF_ENABLED : MF_GRAYED));
-			menu->Enable(MP_RESUME, ((file->GetStatus() == PS_PAUSED) ? MF_ENABLED : MF_GRAYED));
-			menu->Enable(MP_CLEARCOMPLETED, (theApp.downloadqueue->CompletedFilesExist()) ? MF_ENABLED : MF_GRAYED);
->>>>>>> 1.106
 			menu->Enable(MP_OPEN, ((file->GetStatus() == PS_COMPLETE) ? MF_ENABLED : MF_GRAYED));	//<<--9/21/02
 			
 			wxString preview(_("Preview"));
