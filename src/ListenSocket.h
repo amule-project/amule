@@ -105,6 +105,13 @@ private:
 	CClientReqSocket* socket;
 	
 #ifdef AMULE_DAEMON
+public:
+	// lfroen: for some reason wx can't Wait for detached threads
+	wxThreadError Delete();
+private:
+
+	wxMutex exit_mutex; 
+
 	void *Entry();
 #else
 	DECLARE_EVENT_TABLE();
