@@ -27,7 +27,6 @@
 #include <wx/thread.h>		// Needed for wxThread
 
 #include <list>				// Needed for std::list
-#include <memory>			// Needed for std::auto_ptr
 
 #include "Types.h"			// Needed for uints
 
@@ -35,7 +34,6 @@
 class CKnownFile;
 class CPartFile;
 struct QueuedFile;
-typedef std::auto_ptr<QueuedFile> QueuedFilePtr;
 class CFile;
 
 
@@ -154,7 +152,7 @@ private:
 	 * Please not that this function will also delete the pointer, so 
 	 * do not attempt to delete it afterwards.
 	 */
-	static void RemoveFromQueue(QueuedFilePtr file);
+	static void RemoveFromQueue(QueuedFile* file);
 	
 
 	/**

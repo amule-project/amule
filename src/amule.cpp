@@ -1586,20 +1586,18 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 	static int filecount = 0;
 	static int bytecount = 0;
 
-	std::auto_ptr<CKnownFile> result(static_cast<CKnownFile*>(evt.GetClientData()));
+	CKnownFile* result = (CKnownFile*)evt.GetClientData();
 	if (evt.GetExtraLong()) {
 		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
 		if (downloadqueue->IsPartFile(requester)) {
 			requester->PartFileHashFinished(result);
 		}
 	} else {
-		if (knownfiles->SafeAddKFile(result.get())) {
+		if (knownfiles->SafeAddKFile(result)) {
+			sharedfiles->SafeAddKFile(result);
+
 			filecount++;
 			bytecount += result->GetFileSize();
-
-			// knownfiles has taken ownership of result
-			sharedfiles->SafeAddKFile(result.release());
-
 			// If we have added 30 files or files with a total size of ~300mb
 			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
 				if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
@@ -1610,6 +1608,7 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 			}
 		} else {
 			printf("File not added to sharedlist: %s\n", (const char *)unicode2char(result->GetFileName()));
+			delete result;
 		}
 	}
 
