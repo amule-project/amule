@@ -216,7 +216,6 @@ bool		CPreferences::s_FastED2KLinksHandler;
 
 
 
-
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -383,21 +382,17 @@ public:
 #ifndef AMULE_DAEMON
 	virtual bool TransferFromWindow()
 	{
-		// Store current value to see if it has changed
-		wxString temp;
-	
 		// Shakraw: when storing value, store it encrypted here (only if changed in prefs)
 		if ( Cfg_Str::TransferFromWindow() ) {
-			if ( temp != m_value ) {
-				if ( temp.IsEmpty() ) {
-					m_value = temp;
-				} else {
-					m_value = MD5Sum(temp).GetHash();
-				}
+
+			// Only recalucate the hash for new, non-empty passwords
+			if ( HasChanged() && !m_value.IsEmpty() ) {
+				m_value = MD5Sum( m_value ).GetHash();
 			}
 
 			return true;
 		}
+
 
 		return false;
 	}
