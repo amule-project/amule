@@ -442,7 +442,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		}
 		/*
 		} else {
-			theApp.amuledlg->AddLogLine(false, CString(_("Added new server: %s:%d")), srv->GetFullIP(), srv->GetPort());
+			theApp.amuledlg->AddLogLine(false, _("Added new server: %s:%d"), srv->GetFullIP(), srv->GetPort());
 		}
 		*/
 	}
@@ -586,7 +586,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
 	//Append the filehash to the list.
 	suspended_uploads_list.AddTail(filehash);
-	CString base16hash = EncodeBase16(filehash, 16);
+	wxString base16hash = EncodeBase16(filehash, 16);
 	
 	printf("%s: Suspending uploads of file.\n", unicode2char(base16hash));
 	

@@ -89,16 +89,16 @@ void CQueueListCtrl::InitSort()
 
 void CQueueListCtrl::Init(){
 	
-	InsertColumn(0,CString(_("Username")),LVCFMT_LEFT,150);
-	InsertColumn(1,CString(_("File")),LVCFMT_LEFT,275);
-	InsertColumn(2,CString(_("File Priority")),LVCFMT_LEFT,110);
-	InsertColumn(3,CString(_("Rating")),LVCFMT_LEFT,60);
-	InsertColumn(4,CString(_("Score")),LVCFMT_LEFT,60);
-	InsertColumn(5,CString(_("Asked")),LVCFMT_LEFT,60);
-	InsertColumn(6,CString(_("Last Seen")),LVCFMT_LEFT,110);
-	InsertColumn(7,CString(_("Entered Queue")),LVCFMT_LEFT,110);
-	InsertColumn(8,CString(_("Banned")),LVCFMT_LEFT,60);
-	InsertColumn(9,CString(_("Obtained Parts")),LVCFMT_LEFT,100);
+	InsertColumn(0,_("Username"),LVCFMT_LEFT,150);
+	InsertColumn(1,_("File"),LVCFMT_LEFT,275);
+	InsertColumn(2,_("File Priority"),LVCFMT_LEFT,110);
+	InsertColumn(3,_("Rating"),LVCFMT_LEFT,60);
+	InsertColumn(4,_("Score"),LVCFMT_LEFT,60);
+	InsertColumn(5,_("Asked"),LVCFMT_LEFT,60);
+	InsertColumn(6,_("Last Seen"),LVCFMT_LEFT,110);
+	InsertColumn(7,_("Entered Queue"),LVCFMT_LEFT,110);
+	InsertColumn(8,_("Banned"),LVCFMT_LEFT,60);
+	InsertColumn(9,_("Obtained Parts"),LVCFMT_LEFT,100);
 
 }
 
@@ -130,13 +130,13 @@ void CQueueListCtrl::OnNMRclick(wxMouseEvent& evt)
 	}
 
 	if(m_ClientMenu==NULL) {
-		wxMenu* menu=new wxMenu(CString(_("Clients")));
-		menu->Append(MP_DETAIL,CString(_("Show &Details")));
-		menu->Append(MP_ADDFRIEND,CString(_("Add to Friends")));
-		menu->Append(MP_UNBAN,CString(_("Unban")));
-		menu->Append(MP_SHOWLIST,CString(_("View Files")));
+		wxMenu* menu=new wxMenu(_("Clients"));
+		menu->Append(MP_DETAIL,_("Show &Details"));
+		menu->Append(MP_ADDFRIEND,_("Add to Friends"));
+		menu->Append(MP_UNBAN,_("Unban"));
+		menu->Append(MP_SHOWLIST,_("View Files"));
 		menu->AppendSeparator();
-		menu->Append(MP_SWITCHCTRL,CString(_("Show Uploads")));
+		menu->Append(MP_SWITCHCTRL,_("Show Uploads"));
 		m_ClientMenu=menu;
 	} 
 
@@ -155,49 +155,49 @@ void CQueueListCtrl::Localize() {
 	hdi.mask = HDI_TEXT;
 
 	if(pHeaderCtrl->GetItemCount() != 0) {
-		CString strRes;
+		wxString strRes;
 
-		strRes = CString(_("Username"));
+		strRes = wxString(_("Username"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(0, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("File"));
+		strRes = wxString(_("File"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(1, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("File Priority"));
+		strRes = wxString(_("File Priority"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(2, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Rating"));
+		strRes = wxString(_("Rating"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(3, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Score"));
+		strRes = wxString(_("Score"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(4, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Asked"));
+		strRes = wxString(_("Asked"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(5, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Last Seen"));
+		strRes = wxString(_("Last Seen"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(6, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Entered Queue"));
+		strRes = wxString(_("Entered Queue"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(7, &hdi);
 		strRes.ReleaseBuffer();
 
-		strRes = CString(_("Banned"));
+		strRes = wxString(_("Banned"));
 		hdi.pszText = strRes.GetBuffer();
 		pHeaderCtrl->SetItem(8, &hdi);
 		strRes.ReleaseBuffer();
@@ -294,7 +294,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
   cur_rec.right=rect.x+rect.width;
   cur_rec.bottom=rect.y+rect.height;
     
-    CString Sbuffer;
+    wxString Sbuffer;
     //	char buffer[100];
     
     CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
@@ -364,7 +364,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 			imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 		}		
 		
-		Sbuffer.Format(wxT("%s"), client->GetUserName());
+		Sbuffer.Printf(wxT("%s"), client->GetUserName());
 		cur_rec.left +=20;
 		dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
 		cur_rec.left -=20;
@@ -372,7 +372,7 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	}
 	case 1:
 	  if(file)
-	    Sbuffer.Format(wxT("%s"), file->GetFileName().GetData());
+	    Sbuffer.Printf(wxT("%s"), file->GetFileName().GetData());
 	  else
 	    Sbuffer = wxT("?");
 	  break;
@@ -380,22 +380,22 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	  if(file){
 	    switch(file->GetUpPriority()){
 	    case PR_POWERSHARE:                    //added for powershare (deltaHF)
-	      Sbuffer.Format(wxT("%s"),CString(_("PowerShare[Release]")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("PowerShare[Release]"));
 	      break; //end
 	    case PR_VERYHIGH:
-	      Sbuffer.Format(wxT("%s"),CString(_("Very High")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("Very High"));
 	      break;
 	    case PR_HIGH: 
-	      Sbuffer.Format(wxT("%s"),CString(_("High")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("High"));
 	      break; 
 	    case PR_LOW: 
-	      Sbuffer.Format(wxT("%s"),CString(_("Low")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("Low"));
 	      break; 
 	    case PR_VERYLOW:
-	      Sbuffer.Format(wxT("%s"),CString(_("Very low")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("Very low"));
 	      break;
 	    default: 
-	      Sbuffer.Format(wxT("%s"),CString(_("Normal")).GetData());
+	      Sbuffer.Printf(wxT("%s"),_("Normal"));
 	      break; 
 	    }
 	  }
@@ -403,34 +403,34 @@ void CQueueListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRec
 	    Sbuffer = wxT("?");
 	  break;
 	case 3:
-	  Sbuffer.Format(wxT("%.1f"),(float)client->GetScore(false,false,true));
+	  Sbuffer.Printf(wxT("%.1f"),(float)client->GetScore(false,false,true));
 	  break;
 	case 4:
 		if (client->HasLowID()){
 			if (client->m_bAddNextConnect) {
-				Sbuffer.Format(wxT("%i ****"),client->GetScore(false));
+				Sbuffer.Printf(wxT("%i ****"),client->GetScore(false));
 			} else {
-                  	Sbuffer.Format(wxT("%i ")+CString(_("LowID")),client->GetScore(false));
+                  	Sbuffer.Printf(wxT("%i ")+wxString(_("LowID")),client->GetScore(false));
 			}
 		} else {
-			Sbuffer.Format(wxT("%i"),client->GetScore(false));
+			Sbuffer.Printf(wxT("%i"),client->GetScore(false));
 		}
 		break;		
 	  break;
 	case 5:
-	  Sbuffer.Format(wxT("%i"),client->GetAskedCount());
+	  Sbuffer.Printf(wxT("%i"),client->GetAskedCount());
 	  break;
 	case 6:
-	  Sbuffer.Format(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000).GetData());
+	  Sbuffer.Printf(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000).GetData());
 	  break;
 	case 7:
-	  Sbuffer.Format(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000).GetData());
+	  Sbuffer.Printf(wxT("%s"), CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000).GetData());
 	  break;
 	case 8:
 	  if(client->IsBanned())
-	    Sbuffer.Format(wxT("%s"),CString(_("Yes")).GetData());
+	    Sbuffer.Printf(wxT("%s"),_("Yes"));
 	  else
-	    Sbuffer.Format(wxT("%s"),CString(_("No")).GetData());
+	    Sbuffer.Printf(wxT("%s"),_("No"));
 	  break;
 	case 9:
 	  if( client->GetUpPartCount()){
@@ -559,12 +559,12 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
 		switch(lParamSort) {
 		case 0:
-			return CString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
+			return wxString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
 		case 100:
-			return CString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
+			return wxString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
 		case 1:
 			if( (file1 != NULL) && (file2 != NULL)) {
-				return CString(file1->GetFileName()).CmpNoCase(file2->GetFileName());
+				return file1->GetFileName().CmpNoCase(file2->GetFileName());
 			} else if(file1 == NULL) {
 				return 1;
 			} else {
@@ -572,7 +572,7 @@ int CQueueListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			}
 		case 101:
 			if( (file1 != NULL) && (file2 != NULL)) {
-				return CString(file2->GetFileName()).CmpNoCase(file1->GetFileName());
+				return file2->GetFileName().CmpNoCase(file1->GetFileName());
 			} else if(file1 == NULL) {
 				return 1;
 			} else {

@@ -28,7 +28,6 @@
 #include "filefn.h"		// Needed for wxCopyFile_fat32
 #include "endianfix.h"
 
-class CString;
 class CPartFile;
 
 static wxCSConv aMuleConv(wxT("iso8859-1"));
@@ -45,20 +44,20 @@ const char* ConvertUnicode2Char(wxString unic_string);
 */
 
 // From Gnucleus project [found by Tarod]
-// Converts 'buffer' with length 'bufLen' to a CString
-CString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
+// Converts 'buffer' with length 'bufLen' to a wxString
+wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen);
 // Converts the string 'base16Buffer' with length 'base16BufLen' to a hash in 'buffer'.
 void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, unsigned char *buffer);
 
 
 // Converts the number of bytes to human readable form.
-CString CastItoXBytes(uint64 count);
+wxString CastItoXBytes(uint64 count);
 // Converts the number to human readable form, abbreviating when nessecary.
-CString CastItoIShort(uint64 number);
+wxString CastItoIShort(uint64 number);
 // Converts an ammount of seconds to human readable time.
-CString CastSecondsToHM(sint32 seconds);
+wxString CastSecondsToHM(sint32 seconds);
 // Returns the string assosiated with a file-rating value.
-CString GetRateString(uint16 rate);
+wxString GetRateString(uint16 rate);
 
 
 // The following functions are used to identify and/or name the type of a file
@@ -75,7 +74,7 @@ wxString GetFiletypeByName(const wxString& filename);
 // Currently anything but windows will return the default value (-1);
 int GetMaxConnections();
 // Returns the name assosiated with a category value.
-CString GetCatTitle(int catid);
+wxString GetCatTitle(int catid);
 // Checks an ip to see if it is valid, depending on current preferences.
 bool IsGoodIP(uint32 nIP);
 
