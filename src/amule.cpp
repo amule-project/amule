@@ -767,10 +767,16 @@ bool CamuleApp::OnInit()
 		AddLogLineM(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
 	}
-	
+
+	// No webserver on Win at all (yet)	
+#ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
+#ifdef __WXGTK__
+		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
+#elif defined( __WXMAC__ )
 		wxString aMuleConfigFile(wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".eMule"));
+#endif
 		#ifndef AMULE_DAEMON
 		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
 		if (!webserver_pid) {
@@ -797,6 +803,7 @@ bool CamuleApp::OnInit()
 		}
 		#endif
 	}
+#endif /* ! __WXMSW__ */
 
 	return true;
 }
