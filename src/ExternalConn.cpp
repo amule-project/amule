@@ -1009,7 +1009,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			int32 level = StrToLong(args);
 			int32 oldLevel = theApp.glob_prefs->GetIPFilterLevel();
 			wxString msg;
-			if ( level >= 0 && level <= 255 ) {
+			if ( level <= 255 ) {
 				if ( level != oldLevel ) {
 					theApp.glob_prefs->SetIPFilterLevel(level);
 					msg = wxString::Format(_("aMule IP Filter level changed from %d to %d."), oldLevel, level);
