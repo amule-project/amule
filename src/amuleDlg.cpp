@@ -123,6 +123,7 @@ void CamuleDlg::OnSourcesDnsDone(wxCommandEvent& evt)
 void CamuleDlg::OnFinishedHashing(wxCommandEvent& evt)
 {
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
+	printf("Finished Hashing %s\n",result->GetFileName().c_str());
 	if (evt.GetExtraLong()) {
 		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
 		if (theApp.downloadqueue->IsPartFile(requester)) {
