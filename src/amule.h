@@ -166,7 +166,7 @@ public:
 	bool		CopyTextToClipboard( wxString strText );
 	void		OnlineSig(bool zero = false); 
 	void		Localize_mule();
-	void		Trigger_New_version(wxString old_version, wxString new_version);
+	void		Trigger_New_version(wxString new_version);
 	
 	// Kry - External connections
 	wxServer*		localserver;	
