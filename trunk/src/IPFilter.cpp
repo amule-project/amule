@@ -27,7 +27,7 @@
 
 
 #if defined(__WXMSW__)
-  #include <winsock.h>
+  #include <winsock2.h>
 #else
   #include <sys/socket.h>		// for inet_aton() and struct in_addr
   #include <netinet/in.h>
