@@ -112,7 +112,7 @@ void CServerSocket::OnConnect(wxSocketError nErrorCode)
 				memset(&sockAddr, 0, sizeof(sockAddr));
 				wxIPV4address tmpaddr;
 				GetPeer(tmpaddr);
-				sockAddr.sin_addr.s_addr = IPToLong(tmpaddr.IPAddress());
+				sockAddr.sin_addr.s_addr = inet_addr(unicode2char(tmpaddr.IPAddress()));
 				cur_server->SetID(sockAddr.sin_addr.s_addr);
 				theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort())->SetID(sockAddr.sin_addr.s_addr);
 			}
@@ -437,7 +437,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					if (2 != servers->Read(port)) {
 						break;
 					}
-					CServer* srv = new CServer(port, IPToStr(ip));
+					in_addr host;
+					host.s_addr=ip;
+					CServer* srv = new CServer(port, char2unicode(inet_ntoa(host)));
 					srv->SetListName(srv->GetFullIP());
 					if (!theApp.amuledlg->serverwnd->serverlistctrl->AddServer(srv, true)) {
 						delete srv;
