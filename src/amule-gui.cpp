@@ -801,6 +801,7 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 		// logging
 		case ADDLOGLINE:
 			if (amuledlg) {
+				CamuleApp::AddLogLine(event.string_value);
 				amuledlg->AddLogLine(event.byte_value,event.string_value);
 			} else {
 				QueueLogLine(event.byte_value,event.string_value);

@@ -119,15 +119,6 @@
 #endif
 
 
-//
-// LOGGING
-//
-// lfroen: do it simple.
-wxFile *applog = 0;
-bool enable_stdout_log = false;
-wxString server_msg;
-
-
 static void UnlimitResource(RLIMIT_RESOURCE resType)
 {
 #if defined(HAVE_GETRLIMIT) && defined(HAVE_SETRLIMIT)
@@ -315,8 +306,10 @@ bool CamuleApp::OnInit()
 	if ( cmdline.Found(wxT("log-stdout")) ) {
 		printf("Logging to stdout enabled\n");
 		enable_stdout_log = true;
+	} else {
+		enable_stdout_log = false;
 	}
-
+	
 	if ( cmdline.Found(wxT("version")) ) {
 		printf("%s\n", unicode2char(GetMuleVersion()));
 		return false;
@@ -1472,7 +1465,7 @@ bool CamuleApp::AddServer(CServer *srv)
 //
 // lfroen: logging is not unicode-aware, and it should not be !
 // Phoenix: You must be joking. :)
-void AddLogLine(const wxString &msg)
+void CamuleApp::AddLogLine(const wxString &msg)
 {
 	wxString curr_date = wxDateTime::Now().FormatDate() + wxT(" ") + 
 		wxDateTime::Now().FormatTime() + wxT(": ");
