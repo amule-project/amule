@@ -270,9 +270,10 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
         _("CD-Images"), 
         _("Pictures"), 
         _("Programs"), 
+        _("Texts"), 
         _("Videos")
     };
-    wxChoice *item17 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxSize(100,30), 7, strs17, 0 );
+    wxChoice *item17 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxSize(100,30), 8, strs17, 0 );
     item17->SetName( wxT("SearchSearchType") );
     item14->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 

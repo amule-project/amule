@@ -381,7 +381,8 @@ void CSearchDlg::StartNewSearch()
 		case 3: typeText = wxT("CD-Images"); break;
 		case 4: typeText = wxT("Pictures"); break;
 		case 5: typeText = wxT("Programs"); break;
-		case 6: typeText = wxT("Videos"); break;
+		case 6: typeText = wxT("Texts"); break;
+		case 7: typeText = wxT("Videos"); break;
 		default:
 			printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
 			break;
