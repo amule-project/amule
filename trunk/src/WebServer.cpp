@@ -794,7 +794,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 				CECTag *server = stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetTagByIndex(0);
 				sConnected = _("Connected to ");
 				sConnected += server->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData() + wxT(" ");
-				sConnected += server->GetIPv4Data().StringIP();
+				sConnected += server->GetIPv4Data().StringIP() + wxT(" ");
 				sConnected += stats->GetTagByName(EC_TAG_STATS_CONNSTATE)->GetInt8Data() == 2 ? _("with LowID") : _("with HighID");
 			}
 			break;
