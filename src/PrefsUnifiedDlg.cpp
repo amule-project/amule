@@ -148,14 +148,6 @@ public:
 	RseBool(int ID, bool& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
 		: Rse(ID, szIniName, szIniSection), pbSet(&bSetting), bDef(bDefault)  {}
 
-	RseBool(int ID, sint8& bSetting, const wxString& szIniName, bool bDefault, const wxString& szIniSection)
-		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
-			{ wxASSERT(sizeof(bool)==sizeof(sint8)); }
-
-	RseBool(int ID, uint8& bSetting, const wxString&  szIniName, bool bDefault, const wxString& szIniSection)
-		: Rse(ID, szIniName, szIniSection), pbSet((bool*)&bSetting), bDef(bDefault) 
-			{ wxASSERT(sizeof(bool)==sizeof(uint8)); }
-
 	virtual void LoadFromFile(wxConfigBase& ini) {
 		ini.Read( wxT("/") + szSection + wxT("/") + strName, pbSet, bDef );
 	}
