@@ -336,13 +336,13 @@ esac
 case "$CRYPTO_PP_STYLE" in
 gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_DEBIAN_GENTOO__"
 # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
-	LIBS="$LIBS -lcrypto++"
+	CRYPTOLIBS="-lcrypto++"
 	;;
 mdk_suse_fc) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_MDK_SUSE_FC__"
-	LIBS="$LIBS -lcryptopp"
+	CRYPTOLIBS="-lcryptopp"
 	;;
 sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
-	LIBS="$LIBS -lcryptopp"
+	CRYPTOLIBS="-lcryptopp"
 	;;
 esac
 
@@ -369,6 +369,7 @@ AM_CONDITIONAL(HAVE_GTK, test x$gtk = xyes)
 AC_SUBST(GTK_DEFS)
 AC_SUBST(TRAY_FLAGS)
 AC_SUBST(CAS_DEFS)
+AC_SUBST(CRYPTOLIBS)
 
 # DO NOT MOVE UP...THAT'S A REASON TO BE HERE!!
 
