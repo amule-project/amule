@@ -10,6 +10,6 @@ dist_util_DATA = amule.desktop
 utildir = $(datadir)/applications
 
 dist_doc_DATA = docs/*
-docdir = $(datadir)/doc/$(PACKAGE)-$(VERSION)
+docdir = $(datadir)/doc/$(PACKAGE_NAME)-$(PACKAGE_VERSION)
 
 ACLOCAL_AMFLAGS = -I m4
