@@ -269,12 +269,12 @@ amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CURL_LIBS) $(CRYPTOLIBS)
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) -DEC_REMOTE
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) -DEC_REMOTE
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS)
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp otherfunctions.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG -DEC_REMOTE
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG  -DEC_REMOTE
 amulecmdDLG_LDADD = $(WX_LIBS)
