@@ -192,12 +192,15 @@ public:
 	float	GetAverageConnections()		{ return averageconnections; }
 	uint32	GetActiveConnections()		{ return activeconnections; }
 	
+	bool	OnShutdown() { return shutdown;}
+	
 private:
 	
 	typedef std::set<CClientReqSocket *> SocketSet;
 	SocketSet socket_list;
 	
 	bool bListening;
+	bool shutdown;
 	
 	uint16 m_OpenSocketsInterval;
 	uint32 maxconnectionreached;

@@ -1463,7 +1463,7 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 	thePrefs::SetLanguageID(0);
 }
 
-void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line)
+void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line, bool debug)
 {
 	m_LogQueueLock.Enter();
 
@@ -1471,6 +1471,7 @@ void CamuleApp::QueueLogLine(bool addtostatusbar, const wxString& line)
 	
 	new_line_to_log.line = line;
 	new_line_to_log.addtostatus = addtostatusbar;
+	new_line_to_log.debug = debug;
 
 	QueuedAddLogLines.push_back(new_line_to_log);
 
@@ -1487,7 +1488,11 @@ void CamuleApp::FlushQueuedLogLines()
 	while (!QueuedAddLogLines.empty()) {
 		line_to_add = QueuedAddLogLines.front();
 		QueuedAddLogLines.pop_front();
-		AddLogLineM(line_to_add.addtostatus, line_to_add.line);
+		if (line_to_add.debug) {
+			AddDebugLogLineM(line_to_add.addtostatus, line_to_add.line);
+		} else {
+			AddLogLineM(line_to_add.addtostatus, line_to_add.line);
+		}
 	}
 
 	m_LogQueueLock.Leave();

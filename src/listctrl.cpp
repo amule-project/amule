@@ -4667,7 +4667,7 @@ long wxODListMainWindow::FindItem(long start, long data)
         wxODListLineData *line = GetLine(i);
         wxListItem item;
         line->GetItem( 0, item );
-        if (item.m_data == data)
+        if ((long)item.m_data == data)
             return i;
     }
     return wxNOT_FOUND;

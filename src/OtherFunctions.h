@@ -28,7 +28,6 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
-#include <wx/dynarray.h>
 
 #ifdef __WXBASE__
 	#include <time.h>
