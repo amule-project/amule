@@ -41,6 +41,15 @@
 IMPLEMENT_APP (WxCas)
      bool WxCas::OnInit ()
 {
+#if wxUSE_LIBPNG
+  wxImage::AddHandler (new wxPNGHandler);
+#endif
+
+#if wxUSE_LIBJPEG
+  wxImage::AddHandler (new wxJPEGHandler);
+#endif
+
+
   wxFrame *frame = new WxCasFrame (_("wxCas, aMule online statistics"));
 
   // Show all
