@@ -269,93 +269,14 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	return response;
 }
 
-
-void AddServerTo(CECTag *tag, CServer *server)
-{
-	EC_IPv4_t addr;
-
-	if (!server || !tag) {
-		return;
-	}
-
-	uint32 serverip = server->GetIP();
-	addr.ip[0] = (uint8)serverip;
-	addr.ip[1] = (uint8)(serverip >> 8);
-	addr.ip[2] = (uint8)(serverip >> 16);
-	addr.ip[3] = (uint8)(serverip >> 24);
-	addr.port = server->GetPort();
-
-	CECTag ecServer(EC_TAG_SERVER, &addr);
-	wxString tmpStr;
-	uint32 tmpInt;
-	uint8 tmpShort;
-
-	if (!(tmpStr = server->GetListName()).IsEmpty()) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));
-	}
-
-	if (!(tmpStr = server->GetDescription()).IsEmpty()) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
-	}
-
-	if ((tmpInt = server->GetPing()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
-	}
-
-	if ((tmpInt = server->GetUsers()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
-	}
-
-	if ((tmpInt = server->GetMaxUsers()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, tmpInt));
-	}
-
-	if ((tmpInt = server->GetFiles()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
-	}
-
-//	if ((tmpShort pref = (uint8)server.GetPreferences()) != 0) {
-//		ecServer.AddTag(CECTag(EC_TAG_SERVER_PREF, tmpShort));
-//	}
-
-	if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
-	}
-
-	if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
-	}
-
-	if (!(tmpStr = server->GetVersion()).IsEmpty()) {
-		ecServer.AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
-	}
-
-	tag->AddTag(ecServer);
-}
-
-
 CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_STAT_REQ);
 	
 	CECPacket *response = new CECPacket(EC_OP_STATS);
-	if ( theApp.serverconnect->IsConnected() ) {
-		CECTag *connstate;
-		if (theApp.serverconnect->IsLowID()) {
-			connstate = new CECTag(EC_TAG_STATS_CONNSTATE, (uint8)2);
-		} else {
-			connstate = new CECTag(EC_TAG_STATS_CONNSTATE, (uint8)3);
-		}
-		AddServerTo(connstate, theApp.serverconnect->GetCurrentServer());
-		response->AddTag(*connstate);
-		delete connstate;
-	} else {
-		if (theApp.serverconnect->IsConnecting()) {
-			response->AddTag(CECTag(EC_TAG_STATS_CONNSTATE, (uint8)1));
-		} else {
-			response->AddTag(CECTag(EC_TAG_STATS_CONNSTATE, (uint8)0));
-		}
-	}
+	
+	response->AddTag(CEC_ConnState_Tag());
+
 	//
 	// ul/dl speeds
 	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)(theApp.uploadqueue->GetKBps()*1024.0)));
@@ -704,7 +625,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 		case EC_OP_GET_SERVER_LIST:
 			response = new CECPacket(EC_OP_SERVER_LIST);
 			for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-				AddServerTo(response, theApp.serverlist->GetServerAt(i));
+				response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerAt(i)));
 			}	
 			break;
 		case EC_OP_IPFILTER_CMD:
@@ -2786,5 +2707,58 @@ void *ExternalConnClientThread::Entry()
 		}
 	}
 	return 0;
+}
+
+CEC_Server_Tag::CEC_Server_Tag(CServer *server) :
+	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
+{
+	wxString tmpStr;
+	uint32 tmpInt;
+	uint8 tmpShort;
+
+	if (!(tmpStr = server->GetListName()).IsEmpty()) {
+		AddTag(CECTag(EC_TAG_SERVER_NAME, tmpStr));
+	}
+
+	if (!(tmpStr = server->GetDescription()).IsEmpty()) {
+		AddTag(CECTag(EC_TAG_SERVER_DESC, tmpStr));
+	}
+
+	if ((tmpInt = server->GetPing()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
+	}
+
+	if ((tmpInt = server->GetUsers()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_USERS, tmpInt));
+	}
+
+	if ((tmpInt = server->GetMaxUsers()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, tmpInt));
+	}
+
+	if ((tmpInt = server->GetFiles()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_FILES, tmpInt));
+	}
+
+	if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
+	}
+
+	if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
+		AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
+	}
+
+	if (!(tmpStr = server->GetVersion()).IsEmpty()) {
+		AddTag(CECTag(EC_TAG_SERVER_VERSION, tmpStr));
+	}
+}
+
+CEC_ConnState_Tag::CEC_ConnState_Tag() : CECTag(EC_TAG_STATS_CONNSTATE,
+	(uint8) (theApp.serverconnect->IsConnected() ? (theApp.serverconnect->IsLowID() ? 2 : 3) : 
+		theApp.serverconnect->IsConnecting() ? 1 : 0))
+{
+	if ( theApp.serverconnect->GetCurrentServer() ) {
+		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer()));
+	}
 }
 

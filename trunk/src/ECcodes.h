@@ -37,10 +37,19 @@ typedef uint32 ec_taglen_t;
 /**
  * Type to hold IPv4 address.
  */
-typedef struct {
-	uint8 ip[4];
-	uint16 port;
-} EC_IPv4_t;
+class EC_IPv4_t {
+	public:
+		EC_IPv4_t() { }
+		EC_IPv4_t(uint32 ip, uint16 port) {
+			EC_IPv4_t::ip[0] = ip & 0xff;
+			EC_IPv4_t::ip[1] = (ip >> 8) & 0xff;
+			EC_IPv4_t::ip[2] = (ip >> 16) & 0xff;
+			EC_IPv4_t::ip[3] = (ip >> 24) & 0xff;
+			EC_IPv4_t::port = port;
+		}
+		uint8 ip[4];
+		uint16 port;
+};
 
 
 /**

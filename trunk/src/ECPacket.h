@@ -56,7 +56,7 @@ class CECTag {
 				CECTag(ec_tagname_t name, uint16 data);
 				CECTag(ec_tagname_t name, uint32 data);
 				CECTag(ec_tagname_t name, const wxString& data);
-				CECTag(ec_tagname_t name, const EC_IPv4_t * data);
+				CECTag(ec_tagname_t name, const EC_IPv4_t &data);
 				CECTag(const CECTag& tag);
 				~CECTag(void);
 		bool		AddTag(const CECTag& tag);

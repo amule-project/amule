@@ -71,11 +71,11 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
  *
  * \sa GetIPv4Data()
  */
-CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t *data) : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t &data) : m_tagName(name), m_dynamic(true)
 {
 
 	m_dataLen = sizeof(EC_IPv4_t);
-	m_tagData = malloc(m_dataLen);
+	m_tagData = new EC_IPv4_t;
 	if (m_tagData != NULL) {
 //		memcpy((void *)m_tagData, data, m_dataLen);
 		*((uint32 *)(((EC_IPv4_t *)m_tagData)->ip)) = *((uint32 *)(data->ip));
