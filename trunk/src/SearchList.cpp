@@ -561,9 +561,8 @@ wxString CSearchList::GetWebList(const wxString& linePattern,int sortby,bool asc
 
 void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash,uint8 WXUNUSED(cat)) {
 	for (POSITION pos = list.GetHeadPosition(); pos !=0; ){
-		CSearchFile* sf=list.GetNext(pos);//->GetSearchID() == nSearchID ){
+		CSearchFile* sf=list.GetNext(pos);
 		if (hash == sf->GetFileHash()) {
-			//theApp.downloadqueue->AddSearchToDownload(sf,2,cat);
 			theApp.downloadqueue->AddSearchToDownload(sf);
 			break;
 		}
