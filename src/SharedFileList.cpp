@@ -343,11 +343,15 @@ uint64 CSharedFileList::GetDatasize() {
 	return fsize;
 }
 
-CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash){
-	if (m_Files_map.find(filehash) != m_Files_map.end())
-		return m_Files_map[filehash];
-	else
+CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
+{
+	CKnownFileMap::iterator it = m_Files_map.find(filehash);
+	
+	if ( it != m_Files_map.end() ) {
+		return it->second;
+	} else {
 		return NULL;
+	}
 }
 
 short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
