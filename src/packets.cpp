@@ -376,102 +376,133 @@ CTag::CTag(CFile *file)
 
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
-	off_t off;
-	if ((off = data.Read(&tag.type,1)) == (off_t)wxInvalidOffset) {
-		throw CInvalidPacket("Bad Met File");
-	}
-	
-	uint16 length = 0;
-	
-	if (tag.type & 0x80)
-	{
-		tag.type &= 0x7F;
-		
-		#warning we need to add the new tag types before 2.0.0
-		tag.specialtag = data.ReadUInt8();
-		tag.tagname = NULL;
-	} else {
-	
-		length = data.ReadUInt16();
-		
-		if (length == 1) {
-			tag.specialtag = data.ReadUInt8();
-		} else {
-			tag.tagname = new char[length+1];
-			if ((off = data.Read(tag.tagname,length)) == (off_t)wxInvalidOffset) {
-				throw CInvalidPacket("Bad Met File");
-			}
-			tag.tagname[length] = 0;
-		}
-	}
-
-	// NOTE: It's very important that we read the *entire* packet data, even if we do
-	// not use each tag. Otherwise we will get troubles when the packets are returned in 
-	// a list - like the search results from a server.
-	
-	if (tag.type == 2){ // STRING
-		tag.stringvalue = data.ReadString(bOptUTF8);
-	}
-	else if (tag.type == 3){ // DWORD
-		tag.intvalue = data.ReadUInt32();
-	}
-	else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
-		// What to do with them?
-		data.ReadUInt32();
-	}
-	else if (tag.type == 1){ // HASH (never seen)
-		printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-		uchar* discard = new uchar[16];
-		data.ReadHash16(discard);
-		delete discard;
-	}
-	else if (tag.type == 5){ // BOOL (never seen; propably 1 byte)
-		// NOTE: This is preventive code, it was never tested
-		printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-		data.ReadUInt8();
-	}
-	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbytes> <bytes>)
-		// NOTE: This is preventive code, it was never tested
-		printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
-		uint16 len = data.ReadUInt16();
-		uchar* discard = new uchar[(len/8) +1];
-		data.Read(discard, (len/8) +1);
-		delete discard;
-	}
-	else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
-		// NOTE: This is preventive code, it was never tested
-		printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
-		uint32 len = data.ReadUInt32();
-		uchar* discard = new uchar[len];
-		data.Read(discard, len);
-		delete discard;
-	}
-	else if (tag.type == TAGTYPE_UINT16){ 
-		tag.type = 3;
-		tag.intvalue = data.ReadUInt16();
-	}
-	else if (tag.type == TAGTYPE_UINT8){ 
-		tag.type = 3;
-		tag.intvalue = data.ReadUInt8();
-	}	
-	else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
-		length = tag.type - TAGTYPE_STR1 + 1;
-		char* stringvalue = new char[length+1];
-		if (data.Read(stringvalue,length) == wxInvalidOffset) {
+	uchar* discard = NULL;
+	char* stringvalue = NULL;
+	try {
+		off_t off;
+		if ((off = data.Read(&tag.type,1)) == (off_t)wxInvalidOffset) {
 			throw CInvalidPacket("Bad Met File");
+		}
+		
+		uint16 length = 0;
+		
+		if (tag.type & 0x80)
+		{
+			tag.type &= 0x7F;
+			
+			#warning we need to add the new tag types before 2.0.0
+			tag.specialtag = data.ReadUInt8();
+			tag.tagname = NULL;
+		} else {
+		
+			length = data.ReadUInt16();
+			
+			if (length == 1) {
+				tag.specialtag = data.ReadUInt8();
+			} else {
+				tag.tagname = new char[length+1];
+				if ((off = data.Read(tag.tagname,length)) == (off_t)wxInvalidOffset) {
+					tag.tagname[length] = 0;
+					throw CInvalidPacket("Bad Met File");
+				}
+				tag.tagname[length] = 0;
+			}
+		}
+	
+		// NOTE: It's very important that we read the *entire* packet data, even if we do
+		// not use each tag. Otherwise we will get troubles when the packets are returned in 
+		// a list - like the search results from a server.
+		
+		if (tag.type == 2){ // STRING
+			tag.stringvalue = data.ReadString(bOptUTF8);
+		}
+		else if (tag.type == 3){ // DWORD
+			tag.intvalue = data.ReadUInt32();
+		}
+		else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
+			// What to do with them?
+			data.ReadUInt32();
+		}
+		else if (tag.type == 1){ // HASH (never seen)
+			printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
+			wxASSERT(!discard);
+			discard = new uchar[16];
+			data.ReadHash16(discard);
+			delete[] discard;
+			discard = NULL;
+		}
+		else if (tag.type == 5){ // BOOL (never seen; propably 1 byte)
+			// NOTE: This is preventive code, it was never tested
+			printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
+			data.ReadUInt8();
+		}
+		else if (tag.type == 6){ // BOOL Array (never seen; propably <numbytes> <bytes>)
+			// NOTE: This is preventive code, it was never tested
+			printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
+			uint16 len = data.ReadUInt16();
+			wxASSERT(!discard);
+			discard = new uchar[(len/8) +1];
+			data.Read(discard, (len/8) +1);
+			delete[] discard;
+			discard = NULL;
+		}
+		else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
+			// NOTE: This is preventive code, it was never tested
+			printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
+			uint32 len = data.ReadUInt32();
+			wxASSERT(!discard);
+			discard = new uchar[len];
+			data.Read(discard, len);
+			delete[] discard;
+			discard = NULL;
+		}
+		else if (tag.type == TAGTYPE_UINT16){ 
+			tag.type = 3;
+			tag.intvalue = data.ReadUInt16();
+		}
+		else if (tag.type == TAGTYPE_UINT8){ 
+			tag.type = 3;
+			tag.intvalue = data.ReadUInt8();
+		}	
+		else if (tag.type >= TAGTYPE_STR1 && tag.type <= TAGTYPE_STR16) {
+			length = tag.type - TAGTYPE_STR1 + 1;
+			wxASSERT(!stringvalue);
+			stringvalue = new char[length+1];
+			if (data.Read(stringvalue,length) == wxInvalidOffset) {
+				throw CInvalidPacket("Bad Met File");
+			}		
+			stringvalue[length] = '\0';		
+			// NETWORK UNICODE!
+			tag.stringvalue = char2unicode(stringvalue);
+			delete[] stringvalue;
+			stringvalue = NULL;
+			tag.type = 2;
+		}
+		else{
+			if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
+			if (length == 1)
+				printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
+			else
+				printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
+		}
+	} catch(CInvalidPacket reason) {
+		if (discard) {
+			delete[] discard;
+		}
+		if (stringvalue) {
+			delete[] stringvalue;
+		}
+		throw(reason);
+	} catch(...) {
+		if (discard) {
+			delete[] discard;
+		}
+		if (stringvalue) {
+			delete[] stringvalue;
 		}		
-		stringvalue[length] = '\0';		
-		// NETWORK UNICODE!
-		tag.stringvalue = char2unicode(stringvalue);
-		tag.type = 2;
+		throw(CInvalidPacket("Bad met file"));
 	}
-	else{
-		if (tag.type==0x00) throw(CInvalidPacket("Bad met file"));
-		if (length == 1)
-			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  specialtag=%u\n", tag.type, tag.specialtag);
-		else
-			printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
-	}
+	
 }
 
 CTag::~CTag()
