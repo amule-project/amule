@@ -71,7 +71,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 		crNextPending = RGB(255,255,100);
 	} 
 
-	//s_StatusBar.SetFileSize(reqfile->GetFileSize()); // Look below to see where it moved (Creteil)
+	s_StatusBar.SetFileSize(reqfile->GetFileSize()); 
 	s_StatusBar.SetHeight(rect.height - rect.y);
 	s_StatusBar.SetWidth(rect.width - rect.x);
 	s_StatusBar.Fill(crNeither);
@@ -81,7 +81,6 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	ShowDownloadingParts(&gettingParts);
 
 	if (!onlygreyrect && reqfile && m_abyPartStatus) {
-		//s_StatusBar.SetFileSize(reqfile->GetFileSize()); // Moved here bu x86_64 men (Creteil)
 		for (uint32 i = 0;i != m_nPartCount;i++) {
 			if (m_abyPartStatus[i]) {
 				uint32 uEnd;
