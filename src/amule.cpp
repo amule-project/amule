@@ -1468,7 +1468,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	if (msCur-msPrev1 > 1000) {  // approximately every second
 		msPrev1 = msCur;
 		clientcredits->Process();
-		serverlist->Process();
 		clientlist->Process();
 		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
 			serverconnect->TryAnotherConnectionrequest();

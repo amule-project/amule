@@ -679,22 +679,6 @@ bool CServerList::SaveServermetToFile()
 }
 
 
-void CServerList::Process()
-{
-	// emanuelw(20030924) added:Check for new server links once per second.	
-	if ((::GetTickCount() - m_nLastED2KServerLinkCheck) >= 1000) {
-		wxString filename(theApp.ConfigDir + wxT("ED2KServers"));
-	
-		if (wxFile::Exists(filename)) {
-			AddServersFromTextFile(filename, false, true);
-			SaveServermetToFile();
-			wxRemoveFile(filename);
-		}
-		m_nLastED2KServerLinkCheck = ::GetTickCount();
-	}
-}
-
-
 void CServerList::RemoveDeadServers()
 {
 	if ( thePrefs::DeadServer() ) {
