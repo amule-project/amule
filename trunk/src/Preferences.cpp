@@ -34,9 +34,7 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
-#include "PrefsUnifiedDlg.h"			// Needed for Rse
 #include "opcodes.h"		// Needed for PREFFILE_VERSION
-#include "color.h"			// Needed for RGB
 
 #include <wx/config.h>
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
@@ -251,8 +249,6 @@ CPreferences::CPreferences()
 		SetStandartValues();
 	}
 	
-	PrefsUnifiedDlg::BuildItemList(this, theApp.ConfigDir);
-
 	LoadPreferences();
 
 	// shared directories
@@ -575,8 +571,6 @@ void CPreferences::SavePreferences()
 
 	cfg->Write( wxT("/eMule/AppVersion"), wxT(PACKAGE_STRING) );
 
-	PrefsUnifiedDlg::SaveAllItems((*cfg));
-
 	// Ensure that the changes are saved to disk.
 	cfg->Flush();
 }
@@ -604,10 +598,6 @@ void CPreferences::SaveCats()
 
 void CPreferences::LoadPreferences()
 {
-	wxConfigBase* cfg = wxConfig::Get();
-
-	PrefsUnifiedDlg::LoadAllItems( (*cfg)  );
-
 	LoadCats();
 }
 
