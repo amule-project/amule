@@ -103,7 +103,7 @@ CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
 }
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
-	(uint8) (theApp.serverconnect->IsConnected() ? theApp.serverconnect->GetClientID() : 
+	(uint32) (theApp.serverconnect->IsConnected() ? theApp.serverconnect->GetClientID() : 
 		theApp.serverconnect->IsConnecting() ? 0xffffffff : 0))
 {
 	if ( theApp.serverconnect->GetCurrentServer() ) {

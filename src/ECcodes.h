@@ -666,12 +666,11 @@ enum {
 		/*!
 		 * \brief Connection state.
 		 *
-		 * Possible values (\c uint8):
+		 * Possible values (\c uint32):
 		 *	<ul>
 		 *		<li>0 - Not Connected</li>
-		 *		<li>1 - Connecting</li>
-		 *		<li>2 - Connected with LowID</li>
-		 *		<li>3 - Connected with HighID</li>
+		 *		<li>0xffffffff - Connecting</li>
+		 *		<li>Any other - Client ID</li>
 		 *	</ul>
 		 *
 		 * When connected, it contains an ::EC_TAG_SERVER child, describing the
