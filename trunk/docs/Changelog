@@ -1,7 +1,10 @@
-Version 2.0.0rc8 - The "???????????" version.
+Version 2.0.0rc8 - The "last rc" version.
 ----------
-2004-10-??
+2004-12-21
 
+    deltaHF: 
+	    * Show comments for shared files
+		
 	Hetfield:
 		* Some fix in new Tray system and desktopMode bypass
 
