@@ -91,18 +91,18 @@ void CCommentDialogLst::CompleteList()
 			cur_src = m_file->srclists[sl].GetAt(pos2);
 
 			if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRate()>0) {
-				pmyListCtrl->InsertItem(count, cur_src->GetUserName());
-				pmyListCtrl->SetItem(count, 1, cur_src->GetClientFilename());
+				pmyListCtrl->InsertItem(count, char2unicode(cur_src->GetUserName()));
+				pmyListCtrl->SetItem(count, 1, char2unicode(cur_src->GetClientFilename()));
 				pmyListCtrl->SetItem(count, 2, GetRateString(cur_src->GetFileRate()));
 				pmyListCtrl->SetItem(count, 3, cur_src->GetFileComment());
 				count++;
 			}
 		}
-		wxString info="";
+		CString info="";
 		if (count==0) {
-			info=CString(_("No comments"));
+			info = wxT("No comments");
 		} else {
-			info=(CastItoIShort(count))+" comment(s)";
+			info = CastItoIShort(count) + wxT(" comment(s)");
 		}
 		FindWindowById(IDC_CMSTATUS)->SetLabel(info);
 		m_file->UpdateFileRatingCommentAvail();
