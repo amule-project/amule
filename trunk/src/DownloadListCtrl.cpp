@@ -2215,7 +2215,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 			_("File preview"), wxOK);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output decivce and needs a parameter, go figure...
-		command = wxT("mplayer -vo xv");
+		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer");
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
@@ -2230,7 +2230,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	command += wxT("\"");
 
 	// We can't use wxShell here, it blocks the app
-	// <jacobo221> mplayer users (like me) should use  -T "aMule Preview" -e mplayer -idx
+	// <jacobo221> mplayer users (like me) should use xterm -T "aMule Preview" -iconic -e mplayer -idx
 	if (!wxExecute(command,wxEXEC_ASYNC)) {
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
 		AddLogLineM( false, wxString( _("Command: ") ) + command );
