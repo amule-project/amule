@@ -124,8 +124,9 @@ public:
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
+#ifndef AMULE_DAEMON
 	CClientReqSocketHandler *GetEventHandler(void) const { return my_handler; }
-#ifdef AMULE_DAEMON
+#else
 	void Destroy();
 #endif
 protected:
@@ -140,8 +141,9 @@ private:
 	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
 	bool	IsMessageFiltered(wxString Message, CUpDownClient* client);
 
+#ifndef AMULE_DAEMON
 	CClientReqSocketHandler* my_handler;
-#ifdef AMULE_DAEMON
+#else
 	wxMutex handler_exit;
 #endif
 };

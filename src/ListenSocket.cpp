@@ -164,7 +164,6 @@ void *CClientReqSocketHandler::Entry()
 		}
 	}
 	printf("CClientReqSocketHandler: thread %ld for %p exited\n", GetId(), m_socket);
-	m_socket->my_handler = 0;
 	m_socket->Safe_Delete();
 	m_socket = NULL;
 
@@ -202,7 +201,6 @@ CEMSocket(ProxyData)
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
 #else
-	my_handler = 0;
 	Notify(false);
 #endif
 	theApp.listensocket->AddSocket(this);
@@ -243,7 +241,7 @@ CClientReqSocket::~CClientReqSocket()
 		theApp.listensocket->RemoveSocket(this);
 	}
 #ifdef AMULE_DAEMON
-	wxASSERT(deletethis && !my_handler);
+	wxASSERT(deletethis);
 #endif
 }
 
@@ -257,11 +255,6 @@ bool CClientReqSocket::CheckTimeOut()
 // lfroen: on daemon sockets must be blocking. Which means
 // that when client is downloading, i will only trust
 // tcp timeout
-#ifdef AMULE_DAEMON
-	if (my_handler) {
-		return false;
-	}
-#endif
 	// 0.42x
 	UINT uTimeout = CONNECTION_TIMEOUT;
 	if(m_client) {
@@ -340,9 +333,6 @@ void CClientReqSocket::Safe_Delete()
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
-#ifdef AMULE_DAEMON
-	if ( !my_handler )
-#endif
 		Close();
 	}
 }
@@ -2306,9 +2296,7 @@ bool CClientReqSocket::IsMessageFiltered(wxString Message, CUpDownClient* client
 #ifdef AMULE_DAEMON
 void CClientReqSocket::Destroy()
 {
-	if ( !my_handler ) {
-		CEMSocket::Destroy();
-	}
+	CEMSocket::Destroy();
 }
 #endif
 
