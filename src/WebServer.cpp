@@ -1396,20 +1396,6 @@ wxString CWebServer::_GetGraphs(ThreadData WXUNUSED(Data)) {
 		}
 	}
 
-	/*
-	#ifdef WITH_LIBPNG 
-	CECTag* ImageTag = response->GetTagByName(EC_TAG_IMAGE);
-	// If we have libpng, we can generate the image, otherwise ignore it
-	CDynPngImage* DLImage =  new CDynPngImage(
-										ImageTag->GetTagByName(EC_TAG_IMAGE_X)->GetInt32Data(),
-										ImageTag->GetTagByName(EC_TAG_IMAGE_Y)->GetInt32Data(),
-				(unsigned char*) 	ImageTag->GetTagByName(EC_TAG_IMAGE_DATA)->GetTagData(),
-										wxT("StatGraphDownload.png"));
-	m_ImageLib.AddImage(DLImage,wxT("/") + DLImage->Name());
-	
-	#endif
-	*/
-	
 	Out.Replace(wxT("[GraphDownload]"), sGraphDownload);
 	Out.Replace(wxT("[GraphUpload]"), sGraphUpload);
 	Out.Replace(wxT("[GraphConnections]"), sGraphCons);
