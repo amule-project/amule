@@ -102,7 +102,7 @@ bool CTransferWnd::OnInitDialog()
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
 	char buffer[100];
-	wxString fmtstr=wxT("%u (%u ")+ CString(_("Banned")).MakeLower() +wxT(")");
+	wxString fmtstr=wxT("%u (%u ")+ wxString(_("Banned")).MakeLower() +wxT(")");
 	sprintf(buffer,unicode2char(fmtstr),number,theApp.uploadqueue->GetBanCount());
 	wxStaticCast(FindWindowByName(wxT("clientCount")),wxStaticText)->SetLabel(char2unicode(buffer));
 	//this->GetDlgItem(IDC_QUEUECOUNT)->SetWindowText(buffer);
@@ -118,7 +118,7 @@ void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
 		queueSizer->Add(queuelistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL ,5);
 		queuelistctrl->Show();
 		queueSizer->Layout();
-		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(CString(_("On Queue")));
+		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(_("On Queue"));
 	} else {
 		windowtransferstate=false;
 		// hide the queuelist
@@ -127,7 +127,7 @@ void CTransferWnd::SwitchUploadList(wxCommandEvent& evt)
 		queueSizer->Add(uploadlistctrl,1,wxGROW|wxALIGN_CENTER_VERTICAL, 5);
 		uploadlistctrl->Show();
 		queueSizer->Layout();
-		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(CString(_("Uploads")));
+		wxStaticCast(FindWindowByName(wxT("uploadTitle")),wxStaticText)->SetLabel(_("Uploads"));
 	}
 }
 
@@ -152,43 +152,43 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt) {
 	if (CatMenu==false) {  
 		
 		CatMenu=true;
-		wxMenu* menu=new wxMenu(CString(_("Category")));
+		wxMenu* menu=new wxMenu(_("Category"));
 
 		if(nb->GetSelection()==0) {
 			wxMenu* m_CatMenu=new wxMenu();
 
-			m_CatMenu->Append(MP_CAT_SET0,CString(_("all")) );
-			m_CatMenu->Append(MP_CAT_SET0+1,CString(_("all others")) );
+			m_CatMenu->Append(MP_CAT_SET0,_("all"));
+			m_CatMenu->Append(MP_CAT_SET0+1,_("all others"));
 			m_CatMenu->AppendSeparator();
-			m_CatMenu->Append(MP_CAT_SET0+2,CString(_("Incomplete")) );
-			m_CatMenu->Append(MP_CAT_SET0+3,CString(_("Completed")) );
-			m_CatMenu->Append(MP_CAT_SET0+4,CString(_("Waiting")) );
-			m_CatMenu->Append(MP_CAT_SET0+5,CString(_("Downloading")) );
-			m_CatMenu->Append(MP_CAT_SET0+6,CString(_("Erroneous")) );
-			m_CatMenu->Append(MP_CAT_SET0+7,CString(_("Paused")) );
-			m_CatMenu->Append(MP_CAT_SET0+8,CString(_("Stopped")) );
+			m_CatMenu->Append(MP_CAT_SET0+2,_("Incomplete"));
+			m_CatMenu->Append(MP_CAT_SET0+3,_("Completed"));
+			m_CatMenu->Append(MP_CAT_SET0+4,_("Waiting"));
+			m_CatMenu->Append(MP_CAT_SET0+5,_("Downloading"));
+			m_CatMenu->Append(MP_CAT_SET0+6,_("Erroneous"));
+			m_CatMenu->Append(MP_CAT_SET0+7,_("Paused"));
+			m_CatMenu->Append(MP_CAT_SET0+8,_("Stopped"));
 			m_CatMenu->AppendSeparator();
-			m_CatMenu->Append(MP_CAT_SET0+9,CString(_("Video")) );
-			m_CatMenu->Append(MP_CAT_SET0+10,CString(_("Audio")) );
-			m_CatMenu->Append(MP_CAT_SET0+11,CString(_("Archive")) );
-			m_CatMenu->Append(MP_CAT_SET0+12,CString(_("CD-Images")) );
-			m_CatMenu->Append(MP_CAT_SET0+13,CString(_("Pictures")) );
-			m_CatMenu->Append(MP_CAT_SET0+14,CString(_("Text")) );
+			m_CatMenu->Append(MP_CAT_SET0+9,_("Video"));
+			m_CatMenu->Append(MP_CAT_SET0+10,_("Audio"));
+			m_CatMenu->Append(MP_CAT_SET0+11,_("Archive"));
+			m_CatMenu->Append(MP_CAT_SET0+12,_("CD-Images"));
+			m_CatMenu->Append(MP_CAT_SET0+13,_("Pictures"));
+			m_CatMenu->Append(MP_CAT_SET0+14,_("Text"));
 			//m_CatMenu.CheckMenuItem( MP_CAT_SET0+theApp.glob_prefs->GetAllcatType() ,MF_CHECKED | MF_BYCOMMAND);
-			menu->Append(47321,CString(_("Select view filter")),m_CatMenu);
+			menu->Append(47321,_("Select view filter"),m_CatMenu);
 		}
 
-		menu->Append(MP_CAT_ADD,CString(_("Add category")));
-		menu->Append(MP_CAT_EDIT,CString(_("Edit category")));
-		menu->Append(MP_CAT_REMOVE, CString(_("Remove category")));
+		menu->Append(MP_CAT_ADD,_("Add category"));
+		menu->Append(MP_CAT_EDIT,_("Edit category"));
+		menu->Append(MP_CAT_REMOVE, _("Remove category"));
 		menu->AppendSeparator();
-		//menu->Append(472834,CString(_("Priority")),m_PrioMenu);
+		//menu->Append(472834,_("Priority"),m_PrioMenu);
 
-		menu->Append(MP_CANCEL,CString(_("Cancel")) );
-		menu->Append(MP_STOP, CString(_("&Stop")));
-		menu->Append(MP_PAUSE, CString(_("&Pause")));
-		menu->Append(MP_RESUME, CString(_("&Resume")));
-		//menu->Append(MP_RESUMENEXT, CString(_("Resume next paused")));
+		menu->Append(MP_CANCEL,_("Cancel"));
+		menu->Append(MP_STOP, _("&Stop"));
+		menu->Append(MP_PAUSE, _("&Pause"));
+		menu->Append(MP_RESUME, _("&Resume"));
+		//menu->Append(MP_RESUMENEXT, _("Resume next paused"));
 		// the point coming from mulenotebook control isn't in screen coordinates
 		// (unlike std mouse event, which always returns screen coordinates)
 		// so we must do the conversion here
@@ -300,7 +300,7 @@ bool CTransferWnd::ProcessEvent(wxEvent& evt)
 		}
 
 		case MP_CANCEL:
-			if (wxMessageBox(CString(_("Are you sure you wish to cancel and delete all files in this category?")),CString(_("Confirmation Required")),
+			if (wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"),
 			   wxYES_NO|wxCENTRE|wxICON_EXCLAMATION) == wxYES) {
 				theApp.downloadqueue->SetCatStatus(m_dlTab->GetSelection(),MP_CANCEL);
 			}

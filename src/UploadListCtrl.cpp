@@ -69,14 +69,14 @@ CUploadListCtrl::CUploadListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxS
 void CUploadListCtrl::Init()
 {
 
-	InsertColumn(0,CString(_("Username")),wxLIST_FORMAT_LEFT,150); //,0);
-	InsertColumn(1,CString(_("File")),wxLIST_FORMAT_LEFT,275);//,1);
-	InsertColumn(2,CString(_("Speed")),wxLIST_FORMAT_LEFT,60);//,2);
-	InsertColumn(3,CString(_("Transferred")),wxLIST_FORMAT_LEFT,65);//,3);
-	InsertColumn(4,CString(_("Waited")),wxLIST_FORMAT_LEFT,60);//,4);
-	InsertColumn(5,CString(_("Upload Time")),wxLIST_FORMAT_LEFT,60);//,6);
-	InsertColumn(6,CString(_("Status")),wxLIST_FORMAT_LEFT,110);//,5);
-	InsertColumn(7,CString(_("Obtained Parts")),wxLIST_FORMAT_LEFT,100);
+	InsertColumn(0,_("Username"),wxLIST_FORMAT_LEFT,150); //,0);
+	InsertColumn(1,_("File"),wxLIST_FORMAT_LEFT,275);//,1);
+	InsertColumn(2,_("Speed"),wxLIST_FORMAT_LEFT,60);//,2);
+	InsertColumn(3,_("Transferred"),wxLIST_FORMAT_LEFT,65);//,3);
+	InsertColumn(4,_("Waited"),wxLIST_FORMAT_LEFT,60);//,4);
+	InsertColumn(5,_("Upload Time"),wxLIST_FORMAT_LEFT,60);//,6);
+	InsertColumn(6,_("Status"),wxLIST_FORMAT_LEFT,110);//,5);
+	InsertColumn(7,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
 
 	// not here.. no preferences yet
 	//LoadSettings(CPreferences::tableUpload);
@@ -122,12 +122,12 @@ void CUploadListCtrl::OnNMRclick(wxMouseEvent& evt)
 		}
 	}
 	if(m_ClientMenu==NULL) {
-		wxMenu* menu=new wxMenu(CString(_("Clients")));
-		menu->Append(MP_DETAIL,CString(_("Show &Details")));
-		menu->Append(MP_ADDFRIEND,CString(_("Add to Friends")));
-		menu->Append(MP_SHOWLIST,CString(_("View Files")));
+		wxMenu* menu=new wxMenu(_("Clients"));
+		menu->Append(MP_DETAIL,_("Show &Details"));
+		menu->Append(MP_ADDFRIEND,_("Add to Friends"));
+		menu->Append(MP_SHOWLIST,_("View Files"));
 		menu->AppendSeparator();
-		menu->Append(MP_SWITCHCTRL,CString(_("Show Queue")));
+		menu->Append(MP_SWITCHCTRL,_("Show Queue"));
 		m_ClientMenu=menu;
 	}
 	
@@ -188,16 +188,16 @@ void CUploadListCtrl::RefreshClient(CUpDownClient* client)
 	wxString status;
 	switch (client->GetUploadState()) {
 		case US_CONNECTING:
-			status = CString(_("Connecting"));
+			status = _("Connecting");
 			break;
 		case US_WAITCALLBACK:
-			status = CString(_("Connecting via server"));
+			status = _("Connecting via server");
 			break;
 		case US_UPLOADING:
-			status = CString(_("Transferring"));
+			status = _("Transferring");
 			break;
 		default:
-			status = CString(_("Unknown"));
+			status = _("Unknown");
 	}
 	SetItem(itemnr,6,status);
 	SetItem(itemnr,7,wxT("Bar is missing :)"));
@@ -276,12 +276,12 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 	CKnownFile* file2 = theApp.sharedfiles->GetFileByID(item2->GetUploadFileID());
 	switch(lParamSort) {
 		case 0:
-			return CString(item1->GetUserName()).CmpNoCase(char2unicode(item2->GetUserName()));
+			return wxString(char2unicode(item1->GetUserName())).CmpNoCase(char2unicode(item2->GetUserName()));
 		case 100:
-			return CString(item2->GetUserName()).CmpNoCase(char2unicode(item1->GetUserName()));
+			return wxString(char2unicode(item2->GetUserName())).CmpNoCase(char2unicode(item1->GetUserName()));
 		case 1:
 			if( (file1 != NULL) && (file2 != NULL)) {
-				return CString(file1->GetFileName()).CmpNoCase(file2->GetFileName());
+				return file1->GetFileName().CmpNoCase(file2->GetFileName());
 			} else if (file1 == NULL) {
 				return 1;
 			} else {
@@ -289,7 +289,7 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			}
 		case 101:
 			if( (file1 != NULL) && (file2 != NULL)) {
-				return CString(file2->GetFileName()).CmpNoCase(file1->GetFileName());
+				return file2->GetFileName().CmpNoCase(file1->GetFileName());
 			} else if (file1 == NULL) {
 				return 1;
 			} else {
@@ -372,10 +372,10 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 	cur_rec.bottom=rect.y+rect.height;
 
 	// lagloose
-	CString rbuffer;
+	wxString rbuffer;
 	// end lagloose
 
-	CString Sbuffer;
+	wxString Sbuffer;
 	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	//CHeaderCtrl *pHeaderCtrl = GetHeaderCtrl();
 	int iCount = GetColumnCount(); //pHeaderCtrl->GetItemCount();
@@ -443,7 +443,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 						imagelist.Draw(7,*dc,cur_rec.left,cur_rec.top+1,wxIMAGELIST_DRAW_TRANSPARENT);
 					}		
 					
-					Sbuffer.Format(wxT("%s"), client->GetUserName());
+					Sbuffer.Printf(wxT("%s"), client->GetUserName());
 					cur_rec.left +=20;
 					//dc->DrawText(Sbuffer,Sbuffer.GetLength(),&cur_rec,DT_LEFT|DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
 					dc->DrawText(Sbuffer,cur_rec.left,cur_rec.top+3);
@@ -452,7 +452,7 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 				}
 				case 1:
 					if(file) {
-						Sbuffer.Format(wxT("%s"), file->GetFileName().GetData());
+						Sbuffer.Printf(wxT("%s"), file->GetFileName().GetData());
 					} else {
 						Sbuffer = wxT("?");
 					}
@@ -461,45 +461,45 @@ void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRe
 					// lagloose
 					if (client->GetDownloadState() == DS_DOWNLOADING) {
 						Sbuffer = wxT("");
-						rbuffer.Format(wxT("%.1f"),client->GetKBpsUp());
+						rbuffer.Printf(wxT("%.1f"),client->GetKBpsUp());
 						Sbuffer.Append(rbuffer);
 						Sbuffer.Append(wxT("/"));
-						rbuffer.Format(wxT("%.1f %s"),client->GetKBpsDown(), CString(_("kB/s")).GetData());
+						rbuffer.Printf(wxT("%.1f %s"),client->GetKBpsDown(), _("kB/s"));
 						Sbuffer.Append(rbuffer);
 					} else {
-						Sbuffer.Format(wxT("%.1f %s"),client->GetKBpsUp(),CString(_("kB/s")).GetData());
+						Sbuffer.Printf(wxT("%.1f %s"),client->GetKBpsUp(),_("kB/s"));
 					}
 					// end lagloose
 					break;
 				case 3:
-					Sbuffer.Format(wxT("%s"),CastItoXBytes(client->GetSessionUp()).GetData());
+					Sbuffer.Printf(wxT("%s"),CastItoXBytes(client->GetSessionUp()).GetData());
 					break;
 				case 4:
-					Sbuffer.Format(wxT("%s"),CastSecondsToHM((client->GetWaitTime())/1000).GetData());
+					Sbuffer.Printf(wxT("%s"),CastSecondsToHM((client->GetWaitTime())/1000).GetData());
 					break;
 				case 5:
-					Sbuffer.Format(wxT("%s"),CastSecondsToHM((client->GetUpStartTimeDelay())/1000).GetData());
+					Sbuffer.Printf(wxT("%s"),CastSecondsToHM((client->GetUpStartTimeDelay())/1000).GetData());
 					break;
 				case 6:
 					switch (client->GetUploadState()) {
 						case US_CONNECTING:
-							Sbuffer = CString(_("Connecting"));
+							Sbuffer = _("Connecting");
 							break;
 						case US_WAITCALLBACK:
-							Sbuffer = CString(_("Connecting via server"));
+							Sbuffer = _("Connecting via server");
 							break;
 						case US_UPLOADING:
 							// lagloose
 							Sbuffer = "<-- ";
-							Sbuffer.Append(CString(_("Transferring")));
+							Sbuffer.Append(_("Transferring"));
 							if (client->GetDownloadState() == DS_DOWNLOADING) {
 								Sbuffer.Append(wxT(" -->"));
 							}
-							// Sbuffer = CString(_("Transferring"));
+							// Sbuffer = _("Transferring");
 							// end lagloose
 							break;
 						default:
-							Sbuffer = CString(_("Unknown"));
+							Sbuffer = _("Unknown");
 					}
 					break;
 				case 7:

@@ -31,7 +31,6 @@
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "KnownFile.h"		// Needed for CAbstractFile
-#include "CString.h"		// Needed for CString
 #include <ctype.h>
 
 wxString ConvertChar2Unicode(const char* c_string) {
@@ -43,59 +42,59 @@ const char* ConvertUnicode2Char(wxString unic_string) {
 }
 
 // Formats a filesize in bytes to make it suitable for displaying
-CString CastItoXBytes( uint64 count )
+wxString CastItoXBytes( uint64 count )
 {
-	CString buffer;
+	wxString buffer;
 
 	if (count < 1024)
-		buffer.Format( wxT("%.0f %s"), (float)count, _("Bytes") );
+		buffer.Printf( wxT("%.0f %s"), (float)count, _("Bytes") );
 	else if (count < 1048576)
-		buffer.Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
+		buffer.Printf( wxT("%.0f %s"), (float)count/1024, _("KB") );
 	else if (count < 1073741824)
-		buffer.Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
+		buffer.Printf( wxT("%.2f %s"), (float)count/1048576, _("MB") );
 	else if (count < 1099511627776LL)
-		buffer.Format( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
+		buffer.Printf( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
 	else
-		buffer.Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
+		buffer.Printf( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
 
 	return buffer;
 }
 
 
-CString CastItoIShort(uint64 count)
+wxString CastItoIShort(uint64 count)
 {
-	CString output;
+	wxString output;
 
 	if (count < 1000)
-		output.Format(wxT("%i"),count);
+		output.Printf(wxT("%i"),count);
 	else if (count < 1000000)
-		output.Format(wxT("%.0f%s"),(float)count/1000, _("K") );
+		output.Printf(wxT("%.0f%s"),(float)count/1000, _("K") );
 	else if (count < 1000000000)
-		output.Format(wxT("%.2f%s"),(float)count/1000000, _("M") );
+		output.Printf(wxT("%.2f%s"),(float)count/1000000, _("M") );
 	else if (count < 1000000000000LL)
-		output.Format(wxT("%.2f%s"),(float)count/1000000000LL, _("G") );
+		output.Printf(wxT("%.2f%s"),(float)count/1000000000LL, _("G") );
 	else if (count < 1000000000000000LL)
-		output.Format(wxT("%.2f%s"),(float)count/1000000000000LL, _("T") );
+		output.Printf(wxT("%.2f%s"),(float)count/1000000000000LL, _("T") );
 
 	return output;
 }
 
 
 // Make a time value in millieseconds suitable for displaying
-CString CastSecondsToHM(sint32 count)
+wxString CastSecondsToHM(sint32 count)
 {
-	CString buffer;
+	wxString buffer;
 	
 	if (count < 0)
 		buffer = wxT("?");
 	else if (count < 60)
-		buffer.Format( wxT("%02i %s"), count, _("secs") );
+		buffer.Printf( wxT("%02i %s"), count, _("secs") );
 	else if (count < 3600)
-		buffer.Format( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
+		buffer.Printf( wxT("%i:%02i %s"), count/60, (count % 60), _("mins") );
 	else if (count < 86400)
-		buffer.Format( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
+		buffer.Printf( wxT("%i:%02i %s"), count/3600, (count % 3600)/60, _("h") );
 	else
-		buffer.Format( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
+		buffer.Printf( wxT("%i %s %02i %s"), count/86400, _("D") , (count % 86400) / 3600, _("h") );
 		
 	return buffer;
 }
@@ -214,16 +213,16 @@ int GetMaxConnections() {
 
 
 // Return the text assosiated with a rating of a file
-CString GetRateString(uint16 rate)
+wxString GetRateString(uint16 rate)
 {
 	switch ( rate ) {
-		case 0: return CString( _("Not rated") );
-		case 1: return CString( _("Invalid / Corrupt / Fake") );
-		case 2: return CString( _("Poor") );
-		case 3: return CString( _("Good") );
-		case 4: return CString( _("Fair") );
-		case 5: return CString( _("Excellent") );
-		default: return CString( _("Not rated") );
+		case 0: return _("Not rated");
+		case 1: return _("Invalid / Corrupt / Fake");
+		case 2: return _("Poor");
+		case 3: return _("Good");
+		case 4: return _("Fair");
+		case 5: return _("Excellent");
+		default: return _("Not rated");
 	}
 }
 
@@ -290,10 +289,10 @@ wxString URLEncode(wxString sIn)
 //   bufLen: Lenght of buffer array
 //
 // [Return]
-//   CString object with BASE16 encoded byte array
-CString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
+//   wxString object with BASE16 encoded byte array
+wxString EncodeBase16(const unsigned char* buffer, unsigned int bufLen)
 {
-	CString Base16Buff;
+	wxString Base16Buff;
 
 	for(unsigned int i = 0; i < bufLen; i++) {
 		Base16Buff += base16Chars[buffer[i] >> 4];
@@ -337,25 +336,25 @@ void DecodeBase16(const char *base16Buffer, unsigned int base16BufLen, byte *buf
 
 
 // Returns the text assosiated with a category type
-CString GetCatTitle(int catid)
+wxString GetCatTitle(int catid)
 {
 	switch (catid) {
-		case 0:	 return CString(_("all"));
-		case 1:  return CString(_("all others"));
-		case 2:  return CString(_("Incomplete"));
-		case 3:  return CString(_("Completed"));
-		case 4:  return CString(_("Waiting"));
-		case 5:  return CString(_("Downloading"));
-		case 6:  return CString(_("Erroneous"));
-		case 7:  return CString(_("Paused"));
-		case 8:  return CString(_("Stopped"));
-		case 9:  return CString(_("Video"));
-		case 10: return CString(_("Audio"));
-		case 11: return CString(_("Archive"));
-		case 12: return CString(_("CD-Images"));
-		case 13: return CString(_("Pictures"));
-		case 14: return CString(_("Text"));
-		default: return CString(_("?"));
+		case 0:	 return _("all");
+		case 1:  return _("all others");
+		case 2:  return _("Incomplete");
+		case 3:  return _("Completed");
+		case 4:  return _("Waiting");
+		case 5:  return _("Downloading");
+		case 6:  return _("Erroneous");
+		case 7:  return _("Paused");
+		case 8:  return _("Stopped");
+		case 9:  return _("Video");
+		case 10: return _("Audio");
+		case 11: return _("Archive");
+		case 12: return _("CD-Images");
+		case 13: return _("Pictures");
+		case 14: return _("Text");
+		default: return _("?");
 	}
 }
 
