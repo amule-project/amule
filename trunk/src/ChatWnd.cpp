@@ -43,12 +43,6 @@ BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
 	EVT_BUTTON(IDC_CSEND, CChatWnd::OnBnClickedCsend)
 	EVT_BUTTON(IDC_CCLOSE, CChatWnd::OnBnClickedCclose)
 	EVT_TEXT_ENTER(IDC_CMESSAGE, CChatWnd::OnBnClickedCsend)
-
-	EVT_RIGHT_DOWN(CChatWnd::OnRMButton)
-
-	EVT_MENU(MP_CLOSE_TAB, CChatWnd::OnPopupClose)
-	EVT_MENU(MP_CLOSE_ALL_TABS, CChatWnd::OnPopupCloseAll)
-	EVT_MENU(MP_CLOSE_OTHER_TABS, CChatWnd::OnPopupCloseOthers)
 END_EVENT_TABLE()
 
 
@@ -63,9 +57,6 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 
 	chatselector = (CChatSelector*)FindWindow(IDC_CHATSELECTOR);
 	friendlist = (CFriendListCtrl*)FindWindow(ID_FRIENDLIST);
-
-	// Allow notebook to dispatch right mouse clicks to us
-	chatselector->SetMouseListener(GetEventHandler());
 }
 
 
@@ -84,60 +75,6 @@ void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString message = GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->GetValue();
 	SendMessage(message);
-}
-
-
-void CChatWnd::OnRMButton(wxMouseEvent& evt)
-{
-	if( !chatselector->GetPageCount() ) {
-		return;
-	}
-
-	// Translate the global position to a position relative to the notebook
-	wxPoint newpt=((wxWindow*)evt.GetEventObject())->ClientToScreen( evt.GetPosition() );
-	newpt = ScreenToClient(newpt);
-
-	// Only show the popup-menu if we are inside the notebook widget
-	if ( chatselector->GetRect().Inside( newpt ) ) {
-		wxMenu* menu = new wxMenu(wxString(_("Close")));
-		menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
-		menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
-		menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
-
-		PopupMenu(menu, newpt);
-
-		delete menu;
-	} else {
-		evt.Skip();
-	}
-}
-
-
-void CChatWnd::OnPopupClose(wxCommandEvent& WXUNUSED(evt))
-{
-	chatselector->DeletePage( chatselector->GetSelection() );
-}
-
-
-void CChatWnd::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
-{
-	chatselector->DeleteAllPages();
-}
-
-
-void CChatWnd::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
-{
-	wxNotebookPage* current = chatselector->GetPage( chatselector->GetSelection() );
-
-	unsigned int i = 0;
-	while ( i < chatselector->GetPageCount() ) {
-		if ( current == chatselector->GetPage( i ) ) {
-			i++;
-			continue;
-		}
-
-		chatselector->DeletePage( i );
-	}
 }
 
 

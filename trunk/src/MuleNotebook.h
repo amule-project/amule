@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004 aMule Team ( http://www.amule-project.net )
@@ -17,102 +18,122 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
 //
+
 #ifndef MULENOTEBOOK_H
 #define MULENOTEBOOK_H
 
-#include <wx/dynarray.h>		// Needed for WX_DECLARE_LIST
+
 #include <wx/notebook.h>
 
-typedef long item_data;
-
-WX_DECLARE_OBJARRAY(item_data, SearchDataArray);
 
 BEGIN_DECLARE_EVENT_TYPES()
-	DECLARE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED,4804)
+	DECLARE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED, 4804)
 END_DECLARE_EVENT_TYPES()
 
-#define EVT_MULENOTEBOOK_PAGE_CLOSED(id, fn)               \
-	DECLARE_EVENT_TABLE_ENTRY(                         \
-		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED,    \
-		id,                                        \
-		-1,                                        \
+#define EVT_MULENOTEBOOK_PAGE_CLOSED(id, fn)		\
+	DECLARE_EVENT_TABLE_ENTRY(						\
+		wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED,		\
+		id,											\
+		-1,											\
 		(wxObjectEventFunction)(wxEventFunction)(wxNotebookEventFunction) &fn,  \
 		NULL                                                                    \
 	),
 
 
-class CMuleNotebook :public wxNotebook
+class wxWindow;
+
+
+/**
+ * This is an NoteBook control which adds additional features above what is 
+ * provided by the wxNoteBook widget. Currently it includes:
+ *  - Use of images on the tabs for closing the pages.
+ *  - A popup-menu for closing one or more pages.
+ *  - Events triggered when pages are closed.
+ */
+class CMuleNotebook : public wxNotebook
 {
 public:
-      // default for dynamic class
-	CMuleNotebook() : wxNotebook() {
-		m_listener=NULL;
-	};
-      // the same arguments as for wxControl
+	/**
+	 * Constructor.
+	 *
+	 * @see wxNotebook::wxNotebook
+	 */
+	CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = wxT("notebook") );
 
-	CMuleNotebook(wxWindow *parent,
-             wxWindowID id,
-             const wxPoint& pos = wxDefaultPosition,
-             const wxSize& size = wxDefaultSize,
-             long style = 0,
-             const wxString& name = wxT("notebook")) :
-	wxNotebook(parent, id, pos, size, style, name) {
-		
-		m_listener=NULL;
-	};
-
+	/**
+	 * Destructor.
+	 */
 	virtual ~CMuleNotebook();
 
-	// wxNotebook
+	/**
+	 * Deletes the page and triggers an event.
+	 *
+	 * @param nPage The page to be removed.
+	 */
+	virtual bool DeletePage(int nPage);
 
-	bool DeletePage(int nPage);
-	
-	bool DeleteAllPages();
-		
-	// Specific for CMuleNotebook
+	/**
+	 * Deletes and triggers and event for every page.
+	 */
+	virtual bool DeleteAllPages();
 
-	bool AddPage(wxNotebookPage* page, const wxString& text, bool select = false, int imageId = -1, unsigned long itemData = 0);
-	long GetUserData(int nPage) const; 
-	void SetUserData(int nPage, long itemData); 
 
-	// sets the size of the tabs (assumes all tabs are the same size)
-	// Seems never used
-	//void SetTabSize(const wxSize& sz); // NEW?
-	
-	// adds a new page to the notebook (it will be deleted ny the notebook,
-	// don't delete it yourself). If bSelect, this page becomes active.
-	// the same as AddPage(), but adds it at the specified position
-	bool InsertPage( int position,
-                     wxNotebookPage *page,
-                     const wxString& text,
-                     bool select = FALSE,
-                     int imageId = -1,unsigned long itemData=0 ); // Item data is the new one
+	/**
+	 * Enables or disables the displaying of a popup-menu.
+	 *
+	 * @param enabled The new setting.
+	 */
+	void EnablePopup( bool enable );
 
-	void SetMouseListener(wxEvtHandler* _listener) {
-		m_listener=_listener;
-	}
-	
-	wxEvtHandler* GetMouseListener() {
-		return m_listener;
-	}
-	
-	wxMutex m_LockTabs;
+	/**
+	 * Sets an external widget to handle the popup-event.  
+	 *
+	 * @param widget The widget which would recieve the event or NULL to disable.
+	 *
+	 * Setting the handler to a non-NULL pointer means that upon right-clicks, a 
+	 * right click event will be sent to that widget, so that it can create a 
+	 * popup-menu. The coordinates will be fixed to fit onto the specified widget,
+	 * so no mapping is needed.
+	 */
+	void SetPopupHandler( wxWindow* widget );
 
-private:
-	SearchDataArray tab_data_array;
-	wxEvtHandler* m_listener;
-
+protected:
 	// Madcat - closing engine
 	void CalculatePositions();   // Fills the widths/begins/ends arrays
 	void MouseClick(wxMouseEvent &event);  // Mouse clicks event handler
 	void MouseMotion(wxMouseEvent &event); // Mouse moving around
 	wxArrayInt widths, begins, ends;       // Positions of tabs
 
-protected:
-	void OnRMButton(wxMouseEvent& event);	
+	
+	/**
+	 * Event-handler for right-clicks that takes care of displaying the popup-menu.
+	 */	 
+	void OnRMButton(wxMouseEvent& event);
+
+	/**
+	 * Event-handler fo the Close item on the popup-menu.
+	 */
+	void OnPopupClose(wxCommandEvent& evt);
+	
+	/**
+	 * Event-handler fo the CloseAll item on the popup-menu.
+	 */
+	void OnPopupCloseAll(wxCommandEvent& evt);
+
+	/**
+	 * Event-handler fo the CloseOthers item on the popup-menu.
+	 */
+	void OnPopupCloseOthers(wxCommandEvent& evt);
+
+	//! Keeps track of the popup-menu being enabled or not.
+	bool		m_popup_enable;
+
+	//! The pointer to the widget which would recieve right-click events or NULL.
+	wxWindow*	m_popup_widget;
+
 	DECLARE_EVENT_TABLE()
 };
 
-#endif // MULENOTEBOOK_H
+#endif
+

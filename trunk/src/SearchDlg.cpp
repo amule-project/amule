@@ -51,43 +51,32 @@
 #include "GetTickCount.h"
 #include "Preferences.h"
 
-#define ID_SEARCHTIMER 55219
-#define ID_SEARCHLISTCTRL wxID_HIGHEST+666
+#define ID_SEARCHLISTCTRL wxID_HIGHEST+667
 
 // just to keep compiler happy
 static wxCommandEvent nullEvent;
 
 
 BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
-	EVT_BUTTON(IDC_STARTS, CSearchDlg::OnBnClickedStarts)
+	EVT_BUTTON(		IDC_STARTS,		CSearchDlg::OnBnClickedStart)
+	EVT_TEXT_ENTER(	IDC_SEARCHNAME,	CSearchDlg::OnBnClickedStart)
 	
-	EVT_TEXT_ENTER(IDC_SEARCHNAME, CSearchDlg::OnBnClickedStarts)
-	EVT_TEXT_ENTER(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnBnClickedStarts)
-	
-	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnEditFieldsChange)
-	EVT_TEXT(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnEditFieldsChange)
-	
-	EVT_SPINCTRL(IDC_SPINSEARCHMIN, CSearchDlg::OnSpinFieldsChange)
-	EVT_SPINCTRL(IDC_SPINSEARCHMAX, CSearchDlg::OnSpinFieldsChange)
-	EVT_SPINCTRL(IDC_SPINSEARCHAVAIBILITY, CSearchDlg::OnSpinFieldsChange)
-	
-	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedCancels)
-	EVT_BUTTON(IDC_CLEARALL, CSearchDlg::OnBnClickedClearall)
+	EVT_BUTTON(IDC_CANCELS, CSearchDlg::OnBnClickedCancel)
 	
 	EVT_LIST_ITEM_SELECTED(ID_SEARCHLISTCTRL, CSearchDlg::OnListItemSelected)
-	EVT_BUTTON(IDC_SDOWNLOAD, CSearchDlg::OnBnClickedSdownload)
-	EVT_BUTTON(IDC_SEARCH_RESET, CSearchDlg::OnBnClickedSearchReset)
-	EVT_BUTTON(ID_BTN_DDLOAD, CSearchDlg::DirectDownload)
-	EVT_RIGHT_DOWN(CSearchDlg::OnRMButton)
-
-	EVT_MENU(MP_CLOSE_TAB, CSearchDlg::OnPopupClose)
-	EVT_MENU(MP_CLOSE_ALL_TABS, CSearchDlg::OnPopupCloseAll)
-	EVT_MENU(MP_CLOSE_OTHER_TABS, CSearchDlg::OnPopupCloseOthers)
 	
+	EVT_BUTTON(IDC_SDOWNLOAD, CSearchDlg::OnBnClickedDownload)
+	EVT_BUTTON(IDC_SEARCH_RESET, CSearchDlg::OnBnClickedReset)
+	EVT_BUTTON(IDC_CLEAR_RESULTS, CSearchDlg::OnBnClickedClear)
+
 	EVT_CHECKBOX(ID_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
 	
 	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
+
+	// Event handlers for the parameter fields getting changed
+	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     -1, CSearchDlg::OnFieldChanged) 
+	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, -1, CSearchDlg::OnFieldChanged)
 END_EVENT_TABLE()
 
 
@@ -95,52 +84,90 @@ END_EVENT_TABLE()
 CSearchDlg::CSearchDlg(wxWindow* pParent)
 : wxPanel(pParent, -1)
 {
-	last_search_time = 0;
-	
-	globalsearch = false;
+	m_last_search_time = 0;
+	m_globalsearch = false;
 
-	searchpacket = NULL;
-
-	wxSizer* content=searchDlg(this, true);
+	wxSizer* content = searchDlg(this, true);
 	content->Show(this, true);
 
-	progressbar = (wxGauge*)FindWindow(ID_SEARCHPROGRESS);
-	wxASSERT( progressbar );
-	progressbar->SetRange(100);
+	m_progressbar = (wxGauge*)FindWindow(ID_SEARCHPROGRESS);
+	m_progressbar->SetRange(100);
 	
-	notebook = (CMuleNotebook*)FindWindow(ID_NOTEBOOK);
-	wxASSERT( notebook );
+	m_notebook = (CMuleNotebook*)FindWindow(ID_NOTEBOOK);
 
 	// Initialise the image list
 	wxImageList* m_ImageList = new wxImageList(16,16);
 	m_ImageList->Add(amuleSpecial(3));
 	m_ImageList->Add(amuleSpecial(4));
-	notebook->AssignImageList(m_ImageList);
+	m_notebook->AssignImageList(m_ImageList);
 
-	// allow notebook to dispatch right mouse clicks to us
-	notebook->SetMouseListener(GetEventHandler());
-	
-	ToggleLinksHandler();
-	
 	((wxChoice*)FindWindow(ID_SEARCHTYPE))->SetSelection(0);
 	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
 	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
+	
 	Layout();
 }
 
 
-// Enable the download button when there are items selected
+CSearchDlg::~CSearchDlg()
+{
+
+
+}
+
+
+CSearchListCtrl* CSearchDlg::GetSearchList( long id )
+{
+	int nPages = m_notebook->GetPageCount();
+	for ( int i = 0; i < nPages; i++ ) {
+		CSearchListCtrl* page = (CSearchListCtrl*)m_notebook->GetPage( i );
+
+		if ( page->GetSearchId() == id )
+			return page;	
+	}
+
+	return NULL;
+}
+
+
+void CSearchDlg::AddResult(CSearchFile* toadd)
+{
+	CSearchListCtrl* outputwnd = GetSearchList( toadd->GetSearchID() );
+	
+	if ( outputwnd ) {
+		outputwnd->AddResult( toadd );
+		
+		// Update the result count
+		UpdateHitCount( outputwnd );
+	}
+}
+
+
+void CSearchDlg::UpdateResult(CSearchFile* toupdate)
+{
+	CSearchListCtrl* outputwnd = GetSearchList( toupdate->GetSearchID() );
+	
+	if ( outputwnd ) {
+		outputwnd->UpdateResult( toupdate );
+	
+		// Update the result count
+		UpdateHitCount( outputwnd );
+	}
+}
+
+
 void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
 {
 	FindWindow(IDC_SDOWNLOAD)->Enable(true);
 }
 
-// Enable the extended options 
+
 void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 {
 	s_searchsizer->Show(s_extendedsizer, event.IsChecked());
+	
 	Layout();
 }
 
@@ -148,23 +175,34 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
-	if ( evt.GetSelection() == ((int)notebook->GetPageCount() - 1 ) ) {
-		OnBnClickedCancels(nullEvent);
+	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
+		OnBnClickedCancel(nullEvent);
+	}
+
+	// Do cleanups if this was the last tab
+	if ( m_notebook->GetPageCount() == 1 ) {
+		theApp.searchlist->Clear();
+
+		FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	}
 }
 
+
 void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
 {
+	int selection = m_notebook->GetSelection();
+
 	// Only enable the Download button for pages where files have been selected
-	if ( evt.GetSelection() != -1 ) {
-		bool enable = ((CSearchListCtrl*)notebook->GetPage(evt.GetSelection()))->GetSelectedItemCount();
+	if ( selection != -1 ) {
+		bool enable = ((CSearchListCtrl*)m_notebook->GetPage( selection ))->GetSelectedItemCount();
 
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
 	}
 
 }
 
-void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
+
+void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
 	searchString.Trim(true);
@@ -183,11 +221,11 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 		case 0: 
 		// Global Search
 		case 1:
-			// lugdunum will kill us if we don't fix this ;)
-			if ((GetTickCount() - last_search_time)  > 2000) {
-				last_search_time = GetTickCount();
+			// We musn't search more often than once every 2 secs
+			if ((GetTickCount() - m_last_search_time) > 2000) {
+				m_last_search_time = GetTickCount();
 		
-				OnBnClickedCancels(nullEvent);
+				OnBnClickedCancel(nullEvent);
 		
 				StartNewSearch();
 			}
@@ -211,7 +249,7 @@ void CSearchDlg::OnBnClickedStarts(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CSearchDlg::FieldsChanged()
+void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 {
 	bool enable = false;
 	
@@ -232,7 +270,7 @@ void CSearchDlg::FieldsChanged()
 
 	// Enable the Clear and Clear-All button if any fields contain text
 	FindWindow(IDC_SEARCH_RESET)->Enable( enable );
-	FindWindow(IDC_CLEARALL)->Enable( enable || notebook->GetPageCount() );
+	FindWindow(IDC_CLEAR_RESULTS)->Enable( enable || m_notebook->GetPageCount() );
 
 	
 	// Enable the Server Search button if the Name field contains text
@@ -240,24 +278,13 @@ void CSearchDlg::FieldsChanged()
 	FindWindowById(IDC_STARTS)->Enable( enable );
 }
 
-// Enables or disables the Reset and Start button depending on the conents of the text fields
-void CSearchDlg::OnEditFieldsChange(wxCommandEvent& WXUNUSED(evt))
-{
-	FieldsChanged();
-}
 
-
-// Enables or disables the Reset and Start button depending on the conents of the text fields
-void CSearchDlg::OnSpinFieldsChange(wxSpinEvent& WXUNUSED(evt))
+bool CSearchDlg::CheckTabNameExists(const wxString& searchString) 
 {
-	FieldsChanged();
-}
-
-bool CSearchDlg::CheckTabNameExists(wxString searchString) 
-{
-	int nPages = notebook->GetPageCount();
-	for ( int i = 0; i < nPages ; i++ ) {
-		if ( notebook->GetPageText(i).BeforeLast(wxT(' ')) == searchString ) {
+	int nPages = m_notebook->GetPageCount();
+	for ( int i = 0; i < nPages; i++ ) {
+		// The BeforeLast(' ') is to strip the hit-count from the name
+		if ( m_notebook->GetPageText(i).BeforeLast(wxT(' ')) == searchString ) {
 			return true;
 		}
 	}
@@ -266,78 +293,83 @@ bool CSearchDlg::CheckTabNameExists(wxString searchString)
 }
 
 
-void CSearchDlg::CreateNewTab(wxString searchString, long nSearchID)
+void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 {
-    CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
+    CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)m_notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
 	
-	list->Init(theApp.searchlist);
+	m_notebook->AddPage( list, searchString, true, 0 );
+	
 	list->ShowResults(nSearchID);
-	
-	notebook->AddPage(list, searchString, true, 0, nSearchID);
 	
 	Layout();
 
-	FindWindow(IDC_CLEARALL)->Enable(true);
+	FindWindow(IDC_CLEAR_RESULTS)->Enable(true);
 }
 
 
-void CSearchDlg::OnBnClickedCancels(wxCommandEvent& WXUNUSED(evt))
+void CSearchDlg::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 {
-	canceld = true;
+	m_canceld = true;
 
- 	if (globalsearch) {
-		theApp.searchlist->searchthread->Delete();
+ 	if ( m_globalsearch ) {
+		theApp.searchlist->m_searchthread->Delete();
  	}
 	ResetControls();
 }
 
+
 void CSearchDlg::ResetControls()
 {
-	progressbar->SetValue(0);
+	m_progressbar->SetValue(0);
 
 	FindWindow(IDC_CANCELS)->Disable();
 	FindWindow(IDC_STARTS)->Enable();
 }
 
-void CSearchDlg::LocalSearchEnd(uint16 WXUNUSED(count))
+
+void CSearchDlg::LocalSearchEnd()
 {
-	if (!canceld) {
-		if (!globalsearch) {
+	if ( !m_canceld ) {
+		if ( !m_globalsearch ) {
 			ResetControls();
 		}
 	}
 }
 
 
-void CSearchDlg::OnBnClickedSdownload(wxCommandEvent& WXUNUSED(evt))
+void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 {
-	if( notebook->GetSelection() == -1 ) {
+	int selection = m_notebook->GetSelection();
+
+	if ( selection == -1 )
 		return;
-	}
-
-	wxMutexLocker slock(notebook->m_LockTabs);
-
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)notebook->GetPage(notebook->GetSelection());
-	if ( searchlistctrl == NULL ) {
-		printf("searchlistctrl == NULL in CSearchDlg::OnBnClickedSdownload -- please, report this on amule forums: www.amule.org");
+	
+	
+	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)m_notebook->GetPage( selection );
+	
+	if ( !searchlistctrl->GetSelectedItemCount() )
 		return;
-	}
-
+	
+	FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+	
 	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while ( (index > -1) ) {
-		FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
-		CoreNotify_Search_Add_Download((CSearchFile*)searchlistctrl->GetItemData(index), GetCatChoice());
+	while ( index > -1 ) {
+		uint8 cat = ((wxChoice*)FindWindow(ID_AUTOCATASSIGN))->GetSelection();
+		
+		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), cat );
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 }
 
 
-void CSearchDlg::OnBnClickedClearall(wxCommandEvent& WXUNUSED(ev))
+void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 {
-	OnBnClickedCancels(nullEvent);
-	DeleteAllSearchs();
-	OnBnClickedSearchReset(nullEvent);
+	OnBnClickedCancel(nullEvent);
+	
+	m_notebook->DeleteAllPages();
+
+	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 }
 
 
@@ -345,7 +377,9 @@ void CSearchDlg::StartNewSearch()
 {
 	static uint16 m_nSearchID = 0;
 	m_nSearchID++;
-	m_nSearchID %= 0xfffe; // lfroen: 0xffff is reserved for websearch
+	
+	// 0xffff is reserved for websearch
+	m_nSearchID %= 0xfffe; 
 	
 	// No searching if not connected
 	if (!theApp.serverconnect->IsConnected()) {
@@ -358,7 +392,7 @@ void CSearchDlg::StartNewSearch()
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_CANCELS)->Enable();
 
-	canceld = false;
+	m_canceld = false;
 	
 	wxString searchString = ((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->GetValue();
 	searchString.Trim(true);
@@ -403,55 +437,22 @@ void CSearchDlg::StartNewSearch()
 
 	Packet *packet = CreateSearchPacket(searchString, typeText, extension, min, max, avaibility);
 	
-	globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
+	m_globalsearch = ((wxChoice*)FindWindow(ID_SEARCHTYPE))->GetSelection() == 1;
 
-	CoreNotify_Search_Req(packet, globalsearch);
+	CoreNotify_Search_Req(packet, m_globalsearch);
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }
 
 
-// Only needed for CSearchListCtrl to be able to close us by passing only ID
-void CSearchDlg::DeleteSearch(uint16 nSearchID)
-{
-	theApp.searchlist->RemoveResults(nSearchID);
-
-	wxMutexLocker sLock(notebook->m_LockTabs);
-	for ( unsigned i = 0; i < notebook->GetPageCount(); i++ ) {
-		wxWindow * slctrl = (wxWindow *)notebook->GetPage( i );
-		
-		// Make sure we have a valid pointer
-		if( slctrl ) {
-			if( nSearchID == ((CSearchListCtrl*)slctrl)->GetSearchId() ) {
-				// Force further actions on the searchlistctrl to fail
-				((CSearchListCtrl *)slctrl)->InvalidateSearchId();
-				
-				notebook->DeletePage(i);
-				break;
-			}
-		}
-	}
-}
-
-
-void CSearchDlg::DeleteAllSearchs()
-{
-	theApp.searchlist->Clear();
-	
-	notebook->DeleteAllPages();
-
-	FindWindow(IDC_CLEARALL)->Enable(FALSE);
-}
-
-
 void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 {
-	for ( unsigned i = 0; i < notebook->GetPageCount(); ++i ) {
-		if ( notebook->GetPage(i) == page ) {
-			wxString searchtxt = notebook->GetPageText(i).BeforeLast(wxT(' '));
+	for ( unsigned i = 0; i < m_notebook->GetPageCount(); ++i ) {
+		if ( m_notebook->GetPage(i) == page ) {
+			wxString searchtxt = m_notebook->GetPageText(i).BeforeLast(wxT(' '));
 		
 			if ( !searchtxt.IsEmpty() ) {
-				notebook->SetPageText( i, searchtxt + wxString::Format(wxT(" (%i)"), page->GetItemCount()));
+				m_notebook->SetPageText( i, searchtxt + wxString::Format(wxT(" (%i)"), page->GetItemCount()));
 			}
 		
 			break;
@@ -460,7 +461,7 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 }
 
 
-void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
+void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 {
 	((wxTextCtrl*)FindWindow(IDC_SEARCHNAME))->Clear();
 	((wxTextCtrl*)FindWindow(IDC_EDITSEARCHEXTENSION))->Clear();
@@ -469,7 +470,7 @@ void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHMAX))->SetValue(0);
 	((wxSpinCtrl*)FindWindow(IDC_SPINSEARCHAVAIBILITY))->SetValue(0);
 
-	FindWindow(IDC_CLEARALL)->Enable( notebook->GetPageCount() );
+	FindWindow(IDC_CLEAR_RESULTS)->Enable( m_notebook->GetPageCount() );
 
 	((wxChoice*)FindWindow(IDC_TypeSearch))->SetSelection(0);
 	
@@ -477,18 +478,6 @@ void CSearchDlg::OnBnClickedSearchReset(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-/**
- * Sends the contents of the directdownload textctrl box to fast links handler
- **/
-void CSearchDlg::DirectDownload(wxCommandEvent& WXUNUSED(event))
-{
-	theApp.amuledlg->StartFast( (wxTextCtrl*)FindWindowById(ID_ED2KLINKHANDLER) );
-}
-
-
-/**
- * Update category autoassign choice box according to existing categories.
- **/
 void CSearchDlg::UpdateCatChoice()
 {
 	CMuleNotebook* catbook = (CMuleNotebook*)FindWindowById(ID_CATEGORIES);
@@ -505,87 +494,3 @@ void CSearchDlg::UpdateCatChoice()
 }
 
 
-/**
- * Returns current selected category-assignment choice.
- **/
-uint8 CSearchDlg::GetCatChoice()
-{
-	wxChoice *c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
-	return (uint8)c_cat->GetSelection();
-}
-
-
-/**
- * Toggles Links Handler on this page on/off depending wether
- * global FastED2KLinksHandler is turned on or off.
- **/
-void CSearchDlg::ToggleLinksHandler()
-{
-	s_searchdlgsizer->Show(s_ed2ksizer, !theApp.glob_prefs->GetFED2KLH());
-	
-	// Doesn't get entirely hidden for some reason =/
-	((wxStaticBoxSizer*)s_ed2ksizer)->GetStaticBox()->Show( !theApp.glob_prefs->GetFED2KLH() );
-	
-	Layout();
-}
-
-
-void CSearchDlg::OnRMButton(wxMouseEvent& evt)
-{
-	if( !notebook->GetPageCount() ) {
-		return;
-	}
-	
-	// Translate the global position to a position relative to the notebook
-	wxPoint pt=evt.GetPosition();
-	wxPoint newpt=((wxWindow*)evt.GetEventObject())->ClientToScreen(pt);
-	newpt = ScreenToClient(newpt);
-
-	// Only show the popup-menu if we are inside the notebook widget
-	if ( notebook->GetRect().Inside( newpt ) ) {
-		wxMenu* menu = new wxMenu(wxString(_("Close")));
-		menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
-		menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
-		menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
-	
-		PopupMenu(menu, newpt);
-	
-		delete menu;
-	} else {
-		evt.Skip();
-	}
-}
-
-
-void CSearchDlg::OnPopupClose(wxCommandEvent& WXUNUSED(evt))
-{
-	if ( notebook->GetPageCount() == 1 ) {
-		// Ensure that the dialog is tidied up
-		DeleteAllSearchs();
-	} else {
-		notebook->DeletePage( notebook->GetSelection() );
-	}
-}
-
-
-void CSearchDlg::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
-{
-	DeleteAllSearchs();
-}
-
-
-void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
-{
-	wxMutexLocker slock(notebook->m_LockTabs);
-	wxNotebookPage* current = notebook->GetPage( notebook->GetSelection() );
-	
-	unsigned i = 0;
-	while ( i < notebook->GetPageCount() ) {
-		if ( current == notebook->GetPage( i ) ) {
-			i++;
-			continue;
-		}
-		
-		notebook->DeletePage( i );
-	}
-}

@@ -80,9 +80,7 @@ public:
 	DialogType GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 	
-	// Madcat - Toggles Fast ED2K Links Handler on/off.
-	void ToggleFastED2KLinksHandler();
-	void StartFast(wxTextCtrl *ctl);
+	void ShowED2KLinksHandler( bool show );
 
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);

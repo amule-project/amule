@@ -328,9 +328,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	theApp.glob_prefs->Save();
 
 
-	if ( CfgChanged(IDC_FED2KLH) )
-		theApp.amuledlg->ToggleFastED2KLinksHandler();
-
+	if ( CfgChanged(IDC_FED2KLH) && theApp.amuledlg->GetActiveDialog() != CamuleDlg::SearchWnd )
+		theApp.amuledlg->ShowED2KLinksHandler( theApp.glob_prefs->GetFED2KLH() );
 
 	if ( CfgChanged(IDC_LANGUAGE) )
 		wxMessageBox(wxString::wxString(_("Language change will not be applied until aMule is restarted.")));

@@ -82,8 +82,8 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
 	m_abyFileHash = searchresult->GetFileHash();
-	for (unsigned int i = 0; i < searchresult->taglist.size();i++){
-		const CTag* pTag = searchresult->taglist[i];
+	for (unsigned int i = 0; i < searchresult->m_taglist.size();i++){
+		const CTag* pTag = searchresult->m_taglist[i];
 		switch (pTag->tag.specialtag){
 			case FT_FILENAME:{
 				if (pTag->tag.type == 2)

@@ -214,7 +214,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	#ifndef __USE_KAD__
 	m_wndToolbar->RemoveTool(ID_BUTTONKAD);
 	#endif
-	ToggleFastED2KLinksHandler();
+
+	ShowED2KLinksHandler( theApp.glob_prefs->GetFED2KLH() );
 
 	is_safe_state = true;
 
@@ -274,16 +275,15 @@ void CamuleDlg::InitSort()
 }
 
 // Madcat - Toggles Fast ED2K Links Handler on/off.
-void CamuleDlg::ToggleFastED2KLinksHandler()
+void CamuleDlg::ShowED2KLinksHandler( bool show )
 {
 	// Errorchecking in case the pointer becomes invalid ...
 	if (s_fed2klh == NULL) {
 		wxLogWarning(wxT("Unable to find Fast ED2K Links handler sizer! Hiding FED2KLH aborted."));
 		return;
 	}
-	s_dlgcnt->Show(s_fed2klh, theApp.glob_prefs->GetFED2KLH());
+	s_dlgcnt->Show( s_fed2klh, show );
 	s_dlgcnt->Layout();
-	searchwnd->ToggleLinksHandler();
 }
 
 
@@ -375,6 +375,10 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 	// Kry - just if the app is ready for it
 	if ( theApp.IsReady ) {
 
+		// Rehide the handler if needed
+		if ( lastbutton == ID_BUTTONSEARCH && !theApp.glob_prefs->GetFED2KLH() )
+			ShowED2KLinksHandler( false );
+
 		if ( lastbutton != ev.GetId() ) {
 			switch ( ev.GetId() ) {
 				case ID_BUTTONSERVERS:
@@ -384,6 +388,10 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					break;
 
 				case ID_BUTTONSEARCH:
+					// The search dialog should always display the handler
+					if ( !theApp.glob_prefs->GetFED2KLH() )
+						ShowED2KLinksHandler( true );
+
 					SetActiveDialog(SearchWnd, searchwnd);
 					break;
 
@@ -807,18 +815,13 @@ void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), boo
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 {
 	if (!theApp.serverconnect->IsConnected()) {
-		wxMessageDialog* bigbob = new wxMessageDialog(this, wxT("The ED2K link has been added but your download won't start until you connect to a server."), wxT("Not Connected"), wxOK|wxICON_INFORMATION);
-		bigbob->ShowModal();
-		delete bigbob;
+		wxMessageDialog* msg = new wxMessageDialog(this, wxT("The ED2K link has been added but your download won't start until you connect to a server."), wxT("Not Connected"), wxOK|wxICON_INFORMATION);
+		msg->ShowModal();
+		delete msg;
 	}
 
-	StartFast((wxTextCtrl*)FindWindow(wxT("FastEd2kLinks")));
-}
+	wxTextCtrl* ctl = (wxTextCtrl*)FindWindow(wxT("FastEd2kLinks"));
 
-
-// Pass pointer to textctrl which contains the links as argument
-void CamuleDlg::StartFast(wxTextCtrl *ctl)
-{
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
 		strlink.Trim(true);
@@ -850,7 +853,8 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			AddLogLineM( true, _("Invalid link: ") + msg);
 		}
 	}
-ctl->SetValue(wxEmptyString);
+	
+	ctl->SetValue(wxEmptyString);
 }
 
 

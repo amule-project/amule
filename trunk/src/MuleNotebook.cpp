@@ -20,88 +20,156 @@
 //
 
 
-#include "MuleNotebook.h"	// Interface declarations
 
 #include <wx/event.h>
 #include <wx/app.h>
 #include <wx/imaglist.h>
+#include <wx/menu.h>
+#include <wx/intl.h>
 
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+#include "MuleNotebook.h"	// Interface declarations
+#include "opcodes.h"		// Needed for MP_CLOSE_ IDs
 
-WX_DEFINE_OBJARRAY(SearchDataArray);
 DEFINE_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
 
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
 	EVT_RIGHT_DOWN(CMuleNotebook::OnRMButton)
+
+	EVT_MENU(MP_CLOSE_TAB,			CMuleNotebook::OnPopupClose)
+	EVT_MENU(MP_CLOSE_ALL_TABS,		CMuleNotebook::OnPopupCloseAll)
+	EVT_MENU(MP_CLOSE_OTHER_TABS,	CMuleNotebook::OnPopupCloseOthers)	
+	
 	// Madcat - tab closing engine
 	EVT_LEFT_DOWN(CMuleNotebook::MouseClick)
 	EVT_LEFT_DCLICK(CMuleNotebook::MouseClick)
 	EVT_MOTION(CMuleNotebook::MouseMotion)
 END_EVENT_TABLE()
 
-CMuleNotebook::~CMuleNotebook() {
+CMuleNotebook::CMuleNotebook( wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name )
+	: wxNotebook(parent, id, pos, size, style, name)
+{
+	m_popup_enable = true;
+};
+
+
+CMuleNotebook::~CMuleNotebook()
+{
+	// Ensure that all notifications gets sent
 	DeleteAllPages();
 }
 
-bool CMuleNotebook::DeletePage(int nPage) {
-	// Remove from array
-	tab_data_array.RemoveAt(nPage);
 
+bool CMuleNotebook::DeletePage(int nPage)
+{
 	// Send out close event
-	wxNotebookEvent evt(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED, GetId(), nPage);
+	wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED, GetId(), nPage );
 	evt.SetEventObject(this);
-	GetEventHandler()->ProcessEvent(evt);
+	ProcessEvent( evt );
 
 	// and finally remove the actual page
-	return(wxNotebook::DeletePage((size_t)nPage));
+	if ( wxNotebook::DeletePage( nPage ) ) {
+		// Ensure a valid selection
+		if ( nPage >= GetPageCount() )
+			nPage = GetPageCount() - 1;
+
+		if ( nPage != -1 )
+			SetSelection( nPage );
+
+		return true;
+	} 
+
+	return false;
 }
 
 
-bool CMuleNotebook::DeleteAllPages() {
+bool CMuleNotebook::DeleteAllPages()
+{
+	Freeze();
 	
-	bool all_ok = true;
-	unsigned int  n_pages = (unsigned int) GetPageCount();
-	
-	for (unsigned int i = 0; i< n_pages; i++) {
-		all_ok |= DeletePage(0);
-	}
-
-	return(all_ok);
+	bool result = false;
+	while ( GetPageCount() )
+		result |= DeletePage(0);
+		
+	Thaw();
+		
+	return result;
 }
 
-// Specific for CMuleNotebook
 
-long CMuleNotebook::GetUserData(int nPage) const {
-	return (tab_data_array.Item(nPage));
+void CMuleNotebook::EnablePopup( bool enable )
+{
+	m_popup_enable = enable;
 }
 
-void CMuleNotebook::SetUserData(int nPage, long itemData) {
-	tab_data_array.RemoveAt(nPage);
-	tab_data_array.Insert(itemData, nPage);
+
+void CMuleNotebook::SetPopupHandler( wxWindow* widget )
+{
+	m_popup_widget = widget;
 }
 
-bool CMuleNotebook::InsertPage(int position, wxNotebookPage* page, const wxString& text, bool select, int imageId, unsigned long itemData) {
-	tab_data_array.Insert(itemData, position);
-	return (wxNotebook::InsertPage((size_t)position, page, text, select, imageId));
-}
 
-bool CMuleNotebook::AddPage(wxNotebookPage* page, const wxString& text, bool select, int imageId, unsigned long itemData) {
-	tab_data_array.Add(itemData);
-	return (wxNotebook::AddPage(page, text, select, imageId));
-}
-
-void CMuleNotebook::OnRMButton(wxMouseEvent& event) {
-	wxMouseEvent evt(wxEVT_RIGHT_DOWN);
-	if (this->GetMouseListener()) {
-		evt.SetEventObject(this);
-		evt.m_x=event.m_x;
-		evt.m_y=event.m_y;
-		wxPostEvent(this->GetMouseListener(),evt);
-	}
-	
+void CMuleNotebook::OnRMButton(wxMouseEvent& event)
+{
 	// Allow the event to propagate further. That way, tabs can be selected with right-click
 	event.Skip();
+
+	// Cases where we shouldn't be showing a popup-menu
+	if ( !GetPageCount() || !m_popup_enable )
+		return;
+
+
+	// Should we send the event to a specific widget?
+	if ( m_popup_widget ) {
+		wxMouseEvent evt = event;
+
+		evt.SetEventObject( this );
+						
+		// Map the coordinates onto the parent
+		wxPoint point = evt.GetPosition();
+		point = ClientToScreen( point );
+		point = m_popup_widget->ScreenToClient( point );
+			
+		evt.m_x = point.x;
+		evt.m_y = point.y;
+			
+		m_popup_widget->ProcessEvent( evt );
+
+	} else {
+		// The usual case, where we show the popup
+		wxMenu* menu = new wxMenu(wxString(_("Close")));
+		menu->Append(MP_CLOSE_TAB, wxString(_("Close tab")));
+		menu->Append(MP_CLOSE_ALL_TABS, wxString(_("Close all tabs")));
+		menu->Append(MP_CLOSE_OTHER_TABS, wxString(_("Close other tabs")));
+
+		PopupMenu( menu, event.GetPosition() );
+	
+		delete menu;
+	}
 }
+
+
+void CMuleNotebook::OnPopupClose(wxCommandEvent& WXUNUSED(evt))
+{
+	DeletePage( GetSelection() );
+}
+
+
+void CMuleNotebook::OnPopupCloseAll(wxCommandEvent& WXUNUSED(evt))
+{
+	DeleteAllPages();
+}
+
+
+void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
+{
+	wxNotebookPage* current = GetPage( GetSelection() );
+	
+	for ( int i = GetPageCount() - 1; i >= 0; i-- ) {
+		if ( current != GetPage( i ) )
+			DeletePage( i );
+	}
+}
+
 
 /**
  * Copyright (c) 2004 Alo Sarv <madcat_@users.sourceforge.net>
@@ -119,9 +187,10 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event) {
  * platforms), and fill the arrays with the data. Important notice: The FIRST
  * notebook tab is 3 pixels wider than the rest (at least on GTK)!
  */
-void CMuleNotebook::CalculatePositions() {
-int imagesizex, imagesizey;  // Notebookpage image size
-int textsizex, textsizey;    // Notebookpage text size
+void CMuleNotebook::CalculatePositions()
+{
+	int imagesizex, imagesizey;  // Notebookpage image size
+	int textsizex, textsizey;    // Notebookpage text size
 
 	if (GetImageList() == NULL) {
 		return; // No images
@@ -171,8 +240,9 @@ int textsizex, textsizey;    // Notebookpage text size
  * recalculation, and then compare the event position to our known close
  * buttons locations. If found, close the neccesery tab.
  */
-void CMuleNotebook::MouseClick(wxMouseEvent &event) {
-long posx, posy;             // Mouse position at the time of the event
+void CMuleNotebook::MouseClick(wxMouseEvent &event)
+{
+	long posx, posy;             // Mouse position at the time of the event
 
 	if (GetImageList() == NULL) {
 		event.Skip();
@@ -218,8 +288,9 @@ long posx, posy;             // Mouse position at the time of the event
  * event position to our known close button locations, and if found, highlight
  * the neccesery button.
  */
-void CMuleNotebook::MouseMotion(wxMouseEvent &event) {
-long posx, posy;                        // Event X and Y positions
+void CMuleNotebook::MouseMotion(wxMouseEvent &event)
+{
+	long posx, posy;                        // Event X and Y positions
 	if (GetImageList() == NULL) {
 		event.Skip();
 		return; // No images
@@ -251,3 +322,4 @@ long posx, posy;                        // Event X and Y positions
 	}
 	event.Skip();
 }
+

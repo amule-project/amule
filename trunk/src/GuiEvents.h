@@ -320,7 +320,7 @@ class GUIEvent : public wxEvent {
 // search
 #define Notify_SearchCancel()                       Notify_0_ValEvent(SEARCH_CANCEL)
 #define Notify_SearchLocalEnd()                     Notify_0_ValEvent(SEARCH_LOCAL_END)
-#define Notify_Search_Update_Sources(s, f)          Notify_2_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)s, (CSearchFile *)f);
+#define Notify_Search_Update_Sources(ptr)          Notify_1_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)ptr);
 #define Notify_Search_Add_Result(s)                 Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
 
 // chat
