@@ -20,25 +20,6 @@
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
 
-#ifdef __CRYPTO_DEBIAN_GENTOO__
-	#include <crypto++/config.h>
-	#include <crypto++/rsa.h>
-#else
-	#ifdef __CRYPTO_MDK_SUSE_FC__
-		#include <cryptopp/config.h>
-		#include <cryptopp/rsa.h>
-	#else
-		#ifdef __CRYPTO_SOURCE__
-			#include <crypto-5.1/config.h>
-			#include <crypto-5.1/rsa.h>
-		#else //needed for standard path
-			#include <cryptopp/config.h>
-			#include <cryptopp/rsa.h>
-		#endif
-	#endif
-#endif
-
-
 #include "CMD4Hash.h"
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
