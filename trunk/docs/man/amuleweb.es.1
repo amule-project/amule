@@ -1,35 +1,35 @@
-.TH AMULEWEB 1 "March 2005" "aMule webserver v2.0.0" "aMule utilities"
+.TH AMULEWEB 1 "Marzo 2005" "aMule webserver v2.0.0" "Utilidades de aMule"
 .SH NOMBRE
 amuleweb \- servidor web de aMule
 .SH SYNOPSIS
 .B amuleweb
 .RB [ \-h " " \fI<host> ]
-.RB [ \-p " " \fI<port> ]
-.RB [ \-P " " \fI<pass> ]
-.RB [ \-f " " \fI<path> ]
+.RB [ \-p " " \fI<puerto> ]
+.RB [ \-P " " \fI<contraseña> ]
+.RB [ \-f " " \fI<localización> ]
 .RB [ \-q ]
 .RB [ \-v ]
 .RB [ \-w ]
-.RB [ \-t " " \fI<name> ]
-.RB [ \-s " " \fI<port> ]
+.RB [ \-t " " \fI<nombre> ]
+.RB [ \-s " " \fI<puerto> ]
 .RB [ \-z ]
 .RB [ \-Z ]
-.RB [ \-A " " \fI<pass> ]
-.RB [ \-G " " \fI<pass> ]
+.RB [ \-A " " \fI<contraseña> ]
+.RB [ \-G " " \fI<contraseña> ]
 .RB [ \-a ]
 .RB [ \-d ]
 .RB [ \-L ]
 .PP
 .B amuleweb
-.RB [ \-f " " \fI<path> ]
-.B \-\-create-config-from=\fI<path>
+.RB [ \-f " " \fI<localización> ]
+.B \-\-create-config-from=\fI<localización>
 .PP
 .B amuleweb
 .RB [ \-\-help ]
 .RB [ \-\-version ]
 .PP
 .B amuleweb
-.RB [ \-\-amule\-config\-file=\fI<path> ]
+.RB [ \-\-amule\-config\-file=\fI<localización> ]
 .SH DESCRIPCIÓN
 \fBamuleweb\fR permite administrar aMule a través de un navegador.
 Se puede iniciar amuleweb junto con \fBamule\fR(1), por separado, o en cualquier momento.
@@ -39,66 +39,66 @@ Las opciones pasadas a través de la linea de comandos tienen prioridad sobre las
 \fBamulewebDLG\fR es el clon de \fBamuleweb\fR con interfaz gráfica. Su funcionamiento es exactamente igual.
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-host donde aMule esta siendo ejecutado (por defecto: \fIlocalhost\fR).
+Host donde aMule esta siendo ejecutado (por defecto: \fIlocalhost\fR).
 \fI<host>\fR puede ser una IP o una dirección DNS.
 .TP
-\fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
-el puerto abierto en aMule's para conexiones de External Connections. Puede consultarlo en Preferencias->Controles Remotos (por defecto: \fI4712\fR)
+\fB\-p\fR, \fB\-\-port\fR=\fI<puerto>\fR
+El puerto abierto en aMule's para conexiones de External Connections. Puede consultarlo en Preferencias->Controles Remotos (por defecto: \fI4712\fR)
 .TP
-\fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
-constraseña para External Connections
+\fB\-P\fR, \fB\-\-password\fR=\fI<contraseña>\fR
+Constraseña para External Connections
 .TP
-\fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-usar el arhivo de configuración indicado.
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<localización>\fR
+Usar el arhivo de configuración indicado.
 Por defecto, \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
-no mostrar nada en la consola.
+No mostrar nada en la consola.
 Probablemente interese también el parámetro \fB\-q\fR para ejecutar esta aplicación como demonio,
-por ejemplo: '\fBamuleweb \-q &\fR'
+Por ejemplo: '\fBamuleweb \-q &\fR'
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
-mostrar información adicional \- mostrar también información para depuración.
+Mostrar información adicional \- mostrar también información para depuración.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
-crear el archivo de configuración y salir.
+Crear el archivo de configuración y salir.
 .TP
-\fB\-\-create\-config\-from\fR=\fI<path>\fR
-crear el archivo de configuración basándose en \fI<path>\fR y salir. \fI<path>\fR debe ser un archivo de configuración de aMule.
+\fB\-\-create\-config\-from\fR=\fI<localización>\fR
+Crear el archivo de configuración basándose en \fI<localización>\fR y salir. \fI<localización>\fR debe ser un archivo de configuración de aMule.
 .TP
-\fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
-cargar la piel \fI<name>\fR. Ver la sección
+\fB\-t\fR, \fB\-\-template\fR=\fI<nombre>\fR
+Cargar la piel \fI<nombre>\fR. Ver la sección
 .B PIELES
 .TP
-\fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
-el puerto HTTP del servidor web. Este es el puerto al que debe direccionar su navegador web (por defecto: \fI4711\fR)
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<puerto>\fR
+El puerto HTTP del servidor web. Este es el puerto al que debe direccionar su navegador web (por defecto: \fI4711\fR)
 .TP
 \fB\-z\fR, \fB\-\-enable\-gzip\fR
-emplear compresión gzip en las transferencias HTTP para reducir el ancho de banda usado.
+Emplear compresión gzip en las transferencias HTTP para reducir el ancho de banda usado.
 .TP
 \fB\-Z\fR, \fB\-\-disable\-gzip\fR
-deshabilitar la compresión gzip en las transferencias HTTP (esta es la opción por defecto)
+Deshabilitar la compresión gzip en las transferencias HTTP (esta es la opción por defecto)
 .TP
-\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
-definir la contraseña de acceso total al servidor web.
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<contraseña>\fR
+Definir la contraseña de acceso total al servidor web.
 .TP
-\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
-definir la contraseña de acceso al servidor web en modo "invitado".
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<contraseña>\fR
+Definir la contraseña de acceso al servidor web en modo "invitado".
 .TP
 \fB\-a\fR, \fB\-\-allow\-guest\fR
-permitir accesos al servidor web en modo "invitado".
+Permitir accesos al servidor web en modo "invitado".
 .TP
 \fB\-d\fR, \fB\-\-deny\-guest\fR
-denegar accesos al servidor web en modo "invitado" (esta es la opción por defecto)
+Denegar accesos al servidor web en modo "invitado" (esta es la opción por defecto)
 .TP
 \fB\-L\fR, \fB\-\-load\-settings\fR
-cargar/guardar la configuración de control remoto de aMule de/a la configuración de aMule.
+Cargar/guardar la configuración de control remoto de aMule de/a la configuración de aMule.
 Esto hace que amuleweb ignore las parámetros que se le pasen y el archivo de configuración, en beneficio de lo que figura en la configuración de aMule.
 Al guardar las preferencias, ninguna se guardará en el archivo de configuraciñon del programa, sino en el de aMule.
 (Por supuesto, esto solo es válido para aquellas preferencias que pueden ser definidas desde Preferencias->Controles Remotos)
 .TP
-\fB\-\-amule\-config\-file\fR=\fI<path>\fR
-localización del archivo de configuración de aMule.
+\fB\-\-amule\-config\-file\fR=\fI<localización>\fR
+Localización del archivo de configuración de aMule.
 .B NO USAR DIRECTAMENTE!
 aMule usa esta opción cuando se le pide ejecutar amuelweb al iniciarse.
 Esto hace que amuleweb ignore las parámetros que se le pasen y el archivo de configuración, las preferencias se leerán del archivo de configuracin especificado, e implica también las opciones \fB\-q \-L\fR.
