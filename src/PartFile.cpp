@@ -39,6 +39,7 @@
 #include <wx/setup.h>
 #include <wx/gdicmn.h>
 #include <wx/filename.h>	// Needed for wxFileName
+#include <wx/utils.h>
 
 #ifndef AMULE_DAEMON
 	#include <wx/msgdlg.h>		// Needed for wxMessageBox
@@ -2831,37 +2832,6 @@ sint32 CPartFile::getTimeRemaining() const
 	else 
 		return((GetFileSize()-GetCompletedSize()) / ((int)(GetKBpsDown()*1024.0)));
 } 
-
-void CPartFile::PreviewFile()
-{
-	wxString command;
-
-	// If no player set in preferences, use mplayer.
-	if (thePrefs::GetVideoPlayer().IsEmpty()) {
-		command.Append(wxT("mplayer"));
-	} else {
-		command.Append(thePrefs::GetVideoPlayer());
-	}
-	// Need to use quotes in case filename contains spaces.
-	command.Append(wxT(" \""));
-	if ( GetStatus() == PS_COMPLETE ) {
-		command.Append(thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() + GetFileName());
-	} else {
-		command.Append(GetFullName());
-		// Remove the .met from filename.
-		for (int i=0;i<4;++i) {
-			command.RemoveLast();
-		}
-	}
-	#warning Need PreviewSmallBlocks preferences.
-	/*
-	if (thePrefs.GetPreviewSmallBlocks()) {
-		FlushBuffer(true);
-	}
-	*/
-	command.Append(wxT("\""));
-	wxExecute(command);
-}
 
 bool CPartFile::PreviewAvailable()
 {

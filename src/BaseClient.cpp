@@ -21,6 +21,8 @@
 
 #include <zlib.h>		// Needed for inflateEnd
 #include <wx/defs.h>		// Needed before any other wx/*.h
+#include <wx/tokenzr.h>
+#include <wx/utils.h>
 
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "SearchList.h"		// Needed for CSearchList
@@ -41,7 +43,6 @@
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "opcodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
-#include <wx/tokenzr.h>
 
 //#define DEBUG_LOCAL_CLIENT_PROTOCOL
 //#define __PACKET_DEBUG__
@@ -637,8 +638,6 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		data->WriteUInt32(1); // One Tag (OS_INFO)
 
-		#ifndef __WXBASE__
-		
 		wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));
 
 		if (tkz.HasMoreTokens()) {
@@ -647,15 +646,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		} else {
 			CTag tag1(ET_OS_INFO,wxT("Unknown"));
 			tag1.WriteTagToFile(data);
-		}
-		
-		#else 
-			#warning wxGetOSDescription does not exist in wxBase, what should we do?
-			CTag tag1(ET_OS_INFO,wxT("Unknown"));
-			tag1.WriteTagToFile(data);		
-		
-		#endif
-		
+		}	
 
 	} else {
 

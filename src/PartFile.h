@@ -147,7 +147,6 @@ public:
 	//void	AddClientSources(CMemFile* sources);
 	void    AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion);
 
-	void	PreviewFile();
 	bool	PreviewAvailable();
 	uint8	GetAvailablePartCount() const	{ return m_availablePartsCount; }
 	uint32	GetLastAnsweredTime() const	{ return m_ClientSrcAnswered; }
