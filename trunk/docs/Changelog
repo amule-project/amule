@@ -122,15 +122,20 @@ Version 2.0.0rc3 - The 'Target: Stability' version.
 		* Fixed PowerShare priority level not being saved. (Tran.9)
 		* Fixed the problem where it wasn't possible to select auto-priority in the uploadlist after having selected another priority (Tran.8)
 		* Cleanup of Search Dialog:
-  		* The reset button is now properly enabled/disabled depending on the contenst of the text fields
-		* Fixed a bug where searched would be limited to 2gb if max size was set to a value less than min size
-  		* The popup-menu for the notebook now works as expected (SRCH.1) 
-		* The popup-menu will now only show when right-clicking within the bounds of the notebook (DISP.12)
-		* Other stuff
+  		  * The reset button is now properly enabled/disabled depending on the contenst of the text fields
+		  * Fixed a bug where searched would be limited to 2gb if max size was set to a value less than min size
+  		  * The popup-menu for the notebook now works as expected (SRCH.1) 
+		  * The popup-menu will now only show when right-clicking within the bounds of the notebook (DISP.12)
 		* Fixed the green progressbar on downloads always displaying 100%. (DISP.9)
 		* aMule will no longer display warnings about not being able to find server.met when a new server.met is saved and no old copy exists.
 		* known.met is now auto-saved (1) when 30 files have been hashed, (2) when 300mb worth of files have been hashed, (3) and when all files have been hashed. This is to reduce the chances of having to rehash all files after a crash.	
-
+		* Now uses the user-selected browser for fake-checking and such. (PREF.3)
+		* Further update of the Chat Page:
+		  * Pages can now be closed like the ones on the Search Page
+		  * Double-clicking on a nickname will open a chatsession for that friend
+		  * When a nickname is updated in the friendlist, the assosiated tab is updated as well
+		* Other stuff
+		
 
 	** Special thanks 
 		
