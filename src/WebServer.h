@@ -220,6 +220,7 @@ class SearchFile {
 		
 		SearchFile(CEC_SearchFile_Tag *);
 		
+		void ProcessUpdate(CEC_SearchFile_Tag *);
 		static class SearchInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
 };
@@ -493,7 +494,7 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_S
 		
 		SearchInfo(CamulewebApp *webApp);
 		
-		//virtual bool ReQuery();
+		virtual bool ReQuery();
 
 		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
 };
