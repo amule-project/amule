@@ -674,24 +674,21 @@ bool UTF8_CopyFile(wxString& from, wxString& to)
 	return true;
 }
 
-// When iterating dir, first try an UTF-8 file name so that we don't loose
-// information, only then try an ANSI name.
+// When iterating dir, first try an ANSI file name, then try an UTF-8 file name.
 CDirIterator::CDirIterator(wxString dir) {
 	DirStr = dir;
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
 	}
-	Unicode2CharBuf tmpDir(unicode2UTF8(dir));
+	Unicode2CharBuf tmpDir(unicode2char(dir));
 	if (tmpDir) {
-		if ((DirPtr = opendir(tmpDir)) == NULL) {
-			AddDebugLogLineM(false,
-				wxT("Error enumerating files for dir ") + dir);
-		}
+		DirPtr = opendir(tmpDir);
 	} else {
-		if ((DirPtr = opendir(unicode2char(dir))) == NULL) {
-			AddDebugLogLineM(false,
-				wxT("Error enumerating files for dir ") + dir);
-		}
+		DirPtr = opendir(unicode2UTF8(dir));
+	}
+	if (!DirPtr) {
+		AddDebugLogLineM(false,
+			wxT("Error enumerating files for dir ") + dir);
 	}
 }
 
@@ -747,15 +744,18 @@ wxString  CDirIterator::FindNextFile() {
 			default:
 #endif
 				// Fallback to stat
+				//
 				// The file name came from the OS, it is a sequence of
 				// bytes ending in a zero. First try an UTF-8 conversion,
 				// so that we don't loose information. Only then stick
-				// to an ANSI name.
+				// to an ANSI name. UTF82Unicode might fail because
+				// dp->name may not be a valid UTF-8 sequence.
 				Char2UnicodeBuf tmpFoundName(UTF82unicode(dp->d_name));
 				FoundName = tmpFoundName ?
 					tmpFoundName : char2unicode(dp->d_name);
 				wxString FullName(DirStr + FoundName);
-				// It might not be possible to use ANSI, so test.
+				// First, we try to use an ANSI name, but it might not be
+				// possible to use ANSI for the full name, so we test.
 				Unicode2CharBuf tmpFullName(unicode2char(FullName));
 				if (tmpFullName) {
 					stat(tmpFullName, buf);
