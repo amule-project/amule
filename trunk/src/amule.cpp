@@ -664,11 +664,6 @@ bool CamuleApp::OnInit()
 	uploadqueue	= new CUploadQueue(glob_prefs);
 	ipfilter	= new CIPFilter();
 
-	// Create listen socket 
-	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
-	myaddr.Service(glob_prefs->GetPort());
-	listensocket = new CListenSocket(glob_prefs, myaddr);
-
 	// Create main dialog
 	// Should default/last-used position be overridden?
 	if ( geometry_enabled ) {
@@ -693,6 +688,11 @@ bool CamuleApp::OnInit()
 
 	// reload shared files
 	sharedfiles->Reload(true, true);
+
+	// Create listen socket 
+	printf("*** TCP socket at %d\n", glob_prefs->GetPort());
+	myaddr.Service(glob_prefs->GetPort());
+	listensocket = new CListenSocket(glob_prefs, myaddr);
 
 	// This command just sets a flag to control maximun number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
