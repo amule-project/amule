@@ -65,8 +65,8 @@ static CmdId commands[] = {
 	{ wxT("reloadipf"),	CMD_ID_RELOAD_IPFILTER },
 	{ wxT("setiplevel"),	CMD_ID_SET_IPLEVEL },
 	{ wxT("iplevel"),	CMD_ID_IPLEVEL },
-	{ wxT("list"),		CMD_ID_CMDSEARCH },
-	{ wxT("find"),		CMD_ID_CMDSEARCH },
+	{ wxT("list"),		CMD_ID_DLOAD_QUEUE },
+	//{ wxT("find"),		CMD_ID_CMDSEARCH },
 	{ wxT("shutdown"),		CMD_ID_SHUTDOWN },
 	{ wxT("servers"),		CMD_ID_SERVERLIST },
 	// backward compat commands
@@ -329,8 +329,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 			break;
 
-		case CMD_ID_CMDSEARCH:
-			msg = wxT("CMDSEARCH") + args;
+		case CMD_ID_DLOAD_QUEUE:
+			request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
+			request_list.push_back(request);
 			break;
 			
 		case CMD_ID_PAUSE:
