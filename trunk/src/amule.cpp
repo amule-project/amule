@@ -1879,11 +1879,11 @@ wxString CamuleApp::GetLog(bool reset)
 	wxFile *logfile = new wxFile();
 	logfile->Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !logfile->IsOpened() ) {
-		return _("ERROR: can't open logfile");
+		return wxTRANSLATE("ERROR: can't open logfile");
 	}
 	int len = logfile->Length();
 	if ( len == 0 ) {
-		return _("WARNING: logfile is empty. Something wrong");
+		return wxTRANSLATE("WARNING: logfile is empty. Something is wrong.");
 	}
 	char *tmp_buffer = new char[len + sizeof(wxChar)];
 	logfile->Read(tmp_buffer, len);
@@ -1892,13 +1892,13 @@ wxString CamuleApp::GetLog(bool reset)
 	#if wxUSE_UNICODE
 	wxString str((wxWCharBuffer&)tmp_buffer);
 	#else
-	wxString str(char2unicode(tmp_buffer));
+	wxString str(tmp_buffer);
 	#endif
 #else
 	#if wxUSE_UNICODE
 	wxString str(UTF82unicode(tmp_buffer));
 	#else
-	wxString str(char2unicode(tmp_buffer));
+	wxString str(tmp_buffer);
 	#endif
 #endif
 	delete [] tmp_buffer;
