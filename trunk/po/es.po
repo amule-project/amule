@@ -4794,7 +4794,7 @@ msgstr "Encontrados %i archivos compartidos, %i desconocidos"
 #: src/SharedFileList.cpp:114
 #, c-format
 msgid "ERROR! Attempted to share %s"
-msgstr "¡ERROR! Procura compartir %s"
+msgstr "¡ERROR! No se debe compartir %s"
 
 #: src/SharedFileList.cpp:116
 #, c-format
