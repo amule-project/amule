@@ -31,12 +31,12 @@ class CAddFriend : public wxDialog
 public:
 	CAddFriend() {};
 	CAddFriend(wxWindow* parent);   // standard constructor
-	virtual ~CAddFriend();
-	virtual bool OnInitDialog();
+	virtual ~CAddFriend() {};
 	enum { IDD = IDD_ADDFRIEND };
 
 protected:
 	DECLARE_EVENT_TABLE()
+
 private:
 	void OnAddBtn(wxEvent& evt);
 	void OnCloseBtn(wxEvent& evt);
