@@ -58,6 +58,12 @@
 
 //-------------------------------------------------------------------
 
+// Initialization of the static MyTimer member variables.
+uint32 MyTimer::tic32 = 0;
+uint64 MyTimer::tic64 = 0;
+
+//-------------------------------------------------------------------
+
 WX_DEFINE_OBJARRAY(ArrayOfUpDown);
 WX_DEFINE_OBJARRAY(ArrayOfSession);
 WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
