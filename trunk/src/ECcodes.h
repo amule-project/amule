@@ -506,6 +506,13 @@ enum {
 		 * Server replies with an ::EC_OP_STATSGRAPHS packet.
 		 */
 	
+	EC_OP_GET_STATSGRAPHS,
+
+		/*!
+		 * \brief Statistics graphs reply
+		 *
+		 */	
+	
 	EC_OP_STATSGRAPHS,
 
 		/*!
@@ -514,6 +521,13 @@ enum {
 		 * Server replies with an ::EC_OP_STATSTREE packet.
 		 */
 
+	EC_OP_GET_STATSTREE,
+	
+		/*!
+		 * \brief Statistics tree reply
+		 *
+		 */	
+	
 	EC_OP_STATSTREE,
 
 
