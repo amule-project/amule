@@ -1,8 +1,8 @@
 //
 // This file is part of aMule Project
 //
-// Copyright (c) 2003-2004 Angel Vidal (Kry) ( kry@amule.org )
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
+// Copyright (c) 2004-2005 Angel Vidal (Kry) ( kry@amule.org )
+// Copyright (c) 2004-2005 aMule Project ( http://www.amule-project.net )
 // Copyright (C)2003 Barry Dunne (http://www.emule-project.net)
 
 // This program is free software; you can redistribute it and/or
@@ -62,10 +62,10 @@ class CKademliaError
 {
 public:
 	
-	CKademliaError(int errorCode, LPCSTR errorDescription) {m_ErrorCode = errorCode; m_ErrorDescription = errorDescription;}
+	CKademliaError(int errorCode, const wxString& errorDescription) {m_ErrorCode = errorCode; m_ErrorDescription = errorDescription;}
 
 	int m_ErrorCode;
-	LPCSTR m_ErrorDescription; // For internationalisation use error code to lookup description
+	wxString m_ErrorDescription; // For internationalisation use error code to lookup description
 };
 
 } // End namespace
