@@ -59,10 +59,7 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 
 	chatselector = (CChatSelector*)FindWindow(IDC_CHATSELECTOR);
 	friendlist = (CFriendListCtrl*)FindWindow(ID_FRIENDLIST);
-	
-	GetDlgItem(IDC_CSEND, wxButton)->Enable(false);
-	GetDlgItem(IDC_CCLOSE, wxButton)->Enable(false);
-	
+
 	// Allow notebook to dispatch right mouse clicks to us
 	chatselector->SetMouseListener(GetEventHandler());
 }
