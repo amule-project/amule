@@ -264,7 +264,6 @@ void CServerList::ServerStats()
 			packet = new Packet( OP_SERVER_DESC_REQ,4);
 			packet->CopyUInt32ToDataBuffer(ENDIAN_SWAP_32(uDescReqChallenge));
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
-			DumpMem(packet->GetPacket(),packet->GetPacketSize() + 6 /* Header */);
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
 			ping_server->SetLastDescPingedCount(true);
