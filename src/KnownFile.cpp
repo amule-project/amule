@@ -34,7 +34,6 @@
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "BarShader.h"		// Needed for CBarShader
 #include "packets.h"		// Needed for CTag
 #include "Preferences.h"	// Needed for CPreferences
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -129,25 +128,6 @@ CKnownFile::~CKnownFile(){
 	}
 	
 	m_AvailPartFrequency.Clear();
-}
-
-CBarShader CKnownFile::s_ShareStatusBar(16);
-
-void CKnownFile::DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat) {
-
-   s_ShareStatusBar.SetFileSize(GetFileSize()); 
-   s_ShareStatusBar.SetHeight(rect.GetHeight()); 
-   s_ShareStatusBar.SetWidth(rect.GetWidth()); 
-   s_ShareStatusBar.Fill(RGB(255,0,0));
-
-   if (!onlygreyrect && !m_AvailPartFrequency.IsEmpty()) {
-   	for (int i = 0;i != GetPartCount();i++)
-   		if(m_AvailPartFrequency[i] > 0 ){
-   			DWORD color = RGB(0, (210-(22*(m_AvailPartFrequency[i]-1)) <  0)? 0:210-(22*(m_AvailPartFrequency[i]-1)), 255);
-			s_ShareStatusBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
-		}
-   }
-   s_ShareStatusBar.Draw(dc, rect.GetLeft(), rect.GetTop(), bFlat);
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){

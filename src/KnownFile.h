@@ -58,7 +58,6 @@ class CUpDownClient;
 class CFile;
 class Packet;
 class CTag;
-class CBarShader;
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
@@ -184,7 +183,6 @@ public:
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
 	void	NewAvailPartsInfo();
-	void	DrawShareStatusBar(wxDC* dc, wxRect rect, bool onlygreyrect, bool bFlat);
 	
 	// comment 
 	CString	GetFileComment()		{if (!m_bCommentLoaded) LoadComment(); return m_strComment;} 
@@ -234,7 +232,6 @@ private:
 	uint8	m_iPermissions;
 	bool	m_bAutoUpPriority;
 	uint32	m_iQueuedCount;
-	static	CBarShader s_ShareStatusBar;
 	bool	m_PublishedED2K;
 
 };
