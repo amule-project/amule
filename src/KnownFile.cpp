@@ -141,9 +141,8 @@ CKnownFile::~CKnownFile(){
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
-	POSITION pos = m_ClientUploadList.Find(client); // to be sure
-	if(pos == NULL){
-		m_ClientUploadList.AddTail(client);
+	if ( m_ClientUploadList.find(client) != m_ClientUploadList.end() ) {
+		m_ClientUploadList.insert(client);
 	}
 }
 
@@ -151,9 +150,8 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client){
 
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
-	POSITION pos = m_ClientUploadList.Find(client); // to be sure
-	if(pos != NULL){
-		m_ClientUploadList.RemoveAt(pos);
+	if ( m_ClientUploadList.find(client) != m_ClientUploadList.end() ) {
+		m_ClientUploadList.erase(client);
 	}
 }
 
@@ -1093,14 +1091,14 @@ void CKnownFile::UpdatePartsInfo()
 	ArrayOfUInts16 count;	
 	
 	if (flag) {
-		count.Alloc(m_ClientUploadList.GetCount());	
+		count.Alloc(m_ClientUploadList.size());	
 	}
 
 	uint k_test = 0;
 	
-	for (POSITION pos = m_ClientUploadList.GetHeadPosition(); pos != 0; ) {
+	for (SourceSet::iterator it = m_ClientUploadList.begin(); it != m_ClientUploadList.end(); ) {
 		k_test++;
-		CUpDownClient* cur_src = m_ClientUploadList.GetNext(pos);
+		CUpDownClient* cur_src = *it++;
 		//This could be a partfile that just completed.. Many of these clients will not have this information.
 		if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount ) {
 			for (uint16 i = 0; i < partcount; i++) {

@@ -28,6 +28,7 @@
 #include "CFile.h"		// Needed for CFile
 
 #include "otherstructs.h"	// Needed for Gap_Struct
+#include "CTypedPtrList.h"
 
 #include <set>
 #include <list>
