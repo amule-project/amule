@@ -88,7 +88,7 @@ public:
 	uint32	GetHardFiles()						{return hardfiles;}
 	void	SetHardFiles(uint32 in_hardfiles)			{hardfiles = in_hardfiles;}
 	const	wxString& GetVersion() const				{return m_strVersion;}
-	void	SetVersion(CString pszVersion)				{m_strVersion = pszVersion;}
+	void	SetVersion(wxString pszVersion)				{m_strVersion = pszVersion;}
 	void	SetTCPFlags(uint32 uFlags)				{m_uTCPFlags = uFlags;}
 	uint32	GetTCPFlags() const					{return m_uTCPFlags;}
 	void	SetUDPFlags(uint32 uFlags)				{m_uUDPFlags = uFlags;}

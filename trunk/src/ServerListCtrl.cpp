@@ -411,7 +411,8 @@ void CServerListCtrl::RefreshServer(CServer* server)
 		SetItem(itemnr,8,_("No"));
 	}
 	
-	SetItem(itemnr,9,server->GetVersion());
+	temp = server->GetVersion();
+	SetItem(itemnr,9,temp);
 			
 }
 
