@@ -287,14 +287,19 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
 {
 	CPartFile* newfile = new CPartFile(pLink);
 	if (!newfile) {
+		// Very Bad Things Happened
+		printf("Really evil thing happened trying to create a partfile\n");
 		return;
 	}
 	if (newfile->GetStatus() == PS_ERROR) {
+		// This can be a ed2k link for a currently downloading file
+		// so we'll try to add the sources to the file anyway.
 		delete newfile;
 		newfile=NULL;
 	} else {
 		AddDownload(newfile,theApp.glob_prefs->AddNewFilesPaused(), category);
 	}
+	
 	if (pLink->HasValidSources()) {
 		if (newfile) {
 			newfile->AddClientSources(pLink->SourcesList,1);
@@ -305,6 +310,7 @@ void CDownloadQueue::AddFileLinkToDownload(CED2KFileLink* pLink, uint8 category)
 			}
 		}
 	}
+	
 	if(pLink->HasHostnameSources()) {
 		for (POSITION pos = pLink->m_HostnameSourcesList.GetHeadPosition(); pos != NULL; pLink->m_HostnameSourcesList.GetNext(pos)) {
 			AddToResolve(pLink->GetHashKey(), pLink->m_HostnameSourcesList.GetAt(pos)->strHostname, pLink->m_HostnameSourcesList.GetAt(pos)->nPort);
@@ -339,13 +345,13 @@ bool CDownloadQueue::IsFileExisting(const CMD4Hash& fileid) const
 {
 	if (const CKnownFile* file = sharedfilelist->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			AddLogLineM(true, wxString::Format(_("You are already trying to download the file %s"), file->GetFileName().c_str()));
+			AddLogLineM(true, _("You are already trying to download the file ") + file->GetFileName());
 		} else {
-			AddLogLineM(true, wxString::Format(_("You already have the file %s"), file->GetFileName().c_str()));
+			AddLogLineM(true, _("You already have the file ") + file->GetFileName());
 		}
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineM(true, wxString::Format(_("You are already trying to download the file %s"), file->GetFileName().c_str()));
+		AddLogLineM(true, _("You are already trying to download the file %s") + file->GetFileName());
 		return true;
 	}
 	return false;
@@ -1355,4 +1361,3 @@ wxString CDownloadQueue::getTextList( const wxString& file_to_search ) const
 	
 	return out;
 }
-

@@ -191,11 +191,13 @@ CED2KServerLink::GetKind() const
 /////////////////////////////////////////////
 // CED2KFileLink implementation
 /////////////////////////////////////////////
-CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash,const TCHAR* sources)
+CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* hash, const TCHAR* hashset, const TCHAR* masterhash, const TCHAR* sources)
 : m_name(char2unicode(name))
 , m_size(char2unicode(size))
 {
-  SourcesList=NULL;
+	SourcesList=NULL;
+	m_hashset = NULL;
+	m_bAICHHashValid = false;	
 
 	if ( strlen(hash) != 32 )
 		throw wxString(wxT("Ill-formed hash"));
@@ -315,22 +317,72 @@ CED2KFileLink::CED2KFileLink(const TCHAR* name,const TCHAR* size, const TCHAR* h
 			}
 		}
 	}
+	
+	if (hashset) {
+		if (m_hashset != NULL){
+			// W00t? 2 Hashsets?
+			wxASSERT(0);
+			return;
+		}		
+		m_hashset = new CSafeMemFile(256);
+		m_hashset->WriteHash16(m_hash);
+		m_hashset->WriteUInt16(0);
+
+		int iPartHashs = 0;
+		
+		TCHAR* pCh = (TCHAR*)hashset;
+		TCHAR* pStart = pCh;
+		while( (pCh = strchr(pCh,_T(':'))) !=0 ) {
+			*pCh = 0;
+			if (strlen(pStart)!=16){
+				delete m_hashset;
+				m_hashset = NULL;
+				return;
+			}
+			m_hashset->WriteHash16((uchar*)pStart);
+			iPartHashs++;			
+			++ pCh;
+			pStart = pCh;
+		}		
+
+		m_hashset->Seek(16, wxFromStart);
+		m_hashset->WriteUInt16(iPartHashs);
+		m_hashset->Seek(0, wxFromStart);
+	}
+	
+	if (masterhash) {
+		wxString strHash = char2unicode(masterhash);
+		if (!strHash.IsEmpty()) {
+			if (DecodeBase32(strHash, m_AICHHash.GetRawHash(), CAICHHash::GetHashSize()) == CAICHHash::GetHashSize()){
+				m_bAICHHashValid = true;
+				wxASSERT( m_AICHHash.GetString().CmpNoCase(strHash) == 0 );
+			} else {
+				wxASSERT( false );
+			}
+		} else {
+			wxASSERT( false );		
+		}
+	}
 
 }
 
 CED2KFileLink::~CED2KFileLink()
 {
-	// Imported from 0.30d
 	
 	if (SourcesList){
 		delete SourcesList;
 		SourcesList=NULL;
 	}
 	
-	while (!m_HostnameSourcesList.IsEmpty())
+	while (!m_HostnameSourcesList.IsEmpty()) {
 		delete m_HostnameSourcesList.RemoveHead();
+	}
 	
-	// EOI
+	if (m_hashset) {
+		delete m_hashset;
+		m_hashset =  NULL;
+	}
+
 }
 
 void 
@@ -379,7 +431,7 @@ CED2KLink*
 CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 {
 	// Parse pseudo-URI
-	const TCHAR* pChArray[7];
+	const TCHAR* pChArray[10];
 	if (uri==0) 
 		throw wxString(wxT("null ed2k link"));
 	TCHAR* pNewString = strdup(uri);
@@ -387,11 +439,15 @@ CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 	TCHAR* pCh = pNewString;
 	const TCHAR* pStart = pCh;
 	int idx = 0;
-	for (idx=0;idx<7;idx++) pChArray[idx]=NULL;
+	uint32 std_ed2k_link_end = 0;
+	for (idx=0;idx<10;idx++) pChArray[idx]=NULL;
 	idx = 0;
-	while( idx <7 && ((pCh = strchr(pCh,_T('|'))) !=0) ) {
+	while( idx <10 && ((pCh = strchr(pCh,_T('|'))) !=0) ) {
 		pChArray[idx++] = pStart;
 		*pCh = 0;
+		if (strcmp("/",pStart) == 0) {
+			std_ed2k_link_end = idx;
+		}		
 		++ pCh;
 		pStart = pCh;
 	}
@@ -407,8 +463,22 @@ CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 	   ) {
 			throw wxString(wxT("Not a well-formed ed2k link"));
 	}
-	if ( strcmp( ("file") , pChArray[1]  ) == 0 && idx >=  5 && pChArray[4] != 0 ) {
-		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4],pChArray[6]);
+	if ( strcmp( "file" , pChArray[1]  ) == 0 && idx >=  5 && pChArray[4] != 0 ) {
+		// If AICH hashset is present, must have 'h=' as start
+		// 'p=' marks a masterhash.
+		// std_ed2k_link_end marks the end of the link, after that, there might be 
+		// dragons, or a sources list.
+		const TCHAR* hashset = NULL;
+		const TCHAR* masterhash = NULL;
+		for (uint32 i = 4; i <= std_ed2k_link_end ; i++) {
+			if (strncmp(pChArray[i],"p=",2) == 0) {
+				hashset = (pChArray[i]) + 2;
+			} else if (strncmp(pChArray[i],"h=",2) == 0) {
+				masterhash = (pChArray[i]) + 2;
+			}
+		}
+		
+		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4], hashset, masterhash,pChArray[std_ed2k_link_end+1]);
 	}
 	else if ( strcmp( unicode2char(_T("serverlist")) , pChArray[1] ) == 0 && idx == 3 ) {
 		return new CED2KServerListLink(pChArray[2]);
@@ -421,52 +491,3 @@ CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 	}
 	return 0;
 }
-#if 0
-//static 
-CED2KLink* 
-CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
-{
-	// Parse pseudo-URI
-	const TCHAR* pChArray[7];
-	if (uri==0) 
-		throw wxString(("null ed2k link"));
-	TCHAR* pNewString = strdup(uri);
-	autoFree liberator(pNewString);
-	TCHAR* pCh = pNewString;
-	const TCHAR* pStart = pCh;
-	int idx = 0;
-	for (idx=0;idx<7;idx++) pChArray[idx]=NULL;
-	idx = 0;
-	while( idx <7 && ((pCh = strchr(pCh,('|'))) !=0) ) {
-		pChArray[idx++] = pStart;
-		*pCh = 0;
-		++ pCh;
-		pStart = pCh;
-	}
-	if ( *pStart != ('/') ) {
-		throw wxString((_("not a well-formed ed2k link")));
-	}
-	if (   idx < 3
-		|| pChArray[0] == 0 
-		|| pChArray[1] == 0 
-		|| pChArray[2] == 0 
-		|| pChArray[3] == 0 
-		|| strcmp( ("ed2k://") , pChArray[0]  ) != 0 
-	   ) {
-			throw wxString(_("not a well-formed ed2k link"));
-	}
-	if ( strcmp( ("file") , pChArray[1]  ) == 0 && idx == 5 && pChArray[4] != 0 ) {
-		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4]);
-	}
-	else if ( strcmp( ("serverlist") , pChArray[1] ) == 0 && idx == 3 ) {
-		return new CED2KServerListLink(pChArray[2]);
-	}
-	else if ( strcmp( ("server") , pChArray[1]  ) == 0 && idx == 4 ) {
-		return new CED2KServerLink(pChArray[2],pChArray[3]);
-	}
-	else {
-		throw wxString(_("Not an ED2K server or file link"));
-	}
-	return 0;
-}
-#endif
