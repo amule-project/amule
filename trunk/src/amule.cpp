@@ -738,16 +738,7 @@ bool CamuleApp::OnInit()
 	// Everything should be loaded now, so sort the list widgets
 	amuledlg->InitSort();
 	
-	// AICH sync thread start
 
-	#warning activate here AICH thread	
-	/*
-	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
-	AICH_Thread->Create();
-	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
-	AICH_Thread->Run();
-	*/
-	
 	// Start the Core Timer
 
 	// Note: wxTimer can be off by more than 10% !!!
@@ -771,7 +762,16 @@ bool CamuleApp::OnInit()
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
+
+	#warning activate here AICH thread	
+
+	// First Run AICH.
 	
+	CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
+	AICH_Thread->Create();
+	AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
+	AICH_Thread->Run();
+
 	return true;
 }
 
@@ -1622,6 +1622,16 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
 		// Save the known.met file
 		knownfiles->Save();
+		
+		// Known.met changed, AICH sync thread start
+
+		#warning activate here AICH thread	
+		
+		CAICHSyncThread* AICH_Thread = new CAICHSyncThread();
+		AICH_Thread->Create();
+		AICH_Thread->SetPriority(WXTHREAD_DEFAULT_PRIORITY-10); // slightly less than main
+		AICH_Thread->Run();
+				
 	} 
 }
 
