@@ -372,7 +372,7 @@ noinst_HEADERS = AddFileThread.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Preview.h \
-		 Proxy.cpp \
+		 Proxy.h \
 		 SafeFile.h \
 		 SearchDlg.h \
 		 SearchListCtrl.h \
