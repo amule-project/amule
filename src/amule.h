@@ -28,6 +28,8 @@
 #include "CTypedPtrList.h"
 #include "types.h"			// Needed for int32, uint16 and uint64
 
+#include <deque>
+
 // must be moved to a file
 enum GUI_Event_ID {
 	INVALID_EVENT = 0,
@@ -234,9 +236,9 @@ protected:
 	wxTimer* core_timer;
 		
 	wxCriticalSection m_LogQueueLock;
-	CList<QueuedLogLine>	QueuedAddLogLines;
+	std::deque<QueuedLogLine>	QueuedAddLogLines;
 #ifdef __DEBUG__
-	CList<socket_deletion_log_item>	SocketDeletionList;
+	std::deque<socket_deletion_log_item>	SocketDeletionList;
 #endif
 	wxLocale		m_locale;
 
