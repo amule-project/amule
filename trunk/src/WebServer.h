@@ -30,7 +30,7 @@
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "WebServer.h"
 #endif
-//-------------------------------------------------------------------
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 #else
@@ -41,8 +41,6 @@
 #endif
 #include <zlib.h>		// Needed for Bytef etc.
 
-//#define WITH_LIBPNG	1
-
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
@@ -51,14 +49,6 @@
 #include <map>
 #include <vector>
 
-
-//-------------------------------------------------------------------
-#ifndef WIN32
-	#include "config.h"
-#endif
-//-------------------------------------------------------------------
-#define wxUSE_DDE_FOR_IPC  0
-//#include <wx/ipc.h>
 #include <wx/wx.h>
 #include <wx/filename.h>
 

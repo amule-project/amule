@@ -54,8 +54,7 @@
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, LOCALEDIR, PACKAGE, 
-					//   PACKAGE_STRING and VERSION
+					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
 
 #include <wx/filefn.h>

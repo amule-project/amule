@@ -28,7 +28,7 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION
+#include "config.h"		// Needed for VERSION and CVSDATE
 #endif
 
 #include "ExternalConn.h"	// Interface declarations

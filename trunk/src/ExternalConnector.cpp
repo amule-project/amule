@@ -23,7 +23,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for VERSION
+	#include "config.h"	// Needed for VERSION and readline detection
 #endif
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)

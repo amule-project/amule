@@ -38,8 +38,8 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT, HAVE_SYS_RESOURCE_H,
-#endif				//   LOCALEDIR, PACKAGE, PACKAGE_STRING and VERSION
+#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
+#endif
 
 #include <wx/filefn.h>
 #include <wx/ffile.h>
