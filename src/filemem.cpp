@@ -259,4 +259,3 @@ bool CMemFile::Error() const
 {
 	return false;
 }
-

@@ -1208,7 +1208,6 @@ bool CUpDownClient::Disconnected(const wxString& WXUNUSED(strReason), bool bFrom
     if (m_iFileListRequested){
 		AddLogLineM(true, wxString(_("Failed to retrieve shared files from ")) +GetUserName());
 		m_iFileListRequested = 0;
-	    wxASSERT(0);
 	}
 	if (m_Friend) {
 		Notify_ChatRefreshFriend(m_Friend);
