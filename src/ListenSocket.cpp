@@ -1215,6 +1215,9 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				CSafeMemFile data_out(128);
 				data_out.WriteHash16(reqfile->GetFileHash());
 				while(data_in.GetLength()-data_in.GetPosition()) {
+					if (!m_client) {
+						throw wxString(wxT("Client suddenly disconnected"));
+					}
 					uint8 opcode_in = data_in.ReadUInt8();
 					switch(opcode_in) {
 						case OP_REQUESTFILENAME: {

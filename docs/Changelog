@@ -192,6 +192,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Implemented changes suggested by bootstrap in aMule-CVS.spec,
 		merged all the packages in a single rpm, changed the packager
 		to "The aMule Team" and updated %BuildPreReq.
+		* Fixed a crash in ListenSocket.cpp when a client could
+		disconnect suddenly.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
