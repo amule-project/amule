@@ -217,7 +217,6 @@ void CSafeMemFile::ReadHash16(uchar* pVal) const
 	if (m_position + sizeof(uint32)*4 /*16 bytes*/ > m_FileSize)
 		throw CInvalidPacket("EOF");
 	CFileDataIO::ReadHash16(pVal);
-	m_position += sizeof(uint32)*4;
 }
 
 void CSafeMemFile::WriteUInt8(uint8 nVal)
