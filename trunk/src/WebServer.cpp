@@ -2161,9 +2161,6 @@ bool CWebServer::_RemoveSession(ThreadData WXUNUSED(Data), long lSession) {
 	for (size_t i = 0; i < m_Params.Sessions.GetCount(); ++i) {
 		if (m_Params.Sessions[i]->lSession == lSession && lSession != 0) {
 			m_Params.Sessions.RemoveAt(i);
-			CECPacket req(EC_OP_ADDLOGLINE);
-			req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Webserver: Logout"))));
-			Send_Discard_V2_Request(&req);
 			return true;
 		}
 	}
