@@ -61,7 +61,7 @@ private:
 	bool		ProcessEvent(wxEvent& evt);
 
 	bool		asc_sort[7];	 
-	wxImageList	imagelist;
+
 	wxMenu*		m_ClientMenu;
 	wxBrush*	m_hilightBrush,*m_hilightUnfocusBrush;
 

@@ -45,6 +45,8 @@ BEGIN_EVENT_TABLE(CQueueListCtrl,CMuleListCtrl)
   EVT_TIMER(2349,CQueueListCtrl::OnTimer)
 END_EVENT_TABLE()
 
+#define imagelist theApp.amuledlg->imagelist
+
 CQueueListCtrl::CQueueListCtrl(){
 }
 
@@ -66,15 +68,6 @@ CQueueListCtrl::CQueueListCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSiz
   m_hilightUnfocusBrush=new wxBrush(newcol,wxSOLID);
 
   Init();
-
-  // load images
-#warning As with uploadlistctrl and downloadlistctrl, this list should be centralised on amuleDlg, or even better, not used at all.
-	
-	imagelist.Create(16,16);
-	
-	for (uint32 i=0; i<22; i++) {
-		imagelist.Add(wxBitmap(clientImages(i)));
-	}
 	
   m_hTimer.SetOwner(this,2349);
   m_hTimer.Start(10000);

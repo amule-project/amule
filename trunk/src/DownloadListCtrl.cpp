@@ -53,6 +53,8 @@
 
 class CPartFile;
 
+#define m_ImageList theApp.amuledlg->imagelist
+
 // CDownloadListCtrl
 
 // hmm some parts here might be overkill ;) ...
@@ -68,21 +70,13 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_KEY_DOWN(CDownloadListCtrl::OnKeyDown)
 END_EVENT_TABLE()
 
-void preloadImages(wxImageList * imgs)
-{
-	for (uint32 i=0; i<22; i++) {
-		imgs->Add(clientImages(i));
-	}
-}
-
 //IMPLEMENT_DYNAMIC(CDownloadListCtrl, CListBox)
-CDownloadListCtrl::CDownloadListCtrl():m_ImageList(16, 16)
+CDownloadListCtrl::CDownloadListCtrl()
 {
-	SetImageList(&m_ImageList, wxIMAGE_LIST_SMALL);
-	preloadImages(&m_ImageList);
+	//SetImageList(&theApp.amuledlg->imagelist, wxIMAGE_LIST_SMALL);
 }
 
-CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags | wxLC_OWNERDRAW), m_ImageList(16, 16)
+CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags | wxLC_OWNERDRAW)
 {
 	m_ClientMenu = NULL;
 	m_PrioMenu = NULL;
@@ -93,8 +87,7 @@ CDownloadListCtrl::CDownloadListCtrl(wxWindow * &parent, int id, const wxPoint &
 	col = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW);
 	newcol = wxColour(G_BLEND(col.Red(), 125), G_BLEND(col.Green(), 125), G_BLEND(col.Blue(), 125));
 	m_hilightUnfocusBrush = new wxBrush(newcol, wxSOLID);
-	SetImageList(&m_ImageList, wxIMAGE_LIST_SMALL);
-	preloadImages(&m_ImageList);
+	//SetImageList(&theApp.amuledlg->imagelist, wxIMAGE_LIST_SMALL);
 	Init();
 	LoadSettings();
 }

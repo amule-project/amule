@@ -113,7 +113,7 @@ private:
 	typedef std::pair<void*,CtrlItem_Struct*> ListItemsPair;
 	typedef std::multimap<void*,CtrlItem_Struct*> ListItems;
 	ListItems	m_ListItems;
-	wxImageList	m_ImageList;
+
 	wxMenu*		m_FileMenu;
 	wxMenu*		m_ClientMenu;
 	wxMenu*		m_PrioMenu;
