@@ -223,7 +223,7 @@ AC_CHECK_FUNCS([floor ftruncate gettimeofday inet_ntoa memchr memmove memset mkd
 # Other tests
 
 case "$USE_DEBUG" in
-yes)	DEBUG_FLAGS="-Wall -g -ggdb -fno-inline -D__DEBUG__"
+yes)	DEBUG_FLAGS="-W -Wall -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0"
     ;;
 *)	DEBUG_FLAGS=""
     ;;
