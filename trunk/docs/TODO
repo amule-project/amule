@@ -62,11 +62,8 @@
 		+ Graphs
 		+ Categories
 		+ DownloadLink
-	- improve and clean amulecmd & amuleweb code (high)
-	- global websocket code check
-	- ssl support for communication protocol (high)
-	- Fix amule{web,cmd}DLG
-	- add new amule's images for web interface (low)
+	- rewrite websocket to be xplatform (high)
+	- ssl support for communication protocol
 
 - hellimod:
 	- Check little/big endian access to mem/files that must be fixed.
