@@ -477,19 +477,15 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
 			CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData(i);
 		
-			if ( item->owner == file ) {
+			if ( item->type != FILE_TYPE && item->owner == file ) {
 				// Remove from the grand list, this call doesn't remove the source
 				// from the listctrl, because ShowSources is now false. This also
 				// deletes the item.
 				RemoveSource( (CUpDownClient*)item->value, file );
-			
-				// Remove from the listctrl
-				DeleteItem(i);
 			}
 		}
 	}
 	
-
 	Thaw();
 }
 
