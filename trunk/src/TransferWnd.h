@@ -25,7 +25,6 @@
 
 #include "types.h"		// Needed for uint32
 #include "resource.h"		// Needed for IDD_TRANSFER
-#include "SplitterControl.h"	// Needed for CSplitterControl
 
 class CUploadListCtrl;
 class CDownloadListCtrl;
@@ -80,7 +79,6 @@ protected:
 	int AddCategorie(wxString newtitle,wxString newincoming,wxString newcomment,bool addTab);
 	void EditCatTabLabel(int index,wxString newlabel);
 
-	CSplitterControl m_wndSplitter;
 	CMuleNotebook* m_dlTab;
 
 	DECLARE_EVENT_TABLE()
