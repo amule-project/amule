@@ -79,8 +79,8 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 void CFileDetailDialog::UpdateData()
 {
 	wxString bufferS;
-	GetDlgItem(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(m_file->GetFileName().GetData()));
-	GetDlgItem(IDC_METFILE,wxStaticText)->SetLabel(m_file->GetFullName());
+	GetDlgItem(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFileName(),60)));
+	GetDlgItem(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFullName(),60,true)));
 	wxString tmp=GetDlgItem(IDC_FILENAME,wxTextCtrl)->GetValue();
 
 	if (tmp.Length()<3) {
