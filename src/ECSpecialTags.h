@@ -150,8 +150,10 @@ class CEC_UpDownClient_Tag : public CECTag {
 
  		wxString ClientName() { return GetTagByNameSafe(EC_TAG_CLIENT_NAME)->GetStringData(); }
  		uint32 Speed() { return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
- 		uint32 XferUp() { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER_UP)->GetInt32Data(); };
- 		uint32 XferDown() { return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
+ 		
+ 		uint32 XferUp() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_TOTAL)->GetInt32Data(); };
+ 		uint32 XferDown() { return GetTagByNameSafe(EC_TAG_CLIENT_DOWNLOAD_TOTAL)->GetInt32Data(); }
+ 		uint32 XferUpSession() { return GetTagByNameSafe(EC_TAG_CLIENT_UPLOAD_SESSION)->GetInt32Data(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {

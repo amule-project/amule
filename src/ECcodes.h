@@ -857,15 +857,20 @@ enum {
 	/*!
 	 * \brief Info about up-down client
 	 * 
-	 * Value (string): name,id of connected user
+	 * Value (uint32): id of connected user
 	 * 
-	 * \par Child TAGs:
-	 *  ::EC_TAG_PARTFILE
-	 *  ::EC_TAG_PARTFILE_SIZE_XFER
-	 *  ::EC_TAG_PARTFILE_SPEED
+	 * \par Child TAGs: all below
 	 */
 	EC_TAG_UPDOWN_CLIENT,
-
+	EC_TAG_CLIENT_SOFTWARE,
+	EC_TAG_CLIENT_SCORE,
+	EC_TAG_CLIENT_FRIEND,
+	EC_TAG_CLIENT_WAIT_TIME,
+	EC_TAG_CLIENT_XFER_TIME,
+	EC_TAG_CLIENT_UPLOAD_SESSION,
+	EC_TAG_CLIENT_UPLOAD_TOTAL,
+	EC_TAG_CLIENT_DOWNLOAD_TOTAL,
+	
 	//
 	// Search
 	//
