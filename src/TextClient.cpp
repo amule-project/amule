@@ -76,6 +76,9 @@ static CmdId commands[] = {
 	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
 	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
 	{ wxT("show"),		CMD_ID_SHOW },
+	{ wxT("setupbwlimit"),	CMD_ID_SETUPBWLIMIT },
+	{ wxT("setdownbwlimit"),	CMD_ID_SETDOWNBWLIMIT },
+	{ wxT("getbwlimits"),	CMD_ID_GETBWLIMITS },
 	{ wxEmptyString,	0 },
 };
 
@@ -430,7 +433,46 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				Show(_("This option requires an argument."));
 			}
 			break;
-
+		case CMD_ID_SETUPBWLIMIT:
+			if ( ! args.IsEmpty() ) {
+				unsigned long int limit;
+				if (args.ToULong(&limit)) {
+					request = new CECPacket(EC_OP_SET_PREFERENCES);
+					CECEmptyTag prefs(EC_TAG_PREFS_CONNECTIONS);
+					prefs.AddTag(CECTag(EC_TAG_CONN_MAX_UL, (uint16)limit));
+					request->AddTag(prefs);
+					request_list.push_back(request);
+				} else {
+					Show(_("Invalid argument."));
+				}
+			} else {
+				Show(_("This option requires an argument."));
+			}
+			request = new CECPacket(EC_OP_GET_PREFERENCES);
+			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
+			request_list.push_back(request);
+			break;
+		case CMD_ID_SETDOWNBWLIMIT:
+			if ( ! args.IsEmpty() ) {
+				unsigned long int limit;
+				if (args.ToULong(&limit)) {
+					request = new CECPacket(EC_OP_SET_PREFERENCES);
+					CECEmptyTag prefs(EC_TAG_PREFS_CONNECTIONS);
+					prefs.AddTag(CECTag(EC_TAG_CONN_MAX_DL, (uint16)limit));
+					request->AddTag(prefs);
+					request_list.push_back(request);
+				} else {
+					Show(_("Invalid argument."));
+				}
+			} else {
+				Show(_("This option requires an argument."));
+			}
+		case CMD_ID_GETBWLIMITS:
+			request = new CECPacket(EC_OP_GET_PREFERENCES);
+			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
+			request_list.push_back(request);
+			break;
+			
 		default:
 			return -1;
 	}
@@ -497,6 +539,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				if (tab) {
 					s += wxString::Format(_("IPFilter is %s.\n"), (tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
 					s += wxString::Format(_("Current IPFilter Level is %d.\n"), tab->GetTagByName(EC_TAG_IPFILTER_LEVEL)->GetInt8Data());
+				}
+				tab = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
+				if (tab) {
+					s += wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"), tab->GetTagByName(EC_TAG_CONN_MAX_UL)->GetInt16Data(), tab->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data());
 				}
 			}
 			break;		
@@ -599,6 +645,9 @@ void CamulecmdApp::ShowHelp() {
 //	Show(wxString(wxT("SetIPLevel <")) + wxString(_("new level")) + wxString(wxT(">:\t")) + wxString(_("Changes current IP Filter level.\n")));
 	Show(wxString(wxT("IPLevel [")) + wxString(_("level")) + wxString(wxT("]:\t")) + wxString(_("Shows/Sets current IP Filter level.\n")));
 	Show(wxString(wxT("Add <")) + wxString(_("ED2k Link")) + wxString(wxT(">\t\t")) + wxString(_("Adds <ED2k Link> to aMule.\n\t\t\t\tCurrently file and server links are supported.\n")));
+	Show(wxString(wxT("SetUpBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum upload bandwidth.\n")));
+	Show(wxString(wxT("SetDownBWLimit <")) + wxString(_("limit")) + wxString(wxT(">\t")) + wxString(_("Sets maximum downloadload bandwidth.\n")));
+	Show(wxString(wxT("GetBWLimits\t\t")) + wxString(_("Displays bandwidth limits.\n")));
 	Show(wxString(wxT("Help:\t\t\t")) + wxString(_("Shows this help.\n")));	
 	Show(wxString(wxT("Quit:\t\t\t")) + wxString(_("Exits Textclient.\n")));
 	Show(wxString(wxT("Shutdown:\t\t\t")) + wxString(_("Shutdown amule\n")));
