@@ -354,12 +354,7 @@ void CWebServer::ReloadTemplates(void) {
 	}
 	if (!wxFileName::FileExists(sFile)) {
 		// no file. do nothing.
-		// Show error locally instead of logging into remote core
 		webInterface->Show(wxString(_("Can't load templates: Can't open file ")) + sFile);
-		//CECPacket req(EC_OP_ADDLOGLINE);
-		//req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
-		//req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
-		//Send_Discard_V2_Request(&req);
 		return;
 	}
 
@@ -374,12 +369,7 @@ void CWebServer::ReloadTemplates(void) {
 		wxString sVersion = _LoadTemplate(sAll,wxT("TMPL_VERSION"));
 		long lVersion = StrToLong(sVersion);
 		if (lVersion < WEB_SERVER_TEMPLATES_VERSION) {
-			// Show error locally instead of logging into remote core
 			webInterface->Show(wxString(_("Can't load templates: Can't open file ")) + sFile);
-			//CECPacket req(EC_OP_ADDLOGLINE);
-			//req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
-			//req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
-			//Send_Discard_V2_Request(&req);
 		} else {
 			m_Templates.sHeader = _LoadTemplate(sAll,wxT("TMPL_HEADER"));
 			m_Templates.sHeaderMetaRefresh = _LoadTemplate(sAll,wxT("TMPL_HEADER_META_REFRESH"));
@@ -433,12 +423,7 @@ void CWebServer::ReloadTemplates(void) {
 				
 		}
 	} else {
-		// Show error locally instead of logging into remote core
 		webInterface->Show(wxString(_("Can't load templates: Can't open file ")) + sFile);
-		//CECPacket req(EC_OP_ADDLOGLINE);
-		//req.AddTag(CECEmptyTag(EC_TAG_LOG_TO_STATUS));	// to log to statusbar also
-		//req.AddTag(CECTag(EC_TAG_STRING, wxString(_("Can't load templates: Can't open file ")) + sFile));
-		//Send_Discard_V2_Request(&req);
 	}
 }
 
@@ -709,8 +694,6 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 			}
 		}
 	}
-	// this for debug only
-	//webInterface->Show(_("*** URL parsed. returning ") + value + wxT("\n"));
 	return value;
 }
 
