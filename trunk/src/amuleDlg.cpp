@@ -783,31 +783,8 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		wxString strlink = ctl->GetLineText(i);
 		strlink.Trim(true);
 		strlink.Trim(false);
-		if ( strlink.IsEmpty() )
-			continue;
-
-		if ( strlink.Last() != '/' )
-			strlink += wxT("/");
-
-		try {
-			CED2KLink* pLink = CED2KLink::CreateLinkFromUrl(unicode2char(strlink));
-
-			if ( pLink ) {
-				if( pLink->GetKind() == CED2KLink::kFile ) {
-					uint8 cat = transferwnd->downloadlistctrl->curTab;
-					theApp.downloadqueue->AddFileLinkToDownload(pLink->GetFileLink(), cat);
-				} else {
-					throw wxString(wxT("Bad link"));
-				}
-
-				delete pLink;
-			} else {
-				printf("Failed to create ED2k link from URL\n");
-			}
-		}
-		catch(wxString error) {
-			wxString msg = _("This ed2k link is invalid: ") + error;
-			AddLogLineM( true, _("Invalid link: ") + msg);
+		if ( !strlink.IsEmpty() ) {
+			theApp.downloadqueue->AddED2KLink( strlink, transferwnd->downloadlistctrl->curTab );
 		}
 	}
 	

@@ -43,6 +43,7 @@ class completingThread;
 class CSafeMemFile;
 class wxMemoryDC;
 class wxRect;
+class CED2KFileLink;
 
 
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
@@ -68,9 +69,7 @@ class CPartFile : public CKnownFile {
 public:
 	CPartFile();
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
-	CPartFile(const wxString& edonkeylink);
-	CPartFile(class CED2KFileLink* fileLink);
-	void InitializeFromLink(CED2KFileLink* fileLink);
+	CPartFile(const CED2KFileLink* fileLink);
 	virtual ~CPartFile();
 	
 	bool	CreateFromFile(wxString WXUNUSED(directory), wxString WXUNUSED(filename), void* WXUNUSED(pvProgressParam)) {return false;}// not supported in this class

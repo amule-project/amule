@@ -182,49 +182,22 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 	CreatePartFile();
 }
 
-CPartFile::CPartFile(const wxString& edonkeylink)
-{
-	CED2KLink* pLink = 0;
-	try {
-		pLink = CED2KLink::CreateLinkFromUrl(unicode2char(edonkeylink));
-		wxASSERT(pLink != 0);
-		CED2KFileLink* pFileLink = pLink->GetFileLink();
-		if (pFileLink==0) {
-			throw wxString(wxT("Not a file link"));
-		}
-		InitializeFromLink(pFileLink);
-	} catch (wxString error) {
-		wxString strBuffer =  _("This ed2k link is invalid (") +  error + wxT(")");
-		AddLogLineM(true, _("Invalid link: ") + strBuffer);
-		SetPartFileStatus(PS_ERROR);
-	}
-	delete pLink;
-}
 
-void
-CPartFile::InitializeFromLink(CED2KFileLink* fileLink)
+CPartFile::CPartFile(const CED2KFileLink* fileLink)
 {
 	Init();
-	try {
-		m_strFileName = fileLink->GetName();
-		SetFileSize(fileLink->GetSize());
-		m_abyFileHash = fileLink->GetHashKey();
-		if (!theApp.downloadqueue->IsFileExisting(m_abyFileHash)) {
-			CreatePartFile();
-		} else {
-			SetPartFileStatus(PS_ERROR);
-		}
-	} catch(wxString error) {
-		wxString strBuffer =  _("This ed2k link is invalid (") + error + wxT(")");
-		AddLogLineM(true, _("Invalid link: ") + strBuffer);
+	
+	m_strFileName = fileLink->GetName();
+	SetFileSize(fileLink->GetSize());
+	m_abyFileHash = fileLink->GetHashKey();
+
+	if ( theApp.downloadqueue->IsFileExisting(m_abyFileHash) ) {
 		SetPartFileStatus(PS_ERROR);
+	} else {
+		CreatePartFile();
 	}
 }
 
-CPartFile::CPartFile(CED2KFileLink* fileLink)
-{
-	InitializeFromLink(fileLink);
-}
 
 void CPartFile::Init()
 {

@@ -464,7 +464,7 @@ CED2KLink::CreateLinkFromUrl( const TCHAR * uri)
 			}
 		}
 		
-		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4], hashset, masterhash,pChArray[std_ed2k_link_end+1]);
+		return new CED2KFileLink(pChArray[2],pChArray[3],pChArray[4], hashset, masterhash,pChArray[std_ed2k_link_end]);
 	}
 	else if ( strcmp( unicode2char(_T("serverlist")) , pChArray[1] ) == 0 && idx == 3 ) {
 		return new CED2KServerListLink(pChArray[2]);
