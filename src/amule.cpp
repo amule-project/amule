@@ -2063,7 +2063,8 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// search window
 		case SEARCH_CANCEL:
 			if ( amuledlg->searchwnd ) {
-				amuledlg->searchwnd->OnBnClickedCancels(*(wxCommandEvent *)event.ptr_value);
+				wxCommandEvent evt;
+				amuledlg->searchwnd->OnBnClickedCancels(evt);
 			}
 			break;
 		case SEARCH_LOCAL_END:

@@ -350,8 +350,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			if (connectedsocket) 
 				connectedsocket->Close();
 			connectedsocket = NULL;
-			wxCommandEvent evt;
-			Notify_SearchCancel(&evt);
+			Notify_SearchCancel();
 //			printf("Reconn %d conn %d\n",app_prefs->Reconnect(),connecting);
 			theApp.stat_serverConnectTime = 0;
 			if (app_prefs->Reconnect() && !connecting){
