@@ -358,7 +358,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 
 			m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
 			// This will effectively show the Tray Icon.
-			ShowTransferRate();
+			UpdateTrayIcon(0);
 		}
 
 		
@@ -387,8 +387,8 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 		{
 			m_wndTaskbarNotifier = new CMuleTrayIcon();
 			wxASSERT(m_wndTaskbarNotifier->IsOk());			
-			// this will effectively show the Tray Icon.
-			ShowTransferRate();
+			// This will effectively show the Tray Icon.
+			UpdateTrayIcon(0);
 		}	
 		
 	#endif
