@@ -592,7 +592,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 						if ((!newtag->tag.specialtag) &&
 						(newtag->tag.tagname[0] == FT_GAPSTART ||
 						newtag->tag.tagname[0] == FT_GAPEND)) {
-							Gap_Struct* gap;
+							Gap_Struct* gap = NULL;
 							uint16 gapkey = atoi(&newtag->tag.tagname[1]);
 
 							if ( gap_map.find( gapkey ) == gap_map.end() ) {
@@ -600,6 +600,8 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 								gap_map[gapkey] = gap;
 								gap->start = (uint32)-1;
 								gap->end = (uint32)-1;
+							} else {
+								gap = gap_map[ gapkey ];
 							}
 							if (newtag->tag.tagname[0] == FT_GAPSTART) {
 								gap->start = newtag->tag.intvalue;
@@ -3528,8 +3530,8 @@ void CPartFile::FlushBuffer(void)
 
 void CPartFile::GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled)
 {
-	Gap_Struct *gap;
-	Gap_Struct *best;
+	Gap_Struct *gap = NULL;
+	Gap_Struct *best = NULL;
 	POSITION pos;
 	uint32 start = 0;
 	uint32 bestEnd = 0;
