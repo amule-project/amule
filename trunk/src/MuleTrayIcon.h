@@ -22,12 +22,11 @@
 #define MULETRAYICON_H
 
 #include <wx/defs.h>	// Needed before any other wx/*.h
-#warning remove this when new tray ready.
-/*
-#if wxCHECK_VERSION(2, 5, 3)
- #define USE_WX_TRAY 1
+
+#if !wxCHECK_VERSION(2, 5, 3)
+ #define USE_WX_TRAY 0
 #endif
-*/
+
 
 #ifdef USE_WX_TRAY 
 
