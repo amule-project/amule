@@ -79,13 +79,20 @@ public:
 	
 
 	off_t Read(wxString& v) {
-		uint16 len;
+		uint16 len = 0;
 		off_t off = Read(len);
-		char buffer[len+1];
-		off += ReadRaw(buffer, len);
-		v = char2unicode(buffer);
-		v.UngetWriteBuf(len);
-		if (off != (len + 2)) {
+		if ( off == sizeof(len) ) {
+			char buffer[len+1];
+			off += ReadRaw(buffer, len);
+
+			if ( sizeof(len) + len == off ) {
+				buffer[len] = 0; // We want to be sure that the string is terminated
+				v = char2unicode(buffer);
+	//			v.UngetWriteBuf(len);
+			}
+		}
+			
+		if (off != (len + sizeof(len))) {
 			throw CInvalidPacket("short packet reading string");
 		}
 		return off;
