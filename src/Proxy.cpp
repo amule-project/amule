@@ -34,7 +34,7 @@
 #include <typeinfo>		/* For bad_cast			*/
 #include <cctype>		/* For isspace() and isgraph()	*/
 
-#include <netinet/in.h>		/* for htons()			*/
+#include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 
 #include "Logger.h"		/* for AddDebugLogLineM		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/

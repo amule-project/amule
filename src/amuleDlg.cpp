@@ -94,7 +94,9 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 
+#ifndef __WXMSW__
 #include "aMule.xpm"
+#endif
 
 using namespace otherfunctions;
 

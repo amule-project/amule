@@ -298,7 +298,7 @@ int GetMaxConnections() {
 	int os = wxGetOsVersion();
 		
 	// Try to get the max connection value in the registry
-	wxRegKey key( "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections" );
+	wxRegKey key( wxT("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections") );
 	
 	wxString value;
 	if ( key.Exists() )
