@@ -86,30 +86,34 @@ CClientUDPSocket::~CClientUDPSocket()
 
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
-	if (thePrefs::IsUDPDisabled()) {
-		ReceiveAndDiscard();
-	}
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
-	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
-	uint32 length = LastCount();
-
-	if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<uint32>(-1)) {
-		ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
-	}
-}
-
-void CClientUDPSocket::ReceiveAndDiscard() {
+	uint32 length = DoReceive(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
 	
-	char buffer[CLIENT_UDP_BUFFER_SIZE];
-	amuleIPV4Address addr;
-	RecvFrom(addr,buffer,CLIENT_UDP_BUFFER_SIZE);	
-	// And then discard.
-
-	if (thePrefs::IsUDPDisabled()) {
+	if (!thePrefs::IsUDPDisabled()) {
+		if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<uint32>(-1)) {
+			ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
+		}
+	} else {
 		Close();
 	}
 }
+
+int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
+	RecvFrom(addr,buffer,max_size);
+	int length = LastCount();
+	#ifndef AMULE_DAEMON
+	// Daemon doesn't need this because it's a thread, checking every X time.
+	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
+		// Evil trick to retry later.
+		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(this);
+		theApp.AddPendingEvent(input_event);
+	}
+	#endif
+	return length;
+};
 
 bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {

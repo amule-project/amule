@@ -71,7 +71,7 @@ public:
 	void	OnHostnameResolved(uint32 ip);
 
 	virtual void OnReceive(int nErrorCode);
- 	void	ReceiveAndDiscard();
+ 	int DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
 
 private:
 

@@ -27,6 +27,7 @@
 #endif
 
 #include <exception>
+#include <list>
 
 #include <wx/string.h>
 
@@ -208,6 +209,8 @@ protected:
 	  unsigned char*		m_pData;
 	};
 };
+
+typedef std::list<CTag*> TagPtrList;
 
 ///////////////////////////////////////////////////////////////////////////////
 // CTag and tag string helpers

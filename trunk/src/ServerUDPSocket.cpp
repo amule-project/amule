@@ -69,7 +69,7 @@ CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 	}
 	Run();
 #else
-	SetEventHandler(theApp, UDPSOCKET_HANDLER);
+	SetEventHandler(theApp, SERVERUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG);
 	Notify(true);
 #endif
@@ -94,9 +94,7 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 	uint8 buffer[SERVER_UDP_BUFFER_SIZE];
 
 	amuleIPV4Address addr;
-	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
-	int length = LastCount();
-	
+	int length = DoReceive(addr,(char*)buffer,SERVER_UDP_BUFFER_SIZE);
 	if (length > 2) { 
 		// 2 bytes (protocol and opcode) must be there. This 'if' also takes care
 		// of len == -1 (read error on udp socket)
@@ -121,12 +119,20 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 }
 
 
-void CServerUDPSocket::ReceiveAndDiscard() {
-	uint32  buffer[SERVER_UDP_BUFFER_SIZE];
-	
-	amuleIPV4Address addr;
-	RecvFrom(addr,buffer,SERVER_UDP_BUFFER_SIZE);
-	// And just discard it :)	
+int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
+	RecvFrom(addr,buffer,max_size);
+	int length = LastCount();
+	#ifndef AMULE_DAEMON
+	// Daemon doesn't need this because it's a thread, checking every X time.
+	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
+		// Evil trick to retry later.
+		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(this);
+		theApp.AddPendingEvent(input_event);
+	}
+	#endif
+	return length;
 };
 
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){

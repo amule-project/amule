@@ -96,7 +96,7 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 			socket->OnConnect(socket->Error() ? socket->LastError() : 0);
 			break;
 		default:
-			// connection requests should not arrive here..
+			// Nothing should arrive here...
 			wxASSERT(0);
 			break;
 	}

@@ -63,7 +63,7 @@ protected:
 public:
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
-	void 	ReceiveAndDiscard();
+	int DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
 	
 private:
 	void	ClearQueues();	

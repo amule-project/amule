@@ -71,7 +71,7 @@ public:
 	bool	SendPacket(CPacket* packet,bool delpacket = true, CServerSocket* to = 0);
 
 	// Creteil Begin
-	bool	IsUDPSocketAvailable() const { return udpsocket != NULL; }
+	bool	IsUDPSocketAvailable() const { return serverudpsocket != NULL; }
 	// Creteil End
 
 	bool	SendUDPPacket(CPacket* packet,CServer* host, bool delpacket = false );
@@ -100,7 +100,7 @@ private:
 	uint32	lastStartAt;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
-	CServerUDPSocket*	udpsocket;
+	CServerUDPSocket*	serverudpsocket;
 	
 	// list of currently opened sockets
 	CTypedPtrList<CPtrList, CServerSocket*>	m_lstOpenSockets;
