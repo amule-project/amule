@@ -1,3 +1,4 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
@@ -1620,7 +1621,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 												
 				if (m_client->GetRequestFile() && !m_client->GetRequestFile()->IsStopped() && (m_client->GetRequestFile()->GetStatus()==PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 					m_client->ProcessBlockPacket(packet,size,true);
-					if (m_client && m_client->GetRequestFile()->IsStopped() || m_client->GetRequestFile()->GetStatus()==PS_PAUSED || m_client->GetRequestFile()->GetStatus()==PS_ERROR) {
+					if (m_client && (
+						m_client->GetRequestFile()->IsStopped() ||
+						m_client->GetRequestFile()->GetStatus() == PS_PAUSED ||
+						m_client->GetRequestFile()->GetStatus() == PS_ERROR)) {
 						if (!m_client->GetSentCancelTransfer()) {
 							#ifdef __USE_DEBUG__
 							if (thePrefs.GetDebugClientTCPLevel() > 0) {
