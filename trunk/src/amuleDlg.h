@@ -80,7 +80,7 @@ public:
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
 	
 	// Barry - To find out if app is running or shutting/shut down
-	bool IsRunning();
+	const bool IsRunning() { if (this!=0x0) { return (m_app_state == APP_STATE_RUNNING); } else return false;}
 
 	/* Returns the ID of the active dialog. Needed to check what to redraw. */
 	int GetActiveDialog()	{return m_nActiveDialog;}
