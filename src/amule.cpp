@@ -1824,13 +1824,13 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	applog->Flush();
 
 	if (enable_stdout_log) {
-		const Unicode2CharBuf date_str_buf = unicode2char(curr_date);
+		Unicode2CharBuf date_str_buf = unicode2char(curr_date);
 		const char *date_str = (const char *)date_str_buf;
 		// conversion may fail, so must check date_str
 		if (date_str) {
 			fputs(date_str, stdout);
 		}
-		const Unicode2CharBuf c_msg_buf = unicode2char(msg);
+		Unicode2CharBuf c_msg_buf = unicode2char(msg);
 		const char *c_msg = (const char *)c_msg_buf;
 		// conversion may fail, so must check c_msg
 		if (c_msg) {
