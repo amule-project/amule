@@ -178,7 +178,7 @@ void CClientCreditsList::LoadList()
 	
 		uint8 version;
 		file.Read(&version, 1);
-		if (version != CREDITFILE_VERSION && version != CREDITFILE_VERSION_29){
+		if ( version != CREDITFILE_VERSION ){
 			AddLogLineM(false, _("Creditfile is out of date and will be replaced"));
 			file.Close();
 			return;
