@@ -1290,7 +1290,7 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s") )
 			% file % line % cond % ( msg ? msg : wxT("") );
 
-		printf("%s", unicode2char( errmsg ));
+		printf("%s\n", unicode2char( errmsg ));
 		
 		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );
