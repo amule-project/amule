@@ -213,8 +213,10 @@ void CHTTPDownloadThread::OnExit()
 #ifndef AMULE_DAEMON 
 int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) 
 {	
+	wxMutexGuiEnter();
 //	printf("CB: %f %f - %i %i\n",dltotal, dlnow, int(dltotal),int(dlnow));
 	((CHTTPDownloadThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));
+	wxMutexGuiLeave();
 	return 0;
 }
 #endif
