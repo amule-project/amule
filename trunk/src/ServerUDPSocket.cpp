@@ -129,7 +129,7 @@ int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
 		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
 		input_event.SetEventObject(this);
-		theApp.AddPendingEvent(input_event);
+		//theApp.AddPendingEvent(input_event);
 	}
 	#endif
 	return length;
