@@ -491,14 +491,7 @@ void CamuleDlg::ResetLog(uint8 whichone)
 		case 1: {
 			ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 			// Delete log file aswell.
-			wxString logname(theApp.ConfigDir + wxT("logfile"));
-			wxRemoveFile(logname);
-			wxTextFile file(logname);
-			if (!file.Create()) {
-				printf("Error creating log file!\n");
-				return;
-			}
-			file.Close();
+			theApp.GetLog(true);
 			break;
 		}
 		case 2:
@@ -628,7 +621,6 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 				break;
 		}
 		m_wndToolbar->Realize();
-		theApp.OnlineSig();
 		ShowUserCount(0, 0);
 	} else if (connected) {
 		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
