@@ -92,14 +92,14 @@ public:
 	 * Please note that this function ALSO removes the server from the actual
 	 * server list, not just from the displayed one!
 	 */
-	void	RemoveServer( const CServer* server );
+	void	RemoveServer( const CServer* server, bool ask_static = false);
 	
 	/**
 	 * Removes all servers with the specified state. 
 	 *
 	 * @param state All items with this state will be removed, default being all.
 	 */
-	void	RemoveAllServers( int state = wxLIST_STATE_DONTCARE );
+	void	RemoveAllServers( int state = wxLIST_STATE_DONTCARE, bool ask_static = false );
 	
 	
 	/**
