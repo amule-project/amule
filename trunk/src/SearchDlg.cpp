@@ -319,7 +319,7 @@ void CSearchDlg::ResetControls()
 	m_progressbar->SetValue(0);
 	
 	FindWindow(IDC_CANCELS)->Disable();
-	FindWindow(IDC_STARTS)->Enable();
+	FindWindow(IDC_STARTS)->Enable(!CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue().IsEmpty());
 }
 
 
@@ -457,7 +457,7 @@ void CSearchDlg::StartNewSearch()
 		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);
 		dlg->ShowModal();
 		delete dlg;
-		FindWindow(IDC_STARTS)->Enable();
+		FindWindow(IDC_STARTS)->Enable(!CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue().IsEmpty());
 		FindWindow(IDC_SDOWNLOAD)->Enable();
 		FindWindow(IDC_CANCELS)->Disable();
 		return;
