@@ -100,7 +100,7 @@ msgstr "o mati el teu gos. Però *hauria* de poder-se usar igualment. \n"
 
 #: src/amule.cpp:1308
 msgid "This version has new SecureIdent support, so your \n"
-msgstr "Aquest versió té un nou suport de SecureIdent, per això"
+msgstr "Aquest versió té un nou suport de SecureIdent, per això \n"
 
 #: src/amule.cpp:1309
 msgid "client credits will be lost on this first run. \n"
@@ -142,7 +142,7 @@ msgstr ""
 msgid ""
 "You locale has been changed to System Default due to version change. Sorry."
 msgstr ""
-"El teu locale ha sigut canviat a Prestabler a causa del canvi de versió. Perdó.!
+"El teu locale ha sigut canviat a Prestabler a causa del canvi de versió. Perdó.!"
 
 #: src/amule.cpp:1320
 msgid "Feel free to report any bugs to forum.amule.org"
