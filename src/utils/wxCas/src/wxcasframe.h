@@ -67,6 +67,8 @@ protected:
 private:
     wxTimer * m_timer;
 
+	int MaxLineCount;
+
   wxToolBar *m_toolbar;
   wxBitmap *m_toolBarBitmaps[5];
 

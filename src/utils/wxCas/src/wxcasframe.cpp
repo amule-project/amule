@@ -66,10 +66,8 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Give it an icon
   SetIcon (wxICON (wxcas));
 
-  // Add time
-  m_timer = new wxTimer (this, ID_TIMER);
-  m_timer->Start (5000);
-
+ MaxLineCount = 0;
+	
   // Status Bar
   CreateStatusBar ();
   SetStatusText (_("Welcome!"));
@@ -161,6 +159,11 @@ wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
   // Frame Layout
   SetAutoLayout (TRUE);
   SetSizerAndFit (m_frameVBox);
+  
+  // Add time
+  m_timer = new wxTimer (this, ID_TIMER);
+  m_timer->Start (5000);
+  
 }
 
 // Destructor
@@ -246,49 +249,97 @@ WxCasFrame::SetFromDefaultAmuleFile ()
 
 	Freeze();
 	
-  m_statLine_1->SetLabel ("aMule " +
-			  aMuleSig.GetVersion () +
-			  _(" has been running for ") +
-			  aMuleSig.GetRunTime ());
+	int NewMaxLineCount = 0;
+	wxString newline;
+	
+	newline = "aMule ";
+	newline += aMuleSig.GetVersion ();
+	newline += _(" has been running for ");
+	newline += aMuleSig.GetRunTime ();
+  
+	m_statLine_1->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
 
-  m_statLine_2->SetLabel (aMuleSig.GetUser () +
-			  _(" is on ") +
-			  aMuleSig.GetServerName () +
-			  " [" + aMuleSig.GetServerIP () +
-			  _("] with ") + aMuleSig.GetConnexionIDType ());
+  	newline = aMuleSig.GetUser();
+	newline +=  _(" is on ");
+	newline +=  aMuleSig.GetServerName();
+	newline +=  " [" ;
+	newline += aMuleSig.GetServerIP();
+	newline += ":";
+	newline += aMuleSig.GetServerPort();
+	newline +=  _("] with ");
+	newline +=	aMuleSig.GetConnexionIDType();;
 
-  m_statLine_3->SetLabel (_("Total Download: ") +
-			  aMuleSig.GetConvertedTotalDL () +
-			  _(", Upload: ") + aMuleSig.GetConvertedTotalUL ());
+	m_statLine_2->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
+	
+	newline =  _("Total Download: ");
+	newline +=  aMuleSig.GetConvertedTotalDL();
+	newline +=  _(", Upload: ");
+	newline += aMuleSig.GetConvertedTotalUL ();
+	
+	m_statLine_3->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
 
-  m_statLine_4->SetLabel (_("Session Download: ") +
-			  aMuleSig.
-			  GetConvertedSessionDL () +
-			  _(", Upload: ") +
-			  aMuleSig.GetConvertedSessionUL ());
+	newline = _("Session Download: ");
+	newline +=  aMuleSig.GetConvertedSessionDL();
+	newline +=  _(", Upload: ");
+	newline += aMuleSig.GetConvertedSessionUL ();
+	
+	m_statLine_4->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
 
-  m_statLine_5->SetLabel (_("Download: ") +
-			  aMuleSig.GetDLRate () +
-			  _(" kB/s, Upload: ") +
-			  aMuleSig.GetULRate () + _("kB/s"));
+	newline = _("Download: ");
+	newline += aMuleSig.GetDLRate();
+	newline += _(" kB/s, Upload: ");
+	newline += aMuleSig.GetULRate();
+	newline += _("kB/s");
+	
+	m_statLine_5->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
 
-  m_statLine_6->SetLabel (_("Sharing: ") +
-			  aMuleSig.GetSharedFiles () +
-			  _(" file(s), Clients on queue: ")
-			  + aMuleSig.GetQueue ());
-
+	newline =_("Sharing: ");
+	newline += aMuleSig.GetSharedFiles();
+	newline += _(" file(s), Clients on queue: ");
+	newline += aMuleSig.GetQueue ();
+	
+	m_statLine_6->SetLabel (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
+	
   // Set status bar
   if (aMuleSig.IsRunning ())
     {
-      SetStatusText (_("aMule is running"));
+	    newline =_("aMule is running");
     }
   else
     {
-      SetStatusText (_("WARNING: aMule is NOT running"));
+     	newline = _("WARNING: aMule is NOT running");
     }
-
+	SetStatusText (newline);
+	if (newline.Length() > NewMaxLineCount ) {
+		NewMaxLineCount = newline.Length();
+	}
+    
 	Thaw();
-  // Fit to new lable size
-  Layout ();
-  Fit ();
+    
+    if (MaxLineCount != NewMaxLineCount) {
+  		// Fit to new lable size
+  		Layout ();
+  		Fit ();
+	    MaxLineCount = NewMaxLineCount;
+    }
+    
+    
 }
