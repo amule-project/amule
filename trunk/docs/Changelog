@@ -54,8 +54,9 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
 
 	falso:
-		* Added cas (C aMule Statistics), a remake of aStats but like
-		10 times faster
+		* Added cas (C aMule Statistics), a remake of aStats but 10 times faster (still lack online sign).
+		* amulesign.dat now shows the Total transfered values in bytes.
+		* Added Session upload and download to amulesign and uptime too.
 
 	 Ariel:
 		* Implemented completed parts count on file rehash.
