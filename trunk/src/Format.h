@@ -33,6 +33,14 @@
 #include <limits>
 
 
+#ifdef __GNUC__
+    #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#else
+    /* Assume that other compilers don't have this bug */
+    #define GCC_VERSION	99999
+#endif
+
+
 /**
  * This class offers a typesafe alternative to wxString::Format.
  *
@@ -113,7 +121,11 @@ public:
 	/**
 	 * Implicit conversion to wxString.
 	 */
+#if GCC_VERSION > 30202
 	operator const wxString&() const;
+#else
+	operator const wxString() const;
+#endif
 	 
 private:
 	/**
