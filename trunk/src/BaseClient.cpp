@@ -553,13 +553,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	if (credits == NULL){
 		credits = pFoundCredits;
 		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
-			AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), GetUserName().c_str(), GetFullIP().c_str())); 
+			AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed (Found in TrackedClientsList)"), GetUserName().c_str(), GetFullIP().c_str())); 
 			Ban();
 		}	
 	} else if (credits != pFoundCredits){
 		// userhash change ok, however two hours "waittime" before it can be used
 		credits = pFoundCredits;
-		AddDebugLogLineM(false, wxString::Format(wxT("Clients: %s (%s), Banreason: Userhash changed"), GetUserName().c_str(), GetFullIP().c_str())); 
+		AddDebugLogLineM(false, wxString::Format(_("Clients: %s (%s), Banreason: Userhash changed"), GetUserName().c_str(), GetFullIP().c_str())); 
 		Ban();
 	}
 
@@ -1032,7 +1032,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
-		AddDebugLogLineM(false,wxT("Rating for file '") + ClientFilename + wxString::Format(wxT("' received: %i"),m_iRate));
+		AddDebugLogLineM(false,_("Rating for file '") + ClientFilename + wxString::Format(_("' received: %i"),m_iRate));
 		
 		uint32 length = data.ReadUInt32();	
 
@@ -1055,7 +1055,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 			m_strComment = char2unicode(desc);			
 			
-			AddDebugLogLineM(false, wxT("Description for file '") + ClientFilename + wxT("' received: ") + m_strComment);
+			AddDebugLogLineM(false, _("Description for file '") + ClientFilename + _("' received: ") + m_strComment);
 			
 			m_reqfile->SetHasComment(true);
 		}
@@ -1431,17 +1431,17 @@ void CUpDownClient::ReGetClientSoft()
 		switch(m_byCompatibleClient){
 			case SO_CDONKEY:
 				m_clientSoft = SO_CDONKEY;
-				m_clientVerString = _("cDonkey");
+				m_clientVerString = wxT("cDonkey");
 				break;
 			case SO_LXMULE:
 				m_clientSoft = SO_LXMULE;
 				if(GetClientModString().IsEmpty() == false) {
 					m_clientVerString = GetClientModString();
 				} else {
-					m_clientVerString = _("xMule");
+					m_clientVerString = wxT("xMule");
 				}
 				if (GetMuleVersion() > 0x26) {
-					m_clientVerString += wxString::Format(wxT(" (Fake eMule version %x)"),GetMuleVersion());
+					m_clientVerString += wxString::Format(_(" (Fake eMule version %x)"),GetMuleVersion());
 				}
 				break;
 			case SO_AMULE:
@@ -1450,12 +1450,12 @@ void CUpDownClient::ReGetClientSoft()
 					Extended_aMule_SO &= 2;
 					m_clientVerString = GetClientModString();
 				} else {
-					m_clientVerString = _("aMule");
+					m_clientVerString = wxT("aMule");
 				}
 				break;
 			case SO_SHAREAZA:
 				m_clientSoft = SO_SHAREAZA;
-				m_clientVerString = _("Shareaza");
+				m_clientVerString = wxT("Shareaza");
 				break;
 			case SO_MLDONKEY:
 				m_clientSoft = SO_MLDONKEY;
@@ -1468,31 +1468,31 @@ void CUpDownClient::ReGetClientSoft()
 				break;		
 			case SO_LPHANT:
 				m_clientSoft = SO_LPHANT;
-				m_clientVerString = _("lphant");
+				m_clientVerString = wxT("lphant");
 				break;					
 			default:
 				if (m_bIsML){
 					m_clientSoft = SO_MLDONKEY;
-					m_clientVerString = _("MLdonkey");
+					m_clientVerString = wxT("MLdonkey");
 				}
 				else if (m_bIsHybrid){
 					m_clientSoft = SO_EDONKEYHYBRID;
-					m_clientVerString = _("eDonkeyHybrid");
+					m_clientVerString = wxT("eDonkeyHybrid");
 				}
 				else if (m_byCompatibleClient != 0){
 					m_clientSoft = SO_COMPAT_UNK;
 					#ifdef __DEBUG__
 					printf("Compatible client found with ET_COMPATIBLECLIENT of 0x%x\n",m_byCompatibleClient);
 					#endif
-					m_clientVerString = wxString::Format(wxT("eMule Compat(0x%x)"),m_byCompatibleClient);
+					m_clientVerString = wxString::Format(_("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
 				else if (wxString(GetClientModString()).MakeLower().Find(wxT("xmule"))!=-1 || GetUserName().Find(wxT("xmule."))!=-1) {
 					// FAKE eMule -a newer xMule faking is ident.
 					m_clientSoft = SO_LXMULE;
 					if (GetClientModString().IsEmpty() == false) {
-						m_clientVerString = GetClientModString() + wxT(" (Fake eMule)");
+						m_clientVerString = GetClientModString() + _(" (Fake eMule)");
 					} else {
-						m_clientVerString = wxT("xMule (Fake eMule)");
+						m_clientVerString = _("xMule (Fake eMule)");
 					}
 				} else {
 					// If we step here, it might mean 2 things:
@@ -1513,7 +1513,7 @@ void CUpDownClient::ReGetClientSoft()
 			switch (m_clientSoft) {
 				case SO_AMULE:
 					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now					
-					m_clientVerString += wxString::Format(wxT(" (based on eMule v0.%u)"), nClientMinVersion);
+					m_clientVerString += wxString::Format(_(" (based on eMule v0.%u)"), nClientMinVersion);
 					break;
 				case SO_LPHANT:
 					m_clientVerString += wxT(" < v0.05 ");
@@ -1622,7 +1622,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = SO_OLDEMULE;
 		UINT nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-		m_clientVerString = wxT("Old eMule");
+		m_clientVerString = _("Old eMule");
 		m_SoftLen = m_clientVerString.Length();
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);		
 		return;
@@ -1682,7 +1682,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
 		wxString stat;
-		stat.Printf(wxT("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
+		stat.Printf(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")+wxString(_("Filestats for all sessions: Accepted %d of %d requests")),
 		m_reqfile->statistic.GetAccepts(), m_reqfile->statistic.GetRequests(), CastItoXBytes(m_reqfile->statistic.GetTransfered()).GetData(),
 		m_reqfile->statistic.GetAllTimeAccepts(),
 		m_reqfile->statistic.GetAllTimeRequests(), CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered()).GetData() );
@@ -1746,7 +1746,7 @@ void CUpDownClient::SendSignaturePacket(){
 		///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "sending signature key to '%s'", GetUserName()));
 	// do we have a challenge value recieved (actually we should if we are in this function)
 	if (credits->m_dwCryptRndChallengeFrom == 0){
-		AddDebugLogLineM(false, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
+		AddDebugLogLineM(false, wxString(_("Want to send signature but challenge value is invalid - User ")) + GetUserName());
 		return;
 	}
 	// v2
@@ -1817,11 +1817,11 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 		}
 		else if(m_SecureIdentState == IS_KEYANDSIGNEEDED){
 			// something is wrong
-			AddDebugLogLineM(false, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
+			AddDebugLogLineM(false, _("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket"));
 		}
 	}
 	else{
-		AddDebugLogLineM(false, wxT("Failed to use new recieved public key"));
+		AddDebugLogLineM(false, _("Failed to use new recieved public key"));
 	}
 }
 
@@ -1849,17 +1849,17 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 	
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
 	if (m_dwLastSignatureIP == GetIP()){
-		AddDebugLogLineM(false, wxT("recieved multiple signatures from one client"));
+		AddDebugLogLineM(false, _("recieved multiple signatures from one client"));
 		return;
 	}
 	// also make sure this client has a public key
 	if (credits->GetSecIDKeyLen() == 0){
-		AddDebugLogLineM(false, wxT("recieved signature for client without public key"));
+		AddDebugLogLineM(false, _("recieved signature for client without public key"));
 		return;
 	}
 	// and one more check: did we ask for a signature and sent a challange packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
-		AddDebugLogLineM(false, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName());
+		AddDebugLogLineM(false, _("recieved signature for client with invalid challenge value - User ") + GetUserName());
 		return;
 	}
 
@@ -1885,7 +1885,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 			}
 		}
 		if (nValue == 0){
-			AddDebugLogLineM(false, wxT("Not sending SecIdentState Packet, because State is Zero"));
+			AddDebugLogLineM(false, _("Not sending SecIdentState Packet, because State is Zero"));
 			return;
 		}
 		// crypt: send random data to sign
@@ -1974,7 +1974,7 @@ bool CUpDownClient::CheckHandshakeFinished(UINT WXUNUSED(protocol), UINT WXUNUSE
 		//	throw CString(wxT("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
 		if (theApp.glob_prefs->GetVerbose()) {
-			AddLogLineM(false, wxT("Handshake not finished while processing packet."));
+			AddLogLineM(false, _("Handshake not finished while processing packet."));
 		}
 		return false;
 	}
@@ -2177,15 +2177,15 @@ wxString CUpDownClient::GetClientFullInfo() {
 	}
 	
 	wxString FullVerName;
-	FullVerName = wxT("Client ");
+	FullVerName = _("Client ");
 	if (m_Username.IsEmpty()) {
-		FullVerName += wxT("(Unknown)");
+		FullVerName += _("(Unknown)");
 	} else {
 		FullVerName += m_Username;
 	}
-	FullVerName += wxT(" on IP ") + GetFullIP() + wxString::Format(wxT(" port %u using "),GetUserPort()) + m_clientVerString;
+	FullVerName += _(" on IP ") + GetFullIP() + wxString::Format(_(" port %u using "),GetUserPort()) + m_clientVerString;
 	if (!GetClientModString().IsEmpty()) {		
-		FullVerName += wxString(wxT(" Mod ")) + GetClientModString();
+		FullVerName += wxString(_(" Mod ")) + GetClientModString();
 	}
 	return (FullVerName);
 }
