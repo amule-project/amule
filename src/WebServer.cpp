@@ -75,6 +75,15 @@ WX_DEFINE_OBJARRAY(ArrayOfTransferredData);
 #define WEB_SERVER_TEMPLATES_VERSION	4
 
 
+#if wxUSE_UNICODE
+	#define	WEBCHARSET	wxT("UTF-8")
+#else
+	// Western (Latin) includes Catalan, Danish, Dutch, English, Faeroese, Finnish, French,
+	// German, Galician, Irish, Icelandic, Italian, Norwegian, Portuguese, Spanish and Swedish
+	#define	WEBCHARSET	wxT("ISO-8859-1")
+#endif
+
+
 using namespace otherfunctions;
 
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
@@ -649,7 +658,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
 	wxString Out = m_Templates.sHeader;
 
-	Out.Replace(wxT("[CharSet]"), _GetWebCharSet());
+	Out.Replace(wxT("[CharSet]"), WEBCHARSET);
 
 	if (m_nRefresh) {
 		wxString sPage = _ParseURL(Data, wxT("w"));
@@ -1783,7 +1792,7 @@ wxString CWebServer::_GetLoginScreen(ThreadData Data) {
 
 	Out += m_Templates.sLogin;
 
-	Out.Replace(wxT("[CharSet]"), _GetWebCharSet());
+	Out.Replace(wxT("[CharSet]"), WEBCHARSET);
 	Out.Replace(wxT("[aMulePlus]"), wxT("aMule"));
 	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
 	Out.Replace(wxT("[version]"), wxT(VERSION)); //shakraw - was CURRENT_VERSION_LONG);
@@ -1972,31 +1981,6 @@ bool CWebServer::_GetFileHash(wxString sHash, uchar *FileHash) {
 		FileHash[i] = (uchar)byte;
 	}
 	return true;
-}
-
-
-// EC + kuchin
-wxString CWebServer::_GetWebCharSet() {
-#if 0
-	switch (theApp.glob_prefs->GetLanguageID()) {
-		case MAKELANGID(LANG_POLISH,SUBLANG_DEFAULT):			return "windows-1250";
-		case MAKELANGID(LANG_RUSSIAN,SUBLANG_DEFAULT):			return "windows-1251";
-		case MAKELANGID(LANG_GREEK,SUBLANG_DEFAULT):			return "ISO-8859-7";
-		case MAKELANGID(LANG_HEBREW,SUBLANG_DEFAULT):			return "ISO-8859-8";
-		case MAKELANGID(LANG_KOREAN,SUBLANG_DEFAULT):			return "EUC-KR";
-		case MAKELANGID(LANG_CHINESE,SUBLANG_CHINESE_SIMPLIFIED):	return "GB2312";
-		case MAKELANGID(LANG_CHINESE,SUBLANG_CHINESE_TRADITIONAL):	return "Big5";
-		case MAKELANGID(LANG_LITHUANIAN,SUBLANG_DEFAULT):		return "windows-1257";
-		case MAKELANGID(LANG_TURKISH,SUBLANG_DEFAULT):			return "windows-1254";
-	}
-#endif
-#if wxUSE_UNICODE
-	return wxT("UTF-8");
-#else
-	// Western (Latin) includes Catalan, Danish, Dutch, English, Faeroese, Finnish, French,
-	// German, Galician, Irish, Icelandic, Italian, Norwegian, Portuguese, Spanish and Swedish
-	return wxT("ISO-8859-1");
-#endif
 }
 
 

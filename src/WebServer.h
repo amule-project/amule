@@ -760,7 +760,6 @@ class CWebServer {
 		wxString	_GetPlainResString(UINT nID, bool noquote = false);
 		int	_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
 		void	_SetSharedFilePriority(wxString hash, uint8 priority);
-		wxString	_GetWebCharSet();
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
 		Session	GetSessionByID(ThreadData Data,long sessionID);
 		bool	IsSessionAdmin(ThreadData Data,wxString SsessionID);
