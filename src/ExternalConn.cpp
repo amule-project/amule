@@ -154,8 +154,9 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 	wxSocketBase *sock = event.GetSocket();
-	CECPacket * request;
-	CECPacket * response;
+	CECPacket * request = NULL;
+	CECPacket * response = NULL;
+
 	// Now we process the event
 	switch(event.GetSocketEvent()) {
 	case wxSOCKET_INPUT: {
@@ -165,24 +166,24 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		request = m_ECServer->ReadPacket(sock);		
 		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
-			delete request;
+			delete request;	request = NULL;
 			m_ECServer->WritePacket(sock, response);
 			if (response->GetOpCode() != EC_OP_AUTH_OK) {
 				// Access denied!
 				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-				delete response;
+				delete response; response = NULL;
 				sock->Destroy();
 				return;
 			} else {
 				// Authenticated => change socket handler
-				delete response;
+				delete response; response = NULL;
 				sock->SetEventHandler(*this, SOCKET_ID);
 			}
 		} else {
 			response = ProcessRequest2(request);
-			delete request;
+			delete request; request = NULL;
 			m_ECServer->WritePacket(sock, response);
-			delete response;
+			delete response; response = NULL;
 		}		
 		// Re-Enable input events again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG | wxSOCKET_INPUT_FLAG);
@@ -216,66 +217,68 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 //
 CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 {
-    CECPacket *response;
+	CECPacket *response;
 
-    if (request == NULL) {
-	response = new CECPacket(EC_OP_AUTH_FAIL);
-	return response;
-    }
-
-    if (request->GetOpCode() == EC_OP_AUTH_REQ) {
-	CECTag *cname = request->GetTagByName(EC_TAG_CLIENT_NAME);
-	const char *client = (cname == NULL) ? NULL : (const char *)cname->GetTagData();	// Extracting the UTF-8 string data
-	printf("Connecting client: %s - ", client);
-	CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
-	CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
-	if (protocol != NULL) {
-	    if (*((uint16 *)protocol->GetTagData()) == 0x0200) {
-		if (passwd == NULL) {
-		    if (theApp.glob_prefs->ECPassword().IsEmpty()) {
-			response = new CECPacket(EC_OP_AUTH_OK);
-		    } else {
-			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
-		    }
-		} else if (passwd->GetTagString() == theApp.glob_prefs->ECPassword()) {
-		    response = new CECPacket(EC_OP_AUTH_OK);
-		} else {
-		    response = new CECPacket(EC_OP_AUTH_FAIL);
-		    response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
-		}
-
-	    } else {
+	if (request == NULL) {
 		response = new CECPacket(EC_OP_AUTH_FAIL);
-		response->AddTag(CECTag(EC_TAG_STRING, _("Invalid protocol version.")));
-	    }
-	} else {
-	    response = new CECPacket(EC_OP_AUTH_FAIL);
-	    response->AddTag(CECTag(EC_TAG_STRING, _("Missing protocol version tag.")));
+		return response;
 	}
-    } else {
-	response = new CECPacket(EC_OP_AUTH_FAIL);
-	response->AddTag(CECTag(EC_TAG_STRING, _("Invalid request, you should first authenticate.")));
-    }
 
-    if (response->GetOpCode() == EC_OP_AUTH_OK) printf("Access granted.\n");
-    else printf("%s\n", (const char *)response->GetTagByIndex(0)->GetTagData());
+	if (request->GetOpCode() == EC_OP_AUTH_REQ) {
+		CECTag *cname = request->GetTagByName(EC_TAG_CLIENT_NAME);
+		const char *client = (cname == NULL) ? NULL : (const char *)cname->GetTagData();	// Extracting the UTF-8 string data
+		printf("Connecting client: %s - ", client);
+		CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
+		CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
+		if (protocol != NULL) {
+			EC_Version_t *proto_version = (EC_Version_t *)protocol->GetTagData();
+			if (proto_version->major == 0x02 && proto_version->minor == 0x00) {
+				if (passwd == NULL) {
+					if (theApp.glob_prefs->ECPassword().IsEmpty()) {
+						response = new CECPacket(EC_OP_AUTH_OK);
+					} else {
+						response = new CECPacket(EC_OP_AUTH_FAIL);
+						response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
+					}
+				} else if (passwd->GetTagString() == theApp.glob_prefs->ECPassword()) {
+					response = new CECPacket(EC_OP_AUTH_OK);
+				} else {
+					response = new CECPacket(EC_OP_AUTH_FAIL);
+					response->AddTag(CECTag(EC_TAG_STRING, _("Authentication failed.")));
+				}
+			} else {
+				response = new CECPacket(EC_OP_AUTH_FAIL);
+				response->AddTag(CECTag(EC_TAG_STRING, _("Invalid protocol version.")));
+			}
+		} else {
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, _("Missing protocol version tag.")));
+		}
+	} else {
+		response = new CECPacket(EC_OP_AUTH_FAIL);
+		response->AddTag(CECTag(EC_TAG_STRING, _("Invalid request, you should first authenticate.")));
+	}
 
-    return response;
+	if (response->GetOpCode() == EC_OP_AUTH_OK) printf("Access granted.\n");
+	else printf("%s\n", (const char *)response->GetTagByIndex(0)->GetTagData());
+
+	return response;
 }
+
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 {
-    CECPacket *response;
+	CECPacket *response = NULL;
 
-    if (request->GetOpCode() == EC_OP_COMPAT) {
-	response = new CECPacket(EC_OP_COMPAT);
-	response->AddTag(CECTag(EC_TAG_STRING, ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
-    } else {
-	// implement new code here
-    }
-    return response;
+	if (request->GetOpCode() == EC_OP_COMPAT) {
+		response = new CECPacket(EC_OP_COMPAT);
+		response->AddTag(CECTag(EC_TAG_STRING, ProcessRequest(request->GetTagByIndex(0)->GetTagString())));
+	} else {
+		// implement new code here
+	}
+	return response;
 }
+
 
 //TODO: do a function for each command
 wxString ExternalConn::ProcessRequest(const wxString& item) {

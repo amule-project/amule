@@ -20,19 +20,45 @@
 #ifndef	ECCODES_H
 #define	ECCODES_H
 
+/*
+ * EC types
+ */
+
+typedef uint8 ec_opcode_t;
+typedef uint8 ec_tagname_t;
+typedef uint16 ec_taglen_t;
+
+/*
+ * Type to hold EC Protocol Version information
+ */
+typedef struct {
+	uint8	major;
+	uint8	minor;
+} EC_Version_t;
+
+/**
+ * bool HasTagCount(const ec_tagname_t tagName)
+ *
+ * Given a tag name, it returns whether the tag contains a
+ * TAGCOUNT field, and thus can contain child tags.
+ *
+ */
+
+inline bool HasTagCount(const ec_tagname_t tagName) { return (tagName & 0x80) ? true : false; }
+
 
 /*
  * EC opcodes
  */
 
 enum {
-    EC_OP_AUTH_REQ	= 0x0001,
-    EC_OP_AUTH_FAIL	= 0x0002,
-    EC_OP_AUTH_OK	= 0x0003,
-    EC_OP_STRINGS	= 0x0004,
-    EC_OP_MISC_DATA	= 0x0005,
+	EC_OP_AUTH_REQ	= 0x0001,
+	EC_OP_AUTH_FAIL	= 0x0002,
+	EC_OP_AUTH_OK	= 0x0003,
+	EC_OP_STRINGS	= 0x0004,
+	EC_OP_MISC_DATA	= 0x0005,
 
-    EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
+	EC_OP_COMPAT	= 0x00ff	// compatibility opcode, for testing purposes only
 					// tags: EC_TAG_STRING: v1.0 message
 };
 
@@ -42,10 +68,10 @@ enum {
  */
 
 enum {
-    EC_TAG_STRING		= 0x0001,
-    EC_TAG_PASSWD_HASH		= 0x0002,
-    EC_TAG_CLIENT_NAME		= 0x0003,
-    EC_TAG_PROTOCOL_VERSION	= 0x0004
+	EC_TAG_STRING		= 0x0001,
+	EC_TAG_PASSWD_HASH	= 0x0002,
+	EC_TAG_CLIENT_NAME	= 0x0003,
+	EC_TAG_PROTOCOL_VERSION	= 0x0004
 };
 
 #endif	/* ECCODES_H */

@@ -310,7 +310,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, CmdId *UNU
 	CECPacket packet(EC_OP_AUTH_REQ);
 	CECTag *tag = new CECTag(EC_TAG_CLIENT_NAME, ProgName);
 	packet.AddTag(*tag);
-	uint16 proto_version = 0x0200;
+	EC_Version_t proto_version = { 0x02, 0x00 };
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, 2, &proto_version));
 
 	if ( m_HasConfigFromFile ) {
