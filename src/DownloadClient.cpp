@@ -383,10 +383,12 @@ bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 void CUpDownClient::SetDownloadState(uint8 byNewState)
 {
 	if (m_nDownloadState != byNewState) {
-		if (byNewState == DS_DOWNLOADING) {
-			reqfile->AddDownloadingSource(this);
-		} else if (m_nDownloadState == DS_DOWNLOADING) {
-			reqfile->RemoveDownloadingSource(this);
+		if (reqfile) {
+			if (byNewState == DS_DOWNLOADING) {
+				reqfile->AddDownloadingSource(this);
+			} else if (m_nDownloadState == DS_DOWNLOADING) {
+				reqfile->RemoveDownloadingSource(this);
+			}
 		}
 		if (byNewState == DS_CONNECTED && m_nDownloadState != DS_CONNECTED) {
 			m_dwEnteredConnectedState = GetTickCount();
