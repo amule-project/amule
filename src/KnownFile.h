@@ -118,6 +118,7 @@ protected:
 	int8		m_iRate;
 };
 
+
 class CKnownFile : public CAbstractFile
 {
 friend class CAddFileThread;
@@ -205,7 +206,19 @@ public:
 	// aich
 	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
 	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		
-	
+
+	/**
+	 * Updates the requency of uploading parts from with the data the client provides.
+	 *
+	 * @param client The clients whoose uploading parts should be considered.
+	 * @param increment If true, the counts are incremented, otherwise they are decremented.
+	 *
+	 * This functions updates the frequency list of file-upparts, using the clients 
+	 * upparts-status. This function should be called by clients every time they update their
+	 * upparts-status, or when they are added or removed from the file.
+	 */
+	void UpdateUpPartsFrequency( CUpDownClient* client, bool increment );
+
 	void	CreateHashFromString(uchar* in_string, uint32 Length, uchar* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
 protected:
 	bool	LoadTagsFromFile(const CFile* file);

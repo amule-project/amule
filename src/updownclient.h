@@ -1,21 +1,23 @@
+//
 // This file is part of the aMule Project
 //
 // Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
 // Copyright (C) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
 //
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
 //
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 
 #ifndef UPDOWNCLIENT_H
 #define UPDOWNCLIENT_H
@@ -27,7 +29,13 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "otherfunctions.h"
+
 #include <map>
+#include <vector>
+
+
+typedef std::vector<bool> BitVector;
+
 
 class CPartFile;
 class CClientReqSocket;
@@ -327,12 +335,12 @@ public:
 	uint32		GetLastAskedTime() const	{ return m_dwLastAskedTime; }
 
 	bool		IsPartAvailable(uint16 iPart) const
-		{ return ( (iPart >= m_nPartCount) || (!m_abyPartStatus) )? 0:m_abyPartStatus[iPart]; }
+		{ return ( iPart < m_downPartStatus.size() ) ? m_downPartStatus[iPart] : 0; }
 	bool		IsUpPartAvailable(uint16 iPart) const 
-		{ return ( (iPart >= m_nUpPartCount) || (!m_abyUpPartStatus) )? 0:m_abyUpPartStatus[iPart];}
+		{ return ( iPart < m_upPartStatus.size() ) ? m_upPartStatus[iPart] : 0;}
 
-	const uint8*	GetPartStatus() const		{ return m_abyPartStatus; }
-	const uint8*	GetUpPartStatus() const		{ return m_abyUpPartStatus; }
+	const BitVector& GetPartStatus() const			{ return m_downPartStatus; }
+	const BitVector& GetUpPartStatus() const		{ return m_upPartStatus; }
 	float		GetKBpsDown() const		{ return kBpsDown; }
 	float		CalculateKBpsDown();
 	uint16		GetRemoteQueueRank() const	{ return m_nRemoteQueueRank; }
@@ -557,7 +565,10 @@ private:
 	uint16		m_nUpCompleteSourcesCount;
 
 public:
-	uint8*		m_abyUpPartStatus;
+	//! This vector contains the avilability of parts for the file that the user
+	//! is requesting. When changing it, be sure to call CKnownFile::UpdatePartsFrequency
+	//! so that the files know the actual availability of parts.
+	BitVector	m_upPartStatus;
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
 	
@@ -618,7 +629,10 @@ public:
 	// (Extended_aMule_SO & 2)  -> CVS
 	uint8		Extended_aMule_SO;
 
-	uint8*		m_abyPartStatus;
+	//! This vector contains the avilability of parts for the file we requested 
+	//! from this user. When changing it, be sure to call CPartFile::UpdatePartsFrequency
+	//! so that the files know the actual availability of parts.
+	BitVector	m_downPartStatus;
 	
 	CAICHHash*  m_pReqFileAICHHash; 
 	

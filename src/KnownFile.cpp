@@ -133,8 +133,6 @@ CKnownFile::~CKnownFile(){
 		(*it)->ResetUploadFile();
 	}
 	
-	m_AvailPartFrequency.Clear();
-	
 	delete m_pAICHHashSet;
 }
 
@@ -591,10 +589,8 @@ bool CKnownFile::LoadTagsFromFile(const CFile* file)
 				}
 				case FT_FILESIZE:{
 					SetFileSize(newtag->tag.intvalue);
-					m_AvailPartFrequency.Alloc(GetPartCount());
-					for (uint32 i = 0; i < GetPartCount();i++) {
-						m_AvailPartFrequency.Add(0);
-					}
+					m_AvailPartFrequency.Clear();
+					m_AvailPartFrequency.Add(0, GetPartCount());
 					delete newtag;
 					break;
 				}
@@ -894,11 +890,11 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			continue;
 
 		bool bNeeded = false;
-		const uint8* rcvstatus = forClient->GetUpPartStatus();
+		const BitVector& rcvstatus = forClient->GetUpPartStatus();
 
-		if ( rcvstatus ) {
-			const uint8* srcstatus = cur_src->GetUpPartStatus();
-			if ( srcstatus ) {
+		if ( !rcvstatus.empty() ) {
+			const BitVector& srcstatus = cur_src->GetUpPartStatus();
+			if ( !srcstatus.empty() ) {
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
@@ -917,8 +913,8 @@ Packet*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			// remote client does not support upload chunk status, search sources which have at least one complete part
 			// we could even sort the list of sources by available chunks to return as much sources as possible which
 			// have the most available chunks. but this could be a noticeable performance problem.
-			const uint8* srcstatus = cur_src->GetUpPartStatus();
-			if ( srcstatus ) {
+			const BitVector& srcstatus = cur_src->GetUpPartStatus();
+			if ( !srcstatus.empty() ) {
 				for (int x = 0; x < GetPartCount(); x++ ) {
 					if ( srcstatus[x] ) {
 						// this client has at least one chunk
@@ -1053,38 +1049,24 @@ void CKnownFile::UpdatePartsInfo()
 	uint16 partcount = GetPartCount();
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
 
-	// Reset Part Count and allocate it with 0es
-	
-	m_AvailPartFrequency.Clear();
-	m_AvailPartFrequency.Alloc(partcount);
-	
-	m_AvailPartFrequency.Insert(/*Item*/(uint16) 1, /*pos*/0, partcount);
+	// Ensure the frequency-list is ready
+	if ( m_AvailPartFrequency.GetCount() != GetPartCount() ) {
+		m_AvailPartFrequency.Clear();
 
-	ArrayOfUInts16 count;	
-	
-	if (flag) {
-		count.Alloc(m_ClientUploadList.size());	
+		m_AvailPartFrequency.Add( 0, GetPartCount() );
 	}
 
-	uint k_test = 0;
-	
-	for (SourceSet::iterator it = m_ClientUploadList.begin(); it != m_ClientUploadList.end(); ) {
-		k_test++;
-		CUpDownClient* cur_src = *it++;
-		//This could be a partfile that just completed.. Many of these clients will not have this information.
-		if(cur_src->m_abyUpPartStatus && cur_src->GetUpPartCount() == partcount ) {
-			for (uint16 i = 0; i < partcount; i++) {
-				if (cur_src->IsUpPartAvailable(i)) {
-					m_AvailPartFrequency[i] += 1;
-				}
-			}
-			if ( flag ) {
-				count.Add(cur_src->GetUpCompleteSourcesCount());
+	if (flag) {
+		ArrayOfUInts16 count;	
+		count.Alloc(m_ClientUploadList.size());	
+		
+		SourceSet::iterator it = m_ClientUploadList.begin();
+		for ( ; it != m_ClientUploadList.end(); it++ ) {
+			if ( !(*it)->GetUpPartStatus().empty() && (*it)->GetUpPartCount() == partcount ) {
+				count.Add( (*it)->GetUpCompleteSourcesCount() );
 			}
 		}
-	}
-
-	if (flag) {
+	
 		m_nCompleteSourcesCount = m_nCompleteSourcesCountLo = m_nCompleteSourcesCountHi = 0;
 
 		if( partcount > 0) {
@@ -1156,4 +1138,41 @@ void CKnownFile::UpdatePartsInfo()
 	Notify_SharedFilesUpdateItem(this);
 }
 
+
+void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
+{
+	const BitVector& freq = client->GetUpPartStatus();
+
+	if ( m_AvailPartFrequency.GetCount() != GetPartCount() ) {
+		m_AvailPartFrequency.Clear();
+
+		m_AvailPartFrequency.Add( 0, GetPartCount() );
+	
+		if ( !increment ) {
+			return;
+		}
+	}
+
+	
+	unsigned int size = freq.size();
+	
+	if ( size != m_AvailPartFrequency.GetCount() ) {
+		return;
+	}
+
+	
+	if ( increment ) {
+		for ( unsigned int i = 0; i < size; i++ ) {
+			if ( freq[i] ) {
+				m_AvailPartFrequency[i]++;
+			}
+		}
+	} else {
+		for ( unsigned int i = 0; i < size; i++ ) {
+			if ( freq[i] ) {
+				m_AvailPartFrequency[i]--;
+			}
+		}
+	}
+}
 
