@@ -239,19 +239,19 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			CPartFile *file = (CPartFile *) content->value;
 			if (m_PrioMenu == NULL) {
 				wxMenu *priomenu = new wxMenu();
-				priomenu->AppendCheckItem(MP_PRIOLOW, CString(_("Low")));
-				priomenu->AppendCheckItem(MP_PRIONORMAL, CString(_("Normal")));
-				priomenu->AppendCheckItem(MP_PRIOHIGH, CString(_("High")));
-				priomenu->AppendCheckItem(MP_PRIOAUTO, CString(_("Auto")));
+				priomenu->AppendCheckItem(MP_PRIOLOW, _("Low"));
+				priomenu->AppendCheckItem(MP_PRIONORMAL, _("Normal"));
+				priomenu->AppendCheckItem(MP_PRIOHIGH, _("High"));
+				priomenu->AppendCheckItem(MP_PRIOAUTO, _("Auto"));
 				m_PrioMenu = priomenu;
 
-				wxMenu *menu = new wxMenu(CString(_("Downloads")));
-				menu->Append(999989, CString(_("Priority")), priomenu);
-				menu->Append(MP_CANCEL, CString(_("Cancel")));
-				menu->Append(MP_STOP, CString(_("&Stop")));
-				menu->Append(MP_PAUSE, CString(_("&Pause")));
-				menu->Append(MP_RESUME, CString(_("&Resume")));
-				menu->Append(MP_CLEARCOMPLETED, CString(_("C&lear completed")));
+				wxMenu *menu = new wxMenu(_("Downloads"));
+				menu->Append(999989, _("Priority"), priomenu);
+				menu->Append(MP_CANCEL, _("Cancel"));
+				menu->Append(MP_STOP, _("&Stop"));
+				menu->Append(MP_PAUSE, _("&Pause"));
+				menu->Append(MP_RESUME, _("&Resume"));
+				menu->Append(MP_CLEARCOMPLETED, _("C&lear completed"));
 				menu->AppendSeparator();
 				/* Razor 1a - Modif by MikaelB
 				   Menu items for :
@@ -263,34 +263,34 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 				   - Swap every A4AF to this file ( AUTO )
 				   - Swap every A4AF to any other file now   */
 				wxMenu *extendedmenu = new wxMenu();
-				extendedmenu->Append(MP_SWAP_A4AF_TO_THIS, CString(_("Swap every A4AF to this file now")));
-				extendedmenu->AppendCheckItem(MP_SWAP_A4AF_TO_THIS_AUTO, CString(_("Swap every A4AF to this file (Auto)")));
+				extendedmenu->Append(MP_SWAP_A4AF_TO_THIS, _("Swap every A4AF to this file now"));
+				extendedmenu->AppendCheckItem(MP_SWAP_A4AF_TO_THIS_AUTO, _("Swap every A4AF to this file (Auto)"));
 				extendedmenu->AppendSeparator();
-				extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER, CString(_("Swap every A4AF to any other file now")));
+				extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER, _("Swap every A4AF to any other file now"));
 				extendedmenu->AppendSeparator();
-				extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES, CString(_("Drop No Needed Sources now")));
-				extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES, CString(_("Drop Full Queue Sources now")));
-				extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES, CString(_("Drop High Queue Rating Sources now")));
-				extendedmenu->Append(MP_CLEAN_UP_SOURCES, CString(_("Clean Up Sources now (NNS, FQS && HQRS)")));
+				extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES, _("Drop No Needed Sources now"));
+				extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES, _("Drop Full Queue Sources now"));
+				extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES, _("Drop High Queue Rating Sources now"));
+				extendedmenu->Append(MP_CLEAN_UP_SOURCES, _("Clean Up Sources now (NNS, FQS && HQRS)"));
 
-				menu->Append(999989, CString(_("Extended Options")), extendedmenu);
+				menu->Append(999989, _("Extended Options"), extendedmenu);
 				/* End Modif */
 				menu->AppendSeparator();
 				wxMenu *fakecheckmenu = new wxMenu();
-				menu->Append(999989, CString(_("FakeCheck")), fakecheckmenu);
-				fakecheckmenu->Append(MP_FAKECHECK2, CString(_("jugle.net Fake Check"))); // deltahf -> fakecheck
-				fakecheckmenu->Append(MP_FAKECHECK1, CString(_("'Donkey Fakes' Fake Check")));
+				menu->Append(999989, _("FakeCheck"), fakecheckmenu);
+				fakecheckmenu->Append(MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
+				fakecheckmenu->Append(MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
 				menu->AppendSeparator();
 				
-				menu->Append(MP_OPEN, CString(_("&Open the file")));
-				menu->Append(MP_PREVIEW, CString(_("Preview")));
+				menu->Append(MP_OPEN, _("&Open the file"));
+				menu->Append(MP_PREVIEW, _("Preview"));
 
-				menu->Append(MP_METINFO, CString(_("Show file &details")));
-				menu->Append(MP_VIEWFILECOMMENTS, CString(_("Show all comments")));
+				menu->Append(MP_METINFO, _("Show file &details"));
+				menu->Append(MP_VIEWFILECOMMENTS, _("Show all comments"));
 				menu->AppendSeparator();
 				
-				menu->Append(MP_GETED2KLINK, CString(_("Copy ED2k &link to clipboard")));
-				menu->Append(MP_GETHTMLED2KLINK, CString(_("Copy ED2k link to clipboard (&HTML)")));
+				menu->Append(MP_GETED2KLINK, _("Copy ED2k &link to clipboard"));
+				menu->Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (&HTML)"));
 				m_FileMenu = menu;
 
 			} else {
@@ -299,14 +299,14 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			}
 			
 			// Add dinamic entries 
-			wxMenu *cats = new wxMenu(CString(_("Category")));
+			wxMenu *cats = new wxMenu(_("Category"));
 			if (theApp.glob_prefs->GetCatCount() > 1) {
 				for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
-					cats->Append(MP_ASSIGNCAT + i, (i == 0) ? CString(_("unassign")) : CString(theApp.glob_prefs->GetCategory(i)->title));
+					cats->Append(MP_ASSIGNCAT + i, (i == 0) ? wxString(_("unassign")) : theApp.glob_prefs->GetCategory(i)->title);
 				}
 			}
 
-			m_FileMenu->Append(432843, CString(_("Assign to category")), cats);
+			m_FileMenu->Append(432843, _("Assign to category"), cats);
 			if (theApp.glob_prefs->GetCatCount() == 1) {
 				m_FileMenu->Enable(432843, MF_GRAYED);
 			} else {
@@ -372,9 +372,9 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 		} else {
 			if (m_ClientMenu == NULL) {
 				wxMenu *menu = new wxMenu(wxT("Clients"));
-				menu->Append(MP_DETAIL, CString(_("Show &Details")));
-				menu->Append(MP_ADDFRIEND, CString(_("Add to Friends")));
-				menu->Append(MP_SHOWLIST, CString(_("View Files")));
+				menu->Append(MP_DETAIL, _("Show &Details"));
+				menu->Append(MP_ADDFRIEND, _("Add to Friends"));
+				menu->Append(MP_SHOWLIST, _("View Files"));
 				m_ClientMenu = menu;
 			}
 			PopupMenu(m_ClientMenu, evt.GetPoint());
@@ -610,18 +610,18 @@ void CDownloadListCtrl::Init()
 {
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 
-	InsertColumn(0, CString(_("File Name")), LVCFMT_LEFT, 260);
-	InsertColumn(1, CString(_("Size")), LVCFMT_LEFT, 60);
-	InsertColumn(2, CString(_("Transferred")), LVCFMT_LEFT, 65);
-	InsertColumn(3, CString(_("Completed")), LVCFMT_LEFT, 65);
-	InsertColumn(4, CString(_("Speed")), LVCFMT_LEFT, 65);
-	InsertColumn(5, CString(_("Progress")), LVCFMT_LEFT, 170);
-	InsertColumn(6, CString(_("Sources")), LVCFMT_LEFT, 50);
-	InsertColumn(7, CString(_("Priority")), LVCFMT_LEFT, 55);
-	InsertColumn(8, CString(_("Status")), LVCFMT_LEFT, 70);
-	InsertColumn(9, CString(_("Time Remaining")), LVCFMT_LEFT, 110);
-	InsertColumn(10, CString(_("Last Seen Complete")), LVCFMT_LEFT, 220);
-	InsertColumn(11, CString(_("Last Reception")), LVCFMT_LEFT, 220);
+	InsertColumn(0, _("File Name"), LVCFMT_LEFT, 260);
+	InsertColumn(1, _("Size"), LVCFMT_LEFT, 60);
+	InsertColumn(2, _("Transferred"), LVCFMT_LEFT, 65);
+	InsertColumn(3, _("Completed"), LVCFMT_LEFT, 65);
+	InsertColumn(4, _("Speed"), LVCFMT_LEFT, 65);
+	InsertColumn(5, _("Progress"), LVCFMT_LEFT, 170);
+	InsertColumn(6, _("Sources"), LVCFMT_LEFT, 50);
+	InsertColumn(7, _("Priority"), LVCFMT_LEFT, 55);
+	InsertColumn(8, _("Status"), LVCFMT_LEFT, 70);
+	InsertColumn(9, _("Time Remaining"), LVCFMT_LEFT, 110);
+	InsertColumn(10, _("Last Seen Complete"), LVCFMT_LEFT, 220);
+	InsertColumn(11, _("Last Reception"), LVCFMT_LEFT, 220);
 
 	curTab = 0;
 	last_moment = 0;
@@ -985,7 +985,7 @@ void CDownloadListCtrl::DrawFileItem(wxDC * dc, int nColumn, LPRECT lpRect, Ctrl
 				break;
 
 			case 8:	// <<--9/21/02
-				//buffer.Format("%s", lpPartFile->getPartfileStatus().GetData());
+				//buffer.Printf("%s", lpPartFile->getPartfileStatus().GetData());
 				//dc->DrawText(buffer,(int)strlen(buffer),lpRect, DLC_DT_TEXT);
 				dc->DrawText(lpPartFile->getPartfileStatus(), lpRect->left, lpRect->top);
 				break;
@@ -1537,10 +1537,10 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 						wxString quest;
 						if (selectedCount==1) {
 							// for single selection
-							quest=CString(_("Are you sure that you want to cancel and delete this file ?\n"));
+							quest=_("Are you sure that you want to cancel and delete this file ?\n");
 						} else {
 							// for multiple selections
-							quest=CString(_("Are you sure that you want to cancel and delete these files ?\n"));
+							quest=_("Are you sure that you want to cancel and delete these files ?\n");
 						}
 						if (validdelete && wxMessageBox((quest + fileList), wxT("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
 							while (!selectedList.IsEmpty()) {
@@ -1716,7 +1716,7 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 					break;
 				case MP_GETHTMLED2KLINK:
 					if (selectedCount > 1) {
-						CString str;
+						wxString str;
 						while (!selectedList.IsEmpty()) {
 							str += theApp.CreateHTMLED2kLink(selectedList.GetHead()) + wxT("\n");
 							selectedList.RemoveHead();
@@ -1997,7 +1997,7 @@ wxString CDownloadListCtrl::getTextList()
 /*			if (file->IsPartFile() == false && CheckShowItemInGivenCat(file, curTab)) {
 				RemoveFile(file);
 			}
-*/			//theApp.amuledlg->AddLogLine(false, CString(wxT("%s")), file->GetFileName());
+*/			//theApp.amuledlg->AddLogLine(false, wxT("%s"), file->GetFileName());
 
 			char buffer[255 + 1];
 			strncpy(buffer, unicode2char(file->GetFileName()), 255);
@@ -2035,7 +2035,7 @@ void CDownloadListCtrl::ClearCompleted()
 
 void CDownloadListCtrl::ShowFilesCount()
 {
-	CString counter;
+	wxString counter;
 	uint16 count = 0;	//theApp.downloadqueue->GetFileCount();
 
 	// remove all displayed files with a different cat
