@@ -119,7 +119,7 @@ public:
 															  m_nDownDataOverheadOtherPackets++;}
 	void	AddLinksFromFile();
 	
-	uint32	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
+	double	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
 	uint64	GetDownDataOverheadSourceExchange()		{return m_nDownDataOverheadSourceExchange;}
 	uint64	GetDownDataOverheadFileRequest()		{return m_nDownDataOverheadFileRequest;}
 	uint64	GetDownDataOverheadServer()			{return m_nDownDataOverheadServer;}
@@ -175,7 +175,7 @@ private:
 	uint8		udcounter;
 
 	uint64		m_datarateMS;
-	uint32		m_nDownDatarateOverhead;
+	double		m_nDownDatarateOverhead;
 	uint32		m_nDownDataRateMSOverhead;
 	uint64		m_nDownDataOverheadSourceExchange;
 	uint64		m_nDownDataOverheadSourceExchangePackets;
@@ -185,7 +185,7 @@ private:
 	uint64		m_nDownDataOverheadServerPackets;
 	uint64		m_nDownDataOverheadOther;
 	uint64		m_nDownDataOverheadOtherPackets;
-	std::deque<int>	m_AvarageDDRO_list;
+	std::list<int>	m_AvarageDDRO_list;
 
 	// uint32 sumavgDDRO;
 
