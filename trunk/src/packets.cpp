@@ -485,14 +485,6 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			else
 				printf("CTag::CTag(CFile*); Unknown tag: type=0x%02X  name=\"%s\"\n", tag.type, tag.tagname);
 		}
-	} catch(CInvalidPacket reason) {
-		if (discard) {
-			delete[] discard;
-		}
-		if (stringvalue) {
-			delete[] stringvalue;
-		}
-		throw(reason);
 	} catch(...) {
 		if (discard) {
 			delete[] discard;
@@ -500,7 +492,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 		if (stringvalue) {
 			delete[] stringvalue;
 		}		
-		throw(CInvalidPacket("Bad met file"));
+		throw;
 	}
 	
 }
