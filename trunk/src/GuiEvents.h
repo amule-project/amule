@@ -58,6 +58,11 @@ enum GUI_Event_ID {
 	UPLOAD_CTRL_ADD_CLIENT,
 	UPLOAD_CTRL_REFRESH_CLIENT,
 	UPLOAD_CTRL_RM_CLIENT,
+	// client list
+	CLIENT_CTRL_ADD_CLIENT,
+	CLIENT_CTRL_REFRESH_CLIENT,
+	CLIENT_CTRL_RM_CLIENT,
+
 	// server
 	SERVER_ADD,
 	SERVER_RM,
@@ -308,6 +313,11 @@ class GUIEvent : public wxEvent {
 #define Notify_UploadCtrlAddClient(ptr)             Notify_1_ValEvent(UPLOAD_CTRL_ADD_CLIENT, ptr)
 #define Notify_UploadCtrlRefreshClient(ptr)         Notify_1_ValEvent(UPLOAD_CTRL_REFRESH_CLIENT, ptr)
 #define Notify_UploadCtrlRemoveClient(ptr)          Notify_1_ValEvent(UPLOAD_CTRL_RM_CLIENT, ptr)
+
+// client ctrl
+#define Notify_ClientCtrlAddClient(ptr)             Notify_1_ValEvent(CLIENT_CTRL_ADD_CLIENT, ptr)
+#define Notify_ClientCtrlRefreshClient(ptr)         Notify_1_ValEvent(CLIENT_CTRL_REFRESH_CLIENT, ptr)
+#define Notify_ClientCtrlRemoveClient(ptr)          Notify_1_ValEvent(CLIENT_CTRL_RM_CLIENT, ptr)
 
 // server
 #define Notify_ServerAdd(ptr)                       Notify_1_ValEvent(SERVER_ADD, ptr)
