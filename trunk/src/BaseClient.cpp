@@ -1787,7 +1787,8 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		// crypt: send random data to sign
 		uint32 dwRandom = rand()+1;
 		credits->m_dwCryptRndChallengeFor = dwRandom;
-		theApp.amuledlg->AddDebugLogLine(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
+		// Kry - Too much output, it already works.
+		//theApp.amuledlg->AddDebugLogLine(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
 
 		CMemFile data;
 		data.Write(nValue);
