@@ -649,8 +649,6 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 	// Now to flush the map into the list (Slugfiller)
 	std::map<uint16, Gap_Struct*>::iterator it = gap_map.begin();
 	for ( ; it != gap_map.end(); ++it ) {
-		#warning who left this gapkey here? it''s not used anymore, delete if useless.
-		// uint16 gapkey = it->first;
 		Gap_Struct* gap = it->second;
 		// SLUGFILLER: SafeHash - revised code, and extra safety
 		if (((int)gap->start) != -1 && ((int)gap->end) != -1 && gap->start <= gap->end && gap->start < m_nFileSize){
@@ -3056,14 +3054,14 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 					printf("\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
 #endif // __DEBUG__
-					return 0;
+					continue;
 				}
 				if( n != cur_src->m_nPartCount ||
 					cur_src->m_nPartCount != forClient->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d,  forClient->m_nPartCount = %d\n", n, cur_src->m_nPartCount, forClient->m_nPartCount);
 #endif // __DEBUG__
-					return 0;
+					continue;
 				}
 				for (int x = 0; x < n; x++) {
 					if (srcstatus[x] && !reqstatus[x]) {
@@ -3084,13 +3082,13 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 					printf("\tthis: %s\n", unicode2char(GetFileName().c_str()));
 					printf("\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 #endif // __DEBUG__
-					return 0;
+					continue;
 				}
 				if( n != cur_src->m_nPartCount ) {
 #ifdef __DEBUG__
 					printf("\nCPartFile->GetPartStatus() = %d, cur_src->m_nPartCount = %d\n", n, cur_src->m_nPartCount);
 #endif // __DEBUG__
-					return 0;
+					continue;
 				}
 				for (int x = 0; x < GetPartCount(); x++){
 					if (srcstatus[x]) {
