@@ -180,8 +180,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 		AddLogLine(false, _("\tThis is known to cause problems, with the version of wxWidgets that you are using,"));
 		AddLogLine(false, _("\tso it is recommended that that you recompile the nescesarry packages."));
 		AddLogLine(false, _("\tPlease refer to the following websites for more information:"));
-		AddLogLine(false, _("\t\thttp://wiki.amule.org"));
-		AddLogLine(false, _("\t\thttp://www.amule.org"));
+		AddLogLine(false, wxT("\t\thttp://wiki.amule.org"));
+		AddLogLine(false, wxT("\t\thttp://www.amule.org"));
 		AddLogLine(false, _("WARNING!"));
 	#endif
 #endif
