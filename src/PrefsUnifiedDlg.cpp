@@ -919,12 +919,10 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 	
 	
 	if (theApp.glob_prefs->BDlgTabsOnTop()) {
-		wxSizer* top_sizer = preferencesDlgTop( this, FALSE ); 
+		preferencesDlgTop( this, FALSE ); 
 		wxListCtrl* PrefsIcons = (wxListCtrl*) FindWindowById(ID_PREFSLISTCTRL,this);
-		//wxPanel* PrefsPanel = (wxPanel*) FindWindowById(ID_PREFSPANEL,this);
-		//PrefsPanel->Show(TRUE);
-		PrefsIcons->SetSize(wxSize(150,-1));
 		wxASSERT(PrefsIcons);
+		PrefsIcons->SetSize(wxSize(150,-1));
 		wxImageList* icon_list = new wxImageList(16,16);
 		icon_list->Add(amuleSpecial(10));
 		icon_list->Add(amuleSpecial(11));
@@ -979,27 +977,35 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		PreferencesGuiTweaksTab( PrefsPanels[10], TRUE );
 		PrefsPanels[10]->Show(FALSE);
 
+		int w = 0, h = 0;
+
 		for (int i = 0; i < 11; i++) {
 			prefs_sizer->Add(PrefsPanels[i]);
+			
+			// Calc. max size of the panel
+			prefs_sizer->Show(PrefsPanels[i], TRUE);
+			prefs_sizer->Layout();			
+			this->Fit();
+			wxSize size_now = this->GetSize();
+			if (size_now.GetWidth() > w) {
+				w = size_now.GetWidth();
+			}
+			
+			if (size_now.GetHeight() > h) {
+				h = size_now.GetHeight();
+			}			
+				
+			// Hide panel
 			prefs_sizer->Show(PrefsPanels[i], FALSE);
 		}
-
-		prefs_sizer->Show(PrefsPanels[0],TRUE);
+		
+		
+		CurrentPrefsPanel = PrefsPanels[0];				
+		
+		prefs_sizer->Show(CurrentPrefsPanel,TRUE);
 		prefs_sizer->Layout();
-
-		//prefs_select_sizer->Add(new_parent, 0 , wxGROW | wxEXPAND);
-
-		CurrentPrefsPanel = PrefsPanels[0];
-		
-		this->Fit();
-		//PrefsPanel->Fit();
-		//CurrentPrefsPanel->Fit();
-		
-		//prefs_select_sizer->Fit();
-		//prefs_main_sizer->Fit( this );
-		//top_sizer->Fit( this );
-//		top_sizer->Layout();
-//		Layout();
+		//this->Fit();
+		this->SetSize(w,h); // Max size.
 		
 	} else {
     		preferencesDlgLeft( this, TRUE ); 
@@ -1443,5 +1449,5 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event) {
 	CurrentPrefsPanel = PrefsPanels[event.GetIndex()];
 	prefs_sizer->Show(CurrentPrefsPanel,TRUE);
 	prefs_sizer->Layout();
-	this->Fit();
+	//this->Fit();
 }
