@@ -59,32 +59,35 @@ END_EVENT_TABLE()
 
 
 ExternalConn::ExternalConn() {
-	// sorry Shakraw, we were not looking if we are allowed to make an EC.
-	
+	//Citroklar, looking if we are allowed to accept External Connections
 	if (theApp.glob_prefs->AcceptExternalConnections()) {
-	
-	// Create the address - listen on localhost:ECPort
-	wxIPV4address addr;
-	addr.Service(theApp.glob_prefs->ECPort());
+		//can we use TCP port?
+		if (theApp.glob_prefs->ECUseTCPPort()) {
+			
+			// Create the address - listen on localhost:ECPort
+			wxIPV4address addr;
+			addr.Service(theApp.glob_prefs->ECPort());
 
-	// Create the socket
-	m_ECServer = new wxSocketServer(addr);
+			// Create the socket
+			m_ECServer = new wxSocketServer(addr);
 	
-	// We use Ok() here to see if the server is really listening
-	if (! m_ECServer->Ok()) {
-		printf("Could not listen for external connections at port %d!\n\n", theApp.glob_prefs->ECPort());
-		return;
-	} else {
-		printf("ECServer listening on port %d.\n\n", theApp.glob_prefs->ECPort());
-	}
+			// We use Ok() here to see if the server is really listening
+			if (! m_ECServer->Ok()) {
+				printf("Could not listen for external connections at port %d!\n\n", theApp.glob_prefs->ECPort());
+				return;
+			} else {
+				printf("ECServer listening on port %d.\n\n", theApp.glob_prefs->ECPort());
+			}
 
-	// Setup the event handler and subscribe to connection events
-	m_ECServer->SetEventHandler(*this, SERVER_ID);
-	m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
-	m_ECServer->Notify(TRUE);
+			// Setup the event handler and subscribe to connection events
+			m_ECServer->SetEventHandler(*this, SERVER_ID);
+			m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
+			m_ECServer->Notify(TRUE);
 
-	m_numClients = 0; 
-	
+			m_numClients = 0; 
+		} else {
+			//FIXME: shakraw, should we use *nix sockets here?
+		}
 	} else {
 		printf("External connections disabled in .eMule\n");
 		return;
@@ -847,6 +850,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				bool searchAsc = (atoi(sItem.Mid(brk+1).GetData()) == 0) ? false : true;
 				return(theApp.searchlist->GetWebList((CString)sResultLine, sortBy, searchAsc));
 			}
+		}
+		
+		//Special command :)
+		if (item == "AMULEDLG SHOW") {
+			theApp.amuledlg->Show_aMule(true);
+			return("");
 		}
 		
 				
