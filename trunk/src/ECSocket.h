@@ -32,17 +32,19 @@ enum aMuleECSocketType {
 	AMULE_EC_SERVER
 };
 
-#ifndef AMULE_DAEMON
-#define ECSocketBase wxEvtHandler
+#ifdef AMULE_DAEMON
+class ECSocket : public wxEvtHandler
+#else
+class ECSocket
 #endif
-
-class ECSocket  : public ECSocketBase {
+{
 public:
 	//
 	// Constructors/Destructor
 	//
 	ECSocket();
-	ECSocket(wxSockAddress& address, wxEvtHandler& handler, int id = -1);
+	ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id = -1);
+
 	~ECSocket();
 
 	//

@@ -242,7 +242,7 @@ public:
 	
 	bool AddServer(CServer *srv);
 	CFriend *FindFriend(CMD4Hash *hash, uint32 ip, uint16 port);
-
+	void AddServerMessageLine(wxString &msg);
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif
