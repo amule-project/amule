@@ -448,24 +448,23 @@ bool CamuleApp::OnInit()
 #endif /*not __OPENBSD__ */
 
 #ifdef __OPENBSD__
-       wxString incomingdir = glob_prefs->GetIncomingDir();
-       wxString tempdir = glob_prefs->GetTempDir();
-       long size, i;
-        struct statfs *mntbuf;
+	wxString incomingdir = glob_prefs->GetIncomingDir();
+	wxString tempdir = glob_prefs->GetTempDir();
+	long size, i;
+	struct statfs *mntbuf;
  	
-        size = getmntinfo(&mntbuf, MNT_NOWAIT);
-        for (i = 0; i < size; i++) {
-                if ( !strcmp(mntbuf[i].f_fstypename,"msdos"))
-                       if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
-      				 amuledlg->AddLogLine(false, "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
-
-                       		use_chmod = false;
-                       } else if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
-
-      				 amuledlg->AddLogLine(false, "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
-
-                       		use_chmod = false;
- 			}     
+	size = getmntinfo(&mntbuf, MNT_NOWAIT);
+	for (i = 0; i < size; i++) {
+		if ( !strcmp(mntbuf[i].f_fstypename,"msdos")) {
+			if ( tempdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+				// Kry - We cannot addlogline because there's no GUI yet!
+      			printf("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+                    use_chmod = false;
+			} else if ( incomingdir.StartsWith( mntbuf[i].f_mntonname ) ) {
+				printf("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings.");
+				use_chmod = false;
+			}     
+		}
 	}
 
 #endif // __OPENBSD__
