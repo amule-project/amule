@@ -168,8 +168,7 @@ CamuleApp::CamuleApp()
 	// Initialization	
 	printf("Initialising aMule\n");
 
-//#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
-#if 1
+#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
 	wxString msg;
 	
 	msg << wxT("You have attempted to use a version of wxGTK older than\n")
