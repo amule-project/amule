@@ -3,7 +3,13 @@ Version 2.0.0-rc2 - The Unnamed version.
 2004-04-xx
 	
 	Kry:
-		* Fixed all crashes on Hello packets.
+		* Implemented the Complete count on search results and on file publishing.
+		   This feature added since aMule 2.0.0-rc1 and eMule 0.42e was not released
+		   with the rc1 for network technical reasons (still on testing with lugdunummaster).
+		   When publishing a file, we also inform the server if the file is complete or not.
+		   Search results show the count of complete sources sent by the server next to the sources
+		   found: i.e. 100 (28) meaning 100 sources, 28 of them complete (72 incomplete or old client)
+		* Fixed the crashes on any Base Client packets.
 		* Made SafeMem files really safe checking for read after end of file.
 		* Fixed wrong Modversion data (fixes random crash too)
 		* Fixed several crashes on wxString::GetData usage.
