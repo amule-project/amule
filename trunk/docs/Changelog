@@ -81,23 +81,31 @@ Version 2.0.0rc8 - The "???????????" version.
 
 	Special Thanks To:
 
-		* Bug and feature reporters:
-		  Banerjee,	ecforum,
-		  jaguarwan,	jolupa,
-		  juanii,	kdka,
-		  m2kio,	Pableron,
-		  plaenky,	Sir
+		* Translators:
+		  experience.chris: (German    / de_DE)
+		  GhePeU:	    (Italian   / it_IT)
+		  Ogon:		    (Polish    / pl_PL)
+		  piarres:	    (Basque    / es_EU)
+		  Typhon/Gusar:	    (Slovenian / sl_SL)
 
 		* Contributors:
 		  Baz,		boutros,
-		  Frankk,	han,
-		  skolnick,	Vollstrecker,
+		  fossybaer,	Frankk,
+		  han,		janaru,
+		  sebaX,	skolnick,
+		  sLiCeR\,	Vollstrecker,
 		  volpop
 
-		* Translators:
-		  GhePeU:	(Italian / it_IT)
-		  piarres:	(Basque / es_EU)
-		  Typhon/Gusar:	(Slovenian / si_SI)
+		* Bug and feature reporters:
+		  Banerjee,	chisky2003,
+		  Danny,	ecforum,
+		  fctk,		jaguarwan,
+		  jolupa,	juanii,
+		  kdka,		m2kio,
+		  Pableron,	pi-c,
+		  plaenky,	realcruncher,
+		  Sir,		Sniffer,
+		  |Syrius|,	xplode_me
 
 		* Everyone at:
 		  #amule	irc.freenode.net
