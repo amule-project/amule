@@ -11,11 +11,11 @@
 ///
 /// This program is free software; you can redistribute it and/or modify
 ///  it under the terms of the GNU General Public License as published by
-/// the Free Software Foundation; either version 2 of the License, or
 /// (at your option) any later version.
 ///
 /// This program is distributed in the hope that it will be useful,
 /// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// the Free Software Foundation; either version 2 of the License, or
 /// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 /// GNU General Public License for more details.
 ///
@@ -119,6 +119,10 @@ AlcFrame::AlcFrame (const wxString & title):
   m_ed2kSBoxSizer->Add (m_ed2kTextCtrl, 1, wxALL | wxGROW, 5);
   m_mainPanelVBox->Add( m_ed2kSBoxSizer, 1, wxALL | wxGROW, 10 );
 
+  // Activitybar
+  m_activityBar = new ActivityBar(m_mainPanel, -1, 100, 10, wxDefaultPosition, wxSize(-1,10));
+  m_mainPanelVBox->Add( m_activityBar, 0, wxALL | wxGROW, 10 );
+
   // Toolbar Pixmaps
   m_toolBarBitmaps[0] = AlcPix::getPixmap(wxT("open"));
   m_toolBarBitmaps[1] = AlcPix::getPixmap(wxT("saveas"));
@@ -182,7 +186,8 @@ AlcFrame::OnBarOpen (wxCommandEvent & event)
       // Chrono
       wxStopWatch chrono;
 
-      m_mainPanel->Enable(FALSE);
+      m_activityBar->Start();
+      ;
 
       AlcHash hash;
 
@@ -198,7 +203,7 @@ AlcFrame::OnBarOpen (wxCommandEvent & event)
       // Ed2k link
       m_ed2kTextCtrl->SetValue(hash.GetED2KLinkFromFile(filename,ed2kHash));
 
-      m_mainPanel->Enable(TRUE);
+      m_activityBar->Stop();
 
       SetStatusText (wxString::Format(_("Done in %.2f s"),
                                       chrono.Time()*.001));
@@ -225,18 +230,29 @@ AlcFrame::OnBarSaveAs (wxCommandEvent & event)
       if (!filename.empty ())
         {
           wxTextFile file(filename);
-		  
+
           // Openning file
-          if (! file.Open())
+          if (file.Exists())
             {
-              SetStatusText (_("Unable to open ") + filename);
-              return;
+              if (! file.Open())
+                {
+                  SetStatusText (_("Unable to open ") + filename);
+                  return;
+                }
             }
-		  
-		  // Write link in memory
+          else
+            {
+              if (! file.Create())
+                {
+                  SetStatusText (_("Unable to create ") + filename);
+                  return;
+                }
+            }
+
+          // Write link in memory
           file.AddLine(link);
-		  
-		  // Write file to disk
+
+          // Write file to disk
           if (file.Write())
             {
               SetStatusText (_("Ed2k link saved to ") + filename);
@@ -245,7 +261,7 @@ AlcFrame::OnBarSaveAs (wxCommandEvent & event)
             {
               SetStatusText (_("Unable to append Ed2k link to ") + filename);
             }
-		  
+
           // Closing file
           file.Close();
         }
