@@ -1437,7 +1437,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		statistics->UpdateStatsTree();
 	}
 
-	if (msCur-msPrev5 > 10000) {  // every 10 seconds
+	if (msCur-msPrev10 > 10000) {  // every 10 seconds
 		msPrev10 = msCur;
 		downloadqueue->SortByPriority();
 	}	
