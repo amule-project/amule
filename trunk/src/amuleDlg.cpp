@@ -57,7 +57,7 @@
 		#include "pixmaps/mule_TrayIcon.ico.xpm"
 		#include "pixmaps/mule_Tr_yellow.ico.xpm"
 		#include "pixmaps/mule_Tr_grey.ico.xpm"
-	#else
+	#else 
 		#include "MuleTrayIcon.h"
 	#endif // USE_WX_TRAY
 #endif // __SYSTRAY_DISABLED__
