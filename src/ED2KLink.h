@@ -79,7 +79,7 @@ public:
 	virtual CED2KServerLink* GetServerLink();
 	virtual CED2KFileLink* GetFileLink();
 	virtual void GetLink(wxString& lnk);
-	const char* GetName() /*const*/ { if(returnName==NULL) returnName=strdup(unicode2char(m_name)); return returnName;}
+	wxString GetName() const { return m_name;}
 	uint64 GetSize() const { return atoll(unicode2char(m_size)); }
 	const CMD4Hash& GetHashKey() const { return m_hash;}
 	bool HasValidSources() const {return (SourcesList!=NULL); }
@@ -90,10 +90,9 @@ public:
 	// EOI
 	
 private:
-	CED2KFileLink(){returnName=NULL;}; 
+	CED2KFileLink(){}; 
 	CED2KFileLink(const CED2KFileLink&); // Not defined
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
-	char* returnName;
 	wxString m_name;
 	wxString m_size;
 	CMD4Hash m_hash;
