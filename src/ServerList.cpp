@@ -183,7 +183,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 	try {
 		uint32 fservercount;
 		if (4 != servermet.Read(&fservercount,4)) {
-			throw CInvalidPacket();
+			throw CInvalidPacket("Corrupted server.met");
 		}
 
 		ENDIAN_SWAP_I_32(fservercount);			
@@ -241,7 +241,7 @@ bool CServerList::AddServermetToList(const wxString& strFile, bool merge)
 			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
 	}
-	catch (CInvalidPacket) {
+	catch (CInvalidPacket e) {
 		AddLogLineM(true,_("Error: the file server.met is corrupted"));
 		servermet.Close();
 		Notify_ServerThaw();

@@ -168,10 +168,20 @@ bool CServer::AddTagFromFile(CFile* servermet){
 	
 	try {
 		tag = new CTag(*servermet);
-	} catch (...) {
-		printf("Caught exception in CServer::AddTagFromFile!\n");
-		return false;
-	}	
+	} catch (CInvalidPacket e) {
+		if (tag) {
+			delete tag;
+		}
+		printf("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.\n");
+		throw e;
+	} catch (wxString error) {
+		if (tag) {
+			delete tag;
+		}
+		printf("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\n");
+		printf("Error: %s\n",unicode2char(error)); 
+		throw CInvalidPacket("Error reading server.met");		
+	}
 	
 	switch(tag->tag.specialtag){		
 	case ST_SERVERNAME:
