@@ -1207,13 +1207,14 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 
 	Notify_ClientCtrlRefreshClient( this );
 
-	if (bDelete){
-		AddDebugLogLineM(false, wxString::Format(wxT("--- Deleted client \"") + 
-			GetClientFullInfo() + wxT("\"; Reason was ") + strReason + wxT("\n")));
-	}
-	else{
-		AddDebugLogLineM(false, wxString::Format(wxT("--- Disconnected client \"") + 
-			GetClientFullInfo() + wxT("\"; Reason was ") + strReason + wxT("\n")));
+	if (bDelete) {
+		AddDebugLogLineM(false, wxString() <<
+			wxT("--- Deleted client \"") <<	GetClientFullInfo() <<
+			wxT("\"; Reason was ") << strReason << wxT("\n"));
+	} else {
+		AddDebugLogLineM(false, wxString() <<
+			wxT("--- Disconnected client \"") << GetClientFullInfo() <<
+			wxT("\"; Reason was ") << strReason << wxT("\n"));
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
