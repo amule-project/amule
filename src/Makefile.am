@@ -59,8 +59,8 @@ amulegui_SOURCES = \
 	amuleDlg.cpp \
 	BarShader.cpp \
 	CatDialog.cpp \
-	ChatSelector.cpp \
-	ChatWnd.cpp \
+	CFile.cpp \
+	ClientCredits.cpp \
 	ClientDetailDialog.cpp \
 	ClientListCtrl.cpp \
 	ColorFrameCtrl.cpp \
@@ -69,6 +69,10 @@ amulegui_SOURCES = \
 	DirectoryTreeCtrl.cpp \
 	DownloadListCtrl.cpp \
 	ED2KLink.cpp \
+	ECSocket.cpp \
+	ECPacket.cpp \
+	ECSpecialTags.cpp \
+	EditServerListDlg.cpp \
 	filemem.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
@@ -76,6 +80,7 @@ amulegui_SOURCES = \
 	KadDlg.cpp \
 	listctrl.cpp \
 	muuli_wdr.cpp \
+	MD5Sum.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
@@ -87,16 +92,19 @@ amulegui_SOURCES = \
 	packets.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
+	SHA.cpp \
+	SHAHashSet.cpp \
+	SafeFile.cpp \
 	SearchDlg.cpp \
 	SearchListCtrl.cpp \
+	server.cpp \
 	ServerWnd.cpp \
 	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
 	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
 	StringFunctions.cpp \
-	TransferWnd.cpp \
-	amule.cpp
+	TransferWnd.cpp
 
 amule_SOURCES = \
 	kademlia/utils/UInt128.cpp \
