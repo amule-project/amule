@@ -1524,46 +1524,37 @@ bool CamuleApp::AddServer(CServer *srv, bool fromUser)
 //
 // Kry Yay, unicoding via streams
 #if wxCHECK_VERSION(2,5,3)
-#include <wx/sstream.h>
+	#include <wx/sstream.h>	
+#endif
 void CamuleApp::AddLogLine(const wxString &msg)
 {
-	wxString full_line = wxDateTime::Now().FormatISODate() + wxT(" ") + 
-		wxDateTime::Now().FormatISOTime() + wxT(": ") + msg + wxT("\n");
+	// At most one trailing new-line, which we add
+	wxString message = msg;
+	while ( !message.IsEmpty() && message.Last() == wxT('\n') ) {
+		message.RemoveLast();
+	}
 	
+	wxString full_line = wxDateTime::Now().FormatISODate() + wxT(" ") + 
+		wxDateTime::Now().FormatISOTime() + wxT(": ") + message + wxT("\n");
+	
+#if wxCHECK_VERSION(2,5,3)
 	wxStringInputStream stream(full_line);
 	
 	(*applog) << stream;
 	applog->Sync();
-
-	if (enable_stdout_log) { 
-		puts(unicode2char(full_line));
-	}
-
-}
 #else
-void CamuleApp::AddLogLine(const wxString &msg)
-{
-	wxString curr_date = wxDateTime::Now().FormatISODate() + wxT(" ") +
-		wxDateTime::Now().FormatISOTime() + wxT(": ");
-	applog->Write(curr_date + msg + wxT("\n"));
+	applog->Write(full_line);
 	applog->Flush();
-
-	if (enable_stdout_log) {
-		Unicode2CharBuf date_str_buf(unicode2char(curr_date));
-		// conversion may fail, so must check date_str
-		if (date_str_buf) {
-			fputs(date_str_buf, stdout);
-		}
-		Unicode2CharBuf c_msg_buf(unicode2char(msg));
-		// conversion may fail, so must check c_msg
-		if (c_msg_buf) {
-			fputs(c_msg_buf, stdout);
-		}
+#endif
+	
+	if (enable_stdout_log) { 
+		printf("%s", (const char*)unicode2char(full_line));
 	}
 }
-#endif
 
-uint32 CamuleApp::GetPublicIP() const {
+
+uint32 CamuleApp::GetPublicIP() const
+{
 	/*
 	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() )
 		return ntohl(Kademlia::CKademlia::getIPAddress());
