@@ -242,6 +242,8 @@ public:
 	wxString ConfigDir;
 
 	void AddLogLine(const wxString &msg);
+	
+	uint32 sent;
 
 protected:
 	/**
@@ -299,7 +301,6 @@ protected:
 #endif
 	bool enable_stdout_log;
 	wxString server_msg;
-
 };
 
 #ifndef AMULE_DAEMON

@@ -53,10 +53,13 @@
 	#include <wx/msgdlg.h>
 #endif
 
+#warning Theres a lot of Kad code missing from this file and the .h that must be addressed.
 
 CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	filelist = in_filelist;
 	reloading = false;
+	m_lastPublishED2K = 0;
+	m_lastPublishED2KFlag = true;	
 	FindSharedFiles();
 }
 
@@ -247,33 +250,17 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	}
 	Notify_SharedFilesShowFile(toadd);
 
+	
+	
 	// offer new file to server
 	if (!theApp.serverconnect->IsConnected()) {
 		return;
 	}
 
-	CServer* server = theApp.serverconnect->GetCurrentServer();
-	wxASSERT(server);
+	m_lastPublishED2KFlag = true;
 	
-	CSafeMemFile* files = new CSafeMemFile(100);
-
-	files->WriteUInt32(1); // filecount
-
-	CreateOfferedFilePacket(toadd,files, server, NULL);
-	CPacket* packet = new CPacket(files);
-	packet->SetOpCode(OP_OFFERFILES);
-	// compress packet
-	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
-	//   - the min. amount of data needed for one published file is ~100 bytes
-	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
-	//   - if the compressed size is still >= the original size, we send the uncompressed packet
-	// therefor we always try to compress the packet
-	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
-		packet->PackPacket();
-	}
-	delete files;
-	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
-	theApp.serverconnect->SendPacket(packet,true);
+	// Publishing of files is not anymore handled here. Instead, the timer does it by itself.
+	
 }
 
 // removes first occurrence of 'toremove' in 'list'
@@ -282,7 +269,7 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	m_Files_map.erase(toremove->GetFileHash());
 }
 
-void CSharedFileList::Reload(bool sendtoserver, bool firstload){
+void CSharedFileList::Reload(bool firstload){
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
@@ -294,43 +281,9 @@ void CSharedFileList::Reload(bool sendtoserver, bool firstload){
 		if (firstload == false) {
 			Notify_SharedFilesShowFileList(this);
 		}
-		if (sendtoserver) {
-			SendListToServer();
-		}
 		Notify_SharedFilesSort();
 		reloading = false;
 	}
-}
-
-void CSharedFileList::SendListToServer(){
-	
-	if (m_Files_map.empty() || !theApp.serverconnect->IsConnected() ) {
-		return;
-	}
-	
-	CSafeMemFile* files = new CSafeMemFile();
-	CServer* server = theApp.serverconnect->GetCurrentServer();
-
-	files->WriteUInt32(m_Files_map.size());
-
-	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); ++pos ) {
-		CreateOfferedFilePacket(pos->second,files,server, NULL);
-	}
-	CPacket* packet = new CPacket(files);
-	packet->SetOpCode(OP_OFFERFILES);
-	// compress packet
-	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
-	//   - the min. amount of data needed for one published file is ~100 bytes
-	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
-	//   - if the compressed size is still >= the original size, we send the uncompressed packet
-	// therefor we always try to compress the packet
-	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
-		packet->PackPacket();
-	}
-	delete files;
-	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
-	theApp.serverconnect->SendPacket(packet,true);
 }
 
 const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
@@ -348,8 +301,169 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
         }
 	// Should never return here
 	wxASSERT(0);
-        return NULL;
+	return NULL;
 }
+
+uint64 CSharedFileList::GetDatasize() {
+	uint64 fsize;
+	fsize=0;
+
+	for (CKnownFileMap::iterator pos = m_Files_map.begin();
+	     pos != m_Files_map.end(); ++pos ) {
+		fsize+=pos->second->GetFileSize();
+	}
+	return fsize;
+}
+
+CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
+{
+	CKnownFileMap::iterator it = m_Files_map.find(filehash);
+	
+	if ( it != m_Files_map.end() ) {
+		return it->second;
+	} else {
+		return NULL;
+	}
+}
+
+short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
+{
+	CKnownFile* tocheck = GetFileByID(filehash);
+	if (tocheck)
+		return tocheck->GetUpPriority();
+	else
+		return -10;	// file doesn't exist
+}
+
+
+void CSharedFileList::UpdateItem(CKnownFile* toupdate)
+{
+	Notify_SharedFilesUpdateItem(toupdate);
+}
+
+void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
+                            CTypedPtrList<CPtrList, CKnownFile*>& list)
+{
+	for (CKnownFileMap::iterator pos = m_Files_map.begin();
+	     pos != m_Files_map.end(); ++pos ) {
+		CKnownFile *cur_file = pos->second;
+
+		if (directory.CompareTo(cur_file->GetFilePath())) {
+			continue;
+		}
+
+		list.AddTail(cur_file);
+	}
+}
+
+/* ---------------- Network ----------------- */
+
+void CSharedFileList::ClearED2KPublishInfo(){
+	CKnownFile* cur_file;
+	m_lastPublishED2KFlag = true;
+	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
+		cur_file = pos->second;
+		cur_file->SetPublishedED2K(false);
+	}
+
+}
+
+void CSharedFileList::RepublishFile(CKnownFile* pFile)
+{
+	CServer* server = theApp.serverconnect->GetCurrentServer();
+	if (server && (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
+		m_lastPublishED2KFlag = true;
+		pFile->SetPublishedED2K(false); // FIXME: this creates a wrong 'No' for the ed2k shared info in the listview until the file is shared again.
+	}
+}
+
+uint8 GetRealPrio(uint8 in)
+{
+	switch(in) {
+		case 4 : return 0;
+		case 0 : return 1;
+		case 1 : return 2;
+		case 2 : return 3;
+		case 3 : return 4;
+	}
+	return 0;
+}
+
+bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
+{
+    return GetRealPrio(fileA->GetUpPriority()) < GetRealPrio(fileB->GetUpPriority());
+}
+
+void CSharedFileList::SendListToServer(){
+	
+	if (m_Files_map.empty() || !theApp.serverconnect->IsConnected() ) {
+		return;
+	}
+	
+	// Gettting a sorted list of the non-published files.
+
+	std::vector<CKnownFile*> SortedList;
+	SortedList.reserve( m_Files_map.size() );
+
+	CKnownFileMap::iterator it = m_Files_map.begin();
+	for ( ; it != m_Files_map.end(); ++it ) {
+		if (!it->second->GetPublishedED2K()) {
+			SortedList.push_back( it->second );
+		}
+	}
+
+	std::sort( SortedList.begin(), SortedList.end(), SortFunc ); 
+	
+	// Limits for the server. 
+	
+	CServer* server = theApp.serverconnect->GetCurrentServer();	
+	
+	uint32 limit = server ? server->GetSoftFiles() : 0;
+	if( limit == 0 || limit > 200 ) {
+		limit = 200;
+	}
+	
+	if( (uint32)SortedList.size() < limit ) {
+		limit = SortedList.size();
+		if (limit == 0) {
+			m_lastPublishED2KFlag = false;
+			return;
+		}
+	}
+
+	CSafeMemFile files;
+	
+	// Files sent.
+	files.WriteUInt32(limit);	
+	
+	uint16 count = 0;	
+	// Add to packet
+	std::vector<CKnownFile*>::iterator sorted_it = SortedList.begin();
+	for ( ; (sorted_it != SortedList.end()) && (count < limit); ++sorted_it ) {
+		CKnownFile* file = *sorted_it;
+		CreateOfferedFilePacket(file, &files, server, NULL);
+		file->SetPublishedED2K(true);	
+		++count;
+	}
+	
+	wxASSERT(count == limit);
+	
+	CPacket* packet = new CPacket(&files);
+	packet->SetOpCode(OP_OFFERFILES);
+	// compress packet
+	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
+	//   - the min. amount of data needed for one published file is ~100 bytes
+	//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
+	//   - if the compressed size is still >= the original size, we send the uncompressed packet
+	// therefor we always try to compress the packet
+	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION){
+		packet->PackPacket();
+	}
+
+	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+	theApp.serverconnect->SendPacket(packet,true);
+}
+
 
 void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, CServer* pServer, CUpDownClient* pClient){
 	// This function is used for offering files to the local server and for sending
@@ -370,16 +484,13 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 		// complete   file: ip 251.251.251 (0xfbfbfbfb) port 0xfbfb
 		// incomplete file: op 252.252.252 (0xfcfcfcfc) port 0xfcfc
 		if (cur_file->GetStatus() == PS_COMPLETE) {
-//			printf("Publishing complete file\n");
 			nClientID = FILE_COMPLETE_ID;
 			nClientPort = FILE_COMPLETE_PORT;
 		} else {
-//			printf("Publishing incomplete file\n");
 			nClientID = FILE_INCOMPLETE_ID;
 			nClientPort = FILE_INCOMPLETE_PORT;
 		}
 	} else {
-//		printf("Publishing standard file\n");
 		if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID()){
 			nClientID = 0;
 			nClientPort = 0;
@@ -439,64 +550,13 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile*
 	// Either is ok or we are crashing clients that request ;)
 }
 
-uint64 CSharedFileList::GetDatasize() {
-	uint64 fsize;
-	fsize=0;
-
-	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); ++pos ) {
-		fsize+=pos->second->GetFileSize();
-	}
-	return fsize;
-}
-
-CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
+void CSharedFileList::Process()
 {
-	CKnownFileMap::iterator it = m_Files_map.find(filehash);
-	
-	if ( it != m_Files_map.end() ) {
-		return it->second;
-	} else {
-		return NULL;
+	#warning Kad
+	//Publish();
+	if( !m_lastPublishED2KFlag || ( ::GetTickCount() - m_lastPublishED2K < ED2KREPUBLISHTIME ) ) {
+		return;
 	}
-}
-
-short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
-{
-	CKnownFile* tocheck = GetFileByID(filehash);
-	if (tocheck)
-		return tocheck->GetUpPriority();
-	else
-		return -10;	// file doesn't exist
-}
-
-
-void CSharedFileList::UpdateItem(CKnownFile* toupdate)
-{
-	Notify_SharedFilesUpdateItem(toupdate);
-}
-
-void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
-                            CTypedPtrList<CPtrList, CKnownFile*>& list)
-{
-	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); ++pos ) {
-		CKnownFile *cur_file = pos->second;
-
-		if (directory.CompareTo(cur_file->GetFilePath())) {
-			continue;
-		}
-
-		list.AddTail(cur_file);
-	}
-}
-
-void CSharedFileList::ClearED2KPublishInfo(){
-	CKnownFile* cur_file;
-
-	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
-		cur_file = pos->second;
-		cur_file->SetPublishedED2K(false);
-	}
-
+	SendListToServer();
+	m_lastPublishED2K = ::GetTickCount();
 }

@@ -262,7 +262,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			Notify_ServerHighlight(update, true);
 		
 		theApp.sharedfiles->ClearED2KPublishInfo();
-		theApp.sharedfiles->SendListToServer();
+
 		Notify_ServerRemoveDead();
 		
 		// tecxx 1609 2002 - serverlist update

@@ -379,6 +379,8 @@ int CamuleApp::InitGui(bool ,wxString &)
 bool CamuleApp::OnInit()
 {
 
+	sent = 0;
+	
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
@@ -697,7 +699,7 @@ bool CamuleApp::OnInit()
 	m_app_state = APP_STATE_RUNNING;
 
 	// reload shared files
-	sharedfiles->Reload(true, true);
+	sharedfiles->Reload(true);
 	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
@@ -1578,6 +1580,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		msPrev1 = msCur;
 		clientcredits->Process();
 		clientlist->Process();
+		
+		// Publish files to server if needed.
+		theApp.sharedfiles->Process();
+		
 		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
 			serverconnect->TryAnotherConnectionrequest();
 		}
@@ -1586,6 +1592,8 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		}
 		listensocket->UpdateConnectionsStatus();
 		
+		//printf("Bytes sent this second: %i\n",sent);
+		sent = 0;
 	}
 
 	

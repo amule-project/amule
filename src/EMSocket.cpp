@@ -393,7 +393,9 @@ int CEMSocket::Send(char* lpBuf,int nBufLen,int WXUNUSED(nFlags))
 		if (tosend > MAXFRAGSIZE) {
 			tosend = MAXFRAGSIZE;
 		}
-		assert (tosend != 0);
+		wxASSERT(tosend != 0);
+		theApp.sent += tosend;
+		
 		wxSocketBase::Write(sendbuffer+sent,tosend);
 		uint32 result=LastCount();
 		if(Error()) {

@@ -144,7 +144,7 @@ void CSharedFilesWnd::SelectionUpdated()
 
 void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 {
-	theApp.sharedfiles->Reload(true, false);
+	theApp.sharedfiles->Reload(false);
 	SelectionUpdated();
 }
 

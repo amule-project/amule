@@ -50,8 +50,8 @@ class CSharedFileList{
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
-	void	SendListToServer();
-	void 	Reload(bool sendtoserver = true, bool firstload = false);
+	
+	void 	Reload(bool firstload = false);
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
 	wxMutex	list_mut;
@@ -66,11 +66,20 @@ public:
 	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
 	void	ClearED2KPublishInfo();
+	void	RepublishFile(CKnownFile* pFile);
+	void	Process();
+
+	// Not needed yet. Can be included once we add the converter
+	void	PublishNextTurn()	{ m_lastPublishED2KFlag=true;	}
 	
 private:
 	void	FindSharedFiles();
 	bool	reloading;
 	
+	void	SendListToServer();
+	uint32 m_lastPublishED2K;
+	bool	 m_lastPublishED2KFlag;	
+
 	CKnownFileMap		m_Files_map;
 };
 
