@@ -71,6 +71,8 @@ public:
 	COLORREF GetTrayBarColor()		{return acrStat[11];}
 
 	wxString GetHTML();
+	wxString IterateChilds(wxTreeItemId hChild, int level);
+	
 protected:
 	static COLORREF	acrStat[13];
 	
