@@ -33,6 +33,7 @@
 #include "amule.h"			// Needed for theApp
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
+#include "ServerSocket.h"
 
 #define get_uint32(p)	ENDIAN_SWAP_32(*((uint32*)(p)))
 #define get_uint16(p)	ENDIAN_SWAP_16(*((uint16*)(p)))
@@ -228,7 +229,9 @@ bool CUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, const wxSt
 					update->SetUDPFlags( uUDPFlags );
 					update->SetLowIDUsers( uLowIDUsers );
 					Notify_ServerRefresh( update );
-					Notify_ShowUserCount(update);
+					if (update == theApp.serverconnect->GetCurrentServer()) {
+						Notify_ShowUserCount(update);
+					}
 				}
 				break;
 			}
