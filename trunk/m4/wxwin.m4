@@ -119,8 +119,14 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     minvers=`echo $min_wx_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
     
     if test -n "$vers" && test "$vers" -ge $minvers; then
-      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
-      WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
+	  case "$USE_DEBUG_STATIC" in
+	    yes)
+          WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs`
+		  ;;
+		*)
+          WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
+		  ;;
+      esac
 
       dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
       WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
@@ -188,9 +194,15 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   
     WXBASE_CONFIG_NAME=$WX_CONFIG_NAME
     WXBASE_CONFIG_WITH_ARGS=$WX_CONFIG_WITH_ARGS
-  
-    WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS ${wx_conig_base_libs}`
-    WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
+
+    case "$USE_DEBUG_STATIC" in
+	  yes)
+        WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
+		;;
+	 *)
+        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS ${wx_conig_base_libs}`
+		;;
+	esac
       
     dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
     WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
@@ -258,10 +270,16 @@ AC_DEFUN([AM_PATH_WXCONFIG],
       if test -n "$vers" && test "$vers" -ge $minvers; then
 	WXBASE24FOUND=1
         WXBASE25FOUND=0
-      
-        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
-        WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
-      
+
+        case "$USE_DEBUG_STATIC" in
+		  yes)
+            WXBASE_LIBS_STATIC=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
+			;;
+		  *)
+            WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
+			;;
+		esac
+
         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
         WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
         WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
