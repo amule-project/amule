@@ -603,28 +603,30 @@ dnl
 dnl Generate the Makefiles
 dnl
 AC_CONFIG_FILES([Makefile
-                 docs/Makefile
+		 docs/Makefile
 		 docs/man/Makefile
-                 intl/Makefile
-                 m4/Makefile
-                 src/Makefile
-                 src/kademlia/Makefile
-                 src/kademlia/utils/Makefile
-                 src/kademlia/io/Makefile
-                 src/kademlia/kademlia/Makefile
-                 src/kademlia/routing/Makefile
-                 src/kademlia/net/Makefile
-                 src/pixmaps/Makefile
-                 src/utils/Makefile
-                 src/utils/aLinkCreator/Makefile
+		 intl/Makefile
+		 m4/Makefile
+		 src/Makefile
+		 src/kademlia/Makefile
+		 src/kademlia/utils/Makefile
+		 src/kademlia/io/Makefile
+		 src/kademlia/kademlia/Makefile
+		 src/kademlia/routing/Makefile
+		 src/kademlia/net/Makefile
+		 src/pixmaps/Makefile
+		 src/utils/Makefile
+		 src/utils/aLinkCreator/Makefile
 		 src/utils/aLinkCreator/doc/Makefile
-                 src/utils/aLinkCreator/src/Makefile
-                 src/utils/cas/Makefile
-                 src/utils/wxCas/Makefile
+		 src/utils/aLinkCreator/src/Makefile
+		 src/utils/cas/Makefile
+		 src/utils/cas/docs/Makefile
+		 src/utils/wxCas/Makefile
 		 src/utils/wxCas/doc/Makefile
-                 src/utils/wxCas/src/Makefile
-                 src/utils/xas/Makefile
-                 src/webserver/Makefile])
+		 src/utils/wxCas/src/Makefile
+		 src/utils/xas/Makefile
+		 src/utils/xas/docs/Makefile
+		 src/webserver/Makefile])
 dnl
 dnl autoscan has missed these, i wonder why...
 dnl
