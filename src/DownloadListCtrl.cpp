@@ -1787,7 +1787,13 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 
 		// Sort by last reception
 	case 11:
-		result = CmpAny( file1->GetLastChangeDatetime(), file2->GetLastChangeDatetime() );
+		if (!file1->GetLastChangeDatetime().IsValid()) {			
+			result = -1;
+		} else if (!file2->GetLastChangeDatetime().IsValid()) {
+			result = 1;
+		} else {
+			result = CmpAny( file1->GetLastChangeDatetime(), file2->GetLastChangeDatetime() );
+		}
 		break;
 	}
 
