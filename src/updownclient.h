@@ -177,7 +177,7 @@ public:
 	uint8			GetClientSoft()				{return m_clientSoft;}
 	void			ReGetClientSoft();
 	void			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
-	void			ProcessHelloPacket(char* pachPacket, uint32 nSize);
+	bool			ProcessHelloPacket(char* pachPacket, uint32 nSize);
 	void			SendHelloAnswer();
 	void			SendHelloPacket();
 	void			SendMuleInfoPacket(bool bAnswer);
@@ -204,6 +204,8 @@ public:
 	uint8			GetSecureIdentState()		{return m_SecureIdentState;}
 	void			SendSecIdentStatePacket();
 	void			ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize);
+
+	uint8			GetInfoPacketsReceived() const { return m_byInfopacketsReceived; }
 
 	void			InfoPacketsReceived();
 
@@ -344,6 +346,8 @@ public:
 	void 			SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
 	
 	void			ResetFileStatusInfo();
+	
+	bool                    CheckHandshakeFinished(UINT protocol, UINT opcode) const;
 		
 	CPartFile*		reqfile;
 	
@@ -351,7 +355,7 @@ private:
 
 	// base
 	void	Init();
-	void	ProcessHelloTypePacket(CSafeMemFile* data);
+	bool	ProcessHelloTypePacket(CSafeMemFile* data);
 	void	SendHelloTypePacket(CMemFile* data);
 	void	ClearHelloProperties(); // eMule 0.42
 	bool	m_bIsBotuser;
@@ -488,6 +492,7 @@ private:
 	/* Razor 1a - Modif by MikaelB */
 	
 	int				GetHashType() const;
+	bool	m_bHelloAnswerPending;
 	
 public:
 

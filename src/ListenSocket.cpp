@@ -154,6 +154,14 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 			case OP_HELLOANSWER: {
 				theApp.downloadqueue->AddDownDataOverheadOther(size);
 				client->ProcessHelloAnswer(packet,size);
+
+				// start secure identification, if
+				//  - we have received OP_EMULEINFO and OP_HELLOANSWER (old eMule)
+				//	- we have received eMule-OP_HELLOANSWER (new eMule)
+				if (client->GetInfoPacketsReceived() == IP_BOTH) {
+					client->InfoPacketsReceived();
+				}
+				
 				if (client) {
 					client->ConnectionEstablished();
 				}
@@ -167,9 +175,10 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 					client = new CUpDownClient(this);
 				}
 				// client->ProcessHelloPacket(packet,size);
-
+				bool bIsMuleHello = false;
+				
 				try{
-					client->ProcessHelloPacket(packet,size);
+					bIsMuleHello = client->ProcessHelloPacket(packet,size);
 				}
 				catch(...){
 					if (bNewClient){
@@ -200,20 +209,26 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 				// if not we keep our new-constructed client ;)
 				if (theApp.clientlist->AttachToAlreadyKnown(&client,this)) {
 					// update the old client informations
-					client->ProcessHelloPacket(packet,size);
+					bIsMuleHello = client->ProcessHelloPacket(packet,size);
 				} else {
 					theApp.clientlist->AddClient(client);
 					client->SetCommentDirty();
 				}
 
 				// send a response packet with standart informations
-				if (client->GetHashType() == SO_EMULE) {
+				if ((client->GetHashType() == SO_EMULE) && !bIsMuleHello) {
 					client->SendMuleInfoPacket(false);				
 				}
 				
 				client->SendHelloAnswer();
+				
 				if (client) {
 					client->ConnectionEstablished();
+				}
+				// start secure identification, if
+				//	- we have received eMule-OP_HELLO (new eMule)				
+				if (client->GetInfoPacketsReceived() == IP_BOTH) {
+						client->InfoPacketsReceived();				
 				}
 				break;
 			}
@@ -333,6 +348,11 @@ bool CClientReqSocket::ProcessPacket(char* packet, uint32 size, uint8 opcode)
 			}
 			case OP_STARTUPLOADREQ: {
 				theApp.downloadqueue->AddDownDataOverheadFileRequest(size);
+
+				if (!client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode)) {
+					break;
+				}
+	
 				if(size == 16) {
 					uchar reqfileid[16];
 					md4cpy(reqfileid,packet);

@@ -223,6 +223,7 @@ void CUpDownClient::Init()
 	m_lastRefreshedDLDisplay = 0;
 	m_bAddNextConnect = false;  // VQB Fix for LowID slots only on connection
 	m_SoftLen = 0;
+	m_bHelloAnswerPending = false;
 }
 
 
@@ -331,7 +332,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_SoftLen = 0;
 }
 
-void CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 {
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
 	uint8 hashsize;
@@ -348,28 +349,29 @@ void CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 	}
 	// eMule 0.42: reset all client properties; a client may not send a particular emule tag any longer
 	ClearHelloProperties();	
-	ProcessHelloTypePacket(&data);
+	return ProcessHelloTypePacket(&data);
 }
 
 void CUpDownClient::ProcessHelloAnswer(char* pachPacket, uint32 nSize)
 {
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	m_bHelloAnswerPending = false;
 	ProcessHelloTypePacket(&data);
 }
 
-void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
+bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 {
 		
 	m_bIsHybrid = false;
 	m_bIsML = false;
-
+	DWORD dwEmuleTags = 0;
+	
 	try {	
 	
 		data->ReadRaw((unsigned char*)m_achUserHash,16);
 		data->Read(m_nUserID);
 		uint16 nUserPort = 0;
 		data->Read(nUserPort); // hmm clientport is sent twice - why?
-		DWORD dwEmuleTags = 0;
 		uint32 tagcount;
 		data->Read(tagcount);
 		for (uint32 i = 0;i < tagcount; i++){
@@ -591,9 +593,23 @@ void CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	ReGetClientSoft();
 	
 	m_byInfopacketsReceived |= IP_EDONKEYPROTPACK;
-	if (m_byInfopacketsReceived == IP_BOTH)
-		InfoPacketsReceived();
 
+	// check if at least CT_EMULEVERSION was received, all other tags are optional
+	bool bIsMule = (dwEmuleTags & 0x04) == 0x04;
+	if (bIsMule) {
+		m_bEmuleProtocol = true;
+		m_byInfopacketsReceived |= IP_EMULEPROTPACK;
+	}
+
+
+	#ifdef __USE_KAD__
+	if( GetKadPort() && Kademlia::CKademlia::isRunning() )
+	{
+		Kademlia::CKademlia::getUDPListener()->bootstrap(ntohl(GetIP()), GetKadPort());
+	}
+	#endif
+
+	return bIsMule;
 }
 
 
@@ -623,6 +639,7 @@ void CUpDownClient::SendHelloPacket() {
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
 		socket->SendPacket(packet,true);
 	}
+	m_bHelloAnswerPending = true;
 }
 
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
@@ -841,7 +858,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	data->Write(theApp.glob_prefs->GetPort());
 	
 	// Kry - This is the tagcount!!! Be sure to update it!!
-	data->Write((uint32)4);
+	data->Write((uint32)5);
 	
 	CTag tagname(CT_NAME,theApp.glob_prefs->GetUserNick());
 	tagname.WriteTagToFile(data);
@@ -871,6 +888,33 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(VERSION_RC			     ) 
 				);
 	tagMuleVersion.WriteTagToFile(data);	
+
+
+	// eMule Misc. Options #1
+	const UINT uUdpVer				= 4;
+	const UINT uDataCompVer			= 1;
+	const UINT uSupportSecIdent		= theApp.clientcredits->CryptoAvailable() ? 3 : 0;
+	const UINT uSourceExchangeVer	= 2; //3; Kry - Our source exchange it type 2, TODO
+	const UINT uExtendedRequestsVer	= 2;
+	const UINT uAcceptCommentVer	= 1;
+	const UINT uNoViewSharedFiles	= (theApp.glob_prefs->CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
+	const UINT uMultiPacket			= 1;
+	const UINT uSupportPreview		= 0; //(thePrefs.CanSeeShares() != vsfaNobody) ? 1 : 0; // set 'Preview supported' only if 'View Shared Files' allowed
+	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1, 
+//				(						<< 4*7) |
+				(uUdpVer				<< 4*6) |
+				(uDataCompVer			<< 4*5) |
+				(uSupportSecIdent		<< 4*4) |
+				(uSourceExchangeVer		<< 4*3) |
+				(uExtendedRequestsVer	<< 4*2) |
+				(uAcceptCommentVer		<< 4*1) |
+//				(						<< 1*3) |
+				(uNoViewSharedFiles		<< 1*2) |
+				(uMultiPacket			<< 1*1) |
+				(uSupportPreview		<< 1*0) );
+	tagMisOptions.WriteTagToFile(data);
+
+
 	
 	uint32 dwIP = 0;
 	uint16 nPort = 0;
@@ -1066,6 +1110,7 @@ void CUpDownClient::Disconnected()
 	} else {
 		m_fHashsetRequesting = 0;
 		m_dwEnteredConnectedState = 0;
+		m_bHelloAnswerPending = false;
 	}
 }
 
@@ -1841,4 +1886,18 @@ void CUpDownClient::InfoPacketsReceived(){
 	if (m_bySupportSecIdent){
 		SendSecIdentStatePacket();
 	}
+}
+
+bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
+{
+	if (m_bHelloAnswerPending){
+		//throw CString(_T("Handshake not finished")); // -> disconnect client
+		// this triggers way too often.. need more time to look at this -> only create a warning
+		if (theApp.glob_prefs->GetVerbose()) {
+			theApp.amuledlg->AddLogLine(false, _("Handshake not finished while processing packet."));
+		}
+		return false;
+	}
+
+	return true;
 }
