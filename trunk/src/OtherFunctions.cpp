@@ -1131,6 +1131,7 @@ void print_backtrace(uint8 n) {
 	delete [] funcname;
 	delete [] address;
 #else 
+	(void)n;
 	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
 #endif
 }
