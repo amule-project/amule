@@ -235,6 +235,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *reply)
 {
 	wxString answer = wxEmptyString;
 
+	wxASSERT(reply);
+
 	switch (reply->GetOpCode()) {
 		case EC_OP_MISC_DATA:
 			for (int i = 0; i < reply->GetTagCount(); ++i) {
@@ -405,9 +407,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 wxString ECv2_Response2String(CECPacket *response)
 {
 	wxString s;
-//	if ( !response ) {
-//		return wxEmptyString;
-//	}
+
+	wxASSERT(response);
+
 	switch(response->GetOpCode()) {
 		case EC_OP_STRINGS:
 			s = response->GetTagByIndex(0)->GetStringData();
