@@ -247,6 +247,9 @@ bool CServerList::AddServer(CServer* in_server)
 
 void CServerList::ServerStats()
 {
+	uint32 temp;
+	temp = (uint32)time(NULL);
+	
 	if(theApp.serverconnect->IsConnected() && list.GetCount() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
@@ -269,7 +272,7 @@ void CServerList::ServerStats()
 		ping_server->SetChallenge(time);
 		memcpy( packet->pBuffer, &time, 4 );
 		ping_server->SetLastPinged(::GetTickCount());
-		// ping_server->SetLastPingedTime(temp);
+		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(ping_server);
 		theApp.uploadqueue->AddUpDataOverheadServer(packet->size);

@@ -116,6 +116,9 @@ private:
 	CString		m_strVersion;
 	uint32		m_uTCPFlags;
 	uint32		m_uUDPFlags;
+	
+	void Init();
+
 };
 
 #endif // SERVER_H
