@@ -85,8 +85,8 @@ void CUploadListCtrl::Init()
 	InsertColumn(8,_("Obtained Parts"),wxLIST_FORMAT_LEFT,100);
     InsertColumn(9,_("Upload/Download"),wxLIST_FORMAT_LEFT,100);
 	InsertColumn(10,_("Remote Status"),wxLIST_FORMAT_LEFT,100);
-	// not here.. no preferences yet
-	//LoadSettings(TP_Upload);
+	
+	LoadSettings();
 }
 
 

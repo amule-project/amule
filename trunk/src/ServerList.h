@@ -40,7 +40,8 @@ public:
 	bool		Init();
 	bool		AddServer(CServer* in_server );
 	void		RemoveServer(CServer* out_server);
-	void		RemoveAllServers(void);
+	void		RemoveAllServers();
+	void		RemoveDeadServers();	
 	bool		AddServermetToList(const wxString& strFile, bool merge = true);
 	void		AddServersFromTextFile(wxString strFilename,bool isstaticserver=true, bool writetolog = false);// emanuelw(20030924) added writetolog
 	bool		SaveServermetToFile(); //<<--9/22/02

@@ -735,9 +735,6 @@ bool CamuleApp::OnInit()
 		downloadqueue->LoadSourceSeeds();
 	}
 
-	// Everything should be loaded now, so sort the list widgets
-	amuledlg->InitSort();
-	
 
 	// Start the Core Timer
 
@@ -1986,7 +1983,7 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 		// server
 		case SERVER_ADD:
 			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->AddServer((CServer*)event.ptr_value, true);
+				amuledlg->serverwnd->serverlistctrl->AddServer((CServer*)event.ptr_value);
 			}
 			break;
 		case SERVER_RM:
@@ -1995,8 +1992,8 @@ void CamuleApp::NotifyEvent(GUIEvent event)
 			}
 			break;
 		case SERVER_RM_DEAD:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->RemoveDeadServer();
+			if ( serverlist ) {
+				serverlist->RemoveDeadServers();
 			}
 			break;
 		case SERVER_RM_ALL:
@@ -2127,7 +2124,7 @@ bool CamuleApp::AddServer(CServer *srv)
 {
 	if ( serverlist->AddServer(srv) ) {
 		if ( amuledlg && amuledlg->serverwnd ) {
-			amuledlg->serverwnd->serverlistctrl->AddServer(srv, true);
+			amuledlg->serverwnd->serverlistctrl->AddServer(srv);
 			ProcessPendingEvents();
 			return 1;
 		} else {

@@ -97,6 +97,7 @@ void CQueueListCtrl::Init(){
 	InsertColumn(9,_("Banned"),LVCFMT_LEFT,60);
 	InsertColumn(10,_("Obtained Parts"),LVCFMT_LEFT,100);
 
+	LoadSettings();
 }
 
 CQueueListCtrl::~CQueueListCtrl(){
