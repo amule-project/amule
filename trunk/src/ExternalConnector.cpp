@@ -447,7 +447,7 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, "%s\n", (const char *)unicode2char(_("FATAL ERROR: File does not exist: ") + aMuleConfigFile));
 			exit(1);
 		}
-		CECFileConfig aMuleConfig(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		CECFileConfig aMuleConfig(aMuleConfigFile);
 		LoadAmuleConfig(aMuleConfig);
 		SaveConfigFile();
 		m_configFile->Flush();
@@ -497,7 +497,7 @@ void CaMuleExternalConnector::LoadAmuleConfig(CECFileConfig& cfg)
 void CaMuleExternalConnector::LoadConfigFile()
 {
 	if (!m_configFile) {
-		m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
 		m_host = m_configFile->Read(wxT("/EC/Host"), wxEmptyString);
@@ -512,7 +512,7 @@ void CaMuleExternalConnector::SaveConfigFile()
 		wxFileName::Mkdir(otherfunctions::GetConfigDir());
 	}
 	if (!m_configFile) {
-		m_configFile = new CECFileConfig(wxEmptyString, wxEmptyString, m_configFileName, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		m_configFile = new CECFileConfig(m_configFileName);
 	}
 	if (m_configFile) {
 		m_configFile->Write(wxT("/EC/Host"), m_host);

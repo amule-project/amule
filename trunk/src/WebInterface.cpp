@@ -317,7 +317,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, (const char *)unicode2char(_("FATAL ERROR: ") + aMuleConfigFile + _(" does not exist.\n")));
 			exit(1);
 		}
-		CECFileConfig cfg(wxEmptyString, wxEmptyString, aMuleConfigFile, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
 		m_TemplateName = wxT("default");
