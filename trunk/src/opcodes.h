@@ -431,9 +431,32 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_CAT_EDIT				10322
 #define	MP_CAT_REMOVE				10323
 #define MP_TOOGLELIST				10324
-#define 	MP_CLOSE_TAB				10325
-#define 	MP_CLOSE_ALL_TABS			10326		
-#define 	MP_CLOSE_OTHER_TABS			10327
+#define MP_CLOSE_TAB				10325
+#define MP_CLOSE_ALL_TABS			10326		
+#define MP_CLOSE_OTHER_TABS			10327
+
+/* Razor 1a - Modif by MikaelB
+     Opcodes for :
+      - Drop No Needed Sources now
+      - Drop Full Queue Sources now
+      - Drop High Queue Rating Sources now
+      - Clean Up Sources now ( drop NNS, FQS and HQRS )
+      - Swap every A4AF to this file now
+      - Swap every A4AF to this file ( AUTO )
+      - Swap every A4AF to any other file now   */
+#define	MP_DROP_NO_NEEDED_SOURCES		57841
+#define	MP_DROP_FULL_QUEUE_SOURCES		57842
+#define	MP_DROP_HIGH_QUEUE_RATING_SOURCES	57843
+#define	MP_CLEAN_UP_SOURCES			57844
+#define	MP_SWAP_A4AF_TO_THIS			57845
+#define	MP_SWAP_A4AF_TO_THIS_AUTO		57846
+#define	MP_SWAP_A4AF_TO_ANY_OTHER		57847
+
+//menus
+#define MP_MENU_PRIO				999989
+#define MP_MENU_EXTD				999988
+#define MP_MENU_FAKE				999987
+#define MP_MENU_CATS				432843
 
 
 // reserve some for weburls!
@@ -550,25 +573,6 @@ const unsigned int UNLIMITED	= 	0;
 #define	MP_LISTCOL_14				10614
 #define	MP_LISTCOL_15				10615
 
-/* Razor 1a - Modif by MikaelB
-     Opcodes for :
-      - Drop No Needed Sources now
-      - Drop Full Queue Sources now
-      - Drop High Queue Rating Sources now
-      - Clean Up Sources now ( drop NNS, FQS and HQRS )
-      - Swap every A4AF to this file now
-      - Swap every A4AF to this file ( AUTO )
-      - Swap every A4AF to any other file now   */
-
-#define	MP_DROP_NO_NEEDED_SOURCES		57841
-#define	MP_DROP_FULL_QUEUE_SOURCES		57842
-#define	MP_DROP_HIGH_QUEUE_RATING_SOURCES	57843
-#define	MP_CLEAN_UP_SOURCES			57844
-#define	MP_SWAP_A4AF_TO_THIS			57845
-#define	MP_SWAP_A4AF_TO_THIS_AUTO		57846
-#define	MP_SWAP_A4AF_TO_ANY_OTHER		57847
-
-/* End Modif by MikaelB */
 #define	LOCALSERVERREQUESTS			20000	// only one local src request during this timespan
 #define	DISKSPACERECHECKTIME			900000	// checkDiskspace
 
