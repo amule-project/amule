@@ -505,6 +505,9 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 {
 	if (m_nDownloadState != byNewState) {
 		if (m_reqfile) {
+			// Notify the client that this source has changed its state
+			m_reqfile->ClientStateChanged( m_nDownloadState, byNewState );
+		
 			if (byNewState == DS_DOWNLOADING) {
 				m_reqfile->AddDownloadingSource(this);
 			} else if (m_nDownloadState == DS_DOWNLOADING) {
@@ -1193,7 +1196,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 		
 		// Sainity check, if reqfile doesn't own the source, then something
 		// is wrong and the swap cannot proceed.
-		if ( m_reqfile->m_SrcList.erase( this ) ) {
+		if ( m_reqfile->DelSource( this ) ) {
 			CPartFile* SwapTo = target->first;
 			
 			// remove this client from the A4AF list of our new m_reqfile
@@ -1228,7 +1231,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 	
 			SetRequestFile( SwapTo );
 
-			SwapTo->m_SrcList.insert( this );
+			SwapTo->AddSource( this );
 		
 			Notify_DownloadCtrlAddSource(SwapTo, this, false);
 
