@@ -438,10 +438,10 @@ void CUDPSocket::SendBuffer(){
 void CUDPSocket::SendPacket(Packet* packet,CServer* host){
         int ret = 0;
 	cur_server = new CServer(host);
-	sendbuffer = new char[packet->size+2];
+	sendbuffer = new char[packet->GetPacketSize()+2];
 	memcpy(sendbuffer,packet->GetUDPHeader(),2);
-	memcpy(sendbuffer+2,packet->pBuffer,packet->size);
-	sendblen = packet->size+2;
+	memcpy(sendbuffer+2,packet->GetDataBuffer(),packet->GetPacketSize());
+	sendblen = packet->GetPacketSize()+2;
 
 	// see if we need to dns()
 	struct sockaddr_in sockAddr;

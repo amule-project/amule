@@ -218,7 +218,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 
 			// Bugfix We still need to check for a valid protocol
 			// Remark: the default eMule v0.26b had removed this test......
-			switch (pendingPacket->prot){
+			switch (pendingPacket->GetProtocol()){
 				case OP_EDONKEYPROT:
 				case OP_PACKEDPROT:
 				case OP_EMULEPROT:
@@ -232,7 +232,7 @@ void CEMSocket::OnReceive(int nErrorCode){
 			}
 
 			// Security: Check for buffer overflow (2MB)
-			if(pendingPacket->size > sizeof(GlobalReadBuffer)) {
+			if(pendingPacket->GetPacketSize() > sizeof(GlobalReadBuffer)) {
 				delete pendingPacket;
 				pendingPacket = NULL;
 				OnError(ERR_TOOBIG);
@@ -240,24 +240,23 @@ void CEMSocket::OnReceive(int nErrorCode){
 			}
 
 			// Init data buffer
-			pendingPacket->pBuffer = new char[pendingPacket->size + 1];
+			pendingPacket->AllocDataBuffer();
 			pendingPacketSize = 0;
 		}
 
 		// Bytes ready to be copied into packet's internal buffer
 		wxASSERT(rptr <= rend);
-		uint32 toCopy = ((pendingPacket->size - pendingPacketSize) < (uint32)(rend - rptr)) ? 
-			             (pendingPacket->size - pendingPacketSize) : (uint32)(rend - rptr);
+		uint32 toCopy = ((pendingPacket->GetPacketSize() - pendingPacketSize) < (uint32)(rend - rptr)) ? 
+					(pendingPacket->GetPacketSize() - pendingPacketSize) : (uint32)(rend - rptr);
 
 		// Copy Bytes from Global buffer to packet's internal buffer
-		memcpy(&pendingPacket->pBuffer[pendingPacketSize], rptr, toCopy);
+		pendingPacket->CopyToDataBuffer(pendingPacketSize, rptr, toCopy);
 		pendingPacketSize += toCopy;
 		rptr += toCopy;
 		
 		// Check if packet is complet
-		wxASSERT(pendingPacket->size >= pendingPacketSize);
-		if(pendingPacket->size == pendingPacketSize){
-
+		wxASSERT(pendingPacket->GetPacketSize() >= pendingPacketSize);
+		if(pendingPacket->GetPacketSize() == pendingPacketSize) {
 			// Process packet
 			bool bPacketResult = PacketReceived(pendingPacket);
 			delete pendingPacket;	
@@ -295,10 +294,9 @@ void CEMSocket::DisableDownloadLimit(){
 	}
 }
 
-bool CEMSocket::SendPacket(Packet* packet, bool delpacket,bool controlpacket){
+bool CEMSocket::SendPacket(Packet* packet, bool delpacket, bool controlpacket) {
 	if (!delpacket){
-		Packet* copy = new Packet(packet->opcode,packet->size);
-		memcpy(copy->pBuffer,packet->pBuffer,packet->size);
+		Packet* copy = new Packet(*packet);
 		packet = copy;
 	}			
 	if ( ( (!IsConnected()) || IsBusy() ) || ( m_bLinkedPackets && controlpacket ) ){

@@ -278,7 +278,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
 }
 
 // close
-bool CFile::Close()
+bool CFile::Close() const
 {
     if ( IsOpened() ) {
         if ( close(m_fd) == -1 ) {
@@ -298,7 +298,7 @@ bool CFile::Close()
 // ----------------------------------------------------------------------------
 
 // read
-off_t CFile::Read(void *pBuf, off_t nCount)
+off_t CFile::Read(void *pBuf, off_t nCount) const
 {
     wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
 
@@ -362,35 +362,35 @@ bool CFile::Flush()
 #include <cstring>
 
 // seek
-off_t CFile::Seek(off_t ofs, wxSeekMode mode)
+off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
 {
-    wxASSERT( IsOpened() );
+	wxASSERT( IsOpened() );
 
-    int origin;
-    switch ( mode ) {
-        default:
-            wxFAIL_MSG(_("unknown seek origin"));
+	int origin;
+	switch ( mode ) {
+	default:
+		wxFAIL_MSG(_("unknown seek origin"));
 
-        case wxFromStart:
-            origin = SEEK_SET;
-            break;
+	case wxFromStart:
+		origin = SEEK_SET;
+		break;
 
-        case wxFromCurrent:
-            origin = SEEK_CUR;
-            break;
+	case wxFromCurrent:
+		origin = SEEK_CUR;
+		break;
 
-        case wxFromEnd:
-            origin = SEEK_END;
-            break;
-    }
+	case wxFromEnd:
+		origin = SEEK_END;
+		break;
+	}
 
-    off_t iRc = lseek(m_fd, ofs, origin);
-    if ( iRc == -1 ) {
-    	printf("Error in lseek: %s\n", strerror(errno));
-        return wxInvalidOffset;
-    }
-    else
-        return (off_t) iRc;
+	off_t iRc = lseek(m_fd, ofs, origin);
+	if ( iRc == -1 ) {
+		printf("Error in lseek: %s\n", strerror(errno));
+		return wxInvalidOffset;
+	} else {
+		return (off_t) iRc;
+	}
 }
 
 // get current off_t

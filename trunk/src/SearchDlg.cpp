@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHMAX, CSearchDlg::OnBnClickedStarts)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHEXTENSION, CSearchDlg::OnBnClickedStarts)
 	EVT_TEXT_ENTER(IDC_EDITSEARCHAVAIBILITY, CSearchDlg::OnBnClickedStarts)
+	EVT_TEXT_ENTER(IDC_SEARCHWEBNAME, CSearchDlg::OnBtnWebSearch)
 	
 	EVT_TEXT(IDC_SEARCHNAME, CSearchDlg::OnFieldsChange)
 	EVT_TEXT(IDC_SEARCHWEBNAME, CSearchDlg::OnFieldsChange)
@@ -413,12 +414,12 @@ void CSearchDlg::StartNewSearch()
 	}
 	
 	Packet* packet = new Packet(data);
-	packet->opcode = OP_SEARCHREQUEST;
+	packet->SetOpCode(OP_SEARCHREQUEST);
 	delete data;
 		
 	globalsearch = ((wxCheckBox*)FindWindowById(IDC_SGLOBAL))->IsChecked();
 	
-	theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 	theApp.serverconnect->SendPacket( packet, !globalsearch );
 	if ( globalsearch ) {
 		askedlist.clear();
@@ -429,7 +430,7 @@ void CSearchDlg::StartNewSearch()
 		askedlist.insert( current );
 				 
 		searchpacket = packet;
-		searchpacket->opcode = OP_GLOBSEARCHREQ;
+		searchpacket->SetOpCode(OP_GLOBSEARCHREQ);
 		globalsearch = true;
 	}
 	

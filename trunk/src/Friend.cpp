@@ -93,7 +93,7 @@ void CFriend::LoadFromFile(CFile* file)
 	uint32 tagcount;
 	file->Read(&tagcount, 4);
 	for ( uint32 j = 0; j != tagcount; j++) {
-		CTag* newtag = new CTag(file);
+		CTag *newtag = new CTag(*file);
 		switch ( newtag->tag.specialtag ) {
 			case FF_NAME:
 				m_strName = char2unicode(newtag->tag.stringvalue);

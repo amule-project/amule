@@ -285,12 +285,12 @@ void CServerList::ServerStats()
 		srand((unsigned)time(NULL));
 		uint32 time = 0x55AA0000 + (uint16)rand();
 		ping_server->SetChallenge(time);
-		memcpy( packet->pBuffer, &time, 4 );
+		packet->CopyToDataBuffer(0, (const char *)&time, 4);
 		ping_server->SetLastPinged(::GetTickCount());
 		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(ping_server);
-		theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		/* Initial Import Test (Creteil) BEGIN Leave commented for the moment ...
 		ping_server->SetLastDescPingedCount(false);

@@ -34,7 +34,7 @@ class CSearchFile : public CAbstractFile {
 	friend class CPartFile;
 public:
 	//CSearchFile() {};
-	CSearchFile(CMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
+	CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, LPCTSTR pszDirectory = NULL);
 	CSearchFile(uint32 nSearchID, const uchar* pucFileHash, uint32 uFileSize, LPCTSTR pszFileName, int iFileType, int iAvailability);
 	CSearchFile(CSearchFile* copyfrom);
 	//CSearchFile(CFile* in_data, uint32 nSearchID);
@@ -45,14 +45,13 @@ public:
 	uint32	AddSources(uint32 count, uint32 count_complete);
 	uint32	GetSourceCount();
 	uint32	GetCompleteSourceCount();
-	uint32	GetSearchID() {return m_nSearchID;}
-
+	uint32	GetSearchID() 				{ return m_nSearchID; }
 	uint32	GetClientID() const			{ return m_nClientID; }
-	void		SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
+	void	SetClientID(uint32 nClientID)		{ m_nClientID = nClientID; }
 	uint16	GetClientPort() const			{ return m_nClientPort; }
-	void		SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
+	void	SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
 	uint32	GetClientServerIP() const		{ return m_nClientServerIP; }
-	void		SetClientServerIP(uint32 uIP)   	{ m_nClientServerIP = uIP; }
+	void	SetClientServerIP(uint32 uIP)   	{ m_nClientServerIP = uIP; }
 	uint16	GetClientServerPort() const		{ return m_nClientServerPort; }
 	void		SetClientServerPort(uint16 nPort) { m_nClientServerPort = nPort; }
 	
@@ -120,11 +119,12 @@ public:
 	CSearchList();
 	~CSearchList();
 	void	Clear();
+
 	void	NewSearch(const wxString& resTypes, uint16 nSearchID);
-	uint16	ProcessSearchanswer(char* packet, uint32 size, CUpDownClient* Sender = NULL);
-	uint16	ProcessSearchanswer(char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
-	uint16	ProcessSearchanswer(char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
-    	uint16	ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort);	
+	uint16	ProcessSearchanswer(const char* packet, uint32 size, CUpDownClient* Sender = NULL);
+	uint16	ProcessSearchanswer(const char* packet, uint32 size, uint32 nServerIP, uint16 nServerPort);
+	uint16	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, LPCTSTR pszDirectory);
+	uint16	ProcessUDPSearchanswer(CSafeMemFile* packet, uint32 nServerIP, uint16 nServerPort);	
    // uint16	ProcessUDPSearchanswer(char* packet, uint32 size);
 
 	uint16	GetResultCount();

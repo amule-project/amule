@@ -407,3 +407,9 @@ void CTransferWnd::OnBtnSwitchUpload(wxCommandEvent &evt) {
 		queueSizer->Layout();
 	}
 }
+
+void CTransferWnd::UpdateCatTabTitles() {
+	for (uint8 i=0;i<m_dlTab->GetPageCount();i++) {
+		EditCatTabLabel(i,(i==0)? GetCatTitle( theApp.glob_prefs->GetAllcatType() ):theApp.glob_prefs->GetCategory(i)->title);
+	}
+}

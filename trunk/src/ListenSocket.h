@@ -65,8 +65,8 @@ friend class CClientSocket;
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
 
 	CClientReqSocket(); /*{};*/
-public:
 
+public:
 	CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client = 0);	
 	~CClientReqSocket();
 	void		Disconnect(const wxString& strReason);
@@ -91,30 +91,28 @@ public:
 	CUpDownClient*	client;
 	CPreferences* 	app_prefs;
 
-
 protected:
 	bool	 PacketReceived(Packet* packet);
-private:
-//	void		Delete_Timed();
-	bool		ProcessPacket(char* packet, uint32 size,uint8 opcode);
-	bool		ProcessExtPacket(char* packet, uint32 size,uint8 opcode);
 
-    CClientReqSocketHandler* my_handler;
+private:
+//	void	Delete_Timed();
+	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
+	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
+
+	CClientReqSocketHandler* my_handler;
 };
 
 
-class CClientReqSocketHandler: 
-		public wxEvtHandler
+class CClientReqSocketHandler: public wxEvtHandler
 {
-	public:
+public:
 	CClientReqSocketHandler(CClientReqSocket* parent) {
 		socket = parent;
 	}
-	
+
 	CClientReqSocket* socket;
-	
-	private:
-	
+
+private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
 	
 	DECLARE_EVENT_TABLE()
@@ -126,7 +124,7 @@ class CClientReqSocketHandler:
 
 // CListenSocket command target
 class CListenSocket : public wxSocketServer{
-  DECLARE_DYNAMIC_CLASS(CListenSocket)
+	DECLARE_DYNAMIC_CLASS(CListenSocket)
 
 public:
 	CListenSocket() : wxSocketServer(happyCompiler) {};
@@ -155,6 +153,7 @@ public:
 	uint32	GetActiveConnections()		{ return activeconnections; }
 	
 	void	Debug_ClientDeleted(CUpDownClient* deleted);
+
 private:
 	bool bListening;
 	CPreferences* app_prefs;

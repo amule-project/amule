@@ -468,7 +468,7 @@ uint8 CPartFile::LoadPartFile(wxString in_directory, wxString filename, bool get
 		ENDIAN_SWAP_I_32(tagcount);
 
 		for (uint32 j = 0; j < tagcount;j++) {
-			CTag* newtag = new CTag(&metFile);
+			CTag* newtag = new CTag(metFile);
 			if (!getsizeonly || (getsizeonly && (newtag->tag.specialtag==FT_FILESIZE || newtag->tag.specialtag==FT_FILENAME))) {
 				switch(newtag->tag.specialtag) {
 					case FT_FILENAME: {
@@ -1794,9 +1794,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			UpdateCompletedInfos();
 		}
 		m_bPercentUpdated = false;
+		if (theApp.glob_prefs->ShowCatTabInfos()) {
+			theApp.amuledlg->transferwnd->UpdateCatTabTitles();	
+		}				
 	}
 	
-		
 	return (uint32)(kBpsDown*1024.0);
 }
 
@@ -2299,6 +2301,9 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 
 	}
 	theApp.amuledlg->transferwnd->downloadlistctrl->ShowFilesCount();
+	if (theApp.glob_prefs->ShowCatTabInfos()) {
+		theApp.amuledlg->transferwnd->UpdateCatTabTitles();	
+	}			
 	UpdateDisplayedInfo(true);
 }
 
@@ -2447,7 +2452,6 @@ wxThread::ExitCode completingThread::Entry()
 		*newname = strTestName;
 	}
 
-	
 	if (!FS_wxRenameFile(partfilename, *newname)) {
 		if (!FS_wxCopyFile(partfilename, *newname)) {
 			completing_result |= UNEXP_FILE_ERROR;
@@ -2762,7 +2766,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		CUpDownClient* cur_src = m_SrcList.GetNext(pos);
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
-				theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+				theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 				cur_src->socket->SendPacket(packet,false,true);
 				cur_src->SetDownloadState(DS_ONQUEUE);
 				cur_src->SetSentCancelTransfer(1);
@@ -3036,9 +3040,15 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 		uint8* srcstatus = cur_src->GetPartStatus();
 		if (srcstatus) {
 			uint8* reqstatus = forClient->GetPartStatus();
+			int n = GetPartCount();
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
-				for (int x = 0; x < GetPartCount(); x++) {
+				#warning Phoenix - ugly hack to see the problem - I
+				if( cur_src->m_nPartCount != forClient->m_nPartCount ) {
+					printf("%d %d %d\n",n, cur_src->m_nPartCount, forClient->m_nPartCount);
+					n = cur_src->m_nPartCount < forClient->m_nPartCount ? cur_src->m_nPartCount : forClient->m_nPartCount;
+				}
+				for (int x = 0; x < n; x++) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
 						break;
@@ -3047,6 +3057,11 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 			} else {
 				// if we don't know the need parts for this client, return any source
 				// currently a client sends it's file status only after it has at least one complete part,
+				#warning Phoenix - ugly hack to see the problem - II
+				if( n != cur_src->m_nPartCount ) {
+					printf("%d %d\n",n, cur_src->m_nPartCount);
+					n = cur_src->m_nPartCount;
+				}
 				for (int x = 0; x < GetPartCount(); x++){
 					if (srcstatus[x]) {
 						bNeeded = true;
@@ -3083,9 +3098,9 @@ Packet*	CPartFile::CreateSrcInfoPacket(CUpDownClient* forClient)
 	data.Write(nCount);
 
 	Packet* result = new Packet(&data, OP_EMULEPROT);
-	result->opcode = OP_ANSWERSOURCES;
+	result->SetOpCode(OP_ANSWERSOURCES);
 	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
-	if (result->size > 354) {
+	if (result->GetPacketSize() > 354) {
 		result->PackPacket();
 	}
 	//if (thePrefs.GetDebugSourceExchange()) {
@@ -3799,13 +3814,10 @@ void CPartFile::SetStatus(uint8 in)
 	if (theApp.IsRunning()) {
 		if (theApp.amuledlg->transferwnd->downloadlistctrl->curTab==0) {
 			theApp.amuledlg->transferwnd->downloadlistctrl->ChangeCategory(0);
-		} else {
-			UpdateDisplayedInfo(true);
 		}
-/* TODO!
+		UpdateDisplayedInfo(true);
 		if (theApp.glob_prefs->ShowCatTabInfos()) {
 			theApp.amuledlg->transferwnd->UpdateCatTabTitles();		
 		}
-*/
 	}
 }

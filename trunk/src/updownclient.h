@@ -175,7 +175,7 @@ public:
 
 	void			ClearDownloadBlockRequests();
 	void			RequestSharedFileList();
-	void			ProcessSharedFileList(char* pachPacket, uint32 nSize, LPCTSTR pszDirectory = NULL);
+	void			ProcessSharedFileList(const char* pachPacket, uint32 nSize, LPCTSTR pszDirectory = NULL);
 	
 	wxString		GetUploadFileInfo();
 	
@@ -184,13 +184,13 @@ public:
 	void			SetUserName(const char* pszNewName);
 	uint8			GetClientSoft()				{return m_clientSoft;}
 	void			ReGetClientSoft();
-	bool			ProcessHelloAnswer(char* pachPacket, uint32 nSize);
-	bool			ProcessHelloPacket(char* pachPacket, uint32 nSize);
+	bool			ProcessHelloAnswer(const char *pachPacket, uint32 nSize);
+	bool			ProcessHelloPacket(const char *pachPacket, uint32 nSize);
 	void			SendHelloAnswer();
 	bool			SendHelloPacket();
 	void			SendMuleInfoPacket(bool bAnswer);
-	void			ProcessMuleInfoPacket(char* pachPacket, uint32 nSize);
-	void			ProcessMuleCommentPacket(char* pachPacket, uint32 nSize);
+	void			ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
+	void			ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
 	bool			Compare(CUpDownClient* tocomp, bool bIgnoreUserhash = false);	
 	void			SetLastSrcReqTime()			{m_dwLastSourceRequest = ::GetTickCount();}
 	void			SetLastSrcAnswerTime()		{m_dwLastSourceAnswer = ::GetTickCount();}
@@ -211,10 +211,15 @@ public:
 	void			ProcessSignaturePacket(uchar* pachPacket, uint32 nSize);
 	uint8			GetSecureIdentState()		{
 		if (m_SecureIdentState != IS_UNAVAILABLE) {
+			if (!SecIdentSupRec) {
+				printf("\nWrong Tags on SecIdentState packet!!\n");
+				printf("%s\n",unicode2char(GetClientFullInfo()));
+				printf("User Disconnected.\n");			
+			}
 			wxASSERT(SecIdentSupRec);
 		}
 		return m_SecureIdentState;
-		}
+	}
 	void			SendSecIdentStatePacket();
 	void			ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize);
 
@@ -242,7 +247,7 @@ public:
 	void			SetUpStartTime(uint32 dwTime = 0);
 	uint32			GetUpStartTimeDelay()		{return ::GetTickCount() - m_dwUploadTime;}
 	void			SetWaitStartTime(uint32 dwTime = 0);
-	void			SendHashsetPacket(char* forfileid);
+	void			SendHashsetPacket(const char* forfileid);
 	bool			SupportMultiPacket() const { return m_bMultiPacket;	}	
 
 	void			SetUploadFileID(CKnownFile* newreqfile);
@@ -299,10 +304,10 @@ public:
 	bool			AskForDownload();
 	void			SendStartupLoadReq();
 	void			SendFileRequest();
-	void			ProcessHashSet(char* packet,uint32 size);
+	void			ProcessHashSet(const char *packet, uint32 size);
 	bool			AddRequestForAnotherFile(CPartFile* file);
 	void			SendBlockRequests();
-	void			ProcessBlockPacket(char* packet, uint32 size, bool packed = false);
+	void			ProcessBlockPacket(const char* packet, uint32 size, bool packed = false);
 	uint16			GetAvailablePartCount();
 	bool			SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensions, bool bRemoveCompletely, CPartFile* toFile = NULL);
 	void			DontSwapTo(CPartFile* file);
@@ -381,7 +386,7 @@ private:
 
 	// base
 	void	Init();
-	bool	ProcessHelloTypePacket(CSafeMemFile* data);
+	bool	ProcessHelloTypePacket(const CSafeMemFile& data);
 	void	SendHelloTypePacket(CMemFile* data);
 	void	ClearHelloProperties(); // eMule 0.42
 	bool	m_bIsBotuser;

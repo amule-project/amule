@@ -148,8 +148,8 @@ void CUpDownClient::SendStartupLoadReq()
 	CSafeMemFile dataStartupLoadReq(16);
 	dataStartupLoadReq.WriteHash16(reqfile->GetFileHash());
 	Packet* packet = new Packet(&dataStartupLoadReq);
-	packet->opcode = OP_STARTUPLOADREQ;
-	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+	packet->SetOpCode(OP_STARTUPLOADREQ);
+	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 	socket->SendPacket(packet, true, true);
 }
 
@@ -234,8 +234,8 @@ void CUpDownClient::SendFileRequest()
 			DebugSend("OP__MultiPacket", this, (char*)reqfile->GetFileHash());
 		#endif
 		Packet* packet = new Packet(&dataFileReq, OP_EMULEPROT);
-		packet->opcode = OP_MULTIPACKET;
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		packet->SetOpCode(OP_MULTIPACKET);
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		socket->SendPacket(packet, true);
 	} else {
 		//This is extended information
@@ -250,8 +250,8 @@ void CUpDownClient::SendFileRequest()
 			DebugSend("OP__FileRequest", this, (char*)reqfile->GetFileHash());
 		#endif
 		Packet* packet = new Packet(&dataFileReq);
-		packet->opcode=OP_REQUESTFILENAME;
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+		packet->SetOpCode(OP_REQUESTFILENAME);
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		socket->SendPacket(packet, true);
 	
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
@@ -265,8 +265,8 @@ void CUpDownClient::SendFileRequest()
 			CSafeMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteRaw(reqfile->GetFileHash(),16);
 			packet = new Packet(&dataSetReqFileID);
-			packet->opcode = OP_SETREQFILEID;
-			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			packet->SetOpCode(OP_SETREQFILEID);
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 			socket->SendPacket(packet, true);
 		}
 	
@@ -286,8 +286,8 @@ void CUpDownClient::SendFileRequest()
 		    #endif
 			reqfile->SetLastAnsweredTimeTimeout();
 			Packet* packet = new Packet(OP_REQUESTSOURCES,16,OP_EMULEPROT);
-			md4cpy(packet->pBuffer,reqfile->GetFileHash());
-			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->size);
+			packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+			theApp.uploadqueue->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
 			socket->SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		    #ifdef __USE_DEBUG__
@@ -363,8 +363,8 @@ void CUpDownClient::ProcessFileInfo(CSafeMemFile* data, CPartFile* file)
 			if (socket)
 			{
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
-				md4cpy(packet->pBuffer,reqfile->GetFileHash());
-				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+				packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				socket->SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -484,8 +484,8 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, CSafeMemFile* data, CPart
 				}
 				#endif
 				Packet* packet = new Packet(OP_HASHSETREQUEST,16);
-				md4cpy(packet->pBuffer,reqfile->GetFileHash());
-				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+				packet->Copy16ToDataBuffer((const char *)reqfile->GetFileHash().GetHash());
+				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				socket->SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -603,7 +603,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 }
 /* eMule 0.30c implementation, i give it a try (Creteil) END ... */
 
-void CUpDownClient::ProcessHashSet(char* packet,uint32 size)
+void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 {
 	if ((!reqfile) || md4cmp(packet,reqfile->GetFileHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
@@ -655,7 +655,7 @@ void CUpDownClient::SendBlockRequests()
 	if (m_PendingBlocks_list.IsEmpty()) {
 		if (!GetSentCancelTransfer()){
 			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 			socket->SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -664,7 +664,8 @@ void CUpDownClient::SendBlockRequests()
 	}
 	#define iPacketSize 16+(3*4)+(3*4) // 40
 	Packet* packet = new Packet(OP_REQUESTPARTS,iPacketSize);
-	CSafeMemFile data((BYTE*)packet->pBuffer,iPacketSize);
+	char *tempbuf = new char[iPacketSize];
+	CSafeMemFile data((BYTE *)tempbuf, iPacketSize);
 	data.WriteHash16(reqfile->GetFileHash());
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
@@ -692,8 +693,10 @@ void CUpDownClient::SendBlockRequests()
 		}
 	}
 
-	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
-	socket->SendPacket(packet,true,true);
+	packet->CopyToDataBuffer(0, tempbuf, iPacketSize);
+	delete [] tempbuf;
+	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+	socket->SendPacket(packet, true, true);
 }
 
 /*
@@ -714,7 +717,7 @@ The requests will still not exceed 180k, but may be smaller to
 fill a gap.
 */
 
-void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
+void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool packed)
 {
 	try {
 		// Ignore if no data required
@@ -729,7 +732,7 @@ void CUpDownClient::ProcessBlockPacket(char *packet, uint32 size, bool packed)
 
 
 		// Read data from packet
-		CSafeMemFile *data = new CSafeMemFile((BYTE*)packet, size);
+		const CSafeMemFile *data = new CSafeMemFile((BYTE*)packet, size);
 		uchar fileID[16];
 		data->ReadRaw(fileID,16);
 
@@ -1031,7 +1034,7 @@ float CUpDownClient::CalculateKBpsDown() {
 	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
 		if (!GetSentCancelTransfer()){
 			Packet* packet = new Packet(OP_CANCELTRANSFER,0);
-			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+			theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 			socket->SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -1115,8 +1118,8 @@ void CUpDownClient::UDPReaskForDownload()
 			DebugSend("OP__ReaskFilePing", this, (char*)reqfile->GetFileHash());
 		*/
 		Packet* response = new Packet(&data, OP_EMULEPROT);
-		response->opcode = OP_REASKFILEPING;
-		theApp.uploadqueue->AddUpDataOverheadFileRequest(response->size);
+		response->SetOpCode(OP_REASKFILEPING);
+		theApp.uploadqueue->AddUpDataOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetIP(),GetUDPPort());
 	
 	}

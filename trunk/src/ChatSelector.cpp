@@ -183,8 +183,8 @@ bool CChatSelector::SendMessage( const wxString& message )
 		CMemFile data;
 		data.Write(message);
 		Packet* packet = new Packet(&data);
-		packet->opcode = OP_MESSAGE;
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+		packet->SetOpCode(OP_MESSAGE);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		ci->client->socket->SendPacket(packet, true, true);
 		ci->AddText( wxString(char2unicode(theApp.glob_prefs->GetUserNick())), COLOR_GREEN );
 		ci->AddText( wxT(": ") + message + wxT("\n"), COLOR_BLACK );
@@ -239,8 +239,8 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 		CMemFile data;
 		data.Write(wxString(ci->messagepending));
 		Packet* packet = new Packet(&data);
-		packet->opcode = OP_MESSAGE;
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+		packet->SetOpCode(OP_MESSAGE);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		ci->client->socket->SendPacket(packet, true, true);
 		
 		ci->AddText( wxString(char2unicode(theApp.glob_prefs->GetUserNick())), COLOR_GREEN );

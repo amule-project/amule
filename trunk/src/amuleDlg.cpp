@@ -257,14 +257,19 @@ void CamuleDlg::ToggleFastED2KLinksHandler()
 void CamuleDlg::SetActiveDialog(wxWindow* dlg)
 {
 	switch ( dlg->GetId() ) {
+		case IDD_TRANSFER:		
+			if (theApp.glob_prefs->ShowCatTabInfos()) {
+				transferwnd->UpdateCatTabTitles();	
+			}
 		case IDD_SERVER:
 		case IDD_SEARCH:
-		case IDD_TRANSFER:
 		case IDD_FILES:
 		case IDD_CHAT:
 		case IDD_STATISTICS:
 			m_nActiveDialog = dlg->GetId();
 			break;
+		
+		
 		default:
 			printf("Unknown window passed to SetActiveDialog!\n");
 			return;
@@ -1035,6 +1040,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		ShowTransferRate();
+		if (theApp.glob_prefs->ShowCatTabInfos() && theApp.amuledlg->activewnd == theApp.amuledlg->transferwnd) {
+						theApp.amuledlg->transferwnd->UpdateCatTabTitles();		
+		}
 	}
 	
 }

@@ -330,9 +330,9 @@ void CUpDownClient::ClearHelloProperties()
 	SecIdentSupRec = 0;
 }
 
-bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 {
-	CSafeMemFile data((BYTE*)pachPacket,nSize);
+	const CSafeMemFile data((BYTE*)pachPacket,nSize);
 	uint8 hashsize;
 	if ( (1!=data.Read(hashsize)) ) {
 		throw wxString(wxT("Invalid Hello packet: Short packet when reading hash size"));
@@ -347,19 +347,20 @@ bool CUpDownClient::ProcessHelloPacket(char* pachPacket, uint32 nSize)
 		throw wxString(wxT("Invalid Hello packet: Other userhash sizes than 16 are not implemented"));
 	}
 	// eMule 0.42: reset all client properties; a client may not send a particular emule tag any longer
-	ClearHelloProperties();	
-	return ProcessHelloTypePacket(&data);
+	ClearHelloProperties();
+	
+	return ProcessHelloTypePacket(data);
 }
 
-bool CUpDownClient::ProcessHelloAnswer(char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloAnswer(const char *pachPacket, uint32 nSize)
 {
-	CSafeMemFile data((BYTE*)pachPacket,nSize);
-	bool bIsMule = ProcessHelloTypePacket(&data);
+	const CSafeMemFile data((BYTE*)pachPacket,nSize);
+	bool bIsMule = ProcessHelloTypePacket(data);
 	m_bHelloAnswerPending = false;
 	return bIsMule;
 }
 
-bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
+bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 {
 		
 	m_bIsHybrid = false;
@@ -369,13 +370,13 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 	
 	try {	
 	
-		data->ReadHash16(m_achUserHash);
+		data.ReadHash16(m_achUserHash);
 		ValidateHash();
-		data->Read(m_nUserID);
+		data.Read(m_nUserID);
 		uint16 nUserPort = 0;
-		data->Read(nUserPort); // hmm clientport is sent twice - why?
+		data.Read(nUserPort); // hmm clientport is sent twice - why?
 		uint32 tagcount;
-		data->Read(tagcount);
+		data.Read(tagcount);
 		for (uint32 i = 0;i < tagcount; i++){
 			CTag temptag(data);
 			switch(temptag.tag.specialtag){
@@ -466,15 +467,15 @@ bool CUpDownClient::ProcessHelloTypePacket(CSafeMemFile* data)
 		}
 		
 		m_nUserPort = nUserPort;
-		data->Read(m_dwServerIP);
-		data->Read(m_nServerPort);
+		data.Read(m_dwServerIP);
+		data.Read(m_nServerPort);
 		// Hybrid now has an extra uint32.. What is it for?
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data->GetLength() - data->GetPosition() == sizeof(uint32) ){
+		if ( data.Length() - data.GetPosition() == sizeof(uint32) ){
 			// Kry - Changes on eMule code for compat.
 			char test[4];
 			// lemonfan - this is not an "normal" string, so wxString cant be used
-			data->ReadRaw(&test, 4);
+			data.ReadRaw(&test, 4);
 			if ((test[0]=='M') && (test[1]=='L') && (test[2]=='D') && (test[3]=='K')) {
 				m_bIsML=true;
 			} else{
@@ -634,8 +635,8 @@ bool CUpDownClient::SendHelloPacket() {
 	data.Write((uint8)16); // size of userhash
 	SendHelloTypePacket(&data);
 	Packet* packet = new Packet(&data);
-	packet->opcode = OP_HELLO;
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	packet->SetOpCode(OP_HELLO);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	return true;
@@ -691,22 +692,22 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
 	if (!bAnswer)
-		packet->opcode = OP_EMULEINFO;
+		packet->SetOpCode(OP_EMULEINFO);
 	else
-		packet->opcode = OP_EMULEINFOANSWER;
+		packet->SetOpCode(OP_EMULEINFOANSWER);
 	if (socket) {
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		socket->SendPacket(packet,true,true);
 	}
 }
 
-void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 {
 
 	try {
 		
 		//DumpMem(pachPacket,nSize);
-		CSafeMemFile data((BYTE*)pachPacket,nSize);
+		const CSafeMemFile data((BYTE*)pachPacket,nSize);
 		m_byCompatibleClient = 0;
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
@@ -748,7 +749,7 @@ void CUpDownClient::ProcessMuleInfoPacket(char* pachPacket, uint32 nSize)
 		data.Read(tagcount);
 		
 		for (uint32 i = 0;i < tagcount; i++){
-			CTag temptag(&data);
+			CTag temptag(data);
 			switch(temptag.tag.specialtag){
 				case ET_COMPRESSION:
 					// Bits 31- 8: 0 - reserved
@@ -854,9 +855,9 @@ void CUpDownClient::SendHelloAnswer()
 	CSafeMemFile data(128);
 	SendHelloTypePacket(&data);
 	Packet* packet = new Packet(&data);
-	packet->opcode = OP_HELLOANSWER;
+	packet->SetOpCode(OP_HELLOANSWER);
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true);
 
 }
@@ -946,7 +947,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 }
 
 
-void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
 	try
 	{
@@ -954,7 +955,7 @@ void CUpDownClient::ProcessMuleCommentPacket(char* pachPacket, uint32 nSize)
 			throw CInvalidPacket("comment packet for unknown file");
 		}
 
-		CSafeMemFile data((BYTE*)pachPacket,nSize);
+		const CSafeMemFile data((BYTE*)pachPacket, nSize);
 		uint32 length;
 		if ( sizeof(m_iRate) != data.Read(m_iRate) )
 			throw CInvalidPacket("short packet reading rating");
@@ -1220,12 +1221,12 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			CMemFile data;
 			data.Write(m_nUserID);
 			Packet* packet = new Packet(&data);
-			packet->opcode = OP_CALLBACKREQUEST;
+			packet->SetOpCode(OP_CALLBACKREQUEST);
 
 //			Packet* packet = new Packet(OP_CALLBACKREQUEST,4);
 //			memcpy(packet->pBuffer,&m_nUserID,4);
 
-			theApp.uploadqueue->AddUpDataOverheadServer(packet->size);
+			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
@@ -1296,13 +1297,13 @@ void CUpDownClient::ConnectionEstablished()
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
-				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->size);
+				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				socket->SendPacket(packet,true);
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		socket->SendPacket(packet,true,true);
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
@@ -1419,7 +1420,7 @@ void CUpDownClient::ReGetClientSoft()
 			switch (m_clientSoft) {
 				case SO_AMULE:
 					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now					
-					m_clientVerString += wxString::Format(wxT(" v1.x.y (based on eMule v0.%u)"), nClientMinVersion);
+					m_clientVerString += wxString::Format(wxT(" (based on eMule v0.%u)"), nClientMinVersion);
 					break;
 				case SO_LPHANT:
 					m_clientVerString += wxT(" < v0.05 ");
@@ -1566,9 +1567,9 @@ void CUpDownClient::RequestSharedFileList()
 	}
 }
 
-void CUpDownClient::ProcessSharedFileList(char* pachPacket, uint32 nSize, LPCTSTR pszDirectory){
-    if (m_iFileListRequested > 0){
-        m_iFileListRequested--;
+void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, LPCTSTR pszDirectory) {
+	if (m_iFileListRequested > 0) {
+		m_iFileListRequested--;
 		theApp.searchlist->ProcessSearchanswer(pachPacket,nSize,this,NULL,pszDirectory);
 	}
 }
@@ -1651,12 +1652,12 @@ void CUpDownClient::SendPublicKeyPacket(){
 	data.Write(theApp.clientcredits->GetPubKeyLen());
 	data.WriteRaw(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 	Packet* packet = new Packet(&data, OP_EMULEPROT); 
-	packet->opcode = OP_PUBLICKEY;
+	packet->SetOpCode(OP_PUBLICKEY);
 //	Packet* packet = new Packet(OP_PUBLICKEY,theApp.clientcredits->GetPubKeyLen() + 1,OP_EMULEPROT);
 //	memcpy(packet->pBuffer+1,theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 //	packet->pBuffer[0] = theApp.clientcredits->GetPubKeyLen();
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
 }
@@ -1714,7 +1715,7 @@ void CUpDownClient::SendSignaturePacket(){
 		data.Write(byChaIPKind);
 	}	
 	Packet* packet = new Packet(&data, OP_EMULEPROT);
-	packet->opcode = OP_SIGNATURE;
+	packet->SetOpCode(OP_SIGNATURE);
 
 //	Packet* packet = new Packet(OP_SIGNATURE,siglen + 1+ ( (bUseV2)? 1:0 ),OP_EMULEPROT);
 //	memcpy(packet->pBuffer+1,achBuffer, siglen);
@@ -1722,7 +1723,7 @@ void CUpDownClient::SendSignaturePacket(){
 //	if (bUseV2)
 //		packet->pBuffer[1+siglen] = byChaIPKind;
 
-	theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 	socket->SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 }
@@ -1827,12 +1828,12 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		data.Write(nValue);
 		data.Write(dwRandom);
 		Packet* packet = new Packet(&data, OP_EMULEPROT);
-		packet->opcode = OP_SECIDENTSTATE;		
+		packet->SetOpCode(OP_SECIDENTSTATE);
 //		Packet* packet = new Packet(OP_SECIDENTSTATE,5,OP_EMULEPROT);
 //		packet->pBuffer[0] = nValue;
 //		memcpy(packet->pBuffer+1,&dwRandom, sizeof(dwRandom));
 
-		theApp.uploadqueue->AddUpDataOverheadOther(packet->size);
+		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
 		socket->SendPacket(packet,true,true);
 	}
 	else {
@@ -1869,15 +1870,15 @@ void CUpDownClient::ProcessSecIdentStatePacket(uchar* pachPacket, uint32 nSize){
 	} 
 	catch ( CStrangePacket )
 	{
-		printf("\nWrong Tags on SecIdentState packet!!\n");
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("\nWrong SecIdentState packet!!\n");
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		throw wxString(wxT("Wrong Tags on SecIdentState packet"));
 	}
 	catch ( CInvalidPacket (e))
 	{
-		printf("Wrong Tags on SecIdentState packet - %s\n\n",e.what());
-		printf("Sent by %s on ip %s port %i using client %i version %i\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
+		printf("Wrong SecIdentState packet - %s\n\n",e.what());
+		printf("Sent by %s on ip %s port %i using client %x version %x\n",GetUserName(),GetFullIP(),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong Tags on SecIdentState packet"));
 	}
@@ -1901,7 +1902,7 @@ void CUpDownClient::InfoPacketsReceived(){
 bool CUpDownClient::CheckHandshakeFinished(UINT protocol, UINT opcode) const
 {
 	if (m_bHelloAnswerPending){
-		//throw wxString(_T("Handshake not finished")); // -> disconnect client
+		//	throw CString(wxT("Handshake not finished")); // -> disconnect client
 		// this triggers way too often.. need more time to look at this -> only create a warning
 		if (theApp.glob_prefs->GetVerbose()) {
 			theApp.amuledlg->AddLogLine(false, wxT("Handshake not finished while processing packet."));

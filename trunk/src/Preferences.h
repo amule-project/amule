@@ -518,7 +518,9 @@ public:
 	void	RemoveCat(size_t index);
 	uint32	GetCatCount()			{ return catMap.GetCount();}
 	Category_Struct* GetCategory(size_t index) { if (index>=0 && index<catMap.GetCount()) return catMap[index]; else return NULL;}
+
 	const wxString&	GetCatPath(uint8 index)		{ return catMap[index]->incomingpath;}
+
 	DWORD	GetCatColor(size_t index)		{ if (index>=0 && index<catMap.GetCount()) return catMap[index]->color; else return 0;}
 
 //	bool	ShowRatingIndicator()		{ return prefs->indicateratings;}

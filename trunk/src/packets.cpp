@@ -25,77 +25,147 @@
 #include "CMemFile.h"		// Needed for CMemFile
 #include "otherstructs.h"	// Needed for Header_Struct
 
-Packet::Packet(uint8 protocol){
-	m_bSplitted 		= false;
-	m_bLastSplitted 	= false;
-	size 				= 0;
-	pBuffer 			= NULL;
+// Copy constructor
+Packet::Packet(Packet &p)
+{
+	size 		= p.size;
+	opcode		= p.opcode;
+	prot 		= p.prot;
+	m_bSplitted 	= p.m_bSplitted;
+	m_bLastSplitted = p.m_bLastSplitted;
+	m_bPacked 	= p.m_bPacked;
+	m_bFromPF 	= p.m_bFromPF;
+	memcpy(head, p.head, sizeof head);
+	tempbuffer	= NULL;
+	if (p.completebuffer) {
+		completebuffer 	= new char[size + 10];;
+		pBuffer 	= completebuffer + 6;
+	} else {
+		completebuffer 	= NULL;
+		if (p.pBuffer) {
+			pBuffer = new char[size + 1];
+		} else {
+			pBuffer = NULL;
+		}
+	}
+	if (pBuffer)
+		memcpy( pBuffer, p.pBuffer, size + 1);
+}
+
+Packet::Packet(uint8 protocol)
+{
+	size 		= 0;
+	opcode		= 0;
+	prot 		= protocol;
+	m_bSplitted 	= false;
+	m_bLastSplitted = false;
+	m_bPacked 	= false;
+	m_bFromPF 	= false;
+	memset(head, 0, sizeof head);
+	tempbuffer	= NULL;
 	completebuffer 	= NULL;
-	tempbuffer		= NULL;
-	prot 				= protocol;
-	m_bPacked 		= false;
+	pBuffer 	= NULL;
 }
 
-Packet::Packet(char* header) {
-	m_bSplitted = m_bPacked = m_bLastSplitted = false;
-	tempbuffer = pBuffer = completebuffer = NULL;
+// only used for receiving packets
+Packet::Packet(char* header)
+{
 	Header_Struct* head = (Header_Struct*) header;
-	size = head->packetlength - 1;
-	opcode = head->command;
-	prot = head->eDonkeyID;
+	size 		= head->packetlength - 1;
+	opcode		= head->command;
+	prot		= head->eDonkeyID;
+	m_bSplitted 	= false;
+	m_bLastSplitted = false;
+	m_bPacked 	= false;
+	m_bFromPF 	= false;
+	memset(head, 0, sizeof head);
+	tempbuffer	= NULL;
+	completebuffer 	= NULL;
+	pBuffer 	= NULL;
 }
 
-Packet::Packet(char* pPacketPart, wxUint32 nSize ,bool bLast, bool bFromPF){// only used for splitted packets!
-	m_bFromPF = bFromPF;
-	m_bSplitted = true;
-	m_bPacked = false;
-	m_bLastSplitted = bLast;
-	tempbuffer = pBuffer = NULL;
-	completebuffer = pPacketPart;
-	size = nSize-6;
-}
-
-Packet::Packet(int8 in_opcode,wxInt32 in_size,uint8 protocol,bool bFromPF) {
-	m_bFromPF = bFromPF;
-	m_bSplitted = m_bPacked = m_bLastSplitted = false;
-	tempbuffer = 0;
-	if (in_size) {
-		completebuffer = new char[in_size+10];
-		pBuffer = completebuffer+6;
-		memset(completebuffer,0,in_size+10);
-	}
-	else {
-		pBuffer = completebuffer = NULL;
-	}
-	opcode = in_opcode;
-	size = in_size;
-	prot = protocol;
-}
-
-Packet::Packet(CMemFile* datafile, uint8 protocol) {
-	m_bSplitted = m_bPacked = m_bLastSplitted = false;
-	size = datafile->GetLength();
-	completebuffer = new char[datafile->GetLength() + 10];
+Packet::Packet(CMemFile* datafile, uint8 protocol)
+{
+	size		= datafile->GetLength();
+	opcode		= 0;
+	prot		= protocol;
+	m_bSplitted 	= false;
+	m_bLastSplitted = false;
+	m_bPacked 	= false;
+	m_bFromPF 	= false;
+	memset(head, 0, sizeof head);
+	tempbuffer = NULL;
+	completebuffer = new char[size + 10];
 	pBuffer = completebuffer + 6;
 
 	BYTE* tmp = datafile->Detach();
-	memcpy(pBuffer,tmp,size);
-	free(tmp);
-
-	tempbuffer = NULL;
-	prot = protocol;
+	memcpy(pBuffer, tmp, size);
+	#warning check where is the malloc of this free
+	free(tmp); 
 }
 
-Packet::~Packet() {
+Packet::Packet(int8 in_opcode, wxInt32 in_size, uint8 protocol, bool bFromPF)
+{
+	size		= in_size;
+	opcode		= in_opcode;
+	prot		= protocol;
+	m_bSplitted 	= false;
+	m_bLastSplitted = false;
+	m_bPacked 	= false;
+	m_bFromPF	= bFromPF;
+	memset(head, 0, sizeof head);
+	tempbuffer	= NULL;
+	if (in_size) {
+		completebuffer = new char[in_size + 10];
+		pBuffer = completebuffer + 6;
+		memset(completebuffer, 0, in_size + 10);
+	} else {
+		completebuffer = NULL;
+		pBuffer = NULL;
+	}
+}
+
+// only used for splitted packets!
+Packet::Packet(char* pPacketPart, wxUint32 nSize, bool bLast, bool bFromPF)
+{
+	size		= nSize - 6;
+	opcode		= 0;
+	prot		= 0;
+	m_bSplitted	= true;
+	m_bLastSplitted	= bLast;
+	m_bPacked	= false;
+	m_bFromPF	= bFromPF;
+	memset(head, 0, sizeof head);
+	tempbuffer	= NULL;
+	completebuffer	= pPacketPart;
+	pBuffer		= NULL;
+}
+
+Packet::~Packet()
+{
+	// Never deletes pBuffer when completebuffer is not NULL
 	if (completebuffer) {
-		delete[] completebuffer;
+		delete [] completebuffer;
 	} else if (pBuffer) {
+	// On the other hand, if completebuffer is NULL and pBuffer is not NULL 
 		delete [] pBuffer;
 	}
 	
 	if (tempbuffer) {
-		delete[] tempbuffer;
+		delete [] tempbuffer;
 	}
+}
+
+void Packet::AllocDataBuffer(void)
+{
+	wxASSERT(completebuffer == NULL);
+	pBuffer = new char[size + 1];
+}
+
+void Packet::CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n)
+{
+	wxASSERT(offset + n <= size + 1);
+	memcpy(pBuffer + offset, data, n);
 }
 
 char* Packet::GetPacket() {
@@ -106,12 +176,13 @@ char* Packet::GetPacket() {
 		return completebuffer;
 	} else {
 		if (tempbuffer){
-			delete[] tempbuffer;
+			delete [] tempbuffer;
+			#warning Phoenix - why??? Check this info and clean!
 			tempbuffer = NULL; // 'new' may throw an exception
 		}
 		tempbuffer = new char[size+10];
-		memcpy(tempbuffer,GetHeader(),6);
-		memcpy(tempbuffer+6,pBuffer,size);
+		memcpy(tempbuffer    , GetHeader(), 6   );
+		memcpy(tempbuffer + 6, pBuffer    , size);
 		return tempbuffer;
 	}
 }
@@ -294,17 +365,25 @@ CTag::CTag(const STag& in_tag)
 {
 }
 
-CTag::CTag(CFile* in_data)
+#if defined( UNDEFINED )
+CTag::CTag(CFile *file)
 {
-	in_data->Read(&tag.type,1);
+	// Use the constructor below
+	CTag(*file);
+}
+#endif // UNDEDFINED
+
+CTag::CTag(const CFile &in_data)
+{
+	in_data.Read(&tag.type,1);
 	uint16 length;
-	in_data->Read(&length,2);
+	in_data.Read(&length,2);
 	ENDIAN_SWAP_I_16(length);
 	if (length == 1)
-		in_data->Read(&tag.specialtag,1);
+		in_data.Read(&tag.specialtag,1);
 	else {
 		tag.tagname = new char[length+1];
-		in_data->Read(tag.tagname,length);
+		in_data.Read(tag.tagname,length);
 		tag.tagname[length] = 0;
 	}
 
@@ -313,44 +392,44 @@ CTag::CTag(CFile* in_data)
 	// a list - like the search results from a server.
 	
 	if (tag.type == 2){ // STRING
-		in_data->Read(&length,2);
+		in_data.Read(&length,2);
 		ENDIAN_SWAP_I_16(length);
 		tag.stringvalue = new char[length+1];
-		in_data->Read(tag.stringvalue,length);
+		in_data.Read(tag.stringvalue,length);
 		tag.stringvalue[length] = '\0';
 	}
 	else if (tag.type == 3){ // DWORD
-		in_data->Read(&tag.intvalue,4);
+		in_data.Read(&tag.intvalue,4);
 		ENDIAN_SWAP_I_32(tag.intvalue);
 	}
 	else if (tag.type == 4){ // FLOAT (used by Hybrid 0.48)
 		// What to do with them?
-		in_data->Read(&tag.floatvalue,4);
+		in_data.Read(&tag.floatvalue,4);
 	}
 	else if (tag.type == 1){ // HASH (never seen)
 		printf("CTag::CTag(CFile*); Reading *unverified* HASH tag\n");
-		in_data->Seek(16, wxFromCurrent);
+		in_data.Seek(16, wxFromCurrent);
 	}
 	else if (tag.type == 5){ // BOOL (never seen; propably 1 bit)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL tag\n");
-		in_data->Seek(1, wxFromCurrent);
+		in_data.Seek(1, wxFromCurrent);
 	}
 	else if (tag.type == 6){ // BOOL Array (never seen; propably <numbits> <bits>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BOOL Array tag\n");
 		uint16 len;
-		in_data->Read(&len,2);
+		in_data.Read(&len,2);
 		ENDIAN_SWAP_I_16(len);
-		in_data->Seek((len+7)/8, wxFromCurrent);
+		in_data.Seek((len+7)/8, wxFromCurrent);
 	}
 	else if (tag.type == 7){ // BLOB (never seen; propably <len> <byte>)
 		// NOTE: This is preventive code, it was never tested
 		printf("CTag::CTag(CFile*); Reading *unverified* BLOB tag\n");
 		uint16 len;
-		in_data->Read(&len,2);
+		in_data.Read(&len,2);
 		ENDIAN_SWAP_I_16(len);
-		in_data->Seek(len, wxFromCurrent);
+		in_data.Seek(len, wxFromCurrent);
 	}
 	else{
 		if (tag.type==0x00) wxASSERT(0);
