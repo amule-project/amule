@@ -73,21 +73,9 @@ CServer::CServer(CServer* pOld)
 	ping = pOld->ping;
 	failedcount = pOld->failedcount; 
 	lastpinged = pOld->lastpinged;
-	if (!pOld->description.IsEmpty()) {
-		description = pOld->description;
-	} else {
-		description = wxEmptyString;
-	}
-	if (!pOld->listname.IsEmpty()) {
-		listname = pOld->listname;
-	} else {
-		listname = wxEmptyString;
-	}
-	if (!pOld->dynip.IsEmpty()) {
-		dynip = pOld->dynip;
-	} else {
-		dynip = wxEmptyString;
-	}
+	description = pOld->description;
+	listname = pOld->listname;
+	dynip = pOld->dynip;
 	maxusers = pOld->maxusers;
 	m_strVersion = pOld->m_strVersion;
 	m_uTCPFlags = pOld->m_uTCPFlags;
@@ -269,6 +257,7 @@ void CServer::SetDescription(const wxString& newname)
 
 void CServer::SetID(uint32 newip)
 {
+	wxASSERT(newip);
 	ip = newip;
 	ipfull = Uint32toStringIP(ip);
 }
