@@ -64,8 +64,8 @@ public:
 	//protected:
 	// this functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
-	void	OnSend(int nErrorCode);	
-	void	OnReceive(int nErrorCode);
+	virtual void	OnSend(int nErrorCode);	
+	virtual void	OnReceive(int nErrorCode);
 	
  protected:
 	#ifdef __DEBUG__
