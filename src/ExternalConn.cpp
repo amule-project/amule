@@ -318,24 +318,38 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &)
+CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_Encoder_Map &encoders)
 {
 	wxASSERT(request->GetOpCode() == EC_OP_GET_SHARED_FILES);
 
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
+
+	//
+	// request can contain list of queried items
+	std::set<CMD4Hash> queryitems;
+	for (int i = 0;i < request->GetTagCount();i++) {
+		const CECTag *tag = request->GetTagByIndex(i);
+		if ( tag->GetTagName() == EC_TAG_KNOWNFILE ) {
+			queryitems.insert(tag->GetMD4Data());
+		}
+	}
+
+	encoders.UpdateEncoders(theApp.sharedfiles);
 	
-	for (int i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
-		const CKnownFile *cur_file = theApp.sharedfiles->GetFileByIndex(i);
-		if ( !cur_file) {
-			// lfroen: wtf - can this really happen ?!
+	for (uint32 i = 0; i < theApp.sharedfiles->GetFileCount(); ++i) {
+		CKnownFile *cur_file = (CKnownFile *)theApp.sharedfiles->GetFileByIndex(i);
+
+		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->GetFileHash())) ) {
 			continue;
 		}
-		/*
-		int part_enc_size;
-		const unsigned char *part_enc_data = m_enc_data.m_part_status.Encode(m_file->m_SrcpartFrequency, part_enc_size);
-		*/
+
 		CEC_SharedFile_Tag filetag(cur_file, detail_level);
+		CKnownFile_Encoder &enc = encoders[cur_file];
+		if ( detail_level != EC_DETAIL_UPDATE ) {
+			enc.ResetEncoder();
+		}
+		enc.Encode(&filetag);
 		response->AddTag(filetag);
 	}
 	return response;
@@ -1288,6 +1302,13 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
+}
+
+// encoder side
+CKnownFile_Encoder::CKnownFile_Encoder(CKnownFile *file) :
+	m_enc_data(file->GetPartCount(), true)
+{
+	m_file = file;
 }
 
 CKnownFile_Encoder::CKnownFile_Encoder()
