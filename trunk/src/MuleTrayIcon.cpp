@@ -264,8 +264,8 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		// right-justified taking a 10% of the icon width.
 		
 		// X
-		int Bar_xSize = (CurrentIcon.GetWidth() / 4); 
-		int Bar_xPos = CurrentIcon.GetWidth() - Bar_xSize -1; 
+		int Bar_xSize = 4; 
+		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
 			
 		IconWithSpeed.SetBrush(*wxBLUE_BRUSH);
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
