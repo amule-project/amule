@@ -44,7 +44,7 @@ class myThread : public wxThread
   private:
   char* url;
   char* tempfile;
-  void* Entry();
+  wxThread::ExitCode Entry();
   int result;
   bool delete_gui;
   CHTTPDownloadDlg* myDlg;
@@ -67,7 +67,7 @@ myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename):wxThread(w
   bool getDeleteGUI();
   void setDeleteGUI(bool);
   
-  void OnExit();
+  virtual void OnExit();
 
 };
 
