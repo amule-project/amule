@@ -192,6 +192,11 @@ void COScopeCtrl::SetBackgroundColor(COLORREF cr)
 
 void COScopeCtrl::RecreateGrid()
 {
+	
+	if (!dcGrid) {
+		return;
+	}
+	
 	// There is a lot of drawing going on here - particularly in terms of 
 	// drawing the grid.  Don't panic, this is all being drawn (only once)
 	// to a bitmap.  The result is then BitBlt'd to the control whenever needed.
