@@ -369,15 +369,15 @@ void CTransferWnd::UpdateCatTabTitles()
 
 
 void CTransferWnd::Prepare()
-{	
+{
+	int header_height = s_clientlistHeader->GetSize().GetHeight();
 	wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
 	
 	if ( clientlistctrl->GetListView() == vtNone ) {
-		
-		int height  = clientlistctrl->GetSize().GetHeight();
-		    height += splitter->GetWindow1()->GetSize().GetHeight();
+		int height = splitter->GetWindow1()->GetSize().GetHeight();
+	    	height += splitter->GetWindow2()->GetSize().GetHeight();
 	
-		splitter->SetSashPosition( height );
+		splitter->SetSashPosition( height - header_height );
 	} else if ( m_splitter ) {
 		// Some sainity checking
 		if ( m_splitter < 90 ) {
@@ -386,8 +386,8 @@ void CTransferWnd::Prepare()
 			int height = splitter->GetWindow1()->GetSize().GetHeight();
 		    	height += splitter->GetWindow2()->GetSize().GetHeight();
 		
-			if ( height - 65 < m_splitter ) {
-				m_splitter = height - 65;
+			if ( height - header_height * 2 < m_splitter ) {
+				m_splitter = height - header_height * 2;
 			}
 		}
 		
@@ -465,6 +465,8 @@ void CTransferWnd::OnToggleClientList(wxCommandEvent& WXUNUSED(evt))
 
 void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 {
+	int header_height = s_clientlistHeader->GetSize().GetHeight();
+	
 	if ( evt.GetSashPosition() < 90 ) {
 		evt.SetSashPosition( 90 );
 	} else {
@@ -474,15 +476,15 @@ void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		    height += splitter->GetWindow2()->GetSize().GetHeight();
 
 		if ( clientlistctrl->GetListView() == vtNone ) {
-			if ( height - evt.GetSashPosition() < 65 ) {
+			if ( height - evt.GetSashPosition() < header_height * 2 ) {
 				evt.Veto();
 			} else {
 				wxCommandEvent event;
 				OnToggleClientList( event );
 			}
 		} else {
-			if ( height - evt.GetSashPosition() < 65 ) {
-				evt.SetSashPosition( height - 36 );
+			if ( height - evt.GetSashPosition() < header_height * 2 ) {
+				evt.SetSashPosition( height - header_height );
 
 				wxCommandEvent event;
 				OnToggleClientList( event );
