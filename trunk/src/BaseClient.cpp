@@ -2001,9 +2001,9 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 	if ( m_socket ) {
 		return m_socket->SendPacket(packet, delpacket, controlpacket );
 	} else {
-//#ifndef AMULE_DAEMON
+#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
-//#endif
+#endif
 		return false;
 	}
 }
