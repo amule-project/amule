@@ -1,11 +1,11 @@
 EXTRA_DIST = README
 
+SUBDIRS = docs
+
 bin_PROGRAMS = cas
 
 dist_cas_DATA = tmp.html stat.png
 casdir = $(datadir)/cas
-
-dist_man_MANS = cas.1
 
 cas_SOURCES = cas.c \
 	      configfile.c \
