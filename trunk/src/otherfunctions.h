@@ -116,7 +116,7 @@ wxString GetMuleVersion();
  * we will be alerted in case of widget changing type, instead of getting just 
  * getting bad mojo due to casting a pointer to the wrong type.
  */
-#define CastChild( IdOrName, type )			wxStaticCast( FindWindow( IdOrName ), type )
+#define CastChild( IdOrName, type )			dynamic_cast<type*>( FindWindow( IdOrName ) )
 
 
 /**
@@ -128,7 +128,7 @@ wxString GetMuleVersion();
  *
  * @see CastChild()
  */
-#define CastByID( ID, parent, type )		wxStaticCast( wxWindow::FindWindowById( (ID), (parent) ), type )
+#define CastByID( ID, parent, type )		dynamic_cast<type*>( wxWindow::FindWindowById( (ID), (parent) ) )
 
 
 /**
@@ -140,7 +140,7 @@ wxString GetMuleVersion();
  *
  * @see CastChild()
  */
-#define CastByName( Name, parent, type )	wxStaticCast( wxWindow::FindWindowByName( (Name), (parent) ), type )
+#define CastByName( Name, parent, type )	dynamic_cast<type*>( wxWindow::FindWindowByName( (Name), (parent) ) )
 
 
 // From Gnucleus project [found by Tarod]
