@@ -101,15 +101,6 @@ CDownloadQueue::CDownloadQueue(CPreferences* in_prefs,CSharedFileList* in_shared
 	m_cRequestsSentToServer = 0;
 }
 
-void CDownloadQueue::UpdateDisplayedInfo(bool force)
-{
-	DWORD curTick = ::GetTickCount();
-
-	if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE+(uint32)(rand()/(RAND_MAX/1000))) {
-		Notify_DownloadCtrlUpdateItem(this);
-		m_lastRefreshedDLDisplay = curTick;
-	}
-}
 
 void CDownloadQueue::AddPartFilesToShare()
 {
@@ -545,8 +536,6 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	
 		Notify_DownloadCtrlAddSource(sender, source, false);
 	}
-	
-	UpdateDisplayedInfo();
 }
 
 void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source)
@@ -580,7 +569,6 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 
 	sender->m_SrcList.insert(source);
 	Notify_DownloadCtrlAddSource(sender,source,false);
-	UpdateDisplayedInfo();
 }
 
 /* Creteil importing new method from eMule 0.30c */

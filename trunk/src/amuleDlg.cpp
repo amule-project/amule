@@ -280,6 +280,10 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	dlg->Show(TRUE);
 	activewnd=dlg;
 	s_dlgcnt->Layout();
+
+	// Since we might be suspending redrawing while hiding the dialog
+	// we have to refresh it once it is visible again
+	dlg->Refresh( true );
 }
 
 

@@ -320,10 +320,10 @@ int CUploadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 void CUploadListCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted)
 {
 	/* Don't do any drawing if we not being watched. */
-	//if ((theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != 2)) {
-	if (!theApp.amuledlg->SafeState() || (theApp.amuledlg->transferwnd->windowtransferstate) || (theApp.amuledlg->GetActiveDialog() != CamuleDlg::TransferWnd)) {
+	if ( theApp.amuledlg->transferwnd->windowtransferstate || !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
 		return;
 	}
+
 	if(highlighted) {
 		if(GetFocus()) {
 			dc->SetBackground(*m_hilightBrush);

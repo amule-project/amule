@@ -102,7 +102,6 @@ public:
 	void	AddPartFilesToShare();
 	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
 	CUpDownClient* 	GetDownloadClientByIP(uint32 dwIP);
-	void	UpdateDisplayedInfo(bool force=false);
 	void	StartNextFile();
 	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
 															  m_nDownDataOverheadSourceExchange += data;
