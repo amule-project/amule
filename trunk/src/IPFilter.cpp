@@ -151,23 +151,17 @@ bool CIPFilter::ProcessLineOk(const wxString& sLine, unsigned long linecounter)
 int CIPFilter::LoadFromFile()
 {
 	int filtercounter = 0;
-	int linecounter = 0;
 	RemoveAllIPs();
 	wxTextFile readFile(theApp.ConfigDir + wxT("ipfilter.dat"));
 	if( readFile.Exists() && readFile.Open() ) {
 		// Ok, the file exists and was opened, lets read it
-		wxString sbuffer = readFile.GetFirstLine();
-		for( ; !readFile.Eof(); sbuffer = readFile.GetNextLine() ) {
-			// increment line counter
-			linecounter++;
-			// Process line
-			if( !ProcessLineOk(sbuffer, linecounter) ) continue;
-			filtercounter++;
+		
+		for ( size_t i = 0; i < readFile.GetLineCount(); i++ ) {
+			if( ProcessLineOk( readFile.GetLine( i ), i ) ) {
+				filtercounter++;
+			}
 		}
-		// Last line must be processed after.
-		linecounter++;
-		if( ProcessLineOk(sbuffer, linecounter) ) filtercounter++;
-
+		
 		// Close it for completeness ;)
 		readFile.Close();
 	}

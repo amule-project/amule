@@ -594,11 +594,10 @@ CPreferences::CPreferences()
 	// serverlist adresses
 	wxTextFile slistfile(theApp.ConfigDir + wxT("addresses.dat"));
 	if ( slistfile.Exists() && slistfile.Open()) {
-		if (slistfile.GetLineCount()) {
-			for (wxString str = slistfile.GetFirstLine(); !slistfile.Eof(); str = slistfile.GetNextLine() ) {
-    				adresses_list.Add(str);
-			}
+		for ( size_t i = 0; i < slistfile.GetLineCount(); i++ ) {
+    		adresses_list.Add( slistfile.GetLine( i ) );
 		}
+		
 		slistfile.Close();
 	}
 
