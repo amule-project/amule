@@ -91,7 +91,7 @@ int CIPFilter::LoadFromFile(){
 	RemoveAllIPs();
 
 	wxTextFile readFile(theApp.ConfigDir + wxT("ipfilter.dat"));
-	if (readFile.Open()) {
+	if ( readFile.Exists() && readFile.Open()) {
 		for (wxString sbuffer = readFile.GetFirstLine(); !readFile.Eof(); sbuffer = readFile.GetNextLine() ) {
 
 			// ignore comments & too short lines

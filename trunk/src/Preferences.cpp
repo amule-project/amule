@@ -80,10 +80,9 @@ CPreferences::CPreferences()
 
 	LoadPreferences();
 
-	wxTextFile sdirfile;
-
 	// shared directories
-	if(sdirfile.Open(theApp.ConfigDir + wxT("shareddir.dat"))) {
+	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
+	if( sdirfile.Exists() && sdirfile.Open() ) {
 		if (sdirfile.GetLineCount()) {
 			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
     				shareddir_list.Add(str);
@@ -93,13 +92,14 @@ CPreferences::CPreferences()
 	}
 
 	// serverlist adresses
-	if(sdirfile.Open(theApp.ConfigDir + wxT("addresses.dat"))) {
-		if (sdirfile.GetLineCount()) {
-			for (wxString str = sdirfile.GetFirstLine(); !sdirfile.Eof(); str = sdirfile.GetNextLine() ) {
+	wxTextFile slistfile(theApp.ConfigDir + wxT("addresses.dat"));
+	if ( slistfile.Exists() && slistfile.Open()) {
+		if (slistfile.GetLineCount()) {
+			for (wxString str = slistfile.GetFirstLine(); !slistfile.Eof(); str = slistfile.GetNextLine() ) {
     				adresses_list.Append(new CString(str));
 			}
 		}
-		sdirfile.Close();
+		slistfile.Close();
 	}
 
 	userhash[5] = 14;
