@@ -113,6 +113,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* EC additions
 		* RLE encoder for shared files
 
+	martymac:
+		* Fix for FreeBSD 5.4-PRERELEASE
+
 	ObsessionAl:
 		* Patch to include CVS date in about box.
 
