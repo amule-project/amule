@@ -439,6 +439,7 @@ enum {
 	 *	::EC_TAG_SERVER_DESC\n
 	 *	::EC_TAG_SERVER_PING\n
 	 *	::EC_TAG_SERVER_USERS\n
+	 *	::EC_TAG_SERVER_USERS_MAX\n
 	 *	::EC_TAG_SERVER_FILES\n
 	 *	::EC_TAG_SERVER_PREF\n
 	 *	::EC_TAG_SERVER_FAILED\n
@@ -452,7 +453,7 @@ enum {
 	EC_TAG_SERVER_ADDRESS,
 	EC_TAG_SERVER_PING,		///< (\c uint32) Server ping time. Default: N/A.
 	EC_TAG_SERVER_USERS,		///< (\c uint32) User count. Default: N/A.
-	EC_TAG_SERVER_USERS_MAX,
+	EC_TAG_SERVER_USERS_MAX,	///< (\c uint32) Max. user count. Default: N/A.
 	EC_TAG_SERVER_FILES,		///< (\c uint32) File count. Default: N/A.
 	EC_TAG_SERVER_PREF,		///< (\c uint8) Server preference (priority). Default: 1 (normal)
 					/*!< <ul><li>0 - Low Priority</li>
