@@ -1645,8 +1645,8 @@ bool CDownloadListCtrl::ProcessEvent(wxEvent & evt)
 
 int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
-	CtrlItem_Struct *item1 = (CtrlItem_Struct *) lParam1;
-	CtrlItem_Struct *item2 = (CtrlItem_Struct *) lParam2;
+	CtrlItem_Struct* item1 = (CtrlItem_Struct *) lParam1;
+	CtrlItem_Struct* item2 = (CtrlItem_Struct *) lParam2;
 
 	int sortMod = 1;
 	if (lParamSort >= 1000) {
@@ -1656,74 +1656,128 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 
 	int comp = 0;
 
-	if (item1->type == 1 && item2->type != 1) {
-		if (item1->value == item2->parent->value) {
-			return -1;
+	if ( item1->type == FILE_TYPE ) {
+		if ( item2->type == FILE_TYPE ) {
+			// Both are files, so we just compare them
+			comp = Compare( (CPartFile*)item1->value, (CPartFile*)item2->value, lParamSort);
+		} else {
+			// A file and a source, checking if they belong to each other
+			if ( item1->value == item2->owner ) {
+				// A file should always be above its sources
+				// Returning directly to avoid the modifier
+				return -1;
+			} else {
+				// Source belongs to anther file, so we compare the files instead	
+				comp = Compare( (CPartFile*)item1->value, item2->owner, lParamSort);
+			}
 		}
-
-		comp = Compare((CPartFile *) item1->value, (CPartFile *) (item2->parent->value), lParamSort);
-
-	} else if (item2->type == 1 && item1->type != 1) {
-		if (item1->parent->value == item2->value) {
-			return 1;
-		}
-
-		comp = Compare((CPartFile *) (item1->parent->value), (CPartFile *) item2->value, lParamSort);
-
-	} else if (item1->type == 1) {
-		CPartFile *file1 = (CPartFile *) item1->value;
-		CPartFile *file2 = (CPartFile *) item2->value;
-
-		comp = Compare(file1, file2, lParamSort);
-
 	} else {
-		CUpDownClient *client1 = (CUpDownClient *) item1->value;
-		CUpDownClient *client2 = (CUpDownClient *) item2->value;
-		comp = Compare((CPartFile *) (item1->parent->value), (CPartFile *) (item2->parent->value), lParamSort);
-		if (comp != 0) {
-			return sortMod * comp;
-		}
-		if (item1->type != item2->type) {
-			return item1->type - item2->type;
-		}
+		if ( item2->type == FILE_TYPE ) {
+			// A source and a file, checking if they belong to each other
+			if ( item1->owner == item2->value ) {
+				// A source should always be below its file
+				// Returning directly to avoid the modifier
+				return 1;
+			} else {
+				// Source belongs to anther file, so we compare the files instead	
+				comp = Compare( item1->owner, (CPartFile*)item2->value, lParamSort);
+			}
+		} else {
+			// Two sources, some different possibilites
+			if ( item1->owner == item2->owner ) {
+				// Avilable sources first, if we have both an available and an unavailable			
+				comp = ( item1->type - item2->type );
 
-		comp = Compare(client1, client2, lParamSort);
+				// Do we need to futher compare them? Happens if both have same type.
+				if ( !comp ) {
+					comp = Compare( (CUpDownClient*)item1->value, (CUpDownClient*)item1->value, lParamSort);
+				}
+			} else {
+				// Belongs to different files, so we compare the files
+				comp = Compare( item1->owner, item2->owner, lParamSort);
+			}
+		}
 	}
 
+	// We modify the result so that it matches with ascending or decending
 	return sortMod * comp;
 }
 
+
 int CDownloadListCtrl::Compare(CPartFile* file1, CPartFile* file2, long lParamSort)
 {
+	int result = 0;
+
 	switch (lParamSort) {
 		// Sort by filename		
-		case 0:	 return file1->GetFileName().CmpNoCase( file2->GetFileName() );
+		case 0:
+			result = file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			break;
+			
 		// Sort by size
-		case 1:	return CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+		case 1:	
+			result = CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+			break;
+			
 		// Sort by transfered
-		case 2:	return CmpAny( file1->GetTransfered(), file2->GetTransfered() );
-		// Sort by completed
-		case 3:	return CmpAny( file1->GetCompletedSize(), file2->GetCompletedSize() );
-		// Sort by speed
-		case 4:	return CmpAny( file1->GetKBpsDown()*1024, file2->GetKBpsDown()*1024 );
-		// Sort by percentage completed
-		case 5: return CmpAny( file1->GetPercentCompleted(), file2->GetPercentCompleted() );
-		// Sort by number of sources		
-		case 6:	return CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
-		// Sort by priority
-		case 7:	return CmpAny( file1->GetDownPriority(), file2->GetDownPriority() );
-		// Sort by status
-		case 8:	return CmpAny( file1->getPartfileStatusRang(), file2->getPartfileStatusRang() );
-		// Sort by remaining time
-		case 9:	return CmpAny( file1->getTimeRemaining(), file2->getTimeRemaining() );
-		// Sort by last seen complete
-		case 10: return CmpAny( file1->lastseencomplete, file2->lastseencomplete );
-		// Sort by last reception
-        case 11: return CmpAny( file1->GetLastChangeDatetime(), file2->GetLastChangeDatetime() ); 
+		case 2:	
+			result = CmpAny( file1->GetTransfered(), file2->GetTransfered() );
+			break;
 		
-		default:
-			return 0;
+		// Sort by completed
+		case 3:	
+			result = CmpAny( file1->GetCompletedSize(), file2->GetCompletedSize() );
+			break;
+		
+		// Sort by speed
+		case 4:	
+			result = CmpAny( file1->GetKBpsDown()*1024, file2->GetKBpsDown()*1024 );
+			break;
+		
+		// Sort by percentage completed
+		case 5:
+			result = CmpAny( file1->GetPercentCompleted(), file2->GetPercentCompleted() );
+			break;
+		
+		// Sort by number of sources		
+		case 6:	
+			result = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
+			break;
+		
+		// Sort by priority
+		case 7:
+			result = CmpAny( file1->GetDownPriority(), file2->GetDownPriority() );
+			break;
+		
+		// Sort by status
+		case 8:
+			result = CmpAny( file1->getPartfileStatusRang(), file2->getPartfileStatusRang() );
+			break;
+		
+		// Sort by remaining time
+		case 9:
+			result = CmpAny( file1->getTimeRemaining(), file2->getTimeRemaining() );
+			break;
+		
+		// Sort by last seen complete
+		case 10:
+			result = CmpAny( file1->lastseencomplete, file2->lastseencomplete );
+			break;
+		
+		// Sort by last reception
+        case 11:
+			result = CmpAny( file1->GetLastChangeDatetime(), file2->GetLastChangeDatetime() ); 
+			break;
 	}
+
+	// We cannot have that two files are equal, since that will screw up 
+	// the placement of sources. So if they are equal, we compare something that 
+	// is bound to be unique and will give a consistant result: Their hashes.
+	if ( !result ) {
+		return CmpAny( file1->GetFileHash(), file2->GetFileHash() );
+	}
+
+	return result;
 }
 
 int CDownloadListCtrl::Compare(const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort)
