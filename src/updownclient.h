@@ -78,20 +78,6 @@ class CAICHHash;
 #define	MS_CONNECTING		2
 #define	MS_UNABLETOCONNECT	3
 
-#if 0
-// clientsoft
-#define SO_EMULE		0
-#define SO_CDONKEY		1
-#define SO_LXMULE		2
-#define SO_AMULE		3
-#define	SO_SHAREAZA		4
-#define SO_EDONKEYHYBRID	50
-#define	SO_EDONKEY		51
-#define SO_MLDONKEY		52
-#define SO_NEW_MLDONKEY		152
-#define SO_OLDEMULE		53
-#define SO_UNKNOWN		54
-#endif
 
 enum EClientSoftware{
 	SO_EMULE		= 0,
@@ -125,6 +111,17 @@ enum EInfoPacketState{
 	IP_BOTH			= 3,
 };
 
+
+//! Used to keep track of the state of the client
+enum ClientState
+{
+	//! New is for clients that have just been created.
+	CS_NEW = 0,
+	//! Listed is for clients that are on the clientlist
+	CS_LISTED,
+	//! Dying signifies clients that have been queued for deletion
+	CS_DYING
+};
 
 //
 // Magic numbers to check for memory corruption
@@ -173,21 +170,19 @@ public:
 	 *
 	 * @return True if Safe_Delete has been called, false otherwise.
 	 */
-	bool		HasBeenDeleted()		{ return m_SafelyDeleted; }
-	
+	bool		HasBeenDeleted()		{ return m_clientState == CS_DYING; }
+
+	ClientState	GetClientState()		{ return m_clientState; }
+
 	
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
 	void		ConnectionEstablished();
 	uint32		GetUserID() const		{ return m_nUserID; }
-	void		SetUserID(uint32 nUserID)	{ m_nUserID = nUserID; }
+	void		SetUserID(uint32 nUserID);
 	const wxString&	GetUserName() const		{ return m_Username; }
 	//Only use this when you know the real IP or when your clearing it.
-	void			SetIP( uint32 val )
-					{
-						m_dwUserIP = val;
-						m_nConnectIP = val;
-					}	
+	void		SetIP( uint32 val );
 	uint32		GetIP() const 			{ return m_dwUserIP; }
 	bool		HasLowID() const 		{ return (m_nUserID < 16777216); }
 	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
@@ -200,7 +195,7 @@ public:
 	uint16		GetServerPort()	const		{ return m_nServerPort; }
 	void		SetServerPort(uint16 nPort)	{ m_nServerPort = nPort; }	
 	const CMD4Hash&	GetUserHash() const		{ return m_UserHash; }
-	void		SetUserHash(const CMD4Hash& userhash) { m_UserHash = userhash; ValidateHash(); }
+	void		SetUserHash(const CMD4Hash& userhash);
 	void		ValidateHash()			{ m_HasValidHash = !m_UserHash.IsEmpty(); }
 	bool		HasValidHash() const		{ return m_HasValidHash; }
 	uint32		GetVersion() const		{ return m_nClientVersion;}
@@ -311,6 +306,7 @@ public:
 
 	//! Only call this function if the old requpfile is being deleted
 	void		ResetUploadFile();
+	CKnownFile*	GetUploadFile()		{ return m_requpfile; }
 	void		SetUploadFileID(CKnownFile *newreqfile);
 	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
@@ -340,6 +336,8 @@ public:
 #ifndef AMULE_DAEMON
 	void		DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect);
 #endif
+
+
 	//download
 	void 		SetRequestFile(CPartFile* reqfile); 
 	CPartFile*	GetRequestFile() const { return m_reqfile; }
@@ -391,7 +389,9 @@ public:
 	void		InitTransferredDownMini()	{ m_bTransferredDownMini=false; }
 	uint16		GetUpCompleteSourcesCount() const { return m_nUpCompleteSourcesCount; }
 	void		SetUpCompleteSourcesCount(uint16 n){ m_nUpCompleteSourcesCount = n; }
+
 	
+
 	int		sourcesslot;
 
 	//chat
@@ -562,7 +562,7 @@ private:
  	bool		m_bPreviewAnsPending;
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
-	bool		m_SafelyDeleted;
+	ClientState	m_clientState;
 	CClientReqSocket*	m_socket;		
 	bool		m_fNeedOurPublicIP; // we requested our IP from this client
 

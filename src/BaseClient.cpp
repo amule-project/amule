@@ -77,10 +77,9 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 {
 	m_socket = NULL;
 	Init();
-	m_nUserID = in_userid;
+	SetUserID( in_userid );
 	m_nUserPort = in_port;
-	// not anymore.
-	//	sourcesslot=m_nUserID%SOURCESSLOTS;
+	
 	if (!HasLowID()) {
 		m_FullUserIP.Printf(wxT("%i.%i.%i.%i"),(uint8)m_nUserID,(uint8)(m_nUserID>>8),(uint8)(m_nUserID>>16),(uint8)(m_nUserID>>24));
 	}
@@ -206,8 +205,8 @@ void CUpDownClient::Init()
 	m_bHasBeenGPLEvildoer = false;
 	// Import from BlackRat end
 	
-	m_SafelyDeleted = false;
-	
+	m_clientState = CS_NEW;
+
 	ClearHelloProperties();	
 	
 	m_pReqFileAICHHash = NULL;
@@ -368,10 +367,10 @@ void CUpDownClient::Safe_Delete()
 {
 	// Because we are delaying the deletion, we might end up trying to delete 
 	// it twice, however, this is normal and shouldn't trigger any failures
-	if ( m_SafelyDeleted ) 
+	if ( m_clientState == CS_DYING ) 
 		return;
  
-	m_SafelyDeleted = true;
+ 	m_clientState = CS_DYING;
 		
 	// Close the socket to avoid any more connections and related events
 	if ( m_socket ) {
@@ -409,10 +408,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	m_bUnicodeSupport = false;
 	DWORD dwEmuleTags = 0;
 	
-	try {	
-		data.ReadHash16(m_UserHash);
-		ValidateHash();
-		m_nUserID = data.ReadUInt32();
+	try {
+		CMD4Hash hash;
+		data.ReadHash16(hash);
+		SetUserHash( hash );
+		SetUserID( data.ReadUInt32() );
 		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
 		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
@@ -611,7 +611,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 	if(!HasLowID() || m_nUserID == 0) {
-		m_nUserID = m_dwUserIP;
+		SetUserID( m_dwUserIP );
 	}
 
 	// get client credits
@@ -1405,9 +1405,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			data.WriteUInt32(m_nUserID);
 			Packet* packet = new Packet(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
-
-//			Packet* packet = new Packet(OP_CALLBACKREQUEST,4);
-//			memcpy(packet->pBuffer,&m_nUserID,4);
 
 			theApp.uploadqueue->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
@@ -2390,3 +2387,33 @@ bool CUpDownClient::DisableDownloadLimit()
 		return false;
 	}
 }
+
+
+void CUpDownClient::SetUserID(uint32 nUserID)
+{
+	theApp.clientlist->UpdateClientID( this, nUserID );
+		
+	m_nUserID = nUserID;
+}
+
+
+void CUpDownClient::SetIP( uint32 val )
+{
+	theApp.clientlist->UpdateClientIP( this, val );
+		
+	m_dwUserIP = val;
+	
+	m_nConnectIP = val;
+}
+
+
+void CUpDownClient::SetUserHash(const CMD4Hash& userhash)
+{
+	theApp.clientlist->UpdateClientHash( this, userhash );
+
+	m_UserHash = userhash; 
+	
+	ValidateHash();
+}
+
+

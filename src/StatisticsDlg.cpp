@@ -850,13 +850,12 @@ void CStatisticsDlg::ShowStatistics()
 
 	// statsclientstatus : original idea and code by xrmb
 	
-	CClientList::clientmap16 clientStatus;
-	CClientList::clientmap32 clientVersionEDonkey;
-	CClientList::clientmap32 clientVersionEDonkeyHybrid;
-	CClientList::clientmap32 clientVersionEMule;
-	CClientList::clientmap32 clientVersionAMule;
+	CClientList::ClientMap clientVersionEDonkey;
+	CClientList::ClientMap clientVersionEDonkeyHybrid;
+	CClientList::ClientMap clientVersionEMule;
+	CClientList::ClientMap clientVersionAMule;
 	uint32 totalclient;
-	theApp.clientlist->GetStatistics(totalclient, myStats, &clientStatus, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule);
+	theApp.clientlist->GetStatistics(totalclient, myStats, &clientVersionEDonkey, &clientVersionEDonkeyHybrid, &clientVersionEMule, &clientVersionAMule);
 	totalclient -= myStats[0];
 	if( !totalclient ) {
 		totalclient = 1;
@@ -907,7 +906,7 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			CClientList::clientmap32::iterator it = clientVersionEDonkey.begin();
+			CClientList::ClientMap::iterator it = clientVersionEDonkey.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
@@ -960,7 +959,7 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			CClientList::clientmap32::iterator it = clientVersionEDonkeyHybrid.begin();
+			CClientList::ClientMap::iterator it = clientVersionEDonkeyHybrid.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
@@ -1011,7 +1010,7 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			CClientList::clientmap32::iterator it = clientVersionEMule.begin();
+			CClientList::ClientMap::iterator it = clientVersionEMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
@@ -1062,7 +1061,7 @@ void CStatisticsDlg::ShowStatistics()
 		uint32	currtop = 0;
 		uint32	lasttop = 0xFFFFFFFF;
 		for(uint32 i=0; i<4; i++) {
-			CClientList::clientmap32::iterator it = clientVersionAMule.begin();
+			CClientList::ClientMap::iterator it = clientVersionAMule.begin();
 			uint32 topver=0;
 			uint32 topcnt=0;
 			double topper=0;
