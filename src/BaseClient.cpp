@@ -226,21 +226,21 @@ bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file
 
 	if( !sane ) {
 		debugprintf(verbose, "Bogus pointer to UpDownClient detected!\n");
-		debugprintf(verbose, "'this' is a NULL pointer.\n");
-		debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
+		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 	} else {
 		sane = 	MagicNumber1 == MAGIC_1 && 
 			MagicNumber2 == MAGIC_2;
 		if(!sane) {
 			debugprintf(verbose, "Bogus UpDownClient detected!\n", function, file, line);
-			debugprintf(verbose, "MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 		} else {
 			sane = reqfile != NULL;
 			if (!sane) {
 				debugprintf(verbose, "Bogus UpDownClient source detected!\n");
-				debugprintf(verbose, "source has NULL reqfile!\n");
-				debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+				debugprintf(verbose, "\tsource has NULL reqfile!\n");
+				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 			}
 		}
 	}

@@ -339,15 +339,15 @@ bool CPartFile::IsASanePartFile(bool verbose, char *function, char *file, int li
 	if( !sane ) {
 		// scream loud!
 		debugprintf(verbose, "Bogus pointer to CPartFile detected!\n");
-		debugprintf(verbose, "'this' is a NULL pointer.\n");
-		debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+		debugprintf(verbose, "\t'this' is a NULL pointer.\n");
+		debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 	} else {
 		sane = 	MagicNumber1 == MAGIC_1 && 
 			MagicNumber2 == MAGIC_2; 
 		if(!sane) {
 			debugprintf(verbose, "Bogus CPartFile detected!\n");
-			debugprintf(verbose, "MN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
-			debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+			debugprintf(verbose, "\tMN1 = %u, MN2 = %u\n", MagicNumber1, MagicNumber2);
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 		}
 	}
 
@@ -3089,12 +3089,12 @@ bool CPartFile::IsASaneFileClientCombination(
 			debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileHash().Encode().c_str()));
 			if (forClient && forClient->reqfile)
 				debugprintf(verbose, "\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileHash().Encode().c_str()));
-			debugprintf(verbose, "Filenames are: \n");
+			debugprintf(verbose, "\tFilenames are: \n");
 			debugprintf(verbose, "\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 			debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 			if (forClient && forClient->reqfile)
 				debugprintf(verbose, "\tfor_clt: %s\n", unicode2char(forClient->reqfile->GetFileName().c_str()));
-			debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+			debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 		} else {
 			int n = GetPartCount();
 			sane = (n == cur_src->m_nPartCount);
@@ -3108,13 +3108,13 @@ bool CPartFile::IsASaneFileClientCombination(
 				if (forClient) {
 					debugprintf(verbose, "forClient->m_nPartCount    = %d\n", forClient->m_nPartCount);
 				}
-				debugprintf(verbose, "Filenames are: \n");
+				debugprintf(verbose, "\tFilenames are: \n");
 				debugprintf(verbose, "\tthis   : %s\n", unicode2char(GetFileName().c_str()));
 				debugprintf(verbose, "\tcur_src: %s\n", unicode2char(cur_src->reqfile->GetFileName().c_str()));
 				if (forClient) {
 					debugprintf(verbose, "\tfor_clt: %s\n", 	unicode2char(forClient->reqfile->GetFileName().c_str()));
 				}
-				debugprintf(verbose, "function: %s(%s:%d)\n", function, file, line);
+				debugprintf(verbose, "\tfunction: %s(%s:%d)\n", function, file, line);
 			}
 		}
 	}
