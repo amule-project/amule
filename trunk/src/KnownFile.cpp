@@ -30,7 +30,7 @@
 #include <wx/string.h>
 #include <wx/filename.h>
 #include <wx/confbase.h>
-#include <wx/fileconf.h>
+#include <wx/config.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
