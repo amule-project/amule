@@ -148,6 +148,21 @@ inline char* nstrdup(const char* src)
 }
 
 
+// Replacements for atoi and atol that removes the need for converting
+// a string to normal chars with unicode2char. The value returned is the
+// value represented in the string or 0 if the conversion failed.
+inline long StrToLong( const wxString& str ) {
+	long value = 0;
+	str.ToLong( &value );
+	return value;
+}
+inline unsigned long StrToULong( const wxString& str ) {
+	unsigned long value = 0;
+	str.ToULong( &value );
+	return value;
+}
+
+
 // md4cmp -- replacement for memcmp(hash1,hash2,16)
 // Like 'memcmp' this function returns 0, if hash1==hash2, and !0, if hash1!=hash2.
 // NOTE: Do *NOT* use that function for determining if hash1<hash2 or hash1>hash2.
