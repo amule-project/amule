@@ -710,7 +710,7 @@ WxCasFrame::UpdateStatsPanel ()
 
 // Refresh period changing
 bool
-WxCasFrame::ChangeRefreshPeriod(wxInt32 newPeriod)
+WxCasFrame::ChangeRefreshPeriod(const wxInt32 newPeriod)
 {
   // As the user can stop it, we must let it in the same state
   // it was before changing period
@@ -733,7 +733,7 @@ WxCasFrame::ChangeRefreshPeriod(wxInt32 newPeriod)
 
 // Ftp update period changing
 bool
-WxCasFrame::ChangeFtpUpdatePeriod(wxInt32 newPeriod)
+WxCasFrame::ChangeFtpUpdatePeriod(const wxInt32 newPeriod)
 {
   // As the user can stop it, we must let it in the same state
   // it was before changing period
@@ -756,7 +756,7 @@ WxCasFrame::ChangeFtpUpdatePeriod(wxInt32 newPeriod)
 
 // Adjust splash bitmap width
 void
-WxCasFrame::AdjustSplashWidth(wxInt32 width)
+WxCasFrame::AdjustSplashWidth(const wxInt32 width)
 {
   wxInt32 h =
     (wxInt32) ((double) (m_amuleSBitmap->GetBitmap().GetHeight ()) / m_amuleSBitmap->GetBitmap().GetWidth () *
@@ -770,7 +770,7 @@ WxCasFrame::AdjustSplashWidth(wxInt32 width)
 
 // Set amulesig.dat file
 void
-WxCasFrame::SetAmuleSigFile(wxFileName *file)
+WxCasFrame::SetAmuleSigFile(const wxFileName& file)
 {
   m_aMuleSig->SetAmuleSig (file);
 }

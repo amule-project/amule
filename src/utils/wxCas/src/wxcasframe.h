@@ -128,16 +128,16 @@ class WxCasFrame:public wxFrame
     wxImage *GetStatImage () const;
 
     /// Refresh timer period changing
-    bool ChangeRefreshPeriod(wxInt32 newPeriod);
+    bool ChangeRefreshPeriod(const wxInt32 newPeriod);
 
     /// Refresh timer period changing
-    bool ChangeFtpUpdatePeriod(wxInt32 newPeriod);
+    bool ChangeFtpUpdatePeriod(const wxInt32 newPeriod);
 
     /// Adjust splash bitmap width
-    void AdjustSplashWidth(wxInt32 width);
+    void AdjustSplashWidth(const wxInt32 width);
 
     /// Set amulesig.dat file
-    void SetAmuleSigFile(wxFileName *file);
+    void SetAmuleSigFile(const wxFileName& file);
   };
 
 #endif /* _WXCASFRAME_H */
