@@ -112,7 +112,7 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxHORIZONTAL );
     s_fed2klh = item3;
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
     item5->SetName( wxT("FastEd2kLinks") );
     item3->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
@@ -220,7 +220,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SEARCHNAME, wxEmptyString, wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SEARCHNAME, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
     item3->Add( item5, 1, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item6 = new wxButton( parent, IDC_SEARCH_RESET, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -334,7 +334,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Extension:"), wxDefaultPosition, wxDefaultSize, 0 );
     item17->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item34 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxEmptyString, wxDefaultPosition, wxSize(40,-1), wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item34 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(40,-1), wxTE_PROCESS_ENTER );
     item17->Add( item34, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item1->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
@@ -361,7 +361,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxHORIZONTAL );
     s_ed2ksizer = item40;
 
-    CMuleTextCtrl *item42 = new CMuleTextCtrl( parent, ID_ED2KLINKHANDLER, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item42 = new CMuleTextCtrl( parent, ID_ED2KLINKHANDLER, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item40->Add( item42, 1, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item43 = new wxButton( parent, ID_BTN_DDLOAD, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -465,7 +465,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
@@ -483,7 +483,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item8 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
     wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
@@ -502,7 +502,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, IDC_CMESSAGE, wxEmptyString, wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, IDC_CMESSAGE, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
     item13->Add( item14, 1, wxALIGN_CENTER, 5 );
 
     wxButton *item15 = new wxButton( parent, IDC_CSEND, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -658,7 +658,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item36->SetForegroundColour( *wxBLUE );
     item28->Add( item36, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item37 = new wxStaticText( parent, ID_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item37 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item28->Add( item37, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item38 = new wxStaticText( parent, IDC_FD_X14, _("Transferred :"), wxDefaultPosition, wxSize(88,-1), 0 );
@@ -683,7 +683,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item43->SetForegroundColour( *wxBLUE );
     item41->Add( item43, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item44 = new wxStaticText( parent, ID_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item44 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item41->Add( item44, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item45 = new wxBoxSizer( wxHORIZONTAL );
@@ -735,10 +735,10 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item58->SetForegroundColour( *wxBLUE );
     item52->Add( item58, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item59 = new wxStaticText( parent, ID_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item59 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item52->Add( item59, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item60 = new wxStaticText( parent, ID_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item60 = new wxStaticText( parent, ID_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item52->Add( item60, 0, wxALIGN_CENTER, 5 );
 
     item50->Add( item52, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
@@ -767,7 +767,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item67 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item68 = new CMuleTextCtrl( parent, IDC_FILENAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item68 = new CMuleTextCtrl( parent, IDC_FILENAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item67->Add( item68, 1, wxALIGN_CENTER, 5 );
 
     wxButton *item69 = new wxButton( parent, IDC_RENAME, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -807,7 +807,7 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_CMT_TEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_CMT_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item3->Add( item4, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxButton *item5 = new wxButton( parent, IDC_FC_CLEAR, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -943,13 +943,13 @@ wxSizer *addFriendDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("IP Address :"), wxDefaultPosition, wxSize(70,-1), 0 );
     item3->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_IPADDRESS, wxEmptyString, wxDefaultPosition, wxSize(150,-1), 0 );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
     item3->Add( item5, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Port :"), wxDefaultPosition, wxSize(70,-1), 0 );
     item3->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP, 5 );
 
-    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, ID_IPORT, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, ID_IPORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item3->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -964,13 +964,13 @@ wxSizer *addFriendDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Username :"), wxDefaultPosition, wxSize(70,-1), 0 );
     item10->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_USERNAME, wxEmptyString, wxDefaultPosition, wxSize(250,-1), 0 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_USERNAME, wxT(""), wxDefaultPosition, wxSize(250,-1), 0 );
     item10->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 5 );
 
     wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("Userhash :"), wxDefaultPosition, wxSize(70,-1), 0 );
     item10->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxBOTTOM, 5 );
 
-    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_USERHASH, wxEmptyString, wxDefaultPosition, wxSize(250,-1), 0 );
+    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_USERHASH, wxT(""), wxDefaultPosition, wxSize(250,-1), 0 );
     item10->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 5 );
 
     item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -1000,7 +1000,7 @@ wxSizer *addFriendDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
@@ -1119,7 +1119,7 @@ wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 wxSizer *testSizer;
 wxSizer *statsDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxHORIZONTAL );
     testSizer = item0;
 
@@ -1127,7 +1127,7 @@ wxSizer *statsDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item3 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
     wxWindow *item6 = new COScopeCtrl(3,1,parent);
@@ -1189,7 +1189,7 @@ item6->SetName(wxT("dloadScope"));
 
     wxBoxSizer *item20 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item22 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item22 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
     wxWindow *item23 = new COScopeCtrl(3,0,parent);
@@ -1248,7 +1248,7 @@ item23->SetName(wxT("otherScope"));
 
     wxBoxSizer *item36 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item38 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item38 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item37 = new wxStaticBoxSizer( item38, wxVERTICAL );
 
     wxWindow *item39 = new COScopeCtrl(3,1,parent);
@@ -1308,7 +1308,7 @@ item39->SetName(wxT("uloadScope"));
 
     item35->Add( item36, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item54 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item54 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item53 = new wxStaticBoxSizer( item54, wxVERTICAL );
 
     wxTreeCtrl *item55 = new wxTreeCtrl( parent, ID_TREECTRL, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxSUNKEN_BORDER );
@@ -1889,7 +1889,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item0->Add( item36, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
-    wxStaticBox *item50 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item50 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item49 = new wxStaticBoxSizer( item50, wxVERTICAL );
 
     wxCheckBox *item51 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2013,7 +2013,7 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
     wxCheckBox *item7 = new wxCheckBox( parent, IDC_ADDNEWFILESPAUSED, _("Add files to download in pause mode"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2107,7 +2107,7 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Incoming Directory :") );
     wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxHORIZONTAL );
 
-    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_INCFILES, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxButton *item5 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2118,7 +2118,7 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticBox *item7 = new wxStaticBox( parent, -1, _("Temporary Directory :") );
     wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxHORIZONTAL );
 
-    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_TEMPFILES, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item6->Add( item8, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxButton *item9 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2263,7 +2263,7 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_EDIT_TBN_WAVFILE, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_EDIT_TBN_WAVFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item6->Enable( false );
     item5->Add( item6, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxTOP, 5 );
 
@@ -2320,14 +2320,14 @@ wxSizer *PreferencesNotifyTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("SMTP server :"), wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_SMTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxVSCROLL );
+    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_SMTP, wxT(""), wxDefaultPosition, wxDefaultSize, wxVSCROLL );
     item21->Enable( false );
     item19->Add( item21, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item22 = new wxStaticText( parent, ID_TEXT, _("Email Address :"), wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item22, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item23 = new CMuleTextCtrl( parent, IDC_EMAIL, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item23 = new CMuleTextCtrl( parent, IDC_EMAIL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item23->Enable( false );
     item19->Add( item23, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -2357,7 +2357,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticBox *item3 = new wxStaticBox( parent, -1, _("aMule Tweaks Advertisements && Parameters") );
     wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
     wxStaticText *item6 = new wxStaticText( parent, IDC_WARNING, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2481,7 +2481,7 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Skin file:") );
     wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxHORIZONTAL );
 
-    CMuleTextCtrl *item18 = new CMuleTextCtrl( parent, IDC_SKINFILE, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item18 = new CMuleTextCtrl( parent, IDC_SKINFILE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item16->Add( item18, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxButton *item19 = new wxButton( parent, IDC_SELSKINFILE, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2643,13 +2643,13 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxEmptyString, wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
     item13->Add( item15, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
     wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item17 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxEmptyString, wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    CMuleTextCtrl *item17 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
     item13->Add( item17, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
     item2->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
@@ -2680,7 +2680,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxCheckBox *item26 = new wxCheckBox( parent, IDC_EXT_CONN_PASSWD_ENABLE, _("Enable password"), wxDefaultPosition, wxDefaultSize, 0 );
     item25->Add( item26, 1, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
     item25->Add( item27, 1, wxALIGN_CENTER, 5 );
 
     item18->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -2713,7 +2713,7 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 0 );
 
-    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxHORIZONTAL );
 
     wxButton *item5 = new wxButton( parent, ID_PREFS_OK_TOP, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2741,7 +2741,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
@@ -2749,7 +2749,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item4 = new wxStaticText( parent, IDC_STATIC_TITLE, _("Title :"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_TITLE, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item5, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
@@ -2759,7 +2759,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item7 = new wxStaticText( parent, IDC_STATIC_COMMENT, _("Comment :"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item7, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_COMMENT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_COMMENT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item8, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
     item1->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5 );
@@ -2769,7 +2769,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item10 = new wxStaticText( parent, IDC_STATIC_INCOMING, _("Incoming Dir :"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item10, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item11 = new CMuleTextCtrl( parent, IDC_INCOMING, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item11 = new CMuleTextCtrl( parent, IDC_INCOMING, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item11, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxButton *item12 = new wxButton( parent, IDC_BROWSE, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2801,7 +2801,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item17 = new wxStaticText( parent, IDC_STATIC_COLOR, _("Select color for this Category (currently selected) :"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item19 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
 
     wxStaticBitmap *item20 = new wxStaticBitmap( parent, ID_BOX_CATCOLOR, amuleSpecial( 0 ), wxDefaultPosition, wxDefaultSize );
@@ -2816,7 +2816,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item23 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxHORIZONTAL );
 
     wxButton *item24 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2840,7 +2840,7 @@ wxSizer *CategoriesEditWindow( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *transferDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxSplitterWindow *item2 = new wxSplitterWindow( parent, ID_SPLATTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
@@ -2892,7 +2892,7 @@ wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_SERVERINFO, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_SERVERINFO, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
     item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET_SERVER, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2927,7 +2927,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_LOGVIEW, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_LOGVIEW, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxVSCROLL|wxHSCROLL );
     item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2948,7 +2948,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
@@ -2973,21 +2973,21 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item7 = new wxStaticText( parent, ID_TEXT, _("Manual Server Add : Name"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item7, 0, wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_SERVERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_SERVERNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item8->SetToolTip( _("Enter the name of the new server here") );
     item6->Add( item8, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("IP:Port"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxEmptyString, wxDefaultPosition, wxSize(150,-1), 0 );
+    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
     item10->SetToolTip( _("Enter the IP of the server here, using the x.x.x.x format.") );
     item6->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item11, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_SPORT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_SPORT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetToolTip( _("Enter the port of the server here.") );
     item6->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -3012,7 +3012,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxEmptyString );
+    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
 
     wxNotebook *item3 = new wxNotebook( parent, ID_SRVLOG_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
@@ -3107,25 +3107,25 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("IP:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 10 );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, ID_NODE_IP1, wxEmptyString, wxDefaultPosition, wxSize(30,-1), 0 );
+    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, ID_NODE_IP1, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item10, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item11, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_NODE_IP2, wxEmptyString, wxDefaultPosition, wxSize(30,-1), 0 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_NODE_IP2, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item12, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item13, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_NODE_IP3, wxEmptyString, wxDefaultPosition, wxSize(30,-1), 0 );
+    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_NODE_IP3, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item14, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item15, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item16 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxEmptyString, wxDefaultPosition, wxSize(30,-1), 0 );
+    CMuleTextCtrl *item16 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item16, 0, wxALIGN_CENTER, 5 );
 
     item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3136,7 +3136,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Port:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, ID_NODE_PORT, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, ID_NODE_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item6->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3317,7 +3317,7 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxHORIZONTAL );
 
-    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_OSDIR, wxEmptyString, wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item7->Add( item9, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxButton *item10 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
