@@ -44,6 +44,7 @@
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 #include <wx/mimetype.h>
+#include <wx/tokenzr.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
@@ -601,10 +602,18 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 	// Add the message to the log-view
 	wxTextCtrl* ct = CastByID( ID_LOGVIEW, serverwnd, wxTextCtrl );
 	if ( ct ) {
-		if (!bufferline.IsEmpty()) {
-			bufferline = stamp + bufferline;
-		} // If it's empty we just write a blank line with no timestamp.
-		ct->AppendText( bufferline + wxT("\n") );
+		if ( bufferline.IsEmpty() ) {
+			// If it's empty we just write a blank line with no timestamp.
+			ct->AppendText( wxT("\n") );
+		} else {
+			// Split multi-line messages into individual lines
+			wxStringTokenizer tokens( bufferline, wxT("\n") );		
+		
+			while ( tokens.HasMoreTokens() ) {
+				ct->AppendText( stamp + tokens.GetNextToken() + wxT("\n") );	
+			} 
+		}
+			
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
 	}
 	
@@ -614,7 +623,8 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 		// Escape "&"s, which would otherwise not show up
 		bufferline.Replace( wxT("&"), wxT("&&") );
 		wxStaticText* text = CastChild( wxT("infoLabel"), wxStaticText );
-		text->SetLabel(bufferline);
+		// Only show the first line if multiple lines
+		text->SetLabel( stamp + bufferline.BeforeFirst( wxT('\n') ) );
 		text->GetParent()->Layout();
 	}
 	
