@@ -42,6 +42,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Created Proxy dialog on preferences.
 		* Updated muuli.wdr for wxDesigner version 2.11 -- no more
 		  manual patching for wxFIXED_MINSIZE required.
+		* Fix for rommel's report of IP filter problem.
+
+	Special Thanks To:
+		* Bug and feature reporters:
+		rommel
 
 --------------------------------------------------------------------------------
 

@@ -411,7 +411,7 @@ public:
 	static bool		GetIPFilterOn()			{ return s_IPFilterOn; }
 	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
-	static void		SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
+	static void		SetIPFilterLevel(uint8 level);
 	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }
 	static void		SetIPFilterAutoLoad(bool val)	{ s_IPFilterAutoLoad = val; }
 	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
@@ -522,7 +522,6 @@ protected:
 	CatList			m_CatList;
 
 private:
-
 	void LoadPreferences();
 	void SavePreferences();
 
