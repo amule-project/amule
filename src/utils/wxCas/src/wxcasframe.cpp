@@ -1,14 +1,27 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        wxcasframe.cpp
-// Purpose:     wxCas main frame
-// Author:      ThePolish <thepolish@vipmail.ru>
-// Created:     2004/04/15
-// Modified by:
-// Copyright:   (c) ThePolish <thepolish@vipmail.ru>
-// Licence:     GPL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Name:        wxCas
+// Purpose:    Display aMule Online Statistics
+// Author:       ThePolish <thepolish@vipmail.ru>
+// Copyright (C) 2004 by ThePolish
+//
 // Derived from CAS by Pedro de Oliveira <falso@rdk.homeip.net>
 // Pixmats from aMule http://www.amule.org
-/////////////////////////////////////////////////////////////////////////////
+//
+// This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the
+// Free Software Foundation, Inc.,
+// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __GNUG__
 #pragma implementation "wxcasframe.h"
@@ -24,13 +37,11 @@
 #include "wxcasframe.h"
 #include "onlinesig.h"
 
-#include <wx/statline.h>
-#include <wx/toolbar.h>
-
 #if defined(__WXGTK__) || defined(__WXMOTIF__) || wxUSE_XPM_IN_MSW
 #include "../pixmaps/wxcas.xpm"
 #include "../pixmaps/amule.xpm"
 #include "../pixmaps/refresh.xpm"
+#include "../pixmaps/stop.xpm"
 #include "../pixmaps/save.xpm"
 #include "../pixmaps/print.xpm"
 #include "../pixmaps/about.xpm"
@@ -41,158 +52,165 @@ WxCasFrame::WxCasFrame (const wxChar * title):
 wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
 	 wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxSYSTEM_MENU | wxCAPTION)
 {
-	// Give it an icon
-	SetIcon (wxICON (wxcas));
+  // Give it an icon
+  SetIcon (wxICON (wxcas));
 
-	// Status Bar
-	CreateStatusBar ();
-	SetStatusText (_("Welcome!"));
+  // Add time
+  m_timer = new wxTimer (this, ID_TIMER);
+  m_timer->Start (1000);
 
-	// Frame Vertical Sizer
-	m_frameVBox = new wxBoxSizer (wxVERTICAL);
+  // Status Bar
+  CreateStatusBar ();
+  SetStatusText (_("Welcome!"));
 
-	// Draw and populate panel
-	m_sigPanel = new wxPanel (this, -1, wxDefaultPosition,
-				  wxDefaultSize, wxTAB_TRAVERSAL,
-				  "wxCasPanel");
+  // Frame Vertical Sizer
+  m_frameVBox = new wxBoxSizer (wxVERTICAL);
 
-	// Panel Vertical Sizer
-	m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, "");
-	m_sigPanelSBoxSizer =
-		new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
+  // Draw and populate panel
+  m_sigPanel = new wxPanel (this, -1, wxDefaultPosition,
+			    wxDefaultSize, wxTAB_TRAVERSAL, "wxCasPanel");
 
-	// Statistics
-	OnLineSig *aMuleSig = new OnLineSig ();
-	aMuleSig->SetFromDefaultAmuleSig ();
+  // Panel Vertical Sizer
+  m_sigPanelSBox = new wxStaticBox (m_sigPanel, -1, "");
+  m_sigPanelSBoxSizer = new wxStaticBoxSizer (m_sigPanelSBox, wxVERTICAL);
 
-	label_1 = new wxStaticText (m_sigPanel, -1,
-				    "aMule " +
-				    aMuleSig->GetVersion () +
-				    _(" has been running for ") +
-				    aMuleSig->GetRunTime ());
+  // Statistics
+  OnLineSig aMuleSig;
+  aMuleSig.SetFromDefaultAmuleSig ();
 
-	label_2 = new wxStaticText (m_sigPanel, -1,
-				    aMuleSig->GetUser () +
-				    _(" is on ") +
-				    aMuleSig->GetServerName () +
-				    " [" + aMuleSig->GetServerIP () +
-				    _("] with ") +
-				    aMuleSig->GetConnexionIDType ());
+  m_statLine_1 = new wxStaticText (m_sigPanel, -1,
+				   "aMule " +
+				   aMuleSig.GetVersion () +
+				   _(" has been running for ") +
+				   aMuleSig.GetRunTime ());
 
-	label_3 = new wxStaticText (m_sigPanel, -1,
-				    _("Total Download: ") +
-				    aMuleSig->GetConvertedTotalDL () +
-				    _(", Upload: ") +
-				    aMuleSig->GetConvertedTotalUL ());
+  m_statLine_2 = new wxStaticText (m_sigPanel, -1,
+				   aMuleSig.GetUser () +
+				   _(" is on ") +
+				   aMuleSig.GetServerName () +
+				   " [" + aMuleSig.GetServerIP () +
+				   _("] with ") +
+				   aMuleSig.GetConnexionIDType ());
 
-	label_4 = new wxStaticText (m_sigPanel, -1,
-				    _("Session Download: ") +
-				    aMuleSig->
-				    GetConvertedSessionDL () +
-				    _(", Upload: ") +
-				    aMuleSig->GetConvertedSessionUL ());
+  m_statLine_3 = new wxStaticText (m_sigPanel, -1,
+				   _("Total Download: ") +
+				   aMuleSig.GetConvertedTotalDL () +
+				   _(", Upload: ") +
+				   aMuleSig.GetConvertedTotalUL ());
 
-	label_5 = new wxStaticText (m_sigPanel, -1,
-				    _("Download: ") +
-				    aMuleSig->GetDLRate () +
-				    _(" kB/s, Upload: ") +
-				    aMuleSig->GetULRate () + _("kB/s"));
+  m_statLine_4 = new wxStaticText (m_sigPanel, -1,
+				   _("Session Download: ") +
+				   aMuleSig.
+				   GetConvertedSessionDL () +
+				   _(", Upload: ") +
+				   aMuleSig.GetConvertedSessionUL ());
 
-	label_6 = new wxStaticText (m_sigPanel, -1,
-				    _("Sharing: ") +
-				    aMuleSig->GetSharedFiles () +
-				    _(" file(s), Clients on queue: ")
-				    + aMuleSig->GetQueue ());
+  m_statLine_5 = new wxStaticText (m_sigPanel, -1,
+				   _("Download: ") +
+				   aMuleSig.GetDLRate () +
+				   _(" kB/s, Upload: ") +
+				   aMuleSig.GetULRate () + _("kB/s"));
 
-
-	if (aMuleSig->IsRunning ())
-	{
-		SetStatusText (_("aMule is running"));
-	}
-	else
-	{
-		SetStatusText (_("WARNING: aMule is NOT running"));
-	}
-
-	delete aMuleSig;
-
-	m_sigPanelSBoxSizer->Add (label_1, 0, wxALL | wxEXPAND, 5);
-	m_sigPanelSBoxSizer->Add (label_2, 0, wxALL | wxEXPAND, 5);
-	m_sigPanelSBoxSizer->Add (label_3, 0, wxALL | wxEXPAND, 5);
-	m_sigPanelSBoxSizer->Add (label_4, 0, wxALL | wxEXPAND, 5);
-	m_sigPanelSBoxSizer->Add (label_5, 0, wxALL | wxEXPAND, 5);
-	m_sigPanelSBoxSizer->Add (label_6, 0, wxALL | wxEXPAND, 5);
-
-	// Panel Layout
-	m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
-
-	// Add panel to sizer
-	m_frameVBox->Add (new wxStaticLine (this, -1), 0, wxALL | wxEXPAND,
-			  5);
-	m_frameVBox->Add (m_sigPanel, 0, wxALL | wxEXPAND, 10);
-
-	// Add Bitmap
-	wxBitmap bitmap (amule_xpm);
-	
-	wxInt32 h, w;
-	m_sigPanel->GetSize (&w, &h);
-
-	m_amule_xpm = new wxBitmap (wxImage (bitmap.ConvertToImage ()).
-			       Scale (w, h));
-
-	m_imgPanel = new WxCasCanvas (this, m_amule_xpm);
-
-	m_frameVBox->Add (m_imgPanel, 0, wxALL | wxEXPAND, 10);
+  m_statLine_6 = new wxStaticText (m_sigPanel, -1,
+				   _("Sharing: ") +
+				   aMuleSig.GetSharedFiles () +
+				   _(" file(s), Clients on queue: ")
+				   + aMuleSig.GetQueue ());
 
 
-// Toolbar
-	wxBitmap *toolBarBitmaps[4];
+  if (aMuleSig.IsRunning ())
+    {
+      SetStatusText (_("aMule is running"));
+    }
+  else
+    {
+      SetStatusText (_("WARNING: aMule is NOT running"));
+    }
 
+  m_sigPanelSBoxSizer->Add (m_statLine_1, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_2, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_3, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_4, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_5, 0, wxALL | wxEXPAND, 5);
+  m_sigPanelSBoxSizer->Add (m_statLine_6, 0, wxALL | wxEXPAND, 5);
+
+  // Panel Layout
+  m_sigPanel->SetSizerAndFit (m_sigPanelSBoxSizer);
+
+  // Add static line to sizer
+  m_staticLine = new wxStaticLine (this, -1);
+  m_frameVBox->Add (m_staticLine, 0, wxALL | wxEXPAND);
+
+  // Add panel to sizer
+  m_frameVBox->Add (m_sigPanel, 0, wxALL | wxEXPAND, 10);
+
+  // Add Bitmap Splash
+  wxBitmap *splash;
 #if USE_XPM_BITMAPS
-	toolBarBitmaps[0] = new wxBitmap (refresh_xpm);
-	toolBarBitmaps[1] = new wxBitmap (save_xpm);
-	toolBarBitmaps[2] = new wxBitmap (print_xpm);
-	toolBarBitmaps[3] = new wxBitmap (about_xpm);
+  splash = new wxBitmap (amule_xpm);
 #else
-	toolBarBitmaps[0] = new wxBITMAP (refresh);
-	toolBarBitmaps[1] = new wxBITMAP (save);
-	toolBarBitmaps[2] = new wxBITMAP (print);
-	toolBarBitmaps[3] = new wxBITMAP (about);
+  splash = new wxBITMAP (amule);
 #endif
 
-	m_toolbar =
-		new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
-			       wxTB_HORIZONTAL | wxTB_FLAT);
-	SetToolBar (m_toolbar);
+  // Resize Bitmap
+  wxInt32 ph, pw, h;
+  m_sigPanel->GetClientSize (&pw, &ph);
+  h = (wxInt32) ((double) (splash->GetHeight ()) / splash->GetWidth () * pw);
 
-	m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", *(toolBarBitmaps[0]),
-			    _("Refresh Online statistics"));
+  wxBitmap *ResizedSplash = new wxBitmap (wxImage (splash->ConvertToImage ()).
+					  Scale (pw, h));
 
-	m_toolbar->AddTool (ID_BAR_SAVE, "Refresh", *(toolBarBitmaps[1]),
-			    _("Save Online statistics image"));
+  delete splash;		// Dont need it anymore
 
-	m_toolbar->AddTool (ID_BAR_PRINT, "Refresh", *(toolBarBitmaps[2]),
-			    _("Print Online statistics image"));
+  // Display Bitmap
+  m_imgPanel = new WxCasCanvas (this, ResizedSplash);
 
-	m_toolbar->AddSeparator ();
+  m_frameVBox->Add (m_imgPanel, 0, wxALL | wxEXPAND, 10);
 
-	m_toolbar->AddTool (ID_BAR_ABOUT, "About", *(toolBarBitmaps[3]),
-			    _("About wxCas"));
 
-#ifdef __WXMSW__
-	m_toolbar->SetMargins (16, 15);
-	//int width = 24;
+// Toolbar Pixmaps
+#if USE_XPM_BITMAPS
+  m_toolBarBitmaps[0] = new wxBitmap (refresh_xpm);
+  m_toolBarBitmaps[1] = new wxBitmap (save_xpm);
+  m_toolBarBitmaps[2] = new wxBitmap (print_xpm);
+  m_toolBarBitmaps[3] = new wxBitmap (about_xpm);
+  m_toolBarBitmaps[4] = new wxBitmap (stop_xpm);
 #else
-	m_toolbar->SetMargins (24, 24);
-	//int width = 16;
+  m_toolBarBitmaps[0] = new wxBITMAP (refresh);
+  m_toolBarBitmaps[1] = new wxBITMAP (save);
+  m_toolBarBitmaps[2] = new wxBITMAP (print);
+  m_toolBarBitmaps[3] = new wxBITMAP (about);
+  m_toolBarBitmaps[4] = new wxBITMAP (stop);
 #endif
+  
+  // Constructing toolbar
+  m_toolbar =
+    new wxToolBar (this, -1, wxDefaultPosition, wxDefaultSize,
+		   wxTB_HORIZONTAL | wxTB_FLAT);
+  SetToolBar (m_toolbar);
 
-	m_toolbar->SetMargins (2, 2);
-	m_toolbar->Realize ();
+  m_toolbar->AddTool (ID_BAR_REFRESH, "Refresh", *(m_toolBarBitmaps[0]),
+		      _("Stop Auto Refresh"));
 
-	// Frame Layout
-	SetAutoLayout (TRUE);
-	SetSizerAndFit (m_frameVBox);
+  m_toolbar->AddSeparator ();
+
+  m_toolbar->AddTool (ID_BAR_SAVE, "Save", *(m_toolBarBitmaps[1]),
+		      _("Save Online Statistics image"));
+
+  m_toolbar->AddTool (ID_BAR_PRINT, "Print", *(m_toolBarBitmaps[2]),
+		      _("Print Online Statistics image"));
+
+  m_toolbar->AddSeparator ();
+
+  m_toolbar->AddTool (ID_BAR_ABOUT, "About", *(m_toolBarBitmaps[3]),
+		      _("About wxCas"));
+
+  m_toolbar->SetMargins (2, 2);
+  m_toolbar->Realize ();
+
+  // Frame Layout
+  SetAutoLayout (TRUE);
+  SetSizerAndFit (m_frameVBox);
 }
 
 // Destructor
@@ -200,93 +218,121 @@ WxCasFrame::~WxCasFrame ()
 {
 }
 
+// Events table
 BEGIN_EVENT_TABLE (WxCasFrame, wxFrame)
 EVT_TOOL (ID_BAR_REFRESH, WxCasFrame::OnBarRefresh)
 EVT_TOOL (ID_BAR_SAVE, WxCasFrame::OnBarSave)
 EVT_TOOL (ID_BAR_PRINT, WxCasFrame::OnBarPrint)
-EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout) END_EVENT_TABLE ()
+EVT_TOOL (ID_BAR_ABOUT, WxCasFrame::OnBarAbout)
+EVT_TIMER (ID_TIMER, WxCasFrame::OnTimer)
+END_EVENT_TABLE ()
+
 // Refresh button
-     void
+ void
      WxCasFrame::OnBarRefresh (wxCommandEvent & event)
 {
-	SetFromDefaultAmuleFile ();
+  if (m_timer->IsRunning ())
+    {
+      m_timer->Stop ();
+      m_toolbar->DeleteTool (ID_BAR_REFRESH);
+      m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
+			     *(m_toolBarBitmaps[4]), wxNullBitmap,
+			     wxITEM_NORMAL, _("Start Auto Refresh"));
+
+    }
+  else
+    {
+      m_timer->Start ();
+      m_toolbar->DeleteTool (ID_BAR_REFRESH);
+      m_toolbar->InsertTool (0, ID_BAR_REFRESH, "Refresh",
+			     *(m_toolBarBitmaps[0]), wxNullBitmap,
+			     wxITEM_NORMAL, _("Stop Auto Refresh"));
+    }
 }
 
 // Save button
 void
 WxCasFrame::OnBarSave (wxCommandEvent & event)
 {
-	printf ("To be implemented\n");
+  printf ("To be implemented\n");
 }
 
 // Print button
 void
 WxCasFrame::OnBarPrint (wxCommandEvent & event)
 {
-	printf ("To be implemented\n");
+  printf ("To be implemented\n");
 }
 
 // About button
 void
 WxCasFrame::OnBarAbout (wxCommandEvent & event)
 {
-	wxMessageBox (_
-		      ("wxCas, aMule OnLigne Signature Statistics\n\n"
-		       "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
-		       "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
-		       "Distributed under GPL"),
-		      _("About wxCas"), wxOK | wxCENTRE | wxICON_INFORMATION);
+  wxMessageBox (_
+		("wxCas, aMule OnLigne Signature Statistics\n\n"
+		 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
+		 "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n\n"
+		 "Distributed under GPL"),
+		_("About wxCas"), wxOK | wxCENTRE | wxICON_INFORMATION);
+}
+
+// Timer
+void
+WxCasFrame::OnTimer (wxTimerEvent & event)
+{
+  SetFromDefaultAmuleFile ();
 }
 
 // Accessors
 void
 WxCasFrame::SetFromDefaultAmuleFile ()
 {
-	OnLineSig *aMuleSig = new OnLineSig ();
-	aMuleSig->SetFromDefaultAmuleSig ();
+  // Set labels
+  OnLineSig aMuleSig;
+  aMuleSig.SetFromDefaultAmuleSig ();
 
-	label_1->SetLabel ("aMule " +
-			   aMuleSig->GetVersion () +
-			   _(" has been running for ") +
-			   aMuleSig->GetRunTime ());
+  m_statLine_1->SetLabel ("aMule " +
+			  aMuleSig.GetVersion () +
+			  _(" has been running for ") +
+			  aMuleSig.GetRunTime ());
 
-	label_2->SetLabel (aMuleSig->GetUser () +
-			   _(" is on ") +
-			   aMuleSig->GetServerName () +
-			   " [" + aMuleSig->GetServerIP () +
-			   _("] with ") + aMuleSig->GetConnexionIDType ());
+  m_statLine_2->SetLabel (aMuleSig.GetUser () +
+			  _(" is on ") +
+			  aMuleSig.GetServerName () +
+			  " [" + aMuleSig.GetServerIP () +
+			  _("] with ") + aMuleSig.GetConnexionIDType ());
 
-	label_3->SetLabel (_("Total Download: ") +
-			   aMuleSig->GetConvertedTotalDL () +
-			   _(", Upload: ") +
-			   aMuleSig->GetConvertedTotalUL ());
+  m_statLine_3->SetLabel (_("Total Download: ") +
+			  aMuleSig.GetConvertedTotalDL () +
+			  _(", Upload: ") + aMuleSig.GetConvertedTotalUL ());
 
-	label_4->SetLabel (_("Session Download: ") +
-			   aMuleSig->
-			   GetConvertedSessionDL () +
-			   _(", Upload: ") +
-			   aMuleSig->GetConvertedSessionUL ());
+  m_statLine_4->SetLabel (_("Session Download: ") +
+			  aMuleSig.
+			  GetConvertedSessionDL () +
+			  _(", Upload: ") +
+			  aMuleSig.GetConvertedSessionUL ());
 
-	label_5->SetLabel (_("Download: ") +
-			   aMuleSig->GetDLRate () +
-			   _(" kB/s, Upload: ") +
-			   aMuleSig->GetULRate () + _("kB/s"));
+  m_statLine_5->SetLabel (_("Download: ") +
+			  aMuleSig.GetDLRate () +
+			  _(" kB/s, Upload: ") +
+			  aMuleSig.GetULRate () + _("kB/s"));
 
-	label_6->SetLabel (_("Sharing: ") +
-			   aMuleSig->GetSharedFiles () +
-			   _(" file(s), Clients on queue: ")
-			   + aMuleSig->GetQueue ());
+  m_statLine_6->SetLabel (_("Sharing: ") +
+			  aMuleSig.GetSharedFiles () +
+			  _(" file(s), Clients on queue: ")
+			  + aMuleSig.GetQueue ());
 
+  // Set status bar
+  if (aMuleSig.IsRunning ())
+    {
+      SetStatusText (_("aMule is running"));
+    }
+  else
+    {
+      SetStatusText (_("WARNING: aMule is NOT running"));
+    }
 
-	if (aMuleSig->IsRunning ())
-	{
-		SetStatusText (_("aMule is running"));
-	}
-	else
-	{
-		SetStatusText (_("WARNING: aMule is NOT running"));
-	}
-
-	delete aMuleSig;
-	Refresh ();
+  // Resze Pannel if labels' size change
+  Fit ();
+  Refresh ();
 }
