@@ -1223,7 +1223,8 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
 	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
-	fprintf(stderr, "aMule version is: %s\n\n", (const char *)unicode2char(GetMuleVersion()));
+	fprintf(stderr, "aMule version is: %s\n", (const char *)unicode2char(GetMuleVersion()));
+	fprintf(stderr, "Running on: %s\n\n", (const char*)unicode2char(wxGetOsDescription()));
 	
 	otherfunctions::print_backtrace(1); // 1 == skip this function.
 	
