@@ -26,10 +26,10 @@
 #include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "types.h"			// Needed for uint32 and uint64
+#include "Preferences.h"	// Needed for cntStatColors
 #include "OScopeCtrl.h"		// Needed for graphs
 #include "CTypedPtrList.h"	// Needed for CList
 #include "amule.h"			// Needed for theApp
-#include "PrefsUnifiedDlg.h"	// Needed for cntStatColors
 
 class COScopeCtrl;
 
@@ -46,7 +46,7 @@ typedef struct {
 class CStatisticsDlg : public wxPanel// CResizableDialog
 {
 	friend class PrefsUnifiedDlg;
-
+	friend class CPreferences;
 public:
 	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
 	~CStatisticsDlg();

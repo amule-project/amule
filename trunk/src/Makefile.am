@@ -190,7 +190,6 @@ amuled_SOURCES = ListenSocket.cpp \
         packets.cpp \
         PartFile.cpp \
         Preferences.cpp \
-        Preview.cpp \
         SafeFile.cpp \
         SearchList.cpp \
         server.cpp \
@@ -207,10 +206,8 @@ amuled_SOURCES = ListenSocket.cpp \
 if ADD_GSOCKET
 if ADD_24GSOCKET
 amule_SOURCES += gsocket.c 
-amuled_SOURCES += gsocket.c
 else
 amule_SOURCES += gsocket-2.5.c
-amuled_SOURCES += gsocket-2.5.c 
 endif
 endif
 
