@@ -203,7 +203,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, wxString title) : wxFrame(
 	// Set Serverlist as active window
 	activewnd=NULL;
 	SetActiveDialog(serverwnd);
-	m_nActiveDialog = 1;
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );	
 
 	CAddFileThread::Setup();
@@ -228,10 +227,25 @@ void CamuleDlg::ToggleFastED2KLinksHandler()
 
 void CamuleDlg::SetActiveDialog(wxWindow* dlg)
 {
+	switch ( dlg->GetId() ) {
+		case IDD_SERVER:
+		case IDD_SEARCH:
+		case IDD_TRANSFER:
+		case IDD_FILES:
+		case IDD_CHAT:
+		case IDD_STATISTICS:
+			m_nActiveDialog = dlg->GetId();
+			break;
+		default:
+			printf("Unknown window passed to SetActiveDialog!\n");
+			return;
+	}
+
 	if ( activewnd ) {
 		activewnd->Show(FALSE);
 		contentSizer->Remove(activewnd);
 	}
+	
 	contentSizer->Add(dlg, 1, wxALIGN_LEFT|wxEXPAND);
 	dlg->Show(TRUE);
 	activewnd=dlg;
@@ -326,36 +340,30 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 			switch ( ev.GetId() ) {
 				case ID_BUTTONSERVERS:
 					SetActiveDialog(serverwnd);
-					m_nActiveDialog = 1;
 					// Set serverlist splitter position
 					((wxSplitterWindow*)FindWindow("SrvSplitterWnd"))->SetSashPosition(srv_split_pos, true);
 					break;
 
 				case ID_BUTTONSEARCH:
 					SetActiveDialog(searchwnd);
-					m_nActiveDialog = 3;
 					break;
 
 				case ID_BUTTONTRANSFER:
 					SetActiveDialog(transferwnd);
-					m_nActiveDialog = 2;
 					// Set splitter position
 					((wxSplitterWindow*)FindWindow("splitterWnd"))->SetSashPosition(split_pos, true);
 					break;
 
 				case ID_BUTTONSHARED:
 					SetActiveDialog(sharedfileswnd);
-					m_nActiveDialog = 4;
 					break;
 
 				case ID_BUTTONMESSAGES:
 					SetActiveDialog(chatwnd);
-					m_nActiveDialog = 5;
 					break;
 
 				case ID_BUTTONSTATISTICS:
 					SetActiveDialog(statisticswnd);
-					m_nActiveDialog = 7;
 					break;
 
 				// This shouldn't happen, but just in case
@@ -676,7 +684,6 @@ void CamuleDlg::ShowConnectionState(bool connected, wxString server, bool iconOn
 		
 		m_wndToolbar->Realize();
 
-	//	Layout();
 		ShowUserCount(0, 0);
 	}
 
