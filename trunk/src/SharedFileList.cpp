@@ -78,10 +78,11 @@ void CSharedFileList::FindSharedFiles() {
 	}
 
 	// remove bogus entries first
-	for (unsigned int ij = 0; ij < app_prefs->shareddir_list.GetCount(); ++ij) {
-		if(!wxFileName::DirExists(app_prefs->shareddir_list.Item(ij))) {
-			app_prefs->shareddir_list.Remove(ij);
-			--ij;
+	for (unsigned int i = 0; i < app_prefs->shareddir_list.GetCount(); ) {
+		if(!wxFileName::DirExists(app_prefs->shareddir_list.Item(i))) {
+			app_prefs->shareddir_list.RemoveAt(i);
+		} else {
+			i++;
 		}
 	}
 
