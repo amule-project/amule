@@ -43,8 +43,14 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include <sys/types.h>
 
+//
+// (TCP+3) UDP socket
+//
 
-CUDPSocket::CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& address, const wxProxyData *ProxyData)
+CUDPSocket::CUDPSocket(
+	CServerConnect* in_serverconnect,
+	amuleIPV4Address &address,
+	const wxProxyData *ProxyData)
 :
 wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 #ifdef AMULE_DAEMON
@@ -55,7 +61,6 @@ wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 	cur_server = NULL;
 	serverconnect = in_serverconnect;
 
-	printf("*** UDP socket at %d\n",address.Service());
 #ifdef AMULE_DAEMON
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		printf("ERROR: CUDPSocket failed create\n");
@@ -63,9 +68,9 @@ wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 	}
 	Run();
 #else
-	SetEventHandler(theApp,UDPSOCKET_HANDLER);
+	SetEventHandler(theApp, UDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG);
-	Notify(TRUE);
+	Notify(true);
 #endif
   
 }

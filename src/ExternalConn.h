@@ -35,7 +35,8 @@
 #include "ECSocket.h"
 #include "ECPacket.h"
 
-#include "otherfunctions.h" // for RLE
+#include "amuleIPV4Address.h"	// for amuleIPV4Address
+#include "otherfunctions.h"	// for RLE
 
 class CPartFile;
 class wxSocketServer;
@@ -104,7 +105,7 @@ typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
 
 class ExternalConn : public EXTERNAL_CONN_BASE {
 	public:
-		ExternalConn();
+		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
 	
 		wxString ProcessRequest(const wxString& item);

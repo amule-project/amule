@@ -61,7 +61,10 @@ class CUDPSocket : public wxDatagramSocketProxy
 	friend class CServerConnect;
 
 public:
-	CUDPSocket(CServerConnect* in_serverconnect, amuleIPV4Address& addr, const wxProxyData *ProxyData = NULL);
+	CUDPSocket(
+		CServerConnect* in_serverconnect,
+		amuleIPV4Address &addr,
+		const wxProxyData *ProxyData = NULL);
 	~CUDPSocket();
 
 	void	SendPacket(Packet* packet,CServer* host);

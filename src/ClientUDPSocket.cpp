@@ -59,7 +59,9 @@
 #include "otherfunctions.h"
 #include "SafeFile.h"
 
-// CClientUDPSocket
+//
+// CClientUDPSocket -- Extended eMule UDP socket
+//
 
 IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket,wxDatagramSocketProxy)
 
@@ -72,7 +74,6 @@ wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 {
 	m_bWouldBlock = false;
 
-	printf("*** UDP socket at %d\n",address.Service());
 #ifdef AMULE_DAEMON
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		printf("ERROR: CClientUDPSocket failed create\n");
@@ -80,9 +81,9 @@ wxDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 	}
 	Run();
 #else
-	SetEventHandler(theApp,CLIENTUDPSOCKET_HANDLER);
-	SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG);
-	Notify(TRUE);
+	SetEventHandler(theApp, CLIENTUDPSOCKET_HANDLER);
+	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
+	Notify(true);
 #endif
 }
 
