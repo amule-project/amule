@@ -184,7 +184,9 @@ public:
 	bool	GetInsufficient() const		{ return insufficient; }
 	
 	void	CompleteFileEnded(int completing_result, wxString* newname);	
-	
+
+	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
+
 protected:
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
 	bool	IsAlreadyRequested(uint32 start, uint32 end);

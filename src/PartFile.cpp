@@ -1601,7 +1601,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					if( cur_src->HasLowID() && (theApp.serverconnect->GetClientID() < 16777216) ) {
 						//If we are almost maxed on sources, slowly remove these client to see if we can find a better source.
 						if( ((dwCurTick - lastpurgetime) > 30000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8))) {
-							theApp.downloadqueue->RemoveSource( cur_src );
+							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break;
 						}
@@ -1618,7 +1618,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 						if(!cur_src->SwapToAnotherFile(false , false, false , NULL)) {
 							//however we only delete them if reaching the limit
 							if (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) {
-								theApp.downloadqueue->RemoveSource(cur_src);
+								RemoveSource(cur_src);
 								lastpurgetime = dwCurTick;
 								break; //Johnny-B - nothing more to do here (good eye!)
 							}
@@ -1639,7 +1639,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					if( cur_src->IsRemoteQueueFull()) {
 						cur_src->SetValidSource(false);
 						if( ((dwCurTick - lastpurgetime) > 60000) && (GetSourceCount() >= (theApp.glob_prefs->GetMaxSourcePerFile()*.8 )) ){
-							theApp.downloadqueue->RemoveSource( cur_src );
+							RemoveSource( cur_src );
 							lastpurgetime = dwCurTick;
 							break; //Johnny-B - nothing more to do here (good eye!)
 						}
@@ -2472,12 +2472,12 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 		CUpDownClient* cur_src = *it++;
 		if (bTryToSwap) {
 			if (!cur_src->SwapToAnotherFile(true, true, true, NULL)) {
-				theApp.downloadqueue->RemoveSource(cur_src,true,false);
+				RemoveSource(cur_src,true,false);
 				// If it was not swapped, it's not on any file anymore, and should die 
 				//theApp.clientlist->RemoveClient(cur_src);
 			}
 		} else {
-			theApp.downloadqueue->RemoveSource(cur_src,true,false);
+			RemoveSource(cur_src,true,false);
 			//theApp.clientlist->RemoveClient(cur_src);
 		}
 	}
@@ -3566,6 +3566,22 @@ void CPartFile::CharFillRange(wxString* buffer,uint32 start, uint32 end, char co
 	}
 }
 
+
+bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bDoStatsUpdate)
+{
+	wxASSERT( toremove );
+
+	theApp.downloadqueue->RemoveSource( toremove, updatewindow, bDoStatsUpdate );
+
+	// Check if the client should be deleted, but not if the client is already dying
+	if ( !toremove->GetSocket() && !toremove->HasBeenDeleted() ) {
+		if ( toremove->Disconnected(wxT("RemoveSource - purged")) ) {
+			toremove->Safe_Delete();
+		}
+	}
+
+}
+
 /* Razor 1a - Modif by MikaelB
    RemoveNoNeededSources function */
 
@@ -3577,11 +3593,11 @@ void CPartFile::RemoveNoNeededSources()
 			/* If allowed, try to swap to other file. If swapping fails, remove from this one. */
 			if (theApp.glob_prefs->SwapNoNeededSources()) {
 				if (!client->SwapToAnotherFile(true, true, true, NULL)) {
-					theApp.downloadqueue->RemoveSource( client );
+					RemoveSource( client );
 				}
 			/* If not allowed to swap, simply remove from this one. */
 			} else {
-				theApp.downloadqueue->RemoveSource( client );
+				RemoveSource( client );
 			}
 		}
 	}
@@ -3596,7 +3612,7 @@ void CPartFile::RemoveFullQueueSources()
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 		CUpDownClient* client = *it++;
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			theApp.downloadqueue->RemoveSource( client );
+			RemoveSource( client );
 		}
 	}
 }
@@ -3610,7 +3626,7 @@ void CPartFile::RemoveHighQueueRatingSources()
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 		CUpDownClient* client = *it++;
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			theApp.downloadqueue->RemoveSource( client );
+			RemoveSource( client );
 		}
 	}
 }
@@ -3625,13 +3641,13 @@ void CPartFile::CleanUpSources()
 		CUpDownClient* client = *it++;
 		if (client->GetDownloadState() == DS_NONEEDEDPARTS) {
 			if ((theApp.glob_prefs->DropNoNeededSources()) && (!client->SwapToAnotherFile(true, true, true, NULL))) {
-				theApp.downloadqueue->RemoveSource( client );
+				RemoveSource( client );
 			}
 		}
 		if ((client->GetDownloadState() == DS_ONQUEUE) && (client->IsRemoteQueueFull())) {
-			theApp.downloadqueue->RemoveSource( client );
+			RemoveSource( client );
 		} else if ((client->GetDownloadState() == DS_ONQUEUE) && (client->GetRemoteQueueRank() > theApp.glob_prefs->HighQueueRanking())) {
-			theApp.downloadqueue->RemoveSource( client );
+			RemoveSource( client );
 		}
 	}
 }
