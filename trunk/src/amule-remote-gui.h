@@ -336,7 +336,7 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 
 class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
 		uint32 m_waiting_user_count;
-		uint32 m_kbps;
+		float m_kbps;
 		uint32 m_data_overhead;
 
 		std::list<CUpDownClient *>::iterator it;
@@ -344,7 +344,7 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		CUpQueueRem(CRemoteConnect *);
 		
 		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
-		uint32 GetKBps() { return m_kbps; }
+		float GetKBps() { return m_kbps; }
 		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
 		
 		POSITION GetFirstFromUploadList();
@@ -353,6 +353,7 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 		POSITION GetFirstFromWaitingList();
 		CUpDownClient *GetNextFromWaitingList(POSITION &curpos);
 		
+		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// template
 		//
@@ -363,7 +364,7 @@ class CUpQueueRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownCli
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
-		uint32 m_kbps;
+		float m_kbps;
 		uint32 m_data_overhead;
 		
 		std::list<CUpDownClient *>::iterator it;
@@ -372,7 +373,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
-		uint32 GetKBps() { return m_kbps; }
+		float GetKBps() { return m_kbps; }
 		uint32 GetDownDatarateOverhead() { return m_data_overhead; }
 
 		uint32 GetFileCount() { return GetCount(); }
@@ -401,6 +402,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		void UnsetCompletedFilesExist();
 		void ResetCatParts(int cat);
 
+		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// template
 		//
@@ -527,6 +529,8 @@ class CListenSocketRem {
 
 class CStatisticsRem {
 	CStatistics *m_stat_data;
+	public:
+		void UpdateStats(CEC_Stats_Tag *);
 };
 
 #endif /* AMULE_REMOTE_GUI_H */
