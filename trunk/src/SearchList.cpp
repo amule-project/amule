@@ -263,8 +263,6 @@ void CSearchList::RemoveResults(long nSearchID)
 bool CSearchList::StartNewSearch(long nSearchID, bool global_search, wxString &searchString, wxString& typeText, 
 											wxString &extension, uint32 min, uint32 max, uint32 availability)
 {
-	// New search, kill the previous ones.
-	Clear();
 	
 	if(!theApp.serverconnect->IsConnected()) {
 		// Failed!
