@@ -75,6 +75,7 @@ void CUpDownClient::DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect
 	s_StatusBar.SetHeight(rect.height - rect.y);
 	s_StatusBar.SetWidth(rect.width - rect.x);
 	s_StatusBar.Fill(crNeither);
+	s_StatusBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
 
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
 	CString gettingParts;

@@ -665,6 +665,8 @@ void CSharedFilesCtrl::OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxR
 			s_ShareStatusBar.SetHeight(columnRect.GetHeight()); 
 			s_ShareStatusBar.SetWidth(columnRect.GetWidth()); 
 			s_ShareStatusBar.Fill(RGB(255,0,0));
+			s_ShareStatusBar.Set3dDepth( theApp.glob_prefs->Get3DDepth() );
+
 
 			if ( !file->m_AvailPartFrequency.IsEmpty()) {
 				for (int i = 0;i != file->GetPartCount();i++)
