@@ -2187,7 +2187,8 @@ void CClientReqSocket::OnError(int nErrorCode)
 		} else {
 			strError = wxT("A client caused a socket blocking error or closed connection.");
 		}
-		
+	
+#if 0	
 		strError += wxString::Format(wxT(" Retries: %u. "), connection_retries);
 		
 		#define MAX_RETRIES 2
@@ -2202,6 +2203,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 			disconnect = false;
 			connection_retries++;			
 		}
+#endif
 		
 		//AddDebugLogLineM(false, strError);
 		
