@@ -22,10 +22,11 @@
 
 #include <wx/dynarray.h>
 #include "types.h"		// Needed for uint16 and uint32
-#include "CTypedPtrList.h"	// Needed for CPtrList
 #include "GetTickCount.h"
 #include "updownclient.h"	// Needed for CUpDownClient
 
+#include <set>
+#include <list>
 #include <map>
 
 class CUpDownClient;
@@ -64,9 +65,27 @@ class CClientList
 public:
 	CClientList();
 	~CClientList();
-	void	AddClient(CUpDownClient* toadd,bool bSkipDupTest = false);
-	void	RemoveClient(CUpDownClient* toremove);
+	
+	/**
+	 * Adds a client to the global list of clients.
+	 *
+	 * @param toadd The new client.
+	 * @param bSkipDupTest Not used, as the list is currently a set, which does not allow duplicates.
+	 */
+	void	AddClient(CUpDownClient* toadd, bool bSkipDupTest = false);
 
+	/**
+	 * Schedules a client for deletion.
+	 *
+	 * @param client The client to be deleted.
+	 *
+	 * Call this function whenever a client is to be deleted, rather than 
+	 * directly deleting the client. If the client is on the global client-
+	 * list, then it will be scheduled for deletion, otherwise it will be 
+	 * deleted immediatly.
+	 */
+	void	AddToDeleteQueue(CUpDownClient* client);
+	
 	typedef std::map<uint16, uint32> clientmap16;
 	typedef std::map<uint32, uint32> clientmap32;
 	
@@ -83,14 +102,19 @@ public:
 	bool	IsBannedClient(uint32 dwIP);
 	void	RemoveBannedClient(uint32 dwIP);
 	uint16	GetBannedCount() const		{return m_bannedList.size(); }
-	uint32	GetCount() const { return list.GetCount(); }
+	uint32	GetCount() const { return list.size(); }
 
 	void	Process();
-	
-	bool	Debug_IsValidClient(CUpDownClient* tocheck) const;
 	void	FilterQueues();
+	
 private:
-	CTypedPtrList<CPtrList, CUpDownClient*> list;
+	typedef std::set<CUpDownClient*> SourceSet;
+	SourceSet list;
+
+	typedef std::list<CUpDownClient*> SourceList;
+	//! This is the lists of clients that should be deleted
+	SourceList delete_queue;
+	
 	std::map<uint32, uint32> m_bannedList;
 	std::map<uint32, CDeletedClient*> m_trackedClientsList;
 	uint32	m_dwLastBannCleanUp;

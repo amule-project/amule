@@ -456,7 +456,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	if ( source->HasValidHash() ) {
 		if ( source->GetUserHash() == theApp.glob_prefs->GetUserHash() ) {
 			AddDebugLogLineM(false, wxT("Tried to add source with matching hash to your own."));
-			delete source;
+			source->Safe_Delete();
 			return;
 		}
 	}
@@ -469,7 +469,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 	*/
 
 	if (sender->IsStopped()) {
-		delete source;
+		source->Safe_Delete();
 		return;
 	}
 
@@ -482,18 +482,18 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source)
 		for ( CPartFile::SourceSet::iterator it = cur_file->m_SrcList.begin(); it != cur_file->m_SrcList.end(); ++it) {
 			if ( (*it)->Compare(source) ) {
 				if (cur_file == sender) { // this file has already this source
-					delete source;
+					source->Safe_Delete();
 					return;
 				}
 				// set request for this source
 				if ( (*it)->AddRequestForAnotherFile(sender)) {
 					// add it to uploadlistctrl
 					Notify_DownloadCtrlAddSource(sender, *it, true);
-					delete source;
+					source->Safe_Delete();
 					return;
 				}
 				else{
-					delete source;
+					source->Safe_Delete();
 					return;
 				}
 			}
@@ -1347,4 +1347,3 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	}
 	return TRUE;
 }
-

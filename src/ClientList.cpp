@@ -17,7 +17,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#include "amule.h"		// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -27,17 +27,19 @@
 #include "TransferWnd.h"
 #include "ClientCredits.h"
 #include <wx/intl.h>
-#include <wx/arrimpl.cpp>	 // this is a magic incantation which must be done!
+#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 #include "opcodes.h"
 
 WX_DEFINE_OBJARRAY(ArrayOfPortAndHash);
 
-CClientList::CClientList(){
+CClientList::CClientList()
+{
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
 }
 
-CClientList::~CClientList() {
+CClientList::~CClientList()
+{
 	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
 	
 	for ( ; it != m_trackedClientsList.end(); ++it ){
@@ -50,7 +52,7 @@ CClientList::~CClientList() {
 // xrmb : statsclientstatus
 void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16* WXUNUSED(clientStatus), clientmap32 *clientVersionEDonkey, clientmap32 *clientVersionEDonkeyHybrid, clientmap32 *clientVersionEMule, clientmap32 *clientVersionAMule){
 	//if(clientStatus)		clientStatus->RemoveAll();
-	totalclient = list.GetCount();
+	totalclient = list.size();
 	if(clientVersionEDonkey)	clientVersionEDonkey->clear();
 	if(clientVersionEMule)		clientVersionEMule->clear();
 	if(clientVersionEDonkeyHybrid)	clientVersionEDonkeyHybrid->clear();
@@ -58,8 +60,8 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16
 
 	for (int i=0;i<18;i++) stats[i]=0;
 
-	for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ){
-		CUpDownClient* cur_client =	list.GetNext(pos);
+	for ( SourceSet::iterator it = list.begin(); it != list.end(); ++it ) { 
+		CUpDownClient* cur_client =	(*it);
 		
 		if (cur_client->HasLowID()) {
 			stats[11]++;		
@@ -138,7 +140,7 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16
 			}
 		}
 		
-		if (cur_client->socket) {
+		if (cur_client->GetSocket()) {
 			stats[17]++;
 		}
 		
@@ -147,46 +149,54 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], clientmap16
 }
 
 
-void CClientList::AddClient(CUpDownClient* toadd,bool bSkipDupTest){
-	if ( !bSkipDupTest){
-		if(list.Find(toadd))
-			return;
-	}
+void CClientList::AddClient(CUpDownClient* toadd, bool WXUNUSED(bSkipDupTest) )
+{
 	#warning needs more code
 	//theApp.amuledlg->transferwnd->clientlistctrl->AddClient(toadd);
-	list.AddTail(toadd);
+	
+	// No need to manually test, as a std::set does not allow duplicates
+	list.insert(toadd);
 }
 
-void CClientList::RemoveClient(CUpDownClient* toremove){
-	POSITION pos = list.Find(toremove);
-	if (pos){
-		//just to be sure...
-		theApp.uploadqueue->RemoveFromUploadQueue(toremove);
-		theApp.uploadqueue->RemoveFromWaitingQueue(toremove);
-		theApp.downloadqueue->RemoveSource(toremove);
-		#warning needs more code
-		//theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(toremove);
-		list.RemoveAt(pos);
+
+void CClientList::AddToDeleteQueue(CUpDownClient* client)
+{
+	// We have to remove the client from the list immediatly, to avoit it getting
+	// found by functions such as AttachToAlreadyKnown and GetClientsFromIP, 
+	// however, if the client isn't on the clientlist, then it is safe to delete 
+	// it right now. Otherwise, push it onto the queue.
+	if ( list.erase( client ) ) {	
+		delete_queue.push_back( client );
+	} else {
+		delete client;
 	}
 }
 
-void CClientList::DeleteAll(){
+
+void CClientList::DeleteAll()
+{
 	theApp.uploadqueue->DeleteAll();
 	theApp.downloadqueue->DeleteAll();
-	while ( !list.IsEmpty() ) {
-		CUpDownClient* cur_src = list.GetTail();
-		list.RemoveTail();
-		delete cur_src; // recursiv: this will call RemoveClient
+	while ( !list.empty() ) {
+		CUpDownClient* cur_src = *list.begin();
+		list.erase( list.begin() );
+		delete cur_src;
+	}
+	
+	while ( !delete_queue.empty() ) {
+		delete delete_queue.front();
+		delete_queue.pop_front();
 	}
 }
 
 
-bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender){
+bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender)
+{
 	CUpDownClient* tocheck = (*client);
 	CUpDownClient* found_client = NULL;
 	CUpDownClient* found_client2 = NULL;
-	for (POSITION pos = list.GetHeadPosition(); pos != NULL;){	//
-		CUpDownClient* cur_client =	list.GetNext(pos);
+	for ( SourceSet::iterator it = list.begin(); it != list.end(); ++it ) {
+		CUpDownClient* cur_client =	(*it);
 		if (tocheck->Compare(cur_client,false)){ //matching userhash
 			found_client2 = cur_client;
 		}
@@ -204,8 +214,8 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 			return true;
 		}
 		if (sender){
-			if (found_client->socket){
-				if (found_client->socket->IsConnected() 
+			if (found_client->GetSocket()){
+				if (found_client->IsConnected() 
 					&& (found_client->GetIP() != tocheck->GetIP() || found_client->GetUserPort() != tocheck->GetUserPort() ) )
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
@@ -219,23 +229,25 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 					AddDebugLogLineF(true,_("WARNING! Found matching client, to a currently connected client: %s (%s) and with %s"),unicode2char(tocheck->GetUserName()),unicode2char(tocheck->GetFullIP()),unicode2char(found_client->GetUserName()),unicode2char(found_client->GetFullIP()));
 					return false;
 				}
-				found_client->socket->client = 0;
-				found_client->socket->Safe_Delete();
+				found_client->GetSocket()->client = NULL;
+				found_client->GetSocket()->Safe_Delete();
 			}
-			found_client->socket = sender;
-			tocheck->socket = 0;
+			found_client->SetSocket( sender );
+			tocheck->SetSocket( NULL );
 		}
 		*client = 0;
-		delete tocheck;
+		tocheck->Safe_Delete();
 		*client = found_client;
 		return true;
 	}
 	return false;
 }
 
-CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port){
-	for (POSITION pos = list.GetHeadPosition(); pos != NULL;){
-		CUpDownClient* cur_client =	list.GetNext(pos);
+
+CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port)
+{
+	for ( SourceSet::iterator it = list.begin(); it != list.end(); ++it ) {
+		CUpDownClient* cur_client =	(*it);
 		if (cur_client->GetIP() == clientip && cur_client->GetUserPort() == port)
 			return cur_client;
 	}
@@ -243,13 +255,10 @@ CUpDownClient* CClientList::FindClientByIP(uint32 clientip,uint16 port){
 }
 
 
-bool CClientList::Debug_IsValidClient(CUpDownClient* tocheck) const {
-	return list.Find(tocheck);
-}
-
 // true = everything ok, hash didn't changed
 // false = hash changed
-bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash){
+bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash)
+{
 	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( dwIP );
 	
 	if ( it != m_trackedClientsList.end() ) {
@@ -267,7 +276,9 @@ bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash
 	return true;
 }
 
-void CClientList::AddTrackClient(CUpDownClient* toadd){
+
+void CClientList::AddTrackClient(CUpDownClient* toadd)
+{
 	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( toadd->GetIP() );
 	
 	if ( it != m_trackedClientsList.end() ) {
@@ -283,13 +294,14 @@ void CClientList::AddTrackClient(CUpDownClient* toadd){
 		}
 		PORTANDHASH porthash = { toadd->GetUserPort(), toadd->Credits()};
 		pResult->m_ItemsList.Add(porthash);
-	}
-	else{
+	} else {
 		m_trackedClientsList[ toadd->GetIP() ] = new CDeletedClient(toadd);
 	}
 }
 
-uint16 CClientList::GetClientsFromIP(uint32 dwIP){
+
+uint16 CClientList::GetClientsFromIP(uint32 dwIP)
+{
 	std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.find( dwIP );
 	
 	if ( it != m_trackedClientsList.end() ) {
@@ -299,9 +311,29 @@ uint16 CClientList::GetClientsFromIP(uint32 dwIP){
 	}
 }
 
-void CClientList::Process(){
+void CClientList::Process()
+{
 	const uint32 cur_tick = ::GetTickCount();
-	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick){
+
+//	if ( !delete_queue.empty() )
+//		printf("Deleting %d clients on delete_queue.\n", delete_queue.size());
+	
+	while ( !delete_queue.empty() ) {
+		CUpDownClient* toremove = delete_queue.front();
+		delete_queue.pop_front();
+		
+		// Doing what RemoveClient used to do. Just to be sure...
+		theApp.uploadqueue->RemoveFromUploadQueue( toremove );
+		theApp.uploadqueue->RemoveFromWaitingQueue( toremove );
+		theApp.downloadqueue->RemoveSource( toremove );
+	
+		#warning needs more code
+		//theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(toremove);
+				
+		delete toremove;
+	}
+	
+	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick) {
 		m_dwLastBannCleanUp = cur_tick;
 		
 		std::map<uint32, uint32>::iterator it = m_bannedList.begin();
@@ -323,14 +355,11 @@ void CClientList::Process(){
 		
 		std::map<uint32, CDeletedClient*>::iterator it = m_trackedClientsList.begin();
 		while ( it != m_trackedClientsList.end() ) {
-			uint32 nKey = it->first;
-			CDeletedClient* pResult = it->second;
-				
-			++it;
+			std::map<uint32, CDeletedClient*>::iterator cur_src = it++;
 			
-			if (pResult->m_dwInserted + KEEPTRACK_TIME < cur_tick ){
-				m_trackedClientsList.erase( nKey );
-				delete pResult;
+			if ( cur_src->second->m_dwInserted + KEEPTRACK_TIME < cur_tick ) {
+				delete cur_src->second;
+				m_trackedClientsList.erase( cur_src );
 			}
 		}
 		AddDebugLogLineF(false, wxT("...done, %i clients left on list"), m_trackedClientsList.size());
@@ -341,7 +370,8 @@ void CClientList::AddBannedClient(uint32 dwIP){
 	m_bannedList[dwIP] = ::GetTickCount();
 }
 
-bool CClientList::IsBannedClient(uint32 dwIP){
+bool CClientList::IsBannedClient(uint32 dwIP)
+{
 	std::map<uint32, uint32>::iterator it = m_bannedList.find( dwIP );
 		
 	if ( it != m_bannedList.end() ){
@@ -353,19 +383,18 @@ bool CClientList::IsBannedClient(uint32 dwIP){
 	return false; 
 }
 
-void CClientList::RemoveBannedClient(uint32 dwIP){
+void CClientList::RemoveBannedClient(uint32 dwIP)
+{
 	m_bannedList.erase(dwIP);
 }
 
 void CClientList::FilterQueues() {
 	// Filter client list
-	POSITION pos = list.GetHeadPosition();
-	while( pos ) {
-		CUpDownClient* client = list.GetNext(pos);
+	SourceSet::iterator it = list.begin();
+	while ( it != list.end() ) {
+		CUpDownClient* client = *it++;
 		if (theApp.ipfilter->IsFiltered(client->GetIP())) {
-			delete client;
-#warning Xaignar, do not forget to add Safe_Delete here ;)
-			//client->Safe_Delete();
+			client->Safe_Delete();
 		}
 	}
 }

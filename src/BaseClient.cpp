@@ -86,15 +86,13 @@ public:
 
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
-	socket = sender;
-	//printf("Socket %x set on client %x\n",socket, this);
+	m_socket = sender;
 	Init();
 }
 
 CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile)
 {
-	socket = NULL;
-	//printf("Socket %x set on client %x\n",socket, this);
+	m_socket = NULL;
 	Init();
 	m_nUserID = in_userid;
 	m_nUserPort = in_port;
@@ -186,9 +184,9 @@ void CUpDownClient::Init()
 	m_bRemoteQueueFull = false;
 	m_HasValidHash = false;
 	SetWaitStartTime();
-	if (socket) {
+	if (m_socket) {
 		wxIPV4address address;
-		socket->GetPeer(address);
+		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
 		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
 	}
@@ -212,30 +210,28 @@ void CUpDownClient::Init()
 	m_bHasBeenGPLEvildoer = false;
 	// Import from BlackRat end
 	
+	m_SafelyDeleted = false;
+	
 	ClearHelloProperties();	
 }
 
 CUpDownClient::~CUpDownClient()
 {
-	// Kry - This 'if' is not really needed because the client list gets 
-	// deleted AFTER all the clients were removed by the listensocket destructor.
-	if (theApp.clientlist) {
-		theApp.clientlist->RemoveClient(this);
-	}
-	
 	if (m_Friend) {
 		m_Friend->m_LinkedClient = NULL;
 		Notify_ChatRefreshFriend(m_Friend);
 		m_Friend = NULL;
 	}
-	
-	if (socket) {
-		socket->client = NULL; 
-		socket->Safe_Delete(); 
+
+	// The socket should have been removed in Safe_Delete, but it
+	// doesn't hurt to have an extra check.
+	if (m_socket) {
+		m_socket->client = NULL; 
+		m_socket->Safe_Delete(); 
 		// We're going down anyway....
-		socket->Destroy();
+		m_socket->Destroy();
 		// Paranoia
-		socket = NULL;
+		m_socket = NULL;
 	}
 	
 	
@@ -335,6 +331,37 @@ bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 	
 	return ProcessHelloTypePacket(data);
 }
+
+void CUpDownClient::Safe_Delete()
+{
+	// Because we are delaying the deletion, we might end up trying to delete 
+	// it twice, however, this is normal and shouldn't trigger any failures
+	if ( m_SafelyDeleted ) {
+		// Tmp warning
+		printf("WARNING! CLIENT DELETED TWICE!\n");
+		return;
+	} 
+	
+	m_SafelyDeleted = true;
+		
+	// Close the socket to avoid any more connections and related events
+	if ( m_socket ) {
+		m_socket->client = NULL; 
+		m_socket->Safe_Delete(); 
+		// We're going down anyway....
+		m_socket->Destroy();
+		// Paranoia
+		m_socket = NULL;
+	}
+	
+	// Schedule the client for deletion if we still have the clientlist
+	if ( theApp.clientlist ) {
+		theApp.clientlist->AddToDeleteQueue( this );
+	} else {
+		delete this;
+	}
+}
+
 
 bool CUpDownClient::ProcessHelloAnswer(const char *pachPacket, uint32 nSize)
 {
@@ -542,9 +569,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	
 	// tecxx 1609 2002 - add client's servet to serverlist (Moved to uploadqueue.cpp)
 
-	if (socket) {
+	if (m_socket) {
 		wxIPV4address address;
-		socket->GetPeer(address);
+		m_socket->GetPeer(address);
 		m_FullUserIP = address.IPAddress();
 		m_dwUserIP = inet_addr(unicode2char(m_FullUserIP));
 	} else {
@@ -671,19 +698,19 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 
 bool CUpDownClient::SendHelloPacket() {
 
-	if (socket == NULL){
+	if (m_socket == NULL){
 		wxASSERT(0);
 		return true;
 	}
 	
 	// if IP is filtered, dont greet him but disconnect...
 	wxIPV4address address;
-	socket->GetPeer(address);
+	m_socket->GetPeer(address);
 	if ( theApp.ipfilter->IsFiltered(inet_addr(unicode2char(address.IPAddress())))) {
 		AddDebugLogLineM(true,_("Filtered IP: ") +GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));
 		theApp.stat_filteredclients++;
 		if (Disconnected(wxT("IPFilter"))) {
-			delete this;
+			Safe_Delete();
 			return false;
 		}
 		return true;
@@ -695,14 +722,14 @@ bool CUpDownClient::SendHelloPacket() {
 	Packet* packet = new Packet(&data);
 	packet->SetOpCode(OP_HELLO);
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true);
+	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	return true;
 }
 
 void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 
-	if (socket == NULL){
+	if (m_socket == NULL){
 		wxASSERT(0);
 		return;
 	}
@@ -753,9 +780,9 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 		packet->SetOpCode(OP_EMULEINFO);
 	else
 		packet->SetOpCode(OP_EMULEINFOANSWER);
-	if (socket) {
+	if (m_socket) {
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		socket->SendPacket(packet,true,true);
+		SendPacket(packet,true,true);
 	}
 }
 
@@ -933,7 +960,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 void CUpDownClient::SendHelloAnswer()
 {
 
-	if (socket == NULL){
+	if (m_socket == NULL){
 		wxASSERT(0);
 		return;
 	}	
@@ -944,7 +971,7 @@ void CUpDownClient::SendHelloAnswer()
 	packet->SetOpCode(OP_HELLOANSWER);
 
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true);
+	SendPacket(packet,true);
 
 }
 
@@ -1206,12 +1233,12 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		Notify_ChatConnResult(this,false);
 	}
 	
-	if (!bFromSocket && socket){
-		wxASSERT (theApp.listensocket->IsValidSocket(socket));
-		socket->Safe_Delete();
+	if (!bFromSocket && m_socket){
+		wxASSERT (theApp.listensocket->IsValidSocket(m_socket));
+		m_socket->Safe_Delete();
 	}
 	
-	socket = 0;
+	m_socket = NULL;
 	
     if (m_iFileListRequested){
 		AddLogLineM(true, wxString(_("Failed to retrieve shared files from ")) +GetUserName());
@@ -1249,15 +1276,15 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
-		if (!socket) { 
+		if (!m_socket) { 
 			if(Disconnected(wxT("Too many connections"))) {
-				delete this;
+				Safe_Delete();
 				return false;
 			}
 			return true;			
-		} else if (!socket->IsConnected()) {
+		} else if (!m_socket->IsConnected()) {
 			if(Disconnected(wxT("Too many connections"))) {
-				delete this;
+				Safe_Delete();
 				return false;
 			}
 			return true;			
@@ -1283,26 +1310,24 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 		if (GetUploadState() == US_CONNECTING) {
 			if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
-				delete this;
+				Safe_Delete();
 				return false;
 			}
 		}
 		return true;
 	}
 
-	if (!socket) {
-		socket = new CClientReqSocket(theApp.glob_prefs,this);
-	//	printf("Socket %x set on client %x\n",socket, this);
-		if (!socket->Create()) {
-			socket->Safe_Delete();
+	if (!m_socket) {
+		m_socket = new CClientReqSocket(theApp.glob_prefs,this);
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
 			return true;
 		} 
-	} else if (!socket->IsConnected()) {
-		socket->Safe_Delete();
-		socket = new CClientReqSocket(theApp.glob_prefs,this);
-	//	printf("Socket %x set on client %x\n",socket, this);
-		if (!socket->Create()) {
-			socket->Safe_Delete();
+	} else if (!m_socket->IsConnected()) {
+		m_socket->Safe_Delete();
+		m_socket = new CClientReqSocket(theApp.glob_prefs,this);
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
 			return true;
 		}
 	} else {
@@ -1316,7 +1341,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		if (GetUploadState() == US_CONNECTING) {
 			if(Disconnected(wxT("LowID and US_CONNECTING")))
 			{
-				delete this;
+				Safe_Delete();
 				return false;
 			}
 			return true;
@@ -1338,7 +1363,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				theApp.downloadqueue->RemoveSource(this);
 				if(Disconnected(wxT("LowID and US_NONE and QR=0")))
 				{
-					delete this;
+					Safe_Delete();
 					return false;
 				}
 				return true;
@@ -1354,8 +1379,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		//tmp.Hostname(GetIP());
 		tmp.Hostname((char*)unicode2char(GetFullIP()));
 		tmp.Service(GetUserPort());
-		socket->Connect(tmp,FALSE);
-		// socket->Connect(GetFullIP(),GetUserPort());
+		m_socket->Connect(tmp,FALSE);
 		if (!SendHelloPacket()) {
 			return false; // client was deleted!
 		}
@@ -1404,16 +1428,16 @@ void CUpDownClient::ConnectionEstablished()
 				SetUploadState(US_UPLOADING);
 				Packet* packet = new Packet(OP_ACCEPTUPLOADREQ,0);
 				theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-				socket->SendPacket(packet,true);
+				SendPacket(packet,true);
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		Packet* packet = new Packet(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		socket->SendPacket(packet,true,true);
+		SendPacket(packet,true,true);
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
-		socket->SendPacket(m_WaitingPackets_list.RemoveHead());
+		SendPacket(m_WaitingPackets_list.RemoveHead());
 	}
 }
 
@@ -1707,25 +1731,13 @@ wxString CUpDownClient::GetUploadFileInfo()
 	return wxT("");
 }
 
-// Kry - I don't this there's need for this 
-#if 0
-void CUpDownClient::Destroy()
-{
-	if (socket) {
-		//delete socket;
-		socket->Safe_Delete();
-		socket = NULL;
-	}
-}
-#endif
-
 // sends a packet, if needed it will establish a connection before
 // options used: ignore max connections, control packet, delete packet
 // !if the functions returns false it is _possible_ that this clientobject was deleted, because the connectiontry fails 
 bool CUpDownClient::SafeSendPacket(Packet* packet)
 {
-	if (socket && socket->IsConnected()) {
-		socket->SendPacket(packet);
+	if (IsConnected()) {
+		SendPacket(packet);
 		return true;
 	} else {
 		m_WaitingPackets_list.AddTail(packet);
@@ -1736,7 +1748,7 @@ bool CUpDownClient::SafeSendPacket(Packet* packet)
 void CUpDownClient::SendPublicKeyPacket(){
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "sending public key to '%s'", GetUserName()));
 	// send our public key to the client who requested it
-	if (socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
+	if (m_socket == NULL || credits == NULL || m_SecureIdentState != IS_KEYANDSIGNEEDED){
 		wxASSERT ( false );
 		return;
 	}
@@ -1753,13 +1765,13 @@ void CUpDownClient::SendPublicKeyPacket(){
 //	packet->pBuffer[0] = theApp.clientcredits->GetPubKeyLen();
 
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true,true);
+	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
 }
 
 void CUpDownClient::SendSignaturePacket(){
 	// signate the public key of this client and send it
-	if (socket == NULL || credits == NULL || m_SecureIdentState == 0){
+	if (m_socket == NULL || credits == NULL || m_SecureIdentState == 0){
 		wxASSERT ( false );
 		return;
 	}
@@ -1819,7 +1831,7 @@ void CUpDownClient::SendSignaturePacket(){
 //		packet->pBuffer[1+siglen] = byChaIPKind;
 
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true,true);
+	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 }
 
@@ -1827,7 +1839,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const uchar* pachPacket, uint32 nSize
 	theApp.clientlist->AddTrackClient(this);
 
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "recieving public key from '%s'", GetUserName()));
-	if (socket == NULL || credits == NULL || pachPacket[0] != nSize-1
+	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
 		|| nSize == 0 || nSize > 250){
 		wxASSERT ( false );
 		return;
@@ -1854,7 +1866,7 @@ void CUpDownClient::ProcessSignaturePacket(const uchar* pachPacket, uint32 nSize
 	///* delete this line later*/ DEBUG_ONLY(AddDebugLogLine(false, "receiving signature from '%s'", GetUserName()));
 	// here we spread the good guys from the bad ones ;)
 
-	if (socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
+	if (m_socket == NULL || credits == NULL || nSize == 0 || nSize > 250){
 		wxASSERT ( false );
 		return;
 	}
@@ -1929,7 +1941,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 //		memcpy(packet->pBuffer+1,&dwRandom, sizeof(dwRandom));
 
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		socket->SendPacket(packet,true,true);
+		SendPacket(packet,true,true);
 	}
 	else {
 		wxASSERT ( false );
@@ -2218,14 +2230,14 @@ wxString CUpDownClient::GetClientFullInfo() {
 
 
 void CUpDownClient::SendPublicIPRequest(){
-	if (socket && socket->IsConnected()){
+	if (IsConnected()){
 		/*
 		if (thePrefs.GetDebugClientTCPLevel() > 0)
 			DebugSend("OP__PublicIPReq", this);
 		*/
 		Packet* packet = new Packet(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-		socket->SendPacket(packet,true);
+		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
 	}
 }
@@ -2284,3 +2296,42 @@ bool CUpDownClient::IsASaneUpDownClient(bool verbose, char *function, char *file
 	return sane;
 }
 #endif // __DEBUG__
+
+
+bool CUpDownClient::IsConnected() const
+{
+	return m_socket && m_socket->IsConnected();
+}
+
+bool CUpDownClient::SendPacket(Packet* packet, bool delpacket, bool controlpacket)
+{
+	if ( m_socket ) {
+		return m_socket->SendPacket(packet, delpacket, controlpacket );
+	} else {
+		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
+		return false;
+	}
+}
+
+bool CUpDownClient::SetDownloadLimit(uint32 limit)
+{
+	if ( m_socket ) {
+		m_socket->SetDownloadLimit( limit );
+		return true;
+	} else {
+		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT()\n");
+		return false;
+	}
+}
+
+bool CUpDownClient::DisableDownloadLimit()
+{
+	if ( m_socket ) {
+		m_socket->DisableDownloadLimit();
+		return true;
+	} else {
+		printf("CAUGHT DEAD SOCKET IN DISABLEDOWNLOADLIMIT()\n");
+		return false;
+	}
+}
+

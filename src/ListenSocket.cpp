@@ -62,7 +62,7 @@ CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_clie
 	app_prefs = in_prefs;
 	client = in_client;
 	if (in_client) {
-		client->socket = this;
+		client->SetSocket( this );
 	}
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
@@ -82,7 +82,7 @@ CClientReqSocket::~CClientReqSocket()
 	Notify(FALSE);
 
 	if (client) {
-		client->socket = NULL;
+		client->SetSocket( NULL );
 	}
 	client = NULL;
 	if (theApp.listensocket) {
@@ -144,8 +144,8 @@ void CClientReqSocket::Disconnect(const wxString& strReason){
 
 	if (client) {
 		if(client->Disconnected(strReason, true)){
-			client->socket = NULL;
-			delete client;
+			client->SetSocket( NULL );
+			client->Safe_Delete();
 		} 
 		client = NULL;
 	}
@@ -178,7 +178,7 @@ void CClientReqSocket::Safe_Delete()
 		Notify(FALSE);		
 	
 		if (client) {
-			client->socket = NULL;
+			client->SetSocket( NULL );
 		}
 		client = NULL;
 		byConnected = ES_DISCONNECTED;
@@ -229,9 +229,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					bIsMuleHello = client->ProcessHelloPacket(packet,size);
 				}
 				catch(...){
-					if (bNewClient){
+					if (bNewClient && client) {
 						// Don't let CUpDownClient::Disconnected be processed for a client which is not in the list of clients.
-						delete client;
+						client->Safe_Delete();
 						client = NULL;
 					}
 					throw;
@@ -242,7 +242,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					AddDebugLogLineM(true,_("Filtered IP: ") + client->GetFullIP() + wxT("(") + theApp.ipfilter->GetLastHit() + wxT(")"));					
 					theApp.stat_filteredclients++;
 					if (bNewClient) {
-						delete client;
+						client->Safe_Delete();
 						client = NULL;
 					}
 					Disconnect(wxT("IPFilter"));
@@ -540,7 +540,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						#endif
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-						client->socket->SendPacket(packet,true,true);
+						client->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
 					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
@@ -667,7 +667,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						if (!client->GetSentCancelTransfer()) {
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 							theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-							client->socket->SendPacket(packet,true,true);
+							client->SendPacket(packet,true,true);
 							client->SetSentCancelTransfer(1);
 						}
 						client->SetDownloadState(client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);
@@ -676,7 +676,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					if (!client->GetSentCancelTransfer()) {
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-						client->socket->SendPacket(packet,true,true);
+						client->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
 					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
@@ -1447,7 +1447,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							#endif
 							Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 							theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-							client->socket->SendPacket(packet,true,true);					
+							client->SendPacket(packet,true,true);					
 							client->SetSentCancelTransfer(1);
 						}
 						client->SetDownloadState(client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);						
@@ -1461,7 +1461,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						#endif
 						Packet* packet = new Packet(OP_CANCELTRANSFER,0);
 						theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-						client->socket->SendPacket(packet,true,true);
+						client->SendPacket(packet,true,true);
 						client->SetSentCancelTransfer(1);
 					}
 					client->SetDownloadState((client->GetRequestFile()==NULL || client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
@@ -2028,7 +2028,7 @@ void CListenSocket::KillAllSockets()
 	for (POSITION pos = socket_list.GetHeadPosition();pos != 0;) {
 		CClientReqSocket* cur_socket = socket_list.GetNext(pos);
 		if (cur_socket->client) {
-			delete cur_socket->client;
+			cur_socket->client->Safe_Delete();
 		} else {
 			cur_socket->Safe_Delete();
 			cur_socket->Destroy(); 

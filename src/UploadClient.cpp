@@ -108,7 +108,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	if (IsBanned())
 		return 0;
 
-	if (sysvalue && HasLowID() && !(socket && socket->IsConnected())){
+	if (sysvalue && HasLowID() && !IsConnected()){
 		return 0;
 	}	
 
@@ -168,7 +168,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		fBaseValue *= (float(filepriority)/10.0f);
 	}
 	if (!isdownloading && !onlybasevalue) {
-		if (sysvalue && HasLowID() && !(socket && socket->IsConnected())) {
+		if (sysvalue && HasLowID() && !IsConnected()) {
 			if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID() || theApp.listensocket->TooManySockets()) {
 				return 0;
 			}
@@ -593,7 +593,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 	}
 
 	kBpsUp *= lambdaAvg;	// 1st part of averaging filter; do it here in case we return "0"
-	if (socket==NULL || socket->IsBusy()
+	if (m_socket==NULL || m_socket->IsBusy()
 		|| (m_BlockSend_queue.IsEmpty() && !CreateNextBlockPackage()) ) {
 		return 0;
 	}
@@ -624,7 +624,7 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 		uint32 nBlockSize = tosend->GetRealPacketSize();
 		m_nMaxSendAllowed -= nBlockSize;
 //		theApp.uploadqueue->AddUpDataOverheadOther(0, 24);
-		socket->SendPacket(tosend,true,false);
+		SendPacket(tosend,true,false);
 		m_nTransferedUp += nBlockSize;
 		theApp.UpdateSentBytes(nBlockSize);
 		credits->AddUploaded(nBlockSize, GetIP());
@@ -638,11 +638,11 @@ uint32 CUpDownClient::SendBlockData(float kBpsToSend){
 void CUpDownClient::FlushSendBlocks(){ // call this when you stop upload, or the socket might be not able to send
 	//printf("entered in : CUpDownClient::FlushSendBlocks\n");
 	bool bBreak = false;
-	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && socket && socket->IsConnected() && !bBreak ){	
+	while (!m_BlockSend_queue.IsEmpty() && m_BlockSend_queue.GetHead()->IsSplitted() && IsConnected() && !bBreak ){	
 		Packet* tosend = m_BlockSend_queue.RemoveHead();
 		//bool bBreak = tosend->IsLastSplitted();
 		theApp.uploadqueue->AddUpDataOverheadOther(tosend->GetPacketSize());
-		socket->SendPacket(tosend,true,false);
+		SendPacket(tosend,true,false);
 	}
 }
 
@@ -664,7 +664,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid) {
 	delete data;
 	packet->SetOpCode(OP_HASHSETANSWER);
 	theApp.uploadqueue->AddUpDataOverheadFileRequest(packet->GetPacketSize());
-	socket->SendPacket(packet,true,true);
+	SendPacket(packet,true,true);
 }
 
 void CUpDownClient::ClearUploadBlockRequests(){
@@ -702,7 +702,7 @@ void CUpDownClient::SendRankingInfo(){
 //	memset(packet->pBuffer,0,12);
 //	memcpy(packet->pBuffer+0,&nRank,2);
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true,true);
+	SendPacket(packet,true,true);
 }
 
 void CUpDownClient::SendCommentInfo(CKnownFile* file)
@@ -734,7 +734,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	Packet *packet = new Packet(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_FILEDESC);
 	theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
-	socket->SendPacket(packet,true);
+	SendPacket(packet,true);
 }
 
 void  CUpDownClient::UnBan(){
