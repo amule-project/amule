@@ -235,33 +235,6 @@ void CamulecmdApp::TextShell(const wxString& prompt, CmdId commands[])
 }
 #endif
 
-void CamulecmdApp::Process_Answer_v2(CECPacket *reply)
-{
-	wxString answer = wxEmptyString;
-
-	wxASSERT(reply);
-
-	switch (reply->GetOpCode()) {
-		case EC_OP_MISC_DATA:
-			for (int i = 0; i < reply->GetTagCount(); ++i) {
-				CECTag *tag = reply->GetTagByIndex(i);
-				switch (tag->GetTagName()) {
-					case EC_TAG_IPFILTER_STATUS:
-						answer += wxString::Format(_("IPFilter is %s.\n"), (tag->GetInt8Data() == 0) ? _("OFF") : _("ON"));
-						break;
-					case EC_TAG_IPFILTER_LEVEL:
-						answer += wxString::Format(_("Current IPFilter Level is %d.\n"), tag->GetInt8Data());
-						break;
-				}
-			}
-			break;
-		default:
-				answer = ECv2_Response2String(reply);
-				break;
-	}
-	Process_Answer(answer);
-}
-
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
 	uint32 FileId;
@@ -461,15 +434,30 @@ wxString CastItoXBytes( uint64 count )
  * Format EC packet into text form for output to console
  * 
  */
-wxString ECv2_Response2String(CECPacket *response)
+void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 {
-	wxString s;
+	wxString s = wxEmptyString;
 
 	wxASSERT(response);
 
-	switch(response->GetOpCode()) {
+	switch (response->GetOpCode()) {
+		case EC_OP_MISC_DATA:
+			for (int i = 0; i < response->GetTagCount(); ++i) {
+				CECTag *tag = response->GetTagByIndex(i);
+				switch (tag->GetTagName()) {
+					case EC_TAG_IPFILTER_STATUS:
+						s += wxString::Format(_("IPFilter is %s.\n"), (tag->GetInt8Data() == 0) ? _("OFF") : _("ON"));
+						break;
+					case EC_TAG_IPFILTER_LEVEL:
+						s += wxString::Format(_("Current IPFilter Level is %d.\n"), tag->GetInt8Data());
+						break;
+				}
+			}
+			break;
 		case EC_OP_STRINGS:
-			s = response->GetTagByIndex(0)->GetStringData();
+			for (int i = 0; i < response->GetTagCount(); ++i) {
+				s += response->GetTagByIndex(i)->GetStringData();
+			}
 			break;
 		case EC_OP_DLOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
@@ -510,7 +498,7 @@ wxString ECv2_Response2String(CECPacket *response)
 				s += _("\n");
 			}
 	}
-	return s;
+	Process_Answer(s);
 }
 
 
@@ -518,13 +506,13 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(_("\n----------------> Help: Avalaible commands (case insensitive): <----------------\n\n"));
-	Show(wxString(wxT("Connect [")) + wxString(_("server ID")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
+	Show(wxString(wxT("Connect [")) + wxString(_("server ID")) + wxString(wxT("]\t")) + wxString(_("Connect to given/random server. No warn if failed!\n")));
 //	Show(wxString(wxT("ConnectTo [")) + wxString(_("name")) + wxString(wxT("] [")) + wxString(_("port")) + wxString(wxT("]:\t")) + wxString(_("Connect to specified server and port.\n")));
 	Show(wxString(wxT("Disconnect:\t\t")) + wxString(_("Disconnect from server.\n")));
 	Show(wxString(wxT("Servers:\t\t")) + wxString(_("Show server list.\n")));
 //	Show(wxString(wxT("ServerStatus:\t\t")) + wxString(_("Tell us if connected/not connected.\n")));
 	Show(wxString(wxT("Stats:\t\t\t")) + wxString(_("Shows status and statistics.\n")));
-//	Show(wxString(wxT("Show DL:\t\t")) + wxString(_("Shows Download queue.\n")));
+	Show(wxString(wxT("Show DL | UL:\t\t")) + wxString(_("Shows Download/Upload queue.\n")));
 	Show(wxString(wxT("List <")) + wxString(_("pattern")) + wxString(wxT(">:\t\t")) + wxString(_("Lists or finds downloads by name or number.\n")));
 	Show(wxString(wxT("Resume [n | all]:\t")) + wxString(_("Resume file number n (or 'all').\n")));
 	Show(wxString(wxT("Pause [n | all]:\t")) + wxString(_("Pauses file number n (or 'all').\n")));
