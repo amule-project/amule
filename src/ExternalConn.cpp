@@ -1193,6 +1193,7 @@ CECPacket *SetPreferencesFromRequest(const CECPacket *request)
 }
 
 // init with some default size
+#warning lfroen, FIX THIS MEMORY NOT BEING FREED!
 uint32 *CPartFile_Encoder::m_gap_buffer = new uint32[128];
 int CPartFile_Encoder::m_gap_buffer_size = 128;
 
