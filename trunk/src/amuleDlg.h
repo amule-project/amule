@@ -86,7 +86,7 @@ public:
 	 */
 	bool IsDialogVisible( DialogType dlg )
 	{
-		return ( m_nActiveDialog == dlg ) && ( is_safe_state ) && ( !IsIconized() ); 
+		return ( m_nActiveDialog == dlg ) && ( is_safe_state ) /* && ( !IsIconized() ) */; 
 	}
 
 	void ShowED2KLinksHandler( bool show );
