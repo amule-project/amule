@@ -249,7 +249,7 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 		
 		theApp.amuledlg->chatwnd->AddFriend( client );
-		long index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 }
 
