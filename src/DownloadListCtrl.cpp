@@ -165,7 +165,7 @@ void CDownloadListCtrl::collectSelections(CTypedPtrList < CPtrList, CPartFile * 
 			break;
 		}
 		if (((CtrlItem_Struct *) this->GetItemData(item))->type == 1) {
-			selectedList->Append((CPartFile *) ((CtrlItem_Struct *) this->GetItemData(item))->value);
+			selectedList->AddTail((CPartFile *) ((CtrlItem_Struct *) this->GetItemData(item))->value);
 		}
 	}
 }
