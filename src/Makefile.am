@@ -320,7 +320,6 @@ noinst_HEADERS = AddFileThread.h \
 		 amule.h \
 		 amuleIPV4Address.h \
 		 BarShader.h \
-		 CArray.h \
 		 CatDialog.h \
 		 CFile.h \
 		 ChatSelector.h \
