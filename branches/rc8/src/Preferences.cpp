@@ -1308,10 +1308,15 @@ wxString CPreferences::GetBrowser()
 void CPreferences::SetIPFilterLevel(uint8 level)
 {
 	if (level != s_filterlevel) {
-		if (level > s_filterlevel) {
+		// We only need to recheck if the new level is more restrictive
+		bool filter = level > s_filterlevel;
+		
+		// Set the new access-level
+		s_filterlevel = level;
+		
+		if ( filter ) {
 			theApp.clientlist->FilterQueues();
 		}
-		s_filterlevel = level;
 	}
 }
 
