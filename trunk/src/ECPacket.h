@@ -91,8 +91,8 @@ class CECTag {
 		uint32		GetInt32Data(void) const { return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) ); }
 		uint64		GetInt64Data(void) const
 			{
-				uint32 low = ENDIAN_NTOHL(RawPeekUInt32(m_tagData));
-				uint32 high = ENDIAN_NTOHL(RawPeekUInt32(((unsigned char *)m_tagData)+sizeof(uint32))); 
+				uint32 high = ENDIAN_NTOHL(RawPeekUInt32(m_tagData));
+				uint32 low = ENDIAN_NTOHL(RawPeekUInt32(((unsigned char *)m_tagData)+sizeof(uint32))); 
 				return low | (((uint64)high) << 32);
 			}
 		wxString	GetStringData(void) const

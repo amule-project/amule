@@ -293,7 +293,7 @@ CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true
  * @param name TAG name.
  * @param data uint64 number.
  *
- * @see GetInt32Data()
+ * @see GetInt64Data()
  */
 CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true)
 {
@@ -302,8 +302,8 @@ CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true
 	uint32 low = data & 0xffffffff;
 	uint32 high = data >> 32;
 	if (m_tagData != NULL) {
-		RawPokeUInt32( (void *)m_tagData, ENDIAN_HTONL( low ) );
-		RawPokeUInt32( ((unsigned char*)m_tagData) + sizeof(uint32), ENDIAN_HTONL( high ) );
+		RawPokeUInt32( (void *)m_tagData, ENDIAN_HTONL( high ) );
+		RawPokeUInt32( ((unsigned char*)m_tagData) + sizeof(uint32), ENDIAN_HTONL( low ) );
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -677,7 +677,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 
 /*!
- * \fn uint8 CECTag::GetInt16Data(void) const
+ * \fn uint16 CECTag::GetInt16Data(void) const
  *
  * \brief Returns the uint16 data of the tag.
  *
@@ -689,7 +689,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 
 /*!
- * \fn uint8 CECTag::GetInt32Data(void) const
+ * \fn uint32 CECTag::GetInt32Data(void) const
  *
  * \brief Returns the uint32 data of the tag.
  *
@@ -698,6 +698,18 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  * \return The uint32 data of the tag.
  *
  * \sa CECTag(ec_tagname_t, uint32)
+ */
+
+/*!
+ * \fn uint64 CECTag::GetInt64Data(void) const
+ *
+ * \brief Returns the uint64 data of the tag.
+ *
+ * This function takes care of the endianness problems with numbers.
+ *
+ * \return The uint64 data of the tag.
+ *
+ * \sa CECTag(ec_tagname_t, uint64)
  */
 
 /**********************************************************
