@@ -551,7 +551,14 @@ CECPacket *Get_EC_Response_ServerList(const CECPacket *WXUNUSED(request))
 		CECTag srv_tag(EC_TAG_SERVER, curr_srv->GetListName());
 		srv_tag.AddTag(CECTag(EC_TAG_ITEM_ID, PTR_2_ID(curr_srv)));
 		srv_tag.AddTag(CECTag(EC_TAG_SERVER_USERS, curr_srv->GetUsers()));
+		srv_tag.AddTag(CECTag(EC_TAG_SERVER_USERS_MAX, curr_srv->GetMaxUsers()));
 		srv_tag.AddTag(CECTag(EC_TAG_SERVER_FILES, curr_srv->GetFiles()));
+		srv_tag.AddTag(CECTag(EC_TAG_SERVER_DESC, curr_srv->GetDescription()));
+		uint32 ip = curr_srv->GetIP();
+		srv_tag.AddTag(CECTag(EC_TAG_SERVER_ADDRESS,
+			wxString::Format(wxT("%d.%d.%d.%d:%d"),
+				ip >> 24, (ip >> 16) & 0xff, (ip >> 8) & 0xff, ip & 0xff,
+				curr_srv->GetPort())));
 		response->AddTag(srv_tag);
 	}	
 	return response;
@@ -561,29 +568,41 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
 	CECTag *srv_tag = request->GetTagByIndex(0);
+	CServer *srv = 0;
+	if ( srv_tag ) {
+		uint32 srv_id = srv_tag->GetInt32Data();
+		for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
+			CServer *curr_srv = theApp.serverlist->GetServerAt(i);
+			if ( PTR_2_ID(curr_srv) == srv_id ) {
+				srv = curr_srv;
+				break;
+			}
+		}
+		// tag with id passed, but server not found
+		if ( !srv ) {
+			response->AddTag(CECTag(EC_TAG_STRING,
+						_("ERROR: server not found by id")));
+			return response;
+		}
+	}
 	switch (request->GetOpCode()) {
 		case EC_OP_SERVER_DISCONNECT:
 			theApp.serverconnect->Disconnect();
 			response->AddTag(CECTag(EC_TAG_STRING,_("OK: disconnected from server")));
 			break;
+		case EC_OP_SERVER_REMOVE:
+			if ( srv ) {
+				theApp.serverlist->RemoveServer(srv);
+				response->AddTag(CECTag(EC_TAG_STRING, _("OK: server removed")));
+			} else {
+				response->AddTag(CECTag(EC_TAG_STRING,
+							_("ERROR: id must present in this command")));
+			}
+			break;
 		case EC_OP_SERVER_CONNECT:
-			if ( srv_tag ) {
-				uint32 srv_id = srv_tag->GetInt32Data();
-				CServer *srv = 0;
-				for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-					CServer *curr_srv = theApp.serverlist->GetServerAt(i);
-					if ( PTR_2_ID(curr_srv) == srv_id ) {
-						srv = curr_srv;
-						break;
-					}
-				}
-				if ( srv ) {
-					theApp.serverconnect->ConnectToServer(srv);
-					response->AddTag(CECTag(EC_TAG_STRING, _("OK: trying to connect")));
-				} else {
-					response->AddTag(CECTag(EC_TAG_STRING,
-						_("ERROR: server not found by id")));
-				}
+			if ( srv ) {
+				theApp.serverconnect->ConnectToServer(srv);
+				response->AddTag(CECTag(EC_TAG_STRING, _("OK: trying to connect")));
 			} else {
 				theApp.serverconnect->ConnectToAnyServer();
 				response->AddTag(CECTag(EC_TAG_STRING, _("OK: connecting to any server")));
@@ -623,6 +642,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request)
 			break;
 		case EC_OP_SERVER_DISCONNECT:
 		case EC_OP_SERVER_CONNECT:
+		case EC_OP_SERVER_REMOVE:
 			response = Get_EC_Response_Server(request);
 			break;
 		case EC_OP_GET_SERVER_LIST:
