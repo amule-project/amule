@@ -47,10 +47,10 @@ class wxTextCtrl;
 class CSysTray;
 #endif
 
-#define MP_RESTORE		4001
-#define MP_CONNECT		4002
+#define MP_RESTORE	4001
+#define MP_CONNECT	4002
 #define MP_DISCONNECT	4003
-#define MP_EXIT			4004
+#define MP_EXIT		4004
 
 #define DEFAULT_SIZE_X  800
 #define DEFAULT_SIZE_Y  600
@@ -59,7 +59,9 @@ class CSysTray;
 class CamuleDlg : public wxFrame 
 {
 public:
-	CamuleDlg(wxWindow* pParent=NULL, wxString title=wxT(""),wxPoint where = wxDefaultPosition, wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
+	CamuleDlg(wxWindow* pParent = NULL, const wxString &title = wxEmptyString,
+		wxPoint where = wxDefaultPosition,
+		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
 	void AddLogLine(bool addtostatusbar, const wxString& line);
@@ -68,7 +70,7 @@ public:
 	void ResetLog(uint8 whichone = 1);
 	void ResetDebugLog();
 	
-	void ShowConnectionState(bool connected, wxString server = wxT(""), bool iconOnly = false);
+	void ShowConnectionState(bool connected, const wxString &server = wxEmptyString);
 	void ShowUserCount(uint32 toshow, uint32 filetoshow);
 	void ShowTransferRate();
 	
@@ -94,12 +96,12 @@ public:
 	
 	bool SafeState() { return is_safe_state; }
 
-	void			LaunchUrl(const wxString &url);
+	void LaunchUrl(const wxString &url);
 	
 	//! These are the currently known web-search providers
 	enum WebSearch { wsFileHash, wsJugle };
 	// websearch function
-	wxString        GenWebSearchUrl( const wxString &filename, WebSearch provider );
+	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
 
 
 #ifndef __SYSTRAY_DISABLED__
@@ -107,17 +109,17 @@ public:
 #endif
 
 	CTransferWnd*		transferwnd;
-	CServerWnd*			serverwnd;
+	CServerWnd*		serverwnd;
 	PrefsUnifiedDlg*	prefsunifiedwnd;
 	CSharedFilesWnd*	sharedfileswnd;
-	CSearchDlg*			searchwnd;
-	CChatWnd*			chatwnd;
-	wxWindow*			activewnd;
+	CSearchDlg*		searchwnd;
+	CChatWnd*		chatwnd;
+	wxWindow*		activewnd;
 	CStatisticsDlg*		statisticswnd;
-	CKadDlg*			kadwnd;
+	CKadDlg*		kadwnd;
 
-	int					split_pos;
-	int					srv_split_pos;
+	int			split_pos;
+	int			srv_split_pos;
 	
 	wxImageList imagelist;
 	
@@ -152,10 +154,10 @@ private:
 #ifndef __SYSTRAY_DISABLED__
 	void RemoveSystray();
 	void UpdateTrayIcon(int procent);
-	CSysTray*			m_wndTaskbarNotifier;
+	CSysTray *m_wndTaskbarNotifier;
 #endif
 
-	DialogType			m_nActiveDialog;
+	DialogType m_nActiveDialog;
 
 	bool is_safe_state;
 
@@ -169,3 +171,4 @@ private:
 };
 
 #endif
+

@@ -2147,8 +2147,7 @@ void CamuleApp::NotifyEvent(GUIEvent event) {
 			amuledlg->ShowNotifier(event.string_value,event.long_value,event.byte_value);
 			break;
 		case SHOW_CONN_STATE:
-			amuledlg->ShowConnectionState(event.byte_value, event.string_value,
-						      event.long_value);
+			amuledlg->ShowConnectionState(event.byte_value, event.string_value);
 			break;
 		case SHOW_QUEUE_COUNT:
 			if ( amuledlg->transferwnd ) {
