@@ -1189,36 +1189,50 @@ void CStatisticsDlg::ShowStatistics()
 	stattree->SetItemText(con9, cbuffer);
 }
 
+
+wxString CStatisticsDlg::IterateChilds(wxTreeItemId hChild, int level) {
+	
+	wxString strBuffer;
+	
+	wxTreeItemId hChild2;
+	wxTreeItemIdValue cookie;
+	hChild2 = stattree->GetFirstChild(hChild,cookie);
+	
+	while(hChild2.IsOk()) {
+		
+		// Add this item
+		strBuffer+= wxT("<br>");
+		for (int ix=0; ix < level; ++ix) {
+			strBuffer += wxT("&nbsp;&nbsp;&nbsp;");
+		}		
+		strBuffer += stattree->GetItemText(hChild2);
+		
+		// Add subchilds
+		
+		strBuffer+= IterateChilds(hChild2,level+1);
+		
+		// Next on this level
+		hChild2 = stattree->GetNextSibling(hChild2);
+	}	
+	
+	return strBuffer;
+}
+
 // This is the primary function for generating HTML output of the statistics tree.
 wxString CStatisticsDlg::GetHTML() {
 	
-	int8 ix;
-	wxString temp;
-	wxString strBuffer=wxEmptyString;
+	wxString strBuffer;
 	wxTreeItemId item;
 
 	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), thePrefs::GetUserNick().c_str());
 	// update it
 	ShowStatistics();
-
+	stattree->GetFirstVisibleItem();
 	item=stattree->GetRootItem();
 	strBuffer+=stattree->GetItemText(item);
-	while (item) {
-		item=stattree->GetNextVisible(item);
-		if (!item) {
-			break;
-		}
-		stattree->Expand(item);
-
-		temp=wxEmptyString;
-		wxTreeItemId tempItem = item;
-		int level = 0;
-		while (tempItem = stattree->GetItemParent(tempItem)) level+=1;
-		for (ix=0; ix < level; ++ix)
-			temp+=wxT("&nbsp;&nbsp;&nbsp;");
-		
-		strBuffer+=wxT("<br>")+temp+stattree->GetItemText(item);
-	}
+	
+	strBuffer += IterateChilds(item, 0);
+			
  	strBuffer+=wxT("</font>");
 
 	// return the string
