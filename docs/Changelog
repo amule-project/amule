@@ -5,9 +5,9 @@ Version 2.0.0-rc2 - The Unnamed version.
 	aquatroll:
 		* Fixed Win32 compilation (again).
 
-	 Ariel:
+	Ariel:
 		* Implemented completed parts count on file rehash.
-		  Prevents your downloads to completely lost on a wrong .part.met write.
+		   Prevents your downloads to completely lost on a wrong .part.met write.
 
 	falso:
 		* Added cas (C aMule Statistics), a remake of aStats but 10 times faster (still lack online sign).
@@ -28,25 +28,25 @@ Version 2.0.0-rc2 - The Unnamed version.
 		   When publishing a file, we also inform the server if the file is complete or not.
 		   Search results show the count of complete sources sent by the server next to the sources
 		   found: i.e. 100 (28) meaning 100 sources, 28 of them complete (72 incomplete or old client)
-		* Added sending of the extended emule version using amule version, with additional rc version
+		* Added sending of the extended eMule version using aMule version, with additional rc version
 		* Added parsing of the new 0.4x eMule tags on hello packets.		
 		* Added parsing the Secure Ident packets for new eMule versions. Reduce overhead on download/upload.
 		* Added HandShake check on upload request.
 		* Rewrote display of client version on transfers page to handle the client soft/version correctly on any client.
 		   That means eDonkeyHybrids and eMule does show now the correct version (i.e edonkey 0.50.1 or emule 0.42d)
-		   aMule shows now as either "aMule (based on eMule v0.xx)" (< 2.0.0-rc1) or aMule "A.B.C-rcX" (>= 2.0.0-rc2)
-		* Fixed Mule Info packet only sent to eMule clients. Now is sent to eMule-like clients (compatible clients)
+		   aMule shows now as either "aMule 1.x (based on eMule v0.xx)" (<= 2.0.0-rc1) or aMule "A.B.C-rcX" (>= 2.0.0-rc2)
+		* Fixed Mule Info packet only sent to eMule clients. Now is sent to old eMule && eMule-like clients (compatible clients)
 		* Added 'Allocate Full Part File" and "Allocate Full Chunk" to preferences. None functional yet.
 		* Fixed Client Detail Dialog to show correct client version.
 		* Fixed comment mark on Download list being cut on the display.
-		* Fixed the crashes on any Base Client packets.
+		* Fixed the crashes on Base Client packets.
 		* aMule now loads .par.met.BAK if the .part.met is 0-size (added to Ariel's commit, this prevents losing met files).
 		* Made SafeMem files really safe checking for read after end of file.
 		* Fixed wrong Modversion data (fixes random crash too)
 		* Fixed assert on wrong upload list control data.
 		* Fixed several crashes on wxString::GetData usage.
 		* Fixed UDP disable button not being saved across sessions
-		* Fixed a bug on version check
+		* Fixed a bug on new version check.
 		* Locale goes to System Default on new version now (fixes weird language problems)
 		* Fixed wrong OP_REASKFILEPING packets being sent .
 		* Reverted GAddress_INET functions to standard inet_addr ones.
@@ -81,6 +81,7 @@ Version 2.0.0-rc2 - The Unnamed version.
 		* Speeded up hashing of the files a lot. This should fix the gui hangs at startup.
 		* Removed all old preferences code. That makes the app smaller, less memory used, and avoid some
 		   unexpected bugs that arised on having 2 preferences implementation. Now New Prefs become Preferences.
+		* Fixed SysTray and gtk-files being compiled even when disabled on configure.
 		* Fixed several warnings.
 		* Make aMule compile on wxWidgets 2.5 (and CVS) version.
 
