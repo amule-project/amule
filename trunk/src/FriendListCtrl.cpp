@@ -167,7 +167,7 @@ bool CFriendListCtrl::LoadList()
 	
 	bool result = false;
 	
-	CFile file;
+	CSafeFile file;
 	if ( file.Open(metfile) ) {
 		
 		uint8 header;
@@ -199,14 +199,12 @@ bool CFriendListCtrl::LoadList()
 
 void CFriendListCtrl::SaveList()
 {
-	CFile file;
+	CSafeFile file;
 	if( file.Create(theApp.ConfigDir + wxT("emfriends.met"), true) ) {
 		uint8 header = MET_HEADER;
-		file.Write(&header, 1);
+		file.WriteUInt8(header);
 		
-		uint32 nRecordsNumber = GetItemCount();
-		ENDIAN_SWAP_I_32(nRecordsNumber);
-		file.Write(&nRecordsNumber, 4);
+		file.WriteUInt32(GetItemCount());
 		
 		for ( int i = 0; i < GetItemCount(); i++ ) {
 			((CFriend*)GetItemData(i))->WriteToFile(&file);

@@ -146,6 +146,9 @@ private:
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
 
+#undef FindFirstFile
+#undef FindNextFile
+
 class CDirIterator {
 public:
 	enum FileType { File, Dir, Any}; 

@@ -29,6 +29,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "StringFunctions.h"
+#include "SafeFile.h"
 #include "amule.h"		// Needed for AddDebugLogLineM & theApp
 
 #include <map>
@@ -400,6 +401,8 @@ public:
 	void			ProcessAICHAnswer(const char* packet, UINT size);
 	void			ProcessAICHRequest(const char* packet, UINT size);
 	void			ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file);	
+
+	EUtf8Str		GetUnicodeSupport() const;
 	
 	// Barry - Process zip file as it arrives, don't need to wait until end of block
 	int unzip(Pending_Block_Struct *block, BYTE *zipped, uint32 lenZipped, BYTE **unzipped, uint32 *lenUnzipped, int iRecursion = 0);

@@ -165,11 +165,11 @@ void CServerConnect::StopConnectionTry()
 }
 
 
-#define CAPABLE_ZLIB 1
-#define CAPABLE_IP_IN_LOGIN_FRAME 2
-#define CAPABLE_AUXPORT 4
-#define CAPABLE_NEWTAGS 8
-
+#define CAPABLE_ZLIB 0x01
+#define CAPABLE_IP_IN_LOGIN_FRAME 0x02
+#define CAPABLE_AUXPORT 0x04
+#define CAPABLE_NEWTAGS 0x08
+#define CAPABLE_UNICODE 0x10
 
 void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 {
@@ -206,7 +206,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		CTag tagport(CT_PORT,thePrefs::GetPort());
 		tagport.WriteTagToFile(&data);
 		
-		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB | CAPABLE_NEWTAGS); // FLAGS for server connection
+		CTag tagflags(CT_SERVER_FLAGS,CAPABLE_ZLIB | CAPABLE_NEWTAGS /*| CAPABLE_UNICODE*/); // FLAGS for server connection
 		tagflags.WriteTagToFile(&data);
 
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 

@@ -302,7 +302,7 @@ void CUpDownClient::ProcessFileInfo(const CSafeMemFile* data, const CPartFile* f
 		throw wxString(_("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
-	m_clientFilename = data->ReadString();
+	m_clientFilename = data->ReadString(GetUnicodeSupport());
 			
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we

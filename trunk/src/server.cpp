@@ -128,14 +128,14 @@ void CServer::Init() {
 	lastdescpingedcout = 0;
 }	
 
-bool CServer::AddTagFromFile(CFile* servermet){
+bool CServer::AddTagFromFile(CFileDataIO* servermet){
 	if (servermet == 0)
 		return false;
 	
 	CTag* tag = NULL;
 	
 	try {
-		tag = new CTag(*servermet);
+		tag = new CTag(*servermet, false);
 	} catch (CInvalidPacket e) {
 		if (tag) {
 			delete tag;
@@ -153,17 +153,11 @@ bool CServer::AddTagFromFile(CFile* servermet){
 	
 	switch(tag->tag.specialtag){		
 	case ST_SERVERNAME:
-		if(tag->tag.stringvalue)
-			listname = char2unicode(tag->tag.stringvalue);
-		else
-			listname = wxEmptyString;
+		listname = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_DESCRIPTION:
-		if( tag->tag.stringvalue )
-			description = char2unicode(tag->tag.stringvalue);
-		else
-			description = wxEmptyString;
+		description = tag->tag.stringvalue;		
 		delete tag;
 		break;
 	case ST_PREFERENCE:
@@ -177,10 +171,7 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		delete tag;
 		break;
 	case ST_DYNIP:
-		if ( tag->tag.stringvalue )
-			dynip = char2unicode(tag->tag.stringvalue);
-		else
-			dynip = wxEmptyString;
+		dynip = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_FAIL:
@@ -210,7 +201,7 @@ bool CServer::AddTagFromFile(CFile* servermet){
 		break;
 	case ST_VERSION:
 		if (tag->tag.type == 2)
-			m_strVersion = char2unicode(tag->tag.stringvalue);
+			m_strVersion = tag->tag.stringvalue;
 		delete tag;
 		break;
 	case ST_UDPFLAGS:

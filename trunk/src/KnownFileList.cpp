@@ -98,7 +98,7 @@ bool CKnownFileList::Init() {
 
 void CKnownFileList::Save() {
 
-	CFile* file = new CFile();
+	CSafeFile* file = new CSafeFile();
 	wxString fullpath(theApp.ConfigDir + wxT("known.met"));
 	file->Open(fullpath, CFile::write);
 	if (!(file->IsOpened())) {
@@ -108,16 +108,11 @@ void CKnownFileList::Save() {
 
 
 	wxMutexLocker sLock(list_mut);
-	//AddLogLineM(false,_("KnownFileList Save Starts"));
-	uint8 ucHeader = MET_HEADER;
-	//AddLogLineM(false,_("Saved MET_HEADER"));
-	file->Write(&ucHeader, 1);
-	uint32 RecordsNumber = m_map.size() + duplicates.GetCount();
-	//AddLogLineF(false,_("RecordsNumber = %i"), RecordsNumber);
-	ENDIAN_SWAP_I_32(RecordsNumber);
-	//AddLogLineF(false,_("Endian RecordsNumber = %i"), RecordsNumber);		
-	file->Write(&RecordsNumber,4);
-	RecordsNumber = m_map.size();
+
+	file->WriteUInt8(MET_HEADER);
+	uint32 RecordsNumber = m_map.size();
+	file->WriteUInt32(RecordsNumber + duplicates.GetCount());
+
 	CKnownFileMap::iterator it = m_map.begin();
 	for (uint32 i = 0; i != RecordsNumber; i++,it++) {
 		if ( it == m_map.end() )
@@ -134,7 +129,6 @@ void CKnownFileList::Save() {
 	
 	file->Flush();
 	file->Close();
-	//AddLogLineM(false,_("KnownFileList Save Ends"));	
 	delete file;
 }
 

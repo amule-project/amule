@@ -24,6 +24,8 @@
 #include "packets.h"
 #include "kademlia/utils/UInt128.h"
 
+#define CHECK_BOM(size,x) ((size > 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
+
 ///////////////////////////////////////////////////////////////////////////////
 // CFileDataIO
 
@@ -67,7 +69,7 @@ void CFileDataIO::ReadHash16(uchar* pVal) const
 }
 
 
-wxString CFileDataIO::ReadString() const
+wxString CFileDataIO::ReadString(bool bOptUTF8) const
 {
 	uint16 length = ReadUInt16();
 
@@ -80,8 +82,23 @@ wxString CFileDataIO::ReadString() const
 		val[length] = 0;
 		
 		Read(val, length);
-
-		wxString str = char2unicode(val);
+		wxString str;
+		
+		if (CHECK_BOM(length,val)) {
+			// This is a UTF8 string with a BOM header, skip header.
+			str = UTF82unicode(val+3);
+		} else {
+			if (bOptUTF8) {
+				str = UTF82unicode(val);
+				if (str.IsEmpty()) {
+					// Fallback to system locale
+					printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
+					str = char2unicode(val);
+				}					
+			} else {
+				str = char2unicode(val);
+			}
+		}
 		delete[] val;
 
 		return str;
@@ -127,7 +144,7 @@ void CFileDataIO::WriteHash16(const uchar* pVal)
 }
 
 
-void CFileDataIO::WriteString(const wxString& rstr)
+void CFileDataIO::WriteString(const wxString& rstr,  EUtf8Str eEncode)
 {
 	//
 	// We dont include the NULL terminator. Dont know why.
@@ -136,25 +153,55 @@ void CFileDataIO::WriteString(const wxString& rstr)
 	// From wx docs: 
 	// The macro wxWX2MBbuf reflects the correct return value of cWX2MB 
 	// (either char* or wxCharBuffer), except for the const.
-	const wxWX2MBbuf tmp = aMuleConv.cWX2MB(rstr);
-	const char *s = (const char *)tmp;
+	
+	if (eEncode == utf8strRaw) {
+		const wxWX2MBbuf tmp = wxConvUTF8.cWC2MB(rstr.wc_str(aMuleConv));
+		const char *s = (const char *)tmp;		
+		unsigned int sLength = s ? strlen(s) : 0;
+		if (sLength == 0) {
+			wxASSERT(sLength);
+			// Something failed on UTF8 enconding.
+			printf("Failed UTF8 conversion (WRITE), going for current locale: %s\n",unicode2char(rstr));			
+			const wxWX2MBbuf tmp2 = aMuleConv.cWX2MB(rstr);
+			const char *s2 = (const char *)tmp2;
+			sLength = s2 ? strlen(s2) : 0;
+			WriteUInt16(sLength);
+			if (sLength) {
+				Write(s2, sLength);
+			}			
+		} else {
+			WriteUInt16(sLength);
+			if (sLength) {
+				Write(s, sLength);
+			}
+		}
+	} else {
+		const wxWX2MBbuf tmp = aMuleConv.cWX2MB(rstr);
+		const char *s = (const char *)tmp;
+		unsigned int sLength = s ? strlen(s) : 0;
+		WriteUInt16(sLength);
+		if (sLength) {
+			Write(s, sLength);
+		}
+	}
+
 	//
 	// This avoids a crash in case unicode2char cannot perform the conversion,
 	// e.g., original string is an unicode string that cannot be converted to
 	// the current character set, in which case it will return NULL. Returning
 	// a NULL should not happen if UTF-8 was beeing used.
 	// 
-	unsigned int sLength = s ? strlen(s) : 0;
+	// unsigned int sLength = s ? strlen(s) : 0;
 	//
 	// Write the size of the string
 	//
-	WriteUInt16(sLength);
+	// WriteUInt16(sLength);
 	//
 	// If this is a NULL string, there is nothing to write, only the size.
 	// 
-	if (sLength) {
-		Write(s, sLength);
-	}
+	// if (sLength) {
+	//	Write(s, sLength);
+	// }
 }
 
 

@@ -27,6 +27,7 @@
 
 class CUpDownClient;
 class CFile;
+class CFileDataIO;
 
 #define	FF_NAME		0x01
 
@@ -48,8 +49,8 @@ public:
 
 	CUpDownClient* m_LinkedClient;
 
-	void	LoadFromFile(CFile* file);
-	void	WriteToFile(CFile* file);
+	void	LoadFromFile(CFileDataIO* file);
+	void	WriteToFile(CFileDataIO* file);
 };
 
 #endif

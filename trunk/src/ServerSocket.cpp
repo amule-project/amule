@@ -60,7 +60,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h" // Needed for amuleIPV4Address
 
-//#define DEBUG_SERVER_PROTOCOL
+#define DEBUG_SERVER_PROTOCOL
 
 #ifndef AMULE_DAEMON
 
@@ -340,7 +340,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? serverconnect->GetCurrentServer() : NULL;
-				theApp.searchlist->ProcessSearchanswer(packet,size,(cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0);
+				printf("Process search answer\n");
+				theApp.searchlist->ProcessSearchanswer(packet,size, true /*(cur_srv && cur_srv->GetUnicodeSupport())*/, (cur_srv)?cur_srv->GetIP():0,(cur_srv)?cur_srv->GetPort():0);
+				printf("Process search answer end\n");
 				theApp.searchlist->LocalSearchEnd();
 				break;
 			}

@@ -26,6 +26,7 @@
 
 #include "types.h"		// Needed for int8, int32, uint8 and uint32
 #include "opcodes.h"		// Needed for OP_EDONKEYPROT
+#include "SafeFile.h"		// Needed for CFileDataIO
 #include "otherfunctions.h"
 
 class CMemFile;
@@ -115,10 +116,10 @@ struct STag{
 	int8	type;
 	LPSTR	tagname;
 	union{
-		LPSTR	stringvalue;
 		uint32	intvalue;
 		float floatvalue;
 	};
+	wxString	stringvalue;	
 	uint8	specialtag;
 };
 
@@ -131,12 +132,12 @@ public:
 	CTag(LPCSTR name,  const wxString& strvalue);
 	CTag(int8 special, const wxString& strvalue);
 	CTag(const STag &in_tag);
-	CTag(const CFile &in_data);
+	CTag(const CFileDataIO& data, bool bOptUTF8);
 	~CTag();
 	
 	CTag* CloneTag() { return new CTag(tag); }
 	
-	bool WriteTagToFile(CFile* file); //used for CMemfiles
+	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const; //used for CMemfiles
 	
 	STag tag;
 	wxString GetFullInfo() const;

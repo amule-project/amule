@@ -77,7 +77,7 @@ CFriend::CFriend(CUpDownClient* client)
 }
 
 
-void CFriend::LoadFromFile(CFile* file)
+void CFriend::LoadFromFile(CFileDataIO* file)
 {
 	wxASSERT( file );
 
@@ -92,10 +92,10 @@ void CFriend::LoadFromFile(CFile* file)
 		uint32 tagcount;
 		file->Read(&tagcount, 4);
 		for ( uint32 j = 0; j != tagcount; j++) {
-			CTag *newtag = new CTag(*file);
+			CTag *newtag = new CTag(*file, false);
 			switch ( newtag->tag.specialtag ) {
 				case FF_NAME:
-					m_strName = char2unicode(newtag->tag.stringvalue);
+					m_strName = newtag->tag.stringvalue;
 					break;
 			}
 		
@@ -107,18 +107,18 @@ void CFriend::LoadFromFile(CFile* file)
 }
 
 
-void CFriend::WriteToFile(CFile* file)
+void CFriend::WriteToFile(CFileDataIO* file)
 {
 	wxASSERT( file );
 	
-	file->Write(m_Userhash, 16);
-	file->Write(&m_dwLastUsedIP, 4);
-	file->Write(&m_nLastUsedPort, 2);
-	file->Write(&m_dwLastSeen, 4);
-	file->Write(&m_dwLastChatted, 4);
+	file->WriteHash16(m_Userhash);
+	file->WriteUInt32(m_dwLastUsedIP);
+	file->WriteUInt16(m_nLastUsedPort);
+	file->WriteUInt32(m_dwLastSeen);
+	file->WriteUInt32(m_dwLastChatted);
 	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 1 );
 
-	file->Write(&tagcount, 4);
+	file->WriteUInt32(tagcount);
 	if ( !m_strName.IsEmpty() ) {
 		CTag nametag(FF_NAME, m_strName);
 		nametag.WriteTagToFile(file);
