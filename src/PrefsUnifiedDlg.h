@@ -32,6 +32,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
+#include <wx/choice.h>
 #include "muuli_wdr.h"
 #include "ini2.h"
 #include "Preferences.h"
