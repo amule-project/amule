@@ -302,6 +302,8 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
+	bool retval = CaMuleExternalConnector::OnCmdLineParsed(parser);
+
 	if ( parser.Found(wxT("file-config")) ) {
 		wxFileConfig eMuleIni(
 			wxT("eMule"),
@@ -340,7 +342,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		m_GuestPass = MD5Sum(m_GuestPass).GetHash();
 		m_bForcedGuestPassword = true;
 	}
-	return CaMuleExternalConnector::OnCmdLineParsed(parser);
+	return retval;
 }
 
 int CamulewebApp::ProcessCommand(int ID) {
