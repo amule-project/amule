@@ -188,6 +188,9 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		curl_easy_cleanup(curl_handle);
 		#endif
 	}
+	
+	StopAnimation();
+	
 	printf("HTTP download thread end\n");
 	
 	return 0;
@@ -220,4 +223,3 @@ int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUN
 	return 0;
 }
 #endif
-
