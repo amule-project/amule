@@ -295,10 +295,7 @@ void CUpDownClient::ClearHelloProperties()
 bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 {
 	const CSafeMemFile data((BYTE*)pachPacket,nSize);
-	uint8 hashsize;
-	if ( (1!=data.Read(hashsize)) ) {
-		throw wxString(wxT("Invalid Hello packet: Short packet when reading hash size"));
-	}
+	uint8 hashsize = data.ReadUInt8();
 	if ( 16 != hashsize ) {
 		/*
 		 * Hint: We can not accept other sizes here because:
@@ -361,14 +358,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	DWORD dwEmuleTags = 0;
 	
 	try {	
-	
 		data.ReadHash16(m_UserHash);
 		ValidateHash();
-		data.Read(m_nUserID);
-		uint16 nUserPort = 0;
-		data.Read(nUserPort); // hmm clientport is sent twice - why?
-		uint32 tagcount;
-		data.Read(tagcount);
+		m_nUserID = data.ReadUInt32();
+		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
+		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
 			CTag temptag(data);
 			switch(temptag.tag.specialtag){
@@ -506,16 +500,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		}
 		
 		m_nUserPort = nUserPort;
-		data.Read(m_dwServerIP);
-		data.Read(m_nServerPort);
+		m_dwServerIP = data.ReadUInt32();
+		m_nServerPort = data.ReadUInt16();
 		// Hybrid now has an extra uint32.. What is it for?
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data.Length() - data.GetPosition() == sizeof(uint32) ){
-			// Kry - Changes on eMule code for compat.
-			char test[4];
-			// lemonfan - this is not an "normal" string, so wxString cant be used
-			data.ReadRaw(&test, 4);
-			if ((test[0]=='M') && (test[1]=='L') && (test[2]=='D') && (test[3]=='K')) {
+		if ( data.Length() - data.GetPosition() == sizeof(uint32) ) {
+			uint32 test = data.ReadUInt32();
+			if (test == 'KDLM') {
 				m_bIsML=true;
 			} else{
 				m_bIsHybrid = true;
@@ -698,7 +689,7 @@ bool CUpDownClient::SendHelloPacket() {
 	}
 
 	CSafeMemFile data(128);
-	data.Write((uint8)16); // size of userhash
+	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
 	Packet* packet = new Packet(&data);
 	packet->SetOpCode(OP_HELLO);
@@ -715,12 +706,12 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 		return;
 	}
 	
-	CMemFile* data = new CMemFile();
-	data->Write((uint8)CURRENT_VERSION_SHORT);
-	data->Write((uint8)EMULE_PROTOCOL);
+	CSafeMemFile* data = new CSafeMemFile();
+	data->WriteUInt8(CURRENT_VERSION_SHORT);
+	data->WriteUInt8(EMULE_PROTOCOL);
 
 	// Support for ET_MOD_VERSION [BlackRat]
-	data->Write((uint32)9); 
+	data->WriteUInt32(9); 
 
 	CTag tag1(ET_COMPRESSION,1);
 	tag1.WriteTagToFile(data);
@@ -779,12 +770,11 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
 		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
 		//No sense making a third value sent for versions..
-		data.Read(m_byEmuleVersion);
+		m_byEmuleVersion = data.ReadUInt8();
 		if( m_byEmuleVersion == 0x2B ) {
 			m_byEmuleVersion = 0x22;
 		}	
-		uint8 protversion;
-		data.Read(protversion);
+		uint8 protversion = data.ReadUInt8();
 
 		//implicitly supported options by older clients
 		if (protversion == EMULE_PROTOCOL) {
@@ -811,8 +801,7 @@ void CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		
 		m_bEmuleProtocol = true;
 
-		uint32 tagcount;
-		data.Read(tagcount);
+		uint32 tagcount = data.ReadUInt32();
 		
 		for (uint32 i = 0;i < tagcount; i++){
 			CTag temptag(data);
@@ -956,17 +945,17 @@ void CUpDownClient::SendHelloAnswer()
 
 }
 
-void CUpDownClient::SendHelloTypePacket(CMemFile* data)
+void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 {
 	data->WriteHash16(theApp.glob_prefs->GetUserHash());
-	data->Write((uint32)theApp.serverconnect->GetClientID());
-	data->Write((uint16)theApp.glob_prefs->GetPort());
+	data->WriteUInt32(theApp.serverconnect->GetClientID());
+	data->WriteUInt16(theApp.glob_prefs->GetPort());
 
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
-	data->Write((uint32)6);
+	data->WriteUInt32(6);
 	#else
-	data->Write((uint32)5);  // NO MOD_VERSION
+	data->WriteUInt32(5);  // NO MOD_VERSION
 	#endif
 	
 	
@@ -1036,70 +1025,80 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 		dwIP = theApp.serverconnect->GetCurrentServer()->GetIP();
 		nPort = theApp.serverconnect->GetCurrentServer()->GetPort();
 	}
-	data->Write(dwIP);
-	data->Write(nPort);
+	data->WriteUInt32(dwIP);
+	data->WriteUInt16(nPort);
 }
 
 
 void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
-	char* desc =  NULL;
+	char* desc = NULL;
+
 	try
 	{	
 		if (!m_reqfile) {
-			throw CInvalidPacket("comment packet for unknown file");
+			throw CInvalidPacket("Comment packet for unknown file");
+		}
+
+		if (!m_reqfile->IsPartFile()) {
+			throw CInvalidPacket("Comment packet for completed file");
 		}
 
 		const CSafeMemFile data((BYTE*)pachPacket, nSize);
-		uint32 length;
-		if ( sizeof(m_iRate) != data.Read(m_iRate) )
-			throw CInvalidPacket("short packet reading rating");
-		if ( sizeof(length) != data.Read(length) )
-			throw CInvalidPacket("short packet reading comment length");
-		
+
+		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		AddDebugLogLineM(false,wxT("Rating for file '") + ClientFilename + wxString::Format(wxT("' received: %i"),m_iRate));
-		if (length>50)  {
-			length=50;
+		
+		uint32 length = data.ReadUInt32();	
+
+		// Avoid triggering exception, even if part of the comment is missing
+		if ( length > data.GetLength() - data.GetPosition() ) {
+			length = data.GetLength() - data.GetPosition();
 		}
-		if (length>0){
+		
+		if ( length > 50 ) {
+			length = 50;
+		}
+
+		if ( length > 0 ) {
 			#warning Lacks Comment Filtering
-			desc=new char[length+1];
-			memset(desc,0,length+1);
-			if ( (unsigned int)length != data.ReadRaw(desc,length) ) {
-				throw CInvalidPacket("short packet reading comment string");
-			}
-			m_strComment = char2unicode(desc);
-			//m_strComment = wxT("Whatever");
-			AddDebugLogLineM(false,wxT("Description for file '") +ClientFilename + wxT("' received: ") + m_strComment);
+			
+			desc = new char[length + 1];
+			desc[length] = 0;
+
+			data.Read(desc, length);
+
+			m_strComment = char2unicode(desc);			
+			
+			AddDebugLogLineM(false, wxT("Description for file '") + ClientFilename + wxT("' received: ") + m_strComment);
+			
 			m_reqfile->SetHasComment(true);
 		}
 
 	}
 	catch ( CStrangePacket )
 	{
-		if (desc) {
-			delete[] desc;
-		}
+		delete[] desc;
+	
 		printf("\nInvalid MuleComment packet!\n");
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
-	catch ( CInvalidPacket (e))
+	catch ( CInvalidPacket e )
 	{
-		if (desc) {
-			delete[] desc;
-		}
+		delete[] desc;
+	
 		printf("\nInvalid MuleComment packet - %s\n\n",e.what());
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
-	catch (...) {
-		if (desc) {
-			delete[] desc;
-		}
+	catch (...)
+	{
+		delete[] desc;
+	
 		printf("\nInvalid MuleComment packet - Uncatched exception\n\n");
 		printf("Sent by %s on ip %s port %i using client %i version %i\n",unicode2char(GetUserName()),unicode2char(GetFullIP()),GetUserPort(),GetClientSoft(),GetMuleVersion());
 		printf("User Disconnected.\n");		
@@ -1109,9 +1108,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	if (m_reqfile->HasRating() || m_reqfile->HasComment()) { 
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
-	if (desc) {
-		delete[] desc;
-	}
+
+	delete[] desc;
 }
 
 void CUpDownClient::ClearDownloadBlockRequests()
@@ -1329,8 +1327,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
-			CMemFile data;
-			data.Write(m_nUserID);
+			CSafeMemFile data;
+			data.WriteUInt32(m_nUserID);
 			Packet* packet = new Packet(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
 
@@ -1736,9 +1734,9 @@ void CUpDownClient::SendPublicKeyPacket(){
 	if (!theApp.clientcredits->CryptoAvailable())
 		return;
 
-	CMemFile data;
-	data.Write(theApp.clientcredits->GetPubKeyLen());
-	data.WriteRaw(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
+	CSafeMemFile data;
+	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
+	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 	Packet* packet = new Packet(&data, OP_EMULEPROT); 
 	packet->SetOpCode(OP_PUBLICKEY);
 //	Packet* packet = new Packet(OP_PUBLICKEY,theApp.clientcredits->GetPubKeyLen() + 1,OP_EMULEPROT);
@@ -1796,11 +1794,11 @@ void CUpDownClient::SendSignaturePacket(){
 		wxASSERT ( false );
 		return;
 	}
-	CMemFile data;
-	data.Write(siglen);
-	data.WriteRaw(achBuffer, siglen);
+	CSafeMemFile data;
+	data.WriteUInt8(siglen);
+	data.Write(achBuffer, siglen);
 	if (bUseV2) {
-		data.Write(byChaIPKind);
+		data.WriteUInt8(byChaIPKind);
 	}	
 	Packet* packet = new Packet(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_SIGNATURE);
@@ -1912,9 +1910,9 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		// Kry - Too much output, it already works.
 		//AddDebugLogLineM(false, "sending SecIdentState Packet, state: %i (to '%s')", nValue, GetUserName() );
 
-		CMemFile data;
-		data.Write(nValue);
-		data.Write(dwRandom);
+		CSafeMemFile data;
+		data.WriteUInt8(nValue);
+		data.WriteUInt32(dwRandom);
 		Packet* packet = new Packet(&data, OP_EMULEPROT);
 		packet->SetOpCode(OP_SECIDENTSTATE);
 //		Packet* packet = new Packet(OP_SECIDENTSTATE,5,OP_EMULEPROT);
@@ -1950,10 +1948,9 @@ void CUpDownClient::ProcessSecIdentStatePacket(const uchar* pachPacket, uint32 n
 	CSafeMemFile data((BYTE*)pachPacket,nSize);
 	// Kry:  + 1 on the original one.
 	try {
-		byte discard;
-		data.Read(discard);		
-		uint32 dwRandom;
-		data.Read(dwRandom);
+		// Discard first byte
+		data.ReadUInt8();		
+		uint32 dwRandom = data.ReadUInt32();
 		credits->m_dwCryptRndChallengeFrom = dwRandom;
 	} 
 	catch ( CStrangePacket )

@@ -18,58 +18,68 @@
 //
 
 #include "CMemFile.h"		// Needed for CMemFile
-#include "otherfunctions.h" // Needed for ENDIAN_SWAP_xx
+#include "packets.h"
+
 
 CMemFile::CMemFile(unsigned int growBytes)
 {
-	fGrowBytes	= growBytes;
-	fPosition	= 0;
-	fBufferSize	= 0;
-	fFileSize	= 0;
-	deleteBuffer	= TRUE;
-	fBuffer		= NULL;
+	m_GrowBytes		= growBytes;
+	m_position		= 0;
+	m_BufferSize	= 0;
+	m_FileSize		= 0;
+	m_delete		= true;
+	m_buffer		= NULL;
 }
+
 
 CMemFile::CMemFile(BYTE *buffer, unsigned int bufferSize, unsigned int growBytes)
 {
+	m_buffer		= NULL;
+	m_delete		= true;
+	
 	Attach(buffer, bufferSize, growBytes);
 }
 
+
 void CMemFile::Attach(BYTE* buffer, unsigned int bufferSize, unsigned int growBytes)
 {
-	fGrowBytes	= growBytes;
-	fPosition	= 0;
-	fBufferSize	= bufferSize;
-	if (!growBytes)
-		fFileSize = bufferSize; 
-	else 
-		fFileSize = 0;
-	deleteBuffer	= FALSE;
-	fBuffer		= buffer; // uh
+	// Should we free the old buffer if one such exists
+	if ( m_buffer && m_delete ) {
+		free(m_buffer);
+	}
+	m_buffer		= buffer;
+	
+	m_GrowBytes		= growBytes;
+	m_position		= 0;
+	m_BufferSize	= bufferSize;
+	m_delete		= false;
+
+	// According to the MSDN reference, attaching with a non-zero growBytes value
+	// will mean that the current contents is to be ignored
+	m_FileSize 	= ( growBytes ? 0 : bufferSize );
 }
+
 
 BYTE* CMemFile::Detach()
 {
-	BYTE *retval	= fBuffer;
+	BYTE *retval	= m_buffer;
 	
-	fPosition	= 0;
-	fBufferSize	= 0;
-	fFileSize	= 0;
-	fBuffer		= NULL;
+	m_position		= 0;
+	m_BufferSize	= 0;
+	m_FileSize		= 0;
+	m_buffer		= NULL;
+	m_delete		= false;
 	
 	return retval;
 }
 
+
 CMemFile::~CMemFile()
 {
-	fGrowBytes	= 0;
-	fPosition	= 0;
-	fBufferSize	= 0;
-	fFileSize	= 0;
-	// should the buffer be free'd ?
-	if (fBuffer && deleteBuffer)
-		free(fBuffer);
-	fBuffer = NULL;
+	if ( m_buffer && m_delete )
+		free(m_buffer);
+	
+	m_buffer = NULL;
 }
 
 
@@ -78,157 +88,176 @@ off_t CMemFile::Seek(off_t offset, wxSeekMode from)
 	off_t newpos = 0;
 	
 	switch (from) {
-	case wxFromStart:
-		newpos = offset;
-		break;
-	case wxFromCurrent:
-		newpos = fPosition + offset;
-		break;
-	case wxFromEnd:
-		newpos = fFileSize - offset;
-		break;
-	default:
-		return -1;
+		case wxFromStart:
+			newpos = offset;
+			break;
+		case wxFromCurrent:
+			newpos = m_position + offset;
+			break;
+		case wxFromEnd:
+			newpos = m_FileSize - offset;
+			break;
+		default:
+			throw CInvalidPacket("Using an invalid seek-mode in CMemFile::Seek!");
 	}
-	if (newpos<0) {
-		return -1;
+	
+	if ( newpos < 0 ) {
+		throw CInvalidPacket("Position after seeking in CMemFile is less than zero!");
 	}
 
-	// what if we seek over the end??
-	fPosition = newpos;
+	// If the new position is greater than current filesize, then the 
+	// file-size is increased to match the position
+	if ( newpos > m_FileSize ) {
+		SetLength( newpos );
+	}
 
-	return fPosition;
+	m_position = newpos;
+
+	return m_position;
 }
+
+
+bool CMemFile::Eof() const
+{
+	return ( m_position >= m_FileSize );
+
+}
+
 
 void CMemFile::enlargeBuffer(unsigned long size)
 {
-	unsigned long newsize=fBufferSize;
+	off_t newsize = m_BufferSize;
 
-	// hmm.. mit�h�n jos growbytes==0??
-	// Kry - I can't understand you, traveler from far away,
-	// but I'm kinnda sure of what you mean. Answer is: it hangs.
-	while(newsize<size)
-		newsize+=fGrowBytes;
+	// Avoid infinate loops and ensure that we dont try to grow attached
+	// buffers with growlength == 0
+	if ( m_GrowBytes ) {
+		// Everything is fine if m_GrowBytes is non-zero
+		while ( newsize < size )
+			newsize += m_GrowBytes;
+	} else {
+		// Does the buffer belong to the CMemFile object? 
+		if ( m_delete ) {
+			// Non-attached. Change to exactly the size specified.
+			newsize = size;
+		} else {
+			// Attached. This is an illegal operation, as we could be trying to 
+			// free/alloc a local variable
+			throw CInvalidPacket("A CMemFile attempted to grow an attached buffer where m_GrowBytes is zero.");
+		}
+	}
 
-	if (fBuffer)
-		fBuffer = (BYTE*)realloc((void*)fBuffer,newsize);
-	else
-		fBuffer = (BYTE*)malloc(newsize);
+	if ( m_buffer ) {
+		m_buffer = (BYTE*)realloc((void*)m_buffer, newsize);
+	} else {
+		m_buffer = (BYTE*)malloc(newsize);
+	}
 
-	if (fBuffer==NULL) {
-		// jaa-a. mit�h�n tekis
-		printf("out of memory experience\n");
+	// Check for memory errors
+	if ( m_buffer == NULL ) {
+		printf("Unable to allocate memory in CMemFile!\n");
 		exit(1);
 	}
 
-	fBufferSize = newsize;
+	m_BufferSize = newsize;
 }
 
-void CMemFile::SetLength(unsigned long newLen)
+
+bool CMemFile::SetLength(off_t newLen)
 {
-	if (newLen > fBufferSize) {
-	// enlarge buffer
+	if ( newLen > m_BufferSize ) {
 		enlargeBuffer(newLen);
 	}
-	if (newLen < fPosition) {
-		fPosition = newLen;
+	
+	if ( newLen < m_position ) {
+		m_position = newLen;
 	}
-	fFileSize = newLen;
+	
+	m_FileSize = newLen;
+
+	return true;
 }
 
-off_t CMemFile::ReadRaw(void* buf, off_t length) const
+
+off_t CMemFile::Read(void* buf, off_t length) const
 {
-	if(length == 0) 
+	if ( length == 0 )
 		return 0;
-	// dont' read over buffer end
-	//printf("fPos %i, fFSize %i\n",fPosition,fFileSize);
-	if (fPosition > fFileSize) {
-		//printf("Read Over Buffer End!!!!\n");
-		throw CInvalidPacket("Read over buffer end on MemFile (corrupted tag?)");
-		return 0;
-	}
-	unsigned int readlen = length;
-	if (length + fPosition > fFileSize) {
-		//printf("Read After End Of File!!!!\n");
-		//wxASSERT(0);
-		throw CInvalidPacket("Read after End Of MemFile (corrupted tag?)");
-		readlen = fFileSize - fPosition;
+	
+	// Combined test, which will fail in most cases, so we can just figoure out
+	// what really happened in case it triggers, which is cheaper than doing 2
+	// tests every single time
+	if ( length + m_position > m_FileSize ) {
+		printf("READ AFTER END OF CMEMFILE\n");
+		if ( m_position > m_FileSize ) {
+			throw CInvalidPacket("Position is greater than length in CMemFile");
+		} else {
+			throw CInvalidPacket("Attempted to read past end of CMemFile");
+		}
 	}
 
-	memcpy(buf, fBuffer + fPosition, readlen);
-	fPosition += readlen;
-
-	return readlen;
-}
-
-size_t CMemFile::WriteRaw(const void* buf,size_t length)
-{
-	if (length == 0)
-		return 0;
-	// need more space?
-	if (fPosition + length > fBufferSize)
-		enlargeBuffer(fPosition + length);
-	memcpy(fBuffer + fPosition, buf, length);
-	fPosition += length;
-	if(fPosition > fFileSize)
-		fFileSize = fPosition;
+	memcpy(buf, m_buffer + m_position, length);
+	m_position += length;
 
 	return length;
 }
 
+
+size_t CMemFile::Write(const void* buf, size_t length)
+{
+	if ( length == 0 )
+		return 0;
+	
+	// Needs more space?
+	if (m_position + length > m_BufferSize) {
+		enlargeBuffer(m_position + length);
+	}
+	
+	memcpy(m_buffer + m_position, buf, length);
+	m_position += length;
+
+	if ( m_position > m_FileSize )
+		m_FileSize = m_position;
+
+	return length;
+}
+
+
+////////////////////////////////////////////////////////////////////
+// These functions make no sense for a CMemFile and thus have been
+// implemented to do nothing at all to avoid odd bugs
+
 bool CMemFile::Close() const
 {
-	// do-nothing :)
-	return TRUE;
+	return true;
 }
 
-#if wxBYTE_ORDER == wxBIG_ENDIAN
 
-inline off_t CMemFile::Read(uint16& v) const
+bool CMemFile::Create(const wxChar* WXUNUSED(szFileName), bool WXUNUSED(bOverwrite), int WXUNUSED(access))
 {
-	off_t off = ReadRaw(&v, 2);
-	ENDIAN_SWAP_I_16(v);
-	return off;
+	return false;
 }
 
-inline off_t CMemFile::Read(uint32& v) const
+
+bool CMemFile::Open(const wxChar* WXUNUSED(szFileName), OpenMode WXUNUSED(mode), int WXUNUSED(access))
 {
-	off_t off = ReadRaw(&v, 4);
-	ENDIAN_SWAP_I_32(v);
-	return off;
+	return false;
 }
 
-inline size_t CMemFile::Write(const uint16& v)
+
+bool CMemFile::Flush()
 {
-	int16 tmp = ENDIAN_SWAP_16(v);
-	return WriteRaw(&tmp, 2);
+	return true;
 }
-	
-inline size_t CMemFile::Write(const uint32& v)
+
+
+bool CMemFile::IsOpened() const
 {
-	int32 tmp = ENDIAN_SWAP_32(v);
-	return WriteRaw(&tmp, 4);
+	return true;
 }
 
-#endif // wxBYTE_ORDER == wxBIG_ENDIAN
 
-
-inline off_t CMemFile::Read(uint8 v[16]) const
+bool CMemFile::Error() const
 {
-	return ReadRaw(v, 16);
+	return false;
 }
 
-inline off_t CMemFile::Read(void* buf,off_t length) const
-{
-	return ReadRaw(buf, length);
-}
-
-inline size_t CMemFile::Write(const uint8 v[16])
-{
-	return WriteRaw(v, 16);
-}
-
-inline size_t CMemFile::Write(const void* buf,size_t length)
-{
-	return WriteRaw(buf, length);
-}

@@ -35,7 +35,7 @@ class CAddFileThread;
 class CKnownFile;
 class CServerConnect;
 class CPreferences;
-class CMemFile;
+class CSafeMemFile;
 class CMD4Hash;
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
@@ -56,7 +56,7 @@ public:
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	CKnownFile*     GetFileByIndex(int index);
 	CKnownFileList*		filelist;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files, bool toserver);
+	void	CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, bool toserver);
 	uint64	GetDatasize();
 	uint16	GetCount()	{return m_Files_map.size(); }
 	void	UpdateItem(CKnownFile* toupdate);

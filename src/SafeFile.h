@@ -24,42 +24,80 @@
 #include "types.h"		// Needed for LPCSTR
 #include "CMemFile.h"		// Needed for CMemFile
 
-class CSafeFile : public CFile{
-public:
-	CSafeFile();
-	CSafeFile(LPCSTR lpszFileName, unsigned int nOpenFlags);
-	unsigned int Read(void* lpBuf, unsigned int nCount);
-};
 
-class CSafeMemFile : public CMemFile{ // memFile
-public:
-	CSafeMemFile(unsigned int nGrowBytes = 0);
-	CSafeMemFile(BYTE* lpBuffer, unsigned int nBufferSize, unsigned int nGrowBytes = 0);
-/*
-  virtual off_t Read(int8& v)             { return CMemFile::Read(v); };
-  virtual off_t Read(int16& v)            { return CMemFile::Read(v); };
-  virtual off_t Read(int32& v)            { return CMemFile::Read(v); };
-  virtual off_t Read(unsigned char v[16]) { return CMemFile::Read(v); };
-  virtual off_t Read(wxString& v)         { return CMemFile::Read(v); };
-
-  virtual size_t Write(const int8& v)             { return CMemFile::Write(v); };
-  virtual size_t Write(const int16& v)            { return CMemFile::Write(v); };
-  virtual size_t Write(const int32& v)            { return CMemFile::Write(v); };
-  virtual size_t Write(const unsigned char v[16]) { return CMemFile::Write(v); };
-  virtual size_t Write(const wxString& v)         { return CMemFile::Write(v); };
-*/	
-	off_t ReadRaw(void* lpBuf, unsigned int nCount) const;
+///////////////////////////////////////////////////////////////////////////////
+class CFileDataIO
+{
+ public:
+	virtual off_t Read(void *pBuf, off_t nCount) const = 0;
+	virtual size_t Write(const void *pBuf, size_t nCount) = 0;
 	
-protected:
+	virtual uint8		ReadUInt8() const;
+	virtual uint16		ReadUInt16() const;
+	virtual uint32		ReadUInt32() const;
+//	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
+	virtual void		ReadHash16(unsigned char* pVal) const;
+	virtual wxString	ReadString() const;
+
+	virtual void WriteUInt8(uint8 nVal);
+	virtual void WriteUInt16(uint16 nVal);
+	virtual void WriteUInt32(uint32 nVal);
+//	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
+	virtual void WriteHash16(const unsigned char* pVal);
+	virtual void WriteString(const wxString& rstr);
+ };
+ 
+
+
+///////////////////////////////////////////////////////////////////////////////
+class CSafeFile : public CFile, public CFileDataIO
+{
+ public:
+	CSafeFile() {}
+	CSafeFile(const wxChar* lpszFileName, OpenMode mode = read)
+		: CFile(lpszFileName, mode) {}
+
+	virtual off_t Read(void *pBuf, off_t nCount) const;
+	virtual size_t Write(const void *pBuf, size_t nCount);
+ };
+ 
+
+
+///////////////////////////////////////////////////////////////////////////////
+class CSafeMemFile : public CMemFile, public CFileDataIO
+{
+public:
+	CSafeMemFile(UINT nGrowBytes = 512)
+		: CMemFile(nGrowBytes) {}
+	CSafeMemFile(BYTE* lpBuffer, UINT nBufferSize, UINT nGrowBytes = 0)
+		: CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
+
+	// CMemFile already does the needed checks
+	virtual off_t Read(void *pBuf, off_t nCount) const {
+		return CMemFile::Read( pBuf, nCount );
+	}
+	
+	virtual size_t Write(const void *pBuf, size_t nCount) {
+		return CMemFile::Write( pBuf, nCount );
+	}
 };
 
+
+
+///////////////////////////////////////////////////////////////////////////////
 // This is just a workaround
-class CSafeBufferedFile : public CFile{
-public:
-	CSafeBufferedFile();
-	CSafeBufferedFile(LPCSTR lpszFileName,UINT nOpenFlags);
-	virtual UINT Read(void* lpBuf,UINT nCount);
+class CSafeBufferedFile : public CFile, public CFileDataIO
+{
+ public:
+	CSafeBufferedFile() {}
+	CSafeBufferedFile(const wxChar* lpszFileName, OpenMode mode = read)
+		: CFile(lpszFileName, mode) {}
+
+	virtual off_t Read(void *pBuf, off_t nCount) const;
+	virtual size_t Write(const void *pBuf, size_t nCount);
 };
+ 
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Peek - helper functions for read-accessing memory without modifying the memory pointer

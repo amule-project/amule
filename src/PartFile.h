@@ -36,7 +36,7 @@
 class CSearchFile;
 class CUpDownClient;
 class completingThread;
-class CMemFile;
+class CSafeMemFile;
 class wxMemoryDC;
 class wxRect;
 
@@ -101,10 +101,10 @@ public:
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
-	void	WritePartStatus(CMemFile* file);
-	void	WriteCompleteSourcesCount(CMemFile* file);
+	void	WritePartStatus(CSafeMemFile* file);
+	void	WriteCompleteSourcesCount(CSafeMemFile* file);
 	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
-	void	AddSources(CMemFile* sources,uint32 serverip, uint16 serverport);
+	void	AddSources(CSafeMemFile* sources,uint32 serverip, uint16 serverport);
 	uint8	GetStatus(bool ignorepause = false) const;
 	virtual void	UpdatePartsInfo();
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
@@ -148,7 +148,7 @@ public:
 
 	virtual	Packet* CreateSrcInfoPacket(const CUpDownClient* forClient);
 	//void	AddClientSources(CMemFile* sources);
-	void    AddClientSources(CMemFile* sources,uint8 sourceexchangeversion);
+	void    AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion);
 
 	void	PreviewFile();
 	bool	PreviewAvailable();

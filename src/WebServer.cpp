@@ -254,8 +254,7 @@ void CWebServer::ReloadTemplates(void) {
 		wxTextInputStream file(input);
 		wxString sAll;
 		while (!input.Eof()) {
-			wxString sLine;
-			sLine=file.ReadString();
+			wxString sLine = file.ReadString();
 
 			sAll += sLine + wxT("\n");
 		}

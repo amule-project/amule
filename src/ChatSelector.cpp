@@ -180,8 +180,8 @@ bool CChatSelector::SendMessage( const wxString& message )
 	}
 	
 	if (ci->client->IsConnected()) {
-		CMemFile data;
-		data.Write(message);
+		CSafeMemFile data;
+		data.WriteString(message);
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());
@@ -237,8 +237,8 @@ void CChatSelector::ConnectionResult(CUpDownClient* sender, bool success)
 	} else {
 		ci->AddText( wxString(wxT(" ok\n")), COLOR_RED );
 		
-		CMemFile data;
-		data.Write(wxString(ci->messagepending));
+		CSafeMemFile data;
+		data.WriteString(ci->messagepending);
 		Packet* packet = new Packet(&data);
 		packet->SetOpCode(OP_MESSAGE);
 		theApp.uploadqueue->AddUpDataOverheadOther(packet->GetPacketSize());

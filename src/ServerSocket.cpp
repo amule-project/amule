@@ -355,9 +355,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddLogLineM(true,wxString::Format(_("ServerMsg - OP_FoundSources; sources = %u\n"), (UINT)(uchar)packet[16]));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
-				CMemFile* sources = new CMemFile((BYTE*)packet,size);
+				CSafeMemFile* sources = new CSafeMemFile((BYTE*)packet,size);
 				uint8 fileid[16];
-				sources->Read(fileid);
+				sources->ReadHash16(fileid);
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 					file->AddSources(sources,cur_server->GetIP(), cur_server->GetPort());
 				}
@@ -439,20 +439,14 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddLogLineM(true,_("ServerMsg - OP_ServerList\n"));
 				#endif
 				CSafeMemFile* servers = new CSafeMemFile((BYTE*)packet,size);
-				unsigned char count;
-				if ((1 != servers->Read(count)) || ((int32)(count*6 + 1) > size)) {
+				uint8 count = servers->ReadUInt8();
+				if (((int32)(count*6 + 1) > size)) {
 					count = 0;
 				}
 				int addcount = 0;
 				while(count) {
-					uint32 ip;
-					uint16 port;
-					if (4 != servers->Read(ip)) {
-						break;
-					}
-					if (2 != servers->Read(port)) {
-						break;
-					}
+					uint32 ip   = servers->ReadUInt32();
+					uint16 port = servers->ReadUInt16();
 					in_addr host;
 					host.s_addr=ip;
 					CServer* srv = new CServer(port, char2unicode(inet_ntoa(host)));

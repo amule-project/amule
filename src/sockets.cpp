@@ -36,7 +36,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "packets.h"		// Needed for CTag
 #include "opcodes.h"		// Needed for CT_NAME
-#include "CMemFile.h"		// Needed for CMemFile
+#include "SafeFile.h"		// Needed for CSafeMemFile
 #include "otherfunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
@@ -177,11 +177,11 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 			update->ResetFailedCount();
 			Notify_ServerRefresh( update );
 		}
-		CMemFile data;
-		data.WriteRaw(theApp.glob_prefs->GetUserHash(),16);
-		data.Write(GetClientID());
-		data.Write(app_prefs->GetPort());
-		data.Write((uint32)5); // tagcount
+		CSafeMemFile data;
+		data.WriteHash16(theApp.glob_prefs->GetUserHash());
+		data.WriteUInt32(GetClientID());
+		data.WriteUInt16(app_prefs->GetPort());
+		data.WriteUInt32(5); // tagcount
 
 		CTag tagname(CT_NAME,unicode2char(app_prefs->GetUserNick()));
 		tagname.WriteTagToFile(&data);
@@ -483,8 +483,8 @@ void CServerConnect::KeepConnectionAlive()
 		// "Ping" the server if the TCP connection was not used for the specified interval with
 		// an empty publish files packet -> recommended by lugdunummaster himself!
 		
-		CMemFile* files = new CMemFile(4);
-		files->Write((uint32)0); //nFiles
+		CSafeMemFile* files = new CSafeMemFile(4);
+		files->WriteUInt32(0); //nFiles
 	
 		Packet* packet = new Packet(files);
 		packet->SetOpCode(OP_OFFERFILES);

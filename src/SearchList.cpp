@@ -100,18 +100,17 @@ CSearchFile::CSearchFile(CSearchFile* copyfrom)
 }
 
 
-CSearchFile::CSearchFile(const CMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
+CSearchFile::CSearchFile(const CSafeMemFile* in_data, uint32 nSearchID, uint32 nServerIP, uint16 nServerPort, LPCTSTR pszDirectory)
 {
 	m_nSearchID = nSearchID;
-	in_data->ReadRaw(m_abyFileHash,16);
-	in_data->Read(m_nClientID);
-	in_data->Read(m_nClientPort);
+	in_data->ReadHash16(m_abyFileHash);
+	m_nClientID = in_data->ReadUInt32();
+	m_nClientPort = in_data->ReadUInt16();
 	if ((m_nClientID || m_nClientPort) && !IsValidClientIPPort(m_nClientID, m_nClientPort)){
 		m_nClientID = 0;
 		m_nClientPort = 0;
 	}
-	uint32 tagcount;
-	in_data->Read(tagcount);
+	uint32 tagcount = in_data->ReadUInt32();
 
 	for (unsigned int i = 0; i != tagcount; ++i){
 		CTag* toadd = new CTag(*in_data);
@@ -281,11 +280,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, CUpD
 
 	try
 	{
-		uint32 results;
-		// Why? Emule don't catch anything. I assume it's safe not to do that.
-		if ( 4 != packet->Read(results) ) {
-			throw CInvalidPacket("short packet reading search result count");
-		}	
+		uint32 results = packet->ReadUInt32();
 		uint32 mySearchID=( (Sender != NULL)? (uint32)Sender : m_nCurrentSearch);
 		foundFilesCount[mySearchID] = 0;
 
@@ -331,8 +326,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	}
 	
 	const CSafeMemFile packet((BYTE*)in_packet,size);
-	uint32 results;
-	packet.Read(results);
+	uint32 results = packet.ReadUInt32();
 
 	for (unsigned int i = 0; i != results; i++){
 		CSearchFile* toadd = new CSearchFile(&packet, nSearchID, 0, 0, pszDirectory);
@@ -357,8 +351,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	
 	int iAddData = (int)(packet.Length() - packet.GetPosition());
 	if (iAddData == 1){
-		uint8 ucMore;
-		packet.Read(ucMore);
+		uint8 ucMore = packet.ReadUInt8();
 		if (ucMore == 0x00 || ucMore == 0x01){
 			if (pbMoreResultsAvailable)
 				*pbMoreResultsAvailable = (bool)ucMore;
@@ -374,8 +367,7 @@ uint16 CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, uint
 	//CSafeMemFile packet((BYTE*)in_packet,size);
 	const CSafeMemFile* packet = new CSafeMemFile((BYTE*)in_packet,size,0);
 
-	uint32 results;
-	packet->Read(results);
+	uint32 results = packet->ReadUInt32();
 
 	
 //	in_addr server;

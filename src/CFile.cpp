@@ -400,7 +400,7 @@ off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
 }
 
 // get current off_t
-off_t CFile::Tell() const
+off_t CFile::GetPosition() const
 {
     wxASSERT( IsOpened() );
 
@@ -462,7 +462,7 @@ bool CFile::Eof() const
 
 #if defined(__DOS__) || defined(__UNIX__) || defined(__GNUWIN32__) || defined( __MWERKS__ ) || defined(__SALFORDC__)
     // @@ this doesn't work, of course, on unseekable file descriptors
-    off_t ofsCur = Tell(),
+    off_t ofsCur = GetPosition(),
     ofsMax = Length();
     if ( ofsCur == wxInvalidOffset || ofsMax == wxInvalidOffset )
         iRc = -1;

@@ -31,7 +31,7 @@
 #include "SharedFileList.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "packets.h"		// Needed for Packet
-#include "CMemFile.h"		// Needed for CMemFile
+#include "SafeFile.h"		// Needed for CSafeMemFile
 #include "sockets.h"		// Needed for CServerConnect
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "KnownFile.h"		// Needed for CKnownFile
@@ -177,9 +177,9 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	if (!server->IsConnected()) {
 		return;
 	}
-	CMemFile* files = new CMemFile(100);
+	CSafeMemFile* files = new CSafeMemFile(100);
 
-	files->Write((uint32)1); // filecount
+	files->WriteUInt32(1); // filecount
 	CreateOfferedFilePacket(toadd,files, true);
 	Packet* packet = new Packet(files);
 	packet->SetOpCode(OP_OFFERFILES);
@@ -232,9 +232,9 @@ void CSharedFileList::SetOutputCtrl(CSharedFilesCtrl* in_ctrl){
 void CSharedFileList::SendListToServer(){
 	if (m_Files_map.empty() || !server->IsConnected())
 		return;
-	CMemFile* files = new CMemFile();
+	CSafeMemFile* files = new CSafeMemFile();
 
-	files->Write((uint32)m_Files_map.size());
+	files->WriteUInt32(m_Files_map.size());
 
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); pos++ ) {
@@ -267,13 +267,13 @@ CKnownFile* CSharedFileList::GetFileByIndex(int index){
         return 0;
 }
 
-void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* files, bool fromserver){
+void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, bool fromserver){
 	// This function is used for offering files to the local server and for sending
 	// shared files to some other client. In each case we send our IP+Port only, if
 	// we have a HighID.
 
 	cur_file->SetPublishedED2K(true);
-	files->Write((const uint8*)cur_file->GetFileHash());
+	files->WriteHash16(cur_file->GetFileHash());
 
 	uint32 nClientID;
 	uint16 nClientPort;
@@ -305,8 +305,8 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 		}
 	}
 
-	files->Write(nClientID);
-	files->Write(nClientPort);
+	files->WriteUInt32(nClientID);
+	files->WriteUInt16(nClientPort);
 
 	// files->Write(cur_file->GetFileTypePtr(),4);
 
@@ -321,7 +321,7 @@ void CSharedFileList::CreateOfferedFilePacket(CKnownFile* cur_file,CMemFile* fil
 		uTagCount++;
 	}
 
-	files->Write(uTagCount);
+	files->WriteUInt32(uTagCount);
 
 	if (cur_file->GetFileName()) {
 		CTag* nametag = new CTag(FT_FILENAME,cur_file->GetFileName());

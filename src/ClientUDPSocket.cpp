@@ -99,7 +99,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				
 				CSafeMemFile data_in((BYTE*)packet, size);
 				uchar reqfilehash[16];
-				data_in.ReadRaw(reqfilehash,16);		
+				data_in.ReadHash16(reqfilehash);
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if (!reqfile) {
 					Packet* response = new Packet(OP_FILENOTFOUND,0,OP_EMULEPROT);
@@ -121,9 +121,8 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						if (sender->GetUDPVersion() > 3) {
 							sender->ProcessExtendedInfo(&data_in, reqfile);
 						} else  if (sender->GetUDPVersion() > 2) {
-							uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
-							uint16 nCompleteCountNew;
-							data_in.Read(nCompleteCountNew);
+							uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
+							uint16 nCompleteCountNew = data_in.ReadUInt16();
 							sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
 							if (nCompleteCountLast != nCompleteCountNew) {
 								reqfile->UpdatePartsInfo();
@@ -135,11 +134,11 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 							if (reqfile->IsPartFile()) {
 								((CPartFile*)reqfile)->WritePartStatus(&data_out);
 							} else {
-								data_out.Write((uint16)0);
+								data_out.WriteUInt16(0);
 							}
 						}
 						
-						data_out.Write((uint16)theApp.uploadqueue->GetWaitingPosition(sender));
+						data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
 						#ifdef __USE_DEBUG__						
 						if (thePrefs.GetDebugClientUDPLevel() > 0) {
 							DebugSend("OP__ReaskAck", sender);
@@ -178,8 +177,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					if ( sender->GetUDPVersion() > 3 ) {
 						sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
 					}
-					uint16 nRank;
-					data_in.Read(nRank);
+					uint16 nRank = data_in.ReadUInt16();
 					sender->SetRemoteQueueFull(false);
 					sender->UDPReaskACK(nRank);
 					sender->AddAskedCountDown();
