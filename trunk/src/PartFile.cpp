@@ -2544,7 +2544,7 @@ void completingThread::OnExit(){
 	evt.SetClientData(completing);
 	evt.SetInt((int)completing_result);
 	evt.SetExtraLong((long)newname);
-	wxPostEvent(theApp.amuledlg,evt);
+	wxPostEvent(&theApp,evt);
 	
 }
 
