@@ -2907,10 +2907,11 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxFlexGridSizer *item1 = new wxFlexGridSizer( 1, 0, 0, 0 );
     item1->AddGrowableCol( 1 );
+    item1->AddGrowableRow( 0 );
     prefs_select_sizer = item1;
 
     wxListCtrl *item2 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,350), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL|wxGROW, 5 );
 
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
     prefs_sizer = item3;

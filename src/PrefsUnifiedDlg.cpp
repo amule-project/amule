@@ -980,7 +980,7 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		int w = 0, h = 0;
 
 		for (int i = 0; i < 11; i++) {
-			prefs_sizer->Add(PrefsPanels[i],0,wxGROW);
+			prefs_sizer->Add(PrefsPanels[i],0,wxGROW|wxEXPAND);
 			
 			// Calc. max size of the panel
 			prefs_sizer->Show(PrefsPanels[i], TRUE);
@@ -1003,9 +1003,10 @@ PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 		CurrentPrefsPanel = PrefsPanels[0];				
 		
 		prefs_sizer->Show(CurrentPrefsPanel,TRUE);
+		prefs_sizer->SetMinSize(GetSize());
 		prefs_sizer->Layout();
 		//this->Fit();
-		this->SetSize(w,h); // Max size.
+		this->SetSize(w,h+30); // Max size.
 		
 	} else {
     		preferencesDlgLeft( this, TRUE ); 
@@ -1444,10 +1445,8 @@ void PrefsUnifiedDlg::SaveAllItems(wxConfigBase& ini)
 }
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event) {
-
-	prefs_sizer->Show(CurrentPrefsPanel,FALSE);
+	prefs_sizer->Show(CurrentPrefsPanel, false);
 	CurrentPrefsPanel = PrefsPanels[event.GetIndex()];
-	prefs_sizer->Show(CurrentPrefsPanel,TRUE);
-	prefs_sizer->Layout();
-	//this->Fit();
+	prefs_sizer->Show(CurrentPrefsPanel, true);
+	Layout();
 }
