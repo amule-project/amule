@@ -42,10 +42,45 @@
 #include "DownloadQueue.h"
 #include "SharedFileList.h"
 
-class CPartFile;
-class CKnownFile;
 class wxSocketServer;
 class wxSocketEvent;
+
+//
+// T - type of item
+// E - type of encoder
+// C - type of container in theApp
+template <class T, class E, class C>
+class CFileEncoderMap : public std::map<T *, E> {
+	public:
+		void UpdateEncoders(C *container)
+		{
+			// check if encoder contains files that no longer in container
+			// or, we have new files without encoder yet
+			std::set<T *> curr_files, dead_files;
+			for (unsigned int i = 0; i < container->GetFileCount(); i++) {
+				// cast for case of 'const'
+				T *cur_file = (T *)container->GetFileByIndex(i);
+				curr_files.insert(cur_file);
+				if ( this->count(cur_file) == 0 ) {
+					this->operator [](cur_file) = E(cur_file);
+				}
+			}
+			//
+			// curr_files set is created to minimize lookup time in download queue,
+			// since GetFileByID have loop inside leading to O(n), in this case
+			// it will mean O(n^2)
+			typename std::map<T *, E>::iterator i;
+			for(i = this->begin(); i != this->end(); i++) {
+				if ( curr_files.count(i->first) == 0 ) {
+					dead_files.insert(i->first);
+				}
+			}
+			typename std::set<T *>::iterator j;
+			for(j = dead_files.begin(); j != dead_files.end(); j++) {
+				this->erase(*j);
+			}
+		}
+};
 
 /*!
  * PartStatus strings are quite long - RLE encoding will help.
@@ -100,43 +135,6 @@ class CPartFile_Encoder {
 		}
 };
 
-//
-// T - type of item
-// E - type of encoder
-// C - type of container in theApp
-template <class T, class E, class C>
-class CFileEncoderMap : public std::map<T *, E> {
-	public:
-		void UpdateEncoders(C *container)
-		{
-			// check if encoder contains files that no longer in container
-			// or, we have new files without encoder yet
-			std::set<T *> curr_files, dead_files;
-			for (unsigned int i = 0; i < container->GetFileCount(); i++) {
-				T *cur_file = container->GetFileByIndex(i);
-				curr_files.insert(cur_file);
-				if ( this->count(cur_file) == 0 ) {
-					this->operator [](cur_file) = E(cur_file);
-				}
-			}
-			//
-			// curr_files set is created to minimize lookup time in download queue,
-			// since GetFileByID have loop inside leading to O(n), in this case
-			// it will mean O(n^2)
-			typename std::map<T *, E>::iterator i;
-			for(i = this->begin(); i != this->end(); i++) {
-				if ( curr_files.count(i->first) == 0 ) {
-					dead_files.insert(i->first);
-				}
-			}
-			typename std::set<T *>::iterator j;
-			for(j = dead_files.begin(); j != dead_files.end(); j++) {
-				this->erase(*j);
-			}
-		}
-};
-
-//typedef std::map<CPartFile *, CPartFile_Encoder> CPartFile_Encoder_Map;
 typedef CFileEncoderMap<CPartFile , CPartFile_Encoder, CDownloadQueue> CPartFile_Encoder_Map;
 
 /*
@@ -159,9 +157,13 @@ class CKnownFile_Encoder {
 		void Encode(CECTag *parent_tag);
 		// decode - take data from tag
 		void Decode(CECTag *tag);
+
+		void ResetEncoder()
+		{
+			m_enc_data.ResetEncoder();
+		}
 };
 
-//typedef std::map<CKnownFile *, CKnownFile_Encoder> CKnownFile_Encoder_Map;
 typedef CFileEncoderMap<CKnownFile , CKnownFile_Encoder, CSharedFileList> CKnownFile_Encoder_Map;
 
 #ifdef AMULE_DAEMON
