@@ -109,14 +109,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 {
 	
 	while (!m_endWaitingForHashList) {
-	
-		if (theApp.amuledlg) {
-			// Sanity check
-		    if (theApp.amuledlg->m_app_state == APP_STATE_SHUTINGDOWN) {
-			    printf("App is shutting down, hashing thread died\n");		    	
-				break;
-		    }		    
-		}
 		   
 		  if (m_sWaitingForHashList.IsEmpty()) {
 			  if ((GetTickCount() - dwLastAddTime) > THREAD_ADDING_TIMEOUT) {
@@ -127,8 +119,8 @@ wxThread::ExitCode CAddFileThread::Entry()
 				wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED,TM_HASHTHREADFINISHED);
 				wxPostEvent(theApp.amuledlg,evt);
 			  } else {
-				wxYield();
-				wxSleep(1);
+				this->Yield();
+				this->Sleep(1);
 			  }				  
 			  continue;	  
 		  }
