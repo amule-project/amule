@@ -1302,8 +1302,7 @@ void CDownloadQueue::AddToResolve(uchar* fileid, CStringA pszHostname, uint16 po
 	if (bResolving) {
 		return;
 	}
-	//printf("Opening thread for resolving %s\n",pszHostname.c_str());;
-	printf(unicode2char(wxString::Format(wxT("Opening thread for resolving %s\n"), pszHostname.c_str())));
+	printf(unicode2char(wxString::Format(wxT("Opening thread for resolving ")) + pszHostname + wxT("\n")));
 	SourcesAsyncDNS* dns=new SourcesAsyncDNS();
 	if(dns->Create()!=wxTHREAD_NO_ERROR) {
 		// Cannot create (Already there?)
@@ -1330,8 +1329,7 @@ bool CDownloadQueue::OnHostnameResolved(struct sockaddr_in* inaddr)
 	m_toresolve.pop_front();
 
 	if (resolved) {
-		//printf("Thread finished, Hostname %s resolved to %s\n", resolved->strHostname.c_str(),inet_ntoa(inaddr->sin_addr));
-		printf(unicode2char(wxString::Format(wxT("Thread finished, Hostname %s resolved to %s\n"), resolved->strHostname.c_str(), inet_ntoa(inaddr->sin_addr))));
+		printf(unicode2char(wxString(wxT("Thread finished, Hostname ")) + resolved->strHostname + wxString::Format(wxT(" resolved to %s\n"), inet_ntoa(inaddr->sin_addr))));
 		if (inaddr!=NULL) {
 			CPartFile* file = theApp.downloadqueue->GetFileByID(resolved->fileid);
 			if (file) {
