@@ -153,7 +153,7 @@ namespace CLogger
 
 
 
-#ifdef __VERBOSE_OUTPUT__
+#ifdef __DEBUG__
 	#define AddDebugLogLineM( critical, type, string ) \
 	do { \
 		if ( critical || CLogger::IsEnabled( type ) ) { \
