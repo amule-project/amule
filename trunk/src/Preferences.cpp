@@ -53,17 +53,14 @@ CPreferences::CPreferences()
 	memset(prefsExt,0,sizeof(Preferences_Ext_Struct));
 
 	//get application start directory
-	char buffer[490];
-
-	// Use home directory to save preferences 
-	snprintf(buffer,400,"%s/." PACKAGE_NAME,getenv("HOME"));
-
-	if (!wxFileName::DirExists(buffer)) {
-		wxFileName::Mkdir(buffer,0777);
+	appdir = wxString::Format( "%s/." PACKAGE_NAME, getenv("HOME") );
+	
+	if (!wxFileName::DirExists( appdir )) {
+		wxFileName::Mkdir( appdir );
 	}
-	strncat(buffer,"/",1);
+	
+	appdir += "/";
 
-	appdir = nstrdup(buffer);
 	CreateUserHash();
 	md4cpy(&prefs->userhash,&userhash);
 	
