@@ -411,7 +411,6 @@ bool CamuleApp::OnInit()
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
-	// Do NOT change this string to anything else, it WILL fuck you up.
 	SetAppName(wxT("aMule"));
 	
 	wxStringTokenizer tkz(wxGetOsDescription(), wxT(" "));

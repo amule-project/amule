@@ -161,6 +161,11 @@ private:
 	void OnGetComment( wxCommandEvent& evt );
 	 
 	/**
+	 * Event handler for get-razorback stats menu item
+	 */	 
+	void OnGetRazorStats( wxCommandEvent& evt );
+	 
+	/**
 	 * Event-handler for the Edit Comment menu item.
 	 */
 	void	OnEditComment( wxCommandEvent& event );
