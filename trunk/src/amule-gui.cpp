@@ -770,6 +770,11 @@ void CamuleGuiApp::NotifyEvent(GUIEvent event)
 				amuledlg->serverwnd->serverlistctrl->Thaw();
 			}
 			break;
+		case SERVER_UPDATEMYINFO:
+			if ( amuledlg->serverwnd ) {
+				amuledlg->serverwnd->UpdateMyInfo();
+			}
+			break;
 
 		// notification
 		case SHOW_NOTIFIER:

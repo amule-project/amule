@@ -77,6 +77,7 @@ enum GUI_Event_ID {
 	SERVER_REFRESH,
 	SERVER_FREEZE,
 	SERVER_THAW,
+	SERVER_UPDATEMYINFO,
 	// search window
 	SEARCH_CANCEL,
 	SEARCH_LOCAL_END,
@@ -333,6 +334,7 @@ class GUIEvent : public wxEvent {
 #define Notify_ServerRefresh(ptr)                   Notify_1_ValEvent(SERVER_REFRESH, ptr)
 #define Notify_ServerFreeze()                       Notify_0_ValEvent(SERVER_FREEZE)
 #define Notify_ServerThaw()                         Notify_0_ValEvent(SERVER_THAW)
+#define Notify_ServerUpdateMyInfo()		    Notify_0_ValEvent(SERVER_UPDATEMYINFO)
 
 // queue list
 #define Notify_QlistAddClient(ptr)                  Notify_1_ValEvent(QLIST_CTRL_ADD_CLIENT, ptr)
