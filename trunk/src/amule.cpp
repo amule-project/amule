@@ -1241,7 +1241,7 @@ void CamuleApp::Trigger_New_version(wxString old_version, wxString new_version)
 		info += wxT(_("This version is a testing version, updated daily, and \n"));
 		info += wxT(_("we give no warranty it won't break anything, burn your house,\n"));
 		info += wxT(_("or kill your dog. But it *should* be safe to use anyway. \n"));		
-	} else if ((new_version == wxT("2.0.0pre1")) || (old_version == wxT("pre_1.2.7"))) {
+	} else if ((new_version == wxT("2.0.0rc1")) || (old_version == wxT("pre_2.0.0rc1"))) {
 		info += wxT(_("This version has new SecureIdent support, so your \n"));
 		info += wxT(_("client credits will be lost on this first run. \n"));
 		info += wxT(_("There is no way to fix that, and eMule did the same.\n"));
