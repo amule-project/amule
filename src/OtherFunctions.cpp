@@ -47,6 +47,9 @@
 	#include <execinfo.h>
 	#include <cxxabi.h>
 	#include <wx/thread.h>
+	#if wxUSE_GUI
+		#include <wx/utils.h>
+	#endif
 #endif
 
 namespace otherfunctions {
@@ -1131,11 +1134,9 @@ void print_backtrace(uint8 n) {
 		// The output of the command is this wxArrayString, in which
 		// the even elements are the function names, and the odd elements
 		// are the line numbers.
-#ifndef AMULE_DAEMON		
+#if wxUSE_GUI
 		::wxEnableTopLevelWindows(false);
-#endif
 		hasLineNumberInfo = wxExecute(command, out) != -1;
-#ifndef AMULE_DAEMON		
 		::wxEnableTopLevelWindows(true);
 #endif
 	}
