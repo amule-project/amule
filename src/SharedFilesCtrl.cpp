@@ -453,26 +453,13 @@ bool CSharedFilesCtrl::ProcessEvent(wxEvent& evt)
 				break;
 			}
 			case MP_PRIOAUTO: {
-				bool no_partfile_selected = false;
 				long pos=GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				while( pos != (-1) ) {
 					int iSel=pos;
 					file = (CKnownFile*)this->GetItemData(iSel);
-					if (file->IsPartFile()) {
-						file->SetAutoUpPriority(true);
-						file->UpdateAutoUpPriority();
-						if (file->GetUpPriority() == PR_VERYHIGH) {
-							SetItem(iSel,3,CString(_("Auto [Re]")));
-						} else if (file->GetUpPriority() == PR_HIGH) {
-							SetItem(iSel,3,CString(_("Auto [Hi]")));
-						} else if (file->GetUpPriority() == PR_NORMAL) {
-							SetItem(iSel,3,CString(_("Auto [No]")));
-						} else if (file->GetUpPriority() == PR_LOW) {
-							SetItem(iSel,3,CString(_("Auto [Lo]")));
-						}
-					} else {
-						no_partfile_selected = true;
-					}
+					file->SetAutoUpPriority(true);
+					file->UpdateAutoUpPriority();
+					SetItem(iSel,3,CString(_("Auto [No]")));
 					pos=GetNextItem(pos,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED);
 				}
 				return true;
