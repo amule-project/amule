@@ -169,10 +169,6 @@ CWebServer::CWebServer(CamulewebApp *webApp):
 
 	m_Params.DownloadSort = DOWN_SORT_NAME;
 	m_Params.bDownloadSortReverse = false;
-	m_Params.ServerSort = SERVER_SORT_NAME;
-	m_Params.bServerSortReverse = false;
-	m_Params.SharedSort = SHARED_SORT_NAME;
-	m_Params.bSharedSortReverse = false;
 		
 	m_Params.sLastModified = wxEmptyString;
 	m_Params.sETag = wxEmptyString;
