@@ -80,6 +80,7 @@ OnLineSig::OnLineSig ()
 OnLineSig::OnLineSig (const wxFileName& file)
 {
   m_amulesig = file;
+  m_maxDL = 0.0;
   Refresh ();
 }
 
