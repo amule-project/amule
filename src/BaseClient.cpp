@@ -2019,7 +2019,7 @@ void CUpDownClient::SetIP( uint32 val )
 		
 	m_dwUserIP = val;
 	
-	m_nConnectIP = val;
+	m_nConnectIP = ENDIAN_SWAP_32(val);
 }
 
 
