@@ -1256,7 +1256,6 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 
 void CamuleApp::SetOSFiles(const wxString new_path)
 {
-	printf("%s\n", new_path.c_str());
 	if ( thePrefs::IsOnlineSignatureEnabled() ) {
 		if ( ::wxDirExists(new_path) ) {
 			m_emulesig_path = new_path + wxFileName::GetPathSeparator() + wxT("onlinesig.dat");
