@@ -1,6 +1,7 @@
 //
-// Copyright (c) 2003-2004 aMule Project ( http://www.amule-project.net )
-// Copyright (c) 2002 Merkur ( merkur-@users.sourceforge.net / http://www.emule-project.net )
+// This file is part of eMule
+// 
+// Copyright (C)2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,58 +19,78 @@
 //
 
 #ifndef UPLOADBANDWIDTHTHROTTLER_H
-
 #define UPLOADBANDWIDTHTHROTTLER_H
 
-#include <wx/thread.h>		// Needed for wxThread
+
+#include <wx/thread.h>
+
+#include <deque>
+
 #include "types.h"
-#include "CTypedPtrList.h"
 
-class CEMSocket;
+class ThrottledControlSocket;
+class ThrottledFileSocket;
 
-class UploadBandwidthThrottler :
-    public wxThread 
+class UploadBandwidthThrottler : public wxThread 
 {
 public:
-    UploadBandwidthThrottler(void);
-    ~UploadBandwidthThrottler(void);
-
-    uint64 GetNumberOfSentBytesSinceLastCallAndReset();
-    uint64 GetNumberOfSentBytesExcludingOverheadSinceLastCallAndReset();
+    UploadBandwidthThrottler();
+    ~UploadBandwidthThrottler();
+    
+	uint64 GetNumberOfSentBytesSinceLastCallAndReset();
+    uint64 GetNumberOfSentBytesOverheadSinceLastCallAndReset();
     uint32 GetHighestNumberOfFullyActivatedSlotsSinceLastCallAndReset();
+    
+	uint32 GetStandardListSize();
 
-    void AddToStandardList(uint32 index, CEMSocket* socket);
-    void RemoveFromStandardList(CEMSocket* socket);
-
-    void QueueForSendingControlPacket(CEMSocket* socket);
-    void RemoveFromAllQueues(CEMSocket* socket);
-
-    void EndThread();
+    void QueueForSendingControlPacket(ThrottledControlSocket* socket, bool hasSent = false);
+    void RemoveFromAllQueues(ThrottledControlSocket* socket);
+    void RemoveFromAllQueues(ThrottledFileSocket* socket);
 
     void SetAllowedDataRate(uint32 newValue);
+
+    void AddToStandardList(uint32 index, ThrottledFileSocket* socket);
+    bool RemoveFromStandardList(ThrottledFileSocket* socket);
+
+
+    void Pause(bool paused);
+    void EndThread();
+	
 private:
-    static UINT RunProc(LPVOID pParam);
-    UINT RunInternal();
+    void DoRemoveFromAllQueues(ThrottledControlSocket* socket);
+    bool RemoveFromStandardListNoLock(ThrottledFileSocket* socket);
 
-    void RemoveFromStandardListNoLock(CEMSocket* socket);
+    void* Entry();
+	
+    bool m_doRun;
 
-    CTypedPtrList<CPtrList, CEMSocket*> m_ControlQueue_list; // a queue for all the sockets that want to have Send() called on them.
-    CTypedPtrList<CPtrList, CEMSocket*> m_TempControlQueue_list; // sockets that wants to enter m_ControlQueue_list
 
-    CArray<CEMSocket*, CEMSocket*> m_StandardOrder_list; // sockets that have upload slots. Ordered so the most prioritized socket is first
+    wxMutex m_sendLocker;
+    wxMutex m_tempQueueLocker;
+    wxMutex m_pauseLocker;
+	
+	typedef std::deque<ThrottledControlSocket*> SocketQueue;
+	
+	// a queue for all the sockets that want to have Send() called on them.
+    SocketQueue m_ControlQueue_list;
+	// a queue for all the sockets that want to have Send() called on them.
+    SocketQueue m_ControlQueueFirst_list;
+	// sockets that wants to enter m_ControlQueue_list 
+    SocketQueue m_TempControlQueue_list;
+	// sockets that wants to enter m_ControlQueue_list and has been able to send before 
+    SocketQueue m_TempControlQueueFirst_list; 
 
-    wxCriticalSection sendLocker;
-    wxCriticalSection tempQueueLocker;
 
-    wxEvent* threadEndedEvent;
+	typedef std::deque<ThrottledFileSocket*> FileSocketQueue;
+	// sockets that have upload slots. Ordered so the most prioritized socket is first
+    FileSocketQueue m_StandardOrder_list; 
 
     uint64 m_SentBytesSinceLastCall;
-    uint64 m_SentBytesSinceLastCallExcludingOverhead;
+    uint64 m_SentBytesSinceLastCallOverhead;
     uint32 m_highestNumberOfFullyActivatedSlots;
 
     uint32 m_allowedDataRate;
-    bool doRun;
 };
 
-#endif /* UPLOADBANDWIDTHTHROTTLER_H */
 
+#endif
