@@ -214,6 +214,9 @@ int CamuleApp::OnExit()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("Now, exiting main app...\n");
 	}
+	
+	// Save IPFilter file.
+	ipfilter->SaveToFile();
 
 	if (serverlist) {
 		delete serverlist;
