@@ -132,7 +132,6 @@ protected:
 
 private:
 	CUpDownClient*	m_client;
-	uint8 connection_retries;
 
 //	void	Delete_Timed();
 	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
