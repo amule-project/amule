@@ -39,7 +39,7 @@ wxString GetMuleVersion()
 {
 	wxString ver;
 	
-	ver += wxString::Format(wxT("aMule %s using "), wxT(VERSION));
+	ver += wxString::Format(wxT("%s using "), wxT(VERSION));
 
 	// Figure out the wx build-type
 	#ifdef __WXGTK__
