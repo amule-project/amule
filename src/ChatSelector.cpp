@@ -80,7 +80,7 @@ CChatSession::~CChatSession()
 void CChatSession::AddText(const wxString& text, const wxTextAttr& style)
 {
 	// Split multi-line messages into individual lines
-	wxStringTokenizer tokens( text, "\n" );
+	wxStringTokenizer tokens( text, wxT("\n") );
 
 	while ( tokens.HasMoreTokens() ) {
 		// Check if we should add a time-stamp
