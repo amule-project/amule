@@ -139,7 +139,7 @@ AC_ARG_ENABLE([verbose],
 # to avoid losing to much time
 
 # Sets gettext version.
-AM_GNU_GETTEXT_VERSION(0.14.1)
+AM_GNU_GETTEXT_VERSION(0.11.5)
 
 # Check for zlib
 CHECK_ZLIB
