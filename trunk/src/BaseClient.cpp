@@ -929,7 +929,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	tagMisOptions.WriteTagToFile(data);
 
 #ifdef __CVS__
-	wxString mod_name(MOD_VERSION_SHORT);
+	wxString mod_name(MOD_VERSION_LONG);
 	CTag tagModName(ET_MOD_VERSION, mod_name);
 	tagModName.WriteTagToFile(data);
 #endif
@@ -1341,7 +1341,7 @@ void CUpDownClient::ReGetClientSoft()
 			case SO_LXMULE:
 				m_clientSoft = SO_LXMULE;
 				if(GetClientModString().IsEmpty() == false) {
-					m_clientVerString = wxString::Format(wxT("xMule %s"), GetClientModString().c_str());
+					m_clientVerString = GetClientModString();
 				} else {
 					m_clientVerString = _("xMule");
 				}
@@ -1353,7 +1353,7 @@ void CUpDownClient::ReGetClientSoft()
 				m_clientSoft = SO_AMULE;
 				if(GetClientModString().IsEmpty() == false) {
 					Extended_aMule_SO &= 2;
-					m_clientVerString = wxString::Format(wxT("aMule %s"), GetClientModString().c_str());
+					m_clientVerString = GetClientModString();
 				} else {
 					m_clientVerString = _("aMule");
 				}
@@ -1391,12 +1391,20 @@ void CUpDownClient::ReGetClientSoft()
 					#endif
 					m_clientVerString = wxString::Format(wxT("eMule Compat(0x%x)"),m_byCompatibleClient);
 				}
-				else {
+				else if (GetClientModString().Find("xMule")!=-1 || wxString(GetUserName()).Find("xmule.org")!=-1) {
+					// FAKE eMule -a newwer xMule faking is ident.
+					m_clientSoft = SO_LXMULE;
+					if (GetClientModString().IsEmpty() == false) {
+						m_clientVerString = GetClientModString() + wxT(" (Fake eMule)");
+					} else {
+						m_clientVerString = wxT("xMule (Fake eMule)");
+					}
+				} else {
 					// If we step here, it might mean 2 things:
 					// a eMule
 					// a Compat Client that has sent no MuleInfo packet yet.
 					m_clientSoft = SO_EMULE;
-					m_clientVerString = _("eMule");
+					m_clientVerString = wxT("eMule");
 				}
 		}	
 		
@@ -1416,7 +1424,11 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString += wxT(" < v0.05 ");
 					break;
 				default:
-					m_clientVerString +=  wxString::Format(wxT(" v0.%u"), nClientMinVersion);				
+					if (GetClientModString().IsEmpty() == false) {
+						m_clientVerString +=  wxString::Format(wxT(" v0.%u - "), nClientMinVersion) + GetClientModString();
+					} else {
+					m_clientVerString +=  wxString::Format(wxT(" v0.%u"), nClientMinVersion);
+					}
 					break;
 			}
 		} else {					
@@ -1434,7 +1446,11 @@ void CUpDownClient::ReGetClientSoft()
 					m_clientVerString +=  wxString::Format(wxT(" v%u.%.2u%c"), nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);					
 					break;
 				default:
-					m_clientVerString +=  wxString::Format(wxT(" v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+					if (GetClientModString().IsEmpty() == false) {
+						m_clientVerString +=  wxString::Format(wxT(" v%u.%u%c - "), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion) + GetClientModString();
+					} else {
+						m_clientVerString +=  wxString::Format(wxT(" v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+					}
 					break;
 			}
 		}

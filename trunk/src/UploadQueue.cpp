@@ -198,25 +198,25 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	(strcmp(newclient->m_pszUsername,"Reverse") == 0) ||
 	(strcmp(newclient->m_pszUsername,"[toXic]") == 0) ||
 	(strcmp(newclient->m_pszUsername,"$WAREZ$") == 0) ||
-	(newclient->m_clientModString.Cmp("aldo") == 0 ) ||
-	(newclient->m_clientModString.Cmp("booster") == 0 ) ||
-	(newclient->m_clientModString.Cmp("darkmule") == 0 ) ||
-	(newclient->m_clientModString.Cmp("d-unit") == 0 ) ||
-	(newclient->m_clientModString.Cmp("DM-") == 0 ) ||       
-	(newclient->m_clientModString.Cmp("dodgethis") == 0 ) ||
-	(newclient->m_clientModString.Cmp("Dragon") == 0 ) ||
-	(newclient->m_clientModString.Cmp("egomule") == 0 ) ||
-	(newclient->m_clientModString.Cmp("eVortex") == 0 ) ||
-	(newclient->m_clientModString.Cmp("father") == 0 ) ||
-	(newclient->m_clientModString.Cmp("Freeza") == 0 ) ||
-	(newclient->m_clientModString.Cmp("gt mod") == 0 ) ||
-	(newclient->m_clientModString.Cmp("imperator") == 0 ) ||
-	(newclient->m_clientModString.Cmp("LegoLas") == 0 ) ||
-	(newclient->m_clientModString.Cmp("Max") == 0 )  ||
-	(newclient->m_clientModString.Cmp("Mison") == 0 ) ||
-	(newclient->m_clientModString.Cmp("SpeedLoad") == 0 ) ||
-	(newclient->m_clientModString.Cmp("|X|") == 0 ) ||
-	((newclient->m_clientModString.IsEmpty() == false) && (newclient->GetClientSoft() != SO_EMULE) && (newclient->GetClientSoft() != SO_LXMULE) && (newclient->GetClientSoft() != SO_AMULE) ) ||
+	(newclient->m_strModVersion.Cmp("aldo") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("booster") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("darkmule") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("d-unit") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("DM-") == 0 ) ||       
+	(newclient->m_strModVersion.Cmp("dodgethis") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("Dragon") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("egomule") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("eVortex") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("father") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("Freeza") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("gt mod") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("imperator") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("LegoLas") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("Max") == 0 )  ||
+	(newclient->m_strModVersion.Cmp("Mison") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("SpeedLoad") == 0 ) ||
+	(newclient->m_strModVersion.Cmp("|X|") == 0 ) ||
+	((newclient->m_strModVersion.IsEmpty() == false) && (newclient->GetClientSoft() != SO_EMULE) && (newclient->GetClientSoft() != SO_LXMULE) && (newclient->GetClientSoft() != SO_AMULE) ) ||
  	((!newclient->GetMuleVersion() && (newclient->GetClientSoft()==SO_EMULE || newclient->GetClientSoft()==SO_OLDEMULE)) && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
  	(!newclient->ExtProtocolAvailable() && newclient->GetClientSoft()==SO_EMULE && (newclient->GetVersion()==60 || !newclient->GetVersion())) ||
  	((newclient->GetVersion()>589) && (newclient->GetSourceExchangeVersion()>0) && (newclient->GetClientSoft()== SO_EDONKEY))))
@@ -384,6 +384,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client, bool bIgnoreTimelimit
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
+
 	
 	if (client->IsBanned()) {
 		if (::GetTickCount() - client->GetBanTime() > 18000000) {
