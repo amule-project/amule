@@ -936,8 +936,8 @@ RLE_String::RLE_String(int len)
 	m_len = len;
 	m_buff = new unsigned char[m_len];
 	//
-	// in worst case string will be twice long
-	m_enc_buff = new unsigned char[m_len*2];
+	// resulting string should *never* be longer that the original
+	m_enc_buff = new unsigned char[m_len];
 }
 
 RLE_String::~RLE_String()
@@ -965,8 +965,15 @@ CECTag *RLE_String::Encode(unsigned char *buff)
 		while ( (i != m_len) && (curr_val == m_buff[i]) ) {
 			i++;
 		}
-		m_enc_buff[j++] = i - seq_start;
-		m_enc_buff[j++] = curr_val;
+		if (i - seq_start > 3) {
+			m_enc_buff[j++] = RLE_CONTROL_CHAR;
+			m_enc_buff[j++] = i - seq_start;
+			m_enc_buff[j++] = curr_val;
+		} else {
+			for (int c = 0; c < i - seq_start; c++) {
+				m_enc_buff[j++] = curr_val;
+			}
+		}
 	}
 	m_enc_len = j - 1;
 	
@@ -984,9 +991,15 @@ const unsigned char *RLE_String::Decode(CECTag *tag)
 	int i = 0, j = 0;
 	const unsigned char *next = (unsigned char*)tag->GetTagData();
 	while ( i != m_len ) {
-		memset(m_enc_buff + i, next[j + 1], next[j]);
-		i += next[j];
-		j += 2;
+		if (next[j] == RLE_CONTROL_CHAR) {
+			j++;
+			memset(m_enc_buff + i, next[j + 1], next[j]);
+			i += next[j];
+			j += 2;
+		} else {
+			*(m_enc_buff + i) = next[j];
+			i++; j++;
+		}
 	}
 	
 	//
