@@ -96,7 +96,6 @@ private:
 	wxComboBox	typebox;
 	wxComboBox	Stypebox;
 	wxImageList	m_ImageList;
-	wxImageList     m_StateImageList;
 	wxTimer 	m_timer;
 	wxStaticBitmap	m_ctrlSearchFrm;
 	wxStaticBitmap	m_ctrlWebSearchFrm;

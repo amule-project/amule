@@ -106,16 +106,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent /*=NULL*/)
 
 }
 
-CSearchDlg::~CSearchDlg()
-{
-	// Let's remove the lists.
-	if (m_ImageList.GetImageCount()>0) {
-		m_ImageList.RemoveAll();
-	}
-	if (m_StateImageList.GetImageCount()>0) {
-		m_StateImageList.RemoveAll();
-	}
-
+CSearchDlg::~CSearchDlg() {
 }
 
 // we must implement Rclick here as wxWindows does not redirect events correctly :(
