@@ -1,7 +1,10 @@
-Version 2.0.0rc5 - The "Let's recover our release speed" version
-
+Version 2.0.0rc5 - The 'Let's recover our release speed' version.
+----------
 2004-07-18
 
+        deltaHF:
+	        * Better sorting of some columns
+		
 	Kry:
 		* Some gui design and coding of the upcoming Kad window
 		* Protocol update:
@@ -65,9 +68,13 @@ Version 2.0.0rc5 - The "Let's recover our release speed" version
 	Special thanks to:
 		* The usual people, those on the other 'Thank you!' sections of changelog.
 		* All the people at the Mac section of forums, for testing compilation and run.
+		
+		
+----------------------------------------------------------------------------------------------------------------------
+
 
 Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' version)
-
+----------
 2004-07-14
 
 	Kry:
@@ -76,8 +83,11 @@ Version 2.0.0rc4a - HOTFIX release for lugdunum 16.47 servers (The 'Ooops!' vers
 	deltaHF:
 		* Translations update
 
-Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
+----------------------------------------------------------------------------------------------------------------------
 
+
+Version 2.0.0rc4 - The 'Mules and rabbits like apples too' version.
+----------
 2004-07-12
 
 	alehack:
