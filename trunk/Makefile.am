@@ -1,7 +1,8 @@
 SUBDIRS = . m4 intl po docs src
 
 EXTRA_DIST = ABOUT-NLS config.rpath mkinstalldirs \
-	config.h.in Compilation.flags.in acinclude.m4
+	config.h.in Compilation.flags.in acinclude.m4 \
+	amule.rc
 
 dist_icon_DATA = amule.xpm
 icondir = $(datadir)/pixmaps
