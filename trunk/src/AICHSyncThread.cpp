@@ -109,9 +109,9 @@ void* CAICHSyncThread::Entry()
 	}
 	catch(wxString error){
 		if (file.Eof()) {
-			   theApp.QueueLogLine(true,_("Thread Error: EOF on ") + error);
+			theApp.QueueLogLine(true,_("Thread Error: EOF on ") + error);
 		} else {
-				theApp.QueueLogLine(true,_("Thread Error: wrong format on ")  + error);
+			theApp.QueueLogLine(true,_("Thread Error: wrong format on ")  + error);
 		}
 		return false;
 	}
