@@ -136,6 +136,7 @@ public:
 	wxString		CreateED2kSourceLink( CAbstractFile* f );
 	wxString		CreateED2kHostnameSourceLink( CAbstractFile* f );
 	wxString		GenFakeCheckUrl(CAbstractFile *file);
+	wxString        GenFakeCheckUrl2(CAbstractFile *file);
 	
 	void QueueLogLine(bool addtostatusbar, const wxChar* line, ...);
 	void FlushQueuedLogLines();
