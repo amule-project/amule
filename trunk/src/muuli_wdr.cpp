@@ -1647,10 +1647,9 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Croatian"), 
         _("Italian (Napoletan)"), 
         _("Custom"), 
-        _("Chinese (Traditional)"),
-	_("Slovenian")
+        _("Chinese (Traditional)")
     };
-    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 31, strs10, 0 );
+    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 30, strs10, 0 );
     item10->SetToolTip( _("This specifies the language used on controls.") );
     item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1788,7 +1787,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     wxBoxSizer *item12 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
+    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("10"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 10 );
     item12->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item14 = new wxStaticText( parent, IDC_KBS4, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1855,7 +1854,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Client TCP Port:") );
     wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxVERTICAL );
 
-    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 80, 65535, 4662 );
+    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4662 );
     item31->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item30->Add( item31, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
@@ -1863,7 +1862,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticBox *item35 = new wxStaticBox( parent, -1, _("Client UDP Port:") );
     wxStaticBoxSizer *item34 = new wxStaticBoxSizer( item35, wxHORIZONTAL );
 
-    wxSpinCtrl *item36 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 4672 );
+    wxSpinCtrl *item36 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
     item34->Add( item36, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxCheckBox *item37 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2443,10 +2442,10 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item11->SetToolTip( _("This code use an average calc. to avoid breaking usb modems, etc") );
     item7->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback)"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_VERBOSE, _("Verbose (additional program feedback - HIGH CPU!!!)"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug)"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_VERBOSEPACKETERROR, _("Verbose packet error output (only in debug - HIGH CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     wxStaticText *item14 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2549,22 +2548,32 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 
     item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Column Sorting") );
     wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
 
-    wxCheckBox *item24 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item24 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files in the download queue (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
     item24->SetValue( TRUE );
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxCheckBox *item25 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->SetValue( TRUE );
-    item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxCheckBox *item26 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->SetValue( TRUE );
-    item22->Add( item26, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    item24->SetToolTip( _("aMule will sort the columns in your download list automatically") );
+    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item26 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBoxSizer *item25 = new wxStaticBoxSizer( item26, wxVERTICAL );
+
+    wxCheckBox *item27 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->SetValue( TRUE );
+    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    wxCheckBox *item28 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item28->SetValue( TRUE );
+    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    item29->SetValue( TRUE );
+    item25->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
