@@ -170,25 +170,73 @@ FileType GetFiletype(const wxString& filename)
 
 
 // Returns the (translated) description assosiated with a FileType
-wxString GetFiletypeDesc(FileType type)
+wxString GetFiletypeDesc(FileType type, bool translated)
 {
 	switch ( type ) {
-		case ftVideo:	return wxString( _("Videos") );
-		case ftAudio:	return wxString( _("Audio") );
-		case ftArchive:	return wxString( _("Archives") );
-		case ftCDImage:	return wxString( _("CD-Images") );
-		case ftPicture:	return wxString( _("Pictures") );
-		case ftText:	return wxString( _("Texts") ); // ?
-		case ftProgram:	return wxString( _("Programs") );
-		default:		return wxString(_("Any"));
+		case ftVideo:	
+			if (translated) {
+				return _("Videos");
+			} else {
+				return wxT("Videos");
+			}
+			break;
+		case ftAudio:
+			if (translated) {
+				return _("Audio");
+			} else {
+				return wxT("Audio");
+			}
+			break;			
+		case ftArchive:	
+			if (translated) {
+				return _("Archives");
+			} else {
+				return wxT("Archives");
+			}
+			break;			
+		case ftCDImage:
+			if (translated) {
+				return _("CD-Images");
+			} else {
+				return wxT("CD-Images");
+			}
+			break;			
+		case ftPicture:
+			if (translated) {
+				return _("Pictures");
+			} else {
+				return wxT("Pictures");
+			}
+			break;			
+		case ftText:
+			if (translated) {
+				return _("Texts");
+			} else {
+				return wxT("Texts");
+			}
+			break;			
+		case ftProgram:
+			if (translated) {
+				return _("Programs");
+			} else {
+				return wxT("Programs");
+			}
+			break;			
+		default:
+			if (translated) {
+				return _("Any");
+			} else {
+				return wxT("Any");
+			}
+			break;			
 	}
 }
 
 
 // Returns the Typename, examining the extention of the given filename
-wxString GetFiletypeByName(const wxString& filename)
+wxString GetFiletypeByName(const wxString& filename, bool translated)
 {
-	return GetFiletypeDesc( GetFiletype( filename ) );
+	return GetFiletypeDesc( GetFiletype( filename ), translated );
 }
 
 /** 

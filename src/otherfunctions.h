@@ -145,9 +145,9 @@ enum FileType { ftAny, ftVideo, ftAudio, ftArchive, ftCDImage, ftPicture, ftText
 // Examins a filename and returns the enumerated value assosiated with it, or ftAny if unknown extension
 FileType GetFiletype(const wxString& filename);
 // Returns the description of a filetype: Movies, Audio, Pictures and so on...
-wxString GetFiletypeDesc(FileType type);
+wxString GetFiletypeDesc(FileType type, bool translated = true);
 // Shorthand for GetFiletypeDesc(GetFiletype(filename))
-wxString GetFiletypeByName(const wxString& filename);
+wxString GetFiletypeByName(const wxString& filename, bool translated = true);
 // Reports if the file has contents or not (no need for the file to exist)
 bool IsEmptyFile(const wxString& filename);
 

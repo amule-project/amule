@@ -416,8 +416,6 @@ void CSearchDlg::StartNewSearch()
 			extension = wxT(".") + extension;
 		}		
 
-		typeText = CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection();
-
 		uint32 sizemin = GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
 		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
 
@@ -433,18 +431,36 @@ void CSearchDlg::StartNewSearch()
 		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-			case 0: typeText = wxT("Any"); break;
-			case 1: typeText = wxT("Archives"); break;
-			case 2: typeText = wxT("Audio"); break;
-			case 3: typeText = wxT("CD-Images"); break;
-			case 4: typeText = wxT("Pictures"); break;
-			case 5: typeText = wxT("Programs"); break;
-			case 6: typeText = wxT("Texts"); break;
-			case 7: typeText = wxT("Videos"); break;
+			case 0: 
+				typeText = wxT("Any"); 
+				break;
+			case 1: 
+				typeText = wxT("Archives"); 
+				break;
+			case 2: 
+				typeText = wxT("Audio"); 
+				break;
+			case 3: 
+				typeText = wxT("CD-Images"); 
+				break;
+			case 4: 
+				typeText = wxT("Pictures"); 
+				break;
+			case 5: 
+				typeText = wxT("Programs"); 
+				break;
+			case 6: 
+				typeText = wxT("Texts"); 
+				break;
+			case 7: 
+				typeText = wxT("Videos"); 
+				break;
 			default:
 				printf("Warning! Unknown search-category ( %s ) selected!\n", unicode2char(typeText));
 				break;
 		}
+		// This will break if we change the order (good to know!)
+		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
 	theApp.searchlist->NewSearch(typeText, m_nSearchID);
