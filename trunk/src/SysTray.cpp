@@ -164,19 +164,19 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 		label += _("\nSpeed Limits:\n");
 	
 		// Check for upload limits
-		int max_upload = theApp.glob_prefs->GetMaxUpload();
+		unsigned int max_upload = theApp.glob_prefs->GetMaxUpload();
 		if ( max_upload == UNLIMITED ) {
 			label += wxString::Format( _("UL: None, "));
 		} else {
-			label += wxString::Format( _("UL: %d, "), max_upload);
+			label += wxString::Format( _("UL: %u, "), max_upload);
 		}
 	
 		// Check for download limits
-		int max_download = theApp.glob_prefs->GetMaxDownload();
+		unsigned int max_download = theApp.glob_prefs->GetMaxDownload();
 		if ( max_download == UNLIMITED ) {
 			label += wxString::Format( _("DL: None"));
 		} else {
-			label += wxString::Format( _("DL: %d"), max_download);
+			label += wxString::Format( _("DL: %u"), max_download);
 		}
 
 		item = gtk_menu_item_new_with_label( StringToSystray( label ) );
