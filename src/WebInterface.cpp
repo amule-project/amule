@@ -28,6 +28,7 @@
 #endif
 
 //-------------------------------------------------------------------
+#include "MD5Sum.h"
 
 #include "WebInterface.h"
 
@@ -41,6 +42,8 @@
 
 #include "otherfunctions.h"
 #include "WebServer.h"
+
+#include <wx/fileconf.h>	// For wxFileConfig
 
 //-------------------------------------------------------------------
 
@@ -229,11 +232,54 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	amuleweb_parser.AddOption(wxT("t"), wxT("template"), 
 		wxT("loads template from file <template file>"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+		
+	amuleweb_parser.AddSwitch(wxT("z"), wxT("gzip"), 
+		wxT("Use gzip compression"));
+	
+	amuleweb_parser.AddOption(wxT("apw"), wxT("admin-pass"), 
+		wxT("Full access password for webserver"), 
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+
+	amuleweb_parser.AddOption(wxT("gpw"), wxT("quest-pass"), 
+		wxT("Guest password for webserver"), 
+		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+
+	amuleweb_parser.AddSwitch(wxT("g"), wxT("guest"), 
+		wxT("Allow guest access"));
 }
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	m_HasTemplate = parser.Found(wxT("template"), &m_TemplateFileName);
+	m_UseGzip = parser.Found(wxT("gzip"));
+	m_AllowGuest = parser.Found(wxT("guest"));
+	if ( parser.Found(wxT("file-config")) ) {
+		wxFileConfig eMuleIni(
+			wxT("eMule"),
+			wxT("eMule-project"),
+			wxT(".eMule")
+		);
+		m_AdminPass = eMuleIni.Read(wxT("/WebServer/Password"));
+		m_GuestPass = eMuleIni.Read(wxT("/WebServer/LowPassword"));
+		wxString AllowGuest = eMuleIni.Read(wxT("/WebServer/UseLowRightsUser"));
+		m_AllowGuest = (AllowGuest == wxT("1")) ? true : false;
+	} else {
+		// file already contain password in hashed form
+		if ( !parser.Found(wxT("admin-pass"), &m_AdminPass) ) {
+			Show(_("Admin password not passed on command line and config file not used.\n"));
+			Show(_("Either pass -apw=<pass> or use -f to read from config file\n"));
+			return false;
+		}
+		m_AdminPass = MD5Sum(m_AdminPass).GetHash();
+		if ( !parser.Found(wxT("quest-pass"), &m_GuestPass) ) {
+			Show(_("Guest password not passed on command line and config file not used.\n"));
+			Show(_("Guest access disabled\n"));
+			
+			m_AllowGuest = false;
+		} else {
+			m_GuestPass = MD5Sum(m_GuestPass).GetHash();
+		}
+	}
 	return CaMuleExternalConnector::OnCmdLineParsed(parser);
 }
 
