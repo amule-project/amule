@@ -233,18 +233,21 @@ CPreferences::CPreferences()
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
 	CFile preffile;
-	if ( preffile.Open(fullpath, CFile::read) ) {
-		off_t read = preffile.Read(prefsExt, sizeof(Preferences_Ext_Struct));
+	if ( wxFileExists( fullpath ) ) {
+		if ( preffile.Open(fullpath, CFile::read) ) {
+			off_t read = preffile.Read(prefsExt, sizeof(Preferences_Ext_Struct));
 
-		if ( read != sizeof(Preferences_Ext_Struct) ) {
+			if ( read != sizeof(Preferences_Ext_Struct) ) {
+				SetStandartValues();
+			}
+		
+			md4cpy(m_userhash,prefsExt->userhash);
+			s_smartidstate = 0;
+
+			preffile.Close();	
+		} else {
 			SetStandartValues();
 		}
-		
-		md4cpy(m_userhash,prefsExt->userhash);
-		s_smartidstate = 0;
-
-		preffile.Close();	
-	
 	} else {
 		SetStandartValues();
 	}
@@ -314,6 +317,10 @@ bool CPreferences::Save()
 	prefsExt->version = PREFFILE_VERSION;
 
 	CFile preffile;
+	
+	if ( !wxFileExists( fullpath ) )
+		preffile.Create( fullpath );
+	
 	if ( preffile.Open(fullpath, CFile::read_write) ) {
 		printf("Saving userhash: %s\n", unicode2char(m_userhash.Encode()));
 		
