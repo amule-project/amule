@@ -119,19 +119,23 @@ CEConnectDlg::CEConnectDlg() :
 {
 	CoreConnect(this, TRUE);
 	
-	//
-	// FIXME: there should be preferences for this
-	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(wxT("4712"));
-	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(wxT("localhost"));
+	wxString pref_host, pref_port;
+	wxConfig::Get()->Read(wxT("/EC/Host" ), &pref_host, wxT("localhost"));
+	wxConfig::Get()->Read(wxT("/EC/Port" ), &pref_port, wxT("4712"));
+	wxConfig::Get()->Read(wxT("/EC/Password" ), &pwd_hash);
+	
+	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
+	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(pref_host);
+	CastChild(ID_EC_PASSWD, wxTextCtrl)->SetValue(pwd_hash);
 	
 	CentreOnParent();
 }
 
 wxString CEConnectDlg::PassHash()
 {
-	return MD5Sum(passwd).GetHash();
+	return pwd_hash;
 }
-	
+
 BEGIN_EVENT_TABLE(CEConnectDlg, wxDialog)
   EVT_BUTTON(wxID_OK, CEConnectDlg::OnOK)
 END_EVENT_TABLE()
@@ -143,7 +147,11 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 	
 	host = CastChild(ID_REMOTE_HOST, wxTextCtrl)->GetValue();
 	passwd = CastChild(ID_EC_PASSWD, wxTextCtrl)->GetValue();
-	
+
+	if ( passwd != pwd_hash ) {
+		pwd_hash = MD5Sum(passwd).GetHash();
+	}
+	m_save_user_pass = CastChild(ID_EC_SAVE, wxCheckBox)->IsChecked();
 	evt.Skip();
 }
 
@@ -238,6 +246,10 @@ bool CamuleRemoteGuiApp::OnInit()
 	connect = new CRemoteConnect;
 	
 	// Load Preferences
+	// This creates the CFG file we shall use
+	ConfigDir = otherfunctions::GetConfigDir();
+	wxConfig::Set(new wxConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
+
 	glob_prefs = new CPreferencesRem(connect);
 	
 	serverconnect = new CServerConnectRem(connect);
@@ -270,6 +282,12 @@ bool CamuleRemoteGuiApp::OnInit()
 		}
 	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
 	amuledlg->AddLogLine(true, _("Connected to amule at ") + dialog->Host());
+	
+	if ( dialog->SaveUserPass() ) {
+		wxConfig::Get()->Write(wxT("/EC/Host" ), dialog->Host());
+		wxConfig::Get()->Write(wxT("/EC/Port" ), dialog->Port());
+		wxConfig::Get()->Write(wxT("/EC/Password" ), dialog->PassHash());
+	}
 	dialog->Destroy();
 	
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
@@ -902,6 +920,8 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 
 void CDownQueueRem::DeleteItem(CPartFile *file)
 {
+	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file);
+	
 	m_enc_map.erase(file->GetFileHash());
 }
 
