@@ -165,7 +165,7 @@ void CFileDetailDialog::FillSourcenameList()
 		} else { 
 			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
 			item->count++;
-			nameCountStr.Printf(wxT("%l"), item->count); 
+			nameCountStr.Printf(wxT("%il"), item->count); 
 			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
 		} 
 		pmyListCtrl->UpdateSort();
