@@ -90,10 +90,10 @@ public:
 	// EOI
 	
 private:
-	CED2KFileLink(); // Not defined
+	CED2KFileLink(){returnName=NULL;}; 
 	CED2KFileLink(const CED2KFileLink&); // Not defined
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
-	char* returnName=NULL;
+	char* returnName;
 	wxString m_name;
 	wxString m_size;
 	CMD4Hash m_hash;
