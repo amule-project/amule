@@ -47,37 +47,65 @@
 //#define DEBUG_REMOTE_CLIENT_PROTOCOL
 
 
+WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
+
+//-----------------------------------------------------------------------------
+// CClientReqSocketHandler
+//-----------------------------------------------------------------------------
+
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
 	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
 END_EVENT_TABLE()
 
-WX_DEFINE_OBJARRAY(ArrayOfwxStrings);
-
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
+CClientReqSocket::CClientReqSocket()
+{
+}
 
-CClientReqSocket::CClientReqSocket(CPreferences* in_prefs,CUpDownClient* in_client)
+CClientReqSocket::CClientReqSocket(CPreferences* in_prefs, CUpDownClient* in_client)
 {
 	app_prefs = in_prefs;
 	m_client = in_client;
 	if (m_client) {
-		m_client->SetSocket( this );
+		m_client->SetSocket(this);
 	}
 	theApp.listensocket->AddSocket(this);
 	ResetTimeOutTimer();
 	deletethis = false;
 	
 	my_handler = new CClientReqSocketHandler(this);
-	SetEventHandler(*my_handler,CLIENTREQSOCKET_HANDLER);
-	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
-	Notify(TRUE);
+	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
+	SetNotify(
+		wxSOCKET_CONNECTION_FLAG|
+		wxSOCKET_INPUT_FLAG|
+		wxSOCKET_OUTPUT_FLAG|
+		wxSOCKET_LOST_FLAG);
+	Notify(true);
+}
+
+void CClientReqSocket::OnInit()
+{
+}
+
+bool CClientReqSocket::Close()
+{
+	return wxSocketBase::Close();
+}
+
+// Used in BaseClient.cpp, but not here.
+bool CClientReqSocket::Create()
+{
+	theApp.listensocket->AddConnection();
+	OnInit();
+	return true;
 }
 
 CClientReqSocket::~CClientReqSocket()
 {
 	// remove event handler
 	SetNotify(0);
-	Notify(FALSE);
+	Notify(false);
 
 	if (m_client) {
 		m_client->SetSocket( NULL );
@@ -90,8 +118,6 @@ CClientReqSocket::~CClientReqSocket()
 	}
 	
 	delete my_handler;
-
-	//DEBUG_ONLY (theApp.clientlist->Debug_SocketDeleted(this));
 }
 
 void CClientReqSocket::ResetTimeOutTimer()
@@ -174,7 +200,7 @@ void CClientReqSocket::Safe_Delete()
 		//theApp.AddSocketDeleteDebug((uint32) this,created);
 		// Paranoia is back.
 		SetNotify(0);
-		Notify(FALSE);		
+		Notify(false);		
 	
 		if (m_client) {
 			m_client->SetSocket( NULL );
@@ -1885,13 +1911,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	return true;
 }
 
-void CClientReqSocket::OnInit()
-{
-	// 0.42e
-	// uint8 tv = 1; // commented like in eMule 0.30c (Creteil)
-	// SetSockOpt(SO_DONTLINGER,&tv,sizeof(bool));
-}
-
 void CClientReqSocket::OnConnect(int nErrorCode)
 {
 	//CEMSocket::OnConnect(nErrorCode);
@@ -1901,8 +1920,6 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 		Disconnect(error);
 	}
 }
-
-
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
@@ -1921,28 +1938,21 @@ void CClientReqSocket::OnError(int nErrorCode)
 		if (m_client) {
 			if (m_client->GetUserName()) {
 				strError = wxString(_("Client '")) + m_client->GetUserName();
-				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"), m_client->GetFullIP().c_str(),nErrorCode);
+				strError += wxString::Format(_("' (IP:%s) caused an error: %u. Disconnecting client!"),
+					m_client->GetFullIP().c_str(), nErrorCode);
 			} else {
-				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"), m_client->GetFullIP().c_str(), nErrorCode);
+				strError.Printf(_("Unknown client (IP:%s) caused an error: %u. Disconnecting client!"),
+					m_client->GetFullIP().c_str(), nErrorCode);
 			}
 		} else {
-			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),nErrorCode);
+			strError.Printf(_("A client caused an error or did something bad (error %u). Disconnecting client !"),
+				nErrorCode);
 		}
-		AddLogLineM(false,strError);
+		AddLogLineM(false, strError);
 	} else {
 		strError = _("No error or error 107 (Transport endpoint is not connected)");
-	}
-	
+	}	
 	Disconnect(strError);
-}
-
-CClientReqSocket::CClientReqSocket()
-{
-}
-
-bool CClientReqSocket::Close()
-{
-	return wxSocketBase::Close();
 }
 
 bool CClientReqSocket::PacketReceived(Packet* packet)
@@ -1952,18 +1962,20 @@ bool CClientReqSocket::PacketReceived(Packet* packet)
 	UINT uRawSize = packet->GetPacketSize();	
 	switch (packet->GetProtocol()) {
 		case OP_EDONKEYPROT:
-/**/
 			bResult = ProcessPacket(packet->GetDataBuffer(),uRawSize,packet->GetOpCode());
-			break;
-		
+			break;		
 		case OP_PACKEDPROT:
 			if (!packet->UnPackPacket()) {
-				AddDebugLogLineM(false, wxString::Format(_("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
+				AddDebugLogLineM(false, 
+					wxString::Format(_("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"),
+					packet->GetProtocol(),
+					packet->GetOpCode(),
+					packet->GetPacketSize()));
 				bResult = false;
 				break;
 			}
 		case OP_EMULEPROT:
-			bResult =  ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
+			bResult = ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 			break;
 		default: {
 			theApp.downloadqueue->AddDownDataOverheadOther(uRawSize);
@@ -1984,27 +1996,20 @@ void CClientReqSocket::OnReceive(int nErrorCode)
 	CEMSocket::OnReceive(nErrorCode);
 }
 
-bool CClientReqSocket::Create()
+//-----------------------------------------------------------------------------
+// CClientReqSocketHandler
+//-----------------------------------------------------------------------------
+
+void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 {
-	theApp.listensocket->AddConnection();
-	//bool result = CAsyncSocket::Create(0,SOCK_STREAM,FD_WRITE|FD_READ|FD_CLOSE);
-	OnInit();
-	return TRUE; //result;
-}
-
-
-void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event) {
-
 	if(!socket) {
 		// we are not mentally ready to receive anything
 		// or there is no socket on the event (got deleted?)
 		return;
 	}
-	
 	if (socket->OnDestroy()) {
 		return;
 	}
-
 	//printf("request at clientreqsocket\n");
 	switch(event.GetSocketEvent()) {
 		case wxSOCKET_LOST:
@@ -2025,16 +2030,25 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event) {
 			wxASSERT(0);
 			break;
 	}
-	
 }
+
+//-----------------------------------------------------------------------------
+// CListenSocket
+//-----------------------------------------------------------------------------
+//
+// This is the socket that listens to incomming connections in aMule's TCP port
+// As soon as a connection is detected, it creates a new socket of type 
+// CClientReqSocket to handle (accept) the connection.
+// 
 
 // Do we really need that?
 IMPLEMENT_DYNAMIC_CLASS(CListenSocket,wxSocketServer)
 
-// CListenSocket
-// CListenSocket member functions
-CListenSocket::CListenSocket(CPreferences* in_prefs,wxSockAddress& addr)
-: wxSocketServer(addr,wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
+CListenSocket::CListenSocket(CPreferences* in_prefs, wxSockAddress& addr)
+:
+// wxSOCKET_NOWAIT    - means non-blocking i/o
+// wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
+wxSocketServer(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR)
 {
 	// 0.42e - vars not used by us
 	bListening = false;
@@ -2047,9 +2061,15 @@ CListenSocket::CListenSocket(CPreferences* in_prefs,wxSockAddress& addr)
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
 	activeconnections = 0;
-	SetEventHandler(theApp,LISTENSOCKET_HANDLER);
-	SetNotify(wxSOCKET_CONNECTION_FLAG|wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG);
-	Notify(TRUE);
+	// Set the listen socket event handler -- The handler is written in amule.cpp
+	if (Ok()) {
+		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
+		SetNotify(wxSOCKET_CONNECTION_FLAG);
+		Notify(true);
+		printf("ListenSocket: Ok.\n");
+	} else {
+		AddLogLineM(true,wxT("Error: Could not listen to TCP port.\n"));
+	}
 }
 
 CListenSocket::~CListenSocket()
@@ -2065,7 +2085,7 @@ bool CListenSocket::StartListening()
 	// 0.42e
 	bListening = true;
 	//return (this->Create(app_prefs->GetPort(),SOCK_STREAM,FD_ACCEPT) && this->Listen());
-	return TRUE;
+	return true;
 }
 
 void CListenSocket::ReStartListening()
@@ -2103,19 +2123,28 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// But if you don't, you will get a lowID on all servers.
 			ReStartListening();
 		}
+		// Deal with the pending connections, there might be more than one, due to
+		// the StopListening() call above.
 		while (m_nPeningConnections) {
 			m_nPeningConnections--;
+			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket(app_prefs);
-			// if (!Accept(*newclient)) {
-			if(!AcceptWith(*newclient,FALSE)) {
-				newclient->Safe_Delete();
-			} else {
-				//newclient->AsyncSelect(FD_WRITE|FD_READ|FD_CLOSE);
+			// Accept the connection and give it to the newly created socket
+			if (AcceptWith(*newclient, false)) {
+				// OnInit currently does nothing
 				newclient->OnInit();
+			} else {
+				newclient->Safe_Delete();
 			}
 			AddConnection();
 		}
 	}
+}
+
+void CListenSocket::AddConnection()
+{
+	m_OpenSocketsInterval++;
+	opensockets++;
 }
 
 void CListenSocket::Process()
@@ -2123,15 +2152,14 @@ void CListenSocket::Process()
 	// 042e + Kry changes for Destroy
 	m_OpenSocketsInterval = 0;
 	opensockets = 0;
-	for(POSITION pos = socket_list.GetHeadPosition(); pos != NULL;) {
-		CClientReqSocket* cur_sock = socket_list.GetNext(pos);
+	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); ) {
+		CClientReqSocket* cur_socket = *it++;
 		opensockets++;
-		
-		if (!cur_sock->OnDestroy()) {
-			if (cur_sock->deletethis) {
-				cur_sock->Destroy();
+		if (!cur_socket->OnDestroy()) {
+			if (cur_socket->deletethis) {
+				cur_socket->Destroy();
 			} else {
-				cur_sock->CheckTimeOut();
+				cur_socket->CheckTimeOut();
 			}
 		}
 	}
@@ -2144,9 +2172,9 @@ void CListenSocket::RecalculateStats()
 {
 	// 0.42e
 	memset(m_ConnectionStates,0,6);
-	for(POSITION pos = socket_list.GetHeadPosition(); pos != NULL;) {
-		CClientReqSocket* cur_sock = socket_list.GetNext(pos);
-		switch (cur_sock->GetConState()) {
+	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); ) {
+		CClientReqSocket* cur_socket = *it++;
+		switch (cur_socket->GetConState()) {
 			case ES_DISCONNECTED:
 				m_ConnectionStates[0]++;
 				break;
@@ -2162,20 +2190,12 @@ void CListenSocket::RecalculateStats()
 
 void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
-	//0.42e
-	socket_list.AddTail(toadd);
+	socket_list.insert(toadd);
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
-	// 0.42e
-	POSITION pos2,pos1;
-	for(pos1 = socket_list.GetHeadPosition(); (pos2 = pos1) != NULL;) {
-		socket_list.GetNext(pos1);
-		if (socket_list.GetAt(pos2) == todel) {
-			socket_list.RemoveAt(pos2);
-		}
-	}
+	socket_list.erase(todel);
 }
 
 void CListenSocket::KillAllSockets()
@@ -2183,8 +2203,8 @@ void CListenSocket::KillAllSockets()
 	// 0.42e reviewed - they use delete, but our safer is Destroy...
 	// But I bet it would be better to call Safe_Delete on the socket.
 	// Update: no... Safe_Delete MARKS for deletion. We need to delete it.
-	for (POSITION pos = socket_list.GetHeadPosition();pos != 0;) {
-		CClientReqSocket* cur_socket = socket_list.GetNext(pos);
+	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); ) {
+		CClientReqSocket* cur_socket = *it++;
 		if (cur_socket->GetClient()) {
 			cur_socket->GetClient()->Safe_Delete();
 		} else {
@@ -2192,13 +2212,6 @@ void CListenSocket::KillAllSockets()
 			cur_socket->Destroy(); 
 		}
 	}
-}
-
-void CListenSocket::AddConnection()
-{
-	// 0.42e
-	m_OpenSocketsInterval++;
-	opensockets++;
 }
 
 bool CListenSocket::TooManySockets(bool bIgnoreInterval)
@@ -2213,7 +2226,7 @@ bool CListenSocket::TooManySockets(bool bIgnoreInterval)
 bool CListenSocket::IsValidSocket(CClientReqSocket* totest)
 {
 	// 0.42e
-	return socket_list.Find(totest);
+	return socket_list.find(totest) != socket_list.end();
 }
 
 
@@ -2267,3 +2280,4 @@ float CListenSocket::GetMaxConperFiveModifier(){
 		return 1;
 	}
 }
+
