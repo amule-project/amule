@@ -150,18 +150,21 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 
 	// Async dns handling
 		EVT_MENU(TM_DNSDONE, CamuleApp::OnDnsDone)
-		EVT_MENU(TM_SOURCESDNSDONE, CamuleApp::OnSourcesDnsDone)
 
+		EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleApp::OnSourcesDnsDone)
 	// Hash ended notifier
-		EVT_MENU(TM_FINISHEDHASHING, CamuleApp::OnFinishedHashing)
 
+		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleApp::OnFinishedHashing)
+		
 	// Hashing thread finished and dead
-		EVT_MENU(TM_HASHTHREADFINISHED, CamuleApp::OnHashingShutdown)
+
+		EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleApp::OnHashingShutdown)
 
 	// File completion ended notifier
 		EVT_MENU(TM_FILECOMPLETIONFINISHED, CamuleApp::OnFinishedCompletion)
 
 END_EVENT_TABLE()
+
 
 IMPLEMENT_APP(CamuleApp)
 
@@ -312,7 +315,6 @@ bool CamuleApp::OnInit()
 	downloadqueue	= NULL;
 	uploadqueue 	= NULL;
 	ipfilter			= NULL;
-	m_dwPublicIP	= 0;
 
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
@@ -1643,8 +1645,9 @@ void CamuleApp::OnDnsDone(wxCommandEvent& evt)
 }
 
 
-void CamuleApp::OnSourcesDnsDone(wxCommandEvent& evt)
+void CamuleApp::OnSourcesDnsDone(wxEvent& e)
 {
+	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	struct sockaddr_in *si=(struct sockaddr_in*)evt.GetExtraLong();
 	downloadqueue->OnHostnameResolved(si);
 }
@@ -1729,7 +1732,7 @@ void CamuleApp::OnCoreTimer(wxTimerEvent& WXUNUSED(evt))
 
 }
 
-void CamuleApp::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
+void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
 		// Save the known.met file
@@ -1738,8 +1741,9 @@ void CamuleApp::OnHashingShutdown(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnFinishedHashing(wxCommandEvent& evt)
+void CamuleApp::OnFinishedHashing(wxEvent& e)
 {
+	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	static int filecount = 0;
 	static int bytecount = 0;
 
@@ -1788,9 +1792,7 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	IsReady =  false;
-
 	amuledlg->Destroy();
-
 	if (CAddFileThread::IsRunning()) {
 		CAddFileThread::Stop();
 	}
@@ -2269,3 +2271,8 @@ void CamuleApp::SetPublicIP(const uint32 dwIP){
 	m_dwPublicIP = dwIP;
 
 }
+
+DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
+DEFINE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
+DEFINE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
