@@ -54,9 +54,13 @@
 #endif
 
 // Constructor
-WxCasFrame::WxCasFrame (const wxString & title):
+/*WxCasFrame::WxCasFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION | wxCLOSE_BOX ))
+*/
+WxCasFrame::WxCasFrame (const wxString & title):
+    wxFrame ((wxFrame *) NULL, -1, title, wxDefaultPosition, wxDefaultSize,
+             wxDEFAULT_FRAME_STYLE & (wxSYSTEM_MENU | wxMINIMIZE_BOX | wxCAPTION ))
 {
   // Give it an icon
   SetIcon (wxICON (wxcas));
