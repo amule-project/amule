@@ -26,6 +26,7 @@ Version 2.0.0rc6 - The '???' version.
 
 	Littletux:
 		* Patch to include UTF-8 support in systray.
+		* Patch to fix configure.in UTF-8 SysTray code.
 
 	Phoenix:
 		* Fixed a compilation warning + appartently useless code in 
