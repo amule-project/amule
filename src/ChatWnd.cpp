@@ -69,10 +69,12 @@ CChatWnd::CChatWnd(wxWindow* pParent)
 }
 
 
-void CChatWnd::StartSession(CUpDownClient* client)
+void CChatWnd::StartSession(CUpDownClient* client, bool setfocus)
 {
 	if ( !client->GetUserName().IsEmpty() ) {
-		theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
+		if (setfocus) {
+			theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
+		}
 		chatselector->StartSession(client, true);
 	}
 }
@@ -81,10 +83,7 @@ void CChatWnd::StartSession(CUpDownClient* client)
 void CChatWnd::OnBnClickedCsend(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString message = GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->GetValue();
-	if (chatselector->SendMessage( message )) {
-		GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->Clear();
-	}
-	GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
+	SendMessage(message);
 }
 
 
@@ -180,4 +179,12 @@ void CChatWnd::ProcessMessage(CUpDownClient* sender, const wxString& message)
 void CChatWnd::ConnectionResult(CUpDownClient* sender, bool success)
 {
 	chatselector->ConnectionResult(sender, success);
+}
+
+void CChatWnd::SendMessage(const wxString& message, bool setfocus)
+{
+	if (chatselector->SendMessage( message )) {
+		GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->Clear();
+	}
+	GetDlgItem(IDC_CMESSAGE, wxTextCtrl)->SetFocus();
 }

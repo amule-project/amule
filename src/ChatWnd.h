@@ -35,7 +35,7 @@ public:
 	CChatWnd(wxWindow* pParent = NULL); 
 	~CChatWnd() {};
 
-	void StartSession(CUpDownClient* client);
+	void StartSession(CUpDownClient* client, bool setfocus = true);
 
 	CFriend*	FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
 	void		AddFriend(CUpDownClient* toadd);
@@ -44,6 +44,8 @@ public:
 	
 	void		ProcessMessage(CUpDownClient* sender, const wxString& message);
 	void 		ConnectionResult(CUpDownClient* sender, bool success);
+
+	void		SendMessage(const wxString& message, bool setfocus = true);
 		
 protected:
 	void	OnBnClickedCsend(wxCommandEvent& evt);
@@ -57,8 +59,9 @@ protected:
 	DECLARE_EVENT_TABLE()
 	
 private:
+
 	CFriendListCtrl* friendlist;
 	CChatSelector*	chatselector;
 };
 
-#endif 
+#endif
