@@ -221,6 +221,7 @@ public:
 	bool Ok() const	{ return m_SocketServer->Ok(); }
 	void SetEventHandler(wxEvtHandler& handler, int id = -1) { m_SocketServer->SetEventHandler(handler, id); }
 	void SetNotify(wxSocketEventFlags flags) { m_SocketServer->SetNotify(flags); }
+	bool WaitForAccept(long seconds = -1, long millisecond = 0) { return m_SocketServer->WaitForAccept(seconds, millisecond); }
 	
 private:
 	wxSocketProxy	m_SocketProxy;
