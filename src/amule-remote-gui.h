@@ -56,6 +56,7 @@ class CRemoteConnect {
 		
 		bool Connect(const wxString &host, int port, const wxString& login, const wxString &pass);
 
+
 		CECPacket *SendRecv(CECPacket *);
 		void Send(CECPacket *);
 };
@@ -263,9 +264,11 @@ class CServerConnectRem {
 		uint32 m_ID;
 	public:
 		CServerConnectRem(CRemoteConnect *);
+		bool ReQuery();
+		
 		bool IsConnected() { return (m_ID != 0) && (m_ID != 0xffffffff); }
 		bool IsConnecting() { return m_ID == 0xffffffff; }
-		bool IsLowID() { return m_ID > 16777216; }
+		bool IsLowID() { return m_ID < 16777216; }
 		uint32 GetClientID() { return m_ID; }
 		CServer *GetCurrentServer();
 		
