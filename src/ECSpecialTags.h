@@ -75,6 +75,14 @@ class CEC_ConnState_Tag : public CECTag {
  		uint32 ClientID() { return GetInt32Data(); }
 };
 
+class CEC_Stats_Tag : public CECTag {
+	public:
+		CEC_Stats_Tag();
+		
+		uint32 UpSpeed() { return GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt32Data(); }
+		uint32 DownSpeed() { return GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt32Data(); }
+		
+};
 
 class CEC_PartFile_Tag : public CECTag {
  	public:

@@ -154,8 +154,17 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	if ( connect->Busy() ) {
 		return;
 	}
-	// always query connection state
+	// always query connection state and stats
 	serverconnect->ReQuery();
+	CECPacket stats_req(EC_OP_STAT_REQ);
+	CEC_Stats_Tag *stats = (CEC_Stats_Tag *)connect->SendRecv(&stats_req);
+	if ( !stats ) {
+		return;
+	}
+	downloadqueue->UpdateStats(stats);
+	uploadqueue->UpdateStats(stats);
+	//statistics->UpdateStats(stats);
+	
 	if ( theApp.amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 		sharedfiles->ReloadControl();
@@ -169,6 +178,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
+	theApp.amuledlg->ShowTransferRate();
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -824,6 +834,11 @@ void CUpQueueRem::ProcessItemUpdate(CEC_UpDownClient_Tag *, CUpDownClient *)
 {
 }
 
+void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
+{
+	m_kbps = tag->UpSpeed() / 1024;
+}
+
 CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn)
 {
 }
@@ -879,9 +894,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	//
 	// update status
 	//
-	uint32 speed = tag->Speed();
-	file->kBpsDown = speed / 1024.0;
-	m_kbps = speed / 1024;
+	file->kBpsDown = tag->Speed() / 1024.0;
 
 	if ( file->kBpsDown > 0 ) {
 		file->transfered = tag->SizeXfer();
@@ -958,8 +971,12 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 
 bool CDownQueueRem::Phase1Done(CECPacket *)
 {
-	m_kbps = 0;
 	return true;
+}
+
+void CDownQueueRem::UpdateStats(CEC_Stats_Tag *tag)
+{
+	m_kbps = tag->DownSpeed() / 1024.0;
 }
 
 void CDownQueueRem::Pause(CPartFile *file)
