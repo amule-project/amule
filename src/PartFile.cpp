@@ -198,7 +198,7 @@ CPartFile::InitializeFromLink(CED2KFileLink* fileLink)
 {
 	Init();
 	try {
-		m_strFileName = (char2unicode(fileLink->GetName()));
+		m_strFileName = fileLink->GetName();
 		SetFileSize(fileLink->GetSize());
 		m_abyFileHash = fileLink->GetHashKey();
 		if (!theApp.downloadqueue->IsFileExisting(m_abyFileHash)) {
