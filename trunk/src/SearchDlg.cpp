@@ -146,7 +146,7 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
-	if ( evt.GetSelection() == (notebook->GetPageCount() - 1 ) ) {
+	if ( evt.GetSelection() == ((int)notebook->GetPageCount() - 1 ) ) {
 		OnBnClickedCancels(nullEvent);
 	}
 }
@@ -549,7 +549,7 @@ void CSearchDlg::DeleteSearch(uint16 nSearchID)
 {
 	theApp.searchlist->RemoveResults(nSearchID);
 
-	for ( int i = 0; i < notebook->GetPageCount(); i++ ) {
+	for ( unsigned i = 0; i < notebook->GetPageCount(); i++ ) {
 		wxWindow * slctrl = (wxWindow *)notebook->GetPage( i );
 		
 		// Make sure we have a valid pointer
@@ -578,7 +578,7 @@ void CSearchDlg::DeleteAllSearchs()
 
 void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 {
-	for ( int i = 0; i < notebook->GetPageCount(); ++i ) {
+	for ( unsigned i = 0; i < notebook->GetPageCount(); ++i ) {
 		if ( notebook->GetPage(i) == page ) {
 			wxString searchtxt = notebook->GetPageText(i).BeforeLast(wxT(' '));
 		
@@ -629,7 +629,7 @@ void CSearchDlg::UpdateCatChoice()
 	wxChoice *c_cat = (wxChoice*)FindWindow(ID_AUTOCATASSIGN);
 	c_cat->Clear();
 
-	for ( int i = 0; i < catbook->GetPageCount(); i++ ) {
+	for ( unsigned i = 0; i < catbook->GetPageCount(); i++ ) {
 		c_cat->Append( catbook->GetPageText(i) );
 	}
 	
@@ -710,7 +710,7 @@ void CSearchDlg::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 {
 	wxNotebookPage* current = notebook->GetPage( notebook->GetSelection() );
 	
-	int i = 0;
+	unsigned i = 0;
 	while ( i < notebook->GetPageCount() ) {
 		if ( current == notebook->GetPage( i ) ) {
 			i++;
