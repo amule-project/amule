@@ -1,64 +1,79 @@
-Current (aMule)  author(s):
+Current (aMule) author(s):
 
-/=======================================================================\
-|*                                                                     *|
-| Maintainer(s):                                                        |
-|    Angel Vidal Veiga aka Kry  (kry@amule.org)                         |
-|                                                                       |
-| Developer(s):                                                         |
-|    Patrizio Bassi aka Hetfield                                        |
-|    TODO: JACOBO221                                                    |
-|                                                                       |
-| Web Design & Forum Administration:                                    |
-|    K.B. aka deltaHF                                                   |
-|    Benjamin Wohlwend aka hermych                                      |
-|                                                                       |
-| Former developers:                                                    |
-|    Nikolay Igotti aka olonho                                          |
-|    Norbert LATAILLE aka nonal                                         |
-|    TODO: JACOBO221                                                    |
-|                                                                       |
-| Gold Members:                                                         |
-|    aMule Creator:                                                     |
-|      Stephane COLIN aka Creteil or BigBob <bigbob@meloo.com>          |
-|    lmule Creator:                                                     |
-|      Timo Kujala                 <???@???.???>                        |
-|    Guest Coder and Good Friend:                                       |
-|      Alo Sarv aka Madcat         <madcat@_@users.sf.net>              |
-|                                                                       |
-|*                                                                     *|
-\=======================================================================/
+/==================================================================================\
+|*                                                                                *|
+| Maintainer(s):                                                                   |
+|    Angel Vidal Veiga  aka Kry               <kry@amule.org>                      |
+|                                                                                  |
+| Developer(s):                                                                    |
+|    Citroklar                                <citroklar@gmx.net>                  |
+|    efe aka the polish                       <thepolish@vipmail.ru>               |
+|    GonoszTopi                               <devait@vnet.hu>                     |
+|    Jacobo Vilella     aka Jacobo221         <jacobo221@amule.org>                |
+|    ken                                      <ken@codeweavers.com>                |
+|    Leonid Froenchenko aka lfroen            <lfroen@galileo.co.il>               |
+|    Mikkel Schubert    aka Xaignar           <xaignar@gmx.net>                    |
+|    Patrizio Bassi     aka Hetfield          <hetfield666@virgilio.it>            |
+|    Pedro De Oliveira  aka falso             <falso@rdk.homeip.net>               |
+|    phoenix                                  <mrjimenez@globo.com>                |
+|    Stefan Baldus      aka stefanero         <sbinerfurt@hotmail.com>             |
+|                                                                                  |
+|                                                                                  |
+| Web Design & Forum Administration:                                               |
+|    K. B.              aka deltaHF           <deltahf@datahighways.de>            |
+|                                                                                  |
+| Former developers:                                                               |
+|    Jayson Cowan       aka hellimod          <jayson@spelljammer.com>             |
+|    Luca Vagnozzi      aka shakraw           <shakraw@users.sourceforge.net>      |
+|    Nikolay Igotti     aka olonho            <nike@lyola.com>                     |
+|    Norbert Lataille   aka nonal             <Norbert.Lataille@m4x.org>           |
+|    pure_ascii                               <pure_ascii@users.sourceforge.net>   |
+|    Santiago Medina    aka aquatroll         <aquatroll@users.sourceforge.net>    |
+|    Thomas Landsberger aka emiliosandoz      <emiliosandoz@users.sourceforge.net> |
+|    umale                                    <umale@web.de>                       |
+|    Unleashed                                <alex@unleashed.kicks-ass.org>       |
+|                                                                                  |
+| Gold Members:                                                                    |
+|    aMule Creator:                                                                |
+|      Stephane Colin   aka Creteil or BigBob <bigbob@meloo.com>                   |
+|    lmule Creator:                                                                |
+|      Timo Kujala      aka Tiku              <tkujala@lut.fi>                     |
+|    Guest Coder and Good Friend:                                                  |
+|      Alo Sarv         aka Madcat            <madcat@_@users.sf.net>              |
+|                                                                                  |
+|*                                                                                *|
+\==================================================================================/
 
 Original (xMule) author(s):
 
-/=======================================================================\
-|*                                                                     *|
-| Maintainer(s):                                                        |
-|    Alo Sarv aka Madcat         <madcat@_@users.sf.net>                |
-|    Michael Mueller aka malware                                        |
-|                                                                       |
-| Developer(s):                                                         |
-|    Un-Thesis                   <un-thesis@wakeup-people.com>          |
-|    Kry                                                                |
-|    MikaelB                                                            |
-|                                                                       |
-| Graphics Designer(s):                                                 |
-|    uberpenguin                                                        |
-|*                                                                     *|
-\=======================================================================/
+/==================================================================================\
+|*                                                                                *|
+| Maintainer(s):                                                                   |
+|    Alo Sarv           aka Madcat            <madcat_@users.sf.net>               |
+|    Michael Mueller    aka malware           <malware@t-online.de>                |
+|                                                                                  |
+| Developer(s):                                                                    |
+|    Thedore R. Smith   aka Un-Thesis         <un-thesis@wakeup-people.com>        |
+|    Angel Vidal Veiga  aka Kry               <kry@amule.org>                      |
+|    Mikael Berglund    aka MikaelB           <Mikael.Berglund@tnv.mh.se>          |
+|                                                                                  |
+| Graphics Designer(s):                                                            |
+|    Matt Britt         aka uberpenguin       <uberpenguin@hotpop.com>             |
+|*                                                                                *|
+\==================================================================================/
 
-Original (lMule)  author(s):
+Original (lMule) author(s):
 
-/=======================================================================\
-|*                                                                     *|
-| Maintainer(s):                                                        |
-|    Timo Kujala                 <tkujala@lut.fi>                       |
-|                                                                       |
-| Developer(s):                                                         |
-|    Marcelo Falero              <mfalero@users.sourceforge.net>        |
-|    Fuentes Xavier              <furax@r00tworld.com>                  |
-|    pure_ascii                  <pure_ascii@users.sourceforge.net>     |
-|    Un-Thesis                   <un-thesis@wakeup-people.com>          |
-|    Madcat                      <madcat@xmule.org>                     |
-|*                                                                     *|
-\=======================================================================/
+/==================================================================================\
+|*                                                                                *|
+| Maintainer(s):                                                                   |
+|    Timo Kujala        aka Tiku              <tkujala@lut.fi>                     |
+|                                                                                  |
+| Developer(s):                                                                    |
+|    Marcelo Falero     aka mfalero           <mfalero@st.com.uy>                  |
+|    Xavier Fuentes     aka furax             <furax@r00tworld.com>                |
+|    pure_ascii                               <pure_ascii@users.sourceforge.net>   |
+|    Theodore R. Smith  aka Un-Thesis         <un-thesis@wakeup-people.com>        |
+|    Alo Serv           aka Madcat            <madcat@_@users.sf.net>              |
+|*                                                                                *|
+\==================================================================================/
