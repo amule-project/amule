@@ -931,7 +931,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);							
 			} else {
-				cbuffer="";
+				cbuffer=wxEmptyString;
 			}
 			if (cbuffer.IsEmpty()) {
 				if (cli_versions[i+8].active) {
@@ -983,7 +983,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer.Printf(wxT("v%u.%u.%u: %i (%1.1f%%)"), verMaj, verMin, verUp, topcnt, topper*100);
 			} else {
-				cbuffer="";
+				cbuffer=wxEmptyString;
 			}
 			if (cbuffer.IsEmpty()) {
 				if (cli_versions[i+4].active) {
@@ -1034,7 +1034,7 @@ void CStatisticsDlg::ShowStatistics()
 				UINT verUp = (topver - (verMaj*100*10*100) - (verMin*100*10))/(100);
 				cbuffer.Printf(wxT(" v%u.%u%c: %i (%1.1f%%)"),verMaj, verMin, 'a' + verUp, topcnt, topper*100);
 			} else {
-				cbuffer="";
+				cbuffer=wxEmptyString;
 			}
 			if (cbuffer.IsEmpty()) {
 				if (cli_versions[i].active) {
@@ -1089,7 +1089,7 @@ void CStatisticsDlg::ShowStatistics()
 					cbuffer.Printf(wxT(" v%u.%u.%u: %i (%1.1f%%)"),verMaj, verMin, verUp, topcnt, topper*100);
 				}
 			} else {
-				cbuffer="";
+				cbuffer=wxEmptyString;
 			}
 			if (cbuffer.IsEmpty()) {
 				if (cli_versions[i+12].active) {
@@ -1186,7 +1186,7 @@ void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& WXUNUSED(evt))
 {
 	int8 ix;
 	wxString temp;
-	wxString text=wxT("");
+	wxString text=wxEmptyString;
 	wxTreeItemId item;
 
 	// update it
@@ -1201,7 +1201,7 @@ void CStatisticsDlg::ExportHTMLEvent(wxCommandEvent& WXUNUSED(evt))
 		}
 		stattree->Expand(item);//,TVE_EXPAND);
 
-		temp=wxT("");
+		temp=wxEmptyString;
 		for (ix=0;ix<3*(int)stattree->GetItemData(item);ix++) {
 			temp+=wxT("&nbsp;");
 			}
@@ -1222,7 +1222,7 @@ wxString CStatisticsDlg::GetHTML() {
 	
 	int8 ix;
 	wxString temp;
-	wxString strBuffer=wxT("");
+	wxString strBuffer=wxEmptyString;
 	wxTreeItemId item;
 
 	strBuffer.Printf(wxT("<font face=\"Verdana,Courier New,Helvetica\" size=\"2\">\r\n<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"), PACKAGE_VERSION, _("Statistics"), unicode2char(theApp.glob_prefs->GetUserNick()));
@@ -1238,7 +1238,7 @@ wxString CStatisticsDlg::GetHTML() {
 		}
 		stattree->Expand(item);
 
-		temp=wxT("");
+		temp=wxEmptyString;
 		wxTreeItemId tempItem = item;
 		int level = 0;
 		while (tempItem = stattree->GetItemParent(tempItem)) level+=1;

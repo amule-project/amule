@@ -267,7 +267,7 @@ void CSearchList::ShowResults( uint32 nSearchID){
 void CSearchList::NewSearch(const wxString& resTypes, uint16 nSearchID){
 	resultType=resTypes;
 	m_nCurrentSearch = nSearchID;
-	myHashList="";
+	myHashList=wxEmptyString;
 
 	foundFilesCount[nSearchID] = 0;
 }
