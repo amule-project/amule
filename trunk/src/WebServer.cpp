@@ -254,8 +254,7 @@ int CWebServer::GetWSPrefs(void)
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
-
-	if ( ! reply ) {
+	if (!reply) {
 		return 0;
 	}
 
@@ -318,24 +317,24 @@ void CWebServer::Print(const wxString &s) {
 // send EC request and discard output
 void CWebServer::Send_Discard_V2_Request(CECPacket *request)
 {
-		CECPacket *reply = webInterface->SendRecvMsg_v2(request);
-		if ( reply ) {
-			if ( reply->GetOpCode() == EC_OP_STRINGS ) {
-				for(int i = 0;i < reply->GetTagCount();i++) {
-					CECTag *tag = reply->GetTagByIndex(i);
-					if ( tag->GetTagName() == EC_TAG_STRING ) {
-						webInterface->Show(tag->GetStringData());
-					}
-				}
-			} else if ( reply->GetOpCode() == EC_OP_FAILED ) {
-				if (reply->GetTagCount()) {
-					webInterface->Show(wxString(_("Request failed with the following error: ")) + wxString(wxGetTranslation(reply->GetTagByIndex(0)->GetStringData())) + wxT("."));
-				} else {
-					webInterface->Show(_("Request failed with an unknown error."));
+	CECPacket *reply = webInterface->SendRecvMsg_v2(request);
+	if (reply) {
+		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
+			for(int i = 0;i < reply->GetTagCount();i++) {
+				CECTag *tag = reply->GetTagByIndex(i);
+				if ( tag->GetTagName() == EC_TAG_STRING ) {
+					webInterface->Show(tag->GetStringData());
 				}
 			}
-			delete reply;
+		} else if ( reply->GetOpCode() == EC_OP_FAILED ) {
+			if (reply->GetTagCount()) {
+				webInterface->Show(wxString(_("Request failed with the following error: ")) + wxString(wxGetTranslation(reply->GetTagByIndex(0)->GetStringData())) + wxT("."));
+			} else {
+				webInterface->Show(_("Request failed with an unknown error."));
+			}
 		}
+		delete reply;
+	}
 }
 
 //reload template file
@@ -761,7 +760,7 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
 
 	CECPacket *stats = webInterface->SendRecvMsg_v2(&stat_req);
-	if ( !stats ) {
+	if (!stats) {
 		return wxEmptyString;
 	}
 	
@@ -936,13 +935,17 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		CECPacket req(EC_OP_ED2K_LINK);
 		req.AddTag(CECTag(EC_TAG_STRING, HTTPTemp));
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-		if ( response->GetOpCode() == EC_OP_FAILED) {
-			wxString HTTPTempC = _("This ed2k link is invalid (") + HTTPTemp + wxT(")");
-			Out = m_Templates.sTransferBadLink;
-			Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
-			Out.Replace(wxT("[Link]"), HTTPTemp);
+		if (response) {
+			if ( response->GetOpCode() == EC_OP_FAILED) {
+				wxString HTTPTempC = _("This ed2k link is invalid (") + HTTPTemp + wxT(")");
+				Out = m_Templates.sTransferBadLink;
+				Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
+				Out.Replace(wxT("[Link]"), HTTPTemp);
+			}
+			delete response;
+		} else {
+			Out = _("Got no response from aMule.");
 		}
-		delete response;
 	}
 	//
 	// Commands
@@ -1291,12 +1294,17 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
-	if ( reply->GetTagCount() ) { 	// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)
-		InsertCatBox(Out, 0, m_Templates.sCatArrow, reply->GetTagByIndex(0));
+	if (reply) {
+		// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)	
+		if (reply->GetTagCount()) {
+			InsertCatBox(Out, 0, m_Templates.sCatArrow, reply->GetTagByIndex(0));
+		} else {
+			Out.Replace(wxT("[CATBOX]"), wxEmptyString);
+		}
+		delete reply;
 	} else {
-		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
+		Out.Replace(wxT("[CATBOX]"), wxEmptyString);
 	}
-	delete reply;
 
 	return Out;
 }
@@ -1403,14 +1411,26 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	wxString sSession = _ParseURL(Data, wxT("ses"));
     
 	CECPacket *request = new CECPacket(EC_OP_GET_PREFERENCES);
-	request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
-	CECPacket *response = webInterface->SendRecvMsg_v2(request);
-	uint32 max_ul = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data();
-	uint32 max_dl = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data();
-	uint16 max_conn = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data();
-	delete response;
-	delete request;
+	if (request) {
+		request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CONNECTIONS));
+		delete request;
+	} else {
+		return wxEmptyString;
+	}
 
+	uint32 max_ul = 0;
+	uint32 max_dl = 0;
+	uint16 max_conn = 0;	
+	CECPacket *response = webInterface->SendRecvMsg_v2(request);
+	if (response) {
+		max_ul = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data();
+		max_dl = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data();
+		max_conn = response->GetTagByIndex(0)->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data();
+		delete response;
+	} else {
+		return wxEmptyString;
+	}
+	
 	request = new CECPacket(EC_OP_GET_STATSGRAPHS, EC_DETAIL_WEB);
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, m_nGraphWidth));
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
@@ -1419,37 +1439,41 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 			request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_sLastHistoryTimeStamp));
 		}
 	}
+	
 	response = webInterface->SendRecvMsg_v2(request);
-	delete request;
-
-	if (response->GetOpCode() == EC_OP_STATSGRAPHS) {
-		m_sLastHistoryTimeStamp = response->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
-		CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
-		const uint32 *data = (const uint32 *)dataTag->GetTagData();
-		unsigned int numItems = dataTag->GetTagDataLen() / sizeof(uint32);
-		if (_ParseURL(Data, wxT("refetch")) == wxT("yes")) {
-			if (numItems / 3 < m_nGraphWidth) {
-				while (m_Params.PointsForWeb.GetCount() > 0) {
+	delete request;	
+	if (response) {
+		if (response->GetOpCode() == EC_OP_STATSGRAPHS) {
+			m_sLastHistoryTimeStamp = response->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
+			CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+			const uint32 *data = (const uint32 *)dataTag->GetTagData();
+			unsigned int numItems = dataTag->GetTagDataLen() / sizeof(uint32);
+			if (_ParseURL(Data, wxT("refetch")) == wxT("yes")) {
+				if (numItems / 3 < m_nGraphWidth) {
+					while (m_Params.PointsForWeb.GetCount() > 0) {
+						delete m_Params.PointsForWeb[0];
+						m_Params.PointsForWeb.RemoveAt(0);
+					}
+				}
+			}
+			for (unsigned int i = 0; i < numItems;) {
+				UpDown *dataLine = new UpDown;
+				dataLine->download = ntohl(data[i++]);
+				dataLine->upload = ntohl(data[i++]);
+				dataLine->connections = ntohl(data[i++]);
+				m_Params.PointsForWeb.Add(dataLine);
+				while (m_Params.PointsForWeb.GetCount() > m_nGraphWidth) {
 					delete m_Params.PointsForWeb[0];
 					m_Params.PointsForWeb.RemoveAt(0);
 				}
+	
 			}
 		}
-		for (unsigned int i = 0; i < numItems;) {
-			UpDown *dataLine = new UpDown;
-			dataLine->download = ntohl(data[i++]);
-			dataLine->upload = ntohl(data[i++]);
-			dataLine->connections = ntohl(data[i++]);
-			m_Params.PointsForWeb.Add(dataLine);
-			while (m_Params.PointsForWeb.GetCount() > m_nGraphWidth) {
-				delete m_Params.PointsForWeb[0];
-				m_Params.PointsForWeb.RemoveAt(0);
-			}
-
-		}
+		delete response;
+	} else {
+		return wxEmptyString;
 	}
-	delete response;
-
+	
 	for (size_t i = 0; i < m_nGraphWidth; ++i) {
 		if (i < m_Params.PointsForWeb.GetCount()) {
 			if (i != 0) {
@@ -1522,8 +1546,12 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 
 		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-		Out.Replace(wxT("[Message]"),_SpecialChars(response->GetTagByIndex(0)->GetStringData()));
-		delete response;
+		if (response) {
+			Out.Replace(wxT("[Message]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+			delete response;
+		} else {
+			Out.Replace(wxT("[Message]"), wxEmptyString);
+		}
 	} else if (_ParseURL(Data, wxT("updateservermetfromurl")) == wxT("true")) {
 		CECPacket request(EC_OP_SERVER_UPDATE_FROM_URL);
 		request.AddTag(CECTag(EC_TAG_STRING, _ParseURL(Data, wxT("servermeturl"))));
@@ -1531,8 +1559,12 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 		
 		CECPacket req(EC_OP_GET_LAST_LOG_ENTRY);
 		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-		Out.Replace(wxT("[Message]"),_SpecialChars(response->GetTagByIndex(0)->GetStringData()));
-		delete response;
+		if (response) {
+			Out.Replace(wxT("[Message]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+			delete response;
+		} else {
+			Out.Replace(wxT("[Message]"), wxEmptyString);
+		}
 	} else
 		Out.Replace(wxT("[Message]"), wxEmptyString);
 	
@@ -1596,8 +1628,14 @@ wxString CWebServer::_GetLog(ThreadData Data) {
 	Out.Replace(wxT("[Clear]"), _("Reset"));
 	CECPacket req(EC_OP_GET_LOG);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	Out.Replace(wxT("[Log]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()) + wxT("<br><a name=\"end\"></a>"));
-	delete response;
+	if (response) {
+		Out.Replace(wxT("[Log]"), 
+			_SpecialChars(response->GetTagByIndex(0)->GetStringData()) +
+			wxT("<br><a name=\"end\"></a>"));
+		delete response;
+	} else {
+		Out.Replace(wxT("[Log]"), wxT("<br><a name=\"end\"></a>"));
+	}
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1618,9 +1656,13 @@ wxString CWebServer::_GetServerInfo(ThreadData Data) {
 	CECPacket req(EC_OP_GET_SERVERINFO);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	Out.Replace(wxT("[Clear]"), _("Reset"));
-	Out.Replace(wxT("[ServerInfo]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+	if (response) {
+		Out.Replace(wxT("[ServerInfo]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()));
+		delete response;
+	} else {
+		Out.Replace(wxT("[ServerInfo]"), wxEmptyString);
+	}
 	Out.Replace(wxT("[Session]"), sSession);
-	delete response;
 
 	return Out;
 }
@@ -1643,8 +1685,14 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 
 	CECPacket req(EC_OP_GET_DEBUGLOG);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	Out.Replace(wxT("[DebugLog]"), _SpecialChars(response->GetTagByIndex(0)->GetStringData()) + wxT("<br><a name=\"end\"></a>"));
-	delete response;
+	if (response) {
+		Out.Replace(wxT("[DebugLog]"), 
+			_SpecialChars(response->GetTagByIndex(0)->GetStringData()) +
+			wxT("<br><a name=\"end\"></a>"));
+		delete response;
+	} else {
+		Out.Replace(wxT("[DebugLog]"), wxT("<br><a name=\"end\"></a>"));
+	}
 	Out.Replace(wxT("[Session]"), sSession);
 
 	return Out;
@@ -1678,14 +1726,17 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	
 	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	wxString sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
-		response->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData().GetData(),
-		_("Statistics"),
-		response->GetTagByName(EC_TAG_USER_NICK)->GetStringData().GetData());
-	sStats += ECTree2Html(response->GetTagByName(EC_TAG_TREE), 0);
-
-	Out.Replace(wxT("[STATSDATA]"), sStats);
-	delete response;
+	if (response) {
+		wxString sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
+			response->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData().GetData(),
+			_("Statistics"),
+			response->GetTagByName(EC_TAG_USER_NICK)->GetStringData().GetData());
+		sStats += ECTree2Html(response->GetTagByName(EC_TAG_TREE), 0);
+		Out.Replace(wxT("[STATSDATA]"), sStats);
+		delete response;
+	} else {
+		Out.Replace(wxT("[STATSDATA]"), wxEmptyString);
+	}
 
 	return Out;
 }
@@ -1766,92 +1817,103 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(EC_PREFS_CONNECTIONS | EC_PREFS_REMOTECONTROLS | EC_PREFS_FILES | EC_PREFS_CORETWEAKS)));
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-	CECTag *filePrefs = response->GetTagByName(EC_TAG_PREFS_FILES);
-	CECTag *connPrefs = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
-	CECTag *webPrefs = response->GetTagByName(EC_TAG_PREFS_REMOTECTRL);
-	if (webPrefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
-		Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
-	} else {
-		Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
-	}
-	if(m_Params.bShowUploadQueue) {
-		Out.Replace(wxT("[ShowUploadQueueVal]"), wxT("checked"));
-	} else {
-		Out.Replace(wxT("[ShowUploadQueueVal]"), wxEmptyString);
-	}
-	if (filePrefs->GetTagByName(EC_TAG_FILES_PREVIEW_PRIO)) {
-		Out.Replace(wxT("[FirstAndLastVal]"), wxT("checked"));
-	} else {
-		Out.Replace(wxT("[FirstAndLastVal]"), wxEmptyString);
-	}
-	if (filePrefs->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS)) {
-		Out.Replace(wxT("[FullChunksVal]"), wxT("checked"));
-	} else {
-		Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
-	}
-
-	wxString sRefresh = sRefresh.Format(wxT("%i"), webPrefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH)->GetInt32Data());
-	Out.Replace(wxT("[RefreshVal]"), sRefresh);
-	sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)->GetInt16Data());
-	Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
-	sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
-	Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
-	sRefresh.Printf(wxT("%i"), response->GetTagByName(EC_TAG_PREFS_CORETWEAKS)->GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)->GetInt16Data());
-	Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
-
-	wxString colon(wxT(":"));
-	Out.Replace(wxT("[KBS]"), _("kB/s"));
-	Out.Replace(wxT("[FileSettings]"), _("File Settings"));
-	Out.Replace(wxT("[LimitForm]"), _("Connection Limits"));
-	Out.Replace(wxT("[MaxSources]"), _("Max Sources Per File")+colon);
-	Out.Replace(wxT("[MaxConnections]"), _("Max. Connections")+colon);
-	Out.Replace(wxT("[MaxConnectionsPer5]"), _("Max. new connections / 5secs")+colon);
-	Out.Replace(wxT("[UseGzipForm]"), _("Gzip Compression"));
-	Out.Replace(wxT("[UseGzipComment]"), _("Save traffic, especially in graphs."));
-	Out.Replace(wxT("[ShowUploadQueueForm]"), _("Show Queue"));
-	Out.Replace(wxT("[ShowUploadQueueComment]"), _("Enable or disable the display of waiting queue in transfer page."));
-	Out.Replace(wxT("[ShowQueue]"), _("Show Queue"));
-	Out.Replace(wxT("[HideQueue]"), _("Hide Queue"));
-	Out.Replace(wxT("[RefreshTimeForm]"), _("Refresh-Time of Pages"));
-	Out.Replace(wxT("[RefreshTimeComment]"), _("Time in seconds (zero=disabled)")+colon);
-	Out.Replace(wxT("[SpeedForm]"), _("Speed Limits"));
-	Out.Replace(wxT("[MaxDown]"), _("Download"));
-	Out.Replace(wxT("[MaxUp]"), _("Upload"));
-	Out.Replace(wxT("[SpeedCapForm]"), _("Bandwidth Limits"));
-	Out.Replace(wxT("[MaxCapDown]"), _("Download"));
-	Out.Replace(wxT("[MaxCapUp]"), _("Upload"));
-	Out.Replace(wxT("[TryFullChunks]"), _("Try to transfer full chunks to all uploads"));
-	Out.Replace(wxT("[FirstAndLast]"), _("Try to download first and last chunks first"));
-	Out.Replace(wxT("[WebControl]"), _("Web Control Panel"));
-	Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
-	Out.Replace(wxT("[GraphSettings]"), _("Statistics graphs' settings"));
-	Out.Replace(wxT("[GraphHeightText]"), _("Graph height")+colon);
-	Out.Replace(wxT("[GraphWidthText]"), _("Graph width")+colon);
-	Out.Replace(wxT("[pixels]"), _("pixels"));
-	Out.Replace(wxT("[GraphHeight]"), wxString::Format(wxT("%u"), m_nGraphHeight));
-	Out.Replace(wxT("[GraphWidth]"), wxString::Format(wxT("%u"), m_nGraphWidth));
-	Out.Replace(wxT("[GraphScaleText]"), _("In the graph, each pixel represents"));
-	Out.Replace(wxT("[seconds]"), _("seconds"));
-	Out.Replace(wxT("[GraphScale]"), wxString::Format(wxT("%u"), m_nGraphScale));
-	Out.Replace(wxT("[Apply]"), _("Apply"));
-
-	int n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data();
-	if (n < 0 || n == 65535) {
-		n = 0;
-	}
-	Out.Replace(wxT("[MaxDownVal]"), wxString::Format(wxT("%d"), n));
+	if (response) {
+		CECTag *filePrefs = response->GetTagByName(EC_TAG_PREFS_FILES);
+		CECTag *connPrefs = response->GetTagByName(EC_TAG_PREFS_CONNECTIONS);
+		CECTag *webPrefs = response->GetTagByName(EC_TAG_PREFS_REMOTECTRL);
+		if (webPrefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP)) {
+			Out.Replace(wxT("[UseGzipVal]"), wxT("checked"));
+		} else {
+			Out.Replace(wxT("[UseGzipVal]"), wxEmptyString);
+		}
+		if(m_Params.bShowUploadQueue) {
+			Out.Replace(wxT("[ShowUploadQueueVal]"), wxT("checked"));
+		} else {
+			Out.Replace(wxT("[ShowUploadQueueVal]"), wxEmptyString);
+		}
+		if (filePrefs->GetTagByName(EC_TAG_FILES_PREVIEW_PRIO)) {
+			Out.Replace(wxT("[FirstAndLastVal]"), wxT("checked"));
+		} else {
+			Out.Replace(wxT("[FirstAndLastVal]"), wxEmptyString);
+		}
+		if (filePrefs->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS)) {
+			Out.Replace(wxT("[FullChunksVal]"), wxT("checked"));
+		} else {
+			Out.Replace(wxT("[FullChunksVal]"), wxEmptyString);
+		}
 	
-	n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_UL)->GetInt16Data();
-	if (n < 0 || n == 65535)  {
-		n = 0;
+		wxString sRefresh = sRefresh.Format(wxT("%i"), 
+			webPrefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH)->GetInt32Data());
+		Out.Replace(wxT("[RefreshVal]"), sRefresh);
+		sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)->GetInt16Data());
+		Out.Replace(wxT("[MaxSourcesVal]"), sRefresh);
+		sRefresh.Printf(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
+		Out.Replace(wxT("[MaxConnectionsVal]"), sRefresh);
+		sRefresh.Printf(wxT("%i"), response->
+			GetTagByName(EC_TAG_PREFS_CORETWEAKS)->
+			GetTagByName(EC_TAG_CORETW_MAX_CONN_PER_FIVE)->GetInt16Data());
+		Out.Replace(wxT("[MaxConnectionsPer5Val]"), sRefresh);
+	
+		wxString colon(wxT(":"));
+		Out.Replace(wxT("[KBS]"), _("kB/s"));
+		Out.Replace(wxT("[FileSettings]"), _("File Settings"));
+		Out.Replace(wxT("[LimitForm]"), _("Connection Limits"));
+		Out.Replace(wxT("[MaxSources]"), _("Max Sources Per File")+colon);
+		Out.Replace(wxT("[MaxConnections]"), _("Max. Connections")+colon);
+		Out.Replace(wxT("[MaxConnectionsPer5]"), _("Max. new connections / 5secs")+colon);
+		Out.Replace(wxT("[UseGzipForm]"), _("Gzip Compression"));
+		Out.Replace(wxT("[UseGzipComment]"), _("Save traffic, especially in graphs."));
+		Out.Replace(wxT("[ShowUploadQueueForm]"), _("Show Queue"));
+		Out.Replace(wxT("[ShowUploadQueueComment]"),
+			_("Enable or disable the display of waiting queue in transfer page."));
+		Out.Replace(wxT("[ShowQueue]"), _("Show Queue"));
+		Out.Replace(wxT("[HideQueue]"), _("Hide Queue"));
+		Out.Replace(wxT("[RefreshTimeForm]"), _("Refresh-Time of Pages"));
+		Out.Replace(wxT("[RefreshTimeComment]"), _("Time in seconds (zero=disabled)")+colon);
+		Out.Replace(wxT("[SpeedForm]"), _("Speed Limits"));
+		Out.Replace(wxT("[MaxDown]"), _("Download"));
+		Out.Replace(wxT("[MaxUp]"), _("Upload"));
+		Out.Replace(wxT("[SpeedCapForm]"), _("Bandwidth Limits"));
+		Out.Replace(wxT("[MaxCapDown]"), _("Download"));
+		Out.Replace(wxT("[MaxCapUp]"), _("Upload"));
+		Out.Replace(wxT("[TryFullChunks]"), _("Try to transfer full chunks to all uploads"));
+		Out.Replace(wxT("[FirstAndLast]"), _("Try to download first and last chunks first"));
+		Out.Replace(wxT("[WebControl]"), _("Web Control Panel"));
+		Out.Replace(wxT("[aMuleAppName]"), wxT("aMule"));
+		Out.Replace(wxT("[GraphSettings]"), _("Statistics graphs' settings"));
+		Out.Replace(wxT("[GraphHeightText]"), _("Graph height")+colon);
+		Out.Replace(wxT("[GraphWidthText]"), _("Graph width")+colon);
+		Out.Replace(wxT("[pixels]"), _("pixels"));
+		Out.Replace(wxT("[GraphHeight]"), wxString::Format(wxT("%u"), m_nGraphHeight));
+		Out.Replace(wxT("[GraphWidth]"), wxString::Format(wxT("%u"), m_nGraphWidth));
+		Out.Replace(wxT("[GraphScaleText]"), _("In the graph, each pixel represents"));
+		Out.Replace(wxT("[seconds]"), _("seconds"));
+		Out.Replace(wxT("[GraphScale]"), wxString::Format(wxT("%u"), m_nGraphScale));
+		Out.Replace(wxT("[Apply]"), _("Apply"));
+	
+		int n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_DL)->GetInt16Data();
+		if (n < 0 || n == 65535) {
+			n = 0;
+		}
+		Out.Replace(wxT("[MaxDownVal]"), wxString::Format(wxT("%d"), n));
+		
+		n = connPrefs->GetTagByName(EC_TAG_CONN_MAX_UL)->GetInt16Data();
+		if (n < 0 || n == 65535)  {
+			n = 0;
+		}
+		Out.Replace(wxT("[MaxUpVal]"), wxString::Format(wxT("%d"), n));
+		
+		Out.Replace(wxT("[MaxCapDownVal]"), wxString::Format(wxT("%i"),
+			connPrefs->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data()));
+		
+		Out.Replace(wxT("[MaxCapUpVal]"), wxString::Format(wxT("%i"),
+			connPrefs->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data()));
+	
+		delete response;
+	} else {
+		Out.Clear();
 	}
-	Out.Replace(wxT("[MaxUpVal]"), wxString::Format(wxT("%d"), n));
 	
-	Out.Replace(wxT("[MaxCapDownVal]"), wxString::Format(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_DL_CAP)->GetInt32Data()));
-	
-	Out.Replace(wxT("[MaxCapUpVal]"), wxString::Format(wxT("%i"), connPrefs->GetTagByName(EC_TAG_CONN_UL_CAP)->GetInt32Data()));
-
-	delete response;
 	return Out;
 }
 
@@ -1897,7 +1959,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE, EC_DETAIL_WEB);
 	CECPacket *sServerStat = webInterface->SendRecvMsg_v2(&connstate_req);
-	if ( !sServerStat ) {
+	if (!sServerStat) {
 		return wxEmptyString;
 	}
 	uint8 connstate = sServerStat->GetTagByIndex(0)->GetInt8Data();
@@ -2072,7 +2134,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 			downloads=downloads.Mid(brk+1);
 		}
 		CECPacket *dload_reply = webInterface->SendRecvMsg_v2(&dload_req);
-		if ( dload_reply ) {
+		if (dload_reply) {
 			delete dload_reply;
 		}
 	}
@@ -2095,9 +2157,12 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		CECPacket search_req(EC_OP_SEARCH_START);
 		search_req.AddTag(CEC_Search_Tag (sToSearch, search_type, type, ext, avail, min_size, max_size));
 		CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
-
-		Out.Replace(wxT("[Message]"), search_reply->GetTagByIndex(0)->GetStringData());
-		delete search_reply;
+		if (search_reply) {
+			Out.Replace(wxT("[Message]"), search_reply->GetTagByIndex(0)->GetStringData());
+			delete search_reply;
+		} else {
+			Out.Replace(wxT("[Message]"), wxEmptyString);
+		}
 	} else if (!sToSearch.IsEmpty() && !IsSessionAdmin(Data,sSession) ) {
 		Out.Replace(wxT("[Message]"),_("Access denied!"));
 	} else 
@@ -2107,13 +2172,17 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_WEB);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
-	if ( reply->GetTagCount() ) { 	// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)
-		InsertCatBox(Out, 0, m_Templates.sCatArrow, reply->GetTagByIndex(0));
+	if (reply) {
+		// if there are no categories, not even the EC_TAG_PREFS_CATEGORIES will be included :)
+		if ( reply->GetTagCount() ) { 	
+			InsertCatBox(Out, 0, m_Templates.sCatArrow, reply->GetTagByIndex(0));
+		} else {
+			Out.Replace(wxT("[CATBOX]"), wxEmptyString);
+		}
+		delete reply;
 	} else {
-		Out.Replace(wxT("[CATBOX]"),wxEmptyString);
+		Out.Replace(wxT("[CATBOX]"), wxEmptyString);
 	}
-	delete reply;
-
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 	wxString sSearchSortRev = _ParseURL(Data, wxT("sortreverse"));
 	m_SearchInfo.SetSortOrder(sSort, sSearchSortRev);
@@ -2265,12 +2334,12 @@ void CWebServer::InsertCatBox(wxString &Out, int preselect, wxString boxlabel, C
 	int catCount = cats->GetTagCount();
 	for (int i = 0; i < catCount; ++i) {
 		catTitle = cats->GetTagByIndex(i)->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
-		tempBuf += wxString() + 
-						wxT("<option") + ((i==preselect) ? wxT(" selected") : wxT(""))	+ 
-						wxString::Format(wxT(" value=\"%i\">"),i) + ((i==0) ? wxString(_("all")) : catTitle) + 
-						wxT("</option>");
+		tempBuf << wxT("<option") <<
+			((i == preselect) ? wxT(" selected") : wxEmptyString) <<
+			wxT(" value=\"") << i << wxT("\">") <<
+			((i==0) ? wxString(_("all")) : catTitle) <<
+			wxT("</option>");
 	}
-	
 	Out.Replace(wxT("[CATBOX]"), boxlabel + tempBuf + wxT("</select></form>"));
 }
 
@@ -2309,7 +2378,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 {
 	CECPacket srv_req(EC_OP_GET_SERVER_LIST, EC_DETAIL_WEB);
 	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
-	if ( !srv_reply ) {
+	if (!srv_reply) {
 		return false;
 	}
 	//
@@ -2659,7 +2728,7 @@ bool UploadsInfo::ReQuery()
 {
 	CECPacket up_req(EC_OP_GET_ULOAD_QUEUE, EC_DETAIL_WEB);
 	CECPacket *up_reply = m_webApp->SendRecvMsg_v2(&up_req);
-	if ( !up_reply ) {
+	if (!up_reply) {
 		return false;
 	}
 	//

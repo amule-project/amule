@@ -54,51 +54,56 @@ class wxSocketBase;
 
 class CECTag {
 	public:
-				CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
-				// tag for custom data: just init object, alloc buffer and return pointer
-				CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
-			// Routines for special data types.
-				CECTag(ec_tagname_t name, uint8 data);
-				CECTag(ec_tagname_t name, uint16 data);
-				CECTag(ec_tagname_t name, uint32 data);
-				CECTag(ec_tagname_t name, const wxString& data);
-				CECTag(ec_tagname_t name, const EC_IPv4_t& data);
-				CECTag(ec_tagname_t name, const CMD4Hash& data);
-				CECTag(const CECTag& tag);
-				~CECTag(void);
+		CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy = true);
+		// tag for custom data: just init object, alloc buffer and return pointer
+		CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
+		// Routines for special data types.
+		CECTag(ec_tagname_t name, uint8 data);
+		CECTag(ec_tagname_t name, uint16 data);
+		CECTag(ec_tagname_t name, uint32 data);
+		CECTag(ec_tagname_t name, const wxString& data);
+		CECTag(ec_tagname_t name, const EC_IPv4_t& data);
+		CECTag(ec_tagname_t name, const CMD4Hash& data);
+		CECTag(const CECTag& tag);
+		~CECTag(void);
 
-		CECTag& operator=(const CECTag& rhs);
-
+		CECTag&		operator=(const CECTag& rhs);
 		bool		AddTag(const CECTag& tag);
-
-		const	CECTag*	GetTagByIndex(unsigned int index) const { return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-				CECTag*	GetTagByIndex(unsigned int index)		{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-		const	CECTag*	GetTagByName(ec_tagname_t name) const;
-				CECTag*	GetTagByName(ec_tagname_t name);
-
+		const CECTag*	GetTagByIndex(unsigned int index) const
+			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
+		CECTag*		GetTagByIndex(unsigned int index)
+			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
+		
+		const CECTag*	GetTagByName(ec_tagname_t name) const;
+		CECTag*		GetTagByName(ec_tagname_t name);
+		
 		uint16		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { return m_tagData; }
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
 		uint32		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
-			// Retrieving special data types
+		// Retrieving special data types
 		uint8		GetInt8Data(void) const { return *((uint8 *)m_tagData); }
 		uint16		GetInt16Data(void) const { return ntohs(*((uint16 *)m_tagData)); }
 		uint32		GetInt32Data(void) const { return ntohl(*((uint32 *)m_tagData)); }
-		wxString	GetStringData(void) const { return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
+		wxString	GetStringData(void) const
+			{ return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { return CMD4Hash((const unsigned char *)m_tagData); }
+		
 	protected:
-				CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		
 		bool		WriteTag(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
 		bool		ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque);
 		bool		WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
 		int		m_error;
 		const void *	m_tagData;
+		
 	private:
 		ec_tagname_t	m_tagName;
 		unsigned int	m_dataLen;
-		bool			m_dynamic;
+		bool		m_dynamic;
 
 		typedef std::vector<CECTag> TagList;
 		TagList m_tagList;
@@ -111,42 +116,46 @@ class CECTag {
  * Note, that an "empty" tag is empty because it contains no data, but it still
  * may contain children.
  */
-
 class CECEmptyTag : public CECTag {
 	public:
-				CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, NULL, false) {}
+		CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, NULL, false) {}
 };
 
 
 /**
  * High level EC packet handler class
  */
-
 class CECPacket : private CECEmptyTag {
 	friend class ECSocket;
 	public:
-				CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI) : CECEmptyTag(0), m_opCode(opCode)
-				{
-					// since EC_DETAIL_GUI is default - no point transmit it
-					if ( detail_level != EC_DETAIL_GUI ) {
-						AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
-					}
-				}
-				CECTag::AddTag;
-				CECTag::GetTagByIndex;
-				CECTag::GetTagByName;
-				CECTag::GetTagCount;
+		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_GUI)
+		: CECEmptyTag(0), m_opCode(opCode)
+		{
+			// since EC_DETAIL_GUI is default - no point transmit it
+			if ( detail_level != EC_DETAIL_GUI ) {
+				AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
+			}
+		}
+		
+		CECTag::AddTag;
+		CECTag::GetTagByIndex;
+		CECTag::GetTagByName;
+		CECTag::GetTagCount;
+
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 		EC_DETAIL_LEVEL GetDetailLevel() const
-				{
-					const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
-					return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
-				}
+		{
+			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
+			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_GUI;
+		}
+		
 	private:
-				CECPacket(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		CECPacket(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		
 		bool		WritePacket(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
 		ec_opcode_t	m_opCode;
 };
 
 #endif /* ECPACKET_H */
+
