@@ -310,7 +310,6 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			} else {
 				// Remove dynamic entries
 				m_FileMenu->Remove(432843);	// Assign category
-				m_FileMenu->Remove(MP_TOOGLELIST);
 			}
 			
 			// Add dinamic entries 
