@@ -130,7 +130,7 @@ CamuleLocker::~CamuleLocker()
 int CamuleDaemonApp::OnRun()
 {
 	const uint uLoop = 100;
-	AddDebugLogLineM(true, wxT("CamuleDaemonApp::OnRun()"));
+	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
 		wxString warning = _("ERROR: amule daemon is useless when external connections disabled. "

@@ -564,7 +564,7 @@ void CServerConnect::KeepConnectionAlive()
 		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
-		AddDebugLogLineM(false, wxT("Refreshing server connection"));
+		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));
 		delete files;
  	}
 }
@@ -579,6 +579,6 @@ void CServerConnect::InitLocalIP()
 	}
 	catch(...){
 		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs
-		AddDebugLogLineM(false, wxT("Unknown exception in CServerConnect::InitLocalIP"));
+		AddDebugLogLineM(false, logGeneral, wxT("Unknown exception in CServerConnect::InitLocalIP"));
 	}
 }

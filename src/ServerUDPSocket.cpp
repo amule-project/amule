@@ -325,9 +325,9 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				printf("Unknown Server UDP opcode %x\n",opcode);
 		}
 	} catch(wxString error) {
-		AddDebugLogLineM(false, wxT("Error while processing incoming UDP Packet: ") + error);
+		AddDebugLogLineM(false, logServer, wxT("Error while processing incoming UDP Packet: ") + error);
 	} catch(...) {
-		AddDebugLogLineM(false,
+		AddDebugLogLineM(false, logServer,
 			wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
 	}
 	
