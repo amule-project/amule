@@ -22,8 +22,10 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
+#ifndef AMULE_DAEMON
 #include <wx/dcmemory.h>	// Needed for wxMemoryDC
 #include <wx/gdicmn.h>		// Needed for wxRect
+#endif
 #include "types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
@@ -317,8 +319,9 @@ public:
 	uint32		GetSessionUp() const 		{ return m_nTransferedUp - m_nCurSessionUp; }
 	void		ResetSessionUp()		{ m_nCurSessionUp = m_nTransferedUp; }
 	uint16		GetUpPartCount() const 		{ return m_nUpPartCount; }
+#ifndef AMULE_DAEMON
 	void		DrawUpStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
-
+#endif
 	//download
 	void 		SetRequestFile(CPartFile* reqfile); 
 	CPartFile*	GetRequestFile() const { return m_reqfile; }
@@ -343,7 +346,9 @@ public:
 	void		SetRemoteQueueFull(bool flag)	{ m_bRemoteQueueFull = flag; }
 	bool		IsRemoteQueueFull() const 	{ return m_bRemoteQueueFull; }
 	void		SetRemoteQueueRank(uint16 nr);
+#ifndef AMULE_DAEMON
 	void		DrawStatusBar(wxMemoryDC* dc, wxRect rect, bool onlygreyrect, bool  bFlat);
+#endif	
 	bool		AskForDownload();
 	void		SendStartupLoadReq();
 	void		SendFileRequest();

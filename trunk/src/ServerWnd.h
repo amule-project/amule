@@ -23,6 +23,7 @@
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
+#include <wx/splitter.h>	// Needed for wxSplitter
 
 class CServerListCtrl;
 

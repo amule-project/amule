@@ -42,13 +42,12 @@
 #include <sys/stat.h>
 #include <wx/string.h>
 #include <wx/filename.h>
+#include <wx/fileconf.h>
 
 #include "KnownFile.h"		// Interface declarations.
 #include "otherfunctions.h"	// Needed for nstrdup
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SafeFile.h"		// Needed for CSafeMemFile
-#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
-#include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "packets.h"		// Needed for CTag
 #include "Preferences.h"	// Needed for CPreferences
