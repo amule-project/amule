@@ -533,7 +533,7 @@ void CamuleDlg::AddDebugLogLine(bool addtostatusbar, const wxChar* line, ...)
 		bufferline.Truncate(1000); // Max size 1000 chars
 		va_end(argptr);
 		
-		AddLogLine(addtostatusbar, wxT("%s"), bufferline.c_str());
+		AddLogLine(addtostatusbar, bufferline);
 	}
 }
 
@@ -624,8 +624,13 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	}
 	
-	wxString buffer = wxString::Format( wxT("%s: %s(%s) | %s: %s(%s)"), _("Users"), CastItoIShort(user_toshow).c_str(), CastItoIShort(totaluser).c_str(), _("Files"), CastItoIShort(file_toshow).c_str(), CastItoIShort(totalfile).c_str());
-	
+	wxString buffer = 	_("Users: ") +
+							CastItoIShort(user_toshow) + wxT(" (") + CastItoIShort(totaluser) +
+							wxT(") | ") + 
+							 _("Files: ") +
+							CastItoIShort(file_toshow) + wxT(" (") + CastItoIShort(totalfile) + 
+							wxT(")");
+									
 	wxStaticCast(FindWindow(wxT("userLabel")), wxStaticText)->SetLabel(buffer);
 
 	Layout();
@@ -658,9 +663,9 @@ void CamuleDlg::ShowTransferRate()
 
 	wxString buffer2;
 	if ( theApp.serverconnect->IsConnected() ) {
-		buffer2.Printf(wxT("aMule (%s | %s)"), buffer.c_str(), _("Connected") );
+		buffer2 = wxT("aMule (") +buffer + wxT(" | ") + %s + wxT(")") +  _("Connected");
 	} else {
-		buffer2.Printf(wxT("aMule (%s | %s)"), buffer.c_str(), _("Disconnected") );
+		buffer2 = wxT("aMule (") +buffer + wxT(" | ") + %s + wxT(")") +  _("Disconnected");
 	}
 	char* buffer3 = nstrdup(unicode2char(buffer2));
 	m_wndTaskbarNotifier->TraySetToolTip(buffer3);
@@ -822,8 +827,8 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 			}
 		}
 		catch(wxString error) {
-			wxString msg = wxString::Format( _("This ed2k link is invalid (%s)"), error.c_str() );
-			theApp.amuledlg->AddLogLine( true, _("Invalid link: %s"), msg.c_str());
+			wxString msg = _("This ed2k link is invalid: ") + error;
+			theApp.amuledlg->AddLogLine( true, _("Invalid link: ") + msg);
 		}
 	}
 ctl->SetValue(wxT(""));
