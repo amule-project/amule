@@ -139,8 +139,6 @@ BEGIN_EVENT_TABLE(CamuleApp, wxApp)
 		EVT_SOCKET(UDPSOCKET_HANDLER, CamuleApp::UDPSocketHandler)
 		// UDP Socket (clients)
 		EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleApp::ClientUDPSocketHandler)
-		// Server Socket
-		//EVT_SOCKET(SERVERSOCKET_HANDLER, CamuleApp::ServerSocketHandler)
 
 	// Socket timers (TCP + UDO)
 		EVT_TIMER(TM_UDPSOCKET, CamuleApp::OnUDPTimer)
@@ -1489,38 +1487,6 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
-void CamuleApp::ServerSocketHandler(wxSocketEvent& event)
-{
-	//printf("Got a server event\n");
-	//wxMessageBox(wxString::Format("Got Server Event %u",event.GetSocketEvent()));
-	wxASSERT(event.GetSocket()->IsKindOf(CLASSINFO(CServerSocket)));
-	CServerSocket * socket = (CServerSocket*) event.GetSocket();
-	if(!IsReady || !socket) {
-		// we are not mentally ready to receive anything
-		// or there is no socket on the event (got deleted?)
-		return;
-	}
-	if (socket->OnDestroy()) {
-		return;
-	}
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_CONNECTION:
-			socket->OnConnect(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_LOST:
-			socket->OnError(socket->LastError());
-			break;
-		case wxSOCKET_INPUT:
-			socket->OnReceive(wxSOCKET_NOERROR);
-			break;
-		case wxSOCKET_OUTPUT:
-			socket->OnSend(wxSOCKET_NOERROR);
-			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-}
 
 void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event) {
 
