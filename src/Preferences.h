@@ -205,7 +205,6 @@ public:
 
 	static void 	SetLanguage();
 	static bool 	AutoConnectStaticOnly() {return s_autoconnectstaticonly;}	
-	static int32	GetIPFilterLevel() { return s_filterlevel;}
 	void	LoadCats();
 	static const wxString&	GetDateTimeFormat() { return s_datetimeformat;}
 	// Download Categories (Ornis)
@@ -258,44 +257,46 @@ public:
 	static int32	GetAutoDropTimer() { return s_AutoDropTimer; }
 	
 	// Kry - External Connections
-	static bool 	AcceptExternalConnections() { return s_AcceptExternalConnections; }
-	static bool 	ECUseTCPPort() { return s_ECUseTCPPort; }
-	static int32	ECPort() { return s_ECPort; }
-	static const wxString&	ECPassword() { return s_ECPassword; }
+	static bool AcceptExternalConnections()		{ return s_AcceptExternalConnections; }
+	static bool ECUseTCPPort()			{ return s_ECUseTCPPort; }
+	static int32 ECPort()				{ return s_ECPort; }
+	static const wxString&	ECPassword()		{ return s_ECPassword; }
 	// Madcat - Fast ED2K Links Handler Toggling
-	static bool	GetFED2KLH() { return s_FastED2KLinksHandler; }
+	static bool GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
-	static bool BDlgTabsOnTop() { return true; }
+	static bool BDlgTabsOnTop()			{ return true; }
 	
 	// Kry - Ip filter On/Off
-	static bool GetIPFilterOn() { return s_IPFilterOn; }
-	static void SetIPFilterOn(bool val) { s_IPFilterOn = val; }
+	static bool GetIPFilterOn()			{ return s_IPFilterOn; }
+	static void SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
+	static int32 GetIPFilterLevel()			{ return s_filterlevel;}
+	static void SetIPFilterLevel(uint8 level)	{ s_filterlevel = level;}
 
 	// Kry - Source seeds On/Off
-	static bool GetSrcSeedsOn() { return s_UseSrcSeeds; }
+	static bool GetSrcSeedsOn() 			{ return s_UseSrcSeeds; }
 	
 	// Kry - Safe Max Connections
-	static bool GetSafeMaxConn() { return s_UseSafeMaxConn; }
+	static bool GetSafeMaxConn()			{ return s_UseSafeMaxConn; }
 	
-	static bool GetVerbosePacketError() { return s_VerbosePacketError; }
+	static bool GetVerbosePacketError()		{ return s_VerbosePacketError; }
 	
-	static bool IsSecureIdentEnabled() { return s_SecIdent; }
+	static bool IsSecureIdentEnabled()		{ return s_SecIdent; }
 	
-	static bool GetExtractMetaData() { return s_ExtractMetaData; }
+	static bool GetExtractMetaData()		{ return s_ExtractMetaData; }
 	
-	static bool ShowProgBar() { return s_ProgBar; }
-	static bool ShowPercent() { return s_Percent; }	
+	static bool ShowProgBar()			{ return s_ProgBar; }
+	static bool ShowPercent()			{ return s_Percent; }	
 	
-	static bool	GetAllocFullPart() { return s_AllocFullPart; };
-	static bool	GetAllocFullChunk() { return s_AllocFullChunk; };
+	static bool GetAllocFullPart()			{ return s_AllocFullPart; };
+	static bool GetAllocFullChunk()			{ return s_AllocFullChunk; };
 
 	static wxString GetBrowser();
 	
-	static const wxString& GetSkinFile() { return s_SkinFile; }
+	static const wxString& GetSkinFile()		{ return s_SkinFile; }
 	
-	static bool	UseSkin() { return s_UseSkinFile; }
+	static bool UseSkin()				{ return s_UseSkinFile; }
 	
-	static const wxString& GetOSDir() {return s_OSDirectory;};
+	static const wxString& GetOSDir()		{ return s_OSDirectory; }
 	
 protected:
 	void	CreateUserHash();
@@ -324,7 +325,6 @@ protected:
 ////////////// USER
 	static wxString	s_nick;
 
-
 ////////////// CONNECTION
 	static uint16	s_maxupload;
 	static uint16	s_maxdownload;
@@ -337,11 +337,9 @@ protected:
 	static bool		s_autoconnect;
 	static bool		s_autoconnectstaticonly;
 
-
 ////////////// SERVERS
 	static bool		s_autoserverlist;
 	static bool		s_deadserver;
-
 
 ////////////// FILES
 	static wxString	s_incomingdir;
@@ -350,8 +348,6 @@ protected:
 	
 ////////////// MISC
 	static int8		s_versioncheckdays;
-
-
 
 ////////////// GUI
 	static int16	s_downloadColumnWidths[13];
@@ -392,10 +388,6 @@ protected:
 	static bool		s_tableSortAscendingShared;
 	static bool		s_tableSortAscendingServer;
 	static bool		s_tableSortAscendingClientList;
-
-
-
-
 
 
 	static bool		s_scorsystem;
@@ -463,8 +455,6 @@ protected:
 	static bool		s_bDisableQueueList;
 
 
-
-
 	static bool		s_showRatesInTitle;
 
 	static wxString	s_VideoPlayer;
@@ -479,7 +469,6 @@ protected:
 	static bool		s_msgonlyfriends;
 	static bool		s_msgsecure;
 
-	static uint8	s_filterlevel;
 	static uint8	s_iFileBufferSize;
 	static uint8	s_iQueueSize;
 
@@ -491,26 +480,26 @@ protected:
 	static wxString	s_sWebPassword;
 	static wxString	s_sWebLowPassword;
 	static uint16	s_nWebPort;
-	static bool		s_bWebEnabled;
-	static bool		s_bWebUseGzip;
+	static bool	s_bWebEnabled;
+	static bool	s_bWebUseGzip;
 	static int32	s_nWebPageRefresh;
-	static bool		s_bWebLowEnabled;
+	static bool	s_bWebLowEnabled;
 	static wxString	s_sWebResDir;
 
 	static wxString	s_sTemplateFile;
-	static bool		s_bIsASCWOP;
+	static bool	s_bIsASCWOP;
 
-	static bool		s_showCatTabInfos;
-	static bool		s_resumeSameCat;
-	static bool		s_dontRecreateGraphs;
+	static bool	s_showCatTabInfos;
+	static bool	s_resumeSameCat;
+	static bool	s_dontRecreateGraphs;
 	static int32	s_allcatType;
 	
 	static int32 	s_desktopMode;
 	
 	// Madcat - Sources Dropping Tweaks
 	static uint8	s_NoNeededSources; // 0: Keep, 1: Drop, 2:Swap
-	static bool		s_DropFullQueueSources;
-	static bool		s_DropHighQueueRankingSources;
+	static bool	s_DropFullQueueSources;
+	static bool	s_DropHighQueueRankingSources;
 	static int32	s_HighQueueRanking;
 	static int32	s_AutoDropTimer;
 	
@@ -521,40 +510,40 @@ protected:
 	static wxString	s_ECPassword;
 	
 	// Kry - IPFilter On/Off
-	static bool		s_IPFilterOn;
+	static bool	s_IPFilterOn;
+	static uint8	s_filterlevel;
 	
 	// Kry - Source seeds on/off
-	static bool		s_UseSrcSeeds;
+	static bool	s_UseSrcSeeds;
 	
 	// Kry - Safe Max Connections
-	static bool		s_UseSafeMaxConn;
+	static bool	s_UseSafeMaxConn;
 	
-	static bool		s_VerbosePacketError;
+	static bool	s_VerbosePacketError;
 
-	static bool		s_ProgBar;
-	static bool		s_Percent;	
+	static bool	s_ProgBar;
+	static bool	s_Percent;	
 	
-	static bool		s_SecIdent;
+	static bool	s_SecIdent;
 	
-	static bool		s_ExtractMetaData;
+	static bool	s_ExtractMetaData;
 	
-	static bool		s_AllocFullPart;
-	static bool		s_AllocFullChunk;
+	static bool	s_AllocFullPart;
+	static bool	s_AllocFullChunk;
 	
 	static uint16	s_Browser;
 	static wxString	s_CustomBrowser;
-	static bool		s_BrowserTab;     // Jacobo221 - Open in tabs if possible
+	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible
 	
 	static wxString	s_OSDirectory;
 	
 	static wxString	s_SkinFile;
 	
-	static bool		s_UseSkinFile;
+	static bool	s_UseSkinFile;
 	
-	static bool		s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
-	static bool		s_bDlgTabsOnTop;			// Creteil: dlg aesthetics
-
-
+	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler
+	static bool	s_bDlgTabsOnTop;	// Creteil: dlg aesthetics
 };
 
 #endif // PREFERENCES_H
+
