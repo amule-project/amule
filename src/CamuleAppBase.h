@@ -20,6 +20,17 @@
 #ifndef CAMULEAPPBASE_H
 #define CAMULEAPPBASE_H
 
+// To keep things working, without needing to patch everything at once... =)
+#include "amule.h"
+
+#warning Cthulhu says: CamuleAppBase.h has been deprecated. Please use amule.h instead.
+/* 
+	The following code has been merged with the CamuleApp class.
+	Since this file has been deprecated, please avoid including it,
+	it will be removed later. Rather, include the amule.h file.
+*/
+#if 0
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>		// Needed for wxApp
 #include "types.h"		// Needed for DWORD
@@ -63,5 +74,7 @@ struct CamuleAppBase : public wxApp {
   CFriendList*		friendlist;
   CIPFilter*		ipfilter;
 };
+
+#endif
 
 #endif // CAMULEAPPBASE_H
