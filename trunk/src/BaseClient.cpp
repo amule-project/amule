@@ -225,6 +225,7 @@ void CUpDownClient::Init()
 	m_SoftLen = 0;
 	m_bHelloAnswerPending = false;
 	m_fSentCancelTransfer = 0;
+	Extended_aMule_SO = 0;
 }
 
 
@@ -662,13 +663,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	data->Write((uint8)CURRENT_VERSION_SHORT);
 	data->Write((uint8)EMULE_PROTOCOL);
 
-
-	#ifdef __CVS__
 	// Support for ET_MOD_VERSION [BlackRat]
 	data->Write((uint32)9); 
-	#else
-	data->Write((uint32)8);  // NO MOD_VERSION
-	#endif
 
 	CTag tag1(ET_COMPRESSION,1);
 	tag1.WriteTagToFile(data);
@@ -697,13 +693,11 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer) {
 	CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
 	tag8.WriteTagToFile(data);
 
-#ifdef __CVS__
 	// Support for tag ET_MOD_VERSION
-	wxString mod_name(MOD_VERSION);
+	wxString mod_name(MOD_VERSION_LONG);
 	CTag tag9(ET_MOD_VERSION, mod_name);
 	tag9.WriteTagToFile(data);
 	// Maella end
-#endif
 
 	Packet* packet = new Packet(data,OP_EMULEPROT);
 	delete data;
@@ -946,7 +940,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	tagMisOptions.WriteTagToFile(data);
 
 #ifdef __CVS__
-	wxString mod_name(MOD_VERSION);
+	wxString mod_name(MOD_VERSION_SHORT);
 	CTag tagModName(ET_MOD_VERSION, mod_name);
 	tagModName.WriteTagToFile(data);
 #endif
@@ -1370,6 +1364,7 @@ void CUpDownClient::ReGetClientSoft()
 			case SO_AMULE:
 				m_clientSoft = SO_AMULE;
 				if(GetClientModString().IsEmpty() == false) {
+					Extended_aMule_SO &= 2;
 					m_clientVerString = wxString::Format("aMule %s", GetClientModString().c_str());
 				} else {
 					m_clientVerString = _("aMule");
@@ -1422,6 +1417,7 @@ void CUpDownClient::ReGetClientSoft()
 			UINT nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			if (m_clientSoft == SO_AMULE) {
+				Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now
 				m_clientVerString += wxString::Format(" 1.x (based on eMule v0.%u)", nClientMinVersion);
 			} else {
 				m_clientVerString +=  wxString::Format(" v0.%u", nClientMinVersion);
@@ -1433,7 +1429,7 @@ void CUpDownClient::ReGetClientSoft()
 			
 			m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 
-			if (m_clientSoft == SO_AMULE) {
+			if (m_clientSoft == SO_AMULE) {				
 					m_nClientVersion = MAKE_CLIENT_VERSION(nClientMajVersion, nClientMinVersion, nClientUpVersion);
 					m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
 			} else {

@@ -46,17 +46,19 @@
 // aMule version 
 
 // No more Mod Version unless we're cvs
+
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 #define __CVS__
 
 #ifdef __CVS__
-	#define	MOD_VERSION				"aMule CVS"
-	#define	VERSION_MJR		(0x10        |    0x02) 
-	// Kry -                   ^- CVS     ^- Major
+	#define	MOD_VERSION_LONG				"aMule 2.0.0 CVS"
+	#define	MOD_VERSION_SHORT				"aMule CVS"
 #else
-	#define	VERSION_MJR		0x02
+	#define	MOD_VERSION_LONG				"aMule 2.0.0-rc3"
+	#define	MOD_VERSION_SHORT				"Would Never Happen" // Really!
 #endif
 
+#define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
 #define	VERSION_UPDATE	0 
 
