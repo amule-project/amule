@@ -86,7 +86,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logPartFile,		wxT("PartFiles") ),
 	CDebugCategory( logSHAHashSet,		wxT("SHAHashSet") ),
 	CDebugCategory( logServer,		wxT("Servers") ),
-	CDebugCategory( logProxy,		wxT("Proxy") )
+	CDebugCategory( logProxy,		wxT("Proxy") ),
+	CDebugCategory( logSearch,		wxT("Searching") ),
 };
 
 

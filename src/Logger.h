@@ -70,6 +70,8 @@ enum DebugType
 	logServer,
 	//! Warnings/Errors for proxy.
 	logProxy,
+	//! Warnings/Errors related to searching.
+	logSearch,
 };
 
 
