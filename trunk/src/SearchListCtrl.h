@@ -194,6 +194,11 @@ protected:
 	void OnPopupFakeCheck( wxCommandEvent& evt );
 
 	/**
+	 * Event handler for Razorback 2 stats menu items.
+	 */
+	void OnRazorStatsCheck( wxCommandEvent& evt );
+
+	/**
 	 * Event handler for download-file(s) menu item.
 	 */
 	void OnPopupDownload( wxCommandEvent& evt );
@@ -202,4 +207,3 @@ protected:
 };
 
 #endif // SEARCHLISTCTRL_H
-
