@@ -884,8 +884,8 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(SO_AMULE	<< 24) |
 				(VERSION_MJR			<< 17) |
 				(VERSION_MIN			<< 10) |
-				(VERSION_UPDATE			<<  7) |
-				(VERSION_RC			     ) 
+				(VERSION_UPDATE			<<  7)//|
+				//(RESERVED			     ) 
 				);
 	tagMuleVersion.WriteTagToFile(data);	
 
@@ -1436,17 +1436,13 @@ void CUpDownClient::ReGetClientSoft()
 			UINT nClientMajVersion = (m_nClientVersion >> 17) & 0x7f;
 			UINT nClientMinVersion = (m_nClientVersion >> 10) & 0x7f;
 			UINT nClientUpVersion  = (m_nClientVersion >>  7) & 0x07;
-			UINT nClientRcVersion  = m_nClientVersion & 0x0f;
 			
 			m_nClientVersion = nClientMajVersion*100*10*100 + nClientMinVersion*100*10 + nClientUpVersion*100;
 			if (m_clientSoft == SO_AMULE) {
-				m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);
-				if (nClientRcVersion > 0) {
-					if (nClientRcVersion == 0x0f) {
-						m_clientVerString +=  "-CVS";
-					} else {
-						m_clientVerString +=  wxString::Format("-rc%i",nClientRcVersion);
-					}
+				if (nClientMajVersion >= 0x0f) {
+					m_clientVerString +=  wxString::Format(" v%u.%u.%u CVS", nClientMajVersion & 0x0f, nClientMinVersion, nClientUpVersion);						;
+				} else {
+					m_clientVerString +=  wxString::Format(" v%u.%u.%u", nClientMajVersion, nClientMinVersion, nClientUpVersion);						
 				}
 			} else {
 				m_clientVerString +=  wxString::Format(" v%u.%u%c", nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
