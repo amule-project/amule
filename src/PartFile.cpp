@@ -953,9 +953,8 @@ void CPartFile::SaveSourceSeeds() {
 	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
 	int n_sources = 0;
 	
-	for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
-		it != m_downloadingSourcesList.end() && n_sources < 5; 
-		it++ ) {
+	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+	for( ; it != m_downloadingSourcesList.end() && n_sources < 5; it++) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->HasLowID()) {
 			continue;
@@ -1513,7 +1512,7 @@ void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 
 int CPartFile::GetValidSourcesCount()
 {
-	int counter=0;
+	int counter = 0;
 	
 	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ){
 		CUpDownClient* cur_src = *it;
@@ -1528,17 +1527,17 @@ int CPartFile::GetValidSourcesCount()
 
 uint16 CPartFile::GetNotCurrentSourcesCount()
 {
-		uint16 counter=0;
+	uint16 counter = 0;
 
-		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ){
-			CUpDownClient* cur_src = *it;
-			uint8 state = cur_src->GetDownloadState();
-			
-			if ( state != DS_ONQUEUE && state != DS_DOWNLOADING ) {
-				counter++;
-			}
+	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ){
+		CUpDownClient* cur_src = *it;
+		uint8 state = cur_src->GetDownloadState();
+	
+		if ( state != DS_ONQUEUE && state != DS_DOWNLOADING ) {
+			counter++;
 		}
-		return counter;
+	}
+	return counter;
 }
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
@@ -1570,13 +1569,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	kBpsDown = 0.0;
 
 	if (m_icounter < 10) {
-		for(	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
-			it != m_downloadingSourcesList.end(); ) {
+		std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+		for( ; it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
 #ifdef __DEBUG__
-#warning phoenix - caught one insane source here in a backtrace - I
+//#warning caught one insane source here in a backtrace - I
 			// if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if(!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
+			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
 				debugprintf(true, "\tcontinue1\n");
 				continue;
 			}
@@ -1608,9 +1607,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 			cur_src = *it++;
 #ifdef __DEBUG__
-#warning phoenix - caught one insane source here in a backtrace - II
+//#warning caught one insane source here in a backtrace - II
 			//if(!IsASaneFileClientCombination(false, "CPartFile::Process", __FILE__, __LINE__, cur_src)) {
-			if(!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
+			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::Process", __FILE__, __LINE__)) {
 				// this happens all the time.
 				debugprintf(true, "\tcontinue2\n");
 				continue;
@@ -1911,18 +1910,16 @@ void CPartFile::UpdatePartsInfo() {
 		count.Alloc(GetSourceCount());	
 	}
 	
-	CUpDownClient* cur_src;
-
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
-		cur_src = *it;
+		CUpDownClient *cur_src = *it;
 		for (uint16 i = 0; i < partcount; i++)	{
 #ifdef __DEBUG__
-#warning phoenix - caught an insane source here in a backtrace - III
+//#warning caught an insane source here in a backtrace - III
 			if(!IsASaneFileClientCombination(true, "CPartFile::UpdatePartsInfo", __FILE__, __LINE__, cur_src)) {
 				debugprintf(true, "\tcontinue3\n");
 				continue;
 			}
-#endif __DEBUG__
+#endif // __DEBUG__
 			if (cur_src->IsPartAvailable(i)) {
 				m_SrcpartFrequency[i] +=1;
 			}
@@ -2544,7 +2541,6 @@ uint8 CPartFile::PerformFileComplete()
 
 void  CPartFile::RemoveAllSources(bool bTryToSwap)
 {
-
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end();) {
 		CUpDownClient* cur_src = *it++;
 		if (bTryToSwap) {
@@ -2990,17 +2986,15 @@ void CPartFile::UpdateAvailablePartsCount()
 	uint16 iPartCount = GetPartCount();
 	for (uint32 ixPart = 0; ixPart < iPartCount; ixPart++) {		
 		for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it) {
+			CUpDownClient *cur_src = *it;
 #ifdef __DEBUG__
-#warning phoenix - caught one insane source here in a backtrace - IV
-			CUpDownClient* cur_src = *it;
+//#warning caught one insane source here in a backtrace - IV
 			if (!cur_src->IsASaneUpDownClient(true, "CPartFile::UpdateAvailablePartsCount", __FILE__, __LINE__)) {
 				debugprintf(true,"\tcontinue4\n");
 				continue;
 			}
-			if (cur_src->IsPartAvailable(ixPart)) {
-#else // __DEBUG__
-			if ((*it)->IsPartAvailable(ixPart)) {
 #endif // __DEBUG__
+			if (cur_src->IsPartAvailable(ixPart)) {
 				availablecounter++;
 				break;
 			}
@@ -3056,7 +3050,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			if (reqstatus) {
 				// only send sources which have needed parts for this client
 #ifdef __DEBUG__
-#warning phoenix - hack to see the mixed sources problem - I
+//#warning hack to see the mixed sources problem - I
 				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src, forClient)) {
 					continue;
 				}
@@ -3072,7 +3066,7 @@ Packet *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
 #ifdef __DEBUG__
-#warning phoenix - hack to see the mixed sources problem - II
+//#warning hack to see the mixed sources problem - II
 				if(!IsASaneFileClientCombination(true, "CPartFile::CreateSrcInfoPacket", __FILE__, __LINE__, cur_src)) {
 					continue;
 				}
@@ -3537,6 +3531,14 @@ void CPartFile::UpdateFileRatingCommentAvail()
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		CUpDownClient* cur_src = *it;
 		
+#ifdef __DEBUG__
+//#warning caught one insane source here in a backtrace - III
+		if (!cur_src->IsASaneUpDownClient(true, "CPartFile::UpdateFileRatingCommentAvail", __FILE__, __LINE__)) {
+			// this happens all the time.
+			debugprintf(true, "\tcontinue5\n");
+			continue;
+		}
+#endif // __DEBUG__
 		if (cur_src->GetFileComment().Length()>0) {
 			hasComment=true;
 		}
@@ -3753,7 +3755,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
 #ifdef __DEBUG__
-		if(client->IsASaneUpDownClient(true, "CPartFile::AddDownloadingSource", __FILE__, __LINE__)) {
+		if (client->IsASaneUpDownClient(true, "CPartFile::AddDownloadingSource", __FILE__, __LINE__)) {
 			m_downloadingSourcesList.push_back(client);
 		}
 #else // __DEBUG__
@@ -3866,7 +3868,7 @@ bool CPartFile::IsASanePartFile(bool verbose, char *function, char *file, int li
  */
 bool CPartFile::IsASaneFileClientCombination(
 	bool verbose, char *function, char *file, int line, 
-	const CUpDownClient* cur_src, const CUpDownClient* forClient) const
+	const CUpDownClient *cur_src, const CUpDownClient *forClient) const
 {
 	bool sane_this = IsASanePartFile(true, function, file, line);
 	bool sane_cur_src = 
