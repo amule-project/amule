@@ -104,11 +104,11 @@ Section 3: EC tags
 	taglen = strlen(string) + 1).
 
     EC_TAG_PASSWD_HASH:
-	ASCIIZ password hash, [32 * char], taglen := 33.
+	ASCIIZ password hash.
 
     EC_TAG_CLIENT_NAME:
 	An EC_TAG_STRING dedicated to hold the client name.
 
     EC_TAG_PROTOCOL_VERSION:
-	[uint16] protocol version, MSB = major, LSB = minor version number.
-	Should be 0x0200 = v2.0.
+	A "struct { uint8 major, minor; }" that is by default = { 0x02, 0x00 };
+	for the 2.0 version.

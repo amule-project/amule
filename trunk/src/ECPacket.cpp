@@ -24,11 +24,21 @@
 
 #define	ARRAY_ALLOC_CHUNKS	16
 
-//
-// CECTag class
-//
+/**********************************************************
+ *							  *
+ *	CECTag class					  *
+ *							  *
+ **********************************************************/
 
-CECTag::CECTag(const ec_tagname_t name, const ec_taglen_t length, const void *data, bool copy) : m_tagName(name), m_dynamic(copy)
+/**
+ * Creates a new CECTag instance from the given data
+ *
+ * @param name	 TAG name
+ * @param length length of data buffer
+ * @param data	 TAG data
+ * @param copy	 whether to create a copy of the TAG data at *data, or should use the provided pointer.
+ */
+CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy) : m_tagName(name), m_dynamic(copy)
 {
 	m_error = 0;
 	m_dataLen = length;
@@ -44,17 +54,23 @@ CECTag::CECTag(const ec_tagname_t name, const ec_taglen_t length, const void *da
 	} else {
 		m_tagData = data;
 	}
-		m_tagLen = m_dataLen;
-		m_listSize = 0;
+	m_listSize = 0;
 };
 
-
-CECTag::CECTag(const ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true)
+/**
+ * Creates a new CECTag instance, which contains a string
+ *
+ * @param name TAG name
+ * @param data wxString object, it's contents are converted to UTF-8.
+ *
+ * \sa GetTagString()
+ */
+CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true)
 {
 	const wxCharBuffer buf = wxConvUTF8.cWC2MB(data.wc_str(aMuleConv));
 	const char *utf8 = (const char *)buf;
 
-	m_dataLen = m_tagLen = strlen(utf8) + 1;
+	m_dataLen = strlen(utf8) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
 		memcpy((void *)m_tagData, utf8, m_dataLen);
@@ -66,7 +82,9 @@ CECTag::CECTag(const ec_tagname_t name, const wxString& data) : m_tagName(name),
 	m_tagList = NULL;
 }
 
-
+/**
+ * Copy constructor
+ */
 CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic )
 {
 	m_error = 0;
@@ -86,7 +104,6 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 			m_tagData = tag.m_tagData;
 		}
 	} else m_tagData = NULL;
-	m_tagLen = tag.m_dataLen;
 	if (tag.m_tagCount != 0) {
 		m_tagList = (_taglist_t)malloc(tag.m_tagCount * sizeof(CECTag *));
 		if (m_tagList != NULL) {
@@ -96,8 +113,6 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 				if ((*m_tagList)[i] != NULL) {
 					if ((*m_tagList)[i]->m_error == 0) {
 						m_tagCount++;
-						m_tagLen += (*tag.m_tagList)[i]->GetTagLen();
-						m_tagLen += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (HasTagCount((*tag.m_tagList)[i]->m_tagName) ? 2 : 0);
 					} else {
 						m_error = (*m_tagList)[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
@@ -120,8 +135,10 @@ CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m
 	}
 }
 
-
-CECTag::~CECTag()
+/**
+ * Destructor - frees allocated data and deletes child TAGs.
+ */
+CECTag::~CECTag(void)
 {
 	if (m_dynamic) free((void *)m_tagData);
 	for (int i=0; i<m_tagCount; i++) {
@@ -129,7 +146,12 @@ CECTag::~CECTag()
 	}
 }
 
-
+/**
+ * Add a child tag to this one.
+ *
+ * @param tag CECTag to add.
+ * @return true on succcess, false when an error occured
+ */
 bool CECTag::AddTag(const CECTag& tag)
 {
 	if (m_listSize == 0) {
@@ -155,7 +177,6 @@ bool CECTag::AddTag(const CECTag& tag)
 	if (((*m_tagList)[m_tagCount]) != NULL) {
 		if ((*m_tagList)[m_tagCount]->m_error == 0) {
 			m_tagCount++;
-			m_tagLen += tag.m_tagLen;
 			return true;
 		} else {
 			m_error = (*m_tagList)[m_tagCount]->m_error;
@@ -173,26 +194,25 @@ bool CECTag::AddTag(const CECTag& tag)
 
 CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 {
-	ec_taglen_t tmp_tagLen;
+	ec_taglen_t tagLen;
 
 	m_listSize = m_tagCount = 0;
 	m_tagData = NULL;
+	m_dataLen = 0;
 	if (!socket.ReadNumber(sock, &m_tagName, sizeof(ec_tagname_t))) {
 		m_error = 2;
 		return;
 	}
-	if (!socket.ReadNumber(sock, &tmp_tagLen, sizeof(ec_taglen_t))) {
+	if (!socket.ReadNumber(sock, &tagLen, sizeof(ec_taglen_t))) {
 		m_error = 2;
 		return;
 	}
-	m_tagLen = tmp_tagLen;
 	if (HasTagCount(m_tagName)) {
 		if (!ReadChildren(sock, socket)) {
 			return;
 		}
-	} else {
-		m_dataLen = m_tagLen;
 	}
+	m_dataLen = tagLen - GetTagLen();
 	if (m_dataLen > 0) {
 		m_tagData = malloc(m_dataLen);
 		if (m_tagData != NULL) {
@@ -213,10 +233,9 @@ CECTag::CECTag(wxSocketBase *sock, ECSocket& socket) : m_dynamic(true)
 
 bool CECTag::WriteTag(wxSocketBase *sock, ECSocket& socket) const
 {
-	ec_taglen_t tmp_tagLen = m_tagLen;
-
+	ec_taglen_t tagLen = GetTagLen();
 	if (!socket.WriteNumber(sock, &m_tagName, sizeof(ec_tagname_t))) return false;
-	if (!socket.WriteNumber(sock, &tmp_tagLen, sizeof(ec_taglen_t))) return false;
+	if (!socket.WriteNumber(sock, &tagLen, sizeof(ec_taglen_t))) return false;
 	if (HasTagCount(m_tagName)) {
 		if (!WriteChildren(sock, socket)) return false;
 	}
@@ -231,7 +250,6 @@ bool CECTag::WriteTag(wxSocketBase *sock, ECSocket& socket) const
 
 bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket)
 {
-	ec_taglen_t tmp_tagLen = m_tagLen;
 	uint16 tmp_tagCount;
 
 	if (!socket.ReadNumber(sock, &tmp_tagCount, 2)) {
@@ -247,8 +265,6 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket)
 				if ((*m_tagList)[i] != NULL) {
 					if ((*m_tagList)[i]->m_error == 0) {
 						m_tagCount++;
-						tmp_tagLen -= (*m_tagList)[i]->GetTagLen();
-						tmp_tagLen -= sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (HasTagCount((*m_tagList)[i]->GetTagName()) ? 2 : 0);
 					} else {
 						m_error = (*m_tagList)[i]->m_error;
 #ifndef KEEP_PARTIAL_PACKETS
@@ -268,7 +284,6 @@ bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket)
 	} else {
 		m_tagList = NULL;
 	}
-	m_dataLen = tmp_tagLen;
 	return true;
 }
 
@@ -286,30 +301,100 @@ bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket) const
 	return true;
 }
 
-
-CECTag *CECTag::GetTagByName(const ec_tagname_t name) const
+/**
+ * Finds the (first) child tag with given name.
+ *
+ * @param name TAG name to look for.
+ * @return the tag found, or NULL.
+ */
+CECTag *CECTag::GetTagByName(ec_tagname_t name) const
 {
 	for (int i=0; i<m_tagCount; i++)
 		if ((*m_tagList)[i]->m_tagName == name) return (*m_tagList)[i];
 	return NULL;
 }
 
-
-uint32 CECTag::GetTagLen(void)
+/**
+ * Query TAG length that is suitable for the TAGLEN field (i.e.\ 
+ * without it's own header size).
+ *
+ *
+ */
+uint32 CECTag::GetTagLen(void) const
 {
 	uint32 length = m_dataLen;
 	for (int i=0; i<m_tagCount; i++) {
 		length += (*m_tagList)[i]->GetTagLen();
 		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + (HasTagCount((*m_tagList)[i]->GetTagName()) ? 2 : 0);
 	}
-	m_tagLen = length;
 	return length;
 }
 
+/*!
+ * \fn CECTag *CECTag::GetTagByIndex(unsigned int index) const
+ *
+ * \brief Finds the indexth child tag.
+ *
+ * \param index 0-based index, 0 <= index < GetTagCount()
+ *
+ * \return The child tag, or NULL if index out of range.
+ */
 
-//
-// ECPacket class
-//
+/*!
+ * \fn uint16 CECTag::GetTagCount(void) const
+ *
+ * \brief Returns the number of child tags.
+ *
+ * \return The number of child tags.
+ */
+
+/*!
+ * \fn const void *CECTag::GetTagData(void) const
+ *
+ * \brief Returns a pointer to the TAG DATA.
+ *
+ * \return A pointer to the TAG DATA. (As specified with the data field of the constructor.)
+*/
+
+/*!
+ * \fn uint16 CECTag::GetTagDataLen(void) const
+ *
+ * \brief Returns the length of the data buffer.
+ *
+ * \return The length of the data buffer.
+ */
+
+/*!
+ * \fn ec_tagname_t CECTag::GetTagName(void) const
+ *
+ * \brief Returns TAGNAME.
+ *
+ * \return The name of the tag.
+ */
+
+/*!
+ * \fn wxString CECTag::GetTagString(void) const
+ *
+ * \brief Returns the string data of the tag.
+ *
+ * Returns a wxString created from TAGDATA. It is automatically
+ * converted from UTF-8 to the internal application encoding.
+ * Should be used with care (only on tags created with the
+ * CECTag(const ec_tagname_t, const wxString&) constructor),
+ * becuse it does not perform any check to see if the tag really contains a
+ * string object.
+ *
+ * \return The string data of the tag.
+ *
+ * \sa CECTag(const ec_tagname_t, const wxString&)
+ */
+
+
+/**********************************************************
+ *							  *
+ *	CECPacket class					  *
+ *							  *
+ **********************************************************/
 
 CECPacket::CECPacket(wxSocketBase *sock, ECSocket& socket) : CECTag(0, 0, NULL, true)
 {
@@ -328,3 +413,25 @@ bool CECPacket::WritePacket(wxSocketBase *sock, ECSocket& socket) const
 	if (!WriteChildren(sock, socket)) return false;
 	return true;
 }
+
+/*!
+ * \fn CECPacket::CECPacket(ec_opcode_t opCode)
+ *
+ * \brief Creates a new packet with given OPCODE.
+ */
+
+/*!
+ * \fn ec_opcode_t CECPacket::GetOpCode(void) const
+ *
+ * \brief Returns OPCODE.
+ *
+ * \return The OpCode of the packet.
+ */
+
+/*!
+ * \fn uint32 CECPacket::GetPacketLength(void) const
+ *
+ * \brief Returns the length of the packet.
+ *
+ * \return The length of the packet.
+ */
