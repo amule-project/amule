@@ -5,6 +5,7 @@ Version 2.0.0rc6 - The '???' version.
 	GonoszTopi:
 		* Patch to fix buffer overflow in cas when line had more than
 		  80 chars.
+		* Patch to fix help switch in ExternalConnector.cpp
 
 	Hetfield:
 		* Lots of 3.4.x compilation fixes, due to -DWX_PRECOMP
