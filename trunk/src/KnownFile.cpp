@@ -804,7 +804,7 @@ bool CKnownFile::LoadTagsFromFile(CFile* file){
 					m_bAutoUpPriority = true;
 				}
 				else {
-					if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH) {
+					if (m_iUpPriority != PR_VERYLOW && m_iUpPriority != PR_LOW && m_iUpPriority != PR_NORMAL && m_iUpPriority != PR_HIGH && m_iUpPriority != PR_VERYHIGH && m_iUpPriority != PR_POWERSHARE) {
 						m_iUpPriority = PR_NORMAL;
 					}					
 					m_bAutoUpPriority = false;
