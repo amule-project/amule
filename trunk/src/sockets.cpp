@@ -184,7 +184,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender){
 		data.WriteRaw(theApp.glob_prefs->GetUserHash(),16);
 		data.Write(GetClientID());
 		data.Write(app_prefs->GetPort());
-		data.Write((uint32)4); // tagcount
+		data.Write((uint32)5); // tagcount
 
 		CTag tagname(CT_NAME,app_prefs->GetUserNick());
 		tagname.WriteTagToFile(&data);
