@@ -110,7 +110,7 @@ wxString _SpecialChars(wxString str) {
 	return str;
 }
 
-uint32 GetHigherPrio(int prio, bool autoprio)
+uint32 GetHigherPrio(uint32 prio, bool autoprio)
 {
 	uint32 upperpriority = PR_LOW;
 	if (autoprio) {
@@ -153,7 +153,7 @@ wxString Prio2Str(uint32 nFilePriority, bool bFileAutoPriority)
 	return sFilePriority;
 }
 
-uint32 GetLowerPrio(int prio, bool autoprio)
+uint32 GetLowerPrio(uint32 prio, bool autoprio)
 {
 	uint32 lesserpriority = PR_LOW;
 	if (autoprio) {

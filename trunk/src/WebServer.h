@@ -139,7 +139,7 @@ class DownloadFiles {
 		long		lTransferringSourceCount;
 		long		lSourceCountA4AF;
 		double		fCompleted;
-		long		lFilePrio;
+		uint32		lFilePrio;
 		bool		bFileAutoPriority;
 		wxString	sFileHash;
 		wxString	sED2kLink;
