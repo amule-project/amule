@@ -370,8 +370,8 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request,
 		
 		CPartFile_Encoder &enc = encoders[cur_file];
 //		CECTag *etag = encoders[cur_file].Encode();
-		CECTag *etag = enc.Encode();
-		filetag.AddTag(etag);
+//		CECTag *etag = enc.Encode();
+//		filetag.AddTag(etag);
 
 		response->AddTag(filetag);
 	}
@@ -988,7 +988,7 @@ CECTag *CPartFile_Encoder::Encode()
 			Gap_Struct diff;
 			Gap_Struct *curr = m_file->gaplist.GetAt(curr_pos);
 			gap_ptr = prev->start;
-			while ( curr->end <= prev->end ) {
+			while ( curr_pos && (curr->end <= prev->end) ) {
 				if ( gap_ptr != curr->start ) {
 					diff.start = gap_ptr;
 					diff.end = curr->start;
