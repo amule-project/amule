@@ -434,13 +434,13 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				CServer *server = theApp.serverlist->GetServerAt(i);
 				if (server) {
 					buffer.Append(
-						server->GetListName() + wxString(wxT("\t")) +
-						server->GetDescription() + wxString(wxT("\t")) +
-						wxString::Format(wxT("%i"),server->GetPort()) + wxString(wxT("\t")) +
-						server->GetAddress() + wxString(wxT("\t")) +
-						wxString::Format(wxT("%i"),server->GetUsers()) + wxString(wxT("\t")) +
-						wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxString(wxT("\t")) +
-						wxString::Format(wxT("%i"),server->GetFiles()) + wxString(wxT("\n"))
+						server->GetListName() + wxT("\t") +
+						server->GetDescription() + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetPort()) + wxT("\t") +
+						server->GetAddress() + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetUsers()) + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetMaxUsers()) + wxT("\t") +
+						wxString::Format(wxT("%i"),server->GetFiles()) + wxT("\n")
 					);
 				}
 			}
@@ -475,7 +475,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			if (theApp.serverconnect->IsConnected()) {
 				buffer.Append(wxT("Connected\t"));
 				theApp.serverconnect->IsLowID() ? buffer.Append(wxT("Low ID\t")) : buffer.Append(wxT("High ID\t"));
-				buffer+=theApp.serverconnect->GetCurrentServer()->GetListName() + wxString(wxT("\t"));
+				buffer+=theApp.serverconnect->GetCurrentServer()->GetListName() + wxT("\t");
 				buffer+=wxString::Format(wxT("%ld"), (long)theApp.serverconnect->GetCurrentServer()->GetUsers());
 			} else if (theApp.serverconnect->IsConnecting()) {
 				buffer.Append(wxT("Connecting\t"));
@@ -655,9 +655,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					( ( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ) ?
 						theApp.CreateED2kSourceLink(cur_file) :
 						theApp.CreateED2kLink(cur_file) ) +
-					wxString(wxT("\t")) + tempFileInfo + wxString(wxT("\t")) +
+					wxT("\t") + tempFileInfo + wxT("\t") +
 					( (!cur_file->IsPartFile()) ?
-						wxString(wxT("1\n")) : wxString(wxT("0\n")) );
+						wxT("1\n") : wxT("0\n") );
 			}
 		}
 		return buffer;
@@ -671,7 +671,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 			 pos != 0;theApp.uploadqueue->GetNextFromUploadList(pos)) {
 			CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 			if (cur_client) {
-				buffer += cur_client->GetUserName() + wxString(wxT("\t"));
+				buffer += cur_client->GetUserName() + wxT("\t");
 				tempFileInfo = cur_client->GetUploadFileInfo();
 				tempFileInfo.Replace(wxT("\n"), wxT("|"));
 				buffer += wxString::Format(wxT("%s\t"), tempFileInfo.GetData());
@@ -707,9 +707,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}					
 				CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetRequestFile()->GetFileHash());
 				buffer +=
-					file ? cur_client->GetDownloadFile()->GetFileName() : wxString(wxT("?")) +
+					file ? cur_client->GetDownloadFile()->GetFileName() : wxT("?") +
 					wxString::Format(wxT("\t%d\t"), cur_client->GetScore(false)) +
-					( cur_client->IsBanned() ? wxString(wxT("1\n")) : wxString(wxT("0\n")) );
+					( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 			}
 		}
 		return buffer;
@@ -728,11 +728,11 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 		for (int i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
 			const CKnownFile *cur_file = theApp.sharedfiles->GetFileByIndex(i);
 			if (cur_file) {
-				buffer += cur_file->GetFileName() + wxString(wxT("\t")) << 
-					(long)cur_file->GetFileSize() << wxString(wxT("\t")) +
+				buffer += cur_file->GetFileName() + wxT("\t") << 
+					(long)cur_file->GetFileSize() << wxT("\t") +
 					( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
 						theApp.CreateED2kSourceLink(cur_file) :
-						theApp.CreateED2kLink(cur_file)	) + wxString(wxT("\t")) +
+						theApp.CreateED2kLink(cur_file)	) + wxT("\t") +
 						wxString::Format(wxT("%ld\t%ld\t%d\t%d\t%d\t%d\t"),
 							(long)cur_file->statistic.GetTransfered(),
 							(long)cur_file->statistic.GetAllTimeTransfered(),
@@ -740,7 +740,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 							cur_file->statistic.GetAllTimeRequests(),
 							cur_file->statistic.GetAccepts(),
 							cur_file->statistic.GetAllTimeAccepts() ) +
-						EncodeBase16(cur_file->GetFileHash(), 16) + wxString(wxT("\t"));					
+						EncodeBase16(cur_file->GetFileHash(), 16) + wxT("\t");					
 				int prio = cur_file->GetUpPriority();
 				if (cur_file->IsAutoUpPriority()) {
 					switch (prio) {
@@ -775,7 +775,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 				}
 				buffer +=
 					wxString::Format(wxT("\t%d\t"), prio) +
-					( cur_file->IsAutoUpPriority() ? wxString(wxT("1\n")) : wxString(wxT("0\n")) );
+					( cur_file->IsAutoUpPriority() ? wxT("1\n") : wxT("0\n") );
 			}
 		}
 		return buffer;
@@ -859,12 +859,12 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					// Needed because GetFileType() no longer exists (and returned always returned 2 anyway)
 					// buffer.Append(wxString::Format("%d\t", cur_file->GetFileType()));
 					// buffer.Append(wxString::Format(wxT("%d\t"), 2));
-						( cur_file->IsPartFile() ? wxString(wxT("Is PartFile\t")) : wxString(wxT("Is Not PartFile\t")) ) +
-						( cur_file->IsStopped()  ? wxString(wxT("Is Stopped\t"))  : wxString(wxT("Is Not Stopped\t"))  ) +
+						( cur_file->IsPartFile() ? wxT("Is PartFile\t") : wxT("Is Not PartFile\t") ) +
+						( cur_file->IsStopped()  ? wxT("Is Stopped\t")  : wxT("Is Not Stopped\t")  ) +
 						( GetFiletype(cur_file->GetFileName()) == ftVideo ? 
-							wxString(wxT("Is Movie\t")) : wxString(wxT("Is Not Movie\t")) ) +
+							wxT("Is Movie\t") : wxT("Is Not Movie\t") ) +
 						( GetFiletype(cur_file->GetFileName()) == ftArchive ?
-							wxString(wxT("Is Archive")) : wxString(wxT("Is Not Archive")) );
+							wxT("Is Archive") : wxT("Is Not Archive") );
 					return buffer;
 				}
 			}
@@ -1036,7 +1036,7 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					msg = wxString::Format(_("aMule IP Filter level was already %d. Nothing changed."), level);
 				}
 			} else {
-				msg = wxString(_("Invalid IP Filter level entered: ")) + args + wxString(wxT("."));
+				msg = wxString(_("Invalid IP Filter level entered: ")) + args + wxT(".");
 			}
 			AddLogLineM(true, msg);
 			return msg;
@@ -1588,10 +1588,10 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 					CServer *server = theApp.serverlist->GetServerAt(i);
 					if (server) {
 						buffer +=
-							server->GetListName() + wxString(wxT("\t")) +
-							server->GetDescription() + wxString(wxT("\t")) +
-							wxString::Format(wxT("%i"), server->GetPort()) + wxString(wxT("\t")) +
-							server->GetAddress() + wxString(wxT("\t")) +
+							server->GetListName() + wxT("\t") +
+							server->GetDescription() + wxT("\t") +
+							wxString::Format(wxT("%i"), server->GetPort()) + wxT("\t") +
+							server->GetAddress() + wxT("\t") +
 							wxString::Format(wxT("%i\t%i\t%i\n"),
 								server->GetUsers(),
 								server->GetMaxUsers(),
@@ -1778,8 +1778,8 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 							( theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() ?
 								theApp.CreateED2kSourceLink(cur_file) :
 								theApp.CreateED2kLink(cur_file) ) +
-							wxT("\t") + tempFileInfo + wxString(wxT("\t")) +
-							( !cur_file->IsPartFile() ? wxString(wxT("1\n")) : wxString(wxT("0\n")) );
+							wxT("\t") + tempFileInfo + wxT("\t") +
+							( !cur_file->IsPartFile() ? wxT("1\n") : wxT("0\n") );
 					}
 				}
 				return buffer;
@@ -2126,9 +2126,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(
 							cur_client->GetRequestFile()->GetFileHash());
 						buffer +=
-							( file ? cur_client->GetDownloadFile()->GetFileName() : wxString(wxT("?")) ) + wxString(wxT("\t")) +
+							( file ? cur_client->GetDownloadFile()->GetFileName() : wxString(wxT("?")) ) + wxT("\t") +
 							wxString::Format(wxT("%i\t"), cur_client->GetScore(false)) +
-							( cur_client->IsBanned() ? wxString(wxT("1\n")) : wxString(wxT("0\n")) );
+							( cur_client->IsBanned() ? wxT("1\n") : wxT("0\n") );
 					}
 				}
 				return buffer;
@@ -2145,9 +2145,9 @@ wxString ExternalConn::ProcessRequest(const wxString& item) {
 						temp.Replace(wxT("\n"), wxT(" | "));
 						CKnownFile* file = theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID());
 						buffer +=
-							cur_client->GetUserName() + wxString(wxT("\t")) +
-							temp + wxString(wxT("\t")) +
-							( file ? file->GetFileName() : wxString(wxT("?")) ) + wxString(wxT("\t")) +
+							cur_client->GetUserName() + wxT("\t") +
+							temp + wxT("\t") +
+							( file ? file->GetFileName() : wxString(wxT("?")) ) + wxT("\t") +
 							wxString::Format(wxT("%i\t%i\t%i\n"),
 								cur_client->GetTransferedDown(),
 								cur_client->GetTransferedUp(),
@@ -2276,7 +2276,7 @@ wxString ExternalConn::GetDownloadFileInfo(const CPartFile* file)
 {
 	wxString sRet;
 	wxString strHash = EncodeBase16(file->GetFileHash(), 16);
-	wxString strComplx = CastItoXBytes(file->GetCompletedSize()) + wxString(wxT("/")) + CastItoXBytes(file->GetFileSize());
+	wxString strComplx = CastItoXBytes(file->GetCompletedSize()) + wxT("/") + CastItoXBytes(file->GetFileSize());
 	wxString strLsc = _("Unknown");
 	wxString strLastprogr = _("Unknown");
 	
@@ -2302,7 +2302,7 @@ wxString ExternalConn::GetDownloadFileInfo(const CPartFile* file)
 	sRet << wxString(_("Parts: ")) << file->GetPartCount() << wxT(", ")
 		<< wxString(_("Available")) << wxT(": ") << file->GetAvailablePartCount() << wxT(" ")
 		<< wxString::Format(wxT( "(%.1f%%)"), availability);
-	sRet << wxString::Format(wxT("%d%% done (%s) - Transferring from %d sources"), (int)file->GetPercentCompleted(), unicode2char(strComplx), file->GetTransferingSrcCount()) + wxString(wxT("\n"));
+	sRet << wxString::Format(wxT("%d%% done (%s) - Transferring from %d sources"), (int)file->GetPercentCompleted(), unicode2char(strComplx), file->GetTransferingSrcCount()) + wxT("\n");
 	sRet << wxString(_("Last Seen Complete :")) << wxT(" ") << strLsc << wxT("\n");
 	sRet << wxString(_("Last Reception:")) << wxT(" ") << strLastprogr << wxT("\n");
 	
