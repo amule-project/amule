@@ -449,9 +449,6 @@ void CSearchDlg::StartNewSearch()
 
 	bool globalsearch = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection() == 1;
 	
-#ifdef CLIENT_GUI
-	#warning EC packet for starting search
-#else
 	if (!theApp.searchlist->StartNewSearch(m_nSearchID, globalsearch, searchString, typeText, extension, min, max, availability)) {
 		// Search failed (not connected?)
 		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);
@@ -462,7 +459,6 @@ void CSearchDlg::StartNewSearch()
 		FindWindow(IDC_CANCELS)->Disable();
 		return;
 	}	
-#endif
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }
