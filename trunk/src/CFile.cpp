@@ -238,7 +238,7 @@ bool CFile::Access(const wxChar *name, OpenMode mode)
 // ----------------------------------------------------------------------------
 
 // ctors
-CFile::CFile(const wxChar *szFileName, OpenMode mode)
+CFile::CFile(const wxString& szFileName, OpenMode mode)
 {
 	m_fd = fd_invalid;
 	m_error = FALSE;
@@ -251,7 +251,7 @@ CFile::CFile(const wxChar *szFileName, OpenMode mode)
 }
 
 // create the file, fail if it already exists and bOverwrite
-bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
+bool CFile::Create(const wxString& szFileName, bool bOverwrite, int accessMode)
 {
 	if ( accessMode == -1 )
 		accessMode = CPreferences::GetFilePermissions();
@@ -262,7 +262,11 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 	    Close();	
     }
 
-	m_fd = creat( unicode2char(szFileName) , accessMode);
+    if (wxFileExists(szFileName) && !bOverwrite) {
+		return FALSE;
+    }
+    
+    m_fd = creat( unicode2char(szFileName) , accessMode);
 	
 	#ifdef FILE_TRACKER
 		AddLogLineM(false,wxString(_("Created file ")) + fFilePath + wxString::Format(_(" with file descriptor %i"),m_fd));
@@ -270,7 +274,7 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 	#endif
 	
 	if ( m_fd == -1 ) {
-		wxLogSysError(_("can't create file '%s'"), szFileName);
+		wxLogSysError(_("can't create file '%s'"), unicode2char(szFileName));
 		return FALSE;
 	} else {
 		//Attach(m_fd);
@@ -279,13 +283,16 @@ bool CFile::Create(const wxChar *szFileName, bool bOverwrite, int accessMode)
 }
 
 // open the file
-bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
+bool CFile::Open(const wxString& szFileName, OpenMode mode, int accessMode)
 {
 	if ( accessMode == -1 )
 		accessMode = CPreferences::GetFilePermissions();
 
-    int flags = O_BINARY | O_LARGEFILE;
-
+    int flags = O_BINARY;
+#ifdef _LARGE_FILES
+	flags |=  O_LARGEFILE;
+#endif
+	
     fFilePath=szFileName;
 
 	#ifdef FILE_TRACKER
@@ -341,7 +348,7 @@ bool CFile::Open(const wxChar *szFileName, OpenMode mode, int accessMode)
     
     if ( m_fd == -1 )
     {
-   		theApp.QueueLogLine(true, wxString::Format(_("Can't open file '%s'"), szFileName));
+   		theApp.QueueLogLine(true, wxString::Format(_("Can't open file '%s'"), unicode2char(szFileName)));
 		/*
 			get_caller(4);    	    
 			get_caller(3);    

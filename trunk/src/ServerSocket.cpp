@@ -262,24 +262,21 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddLogLineM(true,wxT("Server: OP_IDCHANGE\n"));
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
-				if (size < sizeof(LoginAnswer_Struct)) {
+				
+				if (size < 4 /* uint32 (ID)*/) {
 					throw wxString(_("Corrupt or invalid loginanswer from server received"));
 				}
+
+				CSafeMemFile data((BYTE*)packet, size);			
 				
-				LoginAnswer_Struct* la = (LoginAnswer_Struct*) packet;
-				
-				// Kry - This is because we have to check if there is only a uint32 
-				// on the struct.If this fails, we had extended the login struct.
-				wxASSERT(sizeof(LoginAnswer_Struct) == 4);
-				
-				ENDIAN_SWAP_I_32(la->clientid);
+				uint32 new_id = data.ReadUInt32();
 
 				/* Add more from 0.30c (Creteil) BEGIN */
 				// save TCP flags in 'cur_server'
 				wxASSERT(cur_server);
 				if (cur_server) {
-					if (size >= sizeof(LoginAnswer_Struct)+4) {						
-						cur_server->SetTCPFlags(ENDIAN_SWAP_32(*((uint32*)(packet + sizeof(LoginAnswer_Struct)))));
+					if (size >= 4+4 /* uint32 (ID) + uint32 (TCP flags)*/) {			
+						cur_server->SetTCPFlags(data.ReadUInt32());
 					} else {
 						cur_server->SetTCPFlags(0);
 					}
@@ -290,7 +287,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 				}
 				/* Add more from 0.30c (Creteil) END */
-				if (la->clientid == 0) {
+				if (new_id == 0) {
 					uint8 state = thePrefs::GetSmartIdState();
 					if ( state > 0 ) {
 						state++;
@@ -303,7 +300,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					break;
 				}
 				if(thePrefs::GetSmartIdCheck()) {
-					if (la->clientid >= 16777216) {
+					if (new_id >= 16777216) {
 						thePrefs::SetSmartIdState(1);
 					} else {
 						uint8 state = thePrefs::GetSmartIdState();
@@ -319,7 +316,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					}
 				}
 				// we need to know our client when sending our shared files (done indirectly on SetConnectionState)
-				serverconnect->clientid = la->clientid;
+				serverconnect->clientid = new_id;
 
 				if (connectionstate != CS_CONNECTED) {
 					#ifdef DEBUG_SERVER_PROTOCOL
@@ -328,8 +325,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					SetConnectionState(CS_CONNECTED);
 					theApp.OnlineSig();       // Added By Bouc7
 				}
-				serverconnect->SetClientID(la->clientid);
-				AddLogLineM(false, wxString::Format(_("New clientid is %u"),la->clientid));
+				serverconnect->SetClientID(new_id);
+				AddLogLineM(false, wxString::Format(_("New clientid is %u"),new_id));
 								
 				theApp.downloadqueue->ResetLocalServerRequests();
 				break;
@@ -368,22 +365,17 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					throw wxString(_("Invalid server status packet"));
 					break;
 				}
-				uint32 cur_user;
-				memcpy(&cur_user,packet,4);
-				uint32 cur_files;
-				memcpy(&cur_files,packet+4,4);
-				ENDIAN_SWAP_I_32(cur_user);
-				ENDIAN_SWAP_I_32(cur_files);
 				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
-					update->SetUserCount(cur_user);
-					update->SetFileCount(cur_files);
+					CSafeMemFile data((BYTE*)packet, size);
+					update->SetUserCount(data.ReadUInt32());
+					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
 					Notify_ShowUserCount(update);
 				}
 				break;
 			}
-			//<<--Working, but needs to be cleaned up..
+			// Cleaned.
 			case OP_SERVERIDENT: {
 				#ifdef DEBUG_SERVER_PROTOCOL
 				AddLogLineM(true,wxT("Server: OP_SERVERIDENT\n"));
@@ -396,36 +388,41 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					// throw wxString(wxT("Unknown server info received!"));
 					break;
 				}
-				char* buffer = new char[size-29];
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-				uint16 num,num2;
-				memcpy(buffer,&packet[30],size-30);// 1st 30 char contain only server address & fillers
-				memcpy(&num,&buffer[0],2); // length of server_name
-				ENDIAN_SWAP_I_16(num);
-				if ((uint32)(num + 2) > (size - 30)) {
-	                                printf("%u + 2 > %u - 30\n",num,size);
-					delete[] buffer;
-					throw wxString(_("Unknown server info received!- wrong server name"));
+				if (update) {
+					CSafeMemFile data((BYTE*)packet,size);
+					uint8 aucHash[16];
+					data.ReadHash16(aucHash);				
+					if (((uint32*)aucHash)[0] == 0x2A2A2A2A){ // No endian problem here
+						const wxString& rstrVersion = update->GetVersion();
+						if (!rstrVersion.IsEmpty()) {
+							update->SetVersion(wxT("eFarm ") + rstrVersion);
+						} else {
+							update->SetVersion(wxT("eFarm"));
+						}
+					}
+					// Unused
+					/*uint32 nServerIP = */data.ReadUInt32();
+					/*uint16 nServerPort = */data.ReadUInt16();
+				
+					uint32 nTags = data.ReadUInt32();					
+					for (uint32 i = 0; i < nTags; i++){
+						CTag tag(data, update->GetUnicodeSupport());
+						if (tag.tag.specialtag == ST_SERVERNAME){
+							if (tag.tag.type == 3){ //String
+								update->SetListName(tag.tag.stringvalue);
+							}
+						}
+						else if (tag.tag.specialtag == ST_DESCRIPTION){
+							if (tag.tag.type == 3){
+								update->SetDescription(tag.tag.stringvalue);		
+							}
+						} // No more known tags from server
+					}				
+								
+					Notify_ShowConnState(true,update->GetListName());
+					Notify_ServerRefresh(update);
 				}
-				char* temp=new char[size-38+1];
-				memcpy(temp,&buffer[2],num);
-				temp[num]=0;//close the string
-				update->SetListName(char2unicode(temp));
-				memcpy(&num2,&buffer[num+6],2);
-                                ENDIAN_SWAP_I_16(num2);
-				if ((uint32)(num2 + num + 8) > (size - 30)) {
-	                                printf("%u + %u + 8 > %u - 30\n",num2,num,size);
-					delete[] temp;
-					delete[] buffer;
-					throw wxString(_("Unknown server info received! - wrong description"));
-				}
-				memcpy (temp,&buffer[num+8],num2);
-				temp[num2]=0; //close the string
-				update->SetDescription(char2unicode(temp));
-				Notify_ShowConnState(true,update->GetListName());
-				Notify_ServerRefresh(update);
-				delete[] temp;
-				delete[] buffer;
 				break;
 			}
 			// tecxx 1609 2002 - add server's serverlist to own serverlist
@@ -465,12 +462,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				#endif
 				theApp.downloadqueue->AddDownDataOverheadServer(size);
 				if (size == 6) {
-					uint32 dwIP;
-					memcpy(&dwIP,packet,4);
-					ENDIAN_SWAP_I_32(dwIP);
-					uint16 nPort;
-					memcpy(&nPort,packet+4,2);
-					ENDIAN_SWAP_I_16(nPort);
+					CSafeMemFile data((BYTE*)packet,size);
+					uint32 dwIP = data.ReadUInt32();
+					uint16 nPort = data.ReadUInt32();
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);
 					if (client) {
 						client->TryToConnect();

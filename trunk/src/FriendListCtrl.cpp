@@ -167,29 +167,23 @@ bool CFriendListCtrl::LoadList()
 	bool result = false;
 	
 	CSafeFile file;
-	if ( file.Open(metfile) ) {
-		
-		uint8 header;
-		if ( 1 == file.Read(&header, 1) ) {
-			if ( header == MET_HEADER ) {
-				uint32 nRecordsNumber;
-				if ( 4 == file.Read(&nRecordsNumber, 4) ) {
-		
-					ENDIAN_SWAP_I_32(nRecordsNumber);
-					for (uint32 i = 0; i < nRecordsNumber; i++) {
-						CFriend* Record = new CFriend();
-						Record->LoadFromFile(&file);
-						AddFriend(Record);
-					}
-					
-					result = true;
-				}
+	try {
+		if ( file.Open(metfile) ) {
+			if ( file.ReadUInt8() /*header*/ == MET_HEADER ) {
+				uint32 nRecordsNumber = file.ReadUInt32();
+				for (uint32 i = 0; i < nRecordsNumber; i++) {
+					CFriend* Record = new CFriend();
+					Record->LoadFromFile(&file);
+					AddFriend(Record);
+				}				
+				result = true;
 			}
+			file.Close();
+		} else if ( wxFileExists(metfile) ) {
+			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
 		}
-		
-		file.Close();
-	} else if ( wxFileExists(metfile) ) {
-		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!\n"));
+	} catch (...) {
+		AddLogLineM(false, _("Failed to read corrupted friendlist file 'emfriends.met'!\n"));
 	}
 	
 	return result;
