@@ -62,6 +62,7 @@ class CECTag {
 				CECTag(const CECTag& tag);
 				~CECTag(void);
 		bool		AddTag(const CECTag& tag);
+		bool		AddTag(const CECTag *tag);
 		CECTag *	GetTagByIndex(unsigned int index) const { return ((index >= m_tagCount) ? NULL : (*m_tagList)[index]); }
 		CECTag *	GetTagByName(ec_tagname_t name) const;
 		uint16		GetTagCount(void) const { return m_tagCount; }
