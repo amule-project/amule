@@ -397,11 +397,6 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					SetActiveDialog(KadWnd, kadwnd);
 					break;
 				
-				//case ID_ABOUT:
-				//	wxMessageBox(wxString::wxString( _("aMule - 'all-platform' p2p client based on eMule.\n\n Website: http://www.amule.org\n Forum: http://forum.amule.org \n FAQ: http://wiki.amule.org \n\n Copyright (C) 2003-2004 aMule Project \n")));
-                    		//	break;
-				     
-				
 				// This shouldn't happen, but just in case
 				default:
 					printf("Unknown button triggered CamuleApp::OnToolBarButton().\n");
