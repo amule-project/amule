@@ -83,6 +83,8 @@ Version 2.0.0rc6 - The '???' version.
 		* Fixed the Random Lowid Bug.
 		* Cleaner solution to RLB: Accept() the connection and
 		  Destroy() the socket immediately.
+		* Fixed a lot of bugs in amuleweb. In particular, stop / pause
+		  / cancel / priority(up/down) now works.
 
 	rommel:
 		* Patch to implement the commands serverconnect and reloadipf

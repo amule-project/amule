@@ -36,9 +36,10 @@
 
 //-------------------------------------------------------------------
 
-#include <wx/wfstream.h>
+#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
+#include <wx/tokenzr.h>		// for wxTokenizer
 #include <wx/txtstrm.h>
-#include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
+#include <wx/wfstream.h>
 
 //-------------------------------------------------------------------
 
@@ -461,80 +462,80 @@ void CWebServer::ProcessStyleFileReq(ThreadData Data) {
 
 void CWebServer::ProcessURL(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if(pThis == NULL)
+	if (pThis == NULL) {
 		return;
-
-	bool isUseGzip = (atoi((char*) pThis->webInterface->SendRecvMsg(wxT("PREFS GETWEBUSEGZIP")).GetData()) == 0) ? false : true;
-	wxString Out = wxT("");
-	wxString OutE = wxT("");	// List Entry Templates
-	wxString OutE2 = wxT("");
-	wxString OutS = wxT("");	// ServerStatus Templates
+	}
+	bool isUseGzip = pThis->webInterface->SendRecvMsg(wxT("PREFS GETWEBUSEGZIP")) == wxT("1");
+	wxString Out;
+	// List Entry Templates
+	wxString OutE;
+	wxString OutE2;
+	// ServerStatus Templates
+	wxString OutS;
 	TCHAR *gzipOut = NULL;
-	long gzipLen=0;
-
-	wxString HTTPProcessData = wxT("");
-	wxString HTTPTemp = wxT("");
+	long gzipLen = 0;
+	wxString HTTPProcessData;
+	wxString HTTPTemp;
 	srand ( time(NULL) );
-
 	long lSession = 0;
 	wxString sSes = _ParseURL(Data, wxT("ses"));
-	if (sSes.Cmp(wxT("")) != 0) lSession = atol((char*) sSes.GetData());
+	if (!sSes.IsEmpty()) {
+		sSes.ToLong(&lSession);
+	}
 	wxString sSession = sSession.Format(wxT("%ld"), lSession);
-
 	wxString sW = _ParseURL(Data, wxT("w"));
-
+	//
 	// WE CANT TOUCH THE MAIN THREAD'S GUI!!!
+	//
 	if (sW == wxT("password")) {
-		bool login=false;
-		wxString ip= ip.Format(wxT("%s"), inet_ntoa( Data.inadr ));
-
-		wxString strAuth = pThis->webInterface->SendRecvMsg(wxString::Format(wxT("PREFS GETWSPASS %s"), MD5Sum(_ParseURL(Data, wxT("p"))).GetHash().GetData()).GetData());
+		bool login = false;
+		wxString ip = ip.Format(wxT("%s"), inet_ntoa( Data.inadr ));
+		wxString strAuth = pThis->webInterface->SendRecvMsg(
+			wxT("PREFS GETWSPASS ") + MD5Sum(_ParseURL(Data, wxT("p"))).GetHash());
 		if (strAuth == wxT("AdminLogin")) {
-			Session* ses=new Session();
-			ses->admin=true;
+			Session* ses = new Session();
+			ses->admin = true;
 			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
-			login=true;
+			login = true;
 		} else if (strAuth == wxT("GuestLogin")) {
-			Session* ses=new Session();
-			ses->admin=false;
+			Session* ses = new Session();
+			ses->admin = false;
 			ses->startTime = time(NULL);
 			ses->lSession = lSession = rand() * 10000L + rand();
 			pThis->m_Params.Sessions.Add(ses);
-			login=true;
+			login = true;
 		} else {
 			// This call to ::GetTickCount has segfaulted once with this == 0x0, because
 			// wxUSE_GUI was set to 1 in a console only application. This may happen due
 			// to wrong wxWidgets configuration.
 			// 
 			// save failed attempt (ip,time)
-			TransferredData newban={inet_addr((char*) ip.GetData()), ::GetTickCount()}; 
+			TransferredData newban = {inet_addr((char*) ip.GetData()), ::GetTickCount()}; 
 			pThis->m_Params.badlogins.Add(&newban);
-			login=false;
+			login = false;
 		}
-		isUseGzip = false; // [Julien]
+		isUseGzip = false;
 		if (login) {
-			uint32 ipn=inet_addr((char*) ip.GetData());
+			uint32 ipn = inet_addr((char*) ip.GetData());
 			for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();) {
 				if (ipn == pThis->m_Params.badlogins[i]->datalen) {
 					pThis->m_Params.badlogins.RemoveAt(i);
-				} else 
+				} else {
 					i++;
+				}
 			}
 		}
 	}
-
-	if (sW == wxT("logout"))
+	if (sW == wxT("logout")) {
 		_RemoveSession(Data, lSession);
-		
+	}
 	if (_IsLoggedIn(Data, lSession)) {
-		Out += _GetHeader(Data, lSession);
-		
+		Out += _GetHeader(Data, lSession);		
 		wxString sPage = sW;
 		pThis->webInterface->Show(_("***** logged in, getting page ") + sPage + wxT("\n"));
-		pThis->webInterface->Show(_("***** session is ") + sSession + wxT("\n"));
-		
+		pThis->webInterface->Show(_("***** session is ") + sSession + wxT("\n"));		
 		if (sPage == wxT("server")) {
 			Out += _GetServerList(Data);
 		} else if (sPage == wxT("download")) {
@@ -559,25 +560,23 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			Out += _GetStats(Data);
 		} else if (sPage == wxT("options")) {
 			Out += _GetPreferences(Data);
-		}
-		
+		}		
 		Out += _GetFooter(Data);
-
-		if (sPage == wxT(""))
+		if (sPage.IsEmpty()) {
 			isUseGzip = false;
-
+		}
 		if (isUseGzip) {
 			bool bOk = false;
 			try {
 				uLongf destLen = Out.Length() + 1024;
 				gzipOut = new TCHAR[destLen];
-				if (_GzipCompress((Bytef*)gzipOut, &destLen, (const Bytef*)(TCHAR*)Out.GetData(), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
+				if( _GzipCompress((Bytef*)gzipOut, &destLen, 
+				   (const Bytef*)(TCHAR*)Out.GetData(), Out.Length(), Z_DEFAULT_COMPRESSION) == Z_OK) {
 					bOk = true;
 					gzipLen = destLen;
 				}
 			} catch(...) {
-			}
-			
+			}			
 			if (!bOk) {
 				isUseGzip = false;
 				if (gzipOut != NULL) {
@@ -587,44 +586,45 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			}
 		}
 	} else {
-		isUseGzip = false;
-		
+		isUseGzip = false;		
 		uint32 ip = inet_addr(inet_ntoa( Data.inadr ));
-		uint32 faults=0;
-
+		uint32 faults = 0;
 		// check for bans
-		for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();i++)
+		for (size_t i = 0; i < pThis->m_Params.badlogins.GetCount();i++) {
 			if (pThis->m_Params.badlogins[i]->datalen==ip) faults++;
-
+		}
 		if (faults>4) {
 			Out += _("Access denied!");
-				
 			// set 15 mins ban by using the badlist
 			TransferredData preventive={ip, ::GetTickCount() + (15*60*1000) };
-			for (int i=0;i<=5;i++)
+			for (int i=0;i<=5;i++) {
 				pThis->m_Params.badlogins.Add(&preventive);
-		} else
+			}
+		} else {
 			Out += _GetLoginScreen(Data);
+		}
 	}
-
+	//
 	// send answer ...
+	//
 	if (!isUseGzip)	{
 		Data.pSocket->SendContent(HTTPInit, Out, Out.Length());
 	} else {
 		Data.pSocket->SendContent(HTTPInitGZ, gzipOut, gzipLen);
 	}
-	if (gzipOut != NULL)
+	if (gzipOut != NULL) {
 		delete[] gzipOut;
+	}
 }
 
 
 wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if (pThis == NULL) return(wxT(""));
-	
+	if (pThis == NULL) {
+		return wxEmptyString;
+	}	
 	wxString URL = Data.sURL;
 	wxString res,temp;
-
 	while (URL.Length()>0) {
 		int pos=URL.MakeLower().Find(fieldname.MakeLower() + wxT("="));
 		if (pos>-1) {
@@ -636,29 +636,26 @@ wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 			//URL.Remove(pos,10);
 		} else break;
 	}
-
 	return res;
 }
 
 
 wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if (pThis == NULL) return(wxT(""));
-	
-	wxString URL = Data.sURL;
-	
-	wxString value = wxT("");
-	wxString Parameter = wxT("");
+	if (pThis == NULL) {
+		return wxEmptyString;
+	}	
+	wxString URL = Data.sURL;	
+	wxString value;
+	wxString Parameter;
 	char fromReplace[4] = "";	// decode URL
 	char toReplace[2] = "";		// decode URL
 	int i = 0;
 	int findPos = -1;
 	int findLength = 0;
-
 	pThis->webInterface->Show(wxT("*** parsing url ") + URL + _(" :: field ") + fieldname + wxT("\n"));
 	if (URL.Find(wxT("?")) > -1) {
 		Parameter = URL.Mid(URL.Find(wxT("?"))+1, URL.Length()-URL.Find(wxT("?"))-1);
-
 		// search the fieldname beginning / middle and strip the rest...
 		if (Parameter.Find(fieldname + wxT("=")) == 0) {
 			findPos = 0;
@@ -672,10 +669,8 @@ wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
 			Parameter = Parameter.Mid(findPos + findLength, Parameter.Length());
 			if (Parameter.Find(wxT("&")) > -1) {
 				Parameter = Parameter.Mid(0, Parameter.Find(wxT("&")));
-			}
-	
+			}	
 			value = Parameter;
-
 			// decode value ...
 			value.Replace(wxT("+"), wxT(" "));
 			for (i = 0 ; i <= 255 ; i++) {
@@ -1019,127 +1014,99 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 
 wxString CWebServer::_GetTransferList(ThreadData Data) {
 	CWebServer *pThis = (CWebServer *)Data.pThis;
-	if (pThis == NULL)
-		return wxT("");
-
+	if (pThis == NULL) {
+		return wxEmptyString;
+	}
+	//
 	wxString sSession = _ParseURL(Data, wxT("ses"));
-	int cat=atoi((char*) _ParseURL(Data, wxT("cat")).GetData());
-
-	bool clcompl=(_ParseURL(Data, wxT("ClCompl")) == wxT("yes"));
-	wxString sCat = wxT(""); if (cat!=0) sCat.Printf(wxT("&cat=%i"), cat);
-
-	wxString Out = wxT("");
-
+	wxString sCat = _ParseURL(Data, wxT("cat"));
+	long cat = 0;
+	sCat.ToLong(&cat);
+	if (cat) {
+		sCat = wxT("&cat=") + sCat;
+	}
+	bool clcompl = _ParseURL(Data, wxT("ClCompl")) == wxT("yes");
+	wxString sOp = _ParseURL(Data, wxT("op"));
+	wxString sFileHash = _ParseURL(Data, wxT("file"));
+	wxString sSort = _ParseURL(Data, wxT("sort"));
+	wxString sSortReverse = _ParseURL(Data, wxT("sortreverse"));
+	//
 	if (clcompl && IsSessionAdmin(Data, sSession)) {
 		pThis->webInterface->SendRecvMsg(wxT("TRANSFER CLEARCOMPLETE"));
 	}
-	
-	if (_ParseURL(Data, wxT("c")) != wxT("") && IsSessionAdmin(Data, sSession)) {
+	//
+	wxString Out;
+	if (!_ParseURL(Data, wxT("c")).IsEmpty() && IsSessionAdmin(Data, sSession)) {
 		wxString HTTPTemp = _ParseURL(Data, wxT("c"));
-		if (HTTPTemp.Right(1) != wxT("/"))
+		if (HTTPTemp.Right(1) != wxT("/")) {
 			HTTPTemp += wxT("/");
-
-		wxString request = request.Format(wxT("TRANSFER ADDFILELINK %s"), HTTPTemp.GetData());
+		}
+		wxString request = wxT("TRANSFER ADDFILELINK ") + HTTPTemp;
 		if (pThis->webInterface->SendRecvMsg(request) == wxT("Bad Link")) {
-			char HTTPTempC[100] = "";
-			sprintf(HTTPTempC,"This ed2k link is invalid (%s)", unicode2char(HTTPTemp));//error.GetData());
-			Out += pThis->m_Templates.sTransferBadLink;
-			Out.Replace(wxT("[InvalidLink]"), wxString::Format(wxT("%s"), HTTPTempC));
+			wxString HTTPTempC = wxT("This ed2k link is invalid (") + HTTPTemp + wxT(")");
+			Out = pThis->m_Templates.sTransferBadLink;
+			Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
 			Out.Replace(wxT("[Link]"), HTTPTemp);
 		}
 	}
-
-	if (_ParseURL(Data, wxT("op")) != wxT("") && _ParseURL(Data, wxT("file")) != wxT("")) {
-		uchar FileHash[16];
-		_GetFileHash(_ParseURL(Data, wxT("file")), FileHash);
-
-		int found_file_index = -1;
-
-		int dlFilePosition=0;
+	//
+	if (!sOp.IsEmpty() && !sFileHash.IsEmpty()) {
 		//sFileHashes formatted as: %s\t%s\t....\t%s
 		wxString sFileHashes = pThis->webInterface->SendRecvMsg(wxT("TRANSFER DL_FILEHASH"));
-		wxString sEntry;
-		int tabPos;
-		while (sFileHashes.Length()>0) {
-			tabPos=sFileHashes.First(wxT("\t"));
-			sEntry = sFileHashes.Left(tabPos);
-			sFileHashes = sFileHashes.Mid(tabPos+1);
-			
-			uchar filehash[16];
-			for (int k = 0; k < 16; k++)
-				filehash[k] = (uchar) sEntry.GetChar(k);
-
-			bool bGood = true;
-			for (int i = 0; i < 16; i++) {
-				if ( filehash[i] != FileHash[i]) {
-					bGood = false;
-					break;
-				}
-			}
-			
-			if (bGood) {
-				found_file_index = dlFilePosition;
-				break;
-			}			
-			
-			dlFilePosition++;
+		if (sFileHashes.Left(12) == wxT("Disconnected")) {
+			Out += wxT("DISCONNECTED!!!");
+			return Out;
 		}
-		
-		if (_ParseURL(Data, wxT("op")) == wxT("pause") && IsSessionAdmin(Data,sSession)) {
-			if (found_file_index >= 0) 
-				pThis->webInterface->SendRecvMsg(wxString::Format(wxT("TRANSFER DL_FILEPAUSE %i"), found_file_index));
-		} else if (_ParseURL(Data, wxT("op")) == wxT("resume") && IsSessionAdmin(Data,sSession)) {
-			if (found_file_index >= 0)
-				pThis->webInterface->SendRecvMsg(wxString::Format(wxT("TRANSFER DL_FILERESUME %i"), found_file_index));
-		} else if (_ParseURL(Data, wxT("op")) == wxT("cancel") && IsSessionAdmin(Data,sSession)) {
-			if (found_file_index >= 0)
-				pThis->webInterface->SendRecvMsg(wxString::Format(wxT("TRANSFER DL_FILEDELETE %i"), found_file_index));
-		} else if (_ParseURL(Data, wxT("op")) == wxT("prioup") && IsSessionAdmin(Data,sSession)) {
-			if (found_file_index >= 0) {
-				pThis->webInterface->SendRecvMsg(wxString::Format(wxT("TRANSFER DL_FILEPRIOUP %d"), found_file_index));
+		bool bFoundFile = false;
+		int FileIndex = -1;
+		wxStringTokenizer tokens( sFileHashes, wxT("\t") );
+		while (!bFoundFile && tokens.HasMoreTokens()) {
+			++FileIndex;
+			bFoundFile = sFileHash == tokens.GetNextToken();
+		}
+		if ( bFoundFile && IsSessionAdmin(Data,sSession)) {
+			wxString sFoundFileIndex = wxString() << FileIndex;
+			wxString sMessage;
+			if (sOp == wxT("pause")) {
+				sMessage = wxT("TRANSFER DL_FILEPAUSE ");
+			} else if (sOp == wxT("resume")) {
+				sMessage = wxT("TRANSFER DL_FILERESUME ");
+			} else if (sOp == wxT("cancel")) {
+				sMessage = wxT("TRANSFER DL_FILEDELETE ");
+			} else if (sOp == wxT("prioup")) {
+				sMessage = wxT("TRANSFER DL_FILEPRIOUP ");
+			} else if (sOp == wxT("priodown")) {
+				sMessage = wxT("TRANSFER DL_FILEPRIODOWN ");
 			}
-		} else if (_ParseURL(Data, wxT("op")) == wxT("priodown") && IsSessionAdmin(Data,sSession)) {
-			if (found_file_index >= 0) {
-				pThis->webInterface->SendRecvMsg(wxString::Format(wxT("TRANSFER DL_FILEPRIODOWN %d"), found_file_index));
-			}
+			sMessage += sFoundFileIndex;
+			pThis->webInterface->SendRecvMsg(sMessage);
+			pThis->webInterface->Show(sMessage + wxT("\n"));
 		}
 	}
 
-	if (_ParseURL(Data, wxT("sort")) != wxT("")) {
-		if (_ParseURL(Data, wxT("sort")) == wxT("name"))
+	if (!sSort.IsEmpty()) {
+		if (sSort == wxT("name")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_NAME;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("size"))
+		}
+		else if (sSort == wxT("size")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_SIZE;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("completed"))
+		}
+		else if (sSort == wxT("completed")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_COMPLETED;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("transferred"))
+		}
+		else if (sSort == wxT("transferred")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_TRANSFERRED;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("speed"))
+		}
+		else if (sSort == wxT("speed")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_SPEED;
-		else if (_ParseURL(Data, wxT("sort")) == wxT("progress"))
+		}
+		else if (sSort == wxT("progress")) {
 			pThis->m_Params.DownloadSort = DOWN_SORT_PROGRESS;
-
-		if (_ParseURL(Data, wxT("sortreverse")) == wxT(""))
-			pThis->m_Params.bDownloadSortReverse = false;
+		}
 	}
-	
-	if (_ParseURL(Data, wxT("sortreverse")) != wxT("")) {
-		pThis->m_Params.bDownloadSortReverse = (_ParseURL(Data, wxT("sortreverse")) == wxT("true"));
-	} 
-	
-	if (_ParseURL(Data, wxT("showuploadqueue")) == wxT("true")) {
-		pThis->m_Params.bShowUploadQueue = true;
-	}
-	
-	if (_ParseURL(Data, wxT("showuploadqueue")) == wxT("false")) {
-		pThis->m_Params.bShowUploadQueue = false;
-	}
-	
-	wxString sDownloadSortRev;
-	if (pThis->m_Params.bDownloadSortReverse)
-		sDownloadSortRev = wxT("false");
-	else
-		sDownloadSortRev = wxT("true");
+	pThis->m_Params.bDownloadSortReverse = sSortReverse == wxT("true");
+	pThis->m_Params.bShowUploadQueue = _ParseURL(Data, wxT("showuploadqueue")) == wxT("true");
+	wxString sDownloadSortRev = pThis->m_Params.bDownloadSortReverse ?  wxT("true") : wxT("false");
 
 	Out += pThis->m_Templates.sTransferImages;
 	Out += pThis->m_Templates.sTransferList;
@@ -1149,41 +1116,45 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[UploadFooter]"), pThis->m_Templates.sTransferUpFooter);
 	Out.Replace(wxT("[Session]"), sSession);
 
-	InsertCatBox(pThis, Out, cat, wxT(""), true, true);
+	InsertCatBox(pThis, Out, cat, wxEmptyString, true, true);
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_NAME)
-		Out.Replace(wxT("[SortName]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortName]"), wxT(""));
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_NAME) {
+		Out.Replace(wxT("[SortName]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortName]"), wxEmptyString);
+	}
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_SIZE)
-		Out.Replace(wxT("[SortSize]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortSize]"), wxT(""));
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_SIZE) {
+		Out.Replace(wxT("[SortSize]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortSize]"), wxEmptyString);
+	}
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_COMPLETED)
-		Out.Replace(wxT("[SortCompleted]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortCompleted]"), wxT(""));
-
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_TRANSFERRED)
-		Out.Replace(wxT("[SortTransferred]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortTransferred]"), wxT(""));
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_COMPLETED) {
+		Out.Replace(wxT("[SortCompleted]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortCompleted]"), wxEmptyString);
+	}
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_TRANSFERRED) {
+		Out.Replace(wxT("[SortTransferred]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortTransferred]"), wxEmptyString);
+	}
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_SPEED)
-		Out.Replace(wxT("[SortSpeed]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortSpeed]"), wxT(""));
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_SPEED) {
+		Out.Replace(wxT("[SortSpeed]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortSpeed]"), wxEmptyString);
+	}
 	
-	if (pThis->m_Params.DownloadSort == DOWN_SORT_PROGRESS)
-		Out.Replace(wxT("[SortProgress]"), wxString::Format(wxT("&sortreverse=%s"), sDownloadSortRev.GetData()));
-	else
-		Out.Replace(wxT("[SortProgress]"), wxT(""));
+	if (pThis->m_Params.DownloadSort == DOWN_SORT_PROGRESS) {
+		Out.Replace(wxT("[SortProgress]"), wxT("&sortreverse=") + sDownloadSortRev);
+	} else {
+		Out.Replace(wxT("[SortProgress]"), wxEmptyString);
+	}
 	
 	Out.Replace(wxT("[Filename]"), _("File Name"));
 	Out.Replace(wxT("[Size]"), _("Size"));
-	//here we should 
 	Out.Replace(wxT("[Completed]"), _("Complete"));
 	Out.Replace(wxT("[Transferred]"), _("Transferred"));
 	Out.Replace(wxT("[Progress]"), _("Progress"));
