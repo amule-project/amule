@@ -1327,15 +1327,15 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 
 		uint8 upperpriority=0, lesserpriority=0;
 		if (i->bFileAutoPriority) {
-			upperpriority = 5;	lesserpriority = 3;
+			upperpriority = PR_AUTO;	lesserpriority = PR_VERYHIGH;
 		} else {
 			switch (i->nFilePriority) {
-				case 0: upperpriority = 1;	lesserpriority = 4; break;
-				case 1: upperpriority = 2;	lesserpriority = 0; break;
-				case 2: upperpriority = 3;	lesserpriority = 1; break;
-				case 3: upperpriority = 5;	lesserpriority = 2; break;
-				case 4: upperpriority = 0;	lesserpriority = 4; break;
-				case 5: upperpriority = 5;	lesserpriority = 3; break;
+				case PR_LOW: upperpriority = PR_NORMAL;	lesserpriority = PR_VERYLOW; break;
+				case PR_NORMAL: upperpriority = PR_HIGH;	lesserpriority = PR_LOW; break;
+				case PR_HIGH: upperpriority = PR_VERYHIGH;	lesserpriority = PR_NORMAL; break;
+				case PR_VERYHIGH: upperpriority = PR_AUTO;	lesserpriority = PR_HIGH; break;
+				case PR_VERYLOW: upperpriority = PR_LOW;	lesserpriority = PR_VERYLOW; break;
+				case PR_AUTO: upperpriority = PR_AUTO;	lesserpriority = PR_VERYHIGH; break;
 			}
 		}
 		
