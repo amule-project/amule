@@ -131,86 +131,78 @@ void CServerUDPSocket::ReceiveAndDiscard() {
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 
 	CServer* update = theApp.serverlist->GetServerByAddress( host, port-4 );
-
+	
+	theApp.statistics->AddDownDataOverheadOther(size);
+	
 	try{
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
 		switch(opcode){
 			case OP_GLOBSEARCHRES: {
-				theApp.statistics->AddDownDataOverheadOther(size);
+
 				// process all search result packets
-				int iLeft;
+
 				do{
 					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(packet, true /* (update && update->GetUnicodeSupport())*/, StringIPtoUint32(host), port-4);
 					// There is no need because we don't limit the global results
 					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
 					// check if there is another source packet
-					iLeft = (int)(size - packet.GetPosition());
-					if (iLeft >= 2){
+					
+					if (packet.GetPosition()+2 < size) {
+						// An additional packet?
 						uint8 protocol = packet.ReadUInt8();
-						iLeft--;
-						if (protocol != OP_EDONKEYPROT){
-							packet.Seek(-1, wxFromCurrent);
-							iLeft += 1;
+						uint8 new_opcode = packet.ReadUInt8();
+					
+						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBSEARCHRES) {
+							printf("Server search reply got additional bogus bytes\n");
 							break;
+						} else {
+							printf("Got server search reply with additional packet\n");
 						}
-
-						uint8 opcode = packet.ReadUInt8();
-						iLeft--;
-						if (opcode != OP_GLOBSEARCHRES){
-							packet.Seek(-2,wxFromCurrent);
-							iLeft += 2;
-							break;
-						}
-					}
-				} while (iLeft > 0);
+					}					
+					
+				} while (packet.GetPosition()+2 < size);
 				
-				theApp.statistics->AddDownDataOverheadOther(size);
-
 				break;
 			}
 			case OP_GLOBFOUNDSOURCES:{
-				theApp.statistics->AddDownDataOverheadOther(size);
+				printf("Got a UDP sources packet from server\n");
+
 				// process all source packets
-				int iLeft;
 				do{
 					uint8 fileid[16];
 					packet.ReadHash16(fileid);
-					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid))
+					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
+						printf("Adding sources for file %s",unicode2char(file->GetFileName()));
 						file->AddSources(packet, StringIPtoUint32(host), port-4);
-					else{
+					} else {
+						printf("Sources received for unknown file\n");
 						// skip sources for that file
 						uint8 count = packet.ReadUInt8();
-						packet.Seek(count*(4+2), wxFromStart);
+						packet.Seek(count*(4+2), wxFromCurrent);
 					}
 
-					// check if there is another source packet
-					iLeft = (int)(size - packet.GetPosition());
-					if (iLeft >= 2){
+					if (packet.GetPosition()+2 < size) {
+						// An additional packet?
 						uint8 protocol = packet.ReadUInt8();
-						iLeft--;
-						if (protocol != OP_EDONKEYPROT){
-							packet.Seek(-1, wxFromCurrent);
-							iLeft += 1;
+						uint8 new_opcode = packet.ReadUInt8();
+					
+						if (protocol != OP_EDONKEYPROT || new_opcode != OP_GLOBFOUNDSOURCES) {
+							printf("Server sources reply got additional bogus bytes\n");
 							break;
-						}
-
-						uint8 opcode = packet.ReadUInt8();
-						iLeft--;
-						if (opcode != OP_GLOBFOUNDSOURCES){
-							packet.Seek(-2, wxFromCurrent);
-							iLeft += 2;
-							break;
+						} else {
+							printf("Got server sources reply with additional packet\n");
 						}
 					}
-				} while (iLeft > 0);
+				} while ((packet.GetPosition() + 2) < size);
+								
 				break;
 			}
 
  			case OP_GLOBSERVSTATRES:{
 				// Imported from 0.43b
-				theApp.statistics->AddDownDataOverheadOther(size);
+				
 				if( size < 12 || !update) {
 					throw(wxString(wxT("Invalid OP_GLOBSERVSTATRES packet or unknown server")));
 				}
@@ -312,7 +304,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				break;
 			}
 			default:
-				theApp.statistics->AddDownDataOverheadOther(size);
+				printf("Unknown Server UDP opcode %x\n",opcode);
 		}
 	} catch(wxString error) {
 		AddDebugLogLineM(false,wxT("Error while processing incoming UDP Packet: ")+error);
