@@ -612,17 +612,27 @@ void CamuleDlg::OnBnConnect(wxEvent& evt) {
 	// UpdateBar();
 }
 
-void CamuleDlg::ResetLog() {
+void CamuleDlg::ResetLog(uint8 whichone) {
 	logtext="";
+	wxTextCtrl* ct = NULL;
 	//serverwnd.logbox.SetWindowText(logtext);
-	wxTextCtrl* ct=(wxTextCtrl*)serverwnd->FindWindowById(ID_LOGVIEW);
+	switch (whichone){
+		case 1:
+			ct=(wxTextCtrl*)serverwnd->FindWindowById(ID_LOGVIEW);
+			// Delete log file aswell.
+			wxRemoveFile(wxString::Format("%s/.aMule/logfile", getenv("HOME")));
+			break;
+		case 2:
+			ct=(wxTextCtrl*)serverwnd->FindWindowById(ID_SERVERINFO);
+			break;
+		default:
+			return;
+	}
 
 	if(ct) {
 		ct->SetValue("");
 	}
 
-	// Delete log file aswell.
-	wxRemoveFile(wxString::Format("%s/.aMule/logfile", getenv("HOME")));
 }
 
 void CamuleDlg::ResetDebugLog() {
