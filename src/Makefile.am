@@ -259,8 +259,7 @@ ed2k_CFLAGS =
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS)
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS)
-amulecmd_LDADD = $(WXBASE_LIBS)
-
+amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS)
 
 amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG
@@ -271,8 +270,7 @@ amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp
 amuleweb_CFLAGS = $(WXBASE_CFLAGS)
 amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS)
-amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS)
-
+amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp

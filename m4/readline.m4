@@ -36,6 +36,9 @@ AC_DEFUN([VL_LIB_READLINE], [
     if test -z "$vl_cv_lib_readline"; then
       vl_cv_lib_readline="no"
       LIBS="$ORIG_LIBS"
+      READLINE_LIBS=""
+    else 
+      READLINE_LIBS="$vl_cv_lib_readline"
     fi
   ])
 
@@ -54,4 +57,6 @@ AC_DEFUN([VL_LIB_READLINE], [
       AC_CHECK_HEADERS(history.h readline/history.h)
     fi
   fi
+  AC_SUBST(READLINE_LIBS)
+  LIBS="$ORIG_LIBS"
 ])dnl
