@@ -802,7 +802,8 @@ void CamuleDlg::StartFast(wxTextCtrl *ctl)
 {
 	for ( int i = 0; i < ctl->GetNumberOfLines(); i++ ) {
 		wxString strlink = ctl->GetLineText(i);
-
+		strlink.Trim(true);
+		strlink.Trim(false);
 		if ( strlink.IsEmpty() )
 			continue;
 
