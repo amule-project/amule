@@ -146,22 +146,46 @@ class CTimer {
 	void Stop();
 };
 
-#if !wxCHECK_VERSION_FULL(2,5,3,1)
-    typedef off_t wxFileOffset;
-    #ifdef _LARGE_FILES
-        #define wxFileOffsetFmtSpec wxLongLongFmtSpec
-        wxCOMPILE_TIME_ASSERT( sizeof(off_t) == sizeof(wxLongLong_t),
-                                BadFileSizeType );
-        typedef unsigned wxLongLong_t wxFileSize_t;
-    #else
-        #define wxFileOffsetFmtSpec _T("")
-        typedef unsigned long wxFileSize_t;
-    #endif
-#endif
-
 #else
 #define AMULE_TIMER_CLASS wxTimer
 #define AMULE_TIMER_EVENT_CLASS wxTimerEvent
+#endif
+
+/*
+ * Check version stuff
+ */
+#if !defined(wxSUBRELEASE_NUMBER)
+	#define wxSUBRELEASE_NUMBER 0
+#endif
+
+#if !defined(wxCHECK_VERSION_FULL)
+
+	#define wxCHECK_VERSION_FULL(major,minor,release,subrel) \
+		(wxMAJOR_VERSION > (major) || \
+		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION > (minor)) || \
+		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
+		 	wxRELEASE_NUMBER > (release)) || \
+		 wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
+		 	wxRELEASE_NUMBER == (release) && wxSUBRELEASE_NUMBER >= (subrel))
+
+#endif
+
+/*
+ * wxFileSize_t stuff
+ */
+#if !wxCHECK_VERSION_FULL(2,5,3,1)
+	#include <wx/longlong.h>
+
+	typedef off_t wxFileOffset;
+	#ifdef _LARGE_FILES
+		#define wxFileOffsetFmtSpec wxLongLongFmtSpec
+		wxCOMPILE_TIME_ASSERT( sizeof(off_t) == sizeof(wxLongLong_t),
+			BadFileSizeType );
+		typedef unsigned wxLongLong_t wxFileSize_t;
+	#else
+		#define wxFileOffsetFmtSpec _T("")
+		typedef unsigned long wxFileSize_t;
+	#endif
 #endif
 
 #endif // TYPES_H
