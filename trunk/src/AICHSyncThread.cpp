@@ -68,6 +68,8 @@ void* CAICHSyncThread::Entry()
 		return 0;
 
 	printf("AICH sync thread running...\n");
+
+	wxMutexLocker sLock1(theApp.hashing_mut); // only one thread at a time
 	
 	// we collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> liKnown2Hashs;
@@ -160,23 +162,17 @@ void* CAICHSyncThread::Entry()
 //		theApp.QueueLogLine(true, GetResString(IDS_AICH_SYNCTOTAL), m_liToHash.GetCount() );
 		
 		printf("\tTotal %i files to hash (from %i)...\n", m_liToHash.size(), theApp.sharedfiles->GetCount());
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size());
 		// let first all normal hashing be done before starting out synchashing
 
 		#warning I assume there are no files being hashed, because this gets called only on hashing thread termination.
 		#warning If hashing thread gets called after this is triggered... well... undocumented behaviour :)
 		
-		wxMutexLocker sLock1(theApp.hashing_mut); // only one filehash at a time
-
 		uint32 cDone = 0;
 		for (KnownFilePtrList::iterator it = m_liToHash.begin();it != m_liToHash.end(); ++it)
 		{
 			if (theApp.amuledlg==NULL || !theApp.IsRunning()){ // in case of shutdown while still hashing
 				return 0;
 			}
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(m_liToHash.size()-cDone);
-			if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
-				theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 			
 			CKnownFile* pCurFile = *(it);
 			
@@ -194,10 +190,6 @@ void* CAICHSyncThread::Entry()
 			cDone++;
 			printf("\t-> %i files to hash...\n", m_liToHash.size()- cDone);
 		}
-
-		theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SetAICHHashing(0);
-		if (theApp.amuledlg->sharedfileswnd->sharedfilesctrl != NULL)
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFilesCount();
 
 		printf("\tAICH done...\n");
 	}
