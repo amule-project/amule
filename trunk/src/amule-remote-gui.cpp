@@ -711,8 +711,13 @@ CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
 	return reply;
 }
 
-void CRemoteConnect::Send(CECPacket *)
+void CRemoteConnect::Send(CECPacket *packet)
 {
+    if (! m_ECSocket->WritePacket(packet) ) {
+    	return;
+    }
+    CECPacket *reply = m_ECSocket->ReadPacket();
+    delete reply;
 }
 
 CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
