@@ -167,7 +167,6 @@ Packet *CreateSearchPacket(wxString &searchString, wxString& typeText,
 
 CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), wxString pszDirectory)
 {
-	printf("Creating searchfile\n");
 	m_nSearchID = nSearchID;
 	
 	in_data.ReadHash16(m_abyFileHash);
@@ -179,8 +178,6 @@ CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearc
 		m_nClientPort = 0;
 	}
 	
-	printf("Creating searchfile: read tags\n");
-	
 	uint32 tagcount = in_data.ReadUInt32();
 
 	for (unsigned int i = 0; i != tagcount; ++i){
@@ -188,15 +185,12 @@ CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearc
 		m_taglist.push_back(toadd);
 	}
 
-	printf("Creating searchfile: done tags\n");
-	
 	// here we have two choices
 	//	- if the server/client sent us a filetype, we could use it (though it could be wrong)
 	//	- we always trust our filetype list and determine the filetype by the extension of the file
 	wxString tempName = GetStrTagValue(FT_FILENAME);
 	
 	if (tempName.IsEmpty()) {
-		printf("Empty filename\n");
 		throw CInvalidPacket("No filename in search result");
 	}
 		
@@ -205,7 +199,6 @@ CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearc
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
 	m_Directory = pszDirectory;
-	printf("Creating searchfile ended\n");
 }
 
 
