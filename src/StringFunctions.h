@@ -189,5 +189,24 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
 
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(const wxString& sIn);
+
+
+/**
+ * Converts a hexadecimal number to a char.
+ *
+ * @param hex The hex-number, must be at most 2 digits long.
+ * @return The resulting char or \0 if conversion failed.
+ */
+wxChar HexToDec( const wxString& hex );
+
+
+/**
+ * This function converts all valid HTML escape-codes to their corresponding chars.
+ *
+ * @param str The string to unescape.
+ * @return The unescaped version of the input string.
+ */
+wxString UnescapeHTML( const wxString& str );
+
 	
 #endif // STRING_FUNCTIONS_H
