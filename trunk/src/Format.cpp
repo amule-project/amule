@@ -102,7 +102,7 @@ const wxString& CFormat::GetString() const
 }
 
 
-#if GCC_VERSION > 30202
+#if GCC_VERSION > 30203
 CFormat::operator const wxString&() const
 #else
 CFormat::operator wxString() const
