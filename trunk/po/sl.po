@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-06 13:26+0200\n"
+"PO-Revision-Date: 2005-04-07 11:14+0200\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/AddFileThread.cpp:83
 msgid "Hasher: Creating new thread."
-msgstr "fHasher: Ustvarjam novo nit."
+msgstr "Hasher: Ustvarjam novo nit."
 
 #: src/AddFileThread.cpp:132
 msgid "Hasher: Signaling for remaining threads to terminate."
@@ -177,11 +177,11 @@ msgstr "Napaka"
 
 #: src/amule.cpp:1088
 msgid "Failed to create OnlineSig File"
-msgstr "Ni bilo mogoèe ustvariti OnlineSig datoteke"
+msgstr "Ni bilo mogoèe ustvariti Online Podpis datoteke"
 
 #: src/amule.cpp:1096
 msgid "Failed to create aMule OnlineSig File"
-msgstr "Ni bilo mogoèe ustvariti aMule OnlineSig datoteke"
+msgstr "Ni bilo mogoèe ustvariti aMule Online Podpis datoteke"
 
 #: src/amule.cpp:1260
 msgid ""
@@ -225,8 +225,8 @@ msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
-"Mapa, ki ste jo navedli za Online Signature je NEVELJAVNA!\n"
-" Online Signature bo ONEMOGOÈEN dokler te¾ave ne odpravite v nastavitvah."
+"Mapa, ki ste jo navedli za Online Podpis je NEVELJAVNA!\n"
+" Online Podpis bo ONEMOGOÈEN dokler te¾ave ne odpravite v nastavitvah."
 
 #: src/amule.cpp:1631
 msgid "ERROR: can't open logfile"
@@ -291,7 +291,7 @@ msgstr "aMule %s, temelji na eMule."
 #: src/amuleDlg.cpp:196
 #, c-format
 msgid "Running on %s"
-msgstr "Teèe na %s"
+msgstr "Operacijski sistem: %s"
 
 #: src/amuleDlg.cpp:198
 msgid "Visit http://www.amule.org to check if a new version is available."
@@ -330,7 +330,7 @@ msgstr ""
 " Forum: http://forum.amule.org \n"
 " FAQ: http://wiki.amule.org \n"
 "\n"
-"Kontakt: admin@amule.org (administrativna vpra¹anja) \n"
+" Kontakt: admin@amule.org (administrativna vpra¹anja) \n"
 " Copyright (C) 2003-2005 aMule Team \n"
 
 #: src/amuleDlg.cpp:580
@@ -1776,11 +1776,11 @@ msgstr "UDP Port: Ni pripravljen"
 
 #: src/MuleTrayIcon.cpp:425 src/SysTray.cpp:301
 msgid "Online Signature: Enabled"
-msgstr "Online Signature: vklopljen"
+msgstr "Online Podpis: vklopljen"
 
 #: src/MuleTrayIcon.cpp:428 src/SysTray.cpp:303
 msgid "Online Signature: Disabled"
-msgstr "Online Signature: izklopljen"
+msgstr "Online Podpis: izklopljen"
 
 #: src/MuleTrayIcon.cpp:435
 msgid "Uptime: "
@@ -1925,8 +1925,8 @@ msgid ""
 "low ID (firewalled) and green arrows signify that you have high ID (The "
 "optimal connection type)."
 msgstr ""
-"Prikazuje stanje povezave in aktivne prenose. Rdeèe pu¹èice pomenijo da "
-"trenutno niste povezani, rumene pu¹èice pomenijo da imate nizki ID (ste za "
+"Prikazuje stanje povezave. Rdeèe pu¹èice pomenijo da trenutno"
+"niste povezani, rumene pu¹èice pomenijo da imate nizki ID (ste za "
 "firewallom) in zelene pu¹èice pomenijo da imate visok ID (optimalna "
 "povezava)."
 
@@ -2026,7 +2026,7 @@ msgstr "Konènica"
 
 #: src/muuli_wdr.cpp:294 src/WebServer.cpp:2336
 msgid "Min Size"
-msgstr "Min velikost"
+msgstr "Min. velikost"
 
 #: src/muuli_wdr.cpp:304 src/muuli_wdr.cpp:327 src/OtherFunctions.cpp:108
 #: src/TextClient.cpp:530
@@ -2050,7 +2050,7 @@ msgstr "GB"
 
 #: src/muuli_wdr.cpp:317 src/WebServer.cpp:2337
 msgid "Max Size"
-msgstr "Max velikost"
+msgstr "Maks. velikost"
 
 #: src/muuli_wdr.cpp:340
 msgid "Availability"
@@ -2338,7 +2338,7 @@ msgstr "Skupno"
 
 #: src/muuli_wdr.cpp:1058 src/muuli_wdr.cpp:1069
 msgid "Requested :"
-msgstr "Zahtevano :"
+msgstr "Zahtev :"
 
 #: src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:1089
 msgid "Active Uploads :"
@@ -2410,7 +2410,7 @@ msgstr "Ime stre¾nika"
 
 #: src/muuli_wdr.cpp:1432
 msgid "Transfers to client"
-msgstr "Prenosov k uporabniku"
+msgstr "Prenosi k/od uporabnika"
 
 #: src/muuli_wdr.cpp:1439
 msgid "Current request:"
@@ -2669,7 +2669,7 @@ msgstr "onemogoèi"
 
 #: src/muuli_wdr.cpp:1825
 msgid "Max Sources per File"
-msgstr "Max virov na datoteko"
+msgstr "©tevilo virov na datoteko"
 
 #: src/muuli_wdr.cpp:1832
 msgid "Hard Limit"
@@ -2681,7 +2681,7 @@ msgstr "Omejitev povezav"
 
 #: src/muuli_wdr.cpp:1851
 msgid "Max Connections"
-msgstr "Max povezav"
+msgstr "Najveè povezav"
 
 #: src/muuli_wdr.cpp:1868
 msgid "Autoconnect on startup"
@@ -2832,11 +2832,11 @@ msgstr "Preveri prostor na disku"
 
 #: src/muuli_wdr.cpp:2050
 msgid "Select this if you want aMule to check your Disk Space"
-msgstr "Izberite to, èe ¾elite da aMule preverja ali imate dovolj prostora na disku."
+msgstr "Vklopite, èe ¾elite da aMule preverja ali imate dovolj prostora na disku."
 
 #: src/muuli_wdr.cpp:2055
 msgid "    Min Disk Space:    "
-msgstr "    Min prostor na disku:    "
+msgstr "    Min. prostor na disku:    "
 
 #: src/muuli_wdr.cpp:2059
 msgid "Enter here the min disk space desired."
@@ -2948,7 +2948,7 @@ msgstr "Aktive povezave"
 
 #: src/muuli_wdr.cpp:2212
 msgid "Systray Icon Speedbar"
-msgstr "Pokazatelj hitrosti na ikoni v sistemski vrstici"
+msgstr "Pokazatelj hitrosti v sistemski vrstici"
 
 #: src/muuli_wdr.cpp:2217 src/muuli_wdr.cpp:2839
 msgid "Select"
@@ -3044,7 +3044,7 @@ msgstr "Napredne nastavitve"
 
 #: src/muuli_wdr.cpp:2389
 msgid "Max new connections / 5 secs"
-msgstr "Max novih povezav / 5 sek"
+msgstr "©t. novih povezav / 5 sek"
 
 #: src/muuli_wdr.cpp:2395
 msgid "File Buffer Size: 240000 bytes"
@@ -3168,7 +3168,7 @@ msgstr "Pri katerem mestu opusti vir"
 
 #: src/muuli_wdr.cpp:2579
 msgid "(Min 300 / Max 3000)"
-msgstr "(Min 300 / Max 3000)"
+msgstr "(Min. 300 / Maks. 3000)"
 
 #: src/muuli_wdr.cpp:2586
 msgid "Auto Drop Sources Timer"
@@ -3180,7 +3180,7 @@ msgstr "Timer (v sek)"
 
 #: src/muuli_wdr.cpp:2595
 msgid "(Min 60 / 3600 Max)"
-msgstr "(Min 60 / 3600 Max)"
+msgstr "(Min. 60 / 3600 Maks.)"
 
 #: src/muuli_wdr.cpp:2622
 msgid "Remote Control"
@@ -3204,7 +3204,7 @@ msgstr "Osve¾evanje strani (v sek)"
 
 #: src/muuli_wdr.cpp:2653
 msgid "Enable Gzip compression"
-msgstr "Vklopi Gzip kompresijo"
+msgstr "Vklopi gzip kompresijo"
 
 #: src/muuli_wdr.cpp:2657
 msgid "Enable Low rights User"
@@ -3492,7 +3492,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3394 src/PrefsUnifiedDlg.cpp:163
 msgid "Online Signature"
-msgstr "Online Signature"
+msgstr "Online Podpis"
 
 #: src/muuli_wdr.cpp:3399
 msgid "Enable/Disable"
@@ -3500,14 +3500,14 @@ msgstr "Vklopi/Izklopi"
 
 #: src/muuli_wdr.cpp:3402
 msgid "Enable Online-Signature"
-msgstr "Vklopi Online-Signature"
+msgstr "Vklopi Online Podpis"
 
 #: src/muuli_wdr.cpp:3404
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
 msgstr ""
-"Vklopi ustvarjanje OS datoteke, katero lahko uporabljajo programi, da "
+"Vklopi ustvarjanje O-P datoteke, iz katere eksterni programi"
 "izdelajo podpis s podatki o stanju aMule."
 
 #: src/muuli_wdr.cpp:3409
@@ -3516,15 +3516,15 @@ msgstr "Frekvenca posodobitev (sek):"
 
 #: src/muuli_wdr.cpp:3413
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "Spremeni frekvenco posodobitve Online Signature datoteke (v sekundah)."
+msgstr "Spremeni frekvenco posodobitve Online Podpis datoteke (v sekundah)."
 
 #: src/muuli_wdr.cpp:3419
 msgid "Online Signature Directory:"
-msgstr "Mapa za Online Signature:"
+msgstr "Mapa za Online Podpis:"
 
 #: src/muuli_wdr.cpp:3426
 msgid "Click here to select the directory containing the the Online Signature files."
-msgstr "Kliknite tukaj, da nastavite mapo, ki vsebuje datoteke za Online Signature."
+msgstr "Kliknite tukaj, da nastavite mapo, ki vsebuje datoteke za Online Podpis."
 
 #: src/muuli_wdr.cpp:3455 src/muuli_wdr.cpp:3689
 msgid "Disable/Enable"
@@ -3594,7 +3594,7 @@ msgstr "Tip proxyja na katerega se hoèete povezati"
 
 #: src/muuli_wdr.cpp:3533
 msgid "Proxy host:"
-msgstr "Proxy gostitelj:"
+msgstr "Proxy stre¾nik:"
 
 #: src/muuli_wdr.cpp:3537
 msgid "The proxy host name"
@@ -4280,7 +4280,7 @@ msgstr "Prihajajoèe datoteke"
 
 #: src/PrefsUnifiedDlg.cpp:785
 msgid "Online Signatures"
-msgstr "Online Signatures"
+msgstr "Online Podpisi"
 
 #: src/PrefsUnifiedDlg.cpp:793
 #, c-format
@@ -5040,7 +5040,7 @@ msgstr "Skupno datotek"
 #: src/Statistics.cpp:1207
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "Zasedenost stre¾nika: %.2f%%"
+msgstr "Zasedenost stre¾nikov: %.2f%%"
 
 #: src/StatisticsDlg.cpp:170
 #, c-format
@@ -5146,7 +5146,7 @@ msgid ""
 "Ok, exiting Text Client...\n"
 msgstr ""
 "\n"
-"Ok, zapu¹èam tekstovni odjemalec...\n"
+"Ok, zapu¹èam amulecmd...\n"
 
 #: src/TextClient.cpp:189
 #, c-format
@@ -5306,8 +5306,8 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"--------------------> Ukazi ki so na voljo (velike/male èrke nimajo vpliva): "
-"<------------------\n"
+"----------> Ukazi, ki so na voljo (velike/male èrke nimajo vpliva): "
+"<----------\n"
 "\n"
 
 #: src/TextClient.cpp:708
@@ -6046,8 +6046,8 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"----------------> Pomoè: Ukazi, ki so na voljo (velike/male èrke nimajo vpliva): "
-"<----------------\n"
+"----------> Ukazi, ki so na voljo (velike/male èrke nimajo vpliva): "
+"<----------\n"
 "\n"
 
 #: src/WebInterface.cpp:437
@@ -6133,7 +6133,7 @@ msgstr "Stre¾niki"
 
 #: src/WebServer.cpp:755 src/WebServer.cpp:1069 src/WebServer.cpp:1313
 msgid "ED2K Link(s)"
-msgstr "ED2K povezave"
+msgstr "ED2K povezava"
 
 #: src/WebServer.cpp:757
 msgid "Log"
@@ -6141,7 +6141,7 @@ msgstr "Zapisnik"
 
 #: src/WebServer.cpp:758
 msgid "Serverinfo"
-msgstr "Info o stre¾niku"
+msgstr "Stre¾ni¹ka sporoèila"
 
 #: src/WebServer.cpp:759
 msgid "Debug Log"
@@ -6166,11 +6166,11 @@ msgstr "IP"
 
 #: src/WebServer.cpp:878 src/WebServer.cpp:2035
 msgid "users"
-msgstr "uporabnikov"
+msgstr "Uporabnikov"
 
 #: src/WebServer.cpp:879
 msgid "files"
-msgstr "datotek"
+msgstr "Datoteke"
 
 #: src/WebServer.cpp:880 src/WebServer.cpp:1027
 msgid "Actions"
@@ -6269,19 +6269,19 @@ msgstr "Nastavitve datotek"
 
 #: src/WebServer.cpp:1948
 msgid "Max Sources Per File"
-msgstr "Max virov na datoteko"
+msgstr "©t. virov na datoteko"
 
 #: src/WebServer.cpp:1949
 msgid "Max. Connections"
-msgstr "Max povezav"
+msgstr "Zgornja meja"
 
 #: src/WebServer.cpp:1950
 msgid "Max. new connections / 5secs"
-msgstr "Max novih povezav / 5sek"
+msgstr "©t. novih povezav / 5sek"
 
 #: src/WebServer.cpp:1951
 msgid "Gzip Compression"
-msgstr "Gzip kompresija"
+msgstr "gzip kompresija"
 
 #: src/WebServer.cpp:1952
 msgid "Save traffic, especially in graphs."
@@ -6337,11 +6337,11 @@ msgstr "Prijava"
 
 #: src/WebServer.cpp:2021
 msgid "Enter your password here"
-msgstr "Tukaj vnesite svoje geslo"
+msgstr "Vnesite geslo"
 
 #: src/WebServer.cpp:2022
 msgid "Login Now"
-msgstr "Prijavi!"
+msgstr "Prijavi !"
 
 #: src/WebServer.cpp:2051
 msgid "Server Preferences"
@@ -6365,7 +6365,7 @@ msgstr "Hash datoteke"
 
 #: src/WebServer.cpp:2338
 msgid "Min Availability"
-msgstr "Min razpolo¾ljivost"
+msgstr "Min. razpolo¾ljivost"
 
 #: src/WebServer.cpp:2343
 msgid "Method"
