@@ -621,7 +621,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 					CECTag *server = connState ? connState->GetTagByIndex(0) : NULL;
 					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 					if (server && serverName) {
-						s << 	CFormat(_("Connected to %s %s ")) % serverName->GetStringData() % server->GetIPv4Data().StringIP() % (connState->HaveLowID() ? _("with LowID") : _("with HighID"));
+						s << CFormat(_("Connected to %s %s %s")) %
+						 serverName->GetStringData() %
+						 server->GetIPv4Data().StringIP() %
+						 (connState->HaveLowID() ? _("with LowID") : _("with HighID"));
 					}
 					break;
 				}
