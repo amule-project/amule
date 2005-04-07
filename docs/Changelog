@@ -392,11 +392,15 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  gaspojo:	(Portuguese	/ pt_PT)
 		  guest:	(German		/ de_DE)
 		  GhePeU:	(Italian	/ it_IT)
+		  Gusar:	(Slovenian	/ sl_SL)
+		  ilbuio:	(Italian	/ it_IT)
+		  Ogon:		(Polish		/ po_PO)
 		  shafff:	(Russian	/ ru_RU)
 		  thedude0001:	(German		/ de_DE)
 		  toshi:	(Russian	/ ru_RU)
 
 		* Contributors:
+		  hanzo
 		  markb
 		  monkeyboy
 		  ObsessionAl
@@ -408,11 +412,11 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Bug and feature reporters:
 		  alandar
 		  Angel
+		  BigBob
 		  feralertx
 		  Frankk
 		  Mr Faber
 		  OldFrog
-		  peper
 		  RedDwarf
 		  skolnick
 		  thedude0001
