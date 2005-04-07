@@ -955,6 +955,7 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 
 	if (widget) {
 		widget->SetLabel( label );
+		widget->GetParent()->Layout();
 	}
 }
 

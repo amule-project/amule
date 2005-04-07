@@ -2058,8 +2058,11 @@ void CDownloadListCtrl::ShowFilesCount( int diff )
 {
 	m_filecount += diff;
 	
-	wxString fmtstr = wxString::Format( _("Downloads (%i)"), m_filecount );
-	CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText )->SetLabel( fmtstr );
+	wxString str = wxString::Format( _("Downloads (%i)"), m_filecount );
+	wxStaticText* label = CastByName( wxT("downloadsLabel"), GetParent(), wxStaticText );
+
+	label->SetLabel( str );
+	label->GetParent()->Layout();
 }
 
 

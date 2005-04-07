@@ -277,7 +277,10 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
 	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theApp.clientlist->GetBannedCount(), _("Banned") );
-	CastChild( ID_CLIENTCOUNT, wxStaticText )->SetLabel( str );
+	wxStaticText* label = CastChild( ID_CLIENTCOUNT, wxStaticText );
+	
+	label->SetLabel( str );
+	label->GetParent()->Layout();
 }
 
 
@@ -401,23 +404,26 @@ void CTransferWnd::Prepare()
 void CTransferWnd::SwitchUploadList(wxCommandEvent& WXUNUSED(evt))
 {
  	clientlistctrl->ToggleView();
+	wxStaticText* label = CastChild( wxT("uploadTitle"), wxStaticText );
  	
  	switch ( clientlistctrl->GetListView() ) {
  		case vtNone:
  			return;
  		
  		case vtUploading:
- 			CastChild( wxT("uploadTitle"), wxStaticText )->SetLabel( _("Uploads") );
+ 			label->SetLabel( _("Uploads") );
  			break;
  			
  		case vtQueued:
- 			CastChild( wxT("uploadTitle"), wxStaticText )->SetLabel( _("On Queue") );
+ 			label->SetLabel( _("On Queue") );
  			break;
  
  		case vtClients:
- 			CastChild( wxT("uploadTitle"), wxStaticText )->SetLabel( _("Clients") );
+ 			label->SetLabel( _("Clients") );
  			break;
  	}
+
+	label->GetParent()->Layout();
 }
 
 

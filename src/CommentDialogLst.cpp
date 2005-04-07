@@ -110,5 +110,6 @@ void CCommentDialogLst::CompleteList()
 		info = CFormat( _("%s comment(s)")) % CastItoIShort(count);
 	}
 	FindWindow(IDC_CMSTATUS)->SetLabel(info);
+	FindWindow(IDC_CMSTATUS)->GetParent()->Layout();
 	m_file->UpdateFileRatingCommentAvail();
 }

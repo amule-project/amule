@@ -345,6 +345,7 @@ void CServerListCtrl::ShowServerCount()
 
 	if ( label ) {
 		label->SetLabel( wxString::Format( _("Servers (%i)"), GetItemCount() ) );
+		label->GetParent()->Layout();
 	}
 }
 
