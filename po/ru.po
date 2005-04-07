@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-05 15:27+0300\n"
+"PO-Revision-Date: 2005-04-07 13:08+0300\n"
 "Last-Translator: Nick Shaforostoff <shafff@ukr.net>\n"
 "Language-Team:  <kde-russian@lists.kde.ru>\n"
 "MIME-Version: 1.0\n"
@@ -18,33 +18,33 @@ msgstr ""
 
 #: src/AddFileThread.cpp:83
 msgid "Hasher: Creating new thread."
-msgstr "Хеширование: создаётся новый поток."
+msgstr "Хэширование: создаётся новый поток."
 
 #: src/AddFileThread.cpp:132
 msgid "Hasher: Signaling for remaining threads to terminate."
-msgstr "Хеширование: закрываются остающиеся потоки."
+msgstr "Хэширование: закрываются остающиеся потоки."
 
 #: src/AddFileThread.cpp:216
 msgid "Hasher: No files on queue, stopping thread."
-msgstr "Хеширование: нет файлов в очереди, поток останавливается."
+msgstr "Хэширование: нет файлов в очереди, поток останавливается."
 
 #: src/AddFileThread.cpp:271
 #, c-format
 msgid "Hasher: Starting to create MD4 and AICH hash for file: %s"
-msgstr "Хеширование: создаются MD4 и AICH хеши для файла: %s"
+msgstr "Хэширование: создаются MD4 и AICH хэши для файла: %s"
 
 #: src/AddFileThread.cpp:273
 msgid "Hasher: Starting to create MD4 hash for file: "
-msgstr "Хеширование: создаётся MD4-хеш для файла: "
+msgstr "Хэширование: создаётся MD4-хэш для файла: "
 
 #: src/AddFileThread.cpp:337
 #, c-format
 msgid "Hasher: Finished hashing file: %s"
-msgstr "Хеширование: закончено хеширование файла: %s"
+msgstr "Хэширование: закончено хэширование файла: %s"
 
 #: src/AddFileThread.cpp:346
 msgid "Hasher: A thread has died."
-msgstr "Хеширование: поток неожиданно завершился."
+msgstr "Хэширование: поток неожиданно завершился."
 
 #: src/AddFriend.cpp:54
 msgid "Add a Friend"
@@ -56,7 +56,7 @@ msgstr "Вы должны ввести правильный IP-адрес и п�
 
 #: src/AddFriend.cpp:80
 msgid "The specified userhash is not valid!"
-msgstr "Указан недопустимый хеш пользователя."
+msgstr "Указан недопустимый хэш пользователя."
 
 #: src/AICHSyncThread.cpp:86
 msgid "AICH Thread: Signaling for thread to terminate."
@@ -72,12 +72,12 @@ msgstr "Поток AICH: создан поток синхронизации."
 
 #: src/AICHSyncThread.cpp:188
 msgid "AICH Thread: Masterhashes of known files have been loaded."
-msgstr "Поток AICH: мастер-хеши известных файлов загружены."
+msgstr "Поток AICH: мастер-хэши известных файлов загружены."
 
 #: src/AICHSyncThread.cpp:226
 #, c-format
 msgid "AICH Thread: Starting to hash files. %li files found."
-msgstr "Поток AICH: начинается хеширование файлов. %li файлов найдено."
+msgstr "Поток AICH: начинается хэширование файлов. %li файлов найдено."
 
 #: src/AICHSyncThread.cpp:231
 #, c-format
@@ -86,7 +86,7 @@ msgstr "Поток AICH: файл: %s, осталось: %li"
 
 #: src/AICHSyncThread.cpp:243
 msgid "AICH Thread: Hashing completed."
-msgstr "Поток AICH: хеширование завершено."
+msgstr "Поток AICH: хэширование завершено."
 
 #: src/AICHSyncThread.cpp:245
 msgid "AICH Thread: No new files found."
@@ -853,7 +853,7 @@ msgstr "Подключен"
 
 #: src/ClientListCtrl.cpp:912
 msgid "Userhash"
-msgstr "Хеш пользователя"
+msgstr "Хэш пользователя"
 
 #: src/CommentDialog.cpp:43 src/CommentDialogLst.cpp:46
 msgid "File Comments"
@@ -1216,7 +1216,7 @@ msgstr "Неправильная ed2k-ссылка. Ошибка: %s"
 
 #: src/ECSpecialTags.cpp:651 src/PartFile.cpp:3655
 msgid "Hashing"
-msgstr "Хешируется"
+msgstr "Хэшируется"
 
 #: src/ECSpecialTags.cpp:655 src/PartFile.cpp:3659
 msgid "Completing"
@@ -1323,7 +1323,7 @@ msgstr ""
 #: src/ExternalConn.cpp:550
 #, c-format
 msgid "FileHash not found: %s"
-msgstr "Хеш файла не найден: %s"
+msgstr "Хэш файла не найден: %s"
 
 #: src/ExternalConn.cpp:625 src/ExternalConn.cpp:686
 msgid "OOPS! OpCode processing error!"
@@ -1954,7 +1954,7 @@ msgstr "Глобальный поиск"
 
 #: src/muuli_wdr.cpp:240
 msgid "FileHash (WWW)"
-msgstr "Поиск по хешу (WWW)"
+msgstr "Поиск по хэшу (WWW)"
 
 #: src/muuli_wdr.cpp:241
 msgid "Jugle (WWW)"
@@ -2118,7 +2118,7 @@ msgstr "Файл met:"
 
 #: src/muuli_wdr.cpp:587
 msgid "Hash :"
-msgstr "Хеш:"
+msgstr "Хэш:"
 
 #: src/muuli_wdr.cpp:598
 msgid "Filesize :"
@@ -2291,7 +2291,7 @@ msgstr "Имя пользователя :"
 
 #: src/muuli_wdr.cpp:981
 msgid "Userhash :"
-msgstr "Хеш пользователя :"
+msgstr "Хэш пользователя :"
 
 #: src/muuli_wdr.cpp:993 src/muuli_wdr.cpp:3009
 #: src/utils/aLinkCreator/src/alcframe.cpp:139
@@ -2367,7 +2367,7 @@ msgstr "Имя пользователя:"
 
 #: src/muuli_wdr.cpp:1357
 msgid "Userhash:"
-msgstr "Хеш пользователя:"
+msgstr "Хэш пользователя:"
 
 #: src/muuli_wdr.cpp:1380
 msgid "Client software:"
@@ -2737,7 +2737,7 @@ msgstr "I.C.M. включено"
 
 #: src/muuli_wdr.cpp:1989
 msgid "AICH trusts every hash (not recomended)"
-msgstr "AICH доверяет всем хешам (не рекомендуется)"
+msgstr "AICH доверяет всем хэшам (не рекомендуется)"
 
 #: src/muuli_wdr.cpp:1997
 msgid "Add files to download in pause mode"
@@ -3925,7 +3925,7 @@ msgstr "Найдена завершённая часть (%i) в %s"
 #: src/PartFile.cpp:1234
 #, c-format
 msgid "Finished rehashing %s"
-msgstr "Повторное хеширование %s завершено"
+msgstr "Повторное хэширование %s завершено"
 
 #: src/PartFile.cpp:2210
 #, c-format
@@ -4023,24 +4023,24 @@ msgstr "Завершено"
 #: src/PartFile.cpp:2473
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "Предупреждение: Невозможно хешировать загруженную часть - неполная контрольная сумма для '%s'"
+msgstr "Предупреждение: Невозможно хэшировать загруженную часть - неполная контрольная сумма для '%s'"
 
 #: src/PartFile.cpp:2478
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "Предупреждение: Невозможно хешировать загруженную часть - контрольная сумма неполная (%s). Это не должно было случиться"
+msgstr "Предупреждение: Невозможно хэшировать загруженную часть - контрольная сумма неполная (%s). Это не должно было случиться"
 
 #: src/PartFile.cpp:2493
 #, c-format
 msgid "Expected part-hash: %s"
-msgstr "Ожидаемый хеш части: %s"
+msgstr "Ожидаемый хэш части: %s"
 
 #: src/PartFile.cpp:2494
 #, c-format
 msgid "Actual part-hash: %s"
-msgstr "Реальный хеш части: %s"
+msgstr "Реальный хэш части: %s"
 
 #: src/PartFile.cpp:2941
 #, c-format
@@ -5436,7 +5436,7 @@ msgstr "Не вышло открыть публикуемый файл (%s), п�
 #: src/UploadClient.cpp:637
 #, c-format
 msgid "Hashset requested for unknown file: %s"
-msgstr "Запрошен набор хешев на неизвестный файл: %s"
+msgstr "Запрошен набор хэшев на неизвестный файл: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 #, c-format
@@ -5445,7 +5445,7 @@ msgstr "Обрабатывается файл под номером %u: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:78
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "Вы запросили хеш части (используется только при файлах больше, чем > 9.5 MB)"
+msgstr "Вы запросили хэш части (используется только при файлах больше, чем > 9.5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:82
 msgid "Please wait... "
@@ -5471,7 +5471,7 @@ msgstr "Параметры ввода"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:109
 msgid "File to Hash"
-msgstr "Файл для хеширования"
+msgstr "Файл для хэширования"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:113
 msgid "Add Optional URLs for this file"
@@ -5495,7 +5495,7 @@ msgstr "Удалить"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:155
 msgid "Create link with part-hashes"
-msgstr "Создать ссылку с хешами частей"
+msgstr "Создать ссылку с хэшами частей"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid ""
@@ -5507,11 +5507,11 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:187
 msgid "MD4 File Hash"
-msgstr "Хеш MD4"
+msgstr "Хэш MD4"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:199
 msgid "Ed2k File Hash"
-msgstr "Хеш ed2k"
+msgstr "Хэш ed2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:210
 msgid "Ed2k link"
@@ -5591,7 +5591,7 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:475
 #: src/utils/aLinkCreator/src/alcframe.cpp:481
 msgid "Hashing..."
-msgstr "Идёт хеширование..."
+msgstr "Идёт хэширование..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:529
 #: src/utils/aLinkCreator/src/alcframe.cpp:530
@@ -6326,7 +6326,7 @@ msgstr "Повторить поиск"
 
 #: src/WebServer.cpp:2332
 msgid "File Hash"
-msgstr "Хеш файла"
+msgstr "Хэш файла"
 
 #: src/WebServer.cpp:2338
 msgid "Min Availability"
