@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 // 
 // Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2003-2005 Kry ( elkry@users.sourceforge.net )
+// Copyright (c) 2003-2005 Angel Vidal (Kry) ( kry@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -121,4 +121,3 @@ private:
 };
 
 #endif // TEXTCLIENT_H
-
