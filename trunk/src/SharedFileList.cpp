@@ -206,7 +206,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 	CDirIterator SharedDir(directory); 
 	
-	wxString fname = SharedDir.FindFirstFile(CDirIterator::File); // We just want files
+	wxString fname = SharedDir.GetFirstFile(CDirIterator::File); // We just want files
 
 	if (fname.IsEmpty()) {
 		printf("Empty dir %s shared\n", (const char *)unicode2char(directory));
@@ -221,7 +221,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
 			AddDebugLogLineM(false, logKnownFiles, wxT("Shares: ") + fname + wxT(" is a directory, skipping"));
-			fname = SharedDir.FindNextFile();
+			fname = SharedDir.GetNextFile();
 			continue;
 		}
 		
@@ -229,7 +229,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		if (!new_file.IsOpened()) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
-			fname = SharedDir.FindNextFile();
+			fname = SharedDir.GetNextFile();
 			continue;
 		}
 
@@ -240,7 +240,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
-			fname = SharedDir.FindNextFile();
+			fname = SharedDir.GetNextFile();
 			continue;			
 		}
 		
@@ -266,7 +266,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			AddDebugLogLineM(false, logKnownFiles, wxT("Hashing new unknown shared file ") + fname);
 			CAddFileThread::AddFile(directory, fname);
 		}
-		fname = SharedDir.FindNextFile();
+		fname = SharedDir.GetNextFile();
 	}
 }
 

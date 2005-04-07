@@ -721,18 +721,18 @@ CDirIterator::~CDirIterator() {
 	}
 }
 
-wxString CDirIterator::FindFirstFile(FileType search_type, const wxString& search_mask) {
+wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search_mask) {
 	if (!DirPtr) {
 		return wxEmptyString;
 	}
 	seekdir(DirPtr, 0);// 2 if we want to skip . and ..
 	FileMask = search_mask;
 	type = search_type;
-	return FindNextFile();
+	return GetNextFile();
 }
 
 // First try an ANSI name, only then try UTF-8.
-wxString  CDirIterator::FindNextFile() {
+wxString  CDirIterator::GetNextFile() {
 
 	if (!DirPtr) {
 		return wxEmptyString;
