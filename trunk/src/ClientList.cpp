@@ -673,6 +673,7 @@ void CClientList::FilterQueues()
 		IDMap::iterator tmp = it++;
 		
 		if ( theApp.ipfilter->IsFiltered(tmp->second->GetConnectIP())) {
+			tmp->second->Disconnected(wxT("Filtered by IPFilter"));
 			tmp->second->Safe_Delete();
 		}
 	}
