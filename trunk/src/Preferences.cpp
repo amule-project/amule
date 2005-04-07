@@ -719,9 +719,9 @@ CPreferences::CPreferences()
 		SetStandartValues();
 	}
 	
+#ifndef CLIENT_GUI
 	LoadPreferences();
 
-#ifndef CLIENT_GUI
 
 	 ReloadSharedFolders();
 

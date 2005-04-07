@@ -278,6 +278,26 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	glob_prefs = new CPreferencesRem(connect);
 	
+
+	CEConnectDlg *dialog = new CEConnectDlg;
+	do {
+		
+		if ( dialog->ShowModal() != wxID_OK ) {
+			dialog->Destroy();
+			return false;
+		}
+	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
+	//amuledlg->AddLogLine(true, CFormat(_("Connected to amule at %s")) % dialog->Host());
+	
+	if ( dialog->SaveUserPass() ) {
+		wxConfig::Get()->Write(wxT("/EC/Host" ), dialog->Host());
+		wxConfig::Get()->Write(wxT("/EC/Port" ), dialog->Port());
+		wxConfig::Get()->Write(wxT("/EC/Password" ), dialog->PassHash());
+	}
+	dialog->Destroy();
+	
+	glob_prefs->LoadRemote();
+
 	serverconnect = new CServerConnectRem(connect);
 	statistics = new CStatistics();
 	
@@ -299,28 +319,10 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Create main dialog
 	InitGui(0, geom_string);
 
-	CEConnectDlg *dialog = new CEConnectDlg;
-	do {
-		
-		if ( dialog->ShowModal() != wxID_OK ) {
-			dialog->Destroy();
-			return false;
-		}
-	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
-	amuledlg->AddLogLine(true, CFormat(_("Connected to amule at %s")) % dialog->Host());
-	
-	if ( dialog->SaveUserPass() ) {
-		wxConfig::Get()->Write(wxT("/EC/Host" ), dialog->Host());
-		wxConfig::Get()->Write(wxT("/EC/Port" ), dialog->Port());
-		wxConfig::Get()->Write(wxT("/EC/Password" ), dialog->PassHash());
-	}
-	dialog->Destroy();
-	
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 	serverlist->ReloadControl();
 	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
-	glob_prefs->LoadRemote();
-		
+
 	// Start the Core Timer
 	core_timer->Start(1000);	
 
@@ -530,8 +532,7 @@ bool CPreferencesRem::LoadRemote()
 	((CEC_Prefs_Packet *)prefs)->Apply(false);
 
 	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
-		// start from '1' to skip default category "all"
-		for (int i = 1; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
+		for (int i = 0; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
 			const CECTag *cat_tag = prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
@@ -540,8 +541,6 @@ bool CPreferencesRem::LoadRemote()
 			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt32Data();
 			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt8Data();
 			theApp.glob_prefs->AddCat(cat);
-			// update gui
-			theApp.amuledlg->transferwnd->AddCategory(cat);
 		}
 	}
 
