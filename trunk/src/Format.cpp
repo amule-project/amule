@@ -96,7 +96,7 @@ void CFormat::SetString( const wxChar* str )
 
 const wxString& CFormat::GetString() const
 {
-	wxASSERT( m_index == m_format.Len() );
+	wxASSERT_MSG( m_index == m_format.Len(), wxT("Called GetString() before all values were passed.") );
 	
 	return m_result;
 }
@@ -108,7 +108,7 @@ CFormat::operator const wxString&() const
 CFormat::operator wxString() const
 #endif
 {
-	wxASSERT( m_index == m_format.Len() );
+	wxASSERT_MSG( m_index == m_format.Len(), wxT("Cast to wxString before all arguments were passed.") );
 
 	return m_result;
 }
@@ -125,7 +125,7 @@ void CFormat::ResetString()
 
 wxString CFormat::GetCurrentField()
 {
-	wxASSERT( m_index != m_format.Len() );
+	wxASSERT_MSG( m_index != m_format.Len(), wxT("Value passed to already completed string."));
 
 	if ( m_index != m_format.Len() ) {
 		m_indexEnd = m_index + 1;
@@ -135,7 +135,7 @@ wxString CFormat::GetCurrentField()
 			}
 		}
 		
-		wxASSERT( m_indexEnd != m_format.Len() );
+		wxASSERT_MSG( m_indexEnd != m_format.Len(), wxT("Invalid format string, unknown type.") );
 
 		m_indexEnd++;
 
@@ -153,7 +153,7 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 {
 	size_t length = m_format.Length();
 	
-	wxASSERT( m_index != length );
+	wxASSERT_MSG( m_index != length, wxT("Invalid operation: SetCurrentField on completed string.") );
 	wxASSERT( m_index <= m_indexEnd );
 	
 	// Locate the next format-string
@@ -163,7 +163,7 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 
 	for ( ; ptr < end; ++ptr ) {
 		if ( *ptr == wxT('%') ) {
-			wxASSERT( ptr + 1 < end );
+			wxASSERT_MSG( ptr + 1 < end, wxT("Incomplete format-string found.") );
 			
 			if ( *(ptr + 1) != wxT('%') ) {
 				break;
@@ -210,7 +210,7 @@ CFormat& CFormat::operator%( const wxChar* val )
 					SetCurrentField( wxEmptyString );
 				}
 			} else {
-				wxASSERT( false );
+				wxASSERT_MSG( false, wxT("Invalid value found in 'precision' field.") );
 			}
 		} else {
 			if ( val ) {
@@ -221,7 +221,7 @@ CFormat& CFormat::operator%( const wxChar* val )
 			}
 		}
 	} else {
-		wxASSERT( false );
+		wxASSERT_MSG( false, wxT("String value passed to non-integer format string.") );
 	}
 
 	return *this;
