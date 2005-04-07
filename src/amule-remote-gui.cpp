@@ -957,6 +957,8 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 		m_requpfile = 0;
 	}
 	
+	m_nCurSessionUp = 0;
+
 	CreditStruct *credit_struct = new CreditStruct;
 	memset(credit_struct, 0, sizeof(CreditStruct));
 	credits = new CClientCredits(credit_struct);
@@ -1013,6 +1015,8 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	uint64 value = tag->XferUp();
 	credit_struct->nUploadedHi = value >> 32;
 	credit_struct->nUploadedLo = value & 0xffffffff;
+	client->m_nTransferedUp = tag->XferUpSession();
+
 	value = tag->XferDown();
 	credit_struct->nDownloadedHi = value >> 32;
 	credit_struct->nDownloadedLo = value & 0xffffffff;
