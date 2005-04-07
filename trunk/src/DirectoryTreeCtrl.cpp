@@ -221,11 +221,11 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 
 void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const wxString& folder)
 {
-	// we must collect values first because we'll call FindFirstFile() again in AddChildItem() ...
+	// we must collect values first because we'll call GetFirstFile() again in AddChildItem() ...
 	wxArrayString ary;
 
 	CDirIterator SharedDir(folder); 
-	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
+	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	while(!fname.IsEmpty()) {
 		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
@@ -237,7 +237,7 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const wxString&
 		wxASSERT(fname.Last() != ROOT_CHAR);
 
 		ary.Add(fname);
-		fname= SharedDir.FindNextFile();
+		fname= SharedDir.GetNextFile();
 	}
 	
 	// then add them
@@ -251,7 +251,7 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const wxString& folder)
 	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
 
 	CDirIterator SharedDir(folder); 
-	wxString fname = SharedDir.FindFirstFile(CDirIterator::Dir); // We just want dirs
+	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	if(!fname.IsEmpty()) {
 		return TRUE; // at least one directory ...
