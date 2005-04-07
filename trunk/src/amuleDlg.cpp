@@ -669,10 +669,10 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		NewState = sDisconnected;
 	}
 
+	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 	if ( LastState != NewState ) {
 		CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 		switch ( NewState ) {
 			case sLowID:
 				// Display a warning about LowID connections
@@ -710,9 +710,9 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		m_wndToolbar->Realize();
 		ShowUserCount(0, 0);
 	} else if (connected) {
-		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 		connLabel->SetLabel(server);
 	}
+	connLabel->GetParent()->Layout();
 	LastState = NewState;
 }
 

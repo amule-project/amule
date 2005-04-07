@@ -428,7 +428,10 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 void CSharedFilesCtrl::ShowFilesCount()
 {
 	wxString str = wxString::Format(_("Shared Files (%i)"), GetItemCount());
-	CastByName( wxT("sharedFilesLabel"), GetParent(), wxStaticText )->SetLabel( str );
+	wxStaticText* label = CastByName( wxT("sharedFilesLabel"), GetParent(), wxStaticText );
+	
+	label->SetLabel( str );
+	label->GetParent()->Layout();
 }
 
 

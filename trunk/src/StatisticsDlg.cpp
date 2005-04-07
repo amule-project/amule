@@ -167,7 +167,11 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 	unsigned nScale = (unsigned)std::ceil((float)peakconnections / pscopeConn->GetUpperLimit());
 	if (nScale != nScalePrev) {
 		nScalePrev = nScale;
-		CastChild( ID_ACTIVEC, wxStaticText )->SetLabel(wxString::Format(_("Active connections (1:%u)"), nScale));
+		wxStaticText* label = CastChild( ID_ACTIVEC, wxStaticText );
+		
+		label->SetLabel(wxString::Format(_("Active connections (1:%u)"), nScale));
+		label->GetParent()->Layout();
+		
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
 	if (!bStatsVisible)

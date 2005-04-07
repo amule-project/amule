@@ -223,7 +223,10 @@ void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 	FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
 	
 	CastChild( IDC_FILENAME, wxTextCtrl )->SetValue(m_file->GetFileName());
+
+	Layout();
 }
+
 
 bool IsDigit(const wxChar ch)
 {
