@@ -171,9 +171,6 @@ time_t GetLastModificationTime(const wxString& file);
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
 
-#undef FindFirstFile
-#undef FindNextFile
-
 class CDirIterator {
 public:
 	enum FileType { File, Dir, Any}; 
@@ -185,8 +182,8 @@ public:
 		return (DirPtr != NULL);
 	}
 
-	wxString FindFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
-	wxString FindNextFile();
+	wxString GetFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
+	wxString GetNextFile();
 
 private:
 	DIR* DirPtr;

@@ -513,17 +513,17 @@ bool CamuleApp::OnInit()
 			CDirIterator xMuleDir(xMulePrefDir); 
 			
 			// Copy .dat files to the aMule dir			
-			wxString file = xMuleDir.FindFirstFile(CDirIterator::File,wxT("*.dat"));
+			wxString file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.dat"));
   			while ( !file.IsEmpty() ) {
 				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
-				file = xMuleDir.FindNextFile();
+				file = xMuleDir.GetNextFile();
   			}
 
 			// Copy .met files to the aMule dir
-			file = xMuleDir.FindFirstFile(CDirIterator::File,wxT("*.met"));
+			file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.met"));
 			while ( !file.IsEmpty() ) {
 				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
-				file = xMuleDir.FindNextFile();
+				file = xMuleDir.GetNextFile();
   			}
 
 			ShowAlert(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);
