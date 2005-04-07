@@ -356,7 +356,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			} else {
 				TextShell(ProgName, commands);
 			}
-			Show(CFormat(_("\nOk, exiting %s...\n")));
+			Show(CFormat(_("\nOk, exiting ...\n")));
 #endif
 			Post_Shell();
 		    }
