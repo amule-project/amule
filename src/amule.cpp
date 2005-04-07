@@ -467,7 +467,7 @@ bool CamuleApp::OnInit()
 		FILE *ed2kfile;
 		char filename[1024];
 
-		sprintf(filename,"%s/.aMule/ED2KLinks",getenv("HOME"));
+		sprintf(filename,"%s/.aMule/ED2KLinks",wxGetHomeDir());
 		ed2kfile = fopen(filename,"a");
 		if (ed2kfile != NULL) {
 			fprintf(ed2kfile,"RAISE_DIALOG");
