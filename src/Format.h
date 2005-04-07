@@ -242,30 +242,29 @@ inline CFormat& CFormat::FormatInteger( ValueType value )
 					if ( value <= MAX_INT && value >= MIN_INT ) {
 						return SetCurrentField( wxString::Format( field, (signed int)value ) );
 					} else {
-						wxASSERT( false );
+						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
 					}
 					break;
 				case modShort:
 					if ( value <= MAX_SHORT && value >= MIN_SHORT ) {
 						return SetCurrentField( wxString::Format( field, (signed short)value ) );
 					} else {
-						wxASSERT( false );
+						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
 					}
 					break;
 				case modLong:
 					if ( value <= MAX_LONG && value >= MIN_LONG ) {
 						return SetCurrentField( wxString::Format( field, (signed long)value ) );
 					} else {
-						wxASSERT( false );
+						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
 					}
 					break;
 				case modLongLong:
 					// No need to check, can contain all other value-types
 					return SetCurrentField( wxString::Format( field, (signed long long)value ) );
-					break;
 
 				default:
-					wxASSERT( false );
+					wxASSERT_MSG( false, wxT("Invalid modifier specified for interger format.") );
 			}
 			
 			break;
@@ -275,11 +274,16 @@ inline CFormat& CFormat::FormatInteger( ValueType value )
 			if ( value <= MAX_WXCHAR && value >= MIN_WXCHAR ) {
 				return SetCurrentField( wxString( (wxChar)value ) );
 			} else {
-				wxASSERT( false );
+				wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
 			}
+			break;
 
+		// Gracefully handle too many arguments.
+		case wxT('\0'):
+			return *this;
+			
 		default:
-			wxASSERT( false );
+			wxASSERT_MSG( false, wxT("Integer value passed to non-integer format string.") );
 	}
 
 	return SetCurrentField( field );
@@ -290,7 +294,7 @@ template <typename ValueType>
 inline CFormat& CFormat::FormatFloat( ValueType value )
 {
 	wxString field = GetCurrentField();
-
+	
 	switch ( field.Last() ) {
 		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
@@ -302,14 +306,14 @@ inline CFormat& CFormat::FormatFloat( ValueType value )
 					if ( value <= MAX_FLOAT && value >= MIN_FLOAT ) {
 						return SetCurrentField( wxString::Format( field, (float)value ) );
 					} else {
-						wxASSERT( false );
+						wxASSERT_MSG( false, wxT("Floating-point value passed cannot be represented in the specified format.") );
 					}
 					break;
 				case modLong:
 					if ( value <= MAX_DOUBLE && value >= MIN_DOUBLE ) {
 						return SetCurrentField( wxString::Format( field, (double)value ) );
 					} else {
-						wxASSERT( false );
+						wxASSERT_MSG( false, wxT("Floating-point value passed cannot be represented in the specified format.") );
 					}
 					break;
 				case modLongDouble:
@@ -317,13 +321,17 @@ inline CFormat& CFormat::FormatFloat( ValueType value )
 					SetCurrentField( wxString::Format( field, (long double)value ) );
 					
 				default:
-					wxASSERT( false );
+					wxASSERT_MSG( false, wxT("Invalid modifier specified for floating-point format.") );
 			}
 		
 			break;
-
+			
+		// Gracefully handle too many arguments.
+		case wxT('\0'):
+			return *this;
+			
 		default:
-			wxASSERT( false );				
+			wxASSERT_MSG( false, wxT("Floating-point value passed to non-integer format string.") );
 	}
 
 	return SetCurrentField( field );
