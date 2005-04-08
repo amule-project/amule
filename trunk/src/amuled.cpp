@@ -174,6 +174,10 @@ int CamuleDaemonApp::OnRun()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
+	//
+	// fork to background and detouch from controlling tty
+	// while redirecting stdout to /dev/null
+	//
 	return 0;
 }
 
