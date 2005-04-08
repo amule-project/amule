@@ -5263,7 +5263,7 @@ msgstr "Picco connessioni (stima): %i"
 #: src/Statistics.cpp:906
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
-msgstr "Rapporto UL:DL sessione totale: %s"
+msgstr "Rapporto UL:DL sessione (totale): %s"
 
 #: src/Statistics.cpp:909
 msgid "Session UL:DL Ratio (Total): Not available"
