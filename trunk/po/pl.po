@@ -3135,7 +3135,7 @@ msgstr "Katalogi udostępnione"
 
 #: src/muuli_wdr.cpp:2118
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
+msgstr "(Kliknij prawym przyciskiem na katalog aby udost#pni# go razem z podkatalogami)"
 
 #: src/muuli_wdr.cpp:2125
 msgid "Share hidden files"
