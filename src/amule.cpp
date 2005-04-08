@@ -64,6 +64,7 @@
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/config.h>
+#include <wx/fileconf.h>
 #include <wx/socket.h>			// Needed for wxSocket
 #include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
@@ -552,7 +553,7 @@ bool CamuleApp::OnInit()
 #endif
 
 	// This creates the CFG file we shall use
-	wxConfigBase* cfg = new wxConfig( wxEmptyString, wxEmptyString, ConfigDir + wxT("amule.conf") );
+	wxConfigBase* cfg = new wxFileConfig( wxEmptyString, wxEmptyString, ConfigDir + wxT("amule.conf") );
 	
 	// Set the config object as the global cfg file
 	wxConfig::Set( cfg );
