@@ -30,6 +30,7 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/menu.h>		// Needed for wxMenu
+#include <wx/msgdlg.h>		// Needed for wxMessageBox
 
 #include "amule.h"			// Needed for theApp: let it first or fail under win32
 #include "amuleDlg.h"		// Needed for CamuleDlg
