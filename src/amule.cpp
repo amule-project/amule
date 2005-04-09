@@ -1231,19 +1231,15 @@ void CamuleApp::OnFatalException()
 {
 	/* Print the backtrace */
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
-	if (wxString(MOD_VERSION_LONG) == wxT("aMule CVS")) {
-		fprintf(stderr, "Oops, aMule crashed!\n");
-		fprintf(stderr, "Hey, stop crying! You wanted the edge, and now you fell down?!\n");
-	} else {
-		fprintf(stderr, "OOPS! Houston, we have a situation: seems like aMule crashed!\n");
-	}
-
-	fprintf(stderr, "Please, post the following lines, on the aMule Crashes forum on:\n");
-	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67&sid=/\n");
-	fprintf(stderr, "You should also try to generate a real backtrace of this error, please read:\n");
-	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n");
-	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n\n");
-	fprintf(stderr, "aMule version is: %s\n", (const char *)unicode2char(GetMuleVersion()));
+	fprintf(stderr, "A fatal error has occurred and aMule has crashed.\n");
+	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
+	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
+	fprintf(stderr, "circumstances of this crash. The forum is located here:\n");
+	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67\n");
+	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
+	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n\n");
+	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
+	fprintf(stderr, "Current version is: %s\n", (const char *)unicode2char(GetFullMuleVersion()));
 	fprintf(stderr, "Running on: %s\n\n", (const char*)unicode2char(wxGetOsDescription()));
 	
 	otherfunctions::print_backtrace(1); // 1 == skip this function.

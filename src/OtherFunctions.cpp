@@ -62,6 +62,7 @@
 
 #include "StringFunctions.h"
 
+
 namespace otherfunctions {
 
 wxString GetMuleVersion()
@@ -70,6 +71,7 @@ wxString GetMuleVersion()
 	
 	ver += wxT(" using ");
 
+	
 	// Figure out the wx build-type
 	#ifdef __WXGTK__
 		#ifdef __WXGTK20__
@@ -98,6 +100,19 @@ wxString GetMuleVersion()
 	return ver;
 }
 
+
+wxString GetFullMuleVersion()
+{
+#ifdef AMULE_DAEMON
+	wxString app = wxT("aMuled");
+#elif defined(CLIENT_GUI)
+	wxString app = wxT("Remote aMule-GUI");
+#else
+	wxString app = wxT("aMule");
+#endif
+
+	return app + wxT(" ") + GetMuleVersion();
+}
 
 
 // Formats a filesize in bytes to make it suitable for displaying
@@ -1052,7 +1067,8 @@ void DumpMem_DW(const uint32 *ptr, int count)
 }
 
 // Print a stack backtrace if available
-void print_backtrace(uint8 n) {
+void print_backtrace(uint8 n)
+{
 #ifdef __LINUX__
 	// (stkn) create backtrace
 	void *bt_array[100];	// 100 should be enough ?!?
@@ -1140,30 +1156,27 @@ void print_backtrace(uint8 n) {
 	}
 	
 	// Remove 'n+1' first entries (+1 because of this function)
-	
-	for (int i = 0; i < num_entries; ++i) {
-		if (i+2 > n) {
-			/* If we have no function name, use the result from addr2line */
-			if (funcname[i].IsEmpty()) {
-				if (hasLineNumberInfo) {
-					funcname[i] = out[2*i];
-				} else {
-					funcname[i] = wxT("??");
-				}
-			}
-			wxString btLine;
-			btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
-			/* If addr2line did not find a line number, use bt_string */
-			if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
-				btLine += libname[i] + wxT("[") + address[i] + wxT("]");
-			} else if (hasLineNumberInfo) {
-				btLine += out[2*i+1];
+	for (int i = n+1; i < num_entries; ++i) {
+		/* If we have no function name, use the result from addr2line */
+		if (funcname[i].IsEmpty()) {
+			if (hasLineNumberInfo) {
+				funcname[i] = out[2*i];
 			} else {
-				btLine += libname[i];
+				funcname[i] = wxT("??");
 			}
-			/* Print */
-			fprintf(stderr, "%s\n", (const char *)(btLine.mb_str()) );
 		}
+		wxString btLine;
+		btLine << wxT("[") << i << wxT("] ") << funcname[i] << wxT(" in ");
+		/* If addr2line did not find a line number, use bt_string */
+		if (!hasLineNumberInfo || out[2*i+1].Mid(0,2) == wxT("??")) {
+			btLine += libname[i] + wxT("[") + address[i] + wxT("]");
+		} else if (hasLineNumberInfo) {
+			btLine += out[2*i+1];
+		} else {
+			btLine += libname[i];
+		}
+		/* Print */
+		fprintf(stderr, "%s\n", (const char *)(btLine.mb_str()) );
 	}
 	delete [] libname;
 	delete [] funcname;

@@ -123,6 +123,16 @@ int EraseValue( LIST& list, const ITEM& item )
  */
 wxString GetMuleVersion();
 
+/**
+ * This functions is like the GetMuleVersion function above, with the exception
+ * that it also includes the name of the application. This can be one of the
+ * following:
+ *
+ *  - aMule
+ *  - aMuled
+ *  - Remote aMule-GUI
+ */
+wxString GetFullMuleVersion();
 
 
 /**
