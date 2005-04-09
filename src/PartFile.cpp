@@ -411,7 +411,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			return false;
 		} else {
 			if (!(metFile.Length()>0)) {
-				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
+				AddLogLineM(false, CFormat( _("Error: part.met nackups file is 0 size: %s ==> %s") )
 					% m_partmetfilename
 					% m_strFileName );
 				metFile.Close();

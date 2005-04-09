@@ -698,7 +698,7 @@ void CStatistics::InitStatsTree() {
 	cli_versions[3].active = false;
 	cli10= statstree.append_child(h_clients,_("Waiting...")); // aMule
 	cli10_1= statstree.append_child(cli10,_("Version")); // aMule
-	cli10_2= statstree.append_child(cli10,_("Operating System")); // aMule
+	cli10_2= statstree.append_child(cli10,_("Operative System")); // aMule
 	cli_versions[12].active = false;
 	cli_versions[13].active = false;
 	cli_versions[14].active = false;
