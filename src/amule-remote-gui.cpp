@@ -542,6 +542,14 @@ bool CPreferencesRem::LoadRemote()
 			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt8Data();
 			theApp.glob_prefs->AddCat(cat);
 		}
+	} else {
+		Category_Struct *cat = new Category_Struct;
+		cat->title = _("All");
+		cat->incomingpath = wxEmptyString;
+		cat->comment = wxEmptyString;
+		cat->color =  0;
+		cat->prio = PR_NORMAL;
+		theApp.glob_prefs->AddCat(cat);
 	}
 
 	delete prefs;
