@@ -1307,7 +1307,7 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 	printf("\nAssertion failed. Backtrace follows:\n");
 
 	// Skip the function-calls directly related to the assert call.
-	print_backtrace( 5 );
+	print_backtrace( 3 );
 
 	printf("\n");
 		
