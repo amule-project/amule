@@ -1,3 +1,4 @@
+# translation of ru.po to Russian
 # aMule project source code strings for i18n.
 # This file is distributed under the same license as the aMule package.
 # Nick Shaforostoff <shafff@ukr.net>, 2005.
@@ -8,9 +9,9 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-07 13:08+0300\n"
-"Last-Translator: Nick Shaforostoff <shafff@ukr.net>\n"
-"Language-Team:  <kde-russian@lists.kde.ru>\n"
+"PO-Revision-Date: 09.04.2005 21:14\n"
+"Last-Translator: Konstantin <k.koshelyaev@gmail.com>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,7 +83,7 @@ msgstr "Поток AICH: начинается хэширование файло�
 #: src/AICHSyncThread.cpp:231
 #, c-format
 msgid "AICH Thread: Hashing file: %s, total files left: %li"
-msgstr "Поток AICH: файл: %s, осталось: %li"
+msgstr "Поток AICH: файл: %s, осталось: %li."
 
 #: src/AICHSyncThread.cpp:243
 msgid "AICH Thread: Hashing completed."
@@ -226,7 +227,7 @@ msgstr ""
 
 #: src/amule.cpp:1631
 msgid "ERROR: can't open logfile"
-msgstr "Ошибка: Невозможно открыть файл журнала"
+msgstr "Ошибка: невозможно открыть файл журнала"
 
 #: src/amule.cpp:1635
 msgid "WARNING: logfile is empty. Something is wrong."
@@ -252,7 +253,7 @@ msgstr ""
 #: src/amuled.cpp:210
 #, c-format
 msgid "ERROR: %s"
-msgstr "Ошибка:%s"
+msgstr "Ошибка: %s"
 
 #: src/amuled.cpp:223 src/TextClient.cpp:624 src/WebServer.cpp:793
 #: src/WebServer.cpp:2075
@@ -295,7 +296,7 @@ msgstr "Посетите http://www.amule.org для проверки налич
 
 #: src/amuleDlg.cpp:218
 msgid "Fatal Error: Failed to create Timer"
-msgstr "Фатальная ошибка: Не удалось создать Таймер"
+msgstr "Фатальная ошибка: не удалось создать Таймер"
 
 #: src/amuleDlg.cpp:323
 msgid "Desktop integration"
@@ -306,8 +307,9 @@ msgid "aMule remote control"
 msgstr "Удалённый контроль"
 
 #: src/amuleDlg.cpp:514
+# Used only in CVS!
 msgid "Snapshot:"
-msgstr ""
+msgstr "Версия CVS:"
 
 #: src/amuleDlg.cpp:517
 msgid ""
@@ -1041,15 +1043,15 @@ msgstr "&Очистить завершённые"
 
 #: src/DownloadListCtrl.cpp:967
 msgid "Swap every A4AF to this file now"
-msgstr ""
+msgstr "Использовать все A4AF источники для этого файла"
 
 #: src/DownloadListCtrl.cpp:969
 msgid "Swap every A4AF to this file (Auto)"
-msgstr ""
+msgstr "Использовать все A4AF источники для этого файла (авто)"
 
 #: src/DownloadListCtrl.cpp:974
 msgid "Swap every A4AF to any other file now"
-msgstr ""
+msgstr "Отдать все A4AF источники этого файла другим файлам"
 
 #: src/DownloadListCtrl.cpp:979
 msgid "Drop No Needed Sources now"
@@ -1111,7 +1113,7 @@ msgstr "Скопировать ed2k-ссылку в буфер обмена (&HT
 
 #: src/DownloadListCtrl.cpp:1018
 msgid "Copy feedback to clipboard"
-msgstr ""
+msgstr "Скопировать доп. информацию в буфер обмена"
 
 #: src/DownloadListCtrl.cpp:1025
 msgid "unassign"
@@ -1127,7 +1129,7 @@ msgstr "&Открыть файл"
 
 #: src/DownloadListCtrl.cpp:1095
 msgid "Swap to this file"
-msgstr ""
+msgstr "Использовать источник для этого файла"
 
 #: src/DownloadListCtrl.cpp:1124
 msgid "Enter new name for this file:"
@@ -1266,9 +1268,10 @@ msgstr "Принято новое внешнее соединение"
 msgid "Error: couldn't accept a new external connection"
 msgstr "Ошибка: не удалось принять новое внешнее соединение"
 
-#: src/ExternalConn.cpp:183
+#: 0src/ExternalConn.cpp:183
+# EC - External connection.
 msgid "Invalid EC packet received"
-msgstr ""
+msgstr "Получен неправильный EC пакет"
 
 #: src/ExternalConn.cpp:192 src/ExternalConn.cpp:1226
 msgid "Unauthorized access attempt. Connection closed."
@@ -1285,7 +1288,7 @@ msgstr "Отказано во внешнем соединении из-за пу
 #: src/ExternalConn.cpp:264
 #, c-format
 msgid "Connecting client: %s %s"
-msgstr "Соединение с клиентом:%s %s"
+msgstr "Соединение с клиентом: %s %s"
 
 #: src/ExternalConn.cpp:266
 msgid "Unknown version"
@@ -1293,7 +1296,7 @@ msgstr "Неизвестная версия"
 
 #: src/ExternalConn.cpp:275
 msgid "Incorrect CVSDATE. Please run core and remote from the same CVS tarball."
-msgstr ""
+msgstr "Версии удаленного клиента и основной программы не совпадают! Используйте удаленный клиент и основную программу из одинаковой версии CVS."
 
 #: src/ExternalConn.cpp:283
 msgid "Authentication failed."
@@ -1318,7 +1321,7 @@ msgstr "Доступ получен."
 #: src/ExternalConn.cpp:548
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr ""
+msgstr "Удаленная команда для PartFile не удалась: хэш файла не найден: %s"
 
 #: src/ExternalConn.cpp:550
 #, c-format
@@ -1347,8 +1350,9 @@ msgid "Search in progress. Refetch results in a moment!"
 msgstr "Поиск запущен. Ждите результатов."
 
 #: src/ExternalConn.cpp:771
+# Explained by Jacobo221.
 msgid "WebSearch from remote interface makes no sense."
-msgstr ""
+msgstr "При удаленном использовании aMule WWW поиск бесполезен."
 
 #: src/ExternalConn.cpp:990
 msgid "ExternalConn: shutdown requested"
@@ -1373,7 +1377,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:182
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
+msgstr "Ошибка при обработке команды - это не должно было произойти! Пожалуйста, сообщите нам об этой ошибке\n"
 
 #: src/ExternalConnector.cpp:185
 msgid "Syntax error!\n"
@@ -1437,7 +1441,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:364
 msgid "A socket error occured during authentication. Exiting.\n"
-msgstr ""
+msgstr "Произошла ошибка сокета при идентификации. Завершение работы.\n"
 
 #: src/ExternalConnector.cpp:379
 msgid "Show this help text."
@@ -1535,6 +1539,8 @@ msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
 msgstr ""
+"Вы не можете устанавливать более одного слота для друзей.\n"
+" Только один слот был создан."
 
 #: src/FriendListCtrl.cpp:333
 msgid "Multiple selection"
@@ -1555,7 +1561,7 @@ msgstr "Пожалуйста, заполните все обязательные
 
 #: src/KnownFileList.cpp:87
 msgid "Error reading known.met file! (corrupted?)"
-msgstr "Ошибка чтения файла known.met."
+msgstr "Ошибка чтения файла 'known.met'."
 
 #: src/ListenSocket.cpp:712
 #, c-format
@@ -1605,17 +1611,17 @@ msgstr "Пользователь %s (%u) отправил список публ�
 #: src/ListenSocket.cpp:1100
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr "Пользователь %s (%u) закончил передачу списка публикуемых файлов"
+msgstr "Пользователь %s (%u) закончил передачу списка публикуемых файлов."
 
 #: src/ListenSocket.cpp:1105
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "Пользователь %s (%u) отправил незапрошенный список публикуемых файлов"
+msgstr "Пользователь %s (%u) отправил незапрошенный список публикуемых файлов."
 
 #: src/ListenSocket.cpp:1117
 #, c-format
 msgid "User %s (%u) denied access to shareddirectories/files-list"
-msgstr "Пользователь %s (%u) отказался передать список публикуемых папок/файлов"
+msgstr "Пользователь %s (%u) отказался передать список публикуемых папок/файлов."
 
 #: src/ListenSocket.cpp:1931
 msgid "CListenSocket: Cannot create thread"
@@ -1900,10 +1906,11 @@ msgid "Up: 0.0 | Down: 0.0"
 msgstr "Передача: 0.0 | Приём: 0.0"
 
 #: src/muuli_wdr.cpp:152
+# Explained by Jacobo221.
 msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
-msgstr ""
+msgstr "Текущие скорости отдачи и закачки клиента. Если включено - в значениях, указанных в скобках, дополнительно учитывается системный трафик."
 
 #: src/muuli_wdr.cpp:160
 msgid ""
@@ -2974,6 +2981,7 @@ msgid "New aMule version detected"
 msgstr "Обнаружена новая версия aMule"
 
 #: src/muuli_wdr.cpp:2303
+# OOD - Out Of Delivery
 msgid "Urgent OOD, serverconnection lost"
 msgstr ""
 
@@ -3255,8 +3263,9 @@ msgid "Select color for this Category (currently selected) :"
 msgstr "Выбрать цвет для этой категории:"
 
 #: src/muuli_wdr.cpp:2900
+# MOTD - Message Of The Day
 msgid "Display server motd when connected ..."
-msgstr ""
+msgstr "Показывать сообщение сервера при подключении..."
 
 #: src/muuli_wdr.cpp:2903 src/muuli_wdr.cpp:3050
 msgid "Server Info"
@@ -3798,7 +3807,7 @@ msgstr ""
 #: src/PartFile.cpp:381
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "Ошибка: невозможно открыть part.met-файл: %s ==> %s"
+msgstr "Ошибка: невозможно открыть файл 'part.met': %s ==> %s"
 
 #: src/PartFile.cpp:390
 msgid ""
@@ -3824,7 +3833,7 @@ msgstr "Ошибка: размер файла 'part.met' - 0: %s ==> %s"
 #: src/PartFile.cpp:427
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "Ошибка: неверная версия файла part.met: %s ==> %s"
+msgstr "Ошибка: неверная версия файла 'part.met': %s ==> %s"
 
 #: src/PartFile.cpp:475
 #, c-format
@@ -3983,8 +3992,9 @@ msgid "\tRemoved from download queue"
 msgstr "\tУдалён из очереди загрузки"
 
 #: src/PartFile.cpp:2419
+# Explained by Jacobo221.
 msgid "\tRemoved transferwnd"
-msgstr ""
+msgstr "\tУдалён из окна передач"
 
 #: src/PartFile.cpp:2429
 msgid "\tClosed"
@@ -4284,7 +4294,7 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"Впишите сюда адреса для получения файлов server.met.\n"
+"Впишите сюда адреса для получения файлов 'server.met'.\n"
 "Только один URL в одной строчке."
 
 #: src/PrefsUnifiedDlg.cpp:911
@@ -4295,7 +4305,7 @@ msgstr "Интервал обновления: %d сек"
 #: src/PrefsUnifiedDlg.cpp:916
 #, c-format
 msgid "Time for average graph: %d mins"
-msgstr ""
+msgstr "Отрезок времени, охватывающийся графиком: %d минут"
 
 #: src/PrefsUnifiedDlg.cpp:921
 #, c-format
@@ -4331,8 +4341,9 @@ msgid "You are not connected to a server!"
 msgstr "Вы не подключены к серверу."
 
 #: src/SearchDlg.cpp:511
+# It's about default category to download to.
 msgid "Main"
-msgstr ""
+msgstr "основная"
 
 #: src/SearchListCtrl.cpp:84 src/SharedFilesCtrl.cpp:101
 msgid "FileID"
@@ -4352,7 +4363,7 @@ msgstr "Не удалось соединиться ни с одним указа
 
 #: src/ServerConnect.cpp:114 src/ServerConnect.cpp:124
 msgid "No valid servers to connect in serverlist found"
-msgstr "Ни одного действительного сервера для соединения в списке не найдено"
+msgstr "Ни одного действительного сервера для соединения в списке не найдено."
 
 #: src/ServerConnect.cpp:190
 #, c-format
@@ -4361,7 +4372,7 @@ msgstr "Подключен к %s (%s:%i)"
 
 #: src/ServerConnect.cpp:323
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Ошибка во время соединения. Возможно нет соединения с Интернет"
+msgstr "Ошибка во время соединения. Возможно нет соединения с Интернет."
 
 #: src/ServerConnect.cpp:327
 #, c-format
@@ -4417,7 +4428,7 @@ msgstr "Не удалось открыть файл 'server.met'!"
 #: src/ServerList.cpp:116
 #, c-format
 msgid "Invalid versiontag in server.met (0x%x , size %i)!"
-msgstr "Неверный тег версии в файле server.met (0x%x , размер %i)!"
+msgstr "Неверный тег версии в файле 'server.met' (0x%x , размер %i)!"
 
 #: src/ServerList.cpp:166
 #, c-format
@@ -4656,7 +4667,7 @@ msgstr "Невозможно создать поток разрешения DNS 
 #: src/ServerSocket.cpp:730
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
-msgstr "Не удалось разрешить DNS для сервера %s: Не удалось подключиться."
+msgstr "Не удалось разрешить DNS для сервера %s: не удалось подключиться."
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
@@ -4677,12 +4688,12 @@ msgstr "ID"
 #: src/SharedFileList.cpp:143
 #, c-format
 msgid "Found %i known shared files"
-msgstr "Найдено %i известных публикуемых файлов"
+msgstr "Найдено %i известных публикуемых файлов."
 
 #: src/SharedFileList.cpp:150
 #, c-format
 msgid "Found %i known shared files, %i unknown"
-msgstr "Найдено %i известных публикуемых файлов, %i неизвестных"
+msgstr "Найдено %i известных публикуемых файлов, %i неизвестных."
 
 #: src/SharedFileList.cpp:168
 #, c-format
@@ -4890,7 +4901,7 @@ msgstr "Активных соединений (примерно): %i"
 #: src/Statistics.cpp:887
 #, c-format
 msgid "Max Connection Limit Reached: %i : %s"
-msgstr ""
+msgstr "Достигнут предел максимального кол-ва соединений: %i : %s"
 
 #: src/Statistics.cpp:891
 msgid "Max Connection Limit Reached: Never"
@@ -4968,7 +4979,7 @@ msgstr "LowID: %u (%.2f%% Всего %.2f%% Известно)"
 #: src/Statistics.cpp:953
 #, c-format
 msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-msgstr ""
+msgstr "Безопасная идентификация Вкл/Выкл: %u (%.2f%%) : %u (%.2f%%)"
 
 #: src/Statistics.cpp:955
 #, c-format
@@ -5125,6 +5136,9 @@ msgid ""
 "Using %s\n"
 "(c) aMule Dev Team"
 msgstr ""
+"amulecmd DLG версия\n"
+"Используя %s\n"
+"(c) команда разработчиков aMule"
 
 #: src/TextClient.cpp:192
 msgid "About amulecmd"
@@ -5156,7 +5170,7 @@ msgstr "Этой команде требуется аргумент. Досту�
 
 #: src/TextClient.cpp:421
 msgid "Hint: Use Show DL or Show UL\n"
-msgstr ""
+msgstr "Совет: Используйте 'Show DL' или 'Show UL'\n"
 
 #: src/TextClient.cpp:440
 msgid "IPLevel parameter must be in the range of 0-255.\n"
@@ -5244,7 +5258,7 @@ msgid ""
 "Clients in queue:\t%d\n"
 msgstr ""
 "\n"
-"Клиентов в очереди: \t%d\n"
+"Клиентов в очереди:\t%d\n"
 
 #: src/TextClient.cpp:640
 #, c-format
@@ -5253,7 +5267,7 @@ msgid ""
 "Total sources:\t%d\n"
 msgstr ""
 "\n"
-"Всего источников: \t%d\n"
+"Всего источников:\t%d\n"
 
 #: src/TextClient.cpp:660 src/TextClient.cpp:679
 #, c-format
@@ -5597,7 +5611,7 @@ msgstr "Идёт хэширование..."
 #: src/utils/aLinkCreator/src/alcframe.cpp:530
 #: src/utils/aLinkCreator/src/md4.cpp:371
 msgid "Canceled !"
-msgstr "Отменено !"
+msgstr "Отменено!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:538
 #, c-format
@@ -5778,7 +5792,7 @@ msgstr "aMule запущен"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:633
 msgid "WARNING: aMule is stopped !"
-msgstr "Внимание: aMule остановлен !"
+msgstr "Внимание: aMule остановлен!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:637
 msgid "aMule is connecting..."
@@ -5801,7 +5815,7 @@ msgstr " работает "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:720
 msgid " is STOPPED !"
-msgstr " остановлен !"
+msgstr " остановлен!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:724
 msgid " is connecting..."
@@ -5809,11 +5823,12 @@ msgstr " подключается..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:728
 msgid " is doing something strange, check it !"
-msgstr ""
+msgstr " делает что-то непонятное, проверьте!"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:743
+#  stands for $User is on $server
 msgid " is on "
-msgstr ""
+msgstr " на "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:745
 msgid " ["
@@ -5962,7 +5977,7 @@ msgstr "О программе amuleweb"
 
 #: src/WebInterface.cpp:214
 msgid "amuleweb DLG"
-msgstr ""
+msgstr "amuleweb DLG"
 
 #: src/WebInterface.cpp:284
 msgid "Loads template <str>"
@@ -6003,7 +6018,7 @@ msgstr "Путь к файл конфигурации aMule. НЕ ИСПОЛЬЗ
 #: src/WebInterface.cpp:359
 #, c-format
 msgid "FATAL ERROR: Cannot find template: %s"
-msgstr "Ошибка: Не удалось найти шаблон: %s"
+msgstr "Ошибка: не удалось найти шаблон: %s"
 
 #: src/WebInterface.cpp:432
 msgid ""
@@ -6077,6 +6092,8 @@ msgid ""
 "Can't find template version number!\n"
 "Please replace aMule.tmpl with a newer version!"
 msgstr ""
+"Не удалось найти номер версии шаблона!\n"
+"Пожалуйста, замените файл 'aMule.tmpl' более новой версией!"
 
 #: src/WebServer.cpp:462
 #, c-format
@@ -6175,8 +6192,9 @@ msgid "Decrease Priority"
 msgstr "Уменьшить приоритет"
 
 #: src/WebServer.cpp:1208
+# "This should never happen..." - Jacobo221.
 msgid "Internal error - no item in container"
-msgstr ""
+msgstr "Произошла внутренняя ошибка - нет элементов в контейнере"
 
 #: src/WebServer.cpp:1285 src/WebServer.cpp:1957
 msgid "Hide Queue"
@@ -6217,7 +6235,7 @@ msgstr "Добавить в список"
 
 #: src/WebServer.cpp:1618
 msgid "Update server.met from URL"
-msgstr "Обновить server.met используя URL"
+msgstr "Обновить 'server.met' используя URL"
 
 #: src/WebServer.cpp:1619
 msgid "URL"
