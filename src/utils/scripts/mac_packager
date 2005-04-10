@@ -39,11 +39,6 @@ echo "    wxWidgets..."
 for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libwx_ | cut -d " " -f 1 ); do 
 	cp $i aMule.app/Contents/Frameworks; 
 done
-echo "    Curl..."
-# while we're at it, copy curl too
-for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libcurl | cut -d " " -f 1 ); do
-        cp $i aMule.app/Contents/Frameworks;
-done
 echo "Libs copy done."
 echo ""
 echo "Step 4: Update libs info"
