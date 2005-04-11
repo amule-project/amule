@@ -54,12 +54,7 @@ void UnregisterSocket(wxSocketBase*);
  * ECSocket takes care of the transmission of EC packets
  */
 
-#ifdef AMULE_DAEMON
-class ECSocket : public wxEvtHandler
-#else
-class ECSocket
-#endif
-{
+class ECSocket {
 	public:
 		//
 		// Constructors/Destructor
