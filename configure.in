@@ -376,6 +376,9 @@ AC_FUNC_CLOSEDIR_VOID
 AM_GNU_GETTEXT
 AC_FUNC_GETMNTENT
 AC_PROG_GCC_TRADITIONAL
+AC_FUNC_FORK
+AC_FUNC_LSTAT
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MALLOC
 AC_FUNC_MEMCMP
 AC_FUNC_MMAP
@@ -386,7 +389,7 @@ AC_TYPE_SIGNAL
 AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_STRTOD
-AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa memchr memmove mempcpy memset munmap nl_langinfo select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strrchr strstr strtoul])
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa memmove mempcpy memset munmap nl_langinfo select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
 #-------------------------------------------------------------------------------
 # End of autoscan stuff
 #-------------------------------------------------------------------------------
