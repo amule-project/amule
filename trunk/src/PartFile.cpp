@@ -44,10 +44,12 @@
 	#include "Color.h"              // Needed for RGB, DarkenColour
 #endif
 
-#ifdef USE_WX_TRAY
-	#include "MuleTrayIcon.h"		// Needed for TBN_DLOAD
-#else
-	#include "SysTray.h"		// Needed for TBN_DLOAD
+#ifndef __SYSTRAY_DISABLED__
+	#ifdef USE_WX_TRAY
+		#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
+	#else
+		#include "SysTray.h"		// Needed for TBN_DLOAD
+	#endif
 #endif
 
 #include "PartFile.h"		// Interface declarations.
