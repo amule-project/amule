@@ -78,7 +78,7 @@ int CDownloadListCtrl::s_lastOrder;
 int CDownloadListCtrl::s_lastColumn;
 
 
-enum ItemType { FILE_TYPE, AVAILABLE_SOURCE, UNAVAILABLE_SOURCE };
+enum ItemType { FILE_TYPE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
 struct CtrlItem_Struct
 {
 	ItemType	type;
