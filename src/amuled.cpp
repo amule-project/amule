@@ -135,6 +135,7 @@ CamuleLocker::~CamuleLocker()
 CamuleDaemonApp::CamuleDaemonApp()
 {
 	wxPendingEventsLocker = new wxCriticalSection;
+	m_Exit = false;
 }
 
 int CamuleDaemonApp::OnRun()
@@ -153,7 +154,6 @@ int CamuleDaemonApp::OnRun()
 	
 	// lfroen: this loop is instead core timer.
 	uint msWait = uLoop;
-	m_Exit = false;
 	while ( !m_Exit ) {
 		if ( msWait <= uLoop) {
 			wxThread::Sleep(msWait);

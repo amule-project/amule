@@ -154,28 +154,22 @@ static void SetResourceLimits()
 #endif
 }
 
+// We store the received signal in order to avoid race-conditions
+// in the signal handler.
+bool g_shutdownSignal = false;
 
 void OnShutdownSignal( int /* sig */ ) 
 {
-	static bool terminating = false;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
+	
+	printf("Shutdown requested, terminating in next event loop.");
+	
+	g_shutdownSignal = true;
 
-	if ( !terminating ) {
-		terminating = true;
-		printf("Shutdown requested, terminating.\n");
-#ifndef AMULE_DAEMON
-		if ( theApp.amuledlg ) {
-			((wxWindow*)theApp.amuledlg)->Close( true );
-		} else {
-			printf("Dialog not found, forcing termination.\n");
-			exit( 1 );
-		}
-#else
-		theApp.ExitMainLoop();
+#if AMULE_DAEMON
+	theApp.ExitMainLoop();
 #endif
-	} else {
-		printf("Forced termination!\n");
-		exit( 1 );
-	}
 }
 
 
@@ -1380,6 +1374,20 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		return;
 	}
 
+#ifndef AMULE_DAEMON
+	// Check if we should terminate the app
+	if ( g_shutdownSignal ) {
+		wxWindow* top = GetTopWindow();
+
+		if ( top ) {
+			top->Close(true);
+		} else {
+			// No top-window, have to force termination.
+			wxExit();
+		}
+	}
+#endif
+	
 	uploadqueue->Process();
 	downloadqueue->Process();
 	//theApp.clientcredits->Process();
