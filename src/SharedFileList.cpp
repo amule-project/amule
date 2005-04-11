@@ -382,11 +382,12 @@ void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
                             CTypedPtrList<CPtrList, CKnownFile*>& list)
 {
+	
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); ++pos ) {
 		CKnownFile *cur_file = pos->second;
 
-		if (directory.CompareTo(cur_file->GetFilePath())) {
+		if (MakeFoldername(directory).CompareTo(MakeFoldername(cur_file->GetFilePath()))) {
 			continue;
 		}
 
@@ -583,7 +584,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 		(pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE))
 		||
 		// clients that support unicode
-		(pClient && !pClient->GetUnicodeSupport());
+		(pClient && pClient->GetUnicodeSupport());
 	eStrEncode = unicode_support ? utf8strRaw : utf8strNone;
 #else
 	eStrEncode = utf8strNone;
