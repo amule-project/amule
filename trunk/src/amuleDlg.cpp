@@ -325,7 +325,6 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			{
 				wxSizer* content=desktopDlg(this, TRUE);
 				content->Show(this, TRUE);
-				CentreOnScreen();
 			};
 		protected:
 			void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };

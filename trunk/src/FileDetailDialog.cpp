@@ -76,7 +76,6 @@ CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
 	UpdateData();
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
-	CentreOnScreen();	
 }
 
 CFileDetailDialog::~CFileDetailDialog()

@@ -76,8 +76,6 @@ CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadTh
 	m_ani = CastChild(ID_ANIMATE, MuleGifCtrl);
 	m_ani->LoadData((char*)inetDownload,sizeof(inetDownload));
 	m_ani->Start();
-
-	CentreOnScreen();
 	
 	m_parent_thread = thread;
 
