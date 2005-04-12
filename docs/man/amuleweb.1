@@ -113,7 +113,7 @@ Display usage help information and exit
 Output program version information and exit
 .SH NOTES
 .SS Paths
-For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no directory part (i.e. just a plain filename), then it is considered to be under the aMule configuration directory, \fI~/.aMule\fR.
+If you specify a file without giving an absolute path (i.e. just a plain filename, such as \fB\-\-path\fR=\fIremote.conf\fR), then this file is searched within the aMule configuration directory, \fI~/.aMule\fR.
 .SS Languages
 The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
 where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory, \fIencoding\fR is the character set to use and \fImodifier\fR
