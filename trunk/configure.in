@@ -297,8 +297,8 @@ fi
 
 CHECK_WX_PARTIAL_VERSION
 
-if test x"$WX_PARTIAL_VERSION" = x"5"; then
-  WX_VERSION="2_5"
+if test x"$WX_PARTIAL_VERSION" = x"4"; then
+  WX_VERSION="2.4"
 else
   WX_VERSION="any"
 fi
@@ -467,7 +467,7 @@ yes)
 	if test x"$systray" = xyes; then
 		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
 		USE_UTF8_SYSTRAY="yes"
-		if test x"$WX_VERSION" = x"2_5"; then
+		if test x"$WX_VERSION" = x"any"; then
 			echo "UTF-8 GTK SysTray disabled, wx native settings will be used"
 			utf8_systray="no"		
 		fi
@@ -720,7 +720,7 @@ echo "  NOTICE: With wxWidgets versions prior to 2.5, you need wxBase library to
 echo "          amuleweb amulecmd alcc"
 fi
 
-if test x"$GTK_USEDVERSION" = x"2" && test x"$WX_VERSION" = x"any" ; then
+if test x"$GTK_USEDVERSION" = x"2" && test x"$WX_VERSION" = x"2.4" ; then
 echo ""
 echo ""
 echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will make aMule"
