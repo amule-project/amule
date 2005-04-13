@@ -616,9 +616,9 @@ if test x$USE_EMBEDDED_CRYPTO = xno; then
 	  # We don't use AC_CHECK_FILE to avoid caching.
 
 	  if test x$crypto_prefix != x ; then
-		  if test -f $crypto_prefix/cryptlib.h; then
+		  if test -f $crypto_prefix/cryptopp/cryptlib.h; then
 		  CRYPTO_PP_STYLE="sources"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptlib.h | cut -d' ' -f5`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptopp/cryptlib.h | cut -d' ' -f5`
 		  fi
 	  else
           crypto_prefix="/usr"

@@ -37,14 +37,6 @@
 		#include <crypto++/osrng.h>
 		#include <crypto++/files.h>
 		#include <crypto++/sha.h>
-	#elif __CRYPTO_SOURCE__
-		#include <crypto-5.1/config.h>
-		#include <crypto-5.1/md4.h>
-		#include <crypto-5.1/rsa.h>
-		#include <crypto-5.1/base64.h>
-		#include <crypto-5.1/osrng.h>
-		#include <crypto-5.1/files.h>
-		#include <crypto-5.1/sha.h>
 	#else 
 		#include <cryptopp/config.h>
 		#include <cryptopp/md4.h>
@@ -57,4 +49,3 @@
 #endif
 
 #endif /* CRYPTOPP_INC_H */
-
