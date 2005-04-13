@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-11 00:28+0000\n"
+"PO-Revision-Date: 2005-04-12 23:20+0000\n"
 "Last-Translator: Helder Correia <helder.correia@netcabo.pt>\n"
 "Language-Team: Portuguese <helder.correia@netcabo.pt>\n"
 "MIME-Version: 1.0\n"
@@ -319,7 +319,7 @@ msgstr "Controlo remoto do aMule"
 
 #: src/amuleDlg.cpp:514
 msgid "Snapshot:"
-msgstr ""
+msgstr "Captura:"
 
 #: src/amuleDlg.cpp:517
 msgid ""
@@ -350,9 +350,8 @@ msgstr "AVISO: recebeu baixa identidade!"
 
 #: src/amuleDlg.cpp:680
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr ""
-"\tMuito provavelmente, isso deve-se ao facto de estar por detrás de um "
-"protector ('firewall') ou reencaminhador ('router')."
+msgstr "\tMuito provavelmente, isso deve-se ao facto de estar por detrás de "
+"um protector ('firewall') ou reencaminhador ('router')."
 
 #: src/amuleDlg.cpp:681
 msgid "\tFor more information, please refer to http://wiki.amule.org"
@@ -613,7 +612,7 @@ msgstr " - os créditos expiraram para %u clientes!"
 
 #: src/ClientCredits.cpp:482
 msgid "No 'cryptkey.dat' file found, creating"
-msgstr ""
+msgstr "Ficheiro 'cryptkey.dat' não encontrado, a criar"
 
 #: src/ClientDetailDialog.cpp:60
 msgid "Client Details"
@@ -662,7 +661,7 @@ msgstr "Indisponível"
 #: src/ClientDetailDialog.cpp:175
 #, c-format
 msgid "aMule O.S. info is: %s"
-msgstr ""
+msgstr "A informação S.O. do aMule é: %s"
 
 #: src/ClientListCtrl.cpp:194 src/Statistics.cpp:692 src/TransferWnd.cpp:418
 msgid "Clients"
@@ -1185,6 +1184,9 @@ msgid ""
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
+"Por favor, defina o seu leitor de vídeo preferido nas preferências.\n"
+"Entretanto, o aMule tentará usar o mplayer e obterá este aviso em cada "
+"previsualização"
 
 #: src/DownloadListCtrl.cpp:2242
 msgid "File preview"
@@ -1298,7 +1300,8 @@ msgstr "Conexão externa fechada."
 
 #: src/ExternalConn.cpp:254
 msgid "External connection refused due to empty password in preferences!"
-msgstr ""
+msgstr "Conexão externa recusada devido a senha não preenchida nas "
+"preferências!"
 
 #: src/ExternalConn.cpp:264
 #, c-format
@@ -1370,7 +1373,7 @@ msgstr "A pesquisar. Resultados dentro de momentos!"
 
 #: src/ExternalConn.cpp:771
 msgid "WebSearch from remote interface makes no sense."
-msgstr ""
+msgstr "Pesquisa a partir da interface remota não faz sentido."
 
 #: src/ExternalConn.cpp:990
 msgid "ExternalConn: shutdown requested"
@@ -1469,11 +1472,11 @@ msgstr "Mostra esta ajuda."
 
 #: src/ExternalConnector.cpp:382
 msgid "Host where aMule is running. (default: localhost)"
-msgstr ""
+msgstr "Máquina onde o aMule está a ser executado. (predefinida: localhost)"
 
 #: src/ExternalConnector.cpp:385
 msgid "aMule's port for External Connection. (default: 4712)"
-msgstr ""
+msgstr "Porto do aMule para conexão externa. (predefinido: 4712)"
 
 #: src/ExternalConnector.cpp:388
 msgid "External Connection password."
@@ -1489,23 +1492,25 @@ msgstr "Não exibir qualquer mensagem para a saída padrão."
 
 #: src/ExternalConnector.cpp:397
 msgid "Be verbose - show also debug messages."
-msgstr ""
+msgstr "Verboso - mostrar também mensagens de depuração"
 
 #: src/ExternalConnector.cpp:400
 msgid "Sets program locale (language)."
-msgstr ""
+msgstr "Define a localização do programa (idioma)."
 
 #: src/ExternalConnector.cpp:403
 msgid "Write command line options to config file."
-msgstr ""
+msgstr "Escrever as opções da linha de comandos para o ficheiro de "
+"configuração."
 
 #: src/ExternalConnector.cpp:406
 msgid "Creates config file based on aMule's config file."
-msgstr ""
+msgstr "Cria ficheiro de configuração baseado no ficheiro de configuração do "
+"aMule."
 
 #: src/ExternalConnector.cpp:409
 msgid "Print program version."
-msgstr ""
+msgstr "Exibir a versão do programa."
 
 #: src/FileDetailDialog.cpp:70
 msgid "File Details"
@@ -1514,7 +1519,7 @@ msgstr "Detalhes do ficheiro"
 #: src/FileDetailDialog.cpp:117
 #, c-format
 msgid "%.2f%% done"
-msgstr ""
+msgstr "%.2f%% terminado"
 
 #: src/FileDetailDialog.cpp:119 src/utils/wxCas/src/wxcasframe.cpp:803
 #: src/utils/wxCas/src/wxcasframe.cpp:813
@@ -1562,10 +1567,12 @@ msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
 msgstr ""
+"Não lhe é permitido definir mais do que uma vaga para amigos.\n"
+"Apenas uma vaga foi atribuída."
 
 #: src/FriendListCtrl.cpp:333
 msgid "Multiple selection"
-msgstr ""
+msgstr "Selecção múltipla"
 
 #: src/HTTPDownload.cpp:68
 msgid "Downloading..."
@@ -2245,8 +2252,8 @@ msgstr "Renomear"
 
 #: src/muuli_wdr.cpp:813
 msgid "Comment this file (this text will be show by all users)"
-msgstr ""
-"Comente este ficheiro (este texto será mostrado por todos os utilizadores)"
+msgstr "Comente este ficheiro (este texto será mostrado por todos os "
+"utilizadores)"
 
 #: src/muuli_wdr.cpp:827
 msgid ""
@@ -2286,8 +2293,7 @@ msgstr "Excelente"
 
 #: src/muuli_wdr.cpp:851
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Escolha a classificação ou avise os utilizadores se o ficheiro for "
+msgstr "Escolha a classificação ou avise os utilizadores se o ficheiro for "
 "inválido..."
 
 #: src/muuli_wdr.cpp:856 src/WebServer.cpp:1620 src/WebServer.cpp:1979
@@ -2647,8 +2653,8 @@ msgstr "Abrir numa nova aba, se possível"
 
 #: src/muuli_wdr.cpp:1683
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr ""
-"Abrir a nova página numa nova aba em vez de uma nova janela, quando possível"
+msgstr "Abrir a nova página numa nova aba em vez de uma nova janela, quando "
+"possível"
 
 #: src/muuli_wdr.cpp:1707
 msgid "Connections"
@@ -2810,8 +2816,8 @@ msgstr "Tentar transferir pedaços completos a todas as saídas"
 
 #: src/muuli_wdr.cpp:2014
 msgid "Start next paused file when a file completed"
-msgstr ""
-"Iniciar a transferência em pausa seguinte quando uma transferência terminar"
+msgstr "Iniciar a transferência em pausa seguinte quando uma transferência "
+"terminar"
 
 #: src/muuli_wdr.cpp:2018
 msgid "From the same category"
@@ -2835,9 +2841,8 @@ msgstr "Reservar pedaços inteiros para os ficheiros de partes"
 
 #: src/muuli_wdr.cpp:2035
 msgid "Select this to allocate a full chunk each time data is received for it."
-msgstr ""
-"Seleccione para reservar um pedaço inteiro cada vez que forem recebidos "
-"dados."
+msgstr "Seleccione para reservar um pedaço inteiro cada vez que forem "
+"recebidos dados."
 
 #: src/muuli_wdr.cpp:2039
 msgid "Allocate full disk space for .part files"
@@ -2901,7 +2906,7 @@ msgstr "Pastas partilhadas"
 
 #: src/muuli_wdr.cpp:2118
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
+msgstr "(Clique com o botão direito no ícone da pasta para partilha recursiva)"
 
 #: src/muuli_wdr.cpp:2125
 msgid "Share hidden files"
@@ -3129,15 +3134,17 @@ msgstr "Ficheiro de tema:"
 
 #: src/muuli_wdr.cpp:2495
 msgid "Column Sorting"
-msgstr ""
+msgstr "Ordenação da coluna"
 
 #: src/muuli_wdr.cpp:2498
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr ""
+msgstr "Ordenar automaticamente os ficheiros na fila de transferência "
+"(processador rápido)"
 
 #: src/muuli_wdr.cpp:2500
 msgid "aMule will sort the columns in your download list automatically"
-msgstr ""
+msgstr "O aMule ordenará as colunas na sua lista de transferências "
+"automaticamente"
 
 #: src/muuli_wdr.cpp:2505
 msgid "Misc Gui Tweaks"
@@ -3322,8 +3329,7 @@ msgstr "Registo"
 
 #: src/muuli_wdr.cpp:2972
 msgid "Click on this button to update the servers list from URL ..."
-msgstr ""
-"Clique neste botão para actualizar a lista de servidores a partir da "
+msgstr "Clique neste botão para actualizar a lista de servidores a partir da "
 "localização inserida ao lado."
 
 #: src/muuli_wdr.cpp:2976
@@ -3473,8 +3479,8 @@ msgstr "Activar filtragem de IP"
 
 #: src/muuli_wdr.cpp:3307
 msgid "Enable filtering of the IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr ""
-"Activar a filtragem dos IPs definidos no ficheiro ~/.aMule/ipfilter.dat."
+msgstr "Activar a filtragem dos IPs definidos no ficheiro "
+"~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3312 src/WebServer.cpp:1425
 msgid "Reload List"
@@ -3482,9 +3488,8 @@ msgstr "Recarregar a lista"
 
 #: src/muuli_wdr.cpp:3313
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
-msgstr ""
-"Recarregar a lista de IPs a filtrar a partir do ficheiro ~/.aMule/ipfilter."
-"dat"
+msgstr "Recarregar a lista de IPs a filtrar a partir do ficheiro "
+"~/.aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3320
 msgid "Auto-update ipfilter at startup"
@@ -3548,8 +3553,8 @@ msgstr "Frequência de actualização (segundos):"
 
 #: src/muuli_wdr.cpp:3413
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr ""
-"Alterar a frequência (em segundos) de actualizações de assinatura em-linha"
+msgstr "Alterar a frequência (em segundos) das actualizações de assinatura "
+"em linha."
 
 #: src/muuli_wdr.cpp:3419
 msgid "Online Signature Directory:"
@@ -3580,8 +3585,8 @@ msgstr "Filtrar todas as mensagens"
 
 #: src/muuli_wdr.cpp:3467
 msgid "Filter messages from people not on your friend list"
-msgstr ""
-"Filtrar mensagens de utilizadores que não pertençam à sua lista de amigos"
+msgstr "Filtrar mensagens de utilizadores que não pertençam à sua lista de "
+"amigos"
 
 #: src/muuli_wdr.cpp:3470
 msgid "Filter messages from unknown clients"
@@ -3593,9 +3598,8 @@ msgstr "Filtrar mensagens que contenham (use ',' como separador):"
 
 #: src/muuli_wdr.cpp:3477
 msgid "add here the words amule should filter and block messages including it"
-msgstr ""
-"Adicione as palavras que o aMule deve filtrar e bloquear as mensagens que as "
-"contenham."
+msgstr "adicione as palavras que o aMule deve filtrar e bloquear as "
+"mensagens que as contenham."
 
 #: src/muuli_wdr.cpp:3503 src/PrefsUnifiedDlg.cpp:160
 msgid "Proxy"
@@ -3912,14 +3916,13 @@ msgstr "A tentar recuperar a informação do ficheiro..."
 
 #: src/PartFile.cpp:681
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
-"A recuperar ficheiro sem sem nome - tentar-se-á recuperá-lo como "
+msgstr "A recuperar ficheiro sem sem nome - tentar-se-á recuperá-lo como "
 "'RecoveredFile.dat'"
 
 #: src/PartFile.cpp:685
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr ""
-"Recuperada toda a informação disponível do ficheiro :D - A tentar usá-la..."
+msgstr "Recuperada toda a informação disponível do ficheiro :D - A tentar "
+"usá-la..."
 
 #: src/PartFile.cpp:687
 msgid "Unable to recover file info :("
@@ -4110,17 +4113,17 @@ msgstr ""
 #: src/PartFile.cpp:2493
 #, c-format
 msgid "Expected part-hash: %s"
-msgstr ""
+msgstr "Chave de parte esperada: %s"
 
 #: src/PartFile.cpp:2494
 #, c-format
 msgid "Actual part-hash: %s"
-msgstr ""
+msgstr "Chave de parte corrente: %s"
 
 #: src/PartFile.cpp:2941
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
-msgstr ""
+msgstr "AVISO: Espaço livre em disco insuficiente! A pausar o ficheiro: %s"
 
 #: src/PartFile.cpp:3004
 #, c-format
@@ -4238,7 +4241,7 @@ msgstr "Russo"
 
 #: src/Preferences.cpp:606
 msgid "Slovenian"
-msgstr ""
+msgstr "Esloveno"
 
 #: src/Preferences.cpp:607
 msgid "Spanish"
@@ -4252,11 +4255,13 @@ msgstr "Espanhol (México)"
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
+"O porto TCP não pode ser superior a 65532 devido ao ""socket"" UDP do "
+"servidor ser TCP+3"
 
 #: src/Preferences.cpp:1466
 #, c-format
 msgid "Default port will be used (%d)"
-msgstr ""
+msgstr "O porto predefinido será usado (%d)"
 
 #: src/PrefsUnifiedDlg.cpp:159 src/Statistics.cpp:679
 msgid "Connection"
@@ -4297,6 +4302,9 @@ msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
 msgstr ""
+"Activou conexões externas mas não especificou uma senha.\n"
+"Conexões externas não podem ser activadas a menos que uma senha válida seja "
+"especificada"
 
 #: src/PrefsUnifiedDlg.cpp:529
 msgid "Language change will not be applied until aMule is restarted."
@@ -4436,8 +4444,8 @@ msgstr "Conectado a %s (%s:%i)"
 
 #: src/ServerConnect.cpp:323
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Erro Fatal durante tentativa de conexão. Talvez a sua conexão tenha caído."
+msgstr "Erro Fatal durante tentativa de conexão. Talvez a sua conexão tenha "
+"caído."
 
 #: src/ServerConnect.cpp:327
 #, c-format
@@ -4480,7 +4488,7 @@ msgstr "A tentativa de conexão com %s (%s:%i) expirou."
 #: src/ServerList.cpp:94
 #, c-format
 msgid "Loading server.met file: %s"
-msgstr ""
+msgstr "A carregar o ficheiro server.met: %s"
 
 #: src/ServerList.cpp:99
 msgid "Server.met file not found!"
@@ -4512,22 +4520,24 @@ msgstr "Erro: o ficheiro server.met está corrompido :/"
 #: src/ServerList.cpp:185
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
-msgstr ""
+msgstr "Servidor não adicionado: [%s:%d] não especifica um porto válido."
 
 #: src/ServerList.cpp:196
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
-msgstr ""
+msgstr "Servidor não adicionado: O IP de [%s:%d] está filtrado ou é "
+"inválido."
 
 #: src/ServerList.cpp:211
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr ""
+msgstr "Servidor não adicionado: Servidor com IP:Porto correspondente "
+"[%s:%d] encontrado na lista."
 
 #: src/ServerList.cpp:228
 #, c-format
 msgid "Server added: Server at [%s:%d] using the name '%s'."
-msgstr ""
+msgstr "Servidor adiciondao: Servidor em [%s:%d] a usar o nome '%s'."
 
 #: src/ServerList.cpp:295
 msgid ""
@@ -4562,14 +4572,13 @@ msgstr ""
 #: src/ServerList.cpp:735
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-msgstr ""
-"Aviso, lcoalização inválida especificada para a actualização automática de "
-"servidore: %s"
+msgstr "Aviso, lcoalização inválida especificada para a actualização "
+"automática de servidore: %s"
 
 #: src/ServerList.cpp:741
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr ""
-"Nenhuma localização server.met válida de obtenção automática em addresses-dat"
+msgstr "Nenhuma localização server.met válida de obtenção automática em "
+"addresses-dat"
 
 #: src/ServerList.cpp:754
 msgid "Failed to download the server list from "
@@ -4709,7 +4718,7 @@ msgstr "O servidor rejeitou o último comando"
 #: src/ServerSocket.cpp:602
 #, c-format
 msgid "Bogus packet received from server: %s"
-msgstr ""
+msgstr "Pacote malformado recebido do servidor: %s"
 
 #: src/ServerSocket.cpp:604
 #, c-format
@@ -4728,20 +4737,21 @@ msgstr "A conectar a %s (%s - %s:%i)"
 #: src/ServerSocket.cpp:641 src/ServerSocket.cpp:645
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
-msgstr ""
+msgstr "Não é possível criar o processo leve de resolução de nomes para "
+"conectar a %s"
 
 #: src/ServerSocket.cpp:730
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
-msgstr ""
+msgstr "Não é possível resolver o nome do servidor %s: Incapaz de conectar!"
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
-msgstr ""
+msgstr "Servidor não adicionar: IP ou nome de máquina não especificado"
 
 #: src/ServerWnd.cpp:109
 msgid "Server not added: Invalid server-port specified."
-msgstr ""
+msgstr "Servidor não adicionado: Porto de servidor especificado inválido."
 
 #: src/ServerWnd.cpp:157
 msgid "Status:"
@@ -4844,7 +4854,7 @@ msgstr "A aguardar..."
 
 #: src/Statistics.cpp:701
 msgid "Operative System"
-msgstr ""
+msgstr "Sistema operativo"
 
 #: src/Statistics.cpp:763 src/SysTray.cpp:311
 #, c-format
@@ -5212,7 +5222,7 @@ msgstr "Acercao do amulecmd"
 
 #: src/TextClient.cpp:234
 msgid "Execute <str> and exit."
-msgstr ""
+msgstr "Executar <exp> e sair."
 
 #: src/TextClient.cpp:294
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
@@ -5224,8 +5234,8 @@ msgstr "Este comando requere um argumento. Argumentos válidos: 'on', 'off'\n"
 
 #: src/TextClient.cpp:352
 msgid "This command requieres an argument. Valid arguments: 'all', a number.\n"
-msgstr ""
-"Este command requere um argumento. Argumentos válidos: 'all', um número.\n"
+msgstr "Este command requere um argumento. Argumentos válidos: 'all', um "
+"número.\n"
 
 #: src/TextClient.cpp:375 src/TextClient.cpp:406
 msgid "Not a valid number\n"
@@ -5251,7 +5261,7 @@ msgstr "Esta opção requere um argumento."
 
 #: src/TextClient.cpp:467 src/TextClient.cpp:486
 msgid "Invalid argument."
-msgstr ""
+msgstr "Argumento inválido."
 
 #: src/TextClient.cpp:563 src/WebServer.cpp:362
 msgid "Request failed with an unknown error."
@@ -5264,7 +5274,7 @@ msgstr "Operação com sucesso."
 #: src/TextClient.cpp:573 src/WebServer.cpp:359
 #, c-format
 msgid "Request failed with the following error: %s."
-msgstr ""
+msgstr "O pedido falhou com o seguinte erro: %s."
 
 #: src/TextClient.cpp:586
 #, c-format
@@ -5287,7 +5297,7 @@ msgstr "O nível corrente do filtro de IPs é %d.\n"
 #: src/TextClient.cpp:595
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr ""
+msgstr "Limites de largura de banda: Saída: %u kB/s, Entrada: %u kB/s.\n"
 
 #: src/TextClient.cpp:615 src/WebServer.cpp:780
 msgid "Not connected"
@@ -5414,7 +5424,7 @@ msgstr "Ligação ED2k"
 
 #: src/TextClient.cpp:723
 msgid "Adds <ED2k_Link> (file or server) to aMule.\n"
-msgstr ""
+msgstr "Adiciona <Ligação ED2k> (ficheiro ou servidor) ao aMule.\n"
 
 #: src/TextClient.cpp:724 src/TextClient.cpp:725
 msgid "limit"
@@ -5422,11 +5432,11 @@ msgstr "limite"
 
 #: src/TextClient.cpp:724
 msgid "Sets maximum upload bandwidth.\n"
-msgstr ""
+msgstr "Define a largura de banda máxima de saída.\n"
 
 #: src/TextClient.cpp:725
 msgid "Sets maximum download bandwidth.\n"
-msgstr ""
+msgstr "Define a largura de banda máxima de entrada.\n"
 
 #: src/TextClient.cpp:726
 msgid "Displays bandwidth limits.\n"
@@ -5434,7 +5444,7 @@ msgstr "Exibe os limites de largura de banda.\n"
 
 #: src/TextClient.cpp:727
 msgid "Displays full statistics tree.\n"
-msgstr ""
+msgstr "Exibe árvore completa de estatísticas.\n"
 
 #: src/TextClient.cpp:728
 msgid "Reload shared files list.\n"
@@ -5479,8 +5489,7 @@ msgstr ""
 
 #: src/TransferWnd.cpp:198
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
-"Tem a certeza que deseja cancelar e apagar todos os ficheiros desta "
+msgstr "Tem a certeza que deseja cancelar e apagar todos os ficheiros desta "
 "categoria?"
 
 #: src/TransferWnd.cpp:198
@@ -5514,7 +5523,8 @@ msgstr "Remover categoria"
 #: src/UploadClient.cpp:264
 #, c-format
 msgid "Failed to open shared file (%s), rechecking list of shared files."
-msgstr ""
+msgstr "Erro ao abrir ficheiro partilhado (%s), a verificar a lista de "
+"ficheiros partilhados."
 
 #: src/UploadClient.cpp:637
 #, c-format
@@ -5703,8 +5713,8 @@ msgstr "Não é possível abrir %s"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:98
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr ""
-"O file %s é muito grande para a rede Donkey: o limite máximo permitido é 4 GB"
+msgstr "O file %s é muito grande para a rede Donkey: o limite máximo "
+"permitido é 4 GB"
 
 #: src/utils/wxCas/src/linuxmon.cpp:92
 #, c-format
@@ -5766,14 +5776,13 @@ msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:121
 msgid "Maximum DL rate since wxCas is running"
-msgstr ""
-"Taxa máxima de transferência (entrada) desde que o wxCas está em execução"
+msgstr "Taxa máxima de transferência (entrada) desde que o wxCas está em "
+"execução"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:125
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr ""
-"Taxa máxima absoluta de transferência (entrada) durante as execuções "
-"anteriores do wxCas"
+msgstr "Taxa máxima absoluta de transferência (entrada) durante as "
+"execuções anteriores do wxCas"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
@@ -5990,8 +5999,8 @@ msgstr "Insira o RUL do seu servidor FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Insira a pasta do serviro FTP onde deseja colocar a sua imagem estatística"
+msgstr "Insira a pasta do serviro FTP onde deseja colocar a sua imagem "
+"estatística"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:212
 msgid "User"
@@ -6054,7 +6063,7 @@ msgstr "amuleweb DLG"
 
 #: src/WebInterface.cpp:284
 msgid "Loads template <str>"
-msgstr ""
+msgstr "Carrega o molde <exp>"
 
 #: src/WebInterface.cpp:288
 msgid "Webserver HTTP port"
@@ -6066,27 +6075,27 @@ msgstr "Usar compressão gzip"
 
 #: src/WebInterface.cpp:300
 msgid "Full access password for webserver"
-msgstr ""
+msgstr "Senha de acesso total para o servidor HTTP"
 
 #: src/WebInterface.cpp:304
 msgid "Guest password for webserver"
-msgstr ""
+msgstr "Senha de convidado para o servidor HTTP"
 
 #: src/WebInterface.cpp:308
 msgid "Allow guest access"
-msgstr ""
+msgstr "Permitir acesso convidado"
 
 #: src/WebInterface.cpp:312
 msgid "Deny guest access"
-msgstr ""
+msgstr "Negar acesso convidado"
 
 #: src/WebInterface.cpp:316
 msgid "Load/save webserver settings from/to remote aMule"
-msgstr ""
+msgstr "Carregar/guardar as preferências do servidor HTTP de/para aMule remoto"
 
 #: src/WebInterface.cpp:320
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
-msgstr ""
+msgstr "Caminho do ficheiro de configuração do aMule. NÃO USE DIRECTAMENTE!"
 
 #: src/WebInterface.cpp:359
 #, c-format
@@ -6246,7 +6255,7 @@ msgstr "Esta ligação ED2k é inválida (%s)"
 
 #: src/WebServer.cpp:965
 msgid "Got no response from aMule."
-msgstr ""
+msgstr "O aMule não respondeu."
 
 #: src/WebServer.cpp:1029
 msgid "Downloaded total"
@@ -6291,7 +6300,7 @@ msgstr "Tempo"
 
 #: src/WebServer.cpp:1566
 msgid "Refetch graph data"
-msgstr ""
+msgstr "Obter novamente os dados do gráfico"
 
 #: src/WebServer.cpp:1614
 msgid "IP or Address"
