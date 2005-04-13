@@ -322,7 +322,7 @@ case "$CRYPTO_PP_STYLE" in
 	      CRYPTOLIBS="-lcryptopp"
  ;;
  sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
-	  LDFLAGS="$LDFLAGS -L$crypto_prefix"
+	  LDFLAGS="$LDFLAGS -L$crypto_prefix/cryptopp"
           CRYPTOLIBS="-lcryptopp"
  ;;
  embedded) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
@@ -334,7 +334,7 @@ case "$CRYPTO_PP_STYLE" in
           Or this might also be that your cryptopp is instaled on other path.
           Please try again with --with-crypto-prefix=/my_crypto_prefix
           (replace /my_crypto_prefix with a valid path to your crypto directory).
-          The crypto include folder must be named cryptopp or crypto++. 
+          The crypto include folder must be named cryptopp.
 	  Sorry about the mess but it's the only way because libcrypto has no make install.
           To download the lastest version check http://www.cryptopp.com for sources.
 	  ])
