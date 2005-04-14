@@ -1105,7 +1105,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	// update status
 	//
 	if ( m_inc_tags ) {
-		uint32 tmpval;
+		uint32 tmpval = (uint32)(file->kBpsDown * 1024);
 		tag->SetSpeed(tmpval);
 		file->kBpsDown = tmpval / 1024.0;
 		
