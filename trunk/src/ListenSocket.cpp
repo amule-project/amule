@@ -1738,8 +1738,14 @@ void CClientReqSocket::OnSend(int nErrorCode)
 void CClientReqSocket::OnReceive(int nErrorCode)
 {
 	last_action = ACTION_RECEIVE;
-	ResetTimeOutTimer();
 	CEMSocket::OnReceive(nErrorCode);
+#ifdef AMULE_DAEMON
+	if ( LastCount() ) {
+		ResetTimeOutTimer();
+	}
+#else
+		ResetTimeOutTimer();
+#endif
 }
 
 void CClientReqSocket::RepeatLastAction() {
