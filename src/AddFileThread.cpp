@@ -270,7 +270,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		
 			AddLogLineM( false, CFormat( _("Hasher: Starting to create MD4 and AICH hash for file: %s")) % current.m_name );
 		} else {
-			AddLogLineM( false, CFormat( _("Hasher: Starting to create MD4 hash for file: ")) % current.m_name );
+			AddLogLineM( false, CFormat( _("Hasher: Starting to create MD4 hash for file: %s")) % current.m_name );
 		}
 		
 		
