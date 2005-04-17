@@ -62,6 +62,8 @@ public:
 	virtual void WriteUInt128(const Kademlia::CUInt128 *pVal);
 	virtual void WriteHash16(const unsigned char* pVal);
 	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
+protected:
+	virtual ~CFileDataIO() {};
 private:
 	void WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
  };
