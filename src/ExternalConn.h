@@ -203,7 +203,7 @@ class CObjTagMap {
 			return m_obj_map.size();
 		}
 		
-		void RemoveDeleted(std::set<void *> &current_set)
+		void RemoveDeleted(std::set<void *>& WXUNUSED(current_set))
 		{/*
 			for(std::map<void *, CValueMap>::iterator i = m_obj_map.begin(); i != m_obj_map.end(); i++) {
 				if ( !current_set.count(i->first) ) {

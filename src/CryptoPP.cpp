@@ -992,6 +992,7 @@ CRYPTOPP_DLL bool VerifyPrime(RandomNumberGenerator &rng, const Integer &p, unsi
 class PrimeSelector
 {
 public:
+	virtual ~PrimeSelector() {};
 	const PrimeSelector *GetSelectorPointer() const {return this;}
 	virtual bool IsAcceptable(const Integer &candidate) const =0;
 };
@@ -8693,6 +8694,7 @@ enum KeystreamOperation {WRITE_KEYSTREAM, XOR_KEYSTREAM, XOR_KEYSTREAM_INPLACE};
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE CFB_CipherAbstractPolicy
 {
 public:
+	virtual ~CFB_CipherAbstractPolicy() {};
 	virtual unsigned int GetAlignment() const =0;
 	virtual unsigned int GetBytesPerIteration() const =0;
 	virtual byte * GetRegisterBegin() =0;

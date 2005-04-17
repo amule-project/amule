@@ -725,6 +725,8 @@ public:
 class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE SimpleKeyingInterface
 {
 public:
+	virtual ~SimpleKeyingInterface() {};
+	
 	//! returns smallest valid key length in bytes */
 	virtual unsigned int MinKeyLength() const =0;
 	//! returns largest valid key length in bytes */
@@ -1011,6 +1013,8 @@ class WaitObjectContainer;
 class CRYPTOPP_NO_VTABLE Waitable
 {
 public:
+	virtual ~Waitable() {};
+	
 	//! maximum number of wait objects that this object can return
 	virtual unsigned int GetMaxWaitObjectCount() const =0;
 	//! put wait objects into container
@@ -5019,6 +5023,8 @@ template <class TFI, class MEI>
 class CRYPTOPP_NO_VTABLE TF_Base
 {
 protected:
+	virtual ~TF_Base() {};
+	
 	virtual const TrapdoorFunctionBounds & GetTrapdoorFunctionBounds() const =0;
 
 	typedef TFI TrapdoorFunctionInterface;
@@ -5197,6 +5203,8 @@ template <class KEYS>
 class CRYPTOPP_NO_VTABLE PublicKeyCopier
 {
 public:
+	virtual ~PublicKeyCopier() {};
+	
 	typedef typename KEYS::PublicKey KeyClass;
 	virtual void CopyKeyInto(typename KEYS::PublicKey &key) const =0;
 };
@@ -5206,6 +5214,8 @@ template <class KEYS>
 class CRYPTOPP_NO_VTABLE PrivateKeyCopier
 {
 public:
+	virtual ~PrivateKeyCopier() {};
+	
 	typedef typename KEYS::PrivateKey KeyClass;
 	virtual void CopyKeyInto(typename KEYS::PublicKey &key) const =0;
 	virtual void CopyKeyInto(typename KEYS::PrivateKey &key) const =0;

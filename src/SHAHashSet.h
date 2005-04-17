@@ -135,6 +135,7 @@ private:
 class CAICHHashAlgo 
 {
 public:
+	virtual ~CAICHHashAlgo() {};
 	virtual void	Reset() = 0;
 	virtual void	Add(const void* pData, uint32 nLength) = 0;
 	virtual void	Finish(CAICHHash& Hash) = 0;
