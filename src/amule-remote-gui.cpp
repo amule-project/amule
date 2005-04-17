@@ -812,6 +812,8 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, prio));
 	
+	req.AddTag(hashtag);
+	
 	m_conn->Send(&req);
 }
 
