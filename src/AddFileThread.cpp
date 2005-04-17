@@ -129,13 +129,13 @@ void CAddFileThread::Stop()
 	s_mutex.Lock();
 
 	if ( s_running ) {
-		AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
-
 		s_running = false;
 			
 		s_mutex.Unlock();
 		
 		if ( s_thread ) {
+			AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
+			
 			// We will be blocking the main thread, so we need to leave the
 			// gui mutex, so that events can still be processed while we are
 			// waiting.
