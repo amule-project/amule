@@ -128,10 +128,8 @@ void *CServerSocketHandler::Entry()
 			break;
 		}
 	}
-	if ( !m_socket->wxSocketClient::IsConnected() ) {
+	if ( !m_socket->wxSocketClient::IsConnected() || TestDestroy()) {
 		printf("CServerSocket: connection refused or timed out\n");
-	}
-	if ( TestDestroy() ) {
 		return 0;
 	}
 	m_socket->OnConnect(wxSOCKET_NOERROR);
