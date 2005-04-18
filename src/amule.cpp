@@ -358,6 +358,23 @@ int CamuleApp::OnExit()
 		printf("aMule shutdown completed.\n");
 	}
 	
+#if wxUSE_MEMORY_TRACING
+	printf("Memory debug results for aMule exit:\n");
+	// Log mem debug mesages to wxLogStderr
+	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
+	/*
+	printf("**************Classes**************\n");
+	wxDebugContext::PrintClasses();
+	*/
+	//printf("***************Dump***************\n");
+	//wxDebugContext::Dump();
+	printf("***************Stats**************\n");
+	wxDebugContext::PrintStatistics(true);
+
+	// Set back to wxLogGui
+	delete wxLog::SetActiveTarget(oldLog);
+#endif
+
 	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
@@ -371,6 +388,12 @@ int CamuleApp::InitGui(bool ,wxString &)
 
 bool CamuleApp::OnInit()
 {
+	
+#if wxUSE_MEMORY_TRACING
+	printf("Checkpoint set on app init for memory debug\n");
+	wxDebugContext::SetCheckpoint();
+#endif
+	
 #ifndef __WXMSW__
 	// get rid of sigpipe
 	signal(SIGPIPE, SIG_IGN);
