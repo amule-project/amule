@@ -228,6 +228,35 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Initial and further work on aMule and utils' man pages.
 
 	Xaignar:
+		* Improved the "aMule has crashed" message, adding some
+		  more information and fixed the backtrace to skip unneeded
+		  frames properly.
+		* Fixed some static text-ctrls not properly expanding, so
+		  that some text would be cut off the end.
+		* Fixed some position bugs in the progress-bar drawing and 
+		  addeed a black border. A4AF sources now displays that text
+		  instead of an empty area.
+		* Moved the placement of the "Initializing aMule" message on
+		  startup so that --version will only result in the version
+		  information and ensured that amule wont start in case an 
+		  invalid commands was given, instead printing the help info.
+		* Fixed problems with selection on the clients-list.
+		* Improved usage of compressed packets. Now only files that are
+		  not in the list of known archive-formats are compressed, rather
+		  than just Zip, Rar and Ace.
+		* Improved error-handling when opening ports. If either the 
+		  EC or Server-UDP ports conflict with the other ports, then
+		  a random safe value is selected in the range 1025 ... 2^16-1.
+		* Fixed shared files being located twice during startup, which
+		  also resulted in the AICH thread being run twice.
+		* Fixed logging to stdout containing extra newlines.
+		* Cleaned up and merged a number of split translated strings,
+		  which should make it easier for translaters to work.
+		* Fixed some status changes not resulting in removal from or
+		  addition to filtered download categories.
+		* Improved handling of multi-line log events on the main dialog.
+		* Reduced the ammount of output to the console, changing printfs
+		  to either normal or debug log events.
 		* Escape-codes in ED2k links are now properly unescaped.
 		* Cleaned up and improved the readability of the clients-details dialog.
 		* Updated the modified listctrl widget used by aMule, so that
@@ -333,7 +362,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  in the transfer dialog.
 		* Added date to version-information for CVS snapshots.
 		* Reworked CBarShader, making it use the CRangeMap class and getting
-		  rid of needless floating-point math.
+		  rid of needless floating-point math. This fixes some problems where
+		  large chunks would be drawn as complete, even though only a small
+		  part of the file was complete.
 		* Fixed downloads being assigned to the default category despite
 		  the extended options being disabled in search dialog.
 		* Moved overhead calculations to the CStatistics class.
