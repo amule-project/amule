@@ -38,7 +38,7 @@
 
 #include <wx/intl.h>
 #include <cmath>
-#include <curl/curl.h>
+#include <wx/protocol/http.h>
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
@@ -47,6 +47,8 @@
 #endif
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for CastChild
+#include "Logger.h"				// Needed for AddLogLine*
+#include "Format.h"				// Needed for CFormat
 
 #ifndef AMULE_DAEMON 
 	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
@@ -54,8 +56,6 @@
 	#include <wx/sizer.h> 
 	#include <wx/gauge.h>
 #endif
-
-
 
 #ifndef AMULE_DAEMON 
 BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
@@ -104,6 +104,16 @@ CHTTPDownloadThreadDlg::~CHTTPDownloadThreadDlg()
 
 void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow) 
 {	
+	wxString label = wxT("( ") + otherfunctions::CastItoXBytes(dlnow) + wxT(" / ");
+	if (dltotal > 0) {
+		label += otherfunctions::CastItoXBytes(dltotal);
+	} else {
+		label += _("Unknown");
+	}
+	
+	label += wxT(" )");
+	
+	CastChild(IDC_DOWNLOADSIZE, wxStaticText)->SetLabel(label);
 	
 	if ((dltotal != m_progressbar->GetRange()) && (dltotal > 0)) {
 		m_progressbar->SetRange(dltotal);
@@ -111,6 +121,8 @@ void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow)
 	if ((dlnow > 0) && (dlnow <= dltotal))  {
 		m_progressbar->SetValue(dlnow);
 	}
+	
+	Layout();
 }
 
 #endif
@@ -142,67 +154,65 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 	FILE *outfile = fopen(unicode2char(m_tempfile), "w");
 	
 	if (outfile!=NULL) {
-		if ( m_url.IsEmpty() ) {
-			// Nowhere to download from!
-			fclose(outfile);
-			return NULL;
-		}
-		
-		// Init the handle
-		CURL *curl_handle = curl_easy_init();
-		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
-		CURLM *curl_multi_handle =  curl_multi_init();
-		#endif
-		
-		char * tempurl = strdup((const char *)unicode2char(m_url));
-		// Options for the easy handler
-		curl_easy_setopt(curl_handle, CURLOPT_URL, tempurl);
-		curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, TRUE);
-		curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS , 10);
-		curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION , 1);
-		curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "Mozilla/4");
-		curl_easy_setopt(curl_handle, CURLOPT_FILE, outfile);
-	#ifndef AMULE_DAEMON
-		curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, FALSE);	
-		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSFUNCTION, &CurlGaugeCallback);
-		curl_easy_setopt(curl_handle, CURLOPT_PROGRESSDATA, m_myDlg);
-	#endif
-		
-		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
-		// Add the easy handle to the multi handle
-		curl_multi_add_handle(curl_multi_handle, curl_handle);
-		
-		int running_handles = 1;
-
-		while (running_handles) {
-			if (TestDestroy()) {
-				// Cancel button or going down.
-				m_result =0;
-				break;
+		try {
+			if ( m_url.IsEmpty() ) {
+				// Nowhere to download from!
+				throw(wxString(wxT("The URL to download can't be empty\n")));
 			}
-			curl_multi_perform(curl_multi_handle, &running_handles);
+		
+			wxHTTP url_handler;
+			wxInputStream* url_read_stream = GetInputStream(url_handler, m_url);
+			if (!url_read_stream) {					
+				#if wxCHECK_VERSION(2,5,1)			
+					throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError()));
+				#else
+					throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
+				#endif
+			}
+			
+			int download_size = url_read_stream->GetSize();
+			printf("Download size: %i\n",download_size);
+			
+			// Here is our read buffer
+			// <ken> Still, I'm sure 4092 is probably a better size.
+			#define MAX_HTTP_READ 4092
+			
+			char buffer[MAX_HTTP_READ];
+			int current_read = 0;
+			int total_read = 0;
+			do {
+				url_read_stream->Read(buffer, MAX_HTTP_READ);
+				current_read = url_read_stream->LastRead();
+				if (current_read) {
+					total_read += current_read;
+					int current_write = fwrite(buffer,1,current_read,outfile);
+					if (current_read != current_write) {
+						throw(wxString(wxT("Critical error while writing downloaded server.met")));
+					} else {
+						#ifndef AMULE_DAEMON
+							wxMutexGuiEnter();
+							m_myDlg->UpdateGauge(download_size,total_read);
+							wxMutexGuiLeave();
+						#endif
+					}
+				}
+			} while (current_read && !TestDestroy());
+			
+			delete url_read_stream;
+			
+		} catch (wxString& download_error) {
+			AddLogLineM(false,download_error);
 		}
-		#else
-		if (TestDestroy() || (curl_easy_perform(curl_handle)!=CURLE_OK)) {
-			m_result =0;
-		}	
-		#endif
 		
 		fclose(outfile);
-		free(tempurl);
-		#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
-		curl_multi_remove_handle(curl_multi_handle, curl_handle);
-		curl_easy_cleanup(curl_handle);
-		curl_multi_cleanup(curl_multi_handle);				
-		#else
-		curl_easy_cleanup(curl_handle);
-		#endif
 	}
-	
+
+
 #ifndef AMULE_DAEMON 
 	m_myDlg->StopAnimation();
 #endif	
 	
+
 	printf("HTTP download thread end\n");
 	
 	return 0;
@@ -225,13 +235,108 @@ void CHTTPDownloadThread::OnExit()
 	wxPostEvent(&theApp,evt);		
 }
 
-#ifndef AMULE_DAEMON 
-int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double WXUNUSED(ultotal), double WXUNUSED(ulnow)) 
-{	
-	wxMutexGuiEnter();
-//	printf("CB: %f %f - %i %i\n",dltotal, dlnow, int(dltotal),int(dlnow));
-	((CHTTPDownloadThreadDlg*)HTTPDlDlg)->UpdateGauge(int(dltotal),int(dlnow));
-	wxMutexGuiLeave();
-	return 0;
+wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP& url_handler, const wxString& location) {
+	// This function's purpose is to handle redirections in a proper way.
+	
+	if (TestDestroy()) {
+		return NULL;
+	}
+	
+	if ( !location.StartsWith(wxT("http://"))) {
+		// This is not a http url
+		throw(wxString(wxT("Invalid URL for server.met download or http redirection (did you forget 'http://' ?)")));
+	}
+	
+	// Get the host
+	
+	// Remove the "http://"
+	wxString host = location.Right(location.Len() - 7); // strlen("http://") -> 7
+	
+	// I belive this is a bug...
+	// Sometimes "Location" header looks like this:
+	// "http://www.whatever.com:8080http://www.whatever.com/downloads/something.zip"
+	// So let's clean it...				
+		
+	int bad_url_pos = host.Find(wxT("http://"));
+	wxString location_url;
+	if (bad_url_pos != -1) {
+		// Malformed Location field on header (bug above?)
+		location_url = host.Mid(bad_url_pos);
+		host = host.Left(bad_url_pos);
+		// After the first '/' non-http-related, it's the location part of the URL
+		location_url = location_url.Right(location_url.Len() - 7).AfterFirst(wxT('/'));					
+	} else {
+		// Regular Location field
+		// After the first '/', it's the location part of the URL
+		location_url = host.AfterFirst(wxT('/'));
+		// The host is everything till the first "/"
+		host = host.BeforeFirst(wxT('/'));
+	}
+
+	// Build the cleaned url now
+	wxString url = wxT("http://") + host + wxT("/") + location_url;			
+	
+	int port = 80;
+	if (host.Find(wxT(':')) != -1) {
+		// This http url has a port
+		port = wxAtoi(host.AfterFirst(wxT(':')));
+		host = host.BeforeFirst(wxT(':'));
+	}
+
+	#if wxCHECK_VERSION(2,5,1)
+		url_handler.Connect(host, port);
+	#else
+		wxIPV4address addr;
+		addr.Hostname(host);
+		addr.Service(port);
+		url_handler.Connect(addr, true);
+	#endif
+
+	wxInputStream* url_read_stream = url_handler.GetInputStream(url);
+	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
+	printf("URL: %s\n",(const char*)unicode2char(url));
+		
+	#if wxCHECK_VERSION(2,5,1) 
+		printf("Response: %i (Error: %i)\n",url_handler.GetResponse(), url_handler.GetError());
+	
+		if (!url_handler.GetResponse()) {
+			printf("WARNING: Void response on stream creation\n");
+			// WTF? Why does this happen?
+			// I've seen it crash here, sadly.
+			// This is probably produced by an already existing connection, because
+			// the input stream is created nevertheless. However, data is not the same.
+			delete url_read_stream;
+			throw wxString(wxT("Invalid response from http download server"));
+		}
+	
+		if (url_handler.GetResponse() == 301  // Moved permanently
+			|| url_handler.GetResponse() == 302 // Moved temporarily
+			// What about 300 (multiple choices)? Do we have to handle it?
+			) { 
+			
+			// We have to remove the current stream.
+			delete url_read_stream;
+				
+			wxString new_location = url_handler.GetHeader(wxT("Location"));
+			if (!new_location.IsEmpty()) {
+				printf("Redirected\n");
+				url_read_stream = GetInputStream(url_handler, new_location);
+			} else {
+				printf("ERROR: Redirection code received with no URL\n");
+				url_read_stream = NULL;
+			}
+		}
+		
+	#else
+		// This is NOT safe at all. Just a workaround - wx2.4 does not have wxHTTP::GetResponse
+		wxString new_location = url_handler.GetHeader(wxT("Location"));
+		if (!new_location.IsEmpty()) {
+			delete url_read_stream;
+			// Maybe a 301/302
+			printf("Redirected?\n");
+			url_read_stream = GetInputStream(url_handler, new_location);
+		}
+	#endif
+	
+	return url_read_stream;
 }
-#endif

@@ -146,24 +146,6 @@ AM_GNU_GETTEXT_VERSION(0.11.5)
 # Check for zlib
 CHECK_ZLIB
 
-# Checks for Curl
-AM_OPTIONS_CURLCONFIG
-
-AM_PATH_CURLCONFIG(7.9.5,CURLFOUND=1)
-
-if test "$CURLFOUND" != 1; then
-    AC_MSG_ERROR([
-	WARNING: curl >= 7.9.5 is not found.
-	Please check that curl-config is in your default path, check out
-        LD_LIBRARY_PATH or equivalent variable.
-	Or this might also be that your curl-config has other name.
-	Please try again with --with-curl-config=/usr/bin/curl-config
-	(replace /usr/bin/curl-config with a valid path to your curl-config).
-	If you use compiled packages check if you have devel pack installed.
-	To download the lastest version check http://curl.haxx.se/download.html for sources.
-    ])
-fi
-
 # Check for gd
 AM_OPTIONS_GDLIBCONFIG
 
