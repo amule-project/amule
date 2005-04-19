@@ -30,7 +30,6 @@
 #include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
 #include <cerrno>
 #include <cmath>
-#include <curl/curl.h>
 #include <wx/textctrl.h>
 #include <wx/toolbar.h>
 #include <wx/utils.h>
@@ -151,7 +150,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	#endif
 	
 	wxInitAllImageHandlers();
-	curl_global_init(CURL_GLOBAL_ALL);
 	imagelist.Create(16,16);
 	
 	if (thePrefs::UseSkin()) {		
@@ -545,8 +543,6 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 CamuleDlg::~CamuleDlg()
 {
 	printf("Shutting down aMule...\n");
-	
-	curl_global_cleanup();
 	
 	SaveGUIPrefs();
 

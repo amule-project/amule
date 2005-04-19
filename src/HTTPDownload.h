@@ -45,6 +45,10 @@ class wxGauge;
 
 class MuleGifCtrl;
 
+class wxInputStream;
+
+class wxHTTP;
+	
 #ifndef AMULE_DAEMON
 class CHTTPDownloadThreadDlg : public wxDialog
 {
@@ -82,6 +86,8 @@ private:
 	wxString					m_tempfile;
 	int						m_result;
 	HTTP_Download_File	m_file_type;
+
+	wxInputStream* GetInputStream(wxHTTP& url_handler, const wxString& location);
 
 #ifndef AMULE_DAEMON 
 	CHTTPDownloadThreadDlg* m_myDlg;

@@ -925,12 +925,15 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxGauge *item3 = new wxGauge( parent, ID_HTTPDOWNLOADPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), wxGA_SMOOTH|wxGA_PROGRESSBAR );
     item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticLine *item4 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
+    wxStaticText *item4 = new wxStaticText( parent, IDC_DOWNLOADSIZE, _("Unknown size"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item5 = new wxButton( parent, ID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->SetDefault();
-    item0->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticLine *item5 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxButton *item6 = new wxButton( parent, ID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetDefault();
+    item0->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
     if (set_sizer)
     {
