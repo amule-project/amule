@@ -62,8 +62,6 @@ BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
   EVT_BUTTON(ID_CANCEL,CHTTPDownloadThreadDlg::OnBtnCancel)
 END_EVENT_TABLE()
 
-int CurlGaugeCallback(void *HTTPDlDlg, double dltotal, double dlnow, double ultotal, double ulnow);
-
 CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadThread* thread)
   : wxDialog(parent,1025,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
@@ -88,7 +86,6 @@ void CHTTPDownloadThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 
 void CHTTPDownloadThreadDlg::StopAnimation() 
 { 
-	m_ani->Stop();
 	if (m_ani) {
 		m_ani->Stop();
 	}
@@ -133,8 +130,8 @@ CHTTPDownloadThread::CHTTPDownloadThread(wxString urlname, wxString filename,HTT
   	m_tempfile = filename;
   	m_result = 1;
 	m_file_type = file_id;
-	#ifndef AMULE_DAEMON 
-  		m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
+	#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
+		m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
 		m_myDlg->Show(true);
 	#endif
 }
@@ -189,7 +186,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 					if (current_read != current_write) {
 						throw(wxString(wxT("Critical error while writing downloaded server.met")));
 					} else {
-						#ifndef AMULE_DAEMON
+						#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
 							wxMutexGuiEnter();
 							m_myDlg->UpdateGauge(download_size,total_read);
 							wxMutexGuiLeave();
@@ -208,7 +205,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 	}
 
 
-#ifndef AMULE_DAEMON 
+#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
 	m_myDlg->StopAnimation();
 #endif	
 	
@@ -221,7 +218,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 void CHTTPDownloadThread::OnExit() 
 {
 	
-#ifndef AMULE_DAEMON 
+#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
 	wxMutexGuiEnter();
 	if (m_myDlg!=NULL) {
 		delete m_myDlg;
