@@ -12,8 +12,8 @@ URL:         http://www.amule.org
 Source:      aMule-%{version}-%{release}.tar.bz2
 Prefix:      %{_prefix}
 BuildRoot:   %{_builddir}/%{name}-%{version}-root
-Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2, curl >= 7.10.6
-BuildPreReq: wxGTK-devel >= 2.4.2, grep, curl-devel >= 7.10.6, automake >= 1.7
+Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
+BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
 Provides:    %{name}
 Obsoletes:   %{name}
 
@@ -117,6 +117,9 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure $UTF8_SYSTRAY \
 %{_datadir}/amule/webserver/*
 
 %changelog
+* Mon Apr 19 2005 Marcelo Jimenez <phoenix@amule.org>
+- Removed curl dependency, aMule now uses wxHTTP.
+
 * Mon Mar 26 2005 Marcelo Jimenez <phoenix@amule.org>
 - Added a distro test, so we know the distro.
 - Tests for UTF-8 enabled LANG to use UTF-8 systray.
