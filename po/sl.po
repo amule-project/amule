@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-07 11:14+0200\n"
+"PO-Revision-Date: 2005-04-13 19:25+0200\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr "Hasher: Zaèenjam z izdelavo MD4 in AICH hasha za datoteko: %s"
 
 #: src/AddFileThread.cpp:273
 msgid "Hasher: Starting to create MD4 hash for file: "
-msgstr "Hasher: Zaèenjam z izdelavo MD4 za datoteko: %s"
+msgstr "Hasher: Zaèenjam z izdelavo MD4 hasha za datoteko: %s"
 
 #: src/AddFileThread.cpp:337
 #, c-format
@@ -45,7 +45,7 @@ msgstr "Hasher: Konèano hashiranje datoteke: %s"
 
 #: src/AddFileThread.cpp:346
 msgid "Hasher: A thread has died."
-msgstr "Hasher: Nit se je prekinila."
+msgstr "Hasher: Nit konèana."
 
 #: src/AddFriend.cpp:54
 msgid "Add a Friend"
@@ -61,37 +61,37 @@ msgstr "Naveden userhash ni veljaven!"
 
 #: src/AICHSyncThread.cpp:86
 msgid "AICH Thread: Signaling for thread to terminate."
-msgstr "AICH Nit: Po¹iljam signal, naj se nit prekine."
+msgstr "AICH: Po¹iljam signal, naj se nit prekine."
 
 #: src/AICHSyncThread.cpp:139
 msgid "AICH Thread: Terminated."
-msgstr "AICH Nit: Prekinjena."
+msgstr "AICH: Nit konèana."
 
 #: src/AICHSyncThread.cpp:145
 msgid "AICH Thread: Syncronization thread started."
-msgstr "AICH Nit: Sinhronizacijska nit se je zaèela."
+msgstr "AICH: Sinhronizacijska nit zaèeta."
 
 #: src/AICHSyncThread.cpp:188
 msgid "AICH Thread: Masterhashes of known files have been loaded."
-msgstr "AICH Nit: Glavni hashi vseh znanih datotek so nalo¾eni."
+msgstr "AICH: Glavni hashi vseh znanih datotek nalo¾eni."
 
 #: src/AICHSyncThread.cpp:226
 #, c-format
 msgid "AICH Thread: Starting to hash files. %li files found."
-msgstr "AICH Nit: Zaèenjam hashirati datoteke. Najdenih %li datotek."
+msgstr "AICH: Zaèenjam hashirati datoteke. Najdenih %li datotek."
 
 #: src/AICHSyncThread.cpp:231
 #, c-format
 msgid "AICH Thread: Hashing file: %s, total files left: %li"
-msgstr "AICH Nit: Hashiram datoteko: %s, preostane ¹e %li datotek."
+msgstr "AICH: Hashiram datoteko: %s, preostane ¹e %li datotek."
 
 #: src/AICHSyncThread.cpp:243
 msgid "AICH Thread: Hashing completed."
-msgstr "AICH Nit: Hashiranje konèano."
+msgstr "AICH: Hashiranje konèano."
 
 #: src/AICHSyncThread.cpp:245
 msgid "AICH Thread: No new files found."
-msgstr "AICH Nit: Niè novih datotek."
+msgstr "AICH: Niè novih datotek."
 
 #: src/amule.cpp:529
 msgid ""
@@ -542,7 +542,7 @@ msgstr "Zahtevana neznana datoteka"
 #: src/BaseClient.cpp:1959
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s"
-msgstr "Uporabnik %s na IP:Portr %s:%d uporablja %s"
+msgstr "Uporabnik %s na IP:Port %s:%d uporablja %s"
 
 #: src/CatDialog.cpp:71 src/DownloadListCtrl.cpp:1021 src/muuli_wdr.cpp:278
 #: src/TransferWnd.cpp:303
@@ -626,7 +626,7 @@ msgstr "Ni podprt"
 
 #: src/ClientDetailDialog.cpp:143 src/ServerListCtrl.cpp:97
 msgid "Failed"
-msgstr "Ni uspelo"
+msgstr "Neuspeh"
 
 #: src/ClientDetailDialog.cpp:146
 msgid "Not complete"
@@ -981,7 +981,7 @@ msgstr "Preostaja ¹e"
 
 #: src/DownloadListCtrl.cpp:199
 msgid "Last Seen Complete"
-msgstr "Nazadnje viden celotno"
+msgstr "Nazadnje videna celotno"
 
 #: src/DownloadListCtrl.cpp:200
 msgid "Last Reception"
@@ -1915,7 +1915,7 @@ msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
 msgstr ""
-"Trenutno povpreèje prenosa v obe smeri. Èe je vklopljeno, ¹tevilke v "
+"Trenutno povpreèje prenosa v obe smeri. Èe je vklopljen prikaz prese¾ka, ¹tevilke v "
 "oklepaju ponazarjajo prese¾ek prenosa od komunikacije med uporabniki."
 
 #: src/muuli_wdr.cpp:160
@@ -1925,7 +1925,7 @@ msgid ""
 "low ID (firewalled) and green arrows signify that you have high ID (The "
 "optimal connection type)."
 msgstr ""
-"Prikazuje stanje povezave. Rdeèe pu¹èice pomenijo da trenutno"
+"Prikazuje stanje povezave. Rdeèe pu¹èice pomenijo da trenutno "
 "niste povezani, rumene pu¹èice pomenijo da imate nizki ID (ste za "
 "firewallom) in zelene pu¹èice pomenijo da imate visok ID (optimalna "
 "povezava)."
@@ -2084,7 +2084,7 @@ msgid ""
 "switch download list to clients you're downloading from, with files also "
 "(some day)"
 msgstr ""
-"Preklopi seznam prenosov na uporabnike od katerih trenutno prena¹ate (enkrat "
+"Prika¾i uporabnike od katerih trenutno prena¹ate (enkrat "
 "v prihodnosti)"
 
 #: src/muuli_wdr.cpp:458
@@ -2513,8 +2513,8 @@ msgid ""
 "If enabled, it is possible to display the sources associated with downloads "
 "by double-clicking on them."
 msgstr ""
-"Èe je vklopljeno, lahko prika¾ete uporabnike povezane s prenosom datoteke z "
-"dvojnim klikom nanjo."
+"Èe je vklopljeno, se z dvojnim klikom na datoteko prika¾ejo uporabniki, ki imajo to "
+"datoteko."
 
 #: src/muuli_wdr.cpp:1623
 msgid "Enable Tray Icon"
@@ -3224,11 +3224,11 @@ msgstr "Parametri za oddaljene povezave"
 
 #: src/muuli_wdr.cpp:2682
 msgid "Accept external connections"
-msgstr "Sprejmi oddaljene povezave"
+msgstr "Vklopi oddaljene povezave"
 
 #: src/muuli_wdr.cpp:2685
 msgid "Use TCP ports instead of unix local sockets"
-msgstr "Uporabi TCP port namesto 'unix local sockets'"
+msgstr "Uporabi TCP port namesto unix local sockets"
 
 #: src/muuli_wdr.cpp:2690
 msgid "External TCP port"
@@ -3285,7 +3285,7 @@ msgstr "Stre¾ni¹ka sporoèila"
 
 #: src/muuli_wdr.cpp:2914 src/muuli_wdr.cpp:2949
 msgid "Click this button to reset the log."
-msgstr "Kliknite tukaj, da zbri¹ete zapisnik."
+msgstr "Kliknite tukaj, da poèistite zapisnik."
 
 #: src/muuli_wdr.cpp:2938 src/muuli_wdr.cpp:3042
 msgid "aMule Log"
@@ -3507,7 +3507,7 @@ msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
 msgstr ""
-"Vklopi ustvarjanje O-P datoteke, iz katere eksterni programi"
+"Vklopi ustvarjanje O-P datoteke, iz katere eksterni programi "
 "izdelajo podpis s podatki o stanju aMule."
 
 #: src/muuli_wdr.cpp:3409
@@ -3634,7 +3634,7 @@ msgstr "Geslo za povezavo s proxyjem"
 
 #: src/muuli_wdr.cpp:3579
 msgid "Automatic server connect without proxy"
-msgstr "Samodejna stre¾ni¹ka povezava brez proxyja"
+msgstr "Pri samodejni povezavi ne uporabi proxyja"
 
 #: src/muuli_wdr.cpp:3602
 msgid "Connect to:"
@@ -3670,7 +3670,7 @@ msgstr "Razhro¹èevanje"
 
 #: src/muuli_wdr.cpp:3694
 msgid "Enable Verbose Debug-Logging."
-msgstr "Vklopi podrobni zapisnik"
+msgstr "Vklopi zapisnik podrobnosti"
 
 #: src/muuli_wdr.cpp:3699
 msgid "Message Categories:"
@@ -3772,11 +3772,11 @@ msgstr "min"
 
 #: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:153
 msgid "hours"
-msgstr "ur"
+msgstr "h"
 
 #: src/OtherFunctions.cpp:153
 msgid "Days"
-msgstr "dni"
+msgstr "d"
 
 #: src/OtherFunctions.cpp:736 src/WebServer.cpp:2445
 msgid "all"
@@ -4002,23 +4002,23 @@ msgstr "Brisanje datoteke: %s"
 
 #: src/PartFile.cpp:2412
 msgid "\tStopped"
-msgstr "\tUstavljen"
+msgstr "\tDat. ustavljena"
 
 #: src/PartFile.cpp:2415
 msgid "\tRemoved from shared"
-msgstr "\tOdstranjen iz deljenja"
+msgstr "\tDat. odstranjena iz deljenja"
 
 #: src/PartFile.cpp:2417
 msgid "\tRemoved from download queue"
-msgstr "\tOdstranjen iz vrste prenosov"
+msgstr "\tDat. odstranjena iz seznama prenosov"
 
 #: src/PartFile.cpp:2419
 msgid "\tRemoved transferwnd"
-msgstr "\tOdstranjen transferwnd"
+msgstr "\tDat. odstranjena iz okna s prenosi"
 
 #: src/PartFile.cpp:2429
 msgid "\tClosed"
-msgstr "\tZaprt"
+msgstr "\tDat. zaprta"
 
 #: src/PartFile.cpp:2432
 #, c-format
@@ -4027,7 +4027,7 @@ msgstr "\tNi bilo mogoèe zbrisati '%s'"
 
 #: src/PartFile.cpp:2434
 msgid "\tRemoved .part.met"
-msgstr "\tOdstranjen .part.met"
+msgstr "\tOdstranjena .part.met"
 
 #: src/PartFile.cpp:2440 src/PartFile.cpp:2448 src/PartFile.cpp:2459
 #, c-format
@@ -4036,15 +4036,15 @@ msgstr "Ni bilo mogoèe zbrisati '%s'"
 
 #: src/PartFile.cpp:2442
 msgid "\tRemoved .part"
-msgstr "\tOdstranjen .part"
+msgstr "\tOdstranjena .part"
 
 #: src/PartFile.cpp:2450
 msgid "\tRemoved .BAK"
-msgstr "\tOdstranjen .BAK"
+msgstr "\tOdstranjena .BAK"
 
 #: src/PartFile.cpp:2457
 msgid "\tRemoved .seeds"
-msgstr "\tOdstranjen .seeds"
+msgstr "\tOdstranjena .seeds"
 
 #: src/PartFile.cpp:2463
 msgid "Done"
@@ -4289,7 +4289,7 @@ msgstr "Izberite mapo za %s"
 
 #: src/PrefsUnifiedDlg.cpp:809
 msgid "Browse wav"
-msgstr "Prebrskaj wav"
+msgstr "Prebrskaj za wav"
 
 #: src/PrefsUnifiedDlg.cpp:810
 msgid "File wav (*.wav)|*.wav||"
@@ -4297,7 +4297,7 @@ msgstr "Datoteka wav (*.wav)|*.wav||"
 
 #: src/PrefsUnifiedDlg.cpp:823
 msgid "Browse skin file"
-msgstr "Prebrskaj datoteke za preobleko"
+msgstr "Prebrskaj za datoteke za preobleko"
 
 #: src/PrefsUnifiedDlg.cpp:836
 msgid "Browse for videoplayer"
@@ -4364,7 +4364,7 @@ msgstr "Niste povezani na stre¾nik!"
 
 #: src/SearchDlg.cpp:511
 msgid "Main"
-msgstr "Glavno"
+msgstr "Glavna"
 
 #: src/SearchListCtrl.cpp:84 src/SharedFilesCtrl.cpp:101
 msgid "FileID"
@@ -4431,7 +4431,7 @@ msgstr "Napaka: Socket invalid at timeoutcheck"
 #: src/ServerConnect.cpp:446
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr "Timeout pri poskusu povezave z %s (%s:%i)"
+msgstr "Povezava z %s (%s:%i) se je iztekla."
 
 #: src/ServerList.cpp:94
 #, c-format
@@ -4449,7 +4449,7 @@ msgstr "Ni bilo mogoèe odpreti server.met!"
 #: src/ServerList.cpp:116
 #, c-format
 msgid "Invalid versiontag in server.met (0x%x , size %i)!"
-msgstr "Napaèen versiontag v server.met (0x%x , velikost %i)!"
+msgstr "Napaèen zaznamek razlièice (versiontag) v server.met (0x%x , velikost %i)!"
 
 #: src/ServerList.cpp:166
 #, c-format
@@ -4468,7 +4468,7 @@ msgstr "Napaka: datoteka server.met je pokvarjena"
 #: src/ServerList.cpp:185
 #, c-format
 msgid "Server not added: [%s:%d] does not specify a valid port."
-msgstr "Stre¾nik ni bil dodan: port naveden v [%s:%d] ni veljaven."
+msgstr "Stre¾nik ni bil dodan: naveden port [%s:%d] ni veljaven."
 
 #: src/ServerList.cpp:196
 #, c-format
@@ -4550,7 +4550,7 @@ msgstr "Ping"
 
 #: src/ServerListCtrl.cpp:94
 msgid "Users"
-msgstr "Uporabnikov"
+msgstr "Uporabniki"
 
 #: src/ServerListCtrl.cpp:98
 msgid "Static"
@@ -4738,7 +4738,7 @@ msgstr "Prene¹enih podatkov"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Complete Sources"
-msgstr "Celotnih virov"
+msgstr "Celotni viri"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Directory Path"
@@ -5658,7 +5658,7 @@ msgstr "Datoteka %s je prevelika za Donkey: najveèja dovoljena velikost je 4 GB.
 #: src/utils/wxCas/src/linuxmon.cpp:92
 #, c-format
 msgid "%i day(s) %i hour(s) %i min %i s"
-msgstr "%i dni %i ur %i min %i s"
+msgstr "%i d %i h %i min %i s"
 
 #: src/utils/wxCas/src/onlinesig.cpp:220
 #, c-format
