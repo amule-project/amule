@@ -96,7 +96,7 @@ msgid ""
 "Copied old ~/.xMule config and credit files to ~/.aMule\n"
 "However, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"
 msgstr ""
-"De oude ~/.xMule configuratie en krediet bestanden zijn gekopieerd naar ~/.aMule\n"
+"De oude ~/.xMule configuratie en credit bestanden zijn gekopieerd naar ~/.aMule\n"
 "Let er wel op dat u .xMule NIET verwijdert terwijl uw Binnenkomende / Tijdelijke directories daar nog staan ;)"
 
 #: src/amule.cpp:529
@@ -621,12 +621,12 @@ msgstr "*** Kon niet Verbinden met client / Verbinding verbroken ***"
 #: src/ClientCredits.cpp:280
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
-msgstr "Kredietbestand geladen, %u clients bekend"
+msgstr "Creditbestand geladen, %u clients bekend"
 
 #: src/ClientCredits.cpp:283
 #, c-format
 msgid " - Credits expired for %u clients!"
-msgstr " - Kredieten verlopen voor %u clients!"
+msgstr " - Credits verlopen voor %u clients!"
 
 #: src/ClientCredits.cpp:482
 msgid "No 'cryptkey.dat' file found, creating"
@@ -3753,7 +3753,7 @@ msgstr "Gebruik Veilige Identificatie"
 
 #: src/muuli_wdr.cpp:3370
 msgid "Secure Identification uses a handshake approch to safely identify clients for use with the credit system."
-msgstr "Veilige Identificatie gebruikt een handshake methode om clients veilig te kunnen identificeren voor gebruik met het krediet systeem."
+msgstr "Veilige Identificatie gebruikt een handshake methode om clients veilig te kunnen identificeren voor gebruik met het credit systeem."
 
 #: src/muuli_wdr.cpp:3394
 #: src/PrefsUnifiedDlg.cpp:163
