@@ -1276,6 +1276,8 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
+	// FIXME: Actual value here 
+	m_banned_count = 0;
 }
 
 void CClientListRem::FilterQueues()
