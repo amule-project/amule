@@ -55,6 +55,7 @@
 	#include "MuleGifCtrl.h"
 	#include <wx/sizer.h> 
 	#include <wx/gauge.h>
+	#include <wx/stattext.h>
 #endif
 
 #ifndef AMULE_DAEMON 
