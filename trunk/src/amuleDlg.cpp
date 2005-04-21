@@ -534,7 +534,7 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 			if ( prefs_dialog ) {
 				prefs_dialog->TransferToWindow();
 		
-				prefs_dialog->Show();
+				prefs_dialog->ShowModal();
 			}
 		}
 	}
