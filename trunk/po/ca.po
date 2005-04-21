@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-15 17:03+0200\n"
+"PO-Revision-Date: 2005-04-20 23:19+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <ca@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3156,7 +3156,7 @@ msgstr "Abandonament de Fonts amb Cua Plena"
 
 #: src/muuli_wdr.cpp:2558
 msgid "Enable auto drop Full Queue Sources"
-msgstr "Habilita autoabandona Fonts amb Cua Plena"
+msgstr "Habilita l'autoabandonament de fonts amb cua Plena"
 
 #: src/muuli_wdr.cpp:2564
 msgid "High Queue Rating Sources Handling"
@@ -3736,7 +3736,7 @@ msgstr "Finestra dels Paràmetres de Preferències"
 
 #: src/muuli_wdr.cpp:3740
 msgid "About"
-msgstr "Sobre"
+msgstr "Quant a..."
 
 #: src/muuli_wdr.cpp:3740
 msgid "About/Help"
@@ -4743,7 +4743,7 @@ msgstr "Dades Transferides"
 
 #: src/SharedFilesCtrl.cpp:106
 msgid "Complete Sources"
-msgstr "Fonts Completades"
+msgstr "Fonts Completes"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Directory Path"
@@ -5865,7 +5865,7 @@ msgstr "Total descarregat: "
 #: src/utils/wxCas/src/wxcasframe.cpp:760
 #: src/utils/wxCas/src/wxcasframe.cpp:771
 msgid ", Upload: "
-msgstr ", Pujat: "
+msgstr ", Pujant: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:769
 msgid "Session Download: "
@@ -5873,7 +5873,7 @@ msgstr "Descarregat Sessió: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:780
 msgid "Download: "
-msgstr "Descarregat: "
+msgstr "Descarregant: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:782
 msgid " kB/s, Upload: "
@@ -5958,7 +5958,7 @@ msgstr "Interval d'actualització del servidor FTP en minuts"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:302
 msgid "Validate"
-msgstr "Validesa"
+msgstr "D'acord"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:337
 msgid "Folder containing your signature file"
