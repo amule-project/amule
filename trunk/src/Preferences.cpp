@@ -30,9 +30,9 @@
 
 #if wxCHECK_VERSION(2,5,1)
 	#include <wx/stopwatch.h>
-#else
-	#include <wx/timer.h>
 #endif
+
+#include <wx/timer.h> // Needed for wxGetLocalTimeMillis
 
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
