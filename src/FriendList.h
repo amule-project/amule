@@ -58,7 +58,7 @@ public:
 	void		RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
 	void		UpdateFriendName(const CMD4Hash& userhash, const wxString& name, uint32 dwIP, uint16 nPort);
 
-	void		ToogleFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
+	void		SetFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state);
 	void		StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);
 	void		RemoveAllFriendSlots();
 

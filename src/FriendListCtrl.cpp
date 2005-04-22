@@ -245,7 +245,7 @@ void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
 		menu->Append(MP_MESSAGE, _("Send &Message"));
 		menu->Append(MP_SHOWLIST, _("View Files"));
 		menu->AppendCheckItem(MP_FRIENDSLOT, _("Establish Friend Slot"));
-		
+	
 		if (cur_friend->islinked) {
 			menu->Enable(MP_FRIENDSLOT, true);
 			menu->Check(MP_FRIENDSLOT, cur_friend->hasfriendslot);
@@ -322,12 +322,13 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event)) {
 	
 }
 
-void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& WXUNUSED(event)) {
+void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	#warning CORE/GUI!
 	#ifndef CLIENT_GUI
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);	
-		theApp.friendlist->ToogleFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+		cur_friend->hasfriendslot = event.IsChecked();
+		theApp.friendlist->SetFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port, cur_friend->hasfriendslot);
 	#endif
 	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (index != -1) {
