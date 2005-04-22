@@ -33,6 +33,7 @@
 #include "Packet.h"		// Needed for CInvalidPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "amule.h" // Needed for theApp / Notify_ChatRefreshFriend
 #include "OtherFunctions.h"
 
 
@@ -93,6 +94,8 @@ void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
 	m_dwLastUsedIP = client->GetIP();
 	m_nLastUsedPort = client->GetUserPort();
 	m_dwLastSeen = time(NULL);
+	// This will update the Link status also on GUI.
+	Notify_ChatRefreshFriend(m_dwLastUsedIP, m_nLastUsedPort, m_strName);
 }
 
 

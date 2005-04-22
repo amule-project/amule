@@ -335,3 +335,11 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
 		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxICON_ERROR);
 	}
 }
+
+void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state) {
+	CDlgFriend* client = FindFriend(NULL, dwIP, nPort);
+	if (client) {
+		client->m_hash = userhash;
+		client->islinked = new_state;	
+	}
+}

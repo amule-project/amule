@@ -104,7 +104,6 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		CFriend* m_Friend;
 		if ((m_Friend = theApp.friendlist->FindFriend(NULL, m_dwUserIP, m_nUserPort)) != NULL){
 			m_Friend->LinkClient(this);
-			Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
 		} else{
 			// avoid that an unwanted client instance keeps a friend slot
 			m_bFriendSlot = false;
@@ -213,7 +212,7 @@ void CUpDownClient::Init()
 	} else {
 		SetIP(0);
 	}
-	
+
 }
 
 
@@ -532,7 +531,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 
 	if ((m_Friend = theApp.friendlist->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		m_Friend->LinkClient(this);
-		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), m_Friend->GetName());
 	} else{
 		// avoid that an unwanted client instance keeps a friend slot
 		SetFriendSlot(false);

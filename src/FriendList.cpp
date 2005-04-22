@@ -222,7 +222,7 @@ void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16
 			client->SetIP(friend_client->GetIP());
 			client->SetUserName(friend_client->GetName());
 			theApp.clientlist->AddClient(client);
-			friend_client->LinkClient(client);			
+			friend_client->LinkClient(client);
 		}
 	} else {
 		printf("CRITICAL - no client on StartChatSession\n");
