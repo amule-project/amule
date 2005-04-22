@@ -63,6 +63,7 @@ public:
 	void		RemoveFriend(CDlgFriend* todel);
 	void		RemoveFriend(CUpDownClient* todel);
 	void		RefreshFriend(CDlgFriend* toupdate);
+	void		SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state);
 	
 protected:
 	DECLARE_EVENT_TABLE()
