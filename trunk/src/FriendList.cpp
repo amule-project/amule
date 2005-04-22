@@ -205,14 +205,11 @@ void	CFriendList::RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, u
 	}
 }
 
-void CFriendList::ToogleFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort) {
+void CFriendList::SetFriendSlot(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state) {
 	CFriend* cur_friend = FindFriend(userhash, dwIP, nPort);
 	if (cur_friend && cur_friend->GetLinkedClient()) {
-		bool IsAlready = cur_friend->GetLinkedClient()->GetFriendSlot();
 		RemoveAllFriendSlots();
-		if( !IsAlready ) {
-			cur_friend->GetLinkedClient()->SetFriendSlot(true);
-		}
+		cur_friend->GetLinkedClient()->SetFriendSlot(new_state);
 	}
 }
 
