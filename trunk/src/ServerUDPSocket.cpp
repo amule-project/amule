@@ -450,7 +450,9 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 void *CServerUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForRead(0, 1000) ) {
+		Sleep(100);
+		CALL_APP_DATA_LOCK;
+		if ( WaitForRead(0, 0) ) {
 			OnReceive(0);
 		}
 	}
