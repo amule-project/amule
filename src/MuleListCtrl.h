@@ -61,9 +61,6 @@ const int SORT_OFFSET_ALT_DEC = 3000;
 	#include <wx/listctrl.h>
 	#include <wx/msw/imaglist.h>
 	class CMuleListCtrl : public wxListCtrl
-#elif defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
-	#include "listctrl.h"
-	class CMuleListCtrl : public wxODListCtrl
 #else
 	#include "listctrl.h"
 	class CMuleListCtrl : public MuleExtern::wxListCtrl
