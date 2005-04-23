@@ -48,9 +48,7 @@
 // Global constants
 #ifdef __WXGTK__
 	const int COL_SIZE_MIN = 10;
-#elif defined(__WXMSW__)
-	const int COL_SIZE_MIN = 0;
-#elif defined(__WXMAC__) || defined(__WXCOCOA__)
+#elif defined(__WXMSW__) || defined(__WXMAC__) || defined(__WXCOCOA__)
 	const int COL_SIZE_MIN = 0;
 #else
 	#error Need to set col_minsize for your OS
@@ -59,8 +57,6 @@
 
 #ifdef __WXMSW__
 BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
-#elif defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxODListCtrl)	
 #else
 BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxListCtrl)
 #endif
@@ -74,8 +70,6 @@ END_EVENT_TABLE()
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 #if defined(__WXMSW__) 
 	: wxListCtrl( parent, winid, pos, size, style, validator, name )
-#elif defined(__WXMAC__) and !wxCHECK_VERSION(2,5,5)
-	: wxODListCtrl( parent, winid, pos, size, style, validator, name )
 #else
 	: MuleExtern::wxListCtrl( parent, winid, pos, size, style, validator, name )
 #endif
