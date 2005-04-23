@@ -318,8 +318,13 @@ bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 void *CClientUDPSocket::Entry()
 {
 	while ( !TestDestroy() ) {
-		if ( WaitForRead(1, 0) ) {
+		Sleep(100);
+		CALL_APP_DATA_LOCK;
+		if ( WaitForRead(0, 0) ) {	
 			OnReceive(0);
+		}
+		if ( WaitForWrite(0, 0) ) {
+			OnSend(0);
 		}
 	}
 	return 0;
