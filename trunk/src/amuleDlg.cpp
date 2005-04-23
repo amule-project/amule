@@ -502,9 +502,9 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 {
 	wxString msg = wxT(" ");
 #ifdef CLIENT_GUI
-	msg << _("aMule remote control") << wxT(VERSION);
+	msg << _("aMule remote control ") << wxT(VERSION);
 #else
-	msg << wxT("aMule") << wxT(VERSION);
+	msg << wxT("aMule ") << wxT(VERSION);
 #endif
 	msg << wxT(" ");
 #ifdef CVSDATE
