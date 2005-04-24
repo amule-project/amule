@@ -58,24 +58,22 @@ dnl check if zlib is on the system
 dnl ----------------------------------------------------
 AC_DEFUN([CHECK_ZLIB],
 [
-wv_zlib=""
-found_zlib="no"
-
 ZLIB_DIR=""
 ZVERMAX="1"
 ZVERMED="1"
 ZVERMIN="4"
 AC_ARG_WITH(zlib,[  --with-zlib=PREFIX               use zlib in PREFIX],[
 	if [ test "$withval" = "no" ]; then
-		AC_MSG_ERROR([zlib is required by aMule])
+		AC_MSG_ERROR([zlib >= 1.1.4 is required by aMule])
         elif [ test "$withval" = "yes" ]; then
 		zlib=check
         elif [ test "$withval" = "peer" ]; then
 		zlib=peer
-	else
+	elif [ test "$withval" = "sys" ]; then
 		zlib=sys
+	else
+		zlib=user
 		ZLIB_DIR="$withval"
-		wv_zlib="--with-zlib=$withval"
         fi
 ],[	zlib=check
 ])
@@ -83,33 +81,67 @@ AC_ARG_WITH(zlib,[  --with-zlib=PREFIX               use zlib in PREFIX],[
 if test $zlib = peer; then
 	z=peer
 else
-	if test $zlib = sys; then
-		_cppflags="$CPPFLAGS"
+	_cppflags="$CPPFLAGS"
+	if test -n "$ZLIB_DIR"; then
 		CPPFLAGS="$CPPFLAGS -I$ZLIB_DIR/include"
 	fi
-	AC_CHECK_HEADER(zlib.h,[
+	AC_MSG_CHECKING([for zlib >= 1.1.4])
+	AC_RUN_IFELSE([
+		AC_LANG_PROGRAM([[
+			#include <zlib.h>
+			#include <stdio.h>
+		]], [[
+			/* zlib.h defines ZLIB_VERSION="x.y.z" */
+			FILE *f=fopen("conftestval", "w");
+			if (!f) exit(1);
+			fprintf(f, "%s",
+				ZLIB_VERSION[0] > '1' ||
+				(ZLIB_VERSION[0] == '1' &&
+				(ZLIB_VERSION[2] > '1' ||
+				(ZLIB_VERSION[2] == '1' &&
+				ZLIB_VERSION[4] >= '4'))) ? "yes" : "no");
+			fclose(f);
+			f=fopen("conftestver", "w");
+			if (!f) exit(0);
+			fprintf(f, "%s", ZLIB_VERSION);
+			fclose(f);
+			exit(0);
+		]])
+	], [
 		z=sys
-        	CZVER=`grep "define ZLIB_VERSION" /usr/include/zlib.h|sed 's/#define ZLIB_VERSION "//' |sed 's/"//'`
-		CZMIN=`echo $CZVER |sed 's/....//'`
-		CZMED=`echo $CZVER |sed s/.$CZMIN//| sed 's/^..//'`
-		CZMAX=`echo $CZVER |sed s/...$CZMIN//`
-		if test ["$CZMAX" -lt "$ZVERMAX"]; then
-		        result="no"
-                	AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
+		if test -f conftestval; then
+	        	result=`cat conftestval`
+		else
+			result=no
 		fi
-		if test [ "$CZMED" -lt "$ZVERMED"]; then
-				result="no"
-                		AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
-		fi;
-		
-	],[	if test $zlib = sys; then
-			AC_MSG_ERROR([zlib not found in system location])
+		if test x$result = xyes; then
+			if test -f conftestver; then
+				ZLIB_VERSION=`cat conftestver`
+				z_version=" (version $ZLIB_VERSION)"
+			else
+				z_version=""
+			fi
 		fi
-		z=peer
+		AC_MSG_RESULT($result$z_version)
+	], [
+		result=no
+		if test $zlib = check; then
+			z=peer
+		else
+			z=sys
+		fi
+		AC_MSG_RESULT($result)
+	], [
+		z=sys
+		AC_MSG_RESULT([cross-compilation detected, checking only the header])
+		AC_CHECK_HEADER(zlib.h, [result=yes], [result=no])
 	])
-	if test $zlib = sys; then
-		CPPFLAGS="$_cppflags"
+	if test x$result = xno; then
+		if test $z != peer; then
+			AC_MSG_ERROR([zlib >= 1.1.4 not found])
+		fi
 	fi
+	CPPFLAGS="$_cppflags"
 fi
 
 if test $z = peer; then
@@ -117,19 +149,19 @@ if test $z = peer; then
 	if test -d ../zlib; then
 		if test -r ../zlib/libz.a; then
 			AC_MSG_RESULT(yes)
-			CZVER=`grep "define ZLIB_VERSION" ../include/zlib.h|sed 's/#define ZLIB_VERSION "//' |sed 's/"//'`
-		CZMIN=`echo $CZVER |sed 's/....//'`
-		CZMED=`echo $CZVER |sed s/.$CZMIN//| sed 's/^..//'`
-		CZMAX=`echo $CZVER |sed s/...$CZMIN//`
-		if test ["$CZMAX" -lt "$ZVERMAX"]; then
-		        result="no"
-                	AC_MSG_ERROR([ zlib >=1.1.4 is required by amule])
-		fi
-		if test [ "$CZMED" -lt "$ZVERMED"]; then
-				result="no"
-                		AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
-		fi;
-        	
+			CZVER=`grep "define ZLIB_VERSION" ../zlib/zlib.h | sed 's/#define ZLIB_VERSION "//' | sed 's/"//'`
+			CZMIN=`echo $CZVER | sed 's/....//'`
+			CZMED=`echo $CZVER | sed s/.$CZMIN// | sed 's/^..//'`
+			CZMAX=`echo $CZVER | sed s/...$CZMIN//`
+			if test ["$CZMAX" -lt "$ZVERMAX"]; then
+        	        	AC_MSG_ERROR([ zlib >=1.1.4 is required by amule])
+			fi
+			if test [ "$CZMED" -lt "$ZVERMED"]; then
+               			AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
+			fi;
+			if test [ "$CZMIN" -lt "$ZVERMIN"]; then
+               			AC_MSG_ERROR([ zlib >=1.1.4 is required by aMule])
+			fi;
 		else
 			AC_MSG_RESULT(no)
 			AC_MSG_ERROR([unable to use peer zlib - zlib/libz.a not found])
@@ -139,18 +171,13 @@ if test $z = peer; then
 		AC_MSG_ERROR([unable to use zlib - no peer found])
 	fi
 
-	zlib_message="peer zlib"
 	ZLIB_CFLAGS='-I$(top_srcdir)/../zlib'
 	ZLIB_LIBS='$(top_srcdir)/../zlib/libz.a'
-
-	wv_cppflags="$wv_cppflags -I$ZLIB_PEERDIR"
 else
-	if test $zlib = sys; then
-		zlib_message="zlib in -L$ZLIB_DIR/lib -lz"
+	if test -n "$ZLIB_DIR"; then
 		ZLIB_CFLAGS="-I$ZLIB_DIR/include"
 		ZLIB_LIBS="-L$ZLIB_DIR/lib -lz"
 	else
-		zlib_message="zlib in -lz"
 		ZLIB_CFLAGS=""
 		ZLIB_LIBS="-lz"
 	fi
