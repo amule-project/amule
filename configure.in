@@ -657,7 +657,7 @@ echo "  Should aMule be compiled with old GTK taskbar icon?        ${gtk_tray:-n
 echo "  Should aMule be compiled with UTF-8 taskbar icon support?  ${utf8_systray:-no}"
 echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET:-no}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-no}"
-echo "  Should aMule daemon version be built?		           ${AMULE_DAEMON:-no}"
+echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
 echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
 
