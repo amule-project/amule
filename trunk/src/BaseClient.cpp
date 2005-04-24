@@ -1372,6 +1372,7 @@ void CUpDownClient::ConnectionEstablished()
 		case US_WAITCALLBACK:
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
+				ClearWaitStartTime();
 				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
 				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
