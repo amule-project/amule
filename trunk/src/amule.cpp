@@ -1461,12 +1461,16 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		msPrevSave = msCur;
 		wxString buffer;
 		
+		// Save total upload/download to preferences
 		wxConfigBase* cfg = wxConfigBase::Get();
 		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
 		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
+		
+		// Save Shared Files data
+		knownfiles->Save();
 	}
 
 	// Special
