@@ -17,31 +17,16 @@ AC_DEFUN([CHECK_WX_BUILT_WITH_GTK2],
 ])
 
 dnl ----------------------------------------------------
-dnl CHECK_WX_PARTIAL_VERSION
-dnl check wx widgets 2.x version
-dnl ----------------------------------------------------
-
-AC_DEFUN([CHECK_WX_PARTIAL_VERSION],
-[
-  AC_MSG_CHECKING(if wxWidgets version >=2.5.0 )
-  if $WX_CONFIG_WITH_ARGS --version | grep -q '2.5' ; then
-     WX_PARTIAL_VERSION=5
-     AC_MSG_RESULT(yes)
-  else
-     AC_MSG_RESULT(no)
-  fi
-  AC_SUBST(WX_PARTIAL_VERSION)
-])
-
-dnl ----------------------------------------------------
-dnl GET_WXGTK_VERSION
+dnl GET_WX_VERSION
 dnl get wx widgets
 dnl ----------------------------------------------------
 
-AC_DEFUN([GET_WXGTK_VERSION],
+AC_DEFUN([GET_WX_VERSION],
 [
-  WXGTK_VERSION=`$WX_CONFIG_WITH_ARGS --version`
-  AC_SUBST(WXGTK_VERSION)
+  WX_VERSION_FULL=`$WX_CONFIG_WITH_ARGS --version`
+  WX_VERSION_MAJOR=`echo $WX_VERSION_FULL | cut -d . -f 1`
+  WX_VERSION_MINOR=`echo $WX_VERSION_FULL | cut -d . -f 2`
+  WX_VERSION_RELEASE=`echo $WX_VERSION_FULL | cut -d . -f 3`
 ])
 
 
