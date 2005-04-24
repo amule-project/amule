@@ -46,9 +46,6 @@ endif
 
 DEFS = -DHAVE_CONFIG_H
 
-BUILT_SOURCES =
-
-#LIBS = @LIBS@ 
 amulegui_SOURCES = \
 	amule-gui.cpp \
 	amule-remote-gui.cpp \
@@ -446,3 +443,17 @@ noinst_HEADERS = AddFileThread.h \
 
 
 MAINTAINERCLEANFILES = Makefile.in
+
+if NEED_RC
+amule_LDADD += amulerc.$(OBJEXT)
+amulegui_LDADD += amulerc.$(OBJEXT)
+
+amulerc.$(OBJEXT): $(srcdir)/../amule.rc
+	@thisdir=`pwd` ; \
+	cd $(srcdir)/.. ; \
+	rcfile=`basename "$<"` ; \
+	echo "windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o \"$@\"" ; \
+	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
+	cd $${thisdir} ; \
+	mv "$(srcdir)/../$@" "$@"
+endif
