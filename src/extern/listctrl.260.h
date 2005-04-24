@@ -290,8 +290,8 @@ public:
     }
 };
 
-}
-
 #endif // !__WXMSW__ || __WXUNIVERSAL__
+
+}
 
 #endif // __LISTCTRLH_G__
