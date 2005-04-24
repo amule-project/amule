@@ -34,3 +34,16 @@ alcc_SOURCES = alcc.cpp \
 alcc_CFLAGS = $(WXBASE_CFLAGS)
 alcc_CXXFLAGS = $(WXBASE_CXXFLAGS)
 alcc_LDADD = $(WXBASE_LIBS)
+
+if NEED_RC
+alc_LDADD += alcrc.$(OBJEXT)
+
+alcrc.$(OBJEXT): $(srcdir)/../alc.rc
+	@thisdir=`pwd` ; \
+	cd $(srcdir)/.. ; \
+	rcfile=`basename "$<"` ; \
+	echo "windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o \"$@\"" ; \
+	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
+	cd $${thisdir} ; \
+	mv "$(srcdir)/../$@" "$@"
+endif

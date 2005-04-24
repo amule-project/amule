@@ -33,11 +33,6 @@ openbsd*)
 	;;
 *cygwin* | *mingw32*)
 	SYS=win32
-	AC_MSG_ERROR([
-		"You are trying to compile aMule using configure under Windows.
-		This is not possible. Please use the provided MakefileWIN32 instead.
-		Just type make -f MakefileWIN32."
-	])
 	;;
 solaris*)
 	RESOLV_LIB="-lresolv -lnsl"
@@ -283,6 +278,11 @@ if test $WX_VERSION_MAJOR == 2 -a $WX_VERSION_MINOR == 4; then
 else
   WX_VERSION="any"
 fi
+
+
+dnl Get flags for windres
+RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | awk ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
+AC_SUBST(RCFLAGS)
 
 # Check for Crypto++
 AM_OPTIONS_CRYPTO
@@ -565,6 +565,7 @@ AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
+AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
 
 dnl
 dnl Check for readline library
