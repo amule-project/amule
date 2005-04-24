@@ -955,6 +955,8 @@ void CStatistics::UpdateStatsTree() {
 	(*cli17) = wxString::Format(_("HasSocket: %i (%1.1f%%)"),myStats[17],(double)100*myStats[17]/(totalclient + myStats[0]));
 #endif
 	
+	#warning Kry TODO: Must be unified
+	
 	if(myStats[1] > 0) {
 
 		uint32 totcnt = myStats[1];
@@ -1004,6 +1006,14 @@ void CStatistics::UpdateStatsTree() {
 					cli_versions[i+8].TreeItem = statstree.append_child(cli3,cbuffer);
 					cli_versions[i+8].active = true;
 				}
+			}
+		}
+	} else {
+		// Clear stats
+		for(uint32 i=0; i<4; ++i) {
+			if (cli_versions[i+8].active) {
+				statstree.erase(cli_versions[i+8].TreeItem);
+				cli_versions[i+8].active = false;
 			}
 		}
 	}
@@ -1058,6 +1068,14 @@ void CStatistics::UpdateStatsTree() {
 				}
 			}
 		}
+	} else {
+		// Clear stats
+		for(uint32 i=0; i<4; ++i) {
+			if (cli_versions[i+4].active) {
+				statstree.erase(cli_versions[i+4].TreeItem);
+				cli_versions[i+4].active = false;
+			}
+		}
 	}
 
 	if(myStats[2] > 0) {
@@ -1107,6 +1125,14 @@ void CStatistics::UpdateStatsTree() {
 					cli_versions[i].TreeItem = statstree.append_child(cli1,cbuffer);
 					cli_versions[i].active = true;
 				}
+			}
+		}
+	} else {
+		// Clear stats
+		for(uint32 i=0; i<4; ++i) {
+			if (cli_versions[i].active) {
+				statstree.erase(cli_versions[i].TreeItem);
+				cli_versions[i].active = false;
 			}
 		}
 	}
@@ -1164,10 +1190,8 @@ void CStatistics::UpdateStatsTree() {
 				}
 			}
 		}
-	}
-	
-	if(myStats[8]) {
-
+		
+		// Now OS_Info
 		statstree.erase_children(cli10_2);
 		
 		uint32 total = 0;
@@ -1185,6 +1209,16 @@ void CStatistics::UpdateStatsTree() {
 			statstree.append_child(cli10_2, _("Not Received") + wxString::Format(wxT(": %u (%1.1f%%)"),not_rec, ((double)not_rec / myStats[8]) * 100 ));
 		}
 		
+	} else {
+		// Clear stats
+		for(uint32 i=0; i<4; ++i) {
+			if (cli_versions[i+12].active) {
+				statstree.erase(cli_versions[i+12].TreeItem);
+				cli_versions[i+12].active = false;
+			}
+		}
+		// Now OS_Info
+		statstree.erase_children(cli10_2);
 	}
 	
 	// get serverstats
