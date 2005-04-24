@@ -61,8 +61,12 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 		wxFrame ( ( wxFrame * ) NULL, -1, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE )
 {
 	// Give it an icon
+#ifdef __WXMSW__
+	wxIcon icon(wxT("wxcas"));
+#else
 	wxIcon icon;
 	icon.CopyFromBitmap( WxCasPix::getPixmap( wxT( "wxcas" ) ) );
+#endif
 	SetIcon ( icon );
 
 	// Prefs

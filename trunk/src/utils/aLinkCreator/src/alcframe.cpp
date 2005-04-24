@@ -64,14 +64,13 @@ AlcFrame::AlcFrame (const wxString & title):
     wxFrame ((wxFrame *) NULL, -1, title)
 {
   // Give it an icon
-#if defined(__WXMSW__)
+#ifdef __WXMSW__
   wxIcon icon(wxT("alc"));
 #else
-
   wxIcon icon;
-  icon.CopyFromBitmap(AlcPix::getPixmap(wxT("Alc")));
-  SetIcon (icon);
+  icon.CopyFromBitmap(AlcPix::getPixmap(wxT("alc")));
 #endif
+  SetIcon (icon);
 
   // Status Bar
   CreateStatusBar ();
