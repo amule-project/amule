@@ -276,16 +276,13 @@ else
 
 fi
 
+GET_WX_VERSION
 
-CHECK_WX_PARTIAL_VERSION
-
-if test x"$WX_PARTIAL_VERSION" = x"4"; then
+if test $WX_VERSION_MAJOR == 2 -a $WX_VERSION_MINOR == 4; then
   WX_VERSION="2.4"
 else
   WX_VERSION="any"
 fi
-
-GET_WXGTK_VERSION
 
 # Check for Crypto++
 AM_OPTIONS_CRYPTO
@@ -685,7 +682,7 @@ echo
 echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                          ${ccache:-no}"
 echo "  Libraries aMule will use to build:"
-echo "                                       wxWidgets             ${WXGTK_VERSION:-Not detected}"
+echo "                                       wxWidgets             ${WX_VERSION_FULL:-Not detected}"
 if test x"$havegtk" != x"not_needed"; then
 	echo "                                       GTK                   ${GTK_VERSION:-Not detected}"
 fi
