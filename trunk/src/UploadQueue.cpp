@@ -169,7 +169,6 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
-		newclient->ClearWaitStartTime();
 	}
 	newclient->SetUpStartTime();
 	newclient->ResetSessionUp();
@@ -219,7 +218,6 @@ void CUploadQueue::Process()
 		bytesSent += cur_client->SendBlockData(kBpsSendPerClient);
 	}
 	
-	
 	// smooth current UL rate with a first-order filter
 	static uint32	bytesNotCounted;
 	uint32	msCur = ::GetTickCount();
@@ -232,7 +230,6 @@ void CUploadQueue::Process()
 		bytesNotCounted = 0;
 		msPrevProcess = msCur;
 	}
-	
 }
 
 bool CUploadQueue::AcceptNewClient()
