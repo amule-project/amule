@@ -776,9 +776,19 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Misc
 	 **/
-	NewCfgItem(IDC_FCHECK,		(MkCfg_Int( wxT("/FakeCheck/Browser"), s_Browser, 0 )));
+	#ifdef __WXMAC__
+		int			browser = 8; // this is a "magic number" and will break if
+								 // more browser choices are added in the interface,
+								 // but there isn't a symbolic name defined
+		wxString	customBrowser = wxT("/usr/bin/open");
+	#else 
+		int			browser = 0;
+		wxString	customBrowser; // left empty
+	#endif
+
+	NewCfgItem(IDC_FCHECK,		(MkCfg_Int( wxT("/FakeCheck/Browser"), s_Browser, browser )));
 	NewCfgItem(IDC_FCHECKTABS,	(new Cfg_Bool( wxT("/FakeCheck/BrowserTab"), s_BrowserTab, true )));
-	NewCfgItem(IDC_FCHECKSELF,	(new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, wxEmptyString )));
+	NewCfgItem(IDC_FCHECKSELF,	(new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, customBrowser )));
 	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 )));
 
 
@@ -1407,6 +1417,9 @@ uint32 CPreferences::CPreferences::GetCatColor(size_t index)
 // Niether Galeon tabs nor epiphany tabs have been tested
 // Konqueror alternatives is (Open on current window, fails if no konq already open):
 //	dcop `dcop konqueror-* | head -n1` konqueror-mainwindow#1 openURL '%s'
+// IMPORTANT: if you add cases to the switches and change the number which
+//			  corresponds to s_CustomBrowser, you must change the default
+//			  set for the Mac in BuildItemList, above.
 wxString CPreferences::GetBrowser()
 {
 	wxString cmd;
