@@ -53,6 +53,11 @@
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 
+#ifdef __WXMSW__
+	#include <winerror.h>
+	#include <shlobj.h>
+#endif
+
 #include "md4.h"
 #include "ed2khash.h"
 #include "alcframe.h"
@@ -318,9 +323,31 @@ AlcFrame::OnBrowseButton (wxCommandEvent & WXUNUSED(event))
 void
 AlcFrame::SetFileToHash()
 {
+#ifdef __WXMSW__
+	wxString browseroot;
+	LPITEMIDLIST pidl;
+	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl);
+	if (SUCCEEDED(hr)) {
+		if (!SHGetPathFromIDList(pidl, wxStringBuffer(browseroot, MAX_PATH))) {
+			browseroot = wxFileName::GetHomeDir();
+		}
+	} else {
+		browseroot = wxFileName::GetHomeDir();
+	}
+	if (pidl) {
+		LPMALLOC pMalloc;
+		SHGetMalloc(&pMalloc);
+		if (pMalloc) {
+			pMalloc->Free(pidl);
+			pMalloc->Release();
+		}
+	}
+#else
+	wxString browseroot = wxFileName::GetHomeDir();
+#endif
   const wxString & filename =
     wxFileSelector (_("Select the file you want to compute the ed2k link"),
-                    wxFileName::GetHomeDir(),wxEmptyString, wxEmptyString, wxT("*.*"),
+                    browseroot, wxEmptyString, wxEmptyString, wxT("*.*"),
                     wxOPEN | wxFILE_MUST_EXIST );
 
   if (!filename.empty ())
