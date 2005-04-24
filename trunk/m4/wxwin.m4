@@ -196,7 +196,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     fi
   else
     AC_MSG_ERROR([
-	You need wxWidgets (http://www.wxwidgets.org) to compile aMule. If you
+	You need wxWidgets (http://www.wxwidgets.org/) to compile aMule. If you
 	have wxWidgets installed, please check that wx-config is in path, and
 	the directory where wxWidgets libraries are installed is in
 	LD_LIBRARY_PATH or equivalent variable. If you have wx-config in a
