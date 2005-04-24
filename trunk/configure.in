@@ -45,6 +45,9 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
+if test x$SYS == xwin32; then
+	AC_PROG_AWK
+fi
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 AC_PROG_RANLIB
@@ -311,7 +314,7 @@ fi
 
 dnl Get flags for windres
 if test x$SYS = xwin32; then
-	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | awk ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
+	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
 else
 	RCFLAGS=""
 fi
@@ -574,13 +577,15 @@ CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
 
 LDFLAGS="$LDFLAGS $PROFILE_FLAGS"
 dnl -lpthread is needed by Debian but FreeBSD < 5 doesnt support it
-AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
-if test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5; then
-	LDFLAGS="$LDFLAGS -pthread"
-	AC_MSG_RESULT(yes)
-else
-	LDFLAGS="$LDFLAGS -lpthread"
-	AC_MSG_RESULT(no)
+if test x$SYS != xwin32; then
+	AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
+	if test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5; then
+		LDFLAGS="$LDFLAGS -pthread"
+		AC_MSG_RESULT(yes)
+	else
+		LDFLAGS="$LDFLAGS -lpthread"
+		AC_MSG_RESULT(no)
+	fi
 fi
 AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
