@@ -323,7 +323,15 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event)) {
 }
 
 void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	// Clean friendslots
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
+	while (index != -1) {
+		CDlgFriend* friend_item = (CDlgFriend*)GetItemData(index);
+		friend_item->hasfriendslot = false;
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
+	}
+	// Now set the proper one
+	index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	#warning CORE/GUI!
 	#ifndef CLIENT_GUI
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);	
