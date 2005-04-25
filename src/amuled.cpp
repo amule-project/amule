@@ -128,7 +128,7 @@ CamuleLocker::CamuleLocker() : wxMutexLocker(theApp.data_mutex)
 
 CamuleLocker::~CamuleLocker()
 {
-	uint msDone = GetTickCount();
+	uint32 msDone = GetTickCount();
 	assert( (msDone - msStart) < 100);
 }
 
@@ -140,7 +140,7 @@ CamuleDaemonApp::CamuleDaemonApp()
 
 int CamuleDaemonApp::OnRun()
 {
-	const uint uLoop = 100;
+	const uint32 uLoop = 100;
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
@@ -153,13 +153,13 @@ int CamuleDaemonApp::OnRun()
 	}
 	
 	// lfroen: this loop is instead core timer.
-	uint msWait = uLoop;
+	uint32 msWait = uLoop;
 	while ( !m_Exit ) {
 		if ( msWait <= uLoop) {
 			wxThread::Sleep(msWait);
 		}
 		// lock data after sleep
-		uint msRun = GetTickCount();
+		uint32 msRun = GetTickCount();
 		CALL_APP_DATA_LOCK;
 
 		OnCoreTimer(*((wxEvent *)0));
