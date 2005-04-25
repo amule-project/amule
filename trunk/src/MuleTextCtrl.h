@@ -60,6 +60,12 @@ public:
 	 */
 	virtual ~CMuleTextCtrl() {};
 
+#ifdef __WXMAC__
+	/**
+	 * Hack to fix fonts getting reset when Clear() is called.
+	 */
+	virtual void Clear();
+#endif
 
 protected:
 	/**
