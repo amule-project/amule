@@ -135,3 +135,19 @@ void CMuleTextCtrl::OnClear( wxCommandEvent& WXUNUSED(evt) )
 	Clear();
 }
 
+
+#ifdef __WXMAC__
+#warning Remove this when wxMAC has been fixed.
+// https://sourceforge.net/tracker/?func=detail&atid=109863&aid=1189859&group_id=9863
+void CMuleTextCtrl::Clear()
+{
+	if (IsMultiLine()) {
+		wxFont font = GetFont();
+		wxTextCtrl::Clear();
+		SetFont(font);
+	} else {
+		wxTextCtrl::Clear();
+	}
+}
+#endif
+
