@@ -52,11 +52,7 @@ MD5Sum::MD5Sum()
 
 MD5Sum::MD5Sum(const wxString& sSource)
 {
-	if (!sSource.IsEmpty()) {
-		Calculate(sSource);
-	} else {
-		m_sHash = wxT("00000000000000000000000000000000");
-	}
+	Calculate(sSource);
 }
 
 wxString MD5Sum::Calculate(const wxString& sSource)
