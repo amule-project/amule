@@ -249,7 +249,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		SendPacket(packet, true, sender);
 	} else if (sender->GetConnectionState() == CS_CONNECTED){
 		theApp.statistics->AddReconnect();
-		theApp.statistics->SetServerConnectTime(GetTickCount64());
+		theApp.statistics->SetServerConnectTime(GetTickCount());
 		connected = true;
 		AddLogLineM(true, CFormat( _("Connection established on: %s") ) % sender->cur_server->GetListName());
 		connectedsocket = sender;

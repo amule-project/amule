@@ -30,6 +30,10 @@
 #pragma interface "amule.h"
 #endif
 
+#ifdef __WXMSW__
+#include <wx/msw/winundef.h>
+#endif
+
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
@@ -453,7 +457,7 @@ public:
 
 
 class CamuleLocker : public wxMutexLocker {
-	uint msStart;
+	uint32 msStart;
 public:
 	CamuleLocker();
 	~CamuleLocker();

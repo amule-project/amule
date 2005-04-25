@@ -148,7 +148,7 @@ IMPLEMENT_APP(CamuleGuiApp)
 
 #endif // CLIENT_GUI
 
-
+#ifndef __WXMSW__
 // Initialization of the static MyTimer member variables.
 uint32 MyTimer::tic32 = 0;
 uint64 MyTimer::tic64 = 0;
@@ -156,13 +156,15 @@ uint64 MyTimer::tic64 = 0;
 
 // Global timer. Used to cache GetTickCount() results for better performance.
 class MyTimer* mytimer = NULL;
-
+#endif
 
 CamuleGuiBase::CamuleGuiBase()
 {
+#ifndef __WXMSW__
 	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
 	// Kry - I love to init the vars on init, even before timer.
 	mytimer = new MyTimer();
+#endif
 }
 
 
@@ -320,10 +322,11 @@ void CamuleGuiApp::ShutDown()
 {
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
-	if (mytimer) {
-		delete mytimer;
-		mytimer = NULL;
-	}
+
+#ifndef __WXMSW__
+	delete mytimer;
+	mytimer = NULL;
+#endif
 }
 
 

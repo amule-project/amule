@@ -36,7 +36,7 @@
 
 #ifdef __WXMSW__
 #include <winbase.h>
-#endif
+#else
 
 #if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
 /**
@@ -47,9 +47,7 @@
  * is being called exactly 50 times per second at any case, no more no less.
  */
 	#include <wx/timer.h>
-	#ifndef __WXMSW__ // already defined in winbase.h
 	#define GetTickCount() MyTimer::GetTickCountNow()
-	#endif
 	#define GetTickCount64() MyTimer::GetTickCountNow64()
 	class MyTimer : public wxTimer 
 	{
@@ -91,6 +89,8 @@
 		gettimeofday(&aika,NULL);
 		return aika.tv_sec * 1000 + aika.tv_usec / 1000;
 	}
+
+#endif
 
 #endif
 

@@ -1741,7 +1741,14 @@ struct CompileTimeAssert;
 template<>
 struct CompileTimeAssert<true> {};
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#define CRYPTOPP_COMPILE_ASSERT( x )
+#define CRYPTOPP_COMPILE_ASSERT_GLOBAL(assertion)
+#define CRYPTOPP_COMPILE_ASSERT_INSTANCE(assertion, instance)
+#define CRYPTOPP_ASSERT_JOIN(X, Y)
+#define CRYPTOPP_DO_ASSERT_JOIN(X, Y)
 
+#else
 #define CRYPTOPP_COMPILE_ASSERT( x ) \
     { CompileTimeAssert<((x) != 0)> ERROR; (void)ERROR; } 
 
@@ -1754,6 +1761,7 @@ struct CompileTimeAssert<true> {};
 #endif
 #define CRYPTOPP_ASSERT_JOIN(X, Y) CRYPTOPP_DO_ASSERT_JOIN(X, Y)
 #define CRYPTOPP_DO_ASSERT_JOIN(X, Y) X##Y
+#endif
 
 // ************** misc classes ***************
 
