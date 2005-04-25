@@ -272,104 +272,106 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			m_port = 4712;
 		}
 		pass_plain = ::wxGetPasswordFromUser(
-			wxT("Enter password for mule connection (OK if no pass defined)"), 
+			wxT("Enter password for mule connection"),
 			wxT("Enter Password"));
 #else  // wxUse_GUI
 		pass_plain = char2unicode(
-			getpass("Enter password for mule connection (return if no pass defined): "));
+			getpass("Enter password for mule connection: "));
 #endif // wxUse_GUI
 		m_password.Decode(MD5Sum(pass_plain).GetHash());
 	}
 	
-	// Create the packet
-	CECPacket packet(EC_OP_AUTH_REQ);
-	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, ProgName));
-	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, ProgVersion));
-	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
-
 	if (!m_password.IsEmpty()) {
+
+		// Create the packet
+		CECPacket packet(EC_OP_AUTH_REQ);
+		packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, ProgName));
+		packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, ProgVersion));
+		packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, m_password));
-	}
 
 #ifdef CVSDATE
-	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
+		packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
 #endif
 
-	// Clear passwords
-	pass_plain		= wxT("01234567890123456789");
+		// Clear passwords
+		pass_plain		= wxT("01234567890123456789");
 
-	// Create the socket
-	Show(_("\nCreating client...\n"));
-	m_ECClient = new ECSocket();
+		// Create the socket
+		Show(_("\nCreating client...\n"));
+		m_ECClient = new ECSocket();
 
-	Show(_("Now, doing connection....\n"));
-	wxIPV4address addr;
-	addr.Hostname(m_host);
-	addr.Service(m_port);
+		Show(_("Now, doing connection....\n"));
+		wxIPV4address addr;
+		addr.Hostname(m_host);
+		addr.Service(m_port);
 
-	Show( CFormat(_("Using host '%s' port: %d\n")) % addr.Hostname() % addr.Service());
-	Show(_("Trying to connect (timeout = 10 sec)...\n"));
-  	m_ECClient->Connect(addr, false);
-	m_ECClient->WaitOnConnect(10);
+		Show( CFormat(_("Using host '%s' port: %d\n")) % addr.Hostname() % addr.Service());
+		Show(_("Trying to connect (timeout = 10 sec)...\n"));
+	  	m_ECClient->Connect(addr, false);
+		m_ECClient->WaitOnConnect(10);
 
-	if (!m_ECClient->IsConnected()) {
-		// no connection => close gracefully
-		Show(_("Connection Failed. Unable to connect to the specified host\n"));
-	} else {
-		// Authenticate ourselves
-		bool success = m_ECClient->WritePacket(&packet);
-		CECPacket *reply = NULL;
-		if (success) {
-		    reply = m_ECClient->ReadPacket();
-		    success = (reply != NULL);
-		}
-		if (success) {
-		    if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
-			if (reply->GetTagCount() > 0) {
-			    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
-			    if (reason != NULL) {
-				Show(CFormat(_("ExternalConn: Access denied because: %s\n")) % wxGetTranslation(reason->GetStringData()));
+		if (!m_ECClient->IsConnected()) {
+			// no connection => close gracefully
+			Show(_("Connection Failed. Unable to connect to the specified host\n"));
+		} else {
+			// Authenticate ourselves
+			bool success = m_ECClient->WritePacket(&packet);
+			CECPacket *reply = NULL;
+			if (success) {
+			    reply = m_ECClient->ReadPacket();
+			    success = (reply != NULL);
+			}
+			if (success) {
+			    if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
+				if (reply->GetTagCount() > 0) {
+				    CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
+				    if (reason != NULL) {
+					Show(CFormat(_("ExternalConn: Access denied because: %s\n")) % wxGetTranslation(reason->GetStringData()));
+				    } else {
+					Show(_("ExternalConn: Access denied.\n"));
+				    }
+				} else {
+				    Show(_("ExternalConn: Access denied.\n"));
+				}
+			    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+				Show(_("ExternalConn: Bad reply from server. Connection closed.\n"));
 			    } else {
-				Show(_("ExternalConn: Access denied.\n"));
+				m_isConnected = true;
+				if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
+					Show(CFormat(_("Succeeded! Connection established to aMule %s\n")) % reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData());
+				} else {
+					Show(_("Succeeded! Connection established.\n"));
+				}
+				ShowGreet();
+				Pre_Shell();
+#if wxUSE_GUI
+				// Do nothing, the shell is in another place.
+#else
+				if (m_KeepQuiet) {
+					while(true) {
+						pause();
+					}
+				} else {
+					TextShell(ProgName, commands);
+				}
+				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
+#endif
+				Post_Shell();
 			    }
 			} else {
-			    Show(_("ExternalConn: Access denied.\n"));
+			    Show(_("A socket error occured during authentication. Exiting.\n"));
 			}
-		    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-			Show(_("ExternalConn: Bad reply from server. Connection closed.\n"));
-		    } else {
-			m_isConnected = true;
-			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-				Show(CFormat(_("Succeeded! Connection established to aMule %s\n")) % reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData());
-			} else {
-				Show(_("Succeeded! Connection established.\n"));
-			}
-			ShowGreet();
-			Pre_Shell();
-#if wxUSE_GUI
-			// Do nothing, the shell is in another place.
-#else
-			if (m_KeepQuiet) {
-				while(true) {
-					pause();
-				}
-			} else {
-				TextShell(ProgName, commands);
-			}
-			Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
-#endif
-			Post_Shell();
-		    }
-		} else {
-		    Show(_("A socket error occured during authentication. Exiting.\n"));
-		}
 
-		delete reply;
+			delete reply;
 #if wxUSE_GUI
-		// Destroy will be called elsewhere in gui.
+			// Destroy will be called elsewhere in gui.
 #else
-		m_ECClient->Destroy();
+			m_ECClient->Destroy();
 #endif
+		}
+	} else {
+		Show(_("Cannot connect with an empty password.\nYou must specify a password either in config file\nor on command-line, or enter one when asked.\n\nExiting...\n"));
 	}
 }
 
