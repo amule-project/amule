@@ -476,7 +476,11 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	wxString pass_plain;
 	if (parser.Found(wxT("password"), &pass_plain)) {
-		m_password.Decode(MD5Sum(pass_plain).GetHash());
+		if (!pass_plain.IsEmpty()) {
+			m_password.Decode(MD5Sum(pass_plain).GetHash());
+		} else {
+			m_password.Clear();
+		}
 	}
 
 	if (parser.Found(wxT("write-config"))) {
