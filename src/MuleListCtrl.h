@@ -31,6 +31,7 @@
 #pragma interface "MuleListCtrl.h"
 #endif
 
+#include "listctrl.h"
 
 #include <vector>
 
@@ -55,22 +56,13 @@ const int SORT_OFFSET_ALT_DEC = 3000;
  *  - Helper function for inserting items pre-sorted.
  *  - Loading and saving of column properties.
  */
-#include <wx/version.h>
-#ifdef __WXMSW__
-	#define wxLC_OWNERDRAW	0
-	#include <wx/listctrl.h>
-	#include <wx/msw/imaglist.h>
-	class CMuleListCtrl : public wxListCtrl
-#else
-	#include "listctrl.h"
-	class CMuleListCtrl : public MuleExtern::wxListCtrl
-#endif
+class CMuleListCtrl : public MuleExtern::wxGenericListCtrl
 {
 public:
 	/**
 	 * Constructor.
 	 * 
-	 * @see wxListCtrl::wxListCtrl for documentation of parameters.
+	 * @see wxGenericListCtrl::wxListCtrl for documentation of parameters.
 	 */
 	 CMuleListCtrl(
 	            wxWindow *parent,

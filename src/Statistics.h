@@ -121,7 +121,7 @@ public:
 	void UpdateReceivedBytes(int32 bytesToAdd) {
 		if (!stat_transferStarttime) {
 			// Saves the time where transfers were started and calucated the time before
-			stat_transferStarttime = GetTickCount();
+			stat_transferStarttime = GetTickCount64();
 			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
 		}
 		stat_sessionReceivedBytes += bytesToAdd;
@@ -132,7 +132,7 @@ public:
 	void UpdateSentBytes(int32 bytesToAdd) {
 		if (!stat_transferStarttime) {
 			// Saves the time where transfers were started and calucated the time before
-			stat_transferStarttime = GetTickCount();
+			stat_transferStarttime = GetTickCount64();
 			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
 		}
 		stat_sessionSentBytes += bytesToAdd;
@@ -140,7 +140,7 @@ public:
 
 	// Returns the uptime in millie-seconds
 	uint64 GetUptimeMsecs() {
-		return GetTickCount() - Start_time;
+		return GetTickCount64() - Start_time;
 	}
 
 
@@ -272,12 +272,12 @@ private:
 
 	// Returns the amount of time where transfers have been going on
 	uint32 GetTransferSecs() {
-		return ( GetTickCount() - stat_transferStarttime ) / 1000;
+		return ( GetTickCount64() - stat_transferStarttime ) / 1000;
 	}
 
 	// Returns the amount of time where we've been connected to a server
 	uint32 GetServerSecs() {
-		return ( GetTickCount() - stat_serverConnectTime) / 1000;
+		return ( GetTickCount64() - stat_serverConnectTime) / 1000;
 	}
 	
 	

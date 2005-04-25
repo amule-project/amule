@@ -17,12 +17,6 @@
 
 #include <wx/defs.h>
 #include <wx/object.h>
-#ifdef __WXMAC__
-#include <wx/imaglist.h>
-#else
-#include <wx/generic/imaglist.h>
-#endif
-
 #include <wx/control.h>
 #include <wx/timer.h>
 #include <wx/dcclient.h>
@@ -43,12 +37,8 @@ class wxDropTarget;
 class wxListItem;
 class wxListEvent;
 
-#if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
-class wxListCtrl;
-#define wxImageListType wxImageList
-#else
-#define wxImageListType wxGenericImageList
-#endif
+class wxImageList;
+typedef wxImageList wxImageListType;
 
 namespace MuleExtern
 {

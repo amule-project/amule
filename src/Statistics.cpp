@@ -53,7 +53,7 @@
 
 CStatistics::CStatistics() {
 
-	Start_time = GetTickCount();
+	Start_time = GetTickCount64();
 	
 	// Init graphs
 	

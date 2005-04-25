@@ -36,6 +36,29 @@
 
 #ifdef __WXMSW__
 #include <winbase.h>
+
+/**
+ * Returns the tickcount in 64bits.
+ */
+inline uint64 GetTickCount64()
+{
+	// The base value, can store more than 49 days worth of ms.
+	static uint64 tick = 0;
+	// The current tickcount, may have overflown any number of times.
+	static uint32 lastTick = 0;
+
+	uint32 curTick = GetTickCount();
+
+	// Check for overflow
+	if ( curTick < lastTick ) {
+		// Change the base value to contain the overflown value.
+		tick += (uint32)-1;
+	}
+		
+	lastTick = curTick;
+	return tick + lastTick;
+}
+
 #else
 
 #if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
