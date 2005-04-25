@@ -430,8 +430,9 @@ yes)	DEBUG_FLAGS="-W -Wall -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0"
 esac
 
 # wx version dependent stuff
-case "$WXGTK_VERSION" in
-2.4.2)
+WX_VERSION_STR="${WX_VERSION_MAJOR}.${WX_VERSION_MINOR}.${WX_VERSION_RELEASE}"
+case "$WX_VERSION_STR" in
+2.4.*)
 	USE_24GSOCKET="yes"
 	if test x$AMULE_DAEMON = xyes; then
 	 NEEDSWX25="yes"
