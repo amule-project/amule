@@ -62,7 +62,7 @@
     #include <wx/mac/private.h>
 #endif
 
-
+#include <wx/imaglist.h>
 
 // NOTE: If using the wxListBox visual attributes works everywhere then this can
 // be removed, as well as the #else case below.
@@ -2692,7 +2692,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
 				dbDC.SelectObject( buffer );
 
-				((wxListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );
+				((wxGenericListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );
 
 				dc.Blit( rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0 );
 			

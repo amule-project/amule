@@ -34,6 +34,7 @@
 #endif
 #include <wx/fileconf.h>	// Needed for wxConfig
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
+#include <wx/imaglist.h>
 
 #include "MuleListCtrl.h"	// Interface declarations
 #include "StringFunctions.h"	// Needed for StrToLong
@@ -55,11 +56,7 @@
 #endif
 
 
-#ifdef __WXMSW__
-BEGIN_EVENT_TABLE(CMuleListCtrl, wxListCtrl)
-#else
-BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxListCtrl)
-#endif
+BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
 	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
@@ -68,18 +65,14 @@ END_EVENT_TABLE()
 
 
 CMuleListCtrl::CMuleListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
-#if defined(__WXMSW__) 
-	: wxListCtrl( parent, winid, pos, size, style, validator, name )
-#else
-	: MuleExtern::wxListCtrl( parent, winid, pos, size, style, validator, name )
-#endif
+	: MuleExtern::wxGenericListCtrl( parent, winid, pos, size, style, validator, name )
 {
 	m_sort_func = NULL;
 	m_sort_asc 	= true;
 	m_sort_alt	= false;
 	m_sort_column = 0;
 
-	wxImageList* imglist = new wxImageList( 16, 16 );
+	wxImageListType* imglist = new wxImageListType( 16, 16 );
 	imglist->Add( wxBitmap(sort_dn_xpm) );
 	imglist->Add( wxBitmap(sort_up_xpm) );
 	imglist->Add( wxBitmap(sort_dnx2_xpm) );
@@ -472,3 +465,4 @@ long CMuleListCtrl::CheckSelection(wxMouseEvent &event)
 	}
 	return item_hit;
 }
+
