@@ -163,10 +163,10 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
-		EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
-		
-//		EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
-		
+	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
+
+//	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
+
 END_EVENT_TABLE()
 
 
@@ -279,6 +279,8 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	glob_prefs = new CPreferencesRem(connect);
 	
+	otherfunctions::InitCustomLanguages();
+	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(thePrefs::GetLanguageID()));
 
 	CEConnectDlg *dialog = new CEConnectDlg;
 	do {
