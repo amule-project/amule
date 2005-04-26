@@ -423,6 +423,9 @@ public:
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 	
 	DECLARE_EVENT_TABLE()
+
+protected:
+	wxLocale	m_locale;
 };
 
 DECLARE_APP(CamuleRemoteGuiApp)
