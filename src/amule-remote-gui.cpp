@@ -831,6 +831,12 @@ CRemoteConnect::CRemoteConnect()
 bool CRemoteConnect::Connect(const wxString &host, int port,
 	const wxString &WXUNUSED(login), const wxString &pass)
 {
+	// don't even try to connect without password
+	if (pass.IsEmpty() || pass == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(pass).IsEmpty()) {
+		AddLogLineM(true, _("You must specify a password."));
+		return false;
+	}
+
 	wxIPV4address addr;
 
 	addr.Hostname(host);
@@ -849,7 +855,6 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
     packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
     packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
     packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
-
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(pass)));
 
 #ifdef CVSDATE
