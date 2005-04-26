@@ -197,6 +197,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	}
 	downloadqueue->UpdateStats(stats);
 	uploadqueue->UpdateStats(stats);
+	clientlist->UpdateStats(stats);
 	//statistics->UpdateStats(stats);
 	
 	delete stats;
@@ -833,7 +834,7 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 {
 	// don't even try to connect without password
 	if (pass.IsEmpty() || pass == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(pass).IsEmpty()) {
-		AddLogLineM(true, _("You must specify a password."));
+		wxMessageBox(_("You must specify a non-empty password."), _("Error"));
 		return false;
 	}
 
@@ -1283,6 +1284,11 @@ CClientListRem::CClientListRem(CRemoteConnect *conn)
 	m_conn = conn;
 	// FIXME: Actual value here 
 	m_banned_count = 0;
+}
+
+void CClientListRem::UpdateStats(CEC_Stats_Tag *stats)
+{
+	m_banned_count = stats->BannedCount();
 }
 
 void CClientListRem::FilterQueues()

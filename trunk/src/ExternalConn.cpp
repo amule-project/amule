@@ -329,6 +329,9 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 	response->AddTag(CECTag(EC_TAG_STATS_UL_QUEUE_LEN,
 		(uint32)theApp.uploadqueue->GetWaitingUserCount()));
 
+	response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT,
+		(uint32)theApp.clientlist->GetBannedCount()));
+
 	return response;
 }
 
