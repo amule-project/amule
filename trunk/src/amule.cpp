@@ -1468,7 +1468,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 
 		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
-		
+
+		// Write changes to file
+		cfg->Flush();
+
 		// Save Shared Files data
 		knownfiles->Save();
 	}
