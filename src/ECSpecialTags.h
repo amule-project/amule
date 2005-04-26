@@ -173,6 +173,8 @@ class CEC_Stats_Tag : public CECTag {
 		
 		uint32 ClientsInQueue() { return GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data(); }
 		uint32 UsersOnServer() { return GetTagByNameSafe(EC_TAG_STATS_USERS_ON_SERVER)->GetInt32Data(); }
+
+		uint32 BannedCount() { return GetTagByNameSafe(EC_TAG_STATS_BANNED_COUNT)->GetInt32Data(); }
 };
 
 class CEC_PartFile_Tag : public CECTag {

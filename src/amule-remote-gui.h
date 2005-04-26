@@ -519,6 +519,7 @@ class CClientListRem {
 		const std::multimap<uint32, CUpDownClient*>& GetClientList() { return m_client_list; }
 		uint32 GetBannedCount() { return m_banned_count; }
 		
+		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// Actions
 		//

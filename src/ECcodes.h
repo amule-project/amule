@@ -732,6 +732,12 @@ enum {
 	/*!
 	 * \brief Number of users in upload queue
 	 */
+
+	EC_TAG_STATS_BANNED_COUNT,
+	/*!
+	 * \brief Number of banned users
+	 */
+
 	EC_TAG_STATS_UL_QUEUE_LEN,
 	
 	/*!
