@@ -99,7 +99,7 @@ public:
 		// attach to (already opened) file
 	CFile(int fd) { m_fd = fd; m_error = FALSE; }
 
-	virtual const wxString& GetFilePath() const {return fFilePath;}; 
+	virtual const wxString& GetFilePath() const {return m_filePath;}; 
 
 	// open/close
 		// create a new file (with the default value of bOverwrite, it will fail if
@@ -161,7 +161,7 @@ private:
 
 	mutable int m_fd; // file descriptor or INVALID_FD if not opened
 	mutable bool m_error; // error memory
-	wxString fFilePath;
+	wxString m_filePath;
 };
 
 bool UTF8_MoveFile(const wxString& from, const wxString& to); // Move file with safe UTF8 name.

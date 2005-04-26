@@ -49,6 +49,7 @@
 #include "StringFunctions.h" // unicode2char
 #include "Preferences.h"
 #include "Logger.h"
+#include "Format.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
@@ -180,43 +181,6 @@ enum {
 #include <wx/filename.h>
 #include <wx/filefn.h>
 
-//#define FILE_TRACKER
-
-#ifdef FILE_TRACKER
-	#ifdef __LINUX__ // File tracker is only for linux, sorry
-	
-	#include <wx/event.h>
-	#include "GuiEvents.h"
-	#include <unistd.h>       
-
-	void get_caller(int value) {
-		void *bt_array[4];	
-		char **bt_strings;
-		int num_entries;
-	
-		if ((num_entries = backtrace(bt_array, 6)) < 0) {
-			AddDebugLogLineM( true, logCFile, wxT("* Could not generate backtrace") );
-		} else {
-			if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-				AddDebugLogLineM( true, logCFile, wxT("* Could not get symbol names for backtrace") );
-			}  else {
-				wxString wherefrom = bt_strings[value];
-				int starter = wherefrom.Find('(');
-				int ender = wherefrom.Find(')');
-				wherefrom = wherefrom.Mid(starter, ender-starter+1);
-				AddDebugLogLineM( false, logCFile, wxT("Called From: ") + wherefrom );
-			}
-		}	
-	#else // __LINUX__
-		// Dummy function for non-linux
-		void get_caller(int value) {
-			
-		}
-	#endif // __LINUX__
-}
-#endif // FILE_TRACKER
-
-
 // ============================================================================
 // implementation of CFile
 // ============================================================================
@@ -260,14 +224,12 @@ bool CFile::Access(const wxChar *name, OpenMode mode)
 // ctors
 CFile::CFile(const wxString& sFileName, OpenMode mode)
 {
+	wxASSERT(!sFileName.IsEmpty());
+
 	m_fd = fd_invalid;
 	m_error = false;
 	
-#ifdef FILE_TRACKER
-	Open(sFileName, mode, 12345);
-#else
 	Open(sFileName, mode);
-#endif
 }
 
 //
@@ -281,10 +243,12 @@ CFile::CFile(const wxString& sFileName, OpenMode mode)
 // 
 bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 {
+	wxASSERT(!sFileName.IsEmpty());
+
 	if ( accessMode == -1 ) {
 		accessMode = thePrefs::GetFilePermissions();
 	}
-	fFilePath = sFileName;
+	m_filePath = sFileName;
 	if (m_fd != fd_invalid) {
 		Close();	
 	}
@@ -303,16 +267,20 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 		m_fd = creat(unicode2UTF8(sFileName), accessMode);
 	}
 	
-#ifdef FILE_TRACKER
-	AddDebugLogLineM( false, logCFile, wxString( wxT("Created file ") ) << fFilePath << wxT(" with file descriptor " << m_fd ) );
-	get_caller(2);
-#endif
 	
 	if (m_fd == fd_invalid) {
-		wxLogSysError( wxT("Can't create file '") + sFileName + wxT("'") );
+		AddDebugLogLineM( true, logCFile, 
+			CFormat( wxT("Failed to created file '%s'!") )
+				% m_filePath
+				% m_fd );
+		
 		return false;
 	} else {
-		//Attach(m_fd);
+		AddDebugLogLineM( false, logCFile, 
+			CFormat( wxT("Created file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );
+		
 		return true;
 	}
 }
@@ -328,6 +296,8 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 //
 bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 {
+	wxASSERT(!sFileName.IsEmpty());
+	
 	if ( accessMode == -1 ) {
 		accessMode = thePrefs::GetFilePermissions();
 	}
@@ -335,16 +305,8 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 #ifdef __linux__
 	flags |=  O_LARGEFILE;
 #endif
-	fFilePath = sFileName;
+	m_filePath = sFileName;
 
-#ifdef FILE_TRACKER
-	bool fromConstructor = false;
-	if (accessMode == 12345) {
-		fromConstructor = true;
-		accessMode = wxS_DEFAULT;
-	} 
-#endif
-    
 	switch ( mode ) {
 	case read:
 		flags |= O_RDONLY;
@@ -387,27 +349,17 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 		m_fd = open(unicode2UTF8(sFileName), flags ACCESS(accessMode));
 	}
       
-#ifdef FILE_TRACKER
-	AddDebugLogLineM( false, logCFile, 
-		wxString(wxT("Opened file ")) << fFilePath <<
-		wxT(" with file descriptor ") << m_fd );
-    	if (fromConstructor) {
-		get_caller(3);    
-	} else {
-		get_caller(3);    
-	}
-#endif
     
 	if (m_fd == fd_invalid) {
-		AddDebugLogLineM( true, logCFile, wxT("Can't open file '") + sFileName + wxT("'") );
-		/*
-			get_caller(4);    	    
-			get_caller(3);    
-			get_caller(2);    
-		*/
+		AddDebugLogLineM( true, logCFile, wxT("Failed to open file '") + sFileName + wxT("'!") );
+		
 		return false;
 	} else {
-		//Attach(m_fd);
+		AddDebugLogLineM( false, logCFile,
+			CFormat( wxT("Opened file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );
+		
 		return true;
 	}    
 }
@@ -417,23 +369,27 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 // 
 bool CFile::Close() 
 {
-#ifdef FILE_TRACKER
-	AddDebugLogLineM( false, logCFile,
-		wxString(wxT("Closing file ")) << fFilePath <<
-		wxT(" with file descriptor ") << m_fd );
-	get_caller(2);
-	wxASSERT(!fFilePath.IsEmpty());
-#endif
+	wxASSERT(!m_filePath.IsEmpty());
+
 	if ( IsOpened() ) {
 		if (close(m_fd) == -1) {
-			wxLogSysError( wxT("Can't close file descriptor %d"), m_fd);
+			AddDebugLogLineM( true, logCFile,
+				CFormat( wxT("Failed to close file '%s' with file descriptor '%d'.") )
+					% m_filePath
+					% m_fd );
+			
 			m_fd = fd_invalid;
 			return false;
 		} else {
+			AddDebugLogLineM( false, logCFile,
+				CFormat( wxT("Closed file '%s' with file descriptor '%d'.") )
+					% m_filePath
+					% m_fd );
+			
 			m_fd = fd_invalid;
 		}
 	} else {
-		wxASSERT(0);
+		wxASSERT(false);
 	}
 	
 	return true;
@@ -454,7 +410,11 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 	off_t iRc = ::read(m_fd, pBuf, nCount);
 #endif
 	if ( iRc == -1 ) {
-		wxLogSysError( wxT("Can't read from file descriptor %d"), m_fd);
+		AddDebugLogLineM( true, logCFile,
+			CFormat( wxT("Can't read from file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );
+		
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
@@ -477,7 +437,11 @@ size_t CFile::Write(const void *pBuf, size_t nCount)
 	size_t iRc = ::write(m_fd, pBuf, nCount);
 #endif
 	if ( ((int)iRc) == -1 ) {
-		wxLogSysError( wxT("can't write to file descriptor %d"), m_fd);
+		AddDebugLogLineM( true, logCFile,
+			CFormat( wxT("Can't write to file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );		
+		
 		m_error = true;
 		return (size_t)0;
 	} else {
@@ -494,7 +458,11 @@ bool CFile::Flush()
 #else
 	        if ( fsync(m_fd) == -1 ) {
 #endif
-			wxLogSysError( wxT("Can't flush file descriptor %d"), m_fd);
+			AddDebugLogLineM( true, logCFile,
+				CFormat( wxT("Can't flush file '%s' with file descriptor '%d'.") )
+					% m_filePath
+					% m_fd );
+
 			m_error = true;			
 			return false;
 		}
@@ -548,7 +516,11 @@ off_t CFile::GetPosition() const
 	
 	off_t iRc = wxTell(m_fd);
 	if (iRc == -1) {
-		wxLogSysError( wxT("can't get seek position on file descriptor %d"), m_fd);
+		AddDebugLogLineM( true, logCFile,
+			CFormat( wxT("Can't get seek position for file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );		
+		
 		return wxInvalidOffset;
 	} else {
 		return (off_t)iRc;
@@ -579,7 +551,11 @@ off_t CFile::Length() const
 #endif  // VC++
 	
 	if ( iRc == -1 ) {
-		wxLogSysError( wxT("can't find length of file on file descriptor %d"), m_fd);
+		AddDebugLogLineM( true, logCFile,
+			CFormat( wxT("Can't find length of file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );		
+		
 		return wxInvalidOffset;
 	} else {
 		return (off_t)iRc;
@@ -621,7 +597,10 @@ bool CFile::Eof() const
 		return false;
 	
 	case -1:
-		wxLogSysError( wxT("can't determine if the end of file is reached on descriptor %d"), m_fd);
+		AddDebugLogLineM( true, logCFile,
+			CFormat( wxT("Can't determine if the end of file is reached for file '%s' with file descriptor '%d'.") )
+				% m_filePath
+				% m_fd );	
 		break;
 	
 	default:
