@@ -541,7 +541,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	
 	// statistic
 	uint32 tran;
-	tran=statistic.alltimetransferred;
+	tran=statistic.alltimetransferred & 0xFFFFFFFF;
 	CTag attag1(FT_ATTRANSFERED, tran);
 	attag1.WriteTagToFile(file);
 	

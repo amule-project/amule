@@ -597,6 +597,26 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						}
 						break;
 					}
+					case FT_ATTRANSFERED:{
+						wxASSERT( newtag.IsInt() );
+						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
+						break;
+					}
+					case FT_ATTRANSFEREDHI:{
+						wxASSERT( newtag.IsInt() );
+						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
+						break;
+					}
+					case FT_ATREQUESTED:{
+						wxASSERT( newtag.IsInt() );
+						statistic.SetAllTimeRequests(newtag.GetInt());
+						break;
+					}
+					case FT_ATACCEPTED:{
+						wxASSERT( newtag.IsInt() );
+						statistic.SetAllTimeAccepts(newtag.GetInt());
+						break;
+					}
 					default: {
 						// Start Changes by Slugfiller for better exception handling
 						if (	(!newtag.GetNameID()) &&
@@ -852,7 +872,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.WriteHash16(hashlist[x]);
 		}
 		// tags		
-		#define FIXED_TAGS 10
+		#define FIXED_TAGS 14
 		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(gaplist.GetCount()*2);
 		if (corrupted_list.GetHeadPosition()) {			
 			++tagcount;
@@ -897,6 +917,14 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 	
 		CTag( FT_CATEGORY, 		m_category		).WriteTagToFile( &file ); 	// 10
+		
+		CTag( FT_ATTRANSFERED,	statistic.GetAllTimeTransfered() & 0xFFFFFFFF	).WriteTagToFile( &file );	// 11
+		
+		CTag( FT_ATTRANSFEREDHI,	statistic.GetAllTimeTransfered() >>32		).WriteTagToFile( &file );	// 12
+		
+		CTag( FT_ATREQUESTED,	statistic.GetAllTimeRequests()		).WriteTagToFile( &file );	// 13
+		
+		CTag( FT_ATACCEPTED,	statistic.GetAllTimeAccepts()		).WriteTagToFile( &file );	// 14
 
 		// currupt part infos
 		POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
