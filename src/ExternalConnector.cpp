@@ -361,7 +361,11 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 #else
 				if (m_KeepQuiet) {
 					while(true) {
+						#ifndef __WXMSW__
 						pause();
+						#else
+						wxSleep(10);
+						#endif
 					}
 				} else {
 					TextShell(ProgName, commands);
