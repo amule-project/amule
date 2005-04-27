@@ -152,6 +152,9 @@ public:
 		}
 	}
 
+	// This is to avoid wxStat
+	static int Stat( const wxString& file_name, wxStructStat *buf);
+	
 private:
 	// copy ctor and assignment operator are private because
 	// it doesn't make sense to copy files this way:
@@ -192,5 +195,6 @@ private:
 	wxString FileMask;
 };
 	
+bool CheckDirExists(const wxString& dir);
 
 #endif // CFILE_H

@@ -73,20 +73,6 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 CSharedFileList::~CSharedFileList(){
 }
 
-#ifndef __WXMSW__
-static int wxStat( const wxChar *file_name, wxStructStat *buf, wxMBConv &wxConv )
-{
-	return stat( wxConv.cWX2MB( file_name ), buf );
-}
-
-static bool wxDirExists(const wxChar *pszPathName, wxMBConv &wxConv)
-{
-	wxString strPath(pszPathName);
-	wxStructStat st;
-	return wxStat(strPath.c_str(), &st, wxConv) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR);
-}
-#endif /* ! __WXMSW__ */
-
 void CSharedFileList::FindSharedFiles() {
 	/* Abort loading if we are shutting down. */
 	if(!theApp.IsOnShutDown()) {
@@ -128,12 +114,7 @@ void CSharedFileList::FindSharedFiles() {
 		// the second call makes sure we are able to read an extended
 		// ANSI chars directory name.
 		if(	!wxFileName::DirExists(fileName)
-#ifndef __WXMSW__
-
-			&& !wxDirExists(fileName, aMuleConv)
-#else
-#warning Compilation fix only, need to be reviewed
-#endif
+			&& !CheckDirExists(fileName)
 			) {
 			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		} else {

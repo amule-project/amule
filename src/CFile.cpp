@@ -610,6 +610,24 @@ bool CFile::Eof() const
 	return true;
 }
 
+int CFile::Stat( const wxString& file_name, wxStructStat *buf)
+{
+
+	Unicode2CharBuf tmpFile(unicode2char(file_name));
+	
+	int stat_error = -1;
+	
+	if (tmpFile) {
+		stat_error = stat(tmpFile, buf);
+	}
+	
+	if (stat_error) {
+		stat_error = stat(unicode2UTF8(file_name), buf);
+	}
+
+	return stat_error;
+}
+
 //
 // When moving file, first try an ANSI move, only then try UTF-8.
 // 
@@ -842,13 +860,19 @@ wxString  CDirIterator::GetNextFile() {
 
 // First try an ANSI name, only then try UTF-8.
 time_t GetLastModificationTime(const wxString& file) {
-	struct stat buf;
-	Unicode2CharBuf tmpFile(unicode2char(file));
-	if (tmpFile) {
-		stat(tmpFile, &buf);
+	wxStructStat buf;
+		
+	int stat_error = CFile::Stat(file, &buf);
+	
+	if (stat_error) {
+		return 0;
 	} else {
-		stat(unicode2UTF8(file), &buf);
+		return buf.st_mtime;
 	}
+}
 
-	return buf.st_mtime;
+bool CheckDirExists(const wxString& dir)
+{
+	wxStructStat st;
+	return (CFile::Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
 }
