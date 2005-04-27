@@ -275,8 +275,15 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			wxT("Enter password for mule connection"),
 			wxT("Enter Password"));
 #else  // wxUse_GUI
-		pass_plain = char2unicode(
-			getpass("Enter password for mule connection: "));
+		#ifndef __WXMSW__
+			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
+		#else
+			#warning This way, pass enter is not hidden on windows. Bad thing.
+			char temp_str[512];
+			fflush(stdin);
+			fgets(temp_str, 512, stdin);		
+			pass_plain = char2unicode(temp_str);
+		#endif
 #endif // wxUse_GUI
 		m_password.Decode(MD5Sum(pass_plain).GetHash());
 		// MD5 hash for an empty string, according to rfc1321.
