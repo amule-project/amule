@@ -32,6 +32,12 @@
 #endif
 
 #ifdef __WXMSW__
+	#include <wx/msw/winundef.h>
+#endif
+
+#include <wx/wx.h>
+
+#ifdef __WXMSW__
 	#include <winsock.h>
 #else
 	#include <sys/types.h>
@@ -49,12 +55,7 @@
 #include <map>
 #include <vector>
 
-#include <wx/wx.h>
 #include <wx/filename.h>
-
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
-#endif
 
 #include "Types.h"
 #include "OtherFunctions.h"
