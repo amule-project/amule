@@ -274,11 +274,10 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 	
 	// Kry - Safe Backup
 	CFile safebackupfile;
-	safebackupfile.Open(filename + appendix,CFile::read);
+	safebackupfile.Open(filename + appendix,CFile::read_write);
 	safebackupfile.Flush();
 	safebackupfile.Close();
 	// Kry - Safe backup end
 	
 	return true;
 }
-
