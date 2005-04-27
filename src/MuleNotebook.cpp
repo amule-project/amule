@@ -193,7 +193,7 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 	}
 }
 
-#if wxCHECK_VERSION(2,5,4)
+#if wxCHECK_VERSION(2,5,4) && !defined(__WXGTK12__)
 
 void CMuleNotebook::MouseClick(wxMouseEvent &event)
 {
