@@ -49,6 +49,9 @@
 #include <wx/timer.h>
 #include <wx/listbox.h>
 #include <wx/url.h>
+#if wxCHECK_VERSION(2,6,0)
+	#include <uri.h>
+#endif
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
@@ -539,7 +542,11 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
                 {
                   url += fileToHash.GetFullName();
                 }
-              arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
+			#if wxCHECK_VERSION(2,6,0)
+				arrayOfUrls.Add(wxURI(url).BuildURI());
+			 #else 
+			 	arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
+			 #endif
             }
           arrayOfUrls.Shrink(); // Reduce memory usage
 
@@ -595,6 +602,11 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
       // Add only a not already existant URL
       if (UrlNotExists)
         {
+		#if wxCHECK_VERSION(2,6,0)
+		   	m_inputUrlListBox->Append(wxURI(url).BuildURI());
+		#else 
+			m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
+		#endif
           m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
           m_inputAddTextCtrl->SetValue(wxEmptyString);
         }
