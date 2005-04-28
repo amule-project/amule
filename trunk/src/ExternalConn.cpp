@@ -603,7 +603,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				pfile->StopFile();
 				break;
 			case EC_OP_PARTFILE_PRIO_SET: {
-					int prio = hashtag->GetTagByIndexSafe(0)->GetInt32Data();
+					uint8 prio = hashtag->GetTagByIndexSafe(0)->GetInt8Data();
 					if ( prio == PR_AUTO ) {
 						pfile->SetAutoDownPriority(1);
 					} else {
