@@ -50,7 +50,7 @@
 #include <wx/listbox.h>
 #include <wx/url.h>
 #if wxCHECK_VERSION(2,6,0)
-	#include <uri.h>
+	#include <wx/uri.h>
 #endif
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
@@ -607,7 +607,6 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
 		#else 
 			m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
 		#endif
-          m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
           m_inputAddTextCtrl->SetValue(wxEmptyString);
         }
       else
