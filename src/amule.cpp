@@ -471,7 +471,11 @@ bool CamuleApp::OnInit()
 
 	printf("Checking if there is an instance already running...\n");
 	// see if there is another instance running
-	wxString server = ConfigDir + wxT("muleconn");
+	wxString server =
+#if !wxUSE_DDE_FOR_IPC
+		ConfigDir +
+#endif
+		wxT("muleconn");
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
 
