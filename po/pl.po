@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-11 12:34+0200\n"
+"PO-Revision-Date: 2005-04-28 09:11+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -1350,7 +1350,7 @@ msgstr "Znaleziono %u plików z częściami"
 #: src/DownloadQueue.cpp:314
 #, c-format
 msgid "Downloading %s"
-msgstr "Pobierane %s"
+msgstr "Pobieranie %s"
 
 #: src/DownloadQueue.cpp:322
 #, c-format
@@ -3282,7 +3282,7 @@ msgstr "Adres Email :"
 #: src/muuli_wdr.cpp:2361
 #: src/PrefsUnifiedDlg.cpp:173
 msgid "Core Tweaks"
-msgstr "Podkręcanie"
+msgstr "Optymalizacja"
 
 #: src/muuli_wdr.cpp:2368
 msgid "!!! WARNING !!!"
@@ -3930,11 +3930,11 @@ msgstr "Zapamiętaj te ustawienia"
 #: src/muuli_wdr.cpp:3684
 #: src/PrefsUnifiedDlg.cpp:175
 msgid "Debugging"
-msgstr "Diagnozowanie"
+msgstr "Debugowanie"
 
 #: src/muuli_wdr.cpp:3694
 msgid "Enable Verbose Debug-Logging."
-msgstr "Włącz gadatliwe logowanie diagnostyczne."
+msgstr "Włącz gadatliwe logowanie debugowe."
 
 #: src/muuli_wdr.cpp:3699
 msgid "Message Categories:"
