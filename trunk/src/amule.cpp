@@ -375,7 +375,6 @@ int CamuleApp::OnExit()
 	delete wxLog::SetActiveTarget(oldLog);
 #endif
 
-	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
 }
@@ -475,8 +474,14 @@ bool CamuleApp::OnInit()
 	wxString server = ConfigDir + wxT("muleconn");
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
+
 	wxClient* client = new wxClient();
+	
+	// Log to stderr
+	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
 	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
+	delete wxLog::SetActiveTarget(oldLog); // Restore old log
+	
 	// If the connection failed, conn is NULL
 	if ( conn ) {
 		// An instance is already running!
