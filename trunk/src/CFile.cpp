@@ -610,6 +610,12 @@ bool CFile::Eof() const
 	return true;
 }
 
+#ifdef __WXMSW__
+	#define stat_fun _stati64
+#else
+	#define stat_fun stat
+#endif
+
 int CFile::Stat( const wxString& file_name, wxStructStat *buf)
 {
 
@@ -618,11 +624,11 @@ int CFile::Stat( const wxString& file_name, wxStructStat *buf)
 	int stat_error = -1;
 	
 	if (tmpFile) {
-		stat_error = stat(tmpFile, buf);
+		stat_error = stat_fun(tmpFile, buf);
 	}
 	
 	if (stat_error) {
-		stat_error = stat(unicode2UTF8(file_name), buf);
+		stat_error = stat_fun(unicode2UTF8(file_name), buf);
 	}
 
 	return stat_error;
