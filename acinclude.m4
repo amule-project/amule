@@ -81,7 +81,6 @@ AC_ARG_WITH(zlib,[  --with-zlib=PREFIX               use zlib in PREFIX],[
 if test $zlib = peer; then
 	z=peer
 else
-	_cppflags="$CPPFLAGS"
 	if test -n "$ZLIB_DIR"; then
 		CPPFLAGS="$CPPFLAGS -I$ZLIB_DIR/include"
 	fi
@@ -141,7 +140,6 @@ else
 			AC_MSG_ERROR([zlib >= 1.1.4 not found])
 		fi
 	fi
-	CPPFLAGS="$_cppflags"
 fi
 
 if test $z = peer; then
