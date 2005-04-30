@@ -153,8 +153,8 @@ public:
 	}
 
 	// This is to avoid wxStat
-	static int Stat( const wxString& file_name, wxStructStat *buf);
-	
+	static int Stat( const wxString& file_name, struct stat *buf);
+
 private:
 	// copy ctor and assignment operator are private because
 	// it doesn't make sense to copy files this way:
