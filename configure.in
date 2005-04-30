@@ -123,7 +123,7 @@ AC_ARG_ENABLE(systray, [  --disable-systray          disable taskbar icon suppor
 AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      compile taskbar icon with support for UTF-8 encoded strings)],
 		utf8_systray="$enableval", utf8_systray="no")
 
-AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded_crypto  do not use embedded Crypto code],
+AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
 		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
 
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable patched gsocket.c linking],
