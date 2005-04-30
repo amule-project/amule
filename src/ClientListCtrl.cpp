@@ -532,11 +532,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 		
 		case 3:
 			buffer = wxString::Format( wxT("%.1f"), client->GetKBpsUp() );
-				
-			if ( client->GetDownloadState() == DS_DOWNLOADING ) {
-				buffer += wxString::Format( wxT("/%.1f"), client->GetKBpsDown() );
-			} 
-
+		
 			buffer += wxT(" ");
 			buffer += _("kB/s");
 		break;
@@ -590,24 +586,29 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 				buffer = wxT("? / ?");
 			}
 			break;
-		
-		case 10:
-			if ( client->GetDownloadState() == DS_ONQUEUE ) {
-				if ( client->IsRemoteQueueFull() ) {
-					buffer = _("Queue Full");
-				} else {
-					if (client->GetRemoteQueueRank()) {
-						buffer = wxString::Format(_("QR: %u"), client->GetRemoteQueueRank());
-					} else {
-						buffer = _("Unknown");
-					}
-				}
-			} else {
-				buffer = _("Unknown");
-			}
-			break;
-	}
-
+ 
+        case 10: 
+            if ( client->GetDownloadState() == DS_ONQUEUE ) { 
+                if ( client->IsRemoteQueueFull() ) { 
+                    buffer = _("Queue Full"); 
+                } else { 
+                    if (client->GetRemoteQueueRank()) { 
+                        buffer = wxString::Format(_("QR: %u"), client->GetRemoteQueueRank()); 
+                    } else { 
+                        buffer = _("Unknown"); 
+                    } 
+                } 
+            } else if ( client->GetDownloadState() == DS_DOWNLOADING ) {
+				buffer += wxString::Format( wxT("%.1f"), client->GetKBpsDown() ); 
+				
+				buffer += wxT(" ");
+			    buffer += _("kB/s");
+		 
+            } else { 
+                buffer = _("Unknown"); 
+            } 
+            break;
+		}
 			
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
 }
