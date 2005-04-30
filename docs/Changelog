@@ -1,7 +1,7 @@
 
 Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 ----------
-2005-04-XX
+2005-05-01
 
 	BigBob:
 		* Compilation fix for WebServer.cpp and BaseClient.cpp with wx-2.4.2.
@@ -14,6 +14,8 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
+                * Show current DL speed from a client you are uploading to in "Remote
+	Status" column instead of in the "Speed" column. 
 
 	geeko:
 		* Patch to complete html functionality of cas.
