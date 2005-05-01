@@ -325,7 +325,7 @@ msgid ""
 msgstr ""
 "aMule - 'több platformos' p2p kliens eMule alapokon.\n"
 "\n"
-" Weboldal: http://www.amule.org\n"
+" Weboldal: http://www.amule.org \n"
 " Fórum: http://forum.amule.org \n"
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -361,7 +361,7 @@ msgstr "Leválasztás a jelenlegi kiszolgálóról"
 #: src/ServerConnect.cpp:254
 #, c-format
 msgid "Connection established on: %s"
-msgstr "Kapcsolat létrejött a %s-el "
+msgstr "Kapcsolat létrejött a %s-vel"
 
 #: src/amuleDlg.cpp:688
 #: src/DownloadListCtrl.cpp:594
@@ -497,7 +497,7 @@ msgstr "ExternalConn: Rossz válasz a kiszolgálótól. Kapcsolat lezárva."
 #: src/amule-remote-gui.cpp:891
 #, c-format
 msgid "Succeeded! Connection established to aMule %s"
-msgstr "Sikerült! Kapcsolat létrejött az aMule %s-el"
+msgstr "Sikerült! Kapcsolat létrejött az aMule %s-val"
 
 #: src/amule-remote-gui.cpp:894
 msgid "Succeeded! Connection established."
@@ -999,7 +999,7 @@ msgstr "Nincs megjegyzés"
 #: src/CommentDialogLst.cpp:109
 #, c-format
 msgid "%s comment(s)"
-msgstr "%s megjegyzés(ek)"
+msgstr "%s megjegyzés"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Lo]"
@@ -1612,7 +1612,7 @@ msgstr "ExternalConn: Rossz válasz a kiszolgálótól. Kapcsolat lezárva.\n"
 #: src/ExternalConnector.cpp:353
 #, c-format
 msgid "Succeeded! Connection established to aMule %s\n"
-msgstr "Sikerült! Kapcsolat létrejött az aMule %s-el\n"
+msgstr "Sikerült! Kapcsolat létrejött az aMule %s-val\n"
 
 #: src/ExternalConnector.cpp:355
 msgid "Succeeded! Connection established.\n"
@@ -4711,7 +4711,7 @@ msgstr "Végzetes hiba kapcsolatfelvétel közben. Lehet, hogy megszakadt az Int
 #: src/ServerConnect.cpp:327
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
-msgstr "Megszakadt a kapcsolat %s-el (%s:%i)"
+msgstr "Megszakadt a kapcsolat %s-vel (%s:%i)"
 
 #: src/ServerConnect.cpp:338
 #, c-format
