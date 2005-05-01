@@ -183,6 +183,7 @@ else
 	GDLIB_LIBS=""
 	GDLIB_CFLAGS=""
 	GDLIB_LDFLAGS=""
+	GDLIB_VERSION="not_needed"
 fi
 
 AC_SUBST(CAS_DEFS)
@@ -213,6 +214,7 @@ else
 	LIBPNG_LIBS=""
 	LIBPNG_CFLAGS=""
 	LIBPNG_LDFLAGS=""
+	LIBPNG_VERSION="not_needed"
 fi
 
 AC_SUBST(AMULEWEB_DEFS)
@@ -729,6 +731,14 @@ echo "                                       wxWidgets             ${WX_VERSION_
 if test x"$havegtk" != x"not_needed"; then
 	echo "                                       GTK                   ${GTK_VERSION:-Not detected}"
 fi
+echo "                                       crypto++              ${crypto_version:-embedded}"
+if test x$LIBPNG_VERSION != xnot_needed; then
+	echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
+fi
+if test x$GDLIB_VERSION != xnot_needed; then
+	echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
+fi
+echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
 
 if test x"$NEEDSWX25" = x"yes" ; then
 echo ""

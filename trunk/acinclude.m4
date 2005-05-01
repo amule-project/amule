@@ -134,6 +134,7 @@ else
 		z=sys
 		AC_MSG_RESULT([cross-compilation detected, checking only the header])
 		AC_CHECK_HEADER(zlib.h, [result=yes], [result=no])
+		ZLIB_VERSION="detected"
 	])
 	if test x$result = xno; then
 		if test $z != peer; then
@@ -148,6 +149,7 @@ if test $z = peer; then
 		if test -r ../zlib/libz.a; then
 			AC_MSG_RESULT(yes)
 			CZVER=`grep "define ZLIB_VERSION" ../zlib/zlib.h | sed 's/#define ZLIB_VERSION "//' | sed 's/"//'`
+			ZLIB_VERSION=$CZVER
 			CZMIN=`echo $CZVER | sed 's/....//'`
 			CZMED=`echo $CZVER | sed s/.$CZMIN// | sed 's/^..//'`
 			CZMAX=`echo $CZVER | sed s/...$CZMIN//`
