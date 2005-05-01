@@ -372,9 +372,8 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
 	class CRemoteConnect *connect;
-public:
-	wxString	m_FrameTitle;
 
+public:
 	bool CopyTextToClipboard(wxString strText);
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
