@@ -32,17 +32,14 @@
   * GetText (for po files, autogen.sh etc):
     http://prdownloads.sf.net/mingw/gettext-0.11.5-2003.02.01-1.exe?download
 
-  * Curl library (compile w/o ssl support)
-    http://curl.haxx.se/download/curl-7.11.1.tar.gz
-
   * zlib compression library
     http://ftp.lug.udel.edu/pub/cygwin/release/mingw/mingw-zlib/mingw-zlib-1.2.1-1.tar.bz2
 
   * Crypto++ encryption library
-    http://www.eskimo.com/~weidai/crypto51.zip
+    http://prdownloads.sourceforge.net/cryptopp/cryptopp521.zip
 
   * Windows port of wxWidgets library:
-    http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.4.2.zip
+    http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.6.0.zip
 
  Common guidelines, issues, solutions:
 ---------------------------------------
@@ -50,15 +47,8 @@
   * Generally, compile wxMSW as static library. This avoids several linker issues,
     and provides you with static binary.
 
-  * Link statically against zlib, crypto, curl and wxMSW to avoid distributing 
-  extranous dlls (and generally make life simpler). At this point, this 
-  requires manually hacking src/Makefile (after running configure) and 
-  changing the neccesery -l*** places to paths to static libraries.
-
-  * You need to modify wx/setup.h file by hand (after installing wx) and change
-  wxCheckListBox to 0 (or, alternativly, configure wx with 
-  --without-checklistbox). Probably there's a better way around this, but
-  I can't think of any right now.
+  * Link statically against zlib, crypto++ and wxMSW to avoid distributing 
+  extranous dlls (and generally make life simpler).
 
 
  Links
