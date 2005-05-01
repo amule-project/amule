@@ -95,8 +95,8 @@ CServer::CServer(CServer* pOld)
 	taglist = new TagList;
 	// Got a bt here with pOld->taglist == NULL. Check that.
 	if (pOld && pOld->taglist) {
-		for(	TagList::Node* pos = pOld->taglist->GetFirst();
-			pos != NULL;
+		for(	TagList::compatibility_iterator pos = pOld->taglist->GetFirst();
+			pos;
 			pos = pos->GetNext()) {
 			CTag* pOldTag = pos->GetData(); //pOld->taglist->GetAt(pos);
 			taglist->Append(pOldTag->CloneTag()); //AddTail(pOldTag->CloneTag());
@@ -134,7 +134,7 @@ CServer::~CServer()
 {
 
 	if(taglist) {
-		for(TagList::Node* pos = taglist->GetFirst(); pos != NULL; pos=pos->GetNext()) {
+		for(TagList::compatibility_iterator pos = taglist->GetFirst(); pos; pos=pos->GetNext()) {
 			delete pos->GetData(); //taglist->GetAt(pos);
 		}
 		taglist->Clear(); //RemoveAll();

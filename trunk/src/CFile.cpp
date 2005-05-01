@@ -501,7 +501,7 @@ off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
 
 	off_t iRc = lseek(m_fd, ofs, origin);
 	if ( iRc == -1 ) {
-		AddDebugLogLineM( true, logCFile, wxString(wxT("Error in lseek: ")) + char2unicode(strerror(errno)));
+		AddDebugLogLineM( true, logCFile, wxString(wxT("Error in lseek: ")) + wxString(char2unicode(strerror(errno))));
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
