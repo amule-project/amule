@@ -81,6 +81,14 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  'System default' on each version change.
 		* Added Hungarian man pages.
 		* Fixed sorting in web interface.
+		* Compilation fix for gcc-3.2.2 and 3.2.3.
+		* Win32 (wxMSW) compilation fixes.
+		* Enabling configure way of aMule compilation under MinGW/MSYS.
+		* Several improvements of the win32 version of aMule and utilities.
+		* Totally disabled the ability to connect to aMule with an empty password.
+		* Enabling translations on remote GUI, too.
+		* Configure will now list (almost) all libraries it will/wants to
+		  use for build.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
@@ -101,7 +109,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed aMule.tmpl so Safari can work with amuleweb
 		* On Mac, enabled Command-clicking in lists to toggle selection
 		* Solved the DECLARE_ABSTRACT_CLASS() mystery on wx-2.4.2. Now
-		we can have UDP socks5 with wx-2.4.2.
+		  we can have UDP socks5 with wx-2.4.2.
 		* Included CVSDATE with version in amulesig.dat
 		* Fixed an endianness bug with webserver
 		* Fixed last (I hope!) endianness bug with IPFilter
