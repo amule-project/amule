@@ -33,6 +33,8 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/list.h>		// Needed for WX_DECLARE_LIST
 
+#include <list>
+
 #include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "CFile.h"
 
@@ -41,7 +43,6 @@
 #endif
 
 class CTag;
-class TagList;
 class ServerMet_Struct;
 class CSafeFile;
 class CFileDataIO;
@@ -67,9 +68,10 @@ class CFileDataIO;
 #define SRV_PR_MID			1
 #define SRV_PR_MIN			0
 
-WX_DECLARE_LIST(CTag,TagList);
+typedef std::list<CTag*> TagList;
 
-class CServer {
+class CServer
+{
 public:
 	CServer(ServerMet_Struct* in_data);
 	CServer(uint16 in_port, const wxString i_addr);
@@ -80,7 +82,7 @@ public:
 #endif
 
 	~CServer();
-	void		AddTag(CTag* in_tag)	{taglist->Append(in_tag);}
+	void		AddTag(CTag* in_tag)	{m_taglist.push_back(in_tag);}
 	const wxString &GetListName() const	{return listname;}
 	const wxString &GetFullIP() const	{return ipfull;}
 	
@@ -166,7 +168,7 @@ private:
 	uint32		failedcount; 
 	uint32		m_uDescReqChallenge;
 	uint8		lastdescpingedcout;
-	TagList* taglist;
+	TagList		m_taglist;
 	//CTypedPtrList<CPtrList, CTag*>*	taglist;
 	uint8		staticservermember;
 	wxString	m_strVersion;

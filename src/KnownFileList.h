@@ -34,19 +34,16 @@
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP, wxStringHash and wxStringEqual
 #include <wx/thread.h>		// Needed for wxMutex
 
+#include <list>
 
 #include "Types.h"		// Needed for uint16 and uint32
 #include "SharedFileList.h" // CKnownFileMap
 
-class CKnownFile;
-	
- WX_DECLARE_LIST(CKnownFile, KnownFileList);
 
-//WX_DECLARE_HASH_MAP(wxString,CKnownFile*,wxStringHash,wxStringEqual,KnownFileMap);
+class CKnownFile;	
 
-class CKnownFileList {
-//	friend class CSharedFilesWnd;
-//	friend class CFileStatistic;
+class CKnownFileList
+{
 public:
 	CKnownFileList();
 	~CKnownFileList();
@@ -69,7 +66,8 @@ private:
 
 	CKnownFile* IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const;
 
-	KnownFileList	duplicates;
+	typedef std::list<CKnownFile*> KnownFileList;
+	KnownFileList	m_duplicates;
 	CKnownFileMap	m_map;
 };
 
