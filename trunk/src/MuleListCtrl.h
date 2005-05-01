@@ -62,7 +62,7 @@ public:
 	/**
 	 * Constructor.
 	 * 
-	 * @see wxGenericListCtrl::wxListCtrl for documentation of parameters.
+	 * @see wxGenericListCtrl::wxGenericListCtrl for documentation of parameters.
 	 */
 	 CMuleListCtrl(
 	            wxWindow *parent,
