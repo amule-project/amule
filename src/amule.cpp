@@ -666,7 +666,11 @@ bool CamuleApp::OnInit()
 		ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 	}
 
-	use_chmod = true;
+	#ifdef __WXMSW__
+		use_chmod = false;
+	#else
+		use_chmod = true;
+	#endif
 #ifdef __WXGTK__
 	/* Test to see if the Temp or the Incoming dir is on a vfat partition. If
 	   that is the case, we need to avoid chmoding to avoid lots of warnings.
