@@ -90,7 +90,8 @@ public:
 	const wxString	GetString() const {
 		return (wxString) GetData();
 	}
-	
+
+#if !wxUSE_STL	
 	wxChar* GetBuffer(int nMinBufferLength)
 	{
 		return wxString::GetWriteBuf(nMinBufferLength);
@@ -99,7 +100,9 @@ public:
 	void ReleaseBuffer() {
 		wxString::UngetWriteBuf();
 	}
-	
+#else
+	#warning Need a replacement for wxString::GetWriteBuf()/UngetWriteBuf() !
+#endif
 
 	int GetLength() const throw()
 	{

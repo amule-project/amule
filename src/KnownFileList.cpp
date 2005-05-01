@@ -114,7 +114,7 @@ void CKnownFileList::Save() {
 		it->second->WriteToFile(file);
 	}
 	// Kry - Duplicates handling.
-	KnownFileList::Node* node = duplicates.GetFirst();
+	KnownFileList::compatibility_iterator node = duplicates.GetFirst();
 	while (node) {
 		CKnownFile* duplicate = node->GetData();
 		duplicate->WriteToFile(file);
@@ -132,11 +132,10 @@ void CKnownFileList::Clear() {
 		delete it->second;
 	m_map.clear();
 
-	KnownFileList::Node *node = duplicates.GetFirst();
+	KnownFileList::compatibility_iterator node = duplicates.GetFirst();
 	while (node) {
 		CKnownFile* duplicate = node->GetData();
 		delete duplicate;
-		delete node;
 		node = duplicates.GetFirst();
 	}		
 	
@@ -214,7 +213,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 
 CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const {
 
-	for (KnownFileList::Node* node = duplicates.GetFirst(); node != NULL; node = node->GetNext()) {
+	for (KnownFileList::compatibility_iterator node = duplicates.GetFirst(); node; node = node->GetNext()) {
 		CKnownFile* cur_file = node->GetData();
 		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;

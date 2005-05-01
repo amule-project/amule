@@ -15,7 +15,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
                 * Show current DL speed from a client you are uploading to in "Remote
-	Status" column instead of in the "Speed" column. 
+		  Status" column instead of in the "Speed" column. 
 
 	geeko:
 		* Patch to complete html functionality of cas.
@@ -229,6 +229,9 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* work on the Man-Pages
 		* minor compile fixes
 		* lots of support and testing
+
+	stsp:
+		* Compilation fix for STL enabled wxWidgets.
 
 	volpol:
 		* Patch to fix use of deprecated functions in wxGTK-2.5.3.
@@ -455,6 +458,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		  ObsessionAl
 		  rommel
 		  S0undt3ch
+		  stsp
 		  Vollstrecker
 		  volpop
 
