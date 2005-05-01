@@ -248,6 +248,19 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Initial and further work on aMule and utils' man pages.
 
 	Xaignar:
+		* Improved logging for CFile, getting rid of the annoying
+		  pop-up windows which were previously displayed.
+		* Workaround for fonts getting changed on the log-view 
+		  when the clear-button was pressed (wxMac specific).
+		* Work on getting aMule ready for win32, including fixing
+		  the custom-drawing for listctrls.
+		* Fixed threading issues with the UDP-sockets in daemon-
+		  mode, which were the cause of a number of crashes.
+		* Made the preferences dialog modal to fix problems where
+		  it would be displayed at bad locations.
+		* Ensured that the Banned-Count would be initialized to zero
+		  rather than display a random value until it gets properly 
+		  set (not yet implemented).
 		* Improved the "aMule has crashed" message, adding some
 		  more information and fixed the backtrace to skip unneeded
 		  frames properly.
