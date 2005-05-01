@@ -5212,7 +5212,7 @@ msgstr "Várakozó feltöltések: %i"
 #: src/Statistics.cpp:855
 #, c-format
 msgid "Total successful upload sessions: %i"
-msgstr "Összes sikeres feleltöltési folyamat: %i"
+msgstr "Összes sikeres feltöltési folyamat: %i"
 
 #: src/Statistics.cpp:856
 #, c-format
