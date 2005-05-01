@@ -89,6 +89,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Enabling translations on remote GUI, too.
 		* Configure will now list (almost) all libraries it will/wants to
 		  use for build.
+		* Hungarian translation update.
 
 		**** For users, who already got used to amulecmd's or amuleweb's
 		**** command-line parameters: PLEASE READ DOCUMENTATION CAREFULLY!
