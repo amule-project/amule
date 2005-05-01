@@ -41,8 +41,6 @@
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
-	#include <winerror.h>
-	#include <shlobj.h>
 #endif
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
@@ -851,26 +849,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	#ifdef __WXMAC__
 		wxString incpath = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("Documents") + wxFileName::GetPathSeparator() + wxT("aMule Downloads");
 	#elif defined(__WXMSW__)
-		wxString incpath;
-		LPITEMIDLIST pidl;
-		HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl);
-		if (SUCCEEDED(hr)) {
-			if (SHGetPathFromIDList(pidl, wxStringBuffer(incpath, MAX_PATH))) {
-				incpath.append(wxString(wxFileName::GetPathSeparator()) + wxString(wxT("aMule Downloads")));
-			} else {
-				incpath = appdir + wxT("Incoming");
-			}
-		} else {
-			incpath = appdir + wxT("Incoming");
-		}
-		if (pidl) {
-			LPMALLOC pMalloc;
-			SHGetMalloc(&pMalloc);
-			if (pMalloc) {
-				pMalloc->Free(pidl);
-				pMalloc->Release();
-			}
-		}
+		wxString incpath = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("aMule Downloads");
 	#else 
 		wxString incpath = appdir + wxT("Incoming");
 	#endif
