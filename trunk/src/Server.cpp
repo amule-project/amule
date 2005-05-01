@@ -39,8 +39,6 @@
 
 #include <wx/intl.h>	// Needed for _
 
-#include <wx/listimpl.cpp>
-WX_DEFINE_LIST(TagList)
 
 CServer::CServer(ServerMet_Struct* in_data)
 {
@@ -92,15 +90,10 @@ CServer::CServer(CEC_Server_Tag *tag)
 CServer::CServer(CServer* pOld)
 {
 	wxASSERT(pOld != NULL);
-	taglist = new TagList;
-	// Got a bt here with pOld->taglist == NULL. Check that.
-	if (pOld && pOld->taglist) {
-		for(	TagList::compatibility_iterator pos = pOld->taglist->GetFirst();
-			pos;
-			pos = pos->GetNext()) {
-			CTag* pOldTag = pos->GetData(); //pOld->taglist->GetAt(pos);
-			taglist->Append(pOldTag->CloneTag()); //AddTail(pOldTag->CloneTag());
-		}
+	
+	TagList::iterator it = pOld->m_taglist.begin();
+	for ( ; it != pOld->m_taglist.end(); ++it ) {
+		m_taglist.push_back((*it)->CloneTag());
 	}
 	port = pOld->port;
 	ip = pOld->ip; 
@@ -132,22 +125,18 @@ CServer::CServer(CServer* pOld)
 
 CServer::~CServer()
 {
-
-	if(taglist) {
-		for(TagList::compatibility_iterator pos = taglist->GetFirst(); pos; pos=pos->GetNext()) {
-			delete pos->GetData(); //taglist->GetAt(pos);
-		}
-		taglist->Clear(); //RemoveAll();
-		delete taglist;
-		taglist=NULL;
+	TagList::iterator it = m_taglist.begin();
+	for ( ; it != m_taglist.end(); ++it ) {
+		delete *it;
 	}
+
+	m_taglist.clear();
 }
 
 void CServer::Init() {
 	
 	ipfull = Uint32toStringIP(ip);
 	
-	taglist = new TagList;
 	realport = 0;
 	tagcount = 0;
 	files = 0;

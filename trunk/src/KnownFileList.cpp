@@ -38,10 +38,9 @@
 #include "Logger.h"
 #include "Format.h"
 
-#include <wx/listimpl.cpp> // ye old magic incantation
-WX_DEFINE_LIST(KnownFileList)
 
-CKnownFileList::CKnownFileList() {
+CKnownFileList::CKnownFileList()
+{
 	accepted = 0;
 	requested = 0;
 	transfered = 0;
@@ -105,7 +104,7 @@ void CKnownFileList::Save() {
 
 	file->WriteUInt8(MET_HEADER);
 	uint32 RecordsNumber = m_map.size();
-	file->WriteUInt32(RecordsNumber + duplicates.GetCount());
+	file->WriteUInt32(RecordsNumber + m_duplicates.size());
 
 	CKnownFileMap::iterator it = m_map.begin();
 	for (uint32 i = 0; i != RecordsNumber; i++,it++) {
@@ -113,12 +112,11 @@ void CKnownFileList::Save() {
 			break;		// TODO: Throw an exception
 		it->second->WriteToFile(file);
 	}
+	
 	// Kry - Duplicates handling.
-	KnownFileList::compatibility_iterator node = duplicates.GetFirst();
-	while (node) {
-		CKnownFile* duplicate = node->GetData();
-		duplicate->WriteToFile(file);
-		node = node->GetNext();
+	KnownFileList::iterator ite = m_duplicates.begin();
+	for ( ; ite != m_duplicates.end(); ++ite ) {
+		(*ite)->WriteToFile(file);
 	}	
 	
 	file->Flush();
@@ -126,19 +124,19 @@ void CKnownFileList::Save() {
 	delete file;
 }
 
-void CKnownFileList::Clear() {	
+
+void CKnownFileList::Clear()
+{	
 	wxMutexLocker sLock(list_mut);
 	for ( CKnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
 		delete it->second;
 	m_map.clear();
 
-	KnownFileList::compatibility_iterator node = duplicates.GetFirst();
-	while (node) {
-		CKnownFile* duplicate = node->GetData();
-		delete duplicate;
-		node = duplicates.GetFirst();
-	}		
-	
+	KnownFileList::iterator it = m_duplicates.begin();
+	for ( ; it != m_duplicates.end(); ++it ) {
+		delete *it;
+	}
+	m_duplicates.clear();
 }
 
 CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint32 in_size){
@@ -196,7 +194,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 				return false;
 			} else {
 				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
-				duplicates.Append(m_map[tkey]);
+				m_duplicates.push_back(m_map[tkey]);
 				m_map[tkey] = Record;	
 				return true;
 			}
@@ -211,10 +209,12 @@ bool CKnownFileList::Append(CKnownFile* Record)
 	}
 }
 
-CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const {
 
-	for (KnownFileList::compatibility_iterator node = duplicates.GetFirst(); node; node = node->GetNext()) {
-		CKnownFile* cur_file = node->GetData();
+CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const
+{
+	KnownFileList::const_iterator it = m_duplicates.begin();
+	for ( ; it != m_duplicates.end(); ++it ) {
+		CKnownFile* cur_file = *it;
 		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
 			return cur_file;
 		}
