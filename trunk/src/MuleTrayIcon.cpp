@@ -259,8 +259,9 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		Old_Icon = Icon;
 		Old_SpeedSize = NewSize;
 		
-#ifndef __WXMSW__
 		// Do whatever to the icon before drawing it (percent)
+		
+#ifndef __WXMSW__
 		CurrentIcon.SetMask(NULL);
 #else
 		wxBitmap TempBMP;
@@ -327,10 +328,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	traymenu->SetTitle(_("aMule Tray Menu"));
 	
 	// Build the Top string name
-	wxString label = MOD_VERSION_LONG wxT(":\n");
-	label += wxString::Format(_("Download Speed: %.1f\n"), theApp.downloadqueue->GetKBps());
-	label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetKBps());
-	label += _("\nSpeed Limits:\n");
+	wxString label = MOD_VERSION_LONG;
+	traymenu->Append(TRAY_MENU_INFO, label);
+	traymenu->AppendSeparator();
+	label = _("Speed Limits: ");
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
@@ -350,6 +351,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		label += wxString::Format( _("DL: %u"), max_download);
 	}
 
+	traymenu->Append(TRAY_MENU_INFO, label);
+	label = wxString::Format(_("Download Speed: %.1f"), theApp.downloadqueue->GetKBps());
+	traymenu->Append(TRAY_MENU_INFO, label);
+	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
