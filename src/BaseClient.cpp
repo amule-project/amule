@@ -1109,8 +1109,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 
 	if (GetDownloadState() == DS_DOWNLOADING) {
 		SetDownloadState(DS_ONQUEUE);
-	}
-	else{
+	} else{
 		// ensure that all possible block requests are removed from the partfile
 		ClearDownloadBlockRequests();
 
@@ -1183,13 +1182,14 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
 		m_iFileListRequested = 0;
 	}
-	if (m_Friend) {
-		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
-	}
 
 	Notify_ClientCtrlRefreshClient( this );
 
 	if (bDelete) {
+		if (m_Friend) {
+			// Remove the friend linkage
+			Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
+		}
 		AddDebugLogLineM( false, logClient, wxString() <<
 			wxT("--- Deleted client \"") <<	GetClientFullInfo() <<
 			wxT("\"; Reason was ") << strReason );
