@@ -228,7 +228,7 @@ void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const wxString&
 	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	while(!fname.IsEmpty()) {
-		if(fname.Find(wxT('/'),TRUE) != -1) {  // starts at end
+		if(fname.Find(ROOT_CHAR,TRUE) != -1) {  // starts at end
 			// Take just the last folder of the path
 			fname=fname.Mid(fname.Find(ROOT_CHAR,TRUE)+1);  
 		}
