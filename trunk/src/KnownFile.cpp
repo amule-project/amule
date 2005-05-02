@@ -1000,4 +1000,9 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 	}
 }
 
+void CKnownFile::ClearPriority() {
+	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;		
+}
+
 #endif // CLIENT_GUI
