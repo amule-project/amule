@@ -1519,8 +1519,8 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 void CamuleApp::OnFinishedHashing(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	static int filecount = 0;
-	static int bytecount = 0;
+	static int filecount;
+	static int bytecount;
 
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
 	if (evt.GetExtraLong()) {
