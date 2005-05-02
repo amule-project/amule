@@ -185,13 +185,22 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 
 void CUploadQueue::Process()
 {
+	static uint32	bytesNotCounted;
+	uint32	msCur = ::GetTickCount();
+
 	if (AcceptNewClient() && waitinglist.GetCount()) {
 		m_nLastStartUpload = ::GetTickCount();
 		AddUpNextClient();
 	}
+	
 	if (!uploadinglist.GetCount()) {
+		// We have to clean upload speed if there's no client or it will stay last value.
+		kBpsUp = 0;
+		bytesNotCounted = 0;
+		msPrevProcess = msCur;
 		return;
 	}
+	
 	int16 clientsrdy = 0;
 	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0; ) {
 		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
@@ -219,8 +228,6 @@ void CUploadQueue::Process()
 	}
 	
 	// smooth current UL rate with a first-order filter
-	static uint32	bytesNotCounted;
-	uint32	msCur = ::GetTickCount();
 	if (msCur==msPrevProcess) {  		// sometimes we get two pulse quickly in a row
 		bytesNotCounted += bytesSent;	// avoid divide-by-zero in rate computation then
 	} else {
