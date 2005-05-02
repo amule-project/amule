@@ -366,7 +366,6 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Getting ENDIAN_SWAP_* to a bare minimum (just interface)
 		* Fixes endianess of local_ip, which is anyway almost all times 0.
 		
-		
 		- Core/GUI Specific -
 		* Fixed daemon unhability to handle sources properly. Daemon now takes, handles, and 
 		   processes sources in a proper way (making it at last a real competitor for monolithic).
@@ -399,7 +398,7 @@ Version 2.0.0 FINAL - The "Tiku - the one and only" version.
 		* Fixed Mac friends handling.
 		* Proper importing of files for Mac.
 		* Proper reading for amuleweb config on Mac.
-		* Made default Incoming folder for Mad to "~/Library/aMule Downloads"
+		* Made default Incoming folder for Mac to "~/Library/aMule Downloads"
 				
 		- Windows Specific -
 		* Fixed a lot of compilation problems.
