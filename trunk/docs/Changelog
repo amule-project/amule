@@ -375,7 +375,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		   In short, we have statistics tree on webserver, amulecmd and remote GUI :)		
 		* Graphic statistics are now decoupled from GUI.
 		   We have statistics graphics on webserver remote GUI.	
-		* Decoupled Frind list from GUI.
+		* Decoupled Friend list from GUI.
 		* Fixed a bug on set comment on a file on ECv2.
 		* Fix for log on unicoded webserver.
 		* Fix for global daemon thread not closed on exit.
