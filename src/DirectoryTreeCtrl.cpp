@@ -225,7 +225,16 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	} else {
 		wxString strDir = ROOT_STRING;
 		while(hItem.IsOk() && (hItem != hRoot))  {	
-			strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
+			#ifndef __WXMSW__
+				strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
+			#else
+				if (GetItemParent(hItem) != hRoot) {
+					strDir = ROOT_STRING;
+				} else {
+					strDir = wxEmptyString;
+				}
+				 strDir += GetItemText(hItem)  + strDir;
+			#endif
 			hItem = GetItemParent(hItem);		
 		}
 		// Allways has a '/' at the end
