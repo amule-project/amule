@@ -119,7 +119,6 @@ void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
 {
 	wxTreeItemId hItem = evt.GetItem();
 	DeleteChildren(hItem);
-	printf("Expanding %s\n",(const char*)unicode2char(GetFullPath(hItem)));
 	AddSubdirectories(hItem, GetFullPath(hItem));
 	SortChildren(hItem);
 }
@@ -233,7 +232,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 				if (GetItemParent(hItem) != hRoot) {
 					strDir = ROOT_STRING+ GetItemText(hItem)  + strDir;
 				} else {
-					strDir = ROOT_STRING+ GetItemText(hItem)  + strDir;
+					strDir = GetItemText(hItem)  + strDir;
 				}			 
 			#endif
 			hItem = GetItemParent(hItem);		
