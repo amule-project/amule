@@ -325,9 +325,9 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		wxTreeItemId hChild;
 		wxTreeItemIdValue cookie;
 		hChild = GetFirstChild(hRoot,cookie);
-		while(hChild.IsOk()) {
+		while (hChild.IsOk()) {
 			// Does this drive have shared subfolders?
-			if(HasSharedSubdirectory(GetFullPath(hChild)) { 
+			if (HasSharedSubdirectory(GetFullPath(hChild))) { 
 				SetItemImage(hChild,IMAGE_FOLDER_SUB_SHARED);
 			}
 			// Is this drive shared?
