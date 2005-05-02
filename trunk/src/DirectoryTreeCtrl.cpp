@@ -311,7 +311,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 	}
 	
 	
-	#ifndef __WXMWS__
+	#ifndef __WXMSW__
 		// Has root dir a subdir shared?
 		if(HasSharedSubdirectory(ROOT_STRING)) { // root folder
 			SetItemImage(hRoot,IMAGE_FOLDER_SUB_SHARED);
