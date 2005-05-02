@@ -891,7 +891,7 @@ send_xembed_message (GtkPlugXEmbed *plug,
 static void
 focus_first_last (GtkPlugXEmbed          *plug,
 		  GtkDirectionType  direction)
-{ (void)direction;
+{ //(void)direction;
   GtkWindow *window = GTK_WINDOW (plug);
   GtkWidget *parent;
   
@@ -1047,7 +1047,7 @@ handle_xembed_message (GtkPlugXEmbed   *plug,
 
 static GdkFilterReturn
 gtk_plug_xembed_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data)
-{ (void)event;
+{ //(void)event;
   GtkPlugXEmbed *plug = GTK_PLUG_XEMBED (data);
   XEvent *xevent = (XEvent *)gdk_xevent;
 
