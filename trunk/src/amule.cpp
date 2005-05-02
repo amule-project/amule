@@ -1403,7 +1403,7 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	static uint32	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS;
+	static uint32	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
 	uint32 msCur = statistics->GetUptimeMsecs();
 
 	if (!IsRunning()) {
@@ -1485,8 +1485,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		// Write changes to file
 		cfg->Flush();
 
-		// Save Shared Files data
-		knownfiles->Save();
 	}
 
 	// Special
@@ -1494,6 +1492,13 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		OnlineSig(); // Added By Bouc7		
 		msPrevOS = msCur;
 	}
+	
+	if (msCur - msPrevKnownMet >= 30*60*1000/*There must be a prefs option for this*/) {
+		// Save Shared Files data
+		knownfiles->Save();
+		msPrevKnownMet = msCur;
+	}
+
 	
 	// Recomended by lugdunummaster himself - from emule 0.30c
 	serverconnect->KeepConnectionAlive();
