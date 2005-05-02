@@ -310,10 +310,15 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		m_lstShared.Add(list->Item(i));
 	}
 	
-	// Has root dir a subdir shared?
+	
 	#ifndef __WXMWS__
+		// Has root dir a subdir shared?
 		if(HasSharedSubdirectory(ROOT_STRING)) { // root folder
 			SetItemImage(hRoot,IMAGE_FOLDER_SUB_SHARED);
+		}
+		// Is root dir shared?
+		if(IsShared(ROOT_STRING)) {
+			SetItemBold(hRoot,TRUE);
 		}
 	#else 
 		// On Windows, we have to check every drive
@@ -321,17 +326,17 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		wxTreeItemIdValue cookie;
 		hChild = GetFirstChild(hRoot,cookie);
 		while(hChild.IsOk()) {
-			if(HasSharedSubdirectory(GetFullPath(hChild)) { // root folder
+			// Does this drive have shared subfolders?
+			if(HasSharedSubdirectory(GetFullPath(hChild)) { 
 				SetItemImage(hChild,IMAGE_FOLDER_SUB_SHARED);
+			}
+			// Is this drive shared?
+			if (IsShared(GetFullPath(hChild))) {
+				SetItemBold(hChild,TRUE);
 			}
 			hChild = GetNextSibling(hChild);
 		}
 	#endif
-	
-	// Is root dir shared?
-	if(IsShared(ROOT_STRING)) {
-		SetItemBold(hRoot,TRUE);
-	}
 	
 }
 
