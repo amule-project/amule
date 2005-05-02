@@ -33,6 +33,7 @@
 #include <wx/imaglist.h>
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for amuleSpecial
+#include "StringFunctions.h" // Needed for unicode2char
 #include <wx/event.h>
 
 #include "CFile.h"
@@ -118,6 +119,7 @@ void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
 {
 	wxTreeItemId hItem = evt.GetItem();
 	DeleteChildren(hItem);
+	printf("Expanding %s\n",(const char*)GetFullPath(hItem));
 	AddSubdirectories(hItem, GetFullPath(hItem));
 	SortChildren(hItem);
 }
@@ -283,8 +285,6 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const wxString& folder)
 	return FALSE; // no match
 }
 
-
-#include "StringFunctions.h"
 void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
 {
 	for(unsigned int i = 0; i < m_lstShared.GetCount(); ++i) {
