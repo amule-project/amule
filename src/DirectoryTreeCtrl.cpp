@@ -217,7 +217,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	wxASSERT(hItem.IsOk());
 	// don't traverse to the root item ... it will cause extra / to the path
 	if (hItem == hRoot) {
-		#ifndef __WXMWS__
+		#ifndef __WXMSW__
 			return ROOT_STRING;
 		#else
 			return wxEmptyString;
