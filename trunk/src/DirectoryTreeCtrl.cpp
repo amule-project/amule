@@ -223,11 +223,7 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 			return wxEmptyString;
 		#endif
 	} else {
-		#ifndef __WXMWS__
-			wxString strDir = ROOT_STRING;
-		#else
-			wxString strDir = wxEmptyString;
-		#endif
+		wxString strDir = ROOT_STRING;
 		while(hItem.IsOk() && (hItem != hRoot))  {	
 			strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
 			hItem = GetItemParent(hItem);		
