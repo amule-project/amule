@@ -2214,6 +2214,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	
 		SetPartFileStatus(PS_COMPLETE);
 		m_paused = false;
+		ClearPriority();
 		// TODO: What the f*** if it is already known?
 		theApp.knownfiles->SafeAddKFile(this);
 		// remove the file from the suspended uploads list

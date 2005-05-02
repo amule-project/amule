@@ -231,6 +231,9 @@ public:
 	void UpdateUpPartsFrequency( CUpDownClient* client, bool increment );
 
 	void	CreateHashFromString(byte* in_string, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
+	
+	void	ClearPriority();
+	
 protected:
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
