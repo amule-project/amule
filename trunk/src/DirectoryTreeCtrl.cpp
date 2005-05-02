@@ -119,7 +119,7 @@ void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
 {
 	wxTreeItemId hItem = evt.GetItem();
 	DeleteChildren(hItem);
-	printf("Expanding %s\n",(const char*)GetFullPath(hItem));
+	printf("Expanding %s\n",(const char*)unicode2char(GetFullPath(hItem)));
 	AddSubdirectories(hItem, GetFullPath(hItem));
 	SortChildren(hItem);
 }
