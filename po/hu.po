@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-05-01 16:47+0200\n"
-"PO-Revision-Date: 2005-05-01 19:16+0100\n"
+"PO-Revision-Date: 2005-05-02 11:17+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -5811,7 +5811,7 @@ msgstr "Megerősítés szükséges"
 #: src/TransferWnd.cpp:312
 #: src/WebServer.cpp:2400
 msgid "All others"
-msgstr "Minden más"
+msgstr "Összes egyéb"
 
 #: src/TransferWnd.cpp:333
 msgid "Select view filter"
