@@ -102,11 +102,9 @@ void CDirectoryTreeCtrl::Init(void)
 		// Root doesn't show on Windows because I set that flag on muuli. So add Drives here.
 		char drive;
 		for (drive = 'A'; drive <= 'Z'; drive++) {
-			wxString DriveStr = wxString::Format(wxT("%c:\\"),drive);
+			wxString DriveStr = wxString::Format(wxT("%c:%c"),drive,ROOT_CHAR);
 			if (CheckDirExists(DriveStr)) {
-				CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-				wxTreeItemId item=AppendItem(hRoot,DriveStr,IMAGE_FOLDER,-1,ItemData);
-				AppendItem(item,wxT("Cool. Works")); // will be deleted on expanding it
+				AddChildItem(hRoot,DriveStr);
 			}
 		}
 	#endif
