@@ -259,8 +259,15 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		Old_Icon = Icon;
 		Old_SpeedSize = NewSize;
 		
+#ifndef __WXMSW__
 		// Do whatever to the icon before drawing it (percent)
 		CurrentIcon.SetMask(NULL);
+#else
+		wxBitmap TempBMP;
+		TempBMP.CopyFromIcon(CurrentIcon);
+		TempBMP.SetMask(NULL);
+		CurrentIcon.CopyFromBitmap(TempBMP);
+#endif
 		
 		IconWithSpeed.SelectObject(CurrentIcon);
 		
@@ -282,11 +289,17 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		IconWithSpeed.SelectObject(wxNullBitmap);
 		
 		// Do transparency
-		
+
 		// Set a new mask with transparency set to red.
 		wxMask* new_mask = new wxMask(CurrentIcon, wxColour(0xFF, 0x00, 0x00));
 		
+#ifndef __WXMSW__	
 		CurrentIcon.SetMask(new_mask);
+#else
+		TempBMP.CopyFromIcon(CurrentIcon);
+		TempBMP.SetMask(new_mask);
+		CurrentIcon.CopyFromBitmap(TempBMP);
+#endif
 
 		UpdateTray();
 	}
