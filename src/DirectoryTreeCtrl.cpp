@@ -102,7 +102,7 @@ void CDirectoryTreeCtrl::Init(void)
 		// Root doesn't show on Windows because I set that flag on muuli. So add Drives here.
 		char drive;
 		for (drive = 'A'; drive <= 'Z'; drive++) {
-			wxString DriveStr = wxString::Format(wxT("%c:%c"),drive,ROOT_CHAR);
+			wxString DriveStr = wxString::Format(wxT("%c:"),drive);
 			if (CheckDirExists(DriveStr)) {
 				AddChildItem(hRoot,DriveStr);
 			}
@@ -217,9 +217,17 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	wxASSERT(hItem.IsOk());
 	// don't traverse to the root item ... it will cause extra / to the path
 	if (hItem == hRoot) {
-		return ROOT_STRING;
+		#ifndef __WXMWS__
+			return ROOT_STRING;
+		#else
+			return wxEmptyString;
+		#endif
 	} else {
-		wxString strDir = ROOT_STRING;
+		#ifndef __WXMWS__
+			wxString strDir = ROOT_STRING;
+		#else
+			wxString strDir = wxEmptyString;
+		#endif
 		while(hItem.IsOk() && (hItem != hRoot))  {	
 			strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
 			hItem = GetItemParent(hItem);		
