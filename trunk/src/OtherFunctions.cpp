@@ -36,6 +36,10 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 	#include <wx/msw/registry.h>
+	#if 0 /* wxCHECK_VERSION_FULL(2,6,0,2) */
+		// stupid wx forgot to install wx/msw/stdpaths.h
+		#include <wx/stdpaths.h>
+	#endif
 #endif
 
 #include "OtherFunctions.h"	// Interface declarations
@@ -1340,9 +1344,14 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 
 
 wxString GetLocaleDir() {
+#if 1 /* !defined(__WXMSW__) || !wxCHECK_VERSION_FULL(2,6,0,2) */
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 	return localeDir;
+#else
+	wxStandardPaths stdpath;
+	return stdpath.GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
+#endif
 }
 
 void InitCustomLanguages()
