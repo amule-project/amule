@@ -445,7 +445,7 @@ bool CamuleApp::OnInit()
 
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
-	enable_daemon_fork = !cmdline.Found(wxT("full-daemon"));
+	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
 #else
 	enable_daemon_fork = false;
 #endif	
