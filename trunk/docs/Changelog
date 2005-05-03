@@ -600,8 +600,6 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		  wxWidgets 2.4.x and 2.5.x will use a modified version from 
 		  that branch rather than a more generic hacked version. For one
 		  thing, the headers are now drawn using the current GTK theme.
-		  Please note that Mac builds still make use of the old listctrl
-		  due to bugs in wxMac-2.5.4.
 		* Properly handle rehashing of empty part-files.
 		* Changed the "Filter Bad IPs" option to "Filter LAN IPs". Invalid
 		  IPs will always be filtered, but LAN IPs will now only be filtered
