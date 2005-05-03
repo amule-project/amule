@@ -538,9 +538,9 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		wxHTTP.
 	
 	Stefanero:
-		* work on the Man-Pages
-		* minor compile fixes
-		* lots of support and testing
+		* Work on the Man-Pages
+		* Minor compile fixes
+		* Lots of support and testing
 
 	stsp:
 		* Compilation fix for STL enabled wxWidgets.
