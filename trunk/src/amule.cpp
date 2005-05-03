@@ -420,7 +420,9 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-#ifndef AMULE_DAEMON
+#ifdef AMULE_DAEMON
+	cmdline.AddSwitch(wxT("f"), wxT("no-daemon"), wxT("Does not fork to background."));
+#else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
@@ -441,11 +443,19 @@ bool CamuleApp::OnInit()
 #endif
 	}
 
-	if ( cmdline.Found(wxT("log-stdout")) ) {
-		printf("Logging to stdout enabled\n");
-		enable_stdout_log = true;
-	} else {
-		enable_stdout_log = false;
+	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
+#ifdef AMULE_DAEMON		
+	enable_daemon_fork = !cmdline.Found(wxT("no-daemon"));
+#else
+	enable_daemon_fork = false;
+#endif	
+	if ( enable_stdout_log ) {
+		if ( enable_daemon_fork ) {
+			printf("Daemon will fork to background - log to stdout disabled\n");
+			enable_stdout_log = false;
+		} else {
+			printf("Logging to stdout enabled\n");
+		}
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {

@@ -174,10 +174,30 @@ int CamuleDaemonApp::OnRun()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
+	if ( !enable_daemon_fork ) {
+		return 0;
+	}
+	printf("amuled: forking to background - see you\n");
 	//
 	// fork to background and detouch from controlling tty
 	// while redirecting stdout to /dev/null
 	//
+	for(int i_fd = 0;i_fd < 3; i_fd++) {
+		close(i_fd);
+	}
+  	int fd = open("/dev/null",O_RDWR);
+  	dup(fd);
+  	dup(fd);
+  	int pid = fork();
+
+	wxASSERT(pid != -1);
+
+  	if ( pid ) {
+  		exit(0);
+  	} else {
+		setsid();
+  	}
+  	
 	return 0;
 }
 
