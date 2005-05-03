@@ -306,6 +306,7 @@ protected:
 	wxFile *applog;
 #endif
 	bool enable_stdout_log;
+	bool enable_daemon_fork;
 	wxString server_msg;
 };
 
