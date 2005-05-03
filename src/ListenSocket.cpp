@@ -709,6 +709,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if ( CLogger::IsEnabled( logClient ) ) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
+									#warning what is invalid?? please fix message !!!!
 									wxString msg = wxString::Format(_("Client requests invalid %u."), i);
 									msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
 									msg += wxT(" ") + m_client->GetFullIP();
@@ -853,7 +854,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			case OP_MESSAGE: {		// 0.43b
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 				
-				AddLogLineM( true, wxT("New message from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
+				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 				theApp.statistics->AddDownDataOverheadOther(size);
 				
 				CSafeMemFile message_file((byte*)packet,size);
@@ -862,7 +863,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
-						AddLogLineM( true, wxT("Message filtered from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
+						AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 					}
 					m_client->m_bMsgFiltered=true;
 				} else {
@@ -886,11 +887,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Accepted"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
 						% m_client->GetUserName() 
 						% m_client->GetUserID() );
 				} else {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Denied"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
 						% m_client->GetUserName() 
 						% m_client->GetUserID() );
 				}
@@ -1011,7 +1012,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("accepted"));
+					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -1042,7 +1043,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("denied"));
+					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
 					
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1114,7 +1115,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
 				wxASSERT( size == 0 );
-				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shareddirectories/files-list") )
+				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
 					% m_client->GetUserName()
 					% m_client->GetUserID() );
 						

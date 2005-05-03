@@ -862,7 +862,7 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Comment this file (this text will be show by all users)") );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Comment/Rate file (Text will be visible to all users)") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
     wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );

@@ -751,7 +751,7 @@ void CServerList::AutoDownloadFinished(uint32 result) {
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, wxString( _("Failed to download the server list from ") ) + URLUpdate);
+		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
 	}
 	
 	++current_url_index;
