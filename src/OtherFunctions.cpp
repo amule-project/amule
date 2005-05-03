@@ -1342,6 +1342,29 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_gap_status.Decode(gapdata, gaplen - sizeof(uint32));
 }
 
+unsigned char RLE_Data_BV::m_buff[256];
+
+RLE_Data_BV::RLE_Data_BV(int len) : m_last_buff(len)
+{
+}
+
+int RLE_Data_BV::Encode(std::vector<bool> &data)
+{
+	unsigned char *curr = m_buff;
+	std::vector<bool>::const_iterator i = data.begin();
+	std::vector<bool>::const_iterator j = m_last_buff.begin();
+	while( i != data.end() ) {
+		unsigned char count = 0;
+		while ( (i != data.end()) && ( (*i ^ *j) == false) ) {
+			count++;
+			i++;
+			j++;
+		}
+		*curr++ = count;
+	}
+	m_last_buff = data;
+	return 0;
+}
 
 wxString GetLocaleDir() {
 #if 1 /* !defined(__WXMSW__) || !wxCHECK_VERSION_FULL(2,6,0,2) */
