@@ -421,7 +421,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 #ifdef AMULE_DAEMON
-	cmdline.AddSwitch(wxT("f"), wxT("no-daemon"), wxT("Does not fork to background."));
+	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
 #else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
@@ -445,7 +445,7 @@ bool CamuleApp::OnInit()
 
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
-	enable_daemon_fork = !cmdline.Found(wxT("no-daemon"));
+	enable_daemon_fork = !cmdline.Found(wxT("full-daemon"));
 #else
 	enable_daemon_fork = false;
 #endif	
