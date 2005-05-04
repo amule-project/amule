@@ -876,3 +876,21 @@ bool CheckDirExists(const wxString& dir)
 	struct stat st;
 	return (CFile::Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
 }
+
+bool BackupFile(const wxString& filename, const wxString& appendix)
+{
+
+	if ( !UTF8_CopyFile(filename, filename + appendix) ) {
+		AddDebugLogLineM( false, logFileIO, wxT("Could not create backup of ") + filename);
+		return false;
+	}
+	
+	// Kry - Safe Backup
+	CFile safebackupfile;
+	safebackupfile.Open(filename + appendix,CFile::read_write);
+	safebackupfile.Flush();
+	safebackupfile.Close();
+	// Kry - Safe backup end
+	
+	return true;
+}

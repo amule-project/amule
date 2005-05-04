@@ -144,7 +144,6 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
-	filefn.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -220,7 +219,6 @@ amuled_SOURCES = \
         ED2KLink.cpp \
         EMSocket.cpp \
         ExternalConn.cpp \
-        filefn.cpp \
 	Format.cpp \
         Friend.cpp \
 	FriendList.cpp \
@@ -369,7 +367,6 @@ noinst_HEADERS = AddFileThread.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
-		 filefn.h \
 		 Friend.h \
 		 FriendList.h \
 		 FriendListCtrl.h \

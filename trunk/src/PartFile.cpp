@@ -1008,7 +1008,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
 
-		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
+		UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
 			// not error, just backup
@@ -1021,7 +1021,7 @@ bool CPartFile::SavePartFile(bool Initial)
 				% PARTMET_BAK_EXT,
 				_("Message"), wxOK);
 					
-			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
+			UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
 	
