@@ -167,8 +167,16 @@ private:
 	wxString m_filePath;
 };
 
-bool UTF8_MoveFile(const wxString& from, const wxString& to); // Move file with safe UTF8 name.
-bool UTF8_CopyFile(const wxString& from, const wxString& to); // Copy file with safe UTF8 name.
+// Move file with safe UTF8 name.
+bool UTF8_MoveFile(const wxString& from, const wxString& to); 
+
+// Copy file with safe UTF8 name.
+bool UTF8_CopyFile(const wxString& from, const wxString& to); 
+
+// Makes a backup of a file, by copying the original file to filename + appendix
+bool BackupFile(const wxString& filename, const wxString& appendix);
+
+// Get the LastModificationTime for a file.
 time_t GetLastModificationTime(const wxString& file);
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
