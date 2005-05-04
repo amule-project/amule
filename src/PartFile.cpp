@@ -74,7 +74,6 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
-#include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
