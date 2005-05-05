@@ -426,7 +426,6 @@ off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const
 {
 	off_t total_done = 0;
 	int retries = 0; 
-	int done = Read(pBuf,nCount);
 	while ((total_done < nCount) && (retries <= nRetries)) {
 		int done = Read(pBuf+total_done,nCount-total_done);
 		if (done == wxInvalidOffset) {
