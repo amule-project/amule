@@ -449,11 +449,13 @@ case "$WX_VERSION_FULL" in
 2.5.2)
 	USE_24GSOCKET="no"
 	gtk_tray="no"
+	havegtk="not_needed"
 	;;
 *)
 	USE_GSOCKET="no"
 	USE_24GSOCKET="no"
 	gtk_tray="no"
+	havegtk="not_needed"
 	;;
 esac
 
