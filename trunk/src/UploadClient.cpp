@@ -60,6 +60,7 @@
 //	which are mainly used for uploading functions 
 
 #ifndef CLIENT_GUI
+
 uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasevalue) const
 {
 	//TODO: complete this (friends, uploadspeed, amuleuser etc etc)
@@ -130,6 +131,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		// a 15 min bonus while you are in the first 15 min :)
 		// (to avoid 20 sec downloads) after this the score won't raise anymore 
 		fBaseValue = (float)(m_dwUploadTime-GetWaitStartTime());
+		wxASSERT( m_dwUploadTime-GetWaitStartTime() >= 0 ); // Obviously
 		fBaseValue += (float)(::GetTickCount() - m_dwUploadTime > 900000)? 900000:1800000;
 		fBaseValue /= 1000;
 	}
@@ -139,13 +141,6 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	
 	if (!onlybasevalue) {
 		fBaseValue *= (float(filepriority)/10.0f);
-	}
-	if (!isdownloading && !onlybasevalue) {
-		if (sysvalue && HasLowID() && !IsConnected()) {
-			if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID() || theApp.listensocket->TooManySockets()) {
-				return 0;
-			}
-		}
 	}
 	if( (IsEmuleClient() || GetClientSoft() < 10) && m_byEmuleVersion <= 0x19) {
 		fBaseValue *= 0.5f;
