@@ -967,14 +967,14 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	
 	if ( tag->HaveFile() ) {
 		CMD4Hash filehash = tag->FileID();
-		m_requpfile = theApp.sharedfiles->GetByID(filehash);
-		if ( !m_requpfile ) {
-			m_requpfile = theApp.downloadqueue->GetByID(filehash);
+		m_uploadingfile = theApp.sharedfiles->GetByID(filehash);
+		if ( !m_uploadingfile ) {
+			m_uploadingfile = theApp.downloadqueue->GetByID(filehash);
 		}
 	} else {
-		m_requpfile = 0;
+		m_uploadingfile = NULL;
 	}
-	
+
 	m_nCurSessionUp = 0;
 
 	CreditStruct *credit_struct = new CreditStruct;

@@ -418,9 +418,40 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
-		return (off_t)iRc;
+		return iRc;
 	}
 }
+
+off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const 
+{
+	off_t total_done = 0;
+	int retries = 0; 
+	int done = Read(pBuf,nCount);
+	while ((total_done < nCount) && (retries <= nRetries)) {
+		int done = Read(pBuf+total_done,nCount-total_done);
+		if (done == wxInvalidOffset) {
+			// Woops, failure!
+			throw wxString(wxT("Error while reading file!"));
+		} else {
+			total_done += done;
+			wxASSERT(total_done <= nCount);
+			if (total_done == nCount) {
+				// This file is done.
+			} else {
+				retries++;
+			}			
+		}
+	}
+	
+	if (total_done < nCount) {
+		// The total bytes were not reached on the specified replies.
+		throw wxString(wxString::Format(wxT("Error while reading file (unable to read %d bytes on two retries)!"), nCount));
+	}
+		
+	wxASSERT(total_done == nCount);
+	return total_done; // Which should equal nCount	
+}
+
 
 // write
 size_t CFile::Write(const void *pBuf, size_t nCount)

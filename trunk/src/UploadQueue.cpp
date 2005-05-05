@@ -174,8 +174,8 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	newclient->ResetSessionUp();
 	uploadinglist.AddTail(newclient);
 	
-	// statistic
-	CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(newclient->GetUploadFileID());
+	// Statistic
+	CKnownFile* reqfile = (CKnownFile*) newclient->GetUploadFile();
 	if (reqfile) {
 		reqfile->statistic.AddAccepted();
 	}
@@ -387,10 +387,10 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		return;
 	}
 	
-
 	// statistic values
-	if ( client->GetUploadFile() ) {
-		client->GetUploadFile()->statistic.AddRequest();
+	CKnownFile* reqfile = (CKnownFile*) client->GetUploadFile();
+	if (reqfile) {
+		reqfile->statistic.AddRequest();
 	}
 	
 	// TODO find better ways to cap the list

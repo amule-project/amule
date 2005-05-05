@@ -200,9 +200,9 @@ void CUpDownClient::Init()
 
 	m_nLastBlockOffset = 0;
 
-	m_requpfile = NULL;
-
 	m_bMsgFiltered = false;
+
+	m_uploadingfile = NULL;
 
 	if (m_socket) {
 		amuleIPV4Address address;
