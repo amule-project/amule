@@ -516,15 +516,16 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
 	if (newreqfile) {
 		newreqfile->AddUploadingClient(this);
-		SetUploadFileID(newreqfile->GetFileHash());
+		m_requpfileid = newreqfile->GetFileHash();
+		m_uploadingfile = newreqfile;
 	} else {
 		ClearUploadFileID();
 	}
 
-	if (oldreqfile) {		
-		oldreqfile->RemoveUploadingClient(this);	
+	if (oldreqfile) {
+		oldreqfile->RemoveUploadingClient(this);
 	}
-	
+
 }
 
 
@@ -854,11 +855,11 @@ void CUpDownClient::CheckForAggressive()
 
 
 void CUpDownClient::SetUploadFileID(const CMD4Hash& new_id) { 
-	m_requpfileid = new_id;
-	// Update the uploading file found (this could actually make it null!)
-	m_uploadingfile = theApp.sharedfiles->GetFileByID(new_id);
-	if ( !m_uploadingfile ) {
+	// Update the uploading file found 
+	CKnownFile* uploadingfile = theApp.sharedfiles->GetFileByID(new_id);
+	if ( !uploadingfile ) {
 		// Can this really happen?
-		m_uploadingfile = theApp.downloadqueue->GetFileByID(new_id);
+		uploadingfile = theApp.downloadqueue->GetFileByID(new_id);
 	}
+	SetUploadFileID(uploadingfile); // This will update queue count on old and new file.
 }
