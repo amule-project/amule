@@ -57,10 +57,6 @@
 		#include <mntent.h>
 	#endif /* __BSD__ */
 
-	#include <X11/Xlib.h>		// Needed for XParseGeometry
-	#include <gdk/gdk.h>
-	#include <gtk/gtk.h>
-	
 #endif
 
 #ifdef HAVE_CONFIG_H
