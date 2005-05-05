@@ -173,8 +173,6 @@ public:
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
-	void	AddQueuedCount() {m_iQueuedCount++; UpdateAutoUpPriority();};
-	void	SubQueuedCount() {if(m_iQueuedCount) m_iQueuedCount--; UpdateAutoUpPriority();}
 	uint32	GetQueuedCount() const {return m_iQueuedCount;}
 
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);

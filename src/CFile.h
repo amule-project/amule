@@ -151,6 +151,9 @@ public:
 			Close(); 
 		}
 	}
+	
+	// This safe read will throw() on some issues
+	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
 
 	// This is to avoid wxStat
 	static int Stat( const wxString& file_name, struct stat *buf);

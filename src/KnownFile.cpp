@@ -174,20 +174,27 @@ CKnownFile::~CKnownFile(){
 	
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
-		(*it)->ResetUploadFile();
+		(*it)->ClearUploadFileID();
 	}
 	
 	delete m_pAICHHashSet;
 }
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client){
+	m_iQueuedCount++;
+	UpdateAutoUpPriority();
 	m_ClientUploadList.insert(client);
 }
 
-
-
-
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
+	
+	wxASSERT(m_iQueuedCount); // There must be at least one client.
+	
+	if (m_iQueuedCount) {
+		m_iQueuedCount--;
+	} 
+	
+	UpdateAutoUpPriority();
 	m_ClientUploadList.erase(client);
 }
 
@@ -785,27 +792,29 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 }
 
 // Updates priority of file if autopriority is activated
-//void CKnownFile::UpdateUploadAutoPriority(void)
 void CKnownFile::UpdateAutoUpPriority(void)
 {
-		if (!IsAutoUpPriority())
-			return;
+	#warning This function is called TOO MUCH times, give the fact that every client added triggers it.
+	
+	if (!IsAutoUpPriority())
+		return;
 
-		if ( GetQueuedCount() > 20 ) {
-			if ( GetUpPriority() != PR_LOW ) {
-				SetUpPriority(PR_LOW, false);
-				Notify_SharedFilesUpdateItem(this);
-			}
-			return;
-		}
-
-		if ( GetQueuedCount() > 1 ) {
-			if ( GetUpPriority() != PR_NORMAL ) {
-				SetUpPriority(PR_NORMAL, false);
-				Notify_SharedFilesUpdateItem(this);
+	if ( GetQueuedCount() > 20 ) {
+		if ( GetUpPriority() != PR_LOW ) {
+			SetUpPriority(PR_LOW, false);
+			Notify_SharedFilesUpdateItem(this);
 		}
 		return;
 	}
+
+	if ( GetQueuedCount() > 1 ) {
+		if ( GetUpPriority() != PR_NORMAL ) {
+			SetUpPriority(PR_NORMAL, false);
+			Notify_SharedFilesUpdateItem(this);
+		}
+		return;
+	}
+	
 	if ( GetUpPriority() != PR_HIGH ) {
 		SetUpPriority(PR_HIGH, false);
 		Notify_SharedFilesUpdateItem(this);
@@ -857,8 +866,9 @@ void CKnownFile::SetFileRate(int8 iNewRate)
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	m_iUpPriority = iNewUpPriority;
-	if( IsPartFile() && m_bsave )
+	if( IsPartFile() && m_bsave ) {
 		((CPartFile*)this)->SavePartFile();
+	}
 }
 
 void CKnownFile::SetPublishedED2K(bool val){

@@ -752,7 +752,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
@@ -791,7 +791,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 
 	valuemap.CreateTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft(), this);
 	
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
+	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
 		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);

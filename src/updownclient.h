@@ -354,15 +354,22 @@ public:
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const { return m_bMultiPacket;	}
 
-	//! Only call this function if the old requpfile is being deleted
-	void		ResetUploadFile();
 	void		SetUploadFileID(CKnownFile *newreqfile);
+	
+	/**
+	 *Gets the file actually on upload
+	 *
+	 */
+	const CKnownFile* GetUploadFile() const { return m_uploadingfile; }
+ 	
+	void		SendOutOfPartReqsAndAddToWaitingQueue();
 	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
-	CKnownFile*	GetUploadFile()		{ return m_requpfile; }
 	const CMD4Hash&	GetUploadFileID() const	{ return m_requpfileid; }
+	void	SetUploadFileID(const CMD4Hash& new_id);
+	void	ClearUploadFileID() { m_requpfileid.Clear(); m_uploadingfile = NULL;};
 	uint32		SendBlockData(float kBpsToSend);
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
@@ -531,7 +538,7 @@ public:
 	 * @return True if sent, false if connecting
 	 */
 	bool	SendMessage(const wxString& message);
- 	
+	 
 private:
 	/**
 	 * This struct is used to keep track of CPartFiles which this source shares.
@@ -631,7 +638,6 @@ private:
 	uint32		m_dwLastUpRequest;
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
-	CKnownFile*	m_requpfile;
 	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
 
@@ -754,6 +760,8 @@ private:
 	wxString		m_pendingMessage;
 
 	int SecIdentSupRec;
+
+	CKnownFile* m_uploadingfile;
 };
 
 

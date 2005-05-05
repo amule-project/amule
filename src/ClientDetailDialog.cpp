@@ -113,7 +113,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
 	}
 
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
+	const CKnownFile* file = m_client->GetUploadFile();
 	
 	if ( file ) {
 		wxString filename = MakeStringEscaped( TruncateFilename( file->GetFileName(), 60 ) );
