@@ -800,7 +800,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	RemoveSystray();
 #endif
 
-	#warning This will be here till the core close is != app close
+	// This will be here till the core close is != app close
 	theApp.ShutDown();
 
 }
