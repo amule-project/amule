@@ -115,4 +115,7 @@ private:
 
 } // End namespace
 
+void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID);
+wxString KadGetKeywordBytes(const wxString& rstrKeywordW);
+
 #endif // __KAD_KADEMLIA_H__

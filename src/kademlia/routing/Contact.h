@@ -36,75 +36,84 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#ifndef __KAD_ENTRY_H__
-#define __KAD_ENTRY_H__
+#ifndef __CONTACT_H__
+#define __CONTACT_H__
 
 #include "../utils/UInt128.h"
-#include "../kademlia/Tag.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
-class CEntry
-{
-public:
-	CEntry()
-	{
-		ip = 0;
-		tcpport = 0;
-		udpport = 0;
-		size = 0;
-		lifetime = time(NULL);
-		source = false;
-	}
-	~CEntry()
-	{
-		TagList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); ++it)
-			delete *it;
-	}
-	
-	uint32 GetIntTagValue(const wxString& tagname) const
-	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsInt()) {
-				return tag->GetInt();
-			}
-		}
-		return 0;
-	}
+class CRoutingZone;
+class CRoutingBin;
 
-	wxString GetStrTagValue(const wxSTring& tagname) const
+class CContact
+{
+	friend class CRoutingZone;
+	friend class CRoutingBin;
+
+public:
+
+	~CContact();
+	CContact();
+	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type);
+	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type, const CUInt128 &target);
+
+	void getClientID(CUInt128 *id) const;
+	CUInt128 getClientID() const {return m_clientID;}
+	void getClientID(wxString *id) const;
+	void setClientID(const CUInt128 &clientID);
+
+	void getDistance(CUInt128 *distance) const;
+	void getDistance(wxString *distance) const;
+
+	uint32 getIPAddress(void) const;
+	void getIPAddress(wxString *ip) const;
+	void setIPAddress(uint32 ip);
+
+	uint16 getTCPPort(void) const;
+	void getTCPPort(wxString *port) const;
+	void setTCPPort(uint16 port);
+
+	uint16 getUDPPort(void) const;
+	void getUDPPort(wxString *port) const;
+	void setUDPPort(uint16 port);
+
+	byte getType(void) const;
+	void setType(byte type);
+
+	bool madeContact(void) const;
+	void madeContact(bool val);
+
+	bool getGuiRefs(void) const { return m_guiRefs; }
+	void setGuiRefs(bool refs) { m_guiRefs = refs; }
+
+	bool inUse(void) {return (m_inUse>0); }
+	void incUse(void) {m_inUse++;}
+	void decUse(void) 
 	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsStr()) {
-				return tag->GetStr();
-			}
+		if (m_inUse) {
+			m_inUse--;
+		}else {
+			ASSERT(0);
 		}
-		return wxT("");
-	}	
+	}
 	
-	uint32 ip;
-	uint16 tcpport;
-	uint16 udpport;
-	CUInt128 keyID;
-	CUInt128 sourceID;
-	CTagValueString fileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32	size;
-	TagList taglist;
-	time_t lifetime;
-	bool source;
+private:
+	CUInt128	m_clientID;
+	CUInt128	m_distance;
+	uint32		m_ip;
+	uint16		m_tcpPort;
+	uint16		m_udpPort;
+	byte		m_type;
+	bool		m_madeContact;
+	bool		m_guiRefs;
+	time_t		m_lastTypeSet;
+	time_t		m_expires;
+	uint32		m_inUse;
 };
 
-}
+} // End namespace
 
-#endif // __KAD_ENTRY_H__
+#endif // __CONTACT_H__
