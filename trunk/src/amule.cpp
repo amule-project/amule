@@ -125,6 +125,10 @@
 #include <sys/statvfs.h>
 #endif
 
+#ifdef HAVE_SYS_WAIT_H
+#include <sys/wait.h>
+#endif
+
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
 #else
@@ -856,17 +860,7 @@ bool CamuleApp::OnInit()
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
 		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
-		#ifndef AMULE_DAEMON
-		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
-		if (!webserver_pid) {
-			AddLogLineM(false, _(
-				"You requested to run webserver from startup, "
-				"but the amuleweb binary cannot be run. "
-				"Please install the package containing aMule webserver, "
-				"or compile aMule using --enable-webserver and run make install"));
-		}
-		#else
-		// wxBase has no async wxExecute
+#ifdef AMULE_DAEMON
 		int pid = fork();
 		if ( pid == -1 ) {
 			printf("ERROR: fork failed with code %d\n", errno);
@@ -876,17 +870,33 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				// wait few seconds to give amuleweb chance to start or forked child to exit
-				sleep(3);
-				if (wxProcess::Exists(pid)) {
-					printf("aMuleweb is running on pid %d\n", pid);
-					webserver_pid = pid;
-				} else {
-					printf("ERROR: aMuleweb not started\n");
-				}
+				webserver_pid = pid;
 			}
 		}
-		#endif
+#else
+		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
+#endif
+		// give amuleweb chance to start or forked child to exit
+		// 1 second if enough time to fail on "path not found"
+		wxSleep(1);
+		int status, result;
+		if ( (result = wait4(webserver_pid, &status, WNOHANG, 0)) == -1 ) {
+			printf("ERROR: wait4 call failed\n");
+		} else {
+			if ( status && WIFEXITED(status) ) {
+				webserver_pid = 0;
+			}
+		}
+		if (webserver_pid) {
+			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
+		} else {
+			ShowAlert(_(
+				"You requested to run webserver from startup, "
+				"but the amuleweb binary cannot be run. "
+				"Please install the package containing aMule webserver, "
+				"or compile aMule using --enable-webserver and run make install"),
+				_("Error"), wxOK | wxICON_ERROR);
+		}
 	}
 #endif /* ! __WXMSW__ */
 
