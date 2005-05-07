@@ -77,7 +77,9 @@ enum DebugType
 	//! Warnings/Errors related to searching.
 	logSearch,
 	//! Warnings/Errors related to the server UDP socket.
-	logServerUDP
+	logServerUDP,
+	//! Warning/Errors related to Kademlia UDP comunication on client
+	logClientKadUDP
 };
 
 
