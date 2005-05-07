@@ -72,12 +72,12 @@ enum {
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.0.0")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.0.1")
 #endif
 
 #define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
-#define	VERSION_UPDATE		0 
+#define	VERSION_UPDATE		1 
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
@@ -460,9 +460,9 @@ const unsigned int UNLIMITED =	 		0;
 #define	CT_EMULE_UDPPORTS		0xf9
 #define	CT_EMULE_MISCOPTIONS1		0xfa
 #define	CT_EMULE_VERSION		0xfb
-#define CT_EMULE_RESERVED10		0xfc
-#define CT_EMULE_RESERVED11		0xfd
-#define CT_EMULE_RESERVED12		0xfe
+#define CT_EMULE_BUDDYIP		0xfc
+#define CT_EMULE_BUDDYUDP		0xfd
+#define CT_EMULE_MISCOPTIONS2	0xfe
 #define CT_EMULE_RESERVED13		0xff
 
 #define	MP_MESSAGE			10102
