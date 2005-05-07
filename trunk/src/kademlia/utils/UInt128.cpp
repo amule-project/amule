@@ -124,8 +124,9 @@ CUInt128& CUInt128::setValue(uint32 value)
 CUInt128& CUInt128::setValueBE(const byte *valueBE)
 {
 	setValue((uint32)0);
-	for (int i=0; i<16; ++i)
+	for (int i=0; i<16; ++i) {
 		m_data[i/4] |= ((uint32)valueBE[i]) << (8*(3-(i%4)));
+	}
 	return *this;
 }
 

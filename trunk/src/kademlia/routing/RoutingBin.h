@@ -36,75 +36,49 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#ifndef __KAD_ENTRY_H__
-#define __KAD_ENTRY_H__
+#ifndef __ROUTING_BIN__
+#define __ROUTING_BIN__
 
-#include "../utils/UInt128.h"
-#include "../kademlia/Tag.h"
+#include "Maps.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
-class CEntry
-{
-public:
-	CEntry()
-	{
-		ip = 0;
-		tcpport = 0;
-		udpport = 0;
-		size = 0;
-		lifetime = time(NULL);
-		source = false;
-	}
-	~CEntry()
-	{
-		TagList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); ++it)
-			delete *it;
-	}
-	
-	uint32 GetIntTagValue(const wxString& tagname) const
-	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsInt()) {
-				return tag->GetInt();
-			}
-		}
-		return 0;
-	}
+class CUInt128;
+class CRoutingZone;
+class CContact;
 
-	wxString GetStrTagValue(const wxSTring& tagname) const
-	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsStr()) {
-				return tag->GetStr();
-			}
-		}
-		return wxT("");
-	}	
-	
-	uint32 ip;
-	uint16 tcpport;
-	uint16 udpport;
-	CUInt128 keyID;
-	CUInt128 sourceID;
-	CTagValueString fileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32	size;
-	TagList taglist;
-	time_t lifetime;
-	bool source;
+class CRoutingBin
+{
+	friend class CRoutingZone;
+
+public:
+
+	~CRoutingBin();
+
+private:
+
+	CRoutingBin();
+	bool add(CContact *contact);
+	void setAlive(uint32 ip, uint16 port);
+	void setTCPPort(uint32 ip, uint16 port, uint16 tcpPort);
+	void remove(CContact *contact);
+	CContact *getContact(const CUInt128 &id);
+	CContact *getOldest(void);
+
+	uint32 getSize() const;
+	uint32 getRemaining(void) const;
+	void getEntries(ContactList *result, bool emptyFirst = true);
+	int getClosestTo(int maxType, const CUInt128 &target, int maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false);
+
+	// Debug purposes.
+//	void dumpContents(void);
+
+	bool m_dontDeleteContacts;
+	ContactList m_entries;
 };
 
-}
+} // End namespace
 
-#endif // __KAD_ENTRY_H__
+#endif // __ROUTING_BIN__

@@ -36,75 +36,39 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#ifndef __KAD_ENTRY_H__
-#define __KAD_ENTRY_H__
+#ifndef __KAD_PING_H__
+#define __KAD_PING_H__
 
-#include "../utils/UInt128.h"
-#include "../kademlia/Tag.h"
+//#include "../../stdafx.h"
+
+#include "Maps.h"
+#include "Timer.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
-class CEntry
+class CRoutingZone;
+class CUInt128;
+class CRoutingBin;
+
+#warning Kry - WTF?? Need to find a proper replacement!
+class CPing : public CCriticalSection, public CTimerEvent
 {
 public:
-	CEntry()
-	{
-		ip = 0;
-		tcpport = 0;
-		udpport = 0;
-		size = 0;
-		lifetime = time(NULL);
-		source = false;
-	}
-	~CEntry()
-	{
-		TagList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); ++it)
-			delete *it;
-	}
-	
-	uint32 GetIntTagValue(const wxString& tagname) const
-	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsInt()) {
-				return tag->GetInt();
-			}
-		}
-		return 0;
-	}
+	CPing(CRoutingZone *zone, const ContactList &test, const ContactList &replacements);
 
-	wxString GetStrTagValue(const wxSTring& tagname) const
-	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
-			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsStr()) {
-				return tag->GetStr();
-			}
-		}
-		return wxT("");
-	}	
-	
-	uint32 ip;
-	uint16 tcpport;
-	uint16 udpport;
-	CUInt128 keyID;
-	CUInt128 sourceID;
-	CTagValueString fileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32	size;
-	TagList taglist;
-	time_t lifetime;
-	bool source;
+	void responded(const byte *key);
+
+	void onTimer(void);
+
+private:
+
+	CRoutingZone *m_zone;
+	ContactList m_test;
+	ContactList m_replacements;
 };
 
-}
+} // End namespace
 
-#endif // __KAD_ENTRY_H__
+#endif // __KAD__PING_H__
