@@ -187,15 +187,22 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client){
 }
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
+
+	//	wxASSERT(m_iQueuedCount); // There must be at least one client.
 	
-	wxASSERT(m_iQueuedCount); // There must be at least one client.
+	SourceSet::iterator it = m_ClientUploadList.find(client);
+	if(it != m_ClientUploadList.end()) {
+		printf("====================== WARNING ===================\n");
+		printf("Double-removal of a client from a knownfile. Backtrace:\n");
+		otherfunctions::print_backtrace(0);
+	} else {
+		if (m_iQueuedCount) {
+			m_iQueuedCount--;
+		} 
+		UpdateAutoUpPriority();
+		m_ClientUploadList.erase(client);
+	}
 	
-	if (m_iQueuedCount) {
-		m_iQueuedCount--;
-	} 
-	
-	UpdateAutoUpPriority();
-	m_ClientUploadList.erase(client);
 }
 
 void CKnownFile::SetFilePath(const wxString& strFilePath)
@@ -1012,7 +1019,8 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 
 void CKnownFile::ClearPriority() {
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
-	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;		
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
+	UpdateAutoUpPriority();
 }
 
 #endif // CLIENT_GUI
