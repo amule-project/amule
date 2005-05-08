@@ -188,14 +188,13 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client){
 
 void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
 
-	//	wxASSERT(m_iQueuedCount); // There must be at least one client.
-	
 	SourceSet::iterator it = m_ClientUploadList.find(client);
 	if(it == m_ClientUploadList.end()) {
 		printf("====================== WARNING ===================\n");
 		printf("Double-removal of a client from a knownfile. Backtrace:\n");
 		otherfunctions::print_backtrace(0);
 	} else {
+		wxASSERT(m_iQueuedCount); // There must be at least one client.
 		if (m_iQueuedCount) {
 			m_iQueuedCount--;
 		} 
