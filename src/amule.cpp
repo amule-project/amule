@@ -997,14 +997,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	} else {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
-		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % thePrefs::GetPort();
+		err = (CFormat(_("Port %u is not available. You will be LOWID\n")) % thePrefs::GetPort()).GetString();
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
-		err = CFormat(_("Port %u is not available!\n\n"
+		err = (CFormat(_("Port %u is not available!\n\n"
 				"This means that you will be LOWID.\n\n"
 				"Check your network to make sure the port is open for output and input.")) % 
-				thePrefs::GetPort();
+				thePrefs::GetPort()).GetString();
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
 
