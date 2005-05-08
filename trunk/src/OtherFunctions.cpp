@@ -36,8 +36,7 @@
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 	#include <wx/msw/registry.h>
-	#if 0 /* wxCHECK_VERSION_FULL(2,6,0,2) */
-		// stupid wx forgot to install wx/msw/stdpaths.h
+	#if wxCHECK_VERSION_FULL(2,6,0,1)
 		#include <wx/stdpaths.h>
 	#endif
 #endif
@@ -1367,7 +1366,7 @@ int RLE_Data_BV::Encode(std::vector<bool> &data)
 }
 
 wxString GetLocaleDir() {
-#if 1 /* !defined(__WXMSW__) || !wxCHECK_VERSION_FULL(2,6,0,2) */
+#if !defined(__WXMSW__) || !wxCHECK_VERSION_FULL(2,6,0,1)
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 	return localeDir;
