@@ -787,7 +787,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		return;
 	}
 
-	type = (CFormat(_("Choose a folder for %s")) % type).GetString();
+	type = CFormat(_("Choose a folder for %s")) % type;
 
 	wxTextCtrl* widget = CastChild( id, wxTextCtrl );
 	wxString dir = widget->GetValue();
