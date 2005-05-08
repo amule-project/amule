@@ -1366,7 +1366,7 @@ int RLE_Data_BV::Encode(std::vector<bool> &data)
 }
 
 wxString GetLocaleDir() {
-#if !defined(__WXMSW__) || !wxCHECK_VERSION_FULL(2,6,0,1)
+#if !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 	return localeDir;
