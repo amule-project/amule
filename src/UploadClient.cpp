@@ -425,6 +425,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile)
 {
 	try {
+		m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
 		m_upPartStatus.clear();		
 		m_nUpPartCount = 0;
 		m_nUpCompleteSourcesCount= 0;
@@ -453,20 +454,26 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		
 			m_nUpPartCount = tempreqfile->GetPartCount();
 			m_upPartStatus.resize( m_nUpPartCount, 0 );
-		
-			uint16 done = 0;
-			while (done != m_nUpPartCount) {
-				uint8 toread = data->ReadUInt8();
-				for (sint32 i = 0;i != 8;i++){
-					m_upPartStatus[done] = (toread>>i)&1;
-					//	We may want to use this for another feature..
-					//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
-					// bPartsNeeded = true;
-					done++;
-					if (done == m_nUpPartCount) {
-						break;
+			
+			try {			
+				uint16 done = 0;
+				while (done != m_nUpPartCount) {
+					uint8 toread = data->ReadUInt8();
+					for (sint32 i = 0;i != 8;i++){
+						m_upPartStatus[done] = (toread>>i)&1;
+						//	We may want to use this for another feature..
+						//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
+						// bPartsNeeded = true;
+						done++;
+						if (done == m_nUpPartCount) {
+							break;
+						}
 					}
 				}
+			} catch(...) {
+				// We want the increment the frequency even if we didn't read everything
+				m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
+				throw;
 			}
 
 			if (GetExtendedRequestsVersion() > 1) {
@@ -492,6 +499,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		throw(error);
 	}
 		
+	m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
 	Notify_QlistRefreshClient(this);
 }
 
@@ -516,7 +524,12 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
 	if (newreqfile) {
 		newreqfile->AddUploadingClient(this);
-		m_requpfileid = newreqfile->GetFileHash();
+		if (m_requpfileid != newreqfile->GetFileHash() ){
+			m_requpfileid = newreqfile->GetFileHash();
+			m_upPartStatus.clear();
+		} else {
+			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
+		}
 		m_uploadingfile = newreqfile;
 	} else {
 		ClearUploadFileID();
@@ -524,6 +537,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 
 	if (oldreqfile) {
 		oldreqfile->RemoveUploadingClient(this);
+		oldreqfile->UpdateUpPartsFrequency( this, false ); // Decrement
 	}
 
 }
