@@ -404,7 +404,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		* Fixed Mac friends handling.
 		* Proper importing of files for Mac.
 		* Proper reading for amuleweb config on Mac.
-		* Made default Incoming folder for Mac to "~/Library/aMule Downloads"
+		* Made default Incoming folder for Mac to "~/Documents/aMule Downloads"
 				
 		- Windows Specific -
 		* Fixed a lot of compilation problems.
