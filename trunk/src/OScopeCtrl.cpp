@@ -281,7 +281,7 @@ void COScopeCtrl::RecreateGrid()
 	strTemp = otherfunctions::CastSecondsToHM((nPlotWidth/nShiftPixels) * (int)floor(sLastPeriod+0.5));
 		// floor(x + 0.5) is a way of doing round(x) that works with gcc < 3 ...
 	if (bStopped) {
-		strXUnits = (CFormat( _("Disabled [%s]") ) % strTemp).GetString();
+		strXUnits = CFormat( _("Disabled [%s]") ) % strTemp;
 	} else {
 		strXUnits = strTemp;
 	}	

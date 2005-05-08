@@ -106,7 +106,7 @@ void CCommentDialogLst::CompleteList()
 	if (count==0) {
 		info = _("No comments");
 	} else {
-		info = (CFormat( _("%s comment(s)")) % CastItoIShort(count)).GetString();
+		info = CFormat( _("%s comment(s)")) % CastItoIShort(count);
 	}
 	FindWindow(IDC_CMSTATUS)->SetLabel(info);
 	FindWindow(IDC_CMSTATUS)->GetParent()->Layout();

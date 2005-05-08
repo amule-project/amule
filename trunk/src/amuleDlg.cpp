@@ -762,9 +762,9 @@ void CamuleDlg::ShowTransferRate()
 	
 		wxString buffer2;
 		if ( theApp.serverconnect->IsConnected() ) {
-			buffer2 = (CFormat(_("aMule (%s | Connected)")) % buffer).GetString();
+			buffer2 = CFormat(_("aMule (%s | Connected)")) % buffer;
 		} else {
-			buffer2 = (CFormat(_("aMule (%s | Disconnected)")) % buffer).GetString();
+			buffer2 = CFormat(_("aMule (%s | Disconnected)")) % buffer;
 		}
 		m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 	}

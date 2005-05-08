@@ -154,9 +154,9 @@ bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
 		wxString msg;
 
 		if ( fatal ) {
-			msg = (CFormat( _("ERROR! Attempted to share %s") ) % a).GetString();
+			msg = CFormat( _("ERROR! Attempted to share %s") ) % a;
 		} else {
-			msg = (CFormat( _("WARNING! Sharing the following directory is not recommended: %s") ) % a).GetString();
+			msg = CFormat( _("WARNING! Sharing the following directory is not recommended: %s") ) % a;
 		}
 		
 		AddLogLineM(true, msg);
