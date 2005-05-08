@@ -162,7 +162,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 			wxInputStream* url_read_stream = GetInputStream(url_handler, m_url);
 			if (!url_read_stream) {					
 				#if wxCHECK_VERSION(2,5,1)			
-					throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError()));
+                    throw(wxString((const wxString&) (CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError())));
 				#else
 					throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
 				#endif

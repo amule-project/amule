@@ -760,7 +760,7 @@ void CStatistics::UpdateStatsTree() {
 	resize=false;
 
 	if (Start_time>0) {
-		(*h_uptime) = CFormat(_("Uptime: %s") ) % CastSecondsToHM(GetUptimeSecs());
+		(*h_uptime) = (CFormat(_("Uptime: %s") ) % CastSecondsToHM(GetUptimeSecs())).GetString();
 	}
 
 	theApp.downloadqueue->GetDownloadStats(myStats);
@@ -854,7 +854,7 @@ void CStatistics::UpdateStatsTree() {
 	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
 	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
 	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
-	(*up10) = CFormat(_("Average upload time: %s")) % CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime());
+	(*up10) = (CFormat(_("Average upload time: %s")) % CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime())).GetString();
 
 	if (stat_transferStarttime>0) {
 		(*con1) = wxString::Format(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);
@@ -869,13 +869,13 @@ void CStatistics::UpdateStatsTree() {
 	if (stat_transferStarttime==0) {
 		(*con4) = _("waiting for transfer...");
 	} else {
-		(*con4) =  CFormat(_("Time Since First Transfer: %s")) % CastSecondsToHM(GetTransferSecs());
+		(*con4) =  (CFormat(_("Time Since First Transfer: %s")) % CastSecondsToHM(GetTransferSecs())).GetString();
 	}
 
 	if (stat_serverConnectTime==0) {
 		(*con5) = _("Waiting for connection...");
 	}	else {
-		(*con5) = CFormat(_("Connected To Server Since: %s")) % CastSecondsToHM(GetServerSecs());
+		(*con5) = (CFormat(_("Connected To Server Since: %s")) % CastSecondsToHM(GetServerSecs())).GetString();
 	}
 
 	(*con6) = wxString::Format(_("Active Connections (estimate): %i"), theApp.listensocket->GetActiveConnections());
@@ -884,7 +884,7 @@ void CStatistics::UpdateStatsTree() {
 		
 		wxDateTime now = wxDateTime::Now();
 
-		(*con7) = CFormat(_("Max Connection Limit Reached: %i : %s")) % m_itemp % (now.FormatISODate() + wxT(" ") + now.FormatISOTime());
+		(*con7) = (CFormat(_("Max Connection Limit Reached: %i : %s")) % m_itemp % (now.FormatISODate() + wxT(" ") + now.FormatISOTime())).GetString();
 
 		m_ilastMaxConnReached = m_itemp;
 	} else if( m_itemp == 0 ) {
@@ -901,9 +901,9 @@ void CStatistics::UpdateStatsTree() {
 		
 	if (stat_sessionReceivedBytes>0 && stat_sessionSentBytes>0 ) {
 		if (stat_sessionReceivedBytes<stat_sessionSentBytes) {
-			(*tran0) = CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("%.2f : 1"),(float)stat_sessionSentBytes/stat_sessionReceivedBytes);
+			(*tran0) = (CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("%.2f : 1"),(float)stat_sessionSentBytes/stat_sessionReceivedBytes)).GetString();
 		} else {
-			(*tran0) = CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("1 : %.2f"),(float)stat_sessionReceivedBytes/stat_sessionSentBytes);
+			(*tran0) = (CFormat(_("Session UL:DL Ratio (Total): %s")) % wxString::Format(wxT("1 : %.2f"),(float)stat_sessionReceivedBytes/stat_sessionSentBytes)).GetString();
 		}
 	} else {
 			(*tran0) = _("Session UL:DL Ratio (Total): Not available");
@@ -915,9 +915,9 @@ void CStatistics::UpdateStatsTree() {
 	(*shar1) = wxString::Format(_("Number of Shared Files: %i"),file_count);
 
 	uint64 allsize=theApp.sharedfiles->GetDatasize();
-	(*shar2) = CFormat(_("Total size of Shared Files: %s")) % CastItoXBytes(allsize);
+	(*shar2) = (CFormat(_("Total size of Shared Files: %s")) % CastItoXBytes(allsize)).GetString();
 	
-	(*shar3) = CFormat(_("Average filesize: %s")) % ( (file_count != 0) ? CastItoXBytes((uint64)allsize/file_count) : wxT("-") );
+	(*shar3) = (CFormat(_("Average filesize: %s")) % ( (file_count != 0) ? CastItoXBytes((uint64)allsize/file_count) : wxT("-") )).GetString();
 
 	// get clientversion-counts
 

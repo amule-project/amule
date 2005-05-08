@@ -231,7 +231,7 @@ int CamuleDaemonApp::OnExit()
 void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	if ( flags | wxICON_ERROR ) {
-		title = CFormat(_("ERROR: %s")) % title;
+		title = (CFormat(_("ERROR: %s")) % title).GetString();
 	}
 	AddLogLine(title + wxT(" ") + msg);
 }
