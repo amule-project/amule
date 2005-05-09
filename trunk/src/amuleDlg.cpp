@@ -516,7 +516,12 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
 		" Contact: admin@amule.org (administrative issues) \n"
-		" Copyright (C) 2003-2005 aMule Team \n");
+		" Copyright (C) 2003-2005 aMule Team \n\n"
+		" Part of aMule is based on \n"
+		" Kademlia: Peer-to-peer routing based on the XOR metric.\n"
+		" Copyright (C) 2002 Petar Maymounkov\n"
+		" http://kademlia.scs.cs.nyu.edu\n");
+	
 	if (is_safe_state) {
 		wxMessageBox(msg);
 	}
