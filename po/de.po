@@ -1,13 +1,3 @@
-# translation of de1.po to Deutsch
-# translation of de.po to Deutsch
-# translation of de_new.po to
-# translation of new_de.po to
-# translation of new_de.po to
-# translation of new_de.po to
-# translation of new_de.po to
-# translation of new_de.po to
-# translation of tmp.po to
-# translation of tmp.po to
 # aMule i18n resource file.
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the same license as the aMule package.
@@ -16,9 +6,9 @@
 #
 msgid ""
 msgstr ""
+
 "Project-Id-Version: de1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-05 06:14+0200\n"
 "PO-Revision-Date: 2005-05-09 18:04+0200\n"
 "Last-Translator: Stefan Baldus <stefanero@amule.org>\n"
 "Language-Team: Deutsch <de@li.org>\n"
