@@ -65,9 +65,7 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#warning Remove
-extern LPCSTR _aszInvKadKeywordCharsA;
-extern LPCWSTR _awszInvKadKeywordChars;
+extern wxChar* InvKadKeywordChars;
 
 ////////////////////////////////////////
 using namespace Kademlia;

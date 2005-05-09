@@ -83,7 +83,7 @@ public:
 	static CSearch* prepareLookup(uint32 type, bool start, const CUInt128 &id);
 
 	// Will return unique search id, returns zero if already searching for this keyword.
-	static CSearch* prepareFindKeywords(bool bUnicode, wxString keyword1, uint32 uSearchTermsSize, byte* pucSearchTermsData);
+	static CSearch* prepareFindKeywords(bool bUnicode, const wxString& keyword1, uint32 uSearchTermsSize, byte* pucSearchTermsData);
 
 	static bool startSearch(CSearch* pSearch);
 	static void deleteSearch(CSearch* pSearch);
@@ -92,7 +92,7 @@ public:
 	static void processResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
 	static void processPublishResult(const CUInt128 &target, const uint8 load, const bool loadResponse);
 
-	static void getWords(wxString str, WordList *words);
+	static void getWords(const wxString& str, WordList *words);
 
 	static void updateStats(void);
 
