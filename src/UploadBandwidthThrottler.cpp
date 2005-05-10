@@ -37,7 +37,7 @@
 #include <algorithm>
 #include <limits>
 
-#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON)
+#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON) && !defined(__WINDOWS__)
 #include <wx/timer.h>
 
 #ifdef GetTickCount
@@ -51,6 +51,13 @@ uint32 GetTickCount() {
 #include "GetTickCount.h"
 #endif
 
+#ifdef _UI64_MAX
+#undef _UI64_MAX
+#endif
+
+#ifdef _I64_MAX
+#undef _I64_MAX
+#endif
 
 const uint32 _UI32_MAX = std::numeric_limits<uint32>::max();
 const sint32 _I32_MAX = std::numeric_limits<sint32>::max();
