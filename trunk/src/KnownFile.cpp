@@ -749,7 +749,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				for (int x = 0; x < GetPartCount(); x++ ) {
-					if ( srcstatus.at(x) ) {
+					if ( srcstatus[x] ) {
 						// this client has at least one chunk
 						bNeeded = true;
 						break;
