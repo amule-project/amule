@@ -249,7 +249,6 @@ protected:
 	uint16	m_iED2KPartHashCount;
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
-	uint32	m_iQueuedCount;
 	bool	m_PublishedED2K;
 
 };
