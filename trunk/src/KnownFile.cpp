@@ -700,7 +700,7 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	return hashlist[part];
 }
 
-CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if (m_ClientUploadList.empty() ) {
 		return NULL;
@@ -749,7 +749,7 @@ CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				for (int x = 0; x < GetPartCount(); x++ ) {
-					if ( srcstatus[x] ) {
+					if ( srcstatus.at(x) ) {
 						// this client has at least one chunk
 						bNeeded = true;
 						break;
