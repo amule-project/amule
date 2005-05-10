@@ -119,7 +119,6 @@ CKnownFile::CKnownFile() :
 	m_iPartCount(0),
 	m_iED2KPartCount(0),
 	m_iED2KPartHashCount(0),
-	m_iQueuedCount(0),
 	m_PublishedED2K(false)
 {
 	statistic.fileParent = this;
@@ -180,29 +179,29 @@ CKnownFile::~CKnownFile(){
 	delete m_pAICHHashSet;
 }
 
-void CKnownFile::AddUploadingClient(CUpDownClient* client){
-	m_iQueuedCount++;
+
+void CKnownFile::AddUploadingClient(CUpDownClient* client)
+{
 	UpdateAutoUpPriority();
-	m_ClientUploadList.insert(client);
-}
-
-void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
-
-	SourceSet::iterator it = m_ClientUploadList.find(client);
-	if(it == m_ClientUploadList.end()) {
+	if (!m_ClientUploadList.insert(client).second) {
 		printf("====================== WARNING ===================\n");
-		printf("Double-removal of a client from a knownfile. Backtrace:\n");
+		printf("Multiple insertions of a client into a knownfile. Backtrace:\n");
 		otherfunctions::print_backtrace(0);
-	} else {
-		wxASSERT(m_iQueuedCount); // There must be at least one client.
-		if (m_iQueuedCount) {
-			m_iQueuedCount--;
-		} 
-		UpdateAutoUpPriority();
-		m_ClientUploadList.erase(client);
 	}
-	
 }
+
+
+void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
+{
+	if (m_ClientUploadList.erase(client)) {
+		UpdateAutoUpPriority();
+	} else {
+		printf("====================== WARNING ===================\n");
+		printf("Multiple removals of a client from a knownfile. Backtrace:\n");
+		otherfunctions::print_backtrace(0);
+	}
+}
+
 
 void CKnownFile::SetFilePath(const wxString& strFilePath)
 {

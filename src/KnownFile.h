@@ -173,7 +173,7 @@ public:
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
-	uint32	GetQueuedCount() const {return m_iQueuedCount;}
+	uint32	GetQueuedCount() const {return m_ClientUploadList.size();}
 
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
