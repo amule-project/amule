@@ -174,7 +174,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString label = MOD_VERSION_LONG wxT(":\n");
 		label += wxString::Format(_("Download Speed: %.1f\n"), theApp.downloadqueue->GetKBps());
-		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetKBps());
+		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetDatarate() / 1024.0f);
 		label += _("\nSpeed Limits:\n");
 	
 		// Check for upload limits

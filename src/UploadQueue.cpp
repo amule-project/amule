@@ -60,6 +60,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"
+#include "UploadBandwidthThrottler.h"
 
 #ifndef AMULE_DAEMON
 	#include "OScopeCtrl.h"		// Needed for DelayPoints
@@ -72,15 +73,16 @@
 
 CUploadQueue::CUploadQueue()
 {
-	msPrevProcess = ::GetTickCount();
-	kBpsEst = 2.0;
-	kBpsUp = 0.0;
 	successfullupcount = 0;
 	failedupcount = 0;
 	totaluploadtime = 0;
 	m_nLastStartUpload = 0;
 
 	lastupslotHighID = true;
+
+	datarate = 0;
+	m_avarage_dr_sum = 0;
+	m_lastCalculatedDataRateTick = 0;
 }
 
 void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
@@ -172,6 +174,8 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 	}
 	newclient->SetUpStartTime();
 	newclient->ResetSessionUp();
+	
+    theApp.uploadBandwidthThrottler->AddToStandardList(uploadinglist.GetCount(), newclient->GetSocket());	
 	uploadinglist.AddTail(newclient);
 	
 	// Statistic
@@ -185,59 +189,46 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 
 void CUploadQueue::Process()
 {
-	static uint32	bytesNotCounted;
-	uint32	msCur = ::GetTickCount();
-
 	if (AcceptNewClient() && waitinglist.GetCount()) {
 		m_nLastStartUpload = ::GetTickCount();
 		AddUpNextClient();
 	}
-	
-	if (!uploadinglist.GetCount()) {
-		// We have to clean upload speed if there's no client or it will stay last value.
-		kBpsUp = 0;
-		bytesNotCounted = 0;
-		msPrevProcess = msCur;
-		return;
-	}
-	
-	int16 clientsrdy = 0;
-	for (POSITION pos = uploadinglist.GetHeadPosition();pos != 0; ) {
+
+	// The loop that feeds the upload slots with data.
+	POSITION pos = uploadinglist.GetHeadPosition();
+	while (pos != NULL) {
+		// Get the client. Note! Also updates pos as a side effect.	
 		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
-		if ( (cur_client->GetSocket()) && (!cur_client->GetSocket()->IsBusy()) && cur_client->HasBlocks()) {
-			clientsrdy++;
+		//It seems chatting or friend slots can get stuck at times in upload.. This needs looked into..
+		if (!cur_client->GetSocket()) {
+			RemoveFromUploadQueue(cur_client, _T("Uploading to client without socket? (CUploadQueue::Process)"));
+			if(cur_client->Disconnected(_T("CUploadQueue::Process"))){
+				cur_client->Safe_Delete();
+			}
+		} else {
+			cur_client->SendBlockData();
 		}
 	}
-	if (!clientsrdy) {
-		if ((kBpsEst -= 1.0) < 1.0)
-			kBpsEst = 1.0;
-		clientsrdy++;
-	} else {
-		kBpsEst += 1.0;
-		
-		if ( thePrefs::GetMaxUpload() != UNLIMITED ) {
-			if ( kBpsEst > (float)(thePrefs::GetMaxUpload()))
-				kBpsEst = (float)(thePrefs::GetMaxUpload());
-		}
-	}
-	float	kBpsSendPerClient = kBpsEst/clientsrdy;
-	uint32	bytesSent = 0;
-	for (POSITION pos = uploadinglist.GetHeadPosition(); pos != NULL; ) {
-		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
-		bytesSent += cur_client->SendBlockData(kBpsSendPerClient);
-	}
+
+	// Save used bandwidth for speed calculations
+	uint64 sentBytes = theApp.uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
 	
-	// smooth current UL rate with a first-order filter
-	if (msCur==msPrevProcess) {  		// sometimes we get two pulse quickly in a row
-		bytesNotCounted += bytesSent;	// avoid divide-by-zero in rate computation then
-	} else {
-		float	msfDeltaT = (float)(msCur-msPrevProcess);
-		float	lambda = std::exp(-msfDeltaT/4000.0);
-		kBpsUp = kBpsUp*lambda + (((bytesSent+bytesNotCounted)/1.024)/msfDeltaT)*(1.0-lambda);
-		bytesNotCounted = 0;
-		msPrevProcess = msCur;
+	wxMutexLocker lock(m_ratelock);
+	avarage_dr_list.AddTail(sentBytes);
+	m_avarage_dr_sum += sentBytes;
+
+	(void)theApp.uploadBandwidthThrottler->GetNumberOfSentBytesOverheadSinceLastCallAndReset();
+
+	// Save time beetween each speed snapshot
+	avarage_tick_list.AddTail(GetTickCount());
+
+	// don't save more than 30 secs of data
+	while(avarage_tick_list.GetCount() > 3 && ::GetTickCount()-avarage_tick_list.GetHead() > 30*1000) {
+		m_avarage_dr_sum -= avarage_dr_list.RemoveHead();
+		avarage_tick_list.RemoveHead();
 	}
 }
+
 
 bool CUploadQueue::AcceptNewClient()
 {
@@ -247,8 +238,9 @@ bool CUploadQueue::AcceptNewClient()
 	}
 
 	float kBpsUpPerClient = (float)thePrefs::GetSlotAllocation();
+	float kBpsUp = GetDatarate() / 1024.0f;
 	if (thePrefs::GetMaxUpload() == UNLIMITED) {
-		if ((uint32)uploadinglist.GetCount() < ((uint32)(kBpsUp/kBpsUpPerClient)+2)) {
+		if ((uint32)uploadinglist.GetCount() < ((uint32)((kBpsUp)/kBpsUpPerClient)+2)) {
 			return true;
 		}
 	} else {
@@ -427,7 +419,7 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindo
 			Notify_UploadCtrlRemoveClient(client);
 		}
 		uploadinglist.RemoveAt(pos);
-		if( client->GetTransferedUp() ) {
+		if( client->GetTransferredUp() ) {
 			successfullupcount++;
 			totaluploadtime += client->GetUpStartTimeDelay()/1000;
 		} else {
@@ -583,3 +575,28 @@ CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 		return waitinglist.GetAt(pos);
 	}
 }
+
+
+void CUploadQueue::UpdateDatarates()
+{
+	wxMutexLocker lock(m_ratelock);
+	
+    // Calculate average datarate
+    if(::GetTickCount()-m_lastCalculatedDataRateTick > 500) {
+        m_lastCalculatedDataRateTick = ::GetTickCount();
+
+        if(avarage_dr_list.GetSize() >= 2 && (avarage_tick_list.GetTail() > avarage_tick_list.GetHead())) {
+	        datarate = ((m_avarage_dr_sum-avarage_dr_list.GetHead())*1000) / (avarage_tick_list.GetTail()-avarage_tick_list.GetHead());
+        }
+    }
+}
+
+
+uint32 CUploadQueue::GetDatarate()
+{
+    UpdateDatarates();
+  
+	wxMutexLocker lock(m_ratelock);
+	return datarate;
+}
+

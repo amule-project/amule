@@ -245,7 +245,7 @@ void CStatistics::RecordHistory()
 	double		kBytesSent = stat_sessionSentBytes/1024.0;
 	static double	kBytesRecPrev, kBytesSentPrev;
 
-	kBpsUpCur = theApp.uploadqueue->GetKBps();
+	kBpsUpCur = theApp.uploadqueue->GetDatarate() / 1024.0f;
 	kBpsDownCur = theApp.downloadqueue->GetKBps();
     if (maxDown < kBpsDownCur)
 		maxDown = kBpsDownCur;

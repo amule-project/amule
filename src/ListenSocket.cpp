@@ -57,6 +57,8 @@
 
 //#define __PACKET_RECV_DUMP__
 
+IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
+
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
@@ -166,16 +168,10 @@ void *CClientReqSocketHandler::Entry()
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings)
 
-IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
-
 CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *ProxyData)
-:
-CEMSocket(ProxyData)
+	: CEMSocket(ProxyData)
 {
-	m_client = in_client;
-	if (m_client) {
-		m_client->SetSocket(this);
-	}
+	SetClient(in_client);
 	ResetTimeOutTimer();
 	deletethis = false;
 	last_action = ACTION_NONE;
@@ -193,25 +189,9 @@ CEMSocket(ProxyData)
 	Notify(false);
 #endif
 	theApp.listensocket->AddSocket(this);
-}
-
-void CClientReqSocket::OnInit()
-{
-	last_action = ACTION_CONNECT;
-}
-
-bool CClientReqSocket::Close()
-{
-	return CEMSocket::Close();
-}
-
-// Used in BaseClient.cpp, but not here.
-bool CClientReqSocket::Create()
-{
 	theApp.listensocket->AddConnection();
-	OnInit();
-	return true;
 }
+
 
 CClientReqSocket::~CClientReqSocket()
 {
@@ -232,10 +212,12 @@ CClientReqSocket::~CClientReqSocket()
 #endif
 }
 
+
 void CClientReqSocket::ResetTimeOutTimer()
 {
 	timeout_timer = ::GetTickCount();
 }
+
 
 bool CClientReqSocket::CheckTimeOut()
 {
@@ -248,16 +230,26 @@ bool CClientReqSocket::CheckTimeOut()
 	}
 #endif
 	// 0.42x
-	uint32 uTimeout = CONNECTION_TIMEOUT;
-	if(m_client) {
+	uint32 uTimeout = GetTimeOut();
+	if (m_client) {
 		#ifdef __USE_KAD__
 		if (m_client->GetKadState() == KS_CONNECTED_BUDDY) {
-			return false;
+			//We originally ignored the timeout here for buddies.
+			//This was a stupid idea on my part. There is now a ping/pong system
+			//for buddies. This ping/pong system now prevents timeouts.
+			//This release will allow lowID clients with KadVersion 0 to remain connected.
+			//But a soon future version needs to allow these older clients to time out to prevent dead connections from continuing.
+			//JOHNTODO: Don't forget to remove backward support in a future release.
+			if ( client->GetKadVersion() == 0 ) {
+				return false;
+			}
+			
+			uTimeout += MIN2MS(15);		
 		}
 		#endif
-		if (m_client->GetChatState()!=MS_NONE) {
-			timeout_timer = ::GetTickCount();
-			return false;
+		
+		if (m_client->GetChatState() != MS_NONE) {
+			uTimeout += CONNECTION_TIMEOUT;		
 		}
 	}
 	
@@ -276,19 +268,34 @@ bool CClientReqSocket::CheckTimeOut()
 	return false;	
 }
 
+
+void CClientReqSocket::SetClient(CUpDownClient* pClient)
+{
+	m_client = pClient;
+	if (m_client) {
+		m_client->SetSocket( this );
+	}
+}
+
+
+bool CClientReqSocket::Close()
+{
+	return CEMSocket::Close();
+}
+
+
 void CClientReqSocket::OnClose(int nErrorCode)
 {
 	// 0.42x
-	wxASSERT (theApp.listensocket->IsValidSocket(this));
+	wxASSERT(theApp.listensocket->IsValidSocket(this));
 	CEMSocket::OnClose(nErrorCode);
-	if (nErrorCode > 0) {
-		wxString strError;
-		strError = wxString::Format(wxT("Closed: %u"),nErrorCode);
-		Disconnect(strError);
+	if (nErrorCode) {
+		Disconnect(wxString::Format(wxT("Closed: %u"), nErrorCode));
 	} else {
 		Disconnect(wxT("Close"));
 	}
 }
+
 
 void CClientReqSocket::Disconnect(const wxString& strReason)
 {
@@ -330,6 +337,7 @@ void CClientReqSocket::Safe_Delete()
 		Close();
 	}
 }
+
 
 bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opcode)
 {
@@ -1173,6 +1181,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	return true;
 }
 
+
 bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
@@ -1710,7 +1719,8 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 }
 
 
-bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait) {
+bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait)
+{
 	last_action = ACTION_CONNECT;
 	return CEMSocket::Connect(addr, wait);
 }
@@ -1726,8 +1736,11 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 	} else if (!m_client->SendHelloPacket()) {	
 		// and now? Disconnect? not?				
 		AddDebugLogLineM( false, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
+	} else {
+		ResetTimeOutTimer();
 	}
 }
+
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
@@ -1736,18 +1749,14 @@ void CClientReqSocket::OnSend(int nErrorCode)
 	CEMSocket::OnSend(nErrorCode);
 }
 
+
 void CClientReqSocket::OnReceive(int nErrorCode)
 {
 	last_action = ACTION_RECEIVE;
+	ResetTimeOutTimer();
 	CEMSocket::OnReceive(nErrorCode);
-#ifdef AMULE_DAEMON
-	if ( LastCount() ) {
-		ResetTimeOutTimer();
-	}
-#else
-		ResetTimeOutTimer();
-#endif
 }
+
 
 void CClientReqSocket::RepeatLastAction() {
 	switch (last_action) {
@@ -1779,10 +1788,7 @@ void CClientReqSocket::OnError(int nErrorCode)
 	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	
-	bool disconnect = true;
-	
 	if ((nErrorCode == 0) || (nErrorCode == 7) || (nErrorCode == 0xFEFF)) {	
-		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
 				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
@@ -1823,11 +1829,9 @@ void CClientReqSocket::OnError(int nErrorCode)
 		}	
 	}
 	
-	if (disconnect) {
-		Disconnect(strError);
-	}
-	
+	Disconnect(strError);
 }
+
 
 bool CClientReqSocket::PacketReceived(CPacket* packet)
 {
@@ -1865,6 +1869,7 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
+
 bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
 	
 	bool filtered = false;
@@ -1900,6 +1905,38 @@ void CClientReqSocket::Destroy()
 	}
 }
 #endif
+
+
+SocketSentBytes CClientReqSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
+{
+    SocketSentBytes returnStatus = CEMSocket::SendControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
+
+    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
+        ResetTimeOutTimer();
+    }
+
+    return returnStatus;
+}
+
+
+SocketSentBytes CClientReqSocket::SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
+{
+	SocketSentBytes returnStatus = CEMSocket::SendFileAndControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
+
+    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
+        ResetTimeOutTimer();
+    }
+
+    return returnStatus;
+}
+
+
+void CClientReqSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
+{
+	ResetTimeOutTimer();
+	CEMSocket::SendPacket(packet,delpacket,controlpacket, actualPayloadSize);
+}
+
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -2043,13 +2080,9 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
-			if (AcceptWith(*newclient, false)) {
-				// OnInit currently sets the last_action to ACTION_CONNECT
-				newclient->OnInit();
-			} else {
+			if (!AcceptWith(*newclient, false)) {
 				newclient->Safe_Delete();
 			}
-			AddConnection();
 		}
 	}
 }

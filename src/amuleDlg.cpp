@@ -736,7 +736,7 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 
 void CamuleDlg::ShowTransferRate()
 {
-	float kBpsUp = theApp.uploadqueue->GetKBps();
+	float kBpsUp = theApp.uploadqueue->GetDatarate() / 1024.0f;
 	float kBpsDown = theApp.downloadqueue->GetKBps();
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )

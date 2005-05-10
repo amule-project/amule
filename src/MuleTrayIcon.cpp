@@ -354,7 +354,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = wxString::Format(_("Download Speed: %.1f"), theApp.downloadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetKBps());
+	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetDatarate() / 1024.0f);
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 

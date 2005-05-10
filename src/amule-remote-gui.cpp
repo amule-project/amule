@@ -1013,7 +1013,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	client->m_nDownloadState = state & 0xff;
 	client->m_nUploadState = (state >> 8) & 0xff;
 	
-	client->kBpsUp = tag->SpeedUp() / 1024.0;
+	client->m_nUpDatarate = tag->SpeedUp();
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
 		client->kBpsDown = tag->SpeedDown() / 1024.0;
 	} else {
@@ -1029,7 +1029,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	uint64 value = tag->XferUp();
 	credit_struct->nUploadedHi = value >> 32;
 	credit_struct->nUploadedLo = value & 0xffffffff;
-	client->m_nTransferedUp = tag->XferUpSession();
+	client->m_nTransferredUp = tag->XferUpSession();
 
 	value = tag->XferDown();
 	credit_struct->nDownloadedHi = value >> 32;
@@ -1042,7 +1042,7 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
 
 void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 {
-	m_kbps = tag->UpSpeed() / 1024;
+	m_datarate = tag->UpSpeed();
 	m_waiting_user_count = tag->ClientsInQueue();
 }
 

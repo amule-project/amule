@@ -312,7 +312,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 
 	//
 	// ul/dl speeds
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)(theApp.uploadqueue->GetKBps()*1024.0)));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, theApp.uploadqueue->GetDatarate()));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theApp.downloadqueue->GetKBps()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));

@@ -85,13 +85,12 @@ public:
  	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
- public:
 	void	OnClose(wxSocketError nErrorCode);
 	void	OnConnect(wxSocketError nErrorCode);
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(CPacket* packet);
-	bool	SendPacket(CPacket* packet, bool delpacket = true,bool controlpacket = true);
+	void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
 	bool	IsSolving() const { return m_IsSolving;};
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
