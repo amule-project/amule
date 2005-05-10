@@ -283,7 +283,8 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 {
 	if (!to) {
 		if (connected) {
-			return connectedsocket->SendPacket(packet, delpacket, true);
+			connectedsocket->SendPacket(packet, delpacket, true);
+			return true;
 		} else {
 			if ( delpacket ) {
 				delete packet;
@@ -292,7 +293,8 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 			return false;
 		}
 	} else {
-		return to->SendPacket(packet, delpacket, true);
+		to->SendPacket(packet, delpacket, true);
+		return true;
 	}
 }
 

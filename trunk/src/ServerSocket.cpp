@@ -203,7 +203,6 @@ CServerSocket::~CServerSocket()
 void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
 	CALL_APP_DATA_LOCK;
-	//CAsyncSocket::OnConnect(nErrorCode);
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
@@ -686,13 +685,13 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
-	if (connectionstate == CS_WAITFORLOGIN) {
-		SetConnectionState(CS_SERVERFULL);
-	} else if (connectionstate == CS_CONNECTED) {
-		SetConnectionState(CS_DISCONNECTED);
-	} else {
-		SetConnectionState(CS_NOTCONNECTED);
+	
+	switch (connectionstate) {
+		case CS_WAITFORLOGIN:	SetConnectionState(CS_SERVERFULL);		break;
+		case CS_DISCONNECTED:	SetConnectionState(CS_DISCONNECTED);	break;
+		default:				SetConnectionState(CS_NOTCONNECTED);	
 	}
+	
 	serverconnect->DestroySocket(this);
 }
 
@@ -708,10 +707,11 @@ void CServerSocket::SetConnectionState(sint8 newstate)
 	}
 }
 
-bool CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
+
+void CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
 	m_dwLastTransmission = GetTickCount();
-	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
+	CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize);
 }
 
 

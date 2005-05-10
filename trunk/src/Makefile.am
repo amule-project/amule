@@ -192,6 +192,7 @@ amule_SOURCES = \
 	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
+	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
 	kademlia/io/ByteIO.cpp \
@@ -250,6 +251,7 @@ amuled_SOURCES = \
 	Statistics.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
+	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
 	kademlia/io/ByteIO.cpp \

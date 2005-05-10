@@ -49,6 +49,7 @@
 #include "ArchSpecific.h"
 #include "OtherStructs.h" // for Gap_Struct
 
+
 #define	SEC2MS(sec)		((sec)*1000)
 #define	MIN2MS(min)		SEC2MS((min)*60)
 #define	HR2MS(hr)		MIN2MS((hr)*60)
@@ -98,14 +99,38 @@ inline int CmpAny(const wxChar* ArgA, const wxChar* ArgB)
 
 
 /**
- * Removes a value from a stl list, like list, vector or deque.
+ * Removes the first instance of a value from a STL-like list: list, vector or deque.
  *
  * @param list The list to manipulate.
  * @param item The value to search for and remove.
  * @return The number of instances removed.
  */
 template <typename LIST, typename ITEM>
-int EraseValue( LIST& list, const ITEM& item )
+unsigned int EraseFirstValue( LIST& list, const ITEM& item )
+{
+	typename LIST::iterator it = list.begin();
+
+	for (; it != list.end(); ++it) {
+		if (*it == item) {
+			list.erase(it);
+			
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+/**
+ * Removes all instances of a value from a STL-like list: list, vector or deque.
+ *
+ * @param list The list to manipulate.
+ * @param item The value to search for and remove.
+ * @return The number of instances removed.
+ */
+template <typename LIST, typename ITEM>
+unsigned int EraseValue( LIST& list, const ITEM& item )
 {
 	typename LIST::iterator it = list.begin();
 	unsigned int count = 0;

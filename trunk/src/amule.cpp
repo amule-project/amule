@@ -103,6 +103,7 @@
 #include "AICHSyncThread.h"
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#include "UploadBandwidthThrottler.h"
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -125,9 +126,7 @@
 #include <sys/statvfs.h>
 #endif
 
-#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
-#endif
 
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
@@ -271,92 +270,62 @@ int CamuleApp::OnExit()
 	}
 	
 	
-	if (serverlist) {
-		delete serverlist;
-		serverlist = NULL;
-	}
+	delete serverlist;
+	serverlist = NULL;
 	
-	if (searchlist) {
-		delete searchlist;
-		searchlist = NULL;
-	}
+	delete searchlist;
+	searchlist = NULL;
 	
-	if (clientcredits) {
-		delete clientcredits;
-		clientcredits = NULL;
-	}		
+	delete clientcredits;
+	clientcredits = NULL;
 
-	if (friendlist) {
-		delete friendlist;
-		friendlist = NULL;
-	}
+	delete friendlist;
+	friendlist = NULL;
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
-	if (sharedfiles) {
-		delete sharedfiles;
-		sharedfiles = NULL;
-	}
+	delete sharedfiles;
+	sharedfiles = NULL;
 	
-	if (serverconnect) {
-		delete serverconnect;
-		serverconnect = NULL;
-	}
+	delete serverconnect;
+	serverconnect = NULL;
 	
-	if (listensocket) {
-		delete listensocket;
-		listensocket = NULL;
-	}
+	delete listensocket;
+	listensocket = NULL;
 	
-	if (knownfiles) {
-		delete knownfiles;
-		knownfiles = NULL;
-	}
+	delete knownfiles;
+	knownfiles = NULL;
 	
-	if (clientlist) {
-		delete clientlist;
-		clientlist = NULL;
-	}
+	delete clientlist;
+	clientlist = NULL;
 	
-	if (uploadqueue) {
-		delete uploadqueue;
-		uploadqueue = NULL;
-	}
+	delete uploadqueue;
+	uploadqueue = NULL;
 	
-	if (downloadqueue) {
-		delete downloadqueue;
-		downloadqueue = NULL;
-	}
+	delete downloadqueue;
+	downloadqueue = NULL;
 	
-	if (ipfilter) {
-		delete ipfilter;
-		ipfilter = NULL;
-	}
+	delete ipfilter;
+	ipfilter = NULL;
 	
-	if (ECServerHandler) {
-		delete ECServerHandler;
-		ECServerHandler = NULL;
-	}
+	delete ECServerHandler;
+	ECServerHandler = NULL;
 
-	if (statistics) {
-		delete statistics;		
-	}		
+	delete statistics;
+	statistics = NULL;
 
-	if (glob_prefs) {
-		delete glob_prefs;
-		glob_prefs = NULL;
-		CPreferences::EraseItemList();
-	}
+	delete glob_prefs;
+	glob_prefs = NULL;
+	CPreferences::EraseItemList();
 
-	if (localserver) {
-		delete localserver;
-		localserver = NULL;
-	}
+	delete localserver;
+	localserver = NULL;
 	
-	if (applog) {
-		delete applog; // deleting a wxFFileOutputStream closes it
-		applog = NULL;
-	}
+	delete applog; // deleting a wxFFileOutputStream closes it
+	applog = NULL;
+	
+	delete uploadBandwidthThrottler;
+	uploadBandwidthThrottler = NULL;
 	
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
@@ -805,6 +774,7 @@ bool CamuleApp::OnInit()
 	// Ready file-hasher
 	CAddFileThread::Start();
 
+    uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	clientlist	= new CClientList();
 	friendlist = new CFriendList();
 	searchlist	= new CSearchList();
@@ -1213,7 +1183,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetKBps());
+		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetDatarate() / 1024.0f);
 		
 		emulesig_string += temp + wxT("|");		
 		amulesig_out.AddLine(temp);
@@ -1626,7 +1596,8 @@ void CamuleApp::ShutDown() {
 	if (CAICHSyncThread::IsRunning()) {
 		CAICHSyncThread::Stop();
 	}
-	
+
+    theApp.uploadBandwidthThrottler->EndThread();
 }
 
 bool CamuleApp::AddServer(CServer *srv, bool fromUser)

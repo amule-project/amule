@@ -26,7 +26,7 @@
 #ifndef THROTTLEDSOCKET_H
 #define THROTTLEDSOCKET_H
 
-#include "types.h"
+#include "Types.h"
 
 struct SocketSentBytes
 {

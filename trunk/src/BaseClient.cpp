@@ -120,12 +120,11 @@ void CUpDownClient::Init()
 	m_byChatstate = 0;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
-	m_nMaxSendAllowed = 0;
-	m_nTransferedUp = 0;
+	m_nTransferredUp = 0;
 	m_cSendblock = 0;
 	m_cAsked = 0;
-	msSentPrev = msReceivedPrev = 0;
-	kBpsUp = kBpsDown = 0.0;
+	msReceivedPrev = 0;
+	kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
 	m_nUserID = 0;
@@ -147,8 +146,13 @@ void CUpDownClient::Init()
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
-
 	m_bUnicodeSupport = false;
+
+	m_fSentOutOfPartReqs = 0;
+	m_nCurQueueSessionPayloadUp = 0;
+	m_addedPayloadQueueSession = 0;
+	m_nUpDatarate = 0;
+	m_nSumForAvgUpDataRate = 0;
 
 	m_nRemoteQueueRank = 0;
 	m_nOldRemoteQueueRank = 0;
@@ -1200,6 +1204,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
+		m_fSentOutOfPartReqs = 0;
 	}
 	
 	return bDelete;
@@ -1211,13 +1216,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
-		if (!m_socket) {
-			if(Disconnected(wxT("Too many connections"))) {
-				Safe_Delete();
-				return false;
-			}
-			return true;
-		} else if (!m_socket->IsConnected()) {
+		if (!(m_socket && m_socket->IsConnected())) {
 			if(Disconnected(wxT("Too many connections"))) {
 				Safe_Delete();
 				return false;
@@ -1253,20 +1252,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 
 	if (!m_socket) {
-//#ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
-		if (!m_socket->Create()) {
-			m_socket->Safe_Delete();
-			return true;
-		}
 	} else if (!m_socket->IsConnected()) {
 		m_socket->Safe_Delete();
-//#ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
-		if (!m_socket->Create()) {
-			m_socket->Safe_Delete();
-			return true;
-		}
 	} else {
 		ConnectionEstablished();
 		return true;
@@ -1993,7 +1982,8 @@ bool CUpDownClient::IsConnected() const
 bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	if ( m_socket ) {
-		return m_socket->SendPacket(packet, delpacket, controlpacket );
+		m_socket->SendPacket(packet, delpacket, controlpacket );
+		return true;
 	} else {
 #ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");

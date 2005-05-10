@@ -531,7 +531,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			break;
 		
 		case 3:
-			buffer = wxString::Format( wxT("%.1f"), client->GetKBpsUp() );
+			buffer = wxString::Format( wxT("%.1f"), client->GetUploadDatarate() / 1024.0f );
 		
 			buffer += wxT(" ");
 			buffer += _("kB/s");
@@ -656,10 +656,10 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 		}
 		
 		// Sort by speed
-		case 3: return mode * CmpAny( client1->GetKBpsUp(), client2->GetKBpsUp() );
+		case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
 		
 		// Sort by transfered
-		case 4: return mode * CmpAny( client1->GetTransferedUp(), client2->GetTransferedUp() );
+		case 4: return mode * CmpAny( client1->GetTransferredUp(), client2->GetTransferredUp() );
 		
 		// Sort by wait-time
 		case 5: return mode * CmpAny( client1->GetWaitTime(), client2->GetWaitTime() );

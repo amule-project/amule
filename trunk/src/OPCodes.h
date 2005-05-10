@@ -108,7 +108,7 @@ enum {
 #define	UDPSERVERSTATTIME			5000
 #define	UDPSERVSTATREASKTIME			14400
 #define	UDPSERVERPORT				4665	// default udp port
-#define	MIN_UP_CLIENTS_ALLOWED			3	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
+#define	MIN_UP_CLIENTS_ALLOWED			2	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 // MOD Note: end
 
 #define	MAXCONPER5SEC				20
@@ -116,8 +116,8 @@ enum {
 #define	UPLOAD_CHECK_CLIENT_DR			1000
 #define	UPLOAD_LOW_CLIENT_DR			2400	// uploadspeed per client in bytes - you may want to adjust
 							// this if you have a slow connection or T1-T3 ;)
-#define	UPLOAD_CLIENT_DATARATE			2048
-#define	MAX_UP_CLIENTS_ALLOWED			100	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
+#define	UPLOAD_CLIENT_DATARATE			3072
+#define	MAX_UP_CLIENTS_ALLOWED			250	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
 #define	CONSERVTIMEOUT				25000	// agelimit for pending connection attempts
 #define	RARE_FILE				50

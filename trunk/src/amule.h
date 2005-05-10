@@ -75,6 +75,7 @@ class CClientCreditsList;
 class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
+class UploadBandwidthThrottler;
 class CStatistics;
 class wxServer;
 class wxString;
@@ -225,7 +226,8 @@ public:
 	CClientUDPSocket*	clientudp;
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
-
+	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	
 	void ShutDown();
 	
 	wxString GetLog(bool reset = false);

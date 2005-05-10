@@ -35,76 +35,129 @@
 
 #include "Types.h"		// Needed for uint8 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "ThrottledSocket.h"
 
-#ifdef __DEBUG__
-	#include "amule.h"
-#endif
 
 class CPacket;
 
+
 #define ERR_WRONGHEADER		0x01
-#define ERR_TOOBIG		0x02
+#define ERR_TOOBIG			0x02
 
 #define	ES_DISCONNECTED		0xFF
 #define	ES_NOTCONNECTED		0x00
 #define	ES_CONNECTED		0x01
 
-#define PACKET_HEADER_SIZE	6
 
-class CEMSocket : public CSocketClientProxy
+const sint32 PACKET_HEADER_SIZE	= 6;
+
+
+class CEMSocket : public CSocketClientProxy, public ThrottledFileSocket
 {
-  DECLARE_DYNAMIC_CLASS(CEMSocket)
-    
+	DECLARE_DYNAMIC_CLASS(CEMSocket)
+	
 public:
 	CEMSocket(const CProxyData *ProxyData = NULL);
-	virtual ~CEMSocket(void);
-	bool	SendPacket(CPacket* packet, bool delpacket = true,bool controlpacket = true);// controlpackets have a higher priority
-	bool	IsBusy()	{return sendbuffer;}
+	virtual ~CEMSocket();
+	
+	virtual void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+    bool    HasQueues();
 	bool	IsConnected() { return byConnected==ES_CONNECTED;};
 	uint8	GetConState()	{return byConnected;}
 	void	SetDownloadLimit(uint32 limit);
 	void	DisableDownloadLimit();
+
+	virtual uint32	GetTimeOut() const;
+	virtual void	SetTimeOut(uint32 uTimeOut);
+	
+    uint32	GetLastCalledSend() { return lastCalledSend; }
+
+    uint64	GetSentBytesCompleteFileSinceLastCallAndReset();
+    uint64	GetSentBytesPartFileSinceLastCallAndReset();
+    uint64	GetSentBytesControlPacketSinceLastCallAndReset();
+    uint64	GetSentPayloadSinceLastCallAndReset();
+    void	TruncateQueues();
+
+    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, true); };
+    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) { return Send(maxNumberOfBytesToSend, minFragSize, false); };
+
+    uint32	GetNeededBytes();
+	
 	void	Destroy();
 	bool OnDestroy() { return DoingDestroy; };
+	
 	//protected:
-	// this functions are public on our code because of the amuleDlg::socketHandler
+	// these functions are public on our code because of the amuleDlg::socketHandler
 	virtual void	OnError(int WXUNUSED(nErrorCode)) { };
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
 	
- protected:
-
+protected:
+	bool RecievePending() { return pendingOnReceive; }
 	virtual bool	PacketReceived(CPacket* WXUNUSED(packet)) { return false; };
-
 	virtual void	OnClose(int nErrorCode);
+	
 	uint8	byConnected;
+	uint32	m_uTimeOut;
 
-	bool RecievePending() { return (limitenabled && (downloadlimit == 0)); }
 private:
+    virtual SocketSentBytes Send(uint32 maxNumberOfBytesToSend, uint32 minFragSize, bool onlyAllowedToSendControlPacket);
 	void	ClearQueues();	
-	int		Send(char* lpBuf,int nBufLen,int nFlags = 0);
 
-	uint32	downloadlimit;
-	bool	limitenabled;
+    uint32	GetNextFragSize(uint32 current, uint32 minFragSize);
+    bool    HasSent() { return m_hasSent; }
+	
+	// Download (pseudo) rate control	
+	uint32	downloadLimit;
+	bool	downloadLimitEnable;
 	bool	pendingOnReceive;
 
 	// Download partial header
-	char	pendingHeader[PACKET_HEADER_SIZE];      
+	// actually, this holds only 'PACKET_HEADER_SIZE-1' bytes.
+	char	pendingHeader[PACKET_HEADER_SIZE];
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
 	CPacket* pendingPacket;
 	uint32  pendingPacketSize;
 
+	// Upload control
 	char*	sendbuffer;
 	uint32	sendblen;
 	uint32	sent;
-	bool	m_bLinkedPackets;
-	bool		DoingDestroy;  	
+
+	CList<CPacket*> controlpacket_queue;
+
+	struct StandardPacketQueueEntry
+	{
+		uint32 actualPayloadSize;
+		CPacket* packet;
+	};
 	
-	CList<CPacket*, CPacket*> controlpacket_queue;
-	CList<CPacket*, CPacket*> standartpacket_queue;
-	
+	CList<StandardPacketQueueEntry> standartpacket_queue;
+
+    bool m_currentPacket_is_controlpacket;
+
+	wxMutex	m_sendLocker;
+
+	uint64 m_numberOfSentBytesCompleteFile;
+    uint64 m_numberOfSentBytesPartFile;
+    uint64 m_numberOfSentBytesControlPacket;
+    bool m_currentPackageIsFromPartFile;
+
+	bool	m_bAccelerateUpload;
+	uint32	lastCalledSend;
+    uint32	lastSent;
+	uint32	lastFinishedStandard;
+
+    uint32 m_actualPayloadSize;
+    uint32 m_actualPayloadSizeSent;
+
+    bool m_bBusy;
+    bool m_hasSent;
+
+	bool DoingDestroy;
 };
+
 
 #endif // EMSOCKET_H
