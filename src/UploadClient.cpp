@@ -59,20 +59,18 @@
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 
-
 void CUpDownClient::SetUploadState(uint8 eNewState)
 {
-	if (eNewState != m_nUploadState)
-	{
-		if (m_nUploadState == US_UPLOADING)
-		{
+	if (eNewState != m_nUploadState) {
+		if (m_nUploadState == US_UPLOADING) {
 			// Reset upload data rate computation
 			m_nUpDatarate = 0;
 			m_nSumForAvgUpDataRate = 0;
 			m_AvarageUDR_list.RemoveAll();
 		}
-		if (eNewState == US_UPLOADING)
+		if (eNewState == US_UPLOADING) {
 			m_fSentOutOfPartReqs = 0;
+		}
 
 		// don't add any final cleanups for US_NONE here
 		m_nUploadState = eNewState;
@@ -199,14 +197,12 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 		next_requested_part = next_requested_block->StartOffset / PARTSIZE; 
              
 		// Test is we are asking same file and same part
-		if ( last_done_part != next_requested_part)
-		{ 
+		if ( last_done_part != next_requested_part) { 
 			different_part = true;
 			AddDebugLogLineM(false, logClient, wxT("Session ended due to new chunk."));
 		}
 	
-		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0)
-		{ 
+		if (md4cmp(last_done_block->FileID, next_requested_block->FileID) != 0) { 
 			different_part = true;
 			AddDebugLogLineM(false, logClient, wxT("Session ended due to different file."));
 		}
@@ -227,7 +223,7 @@ void CUpDownClient::CreateNextBlockPackage()
     CFile file;
 	byte* filedata = 0;
 	wxString fullname;
-	try{
+	try {
         // Buffer new data if current buffer is less than 100 KBytes
         while (!m_BlockRequests_queue.IsEmpty() &&
                (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
@@ -271,8 +267,9 @@ void CUpDownClient::CreateNextBlockPackage()
 				}
 			}
 
-			if (togo > EMBLOCKSIZE * 3)
+			if (togo > EMBLOCKSIZE * 3) {
 				throw wxString(wxT("Client requested too large of a block."));
+			}
 			
 			if (!srcfile->IsPartFile()){
 				if ( !file.Open(fullname,CFile::read) ) {
@@ -387,7 +384,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		CMemFile memfile(output,newsize);
     	
 		uint32 totalPayloadSize = 0;
-    	uint32 oldSize = togo;
+		uint32 oldSize = togo;
 		togo = newsize;
 		uint32 nPacketSize;
 		if (togo > 10240) {
@@ -396,7 +393,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 			nPacketSize = togo;
 		}
 			
-		while (togo){
+		while (togo) {
 			if (togo < nPacketSize*2) {
 				nPacketSize = togo;
 			}
@@ -538,7 +535,8 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		newreqfile->AddUploadingClient(this);
 		if (m_requpfileid != newreqfile->GetFileHash() ){
 			m_requpfileid = newreqfile->GetFileHash();
- 			m_upPartStatus.clear();
+			m_nUpPartCount = newreqfile->GetPartCount();
+			m_upPartStatus.resize( m_nUpPartCount, 0 );
 		} else {
 			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
  		}
@@ -889,4 +887,3 @@ void CUpDownClient::SetUploadFileID(const CMD4Hash& new_id)
 	}
 	SetUploadFileID(uploadingfile); // This will update queue count on old and new file.
 }
-
