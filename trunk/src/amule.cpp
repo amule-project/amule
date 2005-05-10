@@ -119,14 +119,16 @@
 #endif
 
 #ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
+	#include <sys/resource.h>
 #endif
 
 #ifdef HAVE_SYS_STATVFS_H
-#include <sys/statvfs.h>
+	#include <sys/statvfs.h>
 #endif
 
-#include <sys/wait.h>
+#ifdef  HAVE_SYS_WAIT_H
+	#include <sys/wait.h>
+#endif
 
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
@@ -850,6 +852,7 @@ bool CamuleApp::OnInit()
 		// 1 second if enough time to fail on "path not found"
 		wxSleep(1);
 		int status, result;
+//#ifdef HAVE_SYS_WAIT_H
 		if ( (result = wait4(webserver_pid, &status, WNOHANG, 0)) == -1 ) {
 			printf("ERROR: wait4 call failed\n");
 		} else {
@@ -857,6 +860,9 @@ bool CamuleApp::OnInit()
 				webserver_pid = 0;
 			}
 		}
+//#else
+//#warning wtf to do here?
+//#endif
 		if (webserver_pid) {
 			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
 		} else {
