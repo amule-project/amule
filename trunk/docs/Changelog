@@ -9,10 +9,12 @@ Version 2.0.1 - The " **** " version.
 		* Added DNS resolving functionality to amulecmd's connect
 		command. This is usefull for dynamic IP servers. Now you can
 		use the server's name instead of the server's IP address.
+		* Fixed a bug in http proxy authentication code.
 
 	Special Thanks To:
 
 		* Bug and feature reporters:
+		  albatros_la
 		  Lucky_JL
 
 		
