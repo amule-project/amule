@@ -1041,4 +1041,3 @@ void CKnownFile::ClearPriority() {
 }
 
 #endif // CLIENT_GUI
-
