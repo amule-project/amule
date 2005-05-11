@@ -281,9 +281,9 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledControlSocket* socke
 
 void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
 {
-	wxMutexLocker lock( m_sendLocker );
-
 	if (m_doRun) {
+		wxMutexLocker lock( m_sendLocker );
+		
 		DoRemoveFromAllQueues(socket);
 
 		// And remove it from upload slots
@@ -349,7 +349,12 @@ void* UploadBandwidthThrottler::Entry()
 		// Get current speed from UploadSpeedSense
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
 			// Try to increase the upload rate
-			allowedDataRate = theApp.uploadqueue->GetDatarate() + 5 * 1024;
+			if (theApp.uploadqueue) {
+				allowedDataRate = theApp.uploadqueue->GetDatarate() + 5 * 1024;
+			} else {
+				// App not created yet or already destroyed.
+				allowedDataRate = (uint32)(-1);
+			}
 		} else {
 			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
 		}
@@ -567,4 +572,3 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 
 	return 0;
 }
-
