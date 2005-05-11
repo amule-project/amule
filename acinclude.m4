@@ -648,3 +648,25 @@ AC_SUBST(BFD_FLAGS)
 AC_SUBST(BFD_LIB)
 
 ])
+
+dnl ----------------------------------------------------
+dnl CHECK_AUTOPOINT
+dnl check if autopoint is installed and fail if not
+dnl ----------------------------------------------------
+AC_DEFUN([CHECK_AUTOPOINT],
+[
+
+AC_MSG_CHECKING([for autopoint])
+
+autopoint_version=`autopoint --version | grep 'gettext-tools' | grep -o '[[0-9]]*\.[[0-9]]*\.[[0-9]]*'`
+if test x$autopoint_version != x; then
+	result="yes"
+else
+	result="no"
+fi
+
+AC_MSG_RESULT($result ($autopoint_version))
+if test x$result = xno; then
+	AC_MSG_ERROR([You need to install GNU gettext/gettext-tools to compile aMule])
+fi
+])
