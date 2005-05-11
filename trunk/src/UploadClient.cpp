@@ -537,7 +537,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 			m_upPartStatus.resize( m_nUpPartCount, 0 );
 		} else {
 			// this is the same file we already had assigned. Only update data.
-			wxASSERT(m_nUpPartCount == newreqfile->GetPartCount());
+			//wxASSERT(m_nUpPartCount == newreqfile->GetPartCount());
 			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
  		}
 		m_uploadingfile = newreqfile;
