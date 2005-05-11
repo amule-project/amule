@@ -39,6 +39,7 @@
 #include "stdlib.h"		// Needed for malloc()/free()
 
 #include "StringFunctions.h"	// Needed for unicode2char()
+#include "OPCodes.h"
 
 #define EC_SOCKET_BUFFER_SIZE	32768
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -442,6 +443,123 @@ ECSocket::~ECSocket(void)
 	delete m_sock;
 }
 
+#ifdef AMULE_DAEMON
+
+void *CECSocketHandler::Entry()
+{
+	// Code is ok. Uncomment it when inheritance fixed
+	/*
+    while ( !TestDestroy() ) {
+        if ( m_socket->Error()) {
+            if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
+                if ( m_socket->WaitForWrite(0, 0) ) {
+                        m_socket->OnSend();
+                }
+            } else  {
+                break;
+            }
+        }
+        if ( m_socket->WaitForRead(0, 100) ) {
+            m_socket->OnReceive();
+        }
+    }
+    */
+    return 0;
+}
+ 
+#else
+
+BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
+        EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
+END_EVENT_TABLE()
+
+void CECSocketHandler::SocketHandler(wxSocketEvent& event)
+{
+        ECSocket *socket = dynamic_cast<ECSocket *>(event.GetSocket());
+        wxASSERT(socket);
+        if (!socket) {
+                return;
+        }
+
+        switch(event.GetSocketEvent()) {
+                case wxSOCKET_LOST:
+                        socket->OnError();
+                        break;
+                case wxSOCKET_INPUT:
+                        socket->OnReceive();
+                        break;
+                case wxSOCKET_OUTPUT:
+                        socket->OnSend();
+                        break;
+                case wxSOCKET_CONNECTION:
+                        socket->OnConnect();
+                        break;
+                default:
+                        // Nothing should arrive here...
+                        wxASSERT(0);
+                        break;
+        }
+}
+
+
+#endif
+
+/*
+ * FIXME: ECSocket must be make "public wxSocketBase" and all "m_sock->" removed.
+ * 
+ */
+void ECSocket::OnConnect()
+{
+}
+
+void ECSocket::OnSend()
+{
+	while ( !m_pending_tx.empty() ) {
+		EC_OUTBUF &buf = m_pending_tx.front();
+		
+		int write_count = buf.m_size - (buf.m_current - buf.m_buf);
+		m_sock->Write(buf.m_current, write_count);
+		int written_count = m_sock->LastCount();
+		if ( write_count == written_count ) {
+			delete [] buf.m_buf;
+			m_pending_tx.pop_front();
+		} else {
+			buf.m_current += written_count;
+			if ( m_sock->Error() ) {
+				if ( m_sock->LastError() == wxSOCKET_WOULDBLOCK ) {
+					break;
+				} else {
+					OnError();
+					return;
+				}
+			}
+		}
+	}
+}
+
+void ECSocket::OnReceive()
+{
+	m_sock->Read(m_curr_ptr, m_bytes_left);
+	int recv_count = m_sock->LastCount();
+	if ( m_sock->Error() || !recv_count ) {
+		if ( m_sock->LastError() == wxSOCKET_WOULDBLOCK ) {
+			return;
+		} else {
+			OnError();
+			return;
+		}
+	}
+	m_curr_ptr += recv_count;
+}
+
+void ECSocket::OnClose()
+{
+	Destroy();
+}
+
+void ECSocket::OnError()
+{
+}
 
 bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque)
 {
