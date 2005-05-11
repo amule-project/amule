@@ -776,7 +776,7 @@ bool CamuleApp::OnInit()
 	// Ready file-hasher
 	CAddFileThread::Start();
 
-    uploadBandwidthThrottler = new UploadBandwidthThrottler();
+	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	clientlist	= new CClientList();
 	friendlist = new CFriendList();
 	searchlist	= new CSearchList();
