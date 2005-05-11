@@ -360,6 +360,9 @@ esac
 
 AC_SUBST(CRYPTOLIBS)
 
+# Check for bfd.h (to have proper backtraces without using wxExecute)
+CHECK_BFD
+
 # Ok, we have all needed libs, now checking for other stuff
 
 # Flush standard test results for speeding cache
