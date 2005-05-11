@@ -1041,7 +1041,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	wxString cmd;
 
 #if defined (__WXMSW__)
-wxFileType *ft;                            /* Temporary storage for filetype. */
+	wxFileType *ft;                            /* Temporary storage for filetype. */
 
 	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
 	if (!ft) {
@@ -1081,8 +1081,7 @@ wxFileType *ft;                            /* Temporary storage for filetype. */
 		}
 
 		if ( wxExecute( cmd, false ) ) {
-			printf( "Launch Command: %s\n",
-				(const char *)unicode2char(cmd));
+			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
 			return;
 		}
 	}

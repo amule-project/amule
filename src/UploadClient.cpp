@@ -538,6 +538,7 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 			m_nUpPartCount = newreqfile->GetPartCount();
 			m_upPartStatus.resize( m_nUpPartCount, 0 );
 		} else {
+			wxASSERT(m_nUpPartCount == newreqfile->GetPartCount());
 			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
  		}
 		m_uploadingfile = newreqfile;
