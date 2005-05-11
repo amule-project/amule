@@ -184,9 +184,9 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
 	UpdateAutoUpPriority();
 	if (!m_ClientUploadList.insert(client).second) {
-		printf("====================== WARNING ===================\n");
-		printf("Multiple insertions of a client into a knownfile. Backtrace:\n");
-		otherfunctions::print_backtrace(0);
+//		printf("====================== WARNING ===================\n");
+//		printf("Multiple insertions of a client into a knownfile. Backtrace:\n");
+//		otherfunctions::print_backtrace(0);
 	}
 }
 
@@ -196,9 +196,9 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 	if (m_ClientUploadList.erase(client)) {
 		UpdateAutoUpPriority();
 	} else {
-		printf("====================== WARNING ===================\n");
-		printf("Multiple removals of a client from a knownfile. Backtrace:\n");
-		otherfunctions::print_backtrace(0);
+//		printf("====================== WARNING ===================\n");
+//		printf("Multiple removals of a client from a knownfile. Backtrace:\n");
+//		otherfunctions::print_backtrace(0);
 	}
 }
 
