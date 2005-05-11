@@ -12,8 +12,10 @@ URL:         http://www.amule.org
 Source:      aMule-%{version}-%{release}.tar.bz2
 Prefix:      %{_prefix}
 BuildRoot:   %{_builddir}/%{name}-%{version}-root
-Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
-BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
+#These dependencies do not always work, so lets leave them out for now
+#Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
+#BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
+BuildPreReq: grep, automake >= 1.7
 Provides:    %{name}
 Obsoletes:   %{name}
 
