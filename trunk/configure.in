@@ -365,6 +365,8 @@ CHECK_BFD
 
 # Ok, we have all needed libs, now checking for other stuff
 
+CHECK_AUTOPOINT
+
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
 
