@@ -493,7 +493,8 @@ bool CKnownFile::LoadFromFile(const CFileDataIO* file){
 	bool ret2 = LoadHashsetFromFile(file,false);
 	bool ret3 = LoadTagsFromFile(file);
 	UpdatePartsInfo();
-	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();// Final hash-count verification, needs to be done after the tags are loaded.
+	// Final hash-count verification, needs to be done after the tags are loaded.
+	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();
 	// SLUGFILLER: SafeHash
 }
 
@@ -513,7 +514,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	//tags
 	const int iFixedTags = 7;
 	uint32 tagcount = iFixedTags;
-	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
+	if (	m_pAICHHashSet->HasValidMasterHash() &&
+		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
+			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
 		tagcount++;
 	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have 
@@ -572,7 +575,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	priotag.WriteTagToFile(file);
 
 	//AICH Filehash
-	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){
+	if (	m_pAICHHashSet->HasValidMasterHash() && 
+		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
+			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {
 		CTag aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
 		aichtag.WriteTagToFile(file);
 	}
@@ -717,20 +722,24 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
 		const CUpDownClient *cur_src = *it;
 		
-		if ( cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE)) {
+		if (	cur_src->HasLowID() ||
+			cur_src == forClient ||
+			!(	cur_src->GetUploadState() == US_UPLOADING ||
+				cur_src->GetUploadState() == US_ONUPLOADQUEUE)) {
 			continue;
 		}
-
+		
 		bool bNeeded = false;
 		const BitVector& rcvstatus = forClient->GetUpPartStatus();
-
+		
 		if ( !rcvstatus.empty() ) {
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
-							// We know the recieving client needs a chunk from this client.
+							// We know the recieving client needs
+							// a chunk from this client.
 							bNeeded = true;
 							break;
 						}
@@ -738,13 +747,17 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				}
 			} else {
 				cDbgNoSrc++;
-				// This client doesn't support upload chunk status. So just send it and hope for the best.
+				// This client doesn't support upload chunk status.
+				// So just send it and hope for the best.
 				bNeeded = true;
 			}
 		} else {
-			// remote client does not support upload chunk status, search sources which have at least one complete part
-			// we could even sort the list of sources by available chunks to return as much sources as possible which
-			// have the most available chunks. but this could be a noticeable performance problem.
+			// remote client does not support upload chunk status,
+			// search sources which have at least one complete part
+			// we could even sort the list of sources by available
+			// chunks to return as much sources as possible which
+			// have the most available chunks. but this could be
+			// a noticeable performance problem.
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				for (int x = 0; x < GetPartCount(); x++ ) {
@@ -755,7 +768,8 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 					}
 				}
 			} else {
-				// This client doesn't support upload chunk status. So just send it and hope for the best.
+				// This client doesn't support upload chunk status.
+				// So just send it and hope for the best.
 				bNeeded = true;
 			}
 		}
@@ -924,7 +938,6 @@ void CKnownFile::UpdatePartsInfo()
 		int32 n = count.GetCount();	
 
 		if (n > 0) {
-			
 			// Kry - Native wx functions instead
 			count.Sort(Uint16CompareValues);
 			
@@ -932,14 +945,18 @@ void CKnownFile::UpdatePartsInfo()
 			int i = n >> 1;			// (n / 2)
 			int j = (n * 3) >> 2;	// (n * 3) / 4
 			int k = (n * 7) >> 3;	// (n * 7) / 8
-
-			//For complete files, trust the people your uploading to more...
-
-			//For low guess and normal guess count
-			//	If we see more sources then the guessed low and normal, use what we see.
-			//	If we see less sources then the guessed low, adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
-			//For high guess
-			//  Adjust 100% network and 0% what we see.
+			
+			// For complete files, trust the people your uploading to more...
+			
+			// For low guess and normal guess count
+			//	- If we see more sources then the guessed low and
+			//	normal, use what we see.
+			//	- If we see less sources then the guessed low,
+			//	adjust network accounts for 100%, we account for
+			//	0% with what we see and make sure we are still
+			//	above the normal.
+			// For high guess
+			//	Adjust 100% network and 0% what we see.
 			if (n < 20) {
 				if ( count[i] < m_nCompleteSourcesCount ) {
 					m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
@@ -952,13 +969,15 @@ void CKnownFile::UpdatePartsInfo()
 					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 				}
 			} else {
-			//Many sources..
-			//For low guess
+			// Many sources..
+			// For low guess
 			//	Use what we see.
-			//For normal guess
-			//	Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the low.
-			//For high guess
-			//  Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
+			// For normal guess
+			//	Adjust network accounts for 100%, we account for
+			//	0% with what we see and make sure we are still above the low.
+			// For high guess
+			//	Adjust network accounts for 100%, we account for 0%
+			//	with what we see and make sure we are still above the normal.
 
 				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
 				m_nCompleteSourcesCount = count[j];
@@ -1022,3 +1041,4 @@ void CKnownFile::ClearPriority() {
 }
 
 #endif // CLIENT_GUI
+
