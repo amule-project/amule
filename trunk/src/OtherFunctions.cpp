@@ -65,6 +65,10 @@
 
 #include "StringFunctions.h"
 
+#if wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER
+#include <wx/stackwalk.h>
+#endif
+
 
 namespace otherfunctions {
 
@@ -1069,6 +1073,67 @@ void DumpMem_DW(const uint32 *ptr, int count)
 	printf("\n");
 }
 
+#if wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER
+
+// Derived class to define the actions to be done on frame print.
+
+class MuleStackWalker : public wxStackWalker { // I was tempted to name it MuleSkyWalker
+
+public:
+	MuleStackWalker() {};
+	~MuleStackWalker() {};
+	void OnStackFrame(const wxStackFrame& frame);
+	
+};
+
+#define TOO_VERBOSE_BACKTRACE 0 // Make it 1 for getting the file path also
+
+void MuleStackWalker::OnStackFrame(const wxStackFrame& frame) {
+	
+	wxString btLine = wxString::Format(wxT("[%u] "), frame.GetLevel());
+	wxString filename = frame.GetName();
+	
+	if (!filename.IsEmpty()) {
+		btLine += filename + wxT(" (") + 
+			#if TOO_VERBOSE_BACKTRACE
+				frame.GetModule() 
+			#else
+				frame.GetModule().AfterLast(wxT('/'))
+			#endif
+			+ wxT(")");
+	} else {
+		btLine += wxString::Format(wxT("0x%lx"), frame.GetAddress());
+	}
+	
+	if (frame.HasSourceLocation()) {
+		btLine += wxT(" at ") + 
+			#if TOO_VERBOSE_BACKTRACE
+				frame.GetFileName()
+			#else 
+				frame.GetFileName().AfterLast(wxT('/')) 
+			#endif
+			+ wxString::Format(wxT(":%u"),frame.GetLine());
+	} else {
+		btLine += wxT(" (Unknown file/line)");
+	}
+	
+	// This is because the string is ansi anyway, and the conv classes are very slow
+	#if wxUSE_UNICODE
+	fwprintf(stderr, L"%ls\n", (const wchar_t *)(btLine.c_str()) ); 
+	#else
+	fprintf(stderr, "%s\n", (const char *)(btLine.c_str()) ); 
+	#endif
+}
+
+
+// Print a stack backtrace if available
+void print_backtrace(uint8 n)
+{
+	MuleStackWalker walker; // Texas ranger?
+	walker.Walk(n); // Skip this one and Walk() also!
+}
+#else 
+
 // Print a stack backtrace if available
 void print_backtrace(uint8 n)
 {
@@ -1189,6 +1254,8 @@ void print_backtrace(uint8 n)
 	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
 #endif
 }
+
+#endif // wxCHECK_VERSION(2,6,0)
 
 /*
  * RLE encoder implementation. This is RLE implementation for very specific
