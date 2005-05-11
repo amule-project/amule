@@ -99,7 +99,9 @@ CEMSocket::~CEMSocket()
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
-    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
+	if (theApp.uploadBandwidthThrottler) {
+	    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
+	}
 
     ClearQueues();
 	

@@ -281,9 +281,9 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledControlSocket* socke
 
 void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
 {
-	if (m_doRun) {
-		wxMutexLocker lock( m_sendLocker );
-		
+	wxMutexLocker lock( m_sendLocker );
+	
+	if (m_doRun) {	
 		DoRemoveFromAllQueues(socket);
 
 		// And remove it from upload slots
