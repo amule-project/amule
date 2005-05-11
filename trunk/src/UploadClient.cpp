@@ -526,24 +526,26 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		// It's ok.
 		return;
 	}
-	// Clear old status
-	m_upPartStatus.clear();
-	m_nUpPartCount = 0;
-	m_nUpCompleteSourcesCount= 0;
 
 	if (newreqfile) {
 		newreqfile->AddUploadingClient(this);
 		if (m_requpfileid != newreqfile->GetFileHash() ){
+			// This is a new file! update info
 			m_requpfileid = newreqfile->GetFileHash();
 			m_nUpPartCount = newreqfile->GetPartCount();
+			m_upPartStatus.clear();
 			m_upPartStatus.resize( m_nUpPartCount, 0 );
 		} else {
+			// this is the same file we already had assigned. Only update data.
 			wxASSERT(m_nUpPartCount == newreqfile->GetPartCount());
 			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
  		}
 		m_uploadingfile = newreqfile;
 	} else {
-		ClearUploadFileID();
+		m_upPartStatus.clear();
+		m_nUpPartCount = 0;
+		m_nUpCompleteSourcesCount= 0;
+		ClearUploadFileID(); // This clears m_uploadingfile and m_requpfileid
 	}
 
 	if (oldreqfile) {
