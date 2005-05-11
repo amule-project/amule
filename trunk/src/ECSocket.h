@@ -39,7 +39,31 @@ enum aMuleECSocketType {
 	AMULE_EC_SERVER
 };
 
+#include <list>
+
 class CECPacket;
+class ECSocket;
+
+#ifdef AMULE_DAEMON
+#define EC_SOCK_HANDLER_BASE wxThread
+#else
+#define EC_SOCK_HANDLER_BASE wxEvtHandler
+#endif
+
+class CECSocketHandler: public EC_SOCK_HANDLER_BASE {
+	public:
+        CECSocketHandler(ECSocket *socket = NULL);
+
+	public:
+#ifdef AMULE_DAEMON
+        void *Entry();
+        ECSocket *m_socket;
+#else
+	private:
+        void SocketHandler(wxSocketEvent& event);
+        DECLARE_EVENT_TABLE()
+#endif
+};
 
 //
 // Socket registry functions
@@ -111,6 +135,28 @@ class ECSocket {
 //		bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
 
 	private:
+		friend class CECSocketHandler;
+		
+		void OnConnect();
+		void OnSend();
+		void OnReceive();
+		void OnClose();
+		void OnError();
+		
+		// recieve buffer
+		int m_buf_size;
+		unsigned char *m_buffer, *m_curr_ptr;
+		int m_tags_left, m_bytes_left; // how match to wait
+		
+		// transmit buffer
+		class EC_OUTBUF {
+			public:
+				unsigned char *m_buf, *m_current;
+				int m_size;
+				~EC_OUTBUF() { if ( m_buf ) delete [] m_buf; }
+		};
+		std::list<EC_OUTBUF> m_pending_tx;
+		
 		uint32	ReadFlags(wxSocketBase *);
 		bool	WriteFlags(wxSocketBase *, uint32);
 		aMuleECSocketType m_type;
