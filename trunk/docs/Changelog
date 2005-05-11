@@ -2,9 +2,20 @@ Version 2.0.1 - The " **** " version.
 ----------
 2005-X-X
 
-        deltaHF:
-                * Compilation fixes for older gcc versions.
+	deltaHF:
+		* Compilation fixes for older gcc versions.
 
+	Phoenix:
+		* Added DNS resolving functionality to amulecmd's connect
+		command. This is usefull for dynamic IP servers. Now you can
+		use the server's name instead of the server's IP address.
+
+	Special Thanks To:
+
+		* Bug and feature reporters:
+		  Lucky_JL
+
+		
 Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 ----------
 2005-05-01
@@ -20,7 +31,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		* Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
-                * Show current DL speed from a client you are uploading to in "Remote
+		* Show current DL speed from a client you are uploading to in "Remote
 		  Status" column instead of in the "Speed" column. 
 
 	geeko:
@@ -542,7 +553,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		so that we build the rpm with --enable-utf8-systray.
 		* Removed curl dependencies from spec file, aMule now uses
 		wxHTTP.
-	
+
 	Stefanero:
 		* Work on the Man-Pages
 		* Minor compile fixes
