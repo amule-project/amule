@@ -138,7 +138,7 @@ public:
 	CChatWnd*		chatwnd;
 	wxWindow*		activewnd;
 	CStatisticsDlg*		statisticswnd;
-	CKadDlg*		kadwnd;
+	CKadDlg*		kademliawnd;
 
 	int			srv_split_pos;
 	

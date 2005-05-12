@@ -188,14 +188,14 @@ void CUInt128::toBinaryString(wxString *str, bool trim) const
 	for (int i=0; i<128; ++i)
 	{
 		b = getBitNumber(i);
-		if ((!trim) || (b != 0))
-		{
+		if ((!trim) || (b != 0)) {
 			str->Append(wxString::Format(wxT("%d"), b));
 			trim = false;
 		}
 	}
-	if (str->Len() == 0)
+	if (str->Len() == 0) {
 		*str = wxT("0");
+	}
 }
 
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN

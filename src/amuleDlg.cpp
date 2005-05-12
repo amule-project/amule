@@ -201,14 +201,14 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
 	chatwnd = new CChatWnd(p_cnt);
-	kadwnd = new CKadDlg(p_cnt);
+	kademliawnd = new CKadDlg(p_cnt);
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-	kadwnd->Show(FALSE);	
+	kademliawnd->Show(FALSE);	
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
@@ -482,7 +482,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					break;
 
 				case ID_BUTTONKAD:
-					SetActiveDialog(KadWnd, kadwnd);
+					SetActiveDialog(KadWnd, kademliawnd);
 					break;
 				
 				// This shouldn't happen, but just in case
