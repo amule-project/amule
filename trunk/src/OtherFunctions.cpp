@@ -1247,7 +1247,7 @@ static void get_file_line_info(bfd *abfd, asection *section, void *_address)
 		return ;
 	}
 	
-	bfd_size_type size = bfd_get_section_size_before_reloc (section);
+	bfd_size_type size = bfd_section_size (abfd, section);
 	if (address > (vma + size)) {
         return ;
 	}
