@@ -658,7 +658,7 @@ AC_DEFUN([CHECK_AUTOPOINT],
 
 AC_MSG_CHECKING([for autopoint])
 
-autopoint_version=`autopoint --version | grep 'gettext-tools' | grep -o '[[0-9]]*\.[[0-9]]*\.[[0-9]]*'`
+autopoint_version=`autopoint --version | head -n 1 | sed -e 's/.*\([[0-9]][[0-9]]*\.[[0-9]]*\.[[0-9]]*\).*/\1/'`
 if test x$autopoint_version != x; then
 	result="yes"
 else
