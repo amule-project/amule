@@ -37,7 +37,6 @@ there client on the eMule forum..
 */
 
 #include "LittleEndian.h"
-#include "../../Types.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

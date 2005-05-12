@@ -41,6 +41,7 @@ there client on the eMule forum..
 
 #include <map>
 #include "../../Types.h"
+#include "../utils/UInt128.h"
 
 class CSharedFileList;
 struct Status;
@@ -86,7 +87,7 @@ public:
 	static bool					getPublish(void);
 	static uint32				getIPAddress(void);
 	static void					bootstrap(uint32 ip, uint16 port);
-	static void					bootstrap(const char* host, uint16 port);
+	static void					bootstrap(const wxString& host, uint16 port);
 	static void					processPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
 
 	static void addEvent(CRoutingZone *zone);

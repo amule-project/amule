@@ -82,8 +82,11 @@ public:
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint32 whichone);
 	
-	void ShowConnectionState(bool connected, const wxString &server = wxEmptyString);
-	void ShowUserCount(uint32 toshow, uint32 filetoshow);
+	#warning Kry: KAD TODO - This defaults must be gone!
+	void ShowUserCount(uint32 toshow = 0, uint32 filetoshow = 0);
+	void ShowConnectionState(bool connected = false, const wxString &server = wxEmptyString);
+	// END KAD TODO
+
 	void ShowTransferRate();
 	
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}

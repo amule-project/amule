@@ -96,7 +96,7 @@ public:
 		if (m_inUse) {
 			m_inUse--;
 		}else {
-			ASSERT(0);
+			wxASSERT(0);
 		}
 	}
 	

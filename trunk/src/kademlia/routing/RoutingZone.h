@@ -61,7 +61,7 @@ class CContact;
  */
 class CRoutingZone
 {
-	friend CRoutingZone;
+	//friend CRoutingZone;
 public:
 
 	CRoutingZone();

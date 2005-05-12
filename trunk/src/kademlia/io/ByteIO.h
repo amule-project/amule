@@ -71,9 +71,8 @@ public:
 	uint32 getAvailable() const { return m_available; }
 	void reset(void);
 
-protected:
 	virtual ~CByteIO() {};
-	
+
 private:
 	bool	m_bReadOnly;
 	byte*	m_buffer;

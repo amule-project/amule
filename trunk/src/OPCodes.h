@@ -86,8 +86,6 @@ enum {
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
 #define	CREDITFILE_VERSION			0x12
 
-#define RSAKEYSIZE				384             //384 bits
-
 #define EMBLOCKSIZE				(uint32)184320
 
 #define COMPILE_DATE				__DATE__
@@ -101,14 +99,36 @@ enum {
 #define	FILEREASKTIME				1300000	// 1300000 <- original value ***
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
-//#define	SOURCECLIENTREASK			600000
 #define	SOURCECLIENTREASKS			MIN2MS(40)	//40 mins
 #define	SOURCECLIENTREASKF			MIN2MS(5)	//5 mins
+#define	KADEMLIAASKTIME			SEC2MS(1)	//1 second
+#define	KADEMLIATOTALFILE		7			//Total files to search sources for.
+#define	KADEMLIAREASKTIME		HR2MS(1)	//1 hour
+#define	KADEMLIAPUBLISHTIME		SEC(2)		//2 second
+#define	KADEMLIATOTALSTORENOTES	1			//Total hashes to store.
+#define	KADEMLIATOTALSTORESRC	2			//Total hashes to store.
+#define	KADEMLIATOTALSTOREKEY	1			//Total hashes to store.
+#define	KADEMLIAREPUBLISHTIMES	HR2S(5)		//5 hours
+#define	KADEMLIAREPUBLISHTIMEN	HR2S(24)	//24 hours
+#define	KADEMLIAREPUBLISHTIMEK	HR2S(24)	//24 hours
+#define	KADEMLIADISCONNECTDELAY	MIN2S(20)	//20 mins
+#define	KADEMLIAMAXINDEX		50000		//Total keyword indexes.
+#define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
+#define	KADEMLIAMAXSOUCEPERFILE	300			//Max number of sources per file in index.
+#define	KADEMLIAMAXNOTESPERFILE	50			//Max number of notes per entry in index.
+
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min
-#define	MINCOMMONPENALTY			4
-#define	UDPSERVERSTATTIME			5000
-#define	UDPSERVSTATREASKTIME			14400
-#define	UDPSERVERPORT				4665	// default udp port
+#define	MINCOMMONPENALTY		4
+#define	UDPSERVERSTATTIME		SEC2MS(5)	//5 secs
+#define	UDPSERVSTATREASKTIME	HR2S(4)		//4 hours
+#define	UDPSERVERPORT			4665		//default udp port
+#define	UDPMAXQUEUETIME			SEC2MS(30)	//30 Seconds
+#define	RSAKEYSIZE				384			//384 bits
+#define	MAX_SOURCES_FILE_SOFT	500
+#define	MAX_SOURCES_FILE_UDP	50
+#define	SESSIONMAXTRANS			(9.3*1024*1024) // 9.3 Mbytes. "Try to send complete chunks" always sends this amount of data
+#define	SESSIONMAXTIME			HR2MS(1)	//1 hour
+#define	MAXFILECOMMENTLEN		50
 #define	MIN_UP_CLIENTS_ALLOWED			2	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 // MOD Note: end
 
@@ -142,6 +162,8 @@ const int BLOCKSIZE =				184320;
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER
 #define	OP_PACKEDPROT				0xD4
 #define	OP_EMULEPROT				0xC5
+#define	OP_KADEMLIAHEADER		0xE4
+#define	OP_KADEMLIAPACKEDPROT	0xE5
 #define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
@@ -287,13 +309,13 @@ const unsigned int UNLIMITED =	 		0;
 
 //file tags
 #define FT_FILENAME				 0x01	// <string>
-#define TAG_NAME				"\x01"	// <string>
+#define TAG_FILENAME				"\x01"	// <string>
 #define FT_FILESIZE				 0x02	// <uint32>
-#define TAG_SIZE				"\x02"	// <uint32>
+#define TAG_FILESIZE				"\x02"	// <uint32>
 #define FT_FILETYPE				 0x03	// <string>
-#define TAG_TYPE				"\x03"	// <string>
+#define TAG_FILETYPE				"\x03"	// <string>
 #define FT_FILEFORMAT				 0x04	// <string>
-#define TAG_FORMAT				"\x04"	// <string>
+#define TAG_FILEFORMAT				"\x04"	// <string>
 #define FT_LASTSEENCOMPLETE			 0x05	// <uint32>
 #define TAG_COLLECTION				"\x05"
 #define	TAG_PART_PATH				"\x06"	// <string>
