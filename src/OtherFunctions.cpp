@@ -1227,7 +1227,7 @@ void clear_backtrace_info() {
 
 static void get_file_line_info(bfd *abfd, asection *section, void *_address)
 {
-	unsigned long address, sectionStart ;
+	unsigned long address;
 	
 	wxASSERT(symbol_list);
 
@@ -1240,20 +1240,20 @@ static void get_file_line_info(bfd *abfd, asection *section, void *_address)
 	if ((section->flags & SEC_ALLOC) == 0) {
         return ;
 	}
+	
+	bfd_vma vma = bfd_get_section_vma (abfd, section);
 
-	sectionStart = section->vma ;
-
-	if (address < sectionStart) {
+	if (address < vma) {
 		return ;
 	}
 	
 	bfd_size_type size = bfd_get_section_size_before_reloc (section);
-	if (address > (sectionStart + size)) {
+	if (address > (vma + size)) {
         return ;
 	}
 
 	found =  bfd_find_nearest_line (abfd, section, symbol_list,
-					address - sectionStart, 
+					address - vma, 
 					&file_name, &function_name, &line_number) ;
 	return ;
 }
