@@ -1246,8 +1246,9 @@ static void get_file_line_info(bfd *abfd, asection *section, void *_address)
 	if (address < sectionStart) {
 		return ;
 	}
-
-	if (address > (sectionStart + section->_raw_size)) {
+	
+	bfd_size_type size = bfd_get_section_size_before_reloc (section);
+	if (address > (sectionStart + size)) {
         return ;
 	}
 
