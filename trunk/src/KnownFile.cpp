@@ -126,6 +126,7 @@ CKnownFile::CKnownFile() :
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
+
 }
 
 #ifdef CLIENT_GUI

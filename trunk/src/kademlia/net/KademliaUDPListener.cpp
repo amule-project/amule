@@ -598,10 +598,12 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CSafeMemFile& bio,
 
 		// pre-tokenize the string term
 		int iPosTok = 0;
-		CTagValueString strTok(str.Tokenize(_awszInvKadKeywordChars, iPosTok));
-		while (!strTok.IsEmpty()) {
-			pSearchTerm->astr->Add(strTok);
-			strTok = str.Tokenize(_awszInvKadKeywordChars, iPosTok);
+		wxStringTokenizer token(str,InvKadKeywordChars,wxTOKEN_DEFAULT );
+		while (token.HasMoreTokens()) {
+			CTagValueString strTok(token.GetNextToken());
+			if (!strTok.IsEmpty()) {
+				pSearchTerm->astr->Add(strTok);
+			}
 		}
 
 		return pSearchTerm;

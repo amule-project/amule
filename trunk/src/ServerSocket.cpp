@@ -279,7 +279,6 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				
 				// 16.40 servers do not send separate OP_SERVERMESSAGE packets for each line;
 				// instead of this they are sending all text lines with one OP_SERVERMESSAGE packet.
-				//wxString message = strMessages.Tokenize("\r\n", iPos);
 
 				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
