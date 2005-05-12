@@ -39,20 +39,42 @@ there client on the eMule forum..
 #ifndef __INDEXED_H__
 #define __INDEXED_H__
 
-#include "MapKey.h"
 #include "../../Types.h"
 #include <list>
 #include <map>
 #include "SearchManager.h"
 #include "../routing/Maps.h"
 #include "../utils/UInt128.h"
+#include "../../CTypedPtrList.h"
 #include "Entry.h"
 
+struct key_compare {
+	bool operator()(const CCKey& k1, const CCKey& k2) const 
+	{
+		if (!k1.m_key && k2.m_key) {
+			return -1;
+		} else if (k1.m_key && !k2.m_key) {
+			return 1;
+		} else if (!k1.m_key && !k2.m_key) {
+			return 0;
+		} else {
+			int result = (((uint32*)k1.m_key)[0] - ((uint32*)k2.m_key)[0]);
+			if (!result) {
+				result = (((uint32*)k1.m_key)[1] - ((uint32*)k2.m_key)[1]);
+			}
+			if (!result) {
+				result = (((uint32*)k1.m_key)[2] - ((uint32*)k2.m_key)[2]);
+			}
+			if (!result) {
+				result = (((uint32*)k1.m_key)[3] - ((uint32*)k2.m_key)[3]);
+			}
+			return result;			
+		}
+	}
+};
+
+
 typedef CTypedPtrList<CPtrList, Kademlia::CEntry*> CKadEntryPtrList;
-typedef std::map<CCKey,KeyHash*> KeyHashMap;
-typedef std::map<CCKey,Source*> CSourceKeyMap;
-typedef std::map<CCKey,SrcHash*> SrcHashMap;
-typedef std::map<CCKey,Load*> LoadMap;
 
 struct Source
 {
@@ -60,13 +82,16 @@ struct Source
 	CKadEntryPtrList entryList;
 };
 
+typedef CTypedPtrList<CPtrList, Source*> CKadSourcePtrList;
+
+typedef std::map<CCKey,Source*,key_compare> CSourceKeyMap;
+
 struct KeyHash
 {
 	Kademlia::CUInt128 keyID;
 	CSourceKeyMap m_Source_map;
 };
 
-typedef CTypedPtrList<CPtrList, Source*> CKadSourcePtrList;
 
 struct SrcHash
 {
@@ -106,6 +131,10 @@ struct SSearchTerm
 	SSearchTerm* right;
 };
 
+typedef std::map<CCKey,KeyHash*,key_compare> KeyHashMap;
+typedef std::map<CCKey,SrcHash*,key_compare> SrcHashMap;
+typedef std::map<CCKey,Load*,key_compare> LoadMap;
+
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
@@ -121,8 +150,8 @@ public:
 	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
 	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
 	bool AddLoad(const CUInt128& keyID, uint32 time);
-	uint32 GetIndexedCount() {return m_Keyword_map.GetCount();}
-	uint32 GetFileKeyCount() {return m_Keyword_map.GetCount();}
+	uint32 GetIndexedCount() {return m_Keyword_map.size();}
+	uint32 GetFileKeyCount() {return m_Keyword_map.size();}
 	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32 ip, uint16 port);
 	void SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port);
 	void SendValidNoteResult(const CUInt128& keyID, const CUInt128& CheckID, uint32 ip, uint16 port);
@@ -145,4 +174,4 @@ private:
 
 } // End namespace
 
-#endif __INDEXED_H__
+#endif //__INDEXED_H__

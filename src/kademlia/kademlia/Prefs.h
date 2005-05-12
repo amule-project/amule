@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __PREFS_H__
 
 #include "../utils/UInt128.h"
+#include "Types.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -129,7 +130,7 @@ private:
 	bool		m_findBuddy;
 	bool		m_lastFirewallState;
 
-	void init(wxString filename);
+	void init(const wxString& filename);
 	void reset();
 	void setDefaults();
 	void readFile();
@@ -138,4 +139,4 @@ private:
 
 } // End namespace
 
-#endif __PREFS_H__
+#endif //__PREFS_H__

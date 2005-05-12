@@ -56,8 +56,8 @@ void deleteTagListEntries(TagList* taglist);
 
 // If type is unknown it will be an empty string
 // If there are any properties about the file to report, there will follow LPCSTR key/value pairs.
-typedef void (CALLBACK *SEARCH_KEYWORD_CALLBACK)(uint32 searchID, CUInt128 fileID, wxString name, uint32 size, wxString type, uint16 numProperties, ...);
-typedef void (CALLBACK *SEARCH_ID_CALLBACK)(uint32 searchID, CUInt128 contactID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 port);
+//typedef void (CALLBACK *SEARCH_KEYWORD_CALLBACK)(uint32 searchID, CUInt128 fileID, wxString name, uint32 size, wxString type, uint16 numProperties, ...);
+//typedef void (CALLBACK *SEARCH_ID_CALLBACK)(uint32 searchID, CUInt128 contactID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 port);
 
 typedef std::list<wxString> WordList;
 typedef std::map<CUInt128, CSearch*> SearchMap;

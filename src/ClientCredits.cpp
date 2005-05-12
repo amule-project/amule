@@ -52,8 +52,6 @@
 
 #include "CryptoPP_Inc.h"
 
-//#include "StdAfx.h"
-
 
 #define CLIENTS_MET_FILENAME		wxT("clients.met")
 #define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.BAK")
@@ -406,8 +404,9 @@ void CClientCredits::Verified(uint32 dwForIP){
 }
 
 bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
-	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 )
+	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 ) {
 		return false;
+	}
 	memcpy(m_abyPublicKey,pachIdent, nIdentLen);
 	m_nPublicKeyLen = nIdentLen;
 	IdentState = IS_IDNEEDED;

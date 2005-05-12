@@ -61,36 +61,35 @@ public:
 	~CEntry()
 	{
 		TagList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); ++it)
+		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			delete *it;
+		}
 	}
 	
-	uint32 GetIntTagValue(const wxString& tagname) const
+	uint32 GetIntTagValue(const char* tagname) const
 	{
 		TagList::const_iterator it;
 		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
+		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsInt()) {
+			if (!tag->m_name.Compare(tagname) && tag->IsInt()) {
 				return tag->GetInt();
 			}
 		}
 		return 0;
 	}
 
-	wxString GetStrTagValue(const wxSTring& tagname) const
+	wxString GetStrTagValue(const char* tagname) const
 	{
 		TagList::const_iterator it;
 		Kademlia::CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); it++)
-		{
+		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
 			if (!tag->m_name.Compare(tagname)&& tag->IsStr()) {
 				return tag->GetStr();
 			}
 		}
-		return wxT("");
+		return wxEmptyString;
 	}	
 	
 	uint32 ip;

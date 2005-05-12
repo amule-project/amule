@@ -83,7 +83,13 @@ enum DebugType
 	//! Warning/Errors related to Kademlia Search
 	logKadSearch,
 	//! Warning/Errors related to Kademlia Routing
-	logKadRouting
+	logKadRouting,
+	//! Warning/Errors related to Kademlia Indexing
+	logKadIndex,
+	//! Warning/Errors related to Kademlia Main Thread
+	logKadMain,
+	//! Warning/Errors related to Kademlia Preferences
+	logKadPrefs	
 };
 
 

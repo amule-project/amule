@@ -56,6 +56,10 @@ public:
 	CIOException(int cause = ERR_SUCCESS) {m_cause = cause;}
 
 	bool GetErrorMessage(wxString* lpszError, uint32 nMaxError, uint32* pnHelpContext = NULL);
+	
+	// This one is part of CException, and I have NFC on what it does.
+	void Delete() const { };
+	
 };
 
 } // End namespace

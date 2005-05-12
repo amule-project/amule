@@ -50,7 +50,7 @@ namespace Kademlia {
 
 class CUInt128;
 
-class CTagNameString : protected wxString
+class CTagNameString : public wxString
 {
 public:
 	CTagNameString()
@@ -70,12 +70,20 @@ public:
 	// A tag name may include character values >= 0xD0 and therefor also >= 0xF0. to prevent those
 	// characters be interpreted as multi byte character sequences we have to ensure that a binary
 	// string compare is performed.
+	int Compare(const char* psz) const throw()
+	{
+		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
+		return strcmp((char*)c_str(), psz);
+	}
+
+	#if wxUSE_UNICODE
 	int Compare(const wxString& psz) const throw()
 	{
 		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
-		return strcmp((char*)c_str(), (char*)psz.c_str());
-	}
-
+		return Compare((const char*) psz.c_str());
+	}	
+	#endif
+	
 	int CompareNoCase(const wxString& psz) const throw()
 	{
 		return CmpNoCase(psz);

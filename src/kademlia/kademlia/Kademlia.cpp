@@ -37,24 +37,26 @@ there client on the eMule forum..
 */
 
 //#include "stdafx.h"
+//#include "../utils/MiscUtils.h"
+//#include "StringConversion.h"
+//#include "MD4.h"
+
 #include "Kademlia.h"
+#include "Defines.h"
 #include "Prefs.h"
 #include "Error.h"
 #include "SearchManager.h"
 #include "Indexed.h"
 #include "../net/KademliaUDPListener.h"
 #include "../routing/RoutingZone.h"
-#include "../utils/MiscUtils.h"
 #include "../../SharedFileList.h"
-#include "../routing/contact.h"
+#include "../routing/Contact.h"
 #include "amule.h"
 #include "amuleDlg.h"
 #include "OPCodes.h"
-//#include "defines.h"
 #include "Preferences.h"
 #include "Logger.h"
-#include "MD4.h"
-//#include "StringConversion.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -94,7 +96,7 @@ void CKademlia::start(CPrefs *prefs)
 			return;
 		}
 
-		AddDebugLogLineM(false, wxT("Starting Kademlia"));
+		AddDebugLogLineM(false, logKadMain, wxT("Starting Kademlia"));
 
 		m_nextSearchJumpStart = time(NULL);
 		m_nextSelfLookup = time(NULL) + MIN2S(3);
@@ -116,7 +118,7 @@ void CKademlia::start(CPrefs *prefs)
 		instance->m_udpListener = new CKademliaUDPListener();
 		m_running = true;
 	} catch (...) {
-		AddDebugLogLine( false, wxT("Exception in CKademlia::start");
+		AddDebugLogLineM( false, logKadMain, wxT("Exception in CKademlia::start"));
 	}
 }
 
@@ -126,7 +128,7 @@ void CKademlia::stop() {
 		return;
 	}
 
-	AddDebugLogLineM(false, wxT("Stopping Kademlia"));
+	AddDebugLogLineM(false, logKadMain, wxT("Stopping Kademlia"));
 	m_running = false;
 
 	CSearchManager::stopAllSearches();
@@ -134,7 +136,7 @@ void CKademlia::stop() {
 		delete instance->m_udpListener;
 		instance->m_udpListener = NULL;
 	} catch(...) {
-		AddDebugLogLineM(false, wxT("Exception in CKademlia::stop (UDP Listener)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (UDP Listener)"));
 		wxASSERT(0);
 	}
 
@@ -142,7 +144,7 @@ void CKademlia::stop() {
 		delete instance->m_routingZone;
 		instance->m_routingZone = NULL;
 	} catch(...) {
-		AddDebugLogLineM(false, _T("Exception in CKademlia::stop (Routing Zone)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Routing Zone)"));
 		wxASSERT(0);
 	}
 
@@ -150,7 +152,7 @@ void CKademlia::stop() {
 		delete instance->m_indexed;
 		instance->m_indexed = NULL;
 	} catch(...) {
-		AddDebugLogLineM(false, _T("Exception in CKademlia::stop (Indexed)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Indexed)"));
 		wxASSERT(0);
 	}
 
@@ -158,14 +160,14 @@ void CKademlia::stop() {
 		delete instance->m_prefs;
 		instance->m_prefs = NULL;
 	} catch(...) {
-		AddDebugLogLineM(false, _T("Exception in CKademlia::stop (Prefs)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Prefs)"));
 		wxASSERT(0);
 	}
 
 	try {
 		delete instance;
 	} catch(...) {
-		AddDebugLogLine(false, _T("Exception in CKademlia::stop (instance)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (instance)"));
 		wxASSERT(0);
 	}
 	m_events.clear();
@@ -189,7 +191,7 @@ void CKademlia::process()
 	try
 	{
 		now = time(NULL);
-		ASSERT(instance->m_prefs != NULL);
+		wxASSERT(instance->m_prefs != NULL);
 		lastContact = instance->m_prefs->getLastContact();
 		CSearchManager::updateStats();
 		if( m_statusUpdate <= now ) {
@@ -233,14 +235,14 @@ void CKademlia::process()
 						} 
 					}
 				} catch (...) {
-					AddDebugLogLineM(false, wxT("Exception in Kademlia::Process (Contact)"));
+					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Contact)"));
 				}
 			}
 			if (zone->m_nextSmallTimer <= now) {
 				try {
 					zone->onSmallTimer();
 				} catch (...) {
-					AddDebugLogLineM(false, wxT("Exception in Kademlia::Process (Timer)"));
+					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Timer)"));
 				}
 				zone->m_nextSmallTimer = MIN2S(1) + now;
 			}
@@ -249,7 +251,7 @@ void CKademlia::process()
 				try {
 					CSearchManager::jumpStart();
 				} catch (...) {
-					AddDebugLogLine(false, _T("Exception in Kademlia::Process (Search Manager)"));
+					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Search Manager)"));
 				}
 				m_nextSearchJumpStart += SEARCH_JUMPSTART;
 			}
@@ -260,11 +262,11 @@ void CKademlia::process()
 			if( maxUsers != instance->m_prefs->getKademliaUsers()) {
 				instance->m_prefs->setKademliaUsers(maxUsers);
 				instance->m_prefs->setKademliaFiles();
-				theApp.emuledlg->ShowUserCount();
+				theApp.amuledlg->ShowUserCount();
 			}
 		}
 	} catch (...) {
-		AddDebugLogLineM(false, wxT("Exception in Kademlia::Process (Main)"));
+		AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Main)"));
 	}
 }
 
@@ -365,7 +367,7 @@ bool CKademlia::getPublish(void)
 	return 0;
 }
 
-void CKademlia::bootstrap(LPCTSTR host, uint16 port)
+void CKademlia::bootstrap(const wxString& host, uint16 port)
 {
 	if( instance && instance->m_udpListener && !isConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
 		instance->m_udpListener->bootstrap( host, port);
@@ -427,16 +429,20 @@ CIndexed *CKademlia::getIndexed(void)
 
 // Global function.
 
+#include "../../CryptoPP_Inc.h"
+
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
-	byte* Output[16];
+	byte Output[16];
 	
 	CryptoPP::MD4 md4_hasher; 	
 	
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
-	const wxWX2MBbuf ansi_buffer(unicode2char(rstrKeyword));
-
-	md4_hasher.CalculateDigest(Output,ansi_buffer,srtlen(ansi_buffer));
+	char* ansi_buffer = strdup((const char*)rstrKeyword.c_str());
+	
+	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
+	
+	free(ansi_buffer);
 	
 	pKadID->setValueBE(Output);
 }

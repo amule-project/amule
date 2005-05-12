@@ -37,12 +37,11 @@ there client on the eMule forum..
 */
 
 //#include "stdafx.h"
+//#include "../utils/MiscUtils.h"
 #include "Prefs.h"
-#include "../utils/UInt128.h"
-#include "../utils/MiscUtils.h"
 #include "../kademlia/SearchManager.h"
 #include "../../OPCodes.h"
-#include "../Routing/RoutingZone.h"
+#include "../routing/RoutingZone.h"
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Indexed.h"
 #include "Preferences.h"
@@ -88,7 +87,7 @@ void CPrefs::init(const wxString& filename)
 	m_totalNotes = 0;
 	m_totalStoreNotes = 0;
 	m_Publish = false;
-	m_clientHash.setValue((byte*)thePrefs.GetUserHash());
+	m_clientHash.setValue((const unsigned char*)thePrefs::GetUserHash());
 	m_ip			= 0;
 	m_ipLast		= 0;
 	m_recheckip		= 0;
@@ -105,14 +104,14 @@ void CPrefs::readFile()
 {
 	try {
 		CSafeBufferedFile file;
-		if (file.Open(m_filename,CFile::read) {
+		if (file.Open(m_filename,CFile::read)) {
 			m_ip = file.ReadUInt32();
 			file.ReadUInt16();
 			file.ReadUInt128(&m_clientID);
 			file.Close();
 		}
 	} catch (...) {
-		AddDebugLogLineM(false, wxT("Exception in CPrefs::readFile"));
+		AddDebugLogLineM(false, logKadPrefs, wxT("Exception in CPrefs::readFile"));
 	}
 }
 
@@ -128,7 +127,7 @@ void CPrefs::writeFile()
 			file.Close();
 		}
 	} catch (...) {
-		AddDebugLogLineM(false,wxT("Exception in CPrefs::writeFile"));
+		AddDebugLogLineM(false, logKadPrefs, wxT("Exception in CPrefs::writeFile"));
 	}
 }
 
@@ -234,7 +233,7 @@ void CPrefs::setKademliaFiles()
 		nKadAverage = 108;
 	}
 #ifdef ___DEBUG__
-	AddDebugLogLineM(false, method);
+	AddDebugLogLineM(false, logKadPrefs, method);
 #endif
 	m_kademliaFiles = nKadAverage*m_kademliaUsers;
 }
