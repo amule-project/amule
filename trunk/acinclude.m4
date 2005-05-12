@@ -639,7 +639,7 @@ AC_RUN_IFELSE([
 	])
 if test x$result = xyes; then
 	BFD_FLAGS="-DHAVE_BFD"
-	BFD_LIB="-lbfd"
+	BFD_LIB="-lbfd -liberty"
 else
 	AC_MSG_NOTICE([WARNING: bfd.h not found, please install binutils development package if you are a developer or want to help testing aMule])
 fi
