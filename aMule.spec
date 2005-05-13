@@ -1,47 +1,29 @@
-%define cvsdate %(date +%Y%m%d)
 
-Summary:     aMule - another eMule p2p client
-Name:        aMule
-Version:     CVS
-Release:     %{cvsdate}
-License:     GPL
-Group:       Applications/Internet
-Packager:    The aMule Team (http://forum.amule.org/)
-Vendor:      The aMule Project
-URL:         http://www.amule.org
-Source:      aMule-%{version}-%{release}.tar.bz2
-Prefix:      %{_prefix}
-BuildRoot:   %{_builddir}/%{name}-%{version}-root
-#These dependencies do not always work, so lets leave them out for now
-#Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
-#BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
-BuildPreReq: grep, automake >= 1.7
-Provides:    %{name}
-Obsoletes:   %{name}
+Summary:        aMule - another eMule p2p client
+Name:           aMule
 
-AutoReq:     0
+Version:        2.0.0
+Release:        1
+
+Group:          Applications/Internet
+License:        GPL
+URL:            http://www.amule.org
+Source0:        aMule-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  grep, automake >= 1.7, wxGTK2-devel
+Requires:       wxGTK2
 
 %description
 aMule is a peer to peer file sharing client, based on the well known eMule.
 Starting with 2.0.0 aMule works on Linux, Mac, *BSD and Windows, which makes it the first multi-platform edonkey network client.
 
 
-%pre
-echo "************************************************************************************"
-echo "Warning: This is a cvs release!"
-echo "This release is made for testing purpose and it may cause several problems,"
-echo "burn your house, kill your dog, etc, but it *should* be safe to use anyway."
-echo "If you would like to test some of the great new features go on and install."
-echo "Otherwise you may press ctrl-c within the next 10 seconds to abort the installation."
-echo -n "Waiting for user... "
-for i in $(seq 10 -1 1); do
-    echo -n "$i, "
-    sleep 1
-done
-echo " 0, ok, here we go then... Muhahaha :), installing."
-
 %prep
-%setup -q -n amule-cvs
+%setup -q
+
+
+%build
 #
 # Tests for Fedora Core distro and then for UTF-8 enabled locale.
 # For some reason, rpmbuild sets LANG="C" before executing prep section,
@@ -71,33 +53,30 @@ esac
 #
 # ./configure
 #
-CFLAGS="$RPM_OPT_FLAGS" ./configure $UTF8_SYSTRAY \
-        --prefix=%{_prefix} \
-        --disable-optimize \
-        --enable-debug \
+%configure \
+        $UTF8_SYSTRAY \
+        --enable-optimize \
+        --disable-debug \
         --enable-cas \
 	--enable-wxcas \
         --enable-amulecmd \
         --enable-webserver \
 	--enable-ccache \
-        --with-wx-config=`rpm -ql wxGTK-devel|grep 'wxgtk-2\.[0-9]-config'` \
-        --with-wxbase-config=`rpm -ql wxBase|grep 'wxbase-2\.[0-9]-config'`
+        --with-wx-config=`rpm -ql wxGTK-devel|grep 'wxgtk-2\.[0-9]-config'`
+make %{?_smp_mflags}
 
-%build
-%{__make}
 
 %install
-[ ! "$RPM_BUILD_ROOT" = "/" ] && rm -rf $RPM_BUILD_ROOT
-%{__make} prefix=$RPM_BUILD_ROOT%{_prefix} \
-        exec_prefix=$RPM_BUILD_ROOT%{_prefix} \
-        install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+
 
 %clean
-[ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf $RPM_BUILD_ROOT
-%{__rm} -rf %{_builddir}/%{name}-%{version}
+rm -rf $RPM_BUILD_ROOT
+
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %{_bindir}/amule
 %{_bindir}/ed2k
 %{_bindir}/amulecmd
@@ -117,7 +96,11 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure $UTF8_SYSTRAY \
 %dir %{_datadir}/amule/webserver
 %{_datadir}/amule/webserver/*
 
+
 %changelog
+* Fri May 13 2005 Marcelo Jimenez <phoenix@amule.org>
+- New spec for aMule-2.0.0 compliant with Fedora Core specifications.
+
 * Mon Apr 19 2005 Marcelo Jimenez <phoenix@amule.org>
 - Removed curl dependency, aMule now uses wxHTTP.
 

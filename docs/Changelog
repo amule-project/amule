@@ -13,6 +13,7 @@ Version 2.0.1 - The " **** " version.
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		file. They don't work on all distros, even worse, don't always
 		work with Fedora Core.
+		* Created a new spec file, compliant with Fedora Core.
 
 	Special Thanks To:
 
