@@ -3129,9 +3129,9 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item2->AddGrowableRow( 0 );
 
     wxListCtrl *item3 = new wxListCtrl( parent, ID_NODELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item2, 0, wxGROW|wxALL, 0 );
+    item1->Add( item2, 0, wxGROW, 0 );
 
     wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Bootstrap") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
@@ -3165,7 +3165,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     CMuleTextCtrl *item16 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item16, 0, wxALIGN_CENTER, 5 );
 
-    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
     item17->AddGrowableCol( 1 );
@@ -3176,30 +3176,31 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, ID_NODE_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item6->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item6->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxButton *item20 = new wxButton( parent, ID_NODECONNECT, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
     item20->Enable( false );
-    item6->Add( item20, 0, wxALIGN_CENTER|wxALL, 5 );
+    item6->Add( item20, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item4->Add( item6, 0, wxALIGN_RIGHT|wxALL, 0 );
+    item4->Add( item6, 0, wxALIGN_RIGHT, 0 );
 
     item4->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item21 = new wxButton( parent, ID_KNOWNNODECONNECT, _("Bootstrap known clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item4->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item4, 0, wxGROW|wxALIGN_RIGHT|wxALL, 0 );
+    item1->Add( item4, 0, wxGROW|wxALIGN_RIGHT, 0 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Current Searches") );
     wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
 
-    wxListCtrl *item24 = new wxListCtrl( parent, ID_KADSEARCHLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CKadSearchListCtrl *item24 = new CKadSearchListCtrl( parent, ID_KADSEARCHLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
+    item24->SetName( wxT("kadsearchlistctrl") );
+    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {

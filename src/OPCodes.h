@@ -340,8 +340,10 @@ const unsigned int UNLIMITED =	 		0;
 #define FT_STATUS				 0x14	// <uint32>
 #define TAG_STATUS				"\x14"	// <uint32>
 #define FT_SOURCES				 0x15	// <uint32>
+#define TAG_SOURCES				"\x15"	// <uint32>
 #define TAG_AVAILABILITY			"\x15"	// <uint32>
 #define FT_PERMISSIONS				 0x16	// <uint32>
+#define TAG_PERMISSIONS			"\x16"
 #define TAG_QTIME				"\x16"
 #define FT_OLDULPRIORITY			 0x17	// Not used anymore
 #define TAG_PARTS				"\x17"
@@ -358,31 +360,34 @@ const unsigned int UNLIMITED =	 		0;
 #define	FT_COMPLETE_SOURCES			 0x30	// nr. of sources which share a complete version
 							 //of the associated file (supported by eserver 16.46+)
 // statistic
-#define FT_ATTRANSFERED			 0x50	// <uint32>
-#define FT_ATREQUESTED			 0x51	// <uint32>
-#define FT_ATACCEPTED			 0x52	// <uint32>
-#define FT_CATEGORY			 0x53	// <uint32>
+#define	FT_ATTRANSFERED			 0x50	// <uint32>
+#define	FT_ATREQUESTED			 0x51	// <uint32>
+#define	FT_ATACCEPTED			 0x52	// <uint32>
+#define	FT_CATEGORY			 0x53	// <uint32>
 #define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
 #define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
-#define	 FT_MEDIA_ARTIST		 0xD0	// <string>
+#define	FT_MEDIA_ARTIST		 0xD0	// <string>
 #define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
-#define	 FT_MEDIA_ALBUM			 0xD1	// <string>
+#define	FT_MEDIA_ALBUM			 0xD1	// <string>
 #define	TAG_MEDIA_TITLE			"\xD2"	// <string>
-#define	 FT_MEDIA_TITLE			 0xD2	// <string>
+#define	FT_MEDIA_TITLE			 0xD2	// <string>
 #define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
-#define	 FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
+#define	FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
 #define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
-#define	 FT_MEDIA_BITRATE		 0xD4	// <uint32>
+#define	FT_MEDIA_BITRATE		 0xD4	// <uint32>
 #define	TAG_MEDIA_CODEC			"\xD5"	// <string>
-#define	 FT_MEDIA_CODEC			 0xD5	// <string>
-#define TAG_BUDDYHASH			"\xF8"	// <string>
-#define TAG_CLIENTLOWID			"\xF9"	// <uint32>
-#define TAG_SERVERPORT			"\xFA"	// <uint16>
-#define TAG_SERVERIP			"\xFB"	// <uint32>
-#define TAG_SOURCEUPORT			"\xFC"	// <uint16>
-#define TAG_SOURCEPORT			"\xFD"	// <uint16>
-#define TAG_SOURCEIP			"\xFE"	// <uint32>
-#define TAG_SOURCETYPE			"\xFF"	// <uint8>
+#define	FT_MEDIA_CODEC			 0xD5	// <string>
+#define	FT_FILERATING			 0xF7	// <uint8>
+#define	TAG_FILERATING			"\xF7"	// <uint8>
+
+#define	TAG_BUDDYHASH			"\xF8"	// <string>
+#define	TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define	TAG_SERVERPORT			"\xFA"	// <uint16>
+#define	TAG_SERVERIP			"\xFB"	// <uint32>
+#define	TAG_SOURCEUPORT			"\xFC"	// <uint16>
+#define	TAG_SOURCEPORT			"\xFD"	// <uint16>
+#define	TAG_SOURCEIP			"\xFE"	// <uint32>
+#define	TAG_SOURCETYPE			"\xFF"	// <uint8>
 
 #define	TAGTYPE_HASH			0x01
 #define	TAGTYPE_STRING			0x02

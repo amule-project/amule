@@ -34,11 +34,13 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"
 
-class CMD4Hash;
 class wxListCtrl;	
 class wxListEvent;
 class wxCommandEvent;
 class wxMouseEvent;
+	
+class CMD4Hash;
+class CKadSearchListCtrl;
 
 class CKadDlg : public wxPanel {
 public:
@@ -47,6 +49,8 @@ public:
 
 	void AddNode(uint32 ip, uint16 port, CMD4Hash Hash);
 	void RemoveNode();
+		
+	CKadSearchListCtrl* searchList;
 		
 private:
 

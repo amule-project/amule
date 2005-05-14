@@ -159,17 +159,17 @@ CUInt128& CUInt128::setBitNumber(uint32 bit, uint32 value)
 	return *this;
 }
 
-CUInt128& CUInt128::xorv(const CUInt128 &value)
+CUInt128& CUInt128::XOR(const CUInt128 &value)
 {
 	for (int i=0; i<4; ++i)
 		m_data[i] ^= value.m_data[i];
 	return *this;
 }
 
-CUInt128& CUInt128::xorBE(const byte *valueBE)
+CUInt128& CUInt128::XORBE(const byte *valueBE)
 {
 	CUInt128 temp(valueBE);
-	return xorv(temp);
+	return XOR(temp);
 }
 
 void CUInt128::toHexString(wxString *str) const

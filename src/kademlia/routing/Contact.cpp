@@ -86,7 +86,7 @@ CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 t
 {
 	m_clientID = clientID;
 	CKademlia::getPrefs()->getKadID(&m_distance);
-	m_distance.xor(clientID);
+	m_distance.XOR(clientID);
 	m_ip = ip;
 	m_udpPort = udpPort;
 	m_tcpPort = tcpPort;
@@ -102,7 +102,7 @@ CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 t
 {
 	m_clientID = clientID;
 	m_distance.setValue(target);
-	m_distance.xor(clientID);
+	m_distance.XOR(clientID);
 	m_ip = ip;
 	m_udpPort = udpPort;
 	m_tcpPort = tcpPort;
@@ -128,7 +128,7 @@ void CContact::setClientID(const CUInt128 &clientID)
 {
 	m_clientID = clientID;
 	CKademlia::getPrefs()->getKadID(&m_distance);
-	m_distance.xor(clientID);
+	m_distance.XOR(clientID);
 }
 
 void CContact::getDistance(CUInt128 *distance) const

@@ -53,10 +53,10 @@ there client on the eMule forum..
 #include "../../SharedFileList.h"
 #include "../../OtherFunctions.h"
 #include "../../amuleDlg.h"
-#include "../../Packets.h"
+#include "../../Packet.h"
 #include "../../KnownFile.h"
 #include "KadSearchListCtrl.h"
-#include "kademliawnd.h"
+#include "../../KadDlg.h"
 #include "DownloadQueue.h"
 #include "SearchList.h"
 #include "SafeFile.h"
@@ -66,6 +66,7 @@ there client on the eMule forum..
 #include "ClientList.h"
 #include "updownclient.h"
 #include "Logger.h"
+#include "../../Preferences.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -86,7 +87,7 @@ CSearch::CSearch()
 	m_count = 0;
 	m_countSent = 0;
 	m_searchID = (uint32)-1;
-	m_keywordPublish = NULL;
+	m_keywordPublish = 0;
 	(void)m_fileName;
 	m_stoping = false;
 	m_totalLoad = 0;
@@ -94,7 +95,7 @@ CSearch::CSearch()
 	bio1 = NULL;
 	bio2 = NULL;
 	bio3 = NULL;
-	theApp.emuledlg->kademliawnd->searchList->SearchAdd(this);
+	theApp.amuledlg->kademliawnd->searchList->SearchAdd(this);
 }
 
 CSearch::~CSearch()
@@ -122,18 +123,19 @@ CSearch::~CSearch()
 				Kademlia::CKademlia::getIndexed()->AddLoad(getTarget(), ((uint32)(DAY2S(7)*((double)getNodeLoad()/100.0))+(uint32)time(NULL)));
 				break;
 			default:
-				// WTF?
+				;
+				// WTF? 
 		}
 	}
 }
 
 void CSearch::go(void)
 {
-	theApp.emuledlg->kademliawnd->searchList->SearchRef(this);
+	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 	// Start with a lot of possible contacts, this is a fallback in case search stalls due to dead contacts
 	if (m_possible.empty()) {
 		CUInt128 distance(CKademlia::getPrefs()->getKadID());
-		distance.xor(m_target);
+		distance.XOR(m_target);
 		CKademlia::getRoutingZone()->getClosestTo(1, distance, 50, &m_possible, true, true);
 	}
 	
@@ -224,11 +226,9 @@ void CSearch::jumpStart(void)
 	if (!m_responded.empty()) {
 		best = m_responded.begin()->first;
 		ContactMap::iterator it = m_possible.begin();
-		while (it != m_possible.end()) {
+		for (; it != m_possible.end(); ++it) {
 			if (it->first < best) {
-				it = m_possible.erase(it);
-			} else {
-				++it;
+				m_possible.erase(it);
 			}
 		}
 	}
@@ -292,7 +292,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 					c = *response;
 
 					c->getClientID(&distance);
-					distance.xor(m_target);
+					distance.XOR(m_target);
 
 					// Ignore if already tried
 					if (m_tried.count(distance) > 0) {
@@ -335,15 +335,15 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 				if( m_type == NODECOMPLETE ) {
 					m_count++;
 					theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
-				} else if (!returnedCloser && ( !thePrefs.FilterLANIPs() || fromDistance.get32BitChunk(0) < SEARCHTOLERANCE)) {
+				} else if (!returnedCloser && ( !thePrefs::FilterLanIPs() || fromDistance.get32BitChunk(0) < SEARCHTOLERANCE)) {
 					// Ask 'from' for the file if closest
 					switch(m_type) {
 						case FILE:
 						case KEYWORD: {
 							if (m_type == FILE) {
-								AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchReq (File) %s")) % Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							} else {
-								AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchReq (Keyword) %s")) % Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							}
 							wxASSERT( m_searchTerms->GetLength() > 0 );
 							// the data in 'm_searchTerms' is to be sent several times. do not pass the m_searchTerms (CSafeMemFile) to 'sendPacket' as it would get detached.
@@ -353,8 +353,8 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						}
 						case NOTES: {
 							CSafeMemFile bio(34);
-							bio.WriteUInt128(&m_target);
-							bio.WriteUInt128(&CKademlia::getPrefs()->getKadID());
+							bio.WriteUInt128(m_target);
+							bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 							m_count++;
 							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_SRC_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
 							break;
@@ -382,16 +382,16 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								if( theApp.IsFirewalled() ) {
 									if( theApp.clientlist->GetBuddy() ) {
 										CUInt128 buddyID(true);
-										buddyID.xor(CKademlia::getPrefs()->getKadID());
+										buddyID.XOR(CKademlia::getPrefs()->getKadID());
 										taglist.push_back(new CTagUInt8(TAG_SOURCETYPE, 3));
 										taglist.push_back(new CTagUInt32(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
 										taglist.push_back(new CTagUInt16(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
 										taglist.push_back(new CTagStr(TAG_BUDDYHASH, CMD4Hash((unsigned char*)buddyID.getData()).Encode()));
-										taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs.GetPort()));
+										taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs::GetPort()));
 									}
 								} else {
 									taglist.push_back(new CTagUInt8(TAG_SOURCETYPE, 1));
-									taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs.GetPort()));
+									taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs::GetPort()));
 								}
 
 								CKademlia::getUDPListener()->publishPacket(from->getIPAddress(), from->getUDPPort(),m_target,id, taglist);
@@ -409,17 +409,17 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								break;
 							}
 							if( bio1 ) {
-								AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadStoreKeywReq %s")) % Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
 								CKademlia::getUDPListener()->sendPacket( packet1, ((1024*50)-bio1->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}
 							if( bio2 ) {
-								AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadStoreKeywReq %s")) % Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));											
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));											
 								CKademlia::getUDPListener()->sendPacket( packet2, ((1024*50)-bio2->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}
 							if( bio3 ) {
-								AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadStoreKeywReq %s")) % Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq %s")  + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
 								CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}
@@ -467,9 +467,10 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								break;
 							}
 							CSafeMemFile bio(34);
-							bio.WriteUInt128(&m_target);
-							bio.WriteUInt128(&CKademlia::getPrefs()->getClientHash());
-							bio.WriteUInt16(thePrefs.GetPort());
+							bio.WriteUInt128(m_target);
+							CUInt128 id(CKademlia::getPrefs()->getClientHash());
+							bio.WriteUInt128(CKademlia::getPrefs()->getClientHash());
+							bio.WriteUInt16(thePrefs::GetPort());
 							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_FINDBUDDY_REQ, from->getIPAddress(), from->getUDPPort());
 							m_count++;
 							theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
@@ -482,12 +483,12 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								break;
 							}
 							CSafeMemFile bio(34);
-							bio.WriteUInt128(&m_target);
+							bio.WriteUInt128(m_target);
 							if( m_fileIDs.size() != 1) {
 								throw wxString(wxT("Kademlia.CSearch.processResponse: m_fileIDs.size() != 1"));
 							}
-							bio.WriteUInt128(&m_fileIDs.front());
-							bio.WriteUInt16(thePrefs.GetPort());
+							bio.WriteUInt128(m_fileIDs.front());
+							bio.WriteUInt16(thePrefs::GetPort());
 							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_FINDSOURCE_REQ, from->getIPAddress(), from->getUDPPort());
 							m_count++;
 							theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
@@ -519,7 +520,7 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 }
 
-void CSearch::processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
+void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
 {
 	uint8  type = 0;
 	uint32 ip = 0;
@@ -550,8 +551,8 @@ void CSearch::processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &
 		} else if (!tag->m_name.Compare(TAG_CLIENTLOWID)) {
 			clientid	= tag->GetInt();
 		} else if (!tag->m_name.Compare(TAG_BUDDYHASH)) {
-			CMD4Hash hash(tag->GetStr);
-			md4cpy(buddyhash, hash->GetHash());
+			CMD4Hash hash(tag->GetStr());
+			md4cpy(buddyhash, hash.GetHash());
 			md4cpy(buddy.getDataPtr(), buddyhash);
 		}
 
@@ -573,7 +574,7 @@ void CSearch::processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &
 	}
 }
 
-void CSearch::processResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
+void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
 {
 	CEntry* entry = new CEntry();
 	entry->keyID.setValue(m_target);
@@ -613,7 +614,7 @@ void CSearch::processResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 
 	}
 }
 
-void CSearch::processResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
+void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
 {
 	bool interested = false;
 	wxString name;
@@ -728,11 +729,11 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 				bio.WriteUInt8(KADEMLIA_STORE);
 				break;
 			default:
-				AddDebugLogLine;(false, logKadSearch, wxT("Invalid search type. (CSearch::sendFindValue)"));
+				AddDebugLogLineM(false, logKadSearch, wxT("Invalid search type. (CSearch::sendFindValue)"));
 				return;
 		}
-		bio.WriteUInt128(&m_target);
-		bio.WriteUInt128(&check);
+		bio.WriteUInt128(m_target);
+		bio.WriteUInt128(check);
 		m_countSent++;
 		theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 		#ifdef __DEBUG__
@@ -764,7 +765,6 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 				break;
 			default:
 				Type = wxT("KadReqUnknown");
-			}
 		}
 		AddDebugLogLineM(false, logClientKadUDP, Type + wxT(" ") + Uint32_16toStringIP_Port(ip,port));
 		#endif
@@ -802,7 +802,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			}
 			
 			// file format (filename extension)
-			int iExt = file->GetFileName().ReverseFind(wxT('.'));
+			int iExt = file->GetFileName().Find(wxT('.'), true);
 			if (iExt != -1) {
 				wxString strExt(file->GetFileName().Mid(iExt));
 				if (!strExt.IsEmpty()) {
@@ -922,7 +922,7 @@ void CSearch::PreparePacket(void)
 			}
 		}
 	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(_T("Exception in CSearch::PreparePacket (IO error(%i))"), ioe->m_cause));
+		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacket (IO error(%i))"), ioe->m_cause));
 		ioe->Delete();
 	} catch (...) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::PreparePacket"));
