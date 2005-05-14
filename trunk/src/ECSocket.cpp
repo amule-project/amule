@@ -358,8 +358,6 @@ ECSocket::~ECSocket(void)
 
 void *CECSocketHandler::Entry()
 {
-	// Code is ok. Uncomment it when inheritance fixed
-	/*
     while ( !TestDestroy() ) {
         if ( m_socket->Error()) {
             if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
@@ -374,12 +372,12 @@ void *CECSocketHandler::Entry()
             m_socket->OnReceive();
         }
     }
-    */
+
     return 0;
 }
  
 #else
-/*
+
 BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
         EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
 END_EVENT_TABLE()
@@ -412,7 +410,6 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
         }
 }
 
-*/
 #endif
 
 /*
@@ -422,22 +419,22 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
 void ECSocket::OnConnect()
 {
 }
-/*
+
 void ECSocket::OnSend()
 {
 	while ( !m_pending_tx.empty() ) {
 		EC_OUTBUF &buf = m_pending_tx.front();
 		
 		int write_count = buf.m_size - (buf.m_current - buf.m_buf);
-		m_sock->Write(buf.m_current, write_count);
-		int written_count = m_sock->LastCount();
+		Write(buf.m_current, write_count);
+		int written_count = LastCount();
 		if ( write_count == written_count ) {
 			delete [] buf.m_buf;
 			m_pending_tx.pop_front();
 		} else {
 			buf.m_current += written_count;
-			if ( m_sock->Error() ) {
-				if ( m_sock->LastError() == wxSOCKET_WOULDBLOCK ) {
+			if ( Error() ) {
+				if ( LastError() == wxSOCKET_WOULDBLOCK ) {
 					break;
 				} else {
 					OnError();
@@ -450,10 +447,10 @@ void ECSocket::OnSend()
 
 void ECSocket::OnReceive()
 {
-	m_sock->Read(m_curr_ptr, m_bytes_left);
-	int recv_count = m_sock->LastCount();
-	if ( m_sock->Error() || !recv_count ) {
-		if ( m_sock->LastError() == wxSOCKET_WOULDBLOCK ) {
+	Read(m_curr_ptr, m_bytes_left);
+	int recv_count = LastCount();
+	if ( Error() || !recv_count ) {
+		if ( LastError() == wxSOCKET_WOULDBLOCK ) {
 			return;
 		} else {
 			OnError();
@@ -462,7 +459,7 @@ void ECSocket::OnReceive()
 	}
 	m_curr_ptr += recv_count;
 }
-*/
+
 void ECSocket::OnClose()
 {
 	Destroy();
