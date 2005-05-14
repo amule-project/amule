@@ -91,8 +91,8 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_ALL,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_STARTNEXTFILE, PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_ENABLETRAYICON, PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
@@ -103,10 +103,11 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Browse buttons
 	EVT_BUTTON(IDC_SELSKINFILE,		PrefsUnifiedDlg::OnButtonBrowseSkin)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV,		PrefsUnifiedDlg::OnButtonBrowseWav)
-	EVT_BUTTON(IDC_BROWSEV,			PrefsUnifiedDlg::OnButtonBrowseVideoplayer)
+	EVT_BUTTON(IDC_BROWSEV,			PrefsUnifiedDlg::OnButtonBrowseApplication)
 	EVT_BUTTON(IDC_SELTEMPDIR,		PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELINCDIR,		PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_SELOSDIR,		PrefsUnifiedDlg::OnButtonDir)
+	EVT_BUTTON(IDC_SELBROWSER,		PrefsUnifiedDlg::OnButtonBrowseApplication)
 
 	EVT_SPINCTRL(IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
 
@@ -234,7 +235,14 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 			#ifdef USE_WX_TRAY
 				FindWindow(IDC_DESKTOPMODE)->Show(false);
 				IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
-			#endif
+			#endif /* USE_WX_TRAY */
+			#ifdef __WXMSW__ 
+				CastChild(IDC_FCHECKTABS, wxCheckBox)->Enable(false);
+				wxChoice *fakeCheck = CastChild(IDC_FCHECK, wxChoice);
+				fakeCheck->Clear();
+				fakeCheck->Append(_("System default"));
+				fakeCheck->Append(_("User Defined"));
+			#endif /* __WXMSW__ */
 		}
 		
 		// Align and resize the page
@@ -363,7 +371,12 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
 	
 	// Enable/Disable some controls
-	FindWindow( IDC_FCHECKSELF )->Enable( CastChild( IDC_FCHECK, wxChoice )->GetSelection() == 8 );
+	bool fcheckCustom = CastChild( IDC_FCHECK, wxChoice )->GetSelection() == CastChild( IDC_FCHECK, wxChoice )->GetCount() - 1;
+	FindWindow( IDC_FCHECKSELF )->Enable( fcheckCustom );
+	FindWindow( IDC_SELBROWSER )->Enable( fcheckCustom );
+	#ifndef __WXMSW__
+		FindWindow( IDC_FCHECKTABS )->Enable( !fcheckCustom );
+	#endif
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
@@ -734,11 +747,19 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 {
-	wxTextCtrl* widget = CastChild( IDC_FCHECKSELF, wxTextCtrl );
+	wxTextCtrl* textctrl = CastChild( IDC_FCHECKSELF, wxTextCtrl );
+	wxButton* btn = CastChild( IDC_SELBROWSER, wxButton );
+	bool enable = evt.GetSelection() == CastChild( IDC_FCHECK, wxChoice )->GetCount() - 1;
 
-	if (widget) {
-		widget->Enable( evt.GetSelection() == 8 );
+	if (textctrl) {
+		textctrl->Enable( enable );
 	}
+	if (btn) {
+		btn->Enable( enable );
+	}
+#ifndef __WXMSW__
+	FindWindow( IDC_FCHECKTABS )->Enable( !enable );
+#endif
 }
 
 void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
@@ -774,7 +795,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 
 	case IDC_SELINCDIR:
 		id = IDC_INCFILES;
-		type = _("Incomming files");
+		type = _("Incoming files");
 		break;
 
 	case IDC_SELOSDIR:
@@ -827,15 +848,35 @@ void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void PrefsUnifiedDlg::OnButtonBrowseVideoplayer(wxCommandEvent& WXUNUSED(e))
+void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 {
-	wxString str = wxFileSelector(
-		_("Browse for videoplayer"), wxEmptyString, wxEmptyString,
-		wxEmptyString, _("Executable (*)|*||") );
+	wxString title;
+	int id = 0;
+	switch ( event.GetId() ) {
+		case IDC_BROWSEV:
+			id = IDC_VIDEOPLAYER;
+			title = _("Browse for videoplayer");
+			break;
+		case IDC_SELBROWSER:
+			id = IDC_FCHECKSELF;
+			title = _("Select browser");
+			break;
+		default:
+			wxASSERT( false );
+			return;
+	}
+	wxString wildcard = CFormat(_("Executable%s"))
+#ifdef __WINDOWS__
+		% wxT(" (*.exe)|*.exe");
+#else
+		% wxT("|*");
+#endif
+	
+	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
+		wxEmptyString, wildcard );
 
 	if ( !str.IsEmpty() ) {
-		wxTextCtrl* widget = CastChild( IDC_VIDEOPLAYER, wxTextCtrl );
-
+		wxTextCtrl* widget = CastChild( id, wxTextCtrl );
 		widget->SetValue( str );
 	}
 }
