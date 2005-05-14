@@ -1138,7 +1138,7 @@ void print_backtrace(uint8 n)
 	MuleStackWalker walker; // Texas ranger?
 	walker.Walk(n); // Skip this one and Walk() also!
 }
-#else 
+#else	/* !(wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER && 0) */
 
 
 #if HAVE_BFD
@@ -1260,6 +1260,7 @@ static void get_file_line_info(bfd *abfd, asection *section, void *_address)
 
 #endif // HAVE_BFD
 
+#ifdef __LINUX__
 wxString demangle(const wxString& function) {
 	wxString result;
 	if (function.Mid(0,2) == wxT("_Z")) {
@@ -1274,6 +1275,7 @@ wxString demangle(const wxString& function) {
 	}	
 	return result;
 }
+#endif /* __LINUX__ */
 
 // Print a stack backtrace if available
 void print_backtrace(uint8 n)
@@ -1383,7 +1385,7 @@ void print_backtrace(uint8 n)
 	
 	hasLineNumberInfo = true;
 	
-#else
+#else	/* !HAVE_BFD */
 	if (wxThread::IsMain()) {
 		wxString command;
 		command << wxT("addr2line -C -f -s -e /proc/") <<
@@ -1395,9 +1397,9 @@ void print_backtrace(uint8 n)
 		::wxEnableTopLevelWindows(false);
 		hasLineNumberInfo = wxExecute(command, out) != -1;
 		::wxEnableTopLevelWindows(true);
-#endif
+#endif	/* wxUSE_GUI */
 	}
-#endif	
+#endif	/* HAVE_BFD / !HAVE_BFD */
 	
 	// Remove 'n+1' first entries (+1 because of this function)
 	for (int i = n+1; i < num_entries; ++i) {
@@ -1429,10 +1431,10 @@ void print_backtrace(uint8 n)
 	delete [] libname;
 	delete [] funcname;
 	delete [] address;
-#else 
+#else	/* !__LINUX__ */
 	(void)n;
 	fprintf(stderr, "--== no BACKTRACE for your platform ==--\n\n");
-#endif
+#endif	/* __LINUX__ / !__LINUX__ */
 }
 
 #endif // wxCHECK_VERSION(2,6,0)
