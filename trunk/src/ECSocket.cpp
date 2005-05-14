@@ -166,7 +166,6 @@ void ECSocket::InitBuffers()
 	parms.z.total_out = 0;
 }
 
-#ifdef __DEBUG__
 wxString GetSocketError(wxSocketError code)
 {
 	switch(code) {
@@ -215,21 +214,6 @@ void ShowZError(int zerror, z_streamp strm)
 	printf("zstream state:\n\tnext_in=%p\n\tavail_in=%u\n\ttotal_in=%lu\n\tnext_out=%p\n\tavail_out=%u\n\ttotal_out=%lu\n",
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
 }
-
-// note that args value MUST be in brackets!
-#define CALL_Z_FUNCTION(func, args)	{	\
-	int zerror = func args ;		\
-	if (zerror != Z_OK) {			\
-		ShowZError(zerror, &parms.z);	\
-	}					\
-}
-
-#else
-
-#define ShowZError(x,y)
-#define CALL_Z_FUNCTION(func, args)	func args
-
-#endif /* __DEBUG__ */
 
 unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int required_len, unsigned int max_len, wxSocketError *ErrorCode)
 {
@@ -603,7 +587,11 @@ bool ECSocket::WriteBuffer(const void *buffer, unsigned int len)
 			buffer = (Bytef*)buffer + remain_in;
 			len -= remain_in;
 			parms.z.avail_in += remain_in;
-			CALL_Z_FUNCTION(deflate, (&parms.z, Z_NO_FLUSH));
+			int zerror = deflate(&parms.z, Z_NO_FLUSH);
+			if ( zerror != Z_OK ) {
+				ShowZError(zerror, &parms.z);
+				return false;
+			}
 			if (!parms.z.avail_out) {
 				WriteBufferToSocket(this, parms.out_ptr, EC_SOCKET_BUFFER_SIZE, &parms.LastSocketError);
 				if (parms.LastSocketError != wxSOCKET_NOERROR) {
@@ -758,7 +746,11 @@ bool ECSocket::WritePacket(const CECPacket *packet)
 	}
 	bool retval = packet->WritePacket(*this) && FlushBuffers();
 	if (flags & EC_FLAG_ZLIB) {
-		CALL_Z_FUNCTION(deflateEnd, (&parms.z));
+		int zerror = deflateEnd(&parms.z);
+		if ( zerror != Z_OK ) {
+			ShowZError(zerror, &parms.z);
+			return false;
+		}
 	}
 	return retval;
 }
@@ -816,7 +808,10 @@ CECPacket * ECSocket::ReadPacket()
 	}
 #endif
 	if (flags & EC_FLAG_ZLIB) {
-		CALL_Z_FUNCTION(inflateEnd, (&parms.z));
+		int zerror = inflateEnd(&parms.z);
+		if ( zerror != Z_OK ) {
+			ShowZError(zerror, &parms.z);
+		}
 	}
 	return p;
 }
