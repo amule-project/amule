@@ -122,7 +122,7 @@ void CPrefs::writeFile()
 		if (file.Open(m_filename, CFile::write)) {
 			file.WriteUInt32(m_ip);
 			file.WriteUInt16(0); //This is no longer used.
-			file.WriteUInt128(&m_clientID);
+			file.WriteUInt128(m_clientID);
 			file.WriteUInt8(0); //This is to tell older clients there are no tags..
 			file.Close();
 		}

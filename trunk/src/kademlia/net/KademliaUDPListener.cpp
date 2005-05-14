@@ -95,7 +95,7 @@ void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
 void CKademliaUDPListener::sendMyDetails(byte opcode, uint32 ip, uint16 port)
 {
 	CSafeMemFile bio(25);
-	bio.WriteUInt128(&CKademlia::getPrefs()->getKadID());
+	bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
 	bio.WriteUInt16(thePrefs.GetUDPPort());
 	bio.WriteUInt16(thePrefs.GetPort());
@@ -309,14 +309,14 @@ void CKademliaUDPListener::processBootstrapRequest (const byte *packetData, uint
 	for (it = contacts.begin(); it != contacts.end(); it++) {
 		contact = *it;
 		contact->getClientID(&id);
-		bio.WriteUInt128(&id);
+		bio.WriteUInt128(id);
 		bio.WriteUInt32(contact->getIPAddress());
 		bio.WriteUInt16(contact->getUDPPort());
 		bio.WriteUInt16(contact->getTCPPort());
 		bio.WriteUInt8(contact->getType());
 	}
 	CKademlia::getPrefs()->getKadID(&id);
-	bio.WriteUInt128(&id);
+	bio.WriteUInt128(id);
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
 	bio.WriteUInt16(thePrefs.GetUDPPort());
 	bio.WriteUInt16(thePrefs.GetPort());
@@ -419,7 +419,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	CUInt128 target;
 	bio.ReadUInt128(&target);
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
-	distance.xor(target);
+	distance.XOR(target);
 
 	//This makes sure we are not mistaken identify. Some client may have fresh installed and have a new hash.
 	CUInt128 check;
@@ -437,7 +437,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	// Max count is 32. size 817.. 
 	// 16 + 1 + 25(32)
 	CSafeMemFile bio2( 817 );
-	bio2.WriteUInt128(&target);
+	bio2.WriteUInt128(target);
 	bio2.WriteUInt8((byte)count);
 	CContact *c;
 	CUInt128 id;
@@ -445,7 +445,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	for (it = results.begin(); it != results.end(); it++) {
 		c = it->second;
 		c->getClientID(&id);
-		bio2.WriteUInt128(&id);
+		bio2.WriteUInt128(id);
 		bio2.WriteUInt32(c->getIPAddress());
 		bio2.WriteUInt16(c->getUDPPort());
 		bio2.WriteUInt16(c->getTCPPort());
@@ -781,7 +781,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 
 	CUInt128 distance;
 	CKademlia::getPrefs()->getKadID(&distance);
-	distance.xor(file);
+	distance.XOR(file);
 
 	if( thePrefs.FilterLANIPs() && distance.get32BitChunk(0) > SEARCHTOLERANCE) {
 		return;
@@ -898,7 +898,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	}	
 	if( flag ) {
 		CSafeMemFile bio2(17);
-		bio2.WriteUInt128(&file);
+		bio2.WriteUInt128(file);
 		bio2.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat("KadPublishRes %s") % Uint32_16toStringIP_Port(ip, port));
 
@@ -1009,7 +1009,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 
 	CUInt128 distance;
 	CKademlia::getPrefs()->getKadID(&distance);
-	distance.xor(target);
+	distance.XOR(target);
 
 	if( thePrefs.FilterLANIPs() && distance.get32BitChunk(0) > SEARCHTOLERANCE) {
 		return;
@@ -1043,7 +1043,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 	uint8 load = 0;
 	if( CKademlia::getIndexed()->AddNotes(target, source, entry, load ) ) {
 		CSafeMemFile bio2(17);
-		bio2.WriteUInt128(&target);
+		bio2.WriteUInt128(target);
 		bio2.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat("KadPublishNotesRes %s") % Uint32_16toStringIP_Port(ip, port));
 		sendPacket( &bio2, KADEMLIA_PUB_NOTES_RES, ip, port);
@@ -1166,8 +1166,8 @@ void CKademliaUDPListener::processFindBuddyRequest (const byte *packetData, uint
 	theApp.clientlist->IncomingBuddy(&contact, &BuddyID);
 
 	CSafeMemFile bio2(34);
-	bio2.WriteUInt128(&BuddyID);
-	bio2.WriteUInt128(&CKademlia::getPrefs()->getClientHash());
+	bio2.WriteUInt128(BuddyID);
+	bio2.WriteUInt128(CKademlia::getPrefs()->getClientHash());
 	bio2.WriteUInt16(thePrefs.GetPort());
 	AddDebugLogLineM(false, logClientKadUDP, CFormat("KadFindBuddyRes %s") % Uint32_16toStringIP_Port(ip, port));
 
@@ -1186,7 +1186,7 @@ void CKademliaUDPListener::processFindBuddyResponse (const byte *packetData, uin
 	CSafeMemFile bio(packetData, lenPacket);
 	CUInt128 check;
 	bio.ReadUInt128(&check);
-	check.xor(CUInt128(true));
+	check.XOR(CUInt128(true));
 	if( CKademlia::getPrefs()->getKadID().compareTo(check)) {
 		return;
 	}
@@ -1220,8 +1220,8 @@ void CKademliaUDPListener::processFindSourceRequest (const byte *packetData, uin
 		bio.ReadUInt128(&file);
 		uint16 tcp = bio.ReadUInt16();
 		CSafeMemFile bio2(lenPacket+6);
-		bio2.WriteUInt128(&check);
-		bio2.WriteUInt128(&file);
+		bio2.WriteUInt128(check);
+		bio2.WriteUInt128(file);
 		bio2.WriteUInt32(ip);
 		bio2.WriteUInt16(tcp);
 		Packet* packet = new Packet(&bio2, OP_EMULEPROT, OP_CALLBACK);

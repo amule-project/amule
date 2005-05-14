@@ -201,7 +201,7 @@ void CRoutingZone::writeFile(void)
 				count++;
 				c = *it;
 				c->getClientID(&id);
-				file.WriteUInt128(&id);
+				file.WriteUInt128(id);
 				file.WriteUInt32(c->getIPAddress());
 				file.WriteUInt16(c->getUDPPort());
 				file.WriteUInt16(c->getTCPPort());
@@ -232,12 +232,13 @@ bool CRoutingZone::canSplit(void) const
 
 bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
 {
-	if (id == me)
+	if (id == me) {
 		return false;
+	}
 
 	bool retVal = false;
 	CUInt128 distance(me);
-	distance.xor(id);
+	distance.XOR(id);
 	CContact *c = NULL;
 
 	try
@@ -572,7 +573,7 @@ void CRoutingZone::randomLookup(void)
 	CUInt128 prefix(m_zoneIndex);
 	prefix.shiftLeft(128 - m_level);
 	CUInt128 random(prefix, m_level);
-	random.xor(me);
+	random.XOR(me);
 	CSearchManager::findNode(random);
 }
 
@@ -671,7 +672,7 @@ OutputDebugString(_T("\r\n"));
 	OutputDebugString(msg);
 	OutputDebugString(_T("\r\n"));
 	CUInt128 x(me);
-	x.xor(id);
+	x.XOR(id);
 	OutputDebugString(_T("Distance from me                 : "));
 	x.toBinaryString(&msg);
 	OutputDebugString(msg);

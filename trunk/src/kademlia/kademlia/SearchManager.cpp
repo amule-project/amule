@@ -178,7 +178,7 @@ CSearch* CSearchManager::prepareFindKeywords(bool bUnicode, const wxString& keyw
 
 		// Write complete packet
 		s->m_searchTerms = new CSafeMemFile();
-		s->m_searchTerms->WriteUInt128(&s->m_target);
+		s->m_searchTerms->WriteUInt128(s->m_target);
 		if (uSearchTermsSize == 0) {
 			s->m_searchTerms->WriteUInt8(0);
 		} else {
@@ -226,7 +226,7 @@ CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &
 
 		// Write complete packet
 		s->m_searchTerms = new CSafeMemFile();
-		s->m_searchTerms->WriteUInt128(&s->m_target);
+		s->m_searchTerms->WriteUInt128(s->m_target);
 		s->m_searchTerms->WriteUInt8(1);
 
 		s->m_searchID = ++m_nextID;

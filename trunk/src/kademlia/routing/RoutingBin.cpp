@@ -200,7 +200,7 @@ int CRoutingBin::getClosestTo(int maxType, const CUInt128 &target, int maxRequir
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
 		if((*it)->getType() <= maxType) {
 			CUInt128 distance((*it)->m_clientID);
-			distance.xor(target);
+			distance.XOR(target);
 			(*result)[distance] = *it;
 			if( inUse ) {
 				(*it)->incUse();

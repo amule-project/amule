@@ -93,8 +93,8 @@ public:
 	CUInt128& subtract(const CUInt128 &value);
 	CUInt128& subtract(uint32 value);
 
-	CUInt128& xorv(const CUInt128 &value);
-	CUInt128& xorBE(const byte *valueBE);
+	CUInt128& XOR(const CUInt128 &value);
+	CUInt128& XORBE(const byte *valueBE);
 
 	void operator+  (const CUInt128 &value) {add(value);}
 	void operator-  (const CUInt128 &value) {subtract(value);}

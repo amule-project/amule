@@ -520,3 +520,7 @@ void CSearchDlg::UpdateCatChoice()
 void	CSearchDlg::UpdateProgress(uint32 new_value) {
 	m_progressbar->SetValue(new_value);
 }
+
+void CSearchDlg::CancelKadSearch(unsigned int WXUNUSED(uSearchID)) {
+	#WARNING KAD TODO
+}
