@@ -1032,41 +1032,13 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 /*
 	Try to launch the specified url:
-	 - Windows: The default browser will be used.
+	 - Windows: Default or custom browser will be used.
 	 - Mac: Currently not implemented
-	 - Anything else: Try a number of hardcoded browsers. Should be made configuable...
+	 - Anything else: Try a number of hardcoded browsers. Should be made configurable...
 */
 void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;
-
-#if defined (__WXMSW__)
-	wxFileType *ft;                            /* Temporary storage for filetype. */
-
-	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
-	if (!ft) {
-		wxLogError(
-			wxT("Impossible to determine the file type for extension html."
-			"Please edit your MIME types.")
-		);
-		return;
-	}
-
-	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
-		// TODO: some kind of configuration dialog here.
-		wxMessageBox(
-			_("Could not determine the command for running the browser."),
-			wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
-		delete ft;
-		return;
-	}
-	delete ft;
-
-	wxPuts(wxT("Launch Command: ") + cmd);
-	if (!wxExecute(cmd, FALSE)) {
-		wxLogError(wxT("Error launching browser for FakeCheck."));
-	}
-#else
 
 	cmd = thePrefs::GetBrowser();
 	if ( !cmd.IsEmpty() ) {
@@ -1084,14 +1056,37 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
 			return;
 		}
-	}
+#ifdef __WXMSW__
+	} else {
+		wxFileType *ft;		/* Temporary storage for filetype. */
 
+		ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+		if (!ft) {
+			wxLogError(
+				wxT("Impossible to determine the file type for extension html."
+				"Please edit your MIME types.")
+			);
+			return;
+		}
+
+		if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
+			wxMessageBox(
+				_("Could not determine the command for running the browser."),
+				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+			delete ft;
+			return;
+		}
+		delete ft;
+
+		wxPuts(wxT("Launch Command: ") + cmd);
+		if (wxExecute(cmd, false)) {
+			return;
+		}
+#endif
+	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
 	wxLogError( wxT("Unable to launch browser. Please set correct browser executable path in Preferences.") );
-
-#endif
-
 }
 
 

@@ -1680,23 +1680,26 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item24->SetToolTip( _("Select your browser here") );
     item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item25 = new wxFlexGridSizer( 2, 0, 0 );
+    wxFlexGridSizer *item25 = new wxFlexGridSizer( 3, 0, 0 );
     item25->AddGrowableCol( 1 );
 
     wxStaticText *item26 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxGROW|wxALL, 5 );
+    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_FCHECKSELF, _("my browser"), wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_FCHECKSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
     item27->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
     item27->Enable( false );
-    item25->Add( item27, 0, wxGROW|wxALL, 5 );
+    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxButton *item28 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->SetValue( TRUE );
-    item28->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item22->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item29->SetValue( TRUE );
+    item29->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item22->Add( item29, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
