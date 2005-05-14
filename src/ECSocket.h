@@ -116,7 +116,6 @@ class ECSocket : public wxSocketClient {
 		struct socket_desc {
 			bool			firsttransfer;
 			uint32			accepts;
-			bool			ptrs_valid;
 			unsigned char *in_ptr;
 			unsigned char *out_ptr;
 			// This transfer only
