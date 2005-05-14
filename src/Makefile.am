@@ -75,6 +75,7 @@ amulegui_SOURCES = \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
+	KadSearchListCtrl.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
 	Logger.cpp \
@@ -152,6 +153,7 @@ amule_SOURCES = \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
+	KadSearchListCtrl.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \
@@ -194,12 +196,7 @@ amule_SOURCES = \
 	TransferWnd.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
-	UploadQueue.cpp \
-	kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/utils/UInt128.cpp
+	UploadQueue.cpp
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
@@ -253,12 +250,7 @@ amuled_SOURCES = \
 	Timer.cpp \
 	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
-        UploadQueue.cpp \
-	kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/utils/UInt128.cpp
+        UploadQueue.cpp 
 
 if ADD_GSOCKET
 if ADD_24GSOCKET

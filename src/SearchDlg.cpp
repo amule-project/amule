@@ -522,5 +522,5 @@ void	CSearchDlg::UpdateProgress(uint32 new_value) {
 }
 
 void CSearchDlg::CancelKadSearch(unsigned int WXUNUSED(uSearchID)) {
-	#WARNING KAD TODO
+	#warning KAD TODO
 }

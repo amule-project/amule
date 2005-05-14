@@ -47,6 +47,7 @@
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "MuleTextCtrl.h" // Needed for CMuleTextCtrl
 #include "ClientListCtrl.h"
+#include "KadSearchListCtrl.h"
 
 // Implement window functions
 
