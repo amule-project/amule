@@ -196,7 +196,9 @@ amule_SOURCES = \
 	TransferWnd.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
-	UploadQueue.cpp
+	UploadQueue.cpp \
+	kademlia/utils/UInt128.cpp
+
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
@@ -250,7 +252,8 @@ amuled_SOURCES = \
 	Timer.cpp \
 	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
-        UploadQueue.cpp 
+        UploadQueue.cpp \
+	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
