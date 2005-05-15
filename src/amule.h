@@ -183,6 +183,9 @@ public:
 	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 	const bool IsOnShutDown() const { return (m_app_state != APP_STATE_SHUTINGDOWN); }
 	
+	// Check ED2K and Kademlia state
+	bool IsFirewalled();
+	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);

@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __ROUTING_BIN__
 
 #include "Maps.h"
+#include "../../Types.h"
 
 ////////////////////////////////////////
 namespace Kademlia {

@@ -54,6 +54,8 @@ there client on the eMule forum..
 #include "OtherFunctions.h"
 #include "Logger.h"
 
+#include <wx/tokenzr.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -76,18 +78,14 @@ void CSearchManager::stopSearch(uint32 searchID, bool delayDelete)
 		if(searchID == (uint32)-1) {
 			return;
 		}
-		SearchMap::iterator it = m_searches.begin(); 
-		while (it != m_searches.end()) {
+		for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 			if (it->second->m_searchID == searchID) {
 				if(delayDelete) {
 					it->second->prepareToStop();
-					++it;
 				} else {
 					delete it->second;
-					it = m_searches.erase(it);
+					m_searches.erase(it);
 				}
-			} else {
-				++it;
 			}
 		}
 	} catch (...) {
@@ -197,9 +195,8 @@ CSearch* CSearchManager::prepareFindKeywords(bool bUnicode, const wxString& keyw
 	} catch (wxString strException) {
 		throw strException;
 	} catch (...) {
-		e->Delete();
 		delete s;
-		throw wxString::Format(_T("Exception in %s: Unhandled (search packet I/O?)"), __FUNCTION__, );
+		throw wxString::Format(wxT("Exception in %s: Unhandled (search packet I/O?)"), __FUNCTION__);
 	}
 	return s;
 }
@@ -299,7 +296,7 @@ bool CSearchManager::alreadySearchingFor(const CUInt128 &target)
 void CSearchManager::getWords(const wxString& str, WordList *words)
 {
 	int len = 0;
-	wxString current_word;
+	wxString current_word, wordtemp;
 	uint32 i;
 	wxStringTokenizer tkz(str, InvKadKeywordChars);
 	while (tkz.HasMoreTokens()) {
@@ -307,7 +304,7 @@ void CSearchManager::getWords(const wxString& str, WordList *words)
 		
 		if (len = current_word.Length() > 2) {
 			KadTagStrMakeLower(current_word);
-			#warninig terribly unoptimized... must be fixed.
+			#warning terribly unoptimized... must be fixed.
 			for( i = 0; i < words->size(); i++) {
 				wordtemp = words->front();
 				words->pop_front();
@@ -329,81 +326,69 @@ void CSearchManager::jumpStart(void)
 {
 	time_t now = time(NULL);
 	try {
-		SearchMap::iterator it = m_searches.begin(); 
-		while (it != m_searches.end()) {
+		for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 			switch(it->second->getSearchTypes()){
 				case CSearch::FILE: {
 					if (it->second->m_created + SEARCHFILE_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHFILE_TOTAL || it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
-					}
+					}					
 					break;
 				}
 				case CSearch::KEYWORD: {
 					if (it->second->m_created + SEARCHKEYWORD_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHKEYWORD_TOTAL || it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::NOTES: {
 					if (it->second->m_created + SEARCHNOTES_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHNOTES_TOTAL || it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::FINDBUDDY: {
 					if (it->second->m_created + SEARCHFINDBUDDY_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHFINDBUDDY_TOTAL || it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::FINDSOURCE: {
 					if (it->second->m_created + SEARCHFINDSOURCE_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHFINDSOURCE_TOTAL || it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::NODE: {
 					if (it->second->m_created + SEARCHNODE_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
@@ -411,63 +396,55 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHNODE_LIFETIME < now) {
 						CKademlia::getPrefs()->setPublish(true);
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if ((it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (it->second->getCount() > SEARCHNODECOMP_TOTAL)) {
 						CKademlia::getPrefs()->setPublish(true);
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::STOREFILE: {
 					if (it->second->m_created + SEARCHSTOREFILE_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHSTOREFILE_TOTAL || it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::STOREKEYWORD: {
 					if (it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHSTOREKEYWORD_TOTAL || it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				case CSearch::STORENOTES: {
 					if (it->second->m_created + SEARCHSTORENOTES_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else if (it->second->getCount() > SEARCHSTORENOTES_TOTAL || it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
 						it->second->prepareToStop();
-						++it;
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
 				default: {
 					if (it->second->m_created + SEARCH_LIFETIME < now) {
 						delete it->second;
-						it = m_searches.erase(it);
+						m_searches.erase(it);
 					} else {
 						it->second->jumpStart();
-						++it;
 					}
 					break;
 				}
@@ -488,41 +465,33 @@ void CSearchManager::updateStats(void)
 	uint8 m_totalStoreNotes = 0;
 	try
 	{
-		SearchMap::iterator it = m_searches.begin(); 
-		while (it != m_searches.end()) {
+		for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
 			switch(it->second->getSearchTypes()){
 				case CSearch::FILE: {
 					m_totalFile++;
-					++it;
 					break;
 				}
 				case CSearch::STOREFILE: {
 					m_totalStoreSrc++;
-					++it;
 					break;
 				}
 				case CSearch::STOREKEYWORD:	{
 					m_totalStoreKey++;
-					++it;
 					break;
 				}
 				case CSearch::FINDSOURCE: {
 					m_totalSource++;
-					++it;
 					break;
 				}
 				case CSearch::STORENOTES: {
 					m_totalStoreNotes++;
-					++it;
 					break;
 				}
 				case CSearch::NOTES: {
 					m_totalNotes++;
-					++it;
 					break;
 				}
 				default:
-					++it;
 					break;
 			}
 		}

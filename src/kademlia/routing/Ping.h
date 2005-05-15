@@ -41,6 +41,8 @@ there client on the eMule forum..
 
 //#include "../../stdafx.h"
 
+#if 0 // This class is, huh, completely unused!
+
 #include "Maps.h"
 #include "Timer.h"
 
@@ -70,5 +72,7 @@ private:
 };
 
 } // End namespace
+
+#endif // 0
 
 #endif // __KAD__PING_H__

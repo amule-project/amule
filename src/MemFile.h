@@ -37,11 +37,11 @@ class CMemFile : public CFile {
 public:  
 	
 	CMemFile( unsigned int growBytes = 1024 );
-	CMemFile( byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
+	CMemFile( const byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
 	virtual ~CMemFile();
 
 
-	void Attach(byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
+	void Attach(const byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
 	byte* Detach();	
 	
 	virtual off_t GetPosition() const 		{ return m_position; };

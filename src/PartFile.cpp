@@ -131,7 +131,7 @@ void CPartFile::Init()
 	m_availablePartsCount=0;
 	m_ClientSrcAnswered = 0;
 	m_LastNoNeededCheck = 0;
-	m_iRate = 0;
+	m_iRating = 0;
 	m_nTotalBufferData = 0;
 	m_nLastBufferFlushTime = 0;
 	m_bPercentUpdated = false;
@@ -3171,10 +3171,10 @@ void CPartFile::UpdateFileRatingCommentAvail()
 			hasComment=true;
 		}
 
-		if (cur_src->GetFileRate()>0) {
+		if (cur_src->GetFileRating()>0) {
 			++ratings;
 		}
-		if (cur_src->GetFileRate()==1) {
+		if (cur_src->GetFileRating()==1) {
 			++badratings;
 		}
 	}

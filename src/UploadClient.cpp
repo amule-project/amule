@@ -802,9 +802,9 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 
 	// We used to limit the comment to 50 before, now we do not anymore.
 	const wxString& desc = file->GetFileComment();
-	uint8 rating = file->GetFileRate();
+	uint8 rating = file->GetFileRating();
 	
-	if ( file->GetFileRate() == 0 && desc.IsEmpty() ) {
+	if ( file->GetFileRating() == 0 && desc.IsEmpty() ) {
 		return;
 	}
 	

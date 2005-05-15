@@ -28,7 +28,10 @@
 #define __KADSEARCHLISTCTRL__
 
 #include "MuleListCtrl.h"
-#include "kademlia/kademlia/Search.h"
+
+namespace Kademlia {
+	class CSearch;	
+}
 
 class CKadSearchListCtrl : public CMuleListCtrl
 {

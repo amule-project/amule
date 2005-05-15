@@ -108,6 +108,10 @@ wxString GetLocalHost();
  */
 bool IsGoodIP( uint32 IP, bool filterLAN );
 
+inline bool IsGoodIPPort(uint32 nIP, uint16 nPort)
+{
+	return IsGoodIP(nIP, true) && nPort!=0;
+}
 
 #ifndef EC_REMOTE
 // Not needed for remote apps.

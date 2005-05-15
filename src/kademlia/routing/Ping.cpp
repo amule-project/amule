@@ -27,6 +27,9 @@
 //#include "../../stdafx.h"
 
 #include "Ping.h"
+
+#if 0 // This class is, huh, completely unused!
+
 #include "RoutingZone.h"
 #include "Contact.h"
 
@@ -72,3 +75,5 @@ void CPing::onTimer(void)
 		m_zone->removePending(*it);
 	}
 }
+
+#endif //0

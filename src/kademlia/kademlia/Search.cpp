@@ -38,6 +38,10 @@ there client on the eMule forum..
 
 
 //#include "stdafx.h"
+
+#include "../../Packet.h"
+typedef CTag ed2kCTag;
+
 #include "Search.h"
 #include "Kademlia.h"
 #include "../../OPCodes.h"
@@ -53,7 +57,6 @@ there client on the eMule forum..
 #include "../../SharedFileList.h"
 #include "../../OtherFunctions.h"
 #include "../../amuleDlg.h"
-#include "../../Packet.h"
 #include "../../KnownFile.h"
 #include "KadSearchListCtrl.h"
 #include "../../KadDlg.h"
@@ -397,7 +400,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								CKademlia::getUDPListener()->publishPacket(from->getIPAddress(), from->getUDPPort(),m_target,id, taglist);
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 								TagList::const_iterator it;
-								for (it = taglist.begin(); it != taglist.end(); it++) {
+								for (it = taglist.begin(); it != taglist.end(); ++it) {
 									delete *it;
 								}
 							}
@@ -690,18 +693,40 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	//		return;
 	//}
 
+	TagPtrList taglist;
+	
+	if (!format.IsEmpty()) {
+		taglist.push_back(new ed2kCTag(TAG_FILEFORMAT, format));
+	}
+	if (!artist.IsEmpty()) {
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_ARTIST, artist));
+	}
+	if (!album.IsEmpty()) {
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_ALBUM, album));
+	}
+	if (!title.IsEmpty()) {
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_TITLE, title));
+	}
+	if (length) {
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_LENGTH, length));
+	}
+	if (bitrate) {
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_BITRATE, bitrate));
+	}
+	if (availability) {
+		taglist.push_back(new ed2kCTag(TAG_SOURCES, availability));
+	}
+
 	if (interested) {
 		m_count++;
-		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, 8, 
-				2, TAG_FILEFORMAT, format, 
-				2, TAG_MEDIA_ARTIST, artist, 
-				2, TAG_MEDIA_ALBUM, album, 
-				2, TAG_MEDIA_TITLE, title, 
-				3, TAG_MEDIA_LENGTH, length, 
-				3, TAG_MEDIA_BITRATE, bitrate, 
-				2, TAG_MEDIA_CODEC, codec, 
-				3, TAG_SOURCES, availability);
+		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
 	}
+	
+	// Free tags memory
+	for (TagPtrList::iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete (*it);
+	}	
+	
 }
 
 void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)

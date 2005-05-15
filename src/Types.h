@@ -29,7 +29,7 @@
 #include <wx/defs.h>
 #include <inttypes.h>
 #include <wx/dynarray.h>
-
+#include <wx/string.h>
 
 // These are MSVC defines used in eMule. They should 
 // not be used in aMule, instead, use this table to 
@@ -87,6 +87,9 @@ typedef int64_t		sint64;
 typedef uint8_t		byte;
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
+
+/* This is the Evil Void String For Returning On Const References From Hell */
+static const wxString EmptyString = wxEmptyString;
 
 #ifndef __cplusplus
 	typedef int bool;
