@@ -105,6 +105,10 @@
 #include "Format.h"		// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 
+#ifdef __COMPILE_KAD__
+#include "kademlia/kademlia/Kademlia.h"
+#endif
+
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
 	#include <wx/gauge.h>
@@ -1763,6 +1767,24 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 			serverlist->AutoDownloadFinished(event.GetExtraLong());
 			break;
 	}
+}
+
+bool CamuleApp::IsFirewalled()
+{
+	#ifdef __COMPILE_KAD__
+	if (theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) {
+		return false; // we have an eD2K HighID -> not firewalled
+	}
+
+	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled()) {
+		return false; // we have an Kad HighID -> not firewalled
+	}
+
+	return true; // firewalled
+	
+	#else
+	return false;
+	#endif
 }
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)

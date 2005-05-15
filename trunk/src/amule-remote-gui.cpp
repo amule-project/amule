@@ -1429,7 +1429,7 @@ void CKnownFile::SetFileComment(const wxString &)
 	wxASSERT(0);
 }
 
-void CKnownFile::SetFileRate(unsigned char)
+void CKnownFile::SetFileRating(unsigned char)
 {
 	// FIXME: add code
 	wxASSERT(0);

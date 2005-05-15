@@ -42,7 +42,7 @@ CMemFile::CMemFile(unsigned int growBytes)
 }
 
 
-CMemFile::CMemFile(byte *buffer, unsigned int bufferSize, unsigned int growBytes)
+CMemFile::CMemFile(const byte *buffer, unsigned int bufferSize, unsigned int growBytes)
 {
 	m_buffer		= NULL;
 	m_delete		= true;
@@ -51,13 +51,13 @@ CMemFile::CMemFile(byte *buffer, unsigned int bufferSize, unsigned int growBytes
 }
 
 
-void CMemFile::Attach(byte* buffer, unsigned int bufferSize, unsigned int growBytes)
+void CMemFile::Attach(const byte* buffer, unsigned int bufferSize, unsigned int growBytes)
 {
 	// Should we free the old buffer if one such exists
 	if ( m_buffer && m_delete ) {
 		free(m_buffer);
 	}
-	m_buffer		= buffer;
+	m_buffer =  (byte*)buffer;
 	
 	m_GrowBytes		= growBytes;
 	m_position		= 0;

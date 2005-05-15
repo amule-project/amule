@@ -40,15 +40,16 @@ there client on the eMule forum..
 #include "Contact.h"
 #include "../kademlia/Prefs.h"
 #include "../kademlia/Kademlia.h"
-#include "../utils/MiscUtils.h"
+//#include "../utils/MiscUtils.h"
 #include "../io/ByteIO.h"
 #include "../net/KademliaUDPListener.h"
 #include "../kademlia/Defines.h"
 #include "../../OPCodes.h"
 #include "../../amule.h"
 #include "../../amuleDlg.h"
-#include "../../KadContactListCtrl.h"
+//#include "../../KadContactListCtrl.h"
 #include "../../KadDlg.h"
+#include "../../NetworkFunctions.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -148,7 +149,7 @@ uint32 CContact::getIPAddress(void) const
 
 void CContact::getIPAddress(wxString* ip) const
 {
-	CMiscUtils::ipAddressToString(m_ip, ip);
+	*ip = Uint32toStringIP(m_ip);
 }
 
 void CContact::setIPAddress(uint32 ip)

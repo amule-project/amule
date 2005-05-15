@@ -46,12 +46,11 @@ there client on the eMule forum..
  * is considered to be 000..000
  */
 //#include "stdafx.h"
-#include <math.h>
 #include "RoutingZone.h"
 #include "Contact.h"
 #include "RoutingBin.h"
 #include "../utils/UInt128.h"
-#include "../utils/MiscUtils.h"
+//#include "../utils/MiscUtils.h"
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Prefs.h"
 #include "../kademlia/SearchManager.h"
@@ -59,13 +58,17 @@ there client on the eMule forum..
 #include "../kademlia/Error.h"
 #include "../net/KademliaUDPListener.h"
 #include "../../OtherFunctions.h"
-#include "../../Opcodes.h"
+#include "../../OPCodes.h"
 #include "../../amule.h"
 #include "../../amuleDlg.h"
-#include "../../KadContactListCtrl.h"
+//#include "../../KadContactListCtrl.h"
 #include "../../KadDlg.h"
 #include "../../SafeFile.h"
 #include "../../Logger.h"
+#include "../../NetworkFunctions.h"
+
+#include <cmath>
+#include <algorithm>		// Needed for std::min
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -78,20 +81,18 @@ static char THIS_FILE[] = __FILE__;
 using namespace Kademlia;
 ////////////////////////////////////////
 
-void DebugSend(LPCTSTR pszMsg, uint32 ip, uint16 port);
-
 // This is just a safety precaution
 #define CONTACT_FILE_LIMIT 5000
 
-CString CRoutingZone::m_filename;
-CUInt128 CRoutingZone::me = (ULONG)0;
+wxString CRoutingZone::m_filename;
+CUInt128 CRoutingZone::me((uint32)0);
 
 CRoutingZone::CRoutingZone()
 {
 	// Can only create routing zone after prefs
 	CKademlia::getPrefs()->getKadID(&me);
 	m_filename = theApp.ConfigDir + wxT("nodes.dat");
-	CUInt128 zero((unsigned long)0);
+	CUInt128 zero((uint32)0);
 	init(NULL, 0, zero);
 }
 
@@ -100,7 +101,7 @@ CRoutingZone::CRoutingZone(const wxString& filename)
 	// Can only create routing zone after prefs
 	CKademlia::getPrefs()->getKadID(&me);
 	m_filename = filename;
-	CUInt128 zero((unsigned long)0);
+	CUInt128 zero((uint32)0);
 	init(NULL, 0, zero);
 }
 
@@ -120,7 +121,7 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 
 	m_nextSmallTimer = time(NULL) + m_zoneIndex.get32BitChunk(3);
 
-	if ((m_superZone == NULL) && (m_filename.GetLength() > 0)) {
+	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
 		readFile();
 	}
 
@@ -129,7 +130,7 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 
 CRoutingZone::~CRoutingZone()
 {
-	if ((m_superZone == NULL) && (m_filename.GetLength() > 0)) {
+	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
 		theApp.amuledlg->kademliawnd->HideContacts();
 		writeFile();
 	}
@@ -148,10 +149,10 @@ void CRoutingZone::readFile(void)
 {
 	try
 	{
-		theApp.emuledlg->kademliawnd->HideContacts();
+		theApp.amuledlg->kademliawnd->HideContacts();
 		uint32 numContacts = 0;
 		CSafeBufferedFile file;
-		if (file.Open(m_filename, CFile::read) {
+		if (file.Open(m_filename, CFile::read)) {
 
 			numContacts = file.ReadUInt32();
 
@@ -166,7 +167,7 @@ void CRoutingZone::readFile(void)
 				udpPort = file.ReadUInt16();
 				tcpPort = file.ReadUInt16();
 				type = file.ReadUInt8();
-				if(::IsGoodIPPort(ENDIAN_NTOHL(ip),udpPort)) {
+				if(IsGoodIPPort(ENDIAN_NTOHL(ip),udpPort)) {
 					if( type < 2) {
 						add(id, ip, udpPort, tcpPort, type);
 					}
@@ -195,7 +196,7 @@ void CRoutingZone::writeFile(void)
 
 			ContactList contacts;
 			getBootstrapContacts(&contacts, 200);
-			file.WriteUInt32((uint32)min(contacts.size(), CONTACT_FILE_LIMIT));
+			file.WriteUInt32((uint32)std::min((int)contacts.size(), CONTACT_FILE_LIMIT));
 			ContactList::const_iterator it;
 			for (it = contacts.begin(); it != contacts.end(); ++it) {
 				count++;
@@ -212,7 +213,7 @@ void CRoutingZone::writeFile(void)
 			}
 			file.Close();
 		}
-		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %ld contacts to file."), count)));
+		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %ld contacts to file."), count));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::writeFile"));
 	}
@@ -257,7 +258,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 				c = new CContact(id, ip, port, tport, type);
 				retVal = m_bin->add(c);
 				if(retVal) {
-					if (theApp.emuledlg->kademliawnd->ContactAdd(c)) {
+					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
 						c->setGuiRefs(true);
 					}
 				}
@@ -269,7 +270,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 				c = new CContact(id, ip, port, tport, type);
 				retVal = m_bin->add(c);
 				if(retVal) {
-					if (theApp.emuledlg->kademliawnd->ContactAdd(c)) {
+					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
 						c->setGuiRefs(true);
 					}
 				}
@@ -377,7 +378,7 @@ uint32 CRoutingZone::getMaxDepth(void) const
 	if (isLeaf()) {
 		return 0;
 	}
-	return 1 + max(m_subZones[0]->getMaxDepth(), m_subZones[1]->getMaxDepth());
+	return 1 + std::max(m_subZones[0]->getMaxDepth(), m_subZones[1]->getMaxDepth());
 }
 
 void CRoutingZone::split(void)

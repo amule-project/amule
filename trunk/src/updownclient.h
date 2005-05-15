@@ -446,7 +446,7 @@ public:
 
 	//File Comment 
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
-	uint8		GetFileRate() const		{ return m_iRate; }
+	uint8		GetFileRating() const		{ return m_iRating; }
 	
 	wxString	GetSoftStr() const 		{ return m_clientVerString.Left(m_SoftLen); }
 	wxString	GetSoftVerStr() const		{ return m_clientVerString.Mid(m_SoftLen+1); }
@@ -698,7 +698,7 @@ public:
 	// chat
 	uint8 		m_byChatstate;
 	wxString	m_strComment;
-	int8		m_iRate;
+	int8		m_iRating;
 	unsigned int 
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
 		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, 

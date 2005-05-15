@@ -47,7 +47,7 @@ namespace Kademlia {
 ////////////////////////////////////////
 
 class CRoutingBin;
-class CPing;
+//class CPing;
 class CContact;
 
 /**

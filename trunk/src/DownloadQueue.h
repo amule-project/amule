@@ -52,7 +52,9 @@ class CED2KFileLink;
 class CED2KServerLink;
 class CED2KServerListLink;
 
-
+namespace Kademlia {
+	class CUInt128;
+}
 
 /**
  * The download queue houses all active downloads.
@@ -296,6 +298,11 @@ public:
 	 * Stop the source-requests from non-connected servers.
 	 */
 	void	StopUDPRequests();
+	
+	/**
+	 * Add a Kad source to a download
+	 */
+	 void	KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid);
 	
 private:
 	/**

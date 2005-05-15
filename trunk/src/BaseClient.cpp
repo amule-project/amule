@@ -168,7 +168,7 @@ void CUpDownClient::Init()
 	m_bIsHybrid = false;
 	m_bIsML = false;
 	m_Friend = NULL;
-	m_iRate=0;
+	m_iRating = 0;
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
 
@@ -254,8 +254,8 @@ CUpDownClient::~CUpDownClient()
 	}
 
 
-	if (m_iRate>0 || !m_strComment.IsEmpty()) {
-		m_iRate=0;
+	if (m_iRating>0 || !m_strComment.IsEmpty()) {
+		m_iRating = 0;
 		m_strComment.Clear();
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
@@ -1012,10 +1012,10 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		const CSafeMemFile data((byte*)pachPacket, nSize);
 
-		m_iRate = data.ReadUInt8();
+		m_iRating = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		
-		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRate);
+		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
 
 		// The comment is unicoded, with a uin32 len and safe read 
 		// (won't break if string size is < than advertised len)
@@ -1063,7 +1063,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 
-	if (!m_strComment.IsEmpty() || m_iRate > 0) {
+	if (!m_strComment.IsEmpty() || m_iRating > 0) {
 		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
@@ -1643,7 +1643,7 @@ void CUpDownClient::ResetFileStatusInfo()
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
-	m_iRate=0;
+	m_iRating = 0;
 	m_strComment.Clear();
 
 	if (m_pReqFileAICHHash != NULL) {

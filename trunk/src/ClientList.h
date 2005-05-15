@@ -323,7 +323,11 @@ public:
 	 *
 	 */
 	 void	SetChatState(uint64 client_id, uint8 state);
-	 
+
+	#warning KAD TODO: Implement buddies for kademlia lowid support (firewalled)
+	#warning This is actually a much bigger import, the kademlia process list.
+	CUpDownClient* GetBuddy() const { return NULL; };
+
 
 private:
 	/**

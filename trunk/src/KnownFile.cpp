@@ -55,6 +55,9 @@
 #include "ArchSpecific.h"
 #include "Logger.h"
 
+#include "kademlia/kademlia/SearchManager.h"
+#include "kademlia/kademlia/Entry.h"
+
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
@@ -97,9 +100,12 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 
 #endif // CLIENT_GUI
 
+
+/* Abstract File (base class)*/
+
 CAbstractFile::CAbstractFile() :
 	m_nFileSize(0),
-	m_iRate(0)
+	m_iRating(0)
 {
 }
 
@@ -108,6 +114,127 @@ void CAbstractFile::SetFileName(const wxString& strFileName)
 { 
 	m_strFileName = strFileName;
 } 
+
+uint32 CAbstractFile::GetIntTagValue(uint8 tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pTag = taglist[i];
+		if ((pTag->GetNameID() == tagname) && pTag->IsInt()) {
+			return pTag->GetInt();
+		}
+	}
+	return 0;
+}
+
+bool CAbstractFile::GetIntTagValue(uint8 tagname, uint32& ruValue) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pTag = taglist[i];
+		if ((pTag->GetNameID() == tagname) && pTag->IsInt()){
+			ruValue = pTag->GetInt();
+			return true;
+		}
+	}
+	return false;
+}
+
+uint32 CAbstractFile::GetIntTagValue(const char* tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pTag = taglist[i];
+		if ((pTag->GetNameID()==0) && pTag->IsInt() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+			return pTag->GetInt();
+		}
+	}
+	return 0;
+}
+
+const wxString& CAbstractFile::GetStrTagValue(uint8 tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pTag = taglist[i];
+		if (pTag->GetNameID()==tagname && pTag->IsStr()) {
+			return pTag->GetStr();
+		}
+	}
+	return EmptyString;
+}
+
+const wxString& CAbstractFile::GetStrTagValue(const char* tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pTag = taglist[i];
+		if (pTag->GetNameID()==0 && pTag->IsStr() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+			return pTag->GetStr();
+		}
+	}
+	return EmptyString;
+}
+
+CTag* CAbstractFile::GetTag(uint8 tagname, uint8 tagtype) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		CTag* pTag = taglist[i];
+		if ((pTag->GetNameID()==tagname) && pTag->GetType()==tagtype) {
+			return pTag;
+		}
+	}
+	return NULL;
+}
+
+CTag* CAbstractFile::GetTag(const char* tagname, uint8 tagtype) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		CTag* pTag = taglist[i];
+		if ((pTag->GetNameID()==0) && pTag->GetType()==tagtype && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+			return pTag;
+		}
+	}
+	return NULL;
+}
+
+CTag* CAbstractFile::GetTag(uint8 tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		CTag* pTag = taglist[i];
+		if (pTag->GetNameID()==tagname) {
+			return pTag;
+		}
+	}
+	return NULL;
+}
+
+CTag* CAbstractFile::GetTag(const char* tagname) const
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		CTag* pTag = taglist[i];
+		if (pTag->GetNameID()==0 && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+			return pTag;
+		}
+	}
+	return NULL;
+}
+
+void CAbstractFile::AddTagUnique(CTag* pTag)
+{
+	for (unsigned int i = 0; i < taglist.Count(); i++){
+		const CTag* pCurTag = taglist[i];
+		if ( (   (pCurTag->GetNameID()!=0 && pCurTag->GetNameID()==pTag->GetNameID())
+			  || (pCurTag->GetName()!=NULL && pTag->GetName()!=NULL && CmpED2KTagName(pCurTag->GetName(), pTag->GetName())==0)
+			 )
+			 && pCurTag->GetType() == pTag->GetType()){
+			taglist.RemoveAt(i);
+			// When an item is removed from a ObjArray, it gets deleted, acording to docs.
+			// delete pCurTag; 
+			taglist.Insert(pTag,i);
+			return;
+		}
+	}
+	taglist.Add(pTag);
+}
+
+
+/* Known File */
 
 CKnownFile::CKnownFile() :
 	date(0),
@@ -179,7 +306,6 @@ CKnownFile::~CKnownFile(){
 	
 	delete m_pAICHHashSet;
 }
-
 
 void CKnownFile::AddUploadingClient(CUpDownClient* client)
 {
@@ -849,7 +975,7 @@ void CKnownFile::LoadComment()
 	wxConfigBase* cfg = wxConfigBase::Get();
 	
 	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
-	m_iRate = cfg->Read( strCfgPath + wxT("Rate"), 0l);
+	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
 	m_bCommentLoaded = true;
 }    
 
@@ -870,12 +996,12 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 
 
 // For File rate 
-void CKnownFile::SetFileRate(int8 iNewRate)
+void CKnownFile::SetFileRating(int8 iNewRating)
 { 
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 	wxConfigBase* cfg = wxConfigBase::Get();
-	cfg->Write( strCfgPath + wxT("Rate"), iNewRate);
-	m_iRate = iNewRate; 
+	cfg->Write( strCfgPath + wxT("Rate"), iNewRating);
+	m_iRating = iNewRating; 
 
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {

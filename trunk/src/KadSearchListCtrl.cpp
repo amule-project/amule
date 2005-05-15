@@ -29,6 +29,8 @@
 
 #include "KadSearchListCtrl.h"
 #include "muuli_wdr.h"
+#include "kademlia/kademlia/Search.h"
+
 
 BEGIN_EVENT_TABLE(CKadSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_COL_CLICK( -1, CKadSearchListCtrl::OnColumnLClick)

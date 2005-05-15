@@ -32,6 +32,7 @@
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
+#include "Packet.h"
 #include <wx/thread.h>
 
 #include <map>
@@ -41,6 +42,11 @@ class CSafeMemFile;
 class CMD4Hash;
 class CServer;
 class CSearchList;
+class CTag;
+
+namespace Kademlia {
+	class CUInt128;
+}
 
 class CGlobalSearchThread : public wxThread 
 {	
@@ -59,7 +65,7 @@ class CSearchFile : public CAbstractFile
 {
 	friend class CPartFile;
 public:
-	CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString);
+	CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString, bool nKademlia = false);
 	
 	virtual ~CSearchFile();
 
@@ -86,6 +92,9 @@ public:
 	uint16	GetClientPort() const			{ return m_nClientPort; }
 	void	SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
 	
+	#warning KAD TODO: Who cares about this?
+	bool	IsKademlia() const { return m_nKademlia; }
+	
 private:
 	long		m_nSearchID;
 	
@@ -98,6 +107,7 @@ private:
 	uint32		m_nClientID;
 	uint16		m_nClientPort;
 	wxString	m_Directory;
+	bool m_nKademlia;
 };
 
 
@@ -146,6 +156,9 @@ public:
 	bool IsGlobalSearch() { return m_searchthread != NULL; };
 
 	bool SearchInProgress() { return m_SearchInProgress; }
+	
+	void KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* pfileID, const wxString& name, uint32 size, const wxString& type, const TagPtrList& taglist);
+	
 private:
 
 	CPacket *CreateSearchPacket(const wxString &searchString, const wxString& typeText,

@@ -99,7 +99,7 @@ class CSafeMemFile : public CMemFile, public CFileDataIO
 public:
 	CSafeMemFile(uint32 nGrowBytes = 512)
 		: CMemFile(nGrowBytes) {}
-	CSafeMemFile(byte* lpBuffer, uint32 nBufferSize, uint32 nGrowBytes = 0)
+	CSafeMemFile(const byte* lpBuffer, uint32 nBufferSize, uint32 nGrowBytes = 0)
 		: CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
 
 	// CMemFile already does the needed checks
