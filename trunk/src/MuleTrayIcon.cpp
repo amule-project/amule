@@ -261,7 +261,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		
 		// Do whatever to the icon before drawing it (percent)
 		
-#ifndef __WXMSW__
+#if !defined(__WXMSW__) && !defined(__WXMAC__)
 		CurrentIcon.SetMask(NULL);
 #else
 		wxBitmap TempBMP;
@@ -294,7 +294,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		// Set a new mask with transparency set to red.
 		wxMask* new_mask = new wxMask(CurrentIcon, wxColour(0xFF, 0x00, 0x00));
 		
-#ifndef __WXMSW__	
+#if !defined(__WXMSW__) && !defined(__WXMAC__)
 		CurrentIcon.SetMask(new_mask);
 #else
 		TempBMP.CopyFromIcon(CurrentIcon);
