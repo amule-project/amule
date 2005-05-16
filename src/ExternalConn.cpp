@@ -55,6 +55,7 @@
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
+#include "gsocket-fix.h"
 
 using namespace otherfunctions;
 
