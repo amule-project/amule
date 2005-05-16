@@ -213,6 +213,9 @@ void CUploadQueue::Process()
 	// Save used bandwidth for speed calculations
 	uint64 sentBytes = theApp.uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
 	
+	// Update statistics
+	theApp.statistics->UpdateSentBytes(sentBytes);
+	
 	wxMutexLocker lock(m_ratelock);
 	avarage_dr_list.AddTail(sentBytes);
 	m_avarage_dr_sum += sentBytes;
