@@ -146,7 +146,8 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 		} else {
 			CServer* cur_server = (CServer*) GetItemData( pos );
 			bool is_static = cur_server->IsStaticMember();
-			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
+			const wxString server_name = cur_server->GetListName().IsEmpty() ? wxString(_("(Unknown name)")) : cur_server->GetListName();
+			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % server_name, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
 				theApp.serverlist->RemoveServer( cur_server );
 				DeleteItem( pos );
 			} else {
