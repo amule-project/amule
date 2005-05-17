@@ -1,0 +1,40 @@
+.TH AMULE 1 "March 2005" "aMule v2.0.0" "aMule"
+.SH NAME
+amule \- the all\-platform eMule p2p client
+.SH SYNOPSIS
+.B amule
+.RB [ \-v ]
+.RB [ \-h ]
+.RB [ \-i ]
+.RB [ \-geometry " " \fI<geom> ]
+.RB [ \-d ]
+.RB [ \-o ]
+.SH DESCRIPTION
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Displays the current version number.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Displays this information.
+.TP
+\fB-i\fR, \fB\-\-enable\-stdin\fR
+Does not disable stdin.
+.TP
+\fB\-geometry\fR \fI<geom>\fR
+Sets the geometry of the app.
+\fI<geom>\fR uses the same format as standard X11 apps:	[\fB=\fR][\fI<width>\fR{\fBxX\fR}\fI<height>\fR][{\fB+-\fR}\fI<xoffset>\fR{\fB+-\fR}\fI<yoffset>\fR]
+.TP
+\fB\-d\fR, \fB\-\-disable\-fatal\fR
+Does not handle fatal exception.
+.TP
+\fB-o\fR, \fB\-\-log\-stdout\fR
+Print log messages to stdout.
+.SH FILES
+~/.aMule/*
+.SH REPORTING BUGS
+Please report bugs either on our forum (\fIhttp://forum.amule.org/\fR), or in our bugtracker (\fIhttp://bugs.amule.org/\fR).
+Please do not report bugs in e-mail, neither to our mailing list nor directly to any team member.
+.SH COPYRIGHT
+aMule and all of its related utilities are distributed under the GNU General Public License.
+.SH SEE ALSO
+\fBalc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
