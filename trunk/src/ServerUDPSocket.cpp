@@ -46,6 +46,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
+#include "Format.h"
 
 #include <sys/types.h>
 
