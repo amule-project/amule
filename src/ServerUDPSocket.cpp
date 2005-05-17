@@ -138,7 +138,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
-	AddDebugLogLineM( true, logServerUDP,
+	AddDebugLogLineM( false, logServerUDP,
 					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
 	try{
