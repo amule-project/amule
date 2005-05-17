@@ -106,6 +106,8 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			
 		switch (/*Protocol*/buffer[0]) {
 			case OP_EDONKEYPROT: {
+				AddDebugLogLineM( true, logServerUDP,
+					wxString::Format( wxT("Received UDP server packet with eMule protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[1] ) );
 				length = length - 2; // skip protocol and opcode
 				// Create the safe mem file.	
 				CSafeMemFile  data(buffer+2,length);
@@ -115,6 +117,8 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
+				AddDebugLogLineM( true, logServerUDP,
+					wxString::Format( wxT("Received UDP server packet with eDonkey protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[0] ) );
 				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
