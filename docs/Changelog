@@ -1,26 +1,38 @@
-Version 2.0.1 - The " **** " version.
+Version 2.0.1 - The " Woops, HotFix " version.
 ----------
-2005-X-X
+2005-05-18
 
-	deltaHF:
-		* Compilation fixes for older gcc versions.
+	ken:
+		* Fixed Tray Icon compilation on Mac.
+
+	Kry:
+		* HOTFIX: Fixed 100% CPU usage because of network errors on some servers.
+		* Fixed crash after removing a server.
+		* Fixed sorting on the UploadList by Transferred (thanks eylzo).
+		* Users/Files on server no longer show as negative if server sends wrong values.
+		* Check for autopoint on configure to warn for gettext not installed.
+		
+	niet:
+		* Updated xal.pl (some fixes).
 
 	Phoenix:
-		* Added DNS resolving functionality to amulecmd's connect
-		command. This is usefull for dynamic IP servers. Now you can
-		use the server's name instead of the server's IP address.
+		* Added DNS resolving functionality to amulecmd's connect command. 
+		  This is usefull for dynamic IP servers. 
+		  Now you can use the server's name instead of the server's IP address.
 		* Fixed a bug in http proxy authentication code.
-		* Removed wxGTK and wxGTK-devel dependencies from the spec
-		file. They don't work on all distros, even worse, don't always
-		work with Fedora Core.
-		* Created a new spec file, compliant with Fedora Core.
 
 	Special Thanks To:
+		
+		* Contributors:
+		  eylzo
 
 		* Bug and feature reporters:
 		  albatros_la
 		  Lucky_JL
-
+		  Mr Faber
+		  
+		* All the usual people (translators, debugers, people at #amule, etc)
+		  C'mon, this is a hotfix release, I can't add everyone again.
 		
 Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 ----------

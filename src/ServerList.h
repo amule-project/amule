@@ -38,6 +38,7 @@
 
 #include "ObservableQueue.h"
 
+
 class CServer;
 class CPacket;
 
@@ -72,8 +73,7 @@ public:
 	void 		UpdateServerMetFromURL(const wxString& strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
-	uint32	CServerList::GetAvgFile() const;
-	
+
 private:
 	virtual void 	ObserverAdded( ObserverType* );
 	void			AutoUpdate();

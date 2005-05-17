@@ -50,7 +50,7 @@ namespace Kademlia {
 
 class CUInt128;
 
-class CTagNameString : public wxString
+class CTagNameString : protected wxString
 {
 public:
 	CTagNameString()
@@ -70,20 +70,12 @@ public:
 	// A tag name may include character values >= 0xD0 and therefor also >= 0xF0. to prevent those
 	// characters be interpreted as multi byte character sequences we have to ensure that a binary
 	// string compare is performed.
-	int Compare(const char* psz) const throw()
-	{
-		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
-		return strcmp((char*)c_str(), psz);
-	}
-
-	#if wxUSE_UNICODE
 	int Compare(const wxString& psz) const throw()
 	{
 		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
-		return Compare((const char*) psz.c_str());
-	}	
-	#endif
-	
+		return strcmp((char*)c_str(), (char*)psz.c_str());
+	}
+
 	int CompareNoCase(const wxString& psz) const throw()
 	{
 		return CmpNoCase(psz);
@@ -132,15 +124,6 @@ public:
 	{
 		m_type = type;
 	}
-	
-	#if wxUSE_UNICODE
-	CTag(byte type, const char* name)
-		: m_name(wxString::FromAscii(name))
-	{
-		m_type = type;
-	}	
-	#endif
-	
 	virtual ~CTag() {}
 
 	bool IsStr()  const { return m_type == TAGTYPE_STRING; }
@@ -169,11 +152,6 @@ public:
 	CTagUnk(byte type, const wxString& name)
 		: CTag(type, name)
 	{ }
-	#if wxUSE_UNICODE
-	CTagUnk(byte type, const char* name)
-		: CTag(type, wxString::FromAscii(name))
-	{ }	
-	#endif
 };
 
 
@@ -184,13 +162,6 @@ public:
 		: CTag(TAGTYPE_STRING, name)
 		, m_value(value)
 	{ }
-	
-	#if wxUSE_UNICODE
-	CTagStr(const char* name, const wxString& value)
-		: CTag(TAGTYPE_STRING, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
 
 	virtual CTagValueString GetStr() const { return m_value; }
 
@@ -206,14 +177,6 @@ public:
 		: CTag(0xFE, name)
 		, m_value(value)
 	{ }
-	
-	#if wxUSE_UNICODE
-	CTagUInt(const char* name, uint32 value)
-		: CTag(0xFE, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
-
 
 	virtual uint32 GetInt() const { return m_value; }
 
@@ -229,13 +192,6 @@ public:
 		: CTag(TAGTYPE_UINT32, name)
 		, m_value(value)
 	{ }
-	
-	#if wxUSE_UNICODE
-	CTagUInt32(const char* name, uint32 value)
-		: CTag(TAGTYPE_UINT32, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
 
 	virtual uint32 GetInt() const { return m_value; }
 
@@ -252,13 +208,6 @@ public:
 		, m_value(value)
 	{ }
 
-	#if wxUSE_UNICODE
-	CTagFloat(const char* name, float value)
-		: CTag(TAGTYPE_FLOAT32, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
-	
 	virtual float GetFloat() const { return m_value; }
 
 protected:
@@ -273,13 +222,6 @@ public:
 		: CTag(TAGTYPE_BOOL, name)
 		, m_value(value)
 	{ }
-	
-	#ifdef wxUSE_UNICODE
-	CTagBool(const char* name, bool value)
-		: CTag(TAGTYPE_BOOL, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif	
 
 	virtual bool GetBool() const { return m_value; }
 
@@ -291,18 +233,10 @@ protected:
 class CTagUInt16 : public CTag
 {
 public:
-
 	CTagUInt16(const wxString& name, uint16 value)
 		: CTag(TAGTYPE_UINT16, name)
 		, m_value(value)
 	{ }
-	
-	#if wxUSE_UNICODE
-	CTagUInt16(const char* name, uint16 value)
-		: CTag(TAGTYPE_UINT16, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
 
 	virtual uint32 GetInt() const { return m_value; }
 
@@ -318,13 +252,6 @@ public:
 		: CTag(TAGTYPE_UINT8, name)
 		, m_value(value)
 	{ }
-
-	#ifdef wxUSE_UNICODE
-	CTagUInt8(const char* name, uint8 value)
-		: CTag(TAGTYPE_UINT8, wxString::FromAscii(name))
-		, m_value(value)
-	{ }
-	#endif
 
 	virtual uint32 GetInt() const { return m_value; }
 
@@ -343,16 +270,6 @@ public:
 		memcpy(m_value, value, nSize);
 		m_size = nSize;
 	}
-	
-	#if wxUSE_UNICODE
-	CTagBsob(const char* name, const byte* value, uint8 nSize)
-		: CTag(TAGTYPE_BSOB, wxString::FromAscii(name))
-	{
-		m_value = new byte[nSize];
-		memcpy(m_value, value, nSize);
-		m_size = nSize;
-	}	
-	#endif
 
 	~CTagBsob()
 	{
@@ -377,15 +294,6 @@ public:
 		m_value = new byte[16];
 		otherfunctions::md4cpy(m_value, value);
 	}
-	
-	#if wxUSE_UNICODE
-	CTagHash(const char* name, const byte* value) 
-		: CTag(TAGTYPE_HASH, wxString::FromAscii(name))
-	{ 
-		m_value = new byte[16];
-		otherfunctions::md4cpy(m_value, value);
-	}
-	#endif	
 
 	~CTagHash()
 	{

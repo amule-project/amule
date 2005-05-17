@@ -180,7 +180,7 @@ typedef std::list<CTag*> TagPtrList;
 ///////////////////////////////////////////////////////////////////////////////
 // CTag and tag string helpers
 
-inline int CmpED2KTagName(const char* pszTagName1, const char* pszTagName2){
+inline int CmpED2KTagName(char* pszTagName1, char* pszTagName2){
 	// string compare is independant from any codepage and/or LC_CTYPE setting.
 	return strcasecmp(pszTagName1, pszTagName2);
 }

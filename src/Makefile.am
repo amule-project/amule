@@ -75,7 +75,6 @@ amulegui_SOURCES = \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
 	Logger.cpp \
@@ -145,6 +144,7 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	filefn.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -153,7 +153,6 @@ amule_SOURCES = \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \
@@ -194,11 +193,13 @@ amule_SOURCES = \
 	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
-	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
-
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
@@ -219,6 +220,7 @@ amuled_SOURCES = \
         ED2KLink.cpp \
         EMSocket.cpp \
         ExternalConn.cpp \
+        filefn.cpp \
 	Format.cpp \
         Friend.cpp \
 	FriendList.cpp \
@@ -250,9 +252,12 @@ amuled_SOURCES = \
 	Statistics.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
-	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
@@ -364,6 +369,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
+		 filefn.h \
 		 Friend.h \
 		 FriendList.h \
 		 FriendListCtrl.h \

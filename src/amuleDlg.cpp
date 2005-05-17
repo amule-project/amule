@@ -201,14 +201,14 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt);
 	chatwnd = new CChatWnd(p_cnt);
-	kademliawnd = new CKadDlg(p_cnt);
+	kadwnd = new CKadDlg(p_cnt);
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-	kademliawnd->Show(FALSE);	
+	kadwnd->Show(FALSE);	
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
@@ -482,7 +482,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					break;
 
 				case ID_BUTTONKAD:
-					SetActiveDialog(KadWnd, kademliawnd);
+					SetActiveDialog(KadWnd, kadwnd);
 					break;
 				
 				// This shouldn't happen, but just in case
@@ -516,12 +516,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
 		" Contact: admin@amule.org (administrative issues) \n"
-		" Copyright (C) 2003-2005 aMule Team \n\n"
-		" Part of aMule is based on \n"
-		" Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-		" Copyright (C) 2002 Petar Maymounkov\n"
-		" http://kademlia.scs.cs.nyu.edu\n");
-	
+		" Copyright (C) 2003-2005 aMule Team \n");
 	if (is_safe_state) {
 		wxMessageBox(msg);
 	}
@@ -736,7 +731,7 @@ void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
 
 void CamuleDlg::ShowTransferRate()
 {
-	float kBpsUp = theApp.uploadqueue->GetDatarate() / 1024.0f;
+	float kBpsUp = theApp.uploadqueue->GetKBps();
 	float kBpsDown = theApp.downloadqueue->GetKBps();
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )
@@ -805,7 +800,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	RemoveSystray();
 #endif
 
-	// This will be here till the core close is != app close
+	#warning This will be here till the core close is != app close
 	theApp.ShutDown();
 
 }
@@ -1032,13 +1027,41 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 /*
 	Try to launch the specified url:
-	 - Windows: Default or custom browser will be used.
+	 - Windows: The default browser will be used.
 	 - Mac: Currently not implemented
-	 - Anything else: Try a number of hardcoded browsers. Should be made configurable...
+	 - Anything else: Try a number of hardcoded browsers. Should be made configuable...
 */
 void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;
+
+#if defined (__WXMSW__)
+wxFileType *ft;                            /* Temporary storage for filetype. */
+
+	ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+	if (!ft) {
+		wxLogError(
+			wxT("Impossible to determine the file type for extension html."
+			"Please edit your MIME types.")
+		);
+		return;
+	}
+
+	if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
+		// TODO: some kind of configuration dialog here.
+		wxMessageBox(
+			_("Could not determine the command for running the browser."),
+			wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+		delete ft;
+		return;
+	}
+	delete ft;
+
+	wxPuts(wxT("Launch Command: ") + cmd);
+	if (!wxExecute(cmd, FALSE)) {
+		wxLogError(wxT("Error launching browser for FakeCheck."));
+	}
+#else
 
 	cmd = thePrefs::GetBrowser();
 	if ( !cmd.IsEmpty() ) {
@@ -1053,40 +1076,18 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		}
 
 		if ( wxExecute( cmd, false ) ) {
-			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
+			printf( "Launch Command: %s\n",
+				(const char *)unicode2char(cmd));
 			return;
 		}
-#ifdef __WXMSW__
-	} else {
-		wxFileType *ft;		/* Temporary storage for filetype. */
-
-		ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
-		if (!ft) {
-			wxLogError(
-				wxT("Impossible to determine the file type for extension html."
-				"Please edit your MIME types.")
-			);
-			return;
-		}
-
-		if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
-			wxMessageBox(
-				_("Could not determine the command for running the browser."),
-				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
-			delete ft;
-			return;
-		}
-		delete ft;
-
-		wxPuts(wxT("Launch Command: ") + cmd);
-		if (wxExecute(cmd, false)) {
-			return;
-		}
-#endif
 	}
+
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
 	wxLogError( wxT("Unable to launch browser. Please set correct browser executable path in Preferences.") );
+
+#endif
+
 }
 
 

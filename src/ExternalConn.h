@@ -229,7 +229,7 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &, CObjTagMap &);
 	
 		CECPacket *Authenticate(const CECPacket *);
-		wxSocketServer *m_ECServer;
+		ECSocket *m_ECServer;
 
 	private:
 #ifdef AMULE_DAEMON
@@ -251,7 +251,7 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 
 class ExternalConnClientThread : public wxThread {
 	public:
-		ExternalConnClientThread(ExternalConn *owner, ECSocket *sock);
+		ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock);
 		~ExternalConnClientThread();
 	
 	private:
@@ -264,7 +264,7 @@ class ExternalConnClientThread : public wxThread {
 		CObjTagMap m_obj_tagmap;
 		
 		ExternalConn *m_owner;
-		ECSocket *m_sock;
+		wxSocketBase *m_sock;
 };
 
 #endif // EXTERNALCONN_H

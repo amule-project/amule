@@ -245,7 +245,7 @@ void CStatistics::RecordHistory()
 	double		kBytesSent = stat_sessionSentBytes/1024.0;
 	static double	kBytesRecPrev, kBytesSentPrev;
 
-	kBpsUpCur = theApp.uploadqueue->GetDatarate() / 1024.0f;
+	kBpsUpCur = theApp.uploadqueue->GetKBps();
 	kBpsDownCur = theApp.downloadqueue->GetKBps();
     if (maxDown < kBpsDownCur)
 		maxDown = kBpsDownCur;
@@ -698,7 +698,7 @@ void CStatistics::InitStatsTree() {
 	cli_versions[3].active = false;
 	cli10= statstree.append_child(h_clients,_("Waiting...")); // aMule
 	cli10_1= statstree.append_child(cli10,_("Version")); // aMule
-	cli10_2= statstree.append_child(cli10,_("Operating System")); // aMule
+	cli10_2= statstree.append_child(cli10,_("Operative System")); // aMule
 	cli_versions[12].active = false;
 	cli_versions[13].active = false;
 	cli_versions[14].active = false;

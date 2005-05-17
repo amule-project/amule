@@ -113,7 +113,7 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
 	}
 
-	const CKnownFile* file = m_client->GetUploadFile();
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(m_client->GetUploadFileID());
 	
 	if ( file ) {
 		wxString filename = MakeStringEscaped( TruncateFilename( file->GetFileName(), 60 ) );
@@ -124,9 +124,9 @@ bool CClientDetailDialog::OnInitDialog() {
 	}
 
 	CastChild(ID_DDUP,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedDown()));
-	CastChild(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferredUp()));
+	CastChild(ID_DDOWN,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetTransferedUp()));
 	CastChild(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetKBpsDown()));
-	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetUploadDatarate() / 1024.0f));
+	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetKBpsUp()));
 
 	if (m_client->Credits()) {
 		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		

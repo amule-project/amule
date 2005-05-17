@@ -523,7 +523,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			// happen, but it's best to be certain, so I handle this case as well
 			source->SetRequestFile( sender );
 			
-			if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
+			if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
 			}
 	
@@ -537,7 +537,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 
 		theApp.clientlist->AddClient(source);
 	
-		if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
+		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 			sender->UpdateFileRatingCommentAvail();
 		}
 	
@@ -575,7 +575,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	} else {
 		source->SetRequestFile( sender );
 
-		if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
+		if ( source->GetFileRate() || !source->GetFileComment().IsEmpty() ) {
 			sender->UpdateFileRatingCommentAvail();
 		}
 
@@ -607,7 +607,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	}
 
 
-	if ( !toremove->GetFileComment().IsEmpty() || toremove->GetFileRating()>0) {
+	if ( !toremove->GetFileComment().IsEmpty() || toremove->GetFileRate()>0) {
 		toremove->GetRequestFile()->UpdateFileRatingCommentAvail();
 	}
 	
@@ -1338,9 +1338,4 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 	m_mutex.Unlock();
 
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
-}
-
-void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid)
-{
-	#warning KAD TODO: Currently a placeholder, must include the code to add a source result from Kad.	
 }

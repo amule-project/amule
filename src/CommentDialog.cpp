@@ -68,7 +68,7 @@ void CCommentDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 	wxString SValue;
 	SValue = CastChild( IDC_CMT_TEXT, wxTextCtrl )->GetValue();
 	m_file->SetFileComment(SValue);
-	m_file->SetFileRating((int8)ratebox->GetSelection());
+	m_file->SetFileRate((int8)ratebox->GetSelection());
 	EndModal(0);
 }
 
@@ -86,6 +86,6 @@ bool CCommentDialog::OnInitDialog()
 {
 	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(m_file->GetFileComment());
 	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetMaxLength(50);
-	ratebox->SetSelection(m_file->GetFileRating());
+	ratebox->SetSelection(m_file->GetFileRate());
 	return TRUE;
 }

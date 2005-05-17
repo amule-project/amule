@@ -58,6 +58,7 @@ class Pending_Block_Struct;
 class CSafeMemFile;
 class CMemFile;
 class Requested_File_Struct;
+class TransferredData;
 class CAICHHash;
 
 	
@@ -238,6 +239,7 @@ public:
 	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
 	uint32			GetConnectIP() const				{return m_nConnectIP;}
 	uint32		GetUserPort() const		{ return m_nUserPort; }
+	uint32		GetTransferedUp() const 	{ return m_nTransferedUp; }
 	uint32		GetTransferedDown() const	{ return m_nTransferedDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
 	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
@@ -306,18 +308,10 @@ public:
 	CClientCredits 		*credits;
 	CFriend 		*m_Friend;
 
-
 	//upload
 	uint8		GetUploadState() const		{ return m_nUploadState; }
-	void		SetUploadState(uint8 news);
-	uint32			GetTransferredUp() const						{ return m_nTransferredUp; }
-	uint32			GetSessionUp() const							{ return m_nTransferredUp - m_nCurSessionUp; }
-	void			ResetSessionUp() {
-						m_nCurSessionUp = m_nTransferredUp;
-						m_addedPayloadQueueSession = 0;
-						m_nCurQueueSessionPayloadUp = 0;
-					}	
-	uint32			GetUploadDatarate() const		{ return m_nUpDatarate; }	
+	void		SetUploadState(uint8 news)	{ m_nUploadState = news; }
+
 
 #ifndef CLIENT_GUI
 	uint32		GetWaitTime() const 		{ return m_dwUploadTime - GetWaitStartTime(); }
@@ -331,6 +325,9 @@ public:
 #endif
 
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
+	bool		HasBlocks() const
+		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
+	float		GetKBpsUp()	const 		{ return kBpsUp; }
 	
 #ifdef CLIENT_GUI
 	uint32 m_base_score, m_score;
@@ -350,30 +347,23 @@ public:
 #endif
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
-	void		CreateNextBlockPackage();
+	bool		CreateNextBlockPackage();
 	void		SetUpStartTime() 			{ m_dwUploadTime = ::GetTickCount(); }
 	void		SetWaitStartTime();
 	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const { return m_bMultiPacket;	}
 
+	//! Only call this function if the old requpfile is being deleted
+	void		ResetUploadFile();
 	void		SetUploadFileID(CKnownFile *newreqfile);
-	
-	/**
-	 *Gets the file actually on upload
-	 *
-	 */
-	const CKnownFile* GetUploadFile() const { return m_uploadingfile; }
- 	
-	void		SendOutOfPartReqsAndAddToWaitingQueue();
 	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
 	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
 	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
 	
+	CKnownFile*	GetUploadFile()		{ return m_requpfile; }
 	const CMD4Hash&	GetUploadFileID() const	{ return m_requpfileid; }
-	void	SetUploadFileID(const CMD4Hash& new_id);
-	void	ClearUploadFileID() { m_requpfileid.Clear(); m_uploadingfile = NULL;};
-	uint32		SendBlockData();
+	uint32		SendBlockData(float kBpsToSend);
 	void		ClearUploadBlockRequests();
 	void		SendRankingInfo();
 	void		SendCommentInfo(CKnownFile *file);
@@ -387,6 +377,8 @@ public:
 						// or the socket might be not able to send
 	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
 	uint32		GetLastUpRequest() const 	{ return m_dwLastUpRequest; }
+	uint32		GetSessionUp() const 		{ return m_nTransferedUp - m_nCurSessionUp; }
+	void		ResetSessionUp()		{ m_nCurSessionUp = m_nTransferedUp; }
 	uint16		GetUpPartCount() const 		{ return m_nUpPartCount; }
 
 
@@ -446,7 +438,7 @@ public:
 
 	//File Comment 
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
-	uint8		GetFileRating() const		{ return m_iRating; }
+	uint8		GetFileRate() const		{ return m_iRate; }
 	
 	wxString	GetSoftStr() const 		{ return m_clientVerString.Left(m_SoftLen); }
 	wxString	GetSoftVerStr() const		{ return m_clientVerString.Mid(m_SoftLen+1); }
@@ -539,30 +531,8 @@ public:
 	 * @return True if sent, false if connecting
 	 */
 	bool	SendMessage(const wxString& message);
- 
-	uint32			GetPayloadInBuffer() const						{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
-	uint32			GetQueueSessionPayloadUp() const				{ return m_nCurQueueSessionPayloadUp; }
-	void			SendCancelTransfer(CPacket* packet = NULL);
-	bool			HasBlocks() const								{ return !m_BlockRequests_queue.IsEmpty(); }
-
+ 	
 private:
-	uint32		m_nTransferredUp;
-	uint32		m_nCurQueueSessionPayloadUp;
-	uint32		m_addedPayloadQueueSession;
-	
-	struct TransferredData {
-		uint32	datalen;
-		uint32	timestamp;
-	};
-	
-	//////////////////////////////////////////////////////////
-	// Upload data rate computation
-	//
-	uint32		m_nUpDatarate;
-	uint32		m_nSumForAvgUpDataRate;
-	CList<TransferredData> m_AvarageUDR_list;
-	
-	
 	/**
 	 * This struct is used to keep track of CPartFiles which this source shares.
 	 */
@@ -651,12 +621,17 @@ private:
 	void CreateStandartPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	void CreatePackedPackets(const unsigned char* data,uint32 togo, Requested_Block_Struct* currentblock);
 	
+	float		kBpsUp;
+	uint32		msSentPrev;
+	uint32		m_nTransferedUp;
 	uint8		m_nUploadState;
 	uint32		m_dwUploadTime;
+	uint32		m_nMaxSendAllowed;
 	uint32		m_cAsked;
 	uint32		m_dwLastUpRequest;
 	uint32		m_nCurSessionUp;
 	uint16		m_nUpPartCount;
+	CKnownFile*	m_requpfile;
 	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
 
@@ -668,6 +643,7 @@ public:
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
 	
+	CList<CPacket*>		 			m_BlockSend_queue;
 	CList<Requested_Block_Struct*>	m_BlockRequests_queue;
 	CList<Requested_Block_Struct*>	m_DoneBlocks_list;
 	
@@ -698,7 +674,7 @@ public:
 	// chat
 	uint8 		m_byChatstate;
 	wxString	m_strComment;
-	int8		m_iRating;
+	int8		m_iRate;
 	unsigned int 
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
 		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, 
@@ -708,8 +684,7 @@ public:
 		m_fSentCancelTransfer: 1, // we have sent an OP_CANCELTRANSFER in the current connection
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
-		m_fAICHRequested     : 1,
-		m_fSentOutOfPartReqs : 1;
+		m_fAICHRequested     : 1; 
 		
 	unsigned int 
 		m_fOsInfoSupport : 1;
@@ -779,8 +754,6 @@ private:
 	wxString		m_pendingMessage;
 
 	int SecIdentSupRec;
-
-	CKnownFile* m_uploadingfile;
 };
 
 

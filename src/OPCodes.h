@@ -26,14 +26,8 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#define	SEC2MS(sec)		((sec)*1000)
-#define	MIN2MS(min)		SEC2MS((min)*60)
-#define	HR2MS(hr)		MIN2MS((hr)*60)
-#define	DAY2MS(day)		HR2MS((day)*24)
-#define	SEC(sec)		(sec)
-#define	MIN2S(min)		((min)*60)
-#define	HR2S(hr)		MIN2S((hr)*60)
-#define	DAY2S(day)		HR2S((day)*24)
+#define    SEC2MS(sec)             ((sec)*1000)
+#define    MIN2MS(min)             SEC2MS((min)*60)
 
 // Handlers
 
@@ -47,7 +41,6 @@ enum {
 	SERVERSOCKET_HANDLER,
 	CLIENTUDPSOCKET_HANDLER,
 	PROXY_SOCKET_HANDLER,
-	EC_SOCKET_HANDLER,
 	
 	// Custom Events
 
@@ -79,18 +72,20 @@ enum {
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.0.1")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.0.0")
 #endif
 
 #define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
-#define	VERSION_UPDATE		1 
+#define	VERSION_UPDATE		0 
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
 #define	PARTFILE_VERSION			0xe0
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
 #define	CREDITFILE_VERSION			0x12
+
+#define RSAKEYSIZE				384             //384 bits
 
 #define EMBLOCKSIZE				(uint32)184320
 
@@ -105,37 +100,15 @@ enum {
 #define	FILEREASKTIME				1300000	// 1300000 <- original value ***
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
+//#define	SOURCECLIENTREASK			600000
 #define	SOURCECLIENTREASKS			MIN2MS(40)	//40 mins
 #define	SOURCECLIENTREASKF			MIN2MS(5)	//5 mins
-#define	KADEMLIAASKTIME			SEC2MS(1)	//1 second
-#define	KADEMLIATOTALFILE		7			//Total files to search sources for.
-#define	KADEMLIAREASKTIME		HR2MS(1)	//1 hour
-#define	KADEMLIAPUBLISHTIME		SEC(2)		//2 second
-#define	KADEMLIATOTALSTORENOTES	1			//Total hashes to store.
-#define	KADEMLIATOTALSTORESRC	2			//Total hashes to store.
-#define	KADEMLIATOTALSTOREKEY	1			//Total hashes to store.
-#define	KADEMLIAREPUBLISHTIMES	HR2S(5)		//5 hours
-#define	KADEMLIAREPUBLISHTIMEN	HR2S(24)	//24 hours
-#define	KADEMLIAREPUBLISHTIMEK	HR2S(24)	//24 hours
-#define	KADEMLIADISCONNECTDELAY	MIN2S(20)	//20 mins
-#define	KADEMLIAMAXINDEX		50000		//Total keyword indexes.
-#define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
-#define	KADEMLIAMAXSOUCEPERFILE	300			//Max number of sources per file in index.
-#define	KADEMLIAMAXNOTESPERFILE	50			//Max number of notes per entry in index.
-
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min
-#define	MINCOMMONPENALTY		4
-#define	UDPSERVERSTATTIME		SEC2MS(5)	//5 secs
-#define	UDPSERVSTATREASKTIME	HR2S(4)		//4 hours
-#define	UDPSERVERPORT			4665		//default udp port
-#define	UDPMAXQUEUETIME			SEC2MS(30)	//30 Seconds
-#define	RSAKEYSIZE				384			//384 bits
-#define	MAX_SOURCES_FILE_SOFT	500
-#define	MAX_SOURCES_FILE_UDP	50
-#define	SESSIONMAXTRANS			(9.3*1024*1024) // 9.3 Mbytes. "Try to send complete chunks" always sends this amount of data
-#define	SESSIONMAXTIME			HR2MS(1)	//1 hour
-#define	MAXFILECOMMENTLEN		50
-#define	MIN_UP_CLIENTS_ALLOWED			2	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
+#define	MINCOMMONPENALTY			4
+#define	UDPSERVERSTATTIME			5000
+#define	UDPSERVSTATREASKTIME			14400
+#define	UDPSERVERPORT				4665	// default udp port
+#define	MIN_UP_CLIENTS_ALLOWED			3	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 // MOD Note: end
 
 #define	MAXCONPER5SEC				20
@@ -143,8 +116,8 @@ enum {
 #define	UPLOAD_CHECK_CLIENT_DR			1000
 #define	UPLOAD_LOW_CLIENT_DR			2400	// uploadspeed per client in bytes - you may want to adjust
 							// this if you have a slow connection or T1-T3 ;)
-#define	UPLOAD_CLIENT_DATARATE			3072
-#define	MAX_UP_CLIENTS_ALLOWED			250	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
+#define	UPLOAD_CLIENT_DATARATE			2048
+#define	MAX_UP_CLIENTS_ALLOWED			100	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
 #define	CONSERVTIMEOUT				25000	// agelimit for pending connection attempts
 #define	RARE_FILE				50
@@ -168,8 +141,6 @@ const int BLOCKSIZE =				184320;
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER
 #define	OP_PACKEDPROT				0xD4
 #define	OP_EMULEPROT				0xC5
-#define	OP_KADEMLIAHEADER		0xE4
-#define	OP_KADEMLIAPACKEDPROT	0xE5
 #define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
@@ -315,13 +286,13 @@ const unsigned int UNLIMITED =	 		0;
 
 //file tags
 #define FT_FILENAME				 0x01	// <string>
-#define TAG_FILENAME				"\x01"	// <string>
+#define TAG_NAME				"\x01"	// <string>
 #define FT_FILESIZE				 0x02	// <uint32>
-#define TAG_FILESIZE				"\x02"	// <uint32>
+#define TAG_SIZE				"\x02"	// <uint32>
 #define FT_FILETYPE				 0x03	// <string>
-#define TAG_FILETYPE				"\x03"	// <string>
+#define TAG_TYPE				"\x03"	// <string>
 #define FT_FILEFORMAT				 0x04	// <string>
-#define TAG_FILEFORMAT				"\x04"	// <string>
+#define TAG_FORMAT				"\x04"	// <string>
 #define FT_LASTSEENCOMPLETE			 0x05	// <uint32>
 #define TAG_COLLECTION				"\x05"
 #define	TAG_PART_PATH				"\x06"	// <string>
@@ -346,10 +317,8 @@ const unsigned int UNLIMITED =	 		0;
 #define FT_STATUS				 0x14	// <uint32>
 #define TAG_STATUS				"\x14"	// <uint32>
 #define FT_SOURCES				 0x15	// <uint32>
-#define TAG_SOURCES				"\x15"	// <uint32>
 #define TAG_AVAILABILITY			"\x15"	// <uint32>
 #define FT_PERMISSIONS				 0x16	// <uint32>
-#define TAG_PERMISSIONS			"\x16"
 #define TAG_QTIME				"\x16"
 #define FT_OLDULPRIORITY			 0x17	// Not used anymore
 #define TAG_PARTS				"\x17"
@@ -366,34 +335,31 @@ const unsigned int UNLIMITED =	 		0;
 #define	FT_COMPLETE_SOURCES			 0x30	// nr. of sources which share a complete version
 							 //of the associated file (supported by eserver 16.46+)
 // statistic
-#define	FT_ATTRANSFERED			 0x50	// <uint32>
-#define	FT_ATREQUESTED			 0x51	// <uint32>
-#define	FT_ATACCEPTED			 0x52	// <uint32>
-#define	FT_CATEGORY			 0x53	// <uint32>
+#define FT_ATTRANSFERED			 0x50	// <uint32>
+#define FT_ATREQUESTED			 0x51	// <uint32>
+#define FT_ATACCEPTED			 0x52	// <uint32>
+#define FT_CATEGORY			 0x53	// <uint32>
 #define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
 #define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
-#define	FT_MEDIA_ARTIST		 0xD0	// <string>
+#define	 FT_MEDIA_ARTIST		 0xD0	// <string>
 #define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
-#define	FT_MEDIA_ALBUM			 0xD1	// <string>
+#define	 FT_MEDIA_ALBUM			 0xD1	// <string>
 #define	TAG_MEDIA_TITLE			"\xD2"	// <string>
-#define	FT_MEDIA_TITLE			 0xD2	// <string>
+#define	 FT_MEDIA_TITLE			 0xD2	// <string>
 #define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
-#define	FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
+#define	 FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
 #define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
-#define	FT_MEDIA_BITRATE		 0xD4	// <uint32>
+#define	 FT_MEDIA_BITRATE		 0xD4	// <uint32>
 #define	TAG_MEDIA_CODEC			"\xD5"	// <string>
-#define	FT_MEDIA_CODEC			 0xD5	// <string>
-#define	FT_FILERATING			 0xF7	// <uint8>
-#define	TAG_FILERATING			"\xF7"	// <uint8>
-
-#define	TAG_BUDDYHASH			"\xF8"	// <string>
-#define	TAG_CLIENTLOWID			"\xF9"	// <uint32>
-#define	TAG_SERVERPORT			"\xFA"	// <uint16>
-#define	TAG_SERVERIP			"\xFB"	// <uint32>
-#define	TAG_SOURCEUPORT			"\xFC"	// <uint16>
-#define	TAG_SOURCEPORT			"\xFD"	// <uint16>
-#define	TAG_SOURCEIP			"\xFE"	// <uint32>
-#define	TAG_SOURCETYPE			"\xFF"	// <uint8>
+#define	 FT_MEDIA_CODEC			 0xD5	// <string>
+#define TAG_BUDDYHASH			"\xF8"	// <string>
+#define TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define TAG_SERVERPORT			"\xFA"	// <uint16>
+#define TAG_SERVERIP			"\xFB"	// <uint32>
+#define TAG_SOURCEUPORT			"\xFC"	// <uint16>
+#define TAG_SOURCEPORT			"\xFD"	// <uint16>
+#define TAG_SOURCEIP			"\xFE"	// <uint32>
+#define TAG_SOURCETYPE			"\xFF"	// <uint8>
 
 #define	TAGTYPE_HASH			0x01
 #define	TAGTYPE_STRING			0x02
@@ -494,9 +460,9 @@ const unsigned int UNLIMITED =	 		0;
 #define	CT_EMULE_UDPPORTS		0xf9
 #define	CT_EMULE_MISCOPTIONS1		0xfa
 #define	CT_EMULE_VERSION		0xfb
-#define CT_EMULE_BUDDYIP		0xfc
-#define CT_EMULE_BUDDYUDP		0xfd
-#define CT_EMULE_MISCOPTIONS2	0xfe
+#define CT_EMULE_RESERVED10		0xfc
+#define CT_EMULE_RESERVED11		0xfd
+#define CT_EMULE_RESERVED12		0xfe
 #define CT_EMULE_RESERVED13		0xff
 
 #define	MP_MESSAGE			10102

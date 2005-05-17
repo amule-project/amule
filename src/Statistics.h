@@ -130,7 +130,7 @@ public:
 
 	// Updates the number of received bytes and marks when transfers first began
 	void UpdateSentBytes(int32 bytesToAdd) {
-		if (!stat_transferStarttime && bytesToAdd) {
+		if (!stat_transferStarttime) {
 			// Saves the time where transfers were started and calucated the time before
 			stat_transferStarttime = GetTickCount64();
 			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			

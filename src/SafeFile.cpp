@@ -174,10 +174,10 @@ void CFileDataIO::WriteUInt32(uint32 nVal)
 }
 
 
-void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& pVal)
+void CFileDataIO::WriteUInt128(const Kademlia::CUInt128 *pVal)
 {
 	for (int i = 0; i < 4; i++)
-		WriteUInt32(pVal.get32BitChunk(i));
+		WriteUInt32(pVal->get32BitChunk(i));
 }
 
 
@@ -325,11 +325,10 @@ void CSafeMemFile::WriteUInt32(uint32 nVal)
 }
 
 
-void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128& pVal)
+void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128* pVal)
 {
-	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize) {
+	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
 		enlargeBuffer(m_position + sizeof(uint32)*4);
-	}
 	CFileDataIO::WriteUInt128(pVal);
 }
 

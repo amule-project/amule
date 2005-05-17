@@ -734,7 +734,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
 		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
 
-	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()));
+	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
 	if ( client->GetDownloadState() == DS_DOWNLOADING ) {
 		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0)));
 	}
@@ -752,7 +752,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	
-	const CKnownFile* file = client->GetUploadFile();
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
@@ -774,7 +774,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	valuemap.CreateTag(EC_TAG_CLIENT_STATE,
 		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) ), this);
 
-	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, (uint32)(client->GetKBpsUp()*1024.0), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime(), this);
@@ -791,7 +791,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 
 	valuemap.CreateTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft(), this);
 	
-	const CKnownFile* file = client->GetUploadFile();
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);

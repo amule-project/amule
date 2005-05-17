@@ -407,25 +407,25 @@ bool CECTag::AddTag(const CECTag& tag)
 	}
 }
 
-CECTag::CECTag(ECSocket& socket) : m_dynamic(true)
+CECTag::CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque) : m_dynamic(true)
 {
 	ec_taglen_t tagLen;
 	ec_tagname_t tmp_tagName;
 
 	m_tagData = NULL;
 	m_dataLen = 0;
-	if (!socket.ReadNumber(&tmp_tagName, sizeof(ec_tagname_t))) {
+	if (!socket.ReadNumber(sock, &tmp_tagName, sizeof(ec_tagname_t), opaque)) {
 		m_error = 2;
 		m_tagName = 0;
 		return;
 	}
 	m_tagName = tmp_tagName >> 1;
-	if (!socket.ReadNumber(&tagLen, sizeof(ec_taglen_t))) {
+	if (!socket.ReadNumber(sock, &tagLen, sizeof(ec_taglen_t), opaque)) {
 		m_error = 2;
 		return;
 	}
 	if (tmp_tagName & 0x01) {
-		if (!ReadChildren(socket)) {
+		if (!ReadChildren(sock, socket, opaque)) {
 			return;
 		}
 	}
@@ -433,7 +433,7 @@ CECTag::CECTag(ECSocket& socket) : m_dynamic(true)
 	if (m_dataLen > 0) {
 		m_tagData = malloc(m_dataLen);
 		if (m_tagData != NULL) {
-			if (!socket.ReadBuffer((void *)m_tagData, m_dataLen)) {
+			if (!socket.ReadBuffer(sock, (void *)m_tagData, m_dataLen, opaque)) {
 				m_error = 2;
 				return;
 			}
@@ -448,30 +448,30 @@ CECTag::CECTag(ECSocket& socket) : m_dynamic(true)
 }
 
 
-bool CECTag::WriteTag(ECSocket& socket) const
+bool CECTag::WriteTag(wxSocketBase *sock, ECSocket& socket, void *opaque) const
 {
 	ec_taglen_t tagLen = GetTagLen();
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
 	
-	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;
-	if (!socket.WriteNumber(&tagLen, sizeof(ec_taglen_t))) return false;
+	if (!socket.WriteNumber(sock, &tmp_tagName, sizeof(ec_tagname_t), opaque)) return false;
+	if (!socket.WriteNumber(sock, &tagLen, sizeof(ec_taglen_t), opaque)) return false;
 	if (!m_tagList.empty()) {
-		if (!WriteChildren(socket)) return false;
+		if (!WriteChildren(sock, socket, opaque)) return false;
 	}
 	if (m_dataLen > 0) {
 		if (m_tagData != NULL) {	// This is here only to make sure everything, it should not be NULL at this point
-			if (!socket.WriteBuffer(m_tagData, m_dataLen)) return false;
+			if (!socket.WriteBuffer(sock, m_tagData, m_dataLen, opaque)) return false;
 		}
 	}
 	return true;
 }
 
 
-bool CECTag::ReadChildren(ECSocket& socket)
+bool CECTag::ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque)
 {
 	uint16 tmp_tagCount;
 
-	if (!socket.ReadNumber(&tmp_tagCount, 2)) {
+	if (!socket.ReadNumber(sock, &tmp_tagCount, 2, opaque)) {
 		m_error = 2;
 		return false;
 	}
@@ -480,7 +480,7 @@ bool CECTag::ReadChildren(ECSocket& socket)
 	if (tmp_tagCount > 0) {
 		m_tagList.reserve(tmp_tagCount);
 		for (int i=0; i<tmp_tagCount; i++) {
-			m_tagList.push_back(CECTag(socket));
+			m_tagList.push_back(CECTag(sock, socket, opaque));
 			if (m_tagList.back().m_error != 0) {
 				m_error = m_tagList.back().m_error;
 #ifndef KEEP_PARTIAL_PACKETS
@@ -494,13 +494,13 @@ bool CECTag::ReadChildren(ECSocket& socket)
 }
 
 
-bool CECTag::WriteChildren(ECSocket& socket) const
+bool CECTag::WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) const
 {
     uint16 tmp = m_tagList.size();
-	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
+	if (!socket.WriteNumber(sock, &tmp, sizeof(tmp), opaque)) return false;
 	if (!m_tagList.empty()) {
 		for (TagList::size_type i=0; i<m_tagList.size(); i++) {
-			if (!m_tagList[i].WriteTag(socket)) return false;
+			if (!m_tagList[i].WriteTag(sock, socket, opaque)) return false;
 		}
 	}
 	return true;
@@ -718,21 +718,21 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  *							  *
  **********************************************************/
 
-CECPacket::CECPacket(ECSocket& socket) : CECEmptyTag(0)
+CECPacket::CECPacket(wxSocketBase *sock, ECSocket& socket, void *opaque) : CECEmptyTag(0)
 {
 	m_error = 0;
-	if (!socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))) {
+	if (!socket.ReadNumber(sock, &m_opCode, sizeof(ec_opcode_t), opaque)) {
 		m_error = 2;
 		return;
 	}
-	ReadChildren(socket);
+	ReadChildren(sock, socket, opaque);
 }
 
 
-bool CECPacket::WritePacket(ECSocket& socket) const
+bool CECPacket::WritePacket(wxSocketBase *sock, ECSocket& socket, void *opaque) const
 {
-	if (!socket.WriteNumber(&m_opCode, sizeof(ec_opcode_t))) return false;
-	if (!WriteChildren(socket)) return false;
+	if (!socket.WriteNumber(sock, &m_opCode, sizeof(ec_opcode_t), opaque)) return false;
+	if (!WriteChildren(sock, socket, opaque)) return false;
 	return true;
 }
 

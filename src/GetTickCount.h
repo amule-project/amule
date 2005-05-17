@@ -34,7 +34,7 @@
 
 #include "Types.h"		// Needed for uint32
 
-#ifdef __WINDOWS__
+#ifdef __WXMSW__
 #include <winbase.h>
 
 /**

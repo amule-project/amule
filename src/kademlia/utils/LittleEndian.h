@@ -39,8 +39,6 @@ there client on the eMule forum..
 #ifndef __KAD_LITTLE_ENDIAN_H
 #define __KAD_LITTLE_ENDIAN_H
 
-#include "../../Types.h"
-
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////

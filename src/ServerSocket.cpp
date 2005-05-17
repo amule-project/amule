@@ -203,6 +203,7 @@ CServerSocket::~CServerSocket()
 void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
 	CALL_APP_DATA_LOCK;
+	//CAsyncSocket::OnConnect(nErrorCode);
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
@@ -279,6 +280,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				
 				// 16.40 servers do not send separate OP_SERVERMESSAGE packets for each line;
 				// instead of this they are sending all text lines with one OP_SERVERMESSAGE packet.
+				//wxString message = strMessages.Tokenize("\r\n", iPos);
 
 				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
@@ -684,13 +686,13 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
-	
-	switch (connectionstate) {
-		case CS_WAITFORLOGIN:	SetConnectionState(CS_SERVERFULL);		break;
-		case CS_DISCONNECTED:	SetConnectionState(CS_DISCONNECTED);	break;
-		default:				SetConnectionState(CS_NOTCONNECTED);	
+	if (connectionstate == CS_WAITFORLOGIN) {
+		SetConnectionState(CS_SERVERFULL);
+	} else if (connectionstate == CS_CONNECTED) {
+		SetConnectionState(CS_DISCONNECTED);
+	} else {
+		SetConnectionState(CS_NOTCONNECTED);
 	}
-	
 	serverconnect->DestroySocket(this);
 }
 
@@ -706,11 +708,10 @@ void CServerSocket::SetConnectionState(sint8 newstate)
 	}
 }
 
-
-void CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
+bool CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	m_dwLastTransmission = GetTickCount();
-	CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize);
+	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
 }
 
 
