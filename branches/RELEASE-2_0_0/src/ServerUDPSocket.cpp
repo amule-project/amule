@@ -127,18 +127,7 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 
 int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
 	RecvFrom(addr,buffer,max_size);
-	int length = LastCount();
-	#ifndef AMULE_DAEMON
-	// Daemon doesn't need this because it's a thread, checking every X time.
-	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
-		// Evil trick to retry later.
-		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
-		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
-		input_event.SetEventObject(this);
-		theApp.AddPendingEvent(input_event);
-	}
-	#endif
-	return length;
+	return LastCount();
 }
 
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){

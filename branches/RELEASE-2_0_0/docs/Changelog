@@ -1,4 +1,39 @@
+Version 2.0.1 - The " Woops, HotFix " version.
+----------
+2005-05-18
 
+	ken:
+		* Fixed Tray Icon compilation on Mac.
+
+	Kry:
+		* HOTFIX: Fixed 100% CPU usage because of network errors on some servers.
+		* Fixed crash after removing a server.
+		* Fixed sorting on the UploadList by Transferred (thanks eylzo).
+		* Users/Files on server no longer show as negative if server sends wrong values.
+		* Check for autopoint on configure to warn for gettext not installed.
+		
+	niet:
+		* Updated xal.pl (some fixes).
+
+	Phoenix:
+		* Added DNS resolving functionality to amulecmd's connect command. 
+		  This is usefull for dynamic IP servers. 
+		  Now you can use the server's name instead of the server's IP address.
+		* Fixed a bug in http proxy authentication code.
+
+	Special Thanks To:
+		
+		* Contributors:
+		  eylzo
+
+		* Bug and feature reporters:
+		  albatros_la
+		  Lucky_JL
+		  Mr Faber
+		  
+		* All the usual people (translators, debugers, people at #amule, etc)
+		  C'mon, this is a hotfix release, I can't add everyone again.
+		
 Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 ----------
 2005-05-01
@@ -14,7 +49,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		* Preferences for auto-sort download queue.
 		* TCP and UDP port start now at 0 (remember - running amule as root is insecure!!)
 		* Added aMule version info into "About" popup.
-                * Show current DL speed from a client you are uploading to in "Remote
+		* Show current DL speed from a client you are uploading to in "Remote
 		  Status" column instead of in the "Speed" column. 
 
 	geeko:
@@ -398,7 +433,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		* Fixed Mac friends handling.
 		* Proper importing of files for Mac.
 		* Proper reading for amuleweb config on Mac.
-		* Made default Incoming folder for Mac to "~/Library/aMule Downloads"
+		* Made default Incoming folder for Mac to "~/Documents/aMule Downloads"
 				
 		- Windows Specific -
 		* Fixed a lot of compilation problems.
@@ -536,7 +571,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		so that we build the rpm with --enable-utf8-systray.
 		* Removed curl dependencies from spec file, aMule now uses
 		wxHTTP.
-	
+
 	Stefanero:
 		* Work on the Man-Pages
 		* Minor compile fixes
