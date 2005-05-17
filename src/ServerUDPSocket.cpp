@@ -106,8 +106,6 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			
 		switch (/*Protocol*/buffer[0]) {
 			case OP_EDONKEYPROT: {
-				AddDebugLogLineM( true, logServerUDP,
-					wxString::Format( wxT("Received UDP server packet with eMule protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[1] ) );
 				length = length - 2; // skip protocol and opcode
 				// Create the safe mem file.	
 				CSafeMemFile  data(buffer+2,length);
@@ -150,6 +148,8 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
+	AddDebugLogLineM( true, logServerUDP,
+					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
 	try{
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
