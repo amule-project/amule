@@ -10,28 +10,30 @@
 
   You will need glib/gtk-1.2.10 (package names like glib and glibdev
   or glib-devel, gtk and gtkdev or gtk-devel or similar) or gtk2
-  (package names correspond to gtk ones), libexpat (package name
-  should be expat) and gettext to compile aMule. Also wxWidgets-2.4.2 or greater (wxGTK-2.6.x is recommended),
+  (package names correspond to gtk ones) and libexpat (package name
+  should be expat) to compile aMule. Also wxWidgets-2.4.2 or greater,
   linked against glib/gtk-1.2.10 is needed (package names wxGTK and
   wxGTK-devel or similar).
 
-  If you compile with wxGTK-2.4.2, you will need wxBase-2.4.2
-  package,  too, if you want to use amulecmd (the TextClient).
+  If you compile with wxWidgets 2.4.2, you will need wxbase-2.4.2
+  packages or greater,  too, if you want to use amulecmd (the TextClient).
   You can link it to wxgtk too, but it won't run on non-graphical consoles,
   thus removing all the fun ;)
-  Since wxWidgets-2.5.x you don't need wxBase anymore.
 
-  It is known to compile in GCC 3.2, 3.3 and 3.4, older GCC's probably 
+  It is known to compile in GCC 2.95.2, 3.2, 3.3 and 3.4, older GCC's probably 
   can't handle Microsoft C++ well enough.
 
  How to compile wxWidgets
 --------------------------
 
-  Only GTK1 is supported. GTK2 with wxWidgets 2.6 and greater, but it is known
+  Only GTK1 is supported. GTK2 with wxWidgets 2.5 and greater, but it is known
   to have lots of leaks and so is not supported.
 
   For GTK1:
-  ./configure  --prefix=/usr --disable-gtk2 --with-gtk && make
+  ./configure  --prefix=/usr --disable-gtk2 --enable-timedate --enable-gui 
+  --enable-protocol --enable-http --enable-ftp --enable-resources 
+  --enable-prologio --disable-debug --enable-final --enable-timer --with-gtk 
+  --disable-profile
 
   After wxWidgets has compiled and you have installed it, you can compile aMule.
   Do "./configure && make" as usual. If for some reason, wx-config cannot be 

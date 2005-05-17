@@ -120,11 +120,12 @@ void CUpDownClient::Init()
 	m_byChatstate = 0;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
-	m_nTransferredUp = 0;
+	m_nMaxSendAllowed = 0;
+	m_nTransferedUp = 0;
 	m_cSendblock = 0;
 	m_cAsked = 0;
-	msReceivedPrev = 0;
-	kBpsDown = 0.0;
+	msSentPrev = msReceivedPrev = 0;
+	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
 	m_nUserID = 0;
@@ -146,13 +147,8 @@ void CUpDownClient::Init()
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
-	m_bUnicodeSupport = false;
 
-	m_fSentOutOfPartReqs = 0;
-	m_nCurQueueSessionPayloadUp = 0;
-	m_addedPayloadQueueSession = 0;
-	m_nUpDatarate = 0;
-	m_nSumForAvgUpDataRate = 0;
+	m_bUnicodeSupport = false;
 
 	m_nRemoteQueueRank = 0;
 	m_nOldRemoteQueueRank = 0;
@@ -168,7 +164,7 @@ void CUpDownClient::Init()
 	m_bIsHybrid = false;
 	m_bIsML = false;
 	m_Friend = NULL;
-	m_iRating = 0;
+	m_iRate=0;
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
 
@@ -204,9 +200,9 @@ void CUpDownClient::Init()
 
 	m_nLastBlockOffset = 0;
 
-	m_bMsgFiltered = false;
+	m_requpfile = NULL;
 
-	m_uploadingfile = NULL;
+	m_bMsgFiltered = false;
 
 	if (m_socket) {
 		amuleIPV4Address address;
@@ -254,8 +250,8 @@ CUpDownClient::~CUpDownClient()
 	}
 
 
-	if (m_iRating>0 || !m_strComment.IsEmpty()) {
-		m_iRating = 0;
+	if (m_iRate>0 || !m_strComment.IsEmpty()) {
+		m_iRate=0;
 		m_strComment.Clear();
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
@@ -1012,10 +1008,10 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		const CSafeMemFile data((byte*)pachPacket, nSize);
 
-		m_iRating = data.ReadUInt8();
+		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		
-		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
+		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRate);
 
 		// The comment is unicoded, with a uin32 len and safe read 
 		// (won't break if string size is < than advertised len)
@@ -1063,7 +1059,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 
-	if (!m_strComment.IsEmpty() || m_iRating > 0) {
+	if (!m_strComment.IsEmpty() || m_iRate > 0) {
 		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
@@ -1204,7 +1200,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
-		m_fSentOutOfPartReqs = 0;
 	}
 	
 	return bDelete;
@@ -1216,7 +1211,13 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
-		if (!(m_socket && m_socket->IsConnected())) {
+		if (!m_socket) {
+			if(Disconnected(wxT("Too many connections"))) {
+				Safe_Delete();
+				return false;
+			}
+			return true;
+		} else if (!m_socket->IsConnected()) {
 			if(Disconnected(wxT("Too many connections"))) {
 				Safe_Delete();
 				return false;
@@ -1252,10 +1253,20 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 
 	if (!m_socket) {
+//#ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
+			return true;
+		}
 	} else if (!m_socket->IsConnected()) {
 		m_socket->Safe_Delete();
+//#ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
+			return true;
+		}
 	} else {
 		ConnectionEstablished();
 		return true;
@@ -1643,7 +1654,7 @@ void CUpDownClient::ResetFileStatusInfo()
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
-	m_iRating = 0;
+	m_iRate=0;
 	m_strComment.Clear();
 
 	if (m_pReqFileAICHHash != NULL) {
@@ -1982,8 +1993,7 @@ bool CUpDownClient::IsConnected() const
 bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	if ( m_socket ) {
-		m_socket->SendPacket(packet, delpacket, controlpacket );
-		return true;
+		return m_socket->SendPacket(packet, delpacket, controlpacket );
 	} else {
 #ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");

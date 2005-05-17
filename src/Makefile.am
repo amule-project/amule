@@ -75,7 +75,6 @@ amulegui_SOURCES = \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
 	Logger.cpp \
@@ -145,6 +144,7 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	filefn.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -153,7 +153,6 @@ amule_SOURCES = \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \
@@ -194,11 +193,13 @@ amule_SOURCES = \
 	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
-	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
-
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
@@ -219,6 +220,7 @@ amuled_SOURCES = \
         ED2KLink.cpp \
         EMSocket.cpp \
         ExternalConn.cpp \
+        filefn.cpp \
 	Format.cpp \
         Friend.cpp \
 	FriendList.cpp \
@@ -250,9 +252,12 @@ amuled_SOURCES = \
 	Statistics.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
-	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
@@ -279,13 +284,13 @@ amuled_SOURCES += CryptoPP.cpp
 amulegui_SOURCES += CryptoPP.cpp
 endif
 
-amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
-amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
-amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
+amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
+amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
+amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB)
 
-amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
-amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
-amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(BFD_LIB)
+amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
+amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
+amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS)
 
 if HAVE_TRAY
 if HAVE_OLD_TRAY
@@ -294,34 +299,34 @@ amulegui_LDADD += $(GTK_LIBS)
 endif
 endif
 
-amuled_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
-amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
-amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
+amuled_CFLAGS = $(WXBASE_CFLAGS) -DAMULE_DAEMON 
+amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) -DAMULE_DAEMON 
+amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DEC_REMOTE
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DEC_REMOTE
-amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) -DEC_REMOTE
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) -DEC_REMOTE
+amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB)
 
 amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp
-amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(BFD_FLAGS) -DAMULECMDDLG -DEC_REMOTE
-amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) -DAMULECMDDLG  -DEC_REMOTE
-amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulecmdDLG_CFLAGS = $(WX_CFLAGS) -DAMULECMDDLG -DEC_REMOTE
+amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) -DAMULECMDDLG  -DEC_REMOTE
+amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB)
 
 amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp Format.cpp
-amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
+amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
+amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB)
 
 amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
 	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp StringFunctions.cpp NetworkFunctions.cpp Format.cpp
-amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG  -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
+amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) -DAMULEWEBDLG  -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
+amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB)
 
 noinst_HEADERS = AddFileThread.h \
 		 AddFriend.h \
@@ -364,6 +369,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
+		 filefn.h \
 		 Friend.h \
 		 FriendList.h \
 		 FriendListCtrl.h \

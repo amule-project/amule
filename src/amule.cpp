@@ -103,11 +103,6 @@
 #include "AICHSyncThread.h"
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
-#include "UploadBandwidthThrottler.h"
-
-#ifdef __COMPILE_KAD__
-#include "kademlia/kademlia/Kademlia.h"
-#endif
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -123,15 +118,11 @@
 #endif
 
 #ifdef HAVE_SYS_RESOURCE_H
-	#include <sys/resource.h>
+#include <sys/resource.h>
 #endif
 
 #ifdef HAVE_SYS_STATVFS_H
-	#include <sys/statvfs.h>
-#endif
-
-#ifdef  HAVE_SYS_WAIT_H
-	#include <sys/wait.h>
+#include <sys/statvfs.h>
 #endif
 
 #ifdef __GLIBC__
@@ -276,62 +267,92 @@ int CamuleApp::OnExit()
 	}
 	
 	
-	delete serverlist;
-	serverlist = NULL;
+	if (serverlist) {
+		delete serverlist;
+		serverlist = NULL;
+	}
 	
-	delete searchlist;
-	searchlist = NULL;
+	if (searchlist) {
+		delete searchlist;
+		searchlist = NULL;
+	}
 	
-	delete clientcredits;
-	clientcredits = NULL;
+	if (clientcredits) {
+		delete clientcredits;
+		clientcredits = NULL;
+	}		
 
-	delete friendlist;
-	friendlist = NULL;
+	if (friendlist) {
+		delete friendlist;
+		friendlist = NULL;
+	}
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasally.
-	delete sharedfiles;
-	sharedfiles = NULL;
+	if (sharedfiles) {
+		delete sharedfiles;
+		sharedfiles = NULL;
+	}
 	
-	delete serverconnect;
-	serverconnect = NULL;
+	if (serverconnect) {
+		delete serverconnect;
+		serverconnect = NULL;
+	}
 	
-	delete listensocket;
-	listensocket = NULL;
+	if (listensocket) {
+		delete listensocket;
+		listensocket = NULL;
+	}
 	
-	delete knownfiles;
-	knownfiles = NULL;
+	if (knownfiles) {
+		delete knownfiles;
+		knownfiles = NULL;
+	}
 	
-	delete clientlist;
-	clientlist = NULL;
+	if (clientlist) {
+		delete clientlist;
+		clientlist = NULL;
+	}
 	
-	delete uploadqueue;
-	uploadqueue = NULL;
+	if (uploadqueue) {
+		delete uploadqueue;
+		uploadqueue = NULL;
+	}
 	
-	delete downloadqueue;
-	downloadqueue = NULL;
+	if (downloadqueue) {
+		delete downloadqueue;
+		downloadqueue = NULL;
+	}
 	
-	delete ipfilter;
-	ipfilter = NULL;
+	if (ipfilter) {
+		delete ipfilter;
+		ipfilter = NULL;
+	}
 	
-	delete ECServerHandler;
-	ECServerHandler = NULL;
+	if (ECServerHandler) {
+		delete ECServerHandler;
+		ECServerHandler = NULL;
+	}
 
-	delete statistics;
-	statistics = NULL;
+	if (statistics) {
+		delete statistics;		
+	}		
 
-	delete glob_prefs;
-	glob_prefs = NULL;
-	CPreferences::EraseItemList();
+	if (glob_prefs) {
+		delete glob_prefs;
+		glob_prefs = NULL;
+		CPreferences::EraseItemList();
+	}
 
-	delete localserver;
-	localserver = NULL;
+	if (localserver) {
+		delete localserver;
+		localserver = NULL;
+	}
 	
-	delete applog; // deleting a wxFFileOutputStream closes it
-	applog = NULL;
-	
-	delete uploadBandwidthThrottler;
-	uploadBandwidthThrottler = NULL;
+	if (applog) {
+		delete applog; // deleting a wxFFileOutputStream closes it
+		applog = NULL;
+	}
 	
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
@@ -399,9 +420,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-#ifdef AMULE_DAEMON
-	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
-#else
+#ifndef AMULE_DAEMON
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
@@ -422,19 +441,11 @@ bool CamuleApp::OnInit()
 #endif
 	}
 
-	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
-#ifdef AMULE_DAEMON		
-	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
-#else
-	enable_daemon_fork = false;
-#endif	
-	if ( enable_stdout_log ) {
-		if ( enable_daemon_fork ) {
-			printf("Daemon will fork to background - log to stdout disabled\n");
-			enable_stdout_log = false;
-		} else {
-			printf("Logging to stdout enabled\n");
-		}
+	if ( cmdline.Found(wxT("log-stdout")) ) {
+		printf("Logging to stdout enabled\n");
+		enable_stdout_log = true;
+	} else {
+		enable_stdout_log = false;
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
@@ -780,7 +791,6 @@ bool CamuleApp::OnInit()
 	// Ready file-hasher
 	CAddFileThread::Start();
 
-	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	clientlist	= new CClientList();
 	friendlist = new CFriendList();
 	searchlist	= new CSearchList();
@@ -836,7 +846,17 @@ bool CamuleApp::OnInit()
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
 		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
-#ifdef AMULE_DAEMON
+		#ifndef AMULE_DAEMON
+		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
+		if (!webserver_pid) {
+			AddLogLineM(false, _(
+				"You requested to run webserver from startup, "
+				"but the amuleweb binary cannot be run. "
+				"Please install the package containing aMule webserver, "
+				"or compile aMule using --enable-webserver and run make install"));
+		}
+		#else
+		// wxBase has no async wxExecute
 		int pid = fork();
 		if ( pid == -1 ) {
 			printf("ERROR: fork failed with code %d\n", errno);
@@ -846,37 +866,17 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				webserver_pid = pid;
+				// wait few seconds to give amuleweb chance to start or forked child to exit
+				sleep(3);
+				if (wxProcess::Exists(pid)) {
+					printf("aMuleweb is running on pid %d\n", pid);
+					webserver_pid = pid;
+				} else {
+					printf("ERROR: aMuleweb not started\n");
+				}
 			}
 		}
-#else
-		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
-#endif
-		// give amuleweb chance to start or forked child to exit
-		// 1 second if enough time to fail on "path not found"
-		wxSleep(1);
-		int status, result;
-//#ifdef HAVE_SYS_WAIT_H
-		if ( (result = wait4(webserver_pid, &status, WNOHANG, 0)) == -1 ) {
-			printf("ERROR: wait4 call failed\n");
-		} else {
-			if ( status && WIFEXITED(status) ) {
-				webserver_pid = 0;
-			}
-		}
-//#else
-//#warning wtf to do here?
-//#endif
-		if (webserver_pid) {
-			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
-		} else {
-			ShowAlert(_(
-				"You requested to run webserver from startup, "
-				"but the amuleweb binary cannot be run. "
-				"Please install the package containing aMule webserver, "
-				"or compile aMule using --enable-webserver and run make install"),
-				_("Error"), wxOK | wxICON_ERROR);
-		}
+		#endif
 	}
 #endif /* ! __WXMSW__ */
 
@@ -956,15 +956,15 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
 
-	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
-		% ip % (thePrefs::GetPort() + 3u);
+	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%i\n") )
+		% ip % ( (uint32)thePrefs::GetPort() + 3);
 	
 	// Create the ListenSocket (aMule TCP socket).
 	// Used for Client Port / Connections from other clients,
 	// Client to Client Source Exchange.
 	// Default is 4662.
-	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
-		% ip % (thePrefs::GetPort());
+	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%i\n") )
+		% ip % ((uint32)thePrefs::GetPort());
 	
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
@@ -995,8 +995,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
-			% ip % (thePrefs::GetUDPPort());
+		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%i") )
+			% ip % ((uint32)thePrefs::GetUDPPort());
 	} else {
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 		
@@ -1193,7 +1193,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetDatarate() / 1024.0f);
+		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetKBps());
 		
 		emulesig_string += temp + wxT("|");		
 		amulesig_out.AddLine(temp);
@@ -1606,8 +1606,7 @@ void CamuleApp::ShutDown() {
 	if (CAICHSyncThread::IsRunning()) {
 		CAICHSyncThread::Stop();
 	}
-
-    theApp.uploadBandwidthThrottler->EndThread();
+	
 }
 
 bool CamuleApp::AddServer(CServer *srv, bool fromUser)
@@ -1767,24 +1766,6 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 			serverlist->AutoDownloadFinished(event.GetExtraLong());
 			break;
 	}
-}
-
-bool CamuleApp::IsFirewalled()
-{
-	#ifdef __COMPILE_KAD__
-	if (theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) {
-		return false; // we have an eD2K HighID -> not firewalled
-	}
-
-	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled()) {
-		return false; // we have an Kad HighID -> not firewalled
-	}
-
-	return true; // firewalled
-	
-	#else
-	return false;
-	#endif
 }
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)

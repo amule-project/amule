@@ -275,35 +275,25 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			
 		case CMD_ID_CONN_TO_SRV:
  		case CMD_ID_CONN:
-			if ( !args.IsEmpty() ) {
+			if ( ! args.IsEmpty() ) {
 				unsigned int ip[4];
 				unsigned int port;
 				// Not much we can do against this unicode2char.
 				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
-				if (result != 5) {
-					// Try to resolve DNS -- good for dynamic IP servers
-					wxString serverName(args.BeforeFirst(wxT(':')));
-					long lPort;
-					bool ok = args.AfterFirst(wxT(':')).ToLong(&lPort);
-					port = (unsigned int)lPort;
-					wxIPV4address a;
-					a.Hostname(serverName);
-					a.Service(port);
-					result = sscanf(unicode2char(a.IPAddress()), "%d.%d.%d.%d", &ip[0], &ip[1], &ip[2], &ip[3]);
-					if (serverName.IsEmpty() || !ok || (result != 4)) {
-						Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
-						return 0;
-					}
+				if (result == 5) {
+					EC_IPv4_t addr;
+					addr.ip[0] = ip[0];
+					addr.ip[1] = ip[1];
+					addr.ip[2] = ip[2];
+					addr.ip[3] = ip[3];
+					addr.port = port;
+					request = new CECPacket(EC_OP_SERVER_CONNECT);
+					request->AddTag(CECTag(EC_TAG_SERVER, addr));
+					request_list.push_back(request);
+				} else {
+					Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
+					return 0;
 				}
-				EC_IPv4_t addr;
-				addr.ip[0] = ip[0];
-				addr.ip[1] = ip[1];
-				addr.ip[2] = ip[2];
-				addr.ip[3] = ip[3];
-				addr.port = port;
-				request = new CECPacket(EC_OP_SERVER_CONNECT);
-				request->AddTag(CECTag(EC_TAG_SERVER, addr));
-				request_list.push_back(request);
 			} else {
 				request = new CECPacket(EC_OP_SERVER_CONNECT);
 				request_list.push_back(request);

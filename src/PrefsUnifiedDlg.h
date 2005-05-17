@@ -128,7 +128,7 @@ protected:
 
 	void OnButtonBrowseWav(wxCommandEvent &event);
 	void OnButtonBrowseSkin(wxCommandEvent &event);
-	void OnButtonBrowseApplication(wxCommandEvent &event);
+	void OnButtonBrowseVideoplayer(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);
 	void OnButtonSystray(wxCommandEvent& event);
 	void OnButtonEditAddr(wxCommandEvent& event);

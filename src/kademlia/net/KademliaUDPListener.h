@@ -96,9 +96,8 @@ private:
 	void processFindBuddyRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processFindBuddyResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processFindSourceRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processCallbackRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 };
 
 } // End namespace
 
-#endif //__KAD_UDP_LISTENER_H__
+#endif __KAD_UDP_LISTENER_H__

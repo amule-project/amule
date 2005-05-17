@@ -74,6 +74,7 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
+#include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
@@ -131,7 +132,7 @@ void CPartFile::Init()
 	m_availablePartsCount=0;
 	m_ClientSrcAnswered = 0;
 	m_LastNoNeededCheck = 0;
-	m_iRating = 0;
+	m_iRate = 0;
 	m_nTotalBufferData = 0;
 	m_nLastBufferFlushTime = 0;
 	m_bPercentUpdated = false;
@@ -412,7 +413,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			return false;
 		} else {
 			if (!(metFile.Length()>0)) {
-				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
+				AddLogLineM(false, CFormat( _("Error: part.met nackups file is 0 size: %s ==> %s") )
 					% m_partmetfilename
 					% m_strFileName );
 				metFile.Close();
@@ -1007,7 +1008,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
 
-		UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
+		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
 			// not error, just backup
@@ -1020,7 +1021,7 @@ bool CPartFile::SavePartFile(bool Initial)
 				% PARTMET_BAK_EXT,
 				_("Message"), wxOK);
 					
-			UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
+			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
 	
@@ -3171,10 +3172,10 @@ void CPartFile::UpdateFileRatingCommentAvail()
 			hasComment=true;
 		}
 
-		if (cur_src->GetFileRating()>0) {
+		if (cur_src->GetFileRate()>0) {
 			++ratings;
 		}
-		if (cur_src->GetFileRating()==1) {
+		if (cur_src->GetFileRate()==1) {
 			++badratings;
 		}
 	}

@@ -382,7 +382,7 @@ class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_
 
 class CUpQueueRem {
 		uint32 m_waiting_user_count;
-		uint32 m_datarate;
+		float m_kbps;
 		uint32 m_data_overhead;
 
 		CUpDownClientListRem m_up_list, m_wait_list;
@@ -393,7 +393,7 @@ class CUpQueueRem {
 		bool ReQueryWait() { return m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		
 		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
-		uint32 GetDatarate() { return m_datarate; }
+		float GetKBps() { return m_kbps; }
 		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
 		
 		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }

@@ -146,8 +146,7 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 		} else {
 			CServer* cur_server = (CServer*) GetItemData( pos );
 			bool is_static = cur_server->IsStaticMember();
-			const wxString server_name = cur_server->GetListName().IsEmpty() ? wxString(_("(Unknown name)")) : cur_server->GetListName();
-			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % server_name, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
+			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
 				theApp.serverlist->RemoveServer( cur_server );
 				DeleteItem( pos );
 			} else {
@@ -224,26 +223,26 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_NAME, server->GetListName() );
 	SetItem( itemnr, COLUMN_SERVER_ADDR, server->GetAddress() );
 	if (server->GetAuxPortsList().IsEmpty()) {
-		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u"), server->GetPort()));
+		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%i"), server->GetPort()));
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u ("), server->GetPort()) + wxT(",") + server->GetAuxPortsList() + wxT(")") );
+		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%i ("), server->GetPort()) + wxT(",") + server->GetAuxPortsList() + wxT(")") );
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
-		SetItem( itemnr, COLUMN_SERVER_PING, wxString::Format( wxT("%u"), server->GetPing() ) );
+		SetItem( itemnr, COLUMN_SERVER_PING, wxString::Format( wxT("%i"), server->GetPing() ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
 	}
 
 	if ( server->GetUsers() ) {
-		SetItem( itemnr, COLUMN_SERVER_USERS, wxString::Format( wxT("%u"), server->GetUsers() ) );
+		SetItem( itemnr, COLUMN_SERVER_USERS, wxString::Format( wxT("%i"), server->GetUsers() ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
 	}
 
 	if ( server->GetFiles() ) {
-		SetItem( itemnr, COLUMN_SERVER_FILES, wxString::Format( wxT("%u"), server->GetFiles() ) );
+		SetItem( itemnr, COLUMN_SERVER_FILES, wxString::Format( wxT("%i"), server->GetFiles() ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
 	}
@@ -255,7 +254,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		default:			SetItem( itemnr, COLUMN_SERVER_PRIO, wxT("---") ); // this should never happen
 	}
 
-	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%u"),server->GetFailedCount() ) );
+	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%i"),server->GetFailedCount() ) );
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 }
@@ -308,9 +307,9 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 
 	
 	if ( isStatic ) {
-		file.AddLine( server->GetAddress() + wxString::Format( wxT(":%u,%u," ), server->GetPort(), server->GetPreferences() ) + server->GetListName() );
+		file.AddLine( server->GetAddress() + wxString::Format( wxT(":%i,%i," ), server->GetPort(), server->GetPreferences() ) + server->GetListName() );
 	} else {
-		wxString searchStr = server->GetAddress() + wxString::Format( wxT(":%u" ), server->GetPort() );
+		wxString searchStr = server->GetAddress() + wxString::Format( wxT(":%i" ), server->GetPort() );
 	
 		for ( unsigned int i = 0; i < file.GetLineCount(); ) {
 			wxString line = file.GetLine( i );

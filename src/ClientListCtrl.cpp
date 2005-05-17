@@ -461,7 +461,7 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const wxRect& rect )
 {
 	wxString buffer;	
-	
+
 	switch ( column ) {
 		case 0: {
 			uint8 clientImage;
@@ -531,7 +531,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			break;
 		
 		case 3:
-			buffer = wxString::Format( wxT("%.1f"), client->GetUploadDatarate() / 1024.0f );
+			buffer = wxString::Format( wxT("%.1f"), client->GetKBpsUp() );
 		
 			buffer += wxT(" ");
 			buffer += _("kB/s");
@@ -634,8 +634,8 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 		
 		// Sort by requested file
 		case 1: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
+			CKnownFile* file1 = client1->GetUploadFile();
+			CKnownFile* file2 = client2->GetUploadFile();
 
 			if ( file1 && file2  ) {
 				return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
@@ -656,10 +656,10 @@ int CUploadingView::SortProc( long item1, long item2, long sortData )
 		}
 		
 		// Sort by speed
-		case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
+		case 3: return mode * CmpAny( client1->GetKBpsUp(), client2->GetKBpsUp() );
 		
 		// Sort by transfered
-		case 4: return mode * CmpAny( client1->GetSessionUp(), client2->GetSessionUp() );
+		case 4: return mode * CmpAny( client1->GetTransferedUp(), client2->GetTransferedUp() );
 		
 		// Sort by wait-time
 		case 5: return mode * CmpAny( client1->GetWaitTime(), client2->GetWaitTime() );
@@ -837,8 +837,8 @@ int CQueuedView::SortProc( long item1, long item2, long sortData )
 		
 		// Sort by filename
 		case 1: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
+			CKnownFile* file1 = client1->GetUploadFile();
+			CKnownFile* file2 = client2->GetUploadFile();
 
 			if ( file1 && file2 ) {
 				return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
@@ -861,8 +861,8 @@ int CQueuedView::SortProc( long item1, long item2, long sortData )
 		
 		// Sort by file upload-priority
 		case 3: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
+			CKnownFile* file1 = client1->GetUploadFile();
+			CKnownFile* file2 = client2->GetUploadFile();
 
 			if ( file1 && file2  ) {
 				int8 prioA = file1->GetUpPriority();

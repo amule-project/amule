@@ -55,7 +55,6 @@
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
-#include "gsocket-fix.h"
 
 using namespace otherfunctions;
 
@@ -94,14 +93,10 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		}
 		
 		// Create the socket
-		m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 #ifdef AMULE_DAEMON
-		//m_ECServer = new ECSocket(addr, 0);
+		m_ECServer = new ECSocket(addr, 0);
 #else
-		//m_ECServer = new ECSocket(addr, this, SERVER_ID);
-		m_ECServer->SetEventHandler(*this, SERVER_ID);
-		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
-		m_ECServer->Notify(true);
+		m_ECServer = new ECSocket(addr, this, SERVER_ID);
 #endif
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
@@ -141,9 +136,8 @@ void *ExternalConn::Entry()
 {
         while ( !TestDestroy() ) {
         	if ( m_ECServer->WaitForAccept(1, 0) ) {
-        		ECSocket *client = new ECSocket;
-				if ( !m_ECServer->AcceptWith(*client) ) {
-					delete client;
+				wxSocketBase *client = m_ECServer->Accept();
+				if ( !client ) {
 					continue;
 				}
 				client->Notify(false);
@@ -155,25 +149,26 @@ void *ExternalConn::Entry()
 }
 #else
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
-	ECSocket *sock = new ECSocket;
+	wxSocketBase *sock;
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
-	if ( m_ECServer->AcceptWith(*sock, false) ) {
+	sock = m_ECServer->Accept(false);
+	if (sock) {
 		AddLogLineM(false, _("New external connection accepted"));
 		sock->SetEventHandler(*this, AUTH_ID);
 		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
 		sock->Notify(true);
 		m_numClients++;
+		RegisterSocket(sock);
 	} else {
-		delete sock;
 		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
 }
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
-	ECSocket *sock = (ECSocket *)event.GetSocket();
+	wxSocketBase *sock = event.GetSocket();
 	CECPacket * request = NULL;
 	CECPacket * response = NULL;
 
@@ -183,7 +178,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		// We disable input events, so that the test doesn't trigger
 		// wxSocketEvent again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG);		
-		request = sock->ReadPacket();		
+		request = m_ECServer->ReadPacket(sock);		
 		if(request == NULL) {
 			AddLogLineM(false, _("Invalid EC packet received"));
 			break;
@@ -191,7 +186,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
 			delete request;	request = NULL;
-			sock->WritePacket(response);
+			m_ECServer->WritePacket(sock, response);
 			if (response->GetOpCode() != EC_OP_AUTH_OK) {
 				// Access denied!
 				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
@@ -207,7 +202,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 			response = ProcessRequest2(request, m_part_encoders[sock],
 				m_shared_encoders[sock], m_obj_tagmap[sock]);
 			delete request; request = NULL;
-			sock->WritePacket(response);
+			m_ECServer->WritePacket(sock, response);
 			delete response; response = NULL;
 		}		
 		// Re-Enable input events again.
@@ -229,6 +224,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		AddLogLineM(false,_("External connection closed."));
 		//sock->Destroy();
 		sock->Close();
+		UnregisterSocket(sock);
 		// remove client data
 		m_part_encoders.erase(sock);
 		m_shared_encoders.erase(sock);
@@ -316,7 +312,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 
 	//
 	// ul/dl speeds
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, theApp.uploadqueue->GetDatarate()));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)(theApp.uploadqueue->GetKBps()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theApp.downloadqueue->GetKBps()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
@@ -1206,25 +1202,27 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 }
 
 
-ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, ECSocket *sock) : wxThread()
+ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock) : wxThread()
 {
 	m_owner = owner;
 	m_sock = sock;
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		AddLogLineM(false, _("ExternalConnClientThread: Failed to Create thread."));
 	}
+	RegisterSocket(sock);
 }
 
 ExternalConnClientThread::~ExternalConnClientThread()
 {
+	UnregisterSocket(m_sock);
 	delete m_sock;
 }
 
 void *ExternalConnClientThread::Entry()
 {
-	CECPacket *request = m_sock->ReadPacket();
+	CECPacket *request = m_owner->m_ECServer->ReadPacket(m_sock);
 	CECPacket *response = m_owner->Authenticate(request);
-	m_sock->WritePacket(response);
+	m_owner->m_ECServer->WritePacket(m_sock, response);
 	if (response->GetOpCode() != EC_OP_AUTH_OK) {
 		//
 		// Access denied!
@@ -1241,11 +1239,11 @@ void *ExternalConnClientThread::Entry()
 			break;
 		}
 		if (m_sock->WaitForRead(1, 0)) {
-			request = m_sock->ReadPacket();
+			request = m_owner->m_ECServer->ReadPacket(m_sock);
 			response = m_owner->ProcessRequest2(request, m_part_encoders, m_shared_encoders, m_obj_tagmap);
 			delete request;
 			if ( response ) {
-				m_sock->WritePacket(response);
+				m_owner->m_ECServer->WritePacket(m_sock, response);
 				delete response;
 			}
 		}

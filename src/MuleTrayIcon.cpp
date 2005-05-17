@@ -261,7 +261,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		
 		// Do whatever to the icon before drawing it (percent)
 		
-#if !defined(__WXMSW__) && !defined(__WXMAC__)
+#ifndef __WXMSW__
 		CurrentIcon.SetMask(NULL);
 #else
 		wxBitmap TempBMP;
@@ -294,7 +294,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		// Set a new mask with transparency set to red.
 		wxMask* new_mask = new wxMask(CurrentIcon, wxColour(0xFF, 0x00, 0x00));
 		
-#if !defined(__WXMSW__) && !defined(__WXMAC__)
+#ifndef __WXMSW__	
 		CurrentIcon.SetMask(new_mask);
 #else
 		TempBMP.CopyFromIcon(CurrentIcon);
@@ -354,7 +354,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = wxString::Format(_("Download Speed: %.1f"), theApp.downloadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetDatarate() / 1024.0f);
+	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 

@@ -75,7 +75,6 @@ class CClientCreditsList;
 class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
-class UploadBandwidthThrottler;
 class CStatistics;
 class wxServer;
 class wxString;
@@ -183,9 +182,6 @@ public:
 	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 	const bool IsOnShutDown() const { return (m_app_state != APP_STATE_SHUTINGDOWN); }
 	
-	// Check ED2K and Kademlia state
-	bool IsFirewalled();
-	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
@@ -229,8 +225,7 @@ public:
 	CClientUDPSocket*	clientudp;
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
-	UploadBandwidthThrottler* uploadBandwidthThrottler;
-	
+
 	void ShutDown();
 	
 	wxString GetLog(bool reset = false);
@@ -311,7 +306,6 @@ protected:
 	wxFile *applog;
 #endif
 	bool enable_stdout_log;
-	bool enable_daemon_fork;
 	wxString server_msg;
 };
 

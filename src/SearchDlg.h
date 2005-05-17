@@ -134,9 +134,6 @@ public:
 	
 	void	UpdateProgress(uint32 new_value);
 
-	// Placeholder
-	void CancelKadSearch(unsigned int uSearchID);
-
 private:
 	// Event handlers
 	void		OnFieldChanged(wxEvent& evt);

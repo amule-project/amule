@@ -360,12 +360,7 @@ esac
 
 AC_SUBST(CRYPTOLIBS)
 
-# Check for bfd.h (to have proper backtraces without using wxExecute)
-CHECK_BFD
-
 # Ok, we have all needed libs, now checking for other stuff
-
-CHECK_AUTOPOINT
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
@@ -379,7 +374,6 @@ AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mount.h sys/param.h sys/socket.h sys/statvfs.h sys/time.h unistd.h])
-AC_HEADER_SYS_WAIT
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -455,13 +449,11 @@ case "$WX_VERSION_FULL" in
 2.5.2)
 	USE_24GSOCKET="no"
 	gtk_tray="no"
-	havegtk="not_needed"
 	;;
 *)
 	USE_GSOCKET="no"
 	USE_24GSOCKET="no"
 	gtk_tray="no"
-	havegtk="not_needed"
 	;;
 esac
 

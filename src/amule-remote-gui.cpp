@@ -57,6 +57,10 @@
 		#include <mntent.h>
 	#endif /* __BSD__ */
 
+	#include <X11/Xlib.h>		// Needed for XParseGeometry
+	#include <gdk/gdk.h>
+	#include <gtk/gtk.h>
+	
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -963,14 +967,14 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	
 	if ( tag->HaveFile() ) {
 		CMD4Hash filehash = tag->FileID();
-		m_uploadingfile = theApp.sharedfiles->GetByID(filehash);
-		if ( !m_uploadingfile ) {
-			m_uploadingfile = theApp.downloadqueue->GetByID(filehash);
+		m_requpfile = theApp.sharedfiles->GetByID(filehash);
+		if ( !m_requpfile ) {
+			m_requpfile = theApp.downloadqueue->GetByID(filehash);
 		}
 	} else {
-		m_uploadingfile = NULL;
+		m_requpfile = 0;
 	}
-
+	
 	m_nCurSessionUp = 0;
 
 	CreditStruct *credit_struct = new CreditStruct;
@@ -1013,7 +1017,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	client->m_nDownloadState = state & 0xff;
 	client->m_nUploadState = (state >> 8) & 0xff;
 	
-	client->m_nUpDatarate = tag->SpeedUp();
+	client->kBpsUp = tag->SpeedUp() / 1024.0;
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
 		client->kBpsDown = tag->SpeedDown() / 1024.0;
 	} else {
@@ -1029,7 +1033,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	uint64 value = tag->XferUp();
 	credit_struct->nUploadedHi = value >> 32;
 	credit_struct->nUploadedLo = value & 0xffffffff;
-	client->m_nTransferredUp = tag->XferUpSession();
+	client->m_nTransferedUp = tag->XferUpSession();
 
 	value = tag->XferDown();
 	credit_struct->nDownloadedHi = value >> 32;
@@ -1042,7 +1046,7 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
 
 void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 {
-	m_datarate = tag->UpSpeed();
+	m_kbps = tag->UpSpeed() / 1024;
 	m_waiting_user_count = tag->ClientsInQueue();
 }
 
@@ -1429,7 +1433,7 @@ void CKnownFile::SetFileComment(const wxString &)
 	wxASSERT(0);
 }
 
-void CKnownFile::SetFileRating(unsigned char)
+void CKnownFile::SetFileRate(unsigned char)
 {
 	// FIXME: add code
 	wxASSERT(0);

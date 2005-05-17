@@ -34,17 +34,11 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"
 
+class CMD4Hash;
 class wxListCtrl;	
 class wxListEvent;
 class wxCommandEvent;
 class wxMouseEvent;
-	
-class CMD4Hash;
-class CKadSearchListCtrl;
-
-namespace Kademlia {
-	class CContact;
-}
 
 class CKadDlg : public wxPanel {
 public:
@@ -53,16 +47,6 @@ public:
 
 	void AddNode(uint32 ip, uint16 port, CMD4Hash Hash);
 	void RemoveNode();
-
-	#warning KAD TODO: Obviously!
-	// Placeholder anyone?
-	void ShowContacts() const {};
-	void HideContacts() const {};
-	bool ContactAdd(const Kademlia::CContact* WXUNUSED(contact)) const { return false;};
-	void ContactRem(const Kademlia::CContact* WXUNUSED(contact)) const {};
-	void ContactRef(const Kademlia::CContact* WXUNUSED(contact)) const {};
-		
-	CKadSearchListCtrl* searchList;
 		
 private:
 

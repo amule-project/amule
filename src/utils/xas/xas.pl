@@ -1,7 +1,7 @@
 #!/usr/bin/perl 
 # we register the script
 # if someone knows how to unload it clean....do tell
-IRC::register("xas", "1.7", "", "Xchat Amule Statistics");
+IRC::register("xas", "1.6", "", "Xchat Amule Statistics");
 # welcome message
 IRC::print "\n\0033  Follow the \0034 white\0033 rabbit\0038...\003\n";
 IRC::print "\n\0035 Use command \0038/xas\0035 to print out aMule statistics\003";
@@ -10,7 +10,6 @@ IRC::print "\0035 (#amule @ irc.freenode.net)\003";
 # command that we use
 IRC::add_command_handler("xas","xas");
 
-#06.05.2005 - niet      : file handle change
 #12.10.2004 - bisley    : added session/total ratios
 #16.06.2004 - niet      : added support for memory usage and binary name
 #05.05.2004 - Jacobo221 : fixed typos, sig 2 support, new outputs, crash detect 
@@ -41,9 +40,9 @@ sub xas
 
 	# bootstrap
 	# there is no spoon...err.... signature
-	open(AMULESIGFILE,"$ENV{'HOME'}/.aMule/amulesig.dat") or die "aMule online signature not found. Did you enable it ?";
-	chomp(@amulesigdata = <AMULESIGFILE>);
-	close AMULESIGFILE;
+	open(amulesig,"$ENV{'HOME'}/.aMule/amulesig.dat") or die "aMule online signature not found. Did you enable it ?";
+	chomp(@amulesigdata = <amulesig>);
+	close amulesig;
 
 	# are we high or what ? :-Q
 	if ($amulesigdata[4] eq "H")

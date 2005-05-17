@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-05-01 16:47+0200\n"
-"PO-Revision-Date: 2005-05-02 13:27+0100\n"
+"PO-Revision-Date: 2005-05-01 19:16+0100\n"
 "Last-Translator: Dévai Tamás <gonosztopi@amule.org>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Hasher: Új szál létrehozása."
 
 #: src/AddFileThread.cpp:137
 msgid "Hasher: Signaling for remaining threads to terminate."
-msgstr "Hasher: A megmaradt szálak felszólítása a befejezésre."
+msgstr "Hasher: A megmaradt szálak felszólítom a befejezésre."
 
 #: src/AddFileThread.cpp:216
 msgid "Hasher: No files on queue, stopping thread."
@@ -60,7 +60,7 @@ msgstr "Érvényes IP címet és portot kell megadnod!"
 
 #: src/AddFriend.cpp:80
 msgid "The specified userhash is not valid!"
-msgstr "A megadott felhasználói azonosító (userhash) érvénytelen!"
+msgstr "A megadott felhasználói tördelőalgoritmus (userhash) érvénytelen!"
 
 #: src/AICHSyncThread.cpp:86
 msgid "AICH Thread: Signaling for thread to terminate."
@@ -102,7 +102,7 @@ msgid ""
 "However, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"
 msgstr ""
 "A régi ~/.xMule config és kredit fájlok átmásolásra kerültek ide ~/.aMule\n"
-"Mindamellett, NE távolítsd el az .xMule könyvtárat, ha a Bejövő / Ideiglenes könyvtárak még ott vannak ;)"
+"Mindamellett, biztos lehetsz benne, hogy az .xMule könyvtár NEM került eltávolításra, ha a Bejövő / Ideiglenes könyvtárak még ott vannak ;)"
 
 #: src/amule.cpp:556
 #: src/amule.cpp:666
@@ -199,11 +199,11 @@ msgstr "Ez egy teszt verzió, naponta frissítve, és\n"
 
 #: src/amule.cpp:1296
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "nem vállalunk garanciát, hogy nem omlik össze, gyújtja fel a házad,\n"
+msgstr "nem vállalunk garanciát, ha valami nem omlik össze, gyújtsd fel a házad,\n"
 
 #: src/amule.cpp:1297
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr "vagy öli meg a kutyád. *Elvileg* nyugodtan használható.\n"
+msgstr "vagy öld meg a kutyád. Mindenesetre *tanácsos* óvatosan használni.\n"
 
 #: src/amule.cpp:1302
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -244,7 +244,7 @@ msgstr "KiszolgálóÜzenet: %s"
 
 #: src/amuled.cpp:147
 msgid "ERROR: amule daemon is useless when external connections disabled. Change configuration either from GUI or by editing the config file"
-msgstr "HIBA: Az aMule démon használhatatlan, ha a távoli elérés le van tiltva. Változasd meg a beállításokat vagy a grafikus aMule porgramból, vagy a konfig fájl szerkesztésével."
+msgstr "HIBA: Az aMule démon használhatatlan, ha a távoli eérés le van tiltva. Változasd meg a beállításokat vagy a grafikus aMule porgramból, vagy a konfig fájl szerkesztésével."
 
 #: src/amuled.cpp:214
 #, c-format
@@ -475,7 +475,7 @@ msgstr "Mind"
 
 #: src/amule-remote-gui.cpp:839
 msgid "You must specify a non-empty password."
-msgstr "Meg kell adnod egy nemüres jelszót."
+msgstr "Meg kell egy nemüres jelszót."
 
 #: src/amule-remote-gui.cpp:853
 msgid "Connection Failed. Unable to connect to the specified host"
@@ -750,7 +750,7 @@ msgstr "Nézet kiválasztása"
 #: src/ClientListCtrl.cpp:290
 #: src/DownloadListCtrl.cpp:873
 msgid "Send message to user"
-msgstr "Üzenet küldése ennek a személynek"
+msgstr "Levél küldése ennek a személynek"
 
 #: src/ClientListCtrl.cpp:290
 #: src/DownloadListCtrl.cpp:874
@@ -1079,7 +1079,7 @@ msgstr "Nincs hiányzó fájlrész"
 
 #: src/DataToText.cpp:68
 msgid "Cannot connect LowID to LowID"
-msgstr "Nem lehet alacsony ID-vel alacsony ID-hez kapcsolódni"
+msgstr "Nem lehet alacsony ID-val alacsony ID-hoz kapcsolódni"
 
 #: src/DataToText.cpp:69
 msgid "Too many connections"
@@ -1299,7 +1299,7 @@ msgstr "Fájl &megnyitása"
 
 #: src/DownloadListCtrl.cpp:1095
 msgid "Swap to this file"
-msgstr "Csere ehhez a fájlhoz"
+msgstr "Csere ennél a fájlnál"
 
 #: src/DownloadListCtrl.cpp:1124
 msgid "Enter new name for this file:"
@@ -1325,7 +1325,7 @@ msgstr "QR: %u (%i)"
 
 #: src/DownloadListCtrl.cpp:1742
 msgid "Asked for another file"
-msgstr "Másik fájl kérve"
+msgstr "Másik fájl kérte"
 
 #: src/DownloadListCtrl.cpp:2061
 #, c-format
@@ -1535,7 +1535,7 @@ msgstr "Nem vagy csatlakozva kiszolgálóhoz! Így nem tudsz keresni."
 
 #: src/ExternalConn.cpp:771
 msgid "Search in progress. Refetch results in a moment!"
-msgstr "Keresés folyamatban. Kérdezze le az eredményeket egy rövid idő múlva!"
+msgstr "Keresés folyamatban. Újra lekérdezett eredmények azonnal!"
 
 #: src/ExternalConn.cpp:775
 msgid "WebSearch from remote interface makes no sense."
@@ -1564,7 +1564,7 @@ msgstr "ExternalConnClientThread: kapcsolat lezárva."
 
 #: src/ExternalConnector.cpp:182
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr "Hiba a parancs feldolgozásában - soha sem kellene előfordulnia! Kérlek, küldd el a hibajelentést\n"
+msgstr "Hibás végrehajtási folyamat - soha sem kellene előfordulnia! Kérlek, küld el a hibajelentést\n"
 
 #: src/ExternalConnector.cpp:185
 msgid "Syntax error!\n"
@@ -1782,52 +1782,52 @@ msgstr "fájl blokk-ot kér %u-%u (%d bájt):"
 #: src/ListenSocket.cpp:889
 #, c-format
 msgid "User %s (%u) requested your requested your sharedfiles-list -> Accepted"
-msgstr "A(z) %s (%u) felhasználó lekérdezte a megosztott fájljaid listáját -> Elfogadva"
+msgstr "A %s (%u) felhasználó lekérdezte a megosztott fájljaid listáját -> Elfogadva"
 
 #: src/ListenSocket.cpp:893
 #, c-format
 msgid "User %s (%u) requested your requested your sharedfiles-list -> Denied"
-msgstr "A(z) %s (%u) felhasználó lekérdezte a megosztott fájljaid listáját -> Megtagadva"
+msgstr "A %s (%u) felhasználó lekérdezte a megosztott fájljaid listáját -> Megtagadva"
 
 #: src/ListenSocket.cpp:932
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "A(z) %s (%u) felhasználó lekérdezte megosztott könyvtáraid listáját -> Elfogadva"
+msgstr "A %s (%u) felhasználó lekérdezte megosztott könyvtáraid listáját -> Elfogadva"
 
 #: src/ListenSocket.cpp:990
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr "A(z) %s (%u) felhasználó lekérdezte megosztott könyvtáraid listáját -> Megtagadva"
+msgstr "A %s (%u) felhasználó lekérdezte megosztott könyvtáraid listáját -> Megtagadva"
 
 #: src/ListenSocket.cpp:1063
 #, c-format
 msgid "User %s (%u) shares directory %s"
-msgstr "A(z) %s (%u) felhasználó megosztja a %s könyvtárat"
+msgstr "A %s (%u) felhasználó megosztja a %s könyvtárat"
 
 #: src/ListenSocket.cpp:1078
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr "A(z) %s (%u) felhasználó kéretlen megosztott könyvtárakat küldött."
+msgstr "A %s (%u) felhasználó kéretlen megosztott könyvtárakat küldött."
 
 #: src/ListenSocket.cpp:1093
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr "A(z) %s (%u) felhasználó elküldte megosztott fájljok listáját a %s könyvtárhoz"
+msgstr "A %s (%u) felhasználó elküldte megosztott fájljok listáját a %s könyvtárhoz"
 
 #: src/ListenSocket.cpp:1100
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr "A(z) %s (%u) felhasználó befejezte megosztottfájl-listájának elküldését"
+msgstr "A %s (%u) felhasználó befejezte megosztottfájl-listájának elküldését"
 
 #: src/ListenSocket.cpp:1105
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr "A(z) %s (%u) felhasználó kéretlen megosztottfájl-listát küldött"
+msgstr "A %s (%u) felhasználó kéretlen megosztottfájl-listát küldött"
 
 #: src/ListenSocket.cpp:1117
 #, c-format
 msgid "User %s (%u) denied access to shareddirectories/files-list"
-msgstr "A(z) %s (%u) felhasználó megtagadta a megosztott könytár/fájl listájához történő hozzáférést"
+msgstr "A %s (%u) felhasználó megtagadta a megosztott könytár/fájl listájához történő hozzáférést"
 
 #: src/ListenSocket.cpp:1937
 msgid "CListenSocket: Cannot create thread"
@@ -3084,7 +3084,7 @@ msgstr "Próbálj meg teljes adatelemet feltölteni"
 
 #: src/muuli_wdr.cpp:2028
 msgid "Start next paused file when a file completed"
-msgstr "Következő szüneteltetett fájl indítása, ha egy fájl letöltése befejeződött"
+msgstr "Következő fájl szüneteltetett indítása, ha egy fájl letöltése befejeződött"
 
 #: src/muuli_wdr.cpp:2032
 msgid "From the same category"
@@ -3302,7 +3302,7 @@ msgstr "Sürgős OOD, a kiszolgálókapcsolat megszakadt"
 
 #: src/muuli_wdr.cpp:2326
 msgid "Notify by Mail"
-msgstr "Értesítés e-mail-ben"
+msgstr "Figyelmeztetés email érkezésekor"
 
 #: src/muuli_wdr.cpp:2329
 msgid "Send an Email when transfer complete."
@@ -3471,7 +3471,7 @@ msgstr "Magas várólistás értéke"
 
 #: src/muuli_wdr.cpp:2593
 msgid "(Min 300 / Max 3000)"
-msgstr "(Min 300 / Max 3000)"
+msgstr "(Min 60 / 3600 Max)"
 
 #: src/muuli_wdr.cpp:2600
 msgid "Auto Drop Sources Timer"
@@ -3660,9 +3660,9 @@ msgid ""
 msgstr ""
 "A kiválasztott nyelvi beállítás úgy látszik nem lett feltelepítve a gépedre\n"
 "Létre kell hoznod először, hogy ezen a nyelven is használható legyen.\n"
-"Jó kezdet linuxon az /etc/locale.gen fájl és a  'locales' csomag\n"
+"Jól fog indulni linuxon, ha az /etc/locale.gen fájl és a  'locales' csomag telepítve vannak\n"
 "Sok szerencsét!\n"
-"(Megjegyzés: Mimdenesetre megpróbálom ezt beállítani)"
+"(Megjegyzés: Majd megpróbálom valahogy beállítani)"
 
 #: src/muuli_wdr.cpp:3100
 msgid "Never show this again"
@@ -3789,11 +3789,11 @@ msgstr "Kliens azonosítás:"
 
 #: src/muuli_wdr.cpp:3382
 msgid "Use Secure Identification"
-msgstr "Biztonságos azonosítás használata"
+msgstr "Biztonsági azonosítás használata"
 
 #: src/muuli_wdr.cpp:3384
 msgid "Secure Identification uses a handshake approch to safely identify clients for use with the credit system."
-msgstr "A biztonságos azonosítás egy handshake (kézfogás) eljárást használ a kilensek biztonságos azonosításához a kredit rendszer használatához."
+msgstr "Biztonsági azonosítást használ egy handshake a kredit rendszeri biztonságos kliens azonosításhoz."
 
 #: src/muuli_wdr.cpp:3408
 #: src/PrefsUnifiedDlg.cpp:163
@@ -5811,7 +5811,7 @@ msgstr "Megerősítés szükséges"
 #: src/TransferWnd.cpp:312
 #: src/WebServer.cpp:2400
 msgid "All others"
-msgstr "Összes egyéb"
+msgstr "Minden más"
 
 #: src/TransferWnd.cpp:333
 msgid "Select view filter"

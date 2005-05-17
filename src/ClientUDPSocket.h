@@ -30,19 +30,24 @@
 #pragma interface "ClientUDPSocket.h"
 #endif
 
-#include <wx/thread.h>
-
 #include "Types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
-#include "ThrottledSocket.h"
-
 
 class CPacket;
 
+#pragma pack(1)
+struct UDPPack {
+	CPacket* packet;
+	uint32 dwIP;
+	uint16 nPort;
+	int    trial;
+};
+#pragma pack()
+
 // CClientUDPSocket command target
 
-class CClientUDPSocket : public CDatagramSocketProxy, public ThrottledControlSocket
+class CClientUDPSocket : public CDatagramSocketProxy
 #ifdef AMULE_DAEMON
 , public wxThread
 #endif
@@ -54,7 +59,6 @@ public:
 	CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData = NULL);
 	virtual ~CClientUDPSocket();
 	bool	SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort);
-    SocketSentBytes  SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize); // ZZ:UploadBandWithThrottler (UDP)
 	bool	IsBusy()	{return m_bWouldBlock;}
 
 protected:
@@ -66,22 +70,12 @@ public:
 	int DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
 	
 private:
+	void	ClearQueues();	
 	bool	SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort);
 	bool	m_bWouldBlock;
 
-	struct UDPPack
-	{
-		CPacket*	packet;
-		uint32		dwTime;
-		uint32		dwIP;
-		uint16		nPort;
-	};
-	
-	CList<UDPPack> controlpacket_queue;
+	CTypedPtrList<CPtrList, UDPPack*> controlpacket_queue;
 	amuleIPV4Address  useless2;
-
-	wxMutex m_sendLocker;
-
 #ifdef AMULE_DAEMON
 	void *Entry();
 #endif

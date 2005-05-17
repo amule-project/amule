@@ -46,7 +46,6 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
-#include "Format.h"
 
 #include <sys/types.h>
 
@@ -116,8 +115,6 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
-				AddDebugLogLineM( true, logServerUDP,
-					wxString::Format( wxT("Received UDP server packet with eDonkey protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[0] ) );
 				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
@@ -130,7 +127,18 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 
 int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
 	RecvFrom(addr,buffer,max_size);
-	return LastCount();
+	int length = LastCount();
+	#ifndef AMULE_DAEMON
+	// Daemon doesn't need this because it's a thread, checking every X time.
+	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
+		// Evil trick to retry later.
+		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(this);
+		theApp.AddPendingEvent(input_event);
+	}
+	#endif
+	return length;
 }
 
 void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
@@ -138,8 +146,6 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
-	AddDebugLogLineM( false, logServerUDP,
-					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
 	try{
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES

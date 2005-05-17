@@ -55,9 +55,6 @@
 #include "ArchSpecific.h"
 #include "Logger.h"
 
-#include "kademlia/kademlia/SearchManager.h"
-#include "kademlia/kademlia/Entry.h"
-
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
@@ -100,12 +97,9 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 
 #endif // CLIENT_GUI
 
-
-/* Abstract File (base class)*/
-
 CAbstractFile::CAbstractFile() :
 	m_nFileSize(0),
-	m_iRating(0)
+	m_iRate(0)
 {
 }
 
@@ -114,127 +108,6 @@ void CAbstractFile::SetFileName(const wxString& strFileName)
 { 
 	m_strFileName = strFileName;
 } 
-
-uint32 CAbstractFile::GetIntTagValue(uint8 tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pTag = taglist[i];
-		if ((pTag->GetNameID() == tagname) && pTag->IsInt()) {
-			return pTag->GetInt();
-		}
-	}
-	return 0;
-}
-
-bool CAbstractFile::GetIntTagValue(uint8 tagname, uint32& ruValue) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pTag = taglist[i];
-		if ((pTag->GetNameID() == tagname) && pTag->IsInt()){
-			ruValue = pTag->GetInt();
-			return true;
-		}
-	}
-	return false;
-}
-
-uint32 CAbstractFile::GetIntTagValue(const char* tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pTag = taglist[i];
-		if ((pTag->GetNameID()==0) && pTag->IsInt() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
-			return pTag->GetInt();
-		}
-	}
-	return 0;
-}
-
-const wxString& CAbstractFile::GetStrTagValue(uint8 tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==tagname && pTag->IsStr()) {
-			return pTag->GetStr();
-		}
-	}
-	return EmptyString;
-}
-
-const wxString& CAbstractFile::GetStrTagValue(const char* tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==0 && pTag->IsStr() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
-			return pTag->GetStr();
-		}
-	}
-	return EmptyString;
-}
-
-CTag* CAbstractFile::GetTag(uint8 tagname, uint8 tagtype) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		CTag* pTag = taglist[i];
-		if ((pTag->GetNameID()==tagname) && pTag->GetType()==tagtype) {
-			return pTag;
-		}
-	}
-	return NULL;
-}
-
-CTag* CAbstractFile::GetTag(const char* tagname, uint8 tagtype) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		CTag* pTag = taglist[i];
-		if ((pTag->GetNameID()==0) && pTag->GetType()==tagtype && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
-			return pTag;
-		}
-	}
-	return NULL;
-}
-
-CTag* CAbstractFile::GetTag(uint8 tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==tagname) {
-			return pTag;
-		}
-	}
-	return NULL;
-}
-
-CTag* CAbstractFile::GetTag(const char* tagname) const
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==0 && CmpED2KTagName(pTag->GetName(), tagname)==0) {
-			return pTag;
-		}
-	}
-	return NULL;
-}
-
-void CAbstractFile::AddTagUnique(CTag* pTag)
-{
-	for (unsigned int i = 0; i < taglist.Count(); i++){
-		const CTag* pCurTag = taglist[i];
-		if ( (   (pCurTag->GetNameID()!=0 && pCurTag->GetNameID()==pTag->GetNameID())
-			  || (pCurTag->GetName()!=NULL && pTag->GetName()!=NULL && CmpED2KTagName(pCurTag->GetName(), pTag->GetName())==0)
-			 )
-			 && pCurTag->GetType() == pTag->GetType()){
-			taglist.RemoveAt(i);
-			// When an item is removed from a ObjArray, it gets deleted, acording to docs.
-			// delete pCurTag; 
-			taglist.Insert(pTag,i);
-			return;
-		}
-	}
-	taglist.Add(pTag);
-}
-
-
-/* Known File */
 
 CKnownFile::CKnownFile() :
 	date(0),
@@ -246,6 +119,7 @@ CKnownFile::CKnownFile() :
 	m_iPartCount(0),
 	m_iED2KPartCount(0),
 	m_iED2KPartHashCount(0),
+	m_iQueuedCount(0),
 	m_PublishedED2K(false)
 {
 	statistic.fileParent = this;
@@ -253,7 +127,6 @@ CKnownFile::CKnownFile() :
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
-
 }
 
 #ifdef CLIENT_GUI
@@ -301,34 +174,22 @@ CKnownFile::~CKnownFile(){
 	
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
-		(*it)->ClearUploadFileID();
+		(*it)->ResetUploadFile();
 	}
 	
 	delete m_pAICHHashSet;
 }
 
-void CKnownFile::AddUploadingClient(CUpDownClient* client)
-{
-	UpdateAutoUpPriority();
-	if (!m_ClientUploadList.insert(client).second) {
-//		printf("====================== WARNING ===================\n");
-//		printf("Multiple insertions of a client into a knownfile. Backtrace:\n");
-//		otherfunctions::print_backtrace(0);
-	}
+void CKnownFile::AddUploadingClient(CUpDownClient* client){
+	m_ClientUploadList.insert(client);
 }
 
 
-void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
-{
-	if (m_ClientUploadList.erase(client)) {
-		UpdateAutoUpPriority();
-	} else {
-//		printf("====================== WARNING ===================\n");
-//		printf("Multiple removals of a client from a knownfile. Backtrace:\n");
-//		otherfunctions::print_backtrace(0);
-	}
-}
 
+
+void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
+	m_ClientUploadList.erase(client);
+}
 
 void CKnownFile::SetFilePath(const wxString& strFilePath)
 {
@@ -620,8 +481,7 @@ bool CKnownFile::LoadFromFile(const CFileDataIO* file){
 	bool ret2 = LoadHashsetFromFile(file,false);
 	bool ret3 = LoadTagsFromFile(file);
 	UpdatePartsInfo();
-	// Final hash-count verification, needs to be done after the tags are loaded.
-	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();
+	return ret1 && ret2 && ret3 && GetED2KPartHashCount()==GetHashCount();// Final hash-count verification, needs to be done after the tags are loaded.
 	// SLUGFILLER: SafeHash
 }
 
@@ -641,9 +501,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	//tags
 	const int iFixedTags = 7;
 	uint32 tagcount = iFixedTags;
-	if (	m_pAICHHashSet->HasValidMasterHash() &&
-		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
-			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
+	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
 		tagcount++;
 	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have 
@@ -702,9 +560,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	priotag.WriteTagToFile(file);
 
 	//AICH Filehash
-	if (	m_pAICHHashSet->HasValidMasterHash() && 
-		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
-			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {
+	if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE || m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){
 		CTag aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
 		aichtag.WriteTagToFile(file);
 	}
@@ -831,7 +687,7 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	return hashlist[part];
 }
 
-CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+CPacket*	CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	if (m_ClientUploadList.empty() ) {
 		return NULL;
@@ -849,24 +705,20 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
 		const CUpDownClient *cur_src = *it;
 		
-		if (	cur_src->HasLowID() ||
-			cur_src == forClient ||
-			!(	cur_src->GetUploadState() == US_UPLOADING ||
-				cur_src->GetUploadState() == US_ONUPLOADQUEUE)) {
+		if ( cur_src->HasLowID() || cur_src == forClient || !(cur_src->GetUploadState() == US_UPLOADING || cur_src->GetUploadState() == US_ONUPLOADQUEUE)) {
 			continue;
 		}
-		
+
 		bool bNeeded = false;
 		const BitVector& rcvstatus = forClient->GetUpPartStatus();
-		
+
 		if ( !rcvstatus.empty() ) {
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
-							// We know the recieving client needs
-							// a chunk from this client.
+							// We know the recieving client needs a chunk from this client.
 							bNeeded = true;
 							break;
 						}
@@ -874,17 +726,13 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				}
 			} else {
 				cDbgNoSrc++;
-				// This client doesn't support upload chunk status.
-				// So just send it and hope for the best.
+				// This client doesn't support upload chunk status. So just send it and hope for the best.
 				bNeeded = true;
 			}
 		} else {
-			// remote client does not support upload chunk status,
-			// search sources which have at least one complete part
-			// we could even sort the list of sources by available
-			// chunks to return as much sources as possible which
-			// have the most available chunks. but this could be
-			// a noticeable performance problem.
+			// remote client does not support upload chunk status, search sources which have at least one complete part
+			// we could even sort the list of sources by available chunks to return as much sources as possible which
+			// have the most available chunks. but this could be a noticeable performance problem.
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				for (int x = 0; x < GetPartCount(); x++ ) {
@@ -895,8 +743,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 					}
 				}
 			} else {
-				// This client doesn't support upload chunk status.
-				// So just send it and hope for the best.
+				// This client doesn't support upload chunk status. So just send it and hope for the best.
 				bNeeded = true;
 			}
 		}
@@ -938,29 +785,27 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 }
 
 // Updates priority of file if autopriority is activated
+//void CKnownFile::UpdateUploadAutoPriority(void)
 void CKnownFile::UpdateAutoUpPriority(void)
 {
-	#warning This function is called TOO MUCH times, give the fact that every client added triggers it.
-	
-	if (!IsAutoUpPriority())
-		return;
+		if (!IsAutoUpPriority())
+			return;
 
-	if ( GetQueuedCount() > 20 ) {
-		if ( GetUpPriority() != PR_LOW ) {
-			SetUpPriority(PR_LOW, false);
-			Notify_SharedFilesUpdateItem(this);
+		if ( GetQueuedCount() > 20 ) {
+			if ( GetUpPriority() != PR_LOW ) {
+				SetUpPriority(PR_LOW, false);
+				Notify_SharedFilesUpdateItem(this);
+			}
+			return;
+		}
+
+		if ( GetQueuedCount() > 1 ) {
+			if ( GetUpPriority() != PR_NORMAL ) {
+				SetUpPriority(PR_NORMAL, false);
+				Notify_SharedFilesUpdateItem(this);
 		}
 		return;
 	}
-
-	if ( GetQueuedCount() > 1 ) {
-		if ( GetUpPriority() != PR_NORMAL ) {
-			SetUpPriority(PR_NORMAL, false);
-			Notify_SharedFilesUpdateItem(this);
-		}
-		return;
-	}
-	
 	if ( GetUpPriority() != PR_HIGH ) {
 		SetUpPriority(PR_HIGH, false);
 		Notify_SharedFilesUpdateItem(this);
@@ -975,7 +820,7 @@ void CKnownFile::LoadComment()
 	wxConfigBase* cfg = wxConfigBase::Get();
 	
 	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
-	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
+	m_iRate = cfg->Read( strCfgPath + wxT("Rate"), 0l);
 	m_bCommentLoaded = true;
 }    
 
@@ -996,12 +841,12 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 
 
 // For File rate 
-void CKnownFile::SetFileRating(int8 iNewRating)
+void CKnownFile::SetFileRate(int8 iNewRate)
 { 
 	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 	wxConfigBase* cfg = wxConfigBase::Get();
-	cfg->Write( strCfgPath + wxT("Rate"), iNewRating);
-	m_iRating = iNewRating; 
+	cfg->Write( strCfgPath + wxT("Rate"), iNewRate);
+	m_iRate = iNewRate; 
 
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
@@ -1012,9 +857,8 @@ void CKnownFile::SetFileRating(int8 iNewRating)
 
 void CKnownFile::SetUpPriority(uint8 iNewUpPriority, bool m_bsave){
 	m_iUpPriority = iNewUpPriority;
-	if( IsPartFile() && m_bsave ) {
+	if( IsPartFile() && m_bsave )
 		((CPartFile*)this)->SavePartFile();
-	}
 }
 
 void CKnownFile::SetPublishedED2K(bool val){
@@ -1065,6 +909,7 @@ void CKnownFile::UpdatePartsInfo()
 		int32 n = count.GetCount();	
 
 		if (n > 0) {
+			
 			// Kry - Native wx functions instead
 			count.Sort(Uint16CompareValues);
 			
@@ -1072,18 +917,14 @@ void CKnownFile::UpdatePartsInfo()
 			int i = n >> 1;			// (n / 2)
 			int j = (n * 3) >> 2;	// (n * 3) / 4
 			int k = (n * 7) >> 3;	// (n * 7) / 8
-			
-			// For complete files, trust the people your uploading to more...
-			
-			// For low guess and normal guess count
-			//	- If we see more sources then the guessed low and
-			//	normal, use what we see.
-			//	- If we see less sources then the guessed low,
-			//	adjust network accounts for 100%, we account for
-			//	0% with what we see and make sure we are still
-			//	above the normal.
-			// For high guess
-			//	Adjust 100% network and 0% what we see.
+
+			//For complete files, trust the people your uploading to more...
+
+			//For low guess and normal guess count
+			//	If we see more sources then the guessed low and normal, use what we see.
+			//	If we see less sources then the guessed low, adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
+			//For high guess
+			//  Adjust 100% network and 0% what we see.
 			if (n < 20) {
 				if ( count[i] < m_nCompleteSourcesCount ) {
 					m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
@@ -1096,15 +937,13 @@ void CKnownFile::UpdatePartsInfo()
 					m_nCompleteSourcesCountHi = m_nCompleteSourcesCount;
 				}
 			} else {
-			// Many sources..
-			// For low guess
+			//Many sources..
+			//For low guess
 			//	Use what we see.
-			// For normal guess
-			//	Adjust network accounts for 100%, we account for
-			//	0% with what we see and make sure we are still above the low.
-			// For high guess
-			//	Adjust network accounts for 100%, we account for 0%
-			//	with what we see and make sure we are still above the normal.
+			//For normal guess
+			//	Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the low.
+			//For high guess
+			//  Adjust network accounts for 100%, we account for 0% with what we see and make sure we are still above the normal.
 
 				m_nCompleteSourcesCountLo = m_nCompleteSourcesCount;
 				m_nCompleteSourcesCount = count[j];
@@ -1163,8 +1002,7 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 
 void CKnownFile::ClearPriority() {
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
-	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
-	UpdateAutoUpPriority();
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;		
 }
 
 #endif // CLIENT_GUI

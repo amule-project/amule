@@ -43,12 +43,9 @@
 	#include <wx/utils.h>
 #endif	
 
-#include <vector>
-
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "ArchSpecific.h"
 #include "OtherStructs.h" // for Gap_Struct
-
 
 namespace otherfunctions {
 	
@@ -90,38 +87,14 @@ inline int CmpAny(const wxChar* ArgA, const wxChar* ArgB)
 
 
 /**
- * Removes the first instance of a value from a STL-like list: list, vector or deque.
+ * Removes a value from a stl list, like list, vector or deque.
  *
  * @param list The list to manipulate.
  * @param item The value to search for and remove.
  * @return The number of instances removed.
  */
 template <typename LIST, typename ITEM>
-unsigned int EraseFirstValue( LIST& list, const ITEM& item )
-{
-	typename LIST::iterator it = list.begin();
-
-	for (; it != list.end(); ++it) {
-		if (*it == item) {
-			list.erase(it);
-			
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-/**
- * Removes all instances of a value from a STL-like list: list, vector or deque.
- *
- * @param list The list to manipulate.
- * @param item The value to search for and remove.
- * @return The number of instances removed.
- */
-template <typename LIST, typename ITEM>
-unsigned int EraseValue( LIST& list, const ITEM& item )
+int EraseValue( LIST& list, const ITEM& item )
 {
 	typename LIST::iterator it = list.begin();
 	unsigned int count = 0;
@@ -461,36 +434,6 @@ class RLE_Data {
 		// decoder will need access to data
 		const unsigned char *Buffer() { return m_buff; }
 		int Size() { return m_len; }
-};
-
-/*
- * Another implementation of RLE, optimized for bit-vector. In this RLE flavor we
- * have only 2 values, so we don't need to transmit the value itself. Since most
- * of the time, bitmap will contail all zeros with few 1's, only zeros will be encoded.
- * Meaning that '0000110010000' is encoded as '4024'
- */
-class RLE_Data_BV {
-		// maximum file size in amule is 4G since it uses uint32 as filesize. So, it
-		// can be up to 4Gb/PARTSIZE=442 parts. Worst case is 1/0 interleaving,
-		// producing 221 byte RLE encoded output.
-		static unsigned char m_buff[256];
-
-		std::vector<bool> m_last_buff;
-		
-		void Realloc(int size);
-	public:
-		RLE_Data_BV(int len);
-		RLE_Data_BV();
-		RLE_Data_BV(const RLE_Data_BV &);
-		
-		~RLE_Data_BV();
-		
-		RLE_Data_BV &operator=(const RLE_Data_BV &);
-		
-		int Encode(std::vector<bool> &data);
-		void Decode(unsigned char *data, int datalen, std::vector<bool> &outbuff);
-		
-		const unsigned char *Buffer() { return m_buff; }
 };
 
 /*!

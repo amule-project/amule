@@ -57,8 +57,6 @@
 
 //#define __PACKET_RECV_DUMP__
 
-IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
-
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
@@ -168,10 +166,16 @@ void *CClientReqSocketHandler::Entry()
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings)
 
+IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
+
 CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *ProxyData)
-	: CEMSocket(ProxyData)
+:
+CEMSocket(ProxyData)
 {
-	SetClient(in_client);
+	m_client = in_client;
+	if (m_client) {
+		m_client->SetSocket(this);
+	}
 	ResetTimeOutTimer();
 	deletethis = false;
 	last_action = ACTION_NONE;
@@ -189,9 +193,25 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *P
 	Notify(false);
 #endif
 	theApp.listensocket->AddSocket(this);
-	theApp.listensocket->AddConnection();
 }
 
+void CClientReqSocket::OnInit()
+{
+	last_action = ACTION_CONNECT;
+}
+
+bool CClientReqSocket::Close()
+{
+	return CEMSocket::Close();
+}
+
+// Used in BaseClient.cpp, but not here.
+bool CClientReqSocket::Create()
+{
+	theApp.listensocket->AddConnection();
+	OnInit();
+	return true;
+}
 
 CClientReqSocket::~CClientReqSocket()
 {
@@ -212,12 +232,10 @@ CClientReqSocket::~CClientReqSocket()
 #endif
 }
 
-
 void CClientReqSocket::ResetTimeOutTimer()
 {
 	timeout_timer = ::GetTickCount();
 }
-
 
 bool CClientReqSocket::CheckTimeOut()
 {
@@ -230,26 +248,16 @@ bool CClientReqSocket::CheckTimeOut()
 	}
 #endif
 	// 0.42x
-	uint32 uTimeout = GetTimeOut();
-	if (m_client) {
+	uint32 uTimeout = CONNECTION_TIMEOUT;
+	if(m_client) {
 		#ifdef __USE_KAD__
 		if (m_client->GetKadState() == KS_CONNECTED_BUDDY) {
-			//We originally ignored the timeout here for buddies.
-			//This was a stupid idea on my part. There is now a ping/pong system
-			//for buddies. This ping/pong system now prevents timeouts.
-			//This release will allow lowID clients with KadVersion 0 to remain connected.
-			//But a soon future version needs to allow these older clients to time out to prevent dead connections from continuing.
-			//JOHNTODO: Don't forget to remove backward support in a future release.
-			if ( client->GetKadVersion() == 0 ) {
-				return false;
-			}
-			
-			uTimeout += MIN2MS(15);		
+			return false;
 		}
 		#endif
-		
-		if (m_client->GetChatState() != MS_NONE) {
-			uTimeout += CONNECTION_TIMEOUT;		
+		if (m_client->GetChatState()!=MS_NONE) {
+			timeout_timer = ::GetTickCount();
+			return false;
 		}
 	}
 	
@@ -268,34 +276,19 @@ bool CClientReqSocket::CheckTimeOut()
 	return false;	
 }
 
-
-void CClientReqSocket::SetClient(CUpDownClient* pClient)
-{
-	m_client = pClient;
-	if (m_client) {
-		m_client->SetSocket( this );
-	}
-}
-
-
-bool CClientReqSocket::Close()
-{
-	return CEMSocket::Close();
-}
-
-
 void CClientReqSocket::OnClose(int nErrorCode)
 {
 	// 0.42x
-	wxASSERT(theApp.listensocket->IsValidSocket(this));
+	wxASSERT (theApp.listensocket->IsValidSocket(this));
 	CEMSocket::OnClose(nErrorCode);
-	if (nErrorCode) {
-		Disconnect(wxString::Format(wxT("Closed: %u"), nErrorCode));
+	if (nErrorCode > 0) {
+		wxString strError;
+		strError = wxString::Format(wxT("Closed: %u"),nErrorCode);
+		Disconnect(strError);
 	} else {
 		Disconnect(wxT("Close"));
 	}
 }
-
 
 void CClientReqSocket::Disconnect(const wxString& strReason)
 {
@@ -337,7 +330,6 @@ void CClientReqSocket::Safe_Delete()
 		Close();
 	}
 }
-
 
 bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opcode)
 {
@@ -717,7 +709,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if ( CLogger::IsEnabled( logClient ) ) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									#warning what is invalid?? please fix message !!!!
 									wxString msg = wxString::Format(_("Client requests invalid %u."), i);
 									msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
 									msg += wxT(" ") + m_client->GetFullIP();
@@ -862,7 +853,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			case OP_MESSAGE: {		// 0.43b
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 				
-				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				AddLogLineM( true, wxT("New message from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 				theApp.statistics->AddDownDataOverheadOther(size);
 				
 				CSafeMemFile message_file((byte*)packet,size);
@@ -871,7 +862,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
-						AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+						AddLogLineM( true, wxT("Message filtered from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 					}
 					m_client->m_bMsgFiltered=true;
 				} else {
@@ -895,11 +886,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Accepted"))
 						% m_client->GetUserName() 
 						% m_client->GetUserID() );
 				} else {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Denied"))
 						% m_client->GetUserName() 
 						% m_client->GetUserID() );
 				}
@@ -1020,7 +1011,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("accepted"));
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -1051,7 +1042,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("denied"));
 					
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1123,7 +1114,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
 				wxASSERT( size == 0 );
-				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
+				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shareddirectories/files-list") )
 					% m_client->GetUserName()
 					% m_client->GetUserID() );
 						
@@ -1180,7 +1171,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	}
 	return true;
 }
-
 
 bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 opcode)
 {
@@ -1719,8 +1709,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 }
 
 
-bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait)
-{
+bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait) {
 	last_action = ACTION_CONNECT;
 	return CEMSocket::Connect(addr, wait);
 }
@@ -1736,11 +1725,8 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 	} else if (!m_client->SendHelloPacket()) {	
 		// and now? Disconnect? not?				
 		AddDebugLogLineM( false, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
-	} else {
-		ResetTimeOutTimer();
 	}
 }
-
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
@@ -1749,14 +1735,18 @@ void CClientReqSocket::OnSend(int nErrorCode)
 	CEMSocket::OnSend(nErrorCode);
 }
 
-
 void CClientReqSocket::OnReceive(int nErrorCode)
 {
 	last_action = ACTION_RECEIVE;
-	ResetTimeOutTimer();
 	CEMSocket::OnReceive(nErrorCode);
+#ifdef AMULE_DAEMON
+	if ( LastCount() ) {
+		ResetTimeOutTimer();
+	}
+#else
+		ResetTimeOutTimer();
+#endif
 }
-
 
 void CClientReqSocket::RepeatLastAction() {
 	switch (last_action) {
@@ -1788,7 +1778,10 @@ void CClientReqSocket::OnError(int nErrorCode)
 	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	
+	bool disconnect = true;
+	
 	if ((nErrorCode == 0) || (nErrorCode == 7) || (nErrorCode == 0xFEFF)) {	
+		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
 				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
@@ -1829,9 +1822,11 @@ void CClientReqSocket::OnError(int nErrorCode)
 		}	
 	}
 	
-	Disconnect(strError);
+	if (disconnect) {
+		Disconnect(strError);
+	}
+	
 }
-
 
 bool CClientReqSocket::PacketReceived(CPacket* packet)
 {
@@ -1869,7 +1864,6 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
-
 bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
 	
 	bool filtered = false;
@@ -1905,38 +1899,6 @@ void CClientReqSocket::Destroy()
 	}
 }
 #endif
-
-
-SocketSentBytes CClientReqSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
-{
-    SocketSentBytes returnStatus = CEMSocket::SendControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-
-    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
-        ResetTimeOutTimer();
-    }
-
-    return returnStatus;
-}
-
-
-SocketSentBytes CClientReqSocket::SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
-{
-	SocketSentBytes returnStatus = CEMSocket::SendFileAndControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-
-    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
-        ResetTimeOutTimer();
-    }
-
-    return returnStatus;
-}
-
-
-void CClientReqSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
-{
-	ResetTimeOutTimer();
-	CEMSocket::SendPacket(packet,delpacket,controlpacket, actualPayloadSize);
-}
-
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -2080,9 +2042,13 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
-			if (!AcceptWith(*newclient, false)) {
+			if (AcceptWith(*newclient, false)) {
+				// OnInit currently sets the last_action to ACTION_CONNECT
+				newclient->OnInit();
+			} else {
 				newclient->Safe_Delete();
 			}
+			AddConnection();
 		}
 	}
 }
