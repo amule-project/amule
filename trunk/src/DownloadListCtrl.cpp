@@ -1111,6 +1111,8 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// Check if delete was pressed
 	switch (event.GetKeyCode()) {
+		case WXK_BACK:
+		case WXK_NUMPAD_DELETE:
 		case WXK_DELETE: {
 			wxCommandEvent evt;
 			OnCancelFile( evt );
