@@ -41,6 +41,8 @@
 #include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "OPCodes.h"		// Needed for PARTSIZE
 
+#include "kademlia/kademlia/SearchManager.h"
+
 #ifdef CLIENT_GUI
 #include "ECSpecialTags.h"
 #endif
@@ -120,7 +122,7 @@ public:
 	CAbstractFile();
 	virtual ~CAbstractFile() {};
 
-	const wxString&	GetFileName() const		{return m_strFileName;}
+	virtual const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
 	uint32	GetFileSize() const			{return m_nFileSize;}
 	virtual void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
@@ -168,6 +170,11 @@ public:
 
 	virtual ~CKnownFile();
 
+#ifndef CLIENT_GUI
+	// GUI has no need for Kad search stuff ;)
+	void SetFileName(const wxString& strmakeFilename);
+#endif
+	
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
@@ -214,6 +221,19 @@ public:
 	void	SetFileRating(int8 iNewRating); 
 	void	SetPublishedED2K( bool val );
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
+
+	/* Kad stuff */ 
+	uint32	GetKadFileSearchID() const { return kadFileSearchID; }
+	void	SetKadFileSearchID(uint32 id) { kadFileSearchID = id; } // John - Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
+
+	const Kademlia::WordList& GetKadKeywords() const { return wordlist; }
+
+	uint32	GetLastPublishTimeKadSrc() const { return m_lastPublishTimeKadSrc; }
+	void	SetLastPublishTimeKadSrc(uint32 time, uint32 buddyip) { m_lastPublishTimeKadSrc = time; m_lastBuddyIP = buddyip;}
+	uint32	GetLastPublishBuddy() const { return m_lastBuddyIP; }
+	void	SetLastPublishTimeKadNotes(uint32 time) {m_lastPublishTimeKadNotes = time;}
+	uint32	GetLastPublishTimeKadNotes() const { return m_lastPublishTimeKadNotes; }	
+	
 	
 	// TODO: This must be implemented if we ever want to have metadata.
 	uint32	GetMetaDataVer() const { return /*m_uMetaDataVer*/ 0; }
@@ -275,6 +295,14 @@ protected:
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
 	bool	m_PublishedED2K;
+	
+	/* Kad stuff */
+	Kademlia::WordList wordlist;
+	uint32	kadFileSearchID;
+	#warning KAD TODO - Check usage
+	uint32	m_lastPublishTimeKadSrc;
+	uint32	m_lastPublishTimeKadNotes;
+	uint32	m_lastBuddyIP;
 
 };
 

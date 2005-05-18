@@ -55,7 +55,6 @@
 #include "ArchSpecific.h"
 #include "Logger.h"
 
-#include "kademlia/kademlia/SearchManager.h"
 #include "kademlia/kademlia/Entry.h"
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
@@ -233,6 +232,20 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 	taglist.Add(pTag);
 }
 
+void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
+	#ifdef __COMPILE_KAD__
+	for(POSITION pos = CKadEntryPtrList.GetHeadPosition(); pos != NULL; ) {
+		Kademlia::CEntry* entry = CKadEntryPtrList.GetNext(pos);
+		if(entry->ip == pEntry->ip || entry->sourceID.compareTo(pEntry)) {
+			delete pEntry;
+			return;
+		}
+	}
+	CKadEntryPtrList.AddHead(pEntry);
+	#endif
+}
+
+
 
 /* Known File */
 
@@ -246,7 +259,11 @@ CKnownFile::CKnownFile() :
 	m_iPartCount(0),
 	m_iED2KPartCount(0),
 	m_iED2KPartHashCount(0),
-	m_PublishedED2K(false)
+	m_PublishedED2K(false),
+	kadFileSearchID(0),
+	m_lastPublishTimeKadSrc(0),
+	m_lastPublishTimeKadNotes(0),
+	m_lastBuddyIP(0)
 {
 	statistic.fileParent = this;
 	
@@ -1165,6 +1182,15 @@ void CKnownFile::ClearPriority() {
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	UpdateAutoUpPriority();
+}
+
+void CKnownFile::SetFileName(const wxString& strmakeFilename)
+{ 
+	CAbstractFile::SetFileName(strmakeFilename);
+#ifdef __COMPILE_KAD__
+	wordlist.clear();
+	Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
+#endif
 }
 
 #endif // CLIENT_GUI

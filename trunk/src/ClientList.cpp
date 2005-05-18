@@ -38,11 +38,14 @@
 #include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "OtherFunctions.h" // Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
+#include "ServerConnect.h" // Needed for theApp.serverconnect
+#include "Preferences.h" // Needed for thePrefs
 #include "Logger.h"
 #include "Format.h"
 
 #include <algorithm>
 
+#include "kademlia/routing/Contact.h"
 
 /**
  * CDeletedClient Class
@@ -80,6 +83,7 @@ CClientList::CClientList()
 {
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
+	m_pBuddy = NULL;
 }
 
 
@@ -750,4 +754,116 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 	if (client) {
 		client->SetChatState(state);
 	}
+}
+
+/* Kad stuff */
+#warning KAD TODO: client list handling needs a big import.
+
+void CClientList::RequestTCP(Kademlia::CContact* contact)
+{
+	#ifdef __COMPILE_KAD__
+	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	// don't connect ourself
+	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+		return;
+	}
+
+	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
+
+	if (!pNewClient) {
+		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+	}
+
+	//Add client to the lists to be processed.
+	pNewClient->SetKadPort(contact->getUDPPort());
+	pNewClient->SetKadState(KS_QUEUED_FWCHECK);
+	AddToKadList(pNewClient); // This was a direct adding, but I like to check duplicates
+	//This method checks if this is a dup already.
+	AddClient(pNewClient);
+	#endif
+}
+
+void CClientList::RequestBuddy(Kademlia::CContact* contact)
+{
+	#ifdef __COMPILE_KAD__
+	
+	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	// Don't connect to ourself
+	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+		return;
+	}
+	
+	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
+	if (!pNewClient) {
+		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+	}
+
+	//Add client to the lists to be processed.
+	pNewClient->SetKadPort(contact->getUDPPort());
+	pNewClient->SetKadState(KS_QUEUED_BUDDY);
+	byte ID[16];
+	contact->getClientID().toByteArray(ID);
+	pNewClient->SetUserHash(ID);
+	AddToKadList(pNewClient);
+	//This method checks if this is a dup already.
+	AddClient(pNewClient);
+	
+	#endif
+}
+
+void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
+{
+	#ifdef __COMPILE_KAD__
+	
+	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	//If eMule already knows this client, abort this.. It could cause conflicts.
+	//Although the odds of this happening is very small, it could still happen.
+	if (FindClientByIP(nContactIP, contact->getTCPPort())) {
+		return;
+	}
+
+	// don't connect ourself
+	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+		return;
+	}
+
+	//Add client to the lists to be processed.
+	CUpDownClient* pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+	pNewClient->SetKadPort(contact->getUDPPort());
+	pNewClient->SetKadState(KS_INCOMING_BUDDY);
+	byte ID[16];
+	contact->getClientID().toByteArray(ID);
+	pNewClient->SetUserHash(ID);
+	buddyID->toByteArray(ID);
+	pNewClient->SetBuddyID(ID);
+	AddToKadList(pNewClient);
+	AddClient(pNewClient);
+	#endif
+}
+
+void CClientList::RemoveFromKadList(CUpDownClient* torem) {
+	#ifdef __COMPILE_KAD__
+	
+	wxASSERT(torem);
+	
+	if (m_KadSources.erase(torem)) {
+		if(torem == m_pBuddy) {
+			m_pBuddy = NULL;
+			Notify_ServerUpdateMyInfo();
+		}
+	}
+		
+	#endif
+}
+
+void CClientList::AddToKadList(CUpDownClient* toadd) {
+	#ifdef __COMPILE_KAD__
+	
+	if(!toadd) {
+		return;
+	}
+	
+	m_KadSources.insert(toadd); // This will take care of duplicates.
+	
+	#endif
 }

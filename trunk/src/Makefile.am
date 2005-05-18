@@ -283,6 +283,26 @@ amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) 
 amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
 amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
 
+if COMPILE_KAD
+amule_SOURCES += kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
+	kademlia/kademlia/Indexed.cpp \
+	kademlia/kademlia/Kademlia.cpp \
+	kademlia/kademlia/Prefs.cpp \
+	kademlia/kademlia/Search.cpp \
+	kademlia/kademlia/SearchManager.cpp \
+	kademlia/net/KademliaUDPListener.cpp \
+	kademlia/routing/Contact.cpp \
+	kademlia/routing/Ping.cpp \
+	kademlia/routing/RoutingBin.cpp \
+	kademlia/routing/RoutingZone.cpp \
+	kademlia/utils/LittleEndian.cpp
+amule_CFLAGS += -D__COMPILE_KAD__
+amule_CXXFLAGS += -D__COMPILE_KAD__
+endif
+
 amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
 amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
 amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(BFD_LIB)
