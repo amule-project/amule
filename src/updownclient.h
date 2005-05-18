@@ -92,6 +92,14 @@ class CAICHHash;
 #define	MS_CONNECTING		2
 #define	MS_UNABLETOCONNECT	3
 
+enum ESourceFrom {
+	SF_SERVER			= 0,
+	SF_KADEMLIA			= 1,
+	SF_SOURCE_EXCHANGE	= 2,
+	SF_PASSIVE			= 3,
+	SF_LINK				= 4
+};
+
 
 enum EClientSoftware{
 	SO_EMULE		= 0,
@@ -165,6 +173,19 @@ enum EInfoPacketState{
 	IP_BOTH			= 3
 };
 
+enum EKadState{
+	KS_NONE,
+	KS_QUEUED_FWCHECK,
+	KS_CONNECTING_FWCHECK,
+	KS_CONNECTED_FWCHECK,
+	KS_QUEUED_BUDDY,
+	KS_INCOMING_BUDDY,
+	KS_CONNECTING_BUDDY,
+	KS_CONNECTED_BUDDY,
+	KS_NONE_LOWID,
+	KS_WAITCALLBACK_LOWID,
+	KS_QUEUE_LOWID
+};
 
 //! Used to keep track of the state of the client
 enum ClientState
@@ -472,8 +493,7 @@ public:
 	wxString	ShowDownloadingParts() const;
 	void 		UpdateDisplayedInfo(bool force = false);
 	int 		GetFileListRequested() const 	{ return m_iFileListRequested; }
-	void 		SetFileListRequested(int iFileListRequested) 
-		{ m_iFileListRequested = iFileListRequested; }
+	void 		SetFileListRequested(int iFileListRequested) { m_iFileListRequested = iFileListRequested; }
 	
 	void		ResetFileStatusInfo();
 	
@@ -545,6 +565,28 @@ public:
 	void			SendCancelTransfer(CPacket* packet = NULL);
 	bool			HasBlocks() const								{ return !m_BlockRequests_queue.IsEmpty(); }
 
+	/* Source comes from? */
+	ESourceFrom		GetSourceFrom() const							{ return (ESourceFrom)m_nSourceFrom; }
+	void			SetSourceFrom(ESourceFrom val)					{ m_nSourceFrom = val; }	
+	
+	/* Kad buddy support */
+	// ID
+	const byte* GetBuddyID() const								{ return m_achBuddyID; }
+	void			SetBuddyID(const byte* m_achTempBuddyID);
+	bool			HasValidBuddyID() const							{ return m_bBuddyIDValid; }
+	/* IP */
+	void			SetBuddyIP( uint32 val )						{ m_nBuddyIP = val; }
+	uint32		GetBuddyIP() const								{ return m_nBuddyIP; }
+	/* Port */
+	void			SetBuddyPort( uint16 val )						{ m_nBuddyPort = val; }
+	uint16		GetBuddyPort() const							{ return m_nBuddyPort; }	
+		
+	//KadIPCheck
+	EKadState		GetKadState() const								{ return m_nKadState; }
+	void			SetKadState(EKadState nNewS)					{ m_nKadState = nNewS; }	
+	
+	uint8			GetKadVersion()									{ return m_byKadVersion; }
+	
 private:
 	uint32		m_nTransferredUp;
 	uint32		m_nCurQueueSessionPayloadUp;
@@ -736,6 +778,18 @@ public:
 	CAICHHash*  m_pReqFileAICHHash; 
 	
 	bool m_bMsgFiltered;
+	
+	ESourceFrom m_nSourceFrom;
+	
+	/* Kad Stuff */
+	byte m_achBuddyID[16];
+	bool m_bBuddyIDValid;
+	uint32 m_nBuddyIP;
+	uint16 m_nBuddyPort;
+	
+	EKadState m_nKadState;	
+	
+	uint8	m_byKadVersion;
 	
 public:
 	/**

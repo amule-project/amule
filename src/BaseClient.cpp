@@ -54,6 +54,9 @@
 #include "Format.h"		// Needed for CFormat
 #include "Logger.h"
 
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/net/KademliaUDPListener.h"
+
 //#define __PACKET_DEBUG__
 
 
@@ -208,6 +211,11 @@ void CUpDownClient::Init()
 
 	m_uploadingfile = NULL;
 
+	/* Kad stuff */
+	SetBuddyID(NULL);
+	m_nBuddyIP = 0;
+	m_nBuddyPort = 0;	
+
 	if (m_socket) {
 		amuleIPV4Address address;
 		m_socket->GetPeer(address);
@@ -293,6 +301,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_SoftLen = 0;
 	m_fOsInfoSupport = 0;
 	SecIdentSupRec = 0;
+	m_byKadVersion = 0;
 }
 
 bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
@@ -439,6 +448,17 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					SecIdentSupRec +=  1;
 					break;
 				}
+				case CT_EMULE_MISCOPTIONS2:
+					//	28 Reserved
+					//   4 Kad Version
+					m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
+					dwEmuleTags |= 8;
+					#ifdef __PACKET_DEBUG__
+					printf("Hello type packet processing with eMule Misc Options 2:\n");
+					printf("  KadVersion = %u\n" , m_byKadVersion );
+					printf("That's all.\n");
+					#endif
+					break;
 				// Special tag fo Compat. Clients Misc options.
 				case CT_EMULECOMPAT_OPTIONS:
 					//  1 Operative System Info
@@ -553,10 +573,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 
-	#ifdef __USE_KAD__
-	if( GetKadPort() && Kademlia::CKademlia::isRunning() )
-	{
-		Kademlia::CKademlia::getUDPListener()->bootstrap(ntohl(GetIP()), GetKadPort());
+	#ifdef __COMPILE_KAD__
+	if( GetKadPort() && Kademlia::CKademlia::isRunning() ) {
+		Kademlia::CKademlia::getUDPListener()->bootstrap(ENDIAN_NTOHL(GetIP()), GetKadPort());
 	}
 	#endif
 
@@ -915,9 +934,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	// eMule UDP Ports
 
 	uint32 kadUDPPort = 0;
-	#ifdef __USE_KAD__
-	if(Kademlia::CKademlia::isConnected())
-	{
+	#ifdef __COMPILE_KAD__
+	if(Kademlia::CKademlia::isConnected()) {
 		kadUDPPort = thePrefs::GetUDPPort();
 	}
 	#endif
@@ -1103,9 +1121,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	//If this is a KAD client object, just delete it!
 	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
-	#ifdef __USE_KAD__
 	SetKadState(KS_NONE);
-	#endif
 	
 	if (GetUploadState() == US_UPLOADING) {
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
@@ -1225,17 +1241,11 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	}
 
-	#ifdef __USE_KAD__
 	if( GetKadState() == KS_QUEUED_FWCHECK ) {
 		SetKadState(KS_CONNECTING_FWCHECK);
 	}
-	#endif
 
-	#ifdef __USE_KAD__
 	if (HasLowID() && !theApp.DoCallback(this)) {
-	#else
-	if (HasLowID() && (theApp.serverconnect->GetClientID() < 16777216)) {
-	#endif
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_LOWTOLOWIP);
 		} else if (GetDownloadState() == DS_REQHASHSET) {
@@ -1316,17 +1326,16 @@ void CUpDownClient::ConnectionEstablished()
 		SendPublicIPRequest();
 
 // 0.42e
-	#ifdef __USE_KAD__
-	switch(GetKadState())
-	{
+	switch(GetKadState()) {
 		case KS_CONNECTING_FWCHECK:
-            SetKadState(KS_CONNECTED_FWCHECK);
+			SetKadState(KS_CONNECTED_FWCHECK);
 			break;
 		case KS_QUEUED_BUDDY:
 			SetKadState(KS_CONNECTED_BUDDY);
 			break;
+		default:
+			;
 	}
-	#endif
 
 	// ok we have a connection, lets see if we want anything from this client
 	if (GetChatState() == MS_CONNECTING) {
@@ -2122,4 +2131,17 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 		TryToConnect(true);
 		return false;
 	}	
+}
+
+/* Kad stuff */
+
+void CUpDownClient::SetBuddyID(const byte* pucBuddyID)
+{
+	if( pucBuddyID == NULL ){
+		md4clr(m_achBuddyID);
+		m_bBuddyIDValid = false;
+		return;
+	}
+	m_bBuddyIDValid = true;
+	md4cpy(m_achBuddyID, pucBuddyID);
 }

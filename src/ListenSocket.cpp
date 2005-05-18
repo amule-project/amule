@@ -232,7 +232,7 @@ bool CClientReqSocket::CheckTimeOut()
 	// 0.42x
 	uint32 uTimeout = GetTimeOut();
 	if (m_client) {
-		#ifdef __USE_KAD__
+
 		if (m_client->GetKadState() == KS_CONNECTED_BUDDY) {
 			//We originally ignored the timeout here for buddies.
 			//This was a stupid idea on my part. There is now a ping/pong system
@@ -240,13 +240,12 @@ bool CClientReqSocket::CheckTimeOut()
 			//This release will allow lowID clients with KadVersion 0 to remain connected.
 			//But a soon future version needs to allow these older clients to time out to prevent dead connections from continuing.
 			//JOHNTODO: Don't forget to remove backward support in a future release.
-			if ( client->GetKadVersion() == 0 ) {
+			if ( m_client->GetKadVersion() == 0 ) {
 				return false;
 			}
 			
 			uTimeout += MIN2MS(15);		
 		}
-		#endif
 		
 		if (m_client->GetChatState() != MS_NONE) {
 			uTimeout += CONNECTION_TIMEOUT;		
@@ -717,8 +716,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if ( CLogger::IsEnabled( logClient ) ) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									#warning what is invalid?? please fix message !!!!
-									wxString msg = wxString::Format(_("Client requests invalid %u."), i);
+									wxString msg = wxString::Format(_("Client requests invalid %u "), i);
 									msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
 									msg += wxT(" ") + m_client->GetFullIP();
 								//	AddLogLineM( false, CFormat(_("Client requests invalid %u. file block %u-%u (%d bytes): %s")) % i % auStartOffsets[i] % auEndOffsets[i] % auEndOffsets[i] - auStartOffsets[i] % m_client->GetFullIP());

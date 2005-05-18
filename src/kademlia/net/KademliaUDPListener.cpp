@@ -1223,7 +1223,7 @@ void CKademliaUDPListener::processFindSourceRequest (const byte *packetData, uin
 		bio2.WriteUInt32(ip);
 		bio2.WriteUInt16(tcp);
 		CPacket* packet = new CPacket(&bio2, OP_EMULEPROT, OP_CALLBACK);
-		if( buddy->GetSocket()t ) {
+		if( buddy->GetSocket() ) {
           	buddy->GetSocket()->SendPacket(packet);
 		} else {
 			wxASSERT(0);

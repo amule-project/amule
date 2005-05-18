@@ -53,6 +53,9 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#include "IPFilter.h"
+
+#include "kademlia/kademlia/Kademlia.h"
 
 #include <algorithm>
 #include <numeric>
@@ -826,13 +829,11 @@ void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
 	
-	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) )
-	{
+	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
 		CSafeMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
 		int iFiles = 0;
-		while (!m_localServerReqQueue.empty() && iFiles < iMaxFilesPerTcpFrame)
-		{
+		while (!m_localServerReqQueue.empty() && iFiles < iMaxFilesPerTcpFrame) {
 			// find the file with the longest waitingtime
 			uint32 dwBestWaitTime = 0xFFFFFFFF;
 
@@ -840,10 +841,9 @@ void CDownloadQueue::ProcessLocalRequests()
 			std::list<CPartFile*>::iterator it = m_localServerReqQueue.begin();
 			while( it != m_localServerReqQueue.end() ) {
 				CPartFile* cur_file = (*it);
-				if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY)
-				{
+				if (cur_file->GetStatus() == PS_READY || cur_file->GetStatus() == PS_EMPTY) {
 					uint8 nPriority = cur_file->GetDownPriority();
-					if (nPriority > PR_HIGH){
+					if (nPriority > PR_HIGH) {
 						wxASSERT(0);
 						nPriority = PR_HIGH;
 					}
@@ -854,16 +854,14 @@ void CDownloadQueue::ProcessLocalRequests()
 					}
 
 					it++;
-				}
-				else{
+				} else {
 					it = m_localServerReqQueue.erase(it);
 					cur_file->m_bLocalSrcReqQueued = false;
 					AddDebugLogLineM( false, logDownloadQueue, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
 				}
 			}
 
-			if (posNextRequest != m_localServerReqQueue.end())
-			{
+			if (posNextRequest != m_localServerReqQueue.end()) {
 				CPartFile* cur_file = (*posNextRequest);
 				cur_file->m_bLocalSrcReqQueued = false;
 				cur_file->lastsearchtime = ::GetTickCount();
@@ -883,8 +881,7 @@ void CDownloadQueue::ProcessLocalRequests()
 		}
 
 		int iSize = dataTcpFrame.GetLength();
-		if (iSize > 0)
-		{
+		if (iSize > 0) {
 			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
 			CPacket* packet = new CPacket(new char[iSize], dataTcpFrame.GetLength(), true, false);
@@ -1342,5 +1339,91 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 
 void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid)
 {
-	#warning KAD TODO: Currently a placeholder, must include the code to add a source result from Kad.	
+	#ifdef __COMPILE_KAD__
+	//Safty measure to make sure we are looking for these sources
+	CPartFile* temp = GetFileByKadFileSearchID(searchID);
+	if( !temp ) {
+		return;
+	}
+	
+	//Do we need more sources?
+	if(!(!temp->IsStopped() && thePrefs::GetMaxSourcePerFile() > temp->GetSourceCount())) {
+		return;
+	}
+
+	uint32 ED2Kip = ENDIAN_NTOHL(ip);
+	
+	if (theApp.ipfilter->IsFiltered(ED2Kip)) {
+		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2Kip));
+		return;
+	}
+	
+	if( (ip == Kademlia::CKademlia::getIPAddress() || ED2Kip == theApp.serverconnect->GetClientID()) && tcp == thePrefs::GetPort()) {
+		return;
+	}
+	
+	CUpDownClient* ctemp = NULL; 
+	switch( type ) {
+		case 1: {
+			//NonFirewalled users
+			if(!tcp) {
+				AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
+				return;
+			}
+			if (!IsGoodIP(ED2Kip,thePrefs::FilterLanIPs())) {
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ED2Kip));
+				return;
+			}
+			ctemp = new CUpDownClient(ip,tcp,0,0,temp,false);
+			ctemp->SetSourceFrom(SF_KADEMLIA);
+			ctemp->SetServerIP(serverip);
+			ctemp->SetServerPort(serverport);
+			ctemp->SetKadPort(udp);
+			byte cID[16];
+			pcontactID->toByteArray(cID);
+			ctemp->SetUserHash(cID);
+			break;
+		}
+		case 2: {
+			//Don't use this type... Some clients will process it wrong..
+			break;
+		}
+		case 3: {
+			//This will be a firewaled client connected to Kad only.
+			//We set the clientID to 1 as a Kad user only has 1 buddy.
+			ctemp = new CUpDownClient(tcp,1,0,0,temp,false);
+			//The only reason we set the real IP is for when we get a callback
+			//from this firewalled source, the compare method will match them.
+			ctemp->SetSourceFrom(SF_KADEMLIA);
+			ctemp->SetKadPort(udp);
+			byte cID[16];
+			pcontactID->toByteArray(cID);
+			ctemp->SetUserHash(cID);
+			pbuddyID->toByteArray(cID);
+			ctemp->SetBuddyID(cID);
+			ctemp->SetBuddyIP(serverip);
+			ctemp->SetBuddyPort(serverport);
+			break;
+		}
+	}
+
+	if (ctemp) {
+		CheckAndAddSource(temp, ctemp);
+	}
+	#endif
+}
+
+CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
+{
+	
+	wxMutexLocker lock( m_mutex );
+	
+	for ( uint16 i = 0; i < m_filelist.size(); ++i ) {
+		if ( id == m_filelist[i]->GetKadFileSearchID()) {
+			return m_filelist[ i ];
+		}
+	}
+	
+	return NULL;
+	
 }

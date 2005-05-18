@@ -123,10 +123,12 @@ CStatistics::CStatistics() {
 	m_nUpDataOverheadFileRequest = 0;
 	m_nUpDataOverheadOther = 0;
 	m_nUpDataOverheadServer = 0;
+	m_nUpDataOverheadKad = 0;	
 	m_nUpDataOverheadSourceExchangePackets = 0;
 	m_nUpDataOverheadFileRequestPackets = 0;
-	m_nUpDataOverheadOtherPackets = 0;
 	m_nUpDataOverheadServerPackets = 0;
+	m_nUpDataOverheadKadPackets = 0;
+	m_nUpDataOverheadOtherPackets = 0;
 }
 
 
@@ -658,6 +660,7 @@ void CStatistics::InitStatsTree() {
 	up8= statstree.append_child(h_upload,_("Waiting..."));
 	up9= statstree.append_child(h_upload,_("Waiting..."));
 	up10= statstree.append_child(h_upload,_("Waiting..."));
+	up11= statstree.append_child(h_upload,_("Waiting..."));
 
 	h_download = statstree.append_child(h_transfer,_("Downloads"));
 	down1= statstree.append_child(h_download,_("Waiting..."));
@@ -824,10 +827,12 @@ void CStatistics::UpdateStatsTree() {
 	uint64 UpOHTotal = GetUpDataOverheadFileRequest() 
 							+ GetUpDataOverheadSourceExchange() 
 							+ GetUpDataOverheadServer() 
+							+ GetUpDataOverheadKad() 
 							+ GetUpDataOverheadOther();
 	uint64 UpOHTotalPackets = GetUpDataOverheadFileRequestPackets() 
 									+ GetUpDataOverheadSourceExchangePackets() 
 									+ GetUpDataOverheadServerPackets() 
+									+ GetUpDataOverheadKadPackets() 
 									+ GetUpDataOverheadOtherPackets();		
 
 	(*up2) = CFormat(_("Total Overhead (Packets): %s") ) % 
@@ -849,12 +854,17 @@ void CStatistics::UpdateStatsTree() {
 										a_brackets_b(
 											CastItoXBytes(GetUpDataOverheadServer()),
 											CastItoIShort(GetUpDataOverheadServerPackets()));
+	
+	(*up6) = CFormat(_("Kad Overhead (Packets): %s") ) %
+										a_brackets_b(
+											CastItoXBytes(GetUpDataOverheadKad()),
+											CastItoIShort(GetUpDataOverheadKadPackets()));											
 											
-	(*up6) = wxString::Format(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
-	(*up7) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
-	(*up8) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
-	(*up9) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
-	(*up10) = CFormat(_("Average upload time: %s")) % CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime());
+	(*up7) = wxString::Format(_("Active Uploads: %i"),theApp.uploadqueue->GetUploadQueueLength());
+	(*up8) = wxString::Format(_("Waiting Uploads: %i"),theApp.uploadqueue->GetWaitingUserCount());
+	(*up9) = wxString::Format(_("Total successful upload sessions: %i"),theApp.uploadqueue->GetSuccessfullUpCount());
+	(*up10) = wxString::Format(_("Total failed upload sessions: %i"),theApp.uploadqueue->GetFailedUpCount());
+	(*up11) = CFormat(_("Average upload time: %s")) % CastSecondsToHM(theApp.uploadqueue->GetAverageUpTime());
 
 	if (stat_transferStarttime>0) {
 		(*con1) = wxString::Format(_("Average Downloadrate (Session): %.2f kB/s"),kBpsDownSession);

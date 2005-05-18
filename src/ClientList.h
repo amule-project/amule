@@ -36,12 +36,16 @@
 
 #include <deque>
 #include <map>
-
+#include <set>
 
 class CUpDownClient;
 class CClientReqSocket;
 class CDeletedClient;
 class CMD4Hash;
+namespace Kademlia {
+	class CContact;
+	class CUInt128;
+}
 
 
 typedef std::map<wxString, uint32> aMuleOSInfoMap;
@@ -326,8 +330,12 @@ public:
 
 	#warning KAD TODO: Implement buddies for kademlia lowid support (firewalled)
 	#warning This is actually a much bigger import, the kademlia process list.
-	CUpDownClient* GetBuddy() const { return NULL; };
-
+	CUpDownClient* GetBuddy() const { return m_pBuddy; };
+	void RequestTCP(Kademlia::CContact* contact);
+	void RequestBuddy(Kademlia::CContact* contact);
+	void IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID );
+	void RemoveFromKadList(CUpDownClient* torem);
+	void AddToKadList(CUpDownClient* toadd);
 
 private:
 	/**
@@ -386,9 +394,13 @@ private:
 	//! This keeps track of the last time the tracked-list was pruned.
 	uint32	m_dwLastTrackedCleanUp;
 
-
 	//! List of unusable sources.
 	CDeadSourceList	m_deadSources;
+	
+	/* Kad Stuff */
+	std::set<CUpDownClient*>	m_KadSources;
+	CUpDownClient* m_pBuddy;
+
 };
 
 #endif

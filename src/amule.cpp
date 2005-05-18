@@ -1787,6 +1787,58 @@ bool CamuleApp::IsFirewalled()
 	#endif
 }
 
+bool CamuleApp::DoCallback( CUpDownClient *client )
+{
+	#ifdef __COMPILE_KAD__
+	if(Kademlia::CKademlia::isConnected()) {
+		if(serverconnect->IsConnected()) {
+			if(serverconnect->IsLowID()) {
+				if(Kademlia::CKademlia::isFirewalled()) {
+					//Both Connected - Both Firewalled
+					return false;
+				} else {
+					if(client->GetServerIP() == theApp.serverconnect->GetCurrentServer()->GetIP() && client->GetServerPort() == theApp.serverconnect->GetCurrentServer()->GetPort()) {
+						//Both Connected - Server lowID, Kad Open - Client on same server
+						//We prevent a callback to the server as this breaks the protocol and will get you banned.
+						return false;
+					} else {
+						//Both Connected - Server lowID, Kad Open - Client on remote server
+						return true;
+					}
+				}
+			} else {
+				//Both Connected - Server HighID, Kad don't care
+				return true;
+			}
+		} else {
+			if(Kademlia::CKademlia::isFirewalled()) {
+				//Only Kad Connected - Kad Firewalled
+				return false;
+			} else {
+				//Only Kad Conected - Kad Open
+				return true;
+			}
+		}
+	} else {
+		if( serverconnect->IsConnected() ) {
+			if( serverconnect->IsLowID() ) {
+				//Only Server Connected - Server LowID
+				return false;
+			} else {
+				//Only Server Connected - Server HighID
+				return true;
+			}
+		} else {
+			//We are not connected at all!
+			return false;
+		}
+	}
+	#else
+	return !(serverconnect->GetClientID() < 16777216);
+	#endif
+}
+
+
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
