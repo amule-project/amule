@@ -39,6 +39,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "CMD4Hash.h"
 #include "StringFunctions.h"
+#include "NetworkFunctions.h"
 
 #include <map>
 #include <vector>
@@ -249,17 +250,15 @@ public:
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
 	void		ConnectionEstablished();
-	uint32		GetUserID() const		{ return m_nUserID; }
-	void		SetUserID(uint32 nUserID);
 	const wxString&	GetUserName() const		{ return m_Username; }
 	//Only use this when you know the real IP or when your clearing it.
 	void		SetIP( uint32 val );
 	uint32		GetIP() const 			{ return m_dwUserIP; }
-	bool		HasLowID() const 		{ return (m_nUserID < 16777216); }
+	bool		HasLowID() const 		{ return IsLowID(m_nUserIDHybrid); }
 	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
 	uint32			GetConnectIP() const				{return m_nConnectIP;}
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
-	void			SetUserIDHybrid(uint32 val)	{ m_nUserIDHybrid = val; }	
+	void			SetUserIDHybrid(uint32 val);
 	uint32		GetUserPort() const		{ return m_nUserPort; }
 	uint32		GetTransferedDown() const	{ return m_nTransferedDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
@@ -646,8 +645,6 @@ private:
 	uint32		m_dwUserIP;
 	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;
-	#warning KAD TODO: There can be only one...
-	uint32		m_nUserID;
 	uint32	m_nUserIDHybrid;
 	int16		m_nUserPort;
 	int16		m_nServerPort;

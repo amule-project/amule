@@ -829,14 +829,14 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (IsLowID(nNewUserID)) { // client changed server and gots a LowID
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
-						#warning Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)
-						m_client->SetUserID(nNewUserID); // update UserID only if we know the server
+						#warning KAD TODO: Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)
+						m_client->SetUserIDHybrid(nNewUserID); // update UserID only if we know the server
 						m_client->SetServerIP(nNewServerIP);
 						m_client->SetServerPort(pNewServer->GetPort());
 					}
 				} else if (nNewUserID == m_client->GetIP()) { // client changed server and gots a HighID(IP)
-					#warning Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)					
-					m_client->SetUserID(nNewUserID);
+					#warning KAD TODO: Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)					
+					m_client->SetUserIDHybrid(nNewUserID);
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
 						m_client->SetServerIP(nNewServerIP);
@@ -893,11 +893,11 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
 						% m_client->GetUserName() 
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
 						% m_client->GetUserName() 
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -936,7 +936,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Accepted") )
 						% m_client->GetUserName()
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					ArrayOfwxStrings folders_to_send;
@@ -994,7 +994,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
 						% m_client->GetUserName()
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1016,7 +1016,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
+					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -1047,7 +1047,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserID() % strReqDir);
+					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 					
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1067,7 +1067,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 						AddLogLineM( true, CFormat( _("User %s (%u) shares directory %s") )
 							% m_client->GetUserName()
-							% m_client->GetUserID()
+							% m_client->GetUserIDHybrid()
 							% strDir );
 				
 						CSafeMemFile tempfile(80);
@@ -1082,7 +1082,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) sent unrequested shared dirs.") )
 						% m_client->GetUserName() 
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 				}
       			break;
       		}
@@ -1097,19 +1097,19 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (m_client->GetFileListRequested() > 0){
 					AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory %s") )
 						% m_client->GetUserName()
-						% m_client->GetUserID()
+						% m_client->GetUserIDHybrid()
 						% strDir );
 					
 					m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), strDir);
 					if (m_client->GetFileListRequested() == 0) {
 						AddLogLineM( true, CFormat( _("User %s (%u) finished sending sharedfiles-list") )
 							% m_client->GetUserName()
-							% m_client->GetUserID() );
+							% m_client->GetUserIDHybrid() );
 					}
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) sent unwanted sharedfiles-list") )
 						% m_client->GetUserName()
-						% m_client->GetUserID() );
+						% m_client->GetUserIDHybrid() );
 				}
 				break;
 			}
@@ -1121,7 +1121,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxASSERT( size == 0 );
 				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
 					% m_client->GetUserName()
-					% m_client->GetUserID() );
+					% m_client->GetUserIDHybrid() );
 						
 				m_client->SetFileListRequested(0);			
 				break;

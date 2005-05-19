@@ -55,9 +55,9 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
 	    return (GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
-		return ((GetUserID() == tocomp->GetUserID()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
+		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
 	else
-		return ((GetUserID() == tocomp->GetUserID() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
+		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
 }
 
 

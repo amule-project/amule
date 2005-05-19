@@ -78,13 +78,12 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 {
 	m_socket = NULL;
 	Init();
-	SetUserID( in_userid );
 	m_nUserPort = in_port;
 
 	if(ed2kID && !IsLowID(in_userid)) {
-		m_nUserIDHybrid = ENDIAN_NTOHL(in_userid);
+		SetUserIDHybrid( ENDIAN_NTOHL(in_userid) );
 	} else {
-		m_nUserIDHybrid = in_userid;
+		SetUserIDHybrid( in_userid);
 	}
 	
 	//If highID and ED2K source, incoming ID and IP are equal..
@@ -96,6 +95,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
+		// Will be on right endianess now
 		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
 	}
 
@@ -131,7 +131,6 @@ void CUpDownClient::Init()
 	kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
-	m_nUserID = 0;
 	m_nServerPort = 0;
 	m_iFileListRequested = 0;
 	m_dwLastUpRequest = 0;
@@ -373,7 +372,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		CMD4Hash hash;
 		data.ReadHash16(hash);
 		SetUserHash( hash );
-		SetUserID( data.ReadUInt32() );
+		SetUserIDHybrid( data.ReadUInt32() );
 		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
 		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
@@ -536,8 +535,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		}
 	}
 
-	if(!HasLowID() || m_nUserID == 0) {
-		SetUserID( m_dwUserIP );
+	if(!HasLowID() || m_nUserIDHybrid == 0) {
+		SetUserIDHybrid( m_dwUserIP );
 	}
 
 	// get client credits
@@ -1287,7 +1286,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
 			CSafeMemFile data;
-			data.WriteUInt32(m_nUserID);
+			data.WriteUInt32(m_nUserIDHybrid);
 			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
 
@@ -1630,7 +1629,7 @@ void CUpDownClient::RequestSharedFileList()
 		m_iFileListRequested = 1;
 		TryToConnect(true);
 	} else {
-		AddDebugLogLineM( false, logClient, CFormat( wxT("Requesting shared files from user %s (%u) is already in progress") ) % GetUserName() % GetUserID() );
+		AddDebugLogLineM( false, logClient, CFormat( wxT("Requesting shared files from user %s (%u) is already in progress") ) % GetUserName() % GetUserIDHybrid() );
 	}
 }
 
@@ -1670,7 +1669,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 	
 	// build info text and display it
 	wxString sRet;
-	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserID()) + wxT(" ");
+	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
 		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransfered());
@@ -2050,11 +2049,11 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 	
 }
 
-void CUpDownClient::SetUserID(uint32 nUserID)
+void CUpDownClient::SetUserIDHybrid(uint32 nUserID)
 {
 	theApp.clientlist->UpdateClientID( this, nUserID );
 
-	m_nUserID = nUserID;
+	m_nUserIDHybrid = nUserID;
 }
 
 

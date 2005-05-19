@@ -1096,7 +1096,7 @@ void CPartFile::SaveSourceSeeds()
 	
 	for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
 		CUpDownClient* cur_src = source_seeds.GetNext(pos);		
-		file.WriteUInt32(cur_src->GetUserID());
+		file.WriteUInt32(cur_src->GetUserIDHybrid());
 		file.WriteUInt16(cur_src->GetUserPort());
 		//uint32 dwServerIP = cur_src->GetServerIP();
 		//uint16 nServerPort =cur_src->GetServerPort();
@@ -2747,9 +2747,9 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			uint32 dwID;
 			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserID());
+				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserIDHybrid());
 			} else {
-				dwID = cur_src->GetUserID();
+				dwID = cur_src->GetUserIDHybrid();
 			}
 			data.WriteUInt32(dwID);
 			data.WriteUInt16(cur_src->GetUserPort());

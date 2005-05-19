@@ -413,7 +413,7 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 
 		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
 
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
 			continue;
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
@@ -460,7 +460,7 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 		theApp.uploadqueue->GetNextFromUploadList(pos);
 
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
 			continue;
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
