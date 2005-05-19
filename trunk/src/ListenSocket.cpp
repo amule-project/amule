@@ -564,8 +564,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILEREQANSNOFIL") );
 				
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				if (size == 16)
-				{
+				if (size == 16) {
 					// if that client does not have my file maybe has another different
 					CPartFile* reqfile = theApp.downloadqueue->GetFileByID((byte*)packet);
 					if ( reqfile) {
@@ -575,8 +574,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 						
 					// we try to swap to another file ignoring no needed parts files
-					switch (m_client->GetDownloadState())
-					{
+					switch (m_client->GetDownloadState()) {
 						case DS_CONNECTED:
 						case DS_ONQUEUE:
 						case DS_NONEEDEDPARTS:
@@ -1344,23 +1342,22 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (reqfile != m_client->GetRequestFile()) {
 					throw wxString(wxT(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
-				while((data_in.GetLength()-data_in.GetPosition()) && m_client)
-				{
+				while (data_in.GetLength()-data_in.GetPosition()) {
+					// Some of the cases down there can actually send a packet and lose the client
+					if (!m_client) {
+						throw wxString(wxT("Client suddenly disconnected"));
+					}
 					uint8 opcode_in = data_in.ReadUInt8();
-					switch(opcode_in)
-					{
-						case OP_REQFILENAMEANSWER:
-						{
+					switch(opcode_in) {
+						case OP_REQFILENAMEANSWER: {
 							m_client->ProcessFileInfo(&data_in, reqfile);
 							break;
 						}
-						case OP_FILESTATUS:
-						{
+						case OP_FILESTATUS: {
 							m_client->ProcessFileStatus(false, &data_in, reqfile);
 							break;
 						}
-						case OP_AICHFILEHASHANS:
-						{
+						case OP_AICHFILEHASHANS: {
 							m_client->ProcessAICHFileHash(&data_in, reqfile);
 							break;
 						}					
@@ -1383,7 +1380,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					}
 					m_client->SendMuleInfoPacket(true);
 				} else {
-					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO is a OS_INFO") );
+					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO is an OS_INFO") );
 				}
 				break;
 			}
@@ -1475,12 +1472,14 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 							m_client->SendPacket(packet,true,true);					
 							
-							if (m_client)
+							if (m_client) {
 								m_client->SetSentCancelTransfer(1);
+							}
 						}
 
-						if ( m_client )
+						if ( m_client ) {
 							m_client->SetDownloadState(m_client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);	
+						}
 					}
 				} else {
 					if (!m_client->GetSentCancelTransfer()) {
@@ -1488,12 +1487,14 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
-						if ( m_client )
+						if ( m_client ) {
 							m_client->SetSentCancelTransfer(1);
+						}
 					}
 				
-					if ( m_client )
+					if ( m_client ) {
 						m_client->SetDownloadState((m_client->GetRequestFile()==NULL || m_client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
+					}
 				}
 				break;
 			}
