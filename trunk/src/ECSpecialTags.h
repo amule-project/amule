@@ -30,6 +30,7 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "NetworkFunctions.h" // Needed for IsLowID
 
 #include <map>
 #include <vector>
@@ -156,8 +157,7 @@ class CEC_ConnState_Tag : public CECTag {
  		
  		bool IsConnected() { return ClientID() && (ClientID() != 0xffffffff); }
  		bool IsConnecting() {return (ClientID() == 0xffffffff); }
- 		bool HaveLowID() { return ClientID() < 16777216; }
- 		
+ 		bool HaveLowID() { return IsLowID(ClientID()); }
  		// 0  : disconnected
  		// 0xffffffff : connecting
  		// other: client ID

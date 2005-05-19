@@ -536,7 +536,7 @@ void CServerConnect::SetClientID(uint32 newid)
 {
 	clientid = newid;
 	
-	if (!IsLowIDED2K(newid)) {
+	if (!::IsLowID(newid)) {
 		theApp.SetPublicIP(newid);
 	}
 

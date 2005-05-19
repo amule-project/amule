@@ -74,29 +74,30 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 	Init();
 }
 
-CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool checkfriend)
+CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend)
 {
 	m_socket = NULL;
 	Init();
 	SetUserID( in_userid );
 	m_nUserPort = in_port;
 
-	if (!HasLowID()) {
-		m_FullUserIP = Uint32toStringIP(m_nUserID);
+	if(ed2kID && !IsLowID(in_userid)) {
+		m_nUserIDHybrid = ENDIAN_NTOHL(in_userid);
+	} else {
+		m_nUserIDHybrid = in_userid;
 	}
-	#ifdef __USE_KAD__
+	
+	//If highID and ED2K source, incoming ID and IP are equal..
+	//If highID and Kad source, incoming IP needs ntohl for the IP
+
 	if (!HasLowID()) {
 		if (ed2kID) {
 			m_nConnectIP = in_userid;
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
+		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
 	}
-	#else
- 	if(!HasLowID()) {
-		m_nConnectIP = in_userid;
-	}
-	#endif
 
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
@@ -215,6 +216,7 @@ void CUpDownClient::Init()
 	SetBuddyID(NULL);
 	m_nBuddyIP = 0;
 	m_nBuddyPort = 0;	
+	m_nUserIDHybrid = 0;
 
 	if (m_socket) {
 		amuleIPV4Address address;
@@ -1972,13 +1974,15 @@ void CUpDownClient::SendPublicIPRequest(){
 }
 
 void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
-	if (uSize != 4)
+	if (uSize != 4) {
 		throw wxString(wxT("Wrong Packet size on Public IP answer"));
+	}
 	uint32 dwIP = PeekUInt32(pbyData);
 	if (m_fNeedOurPublicIP == true){ // did we?
 		m_fNeedOurPublicIP = false;
-		if (theApp.GetPublicIP() == 0 && !IsLowIDED2K(dwIP) )
+		if (theApp.GetPublicIP() == 0 && !IsLowID(dwIP) ) {
 			theApp.SetPublicIP(dwIP);
+		}
 	}
 }
 
