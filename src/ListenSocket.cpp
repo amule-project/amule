@@ -826,7 +826,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				uint32 nNewUserID = data.ReadUInt32();
 				uint32 nNewServerIP = data.ReadUInt32();
 				
-				if (IsLowIDED2K(nNewUserID)) { // client changed server and gots a LowID
+				if (IsLowID(nNewUserID)) { // client changed server and gots a LowID
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
 						#warning Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)

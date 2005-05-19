@@ -408,7 +408,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					break;
 				}
 				if(thePrefs::GetSmartIdCheck()) {
-					if (new_id >= 16777216) {
+					if (!IsLowID(new_id)) {
 						thePrefs::SetSmartIdState(1);
 					} else {
 						uint8 state = thePrefs::GetSmartIdState();
@@ -572,7 +572,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					if (client) {
 						client->TryToConnect();
 					} else {
-						client = new CUpDownClient(nPort,dwIP,0,0,0);
+						client = new CUpDownClient(nPort,dwIP,0,0,0, true, true);
 						theApp.clientlist->AddClient(client);
 						client->TryToConnect();
 					}

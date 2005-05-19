@@ -243,17 +243,6 @@ int GetMaxConnections();
 // Returns the name assosiated with a category value.
 wxString GetCatTitle(int catid);
 
-// Tests if a ID is low (behind firewall/router/...)
-#define HIGHEST_LOWID_HYBRID	16777216
-#define HIGHEST_LOWID_ED2K		16777216
-inline bool IsLowIDHybrid(uint32 id){
-	return (id < HIGHEST_LOWID_HYBRID);
-}
-inline bool IsLowIDED2K(uint32 id){
-	return (id < HIGHEST_LOWID_ED2K); //Need to verify what the highest LowID can be returned by the server.
-}
-
-
 /* Other */
 
 // Compares first and second. For uint16 arrays sorting.

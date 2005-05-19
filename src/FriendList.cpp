@@ -197,7 +197,7 @@ void	CFriendList::RequestSharedFileList(const CMD4Hash& userhash, uint32 dwIP, u
 	if (cur_friend) {
 		CUpDownClient* client = cur_friend->GetLinkedClient();
 		if (!client) {
-			client = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0);
+			client = new CUpDownClient(cur_friend->GetPort(), cur_friend->GetIP(), 0, 0, 0, true, true);
 			client->SetUserName(cur_friend->GetName());
 			theApp.clientlist->AddClient(client);
 		}
@@ -218,7 +218,7 @@ void CFriendList::StartChatSession(const CMD4Hash& userhash, uint32 dwIP, uint16
 	if (friend_client) {
 		CUpDownClient* client = friend_client->GetLinkedClient();
 		if (!client) {
-			client = new CUpDownClient(friend_client->GetPort(), friend_client->GetIP(), 0, 0, 0);
+			client = new CUpDownClient(friend_client->GetPort(), friend_client->GetIP(), 0, 0, 0, true, true);
 			client->SetIP(friend_client->GetIP());
 			client->SetUserName(friend_client->GetName());
 			theApp.clientlist->AddClient(client);

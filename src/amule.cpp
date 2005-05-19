@@ -1662,7 +1662,7 @@ uint32 CamuleApp::GetPublicIP() const
 
 void CamuleApp::SetPublicIP(const uint32 dwIP){
 	if (dwIP != 0){
-		wxASSERT ( !IsLowIDED2K(dwIP));
+		wxASSERT ( !IsLowID(dwIP));
 		//wxASSERT ( m_pPeerCache );
 //		if ( GetPublicIP() == 0)
 			//AddDebugLogLineM(false, wxString::Format(wxT("My public IP Address is: %s"),ipstr(dwIP)));
@@ -1834,7 +1834,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 		}
 	}
 	#else
-	return !(serverconnect->GetClientID() < 16777216);
+	return !(serverconnect->IsLowID());
 	#endif
 }
 

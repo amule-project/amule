@@ -217,7 +217,7 @@ public:
 #else
 	//base
 	CUpDownClient(CClientReqSocket* sender = 0);
-	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool checkfriend = false);
+	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend);
 #endif
 	/**
 	 * This function should be called when the client object is to be deleted.
@@ -258,6 +258,8 @@ public:
 	bool		HasLowID() const 		{ return (m_nUserID < 16777216); }
 	const wxString&	GetFullIP() const		{ return m_FullUserIP; }
 	uint32			GetConnectIP() const				{return m_nConnectIP;}
+	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
+	void			SetUserIDHybrid(uint32 val)	{ m_nUserIDHybrid = val; }	
 	uint32		GetUserPort() const		{ return m_nUserPort; }
 	uint32		GetTransferedDown() const	{ return m_nTransferedDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
@@ -644,7 +646,9 @@ private:
 	uint32		m_dwUserIP;
 	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;
+	#warning KAD TODO: There can be only one...
 	uint32		m_nUserID;
+	uint32	m_nUserIDHybrid;
 	int16		m_nUserPort;
 	int16		m_nServerPort;
 	uint32		m_nClientVersion;

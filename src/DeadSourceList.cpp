@@ -26,7 +26,7 @@
 #include "DeadSourceList.h"
 #include "OPCodes.h"
 #include "updownclient.h"
-#include "OtherFunctions.h"
+#include "NetworkFunctions.h"
 
 
 #define	CLEANUPTIME			MIN2MS(60)
@@ -64,7 +64,7 @@ bool CDeadSourceList::CDeadSource::operator==(const CDeadSource& other) const
 {
 	if ( m_ID == other.m_ID ) {
 		if ( m_Port == other.m_Port || m_KadPort == other.m_KadPort ) {
-			if ( otherfunctions::IsLowIDED2K( m_ID ) ) {
+			if ( IsLowID( m_ID ) ) {
 				return m_ServerIP == other.m_ServerIP;
 			} else {
 				return true;
@@ -164,4 +164,3 @@ void CDeadSourceList::CleanUp()
 		}
 	}
 }
-

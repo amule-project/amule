@@ -113,6 +113,12 @@ inline bool IsGoodIPPort(uint32 nIP, uint16 nPort)
 	return IsGoodIP(nIP, true) && nPort!=0;
 }
 
+#define HIGHEST_LOWID_ED2K_KAD		16777216
+
+inline bool IsLowID(uint32 id) {
+	return (id < HIGHEST_LOWID_ED2K_KAD);
+}
+
 #ifndef EC_REMOTE
 // Not needed for remote apps.
 

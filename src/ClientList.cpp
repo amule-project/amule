@@ -743,7 +743,7 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );
-		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true);
+		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true, true);
 		AddClient(client);
 	}
 	return client->SendMessage(message);
@@ -771,7 +771,8 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
 
 	if (!pNewClient) {
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+		#warning Do we actually have to check friendstate here?
+		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true);
 	}
 
 	//Add client to the lists to be processed.
@@ -795,7 +796,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 	
 	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
 	if (!pNewClient) {
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
 	}
 
 	//Add client to the lists to be processed.
@@ -828,7 +829,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	}
 
 	//Add client to the lists to be processed.
-	CUpDownClient* pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false );
+	CUpDownClient* pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
 	pNewClient->SetKadPort(contact->getUDPPort());
 	pNewClient->SetKadState(KS_INCOMING_BUDDY);
 	byte ID[16];

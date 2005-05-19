@@ -1672,7 +1672,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 {
 	// MOD Note: Do not change this part - Merkur
 	// check first if we are this source
-	if (	theApp.serverconnect->GetClientID() < 16777216 &&
+	if (	theApp.serverconnect->IsLowID() &&
 		theApp.serverconnect->IsConnected()){
 		if (	(theApp.serverconnect->GetClientID() == userid) &&
 			StringIPtoUint32(theApp.serverconnect->GetCurrentServer()->GetFullIP())  == serverip) {
@@ -1685,7 +1685,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		  return true;
 #endif
 		return false;
-	} else if (userid < 16777216 && !theApp.serverconnect->IsLocalServer(serverip,serverport)) {
+	} else if (IsLowID(userid) && !theApp.serverconnect->IsLocalServer(serverip,serverport)) {
 		if (pdebug_lowiddropped) {
 			++(*pdebug_lowiddropped);
 		}
@@ -1713,7 +1713,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 		uint16 port   = sources.ReadUInt16();
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-		if (userid >= 16777216) {
+		if (!IsLowID(userid)) {
 			// check for 0-IP, localhost and optionally for LAN addresses
 			if ( !IsGoodIP(userid, thePrefs::FilterLanIPs()) ) {
 				continue;
@@ -1728,7 +1728,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 		}
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			++debug_possiblesources;
-			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
+			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
@@ -2801,18 +2801,18 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 			sources->ReadHash16(achUserHash);
 		}
 		// check first if we are this source
-		if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()) {
+		if (theApp.serverconnect->IsLowID() && theApp.serverconnect->IsConnected()) {
 			if (	(theApp.serverconnect->GetClientID() == dwID) &&
 				theApp.serverconnect->GetCurrentServer()->GetIP() == dwServerIP) {
 				continue;
 			}
 		} else if (theApp.serverconnect->GetClientID() == dwID) {
 			continue;
-		} else if (dwID < 16777216) {
+		} else if (IsLowID(dwID)) {
 			continue;
 		}
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
-			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
+			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, true, true);
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
 			}
