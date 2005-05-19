@@ -108,7 +108,7 @@ void CClientList::AddClient( CUpDownClient* toadd )
  		Notify_ClientCtrlAddClient( toadd );
 	
 		// We always add the ID/ptr pair, regardles of the actual ID value
-		m_clientList.insert( IDMapPair( toadd->GetUserID(), toadd ) );
+		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), toadd ) );
 
 		// We only add the IP if it is valid
 		if ( toadd->GetIP() ) 
@@ -142,7 +142,7 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 {
 	// Sainity check
-	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserID() == newID ) )
+	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserIDHybrid() == newID ) )
 		return;
 
 	// First remove the ID entry
@@ -190,7 +190,7 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 	bool result = false;
 
 	// First remove the ID entry
-	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
+	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( client == range.first->second ) {
@@ -249,7 +249,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 	// LowID clients need a different set of checks
 	if ( client->HasLowID() ) {
 		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
+		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
 		IDMap::iterator it = range.first;
 		for ( ; it != range.second; it++ ) {
@@ -262,7 +262,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 		}
 	} else {
 		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
+		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
 		IDMap::iterator it = range.first;
 		for ( ; it != range.second; it++ ) {

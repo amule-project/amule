@@ -553,7 +553,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 
 void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source)
 {
-	if(!source->HasLowID() && (source->GetUserID() & 0xFF) == 0x7F) {
+	if(!source->HasLowID() && (source->GetUserIDHybrid() & 0xFF) == 0x7F) {
 		return;
 	}
 
@@ -1374,7 +1374,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ED2Kip));
 				return;
 			}
-			ctemp = new CUpDownClient(ip,tcp,0,0,temp,false);
+			ctemp = new CUpDownClient(ip,tcp,0,0,temp,false, true);
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetServerIP(serverip);
 			ctemp->SetServerPort(serverport);
@@ -1391,7 +1391,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		case 3: {
 			//This will be a firewaled client connected to Kad only.
 			//We set the clientID to 1 as a Kad user only has 1 buddy.
-			ctemp = new CUpDownClient(tcp,1,0,0,temp,false);
+			ctemp = new CUpDownClient(tcp,1,0,0,temp,false, true);
 			//The only reason we set the real IP is for when we get a callback
 			//from this firewalled source, the compare method will match them.
 			ctemp->SetSourceFrom(SF_KADEMLIA);

@@ -93,7 +93,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
 	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
-	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserID(),(m_client->HasLowID() ? _("LowID"):_("HighID"))));
+	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),m_client->GetUserIDHybrid(),(m_client->HasLowID() ? _("LowID"):_("HighID"))));
 	
 	CastChild(ID_DIP,wxStaticText)->SetLabel(m_client->GetFullIP() + wxString::Format(wxT(":%i"),m_client->GetUserPort()));
 

@@ -360,7 +360,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, nSearchID,  0, 0, pszDirectory);
 		if (Sender){
-			toadd->SetClientID(Sender->GetUserID());
+			toadd->SetClientID(Sender->GetUserIDHybrid());
 			toadd->SetClientPort(Sender->GetUserPort());
 		}
 		AddToList(toadd, true);

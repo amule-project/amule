@@ -954,7 +954,7 @@ CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 {
-	m_nUserID = tag->ID();
+	m_nUserIDHybrid = tag->ID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
 	m_UserHash = tag->UserID();
@@ -1003,7 +1003,7 @@ void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 
 uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 {
-	return client->GetUserID();
+	return client->GetUserIDHybrid();
 }
 
 void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownClient *client)
