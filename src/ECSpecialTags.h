@@ -293,6 +293,7 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint32 XferTime() { return GetTagByNameSafe(EC_TAG_CLIENT_XFER_TIME)->GetInt32Data(); }
  		uint32 LastReqTime() { return GetTagByNameSafe(EC_TAG_CLIENT_LAST_TIME)->GetInt32Data(); }
  		uint32 QueueTime() { return GetTagByNameSafe(EC_TAG_CLIENT_QUEUE_TIME)->GetInt32Data(); }
+		uint8 GetSourceFrom() { return GetTagByNameSafe(EC_TAG_CLIENT_FROM)->GetInt8Data(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {

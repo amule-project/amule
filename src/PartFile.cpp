@@ -1668,26 +1668,54 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	return (uint32)(kBpsDown*1024.0);
 }
 
-bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped)
+bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped, bool ed2kID)
 {
-	// MOD Note: Do not change this part - Merkur
-	// check first if we are this source
-	if (	theApp.serverconnect->IsLowID() &&
-		theApp.serverconnect->IsConnected()){
-		if (	(theApp.serverconnect->GetClientID() == userid) &&
-			StringIPtoUint32(theApp.serverconnect->GetCurrentServer()->GetFullIP())  == serverip) {
-			return false;
+
+	//The incoming ID could have the userid in the Hybrid format.. 
+	uint32 hybridID = 0;
+	if( ed2kID ) {
+		if (IsLowID(userid)) {
+			hybridID = userid;
+		} else {
+			hybridID = ENDIAN_NTOHL(userid);
 		}
-	} else if (theApp.serverconnect->GetClientID() == userid) {
-#ifdef __DEBUG__
-		// It seems this can be used to test two amule's on one PC, using different ports --Aleric.
-		if (!theApp.serverconnect->IsLowID() && thePrefs::GetPort() != port)
-		  return true;
-#endif
-		return false;
-	} else if (IsLowID(userid) && !theApp.serverconnect->IsLocalServer(serverip,serverport)) {
+	} else {
+		hybridID = userid;
+		if (!IsLowID(userid)) {
+			userid = ENDIAN_NTOHL(userid);
+		}
+	}
+	
+	// MOD Note: Do not change this part - Merkur
+	if (theApp.serverconnect->IsConnected()) {
+		if(theApp.serverconnect->IsLowID()) {
+			if(theApp.serverconnect->GetClientID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
+				return false;
+			}
+			if(theApp.serverconnect->GetLocalIP() == userid) {
+				return false;
+			}
+		} else {
+			if(theApp.serverconnect->GetClientID() == userid && thePrefs::GetPort() == port) {
+				return false;
+			}
+		}
+	}
+	
+	#ifdef __COMPILE_KADEMLIA__
+	if (Kademlia::CKademlia::isConnected()) {
+		if(!Kademlia::CKademlia::isFirewalled()) {
+			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs.GetPort() == port) {
+				return false;
+			}
+		}
+	}
+	#endif
+
+	//This allows *.*.*.0 clients to not be removed if Ed2kID == false
+	if ( IsLowID(hybridID) && theApp.IsFirewalled()) {
 		if (pdebug_lowiddropped) {
-			++(*pdebug_lowiddropped);
+			(*pdebug_lowiddropped)++;
 		}
 		return false;
 	}
@@ -2685,11 +2713,16 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 
 CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
-	if(!IsPartFile()) 
-		return CKnownFile::CreateSrcInfoPacket(forClient);
-
+	
+	// Kad reviewed
+	
 	if (forClient->GetRequestFile() != this) {
+		printf("File missmatch on source packet (P)\n");
 		return NULL;
+	}
+
+	if(!IsPartFile())  {
+		return CKnownFile::CreateSrcInfoPacket(forClient);
 	}
 
 	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)) {
@@ -2720,11 +2753,12 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		// only send source which have needed parts for this client if possible
 		const BitVector& srcstatus = cur_src->GetPartStatus();
 		if ( !srcstatus.empty() ) {
+			wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
 			const BitVector& reqstatus = forClient->GetPartStatus();
-			int n = GetPartCount();
 			if ( !reqstatus.empty() ) {
+				wxASSERT(reqstatus.size() == GetPartCount()); // Obviously!			
 				// only send sources which have needed parts for this client
-				for (int x = 0; x < n; ++x) {
+				for (int x = 0; x < GetPartCount(); ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
 						break;
@@ -2745,11 +2779,10 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		if(bNeeded) {
 			++nCount;
 			uint32 dwID;
-			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserIDHybrid());
-			} else {
 				dwID = cur_src->GetUserIDHybrid();
+			} else {
+				dwID = ENDIAN_NTOHL(cur_src->GetUserIDHybrid());
 			}
 			data.WriteUInt32(dwID);
 			data.WriteUInt16(cur_src->GetUserPort());
@@ -2781,17 +2814,38 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 
 void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion)
 {
+	// Kad reviewed
+	
 	if (m_stopped) {
 		return;
 	}
+
 	uint16 nCount = sources->ReadUInt16();
-	for (int i = 0;i != nCount;++i) {
-		uint32 dwID = sources->ReadUInt32();
-		
-		if (sourceexchangeversion == 3) {		
-			dwID = wxUINT32_SWAP_ALWAYS(dwID);
+	
+	// Check if the data size matches the 'nCount' for v1 or v2 and eventually correct the source
+	// exchange version while reading the packet data. Otherwise we could experience a higher
+	// chance in dealing with wrong source data, userhashs and finally duplicate sources.
+	uint32 uDataSize = sources->GetLength() - sources->GetPosition();
+	
+	if ((uint32)(nCount*(4+2+4+2)) == uDataSize) { //Checks if version 1 packet is correct size
+		if( sourceexchangeversion != 1 ) {
+			return;
 		}
+	} else if ((uint32)(nCount*(4+2+4+2+16)) == uDataSize) { // Checks if version 2&3 packet is correct size
+		if( sourceexchangeversion == 1 ) {
+			return;
+		}
+	} else {
+		// If v4 inserts additional data (like v2), the above code will correctly filter those packets.
+		// If v4 appends additional data after <count>(<Sources>)[count], we are in trouble with the 
+		// above code. Though a client which does not understand v4+ should never receive such a packet.
+		AddDebugLogLineM(false, logClient, CFormat(wxT("Received invalid source exchange packet (v%u) of data size %u for %s")) % sourceexchangeversion % uDataSize % GetFileName());
+		return;
+	}
+	
+	for (int i = 0;i != nCount;++i) {
 		
+		uint32 dwID = sources->ReadUInt32();
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
@@ -2800,22 +2854,62 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 		if (sourceexchangeversion > 1) {
 			sources->ReadHash16(achUserHash);
 		}
-		// check first if we are this source
-		if (theApp.serverconnect->IsLowID() && theApp.serverconnect->IsConnected()) {
-			if (	(theApp.serverconnect->GetClientID() == dwID) &&
-				theApp.serverconnect->GetCurrentServer()->GetIP() == dwServerIP) {
+		
+		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
+		if (sourceexchangeversion == 3) {
+			uint32 dwIDED2K = ENDIAN_NTOHL(dwID);
+
+			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
+			if (!IsLowID(dwID)) {
+				if (!IsGoodIP(dwIDED2K, thePrefs::FilterLanIPs())) {
+					// check for 0-IP, localhost and optionally for LAN addresses
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwIDED2K));
+					continue;
+				}
+				if (theApp.ipfilter->IsFiltered(dwIDED2K)) {
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPFilter")) % Uint32toStringIP(dwIDED2K));
+					continue;
+				}
+				if (theApp.clientlist->IsBannedClient(dwIDED2K)){
+					continue;
+				}
+			}
+
+			// additionally check for LowID and own IP
+			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort, NULL, false)) {
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwIDED2K));
 				continue;
 			}
-		} else if (theApp.serverconnect->GetClientID() == dwID) {
-			continue;
-		} else if (IsLowID(dwID)) {
-			continue;
+		} else {
+			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
+			if (!IsLowID(dwID)) {
+				if (!IsGoodIP(dwID, thePrefs::FilterLanIPs())) { 
+					// check for 0-IP, localhost and optionally for LAN addresses
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwID));
+					continue;
+				}
+				if (theApp.ipfilter->IsFiltered(dwID)) {
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPfilter")) % Uint32toStringIP(dwID));
+					continue;
+				}
+				if (theApp.clientlist->IsBannedClient(dwID)){
+					continue;
+				}
+			}
+
+			// additionally check for LowID and own IP
+			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort)) {
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwID));
+				continue;
+			}
 		}
+		
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
-			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, true, true);
+			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, (sourceexchangeversion != 3), true);
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
 			}
+			newsource->SetSourceFrom(SF_SOURCE_EXCHANGE);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			break;

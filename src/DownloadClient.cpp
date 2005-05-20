@@ -52,6 +52,9 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if (!tocomp) {
 		return false;
 	}
+	
+	#warning KAD TODO: Sort by kad status also
+	
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
 	    return (GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())

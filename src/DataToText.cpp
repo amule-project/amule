@@ -58,16 +58,21 @@ wxString PriorityToStr( int priority, bool isAuto )
 wxString DownloadStateToStr( int state, bool queueFull )
 {
 	switch ( state ) {
-		case DS_CONNECTING:		return  _("Connecting");
-		case DS_CONNECTED:		return _("Asking");
-		case DS_WAITCALLBACK:	return _("Connecting via server");
-		case DS_ONQUEUE:		return ( queueFull ? _("Queue Full") : _("On Queue") );
-		case DS_DOWNLOADING:	return _("Transferring");
-		case DS_REQHASHSET:		return _("Receiving hashset");
-		case DS_NONEEDEDPARTS:	return _("No needed parts");
-		case DS_LOWTOLOWIP:		return _("Cannot connect LowID to LowID");
-		case DS_TOOMANYCONNS:	return _("Too many connections");
-		case DS_NONE:					return _("Unknown");
+		case DS_CONNECTING:			return  _("Connecting");
+		case DS_CONNECTED:				return _("Asking");
+		case DS_WAITCALLBACK:			return _("Connecting via server");
+		case DS_ONQUEUE:				return ( queueFull ? _("Queue Full") : _("On Queue") );
+		case DS_DOWNLOADING:			return _("Transferring");
+		case DS_REQHASHSET:			return _("Receiving hashset");
+		case DS_NONEEDEDPARTS:		return _("No needed parts");
+		case DS_LOWTOLOWIP:			return _("Cannot connect LowID to LowID");
+		case DS_TOOMANYCONNS:		return _("Too many connections");
+		case DS_NONE:						return _("Unknown");
+		case DS_WAITCALLBACKKAD: 	return _("Connecting via Kad");
+		case DS_TOOMANYCONNSKAD:	return _("Too many Kad connections");
+		case DS_BANNED:					return _("Banned");
+		case DS_ERROR:					return _("Connection Error");
+		case DS_REMOTEQUEUEFULL:	return _("Remote Queue Full");
 	}
 	
 	wxASSERT( false );

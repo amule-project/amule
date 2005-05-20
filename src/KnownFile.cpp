@@ -850,6 +850,13 @@ const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 
 CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
+	// Kad reviewed
+	
+	if ((CKnownFile*)forClient->GetRequestFile() != this) {
+		printf("File missmatch on source packet (K)\n");
+		return NULL;
+	}
+	
 	if (m_ClientUploadList.empty() ) {
 		return NULL;
 	}
@@ -860,7 +867,6 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.WriteHash16(forClient->GetUploadFileID());
 	data.WriteUInt16(nCount);
 	uint32 cDbgNoSrc = 0;
-
 	
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
@@ -877,8 +883,10 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		const BitVector& rcvstatus = forClient->GetUpPartStatus();
 		
 		if ( !rcvstatus.empty() ) {
+			wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
+				wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
@@ -904,6 +912,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			// a noticeable performance problem.
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
+				wxASSERT(srcstatus.size() == GetPartCount());
 				for (int x = 0; x < GetPartCount(); x++ ) {
 					if ( srcstatus[x] ) {
 						// this client has at least one chunk
@@ -920,8 +929,12 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 
 		if ( bNeeded ) {
 			nCount++;
-			uint32 dwID = cur_src->GetIP();
-		    
+			uint32 dwID;
+			if(forClient->GetSourceExchangeVersion() > 2) {
+				dwID = cur_src->GetUserIDHybrid();
+			} else {
+				dwID = cur_src->GetIP();
+			}
 			data.WriteUInt32(dwID);
 			data.WriteUInt16(cur_src->GetUserPort());
 			data.WriteUInt32(cur_src->GetServerIP());

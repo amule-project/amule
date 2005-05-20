@@ -553,10 +553,8 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 
 void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* source)
 {
-	if(!source->HasLowID() && (source->GetUserIDHybrid() & 0xFF) == 0x7F) {
-		return;
-	}
-
+	// Kad reviewed
+	
 	if (sender->IsStopped()) {
 		return;
 	}
@@ -566,6 +564,20 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		return;
 	}
 
+	// "Filter LAN IPs" -- this may be needed here in case we are connected to the internet and are also connected
+	// to a LAN and some client from within the LAN connected to us. Though this situation may be supported in future
+	// by adding that client to the source list and filtering that client's LAN IP when sending sources to
+	// a client within the internet.
+	//
+	// "IPfilter" is not needed here, because that "known" client was already IPfiltered when receiving OP_HELLO.
+	if (!source->HasLowID()) {
+		uint32 nClientIP = ENDIAN_NTOHL(source->GetUserIDHybrid());
+		if (!IsGoodIP(nClientIP, thePrefs::FilterLanIPs())) { // check for 0-IP, localhost and LAN addresses
+			AddDebugLogLineM(false, logIPFilter, wxT("Ignored already known source with IP=%s") + Uint32toStringIP(nClientIP));
+			return;
+		}
+	}	
+	
 	CPartFile* file = source->GetRequestFile();
 	
 	// Check if the file is already queued for something else
@@ -583,6 +595,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		}
 
 		sender->AddSource( source );
+		source->SetSourceFrom(SF_PASSIVE);
 		Notify_DownloadCtrlAddSource( sender, source, true );
 	}
 }

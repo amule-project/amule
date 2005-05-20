@@ -258,8 +258,9 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		StopConnectionTry();
 		
 		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
-		if ( update )
+		if ( update ) {
 			Notify_ServerHighlight(update, true);
+		}
 		
 		theApp.sharedfiles->ClearED2KPublishInfo();
 
