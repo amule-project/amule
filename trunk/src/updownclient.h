@@ -74,18 +74,23 @@ class CAICHHash;
 #define US_NONE			8
 
 // downloadstate
-#define	DS_DOWNLOADING		0
-#define	DS_ONQUEUE		1
-#define	DS_CONNECTED		2
-#define	DS_CONNECTING		3
-#define	DS_WAITCALLBACK		4
-#define	DS_REQHASHSET		5
-#define	DS_NONEEDEDPARTS	6
-#define	DS_TOOMANYCONNS		7
-#define	DS_LOWTOLOWIP		8
-#define DS_BANNED		9
-#define DS_ERROR		10
-#define	DS_NONE			11
+enum EDownloadState {
+	DS_DOWNLOADING = 0,
+	DS_ONQUEUE,
+	DS_CONNECTED,
+	DS_CONNECTING,
+	DS_WAITCALLBACK,
+	DS_WAITCALLBACKKAD,
+	DS_REQHASHSET,
+	DS_NONEEDEDPARTS,
+	DS_TOOMANYCONNS,
+	DS_TOOMANYCONNSKAD,
+	DS_LOWTOLOWIP,
+	DS_BANNED,
+	DS_ERROR,
+	DS_NONE,
+	DS_REMOTEQUEUEFULL  // not used yet, except in statistics
+};
 
 // m_byChatstate
 #define	MS_NONE			0
@@ -101,8 +106,7 @@ enum ESourceFrom {
 	SF_LINK				= 4
 };
 
-
-enum EClientSoftware{
+enum EClientSoftware {
 	SO_EMULE		= 0,
 	SO_CDONKEY		= 1,
 	SO_LXMULE		= 2,
@@ -167,6 +171,7 @@ enum ESecureIdentState{
 	IS_SIGNATURENEEDED	= 1,
 	IS_KEYANDSIGNEEDED	= 2
 };
+
 enum EInfoPacketState{
 	IP_NONE			= 0,
 	IP_EDONKEYPROTPACK	= 1,
@@ -716,7 +721,7 @@ public:
 	
 	//download
 	bool		m_bRemoteQueueFull;
-	uint8		m_nDownloadState;
+	uint8			m_nDownloadState;
 	uint16		m_nPartCount;
 	uint32		m_dwLastAskedTime;
 	wxString	m_clientFilename;

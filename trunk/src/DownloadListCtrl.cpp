@@ -1751,6 +1751,31 @@ void CDownloadListCtrl::DrawSourceItem(
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			break;
+		// Source comes from?
+		case 9: {
+			switch (client->GetSourceFrom()) {
+				case SF_SERVER:
+					buffer = _("Server");
+					break;
+				case SF_KADEMLIA:
+					buffer = _("Kad");
+					break;
+				case SF_SOURCE_EXCHANGE:
+					buffer = _("Source Exchange");
+					break;
+				case SF_PASSIVE:
+					buffer = _("Passive");
+					break;
+				case SF_LINK:
+					buffer = _("Link");
+					break;
+				default:
+					buffer = _("Unknown");
+					break;
+			}
+			dc->DrawText(buffer, rect.GetX(), rect.GetY());
+			break;
+		}	
 	}
 }
 

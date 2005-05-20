@@ -52,10 +52,13 @@
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
+#include "ClientUDPSocket.h"
 #include "Logger.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/net/KademliaUDPListener.h"
+#include "kademlia/kademlia/Prefs.h"
+#include "kademlia/kademlia/Search.h"
 
 //#define __PACKET_DEBUG__
 
@@ -216,6 +219,8 @@ void CUpDownClient::Init()
 	m_nBuddyIP = 0;
 	m_nBuddyPort = 0;	
 	m_nUserIDHybrid = 0;
+
+	m_nSourceFrom = SF_SERVER;
 
 	if (m_socket) {
 		amuleIPV4Address address;
@@ -407,6 +412,13 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
 					#endif
 					break;
+				case CT_EMULE_BUDDYIP:
+					// 32 BUDDY IP
+					m_nBuddyIP = temptag.GetInt();
+					#ifdef __PACKET_DEBUG__
+					printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
+					#endif
+					break;				
 				case CT_EMULE_MISCOPTIONS1: {
 					//  3 AICH Version (0 = not supported)
 					//  1 Unicode
@@ -488,11 +500,10 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		if ( data.Length() - data.GetPosition() == sizeof(uint32) ) {
 			uint32 test = data.ReadUInt32();
 			/*if (test == 'KDLM') below kdlm is converted to ascii values.
-			this fix a warning with gcc 3.4.
+			This fixes a warning with gcc 3.4.
 			K=4b D=44 L=4c M=4d
-			i putted that reversed as u can see. please check if works or put plain (0x4b444c4d)
 			*/
-			if (test == 0x4d4c444b)	{ //if it's == "KDLM"
+			if (test == 0x4b444c4d) { //if it's == "KDLM"
 				m_bIsML=true;
 			} else{
 				m_bIsHybrid = true;
@@ -535,10 +546,14 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		}
 	}
 
-	if(!HasLowID() || m_nUserIDHybrid == 0) {
-		SetUserIDHybrid( m_dwUserIP );
+	//(a)If this is a highID user, store the ID in the Hybrid format.
+	//(b)Some older clients will not send a ID, these client are HighID users that are not connected to a server.
+	//(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
+	//because they will send a ID that is the same as their IP..
+	if(!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == m_dwUserIP )  {
+		SetUserIDHybrid(ENDIAN_NTOHL(m_dwUserIP));
 	}
-
+	
 	// get client credits
 	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_UserHash);
 	if (credits == NULL){
@@ -1119,9 +1134,10 @@ void CUpDownClient::ClearDownloadBlockRequests()
 }
 
 bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
-	//If this is a KAD client object, just delete it!
-	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
+	// Kad reviewed
+	
+	//If this is a KAD client object, just delete it!
 	SetKadState(KS_NONE);
 	
 	if (GetUploadState() == US_UPLOADING) {
@@ -1152,8 +1168,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
 		m_reqfile->hashsetneeded = true;
 	}
-
-	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
 	//check if this client is needed in any way, if not delete it
 	bool bDelete = true;
@@ -1232,6 +1246,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 //true means the client was not deleted!
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
+	// Kad reviewed
+	
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
 		if (!(m_socket && m_socket->IsConnected())) {
 			if(Disconnected(wxT("Too many connections"))) {
@@ -1242,42 +1258,92 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	}
 
-	if( GetKadState() == KS_QUEUED_FWCHECK ) {
-		SetKadState(KS_CONNECTING_FWCHECK);
+	// Ipfilter check
+	uint32 uClientIP = GetIP();
+	if (uClientIP == 0 && !HasLowID()) {
+		uClientIP = ENDIAN_NTOHL(m_nUserIDHybrid);
 	}
-
-	if (HasLowID() && !theApp.DoCallback(this)) {
-		if (GetDownloadState() == DS_CONNECTING) {
-			SetDownloadState(DS_LOWTOLOWIP);
-		} else if (GetDownloadState() == DS_REQHASHSET) {
-			SetDownloadState(DS_ONQUEUE);
-			m_reqfile->hashsetneeded = true;
-		}
-		if (GetUploadState() == US_CONNECTING) {
-			if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
+	if (uClientIP) {
+		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
+		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
+		if (theApp.ipfilter->IsFiltered(uClientIP)) {
+			AddDebugLogLineM(true, logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
+			if (Disconnected(wxT("IPFilter"))) {
 				Safe_Delete();
 				return false;
 			}
+			return true;
 		}
-		return true;
-	}
 
-	if (!m_socket) {
-		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
-	} else if (!m_socket->IsConnected()) {
-		m_socket->Safe_Delete();
+		// for safety: check again whether that IP is banned
+		if (theApp.clientlist->IsBannedClient(uClientIP)) {
+			AddDebugLogLineM(false, logClient, wxT("Refused to connect to banned client ") + Uint32toStringIP(uClientIP));
+			if (Disconnected(wxT("Banned IP"))) {
+				Safe_Delete();
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	if( GetKadState() == KS_QUEUED_FWCHECK ) {
+		SetKadState(KS_CONNECTING_FWCHECK);
+	}
+	
+	if ( HasLowID() ) {
+		if (!theApp.DoCallback(this)) {
+			//We cannot do a callback!
+			if (GetDownloadState() == DS_CONNECTING) {
+				SetDownloadState(DS_LOWTOLOWIP);
+			} else if (GetDownloadState() == DS_REQHASHSET) {
+				SetDownloadState(DS_ONQUEUE);
+				m_reqfile->hashsetneeded = true;
+			}
+			if (GetUploadState() == US_CONNECTING) {
+				if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
+					Safe_Delete();
+					return false;
+				}
+			}
+			return true;
+		}
+
+		#ifdef __COMPILE_KAD__
+		//We already know we are not firewalled here as the above condition already detected LowID->LowID and returned.
+		//If ANYTHING changes with the "if(!theApp.DoCallback(this))" above that will let you fall through 
+		//with the condition that the source is firewalled and we are firewalled, we must
+		//recheck it before the this check..
+		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp.serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
+			//This is a Kad firewalled source that we want to do a special callback because it has no buddyIP or buddyPort.
+			if( Kademlia::CKademlia::isConnected() ) {
+				//We are connect to Kad
+				if( Kademlia::CKademlia::getPrefs()->getTotalSource() > 0 || Kademlia::CSearchManager::alreadySearchingFor(Kademlia::CUInt128(GetBuddyID()))) {
+					//There are too many source lookups already or we are already searching this key.
+					SetDownloadState(DS_TOOMANYCONNSKAD);
+					return true;
+				}
+			}
+		}
+		#endif
+	}
+	
+	if (!m_socket || !m_socket->IsConnected()) {
+		if (m_socket) {
+			m_socket->Safe_Delete();
+		}
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
 	} else {
 		ConnectionEstablished();
 		return true;
-	}
+	}	
+	
+	
 	if (HasLowID()) {
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_WAITCALLBACK);
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			if(Disconnected(wxT("LowID and US_CONNECTING")))
-			{
+			if(Disconnected(wxT("LowID and US_CONNECTING"))) {
 				Safe_Delete();
 				return false;
 			}
@@ -1286,28 +1352,77 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
 			CSafeMemFile data;
+			// AFAICS, this id must be reversed to be sent to clients
+			// But if I reverse it, we do a serve violation ;)
 			data.WriteUInt32(m_nUserIDHybrid);
 			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
-
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
+			printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
+				ENDIAN_NTOHL(m_nUserIDHybrid), 
+				(const char*)unicode2char(Uint32toStringIP(m_nUserIDHybrid)),
+				GetSourceFrom());
+			SetDownloadState(DS_WAITCALLBACK);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
-				theApp.downloadqueue->RemoveSource(this);
-				if(Disconnected(wxT("LowID and US_NONE and QR=0")))
-				{
-					Safe_Delete();
-					return false;
+				
+				if( !HasValidBuddyID() ) {
+					theApp.downloadqueue->RemoveSource(this);
+					if (Disconnected(wxT("LowID and US_NONE and QR=0"))) {
+						Safe_Delete();
+						return false;
+					}
+					return true;
 				}
-				return true;
+				
+				#ifdef __COMPILE_KAD__
+				if( !Kademlia::CKademlia::isConnected() ) {
+					//We are not connected to Kad and this is a Kad Firewalled source..
+					theApp.downloadqueue->RemoveSource(this);
+					if(Disconnected(wxT("Kad Firewalled source but not connected to Kad."))) {
+						Safe_Delete();
+						return false;
+					}
+					return true;
+				}
+				
+               	 if( GetDownloadState() == DS_WAITCALLBACK ) {
+					if( GetBuddyIP() && GetBuddyPort()) {
+						CSafeMemFile bio(34);
+						Kademlia::CUInt128 buddy(GetBuddyID());
+						bio.WriteUInt128(&buddy);
+						Kademlia::CUInt128 file(m_reqfile->GetFileHash());
+						bio.WriteUInt128(&file);
+						bio.WriteUInt16(thePrefs::GetPort());
+						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_FINDSOURCE_REQ);
+						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
+						theApp.statistics->AddUpDataOverheadKad(packet->GetRealPacketSize());
+						SetDownloadState(DS_WAITCALLBACKKAD);
+					} else {
+						//Create search to find buddy.
+						Kademlia::CSearch *findSource = new Kademlia::CSearch;
+						findSource->setSearchTypes(Kademlia::CSearch::FINDSOURCE);
+						Kademlia::CUInt128 ID(GetBuddyID());
+						findSource->setTargetID(ID);
+						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash()));
+						if(Kademlia::CSearchManager::startSearch(findSource)) {
+							//Started lookup..
+							SetDownloadState(DS_WAITCALLBACKKAD);
+						} else {
+							//This should never happen..
+							wxASSERT(0);
+						}
+					}
+				}
+				#endif
 			} else {
 				if (GetDownloadState() == DS_WAITCALLBACK) {
 					m_bReaskPending = true;
 					SetDownloadState(DS_ONQUEUE);
 				}
-			}
+			}	
 		}
 	} else {
 		amuleIPV4Address tmp;

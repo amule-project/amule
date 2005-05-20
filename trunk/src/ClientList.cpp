@@ -111,12 +111,14 @@ void CClientList::AddClient( CUpDownClient* toadd )
 		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), toadd ) );
 
 		// We only add the IP if it is valid
-		if ( toadd->GetIP() ) 
+		if ( toadd->GetIP() ) {
 			m_ipList.insert( IDMapPair( toadd->GetIP(), toadd ) );
+		}
 
 		// We only add the hash if it is valid
-		if ( toadd->HasValidHash() ) 
+		if ( toadd->HasValidHash() ) {
 			m_hashList.insert( HashMapPair( toadd->GetUserHash(), toadd ) );
+		}
 	}
 }
 

@@ -818,7 +818,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			
-			case OP_CHANGE_CLIENT_ID: { 	// 0.43b (xcept the IDHybrid)
+			case OP_CHANGE_CLIENT_ID: { 	// Kad reviewed
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_CLIENT_ID") );
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
@@ -829,14 +829,12 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (IsLowID(nNewUserID)) { // client changed server and gots a LowID
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
-						#warning KAD TODO: Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)
 						m_client->SetUserIDHybrid(nNewUserID); // update UserID only if we know the server
 						m_client->SetServerIP(nNewServerIP);
 						m_client->SetServerPort(pNewServer->GetPort());
 					}
 				} else if (nNewUserID == m_client->GetIP()) { // client changed server and gots a HighID(IP)
-					#warning KAD TODO: Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)					
-					m_client->SetUserIDHybrid(nNewUserID);
+					m_client->SetUserIDHybrid(ENDIAN_NTOHL(nNewUserID));
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
 						m_client->SetServerIP(nNewServerIP);
@@ -1669,6 +1667,8 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				break;
 			}
+			#warning KAD TODO: Get the Kad ones (callback, etc)
+			
 			default:
 				theApp.statistics->AddDownDataOverheadOther(size);
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
