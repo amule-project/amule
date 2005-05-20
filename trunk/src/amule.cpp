@@ -780,7 +780,6 @@ bool CamuleApp::OnInit()
 	// Ready file-hasher
 	CAddFileThread::Start();
 
-	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	clientlist	= new CClientList();
 	friendlist = new CFriendList();
 	searchlist	= new CSearchList();
@@ -798,6 +797,7 @@ bool CamuleApp::OnInit()
 	// Create main dialog
 	InitGui(geometry_enabled, geom_string);
 	
+	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	serverlist->Init();
 
 	// init downloadqueue
