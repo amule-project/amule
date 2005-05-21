@@ -145,7 +145,6 @@ void CUpDownClient::Init()
 	m_bUDPPending = false;
 	m_nUserPort = 0;
 	m_nPartCount = 0;
-	m_nUpPartCount = 0;
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
 	m_dwUploadTime = 0;
@@ -1360,10 +1359,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
-			printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
-				ENDIAN_NTOHL(m_nUserIDHybrid), 
-				(const char*)unicode2char(Uint32toStringIP(m_nUserIDHybrid)),
-				GetSourceFrom());
+			//printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
+			//	ENDIAN_NTOHL(m_nUserIDHybrid), 
+			//	(const char*)unicode2char(Uint32toStringIP(m_nUserIDHybrid)),
+			//	GetSourceFrom());
 			SetDownloadState(DS_WAITCALLBACK);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {

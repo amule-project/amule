@@ -433,7 +433,6 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 	try {
 		m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
 		m_upPartStatus.clear();		
-		m_nUpPartCount = 0;
 		m_nUpCompleteSourcesCount= 0;
 		
 		if( GetExtendedRequestsVersion() == 0 ) {
@@ -449,21 +448,19 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 		
 		uint16 nED2KUpPartCount = data->ReadUInt16();
 		if (!nED2KUpPartCount) {
-			m_nUpPartCount = tempreqfile->GetPartCount();
-			m_upPartStatus.resize( m_nUpPartCount, 0 );
+			m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
 		} else {
 			if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount) {
 				// We already checked if we are talking about the same file.. So if we get here, something really strange happened!
-				m_nUpPartCount = 0;
+				m_upPartStatus.clear();
 				return;
 			}
 		
-			m_nUpPartCount = tempreqfile->GetPartCount();
-			m_upPartStatus.resize( m_nUpPartCount, 0 );
+			m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
 		
 			try {
 				uint16 done = 0;
-				while (done != m_nUpPartCount) {
+				while (done != m_upPartStatus.size()) {
 					uint8 toread = data->ReadUInt8();
 					for (sint32 i = 0;i != 8;i++){
 						m_upPartStatus[done] = (toread>>i)&1;
@@ -471,7 +468,7 @@ void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *te
 						//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
 						// bPartsNeeded = true;
 						done++;
-						if (done == m_nUpPartCount) {
+						if (done == m_upPartStatus.size()) {
 							break;
 						}
 					}
@@ -532,18 +529,15 @@ void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 		if (m_requpfileid != newreqfile->GetFileHash() ){
 			// This is a new file! update info
 			m_requpfileid = newreqfile->GetFileHash();
-			m_nUpPartCount = newreqfile->GetPartCount();
 			m_upPartStatus.clear();
-			m_upPartStatus.resize( m_nUpPartCount, 0 );
+			m_upPartStatus.resize( newreqfile->GetPartCount(), 0 );
 		} else {
 			// this is the same file we already had assigned. Only update data.
-			//wxASSERT(m_nUpPartCount == newreqfile->GetPartCount());
 			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
  		}
 		m_uploadingfile = newreqfile;
 	} else {
 		m_upPartStatus.clear();
-		m_nUpPartCount = 0;
 		m_nUpCompleteSourcesCount= 0;
 		ClearUploadFileID(); // This clears m_uploadingfile and m_requpfileid
 	}
