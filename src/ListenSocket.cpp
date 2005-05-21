@@ -127,6 +127,7 @@ CClientReqSocketHandler::~CClientReqSocketHandler()
 
 void *CClientReqSocketHandler::Entry()
 {
+	int idle_count = 0;
 	while ( !TestDestroy() ) {
 		if ( m_socket->deletethis ) {
 			break;
@@ -148,10 +149,16 @@ void *CClientReqSocketHandler::Entry()
 		if ( m_socket->WaitForRead(0, 100) ) {
 			if ( m_socket->RecievePending() ) {
 				Sleep(50);
+				idle_count++;
 			} else {
 				CALL_APP_DATA_LOCK;
 				m_socket->OnReceive(0);
+				idle_count = 0;
 			}
+		}
+		// if no data is coming for 10min - consider client is dead
+		if ( idle_count > 10000 ) {
+			break;
 		}
 	}
 	m_socket->my_handler = 0;
