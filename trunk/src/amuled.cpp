@@ -25,18 +25,6 @@
 #include <unistd.h>           // Needed for close(2) and sleep(3)
 #include <wx/defs.h>
 
-#ifdef __WXGTK__
-
-	#ifdef __BSD__
-     	#include <sys/param.h>
-       	#include <sys/mount.h>
-	#else 
-		#include <mntent.h>
-	#endif /* __BSD__ */
-
-	
-#endif
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
 #endif
