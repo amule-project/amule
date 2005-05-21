@@ -414,7 +414,7 @@ public:
 						// or the socket might be not able to send
 	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
 	uint32		GetLastUpRequest() const 	{ return m_dwLastUpRequest; }
-	uint16		GetUpPartCount() const 		{ return m_nUpPartCount; }
+	uint16		GetUpPartCount() const 		{ return m_upPartStatus.size(); }
 
 
 	//download
