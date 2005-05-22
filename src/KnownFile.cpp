@@ -852,8 +852,19 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	// Kad reviewed
 	
-	if ((CKnownFile*)forClient->GetRequestFile() != this) {
-		printf("File missmatch on source packet (K)\n");
+	if (forClient->GetRequestFile() && ((CKnownFile*)forClient->GetRequestFile() != this)) {
+		wxString file1 = _("Unknown");
+		if (!forClient->GetRequestFile()->GetFileName().IsEmpty()) {
+			file1 = forClient->GetRequestFile()->GetFileName();
+		}
+		wxString file2 = _("Unknown");
+		if (!GetFileName().IsEmpty()) {
+			file2 = GetFileName();
+		}
+		printf("File missmatch on source packet (K) Sending: %s  From: %s\n",
+			(const char*)unicode2char(file1),
+			(const char*)unicode2char(file2)
+		);
 		return NULL;
 	}
 	
@@ -883,10 +894,16 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		const BitVector& rcvstatus = forClient->GetUpPartStatus();
 		
 		if ( !rcvstatus.empty() ) {
-			wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
+			//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
+			if (rcvstatus.size() != GetPartCount()) {
+				continue;
+			}
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
-				wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
+				//wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
+				if (srcstatus.size() != GetPartCount()) {
+					continue;
+				}
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
@@ -912,7 +929,10 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			// a noticeable performance problem.
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
-				wxASSERT(srcstatus.size() == GetPartCount());
+				//wxASSERT(srcstatus.size() == GetPartCount());
+				if (srcstatus.size() != GetPartCount()) {
+					continue;
+				}
 				for (int x = 0; x < GetPartCount(); x++ ) {
 					if ( srcstatus[x] ) {
 						// this client has at least one chunk

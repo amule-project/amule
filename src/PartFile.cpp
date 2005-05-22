@@ -2716,8 +2716,19 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	
 	// Kad reviewed
 	
-	if (forClient->GetRequestFile() != this) {
-		printf("File missmatch on source packet (P)\n");
+	if (forClient->GetRequestFile() && (forClient->GetRequestFile() != this)) {
+		wxString file1 = _("Unknown");
+		if (!forClient->GetRequestFile()->GetFileName().IsEmpty()) {
+			file1 = forClient->GetRequestFile()->GetFileName();
+		}
+		wxString file2 = _("Unknown");
+		if (!GetFileName().IsEmpty()) {
+			file2 = GetFileName();
+		}
+		printf("File missmatch on source packet (P) Sending: %s  From: %s\n",
+			(const char*)unicode2char(file1),
+			(const char*)unicode2char(file2)
+		);
 		return NULL;
 	}
 
@@ -2753,10 +2764,16 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		// only send source which have needed parts for this client if possible
 		const BitVector& srcstatus = cur_src->GetPartStatus();
 		if ( !srcstatus.empty() ) {
-			wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
+			//wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
+			if (srcstatus.size() != GetPartCount()) {
+				continue;
+			}
 			const BitVector& reqstatus = forClient->GetPartStatus();
 			if ( !reqstatus.empty() ) {
-				wxASSERT(reqstatus.size() == GetPartCount()); // Obviously!			
+				//wxASSERT(reqstatus.size() == GetPartCount()); // Obviously!			
+				if (reqstatus.size() != GetPartCount()) {
+					continue;
+				}
 				// only send sources which have needed parts for this client
 				for (int x = 0; x < GetPartCount(); ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
@@ -2768,6 +2785,9 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// if we don't know the need parts for this client, 
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
+				if (srcstatus.size() != GetPartCount()) {
+					continue;
+				}
 				for (int x = 0; x < GetPartCount(); ++x){
 					if (srcstatus[x]) {
 						bNeeded = true;
