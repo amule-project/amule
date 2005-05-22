@@ -157,7 +157,7 @@ class CEC_ConnState_Tag : public CECTag {
  		
  		bool IsConnected() { return ClientID() && (ClientID() != 0xffffffff); }
  		bool IsConnecting() {return (ClientID() == 0xffffffff); }
- 		bool HaveLowID() { return IsLowID(ClientID()); }
+ 		bool HaveLowID() { return ClientID() < HIGHEST_LOWID_ED2K_KAD; }
  		// 0  : disconnected
  		// 0xffffffff : connecting
  		// other: client ID
