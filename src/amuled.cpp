@@ -113,6 +113,88 @@ IMPLEMENT_APP(CamuleDaemonApp)
  * Socket handling in wxBase
  * 
  */
+CAmuledGSocketFuncTable::CAmuledGSocketFuncTable()
+{
+	m_in_fds_count = m_out_fds_count = 0;
+}
+
+void CAmuledGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
+{
+	int fd = socket->m_fd;
+	if ( event == GSOCK_INPUT ) {
+		m_in_fds[m_in_fds_count++] = fd;
+		m_in_gsocks[fd] = socket;
+	} else {
+		m_out_fds[m_out_fds_count++] = fd;
+		m_out_gsocks[fd] = socket;
+	}
+}
+
+void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
+{
+	int fd = socket->m_fd;
+	if ( event == GSOCK_INPUT ) {
+		for(int i = 0; i < m_in_fds_count; i++) {
+			if ( m_in_fds[i] == fd ) {
+				m_in_fds[i] = m_in_fds[m_in_fds_count--];
+				m_in_gsocks[fd] = 0;
+				break;
+			}
+		}
+	} else {
+		for(int i = 0; i < m_out_fds_count; i++) {
+			if ( m_out_fds[i] == fd ) {
+				m_out_fds[i] = m_out_fds[m_out_fds_count--];
+				m_out_gsocks[fd] = 0;
+				break;
+			}
+		}
+	}
+}
+
+void CAmuledGSocketFuncTable::RunSelect()
+{
+	FD_ZERO(&m_readset);
+	FD_ZERO(&m_writeset);
+
+	int max_fd = -1;
+	for(int i = 0; i < m_in_fds_count; i++) {
+	    FD_SET(m_in_fds[i], &m_readset);
+	    if ( m_in_fds[i] > max_fd ) {
+	    	max_fd = m_in_fds[i];
+	    }
+	}
+	for(int i = 0; i < m_out_fds_count; i++) {
+	    FD_SET(m_out_fds[i], &m_writeset);
+	    if ( m_out_fds[i] > max_fd ) {
+	    	max_fd = m_out_fds[i];
+	    }
+	}
+
+    struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = 10000; // 10ms
+	
+	int result = select(max_fd + 1, &m_readset, &m_writeset, 0, &tv);
+	if ( result > 0 ) {
+		for (int i = 0; i < m_in_fds_count; i++) {
+			int fd = m_in_fds[i];
+			if ( FD_ISSET(fd, &m_readset) ) {
+				GSocket *socket = m_in_gsocks[fd];
+				socket->Detected_Read();
+			}
+		}
+		for (int i = 0; i < m_out_fds_count; i++) {
+			int fd = m_out_fds[i];
+			if ( FD_ISSET(fd, &m_writeset) ) {
+				GSocket *socket = m_out_gsocks[fd];
+				socket->Detected_Write();
+			}
+		}
+	}
+	
+}
+
 GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
 {
 	static CAmuledGSocketFuncTable table;
