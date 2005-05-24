@@ -34,8 +34,8 @@
 #include "CTypedPtrList.h"	// Needed for CList
 #include "Statistics.h"
 
-class WXDLLEXPORT wxTreeCtrl;
-class WXDLLEXPORT wxTreeItemId;
+class wxTreeCtrl;
+class wxTreeItemId;
 class COScopeCtrl;
 
 // CStatisticsDlg dialog
