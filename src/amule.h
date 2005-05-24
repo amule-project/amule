@@ -443,6 +443,29 @@ DECLARE_APP(CamuleRemoteGuiApp)
 
 #else /* ! AMULE_DAEMON */
 
+#include <wx/apptrait.h>
+#include <wx/socket.h>
+
+class CDaemonAppTraits : public wxConsoleAppTraits {
+	public:
+	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+	    virtual void ScheduleForDestroy(wxObject *object);
+	    virtual void RemoveFromPendingDelete(wxObject *object);
+};
+
+class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
+public:
+	virtual bool OnInit();
+	virtual void OnExit();
+	virtual bool CanUseEventLoop();
+	virtual bool Init_Socket(GSocket *socket);
+	virtual void Destroy_Socket(GSocket *socket);
+	virtual void Install_Callback(GSocket *socket, GSocketEvent event);
+	virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
+	virtual void Enable_Events(GSocket *socket);
+	virtual void Disable_Events(GSocket *socket);
+};
+
 class CamuleDaemonApp : public CamuleApp {
 	bool m_Exit;
 	int OnRun();
@@ -463,6 +486,14 @@ public:
 	wxMutex data_mutex;
 	
 	DECLARE_EVENT_TABLE()
+	
+#warning Uncomment to enable new socket code
+	// lfroen:
+	// Still in comment, so existing code will not break
+	// untill I commit all implementation
+	//
+	//wxAppTraits *CreateTraits();
+
 };
 
 

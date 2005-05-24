@@ -109,6 +109,76 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleDaemonApp)
 
+/*
+ * Socket handling in wxBase
+ * 
+ */
+GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
+{
+	static CAmuledGSocketFuncTable table;
+	return &table;
+}
+
+void CDaemonAppTraits::ScheduleForDestroy(wxObject *object)
+{
+	//
+	// FIXME: this only present in gtk core lib. Must do myself
+	//
+	/*
+	if ( !wxPendingDelete.Member(object) ) {
+	    wxPendingDelete.Append(object);
+	}
+	*/
+}
+
+bool CAmuledGSocketFuncTable::OnInit()
+{
+	return true;
+}
+
+void CAmuledGSocketFuncTable::OnExit()
+{
+}
+
+bool CAmuledGSocketFuncTable::CanUseEventLoop()
+{
+	return true;
+}
+
+bool CAmuledGSocketFuncTable::Init_Socket(GSocket *socket)
+{
+	return true;
+}
+
+void CAmuledGSocketFuncTable::Destroy_Socket(GSocket *socket)
+{
+}
+
+void CAmuledGSocketFuncTable::Install_Callback(GSocket *sock, GSocketEvent e)
+{
+	//g_sock_table.AddSocket(sock, e);
+}
+
+void CAmuledGSocketFuncTable::Uninstall_Callback(GSocket *sock, GSocketEvent e)
+{
+}
+
+void CAmuledGSocketFuncTable::Enable_Events(GSocket *socket)
+{
+	Install_Callback(socket, GSOCK_INPUT);
+	Install_Callback(socket, GSOCK_OUTPUT);
+}
+
+void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
+{
+	Uninstall_Callback(socket, GSOCK_INPUT);
+	Uninstall_Callback(socket, GSOCK_OUTPUT);
+}
+
+void CDaemonAppTraits::RemoveFromPendingDelete(wxObject *object)
+{
+}
+
 CamuleLocker::CamuleLocker() : wxMutexLocker(theApp.data_mutex)
 {
 	msStart = GetTickCount();
