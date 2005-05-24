@@ -121,7 +121,7 @@ public:
 	/**
 	 * Implicit conversion to wxString.
 	 */
-#if GCC_VERSION > 30203
+#if GCC_VERSION > 31000
 	operator const wxString&() const;
 #else
 	operator wxString() const;
