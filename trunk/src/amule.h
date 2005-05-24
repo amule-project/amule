@@ -454,16 +454,29 @@ class CDaemonAppTraits : public wxConsoleAppTraits {
 };
 
 class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
-public:
-	virtual bool OnInit();
-	virtual void OnExit();
-	virtual bool CanUseEventLoop();
-	virtual bool Init_Socket(GSocket *socket);
-	virtual void Destroy_Socket(GSocket *socket);
-	virtual void Install_Callback(GSocket *socket, GSocketEvent event);
-	virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
-	virtual void Enable_Events(GSocket *socket);
-	virtual void Disable_Events(GSocket *socket);
+		int m_in_fds[1024], m_out_fds[1024];
+		GSocket * m_in_gsocks[1024];
+		GSocket * m_out_gsocks[1024];
+		
+		int m_in_fds_count, m_out_fds_count;
+
+		fd_set m_readset, m_writeset;
+	public:
+		CAmuledGSocketFuncTable();
+
+		void AddSocket(GSocket *socket, GSocketEvent event);
+		void RemoveSocket(GSocket *socket, GSocketEvent event);
+		void RunSelect();
+
+		virtual bool OnInit();
+		virtual void OnExit();
+		virtual bool CanUseEventLoop();
+		virtual bool Init_Socket(GSocket *socket);
+		virtual void Destroy_Socket(GSocket *socket);
+		virtual void Install_Callback(GSocket *socket, GSocketEvent event);
+		virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
+		virtual void Enable_Events(GSocket *socket);
+		virtual void Disable_Events(GSocket *socket);
 };
 
 class CamuleDaemonApp : public CamuleApp {
