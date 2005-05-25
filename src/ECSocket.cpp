@@ -226,7 +226,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 #endif
 	wxSocketError LastErrorValue = sock->LastError();
 
-	while ((required_len == 0) || ((required_len > ReadSoFar) && !error)) {
+	while (((required_len == 0) || (required_len > ReadSoFar)) && !error) {
 		/*
 		 * lfroen: commenting this out becouse it doesn't work this way on gui builds. On wxGTK
 		 * any call to WaitFor<X> will eventually call Yield. As a result, if socket call initiated
