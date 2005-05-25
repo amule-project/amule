@@ -226,7 +226,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 #endif
 	wxSocketError LastErrorValue = sock->LastError();
 
-	while ((required_len > ReadSoFar) && !error) {
+	while ((required_len == 0) || ((required_len > ReadSoFar) && !error)) {
 		/*
 		 * lfroen: commenting this out becouse it doesn't work this way on gui builds. On wxGTK
 		 * any call to WaitFor<X> will eventually call Yield. As a result, if socket call initiated
@@ -264,6 +264,9 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		ReadSoFar += LastIO;
 		iobuf += LastIO;
 		max_len -= LastIO;
+		if (required_len == 0) {
+			break;
+		}
 	}
 	if (error) {
 		if (ErrorCode) *ErrorCode = LastErrorValue;
@@ -523,8 +526,13 @@ bool ECSocket::ReadBuffer(void *buffer, unsigned int len)
 			// consumed all output
 			parms.z.next_out = parms.out_ptr;
 			parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
+			unsigned min_read = 1;
+			if (parms.z.avail_in) {
+				memmove(parms.in_ptr, parms.z.next_in, parms.z.avail_in);
+				min_read = 0;
+			}
 			parms.z.next_in = parms.in_ptr;
-			parms.z.avail_in += ReadBufferFromSocket(this, parms.z.next_in + parms.z.avail_in, 1, EC_SOCKET_BUFFER_SIZE - parms.z.avail_in, &parms.LastSocketError);
+			parms.z.avail_in += ReadBufferFromSocket(this, parms.z.next_in + parms.z.avail_in, min_read, EC_SOCKET_BUFFER_SIZE - parms.z.avail_in, &parms.LastSocketError);
 			if (parms.LastSocketError != wxSOCKET_NOERROR) {
 				return false;
 			}
