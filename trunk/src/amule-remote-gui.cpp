@@ -389,6 +389,10 @@ wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
 	return strCode;
 }
 
+wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
+{
+	return wxEmptyString;
+}
 
 wxString validateURI(const wxString url)
 {
