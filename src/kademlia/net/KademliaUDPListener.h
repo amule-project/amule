@@ -95,7 +95,6 @@ private:
 	void processFirewalledResponse2		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processFindBuddyRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processFindBuddyResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFindSourceRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processCallbackRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 };
 

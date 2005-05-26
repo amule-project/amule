@@ -98,7 +98,8 @@ void CIndexed::readFile(void)
 		if(load_file.Open(m_loadfilename, CFile::read)) {
 			uint32 version = load_file.readUInt32();
 			if(version<2) {
-				time_t savetime = load_file.readUInt32();
+				/*time_t savetime =*/ load_file.readUInt32(); //  Savetime is unused now
+				
 				numLoad = load_file.readUInt32();
 				while(numLoad) {
 					CUInt128 keyID;
@@ -650,7 +651,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			uint32 size = currNoteHash->m_Source_map.GetSize();
 			for(POSITION pos2 = currNoteHash->m_Source_map.GetHeadPosition(); pos2 != NULL; )
 			{
-				Source* currNote = currNoteHash->m_Source_map.GetHead();			
+				Source* currNote = currNoteHash->m_Source_map.GetNext(pos2);			
 				if( currNote->entryList.GetSize() ) {
 					CEntry* currEntry = currNote->entryList.GetHead();
 					wxASSERT(currEntry!=NULL);
@@ -698,13 +699,18 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 bool CIndexed::AddLoad(const CUInt128& keyID, uint32 timet)
 {
 	Load* load = NULL;
+	
+	if((uint32)time(NULL)>timet) {
+		return false;
+	}
+	
 	LoadMap::iterator it = m_Load_map.find(CCKey(keyID.getData()));
 	if(it != m_Load_map.end())
 	{
 		wxASSERT(0);
 		return false;
 	}
-	wxASSERT((uint32)time(NULL)<timet);
+
 	load = new Load();
 	load->keyID.setValue(keyID);
 	load->time = timet;

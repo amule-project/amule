@@ -509,7 +509,7 @@ uint32 CRoutingZone::estimateCount()
 	CRoutingZone* curZone = m_superZone->m_superZone->m_superZone;
 
 	float modify = ((float)curZone->getNumContacts())/20.0F;
-	return (uint32)((pow( 2, m_level-2))*10*(modify));
+	return (uint32)(pow( 2, m_level-2)*10*(modify));
 }
 
 void CRoutingZone::onSmallTimer(void)

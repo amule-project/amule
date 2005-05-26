@@ -170,8 +170,9 @@ void CKademlia::stop() {
 		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (instance)"));
 		wxASSERT(0);
 	}
-	m_events.clear();
+	
 	instance = NULL;
+	m_events.clear();
 }
 
 void CKademlia::process()

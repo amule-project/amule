@@ -228,9 +228,9 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyRes %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFindBuddyResponse(packetData, lenPacket, ip, port);
 			break;
-		case KADEMLIA_FINDSOURCE_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindSourceReq %s")) % Uint32_16toStringIP_Port(ip, port));
-			processFindSourceRequest(packetData, lenPacket, ip, port);
+		case KADEMLIA_CALLBACK_REQ:
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallbackReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			processCallbackRequest(packetData, lenPacket, ip, port);
 			break;
 		default: {
 			throw wxString::Format(wxT("Unknown opcode %02x"), opcode);
@@ -1200,8 +1200,8 @@ void CKademliaUDPListener::processFindBuddyResponse (const byte *packetData, uin
 	theApp.clientlist->RequestBuddy(&contact);
 }
 
-//KADEMLIA_FINDSOURCE_REQ
-void CKademliaUDPListener::processFindSourceRequest (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
+//KADEMLIA_CALLBACK_REQ
+void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
 	if (lenPacket < 34) {
@@ -1224,11 +1224,12 @@ void CKademliaUDPListener::processFindSourceRequest (const byte *packetData, uin
 		bio2.WriteUInt16(tcp);
 		CPacket* packet = new CPacket(&bio2, OP_EMULEPROT, OP_CALLBACK);
 		if( buddy->GetSocket() ) {
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallback %s")) % Uint32_16toStringIP_Port(ip, port));
+			theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
           	buddy->GetSocket()->SendPacket(packet);
 		} else {
 			wxASSERT(0);
 		}
-		AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallback %s")) % Uint32_16toStringIP_Port(ip, port));
 	}
 }
 
