@@ -41,25 +41,13 @@
 class CECPacket;
 class ECSocket;
 
-#ifdef AMULE_DAEMON
-#define EC_SOCK_HANDLER_BASE wxThread
-#else
-#define EC_SOCK_HANDLER_BASE wxEvtHandler
-#endif
-
-class CECSocketHandler: public EC_SOCK_HANDLER_BASE {
+class CECSocketHandler: public wxEvtHandler {
 	public:
         CECSocketHandler(ECSocket *socket = NULL);
 
-	public:
-#ifdef AMULE_DAEMON
-        void *Entry();
-        ECSocket *m_socket;
-#else
 	private:
         void SocketHandler(wxSocketEvent& event);
         DECLARE_EVENT_TABLE()
-#endif
 };
 
 

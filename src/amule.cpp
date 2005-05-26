@@ -1908,6 +1908,106 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 	#endif
 }
 
+void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
+{
+	//
+	// There is only one ListenSocket in the whole application,
+	// so there is no need to discover on the fly with:
+	//
+	// CListenSocket *socket = (CListenSocket *) event.GetSocket();
+	//
+	// Also, now with proxy, CListenSocket is no longer derived from
+	// wxSocketServer, so event.GetSocket() is actually
+	// theApp.listensocket->m_SocketServer
+	//
+	CListenSocket *socket = theApp.listensocket;
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		wxASSERT(0);
+		return;
+	}
+	
+	if (!IsRunning()) {
+		// Even if we are not ready to start listening, we must
+		// accept the connection, otherwise no other connection
+		// events will happen. So we Accept() it and destroy the
+		// socket imediately.
+		wxSocketBase *s = socket->Accept(false);
+		s->Destroy();
+		// Kry - Woops, we don't want to accept a destroying socket
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnAccept(0);
+			break;
+		default:
+			// shouldn't get other than connection events...
+			wxASSERT(0);
+			break;
+	}
+}
+
+void CamuleApp::ServerUDPSocketHandler(wxSocketEvent& event)
+{
+	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		return;
+	}
+
+	if (!IsRunning() && !IsOnShutDown()) {
+		// Back to the queue!
+		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		return;
+	}
+
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+}
+
+void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
+{
+	CClientUDPSocket *socket = dynamic_cast<CClientUDPSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		return;
+	}
+
+	if (!IsRunning() && !IsOnShutDown()) {
+		// Back to the queue!
+		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		return;
+	}
+
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+}
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)

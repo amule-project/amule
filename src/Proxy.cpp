@@ -96,7 +96,6 @@ CProxyEventHandler::CProxyEventHandler()
 {
 }
 
-#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CProxyEventHandler, wxEvtHandler)
 	EVT_SOCKET(PROXY_SOCKET_HANDLER, CProxyEventHandler::ProxySocketHandler)
 END_EVENT_TABLE()
@@ -116,18 +115,6 @@ void CProxyEventHandler::ProxySocketHandler(wxSocketEvent& event)
 	}
 	sock->m_proxyStateMachine->Clock();
 }
-
-#else
-// TODO -- amuled
-CProxyEventHandler::~CProxyEventHandler()
-{
-}
-
-void *CProxyEventHandler::Entry()
-{
-	return NULL;
-}
-#endif
 
 //------------------------------------------------------------------------------
 // CProxyStateMachine
@@ -245,7 +232,6 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 
 void CProxyStateMachine::AddDummyEvent()
 {
-#ifndef AMULE_DAEMON
 	wxSocketEvent e(PROXY_SOCKET_HANDLER);
 	// Make sure this is an unknown event :)
 	e.m_event = (wxSocketNotify)(
@@ -253,7 +239,6 @@ void CProxyStateMachine::AddDummyEvent()
 		wxSOCKET_CONNECTION + wxSOCKET_LOST);
 	e.SetEventObject(m_proxyClientSocket);
 	g_proxyEventHandler.AddPendingEvent(e);
-#endif
 }
 
 /*
@@ -266,7 +251,6 @@ void CProxyStateMachine::AddDummyEvent()
 
 void CProxyStateMachine::ReactivateSocket()
 {
-#ifndef AMULE_DAEMON
 	/*    If proxy is beeing used, then the TCP socket handlers 
 	 * (CServerSocketHandler and CClientReqSocketHandler) will not
 	 * receive a wxSOCKET_CONNECTION event, because the connection has
@@ -301,7 +285,6 @@ void CProxyStateMachine::ReactivateSocket()
 		}
 		s->RestoreState();
 	}
-#endif
 }
 
 wxSocketBase &CProxyStateMachine::ProxyWrite(wxSocketBase &socket, const void *buffer, wxUint32 nbytes)
@@ -1201,7 +1184,6 @@ void CProxySocket::SetProxyData(const CProxyData *proxyData)
 bool CProxySocket::Start(const wxIPaddress &peerAddress)
 {
 	SaveState();
-#ifndef AMULE_DAEMON
 	// Important note! SaveState()/RestoreState() DO NOT save/restore
 	// the event handler. The method SaveEventHandler() has been created
 	// for that.
@@ -1213,9 +1195,6 @@ bool CProxySocket::Start(const wxIPaddress &peerAddress)
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-#else
-	Notify(false);
-#endif
 	Connect(m_proxyAddress, false);
 	SetFlags(wxSOCKET_NONE);
 	bool ok = m_proxyStateMachine->Start(peerAddress, this);

@@ -221,9 +221,9 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 	unsigned int ReadSoFar = 0;
 	char *iobuf = (char *)buffer;
 	bool error = sock->Error();
-#ifdef AMULE_DAEMON
+/*
 	bool FirstRead = true;
-#endif
+*/
 	wxSocketError LastErrorValue = sock->LastError();
 
 	while (((required_len == 0) || (required_len > ReadSoFar)) && !error) {
@@ -233,7 +233,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		 * by some gui action (selecting a menu), wxYield is called recoursively.
 		 * So, furure TODO: get rid of WaitFor<X> on gui builds. Thats an only way.
 		 */
-#ifdef AMULE_DAEMON
+/*
 		//
 		// Give socket a 10 sec chance to recv more data.
 		if (FirstRead && (required_len != max_len)) {
@@ -256,7 +256,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 				break;
 			}
 		}
-#endif
+*/
 		sock->Read(iobuf, max_len);
 		LastIO = sock->LastCount();
 		error = sock->Error();
@@ -337,30 +337,6 @@ ECSocket::~ECSocket(void)
 	}
 }
 
-#ifdef AMULE_DAEMON
-
-void *CECSocketHandler::Entry()
-{
-    while ( !TestDestroy() ) {
-        if ( m_socket->Error()) {
-            if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
-                if ( m_socket->WaitForWrite(0, 0) ) {
-                        m_socket->OnSend();
-                }
-            } else  {
-                break;
-            }
-        }
-        if ( m_socket->WaitForRead(0, 100) ) {
-            m_socket->OnReceive();
-        }
-    }
-
-    return 0;
-}
- 
-#else
-
 BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
         EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
 END_EVENT_TABLE()
@@ -392,8 +368,6 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
                         break;
         }
 }
-
-#endif
 
 /*
  * FIXME: ECSocket must be make "public wxSocketBase" and all "m_sock->" removed.

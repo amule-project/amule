@@ -2109,9 +2109,7 @@ bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpack
 		m_socket->SendPacket(packet, delpacket, controlpacket );
 		return true;
 	} else {
-#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
-#endif
 		return false;
 	}
 }
@@ -2120,9 +2118,7 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 {
 
 	// lfroen: in daemon it actually can happen
-	#ifndef AMULE_DAEMON
 		wxASSERT( m_socket );
-	#endif
 
 	float kBpsClient = CalculateKBpsDown();
 	
@@ -2152,9 +2148,7 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 		}		
 		
 	} else {
-#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f\n", kBpsClient);
-#endif	
 	}
 	
 	return kBpsClient;
