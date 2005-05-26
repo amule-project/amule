@@ -56,6 +56,7 @@
 #endif
 
 class CAbstractFile;
+class CKnownFile;
 class ExternalConn;
 class CamuleDlg;
 class CPreferences;
@@ -192,6 +193,7 @@ public:
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
+	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
 	wxString	GenFakeCheckUrl(const CAbstractFile *f);
 	wxString        GenFakeCheckUrl2(const CAbstractFile *f);
@@ -420,6 +422,7 @@ public:
 	wxString CreateED2kLink(const CAbstractFile* f);
 	wxString CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
+	wxString CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
 	wxString GenFakeCheckUrl(const CAbstractFile *f);
 	wxString GenFakeCheckUrl2(const CAbstractFile *f);

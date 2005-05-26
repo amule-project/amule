@@ -460,7 +460,16 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		// Adding normal sources
 		CPartFile::SourceSet::iterator it;
 		for ( it = normSources.begin(); it != normSources.end(); ++it ) {
-			AddSource( file, *it, true );
+			bool available;
+			switch ((*it)->GetDownloadState()) {
+				case DS_DOWNLOADING:
+				case DS_ONQUEUE:
+					available = true;
+				default:
+					// Any other state
+					available = false;
+			}
+			AddSource( file, *it, available );
 		}
 
 		// Adding A4AF sources
@@ -1824,7 +1833,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			if ( item1->owner == item2->owner ) {
 				// Avilable sources first, if we have both an
 				// available and an unavailable
-				comp = ( item1->type - item2->type );
+				comp = ( item2->type - item1->type );
 
 				// Do we need to futher compare them? Happens if both have same type.
 				if ( !comp ) {
@@ -1915,9 +1924,16 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 
 	// Sort by remaining time
 	case 9:
-		result = CmpAny(
-			file1->getTimeRemaining(),
-			file2->getTimeRemaining() );
+		if (file1->getTimeRemaining() == -1) {
+			result = -1;
+		}
+		if (file2->getTimeRemaining() == -1) {
+			result = 1;
+		} else {
+			result = CmpAny(
+				file1->getTimeRemaining(),
+				file2->getTimeRemaining() );
+		}
 		break;
 
 	// Sort by last seen complete
