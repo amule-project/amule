@@ -43,9 +43,6 @@ class CPacket;
 // CClientUDPSocket command target
 
 class CClientUDPSocket : public CDatagramSocketProxy, public ThrottledControlSocket
-#ifdef AMULE_DAEMON
-, public wxThread
-#endif
 {
 	DECLARE_DYNAMIC_CLASS(CClientUDPSocket)
 	CClientUDPSocket() : CDatagramSocketProxy(useless2) {};
@@ -82,9 +79,6 @@ private:
 
 	wxMutex m_sendLocker;
 
-#ifdef AMULE_DAEMON
-	void *Entry();
-#endif
 };
 
 #endif // CLIENTUDPSOCKET_H

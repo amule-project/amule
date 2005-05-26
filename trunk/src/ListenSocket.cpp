@@ -62,7 +62,6 @@ IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
-#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
 	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
 END_EVENT_TABLE()
@@ -109,65 +108,6 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 //
 static CClientReqSocketHandler g_clientReqSocketHandler;
 
-#else
-CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
-{
-	m_socket = socket;
-	socket->my_handler = this;
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ERROR: CClientReqSocketHandler failed create\n");
-		wxASSERT(0);
-	}
-}
-
-CClientReqSocketHandler::~CClientReqSocketHandler()
-{
-	wxASSERT(m_socket == 0);
-}
-
-void *CClientReqSocketHandler::Entry()
-{
-	int idle_count = 0;
-	while ( !TestDestroy() ) {
-		if ( m_socket->deletethis ) {
-			break;
-		}
-		if ( m_socket->Error()) {
-			if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
-				if ( m_socket->WaitForWrite(0, 0) ) {
-					m_socket->OnSend(0);
-				}
-			} else  {
-				break;
-			}
-		}
-		if ( m_socket->deletethis || m_socket->WaitForLost(0, 0) ) {
-			break;
-		}
-		// lfroen: tradeof here - short wait time for high performance on delete
-		// but long wait time for low cpu usage
-		if ( m_socket->WaitForRead(0, 100) ) {
-			if ( m_socket->RecievePending() ) {
-				Sleep(50);
-				idle_count++;
-			} else {
-				CALL_APP_DATA_LOCK;
-				m_socket->OnReceive(0);
-				idle_count = 0;
-			}
-		}
-		// if no data is coming for 10min - consider client is dead
-		if ( idle_count > 10000 ) {
-			break;
-		}
-	}
-	m_socket->my_handler = 0;
-	m_socket->Safe_Delete();
-	m_socket = NULL;
-
-	return 0;
-}
-#endif
 
 //------------------------------------------------------------------------------
 // CClientReqSocket
@@ -182,7 +122,7 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *P
 	ResetTimeOutTimer();
 	deletethis = false;
 	last_action = ACTION_NONE;
-#ifndef AMULE_DAEMON
+
 	my_handler = &g_clientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
@@ -191,10 +131,7 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *P
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-#else
-	my_handler = 0;
-	Notify(false);
-#endif
+
 	theApp.listensocket->AddSocket(this);
 	theApp.listensocket->AddConnection();
 }
@@ -214,9 +151,6 @@ CClientReqSocket::~CClientReqSocket()
 	if (theApp.listensocket && !theApp.listensocket->OnShutdown()) {
 		theApp.listensocket->RemoveSocket(this);
 	}
-#ifdef AMULE_DAEMON
-	wxASSERT(deletethis && !my_handler);
-#endif
 }
 
 
@@ -228,14 +162,6 @@ void CClientReqSocket::ResetTimeOutTimer()
 
 bool CClientReqSocket::CheckTimeOut()
 {
-// lfroen: on daemon sockets must be blocking. Which means
-// that when client is downloading, i will only trust
-// tcp timeout
-#ifdef AMULE_DAEMON
-	if (my_handler) {
-		return false;
-	}
-#endif
 	// 0.42x
 	uint32 uTimeout = GetTimeOut();
 	if (m_client) {
@@ -337,9 +263,6 @@ void CClientReqSocket::Safe_Delete()
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
-#ifdef AMULE_DAEMON
-	if ( !my_handler )
-#endif
 		Close();
 	}
 }
@@ -1903,16 +1826,6 @@ bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient*
 	return filtered;
 }
 
-#ifdef AMULE_DAEMON
-void CClientReqSocket::Destroy()
-{
-	if ( !my_handler ) {
-		CEMSocket::Destroy();
-	}
-}
-#endif
-
-
 SocketSentBytes CClientReqSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
 {
     SocketSentBytes returnStatus = CEMSocket::SendControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
@@ -1957,12 +1870,7 @@ CListenSocket::CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
-#ifdef AMULE_DAEMON
-CSocketServerProxy(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR, ProxyData),
-wxThread(wxTHREAD_JOINABLE) 
-#else
 CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
-#endif
 {
 	// 0.42e - vars not used by us
 	bListening = false;
@@ -1976,16 +1884,10 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	activeconnections = 0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
-#ifdef AMULE_DAEMON
-		if ( Create() != wxTHREAD_NO_ERROR ) {
-			AddLogLineM( true, _("CListenSocket: Cannot create thread") );
-		}
-		Notify(false);
-#else
  		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
  		SetNotify(wxSOCKET_CONNECTION_FLAG);
  		Notify(true);
-#endif	
+
 		printf("ListenSocket: Ok.\n");
 	} else {
 		AddLogLineM( true, _("Error: Could not listen to TCP port.") );
@@ -1998,49 +1900,15 @@ CListenSocket::~CListenSocket()
 	shutdown = true;
 	Discard();
 	Close();
-#ifdef AMULE_DAEMON
-	AddLogLineM( true, _("CListenSocket: Destroying") );
-	global_sock_thread.Delete();
-	global_sock_thread.Wait();
-#endif
+
 	KillAllSockets();
 }
-
-//
-// lfroen - this used only in daemon where sockets are threaded
-//
-#ifdef AMULE_DAEMON
-void *CListenSocket::Entry()
-{
-	while ( !TestDestroy() ) {
-		if ( WaitForAccept(1, 0) ) {
-			if ( !theApp.IsRunning() ) {
-				wxSocketBase *s = Accept(false);
-				if ( s ) {
-					s->Destroy();
-				}
-				continue;
-			}
-			if ( bListening ) {
-				CALL_APP_DATA_LOCK;
-				OnAccept(0);
-			} else {
-				Sleep(10);
-			}
-		}
-	}
-	return 0;
-}
-#endif
 
 bool CListenSocket::StartListening()
 {
 	// 0.42e
 	bListening = true;
-#ifdef AMULE_DAEMON
-	Run();
-	global_sock_thread.Run();
-#endif
+
 	return true;
 }
 
@@ -2143,18 +2011,12 @@ void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
 	wxASSERT(toadd);
 	socket_list.insert(toadd);
-#ifdef AMULE_DAEMON
-	global_sock_thread.AddSocket(toadd);
-#endif
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
 	wxASSERT(todel);
 	socket_list.erase(todel);
-#ifdef AMULE_DAEMON
-	global_sock_thread.RemoveSocket(todel);
-#endif
 }
 
 void CListenSocket::KillAllSockets()
@@ -2223,89 +2085,3 @@ float CListenSocket::GetMaxConperFiveModifier()
 	return 1.0f - (SpikeSize/SpikeTolerance);
 }
 
-
-#ifdef AMULE_DAEMON
-
-CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
-{
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM( true, _("CSocketGlobalThread: Call to Create failed") );
-	}
-}
-
-void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
-{
-	wxASSERT(sock);
-	socket_list.insert(sock);
-}
-
-void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
-{
-	wxASSERT(sock);
-	socket_list.erase(sock);
-}
-
-
-void *CSocketGlobalThread::Entry()
-{
-	while ( !TestDestroy() ) {
-		Sleep(10);
-		std::set<CClientReqSocket *>::iterator it;
-		CALL_APP_DATA_LOCK;
-		it = socket_list.begin();
-		while (it != socket_list.end()) {
-			CClientReqSocket* cur_sock = *it++;
-			if (cur_sock->deletethis) {
-				socket_list.erase(cur_sock);
-				continue;
-			}
-			if (cur_sock->Error()) {
-				switch (cur_sock->LastError()) {
-					case wxSOCKET_WOULDBLOCK: 
-						if (cur_sock->last_action != ACTION_CONNECT) {
-							// Connection state will be handled on next if
-							cur_sock->RepeatLastAction();
-						}
-					default:
-						socket_list.erase(cur_sock);				
-				}
-			}
-			if ( !cur_sock->wxSocketBase::IsConnected()) {
-					if ( cur_sock->WaitOnConnect(0, 0) ) {
-						cur_sock->OnConnect(0);
-					}
-			} else {
-				if ( cur_sock->deletethis ) { // Must we remove this socket?
-					socket_list.erase(cur_sock);
-					continue;
-				}
-				if ( cur_sock->WaitForLost(0, 0) ) { // Did the socket got closed?
-					cur_sock->OnError(cur_sock->LastError());
-					socket_list.erase(cur_sock);
-					continue;
-				}
-				
-				if (cur_sock->WaitForWrite(0, 0) ) { // Are we ready to write to this socket?
-					cur_sock->OnSend(0);
-				}				
-				
-				// We re-check deletethis because it could have been triggered on write
-				if (!cur_sock->deletethis && cur_sock->WaitForRead(0, 0)) { // Are we ready to read from this socket?
-					cur_sock->OnReceive(0);
-					CUpDownClient *client = cur_sock->GetClient();
-					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
-						// If client is downloading, we create a thread for it.
-						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
-						socket_list.erase(cur_sock);
-						t->Run();
-					}
-				}
-			}
-		}
- 
-	}
-	AddLogLineM( false, _("CSocketGlobalThread: Exited") );
-	return 0;
-}
-
-#endif

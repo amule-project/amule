@@ -214,13 +214,7 @@ class CObjTagMap {
 		}
 };
 
-#ifdef AMULE_DAEMON
-#define EXTERNAL_CONN_BASE wxThread
-#else
-#define EXTERNAL_CONN_BASE wxEvtHandler
-#endif
-
-class ExternalConn : public EXTERNAL_CONN_BASE {
+class ExternalConn : public wxEvtHandler {
 	public:
 		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
@@ -232,9 +226,6 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		wxSocketServer *m_ECServer;
 
 	private:
-#ifdef AMULE_DAEMON
-		void *Entry();
-#else
 		int m_numClients;
 		//
 		// encoder container must be created per EC client
@@ -246,7 +237,6 @@ class ExternalConn : public EXTERNAL_CONN_BASE {
 		void OnServerEvent(wxSocketEvent& event);
 		void OnSocketEvent(wxSocketEvent& event);
 		DECLARE_EVENT_TABLE()
-#endif
 };
 
 class ExternalConnClientThread : public wxThread {

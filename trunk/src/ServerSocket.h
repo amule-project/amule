@@ -42,26 +42,16 @@
 // CServerSocketHandler
 //------------------------------------------------------------------------------
 
-#ifdef AMULE_DAEMON
-#define SERVER_SOCK_HANDLER_BASE wxThread
-#else
-#define SERVER_SOCK_HANDLER_BASE wxEvtHandler
-#endif
 
-class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
+class CServerSocketHandler: public wxEvtHandler
 {
 public:
 	CServerSocketHandler(CServerSocket *socket = NULL);
 
 public:
-#ifdef AMULE_DAEMON
-	void *Entry();
-	CServerSocket *m_socket;
-#else
 private:
 	void ServerSocketHandler(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
-#endif
 };
 
 //------------------------------------------------------------------------------
@@ -95,10 +85,6 @@ public:
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
 	
-#ifdef AMULE_DAEMON
-	bool Connect(wxIPV4address &addr, bool wait);
-#endif
-
 private:
 	bool	ProcessPacket(const char* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);

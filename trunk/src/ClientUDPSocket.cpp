@@ -64,23 +64,12 @@ IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket, CDatagramSocketProxy)
 CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
 :
 CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
-#ifdef AMULE_DAEMON
- , wxThread(wxTHREAD_JOINABLE)
-#endif
 {
 	m_bWouldBlock = false;
 
-#ifdef AMULE_DAEMON
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ERROR: CClientUDPSocket failed create\n");
-		wxASSERT(0);
-	}
-	Run();
-#else
 	SetEventHandler(theApp, CLIENTUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
 	Notify(true);
-#endif
 }
 
 CClientUDPSocket::~CClientUDPSocket()
@@ -113,7 +102,6 @@ int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 {
 	RecvFrom(addr,buffer,max_size);
 	int length = LastCount();
-	#ifndef AMULE_DAEMON
 	// Daemon doesn't need this because it's a thread, checking every X time.
 	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
 		// Evil trick to retry later.
@@ -122,7 +110,6 @@ int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 		input_event.SetEventObject(this);
 		theApp.AddPendingEvent(input_event);
 	}
-	#endif
 	return length;
 }
 
@@ -335,21 +322,3 @@ bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 }
 
 
-#ifdef AMULE_DAEMON
-
-void *CClientUDPSocket::Entry()
-{
-	while ( !TestDestroy() ) {
-		Sleep(100);
-		CALL_APP_DATA_LOCK;
-		if ( WaitForRead(0, 0) ) {	
-			OnReceive(0);
-		}
-		if ( WaitForWrite(0, 0) ) {
-			OnSend(0);
-		}
-	}
-	return 0;
-}
-
-#endif

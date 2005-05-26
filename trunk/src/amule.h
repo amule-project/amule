@@ -177,6 +177,12 @@ public:
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
+	// Socket handlers
+	void ListenSocketHandler(wxSocketEvent& event);
+	void ServerUDPSocketHandler(wxSocketEvent& event);
+	void ServerSocketHandler(wxSocketEvent& event);
+	void ClientUDPSocketHandler(wxSocketEvent& event);
+
 	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 	
@@ -317,6 +323,8 @@ protected:
 	bool enable_stdout_log;
 	bool enable_daemon_fork;
 	wxString server_msg;
+
+	AMULE_TIMER_CLASS* core_timer;
 	
 private:
 	void CheckNewVersion(uint32 result);
@@ -343,16 +351,9 @@ public:
 #ifndef CLIENT_GUI
 
 class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
-	AMULE_TIMER_CLASS* core_timer;
 
     virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	
-	// Socket handlers
-	void ListenSocketHandler(wxSocketEvent& event);
-	void ServerUDPSocketHandler(wxSocketEvent& event);
-	void ServerSocketHandler(wxSocketEvent& event);
-	void ClientUDPSocketHandler(wxSocketEvent& event);
-
 	int OnExit();
 	bool OnInit();
 	
@@ -453,13 +454,6 @@ DECLARE_APP(CamuleRemoteGuiApp)
 #include <wx/apptrait.h>
 #include <wx/socket.h>
 
-class CDaemonAppTraits : public wxConsoleAppTraits {
-	public:
-	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
-	    virtual void ScheduleForDestroy(wxObject *object);
-	    virtual void RemoveFromPendingDelete(wxObject *object);
-};
-
 class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 		int m_in_fds[1024], m_out_fds[1024];
 		GSocket * m_in_gsocks[1024];
@@ -486,8 +480,18 @@ class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 		virtual void Disable_Events(GSocket *socket);
 };
 
+class CDaemonAppTraits : public wxConsoleAppTraits {
+		CAmuledGSocketFuncTable m_table;
+	public:
+	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+	    virtual void ScheduleForDestroy(wxObject *object);
+	    virtual void RemoveFromPendingDelete(wxObject *object);
+};
+
 class CamuleDaemonApp : public CamuleApp {
 	bool m_Exit;
+
+	bool OnInit();
 	int OnRun();
 	int OnExit();
 	
@@ -507,24 +511,12 @@ public:
 	
 	DECLARE_EVENT_TABLE()
 	
-#warning Uncomment to enable new socket code
-	// lfroen:
-	// Still in comment, so existing code will not break
-	// untill I commit all implementation
-	//
-	//wxAppTraits *CreateTraits();
+	wxAppTraits *CreateTraits();
 
 };
 
-
-class CamuleLocker : public wxMutexLocker {
-	uint32 msStart;
-public:
-	CamuleLocker();
-	~CamuleLocker();
-};
-
-#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+//#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+#define CALL_APP_DATA_LOCK
 
 DECLARE_APP(CamuleDaemonApp)
 

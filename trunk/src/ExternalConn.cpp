@@ -67,19 +67,14 @@ enum
 };
 
 
-#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
 	EVT_SOCKET(AUTH_ID,   ExternalConn::OnSocketEvent)
 	EVT_SOCKET(SOCKET_ID, ExternalConn::OnSocketEvent)
 END_EVENT_TABLE()
-#endif
 
 
 ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
-#ifdef AMULE_DAEMON
- : wxThread(wxTHREAD_JOINABLE) 
-#endif
 {
 	wxString msgLocal;
 	m_ECServer = NULL;
@@ -95,14 +90,10 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		
 		// Create the socket
 		m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
-#ifdef AMULE_DAEMON
-		//m_ECServer = new ECSocket(addr, 0);
-#else
-		//m_ECServer = new ECSocket(addr, this, SERVER_ID);
 		m_ECServer->SetEventHandler(*this, SERVER_ID);
 		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
 		m_ECServer->Notify(true);
-#endif
+
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
 		if (m_ECServer->Ok()) {
@@ -110,16 +101,6 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 				wxString::Format(wxT(":%d"), port);
 			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
-#ifdef AMULE_DAEMON
-			if ( Create() != wxTHREAD_NO_ERROR ) {
-				AddLogLineM(false, _("ExternalConn: failed to Create thread"));
-				delete m_ECServer;
-				// This prevents the destructor to do nasty things
-				m_ECServer = NULL;
-			} else {
-				Run();
-			}
-#endif
 		} else {
 			msgLocal = wxT("Could not listen for external connections at ") + ip + 
 				wxString::Format(wxT(":%d!"), port);
@@ -136,24 +117,6 @@ ExternalConn::~ExternalConn() {
 	delete m_ECServer;
 }
 
-#ifdef AMULE_DAEMON
-void *ExternalConn::Entry()
-{
-        while ( !TestDestroy() ) {
-        	if ( m_ECServer->WaitForAccept(1, 0) ) {
-        		ECSocket *client = new ECSocket;
-				if ( !m_ECServer->AcceptWith(*client) ) {
-					delete client;
-					continue;
-				}
-				client->Notify(false);
-				ExternalConnClientThread *cli_thread = new ExternalConnClientThread(this, client);
-				cli_thread->Run();
-        	}
-	}
-	return 0;
-}
-#else
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 	ECSocket *sock = new ECSocket;
 	// Accept new connection if there is one in the pending
@@ -239,7 +202,6 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 	default: ;
 	}
 }
-#endif
 
 //
 // Authentication
