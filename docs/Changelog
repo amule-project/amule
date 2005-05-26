@@ -2,15 +2,27 @@ Version 2.0.2 - The " ????? " version.
 ----------
 2005-x-x
 
+	boutros:
+		* Converted the eMule Chicane web template to aMule.
+
 	deltaHF:
 		* Compilation fixes for older gcc versions.
 
+	GonoszTopi:
+		* Windows specific:
+			- Fixed #421: 'In Windows XP it lets to choose
+			  Konqueror,Galeon and other Unix based browsers.'
+												
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		file. They don't work on all distros, even worse, don't always
 		work with Fedora Core.
 		* Created a new spec file, compliant with Fedora Core.
 	
+	Special Thanks To:
+		
+		* Contributors:
+			boutros
 
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
