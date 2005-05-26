@@ -63,7 +63,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:\\/");
+wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:;\\/");
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -316,7 +316,7 @@ void CSearchManager::getWords(const wxString& str, WordList *words)
 			words->push_back(current_word);
 		}
 	}
-	// Kry - Why this?
+	// If the last word is 3 bytes long, chances are it's a file extension.
 	if(words->size() > 1 && len == 3) {
 		words->pop_back();
 	}

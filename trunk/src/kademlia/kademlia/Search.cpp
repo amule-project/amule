@@ -358,7 +358,6 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							CSafeMemFile bio(34);
 							bio.WriteUInt128(m_target);
 							bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
-							m_count++;
 							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_SRC_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
 							break;
 						}
@@ -391,6 +390,9 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 										taglist.push_back(new CTagUInt16(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
 										taglist.push_back(new CTagStr(TAG_BUDDYHASH, CMD4Hash((unsigned char*)buddyID.getData()).Encode()));
 										taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs::GetPort()));
+									} else {
+										prepareToStop();
+										break;
 									}
 								} else {
 									taglist.push_back(new CTagUInt8(TAG_SOURCETYPE, 1));
@@ -492,7 +494,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							}
 							bio.WriteUInt128(m_fileIDs.front());
 							bio.WriteUInt16(thePrefs::GetPort());
-							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_FINDSOURCE_REQ, from->getIPAddress(), from->getUDPPort());
+							CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_CALLBACK_REQ, from->getIPAddress(), from->getUDPPort());
 							m_count++;
 							theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							break;
@@ -612,7 +614,8 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 		file = (CKnownFile*)theApp.downloadqueue->GetFileByID(fileid);
 	}
 	
-	if(file) {
+	if (file) {
+		m_count++;
 		file->AddNote(entry);
 	}
 }
