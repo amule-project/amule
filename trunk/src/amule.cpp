@@ -72,9 +72,11 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/url.h>
 #include <wx/wfstream.h>
+#include <wx/tokenzr.h>
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
+#include "HTTPDownload.h" // Needed for CHTTPDownloadThreadBase
 #include "Server.h"			// Needed for GetListName
 #include "CFile.h"			// Needed for CFile
 #include "OtherFunctions.h"		// Needed for GetTickCount
@@ -615,6 +617,14 @@ bool CamuleApp::OnInit()
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
+	
+	// Test if there's any new version
+	if (thePrefs::CheckNewVersion()) {
+		// We use the thread base because I don't want a dialog to pop up.
+		CHTTPDownloadThreadBase* version_check = new CHTTPDownloadThreadBase(wxT("http://amule.sourceforge.net/lastversion"), theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck);
+		version_check->Create();
+		version_check->Run();
+	}
 
 	if ( !wxFileExists( vfile.GetName() ) ) {
 		vfile.Create();
@@ -1766,8 +1776,49 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 		case HTTP_ServerMetAuto:
 			serverlist->AutoDownloadFinished(event.GetExtraLong());
 			break;
+		case HTTP_VersionCheck:
+			CheckNewVersion(event.GetExtraLong());
+			break;
 	}
 }
+
+void CamuleApp::CheckNewVersion(uint32 result) {
+	if(result==1) {
+		wxString strTempFilename(theApp.ConfigDir + wxT("last_version_check"));
+		wxTextFile version_file;
+		if (!version_file.Open(strTempFilename)) {
+			AddLogLineM(true, _("Failed to open the downloaded version check file") );
+		} else {
+			wxString update_version = version_file.GetFirstLine();
+			try {
+				wxStringTokenizer tkz(update_version, wxT("."));
+				if (!tkz.HasMoreTokens()) throw;
+				long version_major = StrToLong(tkz.GetNextToken());
+				if (!tkz.HasMoreTokens()) throw;
+				long version_minor = StrToLong(tkz.GetNextToken());
+				if (!tkz.HasMoreTokens()) throw;
+				long version_update = StrToLong(tkz.GetNextToken());
+				
+				if ( make_full_ed2k_version(version_major,version_minor,version_update) > 
+					make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)) {
+						AddLogLineM(true,_("You are using an outdated aMule version!"));
+						AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the lastest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, version_major, version_minor, version_update));
+						AddLogLineM(false, _("You can get the lastest aMule version on http://www.amule.org"));
+						AddLogLineM(false, _("or, if you use your distro's version, just wait till they update it :)"));
+				}
+				AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: "))+wxT(VERSION) +wxT(", Version check: ") +update_version);
+			} catch(...) {
+				AddLogLineM(true, _("Corrupted version check file") );
+			}
+			version_file.Close();
+		}
+		wxRemoveFile(strTempFilename);
+	} else {
+		AddLogLineM(true, _("Failed to download the version check file") );
+	}	
+	
+}
+
 
 bool CamuleApp::IsFirewalled()
 {
