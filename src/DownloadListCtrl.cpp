@@ -77,11 +77,9 @@ class CPartFile;
 int CDownloadListCtrl::s_lastOrder;
 int CDownloadListCtrl::s_lastColumn;
 
-
-enum ItemType { FILE_TYPE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
 struct CtrlItem_Struct
 {
-	ItemType	type;
+	DownloadItemType	type;
 	CPartFile*	owner;
 	void*		value;
 	uint32		dwUpdated;
@@ -236,14 +234,14 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 }
 
 
-void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, bool available)
+void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, DownloadItemType type)
 {
 	wxASSERT( owner );
 	wxASSERT( source );
 	
 	CtrlItem_Struct* newitem = new CtrlItem_Struct;
 	newitem->owner = owner;
-	newitem->type = ( available ? AVAILABLE_SOURCE : UNAVAILABLE_SOURCE );
+	newitem->type = type;
 	newitem->value = source;
 
 	// Update the other instances of this source
@@ -258,7 +256,7 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, bool 
 			cur_item->type = newitem->type;
 			cur_item->dwUpdated = 0;
 			bFound = true;
-		} else if ( available ) {
+		} else if ( type == AVAILABLE_SOURCE ) {
 			// The state 'Available' is exclusive
 			cur_item->type = UNAVAILABLE_SOURCE;
 			cur_item->dwUpdated = 0;
@@ -460,21 +458,20 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		// Adding normal sources
 		CPartFile::SourceSet::iterator it;
 		for ( it = normSources.begin(); it != normSources.end(); ++it ) {
-			bool available;
 			switch ((*it)->GetDownloadState()) {
 				case DS_DOWNLOADING:
 				case DS_ONQUEUE:
-					available = true;
+					AddSource( file, *it, AVAILABLE_SOURCE );
 				default:
 					// Any other state
-					available = false;
+					AddSource( file, *it, UNAVAILABLE_SOURCE );
 			}
-			AddSource( file, *it, available );
+			
 		}
 
 		// Adding A4AF sources
 		for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
-			AddSource( file, *it, false );
+			AddSource( file, *it, A4AF_SOURCE );
 		}
 	} else {
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
@@ -1509,7 +1506,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			// Kry - eMule says +1, so I'm trusting it
 			wxPoint point( cur_rec.GetX(), cur_rec.GetY()+1 );
 
-			if (item->type == AVAILABLE_SOURCE) {
+			if (item->type != A4AF_SOURCE) {
 				uint8 image = 0;
 				
 				switch (client->GetDownloadState()) {
@@ -1625,15 +1622,15 @@ void CDownloadListCtrl::DrawSourceItem(
 			break;
 
 		case 3:	// completed
-			if (item->type == AVAILABLE_SOURCE && client->GetTransferedDown()) {
+			if (item->type != A4AF_SOURCE && client->GetTransferedDown()) {
 				buffer = CastItoXBytes(client->GetTransferedDown());
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
 
 		case 4:	// speed
-
 			if (item->type == AVAILABLE_SOURCE) {
+				// a4af, NNP, QF and others can't have transfer speed
 				if (client->GetKBpsDown() > 0.001) {
 					buffer = wxString::Format(wxT("%.1f "),
 							client->GetKBpsDown()) + _("kB/s");
@@ -1647,7 +1644,7 @@ void CDownloadListCtrl::DrawSourceItem(
 				int iWidth = rect.GetWidth() - 2;
 				int iHeight = rect.GetHeight() - 2;
 			
-				if ( item->type == AVAILABLE_SOURCE ) {
+				if ( item->type != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
 					wxMemoryDC cdcStatus;
 
@@ -1714,7 +1711,7 @@ void CDownloadListCtrl::DrawSourceItem(
 
 		case 7:	// prio
 			// We only show priority for sources actually queued for that file
-			if (	item->type == AVAILABLE_SOURCE &&
+			if (	item->type != A4AF_SOURCE &&
 				client->GetDownloadState() == DS_ONQUEUE ) {
 				if (client->IsRemoteQueueFull()) {
 					buffer = _("Queue Full");
@@ -1746,7 +1743,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			break;
 
 		case 8:	// status
-			if (item->type == AVAILABLE_SOURCE) {
+			if (item->type != A4AF_SOURCE) {
 				buffer = DownloadStateToStr( client->GetDownloadState(), 
 					client->IsRemoteQueueFull() );
 			} else {
@@ -1925,7 +1922,11 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	// Sort by remaining time
 	case 9:
 		if (file1->getTimeRemaining() == -1) {
-			result = -1;
+			if (file2->getTimeRemaining() == -1)  {
+				result = 0;
+			} else {
+				result = -1;
+			}
 		}
 		if (file2->getTimeRemaining() == -1) {
 			result = 1;

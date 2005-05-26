@@ -102,4 +102,6 @@ struct Chunk {
 };
 #pragma pack()
 
+enum DownloadItemType { FILE_TYPE, A4AF_SOURCE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
+
 #endif // OTHERSTRUCTS_H

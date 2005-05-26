@@ -1137,7 +1137,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 				// Avoid swapping to this file for a while
 				m_A4AF_list[m_reqfile].timestamp = ::GetTickCount(); 
 							
-				Notify_DownloadCtrlAddSource(m_reqfile, this, false);
+				Notify_DownloadCtrlAddSource(m_reqfile, this, A4AF_SOURCE);
 			} else {
 				Notify_DownloadCtrlRemoveSource( this, m_reqfile );
 			}
@@ -1154,7 +1154,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			SwapTo->AddSource( this );
 		
-			Notify_DownloadCtrlAddSource(SwapTo, this, true);
+			Notify_DownloadCtrlAddSource(SwapTo, this, UNAVAILABLE_SOURCE);
 
 			// Remove the new reqfile from the list of other files
 			m_A4AF_list.erase( target );
