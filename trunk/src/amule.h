@@ -481,8 +481,9 @@ class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 };
 
 class CDaemonAppTraits : public wxConsoleAppTraits {
-		CAmuledGSocketFuncTable m_table;
+		CAmuledGSocketFuncTable *m_table;
 	public:
+		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
 	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
 	    virtual void ScheduleForDestroy(wxObject *object);
 	    virtual void RemoveFromPendingDelete(wxObject *object);
@@ -496,6 +497,8 @@ class CamuleDaemonApp : public CamuleApp {
 	int OnExit();
 	
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+	
+	CAmuledGSocketFuncTable *m_table;
 public:
 	CamuleDaemonApp();
 	
