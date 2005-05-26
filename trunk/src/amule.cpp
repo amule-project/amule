@@ -667,7 +667,7 @@ bool CamuleApp::OnInit()
 	   folders used for incomming and temp files. */
 #ifndef __BSD__
 	#ifdef __SOLARIS__
-		FILE* mnt_tab = fopen("/etc/mtab","r");		
+		FILE* mnt_tab = fopen("/etc/mntab","r");		
 	#else
 		FILE* mnt_tab = setmntent("/etc/mtab","r");
 	#endif
