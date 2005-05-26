@@ -220,7 +220,7 @@ void CAmuledGSocketFuncTable::RunSelect()
 
 GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
 {
-	return &m_table;
+	return m_table;
 }
 
 bool CAmuledGSocketFuncTable::OnInit()
@@ -272,6 +272,11 @@ void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
 	Uninstall_Callback(socket, GSOCK_OUTPUT);
 }
 
+CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
+{
+	m_table = table;
+}
+
 void CDaemonAppTraits::ScheduleForDestroy(wxObject *object)
 {
 	//
@@ -292,17 +297,19 @@ void CDaemonAppTraits::RemoveFromPendingDelete(wxObject *object)
 CamuleDaemonApp::CamuleDaemonApp()
 {
 	wxPendingEventsLocker = new wxCriticalSection;
+
+	m_table = new CAmuledGSocketFuncTable();
+	
 	m_Exit = false;
 }
 
 wxAppTraits *CamuleDaemonApp::CreateTraits()
 {
-	return new CDaemonAppTraits();
+	return new CDaemonAppTraits(m_table);
 }
 
 int CamuleDaemonApp::OnRun()
 {
-	const uint32 uLoop = 100;
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
@@ -314,29 +321,11 @@ int CamuleDaemonApp::OnRun()
 		return 0;
 	}
 	
-	CDaemonAppTraits *traits = (CDaemonAppTraits *)GetTraits();
-	CAmuledGSocketFuncTable *table = (CAmuledGSocketFuncTable *)traits->GetSocketGUIFunctionsTable();
 	while ( !m_Exit ) {
-		table->RunSelect();
+		m_table->RunSelect();
 		ProcessPendingEvents();
 	}
-	/*
-	// lfroen: this loop is instead core timer.
-	uint32 msWait = uLoop;
-	while ( !m_Exit ) {
-		if ( msWait <= uLoop) {
-			wxThread::Sleep(msWait);
-		}
-		// lock data after sleep
-		uint32 msRun = GetTickCount();
-		CALL_APP_DATA_LOCK;
 
-		OnCoreTimer(*((wxEvent *)0));
-		ProcessPendingEvents();
-		msRun = GetTickCount() - msRun;
-		msWait = uLoop - msRun;
-	}
-	*/
 	return 0;
 }
 
@@ -402,6 +391,7 @@ int CamuleDaemonApp::OnExit()
 	if (ECServerHandler) {
 		ECServerHandler = 0;
 	}
+	core_timer->Stop();
 	
 	return CamuleApp::OnExit();
 }
