@@ -549,4 +549,3 @@ void CIPFilter::DownloadFinished(uint32 result)
 		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
-

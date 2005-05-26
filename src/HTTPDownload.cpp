@@ -82,7 +82,7 @@ CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadTh
 
 void CHTTPDownloadThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 {
-  m_parent_thread->Delete();
+ 	m_parent_thread->Delete();
 }
 
 void CHTTPDownloadThreadDlg::StopAnimation() 
@@ -123,26 +123,52 @@ void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow)
 	Layout();
 }
 
-#endif
-
-CHTTPDownloadThread::CHTTPDownloadThread(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) 
+CHTTPDownloadThreadGUI::CHTTPDownloadThreadGUI(wxString urlname, wxString filename,HTTP_Download_File file_id)
+: CHTTPDownloadThreadBase(urlname,filename,file_id)
 {
-  	m_url = urlname;
-  	m_tempfile = filename;
-  	m_result = 1;
-	m_file_type = file_id;
-	#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
+	#if !defined(__WXMAC__)
 		m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
 		m_myDlg->Show(true);
 	#endif
 }
 
-CHTTPDownloadThread::~CHTTPDownloadThread()
+CHTTPDownloadThreadGUI::~CHTTPDownloadThreadGUI()
+{	
+	#if !defined(__WXMAC__)
+		wxMutexGuiEnter();
+		if (m_myDlg != NULL) {
+			m_myDlg->StopAnimation();
+			delete m_myDlg;
+		}
+		wxMutexGuiLeave();
+	#endif	
+}
+
+void CHTTPDownloadThreadGUI::ProgressCallback(int dltotal, int dlnow) 
+{
+	#if !defined(__WXMAC__)
+		wxMutexGuiEnter();
+		m_myDlg->UpdateGauge(dltotal,dlnow);
+		wxMutexGuiLeave();
+	#endif	
+}
+
+#endif
+
+CHTTPDownloadThreadBase::CHTTPDownloadThreadBase(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) 
+{
+  	m_url = urlname;
+  	m_tempfile = filename;
+  	m_result = 1;
+	m_file_type = file_id;
+}
+
+CHTTPDownloadThreadBase::~CHTTPDownloadThreadBase()
 {	
 	//maybe a thread deletion needed
 }
 
-wxThread::ExitCode CHTTPDownloadThread::Entry()
+wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 {
 	if (TestDestroy()) { 
 		// Thread going down...
@@ -187,11 +213,7 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 					if (current_read != current_write) {
 						throw(wxString(wxT("Critical error while writing downloaded server.met")));
 					} else {
-						#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
-							wxMutexGuiEnter();
-							m_myDlg->UpdateGauge(download_size,total_read);
-							wxMutexGuiLeave();
-						#endif
+						ProgressCallback(download_size, total_read);
 					}
 				}
 			} while (current_read && !TestDestroy());
@@ -203,29 +225,15 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 		}
 		
 		fclose(outfile);
-	}
-
-
-#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
-	m_myDlg->StopAnimation();
-#endif	
-	
+	}	
 
 	printf("HTTP download thread end\n");
 	
 	return 0;
 }
 
-void CHTTPDownloadThread::OnExit() 
+void CHTTPDownloadThreadBase::OnExit() 
 {
-	
-#if !defined(AMULE_DAEMON) && !defined(__WXMAC__)
-	wxMutexGuiEnter();
-	if (m_myDlg!=NULL) {
-		delete m_myDlg;
-	}
-	wxMutexGuiLeave();
-#endif
 	// Kry - Notice the app that the file finished download
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_type);
@@ -233,7 +241,7 @@ void CHTTPDownloadThread::OnExit()
 	wxPostEvent(&theApp,evt);		
 }
 
-wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP& url_handler, const wxString& location) {
+wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP& url_handler, const wxString& location) {
 	// This function's purpose is to handle redirections in a proper way.
 	
 	if (TestDestroy()) {

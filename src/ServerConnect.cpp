@@ -230,9 +230,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// to send an Hello packet to the server during the callback test))
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
 			(SO_AMULE	<< 24) |
-			(VERSION_MJR	<< 17) |
-			(VERSION_MIN	<< 10) |
-			(VERSION_UPDATE	<<  7) );
+			make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
+			 );
 		tagMuleVersion.WriteTagToFile(&data);
 
 		CPacket* packet = new CPacket(&data);

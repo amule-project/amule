@@ -545,6 +545,10 @@ inline void MilliSleep(uint32 msecs) {
 	#endif
 }
 
+inline const long int make_full_ed2k_version(int a, int b, int c){
+	return ((a << 17) | (b << 10) | (c << 7));
+}
+
 inline wxString GetConfigDir(void) {
 	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
 }

@@ -1621,50 +1621,54 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
     IDC_MISC_OPTIONS = item11;
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetToolTip( _("Enabling this makes aMule minimize itself upon start.") );
-    item11->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_NEWVERSION, _("Check for new version at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetToolTip( _("Enabling this will make aMule check for new version at startup") );
+    item11->Add( item13, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetValue( TRUE );
-    item14->SetToolTip( _("Makes aMule promt before exiting.") );
-    item11->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetToolTip( _("Enabling this makes aMule minimize itself upon start.") );
+    item11->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_DBLCLICK, _("Downloadlist doubleclick to expand"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
     item15->SetValue( TRUE );
-    item15->SetToolTip( _("If enabled, it is possible to display the sources associated with downloads by double-clicking on them.") );
+    item15->SetToolTip( _("Makes aMule promt before exiting.") );
     item11->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
-    item11->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_DBLCLICK, _("Downloadlist doubleclick to expand"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetValue( TRUE );
+    item16->SetToolTip( _("If enabled, it is possible to display the sources associated with downloads by double-clicking on them.") );
+    item11->Add( item16, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to trayicon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetToolTip( _("Enabling this will make aMule minimize to the system-tray, rather than the taskbar.") );
-    item11->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
+    item11->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxButton *item18 = new wxButton( parent, IDC_DESKTOPMODE, _("Select Window Manager"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetToolTip( _("Click here to select the type of systray integration you wish aMule to use.") );
-    item11->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to trayicon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->SetToolTip( _("Enabling this will make aMule minimize to the system-tray, rather than the taskbar.") );
+    item11->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticText *item20 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetToolTip( _("The delay before showing tool-tips.") );
-    item19->Add( item20, 1, wxALIGN_CENTER|wxLEFT, 5 );
-
-    wxSpinCtrl *item21 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
-    item21->SetToolTip( _("The delay before showing tool-tips.") );
-    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
-
+    wxButton *item19 = new wxButton( parent, IDC_DESKTOPMODE, _("Select Window Manager"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->SetToolTip( _("Click here to select the type of systray integration you wish aMule to use.") );
     item11->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item21 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->SetToolTip( _("The delay before showing tool-tips.") );
+    item20->Add( item21, 1, wxALIGN_CENTER|wxLEFT, 5 );
+
+    wxSpinCtrl *item22 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
+    item22->SetToolTip( _("The delay before showing tool-tips.") );
+    item20->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
+
+    item11->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Fake Check") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Fake Check") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
 
-    wxString strs24[] = 
+    wxString strs25[] = 
     {
         _("Konqueror"), 
         _("Mozilla"), 
@@ -1676,32 +1680,32 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Epiphany"), 
         _("User Defined")
     };
-    wxChoice *item24 = new wxChoice( parent, IDC_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs24, 0 );
-    item24->SetToolTip( _("Select your browser here") );
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxChoice *item25 = new wxChoice( parent, IDC_FCHECK, wxDefaultPosition, wxSize(100,-1), 9, strs25, 0 );
+    item25->SetToolTip( _("Select your browser here") );
+    item23->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item25 = new wxFlexGridSizer( 3, 0, 0 );
-    item25->AddGrowableCol( 1 );
+    wxFlexGridSizer *item26 = new wxFlexGridSizer( 3, 0, 0 );
+    item26->AddGrowableCol( 1 );
 
-    wxStaticText *item26 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item27 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_FCHECKSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item27->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
-    item27->Enable( false );
-    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CMuleTextCtrl *item28 = new CMuleTextCtrl( parent, IDC_FCHECKSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item28->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
+    item28->Enable( false );
+    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item28 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item29 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->SetValue( TRUE );
-    item29->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item22->Add( item29, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item30 = new wxCheckBox( parent, IDC_FCHECKTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->SetValue( TRUE );
+    item30->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item23->Add( item30, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

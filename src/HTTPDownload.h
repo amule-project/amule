@@ -36,11 +36,17 @@
 
 #include "GuiEvents.h"
 
-class CHTTPDownloadThread;
+class CHTTPDownloadThreadGUI;
 #ifdef __WXMSW__
 class wxGauge95;
 #else
 class wxGauge;
+#endif
+
+#ifndef AMULE_DAEMON
+	#define CHTTPDownloadThread CHTTPDownloadThreadGUI
+#else
+	#define CHTTPDownloadThread CHTTPDownloadThreadBase
 #endif
 
 class MuleGifCtrl;
@@ -48,7 +54,31 @@ class MuleGifCtrl;
 class wxInputStream;
 
 class wxHTTP;
-	
+
+class CHTTPDownloadThreadBase : public wxThread
+{
+private:
+
+	wxThread::ExitCode	Entry();
+	virtual void 			OnExit();
+
+	wxString					m_url;
+	wxString					m_tempfile;
+	int						m_result;
+	HTTP_Download_File	m_file_type;
+
+	wxInputStream* GetInputStream(wxHTTP& url_handler, const wxString& location);
+
+	virtual void ProgressCallback(int WXUNUSED(dltotal), int WXUNUSED(dlnow)) { }
+
+ public:
+//	myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename);
+	~CHTTPDownloadThreadBase();
+
+	CHTTPDownloadThreadBase(wxString urlname, wxString filename, HTTP_Download_File file_id);
+
+};
+
 #ifndef AMULE_DAEMON
 class CHTTPDownloadThreadDlg : public wxDialog
 {
@@ -64,7 +94,7 @@ private:
 
 	void OnBtnCancel(wxCommandEvent& evt);
   
-	CHTTPDownloadThread*	m_parent_thread;
+	CHTTPDownloadThreadGUI*	m_parent_thread;
 	MuleGifCtrl* 					m_ani;
 #ifdef __WXMSW__	
 	wxGauge95* 						m_progressbar;
@@ -72,34 +102,18 @@ private:
 	wxGauge* 						m_progressbar;
 #endif
 };
-#endif
 
-
-class CHTTPDownloadThread : public wxThread
-{
+class CHTTPDownloadThreadGUI : public CHTTPDownloadThreadBase {
+public:
+	CHTTPDownloadThreadGUI(wxString urlname, wxString filename, HTTP_Download_File file_id);
+	~CHTTPDownloadThreadGUI();
+	
 private:
 
-	wxThread::ExitCode	Entry();
-	virtual void 			OnExit();
+	void ProgressCallback(int dltotal, int dlnow);
 
-	wxString					m_url;
-	wxString					m_tempfile;
-	int						m_result;
-	HTTP_Download_File	m_file_type;
-
-	wxInputStream* GetInputStream(wxHTTP& url_handler, const wxString& location);
-
-#ifndef AMULE_DAEMON 
 	CHTTPDownloadThreadDlg* m_myDlg;
-#endif
-
-
- public:
-//	myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename);
-	~CHTTPDownloadThread();
-
-	CHTTPDownloadThread(wxString urlname, wxString filename, HTTP_Download_File file_id);
-
 };
+#endif
 
 #endif // HTTPDOWNLOAD_H

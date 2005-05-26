@@ -315,6 +315,10 @@ protected:
 	bool enable_stdout_log;
 	bool enable_daemon_fork;
 	wxString server_msg;
+	
+private:
+	void CheckNewVersion(uint32 result);
+	
 };
 
 #ifndef AMULE_DAEMON
