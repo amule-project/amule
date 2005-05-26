@@ -642,7 +642,7 @@ const unsigned int UNLIMITED =	 		0;
 
 #define KADEMLIA_FIREWALLED_REQ	0x50	// <TCPPORT (sender) [2]>
 #define KADEMLIA_FINDBUDDY_REQ	0x51	// <TCPPORT (sender) [2]>
-#define KADEMLIA_FINDSOURCE_REQ	0x52	// <TCPPORT (sender) [2]>
+#define KADEMLIA_CALLBACK_REQ	0x52	// <TCPPORT (sender) [2]>
 #define KADEMLIA_FIREWALLED_RES	0x58	// <IP (sender) [4]>
 #define KADEMLIA_FIREWALLED_ACK	0x59	// (null)
 #define KADEMLIA_FINDBUDDY_RES	0x5A	// <TCPPORT (sender) [2]>

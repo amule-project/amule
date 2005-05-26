@@ -1395,7 +1395,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						Kademlia::CUInt128 file(m_reqfile->GetFileHash());
 						bio.WriteUInt128(&file);
 						bio.WriteUInt16(thePrefs::GetPort());
-						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_FINDSOURCE_REQ);
+						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
 						theApp.statistics->AddUpDataOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
