@@ -224,12 +224,15 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		}
 	}
 	theApp.amuledlg->ShowTransferRate();
+	// Why would this be needed?
+	#if 0
 	if ( serverconnect->GetCurrentServer() ) {
 		amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
 			serverconnect->GetCurrentServer()->GetFiles());
 	} else {
-		amuledlg->ShowUserCount(0, 0);
+		amuledlg->ShowUserCount();
 	}
+	#endif
 }
 
 void CamuleRemoteGuiApp::ShutDown() {

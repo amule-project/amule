@@ -260,7 +260,7 @@ public:
 	
 	const wxString& GetOSType() const { return OSType; }
 	
-	uint32 sent;
+	void ShowUserCount();
 
 protected:
 #ifdef __WXDEBUG__

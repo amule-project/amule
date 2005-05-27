@@ -708,7 +708,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 				break;
 		}
 		m_wndToolbar->Realize();
-		ShowUserCount(0, 0);
+		ShowUserCount();
 	} else if (connected) {
 		connLabel->SetLabel(server);
 	}
@@ -716,21 +716,11 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 	LastState = NewState;
 }
 
-void CamuleDlg::ShowUserCount(uint32 user_toshow, uint32 file_toshow)
+void CamuleDlg::ShowUserCount(const wxString& info)
 {
-	uint32 totaluser = 0, totalfile = 0;
-
-	if( user_toshow || file_toshow ) {
-		theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
-	}
-
-	wxString buffer = 
-		CFormat(_("Users: %s (%s) | Files %s (%s)")) % CastItoIShort(user_toshow) % 
-		CastItoIShort(totaluser) % CastItoIShort(file_toshow) % CastItoIShort(totalfile);
-
 	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
 
-	label->SetLabel(buffer);
+	label->SetLabel(info);
 	label->GetParent()->Layout();
 }
 

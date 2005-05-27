@@ -425,7 +425,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
-					Notify_ShowUserCount(update);
+					theApp.ShowUserCount();
 				}
 				break;
 			}
@@ -678,4 +678,3 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
-

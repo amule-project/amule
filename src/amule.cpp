@@ -381,9 +381,7 @@ bool CamuleApp::OnInit()
 	signal(SIGINT, OnShutdownSignal);
 	signal(SIGTERM, OnShutdownSignal);
 #endif
-	
-	sent = 0;
-	
+
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
@@ -1488,7 +1486,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		}
 		listensocket->UpdateConnectionsStatus();
 		
-		sent = 0;
 	}
 
 	
@@ -1802,6 +1799,7 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 }
 
 void CamuleApp::CheckNewVersion(uint32 result) {
+	
 	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("last_version_check"));
 		wxTextFile version_file;
@@ -1822,7 +1820,7 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 					make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)) {
 						AddLogLineM(true,_("You are using an outdated aMule version!"));
 						AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the lastest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, version_major, version_minor, version_update));
-						AddLogLineM(false, _("You can get the lastest aMule version on http://www.amule.org"));
+						AddLogLineM(false, _("You can get the latest aMule version on http://www.amule.org"));
 						AddLogLineM(false, _("or, if you use your distro's version, just wait till they update it :)"));
 				}
 				AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: "))+wxT(VERSION) +wxT(", Version check: ") +update_version);
@@ -1906,6 +1904,23 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 	#else
 	return !(serverconnect->IsLowID());
 	#endif
+}
+
+void CamuleApp::ShowUserCount() {
+	uint32 totaluser = 0, totalfile = 0;
+	
+	theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
+	
+	#ifdef __COMPILE_KAD__
+	wxString buffer = 
+		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
+		CastItoIShort(Kademlia::CKademlia::getKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::getKademliaFiles());
+	#else
+	wxString buffer = 
+		CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(totaluser) % CastItoIShort(totalfile);
+	#endif
+	
+	Notify_ShowUserCount(buffer);
 }
 
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)

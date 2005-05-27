@@ -263,7 +263,7 @@ void CKademlia::process()
 			if( maxUsers != instance->m_prefs->getKademliaUsers()) {
 				instance->m_prefs->setKademliaUsers(maxUsers);
 				instance->m_prefs->setKademliaFiles();
-				theApp.amuledlg->ShowUserCount();
+				theApp.ShowUserCount();
 			}
 		}
 	} catch (...) {

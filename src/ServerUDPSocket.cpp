@@ -234,9 +234,8 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				update->SetHardFiles( cur_hardfiles );
 				update->SetUDPFlags( uUDPFlags );
 				update->SetLowIDUsers( uLowIDUsers );
-				if (update == theApp.serverconnect->GetCurrentServer()) {
-					Notify_ShowUserCount(update);
-				}
+				Notify_ServerRefresh( update );
+				theApp.ShowUserCount();
 				break;
 			}
  			case OP_SERVER_DESC_RES:{
@@ -427,4 +426,3 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 		SendBuffer();
 	}
 }
-

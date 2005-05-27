@@ -718,9 +718,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			}
 			break;
 		case SHOW_USER_COUNT:
-			amuledlg->ShowUserCount(((CServer*)event.ptr_value)->GetUsers(),
-									((CServer*)event.ptr_value)->GetFiles());
-			amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
+			amuledlg->ShowUserCount(event.string_value);
 			break;
 		case SHOW_GUI:
 			amuledlg->Show_aMule(true);
