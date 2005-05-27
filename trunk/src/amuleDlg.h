@@ -82,8 +82,8 @@ public:
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint32 whichone);
 	
+	void ShowUserCount(const wxString& info = wxEmptyString);
 	#warning Kry: KAD TODO - This defaults must be gone!
-	void ShowUserCount(uint32 toshow = 0, uint32 filetoshow = 0);
 	void ShowConnectionState(bool connected = false, const wxString &server = wxEmptyString);
 	// END KAD TODO
 

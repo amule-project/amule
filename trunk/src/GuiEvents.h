@@ -212,8 +212,8 @@ class GUIEvent : public wxEvent {
 
         GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
                 ID              = new_id;
-                byte_value      = 0;
-		short_value	= 0;
+			byte_value      = 0;
+			short_value	= 0;
                 long_value      = value32;
                 longlong_value  = value64;
                 ptr_value       = new_ptr;
@@ -367,7 +367,7 @@ class GUIEvent : public wxEvent {
 // misc
 #define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)
 #define Notify_ShowConnState(val0, str)             Notify_2_ValEvent(SHOW_CONN_STATE, val0, str)
-#define Notify_ShowUserCount(ptr)                   Notify_1_ValEvent(SHOW_USER_COUNT, ptr)
+#define Notify_ShowUserCount(str)                   Notify_2_ValEvent(SHOW_USER_COUNT, (byte)0, str)
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
