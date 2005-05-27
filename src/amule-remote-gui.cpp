@@ -23,6 +23,9 @@
 //
 
 #include <unistd.h>			// Needed for close(2) and sleep(3)
+#include <memory>			// Needed for auto_ptr
+using std::auto_ptr;
+
 #include <wx/defs.h>
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
@@ -185,18 +188,19 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	}
 	// always query connection state and stats
 	serverconnect->ReQuery();
-	CECPacket stats_req(EC_OP_STAT_REQ);
-	CEC_Stats_Tag *stats = (CEC_Stats_Tag *)connect->SendRecv(&stats_req);
-	if ( !stats ) {
-		//core_timer->Stop();
-		return;
+
+	{
+		CECPacket stats_req(EC_OP_STAT_REQ);
+		auto_ptr<CEC_Stats_Tag> stats((CEC_Stats_Tag *)connect->SendRecv(&stats_req));
+		if ( !stats.get() ) {
+			//core_timer->Stop();
+			return;
+		}
+		downloadqueue->UpdateStats(stats.get());
+		uploadqueue->UpdateStats(stats.get());
+		clientlist->UpdateStats(stats.get());
+		//statistics->UpdateStats(stats.get());
 	}
-	downloadqueue->UpdateStats(stats);
-	uploadqueue->UpdateStats(stats);
-	clientlist->UpdateStats(stats);
-	//statistics->UpdateStats(stats);
-	
-	delete stats;
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
@@ -530,12 +534,12 @@ bool CPreferencesRem::LoadRemote()
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	// bring them all !
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(0xffffffff)));
-	CECPacket *prefs = m_conn->SendRecv(&req);
+	auto_ptr<CECPacket> prefs(m_conn->SendRecv(&req));
 	
-	if ( !prefs ) {
+	if ( !prefs.get() ) {
 		return false;
 	}
-	((CEC_Prefs_Packet *)prefs)->Apply(false);
+	((CEC_Prefs_Packet *)prefs.get())->Apply(false);
 
 	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
 		for (int i = 0; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
@@ -557,8 +561,6 @@ bool CPreferencesRem::LoadRemote()
 		cat->prio = PR_NORMAL;
 		theApp.glob_prefs->AddCat(cat);
 	}
-
-	delete prefs;
 	
 	return true;
 }
@@ -680,10 +682,10 @@ CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 	return new CServer(tag);
 }
 
-void CServerListRem::DeleteItem(CServer *srv)
+void CServerListRem::DeleteItem(CServer *in_srv)
 {
-	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv);
-	delete srv;
+	auto_ptr<CServer> srv(in_srv);
+	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv.get());
 }
 
 uint32 CServerListRem::GetItemID(CServer *server)
@@ -749,13 +751,13 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 	return file;
 }
 
-void CSharedFilesRem::DeleteItem(CKnownFile *file)
+void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
 {
+	auto_ptr<CKnownFile> file(in_file);
+
 	m_enc_map.erase(file->GetFileHash());
 	
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file);
-	
-	delete file;
+	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
 }
 
 CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
@@ -870,8 +872,8 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
     if (! m_ECSocket->WritePacket(&packet) ) {
     	return false;
     }
-    CECPacket *reply = m_ECSocket->ReadPacket();
-    if (!reply) {
+    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
+    if (!reply.get()) {
     	return false;
     }
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
@@ -882,11 +884,9 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 		} else {
 		    AddLogLineM(true, _("ExternalConn: Access denied"));
 		}
-		delete reply;
 		return false;
     } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
         AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed."));
-		delete reply;
 		return false;
     } else {
         m_isConnected = true;
@@ -923,10 +923,9 @@ void CRemoteConnect::Send(CECPacket *packet)
 		m_busy = false;
     	return;
     }
-    CECPacket *reply = m_ECSocket->ReadPacket();
+    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
 
 	m_busy = false;
-    delete reply;
 }
 
 /*
@@ -1098,13 +1097,13 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 	return file;
 }
 
-void CDownQueueRem::DeleteItem(CPartFile *file)
+void CDownQueueRem::DeleteItem(CPartFile *in_file)
 {
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file);
+	auto_ptr<CPartFile> file(in_file);
+
+	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file.get());
 	
 	m_enc_map.erase(file->GetFileHash());
-	
-	delete file;
 }
 
 CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)

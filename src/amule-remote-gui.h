@@ -41,6 +41,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <memory>
 
 class CED2KFileLink;
 class CServer;
@@ -171,8 +172,8 @@ class CRemoteContainer {
 		bool FullReload(int cmd)
 		{
 			CECPacket req(cmd);
-			CECPacket *reply = this->m_conn->SendRecv(&req);
-			if ( !reply ) {
+			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req));
+			if ( !reply.get() ) {
 				return false;
 			}
 			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
@@ -181,9 +182,8 @@ class CRemoteContainer {
 			
 			Flush();
 			
-			ProcessFull(reply);
+			ProcessFull(reply.get());
 			
-			delete reply;
 			return true;
 		}
 		
@@ -197,31 +197,31 @@ class CRemoteContainer {
 		
 			//
 			// Phase 1: request status
-			CECPacket *reply = this->m_conn->SendRecv(&req_sts);
-			if ( !reply ) {
+			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req_sts));
+			if ( !reply.get() ) {
 				return false;
 			}
 			
-			if ( !this->Phase1Done(reply) ) {
-				// if derived class choose not to proceed, retrun - but with good status
+			if ( !this->Phase1Done(reply.get()) ) {
+				// if derived class choose not to proceed, return - but with good status
 				return true;
 			}
 			//
 			// Phase 2: update status, mark new files for subsequent query
 			CECPacket req_full(cmd);
 		
-			ProcessUpdate(reply, &req_full, tag);
+			ProcessUpdate(reply.get(), &req_full, tag);
 		
-			delete reply;
+			reply.reset();
 		
 			if ( !m_inc_tags ) {
 				// Phase 3: request full info about files we don't have yet
 				if ( req_full.GetTagCount() ) {
-					reply = this->m_conn->SendRecv(&req_full);
-					if ( !reply ) {
+					reply.reset(this->m_conn->SendRecv(&req_full));
+					if ( !reply.get() ) {
 						return false;
 					}
-					ProcessFull(reply);
+					ProcessFull(reply.get());
 				}
 			}
 			return true;
