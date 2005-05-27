@@ -134,6 +134,8 @@ CAmuledGSocketFuncTable::CAmuledGSocketFuncTable()
 
 void CAmuledGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
 {
+	wxASSERT(socket);
+	
 	int fd = socket->m_fd;
 
 	if ( fd == -1 ) {
@@ -150,10 +152,14 @@ void CAmuledGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
 
 void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
 {
+	wxASSERT(socket);
+	
 	int fd = socket->m_fd;
+	
 	if ( fd == -1 ) {
 		return;
 	}
+	
 	if ( event == GSOCK_INPUT ) {
 		for(int i = 0; i < m_in_fds_count; i++) {
 			if ( m_in_fds[i] == fd ) {
@@ -204,14 +210,18 @@ void CAmuledGSocketFuncTable::RunSelect()
 			int fd = m_in_fds[i];
 			if ( FD_ISSET(fd, &m_readset) ) {
 				GSocket *socket = m_in_gsocks[fd];
-				socket->Detected_Read();
+				if (socket) {
+					socket->Detected_Read();
+				}
 			}
 		}
 		for (int i = 0; i < m_out_fds_count; i++) {
 			int fd = m_out_fds[i];
 			if ( FD_ISSET(fd, &m_writeset) ) {
 				GSocket *socket = m_out_gsocks[fd];
-				socket->Detected_Write();
+				if (socket) {
+					socket->Detected_Write();
+				}
 			}
 		}
 	}
