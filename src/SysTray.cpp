@@ -285,8 +285,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// UDP PORT
 	{
-		if (thePrefs::GetUDPPort()) {
-			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetUDPPort());
+		if (thePrefs::GetEffectiveUDPPort()) {
+			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetEffectiveUDPPort());
 			info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("UDP Port: Not Ready"))));

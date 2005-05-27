@@ -428,8 +428,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// UDP PORT
 	{
 		wxString temp;
-		if (thePrefs::GetUDPPort()) {
-			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
+		if (thePrefs::GetEffectiveUDPPort()) {
+			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetEffectiveUDPPort());	
 		} else {
 			temp=_("UDP Port: Not Ready");
 		}

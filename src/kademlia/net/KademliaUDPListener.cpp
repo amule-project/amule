@@ -102,7 +102,7 @@ void CKademliaUDPListener::sendMyDetails(byte opcode, uint32 ip, uint16 port)
 	CSafeMemFile bio(25);
 	bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
-	bio.WriteUInt16(thePrefs::GetUDPPort());
+	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
 	bio.WriteUInt16(thePrefs::GetPort());
 	bio.WriteUInt8(0);
 	sendPacket(&bio, opcode, ip, port);
@@ -321,7 +321,7 @@ void CKademliaUDPListener::processBootstrapRequest (const byte *packetData, uint
 	CKademlia::getPrefs()->getKadID(&id);
 	bio.WriteUInt128(id);
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
-	bio.WriteUInt16(thePrefs::GetUDPPort());
+	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
 	bio.WriteUInt16(thePrefs::GetPort());
 	bio.WriteUInt8(0);
 
