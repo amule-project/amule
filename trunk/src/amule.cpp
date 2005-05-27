@@ -1819,7 +1819,7 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 				if ( make_full_ed2k_version(version_major,version_minor,version_update) > 
 					make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)) {
 						AddLogLineM(true,_("You are using an outdated aMule version!"));
-						AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the lastest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, version_major, version_minor, version_update));
+						AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, version_major, version_minor, version_update));
 						AddLogLineM(false, _("You can get the latest aMule version on http://www.amule.org"));
 						AddLogLineM(false, _("or, if you use your distro's version, just wait till they update it :)"));
 				}
