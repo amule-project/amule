@@ -669,7 +669,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		tag1.WriteTagToFile(data);
 		CTag tag2(ET_UDPVER,4);
 		tag2.WriteTagToFile(data);
-		CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
+		CTag tag3(ET_UDPPORT,thePrefs::GetEffectiveUDPPort());
 		tag3.WriteTagToFile(data);
 		CTag tag4(ET_SOURCEEXCHANGE,3);
 		tag4.WriteTagToFile(data);
@@ -956,7 +956,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	#endif
 	CTag tagUdpPorts(CT_EMULE_UDPPORTS,
 				(kadUDPPort									<< 16) |
-				((uint32)thePrefs::GetUDPPort()         ) );
+				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
 	tagUdpPorts.WriteTagToFile(data);
 
 	// aMule Version
