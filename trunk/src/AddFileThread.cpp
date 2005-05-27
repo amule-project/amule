@@ -299,7 +299,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				knownfile->hashlist.Clear();
 			} else {
 				unsigned int len = knownfile->hashlist.GetCount() * 16;
-				byte* data = new byte[ len ];
+				byte data[len];
 				
 				for (size_t i = 0; i < knownfile->hashlist.GetCount(); i++) {
 					memcpy( data + 16*i, knownfile->hashlist[i], 16 );
@@ -308,7 +308,6 @@ wxThread::ExitCode CAddFileThread::Entry()
 				byte hash[16];
 	
 				knownfile->CreateHashFromString( data, len, hash, NULL );
-				delete [] data;
 
 				knownfile->m_abyFileHash.SetHash( (byte*)hash );
 			}

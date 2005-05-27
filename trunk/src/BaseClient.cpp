@@ -636,72 +636,75 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		return;
 	}
 
-	CSafeMemFile* data = new CSafeMemFile();
+	CPacket* packet = NULL;
 
-	data->WriteUInt8(CURRENT_VERSION_SHORT);
+	{
+		CSafeMemFile data;
 	
-	if (OSInfo) {
+		data.WriteUInt8(CURRENT_VERSION_SHORT);
 		
-		// Special MuleInfo packet for clients supporting it.
-		// This means aMule >= 2.0.0 and Hydranode
-		
-		// Violently mark it as special Mule Info packet
-		// Sending this makes non-supporting-osinfo clients to refuse to read this
-		// packet. Anyway, this packet should NEVER get to non-supporting clients.
-		
-		data->WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
-
-		data->WriteUInt32(1); // One Tag (OS_INFO)
-
-		CTag tag1(ET_OS_INFO,theApp.GetOSType());
-		tag1.WriteTagToFile(data);
-
-	} else {
-
-		// Normal MuleInfo packet
-
-		data->WriteUInt8(EMULE_PROTOCOL);
-
-		// Tag number
-		data->WriteUInt32(9);
-
-		CTag tag1(ET_COMPRESSION,1);
-		tag1.WriteTagToFile(data);
-		CTag tag2(ET_UDPVER,4);
-		tag2.WriteTagToFile(data);
-		CTag tag3(ET_UDPPORT,thePrefs::GetEffectiveUDPPort());
-		tag3.WriteTagToFile(data);
-		CTag tag4(ET_SOURCEEXCHANGE,3);
-		tag4.WriteTagToFile(data);
-		CTag tag5(ET_COMMENTS,1);
-		tag5.WriteTagToFile(data);
-		CTag tag6(ET_EXTENDEDREQUEST,2);
-		tag6.WriteTagToFile(data);
-
-		uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
-		// Kry - Needs the preview code from eMule
-		/*
-		// set 'Preview supported' only if 'View Shared Files' allowed
-		if (thePrefs::CanSeeShares() != vsfaNobody) {
-			dwTagValue |= 128;
+		if (OSInfo) {
+			
+			// Special MuleInfo packet for clients supporting it.
+			// This means aMule >= 2.0.0 and Hydranode
+			
+			// Violently mark it as special Mule Info packet
+			// Sending this makes non-supporting-osinfo clients to refuse to read this
+			// packet. Anyway, this packet should NEVER get to non-supporting clients.
+			
+			data.WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
+	
+			data.WriteUInt32(1); // One Tag (OS_INFO)
+	
+			CTag tag1(ET_OS_INFO,theApp.GetOSType());
+			tag1.WriteTagToFile(&data);
+	
+		} else {
+	
+			// Normal MuleInfo packet
+	
+			data.WriteUInt8(EMULE_PROTOCOL);
+	
+			// Tag number
+			data.WriteUInt32(9);
+	
+			CTag tag1(ET_COMPRESSION,1);
+			tag1.WriteTagToFile(&data);
+			CTag tag2(ET_UDPVER,4);
+			tag2.WriteTagToFile(&data);
+			CTag tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
+			tag3.WriteTagToFile(&data);
+			CTag tag4(ET_SOURCEEXCHANGE,3);
+			tag4.WriteTagToFile(&data);
+			CTag tag5(ET_COMMENTS,1);
+			tag5.WriteTagToFile(&data);
+			CTag tag6(ET_EXTENDEDREQUEST,2);
+			tag6.WriteTagToFile(&data);
+	
+			uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+			// Kry - Needs the preview code from eMule
+			/*
+			// set 'Preview supported' only if 'View Shared Files' allowed
+			if (thePrefs::CanSeeShares() != vsfaNobody) {
+				dwTagValue |= 128;
+			}
+			*/
+			CTag tag7(ET_FEATURES, dwTagValue);
+			tag7.WriteTagToFile(&data);
+	
+			CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
+			tag8.WriteTagToFile(&data);
+	
+			// Support for tag ET_MOD_VERSION
+			wxString mod_name(MOD_VERSION_LONG);
+			CTag tag9(ET_MOD_VERSION, mod_name);
+			tag9.WriteTagToFile(&data);
+			// Maella end
+	
 		}
-		*/
-		CTag tag7(ET_FEATURES, dwTagValue);
-		tag7.WriteTagToFile(data);
-
-		CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
-		tag8.WriteTagToFile(data);
-
-		// Support for tag ET_MOD_VERSION
-		wxString mod_name(MOD_VERSION_LONG);
-		CTag tag9(ET_MOD_VERSION, mod_name);
-		tag9.WriteTagToFile(data);
-		// Maella end
-
+	
+		packet = new CPacket(&data,OP_EMULEPROT);
 	}
-
-	CPacket* packet = new CPacket(data,OP_EMULEPROT);
-	delete data;
 	
 	if (!bAnswer) {
 		packet->SetOpCode(OP_EMULEINFO);
@@ -1029,8 +1032,6 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
-	char* desc = NULL;
-
 	try
 	{
 		if (!m_reqfile) {
@@ -1060,8 +1061,6 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	}
 	catch ( const CInvalidPacket& e )
 	{
-		delete[] desc;
-
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Invalid MuleComment packet - %s\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
@@ -1078,8 +1077,6 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	}
 	catch (...)
 	{
-		delete[] desc;
-
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
@@ -1098,23 +1095,20 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
-
-	delete[] desc;
 }
 
 void CUpDownClient::ClearDownloadBlockRequests()
 {
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
-		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
+		auto_ptr<Requested_Block_Struct> cur_block(m_DownloadBlocks_list.GetNext(pos));
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
 		}
-		delete cur_block;
 	}
 	m_DownloadBlocks_list.RemoveAll();
 
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
-		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
+		auto_ptr<Pending_Block_Struct> pending(m_PendingBlocks_list.GetNext(pos));
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 		}
@@ -1125,7 +1119,6 @@ void CUpDownClient::ClearDownloadBlockRequests()
 			inflateEnd(pending->zStream);
 			delete pending->zStream;
 		}
-		delete pending;
 	}
 	m_PendingBlocks_list.RemoveAll();
 }

@@ -468,39 +468,38 @@ bool CamuleApp::OnInit()
 	wxString host = wxT("localhost");
 	wxString IPC = wxT("aMule IPC TESTRUN");
 
-	wxClient* client = new wxClient();
-	
-	// Log to stderr
-	wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
-	wxConnectionBase* conn = client->MakeConnection(host, server, IPC);
-	delete wxLog::SetActiveTarget(oldLog); // Restore old log
-	
-	// If the connection failed, conn is NULL
-	if ( conn ) {
-		// An instance is already running!
-		printf("There is an instance of aMule already running\n");
-		// This is very tricky. The most secure way to communicate is via ED2K links file
-		FILE *ed2kfile;
-		char filename[1024];
-
-		sprintf(filename,"%s/.aMule/ED2KLinks",(const char*)unicode2char(wxGetHomeDir()));
-		ed2kfile = fopen(filename,"a");
-		if (ed2kfile != NULL) {
-			fprintf(ed2kfile,"RAISE_DIALOG");
-			printf("Raised current running aMule\n");
-			fclose(ed2kfile);
-		} else {
-			printf("Error opening file %s.Cannot raise active aMule\n", filename);
-		}
+	{
+		wxClient client;
 		
-		conn->Disconnect();
-		delete conn;
-		delete client;
-
-		printf("aMule already running: exiting\n");
-		return false;
+		// Log to stderr
+		wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
+		auto_ptr<wxConnectionBase> conn(client.MakeConnection(host, server, IPC));
+		delete wxLog::SetActiveTarget(oldLog); // Restore old log
+		
+		// If the connection failed, conn is NULL
+		if ( conn.get() ) {
+			// An instance is already running!
+			printf("There is an instance of aMule already running\n");
+			// This is very tricky. The most secure way to communicate is via ED2K links file
+			FILE *ed2kfile;
+			char filename[1024];
+	
+			sprintf(filename,"%s/.aMule/ED2KLinks",(const char*)unicode2char(wxGetHomeDir()));
+			ed2kfile = fopen(filename,"a");
+			if (ed2kfile != NULL) {
+				fprintf(ed2kfile,"RAISE_DIALOG");
+				printf("Raised current running aMule\n");
+				fclose(ed2kfile);
+			} else {
+				printf("Error opening file %s.Cannot raise active aMule\n", filename);
+			}
+			
+			conn->Disconnect();
+	
+			printf("aMule already running: exiting\n");
+			return false;
+		}
 	}
-	delete client;
 
 	// If there was no server, start one
 	localserver = new wxServer();
@@ -1706,17 +1705,17 @@ void CamuleApp::SetPublicIP(const uint32 dwIP){
 wxString CamuleApp::GetLog(bool reset)
 {
 	ConfigDir = GetConfigDir();
-	wxFile *logfile = new wxFile();
-	logfile->Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
-	if ( !logfile->IsOpened() ) {
+	wxFile logfile;
+	logfile.Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+	if ( !logfile.IsOpened() ) {
 		return wxTRANSLATE("ERROR: can't open logfile");
 	}
-	int len = logfile->Length();
+	int len = logfile.Length();
 	if ( len == 0 ) {
 		return wxTRANSLATE("WARNING: logfile is empty. Something is wrong.");
 	}
 	char *tmp_buffer = new char[len + sizeof(wxChar)];
-	logfile->Read(tmp_buffer, len);
+	logfile.Read(tmp_buffer, len);
 	memset(tmp_buffer + len, 0, sizeof(wxChar));
 #if wxUSE_UNICODE
 	// try to guess file format
@@ -1730,7 +1729,6 @@ wxString CamuleApp::GetLog(bool reset)
 	wxString str(tmp_buffer);
 #endif
 	delete [] tmp_buffer;
-	delete logfile;
 	if ( reset ) {
 #if wxCHECK_VERSION(2,5,3)
 		delete applog;
