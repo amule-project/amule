@@ -978,7 +978,7 @@ void CUpDownClient::UDPReaskForDownload()
 		return;
 	}
 
-	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 &&
+	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 && theApp.clientudp &&
 	   !HasLowID() && !IsConnected() && !thePrefs::IsUDPDisabled())
 	{ 
 		//don't use udp to ask for sources
