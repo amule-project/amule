@@ -52,6 +52,7 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "amule.h"			// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
+#include "ClientList.h" // Needed for clientlist (buddy support)
 #include "ArchSpecific.h"
 #include "Logger.h"
 
@@ -234,17 +235,16 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 
 void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
 	#ifdef __COMPILE_KAD__
-	for(POSITION pos = CKadEntryPtrList.GetHeadPosition(); pos != NULL; ) {
-		Kademlia::CEntry* entry = CKadEntryPtrList.GetNext(pos);
+	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; ) {
+		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
 		if(entry->ip == pEntry->ip || entry->sourceID.compareTo(pEntry)) {
 			delete pEntry;
 			return;
 		}
 	}
-	CKadEntryPtrList.AddHead(pEntry);
+	m_kadNotes.AddHead(pEntry);
 	#endif
 }
-
 
 
 /* Known File */
@@ -317,7 +317,7 @@ CKnownFile::~CKnownFile(){
 	}		
 	
 	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); it++ ) {
+	for ( ; it != m_ClientUploadList.end(); ++it ) {
 		(*it)->ClearUploadFileID();
 	}
 	
@@ -612,7 +612,29 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 					}
 					break;
-				}				
+				}
+				case FT_KADLASTPUBLISHSRC:{
+					wxASSERT( newtag.IsInt() );
+					if (newtag.IsInt()) {
+						SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
+					}
+					if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+						//There may be a posibility of an older client that saved a random number here.. This will check for that..
+						SetLastPublishTimeKadSrc(0,0);
+					}
+					break;
+				}
+				case FT_KADLASTPUBLISHNOTES:{
+					wxASSERT( newtag.IsInt() );
+					if (newtag.IsInt()) {
+						SetLastPublishTimeKadNotes( newtag.GetInt() );
+					}
+					break;
+				}		
+				case FT_KADLASTPUBLISHKEY:
+					// Just purgue it
+					wxASSERT( newtag.IsInt() );
+					break;				
 				default:
 					// Store them here and write them back on saving.
 					taglist.Add(new CTag(newtag));
@@ -681,6 +703,14 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 	#if wxUSE_UNICODE
 	++tagcount;
 	#endif
+
+	if (m_lastPublishTimeKadSrc) {
+		++tagcount;
+	}
+
+	if (m_lastPublishTimeKadNotes){
+		++tagcount;
+	}
 	
 	// standard tags
 
@@ -726,6 +756,18 @@ bool CKnownFile::WriteToFile(CFileDataIO* file){
 		aichtag.WriteTagToFile(file);
 	}
 
+	// Kad sources
+	if (m_lastPublishTimeKadSrc){
+		CTag kadLastPubSrc(FT_KADLASTPUBLISHSRC, m_lastPublishTimeKadSrc);
+		kadLastPubSrc.WriteTagToFile(file);
+	}
+
+	// Kad notes
+	if (m_lastPublishTimeKadNotes){
+		CTag kadLastPubNotes(FT_KADLASTPUBLISHNOTES, m_lastPublishTimeKadNotes);
+		kadLastPubNotes.WriteTagToFile(file);
+	}
+	
 	//other tags
 	for (size_t j = 0; j < taglist.GetCount(); j++){
 		if (taglist[j]->IsInt() || taglist[j]->IsStr()) {
@@ -1072,6 +1114,57 @@ void CKnownFile::SetPublishedED2K(bool val){
 	Notify_SharedFilesUpdateItem(this);
 }
 
+bool CKnownFile::PublishNotes()
+{
+	#ifdef __COMPILE_KAD__
+	if(m_lastPublishTimeKadNotes > (uint32)time(NULL)) {
+		return false;
+	}
+	
+	if(!GetFileComment().IsEmpty()) {
+		m_lastPublishTimeKadNotes = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMEN;
+		return true;
+	}
+	
+	if(GetFileRating() != 0) {
+		m_lastPublishTimeKadNotes = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMEN;
+		return true;
+	}
+
+	#endif
+	return false;
+}
+
+bool CKnownFile::PublishSrc()
+{
+	#ifdef __COMPILE_KAD__
+	uint32 lastBuddyIP = 0;
+
+	if( theApp.IsFirewalled() ) {
+		CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+		if( buddy ) {
+			lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
+			if( lastBuddyIP != m_lastBuddyIP ) {
+				SetLastPublishTimeKadSrc( (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES, lastBuddyIP );
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	if(m_lastPublishTimeKadSrc > (uint32)time(NULL)) {
+		return false;
+	}
+
+	SetLastPublishTimeKadSrc((uint32)time(NULL)+KADEMLIAREPUBLISHTIMES,lastBuddyIP);
+	return true;
+	
+	#else
+	// REMOVE THIS!!!
+	return false
+	#endif
+}
 
 void CKnownFile::UpdatePartsInfo()
 {

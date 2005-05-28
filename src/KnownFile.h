@@ -42,6 +42,7 @@
 #include "OPCodes.h"		// Needed for PARTSIZE
 
 #include "kademlia/kademlia/SearchManager.h"
+#include "kademlia/kademlia/Indexed.h"
 
 #ifdef CLIENT_GUI
 #include "ECSpecialTags.h"
@@ -141,7 +142,7 @@ public:
 	void AddTagUnique(CTag* pTag);
 	const ArrayOfCTag& GetTags() const { return taglist; }
 	void AddNote(Kademlia::CEntry* pEntry);
-	const CTypedPtrList<CPtrList, Kademlia::CEntry*>& getNotes() const { return CKadEntryPtrList; }
+	const CKadEntryPtrList& getNotes() const { return m_kadNotes; }
 
 	/* Comment and rating */	
 	virtual const wxString&	GetFileComment() const { return m_strComment; }
@@ -154,7 +155,7 @@ protected:
 	wxString	m_strComment;
 	int8		m_iRating;
 	ArrayOfCTag taglist;
-	CTypedPtrList<CPtrList, Kademlia::CEntry*> CKadEntryPtrList;
+	CKadEntryPtrList m_kadNotes;
 };
 
 
@@ -223,6 +224,7 @@ public:
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
 
 	/* Kad stuff */ 
+	#warning KAD TODO - Check usage
 	uint32	GetKadFileSearchID() const { return kadFileSearchID; }
 	void	SetKadFileSearchID(uint32 id) { kadFileSearchID = id; } // John - Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
 
@@ -233,7 +235,9 @@ public:
 	uint32	GetLastPublishBuddy() const { return m_lastBuddyIP; }
 	void	SetLastPublishTimeKadNotes(uint32 time) {m_lastPublishTimeKadNotes = time;}
 	uint32	GetLastPublishTimeKadNotes() const { return m_lastPublishTimeKadNotes; }	
-	
+
+	bool	PublishSrc();
+	bool	PublishNotes();	
 	
 	// TODO: This must be implemented if we ever want to have metadata.
 	uint32	GetMetaDataVer() const { return /*m_uMetaDataVer*/ 0; }
@@ -299,7 +303,6 @@ protected:
 	/* Kad stuff */
 	Kademlia::WordList wordlist;
 	uint32	kadFileSearchID;
-	#warning KAD TODO - Check usage
 	uint32	m_lastPublishTimeKadSrc;
 	uint32	m_lastPublishTimeKadNotes;
 	uint32	m_lastBuddyIP;
