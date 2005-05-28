@@ -1162,7 +1162,7 @@ bool CKnownFile::PublishSrc()
 	
 	#else
 	// REMOVE THIS!!!
-	return false
+	return false;
 	#endif
 }
 
