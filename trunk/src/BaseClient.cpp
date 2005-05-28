@@ -516,9 +516,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 				m_fSharedDirectories = 1;
 			}
 		}
-	}
-	catch ( const CInvalidPacket& e )
-	{
+	} catch ( const CInvalidPacket& e ) {
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Wrong Tags on hello type packet - %s\n"
 						 "Sent by %s on ip %s port %i using client %x version %x\n"
@@ -596,8 +594,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 
 
 	#ifdef __COMPILE_KAD__
-	if( GetKadPort() && Kademlia::CKademlia::isRunning() ) {
-		Kademlia::CKademlia::getUDPListener()->bootstrap(ENDIAN_NTOHL(GetIP()), GetKadPort());
+	if( GetKadPort() ) {
+		Kademlia::CKademlia::bootstrap(ENDIAN_NTOHL(GetIP()), GetKadPort());
 	}
 	#endif
 
@@ -947,6 +945,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
 		tagcount += 2;
 	}
+	tagcount ++; // eMule misc flags 2 (kad version)
 	#endif
 	
 	#ifdef __CVS__
@@ -1031,6 +1030,16 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 				(uMultiPacket			<< 1*1) |
 				(uSupportPreview		<< 1*0) );
 	tagMisOptions.WriteTagToFile(data);
+
+#ifdef __COMPILE_KAD__
+	// eMule Misc. Options #2
+	const uint32 uKadVersion			= 1;
+	CTag tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
+//				(RESERVED				     ) 
+				(uKadVersion			<<  0) 
+				);
+	tagMisOptions2.WriteTagToFile(data);
+#endif
 
 
 	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
@@ -1455,21 +1464,23 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 void CUpDownClient::ConnectionEstablished()
 {
 	// check if we should use this client to retrieve our public IP
-	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */)
+	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */) {
 		SendPublicIPRequest();
+	}
+	
+	#ifdef __COMPILE_KAD__
 
-// 0.42e
-	switch(GetKadState()) {
+	switch (GetKadState()) {
 		case KS_CONNECTING_FWCHECK:
 			SetKadState(KS_CONNECTED_FWCHECK);
 			break;
-		case KS_QUEUED_BUDDY:
+		case KS_CONNECTING_BUDDY:
+		case KS_INCOMING_BUDDY:
 			SetKadState(KS_CONNECTED_BUDDY);
 			break;
-		default:
-			;
 	}
-
+	#endif
+	
 	// ok we have a connection, lets see if we want anything from this client
 	if (GetChatState() == MS_CONNECTING) {
 		SetChatState( MS_CHATTING );
