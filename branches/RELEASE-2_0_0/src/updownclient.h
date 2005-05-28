@@ -749,9 +749,10 @@ public:
 	const wxString&	GetClientVerString() const { return m_clientVerString; }
 
 private:
-	wxString		m_clientVerString;
-	wxString 		m_sClientOSInfo;
-	wxString		m_pendingMessage;
+	bool		m_OSInfo_sent;
+	wxString	m_clientVerString;
+	wxString 	m_sClientOSInfo;
+	wxString	m_pendingMessage;
 
 	int SecIdentSupRec;
 };
