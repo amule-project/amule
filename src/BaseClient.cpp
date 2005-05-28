@@ -492,11 +492,16 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					//  7 Min Version (Only need 0-99)
 					//  3 Upd Version (Only need 0-5)
 					//  7 Bld Version (Only need 0-99)
-					m_byCompatibleClient = (temptag.GetInt() >> 24);
-					m_nClientVersion = temptag.GetInt() & 0x00ffffff;
-					m_byEmuleVersion = 0x99;
-					m_fSharedDirectories = 1;
-					dwEmuleTags |= 4;
+					if (temptag.IsInt()) {
+						m_byCompatibleClient = (temptag.GetInt() >> 24);
+						m_nClientVersion = temptag.GetInt() & 0x00ffffff;
+						m_byEmuleVersion = 0x99;
+						m_fSharedDirectories = 1;
+						dwEmuleTags |= 4;
+					} else  {
+						// This will disconnect the client. WTF is this client anyway? 
+						throw wxString(wxString::Format(wxT("Wrong tag type on CT_EMULE_VERSION: %x"),temptag.GetType()));
+					}
 					break;				
 			}
 		}
