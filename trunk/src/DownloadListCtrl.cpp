@@ -258,7 +258,7 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 			bFound = true;
 		} else if ( type == AVAILABLE_SOURCE ) {
 			// The state 'Available' is exclusive
-			cur_item->type = UNAVAILABLE_SOURCE;
+			cur_item->type = A4AF_SOURCE;
 			cur_item->dwUpdated = 0;
 		}
 	}
@@ -1629,12 +1629,9 @@ void CDownloadListCtrl::DrawSourceItem(
 			break;
 
 		case 4:	// speed
-			if (item->type == AVAILABLE_SOURCE) {
-				// a4af, NNP, QF and others can't have transfer speed
-				if (client->GetKBpsDown() > 0.001) {
-					buffer = wxString::Format(wxT("%.1f "),
-							client->GetKBpsDown()) + _("kB/s");
-				}
+			if (client->GetKBpsDown() > 0.001) {
+				buffer = wxString::Format(wxT("%.1f "),
+						client->GetKBpsDown()) + _("kB/s");
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
