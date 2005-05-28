@@ -427,7 +427,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					#ifdef __PACKET_DEBUG__
 					printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
 					#endif
-				break;				case CT_EMULE_MISCOPTIONS1: {
+					break;				
+				case CT_EMULE_MISCOPTIONS1: {
 					//  3 AICH Version (0 = not supported)
 					//  1 Unicode
 					//  4 UDP version
