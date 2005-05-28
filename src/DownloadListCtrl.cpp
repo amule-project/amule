@@ -1919,18 +1919,19 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 	// Sort by remaining time
 	case 9:
 		if (file1->getTimeRemaining() == -1) {
-			if (file2->getTimeRemaining() == -1)  {
+			if (file2->getTimeRemaining() == -1) {
 				result = 0;
 			} else {
 				result = -1;
 			}
-		}
-		if (file2->getTimeRemaining() == -1) {
-			result = 1;
 		} else {
-			result = CmpAny(
-				file1->getTimeRemaining(),
-				file2->getTimeRemaining() );
+			if (file2->getTimeRemaining() == -1) {
+				result = 1;
+			} else {
+				result = CmpAny(
+					file1->getTimeRemaining(),
+					file2->getTimeRemaining() );
+			}
 		}
 		break;
 
