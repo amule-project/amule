@@ -689,10 +689,10 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	
 	// Send this inmediately, don't queue.
 	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0);
+	theApp.statistics->AddUpDataOverheadFileRequest(pPacket->GetPacketSize());
 	SendPacket(pPacket, true, true);
 	
 	theApp.uploadqueue->AddClientToQueue(this);
-	theApp.statistics->AddUpDataOverheadFileRequest(pPacket->GetPacketSize());
 }
 
 
