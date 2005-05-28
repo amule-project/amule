@@ -214,6 +214,8 @@ void CUpDownClient::Init()
 
 	m_uploadingfile = NULL;
 
+	m_OSInfo_sent = false;
+	
 	/* Kad stuff */
 	SetBuddyID(NULL);
 	m_nBuddyIP = 0;
@@ -650,74 +652,73 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 
 	CPacket* packet = NULL;
+	CSafeMemFile data;
 
-	{
-		CSafeMemFile data;
+	data.WriteUInt8(CURRENT_VERSION_SHORT);
 	
-		data.WriteUInt8(CURRENT_VERSION_SHORT);
+	if (OSInfo) {
 		
-		if (OSInfo) {
-			
-			// Special MuleInfo packet for clients supporting it.
-			// This means aMule >= 2.0.0 and Hydranode
-			
-			// Violently mark it as special Mule Info packet
-			// Sending this makes non-supporting-osinfo clients to refuse to read this
-			// packet. Anyway, this packet should NEVER get to non-supporting clients.
-			
-			data.WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
-	
-			data.WriteUInt32(1); // One Tag (OS_INFO)
-	
-			CTag tag1(ET_OS_INFO,theApp.GetOSType());
-			tag1.WriteTagToFile(&data);
-	
-		} else {
-	
-			// Normal MuleInfo packet
-	
-			data.WriteUInt8(EMULE_PROTOCOL);
-	
-			// Tag number
-			data.WriteUInt32(9);
-	
-			CTag tag1(ET_COMPRESSION,1);
-			tag1.WriteTagToFile(&data);
-			CTag tag2(ET_UDPVER,4);
-			tag2.WriteTagToFile(&data);
-			CTag tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
-			tag3.WriteTagToFile(&data);
-			CTag tag4(ET_SOURCEEXCHANGE,3);
-			tag4.WriteTagToFile(&data);
-			CTag tag5(ET_COMMENTS,1);
-			tag5.WriteTagToFile(&data);
-			CTag tag6(ET_EXTENDEDREQUEST,2);
-			tag6.WriteTagToFile(&data);
-	
-			uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
-			// Kry - Needs the preview code from eMule
-			/*
-			// set 'Preview supported' only if 'View Shared Files' allowed
-			if (thePrefs::CanSeeShares() != vsfaNobody) {
-				dwTagValue |= 128;
-			}
-			*/
-			CTag tag7(ET_FEATURES, dwTagValue);
-			tag7.WriteTagToFile(&data);
-	
-			CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
-			tag8.WriteTagToFile(&data);
-	
-			// Support for tag ET_MOD_VERSION
-			wxString mod_name(MOD_VERSION_LONG);
-			CTag tag9(ET_MOD_VERSION, mod_name);
-			tag9.WriteTagToFile(&data);
-			// Maella end
-	
+		// Special MuleInfo packet for clients supporting it.
+		// This means aMule >= 2.0.0 and Hydranode
+		
+		// Violently mark it as special Mule Info packet
+		// Sending this makes non-supporting-osinfo clients to refuse to read this
+		// packet. Anyway, this packet should NEVER get to non-supporting clients.
+		
+		data.WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
+
+		data.WriteUInt32(1); // One Tag (OS_INFO)
+
+		CTag tag1(ET_OS_INFO,theApp.GetOSType());
+		tag1.WriteTagToFile(&data);
+		
+		m_OSInfo_sent = true; // So we don't send it again
+
+	} else {
+
+		// Normal MuleInfo packet
+
+		data.WriteUInt8(EMULE_PROTOCOL);
+
+		// Tag number
+		data.WriteUInt32(9);
+
+		CTag tag1(ET_COMPRESSION,1);
+		tag1.WriteTagToFile(&data);
+		CTag tag2(ET_UDPVER,4);
+		tag2.WriteTagToFile(&data);
+		CTag tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
+		tag3.WriteTagToFile(&data);
+		CTag tag4(ET_SOURCEEXCHANGE,3);
+		tag4.WriteTagToFile(&data);
+		CTag tag5(ET_COMMENTS,1);
+		tag5.WriteTagToFile(&data);
+		CTag tag6(ET_EXTENDEDREQUEST,2);
+		tag6.WriteTagToFile(&data);
+
+		uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+		// Kry - Needs the preview code from eMule
+		/*
+		// set 'Preview supported' only if 'View Shared Files' allowed
+		if (thePrefs::CanSeeShares() != vsfaNobody) {
+			dwTagValue |= 128;
 		}
+		*/
+		CTag tag7(ET_FEATURES, dwTagValue);
+		tag7.WriteTagToFile(&data);
+
+		CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
+		tag8.WriteTagToFile(&data);
 	
-		packet = new CPacket(&data,OP_EMULEPROT);
+		// Support for tag ET_MOD_VERSION
+		wxString mod_name(MOD_VERSION_LONG);
+		CTag tag9(ET_MOD_VERSION, mod_name);
+		tag9.WriteTagToFile(&data);
+		// Maella end
+	
 	}
+
+	packet = new CPacket(&data,OP_EMULEPROT);
 	
 	if (!bAnswer) {
 		packet->SetOpCode(OP_EMULEINFO);
@@ -772,7 +773,12 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						// is not supporting OS Info, we're seriously fucked up :)					
 				
 						m_sClientOSInfo = temptag.GetStr();
-	
+						
+						// If we didn't send our OSInfo to this client, just send it
+						if (!m_OSInfo_sent) {
+							SendMuleInfoPacket(false,true);
+						}
+					
 						break;	
 					
 					// Your ad... er... I mean TAG, here

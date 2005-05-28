@@ -325,8 +325,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				try{
 					bIsMuleHello = m_client->ProcessHelloPacket(packet,size);
-				}
-				catch(...){
+				} catch(...) {
 					if (bNewClient && m_client) {
 						// Don't let CUpDownClient::Disconnected be processed for a client which is not in the list of clients.
 						m_client->Safe_Delete();
@@ -345,6 +344,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					return false;
 				}
 						
+				wxASSERT(m_client);
+				
 				// now we check if we now this client already. if yes this socket will
 				// be attached to the known client, the new client will be deleted
 				// and the var. "client" will point to the known client.
@@ -374,8 +375,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}				
 				
 				// Client might die from Sending in SendMuleInfoPacket, so check
-				if ( m_client )
+				if ( m_client ) {
 					m_client->ConnectionEstablished();
+				}
 				
 				// start secure identification, if
 				//	- we have received eMule-OP_HELLO (new eMule)				
