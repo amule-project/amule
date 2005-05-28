@@ -935,12 +935,19 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	data->WriteUInt32(theApp.serverconnect->GetClientID());
 	data->WriteUInt16(thePrefs::GetPort());
 
+	uint32 tagcount = 6;
+	#ifdef __COMPILE_KAD__
+	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
+		tagcount += 2;
+	}
+	#endif
+	
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
 	// Last update: CT_EMULECOMPAT_OPTIONS included
-	data->WriteUInt32(7);
+	data->WriteUInt32(tagcount + 1);
 	#else
-	data->WriteUInt32(6);  // NO MOD_VERSION
+	data->WriteUInt32(tagcount);  // NO MOD_VERSION
 	#endif
 
 
@@ -962,6 +969,19 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
 	tagUdpPorts.WriteTagToFile(data);
 
+	#ifdef __COMPILE_KAD__
+	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
+		CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
+		tagBuddyIP.WriteTagToFile(data);
+	
+		CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
+//					( RESERVED												)
+					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  ) 
+					);
+		tagBuddyPort.WriteTagToFile(data);
+	}	
+	#endif
+	
 	// aMule Version
 	CTag tagMuleVersion(CT_EMULE_VERSION,
 				(SO_AMULE	<< 24) |
