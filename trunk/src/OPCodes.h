@@ -295,7 +295,9 @@ const unsigned int UNLIMITED =	 		0;
 #define	OP_REASKACK				0x91	// <RANG 2>
 #define	OP_FILENOTFOUND				0x92	// (null)
 #define	OP_QUEUEFULL				0x93	// (null)
-	
+#define	OP_REASKCALLBACKUDP		0x94
+#define	OP_PORTTEST				0xFE	// Connection Test
+
 // server.met
 #define	ST_SERVERNAME				0x01	// <string>
 #define	ST_DESCRIPTION				0x0B	// <string>

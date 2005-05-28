@@ -552,15 +552,20 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}				
 					case FT_KADLASTPUBLISHSRC:{
-						#warning Kad
-						//SetLastPublishTimeKadSrc(newtag.GetInt());
+						wxASSERT( newtag.IsInt() );
+						if (newtag.IsInt()) {
+							SetLastPublishTimeKadSrc(newtag.GetInt(), 0);
+							if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+								//There may be a posibility of an older client that saved a random number here.. This will check for that..
+								SetLastPublishTimeKadSrc(0,0);
+							}
+						}
 						break;
 					}
 					case FT_KADLASTPUBLISHNOTES:{
 						wxASSERT( newtag.IsInt() );
 						if (newtag.IsInt()) {
-							#warning Kad
-						    // SetLastPublishTimeKadNotes(newtag->GetInt());
+						     SetLastPublishTimeKadNotes(newtag.GetInt());
 						}
 						break;
 					}					
@@ -876,7 +881,16 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (corrupted_list.GetHeadPosition()) {			
 			++tagcount;
 		}
+		
 		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
+			++tagcount;
+		}
+		
+		if (GetLastPublishTimeKadSrc()){
+			++tagcount;
+		}
+
+		if (GetLastPublishTimeKadNotes()){
 			++tagcount;
 		}
 
@@ -947,6 +961,13 @@ bool CPartFile::SavePartFile(bool Initial)
 			aichtag.WriteTagToFile(&file); // 12?
 		}
 		
+		if (GetLastPublishTimeKadSrc()){
+			CTag( FT_KADLASTPUBLISHSRC,	GetLastPublishTimeKadSrc()).WriteTagToFile(&file); // 15? 
+		}
+		
+		if (GetLastPublishTimeKadNotes()){
+			CTag( FT_KADLASTPUBLISHNOTES,	GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
+		}		
 		
 		for (uint32 j = 0; j != (uint32)taglist.GetCount();++j) {
 			taglist[j]->WriteTagToFile(&file);

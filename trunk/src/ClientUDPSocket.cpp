@@ -50,6 +50,8 @@
 #include "OPCodes.h"		// Needed for OP_EMULEPROT
 #include "Statistics.h"		// Needed for CStatistics
 #include "amule.h"			// Needed for theApp
+#include "ClientList.h"		// Needed for clientlist (buddy support)
+#include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "OtherFunctions.h"
 #include "SafeFile.h"
 #include "Logger.h"
@@ -118,7 +120,30 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 {
 	try {
 		switch(opcode) {
+			case OP_REASKCALLBACKUDP: {
+				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
+				theApp.statistics->AddDownDataOverheadOther(size);
+				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+				if( buddy ) {
+					if( size < 17 || buddy->GetSocket() == NULL ) {
+						break;
+					}
+					if (!md4cmp(packet, buddy->GetBuddyID())) {
+						CSafeMemFile mem_packet((byte*)packet,size-10);
+						// Change the ip and port while leaving the rest untouched
+						mem_packet.Seek(0,wxFromStart);
+						mem_packet.WriteUInt32(host);
+						mem_packet.WriteUInt16(port);
+						CPacket* response = new CPacket(&mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
+						AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
+						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+						buddy->GetSocket()->SendPacket(response);
+					}
+				}
+				break;
+			}
 			case OP_REASKFILEPING: {
+				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				
 				CSafeMemFile data_in((byte*)packet, size);
@@ -131,7 +156,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					SendPacket(response,host,port);
 					break;
 				}
-				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(host);
+				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(host, port);
 				if (sender){
 					sender->CheckForAggressive();
 					
@@ -185,6 +210,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				break;
 			}
 			case OP_QUEUEFULL: {
+				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
 				theApp.statistics->AddDownDataOverheadOther(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender) {
@@ -207,8 +233,8 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				}
 				break;
 			}
-			case OP_FILENOTFOUND:
-			{
+			case OP_FILENOTFOUND: {
+				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender){
@@ -320,5 +346,3 @@ bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
     theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 	return true;
 }
-
-
