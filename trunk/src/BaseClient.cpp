@@ -418,7 +418,14 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
 					#endif
 					break;				
-				case CT_EMULE_MISCOPTIONS1: {
+				case CT_EMULE_BUDDYUDP:
+					// 16 --Reserved for future use--
+					// 16 BUDDY Port
+					m_nBuddyPort = (uint16)temptag.GetInt();
+					#ifdef __PACKET_DEBUG__
+					printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
+					#endif
+				break;				case CT_EMULE_MISCOPTIONS1: {
 					//  3 AICH Version (0 = not supported)
 					//  1 Unicode
 					//  4 UDP version
