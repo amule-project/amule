@@ -29,12 +29,13 @@
 #include <cmath>		// Needed for std::exp
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/treebase.h>	// Needed for wxTreeItemId (HTREEITEM) and wxTreeCtrl
 
 #include "Types.h"		// Needed for uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CList
 #include "Statistics.h"
 
+class wxTreeCtrl;
+class wxTreeItemId;
 class COScopeCtrl;
 
 // CStatisticsDlg dialog
