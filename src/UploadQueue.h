@@ -54,39 +54,34 @@ public:
 	bool	IsOnUploadQueue(CUpDownClient* client)	{return GetWaitingClient(client);}
 	bool	IsDownloading(CUpDownClient* client)	{return GetDownloadingClient(client);}
 	bool	CheckForTimeOver(CUpDownClient* client);
-	int		GetWaitingUserCount()					{return waitinglist.GetCount();}
-	int		GetUploadQueueLength()					{return uploadinglist.GetCount();}
-        POSITION GetFirstFromUploadList()                               {return
-uploadinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromUploadList(POSITION &curpos)  {return uploadinglist.GetNext(curpos);}
-        CUpDownClient* GetQueueClientAt(POSITION &curpos)       {return uploadinglist.GetAt(curpos);}
- 
-        POSITION GetFirstFromWaitingList()                              {return
-waitinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
-        CUpDownClient* GetWaitClientAt(POSITION &curpos)        {return waitinglist.GetAt(curpos);}
- 
+	int	GetWaitingUserCount()			{return waitinglist.GetCount();}
+	int	GetUploadQueueLength()			{return uploadinglist.GetCount();}
+	POSITION GetFirstFromUploadList()		{return uploadinglist.GetHeadPosition();}
+	CUpDownClient* GetNextFromUploadList(POSITION &curpos)	{return uploadinglist.GetNext(curpos);}
+	CUpDownClient* GetQueueClientAt(POSITION &curpos)	{return uploadinglist.GetAt(curpos);}
 
-	CUpDownClient*	GetWaitingClientByIP(uint32 dwIP);
-	CUpDownClient*	GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
-	CUpDownClient*	GetNextClient(CUpDownClient* update);
+	POSITION GetFirstFromWaitingList()		{return waitinglist.GetHeadPosition();}
+	CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
+	CUpDownClient* GetWaitClientAt(POSITION &curpos)	{return waitinglist.GetAt(curpos);}
+	CUpDownClient* GetWaitingClientByIP(uint32 dwIP);
+	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
+	CUpDownClient* GetNextClient(CUpDownClient* update);
 
-	
 	void	DeleteAll();
 	uint16	GetWaitingPosition(CUpDownClient* client);
-	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
-	uint32	GetFailedUpCount()						{return failedupcount;}
+	uint32	GetSuccessfullUpCount()			{return successfullupcount;}
+	uint32	GetFailedUpCount()			{return failedupcount;}
 	uint32	GetAverageUpTime();
 	void	SuspendUpload( const CMD4Hash& );
 	void	ResumeUpload( const CMD4Hash& );
 
-
-    void    UpdateDatarates();
+	void	UpdateDatarates();
 	uint32	GetDatarate();
+
 protected:
 	void	RemoveFromWaitingQueue(POSITION pos);
-	POSITION	GetWaitingClient(CUpDownClient* client);
-	POSITION	GetDownloadingClient(CUpDownClient* client);
+	POSITION GetWaitingClient(CUpDownClient* client);
+	POSITION GetDownloadingClient(CUpDownClient* client);
 	bool	AcceptNewClient();
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 
@@ -103,7 +98,7 @@ private:
 
 	// Mutex used to ensure thread-safe access to GetDatarate()
 	wxMutex m_ratelock;
-	
+
 	// By BadWolf - Accurate Speed Measurement
 	typedef struct TransferredData {
 		uint32	datalen;
@@ -113,10 +108,8 @@ private:
 	CList<uint64> avarage_dr_list;
 	CList<uint32,uint32> avarage_tick_list;
 	uint32	datarate;   //datarate sent to network (including friends)
-	// By BadWolf - Accurate Speed Measurement	
-
-    uint64  m_avarage_dr_sum;
-    uint32   m_lastCalculatedDataRateTick;
+	uint64	m_avarage_dr_sum;
+	uint32	m_lastCalculatedDataRateTick;
 };
 
 #endif // UPLOADQUEUE_H
