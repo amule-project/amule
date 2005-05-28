@@ -102,7 +102,7 @@ const wxString& CFormat::GetString() const
 }
 
 
-#if GCC_VERSION > 30203
+#if GCC_VERSION > 30300
 CFormat::operator const wxString&() const
 #else
 CFormat::operator wxString() const
@@ -226,4 +226,3 @@ CFormat& CFormat::operator%( const wxChar* val )
 
 	return *this;
 }
-
