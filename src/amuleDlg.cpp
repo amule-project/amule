@@ -649,7 +649,6 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 	}
 }
 
-
 void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 {
 	enum state { sUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
