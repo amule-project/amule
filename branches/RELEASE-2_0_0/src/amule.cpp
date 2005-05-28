@@ -1061,6 +1061,25 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 	return strCode;
 }
 
+// Returns a ed2k link with AICH info if available
+wxString CamuleApp::CreateED2kAICHLink(const CKnownFile* f)
+{
+	// Create the first part of the URL
+	wxString strURL = CreateED2kLink(f);
+	// Append the AICH info
+	if (f->GetAICHHashset()->HasValidMasterHash() && 
+		(
+	      f->GetAICHHashset()->GetStatus() == AICH_VERIFIED || 
+		 f->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
+	     )) {
+		strURL << wxT("|h=") << f->GetAICHHashset()->GetMasterHash().GetString();
+	}	
+
+	strURL << wxT("|/");
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|h=<AICH master hash>|/"
+	return strURL;
+}
+
 wxString validateURI(const wxString url)
 {
 	wxString strURI;
