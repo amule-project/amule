@@ -1597,8 +1597,151 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				break;
 			}
-			#warning KAD TODO: Get the Kad ones (callback, etc)
-			
+			//#ifdef __COMPILE_KAD__
+			#if 0
+			case OP_CALLBACK: {
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK") );				
+				theApp.statistics->AddDownDataOverheadFileRequest(uRawSize);
+				if(!Kademlia::CKademlia::isRunning()) {
+					break;
+				}
+				CSafeMemFile data(packet, size);
+				Kademlia::CUInt128 check;
+				data.ReadUInt128(&check);
+				check.XOR(Kademlia::CUInt128(true));
+				if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
+					break;
+				}
+				Kademlia::CUInt128 fileid;
+				data.ReadUInt128(&fileid);
+				uchar fileid2[16];
+				fileid.toByteArray(fileid2);
+				CKnownFile* reqfile;
+				if ( (reqfile = theApp.sharedfiles->GetFileByID(fileid2)) == NULL ) {
+					if ( (reqfile = theApp.downloadqueue->GetFileByID(fileid2)) == NULL) {
+						#warning Xaignar? I know we have something like this somewhere
+						//client->CheckFailedFileIdReqs(fileid2);
+						break;
+					}
+				}
+
+				uint32 ip = data.ReadUInt32();
+				uint16 tcp = data.ReadUInt16();
+				CUpDownClient* callback;
+				callback = theApp.clientlist->FindClientByIP(ENDIAN_NTOHL(ip), tcp);
+				if( callback == NULL ) {
+					callback = new CUpDownClient(NULL,tcp,ip,0,0);
+					theApp.clientlist->AddClient(callback);
+				}
+				callback->TryToConnect(true);
+				break;
+			}
+			case OP_BUDDYPING: {
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPING") );
+				theApp.statistics->AddDownDataOverheadOther(uRawSize);
+
+				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+				if( buddy != client || client->GetKadVersion() == 0 || !client->AllowIncomeingBuddyPingPong() ) {
+					//This ping was not from our buddy or wrong version or packet sent to fast. Ignore
+					break;
+				}
+				#error Move this to updownclient
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_BUDDYPING") );
+				Packet* replypacket = new Packet(OP_BUDDYPONG, 0, OP_EMULEPROT);
+				theStats.AddDownDataOverheadOther(replypacket->size);
+				SendPacket(replypacket);
+				client->SetLastBuddyPingPongTime();
+				break;
+			}
+			case OP_BUDDYPONG: {
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPONG") );
+				theApp.statistics->AddDownDataOverheadOther(uRawSize);
+
+				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+				if( buddy != client || client->GetKadVersion() == 0 ) {
+					//This pong was not from our buddy or wrong version. Ignore
+					break;
+				}
+				client->SetLastBuddyPingPongTime();
+				//All this is for is to reset our socket timeout.
+				break;
+			}
+			case OP_REASKCALLBACKTCP: {
+				theApp.statistics->AddDownDataOverheadFileRequest(uRawSize);
+				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+				if (buddy != client) {
+					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );
+					//This callback was not from our buddy.. Ignore.
+					break;
+				}
+				CSafeMemFile data_in(packet, size);
+				uint32 destip = data_in.ReadUInt32();
+				uint16 destport = data_in.ReadUInt16();
+				byte reqfilehash[16];
+				data_in.ReadHash16(reqfilehash);
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
+				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+				if (!reqfile) {
+					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND") );
+					CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
+					theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+					theApp.clientudp->SendPacket(response, destip, destport);
+					break;
+				}
+				
+				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
+				if (sender) {
+					//Make sure we are still thinking about the same file
+					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
+						sender->AddAskedCount();
+						sender->SetLastUpRequest();
+						//I messed up when I first added extended info to UDP
+						//I should have originally used the entire ProcessExtenedInfo the first time.
+						//So now I am forced to check UDPVersion to see if we are sending all the extended info.
+						//For now on, we should not have to change anything here if we change
+						//anything to the extended info data as this will be taken care of in ProcessExtendedInfo()
+						//Update extended info. 
+						if (sender->GetUDPVersion() > 3) {
+							sender->ProcessExtendedInfo(&data_in, reqfile);
+						} else if (sender->GetUDPVersion() > 2) {
+							//Update our complete source counts.			
+							uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
+							uint16 nCompleteCountNew = data_in.ReadUInt16();
+							sender->SetUpCompleteSourcesCount(nCompleteCountNew);
+							if (nCompleteCountLast != nCompleteCountNew) {
+								reqfile->UpdatePartsInfo();
+							}
+						}
+						
+						CSafeMemFile data_out(128);
+						if(sender->GetUDPVersion() > 3) {
+							if (reqfile->IsPartFile()) {
+								((CPartFile*)reqfile)->WritePartStatus(&data_out);
+							} else {
+								data_out.WriteUInt16(0);
+							}
+						}
+						
+						data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
+						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REASKACK") );
+						CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
+						response->SetOpCode(OP_REASKACK);
+						theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+						theApp.clientudp->SendPacket(response, destip, destport);
+					} else {
+							AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
+					}
+				} else {
+					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
+						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL") );
+						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
+						theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+						theApp.clientudp->SendPacket(response, destip, destport);
+					}
+				}
+				break;
+			}
+			#endif
 			default:
 				theApp.statistics->AddDownDataOverheadOther(size);
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
@@ -2084,4 +2227,3 @@ float CListenSocket::GetMaxConperFiveModifier()
 	
 	return 1.0f - (SpikeSize/SpikeTolerance);
 }
-

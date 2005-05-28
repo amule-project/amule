@@ -93,10 +93,12 @@ enum EDownloadState {
 };
 
 // m_byChatstate
-#define	MS_NONE			0
-#define	MS_CHATTING		1
-#define	MS_CONNECTING		2
-#define	MS_UNABLETOCONNECT	3
+enum {
+	MS_NONE = 0,
+	MS_CHATTING,
+	MS_CONNECTING,
+	MS_UNABLETOCONNECT
+};
 
 enum ESourceFrom {
 	SF_SERVER			= 0,
@@ -588,10 +590,16 @@ public:
 	uint16		GetBuddyPort() const							{ return m_nBuddyPort; }	
 		
 	//KadIPCheck
+	bool			SendBuddyPingPong()								{ return m_dwLastBuddyPingPongTime < ::GetTickCount(); }
+	bool			AllowIncomeingBuddyPingPong()					{ return m_dwLastBuddyPingPongTime < (::GetTickCount()-(3*60*1000)); }
+	void			SetLastBuddyPingPongTime()						{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }	
+	#warning KAD TODO - review usage
 	EKadState		GetKadState() const								{ return m_nKadState; }
 	void			SetKadState(EKadState nNewS)					{ m_nKadState = nNewS; }	
-	
+	// END TODO
 	uint8			GetKadVersion()									{ return m_byKadVersion; }
+	// Kad added by me
+	bool			SendBuddyPing();
 	
 private:
 	uint32		m_nTransferredUp;
@@ -796,7 +804,7 @@ public:
 	EKadState m_nKadState;	
 	
 	uint8	m_byKadVersion;
-	
+	uint32	m_dwLastBuddyPingPongTime;
 public:
 	/**
 	 * Checks that a client isn't aggressively re-asking for files.

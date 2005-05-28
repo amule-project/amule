@@ -47,6 +47,13 @@
 
 #include "kademlia/routing/Contact.h"
 
+#ifdef __COMPILE_KAD__
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/Prefs.h"
+#include "kademlia/kademlia/Search.h"
+#include "kademlia/net/KademliaUDPListener.h"
+#endif
+
 /**
  * CDeletedClient Class
  *
@@ -84,6 +91,7 @@ CClientList::CClientList()
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
 	m_pBuddy = NULL;
+	m_nBuddyStatus = Disconnected;
 }
 
 
@@ -641,6 +649,153 @@ void CClientList::Process()
 			}
 		}
 	}
+	
+	#ifdef __COMPILE_KAD__
+	//We need to try to connect to the clients in m_KadList
+	//If connected, remove them from the list and send a message back to Kad so we can send a ACK.
+	//If we don't connect, we need to remove the client..
+	//The sockets timeout should delete this object.
+
+	// buddy is just a flag that is used to make sure we are still connected or connecting to a buddy.
+	buddyState buddy = Disconnected;
+
+	for (std::set<CUpDownClient*>::iterator it = m_KadSources.begin(); it != m_KadSources.end(); ++it) {
+		CUpDownClient* cur_client = *it;
+		if( !Kademlia::CKademlia::isRunning() ) {
+			//Clear out this list if we stop running Kad.
+			//Setting the Kad state to KS_NONE causes it to be removed in the switch below.
+			cur_client->SetKadState(KS_NONE);
+		}
+		switch (cur_client->GetKadState()) {
+			case KS_QUEUED_FWCHECK:
+				//Another client asked us to try to connect to them to check their firewalled status.
+				cur_client->TryToConnect(true);
+				break;
+
+			case KS_CONNECTING_FWCHECK:
+				//Ignore this state as we are just waiting for results.
+				break;
+
+			case KS_CONNECTED_FWCHECK:
+				//We successfully connected to the client.
+				//We now send a ack to let them know.
+				Kademlia::CKademlia::getUDPListener()->sendNullPacket(KADEMLIA_FIREWALLED_ACK, ENDIAN_NTOHL(cur_client->GetIP()), cur_client->GetKadPort());
+				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
+				cur_client->SetKadState(KS_NONE);
+				break;
+
+			case KS_INCOMING_BUDDY:
+				//A firewalled client wants us to be his buddy.
+				//If we already have a buddy, we set Kad state to KS_NONE and it's removed in the next cycle.
+				//If not, this client will change to KS_CONNECTED_BUDDY when it connects.
+				if( m_nBuddyStatus == Connected ) {
+					cur_client->SetKadState(KS_NONE);
+				}
+				break;
+
+			case KS_QUEUED_BUDDY:
+				//We are firewalled and want to request this client to be a buddy.
+				//But first we check to make sure we are not already trying another client.
+				//If we are not already trying. We try to connect to this client.
+				//If we are already connected to a buddy, we set this client to KS_NONE and it's removed next cycle.
+				//If we are trying to connect to a buddy, we just ignore as the one we are trying may fail and we can then try this one.
+				if( m_nBuddyStatus == Disconnected ) {
+					buddy = Connecting;
+					m_nBuddyStatus = Connecting;
+					cur_client->SetKadState(KS_CONNECTING_BUDDY);
+					cur_client->TryToConnect(true);
+					Notify_ServerUpdateMyInfo();
+				} else {
+					if( m_nBuddyStatus == Connected ) {
+						cur_client->SetKadState(KS_NONE);
+					}
+				}
+				break;
+
+			case KS_CONNECTING_BUDDY:
+				//We are trying to connect to this client.
+				//Although it should NOT happen, we make sure we are not already connected to a buddy.
+				//If we are we set to KS_NONE and it's removed next cycle.
+				//But if we are not already connected, make sure we set the flag to connecting so we know 
+				//things are working correctly.
+				if( m_nBuddyStatus == Connected ) {
+					cur_client->SetKadState(KS_NONE);
+				} else {
+					wxASSERT( m_nBuddyStatus == Connecting );
+					buddy = Connecting;
+				}
+				break;
+
+			case KS_CONNECTED_BUDDY:
+				//A potential connected buddy client wanting to me in the Kad network
+				//We set our flag to connected to make sure things are still working correctly.
+				buddy = Connected;
+				
+				//If m_nBuddyStatus is not connected already, we set this client as our buddy!
+				if( m_nBuddyStatus != Connected ) {
+					m_pBuddy = cur_client;
+					m_nBuddyStatus = Connected;
+					Notify_ServerUpdateMyInfo();
+				}
+				if( m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong() ) {
+					cur_client->SendBuddyPing();
+				}
+				break;
+
+			default:
+				RemoveFromKadList(cur_client);
+		}
+	}
+	
+	//We either never had a buddy, or lost our buddy..
+	if( buddy == Disconnected ) {
+		if( m_nBuddyStatus != Disconnected || m_pBuddy ) {
+			if( Kademlia::CKademlia::isRunning() && theApp.IsFirewalled() ) {
+				//We are a lowID client and we just lost our buddy.
+				//Go ahead and instantly try to find a new buddy.
+				Kademlia::CKademlia::getPrefs()->setFindBuddy();
+			}
+			m_pBuddy = NULL;
+			m_nBuddyStatus = Disconnected;
+			Notify_ServerUpdateMyInfo();
+		}
+	}
+
+	if ( Kademlia::CKademlia::isConnected() ) {
+		if( Kademlia::CKademlia::isFirewalled() ) {
+			if( m_nBuddyStatus == Disconnected && Kademlia::CKademlia::getPrefs()->getFindBuddy() ) {
+				//We are a firewalled client with no buddy. We have also waited a set time 
+				//to try to avoid a false firewalled status.. So lets look for a buddy..
+				Kademlia::CSearch *findBuddy = new Kademlia::CSearch;
+				findBuddy->setSearchTypes(Kademlia::CSearch::FINDBUDDY);
+				Kademlia::CUInt128 ID(true);
+				ID.XOR(Kademlia::CKademlia::getPrefs()->getKadID());
+				findBuddy->setTargetID(ID);
+				if( !Kademlia::CSearchManager::startSearch(findBuddy) ) {
+					//This search ID was already going. Most likely reason is that
+					//we found and lost our buddy very quickly and the last search hadn't
+					//had time to be removed yet. Go ahead and set this to happen again
+					//next time around.
+					Kademlia::CKademlia::getPrefs()->setFindBuddy();
+				}
+			}
+		} else {
+			if( m_pBuddy ) {
+				//Lets make sure that if we have a buddy, they are firewalled!
+				//If they are also not firewalled, then someone must have fixed their firewall or stopped saturating their line.. 
+				//We just set the state of this buddy to KS_NONE and things will be cleared up with the next cycle.
+				if( !m_pBuddy->HasLowID() ) {
+					m_pBuddy->SetKadState(KS_NONE);
+				}
+			}
+		}
+	} else {
+		if( m_pBuddy ) {
+			//We are not connected anymore. Just set this buddy to KS_NONE and things will be cleared out on next cycle.
+			m_pBuddy->SetKadState(KS_NONE);
+		}
+	}
+	#endif
 }
 
 
