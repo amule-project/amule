@@ -124,7 +124,8 @@ void CUpDownClient::Init()
 	Extended_aMule_SO = 0;
 	m_bAddNextConnect = false;
 	credits = 0;
-	m_byChatstate = 0;
+	m_byChatstate = MS_NONE;
+	m_nKadState = KS_NONE;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
 	m_nTransferredUp = 0;
@@ -331,8 +332,9 @@ void CUpDownClient::Safe_Delete()
 {
 	// Because we are delaying the deletion, we might end up trying to delete
 	// it twice, however, this is normal and shouldn't trigger any failures
-	if ( m_clientState == CS_DYING )
+	if ( m_clientState == CS_DYING ) {
 		return;
+	}
 
  	m_clientState = CS_DYING;
 
@@ -1468,8 +1470,6 @@ void CUpDownClient::ConnectionEstablished()
 		SendPublicIPRequest();
 	}
 	
-	#ifdef __COMPILE_KAD__
-
 	switch (GetKadState()) {
 		case KS_CONNECTING_FWCHECK:
 			SetKadState(KS_CONNECTED_FWCHECK);
@@ -1478,9 +1478,10 @@ void CUpDownClient::ConnectionEstablished()
 		case KS_INCOMING_BUDDY:
 			SetKadState(KS_CONNECTED_BUDDY);
 			break;
+		default:
+			break;
 	}
-	#endif
-	
+
 	// ok we have a connection, lets see if we want anything from this client
 	if (GetChatState() == MS_CONNECTING) {
 		SetChatState( MS_CHATTING );
@@ -2284,4 +2285,14 @@ void CUpDownClient::SetBuddyID(const byte* pucBuddyID)
 	}
 	m_bBuddyIDValid = true;
 	md4cpy(m_achBuddyID, pucBuddyID);
+}
+
+// Kad added by me
+
+bool CUpDownClient::SendBuddyPing() {
+	AddDebugLogLineM(false, logLocalClient,wxT("Local Client: OP_BuddyPing"));
+	SetLastBuddyPingPongTime();	
+	CPacket* buddyPing = new CPacket(OP_BUDDYPING, 0, OP_EMULEPROT);
+	theApp.statistics->AddUpDataOverheadOther(buddyPing->GetPacketSize());
+	return SafeSendPacket(buddyPing);
 }

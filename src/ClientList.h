@@ -47,6 +47,13 @@ namespace Kademlia {
 	class CUInt128;
 }
 
+enum buddyState
+{
+	Disconnected,
+	Connecting,
+	Connected
+};
+
 
 typedef std::map<wxString, uint32> aMuleOSInfoMap;
 
@@ -330,6 +337,8 @@ public:
 
 	#warning KAD TODO: Implement buddies for kademlia lowid support (firewalled)
 	#warning This is actually a much bigger import, the kademlia process list.
+	#warning So, check usage - they are already ported
+	uint8	GetBuddyStatus() {return m_nBuddyStatus;}
 	CUpDownClient* GetBuddy() const { return m_pBuddy; };
 	void RequestTCP(Kademlia::CContact* contact);
 	void RequestBuddy(Kademlia::CContact* contact);
@@ -400,7 +409,7 @@ private:
 	/* Kad Stuff */
 	std::set<CUpDownClient*>	m_KadSources;
 	CUpDownClient* m_pBuddy;
-
+	uint8 m_nBuddyStatus;
 };
 
 #endif

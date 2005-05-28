@@ -287,6 +287,8 @@ const unsigned int UNLIMITED =	 		0;
 #define OP_AICHANSWER				0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
 #define OP_AICHFILEHASHANS			0x9D	  
 #define OP_AICHFILEHASHREQ			0x9E
+#define OP_BUDDYPING			0x9F
+#define OP_BUDDYPONG			0xA0
 
 // extened prot client <-> extened prot client UDP
 #define	OP_REASKFILEPING			0x90	// <HASH 16>
