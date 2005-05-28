@@ -68,6 +68,7 @@ waitinglist.GetHeadPosition();}
  
 
 	CUpDownClient*	GetWaitingClientByIP(uint32 dwIP);
+	CUpDownClient*	GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
 	CUpDownClient*	GetNextClient(CUpDownClient* update);
 
 	

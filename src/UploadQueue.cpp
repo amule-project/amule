@@ -280,6 +280,17 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP(uint32 dwIP)
 	return 0;
 }
 
+CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort)
+{
+	for (POSITION pos = waitinglist.GetHeadPosition();pos != 0;waitinglist.GetNext(pos)) {
+		CUpDownClient* cur_client = waitinglist.GetAt(pos);
+		if ((dwIP == cur_client->GetIP()) && (nUDPPort == cur_client->GetUDPPort())) {
+			return waitinglist.GetAt(pos);
+		}
+	}
+	return 0;
+}
+
 POSITION CUploadQueue::GetDownloadingClient(CUpDownClient* client)
 {
 	return uploadinglist.Find( client );
@@ -597,4 +608,3 @@ uint32 CUploadQueue::GetDatarate()
 	wxMutexLocker lock(m_ratelock);
 	return datarate;
 }
-

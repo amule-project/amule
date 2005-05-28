@@ -55,6 +55,12 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
 
+#ifdef __COMPILE_KAD__
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/Prefs.h"
+#include "ClientUDPSocket.h"
+#endif
+
 //#define __PACKET_RECV_DUMP__
 
 IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
@@ -1597,15 +1603,14 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				break;
 			}
-			//#ifdef __COMPILE_KAD__
-			#if 0
+			#ifdef __COMPILE_KAD__
 			case OP_CALLBACK: {
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK") );				
-				theApp.statistics->AddDownDataOverheadFileRequest(uRawSize);
+				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				if(!Kademlia::CKademlia::isRunning()) {
 					break;
 				}
-				CSafeMemFile data(packet, size);
+				CSafeMemFile data((const byte*)packet, size);
 				Kademlia::CUInt128 check;
 				data.ReadUInt128(&check);
 				check.XOR(Kademlia::CUInt128(true));
@@ -1614,7 +1619,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				Kademlia::CUInt128 fileid;
 				data.ReadUInt128(&fileid);
-				uchar fileid2[16];
+				byte fileid2[16];
 				fileid.toByteArray(fileid2);
 				CKnownFile* reqfile;
 				if ( (reqfile = theApp.sharedfiles->GetFileByID(fileid2)) == NULL ) {
@@ -1630,51 +1635,53 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				CUpDownClient* callback;
 				callback = theApp.clientlist->FindClientByIP(ENDIAN_NTOHL(ip), tcp);
 				if( callback == NULL ) {
-					callback = new CUpDownClient(NULL,tcp,ip,0,0);
+					#warning Do we actually have to check friend status here?
+					callback = new CUpDownClient(tcp,ip,0,0,NULL,false, false);
 					theApp.clientlist->AddClient(callback);
 				}
 				callback->TryToConnect(true);
 				break;
 			}
+			
 			case OP_BUDDYPING: {
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPING") );
-				theApp.statistics->AddDownDataOverheadOther(uRawSize);
+				theApp.statistics->AddDownDataOverheadOther(size);
 
 				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy != client || client->GetKadVersion() == 0 || !client->AllowIncomeingBuddyPingPong() ) {
+				if( buddy != m_client || m_client->GetKadVersion() == 0 || !m_client->AllowIncomeingBuddyPingPong() ) {
 					//This ping was not from our buddy or wrong version or packet sent to fast. Ignore
 					break;
 				}
-				#error Move this to updownclient
+				
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_BUDDYPING") );
-				Packet* replypacket = new Packet(OP_BUDDYPONG, 0, OP_EMULEPROT);
-				theStats.AddDownDataOverheadOther(replypacket->size);
+				m_client->SetLastBuddyPingPongTime();
+				CPacket* replypacket = new CPacket(OP_BUDDYPONG, 0, OP_EMULEPROT);
+				theApp.statistics->AddDownDataOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket);
-				client->SetLastBuddyPingPongTime();
 				break;
 			}
 			case OP_BUDDYPONG: {
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPONG") );
-				theApp.statistics->AddDownDataOverheadOther(uRawSize);
+				theApp.statistics->AddDownDataOverheadOther(size);
 
 				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy != client || client->GetKadVersion() == 0 ) {
+				if( buddy != m_client || m_client->GetKadVersion() == 0 ) {
 					//This pong was not from our buddy or wrong version. Ignore
 					break;
 				}
-				client->SetLastBuddyPingPongTime();
+				m_client->SetLastBuddyPingPongTime();
 				//All this is for is to reset our socket timeout.
 				break;
 			}
 			case OP_REASKCALLBACKTCP: {
-				theApp.statistics->AddDownDataOverheadFileRequest(uRawSize);
+				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if (buddy != client) {
+				if (buddy != m_client) {
 					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );
 					//This callback was not from our buddy.. Ignore.
 					break;
 				}
-				CSafeMemFile data_in(packet, size);
+				CSafeMemFile data_in((const byte*)packet, size);
 				uint32 destip = data_in.ReadUInt32();
 				uint16 destport = data_in.ReadUInt16();
 				byte reqfilehash[16];
@@ -1684,7 +1691,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (!reqfile) {
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND") );
 					CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
-					theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 					theApp.clientudp->SendPacket(response, destip, destport);
 					break;
 				}
@@ -1726,16 +1733,16 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REASKACK") );
 						CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
 						response->SetOpCode(OP_REASKACK);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						theApp.clientudp->SendPacket(response, destip, destport);
 					} else {
-							AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
+						AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
 					}
 				} else {
 					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
 						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL") );
 						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->size);
+						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
 						theApp.clientudp->SendPacket(response, destip, destport);
 					}
 				}
