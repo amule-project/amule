@@ -203,6 +203,8 @@ void CUpDownClient::Init()
 	m_requpfile = NULL;
 
 	m_bMsgFiltered = false;
+	
+	m_OSInfo_sent = false;
 
 	if (m_socket) {
 		amuleIPV4Address address;
@@ -618,6 +620,8 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		CTag tag1(ET_OS_INFO,theApp.GetOSType());
 		tag1.WriteTagToFile(data);
 
+		m_OSInfo_sent = true; // So we don't send it again
+		
 	} else {
 
 		// Normal MuleInfo packet
@@ -718,7 +722,12 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						// is not supporting OS Info, we're seriously fucked up :)					
 				
 						m_sClientOSInfo = temptag.GetStr();
-	
+					
+						// If we didn't send our OSInfo to this client, just send it
+						if (!m_OSInfo_sent) {
+							SendMuleInfoPacket(false,true);
+						}
+						
 						break;	
 					
 					// Your ad... er... I mean TAG, here

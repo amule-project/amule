@@ -402,7 +402,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					return false;
 				}
 						
-				// now we check if we now this client already. if yes this socket will
+				// now we check if we know this client already. if yes this socket will
 				// be attached to the known client, the new client will be deleted
 				// and the var. "client" will point to the known client.
 				// if not we keep our new-constructed client ;)
