@@ -1,3 +1,10 @@
+Version 2.0.2 - The "Kry: Name This" version.
+----------
+2005-05-31
+
+	ken:
+		* Fixed a hang-on-exit-using-100%-cpu bug
+
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
 2005-05-18

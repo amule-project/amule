@@ -75,7 +75,7 @@ CSharedFileList::~CSharedFileList(){
 
 void CSharedFileList::FindSharedFiles() {
 	/* Abort loading if we are shutting down. */
-	if(!theApp.IsOnShutDown()) {
+	if(theApp.IsOnShutDown()) {
 		return;
 	}
 	

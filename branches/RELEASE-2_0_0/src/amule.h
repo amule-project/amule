@@ -90,7 +90,6 @@ class wxFFileOutputStream;
 enum APPState {
 	APP_STATE_RUNNING = 0,
 	APP_STATE_SHUTINGDOWN,
-	APP_STATE_DONE,
 	APP_STATE_STARTING
 };	
 
@@ -181,7 +180,7 @@ public:
 	
 	// Barry - To find out if app is running or shutting/shut down
 	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
-	const bool IsOnShutDown() const { return (m_app_state != APP_STATE_SHUTINGDOWN); }
+	const bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTINGDOWN); }
 	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
