@@ -54,35 +54,30 @@ public:
 	bool	IsDownloading(CUpDownClient* client)	{return GetDownloadingClient(client);}
 	float	GetKBps()								{return kBpsUp;}
 	bool	CheckForTimeOver(CUpDownClient* client);
-	int		GetWaitingUserCount()					{return waitinglist.GetCount();}
-	int		GetUploadQueueLength()					{return uploadinglist.GetCount();}
-        POSITION GetFirstFromUploadList()                               {return
-uploadinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromUploadList(POSITION &curpos)  {return uploadinglist.GetNext(curpos);}
-        CUpDownClient* GetQueueClientAt(POSITION &curpos)       {return uploadinglist.GetAt(curpos);}
- 
-        POSITION GetFirstFromWaitingList()                              {return
-waitinglist.GetHeadPosition();}
-        CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
-        CUpDownClient* GetWaitClientAt(POSITION &curpos)        {return waitinglist.GetAt(curpos);}
- 
+	int	GetWaitingUserCount()			{return waitinglist.GetCount();}
+	int	GetUploadQueueLength()			{return uploadinglist.GetCount();}
+	POSITION GetFirstFromUploadList()		{return uploadinglist.GetHeadPosition();}
+	CUpDownClient* GetNextFromUploadList(POSITION &curpos)	{return uploadinglist.GetNext(curpos);}
+	CUpDownClient* GetQueueClientAt(POSITION &curpos)	{return uploadinglist.GetAt(curpos);}
 
-	CUpDownClient*	GetWaitingClientByIP(uint32 dwIP);
-	CUpDownClient*	GetNextClient(CUpDownClient* update);
+	POSITION GetFirstFromWaitingList()		{return waitinglist.GetHeadPosition();}
+	CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
+	CUpDownClient* GetWaitClientAt(POSITION &curpos)	{return waitinglist.GetAt(curpos);}
+	CUpDownClient* GetWaitingClientByIP(uint32 dwIP);
+	CUpDownClient* GetNextClient(CUpDownClient* update);
 
-	
 	void	DeleteAll();
 	uint16	GetWaitingPosition(CUpDownClient* client);
-	uint32	GetSuccessfullUpCount()					{return successfullupcount;}
-	uint32	GetFailedUpCount()						{return failedupcount;}
+	uint32	GetSuccessfullUpCount()			{return successfullupcount;}
+	uint32	GetFailedUpCount()			{return failedupcount;}
 	uint32	GetAverageUpTime();
 	void	SuspendUpload( const CMD4Hash& );
 	void	ResumeUpload( const CMD4Hash& );
-	
+
 protected:
 	void	RemoveFromWaitingQueue(POSITION pos);
-	POSITION	GetWaitingClient(CUpDownClient* client);
-	POSITION	GetDownloadingClient(CUpDownClient* client);
+	POSITION GetWaitingClient(CUpDownClient* client);
+	POSITION GetDownloadingClient(CUpDownClient* client);
 	bool	AcceptNewClient();
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 

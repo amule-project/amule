@@ -2,6 +2,10 @@ Version 2.0.2 - The "Kry: Name This" version.
 ----------
 2005-05-31
 
+	GonoszTopi:
+		* Fixed #406 and #380: 'some clients get an unexpected very
+		  high priority'
+
 	ken:
 		* Fixed a hang-on-exit-using-100%-cpu bug
 		* Fixed a crash when enabling UDP after startup
