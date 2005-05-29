@@ -964,7 +964,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	serverconnect = new CServerConnect(serverlist, myaddr);
 
 	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
-		% ip % (thePrefs::GetPort() + 3u);
+		% ip % ((unsigned int)thePrefs::GetPort() + 3u);
 	
 	// Create the ListenSocket (aMule TCP socket).
 	// Used for Client Port / Connections from other clients,
