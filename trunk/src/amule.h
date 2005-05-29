@@ -454,14 +454,12 @@ DECLARE_APP(CamuleRemoteGuiApp)
 #include <wx/apptrait.h>
 #include <wx/socket.h>
 
-class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
-		int m_in_fds[1024], m_out_fds[1024];
-		GSocket * m_in_gsocks[1024];
-		GSocket * m_out_gsocks[1024];
-		
-		int m_in_fds_count, m_out_fds_count;
+class CSocketSet;
 
-		fd_set m_readset, m_writeset;
+class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
+		CSocketSet *m_in_set, *m_out_set;
+		
+		wxMutex m_lock;
 	public:
 		CAmuledGSocketFuncTable();
 
@@ -482,11 +480,14 @@ class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 
 class CDaemonAppTraits : public wxConsoleAppTraits {
 		CAmuledGSocketFuncTable *m_table;
+		std::list<wxObject *> m_sched_delete;
 	public:
 		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
 	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
 	    virtual void ScheduleForDestroy(wxObject *object);
 	    virtual void RemoveFromPendingDelete(wxObject *object);
+	    
+	    void DeletePending();
 };
 
 class CamuleDaemonApp : public CamuleApp {
