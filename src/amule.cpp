@@ -956,15 +956,15 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr.Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr);
 
-	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%i\n") )
-		% ip % ( (uint32)thePrefs::GetPort() + 3);
+	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
+		% ip % ( (unsigned int)thePrefs::GetPort() + 3);
 	
 	// Create the ListenSocket (aMule TCP socket).
 	// Used for Client Port / Connections from other clients,
 	// Client to Client Source Exchange.
 	// Default is 4662.
-	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%i\n") )
-		% ip % ((uint32)thePrefs::GetPort());
+	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
+		% ip % ((unsigned int)thePrefs::GetPort());
 	
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
@@ -977,14 +977,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	} else {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
-		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % thePrefs::GetPort();
+		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % (unsigned int)(thePrefs::GetPort());
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
 		err = CFormat(_("Port %u is not available!\n\n"
 				"This means that you will be LOWID.\n\n"
 				"Check your network to make sure the port is open for output and input.")) % 
-				thePrefs::GetPort();
+				(unsigned int)(thePrefs::GetPort());
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
 
@@ -995,8 +995,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		myaddr.Service(thePrefs::GetUDPPort());
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
-		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%i") )
-			% ip % ((uint32)thePrefs::GetUDPPort());
+		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
+			% ip % ((unsigned int)thePrefs::GetUDPPort());
 	} else {
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 		

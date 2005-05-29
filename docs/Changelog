@@ -2,6 +2,9 @@ Version 2.0.2 - The "Kry: Name This" version.
 ----------
 2005-05-31
 
+	boutros:
+		* Ported the eMule Chicane web template to aMule.
+
 	GonoszTopi:
 		* Fixed #421: 'In Windows XP it lets to choose Konqueror,
 		  Galeon and other Unix based browsers.'
@@ -11,6 +14,15 @@ Version 2.0.2 - The "Kry: Name This" version.
 	ken:
 		* Fixed a hang-on-exit-using-100%-cpu bug
 		* Fixed a crash when enabling UDP after startup
+
+	volpol:
+		* Ports display fix.
+
+	Special Thanks To:
+
+		* Contributors:
+			boutros
+			volpol
 
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
