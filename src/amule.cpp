@@ -971,7 +971,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Client to Client Source Exchange.
 	// Default is 4662.
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
-		% ip % (thePrefs::GetPort());
+		% ip % (unsigned int)(thePrefs::GetPort());
 	
 	myaddr.Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr);
@@ -984,14 +984,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	} else {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
-		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % thePrefs::GetPort();
+		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % (unsigned int)(thePrefs::GetPort());
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
 		err = CFormat(_("Port %u is not available!\n\n"
 				"This means that you will be LOWID.\n\n"
 				"Check your network to make sure the port is open for output and input.")) % 
-				thePrefs::GetPort();
+				(unsigned int)(thePrefs::GetPort());
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
 
@@ -1003,7 +1003,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 //#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
-			% ip % (thePrefs::GetUDPPort());
+			% ip % (unsigned int)(thePrefs::GetUDPPort());
 	} else {
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 		
