@@ -4,6 +4,7 @@ Version 2.0.2 - The "Kry: Name This" version.
 
 	ken:
 		* Fixed a hang-on-exit-using-100%-cpu bug
+		* Fixed a crash when enabling UDP after startup
 
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
