@@ -21,7 +21,8 @@ Version 2.0.2 - The " ????? " version.
 		* Created a new spec file, compliant with Fedora Core.
 
 	volpol:
-		* Ports display fix
+		* Ports display fix.
+		* A4AF swap to this fix.
 
 	Special Thanks To:
 		
