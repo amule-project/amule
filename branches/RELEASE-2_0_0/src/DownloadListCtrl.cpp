@@ -1095,7 +1095,7 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));
 			
 			// Only enable the Swap option for A4AF sources
-			m_menu->Enable(MP_CHANGE2FILE, ( item->type == UNAVAILABLE_SOURCE ) );
+			m_menu->Enable(MP_CHANGE2FILE, ( item->type == A4AF_SOURCE ) );
 
 			PopupMenu(m_menu, evt.GetPoint());
 
