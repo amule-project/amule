@@ -1490,9 +1490,10 @@ void CPartFile::UpdatePartsInfo()
 	wxASSERT(0);
 }
 
+//
+// Comments should be already here when dialog pops-up
 void CPartFile::UpdateFileRatingCommentAvail()
 {
-	wxASSERT(0);
 }
 
 bool CPartFile::SavePartFile(bool)
