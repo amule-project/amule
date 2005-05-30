@@ -318,19 +318,25 @@ void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
 	Uninstall_Callback(socket, GSOCK_OUTPUT);
 }
 
-CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
+CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table) : m_lock(wxMUTEX_RECURSIVE)
 {
 	m_table = table;
+
+	m_lock.Unlock();
 }
 
 void CDaemonAppTraits::ScheduleForDestroy(wxObject *object)
 {
-	delete object;
-	//m_sched_delete.push_back(object);
+	wxMutexLocker lock(m_lock);
+
+	//delete object;
+	m_sched_delete.push_back(object);
 }
 
 void CDaemonAppTraits::RemoveFromPendingDelete(wxObject *object)
 {
+	wxMutexLocker lock(m_lock);
+
 	for(std::list<wxObject *>::iterator i = m_sched_delete.begin();
 		i != m_sched_delete.end(); i++) {
 			if ( *i == object ) {
@@ -342,15 +348,14 @@ void CDaemonAppTraits::RemoveFromPendingDelete(wxObject *object)
 
 void CDaemonAppTraits::DeletePending()
 {
-	if ( m_sched_delete.empty() ) {
-		return;
+	wxMutexLocker lock(m_lock);
+
+	while ( !m_sched_delete.empty() ) {
+		std::list<wxObject *>::iterator i = m_sched_delete.begin();
+		wxObject *object = *i;
+		delete object;
 	}
-	for(std::list<wxObject *>::iterator i = m_sched_delete.begin();
-		i != m_sched_delete.end(); i++) {
-			wxObject *object = *i;
-			delete object;
-	}
-	m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
+	//m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
 }
 
 CamuleDaemonApp::CamuleDaemonApp()

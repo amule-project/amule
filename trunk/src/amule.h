@@ -480,6 +480,8 @@ class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 
 class CDaemonAppTraits : public wxConsoleAppTraits {
 		CAmuledGSocketFuncTable *m_table;
+
+		wxMutex m_lock;
 		std::list<wxObject *> m_sched_delete;
 	public:
 		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
