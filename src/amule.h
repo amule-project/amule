@@ -260,8 +260,6 @@ public:
 	
 	const wxString& GetOSType() const { return OSType; }
 	
-	void ShowUserCount();
-
 protected:
 #ifdef __WXDEBUG__
 	/**
@@ -342,6 +340,7 @@ public:
 	CamuleDlg*	amuledlg;
 	
 	bool CopyTextToClipboard( wxString strText );
+	void ShowUserCount();
 
 	virtual void NotifyEvent(const GUIEvent& event);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);

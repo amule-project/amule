@@ -228,15 +228,11 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		}
 	}
 	theApp.amuledlg->ShowTransferRate();
-	// Why would this be needed?
-	#if 0
 	if ( serverconnect->GetCurrentServer() ) {
-		amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
-			serverconnect->GetCurrentServer()->GetFiles());
+		theApp.ShowUserCount();
 	} else {
 		amuledlg->ShowUserCount();
 	}
-	#endif
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -496,6 +492,10 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 				break;
 	        case KNOWNFILE_SET_COMMENT:
 			break;
+
+			case SHOW_USER_COUNT:
+				amuledlg->ShowUserCount(event.string_value);
+				break;
 
 			// download queue
 	        case DLOAD_SET_CAT_PRIO:
@@ -1298,7 +1298,7 @@ void CClientListRem::UpdateStats(CEC_Stats_Tag *stats)
 void CClientListRem::FilterQueues()
 {
 	// FIXME: add code
-	wxASSERT(0);
+	//wxASSERT(0);
 }
 
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
