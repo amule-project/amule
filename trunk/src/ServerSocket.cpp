@@ -425,7 +425,11 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
-					theApp.ShowUserCount();
+#warning
+#warning lfroen,
+#warning P-L-E-A-S-E F-I-X T-H-A-T D-A-M-N-E-D L-I-N-E!
+#warning
+//					theApp.ShowUserCount();
 				}
 				break;
 			}
