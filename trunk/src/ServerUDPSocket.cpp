@@ -235,11 +235,7 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				update->SetUDPFlags( uUDPFlags );
 				update->SetLowIDUsers( uLowIDUsers );
 				Notify_ServerRefresh( update );
-#warning
-#warning lfroen,
-#warning P-L-E-A-S-E F-I-X T-H-A-T D-A-M-N-E-D L-I-N-E!
-#warning
-//				theApp.ShowUserCount();
+				theApp.ShowUserCount();
 				break;
 			}
  			case OP_SERVER_DESC_RES:{

@@ -1904,6 +1904,23 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 	#endif
 }
 
+void CamuleApp::ShowUserCount() {
+	uint32 totaluser = 0, totalfile = 0;
+	
+	theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
+	
+	#ifdef __COMPILE_KAD__
+	wxString buffer = 
+		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
+		CastItoIShort(Kademlia::CKademlia::getKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::getKademliaFiles());
+	#else
+	wxString buffer = 
+		CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(totaluser) % CastItoIShort(totalfile);
+	#endif
+	
+	Notify_ShowUserCount(buffer);
+}
+
 void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 {
 	//
