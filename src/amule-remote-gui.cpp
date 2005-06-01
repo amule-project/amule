@@ -227,12 +227,9 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
-	theApp.amuledlg->ShowTransferRate();
-	if ( serverconnect->GetCurrentServer() ) {
-		theApp.ShowUserCount();
-	} else {
-		amuledlg->ShowUserCount();
-	}
+	amuledlg->ShowTransferRate();
+	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
+	ShowUserCount();
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -669,6 +666,14 @@ void CServerListRem::RemoveServer(CServer* server)
 	uint16 port = server->GetPort();
 	req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 	m_conn->Send(&req);
+}
+
+void CServerListRem::UpdateUserFileStatus(CServer *server)
+{
+	if ( server ) {
+		m_TotalUser = server->GetUsers();
+		m_TotalFile = server->GetFiles();
+	}
 }
 
 CServer *CServerListRem::GetServerByAddress(const wxString& WXUNUSED(address), uint16 WXUNUSED(port))

@@ -342,6 +342,9 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 			total_user = m_TotalUser;
 			total_file = m_TotalFile;
 		}
+		
+		void UpdateUserFileStatus(CServer *server);
+		
 		CServer *GetServerByAddress(const wxString& address, uint16 port);
 
 		void ReloadControl();
