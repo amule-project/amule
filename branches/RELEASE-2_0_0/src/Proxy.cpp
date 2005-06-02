@@ -1068,7 +1068,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 		if (m_proxyData.m_enablePassword) {
 			userPass = m_proxyData.m_userName + wxT(":") + m_proxyData.m_password;
 			userPassEncoded =
-				otherfunctions::EncodeBase64(m_buffer, PROXY_BUFFER_SIZE);
+				otherfunctions::EncodeBase64(unicode2char(userPass), PROXY_BUFFER_SIZE);
 		}
 		wxString msg;
 		
