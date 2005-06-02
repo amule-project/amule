@@ -1629,7 +1629,7 @@ void CDownloadListCtrl::DrawSourceItem(
 			break;
 
 		case 4:	// speed
-			if (client->GetKBpsDown() > 0.001) {
+			if (item->type != A4AF_SOURCE && client->GetKBpsDown() > 0.001) {
 				buffer = wxString::Format(wxT("%.1f "),
 						client->GetKBpsDown()) + _("kB/s");
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
