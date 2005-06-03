@@ -183,7 +183,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		outfile = fopen(unicode2char(m_tempfile), "w");
 		
 		if (outfile == NULL) {
-			throw(wxString(wxT("Unable to create destination file %s for download!\n"),(const char*)unicode2char(m_tempfile)));
+			throw(wxString(CFormat(wxT("Unable to create destination file %s for download!\n")) % m_tempfile));
 		}
 			
 		if ( m_url.IsEmpty() ) {
