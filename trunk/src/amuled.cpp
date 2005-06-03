@@ -377,11 +377,12 @@ int CamuleDaemonApp::OnRun()
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
-		wxString warning = _("ERROR: amule daemon is useless when external connections disabled. "
-			"Change configuration either from GUI or by editing the config file");
+		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
+			"To enable External Connections, use either a normal aMule or set the key"
+			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
 		AddLogLineM(true, warning);
 		// Also to console.
-		printf((const char*)unicode2char(warning + wxT("\n")));
+		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
 		return 0;
 	}
 	
