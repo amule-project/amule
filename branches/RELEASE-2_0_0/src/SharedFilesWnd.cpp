@@ -120,6 +120,16 @@ void CSharedFilesWnd::SelectionUpdated()
 			index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 		};
 		
+		// Safety tests
+		if (session_accepted > all_accepted) {
+			session_accepted = all_accepted;
+		}
+		if (session_transfered > all_transfered) {
+			session_transfered = all_transfered;
+		}
+		if (session_requests > all_requests) {
+			session_requests = all_requests;
+		}
 		
 		// Requests
 		m_bar_requests->SetValue( session_requests );
