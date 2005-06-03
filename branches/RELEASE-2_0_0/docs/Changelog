@@ -15,15 +15,35 @@ Version 2.0.2 - The "Kry: Name This" version.
 		* Fixed a hang-on-exit-using-100%-cpu bug
 		* Fixed a crash when enabling UDP after startup
 
+	Kry:
+		* Added Version Check (you can disable it on preferences).
+		* Added "source comes from" (on the "Time remaining" column)
+		* Fixed HTTP download code not returning proper error code (causing crashes).
+		* Fixed OS_Info packet only being sent to downlaoding clients.
+		* Fixed Solaris mount info file name.
+		* Fixed includes on daemon for Solaris.
+		* Fixed mldonkey detection. Did anyone notice mldonkey bans aMule?
+		* Fixed SetAllTimeTransfered parameter size (thanks eylzo)
+		* Fixed #430: "Sources order by priority/status"
+		* Fixed #442: "Sort by 'Time Remaining' puts files which are not transferring first"
+		* Fixed #453: "Add option to export links with AICH hashes"
+		* Fixed #458: "Wrong gauge size on shared files control "
+
 	volpol:
 		* Ports display fix.
 		* A4AF swap to this fix.
 
 	Special Thanks To:
 
-		* Contributors:
-			boutros
-			volpol
+		* Bug reporters:
+			Ateo
+			BeFalou
+			MrFaber
+			xushi		
+			
+		* All the usual people. You don't know who they are? Just check 
+		   previous changelogs :P
+		  
 
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
