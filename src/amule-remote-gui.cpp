@@ -193,7 +193,10 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		CECPacket stats_req(EC_OP_STAT_REQ);
 		auto_ptr<CEC_Stats_Tag> stats((CEC_Stats_Tag *)connect->SendRecv(&stats_req));
 		if ( !stats.get() ) {
-			//core_timer->Stop();
+			core_timer->Stop();
+			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
+				_("Error: connection lost"), wxICON_ERROR);
+			ExitMainLoop();
 			return;
 		}
 		downloadqueue->UpdateStats(stats.get());
