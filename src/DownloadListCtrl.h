@@ -34,7 +34,7 @@
 
 #include "Types.h"			// Needed for uint8
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
-
+#include "OtherStructs.h"	// Needed for DownloadItemType
 
 class CPartFile;
 class CUpDownClient;
@@ -104,7 +104,7 @@ public:
 	 * owner is shown and has ShowSources set to true, otherwise the source will 
 	 * simply be ignored. Duplicates wont be added.
 	 */
-	void AddSource( CPartFile* owner, CUpDownClient* source, bool available );
+	void AddSource( CPartFile* owner, CUpDownClient* source, DownloadItemType type );
 
 	
 	/**
@@ -297,4 +297,3 @@ private:
 };
 
 #endif
-
