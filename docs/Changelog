@@ -12,7 +12,7 @@ Version 2.0.2 - The " [Your Ad Here] " version.
 		  high priority'
 
 	ken:
-		* Fixed a hang-on-exit-using-100%-cpu bug
+		* Fixed a hang-using-100%-cpu-on-exit bug
 		* Fixed a crash when enabling UDP after startup
 
 	Kry:
