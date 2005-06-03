@@ -894,23 +894,29 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	// Kad reviewed
 	
-	if (forClient->GetRequestFile() && ((CKnownFile*)forClient->GetRequestFile() != this)) {
+	if ((CKnownFile*)forClient->GetRequestFile() != this) {
 		wxString file1 = _("Unknown");
-		if (!forClient->GetRequestFile()->GetFileName().IsEmpty()) {
+		if (forClient->GetRequestFile() &&  !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
 			file1 = forClient->GetRequestFile()->GetFileName();
 		}
 		wxString file2 = _("Unknown");
 		if (!GetFileName().IsEmpty()) {
 			file2 = GetFileName();
 		}
-		printf("File missmatch on source packet (K) Sending: %s  From: %s\n",
-			(const char*)unicode2char(file1),
-			(const char*)unicode2char(file2)
-		);
+		AddDebugLogLineM(false, logKnownFiles, wxT("File missmatch on source packet (K) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
 	}
 	
 	if (m_ClientUploadList.empty() ) {
+		return NULL;
+	}
+
+	const BitVector& rcvstatus = forClient->GetUpPartStatus();
+	bool SupportsUploadChunksState = !rcvstatus.empty();
+	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
+	if (rcvstatus.size() != GetPartCount()) {
+		// Yuck. Same file but different part count? Seriously fucked up.
+		AddDebugLogLineM(false, logKnownFiles, wxString::Format(wxT("Impossible situation: different partcounts for the same known file: %i (client) and %i (file)"),rcvstatus.size(),GetPartCount()));
 		return NULL;
 	}
 
@@ -920,7 +926,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.WriteHash16(forClient->GetUploadFileID());
 	data.WriteUInt16(nCount);
 	uint32 cDbgNoSrc = 0;
-	
+
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); it++ ) {
 		const CUpDownClient *cur_src = *it;
@@ -933,13 +939,8 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		}
 		
 		bool bNeeded = false;
-		const BitVector& rcvstatus = forClient->GetUpPartStatus();
 		
-		if ( !rcvstatus.empty() ) {
-			//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
-			if (rcvstatus.size() != GetPartCount()) {
-				continue;
-			}
+		if ( SupportsUploadChunksState ) {
 			const BitVector& srcstatus = cur_src->GetUpPartStatus();
 			if ( !srcstatus.empty() ) {
 				//wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
@@ -949,7 +950,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
 						if ( srcstatus[x] && !rcvstatus[x] ) {
-							// We know the recieving client needs
+							// We know the receiving client needs
 							// a chunk from this client.
 							bNeeded = true;
 							break;
