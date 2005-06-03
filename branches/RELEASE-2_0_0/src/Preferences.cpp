@@ -205,6 +205,7 @@ bool		CPreferences::s_FilterAllMessages;
 bool		CPreferences::s_FilterSomeMessages;
 bool		CPreferences::s_ShareHiddenFiles;
 bool		CPreferences::s_AutoSortDownload;
+bool		CPreferences::s_NewVersionCheck;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -970,6 +971,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	 NewCfgItem(IDC_AUTOSORT,	 (new Cfg_Bool( wxT("/eMule/AutoSortDownloads"), s_AutoSortDownload, false )));
 
+	/**
+	 * Version check
+	 **/
+	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, false )));
+	 
 	/**
 	 * The following doesn't have an associated widget.
 	 **/
