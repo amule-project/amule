@@ -1804,6 +1804,7 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 		if (!version_file.Open(strTempFilename)) {
 			AddLogLineM(true, _("Failed to open the downloaded version check file") );
 		} else {
+			if (!version_file.GetLineCount()) throw;
 			wxString update_version = version_file.GetFirstLine();
 			try {
 				wxStringTokenizer tkz(update_version, wxT("."));
