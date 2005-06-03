@@ -2686,11 +2686,24 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 
 CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
-	if(!IsPartFile()) 
-		return CKnownFile::CreateSrcInfoPacket(forClient);
-
+	
+	// Kad reviewed
+	
 	if (forClient->GetRequestFile() != this) {
+		wxString file1 = _("Unknown");
+		if (forClient->GetRequestFile() && !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
+			file1 = forClient->GetRequestFile()->GetFileName();
+		}
+		wxString file2 = _("Unknown");
+		if (!GetFileName().IsEmpty()) {
+			file2 = GetFileName();
+		}
+		AddDebugLogLineM(false, logPartFile, wxT("File missmatch on source packet (P) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
+	}
+
+	if(!IsPartFile())  {
+		return CKnownFile::CreateSrcInfoPacket(forClient);
 	}
 
 	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)) {
@@ -2701,6 +2714,15 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return NULL;
 	}
 
+	const BitVector& reqstatus = forClient->GetPartStatus();
+	bool KnowNeededParts = !reqstatus.empty();
+	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
+	if (reqstatus.size() != GetPartCount()) {
+		// Yuck. Same file but different part count? Seriously fucked up.
+		AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Impossible situation: different partcounts for the same part file: %i (client) and %i (file)"),reqstatus.size(),GetPartCount()));
+		return NULL;
+	}	
+	
 	CSafeMemFile data(1024);
 	uint16 nCount = 0;
 
@@ -2721,11 +2743,13 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		// only send source which have needed parts for this client if possible
 		const BitVector& srcstatus = cur_src->GetPartStatus();
 		if ( !srcstatus.empty() ) {
-			const BitVector& reqstatus = forClient->GetPartStatus();
-			int n = GetPartCount();
-			if ( !reqstatus.empty() ) {
+			//wxASSERT(srcstatus.size() == GetPartCount()); // Obviously!
+			if (srcstatus.size() != GetPartCount()) {
+				continue;
+			}
+			if ( KnowNeededParts ) {
 				// only send sources which have needed parts for this client
-				for (int x = 0; x < n; ++x) {
+				for (int x = 0; x < GetPartCount(); ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
 						bNeeded = true;
 						break;
@@ -2735,6 +2759,9 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				// if we don't know the need parts for this client, 
 				// return any source currently a client sends it's 
 				// file status only after it has at least one complete part
+				if (srcstatus.size() != GetPartCount()) {
+					continue;
+				}
 				for (int x = 0; x < GetPartCount(); ++x){
 					if (srcstatus[x]) {
 						bNeeded = true;
@@ -2746,13 +2773,12 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		if(bNeeded) {
 			++nCount;
 			uint32 dwID;
-			#warning We should use the IDHybrid here... but is not implemented yet
 			if(forClient->GetSourceExchangeVersion() > 2) {
 				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserID());
 			} else {
 				dwID = cur_src->GetUserID();
 			}
-			data.WriteUInt32(dwID);
+			data.WriteUInt32(dwID);			
 			data.WriteUInt16(cur_src->GetUserPort());
 			data.WriteUInt32(cur_src->GetServerIP());
 			data.WriteUInt16(cur_src->GetServerPort());
