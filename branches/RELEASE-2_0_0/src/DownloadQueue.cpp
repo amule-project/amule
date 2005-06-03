@@ -580,6 +580,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 		}
 
 		sender->AddSource( source );
+		source->SetSourceFrom(SF_PASSIVE);
 		Notify_DownloadCtrlAddSource( sender, source, true );
 	}
 }
