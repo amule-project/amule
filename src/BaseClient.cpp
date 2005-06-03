@@ -205,6 +205,8 @@ void CUpDownClient::Init()
 	m_bMsgFiltered = false;
 	
 	m_OSInfo_sent = false;
+	
+	m_nSourceFrom = SF_SERVER;
 
 	if (m_socket) {
 		amuleIPV4Address address;

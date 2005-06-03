@@ -2843,6 +2843,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
 			}
+			newsource->SetSourceFrom(SF_SOURCE_EXCHANGE);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			break;

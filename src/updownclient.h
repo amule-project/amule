@@ -93,6 +93,13 @@ class CAICHHash;
 #define	MS_CONNECTING		2
 #define	MS_UNABLETOCONNECT	3
 
+enum ESourceFrom {
+	SF_SERVER		= 0,
+	SF_KADEMLIA		= 1,
+	SF_SOURCE_EXCHANGE	= 2,
+	SF_PASSIVE		= 3,
+	SF_LINK			= 4
+};
 
 enum EClientSoftware{
 	SO_EMULE		= 0,
@@ -328,6 +335,10 @@ public:
 		{ return !(m_BlockSend_queue.IsEmpty() && m_BlockRequests_queue.IsEmpty()); }
 	float		GetKBpsUp()	const 		{ return kBpsUp; }
 
+	/* Source comes from? */
+	ESourceFrom		GetSourceFrom() const	{ return (ESourceFrom)m_nSourceFrom; }
+	void			SetSourceFrom(ESourceFrom val)	{ m_nSourceFrom = val; }	
+	
 #ifdef CLIENT_GUI
 	uint32 m_base_score, m_score;
 	uint32		GetScore(
@@ -753,6 +764,8 @@ private:
 	wxString	m_clientVerString;
 	wxString	m_sClientOSInfo;
 	wxString	m_pendingMessage;
+	
+	ESourceFrom	m_nSourceFrom;
 
 	int		SecIdentSupRec;
 };
