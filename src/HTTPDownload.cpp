@@ -172,60 +172,71 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 {
 	if (TestDestroy()) { 
 		// Thread going down...
+		m_result = -1;
 		return NULL;
 	}
 	
-	FILE *outfile = fopen(unicode2char(m_tempfile), "w");
+	FILE *outfile = NULL; 
 	
-	if (outfile!=NULL) {
-		try {
-			if ( m_url.IsEmpty() ) {
-				// Nowhere to download from!
-				throw(wxString(wxT("The URL to download can't be empty\n")));
-			}
+	try {	
 		
-			wxHTTP url_handler;
-			wxInputStream* url_read_stream = GetInputStream(url_handler, m_url);
-			if (!url_read_stream) {					
-				#if wxCHECK_VERSION(2,5,1)			
-					throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError()));
-				#else
-					throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
-				#endif
-			}
+		outfile = fopen(unicode2char(m_tempfile), "w");
+		
+		if (outfile == NULL) {
+			throw(wxString(wxT("Unable to create destination file %s for download!\n"),(const char*)unicode2char(m_tempfile)));
+		}
 			
-			int download_size = url_read_stream->GetSize();
-			printf("Download size: %i\n",download_size);
-			
-			// Here is our read buffer
-			// <ken> Still, I'm sure 4092 is probably a better size.
-			#define MAX_HTTP_READ 4092
-			
-			char buffer[MAX_HTTP_READ];
-			int current_read = 0;
-			int total_read = 0;
-			do {
-				url_read_stream->Read(buffer, MAX_HTTP_READ);
-				current_read = url_read_stream->LastRead();
-				if (current_read) {
-					total_read += current_read;
-					int current_write = fwrite(buffer,1,current_read,outfile);
-					if (current_read != current_write) {
-						throw(wxString(wxT("Critical error while writing downloaded server.met")));
-					} else {
-						ProgressCallback(download_size, total_read);
-					}
-				}
-			} while (current_read && !TestDestroy());
-			
-			delete url_read_stream;
-			
-		} catch (wxString& download_error) {
-			AddLogLineM(false,download_error);
+		if ( m_url.IsEmpty() ) {
+			// Nowhere to download from!
+			throw(wxString(wxT("The URL to download can't be empty\n")));
+		}
+	
+		wxHTTP url_handler;
+		wxInputStream* url_read_stream = GetInputStream(url_handler, m_url);
+		if (!url_read_stream) {					
+			#if wxCHECK_VERSION(2,5,1)			
+				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError()));
+			#else
+				throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
+			#endif
 		}
 		
+		int download_size = url_read_stream->GetSize();
+		printf("Download size: %i\n",download_size);
+		
+		// Here is our read buffer
+		// <ken> Still, I'm sure 4092 is probably a better size.
+		#define MAX_HTTP_READ 4092
+		
+		char buffer[MAX_HTTP_READ];
+		int current_read = 0;
+		int total_read = 0;
+		do {
+			url_read_stream->Read(buffer, MAX_HTTP_READ);
+			current_read = url_read_stream->LastRead();
+			if (current_read) {
+				total_read += current_read;
+				int current_write = fwrite(buffer,1,current_read,outfile);
+				if (current_read != current_write) {
+					throw(wxString(wxT("Critical error while writing downloaded file")));
+				} else {
+					ProgressCallback(download_size, total_read);
+				}
+			}
+		} while (current_read && !TestDestroy());
+		
+		delete url_read_stream;
+		
 		fclose(outfile);
-	}	
+		
+	} catch (wxString& download_error) {
+		if (outfile) {
+			fclose(outfile);
+			wxRemoveFile(m_tempfile);
+		}
+		m_result = -1;		
+		AddLogLineM(false,download_error);
+	}
 
 	printf("HTTP download thread end\n");
 	
