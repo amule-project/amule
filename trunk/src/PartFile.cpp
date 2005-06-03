@@ -2737,19 +2737,16 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	
 	// Kad reviewed
 	
-	if (forClient->GetRequestFile() && (forClient->GetRequestFile() != this)) {
+	if (forClient->GetRequestFile() != this) {
 		wxString file1 = _("Unknown");
-		if (!forClient->GetRequestFile()->GetFileName().IsEmpty()) {
+		if (forClient->GetRequestFile() && !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
 			file1 = forClient->GetRequestFile()->GetFileName();
 		}
 		wxString file2 = _("Unknown");
 		if (!GetFileName().IsEmpty()) {
 			file2 = GetFileName();
 		}
-		printf("File missmatch on source packet (P) Sending: %s  From: %s\n",
-			(const char*)unicode2char(file1),
-			(const char*)unicode2char(file2)
-		);
+		AddDebugLogLineM(false, logPartFile, wxT("File missmatch on source packet (P) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
 	}
 
@@ -2765,6 +2762,15 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return NULL;
 	}
 
+	const BitVector& reqstatus = forClient->GetPartStatus();
+	bool KnowNeededParts = !reqstatus.empty();
+	//wxASSERT(rcvstatus.size() == GetPartCount()); // Obviously!
+	if (reqstatus.size() != GetPartCount()) {
+		// Yuck. Same file but different part count? Seriously fucked up.
+		AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Impossible situation: different partcounts for the same part file: %i (client) and %i (file)"),reqstatus.size(),GetPartCount()));
+		return NULL;
+	}	
+	
 	CSafeMemFile data(1024);
 	uint16 nCount = 0;
 
@@ -2789,12 +2795,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			if (srcstatus.size() != GetPartCount()) {
 				continue;
 			}
-			const BitVector& reqstatus = forClient->GetPartStatus();
-			if ( !reqstatus.empty() ) {
-				//wxASSERT(reqstatus.size() == GetPartCount()); // Obviously!			
-				if (reqstatus.size() != GetPartCount()) {
-					continue;
-				}
+			if ( KnowNeededParts ) {
 				// only send sources which have needed parts for this client
 				for (int x = 0; x < GetPartCount(); ++x) {
 					if (srcstatus[x] && !reqstatus[x]) {
