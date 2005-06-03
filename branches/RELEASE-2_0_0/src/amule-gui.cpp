@@ -693,7 +693,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 				if ( file->ShowSources() ) {
 					amuledlg->transferwnd->downloadlistctrl->AddSource( file,
 							(CUpDownClient*)event.ptr_aux_value,
-							event.byte_value);
+							(DownloadItemType)event.byte_value);
 				}
 			}
 			break;
