@@ -935,10 +935,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	// aMule Version
 	CTag tagMuleVersion(CT_EMULE_VERSION,
 				(SO_AMULE	<< 24) |
-				(VERSION_MJR			<< 17) |
-				(VERSION_MIN			<< 10) |
-				(VERSION_UPDATE			<<  7)//|
-				//(RESERVED			     )
+				make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
+				// | (RESERVED			     )
 				);
 	tagMuleVersion.WriteTagToFile(data);
 

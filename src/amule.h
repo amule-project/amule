@@ -308,6 +308,10 @@ protected:
 #endif
 	bool enable_stdout_log;
 	wxString server_msg;
+	
+private:
+	void CheckNewVersion(uint32 result);
+	
 };
 
 #ifndef AMULE_DAEMON

@@ -149,7 +149,8 @@ enum HTTP_Download_File {
 	HTTP_IPFilter = 1,
 	HTTP_ServerMet,
 	// Auto-updating server.met has a different callback.
-	HTTP_ServerMetAuto
+	HTTP_ServerMetAuto,
+	HTTP_VersionCheck
 };
 
 DECLARE_EVENT_TYPE(wxEVT_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)
