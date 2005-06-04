@@ -1,0 +1,173 @@
+.TH AMULEWEB 1 "2005 március" "aMule web kiszolgáló v2.0.0" "aMule segédprogramok"
+.SH NÉV
+amuleweb \- aMule web kiszolgáló
+.SH ÁTTEKINTÉS
+.B amuleweb
+.RB [ \-h " " \fI<gép> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<jelszó> ]
+.RB [ \-f " " \fI<fájl> ]
+.RB [ \-l " " \fI<nyelv> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-w ]
+.RB [ \-t " " \fI<név> ]
+.RB [ \-s " " \fI<port> ]
+.RB [ \-z ]
+.RB [ \-Z ]
+.RB [ \-A " " \fI<jelszó> ]
+.RB [ \-G " " \fI<jelszó> ]
+.RB [ \-a ]
+.RB [ \-d ]
+.RB [ \-L ]
+.PP
+.B amuleweb
+.RB [ \-f " " \fI<fájl> ]
+.B \-\-create-config-from=\fI<fájl>
+.PP
+.B amuleweb
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.PP
+.B amuleweb \-\-amule\-config\-file=\fI<fájl>
+.SH LEÍRÁS
+Az \fBamuleweb\fR kezeli az aMule-hoz való hozzáférést egy böngészõ segítségével.
+Az \fBamuleweb\fR kiszolgáló elindítható az \fBamule\fR(1) indítákor, azzal együtt, vagy külön, bármikor késõbb.
+Az opciók parancssorban vagy konfigurácós fájlban is megadhatók.
+A parancssorban megadott opciók felülbírálják a konfigurációs fájlban megadottakat.
+.PP
+Az \fBamulewebDLG\fR az \fBamuleweb\fR grafikus változata, melytõl mûködését tekintve semmiben sem különbözik.
+.SH OPCIÓK
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<gép>\fR
+A gép, ahol az aMule fut (alapértelmezés: \fIlocalhost\fR).
+A \fI<gép>\fR lehet egy IP cím vagy DNS név.
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
+Az aMule távoli elérés portja (alapértelmezés: \fI4712\fR).
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<jelszó>\fR
+A távoli elérés jelszava.
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<fájl>\fR
+A megadott konfigurációs fájlt használja.
+Az alapértelmezés a \fI~/.aMule/remote.conf\fR
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<nyelv>\fR
+Beállítja a program nyelvét.
+Lásd a \fBMEGJEGYZÉSEK\fR fejezetet a \fI<nyelv>\fR paraméter bõvebb leírásához.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Csendes mód, semmit nem ír ki a szabvány kimenetre.
+Ezt a háttérben való futtatáshoz lehet jól használni, pl. így indítva: \fBamuleweb \-q &\fR
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Bõbeszédû mód, a hibakeresési üzeneteket is megjeleníti.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+A parancssori paramétereket kiírja a konfigurációs fájlba és kilép.
+.TP
+\fB\-\-create\-config\-from\fR=\fI<fájl>\fR
+Konfigurációs fájl készítése a \fI<fájl>\fR alapján, amely az aMule érvényes konfigurációs fájlja kell legyen, majd utána kilép.
+.TP
+\fB\-t\fR, \fB\-\-template\fR=\fI<név>\fR
+A megadott nevû sablon használata. Lásd még a \fBSABLONOK\fR fejezetet.
+.TP
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
+A web kiszolgáló HTTP portja, alapértelmezés szerint \fI4711\fR. Ezen keresztül kommunikál a böngészõvel.
+.TP
+\fB\-z\fR, \fB\-\-enable\-gzip\fR
+Gzip tömörítés engedélyezése a HTTP forgalom részére.
+.TP
+\fB\-Z\fR, \fB\-\-disable\-gzip\fR
+Gzip tömörítés tiltása (alapértelmezett).
+.TP
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<jelszó>\fR
+Teljes jogú web felület hozzáférést biztosító jelszó.
+.TP
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<jelszó>\fR
+Vendég felhasználó jelszava.
+.TP
+\fB\-a\fR, \fB\-\-allow\-guest\fR
+Vengég felhasználó engedélyezése.
+.TP
+\fB\-d\fR, \fB\-\-deny\-guest\fR
+Vendég felhasználó tiltása (alapértelmezett).
+.TP
+\fB\-L\fR, \fB\-\-load\-settings\fR
+A webkiszolgáló beállításainak töltése/mentése a távoli aMule-ról/ra.
+Ebben az esetben az \fBamuleweb\fR figyelmen kívül hagyja azokat a parancssori és konfigurációs fájlbeli beállításokat, amelyeket az aMule-tól is be tud szerezni (ezek beállíthatóak a Beállítások->Távoli Elérés pontban).
+A beállítások mentésekor sem írja azokat fájlba (mint egyébként), hanem az aMule-t értesíti a beállítások megváltozásáról.
+Azon beállítások, melyek az aMule Beállítások párbeszédpaneljén nem szerpelnek, nem kerülnek mentésre.
+.TP
+\fB\-\-amule\-config\-file\fR=\fI<fájl>\fR
+Az aMule konfigurációs fájljának elérési útvonala.
+.B NE HASZNÁLJA EZT A PARAMÉTERT!
+Ezt az aMule használja, hogy induláskor el tudja indítani a web kiszolgálót.
+Ennek hatására az \fBamuleweb\fR minden egyéb parancssori, konfigurációs és alapértelmezett beállítást figyelmen kívül hagy, és a megadott konfigurációs fájlból olvassa be azokat, ezen kívül úgy viselkedik, mintha a \fB\-q \-L\fR opciók is meg lennének adva.
+.TP
+\fB\-\-help\fR
+Megjeleníti a súgót és kilép.
+.TP
+\fB\-\-version\fR
+Megjeleníti a program verzióját, majd kilép.
+.SH MEGJEGYZÉSEK
+.SS Elérési utak
+Minden olyan opciónál, amely \fI<fájl>\fR paramétert kér, ha a megadott \fIfájl\fR nem tartalmaz könyvtár komponenst (vagyis tisztán csak egy fájlnév), akkor azt az aMule konfigurációs könyvtárában (\fI~/.aMule\fR) fogja keresni.
+.SS Nyelvek
+A \fB\-l\fR opció \fI<nyelv>\fR paramétere a következõ módon adható meg: \fInyelv\fR[\fB_\fITERÜLET\fR][\fB.\fIkódolás\fR][\fB@\fImódosító\fR], ahol \fInyelv\fR az elsõdleges nyelv, \fITERÜLET\fR egy nyelvváltozat/terület kódja, \fIkódolás\fR a karakter készlet kódja és a \fImódosító\fR "lehetõvé teszi, hogy a felhasználó kiválasszon egy meghatározott esetet a helyi jellemzõk adataiból egyetlen kategórián belül".
+.PP
+Például, a következõ értékek mind érvényesek:
+.br
+fr
+.br
+fr_FR
+.br
+de_DE.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+Habár a fenieket mind elfogadja a program, mint érvényes nyelvmeghatározást, a \fIkódolás\fR és \fImódosító\fR még nem használt.
+.PP
+Ráadaásként a fenti formátumhoz, megadható akár egy nyelv teljes angol megnevezése is, így például \fB\-l german\fR szintén érvényes, és egyenértékû a \fB-l de_DE\fR megadással.
+.PP
+Ha sem a parancssorban, sem a konfigurációs fájlban nincsen megadva a nyelv, akkor a rendszer alapértelmezett nyelvét fogja használni.
+.SH SABLONOK
+Az \fBamuleweb\fR képes az információ különbözõ felületekkel történõ megjelenítésére.
+Ezeket hívjuk sablonoknak, és az \fBamuleweb\fR a \fB\-t\fR parancssori opcióval vehetõ rá egy adott sablon használatára.
+A sablonokat a következõ helyen keresi: elõször az \fI~/.aMule/webserver/\fR könyvtárban, majd utána a \fI$(pkgdatadir)/webserver/\fR könyvtárban, ahol (\fI$(pkgdatadir)\fR a hardver független adatok installálási helye, általában /usr/share/amule).
+Minden egyes sablonnak a sablon nevével megegyezõ alkönyvtárban kell lennie, és ez a könyvtár kell tartalmazzon minden fájlt, amelyre a sablonnak szüksége van.
+Magának a sablont tartalmazó fájlnak a neve aMule.tmpl kell, hogy legyen.
+.PP
+Például az alapértelmezett sablon (a neve 'default') a webserver/default/ könyvtárban van, és ez a könyvtár tartalmazza az aMule.tmpl fájlt, meg egy jó pár képet hozzá.
+.SH FÁJLOK
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH PÉLDA
+Tipikusan az \fBamuleweb\fR elsõ indításakor létrehozunk egy konfigurációs fájlt, vagy az
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIgépnév\fR \fB\-p\fR \fIEC_port\fR \fB\-P\fR \fIEC_jelszó\fR \fB\-s\fR \fIHTTP_port\fR \fB\-A\fR \fITeljesJogúJelszó\fR \fB\-w\fR
+.PP
+paranccsal, vagy, ha nem akarjuk a parancssorban megadni a jelszót, akkor pl. az
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/felhasználónév/.aMule/amule.conf\fR
+.PP
+paranccsal. Természetesen a fenti elérési út a helyi viszonyoknak megfelelõen változhat. A beállítások tehát elmentõdnek a \fI$HOME/.aMule/remote.conf\fR fájlba, és ezek után már egyszerûen az
+.PP
+.B amuleweb
+.PP
+paranccsal indíthatjuk a web kiszolgálót.
+.SH HIBÁK JELENTÉSE
+A hibákat kérjük vagy a fórumon (\fIhttp://forum.amule.org/\fR), vagy a hibakövetõben (\fIhttp://bugs.amule.org/\fR) jelentsék.
+Hibákról kérjük ne írjanak levelet (e-mail-t) se a levelzési listára, se közvetlenül valamelyik fejlesztõnek.
+.SH COPYRIGHT
+Az aMule és az összes hozzá tartozó segédprogram a GNU General Public Licence védelme alatt áll.
+.SH LÁSD MÉG
+\fBamule\fR(1), \fBamulecmd\fR(1)
+.SH MAGYAR FORDÍTÁS
+Dévai Tamás <gonosztopi@amule.org>

@@ -1,0 +1,5 @@
+### make_store stores the compilation and warning messages on different files
+###           compilation_messages and warning_messages
+### Of course, error go on warning messages... so you can't see the error happening.
+#!/bin/sh
+make 1>compilation_messages 2>warning_messages
