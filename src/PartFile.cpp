@@ -74,6 +74,7 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
+#include "filefn.h"
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
@@ -131,7 +132,7 @@ void CPartFile::Init()
 	m_availablePartsCount=0;
 	m_ClientSrcAnswered = 0;
 	m_LastNoNeededCheck = 0;
-	m_iRating = 0;
+	m_iRate = 0;
 	m_nTotalBufferData = 0;
 	m_nLastBufferFlushTime = 0;
 	m_bPercentUpdated = false;
@@ -412,7 +413,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			return false;
 		} else {
 			if (!(metFile.Length()>0)) {
-				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
+				AddLogLineM(false, CFormat( _("Error: part.met nackups file is 0 size: %s ==> %s") )
 					% m_partmetfilename
 					% m_strFileName );
 				metFile.Close();
@@ -552,20 +553,15 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}				
 					case FT_KADLASTPUBLISHSRC:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							SetLastPublishTimeKadSrc(newtag.GetInt(), 0);
-							if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-								//There may be a posibility of an older client that saved a random number here.. This will check for that..
-								SetLastPublishTimeKadSrc(0,0);
-							}
-						}
+						#warning Kad
+						//SetLastPublishTimeKadSrc(newtag.GetInt());
 						break;
 					}
 					case FT_KADLASTPUBLISHNOTES:{
 						wxASSERT( newtag.IsInt() );
 						if (newtag.IsInt()) {
-						     SetLastPublishTimeKadNotes(newtag.GetInt());
+							#warning Kad
+						    // SetLastPublishTimeKadNotes(newtag->GetInt());
 						}
 						break;
 					}					
@@ -881,16 +877,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (corrupted_list.GetHeadPosition()) {			
 			++tagcount;
 		}
-		
 		if (m_pAICHHashSet->HasValidMasterHash() && (m_pAICHHashSet->GetStatus() == AICH_VERIFIED)){			
-			++tagcount;
-		}
-		
-		if (GetLastPublishTimeKadSrc()){
-			++tagcount;
-		}
-
-		if (GetLastPublishTimeKadNotes()){
 			++tagcount;
 		}
 
@@ -961,13 +948,6 @@ bool CPartFile::SavePartFile(bool Initial)
 			aichtag.WriteTagToFile(&file); // 12?
 		}
 		
-		if (GetLastPublishTimeKadSrc()){
-			CTag( FT_KADLASTPUBLISHSRC,	GetLastPublishTimeKadSrc()).WriteTagToFile(&file); // 15? 
-		}
-		
-		if (GetLastPublishTimeKadNotes()){
-			CTag( FT_KADLASTPUBLISHNOTES,	GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
-		}		
 		
 		for (uint32 j = 0; j != (uint32)taglist.GetCount();++j) {
 			taglist[j]->WriteTagToFile(&file);
@@ -1028,7 +1008,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
 
-		UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
+		FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
 		if (newpartmet.Length()>0) {			
 			// not error, just backup
@@ -1041,7 +1021,7 @@ bool CPartFile::SavePartFile(bool Initial)
 				% PARTMET_BAK_EXT,
 				_("Message"), wxOK);
 					
-			UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
+			FS_wxCopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
 		}
 	}
 	
@@ -1119,7 +1099,7 @@ void CPartFile::SaveSourceSeeds()
 		
 		for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
 			CUpDownClient* cur_src = source_seeds.GetNext(pos);		
-			file.WriteUInt32(cur_src->GetUserIDHybrid());
+			file.WriteUInt32(cur_src->GetUserID());
 			file.WriteUInt16(cur_src->GetUserPort());
 			//uint32 dwServerIP = cur_src->GetServerIP();
 			//uint16 nServerPort =cur_src->GetServerPort();
@@ -1137,7 +1117,6 @@ void CPartFile::SaveSourceSeeds()
 		file.Close();
 		wxRemoveFile(m_fullname + wxT(".seeds"));
 	}	
-	
 
 	AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
 		% n_sources
@@ -1711,54 +1690,26 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 	return (uint32)(kBpsDown*1024.0);
 }
 
-bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped, bool ed2kID)
+bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped)
 {
-
-	//The incoming ID could have the userid in the Hybrid format.. 
-	uint32 hybridID = 0;
-	if( ed2kID ) {
-		if (IsLowID(userid)) {
-			hybridID = userid;
-		} else {
-			hybridID = ENDIAN_NTOHL(userid);
-		}
-	} else {
-		hybridID = userid;
-		if (!IsLowID(userid)) {
-			userid = ENDIAN_NTOHL(userid);
-		}
-	}
-	
 	// MOD Note: Do not change this part - Merkur
-	if (theApp.serverconnect->IsConnected()) {
-		if(theApp.serverconnect->IsLowID()) {
-			if(theApp.serverconnect->GetClientID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
-				return false;
-			}
-			if(theApp.serverconnect->GetLocalIP() == userid) {
-				return false;
-			}
-		} else {
-			if(theApp.serverconnect->GetClientID() == userid && thePrefs::GetPort() == port) {
-				return false;
-			}
+	// check first if we are this source
+	if (	theApp.serverconnect->GetClientID() < 16777216 &&
+		theApp.serverconnect->IsConnected()){
+		if (	(theApp.serverconnect->GetClientID() == userid) &&
+			StringIPtoUint32(theApp.serverconnect->GetCurrentServer()->GetFullIP())  == serverip) {
+			return false;
 		}
-	}
-	
-	#ifdef __COMPILE_KADEMLIA__
-	if (Kademlia::CKademlia::isConnected()) {
-		if(!Kademlia::CKademlia::isFirewalled()) {
-			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs.GetPort() == port) {
-				return false;
-			}
-		}
-	}
-	#endif
-
-	//This allows *.*.*.0 clients to not be removed if Ed2kID == false
-	if ( IsLowID(hybridID) && theApp.IsFirewalled()) {
+	} else if (theApp.serverconnect->GetClientID() == userid) {
+#ifdef __DEBUG__
+		// It seems this can be used to test two amule's on one PC, using different ports --Aleric.
+		if (!theApp.serverconnect->IsLowID() && thePrefs::GetPort() != port)
+		  return true;
+#endif
+		return false;
+	} else if (userid < 16777216 && !theApp.serverconnect->IsLocalServer(serverip,serverport)) {
 		if (pdebug_lowiddropped) {
-			(*pdebug_lowiddropped)++;
+			++(*pdebug_lowiddropped);
 		}
 		return false;
 	}
@@ -1784,7 +1735,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 		uint16 port   = sources.ReadUInt16();
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-		if (!IsLowID(userid)) {
+		if (userid >= 16777216) {
 			// check for 0-IP, localhost and optionally for LAN addresses
 			if ( !IsGoodIP(userid, thePrefs::FilterLanIPs()) ) {
 				continue;
@@ -1799,7 +1750,7 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 		}
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			++debug_possiblesources;
-			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
+			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
@@ -2844,11 +2795,11 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			++nCount;
 			uint32 dwID;
 			if(forClient->GetSourceExchangeVersion() > 2) {
-				dwID = cur_src->GetUserIDHybrid();
+				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserID());
 			} else {
-				dwID = ENDIAN_NTOHL(cur_src->GetUserIDHybrid());
+				dwID = cur_src->GetUserID();
 			}
-			data.WriteUInt32(dwID);
+			data.WriteUInt32(dwID);			
 			data.WriteUInt16(cur_src->GetUserPort());
 			data.WriteUInt32(cur_src->GetServerIP());
 			data.WriteUInt16(cur_src->GetServerPort());
@@ -2878,38 +2829,17 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 
 void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion)
 {
-	// Kad reviewed
-	
 	if (m_stopped) {
 		return;
 	}
-
 	uint16 nCount = sources->ReadUInt16();
-	
-	// Check if the data size matches the 'nCount' for v1 or v2 and eventually correct the source
-	// exchange version while reading the packet data. Otherwise we could experience a higher
-	// chance in dealing with wrong source data, userhashs and finally duplicate sources.
-	uint32 uDataSize = sources->GetLength() - sources->GetPosition();
-	
-	if ((uint32)(nCount*(4+2+4+2)) == uDataSize) { //Checks if version 1 packet is correct size
-		if( sourceexchangeversion != 1 ) {
-			return;
-		}
-	} else if ((uint32)(nCount*(4+2+4+2+16)) == uDataSize) { // Checks if version 2&3 packet is correct size
-		if( sourceexchangeversion == 1 ) {
-			return;
-		}
-	} else {
-		// If v4 inserts additional data (like v2), the above code will correctly filter those packets.
-		// If v4 appends additional data after <count>(<Sources>)[count], we are in trouble with the 
-		// above code. Though a client which does not understand v4+ should never receive such a packet.
-		AddDebugLogLineM(false, logClient, CFormat(wxT("Received invalid source exchange packet (v%u) of data size %u for %s")) % sourceexchangeversion % uDataSize % GetFileName());
-		return;
-	}
-	
 	for (int i = 0;i != nCount;++i) {
-		
 		uint32 dwID = sources->ReadUInt32();
+		
+		if (sourceexchangeversion == 3) {		
+			dwID = wxUINT32_SWAP_ALWAYS(dwID);
+		}
+		
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
@@ -2918,58 +2848,19 @@ void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversi
 		if (sourceexchangeversion > 1) {
 			sources->ReadHash16(achUserHash);
 		}
-		
-		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
-		if (sourceexchangeversion == 3) {
-			uint32 dwIDED2K = ENDIAN_NTOHL(dwID);
-
-			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-			if (!IsLowID(dwID)) {
-				if (!IsGoodIP(dwIDED2K, thePrefs::FilterLanIPs())) {
-					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwIDED2K));
-					continue;
-				}
-				if (theApp.ipfilter->IsFiltered(dwIDED2K)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPFilter")) % Uint32toStringIP(dwIDED2K));
-					continue;
-				}
-				if (theApp.clientlist->IsBannedClient(dwIDED2K)){
-					continue;
-				}
-			}
-
-			// additionally check for LowID and own IP
-			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort, NULL, false)) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwIDED2K));
+		// check first if we are this source
+		if (theApp.serverconnect->GetClientID() < 16777216 && theApp.serverconnect->IsConnected()) {
+			if (	(theApp.serverconnect->GetClientID() == dwID) &&
+				theApp.serverconnect->GetCurrentServer()->GetIP() == dwServerIP) {
 				continue;
 			}
-		} else {
-			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-			if (!IsLowID(dwID)) {
-				if (!IsGoodIP(dwID, thePrefs::FilterLanIPs())) { 
-					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwID));
-					continue;
-				}
-				if (theApp.ipfilter->IsFiltered(dwID)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPfilter")) % Uint32toStringIP(dwID));
-					continue;
-				}
-				if (theApp.clientlist->IsBannedClient(dwID)){
-					continue;
-				}
-			}
-
-			// additionally check for LowID and own IP
-			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort)) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwID));
-				continue;
-			}
+		} else if (theApp.serverconnect->GetClientID() == dwID) {
+			continue;
+		} else if (dwID < 16777216) {
+			continue;
 		}
-		
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
-			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, (sourceexchangeversion != 3), true);
+			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this);
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
 			}
@@ -3329,10 +3220,10 @@ void CPartFile::UpdateFileRatingCommentAvail()
 			hasComment=true;
 		}
 
-		if (cur_src->GetFileRating()>0) {
+		if (cur_src->GetFileRate()>0) {
 			++ratings;
 		}
-		if (cur_src->GetFileRating()==1) {
+		if (cur_src->GetFileRate()==1) {
 			++badratings;
 		}
 	}

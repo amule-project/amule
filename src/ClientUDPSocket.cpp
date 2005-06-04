@@ -50,12 +50,9 @@
 #include "OPCodes.h"		// Needed for OP_EMULEPROT
 #include "Statistics.h"		// Needed for CStatistics
 #include "amule.h"			// Needed for theApp
-#include "ClientList.h"		// Needed for clientlist (buddy support)
-#include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "OtherFunctions.h"
 #include "SafeFile.h"
 #include "Logger.h"
-#include "UploadBandwidthThrottler.h"
 
 //
 // CClientUDPSocket -- Extended eMule UDP socket
@@ -66,18 +63,27 @@ IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket, CDatagramSocketProxy)
 CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
 :
 CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+#ifdef AMULE_DAEMON
+ , wxThread(wxTHREAD_JOINABLE)
+#endif
 {
 	m_bWouldBlock = false;
 
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CClientUDPSocket failed create\n");
+		wxASSERT(0);
+	}
+	Run();
+#else
 	SetEventHandler(theApp, CLIENTUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
 	Notify(true);
+#endif
 }
 
 CClientUDPSocket::~CClientUDPSocket()
 {
-    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
-
 	SetNotify(0);
 	Notify(FALSE);
 }
@@ -99,11 +105,10 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	}
 }
 
-
-int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size)
-{
+int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
 	RecvFrom(addr,buffer,max_size);
 	int length = LastCount();
+	#ifndef AMULE_DAEMON
 	// Daemon doesn't need this because it's a thread, checking every X time.
 	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
 		// Evil trick to retry later.
@@ -112,38 +117,15 @@ int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 		input_event.SetEventObject(this);
 		theApp.AddPendingEvent(input_event);
 	}
+	#endif
 	return length;
 }
-
 
 bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	try {
 		switch(opcode) {
-			case OP_REASKCALLBACKUDP: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
-				theApp.statistics->AddDownDataOverheadOther(size);
-				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy ) {
-					if( size < 17 || buddy->GetSocket() == NULL ) {
-						break;
-					}
-					if (!md4cmp(packet, buddy->GetBuddyID())) {
-						CSafeMemFile mem_packet((byte*)packet,size-10);
-						// Change the ip and port while leaving the rest untouched
-						mem_packet.Seek(0,wxFromStart);
-						mem_packet.WriteUInt32(host);
-						mem_packet.WriteUInt16(port);
-						CPacket* response = new CPacket(&mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
-						AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						buddy->GetSocket()->SendPacket(response);
-					}
-				}
-				break;
-			}
 			case OP_REASKFILEPING: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				
 				CSafeMemFile data_in((byte*)packet, size);
@@ -156,7 +138,7 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 					SendPacket(response,host,port);
 					break;
 				}
-				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(host, port);
+				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP(host);
 				if (sender){
 					sender->CheckForAggressive();
 					
@@ -210,7 +192,6 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				break;
 			}
 			case OP_QUEUEFULL: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
 				theApp.statistics->AddDownDataOverheadOther(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender) {
@@ -233,8 +214,8 @@ bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 				}
 				break;
 			}
-			case OP_FILENOTFOUND: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
+			case OP_FILENOTFOUND:
+			{
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender){
@@ -260,55 +241,28 @@ void CClientUDPSocket::OnSend(int nErrorCode)
 	if (nErrorCode) {
 		return;
 	}
-
-	wxMutexLocker lock(m_sendLocker);
-    m_bWouldBlock = false;
-
-    if(!controlpacket_queue.IsEmpty()) {
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-    }
-}
-
-
-#define UDPMAXQUEUETIME                       SEC2MS(30)      //30 Seconds
-
-SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 WXUNUSED(minFragSize))
-{
-    wxMutexLocker lock(m_sendLocker);
-    uint32 sentBytes = 0;
-
-	while (!controlpacket_queue.IsEmpty() && !IsBusy() && sentBytes < maxNumberOfBytesToSend){ // ZZ:UploadBandWithThrottler (UDP)
-		UDPPack cur_packet = controlpacket_queue.GetHead();
-		if( GetTickCount() - cur_packet.dwTime < UDPMAXQUEUETIME )
-		{
-			char* sendbuffer = new char[cur_packet.packet->GetPacketSize()+2];
-			memcpy(sendbuffer,cur_packet.packet->GetUDPHeader(),2);
-			memcpy(sendbuffer+2,cur_packet.packet->GetDataBuffer(),cur_packet.packet->GetPacketSize());
-
-            if (SendTo(sendbuffer, cur_packet.packet->GetPacketSize()+2, cur_packet.dwIP, cur_packet.nPort)){
-                sentBytes += cur_packet.packet->GetPacketSize()+2; // ZZ:UploadBandWithThrottler (UDP)
-
-				controlpacket_queue.RemoveHead();
-				delete cur_packet.packet;
-            }
-			delete[] sendbuffer;
-		} else {
+	m_bWouldBlock = false;
+	while (controlpacket_queue.GetHeadPosition() != 0 && !IsBusy()) {
+		UDPPack* cur_packet = controlpacket_queue.GetHead();
+		char* sendbuffer = new char[cur_packet->packet->GetPacketSize()+2];
+		memcpy(sendbuffer, cur_packet->packet->GetUDPHeader(), 2);
+		memcpy(sendbuffer+2, cur_packet->packet->GetDataBuffer(), cur_packet->packet->GetPacketSize());
+		bool is_sent = SendTo(sendbuffer, cur_packet->packet->GetPacketSize()+2, cur_packet->dwIP, cur_packet->nPort);
+		if ((is_sent) || (!is_sent && !IsBusy())) {
+			// Either we sent the packet, or faced an error different from WOULDBLOCK,
+			// like the other guy is not there anymore, so drop it.
 			controlpacket_queue.RemoveHead();
-			delete cur_packet.packet;
+			delete cur_packet->packet;
+			delete cur_packet;
 		}
+		delete [] sendbuffer;
 	}
 
-    if(!IsBusy() && !controlpacket_queue.IsEmpty()) {
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-    }
-
-    SocketSentBytes returnVal = { true, 0, sentBytes };
-    return returnVal;
 }
-
 
 bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 {
+
 	amuleIPV4Address addr;
 	addr.Hostname(dwIP);
 	addr.Service(nPort);
@@ -333,16 +287,47 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 {
-	UDPPack newpending;
-	newpending.dwIP = dwIP;
-	newpending.nPort = nPort;
-	newpending.packet = packet;
-	newpending.dwTime = GetTickCount();
-    
-	m_sendLocker.Lock();
-	controlpacket_queue.AddTail(newpending);
-	m_sendLocker.Unlock();
+	// Send any previously queued packet before this one.
+	OnSend(0);
 	
-    theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
+	UDPPack* newpending = new UDPPack;
+	newpending->dwIP = dwIP;
+	newpending->nPort = nPort;
+	newpending->packet = packet;
+	newpending->trial = 0;
+	if ( IsBusy() ) {
+		controlpacket_queue.AddTail(newpending);
+		return true;
+	}
+	char* sendbuffer = new char[packet->GetPacketSize()+2];
+	memcpy(sendbuffer,packet->GetUDPHeader(),2);
+	memcpy(sendbuffer+2,packet->GetDataBuffer(),packet->GetPacketSize());
+	if (!SendTo(sendbuffer, packet->GetPacketSize()+2, dwIP, nPort)) {
+		controlpacket_queue.AddTail(newpending);
+	} else {
+		delete newpending->packet;
+		delete newpending;
+	}
+	delete[] sendbuffer;
 	return true;
 }
+
+
+#ifdef AMULE_DAEMON
+
+void *CClientUDPSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		Sleep(100);
+		CALL_APP_DATA_LOCK;
+		if ( WaitForRead(0, 0) ) {	
+			OnReceive(0);
+		}
+		if ( WaitForWrite(0, 0) ) {
+			OnSend(0);
+		}
+	}
+	return 0;
+}
+
+#endif

@@ -55,19 +55,12 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
 
-#ifdef __COMPILE_KAD__
-#include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/Prefs.h"
-#include "ClientUDPSocket.h"
-#endif
-
 //#define __PACKET_RECV_DUMP__
-
-IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
 
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
+#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CClientReqSocketHandler, wxEvtHandler)
 	EVT_SOCKET(CLIENTREQSOCKET_HANDLER, CClientReqSocketHandler::ClientReqSocketHandler)
 END_EVENT_TABLE()
@@ -114,6 +107,58 @@ void CClientReqSocketHandler::ClientReqSocketHandler(wxSocketEvent& event)
 //
 static CClientReqSocketHandler g_clientReqSocketHandler;
 
+#else
+CClientReqSocketHandler::CClientReqSocketHandler(CClientReqSocket* socket)
+{
+	m_socket = socket;
+	socket->my_handler = this;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CClientReqSocketHandler failed create\n");
+		wxASSERT(0);
+	}
+}
+
+CClientReqSocketHandler::~CClientReqSocketHandler()
+{
+	wxASSERT(m_socket == 0);
+}
+
+void *CClientReqSocketHandler::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( m_socket->deletethis ) {
+			break;
+		}
+		if ( m_socket->Error()) {
+			if ( m_socket->LastError() == wxSOCKET_WOULDBLOCK ) {
+				if ( m_socket->WaitForWrite(0, 0) ) {
+					m_socket->OnSend(0);
+				}
+			} else  {
+				break;
+			}
+		}
+		if ( m_socket->deletethis || m_socket->WaitForLost(0, 0) ) {
+			break;
+		}
+		// lfroen: tradeof here - short wait time for high performance on delete
+		// but long wait time for low cpu usage
+		if ( m_socket->WaitForRead(0, 100) ) {
+			if ( m_socket->RecievePending() ) {
+				Sleep(50);
+			} else {
+				CALL_APP_DATA_LOCK;
+				m_socket->OnReceive(0);
+			}
+		}
+	}
+	m_socket->my_handler = 0;
+	m_socket->Safe_Delete();
+	m_socket = NULL;
+
+	return 0;
+}
+#endif
 
 //------------------------------------------------------------------------------
 // CClientReqSocket
@@ -121,14 +166,20 @@ static CClientReqSocketHandler g_clientReqSocketHandler;
 
 WX_DEFINE_OBJARRAY(ArrayOfwxStrings)
 
+IMPLEMENT_DYNAMIC_CLASS(CClientReqSocket,CEMSocket)
+
 CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *ProxyData)
-	: CEMSocket(ProxyData)
+:
+CEMSocket(ProxyData)
 {
-	SetClient(in_client);
+	m_client = in_client;
+	if (m_client) {
+		m_client->SetSocket(this);
+	}
 	ResetTimeOutTimer();
 	deletethis = false;
 	last_action = ACTION_NONE;
-
+#ifndef AMULE_DAEMON
 	my_handler = &g_clientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
 	SetNotify(
@@ -137,11 +188,30 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *P
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-
+#else
+	my_handler = 0;
+	Notify(false);
+#endif
 	theApp.listensocket->AddSocket(this);
-	theApp.listensocket->AddConnection();
 }
 
+void CClientReqSocket::OnInit()
+{
+	last_action = ACTION_CONNECT;
+}
+
+bool CClientReqSocket::Close()
+{
+	return CEMSocket::Close();
+}
+
+// Used in BaseClient.cpp, but not here.
+bool CClientReqSocket::Create()
+{
+	theApp.listensocket->AddConnection();
+	OnInit();
+	return true;
+}
 
 CClientReqSocket::~CClientReqSocket()
 {
@@ -157,37 +227,37 @@ CClientReqSocket::~CClientReqSocket()
 	if (theApp.listensocket && !theApp.listensocket->OnShutdown()) {
 		theApp.listensocket->RemoveSocket(this);
 	}
+#ifdef AMULE_DAEMON
+	wxASSERT(deletethis && !my_handler);
+#endif
 }
-
 
 void CClientReqSocket::ResetTimeOutTimer()
 {
 	timeout_timer = ::GetTickCount();
 }
 
-
 bool CClientReqSocket::CheckTimeOut()
 {
+// lfroen: on daemon sockets must be blocking. Which means
+// that when client is downloading, i will only trust
+// tcp timeout
+#ifdef AMULE_DAEMON
+	if (my_handler) {
+		return false;
+	}
+#endif
 	// 0.42x
-	uint32 uTimeout = GetTimeOut();
-	if (m_client) {
-
+	uint32 uTimeout = CONNECTION_TIMEOUT;
+	if(m_client) {
+		#ifdef __USE_KAD__
 		if (m_client->GetKadState() == KS_CONNECTED_BUDDY) {
-			//We originally ignored the timeout here for buddies.
-			//This was a stupid idea on my part. There is now a ping/pong system
-			//for buddies. This ping/pong system now prevents timeouts.
-			//This release will allow lowID clients with KadVersion 0 to remain connected.
-			//But a soon future version needs to allow these older clients to time out to prevent dead connections from continuing.
-			//JOHNTODO: Don't forget to remove backward support in a future release.
-			if ( m_client->GetKadVersion() == 0 ) {
-				return false;
-			}
-			
-			uTimeout += MIN2MS(15);		
+			return false;
 		}
-		
-		if (m_client->GetChatState() != MS_NONE) {
-			uTimeout += CONNECTION_TIMEOUT;		
+		#endif
+		if (m_client->GetChatState()!=MS_NONE) {
+			timeout_timer = ::GetTickCount();
+			return false;
 		}
 	}
 	
@@ -206,34 +276,19 @@ bool CClientReqSocket::CheckTimeOut()
 	return false;	
 }
 
-
-void CClientReqSocket::SetClient(CUpDownClient* pClient)
-{
-	m_client = pClient;
-	if (m_client) {
-		m_client->SetSocket( this );
-	}
-}
-
-
-bool CClientReqSocket::Close()
-{
-	return CEMSocket::Close();
-}
-
-
 void CClientReqSocket::OnClose(int nErrorCode)
 {
 	// 0.42x
-	wxASSERT(theApp.listensocket->IsValidSocket(this));
+	wxASSERT (theApp.listensocket->IsValidSocket(this));
 	CEMSocket::OnClose(nErrorCode);
-	if (nErrorCode) {
-		Disconnect(wxString::Format(wxT("Closed: %u"), nErrorCode));
+	if (nErrorCode > 0) {
+		wxString strError;
+		strError = wxString::Format(wxT("Closed: %u"),nErrorCode);
+		Disconnect(strError);
 	} else {
 		Disconnect(wxT("Close"));
 	}
 }
-
 
 void CClientReqSocket::Disconnect(const wxString& strReason)
 {
@@ -269,10 +324,12 @@ void CClientReqSocket::Safe_Delete()
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
+#ifdef AMULE_DAEMON
+	if ( !my_handler )
+#endif
 		Close();
 	}
 }
-
 
 bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opcode)
 {
@@ -325,7 +382,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				try{
 					bIsMuleHello = m_client->ProcessHelloPacket(packet,size);
-				} catch(...) {
+				}
+				catch(...){
 					if (bNewClient && m_client) {
 						// Don't let CUpDownClient::Disconnected be processed for a client which is not in the list of clients.
 						m_client->Safe_Delete();
@@ -344,9 +402,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					return false;
 				}
 						
-				wxASSERT(m_client);
-				
-				// now we check if we now this client already. if yes this socket will
+				// now we check if we know this client already. if yes this socket will
 				// be attached to the known client, the new client will be deleted
 				// and the var. "client" will point to the known client.
 				// if not we keep our new-constructed client ;)
@@ -375,9 +431,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}				
 				
 				// Client might die from Sending in SendMuleInfoPacket, so check
-				if ( m_client ) {
+				if ( m_client )
 					m_client->ConnectionEstablished();
-				}
 				
 				// start secure identification, if
 				//	- we have received eMule-OP_HELLO (new eMule)				
@@ -502,7 +557,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILEREQANSNOFIL") );
 				
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				if (size == 16) {
+				if (size == 16)
+				{
 					// if that client does not have my file maybe has another different
 					CPartFile* reqfile = theApp.downloadqueue->GetFileByID((byte*)packet);
 					if ( reqfile) {
@@ -512,7 +568,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					}
 						
 					// we try to swap to another file ignoring no needed parts files
-					switch (m_client->GetDownloadState()) {
+					switch (m_client->GetDownloadState())
+					{
 						case DS_CONNECTED:
 						case DS_ONQUEUE:
 						case DS_NONEEDEDPARTS:
@@ -652,7 +709,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					} else {
 						if ( CLogger::IsEnabled( logClient ) ) {
 								if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-									wxString msg = wxString::Format(_("Client requests invalid %u "), i);
+									wxString msg = wxString::Format(_("Client requests invalid %u."), i);
 									msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
 									msg += wxT(" ") + m_client->GetFullIP();
 								//	AddLogLineM( false, CFormat(_("Client requests invalid %u. file block %u-%u (%d bytes): %s")) % i % auStartOffsets[i] % auEndOffsets[i] % auEndOffsets[i] - auStartOffsets[i] % m_client->GetFullIP());
@@ -756,7 +813,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				break;
 			}
 			
-			case OP_CHANGE_CLIENT_ID: { 	// Kad reviewed
+			case OP_CHANGE_CLIENT_ID: { 	// 0.43b (xcept the IDHybrid)
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_CLIENT_ID") );
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
@@ -764,15 +821,17 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				uint32 nNewUserID = data.ReadUInt32();
 				uint32 nNewServerIP = data.ReadUInt32();
 				
-				if (IsLowID(nNewUserID)) { // client changed server and gots a LowID
+				if (IsLowIDED2K(nNewUserID)) { // client changed server and gots a LowID
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
-						m_client->SetUserIDHybrid(nNewUserID); // update UserID only if we know the server
+						#warning Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)
+						m_client->SetUserID(nNewUserID); // update UserID only if we know the server
 						m_client->SetServerIP(nNewServerIP);
 						m_client->SetServerPort(pNewServer->GetPort());
 					}
 				} else if (nNewUserID == m_client->GetIP()) { // client changed server and gots a HighID(IP)
-					m_client->SetUserIDHybrid(ENDIAN_NTOHL(nNewUserID));
+					#warning Here should be the IDHybrid, but we don't use it yet and I'm afraid it will break a lot ;)					
+					m_client->SetUserID(nNewUserID);
 					CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 					if (pNewServer != NULL){
 						m_client->SetServerIP(nNewServerIP);
@@ -794,7 +853,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			case OP_MESSAGE: {		// 0.43b
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 				
-				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				AddLogLineM( true, wxT("New message from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 				theApp.statistics->AddDownDataOverheadOther(size);
 				
 				CSafeMemFile message_file((byte*)packet,size);
@@ -803,7 +862,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 				if (IsMessageFiltered(message, m_client)) {
 					if (!m_client->m_bMsgFiltered) {
-						AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+						AddLogLineM( true, wxT("Message filtered from '") + m_client->GetUserName() + wxT("' (IP:") + m_client->GetFullIP() + wxT(")"));
 					}
 					m_client->m_bMsgFiltered=true;
 				} else {
@@ -827,13 +886,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
 						list.AddTail((void*&)pos->second);
 					}
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Accepted"))
 						% m_client->GetUserName() 
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 				} else {
-					AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
+					AddLogLineM( true, CFormat( _("User %s (%u) requested your requested your sharedfiles-list -> Denied"))
 						% m_client->GetUserName() 
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 				}
 				// now create the memfile for the packet
 				CSafeMemFile tempfile(80);
@@ -872,7 +931,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Accepted") )
 						% m_client->GetUserName()
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 
 					// Kry - This new code from eMule will avoid duplicated folders
 					ArrayOfwxStrings folders_to_send;
@@ -930,7 +989,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
 						% m_client->GetUserName()
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -952,7 +1011,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 											
 				wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 				if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("accepted"));
 					wxASSERT( data.GetPosition() == data.GetLength() );
 					CTypedPtrList<CPtrList, CKnownFile*> list;
 					
@@ -983,7 +1042,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				} else {
-					AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
+					AddLogLineM( true, wxT("User ") + m_client->GetUserName() + wxString::Format( wxT(" (%u) requested your sharedfiles-list for directory "),m_client->GetUserID()) + strReqDir + wxT(" -> ") + wxT("denied"));
 					
 					CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
 					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
@@ -1003,7 +1062,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 						AddLogLineM( true, CFormat( _("User %s (%u) shares directory %s") )
 							% m_client->GetUserName()
-							% m_client->GetUserIDHybrid()
+							% m_client->GetUserID()
 							% strDir );
 				
 						CSafeMemFile tempfile(80);
@@ -1018,7 +1077,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) sent unrequested shared dirs.") )
 						% m_client->GetUserName() 
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 				}
       			break;
       		}
@@ -1033,19 +1092,19 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (m_client->GetFileListRequested() > 0){
 					AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory %s") )
 						% m_client->GetUserName()
-						% m_client->GetUserIDHybrid()
+						% m_client->GetUserID()
 						% strDir );
 					
 					m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), strDir);
 					if (m_client->GetFileListRequested() == 0) {
 						AddLogLineM( true, CFormat( _("User %s (%u) finished sending sharedfiles-list") )
 							% m_client->GetUserName()
-							% m_client->GetUserIDHybrid() );
+							% m_client->GetUserID() );
 					}
 				} else {
 					AddLogLineM( true, CFormat( _("User %s (%u) sent unwanted sharedfiles-list") )
 						% m_client->GetUserName()
-						% m_client->GetUserIDHybrid() );
+						% m_client->GetUserID() );
 				}
 				break;
 			}
@@ -1055,9 +1114,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				theApp.statistics->AddDownDataOverheadOther(size);
 				wxASSERT( size == 0 );
-				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
+				AddLogLineM( true, CFormat( _("User %s (%u) denied access to shareddirectories/files-list") )
 					% m_client->GetUserName()
-					% m_client->GetUserIDHybrid() );
+					% m_client->GetUserID() );
 						
 				m_client->SetFileListRequested(0);			
 				break;
@@ -1112,7 +1171,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	}
 	return true;
 }
-
 
 bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 opcode)
 {
@@ -1278,22 +1336,23 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if (reqfile != m_client->GetRequestFile()) {
 					throw wxString(wxT(" Wrong File ID: OP_MULTIPACKETANSWER; reqfile!=client->reqfile)"));
 				}
-				while (data_in.GetLength()-data_in.GetPosition()) {
-					// Some of the cases down there can actually send a packet and lose the client
-					if (!m_client) {
-						throw wxString(wxT("Client suddenly disconnected"));
-					}
+				while((data_in.GetLength()-data_in.GetPosition()) && m_client)
+				{
 					uint8 opcode_in = data_in.ReadUInt8();
-					switch(opcode_in) {
-						case OP_REQFILENAMEANSWER: {
+					switch(opcode_in)
+					{
+						case OP_REQFILENAMEANSWER:
+						{
 							m_client->ProcessFileInfo(&data_in, reqfile);
 							break;
 						}
-						case OP_FILESTATUS: {
+						case OP_FILESTATUS:
+						{
 							m_client->ProcessFileStatus(false, &data_in, reqfile);
 							break;
 						}
-						case OP_AICHFILEHASHANS: {
+						case OP_AICHFILEHASHANS:
+						{
 							m_client->ProcessAICHFileHash(&data_in, reqfile);
 							break;
 						}					
@@ -1316,7 +1375,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					}
 					m_client->SendMuleInfoPacket(true);
 				} else {
-					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO is an OS_INFO") );
+					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO is a OS_INFO") );
 				}
 				break;
 			}
@@ -1408,14 +1467,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 							theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
 							m_client->SendPacket(packet,true,true);					
 							
-							if (m_client) {
+							if (m_client)
 								m_client->SetSentCancelTransfer(1);
-							}
 						}
 
-						if ( m_client ) {
+						if ( m_client )
 							m_client->SetDownloadState(m_client->GetRequestFile()->IsStopped() ? DS_NONE : DS_ONQUEUE);	
-						}
 					}
 				} else {
 					if (!m_client->GetSentCancelTransfer()) {
@@ -1423,14 +1480,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
-						if ( m_client ) {
+						if ( m_client )
 							m_client->SetSentCancelTransfer(1);
-						}
 					}
 				
-					if ( m_client ) {
+					if ( m_client )
 						m_client->SetDownloadState((m_client->GetRequestFile()==NULL || m_client->GetRequestFile()->IsStopped()) ? DS_NONE : DS_ONQUEUE);
-					}
 				}
 				break;
 			}
@@ -1605,152 +1660,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				}
 				break;
 			}
-			#ifdef __COMPILE_KAD__
-			case OP_CALLBACK: {
-				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK") );				
-				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				if(!Kademlia::CKademlia::isRunning()) {
-					break;
-				}
-				CSafeMemFile data((const byte*)packet, size);
-				Kademlia::CUInt128 check;
-				data.ReadUInt128(&check);
-				check.XOR(Kademlia::CUInt128(true));
-				if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
-					break;
-				}
-				Kademlia::CUInt128 fileid;
-				data.ReadUInt128(&fileid);
-				byte fileid2[16];
-				fileid.toByteArray(fileid2);
-				CKnownFile* reqfile;
-				if ( (reqfile = theApp.sharedfiles->GetFileByID(fileid2)) == NULL ) {
-					if ( (reqfile = theApp.downloadqueue->GetFileByID(fileid2)) == NULL) {
-						#warning Xaignar? I know we have something like this somewhere
-						//client->CheckFailedFileIdReqs(fileid2);
-						break;
-					}
-				}
-
-				uint32 ip = data.ReadUInt32();
-				uint16 tcp = data.ReadUInt16();
-				CUpDownClient* callback;
-				callback = theApp.clientlist->FindClientByIP(ENDIAN_NTOHL(ip), tcp);
-				if( callback == NULL ) {
-					#warning Do we actually have to check friend status here?
-					callback = new CUpDownClient(tcp,ip,0,0,NULL,false, false);
-					theApp.clientlist->AddClient(callback);
-				}
-				callback->TryToConnect(true);
-				break;
-			}
-			
-			case OP_BUDDYPING: {
-				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPING") );
-				theApp.statistics->AddDownDataOverheadOther(size);
-
-				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy != m_client || m_client->GetKadVersion() == 0 || !m_client->AllowIncomeingBuddyPingPong() ) {
-					//This ping was not from our buddy or wrong version or packet sent to fast. Ignore
-					break;
-				}
-				
-				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_BUDDYPING") );
-				m_client->SetLastBuddyPingPongTime();
-				CPacket* replypacket = new CPacket(OP_BUDDYPONG, 0, OP_EMULEPROT);
-				theApp.statistics->AddDownDataOverheadOther(replypacket->GetPacketSize());
-				SendPacket(replypacket);
-				break;
-			}
-			case OP_BUDDYPONG: {
-				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPONG") );
-				theApp.statistics->AddDownDataOverheadOther(size);
-
-				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy != m_client || m_client->GetKadVersion() == 0 ) {
-					//This pong was not from our buddy or wrong version. Ignore
-					break;
-				}
-				m_client->SetLastBuddyPingPongTime();
-				//All this is for is to reset our socket timeout.
-				break;
-			}
-			case OP_REASKCALLBACKTCP: {
-				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if (buddy != m_client) {
-					AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );
-					//This callback was not from our buddy.. Ignore.
-					break;
-				}
-				CSafeMemFile data_in((const byte*)packet, size);
-				uint32 destip = data_in.ReadUInt32();
-				uint16 destport = data_in.ReadUInt16();
-				byte reqfilehash[16];
-				data_in.ReadHash16(reqfilehash);
-				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
-				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
-				if (!reqfile) {
-					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND") );
-					CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
-					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-					theApp.clientudp->SendPacket(response, destip, destport);
-					break;
-				}
-				
-				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
-				if (sender) {
-					//Make sure we are still thinking about the same file
-					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
-						sender->AddAskedCount();
-						sender->SetLastUpRequest();
-						//I messed up when I first added extended info to UDP
-						//I should have originally used the entire ProcessExtenedInfo the first time.
-						//So now I am forced to check UDPVersion to see if we are sending all the extended info.
-						//For now on, we should not have to change anything here if we change
-						//anything to the extended info data as this will be taken care of in ProcessExtendedInfo()
-						//Update extended info. 
-						if (sender->GetUDPVersion() > 3) {
-							sender->ProcessExtendedInfo(&data_in, reqfile);
-						} else if (sender->GetUDPVersion() > 2) {
-							//Update our complete source counts.			
-							uint16 nCompleteCountLast= sender->GetUpCompleteSourcesCount();
-							uint16 nCompleteCountNew = data_in.ReadUInt16();
-							sender->SetUpCompleteSourcesCount(nCompleteCountNew);
-							if (nCompleteCountLast != nCompleteCountNew) {
-								reqfile->UpdatePartsInfo();
-							}
-						}
-						
-						CSafeMemFile data_out(128);
-						if(sender->GetUDPVersion() > 3) {
-							if (reqfile->IsPartFile()) {
-								((CPartFile*)reqfile)->WritePartStatus(&data_out);
-							} else {
-								data_out.WriteUInt16(0);
-							}
-						}
-						
-						data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REASKACK") );
-						CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
-						response->SetOpCode(OP_REASKACK);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						theApp.clientudp->SendPacket(response, destip, destport);
-					} else {
-						AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
-					}
-				} else {
-					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
-						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL") );
-						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						theApp.clientudp->SendPacket(response, destip, destport);
-					}
-				}
-				break;
-			}
-			#endif
 			default:
 				theApp.statistics->AddDownDataOverheadOther(size);
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
@@ -1800,8 +1709,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 }
 
 
-bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait)
-{
+bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait) {
 	last_action = ACTION_CONNECT;
 	return CEMSocket::Connect(addr, wait);
 }
@@ -1817,11 +1725,8 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 	} else if (!m_client->SendHelloPacket()) {	
 		// and now? Disconnect? not?				
 		AddDebugLogLineM( false, logClient, wxT("Couldn't send hello packet (Client deleted by SendHelloPacket!)") );
-	} else {
-		ResetTimeOutTimer();
 	}
 }
-
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
@@ -1830,14 +1735,18 @@ void CClientReqSocket::OnSend(int nErrorCode)
 	CEMSocket::OnSend(nErrorCode);
 }
 
-
 void CClientReqSocket::OnReceive(int nErrorCode)
 {
 	last_action = ACTION_RECEIVE;
-	ResetTimeOutTimer();
 	CEMSocket::OnReceive(nErrorCode);
+#ifdef AMULE_DAEMON
+	if ( LastCount() ) {
+		ResetTimeOutTimer();
+	}
+#else
+		ResetTimeOutTimer();
+#endif
 }
-
 
 void CClientReqSocket::RepeatLastAction() {
 	switch (last_action) {
@@ -1869,7 +1778,10 @@ void CClientReqSocket::OnError(int nErrorCode)
 	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	
+	bool disconnect = true;
+	
 	if ((nErrorCode == 0) || (nErrorCode == 7) || (nErrorCode == 0xFEFF)) {	
+		
 		if (m_client) {
 			if (!m_client->GetUserName().IsEmpty()) {
 				strError = wxT("Client '") + m_client->GetUserName() + wxT("'");
@@ -1910,9 +1822,11 @@ void CClientReqSocket::OnError(int nErrorCode)
 		}	
 	}
 	
-	Disconnect(strError);
+	if (disconnect) {
+		Disconnect(strError);
+	}
+	
 }
-
 
 bool CClientReqSocket::PacketReceived(CPacket* packet)
 {
@@ -1950,7 +1864,6 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 	return bResult;
 }
 
-
 bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient* client) {
 	
 	bool filtered = false;
@@ -1978,36 +1891,14 @@ bool CClientReqSocket::IsMessageFiltered(const wxString& Message, CUpDownClient*
 	return filtered;
 }
 
-SocketSentBytes CClientReqSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
+#ifdef AMULE_DAEMON
+void CClientReqSocket::Destroy()
 {
-    SocketSentBytes returnStatus = CEMSocket::SendControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-
-    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
-        ResetTimeOutTimer();
-    }
-
-    return returnStatus;
+	if ( !my_handler ) {
+		CEMSocket::Destroy();
+	}
 }
-
-
-SocketSentBytes CClientReqSocket::SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend)
-{
-	SocketSentBytes returnStatus = CEMSocket::SendFileAndControlData(maxNumberOfBytesToSend, overchargeMaxBytesToSend);
-
-    if(returnStatus.success && (returnStatus.sentBytesControlPackets > 0 || returnStatus.sentBytesStandardPackets > 0)) {
-        ResetTimeOutTimer();
-    }
-
-    return returnStatus;
-}
-
-
-void CClientReqSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
-{
-	ResetTimeOutTimer();
-	CEMSocket::SendPacket(packet,delpacket,controlpacket, actualPayloadSize);
-}
-
+#endif
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -2022,7 +1913,12 @@ CListenSocket::CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData)
 :
 // wxSOCKET_NOWAIT    - means non-blocking i/o
 // wxSOCKET_REUSEADDR - means we can reuse the socket imediately (wx-2.5.3)
+#ifdef AMULE_DAEMON
+CSocketServerProxy(addr, wxSOCKET_WAITALL|wxSOCKET_REUSEADDR, ProxyData),
+wxThread(wxTHREAD_JOINABLE) 
+#else
 CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
+#endif
 {
 	// 0.42e - vars not used by us
 	bListening = false;
@@ -2036,10 +1932,16 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	activeconnections = 0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
+#ifdef AMULE_DAEMON
+		if ( Create() != wxTHREAD_NO_ERROR ) {
+			AddLogLineM( true, _("CListenSocket: Cannot create thread") );
+		}
+		Notify(false);
+#else
  		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
  		SetNotify(wxSOCKET_CONNECTION_FLAG);
  		Notify(true);
-
+#endif	
 		printf("ListenSocket: Ok.\n");
 	} else {
 		AddLogLineM( true, _("Error: Could not listen to TCP port.") );
@@ -2052,15 +1954,49 @@ CListenSocket::~CListenSocket()
 	shutdown = true;
 	Discard();
 	Close();
-
+#ifdef AMULE_DAEMON
+	AddLogLineM( true, _("CListenSocket: Destroying") );
+	global_sock_thread.Delete();
+	global_sock_thread.Wait();
+#endif
 	KillAllSockets();
 }
+
+//
+// lfroen - this used only in daemon where sockets are threaded
+//
+#ifdef AMULE_DAEMON
+void *CListenSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( WaitForAccept(1, 0) ) {
+			if ( !theApp.IsRunning() ) {
+				wxSocketBase *s = Accept(false);
+				if ( s ) {
+					s->Destroy();
+				}
+				continue;
+			}
+			if ( bListening ) {
+				CALL_APP_DATA_LOCK;
+				OnAccept(0);
+			} else {
+				Sleep(10);
+			}
+		}
+	}
+	return 0;
+}
+#endif
 
 bool CListenSocket::StartListening()
 {
 	// 0.42e
 	bListening = true;
-
+#ifdef AMULE_DAEMON
+	Run();
+	global_sock_thread.Run();
+#endif
 	return true;
 }
 
@@ -2106,9 +2042,13 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Create a new socket to deal with the connection
 			CClientReqSocket* newclient = new CClientReqSocket();
 			// Accept the connection and give it to the newly created socket
-			if (!AcceptWith(*newclient, false)) {
+			if (AcceptWith(*newclient, false)) {
+				// OnInit currently sets the last_action to ACTION_CONNECT
+				newclient->OnInit();
+			} else {
 				newclient->Safe_Delete();
 			}
+			AddConnection();
 		}
 	}
 }
@@ -2163,12 +2103,18 @@ void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
 	wxASSERT(toadd);
 	socket_list.insert(toadd);
+#ifdef AMULE_DAEMON
+	global_sock_thread.AddSocket(toadd);
+#endif
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
 	wxASSERT(todel);
 	socket_list.erase(todel);
+#ifdef AMULE_DAEMON
+	global_sock_thread.RemoveSocket(todel);
+#endif
 }
 
 void CListenSocket::KillAllSockets()
@@ -2236,3 +2182,90 @@ float CListenSocket::GetMaxConperFiveModifier()
 	
 	return 1.0f - (SpikeSize/SpikeTolerance);
 }
+
+
+#ifdef AMULE_DAEMON
+
+CSocketGlobalThread::CSocketGlobalThread() : wxThread(wxTHREAD_JOINABLE)
+{
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM( true, _("CSocketGlobalThread: Call to Create failed") );
+	}
+}
+
+void CSocketGlobalThread::AddSocket(CClientReqSocket* sock)
+{
+	wxASSERT(sock);
+	socket_list.insert(sock);
+}
+
+void CSocketGlobalThread::RemoveSocket(CClientReqSocket* sock)
+{
+	wxASSERT(sock);
+	socket_list.erase(sock);
+}
+
+
+void *CSocketGlobalThread::Entry()
+{
+	while ( !TestDestroy() ) {
+		Sleep(10);
+		std::set<CClientReqSocket *>::iterator it;
+		CALL_APP_DATA_LOCK;
+		it = socket_list.begin();
+		while (it != socket_list.end()) {
+			CClientReqSocket* cur_sock = *it++;
+			if (cur_sock->deletethis) {
+				socket_list.erase(cur_sock);
+				continue;
+			}
+			if (cur_sock->Error()) {
+				switch (cur_sock->LastError()) {
+					case wxSOCKET_WOULDBLOCK: 
+						if (cur_sock->last_action != ACTION_CONNECT) {
+							// Connection state will be handled on next if
+							cur_sock->RepeatLastAction();
+						}
+					default:
+						socket_list.erase(cur_sock);				
+				}
+			}
+			if ( !cur_sock->wxSocketBase::IsConnected()) {
+					if ( cur_sock->WaitOnConnect(0, 0) ) {
+						cur_sock->OnConnect(0);
+					}
+			} else {
+				if ( cur_sock->deletethis ) { // Must we remove this socket?
+					socket_list.erase(cur_sock);
+					continue;
+				}
+				if ( cur_sock->WaitForLost(0, 0) ) { // Did the socket got closed?
+					cur_sock->OnError(cur_sock->LastError());
+					socket_list.erase(cur_sock);
+					continue;
+				}
+				
+				if (cur_sock->WaitForWrite(0, 0) ) { // Are we ready to write to this socket?
+					cur_sock->OnSend(0);
+				}				
+				
+				// We re-check deletethis because it could have been triggered on write
+				if (!cur_sock->deletethis && cur_sock->WaitForRead(0, 0)) { // Are we ready to read from this socket?
+					cur_sock->OnReceive(0);
+					CUpDownClient *client = cur_sock->GetClient();
+					if ( client && (client->GetDownloadState() == DS_DOWNLOADING)) {
+						// If client is downloading, we create a thread for it.
+						CClientReqSocketHandler *t = new CClientReqSocketHandler(cur_sock);
+						socket_list.erase(cur_sock);
+						t->Run();
+					}
+				}
+			}
+		}
+ 
+	}
+	AddLogLineM( false, _("CSocketGlobalThread: Exited") );
+	return 0;
+}
+
+#endif

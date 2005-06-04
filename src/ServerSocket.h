@@ -42,16 +42,26 @@
 // CServerSocketHandler
 //------------------------------------------------------------------------------
 
+#ifdef AMULE_DAEMON
+#define SERVER_SOCK_HANDLER_BASE wxThread
+#else
+#define SERVER_SOCK_HANDLER_BASE wxEvtHandler
+#endif
 
-class CServerSocketHandler: public wxEvtHandler
+class CServerSocketHandler: public SERVER_SOCK_HANDLER_BASE
 {
 public:
 	CServerSocketHandler(CServerSocket *socket = NULL);
 
 public:
+#ifdef AMULE_DAEMON
+	void *Entry();
+	CServerSocket *m_socket;
+#else
 private:
 	void ServerSocketHandler(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
+#endif
 };
 
 //------------------------------------------------------------------------------
@@ -75,16 +85,21 @@ public:
  	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
+ public:
 	void	OnClose(wxSocketError nErrorCode);
 	void	OnConnect(wxSocketError nErrorCode);
 	void	OnReceive(wxSocketError nErrorCode);
 	void	OnError(wxSocketError nErrorCode);
 	bool	PacketReceived(CPacket* packet);
-	void 	SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
+	bool	SendPacket(CPacket* packet, bool delpacket = true,bool controlpacket = true);
 	bool	IsSolving() const { return m_IsSolving;};
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
 	
+#ifdef AMULE_DAEMON
+	bool Connect(wxIPV4address &addr, bool wait);
+#endif
+
 private:
 	bool	ProcessPacket(const char* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);

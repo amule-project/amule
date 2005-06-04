@@ -53,12 +53,17 @@
 #include "Logger.h"
 #include "Format.h"
 
+#ifndef AMULE_DAEMON
+#include "SearchDlg.h"		// Needed for CSearchDlg
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#endif
 
 
 //------------------------------------------------------------------------------
 // CServerSocketHandler
 //------------------------------------------------------------------------------
 
+#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
@@ -105,6 +110,47 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 //
 static CServerSocketHandler g_serverSocketHandler;
 
+#else
+CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
+:
+wxThread(wxTHREAD_JOINABLE)
+{
+	m_socket = socket;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
+	}
+}
+
+void *CServerSocketHandler::Entry()
+{
+	while ( !TestDestroy() ) {
+		if ( m_socket->WaitOnConnect(1,0) ) {
+			break;
+		}
+	}
+	if ( !m_socket->wxSocketClient::IsConnected() || TestDestroy()) {
+		printf("CServerSocket: connection refused or timed out\n");
+		return 0;
+	}
+	m_socket->OnConnect(wxSOCKET_NOERROR);
+	m_socket->OnSend(wxSOCKET_NOERROR);
+	while ( !TestDestroy() ) {
+		if ( m_socket->WaitForLost(0, 0) ) {
+			m_socket->OnError(m_socket->LastError());
+			printf("CServerSocket: connection closed\n");
+			return 0;
+		}
+		// lfroen: setting timeout to give app a chance gracefully destroy
+		// thread before deleting object
+		if ( m_socket->WaitForRead(1, 0) ) {
+			m_socket->OnReceive(wxSOCKET_NOERROR);
+		}
+	}
+	printf("CServerSocket: terminated\n");
+	return 0;
+
+}
+#endif
 
 //------------------------------------------------------------------------------
 // CServerSocket
@@ -121,7 +167,7 @@ CEMSocket(ProxyData)
 	cur_server = 0;
 	info.Clear();
 	m_bIsDeleting = false;
-
+#ifndef AMULE_DAEMON	
 	my_handler = &g_serverSocketHandler;
 	SetEventHandler(*my_handler, SERVERSOCKET_HANDLER);
 	SetNotify(
@@ -130,7 +176,9 @@ CEMSocket(ProxyData)
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-
+#else
+	my_handler = new CServerSocketHandler(this);
+#endif
 	m_dwLastTransmission = 0;	
 	m_IsSolving = false;
 }
@@ -145,12 +193,17 @@ CServerSocket::~CServerSocket()
 		delete cur_server;
 	}
 	cur_server = NULL;
+#ifdef AMULE_DAEMON
+	printf("CServerSocket: destroying socket %p\n", (void*)this);
+	my_handler->Delete();
+#endif
 }
 
 
 void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
 	CALL_APP_DATA_LOCK;
+	//CAsyncSocket::OnConnect(nErrorCode);
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
@@ -227,6 +280,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				
 				// 16.40 servers do not send separate OP_SERVERMESSAGE packets for each line;
 				// instead of this they are sending all text lines with one OP_SERVERMESSAGE packet.
+				//wxString message = strMessages.Tokenize("\r\n", iPos);
 
 				wxStringTokenizer token(strMessages,wxT("\r\n"),wxTOKEN_DEFAULT );
 
@@ -356,7 +410,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					break;
 				}
 				if(thePrefs::GetSmartIdCheck()) {
-					if (!IsLowID(new_id)) {
+					if (new_id >= 16777216) {
 						thePrefs::SetSmartIdState(1);
 					} else {
 						uint8 state = thePrefs::GetSmartIdState();
@@ -425,7 +479,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
-					theApp.ShowUserCount();
+					Notify_ShowUserCount(update);
 				}
 				break;
 			}
@@ -520,7 +574,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					if (client) {
 						client->TryToConnect();
 					} else {
-						client = new CUpDownClient(nPort,dwIP,0,0,0, true, true);
+						client = new CUpDownClient(nPort,dwIP,0,0,0);
 						theApp.clientlist->AddClient(client);
 						client->TryToConnect();
 					}
@@ -632,13 +686,13 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 {
 	CEMSocket::OnClose(0);
-	
-	switch (connectionstate) {
-		case CS_WAITFORLOGIN:	SetConnectionState(CS_SERVERFULL);		break;
-		case CS_DISCONNECTED:	SetConnectionState(CS_DISCONNECTED);	break;
-		default:				SetConnectionState(CS_NOTCONNECTED);	
+	if (connectionstate == CS_WAITFORLOGIN) {
+		SetConnectionState(CS_SERVERFULL);
+	} else if (connectionstate == CS_CONNECTED) {
+		SetConnectionState(CS_DISCONNECTED);
+	} else {
+		SetConnectionState(CS_NOTCONNECTED);
 	}
-	
 	serverconnect->DestroySocket(this);
 }
 
@@ -654,11 +708,10 @@ void CServerSocket::SetConnectionState(sint8 newstate)
 	}
 }
 
-
-void CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
+bool CServerSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	m_dwLastTransmission = GetTickCount();
-	CEMSocket::SendPacket(packet, delpacket, controlpacket, actualPayloadSize);
+	return CEMSocket::SendPacket(packet, delpacket, controlpacket);
 }
 
 
@@ -678,3 +731,12 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
+
+#ifdef AMULE_DAEMON
+bool CServerSocket::Connect(wxIPV4address &addr, bool wait)
+{
+	bool res = CEMSocket::Connect(addr, wait);
+	my_handler->Run();
+	return res;
+}
+#endif

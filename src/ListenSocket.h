@@ -45,20 +45,36 @@
 #include <set> 
 #include <list>
 
+#ifdef AMULE_DAEMON
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxThread
+#else
+#define CLIENT_REQ_SOCK_HANDLER_BASE wxEvtHandler
+#endif
+
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
 
 class CClientReqSocket;
 
-class CClientReqSocketHandler: public wxEvtHandler
+class CClientReqSocketHandler: public CLIENT_REQ_SOCK_HANDLER_BASE
 {
 public:
 	CClientReqSocketHandler(CClientReqSocket* socket = NULL);
 
+#ifdef AMULE_DAEMON
+public:
+	// lfroen: for some reason wx can't Wait for detached threads
+	~CClientReqSocketHandler();
+
+private:
+	CClientReqSocket* m_socket;
+	void *Entry();
+#else
 private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
+#endif
 };
 
 //------------------------------------------------------------------------------
@@ -80,20 +96,21 @@ enum LastActionType {
 
 class CClientReqSocket : public CEMSocket
 {
+friend class CClientReqSocketHandler;
+
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
-	friend class CClientReqSocketHandler;
+
 public:
 	CClientReqSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientReqSocket();
-	
-	virtual	bool 	Close();
+	virtual	void 	OnInit();
+	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
 	virtual	bool 	Connect(amuleIPV4Address addr, bool wait);
-	
+	bool		Create();
 	void		Disconnect(const wxString& strReason);
 
 	void		ResetTimeOutTimer();
 	bool		CheckTimeOut();
-
 	void		Safe_Delete();
 
 	bool		deletethis; // 0.30c (Creteil), set as bool
@@ -109,16 +126,15 @@ public:
 	void		OnError(int nErrorCode);
 	
 	uint32		timeout_timer;
+	bool		hotrank;
 
-	void		SetClient(CUpDownClient* client);
+	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
-	
-	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-
+#ifdef AMULE_DAEMON
+	void Destroy();
+#endif
 protected:
-	virtual bool PacketReceived(CPacket* packet);
+	bool	 PacketReceived(CPacket* packet);
 
 private:
 	CUpDownClient*	m_client;
@@ -129,12 +145,33 @@ private:
 	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
 
 	CClientReqSocketHandler* my_handler;
+#ifdef AMULE_DAEMON
+	wxMutex handler_exit;
+#endif
 };
 
+#ifdef AMULE_DAEMON
+class CSocketGlobalThread : public wxThread {
+	void *Entry();
+	
+	std::set<CClientReqSocket *> socket_list;
+public:
+	CSocketGlobalThread(/*CListenSocket *socket*/);
+	void AddSocket(CClientReqSocket* sock);
+	void RemoveSocket(CClientReqSocket* sock);
+};
+#endif
 
 // CListenSocket command target
 class CListenSocket : public CSocketServerProxy
+#ifdef AMULE_DAEMON
+, public wxThread
+#endif
 {
+#ifdef AMULE_DAEMON
+	void *Entry();
+	CSocketGlobalThread global_sock_thread;
+#endif
 public:
 	CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData = NULL);
 	~CListenSocket();

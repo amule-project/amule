@@ -26,14 +26,8 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#define	SEC2MS(sec)		((sec)*1000)
-#define	MIN2MS(min)		SEC2MS((min)*60)
-#define	HR2MS(hr)		MIN2MS((hr)*60)
-#define	DAY2MS(day)		HR2MS((day)*24)
-#define	SEC(sec)		(sec)
-#define	MIN2S(min)		((min)*60)
-#define	HR2S(hr)		MIN2S((hr)*60)
-#define	DAY2S(day)		HR2S((day)*24)
+#define    SEC2MS(sec)             ((sec)*1000)
+#define    MIN2MS(min)             SEC2MS((min)*60)
 
 // Handlers
 
@@ -47,7 +41,6 @@ enum {
 	SERVERSOCKET_HANDLER,
 	CLIENTUDPSOCKET_HANDLER,
 	PROXY_SOCKET_HANDLER,
-	EC_SOCKET_HANDLER,
 	
 	// Custom Events
 
@@ -74,23 +67,25 @@ enum {
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 // AND FIX THE MOD_VERSION_LONG
 
-#define __CVS__
+// #define __CVS__
 
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.0.3")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.0.2")
 #endif
 
 #define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
-#define	VERSION_UPDATE		3
+#define	VERSION_UPDATE		2
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
 #define	PARTFILE_VERSION			0xe0
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
 #define	CREDITFILE_VERSION			0x12
+
+#define RSAKEYSIZE				384             //384 bits
 
 #define EMBLOCKSIZE				(uint32)184320
 
@@ -105,37 +100,15 @@ enum {
 #define	FILEREASKTIME				1300000	// 1300000 <- original value ***
 #define	SERVERREASKTIME				800000  // don't set this too low, it wont speed up anything, but it could kill amule or your internetconnection
 #define	UDPSERVERREASKTIME			1300000	// 1300000 <- original value ***
+//#define	SOURCECLIENTREASK			600000
 #define	SOURCECLIENTREASKS			MIN2MS(40)	//40 mins
 #define	SOURCECLIENTREASKF			MIN2MS(5)	//5 mins
-#define	KADEMLIAASKTIME			SEC2MS(1)	//1 second
-#define	KADEMLIATOTALFILE		7			//Total files to search sources for.
-#define	KADEMLIAREASKTIME		HR2MS(1)	//1 hour
-#define	KADEMLIAPUBLISHTIME		SEC(2)		//2 second
-#define	KADEMLIATOTALSTORENOTES	1			//Total hashes to store.
-#define	KADEMLIATOTALSTORESRC	2			//Total hashes to store.
-#define	KADEMLIATOTALSTOREKEY	1			//Total hashes to store.
-#define	KADEMLIAREPUBLISHTIMES	HR2S(5)		//5 hours
-#define	KADEMLIAREPUBLISHTIMEN	HR2S(24)	//24 hours
-#define	KADEMLIAREPUBLISHTIMEK	HR2S(24)	//24 hours
-#define	KADEMLIADISCONNECTDELAY	MIN2S(20)	//20 mins
-#define	KADEMLIAMAXINDEX		50000		//Total keyword indexes.
-#define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
-#define	KADEMLIAMAXSOUCEPERFILE	300			//Max number of sources per file in index.
-#define	KADEMLIAMAXNOTESPERFILE	50			//Max number of notes per entry in index.
-
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min
-#define	MINCOMMONPENALTY		4
-#define	UDPSERVERSTATTIME		SEC2MS(5)	//5 secs
-#define	UDPSERVSTATREASKTIME	HR2S(4)		//4 hours
-#define	UDPSERVERPORT			4665		//default udp port
-#define	UDPMAXQUEUETIME			SEC2MS(30)	//30 Seconds
-#define	RSAKEYSIZE				384			//384 bits
-#define	MAX_SOURCES_FILE_SOFT	500
-#define	MAX_SOURCES_FILE_UDP	50
-#define	SESSIONMAXTRANS			(9.3*1024*1024) // 9.3 Mbytes. "Try to send complete chunks" always sends this amount of data
-#define	SESSIONMAXTIME			HR2MS(1)	//1 hour
-#define	MAXFILECOMMENTLEN		50
-#define	MIN_UP_CLIENTS_ALLOWED			2	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
+#define	MINCOMMONPENALTY			4
+#define	UDPSERVERSTATTIME			5000
+#define	UDPSERVSTATREASKTIME			14400
+#define	UDPSERVERPORT				4665	// default udp port
+#define	MIN_UP_CLIENTS_ALLOWED			3	// min. clients allowed to download regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too high
 // MOD Note: end
 
 #define	MAXCONPER5SEC				20
@@ -143,8 +116,8 @@ enum {
 #define	UPLOAD_CHECK_CLIENT_DR			1000
 #define	UPLOAD_LOW_CLIENT_DR			2400	// uploadspeed per client in bytes - you may want to adjust
 							// this if you have a slow connection or T1-T3 ;)
-#define	UPLOAD_CLIENT_DATARATE			3072
-#define	MAX_UP_CLIENTS_ALLOWED			250	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
+#define	UPLOAD_CLIENT_DATARATE			2048
+#define	MAX_UP_CLIENTS_ALLOWED			100	// max. clients allowed regardless UPLOAD_CLIENT_DATARATE or any other factors. Don't set this too low, use DATARATE to adjust uploadspeed per client
 #define	DOWNLOADTIMEOUT				100000
 #define	CONSERVTIMEOUT				25000	// agelimit for pending connection attempts
 #define	RARE_FILE				50
@@ -168,8 +141,6 @@ const int BLOCKSIZE =				184320;
 #define	OP_EDONKEYPROT				OP_EDONKEYHEADER
 #define	OP_PACKEDPROT				0xD4
 #define	OP_EMULEPROT				0xC5
-#define	OP_KADEMLIAHEADER		0xE4
-#define	OP_KADEMLIAPACKEDPROT	0xE5
 #define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
@@ -287,17 +258,13 @@ const unsigned int UNLIMITED =	 		0;
 #define OP_AICHANSWER				0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
 #define OP_AICHFILEHASHANS			0x9D	  
 #define OP_AICHFILEHASHREQ			0x9E
-#define OP_BUDDYPING			0x9F
-#define OP_BUDDYPONG			0xA0
 
 // extened prot client <-> extened prot client UDP
 #define	OP_REASKFILEPING			0x90	// <HASH 16>
 #define	OP_REASKACK				0x91	// <RANG 2>
 #define	OP_FILENOTFOUND				0x92	// (null)
 #define	OP_QUEUEFULL				0x93	// (null)
-#define	OP_REASKCALLBACKUDP		0x94
-#define	OP_PORTTEST				0xFE	// Connection Test
-
+	
 // server.met
 #define	ST_SERVERNAME				0x01	// <string>
 #define	ST_DESCRIPTION				0x0B	// <string>
@@ -319,13 +286,13 @@ const unsigned int UNLIMITED =	 		0;
 
 //file tags
 #define FT_FILENAME				 0x01	// <string>
-#define TAG_FILENAME				"\x01"	// <string>
+#define TAG_NAME				"\x01"	// <string>
 #define FT_FILESIZE				 0x02	// <uint32>
-#define TAG_FILESIZE				"\x02"	// <uint32>
+#define TAG_SIZE				"\x02"	// <uint32>
 #define FT_FILETYPE				 0x03	// <string>
-#define TAG_FILETYPE				"\x03"	// <string>
+#define TAG_TYPE				"\x03"	// <string>
 #define FT_FILEFORMAT				 0x04	// <string>
-#define TAG_FILEFORMAT				"\x04"	// <string>
+#define TAG_FORMAT				"\x04"	// <string>
 #define FT_LASTSEENCOMPLETE			 0x05	// <uint32>
 #define TAG_COLLECTION				"\x05"
 #define	TAG_PART_PATH				"\x06"	// <string>
@@ -350,10 +317,8 @@ const unsigned int UNLIMITED =	 		0;
 #define FT_STATUS				 0x14	// <uint32>
 #define TAG_STATUS				"\x14"	// <uint32>
 #define FT_SOURCES				 0x15	// <uint32>
-#define TAG_SOURCES				"\x15"	// <uint32>
 #define TAG_AVAILABILITY			"\x15"	// <uint32>
 #define FT_PERMISSIONS				 0x16	// <uint32>
-#define TAG_PERMISSIONS			"\x16"
 #define TAG_QTIME				"\x16"
 #define FT_OLDULPRIORITY			 0x17	// Not used anymore
 #define TAG_PARTS				"\x17"
@@ -370,34 +335,31 @@ const unsigned int UNLIMITED =	 		0;
 #define	FT_COMPLETE_SOURCES			 0x30	// nr. of sources which share a complete version
 							 //of the associated file (supported by eserver 16.46+)
 // statistic
-#define	FT_ATTRANSFERED			 0x50	// <uint32>
-#define	FT_ATREQUESTED			 0x51	// <uint32>
-#define	FT_ATACCEPTED			 0x52	// <uint32>
-#define	FT_CATEGORY			 0x53	// <uint32>
+#define FT_ATTRANSFERED			 0x50	// <uint32>
+#define FT_ATREQUESTED			 0x51	// <uint32>
+#define FT_ATACCEPTED			 0x52	// <uint32>
+#define FT_CATEGORY			 0x53	// <uint32>
 #define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
 #define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
-#define	FT_MEDIA_ARTIST		 0xD0	// <string>
+#define	 FT_MEDIA_ARTIST		 0xD0	// <string>
 #define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
-#define	FT_MEDIA_ALBUM			 0xD1	// <string>
+#define	 FT_MEDIA_ALBUM			 0xD1	// <string>
 #define	TAG_MEDIA_TITLE			"\xD2"	// <string>
-#define	FT_MEDIA_TITLE			 0xD2	// <string>
+#define	 FT_MEDIA_TITLE			 0xD2	// <string>
 #define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
-#define	FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
+#define	 FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
 #define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
-#define	FT_MEDIA_BITRATE		 0xD4	// <uint32>
+#define	 FT_MEDIA_BITRATE		 0xD4	// <uint32>
 #define	TAG_MEDIA_CODEC			"\xD5"	// <string>
-#define	FT_MEDIA_CODEC			 0xD5	// <string>
-#define	FT_FILERATING			 0xF7	// <uint8>
-#define	TAG_FILERATING			"\xF7"	// <uint8>
-
-#define	TAG_BUDDYHASH			"\xF8"	// <string>
-#define	TAG_CLIENTLOWID			"\xF9"	// <uint32>
-#define	TAG_SERVERPORT			"\xFA"	// <uint16>
-#define	TAG_SERVERIP			"\xFB"	// <uint32>
-#define	TAG_SOURCEUPORT			"\xFC"	// <uint16>
-#define	TAG_SOURCEPORT			"\xFD"	// <uint16>
-#define	TAG_SOURCEIP			"\xFE"	// <uint32>
-#define	TAG_SOURCETYPE			"\xFF"	// <uint8>
+#define	 FT_MEDIA_CODEC			 0xD5	// <string>
+#define TAG_BUDDYHASH			"\xF8"	// <string>
+#define TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define TAG_SERVERPORT			"\xFA"	// <uint16>
+#define TAG_SERVERIP			"\xFB"	// <uint32>
+#define TAG_SOURCEUPORT			"\xFC"	// <uint16>
+#define TAG_SOURCEPORT			"\xFD"	// <uint16>
+#define TAG_SOURCEIP			"\xFE"	// <uint32>
+#define TAG_SOURCETYPE			"\xFF"	// <uint8>
 
 #define	TAGTYPE_HASH			0x01
 #define	TAGTYPE_STRING			0x02
@@ -498,61 +460,63 @@ const unsigned int UNLIMITED =	 		0;
 #define	CT_EMULE_UDPPORTS		0xf9
 #define	CT_EMULE_MISCOPTIONS1		0xfa
 #define	CT_EMULE_VERSION		0xfb
-#define CT_EMULE_BUDDYIP		0xfc
-#define CT_EMULE_BUDDYUDP		0xfd
-#define CT_EMULE_MISCOPTIONS2	0xfe
+#define CT_EMULE_RESERVED10		0xfc
+#define CT_EMULE_RESERVED11		0xfd
+#define CT_EMULE_RESERVED12		0xfe
 #define CT_EMULE_RESERVED13		0xff
 
-enum {
-	MP_MESSAGE = 11000, // Random start ID that doesn't conflict with wxDesigner
-	MP_DETAIL,
-	MP_ADDFRIEND,
-	MP_REMOVEFRIEND,
-	MP_SHOWLIST,
-	MP_FRIENDSLOT,
-	MP_CHANGE2FILE,
-	MP_CANCEL,
-	MP_STOP,
-	MP_RESUME,
-	MP_PAUSE,
-	MP_CLEARCOMPLETED,
-	MP_VIEW,
-	MP_SENDMESSAGE,
-	MP_FAKECHECK1,   // deltaHF -> fakecheck
-	MP_FAKECHECK2,
-	MP_WS,
-	MP_RAZORSTATS,
-	MP_GETCOMMENTS,
+#define	MP_MESSAGE			10102
+#define	MP_DETAIL			10103
+#define	MP_ADDFRIEND			10104
+#define	MP_REMOVEFRIEND			10105
+#define	MP_SHOWLIST			10106
+#define	MP_FRIENDSLOT			10107
+#define MP_CHANGE2FILE			10108
+#define	MP_CANCEL			10201
+#define	MP_STOP				10202
+#define	MP_RESUME			10204
+#define	MP_PAUSE			10203
+#define	MP_CLEARCOMPLETED		10205
+#define	MP_VIEW				30207
+#define	MP_SENDMESSAGE			30208
+#define	MP_FAKECHECK1			10210   // deltaHF -> fakecheck
+#define	MP_FAKECHECK2			10211
+#define	MP_WS				10212
+#define	MP_RAZORSTATS			10213
+#define MP_GETCOMMENTS			10214
 //For comments 
-	MP_CMT,
+#define	MP_CMT				10208
+#define	MP_SWITCHCTRL_0			10250
+#define	MP_SWITCHCTRL_9			10259
 
-	MP_PRIOVERYLOW,
-	MP_PRIOLOW,
-	MP_PRIONORMAL,
-	MP_PRIOHIGH,
-	MP_PRIOVERYHIGH,
-	MP_POWERSHARE,
-	MP_PRIOAUTO,
-	MP_GETED2KLINK,
-	MP_GETHTMLED2KLINK,
-	MP_GETSOURCEED2KLINK,
-	MP_GETHOSTNAMESOURCEED2KLINK,
-	MP_GETAICHED2KLINK,
-	MP_METINFO,
-	MP_CONNECTTO,
-	MP_REMOVE,
-	MP_REMOVEALL,
-	MP_UNBAN,
-	MP_ADDTOSTATIC,
-	MP_REMOVEFROMSTATIC,
-	MP_VIEWFILECOMMENTS,
-	MP_CAT_ADD,
-	MP_CAT_EDIT,
-	MP_CAT_REMOVE,
-	MP_TOOGLELIST,
-	MP_CLOSE_TAB,
-	MP_CLOSE_ALL_TABS,
-	MP_CLOSE_OTHER_TABS,
+
+#define	MP_PRIOVERYLOW				10300
+#define	MP_PRIOLOW				10301
+#define	MP_PRIONORMAL				10302
+#define	MP_PRIOHIGH				10303
+#define	MP_PRIOVERYHIGH				10304
+#define	MP_POWERSHARE                           10331
+#define	MP_PRIOAUTO				10317
+#define	MP_GETED2KLINK				10305
+#define	MP_GETHTMLED2KLINK			10306
+#define	MP_GETSOURCEED2KLINK			10299
+#define	MP_GETAICHED2KLINK			10298
+#define	MP_GETHOSTNAMESOURCEED2KLINK		10361
+#define	MP_METINFO				10307
+#define	MP_CONNECTTO				10311
+#define	MP_REMOVE				10312
+#define	MP_REMOVEALL				10313
+#define	MP_UNBAN				10315
+#define	MP_ADDTOSTATIC				10316
+#define	MP_REMOVEFROMSTATIC			10400
+#define	MP_VIEWFILECOMMENTS			10401
+#define	MP_CAT_ADD				10321
+#define	MP_CAT_EDIT				10322
+#define	MP_CAT_REMOVE				10323
+#define MP_TOOGLELIST				10324
+#define MP_CLOSE_TAB				10325
+#define MP_CLOSE_ALL_TABS			10326
+#define MP_CLOSE_OTHER_TABS			10327
 
 /* Razor 1a - Modif by MikaelB
      Opcodes for :
@@ -563,46 +527,26 @@ enum {
       - Swap every A4AF to this file now
       - Swap every A4AF to this file ( AUTO )
       - Swap every A4AF to any other file now   */
-	MP_DROP_NO_NEEDED_SOURCES,
-	MP_DROP_FULL_QUEUE_SOURCES,
-	MP_DROP_HIGH_QUEUE_RATING_SOURCES,
-	MP_CLEAN_UP_SOURCES,
-	MP_SWAP_A4AF_TO_THIS,
-	MP_SWAP_A4AF_TO_THIS_AUTO,
-	MP_SWAP_A4AF_TO_ANY_OTHER,
+#define	MP_DROP_NO_NEEDED_SOURCES		57841
+#define	MP_DROP_FULL_QUEUE_SOURCES		57842
+#define	MP_DROP_HIGH_QUEUE_RATING_SOURCES	57843
+#define	MP_CLEAN_UP_SOURCES			57844
+#define	MP_SWAP_A4AF_TO_THIS			57845
+#define	MP_SWAP_A4AF_TO_THIS_AUTO		57846
+#define	MP_SWAP_A4AF_TO_ANY_OTHER		57847
 
 //menus
-	MP_MENU_PRIO,
-	MP_MENU_EXTD,
-	MP_MENU_FAKE,
-	MP_MENU_CATS,
+#define MP_MENU_PRIO				999989
+#define MP_MENU_EXTD				999988
+#define MP_MENU_FAKE				999987
+#define MP_MENU_CATS				432843
 
-// CMuleListCtrl tabs.
-	MP_LISTCOL_1,
-	MP_LISTCOL_2,
-	MP_LISTCOL_3,
-	MP_LISTCOL_4,
-	MP_LISTCOL_5,
-	MP_LISTCOL_6,
-	MP_LISTCOL_7,
-	MP_LISTCOL_8,
-	MP_LISTCOL_9,
-	MP_LISTCOL_10,
-	MP_LISTCOL_11,
-	MP_LISTCOL_12,
-	MP_LISTCOL_13,
-	MP_LISTCOL_14,
-	MP_LISTCOL_15
-};
-
-// This ones can't be enum!
-
-#define	MP_ASSIGNCAT				10800 // reserve some for categories!
-#define	MP_CAT_SET0				10900 // reserve some for change all-cats (about 20)
-#define	MP_SWITCHCTRL_0			10950
-#define	MP_SWITCHCTRL_9			10959
+#define	MP_ASSIGNCAT				10700
+// reserve some for categories!
+#define	MP_CAT_SET0				10900
+// reserve some for change all-cats (about 20)
 	
-// aMule tagnames
+// amule tagnames
 #define 	ET_COMPRESSION			0x20
 #define	ET_UDPPORT				0x21
 #define	ET_UDPVER				0x22
@@ -665,7 +609,7 @@ enum {
 
 #define KADEMLIA_FIREWALLED_REQ	0x50	// <TCPPORT (sender) [2]>
 #define KADEMLIA_FINDBUDDY_REQ	0x51	// <TCPPORT (sender) [2]>
-#define KADEMLIA_CALLBACK_REQ	0x52	// <TCPPORT (sender) [2]>
+#define KADEMLIA_FINDSOURCE_REQ	0x52	// <TCPPORT (sender) [2]>
 #define KADEMLIA_FIREWALLED_RES	0x58	// <IP (sender) [4]>
 #define KADEMLIA_FIREWALLED_ACK	0x59	// (null)
 #define KADEMLIA_FINDBUDDY_RES	0x5A	// <TCPPORT (sender) [2]>
@@ -674,6 +618,23 @@ enum {
 #define KADEMLIA_FIND_VALUE		0x02
 #define KADEMLIA_STORE			0x04
 #define KADEMLIA_FIND_NODE		0x0B
+
+// CMuleListCtrl tabs.
+#define	MP_LISTCOL_1				10601
+#define	MP_LISTCOL_2				10602
+#define	MP_LISTCOL_3				10603
+#define	MP_LISTCOL_4				10604
+#define	MP_LISTCOL_5				10605
+#define	MP_LISTCOL_6				10606
+#define	MP_LISTCOL_7				10607
+#define	MP_LISTCOL_8				10608
+#define	MP_LISTCOL_9				10609
+#define	MP_LISTCOL_10				10610
+#define	MP_LISTCOL_11				10611
+#define	MP_LISTCOL_12				10612
+#define	MP_LISTCOL_13				10613
+#define	MP_LISTCOL_14				10614
+#define	MP_LISTCOL_15				10615
 
 #define	DISKSPACERECHECKTIME			900000	// checkDiskspace
 

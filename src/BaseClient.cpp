@@ -52,13 +52,7 @@
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
-#include "ClientUDPSocket.h"
 #include "Logger.h"
-
-#include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/net/KademliaUDPListener.h"
-#include "kademlia/kademlia/Prefs.h"
-#include "kademlia/kademlia/Search.h"
 
 //#define __PACKET_DEBUG__
 
@@ -77,30 +71,29 @@ CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 	Init();
 }
 
-CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend)
+CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool checkfriend)
 {
 	m_socket = NULL;
 	Init();
+	SetUserID( in_userid );
 	m_nUserPort = in_port;
 
-	if(ed2kID && !IsLowID(in_userid)) {
-		SetUserIDHybrid( ENDIAN_NTOHL(in_userid) );
-	} else {
-		SetUserIDHybrid( in_userid);
+	if (!HasLowID()) {
+		m_FullUserIP = Uint32toStringIP(m_nUserID);
 	}
-	
-	//If highID and ED2K source, incoming ID and IP are equal..
-	//If highID and Kad source, incoming IP needs ntohl for the IP
-
+	#ifdef __USE_KAD__
 	if (!HasLowID()) {
 		if (ed2kID) {
 			m_nConnectIP = in_userid;
 		} else {
 			m_nConnectIP = ENDIAN_NTOHL(in_userid);
 		}
-		// Will be on right endianess now
-		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
 	}
+	#else
+ 	if(!HasLowID()) {
+		m_nConnectIP = in_userid;
+	}
+	#endif
 
 	m_dwServerIP = in_serverip;
 	m_nServerPort = in_serverport;
@@ -124,17 +117,18 @@ void CUpDownClient::Init()
 	Extended_aMule_SO = 0;
 	m_bAddNextConnect = false;
 	credits = 0;
-	m_byChatstate = MS_NONE;
-	m_nKadState = KS_NONE;
+	m_byChatstate = 0;
 	m_cShowDR = 0;
 	m_reqfile = NULL;	 // No file required yet
-	m_nTransferredUp = 0;
+	m_nMaxSendAllowed = 0;
+	m_nTransferedUp = 0;
 	m_cSendblock = 0;
 	m_cAsked = 0;
-	msReceivedPrev = 0;
-	kBpsDown = 0.0;
+	msSentPrev = msReceivedPrev = 0;
+	kBpsUp = kBpsDown = 0.0;
 	fDownAvgFilter = 1.0;
 	bytesReceivedCycle = 0;
+	m_nUserID = 0;
 	m_nServerPort = 0;
 	m_iFileListRequested = 0;
 	m_dwLastUpRequest = 0;
@@ -146,19 +140,15 @@ void CUpDownClient::Init()
 	m_bUDPPending = false;
 	m_nUserPort = 0;
 	m_nPartCount = 0;
+	m_nUpPartCount = 0;
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
 	m_dwUploadTime = 0;
 	m_nTransferedDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
-	m_bUnicodeSupport = false;
 
-	m_fSentOutOfPartReqs = 0;
-	m_nCurQueueSessionPayloadUp = 0;
-	m_addedPayloadQueueSession = 0;
-	m_nUpDatarate = 0;
-	m_nSumForAvgUpDataRate = 0;
+	m_bUnicodeSupport = false;
 
 	m_nRemoteQueueRank = 0;
 	m_nOldRemoteQueueRank = 0;
@@ -174,7 +164,7 @@ void CUpDownClient::Init()
 	m_bIsHybrid = false;
 	m_bIsML = false;
 	m_Friend = NULL;
-	m_iRating = 0;
+	m_iRate=0;
 	m_nCurSessionUp = 0;
 	m_clientSoft=SO_UNKNOWN;
 
@@ -210,18 +200,12 @@ void CUpDownClient::Init()
 
 	m_nLastBlockOffset = 0;
 
+	m_requpfile = NULL;
+
 	m_bMsgFiltered = false;
-
-	m_uploadingfile = NULL;
-
+	
 	m_OSInfo_sent = false;
 	
-	/* Kad stuff */
-	SetBuddyID(NULL);
-	m_nBuddyIP = 0;
-	m_nBuddyPort = 0;	
-	m_nUserIDHybrid = 0;
-
 	m_nSourceFrom = SF_SERVER;
 
 	if (m_socket) {
@@ -270,8 +254,8 @@ CUpDownClient::~CUpDownClient()
 	}
 
 
-	if (m_iRating>0 || !m_strComment.IsEmpty()) {
-		m_iRating = 0;
+	if (m_iRate>0 || !m_strComment.IsEmpty()) {
+		m_iRate=0;
 		m_strComment.Clear();
 		if (m_reqfile) {
 			m_reqfile->UpdateFileRatingCommentAvail();
@@ -309,7 +293,6 @@ void CUpDownClient::ClearHelloProperties()
 	m_SoftLen = 0;
 	m_fOsInfoSupport = 0;
 	SecIdentSupRec = 0;
-	m_byKadVersion = 0;
 }
 
 bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
@@ -334,9 +317,8 @@ void CUpDownClient::Safe_Delete()
 {
 	// Because we are delaying the deletion, we might end up trying to delete
 	// it twice, however, this is normal and shouldn't trigger any failures
-	if ( m_clientState == CS_DYING ) {
+	if ( m_clientState == CS_DYING )
 		return;
-	}
 
  	m_clientState = CS_DYING;
 
@@ -380,7 +362,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		CMD4Hash hash;
 		data.ReadHash16(hash);
 		SetUserHash( hash );
-		SetUserIDHybrid( data.ReadUInt32() );
+		SetUserID( data.ReadUInt32() );
 		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
 		uint32 tagcount = data.ReadUInt32();
 		for (uint32 i = 0;i < tagcount; i++){
@@ -415,21 +397,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
 					#endif
 					break;
-				case CT_EMULE_BUDDYIP:
-					// 32 BUDDY IP
-					m_nBuddyIP = temptag.GetInt();
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
-					#endif
-					break;				
-				case CT_EMULE_BUDDYUDP:
-					// 16 --Reserved for future use--
-					// 16 BUDDY Port
-					m_nBuddyPort = (uint16)temptag.GetInt();
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
-					#endif
-					break;				
 				case CT_EMULE_MISCOPTIONS1: {
 					//  3 AICH Version (0 = not supported)
 					//  1 Unicode
@@ -472,17 +439,6 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					SecIdentSupRec +=  1;
 					break;
 				}
-				case CT_EMULE_MISCOPTIONS2:
-					//	28 Reserved
-					//   4 Kad Version
-					m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
-					dwEmuleTags |= 8;
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule Misc Options 2:\n");
-					printf("  KadVersion = %u\n" , m_byKadVersion );
-					printf("That's all.\n");
-					#endif
-					break;
 				// Special tag fo Compat. Clients Misc options.
 				case CT_EMULECOMPAT_OPTIONS:
 					//  1 Operative System Info
@@ -494,16 +450,11 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 					//  7 Min Version (Only need 0-99)
 					//  3 Upd Version (Only need 0-5)
 					//  7 Bld Version (Only need 0-99)
-					if (temptag.IsInt()) {
-						m_byCompatibleClient = (temptag.GetInt() >> 24);
-						m_nClientVersion = temptag.GetInt() & 0x00ffffff;
-						m_byEmuleVersion = 0x99;
-						m_fSharedDirectories = 1;
-						dwEmuleTags |= 4;
-					} else  {
-						// This will disconnect the client. WTF is this client anyway? 
-						throw wxString(wxString::Format(wxT("Wrong tag type on CT_EMULE_VERSION: %x"),temptag.GetType()));
-					}
+					m_byCompatibleClient = (temptag.GetInt() >> 24);
+					m_nClientVersion = temptag.GetInt() & 0x00ffffff;
+					m_byEmuleVersion = 0x99;
+					m_fSharedDirectories = 1;
+					dwEmuleTags |= 4;
 					break;				
 			}
 		}
@@ -519,14 +470,16 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 			This fixes a warning with gcc 3.4.
 			K=4b D=44 L=4c M=4d
 			*/
-			if (test == 0x4b444c4d) { //if it's == "KDLM"
+			if (test == 0x4b444c4d)	{ //if it's == "KDLM"
 				m_bIsML=true;
 			} else{
 				m_bIsHybrid = true;
 				m_fSharedDirectories = 1;
 			}
 		}
-	} catch ( const CInvalidPacket& e ) {
+	}
+	catch ( const CInvalidPacket& e )
+	{
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Wrong Tags on hello type packet - %s\n"
 						 "Sent by %s on ip %s port %i using client %x version %x\n"
@@ -560,14 +513,10 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		}
 	}
 
-	//(a)If this is a highID user, store the ID in the Hybrid format.
-	//(b)Some older clients will not send a ID, these client are HighID users that are not connected to a server.
-	//(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
-	//because they will send a ID that is the same as their IP..
-	if(!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == m_dwUserIP )  {
-		SetUserIDHybrid(ENDIAN_NTOHL(m_dwUserIP));
+	if(!HasLowID() || m_nUserID == 0) {
+		SetUserID( m_dwUserIP );
 	}
-	
+
 	// get client credits
 	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_UserHash);
 	if (credits == NULL){
@@ -603,9 +552,10 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 	}
 
 
-	#ifdef __COMPILE_KAD__
-	if( GetKadPort() ) {
-		Kademlia::CKademlia::bootstrap(ENDIAN_NTOHL(GetIP()), GetKadPort());
+	#ifdef __USE_KAD__
+	if( GetKadPort() && Kademlia::CKademlia::isRunning() )
+	{
+		Kademlia::CKademlia::getUDPListener()->bootstrap(ntohl(GetIP()), GetKadPort());
 	}
 	#endif
 
@@ -651,10 +601,9 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		return;
 	}
 
-	CPacket* packet = NULL;
-	CSafeMemFile data;
+	CSafeMemFile* data = new CSafeMemFile();
 
-	data.WriteUInt8(CURRENT_VERSION_SHORT);
+	data->WriteUInt8(CURRENT_VERSION_SHORT);
 	
 	if (OSInfo) {
 		
@@ -665,36 +614,36 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		// Sending this makes non-supporting-osinfo clients to refuse to read this
 		// packet. Anyway, this packet should NEVER get to non-supporting clients.
 		
-		data.WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
+		data->WriteUInt8(/*EMULE_PROTOCOL*/ 0xFF);		
 
-		data.WriteUInt32(1); // One Tag (OS_INFO)
+		data->WriteUInt32(1); // One Tag (OS_INFO)
 
 		CTag tag1(ET_OS_INFO,theApp.GetOSType());
-		tag1.WriteTagToFile(&data);
-		
-		m_OSInfo_sent = true; // So we don't send it again
+		tag1.WriteTagToFile(data);
 
+		m_OSInfo_sent = true; // So we don't send it again
+		
 	} else {
 
 		// Normal MuleInfo packet
 
-		data.WriteUInt8(EMULE_PROTOCOL);
+		data->WriteUInt8(EMULE_PROTOCOL);
 
 		// Tag number
-		data.WriteUInt32(9);
+		data->WriteUInt32(9);
 
 		CTag tag1(ET_COMPRESSION,1);
-		tag1.WriteTagToFile(&data);
+		tag1.WriteTagToFile(data);
 		CTag tag2(ET_UDPVER,4);
-		tag2.WriteTagToFile(&data);
-		CTag tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
-		tag3.WriteTagToFile(&data);
+		tag2.WriteTagToFile(data);
+		CTag tag3(ET_UDPPORT,thePrefs::GetUDPPort());
+		tag3.WriteTagToFile(data);
 		CTag tag4(ET_SOURCEEXCHANGE,3);
-		tag4.WriteTagToFile(&data);
+		tag4.WriteTagToFile(data);
 		CTag tag5(ET_COMMENTS,1);
-		tag5.WriteTagToFile(&data);
+		tag5.WriteTagToFile(data);
 		CTag tag6(ET_EXTENDEDREQUEST,2);
-		tag6.WriteTagToFile(&data);
+		tag6.WriteTagToFile(data);
 
 		uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
 		// Kry - Needs the preview code from eMule
@@ -705,20 +654,21 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		}
 		*/
 		CTag tag7(ET_FEATURES, dwTagValue);
-		tag7.WriteTagToFile(&data);
+		tag7.WriteTagToFile(data);
 
 		CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
-		tag8.WriteTagToFile(&data);
-	
+		tag8.WriteTagToFile(data);
+
 		// Support for tag ET_MOD_VERSION
 		wxString mod_name(MOD_VERSION_LONG);
 		CTag tag9(ET_MOD_VERSION, mod_name);
-		tag9.WriteTagToFile(&data);
+		tag9.WriteTagToFile(data);
 		// Maella end
-	
+
 	}
 
-	packet = new CPacket(&data,OP_EMULEPROT);
+	CPacket* packet = new CPacket(data,OP_EMULEPROT);
+	delete data;
 	
 	if (!bAnswer) {
 		packet->SetOpCode(OP_EMULEINFO);
@@ -773,12 +723,12 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 						// is not supporting OS Info, we're seriously fucked up :)					
 				
 						m_sClientOSInfo = temptag.GetStr();
-						
+					
 						// If we didn't send our OSInfo to this client, just send it
 						if (!m_OSInfo_sent) {
 							SendMuleInfoPacket(false,true);
 						}
-					
+						
 						break;	
 					
 					// Your ad... er... I mean TAG, here
@@ -954,20 +904,12 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	data->WriteUInt32(theApp.serverconnect->GetClientID());
 	data->WriteUInt16(thePrefs::GetPort());
 
-	uint32 tagcount = 6;
-	#ifdef __COMPILE_KAD__
-	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
-		tagcount += 2;
-	}
-	tagcount ++; // eMule misc flags 2 (kad version)
-	#endif
-	
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
 	// Last update: CT_EMULECOMPAT_OPTIONS included
-	data->WriteUInt32(tagcount + 1);
+	data->WriteUInt32(7);
 	#else
-	data->WriteUInt32(tagcount);  // NO MOD_VERSION
+	data->WriteUInt32(6);  // NO MOD_VERSION
 	#endif
 
 
@@ -979,29 +921,17 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	// eMule UDP Ports
 
 	uint32 kadUDPPort = 0;
-	#ifdef __COMPILE_KAD__
-	if(Kademlia::CKademlia::isConnected()) {
+	#ifdef __USE_KAD__
+	if(Kademlia::CKademlia::isConnected())
+	{
 		kadUDPPort = thePrefs::GetUDPPort();
 	}
 	#endif
 	CTag tagUdpPorts(CT_EMULE_UDPPORTS,
 				(kadUDPPort									<< 16) |
-				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
+				((uint32)thePrefs::GetUDPPort()         ) );
 	tagUdpPorts.WriteTagToFile(data);
 
-	#ifdef __COMPILE_KAD__
-	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
-		CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
-		tagBuddyIP.WriteTagToFile(data);
-	
-		CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
-//					( RESERVED												)
-					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  ) 
-					);
-		tagBuddyPort.WriteTagToFile(data);
-	}	
-	#endif
-	
 	// aMule Version
 	CTag tagMuleVersion(CT_EMULE_VERSION,
 				(SO_AMULE	<< 24) |
@@ -1045,16 +975,6 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 				(uSupportPreview		<< 1*0) );
 	tagMisOptions.WriteTagToFile(data);
 
-#ifdef __COMPILE_KAD__
-	// eMule Misc. Options #2
-	const uint32 uKadVersion			= 1;
-	CTag tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
-//				(RESERVED				     ) 
-				(uKadVersion			<<  0) 
-				);
-	tagMisOptions2.WriteTagToFile(data);
-#endif
-
 
 	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
 	
@@ -1082,6 +1002,8 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
+	char* desc = NULL;
+
 	try
 	{
 		if (!m_reqfile) {
@@ -1094,10 +1016,10 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 		const CSafeMemFile data((byte*)pachPacket, nSize);
 
-		m_iRating = data.ReadUInt8();
+		m_iRate = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
 		
-		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
+		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRate);
 
 		// The comment is unicoded, with a uin32 len and safe read 
 		// (won't break if string size is < than advertised len)
@@ -1111,6 +1033,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	}
 	catch ( const CInvalidPacket& e )
 	{
+		delete[] desc;
+
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Invalid MuleComment packet - %s\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
@@ -1127,6 +1051,8 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	}
 	catch (...)
 	{
+		delete[] desc;
+
 		AddDebugLogLineM( true, logPacketErrors,
 			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n"
 						 "Sent by %s on ip %s port %i using client %i version %i\n"
@@ -1141,24 +1067,27 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		throw wxString(wxT("Wrong MuleComment packet"));
 	}
 
-	if (!m_strComment.IsEmpty() || m_iRating > 0) {
+	if (!m_strComment.IsEmpty() || m_iRate > 0) {
 		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
+
+	delete[] desc;
 }
 
 void CUpDownClient::ClearDownloadBlockRequests()
 {
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
-		auto_ptr<Requested_Block_Struct> cur_block(m_DownloadBlocks_list.GetNext(pos));
+		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
 		}
+		delete cur_block;
 	}
 	m_DownloadBlocks_list.RemoveAll();
 
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
-		auto_ptr<Pending_Block_Struct> pending(m_PendingBlocks_list.GetNext(pos));
+		Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 		}
@@ -1169,16 +1098,18 @@ void CUpDownClient::ClearDownloadBlockRequests()
 			inflateEnd(pending->zStream);
 			delete pending->zStream;
 		}
+		delete pending;
 	}
 	m_PendingBlocks_list.RemoveAll();
 }
 
 bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
-
-	// Kad reviewed
-	
 	//If this is a KAD client object, just delete it!
+	//wxASSERT(theApp.clientlist->IsValidClient(this));
+
+	#ifdef __USE_KAD__
 	SetKadState(KS_NONE);
+	#endif
 	
 	if (GetUploadState() == US_UPLOADING) {
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
@@ -1208,6 +1139,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
 		m_reqfile->hashsetneeded = true;
 	}
+
+	//wxASSERT(theApp.clientlist->IsValidClient(this));
 
 	//check if this client is needed in any way, if not delete it
 	bool bDelete = true;
@@ -1275,7 +1208,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_fHashsetRequesting = 0;
 		SetSentCancelTransfer(0);
 		m_bHelloAnswerPending = false;
-		m_fSentOutOfPartReqs = 0;
 	}
 	
 	return bDelete;
@@ -1286,10 +1218,14 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 //true means the client was not deleted!
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
-	// Kad reviewed
-	
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
-		if (!(m_socket && m_socket->IsConnected())) {
+		if (!m_socket) {
+			if(Disconnected(wxT("Too many connections"))) {
+				Safe_Delete();
+				return false;
+			}
+			return true;
+		} else if (!m_socket->IsConnected()) {
 			if(Disconnected(wxT("Too many connections"))) {
 				Safe_Delete();
 				return false;
@@ -1298,92 +1234,58 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	}
 
-	// Ipfilter check
-	uint32 uClientIP = GetIP();
-	if (uClientIP == 0 && !HasLowID()) {
-		uClientIP = ENDIAN_NTOHL(m_nUserIDHybrid);
-	}
-	if (uClientIP) {
-		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
-		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
-		if (theApp.ipfilter->IsFiltered(uClientIP)) {
-			AddDebugLogLineM(true, logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
-			if (Disconnected(wxT("IPFilter"))) {
-				Safe_Delete();
-				return false;
-			}
-			return true;
-		}
-
-		// for safety: check again whether that IP is banned
-		if (theApp.clientlist->IsBannedClient(uClientIP)) {
-			AddDebugLogLineM(false, logClient, wxT("Refused to connect to banned client ") + Uint32toStringIP(uClientIP));
-			if (Disconnected(wxT("Banned IP"))) {
-				Safe_Delete();
-				return false;
-			}
-			return true;
-		}
-	}
-	
+	#ifdef __USE_KAD__
 	if( GetKadState() == KS_QUEUED_FWCHECK ) {
 		SetKadState(KS_CONNECTING_FWCHECK);
 	}
-	
-	if ( HasLowID() ) {
-		if (!theApp.DoCallback(this)) {
-			//We cannot do a callback!
-			if (GetDownloadState() == DS_CONNECTING) {
-				SetDownloadState(DS_LOWTOLOWIP);
-			} else if (GetDownloadState() == DS_REQHASHSET) {
-				SetDownloadState(DS_ONQUEUE);
-				m_reqfile->hashsetneeded = true;
+	#endif
+
+	#ifdef __USE_KAD__
+	if (HasLowID() && !theApp.DoCallback(this)) {
+	#else
+	if (HasLowID() && (theApp.serverconnect->GetClientID() < 16777216)) {
+	#endif
+		if (GetDownloadState() == DS_CONNECTING) {
+			SetDownloadState(DS_LOWTOLOWIP);
+		} else if (GetDownloadState() == DS_REQHASHSET) {
+			SetDownloadState(DS_ONQUEUE);
+			m_reqfile->hashsetneeded = true;
+		}
+		if (GetUploadState() == US_CONNECTING) {
+			if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
+				Safe_Delete();
+				return false;
 			}
-			if (GetUploadState() == US_CONNECTING) {
-				if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {
-					Safe_Delete();
-					return false;
-				}
-			}
+		}
+		return true;
+	}
+
+	if (!m_socket) {
+//#ifdef TESTING_PROXY
+		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
 			return true;
 		}
-
-		#ifdef __COMPILE_KAD__
-		//We already know we are not firewalled here as the above condition already detected LowID->LowID and returned.
-		//If ANYTHING changes with the "if(!theApp.DoCallback(this))" above that will let you fall through 
-		//with the condition that the source is firewalled and we are firewalled, we must
-		//recheck it before the this check..
-		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp.serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
-			//This is a Kad firewalled source that we want to do a special callback because it has no buddyIP or buddyPort.
-			if( Kademlia::CKademlia::isConnected() ) {
-				//We are connect to Kad
-				if( Kademlia::CKademlia::getPrefs()->getTotalSource() > 0 || Kademlia::CSearchManager::alreadySearchingFor(Kademlia::CUInt128(GetBuddyID()))) {
-					//There are too many source lookups already or we are already searching this key.
-					SetDownloadState(DS_TOOMANYCONNSKAD);
-					return true;
-				}
-			}
-		}
-		#endif
-	}
-	
-	if (!m_socket || !m_socket->IsConnected()) {
-		if (m_socket) {
-			m_socket->Safe_Delete();
-		}
+	} else if (!m_socket->IsConnected()) {
+		m_socket->Safe_Delete();
+//#ifdef TESTING_PROXY
 		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		if (!m_socket->Create()) {
+			m_socket->Safe_Delete();
+			return true;
+		}
 	} else {
 		ConnectionEstablished();
 		return true;
-	}	
-	
-	
+	}
 	if (HasLowID()) {
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_WAITCALLBACK);
 		}
 		if (GetUploadState() == US_CONNECTING) {
-			if(Disconnected(wxT("LowID and US_CONNECTING"))) {
+			if(Disconnected(wxT("LowID and US_CONNECTING")))
+			{
 				Safe_Delete();
 				return false;
 			}
@@ -1392,77 +1294,28 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
 			CSafeMemFile data;
-			// AFAICS, this id must be reversed to be sent to clients
-			// But if I reverse it, we do a serve violation ;)
-			data.WriteUInt32(m_nUserIDHybrid);
+			data.WriteUInt32(m_nUserID);
 			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
+
 			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
-			//printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
-			//	ENDIAN_NTOHL(m_nUserIDHybrid), 
-			//	(const char*)unicode2char(Uint32toStringIP(m_nUserIDHybrid)),
-			//	GetSourceFrom());
-			SetDownloadState(DS_WAITCALLBACK);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
-				
-				if( !HasValidBuddyID() ) {
-					theApp.downloadqueue->RemoveSource(this);
-					if (Disconnected(wxT("LowID and US_NONE and QR=0"))) {
-						Safe_Delete();
-						return false;
-					}
-					return true;
+				theApp.downloadqueue->RemoveSource(this);
+				if(Disconnected(wxT("LowID and US_NONE and QR=0")))
+				{
+					Safe_Delete();
+					return false;
 				}
-				
-				#ifdef __COMPILE_KAD__
-				if( !Kademlia::CKademlia::isConnected() ) {
-					//We are not connected to Kad and this is a Kad Firewalled source..
-					theApp.downloadqueue->RemoveSource(this);
-					if(Disconnected(wxT("Kad Firewalled source but not connected to Kad."))) {
-						Safe_Delete();
-						return false;
-					}
-					return true;
-				}
-				
-               	 if( GetDownloadState() == DS_WAITCALLBACK ) {
-					if( GetBuddyIP() && GetBuddyPort()) {
-						CSafeMemFile bio(34);
-						Kademlia::CUInt128 buddy(GetBuddyID());
-						bio.WriteUInt128(&buddy);
-						Kademlia::CUInt128 file(m_reqfile->GetFileHash());
-						bio.WriteUInt128(&file);
-						bio.WriteUInt16(thePrefs::GetPort());
-						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
-						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
-						theApp.statistics->AddUpDataOverheadKad(packet->GetRealPacketSize());
-						SetDownloadState(DS_WAITCALLBACKKAD);
-					} else {
-						//Create search to find buddy.
-						Kademlia::CSearch *findSource = new Kademlia::CSearch;
-						findSource->setSearchTypes(Kademlia::CSearch::FINDSOURCE);
-						Kademlia::CUInt128 ID(GetBuddyID());
-						findSource->setTargetID(ID);
-						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash()));
-						if(Kademlia::CSearchManager::startSearch(findSource)) {
-							//Started lookup..
-							SetDownloadState(DS_WAITCALLBACKKAD);
-						} else {
-							//This should never happen..
-							wxASSERT(0);
-						}
-					}
-				}
-				#endif
+				return true;
 			} else {
 				if (GetDownloadState() == DS_WAITCALLBACK) {
 					m_bReaskPending = true;
 					SetDownloadState(DS_ONQUEUE);
 				}
-			}	
+			}
 		}
 	} else {
 		amuleIPV4Address tmp;
@@ -1478,21 +1331,21 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 void CUpDownClient::ConnectionEstablished()
 {
 	// check if we should use this client to retrieve our public IP
-	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */) {
+	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */)
 		SendPublicIPRequest();
-	}
-	
-	switch (GetKadState()) {
+
+// 0.42e
+	#ifdef __USE_KAD__
+	switch(GetKadState())
+	{
 		case KS_CONNECTING_FWCHECK:
-			SetKadState(KS_CONNECTED_FWCHECK);
+            SetKadState(KS_CONNECTED_FWCHECK);
 			break;
-		case KS_CONNECTING_BUDDY:
-		case KS_INCOMING_BUDDY:
+		case KS_QUEUED_BUDDY:
 			SetKadState(KS_CONNECTED_BUDDY);
 			break;
-		default:
-			break;
 	}
+	#endif
 
 	// ok we have a connection, lets see if we want anything from this client
 	if (GetChatState() == MS_CONNECTING) {
@@ -1785,7 +1638,7 @@ void CUpDownClient::RequestSharedFileList()
 		m_iFileListRequested = 1;
 		TryToConnect(true);
 	} else {
-		AddDebugLogLineM( false, logClient, CFormat( wxT("Requesting shared files from user %s (%u) is already in progress") ) % GetUserName() % GetUserIDHybrid() );
+		AddDebugLogLineM( false, logClient, CFormat( wxT("Requesting shared files from user %s (%u) is already in progress") ) % GetUserName() % GetUserID() );
 	}
 }
 
@@ -1809,7 +1662,7 @@ void CUpDownClient::ResetFileStatusInfo()
 
 	m_bCompleteSource = false;
 	m_dwLastAskedTime = 0;
-	m_iRating = 0;
+	m_iRate=0;
 	m_strComment.Clear();
 
 	if (m_pReqFileAICHHash != NULL) {
@@ -1825,7 +1678,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 	
 	// build info text and display it
 	wxString sRet;
-	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
+	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserID()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
 		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransfered());
@@ -2129,15 +1982,13 @@ void CUpDownClient::SendPublicIPRequest(){
 }
 
 void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
-	if (uSize != 4) {
+	if (uSize != 4)
 		throw wxString(wxT("Wrong Packet size on Public IP answer"));
-	}
 	uint32 dwIP = PeekUInt32(pbyData);
 	if (m_fNeedOurPublicIP == true){ // did we?
 		m_fNeedOurPublicIP = false;
-		if (theApp.GetPublicIP() == 0 && !IsLowID(dwIP) ) {
+		if (theApp.GetPublicIP() == 0 && !IsLowIDED2K(dwIP) )
 			theApp.SetPublicIP(dwIP);
-		}
 	}
 }
 
@@ -2150,10 +2001,11 @@ bool CUpDownClient::IsConnected() const
 bool CUpDownClient::SendPacket(CPacket* packet, bool delpacket, bool controlpacket)
 {
 	if ( m_socket ) {
-		m_socket->SendPacket(packet, delpacket, controlpacket );
-		return true;
+		return m_socket->SendPacket(packet, delpacket, controlpacket );
 	} else {
+#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SENDPACKET()\n");
+#endif
 		return false;
 	}
 }
@@ -2162,7 +2014,9 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 {
 
 	// lfroen: in daemon it actually can happen
+	#ifndef AMULE_DAEMON
 		wxASSERT( m_socket );
+	#endif
 
 	float kBpsClient = CalculateKBpsDown();
 	
@@ -2192,18 +2046,20 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 		}		
 		
 	} else {
+#ifndef AMULE_DAEMON
 		printf("CAUGHT DEAD SOCKET IN SETDOWNLOADLIMIT() WITH SPEED %f\n", kBpsClient);
+#endif	
 	}
 	
 	return kBpsClient;
 	
 }
 
-void CUpDownClient::SetUserIDHybrid(uint32 nUserID)
+void CUpDownClient::SetUserID(uint32 nUserID)
 {
 	theApp.clientlist->UpdateClientID( this, nUserID );
 
-	m_nUserIDHybrid = nUserID;
+	m_nUserID = nUserID;
 }
 
 
@@ -2284,27 +2140,4 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 		TryToConnect(true);
 		return false;
 	}	
-}
-
-/* Kad stuff */
-
-void CUpDownClient::SetBuddyID(const byte* pucBuddyID)
-{
-	if( pucBuddyID == NULL ){
-		md4clr(m_achBuddyID);
-		m_bBuddyIDValid = false;
-		return;
-	}
-	m_bBuddyIDValid = true;
-	md4cpy(m_achBuddyID, pucBuddyID);
-}
-
-// Kad added by me
-
-bool CUpDownClient::SendBuddyPing() {
-	AddDebugLogLineM(false, logLocalClient,wxT("Local Client: OP_BuddyPing"));
-	SetLastBuddyPingPongTime();	
-	CPacket* buddyPing = new CPacket(OP_BUDDYPING, 0, OP_EMULEPROT);
-	theApp.statistics->AddUpDataOverheadOther(buddyPing->GetPacketSize());
-	return SafeSendPacket(buddyPing);
 }

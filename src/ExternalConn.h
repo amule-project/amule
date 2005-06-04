@@ -214,7 +214,13 @@ class CObjTagMap {
 		}
 };
 
-class ExternalConn : public wxEvtHandler {
+#ifdef AMULE_DAEMON
+#define EXTERNAL_CONN_BASE wxThread
+#else
+#define EXTERNAL_CONN_BASE wxEvtHandler
+#endif
+
+class ExternalConn : public EXTERNAL_CONN_BASE {
 	public:
 		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
@@ -223,9 +229,12 @@ class ExternalConn : public wxEvtHandler {
 			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &, CObjTagMap &);
 	
 		CECPacket *Authenticate(const CECPacket *);
-		wxSocketServer *m_ECServer;
+		ECSocket *m_ECServer;
 
 	private:
+#ifdef AMULE_DAEMON
+		void *Entry();
+#else
 		int m_numClients;
 		//
 		// encoder container must be created per EC client
@@ -237,11 +246,12 @@ class ExternalConn : public wxEvtHandler {
 		void OnServerEvent(wxSocketEvent& event);
 		void OnSocketEvent(wxSocketEvent& event);
 		DECLARE_EVENT_TABLE()
+#endif
 };
 
 class ExternalConnClientThread : public wxThread {
 	public:
-		ExternalConnClientThread(ExternalConn *owner, ECSocket *sock);
+		ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock);
 		~ExternalConnClientThread();
 	
 	private:
@@ -254,7 +264,7 @@ class ExternalConnClientThread : public wxThread {
 		CObjTagMap m_obj_tagmap;
 		
 		ExternalConn *m_owner;
-		ECSocket *m_sock;
+		wxSocketBase *m_sock;
 };
 
 #endif // EXTERNALCONN_H

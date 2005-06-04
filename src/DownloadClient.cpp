@@ -52,15 +52,12 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
 	if (!tocomp) {
 		return false;
 	}
-	
-	#warning KAD TODO: Sort by kad status also
-	
 	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
 	    return (GetUserHash() == tocomp->GetUserHash());
 	if (HasLowID())
-		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
+		return ((GetUserID() == tocomp->GetUserID()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
 	else
-		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
+		return ((GetUserID() == tocomp->GetUserID() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
 }
 
 
@@ -978,8 +975,8 @@ void CUpDownClient::UDPReaskForDownload()
 		return;
 	}
 
-	if(m_nUDPPort != 0 && thePrefs::GetEffectiveUDPPort() != 0 &&
-	   theApp.clientudp && !HasLowID() && !IsConnected())
+	if(m_nUDPPort != 0 && thePrefs::GetUDPPort() != 0 && theApp.clientudp &&
+	   !HasLowID() && !IsConnected() && !thePrefs::IsUDPDisabled())
 	{ 
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {

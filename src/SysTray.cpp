@@ -174,7 +174,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString label = MOD_VERSION_LONG wxT(":\n");
 		label += wxString::Format(_("Download Speed: %.1f\n"), theApp.downloadqueue->GetKBps());
-		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetDatarate() / 1024.0f);
+		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetKBps());
 		label += _("\nSpeed Limits:\n");
 	
 		// Check for upload limits
@@ -285,8 +285,8 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// UDP PORT
 	{
-		if (thePrefs::GetEffectiveUDPPort()) {
-			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetEffectiveUDPPort());
+		if (thePrefs::GetUDPPort()) {
+			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetUDPPort());
 			info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("UDP Port: Not Ready"))));

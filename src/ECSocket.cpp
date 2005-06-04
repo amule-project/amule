@@ -39,7 +39,6 @@
 #include "stdlib.h"		// Needed for malloc()/free()
 
 #include "StringFunctions.h"	// Needed for unicode2char()
-#include "OPCodes.h"
 
 #define EC_SOCKET_BUFFER_SIZE	32768
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -146,26 +145,107 @@ int utf8_mb_remain(char c)
 	return i;
 }
 
+/*----------=> Socket Registry <=----------*/
+struct socket_desc {
+	// Global values (for whole session)
+	struct socket_desc*	next;
+	wxSocketBase *		socket;
+	bool			firsttransfer;
+	uint32			accepts;
+	bool			ptrs_valid;
+	void *			in_ptr;
+	void *			out_ptr;
+	// This transfer only
+	wxSocketError	LastSocketError;
+	uint32			used_flags;
+	z_stream		z;
+};
 
-void ECSocket::InitBuffers()
+static socket_desc* s_registered_sockets = NULL;
+static wxMutex s_registry_lock;
+
+void RegisterSocket(wxSocketBase *socket)
 {
-	if (!parms.in_ptr) {
-		parms.in_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	}
-	if (!parms.out_ptr) {
-		parms.out_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	}
+	struct socket_desc *p = new struct socket_desc;
+	memset(p, 0, sizeof(struct socket_desc));
+	p->socket = socket;
+	p->firsttransfer = true;
+	// Just in case, if it's defined something else than zero
+	p->LastSocketError = wxSOCKET_NOERROR;
+// Just in case
+#if Z_NULL != 0
+	p->z.zalloc = Z_NULL;
+	p->z.zfree = Z_NULL;
+#endif
 
-	wxASSERT(parms.in_ptr && parms.out_ptr);
-	
-	parms.z.next_in = parms.in_ptr;
-	parms.z.avail_in = 0;
-	parms.z.total_in = 0;
-	parms.z.next_out = parms.out_ptr;
-	parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
-	parms.z.total_out = 0;
+	s_registry_lock.Lock();
+	p->next = s_registered_sockets;
+	s_registered_sockets = p;
+	s_registry_lock.Unlock();
 }
 
+void UnregisterSocket(wxSocketBase *socket)
+{
+	struct socket_desc *p;
+	struct socket_desc *pp;
+
+	s_registry_lock.Lock();
+	p = pp = s_registered_sockets;
+	while (p) {
+		if (p->socket == socket) break;
+		pp = p;
+		p = p->next;
+	}
+	if (p) {
+		if (p == s_registered_sockets) {
+			s_registered_sockets = p->next;
+		} else {
+			pp->next = p->next;
+		}
+		free(p->in_ptr);
+		free(p->out_ptr);
+		delete p;
+	}
+	s_registry_lock.Unlock();
+}
+
+struct socket_desc *FindSocket(wxSocketBase *socket)
+{
+	s_registry_lock.Lock();
+	struct socket_desc *p = s_registered_sockets;
+	while (p) {
+		if (p->socket == socket) break;
+		p = p->next;
+	}
+	s_registry_lock.Unlock();
+	return p;
+}
+/*----------=> End of Socket Registry <=----------*/
+
+void InitBuffers(struct socket_desc * parms)
+{
+	if (!parms->in_ptr) {
+		parms->in_ptr = malloc(EC_SOCKET_BUFFER_SIZE);
+	}
+	if (!parms->out_ptr) {
+		parms->out_ptr = malloc(EC_SOCKET_BUFFER_SIZE);
+	}
+	if (parms->in_ptr && parms->out_ptr) {
+		parms->ptrs_valid = true;
+		parms->z.next_in = (Bytef*)parms->in_ptr;
+		parms->z.avail_in = 0;
+		parms->z.total_in = 0;
+		parms->z.next_out = (Bytef*)parms->out_ptr;
+		parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+		parms->z.total_out = 0;
+#ifdef __DEBUG__
+	} else {
+		printf("EC socket buffer allocation error, using direct socket operations.\n");
+#endif
+	}
+}
+
+#ifdef __DEBUG__
 wxString GetSocketError(wxSocketError code)
 {
 	switch(code) {
@@ -215,25 +295,40 @@ void ShowZError(int zerror, z_streamp strm)
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
 }
 
+// note that args value MUST be in brackets!
+#define CALL_Z_FUNCTION(func, args)	{	\
+	int zerror = func args ;		\
+	if (zerror != Z_OK) {			\
+		ShowZError(zerror, &parms->z);	\
+	}					\
+}
+
+#else
+
+#define ShowZError(x,y)
+#define CALL_Z_FUNCTION(func, args)	func args
+
+#endif /* __DEBUG__ */
+
 unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int required_len, unsigned int max_len, wxSocketError *ErrorCode)
 {
 	unsigned int LastIO;
 	unsigned int ReadSoFar = 0;
 	char *iobuf = (char *)buffer;
 	bool error = sock->Error();
-/*
+#ifdef AMULE_DAEMON
 	bool FirstRead = true;
-*/
+#endif
 	wxSocketError LastErrorValue = sock->LastError();
 
-	while (((required_len == 0) || (required_len > ReadSoFar)) && !error) {
+	while ((required_len > ReadSoFar) && !error) {
 		/*
 		 * lfroen: commenting this out becouse it doesn't work this way on gui builds. On wxGTK
 		 * any call to WaitFor<X> will eventually call Yield. As a result, if socket call initiated
 		 * by some gui action (selecting a menu), wxYield is called recoursively.
 		 * So, furure TODO: get rid of WaitFor<X> on gui builds. Thats an only way.
 		 */
-/*
+#ifdef AMULE_DAEMON
 		//
 		// Give socket a 10 sec chance to recv more data.
 		if (FirstRead && (required_len != max_len)) {
@@ -256,7 +351,7 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 				break;
 			}
 		}
-*/
+#endif
 		sock->Read(iobuf, max_len);
 		LastIO = sock->LastCount();
 		error = sock->Error();
@@ -264,9 +359,6 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		ReadSoFar += LastIO;
 		iobuf += LastIO;
 		max_len -= LastIO;
-		if (required_len == 0) {
-			break;
-		}
 	}
 	if (error) {
 		if (ErrorCode) *ErrorCode = LastErrorValue;
@@ -322,118 +414,43 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 	return WroteSoFar;
 }
 
-ECSocket::ECSocket(void) : wxSocketClient()
+ECSocket::ECSocket(void)
 {
-	memset(&parms, 0, sizeof(parms));
+	m_type = AMULE_EC_CLIENT;
+	m_sock = new wxSocketClient();
+	RegisterSocket(m_sock);
 }
+
+
+ECSocket::ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id)
+{
+	m_type = AMULE_EC_SERVER;
+	m_sock = new wxSocketServer(address, wxSOCKET_REUSEADDR);
+	if(m_sock->Ok() && handler) {
+		// Setup the event handler and subscribe to connection events
+		m_sock->SetEventHandler(*handler, id);
+		m_sock->SetNotify(wxSOCKET_CONNECTION_FLAG);
+		m_sock->Notify(true);
+	}
+	RegisterSocket(m_sock);
+}
+
 
 ECSocket::~ECSocket(void)
 {
-	if (parms.in_ptr) {
-		delete [] parms.in_ptr;
-	}
-	if (parms.out_ptr) {
-		delete [] parms.out_ptr;
-	}
+	UnregisterSocket(m_sock);
+	delete m_sock;
 }
 
-BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
-        EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
-END_EVENT_TABLE()
 
-void CECSocketHandler::SocketHandler(wxSocketEvent& event)
+bool ECSocket::ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque)
 {
-        ECSocket *socket = dynamic_cast<ECSocket *>(event.GetSocket());
-        wxASSERT(socket);
-        if (!socket) {
-                return;
-        }
-
-        switch(event.GetSocketEvent()) {
-                case wxSOCKET_LOST:
-                        socket->OnError();
-                        break;
-                case wxSOCKET_INPUT:
-                        socket->OnReceive();
-                        break;
-                case wxSOCKET_OUTPUT:
-                        socket->OnSend();
-                        break;
-                case wxSOCKET_CONNECTION:
-                        socket->OnConnect();
-                        break;
-                default:
-                        // Nothing should arrive here...
-                        wxASSERT(0);
-                        break;
-        }
-}
-
-/*
- * FIXME: ECSocket must be make "public wxSocketBase" and all "m_sock->" removed.
- * 
- */
-void ECSocket::OnConnect()
-{
-}
-
-void ECSocket::OnSend()
-{
-	while ( !m_pending_tx.empty() ) {
-		EC_OUTBUF &buf = m_pending_tx.front();
-		
-		int write_count = buf.m_size - (buf.m_current - buf.m_buf);
-		Write(buf.m_current, write_count);
-		int written_count = LastCount();
-		if ( write_count == written_count ) {
-			delete [] buf.m_buf;
-			m_pending_tx.pop_front();
-		} else {
-			buf.m_current += written_count;
-			if ( Error() ) {
-				if ( LastError() == wxSOCKET_WOULDBLOCK ) {
-					break;
-				} else {
-					OnError();
-					return;
-				}
-			}
-		}
-	}
-}
-
-void ECSocket::OnReceive()
-{
-	Read(m_curr_ptr, m_bytes_left);
-	int recv_count = LastCount();
-	if ( Error() || !recv_count ) {
-		if ( LastError() == wxSOCKET_WOULDBLOCK ) {
-			return;
-		} else {
-			OnError();
-			return;
-		}
-	}
-	m_curr_ptr += recv_count;
-}
-
-void ECSocket::OnClose()
-{
-	Destroy();
-}
-
-void ECSocket::OnError()
-{
-}
-
-bool ECSocket::ReadNumber(void *buffer, unsigned int len)
-{
-	if (parms.used_flags & EC_FLAG_UTF8_NUMBERS) {
+	if (((struct socket_desc *)opaque)->used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
 		uint32 wc;
-		if (!ReadBuffer(mb, 1)) return false;
+		if (!ReadBuffer(sock, mb, 1, opaque)) return false;
 		int remains = utf8_mb_remain(mb[0]);
-		if (remains) if (!ReadBuffer(&(mb[1]), remains)) return false;
+		if (remains) if (!ReadBuffer(sock, &(mb[1]), remains, opaque)) return false;
 		if (utf8_mbtowc(&wc, mb, 6) == -1) return false;	// Invalid UTF-8 code sequence
 		switch (len) {
 			case 1: PokeUInt8( buffer,  wc ); break;
@@ -441,7 +458,7 @@ bool ECSocket::ReadNumber(void *buffer, unsigned int len)
 			case 4: RawPokeUInt32( buffer, wc ); break;
 		}
 	} else {
-		if ( !ReadBuffer(buffer, len) ) {
+		if ( !ReadBuffer(sock, buffer, len, opaque) ) {
 			return false;
 		}
 		switch (len) {
@@ -457,9 +474,9 @@ bool ECSocket::ReadNumber(void *buffer, unsigned int len)
 }
 
 
-bool ECSocket::WriteNumber(const void *buffer, unsigned int len)
+bool ECSocket::WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque)
 {
-	if (parms.used_flags & EC_FLAG_UTF8_NUMBERS) {
+	if (((struct socket_desc *)opaque)->used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
 		uint32 wc = 0;
 		int mb_len;
@@ -470,7 +487,7 @@ bool ECSocket::WriteNumber(const void *buffer, unsigned int len)
 			default: return false;
 		}
 		if ((mb_len = utf8_wctomb(mb, wc, 6)) == -1) return false;	// Something is terribly wrong...
-		return WriteBuffer(mb, mb_len);
+		return WriteBuffer(sock, mb, mb_len, opaque);
 	} else {
 		char tmp[8];
 
@@ -479,165 +496,188 @@ bool ECSocket::WriteNumber(const void *buffer, unsigned int len)
 			case 2: RawPokeUInt16( tmp, ENDIAN_NTOHS( RawPeekUInt16( buffer ) ) ); break;
 			case 4: RawPokeUInt32( tmp, ENDIAN_NTOHL( RawPeekUInt32( buffer ) ) ); break;
 		}
-		return WriteBuffer(tmp, len);
+		return WriteBuffer(sock, tmp, len, opaque);
 	}
 }
 
 
-bool ECSocket::ReadBuffer(void *buffer, unsigned int len)
+bool ECSocket::ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque)
 {
-	if (parms.used_flags & EC_FLAG_ZLIB) {
-		// using zlib compressed i/o
-		// Here we pretty much misuse the z.next_out and z.avail_out values,
-		// but it doesn't matter as long a we always call inflate() with an
-		// empty output buffer.
-		while (parms.z.avail_out < len) {
-			if (parms.z.avail_out) {
-				memcpy(buffer, parms.z.next_out, parms.z.avail_out);
-				buffer = (unsigned char *)buffer + parms.z.avail_out;
-				len -= parms.z.avail_out;
-			}
-			// consumed all output
-			parms.z.next_out = parms.out_ptr;
-			parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			unsigned min_read = 1;
-			if (parms.z.avail_in) {
-				memmove(parms.in_ptr, parms.z.next_in, parms.z.avail_in);
-				min_read = 0;
-			}
-			parms.z.next_in = parms.in_ptr;
-			parms.z.avail_in += ReadBufferFromSocket(this, parms.z.next_in + parms.z.avail_in, min_read, EC_SOCKET_BUFFER_SIZE - parms.z.avail_in, &parms.LastSocketError);
-			if (parms.LastSocketError != wxSOCKET_NOERROR) {
-				return false;
-			}
-			int zerror = inflate(&parms.z, Z_SYNC_FLUSH);
-			if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
-				ShowZError(zerror, &parms.z);
-				return false;
-			}
-			parms.z.next_out = parms.out_ptr;
-			parms.z.avail_out = EC_SOCKET_BUFFER_SIZE - parms.z.avail_out;
-		}
-		memcpy(buffer, parms.z.next_out, len);
-		parms.z.next_out += len;
-		parms.z.avail_out -= len;
-		return true;
-	} else {
-		// using uncompressed buffered i/o
-		if (parms.z.avail_in < len) {
-			// get more data
-			if (parms.z.avail_in) {
-				memcpy(buffer, parms.z.next_in, parms.z.avail_in);
-				len -= parms.z.avail_in;
-				buffer = (Bytef*)buffer + parms.z.avail_in;
-			}
-			if (len >= EC_SOCKET_BUFFER_SIZE) {
-				// read directly to app mem, to avoid unnecessary memcpy()s
-				parms.z.avail_in = 0;
-				parms.z.next_in = parms.in_ptr;
-				return ReadBufferFromSocket(this, buffer, len, len, &parms.LastSocketError) == len;
-			} else {
-				parms.z.avail_in = ReadBufferFromSocket(this, parms.in_ptr, len, EC_SOCKET_BUFFER_SIZE, &parms.LastSocketError);
-				parms.z.next_in = parms.in_ptr;
-				if (parms.LastSocketError != wxSOCKET_NOERROR) {
-					parms.z.avail_in = 0;
-					return false;
+	struct socket_desc *parms = (struct socket_desc *)opaque;
+
+	if (parms) {
+		if (parms->ptrs_valid) {
+			if (parms->used_flags & EC_FLAG_ZLIB) {
+				// using zlib compressed i/o
+				// Here we pretty much misuse the z.next_out and z.avail_out values,
+				// but it doesn't matter as long a we always call inflate() with an
+				// empty output buffer.
+				while (parms->z.avail_out < len) {
+					if (parms->z.avail_out) {
+						memcpy(buffer, parms->z.next_out, parms->z.avail_out);
+						buffer = (Bytef*)buffer + parms->z.avail_out;
+						len -= parms->z.avail_out;
+					}
+					// consumed all output
+					parms->z.next_out = (Bytef *)parms->out_ptr;
+					parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					unsigned min_read = 1;
+					if (parms->z.avail_in) {
+						memmove(parms->in_ptr, parms->z.next_in, parms->z.avail_in);
+						min_read = 0;
+					}
+					parms->z.next_in = (Bytef *)parms->in_ptr;
+					parms->z.avail_in += ReadBufferFromSocket(sock, parms->z.next_in + parms->z.avail_in, min_read, EC_SOCKET_BUFFER_SIZE - parms->z.avail_in, &parms->LastSocketError);
+					if (parms->LastSocketError != wxSOCKET_NOERROR) {
+						return false;
+					}
+					int zerror = inflate(&parms->z, Z_SYNC_FLUSH);
+					if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
+						ShowZError(zerror, &parms->z);
+						return false;
+					}
+					parms->z.next_out = (Bytef *)parms->out_ptr;
+					parms->z.avail_out = EC_SOCKET_BUFFER_SIZE - parms->z.avail_out;
 				}
+				memcpy(buffer, parms->z.next_out, len);
+				parms->z.next_out += len;
+				parms->z.avail_out -= len;
+				return true;
+			} else {
+				// using uncompressed buffered i/o
+				if (parms->z.avail_in < len) {
+					// get more data
+					if (parms->z.avail_in) {
+						memcpy(buffer, parms->z.next_in, parms->z.avail_in);
+						len -= parms->z.avail_in;
+						buffer = (Bytef*)buffer + parms->z.avail_in;
+					}
+					if (len >= EC_SOCKET_BUFFER_SIZE) {
+						// read directly to app mem, to avoid unnecessary memcpy()s
+						parms->z.avail_in = 0;
+						parms->z.next_in = (Bytef *)parms->in_ptr;
+						return ReadBufferFromSocket(sock, buffer, len, len, &parms->LastSocketError) == len;
+					} else {
+						parms->z.avail_in = ReadBufferFromSocket(sock, parms->in_ptr, len, EC_SOCKET_BUFFER_SIZE, &parms->LastSocketError);
+						parms->z.next_in = (Bytef *)parms->in_ptr;
+						if (parms->LastSocketError != wxSOCKET_NOERROR) {
+							parms->z.avail_in = 0;
+							return false;
+						}
+					}
+				}
+				memcpy(buffer, parms->z.next_in, len);
+				parms->z.next_in += len;
+				parms->z.avail_in -= len;
+				return true;
 			}
+		} else {
+			// No valid buffers, using direct socket i/o
+			return ReadBufferFromSocket(sock, buffer, len, len, &parms->LastSocketError) == len;
 		}
-		memcpy(buffer, parms.z.next_in, len);
-		parms.z.next_in += len;
-		parms.z.avail_in -= len;
-		return true;
+	} else {
+		// Requested direct socket i/o
+		return ReadBufferFromSocket(sock, buffer, len, len, NULL) == len;
 	}
 }
 
 
-bool ECSocket::WriteBuffer(const void *buffer, unsigned int len)
+bool ECSocket::WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque)
 {
+	struct socket_desc *parms = (struct socket_desc *)opaque;
 	unsigned int remain_in;
 
-	if (parms.used_flags & EC_FLAG_ZLIB) {
-		// using zlib compressed i/o
-		while ((remain_in = (EC_SOCKET_BUFFER_SIZE - (parms.z.next_in - parms.in_ptr) - parms.z.avail_in)) < len) {
-			memcpy(parms.z.next_in + parms.z.avail_in, buffer, remain_in);
-			buffer = (Bytef*)buffer + remain_in;
-			len -= remain_in;
-			parms.z.avail_in += remain_in;
-			int zerror = deflate(&parms.z, Z_NO_FLUSH);
-			if ( zerror != Z_OK ) {
-				ShowZError(zerror, &parms.z);
-				return false;
-			}
-			if (!parms.z.avail_out) {
-				WriteBufferToSocket(this, parms.out_ptr, EC_SOCKET_BUFFER_SIZE, &parms.LastSocketError);
-				if (parms.LastSocketError != wxSOCKET_NOERROR) {
-					return false;
+	if (parms) {
+		if (parms->ptrs_valid) {
+			if (parms->used_flags & EC_FLAG_ZLIB) {
+				// using zlib compressed i/o
+				while ((remain_in = (EC_SOCKET_BUFFER_SIZE - (parms->z.next_in - (Bytef *)parms->in_ptr) - parms->z.avail_in)) < len) {
+					memcpy(parms->z.next_in + parms->z.avail_in, buffer, remain_in);
+					buffer = (Bytef*)buffer + remain_in;
+					len -= remain_in;
+					parms->z.avail_in += remain_in;
+					CALL_Z_FUNCTION(deflate, (&parms->z, Z_NO_FLUSH));
+					if (!parms->z.avail_out) {
+						WriteBufferToSocket(sock, parms->out_ptr, EC_SOCKET_BUFFER_SIZE, &parms->LastSocketError);
+						if (parms->LastSocketError != wxSOCKET_NOERROR) {
+							return false;
+						}
+						parms->z.next_out = (Bytef *)parms->out_ptr;
+						parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					}
+					if (parms->z.next_in != parms->in_ptr) {
+						if (parms->z.avail_in) {
+							memmove(parms->in_ptr, parms->z.next_in, parms->z.avail_in);
+						}
+						parms->z.next_in = (Bytef *)parms->in_ptr;
+					}
 				}
-				parms.z.next_out = parms.out_ptr;
-				parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			}
-			if (parms.z.next_in != parms.in_ptr) {
-				if (parms.z.avail_in) {
-					memmove(parms.in_ptr, parms.z.next_in, parms.z.avail_in);
+				memcpy(parms->z.next_in + parms->z.avail_in, buffer, len);
+				parms->z.avail_in += len;
+				return true;
+			} else {
+				// using uncompressed buffered i/o
+				if (parms->z.avail_out < len) {
+					// send some data
+					if (parms->z.avail_out) {
+						memcpy(parms->z.next_out, buffer, parms->z.avail_out);
+						len -= parms->z.avail_out;
+						buffer = (Bytef*)buffer + parms->z.avail_out;
+					}
+					parms->z.next_out = (Bytef *)parms->out_ptr;
+					parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					WriteBufferToSocket(sock, parms->out_ptr, EC_SOCKET_BUFFER_SIZE, &parms->LastSocketError);
+					if (parms->LastSocketError != wxSOCKET_NOERROR) {
+						return false;
+					}
+					if (len >= EC_SOCKET_BUFFER_SIZE) {
+						// direct write from app mem, to avoid unnecessary memcpy()s
+						return WriteBufferToSocket(sock, buffer, len, &parms->LastSocketError) == len;
+					}
 				}
-				parms.z.next_in = parms.in_ptr;
+				memcpy(parms->z.next_out, buffer, len);
+				parms->z.next_out += len;
+				parms->z.avail_out -= len;
+				return true;
 			}
+		} else {
+			// No valid buffers, using direct socket i/o
+			return WriteBufferToSocket(sock, buffer, len, &parms->LastSocketError) == len;
 		}
-		memcpy(parms.z.next_in + parms.z.avail_in, buffer, len);
-		parms.z.avail_in += len;
-		return true;
 	} else {
-		// using uncompressed buffered i/o
-		if (parms.z.avail_out < len) {
-			// send some data
-			if (parms.z.avail_out) {
-				memcpy(parms.z.next_out, buffer, parms.z.avail_out);
-				len -= parms.z.avail_out;
-				buffer = (Bytef*)buffer + parms.z.avail_out;
-			}
-			parms.z.next_out = parms.out_ptr;
-			parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			WriteBufferToSocket(this, parms.out_ptr, EC_SOCKET_BUFFER_SIZE, &parms.LastSocketError);
-			if (parms.LastSocketError != wxSOCKET_NOERROR) {
-				return false;
-			}
-			if (len >= EC_SOCKET_BUFFER_SIZE) {
-				// direct write from app mem, to avoid unnecessary memcpy()s
-				return WriteBufferToSocket(this, buffer, len, &parms.LastSocketError) == len;
-			}
-		}
-		memcpy(parms.z.next_out, buffer, len);
-		parms.z.next_out += len;
-		parms.z.avail_out -= len;
-		return true;
+		// Requested direct socket i/o
+		return WriteBufferToSocket(sock, buffer, len, NULL) == len;
 	}
 }
 
-bool ECSocket::FlushBuffers()
+bool FlushBuffers(struct socket_desc *parms)
 {
-	if (parms.used_flags & EC_FLAG_ZLIB) {
-		int zerror = Z_OK;
-		while (zerror == Z_OK) {
-			zerror = deflate(&parms.z, Z_FINISH);
-			if (WriteBufferToSocket(this, parms.out_ptr, EC_SOCKET_BUFFER_SIZE - parms.z.avail_out, &parms.LastSocketError) == EC_SOCKET_BUFFER_SIZE - parms.z.avail_out) {
-				parms.z.next_out = parms.out_ptr;
-				parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
+	if (parms) {
+		if (parms->ptrs_valid) {
+			if (parms->used_flags & EC_FLAG_ZLIB) {
+				int zerror = Z_OK;
+				while (zerror == Z_OK) {
+					zerror = deflate(&parms->z, Z_FINISH);
+					if (WriteBufferToSocket(parms->socket, parms->out_ptr, EC_SOCKET_BUFFER_SIZE - parms->z.avail_out, &parms->LastSocketError) == EC_SOCKET_BUFFER_SIZE - parms->z.avail_out) {
+						parms->z.next_out = (Bytef *)parms->out_ptr;
+						parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					} else {
+						return false;
+					}
+				}
+				if (zerror == Z_STREAM_END) return true;
+				else {
+					ShowZError(zerror, &parms->z);
+					return false;
+				}
 			} else {
-				return false;
+				if (parms->z.avail_out != EC_SOCKET_BUFFER_SIZE) {
+					bool retval = (WriteBufferToSocket(parms->socket, parms->out_ptr, EC_SOCKET_BUFFER_SIZE - parms->z.avail_out, &parms->LastSocketError) == EC_SOCKET_BUFFER_SIZE - parms->z.avail_out);
+					parms->z.next_out = (Bytef *)parms->out_ptr;
+					parms->z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					return retval;
+				}
 			}
-		}
-		if (zerror == Z_STREAM_END) return true;
-		else {
-			ShowZError(zerror, &parms.z);
-			return false;
-		}
-	} else {
-		if (parms.z.avail_out != EC_SOCKET_BUFFER_SIZE) {
-			bool retval = (WriteBufferToSocket(this, parms.out_ptr, EC_SOCKET_BUFFER_SIZE - parms.z.avail_out, &parms.LastSocketError) == EC_SOCKET_BUFFER_SIZE - parms.z.avail_out);
-			parms.z.next_out = parms.out_ptr;
-			parms.z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			return retval;
 		}
 	}
 	// report success if there's nothing to do
@@ -647,15 +687,14 @@ bool ECSocket::FlushBuffers()
 /**
  * Reads FLAGS value from given socket.
  */
-uint32 ECSocket::ReadFlags()
+uint32 ECSocket::ReadFlags(wxSocketBase *sock)
 {
 	int i = 0;
 	uint32 flags = 0;
 	uint8 b;
 
 	do {
-		//if (!ReadBuffer(&b, 1, NULL)) return 0;
-		if (!ReadBufferFromSocket(this, &b, 1, 1, NULL)) return 0;
+		if (!ReadBuffer(sock, &b, 1, NULL)) return 0;
 		flags += (uint32)b << i;
 		i += 8;
 	} while ((b & 0x80) && (i < 32));
@@ -665,7 +704,7 @@ uint32 ECSocket::ReadFlags()
 /**
  * Writes FLAGS value to given socket.
  */
-bool ECSocket::WriteFlags(uint32 flags)
+bool ECSocket::WriteFlags(wxSocketBase *sock, uint32 flags)
 {
 	uint8 b;
 
@@ -675,8 +714,7 @@ bool ECSocket::WriteFlags(uint32 flags)
 		b = flags & 0xff;
 		flags >>= 8;
 		if (flags) b |= 0x80;
-		//if (!WriteBuffer(sock, &b, 1, NULL)) return false;
-		if (!WriteBufferToSocket(this, &b, 1, NULL)) return false;
+		if (!WriteBuffer(sock, &b, 1, NULL)) return false;
 	} while (flags);
 	return true;
 }
@@ -692,42 +730,43 @@ bool ECSocket::WriteFlags(uint32 flags)
  *
  * @return \b true on success, \b false on failure.
  */
-bool ECSocket::WritePacket(const CECPacket *packet)
+bool ECSocket::WritePacket(wxSocketBase *sock, const CECPacket *packet)
 {
 	uint32 flags = 0x20;
 	uint32 accepted_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS;
+	struct socket_desc *parms = FindSocket(sock);
 
 	if (packet->GetPacketLength() > EC_MAX_UNCOMPRESSED) flags |= EC_FLAG_ZLIB;
 	else flags |= EC_FLAG_UTF8_NUMBERS;
 
-	InitBuffers();
-
+	InitBuffers(parms);
+	if (!parms->ptrs_valid) {
+		// cannot use zlib without i/o buffers
+		flags &= ~EC_FLAG_ZLIB;
+		accepted_flags &= ~EC_FLAG_ZLIB;
+	}
 	// ensure we won't use anything the other end cannot accept
-	flags &= parms.accepts;
+	flags &= parms->accepts;
 	if (flags & EC_FLAG_ZLIB) {
-		int zerror = deflateInit(&parms.z, EC_COMPRESSION_LEVEL);
+		int zerror = deflateInit(&parms->z, EC_COMPRESSION_LEVEL);
 		if (zerror != Z_OK) {
 			// don't use zlib if init failed
 			flags &= ~EC_FLAG_ZLIB;
-			ShowZError(zerror, &parms.z);
+			ShowZError(zerror, &parms->z);
 		}
 	}
-	parms.used_flags = flags;
-	if (parms.firsttransfer) {
-		parms.firsttransfer = false;
+	parms->used_flags = flags;
+	if (parms->firsttransfer) {
+		parms->firsttransfer = false;
 		flags |= EC_FLAG_ACCEPTS;
-		if (!WriteFlags(flags)) return false;
-		if (!WriteFlags(accepted_flags)) return false;
+		if (!WriteFlags(sock, flags)) return false;
+		if (!WriteFlags(sock, accepted_flags)) return false;
 	} else {
-		if (!WriteFlags(flags)) return false;
+		if (!WriteFlags(sock, flags)) return false;
 	}
-	bool retval = packet->WritePacket(*this) && FlushBuffers();
+	bool retval = packet->WritePacket(sock, *this, parms) && FlushBuffers(parms);
 	if (flags & EC_FLAG_ZLIB) {
-		int zerror = deflateEnd(&parms.z);
-		if ( zerror != Z_OK ) {
-			ShowZError(zerror, &parms.z);
-			return false;
-		}
+		CALL_Z_FUNCTION(deflateEnd, (&parms->z));
 	}
 	return retval;
 }
@@ -745,9 +784,10 @@ bool ECSocket::WritePacket(const CECPacket *packet)
  * \note You must later free the packet by calling
  * \b \c delete on the returned pointer.
  */
-CECPacket * ECSocket::ReadPacket()
+CECPacket * ECSocket::ReadPacket(wxSocketBase *sock)
 {
-	uint32 flags = ReadFlags();
+	uint32 flags = ReadFlags(sock);
+	struct socket_desc *parms = FindSocket(sock);
 
 	if ((flags & 0x60) != 0x20) {
 		// Protocol error - other end might use an older protocol
@@ -756,7 +796,7 @@ CECPacket * ECSocket::ReadPacket()
 
 	// check if the other end sends an "accepts" value
 	if (flags & EC_FLAG_ACCEPTS) {
-		parms.accepts=ReadFlags();
+		parms->accepts=ReadFlags(sock);
 	}
 
 	if ((flags & EC_FLAG_UNKNOWN_MASK)) {
@@ -764,20 +804,20 @@ CECPacket * ECSocket::ReadPacket()
 		return NULL;
 	}
 
-	InitBuffers();
-	parms.used_flags = flags;
+	InitBuffers(parms);
+	parms->used_flags = flags;
 	if (flags & EC_FLAG_ZLIB) {
-		int zerror = inflateInit(&parms.z);
+		int zerror = inflateInit(&parms->z);
 		if (zerror != Z_OK) {
 			// unable to uncompress compressed input
-			ShowZError(zerror, &parms.z);
+			ShowZError(zerror, &parms->z);
 			return NULL;
 		} else {
 			// misusing z parameters - read more at ReadBuffer()
-			parms.z.avail_out = 0;
+			parms->z.avail_out = 0;
 		}
 	}
-	CECPacket *p = new CECPacket(*this);
+	CECPacket *p = new CECPacket(sock, *this, parms);
 #ifndef KEEP_PARTIAL_PACKETS
 	if (p->m_error != 0) {
 		delete p;
@@ -785,10 +825,7 @@ CECPacket * ECSocket::ReadPacket()
 	}
 #endif
 	if (flags & EC_FLAG_ZLIB) {
-		int zerror = inflateEnd(&parms.z);
-		if ( zerror != Z_OK ) {
-			ShowZError(zerror, &parms.z);
-		}
+		CALL_Z_FUNCTION(inflateEnd, (&parms->z));
 	}
 	return p;
 }

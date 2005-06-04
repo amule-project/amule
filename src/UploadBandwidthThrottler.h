@@ -31,7 +31,7 @@
 
 #include <deque>
 
-#include "Types.h"
+#include "types.h"
 
 class ThrottledControlSocket;
 class ThrottledFileSocket;
@@ -48,16 +48,19 @@ public:
     
 	uint32 GetStandardListSize();
 
-    void AddToStandardList(uint32 index, ThrottledFileSocket* socket);
-    bool RemoveFromStandardList(ThrottledFileSocket* socket);
-
     void QueueForSendingControlPacket(ThrottledControlSocket* socket, bool hasSent = false);
     void RemoveFromAllQueues(ThrottledControlSocket* socket);
     void RemoveFromAllQueues(ThrottledFileSocket* socket);
 
-    void EndThread();
+    void SetAllowedDataRate(uint32 newValue);
+
+    void AddToStandardList(uint32 index, ThrottledFileSocket* socket);
+    bool RemoveFromStandardList(ThrottledFileSocket* socket);
+
 
     void Pause(bool paused);
+    void EndThread();
+	
 private:
     void DoRemoveFromAllQueues(ThrottledControlSocket* socket);
     bool RemoveFromStandardListNoLock(ThrottledFileSocket* socket);
@@ -90,6 +93,8 @@ private:
     uint64 m_SentBytesSinceLastCall;
     uint64 m_SentBytesSinceLastCallOverhead;
     uint32 m_highestNumberOfFullyActivatedSlots;
+
+    uint32 m_allowedDataRate;
 };
 
 

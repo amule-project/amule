@@ -46,7 +46,6 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
-#include "Format.h"
 
 #include <sys/types.h>
 
@@ -60,14 +59,25 @@ CServerUDPSocket::CServerUDPSocket(
 	const CProxyData *ProxyData)
 :
 CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+#ifdef AMULE_DAEMON
+, wxThread(wxTHREAD_JOINABLE)
+#endif
 {
 	sendbuffer = NULL;
 	cur_server = NULL;
 	serverconnect = in_serverconnect;
 
+#ifdef AMULE_DAEMON
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("ERROR: CServerUDPSocket failed create\n");
+		wxASSERT(0);
+	}
+	Run();
+#else
 	SetEventHandler(theApp, SERVERUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG);
 	Notify(true);
+#endif
   
 }
 
@@ -105,8 +115,6 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
-				AddDebugLogLineM( true, logServerUDP,
-					wxString::Format( wxT("Received UDP server packet with eDonkey protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[0] ) );
 				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
@@ -127,8 +135,6 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
-	AddDebugLogLineM( false, logServerUDP,
-					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
 	try{
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
@@ -234,8 +240,9 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				update->SetHardFiles( cur_hardfiles );
 				update->SetUDPFlags( uUDPFlags );
 				update->SetLowIDUsers( uLowIDUsers );
-				Notify_ServerRefresh( update );
-				theApp.ShowUserCount();
+				if (update == theApp.serverconnect->GetCurrentServer()) {
+					Notify_ShowUserCount(update);
+				}
 				break;
 			}
  			case OP_SERVER_DESC_RES:{
@@ -426,3 +433,19 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 		SendBuffer();
 	}
 }
+
+#ifdef AMULE_DAEMON
+
+void *CServerUDPSocket::Entry()
+{
+	while ( !TestDestroy() ) {
+		Sleep(100);
+		CALL_APP_DATA_LOCK;
+		if ( WaitForRead(0, 0) ) {
+			OnReceive(0);
+		}
+	}
+	return 0;
+}
+
+#endif

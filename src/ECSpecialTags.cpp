@@ -722,7 +722,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
-	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
+	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
 	
@@ -734,7 +734,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
 		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
 
-	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()));
+	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, (uint32)(client->GetKBpsUp()*1024.0)));
 	if ( client->GetDownloadState() == DS_DOWNLOADING ) {
 		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0)));
 	}
@@ -753,7 +753,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint8)client->GetSourceFrom()));
 	
-	const CKnownFile* file = client->GetUploadFile();
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
@@ -762,7 +762,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap) :
-	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
+	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserID())
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown(), this);
 	
@@ -775,7 +775,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	valuemap.CreateTag(EC_TAG_CLIENT_STATE,
 		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) ), this);
 
-	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, (uint32)(client->GetKBpsUp()*1024.0), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime(), this);
@@ -794,7 +794,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_FROM, (uint8)client->GetSourceFrom(), this);
 	
-	const CKnownFile* file = client->GetUploadFile();
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(client->GetUploadFileID());
 	if (file) {
 		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);

@@ -65,8 +65,8 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHTMLED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
+	EVT_MENU( MP_GETAICHED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
-	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 END_EVENT_TABLE()
 
 enum SharedFilesListColumns {
@@ -144,8 +144,7 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
-		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
-		
+		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));		
 
 		PopupMenu( m_menu, event.GetPosition() );
 
@@ -302,7 +301,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 			case MP_GETHTMLED2KLINK:			URIs += theApp.CreateHTMLED2kLink( file ) + wxT("\n");				break;
 			case MP_GETSOURCEED2KLINK:			URIs += theApp.CreateED2kSourceLink( file ) + wxT("\n");			break;
 			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp.CreateED2kHostnameSourceLink( file ) + wxT("\n");	break;
-			case MP_GETAICHED2KLINK: URIs += theApp.CreateED2kAICHLink( file ) + wxT("\n");	break;
+			case MP_GETAICHED2KLINK:	URIs += theApp.CreateED2kAICHLink( file ) + wxT("\n"); break;
 		}
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );

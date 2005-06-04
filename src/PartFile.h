@@ -107,7 +107,7 @@ public:
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
 	void	WritePartStatus(CSafeMemFile* file);
 	void	WriteCompleteSourcesCount(CSafeMemFile* file);
-	static bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
+	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
 	void	AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport);
 #ifdef CLIENT_GUI
 	uint8	GetStatus() const { return status; }
