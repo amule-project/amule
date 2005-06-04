@@ -665,8 +665,11 @@ else
 	result="no"
 fi
 
+HAVE_GETTEXT=$result
+
 AC_MSG_RESULT($result ($autopoint_version))
 if test x$result = xno; then
-	AC_MSG_ERROR([You need to install GNU gettext/gettext-tools to compile aMule])
+	AC_MSG_NOTICE([You need to install GNU gettext/gettext-tools to compile aMule with i18n support])
 fi
+AC_SUBST(HAVE_GETTEXT)
 ])
