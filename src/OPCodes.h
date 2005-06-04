@@ -67,17 +67,17 @@ enum {
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 // AND FIX THE MOD_VERSION_LONG
 
-#define __CVS__
+// #define __CVS__
 
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.0.0")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.0.2")
 #endif
 
 #define	VERSION_MJR		0x02
 #define	VERSION_MIN		0
-#define	VERSION_UPDATE		0 
+#define	VERSION_UPDATE		2
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
