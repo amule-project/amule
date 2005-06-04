@@ -597,6 +597,16 @@ if test x$SYS != xwin32; then
 		AC_MSG_RESULT(no)
 	fi
 fi
+
+case "$USE_NLS" in
+
+yes)
+        ;;
+*)
+        HAVE_GETTEXT="no"
+esac
+
+
 AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
@@ -616,6 +626,7 @@ AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
+AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
 
 dnl
 dnl Check for readline library
@@ -702,6 +713,7 @@ echo "  aMule enabled options:"
 echo 
 echo "  **** aMule Core ****" 
 echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
+echo "  Should aMule be compiled with i18n support?                ${HAVE_GETTEXT:-no}"
 echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
