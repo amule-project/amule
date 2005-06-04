@@ -1,4 +1,7 @@
-SUBDIRS = m4 intl po docs src
+SUBDIRS = m4 docs src
+if COMPILE_NLS
+SUBDIRS += intl po
+endif
 
 EXTRA_DIST = ABOUT-NLS config.rpath mkinstalldirs \
 	config.h.in Compilation.flags.in acinclude.m4 \
