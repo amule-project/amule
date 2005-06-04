@@ -164,7 +164,7 @@ void CSocketSet::AddSocket(GSocket *socket)
 		return;
 	}
 
-	wxASSERT( (fd > 3) && (fd < FD_SETSIZE) );
+	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
 	
 	if ( m_gsocks[fd] ) {
 		return;
@@ -184,7 +184,7 @@ void CSocketSet::RemoveSocket(GSocket *socket)
 		return;
 	}
 	
-	wxASSERT( (fd > 3) && (fd < FD_SETSIZE) );
+	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
 	
 	for(int i = 0; i < m_count; i++) {
 		if ( m_fds[i] == fd ) {
