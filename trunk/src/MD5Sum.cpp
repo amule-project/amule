@@ -32,9 +32,11 @@
 
 #include "MD5Sum.h"		// Interface declarations.
 
+#include <inttypes.h>
+
 typedef unsigned char *POINTER;
-typedef unsigned short int UINT2;
-typedef unsigned long int UINT4;
+typedef uint16_t UINT2;
+typedef uint32_t UINT4;
 
 typedef struct {
   UINT4 state[4];
