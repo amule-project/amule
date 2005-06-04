@@ -1113,18 +1113,31 @@ void CPartFile::SaveSourceSeeds()
 			% m_fullname);
 	}	
 
-	file.WriteUInt8(source_seeds.GetCount());
-	
-	for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
-		CUpDownClient* cur_src = source_seeds.GetNext(pos);		
-		file.WriteUInt32(cur_src->GetUserIDHybrid());
-		file.WriteUInt16(cur_src->GetUserPort());
-		//uint32 dwServerIP = cur_src->GetServerIP();
-		//uint16 nServerPort =cur_src->GetServerPort();
-		//file.Write(&dwServerIP,4);
-		//file.Write(&nServerPort,2);
+	try {
+		
+		file.WriteUInt8(source_seeds.GetCount());
+		
+		for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
+			CUpDownClient* cur_src = source_seeds.GetNext(pos);		
+			file.WriteUInt32(cur_src->GetUserIDHybrid());
+			file.WriteUInt16(cur_src->GetUserPort());
+			//uint32 dwServerIP = cur_src->GetServerIP();
+			//uint16 nServerPort =cur_src->GetServerPort();
+			//file.Write(&dwServerIP,4);
+			//file.Write(&nServerPort,2);
+		}
+		
+		file.Close();
+		
+	} catch (...) {
+		AddLogLineM(false, CFormat( _("Error saving partfile's seeds file (%s - %s)") )
+				% m_partmetfilename
+				% m_strFileName );
+		n_sources = 0;
+		file.Close();
+		wxRemoveFile(m_fullname + wxT(".seeds"));
 	}	
-	file.Close();
+	
 
 	AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
 		% n_sources
@@ -1155,29 +1168,38 @@ void CPartFile::LoadSourceSeeds() {
 		AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
 			% m_partmetfilename
 			% m_strFileName );
+		file.Close();
 		return;
 	}	
-	
-	uint8 src_count = file.ReadUInt8();
-	
-	sources_data.WriteUInt16(src_count);
-
-	for (int i=0;i<src_count;++i) {
-	
-		uint32 dwID = file.ReadUInt32();
-		uint16 nPort = file.ReadUInt16();
 		
-		sources_data.WriteUInt32(dwID);
-		sources_data.WriteUInt16(nPort);
-		sources_data.WriteUInt32(0);
-		sources_data.WriteUInt16(0);	
+	try {
+		
+		uint8 src_count = file.ReadUInt8();
+		
+		sources_data.WriteUInt16(src_count);
+	
+		for (int i=0;i<src_count;++i) {
+		
+			uint32 dwID = file.ReadUInt32();
+			uint16 nPort = file.ReadUInt16();
+			
+			sources_data.WriteUInt32(dwID);
+			sources_data.WriteUInt16(nPort);
+			sources_data.WriteUInt32(0);
+			sources_data.WriteUInt16(0);	
+		}
+		
+		sources_data.Seek(0);
+		
+		AddClientSources(&sources_data, 1 );
+		
+	} catch (...) {
+		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s)") )
+				% m_partmetfilename
+				% m_strFileName );
 	}
-	
-	sources_data.Seek(0);
-	
-	AddClientSources(&sources_data, 1 );
-	
-	file.Close();	
+
+	file.Close();
 }		
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
