@@ -55,6 +55,7 @@
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
+#include "gsocket-fix.h"
 
 using namespace otherfunctions;
 
@@ -66,19 +67,14 @@ enum
 };
 
 
-#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
 	EVT_SOCKET(AUTH_ID,   ExternalConn::OnSocketEvent)
 	EVT_SOCKET(SOCKET_ID, ExternalConn::OnSocketEvent)
 END_EVENT_TABLE()
-#endif
 
 
 ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
-#ifdef AMULE_DAEMON
- : wxThread(wxTHREAD_JOINABLE) 
-#endif
 {
 	wxString msgLocal;
 	m_ECServer = NULL;
@@ -93,11 +89,11 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		}
 		
 		// Create the socket
-#ifdef AMULE_DAEMON
-		m_ECServer = new ECSocket(addr, 0);
-#else
-		m_ECServer = new ECSocket(addr, this, SERVER_ID);
-#endif
+		m_ECServer = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
+		m_ECServer->SetEventHandler(*this, SERVER_ID);
+		m_ECServer->SetNotify(wxSOCKET_CONNECTION_FLAG);
+		m_ECServer->Notify(true);
+
 		int port = addr.Service();
 		wxString ip = addr.IPAddress();
 		if (m_ECServer->Ok()) {
@@ -105,16 +101,6 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 				wxString::Format(wxT(":%d"), port);
 			*msg += msgLocal + wxT("\n");
 			AddLogLineM(false, msgLocal);
-#ifdef AMULE_DAEMON
-			if ( Create() != wxTHREAD_NO_ERROR ) {
-				AddLogLineM(false, _("ExternalConn: failed to Create thread"));
-				delete m_ECServer;
-				// This prevents the destructor to do nasty things
-				m_ECServer = NULL;
-			} else {
-				Run();
-			}
-#endif
 		} else {
 			msgLocal = wxT("Could not listen for external connections at ") + ip + 
 				wxString::Format(wxT(":%d!"), port);
@@ -131,44 +117,26 @@ ExternalConn::~ExternalConn() {
 	delete m_ECServer;
 }
 
-#ifdef AMULE_DAEMON
-void *ExternalConn::Entry()
-{
-        while ( !TestDestroy() ) {
-        	if ( m_ECServer->WaitForAccept(1, 0) ) {
-				wxSocketBase *client = m_ECServer->Accept();
-				if ( !client ) {
-					continue;
-				}
-				client->Notify(false);
-				ExternalConnClientThread *cli_thread = new ExternalConnClientThread(this, client);
-				cli_thread->Run();
-        	}
-	}
-	return 0;
-}
-#else
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
-	wxSocketBase *sock;
+	ECSocket *sock = new ECSocket;
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
-	sock = m_ECServer->Accept(false);
-	if (sock) {
+	if ( m_ECServer->AcceptWith(*sock, false) ) {
 		AddLogLineM(false, _("New external connection accepted"));
 		sock->SetEventHandler(*this, AUTH_ID);
 		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
 		sock->Notify(true);
 		m_numClients++;
-		RegisterSocket(sock);
 	} else {
+		delete sock;
 		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
 }
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
-	wxSocketBase *sock = event.GetSocket();
+	ECSocket *sock = (ECSocket *)event.GetSocket();
 	CECPacket * request = NULL;
 	CECPacket * response = NULL;
 
@@ -178,7 +146,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		// We disable input events, so that the test doesn't trigger
 		// wxSocketEvent again.
 		sock->SetNotify(wxSOCKET_LOST_FLAG);		
-		request = m_ECServer->ReadPacket(sock);		
+		request = sock->ReadPacket();		
 		if(request == NULL) {
 			AddLogLineM(false, _("Invalid EC packet received"));
 			break;
@@ -186,7 +154,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		if (event.GetId() == AUTH_ID) {
 			response = Authenticate(request);
 			delete request;	request = NULL;
-			m_ECServer->WritePacket(sock, response);
+			sock->WritePacket(response);
 			if (response->GetOpCode() != EC_OP_AUTH_OK) {
 				// Access denied!
 				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
@@ -202,7 +170,7 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 			response = ProcessRequest2(request, m_part_encoders[sock],
 				m_shared_encoders[sock], m_obj_tagmap[sock]);
 			delete request; request = NULL;
-			m_ECServer->WritePacket(sock, response);
+			sock->WritePacket(response);
 			delete response; response = NULL;
 		}		
 		// Re-Enable input events again.
@@ -224,7 +192,6 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 		AddLogLineM(false,_("External connection closed."));
 		//sock->Destroy();
 		sock->Close();
-		UnregisterSocket(sock);
 		// remove client data
 		m_part_encoders.erase(sock);
 		m_shared_encoders.erase(sock);
@@ -235,7 +202,6 @@ void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
 	default: ;
 	}
 }
-#endif
 
 //
 // Authentication
@@ -1202,27 +1168,25 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 }
 
 
-ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, wxSocketBase *sock) : wxThread()
+ExternalConnClientThread::ExternalConnClientThread(ExternalConn *owner, ECSocket *sock) : wxThread()
 {
 	m_owner = owner;
 	m_sock = sock;
 	if ( Create() != wxTHREAD_NO_ERROR ) {
 		AddLogLineM(false, _("ExternalConnClientThread: Failed to Create thread."));
 	}
-	RegisterSocket(sock);
 }
 
 ExternalConnClientThread::~ExternalConnClientThread()
 {
-	UnregisterSocket(m_sock);
 	delete m_sock;
 }
 
 void *ExternalConnClientThread::Entry()
 {
-	CECPacket *request = m_owner->m_ECServer->ReadPacket(m_sock);
+	CECPacket *request = m_sock->ReadPacket();
 	CECPacket *response = m_owner->Authenticate(request);
-	m_owner->m_ECServer->WritePacket(m_sock, response);
+	m_sock->WritePacket(response);
 	if (response->GetOpCode() != EC_OP_AUTH_OK) {
 		//
 		// Access denied!
@@ -1239,11 +1203,11 @@ void *ExternalConnClientThread::Entry()
 			break;
 		}
 		if (m_sock->WaitForRead(1, 0)) {
-			request = m_owner->m_ECServer->ReadPacket(m_sock);
+			request = m_sock->ReadPacket();
 			response = m_owner->ProcessRequest2(request, m_part_encoders, m_shared_encoders, m_obj_tagmap);
 			delete request;
 			if ( response ) {
-				m_owner->m_ECServer->WritePacket(m_sock, response);
+				m_sock->WritePacket(response);
 				delete response;
 			}
 		}

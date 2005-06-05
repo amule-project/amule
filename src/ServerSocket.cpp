@@ -53,17 +53,12 @@
 #include "Logger.h"
 #include "Format.h"
 
-#ifndef AMULE_DAEMON
-#include "SearchDlg.h"		// Needed for CSearchDlg
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#endif
 
 
 //------------------------------------------------------------------------------
 // CServerSocketHandler
 //------------------------------------------------------------------------------
 
-#ifndef AMULE_DAEMON
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
@@ -110,47 +105,6 @@ void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 //
 static CServerSocketHandler g_serverSocketHandler;
 
-#else
-CServerSocketHandler::CServerSocketHandler(CServerSocket *socket)
-:
-wxThread(wxTHREAD_JOINABLE)
-{
-	m_socket = socket;
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		AddLogLineM(true,_("CServerSocketHandler: can not create my thread"));
-	}
-}
-
-void *CServerSocketHandler::Entry()
-{
-	while ( !TestDestroy() ) {
-		if ( m_socket->WaitOnConnect(1,0) ) {
-			break;
-		}
-	}
-	if ( !m_socket->wxSocketClient::IsConnected() || TestDestroy()) {
-		printf("CServerSocket: connection refused or timed out\n");
-		return 0;
-	}
-	m_socket->OnConnect(wxSOCKET_NOERROR);
-	m_socket->OnSend(wxSOCKET_NOERROR);
-	while ( !TestDestroy() ) {
-		if ( m_socket->WaitForLost(0, 0) ) {
-			m_socket->OnError(m_socket->LastError());
-			printf("CServerSocket: connection closed\n");
-			return 0;
-		}
-		// lfroen: setting timeout to give app a chance gracefully destroy
-		// thread before deleting object
-		if ( m_socket->WaitForRead(1, 0) ) {
-			m_socket->OnReceive(wxSOCKET_NOERROR);
-		}
-	}
-	printf("CServerSocket: terminated\n");
-	return 0;
-
-}
-#endif
 
 //------------------------------------------------------------------------------
 // CServerSocket
@@ -167,7 +121,7 @@ CEMSocket(ProxyData)
 	cur_server = 0;
 	info.Clear();
 	m_bIsDeleting = false;
-#ifndef AMULE_DAEMON	
+
 	my_handler = &g_serverSocketHandler;
 	SetEventHandler(*my_handler, SERVERSOCKET_HANDLER);
 	SetNotify(
@@ -176,9 +130,7 @@ CEMSocket(ProxyData)
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-#else
-	my_handler = new CServerSocketHandler(this);
-#endif
+
 	m_dwLastTransmission = 0;	
 	m_IsSolving = false;
 }
@@ -193,10 +145,6 @@ CServerSocket::~CServerSocket()
 		delete cur_server;
 	}
 	cur_server = NULL;
-#ifdef AMULE_DAEMON
-	printf("CServerSocket: destroying socket %p\n", (void*)this);
-	my_handler->Delete();
-#endif
 }
 
 
@@ -731,12 +679,3 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
-
-#ifdef AMULE_DAEMON
-bool CServerSocket::Connect(wxIPV4address &addr, bool wait)
-{
-	bool res = CEMSocket::Connect(addr, wait);
-	my_handler->Run();
-	return res;
-}
-#endif

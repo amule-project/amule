@@ -132,11 +132,11 @@ class CECTag {
 		}
 
 	protected:
-		CECTag(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		CECTag(ECSocket& socket);
 		
-		bool		WriteTag(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
-		bool		ReadChildren(wxSocketBase *sock, ECSocket& socket, void *opaque);
-		bool		WriteChildren(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
+		bool		WriteTag(ECSocket& socket) const;
+		bool		ReadChildren(ECSocket& socket);
+		bool		WriteChildren(ECSocket& socket) const;
 		int		m_error;
 		const void *	m_tagData;
 		
@@ -202,9 +202,9 @@ class CECPacket : protected CECEmptyTag {
 		}
 		
 	private:
-		CECPacket(wxSocketBase *sock, ECSocket& socket, void *opaque);
+		CECPacket(ECSocket& socket);
 		
-		bool		WritePacket(wxSocketBase *sock, ECSocket& socket, void *opaque) const;
+		bool WritePacket(ECSocket& socket) const;
 		ec_opcode_t	m_opCode;
 };
 

@@ -178,39 +178,19 @@ public:
 /**
  * Event handler object used during proxy negotiation.
  */
-class CProxyEventHandler :
-#ifndef AMULE_DAEMON
-public wxEvtHandler
-#else
-public wxThread
-#endif
-{
+class CProxyEventHandler : public wxEvtHandler {
 public:
 	/**
 	 * Constructor.
 	 */
 	CProxyEventHandler();
 
-#ifndef AMULE_DAEMON
 private:
 	/**
 	 * Event handler function.
 	 */
 	void ProxySocketHandler(wxSocketEvent &event);
 	DECLARE_EVENT_TABLE()
-#else
-public:
-	/**
-	 * Destructor.
-	 */
-	~CProxyEventHandler();
-
-private:
-	/**
-	 * Thread entry point.
-	 */
-	void *Entry();
-#endif
 };
 
 //------------------------------------------------------------------------------
