@@ -56,10 +56,6 @@
 #include "Logger.h"
 #include "Format.h"
 
-#ifndef AMULE_DAEMON
-	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
-	#include <wx/msgdlg.h>
-#endif
 
 #warning Theres a lot of Kad code missing from this file and the .h that must be addressed.
 

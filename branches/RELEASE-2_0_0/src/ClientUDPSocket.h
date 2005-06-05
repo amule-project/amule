@@ -48,9 +48,6 @@ struct UDPPack {
 // CClientUDPSocket command target
 
 class CClientUDPSocket : public CDatagramSocketProxy
-#ifdef AMULE_DAEMON
-, public wxThread
-#endif
 {
 	DECLARE_DYNAMIC_CLASS(CClientUDPSocket)
 	CClientUDPSocket() : CDatagramSocketProxy(useless2) {};
@@ -76,9 +73,9 @@ private:
 
 	CTypedPtrList<CPtrList, UDPPack*> controlpacket_queue;
 	amuleIPV4Address  useless2;
-#ifdef AMULE_DAEMON
-	void *Entry();
-#endif
+
+	wxMutex m_sendLocker;
+
 };
 
 #endif // CLIENTUDPSOCKET_H

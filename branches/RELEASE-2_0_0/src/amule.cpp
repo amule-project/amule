@@ -127,6 +127,10 @@
 #include <sys/statvfs.h>
 #endif
 
+#ifdef  HAVE_SYS_WAIT_H
+	#include <sys/wait.h>
+#endif
+
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
 #else
@@ -422,7 +426,9 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
-#ifndef AMULE_DAEMON
+#ifdef AMULE_DAEMON
+	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
+#else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
@@ -443,11 +449,19 @@ bool CamuleApp::OnInit()
 #endif
 	}
 
-	if ( cmdline.Found(wxT("log-stdout")) ) {
-		printf("Logging to stdout enabled\n");
-		enable_stdout_log = true;
-	} else {
-		enable_stdout_log = false;
+	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
+#ifdef AMULE_DAEMON		
+	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
+#else
+	enable_daemon_fork = false;
+#endif	
+	if ( enable_stdout_log ) {
+		if ( enable_daemon_fork ) {
+			printf("Daemon will fork to background - log to stdout disabled\n");
+			enable_stdout_log = false;
+		} else {
+			printf("Logging to stdout enabled\n");
+		}
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
@@ -856,17 +870,7 @@ bool CamuleApp::OnInit()
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
 		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
-		#ifndef AMULE_DAEMON
-		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
-		if (!webserver_pid) {
-			AddLogLineM(false, _(
-				"You requested to run webserver from startup, "
-				"but the amuleweb binary cannot be run. "
-				"Please install the package containing aMule webserver, "
-				"or compile aMule using --enable-webserver and run make install"));
-		}
-		#else
-		// wxBase has no async wxExecute
+#ifdef AMULE_DAEMON
 		int pid = fork();
 		if ( pid == -1 ) {
 			printf("ERROR: fork failed with code %d\n", errno);
@@ -876,17 +880,37 @@ bool CamuleApp::OnInit()
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
-				// wait few seconds to give amuleweb chance to start or forked child to exit
-				sleep(3);
-				if (wxProcess::Exists(pid)) {
-					printf("aMuleweb is running on pid %d\n", pid);
-					webserver_pid = pid;
-				} else {
-					printf("ERROR: aMuleweb not started\n");
-				}
+				webserver_pid = pid;
 			}
 		}
-		#endif
+#else
+		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
+#endif
+		// give amuleweb chance to start or forked child to exit
+		// 1 second if enough time to fail on "path not found"
+		wxSleep(1);
+		int status, result;
+//#ifdef HAVE_SYS_WAIT_H
+		if ( (result = wait4(webserver_pid, &status, WNOHANG, 0)) == -1 ) {
+			printf("ERROR: wait4 call failed\n");
+		} else {
+			if ( status && WIFEXITED(status) ) {
+				webserver_pid = 0;
+			}
+		}
+//#else
+//#warning wtf to do here?
+//#endif
+		if (webserver_pid) {
+			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
+		} else {
+			ShowAlert(_(
+				"You requested to run webserver from startup, "
+				"but the amuleweb binary cannot be run. "
+				"Please install the package containing aMule webserver, "
+				"or compile aMule using --enable-webserver and run make install"),
+				_("Error"), wxOK | wxICON_ERROR);
+		}
 	}
 #endif /* ! __WXMSW__ */
 
@@ -1838,6 +1862,107 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 	
 }
 
+
+void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
+{
+	//
+	// There is only one ListenSocket in the whole application,
+	// so there is no need to discover on the fly with:
+	//
+	// CListenSocket *socket = (CListenSocket *) event.GetSocket();
+	//
+	// Also, now with proxy, CListenSocket is no longer derived from
+	// wxSocketServer, so event.GetSocket() is actually
+	// theApp.listensocket->m_SocketServer
+	//
+	CListenSocket *socket = theApp.listensocket;
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		wxASSERT(0);
+		return;
+	}
+	
+	if (!IsRunning()) {
+		// Even if we are not ready to start listening, we must
+		// accept the connection, otherwise no other connection
+		// events will happen. So we Accept() it and destroy the
+		// socket imediately.
+		wxSocketBase *s = socket->Accept(false);
+		s->Destroy();
+		// Kry - Woops, we don't want to accept a destroying socket
+		return;
+	}
+	
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			socket->OnAccept(0);
+			break;
+		default:
+			// shouldn't get other than connection events...
+			wxASSERT(0);
+			break;
+	}
+}
+
+void CamuleApp::ServerUDPSocketHandler(wxSocketEvent& event)
+{
+	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		return;
+	}
+
+	if (!IsRunning() && !IsOnShutDown()) {
+		// Back to the queue!
+		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		return;
+	}
+
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+}
+
+void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
+{
+	CClientUDPSocket *socket = dynamic_cast<CClientUDPSocket *>(event.GetSocket());
+	wxASSERT(socket);
+	if(!socket) {
+		// This should never happen, anyway, there is nothing to do.
+		return;
+	}
+
+	if (!IsRunning() && !IsOnShutDown()) {
+		// Back to the queue!
+		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
+		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
+		input_event.SetEventObject(socket);
+		theApp.AddPendingEvent(input_event);
+		return;
+	}
+
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_INPUT:
+			socket->OnReceive(0);
+			break;
+		case wxSOCKET_OUTPUT:
+			socket->OnSend(0);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
+}
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)

@@ -59,25 +59,14 @@ CServerUDPSocket::CServerUDPSocket(
 	const CProxyData *ProxyData)
 :
 CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
-#ifdef AMULE_DAEMON
-, wxThread(wxTHREAD_JOINABLE)
-#endif
 {
 	sendbuffer = NULL;
 	cur_server = NULL;
 	serverconnect = in_serverconnect;
 
-#ifdef AMULE_DAEMON
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("ERROR: CServerUDPSocket failed create\n");
-		wxASSERT(0);
-	}
-	Run();
-#else
 	SetEventHandler(theApp, SERVERUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG);
 	Notify(true);
-#endif
   
 }
 
@@ -433,19 +422,3 @@ void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 		SendBuffer();
 	}
 }
-
-#ifdef AMULE_DAEMON
-
-void *CServerUDPSocket::Entry()
-{
-	while ( !TestDestroy() ) {
-		Sleep(100);
-		CALL_APP_DATA_LOCK;
-		if ( WaitForRead(0, 0) ) {
-			OnReceive(0);
-		}
-	}
-	return 0;
-}
-
-#endif

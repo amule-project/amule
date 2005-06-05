@@ -61,11 +61,6 @@
 #include "Logger.h"
 #include "Format.h"
 
-#ifndef AMULE_DAEMON
-	#include "OScopeCtrl.h"		// Needed for DelayPoints
-	#include "TransferWnd.h"	// Needed for CTransferWnd	
-#endif
-
 #include <numeric>
 
 //TODO rewrite the whole networkcode, use overlapped sockets

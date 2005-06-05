@@ -34,18 +34,12 @@
 #include <wx/socket.h>
 #include "Types.h"
 
-enum aMuleECSocketType {
-	AMULE_EC_CLIENT,
-	AMULE_EC_SERVER
-};
+#include "zlib.h"		// Needed for packet (de)compression
+
+#include <list>
 
 class CECPacket;
-
-//
-// Socket registry functions
-//
-void RegisterSocket(wxSocketBase*);
-void UnregisterSocket(wxSocketBase*);
+class ECSocket;
 
 /*! \class ECSocket
  *
@@ -54,67 +48,69 @@ void UnregisterSocket(wxSocketBase*);
  * ECSocket takes care of the transmission of EC packets
  */
 
-class ECSocket {
+class ECSocket : public wxSocketClient {
 	public:
 		//
 		// Constructors/Destructor
 		//
 		ECSocket();
-		ECSocket(wxSockAddress& address, wxEvtHandler *handler, int id = -1);
 
 		~ECSocket();
 
 		//
-		// Base
-		//
-		bool Destroy() { m_sock->Notify(false); return m_sock->Destroy(); }
-		bool Ok() const { return m_sock->Ok(); }
-		void SetFlags(wxSocketFlags flags) { if (m_sock) m_sock->SetFlags(flags); }
-
-
-		//
-		// Client
-		//
-		bool Connect(wxSockAddress& address, bool wait = true) { return ((wxSocketClient *)m_sock)->Connect(address, wait); }
-		bool WaitOnConnect(long seconds = -1, long milliseconds = 0) { return ((wxSocketClient *)m_sock)->WaitOnConnect(seconds, milliseconds); }
-		bool IsConnected() { return ((wxSocketClient *)m_sock)->IsConnected(); }
-
-		//
-		// Server
-		//
-		wxSocketBase *Accept(bool wait = true) { return ((wxSocketServer *)m_sock)->Accept(wait); }
-		bool WaitForAccept(long seconds, long millisecond ) { return ((wxSocketServer *)m_sock)->WaitForAccept(seconds, millisecond); }
-
-		//
 		// Packet I/O
 		//
-		CECPacket * ReadPacket(wxSocketBase *sock);
-		bool WritePacket(wxSocketBase *sock, const CECPacket *packet);
-
 		// These 4 methods are to be used by CECPacket & CECTag
-		bool ReadNumber(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque);
-		bool ReadBuffer(wxSocketBase *sock, void *buffer, unsigned int len, void *opaque);
+		bool ReadNumber(void *buffer, unsigned int len);
+		bool ReadBuffer(void *buffer, unsigned int len);
 
-		bool WriteNumber(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque);
-		bool WriteBuffer(wxSocketBase *sock, const void *buffer, unsigned int len, void *opaque);
+		bool WriteNumber(const void *buffer, unsigned int len);
+		bool WriteBuffer(const void *buffer, unsigned int len);
 
 		//
 		// Wrapper functions for client sockets
 		//
-		CECPacket * ReadPacket(void) { return ReadPacket(m_sock); }
-		bool WritePacket(const CECPacket *packet) { return WritePacket(m_sock, packet); }
-
-//		bool ReadNumber(void *buffer, unsigned int len) { return ReadNumber(m_sock, buffer, len); }
-//		bool ReadBuffer(void *buffer, unsigned int len) { return ReadBuffer(m_sock, buffer, len); }
-
-//		bool WriteNumber(const void *buffer, unsigned int len) { return WriteNumber(m_sock, buffer, len); }
-//		bool WriteBuffer(const void *buffer, unsigned int len) { return WriteBuffer(m_sock, buffer, len); }
+		CECPacket *ReadPacket(void);
+		bool WritePacket(const CECPacket *packet);
 
 	private:
-		uint32	ReadFlags(wxSocketBase *);
-		bool	WriteFlags(wxSocketBase *, uint32);
-		aMuleECSocketType m_type;
-		wxSocketBase *m_sock;
+
+		bool FlushBuffers();
+		void InitBuffers();
+
+		uint32	ReadFlags();
+		bool	WriteFlags(uint32);
+
+		//
+		// working buffers: zlib need all data at once
+		struct socket_desc {
+			bool			firsttransfer;
+			uint32			accepts;
+			unsigned char *in_ptr;
+			unsigned char *out_ptr;
+			// This transfer only
+			wxSocketError	LastSocketError;
+			uint32			used_flags;
+			z_stream		z;
+		} parms;
+	
+		/*
+		 * Those buffers needed for event driven io (both rx and tx path)
+		 */
+		// RX queue
+		int m_buf_size;
+		unsigned char *m_buffer, *m_curr_ptr;
+		int m_tags_left, m_bytes_left; // how match to wait
+		
+		// TX queue
+		class EC_OUTBUF {
+			public:
+				unsigned char *m_buf, *m_current;
+				int m_size;
+				~EC_OUTBUF() { if ( m_buf ) delete [] m_buf; }
+		};
+		std::list<EC_OUTBUF> m_pending_tx;
+		
 };
 
 #endif // ECSOCKET_H

@@ -49,10 +49,6 @@
 #include "Logger.h"
 #include "Format.h"
 
-#ifndef AMULE_DAEMON
-	#include "SearchDlg.h"		// Needed for CSearchDlg
-#endif
-
 
 //#define DEBUG_CLIENT_PROTOCOL
 
@@ -510,13 +506,8 @@ CServerConnect::~CServerConnect()
 	DestroySocket(connectedsocket);
 	connectedsocket = NULL;
 	// close udp socket
-#ifdef AMULE_DAEMON
-	// daemon have thread there
-	serverudpsocket->Delete();
-#else
 	serverudpsocket->Close();
 	delete serverudpsocket;
-#endif
 }
 
 

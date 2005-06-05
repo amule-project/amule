@@ -81,10 +81,24 @@
 
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
+	//
+	// Socket handlers
+	//
+	
+	// Listen Socket
+	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleDaemonApp::ListenSocketHandler)
+
+	// UDP Socket (servers)
+	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleDaemonApp::ServerUDPSocketHandler)
+	// UDP Socket (clients)
+	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleDaemonApp::ClientUDPSocketHandler)
+
 	// Socket timers (TCP + UDO)
 	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleDaemonApp::OnTCPTimer)
 
-	// Core timer is OnRun
+	// Core timer
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, ID_CORETIMER, CamuleDaemonApp::OnCoreTimer)
+
 	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleDaemonApp::OnNotifyEvent)
 
 	// Async dns handling
@@ -109,63 +123,322 @@ END_EVENT_TABLE()
 
 IMPLEMENT_APP(CamuleDaemonApp)
 
-CamuleLocker::CamuleLocker() : wxMutexLocker(theApp.data_mutex)
+/*
+ * Socket handling in wxBase
+ * 
+ */
+class CSocketSet {
+		int m_count;
+		int m_fds[1024], m_fd_idx[1024];
+		GSocket *m_gsocks[1024];
+
+		fd_set m_set;
+	public:
+		CSocketSet();
+		void AddSocket(GSocket *);
+		void RemoveSocket(GSocket *);
+		void FillSet(int &max_fd);
+		
+		void Detected(void (GSocket::*func)());
+		
+		fd_set *Set() { return &m_set; }
+};
+
+CSocketSet::CSocketSet()
 {
-	msStart = GetTickCount();
+	m_count = 0;
+	for(int i = 0; i < 1024; i++) {
+		m_fds[i] = 0;
+		m_fd_idx[i] = 0xffff;
+		m_gsocks[i] = 0;
+	}
 }
 
-CamuleLocker::~CamuleLocker()
+void CSocketSet::AddSocket(GSocket *socket)
 {
-	uint32 msDone = GetTickCount();
-	assert( (msDone - msStart) < 100);
+	wxASSERT(socket);
+	
+	int fd = socket->m_fd;
+
+	if ( fd == -1 ) {
+		return;
+	}
+
+	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+	
+	if ( m_gsocks[fd] ) {
+		return;
+	}
+	m_fds[m_count] = fd;
+	m_gsocks[fd] = socket;
+	m_count++;
+}
+
+void CSocketSet::RemoveSocket(GSocket *socket)
+{
+	wxASSERT(socket);
+	
+	int fd = socket->m_fd;
+
+	if ( fd == -1 ) {
+		return;
+	}
+	
+	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+	
+	for(int i = 0; i < m_count; i++) {
+		if ( m_fds[i] == fd ) {
+			m_fds[i] = m_fds[m_count-1];
+			m_gsocks[fd] = 0;
+			m_count--;
+			break;
+		}
+	}
+}
+
+void CSocketSet::FillSet(int &max_fd)
+{
+	FD_ZERO(&m_set);
+
+	for(int i = 0; i < m_count; i++) {
+	    FD_SET(m_fds[i], &m_set);
+	    if ( m_fds[i] > max_fd ) {
+	    	max_fd = m_fds[i];
+	    }
+	}
+}
+
+void CSocketSet::Detected(void (GSocket::*func)())
+{
+	for (int i = 0; i < m_count; i++) {
+		int fd = m_fds[i];
+		if ( FD_ISSET(fd, &m_set) ) {
+			GSocket *socket = m_gsocks[fd];
+			(*socket.*func)();
+		}
+	}
+}
+
+CAmuledGSocketFuncTable::CAmuledGSocketFuncTable() : m_lock(wxMUTEX_RECURSIVE)
+{
+	m_in_set = new CSocketSet;
+	m_out_set = new CSocketSet;
+	
+	m_lock.Unlock();
+}
+
+void CAmuledGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
+{
+	wxMutexLocker lock(m_lock);
+
+	if ( event == GSOCK_INPUT ) {
+		m_in_set->AddSocket(socket);
+	} else {
+		m_out_set->AddSocket(socket);
+	}
+}
+
+void CAmuledGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
+{
+	wxMutexLocker lock(m_lock);
+
+	if ( event == GSOCK_INPUT ) {
+		m_in_set->RemoveSocket(socket);
+	} else {
+		m_out_set->RemoveSocket(socket);
+	}
+}
+
+void CAmuledGSocketFuncTable::RunSelect()
+{
+	wxMutexLocker lock(m_lock);
+
+	int max_fd = -1;
+	m_in_set->FillSet(max_fd);
+	m_out_set->FillSet(max_fd);
+
+    struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = 10000; // 10ms
+	
+	int result = select(max_fd + 1, m_in_set->Set(), m_out_set->Set(), 0, &tv);
+	if ( result > 0 ) {
+		m_in_set->Detected(&GSocket::Detected_Read);
+		m_out_set->Detected(&GSocket::Detected_Write);
+	}
+	
+}
+
+GSocketGUIFunctionsTable *CDaemonAppTraits::GetSocketGUIFunctionsTable()
+{
+	return m_table;
+}
+
+bool CAmuledGSocketFuncTable::OnInit()
+{
+	return true;
+}
+
+void CAmuledGSocketFuncTable::OnExit()
+{
+}
+
+bool CAmuledGSocketFuncTable::CanUseEventLoop()
+{
+	/*
+	 * FIXME: (lfroen) Not sure whether it's right.
+	 * I will review it later.
+	 */
+	return false;
+}
+
+bool CAmuledGSocketFuncTable::Init_Socket(GSocket *)
+{
+	return true;
+}
+
+void CAmuledGSocketFuncTable::Destroy_Socket(GSocket *)
+{
+}
+
+void CAmuledGSocketFuncTable::Install_Callback(GSocket *sock, GSocketEvent e)
+{
+	AddSocket(sock, e);
+}
+
+void CAmuledGSocketFuncTable::Uninstall_Callback(GSocket *sock, GSocketEvent e)
+{
+	RemoveSocket(sock, e);
+}
+
+void CAmuledGSocketFuncTable::Enable_Events(GSocket *socket)
+{
+	Install_Callback(socket, GSOCK_INPUT);
+	Install_Callback(socket, GSOCK_OUTPUT);
+}
+
+void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
+{
+	Uninstall_Callback(socket, GSOCK_INPUT);
+	Uninstall_Callback(socket, GSOCK_OUTPUT);
+}
+
+CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table) : m_lock(wxMUTEX_RECURSIVE)
+{
+	m_table = table;
+
+	m_lock.Unlock();
+}
+
+void CDaemonAppTraits::ScheduleForDestroy(wxObject *object)
+{
+	wxMutexLocker lock(m_lock);
+
+	//delete object;
+	m_sched_delete.push_back(object);
+}
+
+void CDaemonAppTraits::RemoveFromPendingDelete(wxObject *object)
+{
+	wxMutexLocker lock(m_lock);
+
+	for(std::list<wxObject *>::iterator i = m_sched_delete.begin();
+		i != m_sched_delete.end(); i++) {
+			if ( *i == object ) {
+				m_sched_delete.erase(i);
+				return;
+			}
+		}
+}
+
+void CDaemonAppTraits::DeletePending()
+{
+	wxMutexLocker lock(m_lock);
+
+	while ( !m_sched_delete.empty() ) {
+		std::list<wxObject *>::iterator i = m_sched_delete.begin();
+		wxObject *object = *i;
+		delete object;
+	}
+	//m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
 }
 
 CamuleDaemonApp::CamuleDaemonApp()
 {
 	wxPendingEventsLocker = new wxCriticalSection;
+
+	m_table = new CAmuledGSocketFuncTable();
+	
 	m_Exit = false;
+}
+
+wxAppTraits *CamuleDaemonApp::CreateTraits()
+{
+	return new CDaemonAppTraits(m_table);
 }
 
 int CamuleDaemonApp::OnRun()
 {
-	const uint32 uLoop = 100;
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
-		wxString warning = _("ERROR: amule daemon is useless when external connections disabled. "
-			"Change configuration either from GUI or by editing the config file");
+		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
+			"To enable External Connections, use either a normal aMule or set the key"
+			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
 		AddLogLineM(true, warning);
 		// Also to console.
-		printf((const char*)unicode2char(warning + wxT("\n")));
+		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
 		return 0;
 	}
 	
-	// lfroen: this loop is instead core timer.
-	uint32 msWait = uLoop;
 	while ( !m_Exit ) {
-		if ( msWait <= uLoop) {
-			wxThread::Sleep(msWait);
-		}
-		// lock data after sleep
-		uint32 msRun = GetTickCount();
-		CALL_APP_DATA_LOCK;
-
-		OnCoreTimer(*((wxEvent *)0));
+		m_table->RunSelect();
 		ProcessPendingEvents();
-		msRun = GetTickCount() - msRun;
-		msWait = uLoop - msRun;
+		((CDaemonAppTraits *)GetTraits())->DeletePending();
 	}
 
 	return 0;
 }
 
+bool CamuleDaemonApp::OnInit()
+{
+	printf("amuled: OnInit - starting timer\n");
+	if ( !CamuleApp::OnInit() ) {
+		return false;
+	}
+	core_timer = new CTimer(this,ID_CORETIMER);
+	
+	core_timer->Start(100);
+	
+	return true;
+}
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
+	if ( !enable_daemon_fork ) {
+		return 0;
+	}
+	printf("amuled: forking to background - see you\n");
 	//
 	// fork to background and detouch from controlling tty
 	// while redirecting stdout to /dev/null
 	//
+	for(int i_fd = 0;i_fd < 3; i_fd++) {
+		close(i_fd);
+	}
+  	int fd = open("/dev/null",O_RDWR);
+  	dup(fd);
+  	dup(fd);
+  	int pid = fork();
+
+	wxASSERT(pid != -1);
+
+  	if ( pid ) {
+  		exit(0);
+  	} else {
+		setsid();
+  	}
+  	
 	return 0;
 }
 
@@ -176,11 +449,9 @@ int CamuleDaemonApp::OnExit()
 	 * Stop all socket threads before entering
 	 * shutdown sequence.
 	 */
-	listensocket->Delete();
 	delete listensocket;
 	listensocket = 0;
 	if (clientudp) {
-		clientudp->Delete();
 		delete clientudp;
 		clientudp = NULL;
 	}
@@ -189,9 +460,9 @@ int CamuleDaemonApp::OnExit()
 	
 	// lfroen: delete socket threads
 	if (ECServerHandler) {
-		ECServerHandler->Delete();
 		ECServerHandler = 0;
 	}
+	core_timer->Stop();
 	
 	return CamuleApp::OnExit();
 }

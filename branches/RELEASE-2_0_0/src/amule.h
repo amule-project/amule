@@ -175,6 +175,12 @@ public:
 	// derived classes may override those
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
+	// Socket handlers
+	void ListenSocketHandler(wxSocketEvent& event);
+	void ServerUDPSocketHandler(wxSocketEvent& event);
+	void ServerSocketHandler(wxSocketEvent& event);
+	void ClientUDPSocketHandler(wxSocketEvent& event);
+
 	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 	
@@ -307,7 +313,10 @@ protected:
 	wxFile *applog;
 #endif
 	bool enable_stdout_log;
+	bool enable_daemon_fork;
 	wxString server_msg;
+
+	AMULE_TIMER_CLASS* core_timer;
 	
 private:
 	void CheckNewVersion(uint32 result);
@@ -334,16 +343,9 @@ public:
 #ifndef CLIENT_GUI
 
 class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
-	AMULE_TIMER_CLASS* core_timer;
 
     virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	
-	// Socket handlers
-	void ListenSocketHandler(wxSocketEvent& event);
-	void ServerUDPSocketHandler(wxSocketEvent& event);
-	void ServerSocketHandler(wxSocketEvent& event);
-	void ClientUDPSocketHandler(wxSocketEvent& event);
-
 	int OnExit();
 	bool OnInit();
 	
@@ -441,12 +443,57 @@ DECLARE_APP(CamuleRemoteGuiApp)
 
 #else /* ! AMULE_DAEMON */
 
+#include <wx/apptrait.h>
+#include <wx/socket.h>
+
+class CSocketSet;
+
+class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
+		CSocketSet *m_in_set, *m_out_set;
+		
+		wxMutex m_lock;
+	public:
+		CAmuledGSocketFuncTable();
+
+		void AddSocket(GSocket *socket, GSocketEvent event);
+		void RemoveSocket(GSocket *socket, GSocketEvent event);
+		void RunSelect();
+
+		virtual bool OnInit();
+		virtual void OnExit();
+		virtual bool CanUseEventLoop();
+		virtual bool Init_Socket(GSocket *socket);
+		virtual void Destroy_Socket(GSocket *socket);
+		virtual void Install_Callback(GSocket *socket, GSocketEvent event);
+		virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
+		virtual void Enable_Events(GSocket *socket);
+		virtual void Disable_Events(GSocket *socket);
+};
+
+class CDaemonAppTraits : public wxConsoleAppTraits {
+		CAmuledGSocketFuncTable *m_table;
+
+		wxMutex m_lock;
+		std::list<wxObject *> m_sched_delete;
+	public:
+		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
+	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+	    virtual void ScheduleForDestroy(wxObject *object);
+	    virtual void RemoveFromPendingDelete(wxObject *object);
+	    
+	    void DeletePending();
+};
+
 class CamuleDaemonApp : public CamuleApp {
 	bool m_Exit;
+
+	bool OnInit();
 	int OnRun();
 	int OnExit();
 	
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+	
+	CAmuledGSocketFuncTable *m_table;
 public:
 	CamuleDaemonApp();
 	
@@ -461,17 +508,13 @@ public:
 	wxMutex data_mutex;
 	
 	DECLARE_EVENT_TABLE()
+	
+	wxAppTraits *CreateTraits();
+
 };
 
-
-class CamuleLocker : public wxMutexLocker {
-	uint32 msStart;
-public:
-	CamuleLocker();
-	~CamuleLocker();
-};
-
-#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+//#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
+#define CALL_APP_DATA_LOCK
 
 DECLARE_APP(CamuleDaemonApp)
 

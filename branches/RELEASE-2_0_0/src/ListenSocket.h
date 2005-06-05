@@ -45,36 +45,20 @@
 #include <set> 
 #include <list>
 
-#ifdef AMULE_DAEMON
-#define CLIENT_REQ_SOCK_HANDLER_BASE wxThread
-#else
-#define CLIENT_REQ_SOCK_HANDLER_BASE wxEvtHandler
-#endif
-
 //------------------------------------------------------------------------------
 // CClientReqSocketHandler
 //------------------------------------------------------------------------------
 
 class CClientReqSocket;
 
-class CClientReqSocketHandler: public CLIENT_REQ_SOCK_HANDLER_BASE
+class CClientReqSocketHandler: public wxEvtHandler
 {
 public:
 	CClientReqSocketHandler(CClientReqSocket* socket = NULL);
 
-#ifdef AMULE_DAEMON
-public:
-	// lfroen: for some reason wx can't Wait for detached threads
-	~CClientReqSocketHandler();
-
-private:
-	CClientReqSocket* m_socket;
-	void *Entry();
-#else
 private:
 	void ClientReqSocketHandler(wxSocketEvent& event);
 	DECLARE_EVENT_TABLE()
-#endif
 };
 
 //------------------------------------------------------------------------------
@@ -130,9 +114,6 @@ public:
 
 	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
-#ifdef AMULE_DAEMON
-	void Destroy();
-#endif
 protected:
 	bool	 PacketReceived(CPacket* packet);
 
@@ -145,33 +126,12 @@ private:
 	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
 
 	CClientReqSocketHandler* my_handler;
-#ifdef AMULE_DAEMON
-	wxMutex handler_exit;
-#endif
 };
 
-#ifdef AMULE_DAEMON
-class CSocketGlobalThread : public wxThread {
-	void *Entry();
-	
-	std::set<CClientReqSocket *> socket_list;
-public:
-	CSocketGlobalThread(/*CListenSocket *socket*/);
-	void AddSocket(CClientReqSocket* sock);
-	void RemoveSocket(CClientReqSocket* sock);
-};
-#endif
 
 // CListenSocket command target
 class CListenSocket : public CSocketServerProxy
-#ifdef AMULE_DAEMON
-, public wxThread
-#endif
 {
-#ifdef AMULE_DAEMON
-	void *Entry();
-	CSocketGlobalThread global_sock_thread;
-#endif
 public:
 	CListenSocket(wxIPaddress &addr, const CProxyData *ProxyData = NULL);
 	~CListenSocket();

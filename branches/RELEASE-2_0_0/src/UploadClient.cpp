@@ -52,10 +52,6 @@
 #include "Logger.h"
 #include "Format.h"
 
-#ifndef AMULE_DAEMON
-	#include "TransferWnd.h"	// Needed for CTransferWnd
-#endif
-
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 

@@ -59,9 +59,6 @@ struct ServerUDPPacket {
 // Client to Server communication
 
 class CServerUDPSocket : public CDatagramSocketProxy
-#ifdef AMULE_DAEMON
-, wxThread
-#endif
 {
 	friend class CServerConnect;
 
@@ -90,9 +87,6 @@ private:
 	uint32	sendblen;
 	CServer* cur_server;
 	CTypedPtrList<CPtrList, ServerUDPPacket*> server_packet_queue;
-#ifdef AMULE_DAEMON
-	void *Entry();
-#endif
 };
 
 #endif // SERVERUDPSOCKET_H
