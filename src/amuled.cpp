@@ -170,6 +170,7 @@ void CSocketSet::AddSocket(GSocket *socket)
 		return;
 	}
 	m_fds[m_count] = fd;
+	m_fd_idx[fd] = m_count;
 	m_gsocks[fd] = socket;
 	m_count++;
 }
@@ -186,14 +187,17 @@ void CSocketSet::RemoveSocket(GSocket *socket)
 	
 	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
 	
-	for(int i = 0; i < m_count; i++) {
-		if ( m_fds[i] == fd ) {
-			m_fds[i] = m_fds[m_count-1];
-			m_gsocks[fd] = 0;
-			m_count--;
-			break;
-		}
+	int i = m_fd_idx[fd];
+	if ( i == 0xffff ) {
+		return;
 	}
+	wxASSERT(m_fds[i] == fd);
+	m_fds[i] = m_fds[m_count-1];
+	m_gsocks[fd] = 0;
+	m_fds[m_count-1] = 0;
+	m_fd_idx[fd] = 0xffff;
+	m_fd_idx[m_fds[i]] = i;
+	m_count--;
 }
 
 void CSocketSet::FillSet(int &max_fd)
