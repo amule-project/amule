@@ -8,7 +8,7 @@ Version 2.0.3 - Unnamed.
 
 	lfroen:
 		* New daemon socket code, event based. Improved reliability and 
-		  no 1024 sockets limit anymore.
+		  speed problems fixed.
 
 
 Version 2.0.2 - The " [Your Ad Here] " version.
