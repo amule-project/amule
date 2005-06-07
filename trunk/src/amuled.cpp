@@ -400,6 +400,8 @@ int CamuleDaemonApp::OnRun()
 		ProcessPendingEvents();
 		((CDaemonAppTraits *)GetTraits())->DeletePending();
 	}
+	
+	ShutDown();
 
 	return 0;
 }
