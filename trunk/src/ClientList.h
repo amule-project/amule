@@ -335,6 +335,11 @@ public:
 	 */
 	 void	SetChatState(uint64 client_id, uint8 state);
 
+	/*
+	 * Avoids unwanted clients to be forever in the client list
+	 */
+	void CleanUpClientList();
+
 	#warning KAD TODO: Implement buddies for kademlia lowid support (firewalled)
 	#warning This is actually a much bigger import, the kademlia process list.
 	#warning So, check usage - they are already ported
@@ -388,8 +393,6 @@ private:
 	//! The full lists of clients
 	IDMap	m_clientList;
 
-
-
 	//! This is the lists of clients that should be deleted
 	SourceList m_delete_queue;
 	
@@ -402,6 +405,9 @@ private:
 	std::map<uint32, CDeletedClient*> m_trackedClientsList;
 	//! This keeps track of the last time the tracked-list was pruned.
 	uint32	m_dwLastTrackedCleanUp;
+
+	//! This keeps track of the last time the client-list was pruned.
+	uint32 m_dwLastClientCleanUp;
 
 	//! List of unusable sources.
 	CDeadSourceList	m_deadSources;

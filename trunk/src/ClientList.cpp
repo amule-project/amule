@@ -90,6 +90,7 @@ CClientList::CClientList()
 {
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
+	m_dwLastClientCleanUp = 0;
 	m_pBuddy = NULL;
 	m_nBuddyStatus = Disconnected;
 }
@@ -796,6 +797,8 @@ void CClientList::Process()
 		}
 	}
 	#endif
+	
+	CleanUpClientList();
 }
 
 
@@ -1024,4 +1027,36 @@ void CClientList::AddToKadList(CUpDownClient* toadd) {
 	m_KadSources.insert(toadd); // This will take care of duplicates.
 	
 	#endif
+}
+
+void CClientList::CleanUpClientList(){
+	// We remove clients which are not needed any more by time
+	// this check is also done on CUpDownClient::Disconnected, however it will not catch all
+	// cases (if a client changes the state without beeing connected
+	//
+	// Adding this check directly to every point where any state changes would be more effective,
+	// is however not compatible with the current code, because there are points where a client has
+	// no state for some code lines and the code is also not prepared that a client object gets
+	// invalid while working with it (aka setting a new state)
+	// so this way is just the easy and safe one to go (as long as emule is basically single threaded)
+	const uint32 cur_tick = ::GetTickCount();
+	if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick ){
+		m_dwLastClientCleanUp = cur_tick;
+		uint32 cDeleted = 0;
+		for (IDMap::iterator it = m_clientList.begin(); it != m_clientList.end();/*nothing*/) {
+			IDMap::iterator it2 = it++; // Don't change this to a ++it!!!!
+			CUpDownClient* pCurClient = it2->second;
+			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
+				&& pCurClient->GetDownloadState() == DS_NONE
+				&& pCurClient->GetChatState() == MS_NONE
+				&& pCurClient->GetKadState() == KS_NONE
+				&& pCurClient->GetSocket() == NULL)
+			{
+				cDeleted++;
+				delete pCurClient; 
+				m_clientList.erase(it2);
+			}
+		}
+		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
+	}
 }
