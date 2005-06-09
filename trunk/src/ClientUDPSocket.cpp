@@ -290,8 +290,12 @@ SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend,
 
 				controlpacket_queue.RemoveHead();
 				delete cur_packet.packet;
-            }
-			delete[] sendbuffer;
+				delete[] sendbuffer;
+            } else {
+				// TODO: Needs better error handling, see SentTo
+				delete[] sendbuffer;
+				break;
+			}
 		} else {
 			controlpacket_queue.RemoveHead();
 			delete cur_packet.packet;
@@ -324,6 +328,11 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 		uint32 error = LastError();
 		if (error == wxSOCKET_WOULDBLOCK) {
 			m_bWouldBlock = true;
+		} else {
+			// TODO:
+			// Something bad is happening here, I got an infinate loop
+			// due to an error 4 (wxSOCKET_INVSOCK), so ...
+			printf("Error in CClientUDPSocket: %u\n", error);
 		}
 		return false;
 	}
