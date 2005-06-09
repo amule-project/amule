@@ -592,10 +592,8 @@ public:
 	bool		SendBuddyPingPong()		{ return m_dwLastBuddyPingPongTime < ::GetTickCount(); }
 	bool		AllowIncomeingBuddyPingPong()	{ return m_dwLastBuddyPingPongTime < (::GetTickCount()-(3*60*1000)); }
 	void		SetLastBuddyPingPongTime()	{ m_dwLastBuddyPingPongTime = (::GetTickCount()+(10*60*1000)); }	
-	#warning KAD TODO - review usage
 	EKadState	GetKadState() const		{ return m_nKadState; }
 	void		SetKadState(EKadState nNewS)	{ m_nKadState = nNewS; }
-	// END TODO
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
 	// Kad added by me
 	bool			SendBuddyPing();

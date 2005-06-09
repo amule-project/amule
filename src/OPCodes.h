@@ -159,6 +159,7 @@ enum {
 #define	CLIENTBANTIME				7200000 // 2h
 #define	TRACKED_CLEANUP_TIME			3600000 // 1 hour
 #define	KEEPTRACK_TIME				7200000 // 2h	//how long to keep track of clients which were once in the uploadqueue
+#define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 
 // you shouldn't change anything here if you are not really sure, or amule will probaly not work
 #define	MAXFRAGSIZE				1300

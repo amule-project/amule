@@ -243,6 +243,8 @@ CUpDownClient::~CUpDownClient()
 		CAICHHashSet::ClientAICHRequestFailed(this);
 	}
 
+	//theApp.clientlist->RemoveClient(this, wxT("Destructing client object"));
+	
 	if (m_Friend) {
 		m_Friend->UnLinkClient();
 		Notify_ChatRefreshFriend(m_Friend->GetIP(), m_Friend->GetPort(), wxEmptyString);
