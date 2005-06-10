@@ -1054,7 +1054,6 @@ void CClientList::CleanUpClientList(){
 			{
 				cDeleted++;
 				AddToDeleteQueue(pCurClient); 
-				m_clientList.erase(it2);
 			}
 		}
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
