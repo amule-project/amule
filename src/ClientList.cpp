@@ -1053,7 +1053,7 @@ void CClientList::CleanUpClientList(){
 				&& pCurClient->GetSocket() == NULL)
 			{
 				cDeleted++;
-				delete pCurClient; 
+				AddToDeleteQueue(pCurClient); 
 				m_clientList.erase(it2);
 			}
 		}
