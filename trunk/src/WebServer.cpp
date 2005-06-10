@@ -1802,7 +1802,7 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 	Out.Replace(wxT("[Session]"), sSession);
 
 	if ((_ParseURL(Data, wxT("saveprefs")) == wxT("true")) && IsSessionAdmin(Data,sSession) ) {
-		CECPacket prefs(EC_OP_SET_PREFERENCES);
+		CECPacket prefs(EC_OP_SET_PREFERENCES, EC_DETAIL_UPDATE);
 		CECEmptyTag filePrefs(EC_TAG_PREFS_FILES);
 		CECEmptyTag connPrefs(EC_TAG_PREFS_CONNECTIONS);
 		CECEmptyTag webPrefs(EC_TAG_PREFS_REMOTECTRL);
