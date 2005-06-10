@@ -93,6 +93,8 @@ class CRemoteConnect {
 
 class CPreferencesRem : public CPreferences {
 		CRemoteConnect *m_conn;
+		uint32 m_exchange_send_selected_prefs;
+		uint32 m_exchange_recv_selected_prefs;
 	public:
 		CPreferencesRem(CRemoteConnect *);
 		

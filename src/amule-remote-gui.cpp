@@ -524,6 +524,14 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 
 	CPreferences::BuildItemList( theApp.ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
+	
+	//
+	// Settings queried from remote side
+	//
+	m_exchange_send_selected_prefs = EC_PREFS_GENERAL | EC_PREFS_CONNECTIONS | EC_PREFS_MESSAGEFILTER |
+		EC_PREFS_ONLINESIG | EC_PREFS_SERVERS | EC_PREFS_FILES | EC_PREFS_SRCDROP |
+		EC_PREFS_SECURITY | EC_PREFS_CORETWEAKS;
+	m_exchange_recv_selected_prefs = m_exchange_send_selected_prefs | EC_PREFS_CATEGORIES;
 }
 
 bool CPreferencesRem::LoadRemote()
@@ -531,14 +539,15 @@ bool CPreferencesRem::LoadRemote()
 	//
 	// override local settings with remote
 	CECPacket req(EC_OP_GET_PREFERENCES);
-	// bring them all !
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(0xffffffff)));
+
+	// bring categories too
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
 	auto_ptr<CECPacket> prefs(m_conn->SendRecv(&req));
 	
 	if ( !prefs.get() ) {
 		return false;
 	}
-	((CEC_Prefs_Packet *)prefs.get())->Apply(false);
+	((CEC_Prefs_Packet *)prefs.get())->Apply();
 
 	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
 		for (int i = 0; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
@@ -566,6 +575,8 @@ bool CPreferencesRem::LoadRemote()
 
 void CPreferencesRem::SendToRemote()
 {
+	CEC_Prefs_Packet pref_packet(m_exchange_send_selected_prefs, EC_DETAIL_FULL);
+	m_conn->Send(&pref_packet);
 }
 
 //
