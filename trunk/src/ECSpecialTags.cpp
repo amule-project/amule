@@ -342,7 +342,7 @@ void CEC_Prefs_Packet::Apply()
 	//
 	// webserver doesn't transmit all boolean values
 	//
-	bool use_tag = (GetDetailLevel() == EC_DETAIL_UPDATE) : true : false;
+	bool use_tag = (GetDetailLevel() == EC_DETAIL_UPDATE);
 	
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != NULL) {
