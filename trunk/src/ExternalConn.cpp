@@ -1095,7 +1095,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data(), request->GetDetailLevel());
 			break;
 		case EC_OP_SET_PREFERENCES:
-			((CEC_Prefs_Packet *)request)->Apply(true);
+			((CEC_Prefs_Packet *)request)->Apply();
 			theApp.glob_prefs->Save();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
