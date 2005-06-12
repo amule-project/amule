@@ -498,7 +498,7 @@ enum {
 	EC_OP_GET_PREFERENCES,
 
 		/*!
-		 * \brief Setting the Preferences.
+		 * \brief Setting the preferences or reply to EC_OP_GET_PREFERENCES
 		 *
 		 * Setting preferences values to the provided ones.
 		 * If a tag is omitted, the respective preference value
@@ -527,27 +527,13 @@ enum {
 	EC_OP_SET_PREFERENCES,
 
 		/*!
-		 * \brief Preference values.
+		 * \brief Command to create new category
 		 *
-		 * It's tags and contents are depending on
-		 * what preferences were actually required.
 		 *
-		 * \par Possible tags:
-		 *	::EC_TAG_PREFS_CATEGORIES\n
-		 *	::EC_TAG_PREFS_GENERAL\n
-		 *	::EC_TAG_PREFS_CONNECTIONS\n
-		 *	::EC_TAG_PREFS_MESSAGEFILTER\n
-		 *	::EC_TAG_PREFS_REMOTECTRL\n
-		 *	::EC_TAG_PREFS_ONLINESIG\n
-		 *	::EC_TAG_PREFS_SERVERS\n
-		 *	::EC_TAG_PREFS_FILES\n
-		 *	::EC_TAG_PREFS_SRCDROP\n
-		 *	::EC_TAG_PREFS_DIRECTORIES\n
-		 *	::EC_TAG_PREFS_STATISTICS\n
-		 *	::EC_TAG_PREFS_SECURITY\n
-		 *	::EC_TAG_PREFS_CORETWEAKS
+		 * \par Child tags:
+		 *	::EC_TAG_CATEGORY\n
 		 */
-	EC_OP_PREFERENCES,
+	EC_OP_CREATE_CATEGORY,
 
 		/*!
 		 * \brief Retrieves the statistics graphs
