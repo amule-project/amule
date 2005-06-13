@@ -113,6 +113,11 @@
 	#include <wx/clipbrd.h>			// Needed for wxClipBoard	
 	#include <wx/msgdlg.h>			// Needed for wxMessageBox
 
+	#ifdef __WXMAC__
+		#include <CoreFoundation/CFBundle.h>
+		#include <wx/mac/corefoundation/cfstring.h>
+	#endif
+
 	#include "TransferWnd.h"		// Needed for CTransferWnd
 	#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 	#include "ServerWnd.h"			// Needed for CServerWnd
@@ -884,7 +889,26 @@ bool CamuleApp::OnInit()
 			}
 		}
 #else
-		webserver_pid = wxExecute(wxString(wxT("amuleweb --amule-config-file=")) + aMuleConfigFile);
+		wxString amulewebPath = wxT("amuleweb");
+
+#ifdef __WXMAC__
+		// For the Mac GUI application, look for amuleweb in the bundle
+		CFURLRef amulewebUrl = CFBundleCopyAuxiliaryExecutableURL(
+			CFBundleGetMainBundle(), CFSTR("amuleweb"));
+
+		if (amulewebUrl) {
+			CFURLRef absoluteUrl = CFURLCopyAbsoluteURL(amulewebUrl);
+			CFRelease(amulewebUrl);
+
+			if (absoluteUrl) {
+				CFStringRef amulewebCfstr = CFURLCopyFileSystemPath(absoluteUrl, kCFURLPOSIXPathStyle);
+				CFRelease(absoluteUrl);
+				amulewebPath = wxMacCFStringHolder(amulewebCfstr).AsString(wxLocale::GetSystemEncoding());
+			}
+		}
+#endif
+
+		webserver_pid = wxExecute(amulewebPath + wxT(" --amule-config-file=") + aMuleConfigFile);
 #endif
 		// give amuleweb chance to start or forked child to exit
 		// 1 second if enough time to fail on "path not found"

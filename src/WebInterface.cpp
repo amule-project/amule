@@ -44,6 +44,12 @@
 
 #include <stdio.h>
 
+#ifdef __WXMAC__
+	#include <CoreFoundation/CFBundle.h>
+	#include <ApplicationServices/ApplicationServices.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+#endif
+
 #include "ECFileConfig.h"	// Needed for CECFileConfig
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
@@ -264,6 +270,46 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	wxString dir;
 
 	DebugShow(wxT("looking for template: ") + templateName + wxT("\n"));
+
+#ifdef __WXMAC__
+	CFURLRef amuleBundleUrl;
+	OSStatus status = LSFindApplicationForInfo(
+		kLSUnknownCreator,
+		// This magic string is the bundle identifier in aMule.app's Info.plist
+		CFSTR("org.amule.aMule"),
+		NULL,
+		NULL,
+		&amuleBundleUrl
+		);
+	if (status == noErr && amuleBundleUrl) {
+		CFBundleRef amuleBundle = CFBundleCreate(NULL, amuleBundleUrl);
+		CFRelease(amuleBundleUrl);
+		
+		if (amuleBundle) {
+			CFURLRef webserverDirUrl = CFBundleCopyResourceURL(
+				amuleBundle,
+				CFSTR("webserver"),
+				NULL,
+				NULL
+				);
+			CFRelease(amuleBundle);
+			if (webserverDirUrl) {
+				CFURLRef absoluteURL = CFURLCopyAbsoluteURL(webserverDirUrl);
+				CFRelease(webserverDirUrl);
+				if (absoluteURL) {
+					CFStringRef pathString = CFURLCopyFileSystemPath(absoluteURL, kCFURLPOSIXPathStyle);
+					CFRelease(absoluteURL);
+					dir = wxMacCFStringHolder(pathString).AsString(wxLocale::GetSystemEncoding());
+					if (CheckDirForTemplate(dir, templateName)) {
+						templateDir = dir;
+						return true;
+					}
+				}
+			}
+		}
+	}
+#endif
+
 	dir = otherfunctions::GetConfigDir() + wxT("webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;

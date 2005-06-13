@@ -2,6 +2,9 @@ Version 2.0.3 - Unnamed.
 ----------
 2005-06-??
 
+	ken:
+		* Enabled amuleweb to work from within the Mac application bundle
+
 	Kry:
 		* Fixed wrong MD5 hash calculation on 64 bits arch.
 		  This fixes storing the wrong EC/webserver password on config file.
