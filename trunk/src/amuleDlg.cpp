@@ -96,6 +96,9 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#ifndef CLIENT_GUI
+#include "PartFileConvert.h"
+#endif
 
 #ifndef __WXMSW__
 #include "aMule.xpm"
@@ -113,8 +116,11 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONKAD, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_ABOUT, CamuleDlg::OnAboutButton)
-	
+
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
+#ifndef CLIENT_GUI
+	EVT_TOOL(ID_BUTTONIMPORT, CamuleDlg::OnImportButton)
+#endif
 
 	EVT_TOOL(ID_BUTTONCONNECT, CamuleDlg::OnBnConnect)
 
@@ -123,10 +129,9 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 	EVT_BUTTON(IDC_SHOWSTATUSTEXT, CamuleDlg::OnBnStatusText)
-	
 
 	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
-	
+
 	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
 
 END_EVENT_TABLE()
@@ -144,11 +149,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	
 	last_iconizing = 0;
 	prefs_dialog = NULL;
-	
+
 	#ifndef __SYSTRAY_DISABLED__
 		m_wndTaskbarNotifier = NULL;
 	#endif
-	
+
 	wxInitAllImageHandlers();
 	imagelist.Create(16,16);
 	
@@ -223,6 +228,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
 	#ifndef __USE_KAD__
 	m_wndToolbar->DeleteTool(ID_BUTTONKAD);
+	#endif
+	#if 1 //#ifdef CLIENT_GUI
+	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
 	#endif
 
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
@@ -544,6 +552,15 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 		}
 	}
 }
+
+#ifndef CLIENT_GUI
+void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
+{
+	if ( is_safe_state ) {
+		CPartFileConvert::ShowGUI(this);
+	}
+}
+#endif
 
 CamuleDlg::~CamuleDlg()
 {

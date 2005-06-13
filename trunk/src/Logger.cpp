@@ -92,7 +92,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logServer,		wxT("Servers") ),
 	CDebugCategory( logProxy,		wxT("Proxy") ),
 	CDebugCategory( logSearch,		wxT("Searching") ),
-	CDebugCategory( logServerUDP,	wxT("ServerUDP") )
+	CDebugCategory( logServerUDP,		wxT("ServerUDP") ),
+	CDebugCategory( logPfConvert,		wxT("PartFileConvert") )
 };
 
 

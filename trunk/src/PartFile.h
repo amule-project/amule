@@ -63,6 +63,14 @@ class CED2KFileLink;
 // This should fix it.
 #define   PARTMET_BAK_EXT wxT(".bak")
 
+enum EPartFileFormat {
+	PMT_UNKNOWN	= 0,
+	PMT_DEFAULTOLD,
+	PMT_SPLITTED,
+	PMT_NEWOLD,
+	PMT_SHAREAZA,
+	PMT_BADFORMAT
+};
 
 struct PartFileBufferedData
 {
@@ -373,6 +381,7 @@ private:
 friend class CPartFile_Encoder;
 friend class completingThread;
 friend class CDownQueueRem;
+friend class CPartFileConvert;
 };
 
 class completingThread : public wxThread
