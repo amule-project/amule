@@ -373,41 +373,11 @@ bool CamuleGuiApp::OnInit()
 	// This tells the OS to notice the ed2kHelperScript.app inside aMule.app.
 	// ed2kHelperScript.app describes itself (Info.plist) as handling ed2k URLs.
 	// So, from then on the OS will know to pass ed2k URLs to the helper app.
-	CFURLRef bundleUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-	
-	if (bundleUrl)
-	{
-		CFURLRef contentsFolderUrl =
-			CFURLCreateCopyAppendingPathComponent(NULL, bundleUrl, CFSTR("Contents"), true);
-
-		if (contentsFolderUrl)
-		{
-			CFURLRef macOsFolderUrl =
-				CFURLCreateCopyAppendingPathComponent(NULL, contentsFolderUrl, CFSTR("MacOS"), true);
-	
-			if (macOsFolderUrl)
-			{
-				CFURLRef ed2kHelperUrl = CFURLCreateCopyAppendingPathComponent
-					(
-					NULL,
-					macOsFolderUrl,
-					CFSTR("ed2kHelperScript.app"),
-					false
-					);
-	
-				if (ed2kHelperUrl)
-				{
-					LSRegisterURL(ed2kHelperUrl, false);
-					CFRelease(ed2kHelperUrl);
-				}
-	
-				CFRelease(macOsFolderUrl);
-			}
-
-			CFRelease(contentsFolderUrl);
-		}
-
-		CFRelease(bundleUrl);
+	CFURLRef ed2kHelperUrl = CFBundleCopyAuxiliaryExecutableURL(
+		CFBundleGetMainBundle(), CFSTR("ed2kHelperScript.app"));
+	if (ed2kHelperUrl) {
+		LSRegisterURL(ed2kHelperUrl, true);
+		CFRelease(ed2kHelperUrl);
 	}
 #endif
 
