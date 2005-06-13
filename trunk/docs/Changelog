@@ -5,6 +5,9 @@ Version 2.0.3 - The "???" version
 	GonoszTopi:
 		* Ported the partfile importer from eMule.
 
+	ken:
+		* Enabled amuleweb to work from within the Mac application bundle
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
