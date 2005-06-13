@@ -2,6 +2,9 @@ Version 2.0.3 - The "???" version
 ----------
 2005-06-??
 
+	GonoszTopi:
+		* Ported the partfile importer from eMule.
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always

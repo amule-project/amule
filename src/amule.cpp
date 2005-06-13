@@ -106,6 +106,7 @@
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
+#include "PartFileConvert.h"
 
 #ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
@@ -252,6 +253,8 @@ int CamuleApp::OnExit()
 		printf("Now, exiting main app...\n");
 	}
 
+	CPartFileConvert::StopThread();
+
 	// From wxWidgets docs, wxConfigBase:
 	// ...
 	// Note that you must delete this object (usually in wxApp::OnExit)
@@ -281,8 +284,7 @@ int CamuleApp::OnExit()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown: Terminating core.\n");
 	}
-	
-	
+
 	delete serverlist;
 	serverlist = NULL;
 	

@@ -1,3 +1,4 @@
-amule    ICON    "amule.ico"
+amule	ICON	"amule.ico"
+convert	ICON	"convert.ico"
 
 #include "wx/msw/wx.rc"

@@ -129,6 +129,16 @@ public:
 	
 	
 	/**
+	 * Adds an existing partfile to the queue.
+	 *
+	 * @param newfile The file to add.
+	 * @param paused If the file should be stopped when added.
+	 * @param category The category to assign to the file.
+	 */
+	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
+
+
+	/**
 	 * Removes the specified file from the queue.
 	 *
 	 * @param toremove A pointer to the file object to be removed.
@@ -320,15 +330,6 @@ private:
 	 */
 	void	DoSortByPriority();
 	
-	/**
-	 * Adds an existing partfile to the queue.
-	 *
-	 * @param newfile The file to add.
-	 * @param paused If the file should be stopped when added.
-	 * @param category The category to assign to the file.
-	 */
-	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
-
 	/**
 	 * Checks that there is enough free spaces for temp-files at that specified path.
 	 *

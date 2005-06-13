@@ -352,8 +352,6 @@ void CPartFile::CreatePartFile()
 
 uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& filename, bool from_backup, bool getsizeonly)
 {
-	#warning getsizeonly is ignored because we do not import yet
-	
 	bool isnewstyle = false;
 	uint8 version,partmettype=PMT_UNKNOWN;
 	
@@ -423,16 +421,17 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	
 	try {
 		version = metFile.ReadUInt8();
-		if (version != PARTFILE_VERSION  && version!= PARTFILE_SPLITTEDVERSION ){
+		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION){
 			metFile.Close();
+			//if (version == 83) return ImportShareazaTempFile(...)
 			AddLogLineM(false, CFormat( _("Error: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
 				% m_strFileName );
 			return false;
 		}
 
-		isnewstyle=(version== PARTFILE_SPLITTEDVERSION);
-		partmettype= isnewstyle?PMT_SPLITTED:PMT_DEFAULTOLD;
+		isnewstyle = (version == PARTFILE_SPLITTEDVERSION);
+		partmettype = isnewstyle ? PMT_SPLITTED : PMT_DEFAULTOLD;
 		if (!isnewstyle) {
 			uint8 test[4];
 			metFile.Seek(24, CFile::start);
@@ -675,9 +674,9 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 				delete[] buffer;
 			}
 			bool flag=false;
-			if (m_abyFileHash == checkhash)
+			if (m_abyFileHash == checkhash) {
 				flag=true;
-			else{
+			} else {
 				hashlist.Clear();
 				flag=false;
 			}

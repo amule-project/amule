@@ -89,7 +89,9 @@ enum DebugType
 	//! Warning/Errors related to Kademlia Main Thread
 	logKadMain,
 	//! Warning/Errors related to Kademlia Preferences
-	logKadPrefs	
+	logKadPrefs,
+	//! Warnings/Errors related to partfile importer
+	logPfConvert
 };
 
 

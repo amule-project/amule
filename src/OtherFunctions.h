@@ -295,12 +295,6 @@ wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
 wxString GetFileTypeByName(const wxString &strFileName);
 ///////////////////////////////////////////////////////////////////////////////
 
-
-const uint8 PMT_UNKNOWN=0;
-const uint8 PMT_DEFAULTOLD=1;
-const uint8 PMT_SPLITTED=2;
-const uint8 PMT_NEWOLD=3;
-
 // md4cmp -- replacement for memcmp(hash1,hash2,16)
 // Like 'memcmp' this function returns 0, if hash1==hash2, and !0, if hash1!=hash2.
 // NOTE: Do *NOT* use that function for determining if hash1<hash2 or hash1>hash2.

@@ -170,6 +170,7 @@ amule_SOURCES = \
 	OtherFunctions.cpp \
 	Packet.cpp \
 	PartFile.cpp \
+	PartFileConvert.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Proxy.cpp \
@@ -234,6 +235,7 @@ amuled_SOURCES = \
         OtherFunctions.cpp \
         Packet.cpp \
         PartFile.cpp \
+	PartFileConvert.cpp \
         Preferences.cpp \
 	Proxy.cpp \
         SafeFile.cpp \
@@ -418,6 +420,7 @@ noinst_HEADERS = AddFileThread.h \
 		 OtherStructs.h \
 		 Packet.h \
 		 PartFile.h \
+		 PartFileConvert.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Proxy.h \
