@@ -3966,6 +3966,9 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 		case 14:
 			IsNotFiltered = GetFiletype(GetFileName()) == ftText;
 			break;
+		case 15:
+			IsNotFiltered = !IsStopped() && GetStatus() != PS_PAUSED;
+			break;
 	}
 	
 	return IsNotFiltered && IsInCat;
