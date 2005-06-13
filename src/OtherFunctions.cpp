@@ -769,13 +769,14 @@ wxString GetCatTitle(int catid)
 		case 5:  return _("Downloading");
 		case 6:  return _("Erroneous");
 		case 7:  return _("Paused");
-		case 8:  return _("Stopped");
+		case 8:  return _("Stopped");		
 		case 9:  return _("Video");
 		case 10: return _("Audio");
 		case 11: return _("Archive");
 		case 12: return _("CD-Images");
 		case 13: return _("Pictures");
 		case 14: return _("Text");
+		case 15: return _("Active");		
 		default: return wxT("?");
 	}
 }
