@@ -103,7 +103,7 @@ public:
 
 #ifndef CLIENT_GUI
 
-class wxGauge;
+#include <wx/gauge.h>
 
 class CPartFileConvertDlg : public wxDialog
 {

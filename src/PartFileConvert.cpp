@@ -42,7 +42,6 @@
 #ifndef AMULE_DAEMON
 #include "muuli_wdr.h"
 #include <wx/dirdlg.h>
-#include <wx/gauge.h>
 #include <wx/icon.h>
 #include <wx/listctrl.h>
 #include <wx/msgdlg.h>
