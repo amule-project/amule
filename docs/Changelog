@@ -4,6 +4,8 @@ Version 2.0.3 - Unnamed.
 
 	ken:
 		* Enabled amuleweb to work from within the Mac application bundle
+		* Fixed Online Signature not actually being enabled when user sets the
+		  preference
 
 	Kry:
 		* Fixed wrong MD5 hash calculation on 64 bits arch.
