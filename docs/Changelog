@@ -7,6 +7,8 @@ Version 2.0.3 - The "???" version
 
 	ken:
 		* Enabled amuleweb to work from within the Mac application bundle
+		* Fixed Online Signature not actually being enabled when user sets the
+		  preference
 
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
