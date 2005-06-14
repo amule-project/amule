@@ -546,7 +546,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.sharedfiles->Reload(false);
 	}
 
-	if ( CfgChanged(IDC_OSDIR) ) {
+	if ( CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG) ) {
 		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 
 		// Build the filenames for the two OS files
