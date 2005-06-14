@@ -2286,9 +2286,9 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		ClearPriority();
 		// TODO: What the f*** if it is already known?
 		theApp.knownfiles->SafeAddKFile(this);
+		SetAutoUpPriority(thePrefs::GetNewAutoUp());
 		// remove the file from the suspended uploads list
-		theApp.uploadqueue->ResumeUpload(GetFileHash());
-		SetAutoUpPriority(false);
+		theApp.uploadqueue->ResumeUpload(GetFileHash());		
 		theApp.downloadqueue->RemoveFile(this);
 		theApp.sharedfiles->SafeAddKFile(this);
 		UpdateDisplayedInfo();
