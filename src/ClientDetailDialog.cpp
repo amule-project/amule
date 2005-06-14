@@ -91,7 +91,12 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DRATING,wxStaticText)->SetLabel(_("Unknown"));;
 	}	
 
-	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
+
+	wxString OSInfo = m_client->GetClientOSInfo();
+	if (!OSInfo.IsEmpty())
+	    CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr()+wxT(" (")+OSInfo+wxT(")"));
+	else
+	    CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
 	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
 	CastChild(ID_DID,wxStaticText)->SetLabel(wxString::Format(wxT("%u (%s)"),ENDIAN_NTOHL(m_client->GetIP()),(m_client->HasLowID() ? _("LowID"):_("HighID"))));
@@ -174,10 +179,6 @@ bool CClientDetailDialog::OnInitDialog() {
 	}
 	Layout();
 	
-	wxString OSInfo = m_client->GetClientOSInfo();
-	if (!OSInfo.IsEmpty()) {
-		wxMessageBox(CFormat(_("aMule O.S. info is: %s")) % OSInfo);
-	}
 	
 	return true;
 }
