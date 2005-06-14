@@ -1307,6 +1307,7 @@ void CKnownFile::UpdateUpPartsFrequency( CUpDownClient* client, bool increment )
 
 void CKnownFile::ClearPriority() {
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
+	if ( !m_bAutoUpPriority ) return;
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	UpdateAutoUpPriority();
 }
