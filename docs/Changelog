@@ -9,7 +9,7 @@ Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 
 	Kry:
 		* Fixed #471 "compile error". Should compile on GCC4 again.
-		* Fixed Solaris compilation erroron XParseGeometry.
+		* Fixed Solaris compilation error on XParseGeometry.
 		* Fixed wrong MD5 hash calculation on 64 bits arch.
 		  This fixes storing the wrong EC/webserver password on config file.
 		* Fixed unneeded GTK libs usage on aMule remote GUI.
