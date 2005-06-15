@@ -1,0 +1,101 @@
+[Project]
+name=alc
+type=5
+defaultConfig=1
+
+[Debug]
+// compiler 
+workingDirectory=
+arguments=
+intermediateFilesDirectory=Debug
+outputFilesDirectory=Debug
+compilerPreprocessor=_X86_=1, WIN32,_WIN32,WINVER=0x0400,__WIN95__,__GNUWIN32__,__WIN32__,STRICT,__WXMSW__,__WINDOWS__,__WXDEBUG__
+extraCompilerOptions=-DHAVE_CONFIG_H -march=i686 -fomit-frame-pointer  -D__WXMSW__ -mthreads -DNO_GCC_PRAGMA -DWANT_KDE_THEME
+compilerIncludeDirectory=..\..\..\,C:\MinGWStudio\lib\wx\include\msw-unicode-release-static-2.5, C:\MinGWStudio\include\wx-2.5
+noWarning=0
+defaultWarning=0
+allWarning=1
+extraWarning=0
+isoWarning=0
+warningsAsErrors=0
+debugType=1
+debugLevel=2
+exceptionEnabled=0
+runtimeTypeEnabled=0
+optimizeLevel=0
+
+// linker
+libraryPath=
+outputFilename=Debug\alc.exe
+libraries=wx_mswu_xrc-2.5, wx_mswu_html-2.5, wx_mswu_adv-2.5, wx_mswu_core-2.5, wx_baseu_xml-2.5, wx_baseu_net-2.5, wx_baseu-2.5, rpcrt4, oleaut32, ole32, uuid, winspool, winmm, shell32, comctl32, comdlg32, ctl3d32, advapi32, wsock32, gdi32, wxregexu-2.5, wxexpat-2.5, wxtiff-2.5, wxjpeg-2.5, wxpng-2.5, wxzlib-2.5
+extraLinkerOptions=-mthreads  -Wl,--subsystem,windows -mwindows
+ignoreStartupFile=0
+ignoreDefaultLibs=0
+stripExecutableFile=0
+
+// archive
+extraArchiveOptions=
+
+//resource
+resourcePreprocessor=__WIN32__,__WIN95__,__GNUWIN32__
+resourceIncludeDirectory=C:\MinGWStudio\Include\wx-2.5
+extraResourceOptions=
+
+[Release]
+// compiler 
+workingDirectory=
+arguments=
+intermediateFilesDirectory=Release
+outputFilesDirectory=Release
+compilerPreprocessor=_X86_=1, WIN32,_WIN32,WINVER=0x0400,__WIN95__,__GNUWIN32__,__WIN32__,STRICT,__WXMSW__,__WINDOWS__
+extraCompilerOptions=-DHAVE_CONFIG_H -march=i686 -fomit-frame-pointer  -D__WXMSW__ -mthreads -DNO_GCC_PRAGMA -DWANT_KDE_THEME
+compilerIncludeDirectory=..\..\..\,C:\MinGWStudio\lib\wx\include\msw-unicode-release-static-2.5, C:\MinGWStudio\include\wx-2.5
+noWarning=0
+defaultWarning=0
+allWarning=1
+extraWarning=0
+isoWarning=0
+warningsAsErrors=0
+debugType=0
+debugLevel=1
+exceptionEnabled=0
+runtimeTypeEnabled=0
+optimizeLevel=2
+
+// linker
+libraryPath=
+outputFilename=Release\alc.exe
+libraries=wx_mswu_xrc-2.5, wx_mswu_html-2.5, wx_mswu_adv-2.5, wx_mswu_core-2.5, wx_baseu_xml-2.5, wx_baseu_net-2.5, wx_baseu-2.5, rpcrt4, oleaut32, ole32, uuid, winspool, winmm, shell32, comctl32, comdlg32, ctl3d32, advapi32, wsock32, gdi32, wxregexu-2.5, wxexpat-2.5, wxtiff-2.5, wxjpeg-2.5, wxpng-2.5, wxzlib-2.5
+extraLinkerOptions=-mthreads  -Wl,--subsystem,windows -mwindows
+ignoreStartupFile=0
+ignoreDefaultLibs=0
+stripExecutableFile=1
+
+// archive
+extraArchiveOptions=
+
+//resource
+resourcePreprocessor=__WIN32__,__WIN95__,__GNUWIN32__
+resourceIncludeDirectory=C:\MinGWStudio\Include\wx-2.5
+extraResourceOptions=
+
+[Source]
+1=src\alcpix.cpp
+2=src\alc.cpp
+3=src\alcframe.cpp
+4=src\md4.cpp
+5=src\ed2khash.cpp
+[Header]
+1=src\alcpix.h
+2=src\alc.h
+3=src\alcframe.h
+4=src\bithelp.h
+5=src\md4.h
+6=src\ed2khash.h
+[Resource]
+1=alc.rc
+[Other]
+1=alc.desktop
+2=Makefile.am
+3=src\Makefile.am
+[History]

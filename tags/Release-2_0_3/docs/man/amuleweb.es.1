@@ -1,0 +1,175 @@
+.TH AMULEWEB 1 "Marzo 2005" "aMule webserver v2.0.0" "Utilidades de aMule"
+.SH NOMBRE
+amuleweb \- servidor web de aMule
+.SH SYNOPSIS
+.B amuleweb
+.RB [ \-h " " \fI<host> ]
+.RB [ \-p " " \fI<puerto> ]
+.RB [ \-P " " \fI<contraseña> ]
+.RB [ \-f " " \fI<localización> ]
+.RB [ \-l " " \fI<lenguaje> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-w ]
+.RB [ \-t " " \fI<nombre> ]
+.RB [ \-s " " \fI<puerto> ]
+.RB [ \-z ]
+.RB [ \-Z ]
+.RB [ \-A " " \fI<contraseña> ]
+.RB [ \-G " " \fI<contraseña> ]
+.RB [ \-a ]
+.RB [ \-d ]
+.RB [ \-L ]
+.PP
+.B amuleweb
+.RB [ \-f " " \fI<localización> ]
+.B \-\-create-config-from=\fI<localización>
+.PP
+.B amuleweb
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.PP
+.RB amuleweb \-\-amule\-config\-file=\fI<localización>
+.SH DESCRIPCIÓN
+\fBamuleweb\fR permite administrar aMule a través de un navegador.
+Se puede iniciar amuleweb junto con \fBamule\fR(1), por separado, o en cualquier momento.
+Sus opciones se pueden especificar por linea de comandos o mediante su archivo de configuración.
+Las opciones pasadas a través de la linea de comandos tienen prioridad sobre las indicadas en el archivo de configuración.
+.PP
+\fBamulewebDLG\fR es el clon de \fBamuleweb\fR con interfaz gráfica. Su funcionamiento es exactamente igual.
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
+Host donde aMule esta siendo ejecutado (por defecto: \fIlocalhost\fR).
+\fI<host>\fR puede ser una IP o una dirección DNS.
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<puerto>\fR
+El puerto abierto en aMule's para conexiones de External Connections. Puede consultarlo en Preferencias->Controles Remotos (por defecto: \fI4712\fR)
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<contraseña>\fR
+Constraseña para External Connections
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<localización>\fR
+Usar el arhivo de configuración indicado.
+Por defecto, \fI~/.aMule/remote.conf\fR
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
+Establece el lenguaje del programa.
+Ver la sección \fBNOTAS\fR para la descripción del parámetro \fI<lenguaje>\fR.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+No mostrar nada en la consola.
+Probablemente interese también el parámetro \fB\-q\fR para ejecutar esta aplicación como demonio,
+Por ejemplo: '\fBamuleweb \-q &\fR'
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Mostrar información adicional \- mostrar también información para depuración.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+Crear el archivo de configuración y salir.
+.TP
+\fB\-\-create\-config\-from\fR=\fI<localización>\fR
+Crear el archivo de configuración basándose en \fI<localización>\fR y salir. \fI<localización>\fR debe ser un archivo de configuración de aMule.
+.TP
+\fB\-t\fR, \fB\-\-template\fR=\fI<nombre>\fR
+Cargar la piel \fI<nombre>\fR. Ver la sección
+.B PIELES
+.TP
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<puerto>\fR
+El puerto HTTP del servidor web. Este es el puerto al que debe direccionar su navegador web (por defecto: \fI4711\fR)
+.TP
+\fB\-z\fR, \fB\-\-enable\-gzip\fR
+Emplear compresión gzip en las transferencias HTTP para reducir el ancho de banda usado.
+.TP
+\fB\-Z\fR, \fB\-\-disable\-gzip\fR
+Deshabilitar la compresión gzip en las transferencias HTTP (esta es la opción por defecto)
+.TP
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<contraseña>\fR
+Definir la contraseña de acceso total al servidor web.
+.TP
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<contraseña>\fR
+Definir la contraseña de acceso al servidor web en modo "invitado".
+.TP
+\fB\-a\fR, \fB\-\-allow\-guest\fR
+Permitir accesos al servidor web en modo "invitado".
+.TP
+\fB\-d\fR, \fB\-\-deny\-guest\fR
+Denegar accesos al servidor web en modo "invitado" (esta es la opción por defecto)
+.TP
+\fB\-L\fR, \fB\-\-load\-settings\fR
+Cargar/guardar la configuración de control remoto de aMule de/a la configuración de aMule.
+Esto hace que amuleweb ignore las parámetros que se le pasen y el archivo de configuración, en beneficio de lo que figura en la configuración de aMule.
+Al guardar las preferencias, ninguna se guardará en el archivo de configuraciñon del programa, sino en el de aMule.
+(Por supuesto, esto solo es válido para aquellas preferencias que pueden ser definidas desde Preferencias->Controles Remotos)
+.TP
+\fB\-\-amule\-config\-file\fR=\fI<localización>\fR
+Localización del archivo de configuración de aMule.
+.B NO USAR DIRECTAMENTE!
+aMule usa esta opción cuando se le pide ejecutar amuelweb al iniciarse.
+Esto hace que amuleweb ignore las parámetros que se le pasen y el archivo de configuración, las preferencias se leerán del archivo de configuracin especificado, e implica también las opciones \fB\-q \-L\fR.
+.TP
+\fB\-\-help\fR
+Mostrar información del modo de empleo y salir.
+.TP
+\fB\-\-version\fR
+Mostrar la versión del programa y salir.
+.SH NOTAS
+.SS Localizaciones
+Para todas las opciones que reuieran un parámetro \fI<localización>\fR, si la \fIlocalización\fR no contiene el nombre de ningun directorio (por ejemplo, si es simplemente el nombre de un archivo), entonces se tomará como directorio contenedor de ese archivo el directorio de configuración de aMule, \fI~/.aMule\fR.
+.SS Lenguajes
+El parámetro \fI<lenguaje>\fR para la opción \fB\-l\fR tiene el siguiente formato: \fIlenguaje\fR[\fB_\fILENGUAJE\fR][\fB.\fIcodificación\fR][\fB@\fImodificador\fR]
+donde \fIlenguaje\fR es el lenguaje principal, \fILENGUAJE\fR es el sublenguaje/territorio, \fIcodificación\fR es el conjunto de caracteres a usar y \fImodificador\fR
+"permite al usuario seleccionar una instancia específica de los datos ed localización dentro de una sola categoría".
+.PP
+Por ejemplo, los siguientes ejemplos son válidos:
+.br
+fr
+.br
+fr_FR
+.br
+de_DE.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+A pesar de que todos los ejemplos anteriores son válidos como definiciones de lenguajes, \fIcodificación\fR y \fImodificador\fR siguen sin ser usados.
+.PP
+Además de lo especificado en el formato anterior, tambien puede especificar el nombre completo de un lenguaje en inglés - así pues, \fB\-l german\fR también es válido y es equivalente a \fB-l de_DE\fR.
+.PP
+Si no se define ningún lenguaje, ni en los parámetros del programa ni en el archivo de configuración, se usará el predeterminado del sistema.
+.SH PIELES
+\fBamuleweb\fR soporta diferentes pieles (aspectos de la interfaz).
+Puede especificar que piel debe usar amuleweb mediante la opción \fB\-t\fR en la linea de comandos.
+Los templates se buscan de dos lugares: primero en \fI~/.aMule/webserver/\fR y, en caso de no encontrarlo, en \fI$(pkgdatadir)/webserver/\fR 
+(\fI$(pkgdatadir)\fR es el directorio donde se encuentran los datos independientes de la plataforma en su sistema, normalmente algo parecido a /usr/share/amule).
+Cada piel debe encontrase en un directorio con el nombre de la piel y este directorio debe contener todos los archivos que esta piel necesite.
+El archivo indice de la piel debe llamarse aMule.tmpl.
+.PP
+Por ejemplo, la piel por defecto (llamada 'default') se encuentra en webserver/default/, y este directorio contiene aMule.tmpl entre otros muchos archivos.
+.SH ARCHIVOS
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH EJEMPLO
+Normalmente la primera ejecución de amuleweb se hace de la siguiente manera:
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
+.PP
+o
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Esto salva su configuración en \fI$HOME/.aMule/remote.conf\fR, de manera que en sucesivas ejecuciones bastará con:
+.PP
+.B amuleweb
+.PP
+Of course, you may specify any more or less options on the first example line, and you may also totally omit it.
+.SH BUGS
+Si descubre bugs, por favor comuníquelos en (\fIhttp://forum.amule.org/\fR), o en nuestro bugtracker (\fIhttp://bugs.amule.org/\fR).
+Por favor, no comunique bugs por e-mail, ni a nuestro maillist ni directamente a ningún miembro del equipo de aMule.
+.SH COPYRIGHT
+aMule, y todas las utilidades que con el vienen, se distribuyen bajo la licencia GPL.
+.SH VER
+\fBamule\fR(1), \fBamulecmd\fR(1)
