@@ -2,19 +2,20 @@
 # translation of it.po to Italian
 # translation of source_strings.po to
 # aMule i18n resource file.
-# Copyright (C) 2004 aMule Team
+# Copyright (C) 2004,2005 aMule Team
 # This file is distributed under the same license as the PACKAGE package.
-# Kry <elkry@users.sourceforge.net>, 2004.
-# ilbuio <ilbuio.bnf@iol.it>, 2004.
+# Kry <elkry@users.sourceforge.net>, 2004,2005.
+# ilbuio <ilbuio.bnf@iol.it>, 2004,2005.
 # AnonimoVeneziano <voloterreno@tin.it>, 2004.
-# GhePeU <ghepeu@virgilio.it>, 2004.
+# GhePeU <ghepeu@virgilio.it>, 2004,2005.
+
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-04-05 06:14+0200\n"
-"PO-Revision-Date: 2005-04-07 23:48+0100\n"
-"Last-Translator: ilbuio <ilbuio.bnf@iol.it>\n"
+"PO-Revision-Date: 2005-05-12 21:30+0100\n"
+"Last-Translator: GhePeU <ghepeu@virgilio.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr "Hasher: hash terminato per il file: %s"
 
 #: src/AddFileThread.cpp:346
 msgid "Hasher: A thread has died."
-msgstr "Hasher: un thread è morto"
+msgstr "Hasher: un thread è terminato"
 
 #: src/AddFriend.cpp:54
 msgid "Add a Friend"
@@ -79,7 +80,7 @@ msgstr "Thread AICH: thread di sincronizzazione avviato"
 
 #: src/AICHSyncThread.cpp:188
 msgid "AICH Thread: Masterhashes of known files have been loaded."
-msgstr "Thread AICH: i masterhash dei file conosciuti sono stati caricati"
+msgstr "Thread AICH: gli hash principali dei file conosciuti sono stati caricati"
 
 #: src/AICHSyncThread.cpp:226
 #, c-format
@@ -889,7 +890,7 @@ msgstr "Connessione in corso attraverso il server"
 #: src/ClientListCtrl.cpp:568
 #: src/DataToText.cpp:65
 msgid "Transferring"
-msgstr "Trasferendo"
+msgstr "Trasferimento"
 
 #: src/ClientListCtrl.cpp:597
 #: src/DataToText.cpp:64
@@ -3676,11 +3677,11 @@ msgstr "Opzioni file"
 
 #: src/muuli_wdr.cpp:3242
 msgid "Everybody"
-msgstr "chiunque"
+msgstr "Chiunque"
 
 #: src/muuli_wdr.cpp:3244
 msgid "No One"
-msgstr "nessuno"
+msgstr "Nessuno"
 
 #: src/muuli_wdr.cpp:3246
 msgid "Who can see shared files:"
@@ -3688,7 +3689,7 @@ msgstr "Chi può vedere i file condivisi:"
 
 #: src/muuli_wdr.cpp:3247
 msgid "Select who can request to view a list of your shared files."
-msgstr "Seleziona chi può richiedere di vedere la lista dei tuoi file condivisi"
+msgstr "Seleziona chi puo' richiedere di vedere la lista dei tuoi file condivisi"
 
 #: src/muuli_wdr.cpp:3250
 msgid "Default Permissions"
