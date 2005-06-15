@@ -44,6 +44,7 @@
 #include "Types.h"		// Needed for uint16 and uint32
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
+#include "ServerConnect.h" // Needed on some compilers for the friend class CServerConnect
 
 class CPacket;
 class CServer;
