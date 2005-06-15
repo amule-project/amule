@@ -7,6 +7,11 @@ Version 2.0.3 - Unnamed.
 		* Fixed Online Signature not actually being enabled when user sets the
 		  preference
 
+	volpol:
+		* Fixed #417 "Upload priority is changed for completed files."
+		* Added new display filter "Active"
+		* Display of QR and aMule OS info in "Clients Details" dialog
+
 	Kry:
 		* Fixed wrong MD5 hash calculation on 64 bits arch.
 		  This fixes storing the wrong EC/webserver password on config file.

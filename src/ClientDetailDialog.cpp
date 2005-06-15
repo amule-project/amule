@@ -37,6 +37,7 @@
 #include "ClientCredits.h"	// Needed for GetDownloadedTotal
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
+#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ServerList.h"		// Needed for CServerList
 #include "amule.h"			// Needed for theApp
 #include "Server.h"		// Needed for CServer
@@ -90,6 +91,11 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DRATING,wxStaticText)->SetLabel(_("Unknown"));;
 	}	
 
+
+	wxString OSInfo = m_client->GetClientOSInfo();
+	if (!OSInfo.IsEmpty())
+	    CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr()+wxT(" (")+OSInfo+wxT(")"));
+	else
 	CastChild(ID_DSOFT,wxStaticText)->SetLabel(m_client->GetSoftStr());
 	CastChild(ID_DVERSION,wxStaticText)->SetLabel(m_client->GetSoftVerStr());
 
@@ -161,18 +167,18 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DRATIO,wxStaticText)->SetLabel(_("Unknown"));
 	}
-	
+
 	if (m_client->GetUploadState() != US_NONE) {
-		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u"),m_client->GetScore(m_client->IsDownloading(),false)));
+#ifndef CLIENT_GUI
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false),theApp.uploadqueue->GetWaitingPosition(m_client)));
+#else
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false),0));
+#endif
 	} else {
 		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxT("-"));
 	}
 	Layout();
 	
-	wxString OSInfo = m_client->GetClientOSInfo();
-	if (!OSInfo.IsEmpty()) {
-		wxMessageBox(CFormat(_("aMule O.S. info is: %s")) % OSInfo);
-	}
 	
 	return true;
 }
