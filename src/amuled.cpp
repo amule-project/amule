@@ -382,6 +382,7 @@ int CamuleDaemonApp::OnRun()
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
+		
 		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
 			"To enable External Connections, use either a normal aMule or set the key"
 			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
