@@ -1,14 +1,9 @@
-Version 2.0.3 - The "???" version
+Version 2.1.x - The "???" version
 ----------
 2005-06-??
 
 	GonoszTopi:
 		* Ported the partfile importer from eMule.
-
-	ken:
-		* Enabled amuleweb to work from within the Mac application bundle
-		* Fixed Online Signature not actually being enabled when user sets the
-		  preference
 
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
@@ -19,6 +14,40 @@ Version 2.0.3 - The "???" version
 	volpol:
 		* A4AF transfer speed display fix
 
+Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
+----------
+2005-06-15
+
+	ken:
+		* Enabled amuleweb to work from within the Mac application bundle
+		* Fixed Online Signature not actually being enabled when user sets the
+		  preference
+
+	Kry:
+		* Fixed #471 "compile error". Should compile on GCC4 again.
+		* Fixed Solaris compilation error on XParseGeometry.
+		* Fixed wrong MD5 hash calculation on 64 bits arch.
+		  This fixes storing the wrong EC/webserver password on config file.
+		* Fixed unneeded GTK libs usage on aMule remote GUI.
+		* Added a warning on gd-lib not found (progressbar not shown on amuleweb).
+
+	lfroen:
+		* New daemon socket code, event based. Improved reliability and 
+		  speed problems fixed.
+		  
+	volpol:
+		* Fixed #417 "Upload priority is changed for completed files."
+		* Added new display filter "Active"
+		* Display of QR and aMule OS info in "Clients Details" dialog
+
+	Xaignar:
+		* Fixed warning on EC disabled for aMule daemon.
+
+	Special Thanks To:
+
+   		* All the usual people. 
+		  You don't know who they are? Just check previous changelogs 
+		  (just not the previous one, ok?) :P 
 
 Version 2.0.2 - The " [Your Ad Here] " version.
 ----------
