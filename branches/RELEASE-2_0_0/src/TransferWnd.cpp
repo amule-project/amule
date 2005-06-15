@@ -65,7 +65,7 @@ BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
  	EVT_BUTTON(ID_BTNSWITCHUP, 		CTransferWnd::SwitchUploadList)
  	EVT_BUTTON(ID_CLIENTTOGGLE,		CTransferWnd::OnToggleClientList)
 
-	EVT_MENU_RANGE(MP_CAT_SET0, MP_CAT_SET0 + 14, CTransferWnd::OnSetDefaultCat)
+	EVT_MENU_RANGE(MP_CAT_SET0, MP_CAT_SET0 + 15, CTransferWnd::OnSetDefaultCat)
 	EVT_MENU(MP_CAT_ADD, 			CTransferWnd::OnAddCategory)
 	EVT_MENU(MP_CAT_EDIT, 			CTransferWnd::OnEditCategory)
 	EVT_MENU(MP_CAT_REMOVE, 		CTransferWnd::OnDelCategory)
@@ -320,6 +320,7 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
 			catmenu->Append( MP_CAT_SET0 + 6,  _("Erroneous") );
 			catmenu->Append( MP_CAT_SET0 + 7,  _("Paused") );
 			catmenu->Append( MP_CAT_SET0 + 8,  _("Stopped") );
+			catmenu->Append( MP_CAT_SET0 + 15, _("Active") );
 			
 			catmenu->AppendSeparator();
 			

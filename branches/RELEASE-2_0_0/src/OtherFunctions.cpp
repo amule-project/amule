@@ -773,6 +773,7 @@ wxString GetCatTitle(int catid)
 		case 12: return _("CD-Images");
 		case 13: return _("Pictures");
 		case 14: return _("Text");
+		case 15: return _("Active");		
 		default: return wxT("?");
 	}
 }

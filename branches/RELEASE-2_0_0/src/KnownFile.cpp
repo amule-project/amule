@@ -125,6 +125,7 @@ CKnownFile::CKnownFile() :
 	statistic.fileParent = this;
 	
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
+	if ( !m_bAutoUpPriority ) return;
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
 }
