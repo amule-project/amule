@@ -25,7 +25,8 @@ darwin*)
 	;;
 openbsd*) 
 	SYS=openbsd
-	LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  
+	LIBS="$LIBS -L/usr/local/lib"
+	X11LIBS="-lX11 -L/usr/X11R6/lib"
 	CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
 	if test "$DEBUG_FLAGS" != ""; then
 		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
@@ -36,9 +37,11 @@ openbsd*)
 	;;
 solaris*)
 	RESOLV_LIB="-lresolv -lnsl"
+	X11LIBS="-lX11"
 esac
 
 AC_SUBST(RESOLV_LIB)
+AC_SUBST(X11LIBS)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -782,3 +785,11 @@ echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will
 echo "  be unstable, use much more cpu and ram. You have been warned, don't report bugs under this setup."
 fi
 echo
+
+if test x"$GDLIB_LIBS" = x""; then 
+echo ""
+echo " WARNING! gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found."
+echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo " See the above error on gd check for solutions."
+echo ""
+fi
