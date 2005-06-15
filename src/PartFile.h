@@ -63,14 +63,6 @@ class CED2KFileLink;
 // This should fix it.
 #define   PARTMET_BAK_EXT wxT(".bak")
 
-enum EPartFileFormat {
-	PMT_UNKNOWN	= 0,
-	PMT_DEFAULTOLD,
-	PMT_SPLITTED,
-	PMT_NEWOLD,
-	PMT_SHAREAZA,
-	PMT_BADFORMAT
-};
 
 struct PartFileBufferedData
 {
@@ -115,7 +107,7 @@ public:
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
 	void	WritePartStatus(CSafeMemFile* file);
 	void	WriteCompleteSourcesCount(CSafeMemFile* file);
-	static bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
+	bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped);
 	void	AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport);
 #ifdef CLIENT_GUI
 	uint8	GetStatus() const { return status; }
@@ -381,7 +373,6 @@ private:
 friend class CPartFile_Encoder;
 friend class completingThread;
 friend class CDownQueueRem;
-friend class CPartFileConvert;
 };
 
 class completingThread : public wxThread

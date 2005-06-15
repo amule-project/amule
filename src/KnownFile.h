@@ -37,12 +37,8 @@
 
 #include <set>
 
-#include "CTypedPtrList.h"
 #include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "OPCodes.h"		// Needed for PARTSIZE
-
-#include "kademlia/kademlia/SearchManager.h"
-#include "kademlia/kademlia/Indexed.h"
 
 #ifdef CLIENT_GUI
 #include "ECSpecialTags.h"
@@ -71,10 +67,6 @@ class CUpDownClient;
 class CFile;
 class CPacket;
 class CTag;
-
-namespace Kademlia{
-	class CEntry;
-};
 
 WX_DECLARE_OBJARRAY(CMD4Hash, ArrayOfCMD4Hash);
 
@@ -123,39 +115,18 @@ public:
 	CAbstractFile();
 	virtual ~CAbstractFile() {};
 
-	virtual const wxString&	GetFileName() const		{return m_strFileName;}
+	const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
 	uint32	GetFileSize() const			{return m_nFileSize;}
 	virtual void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
 	void	SetFileName(const wxString& strmakeFilename);
-
-	/* Tags and Notes handling */
-	uint32 GetIntTagValue(uint8 tagname) const;
-	uint32 GetIntTagValue(const char* tagname) const;
-	bool GetIntTagValue(uint8 tagname, uint32& ruValue) const;
-	const wxString& GetStrTagValue(uint8 tagname) const;
-	const wxString& GetStrTagValue(const char* tagname) const;
-	CTag* GetTag(const char* tagname) const;	
-	CTag* GetTag(const char* tagname, uint8 tagtype) const;
-	CTag* GetTag(uint8 tagname) const;
-	CTag* GetTag(uint8 tagname, uint8 tagtype) const;	
-	void AddTagUnique(CTag* pTag);
-	const ArrayOfCTag& GetTags() const { return taglist; }
-	void AddNote(Kademlia::CEntry* pEntry);
-	const CKadEntryPtrList& getNotes() const { return m_kadNotes; }
-
-	/* Comment and rating */	
-	virtual const wxString&	GetFileComment() const { return m_strComment; }
-	virtual int8	GetFileRating() 		const { return m_iRating; }	
 	
 protected:
 	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
 	wxString	m_strComment;
-	int8		m_iRating;
-	ArrayOfCTag taglist;
-	CKadEntryPtrList m_kadNotes;
+	int8		m_iRate;
 };
 
 
@@ -171,11 +142,6 @@ public:
 
 	virtual ~CKnownFile();
 
-#ifndef CLIENT_GUI
-	// GUI has no need for Kad search stuff ;)
-	void SetFileName(const wxString& strmakeFilename);
-#endif
-	
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
@@ -207,40 +173,26 @@ public:
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
-	uint32	GetQueuedCount() const {return m_ClientUploadList.size();}
+	void	AddQueuedCount() {m_iQueuedCount++; UpdateAutoUpPriority();};
+	void	SubQueuedCount() {if(m_iQueuedCount) m_iQueuedCount--; UpdateAutoUpPriority();}
+	uint32	GetQueuedCount() const {return m_iQueuedCount;}
 
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);
 	void	RemoveUploadingClient(CUpDownClient* client);
 	
 	// comment 
-#ifndef CLIENT_GUI
-	const wxString&	GetFileComment() { if (!m_bCommentLoaded) LoadComment(); return m_strComment; } 
-	int8	GetFileRating() 		{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
+#ifdef CLIENT_GUI
+	const wxString&	GetFileComment(){ return m_strComment; }
+	int8	GetFileRate() 		{ return m_iRate; }
+#else
+	const wxString&	GetFileComment(){ if (!m_bCommentLoaded) LoadComment(); return m_strComment; } 
+	int8	GetFileRate() 		{ if (!m_bCommentLoaded) LoadComment(); return m_iRate; }
 #endif
 	void	SetFileComment(const wxString& strNewComment);
-	void	SetFileRating(int8 iNewRating); 
+	void	SetFileRate(int8 iNewRate); 
 	void	SetPublishedED2K( bool val );
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
-
-	/* Kad stuff */ 
-	#warning KAD TODO - Check usage
-	uint32	GetKadFileSearchID() const { return kadFileSearchID; }
-	void	SetKadFileSearchID(uint32 id) { kadFileSearchID = id; } // John - Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
-
-	const Kademlia::WordList& GetKadKeywords() const { return wordlist; }
-
-	uint32	GetLastPublishTimeKadSrc() const { return m_lastPublishTimeKadSrc; }
-	void	SetLastPublishTimeKadSrc(uint32 time, uint32 buddyip) { m_lastPublishTimeKadSrc = time; m_lastBuddyIP = buddyip;}
-	uint32	GetLastPublishBuddy() const { return m_lastBuddyIP; }
-	void	SetLastPublishTimeKadNotes(uint32 time) {m_lastPublishTimeKadNotes = time;}
-	uint32	GetLastPublishTimeKadNotes() const { return m_lastPublishTimeKadNotes; }	
-
-	bool	PublishSrc();
-	bool	PublishNotes();	
-	
-	// TODO: This must be implemented if we ever want to have metadata.
-	uint32	GetMetaDataVer() const { return /*m_uMetaDataVer*/ 0; }
 	
 	// file sharing
 	virtual	CPacket*	CreateSrcInfoPacket(const CUpDownClient* forClient);
@@ -288,6 +240,7 @@ protected:
 	void	CreateHashFromFile(CFile* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash hashlist;
+	ArrayOfCTag taglist;
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
 
@@ -298,14 +251,8 @@ protected:
 	uint16	m_iED2KPartHashCount;
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
+	uint32	m_iQueuedCount;
 	bool	m_PublishedED2K;
-	
-	/* Kad stuff */
-	Kademlia::WordList wordlist;
-	uint32	kadFileSearchID;
-	uint32	m_lastPublishTimeKadSrc;
-	uint32	m_lastPublishTimeKadNotes;
-	uint32	m_lastBuddyIP;
 
 };
 

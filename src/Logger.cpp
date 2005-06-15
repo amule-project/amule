@@ -92,14 +92,7 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logServer,		wxT("Servers") ),
 	CDebugCategory( logProxy,		wxT("Proxy") ),
 	CDebugCategory( logSearch,		wxT("Searching") ),
-	CDebugCategory( logServerUDP,		wxT("ServerUDP") ),
-	CDebugCategory( logClientKadUDP,		wxT("Client Kademlia UDP") ),
-	CDebugCategory( logKadSearch,		wxT("Kademlia Search") ),
-	CDebugCategory( logKadRouting,		wxT("Kademlia Routing") ),
-	CDebugCategory( logKadIndex,		wxT("Kademlia Indexing") ),
-	CDebugCategory( logKadMain,		wxT("Kademlia Main Thread") ),
-	CDebugCategory( logKadPrefs,		wxT("Kademlia Preferences") ),
-	CDebugCategory( logPfConvert,		wxT("PartFileConvert") )
+	CDebugCategory( logServerUDP,	wxT("ServerUDP") )
 };
 
 

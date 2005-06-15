@@ -77,6 +77,7 @@ class CPartFile;
 int CDownloadListCtrl::s_lastOrder;
 int CDownloadListCtrl::s_lastColumn;
 
+
 struct CtrlItem_Struct
 {
 	DownloadItemType	type;
@@ -233,7 +234,6 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 	}
 }
 
-
 void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, DownloadItemType type)
 {
 	wxASSERT( owner );
@@ -293,7 +293,6 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 		}
 	}
 }
-
 
 void CDownloadListCtrl::RemoveSource( const CUpDownClient* source, const CPartFile* owner )
 {
@@ -473,6 +472,7 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		for ( it = a4afSources.begin(); it != a4afSources.end(); ++it ) {
 			AddSource( file, *it, A4AF_SOURCE );
 		}
+
 	} else {
 		for ( int i = GetItemCount() - 1; i >= 0; --i ) {
 			CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData(i);
@@ -1117,8 +1117,6 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// Check if delete was pressed
 	switch (event.GetKeyCode()) {
-		case WXK_BACK:
-		case WXK_NUMPAD_DELETE:
 		case WXK_DELETE: {
 			wxCommandEvent evt;
 			OnCancelFile( evt );
@@ -1294,7 +1292,6 @@ void CDownloadListCtrl::OnDrawItem(
 
 	}
 }
-
 
 void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
 {
@@ -1487,7 +1484,6 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		dc->DrawText( text, rect.GetX(), rect.GetY() );
 	}
 }
-
 
 void CDownloadListCtrl::DrawSourceItem(
 	wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
@@ -1782,7 +1778,6 @@ void CDownloadListCtrl::DrawSourceItem(
 	}
 }
 
-
 int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 {
 	CtrlItem_Struct* item1 = (CtrlItem_Struct *) lParam1;
@@ -1827,7 +1822,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 			if ( item1->owner == item2->owner ) {
 				// Avilable sources first, if we have both an
 				// available and an unavailable
-				comp = ( item2->type - item1->type );
+				comp = ( item1->type - item2->type );
 
 				// Do we need to futher compare them? Happens if both have same type.
 				if ( !comp ) {

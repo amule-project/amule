@@ -354,7 +354,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	traymenu->Append(TRAY_MENU_INFO, label);
 	label = wxString::Format(_("Download Speed: %.1f"), theApp.downloadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetDatarate() / 1024.0f);
+	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetKBps());
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
@@ -428,8 +428,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// UDP PORT
 	{
 		wxString temp;
-		if (thePrefs::GetEffectiveUDPPort()) {
-			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetEffectiveUDPPort());	
+		if (thePrefs::GetUDPPort()) {
+			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetUDPPort());	
 		} else {
 			temp=_("UDP Port: Not Ready");
 		}

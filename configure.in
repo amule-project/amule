@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([aMule],[CVS],[admin@amule.org])
+AC_INIT([aMule],[2.0.3],[admin@amule.org])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 
@@ -25,7 +25,8 @@ darwin*)
 	;;
 openbsd*) 
 	SYS=openbsd
-	LIBS="$LIBS -L/usr/local/lib -lX11 -L/usr/X11R6/lib"  
+	LIBS="$LIBS -L/usr/local/lib"
+	X11LIBS="-lX11 -L/usr/X11R6/lib"
 	CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
 	if test "$DEBUG_FLAGS" != ""; then
 		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
@@ -36,9 +37,11 @@ openbsd*)
 	;;
 solaris*)
 	RESOLV_LIB="-lresolv -lnsl"
+	X11LIBS="-lX11"
 esac
 
 AC_SUBST(RESOLV_LIB)
+AC_SUBST(X11LIBS)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -129,9 +132,6 @@ AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded 
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable patched gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
 
-AC_ARG_ENABLE(kad_compile, [  --enable-kad-compile      compile Kademlia code (DOES NOT WORK YET!))],
-		kad_compile="$enableval", kad_compile="no")
-
 # This must be set after AC_ARG_* or it will be overwritten
 if test x"$target_os" = xdarwin; then
 	USE_GSOCKET=no
@@ -170,7 +170,7 @@ case "$GDLIBFOUND" in
 	Please try again with --with-gdlib-config=/usr/bin/gdlib-config
         (replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
         If you use compiled packages check if you have devel pack installed.
-        To download the latest version check http://www.boutell.com/gd
+        To download the lastest version check http://www.boutell.com/gd
 	for sources.
         ])
 	
@@ -351,12 +351,12 @@ case "$CRYPTO_PP_STYLE" in
           WARNING: crypto++ >= $min_crypto_version is not found.
           Please check that cryptopp-headers are in your default include path,
 	  check out LD_LIBRARY_PATH or equivalent variable.
-          Or this might also be that your cryptopp is installed on other path.
+          Or this might also be that your cryptopp is instaled on other path.
           Please try again with --with-crypto-prefix=/my_crypto_prefix
           (replace /my_crypto_prefix with a valid path to your crypto directory).
           The crypto include folder must be named cryptopp.
 	  Sorry about the mess but it's the only way because libcrypto has no make install.
-          To download the latest version check http://www.cryptopp.com for sources.
+          To download the lastest version check http://www.cryptopp.com for sources.
 	  ])
  ;;
 esac
@@ -450,18 +450,15 @@ case "$WX_VERSION_FULL" in
 	fi
 	AMULE_DAEMON="no"
 	gtk_tray="yes"
-	kad_compile="no"
 	;;
 2.5.1)
 	USE_24GSOCKET="no"
 	gtk_tray="yes"
-	kad_compile="no"	
 	;;
 2.5.2)
 	USE_24GSOCKET="no"
 	gtk_tray="no"
 	havegtk="not_needed"
-	kad_compile="no"	
 	;;
 *)
 	USE_GSOCKET="no"
@@ -607,9 +604,9 @@ fi
 case "$USE_NLS" in
 
 yes)
-	;;
+        ;;
 *)
-	HAVE_GETTEXT="no"
+        HAVE_GETTEXT="no"
 esac
 
 
@@ -632,7 +629,6 @@ AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(HAVE_UTF8_TRAY, test x$utf8_systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
-AM_CONDITIONAL(COMPILE_KAD, test x$kad_compile = xyes)
 AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
 
 dnl
@@ -702,6 +698,7 @@ AC_CONFIG_FILES([Makefile
 		 src/webserver/Makefile
 		 src/webserver/default/Makefile
 		 src/webserver/chicane/Makefile])
+
 dnl
 dnl autoscan has missed these, i wonder why...
 dnl
@@ -730,7 +727,6 @@ echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
-echo "  Should aMule Kademlia code be compiled? (DOESN'T WORK)     ${kad_compile:-no}"
 echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
 
 echo
@@ -789,3 +785,11 @@ echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will
 echo "  be unstable, use much more cpu and ram. You have been warned, don't report bugs under this setup."
 fi
 echo
+
+if test x"$GDLIB_LIBS" = x""; then 
+echo ""
+echo " WARNING! gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found."
+echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo " See the above error on gd check for solutions."
+echo ""
+fi

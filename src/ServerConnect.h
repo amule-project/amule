@@ -90,7 +90,7 @@ public:
 	CServer*GetCurrentServer();
 	uint32	clientid;
 	uint8	pendingConnects;
-	bool	IsLowID()	{ return ::IsLowID(clientid); }
+	bool	IsLowID()	{ return clientid < 16777216; }
 	void	SetClientID(uint32 newid);
 	bool	IsLocalServer(uint32 dwIP, uint16 nPort);
 	void	TryAnotherConnectionrequest();

@@ -28,41 +28,16 @@
 #include "EMSocket.h"
 #include "OPCodes.h"
 #include "OtherFunctions.h"
+#include "GetTickCount.h"
 #include "ThrottledSocket.h"
-#include "Logger.h"
-#include "Preferences.h"
-#include "amule.h"
-#include "UploadQueue.h"
 
 #include <algorithm>
 #include <limits>
 
-#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON) && !defined(__WINDOWS__)
-#include <wx/timer.h>
-
-#ifdef GetTickCount
-#undef GetTickCount
-#endif
-
-uint32 GetTickCount() {
-	return wxGetLocalTimeMillis().GetValue();
-}
-#else
-#include "GetTickCount.h"
-#endif
-
-#ifdef _UI64_MAX
-#undef _UI64_MAX
-#endif
-
-#ifdef _I64_MAX
-#undef _I64_MAX
-#endif
-
 const uint32 _UI32_MAX = std::numeric_limits<uint32>::max();
-const sint32 _I32_MAX = std::numeric_limits<sint32>::max();
+const int32 _I32_MAX = std::numeric_limits<int32>::max();
 const uint64 _UI64_MAX = std::numeric_limits<uint64>::max();
-const sint64 _I64_MAX = std::numeric_limits<sint64>::max();
+const int64 _I64_MAX = std::numeric_limits<int64>::max();
 
 /////////////////////////////////////
 
@@ -87,9 +62,17 @@ UploadBandwidthThrottler::UploadBandwidthThrottler()
 /**
  * The destructor stops the thread. If the thread has already stoppped, destructor does nothing.
  */
-UploadBandwidthThrottler::~UploadBandwidthThrottler()
+UploadBandwidthThrottler::~UploadBandwidthThrottler(void)
 {
 	EndThread();
+}
+
+
+void UploadBandwidthThrottler::SetAllowedDataRate(uint32 newValue)
+{
+	wxMutexLocker lock( m_sendLocker );
+
+	m_allowedDataRate = newValue;
 }
 
 
@@ -174,7 +157,7 @@ void UploadBandwidthThrottler::AddToStandardList(uint32 index, ThrottledFileSock
 		wxMutexLocker lock( m_sendLocker );
 
 		RemoveFromStandardListNoLock(socket);
-		if (index > (uint32)m_StandardOrder_list.size()) {
+		if(index > (uint32)m_StandardOrder_list.size()) {
 			index = m_StandardOrder_list.size();
         }
 		
@@ -212,13 +195,13 @@ bool UploadBandwidthThrottler::RemoveFromStandardList(ThrottledFileSocket* socke
 bool UploadBandwidthThrottler::RemoveFromStandardListNoLock(ThrottledFileSocket* socket)
 {
 	// Find the slot
-	bool foundSocket = otherfunctions::EraseFirstValue( m_StandardOrder_list, socket );
+	bool foundSocket = EraseValue( m_StandardOrder_list, socket );
 
     if ( foundSocket && m_highestNumberOfFullyActivatedSlots > m_StandardOrder_list.size()) {
         m_highestNumberOfFullyActivatedSlots = m_StandardOrder_list.size();
     }
 
-	return foundSocket;
+    return foundSocket;
 }
 
 
@@ -261,12 +244,13 @@ void UploadBandwidthThrottler::DoRemoveFromAllQueues(ThrottledControlSocket* soc
 {
 	if ( m_doRun ) {
         // Remove this socket from control packet queue
-		otherfunctions::EraseValue( m_ControlQueue_list, socket );
-		otherfunctions::EraseValue( m_ControlQueueFirst_list, socket );
+        EraseValue( m_ControlQueue_list, socket );
+		EraseValue( m_ControlQueueFirst_list, socket );
 		
-		wxMutexLocker lock( m_tempQueueLocker );
-        otherfunctions::EraseValue( m_TempControlQueue_list, socket );
-        otherfunctions::EraseValue( m_TempControlQueueFirst_list, socket );
+		m_tempQueueLocker.Lock();
+        EraseValue( m_TempControlQueue_list, socket );
+        EraseValue( m_TempControlQueueFirst_list, socket );
+		m_tempQueueLocker.Unlock();
 	}
 }
 
@@ -282,8 +266,8 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledControlSocket* socke
 void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
 {
 	wxMutexLocker lock( m_sendLocker );
-	
-	if (m_doRun) {	
+
+	if (m_doRun) {
 		DoRemoveFromAllQueues(socket);
 
 		// And remove it from upload slots
@@ -315,9 +299,9 @@ void UploadBandwidthThrottler::EndThread()
 void UploadBandwidthThrottler::Pause(bool paused)
 {
 	if (paused) {
-		m_pauseLocker.TryLock();
-	} else {
 		m_pauseLocker.Unlock();
+	} else {
+		m_pauseLocker.TryLock();
     }
 }
 
@@ -335,9 +319,14 @@ void UploadBandwidthThrottler::Pause(bool paused)
 void* UploadBandwidthThrottler::Entry()
 {
 	uint32 lastLoopTick = ::GetTickCount();
+
 	sint64 realBytesToSpend = 0;
+
 	uint32 allowedDataRate = 0;
+	uint32 lastMaxAllowedDataRate = 1;
+
     uint32 rememberedSlotCounter = 0;
+
     uint32 lastTickReachedBandwidth = ::GetTickCount();
 
 	while (m_doRun) {
@@ -347,21 +336,12 @@ void* UploadBandwidthThrottler::Entry()
 		uint32 timeSinceLastLoop = ::GetTickCount() - lastLoopTick;
 
 		// Get current speed from UploadSpeedSense
-		if (thePrefs::GetMaxUpload() == UNLIMITED) {
-			// Try to increase the upload rate
-			if (theApp.uploadqueue) {
-				allowedDataRate = theApp.uploadqueue->GetDatarate() + 5 * 1024;
-			} else {
-				// App not created yet or already destroyed.
-				allowedDataRate = (uint32)(-1);
-			}
-		} else {
-			allowedDataRate = thePrefs::GetMaxUpload() * 1024;
-		}
+		allowedDataRate = 10 * 1024; // theApp.lastCommonRouteFinder->GetUpload();
+#warning ARRGH!
 
 		uint32 minFragSize = 1300;
         uint32 doubleSendSize = minFragSize*2; // send two packages at a time so they can share an ACK
-		if (allowedDataRate < 6*1024) {
+		if(allowedDataRate < 6*1024) {
 			minFragSize = 536;
             doubleSendSize = minFragSize; // don't send two packages at a time at very low speeds to give them a smoother load
 		}
@@ -379,7 +359,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
         }
 
         if(timeSinceLastLoop < sleepTime) {
-			Sleep(sleepTime-timeSinceLastLoop);
+            Sleep(sleepTime-timeSinceLastLoop);
         }
 
 		const uint32 thisLoopTick = ::GetTickCount();
@@ -389,13 +369,13 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
         sint64 bytesToSpend = 0;
 
         if(allowedDataRate != 0 && allowedDataRate != _UI32_MAX) {
-			// prevent overflow
+            // prevent overflow
             if(timeSinceLastLoop == 0) {
                 // no time has passed, so don't add any bytes. Shouldn't happen.
                 bytesToSpend = 0; //realBytesToSpend/1000;
             } else if(_I64_MAX/timeSinceLastLoop > allowedDataRate && _I64_MAX-allowedDataRate*timeSinceLastLoop > realBytesToSpend) {
                 if(timeSinceLastLoop > sleepTime + 2000) {
-			        AddDebugLogLineM(false, logGeneral, wxString::Format(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims"), timeSinceLastLoop, sleepTime, sleepTime + 2000));
+			        AddDebugLogLineM(false, wxString::Format(wxT("UploadBandwidthThrottler: Time since last loop too long. time: %ims wanted: %ims Max: %ims"), timeSinceLastLoop, sleepTime, sleepTime + 2000));
         
                     timeSinceLastLoop = sleepTime + 2000;
                     lastLoopTick = thisLoopTick - timeSinceLastLoop;
@@ -478,7 +458,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 					    }
 				    }
 			    } else {
-				    AddDebugLogLineM(false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()) );
+				    AddDebugLogLineM(false, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (trickle)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()) );
                 }
 		    }
     
@@ -507,7 +487,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 					spentBytes += lastSpentBytes;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 				} else {
-					AddDebugLogLineM(false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"), rememberedSlotCounter, m_StandardOrder_list.size()));
+					AddDebugLogLineM( false, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (equal-for-all)! Prevented usage. Index: %i Size: %i"), rememberedSlotCounter, m_StandardOrder_list.size()));
                 }
 
                 rememberedSlotCounter++;
@@ -521,6 +501,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
                     uint32 bytesToSpendTemp = bytesToSpend-spentBytes;
 					SocketSentBytes socketSentBytes = socket->SendFileAndControlData(bytesToSpendTemp, doubleSendSize);
 					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
+
 					spentBytes += lastSpentBytes;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
 
@@ -528,7 +509,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
                         m_highestNumberOfFullyActivatedSlots = slotCounter+1;
                     }
 				} else {
-					AddDebugLogLineM( false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()));
+					AddDebugLogLineM( false, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()));
                 }
 			}
 		    realBytesToSpend -= spentBytes*1000;

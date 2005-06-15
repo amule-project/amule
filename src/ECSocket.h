@@ -41,16 +41,6 @@
 class CECPacket;
 class ECSocket;
 
-class CECSocketHandler: public wxEvtHandler {
-	public:
-        CECSocketHandler(ECSocket *socket = NULL);
-
-	private:
-        void SocketHandler(wxSocketEvent& event);
-        DECLARE_EVENT_TABLE()
-};
-
-
 /*! \class ECSocket
  *
  * \brief Socket handler for External Communications (EC).
@@ -84,20 +74,12 @@ class ECSocket : public wxSocketClient {
 		bool WritePacket(const CECPacket *packet);
 
 	private:
-		friend class CECSocketHandler;
 
 		bool FlushBuffers();
 		void InitBuffers();
 
 		uint32	ReadFlags();
 		bool	WriteFlags(uint32);
-
-		void OnConnect();
-		void OnSend();
-		void OnReceive();
-		void OnClose();
-		void OnError();
-		
 
 		//
 		// working buffers: zlib need all data at once

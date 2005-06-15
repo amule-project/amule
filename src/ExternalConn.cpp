@@ -278,7 +278,7 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
 
 	//
 	// ul/dl speeds
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, theApp.uploadqueue->GetDatarate()));
+	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)(theApp.uploadqueue->GetKBps()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theApp.downloadqueue->GetKBps()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
 	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
@@ -375,7 +375,7 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 
 		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
 
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
 			continue;
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
@@ -422,7 +422,7 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
 		theApp.uploadqueue->GetNextFromUploadList(pos);
 
-		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
+		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserID())) ) {
 			continue;
 		}
 		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
@@ -1095,7 +1095,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data(), request->GetDetailLevel());
 			break;
 		case EC_OP_SET_PREFERENCES:
-			((CEC_Prefs_Packet *)request)->Apply();
+			((CEC_Prefs_Packet *)request)->Apply(true);
 			theApp.glob_prefs->Save();
 			response = new CECPacket(EC_OP_NOOP);
 			break;

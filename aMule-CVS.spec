@@ -12,10 +12,8 @@ URL:         http://www.amule.org
 Source:      aMule-%{version}-%{release}.tar.bz2
 Prefix:      %{_prefix}
 BuildRoot:   %{_builddir}/%{name}-%{version}-root
-#These dependencies do not always work, so lets leave them out for now
-#Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
-#BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
-BuildPreReq: grep, automake >= 1.7
+Requires:    wxGTK >= 2.4.2, wxBase >= 2.4.2
+BuildPreReq: wxGTK-devel >= 2.4.2, grep, automake >= 1.7
 Provides:    %{name}
 Obsoletes:   %{name}
 
@@ -23,8 +21,9 @@ AutoReq:     0
 
 %description
 aMule is a peer to peer file sharing client, based on the well known eMule.
-Starting with 2.0.0 aMule works on Linux, Mac, *BSD and Windows, which makes it the first multi-platform edonkey network client.
-
+Starting with 2.0.0 aMule is supposed to work on Linux, and *BSD,
+which makes it the first multi-platform edonkey network client. A Windows port
+is planned soon :)
 
 %pre
 echo "************************************************************************************"

@@ -170,7 +170,6 @@ void CSocketSet::AddSocket(GSocket *socket)
 		return;
 	}
 	m_fds[m_count] = fd;
-	m_fd_idx[fd] = m_count;
 	m_gsocks[fd] = socket;
 	m_count++;
 }
@@ -187,17 +186,14 @@ void CSocketSet::RemoveSocket(GSocket *socket)
 	
 	wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
 	
-	int i = m_fd_idx[fd];
-	if ( i == 0xffff ) {
-		return;
+	for(int i = 0; i < m_count; i++) {
+		if ( m_fds[i] == fd ) {
+			m_fds[i] = m_fds[m_count-1];
+			m_gsocks[fd] = 0;
+			m_count--;
+			break;
+		}
 	}
-	wxASSERT(m_fds[i] == fd);
-	m_fds[i] = m_fds[m_count-1];
-	m_gsocks[fd] = 0;
-	m_fds[m_count-1] = 0;
-	m_fd_idx[fd] = 0xffff;
-	m_fd_idx[m_fds[i]] = i;
-	m_count--;
 }
 
 void CSocketSet::FillSet(int &max_fd)
@@ -386,6 +382,7 @@ int CamuleDaemonApp::OnRun()
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
 	if ( !thePrefs::AcceptExternalConnections() ) {
+		
 		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
 			"To enable External Connections, use either a normal aMule or set the key"
 			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
@@ -400,8 +397,6 @@ int CamuleDaemonApp::OnRun()
 		ProcessPendingEvents();
 		((CDaemonAppTraits *)GetTraits())->DeletePending();
 	}
-	
-	ShutDown();
 
 	return 0;
 }

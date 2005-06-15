@@ -32,6 +32,7 @@
 #include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SafeFile.h"		// Needed for CSafeMemFile
+#include "Packet.h"		// Needed for CTag
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
 #include "Server.h"
@@ -44,7 +45,6 @@
 #include "Format.h"
 #include "Logger.h"
 #include "Preferences.h"
-#include "kademlia/utils/UInt128.h" // Needed for CUInt128
 
 #include <algorithm>
 
@@ -122,10 +122,9 @@ void *CGlobalSearchThread::Entry()
 	return NULL;
 }
 
-CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory, bool nKademlia)
+CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory)
 {
 	m_nSearchID = nSearchID;
-	m_nKademlia = nKademlia;
 	
 	in_data.ReadHash16(m_abyFileHash);
 	m_nClientID = in_data.ReadUInt32();
@@ -360,7 +359,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, nSearchID,  0, 0, pszDirectory);
 		if (Sender){
-			toadd->SetClientID(Sender->GetUserIDHybrid());
+			toadd->SetClientID(Sender->GetUserID());
 			toadd->SetClientPort(Sender->GetUserPort());
 		}
 		AddToList(toadd, true);
@@ -595,58 +594,4 @@ CPacket* CSearchList::CreateSearchPacket(const wxString& searchString, const wxS
 	packet->SetOpCode(OP_SEARCHREQUEST);
 	
 	return packet;
-}
-
-void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
-										const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
-{
-
-	#if wxUSE_UNICODE
-	EUtf8Str eStrEncode = utf8strRaw;
-#else
-	EUtf8Str eStrEncode = utf8strNone;
-#endif
-	
-	CSafeMemFile temp(250);
-	byte fileid[16];
-	fileID->toByteArray(fileid);
-	temp.WriteHash16(fileid);
-	
-	temp.WriteUInt32(0);	// client IP
-	temp.WriteUInt16(0);	// client port
-	
-	// write tag list
-	unsigned int uFilePosTagCount = temp.GetPosition();
-	uint32 tagcount = 0;
-	temp.WriteUInt32(tagcount); // dummy tag count, will be filled later
-
-	// standard tags
-	CTag tagName(FT_FILENAME, name);
-	tagName.WriteTagToFile(&temp, eStrEncode);
-	tagcount++;
-
-	CTag tagSize(FT_FILESIZE, size);
-	tagSize.WriteTagToFile(&temp, eStrEncode);
-	tagcount++;
-
-	if (!type.IsEmpty()) {
-		CTag tagType(FT_FILETYPE, type);
-		tagType.WriteTagToFile(&temp, eStrEncode);
-		tagcount++;
-	}
-
-	// Misc tags (bitrate, etc)
-	for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
-		(*it)->WriteTagToFile(&temp,eStrEncode);
-		tagcount++;
-	}
-	
-	temp.Seek(uFilePosTagCount, wxFromStart);
-	temp.WriteUInt32(tagcount);
-	
-	temp.Seek(0, wxFromStart);
-	
-	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
-	AddToList(tempFile);
-	
 }

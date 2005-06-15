@@ -491,30 +491,20 @@ const int ID_VERBOSEDEBUG = 10356;
 const int ID_DEBUGCATS = 10357;
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_CONV_PB_LABEL = 10358;
-const int IDC_CONV_PROZENT = 10359;
-const int IDC_CONV_PB_CURRENT = 10360;
-const int IDC_JOBLIST = 10361;
-const int IDC_ADDITEM = 10362;
-const int IDC_RETRY = 10363;
-const int IDC_CONVREMOVE = 10364;
-wxSizer *convertDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
-
 // Declare menubar functions
 
 // Declare toolbar functions
 
-const int ID_BUTTONCONNECT = 10365;
-const int ID_BUTTONSERVERS = 10366;
-const int ID_BUTTONKAD = 10367;
-const int ID_BUTTONSEARCH = 10368;
-const int ID_BUTTONTRANSFER = 10369;
-const int ID_BUTTONSHARED = 10370;
-const int ID_BUTTONMESSAGES = 10371;
-const int ID_BUTTONSTATISTICS = 10372;
-const int ID_BUTTONNEWPREFERENCES = 10373;
-const int ID_BUTTONIMPORT = 10374;
-const int ID_ABOUT = 10375;
+const int ID_BUTTONCONNECT = 10358;
+const int ID_BUTTONSERVERS = 10359;
+const int ID_BUTTONKAD = 10360;
+const int ID_BUTTONSEARCH = 10361;
+const int ID_BUTTONTRANSFER = 10362;
+const int ID_BUTTONSHARED = 10363;
+const int ID_BUTTONMESSAGES = 10364;
+const int ID_BUTTONSTATISTICS = 10365;
+const int ID_BUTTONNEWPREFERENCES = 10366;
+const int ID_ABOUT = 10367;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

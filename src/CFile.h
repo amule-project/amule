@@ -151,9 +151,6 @@ public:
 			Close(); 
 		}
 	}
-	
-	// This safe read will throw() on some issues
-	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
 
 	// This is to avoid wxStat
 	static int Stat( const wxString& file_name, struct stat *buf);
@@ -170,16 +167,8 @@ private:
 	wxString m_filePath;
 };
 
-// Move file with safe UTF8 name.
-bool UTF8_MoveFile(const wxString& from, const wxString& to); 
-
-// Copy file with safe UTF8 name.
-bool UTF8_CopyFile(const wxString& from, const wxString& to); 
-
-// Makes a backup of a file, by copying the original file to filename + appendix
-bool BackupFile(const wxString& filename, const wxString& appendix);
-
-// Get the LastModificationTime for a file.
+bool UTF8_MoveFile(const wxString& from, const wxString& to); // Move file with safe UTF8 name.
+bool UTF8_CopyFile(const wxString& from, const wxString& to); // Copy file with safe UTF8 name.
 time_t GetLastModificationTime(const wxString& file);
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 

@@ -124,9 +124,8 @@ CUInt128& CUInt128::setValue(uint32 value)
 CUInt128& CUInt128::setValueBE(const byte *valueBE)
 {
 	setValue((uint32)0);
-	for (int i=0; i<16; ++i) {
+	for (int i=0; i<16; ++i)
 		m_data[i/4] |= ((uint32)valueBE[i]) << (8*(3-(i%4)));
-	}
 	return *this;
 }
 
@@ -159,17 +158,17 @@ CUInt128& CUInt128::setBitNumber(uint32 bit, uint32 value)
 	return *this;
 }
 
-CUInt128& CUInt128::XOR(const CUInt128 &value)
+CUInt128& CUInt128::xorv(const CUInt128 &value)
 {
 	for (int i=0; i<4; ++i)
 		m_data[i] ^= value.m_data[i];
 	return *this;
 }
 
-CUInt128& CUInt128::XORBE(const byte *valueBE)
+CUInt128& CUInt128::xorBE(const byte *valueBE)
 {
 	CUInt128 temp(valueBE);
-	return XOR(temp);
+	return xorv(temp);
 }
 
 void CUInt128::toHexString(wxString *str) const
@@ -188,14 +187,14 @@ void CUInt128::toBinaryString(wxString *str, bool trim) const
 	for (int i=0; i<128; ++i)
 	{
 		b = getBitNumber(i);
-		if ((!trim) || (b != 0)) {
+		if ((!trim) || (b != 0))
+		{
 			str->Append(wxString::Format(wxT("%d"), b));
 			trim = false;
 		}
 	}
-	if (str->Len() == 0) {
+	if (str->Len() == 0)
 		*str = wxT("0");
-	}
 }
 
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN

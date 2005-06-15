@@ -75,7 +75,6 @@ amulegui_SOURCES = \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
 	Logger.cpp \
@@ -145,6 +144,7 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	filefn.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -153,7 +153,6 @@ amule_SOURCES = \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \
@@ -170,7 +169,6 @@ amule_SOURCES = \
 	OtherFunctions.cpp \
 	Packet.cpp \
 	PartFile.cpp \
-	PartFileConvert.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Proxy.cpp \
@@ -195,11 +193,13 @@ amule_SOURCES = \
 	StateMachine.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
-	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
-
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
@@ -220,6 +220,7 @@ amuled_SOURCES = \
         ED2KLink.cpp \
         EMSocket.cpp \
         ExternalConn.cpp \
+        filefn.cpp \
 	Format.cpp \
         Friend.cpp \
 	FriendList.cpp \
@@ -235,7 +236,6 @@ amuled_SOURCES = \
         OtherFunctions.cpp \
         Packet.cpp \
         PartFile.cpp \
-	PartFileConvert.cpp \
         Preferences.cpp \
 	Proxy.cpp \
         SafeFile.cpp \
@@ -252,9 +252,12 @@ amuled_SOURCES = \
 	Statistics.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
-	UploadBandwidthThrottler.cpp \
         UploadClient.cpp \
         UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
 	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
@@ -283,31 +286,11 @@ endif
 
 amule_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
 amule_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
-amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
-
-if COMPILE_KAD
-amule_SOURCES += kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/kademlia/Indexed.cpp \
-	kademlia/kademlia/Kademlia.cpp \
-	kademlia/kademlia/Prefs.cpp \
-	kademlia/kademlia/Search.cpp \
-	kademlia/kademlia/SearchManager.cpp \
-	kademlia/net/KademliaUDPListener.cpp \
-	kademlia/routing/Contact.cpp \
-	kademlia/routing/Ping.cpp \
-	kademlia/routing/RoutingBin.cpp \
-	kademlia/routing/RoutingZone.cpp \
-	kademlia/utils/LittleEndian.cpp
-amule_CFLAGS += -D__COMPILE_KAD__
-amule_CXXFLAGS += -D__COMPILE_KAD__
-endif
+amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB) $(X11LIBS)
 
 amulegui_CFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
 amulegui_CXXFLAGS = $(UTF8_SYSTRAY_FLAGS) $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE -DNO_GCC_PRAGMA
-amulegui_LDADD = $(WX_LIBS) $(GTK_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(BFD_LIB)
+amulegui_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(BFD_LIB) $(X11LIBS)
 
 if HAVE_TRAY
 if HAVE_OLD_TRAY
@@ -386,6 +369,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
+		 filefn.h \
 		 Friend.h \
 		 FriendList.h \
 		 FriendListCtrl.h \
@@ -420,7 +404,6 @@ noinst_HEADERS = AddFileThread.h \
 		 OtherStructs.h \
 		 Packet.h \
 		 PartFile.h \
-		 PartFileConvert.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Proxy.h \

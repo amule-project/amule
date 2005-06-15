@@ -80,20 +80,21 @@ enum LastActionType {
 
 class CClientReqSocket : public CEMSocket
 {
+friend class CClientReqSocketHandler;
+
 	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
-	friend class CClientReqSocketHandler;
+
 public:
 	CClientReqSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientReqSocket();
-	
-	virtual	bool 	Close();
+	virtual	void 	OnInit();
+	virtual	bool 	Close(); /*	{return wxSocketBase::Close();}*/
 	virtual	bool 	Connect(amuleIPV4Address addr, bool wait);
-	
+	bool		Create();
 	void		Disconnect(const wxString& strReason);
 
 	void		ResetTimeOutTimer();
 	bool		CheckTimeOut();
-
 	void		Safe_Delete();
 
 	bool		deletethis; // 0.30c (Creteil), set as bool
@@ -109,16 +110,12 @@ public:
 	void		OnError(int nErrorCode);
 	
 	uint32		timeout_timer;
+	bool		hotrank;
 
-	void		SetClient(CUpDownClient* client);
+	void		SetClient(CUpDownClient* client) { m_client = client; }
 	CUpDownClient* GetClient() { return m_client; }
-	
-	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-
 protected:
-	virtual bool PacketReceived(CPacket* packet);
+	bool	 PacketReceived(CPacket* packet);
 
 private:
 	CUpDownClient*	m_client;

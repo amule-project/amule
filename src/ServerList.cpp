@@ -690,8 +690,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 	downloader->Run();
 }
 
-void CServerList::DownloadFinished(uint32 result) 
-{
+void CServerList::DownloadFinished(uint32 result) {
 	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
 		// curl succeeded. proceed with server.met loading
@@ -705,8 +704,7 @@ void CServerList::DownloadFinished(uint32 result)
 }
 
 
-void CServerList::AutoUpdate() 
-{
+void CServerList::AutoUpdate() {
 	
 	uint8 url_count = theApp.glob_prefs->adresses_list.GetCount();
 	
@@ -744,9 +742,7 @@ void CServerList::AutoUpdate()
 }
 
 
-void CServerList::AutoDownloadFinished(uint32 result) 
-{
-	
+void CServerList::AutoDownloadFinished(uint32 result) {
 	if(result==1) {
 		wxString strTempFilename(theApp.ConfigDir + wxT("server_auto.met"));
 		// curl succeeded. proceed with server.met loading
@@ -755,7 +751,7 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
+		AddLogLineM(true, wxString( _("Failed to download the server list from ") ) + URLUpdate);
 	}
 	
 	++current_url_index;
@@ -781,33 +777,4 @@ void CServerList::ObserverAdded( ObserverType* o )
 	}
 
 	NotifyObservers( EventType( EventType::INITIAL, &ilist ), o );
-}
-
-
-uint32 CServerList::GetAvgFile() const
-{
-	//Since there is no real way to know how many files are in the kad network,
-	//I figure to try to use the ED2K network stats to find how many files the
-	//average user shares..
-	uint32 totaluser = 0;
-	uint32 totalfile = 0;
-	for (POSITION pos = list.GetHeadPosition(); pos != 0; ){
-		const CServer* curr = list.GetNext(pos);
-		//If this server has reported Users/Files and doesn't limit it's files too much
-		//use this in the calculation..
-		if( curr->GetUsers() && curr->GetFiles() && curr->GetSoftFiles() > 1000 ) {
-			totaluser += curr->GetUsers();
-			totalfile += curr->GetFiles();
-		}
-	}
-	//If the user count is a little low, don't send back a average..
-	//I added 50 to the count as many servers do not allow a large amount of files to be shared..
-	//Therefore the extimate here will be lower then the actual.
-	//I would love to add a way for the client to send some statistics back so we could see the real
-	//values here..
-	if ( totaluser > 500000 ) {
-		return (totalfile/totaluser)+50;
-	} else {
-		return 0;
-	}
 }

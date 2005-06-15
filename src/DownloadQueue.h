@@ -52,9 +52,7 @@ class CED2KFileLink;
 class CED2KServerLink;
 class CED2KServerListLink;
 
-namespace Kademlia {
-	class CUInt128;
-}
+
 
 /**
  * The download queue houses all active downloads.
@@ -128,16 +126,6 @@ public:
 	void	AddSearchToDownload(CSearchFile* toadd, uint8 category);
 	
 	
-	/**
-	 * Adds an existing partfile to the queue.
-	 *
-	 * @param newfile The file to add.
-	 * @param paused If the file should be stopped when added.
-	 * @param category The category to assign to the file.
-	 */
-	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
-
-
 	/**
 	 * Removes the specified file from the queue.
 	 *
@@ -309,15 +297,6 @@ public:
 	 */
 	void	StopUDPRequests();
 	
-	/* Kad Stuff */
-	
-	/**
-	 * Add a Kad source to a download
-	 */
-	 void	KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pkadID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid);
-	
-	CPartFile* GetFileByKadFileSearchID(uint32 id) const;
-	
 private:
 	/**
 	 * This function initializes new observers with the current contents of the queue.
@@ -330,6 +309,15 @@ private:
 	 */
 	void	DoSortByPriority();
 	
+	/**
+	 * Adds an existing partfile to the queue.
+	 *
+	 * @param newfile The file to add.
+	 * @param paused If the file should be stopped when added.
+	 * @param category The category to assign to the file.
+	 */
+	void	AddDownload(CPartFile* newfile, bool paused, uint8 category);
+
 	/**
 	 * Checks that there is enough free spaces for temp-files at that specified path.
 	 *

@@ -8,7 +8,7 @@
 	    + Add gtk-prefix and prefix for every lib used <- ?
             + Clean options no more used (gtk above all) <- GTK is used for old tray...
 
-	- Import mldonkey partfiles.
+	- Import mldonkey and edonkey partfiles!
 
 	- Remote
             + Finish cmd line clients [working]

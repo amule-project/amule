@@ -588,7 +588,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				s << msgFailedUnknown;
 			}
 			break;
-		case EC_OP_SET_PREFERENCES:
+		case EC_OP_PREFERENCES:
 			{
 				const CECTag *tab = response->GetTagByNameSafe(EC_TAG_PREFS_SECURITY);
 				const CECTag *ipfilterLevel = tab->GetTagByName(EC_TAG_IPFILTER_LEVEL);

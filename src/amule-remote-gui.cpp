@@ -23,9 +23,6 @@
 //
 
 #include <unistd.h>			// Needed for close(2) and sleep(3)
-#include <memory>			// Needed for auto_ptr
-using std::auto_ptr;
-
 #include <wx/defs.h>
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
@@ -60,6 +57,10 @@ using std::auto_ptr;
 		#include <mntent.h>
 	#endif /* __BSD__ */
 
+	#include <X11/Xlib.h>		// Needed for XParseGeometry
+	#include <gdk/gdk.h>
+	#include <gtk/gtk.h>
+	
 #endif
 
 #ifdef HAVE_CONFIG_H
@@ -188,22 +189,18 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	}
 	// always query connection state and stats
 	serverconnect->ReQuery();
-
-	{
-		CECPacket stats_req(EC_OP_STAT_REQ);
-		auto_ptr<CEC_Stats_Tag> stats((CEC_Stats_Tag *)connect->SendRecv(&stats_req));
-		if ( !stats.get() ) {
-			core_timer->Stop();
-			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
-				_("Error: connection lost"), wxICON_ERROR);
-			ExitMainLoop();
-			return;
-		}
-		downloadqueue->UpdateStats(stats.get());
-		uploadqueue->UpdateStats(stats.get());
-		clientlist->UpdateStats(stats.get());
-		//statistics->UpdateStats(stats.get());
+	CECPacket stats_req(EC_OP_STAT_REQ);
+	CEC_Stats_Tag *stats = (CEC_Stats_Tag *)connect->SendRecv(&stats_req);
+	if ( !stats ) {
+		//core_timer->Stop();
+		return;
 	}
+	downloadqueue->UpdateStats(stats);
+	uploadqueue->UpdateStats(stats);
+	clientlist->UpdateStats(stats);
+	//statistics->UpdateStats(stats);
+	
+	delete stats;
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
@@ -230,8 +227,13 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
-	amuledlg->ShowTransferRate();
-	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
+	theApp.amuledlg->ShowTransferRate();
+	if ( serverconnect->GetCurrentServer() ) {
+		amuledlg->ShowUserCount(serverconnect->GetCurrentServer()->GetUsers(),
+			serverconnect->GetCurrentServer()->GetFiles());
+	} else {
+		amuledlg->ShowUserCount(0, 0);
+	}
 }
 
 void CamuleRemoteGuiApp::ShutDown() {
@@ -383,6 +385,11 @@ wxString CamuleRemoteGuiApp::CreateED2kHostnameSourceLink(CAbstractFile const *)
 	return wxEmptyString;
 }
 
+wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
+{
+	return wxEmptyString;
+}
+
 wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
 {
 	wxString strCode = wxT("<a href=\"") + 
@@ -391,10 +398,6 @@ wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
 	return strCode;
 }
 
-wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
-{
-	return wxEmptyString;
-}
 
 wxString validateURI(const wxString url)
 {
@@ -492,10 +495,6 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        case KNOWNFILE_SET_COMMENT:
 			break;
 
-			case SHOW_USER_COUNT:
-				amuledlg->ShowUserCount(event.string_value);
-				break;
-
 			// download queue
 	        case DLOAD_SET_CAT_PRIO:
 			break;
@@ -524,14 +523,6 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 
 	CPreferences::BuildItemList( theApp.ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
-	
-	//
-	// Settings queried from remote side
-	//
-	m_exchange_send_selected_prefs = EC_PREFS_GENERAL | EC_PREFS_CONNECTIONS | EC_PREFS_MESSAGEFILTER |
-		EC_PREFS_ONLINESIG | EC_PREFS_SERVERS | EC_PREFS_FILES | EC_PREFS_SRCDROP |
-		EC_PREFS_SECURITY | EC_PREFS_CORETWEAKS;
-	m_exchange_recv_selected_prefs = m_exchange_send_selected_prefs | EC_PREFS_CATEGORIES;
 }
 
 bool CPreferencesRem::LoadRemote()
@@ -539,15 +530,14 @@ bool CPreferencesRem::LoadRemote()
 	//
 	// override local settings with remote
 	CECPacket req(EC_OP_GET_PREFERENCES);
-
-	// bring categories too
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
-	auto_ptr<CECPacket> prefs(m_conn->SendRecv(&req));
+	// bring them all !
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)(0xffffffff)));
+	CECPacket *prefs = m_conn->SendRecv(&req);
 	
-	if ( !prefs.get() ) {
+	if ( !prefs ) {
 		return false;
 	}
-	((CEC_Prefs_Packet *)prefs.get())->Apply();
+	((CEC_Prefs_Packet *)prefs)->Apply(false);
 
 	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
 		for (int i = 0; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
@@ -569,14 +559,14 @@ bool CPreferencesRem::LoadRemote()
 		cat->prio = PR_NORMAL;
 		theApp.glob_prefs->AddCat(cat);
 	}
+
+	delete prefs;
 	
 	return true;
 }
 
 void CPreferencesRem::SendToRemote()
 {
-	CEC_Prefs_Packet pref_packet(m_exchange_send_selected_prefs, EC_DETAIL_FULL);
-	m_conn->Send(&pref_packet);
 }
 
 //
@@ -681,19 +671,6 @@ void CServerListRem::RemoveServer(CServer* server)
 	m_conn->Send(&req);
 }
 
-void CServerListRem::UpdateUserFileStatus(CServer *server)
-{
-	if ( server ) {
-		m_TotalUser = server->GetUsers();
-		m_TotalFile = server->GetFiles();
-		
-		wxString buffer = 
-			CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(m_TotalUser) % CastItoIShort(m_TotalFile);
-	
-		Notify_ShowUserCount(buffer);
-	}
-}
-
 CServer *CServerListRem::GetServerByAddress(const wxString& WXUNUSED(address), uint16 WXUNUSED(port))
 {
 	// It's ok to return 0 for context where this code is used in remote gui
@@ -705,10 +682,10 @@ CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 	return new CServer(tag);
 }
 
-void CServerListRem::DeleteItem(CServer *in_srv)
+void CServerListRem::DeleteItem(CServer *srv)
 {
-	auto_ptr<CServer> srv(in_srv);
-	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv.get());
+	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv);
+	delete srv;
 }
 
 uint32 CServerListRem::GetItemID(CServer *server)
@@ -774,13 +751,13 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 	return file;
 }
 
-void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
+void CSharedFilesRem::DeleteItem(CKnownFile *file)
 {
-	auto_ptr<CKnownFile> file(in_file);
-
 	m_enc_map.erase(file->GetFileHash());
 	
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
+	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file);
+	
+	delete file;
 }
 
 CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
@@ -895,8 +872,8 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
     if (! m_ECSocket->WritePacket(&packet) ) {
     	return false;
     }
-    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
-    if (!reply.get()) {
+    CECPacket *reply = m_ECSocket->ReadPacket();
+    if (!reply) {
     	return false;
     }
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
@@ -907,9 +884,11 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 		} else {
 		    AddLogLineM(true, _("ExternalConn: Access denied"));
 		}
+		delete reply;
 		return false;
     } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
         AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed."));
+		delete reply;
 		return false;
     } else {
         m_isConnected = true;
@@ -946,9 +925,10 @@ void CRemoteConnect::Send(CECPacket *packet)
 		m_busy = false;
     	return;
     }
-    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
+    CECPacket *reply = m_ECSocket->ReadPacket();
 
 	m_busy = false;
+    delete reply;
 }
 
 /*
@@ -983,7 +963,7 @@ CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 {
-	m_nUserIDHybrid = tag->ID();
+	m_nUserID = tag->ID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
 	m_UserHash = tag->UserID();
@@ -992,14 +972,14 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	
 	if ( tag->HaveFile() ) {
 		CMD4Hash filehash = tag->FileID();
-		m_uploadingfile = theApp.sharedfiles->GetByID(filehash);
-		if ( !m_uploadingfile ) {
-			m_uploadingfile = theApp.downloadqueue->GetByID(filehash);
+		m_requpfile = theApp.sharedfiles->GetByID(filehash);
+		if ( !m_requpfile ) {
+			m_requpfile = theApp.downloadqueue->GetByID(filehash);
 		}
 	} else {
-		m_uploadingfile = NULL;
+		m_requpfile = 0;
 	}
-
+	
 	m_nCurSessionUp = 0;
 
 	CreditStruct *credit_struct = new CreditStruct;
@@ -1032,7 +1012,7 @@ void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 
 uint32 CUpDownClientListRem::GetItemID(CUpDownClient *client)
 {
-	return client->GetUserIDHybrid();
+	return client->GetUserID();
 }
 
 void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownClient *client)
@@ -1042,7 +1022,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	client->m_nDownloadState = state & 0xff;
 	client->m_nUploadState = (state >> 8) & 0xff;
 	
-	client->m_nUpDatarate = tag->SpeedUp();
+	client->kBpsUp = tag->SpeedUp() / 1024.0;
 	if ( client->m_nDownloadState == DS_DOWNLOADING ) {
 		client->kBpsDown = tag->SpeedDown() / 1024.0;
 	} else {
@@ -1058,7 +1038,7 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	uint64 value = tag->XferUp();
 	credit_struct->nUploadedHi = value >> 32;
 	credit_struct->nUploadedLo = value & 0xffffffff;
-	client->m_nTransferredUp = tag->XferUpSession();
+	client->m_nTransferedUp = tag->XferUpSession();
 
 	value = tag->XferDown();
 	credit_struct->nDownloadedHi = value >> 32;
@@ -1071,7 +1051,7 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
 
 void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
 {
-	m_datarate = tag->UpSpeed();
+	m_kbps = tag->UpSpeed() / 1024;
 	m_waiting_user_count = tag->ClientsInQueue();
 }
 
@@ -1120,13 +1100,13 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 	return file;
 }
 
-void CDownQueueRem::DeleteItem(CPartFile *in_file)
+void CDownQueueRem::DeleteItem(CPartFile *file)
 {
-	auto_ptr<CPartFile> file(in_file);
-
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file.get());
+	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file);
 	
 	m_enc_map.erase(file->GetFileHash());
+	
+	delete file;
 }
 
 CMD4Hash CDownQueueRem::GetItemID(CPartFile *file)
@@ -1321,7 +1301,7 @@ void CClientListRem::UpdateStats(CEC_Stats_Tag *stats)
 void CClientListRem::FilterQueues()
 {
 	// FIXME: add code
-	//wxASSERT(0);
+	wxASSERT(0);
 }
 
 CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>(conn)
@@ -1458,7 +1438,7 @@ void CKnownFile::SetFileComment(const wxString &)
 	wxASSERT(0);
 }
 
-void CKnownFile::SetFileRating(unsigned char)
+void CKnownFile::SetFileRate(unsigned char)
 {
 	// FIXME: add code
 	wxASSERT(0);
@@ -1513,10 +1493,9 @@ void CPartFile::UpdatePartsInfo()
 	wxASSERT(0);
 }
 
-//
-// Comments should be already here when dialog pops-up
 void CPartFile::UpdateFileRatingCommentAvail()
 {
+	wxASSERT(0);
 }
 
 bool CPartFile::SavePartFile(bool)

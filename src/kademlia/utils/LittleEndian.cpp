@@ -37,6 +37,7 @@ there client on the eMule forum..
 */
 
 #include "LittleEndian.h"
+#include "../../Types.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,14 +71,14 @@ uint32 le(uint32 val)
 //NOTE: avoid those function whenever possible -> terribly slow
 uint64 le(uint64 val)
 {
-	uint32 b0 = (uint32)((val      ) & 0xFF);
-	uint32 b1 = (uint32)((val >>  8) & 0xFF);
-	uint32 b2 = (uint32)((val >> 16) & 0xFF);
-	uint32 b3 = (uint32)((val >> 24) & 0xFF);
-	uint32 b4 = (uint32)((val >> 32) & 0xFF);
-	uint32 b5 = (uint32)((val >> 40) & 0xFF);
-	uint32 b6 = (uint32)((val >> 48) & 0xFF);
-	uint32 b7 = (uint32)((val >> 56) & 0xFF);
+	uint32 b0 = (val      ) & 0xFF;
+	uint32 b1 = (val >>  8) & 0xFF;
+	uint32 b2 = (val >> 16) & 0xFF;
+	uint32 b3 = (val >> 24) & 0xFF;
+	uint32 b4 = (val >> 32) & 0xFF;
+	uint32 b5 = (val >> 40) & 0xFF;
+	uint32 b6 = (val >> 48) & 0xFF;
+	uint32 b7 = (val >> 56) & 0xFF;
 	return ((uint64)b0 << 56) | ((uint64)b1 << 48) | ((uint64)b2 << 40) | ((uint64)b3 << 32) | 
 		   ((uint64)b4 << 24) | ((uint64)b5 << 16) | ((uint64)b6 << 8) | (uint64)b7;
 }

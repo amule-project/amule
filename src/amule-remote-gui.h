@@ -41,7 +41,6 @@
 #include <map>
 #include <list>
 #include <vector>
-#include <memory>
 
 class CED2KFileLink;
 class CServer;
@@ -93,8 +92,6 @@ class CRemoteConnect {
 
 class CPreferencesRem : public CPreferences {
 		CRemoteConnect *m_conn;
-		uint32 m_exchange_send_selected_prefs;
-		uint32 m_exchange_recv_selected_prefs;
 	public:
 		CPreferencesRem(CRemoteConnect *);
 		
@@ -174,8 +171,8 @@ class CRemoteContainer {
 		bool FullReload(int cmd)
 		{
 			CECPacket req(cmd);
-			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req));
-			if ( !reply.get() ) {
+			CECPacket *reply = this->m_conn->SendRecv(&req);
+			if ( !reply ) {
 				return false;
 			}
 			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
@@ -184,8 +181,9 @@ class CRemoteContainer {
 			
 			Flush();
 			
-			ProcessFull(reply.get());
+			ProcessFull(reply);
 			
+			delete reply;
 			return true;
 		}
 		
@@ -199,31 +197,31 @@ class CRemoteContainer {
 		
 			//
 			// Phase 1: request status
-			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req_sts));
-			if ( !reply.get() ) {
+			CECPacket *reply = this->m_conn->SendRecv(&req_sts);
+			if ( !reply ) {
 				return false;
 			}
 			
-			if ( !this->Phase1Done(reply.get()) ) {
-				// if derived class choose not to proceed, return - but with good status
+			if ( !this->Phase1Done(reply) ) {
+				// if derived class choose not to proceed, retrun - but with good status
 				return true;
 			}
 			//
 			// Phase 2: update status, mark new files for subsequent query
 			CECPacket req_full(cmd);
 		
-			ProcessUpdate(reply.get(), &req_full, tag);
+			ProcessUpdate(reply, &req_full, tag);
 		
-			reply.reset();
+			delete reply;
 		
 			if ( !m_inc_tags ) {
 				// Phase 3: request full info about files we don't have yet
 				if ( req_full.GetTagCount() ) {
-					reply.reset(this->m_conn->SendRecv(&req_full));
-					if ( !reply.get() ) {
+					reply = this->m_conn->SendRecv(&req_full);
+					if ( !reply ) {
 						return false;
 					}
-					ProcessFull(reply.get());
+					ProcessFull(reply);
 				}
 			}
 			return true;
@@ -344,9 +342,6 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 			total_user = m_TotalUser;
 			total_file = m_TotalFile;
 		}
-		
-		void UpdateUserFileStatus(CServer *server);
-		
 		CServer *GetServerByAddress(const wxString& address, uint16 port);
 
 		void ReloadControl();
@@ -387,7 +382,7 @@ class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_
 
 class CUpQueueRem {
 		uint32 m_waiting_user_count;
-		uint32 m_datarate;
+		float m_kbps;
 		uint32 m_data_overhead;
 
 		CUpDownClientListRem m_up_list, m_wait_list;
@@ -398,7 +393,7 @@ class CUpQueueRem {
 		bool ReQueryWait() { return m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		
 		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
-		uint32 GetDatarate() { return m_datarate; }
+		float GetKBps() { return m_kbps; }
 		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
 		
 		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }

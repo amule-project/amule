@@ -93,7 +93,6 @@
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
-#include "Format.h"
 
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h>
@@ -689,7 +688,9 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			}
 			break;
 		case SHOW_USER_COUNT:
-			amuledlg->ShowUserCount(event.string_value);
+			amuledlg->ShowUserCount(((CServer*)event.ptr_value)->GetUsers(),
+									((CServer*)event.ptr_value)->GetFiles());
+			amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
 			break;
 		case SHOW_GUI:
 			amuledlg->Show_aMule(true);

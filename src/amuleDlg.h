@@ -82,11 +82,8 @@ public:
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint32 whichone);
 	
-	void ShowUserCount(const wxString& info = wxEmptyString);
-	#warning Kry: KAD TODO - This defaults must be gone!
-	void ShowConnectionState(bool connected = false, const wxString &server = wxEmptyString);
-	// END KAD TODO
-
+	void ShowConnectionState(bool connected, const wxString &server = wxEmptyString);
+	void ShowUserCount(uint32 toshow, uint32 filetoshow);
 	void ShowTransferRate();
 	
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
@@ -141,7 +138,7 @@ public:
 	CChatWnd*		chatwnd;
 	wxWindow*		activewnd;
 	CStatisticsDlg*		statisticswnd;
-	CKadDlg*		kademliawnd;
+	CKadDlg*		kadwnd;
 
 	int			srv_split_pos;
 	
@@ -161,9 +158,6 @@ protected:
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnAboutButton(wxCommandEvent& ev);
 	void OnPrefButton(wxCommandEvent& ev);
-#ifndef CLIENT_GUI	
-	void OnImportButton(wxCommandEvent& ev);
-#endif
 
 	void OnMinimize(wxIconizeEvent& evt);
 

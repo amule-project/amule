@@ -214,7 +214,6 @@ public:
 	static uint16		GetPort()			{ return s_port; }
 	static void		SetPort(uint16 val);
 	static uint16		GetUDPPort()			{ return s_udpport; }
-	static uint16		GetEffectiveUDPPort()	{ return s_UDPDisable ? 0 : s_udpport; }
 	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
 	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
 	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }

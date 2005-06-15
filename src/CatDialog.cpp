@@ -104,9 +104,6 @@ CCatDialog::CCatDialog( wxWindow* parent, int index )
 
 
 	CastChild(ID_BOX_CATCOLOR, wxStaticBitmap)->SetBitmap( MakeBitmap( WxColourFromCr( m_color ) ) );
-#ifdef CLIENT_GUI
-	CastChild(IDC_BROWSE, wxButton)->Destroy();
-#endif
 }
 
 

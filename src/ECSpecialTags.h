@@ -30,7 +30,6 @@
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "CMD4Hash.h"	// Needed for CMD4Hash
-#include "NetworkFunctions.h" // Needed for IsLowID
 
 #include <map>
 #include <vector>
@@ -129,7 +128,7 @@ class CEC_Prefs_Packet : public CECPacket {
  	public:
  		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);
  		
- 		void Apply();
+ 		void Apply(bool use_unchanged);
 };
 
 class CEC_Server_Tag : public CECTag {
@@ -157,7 +156,8 @@ class CEC_ConnState_Tag : public CECTag {
  		
  		bool IsConnected() { return ClientID() && (ClientID() != 0xffffffff); }
  		bool IsConnecting() {return (ClientID() == 0xffffffff); }
- 		bool HaveLowID() { return ClientID() < HIGHEST_LOWID_ED2K_KAD; }
+ 		bool HaveLowID() { return ClientID() < 16777216; }
+ 		
  		// 0  : disconnected
  		// 0xffffffff : connecting
  		// other: client ID

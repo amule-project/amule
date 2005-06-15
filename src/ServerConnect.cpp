@@ -253,9 +253,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		StopConnectionTry();
 		
 		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
-		if ( update ) {
+		if ( update )
 			Notify_ServerHighlight(update, true);
-		}
 		
 		theApp.sharedfiles->ClearED2KPublishInfo();
 
@@ -279,8 +278,7 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 {
 	if (!to) {
 		if (connected) {
-			connectedsocket->SendPacket(packet, delpacket, true);
-			return true;
+			return connectedsocket->SendPacket(packet, delpacket, true);
 		} else {
 			if ( delpacket ) {
 				delete packet;
@@ -289,8 +287,7 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 			return false;
 		}
 	} else {
-		to->SendPacket(packet, delpacket, true);
-		return true;
+		return to->SendPacket(packet, delpacket, true);
 	}
 }
 
@@ -527,7 +524,7 @@ void CServerConnect::SetClientID(uint32 newid)
 {
 	clientid = newid;
 	
-	if (!::IsLowID(newid)) {
+	if (!IsLowIDED2K(newid)) {
 		theApp.SetPublicIP(newid);
 	}
 

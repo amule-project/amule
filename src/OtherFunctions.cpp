@@ -23,9 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-// The backtrace functions contain modified code from libYaMa, (c) Venkatesha Murthy G.
-// You can check libYaMa at http://personal.pavanashree.org/libyama/
-
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "OtherFunctions.h"
 #endif
@@ -40,6 +37,7 @@
 	#include <wx/msw/winundef.h>
 	#include <wx/msw/registry.h>
 	#if wxCHECK_VERSION_FULL(2,6,0,1)
+		// stupid wx forgot to install wx/msw/stdpaths.h
 		#include <wx/stdpaths.h>
 	#endif
 #endif
@@ -74,7 +72,6 @@
 	#include <ansidecl.h>
 	#include <bfd.h>
 #endif
-
 
 namespace otherfunctions {
 
@@ -769,7 +766,7 @@ wxString GetCatTitle(int catid)
 		case 5:  return _("Downloading");
 		case 6:  return _("Erroneous");
 		case 7:  return _("Paused");
-		case 8:  return _("Stopped");		
+		case 8:  return _("Stopped");
 		case 9:  return _("Video");
 		case 10: return _("Audio");
 		case 11: return _("Archive");
@@ -1438,7 +1435,7 @@ void print_backtrace(uint8 n)
 #endif	/* __LINUX__ / !__LINUX__ */
 }
 
-#endif // wxCHECK_VERSION(2,6,0)
+#endif // !(wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER && 0) 
 
 /*
  * RLE encoder implementation. This is RLE implementation for very specific
@@ -1591,29 +1588,6 @@ void PartFileEncoderData::Decode(unsigned char *gapdata, int gaplen, unsigned ch
 	m_gap_status.Decode(gapdata, gaplen - sizeof(uint32));
 }
 
-unsigned char RLE_Data_BV::m_buff[256];
-
-RLE_Data_BV::RLE_Data_BV(int len) : m_last_buff(len)
-{
-}
-
-int RLE_Data_BV::Encode(std::vector<bool> &data)
-{
-	unsigned char *curr = m_buff;
-	std::vector<bool>::const_iterator i = data.begin();
-	std::vector<bool>::const_iterator j = m_last_buff.begin();
-	while( i != data.end() ) {
-		unsigned char count = 0;
-		while ( (i != data.end()) && ( (*i ^ *j) == false) ) {
-			count++;
-			i++;
-			j++;
-		}
-		*curr++ = count;
-	}
-	m_last_buff = data;
-	return 0;
-}
 
 wxString GetLocaleDir() {
 #if !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )

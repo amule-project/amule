@@ -77,23 +77,7 @@ enum DebugType
 	//! Warnings/Errors related to searching.
 	logSearch,
 	//! Warnings/Errors related to the server UDP socket.
-	logServerUDP,
-	//! Warning/Errors related to Kademlia UDP comunication on client
-	logClientKadUDP,
-	//! Warning/Errors related to Kademlia Search
-	logKadSearch,
-	//! Warning/Errors related to Kademlia Routing
-	logKadRouting,
-	//! Warning/Errors related to Kademlia Indexing
-	logKadIndex,
-	//! Warning/Errors related to Kademlia Main Thread
-	logKadMain,
-	//! Warning/Errors related to Kademlia Preferences
-	logKadPrefs,
-	//! Warnings/Errors related to partfile importer
-	logPfConvert
-	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
-	// array in Logger.cpp!
+	logServerUDP
 };
 
 

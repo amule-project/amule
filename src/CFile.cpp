@@ -418,39 +418,9 @@ off_t CFile::Read(void *pBuf, off_t nCount) const
 		m_error = true;
 		return wxInvalidOffset;
 	} else {
-		return iRc;
+		return (off_t)iRc;
 	}
 }
-
-off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const 
-{
-	off_t total_done = 0;
-	int retries = 0; 
-	while ((total_done < nCount) && (retries <= nRetries)) {
-		int done = Read(pBuf+total_done,nCount-total_done);
-		if (done == wxInvalidOffset) {
-			// Woops, failure!
-			throw wxString(wxT("Error while reading file!"));
-		} else {
-			total_done += done;
-			wxASSERT(total_done <= nCount);
-			if (total_done == nCount) {
-				// This file is done.
-			} else {
-				retries++;
-			}			
-		}
-	}
-	
-	if (total_done < nCount) {
-		// The total bytes were not reached on the specified replies.
-		throw wxString(wxString::Format(wxT("Error while reading file (unable to read %d bytes on two retries)!"), nCount));
-	}
-		
-	wxASSERT(total_done == nCount);
-	return total_done; // Which should equal nCount	
-}
-
 
 // write
 size_t CFile::Write(const void *pBuf, size_t nCount)
@@ -905,22 +875,4 @@ bool CheckDirExists(const wxString& dir)
 {
 	struct stat st;
 	return (CFile::Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
-}
-
-bool BackupFile(const wxString& filename, const wxString& appendix)
-{
-
-	if ( !UTF8_CopyFile(filename, filename + appendix) ) {
-		AddDebugLogLineM( false, logFileIO, wxT("Could not create backup of ") + filename);
-		return false;
-	}
-	
-	// Kry - Safe Backup
-	CFile safebackupfile;
-	safebackupfile.Open(filename + appendix,CFile::read_write);
-	safebackupfile.Flush();
-	safebackupfile.Close();
-	// Kry - Safe backup end
-	
-	return true;
 }

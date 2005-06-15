@@ -130,7 +130,7 @@ public:
 
 	// Updates the number of received bytes and marks when transfers first began
 	void UpdateSentBytes(int32 bytesToAdd) {
-		if (!stat_transferStarttime && bytesToAdd) {
+		if (!stat_transferStarttime) {
 			// Saves the time where transfers were started and calucated the time before
 			stat_transferStarttime = GetTickCount64();
 			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
@@ -186,9 +186,6 @@ public:
 	void	AddUpDataOverheadServer(uint32 data)			{ m_nUpDataRateMSOverhead += data;
 															  m_nUpDataOverheadServer += data;
 															  m_nUpDataOverheadServerPackets++;}
-	void	AddUpDataOverheadKad(uint32 data)			{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadKad += data;
-															  m_nUpDataOverheadKadPackets++;}
 	void	AddUpDataOverheadOther(uint32 data)				{ m_nUpDataRateMSOverhead += data;
 															  m_nUpDataOverheadOther += data;
 															  m_nUpDataOverheadOtherPackets++;}
@@ -196,12 +193,10 @@ public:
 	uint64	GetUpDataOverheadSourceExchange()			{return m_nUpDataOverheadSourceExchange;}
 	uint64	GetUpDataOverheadFileRequest()				{return m_nUpDataOverheadFileRequest;}
 	uint64	GetUpDataOverheadServer()					{return m_nUpDataOverheadServer;}
-	uint64	GetUpDataOverheadKad()					{return m_nUpDataOverheadKad;}	
 	uint64	GetUpDataOverheadOther()					{return m_nUpDataOverheadOther;}
 	uint64	GetUpDataOverheadSourceExchangePackets()	{return m_nUpDataOverheadSourceExchangePackets;}
 	uint64	GetUpDataOverheadFileRequestPackets()		{return m_nUpDataOverheadFileRequestPackets;}
 	uint64	GetUpDataOverheadServerPackets()			{return m_nUpDataOverheadServerPackets;}
-	uint64	GetUpDataOverheadKadPackets()			{return m_nUpDataOverheadKadPackets;}	
 	uint64	GetUpDataOverheadOtherPackets()				{return m_nUpDataOverheadOtherPackets;}
 	void	CompUpDatarateOverhead();
 private:
@@ -263,7 +258,7 @@ private:
 	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
 	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
 	StatsTreeNode	down1_1, down1_2, down1_3, down1_4, down1_5, down1_6, down1_7, down1_8;
-	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10,up11;
+	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10;
 	StatsTreeNode tran0;
 	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
 	StatsTreeNode shar1,shar2,shar3;
@@ -316,12 +311,10 @@ private:
 	uint64	m_nUpDataOverheadSourceExchange;
 	uint64	m_nUpDataOverheadFileRequest;
 	uint64	m_nUpDataOverheadServer;
-	uint64	m_nUpDataOverheadKad;	
 	uint64	m_nUpDataOverheadOther;
 	uint64	m_nUpDataOverheadSourceExchangePackets;
 	uint64	m_nUpDataOverheadFileRequestPackets;
 	uint64	m_nUpDataOverheadServerPackets;
-	uint64	m_nUpDataOverheadKadPackets;	
 	uint64	m_nUpDataOverheadOtherPackets;
 	std::deque<int>	m_AverageUDRO_list;
 };

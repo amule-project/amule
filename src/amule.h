@@ -76,7 +76,6 @@ class CClientCreditsList;
 class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
-class UploadBandwidthThrottler;
 class CStatistics;
 class wxServer;
 class wxString;
@@ -85,7 +84,6 @@ class wxTimer;
 class wxTimerEvent;
 class wxCommandEvent;
 class wxFFileOutputStream;
-class CUpDownClient;
 
 #define theApp wxGetApp()
 
@@ -190,11 +188,6 @@ public:
 	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 	const bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTINGDOWN); }
 	
-	// Check ED2K and Kademlia state
-	bool IsFirewalled();
-	// Check if we should callback this client
-	bool DoCallback( CUpDownClient *client );
-	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
@@ -239,8 +232,7 @@ public:
 	CClientUDPSocket*	clientudp;
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
-	UploadBandwidthThrottler* uploadBandwidthThrottler;
-	
+
 	void ShutDown();
 	
 	wxString GetLog(bool reset = false);
@@ -260,7 +252,7 @@ public:
 	
 	const wxString& GetOSType() const { return OSType; }
 	
-	void ShowUserCount();
+	uint32 sent;
 
 protected:
 #ifdef __WXDEBUG__
@@ -423,7 +415,7 @@ public:
 	wxString CreateED2kLink(const CAbstractFile* f);
 	wxString CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
-	wxString CreateED2kAICHLink(const CKnownFile* f);
+	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
 	wxString GenFakeCheckUrl(const CAbstractFile *f);
 	wxString GenFakeCheckUrl2(const CAbstractFile *f);

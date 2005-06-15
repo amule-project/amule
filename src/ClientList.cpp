@@ -38,21 +38,11 @@
 #include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "OtherFunctions.h" // Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
-#include "ServerConnect.h" // Needed for theApp.serverconnect
-#include "Preferences.h" // Needed for thePrefs
 #include "Logger.h"
 #include "Format.h"
 
 #include <algorithm>
 
-#include "kademlia/routing/Contact.h"
-
-#ifdef __COMPILE_KAD__
-#include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/Prefs.h"
-#include "kademlia/kademlia/Search.h"
-#include "kademlia/net/KademliaUDPListener.h"
-#endif
 
 /**
  * CDeletedClient Class
@@ -90,9 +80,6 @@ CClientList::CClientList()
 {
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
-	m_dwLastClientCleanUp = 0;
-	m_pBuddy = NULL;
-	m_nBuddyStatus = Disconnected;
 }
 
 
@@ -117,17 +104,15 @@ void CClientList::AddClient( CUpDownClient* toadd )
  		Notify_ClientCtrlAddClient( toadd );
 	
 		// We always add the ID/ptr pair, regardles of the actual ID value
-		m_clientList.insert( IDMapPair( toadd->GetUserIDHybrid(), toadd ) );
+		m_clientList.insert( IDMapPair( toadd->GetUserID(), toadd ) );
 
 		// We only add the IP if it is valid
-		if ( toadd->GetIP() ) {
+		if ( toadd->GetIP() ) 
 			m_ipList.insert( IDMapPair( toadd->GetIP(), toadd ) );
-		}
 
 		// We only add the hash if it is valid
-		if ( toadd->HasValidHash() ) {
+		if ( toadd->HasValidHash() ) 
 			m_hashList.insert( HashMapPair( toadd->GetUserHash(), toadd ) );
-		}
 	}
 }
 
@@ -153,7 +138,7 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 {
 	// Sainity check
-	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserIDHybrid() == newID ) )
+	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserID() == newID ) )
 		return;
 
 	// First remove the ID entry
@@ -201,7 +186,7 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 	bool result = false;
 
 	// First remove the ID entry
-	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
+	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
 
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( client == range.first->second ) {
@@ -260,7 +245,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 	// LowID clients need a different set of checks
 	if ( client->HasLowID() ) {
 		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
+		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
 
 		IDMap::iterator it = range.first;
 		for ( ; it != range.second; it++ ) {
@@ -273,7 +258,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 		}
 	} else {
 		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
+		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserID() );
 
 		IDMap::iterator it = range.first;
 		for ( ; it != range.second; it++ ) {
@@ -650,155 +635,6 @@ void CClientList::Process()
 			}
 		}
 	}
-	
-	#ifdef __COMPILE_KAD__
-	//We need to try to connect to the clients in m_KadList
-	//If connected, remove them from the list and send a message back to Kad so we can send a ACK.
-	//If we don't connect, we need to remove the client..
-	//The sockets timeout should delete this object.
-
-	// buddy is just a flag that is used to make sure we are still connected or connecting to a buddy.
-	buddyState buddy = Disconnected;
-
-	for (std::set<CUpDownClient*>::iterator it = m_KadSources.begin(); it != m_KadSources.end(); ++it) {
-		CUpDownClient* cur_client = *it;
-		if( !Kademlia::CKademlia::isRunning() ) {
-			//Clear out this list if we stop running Kad.
-			//Setting the Kad state to KS_NONE causes it to be removed in the switch below.
-			cur_client->SetKadState(KS_NONE);
-		}
-		switch (cur_client->GetKadState()) {
-			case KS_QUEUED_FWCHECK:
-				//Another client asked us to try to connect to them to check their firewalled status.
-				cur_client->TryToConnect(true);
-				break;
-
-			case KS_CONNECTING_FWCHECK:
-				//Ignore this state as we are just waiting for results.
-				break;
-
-			case KS_CONNECTED_FWCHECK:
-				//We successfully connected to the client.
-				//We now send a ack to let them know.
-				Kademlia::CKademlia::getUDPListener()->sendNullPacket(KADEMLIA_FIREWALLED_ACK, ENDIAN_NTOHL(cur_client->GetIP()), cur_client->GetKadPort());
-				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
-				cur_client->SetKadState(KS_NONE);
-				break;
-
-			case KS_INCOMING_BUDDY:
-				//A firewalled client wants us to be his buddy.
-				//If we already have a buddy, we set Kad state to KS_NONE and it's removed in the next cycle.
-				//If not, this client will change to KS_CONNECTED_BUDDY when it connects.
-				if( m_nBuddyStatus == Connected ) {
-					cur_client->SetKadState(KS_NONE);
-				}
-				break;
-
-			case KS_QUEUED_BUDDY:
-				//We are firewalled and want to request this client to be a buddy.
-				//But first we check to make sure we are not already trying another client.
-				//If we are not already trying. We try to connect to this client.
-				//If we are already connected to a buddy, we set this client to KS_NONE and it's removed next cycle.
-				//If we are trying to connect to a buddy, we just ignore as the one we are trying may fail and we can then try this one.
-				if( m_nBuddyStatus == Disconnected ) {
-					buddy = Connecting;
-					m_nBuddyStatus = Connecting;
-					cur_client->SetKadState(KS_CONNECTING_BUDDY);
-					cur_client->TryToConnect(true);
-					Notify_ServerUpdateMyInfo();
-				} else {
-					if( m_nBuddyStatus == Connected ) {
-						cur_client->SetKadState(KS_NONE);
-					}
-				}
-				break;
-
-			case KS_CONNECTING_BUDDY:
-				//We are trying to connect to this client.
-				//Although it should NOT happen, we make sure we are not already connected to a buddy.
-				//If we are we set to KS_NONE and it's removed next cycle.
-				//But if we are not already connected, make sure we set the flag to connecting so we know 
-				//things are working correctly.
-				if( m_nBuddyStatus == Connected ) {
-					cur_client->SetKadState(KS_NONE);
-				} else {
-					wxASSERT( m_nBuddyStatus == Connecting );
-					buddy = Connecting;
-				}
-				break;
-
-			case KS_CONNECTED_BUDDY:
-				//A potential connected buddy client wanting to me in the Kad network
-				//We set our flag to connected to make sure things are still working correctly.
-				buddy = Connected;
-				
-				//If m_nBuddyStatus is not connected already, we set this client as our buddy!
-				if( m_nBuddyStatus != Connected ) {
-					m_pBuddy = cur_client;
-					m_nBuddyStatus = Connected;
-					Notify_ServerUpdateMyInfo();
-				}
-				if( m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong() ) {
-					cur_client->SendBuddyPing();
-				}
-				break;
-
-			default:
-				RemoveFromKadList(cur_client);
-		}
-	}
-	
-	//We either never had a buddy, or lost our buddy..
-	if( buddy == Disconnected ) {
-		if( m_nBuddyStatus != Disconnected || m_pBuddy ) {
-			if( Kademlia::CKademlia::isRunning() && theApp.IsFirewalled() ) {
-				//We are a lowID client and we just lost our buddy.
-				//Go ahead and instantly try to find a new buddy.
-				Kademlia::CKademlia::getPrefs()->setFindBuddy();
-			}
-			m_pBuddy = NULL;
-			m_nBuddyStatus = Disconnected;
-			Notify_ServerUpdateMyInfo();
-		}
-	}
-
-	if ( Kademlia::CKademlia::isConnected() ) {
-		if( Kademlia::CKademlia::isFirewalled() ) {
-			if( m_nBuddyStatus == Disconnected && Kademlia::CKademlia::getPrefs()->getFindBuddy() ) {
-				//We are a firewalled client with no buddy. We have also waited a set time 
-				//to try to avoid a false firewalled status.. So lets look for a buddy..
-				Kademlia::CSearch *findBuddy = new Kademlia::CSearch;
-				findBuddy->setSearchTypes(Kademlia::CSearch::FINDBUDDY);
-				Kademlia::CUInt128 ID(true);
-				ID.XOR(Kademlia::CKademlia::getPrefs()->getKadID());
-				findBuddy->setTargetID(ID);
-				if( !Kademlia::CSearchManager::startSearch(findBuddy) ) {
-					//This search ID was already going. Most likely reason is that
-					//we found and lost our buddy very quickly and the last search hadn't
-					//had time to be removed yet. Go ahead and set this to happen again
-					//next time around.
-					Kademlia::CKademlia::getPrefs()->setFindBuddy();
-				}
-			}
-		} else {
-			if( m_pBuddy ) {
-				//Lets make sure that if we have a buddy, they are firewalled!
-				//If they are also not firewalled, then someone must have fixed their firewall or stopped saturating their line.. 
-				//We just set the state of this buddy to KS_NONE and things will be cleared up with the next cycle.
-				if( !m_pBuddy->HasLowID() ) {
-					m_pBuddy->SetKadState(KS_NONE);
-				}
-			}
-		}
-	} else {
-		if( m_pBuddy ) {
-			//We are not connected anymore. Just set this buddy to KS_NONE and things will be cleared out on next cycle.
-			m_pBuddy->SetKadState(KS_NONE);
-		}
-	}
-	#endif
-	
-	CleanUpClientList();
 }
 
 
@@ -903,7 +739,7 @@ bool CClientList::SendMessage(uint64 client_id, const wxString& message)
 				% client_id 
 				% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
 				% PORT_FROM_GUI_ID(client_id) );
-		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true, true);
+		client = new CUpDownClient(PORT_FROM_GUI_ID(client_id),IP_FROM_GUI_ID(client_id),0,0,NULL, true);
 		AddClient(client);
 	}
 	return client->SendMessage(message);
@@ -913,149 +749,5 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 	CUpDownClient* client = FindClientByIP(IP_FROM_GUI_ID(client_id), PORT_FROM_GUI_ID(client_id));
 	if (client) {
 		client->SetChatState(state);
-	}
-}
-
-/* Kad stuff */
-#warning KAD TODO: client list handling needs a big import.
-
-void CClientList::RequestTCP(Kademlia::CContact* contact)
-{
-	#ifdef __COMPILE_KAD__
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
-	// don't connect ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
-		return;
-	}
-
-	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
-
-	if (!pNewClient) {
-		#warning Do we actually have to check friendstate here?
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true);
-	}
-
-	//Add client to the lists to be processed.
-	pNewClient->SetKadPort(contact->getUDPPort());
-	pNewClient->SetKadState(KS_QUEUED_FWCHECK);
-	AddToKadList(pNewClient); // This was a direct adding, but I like to check duplicates
-	//This method checks if this is a dup already.
-	AddClient(pNewClient);
-	#endif
-}
-
-void CClientList::RequestBuddy(Kademlia::CContact* contact)
-{
-	#ifdef __COMPILE_KAD__
-	
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
-	// Don't connect to ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
-		return;
-	}
-	
-	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
-	if (!pNewClient) {
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
-	}
-
-	//Add client to the lists to be processed.
-	pNewClient->SetKadPort(contact->getUDPPort());
-	pNewClient->SetKadState(KS_QUEUED_BUDDY);
-	byte ID[16];
-	contact->getClientID().toByteArray(ID);
-	pNewClient->SetUserHash(ID);
-	AddToKadList(pNewClient);
-	//This method checks if this is a dup already.
-	AddClient(pNewClient);
-	
-	#endif
-}
-
-void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
-{
-	#ifdef __COMPILE_KAD__
-	
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
-	//If eMule already knows this client, abort this.. It could cause conflicts.
-	//Although the odds of this happening is very small, it could still happen.
-	if (FindClientByIP(nContactIP, contact->getTCPPort())) {
-		return;
-	}
-
-	// don't connect ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
-		return;
-	}
-
-	//Add client to the lists to be processed.
-	CUpDownClient* pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
-	pNewClient->SetKadPort(contact->getUDPPort());
-	pNewClient->SetKadState(KS_INCOMING_BUDDY);
-	byte ID[16];
-	contact->getClientID().toByteArray(ID);
-	pNewClient->SetUserHash(ID);
-	buddyID->toByteArray(ID);
-	pNewClient->SetBuddyID(ID);
-	AddToKadList(pNewClient);
-	AddClient(pNewClient);
-	#endif
-}
-
-void CClientList::RemoveFromKadList(CUpDownClient* torem) {
-	#ifdef __COMPILE_KAD__
-	
-	wxASSERT(torem);
-	
-	if (m_KadSources.erase(torem)) {
-		if(torem == m_pBuddy) {
-			m_pBuddy = NULL;
-			Notify_ServerUpdateMyInfo();
-		}
-	}
-		
-	#endif
-}
-
-void CClientList::AddToKadList(CUpDownClient* toadd) {
-	#ifdef __COMPILE_KAD__
-	
-	if(!toadd) {
-		return;
-	}
-	
-	m_KadSources.insert(toadd); // This will take care of duplicates.
-	
-	#endif
-}
-
-void CClientList::CleanUpClientList(){
-	// We remove clients which are not needed any more by time
-	// this check is also done on CUpDownClient::Disconnected, however it will not catch all
-	// cases (if a client changes the state without beeing connected
-	//
-	// Adding this check directly to every point where any state changes would be more effective,
-	// is however not compatible with the current code, because there are points where a client has
-	// no state for some code lines and the code is also not prepared that a client object gets
-	// invalid while working with it (aka setting a new state)
-	// so this way is just the easy and safe one to go (as long as emule is basically single threaded)
-	const uint32 cur_tick = ::GetTickCount();
-	if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick ){
-		m_dwLastClientCleanUp = cur_tick;
-		uint32 cDeleted = 0;
-		for (IDMap::iterator it = m_clientList.begin(); it != m_clientList.end();/*nothing*/) {
-			IDMap::iterator it2 = it++; // Don't change this to a ++it!!!!
-			CUpDownClient* pCurClient = it2->second;
-			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
-				&& pCurClient->GetDownloadState() == DS_NONE
-				&& pCurClient->GetChatState() == MS_NONE
-				&& pCurClient->GetKadState() == KS_NONE
-				&& pCurClient->GetSocket() == NULL)
-			{
-				cDeleted++;
-				AddToDeleteQueue(pCurClient); 
-			}
-		}
-		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
 	}
 }

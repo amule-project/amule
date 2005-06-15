@@ -1,5 +1,4 @@
 SUBDIRS = m4 docs src
-
 if COMPILE_NLS
 SUBDIRS += intl po
 endif

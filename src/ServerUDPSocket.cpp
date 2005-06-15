@@ -46,7 +46,6 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
-#include "Format.h"
 
 #include <sys/types.h>
 
@@ -105,8 +104,6 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			}
 			case OP_EMULEPROT:
 				// Silently drop it.
-				AddDebugLogLineM( true, logServerUDP,
-					wxString::Format( wxT("Received UDP server packet with eDonkey protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[0] ) );
 				theApp.statistics->AddDownDataOverheadOther(length);
 				break;
 			default:
@@ -127,8 +124,6 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
 	theApp.statistics->AddDownDataOverheadOther(size);
-	AddDebugLogLineM( false, logServerUDP,
-					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
 	try{
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
@@ -234,8 +229,9 @@ void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opco
 				update->SetHardFiles( cur_hardfiles );
 				update->SetUDPFlags( uUDPFlags );
 				update->SetLowIDUsers( uLowIDUsers );
-				Notify_ServerRefresh( update );
-				theApp.ShowUserCount();
+				if (update == theApp.serverconnect->GetCurrentServer()) {
+					Notify_ShowUserCount(update);
+				}
 				break;
 			}
  			case OP_SERVER_DESC_RES:{
