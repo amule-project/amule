@@ -1,24 +1,31 @@
-Version 2.0.3 - Unnamed.
+Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 ----------
-2005-06-??
+2005-06-15
 
 	ken:
 		* Enabled amuleweb to work from within the Mac application bundle
 		* Fixed Online Signature not actually being enabled when user sets the
 		  preference
 
+	Kry:
+		* Fixed #471 "compile error". Should compile on GCC4 again.
+		* Fixed Solaris compilation erroron XParseGeometry.
+		* Fixed wrong MD5 hash calculation on 64 bits arch.
+		  This fixes storing the wrong EC/webserver password on config file.
+		* Fixed unneeded GTK libs usage on aMule remote GUI.
+		* Added a warning on gd-lib not found (progressbar not shown on amuleweb).
+
+	lfroen:
+		* New daemon socket code, event based. Improved reliability and 
+		  speed problems fixed.
+		  
 	volpol:
 		* Fixed #417 "Upload priority is changed for completed files."
 		* Added new display filter "Active"
 		* Display of QR and aMule OS info in "Clients Details" dialog
 
-	Kry:
-		* Fixed wrong MD5 hash calculation on 64 bits arch.
-		  This fixes storing the wrong EC/webserver password on config file.
-
-	lfroen:
-		* New daemon socket code, event based. Improved reliability and 
-		  speed problems fixed.
+	Xaignar:
+		* Fixed warning on EC disabled for aMule daemon.
 
 
 Version 2.0.2 - The " [Your Ad Here] " version.
