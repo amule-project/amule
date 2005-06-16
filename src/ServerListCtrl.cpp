@@ -226,7 +226,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	if (server->GetAuxPortsList().IsEmpty()) {
 		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u"), server->GetPort()));
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u ("), server->GetPort()) + wxT(",") + server->GetAuxPortsList() + wxT(")") );
+		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u ("), server->GetPort()) + server->GetAuxPortsList() + wxT(")") );
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
