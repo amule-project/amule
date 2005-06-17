@@ -104,6 +104,8 @@ class CPreferencesRem : public CPreferences {
 		void UpdateCategory(uint8 cat, wxString name, wxString path,
 			wxString comment, uint32 color, uint8 prio);
 
+		void RemoveCat(uint8 cat);
+		
 		bool LoadRemote();
 		void SendToRemote();
 };

@@ -583,7 +583,7 @@ Category_Struct *CPreferencesRem::CreateCategory(wxString name, wxString path,
 			wxString comment, uint32 color, uint8 prio)
 {
 	CECPacket req(EC_OP_CREATE_CATEGORY);
-	CEC_Category_Tag tag(-1, name, path, comment, color, prio);
+	CEC_Category_Tag tag(0xffffffff, name, path, comment, color, prio);
 	req.AddTag(tag);
 	m_conn->Send(&req);
 
@@ -613,6 +613,15 @@ void CPreferencesRem::UpdateCategory(uint8 cat, wxString name, wxString path,
 	category->comment		= comment;
 	category->color			= color;
 	category->prio			= prio;
+}
+
+void CPreferencesRem::RemoveCat(uint8 cat)
+{
+	CECPacket req(EC_OP_DELETE_CATEGORY);
+	CEC_Category_Tag tag(cat, EC_DETAIL_CMD);
+	req.AddTag(tag);
+	m_conn->Send(&req);
+	CPreferences::RemoveCat(cat);
 }
 
 //
@@ -1140,8 +1149,7 @@ void CDownQueueRem::StopUDPRequests()
 
 void CDownQueueRem::ResetCatParts(int)
 {
-	// TODO: add command
-	wxASSERT(0);
+	// called when category being deleted. Command will be performed on remote side
 }
 
 bool CDownQueueRem::IsPartFile(const CKnownFile *) const

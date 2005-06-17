@@ -743,7 +743,32 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 				amuledlg->chatwnd->ProcessMessage(event.longlong_value, event.string_value);
 			}
 			break;
-			
+		case CATEGORY_ADD:
+			if ( amuledlg->transferwnd ) {
+				uint32 cat = event.long_value;
+				
+		        amuledlg->transferwnd->AddCategory(glob_prefs->GetCategory(cat));
+			}
+			break;
+		case CATEGORY_UPDATE:
+			if ( amuledlg->transferwnd ) {
+				uint32 cat = event.long_value;
+				
+				amuledlg->transferwnd->UpdateCategory(cat);
+				amuledlg->transferwnd->downloadlistctrl->Refresh();
+				amuledlg->searchwnd->UpdateCatChoice();
+			}
+			break;
+		case CATEGORY_DELETE:
+			if ( amuledlg->transferwnd ) {
+				uint32 cat = event.long_value;
+				
+				amuledlg->transferwnd->RemoveCategory(cat);
+				
+				amuledlg->searchwnd->UpdateCatChoice();
+			}
+			break;
+
 		// logging
 		case ADDDEBUGLOGLINE:
 		case ADDLOGLINE:
