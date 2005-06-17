@@ -220,7 +220,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		theApp.amuledlg->searchwnd->UpdateCatChoice();
 	}
 	
-	EndModal(0);
+	EndModal(wxID_OK);
 }
 
 
