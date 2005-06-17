@@ -539,6 +539,7 @@ enum {
 		 */
 	EC_OP_CREATE_CATEGORY,
 	EC_OP_UPDATE_CATEGORY,
+	EC_OP_DELETE_CATEGORY,
 
 		/*!
 		 * \brief Retrieves the statistics graphs
