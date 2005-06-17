@@ -158,6 +158,13 @@ void CTransferWnd::AddCategory( Category_Struct* category )
 	theApp.amuledlg->searchwnd->UpdateCatChoice();
 }
 
+void CTransferWnd::RemoveCategory(int index)
+{
+	m_dlTab->RemovePage(index);
+				
+	m_dlTab->SetSelection(0);
+	downloadlistctrl->ChangeCategory(0);
+}
 
 void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 {
@@ -234,10 +241,7 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 		theApp.downloadqueue->ResetCatParts( m_dlTab->GetSelection() );
 		theApp.glob_prefs->RemoveCat( m_dlTab->GetSelection() );
 		
-		m_dlTab->RemovePage(m_dlTab->GetSelection());
-		m_dlTab->SetSelection(0);
-		
-		downloadlistctrl->ChangeCategory(0);
+		RemoveCategory(m_dlTab->GetSelection());
 		
 		if ( theApp.glob_prefs->GetCatCount() == 1 ) {
 			thePrefs::SetAllcatType(0);
