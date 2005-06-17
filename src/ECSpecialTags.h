@@ -125,6 +125,18 @@ class CValueMap {
 class CValueMap {};
 #endif
 
+class CEC_Category_Tag : public CECTag {
+ 	public:
+ 		CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_level = EC_DETAIL_FULL);
+ 		
+ 		wxString Name() { return GetTagByNameSafe(EC_TAG_CATEGORY_TITLE)->GetStringData(); }
+ 		wxString Path() { return GetTagByNameSafe(EC_TAG_CATEGORY_PATH)->GetStringData(); }
+ 		wxString Comment() { return GetTagByNameSafe(EC_TAG_CATEGORY_COMMENT)->GetStringData(); }
+ 		uint8 GetPrio() { return GetTagByNameSafe(EC_TAG_CATEGORY_PRIO)->GetInt8Data(); }
+ 		uint32 GetColor() { return GetTagByNameSafe(EC_TAG_CATEGORY_COLOR)->GetInt32Data(); }
+ 		
+};
+
 class CEC_Prefs_Packet : public CECPacket {
  	public:
  		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);

@@ -57,6 +57,22 @@
 #include "Preferences.h"
 #include "amule.h"
 
+CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CATEGORY, cat_index)
+{
+	Category_Struct *cat = theApp.glob_prefs->GetCategory(cat_index);
+	switch (detail_level) {
+		case EC_DETAIL_UPDATE:
+		case EC_DETAIL_INC_UPDATE:
+		case EC_DETAIL_FULL:
+			AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->incomingpath));
+			AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
+			AddTag(CECTag(EC_TAG_CATEGORY_COLOR, (uint32)cat->color));
+			AddTag(CECTag(EC_TAG_CATEGORY_PRIO, cat->prio));
+		case EC_DETAIL_CMD:
+			AddTag(CECTag(EC_TAG_CATEGORY_TITLE, cat->title));
+		}
+}
+
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_level) : CECPacket(EC_OP_SET_PREFERENCES)
 {
 	if (selection & EC_PREFS_CATEGORIES) {
@@ -64,18 +80,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);
 			for (unsigned int i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
 				Category_Struct *cat = theApp.glob_prefs->GetCategory(i);
-				CECTag catTag(EC_TAG_CATEGORY, (uint32)i);
-				switch (detail_level) {
-					case EC_DETAIL_UPDATE:
-					case EC_DETAIL_INC_UPDATE:
-					case EC_DETAIL_FULL:
-						catTag.AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->incomingpath));
-						catTag.AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
-						catTag.AddTag(CECTag(EC_TAG_CATEGORY_COLOR, (uint32)cat->color));
-						catTag.AddTag(CECTag(EC_TAG_CATEGORY_PRIO, cat->prio));
-					case EC_DETAIL_CMD:
-						catTag.AddTag(CECTag(EC_TAG_CATEGORY_TITLE, cat->title));
-				}
+				CEC_Category_Tag catTag(i, detail_level);
 				cats.AddTag(catTag);
 			}
 			AddTag(cats);
