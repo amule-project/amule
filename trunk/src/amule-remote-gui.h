@@ -97,7 +97,13 @@ class CPreferencesRem : public CPreferences {
 		uint32 m_exchange_recv_selected_prefs;
 	public:
 		CPreferencesRem(CRemoteConnect *);
-		
+
+		Category_Struct *CreateCategory(wxString name, wxString path,
+			wxString comment, uint32 color, uint8 prio);
+
+		void UpdateCategory(uint8 cat, wxString name, wxString path,
+			wxString comment, uint32 color, uint8 prio);
+
 		bool LoadRemote();
 		void SendToRemote();
 };

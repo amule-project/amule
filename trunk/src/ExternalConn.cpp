@@ -1099,6 +1099,20 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			theApp.glob_prefs->Save();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+			
+		case EC_OP_CREATE_CATEGORY:
+			if ( request->GetTagCount() == 1 ) {
+				((CEC_Category_Tag *)request->GetTagByIndex(0))->Create();
+			}
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		case EC_OP_UPDATE_CATEGORY:
+			if ( request->GetTagCount() == 1 ) {
+				((CEC_Category_Tag *)request->GetTagByIndex(0))->Apply();
+			}
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		
 		//
 		// Logging
 		//

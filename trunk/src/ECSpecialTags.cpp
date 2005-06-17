@@ -73,6 +73,26 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_leve
 		}
 }
 
+CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, wxString name, wxString path,
+			wxString comment, uint32 color, uint8 prio) : CECTag(EC_TAG_CATEGORY, cat_index)
+{
+	AddTag(CECTag(EC_TAG_CATEGORY_PATH, path));
+	AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, comment));
+	AddTag(CECTag(EC_TAG_CATEGORY_COLOR, color));
+	AddTag(CECTag(EC_TAG_CATEGORY_PRIO, prio));
+	AddTag(CECTag(EC_TAG_CATEGORY_TITLE, name));
+}
+
+void CEC_Category_Tag::Apply()
+{
+	theApp.glob_prefs->UpdateCategory(GetInt32Data(), Name(), Path(), Comment(), Color(), Prio());
+}
+
+void CEC_Category_Tag::Create()
+{
+	theApp.glob_prefs->CreateCategory(Name(), Path(), Comment(), Color(), Prio());
+}
+
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_level) : CECPacket(EC_OP_SET_PREFERENCES)
 {
 	if (selection & EC_PREFS_CATEGORIES) {
