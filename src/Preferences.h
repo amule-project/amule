@@ -359,6 +359,8 @@ public:
 	Category_Struct* GetCategory(size_t index);
 	const wxString&	GetCatPath(uint8 index);
 	uint32			GetCatColor(size_t index);
+	Category_Struct *CreateCategory(wxString name, wxString path, wxString comment, uint32 color, uint8 prio);
+	void			UpdateCategory(uint8 cat, wxString name, wxString path, wxString comment, uint32 color, uint8 prio);
 
 	static uint32		GetAllcatType() 		{ return s_allcatType; }
 	static void		SetAllcatType(uint32 in)	{ s_allcatType = in; }

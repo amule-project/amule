@@ -175,11 +175,13 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	// Check if we are using an existing category, and if we are, if it has
 	// been removed in the mean-while. Otherwise create new category.
-	bool found = false;
+	// lfroen: The only place where it could happen, is removing category
+	// from remote gui, while local gui amule have dialog opened in this
+	// category.
 	int index = -1;
-
 	if ( m_category ) {
 		// Check if the original category still exists
+		bool found = false;
 		for ( uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++ ) {
 			if ( m_category == theApp.glob_prefs->GetCategory(i) ) {
 				found = true;
@@ -187,46 +189,37 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 				break;
 			}
 		}
+		if ( !found ) {
+			m_category = 0;
+		}
 	}
 
-	if ( !found ) {
+	if ( !m_category ) {
 		// New category, or the old one is gone
-		m_category = new Category_Struct();
+        m_category = theApp.glob_prefs->CreateCategory(newname, newpath, 
+        	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
+        	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
+        	
+        theApp.amuledlg->transferwnd->AddCategory(m_category);
+	} else {
+		wxString oldpath = m_category->incomingpath;
 
-        index = theApp.glob_prefs->AddCat( m_category );
-	}
-	
-	
-	wxString oldpath = m_category->incomingpath;
-	
-	m_category->incomingpath	= newpath;
-	m_category->title			= newname;
-	m_category->comment			= CastChild(IDC_COMMENT, wxTextCtrl)->GetValue();
-	m_category->color			= m_color;
-	m_category->prio			= CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection();
-	
-	
-	if ( newpath != oldpath ) {
-		theApp.sharedfiles->AddFilesFromDirectory(m_category->incomingpath);
-		theApp.sharedfiles->Reload();
-	}
+		theApp.glob_prefs->UpdateCategory(index, newname, newpath, 
+        	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
+        	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
 
-		
-	if ( found ) {
-		// Already existing category
+		if ( oldpath != newpath ) {
+			theApp.sharedfiles->AddFilesFromDirectory(newpath);
+			theApp.sharedfiles->Reload();
+		}
+
 		theApp.amuledlg->transferwnd->UpdateCategory( index );
 		
 		theApp.amuledlg->transferwnd->downloadlistctrl->Refresh();
 		
 		theApp.amuledlg->searchwnd->UpdateCatChoice();
-	} else {
-		// New category
-		theApp.amuledlg->transferwnd->AddCategory( m_category );
 	}
 	
-	// Save the changes
-	theApp.glob_prefs->SaveCats();
-
 	EndModal(0);
 }
 
