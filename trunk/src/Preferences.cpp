@@ -1418,6 +1418,34 @@ uint32 CPreferences::CPreferences::GetCatColor(size_t index)
 	return m_CatList[index]->color;
 }
 
+Category_Struct *CPreferences::CreateCategory(wxString name, wxString path, wxString comment, uint32 color, uint8 prio)
+{
+	Category_Struct *category = new Category_Struct();
+	category->incomingpath	= path;
+	category->title			= name;
+	category->comment		= comment;
+	category->color			= color;
+	category->prio			= prio;
+			
+	AddCat(category);
+	
+	SaveCats();
+	
+	return category;
+}
+
+void CPreferences::UpdateCategory(uint8 cat, wxString name, wxString path, wxString comment, uint32 color, uint8 prio)
+{
+	Category_Struct *category = m_CatList[cat];
+
+	category->incomingpath	= path;
+	category->title			= name;
+	category->comment		= comment;
+	category->color			= color;
+	category->prio			= prio;
+	
+	SaveCats();
+}
 
 // Jacobo221 - Several issues on the browsers:
 // netscape is named Netscape on some systems
