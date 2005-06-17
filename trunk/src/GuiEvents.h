@@ -94,6 +94,10 @@ enum GUI_Event_ID {
 	SHOW_QUEUE_COUNT,
 	SHOW_UPDATE_CAT_TABS,
 	SHOW_GUI,
+	// catigories
+	CATEGORY_ADD,
+	CATEGORY_UPDATE,
+	CATEGORY_DELETE,
 	// logging
 	ADDLOGLINE,
 	ADDDEBUGLOGLINE,
@@ -371,6 +375,11 @@ class GUIEvent : public wxEvent {
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
 #define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
 #define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
+
+// categories
+#define Notify_CategoryAdded(cat)						Notify_0_ValEvent(CATEGORY_ADD)
+#define Notify_CategoryUpdate(cat)						Notify_1_ValEvent(CATEGORY_UPDATE, cat)
+#define Notify_CategoryDelete(cat)						Notify_1_ValEvent(CATEGORY_DELETE, cat)
 
 //
 // GUI -> core notification
