@@ -579,6 +579,42 @@ void CPreferencesRem::SendToRemote()
 	m_conn->Send(&pref_packet);
 }
 
+Category_Struct *CPreferencesRem::CreateCategory(wxString name, wxString path,
+			wxString comment, uint32 color, uint8 prio)
+{
+	CECPacket req(EC_OP_CREATE_CATEGORY);
+	CEC_Category_Tag tag(-1, name, path, comment, color, prio);
+	req.AddTag(tag);
+	m_conn->Send(&req);
+
+	Category_Struct *category = new Category_Struct();
+	category->incomingpath	= path;
+	category->title			= name;
+	category->comment		= comment;
+	category->color			= color;
+	category->prio			= prio;
+			
+	AddCat(category);
+	
+	return category;
+}
+
+void CPreferencesRem::UpdateCategory(uint8 cat, wxString name, wxString path,
+			wxString comment, uint32 color, uint8 prio)
+{
+	CECPacket req(EC_OP_UPDATE_CATEGORY);
+	CEC_Category_Tag tag(cat, name, path, comment, color, prio);
+	req.AddTag(tag);
+	m_conn->Send(&req);
+
+	Category_Struct *category = m_CatList[cat];
+	category->incomingpath	= path;
+	category->title			= name;
+	category->comment		= comment;
+	category->color			= color;
+	category->prio			= prio;
+}
+
 //
 // Container implementation
 //
@@ -756,9 +792,13 @@ void CSharedFilesRem::Reload(bool, bool)
 	m_conn->Send(&req);
 }
 
-void CSharedFilesRem::AddFilesFromDirectory(wxString)
+void CSharedFilesRem::AddFilesFromDirectory(wxString path)
 {
-	// should not get here. You can't do it remotely.
+	CECPacket req(EC_OP_SHAREDFILES_ADD_DIRECTORY);
+
+	req.AddTag(CECTag(EC_TAG_PREFS_DIRECTORIES, path));
+	
+	m_conn->Send(&req);
 }
 
 CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
