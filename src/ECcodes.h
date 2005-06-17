@@ -315,6 +315,10 @@ enum {
 		 */
 	EC_OP_SHAREDFILES_RELOAD,
 
+		/*
+		 * \brief Add specified directory to the shared files list.
+		 */
+	EC_OP_SHAREDFILES_ADD_DIRECTORY,
 
 		/*!
 		 * \brief Command to start new search
@@ -534,6 +538,7 @@ enum {
 		 *	::EC_TAG_CATEGORY\n
 		 */
 	EC_OP_CREATE_CATEGORY,
+	EC_OP_UPDATE_CATEGORY,
 
 		/*!
 		 * \brief Retrieves the statistics graphs
