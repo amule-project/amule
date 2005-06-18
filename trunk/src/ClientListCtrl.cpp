@@ -568,6 +568,10 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 					}
 					break;
 					
+				case US_ONUPLOADQUEUE:
+					buffer = _("On Queue");
+					break;
+					
 				default:
 					buffer = _("Unknown");
 			}
