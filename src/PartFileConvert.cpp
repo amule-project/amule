@@ -225,8 +225,8 @@ wxThread::ExitCode CPartFileConvert::Entry()
 					delete *it;
 					it = s_jobs.erase(it);
 				}
-				break;
 				s_mutex.Unlock();
+				break;
 			}
 
 #ifndef AMULE_DAEMON
