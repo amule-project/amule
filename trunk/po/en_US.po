@@ -1,26 +1,27 @@
+# translation of en_US.po to
 # translation of en_US.po to English
 # translation of en_US.po
 # aMule i18n resource file.
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the same license as the aMule package.
-# Juan González <juan@skepticshour.com>, 2004, 2005.
+# Juan Gonzï¿½ez <juan@skepticshour.com>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-02-04 06:44+0100\n"
-"PO-Revision-Date: 2005-01-01 11:10-0800\n"
-"Last-Translator: Juan González <juan@skepticshour.com>\n"
-"Language-Team: English <en@li.org>\n"
+"PO-Revision-Date: 2005-06-18 02:24-0700\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: KBabel 1.10.1\n"
 
 #: src/AddFriend.cpp:37
 msgid "Add a Friend"
-msgstr "Add a Friend"
+msgstr "Add a friend"
 
 #: src/AddFriend.cpp:75 src/AddFriend.cpp:82
 msgid "You have to enter a valid IP and port!"
@@ -258,7 +259,7 @@ msgstr "Error processing incoming UDP Packet (Probably a misconfigured server)"
 
 #: src/CommentDialog.cpp:34 src/CommentDialogLst.cpp:36
 msgid "File Comments"
-msgstr "File Comments"
+msgstr "File comments"
 
 #: src/CommentDialogLst.cpp:71
 msgid "Username:"
@@ -267,7 +268,7 @@ msgstr "Username:"
 #: src/CommentDialogLst.cpp:72 src/FileDetailDialog.cpp:141
 #: src/PartFile.cpp:3084 src/SearchListCtrl.cpp:67 src/SharedFilesCtrl.cpp:78
 msgid "File Name"
-msgstr "File Name"
+msgstr "File name"
 
 #: src/CommentDialogLst.cpp:73 src/QueueListCtrl.cpp:104
 #: src/QueueListCtrl.cpp:126 src/QueueListCtrl.cpp:211
@@ -371,11 +372,11 @@ msgstr "Connecting to server"
 
 #: src/DownloadListCtrl.cpp:1256
 msgid "Queue Full"
-msgstr "Queue Full"
+msgstr "Queue full"
 
 #: src/DownloadListCtrl.cpp:1258 src/TransferWnd.cpp:117
 msgid "On Queue"
-msgstr "In Queue"
+msgstr "In queue"
 
 #: src/DownloadListCtrl.cpp:1262 src/UploadListCtrl.cpp:240
 #: src/UploadListCtrl.cpp:535
@@ -457,7 +458,7 @@ msgstr "not a well-formed ed2k link"
 
 #: src/ED2KLink.cpp:448
 msgid "Not an ED2K server or file link"
-msgstr "Not an ED2K server or file link"
+msgstr "Not an ed2k server or file link"
 
 #: src/EditServerListDlg.cpp:77
 #, c-format
@@ -485,7 +486,7 @@ msgstr "Friends"
 #: src/FriendListCtrl.cpp:110 src/QueueListCtrl.cpp:142
 #: src/QueueListCtrl.cpp:176 src/UploadListCtrl.cpp:147
 msgid "Show &Details"
-msgstr "Show &Details"
+msgstr "Show &details"
 
 #: src/FriendListCtrl.cpp:113
 msgid "Add a friend"
@@ -493,11 +494,11 @@ msgstr "Add a friend"
 
 #: src/FriendListCtrl.cpp:115
 msgid "Remove Friend"
-msgstr "Remove Friend"
+msgstr "Remove friend"
 
 #: src/FriendListCtrl.cpp:116
 msgid "Send &Message"
-msgstr "Send &Message"
+msgstr "Send &message"
 
 #: src/FriendListCtrl.cpp:117 src/QueueListCtrl.cpp:179
 #: src/UploadListCtrl.cpp:149
@@ -646,7 +647,7 @@ msgstr "Server"
 
 #: src/PPgServer.cpp:169
 msgid "Edit Serverlist"
-msgstr "Edit Server list"
+msgstr "Edit server list"
 
 #: src/PPgServer.cpp:170
 msgid ""
@@ -658,7 +659,7 @@ msgstr ""
 
 #: src/PPgSourcesDropping.cpp:40
 msgid "Sources Dropping"
-msgstr "Sources Dropping"
+msgstr "Sources dropping"
 
 #: src/PPgStats.cpp:44 src/StatisticsDlg.cpp:572
 msgid "Statistics"
@@ -718,7 +719,7 @@ msgid ""
 " Please report on http://forum.amule.org\n"
 msgstr ""
 "%s file is 0kB - using .bak file.\n"
-" Please report this to http://forum.amule.org\n"
+" Please report this at http://forum.amule.org\n"
 
 #: src/PartFile.cpp:699
 #, c-format
@@ -753,7 +754,7 @@ msgstr "Downloaded:"
 #: src/PartFile.cpp:1976
 #, c-format
 msgid "A file with that name already exists, the file has been saved as %s"
-msgstr "A file with that name already exists, the file has been saved as %s"
+msgstr "A file with that name already exists. The file has been saved as %s"
 
 #: src/PartFile.cpp:2096
 #, c-format
@@ -765,7 +766,7 @@ msgstr "Warning: Unable to hash downloaded part - hashset incomplete (%s)"
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "Error: Unable to hash downloaded part - hashset incomplete (%s). This should not happen"
+msgstr "Error: Unable to hash downloaded part - hashset incomplete (%s). This should not happen..."
 
 #: src/PartFile.cpp:2325 src/TransferWnd.cpp:162 src/otherfunctions.cpp:549
 msgid "Downloading"
@@ -854,7 +855,7 @@ msgstr "Most recent completion"
 
 #: src/PartFile.cpp:3090
 msgid "Last Reception:"
-msgstr "Last Reception:"
+msgstr "Last reception:"
 
 #: src/PreferencesDlg.cpp:48
 msgid "Preferences"
@@ -877,7 +878,7 @@ msgstr "File"
 #: src/QueueListCtrl.cpp:103 src/QueueListCtrl.cpp:125
 #: src/QueueListCtrl.cpp:206
 msgid "File Priority"
-msgstr "File Priority"
+msgstr "File priority"
 
 #: src/QueueListCtrl.cpp:105 src/QueueListCtrl.cpp:127
 #: src/QueueListCtrl.cpp:216
@@ -892,12 +893,12 @@ msgstr "Asked"
 #: src/QueueListCtrl.cpp:107 src/QueueListCtrl.cpp:129
 #: src/QueueListCtrl.cpp:226
 msgid "Last Seen"
-msgstr "Last Seen"
+msgstr "Last seen"
 
 #: src/QueueListCtrl.cpp:108 src/QueueListCtrl.cpp:130
 #: src/QueueListCtrl.cpp:231
 msgid "Entered Queue"
-msgstr "Entered Queue"
+msgstr "Entered queue"
 
 #: src/QueueListCtrl.cpp:109 src/QueueListCtrl.cpp:131
 #: src/QueueListCtrl.cpp:236 src/TransferWnd.cpp:101
@@ -907,7 +908,7 @@ msgstr "Banned"
 #: src/QueueListCtrl.cpp:110 src/SharedFilesCtrl.cpp:87
 #: src/UploadListCtrl.cpp:93
 msgid "Obtained Parts"
-msgstr "Obtained Parts"
+msgstr "Obtained parts"
 
 #: src/QueueListCtrl.cpp:141 src/QueueListCtrl.cpp:175
 #: src/StatisticsDlg.cpp:611 src/UploadListCtrl.cpp:146
@@ -920,7 +921,7 @@ msgstr "Unban"
 
 #: src/QueueListCtrl.cpp:146 src/QueueListCtrl.cpp:181
 msgid "Show Uploads"
-msgstr "Display Uploads"
+msgstr "Display uploads"
 
 #: src/QueueListCtrl.cpp:177 src/UploadListCtrl.cpp:148
 msgid "Add to Friends"
@@ -934,7 +935,7 @@ msgstr "PowerShare[Release]"
 #: src/QueueListCtrl.cpp:404 src/SharedFilesCtrl.cpp:111
 #: src/SharedFilesCtrl.cpp:198 src/SharedFilesCtrl.cpp:424
 msgid "Very High"
-msgstr "Very High"
+msgstr "Very high"
 
 #: src/QueueListCtrl.cpp:413 src/SharedFilesCtrl.cpp:107
 #: src/SharedFilesCtrl.cpp:182 src/SharedFilesCtrl.cpp:372
@@ -956,7 +957,7 @@ msgstr "You are not connected to a server!"
 #: src/SearchDlg.cpp:341 src/amuleDlg.cpp:752 src/amuleDlg.cpp:770
 #: src/amuleDlg.cpp:1028
 msgid "Not Connected"
-msgstr "Not Connected"
+msgstr "Not connected"
 
 #: src/SearchDlg.cpp:384 src/TransferWnd.cpp:168 src/otherfunctions.cpp:245
 #: src/otherfunctions.cpp:554
@@ -999,11 +1000,11 @@ msgstr "Download"
 
 #: src/SearchListCtrl.cpp:129
 msgid "Copy ED2k link to clipboard"
-msgstr "Copy ED2k link to clipboard"
+msgstr "Copy ed2k link to clipboard"
 
 #: src/SearchListCtrl.cpp:130
 msgid "Copy ED2k link to clipboard (HTML)"
-msgstr "Copy ED2k link to clipboard (HTML)"
+msgstr "Copy ed2k link to clipboard (HTML)"
 
 #: src/SearchListCtrl.cpp:135
 msgid "Close this search result"
@@ -1011,13 +1012,13 @@ msgstr "Close this search result"
 
 #: src/SearchListCtrl.cpp:136
 msgid "Clear All"
-msgstr "Clear All"
+msgstr "Clear all"
 
 #: src/ServerList.cpp:65
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
-msgstr "No server addresses found in 'addresses.dat'. Please paste a valid server address into this file in order to auto-update your server list"
+msgstr "No server addresses were found in 'addresses.dat'. Please paste a valid server address into this file in order to auto-update your server list"
 
 #: src/ServerList.cpp:65
 msgid "Unable to retrieve serverlist"
@@ -1086,11 +1087,11 @@ msgstr "Remove all servers"
 
 #: src/ServerListCtrl.cpp:106 src/SharedFilesCtrl.cpp:126
 msgid "Copy ED2k &link to clipboard"
-msgstr "Copy ED2k &link to clipboard"
+msgstr "Copy ed2k &link to clipboard"
 
 #: src/ServerListCtrl.cpp:214
 msgid "Server Name"
-msgstr "Server Name"
+msgstr "Server name"
 
 #: src/ServerListCtrl.cpp:215 src/ServerWnd.cpp:171 src/server.cpp:246
 msgid "IP"
@@ -1184,7 +1185,7 @@ msgstr " (based on "
 
 #: src/ServerWnd.cpp:68
 msgid "Visit http://www.amule.org to check if a new version is available.\n"
-msgstr "Visit http://www.amule.org to check if a new version is available.\n"
+msgstr "Visit http://www.amule.org for the most current version of aMule.\n"
 
 #: src/ServerWnd.cpp:78
 msgid "Invalid URL"
@@ -1196,11 +1197,11 @@ msgstr "Please enter a server address"
 
 #: src/ServerWnd.cpp:113
 msgid "Incomplete serverport: Please enter a serverport"
-msgstr "Incomplete server port: Please enter a server port"
+msgstr "Incomplete server port. Please enter a server port"
 
 #: src/ServerWnd.cpp:134
 msgid "Server not added!"
-msgstr "Server was not added!"
+msgstr "Server was not added"
 
 #: src/ServerWnd.cpp:165 src/amuleDlg.cpp:827
 msgid "Connected"
@@ -1220,11 +1221,11 @@ msgstr "ID"
 
 #: src/ServerWnd.cpp:191
 msgid "Low ID"
-msgstr "Low ID"
+msgstr "LowID"
 
 #: src/ServerWnd.cpp:193
 msgid "High ID"
-msgstr "High ID"
+msgstr "HighID"
 
 #: src/SharedFileList.cpp:86 src/SharedFileList.cpp:88
 #, c-format
@@ -1249,15 +1250,15 @@ msgstr "Requests"
 
 #: src/SharedFilesCtrl.cpp:85
 msgid "Accepted Requests"
-msgstr "Accepted Requests"
+msgstr "Accepted requests"
 
 #: src/SharedFilesCtrl.cpp:86
 msgid "Transferred Data"
-msgstr "Transferred Data"
+msgstr "Transferred data"
 
 #: src/SharedFilesCtrl.cpp:105 src/StatisticsDlg.cpp:646
 msgid "Shared Files"
-msgstr "Shared Files"
+msgstr "Shared files"
 
 #: src/SharedFilesCtrl.cpp:113
 msgid "Auto"
@@ -1287,15 +1288,15 @@ msgstr "Update file comments..."
 
 #: src/SharedFilesCtrl.cpp:127
 msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "Copy ED2k link to clipboard (&Source)"
+msgstr "Copy ed2k link to clipboard (&Source)"
 
 #: src/SharedFilesCtrl.cpp:128
 msgid "Copy ED2k link to clipboard (Hostname)"
-msgstr "Copy ED2k link to clipboard (Hostname)"
+msgstr "Copy ed2k link to clipboard (Hostname)"
 
 #: src/SharedFilesCtrl.cpp:129
 msgid "Copy ED2k link to clipboard (&HTML)"
-msgstr "Copy ED2k link to clipboard (&HTML)"
+msgstr "Copy ed2k link to clipboard (&HTML)"
 
 #: src/SharedFilesCtrl.cpp:175 src/SharedFilesCtrl.cpp:453
 msgid "Auto [Re]"
@@ -1418,12 +1419,12 @@ msgstr "Uploaded data (session (total)): %s (%s)"
 #: src/StatisticsDlg.cpp:704
 #, c-format
 msgid "Active Uploads: %i"
-msgstr "Current Uploads: %i"
+msgstr "Current uploads: %i"
 
 #: src/StatisticsDlg.cpp:706
 #, c-format
 msgid "Waiting Uploads: %i"
-msgstr "Waiting Uploads: %i"
+msgstr "Waiting uploads: %i"
 
 #: src/StatisticsDlg.cpp:708
 #, c-format
@@ -1566,11 +1567,11 @@ msgstr "Deleted servers"
 
 #: src/StatisticsDlg.cpp:936
 msgid "Users on Working Servers"
-msgstr "Users on function servers"
+msgstr "Users on working servers"
 
 #: src/StatisticsDlg.cpp:937
 msgid "Files on Working Servers"
-msgstr "Files on functioning servers"
+msgstr "Files on working servers"
 
 #: src/StatisticsDlg.cpp:938
 msgid "Total Users"
@@ -1717,16 +1718,14 @@ msgstr "Client '%s' caused error while creating package (%s) - disconnecting cli
 
 #: src/UploadClient.cpp:624
 msgid "requested file not found"
-msgstr "requested file not found"
+msgstr "requested file was not found"
 
 #: src/UploadClient.cpp:745
 #, c-format
 msgid ""
 "Client '%s' seems to be an aggressive client and is banned from the "
 "uploadqueue"
-msgstr ""
-"Client '%s' seems to be an aggressive client and is banned from the "
-"upload queue"
+msgstr "Client '%s' seems to be an aggressive client and is banned from the upload queue"
 
 #: src/UploadListCtrl.cpp:88
 msgid "Speed"
@@ -1790,7 +1789,7 @@ msgstr "%s [%s:%i] using %s removed : leecher, invalid eMule or irregular Donkey
 #: src/UploadQueue.cpp:419
 #, c-format
 msgid "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
-msgstr "Client '%s' and '%s' have the same userhash or IP - removed '%s'"
+msgstr "Client '%s' and '%s' have the same userhash or IP - Client '%s' has been removed"
 
 #: src/Wizard.cpp:43
 msgid "Wizard"
@@ -1853,7 +1852,7 @@ msgstr "155 Mbits (ATM)"
 #: src/amule.cpp:495
 #, c-format
 msgid "Port %d is not available. You will be LOWID"
-msgstr "Port %d is not available. You will have Low ID"
+msgstr "Port %d is unavailable. You will have a LowID"
 
 #: src/amule.cpp:497
 #, c-format
@@ -1865,16 +1864,16 @@ msgid ""
 "Use netstat to determine when port becomes available\n"
 "and try starting amule again."
 msgstr ""
-"Port %d is not available !!\n"
+"Port %d is unavailable !!\n"
 "\n"
-"This will mean that you will have a Low ID.\n"
+"This means you will have a LowID.\n"
 "\n"
 "Use netstat to determine when port becomes available\n"
-"and try starting amule again."
+"and then restart amule."
 
 #: src/amule.cpp:682
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "You need a High ID to create a valid sourcelink"
+msgstr "You need a HighID to create a valid sourcelink"
 
 #: src/amule.cpp:742 src/amule.cpp:745
 msgid "Failed to save"
@@ -1882,7 +1881,7 @@ msgstr "Failed to save"
 
 #: src/amule.cpp:742
 msgid " OnlineSig File"
-msgstr " Online Signature File"
+msgstr "Online Signature File"
 
 #: src/amuleDlg.cpp:239
 msgid "Desktop integration"
@@ -1898,7 +1897,7 @@ msgstr "Disconnect from current server"
 
 #: src/amuleDlg.cpp:716
 msgid "Connection established on:"
-msgstr "Connection established on:"
+msgstr "Connection established with:"
 
 #: src/amuleDlg.cpp:732
 msgid "Stops the current connection attempts"
@@ -1920,7 +1919,7 @@ msgstr "Up: %.1f | Down: %.1f"
 
 #: src/amuleDlg.cpp:864
 msgid "Do you really want to exit aMule?"
-msgstr "Are you sure you want to exit aMule?"
+msgstr "Are you sure you want to quit aMule?"
 
 #: src/amuleDlg.cpp:864
 msgid "Exit confirmation"
@@ -1957,22 +1956,22 @@ msgstr "&Preferences"
 #: src/filefn.cpp:142
 #, c-format
 msgid "Failed to copy the file '%s' to '%s'"
-msgstr "Failed to copy the file '%s' to '%s'"
+msgstr "Failed to copy file '%s' to '%s'"
 
 #: src/filefn.cpp:158
 #, c-format
 msgid "Impossible to get permissions for file '%s'"
-msgstr "Impossible to get permissions for file '%s'"
+msgstr "Unable to obtain permissions for file '%s'"
 
 #: src/filefn.cpp:172
 #, c-format
 msgid "Impossible to overwrite the file '%s'"
-msgstr "Impossible to overwrite the file '%s'"
+msgstr "Unable to overwrite file '%s'"
 
 #: src/filefn.cpp:225
 #, c-format
 msgid "Impossible to set permissions for the file '%s'"
-msgstr "Impossible to set permissions for the file '%s'"
+msgstr "Unable to set permissions on file '%s'"
 
 #: src/otherfunctions.cpp:77
 msgid "KB"
@@ -2070,7 +2069,7 @@ msgstr "User: %i"
 
 #: src/sockets.cpp:50
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr "Failed to connect to all servers listed. Making another pass."
+msgstr "Failed to connect to servers listed. Attempting another pass."
 
 #: src/sockets.cpp:92 src/sockets.cpp:102
 msgid "No valid servers to connect in serverlist found"
@@ -2084,7 +2083,7 @@ msgstr "Connected to %s (%s:%i)"
 #: src/sockets.cpp:195
 #, c-format
 msgid "Connection established on: %s"
-msgstr "Connection established on: %s"
+msgstr "Connection established with: %s"
 
 #: src/sockets.cpp:242
 msgid "Fatal Error while trying to connect. Internet connection might be down"
@@ -2098,7 +2097,7 @@ msgstr "Lost connection to %s (%s:%i)"
 #: src/sockets.cpp:248
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
-msgstr "%s (%s:%i) appears to be dead."
+msgstr "%s (%s:%i) appears to be dead"
 
 #: src/sockets.cpp:258
 #, c-format
@@ -2108,7 +2107,7 @@ msgstr "%s (%s:%i) appears to be full"
 #: src/sockets.cpp:273
 #, c-format
 msgid "Automatic connection to server will retry in %d seconds"
-msgstr "Automatic connection to server will retry in %d seconds"
+msgstr "Automatic re-connect to server in %d seconds"
 
 #: src/sockets.cpp:293
 msgid "Connection lost"
