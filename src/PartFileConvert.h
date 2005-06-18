@@ -64,8 +64,10 @@ public:
 	static void	RemoveJob(ConvertJob* job);
 	static wxString	GetReturncodeText(int ret);
 
+	static wxMutex	s_mutex;
+
 private:
-	CPartFileConvert(void); // Just use static recover method
+	CPartFileConvert() : wxThread(wxTHREAD_DETACHED) {}
 
 	static int	performConvertToeMule(wxString folder);
 	virtual ExitCode Entry();

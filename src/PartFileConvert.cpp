@@ -82,14 +82,12 @@ struct ConvertJob {
 wxThread*		CPartFileConvert::s_convertPfThread = NULL;
 std::list<ConvertJob*>	CPartFileConvert::s_jobs;
 ConvertJob*		CPartFileConvert::s_pfconverting = NULL;
+wxMutex			CPartFileConvert::s_mutex;
 
 #ifndef AMULE_DAEMON
 CPartFileConvertDlg*	CPartFileConvert::s_convertgui = NULL;
 #endif
 
-CPartFileConvert::CPartFileConvert() : wxThread(wxTHREAD_DETACHED)
-{
-}
 
 int CPartFileConvert::ScanFolderToAdd(wxString folder, bool deletesource)
 {
@@ -134,6 +132,9 @@ void CPartFileConvert::ConvertToeMule(wxString folder, bool deletesource)
 	newjob->folder = folder;
 	newjob->removeSource = deletesource;
 	newjob->state = CONV_QUEUE;
+
+	wxMutexLocker lock(s_mutex);
+
 	s_jobs.push_back(newjob);
 
 #ifndef AMULE_DAEMON
@@ -173,6 +174,8 @@ void CPartFileConvert::StartThread()
 
 void CPartFileConvert::StopThread()
 {
+	wxMutexLocker lock(s_mutex);
+
 	if (s_convertPfThread) {
 		s_convertPfThread->Delete();
 	}
@@ -185,6 +188,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	for (;;)
 	{
 		// search next queued job and start it
+		s_mutex.Lock();
 		s_pfconverting = NULL;
 		for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 			s_pfconverting = *it;
@@ -194,12 +198,18 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				s_pfconverting = NULL;
 			}
 		}
+		s_mutex.Unlock();
 		if (s_pfconverting) {
+			s_mutex.Lock();
 			s_pfconverting->state = CONV_INPROGRESS;
+			s_mutex.Unlock();
 #ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
 #endif
-			s_pfconverting->state = performConvertToeMule(s_pfconverting->folder);
+			int convertResult = performConvertToeMule(s_pfconverting->folder);
+			s_mutex.Lock();
+			s_pfconverting->state = convertResult;
+			s_mutex.Unlock();
 
 			if (s_pfconverting->state == CONV_OK) {
 				++imported;
@@ -209,18 +219,24 @@ wxThread::ExitCode CPartFileConvert::Entry()
 #ifndef AMULE_DAEMON
 				CloseGUI();
 #endif
+				s_mutex.Lock();
 				std::list<ConvertJob*>::iterator it = s_jobs.begin();
 				while (it != s_jobs.end()) {
 					delete *it;
 					it = s_jobs.erase(it);
 				}
 				break;
+				s_mutex.Unlock();
 			}
 
 #ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
+			wxMutexGuiEnter();
 #endif
 			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetReturncodeText(s_pfconverting->state));
+#ifndef AMULE_DAEMON
+			wxMutexGuiLeave();
+#endif
 		} else {
 			break; // nothing more to do now
 		}
@@ -234,10 +250,18 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	if (imported) {
 		theApp.sharedfiles->PublishNextTurn();
 	}
-
+#ifndef AMULE_DAEMON
+	wxMutexGuiEnter();
+#endif
 	AddDebugLogLineM(false, logPfConvert, wxT("No more jobs on queue, exiting from thread."));
+#ifndef AMULE_DAEMON
+	wxMutexGuiLeave();
+#endif
 
+	s_mutex.Lock();
 	s_convertPfThread = NULL;
+	s_mutex.Unlock();
+
 	return NULL;
 }
 
@@ -275,9 +299,11 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	wxString oldfile = folder + wxFileName::GetPathSeparator() + partfile.Left(partfile.Length() - ((s_pfconverting->partmettype == PMT_SHAREAZA) ? 3 : 4));
 
+	s_mutex.Lock();
 	s_pfconverting->size = file->GetFileSize();
 	s_pfconverting->filename = file->GetFileName();
 	s_pfconverting->filehash = file->GetFileHash().Encode();
+	s_mutex.Unlock();
 #ifndef AMULE_DAEMON
 	UpdateGUI(s_pfconverting);
 #endif
@@ -309,6 +335,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				if (fileindex > maxindex) maxindex = fileindex;
 			}
 			float stepperpart;
+			s_mutex.Lock();
 			if (partfilecount > 0) {
 				stepperpart = (80.0f / partfilecount);
 				if (maxindex * PARTSIZE <= s_pfconverting->size) {
@@ -320,6 +347,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				stepperpart = 80.0f;
 				s_pfconverting->spaceneeded = 0;
 			}
+			s_mutex.Unlock();
 
 #ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
@@ -404,7 +432,9 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	{
 		if (!s_pfconverting->removeSource) {
 			wxFile f(oldfile);
+			s_mutex.Lock();
 			s_pfconverting->spaceneeded = f.Length();
+			s_mutex.Unlock();
 		}
 
 #ifndef AMULE_DAEMON
@@ -512,27 +542,34 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 #ifndef AMULE_DAEMON
 void CPartFileConvert::UpdateGUI(float percent, wxString text, bool WXUNUSED(fullinfo))
 {
-	if (!s_convertgui) return;
+	wxMutexGuiEnter();
+	
+	if (s_convertgui) {
+		s_convertgui->m_pb_current->SetValue((int)percent);
+		wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
+		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel(buffer);
 
-	s_convertgui->m_pb_current->SetValue((int)percent);
-	wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
-	dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel(buffer);
+		if (!text.IsEmpty()) {
+			dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(text);
+		}
 
-	if (!text.IsEmpty()) {
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(text);
+		// to hell with it, wxWidgets doesn't allow changing the title of a wxStaticBox after creation
+		//if (fullinfo) {
+		//	wxMutexLocker(s_mutex);
+		//	dynamic_cast<wxStaticBox*>(s_convertgui->FindWindow(IDC_CURJOB))->SetLabel(s_pfconverting->folder);
+		//}
 	}
 
-	// to hell with it, wxWidgets doesn't allow changing the title of a wxStaticBox after creation
-	//if (fullinfo) {
-	//	dynamic_cast<wxStaticBox*>(s_convertgui->FindWindow(IDC_CURJOB))->SetLabel(s_pfconverting->folder);
-	//}
+	wxMutexGuiLeave();
 }
 
 void CPartFileConvert::UpdateGUI(ConvertJob* job)
 {
+	wxMutexGuiEnter();
 	if (s_convertgui) {
 		s_convertgui->UpdateJobInfo(job);
 	}
+	wxMutexGuiLeave();
 }
 
 void CPartFileConvert::ShowGUI(wxWindow* parent)
@@ -543,6 +580,7 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 		s_convertgui = new CPartFileConvertDlg(parent);
 		s_convertgui->Show(true);
 
+		s_mutex.Lock();
 		if (s_pfconverting) {
 			UpdateGUI(s_pfconverting);
 			UpdateGUI(50, _("Fetching status..."), true);
@@ -553,6 +591,7 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 			s_convertgui->AddJob(*it);
 			UpdateGUI(*it);
 		}
+		s_mutex.Unlock();
 	}
 }
 
@@ -568,6 +607,7 @@ void CPartFileConvert::CloseGUI()
 
 void CPartFileConvert::RemoveAllJobs()
 {
+	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 #ifndef AMULE_DAEMON
 		if (s_convertgui) {
@@ -581,6 +621,7 @@ void CPartFileConvert::RemoveAllJobs()
 
 void CPartFileConvert::RemoveJob(ConvertJob* job)
 {
+	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 		if (*it == job) {
 #ifndef AMULE_DAEMON
@@ -600,6 +641,7 @@ void CPartFileConvert::RemoveJob(ConvertJob* job)
 
 void CPartFileConvert::RemoveAllSuccJobs()
 {
+	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 		if ((*it)->state == CONV_OK) {
 #ifndef AMULE_DAEMON
@@ -697,6 +739,10 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	wxIcon icon(convert_xpm);
 #endif
 	SetIcon(icon);
+	// for some reason, if I try go get the mutex from the dialog
+	// it will end up in a deadlock(?) and I have to kill aMule
+	CastChild(IDC_RETRY, wxButton)->Enable(false);
+	CastChild(IDC_CONVREMOVE, wxButton)->Enable(false);
 }
 
 // CPartFileConvertDlg message handlers
@@ -789,11 +835,13 @@ void CPartFileConvertDlg::RetrySel(wxCommandEvent& WXUNUSED(event))
 	long itemnr = m_joblist->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (itemnr != -1) {
 		ConvertJob* job = (ConvertJob*)m_joblist->GetItemData(itemnr);
+		wxMutexLocker lock(CPartFileConvert::s_mutex);
 		if (job->state != CONV_OK && job->state != CONV_INPROGRESS) {
 			job->state = CONV_QUEUE;
 			UpdateJobInfo(job);
 		}
-	} 
+	}
+	wxMutexLocker lock(CPartFileConvert::s_mutex);
 	CPartFileConvert::StartThread();
 }
 
