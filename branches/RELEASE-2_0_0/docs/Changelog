@@ -5,6 +5,11 @@ Version 2.0.4 - The "too hot fix" version.
 	GonoszTopi:
 		* Fixed a small GUI glitch
 
+	Seagull:
+		* Fixed a small bug on client list view.
+
+--------------------------------------------------------------------------------
+
 Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 ----------
 2005-06-15
@@ -39,6 +44,8 @@ Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
    		* All the usual people. 
 		  You don't know who they are? Just check previous changelogs 
 		  (just not the previous one, ok?) :P 
+
+--------------------------------------------------------------------------------
 
 Version 2.0.2 - The " [Your Ad Here] " version.
 ----------
@@ -89,6 +96,7 @@ Version 2.0.2 - The " [Your Ad Here] " version.
 		* All the usual people. You don't know who they are? Just check 
 		   previous changelogs :P
 		  
+--------------------------------------------------------------------------------
 
 Version 2.0.1 - The " Woops, HotFix " version.
 ----------
@@ -125,6 +133,8 @@ Version 2.0.1 - The " Woops, HotFix " version.
 		  
 		* All the usual people (translators, debugers, people at #amule, etc)
 		  C'mon, this is a hotfix release, I can't add everyone again.
+
+--------------------------------------------------------------------------------
 		
 Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 ----------
