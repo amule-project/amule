@@ -209,7 +209,11 @@ wxThread::ExitCode CPartFileConvert::Entry()
 #ifndef AMULE_DAEMON
 				CloseGUI();
 #endif
-				s_jobs.clear();
+				std::list<ConvertJob*>::iterator it = s_jobs.begin();
+				while (it != s_jobs.end()) {
+					delete *it;
+					it = s_jobs.erase(it);
+				}
 				break;
 			}
 
