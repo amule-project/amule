@@ -1047,12 +1047,15 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			bool fileReady2 =
 				(file->GetStatus() != PS_ERROR) &&
 				(file->GetStatus() != PS_COMPLETE);
+			bool fileResumable =
+				(file->GetStatus() == PS_PAUSED) ||
+				(file->GetStatus() == PS_INSUFFICIENT);
 			
 			wxMenu* menu = m_menu;
 			menu->Enable( MP_CANCEL,	( file->GetStatus() != PS_COMPLETE ) );
 			menu->Enable( MP_PAUSE,		fileReady && fileReady2 );
 			menu->Enable( MP_STOP,		fileReady && fileReady2 );
-			menu->Enable( MP_RESUME, 	( file->GetStatus() == PS_PAUSED ) );
+			menu->Enable( MP_RESUME, 	fileResumable );
 
 			wxString view;
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
