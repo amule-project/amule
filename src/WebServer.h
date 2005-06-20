@@ -121,7 +121,7 @@ class CEC_UpDownClient_Tag;
 class CEC_SearchFile_Tag;
 class CProgressImage;
 
-class DownloadFiles {
+class DownloadFile {
 	public:
 		wxString	sFileName;
 		uint8		nFileStatus;
@@ -147,13 +147,13 @@ class DownloadFiles {
 		std::vector<Gap_Struct> m_ReqParts;
 
 		// container require this		
-		static class DownloadFilesInfo *GetContainerInstance();
-		DownloadFiles(CEC_PartFile_Tag *);
+		static class DownloadFileInfo *GetContainerInstance();
+		DownloadFile(CEC_PartFile_Tag *);
 		void ProcessUpdate(CEC_PartFile_Tag *);
 		CMD4Hash ID() { return nHash; }
 };
 
-class SharedFiles {
+class SharedFile {
 	public:
 		wxString	sFileName;
 		long		lFileSize;
@@ -170,8 +170,8 @@ class SharedFiles {
 
 		CMD4Hash	nHash;
 
-		static class SharedFilesInfo *GetContainerInstance();
-		SharedFiles(CEC_SharedFile_Tag *);
+		static class SharedFileInfo *GetContainerInstance();
+		SharedFile(CEC_SharedFile_Tag *);
 		void ProcessUpdate(CEC_SharedFile_Tag *);
 		CMD4Hash ID() { return nHash; }
 };
@@ -191,7 +191,7 @@ class ServerEntry {
 		uint32 ID() { return nServerIP; }
 };
 
-class UploadFiles {
+class UploadFile {
 	public:
 		wxString  sUserName;
 		uint32 nTransferredUp;
@@ -201,7 +201,7 @@ class UploadFiles {
 		// Don't need filename - sharedfiles already have it
 		CMD4Hash  nHash;
 
-		UploadFiles(CEC_UpDownClient_Tag *tag);
+		UploadFile(CEC_UpDownClient_Tag *tag);
 		
 		static class UploadsInfo *GetContainerInstance();
 		CMD4Hash ID() { return nHash; }
@@ -461,7 +461,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 		virtual void ItemInserted(T *) { }
 };
 
-class UploadsInfo : public ItemsContainer<UploadFiles, int> {
+class UploadsInfo : public ItemsContainer<UploadFile, int> {
 	public:
 		UploadsInfo(CamulewebApp *webApp);
 
@@ -481,16 +481,16 @@ class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
 };
 
 
-class SharedFilesInfo : public UpdatableItemsContainer<SharedFiles, xSharedSort, CEC_SharedFile_Tag, CMD4Hash> {
+class SharedFileInfo : public UpdatableItemsContainer<SharedFile, xSharedSort, CEC_SharedFile_Tag, CMD4Hash> {
 	public:
 		// can be only one instance.
-		static SharedFilesInfo *m_This;
+		static SharedFileInfo *m_This;
 
-		SharedFilesInfo(CamulewebApp *webApp);
+		SharedFileInfo(CamulewebApp *webApp);
 
 		virtual bool ReQuery();
 
-		bool CompareItems(const SharedFiles &i1, const SharedFiles &i2);
+		bool CompareItems(const SharedFile &i1, const SharedFile &i2);
 };
 
 class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_SearchFile_Tag, CMD4Hash> {
@@ -505,7 +505,7 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_S
 };
 
 class CImageLib;
-class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
+class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images
@@ -513,18 +513,18 @@ class DownloadFilesInfo : public UpdatableItemsContainer<DownloadFiles, xDownloa
 		int m_width, m_height;
 	public:
 		// can be only one instance.
-		static DownloadFilesInfo *m_This;
+		static DownloadFileInfo *m_This;
 		
-		DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib);
+		DownloadFileInfo(CamulewebApp *webApp, CImageLib *imlib);
 		
 		void LoadImageParams(wxString &tpl, int width, int height);
 		
 		virtual bool ReQuery();
 
 		// container requirements
-		bool CompareItems(const DownloadFiles &i1, const DownloadFiles &i2);
-		void ItemInserted(DownloadFiles *item);
-		void ItemDeleted(DownloadFiles *item);
+		bool CompareItems(const DownloadFile &i1, const DownloadFile &i2);
+		void ItemInserted(DownloadFile *item);
+		void ItemDeleted(DownloadFile *item);
 };
 
 class CAnyImage {
@@ -568,7 +568,7 @@ class CImage3D_Modifiers {
 
 class CProgressImage : public CAnyImage {
 	protected:
-		DownloadFiles *m_file;
+		DownloadFile *m_file;
 		
 		wxString m_template;
 		int m_width, m_height;
@@ -594,7 +594,7 @@ class CProgressImage : public CAnyImage {
 		uint32 *m_ColorLine;
 		void CreateSpan();
 	public:
-		CProgressImage(int w, int h, wxString &tmpl, DownloadFiles *file);
+		CProgressImage(int w, int h, wxString &tmpl, DownloadFile *file);
 
 		~CProgressImage();
 				
@@ -615,7 +615,7 @@ class CDynImage : public CProgressImage {
 		
 		void DrawImage();
 	public:
-		CDynImage(int w, int h,	wxString &tmpl, DownloadFiles *file);
+		CDynImage(int w, int h,	wxString &tmpl, DownloadFile *file);
 		~CDynImage();
 		
 		virtual unsigned char *RequestData(int &size);
@@ -629,7 +629,7 @@ class CDynImage : public CProgressImage {
 // Fallback to original implementation
 class CDynImage : public CProgressImage {
 	public:
-		CDynImage(int w, int h,	wxString &tmpl, DownloadFiles *file);
+		CDynImage(int w, int h,	wxString &tmpl, DownloadFile *file);
 
 		virtual wxString GetHTML();
 };
@@ -739,8 +739,8 @@ class CWebServer {
 	friend class CWebSocket;
 
 	ServersInfo m_ServersInfo;
-	SharedFilesInfo m_SharedFilesInfo;
-	DownloadFilesInfo m_DownloadFilesInfo;
+	SharedFileInfo m_SharedFileInfo;
+	DownloadFileInfo m_DownloadFileInfo;
 	UploadsInfo m_UploadsInfo;
 	SearchInfo m_SearchInfo;
 	
@@ -773,7 +773,7 @@ class CWebServer {
 		wxString	_GetServerList(ThreadData);
 		wxString	_GetTransferList(ThreadData);
 		wxString	_GetDownloadLink(ThreadData);
-		wxString	_GetSharedFilesList(ThreadData);
+		wxString	_GetSharedFileList(ThreadData);
 		wxString	_GetGraphs(ThreadData);
 		wxString	_GetLog(ThreadData);
 		wxString	_GetServerInfo(ThreadData);
