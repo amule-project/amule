@@ -210,7 +210,7 @@ uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir):
-	m_ServersInfo(webApp), m_SharedFilesInfo(webApp), m_DownloadFilesInfo(webApp, &m_ImageLib),
+	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp),
 	m_ImageLib(templateDir)
 {
@@ -436,7 +436,7 @@ void CWebServer::ReloadTemplates(void) {
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFNAME]"),wxT("%s"));
 			m_Templates.sProgressbarImgs.Replace(wxT("[PROGRESSGIFINTERNAL]"),wxT("%i"));
 			
-			m_DownloadFilesInfo.LoadImageParams(m_Templates.sProgressbarImgs,
+			m_DownloadFileInfo.LoadImageParams(m_Templates.sProgressbarImgs,
 				m_Templates.iProgressbarWidth, 20);
 				
 		}
@@ -562,7 +562,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		} else if (sPage == wxT("download")) {
 			Out += _GetDownloadLink(Data);
 		} else if (sPage == wxT("shared")) { 
-			Out += _GetSharedFilesList(Data);
+			Out += _GetSharedFileList(Data);
 		} else if (sPage == wxT("transfer")) {
 			Out += _GetTransferList(Data);
 		} else if (sPage == wxT("websearch")) {
@@ -984,14 +984,14 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		} else if (sOp == wxT("cancel")) {
 			file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
 		} else if (sOp == wxT("prioup")) {
-			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
+			DownloadFile *file = m_DownloadFileInfo.GetByID(sFileHash);
 			if ( file ) {
 				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 					GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
 			}
 		} else if (sOp == wxT("priodown")) {
-			DownloadFiles *file = m_DownloadFilesInfo.GetByID(sFileHash);
+			DownloadFile *file = m_DownloadFileInfo.GetByID(sFileHash);
 			if ( file ) {
 				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
@@ -1006,7 +1006,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		}
 	}
 
-	m_DownloadFilesInfo.SetSortOrder(sSort, sDownloadSortRev);
+	m_DownloadFileInfo.SetSortOrder(sSort, sDownloadSortRev);
 	m_Params.bShowUploadQueue = _ParseURL(Data, wxT("showuploadqueue")) == wxT("true");
 
 	Out += m_Templates.sTransferImages;
@@ -1021,7 +1021,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[CATBOX]"), GetStatusBox(sCat));
 	//InsertCatBox(pThis, Out, cat, wxEmptyString, true, true);
 	
-	m_DownloadFilesInfo.ProcessHeadersLine(Out);
+	m_DownloadFileInfo.ProcessHeadersLine(Out);
 	
 	Out.Replace(wxT("[Filename]"), _("File Name"));
 	Out.Replace(wxT("[Size]"), _("Size"));
@@ -1043,14 +1043,14 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 
 	uint64 fTotalSize = 0, fTotalTransferred = 0, fTotalCompleted = 0, fTotalSpeed = 0;
 	
-	m_DownloadFilesInfo.ReQuery();
+	m_DownloadFileInfo.ReQuery();
 
 	//
 	// Displaying
 	//
 	wxString sDownList;
-	DownloadFilesInfo::ItemIterator i = m_DownloadFilesInfo.GetBeginIterator();
-	while (i != m_DownloadFilesInfo.GetEndIterator()) {
+	DownloadFileInfo::ItemIterator i = m_DownloadFileInfo.GetBeginIterator();
+	while (i != m_DownloadFileInfo.GetEndIterator()) {
 
 		if ( sCat.Length() && (sCat != i->sFileStatus)) {
 			i++;
@@ -1175,7 +1175,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		i++;
 	}
 
-	Out.Replace(wxT("[DownloadFilesList]"), sDownList);
+	Out.Replace(wxT("[DownloadFileList]"), sDownList);
 	Out.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
 	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
 	// Elandal: cast from float to integral type always drops fractions.
@@ -1203,10 +1203,10 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	while (j != m_UploadsInfo.GetEndIterator()) {
 		wxString HTTPProcessData(OutE);
 		HTTPProcessData.Replace(wxT("[1]"), j->sUserName);
-		SharedFiles *file = m_SharedFilesInfo.GetByID(j->nHash);
+		SharedFile *file = m_SharedFileInfo.GetByID(j->nHash);
 		if ( !file ) {
-			m_SharedFilesInfo.ReQuery();
-			file = m_SharedFilesInfo.GetByID(j->nHash);
+			m_SharedFileInfo.ReQuery();
+			file = m_SharedFileInfo.GetByID(j->nHash);
 		}
 		if ( file ) {
 			HTTPProcessData.Replace(wxT("[2]"), file->sFileName);
@@ -1225,7 +1225,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		j++;
 	}
 	
-	Out.Replace(wxT("[UploadFilesList]"), sUpList);
+	Out.Replace(wxT("[UploadFileList]"), sUpList);
 	// Elandal: cast from float to integral type always drops fractions.
 	// avoids implicit cast warning
 	Out.Replace(wxT("[TotalUpTransferred]"), CastItoXBytes(fTotalSize) + wxT(" / ") + CastItoXBytes(fTotalTransferred));
@@ -1293,7 +1293,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	Out.Replace(wxT("[CLEARCOMPLETED]"), _("Clear Completed"));
 
 	Out.Replace(wxT("[DownloadList]"),
-		wxString::Format(wxT("Downloads (%u)"), m_DownloadFilesInfo.ItemCount()));
+		wxString::Format(wxT("Downloads (%u)"), m_DownloadFileInfo.ItemCount()));
 	Out.Replace(wxT("[UploadList]"),
 		wxString::Format(_("Uploads (%i)"), m_UploadsInfo.ItemCount()));
 	Out.Replace(wxT("[CatSel]"), sCat);
@@ -1340,7 +1340,7 @@ wxString CWebServer::_GetDownloadLink(ThreadData Data) {
 }
 
 
-wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
+wxString CWebServer::_GetSharedFileList(ThreadData Data) {
 
 	wxString sSession = _ParseURL(Data, wxT("ses"));
 	
@@ -1361,11 +1361,11 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));
 	wxString sSort = _ParseURL(Data, wxT("sort"));
 
-	m_SharedFilesInfo.SetSortOrder(sSort, sSortRev);
+	m_SharedFileInfo.SetSortOrder(sSort, sSortRev);
 
 	//Name sorting link
 	wxString Out = m_Templates.sSharedList;
-	m_SharedFilesInfo.ProcessHeadersLine(Out);
+	m_SharedFileInfo.ProcessHeadersLine(Out);
 
 	Out.Replace(wxT("[Session]"), sSession);
 
@@ -1376,12 +1376,12 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 	wxString OutE2 = m_Templates.sSharedLineChanged; 
 	
 	// Populating array
-	m_SharedFilesInfo.ReQuery();	
+	m_SharedFileInfo.ReQuery();	
 
 	// Displaying
 	wxString sSharedList;
-	SharedFilesInfo::ItemIterator i = m_SharedFilesInfo.GetBeginIterator();
-	while (i != m_SharedFilesInfo.GetEndIterator()) {
+	SharedFileInfo::ItemIterator i = m_SharedFileInfo.GetBeginIterator();
+	while (i != m_SharedFileInfo.GetEndIterator()) {
 		wxString HTTPProcessData;
 		if (i->sFileHash == _ParseURL(Data,wxT("hash")))
 			HTTPProcessData = OutE2;
@@ -1424,7 +1424,7 @@ wxString CWebServer::_GetSharedFilesList(ThreadData Data) {
 		sSharedList += HTTPProcessData;
 		i++;
 	}
-	Out.Replace(wxT("[SharedFilesList]"), sSharedList);
+	Out.Replace(wxT("[SharedFileList]"), sSharedList);
 	Out.Replace(wxT("[Session]"), sSession);
 	Out.Replace(wxT("[PriorityUp]"), _("Increase Priority"));
 	Out.Replace(wxT("[PriorityDown]"), _("Decrease Priority"));
@@ -2550,7 +2550,7 @@ bool ServersInfo::CompareItems(const ServerEntry &i1, const ServerEntry &i2)
 	return Result ^ m_SortReverse;
 }
 
-SharedFiles::SharedFiles(CEC_SharedFile_Tag *tag)
+SharedFile::SharedFile(CEC_SharedFile_Tag *tag)
 {
 		sFileName = _SpecialChars(tag->FileName());
 		lFileSize = tag->SizeFull();
@@ -2560,7 +2560,7 @@ SharedFiles::SharedFiles(CEC_SharedFile_Tag *tag)
 		ProcessUpdate(tag);
 }
 
-void SharedFiles::ProcessUpdate(CEC_SharedFile_Tag *tag)
+void SharedFile::ProcessUpdate(CEC_SharedFile_Tag *tag)
 {
 	nFileTransferred = tag->GetXferred();
 	nFileAllTimeTransferred = tag->GetAllXferred();
@@ -2578,15 +2578,15 @@ void SharedFiles::ProcessUpdate(CEC_SharedFile_Tag *tag)
 	}
 }
 
-SharedFilesInfo *SharedFiles::GetContainerInstance()
+SharedFileInfo *SharedFile::GetContainerInstance()
 {
-	return SharedFilesInfo::m_This;
+	return SharedFileInfo::m_This;
 }
 
-SharedFilesInfo *SharedFilesInfo::m_This = 0;
+SharedFileInfo *SharedFileInfo::m_This = 0;
 
-SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) :
-	UpdatableItemsContainer<SharedFiles, xSharedSort, CEC_SharedFile_Tag, CMD4Hash>(webApp)
+SharedFileInfo::SharedFileInfo(CamulewebApp *webApp) :
+	UpdatableItemsContainer<SharedFile, xSharedSort, CEC_SharedFile_Tag, CMD4Hash>(webApp)
 {
 	m_This = this;
 	m_SortOrder = SHARED_SORT_NAME;
@@ -2617,7 +2617,7 @@ SharedFilesInfo::SharedFilesInfo(CamulewebApp *webApp) :
 }
 
 
-bool SharedFilesInfo::ReQuery()
+bool SharedFileInfo::ReQuery()
 {
 	DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 	
@@ -2626,7 +2626,7 @@ bool SharedFilesInfo::ReQuery()
 	return true;
 }
 
-bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
+bool SharedFileInfo::CompareItems(const SharedFile &i1, const SharedFile &i2)
 {
 	bool Result = false;
 	switch(m_SortOrder) {
@@ -2669,7 +2669,7 @@ bool SharedFilesInfo::CompareItems(const SharedFiles &i1, const SharedFiles &i2)
 	return Result ^ m_SortReverse;
 }
 
-DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
+DownloadFile::DownloadFile(CEC_PartFile_Tag *tag)
 {
 	nHash = tag->ID();
 	sFileName = _SpecialChars(tag->FileName());
@@ -2686,7 +2686,7 @@ DownloadFiles::DownloadFiles(CEC_PartFile_Tag *tag)
 	ProcessUpdate(tag);							
 }
 
-void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
+void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 {
 	if (!tag) {
 		return;
@@ -2731,15 +2731,15 @@ void DownloadFiles::ProcessUpdate(CEC_PartFile_Tag *tag)
 	}
 }
 
-DownloadFilesInfo *DownloadFiles::GetContainerInstance()
+DownloadFileInfo *DownloadFile::GetContainerInstance()
 {
-	return DownloadFilesInfo::m_This;
+	return DownloadFileInfo::m_This;
 }
 
-DownloadFilesInfo *DownloadFilesInfo::m_This = 0;
+DownloadFileInfo *DownloadFileInfo::m_This = 0;
 
-DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib) :
-	UpdatableItemsContainer<DownloadFiles, xDownloadSort, CEC_PartFile_Tag, CMD4Hash>(webApp)
+DownloadFileInfo::DownloadFileInfo(CamulewebApp *webApp, CImageLib *imlib) :
+	UpdatableItemsContainer<DownloadFile, xDownloadSort, CEC_PartFile_Tag, CMD4Hash>(webApp)
 {
 	m_This = this;
 	m_ImageLib = imlib;
@@ -2760,14 +2760,14 @@ DownloadFilesInfo::DownloadFilesInfo(CamulewebApp *webApp, CImageLib *imlib) :
 	m_SortStrVals[wxT("speed")] = DOWN_SORT_SPEED;
 }
 
-void DownloadFilesInfo::LoadImageParams(wxString &tpl, int width, int height)
+void DownloadFileInfo::LoadImageParams(wxString &tpl, int width, int height)
 {
 	m_Template = tpl;
 	m_width = width;
 	m_height = height;
 }
 
-void DownloadFilesInfo::ItemInserted(DownloadFiles *item)
+void DownloadFileInfo::ItemInserted(DownloadFile *item)
 {
 	item->m_Image = new CDynImage(m_width, m_height, m_Template, item);
 
@@ -2776,7 +2776,7 @@ void DownloadFilesInfo::ItemInserted(DownloadFiles *item)
 #endif
 }
 
-void DownloadFilesInfo::ItemDeleted(DownloadFiles *item)
+void DownloadFileInfo::ItemDeleted(DownloadFile *item)
 {
 #ifdef WITH_LIBPNG
 	m_ImageLib->RemoveImage(wxT("/") + item->m_Image->Name());
@@ -2784,7 +2784,7 @@ void DownloadFilesInfo::ItemDeleted(DownloadFiles *item)
 	delete item->m_Image;
 }
 
-bool DownloadFilesInfo::ReQuery()
+bool DownloadFileInfo::ReQuery()
 {
 	DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 	
@@ -2793,7 +2793,7 @@ bool DownloadFilesInfo::ReQuery()
 	return true;
 }
 
-bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFiles &i2)
+bool DownloadFileInfo::CompareItems(const DownloadFile &i1, const DownloadFile &i2)
 {
 	bool Result = false;
 	switch(m_SortOrder) {
@@ -2819,7 +2819,7 @@ bool DownloadFilesInfo::CompareItems(const DownloadFiles &i1, const DownloadFile
 	return Result ^ m_SortReverse;
 }
 
-UploadFiles::UploadFiles(CEC_UpDownClient_Tag *tag)
+UploadFile::UploadFile(CEC_UpDownClient_Tag *tag)
 {
 	nHash = tag->FileID();
 	sUserName = _SpecialChars(tag->ClientName());
@@ -2828,7 +2828,7 @@ UploadFiles::UploadFiles(CEC_UpDownClient_Tag *tag)
 	nTransferredDown = tag->XferDown();
 }
 
-UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFiles, int>(webApp)
+UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFile, int>(webApp)
 {
 }
 
@@ -2844,7 +2844,7 @@ bool UploadsInfo::ReQuery()
 	EraseAll();
 	for(int i = 0; i < up_reply->GetTagCount(); i ++) {
 		
-		UploadFiles curr((CEC_UpDownClient_Tag *)up_reply->GetTagByIndex(i));
+		UploadFile curr((CEC_UpDownClient_Tag *)up_reply->GetTagByIndex(i));
 		
 		AddItem(curr);
 	}
@@ -3018,7 +3018,7 @@ CImage3D_Modifiers::~CImage3D_Modifiers()
 	delete [] m_modifiers;
 }
 
-CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
+CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFile *file) :
 		CAnyImage(width * height * sizeof(uint32)), m_template(tmpl)
 {
 	m_width = width;
@@ -3166,7 +3166,7 @@ int CProgressImage::compare_gaps(const void *g1, const void *g2)
 
 #ifdef WITH_LIBPNG
 
-CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
+CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFile *file) :
 	CProgressImage(width, height, tmpl, file), m_modifiers(height)
 {
 	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
@@ -3247,7 +3247,7 @@ unsigned char *CDynImage::RequestData(int &size)
 
 #else
 
-CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFiles *file) :
+CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFile *file) :
 	CProgressImage(width, height, tmpl, file)
 {
 	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
