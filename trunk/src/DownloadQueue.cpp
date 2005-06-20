@@ -396,11 +396,13 @@ void CDownloadQueue::Process()
 	}
 
 	if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
-		// Check if any paused files can be resumed
-		CheckDiskspace( thePrefs::GetTempDir() );
+		
 		
 		DoSortByPriority();
 	}
+	// Check if any paused files can be resumed
+		
+	CheckDiskspace( thePrefs::GetTempDir() );
 
 	m_mutex.Unlock();
 	
@@ -811,6 +813,7 @@ bool ComparePartFiles(const CPartFile* file1, const CPartFile* file2) {
 
 void CDownloadQueue::DoSortByPriority()
 {
+	m_lastsorttime = ::GetTickCount();
 	sort( m_filelist.begin(), m_filelist.end(), ComparePartFiles );
 }
 

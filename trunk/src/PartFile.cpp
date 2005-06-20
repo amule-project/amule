@@ -2708,6 +2708,7 @@ void CPartFile::ResumeFile()
 	m_insufficient = false;
 		
 	lastsearchtime = 0;
+	SetStatus(status);
 	
 	UpdateDisplayedInfo(true);
 }

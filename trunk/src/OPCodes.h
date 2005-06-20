@@ -676,6 +676,6 @@ enum {
 #define KADEMLIA_STORE			0x04
 #define KADEMLIA_FIND_NODE		0x0B
 
-#define	DISKSPACERECHECKTIME			900000	// checkDiskspace
+#define	DISKSPACERECHECKTIME			60000	// checkDiskspace
 
 #endif // OPCODES_H
