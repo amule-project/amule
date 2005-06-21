@@ -315,11 +315,14 @@ void CWebSocket::OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pDat
 	ThreadData Data;
 	Data.sURL = sURL;
 	Data.pSocket = this;
-	if (sURL.Length()>4 && sURL.Right(4).MakeLower()==wxT(".gif") || sURL.Right(4).MakeLower()==wxT(".jpg") || 
-		sURL.Right(4).MakeLower()==wxT(".png") || sURL.Right(4).MakeLower()==wxT(".bmp") ||
-		sURL.Right(4).MakeLower()==wxT(".css") ||
-		sURL.Right(5).MakeLower()==wxT(".jpeg")) {
-		m_pParent->ProcessImgFileReq(Data);
+	if (sURL.Length() > 4 ) {
+		wxString url_ext = sURL.Right( sURL.Length() - sURL.Find('.', true) ).MakeLower();
+		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || 
+			(url_ext==wxT(".png")) || (url_ext==wxT(".bmp")) || (url_ext==wxT(".jpeg")) ) {
+			m_pParent->ProcessImgFileReq(Data);
+		} else {
+			m_pParent->ProcessURL(Data);
+		}
 	} else {
 		m_pParent->ProcessURL(Data);
 	}
