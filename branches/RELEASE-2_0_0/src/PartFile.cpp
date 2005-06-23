@@ -3031,8 +3031,10 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		uint32 lenData = item->end - item->start + 1;
 
 		// SLUGFILLER: SafeHash - could be more than one part
-		for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart)
+		for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart) {
+			wxASSERT(curpart < partCount);
 			changedPart[curpart] = true;
+		}
 		// SLUGFILLER: SafeHash
 		
 		// Go to the correct position in file and write block of data			
@@ -3043,7 +3045,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		m_nTotalBufferData -= lenData;
 
 		// Release memory used by this item
-		delete [] item->data;
+		delete[] item->data;
 		delete item;
 	}
 	
@@ -3066,7 +3068,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	m_hpartfile.Flush();
 
 	// Check each part of the file
-	uint32 partRange = (m_hpartfile.GetLength() % PARTSIZE) - 1;
+	uint32 partRange = (uint32)((m_hpartfile.GetLength() % PARTSIZE > 0) ? ((m_hpartfile.GetLength() % PARTSIZE) - 1) : (PARTSIZE - 1));
+	wxASSERT(((int)partRange) > 0);
 	for (int partNumber = partCount-1; partNumber >= 0; partNumber--) {
 		if (changedPart[partNumber] == false) {
 			// Any parts other than last must be full size
@@ -3099,8 +3102,9 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				
 				// if this part was successfully completed (although ICH is active), remove from corrupted list
 				POSITION posCorrupted = corrupted_list.Find(partNumber);
-				if (posCorrupted)
+				if (posCorrupted) {
 					corrupted_list.RemoveAt(posCorrupted);
+				}
 				if (status == PS_EMPTY) {
 					if (theApp.IsRunning()) { // may be called during shutdown!
 						if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
@@ -3134,8 +3138,9 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					if (status == PS_EMPTY) {
 						// Successfully recovered part, make it available for sharing							
 						SetStatus(PS_READY);
-						if (theApp.IsRunning()) // may be called during shutdown!
+						if (theApp.IsRunning()) { // may be called during shutdown!
 							theApp.sharedfiles->SafeAddKFile(this);
+						}
 					}
 				}
 			}
