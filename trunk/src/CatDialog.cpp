@@ -31,7 +31,6 @@
 #include <wx/msgdlg.h>
 #include <wx/textctrl.h>
 #include <wx/statbmp.h>
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _
 #include <wx/dialog.h>
 #include <wx/bitmap.h>
@@ -45,22 +44,22 @@
 #endif
 
 #include "CatDialog.h"			// Interface declarations.
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
+//#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "SearchDlg.h"				// Needed for UpdateCatChoice
+#include "SearchDlg.h"			// Needed for UpdateCatChoice
 #include "StringFunctions.h"		// Needed for MakeFoldername
 #include "OtherFunctions.h"		// Needed for CastChild
 #include "Preferences.h"		// Needed for CPreferences
-#include "amule.h"				// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"			// Needed for CategoriesEditWindow
-#include "Color.h"				// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
+#include "Color.h"			// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
 
 
 
 BEGIN_EVENT_TABLE(CCatDialog,wxDialog)
-	EVT_BUTTON(wxID_OK,			CCatDialog::OnBnClickedOk)
+	EVT_BUTTON(wxID_OK,		CCatDialog::OnBnClickedOk)
 	EVT_BUTTON(IDC_CATCOLOR,	CCatDialog::OnBnClickColor)
 	EVT_BUTTON(IDC_BROWSE,		CCatDialog::OnBnClickedBrowse)
 END_EVENT_TABLE()
@@ -76,7 +75,7 @@ CCatDialog::CCatDialog( wxWindow* parent, int index )
 	
 	m_category = NULL;
 
-	// Attempt to get the specified category, this may or may not success, 
+	// Attempt to get the specified category, this may or may not succeed,
 	// we dont really care. If it fails (too high index or such), then we
 	// simply get NULL and create a new category
 	if ( index > -1 ) {
@@ -95,7 +94,7 @@ CCatDialog::CCatDialog( wxWindow* parent, int index )
 	} else {
 		// Default values for new categories
 		CastChild(IDC_TITLE,	wxTextCtrl)->SetValue( _("New Category") );
-		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue( CPreferences::GetIncomingDir() );
+		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue( thePrefs::GetIncomingDir() );
 		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue( wxEmptyString );
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection( 0 );
 
@@ -165,7 +164,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	if ( !::wxDirExists( newpath ) ) {
-		if ( !wxMkdir( newpath, CPreferences::GetDirPermissions() ) ) {
+		if ( !wxMkdir( newpath, thePrefs::GetDirPermissions() ) ) {
 			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Info"), wxOK);
 			
 			return;

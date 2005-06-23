@@ -31,13 +31,12 @@
 #pragma interface "Color.h"
 #endif
 
-#include <inttypes.h>		// Needed for uint32_t
-#include <wx/defs.h>            // Needed before any other wx/*.h, possibly needed for COLORREF
-#include <wx/settings.h>        // Needed for wxSystemColour
-#include "Types.h"
+#include <wx/defs.h>		// Possibly needed for COLORREF
+#include <wx/colour.h>		// Needed for wxColour
 
 
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
+#include <inttypes.h>		// Needed for uint32_t
 typedef uint32_t		COLORREF;
 #endif
 

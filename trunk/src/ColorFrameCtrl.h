@@ -30,11 +30,12 @@
 #pragma interface "ColorFrameCtrl.h"
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#include <wx/brush.h>		// Needed for wxBrush
 #include <wx/control.h>		// Needed for wxControl
 
 #include "Types.h"		// Needed for RECT
 #include "Color.h"		// Needed for COLORREF
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl window
