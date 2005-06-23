@@ -44,7 +44,7 @@
 #endif
 
 #include "CatDialog.h"			// Interface declarations.
-//#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SharedFileList.h"		// Needed for CSharedFileList
