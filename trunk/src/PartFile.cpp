@@ -3139,8 +3139,10 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		uint32 lenData = item->end - item->start + 1;
 
 		// SLUGFILLER: SafeHash - could be more than one part
-		for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart)
+		for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart) {
+			wxASSERT(curpart < partCount);
 			changedPart[curpart] = true;
+		}
 		// SLUGFILLER: SafeHash
 		
 		// Go to the correct position in file and write block of data			
@@ -3174,7 +3176,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	m_hpartfile.Flush();
 
 	// Check each part of the file
-	uint32 partRange = (m_hpartfile.GetLength() % PARTSIZE) - 1;
+	uint32 partRange = (uint32)((m_hpartfile.GetLength() % PARTSIZE > 0) ? ((m_hpartfile.GetLength() % PARTSIZE) - 1) : (PARTSIZE - 1));
+	wxASSERT(((int)partRange) > 0);
 	for (int partNumber = partCount-1; partNumber >= 0; partNumber--) {
 		if (changedPart[partNumber] == false) {
 			// Any parts other than last must be full size
