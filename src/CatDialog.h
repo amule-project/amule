@@ -31,7 +31,7 @@
 #endif
 
 #include <wx/dialog.h>		// Needed for wxDialog
-#include "Types.h"		// Needed for DWORD
+#include "Types.h"		// Needed for uint32
 
 
 class Category_Struct;
@@ -85,7 +85,7 @@ private:
 
 
 	//! Variable used to store the user-selected color.
-	uint32				m_color;
+	uint32			m_color;
 
 	//! Pointer to category to be edited or NULL if we are adding a new category.
 	Category_Struct*	m_category;
