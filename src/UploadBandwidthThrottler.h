@@ -56,8 +56,6 @@ public:
     void RemoveFromAllQueues(ThrottledFileSocket* socket);
 
     void EndThread();
-
-    void Pause(bool paused);
 private:
     void DoRemoveFromAllQueues(ThrottledControlSocket* socket);
     bool RemoveFromStandardListNoLock(ThrottledFileSocket* socket);
@@ -69,7 +67,6 @@ private:
 
     wxMutex m_sendLocker;
     wxMutex m_tempQueueLocker;
-    wxMutex m_pauseLocker;
 	
 	typedef std::deque<ThrottledControlSocket*> SocketQueue;
 	

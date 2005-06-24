@@ -305,20 +305,8 @@ void UploadBandwidthThrottler::EndThread()
 	m_doRun = false;
 
 	m_sendLocker.Unlock();
-
-	Pause(false);
 	
 	Wait();
-}
-
-
-void UploadBandwidthThrottler::Pause(bool paused)
-{
-	if (paused) {
-		m_pauseLocker.TryLock();
-	} else {
-		m_pauseLocker.Unlock();
-    }
 }
 
 
@@ -341,9 +329,6 @@ void* UploadBandwidthThrottler::Entry()
     uint32 lastTickReachedBandwidth = ::GetTickCount();
 
 	while (m_doRun) {
-        m_pauseLocker.Lock();
-		m_pauseLocker.Unlock();
-
 		uint32 timeSinceLastLoop = ::GetTickCount() - lastLoopTick;
 
 		// Get current speed from UploadSpeedSense
