@@ -54,6 +54,7 @@
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/url.h>
+#include <wx/dataobj.h> 			// Needed on wxMotif
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
