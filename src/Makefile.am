@@ -448,6 +448,7 @@ noinst_HEADERS = AddFileThread.h \
 		 Logger.h \
 		 SysTray.h \
 		 TextClient.h \
+		 Timer.h \
 		 TransferWnd.h \
 		 tree.hh \
 		 Types.h \

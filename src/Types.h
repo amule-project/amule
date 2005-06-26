@@ -118,45 +118,6 @@ static const wxString EmptyString = wxEmptyString;
 #endif /* __WXMSW__ */
 
 
-#ifdef AMULE_DAEMON
-#define AMULE_TIMER_CLASS CTimer
-#define AMULE_TIMER_EVENT_CLASS wxEvent
-class wxEvtHandler;
-
-#include <wx/thread.h>
-
-/*
- * replace wxTimer with my own on non-X builds
- */
-class CTimer {
-	wxEvtHandler *owner;
-	int id;
-	class CTimerThread : public wxThread {
-		unsigned long m_period;
-		bool m_oneShot;
-		wxEvtHandler *m_owner;
-		int m_id;
-		
-		void *Entry();
-
-		public:
-		CTimerThread(wxEvtHandler *owner, unsigned long period, bool oneShot, int id);
-	};
-	CTimerThread *thread;
-	public:
-	CTimer(wxEvtHandler *owner = 0, int timerid = -1);
-	~CTimer();
-	void SetOwner(wxEvtHandler *owner, int id = -1);
-	bool Start(int millisecs, bool oneShot = false);
-	bool IsRunning() const;
-	void Stop();
-};
-
-#else
-#define AMULE_TIMER_CLASS wxTimer
-#define AMULE_TIMER_EVENT_CLASS wxTimerEvent
-#endif
-
 /*
  * Check version stuff
  */

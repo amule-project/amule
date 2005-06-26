@@ -22,15 +22,18 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-/*
-  Alternative to wxTimer implementation
-*/
-#include <unistd.h>           // Needed for close(2) and sleep(3)
-#include <wx/defs.h>
-#include <wx/wx.h>
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma implementation "Timer.h"
+#endif
 
-#include "Types.h"
-#include "amule.h"
+
+#include <unistd.h>	// Needed for close(2) and sleep(3)
+
+#include "Timer.h"	// Interface declaration
+#include "amule.h"	// Needed for theApp, wxMuleInternalEvent
+
+#include <wx/app.h>	// Needed for wxPostEvent
+
 
 CTimer::~CTimer()
 {
