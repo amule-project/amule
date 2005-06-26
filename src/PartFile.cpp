@@ -34,10 +34,9 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include <wx/intl.h>		// Needed for _
-#include <wx/setup.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/utils.h>
-#include <wx/tokenzr.h> // Needed for wxStringTokenizer
+#include <wx/tokenzr.h>		// Needed for wxStringTokenizer
 
 #ifndef AMULE_DAEMON
 	#include <wx/gdicmn.h>
@@ -58,7 +57,7 @@
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -72,7 +71,7 @@
 #include "SearchList.h"		// Needed for CSearchFile
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
-#include "NetworkFunctions.h" // Needed for Uint32toStringIP
+#include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
@@ -82,6 +81,7 @@
 #include <algorithm>
 
 #ifndef CLIENT_GUI
+#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 wxMutex CPartFile::m_FileCompleteMutex; 
 

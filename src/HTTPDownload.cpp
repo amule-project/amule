@@ -42,15 +42,14 @@
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
-#ifndef AMULE_DAEMON
-#include "inetdownload.h"	// Needed for inetDownload
-#endif
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for CastChild
-#include "Logger.h"				// Needed for AddLogLine*
-#include "Format.h"				// Needed for CFormat
+#include "Logger.h"		// Needed for AddLogLine*
+#include "Format.h"		// Needed for CFormat
+#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 #ifndef AMULE_DAEMON 
+	#include "inetdownload.h"	// Needed for inetDownload
 	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
 	#include "MuleGifCtrl.h"
 	#include <wx/sizer.h> 
