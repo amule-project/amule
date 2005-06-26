@@ -35,19 +35,15 @@
 #endif
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/app.h>			// Needed for wxApp
+#include <wx/app.h>		// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
-#include <wx/textfile.h>		// Needed for wxTextFile
-#include <wx/file.h>
-#include <wx/string.h>
+#include <wx/string.h>		// Needed for wxString
 
-#include "Types.h"			// Needed for int32, uint16 and uint64
-#include "GuiEvents.h"
+#include "Timer.h"		// Needed for AMULE_TIMER_CLASS and AMULE_TIMER_EVENT_CLASS
+#include "Types.h"		// Needed for int32, uint16 and uint64
+#include "GuiEvents.h"		// Needed for GUIEvent
 
-#include <deque>
-#include <list>
-
-#include "CTypedPtrList.h"	// Needed for CLis
+#include <list>			// Needed for std::list
 
 // If wx version is less than 2.5.2, we need this defined. This new flag 
 // is needed to ensure the old behaviour of sizers.
@@ -79,12 +75,10 @@ class CIPFilter;
 class UploadBandwidthThrottler;
 class CStatistics;
 class wxServer;
-class wxString;
 class wxSocketEvent;
-class wxTimer;
-class wxTimerEvent;
 class wxCommandEvent;
 class wxFFileOutputStream;
+class wxFile;
 class CUpDownClient;
 
 #define theApp wxGetApp()
@@ -97,7 +91,6 @@ enum APPState {
 
 
 #include <wx/event.h>
-#include <list>
 
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
 DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHING_SHUTDOWN)
