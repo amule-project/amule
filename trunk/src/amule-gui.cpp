@@ -54,7 +54,7 @@
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/url.h>
-#include <wx/dataobj.h> 			// Needed on wxMotif
+#include <wx/dataobj.h> 		// Needed on wxMotif
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -70,7 +70,7 @@
 #include "ClientCredits.h"		// Needed for CClientCreditsList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"			// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -79,7 +79,7 @@
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "ServerSocket.h"		// Needed for CServerSocket
-#include "ServerUDPSocket.h"			// Needed for CServerUDPSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "updownclient.h"		// Needed for CUpDownClient
@@ -102,6 +102,7 @@
 #endif
 
 #ifndef CLIENT_GUI
+#include "InternalEvents.h"		// Needed for wxEVT_*
 
 BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 

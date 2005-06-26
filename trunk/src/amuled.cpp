@@ -46,17 +46,17 @@
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/url.h>
 
-#include "amule.h"				// Interface declarations.
+#include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "Server.h"				// Needed for GetListName
-#include "CFile.h"				// Needed for CFile
+#include "Server.h"			// Needed for GetListName
+#include "CFile.h"			// Needed for CFile
 #include "OtherFunctions.h"		// Needed for GetTickCount
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCredits.h"		// Needed for CClientCreditsList
-#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
+#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"			// Needed for CServerConnect
+#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -64,16 +64,17 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerSocket.h"	// Needed for CServerSocket
+#include "ServerSocket.h"		// Needed for CServerSocket
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
-#include "PartFile.h"		// Needed for CPartFile
-#include "AddFileThread.h"	// Needed for CAddFileThread
-#include "FriendList.h"	// Needed for CFriendList
+#include "PartFile.h"			// Needed for CPartFile
+#include "AddFileThread.h"		// Needed for CAddFileThread
+#include "FriendList.h"			// Needed for CFriendList
 #include "Packet.h"
 #include "AICHSyncThread.h"
 #include "Statistics.h"
 #include "Logger.h"
 #include "Format.h"
+#include "InternalEvents.h"		// Needed for wxEVT_*
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>

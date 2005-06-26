@@ -28,7 +28,7 @@
 #pragma implementation "NetworkFunctions.h"
 #endif
 
-#include "NetworkFunctions.h"
+#include "NetworkFunctions.h"	// Interface declaration
 
 #ifdef __WXMSW__
 	#include <winsock.h>
@@ -44,7 +44,7 @@
 	#include <arpa/inet.h>		//
 #endif
 	
-#include <unistd.h> // Needed for gethostname()
+#include <unistd.h>		// Needed for gethostname()
 
 
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
@@ -207,8 +207,8 @@ bool IsGoodIP(uint32 IP, bool filterLAN)
 #ifndef EC_REMOTE
 // Not needed for remote apps.
 
-#warning deprecate this: Intenal Events should be on a separate file
-#include "amule.h"
+#include "amule.h"		// Needed for theApp
+#include "InternalEvents.h"	// Needed for wxEVT_*
 
 CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket) : wxThread(wxTHREAD_DETACHED)
 {
@@ -244,7 +244,7 @@ wxThread::ExitCode CAsyncDNS::Entry()
 		wxMuleInternalEvent evt(event_id);
 		evt.SetExtraLong(result);
 		evt.SetClientData(event_data);
-		wxPostEvent(&theApp,evt);	
+		wxPostEvent(&theApp,evt);
 	}
 	
 	return NULL;

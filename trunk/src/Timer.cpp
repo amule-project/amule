@@ -27,12 +27,11 @@
 #endif
 
 
-#include <unistd.h>	// Needed for close(2) and sleep(3)
+#include <unistd.h>		// Needed for close(2) and sleep(3)
 
-#include "Timer.h"	// Interface declaration
-#include "amule.h"	// Needed for theApp, wxMuleInternalEvent
-
-#include <wx/app.h>	// Needed for wxPostEvent
+#include "Timer.h"		// Interface declaration
+#include "amule.h"		// Needed for theApp
+#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 
 CTimer::~CTimer()

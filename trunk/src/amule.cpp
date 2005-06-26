@@ -29,6 +29,7 @@
 #pragma implementation "CTypedPtrList.h"
 #pragma implementation "GetTickCount.h"
 #pragma implementation "GuiEvents.h"
+#pragma implementation "InternalEvents.h"
 #pragma implementation "updownclient.h"
 #endif
 
@@ -107,6 +108,7 @@
 #include "Format.h"		// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 #include "PartFileConvert.h"
+#include "InternalEvents.h"		// Needed for wxMuleInternalEvent
 
 #ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"

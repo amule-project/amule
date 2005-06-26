@@ -30,10 +30,6 @@
 #pragma interface "amule.h"
 #endif
 
-#ifdef __WXMSW__
-#include <wx/msw/winundef.h>
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>		// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
@@ -89,66 +85,6 @@ enum APPState {
 	APP_STATE_STARTING
 };	
 
-
-#include <wx/event.h>
-
-DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED, wxEVT_USER_FIRST+FILE_HASHING_FINISHED)
-DECLARE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN, wxEVT_USER_FIRST+FILE_HASHING_SHUTDOWN)
-DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION, wxEVT_USER_FIRST+FILE_COMPLETION_FINISHED)
-DECLARE_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, wxEVT_USER_FIRST+HTTP_DOWNLOAD_FINISHED)
-
-DECLARE_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS_DONE)
-DECLARE_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE, wxEVT_USER_FIRST+UDP_DNS_DONE)
-DECLARE_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE, wxEVT_USER_FIRST+SERVER_DNS_DONE)
-
-DECLARE_EVENT_TYPE(wxEVT_AMULE_TIMER, wxEVT_USER_FIRST+EVENT_TIMER)
-
-class wxMuleInternalEvent : public wxEvent {
-	void *m_ptr;
-	long m_value;
-	int  m_commandInt;
-	public:
-	wxMuleInternalEvent(int id, int event_id) : wxEvent(event_id, id)
-	{
-	}
-	wxMuleInternalEvent(int id) : wxEvent(-1, id)
-	{
-	}
-	wxMuleInternalEvent(int id, void *ptr, long value) : wxEvent(-1, id)
-	{
-		m_ptr = ptr;
-		m_value = value;
-	}
-	wxEvent *Clone(void) const
-	{
-		return new wxMuleInternalEvent(*this);
-	}
-	void SetExtraLong(long value)
-	{
-		m_value = value;
-	}
-	long GetExtraLong()
-	{
-		return m_value;
-	}
-	void SetInt(int i)
-	{
-		m_commandInt = i;
-	}
-	long GetInt() const
-	{
-		return m_commandInt; 
-	}
-
-	void SetClientData(void *ptr)
-	{
-		m_ptr = ptr;
-	}
-	void *GetClientData()
-	{
-		return m_ptr;
-	}
-};
 
 #ifdef AMULE_DAEMON
 #define AMULE_APP_BASE wxAppConsole
