@@ -65,6 +65,7 @@
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
 #include "Format.h"		// Needed for CFormat
+#include "Color.h"		// Needed for COLORREF
 
 #ifndef __WXMSW__
 	#include "netinet/in.h"	// Needed for ntohl()

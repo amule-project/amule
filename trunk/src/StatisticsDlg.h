@@ -32,7 +32,8 @@
 
 #include "Types.h"		// Needed for uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CList
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for CStatistics
+#include "Color.h"		// Needed for COLORREF
 
 class wxTreeCtrl;
 class wxTreeItemId;

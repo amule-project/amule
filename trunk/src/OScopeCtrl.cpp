@@ -39,7 +39,6 @@
 #include "OtherFunctions.h"	// Needed for CastSecondsToHM
 #include "StringFunctions.h"
 #include "amule.h"			// Needed for theApp
-#include "Color.h"			// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 #include "Format.h"
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
