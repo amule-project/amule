@@ -63,7 +63,6 @@ enum DesktopMode
 #include <wx/string.h>		// Needed for wxString
 
 #include "Types.h"		// Needed for DWORD
-#include "Color.h"		// Needed for COLORREF, GetRValue, GetGValue and GetBValue
 
 
 #if defined(__UTF8_SYSTRAY_ENABLED__) || wxUSE_UNICODE 
@@ -125,7 +124,7 @@ private:
 	wxWindow*		m_parent;
 	GtkWidget*		m_status_docklet;
 	GtkWidget*		m_status_image;
-	GtkTooltips*	m_status_tooltips;
+	GtkTooltips*		m_status_tooltips;
 };
 
 

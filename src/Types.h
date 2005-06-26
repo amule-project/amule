@@ -26,10 +26,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <wx/defs.h>
-#include <inttypes.h>
-#include <wx/dynarray.h>
-#include <wx/string.h>
+#include <inttypes.h>		// Needed for int type declarations
+#include <wx/dynarray.h>	// Needed for WX_DEFINE_ARRAY_SHORT
+#include <wx/string.h>		// Needed for wxString and wxEmptyString
 
 // These are MSVC defines used in eMule. They should 
 // not be used in aMule, instead, use this table to 
@@ -97,15 +96,13 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
-	#include <windef.h>
+	#include <windef.h>		// Needed for RECT
 	#include <wingdi.h>
 	#include <winuser.h>
 	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */
 
 	typedef uint32_t	in_addr_t;
 #else 
-
-	typedef uint32_t	COLORREF;
 
 	typedef struct sRECT {
 	  uint32 left;
@@ -114,7 +111,6 @@ static const wxString EmptyString = wxEmptyString;
 	  uint32 bottom;
 	} RECT;
 
-	typedef RECT		*LPRECT;
 #endif /* __WXMSW__ */
 
 
