@@ -871,7 +871,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		file.WriteHash16(m_abyFileHash);
 		uint16 parts = hashlist.GetCount();
 		file.WriteUInt16(parts);
-		for (int x = 0; x != parts; ++x) {
+		for (int x = 0; x < parts; ++x) {
 			file.WriteHash16(hashlist[x]);
 		}
 		// tags		
@@ -968,7 +968,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			CTag( FT_KADLASTPUBLISHNOTES,	GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
 		}		
 		
-		for (uint32 j = 0; j != (uint32)taglist.GetCount();++j) {
+		for (uint32 j = 0; j < (uint32)taglist.GetCount();++j) {
 			taglist[j]->WriteTagToFile(&file);
 		}
 		
@@ -977,7 +977,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		char* number = &namebuffer[1];
 		uint16 i_pos = 0;
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-			sprintf(number,"%d",i_pos);
+			snprintf(number,9,"%hu",(unsigned short int)i_pos);
 			namebuffer[0] = FT_GAPSTART;
 			
 			CTag( namebuffer, 	gaplist.GetAt(pos)->start	).WriteTagToFile( &file );
