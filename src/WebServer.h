@@ -735,38 +735,75 @@ typedef struct {
 	wxString	sCatArrow;
 } WebTemplates;
 
-class CWebServer {
+/*
+ * In transition period I want both versions of amuleweb available: CPP and PHP
+ */
+class CWebServerBase {
+	protected:
+		CWSThread *wsThread;
+		wxMutex *m_mutexChildren;
+
+		ServersInfo m_ServersInfo;
+		SharedFileInfo m_SharedFileInfo;
+		DownloadFileInfo m_DownloadFileInfo;
+		UploadsInfo m_UploadsInfo;
+		SearchInfo m_SearchInfo;
+		
+		CImageLib m_ImageLib;
+
+		virtual void ProcessURL(ThreadData) = 0;
+		void ProcessImgFileReq(ThreadData);
+
+	
 	friend class CWebSocket;
 	friend class CWSThread;		// to access the wsThread member
 
-	ServersInfo m_ServersInfo;
-	SharedFileInfo m_SharedFileInfo;
-	DownloadFileInfo m_DownloadFileInfo;
-	UploadsInfo m_UploadsInfo;
-	SearchInfo m_SearchInfo;
-	
-	CImageLib m_ImageLib;
-	
+	public:
+		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
+		virtual ~CWebServerBase() { }
+
+		virtual void StartServer() = 0;
+
+		void Print(const wxString &s);
+
+		long GetWSPrefs();
+
+		CamulewebApp	*webInterface;
+
+};
+
+/*
+ * Script based webserver
+ */
+class CScriptWebServer : public CWebServerBase {
+	protected:
+		virtual void ProcessURL(ThreadData);
+	public:
+		CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir);
+		~CScriptWebServer();
+
+		virtual void StartServer();
+};
+
+/*
+ * CPP based webserver
+ */
+class CWebServer : public CWebServerBase {
 	public:
 		CWebServer(CamulewebApp *webApp, const wxString& templateDir);
-		~CWebServer(void);
+		~CWebServer();
 
-		void 	StartServer(void);
-		void 	RestartServer(void);
-		void 	StopServer(void);
-		void 	ReloadTemplates(void);
+		void 	StartServer();
+		void 	RestartServer();
+		void 	StopServer();
+		void 	ReloadTemplates();
 	
 		int	UpdateSessionCount();
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
-		long 	GetWSPrefs();
-		void	Print(const wxString &s);
 		void	Send_Discard_V2_Request(CECPacket *request);
 
 	protected:
 		void	ProcessURL(ThreadData);
-		void	ProcessFileReq(ThreadData);
-		void 	ProcessImgFileReq(ThreadData);
-		void 	ProcessStyleFileReq(ThreadData);
 	
 	private:
 		wxString	_GetHeader(ThreadData, long lSession);
@@ -804,8 +841,6 @@ class CWebServer {
 		wxString	GetStatusBox(wxString &preselect);
 
 		// Common data
-		wxMutex		*m_mutexChildren;
-		CWSThread	*wsThread;
 		GlobalParams	m_Params;
 		WebTemplates	m_Templates;
 		bool		m_bServerWorking;
@@ -818,8 +853,6 @@ class CWebServer {
 		uint16		m_nGraphWidth;
 		uint16		m_nGraphScale;
 
-public:
-		CamulewebApp	*webInterface;
 };
 
 #endif // WEBSERVER_H

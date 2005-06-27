@@ -43,7 +43,7 @@ ArrayOfCWCThread s_wcThreads;
 static wxMutex *s_mutex_wcThreads;
 
 /*** CWSThread ***/
-CWSThread::CWSThread(CWebServer *webserver) {
+CWSThread::CWSThread(CWebServerBase *webserver) {
 	ws = webserver;
 	
 	//retrieve web server listening port
@@ -126,7 +126,7 @@ void *CWSThread::Entry() {
 }
 
 /*** CWCThread ***/
-CWCThread::CWCThread(CWebServer *ws, wxSocketBase *sock) {
+CWCThread::CWCThread(CWebServerBase *ws, wxSocketBase *sock) {
     stWebSocket.m_pParent = ws;
     stWebSocket.m_hSocket = sock;
     stWebSocket.m_hSocket->SetTimeout(10);
