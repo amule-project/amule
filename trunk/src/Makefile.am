@@ -224,7 +224,7 @@ amuled_SOURCES = \
 	Friend.cpp \
 	FriendList.cpp \
 	HTTPDownload.cpp \
-	IFilter.cpp \
+	IPFilter.cpp \
 	KnownFile.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
