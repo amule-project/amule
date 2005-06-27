@@ -4,6 +4,7 @@ Version 2.1.x - The "???" version
 
 	GonoszTopi:
 		* Ported the partfile importer from eMule.
+		* Proper termination of working threads in webserver.
 
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec

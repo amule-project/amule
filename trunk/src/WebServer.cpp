@@ -233,8 +233,10 @@ CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir):
 
 CWebServer::~CWebServer(void) {
 	//stop web socket thread
-	if (wsThread) wsThread->Delete();
-
+	if (wsThread) {
+		wsThread->Delete();
+		while (wsThread);
+	}
 	delete m_mutexChildren;
 }
 
@@ -288,7 +290,11 @@ void CWebServer::RestartServer(void) {
 void CWebServer::StopServer(void) {
 	if (m_bServerWorking) {
 		m_bServerWorking = false;
-		if (wsThread) wsThread->Delete();
+		if (wsThread) {
+			wsThread->Delete();
+			// wait until the thread really terminates.
+			while (wsThread);
+		}
 		webInterface->Show(_("Web Server: Stopped\n"));
 	} else
 		webInterface->Show(_("Web Server: not running\n"));

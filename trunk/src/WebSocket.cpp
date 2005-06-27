@@ -77,10 +77,10 @@ void *CWSThread::Entry() {
 		s_mutex_wcThreads = new wxMutex();
 
 		while (!TestDestroy()) {
-			// Accept the incoming connection and returns immediately
-			// Here we should always have a connection pending.
-			wxSocketBase *sock = m_WSSocket->Accept();
+			// Accept incoming connection if there is any, and returns immediately
+			wxSocketBase *sock = m_WSSocket->Accept(false);
 			if (sock) {
+				// If there was a connection, create new CWCThread
 				CWCThread *wct = new CWCThread(ws, sock);
 
 				s_mutex_wcThreads->Lock();
@@ -95,15 +95,18 @@ void *CWSThread::Entry() {
 					s_wcThreads.Last()->Run();
 				}
 				s_mutex_wcThreads->Unlock();
+			} else {
+				// else "give the rest of the thread time slice to the system allowing the other threads to run."
+				Yield();
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
-		s_mutex_wcThreads->Lock();
-		for (size_t i=0; i<s_wcThreads.GetCount(); ++i) {
-			// terminate i-th thread
-			s_wcThreads.Item(i)->Delete();
+		bool should_wait = true;
+		while (should_wait) {
+			s_mutex_wcThreads->Lock();
+			should_wait = (s_wcThreads.GetCount() != 0);
+			s_mutex_wcThreads->Unlock();
 		}
-		s_mutex_wcThreads->Unlock();
 
 		// by this time, all threads are dead
 		delete s_mutex_wcThreads;
@@ -113,7 +116,10 @@ void *CWSThread::Entry() {
 
 		ws->Print(wxT("done.\n"));
 	}
-	
+
+	// Signal the webserver that we exited.
+	ws->wsThread = NULL;
+
 	// Kry - WTF to return here?
 	// shakraw - it must return NULL. it is correct now.
 	return NULL;
@@ -143,7 +149,7 @@ CWCThread::~CWCThread()
 
 // thread execution starts here
 void *CWCThread::Entry() {
-#ifdef DEBUG
+#ifdef __DEBUG__
 	stWebSocket.m_pParent->Print(wxT("WCThread: Started a new WCThread\n"));
 #endif
 	bool IsGet = false, IsPost = false;
@@ -280,7 +286,7 @@ void *CWCThread::Entry() {
 	}
 	//destroy the socket
 	stWebSocket.m_hSocket->Destroy();
-#ifdef DEBUG
+#ifdef __DEBUG__
 	stWebSocket.m_pParent->Print(wxT("WCThread: exited [WebSocket closed]\n"));
 #endif
 	// remove ourself from threads array
