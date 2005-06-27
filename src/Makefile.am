@@ -203,58 +203,58 @@ amule_SOURCES = \
 
 amuled_SOURCES = \
 	AICHSyncThread.cpp \
-        AddFileThread.cpp \
-        amule.cpp \
-        amuled.cpp \
-        BaseClient.cpp \
-        CFile.cpp \
-        ClientCredits.cpp \
-        ClientList.cpp \
-        ClientUDPSocket.cpp \
+	AddFileThread.cpp \
+	amule.cpp \
+	amuled.cpp \
+	BaseClient.cpp \
+	CFile.cpp \
+	ClientCredits.cpp \
+	ClientList.cpp \
+	ClientUDPSocket.cpp \
 	DeadSourceList.cpp \
-        DownloadClient.cpp \
-        DownloadQueue.cpp \
-        ECSocket.cpp \
+	DownloadClient.cpp \
+	DownloadQueue.cpp \
+	ECSocket.cpp \
 	ECPacket.cpp \
 	ECSpecialTags.cpp \
-        ED2KLink.cpp \
-        EMSocket.cpp \
-        ExternalConn.cpp \
+	ED2KLink.cpp \
+	EMSocket.cpp \
+	ExternalConn.cpp \
 	Format.cpp \
-        Friend.cpp \
+	Friend.cpp \
 	FriendList.cpp \
 	HTTPDownload.cpp \
-        IPFilter.cpp \
-        KnownFile.cpp \
-        KnownFileList.cpp \
+	IFilter.cpp \
+	KnownFile.cpp \
+	KnownFileList.cpp \
 	ListenSocket.cpp \
 	Logger.cpp \
-        MD5Sum.cpp \
-        MemFile.cpp \
+	MD5Sum.cpp \
+	MemFile.cpp \
 	NetworkFunctions.cpp \
-        OtherFunctions.cpp \
-        Packet.cpp \
-        PartFile.cpp \
+	OtherFunctions.cpp \
+	Packet.cpp \
+	PartFile.cpp \
 	PartFileConvert.cpp \
-        Preferences.cpp \
+	Preferences.cpp \
 	Proxy.cpp \
-        SafeFile.cpp \
-        SearchList.cpp \
-        Server.cpp \
-        ServerConnect.cpp \
-        ServerList.cpp \
-        ServerSocket.cpp \
-        ServerUDPSocket.cpp \
-        SHA.cpp \
-        SHAHashSet.cpp \
-        SharedFileList.cpp \
+	SafeFile.cpp \
+	SearchList.cpp \
+	Server.cpp \
+	ServerConnect.cpp \
+	ServerList.cpp \
+	ServerSocket.cpp \
+	ServerUDPSocket.cpp \
+	SHA.cpp \
+	SHAHashSet.cpp \
+	SharedFileList.cpp \
 	StateMachine.cpp \
 	Statistics.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
 	UploadBandwidthThrottler.cpp \
-        UploadClient.cpp \
-        UploadQueue.cpp \
+	UploadClient.cpp \
+	UploadQueue.cpp \
 	kademlia/utils/UInt128.cpp
 
 if ADD_GSOCKET
@@ -397,6 +397,7 @@ noinst_HEADERS = AddFileThread.h \
 		 GuiEvents.h \
 		 HTTPDownload.h \
 		 inetdownload.h \
+		 InternalEvents.h \
 		 IPFilter.h \
 		 KadDlg.h \
 		 KnownFile.h \
