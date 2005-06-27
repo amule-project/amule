@@ -369,6 +369,22 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	amuleweb_parser.AddOption(wxEmptyString, wxT("amule-config-file"),
 		_("aMule config file path. DO NOT USE DIRECTLY!"),
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
+
+	/*
+	 * In this mode, internal PHP interpreter is activated, and
+	 * amuleweb will forward there requests for .php pages
+	 */
+	amuleweb_parser.AddSwitch(wxT("S"), wxT("run-scriptable"), 
+		_("Forward page requests to external PHP script"),
+		wxCMD_LINE_PARAM_OPTIONAL);
+
+	/*
+	 * Reload .php page each time it's requested - don't cache
+	 * compilation results. Used for script development.
+	 */
+	amuleweb_parser.AddSwitch(wxT("N"), wxT("no-script-cache"), 
+		_("Recompile PHP pages on each request"),
+		wxCMD_LINE_PARAM_OPTIONAL);
 }
 
 bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)

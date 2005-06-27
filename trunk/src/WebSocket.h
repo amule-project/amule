@@ -47,7 +47,7 @@ class CWebSocket {
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
 	
-		CWebServer *m_pParent;
+		CWebServerBase *m_pParent;
 		wxSocketBase *m_hSocket;
 	
 		class CChunk {
@@ -76,7 +76,7 @@ class CWebSocket {
 
 class CWCThread : public wxThread { //WC stands for web client socket. not for WC :)
 	public:
-		CWCThread(CWebServer *ws, wxSocketBase *sock);
+		CWCThread(CWebServerBase *ws, wxSocketBase *sock);
 		~CWCThread();
 	
 		//thread execution starts here
@@ -89,14 +89,14 @@ class CWCThread : public wxThread { //WC stands for web client socket. not for W
 
 class CWSThread : public wxThread {
 	public:
-		CWSThread(CWebServer *webserver); //web socket thread ctor
+		CWSThread(CWebServerBase *webserver); //web socket thread ctor
 
 		//thread execution starts here
 		virtual void *Entry();
 	
 	private:
 		wxSocketServer *m_WSSocket;
-		CWebServer *ws;
+		CWebServerBase *ws;
 		int wsport;
 };
 

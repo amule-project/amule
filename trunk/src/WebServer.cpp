@@ -210,14 +210,78 @@ uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
 	}
 }
 
-CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir):
+CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp),
 	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
 	m_mutexChildren = new wxMutex();
+}
 
+//sends output to web interface
+void CWebServerBase::Print(const wxString &s)
+{
+	webInterface->Show(s);
+}
+
+//returns web server listening port
+long CWebServerBase::GetWSPrefs(void)
+{
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
+	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
+	if (!reply) {
+		return -1;
+	}
+	// we have selected only the webserver preferences
+	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
+	unsigned int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
+
+	if (webInterface->m_LoadSettingsFromAmule) {
+		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
+
+		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
+		if (webserverGuest) {
+			webInterface->m_AllowGuest = true;
+			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
+		} else {
+			webInterface->m_AllowGuest = false;
+		}
+
+		// we only need to check the presence of this tag
+		webInterface->m_UseGzip = wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
+	
+		const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
+		if (webserverRefresh) {
+			webInterface->m_PageRefresh = webserverRefresh->GetInt32Data();
+		} else {
+			webInterface->m_PageRefresh = 120;
+		}
+	}
+
+	delete reply;
+
+	return wsport;
+}
+
+void CWebServerBase::ProcessImgFileReq(ThreadData Data)
+{
+	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
+
+	CAnyImage *img = m_ImageLib.GetImage(Data.sURL);
+	if ( img ) {
+		int img_size;
+		unsigned char* img_data = img->RequestData(img_size);
+		// This unicode2char is ok.
+		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
+	} else {
+		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
+	}	
+}
+
+CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
+{
 	m_Params.bShowUploadQueue = false;
 
 	m_iSearchSortby = 3;
@@ -300,51 +364,6 @@ void CWebServer::StopServer(void) {
 		webInterface->Show(_("Web Server: not running\n"));
 }
 
-
-//returns web server listening port
-long CWebServer::GetWSPrefs(void)
-{
-	CECPacket req(EC_OP_GET_PREFERENCES);
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
-	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
-	if (!reply) {
-		return -1;
-	}
-	// we have selected only the webserver preferences
-	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
-	unsigned int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
-
-	if (webInterface->m_LoadSettingsFromAmule) {
-		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
-
-		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
-		if (webserverGuest) {
-			webInterface->m_AllowGuest = true;
-			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
-		} else {
-			webInterface->m_AllowGuest = false;
-		}
-
-		// we only need to check the presence of this tag
-		webInterface->m_UseGzip = wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
-	
-		const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
-		if (webserverRefresh) {
-			webInterface->m_PageRefresh = webserverRefresh->GetInt32Data();
-		} else {
-			webInterface->m_PageRefresh = 120;
-		}
-	}
-
-	delete reply;
-
-	return wsport;
-}
-
-//sends output to web interface
-void CWebServer::Print(const wxString &s) {
-	webInterface->Show(s);
-}
 
 // send EC request and discard output
 void CWebServer::Send_Discard_V2_Request(CECPacket *request)
@@ -469,21 +488,6 @@ wxString CWebServer::_LoadTemplate(wxString sAll, wxString sTemplateName) {
 		webInterface->Show(CFormat(_("Failed to load template %s\n")) % sTemplateName );
 	}
 	return sRet;
-}
-
-void CWebServer::ProcessImgFileReq(ThreadData Data)
-{
-	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
-
-	CAnyImage *img = m_ImageLib.GetImage(Data.sURL);
-	if ( img ) {
-		int img_size;
-		unsigned char* img_data = img->RequestData(img_size);
-		// This unicode2char is ok.
-		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
-	} else {
-		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
-	}	
 }
 
 void CWebServer::ProcessURL(ThreadData Data) {
@@ -3411,4 +3415,34 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 		delete fimg;
 		return 0;
 	}
+}
+
+/* 
+ * Script-based webserver
+ */
+ 
+
+CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)  : CWebServerBase(webApp, templateDir)
+{
+}
+
+CScriptWebServer::~CScriptWebServer()
+{
+}
+
+void CScriptWebServer::StartServer()
+{
+	wsThread = new CWSThread(this);
+	if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
+		webInterface->Show(_("Can't create web socket thread\n"));
+	} else {
+		//...and run it
+		wsThread->Run();
+ 
+		webInterface->Show(_("Web Server: Started\n"));
+	}
+}
+
+void CScriptWebServer::ProcessURL(ThreadData)
+{
 }
