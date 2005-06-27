@@ -737,6 +737,7 @@ typedef struct {
 
 class CWebServer {
 	friend class CWebSocket;
+	friend class CWSThread;		// to access the wsThread member
 
 	ServersInfo m_ServersInfo;
 	SharedFileInfo m_SharedFileInfo;

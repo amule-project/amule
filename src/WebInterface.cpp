@@ -211,6 +211,8 @@ int CamulewebApp::OnExit() {
 	frame = NULL;
 	if (webserver) {
 		webserver->StopServer();
+		delete webserver;
+		webserver = NULL;
 	}
 	return 0;
 }
@@ -234,6 +236,8 @@ int CamulewebApp::OnRun() {
 
 void CamulewebApp::Post_Shell() {
 	webserver->StopServer();
+	delete webserver;
+	webserver = NULL;
 }
 
 #endif
