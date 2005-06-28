@@ -98,9 +98,9 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 			ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
 		}
 	} else {
-		m_sendLocker.Unlock();
-		
 		Close();
+		
+		m_sendLocker.Unlock();
 	}
 }
 
