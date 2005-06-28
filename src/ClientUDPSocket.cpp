@@ -86,6 +86,8 @@ CClientUDPSocket::~CClientUDPSocket()
 
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
+	wxMutexLocker lock(m_sendLocker);
+
 	char buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
 	uint32 length = DoReceive(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
