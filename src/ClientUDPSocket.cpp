@@ -64,8 +64,8 @@
 IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket, CDatagramSocketProxy)
 
 CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
-:
-CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+	: m_sendLocker(wxMUTEX_RECURSIVE),
+	  CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 {
 	m_bWouldBlock = false;
 
