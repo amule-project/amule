@@ -179,7 +179,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 	}
 	
 	// Check current connection state
-	if(byConnected == ES_DISCONNECTED) {
+	if (byConnected == ES_DISCONNECTED) {
 		return;
 	} else {	
 		byConnected = ES_CONNECTED; // ES_DISCONNECTED, ES_NOTCONNECTED, ES_CONNECTED
@@ -197,7 +197,9 @@ void CEMSocket::OnReceive(int nErrorCode)
 		readMax = downloadLimit;
 	}
 
+	
 	// We attempt to read up to 2 megs at a time (minus whatever is in our internal read buffer)
+	m_sendLocker.Lock();
 	Read(GlobalReadBuffer + pendingHeaderSize, readMax);
 	uint32 ret=LastCount();
 	if (Error() || ret == 0) {
@@ -206,6 +208,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 		}
 		return;
 	}
+	m_sendLocker.Unlock();
 	
 	
 	// Bandwidth control
@@ -302,8 +305,9 @@ void CEMSocket::OnReceive(int nErrorCode)
 			pendingPacket = NULL;
 			pendingPacketSize = 0;
 			
-			if (!bPacketResult)
-				return;			
+			if (!bPacketResult) {
+				return;
+			}
 		}
 	}
 
