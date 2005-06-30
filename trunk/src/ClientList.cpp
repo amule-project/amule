@@ -134,6 +134,7 @@ void CClientList::AddClient( CUpDownClient* toadd )
 
 void CClientList::AddToDeleteQueue(CUpDownClient* client)
 {
+	wxASSERT(client->GetClientState() == CS_DYING);
 	// We have to remove the client from the list immediatly, to avoit it getting
 	// found by functions such as AttachToAlreadyKnown and GetClientsFromIP, 
 	// however, if the client isn't on the clientlist, then it is safe to delete 
@@ -1038,7 +1039,7 @@ void CClientList::CleanUpClientList(){
 	// is however not compatible with the current code, because there are points where a client has
 	// no state for some code lines and the code is also not prepared that a client object gets
 	// invalid while working with it (aka setting a new state)
-	// so this way is just the easy and safe one to go (as long as emule is basically single threaded)
+	// so this way is just the easy and safe one to go (as long as amule is basically single threaded)
 	const uint32 cur_tick = ::GetTickCount();
 	if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick ){
 		m_dwLastClientCleanUp = cur_tick;
@@ -1053,7 +1054,7 @@ void CClientList::CleanUpClientList(){
 				&& pCurClient->GetSocket() == NULL)
 			{
 				cDeleted++;
-				AddToDeleteQueue(pCurClient); 
+				pCurClient->Safe_Delete(); 
 			}
 		}
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
