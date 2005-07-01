@@ -206,6 +206,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 		if (LastError() == wxSOCKET_WOULDBLOCK) {
 			pendingOnReceive = true;
 		}
+		m_sendLocker.Unlock();
 		return;
 	}
 	m_sendLocker.Unlock();
