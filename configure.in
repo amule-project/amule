@@ -705,7 +705,10 @@ AC_CONFIG_FILES([Makefile
 		 src/utils/xas/docs/Makefile
 		 src/webserver/Makefile
 		 src/webserver/default/Makefile
-		 src/webserver/chicane/Makefile])
+		 src/webserver/chicane/Makefile
+		 unittests/Makefile
+		 unittests/muleunit/Makefile
+		 unittests/tests/Makefile])
 dnl
 dnl autoscan has missed these, i wonder why...
 dnl
