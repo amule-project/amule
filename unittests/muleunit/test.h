@@ -166,7 +166,7 @@ wxString StringFrom(const TYPE& value)
  */
 #define ASSERT_TRUE_M(condition, message)\
 	{ if (condition) {\
-	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,#condition,success));\
+	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#condition),success));\
 	} else {\
 	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message,failure)); return;\
 	}}
@@ -175,14 +175,14 @@ wxString StringFrom(const TYPE& value)
  * Same as ASSERT_TRUE, but without an explicit message.
  */
 #define ASSERT_TRUE(condition) \
-	ASSERT_TRUE_M(condition, #condition);
+	ASSERT_TRUE_M(condition, wxT(#condition));
 
 
 /**
  * Same as ASSERT_TRUE, but without an explicit message and condition must be false.
  */
 #define ASSERT_FALSE(condition) \
-	ASSERT_TRUE_M(!(condition), #condition);
+	ASSERT_TRUE_M(!(condition), wxT(#condition));
 
 
 /**
