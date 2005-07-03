@@ -5,7 +5,7 @@
 
 # Use this to be able to catch assertions as exceptions
 MUCXXFLAGS = -DMULEUNIT
-AM_CXXFLAGS = -I. -I../ -I../../src $(WX_CXXFLAGS) ${MUCXXFLAGS}
+AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS}
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
