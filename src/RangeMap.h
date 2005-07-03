@@ -28,8 +28,7 @@
 
 #include <map>
 
-#include <wx/defs.h>
-
+#include "MuleDebug.h"
 #include "Types.h"
 
 
@@ -104,8 +103,29 @@ public:
 	 */
 	CRangeMap& operator=(const CRangeMap<VALUE>& other) {
 		m_ranges = other.m_ranges;
+
+		return *this;
 	}
 
+	/**
+	 * Equality operator for two ranges.
+	 *
+	 * @returns True if both ranges contain the same ranges and values.
+	 */
+	bool operator==( const CRangeMap<VALUE>& other ) const {
+		// Check if we are comparing with ourselves
+		if ( this == &other ) {
+			return true;
+		}
+		
+		// Check size, must be the same
+		if ( size() != other.size() ) {
+			return false;
+		}
+		
+		return (m_ranges == other.m_ranges);
+	}
+	
 
 	/**
 	 * Returns an iterator pointing to the first range.
@@ -141,13 +161,15 @@ public:
 	 *
 	 * @param pos The iterator of the range to be erased.
 	 * @return The iterator of the range after the erased range.
+	 *
+	 * Attempting to erase the end() iterator is an invalid operation.
 	 */
-	iterator erase( iterator pos ) {
-		wxASSERT( pos != end() );
+	iterator erase(iterator pos) {
+		MULE_VALIDATE_PARAMS(pos != end(), wxT("Cannot erase 'end'"));
 	
 		RangeIterator temp = pos.m_it++;
 
-		m_ranges.erase( temp );
+		m_ranges.erase(temp);
 
 		return pos;
 	}
@@ -232,8 +254,8 @@ public:
 	 *
 	 * Note that the start position must be smaller than or equal to the end-position.
 	 */
-	iterator insert( uint32 start, uint32 end, const VALUE& object ) {	
-		wxASSERT( start <= end );
+	iterator insert(uint32 start, uint32 end, const VALUE& object) {
+		MULE_VALIDATE_PARAMS(start <= end, wxT("Not a valid range."));
 	
 		if ( m_ranges.empty() ) {
 			return m_ranges.insert( m_ranges.end(), RangePair( start, RangeItems( end, object ) ) );
@@ -353,35 +375,6 @@ public:
 
 	
 	/**
-	 * Equality operator for two ranges.
-	 *
-	 * @returns True if both ranges contain the same ranges and values.
-	 */
-	bool operator==( const CRangeMap<VALUE>& other ) const {
-		// Check if we are comparing with ourselves
-		if ( this == &other ) {
-			return true;
-		}
-		
-		// Check size, must be the same
-		if ( size() != other.size() ) {
-			return false;
-		}
-		
-		RangeIterator a = m_ranges.begin();
-		RangeIterator b = other.m_ranges.begin();
-
-		while ( a != m_ranges.end() && b != other.m_ranges.end() ) {
-			if ( *a++ != *b++ ) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	
-	/**
 	 * This class provides a wrapper around the raw iterator used by CRangeMap.
 	 *
 	 * It will act as a normal iterator and also give access the the range values.
@@ -391,6 +384,7 @@ public:
 	 * Special member-functions are keyStart() and keyEnd().
 	 */ 
 	class iterator {
+		friend class CRangeMap<VALUE>;
 		typedef typename CRangeMap<VALUE>::RangeMap::iterator RealIterator;
 
 	public:
