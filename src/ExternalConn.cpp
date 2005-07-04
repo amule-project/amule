@@ -1173,7 +1173,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		case EC_OP_GET_STATSGRAPHS:
 			response = GetStatsGraphs(request);
-//			response = new CECPacket(EC_OP_FAILED);
 			break;
 		case EC_OP_GET_STATSTREE:
 			response = new CECPacket(EC_OP_STATSTREE);
@@ -1185,7 +1184,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;		
 		
 		default:
+			wxASSERT(false);	// we should never get here, but...
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
+			response = new CECPacket(EC_OP_FAILED);
 			break;
 	}	
 	return response;
