@@ -658,7 +658,7 @@ AC_DEFUN([CHECK_AUTOPOINT],
 
 AC_MSG_CHECKING([for autopoint])
 
-autopoint_version=`autopoint --version | head -n 1 | sed -e 's/.*\([[0-9]]\{1,\}\(\.[[0-9]]\{1,\}\)\{1,2\}\).*/\1/'`
+autopoint_version=`autopoint --version | head -n 1 | sed -e 'y/./_/' -e 's/.*\<\([[0-9]]\{1,\}\(\_[[0-9]]\{1,\}\)\{1,2\}\)\>.*/\1/' -e 'y/_/./'`
 if test x$autopoint_version != x; then
 	result="yes"
 else
