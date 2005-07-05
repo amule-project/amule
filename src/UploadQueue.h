@@ -67,7 +67,6 @@ public:
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
 	CUpDownClient* GetNextClient(CUpDownClient* update);
 
-	void	DeleteAll();
 	uint16	GetWaitingPosition(CUpDownClient* client);
 	uint32	GetSuccessfullUpCount()			{return successfullupcount;}
 	uint32	GetFailedUpCount()			{return failedupcount;}

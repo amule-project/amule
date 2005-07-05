@@ -669,21 +669,6 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 }
 
 
-void CDownloadQueue::ClearAllSources()
-{
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
-		
-		file->m_SrcList.clear();
-		
-		// Barry - Should also remove all requested blocks
-		// Don't worry about deleting the blocks, that gets handled
-		// when CUpDownClient is deleted in CClientList::DeleteAll()
-		file->RemoveAllRequestedBlocks();
-	}
-}
-
-
 bool CDownloadQueue::SendNextUDPPacket()
 {
 	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.serverconnect->IsConnected()) {

@@ -303,7 +303,10 @@ CPartFile::~CPartFile()
 		PartFileBufferedData *item = m_BufferedData_list.GetNext(pos);
 		delete[] item->data;
 		delete item;
-	}	
+	}
+
+	wxASSERT(m_SrcList.empty());
+	wxASSERT(A4AFsrclist.empty());
 }
 
 void CPartFile::CreatePartFile()

@@ -104,6 +104,9 @@ CClientList::~CClientList()
 	}
 
 	m_trackedClientsList.clear();
+
+	wxASSERT(m_clientList.empty());
+	wxASSERT(m_delete_queue.empty());
 }
 
 
@@ -329,24 +332,17 @@ uint32 CClientList::GetClientCount() const
 
 void CClientList::DeleteAll()
 {
-	theApp.uploadqueue->DeleteAll();
-	theApp.downloadqueue->ClearAllSources();
-
 	m_ipList.clear();
 	m_hashList.clear();
 	
 	while ( !m_clientList.empty() ) {
 		IDMap::iterator it = m_clientList.begin();
-	
-		delete it->second;
-			
-		m_clientList.erase( it );
+		
+		it->second->Safe_Delete();
 	}
-	
-	while ( !m_delete_queue.empty() ) {
-		delete m_delete_queue.front();
-		m_delete_queue.pop_front();
-	}
+
+	// Clean up the clients now queued for deletion
+	Process();
 }
 
 

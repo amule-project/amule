@@ -263,6 +263,8 @@ bool CUploadQueue::AcceptNewClient()
 
 CUploadQueue::~CUploadQueue()
 {
+	wxASSERT(waitinglist.IsEmpty());
+	wxASSERT(uploadinglist.IsEmpty());
 }
 
 POSITION CUploadQueue::GetWaitingClient(CUpDownClient* client)
@@ -467,11 +469,6 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 	return false;
 }
 
-void CUploadQueue::DeleteAll()
-{
-	waitinglist.RemoveAll();
-	uploadinglist.RemoveAll();
-}
 
 uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 {
