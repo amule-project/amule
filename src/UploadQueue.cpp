@@ -80,11 +80,13 @@ CUploadQueue::CUploadQueue()
 	m_lastCalculatedDataRateTick = 0;
 }
 
-void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
+
+void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
+{
 	POSITION toadd = 0;
 	POSITION toaddlow = 0;
-	uint32	bestscore = 0;
-	uint32	bestlowscore = 0;
+	sint64	bestscore = -1;
+	sint64	bestlowscore = -1;
 
 	CUpDownClient* newclient;
 	// select next client or use given client
@@ -113,8 +115,9 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd){
 			        continue;
 			}
 			// finished clearing
-			uint32 cur_score = cur_client->GetScore(true);
-			if ( cur_score > bestscore){
+			
+			sint64 cur_score = cur_client->GetScore(true);
+			if (cur_score > bestscore) {
 				bestscore = cur_score;
 				toadd = pos2;
 			} else {
