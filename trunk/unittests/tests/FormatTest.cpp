@@ -133,15 +133,15 @@ TEST(Format, SetStringAndGetString)
 
 //! Test that values outside the scope of a type are rejected
 #define STANDARD_TYPE_CONSTRAINTS(format, type, next) \
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % ((next)MIN(type) - 1)); \
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % ((next)MAX(type) + 1)); 
+	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % (((next)MIN(type)) - 1)); \
+	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % (((next)MAX(type)) + 1)); 
 
 
 
 TEST(Format, InjectwxChar)
 {
 	STANDARD_TYPE_TESTS(wxT("c"), wxChar);
-	STANDARD_TYPE_CONSTRAINTS(wxT("c"), wxChar, signed short);
+	STANDARD_TYPE_CONSTRAINTS(wxT("c"), wxChar, signed long long);
 }
 
 
