@@ -145,11 +145,6 @@ public:
 	 */
 	void	RemoveFile(CPartFile* toremove);
 	
-	/**
-	 * This function clears the sources (and requested block) of all queued files.
-	 */
-	void	ClearAllSources();
-
 	
 	/**
 	 * Saves the source-seeds of every file on the queue.
