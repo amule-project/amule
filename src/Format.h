@@ -32,6 +32,7 @@
 #include <wx/string.h>
 #include <limits>
 
+#include "MuleDebug.h"
 
 #ifdef __GNUC__
     #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
@@ -53,12 +54,13 @@
  * the upper and lower bound of the value displayed and doesn't set any
  * requirements for the actual type of the value provided.
  *
- * The same is done for floating-point types.
+ * This is not done for floating-point types.
  *
  * CFormat lacks the following capabilities:
  *  * The "*" width-modifier, because only one argument is fed at a time.
  *  * The "p" type, could be implemented using void* or templates.
  *  * The "n" type, just unsafe, wont be implemented.
+ *  * The Long Double type, which is extremly slow and shouldn't be used.
  */
 class CFormat
 {
@@ -68,13 +70,13 @@ public:
 	 *
 	 * @param str The format-string to be used.
 	 */
-	CFormat( const wxChar* str );
+	CFormat(const wxChar* str);
 
 	
 	/**
 	 * Sets the format-string.
 	 */
-	void SetString( const wxChar* str );
+	void SetString(const wxChar* str);
 
 	
 	/**
@@ -91,19 +93,18 @@ public:
 	 * apply to integers, see above.
 	 */
 	// \{
-	CFormat& operator%( wxChar value );
-	CFormat& operator%( signed short value );
-	CFormat& operator%( unsigned short value );
-	CFormat& operator%( signed int value );
-	CFormat& operator%( unsigned int value );
-	CFormat& operator%( signed long value );
-	CFormat& operator%( unsigned long value );
-	CFormat& operator%( signed long long value );
-	CFormat& operator%( unsigned long long value );	
-	CFormat& operator%( float value );
-	CFormat& operator%( double value );
-	CFormat& operator%( long double value );
-	CFormat& operator%( const wxChar* value );
+	CFormat& operator%(wxChar value);
+	CFormat& operator%(signed short value);
+	CFormat& operator%(unsigned short value);
+	CFormat& operator%(signed int value);
+	CFormat& operator%(unsigned int value);
+	CFormat& operator%(signed long value);
+	CFormat& operator%(unsigned long value);
+	CFormat& operator%(signed long long value);
+	CFormat& operator%(unsigned long long value);	
+	CFormat& operator%(float value);
+	CFormat& operator%(double value);
+	CFormat& operator%(const wxChar* value);
 	// \}
 
 
@@ -122,9 +123,9 @@ public:
 	 * Implicit conversion to wxString.
 	 */
 #if GCC_VERSION > 30300
-	operator const wxString&() const;
+	operator const wxString&() const	{ return GetString(); };
 #else
-	operator wxString() const;
+	operator wxString() const			{ return GetString(); };
 #endif
 	 
 private:
@@ -138,6 +139,7 @@ private:
 	 */
 	CFormat&	SetCurrentField(const wxString&);
 	
+
 	//! Known type-modifiers. 
 	enum Modifiers
 	{
@@ -149,14 +151,21 @@ private:
 		modLong,
 		//! Two 'long' modifieres, arguments is interpreted as long long (integer types).
 		modLongLong,
-		//! Argument is interpreted as long double (floating point types).
+		//! Argument is interpreted as long double (floating point types). Not supported.
 		modLongDouble
 	};
 
+	
 	/**
-	 * Extracts modifiers from the 
+	 * Extracts modifiers from the argument.
+	 *
+	 * @param str A format string.
+	 * @return The identified modifier.
+	 *
+	 * Note that this function will possibly return wrong results
+	 * for malformed format strings.
 	 */
-	Modifiers getModifier( const wxString& str );
+	Modifiers getModifier(const wxString& str);
 	
 	
 	/**
@@ -169,7 +178,7 @@ private:
 	 * it represents a valid value in that type.
 	 */
 	template <typename ValueType>
-	CFormat& FormatInteger( ValueType value );
+	CFormat& FormatInteger(ValueType value);
 	
 	
 	/**
@@ -182,7 +191,7 @@ private:
 	 * it represents a valid value in that type.
 	 */
 	template <typename ValueType>
-	CFormat& FormatFloat( ValueType value );
+	CFormat& FormatFloat(ValueType value);
 	
 	//! Index to the current format-field.
 	unsigned int m_index;
@@ -201,97 +210,92 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-//! Constants used to validate values when casting to smaller types.
-// \{
-const wxChar MIN_WXCHAR			= std::numeric_limits<wxChar>::min();
-const wxChar MAX_WXCHAR			= std::numeric_limits<wxChar>::max();
-const signed short MIN_SHORT	= std::numeric_limits<signed short>::min();
-const signed short MAX_SHORT	= std::numeric_limits<signed short>::max();
-const signed int MIN_INT		= std::numeric_limits<signed int>::min();
-const signed int MAX_INT		= std::numeric_limits<signed int>::max();
-const signed long MIN_LONG		= std::numeric_limits<signed long>::min();
-const signed long MAX_LONG		= std::numeric_limits<signed long>::max();
-const float MIN_FLOAT			= std::numeric_limits<float>::min();
-const float MAX_FLOAT			= std::numeric_limits<float>::max();
-const double MIN_DOUBLE			= std::numeric_limits<double>::min();
-const double MAX_DOUBLE			= std::numeric_limits<double>::max();
-//\}
-
-
-
-
-
-template <typename ValueType>
-inline CFormat& CFormat::FormatInteger( ValueType value )
+//! Checks if a value can be represented in the TargetType.
+template <typename TargetType, typename CurrentType>
+inline bool CanRepresent(CurrentType value) 
 {
-	wxString field = GetCurrentField();
-
-	switch ( field.Last() ) {
-		case wxT('d'):		// Signed decimal integer
-		case wxT('i'):		// Signed decimal integer
-		case wxT('o'):		// Signed octal
-		case wxT('u'):		// Unsigned decimal integer
-		case wxT('x'):		// Unsigned hexadecimal integer
-		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
-		{
-			switch ( getModifier( field ) ) {
-				case modNone:
-					if ( value <= MAX_INT && value >= MIN_INT ) {
-						return SetCurrentField( wxString::Format( field, (signed int)value ) );
-					} else {
-						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
-					}
-					break;
-				case modShort:
-					if ( value <= MAX_SHORT && value >= MIN_SHORT ) {
-						return SetCurrentField( wxString::Format( field, (signed short)value ) );
-					} else {
-						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
-					}
-					break;
-				case modLong:
-					if ( value <= MAX_LONG && value >= MIN_LONG ) {
-						return SetCurrentField( wxString::Format( field, (signed long)value ) );
-					} else {
-						wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
-					}
-					break;
-				case modLongLong:
-					// No need to check, can contain all other value-types
-					return SetCurrentField( wxString::Format( field, (signed long long)value ) );
-
-				default:
-					wxASSERT_MSG( false, wxT("Invalid modifier specified for interger format.") );
-			}
-			
-			break;
-		}
-		
-		case wxT('c'):		// Character
-			if ( value <= MAX_WXCHAR && value >= MIN_WXCHAR ) {
-				return SetCurrentField( wxString( (wxChar)value ) );
-			} else {
-				wxASSERT_MSG( false, wxT("Integer value passed cannot be represented in the specified format.") );
-			}
-			break;
-
-		// Gracefully handle too many arguments.
-		case wxT('\0'):
-			return *this;
-			
-		default:
-			wxASSERT_MSG( false, wxT("Integer value passed to non-integer format string.") );
-	}
-
-	return SetCurrentField( field );
+	return (CurrentType)((TargetType)value) == value;
 }
 
 
 template <typename ValueType>
-inline CFormat& CFormat::FormatFloat( ValueType value )
+inline CFormat& CFormat::FormatInteger(ValueType value)
+{
+	wxString field = GetCurrentField();
+
+	switch (field.Last()) {
+		case wxT('d'):		// Signed decimal integer
+		case wxT('i'):		// Signed decimal integer
+		{
+			switch (getModifier(field)) {
+				case modNone:
+					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int."))
+					
+					return SetCurrentField(wxString::Format(field, (signed int)value));
+				
+				case modShort:
+					MULE_VALIDATE_PARAMS(CanRepresent<signed short>(value), wxT("Integer value passed cannot be represented as an signed short."));
+					
+					return SetCurrentField(wxString::Format(field, (signed short)value));
+				
+				case modLong:
+					MULE_VALIDATE_PARAMS(CanRepresent<signed long>(value), wxT("Integer value passed cannot be represented as an signed long."));
+					
+					return SetCurrentField(wxString::Format(field, (signed long)value));
+				
+				case modLongLong:
+					// No need to check, can contain all other value-types
+					return SetCurrentField(wxString::Format(field, (signed long long)value));
+
+				default:
+					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
+			}
+		}
+
+		
+		case wxT('o'):		// Unsigned octal
+		case wxT('u'):		// Unsigned decimal integer
+		case wxT('x'):		// Unsigned hexadecimal integer
+		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
+		{
+			switch (getModifier(field)) {
+				case modNone:
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned int>(value), wxT("Integer value passed cannot be represented as an unsigned int."));
+					
+					return SetCurrentField( wxString::Format( field, (unsigned int)value ) );
+				
+				case modShort:
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned short>(value), wxT("Integer value passed cannot be represented as an unsigned short."));
+					
+					return SetCurrentField(wxString::Format(field, (unsigned short)value));
+				
+				case modLong:
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long>(value), wxT("Integer value passed cannot be represented as an unsigned long."));
+					
+					return SetCurrentField(wxString::Format(field, (unsigned long)value));
+				
+				case modLongLong:
+					// No need to check, can contain all other value-types
+					return SetCurrentField(wxString::Format(field, (unsigned long long)value));
+
+				default:
+					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
+			}
+		}
+		
+		case wxT('c'):		// Character
+			MULE_VALIDATE_PARAMS(CanRepresent<wxChar>(value), wxT("Integer value passed cannot be represented as a wxChar.") );
+			
+			return SetCurrentField(wxString::Format(field, (wxChar)value));
+
+		default:
+			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string."));
+	}
+}
+
+
+template <typename ValueType>
+inline CFormat& CFormat::FormatFloat(ValueType value)
 {
 	wxString field = GetCurrentField();
 	
@@ -299,115 +303,82 @@ inline CFormat& CFormat::FormatFloat( ValueType value )
 		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
 		case wxT('f'):		// Decimal floating point
+		case wxT('F'):		// Decimal floating point
 		case wxT('g'):		// Use shorter %e or %f
 		case wxT('G'):		// Use shorter %E or %f
-			switch ( getModifier( field ) ) {
-				case modNone:
-					if ( value <= MAX_FLOAT && value >= MIN_FLOAT ) {
-						return SetCurrentField( wxString::Format( field, (float)value ) );
-					} else {
-						wxASSERT_MSG( false, wxT("Floating-point value passed cannot be represented in the specified format.") );
-					}
-					break;
-				case modLong:
-					if ( value <= MAX_DOUBLE && value >= MIN_DOUBLE ) {
-						return SetCurrentField( wxString::Format( field, (double)value ) );
-					} else {
-						wxASSERT_MSG( false, wxT("Floating-point value passed cannot be represented in the specified format.") );
-					}
-					break;
-				case modLongDouble:
-					// No need to check, can contain all other value-types
-					SetCurrentField( wxString::Format( field, (long double)value ) );
-					
-				default:
-					wxASSERT_MSG( false, wxT("Invalid modifier specified for floating-point format.") );
-			}
+			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format."));
+			
+			return SetCurrentField(wxString::Format(field, (double)value));
 		
-			break;
-			
-		// Gracefully handle too many arguments.
-		case wxT('\0'):
-			return *this;
-			
 		default:
-			wxASSERT_MSG( false, wxT("Floating-point value passed to non-integer format string.") );
+			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-integer format string.") );
 	}
-
-	return SetCurrentField( field );
 }
 
 
-inline CFormat& CFormat::operator%( wxChar value )
+inline CFormat& CFormat::operator%(wxChar value)
 {
-	return FormatInteger( value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( signed short value )
+inline CFormat& CFormat::operator%(signed short value)
 {
-	return FormatInteger( value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( unsigned short value )
+inline CFormat& CFormat::operator%(unsigned short value)
 {
-	return FormatInteger( (signed short)value );
+	return FormatInteger(value);
 }
 
 
-
-inline CFormat& CFormat::operator%( signed int value )
+inline CFormat& CFormat::operator%(signed int value)
 {
-	return FormatInteger( value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( unsigned int value )
+inline CFormat& CFormat::operator%(unsigned int value)
 {
-	return FormatInteger( (signed int)value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( signed long value )
+inline CFormat& CFormat::operator%(signed long value)
 {
-	return FormatInteger( value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( unsigned long value )
+inline CFormat& CFormat::operator%(unsigned long value)
 {
-	return FormatInteger( (signed long)value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( signed long long value )
+inline CFormat& CFormat::operator%(signed long long value)
 {
-	return FormatInteger( value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( unsigned long long value )
+inline CFormat& CFormat::operator%(unsigned long long value)
 {
-	return FormatInteger( (signed long long)value );
+	return FormatInteger(value);
 }
 
 
-inline CFormat& CFormat::operator%( float value )
+inline CFormat& CFormat::operator%(float value)
 {
-	return FormatFloat( value );
+	return FormatFloat(value);
 }
 
 
-inline CFormat& CFormat::operator%( double value )
+inline CFormat& CFormat::operator%(double value)
 {
-	return FormatFloat( value );
-}
-
-
-inline CFormat& CFormat::operator%( long double value )
-{
-	return FormatFloat( value );
+	return FormatFloat(value);	
 }
 
 #endif
