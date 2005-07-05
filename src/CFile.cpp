@@ -444,7 +444,7 @@ off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const
 	
 	if (total_done < nCount) {
 		// The total bytes were not reached on the specified replies.
-		throw wxString(wxString::Format(wxT("Error while reading file (unable to read %d bytes on two retries)!"), nCount));
+		throw wxString(wxString::Format(wxT("Error while reading file (unable to read %u bytes on two retries)!"), (unsigned)nCount));
 	}
 		
 	wxASSERT(total_done == nCount);

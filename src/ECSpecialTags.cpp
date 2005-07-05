@@ -99,7 +99,6 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 		if (theApp.glob_prefs->GetCatCount() > 1) {
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);
 			for (unsigned int i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
-				Category_Struct *cat = theApp.glob_prefs->GetCategory(i);
 				CEC_Category_Tag catTag(i, detail_level);
 				cats.AddTag(catTag);
 			}
