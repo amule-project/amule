@@ -338,6 +338,7 @@ void CClientList::DeleteAll()
 	while ( !m_clientList.empty() ) {
 		IDMap::iterator it = m_clientList.begin();
 		
+		it->second->Disconnected(wxT("Removed while deleting all from ClientList."));
 		it->second->Safe_Delete();
 	}
 
@@ -1050,6 +1051,7 @@ void CClientList::CleanUpClientList(){
 				&& pCurClient->GetSocket() == NULL)
 			{
 				cDeleted++;
+				pCurClient->Disconnected(wxT("Removed during ClientList cleanup."));
 				pCurClient->Safe_Delete(); 
 			}
 		}
