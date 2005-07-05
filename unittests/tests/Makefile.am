@@ -9,7 +9,7 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MU
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest 
+TESTS = RangeMapTest FormatTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -17,4 +17,10 @@ check_PROGRAMS = $(TESTS)
 RangeMapTest_SOURCES = RangeMapTest.cpp
 RangeMapTest_CXXFLAGS = $(AM_CXXFLAGS)
 RangeMapTest_LDADD = $(LDADD)
+
+
+# Tests for the CRangeMap class
+FormatTest_SOURCES = FormatTest.cpp $(top_srcdir)/src/Format.cpp
+FormatTest_CXXFLAGS = $(AM_CXXFLAGS)
+FormatTest_LDADD = $(LDADD)
 
