@@ -286,9 +286,10 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 			m_bAICHHashValid = otherfunctions::DecodeBase32(
 					strHash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == 
 				CAICHHash::GetHashSize();
-			//wxASSERT(m_bAICHHashValid);
-			//wxASSERT(m_AICHHash.GetString().CmpNoCase(strHash) == 0);
-			throw wxString(wxT("Invalid hash"));
+			
+			if (!m_bAICHHashValid || m_AICHHash.GetString() != strHash) {
+				throw wxString(wxT("Invalid hash"));
+			}
 		}
 	}
 }
