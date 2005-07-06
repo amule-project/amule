@@ -164,7 +164,6 @@ void CRoutingZone::readFile(void)
 			for (uint32 i=0; i<numContacts; i++) {
 				file.ReadUInt128(&id);
 				ip = file.ReadUInt32();
-				ip = ENDIAN_NTOHL(ip);
 				udpPort = file.ReadUInt16();
 				tcpPort = file.ReadUInt16();
 				type = file.ReadUInt8();
@@ -204,7 +203,7 @@ void CRoutingZone::writeFile(void)
 				c = *it;
 				c->getClientID(&id);
 				file.WriteUInt128(id);
-				file.WriteUInt32(ENDIAN_NTOHL(c->getIPAddress()));
+				file.WriteUInt32(c->getIPAddress());
 				file.WriteUInt16(c->getUDPPort());
 				file.WriteUInt16(c->getTCPPort());
 				file.WriteUInt8(c->getType());

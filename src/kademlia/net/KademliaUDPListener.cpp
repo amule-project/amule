@@ -88,7 +88,7 @@ void CKademliaUDPListener::bootstrap(const wxString& host, uint16 port)
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(ENDIAN_NTOHL(retVal), port));
 
 	#warning ENDIAN WARNING!
-	bootstrap(retVal,port);
+	bootstrap(ENDIAN_NTOHL(retVal),port);
 }
 
 void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
@@ -1259,5 +1259,5 @@ void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 de
 		packet->PackPacket();
 	}
 	theApp.statistics->AddUpDataOverheadKad(packet->GetPacketSize());
-	theApp.clientudp->SendPacket(packet, destinationHost, destinationPort);
+	theApp.clientudp->SendPacket(packet, ENDIAN_NTOHL(destinationHost), destinationPort);
 }
