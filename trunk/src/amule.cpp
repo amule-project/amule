@@ -2056,6 +2056,7 @@ void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
+#ifndef AMULE_DAEMON
 int CamuleApp::OnRun() {
 	#ifdef __DEBUG__
 		printf("DEBUG: OnRun()\n");
@@ -2070,6 +2071,7 @@ int CamuleApp::OnRun() {
 	}
 	return result;
 }
+#endif
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)

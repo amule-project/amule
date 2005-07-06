@@ -257,7 +257,9 @@ protected:
 	
 private:
 	void CheckNewVersion(uint32 result);
+#ifndef AMULE_DAEMON
 	virtual int OnRun();
+#endif
 };
 
 #ifndef AMULE_DAEMON
