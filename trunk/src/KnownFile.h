@@ -127,7 +127,8 @@ public:
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
 	uint32	GetFileSize() const			{return m_nFileSize;}
 	virtual void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
-	void	SetFileName(const wxString& strmakeFilename);
+	
+	virtual void	SetFileName(const wxString& strmakeFilename);
 
 	/* Tags and Notes handling */
 	uint32 GetIntTagValue(uint8 tagname) const;
@@ -171,11 +172,10 @@ public:
 
 	virtual ~CKnownFile();
 
-#ifndef CLIENT_GUI
-	// GUI has no need for Kad search stuff ;)
-	void SetFileName(const wxString& strmakeFilename);
-#endif
-	
+	#ifndef CLIENT_GUI	
+	virtual void SetFileName(const wxString& strmakeFilename);
+	#endif
+		
 	void SetFilePath(const wxString& strFilePath);
 	const wxString& GetFilePath() const { return m_strFilePath; }
 	
@@ -224,18 +224,18 @@ public:
 	bool	GetPublishedED2K() const	{return m_PublishedED2K;}
 
 	/* Kad stuff */ 
-	#warning KAD TODO - Check usage
 	uint32	GetKadFileSearchID() const { return kadFileSearchID; }
+	// KAD TODO: This must be used on KadSearchListCtrl too once imported
 	void	SetKadFileSearchID(uint32 id) { kadFileSearchID = id; } // John - Don't use this unless you know what your are DOING!! (Hopefully I do.. :)
-
 	const Kademlia::WordList& GetKadKeywords() const { return wordlist; }
-
-	uint32	GetLastPublishTimeKadSrc() const { return m_lastPublishTimeKadSrc; }
+	// KAD TODO: If we add the proper column to SharedFilesCtrl, this is the funtion.
+	uint32	GetLastPublishTimeKadSrc() const { return m_lastPublishTimeKadSrc; }	
 	void	SetLastPublishTimeKadSrc(uint32 time, uint32 buddyip) { m_lastPublishTimeKadSrc = time; m_lastBuddyIP = buddyip;}
+	// Another unused function, useful for the shared files control column
 	uint32	GetLastPublishBuddy() const { return m_lastBuddyIP; }
 	void	SetLastPublishTimeKadNotes(uint32 time) {m_lastPublishTimeKadNotes = time;}
 	uint32	GetLastPublishTimeKadNotes() const { return m_lastPublishTimeKadNotes; }	
-
+	
 	bool	PublishSrc();
 	bool	PublishNotes();	
 	

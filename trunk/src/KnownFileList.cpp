@@ -195,6 +195,11 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			} else {
 				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
 				m_duplicates.push_back(m_map[tkey]);
+				// Is this thread-safe? If John is not sure and I'm not sure either...
+				if (theApp.sharedfiles) {
+					// Removing the old kad keywords created with the old filename
+					theApp.sharedfiles->RemoveKeywords(it->second);
+				}
 				m_map[tkey] = Record;	
 				return true;
 			}

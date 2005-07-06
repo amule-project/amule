@@ -210,7 +210,7 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( client == range.first->second ) {
 			m_clientList.erase( range.first );
-
+			RemoveFromKadList(client);
 			result = true;
 
 			break;
@@ -233,12 +233,11 @@ void CClientList::RemoveIPFromList( CUpDownClient* client )
 	for ( ; range.first != range.second; range.first++ ) {
 		if ( client == range.first->second ) {
 			m_ipList.erase( range.first );
-			
+			RemoveFromKadList(client);
 			break;
 		}
 	}
 }
-
 
 void CClientList::RemoveHashFromList( CUpDownClient* client )
 {
@@ -249,10 +248,10 @@ void CClientList::RemoveHashFromList( CUpDownClient* client )
 	// Find all items with the specified hash
 	std::pair<HashMap::iterator, HashMap::iterator> range = m_hashList.equal_range( client->GetUserHash() );
 
-	for ( ; range.first != range.second; range.first++ ) {
+	for ( ; range.first != range.second; ++range.first ) {
 		if ( client == range.first->second ) {
 			m_hashList.erase( range.first );
-
+			RemoveFromKadList(client);
 			break;
 		}
 	}
@@ -849,7 +848,7 @@ CClientList::SourceList	CClientList::GetClientsByHash( const CMD4Hash& hash )
 	// Find all items with the specified hash
 	std::pair<HashMap::iterator, HashMap::iterator> range = m_hashList.equal_range( hash );
 
-	for ( ; range.first != range.second; range.first++ )  {
+	for ( ; range.first != range.second; ++range.first)  {
 		results.push_back( range.first->second );
 	}
 	
@@ -915,7 +914,6 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 }
 
 /* Kad stuff */
-#warning KAD TODO: client list handling needs a big import.
 
 void CClientList::RequestTCP(Kademlia::CContact* contact)
 {

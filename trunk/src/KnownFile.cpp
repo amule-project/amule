@@ -266,7 +266,7 @@ CKnownFile::CKnownFile() :
 	m_lastBuddyIP(0)
 {
 	statistic.fileParent = this;
-	
+	SetLastPublishTimeKadSrc(0,0),
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
 	m_pAICHHashSet = new CAICHHashSet(this);
@@ -1074,16 +1074,19 @@ void CKnownFile::LoadComment()
 
 void CKnownFile::SetFileComment(const wxString& strNewComment)
 { 
-	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+	if (!m_strComment.Cmp(strNewComment)) {
+		SetLastPublishTimeKadNotes(0);
+		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
-	wxConfigBase* cfg = wxConfigBase::Get();
-	cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
+		wxConfigBase* cfg = wxConfigBase::Get();
+		cfg->Write( strCfgPath + wxT("Comment"), strNewComment);
      
-	m_strComment = strNewComment;
+		m_strComment = strNewComment;
   
-	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); it++ ) {
-		(*it)->SetCommentDirty();
+		SourceSet::iterator it = m_ClientUploadList.begin();
+		for ( ; it != m_ClientUploadList.end(); it++ ) {
+			(*it)->SetCommentDirty();
+		}
 	}
 }
 
@@ -1091,14 +1094,17 @@ void CKnownFile::SetFileComment(const wxString& strNewComment)
 // For File rate 
 void CKnownFile::SetFileRating(int8 iNewRating)
 { 
-	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
-	wxConfigBase* cfg = wxConfigBase::Get();
-	cfg->Write( strCfgPath + wxT("Rate"), iNewRating);
-	m_iRating = iNewRating; 
+	if (m_iRating != iNewRating) {
+		SetLastPublishTimeKadNotes(0);	
+		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+		wxConfigBase* cfg = wxConfigBase::Get();
+		cfg->Write( strCfgPath + wxT("Rate"), iNewRating);
+		m_iRating = iNewRating; 
 
-	SourceSet::iterator it = m_ClientUploadList.begin();
-	for ( ; it != m_ClientUploadList.end(); it++ ) {
-		(*it)->SetCommentDirty();
+		SourceSet::iterator it = m_ClientUploadList.begin();
+		for ( ; it != m_ClientUploadList.end(); it++ ) {
+			(*it)->SetCommentDirty();
+		}
 	}
 } 
 
@@ -1314,10 +1320,12 @@ void CKnownFile::ClearPriority() {
 void CKnownFile::SetFileName(const wxString& strmakeFilename)
 { 
 	CAbstractFile::SetFileName(strmakeFilename);
-#ifdef __COMPILE_KAD__
-	wordlist.clear();
-	Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
-#endif
+	#ifdef CLIENT_GUI
+		#ifdef __COMPILE_KAD__
+			wordlist.clear();
+			Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
+		#endif
+	#endif
 }
 
 #endif // CLIENT_GUI

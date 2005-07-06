@@ -169,7 +169,7 @@ CSearchFile::~CSearchFile()
 }
 
 
-uint32 CSearchFile::GetIntTagValue(uint8 tagname)
+uint32 CSearchFile::GetIntTagValue(uint8 tagname) const
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
 		if ( m_taglist[i]->GetNameID() == tagname )
@@ -180,7 +180,7 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname)
 }
 
 
-wxString CSearchFile::GetStrTagValue(uint8 tagname)
+wxString CSearchFile::GetStrTagValue(uint8 tagname) const
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
 		if ( m_taglist[i]->GetNameID() == tagname )
@@ -198,31 +198,60 @@ void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 	
 		switch ( tag->GetNameID() ) {
 			case FT_SOURCES:
-				tag->SetInt(tag->GetInt() + count);
+				if (m_nKademlia) {
+					if (count > tag->GetInt()) {
+						tag->SetInt(count);
+					}
+				} else {
+					tag->SetInt(tag->GetInt() + count);
+				}
 				break;
 			case FT_COMPLETE_SOURCES:
-				tag->SetInt(tag->GetInt() + count_complete);
+				if (m_nKademlia) {
+					if (count > tag->GetInt())
+						tag->SetInt(count_complete);
+					} else { 
+						tag->SetInt(tag->GetInt() + count_complete);
+					}
 				break;
 		}
 	}
 }
 
 
-uint32 CSearchFile::GetSourceCount()
+uint32 CSearchFile::GetSourceCount() const
 {
 	return GetIntTagValue(FT_SOURCES);
 }
 
 
-uint32 CSearchFile::GetCompleteSourceCount()
+uint32 CSearchFile::GetCompleteSourceCount() const
 {
 	return GetIntTagValue(FT_COMPLETE_SOURCES);
 }
 
-uint32 CSearchFile::GetFileSize()
+uint32 CSearchFile::GetFileSize() const 
 {
 	return GetIntTagValue(FT_FILESIZE);
 }
+
+int CSearchFile::IsComplete() const {
+	return IsComplete(GetSourceCount(), GetIntTagValue(FT_COMPLETE_SOURCES));
+}
+
+int CSearchFile::IsComplete(uint32 uSources, uint32 uCompleteSources) const {
+	if (IsKademlia()) {
+		return -1;		// unknown
+	} else if (uSources > 0 && uCompleteSources > 0) {
+		return 1;		// complete
+	} else {
+		return 0;		// not complete
+	}
+}
+
+//
+// CSearchList
+//
 
 CSearchList::CSearchList()
 {

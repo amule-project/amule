@@ -88,7 +88,7 @@ void CKademliaUDPListener::bootstrap(const wxString& host, uint16 port)
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(ENDIAN_NTOHL(retVal), port));
 
 	#warning ENDIAN WARNING!
-	bootstrap(ENDIAN_NTOHL(retVal),port);
+	bootstrap(retVal,port);
 }
 
 void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
@@ -144,7 +144,7 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 	bool curCon = CKademlia::getPrefs()->hasHadContact();
 	CKademlia::getPrefs()->setLastContact();
 	if( curCon != CKademlia::getPrefs()->hasHadContact()) {
-		theApp.amuledlg->ShowConnectionState();
+		theApp.amuledlg->ShowConnectionState(true,wxT("Kad"));
 	}
 
 	byte opcode = data[1];
@@ -153,87 +153,87 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 
 	switch (opcode) {
 		case KADEMLIA_BOOTSTRAP_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processBootstrapRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_BOOTSTRAP_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapRes %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapRes from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processBootstrapResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_HELLO_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadHelloReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadHelloReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processHelloRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_HELLO_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadHelloRes %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadHelloRes from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processHelloResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadReq %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadReq from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processKademliaRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadRes %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadRes from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processKademliaResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_SEARCH_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchReq %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchReq from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processSearchRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_SEARCH_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchRes %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchRes from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processSearchResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_PUBLISH_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishReq %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishReq from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processPublishRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_PUBLISH_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishRes %s")) % Uint32_16toStringIP_Port(ip, port));			
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishRes from %s")) % Uint32_16toStringIP_Port(ip, port));			
 			processPublishResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_SRC_NOTES_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchNotesReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchNotesReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processSearchNotesRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_SRC_NOTES_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchNotesRes %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadSearchNotesRes from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processSearchNotesResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_PUB_NOTES_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processPublishNotesRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_PUB_NOTES_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesRes %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesRes from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processPublishNotesResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_FIREWALLED_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFirewalledRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_FIREWALLED_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledRes %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledRes from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFirewalledResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_FIREWALLED_ACK:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledAck %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledAck from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFirewalledResponse2(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_FINDBUDDY_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFindBuddyRequest(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_FINDBUDDY_RES:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyRes %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyRes from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processFindBuddyResponse(packetData, lenPacket, ip, port);
 			break;
 		case KADEMLIA_CALLBACK_REQ:
-			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallbackReq %s")) % Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallbackReq from %s")) % Uint32_16toStringIP_Port(ip, port));
 			processCallbackRequest(packetData, lenPacket, ip, port);
 			break;
 		default: {
-			throw wxString::Format(wxT("Unknown opcode %02x"), opcode);
+			throw wxString::Format(wxT("Unknown opcode %02x on CKademliaUDPListener::processPacket"), opcode);
 		}
 	}
 }
@@ -251,6 +251,7 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 		tport = bio.ReadUInt16();
 	}
 	byte type = bio.ReadUInt8();
+	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact with ip ") + Uint32_16toStringIP_Port(ip,port));
 	// Look for existing client
 	CContact *contact = CKademlia::getRoutingZone()->getContact(id);
 	if (contact != NULL) {
@@ -274,9 +275,11 @@ void CKademliaUDPListener::addContacts( const byte *data, uint32 lenData, uint16
 	for (uint16 i=0; i<numContacts; i++) {
 		bio.ReadUInt128(&id);
 		uint32 ip = bio.ReadUInt32();
+		ip = ENDIAN_NTOHL(ip);
 		uint16 port = bio.ReadUInt16();
 		uint16 tport = bio.ReadUInt16();
 		byte type = bio.ReadUInt8();
+		//AddDebugLogLineM(false, logKadMain, wxT("Adding contact(s) with ip ") + Uint32_16toStringIP_Port(ip,port));
 		if (IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
 			routingZone->add(id, ip, port, tport, type);
 		}
@@ -433,7 +436,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 
 	// Get required number closest to target
 	ContactMap results;
-	CKademlia::getRoutingZone()->getClosestTo(0, distance, (int)type, &results);
+	CKademlia::getRoutingZone()->getClosestTo(0, target, distance, (int)type, &results);
 	uint16 count = (uint16)results.size();
 
 	// Write response
@@ -1117,7 +1120,7 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 	//Update con state only if something changes.
 	if( CKademlia::getPrefs()->getIPAddress() != firewalledIP ) {
 		CKademlia::getPrefs()->setIPAddress(firewalledIP);
-		theApp.amuledlg->ShowConnectionState();
+		theApp.amuledlg->ShowConnectionState(true, wxT("Kad (firewalled)"));
 	}
 	CKademlia::getPrefs()->incRecheckIP();
 }
@@ -1256,5 +1259,5 @@ void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 de
 		packet->PackPacket();
 	}
 	theApp.statistics->AddUpDataOverheadKad(packet->GetPacketSize());
-	theApp.clientudp->SendPacket(packet, ENDIAN_NTOHL(destinationHost), destinationPort);
+	theApp.clientudp->SendPacket(packet, destinationHost, destinationPort);
 }

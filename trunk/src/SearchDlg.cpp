@@ -522,5 +522,5 @@ void	CSearchDlg::UpdateProgress(uint32 new_value) {
 }
 
 void CSearchDlg::CancelKadSearch(unsigned int WXUNUSED(uSearchID)) {
-	#warning KAD TODO
+	// KAD TODO: This does not seem to be needed till we have a icon for Kad search active.
 }

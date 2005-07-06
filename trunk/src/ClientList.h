@@ -340,11 +340,10 @@ public:
 	 */
 	void CleanUpClientList();
 
-	#warning KAD TODO: Implement buddies for kademlia lowid support (firewalled)
-	#warning This is actually a much bigger import, the kademlia process list.
-	#warning So, check usage - they are already ported
-	uint8	GetBuddyStatus() {return m_nBuddyStatus;}
-	CUpDownClient* GetBuddy() const { return m_pBuddy; };
+	uint8	GetBuddyStatus() const {return m_nBuddyStatus;}
+	// This must be used on CreateKadSourceLink and if we ever add the columns
+	// on shared files control.
+	CUpDownClient* GetBuddy() const { return m_pBuddy; }
 	void RequestTCP(Kademlia::CContact* contact);
 	void RequestBuddy(Kademlia::CContact* contact);
 	void IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID );

@@ -86,6 +86,7 @@ CDownloadQueue::CDownloadQueue()
 	m_dwNextTCPSrcReq = 0;
 	m_cRequestsSentToServer = 0;
 	m_lastDiskCheck = 0;
+	SetLastKademliaFileRequest();
 }
 
 
@@ -1427,4 +1428,9 @@ CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const
 	
 	return NULL;
 	
+}
+
+bool CDownloadQueue::DoKademliaFileRequest()
+{
+	return ((::GetTickCount() - lastkademliafilerequest) > KADEMLIAASKTIME);
 }

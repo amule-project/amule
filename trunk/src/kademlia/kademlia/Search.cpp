@@ -139,7 +139,7 @@ void CSearch::go(void)
 	if (m_possible.empty()) {
 		CUInt128 distance(CKademlia::getPrefs()->getKadID());
 		distance.XOR(m_target);
-		CKademlia::getRoutingZone()->getClosestTo(1, distance, 50, &m_possible, true, true);
+		CKademlia::getRoutingZone()->getClosestTo(1, m_target, distance, 50, &m_possible, true, true);
 	}
 	
 	if (m_possible.empty()) {
@@ -224,22 +224,6 @@ void CSearch::jumpStart(void)
 		return;
 	}
 
-	CUInt128 best;
-	// Remove any obsolete possible contacts
-	if (!m_responded.empty()) {
-		best = m_responded.begin()->first;
-		ContactMap::iterator it = m_possible.begin();
-		for (; it != m_possible.end(); ++it) {
-			if (it->first < best) {
-				m_possible.erase(it);
-			}
-		}
-	}
-
-	if (m_possible.empty()) {
-		return;
-	}
-
 	// Move to tried
 	CContact *c = m_possible.begin()->second;
 	m_tried[m_possible.begin()->first] = c;
@@ -308,6 +292,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						bool top = false;
 						if (m_best.size() < ALPHA_QUERY) {
 							top = true;
+							m_best[distance] = c;
 						} else {
 							ContactMap::iterator it = m_best.end();
 							--it;
@@ -584,7 +569,10 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	CEntry* entry = new CEntry();
 	entry->keyID.setValue(m_target);
 	entry->sourceID.setValue(answer);
-
+	bool bFilterComment = false;
+	
+	#warning KAD TODO: Filter Kad notes.
+	
 	CTag *tag;
 	TagList::const_iterator it;
 	for (it = info->begin(); it != info->end(); it++) {
@@ -794,7 +782,7 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 			default:
 				Type = wxT("KadReqUnknown");
 		}
-		AddDebugLogLineM(false, logClientKadUDP, Type + wxT(" ") + Uint32_16toStringIP_Port(ip,port));
+		AddDebugLogLineM(false, logClientKadUDP, Type + wxT(" to ") + Uint32_16toStringIP_Port(ip,port));
 		#endif
 
 		CKademlia::getUDPListener()->sendPacket(&bio, KADEMLIA_REQ, ip, port);

@@ -509,6 +509,9 @@ public:
 	
 	static bool CheckNewVersion() { return s_NewVersionCheck; }
 
+	// Kad
+	static bool GetNetworkKademlia() { return s_ConnectToKad; }
+	
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
@@ -706,6 +709,8 @@ protected:
 	// Version check
 	static bool s_NewVersionCheck;
 	
+	// Kad
+	static bool s_ConnectToKad;
 };
 
 

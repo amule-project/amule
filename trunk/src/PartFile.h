@@ -85,6 +85,8 @@ public:
 	CPartFile();
 #ifdef CLIENT_GUI
 	CPartFile(CEC_PartFile_Tag *tag);
+#else 
+	virtual void	SetFileName(const wxString& strmakeFilename);
 #endif
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
 	CPartFile(const CED2KFileLink* fileLink);
@@ -275,6 +277,11 @@ public:
 	 * sources and should not be added to the partfile.
 	 */
 	bool		IsDeadSource(const CUpDownClient* client);
+	
+	/* Kad Stuff */
+	uint16	GetMaxSources() const;
+	uint16	GetMaxSourcePerFileSoft() const;
+	uint16	GetMaxSourcePerFileUDP() const;		 
 
 protected:
 	//! A local list of sources that are invalid for this file.
@@ -377,6 +384,10 @@ private:
 	/* downloading sources list */
 	std::list<CUpDownClient *> m_downloadingSourcesList;
 	static	wxMutex m_FileCompleteMutex;
+
+	/* Kad Stuff */
+	uint32	m_LastSearchTimeKad;
+	uint8	m_TotalSearchesKad;
 
 friend class CPartFile_Encoder;
 friend class completingThread;

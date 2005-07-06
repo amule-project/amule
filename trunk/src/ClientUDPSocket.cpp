@@ -57,6 +57,11 @@
 #include "Logger.h"
 #include "UploadBandwidthThrottler.h"
 
+#ifdef __COMPILE_KAD__
+	#include "kademlia/kademlia/Kademlia.h"
+	#include "zlib.h"
+#endif
+
 //
 // CClientUDPSocket -- Extended eMule UDP socket
 //
@@ -87,15 +92,47 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
 	m_sendLocker.Lock();
 
-	char buffer[CLIENT_UDP_BUFFER_SIZE];
+	byte buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
 	uint32 length = DoReceive(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
 	
+	if (length == static_cast<uint32>(-1)) {
+		return;
+	}
+	
+	if (length < 2) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
+	}
+	
 	if (!thePrefs::IsUDPDisabled()) {
 		m_sendLocker.Unlock();
-		
-		if (buffer[0] == (char)OP_EMULEPROT && length != static_cast<uint32>(-1)) {
-			ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
+		switch (buffer[0]) {
+			case OP_EMULEPROT:
+				ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());	
+				break;
+			#ifdef __COMPILE_KAD__
+			case OP_KADEMLIAHEADER:
+				//theStats.AddDownDataOverheadKad(length);
+				Kademlia::CKademlia::processPacket(buffer, length, StringIPtoUint32(addr.IPAddress()),addr.Service());
+				break;
+			case OP_KADEMLIAPACKEDPROT:
+				//theStats.AddDownDataOverheadKad(length);
+				uint32 nNewSize = length*10+300;
+				byte* unpack = new byte[nNewSize];
+				uLongf unpackedsize = nNewSize-2;
+				uint16 result = uncompress(unpack+2, &unpackedsize, buffer+2, length-2);
+				if (result == Z_OK) {
+					unpack[0] = OP_KADEMLIAHEADER;
+					unpack[1] = buffer[1];
+					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, StringIPtoUint32(addr.IPAddress()),addr.Service());
+				} else {
+					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+				}
+				delete[] unpack;			
+				break;
+				#endif
+			default:
+				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
 		}
 	} else {
 		Close();
@@ -105,7 +142,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 }
 
 
-int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size)
+int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, byte* buffer, uint32 max_size)
 {
 	RecvFrom(addr,buffer,max_size);
 	int length = LastCount();
@@ -121,7 +158,7 @@ int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 }
 
 
-bool CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
+bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	try {
 		switch(opcode) {
@@ -331,7 +368,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 	if(Error()) {
 		uint32 error = LastError();
-		if (error == wxSOCKET_WOULDBLOCK) {
+		if (error == wxSOCKET_WOULDBLOCK || error == wxSOCKET_IOERR) {
 			m_bWouldBlock = true;
 		} else {
 			// TODO:

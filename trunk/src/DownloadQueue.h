@@ -33,6 +33,7 @@
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
+#include "GetTickCount.h" 		// Needed fot GetTickCount
 
 #include <wx/thread.h>	// Needed for wxMutex
 
@@ -313,6 +314,10 @@ public:
 	
 	CPartFile* GetFileByKadFileSearchID(uint32 id) const;
 	
+	bool CDownloadQueue::DoKademliaFileRequest();
+	
+	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount();}
+	
 private:
 	/**
 	 * This function initializes new observers with the current contents of the queue.
@@ -392,6 +397,10 @@ private:
 	
 	//! Observer used to keep track of which file to send UDP requests for
 	CQueueObserver<CPartFile*>	m_queueFiles;
+	
+	/* Kad Stuff */
+	uint32		lastkademliafilerequest;
+	
 };
 
 #endif // DOWNLOADQUEUE_H
