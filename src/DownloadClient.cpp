@@ -48,21 +48,85 @@
 #include "Logger.h"
 
 
-bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash){
+
+bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) const
+{
 	if (!tocomp) {
+		// should we wxASSERT here?
 		return false;
+	}	
+
+	//Compare only the user hash..
+	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash()) {
+	    return GetUserHash() == tocomp->GetUserHash();
+	}
+
+	if (HasLowID()) {
+		//User is firewalled.. Must do two checks..
+		if (GetIP()!=0	&& GetIP() == tocomp->GetIP()) {
+			//The IP of both match
+			if (GetUserPort()!=0 && GetUserPort() == tocomp->GetUserPort()) {
+				//IP-UserPort matches
+				return true;
+		  	}
+			if (GetKadPort()!=0	&& GetKadPort() == tocomp->GetKadPort()) {
+				//IP-KadPort Matches
+				return true;
+			}
+		}
+		
+		if (GetUserIDHybrid()!=0
+						&& GetUserIDHybrid() == tocomp->GetUserIDHybrid()
+						&& GetServerIP()!=0
+						&& GetServerIP() == tocomp->GetServerIP()
+						&& GetServerPort()!=0
+						&& GetServerPort() == tocomp->GetServerPort()) {				
+			//Both have the same lowID, Same serverIP and Port..
+			return true;
+		}
+
+		//Both IP, and Server do not match..
+		return false;
+    }
+
+	//User is not firewalled.
+	if (GetUserPort()!=0) {
+		//User has a Port, lets check the rest.
+		if (GetIP() != 0 && tocomp->GetIP() != 0) {
+			//Both clients have a verified IP..
+			if(GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort()) {
+				//IP and UserPort match..
+				return true;
+			}
+		} else {
+			//One of the two clients do not have a verified IP
+			if (GetUserIDHybrid() == tocomp->GetUserIDHybrid() && GetUserPort() == tocomp->GetUserPort()) {
+				//ID and Port Match..
+				return true;
+			}
+		}
+    }
+    
+	if(GetKadPort()!=0) {
+		//User has a Kad Port.
+		if(GetIP() != 0 && tocomp->GetIP() != 0) {
+			//Both clients have a verified IP.
+			if(GetIP() == tocomp->GetIP() && GetKadPort() == tocomp->GetKadPort()) {
+				//IP and KadPort Match..
+				return true;
+			}
+		} else {
+			//One of the users do not have a verified IP.
+			if (GetUserIDHybrid() == tocomp->GetUserIDHybrid() && GetKadPort() == tocomp->GetKadPort()) {
+				//ID and KadProt Match..
+				return true;
+			}
+		}
 	}
 	
-	#warning KAD TODO: Sort by kad status also
-	
-	if(!bIgnoreUserhash && HasValidHash() && tocomp->HasValidHash())
-	    return (GetUserHash() == tocomp->GetUserHash());
-	if (HasLowID())
-		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid()) && (GetServerIP() == tocomp->GetServerIP()) && (GetUserPort() == tocomp->GetUserPort()));
-	else
-		return ((GetUserIDHybrid() == tocomp->GetUserIDHybrid() && GetUserPort() == tocomp->GetUserPort()) || (GetIP() && (GetIP() == tocomp->GetIP() && GetUserPort() == tocomp->GetUserPort())) );
+	//No Matches..
+	return false;
 }
-
 
 bool CUpDownClient::AskForDownload()
 {

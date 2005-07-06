@@ -306,7 +306,7 @@ public:
 	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
 	bool		ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
 	void		ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
-	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false);
+	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false) const;
 	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
 	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
 	void		SetLastAskedForSources()	{ m_dwLastAskedForSources = ::GetTickCount(); }

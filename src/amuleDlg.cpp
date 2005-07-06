@@ -104,6 +104,10 @@
 #include "aMule.xpm"
 #endif
 
+#ifdef __COMPILE_KAD__
+	#include "kademlia/kademlia/Kademlia.h"
+#endif
+
 using namespace otherfunctions;
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
@@ -576,19 +580,34 @@ CamuleDlg::~CamuleDlg()
 
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
-	if (!theApp.serverconnect->IsConnected()) {
+	if ((!theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsConnecting())
+		#ifdef __COMPILE_KAD__
+		|| !Kademlia::CKademlia::isRunning()
+		#endif
+		) {
 		//connect if not currently connected
-		if (!theApp.serverconnect->IsConnecting()) {
-			AddLogLine(true, _("Connecting"));
-			theApp.serverconnect->ConnectToAnyServer();
-			ShowConnectionState(false);
-		} else {
-			theApp.serverconnect->StopConnectionTry();
-			ShowConnectionState(false);
+		AddLogLine(true, _("Connecting"));
+		theApp.serverconnect->ConnectToAnyServer();
+			
+		#ifdef __COMPILE_KAD__
+		// Connect Kad also
+		if( thePrefs::GetNetworkKademlia() && !Kademlia::CKademlia::isRunning()) {
+			Kademlia::CKademlia::start();
 		}
+		#endif
+			
+		ShowConnectionState(false);
 	} else {
 		//disconnect if currently connected
-		theApp.serverconnect->Disconnect();
+		if (!theApp.serverconnect->IsConnecting()) {
+			theApp.serverconnect->StopConnectionTry();
+			ShowConnectionState(false);
+		} else {
+			theApp.serverconnect->Disconnect();
+		}
+		#ifdef __COMPILE_KAD__
+		Kademlia::CKademlia::stop();
+		#endif
 	}
 }
 

@@ -111,7 +111,8 @@
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
 
 #ifdef __COMPILE_KAD__
-#include "kademlia/kademlia/Kademlia.h"
+	#include "kademlia/kademlia/Kademlia.h"
+	#include "kademlia/kademlia/Prefs.h"
 #endif
 
 #ifndef AMULE_DAEMON
@@ -1499,6 +1500,16 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		// Publish files to server if needed.
 		theApp.sharedfiles->Process();
 		
+		#ifdef __COMPILE_KAD__
+		if( Kademlia::CKademlia::isRunning() ) {
+			Kademlia::CKademlia::process();
+			if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
+				Kademlia::CKademlia::stop();
+				Notify_ShowConnState(false, wxEmptyString);
+			}
+		}
+		#endif
+			
 		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
 			serverconnect->TryAnotherConnectionrequest();
 		}

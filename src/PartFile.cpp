@@ -80,6 +80,11 @@
 #include <map>
 #include <algorithm>
 
+#ifdef __COMPILE_KAD__
+	#include "kademlia/kademlia/Kademlia.h"
+	#include "kademlia/kademlia/Search.h"
+#endif
+
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
@@ -157,6 +162,10 @@ void CPartFile::Init()
 
 	m_validSources = 0;
 	m_notCurrentSources = 0;
+
+	// Kad
+	m_LastSearchTimeKad = 0;
+	m_TotalSearchesKad = 0;	
 }
 
 CPartFile::CPartFile(CSearchFile* searchresult)
@@ -1662,6 +1671,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			}
 		}
 		/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
+		
 		// swap No needed partfiles if possible
 		/* Sources droping engine. Auto drop allowed type of sources at interval. */
 		if (dwCurTick > m_LastSourceDropTime + thePrefs::GetAutoDropTimer() * 1000) {
@@ -1680,6 +1690,37 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			SetPartFileStatus(status);
 		}
 	
+		#ifdef __COMPILE_KAD__
+		// Kad source search		
+		if( GetMaxSourcePerFileUDP() > GetSourceCount()){
+			//Once we can handle lowID users in Kad, we remove the second IsConnected
+			if (theApp.downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::getTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::isConnected() && theApp.serverconnect->IsConnected() && !IsStopped()){ 
+				//Kademlia
+				theApp.downloadqueue->SetLastKademliaFileRequest();
+				if (!GetKadFileSearchID()) {
+					Kademlia::CUInt128 kadFileID(GetFileHash());
+					Kademlia::CSearch* pSearch = Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::FILE, true, kadFileID);
+					AddDebugLogLineM(false, logKadSearch, wxT("Preparing a Kad Search for ") + GetFileName());
+					if (pSearch) {
+						AddDebugLogLineM(false, logKadSearch, wxT("Kad lookup started for ") + GetFileName());
+						if(m_TotalSearchesKad < 7) {
+							m_TotalSearchesKad++;
+						}
+						m_LastSearchTimeKad = dwCurTick + (KADEMLIAREASKTIME*m_TotalSearchesKad);
+						SetKadFileSearchID(pSearch->getSearchID());
+					} else {
+						SetKadFileSearchID(0);
+					}
+				}
+			}
+		} else {
+			if(GetKadFileSearchID()) {
+				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
+			}
+		}
+		#endif 
+		
+		
 		// check if we want new sources from server
 		if (	!m_bLocalSrcReqQueued &&
 			(	(!lastsearchtime) ||
@@ -1747,10 +1788,10 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		}
 	}
 	
-	#ifdef __COMPILE_KADEMLIA__
+	#ifdef __COMPILE_KAD__
 	if (Kademlia::CKademlia::isConnected()) {
 		if(!Kademlia::CKademlia::isFirewalled()) {
-			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs.GetPort() == port) {
+			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs::GetPort() == port) {
 				return false;
 			}
 		}
@@ -1808,6 +1849,11 @@ void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverp
 			// Since we may receive multiple search source UDP results we have to "consume" all data of that packet
 			// This '+1' is added because 'i' counts from 0.
 			sources.Seek((count-(i+1))*(4+2), wxFromCurrent);
+			#ifdef __COMPILE_KAD__
+			if(GetKadFileSearchID()) {
+				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
+			}
+			#endif
 			break;
 		}
 	}
@@ -2226,6 +2272,12 @@ void CPartFile::RemoveAllRequestedBlocks(void)
 
 void CPartFile::CompleteFile(bool bIsHashingDone)
 {
+	#ifdef __COMPILE_KAD__
+	if(GetKadFileSearchID()) {
+		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
+	}
+	#endif
+
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
 	AddDebugLogLineM( false, logPartFile, wxString( wxT("CPartFile::CompleteFile: Hash ") ) + ( bIsHashingDone ? wxT("done") : wxT("not done") ) );
@@ -2633,7 +2685,10 @@ void CPartFile::StopFile(bool bCancel)
 	
 	// Barry - Need to tell any connected clients to stop sending the file
 	PauseFile();
-
+	
+	m_LastSearchTimeKad = 0;
+	m_TotalSearchesKad = 0;
+	
 	RemoveAllSources(true);
 	kBpsDown = 0.0;
 	transferingsrc = 0;
@@ -2664,6 +2719,14 @@ void CPartFile::PauseFile(bool bInsufficient)
 	if ( status == PS_COMPLETE || status == PS_COMPLETING ) {
 		return;
 	}
+
+	#ifdef __COMPILE_KAD__
+	if(GetKadFileSearchID()) {
+		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
+		// If we were in the middle of searching, reset timer so they can resume searching.
+		m_LastSearchTimeKad = 0; 
+	}
+	#endif
 	
 	m_iLastPausePurge = time(NULL);
 	
@@ -4037,4 +4100,52 @@ bool CPartFile::IsDeadSource(const CUpDownClient* client)
 {
 	return m_deadSources.IsDeadSource( client );
 }
+
+void CPartFile::SetFileName(const wxString& pszFileName)
+{
+	CKnownFile* pFile = theApp.sharedfiles->GetFileByID(GetFileHash());
+	
+	bool is_shared = (pFile && pFile == this);
+	
+	if (is_shared) {
+		// The file is shared, we must clear the search keywords so we don't
+		// publish the old name anymore.
+		theApp.sharedfiles->RemoveKeywords(this);
+	}
+	
+	CKnownFile::SetFileName(pszFileName);
+	
+	if (is_shared) {
+		// And of course, we must advertise the new name if the file is shared.
+		theApp.sharedfiles->AddKeywords(this);
+	}
+
+	UpdateDisplayedInfo(true);
+}
+
+
+uint16 CPartFile::GetMaxSources() const
+{
+	// This is just like this, while we don't import the private max sources per file
+	return thePrefs::GetMaxSourcePerFile();
+}
+
+uint16 CPartFile::GetMaxSourcePerFileSoft() const
+{
+	unsigned int temp = ((unsigned int)GetMaxSources() * 9L) / 10;
+	if (temp > MAX_SOURCES_FILE_SOFT) {
+		return MAX_SOURCES_FILE_SOFT;
+	}
+	return temp;
+}
+
+uint16 CPartFile::GetMaxSourcePerFileUDP() const
+{	
+	unsigned int temp = ((unsigned int)GetMaxSources() * 3L) / 4;
+	if (temp > MAX_SOURCES_FILE_UDP) {
+		return MAX_SOURCES_FILE_UDP;
+	}
+	return temp;
+}
+
 #endif

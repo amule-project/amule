@@ -71,7 +71,8 @@ private:
 	uint32 getSize() const;
 	uint32 getRemaining(void) const;
 	void getEntries(ContactList *result, bool emptyFirst = true);
-	int getClosestTo(int maxType, const CUInt128 &target, int maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false);
+
+	uint32 getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false);
 
 	// Debug purposes.
 //	void dumpContents(void);

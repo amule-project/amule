@@ -45,16 +45,17 @@ class CSafeMemFile;
 class CMD4Hash;
 class CServer;
 class CUpDownClient;
+class CPublishKeywordList;
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
 
-class CSharedFileList{
+class CSharedFileList {
 	friend class CSharedFilesCtrl;
 	friend class CClientReqSocket;
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
-	
+	bool	AddFile(CKnownFile* pFile);
 	void 	Reload(bool firstload = false);
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
@@ -73,9 +74,15 @@ public:
 	void	ClearED2KPublishInfo();
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();
-
 	// Not needed yet. Can be included once we add the converter
 	void	PublishNextTurn()	{ m_lastPublishED2KFlag=true;	}
+	
+	/* Kad Stuff */
+	void	Publish();
+	void	AddKeywords(CKnownFile* pFile);
+	void	RemoveKeywords(CKnownFile* pFile);	
+	// This is actually unused, but keep it here - will be needed later.
+	void	ClearKadSourcePublishInfo();
 	
 private:
 	void	FindSharedFiles();
@@ -86,6 +93,15 @@ private:
 	bool	 m_lastPublishED2KFlag;	
 
 	CKnownFileMap		m_Files_map;
+
+	
+	/* Kad Stuff */
+	CPublishKeywordList* m_keywords;
+	unsigned int m_currFileSrc;
+	unsigned int m_currFileNotes;
+	unsigned int m_currFileKey;
+	uint32 m_lastPublishKadSrc;
+	uint32 m_lastPublishKadNotes;
 };
 
 #endif // SHAREDFILELIST_H

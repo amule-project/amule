@@ -206,7 +206,7 @@ bool		CPreferences::s_FilterSomeMessages;
 bool		CPreferences::s_ShareHiddenFiles;
 bool		CPreferences::s_AutoSortDownload;
 bool		CPreferences::s_NewVersionCheck;
-
+bool		CPreferences::s_ConnectToKad;
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -996,6 +996,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
+	
+	// Kad connection has no GUI yet
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ConnectToKad"),	s_ConnectToKad, false ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg

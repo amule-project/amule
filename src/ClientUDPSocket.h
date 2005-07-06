@@ -55,12 +55,12 @@ public:
 	bool	IsBusy()	{return m_bWouldBlock;}
 
 protected:
-	bool	ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port);
+	bool	ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 	
 public:
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
-	int DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
+	int DoReceive(amuleIPV4Address& addr, byte* buffer, uint32 max_size);
 	
 private:
 	bool	SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort);

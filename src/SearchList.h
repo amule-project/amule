@@ -78,22 +78,27 @@ public:
 	uint32  GetFileSize() { return m_nFileSize; }
 #else
 
-	uint32	GetIntTagValue(uint8 tagname);
-	wxString	GetStrTagValue(uint8 tagname);
+	uint32	GetIntTagValue(uint8 tagname) const;
+	wxString	GetStrTagValue(uint8 tagname) const;
 	void	AddSources(uint32 count, uint32 count_complete);
 	
-	uint32	GetSourceCount();
-	uint32	GetCompleteSourceCount();
-	uint32  GetFileSize();
+	uint32	GetSourceCount() const;
+	uint32	GetCompleteSourceCount() const;
+	uint32  GetFileSize() const;
 #endif
-	long	GetSearchID() 					{ return m_nSearchID; }
+	long	GetSearchID() const				{ return m_nSearchID; }
 	uint32	GetClientID() const				{ return m_nClientID; }
 	void	SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
 	uint16	GetClientPort() const			{ return m_nClientPort; }
 	void	SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
 	
-	#warning KAD TODO: Who cares about this?
+	// This is used for some Kad checks on the child search results also, but 
+	// as we don't implement any child search results, it's not used there :)
 	bool	IsKademlia() const { return m_nKademlia; }
+	// This can be used to raise a warning on downloading a file with 
+	// i.e. 50 sources and none complete.
+	int IsComplete() const;
+	int IsComplete(uint32 uSources, uint32 uCompleteSources) const;
 	
 private:
 	long		m_nSearchID;

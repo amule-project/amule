@@ -185,7 +185,7 @@ CContact *CRoutingBin::getOldest(void)
 	return NULL;
 }
 
-int CRoutingBin::getClosestTo(int maxType, const CUInt128 &target, int maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
+uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
 {
 	if (m_entries.size() == 0) {
 		return 0;
@@ -195,22 +195,26 @@ int CRoutingBin::getClosestTo(int maxType, const CUInt128 &target, int maxRequir
 		result->clear();
 	}
 
-	int count = 0;
+	//Put results in sort order for target.
 	ContactList::const_iterator it;
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
-		if((*it)->getType() <= maxType) {
-			CUInt128 distance((*it)->m_clientID);
-			distance.XOR(target);
-			(*result)[distance] = *it;
-			if( inUse ) {
-				(*it)->incUse();
-			}
-			if (++count == maxRequired) {
-				break;
-			}
+		CUInt128 targetDistance((*it)->m_clientID);
+		targetDistance.XOR(target);
+		(*result)[targetDistance] = *it;
+		if( inUse ) {
+			(*it)->incUse();	
 		}
 	}
-	return count;
+
+	//Remove any extra results
+	while(result->size() > maxRequired) {
+		if( inUse ) {
+			(--result->end())->second->decUse();
+		}
+		result->erase(--result->end());
+	}
+
+	return result->size();
 }
 
 /*

@@ -186,13 +186,13 @@ void CPrefs::setFirewalled()
 	//current state to prevent false reports during the recheck..
 	m_lastFirewallState = (m_firewalled<2);
 	m_firewalled = 0;
-	theApp.amuledlg->ShowConnectionState();
+	theApp.amuledlg->ShowConnectionState(true, wxT("Kad (Firewalled 2)"));
 }
 
 void CPrefs::incFirewalled()
 {
 	m_firewalled++;
-	theApp.amuledlg->ShowConnectionState();
+	theApp.amuledlg->ShowConnectionState(true, wxT("Kad (Firewalled 3)"));
 }
 
 bool CPrefs::getFindBuddy() /*const*/

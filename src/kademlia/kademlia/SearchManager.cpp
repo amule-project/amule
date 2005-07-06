@@ -203,6 +203,7 @@ CSearch* CSearchManager::prepareFindKeywords(bool bUnicode, const wxString& keyw
 
 CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &id)
 {
+	
 	if(alreadySearchingFor(id)) {
 		return NULL;
 	}

@@ -164,6 +164,7 @@ void CRoutingZone::readFile(void)
 			for (uint32 i=0; i<numContacts; i++) {
 				file.ReadUInt128(&id);
 				ip = file.ReadUInt32();
+				ip = ENDIAN_NTOHL(ip);
 				udpPort = file.ReadUInt16();
 				tcpPort = file.ReadUInt16();
 				type = file.ReadUInt8();
@@ -203,7 +204,7 @@ void CRoutingZone::writeFile(void)
 				c = *it;
 				c->getClientID(&id);
 				file.WriteUInt128(id);
-				file.WriteUInt32(c->getIPAddress());
+				file.WriteUInt32(ENDIAN_NTOHL(c->getIPAddress()));
 				file.WriteUInt16(c->getUDPPort());
 				file.WriteUInt16(c->getTCPPort());
 				file.WriteUInt8(c->getType());
@@ -233,6 +234,9 @@ bool CRoutingZone::canSplit(void) const
 
 bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
 {
+	
+	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact (routing) with ip ") + Uint32_16toStringIP_Port(ip,port));
+	
 	if (id == me) {
 		return false;
 	}
@@ -311,20 +315,20 @@ CContact *CRoutingZone::getContact(const CUInt128 &id) const
 	}
 }
 
-int CRoutingZone::getClosestTo(int maxType, const CUInt128 &target, int maxRequired, ContactMap *result, bool emptyFirst, bool inUse) const
+uint32 CRoutingZone::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse) const
 {
 	// If leaf zone, do it here
 	if (isLeaf()) {
-		return m_bin->getClosestTo(maxType, target, maxRequired, result, emptyFirst, inUse);
+		return m_bin->getClosestTo(maxType, target, distance, maxRequired, result, emptyFirst, inUse);
 	}
 	
 	// otherwise, recurse in the closer-to-the-target subzone first
-	int closer = target.getBitNumber(m_level);
-	int found = m_subZones[closer]->getClosestTo(maxType, target, maxRequired, result, emptyFirst, inUse);
-
+	int closer = distance.getBitNumber(m_level);
+	uint32 found = m_subZones[closer]->getClosestTo(maxType, target, distance, maxRequired, result, emptyFirst, inUse);
+	
 	// if still not enough tokens found, recurse in the other subzone too
 	if (found < maxRequired) {
-		found += m_subZones[1-closer]->getClosestTo(maxType, target, maxRequired-found, result, false, inUse);
+		found += m_subZones[1-closer]->getClosestTo(maxType, target, distance, maxRequired-found, result, false, inUse);
 	}
 	
 	return found;
@@ -563,7 +567,7 @@ void CRoutingZone::onSmallTimer(void)
 	
 	if(c != NULL) {
 		c->setType(c->getType()+1);
-		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq ") + Uint32_16toStringIP_Port(c->getIPAddress(), c->getUDPPort()));
+		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(c->getIPAddress(), c->getUDPPort()));
 		CKademlia::getUDPListener()->sendMyDetails(KADEMLIA_HELLO_REQ, c->getIPAddress(), c->getUDPPort());
 	}
 }
@@ -612,119 +616,3 @@ uint32 CRoutingZone::getBootstrapContacts(ContactList *results, uint32 maxRequir
 	}
 	return retVal;
 }
-
-/*
-uint64 CRoutingZone::getApproximateNodeCount(uint32 ourLevel) const
-{
-	if (isLeaf()) 
-		return ((uint64)1 << ourLevel) * (uint64)m_bin->getSize();
-	return (m_subZones[0]->getApproximateNodeCount(ourLevel+1) + m_subZones[1]->getApproximateNodeCount(ourLevel+1)) / 2;
-}
-*/
-
-/*
-void CRoutingZone::selfTest(void)
-{
-	// This is not intended to be a conclusive test of the routing zone, 
-	// just a place to put some simple debugging tests
-
-	CString msg;
-
-	// Try storing a lot of random keys
-	CUInt128 id;
-	for (int i=0; i<100000; i++)
-	{
-		id.setValueRandom();
-id.toHexString(&msg);
-OutputDebugString(msg);
-OutputDebugString(_T("\r\n"));
-
-		if (!add(id, 0xC0A80001, 0x1234, 0x4321, 0))
-			break;
-//		if (i%20 == 0)
-//			dumpContents();
-	}
-	dumpContents();
-
-	// Should have good dispersion now
-
-	// Try some close to me, should keep splitting
-	CUInt128 *close = new CUInt128;
-	for (int i=0; i<100000; i++)
-	{
-		delete close;
-		close = new CUInt128(me, 1+i%128);
-close->toHexString(&msg);
-OutputDebugString(msg);
-OutputDebugString(_T("\r\n"));
-		if (!add(*close, 0xC0A80001, 0x1234, 0x4321, 0))
-			break;
-//		if (i%20 == 0)
-//			root->dumpContents();
-	}
-	dumpContents();
-	delete close;
-
-	// Try to find the nearest
-
-	id.setValueRandom();
-	id.toHexString(&msg);
-	OutputDebugString(_T("Trying to find nearest to : "));
-	OutputDebugString(msg);
-	OutputDebugString(_T("\r\n"));
-	CUInt128 x(me);
-	x.XOR(id);
-	OutputDebugString(_T("Distance from me                 : "));
-	x.toBinaryString(&msg);
-	OutputDebugString(msg);
-	OutputDebugString(_T("\r\n"));
-
-	ContactMap result;
-	getClosestTo(0, id, 20, &result);
-
-	CString line;
-	CString hex;
-	CString distance;
-	CContact *c;
-	ContactMap::const_iterator it;
-	for (it = result.begin(); it != result.end(); it++)
-	{
-		c = it->second;
-		c->m_clientID.toHexString(&hex);
-		c->getDistance(&distance);
-		line.Format(_T("%s : %s\r\n"), hex, distance);
-		OutputDebugString(line);
-	}
-}
-*/
-/*
-//Don't delete, just keep for future reference..
-void CRoutingZone::dumpContents(LPCTSTR prefix) const
-{
-#ifdef DEBUG
-	CString msg;
-	CString ziStr;
-	m_zoneIndex.toBinaryString(&ziStr, true);
-
-	if (prefix == NULL)
-		OutputDebugString(_T("------------------------------------------------------\r\n"));
-	if (isLeaf()) 
-	{
-		msg.Format(_T("Zone level: %ld\tZone prefix: %s\tContacts: %ld\tZoneIndex: %s\r\n"), 
-			m_level, (prefix == NULL) ? _T("ROOT") : prefix, getNumContacts(), ziStr);
-		OutputDebugString(msg);
-		m_bin->dumpContents();
-	} 
-	else 
-	{
-		msg.Format(_T("Zone level: %ld\tZone prefix: %s\tContacts: %ld\tZoneIndex: %s NODE\r\n"), 
-					m_level, (prefix == NULL) ? _T("ROOT") : prefix, getNumContacts(), ziStr);
-		OutputDebugString(msg);
-		msg.Format(_T("%s0"), (prefix == NULL) ? _T("") : prefix);
-		m_subZones[0]->dumpContents(msg.GetBuffer(0));
-		msg.Format(_T("%s1"), (prefix == NULL) ? _T("") : prefix);
-		m_subZones[1]->dumpContents(msg.GetBuffer(0));
-	}
-#endif
-}
-*/
