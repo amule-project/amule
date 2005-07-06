@@ -63,6 +63,10 @@ public:
 	virtual bool Flush();
 	virtual bool IsOpened() const;
 	virtual bool Error() const;
+
+	// Sometimes we need to get the raw buffer, like sending a packet and 
+	// not wanting to deatach the buffer from the MemFile.
+	byte*	GetBuffer() { return m_buffer; };
 	
 protected:
 	void enlargeBuffer(unsigned long size);

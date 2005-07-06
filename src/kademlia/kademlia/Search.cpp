@@ -247,6 +247,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 	// Not interested in responses for FIND_NODE, will be added to contacts by udp listener
 	if (m_type == NODE) {
+		AddDebugLogLineM(false, logKadSearch, wxT("Node type search result, discarding."));
 		m_count++;
 		m_possible.clear();
 		delete results;
@@ -284,6 +285,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 					// Ignore if already tried
 					if (m_tried.count(distance) > 0) {
+						AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
 						continue;
 					}
 
@@ -322,6 +324,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 				// We don't want anything from these people, so just increment the counter.
 				if( m_type == NODECOMPLETE ) {
+					AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
 					m_count++;
 					theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 				} else if (!returnedCloser && ( !thePrefs::FilterLanIPs() || fromDistance.get32BitChunk(0) < SEARCHTOLERANCE)) {
@@ -330,17 +333,19 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						case FILE:
 						case KEYWORD: {
 							if (m_type == FILE) {
+								AddDebugLogLineM(false, logKadSearch, wxT("Search result type: File"));
 								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							} else {
+								AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Keyword"));
 								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							}
 							wxASSERT( m_searchTerms->GetLength() > 0 );
-							// the data in 'm_searchTerms' is to be sent several times. do not pass the m_searchTerms (CSafeMemFile) to 'sendPacket' as it would get detached.
-							//udpListner->sendPacket(m_searchTerms, KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort());
-							CKademlia::getUDPListener()->sendPacket(m_searchTerms->GetBuffer(), m_searchTerms->GetLength(), KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort());
+							// The data in 'm_searchTerms' is to be sent several times, so use the don't detach flag.
+							CKademlia::getUDPListener()->sendPacket(m_searchTerms, KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort(), false);
 							break;
 						}
 						case NOTES: {
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Notes"));
 							CSafeMemFile bio(34);
 							bio.WriteUInt128(m_target);
 							bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
@@ -348,6 +353,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							break;
 						}
 						case STOREFILE: {
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreFile"));
 							if( m_count > SEARCHSTOREFILE_TOTAL ) {
 								prepareToStop();
 								break;
@@ -395,6 +401,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							break;
 						}
 						case STOREKEYWORD: {
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreKeyword"));
 							if( m_count > SEARCHSTOREKEYWORD_TOTAL ) {
 								prepareToStop();
 								break;
@@ -417,6 +424,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							break;
 						}
 						case STORENOTES: {
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreNotes"));
 							byte fileid[16];
 							m_target.toByteArray(fileid);
 							CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid);
@@ -453,6 +461,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						}
 						case FINDBUDDY:
 						{
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindBuddy"));
 							if( m_count > SEARCHFINDBUDDY_TOTAL ) {
 								prepareToStop();
 								break;
@@ -469,6 +478,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						}
 						case FINDSOURCE:
 						{
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindSource"));
 							if( m_count > SEARCHFINDSOURCE_TOTAL ) {
 								prepareToStop();
 								break;
@@ -485,7 +495,24 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							break;
 						}
+						default:
+							AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Unknown"));
+							break;
 					}
+				} else {
+					#ifdef __DEBUG__
+					wxString reason = wxT("Unknown");
+					if (returnedCloser) {
+						reason = wxT("Returned closer");
+					} else {
+						if (thePrefs::FilterLanIPs()) {
+							reason = wxT("FilterLanIPs");
+						} else {
+							reason = wxT("Too near (bellow tolerance)");
+						}
+					}
+					AddDebugLogLineM(false, logKadSearch, wxT("Not processed: ")+ reason);
+					#endif
 				}
 			}
 		}
@@ -500,16 +527,19 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 	wxString type = wxT("Unknown");
 	switch(m_type) {
 		case FILE:
+			type = wxT("File");
 			processResultFile(fromIP, fromPort, answer, info);
 			break;
 		case KEYWORD:
+			type = wxT("Keyword");
 			processResultKeyword(fromIP, fromPort, answer, info);
 			break;
 		case NOTES:
+			type = wxT("Notes");
 			processResultNotes(fromIP, fromPort, answer, info);
 			break;
 	}
-	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT("from ") + Uint32_16toStringIP_Port(fromIP,fromPort));
+	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT(" from ") + Uint32_16toStringIP_Port(fromIP,fromPort));
 	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 }
 
