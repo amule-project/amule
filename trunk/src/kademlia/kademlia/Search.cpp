@@ -496,6 +496,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
 {
+	wxString type = wxT("Unknown");
 	switch(m_type) {
 		case FILE:
 			processResultFile(fromIP, fromPort, answer, info);
@@ -507,6 +508,7 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 			processResultNotes(fromIP, fromPort, answer, info);
 			break;
 	}
+	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT("from ") + Uint32_16toStringIP_Port(fromIP,fromPort));
 	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 }
 
@@ -524,7 +526,7 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 
 	CTag *tag;
 	TagList::const_iterator it;
-	for (it = info->begin(); it != info->end(); it++) {
+	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
 		if (!tag->m_name.Compare(TAG_SOURCETYPE)) {
 			type = tag->GetInt();

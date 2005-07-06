@@ -113,7 +113,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 			#ifdef __COMPILE_KAD__
 			case OP_KADEMLIAHEADER:
 				//theStats.AddDownDataOverheadKad(length);
-				Kademlia::CKademlia::processPacket(buffer, length, StringIPtoUint32(addr.IPAddress()),addr.Service());
+				Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
 				break;
 			case OP_KADEMLIAPACKEDPROT:
 				//theStats.AddDownDataOverheadKad(length);
@@ -124,7 +124,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				if (result == Z_OK) {
 					unpack[0] = OP_KADEMLIAHEADER;
 					unpack[1] = buffer[1];
-					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, StringIPtoUint32(addr.IPAddress()),addr.Service());
+					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
 				} else {
 					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}
