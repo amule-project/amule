@@ -94,7 +94,7 @@ CPacket::CPacket(char* header)
 	pBuffer 	= NULL;
 }
 
-CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
+CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode, bool detach)
 {
 	size		= datafile->GetLength();
 	opcode		= ucOpcode;
@@ -107,10 +107,16 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	tempbuffer = NULL;
 	completebuffer = new char[size + sizeof(Header_Struct)/*Why this 4?*/];
 	pBuffer = completebuffer + sizeof(Header_Struct);
-
-	byte* tmp = datafile->Detach();
-	memcpy(pBuffer, tmp, size);
-	free(tmp); 
+	
+	
+	if (detach) {
+		//		pBuffer = (char*)datafile->Detach();
+		byte* tmp = datafile->Detach();
+		memcpy(pBuffer, tmp, size);
+		free(tmp);
+	} else {
+		memcpy(pBuffer, datafile->GetBuffer(), size);
+	}
 }
 
 CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)

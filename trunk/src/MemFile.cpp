@@ -86,8 +86,9 @@ byte* CMemFile::Detach()
 
 CMemFile::~CMemFile()
 {
-	if ( m_buffer && m_delete )
+	if ( m_buffer && m_delete ) {
 		free(m_buffer);
+	}
 	
 	m_buffer = NULL;
 }

@@ -1240,19 +1240,18 @@ void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, uint32 d
 {
 	//This is temp.. The entire Kad code will be rewritten using CMemFile and send a Packet object directly.
 	CSafeMemFile mem_data(data+2,lenData-2);	
-	sendPacket(&mem_data,data[1],destinationHost, destinationPort);
+	sendPacket(&mem_data,data[1],destinationHost, destinationPort, false); // Don't detach...
 }
 
 void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort)
 {
 	CSafeMemFile mem_data(data,lenData);
-	sendPacket(&mem_data,opcode,destinationHost, destinationPort);
+	sendPacket(&mem_data,opcode,destinationHost, destinationPort, false); // Don't detach...
 }
 
-void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort)
+void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort, bool detach)
 {
-	CPacket* packet = new CPacket(data, OP_KADEMLIAHEADER);
-	packet->SetOpCode(opcode);
+	CPacket* packet = new CPacket(data, OP_KADEMLIAHEADER, opcode, detach);
 	if( packet->GetPacketSize() > 200 ) {
 		packet->PackPacket();
 	}

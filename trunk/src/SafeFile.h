@@ -130,9 +130,6 @@ public:
 	virtual void WriteUInt128(const Kademlia::CUInt128& pVal);
 	virtual void WriteHash16(const unsigned char* pVal);
 
-	// Sometimes we need to get the raw buffer, like sending a packet and 
-	// not wanting to deatach the buffer from the SafeMemFile.
-	byte*	GetBuffer() { return m_buffer; };
 };
 
 
