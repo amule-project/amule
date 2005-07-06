@@ -238,6 +238,7 @@ void CSearch::jumpStart(void)
 
 void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *results)
 {
+	AddDebugLogLineM(false, logKadSearch, wxT("Process search response from ") + Uint32_16toStringIP_Port(fromIP, fromPort));
 	// Remember the contacts to be deleted when finished
 	ContactList::iterator response;
 	for (response = results->begin(); response != results->end(); ++response) {
@@ -329,9 +330,9 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						case FILE:
 						case KEYWORD: {
 							if (m_type == FILE) {
-								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							} else {
-								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
 							}
 							wxASSERT( m_searchTerms->GetLength() > 0 );
 							// the data in 'm_searchTerms' is to be sent several times. do not pass the m_searchTerms (CSafeMemFile) to 'sendPacket' as it would get detached.
@@ -404,12 +405,12 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}
 							if( bio2 ) {
-								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq %s") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));											
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));											
 								CKademlia::getUDPListener()->sendPacket( packet2, ((1024*50)-bio2->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}
 							if( bio3 ) {
-								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq %s")  + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
+								AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ")  + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
 								CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 								theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 							}

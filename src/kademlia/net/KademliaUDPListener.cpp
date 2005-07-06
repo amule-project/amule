@@ -1241,14 +1241,12 @@ void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, uint32 d
 	//This is temp.. The entire Kad code will be rewritten using CMemFile and send a Packet object directly.
 	CSafeMemFile mem_data(data+2,lenData-2);	
 	sendPacket(&mem_data,data[1],destinationHost, destinationPort);
-	mem_data.Detach(); // We don't want it to be freed on destructor
 }
 
 void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort)
 {
 	CSafeMemFile mem_data(data,lenData);
 	sendPacket(&mem_data,opcode,destinationHost, destinationPort);
-	mem_data.Detach(); // We don't want it to be freed on destructor
 }
 
 void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort)
