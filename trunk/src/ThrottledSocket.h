@@ -39,6 +39,7 @@ struct SocketSentBytes
 class ThrottledControlSocket
 {
 public:
+    virtual ~ThrottledControlSocket() {}
     virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 minFragSize) = 0;
 };
 
