@@ -2056,6 +2056,21 @@ void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
+int CamuleApp::OnRun() {
+	#ifdef __DEBUG__
+		printf("DEBUG: OnRun()\n");
+	#endif
+	int result = -1;
+	try {
+		// This is the main loop. Everything in the app happens here.
+		result = AMULE_APP_BASE::OnRun();
+	} catch (...) {
+		printf("FATAL: Unhandled exception on main loop. Exiting\n");
+		wxASSERT(0);
+	}
+	return result;
+}
+
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
