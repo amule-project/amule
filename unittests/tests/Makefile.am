@@ -19,7 +19,7 @@ RangeMapTest_CXXFLAGS = $(AM_CXXFLAGS)
 RangeMapTest_LDADD = $(LDADD)
 
 
-# Tests for the CRangeMap class
+# Tests for the CFormat class
 FormatTest_SOURCES = FormatTest.cpp $(top_srcdir)/src/Format.cpp
 FormatTest_CXXFLAGS = $(AM_CXXFLAGS)
 FormatTest_LDADD = $(LDADD)
