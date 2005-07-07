@@ -25,7 +25,6 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "ColorFrameCtrl.h"
-#pragma implementation "Color.h"
 #endif
 
 #include <wx/dcclient.h>

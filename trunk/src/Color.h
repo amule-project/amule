@@ -26,14 +26,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in ColorFrameCtrl.cpp
-#pragma interface "Color.h"
-#endif
-
-#include <wx/defs.h>		// Possibly needed for COLORREF
-#include <wx/colour.h>		// Needed for wxColour
-
+#include <wx/defs.h>		// Needed for wxUSE_GUI and possibly for COLORREF
 
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
 #include <inttypes.h>		// Needed for uint32_t
@@ -45,16 +38,6 @@ inline int G_BLEND(int a, int percentage)
 {
 	int result = a * percentage / 100;
 	return (result > 255) ? 255 : result;
-}
-
-
-inline wxColour BLEND( wxColour colour, int percentage )
-{
-	int red   = G_BLEND( colour.Red(),   percentage );
-	int green = G_BLEND( colour.Green(), percentage );
-	int blue  = G_BLEND( colour.Blue(),  percentage );
-
-	return wxColour( red, green, blue );
 }
 
 
@@ -88,10 +71,26 @@ inline int GetBValue(COLORREF rgb)
 
 #endif
 
+
 inline COLORREF DarkenColour(COLORREF rgb, int level) 
 {	
 	return RGB(GetRValue(rgb) / level, GetGValue(rgb) / level, GetBValue(rgb) / level);
 }
+
+
+#if wxUSE_GUI
+
+#include <wx/colour.h>		// Needed for wxColour
+
+inline wxColour BLEND( wxColour colour, int percentage )
+{
+	int red   = G_BLEND( colour.Red(),   percentage );
+	int green = G_BLEND( colour.Green(), percentage );
+	int blue  = G_BLEND( colour.Blue(),  percentage );
+
+	return wxColour( red, green, blue );
+}
+
 
 inline wxColour WxColourFromCr(COLORREF cr)
 {
@@ -104,6 +103,7 @@ inline COLORREF CrFromWxColour(wxColour col)
 	return RGB(col.Red(), col.Green(), col.Blue());
 }
 
+#endif /* wxUSE_GUI */
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
 
