@@ -443,9 +443,7 @@ bool CClientCreditsList::CreateKeyPair()
 		privkeysink.MessageEnd();
 
 		AddDebugLogLineM( true, logCredits, wxT("Created new RSA keypair"));
-	}
-	catch(...)
-	{
+	} catch(...) {
 		AddDebugLogLineM( true, logCredits, wxT("Failed to create new RSA keypair"));
 		wxASSERT ( false );
 		return false;
@@ -468,25 +466,35 @@ void CClientCreditsList::InitalizeCrypting()
 	bool bCreateNewKey = false;
 
 	CFile KeyFile;
-
-	if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
-		KeyFile.Open(theApp.ConfigDir + CRYPTKEY_FILENAME,CFile::read);
-		if (KeyFile.Length() == 0) {
-			AddDebugLogLineM( true, logCredits, wxT("'cryptkey.dat' is 0 size, creating.") );
+	try{
+		
+		if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
+			KeyFile.Open(theApp.ConfigDir + CRYPTKEY_FILENAME,CFile::read);
+			if (!KeyFile.IsOpened()) {
+				AddDebugLogLineM( true, logCredits, wxT("Can't open 'cryptkey.dat', creating again.") );
+				if (!wxRemoveFile(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
+					AddLogLineM( true, wxT("FATAL: Can't remove 'cryptkey.dat'.") );
+					throw wxString(wxT("FATAL: Can't remove 'cryptkey.dat'."));
+				}
+				bCreateNewKey = true;
+			} else {
+				if (KeyFile.Length() == 0) {
+					AddDebugLogLineM( true, logCredits, wxT("'cryptkey.dat' is 0 size, creating.") );
+					bCreateNewKey = true;
+				}
+				KeyFile.Close();
+			}
+		} else {
+			AddLogLineM( false, _("No 'cryptkey.dat' file found, creating") );
 			bCreateNewKey = true;
 		}
-		KeyFile.Close();
-	}
-	else {
-		AddLogLineM( false, _("No 'cryptkey.dat' file found, creating") );
-		bCreateNewKey = true;
-	}
-	
-	if (bCreateNewKey)
-		CreateKeyPair();
-	
-	// load key
-	try{
+		
+		if (bCreateNewKey) {
+			CreateKeyPair();
+		}
+		
+		// load key
+
 		// load private key
 		// Nothing we can do against this unicode2char :/
 		CryptoPP::FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
