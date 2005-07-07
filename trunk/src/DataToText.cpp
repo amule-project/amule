@@ -25,10 +25,11 @@
 #include "DataToText.h"
 
 #include "KnownFile.h"		// Needed by PriorityToStr
-#include "updownclient.h"	// Needed by DownloadStateToStr
+#include "updownclient.h"	// Needed by DownloadStateToStr and GetSoftName
 
 #include <wx/string.h>
 #include <wx/intl.h>
+
 
 wxString PriorityToStr( int priority, bool isAuto )
 {
@@ -58,24 +59,64 @@ wxString PriorityToStr( int priority, bool isAuto )
 wxString DownloadStateToStr( int state, bool queueFull )
 {
 	switch ( state ) {
-		case DS_CONNECTING:			return  _("Connecting");
-		case DS_CONNECTED:				return _("Asking");
-		case DS_WAITCALLBACK:			return _("Connecting via server");
-		case DS_ONQUEUE:				return ( queueFull ? _("Queue Full") : _("On Queue") );
-		case DS_DOWNLOADING:			return _("Transferring");
-		case DS_REQHASHSET:			return _("Receiving hashset");
+		case DS_CONNECTING:		return  _("Connecting");
+		case DS_CONNECTED:		return _("Asking");
+		case DS_WAITCALLBACK:		return _("Connecting via server");
+		case DS_ONQUEUE:		return ( queueFull ? _("Queue Full") : _("On Queue") );
+		case DS_DOWNLOADING:		return _("Transferring");
+		case DS_REQHASHSET:		return _("Receiving hashset");
 		case DS_NONEEDEDPARTS:		return _("No needed parts");
-		case DS_LOWTOLOWIP:			return _("Cannot connect LowID to LowID");
+		case DS_LOWTOLOWIP:		return _("Cannot connect LowID to LowID");
 		case DS_TOOMANYCONNS:		return _("Too many connections");
-		case DS_NONE:						return _("Unknown");
+		case DS_NONE:			return _("Unknown");
 		case DS_WAITCALLBACKKAD: 	return _("Connecting via Kad");
 		case DS_TOOMANYCONNSKAD:	return _("Too many Kad connections");
-		case DS_BANNED:					return _("Banned");
-		case DS_ERROR:					return _("Connection Error");
+		case DS_BANNED:			return _("Banned");
+		case DS_ERROR:			return _("Connection Error");
 		case DS_REMOTEQUEUEFULL:	return _("Remote Queue Full");
 	}
 	
 	wxASSERT( false );
-	
+
 	return _("Unknown");
+}
+
+
+const wxString GetSoftName(unsigned int software_ident)
+{
+	switch (software_ident) {
+		case SO_OLDEMULE:
+		case SO_EMULE:
+			return wxT("eMule");
+		case SO_CDONKEY:
+			return wxT("cDonkey");
+		case SO_LXMULE:
+			return wxT("(l/x)Mule");
+		case SO_AMULE:
+			return wxT("aMule");
+		case SO_SHAREAZA:
+		case SO_NEW_SHAREAZA:
+			return wxT("Shareaza");
+		case SO_EMULEPLUS:
+			return wxT("eMule+");
+		case SO_HYDRANODE:
+			return wxT("HydraNode");
+		case SO_MLDONKEY:
+			return _("Old MLDonkey");
+		case SO_NEW_MLDONKEY:
+		case SO_NEW2_MLDONKEY:
+			return _("New MlDonkey");
+		case SO_LPHANT:
+			return wxT("lphant");
+		case SO_EDONKEYHYBRID:
+			return wxT("eDonkeyHybrid");
+		case SO_EDONKEY:
+			return wxT("eDonkey");
+		case SO_UNKNOWN:
+			return _("Unknown");
+		case SO_COMPAT_UNK:
+			return _("eMule Compat");
+		default:
+			return wxEmptyString;
+	}
 }

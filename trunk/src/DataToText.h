@@ -34,5 +34,9 @@ wxString PriorityToStr( int priority, bool isAuto );
 // Returns the textual representation of download states
 wxString DownloadStateToStr( int state, bool queueFull );
 
+/**
+ * @return Human-readable client software name.
+ */
+const wxString GetSoftName( unsigned int software_ident );
 
 #endif
