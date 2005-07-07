@@ -15,6 +15,9 @@ Version 2.1.x - The "???" version
 	volpol:
 		* A4AF transfer speed display fix
 
+	shakraw:
+		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
+		
 --------------------------------------------------------------------------------
 
 Version 2.0.4 - The "..." version.
@@ -86,9 +89,9 @@ Version 2.0.2 - The " [Your Ad Here] " version.
 	Kry:
 		* Added Version Check (you can disable it on preferences).
 		* Added "source comes from" (on the "Time remaining" column)
-                * Now you can compile aMule without gettext, using --disable-nls
-                  Additionally, aMule no longer stops configure if there is no gettext installed.
-                * Fixed aMule shutting down if a source seeds file is 0-size.
+		* Now you can compile aMule without gettext, using --disable-nls
+		  Additionally, aMule no longer stops configure if there is no gettext installed.
+		* Fixed aMule shutting down if a source seeds file is 0-size.
 		* Fixed HTTP download code not returning proper error code (causing crashes).
 		* Fixed OS_Info packet only being sent to downlaoding clients.
 		* Fixed Solaris mount info file name.
