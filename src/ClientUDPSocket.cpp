@@ -116,6 +116,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
 				break;
 			case OP_KADEMLIAPACKEDPROT:
+			{
 				//theStats.AddDownDataOverheadKad(length);
 				uint32 nNewSize = length*10+300;
 				byte* unpack = new byte[nNewSize];
@@ -130,7 +131,8 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				}
 				delete[] unpack;			
 				break;
-				#endif
+			}
+			#endif
 			default:
 				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
 		}
