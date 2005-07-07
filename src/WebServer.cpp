@@ -65,6 +65,7 @@
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "ECcodes.h"
 #include "Format.h"		// Needed for CFormat
+#include "Color.h"		// Needed for COLORREF and RGB()
 
 #ifndef __WXMSW__
 	#include "netinet/in.h"	// Needed for ntohl()
@@ -3078,9 +3079,6 @@ void CProgressImage::InitSortedGaps()
 	}
 	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint32), compare_gaps);
 }
-
-#define RGB(r, g, b) ( (((unsigned char)b) << 16) | (((unsigned char)g) << 8) | ((unsigned char)r))
-typedef uint32	COLORREF;
 
 void CProgressImage::CreateSpan()
 {
