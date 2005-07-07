@@ -35,7 +35,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFilter
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "Server.h"		// Needed for CServer
 #include "Preferences.h"	// Needed for CPreferences
@@ -54,6 +54,7 @@
 #include "Format.h"		// Needed for CFormat
 #include "ClientUDPSocket.h"
 #include "Logger.h"
+#include "DataToText.h"		// Needed for GetSoftName()
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/net/KademliaUDPListener.h"

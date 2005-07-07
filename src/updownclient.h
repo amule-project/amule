@@ -128,45 +128,6 @@ enum EClientSoftware {
 	SO_COMPAT_UNK		= 0xFF
 };
 
-inline const wxString GetSoftName(uint8 software_ident) {
-	switch (software_ident) {
-		case SO_OLDEMULE:
-		case SO_EMULE:
-			return wxT("eMule");
-		case SO_CDONKEY:
-			return wxT("cDonkey");
-		case SO_LXMULE:
-			return wxT("(l/x)Mule");
-		case SO_AMULE:
-			return wxT("aMule");
-		case SO_SHAREAZA:
-		case SO_NEW_SHAREAZA:
-			return wxT("Shareaza");
-		case SO_EMULEPLUS:
-			return wxT("eMule+");
-		case SO_HYDRANODE:
-			return wxT("HydraNode");
-		case SO_MLDONKEY:
-			return _("Old MLDonkey");
-		case SO_NEW_MLDONKEY:
-		case SO_NEW2_MLDONKEY:
-			return _("New MlDonkey");
-		case SO_LPHANT:
-			return wxT("lphant");
-		case SO_EDONKEYHYBRID:
-			return wxT("eDonkeyHybrid");
-		case SO_EDONKEY:
-			return wxT("eDonkey");
-		case SO_UNKNOWN:
-			return _("Unknown");
-		case SO_COMPAT_UNK:
-			return _("eMule Compat");
-		default:
-			return wxEmptyString;
-	}
-}
-
-
 enum ESecureIdentState{
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND	= 0,
