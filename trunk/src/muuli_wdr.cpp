@@ -985,7 +985,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticLine *item5 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(20,-1), wxLI_HORIZONTAL );
     item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item6 = new wxButton( parent, ID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item6 = new wxButton( parent, ID_HTTPCANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetDefault();
     item0->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
