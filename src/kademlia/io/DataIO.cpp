@@ -128,36 +128,26 @@ wxString CDataIO::readStringUTF8(bool bOptACP)
 {
 	uint32 length = readUInt16();
 	
-	char* val = NULL;
-	try {
-		val = new char[length + 1];
-		// We only need to set the the NULL terminator, since we know that
-		// reads will either succeed or throw an exception, in which case
-		// we wont be returning anything
-		val[length] = 0;
-		
-		readArray(val, length);
-		wxString str;
-		
-		if (bOptACP) {
-			str = UTF82unicode(val);
-			if (str.IsEmpty()) {
-				// Fallback to system locale
-				str = char2unicode(val);
-			}					
-		} else {
+	char val[length + 1];
+	// We only need to set the the NULL terminator, since we know that
+	// reads will either succeed or throw an exception, in which case
+	// we wont be returning anything
+	val[length] = 0;
+	
+	readArray(val, length);
+	wxString str;
+	
+	if (bOptACP) {
+		str = UTF82unicode(val);
+		if (str.IsEmpty()) {
+			// Fallback to system locale
 			str = char2unicode(val);
-		}
-		delete[] val;
-
-		return str;
-	} catch ( ... ) {
-		// Have to avoid mem-leaks
-		delete[] val;
-		
-		// Re-throw
-		throw;
+		}					
+	} else {
+		str = char2unicode(val);
 	}
+
+	return str;
 }
 
 CTag *CDataIO::readTag(bool bOptACP)

@@ -649,35 +649,30 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	// create fake client which pretends to be this emule
 	CreditStruct* newcstruct = new CreditStruct;
 	memset(newcstruct, 0, sizeof(CreditStruct));
-	CClientCredits* newcredits = new CClientCredits(newcstruct);
-	newcredits->SetSecureIdent(m_abyMyPublicKey,m_nMyPublicKeyLen);
-	newcredits->m_dwCryptRndChallengeFrom = challenge;
+	CClientCredits newcredits(newcstruct);
+	newcredits.SetSecureIdent(m_abyMyPublicKey,m_nMyPublicKeyLen);
+	newcredits.m_dwCryptRndChallengeFrom = challenge;
 	// create signature with fake priv key
 	byte pachSignature[200];
 	memset(pachSignature,200,0);
-	uint8 sigsize = CreateSignature(newcredits,pachSignature,200,0,false, &priv);
+	uint8 sigsize = CreateSignature(&newcredits,pachSignature,200,0,false, &priv);
 
 
 	// next fake client uses the random created public key
 	CreditStruct* newcstruct2 = new CreditStruct;
 	memset(newcstruct2, 0, sizeof(CreditStruct));
-	CClientCredits* newcredits2 = new CClientCredits(newcstruct2);
-	newcredits2->m_dwCryptRndChallengeFor = challenge;
+	CClientCredits newcredits2(newcstruct2);
+	newcredits2.m_dwCryptRndChallengeFor = challenge;
 
 	// if you uncomment one of the following lines the check has to fail
 	//abyPublicKey[5] = 34;
 	//m_abyMyPublicKey[5] = 22;
 	//pachSignature[5] = 232;
 
-	newcredits2->SetSecureIdent(abyPublicKey,PublicKeyLen);
+	newcredits2.SetSecureIdent(abyPublicKey,PublicKeyLen);
 
 	//now verify this signature - if it's true everything is fine
-	bool bResult = VerifyIdent(newcredits2,pachSignature,sigsize,0,0);
-
-	delete newcredits;
-	delete newcredits2;
-
-	return bResult;
+	return VerifyIdent(&newcredits2,pachSignature,sigsize,0,0);
 }
 #endif
 

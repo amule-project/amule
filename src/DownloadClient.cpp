@@ -555,15 +555,13 @@ void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 	if (!m_fHashsetRequesting) {
 		throw wxString(wxT("Received unsolicited hashset, ignoring it."));
 	}
-	CSafeMemFile* data = new CSafeMemFile((byte*)packet,size);
-	if (m_reqfile->LoadHashsetFromFile(data,true)) {
+	CSafeMemFile data((byte*)packet,size);
+	if (m_reqfile->LoadHashsetFromFile(&data,true)) {
 		m_fHashsetRequesting = 0;
 	} else {
 		m_reqfile->hashsetneeded = true;
-		delete data;	//mf
 		throw wxString(wxT("Corrupted or invalid hashset received"));
 	}
-	delete data;
 	SendStartupLoadReq();
 }
 
@@ -576,13 +574,12 @@ void CUpDownClient::SendBlockRequests()
 	if (m_DownloadBlocks_list.IsEmpty()) {
 		// Barry - instead of getting 3, just get how many is needed
 		uint16 count = 3 - m_PendingBlocks_list.GetCount();
-		Requested_Block_Struct** toadd = new Requested_Block_Struct*[count];
+		Requested_Block_Struct* toadd[count];
 		if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
 			for (int i = 0; i != count; i++) {
 				m_DownloadBlocks_list.AddTail(toadd[i]);
 			}
 		}
-		delete[] toadd;
 	}
 
 	// Barry - Why are unfinished blocks requested again, not just new ones?
