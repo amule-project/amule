@@ -1418,7 +1418,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	}
 
 	if (ctemp) {
-		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % type % Uint32_16toStringIP_Port(ctemp->GetIP(), ctemp->GetUserPort()));
+		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ctemp->GetIP(), ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}
 	#endif
