@@ -208,9 +208,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 {
-	CCommentDialogLst* dialog=new CCommentDialogLst(this,m_file);
-	dialog->ShowModal();
-	delete dialog;
+	CCommentDialogLst(this,m_file).ShowModal();
 }
 
 void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))

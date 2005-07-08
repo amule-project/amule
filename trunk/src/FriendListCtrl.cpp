@@ -285,9 +285,7 @@ void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event)) {
 }
 
 void CFriendListCtrl::OnAddFriend(wxCommandEvent& WXUNUSED(event)) {
-	CAddFriend* dialog2 = new CAddFriend(this);
-	dialog2->ShowModal();			
-	delete dialog2;		
+	CAddFriend(this).ShowModal();			
 }
 
 void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event)) {
@@ -298,9 +296,16 @@ void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event)) {
 		if (cur_friend->islinked) {
 			#warning EC: We need a reply packet with a full CUpDownClient
 			#ifndef CLIENT_GUI
-			CClientDetailDialog* dialog = new CClientDetailDialog(this, theApp.friendlist->FindFriend(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port)->GetLinkedClient());
-			dialog->ShowModal();
-			delete dialog;
+			CClientDetailDialog
+				(
+				this,
+				theApp.friendlist->FindFriend
+					(
+					cur_friend->m_hash,
+					cur_friend->m_ip,
+					cur_friend->m_port
+					)->GetLinkedClient()
+				).ShowModal();
 			#endif
 		}		
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
