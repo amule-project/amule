@@ -98,7 +98,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
 
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
-	EVT_BUTTON(ID_CANCEL,			PrefsUnifiedDlg::OnCancel)
 
 	// Browse buttons
 	EVT_BUTTON(IDC_SELSKINFILE,		PrefsUnifiedDlg::OnButtonBrowseSkin)
