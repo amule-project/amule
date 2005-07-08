@@ -1244,6 +1244,7 @@ CProxySocket(flags, proxyData, PROXY_CMD_CONNECT)
 
 bool CSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 {
+	wxMutexLocker lock(m_socketLocker);
 	bool ok;
 	
 	if (GetUseProxy() && ProxyIsCapableOf(PROXY_CMD_CONNECT)) {
@@ -1253,6 +1254,23 @@ bool CSocketClientProxy::Connect(wxIPaddress &address, bool wait)
 	}
 	
 	return ok;
+}
+
+CSocketClientProxy& CSocketClientProxy::Read(void *buffer, wxUint32 nbytes)
+{
+	wxMutexLocker lock(m_socketLocker);
+	CProxySocket::Read(buffer, nbytes);
+
+	return *this;
+	
+}
+
+CSocketClientProxy& CSocketClientProxy::Write(const void *buffer, wxUint32 nbytes)
+{
+	wxMutexLocker lock(m_socketLocker);
+	CProxySocket::Write(buffer, nbytes);
+	
+	return *this;
 }
 
 //------------------------------------------------------------------------------
@@ -1267,6 +1285,22 @@ CSocketServerProxy::CSocketServerProxy(
 wxSocketServer(address, flags)
 {
 	/* Maybe some day when socks6 is out... :) */
+}
+
+CSocketServerProxy& CSocketServerProxy::Read(void *buffer, wxUint32 nbytes)
+{
+	wxMutexLocker lock(m_socketLocker);
+	wxSocketServer::Read(buffer, nbytes);
+
+	return *this;
+}
+
+CSocketServerProxy& CSocketServerProxy::Write(const void *buffer, wxUint32 nbytes)
+{
+	wxMutexLocker lock(m_socketLocker);
+	wxSocketServer::Write(buffer, nbytes);
+
+	return *this;
 }
 
 //------------------------------------------------------------------------------
@@ -1302,6 +1336,7 @@ CDatagramSocketProxy::~CDatagramSocketProxy()
 wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 	wxSockAddress &addr, void* buf, wxUint32 nBytes )
 {
+	wxMutexLocker lock(m_socketLocker);
 	m_lastUDPOperation = UDP_OPERATION_RECV_FROM;
 	if (m_proxyTCPSocket.GetUseProxy()) {
 		if (m_udpSocketOk) {
@@ -1369,6 +1404,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 wxDatagramSocket &CDatagramSocketProxy::SendTo(
 	wxIPaddress &addr, const void* buf, wxUint32 nBytes )
 {
+	wxMutexLocker lock(m_socketLocker);
 	m_lastUDPOperation = UDP_OPERATION_SEND_TO;
 	m_lastUDPOverhead = PROXY_UDP_OVERHEAD_IPV4;
 	if (m_proxyTCPSocket.GetUseProxy()) {
