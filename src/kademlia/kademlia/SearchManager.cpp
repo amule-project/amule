@@ -297,23 +297,14 @@ bool CSearchManager::alreadySearchingFor(const CUInt128 &target)
 void CSearchManager::getWords(const wxString& str, WordList *words)
 {
 	int len = 0;
-	wxString current_word, wordtemp;
-	uint32 i;
+	wxString current_word;
 	wxStringTokenizer tkz(str, InvKadKeywordChars);
 	while (tkz.HasMoreTokens()) {
 		current_word = tkz.GetNextToken();
 		
-		if (len = current_word.Length() > 2) {
+		if ((len = current_word.Length()) > 2) {
 			KadTagStrMakeLower(current_word);
-			#warning terribly unoptimized... must be fixed.
-			for( i = 0; i < words->size(); i++) {
-				wordtemp = words->front();
-				words->pop_front();
-				if(  !wordtemp.IsSameAs(current_word)) {
-					// Back to the list
-					words->push_back(wordtemp);
-				}
-			}
+			words->remove(current_word);
 			words->push_back(current_word);
 		}
 	}
@@ -545,7 +536,7 @@ void CSearchManager::processResponse(const CUInt128 &target, uint32 fromIP, uint
 	}
 
 	if (s == NULL) {
-//		AddDebugLogLineM(false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResponse)"));
+		AddDebugLogLineM(false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResponse)"));
 		ContactList::const_iterator it2;
 		for (it2 = results->begin(); it2 != results->end(); ++it2) {
 			delete (*it2);

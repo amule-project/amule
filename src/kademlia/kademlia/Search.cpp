@@ -285,7 +285,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 					// Ignore if already tried
 					if (m_tried.count(distance) > 0) {
-						AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
+						// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
 						continue;
 					}
 

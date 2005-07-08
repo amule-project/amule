@@ -1342,25 +1342,32 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid)
 {
 	#ifdef __COMPILE_KAD__
+	
+	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
+	
 	//Safty measure to make sure we are looking for these sources
 	CPartFile* temp = GetFileByKadFileSearchID(searchID);
 	if( !temp ) {
+		AddDebugLogLineM(false, logKadSearch, wxT("This is not the file we're looking for..."));
 		return;
 	}
 	
 	//Do we need more sources?
 	if(!(!temp->IsStopped() && thePrefs::GetMaxSourcePerFile() > temp->GetSourceCount())) {
+		AddDebugLogLineM(false, logKadSearch, wxT("No more sources needed for this file"));
 		return;
 	}
 
 	uint32 ED2Kip = ENDIAN_NTOHL(ip);
 	
 	if (theApp.ipfilter->IsFiltered(ED2Kip)) {
+		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));
 		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2Kip));
 		return;
 	}
 	
 	if( (ip == Kademlia::CKademlia::getIPAddress() || ED2Kip == theApp.serverconnect->GetClientID()) && tcp == thePrefs::GetPort()) {
+		AddDebugLogLineM(false, logKadSearch, wxT("Trying to add myself as source, ignore"));
 		return;
 	}
 	
@@ -1369,11 +1376,12 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		case 1: {
 			//NonFirewalled users
 			if(!tcp) {
-				AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
+				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
 				return;
 			}
 			if (!IsGoodIP(ED2Kip,thePrefs::FilterLanIPs())) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ED2Kip));
+				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("%s got filtered")) % Uint32toStringIP(ED2Kip));
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2Kip));
 				return;
 			}
 			ctemp = new CUpDownClient(ip,tcp,0,0,temp,false, true);
@@ -1410,6 +1418,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	}
 
 	if (ctemp) {
+		AddDebugLogLineM(false, logKadSearch, wxT("Happily adding a source"));
 		CheckAndAddSource(temp, ctemp);
 	}
 	#endif

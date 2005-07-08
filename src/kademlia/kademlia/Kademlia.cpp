@@ -355,8 +355,13 @@ uint32 CKademlia::getIPAddress(void)
 
 void CKademlia::processPacket(const byte *data, uint32 lenData, uint32 ip, uint16 port)
 {
-	if( instance && instance->m_udpListener ) {
-		instance->m_udpListener->processPacket( data, lenData, ip, port);
+	try {
+		if( instance && instance->m_udpListener ) {
+			instance->m_udpListener->processPacket( data, lenData, ip, port);
+		}
+	} catch (...) {
+		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad processPacket"));
+		throw;
 	}
 }
 
