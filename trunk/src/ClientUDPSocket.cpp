@@ -106,35 +106,42 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	
 	if (!thePrefs::IsUDPDisabled()) {
 		m_sendLocker.Unlock();
-		switch (buffer[0]) {
-			case OP_EMULEPROT:
-				ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());	
-				break;
-			#ifdef __COMPILE_KAD__
-			case OP_KADEMLIAHEADER:
-				//theStats.AddDownDataOverheadKad(length);
-				Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
-				break;
-			case OP_KADEMLIAPACKEDPROT:
-			{
-				//theStats.AddDownDataOverheadKad(length);
-				uint32 nNewSize = length*10+300;
-				byte* unpack = new byte[nNewSize];
-				uLongf unpackedsize = nNewSize-2;
-				uint16 result = uncompress(unpack+2, &unpackedsize, buffer+2, length-2);
-				if (result == Z_OK) {
-					unpack[0] = OP_KADEMLIAHEADER;
-					unpack[1] = buffer[1];
-					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
-				} else {
-					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+		try {
+			switch (buffer[0]) {
+				case OP_EMULEPROT:
+					ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());	
+					break;
+				#ifdef __COMPILE_KAD__
+				case OP_KADEMLIAHEADER:
+					//theStats.AddDownDataOverheadKad(length);
+					Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+					break;
+				case OP_KADEMLIAPACKEDPROT: {
+					//theStats.AddDownDataOverheadKad(length);
+					uint32 nNewSize = length*10+300; // Should be enough...
+					byte* unpack = new byte[nNewSize];
+					try {
+						uLongf unpackedsize = nNewSize-2;
+						uint16 result = uncompress(unpack+2, &unpackedsize, buffer+2, length-2);
+						if (result == Z_OK) {
+							unpack[0] = OP_KADEMLIAHEADER;
+							unpack[1] = buffer[1];
+							Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+						} else {
+							AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+						}
+					} catch(...) {
+						AddDebugLogLineM(false, logClientKadUDP, wxT("Something wrong happened on a compressed Kad packet\n"));
+					}
+					delete[] unpack;		
+					break;
 				}
-				delete[] unpack;			
-				break;
+				#endif
+				default:
+					AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
 			}
-			#endif
-			default:
-				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
+		} catch (...) {
+			AddDebugLogLineM(false, logClientUDP, wxT("Unhanled exception on UDP socket receive!"));
 		}
 	} else {
 		Close();
