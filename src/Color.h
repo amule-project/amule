@@ -45,14 +45,14 @@ inline int G_BLEND(int a, int percentage)
 inline COLORREF RGB(int a, int b, int c)
 {
 	COLORREF result;
-	result = (a & 0xff) << 16;
+	result = (c & 0xff) << 16;
 	result |= (b & 0xff) << 8;
-	result |= (c & 0xff);
+	result |= (a & 0xff);
 	return result;
 }
 
 
-inline int GetRValue(COLORREF rgb)
+inline int GetBValue(COLORREF rgb)
 {
 	return (rgb >> 16) & 0xff;
 }
@@ -64,7 +64,7 @@ inline int GetGValue(COLORREF rgb)
 }
 
 
-inline int GetBValue(COLORREF rgb)
+inline int GetRValue(COLORREF rgb)
 {
 	return rgb & 0xff;
 }
