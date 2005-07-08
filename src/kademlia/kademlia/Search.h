@@ -64,17 +64,20 @@ public:
 	uint32 getSearchTypes() const {return m_type;}
 	void setSearchTypes( uint32 val ) {m_type = val;}
 	void setTargetID( CUInt128 val ) {m_target = val;}
-	uint32 getCount() const 
-	{ 
+
+	uint32 getAnswers() const {
 		if(bio2 == NULL) {
-			return m_count;
+			return m_answers;
 		} else if(bio3 == NULL) {
-			return m_count/2;
+			return m_answers/2;
 		} else {
-			return m_count/3;
+			return m_answers/3;
+			}
 		}
-	}
-	uint32 getCountSent() const {return m_countSent;}
+	uint32 getKadPacketSent() const {return m_kadPacketSent;}
+	uint32 getRequestAnswer() const {return m_totalRequestAnswers;}
+	void StorePacket();
+
 	CUInt128 m_keywordPublish; //Need to make this private...
 	byte packet1[1024*50];
 	byte packet2[1024*50];
@@ -125,10 +128,12 @@ private:
 	bool		m_stoping;
 	time_t		m_created;
 	uint32		m_type;
-	uint32		m_count;
-	uint32		m_countSent; //Used for gui reasons.. May not be needed later..
+	uint32		m_answers;
+	uint32		m_totalRequestAnswers;
+	uint32		m_kadPacketSent; //Used for gui reasons.. May not be needed later..
 	uint32		m_totalLoad;
 	uint32		m_totalLoadResponses;
+	uint32		m_lastResponse;
 
 	uint32		m_searchID;
 	CUInt128	m_target;
