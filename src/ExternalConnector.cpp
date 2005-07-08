@@ -51,7 +51,7 @@
 		#elif defined(HAVE_READLINE_H)
 			#include <readline.h>
 		#else /* !defined(HAVE_READLINE_H) */
-			extern char *readline ();
+			extern "C" char *readline (const char*);
 		#endif /* !defined(HAVE_READLINE_H) */
 	#else /* !defined(HAVE_READLINE_READLINE_H) */
 		/* no readline */
@@ -63,9 +63,7 @@
 		#elif defined(HAVE_HISTORY_H)
 			#include <history.h>
 		#else /* !defined(HAVE_HISTORY_H) */
-			extern void add_history ();
-			extern int write_history ();
-			extern int read_history ();
+			extern "C" void add_history (const char*);
 		#endif /* defined(HAVE_READLINE_HISTORY_H) */
 	#else
 		/* no history */
