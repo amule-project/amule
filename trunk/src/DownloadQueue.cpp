@@ -1384,7 +1384,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2Kip));
 				return;
 			}
-			ctemp = new CUpDownClient(ip,tcp,0,0,temp,false, true);
+			ctemp = new CUpDownClient(tcp,ip,0,0,temp,false, true);
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetServerIP(serverip);
 			ctemp->SetServerPort(serverport);
@@ -1418,7 +1418,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	}
 
 	if (ctemp) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Happily adding a source"));
+		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % type % Uint32_16toStringIP_Port(ctemp->GetIP(), ctemp->GetUserPort()));
 		CheckAndAddSource(temp, ctemp);
 	}
 	#endif
