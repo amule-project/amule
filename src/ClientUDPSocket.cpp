@@ -312,7 +312,7 @@ void CClientUDPSocket::OnSend(int nErrorCode)
 	}
 
 	wxMutexLocker lock(m_sendLocker);
-    m_bWouldBlock = false;
+	m_bWouldBlock = false;
 
     if(!controlpacket_queue.IsEmpty()) {
         theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
@@ -367,27 +367,50 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 	addr.Hostname(dwIP);
 	addr.Service(nPort);
 
-	if(Ok()) {
+	// We better clear this flag here, status might have been changed
+	// between the U.B.T. adition and the real sending happening later
+	m_bWouldBlock = false; 
+
+	bool sent = false;
+	
+	if (Ok()) {
+
 		CDatagramSocketProxy::SendTo(addr,lpBuf,nBufLen);
+
+		sent = !Error();
+		
+		if(!sent) {
+			uint32 error = LastError();
+			printf("UDP port returned a error: %i\n", error);
+			switch (error) {
+				case wxSOCKET_IOERR:
+					// Seems like wxDatagramSocket raises this error
+					// on some special events like invalid addresses or
+					// unreachable hosts. We'll just discard this packet 
+					// by pretending it was sent ok.
+					printf("WARNING! Discarded packet because I/O error on UDP socket\n");
+					sent = true;
+					break;				
+				case wxSOCKET_WOULDBLOCK:
+					// Socket is busy and can't send this data right now,
+					// so we just return not sent and set the wouldblock 
+					// flag so it gets resent when socket is ready.
+					m_bWouldBlock = true;
+					break;
+				default:
+					// An unknown error happened on send. This packet
+					// must better be deleted so we don't get into some
+					// infinite loop...
+					sent = true;
+					break;
+			}
+		}
 	} else {
-		// hmm. if there is no socket then what?
-		return false;
+		// If the socket is not ok, we can do nothing... just run for your life
+		// (and return true or this packet will be sent over and over again)
 	}
 
-	if(Error()) {
-		uint32 error = LastError();
-		printf("UDP port returned a error: %i\n", error);
-		if (error == wxSOCKET_WOULDBLOCK || error == wxSOCKET_IOERR) {
-			m_bWouldBlock = true;
-		} else {
-			// TODO:
-			// Something bad is happening here, I got an infinate loop
-			// due to an error 4 (wxSOCKET_INVSOCK), so ...
-			printf("Error in CClientUDPSocket: %u\n", error);
-		}
-		return false;
-	}
-	return true;
+	return sent;
 }
 
 
@@ -403,6 +426,6 @@ bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 	controlpacket_queue.AddTail(newpending);
 	m_sendLocker.Unlock();
 	
-    theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
+	theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 	return true;
 }
