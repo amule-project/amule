@@ -401,6 +401,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 					// An unknown error happened on send. This packet
 					// must better be deleted so we don't get into some
 					// infinite loop...
+					printf("WARNING! Discarded packet because unknown error on UDP socket\n");
 					sent = true;
 					break;
 			}
