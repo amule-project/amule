@@ -799,10 +799,9 @@ echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will
 echo "  be unstable, use much more cpu and ram. You have been warned, don't report bugs under this setup."
 fi
 echo
-if test x"$GDLIB_LIBS" = x""; then 
+if test x"$LIBPNG_VERSION" = x""; then
 echo ""
-echo " WARNING! gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found."
+echo " WARNING! libpng >= 1.2.0 not found."
 echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
-echo " See the above error on gd check for solutions."
 echo ""
 fi
