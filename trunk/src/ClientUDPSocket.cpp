@@ -119,10 +119,10 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				case OP_KADEMLIAPACKEDPROT: {
 					//theStats.AddDownDataOverheadKad(length);
 					uint32 nNewSize = length*10+300; // Should be enough...
-					byte* unpack = new byte[nNewSize];
+					byte unpack[nNewSize];
 					try {
 						uLongf unpackedsize = nNewSize-2;
-						uint16 result = uncompress(unpack+2, &unpackedsize, buffer+2, length-2);
+						uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
 						if (result == Z_OK) {
 							unpack[0] = OP_KADEMLIAHEADER;
 							unpack[1] = buffer[1];
@@ -133,7 +133,6 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 					} catch(...) {
 						AddDebugLogLineM(false, logClientKadUDP, wxT("Something wrong happened on a compressed Kad packet\n"));
 					}
-					delete[] unpack;		
 					break;
 				}
 				#endif
@@ -377,6 +376,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 	if(Error()) {
 		uint32 error = LastError();
+		printf("UDP port returned a error: %i\n", error);
 		if (error == wxSOCKET_WOULDBLOCK || error == wxSOCKET_IOERR) {
 			m_bWouldBlock = true;
 		} else {
