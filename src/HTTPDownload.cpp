@@ -59,7 +59,7 @@
 
 #ifndef AMULE_DAEMON 
 BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
-  EVT_BUTTON(ID_CANCEL,CHTTPDownloadThreadDlg::OnBtnCancel)
+  EVT_BUTTON(ID_HTTPCANCEL,CHTTPDownloadThreadDlg::OnBtnCancel)
 END_EVENT_TABLE()
 
 CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadThread* thread)
@@ -81,6 +81,7 @@ CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadTh
 
 void CHTTPDownloadThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
 {
+	printf("HTTP download cancelled\n");
  	m_parent_thread->Delete();
 }
 
