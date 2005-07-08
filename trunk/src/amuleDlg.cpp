@@ -720,8 +720,10 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 					_("Disconnect from current server"));
 				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-				tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
-				connLabel->SetLabel(server);
+				if (server.Cmp(wxT("Kad"))) {
+					tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
+					connLabel->SetLabel(server);
+				}
 				break;
 			}
 			case sConnecting:
@@ -745,8 +747,25 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		m_wndToolbar->Realize();
 		ShowUserCount();
 	} else if (connected) {
-		connLabel->SetLabel(server);
+		if (server.Cmp(wxT("Kad"))) {
+			connLabel->SetLabel(server);
+		}
 	}
+	#ifdef __COMPILE_KAD__
+	int index = connLabel->GetLabel().Find(wxT(" (Kad:"));
+	if (index == -1) {
+		index = connLabel->GetLabel().Length();
+	}
+	if (Kademlia::CKademlia::isRunning()) {
+		if (Kademlia::CKademlia::isFirewalled()) {
+			connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: ok)"));
+		} else {
+			connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: firewalled)"));
+		}
+	} else {
+		connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: off)"));
+	}
+	#endif
 	connLabel->GetParent()->Layout();
 	LastState = NewState;
 }

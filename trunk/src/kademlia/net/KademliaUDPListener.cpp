@@ -1120,7 +1120,7 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 	//Update con state only if something changes.
 	if( CKademlia::getPrefs()->getIPAddress() != firewalledIP ) {
 		CKademlia::getPrefs()->setIPAddress(firewalledIP);
-		theApp.amuledlg->ShowConnectionState(true, wxT("Kad (firewalled)"));
+		theApp.amuledlg->ShowConnectionState(true, wxT("Kad"));
 	}
 	CKademlia::getPrefs()->incRecheckIP();
 }

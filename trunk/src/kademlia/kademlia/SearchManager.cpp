@@ -324,7 +324,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHFILE_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHFILE_TOTAL || it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHFILE_TOTAL || it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -335,7 +335,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHKEYWORD_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHKEYWORD_TOTAL || it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHKEYWORD_TOTAL || it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -346,7 +346,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHNOTES_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHNOTES_TOTAL || it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHNOTES_TOTAL || it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -357,7 +357,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHFINDBUDDY_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHFINDBUDDY_TOTAL || it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHFINDBUDDY_TOTAL || it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -368,7 +368,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHFINDSOURCE_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHFINDSOURCE_TOTAL || it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHFINDSOURCE_TOTAL || it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -389,7 +389,7 @@ void CSearchManager::jumpStart(void)
 						CKademlia::getPrefs()->setPublish(true);
 						delete it->second;
 						m_searches.erase(it);
-					} else if ((it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (it->second->getCount() > SEARCHNODECOMP_TOTAL)) {
+					} else if ((it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (it->second->getAnswers() > SEARCHNODECOMP_TOTAL)) {
 						CKademlia::getPrefs()->setPublish(true);
 						delete it->second;
 						m_searches.erase(it);
@@ -402,7 +402,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHSTOREFILE_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHSTOREFILE_TOTAL || it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
+					} else if (it->second->getAnswers() > SEARCHSTOREFILE_TOTAL || it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -413,7 +413,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHSTOREKEYWORD_TOTAL || it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
+					} else if (it->second->getAnswers() > SEARCHSTOREKEYWORD_TOTAL || it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -424,7 +424,7 @@ void CSearchManager::jumpStart(void)
 					if (it->second->m_created + SEARCHSTORENOTES_LIFETIME < now) {
 						delete it->second;
 						m_searches.erase(it);
-					} else if (it->second->getCount() > SEARCHSTORENOTES_TOTAL || it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
+					} else if (it->second->getAnswers() > SEARCHSTORENOTES_TOTAL || it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
 						it->second->prepareToStop();
 					} else {
 						it->second->jumpStart();
@@ -517,7 +517,7 @@ void CSearchManager::processPublishResult(const CUInt128 &target, const uint8 lo
 		return;
 	}
 	
-	s->m_count++;
+	s->m_answers++;
 	if( loadResponse ) {
 		s->updateNodeLoad( load );
 	}
