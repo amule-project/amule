@@ -134,16 +134,6 @@ inline unsigned long StrToULong( const wxString& str ) {
 	return value;
 }
 
-inline bool NeedUTF8String(wchar_t* pwsz)
-{
-	while (*pwsz != L'\0')
-	{
-		if (*pwsz >= 0x100)
-			return true;
-		pwsz++;
-	}
-	return false;
-}
 
 inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 {
