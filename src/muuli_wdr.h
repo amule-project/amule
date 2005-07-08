@@ -153,7 +153,7 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 const int ID_ANIMATE = 10087;
 const int ID_HTTPDOWNLOADPROGRESS = 10088;
 const int IDC_DOWNLOADSIZE = 10089;
-const int ID_CANCEL = 5101;
+const int ID_HTTPCANCEL = 5101;
 wxSizer *downloadDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 const int ID_IPADDRESS = 10090;
