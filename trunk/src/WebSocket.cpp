@@ -96,8 +96,13 @@ void *CWSThread::Entry() {
 				}
 				s_mutex_wcThreads->Unlock();
 			} else {
+#if wxUSE_UNIX && !defined(HAVE_SCHED_YIELD)
+				// wxThread::Yield won't work, so just sleep some time...
+				Sleep(10);	// 10 milliseconds
+#else
 				// else "give the rest of the thread time slice to the system allowing the other threads to run."
 				Yield();
+#endif
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
