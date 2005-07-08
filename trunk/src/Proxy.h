@@ -516,6 +516,11 @@ public:
 		
 	/* Interface */
 	bool Connect(wxIPaddress &address, bool wait);
+	CSocketClientProxy& Read(void *buffer, wxUint32 nbytes);
+	CSocketClientProxy& Write(const void *buffer, wxUint32 nbytes);
+
+private:
+	wxMutex			m_socketLocker;
 };
 
 //------------------------------------------------------------------------------
@@ -532,8 +537,11 @@ public:
 		const CProxyData *proxyData = NULL);
 		
 	/* Interface */
+	CSocketServerProxy& Read(void *buffer, wxUint32 nbytes);
+	CSocketServerProxy& Write(const void *buffer, wxUint32 nbytes);
 	
 private:
+	wxMutex			m_socketLocker;
 };
 
 //------------------------------------------------------------------------------
@@ -581,8 +589,10 @@ private:
 	CProxySocket		m_proxyTCPSocket;
 	enum UDPOperation	m_lastUDPOperation;
 	unsigned int		m_lastUDPOverhead;
+	wxMutex			m_socketLocker;
 };
 
 /******************************************************************************/
 
 #endif /* __PROXY_H__ */
+
