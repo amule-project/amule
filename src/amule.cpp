@@ -1711,11 +1711,12 @@ void CamuleApp::AddLogLine(const wxString &msg)
 
 uint32 CamuleApp::GetPublicIP() const
 {
-	/*
-	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() )
-		return ntohl(Kademlia::CKademlia::getIPAddress());
-	*/
-	return m_dwPublicIP;
+	#ifdef __COMPILE_KAD__
+	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
+		return ENDIAN_NTOHL(Kademlia::CKademlia::getIPAddress());
+	}
+	#endif
+	return m_dwPublicIP;	
 }
 
 void CamuleApp::SetPublicIP(const uint32 dwIP){
@@ -1866,6 +1867,14 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 		AddLogLineM(true, _("Failed to download the version check file") );
 	}	
 	
+}
+
+bool CamuleApp::IsConnected() {
+	return (serverconnect->IsConnected()
+		#ifdef __COMPILE_KAD__
+		|| Kademlia::CKademlia::isConnected()
+		#endif
+		);
 }
 
 

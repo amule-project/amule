@@ -123,6 +123,8 @@ public:
 	bool IsFirewalled();
 	// Check if we should callback this client
 	bool DoCallback( CUpDownClient *client );
+	// Are we connected to at least one network?
+	bool IsConnected();
 	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
