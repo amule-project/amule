@@ -93,13 +93,13 @@ void CEC_Category_Tag::Create()
 	theApp.glob_prefs->CreateCategory(Name(), Path(), Comment(), Color(), Prio());
 }
 
-CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_level) : CECPacket(EC_OP_SET_PREFERENCES)
+CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_details, EC_DETAIL_LEVEL cat_details) : CECPacket(EC_OP_SET_PREFERENCES, pref_details)
 {
 	if (selection & EC_PREFS_CATEGORIES) {
 		if (theApp.glob_prefs->GetCatCount() > 1) {
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);
 			for (unsigned int i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
-				CEC_Category_Tag catTag(i, detail_level);
+				CEC_Category_Tag catTag(i, cat_details);
 				cats.AddTag(catTag);
 			}
 			AddTag(cats);
@@ -330,7 +330,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL detail_leve
 /**
  * Applies a boolean value from the set_preferences request
  *
- * @param use_tag	If true, an unset variable means "take from tag". If false, an unset variable means false.
+ * @param use_tag	If true, an unset variable means "leave unchanged". If false, an unset variable means false.
  * @param thisTab	The TAG that contains the TAG with a boolean value
  * @param applyFunc	The function to use for applying the value
  * @param tagName	The name of the TAG that holds the boolean value
@@ -366,7 +366,7 @@ void CEC_Prefs_Packet::Apply()
 	//
 	// webserver doesn't transmit all boolean values
 	//
-	bool use_tag = (GetDetailLevel() == EC_DETAIL_UPDATE);
+	bool use_tag = (GetDetailLevel() == EC_DETAIL_FULL);
 	
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_CONN_UL_CAP)) != NULL) {

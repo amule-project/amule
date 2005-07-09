@@ -145,8 +145,8 @@ class CEC_Category_Tag : public CECTag {
 
 class CEC_Prefs_Packet : public CECPacket {
  	public:
- 		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL);
- 		
+ 		CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL prefs_detail = EC_DETAIL_FULL, EC_DETAIL_LEVEL cat_details = EC_DETAIL_FULL);
+
  		void Apply();
 };
 
