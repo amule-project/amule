@@ -168,7 +168,7 @@ void CRoutingZone::readFile(void)
 				tcpPort = file.ReadUInt16();
 				type = file.ReadUInt8();
 				if(IsGoodIPPort(ENDIAN_NTOHL(ip),udpPort)) {
-					if( type < 2) {
+					if( type < 4) {
 						add(id, ip, udpPort, tcpPort, type);
 					}
 				}
@@ -258,7 +258,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 				retVal = true;
 				theApp.amuledlg->kademliawnd->ContactRef(c);
 			} else if (m_bin->getRemaining() > 0) {
-				c = new CContact(id, ip, port, tport, type);
+				c = new CContact(id, ip, port, tport);
 				retVal = m_bin->add(c);
 				if(retVal) {
 					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
@@ -270,7 +270,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 				retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
 			} else {
 				merge();
-				c = new CContact(id, ip, port, tport, type);
+				c = new CContact(id, ip, port, tport);
 				retVal = m_bin->add(c);
 				if(retVal) {
 					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
@@ -534,7 +534,7 @@ void CRoutingZone::onSmallTimer(void)
 		m_bin->getEntries(&entries);
 		for (it = entries.begin(); it != entries.end(); ++it) {
 			c = *it;
-			if ( c->getType() > 1) {
+			if ( c->getType() == 4) {
 				if (((c->m_expires > 0) && (c->m_expires <= now))) {
 					if(!c->inUse()) {
 						m_bin->remove(c);
@@ -543,7 +543,7 @@ void CRoutingZone::onSmallTimer(void)
 					continue;
 				}
 			}
-			if(c->m_expires == 0 && c->madeContact() == false) {
+			if(c->m_expires == 0) {
 				c->m_expires = now;
 			}
 		}
@@ -554,7 +554,7 @@ void CRoutingZone::onSmallTimer(void)
 			c = m_bin->getOldest();
 		} 
 		if( c != NULL ) {
-			if ( c->m_expires >= now || c->getType() == 2) {
+			if ( c->m_expires >= now || c->getType() == 4) {
 				m_bin->remove(c);
 				m_bin->m_entries.push_back(c);
 				c = NULL;
@@ -565,7 +565,7 @@ void CRoutingZone::onSmallTimer(void)
 	}
 	
 	if(c != NULL) {
-		c->setType(c->getType()+1);
+		c->checkingType();
 		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(c->getIPAddress(), c->getUDPPort()));
 		CKademlia::getUDPListener()->sendMyDetails(KADEMLIA_HELLO_REQ, c->getIPAddress(), c->getUDPPort());
 	}

@@ -141,7 +141,7 @@ void CSearch::go(void)
 	if (m_possible.empty()) {
 		CUInt128 distance(CKademlia::getPrefs()->getKadID());
 		distance.XOR(m_target);
-		CKademlia::getRoutingZone()->getClosestTo(1, m_target, distance, 50, &m_possible, true, true);
+		CKademlia::getRoutingZone()->getClosestTo(3, m_target, distance, 50, &m_possible, true, true);
 	}
 	
 	if (m_possible.empty()) {
@@ -164,7 +164,7 @@ void CSearch::go(void)
 		m_tried[it->first] = c;
 		m_possible.erase(it);
 		// Send request
-		c->setType(c->getType()+1);
+		c->checkingType();
 		CUInt128 check;
 		c->getClientID(&check);
 		sendFindValue(check, c->getIPAddress(), c->getUDPPort());
@@ -226,7 +226,7 @@ void CSearch::jumpStart(void)
 		return;
 	}
 
-	if (m_lastResponse + SEC(5) > time(NULL)) {
+	if (m_lastResponse + SEC(3) > time(NULL)) {
 		return;
 	}
 
@@ -234,8 +234,9 @@ void CSearch::jumpStart(void)
 		
 		CContact *c = m_possible.begin()->second;
 	
-		// Ignore if already tried
+		//Have we already tried to contact this node.
 		if (m_tried.count(m_possible.begin()->first) > 0) {
+			//Did we get a response from this node, if so, try to store or get info.
 			if(m_responded.count(m_possible.begin()->first) > 0) {
 				StorePacket();
 			}
@@ -244,7 +245,7 @@ void CSearch::jumpStart(void)
 			// Move to tried
 			m_tried[m_possible.begin()->first] = c;
 			// Send request
-			c->setType(c->getType()+1);
+			c->checkingType();
 			CUInt128 check;
 			c->getClientID(&check);
 			sendFindValue(check, c->getIPAddress(), c->getUDPPort());
@@ -285,6 +286,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 	CUInt128 fromDistance;
 
 	try {
+		//Find contact that is responding.
 		for (tried = m_tried.begin(); tried != m_tried.end(); ++tried) {
 
 			fromDistance = tried->first;
@@ -301,17 +303,21 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 					c->getClientID(&distance);
 					distance.XOR(m_target);
 
-					// Ignore if already tried
+					// Ignore this contact if already know him
+					if (m_possible.count(distance) > 0) {
+						// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
+						continue;
+					}
 					if (m_tried.count(distance) > 0) {
 						// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
 						continue;
 					}
-
+					
+					// Add to possible
+					m_possible[distance] = c;
+					
 					if (distance < fromDistance) {
-						// Add to possible
-						m_possible[distance] = c;						
 
-						// If in top 3 responses
 						bool top = false;
 						if (m_best.size() < ALPHA_QUERY) {
 							top = true;
@@ -320,6 +326,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							ContactMap::iterator it = m_best.end();
 							--it;
 							if (distance < it->first) {
+								// Rotate best list
 								m_best.erase(it);
 								m_best[distance] = c;
 								top = true;
@@ -330,15 +337,11 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 							// Add to tried
 							m_tried[distance] = c;
 							// Send request
-							c->setType(c->getType()+1);
+							c->checkingType();
 							CUInt128 check;
 							c->getClientID(&check);
 							sendFindValue(check, c->getIPAddress(), c->getUDPPort());
 						}
-					} else {
-						#warning John moved this... to the wrong place :)
-						// Add to possible
-						m_possible[distance] = c;
 					}
 				}
 
@@ -359,10 +362,8 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 
 void CSearch::StorePacket()
 {
-	if(m_possible.empty()) {
-		return;
-	}
-
+	wxASSERT(!m_possible.empty());
+	
 	CContact *from;
 	CUInt128 fromDistance;
 	ContactMap::const_iterator possible;

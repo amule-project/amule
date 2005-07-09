@@ -112,7 +112,7 @@ void CRoutingBin::setAlive(uint32 ip, uint16 port)
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
 		c = *it;
 		if ((ip == c->getIPAddress()) && (port == c->getUDPPort())) {
-			c->madeContact(true);
+			c->updateType();
 			break;
 		}
 	}
@@ -130,7 +130,7 @@ void CRoutingBin::setTCPPort(uint32 ip, uint16 port, uint16 tcpPort)
 		c = *it;
 		if ((ip == c->getIPAddress()) && (port == c->getUDPPort())) {
 			c->setTCPPort(tcpPort);
-			c->madeContact(true);
+			c->updateType();
 			// Move to the end of the list
 			remove(c);
 			m_entries.push_back(c);
@@ -198,11 +198,13 @@ uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const C
 	//Put results in sort order for target.
 	ContactList::const_iterator it;
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
-		CUInt128 targetDistance((*it)->m_clientID);
-		targetDistance.XOR(target);
-		(*result)[targetDistance] = *it;
-		if( inUse ) {
-			(*it)->incUse();	
+		if((*it)->getType() <= maxType) {
+			CUInt128 targetDistance((*it)->m_clientID);
+			targetDistance.XOR(target);
+			(*result)[targetDistance] = *it;
+			if( inUse ) {
+				(*it)->incUse();
+			}
 		}
 	}
 
@@ -216,25 +218,3 @@ uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const C
 
 	return result->size();
 }
-
-/*
-//Keep just in case needed at sometime.
-void CRoutingBin::dumpContents(void)
-{
-	CString line;
-	CString hex;
-	CString ipStr;
-	CString distance;
-	CContact *c;
-	ContactList::const_iterator it;
-	for (it = m_entries.begin(); it != m_entries.end(); it++)
-	{
-		c = *it;
-		c->m_clientID.toHexString(&hex);
-		c->getIPAddress(&ipStr);
-		c->getDistance(&distance);
-		line.Format(_T("\t%s\t%s (%ld)\tDistance: %s\r\n"), hex, ipStr, c->getUDPPort(), distance);
-		OutputDebugString(line);
-	}
-}
-*/

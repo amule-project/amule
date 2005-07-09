@@ -90,7 +90,6 @@ void CPrefs::init(const wxString& filename)
 	m_clientHash.setValue((const unsigned char*)thePrefs::GetUserHash());
 	m_ip			= 0;
 	m_ipLast		= 0;
-	m_recheckip		= 0;
 	m_firewalled	= 0;
 	m_findBuddy		= false;
 	m_kademliaUsers	= 0;

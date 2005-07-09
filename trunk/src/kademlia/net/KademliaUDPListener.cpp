@@ -87,7 +87,6 @@ void CKademliaUDPListener::bootstrap(const wxString& host, uint16 port)
 	}
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(ENDIAN_NTOHL(retVal), port));
 
-	#warning ENDIAN WARNING!
 	bootstrap(ENDIAN_NTOHL(retVal),port);
 }
 
@@ -436,7 +435,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 
 	// Get required number closest to target
 	ContactMap results;
-	CKademlia::getRoutingZone()->getClosestTo(0, target, distance, (int)type, &results);
+	CKademlia::getRoutingZone()->getClosestTo(2, target, distance, (int)type, &results);
 	uint16 count = (uint16)results.size();
 
 	// Write response
@@ -505,7 +504,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 			byte type = bio.ReadUInt8();
 			if(::IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
 				routingZone->add(id, ip, port, tport, type);
-				results->push_back(new CContact(id, ip, port, tport, type, target));
+				results->push_back(new CContact(id, ip, port, tport, target));
 			}
 		}
 	} catch(...) {
@@ -1135,7 +1134,6 @@ void CKademliaUDPListener::processFirewalledResponse2 (const byte *packetData, u
 
 	// Set contact to alive.
 	CKademlia::getRoutingZone()->setAlive(ip, port);
-
 	CKademlia::getPrefs()->incFirewalled();
 }
 
