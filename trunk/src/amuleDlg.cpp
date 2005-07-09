@@ -151,6 +151,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 {
 	is_safe_state = false;
 	
+	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
+	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
+	
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 
