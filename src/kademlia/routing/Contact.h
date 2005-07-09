@@ -40,6 +40,8 @@ there client on the eMule forum..
 #define __CONTACT_H__
 
 #include "../utils/UInt128.h"
+#include "../kademlia/Prefs.h"
+#include "../kademlia/Kademlia.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -57,8 +59,7 @@ public:
 
 	~CContact();
 	CContact();
-	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type);
-	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type, const CUInt128 &target);
+	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target = CKademlia::getPrefs()->getKadID());
 
 	void getClientID(CUInt128 *id) const;
 	CUInt128 getClientID() const {return m_clientID;}
@@ -81,11 +82,10 @@ public:
 	void setUDPPort(uint16 port);
 
 	byte getType(void) const;
-	void setType(byte type);
-
-	bool madeContact(void) const;
-	void madeContact(bool val);
-
+	
+	void updateType();
+	void checkingType();
+	
 	bool getGuiRefs(void) const { return m_guiRefs; }
 	void setGuiRefs(bool refs) { m_guiRefs = refs; }
 
@@ -99,18 +99,28 @@ public:
 			wxASSERT(0);
 		}
 	}
+
+	time_t getCreatedTime() const {return m_created;}
+
+	time_t getExpireTime() const {return m_expires;}
+
+	time_t getLastTypeSet() const {return m_lastTypeSet;}	
+	
 	
 private:
+
+	void initContact(); // Common initialization goes here
+
 	CUInt128	m_clientID;
 	CUInt128	m_distance;
 	uint32		m_ip;
 	uint16		m_tcpPort;
 	uint16		m_udpPort;
 	byte		m_type;
-	bool		m_madeContact;
 	bool		m_guiRefs;
 	time_t		m_lastTypeSet;
 	time_t		m_expires;
+	time_t		m_created;
 	uint32		m_inUse;
 };
 

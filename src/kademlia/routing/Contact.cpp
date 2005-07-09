@@ -38,7 +38,6 @@ there client on the eMule forum..
 
 //#include "stdafx.h"
 #include "Contact.h"
-#include "../kademlia/Prefs.h"
 #include "../kademlia/Kademlia.h"
 //#include "../utils/MiscUtils.h"
 #include "../io/ByteIO.h"
@@ -75,31 +74,10 @@ CContact::CContact()
 	m_ip = 0;
 	m_udpPort = 0;
 	m_tcpPort = 0;
-	m_type = 1;
-	m_expires = 0;
-	m_madeContact = false;
-	m_lastTypeSet = time(NULL);
-	m_guiRefs = 0;
-	m_inUse = 0;
+	initContact();
 }
 
-CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type)
-{
-	m_clientID = clientID;
-	CKademlia::getPrefs()->getKadID(&m_distance);
-	m_distance.XOR(clientID);
-	m_ip = ip;
-	m_udpPort = udpPort;
-	m_tcpPort = tcpPort;
-	m_type = 1; // Type; Set all new contacts to 1 to avoid spreading dead contacts..
-	m_expires = 0;
-	m_madeContact = false;
-	m_lastTypeSet = time(NULL);
-	m_guiRefs = 0;
-	m_inUse = 0;
-}
-
-CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, byte type, const CUInt128 &target)
+CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target)
 {
 	m_clientID = clientID;
 	m_distance.setValue(target);
@@ -107,12 +85,16 @@ CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 t
 	m_ip = ip;
 	m_udpPort = udpPort;
 	m_tcpPort = tcpPort;
-	m_type = 1; // Type; Set all new contacts to 1 to avoid spreading dead contacts..
+	initContact();
+}
+
+void CContact::initContact() 
+{
+	m_type = 3;
 	m_expires = 0;
-	m_madeContact = false;
 	m_lastTypeSet = time(NULL);
 	m_guiRefs = 0;
-	m_inUse = 0;
+	m_inUse = 0;	
 }
 
 void CContact::getClientID(CUInt128 *id) const
@@ -192,38 +174,34 @@ byte CContact::getType(void) const
 	return m_type;
 }
 
-void CContact::setType(byte type)
+void CContact::checkingType()
 {
-	if(type != 0 && time(NULL) - m_lastTypeSet < 10 ) {
+	if(time(NULL) - m_lastTypeSet < 10 || m_type == 4) {
 		return;
 	}
-	
-	if(type > 1 ) {
-		m_expires = time(NULL) + SEC(20);
-		m_type = 2; // Just in case..
-		theApp.amuledlg->kademliawnd->ContactRef(this);
-		return;
-	}
-	
+
 	m_lastTypeSet = time(NULL);
-	m_type = type;
-	if( m_type == 0 ) {
-		m_expires = time(NULL) + HR2S(2);
-	} else {
-		m_expires = time(NULL) + MIN2S(20);
-	}
+
+	m_expires = time(NULL) + MIN2S(2);
+	m_type++;
 	theApp.amuledlg->kademliawnd->ContactRef(this);
 }
 
-bool CContact::madeContact(void) const
+void CContact::updateType()
 {
-	return m_madeContact;
-}
-
-void CContact::madeContact(bool val)
-{
-	m_madeContact = val;
-	if( m_madeContact == true ) {
-		setType(0);
+	uint32 hours = (time(NULL)-m_created)/HR2S(1);
+	switch(hours) {
+		case 0:
+			m_type = 2;
+			m_expires = time(NULL) + HR2S(1);
+			break;
+		case 1:
+			m_type = 1;
+			m_expires = time(NULL) + (int)HR2S(1.5);
+			break;
+		default:
+			m_type = 0;
+			m_expires = time(NULL) + HR2S(2);
 	}
+	theApp.amuledlg->kademliawnd->ContactRef(this);
 }
