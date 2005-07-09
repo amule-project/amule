@@ -59,11 +59,11 @@
 
 #ifndef AMULE_DAEMON 
 BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
-  EVT_BUTTON(ID_HTTPCANCEL,CHTTPDownloadThreadDlg::OnBtnCancel)
+  EVT_BUTTON(ID_HTTPCANCEL, CHTTPDownloadThreadDlg::OnBtnCancel)
 END_EVENT_TABLE()
 
 CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadThread* thread)
-  : wxDialog(parent,1025,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
+  : wxDialog(parent, -1,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 {
 	downloadDlg(this,TRUE)->Show(this,TRUE);
 	
@@ -229,7 +229,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		
 		fclose(outfile);
 		
-	} catch (wxString& download_error) {
+	} catch (const wxString& download_error) {
 		if (outfile) {
 			fclose(outfile);
 			wxRemoveFile(m_tempfile);
