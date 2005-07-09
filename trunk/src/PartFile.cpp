@@ -1576,7 +1576,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					break;
 				}
 				case DS_LOWTOLOWIP: {
-					if ( cur_src->HasLowID() && theApp.serverconnect->IsLowID() ) {
+					if ( cur_src->HasLowID() && !theApp.DoCallback( cur_src ) ) {
 						// If we are almost maxed on sources,
 						// slowly remove these client to see 
 						// if we can find a better source.
@@ -1641,7 +1641,8 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_CONNECTING: 
 				case DS_TOOMANYCONNS: 
 				case DS_NONE: 
-				case DS_WAITCALLBACK: {							
+				case DS_WAITCALLBACK: 
+				case DS_WAITCALLBACKKAD:	{							
 					if (	theApp.IsConnected() &&
 						(	(!cur_src->GetLastAskedTime()) ||
 							(dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
