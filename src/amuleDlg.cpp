@@ -583,22 +583,11 @@ CamuleDlg::~CamuleDlg()
 
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
-	if ((!theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsConnecting())
-		#ifdef __COMPILE_KAD__
-		|| !Kademlia::CKademlia::isRunning()
-		#endif
-		) {
+	if ((!theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsConnecting())) {
 		//connect if not currently connected
 		AddLogLine(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
-			
-		#ifdef __COMPILE_KAD__
-		// Connect Kad also
-		if( thePrefs::GetNetworkKademlia() && !Kademlia::CKademlia::isRunning()) {
-			Kademlia::CKademlia::start();
-		}
-		#endif
-			
+					
 		ShowConnectionState(false);
 	} else {
 		//disconnect if currently connected
@@ -608,10 +597,17 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 		} else {
 			theApp.serverconnect->Disconnect();
 		}
-		#ifdef __COMPILE_KAD__
-		Kademlia::CKademlia::stop();
-		#endif
 	}
+
+	#ifdef __COMPILE_KAD__
+	// Connect Kad also
+	if( thePrefs::GetNetworkKademlia() && !Kademlia::CKademlia::isRunning()) {
+		Kademlia::CKademlia::start();
+	} else {
+		Kademlia::CKademlia::stop();
+	}
+	#endif
+
 }
 
 void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
