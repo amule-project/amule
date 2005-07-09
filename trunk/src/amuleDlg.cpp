@@ -757,7 +757,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 		index = connLabel->GetLabel().Length();
 	}
 	if (Kademlia::CKademlia::isRunning()) {
-		if (Kademlia::CKademlia::isFirewalled()) {
+		if (!Kademlia::CKademlia::isFirewalled()) {
 			connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: ok)"));
 		} else {
 			connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: firewalled)"));
