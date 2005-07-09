@@ -36,10 +36,7 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
 #include "Contact.h"
-#include "../kademlia/Kademlia.h"
-//#include "../utils/MiscUtils.h"
 #include "../io/ByteIO.h"
 #include "../net/KademliaUDPListener.h"
 #include "../kademlia/Defines.h"
