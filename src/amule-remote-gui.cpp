@@ -538,7 +538,7 @@ bool CPreferencesRem::LoadRemote()
 {
 	//
 	// override local settings with remote
-	CECPacket req(EC_OP_GET_PREFERENCES);
+	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_UPDATE);
 
 	// bring categories too
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
@@ -575,7 +575,7 @@ bool CPreferencesRem::LoadRemote()
 
 void CPreferencesRem::SendToRemote()
 {
-	CEC_Prefs_Packet pref_packet(m_exchange_send_selected_prefs, EC_DETAIL_FULL);
+	CEC_Prefs_Packet pref_packet(m_exchange_send_selected_prefs, EC_DETAIL_UPDATE, EC_DETAIL_FULL);
 	m_conn->Send(&pref_packet);
 }
 
