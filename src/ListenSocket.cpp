@@ -269,7 +269,8 @@ void CClientReqSocket::Safe_Delete()
 			m_client = NULL;
 		}
 		byConnected = ES_DISCONNECTED;
-		Close();
+		Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
+		Destroy();
 	}
 }
 

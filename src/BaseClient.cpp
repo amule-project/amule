@@ -347,8 +347,6 @@ void CUpDownClient::Safe_Delete()
 	if ( m_socket ) {
 		m_socket->SetClient( NULL );
 		m_socket->Safe_Delete();
-		// We're going down anyway....
-		m_socket->Destroy();
 		// Paranoia
 		m_socket = NULL;
 	}
@@ -984,7 +982,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	uint32 kadUDPPort = 0;
 	#ifdef __COMPILE_KAD__
 	if(Kademlia::CKademlia::isConnected()) {
-		kadUDPPort = thePrefs::GetUDPPort();
+		kadUDPPort = (uint32)thePrefs::GetEffectiveUDPPort();
 	}
 	#endif
 	CTag tagUdpPorts(CT_EMULE_UDPPORTS,
