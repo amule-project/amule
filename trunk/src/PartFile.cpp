@@ -1630,7 +1630,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					
 					// Give up to 1 min for UDP to respond..
 					// If we are within on min on TCP, do not try..
-					if (	theApp.serverconnect->IsConnected() &&
+					if (	theApp.IsConnected() &&
 						(	(!cur_src->GetLastAskedTime()) ||
 							(dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
 						cur_src->UDPReaskForDownload();
@@ -1642,7 +1642,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_TOOMANYCONNS: 
 				case DS_NONE: 
 				case DS_WAITCALLBACK: {							
-					if (	theApp.serverconnect->IsConnected() &&
+					if (	theApp.IsConnected() &&
 						(	(!cur_src->GetLastAskedTime()) ||
 							(dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
 						if (!cur_src->AskForDownload()) {
@@ -1694,7 +1694,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		// Kad source search		
 		if( GetMaxSourcePerFileUDP() > GetSourceCount()){
 			//Once we can handle lowID users in Kad, we remove the second IsConnected
-			if (theApp.downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::getTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::isConnected() && theApp.serverconnect->IsConnected() && !IsStopped()){ 
+			if (theApp.downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::getTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::isConnected() && theApp.IsConnected() && !IsStopped()){ 
 				//Kademlia
 				theApp.downloadqueue->SetLastKademliaFileRequest();
 				if (!GetKadFileSearchID()) {
