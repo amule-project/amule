@@ -24,6 +24,7 @@
 
 #include <wx/string.h>
 #include <list>
+#include <utility>
 
 #include "testcase.h"
 #include "testpartresult.h"
@@ -147,15 +148,17 @@ wxString StringFrom(const TYPE& value)
 }
 
 
+typedef std::pair<bool, wxString> ResultAndDesc;
 
-/*
- * Helper macros
- */
-#define TO_STRING_EQUALS_F(expected,actual)\
-  wxT("Expected : ") + StringFrom(expected) + wxT(" but Actual : ") + StringFrom(actual)
+template <typename TYPE_A, typename TYPE_B>
+ResultAndDesc CompareAndDesc(const TYPE_A& a, const TYPE_B& b)
+{
+	wxString desc = wxT("Expected '") + StringFrom(a) + 
+					wxT("' but got '") + StringFrom(b) + wxT("'");
+	
+	return ResultAndDesc(a == b, desc);
+}
 
-#define TO_STRING_EQUALS_S(expected,actual)\
-  StringFrom(expected) + wxT(" == ") + StringFrom(actual)
 
 
 /**
@@ -202,8 +205,11 @@ wxString StringFrom(const TYPE& value)
 /**
  * Same as ASSERT_EQUALS_M, but without an explicit message.
  */
-#define ASSERT_EQUALS(expected,actual)\
-	ASSERT_EQUALS_M(expected, actual, TO_STRING_EQUALS_S(expected,actual))
+#define ASSERT_EQUALS(expected, actual) \
+{ \
+	ResultAndDesc RaD = CompareAndDesc(expected, actual); \
+	ASSERT_TRUE_M(RaD.first, RaD.second); \
+}
 
 
 /**
