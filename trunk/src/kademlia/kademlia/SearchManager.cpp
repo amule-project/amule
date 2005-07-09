@@ -192,7 +192,7 @@ CSearch* CSearchManager::prepareFindKeywords(bool bUnicode, const wxString& keyw
 		ioe->Delete();
 		delete s;
 		throw strError;
-	} catch (wxString strException) {
+	} catch (const wxString& strException) {
 		throw strException;
 	} catch (...) {
 		delete s;

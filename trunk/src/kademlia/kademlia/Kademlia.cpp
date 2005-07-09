@@ -359,6 +359,9 @@ void CKademlia::processPacket(const byte *data, uint32 lenData, uint32 ip, uint1
 		if( instance && instance->m_udpListener ) {
 			instance->m_udpListener->processPacket( data, lenData, ip, port);
 		}
+	} catch (const wxString& error) {
+		AddDebugLogLineM(false, logKadMain, wxT("Exception on Kad processPacket: ") + error);
+		throw;		
 	} catch (...) {
 		AddDebugLogLineM(false, logKadMain, wxT("Unhandled exception on Kad processPacket"));
 		throw;
