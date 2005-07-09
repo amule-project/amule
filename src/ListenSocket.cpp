@@ -2211,7 +2211,7 @@ void CListenSocket::UpdateConnectionsStatus()
 	if( peakconnections < activeconnections ) {
 		peakconnections = activeconnections;
 	}
-	if( theApp.serverconnect->IsConnected() ) {
+	if( theApp.IsConnected() ) {
 		totalconnectionchecks++;
 		float percent;
 		percent = (float)(totalconnectionchecks-1)/(float)totalconnectionchecks;
