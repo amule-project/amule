@@ -470,7 +470,7 @@ void CSearchDlg::StartNewSearch()
 				wxString error;
 				if (search_type == KadSearch) {
 					#ifdef __COMPILE_KAD__
-					error = _("Impossible to make Kad search (invalid chars? keywords too short?)");
+					error = _("Impossible to make Kad search (invalid chars? keywords too short? not connected?)");
 					#else
 					error = _("Kad search is not available yet");
 					#endif
