@@ -74,8 +74,7 @@ public:
 	void	ClearED2KPublishInfo();
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();
-	// Not needed yet. Can be included once we add the converter
-	void	PublishNextTurn()	{ m_lastPublishED2KFlag=true;	}
+	void	PublishNextTurn()	{ m_lastPublishED2KFlag = true; }
 	
 	/* Kad Stuff */
 	void	Publish();
