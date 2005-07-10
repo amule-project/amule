@@ -2109,6 +2109,12 @@ void CListenSocket::OnAccept(int nErrorCode)
 			// Accept the connection and give it to the newly created socket
 			if (!AcceptWith(*newclient, false)) {
 				newclient->Safe_Delete();
+			} else {
+				#ifdef __DEBUG__
+				amuleIPV4Address addr;
+				newclient->GetPeer(addr);
+				AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
+				#endif
 			}
 		}
 	}
