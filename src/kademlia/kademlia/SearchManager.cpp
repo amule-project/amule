@@ -143,50 +143,44 @@ void CSearchManager::deleteSearch(CSearch* pSearch)
 	delete pSearch;
 }
 
-CSearch* CSearchManager::prepareFindKeywords(bool bUnicode, const wxString& keyword1, uint32 uSearchTermsSize, byte* pucSearchTermsData)
+CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CSafeMemFile* ed2k_packet)
 {
 	CSearch *s = new CSearch;
 	try {
 		s->m_type = CSearch::KEYWORD;
 
-		getWords(keyword1, &s->m_words);
+		// This will actually get the first word.
+		getWords(keyword, &s->m_words);
 		if (s->m_words.size() == 0) {
 			delete s;
 			throw wxString(_("Kademlia: search keyword too short"));
 		}
 
 		wxString wstrKeyword = s->m_words.front();
-		if (bUnicode) {
-			KadGetKeywordHash(wstrKeyword, &s->m_target);
-		} 
-		#if 0
-		// Kry - I removed it anyway. It's been a while since the first unicoded eMule version.
-		else {
-			// backward compatibility: use local ACP encoding
-			// TODO: to be removed in some months (when majority of nodes are Unicode compatible)
-			CStringA strA(wstrKeyword);
-			KadGetKeywordHash(strA, &s->m_target);
-		}
-		#endif
-
+		
+		printf("Keyword for search: %s\n",(const char*)unicode2char(wstrKeyword));
+		
+		// Kry - I just decided to assume everyone is unicoded
+		KadGetKeywordHash(wstrKeyword, &s->m_target);
+		
 		if (alreadySearchingFor(s->m_target)) {
 			delete s;
 			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
 
 		// Write complete packet
-		s->m_searchTerms = new CSafeMemFile();
+		s->m_searchTerms = ed2k_packet;
+		s->m_searchTerms->Seek(0,wxFromStart);
 		s->m_searchTerms->WriteUInt128(s->m_target);
-		if (uSearchTermsSize == 0) {
-			s->m_searchTerms->WriteUInt8(0);
-		} else {
+		if (s->m_searchTerms->Length() > (16 /*uint128*/ + 1 /*uint8*/)) { 
+			// There is actually ed2k search data
 			s->m_searchTerms->WriteUInt8(1);
-			s->m_searchTerms->Write(pucSearchTermsData, uSearchTermsSize);
-		}
+		} // 0 is default, no need for else branch
 
 		s->m_searchID = ++m_nextID;
 		m_searches[s->m_target] = s;
 		s->go();
+		
 	} catch (CIOException* ioe) {
 		wxString strError = wxString::Format(wxT("IO-Exception in %s: Error %u") , __FUNCTION__, ioe->m_cause);
 		ioe->Delete();

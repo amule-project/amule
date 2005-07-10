@@ -100,7 +100,7 @@ public:
 	void IncPublishedCount() { m_uPublishedCount++; }
 
 	bool AddRef(CKnownFile* pFile) {
-		if (std::find(m_aFiles.begin(), m_aFiles.end(), pFile) == m_aFiles.end()) {
+		if (std::find(m_aFiles.begin(), m_aFiles.end(), pFile) != m_aFiles.end()) {
 			wxASSERT(0);
 			return false;
 		}
@@ -123,6 +123,7 @@ public:
 	void RotateReferences(int iRotateSize) {
 		if ((int)m_aFiles.size() > iRotateSize) {
 			m_aFiles.insert(m_aFiles.end(), m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
+			m_aFiles.erase(m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
 			
 			/* I leave this code here for educational purposes.
 			#warning malloc!!! MALLOC!!!!!!!
@@ -243,6 +244,7 @@ void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
 		}
 		pPubKw->AddRef(pFile);
 	}
+	printf("New keywords size is %i\n",(int)m_lstKeywords.GetSize());
 }
 
 void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
@@ -503,13 +505,10 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());
 		//theApp.Yield();
 		if (toadd) {
-			if ( m_Files_map.find(toadd->GetFileHash()) == m_Files_map.end() ) {
+			if ( AddFile(toadd) ) {
 				AddDebugLogLineM(false, logKnownFiles, wxT("Added known file ") + fname + wxT(" to shares"));
 				toadd->SetFilePath(directory);
 				Notify_SharedFilesShowFile(toadd);
-				list_mut.Lock();
-				m_Files_map[toadd->GetFileHash()] = toadd;
-				list_mut.Unlock();
 			} else {
 				if (fname.Cmp(toadd->GetFileName())) {
 					AddDebugLogLineM(false, logKnownFiles, wxT("Warning: File '") + directory + fname + wxT("' already shared as '") + toadd->GetFileName() + wxT("'"));
@@ -538,6 +537,7 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 		m_Files_map[pFile->GetFileHash()] = pFile;		
 		/* Keywords to publish on Kad */
 		#ifdef __COMPILE_KAD__
+		printf("Adding keyword to publish for file %s\n",(const char*)unicode2char(pFile->GetFileName()));
 		m_keywords->AddKeywords(pFile);
 		#endif
 	}
@@ -929,14 +929,18 @@ void CSharedFileList::Publish()
 
 	if( Kademlia::CKademlia::isConnected() && ( !isFirewalled || ( isFirewalled && theApp.clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::getPublish()) { 
 		//We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
+
 		if( Kademlia::CKademlia::getTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
+
 			//We are not at the max simultaneous keyword publishes 
 			if (tNow >= m_keywords->GetNextPublishTime()) {
+
 				//Enough time has passed since last keyword publish
 
 				//Get the next keyword which has to be (re)-published
 				CPublishKeyword* pPubKw = m_keywords->GetNextKeyword();
 				if (pPubKw) {
+
 					//We have the next keyword to check if it can be published
 
 					//Debug check to make sure things are going well.
@@ -961,8 +965,7 @@ void CSharedFileList::Publish()
 								//As a side effect, this may help reduce people finding incomplete files in the network.
 								if( !aFiles[f]->IsPartFile() ) {
 									count++;
-									Kademlia::CUInt128 kadFileID(aFiles[f]->GetFileHash());
-									pSearch->addFileID(kadFileID);
+									pSearch->addFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash()));
 									if( count > 150 ) {
 										//We only publish up to 150 files per keyword publish then rotate the list.
 										pPubKw->RotateReferences(f);

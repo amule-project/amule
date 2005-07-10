@@ -725,18 +725,23 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	wxString ext = search_request->SearchExt();
 		
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
-	bool global_search = false;
-	switch(search_type) {
+	SearchType core_search_type = LocalSearch;
+	switch (search_type) {
 		case EC_SEARCH_GLOBAL:
-			global_search = true;
+			core_search_type = GlobalSearch;
+		case EC_SEARCH_KAD:
+			if (core_search_type != GlobalSearch) { // Not a global search obviously
+				core_search_type = KadSearch;
+			}
 		case EC_SEARCH_LOCAL:
-			if (!theApp.searchlist->StartNewSearch(0xffff, global_search, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
+			if (!theApp.searchlist->StartNewSearch(0xffff, core_search_type, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
 				// Not connected?
 				response = wxTRANSLATE("aMule is not connected! Cannot do search.");
 			} else {
 				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");			
 			}
 			break;
+			
 		case EC_SEARCH_WEB:
 				response = wxTRANSLATE("WebSearch from remote interface makes no sense.");
 			break;

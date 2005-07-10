@@ -199,7 +199,7 @@ void CUInt128::toBinaryString(wxString *str, bool trim) const
 }
 
 #if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	#define SWAP_ULONG(x) ENDIAN_SWAP_32(x) 
+	#define SWAP_ULONG(x) wxUINT32_SWAP_ALWAYS(x) 
 #else
 	// We don't swap on big endian archs.
 	#define SWAP_ULONG(x) x

@@ -1320,7 +1320,7 @@ void CKnownFile::ClearPriority() {
 void CKnownFile::SetFileName(const wxString& strmakeFilename)
 { 
 	CAbstractFile::SetFileName(strmakeFilename);
-	#ifdef CLIENT_GUI
+	#ifndef CLIENT_GUI
 		#ifdef __COMPILE_KAD__
 			wordlist.clear();
 			Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
