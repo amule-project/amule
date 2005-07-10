@@ -59,6 +59,7 @@
 #ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/SearchManager.h"
+#include "kademlia/kademlia/Search.h"
 #endif
 
 CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
@@ -292,6 +293,11 @@ void CSearchList::Clear()
 
 void CSearchList::RemoveResults(long nSearchID)
 {
+	#ifdef __COMPILE_KAD__
+	// A non-existant search id will just be ignored
+	Kademlia::CSearchManager::stopSearch(nSearchID,true);
+	#endif
+	
 	ResultMap::iterator it = m_Results.find( nSearchID );
 
 	if ( it != m_Results.end() ) {
@@ -305,7 +311,7 @@ void CSearchList::RemoveResults(long nSearchID)
 }
 
 
-bool CSearchList::StartNewSearch(long nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
+bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
 											const wxString& extension, uint32 min, uint32 max, uint32 availability)
 {
 	
@@ -315,7 +321,7 @@ bool CSearchList::StartNewSearch(long nSearchID, SearchType search_type, const w
 	}
 	
 	m_resultType = typeText;
-	m_CurrentSearch = nSearchID;
+	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
 
 	CSafeMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
 	
@@ -323,7 +329,8 @@ bool CSearchList::StartNewSearch(long nSearchID, SearchType search_type, const w
 		#ifdef __COMPILE_KAD__
 		if (Kademlia::CKademlia::isRunning()) {
 			// Kad search takes ownership of data and searchstring will get tokenized there
-			Kademlia::CSearchManager::prepareFindKeywords(searchString,ed2k_data);
+			Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(searchString,ed2k_data);
+			*(nSearchID) = search->getSearchID(); // The tab must be created with the Kad search id
 			return true;
 		} else {
 			delete ed2k_data;
@@ -719,7 +726,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	
 	temp.Seek(0, wxFromStart);
 	
-	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, m_CurrentSearch/*searchID*/ , 0, 0, wxEmptyString, true);
+	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
 	AddToList(tempFile);
 	
 }

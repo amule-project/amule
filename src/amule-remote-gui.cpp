@@ -1377,7 +1377,7 @@ CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchF
 	m_curr_search = -1;
 }
 
-bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString &searchString,
+bool CSearchListRem::StartNewSearch(uint32* nSearchID, bool global_search, wxString &searchString,
 	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
 {
 	CECPacket search_req(EC_OP_SEARCH_START);
@@ -1386,7 +1386,7 @@ bool CSearchListRem::StartNewSearch(long nSearchID, bool global_search, wxString
 		extension, availability, min_size, max_size));
 		
 	m_conn->Send(&search_req);
-	m_curr_search = nSearchID;
+	m_curr_search = *(nSearchID); // No kad remote search yet.
 	
 	Flush();
 	
