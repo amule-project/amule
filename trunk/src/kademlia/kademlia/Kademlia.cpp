@@ -449,9 +449,9 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));
 	
-	printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
+	//printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
 	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
-	otherfunctions::DumpMem(Output,16);
+	//otherfunctions::DumpMem(Output,16);
 	free(ansi_buffer);
 	
 	pKadID->setValueBE(Output);
