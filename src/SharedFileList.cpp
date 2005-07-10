@@ -122,8 +122,14 @@ public:
 
 	void RotateReferences(int iRotateSize) {
 		if ((int)m_aFiles.size() > iRotateSize) {
+			#ifdef __DEBUG__
+			size_t old_size = m_aFiles.size();
+			#endif
 			m_aFiles.insert(m_aFiles.end(), m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
 			m_aFiles.erase(m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
+			#ifdef __DEBUG__
+			wxASSERT(old_size == m_aFiles.size());
+			#endif			
 			
 			/* I leave this code here for educational purposes.
 			#warning malloc!!! MALLOC!!!!!!!
