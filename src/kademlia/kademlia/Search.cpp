@@ -788,6 +788,8 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 		m_answers++;
 		theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
+	} else {
+		printf("Not adding search results: not interested\n");
 	}
 	
 	// Free tags memory

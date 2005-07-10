@@ -555,7 +555,7 @@ void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16
 	}
 
 	if (s == NULL) {
-//		AddDebugLogLineM (false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResult)"));
+		AddDebugLogLineM (false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResult)"));
 		TagList::const_iterator it;
 		for (it = info->begin(); it != info->end(); it++) {
 			delete *it;
