@@ -271,7 +271,7 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 {
 	Init();
 	
-	m_strFileName = fileLink->GetName();
+	SetFileName(fileLink->GetName());
 	SetFileSize(fileLink->GetSize());
 	m_abyFileHash = fileLink->GetHashKey();
 

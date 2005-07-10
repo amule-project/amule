@@ -48,6 +48,12 @@ namespace Kademlia {
 	class CUInt128;
 }
 
+enum SearchType {
+	LocalSearch,
+	GlobalSearch,
+	KadSearch
+};
+
 class CGlobalSearchThread : public wxThread 
 {	
 public:
@@ -127,13 +133,14 @@ public:
 	void	Clear();
 
 	bool	StartNewSearch(long nSearchID, 
-								bool global_search, 
+								SearchType search_type, 
 								const wxString& searchString, 
 								const wxString& typeText,
 								const wxString& extension, 
 								uint32 min, 
 								uint32 max, 
 								uint32 availability);
+
 	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, const wxString& pszDirectory);
 	void	ProcessSearchanswer(const char* packet, uint32 size, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);
 	void	ProcessUDPSearchanswer(const CSafeMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);	
@@ -166,8 +173,8 @@ public:
 	
 private:
 
-	CPacket *CreateSearchPacket(const wxString &searchString, const wxString& typeText,
-				const wxString &extension, uint32 min, uint32 max, uint32 avaibility);
+	CSafeMemFile *CreateED2KSearchData(const wxString &searchString, const wxString& typeText,
+				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding);
 
 	CPacket* m_searchpacket;
 

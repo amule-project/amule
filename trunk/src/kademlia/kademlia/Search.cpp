@@ -546,8 +546,14 @@ void CSearch::StorePacket()
 			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
+		case NODECOMPLETE:
+			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: NodeComplete"));
+			break;
+		case NODE:
+			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node"));
+			break;
 		default:
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Unknown"));
+			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result type: Unknown (%i)"),m_type));
 			break;
 	}
 }
@@ -975,6 +981,9 @@ void CSearch::PreparePacket(void)
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(fileid);
+				if (!file) {
+					printf("File not found on shared when publishing packet!\n");
+				}
 				PreparePacketForTags( bio3, file );
 			}
 		}
@@ -990,6 +999,9 @@ void CSearch::PreparePacket(void)
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(fileid);
+				if (!file) {
+					printf("File not found on shared when publishing packet!\n");
+				}
 				PreparePacketForTags( bio2, file );
 			}
 		}
@@ -1005,6 +1017,9 @@ void CSearch::PreparePacket(void)
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(fileid);
+				if (!file) {
+					printf("File not found on shared when publishing packet!\n");
+				}
 				PreparePacketForTags( bio1, file );
 			}
 		}

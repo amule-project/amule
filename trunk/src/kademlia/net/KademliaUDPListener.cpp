@@ -622,13 +622,6 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CSafeMemFile& bio,
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = SSearchTerm::MetaTag;
 		pSearchTerm->tag = new Kademlia::CTagStr(strTagName, strValue);
-		/* Not needed debug code.
-		if (lenTagName == 1) {
-			TRACE(" Tag%02x=\"%ls\"", strTagName[0], strValue);
-		} else {
-			TRACE(" \"%s\"=\"%ls\"", strTagName, strValue);
-		}
-		*/
 		return pSearchTerm;
 	}
 	else if (op == 0x03) { // Min/Max
@@ -661,14 +654,6 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CSafeMemFile& bio,
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = _aOps[mmop].eSearchTermOp;
 		pSearchTerm->tag = new Kademlia::CTagUInt32(strTagName, uValue);
-
-		/* Debug.
-		if (lenTagName == 1) {
-			TRACE(" Tag%02x%s%u", (BYTE)strTagName[0], _aOps[mmop].pszOp, uValue);
-		} else {
-			TRACE(" \"%s\"%s%u", strTagName, _aOps[mmop].pszOp, uValue);
-		}
-		*/
 
 		return pSearchTerm;
 	} else{

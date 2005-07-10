@@ -439,7 +439,7 @@ CIndexed *CKademlia::getIndexed(void)
 // Global function.
 
 #include "../../CryptoPP_Inc.h"
-
+#include "StringFunctions.h"
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
@@ -447,10 +447,11 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 	CryptoPP::MD4 md4_hasher; 	
 	
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
-	char* ansi_buffer = strdup((const char*)rstrKeyword.c_str());
+	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));
 	
+	printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
 	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
-	
+	otherfunctions::DumpMem(Output,16);
 	free(ansi_buffer);
 	
 	pKadID->setValueBE(Output);

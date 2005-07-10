@@ -56,6 +56,11 @@
 #include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #endif
 
+#ifdef __COMPILE_KAD__
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/SearchManager.h"
+#endif
+
 CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	: wxThread(wxTHREAD_DETACHED)
 {
@@ -300,11 +305,11 @@ void CSearchList::RemoveResults(long nSearchID)
 }
 
 
-bool CSearchList::StartNewSearch(long nSearchID, bool global_search, const wxString& searchString, const wxString& typeText, 
+bool CSearchList::StartNewSearch(long nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
 											const wxString& extension, uint32 min, uint32 max, uint32 availability)
 {
 	
-	if(!theApp.serverconnect->IsConnected()) {
+	if(!theApp.IsConnected()) {
 		// Failed!
 		return false;
 	}
@@ -312,11 +317,40 @@ bool CSearchList::StartNewSearch(long nSearchID, bool global_search, const wxStr
 	m_resultType = typeText;
 	m_CurrentSearch = nSearchID;
 
-	CPacket* searchpacket = CreateSearchPacket(searchString, typeText, extension, min, max, availability);
+	CSafeMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
+	
+	if (search_type == KadSearch) {
+		#ifdef __COMPILE_KAD__
+		if (Kademlia::CKademlia::isRunning()) {
+			// Kad search takes ownership of data and searchstring will get tokenized there
+			Kademlia::CSearchManager::prepareFindKeywords(searchString,ed2k_data);
+			return true;
+		} else {
+			delete ed2k_data;
+			return false;
+		}
+		#else
+		delete ed2k_data;
+		return false;
+		#endif
+	}
+	
+	// This is ed2k search...
+	
+	if(!theApp.serverconnect->IsConnected()) {
+		// Failed!
+		delete ed2k_data;
+		return false;
+	}
+	
+	// Packet takes ownership of data
+	CPacket* searchpacket = new CPacket(ed2k_data);
+	searchpacket->SetOpCode(OP_SEARCHREQUEST);
+	
 
 	theApp.statistics->AddUpDataOverheadServer(searchpacket->GetPacketSize());
 	// Send packet. If it's not a global search, delete it after sending.
-	theApp.serverconnect->SendPacket(searchpacket, !global_search ); 
+	theApp.serverconnect->SendPacket(searchpacket, (search_type == LocalSearch) ); 
 	
 	wxASSERT(m_searchthread == NULL);
 	
@@ -326,7 +360,7 @@ bool CSearchList::StartNewSearch(long nSearchID, bool global_search, const wxStr
 	
 	ClearThreadData();
 	
-	if ( global_search ) {
+	if ( search_type == GlobalSearch ) {
 		m_searchpacket = searchpacket;
 	}
 	
@@ -554,8 +588,8 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CPacket* CSearchList::CreateSearchPacket(const wxString& searchString, const wxString& typeText,
-				const wxString &extension, uint32 min, uint32 max, uint32 avaibility)
+CSafeMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, const wxString& typeText,
+				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding)
 {
 	// Count the number of used parameters
 	int parametercount = 0;
@@ -567,7 +601,14 @@ CPacket* CSearchList::CreateSearchPacket(const wxString& searchString, const wxS
 	if ( !extension.IsEmpty() )	++parametercount;
 	
 	// Must write parametercount - 1 parameter headers
-	CSafeMemFile data(100);
+	CSafeMemFile* data =  new CSafeMemFile(100);
+	
+	if (kad_padding) {
+		// We need to make some room for the keyword hash
+		data->WriteUInt128((uint32)0);
+		// and the search type (0/1 if there is ed2k data or not)		
+		data->WriteUInt8(0);
+	}
 	
 	const byte stringParameter = 1;
 	const byte typeParameter = 2;
@@ -581,56 +622,54 @@ CPacket* CSearchList::CreateSearchPacket(const wxString& searchString, const wxS
 	const uint32 maxNemonic = 0x02000102;
 	const uint32 avaibilityNemonic = 0x15000101;
 	
-	for ( int i = 0; i < parametercount - 1; ++i )
-		data.WriteUInt16(andParameter);
+	for ( int i = 0; i < parametercount - 1; ++i ) {
+		data->WriteUInt16(andParameter);
+	}
 
 	// Packet body:
 	if ( !searchString.IsEmpty() ) {
-		data.WriteUInt8( stringParameter ); // Search-String is a string parameter type
-		data.WriteString( searchString, utf8strRaw );   // Write the value of the string
+		data->WriteUInt8( stringParameter ); // Search-String is a string parameter type
+		data->WriteString( searchString, utf8strRaw );   // Write the value of the string
 	}
 	
 	if ( !typeText.IsEmpty() ) {
-		data.WriteUInt8( typeParameter );		// Search-Type is a type parameter type
-		data.WriteString( typeText ); 			// Write the parameter
-		data.Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
+		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
+		data->WriteString( typeText ); 			// Write the parameter
+		data->Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
 	}
 	
 	if ( min > 0 ) {
-		data.WriteUInt8( numericParameter );	// Write the parameter type
-		data.WriteUInt32( min );		// Write the parameter
-		data.WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( min );		// Write the parameter
+		data->WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
 	}
 	
 	if ( max > 0 ) {
-		data.WriteUInt8( numericParameter );	// Write the parameter type
-		data.WriteUInt32( max );		// Write the parameter
-		data.WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( max );		// Write the parameter
+		data->WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
 	}
 	
 	if ( avaibility > 0 ) {
-		data.WriteUInt8( numericParameter );	// Write the parameter type
-		data.WriteUInt32( avaibility );	// Write the parameter
-		data.WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
+		data->WriteUInt8( numericParameter );	// Write the parameter type
+		data->WriteUInt32( avaibility );	// Write the parameter
+		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
 	}
 	
 	if ( !extension.IsEmpty() ) {
-		data.WriteUInt8( stringParameter );	// Write the parameter type
-		data.WriteString( extension );			// Write the parameter
-		data.Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+		data->WriteUInt8( stringParameter );	// Write the parameter type
+		data->WriteString( extension );			// Write the parameter
+		data->Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
 	}
 
-	CPacket* packet = new CPacket(&data);
-	packet->SetOpCode(OP_SEARCHREQUEST);
-	
-	return packet;
+	return data;
 }
 
 void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
 										const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
 {
 
-	#if wxUSE_UNICODE
+#if wxUSE_UNICODE
 	EUtf8Str eStrEncode = utf8strRaw;
 #else
 	EUtf8Str eStrEncode = utf8strNone;

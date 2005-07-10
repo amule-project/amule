@@ -221,6 +221,8 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 		case 0: 
 		// Global Search
 		case 1:
+		// Kad Search
+		case 2:
 			// We musn't search more often than once every 2 secs
 			if ((GetTickCount() - m_last_search_time) > 2000) {
 				m_last_search_time = GetTickCount();
@@ -233,12 +235,12 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 			break;
 
 		// Web Search (FileHash.com)
-		case 2:
-    		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
+		case 3:
+			theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
 			break;
 
 		// Web Search (Jugle.net)
-		case 3:
+		case 4:
     		theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsJugle));
 			break;
 
@@ -453,18 +455,43 @@ void CSearchDlg::StartNewSearch()
 		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
-	bool globalsearch = CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection() == 1;
+	SearchType search_type = KadSearch;
 	
-	if (!theApp.searchlist->StartNewSearch(m_nSearchID, globalsearch, searchString, typeText, extension, min, max, availability)) {
-		// Search failed (not connected?)
-		wxMessageDialog* dlg = new wxMessageDialog(this, wxString(_("You are not connected to a server!")), wxString(_("Not Connected")), wxOK|wxCENTRE|wxICON_INFORMATION);
-		dlg->ShowModal();
-		delete dlg;
-		FindWindow(IDC_STARTS)->Enable();
-		FindWindow(IDC_SDOWNLOAD)->Enable();
-		FindWindow(IDC_CANCELS)->Disable();
-		return;
-	}	
+	switch (CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection()) {
+		case 0: // Local Search	
+			search_type = LocalSearch;
+		case 1: // Global Search
+			if (search_type != LocalSearch) {
+				search_type = GlobalSearch;
+			}
+		case 2: // Kad search
+			if (!theApp.searchlist->StartNewSearch(m_nSearchID, search_type, searchString, typeText, extension, min, max, availability)) {
+				// Search failed (not connected?)
+				wxString error;
+				if (search_type == KadSearch) {
+					#ifdef __COMPILE_KAD__
+					error = _("Impossible to make Kad search (invalid chars? keywords too short?)");
+					#else
+					error = _("Kad search is not available yet");
+					#endif
+				} else {
+					error = _("You are not connected to a server!");
+				}
+				wxMessageDialog* dlg = new wxMessageDialog(this, error, wxString(_("Search not possible")), wxOK|wxCENTRE|wxICON_INFORMATION);
+				dlg->ShowModal();
+				delete dlg;
+				FindWindow(IDC_STARTS)->Enable();
+				FindWindow(IDC_SDOWNLOAD)->Enable();
+				FindWindow(IDC_CANCELS)->Disable();
+				return;
+			}
+			break;
+		default:
+			// Should never happen
+			wxASSERT(0);
+			break;
+	}
+		
 	
 	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
 }

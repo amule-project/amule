@@ -249,7 +249,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		
 		// Set initial values
 		knownfile->m_strFilePath = current.m_path;
-		knownfile->m_strFileName = current.m_name;
+		knownfile->SetFileName(current.m_name);
 		
 		knownfile->SetFileSize( file.GetLength() );
 		knownfile->date = GetLastModificationTime( filename );
@@ -422,4 +422,3 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 	return true;
 }
-
