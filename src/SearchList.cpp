@@ -608,6 +608,11 @@ CSafeMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, co
 		data->WriteUInt128((uint32)0);
 		// and the search type (0/1 if there is ed2k data or not)		
 		data->WriteUInt8(0);
+		// Now the search string
+		data->WriteUInt8( 0x01 ); // Search-String is a string parameter type
+		data->WriteString( searchString, utf8strRaw );   // Write the value of the string
+		// Nothing more is supported on Kad right now
+		return data;
 	}
 	
 	const byte stringParameter = 1;
@@ -714,7 +719,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	
 	temp.Seek(0, wxFromStart);
 	
-	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
+	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, m_CurrentSearch/*searchID*/ , 0, 0, wxEmptyString, true);
 	AddToList(tempFile);
 	
 }
