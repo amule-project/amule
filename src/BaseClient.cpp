@@ -1288,7 +1288,6 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	// Kad reviewed
-	
 	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
 		if (!(m_socket && m_socket->IsConnected())) {
 			if(Disconnected(wxT("Too many connections"))) {
@@ -1304,6 +1303,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	if (uClientIP == 0 && !HasLowID()) {
 		uClientIP = ENDIAN_NTOHL(m_nUserIDHybrid);
 	}
+	
 	if (uClientIP) {
 		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
 		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
@@ -1469,6 +1469,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		amuleIPV4Address tmp;
 		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
+		AddDebugLogLineM(false, logClient, wxT("Trying to connect to ") + Uint32_16toStringIP_Port(GetConnectIP(),GetUserPort()));
 		m_socket->Connect(tmp, false);
 		// We should send hello packets AFTER connecting!
 		// so I moved it to OnConnect
