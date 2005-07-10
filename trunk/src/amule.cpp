@@ -1625,6 +1625,13 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	
+	#ifdef __COMPILE_KAD__
+	// Stop Kad if it's running
+	if (Kademlia::CKademlia::isRunning()) {
+		Kademlia::CKademlia::stop();
+	}
+	#endif
+	
 	// Kry - Save the sources seeds on app exit
 	if (thePrefs::GetSrcSeedsOn()) {
 		downloadqueue->SaveSourceSeeds();
