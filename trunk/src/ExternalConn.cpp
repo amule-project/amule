@@ -667,7 +667,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_SEARCHFILE> queryitems(request);
 
-	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
+	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffffffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -684,7 +684,7 @@ CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 	CECPacket *response = new CECPacket(
 		theApp.searchlist->SearchInProgress() ? EC_OP_SEARCH_RESULTS : EC_OP_SEARCH_RESULTS_DONE);
 
-	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffff));
+	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffffffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -718,7 +718,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	wxString response;
 	
 	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
-	theApp.searchlist->RemoveResults(0xffff);
+	theApp.searchlist->RemoveResults(0xffffffff);
 
 	wxString text = search_request->SearchText();
 	wxString file_type = search_request->SearchFileType();
@@ -733,15 +733,16 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			if (core_search_type != GlobalSearch) { // Not a global search obviously
 				core_search_type = KadSearch;
 			}
-		case EC_SEARCH_LOCAL:
-			if (!theApp.searchlist->StartNewSearch(0xffff, core_search_type, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
+		case EC_SEARCH_LOCAL: {
+			uint32 search_id = 0xffffffff;
+			if (!theApp.searchlist->StartNewSearch(&search_id, core_search_type, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
 				// Not connected?
 				response = wxTRANSLATE("aMule is not connected! Cannot do search.");
 			} else {
 				response = wxTRANSLATE("Search in progress. Refetch results in a moment!");			
 			}
 			break;
-			
+		}
 		case EC_SEARCH_WEB:
 				response = wxTRANSLATE("WebSearch from remote interface makes no sense.");
 			break;

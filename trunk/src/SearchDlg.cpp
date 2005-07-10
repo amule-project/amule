@@ -377,11 +377,8 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 
 void CSearchDlg::StartNewSearch()
 {
-	static uint16 m_nSearchID = 0;
+	static uint32 m_nSearchID = 0;
 	m_nSearchID++;
-	
-	// 0xffff is reserved for websearch
-	m_nSearchID %= 0xfffe; 
 	
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_SDOWNLOAD)->Disable();
@@ -457,6 +454,8 @@ void CSearchDlg::StartNewSearch()
 
 	SearchType search_type = KadSearch;
 	
+	uint32 real_id = m_nSearchID;
+	
 	switch (CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection()) {
 		case 0: // Local Search	
 			search_type = LocalSearch;
@@ -465,7 +464,7 @@ void CSearchDlg::StartNewSearch()
 				search_type = GlobalSearch;
 			}
 		case 2: // Kad search
-			if (!theApp.searchlist->StartNewSearch(m_nSearchID, search_type, searchString, typeText, extension, min, max, availability)) {
+			if (!theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability)) {
 				// Search failed (not connected?)
 				wxString error;
 				if (search_type == KadSearch) {
@@ -491,9 +490,8 @@ void CSearchDlg::StartNewSearch()
 			wxASSERT(0);
 			break;
 	}
-		
 	
-	CreateNewTab(searchString + wxT(" (0)"), m_nSearchID);
+	CreateNewTab(searchString + wxT(" (0)"), real_id);
 }
 
 

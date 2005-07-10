@@ -132,7 +132,7 @@ public:
 	~CSearchList();
 	void	Clear();
 
-	bool	StartNewSearch(long nSearchID, 
+	bool	StartNewSearch(uint32* nSearchID, 
 								SearchType search_type, 
 								const wxString& searchString, 
 								const wxString& typeText,
