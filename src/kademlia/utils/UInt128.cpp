@@ -121,12 +121,15 @@ CUInt128& CUInt128::setValue(uint32 value)
 	return *this;
 }
 
+
+#define SWAP_ULONG_LE(x) wxUINT32_SWAP_ON_LE(x) 
+
 CUInt128& CUInt128::setValueBE(const byte *valueBE)
 {
-	setValue((uint32)0);
-	for (int i=0; i<16; ++i) {
-		m_data[i/4] |= ((uint32)valueBE[i]) << (8*(3-(i%4)));
-	}
+	m_data[0] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+0));
+	m_data[1] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+4));
+	m_data[2] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+8));
+	m_data[3] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+12));
 	return *this;
 }
 
@@ -198,24 +201,12 @@ void CUInt128::toBinaryString(wxString *str, bool trim) const
 	}
 }
 
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	#define SWAP_ULONG(x) wxUINT32_SWAP_ALWAYS(x) 
-#else
-	// We don't swap on big endian archs.
-	#define SWAP_ULONG(x) x
-#endif 
-
 void CUInt128::toByteArray(byte *b) const
 {
-#if 1
-	((uint32*)b)[0] = SWAP_ULONG(m_data[0]);
-	((uint32*)b)[1] = SWAP_ULONG(m_data[1]);
-	((uint32*)b)[2] = SWAP_ULONG(m_data[2]);
-	((uint32*)b)[3] = SWAP_ULONG(m_data[3]);
-#else
-	for (int i=0; i<16; ++i)
-		b[i] = (byte)(m_data[i/4] >> (8*(3-(i%4))));
-#endif
+	RawPokeUInt32(b+0, SWAP_ULONG_LE(m_data[0]));
+	RawPokeUInt32(b+4, SWAP_ULONG_LE(m_data[1]));
+	RawPokeUInt32(b+8, SWAP_ULONG_LE(m_data[2]));
+	RawPokeUInt32(b+12,SWAP_ULONG_LE(m_data[3]));
 }
 
 int CUInt128::compareTo(const CUInt128 &other) const
