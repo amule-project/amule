@@ -102,7 +102,6 @@ public:
 	CFormat& operator%(unsigned long value);
 	CFormat& operator%(signed long long value);
 	CFormat& operator%(unsigned long long value);	
-	CFormat& operator%(float value);
 	CFormat& operator%(double value);
 	CFormat& operator%(const wxChar* value);
 	// \}
@@ -180,18 +179,6 @@ private:
 	template <typename ValueType>
 	CFormat& FormatInteger(ValueType value);
 	
-	
-	/**
-	 * Attempts to apply the current format-string to a floating-point value.
-	 * 
-	 * @param value Any floating-point value, from float to long double.
-	 *
-	 * This function does the value-verification needed to ensure that
-	 * any floating-point type can be used for any fp-format, provided that
-	 * it represents a valid value in that type.
-	 */
-	template <typename ValueType>
-	CFormat& FormatFloat(ValueType value);
 	
 	//! Index to the current format-field.
 	unsigned int m_index;
@@ -294,28 +281,6 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 }
 
 
-template <typename ValueType>
-inline CFormat& CFormat::FormatFloat(ValueType value)
-{
-	wxString field = GetCurrentField();
-	
-	switch ( field.Last() ) {
-		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
-		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
-		case wxT('f'):		// Decimal floating point
-		case wxT('F'):		// Decimal floating point
-		case wxT('g'):		// Use shorter %e or %f
-		case wxT('G'):		// Use shorter %E or %f
-			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format."));
-			
-			return SetCurrentField(wxString::Format(field, (double)value));
-		
-		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-integer format string.") );
-	}
-}
-
-
 inline CFormat& CFormat::operator%(wxChar value)
 {
 	return FormatInteger(value);
@@ -367,18 +332,6 @@ inline CFormat& CFormat::operator%(signed long long value)
 inline CFormat& CFormat::operator%(unsigned long long value)
 {
 	return FormatInteger(value);
-}
-
-
-inline CFormat& CFormat::operator%(float value)
-{
-	return FormatFloat(value);
-}
-
-
-inline CFormat& CFormat::operator%(double value)
-{
-	return FormatFloat(value);	
 }
 
 #endif

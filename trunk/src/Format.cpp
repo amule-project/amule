@@ -181,6 +181,27 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 }
 
 
+CFormat& CFormat::operator%(double value)
+{
+	wxString field = GetCurrentField();
+	
+	switch ( field.Last() ) {
+		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
+		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
+		case wxT('f'):		// Decimal floating point
+		case wxT('F'):		// Decimal floating point
+		case wxT('g'):		// Use shorter %e or %f
+		case wxT('G'):		// Use shorter %E or %f
+			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format."));
+			
+			return SetCurrentField(wxString::Format(field, value));
+		
+		default:
+			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-float format string.") );
+	}
+}
+
+
 CFormat& CFormat::operator%( const wxChar* val )
 {
 	wxString field = GetCurrentField();
