@@ -1014,10 +1014,10 @@ void CUpDownClient::UDPReaskACK(uint16 nNewQR)
 
 void CUpDownClient::UDPReaskFNF()
 {
+	m_bUDPPending = false;
+	
 	// avoid premature deletion of 'this' client
-	if (GetDownloadState()!=DS_DOWNLOADING){
-		m_bUDPPending = false;
-
+	if (GetDownloadState() != DS_DOWNLOADING){
 		if (m_reqfile) {
 			m_reqfile->AddDeadSource(this);
 		}
