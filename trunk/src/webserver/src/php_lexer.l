@@ -1,0 +1,130 @@
+%{
+#include <string.h>
+
+#include "php_syntree.h"
+#include "php_parser.h"
+
+%}
+
+%x BLOCK_COMMENT
+%x LINE_COMMENT
+
+%option noyylineno
+%option noyywrap
+%option stack
+
+DEC_NUM			[0-9]+
+FLOANUM	([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*)
+HEX_NUM		"0x"[0-9a-fA-F]+
+
+IDENT   [a-zA-Z_][a-zA-Z0-9_]*
+
+EOL ("\r"|"\n"|"\r\n")
+
+%%
+
+"exit"|"die"	return EXIT;
+
+"function"		return FUNCTION;
+
+"const"			return CONST;
+
+"return"		return RETURN;
+
+"if"			return IF;
+"else"			return ELSE;
+"elseif"		return ELSEIF;
+"endif"			return ENDIF;
+
+"while"			return WHILE;
+"endwhile"		return ENDWHILE;
+"do"			return DO;
+
+"for"			return FOR;
+"endfor"		return ENDFOR;
+"foreach"		return FOREACH;
+"endforeach"	return ENDFOREACH;
+
+"switch"		return SWITCH;
+"endswitch"		return ENDSWITCH;
+"case"			return CASE;
+"default"		return DEFAULT;
+"break"			return BREAK;
+
+"continue"		return CONTINUE;
+
+"echo"			return ECHO;
+"print"			return PRINT;
+
+"new"			return NEW;
+
+"->"			return OBJECT_OPERATOR;
+
+"list"			return LIST;
+"array"			return ARRAY;
+
+"++"			return INC;
+"--"			return DEC;
+
+"#"|"//" {
+		BEGIN(LINE_COMMENT);
+		yymore();
+	}
+
+<LINE_COMMENT>[^\n\r]+ {
+		yymore();
+	}
+
+<LINE_COMMENT>{EOL} {
+		BEGIN(INITIAL);
+	}
+
+"/*" {
+		BEGIN(BLOCK_COMMENT);
+		yymore();
+	}
+
+<BLOCK_COMMENT>"*/" {
+		BEGIN(INITIAL);
+	}
+
+"$"{IDENT} {
+        yylval.exp_node = get_var_node(yytext+1);
+        return VARIABLE;
+	}
+
+{IDENT} {
+        strcpy(yylval.str_val, yytext);
+        return IDENT;
+	}
+
+{DEC_NUM} {
+	yylval.exp_node = make_const_exp_dnum(atoi(yytext));
+	return DNUMBER;
+	}
+
+{FLOANUM} {
+	yylval.exp_node = make_const_exp_fnum(atof(yytext));
+	return FNUMBER;
+	}
+
+\"([^"]*)\"	{
+		if (yytext[yyleng-1] == '\\') yymore();
+		else {
+			yytext[strlen(yytext)-1] = 0;
+			yylval.exp_node = make_const_exp_str(yytext+1);
+			return STRING;
+		}
+	}
+
+\'([^']*)\'	{
+			yytext[strlen(yytext)-1] = 0;
+			yylval.exp_node = make_const_exp_str(yytext+1);
+			return STRING;
+	}
+
+[ \t\v\n\r\f]		{  }
+
+. {
+		return yytext[0];
+}
