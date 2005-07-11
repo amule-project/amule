@@ -61,6 +61,9 @@
  *  * The "p" type, could be implemented using void* or templates.
  *  * The "n" type, just unsafe, wont be implemented.
  *  * The Long Double type, which is extremly slow and shouldn't be used.
+ *
+ *  CFormat has been implemented against the description of printf found
+ *  in the "man 3 printf" manual page.
  */
 class CFormat
 {
@@ -81,6 +84,9 @@ public:
 	
 	/**
 	 * Returns true if the resulting string is ready for use.
+	 *
+	 * For a string to be ready to use, all format fields must have
+	 * had a value assigned through the operator% functions.
 	 */
 	bool IsReady() const;
 
@@ -88,9 +94,12 @@ public:
 	/**
 	 * Feeds an value into the format-string.
 	 *
-	 * If the given doesn't match the current format-string, then an assert
-	 * will be raised and the format-string will be skipped. Special rules
-	 * apply to integers, see above.
+	 * Passing an type that isn't compatible with the current format
+	 * field results in an illegal-argument exception. Passing any
+	 * type to an CFormat with no free fields results in an illegal-
+	 * state exception.
+	 * 
+	 * Special rules apply to integers, see above.
 	 */
 	// \{
 	CFormat& operator%(wxChar value);
@@ -146,7 +155,7 @@ private:
 		modNone,
 		//! Argument is interpreted as short int (integer types).
 		modShort,
-		//! Argument is interpreted as long int (interger types) or double (floating point types).
+		//! Argument is interpreted as long int (interger types).
 		modLong,
 		//! Two 'long' modifieres, arguments is interpreted as long long (integer types).
 		modLongLong,
