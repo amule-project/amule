@@ -97,7 +97,8 @@ typedef enum PHP_EXP_OP {
     /* logical */
     PHP_OP_LOG_OR, PHP_OP_LOG_AND, PHP_OP_LOG_XOR,
     /* compare */
-    PHP_OP_EQ, PHP_OP_NEQ, PHP_OP_GRT, PHP_OP_LWR,
+    PHP_OP_EQ, PHP_OP_NEQ, PHP_OP_SAME, PHP_OP_NOT_SAME,
+    PHP_OP_GRT, PHP_OP_GRT_EQ, PHP_OP_LWR, PHP_OP_LWR_EQ,
 
 	/* specials */
 	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO, 
