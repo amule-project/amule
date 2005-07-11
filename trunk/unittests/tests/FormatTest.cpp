@@ -80,25 +80,33 @@ END_DECLARE;
 
 TEST(Format, ConstructorAndGetString)
 {
-	// Null should be valid
-	CFormat fmt1(NULL);
-	ASSERT_TRUE(fmt1.IsReady());
-	ASSERT_EQUALS(wxT(""), fmt1.GetString());
+	{
+		// Null should be valid
+		CFormat fmt1(NULL);
+		ASSERT_TRUE(fmt1.IsReady());
+		ASSERT_EQUALS(wxT(""), fmt1.GetString());
+	}
 
-	// Empty string should be valid
-	CFormat fmt2(wxT(""));
-	ASSERT_TRUE(fmt2.IsReady());
-	ASSERT_EQUALS(wxT(""), fmt2.GetString());
+	{
+		// Empty string should be valid
+		CFormat fmt2(wxT(""));
+		ASSERT_TRUE(fmt2.IsReady());
+		ASSERT_EQUALS(wxT(""), fmt2.GetString());
+	}
 
-	// Simple string with no format fields
-	CFormat fmt3(wxT("a b c"));
-	ASSERT_TRUE(fmt3.IsReady());
-	ASSERT_EQUALS(wxT("a b c"), fmt3.GetString());
+	{
+		// Simple string with no format fields
+		CFormat fmt3(wxT("a b c"));
+		ASSERT_TRUE(fmt3.IsReady());
+		ASSERT_EQUALS(wxT("a b c"), fmt3.GetString());
+	}
 
-	// Simple string with one format field
-	CFormat fmt4(wxT("a %i c"));
-	ASSERT_FALSE(fmt4.IsReady());
-	ASSERT_RAISES(CInvalidStateException, fmt4.GetString());
+	{
+		// Simple string with one format field
+		CFormat fmt4(wxT("a %i c"));
+		ASSERT_FALSE(fmt4.IsReady());
+		ASSERT_RAISES(CInvalidStateException, fmt4.GetString());
+	}
 }
 
 
@@ -234,45 +242,57 @@ TEST(Format, ResetString)
 
 TEST(Format, MultipleFields)
 {
-	CFormat fmt1(wxT("%d _ %u _ %i"));
-	fmt1 % -1 % 2 % -4;
-	ASSERT_TRUE(fmt1.IsReady());
-	ASSERT_EQUALS(wxT("-1 _ 2 _ -4"), fmt1.GetString());
+	{
+		CFormat fmt1(wxT("%d _ %u _ %i"));
+		fmt1 % -1 % 2 % -4;
+		ASSERT_TRUE(fmt1.IsReady());
+		ASSERT_EQUALS(wxT("-1 _ 2 _ -4"), fmt1.GetString());
+	}
+		
+	{	
+		CFormat fmt2(wxT("%d _ %u _ %i"));
+		ASSERT_FALSE(fmt2.IsReady());
+		fmt2 % -1;
+		ASSERT_FALSE(fmt2.IsReady());
+		fmt2 %  2;
+		ASSERT_FALSE(fmt2.IsReady());
+		fmt2 % -4;
+		ASSERT_TRUE(fmt2.IsReady());
+		ASSERT_EQUALS(wxT("-1 _ 2 _ -4"), fmt2.GetString());
+	}
 	
-	
-	CFormat fmt2(wxT("%d _ %u _ %i"));
-	ASSERT_FALSE(fmt2.IsReady());
-	fmt2 % -1;
-	ASSERT_FALSE(fmt2.IsReady());
-	fmt2 %  2;
-	ASSERT_FALSE(fmt2.IsReady());
-	fmt2 % -4;
-	ASSERT_TRUE(fmt2.IsReady());
-	ASSERT_EQUALS(wxT("-1 _ 2 _ -4"), fmt2.GetString());
-
-	
-	// Test grouped fields
-	CFormat fmt3(wxT("%d%u%i"));
-	fmt3 % -1 % 2 % -4;
-	ASSERT_EQUALS(wxT("-12-4"), fmt3.GetString());
+	{
+		// Test grouped fields
+		CFormat fmt3(wxT("%d%u%i"));
+		fmt3 % -1 % 2 % -4;
+		ASSERT_EQUALS(wxT("-12-4"), fmt3.GetString());
+	}
 }
 
 
 TEST(Format, EscapedPercentageSign) 
 {
-	CFormat fmt1(wxT("%%"));
-	ASSERT_EQUALS(wxT("%"), fmt1.GetString());
+	{
+		CFormat fmt1(wxT("%%"));
+		ASSERT_EQUALS(wxT("%"), fmt1.GetString());
+	}
 
-	CFormat fmt2(wxT("-- %% --"));
-	ASSERT_EQUALS(wxT("-- % --"), fmt2.GetString());
+	{
+		CFormat fmt2(wxT("-- %% --"));
+		ASSERT_EQUALS(wxT("-- % --"), fmt2.GetString());
+	}
 	
-	CFormat fmt3(wxT("%d _ %% _ %i"));
-	fmt3 % 1 % 2;
-	ASSERT_TRUE(fmt3.IsReady());
-	ASSERT_EQUALS(wxT("1 _ % _ 2"), fmt3.GetString());
+	{
+		CFormat fmt3(wxT("%d _ %% _ %i"));
+		fmt3 % 1 % 2;
+		ASSERT_TRUE(fmt3.IsReady());
+		ASSERT_EQUALS(wxT("1 _ % _ 2"), fmt3.GetString());
+	}
 
-	CFormat fmt4(wxT("%% _ %% _ %%"));
-	ASSERT_EQUALS(wxT("% _ % _ %"), fmt4.GetString());	
+	{
+		CFormat fmt4(wxT("%% _ %% _ %%"));
+		ASSERT_EQUALS(wxT("% _ % _ %"), fmt4.GetString());	
+	}
 }
 
 
