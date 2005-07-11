@@ -1,3 +1,28 @@
+//
+// This file is part of the aMule Project.
+//
+// Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
+//
+
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
@@ -739,21 +764,63 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 	return lval_node;
 }
 
-void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
-{
-}
-
-void php_eval_simple_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
+PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
 {
 	if ( (op1->type == PHP_VAL_FLOAT) || (op2->type == PHP_VAL_FLOAT) ) {
 		cast_value_fnum(op1);
 		cast_value_fnum(op2);
-		result->type = PHP_VAL_FLOAT;
+		return PHP_VAL_FLOAT;
 	} else {
 		cast_value_dnum(op1);
 		cast_value_dnum(op2);
-		result->type = PHP_VAL_INT;
+		return PHP_VAL_INT;
 	}
+}
+
+/*
+ * Same as simple_math, but result is always bool
+ */
+void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
+{
+	cast_type_resolve(op1, op2);
+	result->type = PHP_VAL_BOOL;
+	switch(op) {
+		case PHP_OP_EQ:
+			if ( result->type == PHP_VAL_FLOAT ) {
+				result->int_val = op1->int_val == op2->float_val;
+			} else {
+				result->int_val = op1->int_val == op2->int_val;
+			}
+			break;
+		case PHP_OP_NEQ:
+			if ( result->type == PHP_VAL_FLOAT ) {
+				result->int_val = op1->float_val != op2->float_val;
+			} else {
+				result->int_val = op1->int_val != op2->int_val;
+			}
+			break;
+		case PHP_OP_GRT:
+			if ( result->type == PHP_VAL_FLOAT ) {
+				result->int_val = op1->float_val > op2->float_val;
+			} else {
+				result->int_val = op1->int_val > op2->int_val;
+			}
+			break;
+		case PHP_OP_LWR:
+			if ( result->type == PHP_VAL_FLOAT ) {
+				result->int_val = op1->float_val < op2->float_val;
+			} else {
+				result->int_val = op1->int_val < op2->int_val;
+			}
+			break;
+		default:
+			php_report_error("This op is not compare op", PHP_INTERNAL_ERROR);
+	}
+}
+
+void php_eval_simple_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
+{
+	result->type = cast_type_resolve(op1, op2);
 	switch(op) {
 		case PHP_OP_ADD:
 			if ( result->type == PHP_VAL_FLOAT ) {
