@@ -2671,17 +2671,17 @@ yyreduce:
 
   case 136:
 #line 355 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_EQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 137:
 #line 356 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_NEQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 138:
 #line 357 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_LWR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 139:
@@ -2691,7 +2691,7 @@ yyreduce:
 
   case 140:
 #line 359 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_GRT, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 141:

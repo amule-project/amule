@@ -312,22 +312,22 @@ expr:
 	|	NEW class_name_reference ctor_arguments { }
 	|	CLONE expr {  }
 */
-	|	variable PLUS_EQ expr 		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_ADD, $1, $3)); }
-	|	variable MINUS_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_SUB, $1, $3)); }
-	|	variable MUL_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_MUL, $1, $3)); }
-	|	variable DIV_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_DIV, $1, $3)); }
-	|	variable CONCAT_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_CAT, $1, $3)); }
-	|	variable MOD_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_REM, $1, $3)); }
-	|	variable AND_EQ expr		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_AND, $1, $3)); }
-	|	variable OR_EQ expr 		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_OR, $1, $3)); }
-	|	variable XOR_EQ expr 		{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_XOR, $1, $3)); }
-	|	variable SL_EQ expr			{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_SHL, $1, $3)); } 
-	|	variable SR_EQ expr			{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_SHR, $1, $3)); } 
+	|	variable PLUS_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, $3)); }
+	|	variable MINUS_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, $3)); }
+	|	variable MUL_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_MUL, $1, $3)); }
+	|	variable DIV_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_DIV, $1, $3)); }
+	|	variable CONCAT_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_CAT, $1, $3)); }
+	|	variable MOD_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_REM, $1, $3)); }
+	|	variable AND_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_AND, $1, $3)); }
+	|	variable OR_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_OR, $1, $3)); }
+	|	variable XOR_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_XOR, $1, $3)); }
+	|	variable SL_EQ expr			{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHL, $1, $3)); } 
+	|	variable SR_EQ expr			{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHR, $1, $3)); } 
 	/* ++var and var++ looks same to me */
-	|	variable INC 				{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_ADD, $1, make_const_exp_dnum(1))); }
-	|	INC variable 				{ $$ = make_exp_2(PHP_OP_EQ, $2, make_exp_2(PHP_OP_ADD, $2, make_const_exp_dnum(1))); }
-	|	variable DEC 				{ $$ = make_exp_2(PHP_OP_EQ, $1, make_exp_2(PHP_OP_SUB, $1, make_const_exp_dnum(1))); }
-	|	DEC variable 				{ $$ = make_exp_2(PHP_OP_EQ, $2, make_exp_2(PHP_OP_SUB, $2, make_const_exp_dnum(1))); }
+	|	variable INC 				{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, make_const_exp_dnum(1))); }
+	|	INC variable 				{ $$ = make_exp_2(PHP_OP_ASS, $2, make_exp_2(PHP_OP_ADD, $2, make_const_exp_dnum(1))); }
+	|	variable DEC 				{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, make_const_exp_dnum(1))); }
+	|	DEC variable 				{ $$ = make_exp_2(PHP_OP_ASS, $2, make_exp_2(PHP_OP_SUB, $2, make_const_exp_dnum(1))); }
 	
 	|	expr BOOLEAN_OR expr 		{ $$ = make_exp_2(PHP_OP_LOG_OR, $1, $3); }
 	|	expr BOOLEAN_AND expr 		{ $$ = make_exp_2(PHP_OP_LOG_AND, $1, $3); }  
@@ -351,12 +351,12 @@ expr:
 	|	'~' expr {  }
 	|	expr IS_IDENTICAL expr		{  }
 	|	expr IS_NOIDENTICAL expr	{  }
-	|	expr IS_EQ expr			{  }
-	|	expr IS_NOEQUAL expr 		{  }
-	|	expr '<' expr 					{  }
-	|	expr IS_SMALLER_OR_EQ expr {  }
-	|	expr '>' expr 					{  }
-	|	expr IS_GREATER_OR_EQ expr {  }
+	|	expr IS_EQ expr				{ $$ = make_exp_2(PHP_OP_EQ, $1, $3); }
+	|	expr IS_NOEQUAL expr 		{ $$ = make_exp_2(PHP_OP_NEQ, $1, $3); }
+	|	expr '<' expr 				{ $$ = make_exp_2(PHP_OP_LWR, $1, $3); }
+	|	expr IS_SMALLER_OR_EQ expr 	{ $$ = make_exp_2(PHP_OP_LWR_EQ, $1, $3); }
+	|	expr '>' expr 				{ $$ = make_exp_2(PHP_OP_GRT, $1, $3); }
+	|	expr IS_GREATER_OR_EQ expr 	{ $$ = make_exp_2(PHP_OP_GRT_EQ, $1, $3); }
 	|	'(' expr ')' 				{ $$ = $2; }
 	|	expr '?' expr ':' expr {  }
 	|	INT_CAST expr 	{  }
@@ -367,9 +367,9 @@ expr:
 	|	BOOL_CAST expr	{  }
 	|	UNSECAST expr	{  }
 	|	EXIT exit_expr	{  }
-	|	'@' expr {  }
+	|	'@' expr 					{ $$ = $2; }
 
-	|	const_value				{ }
+	|	const_value					{ $$ = $1; }
 /*	|	ARRAY '(' array_pair_list ')' { } */
 	|	PRINT expr  				{ $$ = make_exp_1(PHP_OP_PRINT, $2); }
 ;
