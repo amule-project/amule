@@ -222,18 +222,22 @@ class SearchFile {
 		CMD4Hash ID() { return nHash; }
 };
 
+
 /*!
  * Each item of type T must implement GetContainerInstance(T) to return ptr
  * to container holding such items.
  * Parameter "T" is used for compiler to distinguish between functions of
- * different types
+ * different types.
  */
-
-template <class T>
-bool operator < (const T &i1, const T &i2)
+template <typename TYPE>
+struct CmpContainerItems
 {
-	return T::GetContainerInstance()->CompareItems(i1, i2);
-}
+	bool operator()(const TYPE &i1, const TYPE &i2)
+	{
+		return TYPE::GetContainerInstance()->CompareItems(i1, i2);
+	}
+};
+
 
 /*!
  * T - type of items in container
@@ -275,7 +279,7 @@ class ItemsContainer {
 		
 		void SortItems()
 		{
-			m_items.sort();
+			m_items.sort(CmpContainerItems<T>());
 		}
 
 		E GetSortOrder()
