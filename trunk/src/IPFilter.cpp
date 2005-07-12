@@ -53,7 +53,7 @@ CIPFilter::CIPFilter()
 	LoadFromFile( theApp.ConfigDir + wxT("ipfilter.dat"), false );
 	
 	if (thePrefs::IPFilterAutoLoad()) {
-		Update();
+		Update(thePrefs::IPFilterURL());
 	}
 }
 
@@ -391,13 +391,11 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 }
 
 
-void CIPFilter::Update( const wxString& strURL )
+void CIPFilter::Update(const wxString& strURL)
 {
-	wxString URL = strURL.IsEmpty() ? thePrefs::IPFilterURL() : strURL;
-	
-	if ( !URL.IsEmpty() ) {
+	if ( !strURL.IsEmpty() ) {
 		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread( URL, filename, HTTP_IPFilter );
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread( strURL, filename, HTTP_IPFilter );
 		
 		downloader->Create();
 		

@@ -103,9 +103,9 @@ public:
 	/**
 	 * Starts a download of the ipfilter-list at the specified URL.
 	 *
-	 * @param A valid URL or an empty string to use the value set in preferences.
+	 * @param A valid URL.
 	 */
-	void	Update( const wxString& strURL = wxEmptyString );
+	void	Update(const wxString& strURL);
 
 	/**
 	 * This function is called when a download is completed.
