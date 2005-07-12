@@ -311,6 +311,32 @@ CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true
 }
 
 /**
+ * Creates a new CECTag instance, which contains a double precision floating point number
+ *
+ * @param name TAG name
+ * @param data double number
+ *
+ * @note The actual data is converted to string representation, because we have not found
+ * yet an effective and safe way to transmit floating point numbers.
+ *
+ * @see GetDoubleData()
+ */
+CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name), m_dynamic(true)
+{
+	const wxCharBuffer buf = wxConvUTF8.cWC2MB(wxString::Format(wxT("%g"), data).wc_str(aMuleConv));
+	const char *utf8 = (const char *)buf;
+
+	m_dataLen = strlen(utf8) + 1;
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		memcpy((void *)m_tagData, utf8, m_dataLen);
+		m_error = 0;
+	} else {
+		m_error = 1;
+	}
+}
+
+/**
  * Destructor - frees allocated data and deletes child TAGs.
  */
 CECTag::~CECTag(void)
@@ -581,6 +607,26 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 	p.port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->port);
 
 	return p;
+}
+
+/**
+ * Returns a double value.
+ *
+ * @note The returned value is what we get by converting the string form
+ * of the number to a double.
+ *
+ * @return The double value of the tag.
+ *
+ * @see CECTag(ec_tagname_t, double)
+ */
+double CECTag::GetDoubleData(void) const
+{
+	double tmp;
+	if (!GetStringData().ToDouble(&tmp)) {
+		double x = 0.0;		// let's fool g++, it'd error out on 0.0 / 0.0
+		tmp = 0.0 / x;		// intentionally generate nan
+	}
+	return tmp;
 }
 
 /*!

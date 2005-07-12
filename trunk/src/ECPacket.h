@@ -61,6 +61,7 @@ class CECTag {
 		CECTag(ec_tagname_t name, uint16 data);
 		CECTag(ec_tagname_t name, uint32 data);
 		CECTag(ec_tagname_t name, uint64 data);
+		CECTag(ec_tagname_t name, double data);
 		CECTag(ec_tagname_t name, const wxString& data);
 		CECTag(ec_tagname_t name, const EC_IPv4_t& data);
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
@@ -95,6 +96,7 @@ class CECTag {
 				uint32 low = ENDIAN_NTOHL(RawPeekUInt32(((unsigned char *)m_tagData)+sizeof(uint32))); 
 				return low | (((uint64)high) << 32);
 			}
+		double		GetDoubleData(void) const;
 		wxString	GetStringData(void) const
 			{ return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
 		EC_IPv4_t 	GetIPv4Data(void) const;
@@ -119,6 +121,11 @@ class CECTag {
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetInt64Data();
+		}
+		void AssignIfExist(ec_tagname_t tagname, double &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetDoubleData();
 		}
 		void AssignIfExist(ec_tagname_t tagname, CMD4Hash &target)
 		{

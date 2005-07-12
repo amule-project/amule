@@ -848,7 +848,7 @@ class CWebServer : public CWebServerBase {
 		bool		m_bSearchAsc;
 
 		// Graph related
-		wxString	m_sLastHistoryTimeStamp;
+		double		m_lastHistoryTimeStamp;
 		uint16		m_nGraphHeight;
 		uint16		m_nGraphWidth;
 		uint16		m_nGraphScale;

@@ -1490,8 +1490,8 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, m_nGraphWidth));
 	request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
 	if (_ParseURL(Data, wxT("refetch")) != wxT("yes")) {
-		if (!m_sLastHistoryTimeStamp.IsEmpty()) {
-			request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_sLastHistoryTimeStamp));
+		if (m_lastHistoryTimeStamp > 0.0) {
+			request->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_lastHistoryTimeStamp));
 		}
 	}
 	
@@ -1501,7 +1501,7 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 		CECTag *t1 = response->GetTagByName(EC_TAG_STATSGRAPH_LAST);
 		CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 		if (response->GetOpCode() == EC_OP_STATSGRAPHS && t1 && dataTag) {
-			m_sLastHistoryTimeStamp = t1->GetStringData();
+			m_lastHistoryTimeStamp = t1->GetDoubleData();
 			const uint32 *data = (const uint32 *)dataTag->GetTagData();
 			unsigned int numItems = dataTag->GetTagDataLen() / sizeof(uint32);
 			if (_ParseURL(Data, wxT("refetch")) == wxT("yes")) {
