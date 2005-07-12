@@ -37,6 +37,7 @@
 #include "Preferences.h"
 #include "Statistics.h"
 #include "OtherFunctions.h"
+#include "RLE.h"
 
 #include <map>
 #include <list>
@@ -424,7 +425,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		
 		std::list<CUpDownClient *>::iterator it;
 		
-		std::map<CMD4Hash, otherfunctions::PartFileEncoderData> m_enc_map;
+		std::map<CMD4Hash, PartFileEncoderData> m_enc_map;
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
@@ -467,7 +468,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
-		std::map<CMD4Hash, otherfunctions::RLE_Data> m_enc_map;
+		std::map<CMD4Hash, RLE_Data> m_enc_map;
 	public:
 		CSharedFilesRem(CRemoteConnect *);
 		
