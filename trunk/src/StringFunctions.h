@@ -198,5 +198,58 @@ wxChar HexToDec( const wxString& hex );
  */
 wxString UnescapeHTML( const wxString& str );
 
+
+
+/**
+ * This class provides a simple and fast tokenizer.
+ */
+class CSimpleTokenizer
+{
+public:
+	/**
+	 * @param str The string to tokenize.
+	 * @param delim The delimiter used to split the string.
+	 */
+	CSimpleTokenizer(const wxString& str, wxChar delim);
+
+	/**
+	 * Returns the next part of the string seperated by the
+	 * given delimiter. When the entire string has been
+	 * tokenized, an empty string is returned. Note that
+	 * empty tokens are also returned.
+	 */
+	wxString next();
+
+	/**
+	 * Returns the remaining part of the string.
+	 *
+	 * The remaining part is defined as being the part after
+	 * the last encountered token, or an empty string if the
+	 * entire string has been tokenized.
+	 *
+	 * If next() has yet to be called, the entire string will
+	 * be returned.
+	 */
+	wxString remaining() const;
+
+	/**
+	 * Returns the number of tokens encountered so far.
+	 */
+	size_t tokenCount() const;
+
+private:
+	//! The string being tokenized.
+	wxString m_string;
 	
+	//! The delimiter used to split the string.
+	wxChar m_delim;
+	
+	//! A pointer to the current position in the string.
+	const wxChar* m_ptr;
+
+	//! The number of tokens encountered.
+	size_t m_count;
+};
+
+
 #endif // STRING_FUNCTIONS_H

@@ -37,6 +37,7 @@
 #include <wx/fs_zip.h>		// Needed for wxZipFSHandler
 
 #include "IPFilter.h"		// Interface declarations.
+#include "StringFunctions.h"
 #include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
@@ -92,161 +93,34 @@ void CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, con
 }
 
 
-bool CIPFilter::m_inet_atoh( const wxString &str, uint32& ipA, uint32& ipB )
+bool CIPFilter::m_inet_atoh(const wxString &str, uint32& ipA, uint32& ipB)
 {
-	// Empty strings would cause problems due to the way I use pointers
-	if ( str.IsEmpty() ) {
-		return false;
-	}
+	wxString first = str.BeforeFirst(wxT('-'));
+	wxString second = str.Mid(first.Len() + 1);
+
+	bool result = StringIPtoUint32(first, ipA) && StringIPtoUint32(second, ipB);
+
+	// StringIPtoUint32 saves the ip in anti-host order, but in order
+	// to be able to make relational comparisons, we need to convert
+	// it back to host-order.
+	ipA = wxUINT32_SWAP_ALWAYS(ipA);
+	ipB = wxUINT32_SWAP_ALWAYS(ipB);
 	
-	// Ensure IPs are zero'd
-	ipA = ipB = 0;
-	
-	// Details if the last char was a digit
-	bool lastIsDigit = false;
-	
-	// The current position in the current field, used to detect malformed fields (x.y..z).
-	int digit = 0;
-
-	// The current field, used to ensure only IPs that looks like a.b.c.d are supported
-	int field = 0;
-
-	// The value of the current field
-	int value = 0;
-
-	// Some ptr magic. Direct pointer access is faster in this case.
-	const wxChar* ptr = str.c_str();
-	wxChar c;
-
-	while ( ( c = *ptr++ ) ) {
-		if ( c >= wxT('0') && c <= wxT('9') ) {
-			// Avoid whitespace inside numbers, ie a.b.XY Z.d
-			if ( lastIsDigit || !digit ) {
-				value = ( value * 10 ) + ( c - wxT('0') );
-				++digit;
-				lastIsDigit = true;
-			} else {
-				// There was a whitespace inside a number, bail
-				return false;
-			}
-		} else if ( c == wxT('.') || c == wxT('-') ) {
-			// Ensure that the split happens at the right place
-			if ( field == 3 && c != wxT('-') ) {
-				return false;
-				// There must have been at least one digit and value must be valid
-			} else if ( digit && value <= 255 ) {
-				// Add the current field to either the first or the second IP
-				if ( field < 4 ) {
-					ipA = ( ipA << 8 ) | value;
-				} else {
-					ipB = ( ipB << 8 ) | value;
-				}
-
-				// Rest the current field values
-				value = digit = 0;
-				++field;
-			} else {
-				return false;
-			}
-		} else if ( c != wxT(' ') && c != wxT('\t') ) {
-			// Something in the string, which isn't whitespace
-			return false;
-		} else {
-			lastIsDigit = false;
-		}
-	}
-
-	// Add the last field to the second IP
-	ipB = ( ipB << 8 ) | value;
-
-	// The only valid possibility is 8 fields.
-	return ( field == 7 && digit );
-}
-
-
-wxString CIPFilter::GetNextToken( const wxString& str, wxChar token, int& cur )
-{
-	// Empty strings would cause problems due to the way I use pointers
-	if ( str.IsEmpty() ) {
-		cur = -1;
-		return wxEmptyString;
-	}
-
-	int current = ( cur < 0 ? 0 : cur );
-
-	const wxChar* ptr = str.c_str() + cur;
-	const wxChar* end = str.c_str() + str.Len() + 1;
-
-	while ( ++ptr < end ) {
-		if ( *ptr == token ) {
-			cur = ptr - str.c_str() + 1;
-
-			return str.Mid( current, ptr - ( str.c_str() + current ) );
-		}
-	}
-
-	// Move back to beginning, thus starting the circle over
-	cur = -1;
-
-	// Return the last token
-	return str.Mid(  current );
-}
-
-
-bool CIPFilter::StrToU( const wxString& str, unsigned& i )
-{
-	// Empty strings would cause problems due to the way I use pointers
-	if ( str.IsEmpty() ) {
-		return false;
-	}
-
-	// The current digit-number and reset i
-	int digit = i = 0;
-	// If the last char was a digit. Used to avoid stuff like "12 3".
-	bool lastIsDigit = false;
-
-	// Direct ptr-access is used for the sake of speed.
-	const wxChar* ptr = str.c_str();
-	wxChar c;
-
-	while ( ( c = *ptr++ ) ) {
-		if ( c >= wxT('0') && c <= wxT('9') ) {
-			if ( lastIsDigit || !digit ) {
-				i = i * 10 + ( c - wxT('0') );
-				++digit;
-				lastIsDigit = true;
-			} else {
-				return false;
-			}
-		} else if ( c != wxT(' ') && c != wxT('\t') ) {
-			return false;
-		} else {
-			lastIsDigit = false;
-		}
-	}
-
-	return digit;
+	return result;
 }
 
 
 bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
 {
-	if ( sLine.Len() < 18 ) {
+	CSimpleTokenizer tkz(sLine, wxT(','));
+	
+	wxString first	= tkz.next();
+	wxString second	= tkz.next();
+	wxString third  = tkz.remaining().Strip(wxString::both);
+
+	// If there were less than two tokens, fail
+	if (tkz.tokenCount() != 2) {
 		return false;
-	}
-
-	int current = -1;
-	wxString first	= GetNextToken( sLine, wxT(','), current );
-	wxString second	= GetNextToken( sLine, wxT(','), current );
-
-	// If there was only one or two tokens, then fail
-	if ( current == -1 ) {
-		return false;
-	}
-
-	wxString third;
-	if ( current < (int)sLine.Len() ) {
-		third = sLine.Mid( current + 1 ).Strip( wxString::both );
 	}
 
 	// Convert string IP's to host order IP numbers
@@ -259,8 +133,8 @@ bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
 	}
 
 	// Second token is Access Level, default is 0.
-	unsigned AccessLevel = 0;
-	if ( !StrToU( second, AccessLevel ) || AccessLevel >= 255 ) {
+	unsigned long AccessLevel = 0;
+	if (!second.Strip(wxString::both).ToULong(&AccessLevel) || AccessLevel >= 255) {
 		return false;
 	}
 

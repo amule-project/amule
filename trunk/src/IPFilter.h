@@ -171,45 +171,9 @@ private:
 	 * @param ipB The target of the second IP in the range.
 	 * @return True if the parsing succeded, false otherwise (results will be invalid).
 	 *
-	 * This function parses a string containing a IP-range and saves the two IP-
-	 * addresses into the specified uint32s. It will ignore whitespace around the
-	 * addresses, but otherwise perform strict error-checking.
-	 *
-	 * The original purpose of this function was to provide support for IP-strings
-	 * with leading zeroes, which would confuce inet_aton, since it would interpret
-	 * it as an octal rather than a deciman. The current version has also been 
-	 * optimized for speed and is a fast mutter-farker.
-	 *
 	 * The IPs returned by this function are in host order, not network order.
 	 */
 	bool	m_inet_atoh(const wxString &str, uint32& ipA, uint32& ipB);
-
-	/**
-	 * Helper function.
-	 *
-	 * @param str The string to be tokenized.
-	 * @param token The token used to split the string.
-	 * @param pos Position which to start after.
-	 * @return The last found token, or the entire string if there are no tokens.
-	 *
-	 * This function will return the string after pos to the next instance of
-	 * token and set pos to the position of that token. If no tokens are found
-	 * the rest of the string is returned and pos set to -1.
-	 */
-	wxString GetNextToken( const wxString& str, wxChar token, int& pos );
-
-	/**
-	 * Helper function.
-	 *
-	 * @param str A string representing an unsigned long, possibly with whitespace.
-	 * @param i The target of the value represented in the string.
-	 * @return true if the converstion succeded, false otherwise.
-	 *
-	 * This function will transform a string representation of a unsigned long
-	 * into an actual unsigned long, while ignoring any whitespace found in the
-	 * string. This is faster than having to call wxString::Strip first.
-	 */
-	bool StrToU( const wxString& str, unsigned& i );
 
 
 	/**
@@ -231,7 +195,7 @@ private:
 	//! The is the type of map used to store the IPs.
 	typedef CRangeMap< rangeObject > IPMap;
 	
-	//! The map of IP-anges
+	//! The map of IP-ranges
 	IPMap m_iplist;
 
 	//! Mutex used to ensure thread-safety of this class
