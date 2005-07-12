@@ -170,6 +170,19 @@ PHP_SYN_NODE *make_func_decl_syn_node()
 	return syn_node;
 }
 
+PHP_SYN_NODE *make_class_decl_syn_node()
+{
+	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
+	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
+	
+	syn_node->type = PHP_ST_CLASS_DECL;
+	
+	syn_node->class_decl = new PHP_SYN_CLASS_DECL_NODE;
+	memset(syn_node->class_decl, 0, sizeof(PHP_SYN_CLASS_DECL_NODE));
+	
+	return syn_node;
+}
+
 PHP_VAR_NODE *make_var_node()
 {
 	PHP_VAR_NODE *node = new PHP_VAR_NODE;
@@ -294,6 +307,22 @@ void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 	std::string key(func->func_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
+		php_report_error("Can not add function to scope table - already present", PHP_ERROR);
+	} else {
+		(*scope_map)[key] = it;
+	}
+}
+
+void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node)
+{
+	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
+	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+	it->type = PHP_SCOPE_CLASS;
+	it->class_decl = class_node;
+	std::string key(class_node->class_decl->name);
+	if ( scope_map->count(key) ) {
+		// error - function already defined
+		php_report_error("Can not add function to scope table - already present", PHP_ERROR);
 	} else {
 		(*scope_map)[key] = it;
 	}
@@ -615,19 +644,22 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	add_func_2_scope(g_global_scope, decl_node);
 }
 
-/*
- * Set of "native" functions. Some doing same as their Zend counterparts
- * while others are amule specific.
- * 
- * The idea is to export internal amuleweb data into PHP script thru
- * set of built-in functions and objects:
- * 
- * $downloads = $aMule->GetDownloads();
- * 
- * $aMule->PauseFile($file_in_queue);
- * 
- * ...
- */
+void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr)
+{
+	if ( get_scope_item_type(g_global_scope, name) != PHP_SCOPE_NONE ) {
+		//
+		// Error: something already defined by this name
+		//
+		php_report_error("Can't add scope item: symbol already defined", PHP_ERROR);
+		return;
+	}
+	PHP_SYN_NODE *decl_node = make_func_decl_syn_node();
+	decl_node->class_decl->name = strdup(name);
+	decl_node->class_decl->is_native = 1;
+	decl_node->class_decl->native_prop_get_ptr = prop_get_native_ptr;
+	add_class_2_scope(g_global_scope, decl_node);
+}
+
 void php_engine_init()
 {
 	g_global_scope = make_scope_table(0, 0);
@@ -651,6 +683,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 {
 	PHP_VALUE_NODE result_val, result_val_left;
 	PHP_VAR_NODE *lval_node = 0;
+	PHP_SCOPE_ITEM *si = 0;
 	switch(expr->op) {
 		case PHP_OP_VAL:
 			result_val = expr->val_node;
@@ -707,6 +740,44 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			// I print to buffer
 			printf(result_val.str_val);
 			break;
+		case PHP_OP_OBJECT_DEREF: // $x->y
+			// take variable from scope of current object
+			//php_report_error("Assign to class members not supported", PHP_ERROR);
+			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
+			if ( !lval_node ) {
+				php_report_error("Left part of -> must be lvalue", PHP_ERROR);
+				return;
+			}
+			if ( lval_node->value.type != PHP_VAL_OBJECT ) {
+				php_report_error("Left part of -> must be an object", PHP_ERROR);
+				return;
+			}
+			if ( get_scope_item_type(g_global_scope, lval_node->value.obj_val.class_name) == PHP_SCOPE_NONE ) {
+				php_report_error("Undeclared object", PHP_ERROR);
+				return;
+			}
+			si = get_scope_item(g_global_scope, lval_node->value.obj_val.class_name);
+			if ( si->type != PHP_SCOPE_CLASS ) {
+				php_report_error("Object classname is not name of class", PHP_INTERNAL_ERROR);
+				return;
+			}
+			// left part is ok, let's check the right
+			if ( (expr->tree_node.right->op != PHP_OP_VAL) || (expr->tree_node.right->val_node.type != PHP_VAL_STRING) ) {
+				php_report_error("Right part of -> must be string value", PHP_ERROR);
+				return;
+			}
+			if ( si->class_decl->class_decl->is_native ) {
+				si->class_decl->class_decl->native_prop_get_ptr(lval_node->value.obj_val.inst_ptr,
+					expr->tree_node.right->val_node.str_val, &result_val);
+			} else {
+				php_report_error("Only native classes supported", PHP_ERROR);
+				return;
+			}
+			break;
+		case PHP_OP_CLASS_DEREF: // A::y
+			// take variable (static) from scope of current class
+			php_report_error("Value of static class members not supported", PHP_ERROR);
+			break;
 		default: ;
 			
 	}
@@ -748,11 +819,13 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 		case PHP_OP_VAR_BY_EXP: // ${"xxx"}
 			// should take variable from current scope
 			break;
-		case PHP_OP_OBJ_MEMBER: // $x->y
+		case PHP_OP_OBJECT_DEREF: // $x->y
 			// take variable from scope of current object
+			php_report_error("Assign to class members not supported", PHP_ERROR);
 			break;
-		case PHP_OP_CLASS_MEMBER: // A::y
+		case PHP_OP_CLASS_DEREF: // A::y
 			// take variable (static) from scope of current class
+			php_report_error("Assign to static class members not supported", PHP_ERROR);
 			break;
 		default:
 			//

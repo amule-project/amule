@@ -107,7 +107,7 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 	if ( si_str ) {
 		cast_value_str(str);
 	} else {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error("Invalid or missing argument 'str' for 'substr'", PHP_ERROR);
 		return;
 	}
 	PHP_SCOPE_ITEM *si_start = get_scope_item(scope, "start");
@@ -115,7 +115,7 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 	if ( si_start ) {
 		cast_value_dnum(start);
 	} else {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error("Invalid or missing argument 'start' for 'substr'", PHP_ERROR);
 		return;
 	}
 	// 3-rd is optional
@@ -128,6 +128,27 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 
 
 }
+
+/*
+ * Amule objects implementations
+ */
+void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+{
+	
+}
+
+/*
+ * Set of "native" functions to access amule data
+ * 
+ * The idea is to export internal amuleweb data into PHP script thru
+ * set of built-in functions and objects:
+ * 
+ * $downloads = $aMule->GetDownloads();
+ * 
+ * $aMule->PauseFile($file_in_queue);
+ * 
+ * ...
+ */
 
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
@@ -146,10 +167,13 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 
 void php_init_core_lib()
 {
+	// load function definitions
 	PHP_BLTIN_FUNC_DEF *curr_def = core_lib_funcs;
 	while ( curr_def->name ) {
 		printf("PHP_LIB: adding function '%s'\n", curr_def->name);
 		php_add_native_func(curr_def);
 		curr_def++;
 	}
+	// load object definitions
+	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 }
