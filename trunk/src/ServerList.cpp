@@ -134,7 +134,11 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 				newserver->AddTagFromFile(&servermet);
 			}
 
-			if ( newserver->GetPreferences() > SRV_PR_HIGH ) {
+			// Server priorities are not in sorted order
+			// High = 1, Low = 2, Normal = 0, so we have to check 
+			// in a less logical fashion.
+			int priority = newserver->GetPreferences();
+			if (priority < SRV_PR_MIN || priority > SRV_PR_MAX) {
 				newserver->SetPreference(SRV_PR_NORMAL);
 			}
 			
@@ -419,7 +423,7 @@ void CServerList::LoadStaticServers( const wxString& filename )
 
 		
 		int priority = StrToLong( prio );
-		if ( priority < 0 || priority > 2 ) {
+		if (priority < SRV_PR_MIN || priority > SRV_PR_MAX) {
 			priority = SRV_PR_NORMAL;
 		}
 
