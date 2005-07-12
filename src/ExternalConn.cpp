@@ -916,10 +916,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 		case EC_DETAIL_FULL: {
 			double dTimestamp = 0.0;
 			if (request->GetTagByName(EC_TAG_STATSGRAPH_LAST) != NULL) {
-				wxString tmp = request->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetStringData();
-				if (!tmp.ToDouble(&dTimestamp)) {
-					dTimestamp = 0.0;
-				}
+				dTimestamp = request->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 			}
 			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
 			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
@@ -929,7 +926,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
 				delete [] graphData;
-				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, wxString::Format(wxT("%f"), dTimestamp)));
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, dTimestamp));
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
 			}
