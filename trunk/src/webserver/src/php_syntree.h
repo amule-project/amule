@@ -46,11 +46,15 @@ typedef struct PHP_VALUE_NODE {
         int int_val;
         double float_val;
         char *str_val;
-        /* used for arrays and objects:
+        /* used for arrays and internal objects:
          * * array contain std::map of key:value pairs
-         * * object contain scope table
+         * * object contain internally interpreted data
          */
         void *ptr_val;
+        struct {
+        	void *inst_ptr;
+        	char *class_name;
+        } obj_val;
     };
 } PHP_VALUE_NODE;
 
@@ -71,7 +75,6 @@ typedef struct PHP_VAR_NODE {
     /* php support references */
     int ref_count;
     int flags;
-    char *class_name;
 } PHP_VAR_NODE;
 
 
@@ -85,9 +88,11 @@ typedef enum PHP_EXP_OP {
     PHP_OP_VAR, PHP_OP_VAL, PHP_OP_ASS,
     
     /* dereference */
-    PHP_OP_ARRAY_BY_KEY, PHP_OP_VAR_BY_EXP, PHP_OP_OBJ_MEMBER,
-    PHP_OP_CLASS_MEMBER, 
-    
+    PHP_OP_ARRAY_BY_KEY, PHP_OP_VAR_BY_EXP,
+
+	/* object access "->" and "::" */
+	PHP_OP_OBJECT_DEREF, PHP_OP_CLASS_DEREF,
+ 
     /* arithmetics */
     PHP_OP_MUL, PHP_OP_DIV, PHP_OP_ADD, PHP_OP_SUB, PHP_OP_REM,
     /* str concat */
@@ -101,8 +106,8 @@ typedef enum PHP_EXP_OP {
     PHP_OP_GRT, PHP_OP_GRT_EQ, PHP_OP_LWR, PHP_OP_LWR_EQ,
 
 	/* specials */
-	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO, 
-	
+	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO,
+
     /* end of list marker */
     PHP_OP_LAST
 } PHP_EXP_OP;
@@ -143,6 +148,7 @@ typedef struct PHP_SCOPE_ITEM {
 	union {
 		PHP_VAR_NODE *var;
 		PHP_SYN_NODE *func;
+		PHP_SYN_NODE *class_decl;
 		struct {
 			PHP_VAR_NODE *var;
 			int num;
@@ -195,6 +201,19 @@ typedef struct PHP_SYN_FUNC_DECL_NODE {
 	};
 } PHP_SYN_FUNC_DECL_NODE;
 
+/*
+ * Evaluating $obj->some_field for built-in objects
+ */
+typedef void (*PHP_NATIVE_PROP_GET_FUNC_PTR)(void *obj, char *prop_name, PHP_VALUE_NODE *result);
+
+typedef struct PHP_SYN_CLASS_DECL_NODE {
+	int is_native;
+	char *name;
+	union {
+		PHP_SCOPE_TABLE decl_scope;
+		PHP_NATIVE_PROP_GET_FUNC_PTR native_prop_get_ptr;
+	};
+} PHP_CLASS_DECL_NODE;
 
 struct PHP_SYN_NODE {
     PHP_STATMENT_TYPE type;
@@ -204,6 +223,7 @@ struct PHP_SYN_NODE {
         PHP_SYN_WHILE_NODE		node_while;
         PHP_SYN_FOR_NODE		node_for;
         PHP_SYN_FUNC_DECL_NODE	*func_decl;
+        PHP_SYN_CLASS_DECL_NODE *class_decl;
     };
     PHP_SYN_NODE *next_node;
 };
@@ -296,6 +316,8 @@ extern "C" {
 	PHP_SYN_NODE *make_ifelse_syn_node(PHP_EXP_NODE *expr,
 		PHP_SYN_NODE *then_node, PHP_SYN_NODE *elseif_list, PHP_SYN_NODE *else_node);
 	PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond, PHP_SYN_NODE *code, int do_while);
+	PHP_SYN_NODE *make_class_decl_syn_node();
+	PHP_SYN_NODE *make_func_decl_syn_node();
 	
 	PHP_VAR_NODE *make_var_node();
 	PHP_EXP_NODE *get_var_node(char *name);
@@ -310,6 +332,7 @@ extern "C" {
 	void switch_pop_scope_table();
 	
 	void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func);
+	void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node);
 	void add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name);
 	PHP_SCOPE_ITEM_TYPE get_scope_item_type(PHP_SCOPE_TABLE scope, const char *name);
 	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, char *name);
@@ -335,7 +358,9 @@ extern "C" {
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
 	void php_eval_compare(PHP_EXP_OP op,
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
+
 	void php_add_native_func(PHP_BLTIN_FUNC_DEF *def);
+	void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr);
 
 	//
 	// left = VAR(func_name), right=ARRAY(args)
