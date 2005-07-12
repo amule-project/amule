@@ -55,10 +55,16 @@ inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
  * Parses a String-IP and saves the IP in the referenced variable.
  *
  * @param strIP A string-ip in the format "a.b.c.d".
- * @param Ip The value to save the result in.
+ * @param Ip The value to save the result in. 
  * @return True if the string was parsed, false otherwise.
  *
- * The IP will be saved in anti-host order.
+ * When parsing the IP address, whitespace before or after the 
+ * ip-address is ignored and the resulting IP is saved in 
+ * anti-host order.
+ *
+ * The reason for the existance of this function is the fact that
+ * the standard inet_aton function treats numbers with 0 prefixed
+ * as octals, which is desirable.
  * 
  * Note: The reference value will not be changed unless the string
  *       contains a valid IP adress.
