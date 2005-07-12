@@ -129,6 +129,23 @@ public:
 	const wxString& getTestName() const;
 
 protected:
+	template <typename A, typename B>
+	bool DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
+	{
+		if (a == b) {
+			addTestPartResult(new muleunit::TestPartResult(file, line, wxEmptyString, success));
+			
+			return true;
+		} else {
+			wxString message = wxT("Expected '") + StringFrom(a) + 
+								wxT("' but got '") + StringFrom(b) + wxT("'");
+
+			addTestPartResult(new muleunit::TestPartResult(file, line, message, failure));
+		
+			return false;
+		}
+	}
+	
 	wxString m_testCaseName;
 	wxString m_testName;
 	TestCase* m_testCase;
@@ -146,19 +163,6 @@ wxString StringFrom(const TYPE& value)
 {
 	return wxString() << value;
 }
-
-
-typedef std::pair<bool, wxString> ResultAndDesc;
-
-template <typename TYPE_A, typename TYPE_B>
-ResultAndDesc CompareAndDesc(const TYPE_A& a, const TYPE_B& b)
-{
-	wxString desc = wxT("Expected '") + StringFrom(a) + 
-					wxT("' but got '") + StringFrom(b) + wxT("'");
-	
-	return ResultAndDesc(a == b, desc);
-}
-
 
 
 /**
@@ -207,8 +211,7 @@ ResultAndDesc CompareAndDesc(const TYPE_A& a, const TYPE_B& b)
  */
 #define ASSERT_EQUALS(expected, actual) \
 { \
-	ResultAndDesc RaD = CompareAndDesc(expected, actual); \
-	ASSERT_TRUE_M(RaD.first, RaD.second); \
+	if (!DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)) return; \
 }
 
 
