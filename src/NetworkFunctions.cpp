@@ -50,26 +50,26 @@
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 {
 	// The current position in the current field, used to detect malformed fields (x.y..z).
-	int digit = 0;
+	unsigned digit = 0;
 
 	// The current field, used to ensure only IPs that looks like a.b.c.d are supported
-	int field = 0;
+	unsigned field = 0;
 
 	// The value of the current field
-	int value = 0;
+	unsigned value = 0;
 
 	// Stores the work-value of the IP, reference is not changed unless the str was valid
 	uint32 tmp_ip = 0;
 
 	wxString str = strIP.Strip( wxString::both );
-	for ( size_t i = 0; i < str.Length(); i++ ) {
+	for (size_t i = 0; i < str.Length(); i++) {
 		wxChar c = str.GetChar( i );
 		
-		if ( c >= wxT('0') && c <= wxT('9') ) {
+		if ( c >= wxT('0') && c <= wxT('9') && (value >> 8) == 0) {
 			value = ( value * 10 ) + ( c - wxT('0') );
 			++digit;
 		} else if ( c == wxT('.') ) {
-			if ( digit && value <= 255 ) {
+			if ( digit && (value >> 8) == 0) {
 				tmp_ip = tmp_ip | value << ( field * 8 );
 
 				// Rest the current field values
@@ -84,7 +84,7 @@ bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 	}
 
 	// Only set the referenced value if it was a valid IP
-	if ( field == 3 && digit ) {
+	if ( field == 3 && digit && (value >> 8) == 0) {
 		Ip = tmp_ip | value << 24;
 		return true;
 	}
