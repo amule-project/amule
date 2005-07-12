@@ -62,6 +62,8 @@
 #include "WebInterface.h"
 #include "KnownFile.h"
 #include "ECPacket.h"
+#include "RLE.h"
+#include "OtherStructs.h"
 
 class TransferredData;
 class CWSThread;
@@ -143,7 +145,7 @@ class DownloadFile {
 		CMD4Hash	nHash;
 		
 		CProgressImage *m_Image;
-		otherfunctions::PartFileEncoderData m_Encoder;
+		PartFileEncoderData m_Encoder;
 		std::vector<Gap_Struct> m_ReqParts;
 
 		// container require this		

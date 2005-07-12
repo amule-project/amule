@@ -814,7 +814,7 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 {
 	CKnownFile *file = new CKnownFile(tag);
 
-	m_enc_map[file->GetFileHash()] = otherfunctions::RLE_Data(file->GetPartCount(), true);
+	m_enc_map[file->GetFileHash()] = RLE_Data(file->GetPartCount(), true);
 
 	ProcessItemUpdate(tag, file);
 	
@@ -1161,7 +1161,7 @@ bool CDownQueueRem::IsPartFile(const CKnownFile *) const
 CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
 	CPartFile *file = new CPartFile(tag);
-	m_enc_map[file->GetFileHash()] = otherfunctions::PartFileEncoderData(file->GetPartCount(), 10);
+	m_enc_map[file->GetFileHash()] = PartFileEncoderData(file->GetPartCount(), 10);
 	ProcessItemUpdate(tag, file);
 	
 	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(file);
@@ -1245,7 +1245,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 
 		wxASSERT(m_enc_map.count(file->GetFileHash()));
 		
-		otherfunctions::PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
+		PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
 		encoder.Decode(
 			(unsigned char *)gaptag->GetTagData(), gaptag->GetTagDataLen(),
 			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());

@@ -43,7 +43,7 @@
 #include "ECSpecialTags.h"
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
-#include "OtherFunctions.h"	// for RLE
+#include "RLE.h"	// for RLE
 #include "DownloadQueue.h"
 #include "SharedFileList.h"
 
@@ -102,7 +102,7 @@ class CPartFile_Encoder {
 		// List of gaps sent to particular client. Since clients
 		// can request lists in different time, they can get
 		// different results
-		otherfunctions::PartFileEncoderData m_enc_data;
+		PartFileEncoderData m_enc_data;
 		
 		// gaps are also RLE encoded, but list have variable size by it's nature.
 		// so realloc buffer when needed.
@@ -144,7 +144,7 @@ typedef CFileEncoderMap<CPartFile , CPartFile_Encoder, CDownloadQueue> CPartFile
  * Encode 'obtained parts' info to be sent to remote gui
  */
 class CKnownFile_Encoder {
-		otherfunctions::RLE_Data m_enc_data;
+		RLE_Data m_enc_data;
 		CKnownFile *m_file;
 	public:
 		CKnownFile_Encoder(CKnownFile *file);
