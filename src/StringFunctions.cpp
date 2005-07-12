@@ -190,3 +190,43 @@ wxString UnescapeHTML( const wxString& str )
 }
 
 
+
+	
+CSimpleTokenizer::CSimpleTokenizer(const wxString& str, wxChar token)
+	: m_string(str),
+	  m_delim(token),
+	  m_ptr(m_string.c_str()),
+	  m_count(0)
+{
+}
+
+
+wxString CSimpleTokenizer::next()
+{
+	const wxChar* start = m_ptr;
+	const wxChar* end   = m_string.c_str() + m_string.Len() + 1;
+
+	for (; m_ptr < end; ++m_ptr) {
+		if (*m_ptr == m_delim) {
+			m_count++;
+			break;
+		}
+	}
+
+	// Return the token
+	return m_string.Mid(start - m_string.c_str(), m_ptr++ - start);
+}
+
+
+wxString CSimpleTokenizer::remaining() const
+{
+	return m_string.Mid(m_ptr - m_string.c_str());
+}
+
+
+size_t CSimpleTokenizer::tokenCount() const
+{
+	return m_count;
+}
+
+
