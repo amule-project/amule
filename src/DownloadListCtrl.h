@@ -245,7 +245,8 @@ private:
 	// Misc event-handlers
 	void	OnItemActivated( wxListEvent& event );
 	void	OnColumnLClick( wxListEvent& event );
-	void 	OnNMRclick( wxListEvent& event );
+	void 	OnMouseRightClick( wxListEvent& event );
+	void 	OnMouseMiddleClick( wxListEvent& event );
 	void	OnKeyPressed( wxKeyEvent& event );
 
 

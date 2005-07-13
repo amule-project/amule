@@ -107,7 +107,8 @@ struct CtrlItem_Struct
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_LIST_COL_CLICK( -1, 		CDownloadListCtrl::OnColumnLClick)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST,	CDownloadListCtrl::OnItemActivated)
-	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnNMRclick)
+	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseRightClick)
+	EVT_LIST_ITEM_MIDDLE_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseMiddleClick)
 
 	EVT_CHAR( CDownloadListCtrl::OnKeyPressed )
 
@@ -926,7 +927,7 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 }
 
 
-void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
+void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 {
 	// Check if clicked item is selected. If not, unselect all and select it.
 	if ( !GetItemState( evt.GetIndex(), wxLIST_STATE_SELECTED ) ) {
@@ -1112,6 +1113,37 @@ void CDownloadListCtrl::OnNMRclick(wxListEvent & evt)
 			
 			m_menu = NULL;
 		}
+	}
+}
+
+
+void CDownloadListCtrl::OnMouseMiddleClick(wxListEvent & evt)
+{
+	// Check if clicked item is selected. If not, unselect all and select it.
+	if ( !GetItemState( evt.GetIndex(), wxLIST_STATE_SELECTED ) ) {
+		long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+
+		while ( item > -1 ) {
+			SetItemState( item, 0, wxLIST_STATE_SELECTED );
+		
+			item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		}
+		
+		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+	}
+
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	if ( index < 0 ) {
+		return;
+	}
+
+	CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData( index );
+	
+	if ( item->type == FILE_TYPE ) {
+		CFileDetailDialog(this, (CPartFile*)item->value).ShowModal();
+	} else {
+		CClientDetailDialog(this, (CUpDownClient*)item->value).ShowModal();
 	}
 }
 
