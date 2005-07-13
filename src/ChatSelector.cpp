@@ -69,6 +69,7 @@ CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& valu
 {
 	m_client_id = 0;
 	m_active = false;
+	SetBackgroundColour(*wxWHITE);
 }
 
 
