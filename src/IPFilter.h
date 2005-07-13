@@ -56,28 +56,13 @@ public:
 	 */
 	CIPFilter();
 
-	/**
-	 * Destructor.
-	 */
-	~CIPFilter();
-	
 	
 	/**
 	 * Clears the current list of IP-Ranges.
 	 */
 	void	RemoveAllIPs();
 
-	/**
-	 * Loads a IP-list from the specified file, can be text or zip.
-	 */
-	int		LoadFromFile(const wxString& file, bool merge);
 
-	/**
-	 * This function saves the list in memory to the file 'ipfilter.dat'.
-	 */
-	void	SaveToFile();
-
-	
 	/**
 	 * Checks if a IP is filtered with the current list and AccessLevel.
 	 *
@@ -95,7 +80,7 @@ public:
 	uint32	BanCount() const;
 
 	/**
-	 * Reloads the current ipfilter.dat file, discarding the current list of ranges.
+	 * Reloads the ipfilter files, discarding the current list of ranges.
 	 */
 	void 	Reload();
 
@@ -104,6 +89,9 @@ public:
 	 * Starts a download of the ipfilter-list at the specified URL.
 	 *
 	 * @param A valid URL.
+	 *
+	 * Once the file has been downloaded, the ipfilter.dat file 
+	 * will be replaced with the new file and Reload will be called.
 	 */
 	void	Update(const wxString& strURL);
 
@@ -113,21 +101,19 @@ public:
 	void	DownloadFinished(uint32 result);
 	
 private:
+	// Contains the number of ranges added and the number of lines discarded while loading.
+	typedef std::pair<size_t, size_t> AddedAndDiscarded;
+	
+	/**
+	 * Loads a IP-list from the specified file, can be text or zip.
+	 */
+	void LoadFromFile(const wxString& file);
+	
 	/**
 	 * Helper-function, loads a IP-list from the text file.
 	 */
-	int		LoadFromDatFile( const wxString& file );
+	AddedAndDiscarded LoadFromDatFile( const wxString& file );
 
-	/**
-	 * Helper-function, loads a IP-list from the specified zip file.
-	 */
-	int		LoadFromZipFile( const wxString& file );
-
-	/**
-	 * Helper-function, returns true if the file is a zip-archive.
-	 */
-	bool	IsZipFile( const wxString& file );
-	
 	/**
 	 * Helper-function for processing the AntiP2P format.
 	 *

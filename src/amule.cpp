@@ -272,9 +272,6 @@ int CamuleApp::OnExit()
 	// Save credits
 	clientcredits->SaveList();
 	
-	// Save IPFilter file.
-	ipfilter->SaveToFile();
-	
 	// Kill amuleweb if running
 	if (webserver_pid) {
 		printf("Killing amuleweb instance...\n");
@@ -824,6 +821,16 @@ bool CamuleApp::OnInit()
 
 	// reload shared files
 	sharedfiles->Reload(true);
+
+
+	// Load and update IPFilter.dat files
+	AddLogLineM(false, _("Loading ipfilter.dat files."));
+	ipfilter->Reload();
+	
+	if (thePrefs::IPFilterAutoLoad()) {
+		ipfilter->Update(thePrefs::IPFilterURL());
+	}	
+
 	
 	// Ensure that the up/down ratio is used
 	CPreferences::CheckUlDlRatio();
