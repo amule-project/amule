@@ -199,6 +199,11 @@ wxChar HexToDec( const wxString& hex );
 wxString UnescapeHTML( const wxString& str );
 
 
+/**
+ * Ensures that the url pass is valid by escaping various chars.
+ */
+wxString validateURI(const wxString& url);
+
 
 /**
  * This class provides a simple and fast tokenizer.
