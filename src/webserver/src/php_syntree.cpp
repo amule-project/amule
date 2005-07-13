@@ -332,6 +332,8 @@ PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	PHP_SCOPE_ITEM *it = new PHP_SCOPE_ITEM;
+	memset(it, 0, sizeof(PHP_SCOPE_ITEM));
+	
 	std::string key(name);
 	(*scope_map)[key] = it;
 	return it;
@@ -457,7 +459,44 @@ PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array)
 	return 0;
 }
 
-/* casting functions */
+/* value manipulation - assignment and disposal */
+
+void value_value_assign(PHP_VALUE_NODE *dst, PHP_VALUE_NODE *src)
+{
+	// first, free old value
+	value_value_free(dst);
+	dst->type = src->type;
+	switch(src->type) {
+		// scalars are copied. Objects are copied too, since
+		// interpreter doesn't allocate them.
+		case PHP_VAL_NONE: 
+		case PHP_VAL_BOOL:
+		case PHP_VAL_INT:
+		case PHP_VAL_FLOAT:
+		case PHP_VAL_OBJECT:
+			// assign biggest in union
+			dst->obj_val = src->obj_val;
+			break;
+		// string is duplicated
+		case PHP_VAL_STRING: {
+			dst->str_val = strdup(src->str_val);
+			break;
+		}
+		// array must duplicate all it's values
+		case PHP_VAL_ARRAY: {
+			dst->ptr_val = new PHP_ARRAY_TYPE;
+			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)src->ptr_val)->array.begin();
+				i != ((PHP_ARRAY_TYPE *)src->ptr_val)->array.end(); i++) {
+					PHP_VAR_NODE *added = array_get_by_str_key(dst, i->first);
+					value_value_assign(&added->value, &i->second->value);
+				}
+			break;
+		}
+
+		case PHP_VAL_VAR_NODE:
+		case PHP_VAL_INT_DATA: break;
+	}
+}
 
 void value_value_free(PHP_VALUE_NODE *val)
 {
@@ -492,6 +531,7 @@ void value_value_free(PHP_VALUE_NODE *val)
 	val->type = PHP_VAL_NONE;
 }
 
+/* casting functions */
 void cast_value_dnum(PHP_VALUE_NODE *val)
 {
 	switch(val->type) {
@@ -668,9 +708,16 @@ void php_engine_init()
 	
 	g_scope_stack = new PHP_SCOPE_STACK_TYPE;
 	
-	// here built-in functions are supposed to be loaded
-	//php_add_native_func("var_dump", php_native_var_dump);
+	// here built-in functions/objects/vars are loaded
 	php_init_core_lib();
+}
+
+void php_engine_free()
+{
+	delete_scope_table(g_global_scope);
+	g_global_scope = 0;
+	g_current_scope = 0;
+	delete (PHP_SCOPE_STACK_TYPE *)g_scope_stack;
 }
 
 /*
@@ -694,8 +741,8 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 		case PHP_OP_ASS:
 			php_expr_eval(expr->tree_node.right, &result_val);
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
-			value_value_free(&lval_node->value);
-			lval_node->value = result_val;
+			value_value_assign(&lval_node->value, &result_val);
+			value_value_free(&result_val);
 			break;
 		case PHP_OP_ARRAY_BY_KEY:
 			php_expr_eval(expr->tree_node.right, &result_val);
@@ -742,7 +789,6 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			break;
 		case PHP_OP_OBJECT_DEREF: // $x->y
 			// take variable from scope of current object
-			//php_report_error("Assign to class members not supported", PHP_ERROR);
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
 			if ( !lval_node ) {
 				php_report_error("Left part of -> must be lvalue", PHP_ERROR);
@@ -782,7 +828,8 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			
 	}
 	if ( result ) {
-		*result = result_val;
+		value_value_assign(result, &result_val);
+		value_value_free(&result_val);
 	}
 }
 
@@ -1160,5 +1207,7 @@ int main()
 	PHP_VALUE_NODE val;
 	php_execute(g_syn_tree_top, &val);
 
+	php_engine_free();
+	
 	return 0;
 }

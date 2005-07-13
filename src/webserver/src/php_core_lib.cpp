@@ -130,6 +130,42 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 }
 
 /*
+ * Load amule variables into interpreter scope.
+ *  "varname" will tell us, what kind of variables need to load:
+ *    "downloads", "uploads", "searchresult", "servers", "options" etc
+ */
+void php_native_load_amule_vars(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_str = get_scope_item(scope, "varname");
+	if ( !si_str  ) {
+		php_report_error("Missing argument 'varname' for 'load_amule_vars'", PHP_ERROR);
+		return;
+	}
+	PHP_VALUE_NODE *str = &si_str->var->value;
+	if ( str->type != PHP_VAL_STRING ) {
+		php_report_error("Argument 'varname' for 'load_amule_vars' must be string", PHP_ERROR);
+		return;
+	}
+	char *varname = str->str_val;
+	if ( strcmp(varname, "downloads") == 0 ) {
+		//PHP_VAR_NODE *arr_var = make_array_var();
+		cast_value_array(result);
+		for (int i = 0; i < 10; i++) {
+			PHP_VAR_NODE *var = array_push_back(result);
+			var->value.type = PHP_VAL_OBJECT;
+			var->value.obj_val.class_name = "AmuleDownloadFile";
+			var->value.obj_val.inst_ptr = 0;
+		}
+		//add_var_2_scope(g_global_scope, arr_var, "AMULE_DOWNLOADS");
+	} else if ( strcmp(varname, "uploads") == 0 ) {
+	} else if ( strcmp(varname, "searchresult") == 0 ) {
+	} else if ( strcmp(varname, "servers") == 0 ) {
+	} else {
+		php_report_error("This type of amule variable is unknown", PHP_ERROR);
+	}
+}
+
+/*
  * Amule objects implementations
  */
 void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
@@ -161,6 +197,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"strlen",
 		{ "str", 0, 0, { PHP_VAL_NONE } },
 		1, php_native_strlen,
+	},
+	{
+		"load_amule_vars",
+		{ "varname", 0, 0, { PHP_VAL_NONE } },
+		1, php_native_load_amule_vars,
 	},
 	{ 0 },
 };

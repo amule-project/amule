@@ -287,12 +287,17 @@ extern "C" {
 	void cast_value_array(PHP_VALUE_NODE *e);
 	void cast_value_bool(PHP_VALUE_NODE *e);
 	
+	void value_value_free(PHP_VALUE_NODE *val);
+	void value_value_assign(PHP_VALUE_NODE *src, PHP_VALUE_NODE *dst);
+	
 	/* array operations */
 	PHP_VAR_NODE *array_get_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key);
 	PHP_VAR_NODE *array_get_by_int_key(PHP_VALUE_NODE *array, int key);
 	
 	int array_is_key_here(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key);
 	int array_get_size(PHP_VALUE_NODE *array);
+	PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array);
+	
 	PHP_VAR_NODE *make_array_var();
 	
 	// signle operand expression:
@@ -340,7 +345,7 @@ extern "C" {
 
 	/* engine */	
 	void php_engine_init();
-
+	void php_engine_free();
 	/*
 	 * Return code meaning:
 	 *  0  : continue execution to the next statement
