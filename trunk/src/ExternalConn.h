@@ -239,22 +239,4 @@ class ExternalConn : public wxEvtHandler {
 		DECLARE_EVENT_TABLE()
 };
 
-class ExternalConnClientThread : public wxThread {
-	public:
-		ExternalConnClientThread(ExternalConn *owner, ECSocket *sock);
-		~ExternalConnClientThread();
-	
-	private:
-		ExitCode Entry();
-
-		//
-		// encoder container must be created per EC client
-		CPartFile_Encoder_Map m_part_encoders;
-		CKnownFile_Encoder_Map m_shared_encoders;
-		CObjTagMap m_obj_tagmap;
-		
-		ExternalConn *m_owner;
-		ECSocket *m_sock;
-};
-
 #endif // EXTERNALCONN_H
