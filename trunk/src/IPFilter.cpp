@@ -32,49 +32,133 @@
 #include <wx/filefn.h>		// Needed for wxFileExists
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/string.h>		// Needed for wxString
-#include <wx/txtstrm.h>		// Needed for wxTextInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/fs_zip.h>		// Needed for wxZipFSHandler
+#include <wx/file.h>		// Needed for wxTempFile
+#include <wx/filename.h>
 
 #include "IPFilter.h"		// Interface declarations.
-#include "StringFunctions.h"
 #include "NetworkFunctions.h"
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
 #include "Statistics.h"		// Needed for CStatistics
-#include "HTTPDownload.h"
-#include "GetTickCount.h"
-#include "CFile.h"
-#include "Logger.h"
+#include "HTTPDownload.h"	// Needed for CHTTPDownloadThread
+#include "Logger.h"			// Needed for AddDebugLogLineM
+#include "Format.h"
 
 
-CIPFilter::CIPFilter()
+/**
+ * Returns true if the file is a zip-archive.
+ */
+bool IsZipFile(const wxString& file)
 {
-	LoadFromFile( theApp.ConfigDir + wxT("ipfilter.dat"), false );
+	wxFile archive(file, wxFile::read);
+	char head[2];
+
+	if (archive.Read(head, 2) == 2) {
+		// Zip-archives have a header of "PK".
+		return (head[0] == 'P') && (head[1] == 'K');
+	}
+
+	return false;
+}
+
+
+/**
+ * Replaces the zip-archive with "guarding.p2p" or "ipfilter.dat",
+ * if either of those files are found in the archive.
+ */
+bool UnpackZipFile(const wxString& file)
+{
+	wxZipFSHandler archive; 
+	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
+
+	while (!filename.IsEmpty()) {
+		// Extract the filename part of the URI
+		filename = filename.AfterLast(wxT(':')).Lower();
 	
-	if (thePrefs::IPFilterAutoLoad()) {
-		Update(thePrefs::IPFilterURL());
+		// We only care about the following files
+		if (filename == wxT("guarding.p2p") || filename == wxT("ipfilter.dat")) {
+			wxZipInputStream inputStream(file, filename);
+			wxTempFile target(file);
+			char buffer[10240];
+
+			while (!inputStream.Eof()) {
+				inputStream.Read(buffer, sizeof(buffer));
+
+				target.Write(buffer, inputStream.LastRead());
+			}
+
+			// Save the unpacked file
+			target.Commit();
+			
+			return true;
+		}
+		
+		filename = archive.FindNext();
+	}
+
+	return false;
+}
+
+
+/**
+ * This function creates a text-file containing the specified text, 
+ * but only if the file does not already exist.
+ */
+void CreateDummyFile(const wxString& filename, const wxString& text)
+{
+	// Create template files
+	if (!wxFileExists(filename)) {
+		wxTextFile file;
+
+		if (file.Create(filename)) {
+			file.AddLine(text);
+			file.Write();
+		}
 	}
 }
 
 
-CIPFilter::~CIPFilter()
+
+
+CIPFilter::CIPFilter()
 {
-	RemoveAllIPs();
+	// Setup dummy files for the curious user.
+	
+	const wxString normalDat = theApp.ConfigDir + wxT("ipfilter.dat");
+	const wxString normalMsg = wxString()
+		<< wxT("# This file is used by aMule to store ipfilter lists downloaded\n")
+		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
+		<< wxT("# ranges here that should not be overwritten by aMule.\n");
+
+	CreateDummyFile(normalDat, normalMsg);
+	
+	
+	const wxString staticDat = theApp.ConfigDir + wxT("ipfilter_static.dat");
+	const wxString staticMsg = wxString()
+		<< wxT("# This file is used to store ipfilter-ranges that should\n")
+		<< wxT("# not be overwritten by aMule. If you wish to keep a custom\n")
+		<< wxT("# set of ipfilter-ranges that take precedence over ipfilter-\n")
+		<< wxT("# ranges aquired through the auto-update functionality, then\n")
+		<< wxT("# place them in this file. aMule will not change this file.");
+
+	CreateDummyFile(staticDat, staticMsg);
 }
 
 
 void CIPFilter::Reload()
 {
 	RemoveAllIPs();
-	
-	LoadFromFile( theApp.ConfigDir + wxT("ipfilter.dat"), false );
+
+	LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"));
+	LoadFromFile(theApp.ConfigDir + wxT("ipfilter_static.dat"));
 }
 
 
 uint32 CIPFilter::BanCount() const
 {
-	wxMutexLocker lock( m_mutex );
+	wxMutexLocker lock(m_mutex);
 
 	return m_iplist.size();
 }
@@ -89,7 +173,7 @@ void CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, con
 	item.AccessLevel = AccessLevel;
 	item.Description = Description;
 
-	m_iplist.insert( IPStart, IPEnd, item );
+	m_iplist.insert(IPStart, IPEnd, item);
 }
 
 
@@ -110,7 +194,7 @@ bool CIPFilter::m_inet_atoh(const wxString &str, uint32& ipA, uint32& ipB)
 }
 
 
-bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
+bool CIPFilter::ProcessPeerGuardianLine(const wxString& sLine)
 {
 	CSimpleTokenizer tkz(sLine, wxT(','));
 	
@@ -128,7 +212,7 @@ bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
 	uint32 IPEnd   = 0;
 
 	// This will also fail if the line is commented out
-	if ( !m_inet_atoh( first, IPStart, IPEnd ) ) {
+	if (!m_inet_atoh(first, IPStart, IPEnd)) {
 		return false;
 	}
 
@@ -139,230 +223,109 @@ bool CIPFilter::ProcessPeerGuardianLine( const wxString& sLine )
 	}
 
 	// Add the filter
-	AddIPRange( IPStart, IPEnd, AccessLevel, third );
+	AddIPRange(IPStart, IPEnd, AccessLevel, third);
 
 	return true;
 }
 
 
-bool CIPFilter::ProcessAntiP2PLine( const wxString& sLine )
+bool CIPFilter::ProcessAntiP2PLine(const wxString& sLine)
 {
 	// remove spaces from the left and right.
 	const wxString line = sLine.Strip(wxString::leading);
 
-	// Ignore comments, too short lines and other odd stuff
-	// The theoretical smallest line would be ":0.0.0.0-0.0.0.0"
-	if ( line.Len() < 16 ) {
-		return false;
-	}
-
 	// Extract description (first) and IP-range (second) form the line
-	int pos = line.Find( wxT(':'), true );
-	if ( pos == -1 ) {
+	int pos = line.Find(wxT(':'), true);
+	if (pos == -1) {
 		return false;
 	}
 
-	wxString Description = line.Left( pos ).Strip( wxString::trailing );
-	wxString IPRange     = line.Right( line.Len() - pos - 1 );
+	wxString Description = line.Left(pos).Strip(wxString::trailing);
+	wxString IPRange     = line.Right(line.Len() - pos - 1);
 
 	// Convert string IP's to host order IP numbers
 	uint32 IPStart = 0;
 	uint32 IPEnd   = 0;
 
-	if ( !m_inet_atoh( IPRange ,IPStart, IPEnd ) ) {
+	if (!m_inet_atoh(IPRange ,IPStart, IPEnd)) {
 		return false;
 	}
 
 	// Add the filter
-	AddIPRange( IPStart, IPEnd, 0, Description );
+	AddIPRange(IPStart, IPEnd, 0, Description);
 
 	return true;
 }
 
 
-int CIPFilter::LoadFromFile( const wxString& file, bool merge )
+void CIPFilter::LoadFromFile(const wxString& file)
 {
-	int filtercounter = 0;
-
-	if ( !merge ) {
-		RemoveAllIPs();
-	}
-
-	if ( wxFileExists( file ) ) {
+	if (wxFileExists(file)) {	
 		// Attempt to discover the filetype
-		if ( IsZipFile( file ) ) {
-			filtercounter = LoadFromZipFile( file );
-		} else {
-			filtercounter = LoadFromDatFile( file );
-		}
-	
-		AddLogLineM(true, wxString::Format(_("Loaded ipfilter with %d new IP addresses."), filtercounter));
-	}
-
-	if (merge) {
-		SaveToFile();
-	}
-
-	return filtercounter;
-}
-
-
-bool CIPFilter::IsZipFile( const wxString& filename )
-{
-	CFile file( filename, CFile::read );
-	char head[2];
-
-	if ( file.Read( head, 2 ) == 2 ) {
-		// Zip-archives have a header of "PK".
-		return ( head[0] == 'P' ) && ( head[1] == 'K' );
-	}
-
-	return false;
-}
-
-
-int CIPFilter::LoadFromZipFile( const wxString& file )
-{
-	int filtercounter = 0;
-	
-	if ( wxFileExists( file ) ) {
-		wxMutexLocker lock( m_mutex );
-	
-		// Try to load every file in the archive
-		wxZipFSHandler archive; 
-		wxString filename = archive.FindFirst( file + wxT("#file:/*"), wxFILE );
-
-		while ( !filename.IsEmpty() ) {
-			// Extract the filename part of the URI
-			filename = filename.AfterLast( ':' );
-			
-			wxZipInputStream inputStream( file, filename );
-			wxBufferedInputStream buffer( inputStream );
-			wxTextInputStream stream( buffer );
-
-			// Function pointer-type of the parse-functions we can use
-			typedef bool (CIPFilter::*ParseFunc)(const wxString&);
-
-			ParseFunc func = NULL;
-
-			while ( !inputStream.Eof() ) {
-				wxString line = stream.ReadLine();
-					
-				if ( func ) {
-					if ( (*this.*func)( line ) ) {
-							filtercounter++;
-					}
-				} else {
-					// Select the parser that can handle this file
-					if ( ProcessPeerGuardianLine( line ) ) {
-						func = &CIPFilter::ProcessPeerGuardianLine;
-						filtercounter++;
-					} else if ( ProcessAntiP2PLine( line ) ) {
-						func = &CIPFilter::ProcessAntiP2PLine;
-						filtercounter++;
-					}
-				}
+		if (IsZipFile(file)) {
+			if (UnpackZipFile(file)) {
+				 LoadFromFile(file);
+			} else {
+				AddLogLineM(true, CFormat(_("Failed to extract ipfilter list from archive '%s'. File may be damaged or contain misnamed files.")) % file);
 			}
-			
-			filename = archive.FindNext();
+		} else {
+			AddedAndDiscarded stat = LoadFromDatFile(file);
+
+			AddLogLineM(false,
+				CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
+					% stat.first
+					% file.AfterLast(wxFileName::GetPathSeparator())
+					% stat.second
+			);			 
 		}
 	}
-
-	return filtercounter;
 }
 
 
-int CIPFilter::LoadFromDatFile( const wxString& file )
+CIPFilter::AddedAndDiscarded CIPFilter::LoadFromDatFile(const wxString& file)
 {
-	int filtercounter = 0;
+	int filtercount = 0;
+	int discardedCount = 0;
 	
 	wxTextFile readFile(file);
-	if( readFile.Exists() && readFile.Open() ) {
-		wxMutexLocker lock( m_mutex );
+	if(readFile.Exists() && readFile.Open()) {
+		wxMutexLocker lock(m_mutex);
 	
 		// Function pointer-type of the parse-functions we can use
 		typedef bool (CIPFilter::*ParseFunc)(const wxString&);
 
 		ParseFunc func = NULL;
 
-		for ( size_t i = 0; i < readFile.GetLineCount(); i++ ) {
-			wxString line = readFile.GetLine( i );
+		for (size_t i = 0; i < readFile.GetLineCount(); i++) {
+			wxString line = readFile.GetLine(i);
 
-			if ( func ) {
-				if ( (*this.*func)( line ) ) {
-					filtercounter++;
-				}
+			if (func && (*this.*func)(line)) {
+				filtercount++;
+			} else if (ProcessPeerGuardianLine(line)) {
+				func = &CIPFilter::ProcessPeerGuardianLine;
+				filtercount++;
+			} else if (ProcessAntiP2PLine(line)) {
+				func = &CIPFilter::ProcessAntiP2PLine;
+				filtercount++;
 			} else {
-				// Select the parser that can handle this file
-				if ( ProcessPeerGuardianLine( line ) ) {
-					func = &CIPFilter::ProcessPeerGuardianLine;
-					filtercounter++;
-				} else if ( ProcessAntiP2PLine( line ) ) {
-					func = &CIPFilter::ProcessAntiP2PLine;
-					filtercounter++;
+				// Comments and empty lines are ignored
+				line = line.Strip(wxString::both);
+				
+				if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
+					discardedCount++;
+					AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
 				}
 			}
 		}
 	}
 
-	return filtercounter;
-}
-
-
-void CIPFilter::SaveToFile()
-{
-	wxMutexLocker lock( m_mutex );
-
-	wxString IPFilterName = theApp.ConfigDir + wxT("ipfilter.dat");
-	wxTextFile IPFilterFile(IPFilterName + wxT(".new"));
-	if (IPFilterFile.Exists()) {
-		// We're gonna do a new one, baby
-		::wxRemoveFile(IPFilterName + wxT(".new"));
-	}
-
-	// Create the new ipfilter.
-	IPFilterFile.Create();
-
-	IPMap::iterator it = m_iplist.begin();
-	for ( ; it != m_iplist.end(); ++it ) {
-		wxString line;
-		wxString ipA = Uint32toStringIP( wxUINT32_SWAP_ALWAYS( it.keyStart() ) );
-		wxString ipB = Uint32toStringIP( wxUINT32_SWAP_ALWAYS( it.keyEnd() ) );
-
-		// Range Start
-		line << ipA.Pad( 15 - ipA.Len() )
-		// Range Seperator
-		<< wxT(" - ")
-		// Range End
-		<< ipB.Pad( 15 - ipB.Len() )
-		// Token separator
-		<< wxT(" , ")
-		// Access level
-		<< (int)it->AccessLevel
-		// Token separator
-		<< wxT(" , ")
-		// Description
-		<< it->Description;
-
-		// Add it to file...
-		IPFilterFile.AddLine(line);
-	}
-
-	// Close & write the file
-	IPFilterFile.Write();
-	IPFilterFile.Close();
-
-	// Remove old ipfilter
-	::wxRemoveFile(IPFilterName);
-
-	// Make new ipfilter the default one.
-	wxRenameFile(IPFilterName + wxT(".new"),IPFilterName);
+	return AddedAndDiscarded(filtercount, discardedCount);
 }
 
 
 void CIPFilter::RemoveAllIPs()
 {
-	wxMutexLocker lock( m_mutex );
+	wxMutexLocker lock(m_mutex);
 
 	m_iplist.clear();
 }
@@ -370,16 +333,15 @@ void CIPFilter::RemoveAllIPs()
 
 bool CIPFilter::IsFiltered(uint32 IPTest)
 {
-	if ( thePrefs::GetIPFilterOn() ) {
-		wxMutexLocker lock( m_mutex );
-	
-		IPTest = wxUINT32_SWAP_ALWAYS(IPTest);
+	if (thePrefs::GetIPFilterOn()) {
+		wxMutexLocker lock(m_mutex);
 
-		IPMap::iterator it = m_iplist.find_range( IPTest );
+		// The IP needs to be in host order
+		IPMap::iterator it = m_iplist.find_range(wxUINT32_SWAP_ALWAYS(IPTest));
 
-		if ( it != m_iplist.end() ) {
-			if ( it->AccessLevel < thePrefs::GetIPFilterLevel() ) {
-				AddDebugLogLineM( false, logIPFilter, wxT("Filtered IP: ") + Uint32toStringIP( wxUINT32_SWAP_ALWAYS(IPTest) ) + wxT(" (") + it->Description + wxT(")") );
+		if (it != m_iplist.end()) {
+			if (it->AccessLevel < thePrefs::GetIPFilterLevel()) {
+				AddDebugLogLineM(false, logIPFilter, wxT("Filtered IP: ") + Uint32toStringIP(IPTest) + wxT(" (") + it->Description + wxT(")"));
 				theApp.statistics->AddFilteredClient();
 				
 				return true;
@@ -393,9 +355,9 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 
 void CIPFilter::Update(const wxString& strURL)
 {
-	if ( !strURL.IsEmpty() ) {
+	if (!strURL.IsEmpty()) {
 		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread( strURL, filename, HTTP_IPFilter );
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, filename, HTTP_IPFilter);
 		
 		downloader->Create();
 		
@@ -406,18 +368,27 @@ void CIPFilter::Update(const wxString& strURL)
 
 void CIPFilter::DownloadFinished(uint32 result)
 {
-	if ( result == 1 ) {
+	if (result == 1) {
 		// curl succeeded. proceed with ipfilter loading
-		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
-		
-		// Load the downloaded file, which may be a zip archive
-		if ( !LoadFromFile( filename, true ) ) {
-			AddDebugLogLineM( true, logIPFilter, wxT("Failed to load the ipfilter from ") + thePrefs::IPFilterURL());
+		wxString newDat = theApp.ConfigDir + wxT("ipfilter.download");
+		wxString oldDat = theApp.ConfigDir + wxT("ipfilter.dat");
+
+		if (wxFileExists(oldDat)) {
+			if (!wxRemoveFile(oldDat)) {
+				AddDebugLogLineM(true, logIPFilter, wxT("Failed to remove ipfilter.dat file, aborting update."));
+				return;
+			}
 		}
 		
-		// Remove the now unused file
-		wxRemoveFile( filename );
+		if (!wxRenameFile(newDat, oldDat)) {
+			AddDebugLogLineM(true, logIPFilter, wxT("Failed to rename new ipfilter.dat file, aborting update."));
+			return;
+		}
+		
+		// Reload both ipfilter files
+		Reload();
 	} else {
 		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
+
