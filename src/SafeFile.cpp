@@ -176,8 +176,9 @@ void CFileDataIO::WriteUInt32(uint32 nVal)
 
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& pVal)
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++) {
 		WriteUInt32(pVal.get32BitChunk(i));
+	}
 }
 
 

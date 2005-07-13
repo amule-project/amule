@@ -310,20 +310,6 @@ void CPublishKeywordList::PurgeUnreferencedKeywords()
 	}
 }
 
-#if 0
-void CPublishKeywordList::Dump()
-{
-	int i = 0;
-	POSITION pos = m_lstKeywords.GetHeadPosition();
-	while (pos)
-	{
-		CPublishKeyword* pPubKw = m_lstKeywords.GetNext(pos);
-		TRACE(_T("%3u: %-10ls  ref=%u  %s\n"), i, pPubKw->GetKeyword(), pPubKw->GetRefCount(), CastSecondsToHM(pPubKw->GetNextPublishTime()));
-		i++;
-	}
-}
-#endif
-
 #endif // __COMPILE_KAD__
 
 CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){

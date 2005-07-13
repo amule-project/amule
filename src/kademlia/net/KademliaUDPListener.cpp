@@ -1199,7 +1199,8 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 		CSafeMemFile bio(packetData, lenPacket);
 		CUInt128 check;
 		bio.ReadUInt128(&check);
-		CUInt128 bud(buddy->GetBuddyID());
+		// JOHNTODO: Filter bad buddies
+		//CUInt128 bud(buddy->GetBuddyID());
 		CUInt128 file;
 		bio.ReadUInt128(&file);
 		uint16 tcp = bio.ReadUInt16();

@@ -527,7 +527,7 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip, uint16 port )
 	// Find all items with the specified ip
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( clientip );
 
-	for ( ; range.first != range.second; range.first++ ) {
+	for ( ; range.first != range.second; ++range.first ) {
 		CUpDownClient* cur_client =	range.first->second;
 		// Check if it's actually the client we want
 		if ( cur_client->GetUserPort() == port )
@@ -545,10 +545,10 @@ bool CClientList::ComparePriorUserhash(uint32 dwIP, uint16 nPort, void* pNewHash
 	if ( it != m_trackedClientsList.end() ) {
 		CDeletedClient* pResult = it->second;
 	
-		CDeletedClient::PaHList::iterator it = pResult->m_ItemsList.begin();
-		for ( ; it != pResult->m_ItemsList.end(); it++ ) {
-			if ( it->nPort == nPort ) {
-				if ( it->pHash != pNewHash) {
+		CDeletedClient::PaHList::iterator it2 = pResult->m_ItemsList.begin();
+		for ( ; it2 != pResult->m_ItemsList.end(); ++it2 ) {
+			if ( it2->nPort == nPort ) {
+				if ( it2->pHash != pNewHash) {
 					return false;
 				} else {
 					break;
@@ -569,11 +569,11 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
 	
 		pResult->m_dwInserted = ::GetTickCount();
 
-		CDeletedClient::PaHList::iterator it = pResult->m_ItemsList.begin();
-		for ( ; it != pResult->m_ItemsList.end(); it++ ) {
-			if ( it->nPort == toadd->GetUserPort() ) {
+		CDeletedClient::PaHList::iterator it2 = pResult->m_ItemsList.begin();
+		for ( ; it2 != pResult->m_ItemsList.end(); ++it2 ) {
+			if ( it2->nPort == toadd->GetUserPort() ) {
 				// already tracked, update
-				it->pHash = toadd->Credits();
+				it2->pHash = toadd->Credits();
 				return;
 			}
 		}
@@ -628,7 +628,7 @@ void CClientList::Process()
 				
 				m_bannedList.erase( tmp );
 			} else {
-				it++;
+				++it;
 			}
 		}
 	}
