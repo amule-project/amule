@@ -1431,7 +1431,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				
                	 if( GetDownloadState() == DS_WAITCALLBACK ) {
 					if( GetBuddyIP() && GetBuddyPort()) {
-						printf("This lowid user has a buddy (%s), asking him\n",(const char*)unicode2char(Uint32_16toStringIP_Port(GetBuddyIP(),GetBuddyPort())));
 						CSafeMemFile bio(34);
 						bio.WriteUInt128(Kademlia::CUInt128(GetBuddyID()));
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash()));
