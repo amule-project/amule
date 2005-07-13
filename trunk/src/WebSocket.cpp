@@ -77,8 +77,14 @@ void *CWSThread::Entry() {
 		s_mutex_wcThreads = new wxMutex();
 
 		while (!TestDestroy()) {
-			// Accept incoming connection if there is any, and returns immediately
-			wxSocketBase *sock = m_WSSocket->Accept(false);
+			bool connection_pending	= m_WSSocket->WaitForAccept(1, 0);	// 1 sec
+			wxSocketBase* sock;
+			if (connection_pending) {
+				// Accept incoming connection
+				sock = m_WSSocket->Accept(false);
+			} else {
+				sock = NULL;
+			}
 			if (sock) {
 				// If there was a connection, create new CWCThread
 				CWCThread *wct = new CWCThread(ws, sock);
@@ -95,14 +101,6 @@ void *CWSThread::Entry() {
 					s_wcThreads.Last()->Run();
 				}
 				s_mutex_wcThreads->Unlock();
-			} else {
-#if wxUSE_UNIX && !defined(HAVE_SCHED_YIELD)
-				// wxThread::Yield won't work, so just sleep some time...
-				Sleep(10);	// 10 milliseconds
-#else
-				// else "give the rest of the thread time slice to the system allowing the other threads to run."
-				Yield();
-#endif
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
