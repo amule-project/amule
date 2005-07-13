@@ -179,6 +179,9 @@ void CMuleListCtrl::LoadSettings()
 		}
 	}
 
+	// Update the sort-arrow
+	SetSortColumn(m_sort_column);
+	
 	// Resort the list after the new settings
 	SortList();
 }
