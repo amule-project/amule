@@ -84,7 +84,6 @@ using std::auto_ptr;
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
-#include <wx/url.h>
 #include <wx/checkbox.h>
 
 #include "amule.h"			// Interface declarations.
@@ -394,22 +393,6 @@ wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
 wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
 {
 	return wxEmptyString;
-}
-
-wxString validateURI(const wxString url)
-{
-	wxString strURI;
-#if wxCHECK_VERSION_FULL(2,5,3,2)
-	wxURI* uri = new wxURI(url);
-	strURI=uri->BuildURI();
-#else
-	strURI=wxURL::ConvertToValidURI(url);
-	// The following cause problems, so we escape them
-	strURI.Replace(wxT("\""), wxT("%22")); 
-	strURI.Replace(wxT("'"),  wxT("%27")); 
-	strURI.Replace(wxT("`"),  wxT("%60")); 
-#endif
-	return strURI;
 }
 
 wxString CamuleRemoteGuiApp::GenFakeCheckUrl(const CAbstractFile *f)

@@ -71,7 +71,6 @@
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
-#include <wx/url.h>
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
 
@@ -101,6 +100,7 @@
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
+#include "StringFunctions.h"	// Needed for validateURI
 #include "Packet.h"
 #include "Statistics.h"
 #include "AICHSyncThread.h"
@@ -1110,21 +1110,7 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 	return strCode;
 }
 
-wxString validateURI(const wxString url)
-{
-	wxString strURI;
-#if wxCHECK_VERSION_FULL(2,5,3,2)
-	wxURI* uri = new wxURI(url);
-	strURI=uri->BuildURI();
-#else
-	strURI=wxURL::ConvertToValidURI(url);
-	// The following cause problems, so we escape them
-	strURI.Replace(wxT("\""), wxT("%22")); 
-	strURI.Replace(wxT("'"),  wxT("%27")); 
-	strURI.Replace(wxT("`"),  wxT("%60")); 
-#endif
-	return strURI;
-}
+
 // Generates an URL for checking if a file is "fake"
 wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 {
