@@ -125,6 +125,13 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	if ( toshow->GetSearchID() != m_nResultsID )
 		return;
 
+	// Check if the result should be shown
+	if (!IsFiltered(toshow)) {
+		m_filteredOut.push_back(toshow);
+		
+		return;
+	}
+	
 	// Insert the item before the item found by the search
 	uint32 newid = InsertItem( GetInsertPos( (long)toshow ), toshow->GetFileName() );
 
@@ -230,7 +237,77 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 
 long CSearchListCtrl::GetSearchId()
 {
-		return m_nResultsID;
+	return m_nResultsID;
+}
+
+
+void CSearchListCtrl::SetFilter(const wxString& regExp, bool invert, bool filterKnown)
+{
+	if (regExp.IsEmpty()) {
+		// Show everything
+		m_filter.Compile(wxT(".*"));
+	} else {	
+		m_filter.Compile(regExp, wxRE_DEFAULT | wxRE_ICASE);
+	}
+	
+	m_filterKnown = filterKnown;
+	m_invert = invert;
+	
+	
+	// Swap the list of filtered results so we can freely add new items to the list
+	ResultList curFiltered;
+	std::swap(curFiltered, m_filteredOut);
+	
+
+	// Filter items already on the list
+	for (int i = 0; i < GetItemCount();) {
+		CSearchFile* file = (CSearchFile*)GetItemData(i);
+		
+		if (IsFiltered(file)) {
+			++i;
+		} else {
+			m_filteredOut.push_back(file);
+			DeleteItem(i);
+		}
+	}
+
+	// Check the previously filtered items.
+	ResultList::iterator it = curFiltered.begin();
+	for (; it != curFiltered.end(); ++it) {
+		if (IsFiltered(*it)) {
+			AddResult(*it);
+		} else {
+			m_filteredOut.push_back(*it);
+		}
+	}
+}
+
+
+size_t CSearchListCtrl::GetHiddenItemCount() const
+{
+	return m_filteredOut.size();
+}
+
+
+bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
+{
+	// By default, everything is displayed
+	bool result = true;
+	
+	if (m_filter.IsValid()) {
+		result = m_filter.Matches(file->GetFileName());
+		result = ((result && !m_invert) || (!result && m_invert));
+	
+		if (result && m_filterKnown) {
+			result = !theApp.downloadqueue->GetFileByID(file->GetFileHash());
+
+			if (result) {
+				result = !theApp.knownfiles->FindKnownFileByID(file->GetFileHash());
+			}
+		}
+	}
+
+	return result;
 }
 
 

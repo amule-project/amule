@@ -77,6 +77,12 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged) 
 	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged) 
 	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, wxID_ANY, CSearchDlg::OnFieldChanged)
+
+	// Event handlers for the filter fields getting changed.
+	EVT_TEXT_ENTER(ID_FILTER_TEXT,	CSearchDlg::OnFilteringChange)
+	EVT_CHECKBOX(ID_FILTER_INVERT,	CSearchDlg::OnFilteringChange)
+	EVT_CHECKBOX(ID_FILTER_KNOWN,	CSearchDlg::OnFilteringChange)
+	EVT_BUTTON(ID_FILTER,			CSearchDlg::OnFilteringChange)
 END_EVENT_TABLE()
 
 
@@ -281,6 +287,27 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 }
 
 
+void CSearchDlg::OnFilteringChange(wxCommandEvent& WXUNUSED(evt))
+{
+	wxString filter = CastChild(ID_FILTER_TEXT, wxTextCtrl)->GetValue();
+	bool     invert = CastChild(ID_FILTER_INVERT, wxCheckBox)->GetValue();
+	bool     known = CastChild(ID_FILTER_KNOWN, wxCheckBox)->GetValue();
+
+	// Check that the expression compiles before we try to assign it
+	// Otherwise we will get an error-dialog for each result-list.
+	if (wxRegEx(filter, wxRE_DEFAULT | wxRE_ICASE).IsValid()) {
+		int nPages = m_notebook->GetPageCount();
+		for ( int i = 0; i < nPages; i++ ) {
+			CSearchListCtrl* page = (CSearchListCtrl*)m_notebook->GetPage( i );
+			
+			page->SetFilter(filter, invert, known);
+		
+			UpdateHitCount(page);
+		}
+	}
+}
+
+
 bool CSearchDlg::CheckTabNameExists(const wxString& searchString) 
 {
 	int nPages = m_notebook->GetPageCount();
@@ -298,13 +325,17 @@ bool CSearchDlg::CheckTabNameExists(const wxString& searchString)
 void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 {
     CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)m_notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
+	m_notebook->AddPage(list, searchString, true, 0);
+
+	// Ensure that new results are filtered
+	wxString filter = CastChild(ID_FILTER_TEXT, wxTextCtrl)->GetValue();
+	bool     invert = CastChild(ID_FILTER_INVERT, wxCheckBox)->GetValue();
+	bool     known = CastChild(ID_FILTER_KNOWN, wxCheckBox)->GetValue();	
 	
-	m_notebook->AddPage( list, searchString, true, 0 );
-	
+	list->SetFilter(filter, invert, known);
 	list->ShowResults(nSearchID);
 	
 	Layout();
-
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(true);
 }
 
@@ -502,7 +533,16 @@ void CSearchDlg::UpdateHitCount(CSearchListCtrl* page)
 			wxString searchtxt = m_notebook->GetPageText(i).BeforeLast(wxT(' '));
 		
 			if ( !searchtxt.IsEmpty() ) {
-				m_notebook->SetPageText( i, searchtxt + wxString::Format(wxT(" (%i)"), page->GetItemCount()));
+				size_t shown = page->GetItemCount();
+				size_t hidden = page->GetHiddenItemCount();
+				
+				if (hidden) {
+					searchtxt += wxString::Format(wxT(" (%u/%u)"), shown, shown + hidden);
+				} else {
+					searchtxt += wxString::Format(wxT(" (%u)"), shown);
+				}
+				
+				m_notebook->SetPageText(i, searchtxt);
 			}
 		
 			break;
