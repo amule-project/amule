@@ -164,8 +164,9 @@ typedef void *PHP_SCOPE_STACK;
  Syntax tree node, representing 1 statement.
 */
 typedef enum PHP_STATMENT_TYPE {
-	PHP_ST_EXPR, PHP_ST_IF, PHP_ST_WHILE, PHP_ST_DO_WHILE, PHP_ST_FOR, PHP_ST_SWITCH, PHP_ST_RET, 
-	PHP_ST_CONTINUE, PHP_ST_BREAK,
+	PHP_ST_EXPR, PHP_ST_IF,
+	PHP_ST_WHILE, PHP_ST_DO_WHILE, PHP_ST_FOR, PHP_ST_FOREACH, PHP_ST_SWITCH,
+	PHP_ST_CONTINUE, PHP_ST_BREAK, PHP_ST_RET,
 	PHP_ST_FUNC_DECL, PHP_ST_CLASS_DECL,
 } PHP_STATMENT_TYPE;
 
@@ -184,9 +185,16 @@ typedef struct PHP_SYN_WHILE_NODE {
 
 typedef struct PHP_SYN_FOR_NODE {
     PHP_EXP_NODE *do_start, *cond, *do_next;
-    PHP_SYN_NODE *code_for;
+    PHP_SYN_NODE *code;
 } PHP_SYN_FOR_NODE;
 
+typedef struct PHP_SYN_FOREACH_NODE {
+    PHP_EXP_NODE *elems;
+  	PHP_VAR_NODE *i_key;
+  	PHP_VAR_NODE *i_val;
+    PHP_SYN_NODE *code;
+    int byref;
+} PHP_SYN_FOREACH_NODE;
 
 /* for built-in or native functions */
 typedef void (*PHP_NATIVE_FUNC_PTR)(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result);
@@ -213,7 +221,7 @@ typedef struct PHP_SYN_CLASS_DECL_NODE {
 		PHP_SCOPE_TABLE decl_scope;
 		PHP_NATIVE_PROP_GET_FUNC_PTR native_prop_get_ptr;
 	};
-} PHP_CLASS_DECL_NODE;
+} PHP_SYN_CLASS_DECL_NODE;
 
 struct PHP_SYN_NODE {
     PHP_STATMENT_TYPE type;
@@ -221,6 +229,7 @@ struct PHP_SYN_NODE {
         PHP_EXP_NODE 			*node_expr;
         PHP_SYN_IF_NODE			node_if;
         PHP_SYN_WHILE_NODE		node_while;
+        PHP_SYN_FOREACH_NODE	node_foreach;
         PHP_SYN_FOR_NODE		node_for;
         PHP_SYN_FUNC_DECL_NODE	*func_decl;
         PHP_SYN_CLASS_DECL_NODE *class_decl;
@@ -316,12 +325,21 @@ extern "C" {
 	
 	
 	extern PHP_SYN_NODE *g_syn_tree_top;
+	
 	/* make syntax node for expression */
 	PHP_SYN_NODE *make_expr_syn_node(PHP_EXP_NODE *node);
+	
 	PHP_SYN_NODE *make_ifelse_syn_node(PHP_EXP_NODE *expr,
 		PHP_SYN_NODE *then_node, PHP_SYN_NODE *elseif_list, PHP_SYN_NODE *else_node);
-	PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond, PHP_SYN_NODE *code, int do_while);
+		
+	PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond,
+		PHP_SYN_NODE *code, int do_while);
+		
+	PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
+		PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref);
+		
 	PHP_SYN_NODE *make_class_decl_syn_node();
+	
 	PHP_SYN_NODE *make_func_decl_syn_node();
 	
 	PHP_VAR_NODE *make_var_node();
@@ -332,14 +350,21 @@ extern "C" {
 	extern PHP_SCOPE_STACK g_scope_stack;
 	
 	PHP_SCOPE_TABLE make_scope_table(PHP_SCOPE_TABLE ref_table, PHP_VALUE_NODE *arg_array);
+	
 	void delete_scope_table(PHP_SCOPE_TABLE scope);
+	
 	void switch_push_scope_table(PHP_SCOPE_TABLE new_table);
+	
 	void switch_pop_scope_table();
 	
 	void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func);
+	
 	void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node);
+	
 	void add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name);
+	
 	PHP_SCOPE_ITEM_TYPE get_scope_item_type(PHP_SCOPE_TABLE scope, const char *name);
+	
 	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, char *name);
 	
 
@@ -356,11 +381,15 @@ extern "C" {
 	int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result);
 	
 	void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result);
+	
 	PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr);
+	
 	void php_eval_simple_math(PHP_EXP_OP op,
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
+		
 	void php_eval_int_math(PHP_EXP_OP op,
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
+		
 	void php_eval_compare(PHP_EXP_OP op,
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
 

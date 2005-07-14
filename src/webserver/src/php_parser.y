@@ -169,9 +169,15 @@ statement:
 	|	RETURN expr ';'										{  }
 	|	ECHO expr_list ';'									{  }
 	|	UNSET '(' variable_list ')' ';'						{  }
-	|	FOREACH '(' expr AS variable ')' foreach_statement {  }
-	|	FOREACH '(' expr AS variable HASH_ASSIGN variable ')' foreach_statement {  }
-	|	FOREACH '(' expr AS variable HASH_ASSIGN '&' variable ')' foreach_statement {  }
+	|	FOREACH '(' expr AS variable ')' foreach_statement 	{
+				$$ = make_foreach_loop_syn_node($3, 0, $5->var_node, $7, 0);
+			}
+	|	FOREACH '(' expr AS variable HASH_ASSIGN variable ')' foreach_statement {
+				$$ = make_foreach_loop_syn_node($3, $5->var_node, $7->var_node, $9, 0);
+			}
+	|	FOREACH '(' expr AS variable HASH_ASSIGN '&' variable ')' foreach_statement {
+				$$ = make_foreach_loop_syn_node($3, $5->var_node, $8->var_node, $10, 1);
+			}
 	|	DECLARE '(' decl_list ')' statement					{ }
 	|	DECLARE '(' decl_list ')' ':' top_statement_list ENDDECLARE { }
 	|	';'													{ $$ = 0; }
