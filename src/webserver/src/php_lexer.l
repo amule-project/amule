@@ -92,6 +92,31 @@ EOL ("\r"|"\n"|"\r\n")
 "--"			return DEC;
 "=>"			return HASH_ASSIGN;
 
+"or"			return LOG_OR;
+"xor"			return LOG_XOR;
+"and"			return LOG_AND;
+"||"			return BOOLEAN_OR;
+"&&"			return BOOLEAN_AND;
+
+"+="			return PLUS_EQ;
+"-="			return MINUS_EQ;
+"*="			return MUL_EQ;
+"/="			return DIV_EQ;
+".="			return CONCAT_EQ;
+"%="			return MOD_EQ;
+"&="			return AND_EQ;
+"|="			return OR_EQ;
+"^="			return XOR_EQ;
+"<<="			return SL_EQ;
+">>="			return SR_EQ;
+
+"==="			return IS_IDENTICAL;
+"!==="			return IS_NOIDENTICAL;
+"=="			return IS_EQ;
+"!="			return IS_NOEQUAL;
+"<="			return IS_SMALLER_OR_EQ;
+">="			return IS_GREATER_OR_EQ;
+
 "#"|"//" {
 		BEGIN(LINE_COMMENT);
 		yymore();
