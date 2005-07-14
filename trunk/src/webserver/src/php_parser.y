@@ -124,7 +124,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %left '*' '/' '%'
 %right '!'
 %nonassoc INSTANCEOF
-%right '~' INC DEC INT_CAST DOUBLE_CAST STRING_CAST ARRAY_CAST OBJECCAST BOOL_CAST UNSECAST '@'
+%right '~' INC DEC INT_CAST DOUBLE_CAST STRING_CAST ARRAY_CAST OBJECT_CAST BOOL_CAST UNSET_CAST '@'
 %right '['
 %nonassoc NEW CLONE
 
@@ -356,8 +356,8 @@ expr:
 	|	'-' expr 					{ $$ = make_exp_2(PHP_OP_SUB, make_const_exp_dnum(0), $2); }
 	|	'!' expr {  }
 	|	'~' expr {  }
-	|	expr IS_IDENTICAL expr		{  }
-	|	expr IS_NOIDENTICAL expr	{  }
+	|	expr IS_IDENTICAL expr		{ $$ = make_exp_2(PHP_OP_SAME, $1, $3); }
+	|	expr IS_NOIDENTICAL expr	{ $$ = make_exp_2(PHP_OP_NOT_SAME, $1, $3); }
 	|	expr IS_EQ expr				{ $$ = make_exp_2(PHP_OP_EQ, $1, $3); }
 	|	expr IS_NOEQUAL expr 		{ $$ = make_exp_2(PHP_OP_NEQ, $1, $3); }
 	|	expr '<' expr 				{ $$ = make_exp_2(PHP_OP_LWR, $1, $3); }
@@ -370,9 +370,9 @@ expr:
 	|	DOUBLE_CAST expr 	{  }
 	|	STRING_CAST expr	{  } 
 	|	ARRAY_CAST expr 	{  }
-	|	OBJECCAST expr 	{  }
+	|	OBJECT_CAST expr 	{  }
 	|	BOOL_CAST expr	{  }
-	|	UNSECAST expr	{  }
+	|	UNSET_CAST expr	{  }
 	|	EXIT exit_expr	{  }
 	|	'@' expr 					{ $$ = $2; }
 
@@ -391,8 +391,8 @@ assignment_list: assignment_list_element
 ;
 
 
-assignment_list_element: variable
+assignment_list_element: variable		{ $$ = make_assign_node($1); }
 	|	LIST '(' assignment_list ')'	{ $$ = $3; }
-	|	/* empty */						{ $$ = 0; }
+	|	/* empty */						{ $$ = make_assign_node(0); }
 ;
 
