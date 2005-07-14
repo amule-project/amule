@@ -110,12 +110,12 @@ PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right)
 /*
  * Syntax tree generation
  */
-PHP_SYN_NODE *make_expr_syn_node(PHP_EXP_NODE *expr)
+PHP_SYN_NODE *make_expr_syn_node(PHP_STATMENT_TYPE type, PHP_EXP_NODE *expr)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
 	
-	syn_node->type = PHP_ST_EXPR;
+	syn_node->type = type;
 	syn_node->node_expr = expr;
 	
 	return syn_node;
@@ -1134,6 +1134,15 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 			case PHP_ST_BREAK:
 				if (  node->node_expr ) {
 					php_expr_eval(node->node_expr, &cond_result);
+				} else {
+					cond_result.type = PHP_VAL_INT;
+					cond_result.int_val = 1;
+				}
+				cast_value_dnum(&cond_result);
+				if ( node->type == PHP_ST_BREAK ) {
+					curr_exec_result = -cond_result.int_val;
+				} else {
+					curr_exec_result = cond_result.int_val;
 				}
 				break;
 				
