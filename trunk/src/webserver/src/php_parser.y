@@ -279,6 +279,7 @@ const_value:
 		FNUMBER
 	|	DNUMBER
 	|   STRING
+	|	IDENT { $$ = make_known_const($1); }
 ;
 
 variable:	deref_variable
