@@ -141,6 +141,12 @@ void CMuleListCtrl::LoadSettings()
 
 	// Set the sort-column (defaults to the first row)
 	cfg->Read( wxT("/eMule/TableSortItem") + name, &m_sort_column, 0l );
+
+	// Sainity check for sort-by-column value
+	if (m_sort_column < 0 || m_sort_column >= GetColumnCount()) {
+		wxASSERT(GetColumnCount() == 0);
+		m_sort_column = 0;
+	}	
 	
 	// Default to non-alt ascending
 	long sort_order = 0;
@@ -178,12 +184,14 @@ void CMuleListCtrl::LoadSettings()
 			SetColumnWidth( counter++, StrToLong( tokenizer.GetNextToken() ) );
 		}
 	}
-
-	// Update the sort-arrow
-	SetSortColumn(m_sort_column);
 	
-	// Resort the list after the new settings
-	SortList();
+	if (GetColumnCount()) {
+		// Update the sort-arrow
+		SetSortColumn(m_sort_column);
+	
+		// Resort the list after the new settings
+		SortList();
+	}
 }
 
 
@@ -321,7 +329,6 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	
 	// If the user clicked on the same column, then revert the order, otherwise sort ascending.
 	if ( evt.GetColumn() == GetSortColumn() ) {
-
 		// Is alternate sort used?
 		if ( AltSortAllowed( evt.GetColumn() ) ) 
 			// Ascending is just flipped, decending changes search-type
