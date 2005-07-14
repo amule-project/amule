@@ -67,6 +67,7 @@ EOL ("\r"|"\n"|"\r\n")
 "for"			return FOR;
 "endfor"		return ENDFOR;
 "foreach"		return FOREACH;
+"as"			return AS;
 "endforeach"	return ENDFOREACH;
 
 "switch"		return SWITCH;
@@ -89,6 +90,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 "++"			return INC;
 "--"			return DEC;
+"=>"			return HASH_ASSIGN;
 
 "#"|"//" {
 		BEGIN(LINE_COMMENT);

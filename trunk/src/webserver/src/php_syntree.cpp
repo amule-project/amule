@@ -157,6 +157,22 @@ PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond, PHP_SYN_NODE *code, i
 	return syn_node;
 }
 
+PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
+	PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref)
+{
+	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
+	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
+	
+	syn_node->type = PHP_ST_FOREACH;
+	syn_node->node_foreach.elems = elems;
+	syn_node->node_foreach.code = code;
+	syn_node->node_foreach.i_key = i_key;
+	syn_node->node_foreach.i_val = i_val;
+	syn_node->node_foreach.byref = byref;
+	
+	return syn_node;
+}
+
 PHP_SYN_NODE *make_func_decl_syn_node()
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
@@ -728,64 +744,82 @@ void php_engine_free()
 
 void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 {
-	PHP_VALUE_NODE result_val, result_val_left;
+	PHP_VALUE_NODE result_val_right, result_val_left;
 	PHP_VAR_NODE *lval_node = 0;
 	PHP_SCOPE_ITEM *si = 0;
+	result_val_right.type = PHP_VAL_NONE;
+	result_val_left.type = PHP_VAL_NONE;
 	switch(expr->op) {
 		case PHP_OP_VAL:
-			result_val = expr->val_node;
+			if ( result ) {
+				value_value_assign(result, &expr->val_node);
+			}
 			break;
 		case PHP_OP_VAR:
-			result_val = expr->var_node->value;
+			if ( result ) {
+				value_value_assign(result, &expr->var_node->value);
+			}
 			break;
 		case PHP_OP_ASS:
-			php_expr_eval(expr->tree_node.right, &result_val);
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
-			value_value_assign(&lval_node->value, &result_val);
-			value_value_free(&result_val);
+			if ( !lval_node ) {
+				break;
+			}
+			php_expr_eval(expr->tree_node.right, &lval_node->value);
+			if ( result ) {
+				value_value_assign(result, &lval_node->value);
+			}
 			break;
 		case PHP_OP_ARRAY_BY_KEY:
-			php_expr_eval(expr->tree_node.right, &result_val);
+			php_expr_eval(expr->tree_node.right, &result_val_right);
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
 			cast_value_array(&lval_node->value);
-			cast_value_str(&result_val);
-			lval_node = array_get_by_key(&lval_node->value, &result_val);
-			result_val = lval_node->value;
+			cast_value_str(&result_val_right);
+			lval_node = array_get_by_key(&lval_node->value, &result_val_right);
+			if ( result ) {
+				value_value_assign(result, &lval_node->value);
+			}
 			break;
 		case PHP_OP_FUNC_CALL:
-			php_run_func_call(expr, &result_val);
+			php_run_func_call(expr, result);
 			break;
 		case PHP_OP_ADD:
 		case PHP_OP_SUB:
 		case PHP_OP_MUL:
 		case PHP_OP_DIV:
-			php_expr_eval(expr->tree_node.right, &result_val);
+			php_expr_eval(expr->tree_node.right, &result_val_right);
 			php_expr_eval(expr->tree_node.left, &result_val_left);
-			php_eval_simple_math(expr->op, &result_val_left, &result_val, &result_val);
+			if ( result ) {
+				php_eval_simple_math(expr->op, &result_val_left, &result_val_right, result);
+			}
 			break;
     	case PHP_OP_SHL:
     	case PHP_OP_SHR:
     	case PHP_OP_OR:
     	case PHP_OP_AND:
     	case PHP_OP_XOR:
-			php_expr_eval(expr->tree_node.right, &result_val);
+			php_expr_eval(expr->tree_node.right, &result_val_right);
 			php_expr_eval(expr->tree_node.left, &result_val_left);
-			php_eval_int_math(expr->op, &result_val_left, &result_val, &result_val);
+			if ( result ) {
+				php_eval_int_math(expr->op, &result_val_left, &result_val_right, result);
+			}
 			break;
 		case PHP_OP_EQ:
 		case PHP_OP_NEQ:
 		case PHP_OP_GRT:
 		case PHP_OP_LWR:
-			php_expr_eval(expr->tree_node.right, &result_val);
+			php_expr_eval(expr->tree_node.right, &result_val_right);
 			php_expr_eval(expr->tree_node.left, &result_val_left);
-			php_eval_compare(expr->op, &result_val_left, &result_val, &result_val);
+			if ( result ) {
+				php_eval_compare(expr->op, &result_val_left, &result_val_right, result);
+			}
 			break;
 		case PHP_OP_PRINT:
-			php_expr_eval(expr->tree_node.left, &result_val);
-			cast_value_str(&result_val);
+			php_expr_eval(expr->tree_node.left, &result_val_right);
+			cast_value_str(&result_val_right);
 			//
 			// I print to buffer
-			printf(result_val.str_val);
+			printf(result_val_right.str_val);
 			break;
 		case PHP_OP_OBJECT_DEREF: // $x->y
 			// take variable from scope of current object
@@ -814,7 +848,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			}
 			if ( si->class_decl->class_decl->is_native ) {
 				si->class_decl->class_decl->native_prop_get_ptr(lval_node->value.obj_val.inst_ptr,
-					expr->tree_node.right->val_node.str_val, &result_val);
+					expr->tree_node.right->val_node.str_val, result);
 			} else {
 				php_report_error("Only native classes supported", PHP_ERROR);
 				return;
@@ -827,10 +861,8 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 		default: ;
 			
 	}
-	if ( result ) {
-		value_value_assign(result, &result_val);
-		value_value_free(&result_val);
-	}
+	value_value_free(&result_val_left);
+	value_value_free(&result_val_right);
 }
 
 PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
@@ -1104,9 +1136,15 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					php_expr_eval(node->node_expr, &cond_result);
 				}
 				break;
+				
 			case PHP_ST_WHILE:
-				php_expr_eval(node->node_while.cond, &cond_result);
-				cast_value_bool(&cond_result);
+			case PHP_ST_DO_WHILE:
+				if ( node->type == PHP_ST_WHILE ) {
+					php_expr_eval(node->node_while.cond, &cond_result);
+					cast_value_bool(&cond_result);
+				} else {
+					cond_result.int_val = 1;
+				}
 				while ( cond_result.int_val ) {
 					curr_exec_result = php_execute(node->node_while.code, 0);
 					if ( curr_exec_result) {
@@ -1115,6 +1153,37 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					php_expr_eval(node->node_while.cond, &cond_result);
 					cast_value_bool(&cond_result);
 				}
+			case PHP_ST_FOREACH: {
+				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
+				if ( !elems || (elems->value.type != PHP_VAL_ARRAY) ) {
+					php_report_error("Argument of 'foreach' must be array", PHP_ERROR);
+					break;
+				}
+				PHP_ARRAY_TYPE *array = (PHP_ARRAY_TYPE *)elems->value.ptr_val;
+				PHP_VAR_NODE *i_key = node->node_foreach.i_key;
+				// keys in array are string values.
+				if ( i_key ) {
+					i_key->value.type = PHP_VAL_STRING;
+				}
+				PHP_VAR_NODE *i_val = node->node_foreach.i_val;
+				array->current = array->array.begin();
+				while ( array->current != array->array.end() ) {
+					if ( i_key ) {
+						PHP_VALUE_NODE tmp_val;
+						tmp_val.type = PHP_VAL_STRING;
+						tmp_val.str_val = (char *)array->current->first.c_str();
+						value_value_assign(&i_key->value, &tmp_val);
+					}
+					value_value_assign(&i_val->value, &array->current->second->value);
+					curr_exec_result = php_execute(node->node_foreach.code, 0);
+					value_value_free(&i_key->value);
+					value_value_free(&i_val->value);
+					if ( curr_exec_result) {
+						break;
+					}
+					array->current++;
+				}
+			}
 			default: ;
 		}
 		if ( curr_exec_result != 0 ) {
