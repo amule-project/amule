@@ -314,7 +314,8 @@ extern "C" {
  	PHP_EXP_NODE *make_exp_1(PHP_EXP_OP op, PHP_EXP_NODE *operand);
  	PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right);
 
-	
+	PHP_EXP_NODE *make_known_const(char *name);
+		
 	PHP_EXP_NODE *make_func_call_exp(char *func_name, PHP_EXP_NODE *args);
 	
 	// create func call param list

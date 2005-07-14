@@ -52,6 +52,10 @@ PHP_SCOPE_STACK g_scope_stack = 0;
 typedef std::map<std::string, PHP_SCOPE_ITEM *> PHP_SCOPE_TABLE_TYPE;
 typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
 
+//
+// Known named constant values
+std::map<std::string, int> g_known_const;
+
 PHP_EXP_NODE *make_zero_exp_node()
 {
 	PHP_EXP_NODE *node = new PHP_EXP_NODE;
@@ -106,6 +110,14 @@ PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right)
 	return node;
 }
 
+PHP_EXP_NODE *make_known_const(char *name)
+{
+	int const_id = -1;
+	if ( g_known_const.count(name) ) {
+		const_id = g_known_const[name];
+	}
+	return make_const_exp_dnum(const_id);
+}
 
 /*
  * Syntax tree generation
@@ -1185,7 +1197,9 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					}
 					value_value_assign(&i_val->value, &array->current->second->value);
 					curr_exec_result = php_execute(node->node_foreach.code, 0);
-					value_value_free(&i_key->value);
+					if ( i_key ) {
+						value_value_free(&i_key->value);
+					}
 					value_value_free(&i_val->value);
 					if ( curr_exec_result) {
 						break;
