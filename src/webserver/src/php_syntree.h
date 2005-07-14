@@ -327,7 +327,7 @@ extern "C" {
 	extern PHP_SYN_NODE *g_syn_tree_top;
 	
 	/* make syntax node for expression */
-	PHP_SYN_NODE *make_expr_syn_node(PHP_EXP_NODE *node);
+	PHP_SYN_NODE *make_expr_syn_node(PHP_STATMENT_TYPE type, PHP_EXP_NODE *node);
 	
 	PHP_SYN_NODE *make_ifelse_syn_node(PHP_EXP_NODE *expr,
 		PHP_SYN_NODE *then_node, PHP_SYN_NODE *elseif_list, PHP_SYN_NODE *else_node);

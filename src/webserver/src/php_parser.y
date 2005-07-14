@@ -153,7 +153,7 @@ top_statement:
 
 statement:
 		'{' top_statement_list '}'							{ $$ = $2; }
-	|	expr ';'											{ $$ = make_expr_syn_node($1); }
+	|	expr ';'											{ $$ = make_expr_syn_node(PHP_ST_EXPR, $1); }
 	|	GLOBAL global_var_list ';' 							{ $$ = $2; }
 	|	STATIC static_var_list ';'							{ $$ = $2; }
 	|	IF '(' expr ')' statement elseif_list else_statement	{ $$ = make_ifelse_syn_node($3, $5, $6, $7); }
@@ -161,12 +161,12 @@ statement:
 	|	DO statement WHILE '(' expr ')' ';'					{ $$ = make_while_loop_syn_node($5, $2, 0); }
 	|	FOR '(' for_expr ';' for_expr ';' for_expr ')' for_statement { }
 	|	SWITCH '(' expr ')' switch_case_list				{ }
-	|	CONTINUE ';'										{  }
-	|	CONTINUE expr ';'									{  }
-	|	BREAK ';'											{  }
-	|	BREAK expr ';'										{  }
-	|	RETURN ';'											{  }
-	|	RETURN expr ';'										{  }
+	|	CONTINUE ';'										{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, 0); }
+	|	CONTINUE expr ';'									{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, $2); }
+	|	BREAK ';'											{ $$ = make_expr_syn_node(PHP_ST_BREAK, 0); }
+	|	BREAK expr ';'										{ $$ = make_expr_syn_node(PHP_ST_BREAK, $2); }
+	|	RETURN ';'											{ $$ = make_expr_syn_node(PHP_ST_RET, 0); }
+	|	RETURN expr ';'										{ $$ = make_expr_syn_node(PHP_ST_RET, $2); }
 	|	ECHO expr_list ';'									{  }
 	|	UNSET '(' variable_list ')' ';'						{  }
 	|	FOREACH '(' expr AS variable ')' foreach_statement 	{
