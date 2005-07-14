@@ -32,7 +32,11 @@
 
 #include <list>				// Needed for std::list
 
+#include <wx/regex.h>		// Needed for wxRegExp
+
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
+
+
 
 class CSearchList;
 class CSearchFile;
@@ -120,8 +124,47 @@ public:
 	 */
 	long	GetSearchId();
 	
-protected:
 
+	/**
+	 * Sets the filter which decides which results should be shown.
+	 *
+	 * @param regExp A regular expression targeting the filenames.
+	 * @param invert If true, invert the results of the filter-test.
+	 * @param filterKnown Should files that are queued or known be filtered out.
+	 *
+	 * An invalid regExp will result in all results being displayed.
+	 */
+	void	SetFilter(const wxString& regExp, bool invert, bool filterKnown);
+
+	
+	/**
+	 * Returns the number of items hidden due to filtering.
+	 */
+	size_t	GetHiddenItemCount() const;
+	
+	
+protected:
+	typedef std::list<CSearchFile*> ResultList;
+
+	//! List used to store results that are hidden due to matching the filter.
+	ResultList	m_filteredOut;
+
+	//! The current filter reg-exp.
+	wxRegEx		m_filter;
+
+	//! Controls if shared/queued results should be shown.
+	bool		m_filterKnown;
+	
+	//! Controls if the result of filter-hits should be inverted
+	bool		m_invert;
+
+
+	/**
+	 * Returns true if the filename is filtered.
+	 */
+	bool	IsFiltered(const CSearchFile* file);
+	
+	
 	/**
 	 * Sorter function used by wxListCtrl::SortItems function.
 	 *

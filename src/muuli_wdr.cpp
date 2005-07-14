@@ -377,19 +377,52 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item1->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item42 = new wxStaticBox( parent, -1, _("Results") );
-    wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxVERTICAL );
+    wxStaticBox *item42 = new wxStaticBox( parent, -1, _("Filtering (Yes, I know it takes up too much space ATM, you don't have to tell me):") );
+    wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxHORIZONTAL );
 
-    wxWindow *item43 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
-    wxASSERT( item43 );
-    item41->Add( item43, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item41->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    wxGauge *item44 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item41->Add( item44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item43 = new wxStaticText( parent, ID_TEXT, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item41->Add( item43, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item41, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxTextCtrl *item44 = new wxTextCtrl( parent, ID_FILTER_TEXT, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item41->Add( item44, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item45 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item41->Add( item45, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item46 = new wxButton( parent, ID_FILTER, _("Filter Results"), wxDefaultPosition, wxDefaultSize, 0 );
+    item41->Add( item46, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item47 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item41->Add( item47, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxCheckBox *item48 = new wxCheckBox( parent, ID_FILTER_INVERT, _("Invert Result"), wxDefaultPosition, wxDefaultSize, 0 );
+    item41->Add( item48, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item49 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item41->Add( item49, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxCheckBox *item50 = new wxCheckBox( parent, ID_FILTER_KNOWN, _("Hide Known Files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item41->Add( item50, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item41->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item41, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item52 = new wxStaticBox( parent, -1, _("Results") );
+    wxStaticBoxSizer *item51 = new wxStaticBoxSizer( item52, wxVERTICAL );
+
+    wxWindow *item53 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
+    wxASSERT( item53 );
+    item51->Add( item53, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxGauge *item54 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
+    item51->Add( item54, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item51, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
