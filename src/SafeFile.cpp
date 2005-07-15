@@ -265,80 +265,14 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 	return CFile::Write( pBuf, nCount );
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // CSafeMemFile
-
-uint8 CSafeMemFile::ReadUInt8() const
-{
-	if ((off_t)(m_position + sizeof(uint8)) > m_BufferSize)
-		throw CInvalidPacket(wxT("EOF"));
-	return CFileDataIO::ReadUInt8();
-}
-
-uint16 CSafeMemFile::ReadUInt16() const
-{
-	if ((off_t)(m_position + sizeof(uint16)) > m_BufferSize)
-		throw CInvalidPacket(wxT("EOF"));
-	return CFileDataIO::ReadUInt16();
-}
-
-uint32 CSafeMemFile::ReadUInt32() const
-{
-	if ((off_t)(m_position + sizeof(uint32)) > m_BufferSize)
-		throw CInvalidPacket(wxT("EOF"));
-	return CFileDataIO::ReadUInt32();
-}
 
 void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
 {
 	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
 		throw CInvalidPacket(wxT("EOF"));
 	CFileDataIO::ReadUInt128(pVal);
-}
-
-
-void CSafeMemFile::ReadHash16(unsigned char* pVal) const
-{
-	if ((off_t)(m_position + 16 /* Hash size*/) > m_BufferSize)
-		throw CInvalidPacket(wxT("EOF"));
-	CFileDataIO::ReadHash16(pVal);
-}
-
-void CSafeMemFile::WriteUInt8(uint8 nVal)
-{
-	if ((off_t)(m_position + sizeof(uint8)) > m_BufferSize)
-		enlargeBuffer(m_position + sizeof(uint8));
-	CFileDataIO::WriteUInt8(nVal);
-}
-
-void CSafeMemFile::WriteUInt16(uint16 nVal)
-{
-	if ((off_t)(m_position + sizeof(uint16)) > m_BufferSize)
-		enlargeBuffer(m_position + sizeof(uint16));
-	CFileDataIO::WriteUInt16(nVal);
-}
-
-void CSafeMemFile::WriteUInt32(uint32 nVal)
-{
-	if ((off_t)(m_position + sizeof(uint32)) > m_BufferSize)
-		enlargeBuffer(m_position + sizeof(uint32));
-	CFileDataIO::WriteUInt32(nVal);
-}
-
-
-void CSafeMemFile::WriteUInt128(const Kademlia::CUInt128& pVal)
-{
-	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize) {
-		enlargeBuffer(m_position + sizeof(uint32)*4);
-	}
-	CFileDataIO::WriteUInt128(pVal);
-}
-
-
-void CSafeMemFile::WriteHash16(const byte* pVal)
-{
-	if ((off_t)(m_position + sizeof(uint32)*4 /* 16 bytes */) > m_BufferSize)
-		enlargeBuffer(m_position + sizeof(uint32)*4);
-	CFileDataIO::WriteHash16(pVal);
 }
 
