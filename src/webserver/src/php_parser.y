@@ -24,6 +24,7 @@
 //
 
 #include <stdio.h>
+#include <string.h>
 
 #include "php_syntree.h"
 
@@ -74,6 +75,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %type <syn_node> while_statement foreach_statement for_statement elseif_list else_statement switch_case_list case_list
 
 %type <exp_node> VARIABLE variable deref_variable global_var
+%type <exp_node> parameter_list
 
 /* "for_expr" is list of expressions - a syntax node actaully */
 %type <syn_node> expr_list for_expr
@@ -81,7 +83,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %type <exp_node> expr exit_expr const_value function_call func_param_list assignment_list assignment_list_element
 %type <exp_node> FNUMBER DNUMBER STRING
 
-%type <str_val> IDENT
+%type <str_val> IDENT optional_class_type
 
 /*
 	All my tokens
@@ -213,21 +215,30 @@ global_var: VARIABLE
 ;
 
 function_decl_statement:
-		FUNCTION IDENT '(' parameter_list ')' '{' top_statement_list '}' {  }
+		FUNCTION IDENT {
+				switch_push_scope_table(make_scope_table())
+			} '(' parameter_list ')' '{' top_statement_list '}' {
+				$$ = make_func_decl_syn_node($2, $5);
+				$$->func_decl->scope = g_current_scope;
+				$$->func_decl->is_native = 0;
+				$$->func_decl->code = $8;
+				switch_pop_scope_table(0);
+				add_func_2_scope(g_current_scope, $$);
+			}
 	|	FUNCTION '&' IDENT '(' parameter_list ')' '{' top_statement_list '}' {  }
 ;
 
 parameter_list: 
-		optional_class_type VARIABLE				{  }
-	|	optional_class_type '&' VARIABLE			{  }
-	|	parameter_list ',' optional_class_type VARIABLE 	{  }
-	|	parameter_list ',' optional_class_type '&' VARIABLE	{  }
-	|	/* empty */
+		optional_class_type VARIABLE						{ $$ = make_func_param(0, $2->var_node, $1, 0); }
+	|	optional_class_type '&' VARIABLE					{ $$ = make_func_param(0, $3->var_node, $1, 1); }
+	|	parameter_list ',' optional_class_type VARIABLE 	{ $$ = make_func_param($1, $4->var_node, $3, 0); }
+	|	parameter_list ',' optional_class_type '&' VARIABLE	{ $$ = make_func_param($1, $5->var_node, $3, 1); }
+	|	/* empty */											{ $$ = 0; }
 ;
 
 optional_class_type:
-		/* empty */	{  }
-	|	IDENT		{  }
+		/* empty */	{ $$[0] = 0; }
+	|	IDENT
 ;
 
 
@@ -391,8 +402,8 @@ assignment_list: assignment_list_element
 ;
 
 
-assignment_list_element: variable		{ $$ = make_assign_node($1); }
+assignment_list_element: variable		{ /*$$ = make_assign_node($1);*/ }
 	|	LIST '(' assignment_list ')'	{ $$ = $3; }
-	|	/* empty */						{ $$ = make_assign_node(0); }
+	|	/* empty */						{ /*$$ = make_assign_node(0);*/ }
 ;
 
