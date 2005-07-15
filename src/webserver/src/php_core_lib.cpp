@@ -43,9 +43,9 @@
 /*
  * Print info about variable: php var_dump()
  */
-void php_native_var_dump(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
+void php_native_var_dump(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si = get_scope_item(scope, "var");
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
 		assert(si->type == PHP_SCOPE_VAR);
 		php_var_dump(&si->var->value, 0);
@@ -86,9 +86,9 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
 /*
  * String functions
  */
-void php_native_strlen(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
+void php_native_strlen(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si = get_scope_item(scope, "str");
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "str");
 	PHP_VALUE_NODE *param = &si->var->value;
 	if ( si ) {
 		assert(si->type == PHP_SCOPE_VAR);
@@ -100,9 +100,9 @@ void php_native_strlen(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 	}
 }
 
-void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
+void php_native_substr(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si_str = get_scope_item(scope, "str");
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "str");
 	PHP_VALUE_NODE *str = &si_str->var->value;
 	if ( si_str ) {
 		cast_value_str(str);
@@ -110,7 +110,7 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 		php_report_error("Invalid or missing argument 'str' for 'substr'", PHP_ERROR);
 		return;
 	}
-	PHP_SCOPE_ITEM *si_start = get_scope_item(scope, "start");
+	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "start");
 	PHP_VALUE_NODE *start = &si_start->var->value;
 	if ( si_start ) {
 		cast_value_dnum(start);
@@ -119,7 +119,7 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 		return;
 	}
 	// 3-rd is optional
-	PHP_SCOPE_ITEM *si_end = get_scope_item(scope, "end");
+	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "end");
 	PHP_VALUE_NODE end = { PHP_VAL_INT, 0 };
 	if ( si_end ) {
 		end = si_end->var->value;
@@ -134,9 +134,9 @@ void php_native_substr(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
  *  "varname" will tell us, what kind of variables need to load:
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
-void php_native_load_amule_vars(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
+void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si_str = get_scope_item(scope, "varname");
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
 	if ( !si_str  ) {
 		php_report_error("Missing argument 'varname' for 'load_amule_vars'", PHP_ERROR);
 		return;
@@ -148,7 +148,6 @@ void php_native_load_amule_vars(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 	}
 	char *varname = str->str_val;
 	if ( strcmp(varname, "downloads") == 0 ) {
-		//PHP_VAR_NODE *arr_var = make_array_var();
 		cast_value_array(result);
 		for (int i = 0; i < 10; i++) {
 			PHP_VAR_NODE *var = array_push_back(result);
@@ -156,7 +155,6 @@ void php_native_load_amule_vars(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result)
 			var->value.obj_val.class_name = "AmuleDownloadFile";
 			var->value.obj_val.inst_ptr = 0;
 		}
-		//add_var_2_scope(g_global_scope, arr_var, "AMULE_DOWNLOADS");
 	} else if ( strcmp(varname, "uploads") == 0 ) {
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
 	} else if ( strcmp(varname, "servers") == 0 ) {
@@ -189,18 +187,18 @@ void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *re
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
-		{ "var", 0, PHP_VARFLAG_BYREF, { PHP_VAL_NONE } },
+		{ 0, 1, { PHP_VAL_NONE } },
 		1,
 		php_native_var_dump,
 	},
 	{
 		"strlen",
-		{ "str", 0, 0, { PHP_VAL_NONE } },
+		{ 0, 0, { PHP_VAL_NONE } },
 		1, php_native_strlen,
 	},
 	{
 		"load_amule_vars",
-		{ "varname", 0, 0, { PHP_VAL_NONE } },
+		{ 0, 0, { PHP_VAL_NONE } },
 		1, php_native_load_amule_vars,
 	},
 	{ 0 },

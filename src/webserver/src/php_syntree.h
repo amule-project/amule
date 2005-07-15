@@ -61,6 +61,7 @@ typedef struct PHP_VALUE_NODE {
 /*
  * Flags for different variable types/usages
  */
+
 #define PHP_VARFLAG_STATIC		0x0001
 #define PHP_VARFLAG_GLOBAL		0x0002
 #define PHP_VARFLAG_BYREF		0x0004
@@ -118,11 +119,31 @@ typedef struct PHP_EXP_NODE {
         struct {
             struct PHP_EXP_NODE *left, *right;
         } tree_node;
+        struct PHP_EXP_NODE *next;
         PHP_VALUE_NODE val_node;
         PHP_VAR_NODE *var_node;
     };
 } PHP_EXP_NODE;
 
+typedef struct PHP_LIST_ASSIGN_NODE PHP_LIST_ASSIGN_NODE;
+
+struct PHP_LIST_ASSIGN_NODE {
+	int is_list;
+	union {
+		PHP_VAR_NODE *var;
+		PHP_LIST_ASSIGN_NODE *list;
+	};
+	PHP_LIST_ASSIGN_NODE *next_node;
+};
+
+typedef struct PHP_FUNC_PARAM_ITEM PHP_FUNC_PARAM_ITEM;
+
+struct PHP_FUNC_PARAM_ITEM {
+	char *name;
+	char *class_name;
+	int byref;
+	PHP_FUNC_PARAM_ITEM *next_item;
+};
 
 typedef struct PHP_SYN_NODE PHP_SYN_NODE;
 
@@ -197,7 +218,15 @@ typedef struct PHP_SYN_FOREACH_NODE {
 } PHP_SYN_FOREACH_NODE;
 
 /* for built-in or native functions */
-typedef void (*PHP_NATIVE_FUNC_PTR)(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result);
+typedef void (*PHP_NATIVE_FUNC_PTR)(PHP_VALUE_NODE *result);
+
+typedef struct PHP_FUNC_PARAM_DEF {
+	char *class_name;
+	int byref;
+	PHP_VALUE_NODE def_value;
+	PHP_VAR_NODE *var;
+} PHP_FUNC_PARAM_DEF;
+
 
 typedef struct PHP_SYN_FUNC_DECL_NODE {
 	char *name;
@@ -207,6 +236,8 @@ typedef struct PHP_SYN_FUNC_DECL_NODE {
 		PHP_SYN_NODE *code;
 		PHP_NATIVE_FUNC_PTR native_ptr;
 	};
+	int param_count;
+	PHP_FUNC_PARAM_DEF *params;
 } PHP_SYN_FUNC_DECL_NODE;
 
 /*
@@ -240,21 +271,16 @@ struct PHP_SYN_NODE {
 /*
  * Interface to lib of built-in functions, classes, variables
  */
-typedef struct PHP_BLTIN_FUNC_PARAM_DEF {
-	char *name;
-	char *class_name;
-	int flags;
-	PHP_VALUE_NODE def_value;
-} PHP_BLTIN_FUNC_PARAM_DEF;
-
 /*
- * Using fixed size array will allow definition "in-place"
- * without pointer mess.
+ * Using fixed size array will allow "in-place" definition 
+ * of built-in functions without pointer mess.
+ * 
  */
-#define PHP_MAX_BLTIN_PARAM	 16
+#define PHP_MAX_FUNC_PARAM	 16
+
 typedef struct PHP_BLTIN_FUNC_DEF {
 	char *name;
-	PHP_BLTIN_FUNC_PARAM_DEF params[PHP_MAX_BLTIN_PARAM];
+	PHP_FUNC_PARAM_DEF params[PHP_MAX_FUNC_PARAM];
 	int param_count;
 	PHP_NATIVE_FUNC_PTR func;
 } PHP_BLTIN_FUNC_DEF;
@@ -288,6 +314,8 @@ extern "C" {
  	PHP_EXP_NODE *make_const_exp_dnum(int number);
  	PHP_EXP_NODE *make_const_exp_fnum(float number);
  	PHP_EXP_NODE *make_const_exp_str(char *s);
+
+	PHP_EXP_NODE *make_const_exp_int_obj(void *obj);
 
 	/* casting functions */
 	void cast_value_dnum(PHP_VALUE_NODE *e);
@@ -343,6 +371,8 @@ extern "C" {
 	
 	PHP_SYN_NODE *make_func_decl_syn_node();
 	
+	PHP_FUNC_PARAM_DEF *make_func_param(PHP_VAR_NODE *var);
+	
 	PHP_VAR_NODE *make_var_node();
 	PHP_EXP_NODE *get_var_node(char *name);
 
@@ -350,13 +380,13 @@ extern "C" {
 	extern PHP_SCOPE_TABLE g_global_scope, g_current_scope;
 	extern PHP_SCOPE_STACK g_scope_stack;
 	
-	PHP_SCOPE_TABLE make_scope_table(PHP_SCOPE_TABLE ref_table, PHP_VALUE_NODE *arg_array);
+	PHP_SCOPE_TABLE make_scope_table();
 	
 	void delete_scope_table(PHP_SCOPE_TABLE scope);
 	
 	void switch_push_scope_table(PHP_SCOPE_TABLE new_table);
 	
-	void switch_pop_scope_table();
+	void switch_pop_scope_table(int old_free);
 	
 	void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func);
 	
