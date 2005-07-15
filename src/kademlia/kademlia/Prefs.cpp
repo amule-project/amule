@@ -102,7 +102,7 @@ void CPrefs::init(const wxString& filename)
 void CPrefs::readFile()
 {
 	try {
-		CSafeBufferedFile file;
+		CSafeFile file;
 		if (file.Open(m_filename,CFile::read)) {
 			m_ip = file.ReadUInt32();
 			file.ReadUInt16();
@@ -117,7 +117,7 @@ void CPrefs::readFile()
 void CPrefs::writeFile()
 {
 	try {
-		CSafeBufferedFile file;
+		CSafeFile file;
 		if (file.Open(m_filename, CFile::write)) {
 			file.WriteUInt32(m_ip);
 			file.WriteUInt16(0); //This is no longer used.
