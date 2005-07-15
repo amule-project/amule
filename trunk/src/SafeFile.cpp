@@ -342,19 +342,3 @@ void CSafeMemFile::WriteHash16(const byte* pVal)
 	CFileDataIO::WriteHash16(pVal);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// CSafeBufferedFile
-
-off_t CSafeBufferedFile::Read(void *pBuf, off_t nCount) const
-{
-	if ( GetPosition() + nCount > GetLength() )
-		throw CInvalidPacket(wxT("Reading past end of CSafeBufferedFile!"));
-//		AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
-
-	return CFile::Read( pBuf, nCount );
-}
-
-size_t CSafeBufferedFile::Write(const void *pBuf, size_t nCount)
-{
-	return CFile::Write( pBuf, nCount );
-}
