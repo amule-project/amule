@@ -93,6 +93,16 @@ PHP_EXP_NODE *make_const_exp_str(char *s)
 	return node;
 }
 
+PHP_EXP_NODE *make_const_exp_int_obj(void *obj)
+{
+	PHP_EXP_NODE *node = make_zero_exp_node();
+	node->op = PHP_OP_VAL;
+	node->val_node.type = PHP_VAL_INT_DATA;
+	node->val_node.ptr_val = obj;
+	
+	return node;
+}
+
 PHP_EXP_NODE *make_exp_1(PHP_EXP_OP op, PHP_EXP_NODE *operand)
 {
 	PHP_EXP_NODE *node = make_zero_exp_node();
@@ -117,6 +127,11 @@ PHP_EXP_NODE *make_known_const(char *name)
 		const_id = g_known_const[name];
 	}
 	return make_const_exp_dnum(const_id);
+}
+
+PHP_FUNC_PARAM_DEF *make_func_param(PHP_VAR_NODE *var)
+{
+	return 0;	
 }
 
 /*
@@ -254,40 +269,31 @@ PHP_EXP_NODE *get_var_node(char *name)
 	return node;
 }
 
-
-PHP_SCOPE_TABLE make_scope_table(PHP_SCOPE_TABLE ref_table, PHP_VALUE_NODE *arg_array)
+void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
+	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
-	PHP_SCOPE_TABLE_TYPE *scope_map = new PHP_SCOPE_TABLE_TYPE;
-	
-	if ( ref_table ) {
-		PHP_SCOPE_TABLE_TYPE *ref_scope_map = (PHP_SCOPE_TABLE_TYPE *)ref_table;
-			
-		for(PHP_SCOPE_TABLE_TYPE::iterator i = ref_scope_map->begin(); i != ref_scope_map->end();i++) {
-			PHP_SCOPE_ITEM *si = i->second;
-			if ( si->type == PHP_SCOPE_VAR ) {
-			} else if ( arg_array && (si->type == PHP_SCOPE_PARAM) ) {
-				PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, si->param.num);
+	for(int i = 0; i < param_count; i++) {
+		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
+		php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &params[i].var->value);
+	}
+}
 
-				PHP_VAR_NODE *new_arg_val;
-				if ( si->param.var->flags & PHP_VARFLAG_BYREF ) {
-					new_arg_val = php_expr_eval_lvalue((PHP_EXP_NODE *)curr_arg_val->value.ptr_val);
-					if ( new_arg_val ) {
-						new_arg_val->ref_count++;
-					} else {
-						//
-						// Error (user): expression is not addressable variable
-						//
-					}
-				} else {
-					new_arg_val = make_var_node();
-					php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &new_arg_val->value);
-				}
-				if ( new_arg_val ) {
-					add_var_2_scope(scope_map, new_arg_val, i->first.c_str());
-				}
-			}
+void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
+	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
+{
+	for(int i = 0; i < param_count; i++) {
+		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
+		if ( (curr_arg_val->flags & PHP_VARFLAG_BYREF) || params[i].byref ) {
+			PHP_VAR_NODE *new_arg_val = php_expr_eval_lvalue((PHP_EXP_NODE *)curr_arg_val->value.ptr_val);
+			value_value_assign(&new_arg_val->value, &params[i].var->value);
+			value_value_free(&params[i].var->value);
 		}
 	}
+}
+
+PHP_SCOPE_TABLE make_scope_table()
+{
+	PHP_SCOPE_TABLE_TYPE *scope_map = new PHP_SCOPE_TABLE_TYPE;
 	
 	return scope_map;
 }
@@ -299,10 +305,12 @@ void switch_push_scope_table(PHP_SCOPE_TABLE new_table)
 	g_current_scope = new_table;
 }
 
-void switch_pop_scope_table()
+void switch_pop_scope_table(int old_free)
 {
 	PHP_SCOPE_STACK_TYPE *scope_stack = (PHP_SCOPE_STACK_TYPE *)g_scope_stack;
-	delete_scope_table(g_current_scope);
+	if ( old_free ) {
+		delete_scope_table(g_current_scope);
+	}
 	if ( scope_stack->size() == 0 ) {
 		php_report_error("Stack underrun - no valid scope", PHP_INTERNAL_ERROR);
 	}
@@ -696,13 +704,22 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 		php_report_error("Can't add scope item: symbol already defined", PHP_ERROR);
 		return;
 	}
-	PHP_SCOPE_TABLE func_scope = make_scope_table(0, 0);
+	PHP_SCOPE_TABLE func_scope = make_scope_table();
 	
 	PHP_SYN_NODE *decl_node = make_func_decl_syn_node();
+	decl_node->func_decl->param_count = def->param_count;
+	decl_node->func_decl->params = new PHP_FUNC_PARAM_DEF[def->param_count];
+	
 	for(int i = 0; i < def->param_count;i++) {
 		PHP_VAR_NODE *func_param = make_var_node();
-		func_param->flags |= def->params[i].flags;
-		add_param_2_scope(func_scope, func_param, def->params[i].name);
+		char param_name[32];
+		sprintf(param_name, "__param_%d", i);
+		decl_node->func_decl->params[i] = def->params[i];
+		decl_node->func_decl->params[i].var = func_param;
+		add_var_2_scope(func_scope, func_param, param_name);
+		if ( def->params[i].class_name ) {
+			decl_node->func_decl->params[i].class_name = strdup(def->params[i].class_name);
+		}
 	}
 	decl_node->func_decl->scope = func_scope;
 	decl_node->func_decl->is_native = 1;
@@ -730,7 +747,7 @@ void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_nati
 
 void php_engine_init()
 {
-	g_global_scope = make_scope_table(0, 0);
+	g_global_scope = make_scope_table();
 	
 	g_current_scope = g_global_scope;
 	
@@ -1085,16 +1102,27 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 	//
 	// Switch stack and call function
 	//
-	PHP_SCOPE_TABLE new_table = make_scope_table(si->func->func_decl->scope, &r_node->var_node->value);
-	switch_push_scope_table(new_table);
+	
+	PHP_SYN_FUNC_DECL_NODE *func_decl = si->func->func_decl;
+
+	func_scope_init(func_decl->params, func_decl->param_count,
+		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value);
+
+	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)func_decl->scope);
+
 	if ( func->func_decl->is_native ) {
-		func->func_decl->native_ptr(new_table, result);
+		func->func_decl->native_ptr(result);
 	} else {
 	}
+
+	func_scope_copy_back(func_decl->params, func_decl->param_count,
+		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value);
+		
+	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)func_decl->scope);
 	//
 	// restore stack, free arg list
 	//
-	switch_pop_scope_table();
+	switch_pop_scope_table(0);
 }
 
 /*
@@ -1199,6 +1227,9 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					curr_exec_result = php_execute(node->node_foreach.code, 0);
 					if ( i_key ) {
 						value_value_free(&i_key->value);
+					}
+					if ( node->node_foreach.byref ) {
+						value_value_assign(&array->current->second->value, &i_val->value);
 					}
 					value_value_free(&i_val->value);
 					if ( curr_exec_result) {

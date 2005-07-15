@@ -95,9 +95,9 @@
      SR = 321,
      SL = 322,
      INSTANCEOF = 323,
-     UNSECAST = 324,
+     UNSET_CAST = 324,
      BOOL_CAST = 325,
-     OBJECCAST = 326,
+     OBJECT_CAST = 326,
      ARRAY_CAST = 327,
      STRING_CAST = 328,
      DOUBLE_CAST = 329,
@@ -183,9 +183,9 @@
 #define SR 321
 #define SL 322
 #define INSTANCEOF 323
-#define UNSECAST 324
+#define UNSET_CAST 324
 #define BOOL_CAST 325
-#define OBJECCAST 326
+#define OBJECT_CAST 326
 #define ARRAY_CAST 327
 #define STRING_CAST 328
 #define DOUBLE_CAST 329
@@ -208,7 +208,7 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 65 "php_parser.y"
+#line 66 "php_parser.y"
 typedef union YYSTYPE {
 	PHP_SYN_NODE *syn_node;
 	PHP_EXP_NODE *exp_node;
