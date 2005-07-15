@@ -117,19 +117,8 @@ public:
 	virtual off_t GetLength() const {
 		return CMemFile::GetLength();
 	}
-	virtual uint8		ReadUInt8() const;
-	virtual uint16		ReadUInt16() const;
-	virtual uint32		ReadUInt32() const;
-	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
-	virtual void		ReadHash16(unsigned char* pVal) const;
 	
-	// We override the default buffer-growth behavior in these functions
-	virtual void WriteUInt8(uint8 nVal);
-	virtual void WriteUInt16(uint16 nVal);
-	virtual void WriteUInt32(uint32 nVal);
-	virtual void WriteUInt128(const Kademlia::CUInt128& pVal);
-	virtual void WriteHash16(const unsigned char* pVal);
-
+	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
 };
 
 
