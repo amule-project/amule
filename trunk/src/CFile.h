@@ -108,7 +108,7 @@ public:
 	virtual bool Create(const wxString& szFileName, bool bOverwrite = FALSE, int access = -1 );
 	virtual bool Open(const wxString& szFileName, OpenMode mode = read, int access = -1 );
 	// Kry -Added for windoze compatibility.
-	off_t GetLength() const { return Length(); }
+	virtual off_t GetLength() const { return Length(); }
 
 	virtual bool Close();  // Close is a NOP if not opened
 
