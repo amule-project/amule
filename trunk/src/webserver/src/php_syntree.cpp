@@ -129,9 +129,26 @@ PHP_EXP_NODE *make_known_const(char *name)
 	return make_const_exp_dnum(const_id);
 }
 
-PHP_FUNC_PARAM_DEF *make_func_param(PHP_VAR_NODE *var)
+PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var, char *class_name, int byref)
 {
-	return 0;	
+	PHP_FUNC_PARAM_DEF *param = new PHP_FUNC_PARAM_DEF;
+	memset(param, 0, sizeof(PHP_FUNC_PARAM_DEF));
+	param->var = var;
+	param->class_name = strdup(class_name);
+	param->byref = byref;
+	
+	PHP_EXP_NODE *curr_node = make_const_exp_int_obj(param);
+	
+	if ( list ) {
+		PHP_EXP_NODE *p = list;
+		while ( p->next) {
+			p = p->next;
+		};
+		p->next = curr_node;
+		return list;
+	} else {
+		return curr_node;
+	}
 }
 
 /*
@@ -200,7 +217,7 @@ PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 	return syn_node;
 }
 
-PHP_SYN_NODE *make_func_decl_syn_node()
+PHP_SYN_NODE *make_func_decl_syn_node(char *name, PHP_EXP_NODE *param_list)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
@@ -209,6 +226,28 @@ PHP_SYN_NODE *make_func_decl_syn_node()
 	
 	syn_node->func_decl = new PHP_SYN_FUNC_DECL_NODE;
 	memset(syn_node->func_decl, 0, sizeof(PHP_SYN_FUNC_DECL_NODE));
+	syn_node->func_decl->name = strdup(name);
+	
+	if ( param_list ) {
+		PHP_EXP_NODE *curr_param = param_list;
+		while ( curr_param ) {
+			syn_node->func_decl->param_count++;
+			curr_param = curr_param->next;
+		}
+		syn_node->func_decl->params = new PHP_FUNC_PARAM_DEF[syn_node->func_decl->param_count];
+		curr_param = param_list;
+		for(int i = 0; param_list; param_list = param_list->next, i++) {
+			syn_node->func_decl->params[i] = *(PHP_FUNC_PARAM_DEF *)param_list->val_node.ptr_val;
+			// param has been copied to array, so it's no longer needed
+			delete (PHP_FUNC_PARAM_DEF *)param_list->val_node.ptr_val;
+		}
+		// dispose linked list as well
+		while ( curr_param ) {
+			PHP_EXP_NODE *p = curr_param->next;
+			delete curr_param;
+			curr_param = p;
+		}
+	}
 	
 	return syn_node;
 }
@@ -706,7 +745,7 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	}
 	PHP_SCOPE_TABLE func_scope = make_scope_table();
 	
-	PHP_SYN_NODE *decl_node = make_func_decl_syn_node();
+	PHP_SYN_NODE *decl_node = make_func_decl_syn_node(def->name, 0);
 	decl_node->func_decl->param_count = def->param_count;
 	decl_node->func_decl->params = new PHP_FUNC_PARAM_DEF[def->param_count];
 	
@@ -724,7 +763,6 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	decl_node->func_decl->scope = func_scope;
 	decl_node->func_decl->is_native = 1;
 	decl_node->func_decl->native_ptr = def->func;
-	decl_node->func_decl->name = strdup(def->name);
 	
 	add_func_2_scope(g_global_scope, decl_node);
 }
@@ -738,7 +776,7 @@ void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_nati
 		php_report_error("Can't add scope item: symbol already defined", PHP_ERROR);
 		return;
 	}
-	PHP_SYN_NODE *decl_node = make_func_decl_syn_node();
+	PHP_SYN_NODE *decl_node = make_class_decl_syn_node();
 	decl_node->class_decl->name = strdup(name);
 	decl_node->class_decl->is_native = 1;
 	decl_node->class_decl->native_prop_get_ptr = prop_get_native_ptr;
@@ -1113,6 +1151,7 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 	if ( func->func_decl->is_native ) {
 		func->func_decl->native_ptr(result);
 	} else {
+		php_execute(func->func_decl->code, result);
 	}
 
 	func_scope_copy_back(func_decl->params, func_decl->param_count,

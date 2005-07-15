@@ -120,6 +120,8 @@ typedef struct PHP_EXP_NODE {
             struct PHP_EXP_NODE *left, *right;
         } tree_node;
         struct PHP_EXP_NODE *next;
+    };
+    union {
         PHP_VALUE_NODE val_node;
         PHP_VAR_NODE *var_node;
     };
@@ -315,6 +317,7 @@ extern "C" {
  	PHP_EXP_NODE *make_const_exp_fnum(float number);
  	PHP_EXP_NODE *make_const_exp_str(char *s);
 
+	// exp node for internally handled data
 	PHP_EXP_NODE *make_const_exp_int_obj(void *obj);
 
 	/* casting functions */
@@ -369,9 +372,13 @@ extern "C" {
 		
 	PHP_SYN_NODE *make_class_decl_syn_node();
 	
-	PHP_SYN_NODE *make_func_decl_syn_node();
+	PHP_SYN_NODE *make_func_decl_syn_node(char *name, PHP_EXP_NODE *param_list);
 	
-	PHP_FUNC_PARAM_DEF *make_func_param(PHP_VAR_NODE *var);
+	//
+	// add new item into function param list (in declaration )
+	//
+	PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var,
+		char *class_name, int byref);
 	
 	PHP_VAR_NODE *make_var_node();
 	PHP_EXP_NODE *get_var_node(char *name);
