@@ -133,28 +133,4 @@ public:
 };
 
 
-
-///////////////////////////////////////////////////////////////////////////////
-// This is just a workaround
-class CSafeBufferedFile : public CFile, public CFileDataIO
-{
- public:
-	CSafeBufferedFile() {}
-	CSafeBufferedFile(const wxChar* lpszFileName, OpenMode mode = read)
-		: CFile(lpszFileName, mode) {}
-
-	virtual off_t Read(void *pBuf, off_t nCount) const;
-	virtual size_t Write(const void *pBuf, size_t nCount);
-	virtual off_t Seek(off_t lOff, CFile::SeekMode nFrom = CFile::start) {
-		return CFile::Seek(lOff, nFrom);
-	}
-	virtual off_t GetPosition() const {
-		return CFile::GetPosition();
-	}
-	virtual off_t GetLength() const {
-		return CFile::GetLength();
-	}
-};
- 
-
 #endif // SAFEFILE_H
