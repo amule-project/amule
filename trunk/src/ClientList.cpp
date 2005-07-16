@@ -207,8 +207,10 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 	// First remove the ID entry
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
-	for ( ; range.first != range.second; range.first++ ) {
+	for ( ; range.first != range.second; ++range.first ) {
 		if ( client == range.first->second ) {
+			/* erase() will invalidate the iterator, but we're not using it anymore 
+			    anyway (notice the break;) */
 			m_clientList.erase( range.first );
 			RemoveFromKadList(client);
 			result = true;
@@ -224,14 +226,17 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 void CClientList::RemoveIPFromList( CUpDownClient* client )
 {
 	// Check if we need to look for the IP entry
-	if ( !client->GetIP() )
+	if ( !client->GetIP() ) {
 		return;
+	}
 		
 	// Remove the IP entry
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( client->GetIP() );
 
-	for ( ; range.first != range.second; range.first++ ) {
+	for ( ; range.first != range.second; ++range.first ) {
 		if ( client == range.first->second ) {
+			/* erase() will invalidate the iterator, but we're not using it anymore 
+			    anyway (notice the break;) */
 			m_ipList.erase( range.first );
 			RemoveFromKadList(client);
 			break;
@@ -242,14 +247,17 @@ void CClientList::RemoveIPFromList( CUpDownClient* client )
 void CClientList::RemoveHashFromList( CUpDownClient* client )
 {
 	// Nothing to remove
-	if ( !client->HasValidHash() )
+	if ( !client->HasValidHash() ) {
 		return;
+	}
 
 	// Find all items with the specified hash
 	std::pair<HashMap::iterator, HashMap::iterator> range = m_hashList.equal_range( client->GetUserHash() );
 
 	for ( ; range.first != range.second; ++range.first ) {
 		if ( client == range.first->second ) {
+			/* erase() will invalidate the iterator, but we're not using it anymore 
+			    anyway (notice the break;) */
 			m_hashList.erase( range.first );
 			RemoveFromKadList(client);
 			break;
@@ -270,8 +278,9 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 			// Check if the port ( and server for lowids ) matches
 			if ( it->second->GetUserPort() == client->GetUserPort() ) {
 				// For lowid, we also have to check the server
-				if ( client->GetServerIP() == it->second->GetServerIP() )
+				if ( client->GetServerIP() == it->second->GetServerIP() ) {
 					return it->second;
+				}
 			}
 		}
 	} else {
@@ -281,10 +290,10 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 		IDMap::iterator it = range.first;
 		for ( ; it != range.second; it++ ) {
 			// Check if the port ( and server for lowids ) matches
-			if ( it->second->GetUserPort() == client->GetUserPort() )
+			if ( it->second->GetUserPort() == client->GetUserPort() ) {
 				return it->second;
+			}
 		}
-
 	
 		// Still nothing? Search for the IP
 		if ( client->GetIP() ) {
@@ -308,8 +317,9 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 		std::pair<HashMap::iterator, HashMap::iterator> range = m_hashList.equal_range( client->GetUserHash() );
 
 		// Just return the first item if any
-		if ( range.first != range.second ) 
+		if ( range.first != range.second ) {
 			return range.first->second;
+		}
 	}
 
 	// Nothing found, must be a new client
@@ -337,6 +347,7 @@ void CClientList::DeleteAll()
 	while ( !m_clientList.empty() ) {
 		IDMap::iterator it = m_clientList.begin();
 		
+		// Will call the removal of the item on this same class 
 		it->second->Disconnected(wxT("Removed while deleting all from ClientList."));
 		it->second->Safe_Delete();
 	}
@@ -528,10 +539,11 @@ CUpDownClient* CClientList::FindClientByIP( uint32 clientip, uint16 port )
 	std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( clientip );
 
 	for ( ; range.first != range.second; ++range.first ) {
-		CUpDownClient* cur_client =	range.first->second;
+		CUpDownClient* cur_client = range.first->second;
 		// Check if it's actually the client we want
-		if ( cur_client->GetUserPort() == port )
+		if ( cur_client->GetUserPort() == port ) {
 			return cur_client;
+		}
 	}
 
 	return NULL;
@@ -656,9 +668,11 @@ void CClientList::Process()
 
 	// buddy is just a flag that is used to make sure we are still connected or connecting to a buddy.
 	buddyState buddy = Disconnected;
-
-	for (std::set<CUpDownClient*>::iterator it = m_KadSources.begin(); it != m_KadSources.end(); ++it) {
-		CUpDownClient* cur_client = *it;
+	
+	std::set<CUpDownClient*>::iterator current_it = m_KadSources.begin();
+	while (current_it != m_KadSources.end()) {
+		CUpDownClient* cur_client = *current_it;
+		++current_it; // Won't be used anymore till while loop 
 		if( !Kademlia::CKademlia::isRunning() ) {
 			//Clear out this list if we stop running Kad.
 			//Setting the Kad state to KS_NONE causes it to be removed in the switch below.
@@ -831,7 +845,7 @@ void CClientList::FilterQueues()
 	// Filter client list
 	IDMap::iterator it = m_ipList.begin();
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
-		IDMap::iterator tmp = it++;
+		IDMap::iterator tmp = it++; // Don't change this to a ++it! 
 		
 		if ( theApp.ipfilter->IsFiltered(tmp->second->GetConnectIP())) {
 			tmp->second->Disconnected(wxT("Filtered by IPFilter"));
@@ -1039,9 +1053,10 @@ void CClientList::CleanUpClientList(){
 	if (m_dwLastClientCleanUp + CLIENTLIST_CLEANUP_TIME < cur_tick ){
 		m_dwLastClientCleanUp = cur_tick;
 		uint32 cDeleted = 0;
-		for (IDMap::iterator it = m_clientList.begin(); it != m_clientList.end();/*nothing*/) {
-			IDMap::iterator it2 = it++; // Don't change this to a ++it!!!!
-			CUpDownClient* pCurClient = it2->second;
+		IDMap::iterator current_it = m_clientList.begin();
+		while (current_it != m_clientList.end()) {
+			CUpDownClient* pCurClient = current_it->second;
+			++current_it; // Won't be used till while loop again
 			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
