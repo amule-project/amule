@@ -207,6 +207,7 @@ wxSizer *serverListDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 wxSizer *s_searchdlgsizer;
 wxSizer *s_searchsizer;
 wxSizer *s_extendedsizer;
+wxSizer *s_filtersizer;
 wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
@@ -230,7 +231,7 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item7 = new wxFlexGridSizer( 4, 0, 0 );
+    wxFlexGridSizer *item7 = new wxFlexGridSizer( 1, 0, 0, 0 );
 
     wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
@@ -249,19 +250,25 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticLine *item10 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
     item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, ID_EXTENDEDSEARCHCHECK, _("Extended Parameters"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_EXTENDEDSEARCHCHECK, _("Extended Parameters"), wxDefaultPosition, wxDefaultSize, 0 );
     item7->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item12 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item7->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_FILTERCHECK, _("Filtering"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item13, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item1->Add( item7, 0, wxALIGN_CENTER, 0 );
 
-    wxFlexGridSizer *item12 = new wxFlexGridSizer( 8, 0, 0 );
-    item12->AddGrowableRow( 1 );
-    s_extendedsizer = item12;
+    wxFlexGridSizer *item14 = new wxFlexGridSizer( 8, 0, 0 );
+    item14->AddGrowableRow( 1 );
+    s_extendedsizer = item14;
 
-    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("File Type"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("File Type"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxString strs14[] = 
+    wxString strs16[] = 
     {
         _("Any"), 
         _("Archives"), 
@@ -272,157 +279,157 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
         _("Texts"), 
         _("Videos")
     };
-    wxChoice *item14 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxDefaultSize, 8, strs14, 0 );
-    item12->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxChoice *item16 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxDefaultSize, 8, strs16, 0 );
+    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticLine *item15 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-    item12->Add( item15, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticLine *item17 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+    item14->Add( item17, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Category"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Category"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxString *strs17 = (wxString*) NULL;
-    wxChoice *item17 = new wxChoice( parent, ID_AUTOCATASSIGN, wxDefaultPosition, wxDefaultSize, 0, strs17, 0 );
-    item12->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxString *strs19 = (wxString*) NULL;
+    wxChoice *item19 = new wxChoice( parent, ID_AUTOCATASSIGN, wxDefaultPosition, wxDefaultSize, 0, strs19, 0 );
+    item14->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticLine *item18 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-    item12->Add( item18, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticLine *item20 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+    item14->Add( item20, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("Extension"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Extension"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(40,10), wxTE_PROCESS_ENTER );
-    item12->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CMuleTextCtrl *item22 = new CMuleTextCtrl( parent, IDC_EDITSEARCHEXTENSION, wxT(""), wxDefaultPosition, wxSize(40,10), wxTE_PROCESS_ENTER );
+    item14->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item23 = new wxStaticText( parent, ID_TEXT, _("Min Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item22 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item23 = new wxSpinCtrl( parent, IDC_SPINSEARCHMIN, wxT("0"), wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
-    item22->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item25 = new wxSpinCtrl( parent, IDC_SPINSEARCHMIN, wxT("0"), wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
+    item24->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxString strs24[] = 
+    wxString strs26[] = 
     {
         _("Bytes"), 
         _("KB"), 
         _("MB"), 
         _("GB")
     };
-    wxChoice *item24 = new wxChoice( parent, IDC_SEARCHMINSIZE, wxDefaultPosition, wxDefaultSize, 4, strs24, 0 );
-    item22->Add( item24, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxChoice *item26 = new wxChoice( parent, IDC_SEARCHMINSIZE, wxDefaultPosition, wxDefaultSize, 4, strs26, 0 );
+    item24->Add( item26, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item12->Add( item22, 0, wxALIGN_CENTER, 5 );
+    item14->Add( item24, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticLine *item25 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item12->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticLine *item27 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item14->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item26 = new wxStaticText( parent, ID_TEXT, _("Max Size"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Max Size"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item27 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item29 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item28 = new wxSpinCtrl( parent, IDC_SPINSEARCHMAX, wxT("0"), wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
-    item27->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item30 = new wxSpinCtrl( parent, IDC_SPINSEARCHMAX, wxT("0"), wxDefaultPosition, wxSize(60,-1), 0, 0, 4096, 0 );
+    item29->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxString strs29[] = 
+    wxString strs31[] = 
     {
         _("Bytes"), 
         _("KB"), 
         _("MB"), 
         _("GB")
     };
-    wxChoice *item29 = new wxChoice( parent, IDC_SEARCHMAXSIZE, wxDefaultPosition, wxDefaultSize, 4, strs29, 0 );
-    item27->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxChoice *item31 = new wxChoice( parent, IDC_SEARCHMAXSIZE, wxDefaultPosition, wxDefaultSize, 4, strs31, 0 );
+    item29->Add( item31, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item12->Add( item27, 0, wxALIGN_CENTER, 5 );
+    item14->Add( item29, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticLine *item30 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item12->Add( item30, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticLine *item32 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item14->Add( item32, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item31 = new wxStaticText( parent, ID_TEXT, _("Availability"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item31, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Availability"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxSpinCtrl *item32 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAIBILITY, wxT("0"), wxDefaultPosition, wxSize(45,-1), 0, 0, 1000, 0 );
-    item12->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item34 = new wxSpinCtrl( parent, IDC_SPINSEARCHAVAIBILITY, wxT("0"), wxDefaultPosition, wxSize(45,-1), 0, 0, 1000, 0 );
+    item14->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item1->Add( item12, 0, wxALIGN_CENTER, 5 );
+    item1->Add( item14, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item33 = new wxBoxSizer( wxHORIZONTAL );
+    wxFlexGridSizer *item35 = new wxFlexGridSizer( 1, 0, 0, 0 );
+    s_filtersizer = item35;
 
-    wxButton *item34 = new wxButton( parent, IDC_STARTS, _("Start"), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->Enable( false );
-    item33->Add( item34, 0, wxALIGN_CENTER|wxALL, 5 );
+    item35->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticLine *item35 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item33->Add( item35, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item36 = new wxStaticText( parent, ID_TEXT, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item36, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item36 = new wxButton( parent, IDC_CANCELS, _("Stop"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->Enable( false );
-    item33->Add( item36, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxTextCtrl *item37 = new wxTextCtrl( parent, ID_FILTER_TEXT, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
+    item35->Add( item37, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticLine *item37 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item33->Add( item37, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticLine *item38 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item35->Add( item38, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item38 = new wxButton( parent, IDC_SDOWNLOAD, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item38->Enable( false );
-    item33->Add( item38, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item39 = new wxButton( parent, ID_FILTER, _("Filter Results"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item39, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticLine *item39 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item33->Add( item39, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticLine *item40 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item35->Add( item40, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item40 = new wxButton( parent, IDC_CLEAR_RESULTS, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
-    item40->Enable( false );
-    item33->Add( item40, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item41 = new wxCheckBox( parent, ID_FILTER_INVERT, _("Invert Result"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item41, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item1->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticLine *item42 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item35->Add( item42, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxCheckBox *item43 = new wxCheckBox( parent, ID_FILTER_KNOWN, _("Hide Known Files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item35->Add( item43, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item35->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
+
+    item1->Add( item35, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxBoxSizer *item44 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxButton *item45 = new wxButton( parent, IDC_STARTS, _("Start"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Enable( false );
+    item44->Add( item45, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item46 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item44->Add( item46, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item47 = new wxButton( parent, IDC_CANCELS, _("Stop"), wxDefaultPosition, wxDefaultSize, 0 );
+    item47->Enable( false );
+    item44->Add( item47, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item48 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item44->Add( item48, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxButton *item49 = new wxButton( parent, IDC_SDOWNLOAD, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    item49->Enable( false );
+    item44->Add( item49, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item50 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item44->Add( item50, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item51 = new wxButton( parent, IDC_CLEAR_RESULTS, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+    item51->Enable( false );
+    item44->Add( item51, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item1->Add( item44, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item42 = new wxStaticBox( parent, -1, _("Filtering (Yes, I know it takes up too much space ATM, you don't have to tell me):") );
-    wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxHORIZONTAL );
+    wxStaticBox *item53 = new wxStaticBox( parent, -1, _("Results") );
+    wxStaticBoxSizer *item52 = new wxStaticBoxSizer( item53, wxVERTICAL );
 
-    item41->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
+    wxWindow *item54 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
+    wxASSERT( item54 );
+    item52->Add( item54, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item43 = new wxStaticText( parent, ID_TEXT, _("Filter:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item43, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxGauge *item55 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
+    item52->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item44 = new wxTextCtrl( parent, ID_FILTER_TEXT, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PROCESS_ENTER );
-    item41->Add( item44, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxStaticLine *item45 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item41->Add( item45, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxButton *item46 = new wxButton( parent, ID_FILTER, _("Filter Results"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item46, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxStaticLine *item47 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item41->Add( item47, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxCheckBox *item48 = new wxCheckBox( parent, ID_FILTER_INVERT, _("Invert Result"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item48, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxStaticLine *item49 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item41->Add( item49, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxCheckBox *item50 = new wxCheckBox( parent, ID_FILTER_KNOWN, _("Hide Known Files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item50, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item41->Add( 10, 10, 1, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item41, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item52 = new wxStaticBox( parent, -1, _("Results") );
-    wxStaticBoxSizer *item51 = new wxStaticBoxSizer( item52, wxVERTICAL );
-
-    wxWindow *item53 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
-    wxASSERT( item53 );
-    item51->Add( item53, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxGauge *item54 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item51->Add( item54, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item51, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item52, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

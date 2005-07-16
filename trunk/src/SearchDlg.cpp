@@ -68,7 +68,8 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_BUTTON(IDC_SEARCH_RESET, CSearchDlg::OnBnClickedReset)
 	EVT_BUTTON(IDC_CLEAR_RESULTS, CSearchDlg::OnBnClickedClear)
 
-	EVT_CHECKBOX(ID_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
+	EVT_CHECKBOX(IDC_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
+	EVT_CHECKBOX(IDC_FILTERCHECK,CSearchDlg::OnFilterCheckChange)
 	
 	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
@@ -113,6 +114,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	
 	// Not there initially.
 	s_searchsizer->Show(s_extendedsizer, false);
+	s_searchsizer->Show(s_filtersizer, false);
 	
 	Layout();
 }
@@ -176,6 +178,19 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 	Layout();
 }
 
+void CSearchDlg::OnFilterCheckChange(wxCommandEvent& event)
+{
+	s_searchsizer->Show(s_filtersizer, event.IsChecked());
+	
+	Layout();
+	
+	// Remove any current filtering
+	if (!event.IsChecked()) {
+		CastChild(ID_FILTER_TEXT, wxTextCtrl)->SetValue(wxT(""));
+		wxCommandEvent evt;
+		OnFilteringChange(evt);
+	}
+}
 
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
@@ -378,7 +393,7 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
 
 	uint8 category = 0;
-	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
+	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
 		category = CastChild( ID_AUTOCATASSIGN, wxChoice )->GetSelection();
 	}
 	
@@ -425,7 +440,7 @@ void CSearchDlg::StartNewSearch()
 	wxString typeText(wxT("Any")), extension;
 	uint32 min = 0, max = 0, availability = 0;
 	
-	if (CastChild(ID_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
+	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
 
 		extension = CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->GetValue();
 		if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
