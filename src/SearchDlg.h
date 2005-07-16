@@ -145,6 +145,7 @@ private:
 	void		OnBnClickedReset(wxCommandEvent& ev);
 	void		OnBnClickedClear(wxCommandEvent& ev);
 	void		OnExtendedSearchChange(wxCommandEvent& ev);
+	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
 	
 	void		StartNewSearch();
