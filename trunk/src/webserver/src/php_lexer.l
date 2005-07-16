@@ -117,6 +117,8 @@ EOL ("\r"|"\n"|"\r\n")
 "<="			return IS_SMALLER_OR_EQ;
 ">="			return IS_GREATER_OR_EQ;
 
+"global"		return GLOBAL;
+
 "#"|"//" {
 		BEGIN(LINE_COMMENT);
 		yymore();
