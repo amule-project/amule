@@ -343,6 +343,7 @@ extern "C" {
 	// signle operand expression:
 	// FIXME: prefix and postfix form not recognized
  	PHP_EXP_NODE *make_exp_1(PHP_EXP_OP op, PHP_EXP_NODE *operand);
+
  	PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right);
 
 	PHP_EXP_NODE *make_known_const(char *name);
@@ -382,7 +383,9 @@ extern "C" {
 	
 	PHP_VAR_NODE *make_var_node();
 	PHP_EXP_NODE *get_var_node(char *name);
-
+	// C can't call "delete"
+	void free_var_node(PHP_VAR_NODE *v);
+	
 	/* scope table manipulation */
 	extern PHP_SCOPE_TABLE g_global_scope, g_current_scope;
 	extern PHP_SCOPE_STACK g_scope_stack;
@@ -400,10 +403,12 @@ extern "C" {
 	void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node);
 	
 	void add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name);
+
+	const char *get_scope_var_name(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var);
 	
 	PHP_SCOPE_ITEM_TYPE get_scope_item_type(PHP_SCOPE_TABLE scope, const char *name);
 	
-	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, char *name);
+	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, const char *name);
 	
 
 	/* engine */	

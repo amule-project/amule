@@ -156,7 +156,7 @@ top_statement:
 statement:
 		'{' top_statement_list '}'							{ $$ = $2; }
 	|	expr ';'											{ $$ = make_expr_syn_node(PHP_ST_EXPR, $1); }
-	|	GLOBAL global_var_list ';' 							{ $$ = $2; }
+	|	GLOBAL global_var_list ';' 							{ $$ = 0; }
 	|	STATIC static_var_list ';'							{ $$ = $2; }
 	|	IF '(' expr ')' statement elseif_list else_statement	{ $$ = make_ifelse_syn_node($3, $5, $6, $7); }
 	|	WHILE '(' expr  ')' while_statement					{ $$ = make_while_loop_syn_node($3, $5, 1); }
@@ -209,9 +209,18 @@ global_var_list: global_var				{  }
 ;
 
 
-global_var: VARIABLE
-	|	'$' variable		{ $$ = $2; }
-	|	'$' '{' expr '}'	{ $$ = make_exp_1(PHP_OP_VAR_BY_EXP, $3); }
+global_var: VARIABLE	{
+		const char *varname = get_scope_var_name(g_current_scope, $1->var_node);
+		PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, varname);
+		PHP_SCOPE_ITEM *gsi = get_scope_item(g_global_scope, varname);
+		if ( gsi && (gsi->type == PHP_SCOPE_VAR) ) {
+			free_var_node(si->var);
+			gsi->var->ref_count++;
+			si->var = gsi->var;
+		} else {
+			php_report_error("There is no such global var", PHP_ERROR);
+		}
+	}
 ;
 
 function_decl_statement:

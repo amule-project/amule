@@ -308,6 +308,11 @@ PHP_EXP_NODE *get_var_node(char *name)
 	return node;
 }
 
+void free_var_node(PHP_VAR_NODE *v)
+{
+	delete v;
+}
+
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
@@ -354,6 +359,7 @@ void switch_pop_scope_table(int old_free)
 		php_report_error("Stack underrun - no valid scope", PHP_INTERNAL_ERROR);
 	}
 	g_current_scope = scope_stack->back();
+	scope_stack->pop_back();
 }
 
 void delete_scope_table(PHP_SCOPE_TABLE scope)
@@ -441,13 +447,28 @@ PHP_SCOPE_ITEM_TYPE get_scope_item_type(PHP_SCOPE_TABLE scope, const char *name)
 	return PHP_SCOPE_NONE;
 }
 
-PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, char *name)
+PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	std::string key(name);
 	if ( scope_map->count(key) ) {
 		PHP_SCOPE_ITEM *it = (*scope_map)[key];
 		return it;
+	}
+	return 0;
+}
+
+const char *get_scope_var_name(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var)
+{
+	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
+
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
+		if ( i->second->type == PHP_SCOPE_VAR ) {
+			PHP_VAR_NODE *curr_var = i->second->var;
+			if ( curr_var == var ) {
+				return i->first.c_str();
+			}
+		}
 	}
 	return 0;
 }
