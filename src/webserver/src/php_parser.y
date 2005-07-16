@@ -136,9 +136,11 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 
 %right STATIC ABSTRACT FINAL PRIVATE PROTECTED PUBLIC
 
+%token START_SCRIPT END_SCRIPT
+
 %% /* Rules */
 
-program_tree: top_statement_list { g_syn_tree_top = $1; }
+program_tree: START_SCRIPT top_statement_list END_SCRIPT { g_syn_tree_top = $2; }
 ;
 
 top_statement_list:

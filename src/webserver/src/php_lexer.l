@@ -47,6 +47,9 @@ EOL ("\r"|"\n"|"\r\n")
 
 %%
 
+"<?php"			return START_SCRIPT;
+"?>"			return END_SCRIPT;
+
 "exit"|"die"	return EXIT;
 
 "function"		return FUNCTION;

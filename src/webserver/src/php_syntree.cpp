@@ -28,15 +28,23 @@
 
 #include <list>
 #include <map>
+#include <vector>
 #include <string>
+#include <algorithm>
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
 typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
+typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
+//
+// In php arrays are behave like hashes (i.e. associative) and are sortable.
+// STL std::map is not sortable.
+//
 typedef struct {
 	std::map<std::string, PHP_VAR_NODE *> array;
-	PHP_ARRAY_ITER_TYPE current;
+	std::list<std::string> sorted_keys;
+	PHP_ARRAY_KEY_ITER_TYPE current;
 } PHP_ARRAY_TYPE;
 
 PHP_SYN_NODE *g_syn_tree_top = 0;
@@ -1275,21 +1283,22 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					i_key->value.type = PHP_VAL_STRING;
 				}
 				PHP_VAR_NODE *i_val = node->node_foreach.i_val;
-				array->current = array->array.begin();
-				while ( array->current != array->array.end() ) {
+				array->current = array->sorted_keys.begin();
+				while ( array->current != array->sorted_keys.end() ) {
 					if ( i_key ) {
 						PHP_VALUE_NODE tmp_val;
 						tmp_val.type = PHP_VAL_STRING;
-						tmp_val.str_val = (char *)array->current->first.c_str();
+						tmp_val.str_val = (char *)array->current->c_str();
 						value_value_assign(&i_key->value, &tmp_val);
 					}
-					value_value_assign(&i_val->value, &array->current->second->value);
+					PHP_VALUE_NODE *curr_value = &array->array[*array->current]->value;
+					value_value_assign(&i_val->value, curr_value);
 					curr_exec_result = php_execute(node->node_foreach.code, 0);
 					if ( i_key ) {
 						value_value_free(&i_key->value);
 					}
 					if ( node->node_foreach.byref ) {
-						value_value_assign(&array->current->second->value, &i_val->value);
+						value_value_assign(curr_value, &i_val->value);
 					}
 					value_value_free(&i_val->value);
 					if ( curr_exec_result) {
@@ -1379,6 +1388,14 @@ int yyerror(char *s)
 	return 0;
 }
 
+class uuu {
+public:
+	int a, b;
+	
+	friend const int operator<(const uuu &u1, const uuu &u2);
+};
+
+const int operator<(const uuu &u1, const uuu &u2) { return u1.a < u2.a; }
 
 int main()
 {
@@ -1391,6 +1408,15 @@ int main()
 	php_execute(g_syn_tree_top, &val);
 
 	php_engine_free();
-	
+
+/*
+	std::vector<uuu> vvv;
+	uuu c;
+	uuu &a = c, &b = c;
+	std::sort(vvv.begin(), vvv.end());
+	if ( b < a ) {
+		printf("ddd = %d\n", a < b);
+	}
+*/
 	return 0;
 }
