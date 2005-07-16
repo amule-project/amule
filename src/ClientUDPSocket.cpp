@@ -97,7 +97,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	uint32 length = DoReceive(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
 	
 	if (length == static_cast<uint32>(-1)) {
-		m_sendLocker.Lock();
+		m_sendLocker.Unlock();
 		return;
 	}
 	
