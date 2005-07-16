@@ -312,10 +312,9 @@ void CSearchManager::jumpStart(void)
 {
 	time_t now = time(NULL);
 	try {
-		SearchMap::iterator current_it;
 		SearchMap::iterator next_it = m_searches.begin();
 		while (next_it != m_searches.end()) {
-			current_it = next_it++; /* don't change this to a ++next_it! */
+			SearchMap::iterator current_it = next_it++; /* don't change this to a ++next_it! */
 			switch(current_it->second->getSearchTypes()){
 				case CSearch::FILE: {
 					if (current_it->second->m_created + SEARCHFILE_LIFETIME < now) {
