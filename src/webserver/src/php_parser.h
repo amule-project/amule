@@ -114,7 +114,9 @@
      PRIVATE = 340,
      FINAL = 341,
      ABSTRACT = 342,
-     STATIC = 343
+     STATIC = 343,
+     START_SCRIPT = 344,
+     END_SCRIPT = 345
    };
 #endif
 #define FNUMBER 258
@@ -203,6 +205,8 @@
 #define FINAL 341
 #define ABSTRACT 342
 #define STATIC 343
+#define START_SCRIPT 344
+#define END_SCRIPT 345
 
 
 
@@ -216,7 +220,7 @@ typedef union YYSTYPE {
 	char str_val[256];
 } YYSTYPE;
 /* Line 1318 of yacc.c.  */
-#line 220 "php_parser.h"
+#line 224 "php_parser.h"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
