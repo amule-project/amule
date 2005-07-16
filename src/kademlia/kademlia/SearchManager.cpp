@@ -312,125 +312,127 @@ void CSearchManager::jumpStart(void)
 {
 	time_t now = time(NULL);
 	try {
-		for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
-			switch(it->second->getSearchTypes()){
+		SearchMap::iterator current_it;
+		for (SearchMap::iterator next_it = m_searches.begin(); next_it != m_searches.end(); /* inc below */) {
+			current_it = next_it++; /* don't change this to a ++it! */
+			switch(current_it->second->getSearchTypes()){
 				case CSearch::FILE: {
-					if (it->second->m_created + SEARCHFILE_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHFILE_TOTAL || it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHFILE_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHFILE_TOTAL || current_it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}					
 					break;
 				}
 				case CSearch::KEYWORD: {
-					if (it->second->m_created + SEARCHKEYWORD_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHKEYWORD_TOTAL || it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHKEYWORD_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHKEYWORD_TOTAL || current_it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::NOTES: {
-					if (it->second->m_created + SEARCHNOTES_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHNOTES_TOTAL || it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHNOTES_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHNOTES_TOTAL || current_it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::FINDBUDDY: {
-					if (it->second->m_created + SEARCHFINDBUDDY_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHFINDBUDDY_TOTAL || it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHFINDBUDDY_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHFINDBUDDY_TOTAL || current_it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::FINDSOURCE: {
-					if (it->second->m_created + SEARCHFINDSOURCE_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHFINDSOURCE_TOTAL || it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHFINDSOURCE_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHFINDSOURCE_TOTAL || current_it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::NODE: {
-					if (it->second->m_created + SEARCHNODE_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
+					if (current_it->second->m_created + SEARCHNODE_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::NODECOMPLETE: {
-					if (it->second->m_created + SEARCHNODE_LIFETIME < now) {
+					if (current_it->second->m_created + SEARCHNODE_LIFETIME < now) {
 						CKademlia::getPrefs()->setPublish(true);
-						delete it->second;
-						m_searches.erase(it);
-					} else if ((it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (it->second->getAnswers() > SEARCHNODECOMP_TOTAL)) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if ((current_it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (current_it->second->getAnswers() > SEARCHNODECOMP_TOTAL)) {
 						CKademlia::getPrefs()->setPublish(true);
-						delete it->second;
-						m_searches.erase(it);
+						delete current_it->second;
+						m_searches.erase(current_it);
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::STOREFILE: {
-					if (it->second->m_created + SEARCHSTOREFILE_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHSTOREFILE_TOTAL || it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHSTOREFILE_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHSTOREFILE_TOTAL || current_it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::STOREKEYWORD: {
-					if (it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHSTOREKEYWORD_TOTAL || it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHSTOREKEYWORD_TOTAL || current_it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				case CSearch::STORENOTES: {
-					if (it->second->m_created + SEARCHSTORENOTES_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
-					} else if (it->second->getAnswers() > SEARCHSTORENOTES_TOTAL || it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
-						it->second->prepareToStop();
+					if (current_it->second->m_created + SEARCHSTORENOTES_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
+					} else if (current_it->second->getAnswers() > SEARCHSTORENOTES_TOTAL || current_it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
+						current_it->second->prepareToStop();
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
 				default: {
-					if (it->second->m_created + SEARCH_LIFETIME < now) {
-						delete it->second;
-						m_searches.erase(it);
+					if (current_it->second->m_created + SEARCH_LIFETIME < now) {
+						delete current_it->second;
+						m_searches.erase(current_it);
 					} else {
-						it->second->jumpStart();
+						current_it->second->jumpStart();
 					}
 					break;
 				}
