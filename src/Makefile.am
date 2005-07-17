@@ -440,9 +440,6 @@ noinst_HEADERS = AddFileThread.h \
 		 updownclient.h \
 		 UploadBandwidthThrottler.h \
 		 UploadQueue.h \
-		 WebInterface.h \
-		 WebServer.h \
-		 WebSocket.h \
 		 xembed.h
 
 
