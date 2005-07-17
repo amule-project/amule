@@ -769,6 +769,7 @@ class CWebServerBase {
 		virtual ~CWebServerBase() { }
 
 		virtual void StartServer() = 0;
+		virtual void StopServer() = 0;
 
 		void Print(const wxString &s);
 
@@ -789,6 +790,7 @@ class CScriptWebServer : public CWebServerBase {
 		~CScriptWebServer();
 
 		virtual void StartServer();
+		virtual void StopServer();
 };
 
 /*

@@ -79,7 +79,7 @@ static CmdId commands[] = {
 	{ wxEmptyString,	0 },
 };
 
-static CWebServer *webserver = NULL;
+static CWebServerBase *webserver = NULL;
 
 #if wxUSE_GUI && wxUSE_TIMER
 	class MyTimer *mytimer;
@@ -450,6 +450,8 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			m_AllowGuest = false;
 		}
 
+		m_UsePhp = parser.Found(wxT("run-scriptable"));
+
 		wxString tmp;
 		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
 			if (tmp.IsEmpty()) {
@@ -516,7 +518,11 @@ void CamulewebApp::ShowGreet() {
 
 void CamulewebApp::Pre_Shell() {
 	//Creating the web server
-	webserver = new CWebServer(this, m_TemplateDir);
+	if ( m_UsePhp ) {
+		webserver = new CScriptWebServer(this, m_TemplateDir);
+	} else {
+		webserver = new CWebServer(this, m_TemplateDir);
+	}
 	webserver->StartServer();
 }
 
