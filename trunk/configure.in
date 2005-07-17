@@ -702,6 +702,7 @@ AC_CONFIG_FILES([Makefile
 		 src/utils/xas/Makefile
 		 src/utils/xas/docs/Makefile
 		 src/webserver/Makefile
+		 src/webserver/src/Makefile
 		 src/webserver/default/Makefile
 		 src/webserver/chicane/Makefile
 		 unittests/Makefile

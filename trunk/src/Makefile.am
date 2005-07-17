@@ -12,14 +12,6 @@ EXTRA_DIST = Makengfile aMule.xpm
 
 bin_PROGRAMS = 
 
-if WEB
-bin_PROGRAMS += amuleweb
-endif
-
-if WEBGUI
-bin_PROGRAMS += amulewebDLG
-endif
-
 if GUI
 bin_PROGRAMS += amulecmdDLG
 endif
@@ -336,18 +328,6 @@ amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.c
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(BFD_FLAGS) -DAMULECMDDLG -DEC_REMOTE
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) -DAMULECMDDLG  -DEC_REMOTE
 amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
-
-amuleweb_SOURCES =  WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp RLE.cpp StringFunctions.cpp NetworkFunctions.cpp Format.cpp
-amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
-
-amulewebDLG_SOURCES = WebServer.cpp WebInterface.cpp WebSocket.cpp \
-	 MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp OtherFunctions.cpp ECSpecialTags.cpp RLE.cpp StringFunctions.cpp NetworkFunctions.cpp Format.cpp
-amulewebDLG_CFLAGS = $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amulewebDLG_CXXFLAGS = $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG  -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
-amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
 noinst_HEADERS = AddFileThread.h \
 		 AddFriend.h \

@@ -1,1 +1,1 @@
-SUBDIRS = default chicane
+SUBDIRS = default chicane src
