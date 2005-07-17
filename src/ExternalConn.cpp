@@ -607,15 +607,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	const CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		uint32 srv_ip = srv_tag->GetIPv4Data().IP();
-		for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-			CServer *curr_srv = theApp.serverlist->GetServerByIndex(i);
-			// lfroen: never saw 2 servers on same IP !
-			if ( curr_srv->GetIP() == srv_ip) {
-				srv = curr_srv;
-				break;
-			}
-		}
+		srv = theApp.serverlist->GetServerByIP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().port);
 		// server tag passed, but server not found
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
@@ -1053,8 +1045,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_GET_SERVER_LIST: {
 				response = new CECPacket(EC_OP_SERVER_LIST);
 				EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
-				for(uint32 i = 0; i < theApp.serverlist->GetServerCount(); i++) {
-					response->AddTag(CEC_Server_Tag(theApp.serverlist->GetServerByIndex(i), detail_level));
+				std::vector<const CServer*> servers = theApp.serverlist->CopySnapshot();
+				for (
+					std::vector<const CServer*>::const_iterator it = servers.begin();
+					it != servers.end();
+					++it
+					) {
+					response->AddTag(CEC_Server_Tag(*it, detail_level));
 				}
 			}
 			break;
