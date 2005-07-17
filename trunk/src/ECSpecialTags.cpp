@@ -537,7 +537,7 @@ void CEC_Prefs_Packet::Apply()
 
 #ifndef EC_REMOTE
 
-CEC_Server_Tag::CEC_Server_Tag(CServer *server, EC_DETAIL_LEVEL detail_level) :
+CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
 {
 	wxString tmpStr;

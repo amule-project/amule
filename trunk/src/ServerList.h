@@ -33,8 +33,10 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/timer.h>		// Needed for wxTimer
 
+#include <list>
+#include <vector>
+
 #include "Types.h"		// Needed for int8, uint16 and uint32
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 #include "ObservableQueue.h"
 
@@ -44,45 +46,48 @@ class CPacket;
 class CServerList : public CObservableQueue<CServer*>
 {
 	friend class CServerListCtrl;
+
 public:
 	CServerList();
 	~CServerList();
 	bool		Init();
 	bool		AddServer(CServer* in_server, bool fromUser = false);
-	void		RemoveServer(CServer* out_server);
+	void		RemoveServer(CServer* in_server);
 	void		RemoveAllServers();
 	void		RemoveDeadServers();	
 	bool		LoadServerMet(const wxString& strFile);
 	bool		SaveServerMet();
 	void		ServerStats();
-	void		ResetServerPos()	{serverpos = 0;}
+	void		ResetServerPos()	{m_serverpos = m_servers.begin();}
 	CServer*	GetNextServer();
-	CServer*	GetNextStatServer();
-	CServer*	GetServerByIndex(uint32 pos)	{return list.GetAt(list.FindIndex(pos));}
-	uint32		GetServerCount()	{return list.GetCount();}
+	uint32		GetServerCount()	{return m_servers.size();}
 	CServer*	GetServerByAddress(const wxString& address, uint16 port);
 	CServer*	GetServerByIP(uint32 nIP);
 	CServer*	GetServerByIP(uint32 nIP, uint16 nPort);	
 	void		GetStatus( uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
 	void		Sort();
-	uint32		GetServerPostion()	{return serverpos;}
-	void		SetServerPosition(uint32 newPosition) { if (newPosition<(uint32)list.GetCount() ) serverpos=newPosition; else serverpos=0;}
 	uint32		GetDeletedServerCount()		{return delservercount;}
 	void 		UpdateServerMetFromURL(const wxString& strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
 	uint32	CServerList::GetAvgFile() const;
+
+	std::vector<const CServer*> CopySnapshot() const;
 	
 private:
 	virtual void 	ObserverAdded( ObserverType* );
 	void			AutoUpdate();
+	CServer*		GetNextStatServer();
 	
 	void			LoadStaticServers( const wxString& filename );
 	uint8			current_url_index;
-	uint32		serverpos;
-	uint32		statserverpos;
-	CTypedPtrList<CPtrList, CServer*>	list;
+
+	typedef std::list<CServer*>		CInternalList;
+	CInternalList					m_servers;
+	CInternalList::const_iterator	m_serverpos;
+	CInternalList::const_iterator	m_statserverpos;
+
 	uint32		delservercount;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
 	wxString		URLUpdate;

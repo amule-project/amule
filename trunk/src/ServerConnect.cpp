@@ -59,30 +59,28 @@ void CServerConnect::TryAnotherConnectionrequest()
 	
 		CServer*  next_server = used_list->GetNextServer();
 
+		if ( thePrefs::AutoConnectStaticOnly() ) {
+			while (next_server && !next_server->IsStaticMember())
+				next_server = used_list->GetNextServer();
+		}
+
 		if (!next_server)
 		{
 			if ( connectionattemps.empty() ) {
 				AddLogLineM(true, _("Failed to connect to all servers listed. Making another pass."));
 				
-				ConnectToAnyServer( lastStartAt );
+				ConnectToAnyServer( false );
 			}
 			return;
 		}
 
-		// Barry - Only auto-connect to static server option
-		if ( thePrefs::AutoConnectStaticOnly() ) {
-			if ( next_server->IsStaticMember() )
-                ConnectToServer(next_server, true);
-		} else {
-			ConnectToServer(next_server, true);
-		}
+		ConnectToServer(next_server, true);
 	}
 }
 
 
-void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto)
+void CServerConnect::ConnectToAnyServer(bool prioSort)
 {
-	lastStartAt=startAt;
 	StopConnectionTry();
 	Disconnect();
 	connecting = true;
@@ -91,11 +89,11 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 
 
 	// Barry - Only auto-connect to static server option
-	if (thePrefs::AutoConnectStaticOnly() && isAuto)
+	if (thePrefs::AutoConnectStaticOnly())
 	{
 		bool anystatic = false;
 		CServer *next_server; 
-		used_list->SetServerPosition( startAt );
+		used_list->ResetServerPos();
 		while ((next_server = used_list->GetNextServer()) != NULL)
 		{
 			if (next_server->IsStaticMember())
@@ -112,8 +110,8 @@ void CServerConnect::ConnectToAnyServer(uint32 startAt,bool prioSort,bool isAuto
 		}
 	}
 
-	used_list->SetServerPosition( startAt );
 	if ( thePrefs::Score() && prioSort ) used_list->Sort();
+	used_list->ResetServerPos();
 
 	if (used_list->GetServerCount()==0 ){
 		connecting = false;
@@ -495,7 +493,6 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 //#ifdef TESTING_PROXY
 	serverudpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
-	lastStartAt=0;	
 	InitLocalIP();	
 }
 

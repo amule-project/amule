@@ -152,7 +152,7 @@ class CEC_Prefs_Packet : public CECPacket {
 
 class CEC_Server_Tag : public CECTag {
  	public:
- 		CEC_Server_Tag(CServer *, EC_DETAIL_LEVEL);
+ 		CEC_Server_Tag(const CServer *, EC_DETAIL_LEVEL);
  		
  		wxString ServerName() { return GetTagByNameSafe(EC_TAG_SERVER_NAME)->GetStringData(); }
  		wxString ServerDesc() { return GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData(); }

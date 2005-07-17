@@ -95,9 +95,9 @@ public:
 	}	
 	
 	// the official port
-	uint16  GetPort()			{return realport ? realport : port;}
+	uint16  GetPort() const			{return realport ? realport : port;}
 	// the connection port
-	uint16  GetConnPort()			{return port;}
+	uint16  GetConnPort() const		{return port;}
 	void    SetPort(uint32 val)		{realport = val;}
 	bool	AddTagFromFile(CFileDataIO* servermet);
 	void	SetListName(const wxString& newname);

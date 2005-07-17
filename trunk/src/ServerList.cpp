@@ -61,8 +61,8 @@
 
 CServerList::CServerList()
 {
-	serverpos = 0;
-	statserverpos = 0;
+	m_serverpos = m_servers.end();
+	m_statserverpos = m_servers.end();
 	delservercount = 0;
 	m_nLastED2KServerLinkCheck = ::GetTickCount();
 }
@@ -93,7 +93,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 {
 	AddLogLineM( false, CFormat( _("Loading server.met file: %s") ) % strFile );
 	
-	bool merge = !list.IsEmpty();
+	bool merge = !m_servers.empty();
 	
 	if ( !wxFileExists(strFile) ) {
 		AddLogLineM( false, _("Server.met file not found!") );
@@ -224,7 +224,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 		return false;
 	}
 	
-	list.AddTail(in_server);
+	m_servers.push_back(in_server);
 	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
 
 	if ( fromUser ) {
@@ -246,13 +246,13 @@ void CServerList::ServerStats()
 	uint32 temp;
 	temp = (uint32)time(NULL);
 	
-	if(theApp.serverconnect->IsConnected() && list.GetCount() > 0) {
+	if(theApp.serverconnect->IsConnected() && m_servers.size() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
 		if(!ping_server) {
 			return;
 		}
-	        while(ping_server->GetLastPinged() != 0 && (::GetTickCount() - ping_server->GetLastPinged()) < UDPSERVSTATREASKTIME) {
+		while(ping_server->GetLastPinged() != 0 && (::GetTickCount() - ping_server->GetLastPinged()) < UDPSERVSTATREASKTIME) {
 			ping_server = GetNextStatServer();
 			if(ping_server == test) {
 				return;
@@ -293,24 +293,28 @@ void CServerList::ServerStats()
 }
 
 
-void CServerList::RemoveServer(CServer* out_server)
+void CServerList::RemoveServer(CServer* in_server)
 {
-	if (out_server == theApp.serverconnect->GetCurrentServer()) {
+	if (in_server == theApp.serverconnect->GetCurrentServer()) {
 		theApp.ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
 	} else {
-	
-		POSITION pos = list.Find( out_server );
-		if ( pos != NULL ) {
-			if (theApp.downloadqueue->GetUDPServer() == out_server) {
+		CInternalList::iterator it = std::find(m_servers.begin(), m_servers.end(), in_server);
+		if ( it != m_servers.end() ) {
+			if (theApp.downloadqueue->GetUDPServer() == in_server) {
 				theApp.downloadqueue->SetUDPServer( 0 );
 			}	
 			
-			NotifyObservers( EventType( EventType::REMOVED, out_server ) );
+			NotifyObservers( EventType( EventType::REMOVED, in_server ) );
 		
-			list.RemoveAt(pos);
+			if (m_serverpos == it) {
+				++m_serverpos;
+			}
+			if (m_statserverpos == it) {
+				++m_statserverpos;
+			}
+			m_servers.erase(it);
 			++delservercount;
-			delete out_server;
-			return;
+			delete in_server;
 		}
 	}
 }
@@ -320,18 +324,20 @@ void CServerList::RemoveAllServers()
 {
 	NotifyObservers( EventType( EventType::CLEARED ) );
 	
-	delservercount += list.GetSize();
+	delservercount += m_servers.size();
 	// no connection, safely remove all servers
-	while ( !list.IsEmpty() ) {
-		delete list.GetTail();
-		list.RemoveTail();
+	while ( !m_servers.empty() ) {
+		delete m_servers.back();
+		m_servers.pop_back();
 	}
+	m_serverpos = m_servers.end();
+	m_statserverpos = m_servers.end();
 }
 
 
 void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)
 {
-	total = list.GetCount();
+	total = m_servers.size();
 	failed = 0;
 	user = 0;
 	file = 0;
@@ -341,9 +347,8 @@ void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 
 	uint32 maxusers=0;
 	uint32 tuserk = 0;
 
-	CServer* curr;
-	for (POSITION pos = list.GetHeadPosition(); pos !=0; ) {
-		curr = (CServer*)list.GetNext(pos);
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+		const CServer* const curr = *it;
 		if( curr->GetFailedCount() ) {
 			++failed;
 		} else {
@@ -368,9 +373,8 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 {
 	user = 0;
 	file = 0;
-	CServer* curr;
-	for (POSITION pos = list.GetHeadPosition(); pos !=0; ) {
-		curr = (CServer*)list.GetNext(pos);
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+		const CServer* const curr = *it;
 		if( !curr->GetFailedCount() ) {
 			user += curr->GetUsers();
 			file += curr->GetFiles();
@@ -382,9 +386,9 @@ void CServerList::GetUserFileStatus(uint32 &user, uint32 &file)
 CServerList::~CServerList()
 {
 	SaveServerMet();
-	while ( !list.IsEmpty() ) {
-		delete list.GetTail();
-		list.RemoveTail();
+	while ( !m_servers.empty() ) {
+		delete m_servers.back();
+		m_servers.pop_back();
 	}
 }
 
@@ -458,80 +462,72 @@ void CServerList::LoadStaticServers( const wxString& filename )
 }
 
 
-void CServerList::Sort()
-{
-	POSITION pos1, pos2;
-	uint16 i = 0;
-	for( pos1 = list.GetHeadPosition(); (pos2 = pos1 ) != NULL;) {
-		list.GetNext(pos1);
-		CServer* cur_server = list.GetAt(pos2);
-		if (cur_server->GetPreferences()== SRV_PR_HIGH) {
-			list.AddHead(cur_server);
-			list.RemoveAt(pos2);
-		} else if (cur_server->GetPreferences() == SRV_PR_LOW) {
-			list.AddTail(cur_server);
-			list.RemoveAt(pos2);
-		}
-		++i;
-		if (i == list.GetCount()) {
-			break;
+struct ServerPriorityComparator {
+	// Return true iff lhs should strictly appear earlier in the list than rhs.
+	// In this case, we want higher priority servers to appear earlier.
+	bool operator()(const CServer* lhs, const CServer* rhs) {
+		wxASSERT
+			(
+			rhs->GetPreferences() == SRV_PR_LOW		||
+			rhs->GetPreferences() == SRV_PR_NORMAL	||
+			rhs->GetPreferences() == SRV_PR_HIGH
+			);
+		switch (lhs->GetPreferences()) {
+			case SRV_PR_LOW:
+				return false;
+			case SRV_PR_NORMAL:
+				return rhs->GetPreferences() == SRV_PR_LOW;
+			case SRV_PR_HIGH:
+				return rhs->GetPreferences() != SRV_PR_HIGH;
+			default:
+				wxASSERT(0);
+				return false;
 		}
 	}
+};
+
+void CServerList::Sort()
+{
+	m_servers.sort(ServerPriorityComparator());
+	// Once the list has been sorted, it doesn't really make sense to continue
+	// traversing the new order from the old position.  Plus, there's a bug in
+	// version of libstdc++ before gcc4 such that iterators that were equal to
+	// end() were left dangling.
+	m_serverpos = m_servers.begin();
+	m_statserverpos = m_servers.begin();
 }
 
 
 CServer* CServerList::GetNextServer()
 {
-	CServer* nextserver = 0;
-	uint32 i = 0;
-	if (serverpos>=((uint32)list.GetCount())) {
+	if (m_serverpos == m_servers.end()) {
 		return 0;
+	} else {
+		wxASSERT(*m_serverpos != NULL);
+		return *m_serverpos++;
 	}
-	while (!nextserver && i != (uint32)list.GetCount()) {
-		POSITION posIndex = list.FindIndex(serverpos);
-		if (posIndex == NULL) {	// check if search position is still valid (could be corrupted by server delete operation)
-			posIndex = list.GetHeadPosition();
-			serverpos= 0; // <<--9/27/02 zg
-		}
-
-		nextserver = list.GetAt(posIndex);
-		++serverpos;
-		++i;
-		// TODO: Add more option to filter bad server like min ping, min users etc
-		//if (nextserver->preferences = ?)
-		//	nextserver = 0;
-		//if (serverpos == list.GetCount()) return 0;//	serverpos = 0;
-	}
-	return nextserver;
 }
 
 
 CServer* CServerList::GetNextStatServer()
 {
-	CServer* nextserver = 0;
-	uint32 i = 0;
-	while (!nextserver && i != (uint32)list.GetCount()) {
-		POSITION posIndex = list.FindIndex(statserverpos);
-		if (posIndex == NULL) {	// check if search position is still valid (could be corrupted by server delete operation)
-			posIndex = list.GetHeadPosition();
-			statserverpos=0;
-		}
-
-		nextserver = list.GetAt(posIndex);
-		++statserverpos;
-		++i;
-		if (statserverpos == (uint32)list.GetCount()) {
-			statserverpos = 0;
-		}
+	if (m_statserverpos == m_servers.end()) {
+		m_statserverpos = m_servers.begin();
 	}
-	return nextserver;
+
+	if (m_statserverpos == m_servers.end()) {
+		return 0;
+	} else {
+		wxASSERT(*m_statserverpos != NULL);
+		return *m_statserverpos++;
+	}
 }
 
 
 CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 {
-	for (POSITION pos = list.GetHeadPosition();pos != 0;) {
-		CServer *s = list.GetNext(pos); // i_a: small speed optimization
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+		CServer* const s = *it;
 		if (port == s->GetPort() && s->GetAddress() == address) {
 			return s;
 		}
@@ -541,8 +537,8 @@ CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 
 
 CServer* CServerList::GetServerByIP(uint32 nIP){
-	for (POSITION pos = list.GetHeadPosition();pos != 0;){
-        CServer* s = list.GetNext(pos);
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
+        CServer* const s = *it;
 		if (s->GetIP() == nIP)
 			return s; 
 	}
@@ -551,8 +547,8 @@ CServer* CServerList::GetServerByIP(uint32 nIP){
 
 
 CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
-	for (POSITION pos = list.GetHeadPosition();pos != 0;){
-        CServer* s = list.GetNext(pos);
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
+        CServer* const s = *it;
 		if (s->GetIP() == nIP && s->GetPort() == nPort)
 			return s; 
 	}
@@ -572,11 +568,11 @@ bool CServerList::SaveServerMet()
 
 
 	servermet.WriteUInt8(0xE0);
-	servermet.WriteUInt32( list.GetCount() );
+	servermet.WriteUInt32( m_servers.size() );
 
 	
-	for ( POSITION pos = list.GetHeadPosition(); pos; ) {
-		CServer* server = list.GetNext( pos );
+	for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+		const CServer* const server = *it;
 
 		uint16 tagcount = 12;
 		if ( !server->GetListName().IsEmpty() ) 			++tagcount;
@@ -672,8 +668,9 @@ bool CServerList::SaveServerMet()
 void CServerList::RemoveDeadServers()
 {
 	if ( thePrefs::DeadServer() ) {
-		for ( POSITION pos = list.GetHeadPosition(); pos != NULL; ) {
-			CServer* cur_server = list.GetNext( pos );
+		for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ) {
+			CServer* const cur_server = *it;
+			++it;
 			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !cur_server->IsStaticMember()) {
 				RemoveServer(cur_server);
 			}
@@ -778,11 +775,8 @@ void CServerList::ObserverAdded( ObserverType* o )
 	CObservableQueue<CServer*>::ObserverAdded( o );
 
 	EventType::ValueList ilist;
-	ilist.reserve( list.GetSize() );
-	
-	for ( POSITION pos = list.GetHeadPosition(); pos; ) {
-		ilist.push_back( list.GetNext(pos) );
-	}
+	ilist.reserve( m_servers.size() );
+	ilist.assign( m_servers.begin(), m_servers.end() );
 
 	NotifyObservers( EventType( EventType::INITIAL, &ilist ), o );
 }
@@ -795,8 +789,8 @@ uint32 CServerList::GetAvgFile() const
 	//average user shares..
 	uint32 totaluser = 0;
 	uint32 totalfile = 0;
-	for (POSITION pos = list.GetHeadPosition(); pos != 0; ){
-		const CServer* curr = list.GetNext(pos);
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
+		const CServer* const curr = *it;
 		//If this server has reported Users/Files and doesn't limit it's files too much
 		//use this in the calculation..
 		if( curr->GetUsers() && curr->GetFiles() && curr->GetSoftFiles() > 1000 ) {
@@ -814,4 +808,13 @@ uint32 CServerList::GetAvgFile() const
 	} else {
 		return 0;
 	}
+}
+
+
+std::vector<const CServer*> CServerList::CopySnapshot() const
+{
+	std::vector<const CServer*> result;
+	result.reserve(m_servers.size());
+	result.assign(m_servers.begin(), m_servers.end());
+	return result;
 }

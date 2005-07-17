@@ -68,8 +68,7 @@ public:
 	void	ConnectionFailed(CServerSocket* sender);
 	void	ConnectionEstablished(CServerSocket* sender);
 	
-	void	ConnectToAnyServer() { ConnectToAnyServer(0,true,true); }
-	void	ConnectToAnyServer(uint32 startAt,bool prioSort = false, bool isAuto = true);
+	void	ConnectToAnyServer(bool prioSort = true);
 	void	ConnectToServer(CServer* toconnect, bool multiconnect = false);
 	void	StopConnectionTry();
 	void	CheckForTimeout();
@@ -105,7 +104,6 @@ private:
 	bool	singleconnecting;
 	bool	connected;
 	int8	max_simcons;
-	uint32	lastStartAt;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CServerUDPSocket*	serverudpsocket;
