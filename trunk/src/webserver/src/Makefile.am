@@ -54,3 +54,8 @@ amuleweb_CXXFLAGS += -DAMULEWEB_SCRIPT_EN
 amulewebDLG_CFLAGS += -DAMULEWEB_SCRIPT_EN
 amulewebDLG_CXXFLAGS += -DAMULEWEB_SCRIPT_EN
 endif
+
+noinst_HEADERS = \
+		 WebInterface.h \
+		 WebServer.h \
+		 WebSocket.h
