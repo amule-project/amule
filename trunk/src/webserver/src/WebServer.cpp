@@ -3441,6 +3441,61 @@ void CScriptWebServer::StartServer()
 	}
 }
 
-void CScriptWebServer::ProcessURL(ThreadData)
+void CScriptWebServer::StopServer()
 {
+}
+
+void CScriptWebServer::ProcessURL(ThreadData Data)
+{
+	wxMutexLocker lock(*m_mutexChildren);
+
+	bool isUseGzip = false; /* will add it later webInterface->m_UseGzip; */
+	char *httpOut = 0;
+	
+	const char *httpReq = unicode2char(Data.sURL);
+	
+	//
+	// Basic parse: separate domain out of resource name
+	//
+	/*
+	char resource[256];
+	const char *p = httpReq;
+	while ( *p && *p != '/' ) { p++; }
+	if ( *p && ( (strlen(httpReq) - (p - httpReq))  > 2) ) {
+		if ( (strlen(httpReq) - (p - httpReq)) > sizeof(resource) ) {
+		} else {
+			strcpy(resource, p);
+		}
+	} else {
+		strcpy(resource, "index.html");
+	}
+	*/
+	httpOut = "<http> hello from PHP webserver </http>";
+	
+	
+	//
+	// send answer ...
+	//
+/*
+ * Untill I find out what is all this about, php will not be unicode
+ * aware and/or enabled
+ *
+ 
+#if wxUSE_UNICODE
+	const wxCharBuffer buf = wxConvUTF8.cWC2MB(Out.wc_str(aMuleConv));
+	const char *httpOut = (const char *)buf;
+#else
+	const char *httpOut = (const char *)Out;
+#endif
+*/
+	if (isUseGzip)	{
+		char *gzipOut = 0;
+		long gzipLen = 0;
+		Data.pSocket->SendContent(HTTPInitGZ, gzipOut, gzipLen);
+		if (gzipOut != NULL) {
+			delete[] gzipOut;
+		}
+	} else {
+		Data.pSocket->SendContent(HTTPInit, httpOut, strlen(httpOut));
+	}
 }

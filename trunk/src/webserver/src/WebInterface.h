@@ -99,6 +99,8 @@ public:
 	unsigned int	m_PageRefresh;
 	bool		m_LoadSettingsFromAmule;
 
+	bool		m_UsePhp;
+
 #if wxUSE_GUI
 public:
 	void LocalShow(const wxString &s);
