@@ -325,6 +325,7 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 ECSocket::ECSocket(void) : wxSocketClient()
 {
 	memset(&parms, 0, sizeof(parms));
+	parms.firsttransfer = true;
 }
 
 ECSocket::~ECSocket(void)
@@ -682,12 +683,11 @@ bool ECSocket::WriteFlags(uint32 flags)
 }
 
 /**
- * Writes \e packet to \e sock.
+ * Writes \e packet to the socket.
  *
- * Writes a given packet to given socket, taking care of
+ * Writes a given packet to the socket, taking care of
  * all transmission aspects (e.g. compression).
  *
- * @param sock socket to use.
  * @param packet CECPacket class instance to be written.
  *
  * @return \b true on success, \b false on failure.
@@ -733,12 +733,10 @@ bool ECSocket::WritePacket(const CECPacket *packet)
 }
 
 /**
- * Reads a CECPacket packet from \e sock.
+ * Reads a CECPacket packet from the socket.
  *
- * Reads a packet from the given socket, taking care of
+ * Reads a packet from the socket, taking care of
  * all transmission aspects (e.g. compression).
- *
- * @param sock socket to use.
  *
  * @return A pointer to a CECPacket class instance.
  *
@@ -756,7 +754,7 @@ CECPacket * ECSocket::ReadPacket()
 
 	// check if the other end sends an "accepts" value
 	if (flags & EC_FLAG_ACCEPTS) {
-		parms.accepts=ReadFlags();
+		parms.accepts = ReadFlags();
 	}
 
 	if ((flags & EC_FLAG_UNKNOWN_MASK)) {
@@ -792,30 +790,3 @@ CECPacket * ECSocket::ReadPacket()
 	}
 	return p;
 }
-
-/*! 
- * \fn ECSocket::WritePacket(const CECPacket *packet)
- *
- * \brief Writes \e packet to the m_sock member of the class.
- *
- * Writes a given packet to given socket, taking care of
- * all transmission aspects (e.g. compression).
- *
- * \param packet CECPacket class instance to be written.
- *
- * \return \b true on success, \b false on failure.
- */
-
-/*!
- * \fn CECPacket * ECSocket::ReadPacket(void)
- *
- * \brief Reads a CECPacket packet from the m_sock member of the class.
- *
- * Reads a packet from the given socket, taking care of
- * all transmission aspects (e.g. compression).
- *
- * \return A pointer to a CECPacket class instance.
- *
- * \note You must later free the packet by calling
- * \c delete on the returned pointer.
- */
