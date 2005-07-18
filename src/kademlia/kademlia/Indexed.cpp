@@ -440,12 +440,12 @@ void CIndexed::clean(void)
 			}
 		}
 
-		SrcHashMap::iterator it_src = m_Sources_map.begin();
-		for ( ; it_src != m_Sources_map.end(); ++it_src) {
-			SrcHash* currSrcHash = it_src->second;
-			CCKey key = it_src->first;
-			for(POSITION pos2 = currSrcHash->m_Source_map.GetHeadPosition(); pos2 != NULL; )
-			{
+		SrcHashMap::iterator it_src_next = m_Sources_map.begin();
+		while (it_src_next != m_Sources_map.end()) {
+			SrcHashMap::iterator curr_it =  it_src_next++; // Don't change this to a ++it!
+			SrcHash* currSrcHash = curr_it->second;
+			CCKey key = curr_it->first;
+			for(POSITION pos2 = currSrcHash->m_Source_map.GetHeadPosition(); pos2 != NULL; ) {
 				POSITION pos3 = pos2;
 				Source* currSource = currSrcHash->m_Source_map.GetNext(pos2);			
 				for(POSITION pos5 = currSource->entryList.GetHeadPosition(); pos5 != NULL; ) {
