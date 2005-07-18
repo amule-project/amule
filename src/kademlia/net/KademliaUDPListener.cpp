@@ -516,12 +516,12 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 
 void CKademliaUDPListener::Free(SSearchTerm* pSearchTerms)
 {
-	if (pSearchTerms->left) {
-		Free(pSearchTerms->left);
+	if (!pSearchTerms) {
+		return;
 	}
-	if (pSearchTerms->right) {
-		Free(pSearchTerms->right);
-	}
+
+	Free(pSearchTerms->left);
+	Free(pSearchTerms->right);
 	delete pSearchTerms;
 }
 
