@@ -215,13 +215,28 @@ uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
  */
 CParsedUrl::CParsedUrl(const wxString &url)
 {
-	m_path = url.BeforeFirst('/');
-	m_file = url.AfterFirst('/');
+	if ( url.Find('/') != -1 ) {
+		m_path = url.BeforeFirst('/');
+		m_file = url.AfterFirst('/');
+	}
 
-	if ( url.Find('?') ) {
+	if ( url.Find('?') != -1 ) {
 		m_file.Truncate(m_file.Find('?'));
 		
 		wxString params = url.AfterFirst('?');
+		
+		params.Replace(wxT("+"), wxT(" "));
+		for (int i = 0 ; i <= 255 ; ++i) {
+			char fromReplace[4];	// decode URL
+			char toReplace[2];		// decode URL
+			sprintf(fromReplace, "%%%02x", i);
+			toReplace[0] = (char)i;
+			toReplace[1] = 0;
+			params.Replace(char2unicode(fromReplace), char2unicode(toReplace));
+			sprintf(fromReplace, "%%%02X", i);
+			params.Replace(char2unicode(fromReplace), char2unicode(toReplace));
+		}
+
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
 	    	wxString param_val = tkz.GetNextToken();
@@ -703,47 +718,8 @@ wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
 }
 
 
-wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname) {
-
-	wxString URL = Data.sURL;	
-	wxString value;
-	wxString Parameter;
-	char fromReplace[4] = "";	// decode URL
-	char toReplace[2] = "";		// decode URL
-	int i = 0;
-	int findPos = -1;
-	int findLength = 0;
-	webInterface->DebugShow(wxT("*** parsing url ") + URL + wxT(" :: field ") + fieldname + wxT("\n"));
-	if (URL.Find(wxT("?")) > -1) {
-		Parameter = URL.Mid(URL.Find(wxT("?"))+1, URL.Length()-URL.Find(wxT("?"))-1);
-		// search the fieldname beginning / middle and strip the rest...
-		if (Parameter.Find(fieldname + wxT("=")) == 0) {
-			findPos = 0;
-			findLength = fieldname.Length() + 1;
-		}
-		if (Parameter.Find(wxT("&") + fieldname + wxT("=")) > -1) {
-			findPos = Parameter.Find(wxT("&") + fieldname + wxT("="));
-			findLength = fieldname.Length() + 2;
-		}
-		if (findPos > -1) {
-			Parameter = Parameter.Mid(findPos + findLength, Parameter.Length());
-			if (Parameter.Find(wxT("&")) > -1) {
-				Parameter = Parameter.Mid(0, Parameter.Find(wxT("&")));
-			}	
-			value = Parameter;
-			// decode value ...
-			value.Replace(wxT("+"), wxT(" "));
-			for (i = 0 ; i <= 255 ; ++i) {
-				sprintf(fromReplace, "%%%02x", i);
-				toReplace[0] = (char)i;
-				toReplace[1] = 0;
-				value.Replace(char2unicode(fromReplace), char2unicode(toReplace));
-				sprintf(fromReplace, "%%%02X", i);
-				value.Replace(char2unicode(fromReplace), char2unicode(toReplace));
-			}
-		}
-	}
-	return value;
+wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname){
+	return Data.parsedURL.Param(fieldname);
 }
 
 
