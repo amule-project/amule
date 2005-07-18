@@ -210,6 +210,27 @@ uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
 	}
 }
 
+/*
+ * Url parser
+ */
+CParsedUrl::CParsedUrl(const wxString &url)
+{
+	m_path = url.BeforeFirst('/');
+	m_file = url.AfterFirst('/');
+
+	if ( url.Find('?') ) {
+		m_file.Truncate(m_file.Find('?'));
+		
+		wxString params = url.AfterFirst('?');
+		wxStringTokenizer tkz(params, wxT("&"));
+		while ( tkz.HasMoreTokens() ) {
+	    	wxString param_val = tkz.GetNextToken();
+	    	m_params[param_val.BeforeFirst('=')] = param_val.AfterFirst('=');
+		}
+    }
+}
+
+
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp),
@@ -3452,24 +3473,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	bool isUseGzip = false; /* will add it later webInterface->m_UseGzip; */
 	char *httpOut = 0;
 	
-	const char *httpReq = unicode2char(Data.sURL);
-	
-	//
-	// Basic parse: separate domain out of resource name
-	//
-	/*
-	char resource[256];
-	const char *p = httpReq;
-	while ( *p && *p != '/' ) { p++; }
-	if ( *p && ( (strlen(httpReq) - (p - httpReq))  > 2) ) {
-		if ( (strlen(httpReq) - (p - httpReq)) > sizeof(resource) ) {
-		} else {
-			strcpy(resource, p);
-		}
-	} else {
-		strcpy(resource, "index.html");
-	}
-	*/
+
 	httpOut = "<http> hello from PHP webserver </http>";
 	
 	
