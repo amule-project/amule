@@ -690,8 +690,24 @@ typedef struct {
 
 } GlobalParams;
 
+class CParsedUrl {
+		wxString m_path, m_file;
+		std::map<wxString, wxString> m_params;
+	public:
+		CParsedUrl(const wxString &url);
+		
+		const wxString &Path() { return m_path; }
+		const wxString &File() { return m_file; }
+
+		const wxString &Param(const wxString &key)
+		{
+			return m_params[key];
+		}
+};
+
 // Changing this to a typedef struct{} makes egcs compiler do it all wrong and crash on run
 struct ThreadData {
+	CParsedUrl	parsedURL;
 	wxString	sURL;
 	in_addr		inadr;
 	CWebSocket	*pSocket;
@@ -777,21 +793,6 @@ class CWebServerBase {
 
 		CamulewebApp	*webInterface;
 
-};
-
-class CParsedUrl {
-		wxString m_path, m_file;
-		std::map<wxString, wxString> m_params;
-	public:
-		CParsedUrl(const wxString &url);
-		
-		const wxString &Path() { return m_path; }
-		const wxString &File() { return m_file; }
-
-		const wxString &Param(const wxString &key)
-		{
-			return m_params[key];
-		}
 };
 
 /*

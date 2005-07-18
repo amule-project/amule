@@ -321,9 +321,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pDat
 	if (sURL.Find(wxT(" ")) > -1)
 		sURL = sURL.Left(sURL.Find(wxT(" ")));
 
-	ThreadData Data;
-	Data.sURL = sURL;
-	Data.pSocket = this;
+	ThreadData Data = { CParsedUrl(sURL), sURL, {0}, this };
 	if (sURL.Length() > 4 ) {
 		wxString url_ext = sURL.Right( sURL.Length() - sURL.Find('.', true) ).MakeLower();
 		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || 
