@@ -779,6 +779,21 @@ class CWebServerBase {
 
 };
 
+class CParsedUrl {
+		wxString m_path, m_file;
+		std::map<wxString, wxString> m_params;
+	public:
+		CParsedUrl(const wxString &url);
+		
+		const wxString &Path() { return m_path; }
+		const wxString &File() { return m_file; }
+
+		const wxString &Param(const wxString &key)
+		{
+			return m_params[key];
+		}
+};
+
 /*
  * Script based webserver
  */
