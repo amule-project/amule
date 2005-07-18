@@ -450,7 +450,11 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			m_AllowGuest = false;
 		}
 
+#ifdef AMULEWEB_SCRIPT_EN
 		m_UsePhp = parser.Found(wxT("run-scriptable"));
+#else
+		m_UsePhp = false;
+#endif
 
 		wxString tmp;
 		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
