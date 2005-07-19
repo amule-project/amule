@@ -256,12 +256,11 @@ protected:
 	wxString server_msg;
 
 	AMULE_TIMER_CLASS* core_timer;
-	
+
 private:
+	virtual void OnUnhandledException();
+	
 	void CheckNewVersion(uint32 result);
-#ifndef AMULE_DAEMON
-	virtual int OnRun();
-#endif
 };
 
 #ifndef AMULE_DAEMON

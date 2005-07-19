@@ -389,6 +389,9 @@ bool CamuleApp::OnInit()
 	signal(SIGTERM, OnShutdownSignal);
 #endif
 
+	// Handle uncaught exceptions
+	InstallMuleExceptionHandler();
+
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	
@@ -2069,22 +2072,13 @@ void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
 	}
 }
 
-#ifndef AMULE_DAEMON
-int CamuleApp::OnRun() {
-	#ifdef __DEBUG__
-		printf("DEBUG: OnRun()\n");
-	#endif
-	int result = -1;
-	try {
-		// This is the main loop. Everything in the app happens here.
-		result = AMULE_APP_BASE::OnRun();
-	} catch (...) {
-		printf("FATAL: Unhandled exception on main loop. Exiting\n");
-		wxASSERT(0);
-	}
-	return result;
+
+void CamuleApp::OnUnhandledException()
+{
+	// Call the generic exception-handler.
+	::OnUnhandledException();
 }
-#endif
+
 
 DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)

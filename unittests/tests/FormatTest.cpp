@@ -105,7 +105,7 @@ TEST(Format, ConstructorAndGetString)
 		// Simple string with one format field
 		CFormat fmt4(wxT("a %i c"));
 		ASSERT_FALSE(fmt4.IsReady());
-		ASSERT_RAISES(CInvalidStateException, fmt4.GetString());
+		ASSERT_RAISES(CInvalidStateEx, fmt4.GetString());
 	}
 }
 
@@ -129,7 +129,7 @@ TEST(Format, SetStringAndGetString)
 	// Simple string with one format field
 	format.SetString(wxT("a %i c"));
 	ASSERT_FALSE(format.IsReady());
-	ASSERT_RAISES(CInvalidStateException, format.GetString());
+	ASSERT_RAISES(CInvalidStateEx, format.GetString());
 }
 
 
@@ -141,8 +141,8 @@ TEST(Format, SetStringAndGetString)
 
 //! Test that values outside the scope of a type are rejected
 #define STANDARD_TYPE_CONSTRAINTS(format, type, next) \
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % (((next)MIN(type)) - 1)); \
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%") format) % (((next)MAX(type)) + 1)); 
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%") format) % (((next)MIN(type)) - 1)); \
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%") format) % (((next)MAX(type)) + 1)); 
 
 
 
@@ -302,17 +302,17 @@ TEST(Format, EscapedPercentageSign)
 TEST(Format, MalformedFields)
 {
 	// Incomplete format string
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%")));
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT(" -- %")));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%")));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %")));
 
 	// Non-existing type
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%q")) % 1);
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT(" -- %q")) % 1.0f );
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT(" -- %q -- ")) % wxT("1"));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%q")) % 1);
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %q")) % 1.0f );
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %q -- ")) % wxT("1"));
 
 	// Invalid string length
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%.qs")) % wxT(""));
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%.-10s")) % wxT(""));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%.qs")) % wxT(""));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%.-10s")) % wxT(""));
 }
 
 
@@ -320,12 +320,12 @@ TEST(Format, NotReady)
 {
 	CFormat fmt(wxT("-- %s - %d"));
 	ASSERT_FALSE(fmt.IsReady());
-	ASSERT_RAISES(CInvalidStateException, fmt.GetString());
+	ASSERT_RAISES(CInvalidStateEx, fmt.GetString());
 
 	fmt % wxT("foo");
 
 	ASSERT_FALSE(fmt.IsReady());
-	ASSERT_RAISES(CInvalidStateException, fmt.GetString());
+	ASSERT_RAISES(CInvalidStateEx, fmt.GetString());
 
 	fmt % 42;
 
@@ -336,25 +336,25 @@ TEST(Format, NotReady)
 
 TEST(Format, WrongTypes)
 {
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%s")) % 1);
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%s")) % 1.0f);
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%s")) % wxT('1'));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % 1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % 1.0f);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % wxT('1'));
 	
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%f")) % 1);
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%f")) % wxT('1'));
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%f")) % wxT("1"));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % 1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % wxT('1'));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % wxT("1"));
 
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%d")) % 1.0f);
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%d")) % wxT("1"));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % 1.0f);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % wxT("1"));
 }
 
 
 TEST(Format, NotSupported)
 {
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%*d")) % 1);
-	ASSERT_RAISES(CInvalidStateException, CFormat(wxT("%*s")) % wxT(""));
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%p")) % wxT(""));
-	ASSERT_RAISES(CInvalidArgsException, CFormat(wxT("%n")) % wxT(""));
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%*d")) % 1);
+	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%*s")) % wxT(""));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%p")) % wxT(""));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%n")) % wxT(""));
 }
 
 
@@ -366,9 +366,9 @@ TEST(Format, Overfeeding)
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 		
-	ASSERT_RAISES(CInvalidStateException, fmt % 1);
-	ASSERT_RAISES(CInvalidStateException, fmt % 1.0f);
-	ASSERT_RAISES(CInvalidStateException, fmt % wxT("1"));
+	ASSERT_RAISES(CInvalidStateEx, fmt % 1);
+	ASSERT_RAISES(CInvalidStateEx, fmt % 1.0f);
+	ASSERT_RAISES(CInvalidStateEx, fmt % wxT("1"));
 
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());

@@ -73,6 +73,7 @@ amulegui_SOURCES = \
 	Logger.cpp \
 	MD5Sum.cpp \
 	MemFile.cpp \
+	MuleDebug.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
@@ -153,6 +154,7 @@ amule_SOURCES = \
 	Logger.cpp \
 	MemFile.cpp \
 	MD5Sum.cpp \
+	MuleDebug.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
@@ -226,6 +228,7 @@ amuled_SOURCES = \
 	Logger.cpp \
 	MD5Sum.cpp \
 	MemFile.cpp \
+	MuleDebug.cpp \
 	NetworkFunctions.cpp \
 	OtherFunctions.cpp \
 	Packet.cpp \

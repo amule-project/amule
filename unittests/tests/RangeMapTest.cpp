@@ -317,13 +317,13 @@ TEST(RangeMap, FindRange)
 
 TEST(RangeMap, InvalidErase)
 {
-	ASSERT_RAISES(CInvalidArgsException, m_map.erase(m_map.end()));
+	ASSERT_RAISES(CInvalidParamsEx, m_map.erase(m_map.end()));
 }
 
 
 TEST(RangeMap, InvalidInsert)
 {
-	ASSERT_RAISES(CInvalidArgsException, m_map.insert(10, 9, 8));	
+	ASSERT_RAISES(CInvalidParamsEx, m_map.insert(10, 9, 8));	
 }
 
 
