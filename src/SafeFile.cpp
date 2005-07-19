@@ -81,47 +81,38 @@ void CFileDataIO::ReadHash16(byte* pVal) const
 	Read(pVal, 16);
 }
 
-wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const {
+
+wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
+{
 	// The name is just to confuse people
 	
-	char* val = NULL;
-	try {
-		val = new char[raw_len + 1];
-		// We only need to set the the NULL terminator, since we know that
-		// reads will either succeed or throw an exception, in which case
-		// we wont be returning anything
-		val[raw_len] = 0;
+	// We only need to set the the NULL terminator, since we know that
+	// reads will either succeed or throw an exception, in which case
+	// we wont be returning anything
+	char val[raw_len + 1];
+	val[raw_len] = 0;
 		
-		Read(val, raw_len);
-		wxString str;
-		
-		if (CHECK_BOM(raw_len,val)) {
-			// This is a UTF8 string with a BOM header, skip header.
-			str = UTF82unicode(val+3);
-		} else {
-			if (bOptUTF8) {
-				str = UTF82unicode(val);
-				if (str.IsEmpty()) {
-					// Fallback to system locale
-					//printf("Failed UTF8 conversion (READ), going for current locale: %s\n",val);
-					str = char2unicode(val);
-				}					
-			} else {
-				str = char2unicode(val);
-			}
-		}
-		delete[] val;
-
-		return str;
-	} catch ( ... ) {
-		// Have to avoid mem-leaks
-		delete[] val;
-		
-		// Re-throw
-		throw;
-	}	
+	Read(val, raw_len);
+	wxString str;
 	
+	if (CHECK_BOM(raw_len,val)) {
+		// This is a UTF8 string with a BOM header, skip header.
+		str = UTF82unicode(val + 3);
+	} else {
+		if (bOptUTF8) {
+			str = UTF82unicode(val);
+			if (str.IsEmpty()) {
+				// Fallback to system locale
+				str = char2unicode(val);
+			}					
+		} else {
+			str = char2unicode(val);
+		}
+	}
+
+	return str;
 }
+
 
 wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) const
 {
