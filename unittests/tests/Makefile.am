@@ -9,7 +9,7 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MU
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest
+TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -24,3 +24,13 @@ FormatTest_SOURCES = FormatTest.cpp $(top_srcdir)/src/Format.cpp
 FormatTest_CXXFLAGS = $(AM_CXXFLAGS)
 FormatTest_LDADD = $(LDADD)
 
+
+# Tests for the various string functions.
+StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/StringFunctions.cpp
+StringFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
+StringFunctionsTest_LDADD = $(LDADD)
+
+# Tests for the various network functions.
+NetworkFunctionsTest_SOURCES = NetworkFunctionsTest.cpp $(top_srcdir)/src/NetworkFunctions.cpp
+NetworkFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
+NetworkFunctionsTest_LDADD = $(LDADD)
