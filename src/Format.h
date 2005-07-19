@@ -225,7 +225,7 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 		{
 			switch (getModifier(field)) {
 				case modNone:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int."))
+					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int."));
 					
 					return SetCurrentField(wxString::Format(field, (signed int)value));
 				
