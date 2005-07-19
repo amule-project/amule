@@ -3469,7 +3469,6 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 {
 	FILE *f = fopen(filename, "r");
 	if ( !f ) {
-		// just create hard-coded "Error-404 page"
 		return Get_404_Page(size);
 	}
 	if ( fseek(f, 0, SEEK_END) != 0 ) {
@@ -3484,6 +3483,15 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	return buf;
 }
 
+char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
+{
+	FILE *f = fopen(filename, "r");
+	if ( !f ) {
+		return Get_404_Page(size);
+	}
+	return 0;
+}
+
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	wxMutexLocker lock(*m_mutexChildren);
@@ -3492,30 +3500,20 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	long httpOutLen;
 	char *httpOut = 0;
 	
-
+	wxString filename = Data.parsedURL.File();
+	if ( filename.Length() == 0 ) {
+		filename = _("index.html");
+	}
 	//wxFileName(m_wwwroot, Data.parsedURL.File());
-	wxString req_file(wxFileName(m_wwwroot, Data.parsedURL.File()).GetFullPath());
+	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if ( req_file.Find(_(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	} else if ( req_file.Find(_(".php")) != -1 ) {
+		httpOut = ProcessPhpRequest(unicode2char(req_file), httpOutLen);
+	} else {
+		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
 	}
-	//httpOut = "<http> hello from PHP webserver </http>";
 	
-	
-	//
-	// send answer ...
-	//
-/*
- * Untill I find out what is all this about, php will not be unicode
- * aware and/or enabled
- *
- 
-#if wxUSE_UNICODE
-	const wxCharBuffer buf = wxConvUTF8.cWC2MB(Out.wc_str(aMuleConv));
-	const char *httpOut = (const char *)buf;
-#else
-	const char *httpOut = (const char *)Out;
-#endif
-*/
 	if (isUseGzip)	{
 		char *gzipOut = 0;
 		long gzipLen = 0;
@@ -3526,4 +3524,5 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	} else {
 		Data.pSocket->SendContent(HTTPInit, httpOut, httpOutLen);
 	}
+	delete [] httpOut;
 }
