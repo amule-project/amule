@@ -290,7 +290,7 @@ void CKademliaUDPListener::processBootstrapRequest (const byte *packetData, uint
 {
 	// Verify packet is expected size
 	if (lenPacket != 25){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Add the sender to the list of contacts
@@ -338,7 +338,7 @@ void CKademliaUDPListener::processBootstrapResponse (const byte *packetData, uin
 {
 	// Verify packet is expected size
 	if (lenPacket < 27){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// How many contacts were given
@@ -361,7 +361,7 @@ void CKademliaUDPListener::processHelloRequest (const byte *packetData, uint32 l
 {
 	// Verify packet is expected size
 	if (lenPacket != 25){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Add the sender to the list of contacts
@@ -382,7 +382,7 @@ void CKademliaUDPListener::processHelloResponse (const byte *packetData, uint32 
 {
 	// Verify packet is expected size
 	if (lenPacket != 25){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Add or Update contact.
@@ -397,7 +397,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 {
 	// Verify packet is expected size
 	if (lenPacket != 33){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	//RecheckIP and firewall status
@@ -417,7 +417,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 
 	type = type & 0x1F;
 	if( type == 0 ) {
-		throw wxString::Format(wxT("***NOTE: Received wrong type (0x%02x) in %hs"), type, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong type (0x%02x) in %s"), type, __FUNCTION__);
 	}
 
 	//This is the target node trying to be found.
@@ -467,7 +467,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 {
 	// Verify packet is expected size
 	if (lenPacket < 17){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);	
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);	
 	}
 
 	//Used Pointers
@@ -487,7 +487,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 
 	// Verify packet is expected size
 	if (lenPacket != (uint32)(16+1 + (16+4+2+2+1)*numContacts)) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -667,7 +667,7 @@ void CKademliaUDPListener::processSearchRequest (const byte *packetData, uint32 
 {
 	// Verify packet is expected size
 	if (lenPacket < 17){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);		
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);		
 	}
 
 	CSafeMemFile bio( packetData, lenPacket);
@@ -711,7 +711,7 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 {
 	// Verify packet is expected size
 	if (lenPacket < 37) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -756,7 +756,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	//Keyword and File are Stored..
 	// Verify packet is expected size
 	if (lenPacket < 37) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	//Used Pointers
@@ -898,7 +898,7 @@ void CKademliaUDPListener::processPublishResponse (const byte *packetData, uint3
 {
 	// Verify packet is expected size
 	if (lenPacket < 16) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -923,7 +923,7 @@ void CKademliaUDPListener::processSearchNotesRequest (const byte *packetData, ui
 {
 	// Verify packet is expected size
 	if (lenPacket < 32) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	CSafeMemFile bio( packetData, lenPacket);
@@ -940,7 +940,7 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 {
 	// Verify packet is expected size
 	if (lenPacket < 37) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -982,7 +982,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 {
 	// Verify packet is expected size
 	if (lenPacket < 37) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	if( CKademlia::getPrefs()->getFirewalled() ) {
@@ -1042,7 +1042,7 @@ void CKademliaUDPListener::processPublishNotesResponse (const byte *packetData, 
 {
 	// Verify packet is expected size
 	if (lenPacket < 16){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);		
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);		
 	}
 
 	// Set contact to alive.
@@ -1067,7 +1067,7 @@ void CKademliaUDPListener::processFirewalledRequest (const byte *packetData, uin
 {
 	// Verify packet is expected size
 	if (lenPacket != 2){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	CSafeMemFile bio(packetData, lenPacket);
@@ -1092,7 +1092,7 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 {
 	// Verify packet is expected size
 	if (lenPacket != 4){
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -1114,7 +1114,7 @@ void CKademliaUDPListener::processFirewalledResponse2 (const byte *packetData, u
 {
 	// Verify packet is expected size
 	if (lenPacket != 0) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	// Set contact to alive.
@@ -1127,7 +1127,7 @@ void CKademliaUDPListener::processFindBuddyRequest (const byte *packetData, uint
 {
 	// Verify packet is expected size
 	if (lenPacket < 34) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	if( CKademlia::getPrefs()->getFirewalled() ) {
@@ -1163,7 +1163,7 @@ void CKademliaUDPListener::processFindBuddyResponse (const byte *packetData, uin
 {
 	// Verify packet is expected size
 	if (lenPacket < 34) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 
@@ -1191,7 +1191,7 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 {
 	// Verify packet is expected size
 	if (lenPacket < 34) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %hs"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
 	CUpDownClient* buddy = theApp.clientlist->GetBuddy();
