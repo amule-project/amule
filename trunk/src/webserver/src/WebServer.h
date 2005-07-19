@@ -802,6 +802,7 @@ class CScriptWebServer : public CWebServerBase {
 		wxString m_wwwroot;
 		
 		char *ProcessHtmlRequest(const char *filename, long &size);
+		char *ProcessPhpRequest(const char *filename, long &size);
 
 		char *GetErrorPage(const char *message, long &size);
 		char *Get_404_Page(long &size);
