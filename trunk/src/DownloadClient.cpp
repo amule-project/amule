@@ -711,7 +711,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 			// Found reserved block
 				
 			if (cur_block->fZStreamError){
-				AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of errornous zstream state for file : "), size - HEADER_SIZE, nStartPos, nEndPos) + m_reqfile->GetFileName());
+				AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - HEADER_SIZE, nStartPos, nEndPos) + m_reqfile->GetFileName());
 				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 				return;
 			}
@@ -747,7 +747,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				// Try to unzip the packet
 				int result = unzip(cur_block, (byte*)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
 				
-				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously errornous.				
+				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously erroneous.
 				if (result == Z_OK && ((int)lenUnzipped >= 0)) {
 					
 					// Write any unzipped data to disk
