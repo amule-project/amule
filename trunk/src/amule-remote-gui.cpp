@@ -245,6 +245,8 @@ bool CamuleRemoteGuiApp::OnInit()
 		return false;
 	}
 
+	// Handle uncaught exceptions
+	InstallMuleExceptionHandler();
 	
 	// Create the Core timer
 	core_timer = new wxTimer(this,ID_CORETIMER);

@@ -1,13 +1,60 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+//
+// This file is part of the aMule Project.
+//
+// Copyright (c) 2005 Mikkel Schubert ( xaignar@users.sourceforge.net )
+// Copyright (c) 2005 aMule Team ( admin@amule.org / http://www.amule.org )
+//
+// Any parts of this program derived from the xMule, lMule or eMule project,
+// or contributed by third-party developers are copyrighted by their
+// respective authors.
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
+//
+
+#ifndef MULEDEBUG_H
+#define MULEDEBUG_H
+
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#pragma interface "MuleDebug.h"
+#endif
 
 #include <wx/debug.h>
 
-class CBaseException
+
+/**
+ * Installs an exception handler that can handle CMuleExceptions.
+ */
+void InstallMuleExceptionHandler();
+
+/**
+ *
+ */
+void OnUnhandledException();
+
+
+/**
+ * This exception should be used to implement other
+ * types of exceptions. It should never be caught, 
+ * instead catch the subtypes.
+ */
+class CMuleException
 {
 public:
-	CBaseException(const wxString& what)
-		: m_what(what) {}
+	CMuleException(const wxString& type, const wxString& what)
+		: m_what(type + wxT(": ") + what)
+	{}
 
 	const wxString& what() const {
 		return m_what;
@@ -19,40 +66,72 @@ private:
 
 
 /**
- * This exception is to be thrown if invalid parameters are passed to a function.
+ * This exception type is used to represent exceptions that are 
+ * caused by invalid operations. Exceptions of this type should
+ * not be caught as they are the result of bugs.
  */
-class CInvalidArgsException : public CBaseException
+class CRunTimeException : public CMuleException
 {
 public:
-	CInvalidArgsException(const wxString& what) : CBaseException(what) {}
+	CRunTimeException(const wxString& type, const wxString& what)
+		: CMuleException(wxT("CRunTimeException::") + type, what) {}
+};
+
+
+/**
+ * This exception is to be thrown if invalid parameters are passed to a function.
+ */
+class CInvalidParamsEx : public CRunTimeException
+{
+public:
+	CInvalidParamsEx(const wxString& what)
+		: CRunTimeException(wxT("CInvalidArgsException"), what) {}
 };
 
 
 /**
  * This exception is to be thrown if an object is used in an invalid state.
  */
-class CInvalidStateException : public CBaseException
+class CInvalidStateEx : public CRunTimeException
 {
 public:
-	CInvalidStateException(const wxString& what) : CBaseException(what) {}
+	CInvalidStateEx(const wxString& what)
+		: CRunTimeException(wxT("CInvalidStateException"), what) {}
 };
 
 
+
+
+// This ifdef ensures that we wont get assertions while 
+// unittesting, which would otherwise impede the tests.
 #ifdef MULEUNIT
-	#define _MULE_THROW(cls, cond, msg) \
-		if (!(cond)) { throw cls(msg); }
+	#define _MULE_THROW(cond, cls, msg) \
+		do { \
+			if (!(cond)) { \
+				throw cls(msg); \
+			} \
+		} while (false)
 #else
-	#define _MULE_THROW(cls, cond, msg) \
-		if (!(cond)) { wxASSERT(cond); throw cls(msg); }	
+	#define _MULE_THROW(cond, cls, msg) \
+		do { \
+			if (!(cond)) { \
+				wxASSERT(cond); \
+				throw cls(msg); \
+			} \
+		} while (false)
 #endif
 
 
+
+#define MULE_CHECK_THROW(cond, cls, msg) \
+	_MULE_THROW((cond), cls, (msg))
+
+
 #define MULE_VALIDATE_STATE(cond, msg) \
-	_MULE_THROW(CInvalidStateException, (cond), (msg))
+	MULE_CHECK_THROW((cond), CInvalidStateEx, (msg))
 
 #define MULE_VALIDATE_PARAMS(cond, msg) \
-	_MULE_THROW(CInvalidArgsException, (cond), (msg))
-
+	MULE_CHECK_THROW((cond), CInvalidParamsEx, (msg))
 
 
 #define MULE_ASSERT(cond)               wxASSERT((cond))

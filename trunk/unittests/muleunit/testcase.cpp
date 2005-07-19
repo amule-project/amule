@@ -96,12 +96,8 @@ void TestCase::run()
 			test->run();
 		} catch (const std::exception &e) {
 			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxConvLibc.cMB2WX(e.what()), error));
-		} catch (const CInvalidArgsException& e) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxT("CInvalidArgsException: " ) + e.what(), error));			
-		} catch (const CInvalidStateException& e) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxT("CInvalidStateException: " ) + e.what(), error));			
-		} catch (const CBaseException& e) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxT("CBaseException: " ) + e.what(), error));			
+		} catch (const CMuleException& e) {
+			test->addTestPartResult(new TestPartResult(wxT(""), -1, e.what(), error));			
 		} catch (...) {
 			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxT("Unexpected exception occured"),error));
 		}
