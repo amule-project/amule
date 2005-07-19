@@ -3417,13 +3417,15 @@ CAnyImage *CImageLib::GetImage(wxString &name)
  */
  
 
-CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)  : CWebServerBase(webApp, templateDir)
+CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
+	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
 }
 
 CScriptWebServer::~CScriptWebServer()
 {
 }
+
 
 void CScriptWebServer::StartServer()
 {
@@ -3442,15 +3444,61 @@ void CScriptWebServer::StopServer()
 {
 }
 
+char *CScriptWebServer::GetErrorPage(const char *message, long &size)
+{
+	char *buf = new char [1024];
+	sprintf(buf,
+		"<html><title> Error -%s </title></html>", message);
+
+	size = strlen(buf);
+	
+	return buf;
+}
+
+char *CScriptWebServer::Get_404_Page(long &size)
+{
+		char *buf = new char [1024];
+		strcpy(buf, "<html><title> Error - requested page not found </title></html>");
+		
+		size = strlen(buf);
+		
+		return buf;
+}
+
+char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
+{
+	FILE *f = fopen(filename, "r");
+	if ( !f ) {
+		// just create hard-coded "Error-404 page"
+		return Get_404_Page(size);
+	}
+	if ( fseek(f, 0, SEEK_END) != 0 ) {
+		return GetErrorPage("fseek failed", size);
+	}
+
+	size = ftell(f);
+	char *buf = new char [size+1];
+	rewind(f);
+	fread(buf, 1, size, f);
+	
+	return buf;
+}
+
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	wxMutexLocker lock(*m_mutexChildren);
 
 	bool isUseGzip = false; /* will add it later webInterface->m_UseGzip; */
+	long httpOutLen;
 	char *httpOut = 0;
 	
 
-	httpOut = "<http> hello from PHP webserver </http>";
+	//wxFileName(m_wwwroot, Data.parsedURL.File());
+	wxString req_file(wxFileName(m_wwwroot, Data.parsedURL.File()).GetFullPath());
+	if ( req_file.Find(_(".html")) != -1 ) {
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	}
+	//httpOut = "<http> hello from PHP webserver </http>";
 	
 	
 	//
@@ -3476,6 +3524,6 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			delete[] gzipOut;
 		}
 	} else {
-		Data.pSocket->SendContent(HTTPInit, httpOut, strlen(httpOut));
+		Data.pSocket->SendContent(HTTPInit, httpOut, httpOutLen);
 	}
 }
