@@ -39,14 +39,15 @@ there client on the eMule forum..
 #ifndef __INDEXED_H__
 #define __INDEXED_H__
 
-#include "../../Types.h"
 #include <list>
 #include <map>
+
+#include "../../Types.h"
 #include "SearchManager.h"
 #include "../routing/Maps.h"
 #include "../utils/UInt128.h"
-#include "../../CTypedPtrList.h"
 #include "Entry.h"
+
 
 struct key_compare {
 	bool operator()(const CCKey& k1, const CCKey& k2) const 
@@ -74,7 +75,7 @@ struct key_compare {
 };
 
 
-typedef CTypedPtrList<CPtrList, Kademlia::CEntry*> CKadEntryPtrList;
+typedef std::list<Kademlia::CEntry*> CKadEntryPtrList;
 
 struct Source
 {
@@ -82,8 +83,7 @@ struct Source
 	CKadEntryPtrList entryList;
 };
 
-typedef CTypedPtrList<CPtrList, Source*> CKadSourcePtrList;
-
+typedef std::list<Source*> CKadSourcePtrList;
 typedef std::map<CCKey,Source*,key_compare> CSourceKeyMap;
 
 struct KeyHash
