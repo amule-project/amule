@@ -59,9 +59,9 @@ class CPhPLibContext {
 		
 		// init global vars, so parser/execution cat start
 		void SetContext();
-}
+};
 
-#ifdef __cplusplus
+#endif
 
 void php_init_core_lib();
 
