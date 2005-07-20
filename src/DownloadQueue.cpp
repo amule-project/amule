@@ -663,6 +663,22 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 }
 
 
+/**
+ * Checks if the specified server is the one we are connected to.
+ */
+bool IsConnectedServer(const CServer* server)
+{
+	if (server && theApp.serverconnect->GetCurrentServer()) {
+		wxString srvAddr = theApp.serverconnect->GetCurrentServer()->GetAddress();
+		uint16 srvPort = theApp.serverconnect->GetCurrentServer()->GetPort();
+
+		return server->GetAddress() == srvAddr && server->GetPort() == srvPort;
+	}
+
+	return false;
+}
+
+
 bool CDownloadQueue::SendNextUDPPacket()
 {
 	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.serverconnect->IsConnected()) {
@@ -682,11 +698,13 @@ bool CDownloadQueue::SendNextUDPPacket()
  		// Get max files ids per packet for current server
  		int filesAllowed = GetMaxFilesPerUDPServerPacket();
  
- 		if ( filesAllowed < 1 || !m_udpserver ) {
- 			// Select the next server to ask
- 			m_udpserver = m_queueServers.GetNext();
+ 		if (filesAllowed < 1 || !m_udpserver || IsConnectedServer(m_udpserver)) {
+ 			// Select the next server to ask, must not be the connected server
+ 			do {
+				m_udpserver = m_queueServers.GetNext();
+			} while (IsConnectedServer(m_udpserver));
+	
  			m_cRequestsSentToServer = 0;
- 		
  			filesAllowed = GetMaxFilesPerUDPServerPacket();
   		}
  
@@ -724,9 +742,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 		
 		// See if we have anything to send
  		if ( hashlist.GetLength() ) {
- 			packetSent = true;
- 			
- 			SendGlobGetSourcesUDPPacket( hashlist );
+ 			packetSent = SendGlobGetSourcesUDPPacket(hashlist);
 		}
  		
  		
@@ -1105,19 +1121,10 @@ int CDownloadQueue::GetMaxFilesPerUDPServerPacket() const
 
 bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
 {
-
 	if (!m_udpserver) {
 		return false;
 	}
 	
-
-	if ( theApp.serverconnect->GetCurrentServer() ) {
-		wxString srvaddr = theApp.serverconnect->GetCurrentServer()->GetAddress();
-		if (m_udpserver == theApp.serverlist->GetServerByAddress(srvaddr,theApp.serverconnect->GetCurrentServer()->GetPort())) {
-			return false;	
-		}
-	}	
-		
 	int item_size;
 	if (m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
 		item_size = (16 + 4); // (hash + size)
