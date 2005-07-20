@@ -865,9 +865,8 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 		#endif
 
 		CKademlia::getUDPListener()->sendPacket(&bio, KADEMLIA_REQ, ip, port);
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::sendFindValue (IO error(%i))"), ioe->m_cause));
-		ioe->Delete();
+	} catch (const CIOException& ioe) {
+		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::sendFindValue (IO error(%i))"), ioe.m_cause));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::sendFindValue"));
 	}
@@ -952,9 +951,8 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			//If we get here.. Bad things happen.. Will fix this later if it is a real issue.
 			wxASSERT(0);
 		}
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacketForTags (IO error(%i))"), ioe->m_cause));
-		ioe->Delete();
+	} catch (const CIOException& ioe) {
+		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacketForTags (IO error(%i))"), ioe.m_cause));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags"));
 	}
@@ -1025,9 +1023,8 @@ void CSearch::PreparePacket(void)
 				PreparePacketForTags( bio1, file );
 			}
 		}
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacket (IO error(%i))"), ioe->m_cause));
-		ioe->Delete();
+	} catch (const CIOException& ioe ) {
+		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacket (IO error(%i))"), ioe.m_cause));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::PreparePacket"));
 	}
