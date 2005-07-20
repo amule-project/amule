@@ -408,6 +408,9 @@ extern "C" {
 	/* engine */	
 	void php_engine_init();
 	void php_engine_free();
+	
+	void php_syn_tree_free(PHP_SYN_NODE *tree);
+	
 	/*
 	 * Return code meaning:
 	 *  0  : continue execution to the next statement
