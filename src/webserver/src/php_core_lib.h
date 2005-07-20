@@ -24,6 +24,45 @@
 #ifndef _PHP_CORE_LIB_H_
 #define _PHP_CORE_LIB_H_
 
+/*
+ * This is interface to CPP parts of amuleweb
+ */
+#ifdef __cplusplus
+
+#include <list>
+
+class CWriteStrBuffer {
+		std::list<char *> m_buf_list;
+		int m_total_length;
+		int m_alloc_size;
+		char *m_curr_buf;
+		char *m_buf_ptr;
+		int m_curr_buf_left;
+		
+		void AllocBuf();
+	public:
+		CWriteStrBuffer();
+		~CWriteStrBuffer();
+		
+		void Write(const char *s);
+		void CopyAll(char *dst_buffer);
+		const int Length() { return m_total_length; }
+};
+
+class CPhPLibContext {
+		PHP_SYN_NODE *m_syn_tree_top;
+		PHP_SCOPE_TABLE m_global_scope;
+	public:
+		// take a "snapshot" of global vars
+		CPhPLibContext();
+		~CPhPLibContext();
+		
+		// init global vars, so parser/execution cat start
+		void SetContext();
+}
+
+#ifdef __cplusplus
+
 void php_init_core_lib();
 
 void php_native_var_dump(PHP_SCOPE_TABLE scope, PHP_VALUE_NODE *result);
