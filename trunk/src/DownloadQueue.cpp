@@ -306,13 +306,6 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 	NotifyObservers( EventType( EventType::INSERTED, file ) );
 
-	// Ask for sources if we are not stopped
-	if ( !file->IsStopped() ) {
-		wxMutexLocker lock( m_mutex );
-	
-		m_localServerReqQueue.push_back( file );
-	}
-
 	file->SetCategory(category);
 	Notify_DownloadCtrlAddFile( file );
 	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
