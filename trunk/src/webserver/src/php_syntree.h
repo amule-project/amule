@@ -83,9 +83,6 @@ typedef struct PHP_VAR_NODE {
  Node in expression tree. Contain either (left op right) or (value)
 */
 typedef enum PHP_EXP_OP {
-    /* start of table */
-    PHP_OP_START = 0,
-
     PHP_OP_VAR, PHP_OP_VAL, PHP_OP_ASS,
     
     /* dereference */
@@ -108,9 +105,6 @@ typedef enum PHP_EXP_OP {
 
 	/* specials */
 	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO,
-
-    /* end of list marker */
-    PHP_OP_LAST
 } PHP_EXP_OP;
 
 typedef struct PHP_EXP_NODE {
