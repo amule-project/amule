@@ -88,7 +88,7 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
  */
 void php_native_strlen(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "str");
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	PHP_VALUE_NODE *param = &si->var->value;
 	if ( si ) {
 		assert(si->type == PHP_SCOPE_VAR);
@@ -102,7 +102,7 @@ void php_native_strlen(PHP_VALUE_NODE *result)
 
 void php_native_substr(PHP_VALUE_NODE *result)
 {
-	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "str");
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
 	PHP_VALUE_NODE *str = &si_str->var->value;
 	if ( si_str ) {
 		cast_value_str(str);
@@ -216,3 +216,87 @@ void php_init_core_lib()
 	// load object definitions
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 }
+
+CPhPLibContext::CPhPLibContext()
+{
+	m_syn_tree_top = g_syn_tree_top;
+	m_global_scope = g_global_scope;
+}
+
+CPhPLibContext::~CPhPLibContext()
+{
+}
+
+CPhPLibContext::SetContext()
+{
+	g_syn_tree_top = m_syn_tree_top;
+	g_global_scope = m_global_scope;
+}
+
+/*
+ * String buffer: almost same as regular 'string' class, but,
+ * without reallocation when full. Instead, new buffer is
+ * allocated, and added to list
+ */
+CWriteStrBuffer::CWriteStrBuffer()
+{
+	m_alloc_size = 16;
+	m_total_length = 0;
+	
+	AllocBuf();
+}
+
+CWriteStrBuffer::~CWriteStrBuffer()
+{
+	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); i++) {
+		delete [] *i;
+	}
+	delete [] m_curr_buf;
+}
+
+void CWriteStrBuffer::AllocBuf()
+{
+	m_curr_buf = new char [m_alloc_size];
+	m_buf_ptr = m_curr_buf;
+	m_curr_buf_left = m_alloc_size;
+}
+
+void CWriteStrBuffer::Write(const char *s)
+{
+	int len = strlen(s);
+	m_total_length += len;
+	
+	while ( len ) {
+		if ( (len + 1) < m_curr_buf_left ) {
+			strcpy(m_buf_ptr, s);
+			m_buf_ptr += len;
+			m_curr_buf_left -= len;
+			len = 0;
+		} else {
+			memcpy(m_buf_ptr, s, m_curr_buf_left);
+			int rem_len = len - m_curr_buf_left;
+			s += m_curr_buf_left;
+			m_buf_ptr += m_curr_buf_left;
+			m_curr_buf_left -= len;
+						
+			len = rem_len;
+			m_buf_list.push_back(m_curr_buf);
+			AllocBuf();
+		}
+	}
+}
+
+void CWriteStrBuffer::CopyAll(char *dst_buffer)
+{
+	char *curr_ptr = dst_buffer;
+	int rem_size = m_total_length;
+	for(std::list<char *>::iterator i = m_buf_list.begin(); i != m_buf_list.end(); i++) {
+		memcpy(curr_ptr, *i, m_alloc_size);
+		rem_size -= m_alloc_size;
+		curr_ptr += m_alloc_size;
+	}
+	int copy_size = m_alloc_size - m_curr_buf_left;
+	memcpy(curr_ptr, m_curr_buf, copy_size);
+	*(curr_ptr + copy_size) = 0;
+}
+
