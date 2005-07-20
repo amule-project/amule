@@ -250,9 +250,8 @@ void CIndexed::readFile(void)
 			m_totalIndexKeyword = totalKeyword;
 			AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
 		}
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::readFile (IO error(%i))"),ioe->m_cause));
-		ioe->Delete();
+	} catch (const CIOException& ioe) {
+		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::readFile (IO error(%i))"),ioe.m_cause));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::readFile"));
 	}
@@ -392,9 +391,8 @@ CIndexed::~CIndexed()
 		} 
 
 		m_Notes_map.clear();
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::~CIndexed (IO error(%i))"), ioe->m_cause));
-		ioe->Delete();
+	} catch ( const CIOException& ioe ) {
+		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::~CIndexed (IO error(%i))"), ioe.m_cause));
 	} catch (...)  {
 		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::~CIndexed"));
 	}

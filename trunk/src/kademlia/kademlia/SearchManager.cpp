@@ -181,9 +181,8 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CSafeMemFi
 		m_searches[s->m_target] = s;
 		s->go();
 		
-	} catch (CIOException* ioe) {
-		wxString strError = wxString::Format(wxT("IO-Exception in %s: Error %u") , __FUNCTION__, ioe->m_cause);
-		ioe->Delete();
+	} catch (const CIOException& ioe) {
+		wxString strError = wxString::Format(wxT("IO-Exception in %s: Error %u") , __FUNCTION__, ioe.m_cause);
 		delete s;
 		throw strError;
 	} catch (const wxString& strException) {
@@ -226,9 +225,8 @@ CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &
 			m_searches[s->m_target] = s;
 			s->go();
 		}
-	} catch ( CIOException *ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearchManager::prepareLookup (IO error(%i))"), ioe->m_cause));
-		ioe->Delete();
+	} catch (const CIOException& ioe) {
+		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearchManager::prepareLookup (IO error(%i))"), ioe.m_cause));
 		delete s;
 		return NULL;
 	} catch (...) {
