@@ -243,7 +243,7 @@ void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
 			return;
 		}
 	}
-	m_kadNotes.push_back(pEntry);
+	m_kadNotes.push_front(pEntry);
 	#endif
 }
 
