@@ -373,8 +373,6 @@ CIndexed::~CIndexed()
 		}
 		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Wrote %u source, %u keyword, and %u load entries"), s_total, k_total, l_total));
 
-		CCKey key;
-		CCKey key2;
 		SrcHashMap::iterator it = m_Notes_map.begin();
 		for ( ; it != m_Notes_map.end(); ++it) {
 			SrcHash* currNoteHash = it->second;
@@ -392,6 +390,8 @@ CIndexed::~CIndexed()
 			}
 			delete currNoteHash;
 		} 
+
+		m_Notes_map.clear();
 	} catch ( CIOException *ioe ) {
 		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::~CIndexed (IO error(%i))"), ioe->m_cause));
 		ioe->Delete();
