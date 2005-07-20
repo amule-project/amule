@@ -375,12 +375,29 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
-		if ( i->second->type == PHP_SCOPE_VAR ) {
-			PHP_VAR_NODE *var = i->second->var;
-			var->ref_count--;
-			if ( var->ref_count == 0 ) {
-				delete var;
-			}
+		switch ( i->second->type ) {
+			case PHP_SCOPE_VAR: {
+					PHP_VAR_NODE *var = i->second->var;
+					var->ref_count--;
+					if ( var->ref_count == 0 ) {
+						delete var;
+					}
+				}
+				break;
+			case PHP_SCOPE_FUNC: {
+					PHP_SYN_NODE *func = i->second->func;
+					php_syn_tree_free(func);
+				}
+				break;
+			case PHP_SCOPE_CLASS: {
+					PHP_SYN_NODE *class_decl = i->second->class_decl;
+					php_syn_tree_free(class_decl);
+				}
+				break;
+			case PHP_SCOPE_NONE:
+			case PHP_SCOPE_PARAM:
+				php_report_error("Scope table can not have such items", PHP_INTERNAL_ERROR);
+				break;
 		}
 		delete i->second;
 	}
@@ -836,6 +853,12 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 		case PHP_OP_VAL:
 			value_value_free(&tree->val_node);
 			break;
+		case PHP_OP_FUNC_CALL: {
+				php_exp_tree_free(tree->tree_node.left);
+				PHP_VAR_NODE *args = tree->tree_node.right->var_node;
+				value_value_free(&args->value);
+			}
+			break;
 		default:
 			// all other things using left/right
 			php_exp_tree_free(tree->tree_node.left);
@@ -847,53 +870,63 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 
 void php_syn_tree_free(PHP_SYN_NODE *tree)
 {
-	if ( !tree ) {
-		return;
-	}
-	switch ( tree->type ) {
-		case PHP_ST_EXPR:
-			php_exp_tree_free(tree->node_expr);
-			break;
-		case PHP_ST_IF:
-			php_exp_tree_free(tree->node_if.cond);
-			php_syn_tree_free(tree->node_if.code_if);
-			php_syn_tree_free(tree->node_if.code_else);
-			break;
-		case PHP_ST_WHILE:
-		case PHP_ST_DO_WHILE:
-			php_exp_tree_free(tree->node_while.cond);
-			php_syn_tree_free(tree->node_while.code);
-			break;
-		case PHP_ST_FOR:
-			php_exp_tree_free(tree->node_for.do_start);
-			php_exp_tree_free(tree->node_for.cond);
-			php_exp_tree_free(tree->node_for.do_next);
-			php_syn_tree_free(tree->node_for.code);
-			break;
-		case PHP_ST_FOREACH:
-			php_exp_tree_free(tree->node_foreach.elems);
-			php_syn_tree_free(tree->node_foreach.code);
-			break;
-		case PHP_ST_SWITCH:
-		case PHP_ST_CONTINUE:
-		case PHP_ST_BREAK:
-			break;
-		case PHP_ST_RET:
-			break;
-		case PHP_ST_FUNC_DECL:
-			if ( !tree->func_decl->is_native ) {
-				php_syn_tree_free(tree->func_decl->code);
-			}
-			delete_scope_table(tree->func_decl->scope);
-			break;
-		case PHP_ST_CLASS_DECL:
-			break;
+	while ( tree ) {
+		switch ( tree->type ) {
+			case PHP_ST_EXPR:
+				php_exp_tree_free(tree->node_expr);
+				break;
+			case PHP_ST_IF:
+				php_exp_tree_free(tree->node_if.cond);
+				php_syn_tree_free(tree->node_if.code_if);
+				php_syn_tree_free(tree->node_if.code_else);
+				break;
+			case PHP_ST_WHILE:
+			case PHP_ST_DO_WHILE:
+				php_exp_tree_free(tree->node_while.cond);
+				php_syn_tree_free(tree->node_while.code);
+				break;
+			case PHP_ST_FOR:
+				php_exp_tree_free(tree->node_for.do_start);
+				php_exp_tree_free(tree->node_for.cond);
+				php_exp_tree_free(tree->node_for.do_next);
+				php_syn_tree_free(tree->node_for.code);
+				break;
+			case PHP_ST_FOREACH:
+				php_exp_tree_free(tree->node_foreach.elems);
+				php_syn_tree_free(tree->node_foreach.code);
+				break;
+			case PHP_ST_SWITCH:
+			case PHP_ST_CONTINUE:
+			case PHP_ST_BREAK:
+				break;
+			case PHP_ST_RET:
+				break;
+			case PHP_ST_FUNC_DECL:
+				if ( !tree->func_decl->is_native ) {
+					php_syn_tree_free(tree->func_decl->code);
+				}
+				delete_scope_table(tree->func_decl->scope);
+				free(tree->func_decl->name);
+				delete [] tree->func_decl->params;
+				delete tree->func_decl;
+				break;
+			case PHP_ST_CLASS_DECL:
+				free(tree->class_decl->name);
+				delete tree->class_decl;
+				break;
+		}
+		PHP_SYN_NODE *next_node = tree->next_node;
+		delete tree;
+		tree = next_node;
 	}
 }	
 
 void php_engine_free()
 {
-	delete_scope_table(g_global_scope);
+	if ( g_global_scope ) {
+		delete_scope_table(g_global_scope);
+	}
+	php_syn_tree_free(g_syn_tree_top);
 	g_global_scope = 0;
 	g_current_scope = 0;
 	delete (PHP_SCOPE_STACK_TYPE *)g_scope_stack;

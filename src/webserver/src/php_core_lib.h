@@ -53,12 +53,13 @@ class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
 	public:
-		// take a "snapshot" of global vars
-		CPhPLibContext();
+		// parse file and take a "snapshot" of global vars
+		CPhPLibContext(const char *file);
 		~CPhPLibContext();
 		
-		// init global vars, so parser/execution cat start
+		// init global vars, so parser/execution can start
 		void SetContext();
+		void Execute();
 };
 
 #endif

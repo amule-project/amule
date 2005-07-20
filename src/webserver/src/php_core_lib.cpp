@@ -217,20 +217,31 @@ void php_init_core_lib()
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 }
 
-CPhPLibContext::CPhPLibContext()
+CPhPLibContext::CPhPLibContext(const char *file)
 {
+	php_engine_init();
+	yyin = fopen(file, "r");
+	yyparse();
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
 }
 
 CPhPLibContext::~CPhPLibContext()
 {
+	SetContext();
+	php_engine_free();
 }
 
-CPhPLibContext::SetContext()
+void CPhPLibContext::SetContext()
 {
 	g_syn_tree_top = m_syn_tree_top;
 	g_global_scope = m_global_scope;
+}
+
+void CPhPLibContext::Execute()
+{
+	PHP_VALUE_NODE val;
+	php_execute(g_syn_tree_top, &val);
 }
 
 /*
