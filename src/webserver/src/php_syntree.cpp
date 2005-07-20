@@ -824,6 +824,73 @@ void php_engine_init()
 	php_init_core_lib();
 }
 
+void php_exp_tree_free(PHP_EXP_NODE *tree)
+{
+	if ( !tree ) {
+		return;
+	}
+	switch ( tree->op ) {
+		case PHP_OP_VAR:
+			/* will be deleted during scope table destruction */
+			break;
+		case PHP_OP_VAL:
+			value_value_free(&tree->val_node);
+			break;
+		default:
+			// all other things using left/right
+			php_exp_tree_free(tree->tree_node.left);
+			php_exp_tree_free(tree->tree_node.right);
+	}
+	
+	delete tree;
+}
+
+void php_syn_tree_free(PHP_SYN_NODE *tree)
+{
+	if ( !tree ) {
+		return;
+	}
+	switch ( tree->type ) {
+		case PHP_ST_EXPR:
+			php_exp_tree_free(tree->node_expr);
+			break;
+		case PHP_ST_IF:
+			php_exp_tree_free(tree->node_if.cond);
+			php_syn_tree_free(tree->node_if.code_if);
+			php_syn_tree_free(tree->node_if.code_else);
+			break;
+		case PHP_ST_WHILE:
+		case PHP_ST_DO_WHILE:
+			php_exp_tree_free(tree->node_while.cond);
+			php_syn_tree_free(tree->node_while.code);
+			break;
+		case PHP_ST_FOR:
+			php_exp_tree_free(tree->node_for.do_start);
+			php_exp_tree_free(tree->node_for.cond);
+			php_exp_tree_free(tree->node_for.do_next);
+			php_syn_tree_free(tree->node_for.code);
+			break;
+		case PHP_ST_FOREACH:
+			php_exp_tree_free(tree->node_foreach.elems);
+			php_syn_tree_free(tree->node_foreach.code);
+			break;
+		case PHP_ST_SWITCH:
+		case PHP_ST_CONTINUE:
+		case PHP_ST_BREAK:
+			break;
+		case PHP_ST_RET:
+			break;
+		case PHP_ST_FUNC_DECL:
+			if ( !tree->func_decl->is_native ) {
+				php_syn_tree_free(tree->func_decl->code);
+			}
+			delete_scope_table(tree->func_decl->scope);
+			break;
+		case PHP_ST_CLASS_DECL:
+			break;
+	}
+}	
+
 void php_engine_free()
 {
 	delete_scope_table(g_global_scope);
@@ -1418,5 +1485,6 @@ int main()
 		printf("ddd = %d\n", a < b);
 	}
 */
+
 	return 0;
 }
