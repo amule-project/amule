@@ -235,14 +235,15 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 
 void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
 	#ifdef __COMPILE_KAD__
-	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; ) {
-		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
+	CKadEntryPtrList::iterator it = m_kadNotes.begin();
+	for (; it != m_kadNotes.end(); ++it) {
+		Kademlia::CEntry* entry = *it;
 		if(entry->ip == pEntry->ip || entry->sourceID.compareTo(pEntry)) {
 			delete pEntry;
 			return;
 		}
 	}
-	m_kadNotes.AddHead(pEntry);
+	m_kadNotes.push_back(pEntry);
 	#endif
 }
 

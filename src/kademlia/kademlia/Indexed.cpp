@@ -302,18 +302,19 @@ CIndexed::~CIndexed()
 				s_file.writeUInt128(currSrcHash->keyID);
 
 				CKadSourcePtrList& KeyHashSrcMap = currSrcHash->m_Source_map;
-				s_file.writeUInt32(KeyHashSrcMap.GetCount());
-				POSITION pos2 = KeyHashSrcMap.GetHeadPosition();
-				while( pos2 != NULL )
-				{
-					Source* currSource = KeyHashSrcMap.GetNext(pos2);
+				s_file.writeUInt32(KeyHashSrcMap.size());
+				
+				CKadSourcePtrList::iterator it = KeyHashSrcMap.begin();
+				for (; it != KeyHashSrcMap.begin(); ++it) {
+					Source* currSource = *it;
 					s_file.writeUInt128(currSource->sourceID);
 
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
-					s_file.writeUInt32(SrcEntryList.GetCount());
-					for(POSITION pos5 = SrcEntryList.GetHeadPosition(); pos5 != NULL; )
-					{
-						Kademlia::CEntry* currName = SrcEntryList.GetNext(pos5);
+					s_file.writeUInt32(SrcEntryList.size());
+					
+					CKadEntryPtrList::iterator it = SrcEntryList.begin();
+					for (; it != SrcEntryList.end(); ++it) {
+						Kademlia::CEntry* currName = *it;
 						s_file.writeUInt32(currName->lifetime);
 						s_file.writeTagList(currName->taglist);
 						delete currName;
@@ -354,9 +355,11 @@ CIndexed::~CIndexed()
 					k_file.writeUInt128(currSource->sourceID);
 				
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
-					k_file.writeUInt32(SrcEntryList.GetCount());
-					for(POSITION pos5 = SrcEntryList.GetHeadPosition(); pos5 != NULL; ) {
-						Kademlia::CEntry* currName = SrcEntryList.GetNext(pos5);
+					k_file.writeUInt32(SrcEntryList.size());
+					
+					CKadEntryPtrList::iterator it = SrcEntryList.begin();
+					for (; it != SrcEntryList.end(); ++it) {
+						Kademlia::CEntry* currName = *it;
 						k_file.writeUInt32(currName->lifetime);
 						k_file.writeTagList(currName->taglist);
 						delete currName;
@@ -376,14 +379,14 @@ CIndexed::~CIndexed()
 		for ( ; it != m_Notes_map.end(); ++it) {
 			SrcHash* currNoteHash = it->second;
 			CKadSourcePtrList& KeyHashNoteMap = currNoteHash->m_Source_map;
-			POSITION pos2 = KeyHashNoteMap.GetHeadPosition();
-			while( pos2 != NULL )
-			{
-				Source* currNote = KeyHashNoteMap.GetNext(pos2);
+			
+			CKadSourcePtrList::iterator it = KeyHashNoteMap.begin();
+			for (; it != KeyHashNoteMap.end(); ++it) {
+				Source* currNote = *it;
 				CKadEntryPtrList& NoteEntryList = currNote->entryList;
-				for(POSITION pos5 = NoteEntryList.GetHeadPosition(); pos5 != NULL; ) {
-					Kademlia::CEntry* currName = NoteEntryList.GetNext(pos5);
-					delete currName;
+				CKadEntryPtrList::iterator it = NoteEntryList.begin();
+				for (; it != NoteEntryList.end(); ++it) {
+					delete *it;
 				}
 				delete currNote;
 			}
@@ -396,6 +399,7 @@ CIndexed::~CIndexed()
 		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::~CIndexed"));
 	}
 }
+
 
 void CIndexed::clean(void)
 {
@@ -411,31 +415,37 @@ void CIndexed::clean(void)
 		time_t tNow = time(NULL);
 
 		KeyHashMap::iterator it = m_Keyword_map.begin();
-		for ( ; it != m_Keyword_map.end(); ++it) {
-			KeyHash* currKeyHash = it->second;
-			CCKey key = it->first;
+		while (it != m_Keyword_map.end()) {
+			KeyHashMap::iterator curr_it = it++; // Don't change this to a ++it!
+			KeyHash* currKeyHash = curr_it->second;
 			
 			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.begin();
-			for ( ; it2 != currKeyHash->m_Source_map.end(); ++it2) {
-				Source* currSource = it2->second;
-				CCKey key2 = it2->first;
-				for(POSITION pos5 = currSource->entryList.GetHeadPosition(); pos5 != NULL; ) {
-					POSITION pos6 = pos5;
-					Kademlia::CEntry* currName = currSource->entryList.GetNext(pos5);
+			for ( ; it2 != currKeyHash->m_Source_map.end(); ) {
+				CSourceKeyMap::iterator curr_it2 = it2++; // Don't change this to a ++it!
+				Source* currSource = curr_it2->second;
+
+				CKadEntryPtrList::iterator it = currSource->entryList.begin();
+				while (it != currSource->entryList.end()) {
 					k_Total++;
+					
+					Kademlia::CEntry* currName = *it;
 					if( !currName->source && currName->lifetime < tNow) {
 						k_Removed++;
-						currSource->entryList.RemoveAt(pos6);
+						it = currSource->entryList.erase(it);
 						delete currName;
+					} else {
+						++it;
 					}
 				}
-				if( currSource->entryList.IsEmpty()) {
-					currKeyHash->m_Source_map.erase(key2);
+				
+				if( currSource->entryList.empty()) {
+					currKeyHash->m_Source_map.erase(curr_it2);
 					delete currSource;
 				}
 			}
+
 			if( currKeyHash->m_Source_map.empty()) {
-				m_Keyword_map.erase(key);
+				m_Keyword_map.erase(curr_it);
 				delete currKeyHash;
 			}
 		}
@@ -444,27 +454,35 @@ void CIndexed::clean(void)
 		while (it_src_next != m_Sources_map.end()) {
 			SrcHashMap::iterator curr_it =  it_src_next++; // Don't change this to a ++it!
 			SrcHash* currSrcHash = curr_it->second;
-			CCKey key = curr_it->first;
-			for(POSITION pos2 = currSrcHash->m_Source_map.GetHeadPosition(); pos2 != NULL; ) {
-				POSITION pos3 = pos2;
-				Source* currSource = currSrcHash->m_Source_map.GetNext(pos2);			
-				for(POSITION pos5 = currSource->entryList.GetHeadPosition(); pos5 != NULL; ) {
-					POSITION pos6 = pos5;
-					Kademlia::CEntry* currName = currSource->entryList.GetNext(pos5);
+
+			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
+			while (it != currSrcHash->m_Source_map.end()) {
+				Source* currSource = *it;			
+				
+				CKadEntryPtrList::iterator it2 = currSource->entryList.begin();
+				while (it2 != currSource->entryList.end()) {
 					s_Total++;
-					if( currName->lifetime < tNow) {
+					
+					Kademlia::CEntry* currName = *it2;
+					if (currName->lifetime < tNow) {
 						s_Removed++;
-						currSource->entryList.RemoveAt(pos6);
+						it2 = currSource->entryList.erase(it2);
 						delete currName;
+					} else {
+						++it2;
 					}
 				}
-				if( currSource->entryList.IsEmpty()) {
-					currSrcHash->m_Source_map.RemoveAt(pos3);
+				
+				if( currSource->entryList.empty()) {
+					it = currSrcHash->m_Source_map.erase(it);
 					delete currSource;
+				} else {
+					++it;
 				}
 			}
-			if( currSrcHash->m_Source_map.IsEmpty()) {
-				m_Sources_map.erase(key);
+
+			if( currSrcHash->m_Source_map.empty()) {
+				m_Sources_map.erase(curr_it);
 				delete currSrcHash;
 			}
 		}
@@ -499,7 +517,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		if(it == m_Keyword_map.end()) {
 			Source* currSource = new Source;
 			currSource->sourceID.setValue(sourceID);
-			currSource->entryList.AddHead(entry);
+			currSource->entryList.push_front(entry);
 			currKeyHash = new KeyHash;
 			currKeyHash->keyID.setValue(keyID);
 			currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
@@ -519,25 +537,25 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
 			if(it2 != currKeyHash->m_Source_map.end()) {
 				currSource = it2->second;
-				if (currSource->entryList.GetCount() > 0) {
+				if (currSource->entryList.size() > 0) {
 					if( indexTotal > KADEMLIAMAXINDEX - 5000 ) {
 						load = 100;
 						//We are in a hot node.. If we continued to update all the publishes
 						//while this index is full, popular files will be the only thing you index.
 						return false;
 					}
-					delete currSource->entryList.GetHead();
-					currSource->entryList.RemoveHead();
+					delete currSource->entryList.front();
+					currSource->entryList.pop_front();
 				} else {
 					m_totalIndexKeyword++;
 				}
 				load = (indexTotal*100)/KADEMLIAMAXINDEX;
-				currSource->entryList.AddHead(entry);
+				currSource->entryList.push_front(entry);
 				return true;
 			} else {
 				currSource = new Source;
 				currSource->sourceID.setValue(sourceID);
-				currSource->entryList.AddHead(entry);
+				currSource->entryList.push_front(entry);
 				currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
 				m_totalIndexKeyword++;
 				load = (indexTotal*100)/KADEMLIAMAXINDEX;
@@ -566,54 +584,58 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		if(it == m_Sources_map.end()) {
 			Source* currSource = new Source;
 			currSource->sourceID.setValue(sourceID);
-			currSource->entryList.AddHead(entry);
+			currSource->entryList.push_front(entry);
 			currSrcHash = new SrcHash;
 			currSrcHash->keyID.setValue(keyID);
-			currSrcHash->m_Source_map.AddHead(currSource);
+			currSrcHash->m_Source_map.push_front(currSource);
 			m_Sources_map[CCKey(currSrcHash->keyID.getData())] =  currSrcHash;
 			m_totalIndexSource++;
 			load = 1;
 			return true;
 		} else {
 			currSrcHash = it->second;
-			uint32 size = currSrcHash->m_Source_map.GetSize();
-			for(POSITION pos2 = currSrcHash->m_Source_map.GetHeadPosition(); pos2 != NULL; )
-			{
-				Source* currSource = currSrcHash->m_Source_map.GetNext(pos2);
-				if( currSource->entryList.GetSize() ) {
-					CEntry* currEntry = currSource->entryList.GetHead();
+			uint32 size = currSrcHash->m_Source_map.size();
+
+			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
+			for (; it != currSrcHash->m_Source_map.end(); ++it) {
+				Source* currSource = *it;
+				if( currSource->entryList.size() ) {
+					CEntry* currEntry = currSource->entryList.front();
 					wxASSERT(currEntry!=NULL);
 					if( currEntry->ip == entry->ip && ( currEntry->tcpport == entry->tcpport || currEntry->udpport == entry->udpport )) {
-						CEntry* currName = currSource->entryList.RemoveHead();
+						CEntry* currName = currSource->entryList.front();
+						currSource->entryList.pop_front();
 						delete currName;
-						currSource->entryList.AddHead(entry);
+						currSource->entryList.push_front(entry);
 						load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
 						return true;
 					}
 				} else {
 					//This should never happen!
-					currSource->entryList.AddHead(entry);
+					currSource->entryList.push_front(entry);
 					wxASSERT(0);
 					load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
 					return true;
 				}
 			}
 			if( size > KADEMLIAMAXSOUCEPERFILE ) {
-				Source* currSource = currSrcHash->m_Source_map.RemoveTail();
+				Source* currSource = currSrcHash->m_Source_map.back();
+				currSrcHash->m_Source_map.pop_back();
 				wxASSERT(currSource!=NULL);
-				Kademlia::CEntry* currName = currSource->entryList.RemoveTail();
+				Kademlia::CEntry* currName = currSource->entryList.back();
+				currSource->entryList.pop_back();
 				wxASSERT(currName!=NULL);
 				delete currName;
 				currSource->sourceID.setValue(sourceID);
-				currSource->entryList.AddHead(entry);
-				currSrcHash->m_Source_map.AddHead(currSource);
+				currSource->entryList.push_front(entry);
+				currSrcHash->m_Source_map.push_front(currSource);
 				load = 100;
 				return true;
 			} else {
 				Source* currSource = new Source;
 				currSource->sourceID.setValue(sourceID);
-				currSource->entryList.AddHead(entry);
-				currSrcHash->m_Source_map.AddHead(currSource);
+				currSource->entryList.push_front(entry);
+				currSrcHash->m_Source_map.push_front(currSource);
 				m_totalIndexSource++;
 				load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
 				return true;
@@ -639,53 +661,57 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 		if(it == m_Notes_map.end()) {
 			Source* currNote = new Source;
 			currNote->sourceID.setValue(sourceID);
-			currNote->entryList.AddHead(entry);
+			currNote->entryList.push_front(entry);
 			currNoteHash = new SrcHash;
 			currNoteHash->keyID.setValue(keyID);
-			currNoteHash->m_Source_map.AddHead(currNote);
+			currNoteHash->m_Source_map.push_front(currNote);
 			m_Notes_map[CCKey(currNoteHash->keyID.getData())] = currNoteHash;
 			load = 1;
 			return true;
 		} else {
 			currNoteHash = it->second;
-			uint32 size = currNoteHash->m_Source_map.GetSize();
-			for(POSITION pos2 = currNoteHash->m_Source_map.GetHeadPosition(); pos2 != NULL; )
-			{
-				Source* currNote = currNoteHash->m_Source_map.GetNext(pos2);			
-				if( currNote->entryList.GetSize() ) {
-					CEntry* currEntry = currNote->entryList.GetHead();
+			uint32 size = currNoteHash->m_Source_map.size();
+
+			CKadSourcePtrList::iterator it = currNoteHash->m_Source_map.begin();
+			for (; it != currNoteHash->m_Source_map.end(); ++it) {			
+				Source* currNote = *it;			
+				if( currNote->entryList.size() ) {
+					CEntry* currEntry = currNote->entryList.front();
 					wxASSERT(currEntry!=NULL);
 					if(currEntry->ip == entry->ip || !currEntry->sourceID.compareTo(entry->sourceID)) {
-						CEntry* currName = currNote->entryList.RemoveHead();
+						CEntry* currName = currNote->entryList.front();
+						currNote->entryList.pop_front();
 						delete currName;
-						currNote->entryList.AddHead(entry);
+						currNote->entryList.push_front(entry);
 						load = (size*100)/KADEMLIAMAXNOTESPERFILE;
 						return true;
 					}
 				} else {
 					//This should never happen!
-					currNote->entryList.AddHead(entry);
+					currNote->entryList.push_front(entry);
 					wxASSERT(0);
 					load = (size*100)/KADEMLIAMAXNOTESPERFILE;
 					return true;
 				}
 			}
 			if( size > KADEMLIAMAXNOTESPERFILE ) {
-				Source* currNote = currNoteHash->m_Source_map.RemoveTail();
+				Source* currNote = currNoteHash->m_Source_map.back();
+				currNoteHash->m_Source_map.pop_back();
 				wxASSERT(currNote!=NULL);
-				CEntry* currName = currNote->entryList.RemoveTail();
+				CEntry* currName = currNote->entryList.back();
+				currNote->entryList.pop_back();
 				wxASSERT(currName!=NULL);
 				delete currName;
 				currNote->sourceID.setValue(sourceID);
-				currNote->entryList.AddHead(entry);
-				currNoteHash->m_Source_map.AddHead(currNote);
+				currNote->entryList.push_front(entry);
+				currNoteHash->m_Source_map.push_front(currNote);
 				load = 100;
 				return true;
 			} else {
 				Source* currNote = new Source;
 				currNote->sourceID.setValue(sourceID);
-				currNote->entryList.AddHead(entry);
-				currNoteHash->m_Source_map.AddHead(currNote);
+				currNote->entryList.push_front(entry);
+				currNoteHash->m_Source_map.push_front(currNote);
 				load = (size*100)/KADEMLIAMAXNOTESPERFILE;
 				return true;
 			}
@@ -954,9 +980,10 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.begin();
 			for ( ; it2 != currKeyHash->m_Source_map.end(); ++it2) {
 				Source* currSource =  it2->second;
-				CCKey key2 = it2->first;
-				for(POSITION pos5 = currSource->entryList.GetHeadPosition(); pos5 != NULL; ) {
-					Kademlia::CEntry* currName = currSource->entryList.GetNext(pos5);
+
+				CKadEntryPtrList::iterator it = currSource->entryList.begin();
+				for (; it != currSource->entryList.end(); ++it) {
+					Kademlia::CEntry* currName = *it;
 					if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
 						if( count < maxResults ) {
 							bio.writeUInt128(currName->sourceID);
@@ -1006,10 +1033,12 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			bio.writeUInt16(50);
 			uint16 maxResults = 300;
 			uint16 count = 0;
-			for(POSITION pos2 = currSrcHash->m_Source_map.GetHeadPosition(); pos2 != NULL; ) {
-				Source* currSource = currSrcHash->m_Source_map.GetNext(pos2);	
-				if( currSource->entryList.GetSize() ) {
-					Kademlia::CEntry* currName = currSource->entryList.GetHead();
+
+			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
+			for (; it != currSrcHash->m_Source_map.end(); ++it) {
+				Source* currSource = *it;	
+				if( currSource->entryList.size() ) {
+					Kademlia::CEntry* currName = currSource->entryList.front();
 					if( count < maxResults ) {
 						bio.writeUInt128(currName->sourceID);
 						bio.writeTagList(currName->taglist);
@@ -1057,10 +1086,12 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& source
 			bio.writeUInt16(50);
 			uint16 maxResults = 50;
 			uint16 count = 0;
-			for(POSITION pos2 = currNoteHash->m_Source_map.GetHeadPosition(); pos2 != NULL; ) {
-				Source* currNote = currNoteHash->m_Source_map.GetNext(pos2);
-				if( currNote->entryList.GetSize() ) {
-					Kademlia::CEntry* currName = currNote->entryList.GetHead();
+
+			CKadSourcePtrList::iterator it = currNoteHash->m_Source_map.begin();
+			for (; it != currNoteHash->m_Source_map.end(); ++it ) {
+				Source* currNote = *it;
+				if( currNote->entryList.size() ) {
+					Kademlia::CEntry* currName = currNote->entryList.front();
 					if( count < maxResults ) {
 						bio.writeUInt128(currName->sourceID);
 						bio.writeTagList(currName->taglist);
