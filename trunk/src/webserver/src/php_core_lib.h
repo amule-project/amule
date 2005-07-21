@@ -52,6 +52,8 @@ class CWriteStrBuffer {
 class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
+		
+		static CWriteStrBuffer *g_curr_str_buffer;
 	public:
 		// parse file and take a "snapshot" of global vars
 		CPhPLibContext(const char *file);
@@ -59,7 +61,9 @@ class CPhPLibContext {
 		
 		// init global vars, so parser/execution can start
 		void SetContext();
-		void Execute();
+		void Execute(CWriteStrBuffer *);
+		
+		static void Printf(const char *str, ...);
 };
 
 #endif
