@@ -64,6 +64,7 @@ class CPhPLibContext {
 		void Execute(CWriteStrBuffer *);
 		
 		static void Printf(const char *str, ...);
+		static void Print(const char *str);
 };
 
 #endif

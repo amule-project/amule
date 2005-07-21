@@ -256,6 +256,8 @@ CWriteStrBuffer *CPhPLibContext::g_curr_str_buffer = 0;
  * For simplicity and performance sake, this function can
  * only handle limited-length printf's. In should be NOT be used
  * for string concatenation like printf("xyz %s %s", s1, s2)
+ * 
+ * Engine will call Print for "print" and "echo"
  */
 void CPhPLibContext::Printf(const char *str, ...)
 {
@@ -268,6 +270,15 @@ void CPhPLibContext::Printf(const char *str, ...)
 		char buf[4096];
 		sprintf(buf, str, args);
 		g_curr_str_buffer->Write(buf);
+	}
+}
+
+void CPhPLibContext::Print(const char *str)
+{
+	if ( !g_curr_str_buffer ) {
+		printf(str);
+	} else {
+		g_curr_str_buffer->Write(str);
 	}
 }
 
