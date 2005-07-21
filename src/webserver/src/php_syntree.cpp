@@ -1020,7 +1020,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			cast_value_str(&result_val_right);
 			//
 			// I print to buffer
-			printf(result_val_right.str_val);
+			CPhPLibContext::Print(result_val_right.str_val);
 			break;
 		case PHP_OP_OBJECT_DEREF: // $x->y
 			// take variable from scope of current object
