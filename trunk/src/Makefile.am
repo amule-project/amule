@@ -322,12 +322,12 @@ amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB
 ed2k_SOURCES = ED2KLinkParser.cpp
 ed2k_CFLAGS =
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp
+amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DEC_REMOTE
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DEC_REMOTE
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp
+amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp
 amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(BFD_FLAGS) -DAMULECMDDLG -DEC_REMOTE
 amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) -DAMULECMDDLG  -DEC_REMOTE
 amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)

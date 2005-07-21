@@ -22,7 +22,8 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
-	$(top_srcdir)/src/Format.cpp
+	$(top_srcdir)/src/Format.cpp \
+	$(top_srcdir)/src/MuleDebug.cpp
 
 if WEB_PHP
 amuleweb_SOURCES += \
@@ -56,7 +57,8 @@ amulewebDLG_SOURCES =  \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
-	$(top_srcdir)/src/Format.cpp
+	$(top_srcdir)/src/Format.cpp \
+	$(top_srcdir)/src/MuleDebug.cpp
 
 amulewebDLG_CFLAGS = -I$(top_srcdir)/src/ $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
 amulewebDLG_CXXFLAGS = -I$(top_srcdir)/src/ $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG  -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
