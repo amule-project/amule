@@ -49,14 +49,21 @@ class CWriteStrBuffer {
 		const int Length() { return m_total_length; }
 };
 
+class CWebServerBase;
 class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
 		
-		static CWriteStrBuffer *g_curr_str_buffer;
+		static CPhPLibContext *g_curr_context;
+		
+		CWriteStrBuffer *m_curr_str_buffer;
+#ifdef AMULEWEB_SCRIPT_EN
+		const std::list<DownloadFile> *m_downloads;
+		const std::list<ServerEntry> *m_servers;
+#endif		
 	public:
 		// parse file and take a "snapshot" of global vars
-		CPhPLibContext(const char *file);
+		CPhPLibContext(CWebServerBase *server, const char *file);
 		~CPhPLibContext();
 		
 		// init global vars, so parser/execution can start

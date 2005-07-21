@@ -31,12 +31,13 @@
 #include <map>
 #include <string>
 
-#include "php_syntree.h"
-#include "php_core_lib.h"
-
 #ifdef AMULEWEB_SCRIPT_EN
 	#include "WebServer.h"
 #endif
+
+#include "php_syntree.h"
+#include "php_core_lib.h"
+
 
 /*
  * Built-in php functions. Those are both library and core internals.
@@ -222,8 +223,13 @@ void php_init_core_lib()
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 }
 
-CPhPLibContext::CPhPLibContext(const char *file)
+CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
+	g_curr_context = this;
+#ifdef AMULEWEB_SCRIPT_EN
+	m_downloads = server->m_DownloadFileInfo.ItemList();
+	m_servers = server->m_ServersInfo.ItemList();
+#endif
 	php_engine_init();
 	yyin = fopen(file, "r");
 	yyparse();
@@ -245,17 +251,18 @@ void CPhPLibContext::SetContext()
 
 void CPhPLibContext::Execute(CWriteStrBuffer *buf)
 {
-	g_curr_str_buffer = buf;
+	m_curr_str_buffer = buf;
+	
 	PHP_VALUE_NODE val;
 	php_execute(g_syn_tree_top, &val);
 }
 
-CWriteStrBuffer *CPhPLibContext::g_curr_str_buffer = 0;
+CPhPLibContext *CPhPLibContext::g_curr_context = 0;
 
 /*
  * For simplicity and performance sake, this function can
  * only handle limited-length printf's. In should be NOT be used
- * for string concatenation like printf("xyz %s %s", s1, s2)
+ * for string concatenation like printf("xyz %s %s", s1, s2).
  * 
  * Engine will call Print for "print" and "echo"
  */
@@ -264,21 +271,21 @@ void CPhPLibContext::Printf(const char *str, ...)
 	va_list args;
         
 	va_start(args, str);
-	if ( !g_curr_str_buffer ) {
+	if ( !g_curr_context || !g_curr_context->m_curr_str_buffer ) {
 		printf(str, args);
 	} else {
 		char buf[4096];
 		sprintf(buf, str, args);
-		g_curr_str_buffer->Write(buf);
+		g_curr_context->m_curr_str_buffer->Write(buf);
 	}
 }
 
 void CPhPLibContext::Print(const char *str)
 {
-	if ( !g_curr_str_buffer ) {
+	if ( !g_curr_context || !g_curr_context->m_curr_str_buffer ) {
 		printf(str);
 	} else {
-		g_curr_str_buffer->Write(str);
+		g_curr_context->m_curr_str_buffer->Write(str);
 	}
 }
 

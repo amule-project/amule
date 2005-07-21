@@ -32,12 +32,12 @@
 #include <string>
 #include <algorithm>
 
-#include "php_syntree.h"
-#include "php_core_lib.h"
-
 #ifdef AMULEWEB_SCRIPT_EN
 	#include "WebServer.h"
 #endif
+
+#include "php_syntree.h"
+#include "php_core_lib.h"
 
 typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
 typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
