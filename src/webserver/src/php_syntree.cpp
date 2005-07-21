@@ -35,6 +35,10 @@
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
+#ifdef AMULEWEB_SCRIPT_EN
+	#include "WebServer.h"
+#endif
+
 typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
 typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
 //
@@ -380,6 +384,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 					PHP_VAR_NODE *var = i->second->var;
 					var->ref_count--;
 					if ( var->ref_count == 0 ) {
+						value_value_free(&var->value);
 						delete var;
 					}
 				}
@@ -1488,6 +1493,8 @@ int yyerror(char *s)
 	return 0;
 }
 
+#ifndef AMULEWEB_SCRIPT_EN
+
 class uuu {
 public:
 	int a, b;
@@ -1521,3 +1528,5 @@ int main()
 
 	return 0;
 }
+
+#endif

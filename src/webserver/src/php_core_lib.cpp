@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include <list>
 #include <map>
@@ -32,6 +33,10 @@
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
+
+#ifdef AMULEWEB_SCRIPT_EN
+	#include "WebServer.h"
+#endif
 
 /*
  * Built-in php functions. Those are both library and core internals.
@@ -238,10 +243,32 @@ void CPhPLibContext::SetContext()
 	g_global_scope = m_global_scope;
 }
 
-void CPhPLibContext::Execute()
+void CPhPLibContext::Execute(CWriteStrBuffer *buf)
 {
+	g_curr_str_buffer = buf;
 	PHP_VALUE_NODE val;
 	php_execute(g_syn_tree_top, &val);
+}
+
+CWriteStrBuffer *CPhPLibContext::g_curr_str_buffer = 0;
+
+/*
+ * For simplicity and performance sake, this function can
+ * only handle limited-length printf's. In should be NOT be used
+ * for string concatenation like printf("xyz %s %s", s1, s2)
+ */
+void CPhPLibContext::Printf(const char *str, ...)
+{
+	va_list args;
+        
+	va_start(args, str);
+	if ( !g_curr_str_buffer ) {
+		printf(str, args);
+	} else {
+		char buf[4096];
+		sprintf(buf, str, args);
+		g_curr_str_buffer->Write(buf);
+	}
 }
 
 /*
