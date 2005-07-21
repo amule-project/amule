@@ -24,6 +24,21 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
 	$(top_srcdir)/src/Format.cpp
 
+if WEB_PHP
+amuleweb_SOURCES += \
+	php_parser.c \
+	php_lexer.c \
+	php_syntree.cpp \
+	php_core_lib.cpp
+endif
+
+php_parser.c: php_parser.y
+	bison --debug -t -d -v -o php_parser.c php_parser.y
+
+php_lexer.c: php_lexer.l
+	lex -F -ophp_lexer.c php_lexer.l
+
+
 amuleweb_CFLAGS = -I$(top_srcdir)/src/ $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
 amuleweb_CXXFLAGS = -I$(top_srcdir)/src/ $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
 amuleweb_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(READLINE_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
