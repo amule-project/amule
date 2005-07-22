@@ -394,7 +394,7 @@ void CWriteStrBuffer::Write(const char *s)
 	m_total_length += len;
 	
 	while ( len ) {
-		if ( (len + 1) < m_curr_buf_left ) {
+		if ( (len + 1) <= m_curr_buf_left ) {
 			strcpy(m_buf_ptr, s);
 			m_buf_ptr += len;
 			m_curr_buf_left -= len;
@@ -403,8 +403,6 @@ void CWriteStrBuffer::Write(const char *s)
 			memcpy(m_buf_ptr, s, m_curr_buf_left);
 			int rem_len = len - m_curr_buf_left;
 			s += m_curr_buf_left;
-			m_buf_ptr += m_curr_buf_left;
-			m_curr_buf_left -= len;
 						
 			len = rem_len;
 			m_buf_list.push_back(m_curr_buf);
