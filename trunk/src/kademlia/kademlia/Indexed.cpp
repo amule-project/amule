@@ -295,25 +295,25 @@ CIndexed::~CIndexed()
 			CCKey key2;
 
 			s_file.writeUInt32(m_Sources_map.size());
-			SrcHashMap::iterator it = m_Sources_map.begin();
-			for ( ; it != m_Sources_map.end(); ++it ) {
-				SrcHash* currSrcHash = it->second;
+			SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
+			for ( ; itSrcHash != m_Sources_map.end(); ++itSrcHash ) {
+				SrcHash* currSrcHash = itSrcHash->second;
 				s_file.writeUInt128(currSrcHash->keyID);
 
 				CKadSourcePtrList& KeyHashSrcMap = currSrcHash->m_Source_map;
 				s_file.writeUInt32(KeyHashSrcMap.size());
 				
-				CKadSourcePtrList::iterator it = KeyHashSrcMap.begin();
-				for (; it != KeyHashSrcMap.begin(); ++it) {
-					Source* currSource = *it;
+				CKadSourcePtrList::iterator itSource = KeyHashSrcMap.begin();
+				for (; itSource != KeyHashSrcMap.begin(); ++itSource) {
+					Source* currSource = *itSource;
 					s_file.writeUInt128(currSource->sourceID);
 
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
 					s_file.writeUInt32(SrcEntryList.size());
 					
-					CKadEntryPtrList::iterator it = SrcEntryList.begin();
-					for (; it != SrcEntryList.end(); ++it) {
-						Kademlia::CEntry* currName = *it;
+					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
+					for (; itEntry != SrcEntryList.end(); ++itEntry) {
+						Kademlia::CEntry* currName = *itEntry;
 						s_file.writeUInt32(currName->lifetime);
 						s_file.writeTagList(currName->taglist);
 						delete currName;
@@ -340,25 +340,25 @@ CIndexed::~CIndexed()
 			k_file.writeUInt128(Kademlia::CKademlia::getPrefs()->getKadID());
 
 			k_file.writeUInt32(m_Keyword_map.size());
-			KeyHashMap::iterator it = m_Keyword_map.begin();
-			for ( ; it != m_Keyword_map.end(); ++it ) {
-				KeyHash* currKeyHash = it->second;
+			KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
+			for ( ; itKeyHash != m_Keyword_map.end(); ++itKeyHash ) {
+				KeyHash* currKeyHash = itKeyHash->second;
 				k_file.writeUInt128(currKeyHash->keyID);
 
 				CSourceKeyMap& KeyHashSrcMap = currKeyHash->m_Source_map;
 				k_file.writeUInt32(KeyHashSrcMap.size());
 				
-				CSourceKeyMap::iterator it2 = KeyHashSrcMap.begin();
-				for ( ; it2 != KeyHashSrcMap.end(); ++it2 ) {
-					Source* currSource = it2->second;
+				CSourceKeyMap::iterator itSource = KeyHashSrcMap.begin();
+				for ( ; itSource != KeyHashSrcMap.end(); ++itSource ) {
+					Source* currSource = itSource->second;
 					k_file.writeUInt128(currSource->sourceID);
 				
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
 					k_file.writeUInt32(SrcEntryList.size());
 					
-					CKadEntryPtrList::iterator it = SrcEntryList.begin();
-					for (; it != SrcEntryList.end(); ++it) {
-						Kademlia::CEntry* currName = *it;
+					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
+					for (; itEntry != SrcEntryList.end(); ++itEntry) {
+						Kademlia::CEntry* currName = *itEntry;
 						k_file.writeUInt32(currName->lifetime);
 						k_file.writeTagList(currName->taglist);
 						delete currName;
@@ -372,18 +372,18 @@ CIndexed::~CIndexed()
 		}
 		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Wrote %u source, %u keyword, and %u load entries"), s_total, k_total, l_total));
 
-		SrcHashMap::iterator it = m_Notes_map.begin();
-		for ( ; it != m_Notes_map.end(); ++it) {
-			SrcHash* currNoteHash = it->second;
+		SrcHashMap::iterator itNoteHash = m_Notes_map.begin();
+		for ( ; itNoteHash != m_Notes_map.end(); ++itNoteHash) {
+			SrcHash* currNoteHash = itNoteHash->second;
 			CKadSourcePtrList& KeyHashNoteMap = currNoteHash->m_Source_map;
 			
-			CKadSourcePtrList::iterator it = KeyHashNoteMap.begin();
-			for (; it != KeyHashNoteMap.end(); ++it) {
-				Source* currNote = *it;
+			CKadSourcePtrList::iterator itNote = KeyHashNoteMap.begin();
+			for (; itNote != KeyHashNoteMap.end(); ++itNote) {
+				Source* currNote = *itNote;
 				CKadEntryPtrList& NoteEntryList = currNote->entryList;
-				CKadEntryPtrList::iterator it = NoteEntryList.begin();
-				for (; it != NoteEntryList.end(); ++it) {
-					delete *it;
+				CKadEntryPtrList::iterator itNoteEntry = NoteEntryList.begin();
+				for (; itNoteEntry != NoteEntryList.end(); ++itNoteEntry) {
+					delete *itNoteEntry;
 				}
 				delete currNote;
 			}
@@ -412,75 +412,75 @@ void CIndexed::clean(void)
 		uint32 k_Total = 0;
 		time_t tNow = time(NULL);
 
-		KeyHashMap::iterator it = m_Keyword_map.begin();
-		while (it != m_Keyword_map.end()) {
-			KeyHashMap::iterator curr_it = it++; // Don't change this to a ++it!
-			KeyHash* currKeyHash = curr_it->second;
+		KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
+		while (itKeyHash != m_Keyword_map.end()) {
+			KeyHashMap::iterator curr_itKeyHash = itKeyHash++; // Don't change this to a ++it!
+			KeyHash* currKeyHash = curr_itKeyHash->second;
 			
-			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.begin();
-			for ( ; it2 != currKeyHash->m_Source_map.end(); ) {
-				CSourceKeyMap::iterator curr_it2 = it2++; // Don't change this to a ++it!
-				Source* currSource = curr_it2->second;
+			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
+			for ( ; itSource != currKeyHash->m_Source_map.end(); ) {
+				CSourceKeyMap::iterator curr_itSource = itSource++; // Don't change this to a ++it!
+				Source* currSource = curr_itSource->second;
 
-				CKadEntryPtrList::iterator it = currSource->entryList.begin();
-				while (it != currSource->entryList.end()) {
+				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+				while (itEntry != currSource->entryList.end()) {
 					k_Total++;
 					
-					Kademlia::CEntry* currName = *it;
+					Kademlia::CEntry* currName = *itEntry;
 					if( !currName->source && currName->lifetime < tNow) {
 						k_Removed++;
-						it = currSource->entryList.erase(it);
+						itEntry = currSource->entryList.erase(itEntry);
 						delete currName;
 					} else {
-						++it;
+						++itEntry;
 					}
 				}
 				
 				if( currSource->entryList.empty()) {
-					currKeyHash->m_Source_map.erase(curr_it2);
+					currKeyHash->m_Source_map.erase(curr_itSource);
 					delete currSource;
 				}
 			}
 
 			if( currKeyHash->m_Source_map.empty()) {
-				m_Keyword_map.erase(curr_it);
+				m_Keyword_map.erase(curr_itKeyHash);
 				delete currKeyHash;
 			}
 		}
 
-		SrcHashMap::iterator it_src_next = m_Sources_map.begin();
-		while (it_src_next != m_Sources_map.end()) {
-			SrcHashMap::iterator curr_it =  it_src_next++; // Don't change this to a ++it!
-			SrcHash* currSrcHash = curr_it->second;
+		SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
+		while (itSrcHash != m_Sources_map.end()) {
+			SrcHashMap::iterator curr_itSrcHash = itSrcHash++; // Don't change this to a ++it!
+			SrcHash* currSrcHash = curr_itSrcHash->second;
 
-			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
-			while (it != currSrcHash->m_Source_map.end()) {
-				Source* currSource = *it;			
+			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+			while (itSource != currSrcHash->m_Source_map.end()) {
+				Source* currSource = *itSource;			
 				
-				CKadEntryPtrList::iterator it2 = currSource->entryList.begin();
-				while (it2 != currSource->entryList.end()) {
+				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+				while (itEntry != currSource->entryList.end()) {
 					s_Total++;
 					
-					Kademlia::CEntry* currName = *it2;
+					Kademlia::CEntry* currName = *itEntry;
 					if (currName->lifetime < tNow) {
 						s_Removed++;
-						it2 = currSource->entryList.erase(it2);
+						itEntry = currSource->entryList.erase(itEntry);
 						delete currName;
 					} else {
-						++it2;
+						++itEntry;
 					}
 				}
 				
 				if( currSource->entryList.empty()) {
-					it = currSrcHash->m_Source_map.erase(it);
+					itSource = currSrcHash->m_Source_map.erase(itSource);
 					delete currSource;
 				} else {
-					++it;
+					++itSource;
 				}
 			}
 
 			if( currSrcHash->m_Source_map.empty()) {
-				m_Sources_map.erase(curr_it);
+				m_Sources_map.erase(curr_itSrcHash);
 				delete currSrcHash;
 			}
 		}
@@ -510,9 +510,9 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			return false;
 		}
 
-		KeyHashMap::iterator it = m_Keyword_map.find(CCKey(keyID.getData())); 
+		KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData())); 
 		KeyHash* currKeyHash = NULL;
-		if(it == m_Keyword_map.end()) {
+		if(itKeyHash == m_Keyword_map.end()) {
 			Source* currSource = new Source;
 			currSource->sourceID.setValue(sourceID);
 			currSource->entryList.push_front(entry);
@@ -524,7 +524,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			m_totalIndexKeyword++;
 			return true;
 		} else {
-			currKeyHash = it->second; 
+			currKeyHash = itKeyHash->second; 
 			uint32 indexTotal = currKeyHash->m_Source_map.size();
 			if ( indexTotal > KADEMLIAMAXINDEX ) {
 				load = 100;
@@ -532,9 +532,9 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 				return false;
 			}
 			Source* currSource = NULL;
-			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
-			if(it2 != currKeyHash->m_Source_map.end()) {
-				currSource = it2->second;
+			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
+			if(itSource != currKeyHash->m_Source_map.end()) {
+				currSource = itSource->second;
 				if (currSource->entryList.size() > 0) {
 					if( indexTotal > KADEMLIAMAXINDEX - 5000 ) {
 						load = 100;
@@ -578,8 +578,8 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	}
 	try {
 		SrcHash* currSrcHash = NULL;
-		SrcHashMap::iterator it = m_Sources_map.find(CCKey(keyID.getData()));
-		if(it == m_Sources_map.end()) {
+		SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+		if(itSrcHash == m_Sources_map.end()) {
 			Source* currSource = new Source;
 			currSource->sourceID.setValue(sourceID);
 			currSource->entryList.push_front(entry);
@@ -591,12 +591,12 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			load = 1;
 			return true;
 		} else {
-			currSrcHash = it->second;
+			currSrcHash = itSrcHash->second;
 			uint32 size = currSrcHash->m_Source_map.size();
 
-			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
-			for (; it != currSrcHash->m_Source_map.end(); ++it) {
-				Source* currSource = *it;
+			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+			for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
+				Source* currSource = *itSource;
 				if( currSource->entryList.size() ) {
 					CEntry* currEntry = currSource->entryList.front();
 					wxASSERT(currEntry!=NULL);
@@ -655,8 +655,8 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	}
 	try {
 		SrcHash* currNoteHash = NULL;
-		SrcHashMap::iterator it = m_Notes_map.find(CCKey(keyID.getData()));
-		if(it == m_Notes_map.end()) {
+		SrcHashMap::iterator itNoteHash = m_Notes_map.find(CCKey(keyID.getData()));
+		if(itNoteHash == m_Notes_map.end()) {
 			Source* currNote = new Source;
 			currNote->sourceID.setValue(sourceID);
 			currNote->entryList.push_front(entry);
@@ -667,12 +667,12 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			load = 1;
 			return true;
 		} else {
-			currNoteHash = it->second;
+			currNoteHash = itNoteHash->second;
 			uint32 size = currNoteHash->m_Source_map.size();
 
-			CKadSourcePtrList::iterator it = currNoteHash->m_Source_map.begin();
-			for (; it != currNoteHash->m_Source_map.end(); ++it) {			
-				Source* currNote = *it;			
+			CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
+			for (; itSource != currNoteHash->m_Source_map.end(); ++itSource) {			
+				Source* currNote = *itSource;			
 				if( currNote->entryList.size() ) {
 					CEntry* currEntry = currNote->entryList.front();
 					wxASSERT(currEntry!=NULL);
@@ -964,9 +964,9 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 {
 	try {
 		KeyHash* currKeyHash = NULL;
-		KeyHashMap::iterator it = m_Keyword_map.find(CCKey(keyID.getData()));
-		if(it != m_Keyword_map.end()) {
-			currKeyHash = it->second;
+		KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData()));
+		if(itKeyHash != m_Keyword_map.end()) {
+			currKeyHash = itKeyHash->second;
 			byte packet[1024*50];
 			CByteIO bio(packet,sizeof(packet));
 			bio.writeByte(OP_KADEMLIAHEADER);
@@ -975,13 +975,13 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			bio.writeUInt16(50);
 			uint16 maxResults = 300;
 			uint16 count = 0;
-			CSourceKeyMap::iterator it2 = currKeyHash->m_Source_map.begin();
-			for ( ; it2 != currKeyHash->m_Source_map.end(); ++it2) {
-				Source* currSource =  it2->second;
+			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
+			for ( ; itSource != currKeyHash->m_Source_map.end(); ++itSource) {
+				Source* currSource =  itSource->second;
 
-				CKadEntryPtrList::iterator it = currSource->entryList.begin();
-				for (; it != currSource->entryList.end(); ++it) {
-					Kademlia::CEntry* currName = *it;
+				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+				for (; itEntry != currSource->entryList.end(); ++itEntry) {
+					Kademlia::CEntry* currName = *itEntry;
 					if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
 						if( count < maxResults ) {
 							bio.writeUInt128(currName->sourceID);
@@ -1020,9 +1020,9 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 {
 	try {
 		SrcHash* currSrcHash = NULL;
-		SrcHashMap::iterator it = m_Sources_map.find(CCKey(keyID.getData()));
-		if(it != m_Sources_map.end()) {
-			currSrcHash = it->second;
+		SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+		if(itSrcHash != m_Sources_map.end()) {
+			currSrcHash = itSrcHash->second;
 			byte packet[1024*50];
 			CByteIO bio(packet,sizeof(packet));
 			bio.writeByte(OP_KADEMLIAHEADER);
@@ -1032,9 +1032,9 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			uint16 maxResults = 300;
 			uint16 count = 0;
 
-			CKadSourcePtrList::iterator it = currSrcHash->m_Source_map.begin();
-			for (; it != currSrcHash->m_Source_map.end(); ++it) {
-				Source* currSource = *it;	
+			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+			for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
+				Source* currSource = *itSource;	
 				if( currSource->entryList.size() ) {
 					Kademlia::CEntry* currName = currSource->entryList.front();
 					if( count < maxResults ) {
@@ -1073,9 +1073,9 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& source
 {
 	try {
 		SrcHash* currNoteHash = NULL;
-		SrcHashMap::iterator it = m_Notes_map.find(CCKey(keyID.getData()));
-		if(it != m_Notes_map.end()) {
-			currNoteHash = it->second;		
+		SrcHashMap::iterator itNote = m_Notes_map.find(CCKey(keyID.getData()));
+		if(itNote != m_Notes_map.end()) {
+			currNoteHash = itNote->second;		
 			byte packet[1024*50];
 			CByteIO bio(packet,sizeof(packet));
 			bio.writeByte(OP_KADEMLIAHEADER);
@@ -1085,9 +1085,9 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& source
 			uint16 maxResults = 50;
 			uint16 count = 0;
 
-			CKadSourcePtrList::iterator it = currNoteHash->m_Source_map.begin();
-			for (; it != currNoteHash->m_Source_map.end(); ++it ) {
-				Source* currNote = *it;
+			CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
+			for (; itSource != currNoteHash->m_Source_map.end(); ++itSource ) {
+				Source* currNote = *itSource;
 				if( currNote->entryList.size() ) {
 					Kademlia::CEntry* currName = currNote->entryList.front();
 					if( count < maxResults ) {

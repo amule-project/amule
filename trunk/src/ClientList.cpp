@@ -386,7 +386,6 @@ void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *
 		stats[i] = 0;
 	}
 
-	IDMap::iterator it = m_clientList.begin();
 	for ( IDMap::iterator it = m_clientList.begin(); it != m_clientList.end(); ++it ) {
 		CUpDownClient* cur_client =	it->second;
 		
@@ -843,7 +842,6 @@ void CClientList::RemoveBannedClient(uint32 dwIP)
 void CClientList::FilterQueues()
 {
 	// Filter client list
-	IDMap::iterator it = m_ipList.begin();
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
 		IDMap::iterator tmp = it++; // Don't change this to a ++it! 
 		
