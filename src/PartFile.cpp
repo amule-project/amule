@@ -3380,10 +3380,6 @@ void CPartFile::GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled)
 
 void CPartFile::UpdateFileRatingCommentAvail()
 {
-	if (!this) {
-		return;
-	}
-
 	bool prev=(hasComment || hasRating);
 	bool prevbad=hasBadRating;
 

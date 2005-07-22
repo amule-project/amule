@@ -1823,8 +1823,6 @@ void CUpDownClient::ResetFileStatusInfo()
 
 wxString CUpDownClient::GetUploadFileInfo()
 {
-	if(this == NULL) return wxEmptyString;
-	
 	// build info text and display it
 	wxString sRet;
 	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
