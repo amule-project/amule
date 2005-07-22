@@ -526,6 +526,7 @@ PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key)
 		PHP_VAR_NODE *add_node = make_var_node();
 		add_node->ref_count++;
 		(arr_ptr->array)[key] = add_node;
+		arr_ptr->sorted_keys.push_back(key);
 		return add_node;
 	}	
 }
@@ -1495,37 +1496,24 @@ int yyerror(char *s)
 
 #ifndef AMULEWEB_SCRIPT_EN
 
-class uuu {
-public:
-	int a, b;
-	
-	friend const int operator<(const uuu &u1, const uuu &u2);
-};
-
-const int operator<(const uuu &u1, const uuu &u2) { return u1.a < u2.a; }
-
-int main()
+int main(int argc, char *argv[])
 {
 	php_engine_init();
-	yyin = fopen("test.php", "r");
-	yydebug = 0;
-	yyparse();
+	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
+
+	CWriteStrBuffer buffer;
+	CPhPLibContext context((CWebServerBase*)0, filename);
 	
-	PHP_VALUE_NODE val;
-	php_execute(g_syn_tree_top, &val);
-
-	php_engine_free();
-
-/*
-	std::vector<uuu> vvv;
-	uuu c;
-	uuu &a = c, &b = c;
-	std::sort(vvv.begin(), vvv.end());
-	if ( b < a ) {
-		printf("ddd = %d\n", a < b);
-	}
-*/
-
+	yydebug = 0;
+	
+	context.Execute(&buffer);
+	
+	int size = buffer.Length();
+	char *buf = new char [size+1];
+	buffer.CopyAll(buf);
+	printf(buf);
+	delete [] buf;
+	
 	return 0;
 }
 

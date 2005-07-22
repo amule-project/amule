@@ -72,6 +72,12 @@
 #else
 	#include "winsock.h"
 #endif
+
+#ifdef AMULEWEB_SCRIPT_EN
+	#include "php_syntree.h"
+	#include "php_core_lib.h"
+#endif
+
 //-------------------------------------------------------------------
 
 // Initialization of the static MyTimer member variables.
@@ -3420,6 +3426,8 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
+	wxString img_tmpl;
+	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 }
 
 CScriptWebServer::~CScriptWebServer()
@@ -3483,14 +3491,32 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	return buf;
 }
 
+#ifdef AMULEWEB_SCRIPT_EN
 char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
 {
 	FILE *f = fopen(filename, "r");
 	if ( !f ) {
 		return Get_404_Page(size);
 	}
-	return 0;
+
+	CPhPLibContext *context = new CPhPLibContext(this, filename);
+	CWriteStrBuffer buffer;
+	context->Execute(&buffer);
+	
+	size = buffer.Length();
+	char *buf = new char [size+1];
+	buffer.CopyAll(buf);
+	
+	delete context;
+	
+	return buf;
 }
+#else
+char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
+{
+	return GetErrorPage("PHP support is not enabled in compilation", size);
+}
+#endif
 
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {

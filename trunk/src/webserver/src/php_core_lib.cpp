@@ -49,7 +49,7 @@
 /*
  * Print info about variable: php var_dump()
  */
-void php_native_var_dump(PHP_VALUE_NODE *result)
+void php_native_var_dump(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
@@ -106,7 +106,7 @@ void php_native_strlen(PHP_VALUE_NODE *result)
 	}
 }
 
-void php_native_substr(PHP_VALUE_NODE *result)
+void php_native_substr(PHP_VALUE_NODE * /*result*/)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
 	PHP_VALUE_NODE *str = &si_str->var->value;
@@ -140,6 +140,35 @@ void php_native_substr(PHP_VALUE_NODE *result)
  *  "varname" will tell us, what kind of variables need to load:
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
+#ifdef AMULEWEB_SCRIPT_EN
+
+void amule_load_downloads(PHP_VALUE_NODE *result)
+{
+	DownloadFileInfo *downloads = CPhPLibContext::g_curr_context->AmuleDownloads();
+	downloads->ReQuery();
+	for (std::list<DownloadFile>::const_iterator i = downloads->GetBeginIterator(); i != downloads->GetEndIterator(); i++) {
+		PHP_VAR_NODE *var = array_push_back(result);
+		var->value.type = PHP_VAL_OBJECT;
+		var->value.obj_val.class_name = "AmuleDownloadFile";
+		const DownloadFile *cur_item = &(*i);
+		var->value.obj_val.inst_ptr = (void *)cur_item;
+	}
+}
+
+#else
+
+void amule_load_downloads(PHP_VALUE_NODE *result)
+{
+	for (int i = 0; i < 10; i++) {
+		PHP_VAR_NODE *var = array_push_back(result);
+		var->value.type = PHP_VAL_OBJECT;
+		var->value.obj_val.class_name = "AmuleDownloadFile";
+		var->value.obj_val.inst_ptr = 0;
+	}
+}
+
+#endif
+
 void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
@@ -155,12 +184,7 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 	char *varname = str->str_val;
 	if ( strcmp(varname, "downloads") == 0 ) {
 		cast_value_array(result);
-		for (int i = 0; i < 10; i++) {
-			PHP_VAR_NODE *var = array_push_back(result);
-			var->value.type = PHP_VAL_OBJECT;
-			var->value.obj_val.class_name = "AmuleDownloadFile";
-			var->value.obj_val.inst_ptr = 0;
-		}
+		amule_load_downloads(result);
 	} else if ( strcmp(varname, "uploads") == 0 ) {
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
 	} else if ( strcmp(varname, "servers") == 0 ) {
@@ -172,11 +196,58 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 /*
  * Amule objects implementations
  */
+#ifdef AMULEWEB_SCRIPT_EN
+void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	printf("DEBUG: obj %p -> %s \n", ptr, prop_name);
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	DownloadFile *obj = (DownloadFile *)ptr;
+	result->type = PHP_VAL_INT;
+	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sFileName));
+	} else if ( strcmp(prop_name, "status") == 0 ) {
+		result->int_val = obj->nFileStatus;
+	} else if ( strcmp(prop_name, "size") == 0 ) {
+		result->int_val = obj->lFileSize;
+	} else if ( strcmp(prop_name, "size_done") == 0 ) {
+		result->int_val = obj->lFileCompleted;
+	} else if ( strcmp(prop_name, "size_xfer") == 0 ) {
+		result->int_val = obj->lFileTransferred;
+	} else if ( strcmp(prop_name, "speed") == 0 ) {
+		result->int_val = obj->lFileSpeed;
+	} else if ( strcmp(prop_name, "src_count") == 0 ) {
+		result->int_val = obj->lSourceCount;
+	} else if ( strcmp(prop_name, "src_count_not_curr") == 0 ) {
+		result->int_val = obj->lNotCurrentSourceCount;
+	} else if ( strcmp(prop_name, "src_count_a4af") == 0 ) {
+		result->int_val = obj->lSourceCountA4AF;
+	} else if ( strcmp(prop_name, "src_count_xfer") == 0 ) {
+		result->int_val = obj->lTransferringSourceCount;
+	} else if ( strcmp(prop_name, "prio") == 0 ) {
+		result->int_val = obj->lFilePrio;
+	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
+		result->int_val = obj->bFileAutoPriority;
+	} else {
+		php_report_error("This property is unknown", PHP_ERROR);
+	}
+}
+#else
 void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
 {
-	
+	printf("DEBUG: obj %p -> %s \n", obj, prop_name);
+	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup("some_str");
+	} else {
+		result->type = PHP_VAL_INT;
+		result->int_val = 10;
+	}
 }
-
+#endif
 /*
  * Set of "native" functions to access amule data
  * 
@@ -227,8 +298,8 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
 	g_curr_context = this;
 #ifdef AMULEWEB_SCRIPT_EN
-	m_downloads = server->m_DownloadFileInfo.ItemList();
-	m_servers = server->m_ServersInfo.ItemList();
+	m_downloads = &server->m_DownloadFileInfo;
+	m_servers = &server->m_ServersInfo;
 #endif
 	php_engine_init();
 	yyin = fopen(file, "r");

@@ -54,12 +54,10 @@ class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
 		
-		static CPhPLibContext *g_curr_context;
-		
 		CWriteStrBuffer *m_curr_str_buffer;
 #ifdef AMULEWEB_SCRIPT_EN
-		const std::list<DownloadFile> *m_downloads;
-		const std::list<ServerEntry> *m_servers;
+		DownloadFileInfo *m_downloads;
+		ServersInfo *m_servers;
 #endif		
 	public:
 		// parse file and take a "snapshot" of global vars
@@ -72,6 +70,12 @@ class CPhPLibContext {
 		
 		static void Printf(const char *str, ...);
 		static void Print(const char *str);
+
+		static CPhPLibContext *g_curr_context;
+	
+#ifdef AMULEWEB_SCRIPT_EN
+		DownloadFileInfo *AmuleDownloads() { return m_downloads; }
+#endif
 };
 
 #endif
