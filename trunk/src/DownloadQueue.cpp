@@ -522,11 +522,10 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			// happen, but it's best to be certain, so I handle this case as well
 			source->SetRequestFile( sender );
 			
+			sender->AddSource( source );
 			if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
 			}
-	
-			sender->AddSource( source );
 			
 			Notify_DownloadCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
 		}
@@ -536,11 +535,10 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 
 		theApp.clientlist->AddClient(source);
 	
+		sender->AddSource( source );
 		if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 			sender->UpdateFileRatingCommentAvail();
 		}
-	
-		sender->AddSource( source );
 	
 		Notify_DownloadCtrlAddSource(sender, source, UNAVAILABLE_SOURCE);
 	}
