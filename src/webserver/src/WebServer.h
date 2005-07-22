@@ -779,7 +779,8 @@ class CWebServerBase {
 	
 	friend class CWebSocket;
 	friend class CWSThread;		// to access the wsThread member
-
+	friend class CPhPLibContext;
+	
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
 		virtual ~CWebServerBase() { }
