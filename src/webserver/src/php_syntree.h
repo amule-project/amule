@@ -397,6 +397,8 @@ extern "C" {
 	
 	void switch_pop_scope_table(int old_free);
 	
+	void scope_reset_nonstatics(PHP_SCOPE_TABLE scope);
+	
 	void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func);
 	
 	void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node);

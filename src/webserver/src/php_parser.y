@@ -74,7 +74,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %type <syn_node> global_var_list static_var_list
 %type <syn_node> while_statement foreach_statement for_statement elseif_list else_statement switch_case_list case_list
 
-%type <exp_node> VARIABLE variable deref_variable global_var
+%type <exp_node> VARIABLE variable deref_variable global_var static_var
 %type <exp_node> parameter_list
 
 /* "for_expr" is list of expressions - a syntax node actaully */
@@ -199,13 +199,9 @@ variable_list: variable
 	|	variable_list ',' variable
 ;
 
-static_var_list:
-		static_var_list ',' VARIABLE {  }
-	|	static_var_list ',' VARIABLE '=' const_value {  }
-	|	VARIABLE  {  }
-	|	VARIABLE '=' const_value {  }
-;
-
+/*
+ This IS implemented. global_var/static itself initialize ptrs as needed
+*/
 global_var_list: global_var				{  }
 	|	global_var_list ',' global_var	{  }
 ;
@@ -224,6 +220,18 @@ global_var: VARIABLE	{
 		}
 	}
 ;
+
+static_var_list: static_var	{ }
+	|	static_var_list ',' static_var {  }
+;
+
+static_var : VARIABLE				{ $1->var_node->flags |= PHP_VARFLAG_STATIC; $$ = $1; }
+	|	VARIABLE '=' const_value	{
+			$1->var_node->flags |= PHP_VARFLAG_STATIC; $$ = $1;
+			value_value_assign(&$1->var_node->value, &$3->val_node);
+		}
+;
+
 
 function_decl_statement:
 		FUNCTION IDENT {
