@@ -101,7 +101,6 @@ static const wxString EmptyString = wxEmptyString;
 	#include <winuser.h>
 	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */
 
-	typedef uint32_t	in_addr_t;
 #else 
 
 	typedef struct sRECT {
@@ -112,7 +111,6 @@ static const wxString EmptyString = wxEmptyString;
 	} RECT;
 
 #endif /* __WXMSW__ */
-
 
 /*
  * Check version stuff

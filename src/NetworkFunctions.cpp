@@ -30,23 +30,6 @@
 
 #include "NetworkFunctions.h"	// Interface declaration
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
-#else
-	#ifdef __BSD__
-     	  #include <sys/types.h>
-	#endif /* __BSD__ */
-	
-	#include <sys/socket.h>		//
-	#include <netinet/in.h>		// Needed for inet_addr
-	#include <arpa/inet.h>		//
-#endif
-	
-#include <unistd.h>		// Needed for gethostname()
-
-
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)
 {
 	// The current position in the current field, used to detect malformed fields (x.y..z).
@@ -110,17 +93,6 @@ uint32 StringHosttoUint32(const wxString &Host)
 	}
 }
 
-wxString GetLocalHost() {
-	char szHost[256];
-	// Get our hostname
-	wxString Host;
-	if (gethostname(szHost, sizeof szHost) == 0){
-		// This is safe. Host shouldn't be unicoded.
-		Host = wxConvCurrent->cMB2WX(szHost);
-	}
-	return Host;
-}
-
 /**
  * Used to store the ranges.
  */
@@ -165,8 +137,8 @@ const IPRange ranges[] = {
 
 
 struct filter_st {
-	in_addr_t addr;		// Address and mask in anti-host order.
-	in_addr_t mask;
+	uint32 addr;		// Address and mask in anti-host order.
+	uint32 mask;
 };
 
 const int number_of_ranges = sizeof(ranges) / sizeof(IPRange);

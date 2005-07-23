@@ -97,12 +97,6 @@ inline uint32 StringIPtoUint32(const wxString &strIP)
  */
 uint32 StringHosttoUint32(const wxString &Host);
 
-
-/**
- * Returns our Local Host.
- */
-wxString GetLocalHost();
-
 /**
  * Checks for invalid IP-values.
  *
