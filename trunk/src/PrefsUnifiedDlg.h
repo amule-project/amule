@@ -125,6 +125,7 @@ protected:
 
 	void OnOk(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	void OnClose(wxCloseEvent &event);
 
 	void OnButtonBrowseWav(wxCommandEvent &event);
 	void OnButtonBrowseSkin(wxCommandEvent &event);
