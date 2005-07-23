@@ -593,7 +593,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 }
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
-	(uint32) (theApp.serverconnect->IsConnected() ? theApp.serverconnect->GetClientID() : 
+	(uint32) (theApp.IsConnectedED2K() ? theApp.serverconnect->GetClientID() : 
 		theApp.serverconnect->IsConnecting() ? 0xffffffff : 0))
 {
 	if ( theApp.serverconnect->GetCurrentServer() ) {
@@ -628,7 +628,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
 }
 
@@ -665,7 +665,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
@@ -718,7 +718,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-		(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+		(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
 }
 
@@ -746,7 +746,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) ?
+				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 

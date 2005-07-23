@@ -285,7 +285,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 	wxString URIs;	
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK ) {
-		if ( !theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID() ) {
+		if ( !theApp.IsConnectedED2K() || theApp.serverconnect->IsLowID() ) {
 			wxMessageBox(_("You need a HighID to create a valid sourcelink"));
 
 			return;

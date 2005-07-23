@@ -901,7 +901,7 @@ void CStatistics::UpdateStatsTree() {
 		(*con7) = _("Max Connection Limit Reached: Never");
 	}
 
-	if(theApp.serverconnect->IsConnected()) {
+	if(theApp.IsConnectedED2K()) {
 		(*con8) = wxString::Format(_("Average Connections (estimate): %f"),theApp.listensocket->GetAverageConnections());
 	} else {
 		(*con8) = _("Waiting for connection...");

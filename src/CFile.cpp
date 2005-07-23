@@ -228,7 +228,6 @@ CFile::CFile(const wxString& sFileName, OpenMode mode)
 
 	m_fd = fd_invalid;
 	m_error = false;
-	
 	Open(sFileName, mode);
 }
 
@@ -861,9 +860,9 @@ wxString  CDirIterator::GetNextFile() {
 				} else {
 					// Stat failed. Assert.
 					printf("CFile: serious error, stat failed\n");
-					wxASSERT(0);
+					//wxASSERT(0);
 					AddDebugLogLineM( true, logFileIO,
-						wxT("Unexpected error calling stat on a file!") );
+						wxT("Unexpected error calling stat on a file: ") + FullName);
 					dp = readdir(DirPtr);
 				}
 #if 0

@@ -511,6 +511,8 @@ public:
 
 	// Kad
 	static bool GetNetworkKademlia() { return s_ConnectToKad; }
+	// Kad
+	static bool GetNetworkED2K() { return s_ConnectToED2K; }
 	
 protected:
 	void	CreateUserHash();
@@ -711,6 +713,7 @@ protected:
 	
 	// Kad
 	static bool s_ConnectToKad;
+	static bool s_ConnectToED2K;
 };
 
 

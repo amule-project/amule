@@ -207,6 +207,7 @@ bool		CPreferences::s_ShareHiddenFiles;
 bool		CPreferences::s_AutoSortDownload;
 bool		CPreferences::s_NewVersionCheck;
 bool		CPreferences::s_ConnectToKad;
+bool		CPreferences::s_ConnectToED2K;
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -841,6 +842,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false )));
 	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false )));
 	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true )));
+	// Enabled networks
+	NewCfgItem( IDC_NETWORKKAD, (new Cfg_Bool( wxT("/eMule/ConnectToKad"),	s_ConnectToKad, true )) );
+	NewCfgItem( IDC_NETWORKED2K, ( new Cfg_Bool( wxT("/eMule/ConnectToED2K"),	s_ConnectToED2K, true ) ));
+
 
 	/**
 	 * Files
@@ -997,9 +1002,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
 	
-	// Kad connection has no GUI yet
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/ConnectToKad"),	s_ConnectToKad, false ) );
-
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  

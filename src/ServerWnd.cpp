@@ -51,6 +51,12 @@
 #include "StringFunctions.h" // Needed for StrToULong
 #include "Logger.h"
 
+#ifdef __COMPILE_KAD__
+#include "kademlia/kademlia/Kademlia.h"
+#include "ClientList.h"
+#include "OtherFunctions.h"
+#include "updownclient.h"
+#endif
 
 BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)
@@ -75,9 +81,15 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
 	
 	// Insert two columns, currently without a header
-	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
-	MyInfoList->InsertColumn(0, wxEmptyString);
-	MyInfoList->InsertColumn(1, wxEmptyString);
+	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
+	wxASSERT(ED2KInfoList);
+	ED2KInfoList->InsertColumn(0, wxEmptyString);
+	ED2KInfoList->InsertColumn(1, wxEmptyString);
+
+	wxListCtrl* KadInfoList = CastChild( ID_KADINFO, wxListCtrl );
+	wxASSERT(KadInfoList);
+	KadInfoList->InsertColumn(0, wxEmptyString);
+	KadInfoList->InsertColumn(1, wxEmptyString);
 	
 	sizer->Show(this,TRUE);
 }
@@ -149,49 +161,107 @@ void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CServerWnd::UpdateMyInfo()
+void CServerWnd::UpdateED2KInfo()
 {
-	wxListCtrl* MyInfoList = CastChild( ID_MYSERVINFO, wxListCtrl );
+	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
 	
-	MyInfoList->DeleteAllItems();
-	MyInfoList->InsertItem(0, _("Status:"));
+	ED2KInfoList->DeleteAllItems();
+	ED2KInfoList->InsertItem(0, _("ED2K Status:"));
 
-	if (theApp.serverconnect->IsConnected()) {
-		MyInfoList->SetItem(0, 1, _("Connected"));
+	if (theApp.IsConnectedED2K()) {
+		ED2KInfoList->SetItem(0, 1, _("Connected"));
 
 		// Connection data		
 		
-		MyInfoList->InsertItem(1, _("IP:Port"));
-		MyInfoList->SetItem(1, 1, theApp.serverconnect->IsLowID() ? 
+		ED2KInfoList->InsertItem(1, _("IP:Port"));
+		ED2KInfoList->SetItem(1, 1, theApp.serverconnect->IsLowID() ? 
 			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
 
-		MyInfoList->InsertItem(2, _("ID"));
+		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
-		MyInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.serverconnect->GetClientID()));
+		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.serverconnect->GetClientID()));
 		
-		MyInfoList->InsertItem(3, wxEmptyString);		
+		ED2KInfoList->InsertItem(3, wxEmptyString);		
 
 		if (theApp.serverconnect->IsLowID()) {
-			MyInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
-			MyInfoList->SetItem(3, 1, _("LowID"));
+			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
+			ED2KInfoList->SetItem(3, 1, _("LowID"));
 		} else {
-			MyInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
-			MyInfoList->SetItem(3, 1, _("HighID"));
+			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
+			ED2KInfoList->SetItem(3, 1, _("HighID"));
 		}
 		
 	} else {
 		// No data
-		MyInfoList->SetItem(0, 1, _("Disconnected"));
+		ED2KInfoList->SetItem(0, 1, _("Not Connected"));
 	}
 
 	// Fit the width of the columns
-	MyInfoList->SetColumnWidth(0, -1);
-	MyInfoList->SetColumnWidth(1, -1);
+	ED2KInfoList->SetColumnWidth(0, -1);
+	ED2KInfoList->SetColumnWidth(1, -1);
 }
 
+void CServerWnd::UpdateKadInfo()
+{
+	wxListCtrl* KadInfoList = CastChild( ID_KADINFO, wxListCtrl );
+	
+	int next_row = 0;
+	
+	#ifdef __COMPILE_KAD__
+	
+		KadInfoList->DeleteAllItems();
+		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
+	
+		if (Kademlia::CKademlia::isRunning()) {
+			KadInfoList->SetItem(next_row, 1, _("Running"));
+			
+			++next_row;
+			
+			// Connection data		
+			
+			KadInfoList->InsertItem(next_row, _("Status:"));
+			KadInfoList->SetItem(next_row, 1, theApp.IsConnectedKad() ? _("Connected"): _("Disconnected"));
+			++next_row;
+			if (theApp.IsConnectedKad()) {
+				KadInfoList->InsertItem(next_row, _("Connection State:"));
+				KadInfoList->SetItem(next_row, 1, Kademlia::CKademlia::isFirewalled() ? _("Firewalled") : _("OK"));
+				++next_row;
+				if (Kademlia::CKademlia::isFirewalled()) {
+					KadInfoList->InsertItem(next_row, _("Firewalled state: "));
+					KadInfoList->SetItem(next_row, 1, theApp.clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
+					++next_row;
+					#ifdef __DEBUG__
+					if (theApp.clientlist->GetBuddy()) {
+						KadInfoList->InsertItem(next_row, _("Buddy address: "));
+						KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp.clientlist->GetBuddy()->GetIP(), theApp.clientlist->GetBuddy()->GetUDPPort()));
+						++next_row;		
+					}
+					#endif
+				}
+				
+				KadInfoList->InsertItem(next_row, _("Average Users:"));
+				KadInfoList->SetItem(next_row, 1, otherfunctions::CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
+				++next_row;
+				KadInfoList->InsertItem(next_row, _("Average Files:"));
+				KadInfoList->SetItem(next_row, 1, otherfunctions::CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
+			} 
+			
+		} else {
+			// No data
+			KadInfoList->SetItem(next_row, 1, _("Not running"));
+		}
+
+	#else
+		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
+		KadInfoList->SetItem(next_row, 1, _("Not Available"));
+	#endif
+	
+	// Fit the width of the columns
+	KadInfoList->SetColumnWidth(0, -1);
+	KadInfoList->SetColumnWidth(1, -1);
+}
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
 	theApp.amuledlg->srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
 }
-

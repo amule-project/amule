@@ -679,7 +679,7 @@ bool IsConnectedServer(const CServer* server)
 
 bool CDownloadQueue::SendNextUDPPacket()
 {
-	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.serverconnect->IsConnected()) {
+	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.IsConnectedED2K()) {
 		return false;
 	}
 

@@ -1726,7 +1726,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		if (	!m_bLocalSrcReqQueued &&
 			(	(!lastsearchtime) ||
 				(dwCurTick - lastsearchtime) > SERVERREASKTIME) &&
-			theApp.serverconnect->IsConnected() &&
+			theApp.IsConnectedED2K() &&
 			thePrefs::GetMaxSourcePerFileSoft() > GetSourceCount() &&
 			!m_stopped ) {
 			m_bLocalSrcReqQueued = true;
@@ -1774,7 +1774,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	}
 	
 	// MOD Note: Do not change this part - Merkur
-	if (theApp.serverconnect->IsConnected()) {
+	if (theApp.IsConnectedED2K()) {
 		if(theApp.serverconnect->IsLowID()) {
 			if(theApp.serverconnect->GetClientID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
 				return false;

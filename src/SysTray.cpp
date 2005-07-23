@@ -121,7 +121,7 @@ void do_show()
 // Connect to a server
 void connect_any_server()
 {
-	if ( theApp.serverconnect->IsConnected() ) {
+	if ( theApp.IsConnectedED2K() ) {
 		theApp.serverconnect->Disconnect();
 	} else if ( !theApp.serverconnect->IsConnecting() ) {
 		AddLogLineM(true, _("Connecting"));
@@ -136,7 +136,7 @@ void connect_any_server()
 // Disconnect
 void disconnect()
 {
-	if ( theApp.serverconnect->IsConnected() )
+	if ( theApp.IsConnectedED2K() )
 		theApp.serverconnect->Disconnect();
 }
 
@@ -228,7 +228,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	{
 		wxString temp = wxString(_("ClientID:")) + wxT(" ");
 		
-		if (theApp.serverconnect->IsConnected()) {
+		if (theApp.IsConnectedED2K()) {
 			unsigned long id = theApp.serverconnect->GetClientID();
 					
 			temp += wxString::Format(wxT("%lu"), id);
@@ -428,7 +428,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	gtk_container_add (GTK_CONTAINER (status_menu), item);
 
 
-	if (theApp.serverconnect->IsConnected()) {
+	if (theApp.IsConnectedED2K()) {
 		//Disconnection Speed item
 		item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("Disconnect from server"))));
 		gtk_container_add (GTK_CONTAINER (status_menu), item);

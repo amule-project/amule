@@ -136,7 +136,7 @@ void CServerListCtrl::RemoveServer( const CServer* server, bool ask_static)
 void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
-	bool connected = theApp.serverconnect->IsConnected() ||
+	bool connected = theApp.IsConnectedED2K() ||
 	  theApp.serverconnect->IsConnecting();
 
 	while ( pos != -1 ) {
@@ -497,7 +497,7 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( item > -1 ) {
-		if ( theApp.serverconnect->IsConnected() )
+		if ( theApp.IsConnectedED2K() )
 			theApp.serverconnect->Disconnect();
 
 		theApp.serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );

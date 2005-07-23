@@ -847,9 +847,16 @@ bool CamuleApp::OnInit()
 	}
 	
 	// Autoconnect if that option is enabled
-	if (thePrefs::DoAutoConnect()) {
+	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
 		AddLogLineM(true, _("Connecting"));
-		theApp.serverconnect->ConnectToAnyServer();
+		if (thePrefs::GetNetworkED2K()) {
+			theApp.serverconnect->ConnectToAnyServer();
+		}
+		#ifdef __COMPILE_KAD__
+		if(thePrefs::GetNetworkKademlia()) {
+			Kademlia::CKademlia::start();
+		}	
+		#endif
 	}
 
 	// No webserver on Win at all (yet)
@@ -1061,7 +1068,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 // Returns a ed2k source URL
 wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 {
-	if ( !serverconnect->IsConnected() || serverconnect->IsLowID() ) {
+	if ( !IsConnectedED2K() || serverconnect->IsLowID() ) {
 		return wxEmptyString;
 	}
 	uint32 clientID = serverconnect->GetClientID();
@@ -1182,7 +1189,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		emulesig_string = wxT("0\xA0.0|0.0|0");
 		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
 	} else {
-		if (serverconnect->IsConnected()) {
+		if (IsConnectedED2K()) {
 
 			// We are online
 			emulesig_string =
@@ -1443,7 +1450,7 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		return;
 	}
 	serverconnect->StopConnectionTry();
-	if (serverconnect->IsConnected() ) {
+	if (IsConnectedED2K() ) {
 		return;
 	}
 	serverconnect->ConnectToAnyServer();
@@ -1882,18 +1889,26 @@ void CamuleApp::CheckNewVersion(uint32 result) {
 }
 
 bool CamuleApp::IsConnected() {
-	return (serverconnect->IsConnected()
-		#ifdef __COMPILE_KAD__
-		|| Kademlia::CKademlia::isConnected()
-		#endif
-		);
+	return (IsConnectedED2K() || IsConnectedKad());
 }
 
+bool CamuleApp::IsConnectedED2K() {
+	return serverconnect->IsConnected();
+}
+
+bool CamuleApp::IsConnectedKad() {
+	return 
+		#ifdef __COMPILE_KAD__
+			Kademlia::CKademlia::isConnected();
+		#else 
+			false;
+		#endif
+}
 
 bool CamuleApp::IsFirewalled()
 {
 	#ifdef __COMPILE_KAD__
-	if (theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsLowID()) {
+	if (theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) {
 		return false; // we have an eD2K HighID -> not firewalled
 	}
 
@@ -1912,7 +1927,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 {
 	#ifdef __COMPILE_KAD__
 	if(Kademlia::CKademlia::isConnected()) {
-		if(serverconnect->IsConnected()) {
+		if(IsConnectedED2K()) {
 			if(serverconnect->IsLowID()) {
 				if(Kademlia::CKademlia::isFirewalled()) {
 					//Both Connected - Both Firewalled
@@ -1943,7 +1958,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 			}
 		}
 	} else {
-		if( serverconnect->IsConnected() ) {
+		if( IsConnectedED2K() ) {
 			if( serverconnect->IsLowID() ) {
 				//Only Server Connected - Server LowID
 				return false;

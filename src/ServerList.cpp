@@ -246,7 +246,7 @@ void CServerList::ServerStats()
 	uint32 temp;
 	temp = (uint32)time(NULL);
 	
-	if(theApp.serverconnect->IsConnected() && m_servers.size() > 0) {
+	if(theApp.IsConnectedED2K() && m_servers.size() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
 		if(!ping_server) {
