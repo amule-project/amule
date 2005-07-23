@@ -11,6 +11,8 @@ Version 2.1.x - The "???" version
 		  file. They don't work on all distros, even worse, don't always
 		  work with Fedora Core.
 		* Created a new spec file, compliant with Fedora Core.
+		* Fixed a crash when aMule was shutdown by amulecmd and an
+		  assert happened.
 
 	volpol:
 		* A4AF transfer speed display fix
@@ -52,7 +54,7 @@ Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 	lfroen:
 		* New daemon socket code, event based. Improved reliability and 
 		  speed problems fixed.
-		  
+
 	volpol:
 		* Fixed #417 "Upload priority is changed for completed files."
 		* Added new display filter "Active"
@@ -63,7 +65,7 @@ Version 2.0.3 - The "Hell 2.0.3: Now with improved daemons!" version.
 
 	Special Thanks To:
 
-   		* All the usual people. 
+		* All the usual people. 
 		  You don't know who they are? Just check previous changelogs 
 		  (just not the previous one, ok?) :P 
 

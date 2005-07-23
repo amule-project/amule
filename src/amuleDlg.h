@@ -148,6 +148,7 @@ public:
 	wxImageList imagelist;
 	
 	void StartGuiTimer() { gui_timer->Start(100); }
+	void StopGuiTimer() { gui_timer->Stop(); }
 	
 	PrefsUnifiedDlg* prefs_dialog;
 
