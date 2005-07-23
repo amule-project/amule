@@ -41,7 +41,7 @@
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
 #include "Color.h"		// Needed for GetColour
-#include "MuleNotebook.h"	// Needed for EMULENOTEBOOK events
+#include "MuleNotebook.h"	// Needed for MULENOTEBOOK events
 #include "OPCodes.h"
 #include "OtherFunctions.h"
 
