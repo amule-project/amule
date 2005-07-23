@@ -43,7 +43,7 @@ class ECSocket;
 
 class CECSocketHandler: public wxEvtHandler {
 	public:
-        CECSocketHandler(ECSocket *socket = NULL) {};
+        CECSocketHandler(ECSocket* WXUNUSED(socket) = NULL) {};
 
 	private:
         void SocketHandler(wxSocketEvent& event);
