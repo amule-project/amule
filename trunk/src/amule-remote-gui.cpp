@@ -38,30 +38,6 @@ using std::auto_ptr;
 #pragma implementation "updownclient.h"
 #endif
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/msw/winundef.h>
-#else
-	#ifdef __BSD__
-		#include <sys/types.h>
-	#endif /* __BSD__ */
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-
-#ifdef __WXGTK__
-
-	#ifdef __BSD__
-     	#include <sys/param.h>
-       	#include <sys/mount.h>
-	#else 
-		#include <execinfo.h>
-		#include <mntent.h>
-	#endif /* __BSD__ */
-
-#endif
-
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for CVSDATE
 #endif
@@ -1268,8 +1244,8 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		curr_pos = file->requestedblocks_list.GetHeadPosition();
 		for (int i = 0; i < reqcount;i++) {
 			Requested_Block_Struct* block = file->requestedblocks_list.GetNext(curr_pos);
-			block->StartOffset = ntohl(reqparts[i].start);
-			block->EndOffset = ntohl(reqparts[i].end);
+			block->StartOffset = ENDIAN_NTOHL(reqparts[i].start);
+			block->EndOffset = ENDIAN_NTOHL(reqparts[i].end);
 		}
 		// copy parts frequency
 		const unsigned char *part_info = encoder.m_part_status.Buffer();
