@@ -346,6 +346,7 @@ ECSocket::ECSocket(void) : wxSocketClient()
 	parms.out_ptr = NULL;
 	parms.LastSocketError = wxSOCKET_NOERROR;
 	parms.used_flags = 0;
+	memset(&parms.z,sizeof(z_stream),0);
 	SetEventHandler(handler,EC_SOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
@@ -353,7 +354,6 @@ ECSocket::ECSocket(void) : wxSocketClient()
 		wxSOCKET_OUTPUT_FLAG |
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
-	// parms.z No zlib.net example does the memset stuff on z_stream
 }
 
 ECSocket::~ECSocket(void)
