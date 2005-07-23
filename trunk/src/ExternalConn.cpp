@@ -232,19 +232,21 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
+		// If one of the clients doesn't use CVSDATE, we just try...
 #ifdef CVSDATE
-		if (request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData() != wxT(CVSDATE)) {
+		if (!request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().IsEmpty() && request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().BeforeFirst(wxT(' ')) != wxString(wxT(CVSDATE)).BeforeFirst(wxT(' '))) {
 #else
-		if (request->GetTagByName(EC_TAG_CVSDATE)) {
+		if (false) { 
 #endif
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect CVSDATE. Please run core and remote from the same CVS tarball.")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect CVSDATE. Please run core and remote from the same CVS tarball (") + request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData() + wxT(" != ") + wxT(CVSDATE) + wxT(")")));
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
 				if (passwd && passwd->GetMD4Data() == CMD4Hash(thePrefs::ECPassword())) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
+					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + CMD4Hash(thePrefs::ECPassword()).Encode() + wxT(")."));
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 				}
@@ -1199,5 +1201,3 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 	}	
 	return response;
 }
-
-
