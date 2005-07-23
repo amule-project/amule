@@ -279,8 +279,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			#warning This way, pass enter is not hidden on windows. Bad thing.
 			char temp_str[512];
 			fflush(stdin);
-			printf("Enter password for mule connection: ");
-			fsync(1); // stdout
+			printf("Enter password for mule connection: \n");
 			fgets(temp_str, 512, stdin);
 			temp_str[strlen(temp_str)-1] = '\0';
 			pass_plain = char2unicode(temp_str);
