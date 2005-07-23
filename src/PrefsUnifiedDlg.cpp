@@ -130,6 +130,9 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_COMMAND_SCROLL(IDC_SERVERKEEPALIVE,	PrefsUnifiedDlg::OnScrollBarChange)
 
 	EVT_SPINCTRL(IDC_MAXUP,			PrefsUnifiedDlg::OnRateLimitChanged)
+	
+	EVT_CLOSE(PrefsUnifiedDlg::OnClose)
+	
 END_EVENT_TABLE()
 
 
@@ -600,7 +603,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 #endif
 }
 
-
+void PrefsUnifiedDlg::OnClose(wxCloseEvent& WXUNUSED(event))
+{
+	wxCommandEvent temp;
+	OnCancel(temp);
+}
 void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Final actions:
@@ -613,7 +620,6 @@ void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 	// Destory the dialog
 	Destroy();
 }
-
 
 void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 {
