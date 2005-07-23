@@ -1250,8 +1250,8 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		curr_pos = file->gaplist.GetHeadPosition();
 		for (int j = 0; j < gap_size;j++) {
 			Gap_Struct* gap = file->gaplist.GetNext(curr_pos);
-			gap->start = ntohl(gap_info[2*j]);
-			gap->end = ntohl(gap_info[2*j+1]);
+			gap->start = ENDIAN_NTOHL(gap_info[2*j]);
+			gap->end = ENDIAN_NTOHL(gap_info[2*j+1]);
 		}
 		
 		// adjust size of requested block list
