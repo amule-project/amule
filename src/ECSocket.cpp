@@ -268,6 +268,10 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		if (required_len == 0) {
 			break;
 		}
+		if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
+			error = false;
+			LastErrorValue = wxSOCKET_NOERROR;
+		}
 	}
 	if (error) {
 		if (ErrorCode) *ErrorCode = LastErrorValue;
@@ -298,13 +302,24 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 		// Give socket a 10 sec chance to send more data.
 		if ( !sock->WaitForWrite(10, 0) ) {
 			LastErrorValue = sock->LastError();
+			if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
+				LastErrorValue = wxSOCKET_NOERROR;
+				continue;
+			}			
 			error = true;
 			break;
 		}
 		sock->Write(iobuf, msgRemain);
 		LastIO = sock->LastCount();
 		error = sock->Error();
-		if (error) LastErrorValue = sock->LastError();
+		if (error) {
+			LastErrorValue = sock->LastError();
+			if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
+				LastErrorValue = wxSOCKET_NOERROR;
+				error = false;
+				continue;
+			}						
+		}
 		msgRemain -= LastIO;
 		WroteSoFar += LastIO;
 		iobuf += LastIO;
