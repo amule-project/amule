@@ -670,12 +670,16 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 				amuledlg->serverwnd->serverlistctrl->Thaw();
 			}
 			break;
-		case SERVER_UPDATEMYINFO:
+		case SERVER_UPDATEED2KINFO:
 			if ( amuledlg->serverwnd ) {
-				amuledlg->serverwnd->UpdateMyInfo();
+				amuledlg->serverwnd->UpdateED2KInfo();
 			}
 			break;
-
+		case SERVER_UPDATEKADINFO:
+			if ( amuledlg->serverwnd ) {
+				amuledlg->serverwnd->UpdateKadInfo();
+			}
+			break;
 		
 		// notification
 		case SHOW_NOTIFIER:

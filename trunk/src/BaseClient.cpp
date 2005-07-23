@@ -1072,7 +1072,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 
 	uint32 dwIP = 0;
 	uint16 nPort = 0;
-	if (theApp.serverconnect->IsConnected()) {
+	if (theApp.IsConnectedED2K()) {
 		dwIP = theApp.serverconnect->GetCurrentServer()->GetIP();
 		nPort = theApp.serverconnect->GetCurrentServer()->GetPort();
 	}
@@ -1479,7 +1479,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 void CUpDownClient::ConnectionEstablished()
 {
 	// check if we should use this client to retrieve our public IP
-	if (theApp.GetPublicIP() == 0 && theApp.serverconnect->IsConnected() /* && m_fPeerCache */) {
+	if (theApp.GetPublicIP() == 0 && theApp.IsConnectedED2K()) {
 		SendPublicIPRequest();
 	}
 	

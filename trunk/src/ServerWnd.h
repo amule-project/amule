@@ -44,7 +44,8 @@ public:
 	virtual ~CServerWnd();
 
 	void UpdateServerMetFromURL(const wxString& strURL);
-	void UpdateMyInfo();
+	void UpdateED2KInfo();
+	void UpdateKadInfo();
 
 	CServerListCtrl* serverlistctrl;
 

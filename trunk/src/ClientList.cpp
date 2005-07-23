@@ -715,7 +715,7 @@ void CClientList::Process()
 					m_nBuddyStatus = Connecting;
 					cur_client->SetKadState(KS_CONNECTING_BUDDY);
 					cur_client->TryToConnect(true);
-					Notify_ServerUpdateMyInfo();
+					Notify_ServerUpdateED2KInfo();
 				} else {
 					if( m_nBuddyStatus == Connected ) {
 						cur_client->SetKadState(KS_NONE);
@@ -746,7 +746,7 @@ void CClientList::Process()
 				if( m_nBuddyStatus != Connected ) {
 					m_pBuddy = cur_client;
 					m_nBuddyStatus = Connected;
-					Notify_ServerUpdateMyInfo();
+					Notify_ServerUpdateED2KInfo();
 				}
 				if( m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong() ) {
 					cur_client->SendBuddyPing();
@@ -768,7 +768,7 @@ void CClientList::Process()
 			}
 			m_pBuddy = NULL;
 			m_nBuddyStatus = Disconnected;
-			Notify_ServerUpdateMyInfo();
+			Notify_ServerUpdateED2KInfo();
 		}
 	}
 
@@ -1018,7 +1018,7 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem) {
 	if (m_KadSources.erase(torem)) {
 		if(torem == m_pBuddy) {
 			m_pBuddy = NULL;
-			Notify_ServerUpdateMyInfo();
+			Notify_ServerUpdateED2KInfo();
 		}
 	}
 		

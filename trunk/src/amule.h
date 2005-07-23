@@ -123,8 +123,14 @@ public:
 	bool IsFirewalled();
 	// Check if we should callback this client
 	bool DoCallback( CUpDownClient *client );
+	
+	// Connection to ED2K
+	bool IsConnectedED2K();
+	// Connection to Kad
+	bool IsConnectedKad();
 	// Are we connected to at least one network?
 	bool IsConnected();
+	
 	
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
@@ -133,14 +139,14 @@ public:
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
 	wxString	GenFakeCheckUrl(const CAbstractFile *f);
-	wxString        GenFakeCheckUrl2(const CAbstractFile *f);
+	wxString	GenFakeCheckUrl2(const CAbstractFile *f);
 	
 	void RunAICHThread();
 	
 	// Misc functions
 	void		OnlineSig(bool zero = false); 
 	void		Localize_mule();
-	void Trigger_New_version(wxString newMule);
+	void		Trigger_New_version(wxString newMule);
 
 	// Used to detect a previous running instance of aMule
 	wxServer*	localserver;

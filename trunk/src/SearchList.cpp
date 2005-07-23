@@ -344,7 +344,7 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	
 	// This is ed2k search...
 	
-	if(!theApp.serverconnect->IsConnected()) {
+	if(!theApp.IsConnectedED2K()) {
 		// Failed!
 		delete ed2k_data;
 		return false;

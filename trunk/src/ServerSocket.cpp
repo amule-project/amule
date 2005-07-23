@@ -338,7 +338,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 //								pServer->SetAuxPortsList(wxString::Format(wxT("%u"), pServer->GetConnPort()) + wxT(",") + pServer->GetAuxPortsList());
 							}
 							Notify_ServerRefresh(pServer);
-							Notify_ServerUpdateMyInfo();
+							Notify_ServerUpdateED2KInfo();
 						}
 					}
 				}

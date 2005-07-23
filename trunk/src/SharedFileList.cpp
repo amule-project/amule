@@ -250,7 +250,6 @@ void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
 		}
 		pPubKw->AddRef(pFile);
 	}
-	printf("New keywords size is %i\n",(int)m_lstKeywords.GetSize());
 }
 
 void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
@@ -529,7 +528,6 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 		m_Files_map[pFile->GetFileHash()] = pFile;		
 		/* Keywords to publish on Kad */
 		#ifdef __COMPILE_KAD__
-		printf("Adding keyword to publish for file %s\n",(const char*)unicode2char(pFile->GetFileName()));
 		m_keywords->AddKeywords(pFile);
 		#endif
 	}
@@ -549,7 +547,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
 	if (!bOnlyAdd) {
 		
 		// offer new file to server
-		if (!theApp.serverconnect->IsConnected()) {
+		if (!theApp.IsConnectedED2K()) {
 			return;
 		}
 	
@@ -719,7 +717,7 @@ bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
 
 void CSharedFileList::SendListToServer(){
 	
-	if (m_Files_map.empty() || !theApp.serverconnect->IsConnected() ) {
+	if (m_Files_map.empty() || !theApp.IsConnectedED2K() ) {
 		return;
 	}
 	
@@ -821,7 +819,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 			nClientPort = FILE_INCOMPLETE_PORT;
 		}
 	} else {
-		if (!theApp.serverconnect->IsConnected() || theApp.serverconnect->IsLowID()){
+		if (!theApp.IsConnectedED2K() || theApp.serverconnect->IsLowID()){
 			nClientID = 0;
 			nClientPort = 0;
 		} else {

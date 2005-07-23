@@ -1926,21 +1926,48 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item0->Add( item39, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
-    wxStaticBox *item53 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBox *item53 = new wxStaticBox( parent, -1, _("Networks") );
     wxStaticBoxSizer *item52 = new wxStaticBoxSizer( item53, wxVERTICAL );
 
-    wxCheckBox *item54 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item52->Add( item54, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    wxFlexGridSizer *item54 = new wxFlexGridSizer( 1, 0, 0, 0 );
+    item54->AddGrowableCol( 0 );
+    item54->AddGrowableCol( 1 );
+    item54->AddGrowableCol( 2 );
+    item54->AddGrowableCol( 3 );
+    item54->AddGrowableCol( 4 );
+    item54->AddGrowableCol( 5 );
+    item54->AddGrowableCol( 6 );
 
-    wxCheckBox *item55 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item55 = new wxCheckBox( parent, IDC_NETWORKED2K, _("ED2K"), wxDefaultPosition, wxDefaultSize, 0 );
     item55->SetValue( TRUE );
-    item52->Add( item55, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    item54->Add( item55, 0, wxALIGN_CENTER|wxLEFT, 40 );
 
-    wxCheckBox *item56 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
-    item56->SetValue( TRUE );
-    item52->Add( item56, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticLine *item56 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item54->Add( item56, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item52, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    wxCheckBox *item57 = new wxCheckBox( parent, IDC_NETWORKKAD, _("Kademlia"), wxDefaultPosition, wxDefaultSize, 0 );
+    item57->SetValue( TRUE );
+    item54->Add( item57, 0, wxALIGN_CENTER|wxRIGHT, 15 );
+
+    item52->Add( item54, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item52, 0, wxADJUST_MINSIZE|wxGROW|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticBox *item59 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item58 = new wxStaticBoxSizer( item59, wxVERTICAL );
+
+    wxCheckBox *item60 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item58->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 10 );
+
+    wxCheckBox *item61 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
+    item61->SetValue( TRUE );
+    item58->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 10 );
+
+    wxCheckBox *item62 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    item62->SetValue( TRUE );
+    item58->Add( item62, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item58, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3110,12 +3137,16 @@ wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
     item3->AddPage( item4, _("aMule Log") );
 
     wxPanel *item5 = new wxPanel( item3, -1 );
-    MyInfoLog( item5, FALSE );
-    item3->AddPage( item5, _("My Info") );
+    Kad_Info( item5, FALSE );
+    item3->AddPage( item5, _("Kad Info") );
 
     wxPanel *item6 = new wxPanel( item3, -1 );
-    ServerInfoLog( item6, FALSE );
-    item3->AddPage( item6, _("Server Info") );
+    ED2K_Info( item6, FALSE );
+    item3->AddPage( item6, _("ED2K Info") );
+
+    wxPanel *item7 = new wxPanel( item3, -1 );
+    ServerInfoLog( item7, FALSE );
+    item3->AddPage( item7, _("Server Info") );
 
     item0->Add( item2, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3262,7 +3293,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
-wxSizer *MyInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
+wxSizer *ED2K_Info( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
@@ -3271,12 +3302,12 @@ wxSizer *MyInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 28 ), wxDefaultPosition, wxDefaultSize );
     item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("My Info"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, ID_STATICTEXT, _("ED2K Info"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxListCtrl *item4 = new wxListCtrl( parent, ID_MYSERVINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    wxListCtrl *item4 = new wxListCtrl( parent, ID_ED2KINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
@@ -3831,6 +3862,33 @@ wxSizer *convertDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item8->Add( item12, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
+wxSizer *Kad_Info( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 28 ), wxDefaultPosition, wxDefaultSize );
+    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, ID_STATICETXT, _("Kad Info"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxListCtrl *item4 = new wxListCtrl( parent, ID_KADINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

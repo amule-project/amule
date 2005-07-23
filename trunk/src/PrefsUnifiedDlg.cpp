@@ -302,6 +302,10 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 		#endif
 	#endif
 	
+	#ifndef __COMPILE_KAD__
+		FindWindow(IDC_NETWORKKAD)->Enable(false);
+	#endif
+	
 }
 
 

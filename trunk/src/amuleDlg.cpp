@@ -376,7 +376,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			if(!theApp.serverconnect) {
 				data = mule_Tr_grey_ico;
 			} else {
-				if (theApp.serverconnect->IsConnected()) {
+				if (theApp.IsConnectedED2K()) {
 				if(!theApp.serverconnect->IsLowID()) {
 						data = mule_TrayIcon_ico;
 					} else {
@@ -414,7 +414,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			if(!theApp.serverconnect) {
 				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 			} else {
-				if (theApp.serverconnect->IsConnected()) {
+				if (theApp.IsConnectedED2K()) {
 					if(!theApp.serverconnect->IsLowID()) {
 						m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
 					} else {
@@ -585,7 +585,7 @@ CamuleDlg::~CamuleDlg()
 
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
-	if ((!theApp.serverconnect->IsConnected() && !theApp.serverconnect->IsConnecting())) {
+	if (thePrefs::GetNetworkED2K() && !theApp.IsConnectedED2K() && !theApp.serverconnect->IsConnecting()) {
 		//connect if not currently connected
 		AddLogLine(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
@@ -593,7 +593,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 		ShowConnectionState(false);
 	} else {
 		//disconnect if currently connected
-		if (!theApp.serverconnect->IsConnecting()) {
+		if (theApp.serverconnect->IsConnecting()) {
 			theApp.serverconnect->StopConnectionTry();
 			ShowConnectionState(false);
 		} else {
@@ -690,7 +690,8 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 {
 	enum state { sUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
 	static state LastState = sUnknown;
-	serverwnd->UpdateMyInfo();
+	serverwnd->UpdateED2KInfo();
+	serverwnd->UpdateKadInfo();
 	state NewState = sUnknown;
 
 	if ( connected ) {
@@ -811,7 +812,7 @@ void CamuleDlg::ShowTransferRate()
 		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
 	
 		wxString buffer2;
-		if ( theApp.serverconnect->IsConnected() ) {
+		if ( theApp.IsConnectedED2K() ) {
 			buffer2 = CFormat(_("aMule (%s | Connected)")) % buffer;
 		} else {
 			buffer2 = CFormat(_("aMule (%s | Disconnected)")) % buffer;
