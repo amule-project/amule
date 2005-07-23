@@ -404,12 +404,14 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
  */
 void ECSocket::OnConnect()
 {
+	#ifdef CLIENT_GUI
 	printf("EC: OnConnect\n");
 	if (!theApp.connect->ConnectionEstablished()) {
 		OnError();
 	} else {
 		theApp.Startup();
 	}
+	#endif
 }
 
 void ECSocket::OnSend()
@@ -459,10 +461,12 @@ void ECSocket::OnClose()
 
 void ECSocket::OnError()
 {
+	#ifdef CLIENT_GUI
 	if (!theApp.ShowConnectionDialog()) {
 		wxCloseEvent e;
 		theApp.ShutDown(e);
 	}
+	#endif
 }
 
 bool ECSocket::ReadNumber(void *buffer, unsigned int len)
