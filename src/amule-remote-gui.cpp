@@ -139,7 +139,7 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
 
-//	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
+//	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
 
 END_EVENT_TABLE()
 
@@ -1541,7 +1541,7 @@ bool CPartFile::SavePartFile(bool)
 //
 // since gui is not linked with amule.cpp - define events here
 //
-DEFINE_EVENT_TYPE(wxEVT_NOTIFY_EVENT)
+DEFINE_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
 DEFINE_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)

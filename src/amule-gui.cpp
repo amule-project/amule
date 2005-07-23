@@ -121,7 +121,7 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
 
-	EVT_CUSTOM(wxEVT_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
+	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
 
 	// Async dns handling
 	EVT_CUSTOM(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)

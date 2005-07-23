@@ -158,11 +158,11 @@ enum HTTP_Download_File {
 	HTTP_VersionCheck
 };
 
-DECLARE_EVENT_TYPE(wxEVT_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)
+DECLARE_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)
 
 class GUIEvent : public wxEvent {
 	public:
-	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
 		ID 		= new_id;
 		byte_value 	= value8;
 		short_value	= 0;
@@ -173,7 +173,7 @@ class GUIEvent : public wxEvent {
 		ptr_aux_value	= NULL;
 	}
 
-	GUIEvent(GUI_Event_ID new_id, byte value8, uint64 value_longlong, wxString value_s) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+	GUIEvent(GUI_Event_ID new_id, byte value8, uint64 value_longlong, wxString value_s) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
 		ID 		= new_id;
 		byte_value 	= value8;
 		short_value	= 0;
@@ -184,7 +184,7 @@ class GUIEvent : public wxEvent {
 		ptr_aux_value	= NULL;
 	}
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = value8;
 		short_value	= 0;
@@ -194,7 +194,7 @@ class GUIEvent : public wxEvent {
 		ptr_aux_value   = new_aux_ptr;
 	}
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = 0;
 		short_value	= 0;
@@ -205,7 +205,7 @@ class GUIEvent : public wxEvent {
 		ptr_aux_value   = NULL;
 	}
 	
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
 		ID              = new_id;
 		byte_value      = value8;
 		short_value	= 0;
@@ -215,7 +215,7 @@ class GUIEvent : public wxEvent {
 		ptr_aux_value   = NULL;
 	}
 
-        GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+        GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
                 ID              = new_id;
 			byte_value      = 0;
 			short_value	= 0;
@@ -225,7 +225,7 @@ class GUIEvent : public wxEvent {
                 ptr_aux_value   = NULL;
         }
 
-        GUIEvent(GUI_Event_ID new_id, uint32 new_val)  : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+        GUIEvent(GUI_Event_ID new_id, uint32 new_val)  : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
 		short_value	= 0;
@@ -235,7 +235,7 @@ class GUIEvent : public wxEvent {
                 ptr_aux_value   = NULL;
         }
 
-        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16, const wxString& string = wxEmptyString) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16, const wxString& string = wxEmptyString) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
                 ID              = new_id;
                 byte_value      = 0;
 			 short_value	= value16;
@@ -247,7 +247,7 @@ class GUIEvent : public wxEvent {
         }
 
         GUIEvent(GUI_Event_ID new_id, void *new_ptr, void *new_aux_ptr,
-		 byte value8, uint32 value32, uint64 value64, wxChar *str) : wxEvent(-1, wxEVT_NOTIFY_EVENT) {
+		 byte value8, uint32 value32, uint64 value64, wxChar *str) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
                 ID              = new_id;       
                 byte_value      = value8;
                 long_value      = value32;
