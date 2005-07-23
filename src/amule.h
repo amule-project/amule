@@ -293,7 +293,7 @@ public:
 
     virtual void ShowAlert(wxString msg, wxString title, int flags);
 	
-	void ShutDown();
+	void ShutDown(wxCloseEvent &evt);
 	virtual void NotifyEvent(const GUIEvent& event);
 	
 	wxString GetLog(bool reset = false);
@@ -325,7 +325,7 @@ public:
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
-	void ShutDown();
+	void ShutDown(wxCloseEvent &evt);
 
 	uint32 GetUptimeMsecs();
 

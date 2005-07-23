@@ -233,7 +233,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
 }
 
-void CamuleRemoteGuiApp::ShutDown() {
+void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt)) {
 	amuledlg->Destroy();
 }
 
