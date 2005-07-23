@@ -317,6 +317,9 @@ int CamuleGuiApp::OnExit()
 		// Stop the Core Timer
 		delete core_timer;
 	}
+	if (amuledlg) {
+		amuledlg->StopGuiTimer();
+	}
 	return CamuleApp::OnExit();
 }
 
