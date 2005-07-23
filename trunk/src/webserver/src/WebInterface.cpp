@@ -251,11 +251,10 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 		DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
 		if (wxFileName::DirExists(dir)) {
 			DebugShow(wxT(" yes\n"));
-#ifdef AMULEWEB_SCRIPT_EN
-			wxString tmplPath(dir + wxFileName::GetPathSeparator() + wxT("index.html"));
-#else
-			wxString tmplPath(dir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl"));
-#endif
+
+			wxString tmplPath(dir + wxFileName::GetPathSeparator() +
+				(m_UsePhp ? wxT("index.html") : wxT("aMule.tmpl")) );
+
 			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {
 				DebugShow(wxT(" yes\n"));
@@ -423,6 +422,12 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
 
+#ifdef AMULEWEB_SCRIPT_EN
+		m_UsePhp = parser.Found(wxT("run-scriptable"));
+#else
+		m_UsePhp = false;
+#endif
+
 		parser.Found(wxT("template"), &m_TemplateName);
 		if (m_TemplateName.IsEmpty()) {
 			m_TemplateName = wxT("default");
@@ -453,12 +458,6 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		if (parser.Found(wxT("deny-guest"))) {
 			m_AllowGuest = false;
 		}
-
-#ifdef AMULEWEB_SCRIPT_EN
-		m_UsePhp = parser.Found(wxT("run-scriptable"));
-#else
-		m_UsePhp = false;
-#endif
 
 		wxString tmp;
 		if ( parser.Found(wxT("admin-pass"), &tmp) ) {
