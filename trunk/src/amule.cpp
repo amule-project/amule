@@ -1387,7 +1387,12 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 	printf("\n");
 		
 	if ( wxThread::IsMain() ) {
-		AMULE_APP_BASE::OnAssert( file, line, cond, msg );
+		if (IsRunning()) {
+			AMULE_APP_BASE::OnAssert( file, line, cond, msg );
+		} else {
+			// Abort, allows gdb to catch the assertion
+			raise( SIGABRT );
+		}
 	} else {
 		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s") )
 			% file % line % cond % ( msg ? msg : wxT("") );
