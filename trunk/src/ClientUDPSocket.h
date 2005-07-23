@@ -60,7 +60,6 @@ protected:
 public:
 	virtual void	OnSend(int nErrorCode);	
 	virtual void	OnReceive(int nErrorCode);
-	int DoReceive(amuleIPV4Address& addr, byte* buffer, uint32 max_size);
 	
 private:
 	bool	SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort);
