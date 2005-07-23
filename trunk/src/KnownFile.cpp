@@ -666,7 +666,10 @@ bool CKnownFile::LoadFromFile(const CFileDataIO* file){
 }
 
 
-bool CKnownFile::WriteToFile(CFileDataIO* file){
+bool CKnownFile::WriteToFile(CFileDataIO* file)
+{
+	wxCHECK(!IsPartFile(), false);
+	
 	// date
 	file->WriteUInt32(date); 
 	// hashset
