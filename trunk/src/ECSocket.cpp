@@ -294,8 +294,8 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 	unsigned int LastIO;
 	unsigned int WroteSoFar = 0;
 	const char *iobuf = (const char *)buffer;
-	bool error = sock->Error();
-	wxSocketError LastErrorValue = sock->LastError();
+	bool error = false;
+	wxSocketError LastErrorValue = wxSOCKET_NOERROR;
 
 	while(msgRemain && !error) {
 		//
