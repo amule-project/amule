@@ -824,7 +824,7 @@ void CamuleDlg::ShowTransferRate()
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
 }
 
-void CamuleDlg::OnClose(wxCloseEvent& evt)
+void CamuleDlg::DlgShutDown(wxCloseEvent& evt)
 {
 	// Are we already shutting down or still on init?
 	if ( is_safe_state == false ) {
@@ -832,7 +832,8 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	}
 
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
-		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")), wxString(_("Exit confirmation")), wxYES_NO)) {
+		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")),
+				wxString(_("Exit confirmation")), wxYES_NO)) {
 			evt.Veto();
 			return;
 		}
@@ -849,10 +850,12 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	//We want to delete the systray too!
 	RemoveSystray();
 #endif
+}
 
+void CamuleDlg::OnClose(wxCloseEvent& evt)
+{
 	// This will be here till the core close is != app close
-	theApp.ShutDown();
-
+	theApp.ShutDown(evt);
 }
 
 //BEGIN - enkeyDEV(kei-kun) -TaskbarNotifier-

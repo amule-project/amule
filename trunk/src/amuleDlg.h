@@ -108,6 +108,7 @@ public:
 
 	void ShowED2KLinksHandler( bool show );
 
+	void DlgShutDown(wxCloseEvent& evt);
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
 

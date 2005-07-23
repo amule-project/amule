@@ -11,8 +11,10 @@ Version 2.1.x - The "???" version
 		  file. They don't work on all distros, even worse, don't always
 		  work with Fedora Core.
 		* Created a new spec file, compliant with Fedora Core.
-		* Fixed a crash when aMule was shutdown by amulecmd and an
+		* Fixed a crash when aMule was shut down by amulecmd and an
 		  assert happened.
+		* Fixed asserts on exit about non-empty lists when aMule was
+		  shut down by amulecmd.
 
 	volpol:
 		* A4AF transfer speed display fix

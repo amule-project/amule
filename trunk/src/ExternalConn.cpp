@@ -953,7 +953,15 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SHUTDOWN:
 			response = new CECPacket(EC_OP_NOOP);
 			AddLogLineM(true, _("ExternalConn: shutdown requested"));
-			theApp.ExitMainLoop();
+#ifndef AMULE_DAEMON
+			{
+				wxCloseEvent evt;
+				evt.SetCanVeto(false);
+				theApp.ShutDown(evt);
+			}
+#else
+			theApp.ShutDown();
+#endif
 			break;
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {

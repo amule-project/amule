@@ -324,8 +324,9 @@ int CamuleGuiApp::OnExit()
 }
 
 
-void CamuleGuiApp::ShutDown()
+void CamuleGuiApp::ShutDown(wxCloseEvent &evt)
 {
+	amuledlg->DlgShutDown(evt);
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
 
