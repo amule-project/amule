@@ -404,7 +404,6 @@ extern "C" {
 	
 	PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, const char *name);
 	
-
 	/* engine */	
 	void php_engine_init();
 	void php_engine_free();
@@ -454,12 +453,34 @@ extern "C" {
 #endif
 
 /*
- * C++ only functions
+ * C++ only functions, type definitions
  */
 #ifdef __cplusplus
 
+typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
+typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
+//
+// In php arrays are behave like hashes (i.e. associative) and are sortable.
+// STL std::map is not sortable.
+//
+typedef struct {
+	std::map<std::string, PHP_VAR_NODE *> array;
+	std::list<std::string> sorted_keys;
+	PHP_ARRAY_KEY_ITER_TYPE current;
+} PHP_ARRAY_TYPE;
+
+//
+// using std::string instead of "char *" so keys will be compared 
+// by string value
+typedef std::map<std::string, PHP_SCOPE_ITEM *> PHP_SCOPE_TABLE_TYPE;
+typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
+
 const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i);
 PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key);
+
+void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
+	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array);
+
 
 #endif
 
