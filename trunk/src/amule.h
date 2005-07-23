@@ -375,6 +375,9 @@ public:
 	
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 	
+	bool IsConnectedED2K();
+	bool IsConnectedKad();
+	
 	DECLARE_EVENT_TABLE()
 
 protected:
