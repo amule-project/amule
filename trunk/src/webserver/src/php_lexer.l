@@ -121,6 +121,7 @@ EOL ("\r"|"\n"|"\r\n")
 ">="			return IS_GREATER_OR_EQ;
 
 "global"		return GLOBAL;
+"static"		return STATIC;
 
 "#"|"//" {
 		BEGIN(LINE_COMMENT);
