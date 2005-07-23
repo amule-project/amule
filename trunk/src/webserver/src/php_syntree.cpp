@@ -115,6 +115,13 @@ PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right)
 	return node;
 }
 
+PHP_EXP_NODE *make_exp_2_self(PHP_EXP_OP op, PHP_EXP_NODE *self, PHP_EXP_NODE *right)
+{
+	PHP_EXP_NODE *clone_self = make_zero_exp_node();
+	*clone_self = *self;
+	return make_exp_2(op, clone_self, right);
+}
+
 PHP_EXP_NODE *make_known_const(char *name)
 {
 	int const_id = -1;
@@ -362,6 +369,8 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
+	//while ( scope_map->size() ) {
+		//PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin();
 		switch ( i->second->type ) {
 			case PHP_SCOPE_VAR: {
 					PHP_VAR_NODE *var = i->second->var;
@@ -369,6 +378,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 					if ( var->ref_count == 0 ) {
 						value_value_free(&var->value);
 						delete var;
+						//scope_map->erase(i);
 					}
 				}
 				break;
@@ -533,6 +543,30 @@ PHP_VAR_NODE *array_get_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key)
 	cast_value_str(&s_key);
 	return array_get_by_str_key(array, s_key.str_val);
 }
+
+void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node)
+{
+	if ( array->type != PHP_VAL_ARRAY ) {
+		return ;
+	}
+	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
+	if ( arr_ptr->array.count(key) ) {
+		return ;
+	} else {
+		node->ref_count++;
+		(arr_ptr->array)[key] = node;
+		arr_ptr->sorted_keys.push_back(key);
+		return ;
+	}	
+}
+
+void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node)
+{
+	char s_key[32];
+	sprintf(s_key, "%d", key);	
+	array_add_to_str_key(array, s_key, node);
+}
+
 
 int array_is_key_here(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key)
 {
@@ -1367,6 +1401,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					php_expr_eval(node->node_while.cond, &cond_result);
 					cast_value_bool(&cond_result);
 				}
+				break;
 			case PHP_ST_FOREACH: {
 				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
 				if ( !elems || (elems->value.type != PHP_VAL_ARRAY) ) {
