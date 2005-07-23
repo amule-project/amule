@@ -341,22 +341,22 @@ expr:
 	|	NEW class_name_reference ctor_arguments { }
 	|	CLONE expr {  }
 */
-	|	variable PLUS_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, $3)); }
-	|	variable MINUS_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, $3)); }
-	|	variable MUL_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_MUL, $1, $3)); }
-	|	variable DIV_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_DIV, $1, $3)); }
-	|	variable CONCAT_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_CAT, $1, $3)); }
-	|	variable MOD_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_REM, $1, $3)); }
-	|	variable AND_EQ expr		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_AND, $1, $3)); }
-	|	variable OR_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_OR, $1, $3)); }
-	|	variable XOR_EQ expr 		{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_XOR, $1, $3)); }
-	|	variable SL_EQ expr			{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHL, $1, $3)); } 
-	|	variable SR_EQ expr			{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHR, $1, $3)); } 
+	|	variable PLUS_EQ expr 		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, $3)); }
+	|	variable MINUS_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, $3)); }
+	|	variable MUL_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_MUL, $1, $3)); }
+	|	variable DIV_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_DIV, $1, $3)); }
+	|	variable CONCAT_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_CAT, $1, $3)); }
+	|	variable MOD_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_REM, $1, $3)); }
+	|	variable AND_EQ expr		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_AND, $1, $3)); }
+	|	variable OR_EQ expr 		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_OR, $1, $3)); }
+	|	variable XOR_EQ expr 		{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_XOR, $1, $3)); }
+	|	variable SL_EQ expr			{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHL, $1, $3)); } 
+	|	variable SR_EQ expr			{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SHR, $1, $3)); } 
 	/* ++var and var++ looks same to me */
-	|	variable INC 				{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, make_const_exp_dnum(1))); }
-	|	INC variable 				{ $$ = make_exp_2(PHP_OP_ASS, $2, make_exp_2(PHP_OP_ADD, $2, make_const_exp_dnum(1))); }
-	|	variable DEC 				{ $$ = make_exp_2(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, make_const_exp_dnum(1))); }
-	|	DEC variable 				{ $$ = make_exp_2(PHP_OP_ASS, $2, make_exp_2(PHP_OP_SUB, $2, make_const_exp_dnum(1))); }
+	|	variable INC 				{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_ADD, $1, make_const_exp_dnum(1))); }
+	|	INC variable 				{ $$ = make_exp_2_self(PHP_OP_ASS, $2, make_exp_2(PHP_OP_ADD, $2, make_const_exp_dnum(1))); }
+	|	variable DEC 				{ $$ = make_exp_2_self(PHP_OP_ASS, $1, make_exp_2(PHP_OP_SUB, $1, make_const_exp_dnum(1))); }
+	|	DEC variable 				{ $$ = make_exp_2_self(PHP_OP_ASS, $2, make_exp_2(PHP_OP_SUB, $2, make_const_exp_dnum(1))); }
 	
 	|	expr BOOLEAN_OR expr 		{ $$ = make_exp_2(PHP_OP_LOG_OR, $1, $3); }
 	|	expr BOOLEAN_AND expr 		{ $$ = make_exp_2(PHP_OP_LOG_AND, $1, $3); }  

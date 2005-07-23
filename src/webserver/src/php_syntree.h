@@ -332,6 +332,8 @@ extern "C" {
 	int array_get_size(PHP_VALUE_NODE *array);
 	PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array);
 	
+	void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node);
+	
 	PHP_VAR_NODE *make_array_var();
 	
 	// signle operand expression:
@@ -339,6 +341,9 @@ extern "C" {
  	PHP_EXP_NODE *make_exp_1(PHP_EXP_OP op, PHP_EXP_NODE *operand);
 
  	PHP_EXP_NODE *make_exp_2(PHP_EXP_OP op, PHP_EXP_NODE *left, PHP_EXP_NODE *right);
+
+	// this is for "OP=" forms
+ 	PHP_EXP_NODE *make_exp_2_self(PHP_EXP_OP op, PHP_EXP_NODE *self, PHP_EXP_NODE *right);
 
 	PHP_EXP_NODE *make_known_const(char *name);
 		
@@ -477,6 +482,7 @@ typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
 
 const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i);
 PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key);
+void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node);
 
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array);

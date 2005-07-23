@@ -72,7 +72,7 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
 		case PHP_VAL_INT: printf("int(%d)\n", node->int_val); break;
 		case PHP_VAL_FLOAT: printf("float(%f)\n", node->float_val); break;
 		case PHP_VAL_STRING: printf("string(%d) \"%s\"\n", strlen(node->str_val), node->str_val); break;
-		case PHP_VAL_OBJECT: printf("Object\n"); break;
+		case PHP_VAL_OBJECT: printf("Object(%s)\n", node->obj_val.class_name); break;
 		case PHP_VAL_ARRAY: {
 			int arr_size = array_get_size(node);
 			printf("array(%d) {\n", arr_size);
@@ -109,12 +109,11 @@ PHP_SYN_FUNC_DECL_NODE *SortElem::callback = 0;
 
 bool operator<(const SortElem &o1, const SortElem &o2)
 {
-	PHP_VALUE_NODE params, result;
-	cast_value_array(&params);
-	
-	func_scope_init(SortElem::callback->params, SortElem::callback->param_count,
-		(PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope, &params);
+	PHP_VALUE_NODE result;
 
+	value_value_assign(&SortElem::callback->params[0].var->value, &o1.obj->value);
+	value_value_assign(&SortElem::callback->params[1].var->value, &o2.obj->value);
+	
 	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope);
 
 	//
@@ -122,14 +121,16 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 	//
 	result.type = PHP_VAL_NONE;
 	php_execute(SortElem::callback->code, &result);
-
+	cast_value_dnum(&result);
 	//
 	// restore stack, free arg list
 	//
 	switch_pop_scope_table(0);
-	value_value_free(&params);
+
+	value_value_free(&SortElem::callback->params[0].var->value);
+	value_value_free(&SortElem::callback->params[1].var->value);
 	
-	return false;
+	return result.int_val;
 }
 
 void php_native_usort(PHP_VALUE_NODE *)
@@ -151,21 +152,28 @@ void php_native_usort(PHP_VALUE_NODE *)
 		php_report_error("Invalid or missing argument", PHP_ERROR);
 		return;
 	}
+	PHP_SYN_FUNC_DECL_NODE *func_decl = si->func->func_decl;
+
 	//
 	// usort invalidates keys, and sorts values
 	//
-	PHP_ARRAY_TYPE *arr_obj = (PHP_ARRAY_TYPE *)array;
+	PHP_ARRAY_TYPE *arr_obj = (PHP_ARRAY_TYPE *)array->value.ptr_val;
 	//
 	// create vector of values
 	//
 	std::vector<SortElem> sort_array;
 	sort_array.resize(arr_obj->array.size());
-	int key = 0;
+	unsigned int key = 0;
 	for(PHP_ARRAY_ITER_TYPE i = arr_obj->array.begin(); i != arr_obj->array.end(); i++) {
 		sort_array[key++] = SortElem(i->second);
 	}
-	//std::sort(arr_obj->sorted_keys.begin(), arr_obj->sorted_keys.end());
+	SortElem::callback = func_decl;
 	std::sort(sort_array.begin(), sort_array.end());
+	arr_obj->array.clear();
+	arr_obj->sorted_keys.clear();
+	for(key = 0; key < sort_array.size(); key++) {
+		array_add_to_int_key(&array->value, key, sort_array[key].obj);
+	}
 }
 
 /*
@@ -351,6 +359,12 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"strlen",
 		{ 0, 0, { PHP_VAL_NONE } },
 		1, php_native_strlen,
+	},
+	{
+		"usort",
+		{ { 0, 1, { PHP_VAL_NONE } }, { 0, 0, { PHP_VAL_STRING } } },
+		2,
+		php_native_usort,
 	},
 	{
 		"load_amule_vars",
