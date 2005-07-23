@@ -39,6 +39,8 @@ there client on the eMule forum..
 #ifndef __KAD_ENTRY_H__
 #define __KAD_ENTRY_H__
 
+#include <time.h>
+
 #include "../utils/UInt128.h"
 #include "../kademlia/Tag.h"
 
