@@ -92,17 +92,16 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
 	m_sendLocker.Lock();
 
-	byte buffer[CLIENT_UDP_BUFFER_SIZE];
 	amuleIPV4Address addr;
-	uint32 length = DoReceive(addr,buffer,CLIENT_UDP_BUFFER_SIZE);
+	byte buffer[CLIENT_UDP_BUFFER_SIZE];
+	uint32 length = RecvFrom(addr, buffer, CLIENT_UDP_BUFFER_SIZE).LastCount();
 	
-	if (length == static_cast<uint32>(-1)) {
-		m_sendLocker.Unlock();
+	if (Error()) {
+		AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Error while reading from CClientUDPSocket: %i"), LastError()));
 		return;
-	}
-	
-	if (length < 2) {
+	} else if (length < 2) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
+		return;
 	}
 	
 	if (!thePrefs::IsUDPDisabled()) {
@@ -110,7 +109,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 		try {
 			switch (buffer[0]) {
 				case OP_EMULEPROT:
-					ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());	
+					ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
 					break;
 				#ifdef __COMPILE_KAD__
 				case OP_KADEMLIAHEADER:
@@ -148,22 +147,6 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 		
 		m_sendLocker.Unlock();
 	}
-}
-
-
-int CClientUDPSocket::DoReceive(amuleIPV4Address& addr, byte* buffer, uint32 max_size)
-{
-	RecvFrom(addr,buffer,max_size);
-	int length = LastCount();
-	// Daemon doesn't need this because it's a thread, checking every X time.
-	if (length <= 0 && (LastError() == wxSOCKET_WOULDBLOCK)) {
-		// Evil trick to retry later.
-		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
-		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
-		input_event.SetEventObject(this);
-		theApp.AddPendingEvent(input_event);
-	}
-	return length;
 }
 
 
