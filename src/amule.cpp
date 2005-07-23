@@ -863,7 +863,7 @@ bool CamuleApp::OnInit()
 			printf("ERROR: fork failed with code %d\n", errno);
 		} else {
 			if ( pid == 0 ) {
-				execlp("amuleweb", "amuleweb", (const char *)unicode2char(wxT("--amule-config-file=") + aMuleConfigFile), 0);
+				execlp("amuleweb", "amuleweb", (const char *)unicode2char(wxT("--amule-config-file=") + aMuleConfigFile), NULL);
 				printf("execlp failed with code %d\n", errno);
 				exit(0);
 			} else {
@@ -1913,12 +1913,14 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 					//Both Connected - Both Firewalled
 					return false;
 				} else {
-					if(client->GetServerIP() == theApp.serverconnect->GetCurrentServer()->GetIP() && client->GetServerPort() == theApp.serverconnect->GetCurrentServer()->GetPort()) {
-						//Both Connected - Server lowID, Kad Open - Client on same server
-						//We prevent a callback to the server as this breaks the protocol and will get you banned.
+					if(client->GetServerIP() == theApp.serverconnect->GetCurrentServer()->GetIP() &&
+					   client->GetServerPort() == theApp.serverconnect->GetCurrentServer()->GetPort()) {
+						// Both Connected - Server lowID, Kad Open - Client on same server
+						// We prevent a callback to the server as this breaks the protocol
+						// and will get you banned.
 						return false;
 					} else {
-						//Both Connected - Server lowID, Kad Open - Client on remote server
+						// Both Connected - Server lowID, Kad Open - Client on remote server
 						return true;
 					}
 				}
