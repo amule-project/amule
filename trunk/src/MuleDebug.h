@@ -26,7 +26,7 @@
 #ifndef MULEDEBUG_H
 #define MULEDEBUG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA) && !defined(MULEUNIT)
 #pragma interface "MuleDebug.h"
 #endif
 
@@ -70,9 +70,8 @@ private:
  * caused by invalid operations. Exceptions of this type should
  * not be caught as they are the result of bugs.
  */
-class CRunTimeException : public CMuleException
+struct CRunTimeException : public CMuleException
 {
-public:
 	CRunTimeException(const wxString& type, const wxString& what)
 		: CMuleException(wxT("CRunTimeException::") + type, what) {}
 };
@@ -81,9 +80,8 @@ public:
 /**
  * This exception is to be thrown if invalid parameters are passed to a function.
  */
-class CInvalidParamsEx : public CRunTimeException
+struct CInvalidParamsEx : public CRunTimeException
 {
-public:
 	CInvalidParamsEx(const wxString& what)
 		: CRunTimeException(wxT("CInvalidArgsException"), what) {}
 };
@@ -92,9 +90,8 @@ public:
 /**
  * This exception is to be thrown if an object is used in an invalid state.
  */
-class CInvalidStateEx : public CRunTimeException
+struct CInvalidStateEx : public CRunTimeException
 {
-public:
 	CInvalidStateEx(const wxString& what)
 		: CRunTimeException(wxT("CInvalidStateException"), what) {}
 };
