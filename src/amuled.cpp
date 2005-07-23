@@ -422,6 +422,7 @@ bool CamuleDaemonApp::OnInit()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
+	#ifndef __WXMSW__
 	if ( !enable_daemon_fork ) {
 		return 0;
 	}
@@ -446,6 +447,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 		setsid();
   	}
   	
+	#endif
 	return 0;
 }
 
