@@ -497,6 +497,10 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	}
 }
 
+bool CamuleRemoteGuiApp::IsConnectedED2K() {
+	return serverconnect->IsConnected();
+}
+
 /*
  * Preferences: holds both local and remote settings.
  * 
