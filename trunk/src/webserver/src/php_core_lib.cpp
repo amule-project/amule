@@ -28,8 +28,10 @@
 #include <stdarg.h>
 
 #include <list>
+#include <vector>
 #include <map>
 #include <string>
+#include <algorithm>
 
 #ifdef AMULEWEB_SCRIPT_EN
 	#include "WebServer.h"
@@ -87,6 +89,83 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
 		case PHP_VAL_VAR_NODE:
 		case PHP_VAL_INT_DATA: assert(0); break;
 	}
+}
+
+/*
+ * Sorting stl-way requires operator ">"
+ */
+class SortElem {
+	public:
+		SortElem() {}
+		SortElem(PHP_VAR_NODE *p) { obj = p; }
+
+		PHP_VAR_NODE *obj;
+		static PHP_SYN_FUNC_DECL_NODE *callback;
+		
+		friend bool operator<(const SortElem &o1, const SortElem &o2);
+};
+
+PHP_SYN_FUNC_DECL_NODE *SortElem::callback = 0;
+
+bool operator<(const SortElem &o1, const SortElem &o2)
+{
+	PHP_VALUE_NODE params, result;
+	cast_value_array(&params);
+	
+	func_scope_init(SortElem::callback->params, SortElem::callback->param_count,
+		(PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope, &params);
+
+	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope);
+
+	//
+	// params passed by-value, all & notations ignored
+	//
+	result.type = PHP_VAL_NONE;
+	php_execute(SortElem::callback->code, &result);
+
+	//
+	// restore stack, free arg list
+	//
+	switch_pop_scope_table(0);
+	value_value_free(&params);
+	
+	return false;
+}
+
+void php_native_usort(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_ARRAY)) {
+		php_report_error("Invalid or missing argument", PHP_ERROR);
+		return;
+	}
+	PHP_VAR_NODE *array = si->var;
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error("Invalid or missing argument", PHP_ERROR);
+		return;
+	}
+	char *cmp_func_name = si->var->value.str_val;
+	si = get_scope_item(g_global_scope, cmp_func_name);
+	if ( !si || (si->type != PHP_SCOPE_FUNC)) {
+		php_report_error("Invalid or missing argument", PHP_ERROR);
+		return;
+	}
+	//
+	// usort invalidates keys, and sorts values
+	//
+	PHP_ARRAY_TYPE *arr_obj = (PHP_ARRAY_TYPE *)array;
+	//
+	// create vector of values
+	//
+	std::vector<SortElem> sort_array;
+	sort_array.resize(arr_obj->array.size());
+	int key = 0;
+	for(PHP_ARRAY_ITER_TYPE i = arr_obj->array.begin(); i != arr_obj->array.end(); i++) {
+		sort_array[key++] = SortElem(i->second);
+	}
+	//std::sort(arr_obj->sorted_keys.begin(), arr_obj->sorted_keys.end());
+	std::sort(sort_array.begin(), sort_array.end());
 }
 
 /*

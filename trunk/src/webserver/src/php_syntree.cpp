@@ -39,18 +39,6 @@
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
-typedef std::map<std::string, PHP_VAR_NODE *>::iterator PHP_ARRAY_ITER_TYPE;
-typedef std::list<std::string>::iterator PHP_ARRAY_KEY_ITER_TYPE;
-//
-// In php arrays are behave like hashes (i.e. associative) and are sortable.
-// STL std::map is not sortable.
-//
-typedef struct {
-	std::map<std::string, PHP_VAR_NODE *> array;
-	std::list<std::string> sorted_keys;
-	PHP_ARRAY_KEY_ITER_TYPE current;
-} PHP_ARRAY_TYPE;
-
 PHP_SYN_NODE *g_syn_tree_top = 0;
 
 /* scope table */
@@ -58,11 +46,6 @@ PHP_SCOPE_TABLE g_global_scope = 0;
 PHP_SCOPE_TABLE g_current_scope = 0;
 PHP_SCOPE_STACK g_scope_stack = 0;
 
-//
-// using std::string instead of "char *" so keys will be compared 
-// by string value
-typedef std::map<std::string, PHP_SCOPE_ITEM *> PHP_SCOPE_TABLE_TYPE;
-typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
 
 //
 // Known named constant values
@@ -641,10 +624,11 @@ void value_value_free(PHP_VALUE_NODE *val)
 		case PHP_VAL_ARRAY: {
 			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)val->ptr_val)->array.begin();
 				i != ((PHP_ARRAY_TYPE *)val->ptr_val)->array.end(); i++) {
-					i->second->ref_count--;
-					if ( i->second->ref_count == 0 ) {
-						value_value_free(&i->second->value);
-						delete i->second;
+					PHP_VAR_NODE *var_i = i->second;
+					var_i->ref_count--;
+					if ( var_i->ref_count == 0 ) {
+						value_value_free(&var_i->value);
+						delete var_i;
 					}
 				}
 			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
@@ -862,7 +846,15 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 		case PHP_OP_FUNC_CALL: {
 				php_exp_tree_free(tree->tree_node.left);
 				PHP_VAR_NODE *args = tree->tree_node.right->var_node;
+				PHP_VALUE_NODE *args_array = &args->value;
+				for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)args_array->ptr_val)->array.begin();
+					i != ((PHP_ARRAY_TYPE *)args_array->ptr_val)->array.end(); i++) {
+					PHP_VAR_NODE *var_i = i->second;
+					php_exp_tree_free((PHP_EXP_NODE *)var_i->value.ptr_val);
+				}
 				value_value_free(&args->value);
+				delete tree->tree_node.right->var_node;
+				delete tree->tree_node.right;
 			}
 			break;
 		default:
@@ -1276,23 +1268,22 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 	// Switch stack and call function
 	//
 	
-	PHP_SYN_FUNC_DECL_NODE *func_decl = si->func->func_decl;
+	PHP_SYN_FUNC_DECL_NODE *func_decl = func->func_decl;
 
 	func_scope_init(func_decl->params, func_decl->param_count,
 		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value);
 
 	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)func_decl->scope);
 
-	if ( func->func_decl->is_native ) {
-		func->func_decl->native_ptr(result);
+	if ( func_decl->is_native ) {
+		func_decl->native_ptr(result);
 	} else {
-		php_execute(func->func_decl->code, result);
+		php_execute(func_decl->code, result);
 	}
 
 	func_scope_copy_back(func_decl->params, func_decl->param_count,
 		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value);
 		
-	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)func_decl->scope);
 	//
 	// restore stack, free arg list
 	//
@@ -1498,7 +1489,6 @@ int yyerror(char *s)
 
 int main(int argc, char *argv[])
 {
-	php_engine_init();
 	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
 
 	CWriteStrBuffer buffer;
