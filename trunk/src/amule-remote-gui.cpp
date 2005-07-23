@@ -890,29 +890,35 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 	m_ECSocket->Connect(addr, false);
 	m_ECSocket->WaitOnConnect(10);
 
-   if (!m_ECSocket->IsConnected()) {
-            // no connection => close gracefully
-            AddLogLineM(true, _("Connection Failed. Unable to connect to the specified host"));
-            return false;
-    } 
-    // Authenticate ourselves
-    CECPacket packet(EC_OP_AUTH_REQ);
-    packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
-    packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
-    packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
+	if (!m_ECSocket->IsConnected()) {
+		// no connection => close gracefully
+		AddLogLineM(true, _("EC Connection Failed. Unable to connect to the specified host"));
+		return false;
+	} 
+	
+	// Authenticate ourselves
+	CECPacket packet(EC_OP_AUTH_REQ);
+	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
+	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
+	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(pass)));
 
 #ifdef CVSDATE
 	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
 #endif
 
-    if (! m_ECSocket->WritePacket(&packet) ) {
-    	return false;
-    }
-    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
-    if (!reply.get()) {
-    	return false;
-    }
+	if (! m_ECSocket->WritePacket(&packet) ) {
+		AddLogLineM(true, _("EC Connection Failed. Unable to write data to the socket."));
+		return false;
+	}
+    
+	auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
+	
+	if (!reply.get()) {
+		AddLogLineM(true, _("EC Connection Failed. Empty reply."));
+		return false;
+	}
+	
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 		if (reason != NULL) {
