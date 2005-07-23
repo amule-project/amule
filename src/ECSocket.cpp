@@ -324,8 +324,13 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 
 ECSocket::ECSocket(void) : wxSocketClient()
 {
-	memset(&parms, 0, sizeof(parms));
 	parms.firsttransfer = true;
+	parms.accepts = 0;
+	parms.in_ptr = NULL;
+	parms.out_ptr = NULL;
+	parms.LastSocketError = wxSOCKET_NOERROR;
+	parms.used_flags = 0;
+	// parms.z No zlib.net example does the memset stuff on z_stream
 }
 
 ECSocket::~ECSocket(void)
