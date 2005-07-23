@@ -80,16 +80,20 @@ class CRemoteConnect {
 		ECSocket *m_ECSocket;
 		bool m_isConnected;
 		bool m_busy;
+		wxString ConnectionPassword;
 	public:
 		CRemoteConnect();
 		~CRemoteConnect();
 		
 		bool Connect(const wxString &host, int port, const wxString& login, const wxString &pass);
 
+		bool ConnectionEstablished();
+	
 		CECPacket *SendRecv(CECPacket *);
 		void Send(CECPacket *);
 		
 		bool Busy() { return m_busy; }
+		
 };
 
 class CPreferencesRem : public CPreferences {

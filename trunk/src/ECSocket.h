@@ -43,7 +43,7 @@ class ECSocket;
 
 class CECSocketHandler: public wxEvtHandler {
 	public:
-        CECSocketHandler(ECSocket *socket = NULL);
+        CECSocketHandler(ECSocket *socket = NULL) {};
 
 	private:
         void SocketHandler(wxSocketEvent& event);
@@ -83,21 +83,20 @@ class ECSocket : public wxSocketClient {
 		CECPacket *ReadPacket(void);
 		bool WritePacket(const CECPacket *packet);
 
-	private:
-		friend class CECSocketHandler;
-
-		bool FlushBuffers();
-		void InitBuffers();
-
-		uint32	ReadFlags();
-		bool	WriteFlags(uint32);
-
 		void OnConnect();
 		void OnSend();
 		void OnReceive();
 		void OnClose();
 		void OnError();
-		
+
+	private:
+		CECSocketHandler handler;
+
+		bool FlushBuffers();
+		void InitBuffers();
+
+		uint32	ReadFlags();
+		bool	WriteFlags(uint32);		
 
 		//
 		// working buffers: zlib need all data at once
