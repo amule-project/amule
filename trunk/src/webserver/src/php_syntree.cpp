@@ -364,13 +364,25 @@ void switch_pop_scope_table(int old_free)
 	scope_stack->pop_back();
 }
 
+void scope_reset_nonstatics(PHP_SCOPE_TABLE scope)
+{
+	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
+	
+	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
+		if ( i->second->type == PHP_SCOPE_VAR) {
+			PHP_VAR_NODE *var = i->second->var;
+			if ( ! (var->flags & PHP_VARFLAG_STATIC) ) {
+				value_value_free(&var->value);
+			}
+		}
+	}
+}
+
 void delete_scope_table(PHP_SCOPE_TABLE scope)
 {
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	
 	for(PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin(); i != scope_map->end();i++) {
-	//while ( scope_map->size() ) {
-		//PHP_SCOPE_TABLE_TYPE::iterator i = scope_map->begin();
 		switch ( i->second->type ) {
 			case PHP_SCOPE_VAR: {
 					PHP_VAR_NODE *var = i->second->var;
@@ -378,7 +390,6 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 					if ( var->ref_count == 0 ) {
 						value_value_free(&var->value);
 						delete var;
-						//scope_map->erase(i);
 					}
 				}
 				break;
@@ -1317,7 +1328,9 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 
 	func_scope_copy_back(func_decl->params, func_decl->param_count,
 		(PHP_SCOPE_TABLE_TYPE *)func_decl->scope, &r_node->var_node->value);
-		
+	
+	scope_reset_nonstatics(func_decl->scope);
+	
 	//
 	// restore stack, free arg list
 	//
