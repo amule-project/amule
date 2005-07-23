@@ -40,6 +40,7 @@
 
 #include "StringFunctions.h"	// Needed for unicode2char()
 #include "OPCodes.h"
+#include "amule.h"
 
 #define EC_SOCKET_BUFFER_SIZE	32768
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -330,6 +331,13 @@ ECSocket::ECSocket(void) : wxSocketClient()
 	parms.out_ptr = NULL;
 	parms.LastSocketError = wxSOCKET_NOERROR;
 	parms.used_flags = 0;
+	SetEventHandler(handler,EC_SOCKET_HANDLER);
+	SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+	Notify(true);
 	// parms.z No zlib.net example does the memset stuff on z_stream
 }
 
@@ -381,6 +389,12 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
  */
 void ECSocket::OnConnect()
 {
+	printf("EC: OnConnect\n");
+	if (!theApp.connect->ConnectionEstablished()) {
+		OnError();
+	} else {
+		theApp.Startup();
+	}
 }
 
 void ECSocket::OnSend()
@@ -430,6 +444,10 @@ void ECSocket::OnClose()
 
 void ECSocket::OnError()
 {
+	if (!theApp.ShowConnectionDialog()) {
+		wxCloseEvent e;
+		theApp.ShutDown(e);
+	}
 }
 
 bool ECSocket::ReadNumber(void *buffer, unsigned int len)

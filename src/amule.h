@@ -319,14 +319,22 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
-	int OnExit();
 	bool OnInit();
+	
+	int OnExit();
 	
 	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
-	class CRemoteConnect *connect;
-
 public:
+
+	void Startup();
+	
+	bool ShowConnectionDialog();
+
+	class CRemoteConnect *connect;
+		
+	CEConnectDlg *dialog;
+
 	bool CopyTextToClipboard(wxString strText);
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);

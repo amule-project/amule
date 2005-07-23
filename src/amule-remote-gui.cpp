@@ -231,20 +231,6 @@ bool CamuleRemoteGuiApp::OnInit()
 		OnExit();
 	}
 
-	// Parse cmdline arguments.
-	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
-	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
-	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
-	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
-	cmdline.Parse();
-
-	
-	bool geometry_enabled = false;
-	wxString geom_string;
-	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
-		geometry_enabled = true;
-	}
-
 	connect = new CRemoteConnect;
 	
 	// Load Preferences
@@ -252,12 +238,26 @@ bool CamuleRemoteGuiApp::OnInit()
 	ConfigDir = otherfunctions::GetConfigDir();
 	wxConfig::Set(new wxConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
 
-	glob_prefs = new CPreferencesRem(connect);
+	glob_prefs = new CPreferencesRem(connect);	
 	
 	otherfunctions::InitCustomLanguages();
 	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(thePrefs::GetLanguageID()));
 
-	CEConnectDlg *dialog = new CEConnectDlg;
+	bool result = ShowConnectionDialog();
+
+	if (result) {
+	#ifndef CLIENT_GUI
+		Startup();
+	#else
+		printf("Going for main loop while we wait for events\n");	
+	#endif
+	}
+	return result;
+}
+
+bool CamuleRemoteGuiApp::ShowConnectionDialog() {
+	
+	dialog = new CEConnectDlg;
 	do {
 		
 		if ( dialog->ShowModal() != wxID_OK ) {
@@ -265,7 +265,11 @@ bool CamuleRemoteGuiApp::OnInit()
 			return false;
 		}
 	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
-	//amuledlg->AddLogLine(true, CFormat(_("Connected to amule at %s")) % dialog->Host());
+
+	return true;	
+}
+
+void CamuleRemoteGuiApp::Startup() {
 	
 	if ( dialog->SaveUserPass() ) {
 		wxConfig::Get()->Write(wxT("/EC/Host" ), dialog->Host());
@@ -293,7 +297,20 @@ bool CamuleRemoteGuiApp::OnInit()
 	uploadqueue = new CUpQueueRem(connect);
 	ipfilter = new CIPFilterRem();
 
+	// Parse cmdline arguments.
+	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
+	cmdline.AddSwitch(wxT("v"), wxT("version"), wxT("Displays the current version number."));
+	cmdline.AddSwitch(wxT("h"), wxT("help"), wxT("Displays this information."));
+	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+	cmdline.Parse();
 
+	
+	bool geometry_enabled = false;
+	wxString geom_string;
+	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
+		geometry_enabled = true;
+	}
+	
 	// Create main dialog
 	InitGui(0, geom_string);
 
@@ -305,9 +322,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	core_timer->Start(1000);	
 
     //amuledlg->StartGuiTimer();
-
-	return true;
-
+	
 }
 
 void CamuleRemoteGuiApp::ShowAlert(wxString msg, wxString title, int flags)
@@ -876,8 +891,11 @@ CRemoteConnect::CRemoteConnect()
 bool CRemoteConnect::Connect(const wxString &host, int port,
 	const wxString &WXUNUSED(login), const wxString &pass)
 {
+	
+	ConnectionPassword = pass;
+	
 	// don't even try to connect without password
-	if (pass.IsEmpty() || pass == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(pass).IsEmpty()) {
+	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(ConnectionPassword).IsEmpty()) {
 		wxMessageBox(_("You must specify a non-empty password."), _("Error"));
 		return false;
 	}
@@ -888,20 +906,30 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
 	addr.Service(port);
 
 	m_ECSocket->Connect(addr, false);
+	
+	#ifndef CLIENT_GUI
 	m_ECSocket->WaitOnConnect(10);
 
 	if (!m_ECSocket->IsConnected()) {
 		// no connection => close gracefully
 		AddLogLineM(true, _("EC Connection Failed. Unable to connect to the specified host"));
 		return false;
-	} 
+	} else {
+		return ConnectionEstablished();
+	}
+	#endif
+	
+	return true;
+}
+
+bool CRemoteConnect::ConnectionEstablished() {
 	
 	// Authenticate ourselves
 	CECPacket packet(EC_OP_AUTH_REQ);
 	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
 	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
-	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(pass)));
+	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(ConnectionPassword)));
 
 #ifdef CVSDATE
 	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
@@ -943,8 +971,9 @@ bool CRemoteConnect::Connect(const wxString &host, int port,
     m_isConnected = true;
     m_ECSocket->SetFlags(wxSOCKET_BLOCK);
     
-	return true;
+	return true;	
 }
+
 
 CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
 {
