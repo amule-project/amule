@@ -52,6 +52,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"
+#include "IPFilter.h"
 
 
 
@@ -666,11 +667,17 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	
 	m_IsSolving = false;
 	if (ip) {
-		amuleIPV4Address addr;
-		addr.Hostname(ip);
-		addr.Service(cur_server->GetConnPort());
-		AddDebugLogLineM(false, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
-		Connect(addr, false);
+		if (theApp.ipfilter->IsFiltered(ip)) {
+			AddLogLineM(true, CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
+				% Uint32toStringIP(ip) % cur_server->GetAddress() );
+			OnConnect(wxSOCKET_INVADDR);
+		} else {
+			amuleIPV4Address addr;
+			addr.Hostname(ip);
+			addr.Service(cur_server->GetConnPort());
+			AddDebugLogLineM(false, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
+			Connect(addr, false);
+		}
 	} else {
 		AddLogLineM(true, CFormat( _("Could not solve dns for server %s: Unable to connect!") )
 			% cur_server->GetAddress() );

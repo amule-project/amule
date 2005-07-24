@@ -6,6 +6,10 @@ Version 2.1.x - The "???" version
 		* Ported the partfile importer from eMule.
 		* Proper termination of working threads in webserver.
 
+	ken:
+		* Use the IPFilter when adding and connecting to servers.  Thanks
+		  to MrFaber for reporting the bug.
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
