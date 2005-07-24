@@ -49,16 +49,44 @@
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 #include <algorithm>
-
+#include <list>
 
 const byte default_zero_hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
 												0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
 
-std::list<CAddFileThread::QueuedFile> CAddFileThread::s_queue;
-bool CAddFileThread::s_running;
-CAddFileThread*	CAddFileThread::s_thread;
-wxMutex CAddFileThread::s_mutex;
+
+//! The mutex used to protect variables and datastructures used by the thread.
+static wxMutex		s_mutex;
+
+//! Is the hasher active. Does not mean that there are any threads running.
+static bool			s_running;
+
+//
+static CAddFileThread*		s_thread;
+
+
+/**
+ * Container for queued files.
+ */
+struct QueuedFile
+{
+	//! The full path to the file.
+	wxString			m_path;
+	//! The name of the file.
+	wxString			m_name;
+	//! The PartFile owning this file in case of a final hashing (completing).
+	const CPartFile*	m_owner;
+};
+
+
+//! The queue-type
+typedef std::list<QueuedFile> FileQueue;
+//! The queue of files to be hashed
+static FileQueue s_queue;
+
+
+
 
 CAddFileThread::CAddFileThread()
 	: wxThread(wxTHREAD_DETACHED)
@@ -84,25 +112,30 @@ void CAddFileThread::CreateNewThread()
 		AddLogLineM( false, _("Hasher: Creating new thread.") );
 		
 		s_thread = new CAddFileThread();
-	
-		switch ( s_thread->Create() ) {
-			case wxTHREAD_NO_ERROR:
-				break;
-			case wxTHREAD_RUNNING:
-				AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a already running thread!") );
-				break;
-			case wxTHREAD_NO_RESOURCE:
-				AddDebugLogLineM( true, logHasher, wxT("Error, attempt to create a thread without resources!") );
-				break;
-			default:
-				AddDebugLogLineM( true, logHasher, wxT("Error, unknown error attempting to create a thread!") );
-		}
 
+		wxThreadError state = s_thread->Create();
+		if (state != wxTHREAD_NO_ERROR) {
+			AddDebugLogLineM(true, logHasher, wxString::Format(wxT("Error while creating file-hashing thread: %d"), state));
+		
+			// Delete() must be called in this case acording to the docs.
+			s_thread->Delete();
+			delete s_thread;
+			s_thread = NULL;
+		}
+		
 		// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
 		s_thread->SetPriority(WXTHREAD_MIN_PRIORITY);
 		
-		s_thread->Run();
-	}
+		state = s_thread->Run();
+		if (state != wxTHREAD_NO_ERROR) {
+			AddDebugLogLineM(true, logHasher, wxString::Format(wxT("Error while attempting to run file-hashing thread: %d"), state));
+			
+			// Delete() must be called in this case acording to the docs.
+			s_thread->Delete();
+			delete s_thread;
+			s_thread = NULL;
+		}		
+	}	
 }
 
 
@@ -151,8 +184,10 @@ void CAddFileThread::Stop()
 				otherfunctions::MilliSleep(10);
 			}
 
+#ifdef __WXGTK__
 			// Re-claim the GUI mutex.
-			wxMutexGuiLeave();
+			wxMutexGuiEnter();
+#endif		
 		}
 	} else {
 		AddDebugLogLineM( true, logHasher, wxT("Warning, Attempted to stop already stopped hasher!") );
