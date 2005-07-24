@@ -29,7 +29,7 @@ Version 2.1.x - The "???" version
 
 	shakraw:
 		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
-		
+
 --------------------------------------------------------------------------------
 
 Version 2.0.4 - The "..." version.
@@ -145,7 +145,7 @@ Version 2.0.1 - The " Woops, HotFix " version.
 		* Fixed sorting on the UploadList by Transferred (thanks eylzo).
 		* Users/Files on server no longer show as negative if server sends wrong values.
 		* Check for autopoint on configure to warn for gettext not installed.
-		
+
 	niet:
 		* Updated xal.pl (some fixes).
 
