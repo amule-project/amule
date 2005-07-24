@@ -21,6 +21,8 @@ Version 2.1.x - The "???" version
 		  shut down by amulecmd.
 		* Small compilation fixes.
 		* Fixed deadlock in ClientUDPSocket.cpp.
+		* Crash handler improovement, avoid calling functions that
+		  may allocate memory.
 
 	volpol:
 		* A4AF transfer speed display fix
