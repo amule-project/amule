@@ -561,7 +561,6 @@ void CWebServer::ProcessURL(ThreadData Data) {
 		wxString PwStr = _ParseURL(Data, wxT("p"));
 		CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 		bool login = false;
-		wxString ip = char2unicode(inet_ntoa(Data.inadr));
 		if ( (PwHash == webInterface->m_AdminPass) || (PwStr.IsEmpty() && webInterface->m_AdminPass.IsEmpty()) ) {
 			Session* ses = new Session();
 			ses->admin = true;
@@ -580,27 +579,10 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			login = true;
 			webInterface->DebugShow(wxT("*** logged in as guest\n"));
 		} else {
-			// This call to ::GetTickCount has segfaulted once with this == 0x0, because
-			// wxUSE_GUI was set to 1 in a console only application. This may happen due
-			// to wrong wxWidgets configuration.
-			//
-			// save failed attempt (ip,time)
-			TransferredData newban = {StringIPtoUint32(ip), ::GetTickCount()}; 
-			m_Params.badlogins.Add(&newban);
 			login = false;
 			webInterface->DebugShow(wxT("*** login failed\n"));
 		}
 		isUseGzip = false;
-		if (login) {
-			uint32 ipn = StringIPtoUint32(ip);
-			for (size_t i = 0; i < m_Params.badlogins.GetCount();) {
-				if (ipn == m_Params.badlogins[i]->datalen) {
-					m_Params.badlogins.RemoveAt(i);
-				} else {
-					++i;
-				}
-			}
-		}
 	}
 	if (sW == wxT("logout")) {
 		_RemoveSession(Data, lSession);
@@ -666,23 +648,9 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			}
 		}
 	} else {
-		isUseGzip = false;		
-		uint32 ip = inet_addr(inet_ntoa( Data.inadr ));
-		uint32 faults = 0;
-		// check for bans
-		for (size_t i = 0; i < m_Params.badlogins.GetCount(); ++i) {
-			if (m_Params.badlogins[i]->datalen==ip) ++faults;
-		}
-		if (faults>4) {
-			Out += _("Access denied!");
-			// set 15 mins ban by using the badlist
-			TransferredData preventive={ip, ::GetTickCount() + (15*60*1000) };
-			for (int i = 0; i <= 5; ++i) {
-				m_Params.badlogins.Add(&preventive);
-			}
-		} else {
-			Out += _GetLoginScreen(Data);
-		}
+		isUseGzip = false;
+
+		Out += _GetLoginScreen(Data);
 	}
 	//
 	// send answer ...
@@ -2384,14 +2352,6 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 
 int CWebServer::UpdateSessionCount() {
-	// remove old bans
-	for (size_t i = 0; i < m_Params.badlogins.GetCount();) {
-		uint32 diff= ::GetTickCount() - m_Params.badlogins[i]->timestamp ;
-		if (diff >1000U*60U*15U && (::GetTickCount() > m_Params.badlogins[i]->timestamp)) {
-			m_Params.badlogins.RemoveAt(i);
-		} else 
-			++i;
-	}
 
 	// count & remove old session
 	for (size_t i = 0; i < m_Params.Sessions.GetCount();) {
