@@ -60,18 +60,33 @@ bool CAICHSyncThread::Start()
 	}
 	
 	s_thread = new CAICHSyncThread();
-	if ( s_thread->Create() != wxTHREAD_NO_ERROR ) {
-		AddDebugLogLineM( true, logAICHThread, wxT("Failed to create AICH thread!") );
 
+	wxThreadError state = s_thread->Create();
+	if (state != wxTHREAD_NO_ERROR) {
+		AddDebugLogLineM(true, logAICHThread, wxString::Format(wxT("Error while creating AICH thread: %d"), state));
+	
+		// Delete() must be called in this case acording to the docs.
+		s_thread->Delete();
 		delete s_thread;
 		s_thread = NULL;
-		
+	
 		return false;
 	}
+	
+	// The threads shouldn't be hugging the CPU, as it will already be hugging the HD
+	s_thread->SetPriority(WXTHREAD_MIN_PRIORITY);
+	
+	state = s_thread->Run();
+	if (state != wxTHREAD_NO_ERROR) {
+		AddDebugLogLineM(true, logAICHThread, wxString::Format(wxT("Error while attempting to run AICH thread: %d"), state));
+		
+		// Delete() must be called in this case acording to the docs.
+		s_thread->Delete();
+		delete s_thread;
+		s_thread = NULL;
 
-	// slightly less than the main thread.
-	s_thread->SetPriority( WXTHREAD_MIN_PRIORITY );
-	s_thread->Run();
+		return false;
+	}
 
 	return true;
 }
@@ -104,8 +119,10 @@ bool CAICHSyncThread::Stop()
 		 	otherfunctions::MilliSleep(10);
 		}
 
+#ifdef __WXGTK__
 		// Re-claim the GUI mutex.
-		wxMutexGuiLeave();
+		wxMutexGuiEnter();
+#endif
 
 		return true;
 	} else {

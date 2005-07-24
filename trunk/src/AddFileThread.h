@@ -31,11 +31,6 @@
 
 #include <wx/thread.h>		// Needed for wxThread
 
-#include <list>				// Needed for std::list
-
-#include "Types.h"			// Needed for uints
-
-
 class CKnownFile;
 class CPartFile;
 class CFile;
@@ -125,33 +120,6 @@ private:
 	
 	//! Main function
 	virtual ExitCode 	Entry();
-	//! The mutex used to protect variables and datastructures used by the thread.
-	static wxMutex		s_mutex;
-	
-	//! Is the hasher active. Does not mean that there are any threads running.
-	static bool			s_running;
-
-	static CAddFileThread*		s_thread;
-
-
-	/**
-	 * Container for queued files.
-	 */
-	struct QueuedFile
-	{
-		//! The full path to the file.
-		wxString			m_path;
-		//! The name of the file.
-		wxString			m_name;
-		//! The PartFile owning this file in case of a final hashing (completing).
-		const CPartFile*	m_owner;
-	};
-
-	
-	//! The queue-type
-	typedef std::list<QueuedFile> FileQueue;
-	//! The queue of files to be hashed
-	static FileQueue s_queue;
 };
 
 #endif // ADDFILETHREAD_H
