@@ -15,6 +15,7 @@ Version 2.1.x - The "???" version
 		  assert happened.
 		* Fixed asserts on exit about non-empty lists when aMule was
 		  shut down by amulecmd.
+		* Small compilation fixes.
 
 	volpol:
 		* A4AF transfer speed display fix
