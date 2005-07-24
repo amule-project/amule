@@ -16,6 +16,7 @@ Version 2.1.x - The "???" version
 		* Fixed asserts on exit about non-empty lists when aMule was
 		  shut down by amulecmd.
 		* Small compilation fixes.
+		* Fixed deadlock in ClientUDPSocket.cpp.
 
 	volpol:
 		* A4AF transfer speed display fix
