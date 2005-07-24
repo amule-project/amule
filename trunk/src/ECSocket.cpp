@@ -401,6 +401,9 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
  * FIXME: ECSocket must be make "public wxSocketBase" and all "m_sock->" removed.
  * 
  */
+#ifdef CLIENT_GUI
+#include "amule.h"			// Needed for theApp
+#endif
 void ECSocket::OnConnect()
 {
 	#ifdef CLIENT_GUI
