@@ -372,10 +372,16 @@ int CamuleApp::InitGui(bool ,wxString &)
 	return 0;
 }
 
+//
+// Static variables initialization and application initialization
+//
+const wxString CamuleApp::FullMuleVersion = GetFullMuleVersion();
+const wxString CamuleApp::OSDescription = wxGetOsDescription();
+char *CamuleApp::strFullMuleVersion = new char[GetFullMuleVersion().Length()+1];
+char *CamuleApp::strOSDescription = new char[wxGetOsDescription().Length()+1];
 
 bool CamuleApp::OnInit()
 {
-	
 #if wxUSE_MEMORY_TRACING
 	printf("Checkpoint set on app init for memory debug\n");
 	wxDebugContext::SetCheckpoint();
@@ -394,10 +400,11 @@ bool CamuleApp::OnInit()
 
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
-	
 	SetAppName(wxT("aMule"));
 
-	OSType = wxGetOsDescription().BeforeFirst( wxT(' ') );
+	strcpy(strFullMuleVersion, (const char *)unicode2char(FullMuleVersion));
+	strcpy(strOSDescription, (const char *)unicode2char(OSDescription));
+	OSType = OSDescription.BeforeFirst( wxT(' ') );
 	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");
 	}	
@@ -412,7 +419,10 @@ bool CamuleApp::OnInit()
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
 #else
-	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+	cmdline.AddOption(wxT("geometry"), wxEmptyString,
+		wxT(	"Sets the geometry of the app.\n"
+			"\t\t\t<str> uses the same format as standard X11 apps:\n"
+			"\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
@@ -449,9 +459,13 @@ bool CamuleApp::OnInit()
 	
 	if ( cmdline.Found(wxT("version")) ) {
 #ifndef AMULE_DAEMON		
-		printf("aMule %s (OS: %s)\n", (const char *)unicode2char(GetMuleVersion()), (const char*)unicode2char(OSType));
+		printf("aMule %s (OS: %s)\n",
+			(const char *)unicode2char(GetMuleVersion()),
+			(const char*)unicode2char(OSType));
 #else
-		printf("aMule Daemon %s (OS: %s)\n", (const char *)unicode2char(GetMuleVersion()), (const char*)unicode2char(OSType));
+		printf("aMule Daemon %s (OS: %s)\n",
+			(const char *)unicode2char(GetMuleVersion()),
+			(const char*)unicode2char(OSType));
 #endif
 		return false;
 	}
@@ -540,14 +554,16 @@ bool CamuleApp::OnInit()
 			// Copy .dat files to the aMule dir			
 			wxString file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.dat"));
   			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
+				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() +
+					file.AfterLast(wxFileName::GetPathSeparator()));
 				file = xMuleDir.GetNextFile();
   			}
 
 			// Copy .met files to the aMule dir
 			file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.met"));
 			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() + file.AfterLast(wxFileName::GetPathSeparator()));
+				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() +
+					file.AfterLast(wxFileName::GetPathSeparator()));
 				file = xMuleDir.GetNextFile();
   			}
 
@@ -622,7 +638,9 @@ bool CamuleApp::OnInit()
 	// Test if there's any new version
 	if (thePrefs::CheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
-		CHTTPDownloadThreadBase* version_check = new CHTTPDownloadThreadBase(wxT("http://amule.sourceforge.net/lastversion"), theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck);
+		CHTTPDownloadThreadBase* version_check = 
+			new CHTTPDownloadThreadBase(wxT("http://amule.sourceforge.net/lastversion"),
+				theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -1321,8 +1339,8 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
 	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
-	fprintf(stderr, "Current version is: %s\n", (const char *)unicode2char(GetFullMuleVersion()));
-	fprintf(stderr, "Running on: %s\n\n", (const char*)unicode2char(wxGetOsDescription()));
+	fprintf(stderr, "Current version is: %s\n", strFullMuleVersion);
+	fprintf(stderr, "Running on: %s\n\n", strOSDescription);
 	
 	otherfunctions::print_backtrace(1); // 1 == skip this function.
 	
