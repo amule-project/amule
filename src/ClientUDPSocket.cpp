@@ -97,9 +97,11 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 	uint32 length = RecvFrom(addr, buffer, CLIENT_UDP_BUFFER_SIZE).LastCount();
 	
 	if (Error()) {
+		m_sendLocker.Unlock();
 		AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Error while reading from CClientUDPSocket: %i"), LastError()));
 		return;
 	} else if (length < 2) {
+		m_sendLocker.Unlock();
 		AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
 		return;
 	}
