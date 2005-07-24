@@ -686,7 +686,6 @@ typedef struct {
 
 	ArrayOfUpDown		PointsForWeb;
 	ArrayOfSession		Sessions;
-	ArrayOfTransferredData	badlogins;
 
 } GlobalParams;
 
@@ -709,7 +708,6 @@ class CParsedUrl {
 struct ThreadData {
 	CParsedUrl	parsedURL;
 	wxString	sURL;
-	in_addr		inadr;
 	CWebSocket	*pSocket;
 };
 
