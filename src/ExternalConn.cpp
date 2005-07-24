@@ -232,14 +232,17 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
-		// If one of the clients doesn't use CVSDATE, we just try...
 #ifdef CVSDATE
-		if (!request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().IsEmpty() && request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().BeforeFirst(wxT(' ')) != wxString(wxT(CVSDATE)).BeforeFirst(wxT(' '))) {
-#else
-		if (false) { 
-#endif
+		// For CVS versions, both client and server must use CVSDATE, and they must be the same
+		if (!request->GetTagByName(EC_TAG_CVSDATE) || request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().BeforeFirst(wxT(' ')) != wxString(wxT(CVSDATE)).BeforeFirst(wxT(' '))) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect CVSDATE. Please run core and remote from the same CVS tarball (") + request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData() + wxT(" != ") + wxT(CVSDATE) + wxT(")")));
+#else
+		// For release versions, we don't want to allow connections from any arbitrary CVS client.
+		if (request->GetTagByName(EC_TAG_CVSDATE)) { 
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary CVS version! *sigh* possible crash prevented")));
+#endif
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
