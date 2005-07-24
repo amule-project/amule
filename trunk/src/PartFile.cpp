@@ -1238,25 +1238,6 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			// Very nice feature, if a file is completed but .part.met don't belive it,
 			// update it.
 			
-			/*
-			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
-				if (!(result->GetPartHash(i) && !md4cmp(result->GetPartHash(i),GetPartHash(i)))){
-					AddLogLineM(false,
-						wxString::Format(_(
-							"Found corrupted part (%i) in %i parts file %s "
-							"- FileResultHash |%s| FileHash |%s|"),
-							i+1, GetED2KPartHashCount(), m_strFileName.c_str(),
-							result->GetPartHash(i),GetPartHash(i)));
-					AddLogLineM(false, wxString::Format(_(
-								"Found corrupted part (%i) in %s"),
-								i+1, m_strFileName.c_str()));
-					AddGap(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= m_nFileSize) ?
-							m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
-					errorfound = true;
-				}
-			}
-			*/
 			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
 				if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 					CMD4Hash wronghash;
