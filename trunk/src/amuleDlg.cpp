@@ -586,13 +586,13 @@ CamuleDlg::~CamuleDlg()
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 	
-	bool connect = (thePrefs::GetNetworkED2K() && !theApp.IsConnectedED2K() && !theApp.serverconnect->IsConnecting()) 
+	bool connect = (!theApp.IsConnectedED2K() && !theApp.serverconnect->IsConnecting()) 
 						#ifdef __COMPILE_KAD__
-						|| ( thePrefs::GetNetworkKademlia() && !Kademlia::CKademlia::isRunning())
+						|| (!Kademlia::CKademlia::isRunning())
 						#endif
 						;	
-	
-	if (connect) {
+
+	if (connect && thePrefs::GetNetworkED2K()) {
 		//connect if not currently connected
 		AddLogLine(true, _("Connecting"));
 		theApp.serverconnect->ConnectToAnyServer();
@@ -610,9 +610,8 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 
 	#ifdef __COMPILE_KAD__
 	// Connect Kad also
-	if( connect ) {
+	if( connect && thePrefs::GetNetworkKademlia()) {
 		Kademlia::CKademlia::start();
-		
 	} else {
 		Kademlia::CKademlia::stop();
 		ShowConnectionState(true,wxT("Kad"));
