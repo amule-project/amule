@@ -519,3 +519,19 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 	*(curr_ptr + copy_size) = 0;
 }
 
+void load_http_vars(std::map<std::string, std::string> &varmap)
+{
+	PHP_EXP_NODE *http_vars_exp_node = get_var_node("HTTP_POST_VARS");
+	PHP_VAR_NODE *http_vars = http_vars_exp_node->var_node;
+	// i'm not building exp tree, node not needed
+	delete http_vars_exp_node;
+	for(std::map<std::string, std::string>::iterator i = varmap.begin(); i != varmap.end(); i++) {
+		cast_value_array(&http_vars->value);
+		PHP_VAR_NODE *curr_var = array_get_by_str_key(&http_vars->value, i->first);
+		PHP_VALUE_NODE val;
+		val.type = PHP_VAL_STRING;
+		val.str_val = (char *)i->second.c_str();
+		value_value_assign(&curr_var->value, &val);
+	}
+}
+

@@ -1491,42 +1491,6 @@ void php_report_error(char *msg, PHP_MSG_TYPE err_type)
 }
 
 
-void print_exp_node(PHP_EXP_NODE *node, int ident)
-{
-	for(int i = 0; i < ident;i++) {
-		printf("\t");
-	}
-	switch(node->op) {
-        case PHP_OP_VAR:
-                printf("NODE VAR:  %p \n", node->var_node);
-                php_var_dump(&node->var_node->value, ident + 1);
-                break;
-        case PHP_OP_VAL:
-                printf("NODE VALUE: \n");
-                php_var_dump(&node->val_node, ident + 1);
-                break;
-        case PHP_OP_ASS:
-                printf("NODE: ASSIGN\n");
-                print_exp_node(node->tree_node.left, ident + 1);
-                print_exp_node(node->tree_node.right, ident + 1);
-                break;
-        default:
-                printf("NODE: OP\n");
-                print_exp_node(node->tree_node.left, ident + 1);
-                print_exp_node(node->tree_node.right, ident + 1);
-        }
-}
-
-void print_syn_node(PHP_SYN_NODE *node, int ident)
-{
-	for(int i = 0; i < ident;i++) {
-		printf("\t");
-	}
-	switch(node->type) {
-		default:
-			printf("SYN_NODE: OP\n");
-	}
-}
 
 int yyerror(char *s)
 {

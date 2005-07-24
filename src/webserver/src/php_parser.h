@@ -212,7 +212,7 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 66 "php_parser.y"
+#line 67 "php_parser.y"
 typedef union YYSTYPE {
 	PHP_SYN_NODE *syn_node;
 	PHP_EXP_NODE *exp_node;
