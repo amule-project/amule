@@ -58,6 +58,7 @@
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
 #include "Format.h"
+#include "IPFilter.h"
 
 CServerList::CServerList()
 {
@@ -193,18 +194,22 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 		}
 
 		return false;
-	} else if ( !in_server->HasDynIP() ) {
-		if ( !IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ) {
-			if ( fromUser ) {
-				AddLogLineM( true,
-					CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
-						% in_server->GetAddress()
-						% in_server->GetPort()
-				);
-			}
-		
-			return false;
+	} else if (
+				!in_server->HasDynIP() &&
+				(
+					!IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ||
+					theApp.ipfilter->IsFiltered( in_server->GetIP() )
+				)
+	          ) {
+		if ( fromUser ) {
+			AddLogLineM( true,
+				CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
+					% in_server->GetAddress()
+					% in_server->GetPort()
+			);
 		}
+	
+		return false;
 	}
 	
 	CServer* test_server = GetServerByAddress(in_server->GetAddress(), in_server->GetPort());
