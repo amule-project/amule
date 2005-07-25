@@ -28,7 +28,7 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION and CVSDATE
+#include "config.h"		// Needed for VERSION
 #endif
 
 #include "ExternalConn.h"	// Interface declarations
@@ -53,6 +53,7 @@
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
+#include "ECVersion.h"		// Needed for EC_VERSION_ID
 #include "Statistics.h"
 #include "Format.h"		// Needed for CFormat
 #include "gsocket-fix.h"
@@ -232,14 +233,14 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
-#ifdef CVSDATE
+#ifdef EC_VERSION_ID
 		// For CVS versions, both client and server must use CVSDATE, and they must be the same
-		if (!request->GetTagByName(EC_TAG_CVSDATE) || request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData().BeforeFirst(wxT(' ')) != wxString(wxT(CVSDATE)).BeforeFirst(wxT(' '))) {
+		if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetStringData() != wxT(EC_VERSION_ID)) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect CVSDATE. Please run core and remote from the same CVS tarball (") + request->GetTagByNameSafe(EC_TAG_CVSDATE)->GetStringData() + wxT(" != ") + wxT(CVSDATE) + wxT(")")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else
 		// For release versions, we don't want to allow connections from any arbitrary CVS client.
-		if (request->GetTagByName(EC_TAG_CVSDATE)) { 
+		if (request->GetTagByName(EC_TAG_VERSION_ID)) { 
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary CVS version! *sigh* possible crash prevented")));
 #endif

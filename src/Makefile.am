@@ -461,3 +461,9 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
 endif
+
+BUILT_SOURCES = ECVersion.h
+CLEANFILES = ECVersion.h
+
+ECVersion.h: ECcodes.h ECPacket.h ECPacket.cpp ECSocket.h ECSocket.cpp
+	$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)

@@ -73,6 +73,7 @@
 #include "ECFileConfig.h"	// Needed for CECFileConfig
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
 #include "ECcodes.h"		// Needed for OPcodes and TAGnames
+#include "ECVersion.h"		// Needed for EC_VERSION_ID
 #include "ExternalConnector.h"
 #include "MD5Sum.h"
 #include "OtherFunctions.h"
@@ -301,8 +302,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, m_password));
 
-#ifdef CVSDATE
-		packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
+#ifdef EC_VERSION_ID
+		packet.AddTag(CECTag(EC_TAG_VERSION_ID, wxT(EC_VERSION_ID)));
 #endif
 
 		// Clear passwords
