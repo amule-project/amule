@@ -581,16 +581,15 @@ AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales
 # Try to set the CVS checkout-date
 if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs
 then
-	AC_DEFINE_UNQUOTED(CVSDATE, "`cat $srcdir/CVSDATE`", [The checkout date.])
+	cvsdate=`cat $srcdir/CVSDATE`
 elif test -f "$srcdir/CVS/Entries" # CVSDATE for cvs
 then
 	cvsdate="$(stat -Lc %y $srcdir/CVS/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
-	test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date.])
-elif (cd $srcdir ; svn info >/dev/null 2>&1) # CVSDATE for svn
+elif test -d $srcdir/.svn # CVSDATE for svn
 then
-	cvsdate="$(cd $srcdir ; svn info | grep Date | cut -d' ' -f4-6)" >/dev/null 2>&1
-	test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date.])
+	cvsdate="`svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`" >/dev/null 2>&1
 fi
+test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date or svn revision number.])
 
 XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
