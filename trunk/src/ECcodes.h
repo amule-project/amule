@@ -124,7 +124,7 @@ enum {
 		 *	::EC_TAG_CLIENT_VERSION\n
 		 *	::EC_TAG_CLIENT_MOD\n
 		 *	::EC_TAG_PROTOCOL_VERSION (required)\n
-		 *	::EC_TAG_CVSDATE
+		 *	::EC_TAG_VERSION_ID
 		 */
 	EC_OP_AUTH_REQ,
 
@@ -657,15 +657,18 @@ enum {
 	EC_TAG_PROTOCOL_VERSION,
 
 		/*!
-		 * \brief CVS checkout date
+		 * \brief EC binary version ID
 		 *
-		 * Used with scripted checkouts (in our CVS tarballs)
-		 * to ensure that core & remote are from the same
-		 * CVS version.
+		 * This ID is different for each change in sensitive
+		 * source files, that may cause binary incompatibility.
+		 *
+		 * This tag is not sent nor accepted on release versions,
+		 * thus we can ensure that releases which are binary compatible
+		 * can still communicate with each other.
 		 *
 		 * Data type: \c string
 		 */
-	EC_TAG_CVSDATE,
+	EC_TAG_VERSION_ID,
 
 		/*!
 		 * \brief Selects response detail level.

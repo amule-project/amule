@@ -38,10 +38,6 @@ using std::auto_ptr;
 #pragma implementation "updownclient.h"
 #endif
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for CVSDATE
-#endif
-
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
@@ -90,6 +86,7 @@ using std::auto_ptr;
 #include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECcodes.h"
+#include "ECVersion.h"
 
 #include "MD5Sum.h"
 
@@ -931,8 +928,8 @@ bool CRemoteConnect::ConnectionEstablished() {
 	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(ConnectionPassword)));
 
-#ifdef CVSDATE
-	packet.AddTag(CECTag(EC_TAG_CVSDATE, wxT(CVSDATE)));
+#ifdef EC_VERSION_ID
+	packet.AddTag(CECTag(EC_TAG_VERSION_ID, wxT(EC_VERSION_ID)));
 #endif
 
 	if (! m_ECSocket->WritePacket(&packet) ) {
