@@ -702,6 +702,8 @@ class CParsedUrl {
 		{
 			return m_params[key];
 		}
+		
+		void ConvertParams(std::map<std::string, std::string> &);
 };
 
 // Changing this to a typedef struct{} makes egcs compiler do it all wrong and crash on run
@@ -800,7 +802,9 @@ class CSession {
 		int m_id;
 		bool m_loggedin;
 		time_t m_last_access;
-		std::map<std::string, std::string> m_vars;
+		std::map<std::string, std::string> m_vars, m_get_vars;
+		
+		void LoadVars(CParsedUrl &url);
 };
 
 /*
@@ -810,7 +814,7 @@ class CScriptWebServer : public CWebServerBase {
 		wxString m_wwwroot;
 		
 		char *ProcessHtmlRequest(const char *filename, long &size);
-		char *ProcessPhpRequest(const char *filename, long &size);
+		char *ProcessPhpRequest(const char *filename, CSession *sess, long &size);
 
 		char *GetErrorPage(const char *message, long &size);
 		char *Get_404_Page(long &size);

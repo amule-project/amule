@@ -519,15 +519,15 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 	*(curr_ptr + copy_size) = 0;
 }
 
-void load_http_vars(std::map<std::string, std::string> &varmap)
+void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 {
-	PHP_EXP_NODE *http_vars_exp_node = get_var_node("HTTP_POST_VARS");
-	PHP_VAR_NODE *http_vars = http_vars_exp_node->var_node;
+	PHP_EXP_NODE *sess_vars_exp_node = get_var_node(target);
+	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
 	// i'm not building exp tree, node not needed
-	delete http_vars_exp_node;
+	delete sess_vars_exp_node;
 	for(std::map<std::string, std::string>::iterator i = varmap.begin(); i != varmap.end(); i++) {
-		cast_value_array(&http_vars->value);
-		PHP_VAR_NODE *curr_var = array_get_by_str_key(&http_vars->value, i->first);
+		cast_value_array(&sess_vars->value);
+		PHP_VAR_NODE *curr_var = array_get_by_str_key(&sess_vars->value, i->first);
 		PHP_VALUE_NODE val;
 		val.type = PHP_VAL_STRING;
 		val.str_val = (char *)i->second.c_str();
@@ -535,3 +535,19 @@ void load_http_vars(std::map<std::string, std::string> &varmap)
 	}
 }
 
+void save_session_vars(std::map<std::string, std::string> &varmap)
+{
+	PHP_EXP_NODE *sess_vars_exp_node = get_var_node("_SESSION_VARS");
+	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
+
+	delete sess_vars_exp_node;
+	if ( sess_vars->value.type != PHP_VAL_ARRAY ) {
+		return;
+	}
+	for(int i = 0; i < array_get_size(&sess_vars->value); i++) {
+		std::string s = array_get_ith_key(&sess_vars->value, i);
+		PHP_VAR_NODE *var = array_get_by_str_key(&sess_vars->value, s);
+		cast_value_str(&var->value);
+		varmap[s] = var->value.str_val;
+	}
+}

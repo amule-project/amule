@@ -248,6 +248,13 @@ CParsedUrl::CParsedUrl(const wxString &url)
     }
 }
 
+void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
+{
+	for(std::map<wxString, wxString>::iterator i = m_params.begin(); i != m_params.end(); i++) {
+		std::string key(unicode2char(i->first)), value(unicode2char(i->second));
+		dst[key] = value;
+	}
+}
 
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
@@ -3380,8 +3387,6 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 /* 
  * Script-based webserver
  */
- 
-
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
@@ -3451,7 +3456,7 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 }
 
 #ifdef AMULEWEB_SCRIPT_EN
-char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
+char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, long &size)
 {
 	FILE *f = fopen(filename, "r");
 	if ( !f ) {
@@ -3460,7 +3465,12 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
 
 	CPhPLibContext *context = new CPhPLibContext(this, filename);
 	CWriteStrBuffer buffer;
+	
+	load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
+	load_session_vars("_SESSION_VARS", sess->m_vars);
 	context->Execute(&buffer);
+	save_session_vars(sess->m_vars);
+	sess->m_get_vars.clear();
 	
 	size = buffer.Length();
 	char *buf = new char [size+1];
@@ -3471,7 +3481,7 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
 	return buf;
 }
 #else
-char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
+char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *, long &size)
 {
 	return GetErrorPage("PHP support is not enabled in compilation", size);
 }
@@ -3498,6 +3508,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData Data)
 		session = &m_sessions[Data.SessionID];
 		session->m_last_access = curr_time;
 		session->m_loggedin = false;
+		Data.parsedURL.ConvertParams(session->m_get_vars);
 	}
 	return session;
 }
@@ -3532,7 +3543,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	if ( req_file.Find(_(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else if ( req_file.Find(_(".php")) != -1 ) {
-		httpOut = ProcessPhpRequest(unicode2char(req_file), httpOutLen);
+		httpOut = ProcessPhpRequest(unicode2char(req_file), session, httpOutLen);
 	} else {
 		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
 	}
