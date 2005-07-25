@@ -143,6 +143,7 @@ CWCThread::CWCThread(CWebServerBase *ws, wxSocketBase *sock) {
     stWebSocket.m_bCanSend = true;
     stWebSocket.m_dwHttpHeaderLen = 0;
     stWebSocket.m_dwHttpContentLen = 0;
+	stWebSocket.m_Cookie = 0;
 }
 CWCThread::~CWCThread()
 {
@@ -304,24 +305,48 @@ void *CWCThread::Entry() {
 
 void CWebSocket::OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen)
 {
-	wxString sHeader(char2unicode(pHeader));
-	sHeader = sHeader.Left(dwHeaderLen);
-	wxString sData(char2unicode(pData));
-	sData=sData.Left(dwDataLen);
-	wxString sURL;
 	
-	if (sHeader.Left(3) == wxT("GET"))
-		sURL = sHeader.Trim();
-	else if (sHeader.Left(4) == wxT("POST"))
-		sURL = wxT("?") + sData.Trim(); // '?' to imitate GET syntax for ParseURL
-
-	if (sURL.Find(wxT(" ")) > -1)
-		sURL = sURL.Mid(sURL.Find(wxT(" "))+1, sURL.Length());
+	bool is_post = false;
+	if ( strncmp(pHeader, "GET", 3) == 0 ) {
+	} else if ( strncmp(pHeader, "POST", 4) == 0 ) {
+		is_post = true;
+	} else {
+		// invalid request
+		return ;
+	}
+	char *path = strchr(pHeader, ' ');
+	if ( !path ) {
+		return;
+	}
+	*path++ = 0;
+	pHeader = strchr(path, ' ');
+	if ( !pHeader ) {
+		return;
+	}
+	*pHeader++ = 0;
 	
-	if (sURL.Find(wxT(" ")) > -1)
-		sURL = sURL.Left(sURL.Find(wxT(" ")));
-
-	ThreadData Data = { CParsedUrl(sURL), sURL, this };
+	wxString sURL(char2unicode(path));
+	if ( is_post ) {
+		wxString sData(char2unicode(pData));
+		sURL += wxT("?") + sData.Left(dwDataLen);
+	}
+	
+	//
+	// Find session cookie.
+	//
+	int sessid = 0;
+	char *current_cookie = strstr(pHeader, "Cookie: ");
+	if ( current_cookie ) {
+		current_cookie += strlen("Cookie: ");
+		char *value = strchr(current_cookie, '=');
+		if ( value ) {
+			*value++ = 0;
+		}
+		if ( !strcmp(current_cookie, "SESSID") ) {
+			sessid = atoi(value);
+		}
+	}
+	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
 	if (sURL.Length() > 4 ) {
 		wxString url_ext = sURL.Right( sURL.Length() - sURL.Find('.', true) ).MakeLower();
 		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || 

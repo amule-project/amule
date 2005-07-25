@@ -63,6 +63,7 @@ class CWebSocket {
 		CChunk *m_pHead; // tails of what has to be sent
 		CChunk *m_pTail;
 		
+		char *m_Cookie;
 		char *m_pBuf;
 		uint32 m_dwBufSize;
 		uint32 m_dwRecv;

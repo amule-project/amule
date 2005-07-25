@@ -708,6 +708,7 @@ class CParsedUrl {
 struct ThreadData {
 	CParsedUrl	parsedURL;
 	wxString	sURL;
+	int 		SessionID;
 	CWebSocket	*pSocket;
 };
 
