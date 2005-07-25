@@ -798,6 +798,7 @@ class CWebServerBase {
 class CSession {
 	public:
 		int m_id;
+		bool m_loggedin;
 		time_t m_last_access;
 		std::map<std::string, std::string> m_vars;
 };
@@ -815,6 +816,8 @@ class CScriptWebServer : public CWebServerBase {
 		char *Get_404_Page(long &size);
 
 		std::map<int, CSession> m_sessions;
+		
+		CSession *CheckLoggedin(ThreadData);
 	protected:
 		virtual void ProcessURL(ThreadData);
 	public:

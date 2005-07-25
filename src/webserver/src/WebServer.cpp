@@ -3477,6 +3477,31 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, long &size)
 }
 #endif
 
+CSession *CScriptWebServer::CheckLoggedin(ThreadData Data)
+{
+	time_t curr_time = time(0);
+	CSession *session = 0;
+	if ( Data.SessionID && m_sessions.count(Data.SessionID) ) {
+		session = &m_sessions[Data.SessionID];
+		// session times out in 2 hours
+		if ( (curr_time - session->m_last_access) > 7200 ) {
+			m_sessions.erase(Data.SessionID);
+			session = 0;
+		} else {
+			session->m_last_access = curr_time;
+		}
+	}
+	if ( !session ) {
+		while ( !Data.SessionID || m_sessions.count(Data.SessionID) ) {
+			Data.SessionID = rand();
+		}
+		session = &m_sessions[Data.SessionID];
+		session->m_last_access = curr_time;
+		session->m_loggedin = false;
+	}
+	return session;
+}
+
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	wxMutexLocker lock(*m_mutexChildren);
@@ -3489,7 +3514,17 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	if ( filename.Length() == 0 ) {
 		filename = _("index.html");
 	}
-	//wxFileName(m_wwwroot, Data.parsedURL.File());
+
+	CSession *session = CheckLoggedin(Data);
+
+	if ( !session->m_loggedin ) {
+		if ( Data.parsedURL.Param(_("pass")).Length() ) {
+			session->m_loggedin = true;
+		} else {
+			filename = _("login.html");
+		}
+	}
+
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if ( req_file.Find(_(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
