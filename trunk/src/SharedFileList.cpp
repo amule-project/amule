@@ -516,48 +516,42 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	}
 }
 
+
 bool CSharedFileList::AddFile(CKnownFile* pFile)
 {
-	wxASSERT( pFile->GetHashCount() == pFile->GetED2KPartHashCount() );
+	wxASSERT(pFile->GetHashCount() == pFile->GetED2KPartHashCount());
 	
-	list_mut.Lock();
-	
-	bool found = (m_Files_map.find(pFile->GetFileHash()) != m_Files_map.end());
-	
-	if ( !found ) {
-		m_Files_map[pFile->GetFileHash()] = pFile;		
-		/* Keywords to publish on Kad */
+	wxMutexLocker lock(list_mut);
+
+	CKnownFileMap::value_type entry(pFile->GetFileHash(), pFile);
+	if (m_Files_map.insert(entry).second) {
 		#ifdef __COMPILE_KAD__
+		/* Keywords to publish on Kad */
 		m_keywords->AddKeywords(pFile);
 		#endif
+
+		return true;
 	}
 
-	list_mut.Unlock();
-
-	return !found;
+	return false;
 }
 
-void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd){
+
+void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
+{
 	// TODO: Check if the file is already known - only with another date
 	
-	AddFile(toadd);
-	
-	Notify_SharedFilesShowFile(toadd);
-	
-	if (!bOnlyAdd) {
-		
-		// offer new file to server
-		if (!theApp.IsConnectedED2K()) {
-			return;
-		}
-	
-		m_lastPublishED2KFlag = true;
-		
-		// Publishing of files is not anymore handled here. Instead, the timer does it by itself.
-
+	if (AddFile(toadd)) {
+		Notify_SharedFilesShowFile(toadd);
 	}
 	
+	if (!bOnlyAdd && theApp.IsConnectedED2K()) {		
+		// Publishing of files is not anymore handled here.
+		// Instead, the timer does it by itself.
+		m_lastPublishED2KFlag = true;
+	}
 }
+
 
 // removes first occurrence of 'toremove' in 'list'
 void CSharedFileList::RemoveFile(CKnownFile* toremove){
