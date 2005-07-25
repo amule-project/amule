@@ -795,6 +795,13 @@ class CWebServerBase {
 
 };
 
+class CSession {
+	public:
+		int m_id;
+		time_t m_last_access;
+		std::map<std::string, std::string> m_vars;
+};
+
 /*
  * Script based webserver
  */
@@ -807,6 +814,7 @@ class CScriptWebServer : public CWebServerBase {
 		char *GetErrorPage(const char *message, long &size);
 		char *Get_404_Page(long &size);
 
+		std::map<int, CSession> m_sessions;
 	protected:
 		virtual void ProcessURL(ThreadData);
 	public:
