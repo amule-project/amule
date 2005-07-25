@@ -46,7 +46,8 @@ class CWebSocket {
 		void Disconnect();
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
-	
+		void SendHttpHeaders(bool use_gzip, uint32 content_len, int session_id);
+		
 		CWebServerBase *m_pParent;
 		wxSocketBase *m_hSocket;
 	

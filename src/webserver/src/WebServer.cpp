@@ -92,9 +92,6 @@ WX_DEFINE_OBJARRAY(ArrayOfUpDown)
 WX_DEFINE_OBJARRAY(ArrayOfSession)
 WX_DEFINE_OBJARRAY(ArrayOfTransferredData)
 
-#define HTTPInit "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\n"
-#define HTTPInitGZ "Server: aMule\r\nPragma: no-cache\r\nExpires: 0\r\nCache-Control: no-cache, no-store, must-revalidate\r\nConnection: close\r\nContent-Type: text/html\r\nContent-Encoding: gzip\r\n"
-
 #define WEB_SERVER_TEMPLATES_VERSION	4
 
 
@@ -662,10 +659,12 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	const char *httpOut = (const char *)Out;
 #endif
 
-	if (!isUseGzip)	{
-		Data.pSocket->SendContent(HTTPInit, httpOut, strlen(httpOut));
+	if (isUseGzip)	{
+		Data.pSocket->SendHttpHeaders(true, gzipLen, 0);
+		Data.pSocket->SendData(gzipOut, gzipLen);
 	} else {
-		Data.pSocket->SendContent(HTTPInitGZ, gzipOut, gzipLen);
+		Data.pSocket->SendHttpHeaders(false, strlen(httpOut), 0);
+		Data.pSocket->SendData(httpOut, strlen(httpOut));
 	}
 	if (gzipOut != NULL) {
 		delete[] gzipOut;
@@ -3501,14 +3500,14 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	}
 	
 	if (isUseGzip)	{
-		char *gzipOut = 0;
-		long gzipLen = 0;
-		Data.pSocket->SendContent(HTTPInitGZ, gzipOut, gzipLen);
-		if (gzipOut != NULL) {
-			delete[] gzipOut;
-		}
+		/*
+		Data.pSocket->SendHttpHeaders(true, gzipLen, 0);
+		Data.pSocket->SendData(gzipOut, gzipLen);
+		delete[] gzipOut;
+		*/
 	} else {
-		Data.pSocket->SendContent(HTTPInit, httpOut, httpOutLen);
+		Data.pSocket->SendHttpHeaders(false, strlen(httpOut), 0);
+		Data.pSocket->SendData(httpOut, strlen(httpOut));
+		delete [] httpOut;
 	}
-	delete [] httpOut;
 }
