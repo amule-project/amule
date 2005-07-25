@@ -38,6 +38,7 @@
 #include "Preferences.h"
 #include "SafeFile.h"
 #include "SharedFileList.h"
+#include "FileFunctions.h"
 
 #ifndef AMULE_DAEMON
 #include "muuli_wdr.h"

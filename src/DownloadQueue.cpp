@@ -54,6 +54,7 @@
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 #include "IPFilter.h"
+#include "FileFunctions.h"	// Needed for CDirIterator
 
 #include "kademlia/kademlia/Kademlia.h"
 

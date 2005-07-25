@@ -109,6 +109,7 @@
 #include "UploadBandwidthThrottler.h"
 #include "PartFileConvert.h"
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
+#include "FileFunctions.h"		// Needed for CDirIterator
 
 #ifdef __COMPILE_KAD__
 	#include "kademlia/kademlia/Kademlia.h"

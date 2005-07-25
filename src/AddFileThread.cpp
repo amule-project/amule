@@ -43,6 +43,7 @@
 #include "OPCodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
 #include "CFile.h"		// Needed for CFile
+#include "FileFunctions.h" // Needed for GetLastModificationTime()
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread
 #include "Logger.h"		// Needed for AddLogLine
 #include "Format.h"

@@ -64,6 +64,7 @@ amulegui_SOURCES = \
 	EditServerListDlg.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	FileFunctions.cpp \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
@@ -139,6 +140,7 @@ amule_SOURCES = \
 	ExternalConn.cpp \
 	FileDetailDialog.cpp \
 	FileDetailListCtrl.cpp \
+	FileFunctions.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -217,6 +219,7 @@ amuled_SOURCES = \
 	ED2KLink.cpp \
 	EMSocket.cpp \
 	ExternalConn.cpp \
+	FileFunctions.cpp \
 	Format.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -373,6 +376,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ExternalConn.h \
 		 FileDetailDialog.h \
 		 FileDetailListCtrl.h \
+		 FileFunctions.h \
 		 Friend.h \
 		 FriendList.h \
 		 FriendListCtrl.h \
@@ -395,6 +399,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ListenSocket.h \
 		 MD5Sum.h \
 		 MemFile.h \
+		 MuleDebug.h \
 		 MuleGifCtrl.h \
 		 MuleListCtrl.h \
 		 MuleNotebook.h \

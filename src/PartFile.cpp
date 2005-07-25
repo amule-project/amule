@@ -76,6 +76,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#include "FileFunctions.h"	// Needed for GetLastModificationTime
 
 #include <map>
 #include <algorithm>

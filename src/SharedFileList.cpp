@@ -55,6 +55,7 @@
 #include "Statistics.h"		// Needed for CStatistics
 #include "Logger.h"
 #include "Format.h"
+#include "FileFunctions.h"
 
 #ifndef AMULE_DAEMON
 	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
