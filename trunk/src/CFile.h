@@ -155,9 +155,6 @@ public:
 	// This safe read will throw() on some issues
 	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
 
-	// This is to avoid wxStat
-	static int Stat( const wxString& file_name, struct stat *buf);
-
 private:
 	// copy ctor and assignment operator are private because
 	// it doesn't make sense to copy files this way:
@@ -169,43 +166,5 @@ private:
 	mutable bool m_error; // error memory
 	wxString m_filePath;
 };
-
-// Move file with safe UTF8 name.
-bool UTF8_MoveFile(const wxString& from, const wxString& to); 
-
-// Copy file with safe UTF8 name.
-bool UTF8_CopyFile(const wxString& from, const wxString& to); 
-
-// Makes a backup of a file, by copying the original file to filename + appendix
-bool BackupFile(const wxString& filename, const wxString& appendix);
-
-// Get the LastModificationTime for a file.
-time_t GetLastModificationTime(const wxString& file);
-
-// Dir iterator: needed because wxWidget's wxFindNextFile and 
-// wxFindFirstFile are bugged like hell.
-
-class CDirIterator {
-public:
-	enum FileType { File, Dir, Any}; 
-
-	CDirIterator(const wxString& dir);
-	~CDirIterator();
-
-	bool IsValid() const {
-		return (DirPtr != NULL);
-	}
-
-	wxString GetFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
-	wxString GetNextFile();
-
-private:
-	DIR* DirPtr;
-	FileType type;
-	wxString DirStr;
-	wxString FileMask;
-};
-	
-bool CheckDirExists(const wxString& dir);
 
 #endif // CFILE_H

@@ -36,7 +36,7 @@
 #include "StringFunctions.h" // Needed for unicode2char
 #include <wx/event.h>
 
-#include "CFile.h"
+#include "FileFunctions.h"
 
 #ifdef __WXMSW__
 	#define ROOT_CHAR	wxT('\\')
