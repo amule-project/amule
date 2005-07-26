@@ -90,64 +90,64 @@ CClientUDPSocket::~CClientUDPSocket()
 
 void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 {
-	m_sendLocker.Lock();
+	amuleIPV4Address	addr;
+	byte				buffer[CLIENT_UDP_BUFFER_SIZE];
+	uint32				length;
 
-	amuleIPV4Address addr;
-	byte buffer[CLIENT_UDP_BUFFER_SIZE];
-	uint32 length = RecvFrom(addr, buffer, CLIENT_UDP_BUFFER_SIZE).LastCount();
+	{
+		wxMutexLocker lock(m_sendLocker);
 	
-	if (Error()) {
-		m_sendLocker.Unlock();
-		AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Error while reading from CClientUDPSocket: %i"), LastError()));
-		return;
-	} else if (length < 2) {
-		m_sendLocker.Unlock();
-		AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
-		return;
-	}
-	
-	if (!thePrefs::IsUDPDisabled()) {
-		m_sendLocker.Unlock();
-		try {
-			switch (buffer[0]) {
-				case OP_EMULEPROT:
-					ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
-					break;
-				#ifdef __COMPILE_KAD__
-				case OP_KADEMLIAHEADER:
-					//theStats.AddDownDataOverheadKad(length);
-					Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
-					break;
-				case OP_KADEMLIAPACKEDPROT: {
-					//theStats.AddDownDataOverheadKad(length);
-					uint32 nNewSize = length*10+300; // Should be enough...
-					byte unpack[nNewSize];
-					try {
-						uLongf unpackedsize = nNewSize-2;
-						uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
-						if (result == Z_OK) {
-							unpack[0] = OP_KADEMLIAHEADER;
-							unpack[1] = buffer[1];
-							Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
-						} else {
-							AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
-						}
-					} catch(...) {
-						AddDebugLogLineM(false, logClientKadUDP, wxT("Something wrong happened on a compressed Kad packet\n"));
-					}
-					break;
-				}
-				#endif
-				default:
-					AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
-			}
-		} catch (...) {
-			AddDebugLogLineM(false, logClientUDP, wxT("Unhanled exception on UDP socket receive!"));
-		}
-	} else {
-		Close();
+		length = RecvFrom(addr, buffer, CLIENT_UDP_BUFFER_SIZE).LastCount();
 		
-		m_sendLocker.Unlock();
+		if (Error()) {
+			AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Error while reading from CClientUDPSocket: %i"), LastError()));
+			return;
+		} else if (length < 2) {
+			AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
+			return;
+		}
+		
+		if (thePrefs::IsUDPDisabled()) {
+			Close();
+			return;
+		}
+	}
+
+	try {
+		switch (buffer[0]) {
+			case OP_EMULEPROT:
+				ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
+				break;
+			#ifdef __COMPILE_KAD__
+			case OP_KADEMLIAHEADER:
+				//theStats.AddDownDataOverheadKad(length);
+				Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+				break;
+			case OP_KADEMLIAPACKEDPROT: {
+				//theStats.AddDownDataOverheadKad(length);
+				uint32 nNewSize = length*10+300; // Should be enough...
+				byte unpack[nNewSize];
+				try {
+					uLongf unpackedsize = nNewSize-2;
+					uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
+					if (result == Z_OK) {
+						unpack[0] = OP_KADEMLIAHEADER;
+						unpack[1] = buffer[1];
+						Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+					} else {
+						AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+					}
+				} catch(...) {
+					AddDebugLogLineM(false, logClientKadUDP, wxT("Something wrong happened on a compressed Kad packet\n"));
+				}
+				break;
+			}
+			#endif
+			default:
+				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
+		}
+	} catch (...) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Unhanled exception on UDP socket receive!"));
 	}
 }
 
@@ -410,9 +410,10 @@ bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 	newpending.packet = packet;
 	newpending.dwTime = GetTickCount();
     
-	m_sendLocker.Lock();
-	controlpacket_queue.AddTail(newpending);
-	m_sendLocker.Unlock();
+	{
+		wxMutexLocker lock(m_sendLocker);
+		controlpacket_queue.AddTail(newpending);
+	}
 	
 	theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 	return true;

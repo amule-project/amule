@@ -345,9 +345,10 @@ void CSharedFileList::FindSharedFiles() {
 	
 	/* All part files are automatically shared. */
   	if (!m_Files_map.empty()) {
-		list_mut.Lock();
-		m_Files_map.clear();
-		list_mut.Unlock();
+  		{
+  			wxMutexLocker lock(list_mut);
+			m_Files_map.clear();
+		}
 
 		for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
 			CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );

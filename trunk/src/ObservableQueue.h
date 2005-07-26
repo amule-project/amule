@@ -420,10 +420,13 @@ bool CQueueObserver<ValueType>::IsActive() const
 template <typename ValueType>
 void CQueueObserver<ValueType>::Reset()
 {
-	m_mutex.Lock();
-	m_queue.clear();	
-	ObservableType* owner = const_cast<ObservableType*>( m_owner );
-	m_mutex.Unlock();
+	ObservableType* owner;
+	
+	{
+		wxMutexLocker lock(m_mutex);
+		m_queue.clear();	
+		owner = const_cast<ObservableType*>( m_owner );
+	}
 
 	owner->RemoveObserver( this );
 	owner->AddObserver( this );	

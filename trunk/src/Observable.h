@@ -30,6 +30,8 @@
 
 #include <set>
 
+#include "OtherFunctions.h"		// Needed for CMutexUnlocker
+
 
 template <typename TEST> class CObservable;
 
@@ -191,9 +193,10 @@ CObserver<EventType>::~CObserver()
 	while ( !m_list.empty() ) {
 		ObservableType* o = *m_list.begin();
 		
-		o->m_mutex.Lock();
-		o->m_list.erase( this );
-		o->m_mutex.Unlock();
+		{
+			wxMutexLocker oLock(o->m_mutex);
+			o->m_list.erase( this );
+		}
 		
 		m_list.erase( m_list.begin() );
 	}
@@ -208,9 +211,10 @@ CObservable<EventType>::~CObservable()
 	while ( !m_list.empty() ) {
 		ObserverType* o = *m_list.begin();
 		
-		o->m_mutex.Lock();
-		o->m_list.erase( this );
-		o->m_mutex.Unlock();
+		{
+			wxMutexLocker oLock(o->m_mutex);
+			o->m_list.erase( this );
+		}
 
 		m_list.erase( m_list.begin() );
 	}
@@ -221,23 +225,22 @@ template <typename EventType>
 bool CObservable<EventType>::AddObserver( CObserver<EventType>* o )
 {
 	wxASSERT( o );
-	
-	m_mutex.Lock();
-	if ( m_list.insert( o ).second ) {
-		m_mutex.Unlock();
 
-		o->m_mutex.Lock();
-		o->m_list.insert( this );
-		o->m_mutex.Unlock();
-	
-		ObserverAdded( o );
-		
-		return true;
+	{
+		wxMutexLocker lock(m_mutex);
+		if ( !m_list.insert( o ).second ) {
+			return false;
+		}
 	}
-	
-	m_mutex.Unlock();
 
-	return false;
+	{
+		wxMutexLocker oLock(o->m_mutex);
+		o->m_list.insert( this );
+	}
+
+	ObserverAdded( o );
+	
+	return true;
 }
 
 
@@ -246,29 +249,28 @@ bool CObservable<EventType>::RemoveObserver( CObserver<EventType>* o )
 {
 	wxASSERT( o );
 
-	m_mutex.Lock();
-	if ( m_list.erase( o ) ) {
-		m_mutex.Unlock();
-
-		o->m_mutex.Lock();
-		o->m_list.erase( this );
-		o->m_mutex.Unlock();
-
-		ObserverRemoved( o );
-		
-		return true;
+	{
+		wxMutexLocker lock(m_mutex);
+		if ( !m_list.erase( o ) ) {
+			return false;
+		}
 	}
-	
-	m_mutex.Unlock();
 
-	return false;
+	{
+		wxMutexLocker oLock(o->m_mutex);
+		o->m_list.erase( this );
+	}
+
+	ObserverRemoved( o );
+
+	return true;
 }
 
 
 template <typename EventType>
 void CObservable<EventType>::NotifyObservers( const EventType& e, ObserverType* o )
 {
-	m_mutex.Lock();
+	wxMutexLocker lock(m_mutex);
 
 	if ( o ) {
 		if ( m_list.count( o ) ) {
@@ -277,36 +279,30 @@ void CObservable<EventType>::NotifyObservers( const EventType& e, ObserverType* 
 	} else {
 		myIteratorType it = m_list.begin();
 		for ( ; it != m_list.end(); ) {
-			m_mutex.Unlock();
+			otherfunctions::CMutexUnlocker unlocker(m_mutex);
 			(*it++)->ReceiveNotification( this, e );
-			m_mutex.Lock();
 		}
 	}
-
-	m_mutex.Unlock();
 }
 
 
 template <typename EventType>
 void CObservable<EventType>::RemoveAllObservers()
 {
-	m_mutex.Lock();
+	wxMutexLocker lock(m_mutex);
 	
 	while ( !m_list.empty() ) {
 		ObserverType* o = *m_list.begin();
 		m_list.erase( m_list.begin() );
-		m_mutex.Unlock();
+		otherfunctions::CMutexUnlocker unlocker(m_mutex);
 		
-		o->m_mutex.Lock();
-		o->m_list.erase( this );
-		o->m_mutex.Unlock();
+		{
+			wxMutexLocker oLock(o->m_mutex);
+			o->m_list.erase( this );
+		}
 
 		ObserverRemoved( o );
-		
-		m_mutex.Lock();		
 	}
-	
-	m_mutex.Unlock();
 }
 
 

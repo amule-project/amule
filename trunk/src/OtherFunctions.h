@@ -35,6 +35,7 @@
 #include <wx/utils.h>		// Needed for wxGetHomeDir()
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
+#include <wx/thread.h>
 
 #ifdef __WXBASE__
 	#include <time.h>
@@ -468,6 +469,52 @@ inline wxString wxLang2Str(const int lang)
 		return wxEmptyString;
 	}
 }
+
+
+/**
+ * Automatically unlocks a mutex on construction and locks it on destruction.
+ *
+ * This class is the complement of wxMutexLocker.  It is intended to be used
+ * when a mutex, which is locked for a period of time, needs to be
+ * temporarily unlocked for a bit.  For example:
+ *
+ *	wxMutexLocker lock(mutex);
+ *
+ *	// ... do stuff that requires that the mutex is locked ...
+ *
+ *	{
+ *		CMutexUnlocker unlocker(mutex);
+ *		// ... do stuff that requires that the mutex is unlocked ...
+ *	}
+ *
+ *	// ... do more stuff that requires that the mutex is locked ...
+ *
+ */
+class CMutexUnlocker
+{
+public:
+    // unlock the mutex in the ctor
+    CMutexUnlocker(wxMutex& mutex)
+        : m_isOk(false), m_mutex(mutex)
+        { m_isOk = ( m_mutex.Unlock() == wxMUTEX_NO_ERROR ); }
+
+    // returns true if mutex was successfully unlocked in ctor
+    bool IsOk() const
+        { return m_isOk; }
+
+    // lock the mutex in dtor
+    ~CMutexUnlocker()
+        { if ( IsOk() ) m_mutex.Lock(); }
+
+private:
+    // no assignment operator nor copy ctor
+    CMutexUnlocker(const CMutexUnlocker&);
+    CMutexUnlocker& operator=(const CMutexUnlocker&);
+
+    bool     m_isOk;
+    wxMutex& m_mutex;
+};
+
 
 } // End namespace
 
