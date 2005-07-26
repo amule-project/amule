@@ -456,7 +456,7 @@ extern "C" {
 	// left = VAR(func_name), right=ARRAY(args)
 	void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result);
 
-	void php_report_error(char *msg, PHP_MSG_TYPE mtype);
+	void php_report_error(PHP_MSG_TYPE mtype, char *msg, ...);
 	
 /*
  * Debugging
