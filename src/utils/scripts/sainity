@@ -20,6 +20,15 @@
 #
 
 
+# This function returns true if a file is filtered
+# and shound't be included in the sainity testing.
+def IsFiltered(filename)
+	(["./config.h", "./configWIN32.h"].index(filename) != nil) or
+	(filename =~ /^.\/intl\//) or
+	(filename =~ /CryptoPP/)
+end
+
+
 
 # This class represents lines of code, with line-number and text
 # It is used to store the source-files once they have been read
@@ -331,7 +340,7 @@ class GPLLicense < SainityCheck
 
 	def parse_file(file, lines)
 		if file =~ /\.h$/
-			if lines.find { |x| x.text =~ /This program is free software;/ } == nil
+			if lines.find { |x| x.text =~ /This (program|library) is free software;/ } == nil
 				add_results( file )
 			end
 		end
@@ -378,7 +387,8 @@ class PartOfAmule < SainityCheck
 	def parse_file(file, lines)
 		if file =~ /\.h$/
 			found = lines.select do |line|
-				line.text =~ /This file is part of the aMule Project/
+				line.text =~ /This file is part of the aMule Project/ or
+				line.text =~ /This file is part of aMule/
 			end
 			
 			if found.empty? then
@@ -571,9 +581,14 @@ class MissingImplementation < SainityCheck
 							cur_level += 1
 						end
 						
-						entry = [ cur_level, line.text.scan( /^\s*(class|struct)\s+([^\:{;]+)/ ).first.last.split.last ]
-				
-						tree << entry
+						name = line.text.scan( /^\s*(class|struct)\s+([^\:{;]+)/ )
+						if name != [] then
+							name = name.first.last.strip
+						else
+							name = "Unknown at line " + line.number.to_s + " in " + file
+						end
+						
+						tree << [ cur_level, name ]
 					elsif line.text =~ /;\s*$/ and line.text.count( "{" ) == 0 then
 						# No pure virtual functions and no return(blah) calls (which otherwise can fit the requirements)
 						if line.text !~ /=\s*0\s*;\s*$/ and line.text !~ /return/ then
@@ -644,7 +659,7 @@ def parse_files( path, filters )
 	require "find"
 
 	Find.find( path ) do |filename|
-		if filename =~ /\.(cpp|h)$/ and not filename =~ /CryptoPP\./
+		if filename =~ /\.(cpp|h)$/ and not IsFiltered(filename) then 
 			File.open(filename, "r") do |aFile|
 				# Read lines and add line-numbers
 				lines = Array.new
