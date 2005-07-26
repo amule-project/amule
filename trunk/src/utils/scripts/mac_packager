@@ -30,7 +30,7 @@ echo "Done"
 echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
 cp src/amule aMule.app/Contents/MacOS/
-cp src/amuleweb aMule.app/Contents/MacOS/
+cp src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp src/ed2k aMule.app/Contents/MacOS/
 cp -R src/webserver aMule.app/Contents/Resources
 find aMule.app/Contents/Resources/webserver \( -name CVS -o -name .cvsignore -o -name "Makefile*" \) -print0 | xargs -0 rm -r
