@@ -220,7 +220,7 @@ global_var: VARIABLE	{
 			gsi->var->ref_count++;
 			si->var = gsi->var;
 		} else {
-			php_report_error("There is no such global var", PHP_ERROR);
+			php_report_error(PHP_ERROR, "There is no such global var");
 		}
 	}
 ;
