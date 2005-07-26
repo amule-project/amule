@@ -78,10 +78,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %type <exp_node> VARIABLE variable deref_variable global_var static_var
 %type <exp_node> parameter_list
 
-/* "for_expr" is list of expressions - a syntax node actaully */
-%type <syn_node> expr_list for_expr
-
-%type <exp_node> expr exit_expr const_value function_call func_param_list assignment_list assignment_list_element
+%type <exp_node> expr expr_list for_expr exit_expr const_value function_call func_param_list assignment_list assignment_list_element
 %type <exp_node> FNUMBER DNUMBER STRING
 
 %type <str_val> IDENT optional_class_type
@@ -172,7 +169,7 @@ statement:
 	|	BREAK expr ';'										{ $$ = make_expr_syn_node(PHP_ST_BREAK, $2); }
 	|	RETURN ';'											{ $$ = make_expr_syn_node(PHP_ST_RET, 0); }
 	|	RETURN expr ';'										{ $$ = make_expr_syn_node(PHP_ST_RET, $2); }
-	|	ECHO expr_list ';'									{  }
+	|	ECHO expr_list ';'									{ $$ = make_expr_syn_node(PHP_ST_ECHO, $2); }
 	|	UNSET '(' variable_list ')' ';'						{  }
 	|	FOREACH '(' expr AS variable ')' foreach_statement 	{
 				$$ = make_foreach_loop_syn_node($3, 0, $5->var_node, $7, 0);
@@ -192,8 +189,14 @@ decl_list: IDENT '=' const_value			{  }
 	|	decl_list ',' IDENT '=' const_value	{  }
 ;
 
-expr_list: expr				{  }
-	|	expr_list ',' expr	{  }
+expr_list: expr				{ $$ = make_exp_1(PHP_OP_LIST, 0); $$->exp_node = $1; }
+	|	expr_list ',' expr	{
+				PHP_EXP_NODE *last = $1;
+				while ( last->next) last = last->next;
+				last->next = make_exp_1(PHP_OP_LIST, 0);
+				last->next->exp_node = $3;
+				$$ = $1;
+			}
 ;
 
 variable_list: variable

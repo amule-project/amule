@@ -919,6 +919,15 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 			case PHP_ST_EXPR:
 				php_exp_tree_free(tree->node_expr);
 				break;
+			case PHP_ST_ECHO: {
+					PHP_EXP_NODE *curr = tree->node_expr;
+                    while (curr) {
+                    	PHP_EXP_NODE *next = curr->next;
+                        php_exp_tree_free(curr);
+                        curr = next;
+                    }
+				}
+				break;
 			case PHP_ST_IF:
 				php_exp_tree_free(tree->node_if.cond);
 				php_syn_tree_free(tree->node_if.code_if);
@@ -1022,6 +1031,16 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			break;
 		case PHP_OP_FUNC_CALL:
 			php_run_func_call(expr, result);
+			break;
+		case PHP_OP_LIST: {
+				PHP_EXP_NODE *curr = expr;
+				while ( curr ) {
+					if ( curr->exp_node ) {
+						php_expr_eval(curr->exp_node, result);
+					}
+					curr = curr->next;
+				}
+			}
 			break;
 		case PHP_OP_ADD:
 		case PHP_OP_SUB:
@@ -1383,6 +1402,16 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				// "return" is ultimate "break"
 				curr_exec_result = -0xffff;
 				break;
+			case PHP_ST_ECHO: {
+					PHP_EXP_NODE *curr = node->node_expr;
+					while (curr) {
+						php_expr_eval(curr->exp_node, &cond_result);
+						cast_value_str(&cond_result);
+						CPhPLibContext::Print(cond_result.str_val);
+						curr = curr->next;
+					}
+				}
+				break;
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
 				if (  node->node_expr ) {
@@ -1415,6 +1444,8 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					php_expr_eval(node->node_while.cond, &cond_result);
 					cast_value_bool(&cond_result);
 				}
+				break;
+			case PHP_ST_FOR:
 				break;
 			case PHP_ST_FOREACH: {
 				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
