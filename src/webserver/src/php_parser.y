@@ -161,7 +161,7 @@ statement:
 	|	IF '(' expr ')' statement elseif_list else_statement	{ $$ = make_ifelse_syn_node($3, $5, $6, $7); }
 	|	WHILE '(' expr  ')' while_statement					{ $$ = make_while_loop_syn_node($3, $5, 1); }
 	|	DO statement WHILE '(' expr ')' ';'					{ $$ = make_while_loop_syn_node($5, $2, 0); }
-	|	FOR '(' for_expr ';' for_expr ';' for_expr ')' for_statement { }
+	|	FOR '(' for_expr ';' for_expr ';' for_expr ')' for_statement { $$ = make_for_syn_node($3, $5, $7, $9); }
 	|	SWITCH '(' expr ')' switch_case_list				{ }
 	|	CONTINUE ';'										{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, 0); }
 	|	CONTINUE expr ';'									{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, $2); }

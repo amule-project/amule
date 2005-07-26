@@ -376,6 +376,9 @@ extern "C" {
 		
 	PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 		PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref);
+
+	PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
+		PHP_EXP_NODE *next, PHP_SYN_NODE *code);
 		
 	PHP_SYN_NODE *make_class_decl_syn_node();
 	
