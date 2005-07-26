@@ -106,9 +106,11 @@ typedef enum PHP_EXP_OP {
 
 	/* specials */
 	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO,
+	/* list of expressions */
+	PHP_OP_LIST,
 } PHP_EXP_OP;
 
-typedef struct PHP_EXP_NODE {
+struct PHP_EXP_NODE {
     PHP_EXP_OP op;
     union {
         struct {
@@ -119,8 +121,11 @@ typedef struct PHP_EXP_NODE {
     union {
         PHP_VALUE_NODE val_node;
         PHP_VAR_NODE *var_node;
+        struct PHP_EXP_NODE *exp_node;
     };
-} PHP_EXP_NODE;
+};
+
+typedef struct PHP_EXP_NODE PHP_EXP_NODE;
 
 typedef struct PHP_LIST_ASSIGN_NODE PHP_LIST_ASSIGN_NODE;
 
@@ -186,6 +191,7 @@ typedef enum PHP_STATMENT_TYPE {
 	PHP_ST_WHILE, PHP_ST_DO_WHILE, PHP_ST_FOR, PHP_ST_FOREACH, PHP_ST_SWITCH,
 	PHP_ST_CONTINUE, PHP_ST_BREAK, PHP_ST_RET,
 	PHP_ST_FUNC_DECL, PHP_ST_CLASS_DECL,
+	PHP_ST_ECHO,
 } PHP_STATMENT_TYPE;
 
 /* 
