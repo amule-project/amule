@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include <list>
 #include <map>
@@ -316,7 +317,7 @@ PHP_EXP_NODE *get_var_node(char *name)
 			//
 			// Error: symbol already defined as different entity
 			//
-			php_report_error("symbol already defined as different entity", PHP_ERROR);
+			php_report_error(PHP_ERROR, "symbol already defined as different entity");
 		}
 	} else {
 		node->var_node = make_var_node();
@@ -374,7 +375,7 @@ void switch_pop_scope_table(int old_free)
 		delete_scope_table(g_current_scope);
 	}
 	if ( scope_stack->size() == 0 ) {
-		php_report_error("Stack underrun - no valid scope", PHP_INTERNAL_ERROR);
+		php_report_error(PHP_INTERNAL_ERROR, "Stack underrun - no valid scope");
 	}
 	g_current_scope = scope_stack->back();
 	scope_stack->pop_back();
@@ -421,7 +422,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 				break;
 			case PHP_SCOPE_NONE:
 			case PHP_SCOPE_PARAM:
-				php_report_error("Scope table can not have such items", PHP_INTERNAL_ERROR);
+				php_report_error(PHP_INTERNAL_ERROR, "Scope table can not have such items");
 				break;
 		}
 		delete i->second;
@@ -438,7 +439,7 @@ void add_func_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *func)
 	std::string key(func->func_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
-		php_report_error("Can not add function to scope table - already present", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
 		(*scope_map)[key] = it;
 	}
@@ -453,7 +454,7 @@ void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node)
 	std::string key(class_node->class_decl->name);
 	if ( scope_map->count(key) ) {
 		// error - function already defined
-		php_report_error("Can not add function to scope table - already present", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Can not add function to scope table - already present");
 	} else {
 		(*scope_map)[key] = it;
 	}
@@ -837,7 +838,7 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 		//
 		// Error: something already defined by this name
 		//
-		php_report_error("Can't add scope item: symbol already defined", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Can't add scope item: symbol already defined");
 		return;
 	}
 	PHP_SCOPE_TABLE func_scope = make_scope_table();
@@ -870,7 +871,7 @@ void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_nati
 		//
 		// Error: something already defined by this name
 		//
-		php_report_error("Can't add scope item: symbol already defined", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Can't add scope item: symbol already defined");
 		return;
 	}
 	PHP_SYN_NODE *decl_node = make_class_decl_syn_node();
@@ -1099,38 +1100,38 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			// take variable from scope of current object
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
 			if ( !lval_node ) {
-				php_report_error("Left part of -> must be lvalue", PHP_ERROR);
+				php_report_error(PHP_ERROR, "Left part of -> must be lvalue");
 				return;
 			}
 			if ( lval_node->value.type != PHP_VAL_OBJECT ) {
-				php_report_error("Left part of -> must be an object", PHP_ERROR);
+				php_report_error(PHP_ERROR, "Left part of -> must be an object");
 				return;
 			}
 			if ( get_scope_item_type(g_global_scope, lval_node->value.obj_val.class_name) == PHP_SCOPE_NONE ) {
-				php_report_error("Undeclared object", PHP_ERROR);
+				php_report_error(PHP_ERROR, "Undeclared object");
 				return;
 			}
 			si = get_scope_item(g_global_scope, lval_node->value.obj_val.class_name);
 			if ( si->type != PHP_SCOPE_CLASS ) {
-				php_report_error("Object classname is not name of class", PHP_INTERNAL_ERROR);
+				php_report_error(PHP_INTERNAL_ERROR, "Object classname is not name of class");
 				return;
 			}
 			// left part is ok, let's check the right
 			if ( (expr->tree_node.right->op != PHP_OP_VAL) || (expr->tree_node.right->val_node.type != PHP_VAL_STRING) ) {
-				php_report_error("Right part of -> must be string value", PHP_ERROR);
+				php_report_error(PHP_ERROR, "Right part of -> must be string value");
 				return;
 			}
 			if ( si->class_decl->class_decl->is_native ) {
 				si->class_decl->class_decl->native_prop_get_ptr(lval_node->value.obj_val.inst_ptr,
 					expr->tree_node.right->val_node.str_val, result);
 			} else {
-				php_report_error("Only native classes supported", PHP_ERROR);
+				php_report_error(PHP_ERROR, "Only native classes supported");
 				return;
 			}
 			break;
 		case PHP_OP_CLASS_DEREF: // A::y
 			// take variable (static) from scope of current class
-			php_report_error("Value of static class members not supported", PHP_ERROR);
+			php_report_error(PHP_ERROR, "Value of static class members not supported");
 			break;
 		default: ;
 			
@@ -1174,17 +1175,17 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 			break;
 		case PHP_OP_OBJECT_DEREF: // $x->y
 			// take variable from scope of current object
-			php_report_error("Assign to class members not supported", PHP_ERROR);
+			php_report_error(PHP_ERROR, "Assign to class members not supported");
 			break;
 		case PHP_OP_CLASS_DEREF: // A::y
 			// take variable (static) from scope of current class
-			php_report_error("Assign to static class members not supported", PHP_ERROR);
+			php_report_error(PHP_ERROR, "Assign to static class members not supported");
 			break;
 		default:
 			//
 			// Error: expression can not be taken as lvalue
 			//
-			php_report_error("This expression can't be used as lvalue", PHP_ERROR);
+			php_report_error(PHP_ERROR, "This expression can't be used as lvalue");
 	}
 	return lval_node;
 }
@@ -1239,7 +1240,7 @@ void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, P
 			}
 			break;
 		default:
-			php_report_error("This op is not compare op", PHP_INTERNAL_ERROR);
+			php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
 	}
 }
 
@@ -1276,7 +1277,7 @@ void php_eval_simple_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op
 			}
 			break;
 		default:
-			php_report_error("This op is not simple math", PHP_INTERNAL_ERROR);
+			php_report_error(PHP_INTERNAL_ERROR, "This op is not simple math");
 	}
 }
 
@@ -1301,7 +1302,7 @@ void php_eval_int_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, 
     	case PHP_OP_XOR:
     		result->int_val = op1->int_val ^ op2->int_val;
 		default:
-			php_report_error("This op is not int math", PHP_INTERNAL_ERROR);
+			php_report_error(PHP_INTERNAL_ERROR, "This op is not int math");
 	}
 }
 
@@ -1317,7 +1318,7 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 		// Internal error: function name must be string value node, and
 		// params must be an array
 		//
-		php_report_error("Function call node have wrong data", PHP_INTERNAL_ERROR);
+		php_report_error(PHP_INTERNAL_ERROR, "Function call node have wrong data");
 		return ;
 	}
 	PHP_SCOPE_ITEM *si = get_scope_item(g_global_scope, l_node->val_node.str_val);
@@ -1325,14 +1326,14 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 		//
 		// Error: undeclared symbol
 		//
-		php_report_error("Function is not defined", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Function is not defined");
 		return;
 	}
 	if ( si->type != PHP_SCOPE_FUNC) {
 		//
 		// Error: defined, but wrong type !
 		//
-		php_report_error("This is not a function", PHP_ERROR);
+		php_report_error(PHP_ERROR, "This is not a function");
 		return;
 	}
 	PHP_SYN_NODE *func = si->func;
@@ -1340,7 +1341,7 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 		//
 		// Internal error: node not a function
 		//
-		php_report_error("Wrong type in function decl node", PHP_INTERNAL_ERROR);
+		php_report_error(PHP_INTERNAL_ERROR, "Wrong type in function decl node");
 		return;
 	}
 	
@@ -1380,7 +1381,6 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 {
 	if ( !node ) {
-		php_report_error("Nothing to execute - top = 0", PHP_INTERNAL_ERROR);
 		return 0;
 	}
 	int curr_exec_result;
@@ -1412,7 +1412,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					//
 					// Warning: code after "return" statement
 					//
-					php_report_error("code after 'return'", PHP_WARNING);
+					php_report_error(PHP_WARNING, "code after 'return'");
 				}
 				// "return" is ultimate "break"
 				curr_exec_result = -0xffff;
@@ -1477,7 +1477,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 			case PHP_ST_FOREACH: {
 				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
 				if ( !elems || (elems->value.type != PHP_VAL_ARRAY) ) {
-					php_report_error("Argument of 'foreach' must be array", PHP_ERROR);
+					php_report_error(PHP_ERROR, "Argument of 'foreach' must be array");
 					break;
 				}
 				PHP_ARRAY_TYPE *array = (PHP_ARRAY_TYPE *)elems->value.ptr_val;
@@ -1526,8 +1526,17 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 //
 // call it when something gone wrong
 //
-void php_report_error(char *msg, PHP_MSG_TYPE err_type)
+void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 {
+	//
+	// hope my error message will never be that big.
+	//
+	// security is ok, since _user_ errors are not reporting thru
+	// this function, but handled by scipt itself.
+	// However, badly written script MAY force user-supplied data to
+	// leak here and create stack overrun exploit. Be warned.
+	//
+	char msgbuf[1024];
 	char *type_msg = 0;
 	switch(err_type) {
 		case PHP_MESAGE:
@@ -1544,6 +1553,10 @@ void php_report_error(char *msg, PHP_MSG_TYPE err_type)
 			break;
 	}
 	
+	va_list args;
+	va_start(args, msg);
+	sprintf(msgbuf, msg, args);
+
 	printf("%s %s\n", type_msg, msg);
 	assert(err_type != PHP_INTERNAL_ERROR);
 }

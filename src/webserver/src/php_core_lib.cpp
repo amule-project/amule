@@ -59,7 +59,7 @@ void php_native_var_dump(PHP_VALUE_NODE *)
 		assert(si->type == PHP_SCOPE_VAR);
 		php_var_dump(&si->var->value, 0);
 	} else {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
 	}
 }
 
@@ -138,19 +138,19 @@ void php_native_usort(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( !si || (si->var->value.type != PHP_VAL_ARRAY)) {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
 		return;
 	}
 	PHP_VAR_NODE *array = si->var;
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
 		return;
 	}
 	char *cmp_func_name = si->var->value.str_val;
 	si = get_scope_item(g_global_scope, cmp_func_name);
 	if ( !si || (si->type != PHP_SCOPE_FUNC)) {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
 		return;
 	}
 	PHP_SYN_FUNC_DECL_NODE *func_decl = si->func->func_decl;
@@ -190,7 +190,7 @@ void php_native_strlen(PHP_VALUE_NODE *result)
 		result->int_val = strlen(param->str_val);
 		result->type = PHP_VAL_INT;
 	} else {
-		php_report_error("Invalid or missing argument", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
 	}
 }
 
@@ -201,7 +201,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 	if ( si_str ) {
 		cast_value_str(str);
 	} else {
-		php_report_error("Invalid or missing argument 'str' for 'substr'", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'substr'");
 		return;
 	}
 	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "start");
@@ -209,7 +209,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 	if ( si_start ) {
 		cast_value_dnum(start);
 	} else {
-		php_report_error("Invalid or missing argument 'start' for 'substr'", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'start' for 'substr'");
 		return;
 	}
 	// 3-rd is optional
@@ -261,12 +261,12 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
 	if ( !si_str  ) {
-		php_report_error("Missing argument 'varname' for 'load_amule_vars'", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Missing argument 'varname' for 'load_amule_vars'");
 		return;
 	}
 	PHP_VALUE_NODE *str = &si_str->var->value;
 	if ( str->type != PHP_VAL_STRING ) {
-		php_report_error("Argument 'varname' for 'load_amule_vars' must be string", PHP_ERROR);
+		php_report_error(PHP_ERROR, "Argument 'varname' for 'load_amule_vars' must be string");
 		return;
 	}
 	char *varname = str->str_val;
@@ -277,7 +277,7 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
 	} else if ( strcmp(varname, "servers") == 0 ) {
 	} else {
-		php_report_error("This type of amule variable is unknown", PHP_ERROR);
+		php_report_error(PHP_ERROR, "This type of amule variable is unknown");
 	}
 }
 
@@ -320,7 +320,7 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
 		result->int_val = obj->bFileAutoPriority;
 	} else {
-		php_report_error("This property is unknown", PHP_ERROR);
+		php_report_error(PHP_ERROR, "This property is unknown");
 	}
 }
 #else
