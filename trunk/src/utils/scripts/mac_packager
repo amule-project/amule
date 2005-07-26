@@ -26,6 +26,7 @@ echo ""
 echo -n "Step 1: Cleaning bundle... "
 rm aMule.app/Contents/Frameworks/* aMule.app/Contents/MacOS/* 1> /dev/null 2> /dev/null
 rm -r aMule.app/Contents/Resources/webserver 1> /dev/null 2> /dev/null
+rm -r aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
 echo "Done"
 echo ""
 echo -n "Step 2: Copying aMule to app bundle... " 
@@ -33,10 +34,17 @@ cp src/amule aMule.app/Contents/MacOS/
 cp src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp src/ed2k aMule.app/Contents/MacOS/
 cp -R src/webserver aMule.app/Contents/Resources
-find aMule.app/Contents/Resources/webserver \( -name CVS -o -name .cvsignore -o -name "Makefile*" \) -print0 | xargs -0 rm -r
+find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" \) -print0 | xargs -0 rm -r
 echo "Done"
 echo ""
-echo "Step 3: Copying libs to Framework"
+echo -n "Step 3: Installing translations to app bundle... "
+orig_dir=`pwd`
+cd po
+make install datadir=$orig_dir/aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
+cd $orig_dir
+echo "Done"
+echo ""
+echo "Step 4: Copying libs to Framework"
 echo "    wxWidgets..."
 # wxWidgets libs to frameworks
 for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libwx_ | cut -d " " -f 1 ); do 
@@ -44,7 +52,7 @@ for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libwx_ | cut -d " " -
 done
 echo "Libs copy done."
 echo ""
-echo "Step 4: Update libs info"
+echo "Step 5: Update libs info"
 #then install_name_tool on them to fix the path on the shared lib
 cd aMule.app/Contents/
 for i in $( ls Frameworks | grep -v CVS); do

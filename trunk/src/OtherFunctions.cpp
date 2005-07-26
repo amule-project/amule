@@ -44,6 +44,10 @@
 	#endif
 #endif
 
+#ifdef __WXMAC__
+	#include <wx/stdpaths.h>
+#endif
+
 #include "OtherFunctions.h"	// Interface declarations
 #include "Format.h"		// Needed for CFormat
 
@@ -1442,7 +1446,9 @@ void print_backtrace(uint8 n)
 
 
 wxString GetLocaleDir() {
-#if !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
+#ifdef __WXMAC__
+	return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator() + wxT("locale");
+#elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 	return localeDir;
