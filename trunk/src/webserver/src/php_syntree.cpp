@@ -204,6 +204,21 @@ PHP_SYN_NODE *make_while_loop_syn_node(PHP_EXP_NODE *cond, PHP_SYN_NODE *code, i
 	return syn_node;
 }
 
+PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
+	PHP_EXP_NODE *next, PHP_SYN_NODE *code)
+{
+	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
+	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
+
+	syn_node->type = PHP_ST_FOR;
+	syn_node->node_for.do_start = start;
+	syn_node->node_for.cond = cond;
+	syn_node->node_for.do_next = next;
+	syn_node->node_for.code = code;
+	
+	return syn_node;
+}
+
 PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 	PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref)
 {
@@ -1446,6 +1461,18 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				}
 				break;
 			case PHP_ST_FOR:
+				php_expr_eval(node->node_for.do_start, &cond_result);
+				php_expr_eval(node->node_for.cond, &cond_result);
+				cast_value_bool(&cond_result);
+				while ( cond_result.int_val ) {
+					curr_exec_result = php_execute(node->node_for.code, 0);
+					if ( curr_exec_result) {
+						break;
+					}
+					php_expr_eval(node->node_for.do_next, &cond_result);
+					php_expr_eval(node->node_for.cond, &cond_result);
+					cast_value_bool(&cond_result);
+				}
 				break;
 			case PHP_ST_FOREACH: {
 				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
