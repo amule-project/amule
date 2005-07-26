@@ -189,28 +189,32 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	for (;;)
 	{
 		// search next queued job and start it
-		s_mutex.Lock();
-		s_pfconverting = NULL;
-		for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-			s_pfconverting = *it;
-			if (s_pfconverting->state == CONV_QUEUE) {
-				break;
-			} else {
-				s_pfconverting = NULL;
+		{
+			wxMutexLocker lock(s_mutex);
+			s_pfconverting = NULL;
+			for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
+				s_pfconverting = *it;
+				if (s_pfconverting->state == CONV_QUEUE) {
+					break;
+				} else {
+					s_pfconverting = NULL;
+				}
 			}
 		}
-		s_mutex.Unlock();
+
 		if (s_pfconverting) {
-			s_mutex.Lock();
-			s_pfconverting->state = CONV_INPROGRESS;
-			s_mutex.Unlock();
+			{
+				wxMutexLocker lock(s_mutex);
+				s_pfconverting->state = CONV_INPROGRESS;
+			}
 #ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
 #endif
 			int convertResult = performConvertToeMule(s_pfconverting->folder);
-			s_mutex.Lock();
-			s_pfconverting->state = convertResult;
-			s_mutex.Unlock();
+			{
+				wxMutexLocker lock(s_mutex);
+				s_pfconverting->state = convertResult;
+			}
 
 			if (s_pfconverting->state == CONV_OK) {
 				++imported;
@@ -220,13 +224,12 @@ wxThread::ExitCode CPartFileConvert::Entry()
 #ifndef AMULE_DAEMON
 				CloseGUI();
 #endif
-				s_mutex.Lock();
+				wxMutexLocker lock(s_mutex);
 				std::list<ConvertJob*>::iterator it = s_jobs.begin();
 				while (it != s_jobs.end()) {
 					delete *it;
 					it = s_jobs.erase(it);
 				}
-				s_mutex.Unlock();
 				break;
 			}
 
@@ -259,9 +262,8 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	wxMutexGuiLeave();
 #endif
 
-	s_mutex.Lock();
+	wxMutexLocker lock(s_mutex);
 	s_convertPfThread = NULL;
-	s_mutex.Unlock();
 
 	return NULL;
 }
@@ -300,11 +302,12 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	wxString oldfile = folder + wxFileName::GetPathSeparator() + partfile.Left(partfile.Length() - ((s_pfconverting->partmettype == PMT_SHAREAZA) ? 3 : 4));
 
-	s_mutex.Lock();
-	s_pfconverting->size = file->GetFileSize();
-	s_pfconverting->filename = file->GetFileName();
-	s_pfconverting->filehash = file->GetFileHash().Encode();
-	s_mutex.Unlock();
+	{
+		wxMutexLocker lock(s_mutex);
+		s_pfconverting->size = file->GetFileSize();
+		s_pfconverting->filename = file->GetFileName();
+		s_pfconverting->filehash = file->GetFileHash().Encode();
+	}
 #ifndef AMULE_DAEMON
 	UpdateGUI(s_pfconverting);
 #endif
@@ -336,19 +339,20 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				if (fileindex > maxindex) maxindex = fileindex;
 			}
 			float stepperpart;
-			s_mutex.Lock();
-			if (partfilecount > 0) {
-				stepperpart = (80.0f / partfilecount);
-				if (maxindex * PARTSIZE <= s_pfconverting->size) {
-					s_pfconverting->spaceneeded = maxindex * PARTSIZE;
+			{
+				wxMutexLocker lock(s_mutex);
+				if (partfilecount > 0) {
+					stepperpart = (80.0f / partfilecount);
+					if (maxindex * PARTSIZE <= s_pfconverting->size) {
+						s_pfconverting->spaceneeded = maxindex * PARTSIZE;
+					} else {
+						s_pfconverting->spaceneeded = ((s_pfconverting->size / PARTSIZE) * PARTSIZE) + (s_pfconverting->size % PARTSIZE);
+					}
 				} else {
-					s_pfconverting->spaceneeded = ((s_pfconverting->size / PARTSIZE) * PARTSIZE) + (s_pfconverting->size % PARTSIZE);
+					stepperpart = 80.0f;
+					s_pfconverting->spaceneeded = 0;
 				}
-			} else {
-				stepperpart = 80.0f;
-				s_pfconverting->spaceneeded = 0;
 			}
-			s_mutex.Unlock();
 
 #ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
@@ -433,9 +437,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	{
 		if (!s_pfconverting->removeSource) {
 			wxFile f(oldfile);
-			s_mutex.Lock();
+			wxMutexLocker lock(s_mutex);
 			s_pfconverting->spaceneeded = f.Length();
-			s_mutex.Unlock();
 		}
 
 #ifndef AMULE_DAEMON
@@ -581,7 +584,7 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 		s_convertgui = new CPartFileConvertDlg(parent);
 		s_convertgui->Show(true);
 
-		s_mutex.Lock();
+		wxMutexLocker lock(s_mutex);
 		if (s_pfconverting) {
 			UpdateGUI(s_pfconverting);
 			UpdateGUI(50, _("Fetching status..."), true);
@@ -592,7 +595,6 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 			s_convertgui->AddJob(*it);
 			UpdateGUI(*it);
 		}
-		s_mutex.Unlock();
 	}
 }
 

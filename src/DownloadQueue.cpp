@@ -55,6 +55,7 @@
 #include "Format.h"		// Needed for CFormat
 #include "IPFilter.h"
 #include "FileFunctions.h"	// Needed for CDirIterator
+#include "OtherFunctions.h"	// Needed for CMutexUnlocker
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -135,9 +136,10 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 		}
 		
 		if (result) {
-			m_mutex.Lock();
-			m_filelist.push_back(toadd);
-			m_mutex.Unlock();
+			{
+				wxMutexLocker lock(m_mutex);
+				m_filelist.push_back(toadd);
+			}
 			
 			NotifyObservers( EventType( EventType::INSERTED, toadd ) );
 			
@@ -230,61 +232,62 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 {
 	if ( thePrefs::StartNextFile() ) {
-		m_mutex.Lock();
 		CPartFile* tFile = NULL;
-		
-		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-			CPartFile* file = m_filelist[i];
-		
-			if ( file->GetStatus() == PS_PAUSED ) {
-				if ( !tFile || file->GetDownPriority() > tFile->GetDownPriority() ) {
-					if (tFile && thePrefs::StartNextFileSame()) {
-						if (tFile->GetCategory() == oldfile->GetCategory()) {
-							// Already found a file for this category
-							if (file->GetCategory() == oldfile->GetCategory()) {
-								// But the new one is also for this category
+
+		{
+			wxMutexLocker lock(m_mutex);
+			
+			for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+				CPartFile* file = m_filelist[i];
+			
+				if ( file->GetStatus() == PS_PAUSED ) {
+					if ( !tFile || file->GetDownPriority() > tFile->GetDownPriority() ) {
+						if (tFile && thePrefs::StartNextFileSame()) {
+							if (tFile->GetCategory() == oldfile->GetCategory()) {
+								// Already found a file for this category
+								if (file->GetCategory() == oldfile->GetCategory()) {
+									// But the new one is also for this category
+									if (file->GetDownPriority() > tFile->GetDownPriority()) {
+										// So, higher prio?
+										tFile = file;
+									} else {
+										; // Lower prio, ignore this file.
+									}
+								} else {
+									; // It's not from the same category, so nothing
+								}
+							} else {
+								// Found no file yet with the same category
 								if (file->GetDownPriority() > tFile->GetDownPriority()) {
 									// So, higher prio?
 									tFile = file;
 								} else {
 									; // Lower prio, ignore this file.
 								}
-							} else {
-								; // It's not from the same category, so nothing
 							}
 						} else {
-							// Found no file yet with the same category
-							if (file->GetDownPriority() > tFile->GetDownPriority()) {
-								// So, higher prio?
-								tFile = file;
-							} else {
-								; // Lower prio, ignore this file.
-							}
+							// There is no file found yet or no category selection.
+							tFile = file;
 						}
-					} else {
-						// There is no file found yet or no category selection.
-						tFile = file;
-					}
-					
-					if ( tFile->GetDownPriority() == PR_HIGH ) {
-						if (thePrefs::StartNextFileSame()) {
-							// It's from the same category?
-							if (tFile->GetCategory() == oldfile->GetCategory()) {
+						
+						if ( tFile->GetDownPriority() == PR_HIGH ) {
+							if (thePrefs::StartNextFileSame()) {
+								// It's from the same category?
+								if (tFile->GetCategory() == oldfile->GetCategory()) {
+									// There can't be any higher
+									break;
+								} else {
+									; // Maybe we'll find another file from the same category
+								}
+							} else {
 								// There can't be any higher
-								break;
-							} else {
-								; // Maybe we'll find another file from the same category
+								break;							
 							}
-						} else {
-							// There can't be any higher
-							break;							
-						}
-					}	
+						}	
+					}
 				}
 			}
 		}
-
-		m_mutex.Unlock();
 		
 		if ( tFile ) {
 			tFile->ResumeFile();
@@ -299,11 +302,11 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 		file->StopFile();
 	}
 
-	m_mutex.Lock();
-	m_filelist.push_back( file );
-	
-	DoSortByPriority();
-	m_mutex.Unlock();
+	{
+		wxMutexLocker lock(m_mutex);
+		m_filelist.push_back( file );
+		DoSortByPriority();
+	}
 
 	NotifyObservers( EventType( EventType::INSERTED, file ) );
 
@@ -335,71 +338,69 @@ void CDownloadQueue::Process()
 	// send src requests to local server
 	ProcessLocalRequests();
 	
-	m_mutex.Lock();	
-	uint32 downspeed = 0;
-	if (thePrefs::GetMaxDownload() != UNLIMITED && m_datarate > 1500) {
-		downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1); 
-		if (downspeed < 50) {
-			downspeed = 50;
-		} else if (downspeed > 200) {
-			downspeed = 200;
-		}
-	}
+	{
+		wxMutexLocker lock(m_mutex);
 
-	m_datarate = 0;
-	m_udcounter++;
-	uint32 cur_datarate = 0;
-	uint32 cur_udcounter = m_udcounter;
+		uint32 downspeed = 0;
+		if (thePrefs::GetMaxDownload() != UNLIMITED && m_datarate > 1500) {
+			downspeed = (((uint32)thePrefs::GetMaxDownload())*1024*100)/(m_datarate+1); 
+			if (downspeed < 50) {
+				downspeed = 50;
+			} else if (downspeed > 200) {
+				downspeed = 200;
+			}
+		}
 	
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		CPartFile* file = m_filelist[i];
-
-		m_mutex.Unlock();
+		m_datarate = 0;
+		m_udcounter++;
+		uint32 cur_datarate = 0;
+		uint32 cur_udcounter = m_udcounter;
 		
-		if ( file->GetStatus() == PS_READY || file->GetStatus() == PS_EMPTY ){
-			cur_datarate += file->Process( downspeed, cur_udcounter );
-		} else {
-			//This will make sure we don't keep old sources to paused and stoped files..
-			file->StopPausedFile();
-		}
-
-		m_mutex.Lock();	
-	}
-
-	m_datarate += cur_datarate;
-
-
-	if (m_udcounter == 5) {
-		if (theApp.serverconnect->IsUDPSocketAvailable()) {
-			if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
-				m_lastudpstattime = ::GetTickCount();
-				
-				m_mutex.Unlock();
-				theApp.serverlist->ServerStats();
-				m_mutex.Lock();
+		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+			CPartFile* file = m_filelist[i];
+	
+			otherfunctions::CMutexUnlocker unlocker(m_mutex);
+			
+			if ( file->GetStatus() == PS_READY || file->GetStatus() == PS_EMPTY ){
+				cur_datarate += file->Process( downspeed, cur_udcounter );
+			} else {
+				//This will make sure we don't keep old sources to paused and stoped files..
+				file->StopPausedFile();
 			}
 		}
-	}
-
-	if (m_udcounter == 10) {
-		m_udcounter = 0;
-		if (theApp.serverconnect->IsUDPSocketAvailable()) {
-			if ( (::GetTickCount() - m_lastudpsearchtime) > UDPSERVERREASKTIME) {
-				SendNextUDPPacket();
+	
+		m_datarate += cur_datarate;
+	
+	
+		if (m_udcounter == 5) {
+			if (theApp.serverconnect->IsUDPSocketAvailable()) {
+				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
+					m_lastudpstattime = ::GetTickCount();
+					
+					otherfunctions::CMutexUnlocker unlocker(m_mutex);
+					theApp.serverlist->ServerStats();
+				}
 			}
 		}
+	
+		if (m_udcounter == 10) {
+			m_udcounter = 0;
+			if (theApp.serverconnect->IsUDPSocketAvailable()) {
+				if ( (::GetTickCount() - m_lastudpsearchtime) > UDPSERVERREASKTIME) {
+					SendNextUDPPacket();
+				}
+			}
+		}
+	
+		if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
+			
+			
+			DoSortByPriority();
+		}
+		// Check if any paused files can be resumed
+			
+		CheckDiskspace( thePrefs::GetTempDir() );
 	}
-
-	if ( (::GetTickCount() - m_lastsorttime) > 10000 ) {
-		
-		
-		DoSortByPriority();
-	}
-	// Check if any paused files can be resumed
-		
-	CheckDiskspace( thePrefs::GetTempDir() );
-
-	m_mutex.Unlock();
 	
 	
 	// Check for new links once per second.
@@ -994,16 +995,17 @@ void CDownloadQueue::SetCatPrio(uint8 cat, uint8 newprio)
 
 void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 {
-	m_mutex.Lock();
-
 	std::list<CPartFile*> files;
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		if ( m_filelist[i]->CheckShowItemInGivenCat(cat) ) {
-			files.push_back( m_filelist[i] );
+
+	{
+		wxMutexLocker lock(m_mutex);
+	
+		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
+			if ( m_filelist[i]->CheckShowItemInGivenCat(cat) ) {
+				files.push_back( m_filelist[i] );
+			}
 		}
 	}
-
-	m_mutex.Unlock();
 	
 	std::list<CPartFile*>::iterator it = files.begin();
 		
@@ -1328,12 +1330,13 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 {
 	CObservableQueue<CPartFile*>::ObserverAdded( o );
 	
-	m_mutex.Lock();
 	EventType::ValueList list;
-	list.reserve( m_filelist.size() );
-	
-	list.insert( list.begin(), m_filelist.begin(), m_filelist.end() );
-	m_mutex.Unlock();
+
+	{
+		wxMutexLocker lock(m_mutex);
+		list.reserve( m_filelist.size() );
+		list.insert( list.begin(), m_filelist.begin(), m_filelist.end() );
+	}
 
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
 }

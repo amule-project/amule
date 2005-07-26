@@ -93,9 +93,10 @@ CEMSocket::~CEMSocket()
 {
     // need to be locked here to know that the other methods
     // won't be in the middle of things
-	m_sendLocker.Lock();
-	byConnected = ES_DISCONNECTED;
-	m_sendLocker.Unlock();
+    {
+    	wxMutexLocker lock(m_sendLocker);
+		byConnected = ES_DISCONNECTED;
+	}
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
@@ -153,9 +154,10 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
 {
     // need to be locked here to know that the other methods
     // won't be in the middle of things
-	m_sendLocker.Lock();
-	byConnected = ES_DISCONNECTED;
-	m_sendLocker.Unlock();
+    {
+    	wxMutexLocker lock(m_sendLocker);
+		byConnected = ES_DISCONNECTED;
+	}
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
@@ -199,17 +201,19 @@ void CEMSocket::OnReceive(int nErrorCode)
 
 	
 	// We attempt to read up to 2 megs at a time (minus whatever is in our internal read buffer)
-	m_sendLocker.Lock();
-	Read(GlobalReadBuffer + pendingHeaderSize, readMax);
-	uint32 ret=LastCount();
-	if (Error() || ret == 0) {
-		if (LastError() == wxSOCKET_WOULDBLOCK) {
-			pendingOnReceive = true;
+	uint32 ret;
+
+	{
+		wxMutexLocker lock(m_sendLocker);
+		Read(GlobalReadBuffer + pendingHeaderSize, readMax);
+		ret = LastCount();
+		if (Error() || ret == 0) {
+			if (LastError() == wxSOCKET_WOULDBLOCK) {
+				pendingOnReceive = true;
+			}
+			return;
 		}
-		m_sendLocker.Unlock();
-		return;
 	}
-	m_sendLocker.Unlock();
 	
 	
 	// Bandwidth control
@@ -675,33 +679,38 @@ uint32 CEMSocket::GetNextFragSize(uint32 current, uint32 minFragSize)
  */
 uint32 CEMSocket::GetNeededBytes()
 {
-	m_sendLocker.Lock();
-	if (byConnected == ES_DISCONNECTED) {
-		m_sendLocker.Unlock();
-		return 0;
-	}
+	uint32 sendgap;
 
-    if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty())) {
-    	// No standard packet to send. Even if data needs to be sent to prevent timout, there's nothing to send.
-		m_sendLocker.Unlock();
-		return 0;
-	}
-
-	if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
-		m_bAccelerateUpload = true;	// We might be trying to send a block request, accelerate packet
-
-	uint32 sendgap = ::GetTickCount() - lastCalledSend;
-
-	uint64 timetotal = m_bAccelerateUpload?45000:90000;
-	uint64 timeleft = ::GetTickCount() - lastFinishedStandard;
+	uint64 timetotal;
+	uint64 timeleft;
 	uint64 sizeleft, sizetotal;
-	if (sendbuffer && !m_currentPacket_is_controlpacket) {
-		sizeleft = sendblen-sent;
-		sizetotal = sendblen;
-	} else {
-		sizeleft = sizetotal = standartpacket_queue.GetHead().packet->GetRealPacketSize();
+
+	{
+		wxMutexLocker lock(m_sendLocker);
+
+		if (byConnected == ES_DISCONNECTED) {
+			return 0;
+		}
+	
+		if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty())) {
+			// No standard packet to send. Even if data needs to be sent to prevent timout, there's nothing to send.
+			return 0;
+		}
+	
+		if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
+			m_bAccelerateUpload = true;	// We might be trying to send a block request, accelerate packet
+	
+		sendgap = ::GetTickCount() - lastCalledSend;
+	
+		timetotal = m_bAccelerateUpload?45000:90000;
+		timeleft = ::GetTickCount() - lastFinishedStandard;
+		if (sendbuffer && !m_currentPacket_is_controlpacket) {
+			sizeleft = sendblen-sent;
+			sizetotal = sendblen;
+		} else {
+			sizeleft = sizetotal = standartpacket_queue.GetHead().packet->GetRealPacketSize();
+		}
 	}
-	m_sendLocker.Unlock();
 
 	if (timeleft >= timetotal)
 		return sizeleft;

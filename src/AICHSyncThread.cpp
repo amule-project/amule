@@ -94,43 +94,41 @@ bool CAICHSyncThread::Start()
 
 bool CAICHSyncThread::Stop()
 {
-	s_mutex.Lock();
-	
-	if ( s_thread ) {
+	{
+		wxMutexLocker lock(s_mutex);
+
 		// Are there any threads to kill?
-		AddLogLineM( false, _("AICH Thread: Signaling for thread to terminate.") );
-		
-		// Tell the thread to terminate, this function returns immediatly
-		s_thread->Delete();
-
-		s_mutex.Unlock();
-		
-		// We will be blocking the main thread, so we need to leave the
-		// gui mutex, so that events can still be processed while we are
-		// waiting.
-		wxMutexGuiLeave();
-			
-		// Wait for all threads to die
-		while ( IsRunning() ) {
-			// Sleep for 1/100 of a second to avoid clobbering the mutex
-			// By doing this we ensure that this function only returns
-			// once the thread has died.
-
-		 	otherfunctions::MilliSleep(10);
+		if ( !s_thread ) {
+			AddDebugLogLineM( true, logAICHThread, wxT("Warning, attempted to stop non-existing thread!") );
+			return false;
 		}
 
+		AddLogLineM( false, _("AICH Thread: Signaling for thread to terminate.") );
+
+		// Tell the thread to terminate, this function returns immediatly
+		s_thread->Delete();
+	}
+
+	// We will be blocking the main thread, so we need to leave the
+	// gui mutex, so that events can still be processed while we are
+	// waiting.
+	wxMutexGuiLeave();
+
+	// Wait for all threads to die
+	while ( IsRunning() ) {
+		// Sleep for 1/100 of a second to avoid clobbering the mutex
+		// By doing this we ensure that this function only returns
+		// once the thread has died.
+
+		otherfunctions::MilliSleep(10);
+	}
+
 #ifdef __WXGTK__
-		// Re-claim the GUI mutex.
-		wxMutexGuiEnter();
+	// Re-claim the GUI mutex.
+	wxMutexGuiEnter();
 #endif
 
-		return true;
-	} else {
-		s_mutex.Unlock();
-
-		AddDebugLogLineM( true, logAICHThread, wxT("Warning, attempted to stop non-existing thread!") );
-		return false;
-	}
+	return true;
 }
 
 

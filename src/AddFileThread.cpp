@@ -161,39 +161,38 @@ void CAddFileThread::Stop()
 {
 	wxASSERT( wxThread::IsMain() );
 
-	s_mutex.Lock();
-
-	if ( s_running ) {
+	{
+		wxMutexLocker lock(s_mutex);
+	
+		if ( !s_running ) {
+			AddDebugLogLineM( true, logHasher, wxT("Warning, Attempted to stop already stopped hasher!") );
+			return;
+		}
+	
 		s_running = false;
-			
-		s_mutex.Unlock();
+	}
+	
+	if ( s_thread ) {
+		AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
 		
-		if ( s_thread ) {
-			AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
-			
-			// We will be blocking the main thread, so we need to leave the
-			// gui mutex, so that events can still be processed while we are
-			// waiting.
-			wxMutexGuiLeave();
-			
-			// Wait for all threads to die
-			while ( s_thread ) {
-				// Sleep for 1/100 of a second to avoid clobbering the mutex
-				// By doing this we ensure that this function only returns
-				// once the thread has died.
+		// We will be blocking the main thread, so we need to leave the
+		// gui mutex, so that events can still be processed while we are
+		// waiting.
+		wxMutexGuiLeave();
+		
+		// Wait for all threads to die
+		while ( s_thread ) {
+			// Sleep for 1/100 of a second to avoid clobbering the mutex
+			// By doing this we ensure that this function only returns
+			// once the thread has died.
 
-				otherfunctions::MilliSleep(10);
-			}
+			otherfunctions::MilliSleep(10);
+		}
 
 #ifdef __WXGTK__
-			// Re-claim the GUI mutex.
-			wxMutexGuiEnter();
+		// Re-claim the GUI mutex.
+		wxMutexGuiEnter();
 #endif		
-		}
-	} else {
-		AddDebugLogLineM( true, logHasher, wxT("Warning, Attempted to stop already stopped hasher!") );
-
-		s_mutex.Unlock();
 	}
 }
 
@@ -241,17 +240,16 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 	// Continue to loop until there's nothing to do, or someone kills the threads
 	while ( IsRunning() ) {
-		s_mutex.Lock();
-		if ( s_queue.size() ) {
+		{
+			wxMutexLocker lock(s_mutex);
+
+			if ( s_queue.empty() ) {
+				AddLogLineM( false, _("Hasher: No files on queue, stopping thread.") );
+				break;
+			}
+
 			current = s_queue.front();
 			s_queue.pop_front();
-
-			s_mutex.Unlock();
-		} else {
-			s_mutex.Unlock();
-			
-			AddLogLineM( false, _("Hasher: No files on queue, stopping thread.") );
-			break;
 		}
 
 
@@ -382,9 +380,10 @@ wxThread::ExitCode CAddFileThread::Entry()
 	AddLogLineM( false, _("Hasher: A thread has died.") );
 
 	
-	s_mutex.Lock();
-	s_thread = NULL;
-	s_mutex.Unlock();
+	{
+		wxMutexLocker lock(s_mutex);
+		s_thread = NULL;
+	}
 
 
 	// Notify the core.

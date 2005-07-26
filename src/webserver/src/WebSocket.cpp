@@ -89,7 +89,7 @@ void *CWSThread::Entry() {
 				// If there was a connection, create new CWCThread
 				CWCThread *wct = new CWCThread(ws, sock);
 
-				s_mutex_wcThreads->Lock();
+				wxMutexLocker lock(*s_mutex_wcThreads);
 				s_wcThreads.Add(wct);
 				
 				if ( s_wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
@@ -100,15 +100,13 @@ void *CWSThread::Entry() {
 					// ...and run it
 					s_wcThreads.Last()->Run();
 				}
-				s_mutex_wcThreads->Unlock();
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
 		bool should_wait = true;
 		while (should_wait) {
-			s_mutex_wcThreads->Lock();
+			wxMutexLocker lock(*s_mutex_wcThreads);
 			should_wait = (s_wcThreads.GetCount() != 0);
-			s_mutex_wcThreads->Unlock();
 		}
 
 		// by this time, all threads are dead
@@ -294,9 +292,8 @@ void *CWCThread::Entry() {
 	stWebSocket.m_pParent->Print(wxT("WCThread: exited [WebSocket closed]\n"));
 #endif
 	// remove ourself from threads array
-	s_mutex_wcThreads->Lock();
+	wxMutexLocker lock(*s_mutex_wcThreads);
 	s_wcThreads.Remove(this);
-	s_mutex_wcThreads->Unlock();
 
 	// Kry - WTF to return here?
 	// shakraw - it must return NULL. it is correct now.

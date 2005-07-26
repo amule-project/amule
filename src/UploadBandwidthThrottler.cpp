@@ -299,12 +299,12 @@ void UploadBandwidthThrottler::RemoveFromAllQueues(ThrottledFileSocket* socket)
  */
 void UploadBandwidthThrottler::EndThread()
 {
-	m_sendLocker.Lock();
+	{
+		wxMutexLocker lock(m_sendLocker);
 
-	// signal the thread to stop looping and exit.
-	m_doRun = false;
-
-	m_sendLocker.Unlock();
+		// signal the thread to stop looping and exit.
+		m_doRun = false;
+	}
 	
 	Wait();
 }
@@ -403,24 +403,24 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 		if(bytesToSpend >= 1) {
 			uint64 spentBytes = 0;
 			uint64 spentOverhead = 0;
-	
-			m_sendLocker.Lock();
-	
-			m_tempQueueLocker.Lock();
-	
-			// are there any sockets in m_TempControlQueue_list? Move them to normal m_ControlQueue_list;
-			m_ControlQueueFirst_list.insert(	m_ControlQueueFirst_list.end(),
-												m_TempControlQueueFirst_list.begin(),
-												m_TempControlQueueFirst_list.end() );
-			
-			m_ControlQueue_list.insert( m_ControlQueue_list.end(), 
-										m_TempControlQueue_list.begin(),
-										m_TempControlQueue_list.end() );
-			
-			m_TempControlQueue_list.clear();
-			m_TempControlQueueFirst_list.clear();
-	
-			m_tempQueueLocker.Unlock();
+
+			wxMutexLocker sendLock(m_sendLocker);
+
+			{
+				wxMutexLocker queueLock(m_tempQueueLocker);
+
+				// are there any sockets in m_TempControlQueue_list? Move them to normal m_ControlQueue_list;
+				m_ControlQueueFirst_list.insert(	m_ControlQueueFirst_list.end(),
+													m_TempControlQueueFirst_list.begin(),
+													m_TempControlQueueFirst_list.end() );
+
+				m_ControlQueue_list.insert( m_ControlQueue_list.end(), 
+											m_TempControlQueue_list.begin(),
+											m_TempControlQueue_list.end() );
+
+				m_TempControlQueue_list.clear();
+				m_TempControlQueueFirst_list.clear();
+			}
 	
 			// Send any queued up control packets first
 			while(bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend && (!m_ControlQueueFirst_list.empty() || !m_ControlQueue_list.empty())) {
@@ -540,20 +540,18 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 			
 			m_SentBytesSinceLastCall += spentBytes;
 			m_SentBytesSinceLastCallOverhead += spentOverhead;
-	
-			m_sendLocker.Unlock();
 		}
 	}
 
-	m_tempQueueLocker.Lock();
-	m_TempControlQueue_list.clear();
-	m_TempControlQueueFirst_list.clear();
-	m_tempQueueLocker.Unlock();
+	{
+		wxMutexLocker queueLock(m_tempQueueLocker);
+		m_TempControlQueue_list.clear();
+		m_TempControlQueueFirst_list.clear();
+	}
 
-	m_sendLocker.Lock();
+	wxMutexLocker sendLock(m_sendLocker);
 	m_ControlQueue_list.clear();
 	m_StandardOrder_list.clear();
-	m_sendLocker.Unlock();
 
 	return 0;
 }
