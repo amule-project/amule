@@ -90,6 +90,16 @@ class CValueMap {
 		{
 		}
 		
+		CValueMap(const CValueMap &valuemap)
+		{
+			m_map_uint8 = valuemap.m_map_uint8;
+			m_map_uint16 = valuemap.m_map_uint16;
+			m_map_uint32 = valuemap.m_map_uint32;
+			m_map_uint64 = valuemap.m_map_uint64;
+			m_map_md4 = valuemap.m_map_md4;
+			m_map_string = valuemap.m_map_string;
+		}
+		
 		void CreateTag(ec_tagname_t tagname, uint8 value, CECTag *parent)
 		{
 			CreateTagT<uint8>(tagname, value, m_map_uint8, parent);
