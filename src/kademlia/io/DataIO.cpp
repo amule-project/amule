@@ -235,7 +235,7 @@ CTag *CDataIO::readTag(bool bOptACP)
 		printf("Invalid Kad tag; type=0x%02x name=0x%02x\n",
 			type, ((const char *)unicode2char(name))[0]);
 		delete retVal;
-		throw;
+		throw wxString(wxT("Invalid Kad tag on packet"));
 	}
 	return retVal;
 }
