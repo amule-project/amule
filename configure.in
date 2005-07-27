@@ -135,7 +135,7 @@ AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded 
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable patched gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
 
-AC_ARG_ENABLE(kad_compile, [  --enable-kad-compile      compile Kademlia code (DOES NOT WORK YET!))],
+AC_ARG_ENABLE(kad_compile, [  --enable-kad-compile      compile Kademlia code],
 		kad_compile="$enableval", kad_compile="no")
 
 # This must be set after AC_ARG_* or it will be overwritten
