@@ -210,7 +210,7 @@ FileType GetFiletype(const wxString& filename)
 		
 	if ( ext==wxT("mpc")  || ext==wxT("mp4")  || ext==wxT("aac")  || ext==wxT("ape")  ||
 	     ext==wxT("mp3")  || ext==wxT("mp2")  || ext==wxT("wav")  || ext==wxT("au")   ||
-		 ext==wxT("ogg")  || ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid")
+		 ext==wxT("ogg")  || ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid")  ||
 		 ext==wxT("m4a")  || ext==wxT("m4b")  || ext==wxT("m4p") )
 		 return ftAudio;
 
