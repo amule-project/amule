@@ -317,7 +317,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Number of shared files
 	{
-		wxString temp = CFormat(_("Shared Files: %s")) % theApp.sharedfiles->GetCount();
+		wxString temp = CFormat(_("Shared Files: %d")) % theApp.sharedfiles->GetCount();
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add(GTK_CONTAINER (info_menu), info_item);
 	}
