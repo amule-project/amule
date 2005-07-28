@@ -821,7 +821,7 @@ class CScriptWebServer : public CWebServerBase {
 
 		std::map<int, CSession> m_sessions;
 		
-		CSession *CheckLoggedin(ThreadData);
+		CSession *CheckLoggedin(ThreadData &);
 	protected:
 		virtual void ProcessURL(ThreadData);
 	public:

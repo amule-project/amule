@@ -3488,7 +3488,7 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *, long
 }
 #endif
 
-CSession *CScriptWebServer::CheckLoggedin(ThreadData Data)
+CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 {
 	time_t curr_time = time(0);
 	CSession *session = 0;
@@ -3556,7 +3556,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		delete[] gzipOut;
 		*/
 	} else {
-		Data.pSocket->SendHttpHeaders(false, strlen(httpOut), 0);
+		Data.pSocket->SendHttpHeaders(false, strlen(httpOut), Data.SessionID);
 		Data.pSocket->SendData(httpOut, strlen(httpOut));
 		delete [] httpOut;
 	}
