@@ -164,6 +164,16 @@ wxString StringFrom(const TYPE& value)
 	return wxString() << value;
 }
 
+inline wxString StringFrom(unsigned long long value)
+{
+	return wxString::Format(wxT("%llu"), value);
+}
+
+inline wxString StringFrom(signed long long value)
+{
+	return wxString::Format(wxT("%lli"), value);
+}
+
 
 /**
  * Asserts that a condition is true.
