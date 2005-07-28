@@ -100,6 +100,10 @@ class CValueMap {
 			m_map_string = valuemap.m_map_string;
 		}
 		
+		~CValueMap()
+		{
+		}
+		
 		void CreateTag(ec_tagname_t tagname, uint8 value, CECTag *parent)
 		{
 			CreateTagT<uint8>(tagname, value, m_map_uint8, parent);
