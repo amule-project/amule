@@ -783,7 +783,10 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 void CamuleDlg::ShowUserCount(const wxString& info)
 {
 	wxStaticText* label = CastChild( wxT("userLabel"), wxStaticText );
-
+	
+	// Update Kad tab
+	serverwnd->UpdateKadInfo();
+	
 	label->SetLabel(info);
 	label->GetParent()->Layout();
 }
