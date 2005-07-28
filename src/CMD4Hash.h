@@ -61,6 +61,9 @@ public:
 		Clear();
 	}
 	
+	~CMD4Hash() {
+	}	
+	
 	/**
 	 * Cast a unsigned char array to a CMD4Hash.
 	 * 
