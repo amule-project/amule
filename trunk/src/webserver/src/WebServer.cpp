@@ -3548,8 +3548,8 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		delete[] gzipOut;
 		*/
 	} else {
-		Data.pSocket->SendHttpHeaders(false, strlen(httpOut), Data.SessionID);
-		Data.pSocket->SendData(httpOut, strlen(httpOut));
+		Data.pSocket->SendHttpHeaders(false, httpOutLen, Data.SessionID);
+		Data.pSocket->SendData(httpOut, httpOutLen);
 		delete [] httpOut;
 	}
 }
