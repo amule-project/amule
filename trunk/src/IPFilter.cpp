@@ -85,7 +85,7 @@ EFileType GuessFiletype(const wxString& file)
 		size_t read = archive.Read(head, 10);
 
 		for (size_t i = 0; i < read; ++i) {
-			if (!isprint(head[i])) {
+			if (!isprint(head[i]) && !isspace(head[i])) {
 				return EFT_Unknown;
 			}
 		}
