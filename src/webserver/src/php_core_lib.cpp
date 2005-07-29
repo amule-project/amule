@@ -388,6 +388,12 @@ void php_init_core_lib()
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 }
 
+//
+// lexer has no include file
+//
+extern "C"
+void php_set_input_buffer(char *buf, int len);
+
 CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
 	g_curr_context = this;
@@ -396,10 +402,32 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_servers = &server->m_ServersInfo;
 #endif
 	php_engine_init();
-	yyin = fopen(file, "r");
+	FILE *yyin = fopen(file, "r");
+	if ( !yyin ) {
+		return;
+	}
+
 	yyparse();
+	
 	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
+}
+
+CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
+{
+	g_curr_context = this;
+#ifdef AMULEWEB_SCRIPT_EN
+	m_downloads = &server->m_DownloadFileInfo;
+	m_servers = &server->m_ServersInfo;
+#endif
+	php_engine_init();
+
+	m_syn_tree_top = g_syn_tree_top;
+	m_global_scope = g_global_scope;
+
+	php_set_input_buffer(php_buf, len);
+	yyparse();
+	
 }
 
 CPhPLibContext::~CPhPLibContext()
@@ -454,6 +482,55 @@ void CPhPLibContext::Print(const char *str)
 	}
 }
 
+CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
+			const char *file, CWriteStrBuffer *buff)
+{
+	FILE *f = fopen(file, "r");
+	if ( !f ) {
+		return;
+	}
+	if ( fseek(f, 0, SEEK_END) != 0 ) {
+		return;
+	}
+	int size = ftell(f);
+	char *buf = new char [size+1];
+	rewind(f);
+	fread(buf, 1, size, f);
+
+	char *scan_ptr = buf;
+	while ( strlen(scan_ptr) ) {
+		scan_ptr = strstr(scan_ptr, "<?php");
+		if ( !scan_ptr ) {
+			break;
+		}
+		char *curr_code_end = strstr(scan_ptr, "?>");
+		if ( !curr_code_end ) {
+			break;
+		}
+		curr_code_end += 2; // include "?>" in buffer
+
+		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, curr_code_end - scan_ptr);
+
+#ifdef AMULEWEB_SCRIPT_EN
+		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
+		load_session_vars("_SESSION_VARS", sess->m_vars);
+#endif
+
+		context->Execute(buff);
+
+#ifdef AMULEWEB_SCRIPT_EN
+		save_session_vars(sess->m_vars);
+		sess->m_get_vars.clear();
+#endif	
+
+		delete context;
+		
+		scan_ptr = curr_code_end;
+	}
+
+	delete [] buf;
+}
+
 /*
  * String buffer: almost same as regular 'string' class, but,
  * without reallocation when full. Instead, new buffer is
@@ -482,14 +559,16 @@ void CWriteStrBuffer::AllocBuf()
 	m_curr_buf_left = m_alloc_size;
 }
 
-void CWriteStrBuffer::Write(const char *s)
+void CWriteStrBuffer::Write(const char *s, int len)
 {
-	int len = strlen(s);
+	if ( len == -1 ) {
+		len = strlen(s);
+	}
 	m_total_length += len;
 	
 	while ( len ) {
 		if ( (len + 1) <= m_curr_buf_left ) {
-			strcpy(m_buf_ptr, s);
+			strncpy(m_buf_ptr, s, len);
 			m_buf_ptr += len;
 			m_curr_buf_left -= len;
 			len = 0;

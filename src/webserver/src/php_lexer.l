@@ -29,6 +29,11 @@
 #include "php_syntree.h"
 #include "php_parser.h"
 
+void php_set_input_buffer(char *buf, int len)
+{
+	yy_scan_bytes(buf, len);
+}
+
 %}
 
 %x BLOCK_COMMENT

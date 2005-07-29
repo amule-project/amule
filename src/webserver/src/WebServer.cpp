@@ -3464,14 +3464,10 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 		return Get_404_Page(size);
 	}
 
-	CPhPLibContext *context = new CPhPLibContext(this, filename);
 	CWriteStrBuffer buffer;
+	CPhpFilter(this, sess, filename, &buffer);
 	
-	load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
-	load_session_vars("_SESSION_VARS", sess->m_vars);
-	context->Execute(&buffer);
-	save_session_vars(sess->m_vars);
-	sess->m_get_vars.clear();
+	CPhPLibContext *context = new CPhPLibContext(this, filename);
 	
 	size = buffer.Length();
 	char *buf = new char [size+1];
