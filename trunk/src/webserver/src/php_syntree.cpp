@@ -1387,6 +1387,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 	while ( node ) {
 		curr_exec_result = 0;
 		PHP_VALUE_NODE cond_result;
+		cond_result.type = PHP_VAL_NONE;
 		switch (node->type) {
 			case PHP_ST_EXPR:
 				php_expr_eval(node->node_expr, 0);
@@ -1426,6 +1427,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 						curr = curr->next;
 					}
 				}
+				value_value_free(&cond_result);
 				break;
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
@@ -1576,11 +1578,8 @@ int main(int argc, char *argv[])
 	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
 
 	CWriteStrBuffer buffer;
-	CPhPLibContext context((CWebServerBase*)0, filename);
-	
-	yydebug = 0;
-	
-	context.Execute(&buffer);
+
+	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
 	
 	int size = buffer.Length();
 	char *buf = new char [size+1];

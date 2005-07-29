@@ -45,12 +45,14 @@ class CWriteStrBuffer {
 		CWriteStrBuffer();
 		~CWriteStrBuffer();
 		
-		void Write(const char *s);
+		void Write(const char *s, int len = -1);
 		void CopyAll(char *dst_buffer);
 		const int Length() { return m_total_length; }
 };
 
 class CWebServerBase;
+class CSession;
+
 class CPhPLibContext {
 		PHP_SYN_NODE *m_syn_tree_top;
 		PHP_SCOPE_TABLE m_global_scope;
@@ -63,6 +65,7 @@ class CPhPLibContext {
 	public:
 		// parse file and take a "snapshot" of global vars
 		CPhPLibContext(CWebServerBase *server, const char *file);
+		CPhPLibContext(CWebServerBase *server, char *php_buf, int len);
 		~CPhPLibContext();
 		
 		// init global vars, so parser/execution can start
@@ -79,7 +82,13 @@ class CPhPLibContext {
 #endif
 };
 
-#endif
+class CPhpFilter {
+	public:
+		CPhpFilter(CWebServerBase *server, CSession *sess,
+			const char *file, CWriteStrBuffer *buff);
+};
+
+#endif // __cplusplus
 
 void php_init_core_lib();
 
