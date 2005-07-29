@@ -3467,13 +3467,9 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 	CWriteStrBuffer buffer;
 	CPhpFilter(this, sess, filename, &buffer);
 	
-	CPhPLibContext *context = new CPhPLibContext(this, filename);
-	
 	size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
-	
-	delete context;
 	
 	return buf;
 }
