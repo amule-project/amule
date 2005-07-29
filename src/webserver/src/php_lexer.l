@@ -34,13 +34,18 @@ void php_set_input_buffer(char *buf, int len)
 	yy_scan_bytes(buf, len);
 }
 
+int yywrap();
+
+int yywrap()
+{
+	return 1;
+}
+
 %}
 
 %x BLOCK_COMMENT
 %x LINE_COMMENT
 
-%option noyylineno
-%option noyywrap
 %option stack
 
 DEC_NUM			[0-9]+
