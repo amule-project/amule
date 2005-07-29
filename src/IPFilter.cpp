@@ -33,6 +33,8 @@
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/string.h>		// Needed for wxString
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
+#include <wx/zstream.h>		// Needed for wxZlibInputStream
+#include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/fs_zip.h>		// Needed for wxZipFSHandler
 #include <wx/file.h>		// Needed for wxTempFile
 #include <wx/filename.h>
@@ -46,21 +48,50 @@
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "Format.h"
 
+enum EFileType
+{
+	EFT_Text,
+	EFT_Zip,
+	EFT_GZip,
+	EFT_Unknown
+};
+
 
 /**
  * Returns true if the file is a zip-archive.
  */
-bool IsZipFile(const wxString& file)
+EFileType GuessFiletype(const wxString& file)
 {
 	wxFile archive(file, wxFile::read);
-	char head[2];
+	char head[10];
 
-	if (archive.Read(head, 2) == 2) {
-		// Zip-archives have a header of "PK".
-		return (head[0] == 'P') && (head[1] == 'K');
+	if (archive.Read(head, 2) != 2) {
+		// Probably just an empty text-file
+		return EFT_Text;
 	}
 
-	return false;
+	// Attempt to guess the filetype.
+	if ((head[0] == 'P') && (head[1] == 'K')) {
+		// Zip-archives have a header of "PK".
+		return EFT_Zip;
+	} else if (head[0] == (char)0x1F && head[1] == (char)0x8B) {
+		// Gzip-archives have a header of 0x1F8B
+		return EFT_GZip;
+	} else {
+		// Check the first ten chars, if all are printable, 
+		// then we can probably safely assume that this is 
+		// a ascii text-file.
+		archive.Seek(0, wxFromStart);
+		size_t read = archive.Read(head, 10);
+
+		for (size_t i = 0; i < read; ++i) {
+			if (!isprint(head[i])) {
+				return EFT_Unknown;
+			}
+		}
+		
+		return EFT_Text;
+	}
 }
 
 
@@ -80,6 +111,7 @@ bool UnpackZipFile(const wxString& file)
 		// We only care about the following files
 		if (filename == wxT("guarding.p2p") || filename == wxT("ipfilter.dat")) {
 			wxZipInputStream inputStream(file, filename);
+			
 			wxTempFile target(file);
 			char buffer[10240];
 
@@ -100,6 +132,28 @@ bool UnpackZipFile(const wxString& file)
 
 	return false;
 }
+
+
+/**
+ * Unpacks a GZip file and replaces the archive.
+ */
+void UnpackGZipFile(const wxString& file)
+{
+	wxFileInputStream source(file);
+	wxZlibInputStream inputStream(source);
+	wxTempFile target(file);
+	char buffer[10240];
+
+	while (!inputStream.Eof()) {
+		inputStream.Read(buffer, sizeof(buffer));
+
+		target.Write(buffer, inputStream.LastRead());
+	}
+
+	// Save the unpacked file
+	target.Commit();
+}
+
 
 
 /**
@@ -262,21 +316,42 @@ void CIPFilter::LoadFromFile(const wxString& file)
 {
 	if (wxFileExists(file)) {	
 		// Attempt to discover the filetype
-		if (IsZipFile(file)) {
-			if (UnpackZipFile(file)) {
-				 LoadFromFile(file);
-			} else {
-				AddLogLineM(true, CFormat(_("Failed to extract ipfilter list from archive '%s'. File may be damaged or contain misnamed files.")) % file);
-			}
-		} else {
-			AddedAndDiscarded stat = LoadFromDatFile(file);
+		switch (GuessFiletype(file)) {
+			case EFT_Text: {
+				AddedAndDiscarded stat = LoadFromDatFile(file);
 
-			AddLogLineM(false,
-				CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
-					% stat.first
-					% file.AfterLast(wxFileName::GetPathSeparator())
-					% stat.second
-			);			 
+				AddLogLineM(false,
+					CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
+						% stat.first
+						% file.AfterLast(wxFileName::GetPathSeparator())
+						% stat.second
+				);
+
+				break;
+			}
+			
+			case EFT_Zip: {
+				if (UnpackZipFile(file)) {
+					AddLogLineM(true, CFormat(_("Extracted ipfilter list from zip-archive '%s'.")) % file);
+					LoadFromFile(file);
+				} else {
+					AddLogLineM(true, CFormat(_("Failed to extract ipfilter list from zip-archive '%s'. File may be damaged or contain misnamed files.")) % file);
+				}
+
+				break;
+			}
+
+			case EFT_GZip: {
+				UnpackGZipFile(file);
+				AddLogLineM(true, CFormat(_("Extracted ipfilter list from gz-archive '%s'.")) % file);
+				LoadFromFile(file);
+
+				break;
+			}
+
+			case EFT_Unknown: {
+				AddLogLineM(true, CFormat(_("IPFilter stored in unknown format, file skipped: '%s'.")) % file);				
+			}
 		}
 	}
 }
