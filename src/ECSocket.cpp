@@ -260,16 +260,19 @@ unsigned int ReadBufferFromSocket(wxSocketBase *sock, void *buffer, unsigned int
 		sock->Read(iobuf, max_len);
 		LastIO = sock->LastCount();
 		error = sock->Error();
-		if (error) LastErrorValue = sock->LastError();
+		if (error) {
+			LastErrorValue = sock->LastError();
+			if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
+				error = false;
+				LastErrorValue = wxSOCKET_NOERROR;
+			}
+			continue;
+		}
 		ReadSoFar += LastIO;
 		iobuf += LastIO;
 		max_len -= LastIO;
 		if (required_len == 0) {
 			break;
-		}
-		if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
-			error = false;
-			LastErrorValue = wxSOCKET_NOERROR;
 		}
 	}
 	if (error) {
@@ -304,7 +307,7 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 			if (LastErrorValue == wxSOCKET_WOULDBLOCK) {
 				LastErrorValue = wxSOCKET_NOERROR;
 				continue;
-			}			
+			}
 			error = true;
 			break;
 		}
@@ -317,7 +320,7 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 				LastErrorValue = wxSOCKET_NOERROR;
 				error = false;
 				continue;
-			}						
+			}
 		}
 		msgRemain -= LastIO;
 		WroteSoFar += LastIO;
@@ -339,13 +342,12 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 
 ECSocket::ECSocket(void) : wxSocketClient()
 {
-	parms.firsttransfer = true;
+	parms.firsttransfer = false;
 	parms.accepts = 0;
 	parms.in_ptr = NULL;
 	parms.out_ptr = NULL;
 	parms.LastSocketError = wxSOCKET_NOERROR;
 	parms.used_flags = 0;
-	memset(&parms.z,sizeof(z_stream),0);
 	SetEventHandler(handler,EC_SOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
