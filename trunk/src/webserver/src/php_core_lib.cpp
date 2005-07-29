@@ -514,7 +514,18 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 		}
 		curr_code_end += 2; // include "?>" in buffer
 
-		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, curr_code_end - scan_ptr);
+		int len = curr_code_end - scan_ptr;
+		yydebug = 0;
+		/*
+		char *scan_buf = new char[len + 2];
+		strncpy(scan_buf, scan_ptr, len);
+		scan_buf[len] = 0;
+		scan_buf[len+1] = 0;
+		yydebug = 1;
+		CPhPLibContext *context = new CPhPLibContext(server, scan_buf, len + 1);
+		delete [] scan_buf;
+		*/
+		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
 #ifdef AMULEWEB_SCRIPT_EN
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
