@@ -702,62 +702,62 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 	serverwnd->UpdateKadInfo();
 	state NewState = sUnknown;
 
-	if ( connected ) {
-		if ( theApp.serverconnect->IsLowID() ) {
-			NewState = sLowID;
-		} else {
-			NewState = sHighID;
-		}
-	} else if ( theApp.serverconnect->IsConnecting() ) {
-		NewState = sConnecting;
-	} else {
-		NewState = sDisconnected;
-	}
-
-	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
-	if ( LastState != NewState ) {
-		CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
-		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-		switch ( NewState ) {
-			case sLowID:
-				// Display a warning about LowID connections
-				AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
-				AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
-				AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
-			
-			case sHighID: {
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
-					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
-					_("Disconnect from current server"));
-				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-				if (server.Cmp(wxT("Kad"))) {
-					tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
-					connLabel->SetLabel(server);
-				}
-				break;
+	if (server.Cmp(wxT("Kad"))) {
+		if ( connected ) {
+			if ( theApp.serverconnect->IsLowID() ) {
+				NewState = sLowID;
+			} else {
+				NewState = sHighID;
 			}
-			case sConnecting:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
-					_("Stops the current connection attempts"));
-				connLabel->SetLabel(_("Connecting"));
-				break;
-
-			case sDisconnected:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
-					connButImg(0), wxNullBitmap, wxITEM_NORMAL,
-					_("Connect to any server"));
-				connLabel->SetLabel(_("Not Connected"));
-				AddLogLine(true, _("Disconnected"));
-				break;
-
-			default:
-				break;
+		} else if ( theApp.serverconnect->IsConnecting() ) {
+			NewState = sConnecting;
+		} else {
+			NewState = sDisconnected;
 		}
-		m_wndToolbar->Realize();
-		ShowUserCount();
-	} else if (connected) {
-		if (server.Cmp(wxT("Kad"))) {
+	
+		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
+		if ( LastState != NewState ) {
+			CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
+			m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
+			switch ( NewState ) {
+				case sLowID:
+					// Display a warning about LowID connections
+					AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
+					AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
+					AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
+				
+				case sHighID: {
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
+						connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+						_("Disconnect from current server"));
+					wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
+					if (server.Cmp(wxT("Kad"))) {
+						tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
+						connLabel->SetLabel(server);
+					}
+					break;
+				}
+				case sConnecting:
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+						connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+						_("Stops the current connection attempts"));
+					connLabel->SetLabel(_("Connecting"));
+					break;
+	
+				case sDisconnected:
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
+						connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+						_("Connect to any server"));
+					connLabel->SetLabel(_("Not Connected"));
+					AddLogLine(true, _("Disconnected"));
+					break;
+	
+				default:
+					break;
+			}
+			m_wndToolbar->Realize();
+			ShowUserCount();
+		} else if (connected) {
 			connLabel->SetLabel(server);
 		}
 	}
