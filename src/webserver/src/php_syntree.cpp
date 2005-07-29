@@ -939,7 +939,8 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 					PHP_EXP_NODE *curr = tree->node_expr;
                     while (curr) {
                     	PHP_EXP_NODE *next = curr->next;
-                        php_exp_tree_free(curr);
+                        php_exp_tree_free(curr->exp_node);
+                        delete curr;
                         curr = next;
                     }
 				}
