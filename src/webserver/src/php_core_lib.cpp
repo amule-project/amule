@@ -422,12 +422,12 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 #endif
 	php_engine_init();
 
-	m_syn_tree_top = g_syn_tree_top;
 	m_global_scope = g_global_scope;
 
 	php_set_input_buffer(php_buf, len);
 	yyparse();
 	
+	m_syn_tree_top = g_syn_tree_top;
 }
 
 CPhPLibContext::~CPhPLibContext()
@@ -498,12 +498,17 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	fread(buf, 1, size, f);
 
 	char *scan_ptr = buf;
+	char *curr_code_end = buf;
 	while ( strlen(scan_ptr) ) {
 		scan_ptr = strstr(scan_ptr, "<?php");
 		if ( !scan_ptr ) {
+			buff->Write(curr_code_end);
 			break;
 		}
-		char *curr_code_end = strstr(scan_ptr, "?>");
+		if ( scan_ptr != curr_code_end ) {
+			buff->Write(curr_code_end, scan_ptr - curr_code_end);
+		}
+		curr_code_end = strstr(scan_ptr, "?>");
 		if ( !curr_code_end ) {
 			break;
 		}
