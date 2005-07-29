@@ -702,6 +702,8 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 	serverwnd->UpdateKadInfo();
 	state NewState = sUnknown;
 
+	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
+	
 	if (server.Cmp(wxT("Kad"))) {
 		if ( connected ) {
 			if ( theApp.serverconnect->IsLowID() ) {
@@ -715,7 +717,6 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 			NewState = sDisconnected;
 		}
 	
-		wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 		if ( LastState != NewState ) {
 			CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
 			m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
