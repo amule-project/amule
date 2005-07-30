@@ -297,6 +297,9 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2char(obj->sFileName));
+	else if ( strcmp(prop_name, "hash") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sFileHash));
 	} else if ( strcmp(prop_name, "status") == 0 ) {
 		result->int_val = obj->nFileStatus;
 	} else if ( strcmp(prop_name, "size") == 0 ) {
@@ -320,7 +323,7 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
 		result->int_val = obj->bFileAutoPriority;
 	} else {
-		php_report_error(PHP_ERROR, "This property is unknown");
+		php_report_error(PHP_ERROR, "This property [%s] is unknown", prop_name);
 	}
 }
 #else
