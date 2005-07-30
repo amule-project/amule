@@ -79,6 +79,7 @@ class CPhPLibContext {
 	
 #ifdef AMULEWEB_SCRIPT_EN
 		DownloadFileInfo *AmuleDownloads() { return m_downloads; }
+		ServersInfo *AmuleServers() { return m_servers; }
 #endif
 };
 
