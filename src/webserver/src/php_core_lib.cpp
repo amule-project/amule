@@ -287,7 +287,6 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 #ifdef AMULEWEB_SCRIPT_EN
 void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 {
-	printf("DEBUG: obj %p -> %s \n", ptr, prop_name);
 	if ( !ptr ) {
 		value_value_free(result);
 		return;
@@ -323,13 +322,43 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
 		result->int_val = obj->bFileAutoPriority;
 	} else {
-		php_report_error(PHP_ERROR, "This property [%s] is unknown", prop_name);
+		php_report_error(PHP_ERROR, "'DownloadFile' property [%s] is unknown", prop_name);
 	}
 }
+
+void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	ServerEntry *obj = (ServerEntry *)ptr;
+	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sServerName));
+	} else if ( strcmp(prop_name, "desc") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sServerDescription));
+	} else if ( strcmp(prop_name, "addr") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sServerIP));
+	} else if ( strcmp(prop_name, "users") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nServerUsers;
+	} else if ( strcmp(prop_name, "maxusers") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nServerMaxUsers;
+	} else if ( strcmp(prop_name, "files") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nServerFiles;
+	} else {
+		php_report_error(PHP_ERROR, "'ServerEntry' property [%s] is unknown", prop_name);
+	}
+}
+
 #else
 void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
 {
-	printf("DEBUG: obj %p -> %s \n", obj, prop_name);
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup("some_str");
@@ -338,6 +367,17 @@ void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *re
 		result->int_val = 10;
 	}
 }
+
+void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	result->type = PHP_VAL_STRING;
+	result->str_val = strdup("some_value");
+}
+
 #endif
 /*
  * Set of "native" functions to access amule data
@@ -389,6 +429,7 @@ void php_init_core_lib()
 	}
 	// load object definitions
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
+	php_add_native_class("AmuleServer", amule_server_prop_get);
 }
 
 //
@@ -519,15 +560,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 		int len = curr_code_end - scan_ptr;
 		yydebug = 0;
-		/*
-		char *scan_buf = new char[len + 2];
-		strncpy(scan_buf, scan_ptr, len);
-		scan_buf[len] = 0;
-		scan_buf[len+1] = 0;
-		yydebug = 1;
-		CPhPLibContext *context = new CPhPLibContext(server, scan_buf, len + 1);
-		delete [] scan_buf;
-		*/
+
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
 #ifdef AMULEWEB_SCRIPT_EN
