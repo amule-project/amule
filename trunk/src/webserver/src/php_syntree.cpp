@@ -138,7 +138,7 @@ PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var, char *class
 	PHP_FUNC_PARAM_DEF *param = new PHP_FUNC_PARAM_DEF;
 	memset(param, 0, sizeof(PHP_FUNC_PARAM_DEF));
 	param->var = var;
-	param->class_name = strdup(class_name);
+	param->class_name = class_name ? strdup(class_name) : 0;
 	param->byref = byref;
 	
 	PHP_EXP_NODE *curr_node = make_const_exp_int_obj(param);
@@ -977,6 +977,11 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 				}
 				delete_scope_table(tree->func_decl->scope);
 				free(tree->func_decl->name);
+				for(int i = 0; i < tree->func_decl->param_count; i++) {
+					if (tree->func_decl->params[i].class_name) {
+						free(tree->func_decl->params[i].class_name);
+					}
+				}
 				delete [] tree->func_decl->params;
 				delete tree->func_decl;
 				break;
