@@ -38,6 +38,7 @@ openbsd*)
 solaris*)
 	RESOLV_LIB="-lresolv -lnsl"
 	X11LIBS="-lX11"
+	LIBS="$LIBS -lrt"
 esac
 
 AC_SUBST(RESOLV_LIB)
