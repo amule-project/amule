@@ -229,11 +229,25 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
 #ifdef AMULEWEB_SCRIPT_EN
-
+/*
+template <class T>
+void amule_obj_array_create(std::list<T>::const_iterator it,
+	std::list<ServerEntry>::const_iterator end, char *class_name, PHP_VALUE_NODE *result)
+{
+	for (; it != end; it++) {
+		PHP_VAR_NODE *var = array_push_back(result);
+		var->value.type = PHP_VAL_OBJECT;
+		var->value.obj_val.class_name = class_name;
+		const T *cur_item = &(*it);
+		var->value.obj_val.inst_ptr = (void *)cur_item;
+	}
+}
+*/
 void amule_load_downloads(PHP_VALUE_NODE *result)
 {
 	DownloadFileInfo *downloads = CPhPLibContext::g_curr_context->AmuleDownloads();
 	downloads->ReQuery();
+
 	for (std::list<DownloadFile>::const_iterator i = downloads->GetBeginIterator(); i != downloads->GetEndIterator(); i++) {
 		PHP_VAR_NODE *var = array_push_back(result);
 		var->value.type = PHP_VAL_OBJECT;
@@ -243,16 +257,40 @@ void amule_load_downloads(PHP_VALUE_NODE *result)
 	}
 }
 
+void amule_load_servers(PHP_VALUE_NODE *result)
+{
+	ServersInfo *servers = CPhPLibContext::g_curr_context->AmuleServers();
+	servers->ReQuery();
+
+	for (std::list<ServerEntry>::const_iterator i = servers->GetBeginIterator(); i != servers->GetEndIterator(); i++) {
+		PHP_VAR_NODE *var = array_push_back(result);
+		var->value.type = PHP_VAL_OBJECT;
+		var->value.obj_val.class_name = "AmuleServer";
+		const ServerEntry *cur_item = &(*i);
+		var->value.obj_val.inst_ptr = (void *)cur_item;
+	}
+}
+
 #else
+
+void amule_fake_obj_array_create(int count, char *class_name, PHP_VALUE_NODE *result)
+{
+	for (int i = 0; i < count; i++) {
+		PHP_VAR_NODE *var = array_push_back(result);
+		var->value.type = PHP_VAL_OBJECT;
+		var->value.obj_val.class_name = class_name;
+		var->value.obj_val.inst_ptr = 0;
+	}
+}
 
 void amule_load_downloads(PHP_VALUE_NODE *result)
 {
-	for (int i = 0; i < 10; i++) {
-		PHP_VAR_NODE *var = array_push_back(result);
-		var->value.type = PHP_VAL_OBJECT;
-		var->value.obj_val.class_name = "AmuleDownloadFile";
-		var->value.obj_val.inst_ptr = 0;
-	}
+	amule_fake_obj_array_create(10, "AmuleDownloadFile", result);
+}
+
+void amule_load_servers(PHP_VALUE_NODE *result)
+{
+	amule_fake_obj_array_create(10, "AmuleServer", result);
 }
 
 #endif
