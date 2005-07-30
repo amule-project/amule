@@ -44,6 +44,13 @@ void InstallMuleExceptionHandler();
 void OnUnhandledException();
 
 
+//! Print a backtrace, skipping the first n frames.
+void print_backtrace(unsigned n);
+
+//! Returns a backtrace, skipping the first n frames.
+wxString get_backtrace(unsigned n);
+
+
 /**
  * This exception should be used to implement other
  * types of exceptions. It should never be caught, 
@@ -75,6 +82,7 @@ struct CRunTimeException : public CMuleException
 	CRunTimeException(const wxString& type, const wxString& what)
 		: CMuleException(wxT("CRunTimeException::") + type, what) {}
 };
+
 
 
 /**
