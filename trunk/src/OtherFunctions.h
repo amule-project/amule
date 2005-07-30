@@ -333,9 +333,6 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg = wxEmptyStri
 void DumpMem(const void *buff, int n, const wxString& msg = wxEmptyString, bool ok = true);
 void DumpMem_DW(const uint32 *ptr, int count);
 
-// Prints backtrace
-void print_backtrace(uint8 n);
-
 // Returns special source ID for GUI.
 // It's actually IP<<16+Port
 #define GUI_ID(x,y) (uint64)((((uint64)x)<<16) + (uint64)y)
