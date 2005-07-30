@@ -387,7 +387,7 @@ extern "C" {
 	//
 	// add new item into function param list (in declaration )
 	//
-	PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var,
+	PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node,
 		char *class_name, int byref);
 	
 	PHP_VAR_NODE *make_var_node();

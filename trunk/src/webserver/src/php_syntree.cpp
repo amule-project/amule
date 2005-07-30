@@ -133,10 +133,14 @@ PHP_EXP_NODE *make_known_const(char *name)
 	return make_const_exp_dnum(const_id);
 }
 
-PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var, char *class_name, int byref)
+PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node, char *class_name, int byref)
 {
 	PHP_FUNC_PARAM_DEF *param = new PHP_FUNC_PARAM_DEF;
 	memset(param, 0, sizeof(PHP_FUNC_PARAM_DEF));
+
+	PHP_VAR_NODE *var = var_exp_node->var_node;
+	delete var_exp_node;
+	
 	param->var = var;
 	param->class_name = class_name ? strdup(class_name) : 0;
 	param->byref = byref;
@@ -147,7 +151,7 @@ PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_VAR_NODE *var, char *class
 		PHP_EXP_NODE *p = list;
 		while ( p->next) {
 			p = p->next;
-		};
+		}
 		p->next = curr_node;
 		return list;
 	} else {
