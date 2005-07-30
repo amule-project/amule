@@ -121,20 +121,20 @@ void CFormat::ResetString()
 
 wxString CFormat::GetCurrentField()
 {
-	MULE_VALIDATE_STATE(m_index < m_format.Len(), wxT("Value passed to already completed string: ") + m_format);
+	MULE_VALIDATE_STATE(m_index < m_format.Len(), wxT("Value passed to already completed string."));
 
 	m_indexEnd = m_index + 1;
 	for (; m_indexEnd < m_format.Len(); m_indexEnd++) {
 		wxChar c = m_format.GetChar(m_indexEnd);
 
-		MULE_VALIDATE_STATE(c != wxT('*'), wxT("'*' precision not supported: ") + m_format);
+		MULE_VALIDATE_STATE(c != wxT('*'), wxT("'*' precision not supported."));
 		
 		if (isTypeChar(c)) {
 			break;
 		}
 	}
 	
-	MULE_VALIDATE_STATE(m_indexEnd < m_format.Len(), wxT("Invalid format string, unknown type: ") + m_format);
+	MULE_VALIDATE_STATE(m_indexEnd < m_format.Len(), wxT("Invalid format string, unknown type."));
 
 	m_indexEnd++;
 
@@ -149,7 +149,7 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 	
 	size_t length = m_format.Length();
 	
-	MULE_ASSERT_MSG(m_index != length, wxT("Invalid operation: SetCurrentField on completed string: ") + m_format);
+	MULE_ASSERT_MSG(m_index != length, wxT("Invalid operation: SetCurrentField on completed string."));
 	MULE_ASSERT(m_index <= m_indexEnd);
 	
 	// Locate the next format-string
@@ -159,7 +159,7 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 
 	for ( ; ptr < end; ++ptr ) {
 		if ( *ptr == wxT('%') ) {
-			MULE_VALIDATE_STATE(ptr + 1 < end, wxT("Incomplete format-string found: ") + m_format);
+			MULE_VALIDATE_STATE(ptr + 1 < end, wxT("Incomplete format-string found."));
 			
 			if ( *(ptr + 1) != wxT('%') ) {
 				break;
@@ -192,12 +192,12 @@ CFormat& CFormat::operator%(double value)
 		case wxT('F'):		// Decimal floating point
 		case wxT('g'):		// Use shorter %e or %f
 		case wxT('G'):		// Use shorter %E or %f
-			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format: ") + m_format);
+			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format."));
 			
 			return SetCurrentField(wxString::Format(field, value));
 		
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-float format string: ") + m_format);
+			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-float format string.") );
 	}
 }
 
@@ -205,7 +205,7 @@ CFormat& CFormat::operator%(double value)
 CFormat& CFormat::operator%( const wxChar* val )
 {
 	wxString field = GetCurrentField();
-	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-integer format string: ") + m_format);
+	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-integer format string."));
 	
 	// Check if a max-length is specified
 	if (field.GetChar(1) == wxT('.')) {
@@ -216,13 +216,13 @@ CFormat& CFormat::operator%( const wxChar* val )
 		if ((size.IsEmpty() || size.ToLong(&lSize)) && (lSize >= 0)) {
 			SetCurrentField(wxString(val).Left(lSize));
 		} else {
-			MULE_VALIDATE_STATE(false, wxT("Invalid value found in 'precision' field: ") + m_format);
+			MULE_VALIDATE_STATE(false, wxT("Invalid value found in 'precision' field."));
 		}
 	} else if (field.GetChar(1) == wxT('s')) {
 		// No limit on size, just set the string
 		SetCurrentField( val );
 	} else {
-		MULE_VALIDATE_STATE(false, wxT("Malformed string format field: ") + m_format);
+		MULE_VALIDATE_STATE(false, wxT("Malformed string format field."));
 	}
 
 	return *this;
