@@ -1343,7 +1343,7 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "Current version is: %s\n", strFullMuleVersion);
 	fprintf(stderr, "Running on: %s\n\n", strOSDescription);
 	
-	otherfunctions::print_backtrace(1); // 1 == skip this function.
+	print_backtrace(1); // 1 == skip this function.
 	
 	fprintf(stderr, "\n--------------------------------------------------------------------------------\n");	
 }
@@ -1402,29 +1402,27 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 
 
 #ifdef __WXDEBUG__
+#ifndef wxUSE_STACKWALKER
+#define wxUSE_STACKWALKER 0
+#endif
 void CamuleApp::OnAssert(const wxChar *file, int line, 
 						 const wxChar *cond, const wxChar *msg)
 {
-#if !wxCHECK_VERSION(2,6,0) || !wxUSE_STACKWALKER
-	printf("\nAssertion failed. Backtrace follows:\n");
-	// Skip the function-calls directly related to the assert call.
-	print_backtrace( 3 );
-	printf("\n");
-#endif
-		
-	if ( wxThread::IsMain() ) {
-		if (IsRunning()) {
-			AMULE_APP_BASE::OnAssert( file, line, cond, msg );
-		} else {
-			// Abort, allows gdb to catch the assertion
-			raise( SIGABRT );
-		}
-	} else {
+	if (!wxUSE_STACKWALKER || !wxThread::IsMain() || !IsRunning()) {
 		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s") )
 			% file % line % cond % ( msg ? msg : wxT("") );
 
-		printf("%s\n", (const char*)unicode2char( errmsg ));
+		fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
 		
+		// Skip the function-calls directly related to the assert call.
+		fprintf(stderr, "\nBacktrace follows:\n");
+		print_backtrace(3);
+		fprintf(stderr, "\n");
+	}
+		
+	if (wxThread::IsMain() && IsRunning()) {
+		AMULE_APP_BASE::OnAssert(file, line, cond, msg);
+	} else {	
 		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );
 	}
