@@ -234,6 +234,9 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Load Preferences
 	// This creates the CFG file we shall use
 	ConfigDir = otherfunctions::GetConfigDir();
+	if ( !wxDirExists( ConfigDir ) ) {
+		wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
+	}
 	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
 
 	glob_prefs = new CPreferencesRem(connect);	
