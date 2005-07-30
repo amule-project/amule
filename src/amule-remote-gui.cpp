@@ -100,8 +100,8 @@ CEConnectDlg::CEConnectDlg() :
 	wxConfig::Get()->Read(wxT("/EC/Port" ), &pref_port, wxT("4712"));
 	wxConfig::Get()->Read(wxT("/EC/Password" ), &pwd_hash);
 	
-	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
 	CastChild(ID_REMOTE_HOST, wxTextCtrl)->SetValue(pref_host);
+	CastChild(ID_REMOTE_PORT, wxTextCtrl)->SetValue(pref_port);
 	CastChild(ID_EC_PASSWD, wxTextCtrl)->SetValue(pwd_hash);
 	
 	CentreOnParent();
@@ -233,7 +233,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Load Preferences
 	// This creates the CFG file we shall use
 	ConfigDir = otherfunctions::GetConfigDir();
-	wxConfig::Set(new wxConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
+	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
 
 	glob_prefs = new CPreferencesRem(connect);	
 	
