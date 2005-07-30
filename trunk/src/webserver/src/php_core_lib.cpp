@@ -461,7 +461,6 @@ void php_init_core_lib()
 	// load function definitions
 	PHP_BLTIN_FUNC_DEF *curr_def = core_lib_funcs;
 	while ( curr_def->name ) {
-		printf("PHP_LIB: adding function '%s'\n", curr_def->name);
 		php_add_native_func(curr_def);
 		curr_def++;
 	}
@@ -706,7 +705,7 @@ void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 
 void save_session_vars(std::map<std::string, std::string> &varmap)
 {
-	PHP_EXP_NODE *sess_vars_exp_node = get_var_node("_SESSION_VARS");
+	PHP_EXP_NODE *sess_vars_exp_node = get_var_node("_SESSION");
 	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
 
 	delete sess_vars_exp_node;
