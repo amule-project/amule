@@ -247,6 +247,7 @@ function_decl_statement:
 				$$->func_decl->code = $8;
 				switch_pop_scope_table(0);
 				add_func_2_scope(g_current_scope, $$);
+				$$ = 0;
 			}
 	|	FUNCTION '&' IDENT '(' parameter_list ')' '{' top_statement_list '}' {  }
 ;
