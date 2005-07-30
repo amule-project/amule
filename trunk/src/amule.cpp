@@ -1405,12 +1405,12 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 void CamuleApp::OnAssert(const wxChar *file, int line, 
 						 const wxChar *cond, const wxChar *msg)
 {
+#if !wxCHECK_VERSION(2,6,0) || !wxUSE_STACKWALKER
 	printf("\nAssertion failed. Backtrace follows:\n");
-
 	// Skip the function-calls directly related to the assert call.
 	print_backtrace( 3 );
-
 	printf("\n");
+#endif
 		
 	if ( wxThread::IsMain() ) {
 		if (IsRunning()) {
