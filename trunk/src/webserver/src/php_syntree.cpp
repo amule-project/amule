@@ -1059,6 +1059,22 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				}
 			}
 			break;
+		case PHP_OP_CAT:
+			php_expr_eval(expr->tree_node.right, &result_val_right);
+			php_expr_eval(expr->tree_node.left, &result_val_left);
+			if ( result ) {
+				cast_value_str(&result_val_left);
+				cast_value_str(&result_val_right);
+				value_value_free(result);
+				result->type = PHP_VAL_STRING;
+				// using "malloc" and not "new" since all strings are freed
+				// later with "free" and not "delete"
+				result->str_val = (char *)malloc(strlen(result_val_left.str_val) +
+					strlen(result_val_right.str_val) + 1);
+				strcpy(result->str_val, result_val_left.str_val);
+				strcat(result->str_val, result_val_right.str_val);
+			}
+			break;
 		case PHP_OP_ADD:
 		case PHP_OP_SUB:
 		case PHP_OP_MUL:
