@@ -596,19 +596,19 @@ static const unsigned short int yyrline[] =
      160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
      170,   171,   172,   173,   174,   177,   180,   183,   184,   185,
      188,   189,   192,   193,   202,   203,   209,   210,   214,   228,
-     229,   232,   233,   241,   241,   251,   255,   256,   257,   258,
-     259,   263,   264,   268,   269,   273,   274,   277,   278,   282,
-     283,   287,   288,   291,   292,   296,   297,   298,   299,   303,
-     304,   305,   308,   309,   313,   314,   315,   316,   319,   320,
-     321,   325,   326,   327,   328,   329,   333,   334,   335,   338,
-     339,   340,   341,   342,   347,   348,   349,   350,   351,   356,
-     357,   358,   359,   360,   361,   362,   363,   364,   365,   366,
-     368,   369,   370,   371,   373,   374,   375,   376,   377,   378,
-     379,   380,   381,   382,   383,   384,   385,   386,   387,   388,
-     389,   390,   391,   392,   393,   394,   395,   396,   397,   398,
-     399,   400,   401,   402,   403,   404,   405,   406,   407,   408,
-     409,   410,   411,   413,   415,   418,   419,   420,   423,   424,
-     428,   429,   430
+     229,   232,   233,   241,   241,   252,   256,   257,   258,   259,
+     260,   264,   265,   269,   270,   274,   275,   278,   279,   283,
+     284,   288,   289,   292,   293,   297,   298,   299,   300,   304,
+     305,   306,   309,   310,   314,   315,   316,   317,   320,   321,
+     322,   326,   327,   328,   329,   330,   334,   335,   336,   339,
+     340,   341,   342,   343,   348,   349,   350,   351,   352,   357,
+     358,   359,   360,   361,   362,   363,   364,   365,   366,   367,
+     369,   370,   371,   372,   374,   375,   376,   377,   378,   379,
+     380,   381,   382,   383,   384,   385,   386,   387,   388,   389,
+     390,   391,   392,   393,   394,   395,   396,   397,   398,   399,
+     400,   401,   402,   403,   404,   405,   406,   407,   408,   409,
+     410,   411,   412,   414,   416,   419,   420,   421,   424,   425,
+     429,   430,   431
 };
 #endif
 
@@ -2349,521 +2349,522 @@ yyreduce:
 				(yyval.syn_node)->func_decl->code = (yyvsp[-1].syn_node);
 				switch_pop_scope_table(0);
 				add_func_2_scope(g_current_scope, (yyval.syn_node));
+				(yyval.syn_node) = 0;
 			;}
     break;
 
   case 45:
-#line 251 "php_parser.y"
+#line 252 "php_parser.y"
     {  ;}
     break;
 
   case 46:
-#line 255 "php_parser.y"
+#line 256 "php_parser.y"
     { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node)->var_node, (yyvsp[-1].str_val), 0); ;}
     break;
 
   case 47:
-#line 256 "php_parser.y"
+#line 257 "php_parser.y"
     { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node)->var_node, (yyvsp[-2].str_val), 1); ;}
     break;
 
   case 48:
-#line 257 "php_parser.y"
+#line 258 "php_parser.y"
     { (yyval.exp_node) = make_func_param((yyvsp[-3].exp_node), (yyvsp[0].exp_node)->var_node, (yyvsp[-1].str_val), 0); ;}
     break;
 
   case 49:
-#line 258 "php_parser.y"
+#line 259 "php_parser.y"
     { (yyval.exp_node) = make_func_param((yyvsp[-4].exp_node), (yyvsp[0].exp_node)->var_node, (yyvsp[-2].str_val), 1); ;}
     break;
 
   case 50:
-#line 259 "php_parser.y"
+#line 260 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 51:
-#line 263 "php_parser.y"
+#line 264 "php_parser.y"
     { (yyval.str_val)[0] = 0; ;}
     break;
 
   case 54:
-#line 269 "php_parser.y"
+#line 270 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
     break;
 
   case 56:
-#line 274 "php_parser.y"
+#line 275 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
     break;
 
   case 58:
-#line 278 "php_parser.y"
+#line 279 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
   case 59:
-#line 282 "php_parser.y"
+#line 283 "php_parser.y"
     { (yyval.syn_node) = add_branch_2_elseif((yyvsp[-5].syn_node), make_ifelse_syn_node((yyvsp[-2].exp_node), (yyvsp[0].syn_node), 0, 0)); ;}
     break;
 
   case 60:
-#line 283 "php_parser.y"
+#line 284 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 61:
-#line 287 "php_parser.y"
+#line 288 "php_parser.y"
     { (yyval.syn_node) = 0; ;}
     break;
 
   case 62:
-#line 288 "php_parser.y"
+#line 289 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[0].syn_node); ;}
     break;
 
   case 64:
-#line 292 "php_parser.y"
+#line 293 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
     break;
 
   case 65:
-#line 296 "php_parser.y"
-    { (yyval.syn_node) = (yyvsp[-1].syn_node); ;}
-    break;
-
-  case 66:
 #line 297 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[-1].syn_node); ;}
     break;
 
-  case 67:
+  case 66:
 #line 298 "php_parser.y"
-    { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
+    { (yyval.syn_node) = (yyvsp[-1].syn_node); ;}
     break;
 
-  case 68:
+  case 67:
 #line 299 "php_parser.y"
     { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
     break;
 
+  case 68:
+#line 300 "php_parser.y"
+    { (yyval.syn_node) = (yyvsp[-2].syn_node); ;}
+    break;
+
   case 69:
-#line 303 "php_parser.y"
+#line 304 "php_parser.y"
     {  (yyval.syn_node) = 0; ;}
     break;
 
   case 70:
-#line 304 "php_parser.y"
-    {  ;}
-    break;
-
-  case 71:
 #line 305 "php_parser.y"
     {  ;}
     break;
 
+  case 71:
+#line 306 "php_parser.y"
+    {  ;}
+    break;
+
   case 77:
-#line 316 "php_parser.y"
+#line 317 "php_parser.y"
     { (yyval.exp_node) = make_known_const((yyvsp[0].str_val)); ;}
     break;
 
   case 79:
-#line 320 "php_parser.y"
+#line 321 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str((yyvsp[-2].str_val)), make_const_exp_str((yyvsp[0].str_val))); ;}
     break;
 
   case 80:
-#line 321 "php_parser.y"
+#line 322 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_OBJECT_DEREF, (yyvsp[-2].exp_node), make_const_exp_str((yyvsp[0].str_val))); ;}
     break;
 
   case 82:
-#line 326 "php_parser.y"
+#line 327 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_ARRAY_BY_KEY, 0); ;}
     break;
 
   case 83:
-#line 327 "php_parser.y"
-    { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[-3].exp_node), (yyvsp[-1].exp_node));;}
-    break;
-
-  case 84:
 #line 328 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[-3].exp_node), (yyvsp[-1].exp_node));;}
     break;
 
-  case 85:
+  case 84:
 #line 329 "php_parser.y"
+    { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[-3].exp_node), (yyvsp[-1].exp_node));;}
+    break;
+
+  case 85:
+#line 330 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_VAR_BY_EXP, (yyvsp[-1].exp_node)); ;}
     break;
 
   case 86:
-#line 333 "php_parser.y"
+#line 334 "php_parser.y"
     { (yyval.exp_node) = make_func_call_exp((yyvsp[-3].str_val), (yyvsp[-1].exp_node)); ;}
     break;
 
   case 87:
-#line 334 "php_parser.y"
-    { ;}
-    break;
-
-  case 88:
 #line 335 "php_parser.y"
     { ;}
     break;
 
+  case 88:
+#line 336 "php_parser.y"
+    { ;}
+    break;
+
   case 89:
-#line 338 "php_parser.y"
+#line 339 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[0].exp_node), 0); ;}
     break;
 
   case 90:
-#line 339 "php_parser.y"
+#line 340 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[0].exp_node), 1); ;}
     break;
 
   case 91:
-#line 340 "php_parser.y"
+#line 341 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[-2].exp_node); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[0].exp_node), 0); ;}
     break;
 
   case 92:
-#line 341 "php_parser.y"
+#line 342 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[-3].exp_node); func_call_add_expr((yyval.exp_node)->var_node, (yyvsp[0].exp_node), 1); ;}
     break;
 
   case 93:
-#line 342 "php_parser.y"
+#line 343 "php_parser.y"
     { (yyval.exp_node) = make_func_call_param_list(); ;}
     break;
 
   case 94:
-#line 347 "php_parser.y"
+#line 348 "php_parser.y"
     { ;}
     break;
 
   case 96:
-#line 349 "php_parser.y"
+#line 350 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ASS, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 97:
-#line 350 "php_parser.y"
+#line 351 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[0].exp_node); ;}
     break;
 
   case 98:
-#line 351 "php_parser.y"
+#line 352 "php_parser.y"
     {  ;}
     break;
 
   case 99:
-#line 356 "php_parser.y"
+#line 357 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 100:
-#line 357 "php_parser.y"
+#line 358 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 101:
-#line 358 "php_parser.y"
+#line 359 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_MUL, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 102:
-#line 359 "php_parser.y"
+#line 360 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_DIV, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 103:
-#line 360 "php_parser.y"
+#line 361 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_CAT, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 104:
-#line 361 "php_parser.y"
+#line 362 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_REM, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 105:
-#line 362 "php_parser.y"
+#line 363 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_AND, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 106:
-#line 363 "php_parser.y"
+#line 364 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_OR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 107:
-#line 364 "php_parser.y"
+#line 365 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_XOR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 108:
-#line 365 "php_parser.y"
+#line 366 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_SHL, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 109:
-#line 366 "php_parser.y"
+#line 367 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-2].exp_node), make_exp_2(PHP_OP_SHR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node))); ;}
     break;
 
   case 110:
-#line 368 "php_parser.y"
+#line 369 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-1].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[-1].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 111:
-#line 369 "php_parser.y"
+#line 370 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[0].exp_node), make_exp_2(PHP_OP_ADD, (yyvsp[0].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 112:
-#line 370 "php_parser.y"
+#line 371 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[-1].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[-1].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 113:
-#line 371 "php_parser.y"
+#line 372 "php_parser.y"
     { (yyval.exp_node) = make_exp_2_self(PHP_OP_ASS, (yyvsp[0].exp_node), make_exp_2(PHP_OP_SUB, (yyvsp[0].exp_node), make_const_exp_dnum(1))); ;}
     break;
 
   case 114:
-#line 373 "php_parser.y"
+#line 374 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_OR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 115:
-#line 374 "php_parser.y"
+#line 375 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_AND, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 116:
-#line 375 "php_parser.y"
+#line 376 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_OR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 117:
-#line 376 "php_parser.y"
+#line 377 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_AND, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 118:
-#line 377 "php_parser.y"
+#line 378 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LOG_XOR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 119:
-#line 378 "php_parser.y"
+#line 379 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_OR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 120:
-#line 379 "php_parser.y"
+#line 380 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_AND, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 121:
-#line 380 "php_parser.y"
+#line 381 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_XOR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 122:
-#line 381 "php_parser.y"
+#line 382 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_CAT, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 123:
-#line 382 "php_parser.y"
+#line 383 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_ADD, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 124:
-#line 383 "php_parser.y"
+#line 384 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SUB, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 125:
-#line 384 "php_parser.y"
+#line 385 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_MUL, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 126:
-#line 385 "php_parser.y"
+#line 386 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_DIV, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 127:
-#line 386 "php_parser.y"
+#line 387 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_REM, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 128:
-#line 387 "php_parser.y"
+#line 388 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SHL, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 129:
-#line 388 "php_parser.y"
+#line 389 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SHR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 130:
-#line 389 "php_parser.y"
+#line 390 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[0].exp_node); ;}
     break;
 
   case 131:
-#line 390 "php_parser.y"
+#line 391 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SUB, make_const_exp_dnum(0), (yyvsp[0].exp_node)); ;}
     break;
 
   case 132:
-#line 391 "php_parser.y"
-    {  ;}
-    break;
-
-  case 133:
 #line 392 "php_parser.y"
     {  ;}
     break;
 
-  case 134:
+  case 133:
 #line 393 "php_parser.y"
+    {  ;}
+    break;
+
+  case 134:
+#line 394 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_SAME, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 135:
-#line 394 "php_parser.y"
+#line 395 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_NOT_SAME, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 136:
-#line 395 "php_parser.y"
+#line 396 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_EQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 137:
-#line 396 "php_parser.y"
+#line 397 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_NEQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 138:
-#line 397 "php_parser.y"
+#line 398 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LWR, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 139:
-#line 398 "php_parser.y"
+#line 399 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_LWR_EQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 140:
-#line 399 "php_parser.y"
+#line 400 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_GRT, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 141:
-#line 400 "php_parser.y"
+#line 401 "php_parser.y"
     { (yyval.exp_node) = make_exp_2(PHP_OP_GRT_EQ, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 142:
-#line 401 "php_parser.y"
+#line 402 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[-1].exp_node); ;}
     break;
 
   case 143:
-#line 402 "php_parser.y"
-    {  ;}
-    break;
-
-  case 144:
 #line 403 "php_parser.y"
     {  ;}
     break;
 
-  case 145:
+  case 144:
 #line 404 "php_parser.y"
     {  ;}
     break;
 
-  case 146:
+  case 145:
 #line 405 "php_parser.y"
     {  ;}
     break;
 
-  case 147:
+  case 146:
 #line 406 "php_parser.y"
     {  ;}
     break;
 
-  case 148:
+  case 147:
 #line 407 "php_parser.y"
     {  ;}
     break;
 
-  case 149:
+  case 148:
 #line 408 "php_parser.y"
     {  ;}
     break;
 
-  case 150:
+  case 149:
 #line 409 "php_parser.y"
     {  ;}
     break;
 
-  case 151:
+  case 150:
 #line 410 "php_parser.y"
     {  ;}
     break;
 
-  case 152:
+  case 151:
 #line 411 "php_parser.y"
+    {  ;}
+    break;
+
+  case 152:
+#line 412 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[0].exp_node); ;}
     break;
 
   case 153:
-#line 413 "php_parser.y"
+#line 414 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[0].exp_node); ;}
     break;
 
   case 154:
-#line 415 "php_parser.y"
+#line 416 "php_parser.y"
     { (yyval.exp_node) = make_exp_1(PHP_OP_PRINT, (yyvsp[0].exp_node)); ;}
     break;
 
   case 155:
-#line 418 "php_parser.y"
+#line 419 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[-1].exp_node); ;}
     break;
 
   case 156:
-#line 419 "php_parser.y"
-    { (yyval.exp_node) = 0; ;}
-    break;
-
-  case 157:
 #line 420 "php_parser.y"
     { (yyval.exp_node) = 0; ;}
     break;
 
+  case 157:
+#line 421 "php_parser.y"
+    { (yyval.exp_node) = 0; ;}
+    break;
+
   case 160:
-#line 428 "php_parser.y"
+#line 429 "php_parser.y"
     { /*$$ = make_assign_node($1);*/ ;}
     break;
 
   case 161:
-#line 429 "php_parser.y"
+#line 430 "php_parser.y"
     { (yyval.exp_node) = (yyvsp[-1].exp_node); ;}
     break;
 
   case 162:
-#line 430 "php_parser.y"
+#line 431 "php_parser.y"
     { /*$$ = make_assign_node(0);*/ ;}
     break;
 
@@ -2871,7 +2872,7 @@ yyreduce:
     }
 
 /* Line 1037 of yacc.c.  */
-#line 2875 "php_parser.c"
+#line 2876 "php_parser.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;

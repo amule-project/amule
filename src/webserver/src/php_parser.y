@@ -253,10 +253,10 @@ function_decl_statement:
 ;
 
 parameter_list: 
-		optional_class_type VARIABLE						{ $$ = make_func_param(0, $2->var_node, $1, 0); }
-	|	optional_class_type '&' VARIABLE					{ $$ = make_func_param(0, $3->var_node, $1, 1); }
-	|	parameter_list ',' optional_class_type VARIABLE 	{ $$ = make_func_param($1, $4->var_node, $3, 0); }
-	|	parameter_list ',' optional_class_type '&' VARIABLE	{ $$ = make_func_param($1, $5->var_node, $3, 1); }
+		optional_class_type VARIABLE						{ $$ = make_func_param(0, $2, $1, 0); }
+	|	optional_class_type '&' VARIABLE					{ $$ = make_func_param(0, $3, $1, 1); }
+	|	parameter_list ',' optional_class_type VARIABLE 	{ $$ = make_func_param($1, $4, $3, 0); }
+	|	parameter_list ',' optional_class_type '&' VARIABLE	{ $$ = make_func_param($1, $5, $3, 1); }
 	|	/* empty */											{ $$ = 0; }
 ;
 
