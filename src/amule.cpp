@@ -1866,54 +1866,73 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 	}
 }
 
-void CamuleApp::CheckNewVersion(uint32 result) {
-	
-	if(result==1) {
-		wxString strTempFilename(theApp.ConfigDir + wxT("last_version_check"));
-		wxTextFile version_file;
-		if (!version_file.Open(strTempFilename)) {
+void CamuleApp::CheckNewVersion(uint32 result)
+{	
+	if (result == 1) {
+		wxString filename = theApp.ConfigDir + wxT("last_version_check");
+		wxTextFile file;
+		
+		if (!file.Open(filename)) {
 			AddLogLineM(true, _("Failed to open the downloaded version check file") );
+			return;
+		} else if (!file.GetLineCount()) {
+			AddLogLineM(true, _("Corrupted version check file"));
 		} else {
-			if (!version_file.GetLineCount()) throw;
-			wxString update_version = version_file.GetFirstLine();
-			try {
-				wxStringTokenizer tkz(update_version, wxT("."));
-				if (!tkz.HasMoreTokens()) throw;
-				long version_major = StrToLong(tkz.GetNextToken());
-				if (!tkz.HasMoreTokens()) throw;
-				long version_minor = StrToLong(tkz.GetNextToken());
-				if (!tkz.HasMoreTokens()) throw;
-				long version_update = StrToLong(tkz.GetNextToken());
-				
-				if ( make_full_ed2k_version(version_major,version_minor,version_update) > 
-					make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)) {
-						AddLogLineM(true,_("You are using an outdated aMule version!"));
-						AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, version_major, version_minor, version_update));
-						AddLogLineM(false, _("You can get the latest aMule version on http://www.amule.org"));
-						AddLogLineM(false, _("or, if you use your distro's version, just wait till they update it :)"));
+			wxString versionLine = file.GetFirstLine();
+			wxStringTokenizer tkz(versionLine, wxT("."));
+			
+			AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: ")) + wxT(VERSION) + wxT(", Version check: ") + versionLine);
+			
+			long fields[] = {0, 0, 0};
+			for (int i = 0; i < 3; ++i) {
+				if (!tkz.HasMoreTokens()) {
+					AddLogLineM(true, _("Corrupted version check file"));
+					return;
+				} else {
+					wxString token = tkz.GetNextToken();
+					
+					if (!token.ToLong(&fields[i])) {
+						AddLogLineM(true, _("Corrupted version check file"));
+						return;
+					}
 				}
-				AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: "))+wxT(VERSION) +wxT(", Version check: ") +update_version);
-			} catch(...) {
-				AddLogLineM(true, _("Corrupted version check file") );
 			}
-			version_file.Close();
+
+			long curVer = make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE);
+			long newVer = make_full_ed2k_version(fields[0], fields[1], fields[2]);
+			
+			if (curVer < newVer) {
+				AddLogLineM(true, _("You are using an outdated version of aMule!"));
+				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
+				AddLogLineM(false, _("The latest version can always be found at http://www.amule.org"));
+			} else {
+				AddLogLineM(false, _("Your copy of aMule is up to date."));
+			}
 		}
-		wxRemoveFile(strTempFilename);
+		
+		file.Close();
+		wxRemoveFile(filename);
 	} else {
 		AddLogLineM(true, _("Failed to download the version check file") );
 	}	
 	
 }
 
-bool CamuleApp::IsConnected() {
+
+bool CamuleApp::IsConnected()
+{
 	return (IsConnectedED2K() || IsConnectedKad());
 }
 
-bool CamuleApp::IsConnectedED2K() {
+
+bool CamuleApp::IsConnectedED2K()
+{
 	return serverconnect->IsConnected();
 }
 
-bool CamuleApp::IsConnectedKad() {
+
+bool CamuleApp::IsConnectedKad()
+{
 	return 
 		#ifdef __COMPILE_KAD__
 			Kademlia::CKademlia::isConnected();
@@ -1921,6 +1940,7 @@ bool CamuleApp::IsConnectedKad() {
 			false;
 		#endif
 }
+
 
 bool CamuleApp::IsFirewalled()
 {
