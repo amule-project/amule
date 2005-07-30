@@ -225,17 +225,17 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 		{
 			switch (getModifier(field)) {
 				case modNone:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int."));
+					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int: ") + m_format);
 					
 					return SetCurrentField(wxString::Format(field, (signed int)value));
 				
 				case modShort:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed short>(value), wxT("Integer value passed cannot be represented as an signed short."));
+					MULE_VALIDATE_PARAMS(CanRepresent<signed short>(value), wxT("Integer value passed cannot be represented as an signed short: ") + m_format);
 					
 					return SetCurrentField(wxString::Format(field, (signed short)value));
 				
 				case modLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed long>(value), wxT("Integer value passed cannot be represented as an signed long."));
+					MULE_VALIDATE_PARAMS(CanRepresent<signed long>(value), wxT("Integer value passed cannot be represented as an signed long: ") + m_format);
 					
 					return SetCurrentField(wxString::Format(field, (signed long)value));
 				
@@ -244,7 +244,7 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 					return SetCurrentField(wxString::Format(field, (signed long long)value));
 
 				default:
-					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
+					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format:") + m_format);
 			}
 		}
 
@@ -256,17 +256,17 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 		{
 			switch (getModifier(field)) {
 				case modNone:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned int>(value), wxT("Integer value passed cannot be represented as an unsigned int."));
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned int>(value), wxT("Integer value passed cannot be represented as an unsigned int: ") + m_format);
 					
 					return SetCurrentField( wxString::Format( field, (unsigned int)value ) );
 				
 				case modShort:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned short>(value), wxT("Integer value passed cannot be represented as an unsigned short."));
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned short>(value), wxT("Integer value passed cannot be represented as an unsigned short: ") + m_format);
 					
 					return SetCurrentField(wxString::Format(field, (unsigned short)value));
 				
 				case modLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long>(value), wxT("Integer value passed cannot be represented as an unsigned long."));
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long>(value), wxT("Integer value passed cannot be represented as an unsigned long: ") + m_format);
 					
 					return SetCurrentField(wxString::Format(field, (unsigned long)value));
 				
@@ -275,17 +275,17 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 					return SetCurrentField(wxString::Format(field, (unsigned long long)value));
 
 				default:
-					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
+					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format: ") + m_format);
 			}
 		}
 		
 		case wxT('c'):		// Character
-			MULE_VALIDATE_PARAMS(CanRepresent<wxChar>(value), wxT("Integer value passed cannot be represented as a wxChar.") );
+			MULE_VALIDATE_PARAMS(CanRepresent<wxChar>(value), wxT("Integer value passed cannot be represented as a wxChar: ") + m_format);
 			
 			return SetCurrentField(wxString::Format(field, (wxChar)value));
 
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string."));
+			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string: ") + m_format);
 	}
 }
 
