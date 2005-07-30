@@ -1233,39 +1233,79 @@ PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
  */
 void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
 {
-	cast_type_resolve(op1, op2);
 	result->type = PHP_VAL_BOOL;
-	switch(op) {
-		case PHP_OP_EQ:
-			if ( result->type == PHP_VAL_FLOAT ) {
-				result->int_val = op1->int_val == op2->float_val;
-			} else {
-				result->int_val = op1->int_val == op2->int_val;
-			}
-			break;
-		case PHP_OP_NEQ:
-			if ( result->type == PHP_VAL_FLOAT ) {
-				result->int_val = op1->float_val != op2->float_val;
-			} else {
-				result->int_val = op1->int_val != op2->int_val;
-			}
-			break;
-		case PHP_OP_GRT:
-			if ( result->type == PHP_VAL_FLOAT ) {
-				result->int_val = op1->float_val > op2->float_val;
-			} else {
-				result->int_val = op1->int_val > op2->int_val;
-			}
-			break;
-		case PHP_OP_LWR:
-			if ( result->type == PHP_VAL_FLOAT ) {
-				result->int_val = op1->float_val < op2->float_val;
-			} else {
-				result->int_val = op1->int_val < op2->int_val;
-			}
-			break;
-		default:
-			php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
+	if ( (op1->type == PHP_VAL_STRING) && (op2->type == PHP_VAL_STRING) ) {
+		int cmp_val = strcmp(op1->str_val, op2->str_val);
+		switch(op) {
+			case PHP_OP_EQ:
+				result->int_val = (cmp_val == 0);
+				break;
+			case PHP_OP_NEQ:
+				result->int_val = (cmp_val != 0);
+				break;
+			case PHP_OP_GRT:
+				result->int_val = (cmp_val > 0);
+				break;
+			case PHP_OP_LWR:
+				result->int_val = (cmp_val < 0);
+				break;
+			case PHP_OP_GRT_EQ:
+				result->int_val = (cmp_val >= 0);
+				break;
+			case PHP_OP_LWR_EQ:
+				result->int_val = (cmp_val <= 0);
+				break;
+			default:
+				php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
+		}	
+	} else {
+		cast_type_resolve(op1, op2);
+		switch(op) {
+			case PHP_OP_EQ:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->int_val == op2->float_val;
+				} else {
+					result->int_val = op1->int_val == op2->int_val;
+				}
+				break;
+			case PHP_OP_NEQ:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val != op2->float_val;
+				} else {
+					result->int_val = op1->int_val != op2->int_val;
+				}
+				break;
+			case PHP_OP_GRT:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val > op2->float_val;
+				} else {
+					result->int_val = op1->int_val > op2->int_val;
+				}
+				break;
+			case PHP_OP_GRT_EQ:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val >= op2->float_val;
+				} else {
+					result->int_val = op1->int_val >= op2->int_val;
+				}
+				break;
+			case PHP_OP_LWR:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val < op2->float_val;
+				} else {
+					result->int_val = op1->int_val < op2->int_val;
+				}
+				break;
+			case PHP_OP_LWR_EQ:
+				if ( result->type == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val <= op2->float_val;
+				} else {
+					result->int_val = op1->int_val <= op2->int_val;
+				}
+				break;
+			default:
+				php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
+		}
 	}
 }
 
