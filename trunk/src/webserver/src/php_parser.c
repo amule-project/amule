@@ -2360,22 +2360,22 @@ yyreduce:
 
   case 46:
 #line 256 "php_parser.y"
-    { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node)->var_node, (yyvsp[-1].str_val), 0); ;}
+    { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node), (yyvsp[-1].str_val), 0); ;}
     break;
 
   case 47:
 #line 257 "php_parser.y"
-    { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node)->var_node, (yyvsp[-2].str_val), 1); ;}
+    { (yyval.exp_node) = make_func_param(0, (yyvsp[0].exp_node), (yyvsp[-2].str_val), 1); ;}
     break;
 
   case 48:
 #line 258 "php_parser.y"
-    { (yyval.exp_node) = make_func_param((yyvsp[-3].exp_node), (yyvsp[0].exp_node)->var_node, (yyvsp[-1].str_val), 0); ;}
+    { (yyval.exp_node) = make_func_param((yyvsp[-3].exp_node), (yyvsp[0].exp_node), (yyvsp[-1].str_val), 0); ;}
     break;
 
   case 49:
 #line 259 "php_parser.y"
-    { (yyval.exp_node) = make_func_param((yyvsp[-4].exp_node), (yyvsp[0].exp_node)->var_node, (yyvsp[-2].str_val), 1); ;}
+    { (yyval.exp_node) = make_func_param((yyvsp[-4].exp_node), (yyvsp[0].exp_node), (yyvsp[-2].str_val), 1); ;}
     break;
 
   case 50:
