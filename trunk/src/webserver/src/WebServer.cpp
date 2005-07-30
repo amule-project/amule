@@ -3501,8 +3501,8 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 		session = &m_sessions[Data.SessionID];
 		session->m_last_access = curr_time;
 		session->m_loggedin = false;
-		Data.parsedURL.ConvertParams(session->m_get_vars);
 	}
+	Data.parsedURL.ConvertParams(session->m_get_vars);
 	return session;
 }
 
