@@ -764,7 +764,7 @@ void cast_value_str(PHP_VALUE_NODE *val)
 		case PHP_VAL_NONE: buff[0] = 0; break;
 		case PHP_VAL_BOOL:
 		case PHP_VAL_INT: sprintf(buff, "%d", val->int_val); break;
-		case PHP_VAL_FLOAT: sprintf(buff, "%f", val->float_val); break;
+		case PHP_VAL_FLOAT: sprintf(buff, "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {
 			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
@@ -937,6 +937,7 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 	while ( tree ) {
 		switch ( tree->type ) {
 			case PHP_ST_EXPR:
+			case PHP_ST_RET:
 				php_exp_tree_free(tree->node_expr);
 				break;
 			case PHP_ST_ECHO: {
@@ -972,8 +973,6 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 			case PHP_ST_SWITCH:
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
-				break;
-			case PHP_ST_RET:
 				break;
 			case PHP_ST_FUNC_DECL:
 				if ( !tree->func_decl->is_native ) {
