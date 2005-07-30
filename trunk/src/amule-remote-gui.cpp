@@ -57,6 +57,7 @@ using std::auto_ptr;
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/checkbox.h>
+#include <wx/fileconf.h>		// Needed for wxFileConfig
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
