@@ -400,7 +400,7 @@ expr:
 	|	expr '>' expr 				{ $$ = make_exp_2(PHP_OP_GRT, $1, $3); }
 	|	expr IS_GREATER_OR_EQ expr 	{ $$ = make_exp_2(PHP_OP_GRT_EQ, $1, $3); }
 	|	'(' expr ')' 				{ $$ = $2; }
-	|	expr '?' expr ':' expr {  }
+	|	expr '?' expr ':' expr		{ $$ = make_exp_2(PHP_OP_MUX, $3, $5); $$->exp_node = $1; }
 	|	INT_CAST expr 	{  }
 	|	DOUBLE_CAST expr 	{  }
 	|	STRING_CAST expr	{  } 
