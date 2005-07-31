@@ -828,6 +828,14 @@ bool CamuleApp::OnInit()
 	InitGui(geometry_enabled, geom_string);
 	
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
+
+	// Load and update IPFilter.dat files. Loading the
+	// existing ipfilter.dat file should be done before
+	// loading the server.met, to ensure that servers are
+	// filtered.
+	AddLogLineM(false, _("Loading ipfilter.dat files."));
+	ipfilter->Reload();
+	
 	serverlist->Init();
 
 	// init downloadqueue
@@ -844,10 +852,6 @@ bool CamuleApp::OnInit()
 	// reload shared files
 	sharedfiles->Reload(true);
 
-
-	// Load and update IPFilter.dat files
-	AddLogLineM(false, _("Loading ipfilter.dat files."));
-	ipfilter->Reload();
 	
 	if (thePrefs::IPFilterAutoLoad()) {
 		ipfilter->Update(thePrefs::IPFilterURL());
