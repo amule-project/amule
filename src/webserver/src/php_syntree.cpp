@@ -1366,6 +1366,7 @@ void php_eval_int_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, 
     		break;
     	case PHP_OP_XOR:
     		result->int_val = op1->int_val ^ op2->int_val;
+    		break;
 		default:
 			php_report_error(PHP_INTERNAL_ERROR, "This op is not int math");
 	}
