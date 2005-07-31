@@ -414,21 +414,15 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			}
 			delete [] ba;
 		}
-		#warning ----------------------------------------------------
-		#warning Somebody (Kry, Xaignar) please review this catch!!!!
-		#warning ----------------------------------------------------
-		catch(...) {
-		//catch(CFileException* error) {
-			//wxString strError(_("Fileerror while converting download"));
-			//TCHAR szError[MAX_CFEXP_ERRORMSG];
-			//if (error->GetErrorMessage(szError, ARRSIZE(szError))){
-			//	strError += _T(" - ");
-			//	strError += szError;
-			//}
-			//LogError(false, _T("%s"), strError);
-			//error->Delete();
-			//delete file;
-			//return CONV_IOERROR;
+		catch (const wxString& error) {
+			AddLogLineM(true, wxString(wxT("PartFileConvert: ")) + error);
+			file->Delete();
+			return CONV_IOERROR;
+		}
+		catch (...) {
+			AddLogLineM(true, _("Unknown error while importing partfile."));
+			file->Delete();
+			return CONV_IOERROR;
 		}
 		file->m_hpartfile.Close();
 	}
