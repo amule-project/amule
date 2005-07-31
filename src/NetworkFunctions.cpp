@@ -111,8 +111,9 @@ const IPRange ranges[] = {
 //----------------------------------------------------------------------------------
 { wxT("0.0.0.0"),        8, false }, // "This" Network             [RFC1700, page 4]
 { wxT("10.0.0.0"),       8, true  }, // Private-Use Networks               [RFC1918]
-{ wxT("14.0.0.0"),       8, false }, // Public-Data Networks     [RFC1700, page 181]
-{ wxT("24.0.0.0"),       8, false }, // Cable Television Networks                 --
+// Acording to RFC3330, 24.* and 14.* must be parsed as normal ips.
+//{ wxT("14.0.0.0"),       8, false }, // Public-Data Networks     [RFC1700, page 181]
+//{ wxT("24.0.0.0"),       8, false }, // Cable Television Networks                 --
 { wxT("39.0.0.0"),       8, false }, // Reserved but subject
                                      //    to allocation                   [RFC1797]
 { wxT("127.0.0.0"),      8, false }, // Loopback                   [RFC1700, page 5]
