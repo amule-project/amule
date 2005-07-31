@@ -259,6 +259,11 @@ void amule_load_servers(PHP_VALUE_NODE *result)
 	amule_obj_array_create<ServersInfo, ServerEntry>("AmuleServer", result);
 }
 
+void amule_load_shared(PHP_VALUE_NODE *result)
+{
+	amule_obj_array_create<SharedFileInfo, SharedFile>("AmuleSharedFile", result);
+}
+
 #else
 
 void amule_fake_obj_array_create(int count, char *class_name, PHP_VALUE_NODE *result)
@@ -278,7 +283,12 @@ void amule_load_downloads(PHP_VALUE_NODE *result)
 
 void amule_load_servers(PHP_VALUE_NODE *result)
 {
-	amule_fake_obj_array_create(10, "AmuleServer", result);
+	amule_fake_obj_array_create(20, "AmuleServer", result);
+}
+
+void amule_load_shared(PHP_VALUE_NODE *result)
+{
+	amule_fake_obj_array_create(15, "AmuleSharedFile", result);
 }
 
 #endif
@@ -300,6 +310,8 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 	if ( strcmp(varname, "downloads") == 0 ) {
 		amule_load_downloads(result);
 	} else if ( strcmp(varname, "uploads") == 0 ) {
+	} else if ( strcmp(varname, "shared") == 0 ) {
+		amule_load_shared(result);
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
 	} else if ( strcmp(varname, "servers") == 0 ) {
 		amule_load_servers(result);
