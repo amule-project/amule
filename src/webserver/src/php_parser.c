@@ -2780,7 +2780,7 @@ yyreduce:
 
   case 143:
 #line 403 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_MUX, (yyvsp[-2].exp_node), (yyvsp[0].exp_node)); (yyval.exp_node)->exp_node = (yyvsp[-4].exp_node); ;}
     break;
 
   case 144:
