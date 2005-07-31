@@ -97,9 +97,9 @@ typedef enum PHP_EXP_OP {
     /* str concat */
     PHP_OP_CAT,
     /* bits */
-    PHP_OP_SHL, PHP_OP_SHR, PHP_OP_OR, PHP_OP_AND, PHP_OP_XOR,
+    PHP_OP_SHL, PHP_OP_SHR, PHP_OP_OR, PHP_OP_AND, PHP_OP_XOR, PHP_OP_NOT,
     /* logical */
-    PHP_OP_LOG_OR, PHP_OP_LOG_AND, PHP_OP_LOG_XOR,
+    PHP_OP_LOG_OR, PHP_OP_LOG_AND, PHP_OP_LOG_XOR, PHP_OP_LOG_NOT,
     /* compare */
     PHP_OP_EQ, PHP_OP_NEQ, PHP_OP_SAME, PHP_OP_NOT_SAME,
     PHP_OP_GRT, PHP_OP_GRT_EQ, PHP_OP_LWR, PHP_OP_LWR_EQ,

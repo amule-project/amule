@@ -389,8 +389,8 @@ expr:
 	|	expr SR expr				{ $$ = make_exp_2(PHP_OP_SHR, $1, $3); }
 	|	'+' expr 					{ $$ = $2; }
 	|	'-' expr 					{ $$ = make_exp_2(PHP_OP_SUB, make_const_exp_dnum(0), $2); }
-	|	'!' expr {  }
-	|	'~' expr {  }
+	|	'!' expr					{ $$ = make_exp_1(PHP_OP_LOG_NOT, $2); }
+	|	'~' expr					{ $$ = make_exp_1(PHP_OP_NOT, $2); }
 	|	expr IS_IDENTICAL expr		{ $$ = make_exp_2(PHP_OP_SAME, $1, $3); }
 	|	expr IS_NOIDENTICAL expr	{ $$ = make_exp_2(PHP_OP_NOT_SAME, $1, $3); }
 	|	expr IS_EQ expr				{ $$ = make_exp_2(PHP_OP_EQ, $1, $3); }
