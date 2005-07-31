@@ -228,6 +228,8 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
  *  "varname" will tell us, what kind of variables need to load:
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
+#ifdef AMULEWEB_SCRIPT_EN
+
 template <class C, class T>
 void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
 {
@@ -246,8 +248,6 @@ void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
 		it++;
 	}
 }
-
-#ifdef AMULEWEB_SCRIPT_EN
 
 void amule_load_downloads(PHP_VALUE_NODE *result)
 {
@@ -396,10 +396,59 @@ void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 	}
 }
 
-#else
-void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 {
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	SharedFile *obj = (SharedFile *)ptr;
 	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sFileName));
+	} else if ( strcmp(prop_name, "hash") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sFileHash));
+	} else if ( strcmp(prop_name, "size") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->lFileSize;
+	} else if ( strcmp(prop_name, "link") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->sED2kLink));
+	} else if ( strcmp(prop_name, "xfer") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileTransferred;
+	} else if ( strcmp(prop_name, "xfer_all") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileAllTimeTransferred;
+	} else if ( strcmp(prop_name, "req") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileRequests;
+	} else if ( strcmp(prop_name, "req_all") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileAllTimeRequests;
+	} else if ( strcmp(prop_name, "accept") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileAccepts;
+	} else if ( strcmp(prop_name, "accept_all") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFileAllTimeAccepts;
+	} else if ( strcmp(prop_name, "prio") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nFilePriority;
+	} else if ( strcmp(prop_name, "auto_prio") == 0 ) {
+		result->type = PHP_VAL_BOOL;
+		result->int_val = obj->bFileAutoPriority;
+	} else {
+		php_report_error(PHP_ERROR, "'SharedFile' property [%s] is unknown", prop_name);
+	}
+}
+
+#else
+
+void amule_fake_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+{
+	if ( !strcmp(prop_name, "name") || !strcmp(prop_name, "hash") ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup("some_str");
 	} else {
@@ -408,15 +457,21 @@ void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *re
 	}
 }
 
-void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
 {
-	if ( !ptr ) {
-		value_value_free(result);
-		return;
-	}
-	result->type = PHP_VAL_STRING;
-	result->str_val = strdup("some_value");
+	amule_fake_prop_get(obj, prop_name, result);
 }
+
+void amule_server_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+{
+	amule_fake_prop_get(obj, prop_name, result);
+}
+
+void amule_shared_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+{
+	amule_fake_prop_get(obj, prop_name, result);
+}
+
 
 #endif
 /*
@@ -469,6 +524,7 @@ void php_init_core_lib()
 	// load object definitions
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 	php_add_native_class("AmuleServer", amule_server_prop_get);
+	php_add_native_class("AmuleSharedFile", amule_shared_file_prop_get);
 }
 
 //
