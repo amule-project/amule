@@ -3522,13 +3522,15 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	CSession *session = CheckLoggedin(Data);
 
 	if ( !session->m_loggedin ) {
+		filename = _("login.html");
 		wxString PwStr(Data.parsedURL.Param(_("pass")));
 		if ( PwStr.Length() ) {
 			CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 			
 			session->m_loggedin = (PwHash == webInterface->m_AdminPass);
-		} else {
-			filename = _("login.html");
+			if ( session->m_loggedin ) {
+				filename = _("index.html");
+			}
 		}
 	}
 
