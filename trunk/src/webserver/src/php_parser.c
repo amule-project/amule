@@ -2725,12 +2725,12 @@ yyreduce:
 
   case 132:
 #line 392 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_1(PHP_OP_LOG_NOT, (yyvsp[0].exp_node)); ;}
     break;
 
   case 133:
 #line 393 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_1(PHP_OP_NOT, (yyvsp[0].exp_node)); ;}
     break;
 
   case 134:
