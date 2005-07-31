@@ -1092,6 +1092,20 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				php_expr_eval(expr->tree_node.right, result);
 			}
 			break;
+		case PHP_OP_LOG_NOT:
+			if ( result ) {
+				php_expr_eval(expr->tree_node.left, result);
+				cast_value_bool(result);
+				result->int_val = !result->int_val;
+			}
+			break;
+		case PHP_OP_NOT:
+			if ( result ) {
+				php_expr_eval(expr->tree_node.left, result);
+				cast_value_dnum(result);
+				result->int_val = ~result->int_val;
+			}
+			break;
 		case PHP_OP_ADD:
 		case PHP_OP_SUB:
 		case PHP_OP_MUL:
