@@ -38,6 +38,7 @@
 #include <wx/colordlg.h>
 #include <wx/dirdlg.h>
 #include <wx/choice.h>
+#include <wx/button.h>
 
 #ifdef __WXMSW__
 	#include <io.h>
