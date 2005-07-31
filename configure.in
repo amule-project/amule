@@ -452,7 +452,6 @@ case "$WX_VERSION_FULL" in
 	fi
 	AMULE_DAEMON="no"
 	gtk_tray="yes"
-	kad_compile="no"
 	;;
 2.5.1)
 	USE_24GSOCKET="no"
