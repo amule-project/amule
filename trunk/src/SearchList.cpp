@@ -328,9 +328,15 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	if (search_type == KadSearch) {
 		#ifdef __COMPILE_KAD__
 		if (Kademlia::CKademlia::isRunning()) {
-			// Kad search takes ownership of data and searchstring will get tokenized there
-			Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(searchString,ed2k_data);
-			*(nSearchID) = search->getSearchID(); // The tab must be created with the Kad search id
+			try {
+				// Kad search takes ownership of data and searchstring will get tokenized there
+				Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(searchString,ed2k_data);
+				*(nSearchID) = search->getSearchID(); // The tab must be created with the Kad search id
+			} catch(wxString& what) {
+				AddLogLineM(true,what);
+				delete ed2k_data;
+				return false;				
+			}
 			return true;
 		} else {
 			delete ed2k_data;
