@@ -30,13 +30,12 @@
 #include "ECSocket.h"
 
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
-#include "ArchSpecific.h" // Needed for ENDIAN_NTOHL
+#include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
 #include "ECcodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
 #include "zlib.h"		// Needed for packet (de)compression
-#include "string.h"		// Needed for memset()
-#include "stdlib.h"		// Needed for malloc()/free()
+#include "string.h"		// Needed for memcpy()/memmove()
 
 #include "StringFunctions.h"	// Needed for unicode2char()
 #include "OPCodes.h"
@@ -157,7 +156,7 @@ void ECSocket::InitBuffers()
 	}
 
 	wxASSERT(parms.in_ptr && parms.out_ptr);
-	
+
 	parms.z.next_in = parms.in_ptr;
 	parms.z.avail_in = 0;
 	parms.z.total_in = 0;
@@ -342,12 +341,15 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 
 ECSocket::ECSocket(void) : wxSocketClient()
 {
-	parms.firsttransfer = false;
+	parms.firsttransfer = true;
 	parms.accepts = 0;
 	parms.in_ptr = NULL;
 	parms.out_ptr = NULL;
 	parms.LastSocketError = wxSOCKET_NOERROR;
 	parms.used_flags = 0;
+	parms.z.zalloc = Z_NULL;
+	parms.z.zfree = Z_NULL;
+	parms.z.opaque = Z_NULL;
 	SetEventHandler(handler,EC_SOCKET_HANDLER);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |

@@ -99,18 +99,18 @@ class ECSocket : public wxSocketClient {
 		bool	WriteFlags(uint32);		
 
 		//
-		// working buffers: zlib need all data at once
+		// working buffers
 		struct socket_desc {
 			bool			firsttransfer;
 			uint32			accepts;
-			unsigned char *in_ptr;
-			unsigned char *out_ptr;
+			unsigned char *		in_ptr;
+			unsigned char *		out_ptr;
 			// This transfer only
-			wxSocketError	LastSocketError;
+			wxSocketError		LastSocketError;
 			uint32			used_flags;
 			z_stream		z;
 		} parms;
-	
+
 		/*
 		 * Those buffers needed for event driven io (both rx and tx path)
 		 */
@@ -118,7 +118,7 @@ class ECSocket : public wxSocketClient {
 		int m_buf_size;
 		unsigned char *m_buffer, *m_curr_ptr;
 		int m_tags_left, m_bytes_left; // how match to wait
-		
+
 		// TX queue
 		class EC_OUTBUF {
 			public:
