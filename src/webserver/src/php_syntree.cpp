@@ -1083,6 +1083,15 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				strcat(result->str_val, result_val_right.str_val);
 			}
 			break;
+		case PHP_OP_MUX:
+			php_expr_eval(expr->exp_node, &result_val_right);
+			cast_value_bool(&result_val_right);
+			if ( result_val_right.int_val ) {
+				php_expr_eval(expr->tree_node.left, result);
+			} else {
+				php_expr_eval(expr->tree_node.right, result);
+			}
+			break;
 		case PHP_OP_ADD:
 		case PHP_OP_SUB:
 		case PHP_OP_MUL:
