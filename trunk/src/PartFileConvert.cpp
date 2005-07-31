@@ -179,6 +179,13 @@ void CPartFileConvert::StopThread()
 
 	if (s_convertPfThread) {
 		s_convertPfThread->Delete();
+	} else {
+		return;
+	}
+
+	printf("Waiting for partfile convert thread to die...\n");
+	while (s_convertPfThread) {
+		wxSleep(1);
 	}
 }
 
