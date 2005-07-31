@@ -228,47 +228,35 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
  *  "varname" will tell us, what kind of variables need to load:
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
-#ifdef AMULEWEB_SCRIPT_EN
-/*
-template <class T>
-void amule_obj_array_create(std::list<T>::const_iterator it,
-	std::list<ServerEntry>::const_iterator end, char *class_name, PHP_VALUE_NODE *result)
+template <class C, class T>
+void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
 {
-	for (; it != end; it++) {
+	C *container;
+	CPhPLibContext::g_curr_context->GetAmuleContainer(&container);
+
+	container->ReQuery();
+
+	typename std::list<T>::const_iterator it = container->GetBeginIterator();
+	while ( it != container->GetEndIterator()) {
 		PHP_VAR_NODE *var = array_push_back(result);
 		var->value.type = PHP_VAL_OBJECT;
 		var->value.obj_val.class_name = class_name;
 		const T *cur_item = &(*it);
 		var->value.obj_val.inst_ptr = (void *)cur_item;
+		it++;
 	}
 }
-*/
+
+#ifdef AMULEWEB_SCRIPT_EN
+
 void amule_load_downloads(PHP_VALUE_NODE *result)
 {
-	DownloadFileInfo *downloads = CPhPLibContext::g_curr_context->AmuleDownloads();
-	downloads->ReQuery();
-
-	for (std::list<DownloadFile>::const_iterator i = downloads->GetBeginIterator(); i != downloads->GetEndIterator(); i++) {
-		PHP_VAR_NODE *var = array_push_back(result);
-		var->value.type = PHP_VAL_OBJECT;
-		var->value.obj_val.class_name = "AmuleDownloadFile";
-		const DownloadFile *cur_item = &(*i);
-		var->value.obj_val.inst_ptr = (void *)cur_item;
-	}
+	amule_obj_array_create<DownloadFileInfo, DownloadFile>("AmuleDownloadFile", result);
 }
 
 void amule_load_servers(PHP_VALUE_NODE *result)
 {
-	ServersInfo *servers = CPhPLibContext::g_curr_context->AmuleServers();
-	servers->ReQuery();
-
-	for (std::list<ServerEntry>::const_iterator i = servers->GetBeginIterator(); i != servers->GetEndIterator(); i++) {
-		PHP_VAR_NODE *var = array_push_back(result);
-		var->value.type = PHP_VAL_OBJECT;
-		var->value.obj_val.class_name = "AmuleServer";
-		const ServerEntry *cur_item = &(*i);
-		var->value.obj_val.inst_ptr = (void *)cur_item;
-	}
+	amule_obj_array_create<ServersInfo, ServerEntry>("AmuleServer", result);
 }
 
 #else
@@ -308,13 +296,15 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 		return;
 	}
 	char *varname = str->str_val;
+	cast_value_array(result);
 	if ( strcmp(varname, "downloads") == 0 ) {
-		cast_value_array(result);
 		amule_load_downloads(result);
 	} else if ( strcmp(varname, "uploads") == 0 ) {
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
 	} else if ( strcmp(varname, "servers") == 0 ) {
+		amule_load_servers(result);
 	} else {
+		value_value_free(result);
 		php_report_error(PHP_ERROR, "This type of amule variable is unknown");
 	}
 }
@@ -602,7 +592,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 #ifdef AMULEWEB_SCRIPT_EN
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
-		load_session_vars("_SESSION_VARS", sess->m_vars);
+		load_session_vars("_SESSION", sess->m_vars);
 #endif
 
 		context->Execute(buff);
