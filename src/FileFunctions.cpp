@@ -56,10 +56,12 @@ int UTF8_Stat(const wxString& file_name, struct stat *buf)
 	return stat_error;
 }
 
+
 //
 // When moving file, first try an ANSI move, only then try UTF-8.
 // 
-bool UTF8_MoveFile(const wxString& from, const wxString& to) {
+bool UTF8_MoveFile(const wxString& from, const wxString& to)
+{
 	bool ret = false;
 	Unicode2CharBuf tmpFrom(unicode2char(from));
 	Unicode2CharBuf tmpTo(unicode2char(to));
@@ -79,6 +81,7 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to) {
 
 	return ret;
 }
+
 
 #define FILE_COPY_BUFFER 5*1024
 
@@ -116,8 +119,22 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 	return true;
 }
 
+
+off_t GetFileSize(const wxString& fullPath)
+{
+	struct stat buf;
+	
+	if (!UTF8_Stat(fullPath, &buf)) {
+		return buf.st_size;
+	}
+
+	return -1;
+}
+
+
 // When iterating dir, first try an ANSI file name, then try an UTF-8 file name.
-CDirIterator::CDirIterator(const wxString& dir) {
+CDirIterator::CDirIterator(const wxString& dir)
+{
 	DirStr = dir;
 	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
 		DirStr += wxFileName::GetPathSeparator();
@@ -140,13 +157,17 @@ CDirIterator::CDirIterator(const wxString& dir) {
 	}
 }
 
-CDirIterator::~CDirIterator() {	
+
+CDirIterator::~CDirIterator()
+{	
 	if (DirPtr) {
 		closedir (DirPtr);
 	}
 }
 
-wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search_mask) {
+
+wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search_mask)
+{
 	if (!DirPtr) {
 		return wxEmptyString;
 	}
@@ -156,9 +177,10 @@ wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search
 	return GetNextFile();
 }
 
-// First try an ANSI name, only then try UTF-8.
-wxString  CDirIterator::GetNextFile() {
 
+// First try an ANSI name, only then try UTF-8.
+wxString  CDirIterator::GetNextFile()
+{
 	if (!DirPtr) {
 		return wxEmptyString;
 	}
@@ -286,8 +308,10 @@ wxString  CDirIterator::GetNextFile() {
 	}
 }
 
+
 // First try an ANSI name, only then try UTF-8.
-time_t GetLastModificationTime(const wxString& file) {
+time_t GetLastModificationTime(const wxString& file)
+{
 	struct stat buf;
 		
 	int stat_error = UTF8_Stat(file, &buf);
@@ -306,9 +330,9 @@ bool CheckDirExists(const wxString& dir)
 	return (UTF8_Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
 }
 
+
 bool BackupFile(const wxString& filename, const wxString& appendix)
 {
-
 	if ( !UTF8_CopyFile(filename, filename + appendix) ) {
 		AddDebugLogLineM( false, logFileIO, wxT("Could not create backup of ") + filename);
 		return false;
@@ -323,3 +347,4 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 	
 	return true;
 }
+
