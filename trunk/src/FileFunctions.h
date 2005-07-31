@@ -52,9 +52,20 @@ bool BackupFile(const wxString& filename, const wxString& appendix);
 // Get the LastModificationTime for a file.
 time_t GetLastModificationTime(const wxString& file);
 
+/**
+ * Returns the size of the specified file.
+ *
+ * @param fullPath The full path of the file to check.
+ * @return The size of the file, or a negative value on failures.
+ *
+ * GetFileSize will fail if the file doesn't exist, if we
+ * dont have read-access to it, or if the path was invalid.
+ */
+off_t GetFileSize(const wxString& fullPath);
+
+
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
-
 class CDirIterator {
 public:
 	enum FileType { File, Dir, Any}; 
