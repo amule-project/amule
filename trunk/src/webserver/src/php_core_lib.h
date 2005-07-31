@@ -79,10 +79,6 @@ class CPhPLibContext {
 		static CPhPLibContext *g_curr_context;
 	
 #ifdef AMULEWEB_SCRIPT_EN
-		DownloadFileInfo *AmuleDownloads() { return m_downloads; }
-		ServersInfo *AmuleServers() { return m_servers; }
-		SharedFileInfo *AmuleShared() { return m_shared; }
-		
 		void GetAmuleContainer(DownloadFileInfo **ptr) { *ptr = m_downloads; }
 		void GetAmuleContainer(ServersInfo **ptr) { *ptr = m_servers; }
 		void GetAmuleContainer(SharedFileInfo **ptr) { *ptr = m_shared; }
