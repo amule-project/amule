@@ -244,11 +244,11 @@ inline wxString StringFrom(signed long long value)
  */
 #define ASSERT_RAISES_M(type, call, message) \
 	try { \
-		call; \
-		addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, failure)); \
+		{ call; }\
+		this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, failure)); \
 		return; \
 	} catch (type) { \
-		addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, success)); \
+		this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, success)); \
 	}
 
 
