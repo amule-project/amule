@@ -667,7 +667,8 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	char *buf = new char [size+1];
 	rewind(f);
 	fread(buf, 1, size, f);
-
+	buf[size] = 0;
+	
 	char *scan_ptr = buf;
 	char *curr_code_end = buf;
 	while ( strlen(scan_ptr) ) {
@@ -717,7 +718,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
  */
 CWriteStrBuffer::CWriteStrBuffer()
 {
-	m_alloc_size = 16;
+	m_alloc_size = 1024;
 	m_total_length = 0;
 	
 	AllocBuf();
@@ -772,11 +773,10 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 		rem_size -= m_alloc_size;
 		curr_ptr += m_alloc_size;
 	}
-	int copy_size = m_alloc_size - m_curr_buf_left;
-	if ( copy_size ) {
-		memcpy(curr_ptr, m_curr_buf, copy_size);
+	if ( rem_size ) {
+		memcpy(curr_ptr, m_curr_buf, rem_size);
 	}
-	*(curr_ptr + copy_size) = 0;
+	*(curr_ptr + rem_size) = 0;
 }
 
 void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
