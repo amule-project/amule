@@ -1216,6 +1216,8 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 
 	wxTextFile skinfile;
 	
+	printf("Testing skins\n");
+	
 	try {
 		
 		if (file.IsEmpty()) {
@@ -1233,7 +1235,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 			throw (CFormat(_("Unable to open skin file: %s")) % file).GetString();
 		}
 		
-		uint32 client_header_found = 0;
+		int client_header_found = -1;
 		
 		for (uint32 i=0; i < skinfile.GetLineCount(); i++) {
 			if (skinfile[i] == wxT("[Client Bitmaps]")) {
@@ -1243,11 +1245,11 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		}
 		
 		
-		if (client_header_found) {
+		if (client_header_found != -1) {
 			
 			wxImage new_image;
 			
-			for (uint32 i=client_header_found; i < skinfile.GetLineCount(); i++) {
+			for (uint32 i=client_header_found+1; i < skinfile.GetLineCount(); i++) {
 				if (skinfile[i].StartsWith(wxT("["))) {
 					break;
 				}				
