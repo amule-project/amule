@@ -47,6 +47,7 @@
 #include <wx/listctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
+#include <wx/button.h>
 #endif /* ! AMULE_DAEMON */
 
 #include <wx/file.h>
