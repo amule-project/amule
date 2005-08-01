@@ -398,6 +398,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				data.Read(m_pszName, length);
 			} catch(...) {
 				delete[] m_pszName;
+				m_pszName = NULL;
 				throw CInvalidPacket(wxT(BAD_TAG_MSG));
 			}
 			m_pszName[length] = '\0';
@@ -434,6 +435,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				data.ReadHash16(m_pData);
 			} catch (...){
 				delete[] m_pData;
+				m_pData = NULL;
 				throw CInvalidPacket(wxT(BAD_TAG_MSG));
 			}
 			break;
