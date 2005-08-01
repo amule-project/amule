@@ -1370,14 +1370,16 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		for (uint32 i=0; i<ClientItemNumber; i++) {
 			if (bitmaps_found[i].found) {
 				wxImage new_image;
-				if (new_image.LoadFile(bitmaps_found[i].filename)) {
+				wxFileName file_name(bitmaps_found[i].filename);
+				file_name.Normalize();
+				if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 					imagelist.Add(wxBitmap(new_image));
 				} else {
 					printf(	"Warning: wrong client bitmap file No.%i: %s",
 						i, (const char *)unicode2char(bitmaps_found[i].filename));
 					imagelist.Add(wxBitmap(clientImages(i)));
 				}
-			}else {
+			} else {
 				imagelist.Add(wxBitmap(clientImages(i)));
 			}
 		}			
