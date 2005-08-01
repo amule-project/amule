@@ -324,7 +324,7 @@ variable:	deref_variable
 
 
 deref_variable: VARIABLE
-	|	deref_variable '[' ']' 			{ $$ = make_exp_1(PHP_OP_ARRAY_BY_KEY, 0); }
+	|	deref_variable '[' ']' 			{ $$ = make_exp_2(PHP_OP_ARRAY_BY_KEY, $1, 0); }
 	|	deref_variable '[' expr ']'		{ $$ = make_exp_2(PHP_OP_ARRAY_BY_KEY, $1, $3);}
 	|	deref_variable '{' expr '}'		{ $$ = make_exp_2(PHP_OP_ARRAY_BY_KEY, $1, $3);}
 	|	'$' '{' expr '}'				{ $$ = make_exp_1(PHP_OP_VAR_BY_EXP, $3); }
