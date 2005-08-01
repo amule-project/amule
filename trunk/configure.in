@@ -261,6 +261,15 @@ AC_MSG_RESULT($need_gui)
 AM_OPTIONS_WXCONFIG
 AM_OPTIONS_WXBASECONFIG
 AM_PATH_WXCONFIG(2.4.2)
+AM_WXCONFIG_LARGEFILE
+
+GET_WX_VERSION
+if test $WX_VERSION_MAJOR == 2 -a $WX_VERSION_MINOR == 4; then
+  WX_VERSION="2.4"
+else
+  WX_VERSION="any"
+fi
+
 
 havegtk="not_needed"
 if test "x${need_gui}" = "xyes" ; then
@@ -284,10 +293,19 @@ if test "x${need_gui}" = "xyes" ; then
 			, enable_gtktest=yes)
 
 		if test x"$GTK_USEDVERSION" = x"2" ; then
+			if test x"$WX_VERSION" = x"2.4" ; then
+    			AC_MSG_ERROR([
+				Your copy of wxWidgets 2.4.x is built against GTK2. This 
+				combination is not supported. If you wish to make use of
+				GTK2, then use the stable 2.6.x branch of wxWidgets,
+				otherwise compile wxWidgets against GTK1,
+				])
+			fi
+		
 			AM_PATH_GTK_2_0(2.0.3, havegtk=2, havegtk=no)
 			GTK_DEFS="-D__GTK2__"
 			GET_GTK2_VERSION
-		else
+		else		
 			AM_PATH_GTK(1.2.0, havegtk=1, havegtk=no)
 			GTK_DEFS=""
 			GET_GTK_VERSION
@@ -308,14 +326,6 @@ else
 	systray=no
 	utf8_systray=no
 
-fi
-
-GET_WX_VERSION
-
-if test $WX_VERSION_MAJOR == 2 -a $WX_VERSION_MINOR == 4; then
-  WX_VERSION="2.4"
-else
-  WX_VERSION="any"
 fi
 
 
@@ -790,13 +800,6 @@ if test x"$NEEDSWXBASE" = x"yes" ; then
 echo ""
 echo "  NOTICE: With wxWidgets versions prior to 2.5, you need wxBase library to compile:"
 echo "          amuleweb amulecmd alcc"
-fi
-
-if test x"$GTK_USEDVERSION" = x"2" && test x"$WX_VERSION" = x"2.4" ; then
-echo ""
-echo ""
-echo "  WARNING!! Your wxWidgets copy has been linked against GTK2 and this will make aMule"
-echo "  be unstable, use much more cpu and ram. You have been warned, don't report bugs under this setup."
 fi
 
 if test x"$LIBPNG_VERSION" = x""; then
