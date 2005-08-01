@@ -378,7 +378,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 	 * In this mode, internal PHP interpreter is activated, and
 	 * amuleweb will forward there requests for .php pages
 	 */
-	amuleweb_parser.AddSwitch(wxT("S"), wxT("run-scriptable"), 
+	amuleweb_parser.AddSwitch(wxT("P"), wxT("php"), 
 		_("Forward page requests to external PHP script"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
