@@ -582,14 +582,11 @@ void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *
 		return ;
 	}
 	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
-	if ( arr_ptr->array.count(key) ) {
-		return ;
-	} else {
+	if ( !arr_ptr->array.count(key) ) {
 		node->ref_count++;
 		(arr_ptr->array)[key] = node;
 		arr_ptr->sorted_keys.push_back(key);
-		return ;
-	}	
+	}
 }
 
 void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node)
@@ -661,11 +658,11 @@ void value_value_assign(PHP_VALUE_NODE *dst, PHP_VALUE_NODE *src)
 		// array must duplicate all it's values
 		case PHP_VAL_ARRAY: {
 			dst->ptr_val = new PHP_ARRAY_TYPE;
-			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)src->ptr_val)->array.begin();
-				i != ((PHP_ARRAY_TYPE *)src->ptr_val)->array.end(); i++) {
-					PHP_VAR_NODE *added = array_get_by_str_key(dst, i->first);
-					value_value_assign(&added->value, &i->second->value);
-				}
+			PHP_ARRAY_TYPE *src_array = (PHP_ARRAY_TYPE *)src->ptr_val;
+			for(PHP_ARRAY_KEY_ITER_TYPE i = src_array->sorted_keys.begin(); i != src_array->sorted_keys.end(); i++) {
+				PHP_VAR_NODE *added = array_get_by_str_key(dst, *i);
+				value_value_assign(&added->value, &src_array->array[*i]->value);
+			}
 			break;
 		}
 
