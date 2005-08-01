@@ -162,19 +162,51 @@ void php_native_usort(PHP_VALUE_NODE *)
 	//
 	// create vector of values
 	//
-	std::vector<SortElem> sort_array;
-	sort_array.resize(arr_obj->array.size());
-	unsigned int key = 0;
+	if ( arr_obj->array.size() == 0 ) {
+		php_report_error(PHP_WARNING, "Sorting array of size 0");
+		return;
+	}
+
+	std::list<SortElem> sort_list;
 	for(PHP_ARRAY_ITER_TYPE i = arr_obj->array.begin(); i != arr_obj->array.end(); i++) {
-		sort_array[key++] = SortElem(i->second);
+		sort_list.push_back(SortElem(i->second));
 	}
 	SortElem::callback = func_decl;
-	std::sort(sort_array.begin(), sort_array.end());
+	sort_list.sort();
+
 	arr_obj->array.clear();
 	arr_obj->sorted_keys.clear();
-	for(key = 0; key < sort_array.size(); key++) {
-		array_add_to_int_key(&array->value, key, sort_array[key].obj);
+	unsigned int key = 0;
+	for(std::list<SortElem>::iterator i = sort_list.begin(); i != sort_list.end(); i++) {
+		array_add_to_int_key(&array->value, key++, i->obj);
 	}
+
+}
+
+/*
+ * 
+ * Usage: php_native_download_file_cmd($file, "command", $optional_arg)
+ * 
+ */
+void php_native_download_file_cmd(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_OBJECT)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		return;
+	}
+	PHP_VAR_NODE *file = si->var;
+	
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		return;
+	}
+	char *cmd_name = si->var->value.str_val;
+#ifdef AMULEWEB_SCRIPT_EN
+#else
+	printf("php_native_download_file_cmd: obj=%p cmd=%s\n", file->value.obj_val.inst_ptr, cmd_name);
+#endif
 }
 
 /*
@@ -741,7 +773,9 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 		curr_ptr += m_alloc_size;
 	}
 	int copy_size = m_alloc_size - m_curr_buf_left;
-	memcpy(curr_ptr, m_curr_buf, copy_size);
+	if ( copy_size ) {
+		memcpy(curr_ptr, m_curr_buf, copy_size);
+	}
 	*(curr_ptr + copy_size) = 0;
 }
 
