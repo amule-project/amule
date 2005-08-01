@@ -370,3 +370,105 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     AC_SUBST(WXBASE_VERSION)
   fi
 ])
+
+
+dnl ---------------------------------------------------------------------------
+dnl AM_WXCONFIG_LARGEFILE()
+dnl
+dnl Test that wxWidgets is built with support for large-files. If not
+dnl configure is terminated. The WX_CFLAGS variables
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([AM_WXCONFIG_LARGEFILE],
+[
+	AC_LANG_PUSH(C++)
+	
+	if test "x${no_wx}" == "x";
+	then
+		dnl Backup current flags
+		__CFLAGS=${CFLAGS}
+		__CXXFLAGS=${CXXFLAGS}
+		__LIBS=${LIBS}
+
+		dnl Use wx-flags for testing
+		CFLAGS=${WX_CFLAGS}
+		CXXFLAGS=${WX_CXXFLAGS}
+		LIBS=${WX_LIBS}
+		
+		AC_MSG_CHECKING(that wxWidgets has support for large files)
+		AC_TRY_RUN([
+			#include <wx/wx.h>
+
+			int main() {
+			#if HAVE_LARGEFILE_SUPPORT
+				exit(0);
+			#else
+				exit(1);
+			#endif
+			}
+		], , NO_LF="true", )
+
+    	if test "x${NO_LF}" != "x";
+		then
+			AC_MSG_RESULT(no)
+    		AC_MSG_ERROR([
+			Support for large files in wxWidgets is required by aMule.
+			To continue you must recompile wxWidgets with support for 
+			large files enabled.
+			])
+		else
+			AC_MSG_RESULT(yes)
+		fi
+
+		dnl Restore backup'd flags
+		CFLAGS=${__CFLAGS}
+		CXXFLAGS=${__CXXFLAGS}
+		LIBS=${__LIBS}
+	fi
+	
+	dnl Test wxBase
+	if test "x${no_wxbase}" == "x";
+	then
+		dnl Backup current flags
+		__CFLAGS=${CFLAGS}
+		__CXXFLAGS=${CXXFLAGS}
+		__LIBS=${LIBS}
+
+		dnl Use wx-flags for testing
+		CFLAGS=${WXBASE_CFLAGS}
+		CXXFLAGS=${WXBASE_CXXFLAGS}
+		LIBS=${WXBASE_LIBS}	
+		
+		AC_MSG_CHECKING(that wxBase has support for large files)
+		AC_TRY_RUN([
+			#include <wx/wx.h>
+
+			int main() {
+			#if HAVE_LARGEFILE_SUPPORT
+				exit(0);
+			#else
+				exit(1);
+			#endif
+			}
+		], , NO_LF="true", )
+
+    	if test "x${NO_LF}" != "x";
+		then
+			AC_MSG_RESULT(no)
+    		AC_MSG_ERROR([
+			Support for large files in wxBase is required by aMule.
+			To continue you must recompile wxWidgets with support for 
+			large files enabled.
+			])
+		else
+			AC_MSG_RESULT(yes)
+		fi
+
+		dnl Restore backup'd flags
+		CFLAGS=${__CFLAGS}
+		CXXFLAGS=${__CXXFLAGS}
+		LIBS=${__LIBS}
+	fi
+
+	AC_LANG_POP(C++)
+])
+
