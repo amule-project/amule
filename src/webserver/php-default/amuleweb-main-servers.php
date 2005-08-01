@@ -61,7 +61,6 @@ body {
 			if ( $sort_reverse ) {
 				$result = !$result;
 			}
-			//var_dump($sort_reverse);
 			return $result;
 		}
 
@@ -78,11 +77,10 @@ body {
 				$_SESSION["sort_reverse"] = !$_SESSION["sort_reverse"];
 			}
 		}
-		//var_dump($_SESSION);
+
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["servers_sort"] = $sort_order;
-			//var_dump($servers);
 			usort($servers, "my_cmp");
 		}
 		foreach ($servers as $srv) {
