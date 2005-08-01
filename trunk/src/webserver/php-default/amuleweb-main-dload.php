@@ -68,14 +68,16 @@ body {
 		}
 
 		// FIXME: replace with switch when supported by interpreter
-		function Status($code)
+		function StatusString($file)
 		{
-			if ( $status == 0 ) {
-				return "Waiting";
-			} elseif ( $status == 1 ) {
+			if ( $status == 7 ) {
+				return "Paused";
+			}	elseif ( $file->src_count_xfer > 0 ) {
+				return "Downloading";
+			} else {
 				return "Waiting";
 			}
-			return "Unknown";
+			return $file->status;
 		}
 
 		//
@@ -133,10 +135,9 @@ body {
 
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
-			echo "<td>", Status($file->status), "</td>";
+			echo "<td>", StatusString($file), "</td>";
 
-			echo "<td>", ($file->status == 1) ? $file->speed : "-", "</td>";
-
+			echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
 			print "</tr>";
 		}
 	  ?>
