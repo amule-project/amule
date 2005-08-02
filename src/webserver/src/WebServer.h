@@ -786,6 +786,8 @@ class CWebServerBase {
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
 		virtual ~CWebServerBase() { }
 
+		void Send_Discard_V2_Request(CECPacket *request);
+
 		virtual void StartServer() = 0;
 		virtual void StopServer() = 0;
 
@@ -847,7 +849,6 @@ class CWebServer : public CWebServerBase {
 	
 		int	UpdateSessionCount();
 		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
-		void	Send_Discard_V2_Request(CECPacket *request);
 
 	protected:
 		void	ProcessURL(ThreadData);

@@ -220,14 +220,22 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	CECTag hashtag(EC_TAG_PARTFILE, file_hash);
 	
 	if ( strcmp(cmd_name, "pause") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
+	} else if ( strcmp(cmd_name, "resume") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_RESUME);
 	} else if ( strcmp(cmd_name, "cancel") == 0 ) {
-	} else if ( strcmp(cmd_name, "prioup") == 0 ) {
-	} else if ( strcmp(cmd_name, "priodown") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
+	} else if ( strcmp(cmd_name, "prio") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 	} else if ( strcmp(cmd_name, "setcat") == 0 ) {
 	} else {
 		php_report_error(PHP_ERROR, "Invalid download command: [%s]", cmd_name);
 		return;
 	} 
+	file_cmd->AddTag(hashtag);
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(file_cmd);
+	delete file_cmd;
+
 #else
 	printf("php_native_download_file_cmd: obj=%p cmd=%s\n", file->value.obj_val.inst_ptr, cmd_name);
 #endif
@@ -611,6 +619,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
 	g_curr_context = this;
 #ifdef AMULEWEB_SCRIPT_EN
+	m_server = server;
 #endif
 	php_engine_init();
 	FILE *yyin = fopen(file, "r");
@@ -628,6 +637,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 {
 	g_curr_context = this;
 #ifdef AMULEWEB_SCRIPT_EN
+	m_server = server;
 #endif
 	php_engine_init();
 

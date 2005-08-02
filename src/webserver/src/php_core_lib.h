@@ -59,6 +59,7 @@ class CPhPLibContext {
 		
 		CWriteStrBuffer *m_curr_str_buffer;
 #ifdef AMULEWEB_SCRIPT_EN
+		CWebServerBase *m_server;
 #endif		
 	public:
 		// parse file and take a "snapshot" of global vars
@@ -74,6 +75,10 @@ class CPhPLibContext {
 		static void Print(const char *str);
 
 		static CPhPLibContext *g_curr_context;
+
+#ifdef AMULEWEB_SCRIPT_EN
+		CWebServerBase *WebServer() { return m_server; }
+#endif
 };
 
 class CPhpFilter {

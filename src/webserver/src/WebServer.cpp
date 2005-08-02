@@ -327,6 +327,33 @@ void CWebServerBase::ProcessImgFileReq(ThreadData Data)
 	}	
 }
 
+// send EC request and discard output
+void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
+{
+	CECPacket *reply = webInterface->SendRecvMsg_v2(request);
+	CECTag *tag = NULL;
+	if (reply) {
+		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
+			for(int i = 0; i < reply->GetTagCount(); ++i) {
+				if (	(tag = reply->GetTagByIndex(i)) &&
+					(tag->GetTagName() == EC_TAG_STRING)) {
+					webInterface->Show(tag->GetStringData());
+				}
+			}
+		} else if (reply->GetOpCode() == EC_OP_FAILED) {
+			if (	reply->GetTagCount() &&
+				(tag = reply->GetTagByIndex(0)) ) {
+				webInterface->Show(
+					CFormat(_("Request failed with the following error: %s.")) %
+					wxString(wxGetTranslation(tag->GetStringData())));
+			} else {
+				webInterface->Show(_("Request failed with an unknown error."));
+			}
+		}
+		delete reply;
+	}
+}
+
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
 {
 	m_Params.bShowUploadQueue = false;
@@ -411,33 +438,6 @@ void CWebServer::StopServer(void) {
 		webInterface->Show(_("Web Server: not running\n"));
 }
 
-
-// send EC request and discard output
-void CWebServer::Send_Discard_V2_Request(CECPacket *request)
-{
-	CECPacket *reply = webInterface->SendRecvMsg_v2(request);
-	CECTag *tag = NULL;
-	if (reply) {
-		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
-			for(int i = 0; i < reply->GetTagCount(); ++i) {
-				if (	(tag = reply->GetTagByIndex(i)) &&
-					(tag->GetTagName() == EC_TAG_STRING)) {
-					webInterface->Show(tag->GetStringData());
-				}
-			}
-		} else if (reply->GetOpCode() == EC_OP_FAILED) {
-			if (	reply->GetTagCount() &&
-				(tag = reply->GetTagByIndex(0)) ) {
-				webInterface->Show(
-					CFormat(_("Request failed with the following error: %s.")) %
-					wxString(wxGetTranslation(tag->GetStringData())));
-			} else {
-				webInterface->Show(_("Request failed with an unknown error."));
-			}
-		}
-		delete reply;
-	}
-}
 
 //reload template file
 void CWebServer::ReloadTemplates(void) {	
