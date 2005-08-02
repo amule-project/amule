@@ -472,5 +472,7 @@ endif
 BUILT_SOURCES = ECVersion.h
 CLEANFILES = ECVersion.h
 
-ECVersion.h: ECcodes.h ECPacket.h ECPacket.cpp ECSocket.h ECSocket.cpp
-	$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)
+ECVersion.h: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion ECcodes.h
+	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)
+
+utils/mkFileSum$(EXEEXT): utils/mkFileSum.c
