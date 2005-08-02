@@ -13,6 +13,8 @@ body {
 	margin-bottom: 0px;
 	background-color: #003399;
 }
+.tbl_header {
+}
 -->
 </style></head>
 
@@ -22,11 +24,11 @@ body {
     <td height="20">&nbsp;</td>
   </tr>
   <tr>
-    <td><table width="100%"  border="1" align="left" cellspacing="1">
+    <td><table width="100%"  border="0" align="left" cellspacing="1">
       <tr>
-        <th width="16" scope="col">&nbsp;</th>
-        <th width="172" scope="col"><div align="left"><a href="amuleweb-main-servers.php?sort=name" target="mainFrame">Name</a></div></th>
-        <th width="227" scope="col"><div align="left">
+        <th width="33" scope="col"></th>
+        <th width="172" ><div align="left"><a href="amuleweb-main-servers.php?sort=name" target="mainFrame">Name</a></div></th>
+        <th width="227" ><div align="left">
           <div align="left"><a href="amuleweb-main-servers.php?sort=desc" target="mainFrame">Description</a></div></th>
         <th width="149" scope="col"><div align="left">
           <div align="left">Address</div></th>
@@ -86,8 +88,12 @@ body {
 		foreach ($servers as $srv) {
 			print "<tr>";
 
-			print "<td>";
-			print "</td>";
+			echo "<td>",
+				'<a href="amuleweb-main-servers.php?cmd=connect&server=', $srv->addr, '">',
+				'<img src="connect.gif" width="16" height="16" border="0">','</a>',
+				'<a href="amuleweb-main-servers.php?cmd=delete&server=', $srv->addr, '">',
+				'<img src="cancel.gif" width="16" height="16" border="0">','</a>',
+				"</td>";
 
 			echo "<td>", $srv->name, "</td>";
 			echo "<td>", $srv->desc, "</td>";

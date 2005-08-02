@@ -70,14 +70,13 @@ body {
 		// FIXME: replace with switch when supported by interpreter
 		function StatusString($file)
 		{
-			if ( $status == 7 ) {
+			if ( $file->status == 7 ) {
 				return "Paused";
-			}	elseif ( $file->src_count_xfer > 0 ) {
+			} elseif ( $file->src_count_xfer > 0 ) {
 				return "Downloading";
 			} else {
 				return "Waiting";
 			}
-			return $file->status;
 		}
 
 		//
