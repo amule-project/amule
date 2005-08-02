@@ -143,8 +143,11 @@ private:
 	 * @param IPend The end of the IP-range, must be less than or equal to IPstart.
 	 * @param AccessLevel The AccessLevel of this range.
 	 * @param Description The assosiated description of this range.
+	 * @return true if the range was added, false if it was discarded.
 	 * 
-	 * This function inserts the specified range into the IPMap.
+	 * This function inserts the specified range into the IPMap. Invalid
+	 * ranges where the AccessLevel is not within the range 0..255, or
+	 * where IPEnd < IPstart not inserted.
 	 */
 	bool	AddIPRange(uint32 IPstart, uint32 IPend, uint16 AccessLevel, const wxString& Description);
 
