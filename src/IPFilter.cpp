@@ -218,16 +218,21 @@ uint32 CIPFilter::BanCount() const
 }
 
 
-void CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
+bool CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, const wxString& Description)
 {
-	wxASSERT(AccessLevel < 256);
-	wxASSERT(IPStart <= IPEnd);
+	if (AccessLevel < 256) {
+		if (IPStart <= IPEnd) {
+			rangeObject item;
+			item.AccessLevel = AccessLevel;
+			item.Description = Description;
 
-	rangeObject item;
-	item.AccessLevel = AccessLevel;
-	item.Description = Description;
+			m_iplist.insert(IPStart, IPEnd, item);
 
-	m_iplist.insert(IPStart, IPEnd, item);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -277,9 +282,7 @@ bool CIPFilter::ProcessPeerGuardianLine(const wxString& sLine)
 	}
 
 	// Add the filter
-	AddIPRange(IPStart, IPEnd, AccessLevel, third);
-
-	return true;
+	return AddIPRange(IPStart, IPEnd, AccessLevel, third);
 }
 
 
@@ -306,9 +309,7 @@ bool CIPFilter::ProcessAntiP2PLine(const wxString& sLine)
 	}
 
 	// Add the filter
-	AddIPRange(IPStart, IPEnd, 0, Description);
-
-	return true;
+	return AddIPRange(IPStart, IPEnd, 0, Description);
 }
 
 
