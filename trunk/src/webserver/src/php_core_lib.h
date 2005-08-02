@@ -59,9 +59,6 @@ class CPhPLibContext {
 		
 		CWriteStrBuffer *m_curr_str_buffer;
 #ifdef AMULEWEB_SCRIPT_EN
-		DownloadFileInfo *m_downloads;
-		ServersInfo *m_servers;
-		SharedFileInfo *m_shared;
 #endif		
 	public:
 		// parse file and take a "snapshot" of global vars
@@ -77,12 +74,6 @@ class CPhPLibContext {
 		static void Print(const char *str);
 
 		static CPhPLibContext *g_curr_context;
-	
-#ifdef AMULEWEB_SCRIPT_EN
-		void GetAmuleContainer(DownloadFileInfo **ptr) { *ptr = m_downloads; }
-		void GetAmuleContainer(ServersInfo **ptr) { *ptr = m_servers; }
-		void GetAmuleContainer(SharedFileInfo **ptr) { *ptr = m_shared; }
-#endif
 };
 
 class CPhpFilter {

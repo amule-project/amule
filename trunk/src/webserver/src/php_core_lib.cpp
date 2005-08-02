@@ -185,17 +185,16 @@ void php_native_usort(PHP_VALUE_NODE *)
 
 /*
  * 
- * Usage: php_native_download_file_cmd($file, "command", $optional_arg)
+ * Usage: php_native_download_file_cmd($file_hash, "command", $optional_arg)
  * 
  */
 void php_native_download_file_cmd(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
-	if ( !si || (si->var->value.type != PHP_VAL_OBJECT)) {
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument");
 		return;
 	}
-	PHP_VAR_NODE *file = si->var;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
@@ -203,10 +202,54 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *cmd_name = si->var->value.str_val;
+	si = get_scope_item(g_current_scope, "__param_2");
+	PHP_VAR_NODE *opt_param = si ? si->var : 0;
+
 #ifdef AMULEWEB_SCRIPT_EN
+	DownloadFileInfo *container = DownloadFile::GetContainerInstance();
+
+	CMD4Hash file_hash(wxString(char2unicode(si->var->value.str_val)));
+	DownloadFile *file = container->GetByID(file_hash);
+	
+	if ( !file ) {
+		php_report_error(PHP_WARNING, "File has not been found in container. Hash=%s", si->var->value.str_val);
+		return;
+	}
+	
+	CECPacket *file_cmd = 0;
+	CECTag hashtag(EC_TAG_PARTFILE, file_hash);
+	
+	if ( strcmp(cmd_name, "pause") == 0 ) {
+	} else if ( strcmp(cmd_name, "cancel") == 0 ) {
+	} else if ( strcmp(cmd_name, "prioup") == 0 ) {
+	} else if ( strcmp(cmd_name, "priodown") == 0 ) {
+	} else if ( strcmp(cmd_name, "setcat") == 0 ) {
+	} else {
+		php_report_error(PHP_ERROR, "Invalid download command: [%s]", cmd_name);
+		return;
+	} 
 #else
 	printf("php_native_download_file_cmd: obj=%p cmd=%s\n", file->value.obj_val.inst_ptr, cmd_name);
 #endif
+}
+
+/*
+ * Usage amule_server_cmd($server_addr, "command");
+ */
+void php_native_server_cmd(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		return;
+	}
+	
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		return;
+	}
+	char *cmd_name = si->var->value.str_val;
 }
 
 /*
@@ -265,8 +308,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 template <class C, class T>
 void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
 {
-	C *container;
-	CPhPLibContext::g_curr_context->GetAmuleContainer(&container);
+	C *container = T::GetContainerInstance();
 
 	container->ReQuery();
 
@@ -569,8 +611,6 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
 	g_curr_context = this;
 #ifdef AMULEWEB_SCRIPT_EN
-	m_downloads = &server->m_DownloadFileInfo;
-	m_servers = &server->m_ServersInfo;
 #endif
 	php_engine_init();
 	FILE *yyin = fopen(file, "r");
@@ -588,8 +628,6 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 {
 	g_curr_context = this;
 #ifdef AMULEWEB_SCRIPT_EN
-	m_downloads = &server->m_DownloadFileInfo;
-	m_servers = &server->m_ServersInfo;
 #endif
 	php_engine_init();
 
