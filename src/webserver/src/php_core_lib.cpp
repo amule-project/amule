@@ -242,22 +242,48 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
- * Usage amule_server_cmd($server_addr, "command");
+ * Usage amule_server_cmd($server_it, $server_port, "command");
  */
 void php_native_server_cmd(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
-	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1: $server_ip");
 		return;
 	}
+	int ip = si->var->value.int_val;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
-	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2: $server_port");
 		return;
 	}
-	char *cmd_name = si->var->value.str_val;
+	int port = si->var->value.int_val;
+
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 3: $command");
+		return;
+	}
+	char *cmd = si->var->value.str_val;
+#ifdef AMULEWEB_SCRIPT_EN
+	CECPacket *req;
+	if ( strcmp(cmd, "connect") == 0 ) {
+		req = new CECPacket(EC_OP_SERVER_CONNECT);
+	} else if ( strcmp(cmd, "connect") == 0 ) {
+		req = new CECPacket(EC_OP_SERVER_REMOVE);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid server command: [%s]", cmd);
+		return;
+	}
+	req->AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(req);
+	
+	delete req;
+#else
+	printf("php_native_server_cmd: ip=%08x port=%04d cmd=%s\n", ip, port, cmd);
+#endif
 }
 
 /*
@@ -467,6 +493,12 @@ void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 	} else if ( strcmp(prop_name, "users") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->nServerUsers;
+	} else if ( strcmp(prop_name, "ip") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nServerIP;
+	} else if ( strcmp(prop_name, "port") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->nServerPort;
 	} else if ( strcmp(prop_name, "maxusers") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->nServerMaxUsers;
@@ -572,27 +604,33 @@ void amule_shared_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
-		{ 0, 1, { PHP_VAL_NONE } },
+		{ 0, 1, { PHP_VAL_NONE, {0} }, 0 },
 		1,
 		php_native_var_dump,
 	},
 	{
 		"strlen",
-		{ 0, 0, { PHP_VAL_NONE } },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
 		1, php_native_strlen,
 	},
 	{
 		"usort",
-		{ { 0, 1, { PHP_VAL_NONE } }, { 0, 0, { PHP_VAL_STRING } } },
+		{ { 0, 1, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} }, 0 } },
 		2,
 		php_native_usort,
 	},
 	{
 		"load_amule_vars",
-		{ 0, 0, { PHP_VAL_NONE } },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
 		1, php_native_load_amule_vars,
 	},
-	{ 0 },
+	{
+		"amule_do_server_cmd",
+		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		3,
+		php_native_load_amule_vars,
+	},
+	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
 
 void php_init_core_lib()
