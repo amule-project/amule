@@ -146,7 +146,7 @@ private:
 	 * 
 	 * This function inserts the specified range into the IPMap.
 	 */
-	void	AddIPRange(uint32 IPstart, uint32 IPend, uint16 AccessLevel, const wxString& Description);
+	bool	AddIPRange(uint32 IPstart, uint32 IPend, uint16 AccessLevel, const wxString& Description);
 
 
 	/**
