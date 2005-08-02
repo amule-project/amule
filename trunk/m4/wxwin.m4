@@ -384,28 +384,21 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 	
 	if test "x${no_wx}" == "x";
 	then
-		dnl Backup current flags
-		__CFLAGS=${CFLAGS}
-		__CXXFLAGS=${CXXFLAGS}
-		__LIBS=${LIBS}
-
-		dnl Use wx-flags for testing
-		CFLAGS=${WX_CFLAGS}
-		CXXFLAGS=${WX_CXXFLAGS}
-		LIBS=${WX_LIBS}
+		dnl Backup current flags and setup flags for testing
+		__CPPFLAGS=${CXXFLAGS}
+		CPPFLAGS=${WXBASE_CPPFLAGS}
 		
 		AC_MSG_CHECKING(that wxWidgets has support for large files)
-		AC_TRY_RUN([
+		AC_PREPROC_IFELSE([
 			#include <wx/wx.h>
 
 			int main() {
-			#if HAVE_LARGEFILE_SUPPORT
-				exit(0);
-			#else
-				exit(1);
+			#if !HAVE_LARGEFILE_SUPPORT
+				#error No LargeFile support!;
 			#endif
+				exit(0);
 			}
-		], , NO_LF="true", )
+		], , NO_LF="true")
 
     	if test "x${NO_LF}" != "x";
 		then
@@ -420,36 +413,27 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 		fi
 
 		dnl Restore backup'd flags
-		CFLAGS=${__CFLAGS}
-		CXXFLAGS=${__CXXFLAGS}
-		LIBS=${__LIBS}
+		CPPFLAGS=${__CPPFLAGS}	
 	fi
 	
 	dnl Test wxBase
 	if test "x${no_wxbase}" == "x";
 	then
-		dnl Backup current flags
-		__CFLAGS=${CFLAGS}
-		__CXXFLAGS=${CXXFLAGS}
-		__LIBS=${LIBS}
-
-		dnl Use wx-flags for testing
-		CFLAGS=${WXBASE_CFLAGS}
-		CXXFLAGS=${WXBASE_CXXFLAGS}
-		LIBS=${WXBASE_LIBS}	
+		dnl Backup current flags and setup flags for testing
+		__CPPFLAGS=${CXXFLAGS}
+		CPPFLAGS=${WXBASE_CPPFLAGS}
 		
 		AC_MSG_CHECKING(that wxBase has support for large files)
-		AC_TRY_RUN([
+		AC_PREPROC_IFELSE([
 			#include <wx/wx.h>
 
 			int main() {
-			#if HAVE_LARGEFILE_SUPPORT
-				exit(0);
-			#else
-				exit(1);
+			#if !HAVE_LARGEFILE_SUPPORT
+				#error No LargeFile support!;
 			#endif
+				exit(0);
 			}
-		], , NO_LF="true", )
+		], , NO_LF="true")
 
     	if test "x${NO_LF}" != "x";
 		then
@@ -464,9 +448,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 		fi
 
 		dnl Restore backup'd flags
-		CFLAGS=${__CFLAGS}
-		CXXFLAGS=${__CXXFLAGS}
-		LIBS=${__LIBS}
+		CPPFLAGS=${__CPPFLAGS}
 	fi
 
 	AC_LANG_POP(C++)
