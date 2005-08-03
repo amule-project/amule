@@ -172,7 +172,7 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CSafeMemFi
 		s->m_searchTerms = ed2k_packet;
 		s->m_searchTerms->Seek(0,wxFromStart);
 		s->m_searchTerms->WriteUInt128(s->m_target);
-		if (s->m_searchTerms->Length() > (16 /*uint128*/ + 1 /*uint8*/)) { 
+		if (s->m_searchTerms->GetLength() > (16 /*uint128*/ + 1 /*uint8*/)) { 
 			// There is actually ed2k search data
 			s->m_searchTerms->WriteUInt8(1);
 		} // 0 is default, no need for else branch

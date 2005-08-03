@@ -186,7 +186,7 @@ void* CAICHSyncThread::Entry()
 
 			// skip the rest of this hashset
 			uint16 nHashCount = file.ReadUInt16();
-			file.Seek( nHashCount * HASHSIZE, CFile::current );
+			file.Seek( nHashCount * HASHSIZE, wxFromCurrent );
 		}
 	} catch ( ... ) {
 		if ( file.Eof() ) {

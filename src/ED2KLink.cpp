@@ -233,7 +233,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		}
 
 		// Rewrite the source-count (if any)
-		int count = m_sources->Length() / 12; // 2xuint16 + 2uint32
+		int count = m_sources->GetLength() / 12; // 2xuint16 + 2uint32
 		if ( count ) {
 			m_sources->Seek(0);
 			m_sources->WriteUInt16( count );
@@ -265,7 +265,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 			}
 		
 			// 
-			int count = m_hashset->Length() / 16 - 1; 
+			int count = m_hashset->GetLength() / 16 - 1; 
 		
 			if ( count ) {
 				m_hashset->Seek( 16, wxFromStart);

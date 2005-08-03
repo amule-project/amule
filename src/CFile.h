@@ -80,8 +80,6 @@ public:
 		// standard values for file descriptor
 	enum { fd_invalid = -1, fd_stdin, fd_stdout, fd_stderr };
 
-	enum SeekMode { start = wxFromStart, current = wxFromCurrent, end = wxFromEnd}; 
-	
 	// static functions
 	// ----------------
 		// check whether a regular file by this name exists
@@ -107,8 +105,6 @@ public:
 		// Default permissions will use the ones specified through CPreferences::GetFilePermissions
 	virtual bool Create(const wxString& szFileName, bool bOverwrite = FALSE, int access = -1 );
 	virtual bool Open(const wxString& szFileName, OpenMode mode = read, int access = -1 );
-	// Kry -Added for windoze compatibility.
-	virtual off_t GetLength() const { return Length(); }
 
 	virtual bool Close();  // Close is a NOP if not opened
 
@@ -127,13 +123,11 @@ public:
 
 	// file pointer operations (return ofsInvalid on failure)
 		// move ptr ofs bytes related to start/current off_t/end of file
-	virtual off_t Seek(off_t ofs, CFile::SeekMode mode = start) const;
-		// move ptr to ofs bytes before the end
-	virtual off_t SeekEnd(off_t ofs = 0) { return Seek(ofs, end); }
+	virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
 		// get current off_t
 	virtual off_t GetPosition() const;
 		// get current file length
-	virtual off_t Length() const;
+	virtual off_t GetLength() const;
 		//Truncate/grow file
 	virtual bool SetLength(off_t new_len);
 

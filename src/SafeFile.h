@@ -86,7 +86,7 @@ class CSafeFile : public CFile, public CFileDataIO
 	virtual off_t GetLength() const {
 		return CFile::GetLength();
 	}
-	virtual off_t Seek(off_t lOff, CFile::SeekMode nFrom = CFile::start) const {
+	virtual off_t Seek(off_t lOff, wxSeekMode nFrom = wxFromStart) const {
 		return CFile::Seek(lOff, nFrom);
 	}
 };
