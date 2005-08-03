@@ -119,6 +119,7 @@ body {
 			$_SESSION["download_sort"] = $sort_order;
 			usort($downloads, "my_cmp");
 		}
+
 		foreach ($downloads as $file) {
 			print "<tr>";
 
@@ -129,9 +130,8 @@ body {
 			print $file->name;
 			print "</td>";
 
-			$progress_image = "dyn_". $file->hash . ".png";
-			echo "<td> <img src=", $progress_image, "></td>";
-
+			echo "<td>", $file->progress, "</td>";
+			
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
 			echo "<td>", StatusString($file), "</td>";

@@ -70,6 +70,13 @@ body {
 
 		$sort_order = $HTTP_GET_VARS["sort"];
 
+		//
+		// perform command before processing content
+		//
+		if ( ($HTTP_GET_VARS["cmd"] != "") and ($HTTP_GET_VARS["ip"] != "") and ($HTTP_GET_VARS["port"] != "")) {
+			amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
+		}
+		
 		if ( $sort_order == "" ) {
 			$sort_order = $_SESSION["servers_sort"];
 		} else {
@@ -89,9 +96,9 @@ body {
 			print "<tr>";
 
 			echo "<td>",
-				'<a href="amuleweb-main-servers.php?cmd=connect&server=', $srv->addr, '">',
+				'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
 				'<img src="connect.gif" width="16" height="16" border="0">','</a>',
-				'<a href="amuleweb-main-servers.php?cmd=delete&server=', $srv->addr, '">',
+				'<a href="amuleweb-main-servers.php?cmd=delete&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
 				'<img src="cancel.gif" width="16" height="16" border="0">','</a>',
 				"</td>";
 

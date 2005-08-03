@@ -206,10 +206,11 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	si = get_scope_item(g_current_scope, "__param_2");
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
+	char *str_hash = si->var->value.str_val;
 #ifdef AMULEWEB_SCRIPT_EN
 	DownloadFileInfo *container = DownloadFile::GetContainerInstance();
 
-	CMD4Hash file_hash(wxString(char2unicode(si->var->value.str_val)));
+	CMD4Hash file_hash(wxString(char2unicode(str_hash)));
 	DownloadFile *file = container->GetByID(file_hash);
 	
 	if ( !file ) {
@@ -238,7 +239,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	delete file_cmd;
 
 #else
-	printf("php_native_download_file_cmd: obj=%p cmd=%s\n", file->value.obj_val.inst_ptr, cmd_name);
+	printf("php_native_download_file_cmd: hash=%s cmd=%s\n", str_hash, cmd_name);
 #endif
 }
 
@@ -294,6 +295,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
  */
 void php_get_amule_stats(PHP_VALUE_NODE *result)
 {
+#ifdef AMULEWEB_SCRIPT_EN
 	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
 	CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
 	if (!stats) {
@@ -326,6 +328,12 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
 		}
 	}
+#else
+	cast_value_array(result);
+	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
+	cast_value_dnum(&id->value);
+	id->value.int_val = 1234567;
+#endif
 }
 
 /*
@@ -489,6 +497,9 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2char(obj->sFileHash));
+	} else if ( strcmp(prop_name, "progress") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2char(obj->m_Image->GetHTML()));
 	} else if ( strcmp(prop_name, "status") == 0 ) {
 		result->int_val = obj->nFileStatus;
 	} else if ( strcmp(prop_name, "size") == 0 ) {

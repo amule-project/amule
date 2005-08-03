@@ -3389,7 +3389,7 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
-	wxString img_tmpl;
+	wxString img_tmpl(_("<img src=%s height=20 width=%d>"));
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 }
 
