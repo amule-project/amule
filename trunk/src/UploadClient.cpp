@@ -329,44 +329,43 @@ void CUpDownClient::CreateNextBlockPackage()
 }
 
 
-void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
+void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock)
+{
 	uint32 nPacketSize;
 
-	try {
-		CMemFile memfile((byte*)data,togo);
-		if (togo > 10240) {
-			nPacketSize = togo/(uint32)(togo/10240);
-		} else {
+	CMemFile memfile((byte*)data,togo);
+	if (togo > 10240) {
+		nPacketSize = togo/(uint32)(togo/10240);
+	} else {
+		nPacketSize = togo;
+	}
+
+	while (togo){
+		if (togo < nPacketSize*2) {
 			nPacketSize = togo;
 		}
-
-		while (togo){
-			if (togo < nPacketSize*2) {
-				nPacketSize = togo;
-			}
-			
-			wxASSERT(nPacketSize);
-			togo -= nPacketSize;
-			
-			CMemFile data(nPacketSize+24);
-			data.WriteHash16(GetUploadFileID().GetHash());
-			data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
-			data.WriteUInt32((currentblock->EndOffset - togo));
-			char *tempbuf = new char[nPacketSize];
-			memfile.Read(tempbuf, nPacketSize);
-			data.Write(tempbuf, nPacketSize);
-			delete [] tempbuf;
-			CPacket* packet = new CPacket(&data,OP_EDONKEYPROT,OP_SENDINGPART);
 		
-			theApp.statistics->AddUpDataOverheadFileRequest(24);
-			m_socket->SendPacket(packet,true,false, nPacketSize);
-		}
-	} catch (...) {
-		throw wxString(wxT("Caught exception in CUpDownClient::CreateStandartPackets!"));
+		wxASSERT(nPacketSize);
+		togo -= nPacketSize;
+		
+		CMemFile data(nPacketSize+24);
+		data.WriteHash16(GetUploadFileID().GetHash());
+		data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
+		data.WriteUInt32((currentblock->EndOffset - togo));
+		char *tempbuf = new char[nPacketSize];
+		memfile.Read(tempbuf, nPacketSize);
+		data.Write(tempbuf, nPacketSize);
+		delete [] tempbuf;
+		CPacket* packet = new CPacket(&data,OP_EDONKEYPROT,OP_SENDINGPART);
+	
+		theApp.statistics->AddUpDataOverheadFileRequest(24);
+		m_socket->SendPacket(packet,true,false, nPacketSize);
 	}
 }
 
-void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock){
+
+void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock)
+{
 	byte* output = new byte[togo+300];
 	uLongf newsize = togo+300;
 	uint16 result = compress2(output,&newsize,data,togo,9);
@@ -376,53 +375,50 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		return;
 	}
 	
-	try {
-		CMemFile memfile(output,newsize);
-    	
-		uint32 totalPayloadSize = 0;
-		uint32 oldSize = togo;
-		togo = newsize;
-		uint32 nPacketSize;
-		if (togo > 10240) {
-			nPacketSize = togo/(uint32)(togo/10240);
-		} else {
+	CMemFile memfile(output,newsize);
+	
+	uint32 totalPayloadSize = 0;
+	uint32 oldSize = togo;
+	togo = newsize;
+	uint32 nPacketSize;
+	if (togo > 10240) {
+		nPacketSize = togo/(uint32)(togo/10240);
+	} else {
+		nPacketSize = togo;
+	}
+		
+	while (togo) {
+		if (togo < nPacketSize*2) {
 			nPacketSize = togo;
 		}
-			
-		while (togo) {
-			if (togo < nPacketSize*2) {
-				nPacketSize = togo;
-			}
-			togo -= nPacketSize;
+		togo -= nPacketSize;
 
-			CMemFile data(nPacketSize+24);
-			data.WriteHash16(GetUploadFileID().GetHash());
-			data.WriteUInt32(currentblock->StartOffset);
-			data.WriteUInt32(newsize);			
-			char *tempbuf = new char[nPacketSize];
-			memfile.Read(tempbuf, nPacketSize);
-			data.Write(tempbuf,nPacketSize);
-			delete [] tempbuf;
-			CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
-		
-			// approximate payload size
-			uint32 payloadSize = nPacketSize*oldSize/newsize;
+		CMemFile data(nPacketSize+24);
+		data.WriteHash16(GetUploadFileID().GetHash());
+		data.WriteUInt32(currentblock->StartOffset);
+		data.WriteUInt32(newsize);			
+		char *tempbuf = new char[nPacketSize];
+		memfile.Read(tempbuf, nPacketSize);
+		data.Write(tempbuf,nPacketSize);
+		delete [] tempbuf;
+		CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
+	
+		// approximate payload size
+		uint32 payloadSize = nPacketSize*oldSize/newsize;
 
-			if (togo == 0 && totalPayloadSize+payloadSize < oldSize) {
-				payloadSize = oldSize-totalPayloadSize;
-			}
-			
-			totalPayloadSize += payloadSize;
-
-			// put packet directly on socket
-			theApp.statistics->AddUpDataOverheadFileRequest(24);
-			m_socket->SendPacket(packet,true,false, payloadSize);			
+		if (togo == 0 && totalPayloadSize+payloadSize < oldSize) {
+			payloadSize = oldSize-totalPayloadSize;
 		}
-		delete[] output;
-	} catch (...) {
-		throw wxString(wxT("Caught exception in CUpDownClient::CreatePackedPackets!"));
+		
+		totalPayloadSize += payloadSize;
+
+		// put packet directly on socket
+		theApp.statistics->AddUpDataOverheadFileRequest(24);
+		m_socket->SendPacket(packet,true,false, payloadSize);			
 	}
+	delete[] output;
 }
+
 
 void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile)
 {
@@ -493,9 +489,6 @@ void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempre
 			error += wxT("Unknown InvalidPacket exception");
 		}
 		
-		throw(error);
-	} catch (...) {
-		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: Unknown Exception");
 		throw(error);
 	}
 	

@@ -588,13 +588,6 @@ void CServerConnect::KeepConnectionAlive()
 
 void CServerConnect::InitLocalIP()
 {
-	m_nLocalIP = 0;
-
-	try{
-		m_nLocalIP = StringHosttoUint32(::wxGetFullHostName());
-	}
-	catch(...){
-		// at least two ppl reported crashs when using 'gethostbyname' with third party winsock DLLs
-		AddDebugLogLineM(false, logGeneral, wxT("Unknown exception in CServerConnect::InitLocalIP"));
-	}
+	m_nLocalIP = StringHosttoUint32(::wxGetFullHostName());
 }
+

@@ -547,8 +547,6 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const wxString& error) {
 		AddLogLineM(false,CFormat( _("Unhandled error while processing packet from server: %s") ) % error);
-	} catch (...) {
-		AddLogLineM(false, _("Unknown exception while processing packet from server!"));
 	}
 
 	// Don't disconnect because of wrong sources.
@@ -607,28 +605,26 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 	CALL_APP_DATA_LOCK;
 	AddDebugLogLineM(false,logServer,wxT("Server: Packet Received: "));
 	
-	try {
-		if (packet->GetProtocol() == OP_PACKEDPROT) {
-			if (!packet->UnPackPacket(250000)){
-				AddDebugLogLineM(false, logZLib, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-				theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
-				return true;
-			}
-			packet->SetProtocol(OP_EDONKEYPROT);
-		}
-		if (packet->GetProtocol() == OP_EDONKEYPROT) {
-			ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
-		} else {
-			AddDebugLogLineM(false, logServer, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+	if (packet->GetProtocol() == OP_PACKEDPROT) {
+		if (!packet->UnPackPacket(250000)){
+			AddDebugLogLineM(false, logZLib, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
 			theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
+			return true;
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logServer, wxString::Format(wxT("Error: Unhandled exception while processing server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-		wxASSERT(0);
-		return false;		
+		
+		packet->SetProtocol(OP_EDONKEYPROT);
 	}
+		
+	if (packet->GetProtocol() == OP_EDONKEYPROT) {
+		ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
+	} else {
+		AddDebugLogLineM(false, logServer, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
+		theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
+	}
+	
 	return true;
 }
+
 
 void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 {

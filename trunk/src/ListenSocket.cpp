@@ -1108,8 +1108,6 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		}
 		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
 		return false;
-	} catch (...) {
-		Disconnect(wxT("Unknown exception on ListenSocket::ProcessPacket"));
 	}
 	return true;
 }
@@ -1793,8 +1791,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		
 		Disconnect(wxT("Client error on ListenSocket::ProcessExtPacket: ") + error);
 		return false;
-	} catch (...) {
-		Disconnect(wxT("Unknown exception on ListenSocket::ProcessExtPacket"));
 	}
 
 	return true;

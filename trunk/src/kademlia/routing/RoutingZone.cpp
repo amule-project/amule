@@ -245,63 +245,55 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 	distance.XOR(id);
 	CContact *c = NULL;
 
-	try
-	{
-		if (!isLeaf()) {
-			retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
-		} else {
-			c = m_bin->getContact(id);
-			if (c != NULL) {
-				c->setIPAddress(ip);
-				c->setUDPPort(port);
-				c->setTCPPort(tport);
-				retVal = true;
-				theApp.amuledlg->kademliawnd->ContactRef(c);
-			} else if (m_bin->getRemaining() > 0) {
-				c = new CContact(id, ip, port, tport);
-				retVal = m_bin->add(c);
-				if(retVal) {
-					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
-						c->setGuiRefs(true);
-					}
-				}
-			} else if (canSplit()) {
-				split();
-				retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
-			} else {
-				merge();
-				c = new CContact(id, ip, port, tport);
-				retVal = m_bin->add(c);
-				if(retVal) {
-					if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
-						c->setGuiRefs(true);
-					}
+	if (!isLeaf()) {
+		retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
+	} else {
+		c = m_bin->getContact(id);
+		if (c != NULL) {
+			c->setIPAddress(ip);
+			c->setUDPPort(port);
+			c->setTCPPort(tport);
+			retVal = true;
+			theApp.amuledlg->kademliawnd->ContactRef(c);
+		} else if (m_bin->getRemaining() > 0) {
+			c = new CContact(id, ip, port, tport);
+			retVal = m_bin->add(c);
+			if(retVal) {
+				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
+					c->setGuiRefs(true);
 				}
 			}
-
-			if (!retVal) {
-				if (c != NULL) {
-					delete c;
+		} else if (canSplit()) {
+			split();
+			retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
+		} else {
+			merge();
+			c = new CContact(id, ip, port, tport);
+			retVal = m_bin->add(c);
+			if(retVal) {
+				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
+					c->setGuiRefs(true);
 				}
 			}
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::add"));
+
+		if (!retVal) {
+			if (c != NULL) {
+				delete c;
+			}
+		}
 	}
+	
 	return retVal;
 }
 
 void CRoutingZone::setAlive(uint32 ip, uint16 port)
 {
-	try {
-		if (isLeaf()) {
-			m_bin->setAlive(ip, port);
-		} else {
-			m_subZones[0]->setAlive(ip, port);
-			m_subZones[1]->setAlive(ip, port);
-		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::setAlive"));
+	if (isLeaf()) {
+		m_bin->setAlive(ip, port);
+	} else {
+		m_subZones[0]->setAlive(ip, port);
+		m_subZones[1]->setAlive(ip, port);
 	}
 }
 
@@ -336,11 +328,7 @@ uint32 CRoutingZone::getClosestTo(uint32 maxType, const CUInt128 &target, const 
 void CRoutingZone::getAllEntries(ContactList *result, bool emptyFirst)
 {
 	if (isLeaf()) {
-		try {
-			m_bin->getEntries(result, emptyFirst);
-		} catch (...) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::getAllEntries"));
-		}
+		m_bin->getEntries(result, emptyFirst);
 	} else {
 		m_subZones[0]->getAllEntries(result, emptyFirst);
 		m_subZones[1]->getAllEntries(result, false);			
@@ -350,11 +338,7 @@ void CRoutingZone::getAllEntries(ContactList *result, bool emptyFirst)
 void CRoutingZone::topDepth(int depth, ContactList *result, bool emptyFirst)
 {
 	if (isLeaf()) {
-		try {
-			m_bin->getEntries(result, emptyFirst);
-		} catch (...) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::topDepth"));
-		}
+		m_bin->getEntries(result, emptyFirst);
 	} else if (depth <= 0) {
 		randomBin(result, emptyFirst);
 	} else {
@@ -366,11 +350,7 @@ void CRoutingZone::topDepth(int depth, ContactList *result, bool emptyFirst)
 void CRoutingZone::randomBin(ContactList *result, bool emptyFirst)
 {
 	if (isLeaf()) {
-		try {
-			m_bin->getEntries(result, emptyFirst);
-		} catch (...) {
-			AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::randomBin"));
-		}
+		m_bin->getEntries(result, emptyFirst);
 	} else {
 		m_subZones[rand()&1]->randomBin(result, emptyFirst);
 	}
@@ -386,72 +366,64 @@ uint32 CRoutingZone::getMaxDepth(void) const
 
 void CRoutingZone::split(void)
 {
-	try {
-		stopTimer();
+	stopTimer();
 		
-		m_subZones[0] = genSubZone(0);
-		m_subZones[1] = genSubZone(1);
+	m_subZones[0] = genSubZone(0);
+	m_subZones[1] = genSubZone(1);
 
-		ContactList entries;
-		m_bin->getEntries(&entries);
-		ContactList::const_iterator it;
-		for (it = entries.begin(); it != entries.end(); ++it) {
-			int sz = (*it)->m_distance.getBitNumber(m_level);
-			m_subZones[sz]->m_bin->add(*it);
-		}
-		m_bin->m_dontDeleteContacts = true;
-		delete m_bin;
-		m_bin = NULL;
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::split"));
+	ContactList entries;
+	m_bin->getEntries(&entries);
+	ContactList::const_iterator it;
+	for (it = entries.begin(); it != entries.end(); ++it) {
+		int sz = (*it)->m_distance.getBitNumber(m_level);
+		m_subZones[sz]->m_bin->add(*it);
 	}
+	m_bin->m_dontDeleteContacts = true;
+	delete m_bin;
+	m_bin = NULL;
 }
 
 void CRoutingZone::merge(void)
 {
-	try {
-        if (isLeaf() && m_superZone != NULL) {
-			m_superZone->merge();
-	   } else if ((!isLeaf())
-			&& (m_subZones[0]->isLeaf() && m_subZones[1]->isLeaf()) 
-			&&	(getNumContacts()) < (K/2) ) 
-	   		{
-			m_bin = new CRoutingBin();
-			
-			m_subZones[0]->stopTimer();
-			m_subZones[1]->stopTimer();
+	if (isLeaf() && m_superZone != NULL) {
+		m_superZone->merge();
+	} else if ((!isLeaf())
+		&& (m_subZones[0]->isLeaf() && m_subZones[1]->isLeaf()) 
+		&&	(getNumContacts()) < (K/2) ) 
+		{
+		m_bin = new CRoutingBin();
+		
+		m_subZones[0]->stopTimer();
+		m_subZones[1]->stopTimer();
 
-			if (getNumContacts() > 0) {
-				ContactList list0;
-				ContactList list1;
-				m_subZones[0]->m_bin->getEntries(&list0);
-				m_subZones[1]->m_bin->getEntries(&list1);
-				ContactList::const_iterator it;
-				for (it = list0.begin(); it != list0.end(); ++it) {
-					m_bin->add(*it);
-				}
-				for (it = list1.begin(); it != list1.end(); ++it) {
-					m_bin->add(*it);
-				}
+		if (getNumContacts() > 0) {
+			ContactList list0;
+			ContactList list1;
+			m_subZones[0]->m_bin->getEntries(&list0);
+			m_subZones[1]->m_bin->getEntries(&list1);
+			ContactList::const_iterator it;
+			for (it = list0.begin(); it != list0.end(); ++it) {
+				m_bin->add(*it);
 			}
-
-			m_subZones[0]->m_superZone = NULL;
-			m_subZones[1]->m_superZone = NULL;
-
-			delete m_subZones[0];
-			delete m_subZones[1];
-
-			m_subZones[0] = NULL;
-			m_subZones[1] = NULL;
-
-			startTimer();
-			
-			if (m_superZone != NULL) {
-				m_superZone->merge();
+			for (it = list1.begin(); it != list1.end(); ++it) {
+				m_bin->add(*it);
 			}
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::merge"));
+
+		m_subZones[0]->m_superZone = NULL;
+		m_subZones[1]->m_superZone = NULL;
+
+		delete m_subZones[0];
+		delete m_subZones[1];
+
+		m_subZones[0] = NULL;
+		m_subZones[1] = NULL;
+
+		startTimer();
+		
+		if (m_superZone != NULL) {
+			m_superZone->merge();
+		}
 	}
 }
 
@@ -529,39 +501,36 @@ void CRoutingZone::onSmallTimer(void)
 	ContactList entries;
 	ContactList::iterator it;
 
-	try {
-		// Remove dead entries
-		m_bin->getEntries(&entries);
-		for (it = entries.begin(); it != entries.end(); ++it) {
-			c = *it;
-			if ( c->getType() == 4) {
-				if (((c->m_expires > 0) && (c->m_expires <= now))) {
-					if(!c->inUse()) {
-						m_bin->remove(c);
-						delete c;
-					}
-					continue;
+	// Remove dead entries
+	m_bin->getEntries(&entries);
+	for (it = entries.begin(); it != entries.end(); ++it) {
+		c = *it;
+		if ( c->getType() == 4) {
+			if (((c->m_expires > 0) && (c->m_expires <= now))) {
+				if(!c->inUse()) {
+					m_bin->remove(c);
+					delete c;
 				}
-			}
-			if(c->m_expires == 0) {
-				c->m_expires = now;
+				continue;
 			}
 		}
-		c = NULL;
-		//Ping only contacts that are in the branches that meet the set level and are not close to our ID.
-		//The other contacts are checked with the big timer.
-		if( m_bin->getRemaining() < (K*(.4)) ) {
-			c = m_bin->getOldest();
-		} 
-		if( c != NULL ) {
-			if ( c->m_expires >= now || c->getType() == 4) {
-				m_bin->remove(c);
-				m_bin->m_entries.push_back(c);
-				c = NULL;
-			}
+		if(c->m_expires == 0) {
+			c->m_expires = now;
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::onSmallTimer"));
+	}
+	c = NULL;
+	//Ping only contacts that are in the branches that meet the set level and are not close to our ID.
+	//The other contacts are checked with the big timer.
+	if( m_bin->getRemaining() < (K*(.4)) ) {
+		c = m_bin->getOldest();
+	} 
+	
+	if( c != NULL ) {
+		if ( c->m_expires >= now || c->getType() == 4) {
+			m_bin->remove(c);
+			m_bin->m_entries.push_back(c);
+			c = NULL;
+		}
 	}
 	
 	if(c != NULL) {
@@ -597,21 +566,19 @@ uint32 CRoutingZone::getBootstrapContacts(ContactList *results, uint32 maxRequir
 	results->clear();
 
 	uint32 retVal = 0;
-	try {
-		ContactList top;
-		topDepth(LOG_BASE_EXPONENT, &top);
-		if (top.size() > 0) {
-			ContactList::const_iterator it;
-			for (it = top.begin(); it != top.end(); ++it) {
-				results->push_back(*it);
-				retVal++;
-				if (retVal == maxRequired) {
-					break;
-				}
+	ContactList top;
+	topDepth(LOG_BASE_EXPONENT, &top);
+	if (top.size() > 0) {
+		ContactList::const_iterator it;
+		for (it = top.begin(); it != top.end(); ++it) {
+			results->push_back(*it);
+			retVal++;
+			if (retVal == maxRequired) {
+				break;
 			}
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::getBoostStrapContacts"));
 	}
+	
 	return retVal;
 }
+

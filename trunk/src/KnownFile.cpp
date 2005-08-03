@@ -544,115 +544,112 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash){
 
 bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 {
-	try {
-		uint32 tagcount;
-		tagcount = file->ReadUInt32();
-		for (uint32 j = 0; j != tagcount;j++){
-			CTag newtag(*file, true);
-			switch(newtag.GetNameID()){
-				case FT_FILENAME:{
-					#if wxUSE_UNICODE
-					if (GetFileName().IsEmpty())
-					#endif
-						SetFileName(newtag.GetStr());
-					break;
+	uint32 tagcount = file->ReadUInt32();
+	for (uint32 j = 0; j != tagcount;j++) {
+		CTag newtag(*file, true);
+		switch(newtag.GetNameID()){
+			case FT_FILENAME:{
+				#if wxUSE_UNICODE
+				if (GetFileName().IsEmpty())
+				#endif
+					SetFileName(newtag.GetStr());
+				break;
+			}
+			case FT_FILESIZE:{
+				SetFileSize(newtag.GetInt());
+				m_AvailPartFrequency.Clear();
+				m_AvailPartFrequency.Add(0, GetPartCount());
+				break;
+			}
+			case FT_ATTRANSFERED:{
+				statistic.alltimetransferred += newtag.GetInt();
+				break;
+			}
+			case FT_ATTRANSFEREDHI:{
+				statistic.alltimetransferred =
+					(((uint64)newtag.GetInt()) << 32) +
+					((uint64)statistic.alltimetransferred);
+				break;
+			}
+			case FT_ATREQUESTED:{
+				statistic.alltimerequested = newtag.GetInt();
+				break;
+			}
+			case FT_ATACCEPTED:{
+				statistic.alltimeaccepted = newtag.GetInt();
+				break;
+			}
+			case FT_ULPRIORITY:{
+				m_iUpPriority = newtag.GetInt();
+				if( m_iUpPriority == PR_AUTO ){
+					m_iUpPriority = PR_HIGH;
+					m_bAutoUpPriority = true;
 				}
-				case FT_FILESIZE:{
-					SetFileSize(newtag.GetInt());
-					m_AvailPartFrequency.Clear();
-					m_AvailPartFrequency.Add(0, GetPartCount());
-					break;
+				else {
+					if (	m_iUpPriority != PR_VERYLOW &&
+						m_iUpPriority != PR_LOW &&
+						m_iUpPriority != PR_NORMAL &&
+						m_iUpPriority != PR_HIGH &&
+						m_iUpPriority != PR_VERYHIGH &&
+						m_iUpPriority != PR_POWERSHARE) {
+						m_iUpPriority = PR_NORMAL;
+					}					
+					m_bAutoUpPriority = false;
 				}
-				case FT_ATTRANSFERED:{
-					statistic.alltimetransferred += newtag.GetInt();
-					break;
+				break;
+			}
+			case FT_PERMISSIONS:{
+				// Ignore it, it's not used anymore.
+				break;
+			}
+			case FT_AICH_HASH: {
+				CAICHHash hash;
+				bool hashSizeOk =
+					hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+				wxASSERT(hashSizeOk);
+				if (hashSizeOk) {
+					m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 				}
-				case FT_ATTRANSFEREDHI:{
-					statistic.alltimetransferred =
-						(((uint64)newtag.GetInt()) << 32) +
-						((uint64)statistic.alltimetransferred);
-					break;
+				break;
+			}
+			case FT_KADLASTPUBLISHSRC:{
+				wxASSERT( newtag.IsInt() );
+				if (newtag.IsInt()) {
+					SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
 				}
-				case FT_ATREQUESTED:{
-					statistic.alltimerequested = newtag.GetInt();
-					break;
+				if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+					//There may be a posibility of an older client that saved a random number here.. This will check for that..
+					SetLastPublishTimeKadSrc(0,0);
 				}
- 				case FT_ATACCEPTED:{
-					statistic.alltimeaccepted = newtag.GetInt();
-					break;
+				break;
+			}
+			case FT_KADLASTPUBLISHNOTES:{
+				wxASSERT( newtag.IsInt() );
+				if (newtag.IsInt()) {
+					SetLastPublishTimeKadNotes( newtag.GetInt() );
 				}
-				case FT_ULPRIORITY:{
-					m_iUpPriority = newtag.GetInt();
-					if( m_iUpPriority == PR_AUTO ){
-						m_iUpPriority = PR_HIGH;
-						m_bAutoUpPriority = true;
-					}
-					else {
-						if (	m_iUpPriority != PR_VERYLOW &&
-							m_iUpPriority != PR_LOW &&
-							m_iUpPriority != PR_NORMAL &&
-							m_iUpPriority != PR_HIGH &&
-							m_iUpPriority != PR_VERYHIGH &&
-							m_iUpPriority != PR_POWERSHARE) {
-							m_iUpPriority = PR_NORMAL;
-						}					
-						m_bAutoUpPriority = false;
-					}
-					break;
-				}
-				case FT_PERMISSIONS:{
-					// Ignore it, it's not used anymore.
-					break;
-				}
-				case FT_AICH_HASH: {
-					CAICHHash hash;
-					bool hashSizeOk =
-						hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
-					wxASSERT(hashSizeOk);
-					if (hashSizeOk) {
-						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
-					}
-					break;
-				}
-				case FT_KADLASTPUBLISHSRC:{
-					wxASSERT( newtag.IsInt() );
-					if (newtag.IsInt()) {
-						SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
-					}
-					if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-						//There may be a posibility of an older client that saved a random number here.. This will check for that..
-						SetLastPublishTimeKadSrc(0,0);
-					}
-					break;
-				}
-				case FT_KADLASTPUBLISHNOTES:{
-					wxASSERT( newtag.IsInt() );
-					if (newtag.IsInt()) {
-						SetLastPublishTimeKadNotes( newtag.GetInt() );
-					}
-					break;
-				}		
-				case FT_KADLASTPUBLISHKEY:
-					// Just purgue it
-					wxASSERT( newtag.IsInt() );
-					break;				
-				default:
-					// Store them here and write them back on saving.
-					taglist.Add(new CTag(newtag));
-			}	
-		}
-		return true;
-	} catch (...) {
-		AddDebugLogLineM( false, logGeneral,
-			wxT("Caught exception in CKnownFile::LoadTagsFromFile!") );
-		return false;
+				break;
+			}		
+			case FT_KADLASTPUBLISHKEY:
+				// Just purgue it
+				wxASSERT( newtag.IsInt() );
+				break;				
+			default:
+				// Store them here and write them back on saving.
+				taglist.Add(new CTag(newtag));
+		}	
 	}
+	
+	return true;
 }
 
-bool CKnownFile::LoadDateFromFile(const CFileDataIO* file){
+
+bool CKnownFile::LoadDateFromFile(const CFileDataIO* file)
+{
 	date = file->ReadUInt32();
 	return true;
 }
+
 
 bool CKnownFile::LoadFromFile(const CFileDataIO* file){
 	// SLUGFILLER: SafeHash - load first, verify later

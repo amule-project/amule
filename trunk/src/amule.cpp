@@ -1530,16 +1530,12 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		theApp.sharedfiles->Process();
 		
 		#ifdef __COMPILE_KAD__
-		try {
-			if( Kademlia::CKademlia::isRunning() ) {
-				Kademlia::CKademlia::process();
-				if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
-					Kademlia::CKademlia::stop();
-					Notify_ShowConnState(false, wxEmptyString);
-				}
+		if( Kademlia::CKademlia::isRunning() ) {
+			Kademlia::CKademlia::process();
+			if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
+				Kademlia::CKademlia::stop();
+				Notify_ShowConnState(false, wxEmptyString);
 			}
-		} catch (...) {
-			printf("FATAL: Unhandled exception on Kad core timer\n");
 		}
 		#endif
 			

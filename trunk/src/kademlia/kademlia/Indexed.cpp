@@ -252,8 +252,6 @@ void CIndexed::readFile(void)
 		}
 	} catch (const CIOException& ioe) {
 		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::readFile (IO error(%i))"),ioe.m_cause));
-	} catch (...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::readFile"));
 	}
 }
 
@@ -393,180 +391,170 @@ CIndexed::~CIndexed()
 		m_Notes_map.clear();
 	} catch ( const CIOException& ioe ) {
 		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::~CIndexed (IO error(%i))"), ioe.m_cause));
-	} catch (...)  {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::~CIndexed"));
 	}
 }
 
 
 void CIndexed::clean(void)
 {
-	try {
-		if( m_lastClean > time(NULL) ) {
-			return;
-		}
-
-		uint32 k_Removed = 0;
-		uint32 s_Removed = 0;
-		uint32 s_Total = 0;
-		uint32 k_Total = 0;
-		time_t tNow = time(NULL);
-
-		KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
-		while (itKeyHash != m_Keyword_map.end()) {
-			KeyHashMap::iterator curr_itKeyHash = itKeyHash++; // Don't change this to a ++it!
-			KeyHash* currKeyHash = curr_itKeyHash->second;
-			
-			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
-			for ( ; itSource != currKeyHash->m_Source_map.end(); ) {
-				CSourceKeyMap::iterator curr_itSource = itSource++; // Don't change this to a ++it!
-				Source* currSource = curr_itSource->second;
-
-				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
-				while (itEntry != currSource->entryList.end()) {
-					k_Total++;
-					
-					Kademlia::CEntry* currName = *itEntry;
-					if( !currName->source && currName->lifetime < tNow) {
-						k_Removed++;
-						itEntry = currSource->entryList.erase(itEntry);
-						delete currName;
-					} else {
-						++itEntry;
-					}
-				}
-				
-				if( currSource->entryList.empty()) {
-					currKeyHash->m_Source_map.erase(curr_itSource);
-					delete currSource;
-				}
-			}
-
-			if( currKeyHash->m_Source_map.empty()) {
-				m_Keyword_map.erase(curr_itKeyHash);
-				delete currKeyHash;
-			}
-		}
-
-		SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
-		while (itSrcHash != m_Sources_map.end()) {
-			SrcHashMap::iterator curr_itSrcHash = itSrcHash++; // Don't change this to a ++it!
-			SrcHash* currSrcHash = curr_itSrcHash->second;
-
-			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
-			while (itSource != currSrcHash->m_Source_map.end()) {
-				Source* currSource = *itSource;			
-				
-				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
-				while (itEntry != currSource->entryList.end()) {
-					s_Total++;
-					
-					Kademlia::CEntry* currName = *itEntry;
-					if (currName->lifetime < tNow) {
-						s_Removed++;
-						itEntry = currSource->entryList.erase(itEntry);
-						delete currName;
-					} else {
-						++itEntry;
-					}
-				}
-				
-				if( currSource->entryList.empty()) {
-					itSource = currSrcHash->m_Source_map.erase(itSource);
-					delete currSource;
-				} else {
-					++itSource;
-				}
-			}
-
-			if( currSrcHash->m_Source_map.empty()) {
-				m_Sources_map.erase(curr_itSrcHash);
-				delete currSrcHash;
-			}
-		}
-
-		m_totalIndexSource = s_Total;
-		m_totalIndexKeyword = k_Total;
-		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
-		m_lastClean = time(NULL) + MIN2S(30);
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::clean"));
-		wxASSERT(0);
+	if( m_lastClean > time(NULL) ) {
+		return;
 	}
+
+	uint32 k_Removed = 0;
+	uint32 s_Removed = 0;
+	uint32 s_Total = 0;
+	uint32 k_Total = 0;
+	time_t tNow = time(NULL);
+
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
+	while (itKeyHash != m_Keyword_map.end()) {
+		KeyHashMap::iterator curr_itKeyHash = itKeyHash++; // Don't change this to a ++it!
+		KeyHash* currKeyHash = curr_itKeyHash->second;
+		
+		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
+		for ( ; itSource != currKeyHash->m_Source_map.end(); ) {
+			CSourceKeyMap::iterator curr_itSource = itSource++; // Don't change this to a ++it!
+			Source* currSource = curr_itSource->second;
+
+			CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+			while (itEntry != currSource->entryList.end()) {
+				k_Total++;
+				
+				Kademlia::CEntry* currName = *itEntry;
+				if( !currName->source && currName->lifetime < tNow) {
+					k_Removed++;
+					itEntry = currSource->entryList.erase(itEntry);
+					delete currName;
+				} else {
+					++itEntry;
+				}
+			}
+			
+			if( currSource->entryList.empty()) {
+				currKeyHash->m_Source_map.erase(curr_itSource);
+				delete currSource;
+			}
+		}
+
+		if( currKeyHash->m_Source_map.empty()) {
+			m_Keyword_map.erase(curr_itKeyHash);
+			delete currKeyHash;
+		}
+	}
+
+	SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
+	while (itSrcHash != m_Sources_map.end()) {
+		SrcHashMap::iterator curr_itSrcHash = itSrcHash++; // Don't change this to a ++it!
+		SrcHash* currSrcHash = curr_itSrcHash->second;
+
+		CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+		while (itSource != currSrcHash->m_Source_map.end()) {
+			Source* currSource = *itSource;			
+			
+			CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+			while (itEntry != currSource->entryList.end()) {
+				s_Total++;
+				
+				Kademlia::CEntry* currName = *itEntry;
+				if (currName->lifetime < tNow) {
+					s_Removed++;
+					itEntry = currSource->entryList.erase(itEntry);
+					delete currName;
+				} else {
+					++itEntry;
+				}
+			}
+			
+			if( currSource->entryList.empty()) {
+				itSource = currSrcHash->m_Source_map.erase(itSource);
+				delete currSource;
+			} else {
+				++itSource;
+			}
+		}
+
+		if( currSrcHash->m_Source_map.empty()) {
+			m_Sources_map.erase(curr_itSrcHash);
+			delete currSrcHash;
+		}
+	}
+
+	m_totalIndexSource = s_Total;
+	m_totalIndexKeyword = k_Total;
+	AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
+	m_lastClean = time(NULL) + MIN2S(30);
 }
 
-bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load){
-	try {
-		if( !entry ) {
-			return false;
-		}
+bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load)
+{
+	if( !entry ) {
+		return false;
+	}
 
-		if( m_totalIndexKeyword > KADEMLIAMAXENTRIES ) {
+	if( m_totalIndexKeyword > KADEMLIAMAXENTRIES ) {
+		load = 100;
+		return false;
+	}
+
+	if( entry->size == 0 || entry->fileName.IsEmpty() || entry->taglist.size() == 0 || entry->lifetime < time(NULL)) {
+		return false;
+	}
+
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData())); 
+	KeyHash* currKeyHash = NULL;
+	if(itKeyHash == m_Keyword_map.end()) {
+		Source* currSource = new Source;
+		currSource->sourceID.setValue(sourceID);
+		currSource->entryList.push_front(entry);
+		currKeyHash = new KeyHash;
+		currKeyHash->keyID.setValue(keyID);
+		currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
+		m_Keyword_map[CCKey(currKeyHash->keyID.getData())] = currKeyHash;
+		load = 1;
+		m_totalIndexKeyword++;
+		return true;
+	} else {
+		currKeyHash = itKeyHash->second; 
+		uint32 indexTotal = currKeyHash->m_Source_map.size();
+		if ( indexTotal > KADEMLIAMAXINDEX ) {
 			load = 100;
+			//Too many entries for this Keyword..
 			return false;
 		}
-
-		if( entry->size == 0 || entry->fileName.IsEmpty() || entry->taglist.size() == 0 || entry->lifetime < time(NULL)) {
-			return false;
-		}
-
-		KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData())); 
-		KeyHash* currKeyHash = NULL;
-		if(itKeyHash == m_Keyword_map.end()) {
-			Source* currSource = new Source;
-			currSource->sourceID.setValue(sourceID);
+		Source* currSource = NULL;
+		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
+		if(itSource != currKeyHash->m_Source_map.end()) {
+			currSource = itSource->second;
+			if (currSource->entryList.size() > 0) {
+				if( indexTotal > KADEMLIAMAXINDEX - 5000 ) {
+					load = 100;
+					//We are in a hot node.. If we continued to update all the publishes
+					//while this index is full, popular files will be the only thing you index.
+					return false;
+				}
+				delete currSource->entryList.front();
+				currSource->entryList.pop_front();
+			} else {
+				m_totalIndexKeyword++;
+			}
+			load = (indexTotal*100)/KADEMLIAMAXINDEX;
 			currSource->entryList.push_front(entry);
-			currKeyHash = new KeyHash;
-			currKeyHash->keyID.setValue(keyID);
-			currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
-			m_Keyword_map[CCKey(currKeyHash->keyID.getData())] = currKeyHash;
-			load = 1;
-			m_totalIndexKeyword++;
 			return true;
 		} else {
-			currKeyHash = itKeyHash->second; 
-			uint32 indexTotal = currKeyHash->m_Source_map.size();
-			if ( indexTotal > KADEMLIAMAXINDEX ) {
-				load = 100;
-				//Too many entries for this Keyword..
-				return false;
-			}
-			Source* currSource = NULL;
-			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
-			if(itSource != currKeyHash->m_Source_map.end()) {
-				currSource = itSource->second;
-				if (currSource->entryList.size() > 0) {
-					if( indexTotal > KADEMLIAMAXINDEX - 5000 ) {
-						load = 100;
-						//We are in a hot node.. If we continued to update all the publishes
-						//while this index is full, popular files will be the only thing you index.
-						return false;
-					}
-					delete currSource->entryList.front();
-					currSource->entryList.pop_front();
-				} else {
-					m_totalIndexKeyword++;
-				}
-				load = (indexTotal*100)/KADEMLIAMAXINDEX;
-				currSource->entryList.push_front(entry);
-				return true;
-			} else {
-				currSource = new Source;
-				currSource->sourceID.setValue(sourceID);
-				currSource->entryList.push_front(entry);
-				currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
-				m_totalIndexKeyword++;
-				load = (indexTotal*100)/KADEMLIAMAXINDEX;
-				return true;
-			}
+			currSource = new Source;
+			currSource->sourceID.setValue(sourceID);
+			currSource->entryList.push_front(entry);
+			currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
+			m_totalIndexKeyword++;
+			load = (indexTotal*100)/KADEMLIAMAXINDEX;
+			return true;
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::AddKeyword"));
-		wxASSERT(0);
 	}
+	
 	return false;
-
 }
+
 
 bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load)
 {
@@ -576,72 +564,70 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	if( entry->ip == 0 || entry->tcpport == 0 || entry->udpport == 0 || entry->taglist.size() == 0 || entry->lifetime < time(NULL)) {
 		return false;
 	}
-	try {
-		SrcHash* currSrcHash = NULL;
-		SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
-		if(itSrcHash == m_Sources_map.end()) {
-			Source* currSource = new Source;
-			currSource->sourceID.setValue(sourceID);
-			currSource->entryList.push_front(entry);
-			currSrcHash = new SrcHash;
-			currSrcHash->keyID.setValue(keyID);
-			currSrcHash->m_Source_map.push_front(currSource);
-			m_Sources_map[CCKey(currSrcHash->keyID.getData())] =  currSrcHash;
-			m_totalIndexSource++;
-			load = 1;
-			return true;
-		} else {
-			currSrcHash = itSrcHash->second;
-			uint32 size = currSrcHash->m_Source_map.size();
+		
+	SrcHash* currSrcHash = NULL;
+	SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+	if(itSrcHash == m_Sources_map.end()) {
+		Source* currSource = new Source;
+		currSource->sourceID.setValue(sourceID);
+		currSource->entryList.push_front(entry);
+		currSrcHash = new SrcHash;
+		currSrcHash->keyID.setValue(keyID);
+		currSrcHash->m_Source_map.push_front(currSource);
+		m_Sources_map[CCKey(currSrcHash->keyID.getData())] =  currSrcHash;
+		m_totalIndexSource++;
+		load = 1;
+		return true;
+	} else {
+		currSrcHash = itSrcHash->second;
+		uint32 size = currSrcHash->m_Source_map.size();
 
-			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
-			for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
-				Source* currSource = *itSource;
-				if( currSource->entryList.size() ) {
-					CEntry* currEntry = currSource->entryList.front();
-					wxASSERT(currEntry!=NULL);
-					if( currEntry->ip == entry->ip && ( currEntry->tcpport == entry->tcpport || currEntry->udpport == entry->udpport )) {
-						CEntry* currName = currSource->entryList.front();
-						currSource->entryList.pop_front();
-						delete currName;
-						currSource->entryList.push_front(entry);
-						load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
-						return true;
-					}
-				} else {
-					//This should never happen!
+		CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+		for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
+			Source* currSource = *itSource;
+			if( currSource->entryList.size() ) {
+				CEntry* currEntry = currSource->entryList.front();
+				wxASSERT(currEntry!=NULL);
+				if( currEntry->ip == entry->ip && ( currEntry->tcpport == entry->tcpport || currEntry->udpport == entry->udpport )) {
+					CEntry* currName = currSource->entryList.front();
+					currSource->entryList.pop_front();
+					delete currName;
 					currSource->entryList.push_front(entry);
-					wxASSERT(0);
 					load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
 					return true;
 				}
-			}
-			if( size > KADEMLIAMAXSOUCEPERFILE ) {
-				Source* currSource = currSrcHash->m_Source_map.back();
-				currSrcHash->m_Source_map.pop_back();
-				wxASSERT(currSource!=NULL);
-				Kademlia::CEntry* currName = currSource->entryList.back();
-				currSource->entryList.pop_back();
-				wxASSERT(currName!=NULL);
-				delete currName;
-				currSource->sourceID.setValue(sourceID);
-				currSource->entryList.push_front(entry);
-				currSrcHash->m_Source_map.push_front(currSource);
-				load = 100;
-				return true;
 			} else {
-				Source* currSource = new Source;
-				currSource->sourceID.setValue(sourceID);
+				//This should never happen!
 				currSource->entryList.push_front(entry);
-				currSrcHash->m_Source_map.push_front(currSource);
-				m_totalIndexSource++;
+				wxASSERT(0);
 				load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
 				return true;
 			}
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::AddSource"));
+		if( size > KADEMLIAMAXSOUCEPERFILE ) {
+			Source* currSource = currSrcHash->m_Source_map.back();
+			currSrcHash->m_Source_map.pop_back();
+			wxASSERT(currSource!=NULL);
+			Kademlia::CEntry* currName = currSource->entryList.back();
+			currSource->entryList.pop_back();
+			wxASSERT(currName!=NULL);
+			delete currName;
+			currSource->sourceID.setValue(sourceID);
+			currSource->entryList.push_front(entry);
+			currSrcHash->m_Source_map.push_front(currSource);
+			load = 100;
+			return true;
+		} else {
+			Source* currSource = new Source;
+			currSource->sourceID.setValue(sourceID);
+			currSource->entryList.push_front(entry);
+			currSrcHash->m_Source_map.push_front(currSource);
+			m_totalIndexSource++;
+			load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
+			return true;
+		}
 	}
+	
 	return false;
 }
 
@@ -653,70 +639,68 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	if( entry->ip == 0 || entry->taglist.size() == 0 ) {
 		return false;
 	}
-	try {
-		SrcHash* currNoteHash = NULL;
-		SrcHashMap::iterator itNoteHash = m_Notes_map.find(CCKey(keyID.getData()));
-		if(itNoteHash == m_Notes_map.end()) {
-			Source* currNote = new Source;
-			currNote->sourceID.setValue(sourceID);
-			currNote->entryList.push_front(entry);
-			currNoteHash = new SrcHash;
-			currNoteHash->keyID.setValue(keyID);
-			currNoteHash->m_Source_map.push_front(currNote);
-			m_Notes_map[CCKey(currNoteHash->keyID.getData())] = currNoteHash;
-			load = 1;
-			return true;
-		} else {
-			currNoteHash = itNoteHash->second;
-			uint32 size = currNoteHash->m_Source_map.size();
+		
+	SrcHash* currNoteHash = NULL;
+	SrcHashMap::iterator itNoteHash = m_Notes_map.find(CCKey(keyID.getData()));
+	if(itNoteHash == m_Notes_map.end()) {
+		Source* currNote = new Source;
+		currNote->sourceID.setValue(sourceID);
+		currNote->entryList.push_front(entry);
+		currNoteHash = new SrcHash;
+		currNoteHash->keyID.setValue(keyID);
+		currNoteHash->m_Source_map.push_front(currNote);
+		m_Notes_map[CCKey(currNoteHash->keyID.getData())] = currNoteHash;
+		load = 1;
+		return true;
+	} else {
+		currNoteHash = itNoteHash->second;
+		uint32 size = currNoteHash->m_Source_map.size();
 
-			CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
-			for (; itSource != currNoteHash->m_Source_map.end(); ++itSource) {			
-				Source* currNote = *itSource;			
-				if( currNote->entryList.size() ) {
-					CEntry* currEntry = currNote->entryList.front();
-					wxASSERT(currEntry!=NULL);
-					if(currEntry->ip == entry->ip || !currEntry->sourceID.compareTo(entry->sourceID)) {
-						CEntry* currName = currNote->entryList.front();
-						currNote->entryList.pop_front();
-						delete currName;
-						currNote->entryList.push_front(entry);
-						load = (size*100)/KADEMLIAMAXNOTESPERFILE;
-						return true;
-					}
-				} else {
-					//This should never happen!
+		CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
+		for (; itSource != currNoteHash->m_Source_map.end(); ++itSource) {			
+			Source* currNote = *itSource;			
+			if( currNote->entryList.size() ) {
+				CEntry* currEntry = currNote->entryList.front();
+				wxASSERT(currEntry!=NULL);
+				if(currEntry->ip == entry->ip || !currEntry->sourceID.compareTo(entry->sourceID)) {
+					CEntry* currName = currNote->entryList.front();
+					currNote->entryList.pop_front();
+					delete currName;
 					currNote->entryList.push_front(entry);
-					wxASSERT(0);
 					load = (size*100)/KADEMLIAMAXNOTESPERFILE;
 					return true;
 				}
-			}
-			if( size > KADEMLIAMAXNOTESPERFILE ) {
-				Source* currNote = currNoteHash->m_Source_map.back();
-				currNoteHash->m_Source_map.pop_back();
-				wxASSERT(currNote!=NULL);
-				CEntry* currName = currNote->entryList.back();
-				currNote->entryList.pop_back();
-				wxASSERT(currName!=NULL);
-				delete currName;
-				currNote->sourceID.setValue(sourceID);
-				currNote->entryList.push_front(entry);
-				currNoteHash->m_Source_map.push_front(currNote);
-				load = 100;
-				return true;
 			} else {
-				Source* currNote = new Source;
-				currNote->sourceID.setValue(sourceID);
+				//This should never happen!
 				currNote->entryList.push_front(entry);
-				currNoteHash->m_Source_map.push_front(currNote);
+				wxASSERT(0);
 				load = (size*100)/KADEMLIAMAXNOTESPERFILE;
 				return true;
 			}
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::AddNotes"));
+		if( size > KADEMLIAMAXNOTESPERFILE ) {
+			Source* currNote = currNoteHash->m_Source_map.back();
+			currNoteHash->m_Source_map.pop_back();
+			wxASSERT(currNote!=NULL);
+			CEntry* currName = currNote->entryList.back();
+			currNote->entryList.pop_back();
+			wxASSERT(currName!=NULL);
+			delete currName;
+			currNote->sourceID.setValue(sourceID);
+			currNote->entryList.push_front(entry);
+			currNoteHash->m_Source_map.push_front(currNote);
+			load = 100;
+			return true;
+		} else {
+			Source* currNote = new Source;
+			currNote->sourceID.setValue(sourceID);
+			currNote->entryList.push_front(entry);
+			currNoteHash->m_Source_map.push_front(currNote);
+			load = (size*100)/KADEMLIAMAXNOTESPERFILE;
+			return true;
+		}
 	}
+	
 	return false;
 }
 
@@ -962,88 +946,33 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 
 void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32 ip, uint16 port)
 {
-	try {
-		KeyHash* currKeyHash = NULL;
-		KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData()));
-		if(itKeyHash != m_Keyword_map.end()) {
-			currKeyHash = itKeyHash->second;
-			byte packet[1024*50];
-			CByteIO bio(packet,sizeof(packet));
-			bio.writeByte(OP_KADEMLIAHEADER);
-			bio.writeByte(KADEMLIA_SEARCH_RES);
-			bio.writeUInt128(keyID);
-			bio.writeUInt16(50);
-			uint16 maxResults = 300;
-			uint16 count = 0;
-			CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
-			for ( ; itSource != currKeyHash->m_Source_map.end(); ++itSource) {
-				Source* currSource =  itSource->second;
+	KeyHash* currKeyHash = NULL;
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData()));
+	if(itKeyHash != m_Keyword_map.end()) {
+		currKeyHash = itKeyHash->second;
+		byte packet[1024*50];
+		CByteIO bio(packet,sizeof(packet));
+		bio.writeByte(OP_KADEMLIAHEADER);
+		bio.writeByte(KADEMLIA_SEARCH_RES);
+		bio.writeUInt128(keyID);
+		bio.writeUInt16(50);
+		uint16 maxResults = 300;
+		uint16 count = 0;
+		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
+		for ( ; itSource != currKeyHash->m_Source_map.end(); ++itSource) {
+			Source* currSource =  itSource->second;
 
-				CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
-				for (; itEntry != currSource->entryList.end(); ++itEntry) {
-					Kademlia::CEntry* currName = *itEntry;
-					if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
-						if( count < maxResults ) {
-							bio.writeUInt128(currName->sourceID);
-							bio.writeTagList(currName->taglist);
-							count++;
-							if( count % 50 == 0 ) {
-								uint32 len = sizeof(packet)-bio.getAvailable();
-								AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
-								CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
-								bio.reset();
-								bio.writeByte(OP_KADEMLIAHEADER);
-								bio.writeByte(KADEMLIA_SEARCH_RES);
-								bio.writeUInt128(keyID);
-								bio.writeUInt16(50);
-							}
-						}
-					}
-				}
-			}
-			uint16 ccount = count % 50;
-			if( ccount ) {
-				uint32 len = sizeof(packet)-bio.getAvailable();
-				ENDIAN_SWAP_I_16(ccount);
-				memcpy(packet+18, &ccount, 2);
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
-				CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
-			}
-			clean();
-		}
-	} catch(...)  {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::SendValidKeywordResult"));
-	}
-}
-
-void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port)
-{
-	try {
-		SrcHash* currSrcHash = NULL;
-		SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
-		if(itSrcHash != m_Sources_map.end()) {
-			currSrcHash = itSrcHash->second;
-			byte packet[1024*50];
-			CByteIO bio(packet,sizeof(packet));
-			bio.writeByte(OP_KADEMLIAHEADER);
-			bio.writeByte(KADEMLIA_SEARCH_RES);
-			bio.writeUInt128(keyID);
-			bio.writeUInt16(50);
-			uint16 maxResults = 300;
-			uint16 count = 0;
-
-			CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
-			for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
-				Source* currSource = *itSource;	
-				if( currSource->entryList.size() ) {
-					Kademlia::CEntry* currName = currSource->entryList.front();
+			CKadEntryPtrList::iterator itEntry = currSource->entryList.begin();
+			for (; itEntry != currSource->entryList.end(); ++itEntry) {
+				Kademlia::CEntry* currName = *itEntry;
+				if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
 					if( count < maxResults ) {
 						bio.writeUInt128(currName->sourceID);
 						bio.writeTagList(currName->taglist);
 						count++;
 						if( count % 50 == 0 ) {
 							uint32 len = sizeof(packet)-bio.getAvailable();
-							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip , port));
+							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
 							CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 							bio.reset();
 							bio.writeByte(OP_KADEMLIAHEADER);
@@ -1054,70 +983,113 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 					}
 				}
 			}
-			uint16 ccount = count % 50;
-			if( ccount ) {
-				ENDIAN_SWAP_I_16(ccount);
-				uint32 len = sizeof(packet)-bio.getAvailable();
-				memcpy(packet+18, &ccount, 2);
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
-				CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
-			}
-			clean();
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::SendValidSourceResult"));
+		uint16 ccount = count % 50;
+		if( ccount ) {
+			uint32 len = sizeof(packet)-bio.getAvailable();
+			ENDIAN_SWAP_I_16(ccount);
+			memcpy(packet+18, &ccount, 2);
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
+			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+		}
+		clean();
 	}
 }
 
-void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& sourceID, uint32 ip, uint16 port)
+void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port)
 {
-	try {
-		SrcHash* currNoteHash = NULL;
-		SrcHashMap::iterator itNote = m_Notes_map.find(CCKey(keyID.getData()));
-		if(itNote != m_Notes_map.end()) {
-			currNoteHash = itNote->second;		
-			byte packet[1024*50];
-			CByteIO bio(packet,sizeof(packet));
-			bio.writeByte(OP_KADEMLIAHEADER);
-			bio.writeByte(KADEMLIA_SRC_NOTES_RES);
-			bio.writeUInt128(keyID);
-			bio.writeUInt16(50);
-			uint16 maxResults = 50;
-			uint16 count = 0;
+	SrcHash* currSrcHash = NULL;
+	SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+	if(itSrcHash != m_Sources_map.end()) {
+		currSrcHash = itSrcHash->second;
+		byte packet[1024*50];
+		CByteIO bio(packet,sizeof(packet));
+		bio.writeByte(OP_KADEMLIAHEADER);
+		bio.writeByte(KADEMLIA_SEARCH_RES);
+		bio.writeUInt128(keyID);
+		bio.writeUInt16(50);
+		uint16 maxResults = 300;
+		uint16 count = 0;
 
-			CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
-			for (; itSource != currNoteHash->m_Source_map.end(); ++itSource ) {
-				Source* currNote = *itSource;
-				if( currNote->entryList.size() ) {
-					Kademlia::CEntry* currName = currNote->entryList.front();
-					if( count < maxResults ) {
-						bio.writeUInt128(currName->sourceID);
-						bio.writeTagList(currName->taglist);
-					}
+		CKadSourcePtrList::iterator itSource = currSrcHash->m_Source_map.begin();
+		for (; itSource != currSrcHash->m_Source_map.end(); ++itSource) {
+			Source* currSource = *itSource;	
+			if( currSource->entryList.size() ) {
+				Kademlia::CEntry* currName = currSource->entryList.front();
+				if( count < maxResults ) {
+					bio.writeUInt128(currName->sourceID);
+					bio.writeTagList(currName->taglist);
+					count++;
 					if( count % 50 == 0 ) {
 						uint32 len = sizeof(packet)-bio.getAvailable();
-						AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
+						AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip , port));
 						CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 						bio.reset();
 						bio.writeByte(OP_KADEMLIAHEADER);
-						bio.writeByte(KADEMLIA_SRC_NOTES_RES);
+						bio.writeByte(KADEMLIA_SEARCH_RES);
 						bio.writeUInt128(keyID);
 						bio.writeUInt16(50);
 					}
 				}
 			}
-			uint16 ccount = count % 50;
-			if( ccount ) {
-				ENDIAN_SWAP_I_16(ccount);
-				uint32 len = sizeof(packet)-bio.getAvailable();
-				memcpy(packet+18, &ccount, 2);
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
-				CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
-			}
-			//clean(); //Not needed at the moment.
 		}
-	} catch(...) {
-		AddDebugLogLineM(false, logKadIndex, wxT("Exception in CIndexed::SendValidSourceResult"));
+		uint16 ccount = count % 50;
+		if( ccount ) {
+			ENDIAN_SWAP_I_16(ccount);
+			uint32 len = sizeof(packet)-bio.getAvailable();
+			memcpy(packet+18, &ccount, 2);
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
+			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+		}
+		clean();
+	}
+}
+
+void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& sourceID, uint32 ip, uint16 port)
+{
+	SrcHash* currNoteHash = NULL;
+	SrcHashMap::iterator itNote = m_Notes_map.find(CCKey(keyID.getData()));
+	if(itNote != m_Notes_map.end()) {
+		currNoteHash = itNote->second;		
+		byte packet[1024*50];
+		CByteIO bio(packet,sizeof(packet));
+		bio.writeByte(OP_KADEMLIAHEADER);
+		bio.writeByte(KADEMLIA_SRC_NOTES_RES);
+		bio.writeUInt128(keyID);
+		bio.writeUInt16(50);
+		uint16 maxResults = 50;
+		uint16 count = 0;
+
+		CKadSourcePtrList::iterator itSource = currNoteHash->m_Source_map.begin();
+		for (; itSource != currNoteHash->m_Source_map.end(); ++itSource ) {
+			Source* currNote = *itSource;
+			if( currNote->entryList.size() ) {
+				Kademlia::CEntry* currName = currNote->entryList.front();
+				if( count < maxResults ) {
+					bio.writeUInt128(currName->sourceID);
+					bio.writeTagList(currName->taglist);
+				}
+				if( count % 50 == 0 ) {
+					uint32 len = sizeof(packet)-bio.getAvailable();
+					AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
+					CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+					bio.reset();
+					bio.writeByte(OP_KADEMLIAHEADER);
+					bio.writeByte(KADEMLIA_SRC_NOTES_RES);
+					bio.writeUInt128(keyID);
+					bio.writeUInt16(50);
+				}
+			}
+		}
+		uint16 ccount = count % 50;
+		if( ccount ) {
+			ENDIAN_SWAP_I_16(ccount);
+			uint32 len = sizeof(packet)-bio.getAvailable();
+			memcpy(packet+18, &ccount, 2);
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
+			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+		}
+		//clean(); //Not needed at the moment.
 	}
 }
 

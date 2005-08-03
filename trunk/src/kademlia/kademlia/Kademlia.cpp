@@ -90,40 +90,37 @@ void CKademlia::start(void)
 
 void CKademlia::start(CPrefs *prefs)
 {
-	try {
-		if( m_running ) {
-			delete prefs;
-			return;
-		}
-
-		AddDebugLogLineM(false, logKadMain, wxT("Starting Kademlia"));
-
-		m_nextSearchJumpStart = time(NULL);
-		m_nextSelfLookup = time(NULL) + MIN2S(3);
-		m_statusUpdate = time(NULL);
-		m_bigTimer = time(NULL);
-		m_nextFirewallCheck = time(NULL) + (HR2S(1));
-		// First Firewall check is done on connect, find a buddy after the first 10min of starting
-		// the client to try to allow it to settle down..
-		m_nextFindBuddy = time(NULL) + (MIN2S(5));
-		m_bootstrap = 0;
-
-		srand((uint32)time(NULL));
-		instance = new CKademlia();	
-		instance->m_prefs = prefs;
-		instance->m_udpListener = NULL;
-		instance->m_routingZone = NULL;
-		instance->m_indexed = new CIndexed();
-		instance->m_routingZone = new CRoutingZone();
-		instance->m_udpListener = new CKademliaUDPListener();
-		m_running = true;
-	} catch (...) {
-		AddDebugLogLineM( false, logKadMain, wxT("Exception in CKademlia::start"));
+	if( m_running ) {
+		delete prefs;
+		return;
 	}
+
+	AddDebugLogLineM(false, logKadMain, wxT("Starting Kademlia"));
+
+	m_nextSearchJumpStart = time(NULL);
+	m_nextSelfLookup = time(NULL) + MIN2S(3);
+	m_statusUpdate = time(NULL);
+	m_bigTimer = time(NULL);
+	m_nextFirewallCheck = time(NULL) + (HR2S(1));
+	// First Firewall check is done on connect, find a buddy after the first 10min of starting
+	// the client to try to allow it to settle down..
+	m_nextFindBuddy = time(NULL) + (MIN2S(5));
+	m_bootstrap = 0;
+
+	srand((uint32)time(NULL));
+	instance = new CKademlia();	
+	instance->m_prefs = prefs;
+	instance->m_udpListener = NULL;
+	instance->m_routingZone = NULL;
+	instance->m_indexed = new CIndexed();
+	instance->m_routingZone = new CRoutingZone();
+	instance->m_udpListener = new CKademliaUDPListener();
+	m_running = true;
 }
 
-void CKademlia::stop() {
-	
+
+void CKademlia::stop()
+{	
 	if( !m_running ) {
 		return;
 	}
@@ -132,46 +129,21 @@ void CKademlia::stop() {
 	m_running = false;
 
 	CSearchManager::stopAllSearches();
-	try {
-		delete instance->m_udpListener;
-		instance->m_udpListener = NULL;
-	} catch(...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (UDP Listener)"));
-		wxASSERT(0);
-	}
+	delete instance->m_udpListener;
+	instance->m_udpListener = NULL;
 
-	try {
-		delete instance->m_routingZone;
-		instance->m_routingZone = NULL;
-	} catch(...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Routing Zone)"));
-		wxASSERT(0);
-	}
+	delete instance->m_routingZone;
+	instance->m_routingZone = NULL;
 
-	try {
-		delete instance->m_indexed;
-		instance->m_indexed = NULL;
-	} catch(...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Indexed)"));
-		wxASSERT(0);
-	}
+	delete instance->m_indexed;
+	instance->m_indexed = NULL;
 
-	try {
-		delete instance->m_prefs;
-		instance->m_prefs = NULL;
-	} catch(...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (Prefs)"));
-		wxASSERT(0);
-	}
+	delete instance->m_prefs;
+	instance->m_prefs = NULL;
 
-	try {
-		delete instance;
-	} catch(...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in CKademlia::stop (instance)"));
-		wxASSERT(0);
-	}
-	
+	delete instance;
 	instance = NULL;
+
 	m_events.clear();
 }
 
@@ -189,85 +161,70 @@ void CKademlia::process()
 	uint32 tempUsers = 0;
 	uint32 lastContact = 0;
 	bool updateUserFile = false;
-	try
-	{
-		now = time(NULL);
-		wxASSERT(instance->m_prefs != NULL);
-		lastContact = instance->m_prefs->getLastContact();
-		CSearchManager::updateStats();
-		if( m_statusUpdate <= now ) {
-			updateUserFile = true;
-			m_statusUpdate = MIN2S(1) + now;
-		}
-		if( m_nextFirewallCheck <= now) {
-			RecheckFirewalled();
-		}
-		if (m_nextSelfLookup <= now) {
-			CUInt128 me;
-			instance->m_prefs->getKadID(&me);
-			CSearchManager::findNodeComplete(me);
-			m_nextSelfLookup = HR2S(4) + now;
-		}
-		if (m_nextFindBuddy <= now) {
-			instance->m_prefs->setFindBuddy();
-			m_nextFindBuddy = MIN2S(5) + m_nextFirewallCheck;
-		}
-		for (it = m_events.begin(); it != m_events.end(); it++) {
-			zone = it->first;
-			if( updateUserFile ) {
-				tempUsers = zone->estimateCount();
-				if( maxUsers < tempUsers ) {
-					maxUsers = tempUsers;
-				}
+		
+	now = time(NULL);
+	wxASSERT(instance->m_prefs != NULL);
+	lastContact = instance->m_prefs->getLastContact();
+	CSearchManager::updateStats();
+	if( m_statusUpdate <= now ) {
+		updateUserFile = true;
+		m_statusUpdate = MIN2S(1) + now;
+	}
+	if( m_nextFirewallCheck <= now) {
+		RecheckFirewalled();
+	}
+	if (m_nextSelfLookup <= now) {
+		CUInt128 me;
+		instance->m_prefs->getKadID(&me);
+		CSearchManager::findNodeComplete(me);
+		m_nextSelfLookup = HR2S(4) + now;
+	}
+	if (m_nextFindBuddy <= now) {
+		instance->m_prefs->setFindBuddy();
+		m_nextFindBuddy = MIN2S(5) + m_nextFirewallCheck;
+	}
+	for (it = m_events.begin(); it != m_events.end(); it++) {
+		zone = it->first;
+		if( updateUserFile ) {
+			tempUsers = zone->estimateCount();
+			if( maxUsers < tempUsers ) {
+				maxUsers = tempUsers;
 			}
-			if (m_bigTimer <= now) {
-				try {
-					if( zone->m_nextBigTimer <= now ) {
-						if(zone->onBigTimer()) {
-							zone->m_nextBigTimer = HR2S(1) + now;
-							m_bigTimer = SEC(10) + now;
-						}
-					} else {
-						if( lastContact && ( (now - lastContact) > (KADEMLIADISCONNECTDELAY-MIN2S(5)))) {
-							if(zone->onBigTimer()) {
-								zone->m_nextBigTimer = HR2S(1) + now;
-								m_bigTimer = SEC(10) + now;
-							}
-						} 
+		}
+		if (m_bigTimer <= now) {
+			if( zone->m_nextBigTimer <= now ) {
+				if(zone->onBigTimer()) {
+					zone->m_nextBigTimer = HR2S(1) + now;
+					m_bigTimer = SEC(10) + now;
+				}
+			} else {
+				if( lastContact && ( (now - lastContact) > (KADEMLIADISCONNECTDELAY-MIN2S(5)))) {
+					if(zone->onBigTimer()) {
+						zone->m_nextBigTimer = HR2S(1) + now;
+						m_bigTimer = SEC(10) + now;
 					}
-				} catch (...) {
-					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Contact)"));
-				}
-			}
-			if (zone->m_nextSmallTimer <= now) {
-				try {
-					zone->onSmallTimer();
-				} catch (...) {
-					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Timer)"));
-				}
-				zone->m_nextSmallTimer = MIN2S(1) + now;
-			}
-				// This is a convenient place to add this, although not related to routing
-			if (m_nextSearchJumpStart <= now) {
-				try {
-					CSearchManager::jumpStart();
-				} catch (...) {
-					AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Search Manager)"));
-				}
-				m_nextSearchJumpStart += SEARCH_JUMPSTART;
+				} 
 			}
 		}
 
-		//Update user count only if changed.
-		if( updateUserFile ) {
-			if( maxUsers != instance->m_prefs->getKademliaUsers()) {
-				instance->m_prefs->setKademliaUsers(maxUsers);
-				instance->m_prefs->setKademliaFiles();
-				theApp.ShowUserCount();
-			}
+		if (zone->m_nextSmallTimer <= now) {
+			zone->onSmallTimer();
+			zone->m_nextSmallTimer = MIN2S(1) + now;
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadMain, wxT("Exception in Kademlia::Process (Main)"));
+			// This is a convenient place to add this, although not related to routing
+		if (m_nextSearchJumpStart <= now) {
+			CSearchManager::jumpStart();
+			m_nextSearchJumpStart += SEARCH_JUMPSTART;
+		}
+	}
+
+	//Update user count only if changed.
+	if( updateUserFile ) {
+		if( maxUsers != instance->m_prefs->getKademliaUsers()) {
+			instance->m_prefs->setKademliaUsers(maxUsers);
+			instance->m_prefs->setKademliaFiles();
+			theApp.ShowUserCount();
+		}
 	}
 }
 
