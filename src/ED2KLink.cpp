@@ -30,7 +30,7 @@
 #include <wx/defs.h>			// Needed before any other wx/*.h
 
 #include "ED2KLink.h"			// Interface declarations.
-#include "SafeFile.h"			// Needed for CSafeMemFile
+#include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for unicode2char
 
@@ -194,7 +194,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 
 	// Parse sources
 	if ( !sources.IsEmpty() ) {
-		m_sources = new CSafeMemFile();
+		m_sources = new CMemFile();
 		m_sources->WriteUInt16( 0 );
 		
 		wxString srcs = sources;
@@ -251,7 +251,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		if ( tmp_hash.StartsWith( wxT("p=") ) ) {
 			tmp_hash.Remove( 0, 2 );
 		
-			m_hashset = new CSafeMemFile();
+			m_hashset = new CMemFile();
 			m_hashset->WriteHash16(m_hash);
 			m_hashset->WriteUInt16(0);
 

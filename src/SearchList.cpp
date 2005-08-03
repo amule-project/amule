@@ -31,7 +31,7 @@
 #include "OtherFunctions.h"	// Needed for GetFiletypeByName
 #include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp
 #include "ServerSocket.h"
 #include "Server.h"
@@ -128,7 +128,7 @@ void *CGlobalSearchThread::Entry()
 	return NULL;
 }
 
-CSearchFile::CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory, bool nKademlia)
+CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory, bool nKademlia)
 {
 	m_nSearchID = nSearchID;
 	m_nKademlia = nKademlia;
@@ -323,7 +323,7 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	m_resultType = typeText;
 	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
 
-	CSafeMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
+	CMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
 	
 	if (search_type == KadSearch) {
 		#ifdef __COMPILE_KAD__
@@ -430,7 +430,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	}
 #endif
 
-	const CSafeMemFile packet((byte*)in_packet, size);
+	const CMemFile packet((byte*)in_packet, size);
 	uint32 results = packet.ReadUInt32();
 	bool unicoded = (Sender && Sender->GetUnicodeSupport());
 	for (unsigned int i = 0; i != results; ++i){			
@@ -458,7 +458,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 
 void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, bool bOptUTF8, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
 {
-	CSafeMemFile packet((byte*)in_packet,size,0);
+	CMemFile packet((byte*)in_packet,size,0);
 
 	uint32 results = packet.ReadUInt32();
 
@@ -470,7 +470,7 @@ void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, bool b
 }
 
 
-void CSearchList::ProcessUDPSearchanswer(const CSafeMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort)
+void CSearchList::ProcessUDPSearchanswer(const CMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort)
 {
 	CSearchFile* toadd = new CSearchFile(packet, bOptUTF8, m_CurrentSearch, nServerIP, nServerPort);
 	AddToList(toadd);
@@ -601,7 +601,7 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CSafeMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, const wxString& typeText,
+CMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, const wxString& typeText,
 				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding)
 {
 	// Count the number of used parameters
@@ -614,7 +614,7 @@ CSafeMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, co
 	if ( !extension.IsEmpty() )	++parametercount;
 	
 	// Must write parametercount - 1 parameter headers
-	CSafeMemFile* data =  new CSafeMemFile(100);
+	CMemFile* data =  new CMemFile(100);
 	
 	if (kad_padding) {
 		// We need to make some room for the keyword hash
@@ -693,7 +693,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	EUtf8Str eStrEncode = utf8strNone;
 #endif
 	
-	CSafeMemFile temp(250);
+	CMemFile temp(250);
 	byte fileid[16];
 	fileID->toByteArray(fileid);
 	temp.WriteHash16(fileid);

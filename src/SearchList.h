@@ -38,7 +38,7 @@
 #include <map>
 #include <vector>
 
-class CSafeMemFile;
+class CMemFile;
 class CMD4Hash;
 class CServer;
 class CSearchList;
@@ -71,7 +71,7 @@ class CSearchFile : public CAbstractFile
 {
 	friend class CPartFile;
 public:
-	CSearchFile(const CSafeMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString, bool nKademlia = false);
+	CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString, bool nKademlia = false);
 	
 	virtual ~CSearchFile();
 
@@ -143,7 +143,7 @@ public:
 
 	void	ProcessSearchanswer(const char* in_packet, uint32 size, CUpDownClient* Sender, bool* pbMoreResultsAvailable, const wxString& pszDirectory);
 	void	ProcessSearchanswer(const char* packet, uint32 size, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);
-	void	ProcessUDPSearchanswer(const CSafeMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);	
+	void	ProcessUDPSearchanswer(const CMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort);	
 
 	void	RemoveResults(long nSearchID);
 
@@ -173,7 +173,7 @@ public:
 	
 private:
 
-	CSafeMemFile *CreateED2KSearchData(const wxString &searchString, const wxString& typeText,
+	CMemFile *CreateED2KSearchData(const wxString &searchString, const wxString& typeText,
 				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding);
 
 	CPacket* m_searchpacket;

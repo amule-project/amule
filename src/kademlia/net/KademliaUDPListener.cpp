@@ -54,10 +54,10 @@ there client on the eMule forum..
 //#include "../../KadContactListCtrl.h"
 #include "../../KadDlg.h"
 #include "../../ClientList.h"
-#include "Statistics.h"
-#include "SafeFile.h"
-#include "updownclient.h"
-#include "ListenSocket.h"
+#include "../../Statistics.h"
+#include "../../MemFile.h"
+#include "../../updownclient.h"
+#include "../../ListenSocket.h"
 #include "../../Logger.h"
 #include "../../Format.h"
 #include "../../Preferences.h"
@@ -98,7 +98,7 @@ void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
 
 void CKademliaUDPListener::sendMyDetails(byte opcode, uint32 ip, uint16 port)
 {
-	CSafeMemFile bio(25);
+	CMemFile bio(25);
 	bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
 	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
@@ -109,21 +109,21 @@ void CKademliaUDPListener::sendMyDetails(byte opcode, uint32 ip, uint16 port)
 
 void CKademliaUDPListener::firewalledCheck(uint32 ip, uint16 port)
 {
-	CSafeMemFile bio(2);
+	CMemFile bio(2);
 	bio.WriteUInt16(thePrefs::GetPort());
 	sendPacket(&bio, KADEMLIA_FIREWALLED_REQ, ip, port);
 }
 
 void CKademliaUDPListener::sendNullPacket(byte opcode,uint32 ip, uint16 port)
 {
-	CSafeMemFile bio(0);
+	CMemFile bio(0);
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadNullPacket %s")) % Uint32_16toStringIP_Port(ip, port));
 	sendPacket(&bio, opcode, ip, port);
 }
 
 void CKademliaUDPListener::publishPacket(uint32 ip, uint16 port, const CUInt128 &targetID, const CUInt128 &contactID, const TagList& tags)
 {
-	//We need to get the tag lists working with CSafeMemFiles..
+	//We need to get the tag lists working with CMemFiles..
 	byte packet[1024];
 	CByteIO bio(packet, sizeof(packet));
 	bio.writeByte(OP_KADEMLIAHEADER);
@@ -239,7 +239,7 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 
 void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 ip, uint16 port, uint16 tport)
 {
-	CSafeMemFile bio( data, lenData);
+	CMemFile bio( data, lenData);
 	CUInt128 id;
 	bio.ReadUInt128(&id);
 	bio.ReadUInt32();
@@ -268,7 +268,7 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 
 void CKademliaUDPListener::addContacts( const byte *data, uint32 lenData, uint16 numContacts)
 {
-	CSafeMemFile bio( data, lenData );
+	CMemFile bio( data, lenData );
 	CRoutingZone *routingZone = CKademlia::getRoutingZone();
 	CUInt128 id;
 	for (uint16 i=0; i<numContacts; i++) {
@@ -303,7 +303,7 @@ void CKademliaUDPListener::processBootstrapRequest (const byte *packetData, uint
 	// Create response packet
 	//We only collect a max of 20 contacts here.. Max size is 527.
 	//2 + 25(20) + 15(1)
-	CSafeMemFile bio(527);
+	CMemFile bio(527);
 
 	CUInt128 id;
 
@@ -342,7 +342,7 @@ void CKademliaUDPListener::processBootstrapResponse (const byte *packetData, uin
 	}
 
 	// How many contacts were given
-	CSafeMemFile bio( packetData, lenPacket);
+	CMemFile bio( packetData, lenPacket);
 	uint16 numContacts = bio.ReadUInt16();
 
 	// Verify packet is expected size
@@ -409,7 +409,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	}
 
 	// Get target and type
-	CSafeMemFile bio( packetData, lenPacket);
+	CMemFile bio( packetData, lenPacket);
 	byte type = bio.ReadUInt8();
 //		bool flag1 = (type >> 6); //Reserved
 //		bool flag2 = (type >> 7); //Reserved
@@ -441,7 +441,7 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	// Write response
 	// Max count is 32. size 817.. 
 	// 16 + 1 + 25(32)
-	CSafeMemFile bio2( 817 );
+	CMemFile bio2( 817 );
 	bio2.WriteUInt128(target);
 	bio2.WriteUInt8((byte)count);
 	CContact *c;
@@ -480,7 +480,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 	}
 
 	// What search does this relate to
-	CSafeMemFile bio( packetData, lenPacket);
+	CMemFile bio( packetData, lenPacket);
 	CUInt128 target;
 	bio.ReadUInt128(&target);
 	uint16 numContacts = bio.ReadUInt8();
@@ -525,7 +525,7 @@ void CKademliaUDPListener::Free(SSearchTerm* pSearchTerms)
 	delete pSearchTerms;
 }
 
-SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CSafeMemFile& bio, int iLevel)
+SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int iLevel)
 {
 	// the max. depth has to match our own limit for creating the search expression 
 	// (see also 'ParsedSearchExpression' and 'GetSearchPacket')
@@ -670,7 +670,7 @@ void CKademliaUDPListener::processSearchRequest (const byte *packetData, uint32 
 		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);		
 	}
 
-	CSafeMemFile bio( packetData, lenPacket);
+	CMemFile bio( packetData, lenPacket);
 	CUInt128 target;
 	bio.ReadUInt128(&target);
 	uint8 restrictive = bio.ReadUInt8();
@@ -884,7 +884,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 		count--;
 	}	
 	if( flag ) {
-		CSafeMemFile bio2(17);
+		CMemFile bio2(17);
 		bio2.WriteUInt128(file);
 		bio2.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishRes %s")) % Uint32_16toStringIP_Port(ip, port));
@@ -904,7 +904,7 @@ void CKademliaUDPListener::processPublishResponse (const byte *packetData, uint3
 	// Set contact to alive.
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 file;
 	bio.ReadUInt128(&file);
 
@@ -926,7 +926,7 @@ void CKademliaUDPListener::processSearchNotesRequest (const byte *packetData, ui
 		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
-	CSafeMemFile bio( packetData, lenPacket);
+	CMemFile bio( packetData, lenPacket);
 	CUInt128 target;
 	bio.ReadUInt128(&target);
 	CUInt128 source;
@@ -1027,7 +1027,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 
 	uint8 load = 0;
 	if( CKademlia::getIndexed()->AddNotes(target, source, entry, load ) ) {
-		CSafeMemFile bio2(17);
+		CMemFile bio2(17);
 		bio2.WriteUInt128(target);
 		bio2.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesRes %s")) % Uint32_16toStringIP_Port(ip, port));
@@ -1048,7 +1048,7 @@ void CKademliaUDPListener::processPublishNotesResponse (const byte *packetData, 
 	// Set contact to alive.
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 file;
 	bio.ReadUInt128(&file);
 
@@ -1070,7 +1070,7 @@ void CKademliaUDPListener::processFirewalledRequest (const byte *packetData, uin
 		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
 	}
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	uint16 tcpport = bio.ReadUInt16();
 
 	CContact contact;
@@ -1080,7 +1080,7 @@ void CKademliaUDPListener::processFirewalledRequest (const byte *packetData, uin
 	theApp.clientlist->RequestTCP(&contact);
 
 	// Send response
-	CSafeMemFile bio2(4);
+	CMemFile bio2(4);
 	bio2.WriteUInt32(ip);
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledRes %s")) % Uint32_16toStringIP_Port(ip, port));
 
@@ -1098,7 +1098,7 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 	// Set contact to alive.
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	uint32 firewalledIP = bio.ReadUInt32();
 
 	//Update con state only if something changes.
@@ -1135,7 +1135,7 @@ void CKademliaUDPListener::processFindBuddyRequest (const byte *packetData, uint
 		return;
 	}
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 BuddyID;
 	bio.ReadUInt128(&BuddyID);
 	CUInt128 userID;
@@ -1149,7 +1149,7 @@ void CKademliaUDPListener::processFindBuddyRequest (const byte *packetData, uint
 	contact.setClientID(userID);
 	theApp.clientlist->IncomingBuddy(&contact, &BuddyID);
 
-	CSafeMemFile bio2(34);
+	CMemFile bio2(34);
 	bio2.WriteUInt128(BuddyID);
 	bio2.WriteUInt128(CKademlia::getPrefs()->getClientHash());
 	bio2.WriteUInt16(thePrefs::GetPort());
@@ -1167,7 +1167,7 @@ void CKademliaUDPListener::processFindBuddyResponse (const byte *packetData, uin
 	}
 
 
-	CSafeMemFile bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 check;
 	bio.ReadUInt128(&check);
 	check.XOR(CUInt128(true));
@@ -1196,7 +1196,7 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 
 	CUpDownClient* buddy = theApp.clientlist->GetBuddy();
 	if( buddy != NULL ) {
-		CSafeMemFile bio(packetData, lenPacket);
+		CMemFile bio(packetData, lenPacket);
 		CUInt128 check;
 		bio.ReadUInt128(&check);
 		// JOHNTODO: Filter bad buddies
@@ -1204,7 +1204,7 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 		CUInt128 file;
 		bio.ReadUInt128(&file);
 		uint16 tcp = bio.ReadUInt16();
-		CSafeMemFile bio2(lenPacket+6);
+		CMemFile bio2(lenPacket+6);
 		bio2.WriteUInt128(check);
 		bio2.WriteUInt128(file);
 		bio2.WriteUInt32(ip);
@@ -1223,17 +1223,17 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, uint32 destinationHost, uint16 destinationPort)
 {
 	//This is temp.. The entire Kad code will be rewritten using CMemFile and send a Packet object directly.
-	CSafeMemFile mem_data(data+2,lenData-2);	
+	CMemFile mem_data(data+2,lenData-2);	
 	sendPacket(&mem_data,data[1],destinationHost, destinationPort, false); // Don't detach...
 }
 
 void CKademliaUDPListener::sendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort)
 {
-	CSafeMemFile mem_data(data,lenData);
+	CMemFile mem_data(data,lenData);
 	sendPacket(&mem_data,opcode,destinationHost, destinationPort, false); // Don't detach...
 }
 
-void CKademliaUDPListener::sendPacket(CSafeMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort, bool detach)
+void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort, bool detach)
 {
 	CPacket* packet = new CPacket(data, OP_KADEMLIAHEADER, opcode, detach);
 	if( packet->GetPacketSize() > 200 ) {

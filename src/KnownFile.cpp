@@ -44,7 +44,7 @@
 #include "KnownFile.h"		// Interface declarations.
 #include "OtherFunctions.h"	// Needed for nstrdup
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Packet.h"		// Needed for CTag
 #include "Preferences.h"	// Needed for CPreferences
@@ -924,7 +924,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return NULL;
 	}
 
-	CSafeMemFile data(1024);
+	CMemFile data(1024);
 	uint16 nCount = 0;
 
 	data.WriteHash16(forClient->GetUploadFileID());

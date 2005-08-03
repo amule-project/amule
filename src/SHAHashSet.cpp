@@ -31,7 +31,7 @@
 #include "SHAHashSet.h"
 #include "OPCodes.h"
 #include "amule.h"
-#include "SafeFile.h"
+#include "MemFile.h"
 #include "KnownFile.h"
 #include "Preferences.h"
 #include "SHA.h"
@@ -501,7 +501,8 @@ bool CAICHHashSet::CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fil
 	return bResult;
 }
 
-bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CSafeMemFile* fileDataIn){
+bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn)
+{
 	if (/*eMule TODO !m_pOwner->IsPartFile() ||*/ !(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED) ){
 		wxASSERT( false );
 		return false;
@@ -901,7 +902,7 @@ void CAICHHashSet::DbgTest(){
 	CAICHHashSet TestHashSet(m_pOwner);
 	TestHashSet.SetFileSize(m_pOwner->GetFileSize());
 	TestHashSet.SetMasterHash(GetMasterHash(), AICH_VERIFIED);
-	CSafeMemFile file;
+	CMemFile file;
 	uint64 i = 0;
 	for (i = 0; i+9728000 < TESTSIZE; i += 9728000){
 		VERIFY( CreatePartRecoveryData(i, &file) );

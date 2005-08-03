@@ -35,7 +35,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
 #include "OPCodes.h"		// Needed for CT_NAME
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
@@ -193,7 +193,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			Notify_ServerRefresh( update );
 		}
 		
-		CSafeMemFile data(256);
+		CMemFile data(256);
 		data.WriteHash16(thePrefs::GetUserHash());
 		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
@@ -564,10 +564,10 @@ void CServerConnect::KeepConnectionAlive()
 		// "Ping" the server if the TCP connection was not used for the specified interval with
 		// an empty publish files packet -> recommended by lugdunummaster himself!
 		
-		CSafeMemFile* files = new CSafeMemFile(4);
-		files->WriteUInt32(0); //nFiles
+		CMemFile files(4);
+		files.WriteUInt32(0); //nFiles
 	
-		CPacket* packet = new CPacket(files);
+		CPacket* packet = new CPacket(&files);
 		packet->SetOpCode(OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_OFFERFILES"));
@@ -582,7 +582,6 @@ void CServerConnect::KeepConnectionAlive()
 		connectedsocket->SendPacket(packet,true);
 		
 		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));
-		delete files;
  	}
 }
 

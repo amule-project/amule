@@ -38,7 +38,7 @@
 #include "SHAHashSet.h"		// 
 
 
-class CSafeMemFile;
+class CMemFile;
 
 
 struct SUnresolvedHostname 
@@ -87,8 +87,8 @@ public:
 	bool	HasValidAICHHash() const;
 	const CAICHHash&	GetAICHHash() const;
 	
-	CSafeMemFile* m_sources;
-	CSafeMemFile* m_hashset;
+	CMemFile* m_sources;
+	CMemFile* m_hashset;
 	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_hostSources;
 	
 private:

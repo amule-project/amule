@@ -32,7 +32,7 @@
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "Packet.h"		// Needed for CPacket
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Preferences.h"	// Needed for CPreferences
@@ -348,7 +348,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 			wxASSERT(nPacketSize);
 			togo -= nPacketSize;
 			
-			CSafeMemFile data(nPacketSize+24);
+			CMemFile data(nPacketSize+24);
 			data.WriteHash16(GetUploadFileID().GetHash());
 			data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
 			data.WriteUInt32((currentblock->EndOffset - togo));
@@ -395,7 +395,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 			}
 			togo -= nPacketSize;
 
-			CSafeMemFile data(nPacketSize+24);
+			CMemFile data(nPacketSize+24);
 			data.WriteHash16(GetUploadFileID().GetHash());
 			data.WriteUInt32(currentblock->StartOffset);
 			data.WriteUInt32(newsize);			
@@ -424,7 +424,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 	}
 }
 
-void CUpDownClient::ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile)
+void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile)
 {
 	try {
 		m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
@@ -730,7 +730,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 		}
 	}	
 
-	CSafeMemFile data(1024);
+	CMemFile data(1024);
 	data.WriteHash16(file->GetFileHash());
 	uint16 parts = file->GetHashCount();
 	data.WriteUInt16(parts);
@@ -769,7 +769,7 @@ void CUpDownClient::SendRankingInfo(){
 		return;
 	}
 		
-	CSafeMemFile data;
+	CMemFile data;
 	data.WriteUInt16(nRank);
 	// Kry: what are these zero bytes for. are they really correct?
 	// Kry - Well, eMule does like that. I guess they're ok.
@@ -798,7 +798,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 		return;
 	}
 	
-	CSafeMemFile data(256);
+	CMemFile data(256);
 	data.WriteUInt8(rating);
 	data.WriteString(desc, GetUnicodeSupport(), 4 /* size it's uint32 */);
 	

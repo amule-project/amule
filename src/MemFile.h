@@ -30,12 +30,12 @@
 #pragma interface "MemFile.h"
 #endif
 
-#include "CFile.h"		// Needed for CFile
 #include "Types.h"		// Needed for uint8, uint16, uint32
+#include "SafeFile.h"	// Needed for CSafeFile
 
-class CMemFile : public CFile {
-public:  
-	
+class CMemFile : public CSafeFile
+{
+public:
 	CMemFile( unsigned int growBytes = 1024 );
 	CMemFile( const byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
 	virtual ~CMemFile();

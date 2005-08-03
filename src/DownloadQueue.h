@@ -46,7 +46,7 @@ class CSearchFile;
 class CPartFile;
 class CUpDownClient;
 class CServer;
-class CSafeMemFile;
+class CMemFile;
 class CKnownFile;
 class CED2KLink;
 class CED2KFileLink;
@@ -352,7 +352,7 @@ private:
 	
 	bool	SendNextUDPPacket();
 	int		GetMaxFilesPerUDPServerPacket() const;
-	bool	SendGlobGetSourcesUDPPacket(CSafeMemFile& data);
+	bool	SendGlobGetSourcesUDPPacket(CMemFile& data);
 	
 	void 	AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port);
 

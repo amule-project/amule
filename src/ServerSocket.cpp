@@ -36,7 +36,7 @@
 #include "Packet.h"		// Needed for CPacket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"		// Needed for CClientList
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "MemFile.h"		// Needed for CMemFile
 #include "SearchList.h"		// Needed for CSearchList
@@ -302,7 +302,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					throw wxString(wxT("Corrupt or invalid loginanswer from server received"));
 				}
 
-				CSafeMemFile data((byte*)packet, size);			
+				CMemFile data((byte*)packet, size);			
 				
 				uint32 new_id = data.ReadUInt32();
 
@@ -405,7 +405,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_FOUNDSOURCES: {
 				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
 				theApp.statistics->AddDownDataOverheadServer(size);
-				CSafeMemFile sources((byte*)packet,size);
+				CMemFile sources((byte*)packet,size);
 				uint8 fileid[16];
 				sources.ReadHash16(fileid);
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
@@ -422,7 +422,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
-					CSafeMemFile data((byte*)packet, size);
+					CMemFile data((byte*)packet, size);
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
@@ -442,7 +442,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 				if (update) {
-					CSafeMemFile data((byte*)packet,size);
+					CMemFile data((byte*)packet,size);
 					uint8 aucHash[16];
 					data.ReadHash16(aucHash);				
 					if (RawPeekUInt32(aucHash) == 0x2A2A2A2A){ // No endian problem here
@@ -481,7 +481,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_SERVERLIST: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERLIST"));
 				
-				CSafeMemFile* servers = new CSafeMemFile((byte*)packet,size);
+				CMemFile* servers = new CMemFile((byte*)packet,size);
 				uint8 count = servers->ReadUInt8();
 				if (((int32)(count*6 + 1) > size)) {
 					count = 0;
@@ -514,7 +514,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				
 				theApp.statistics->AddDownDataOverheadServer(size);
 				if (size == 6) {
-					CSafeMemFile data((byte*)packet,size);
+					CMemFile data((byte*)packet,size);
 					uint32 dwIP = data.ReadUInt32();
 					uint16 nPort = data.ReadUInt16();
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);

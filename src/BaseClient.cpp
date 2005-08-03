@@ -39,7 +39,7 @@
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "Server.h"		// Needed for CServer
 #include "Preferences.h"	// Needed for CPreferences
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "Packet.h"		// Needed for CPacket
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Friend.h"		// Needed for CFriend
@@ -317,7 +317,7 @@ void CUpDownClient::ClearHelloProperties()
 
 bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
 {
-	const CSafeMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data((byte*)pachPacket,nSize);
 	uint8 hashsize = data.ReadUInt8();
 	if ( 16 != hashsize ) {
 		/*
@@ -362,13 +362,13 @@ void CUpDownClient::Safe_Delete()
 
 bool CUpDownClient::ProcessHelloAnswer(const char *pachPacket, uint32 nSize)
 {
-	const CSafeMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data((byte*)pachPacket,nSize);
 	bool bIsMule = ProcessHelloTypePacket(data);
 	m_bHelloAnswerPending = false;
 	return bIsMule;
 }
 
-bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
+bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 {
 
 	m_bIsHybrid = false;
@@ -632,7 +632,7 @@ bool CUpDownClient::SendHelloPacket() {
 		return true;
 	}
 
-	CSafeMemFile data(128);
+	CMemFile data(128);
 	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
 	
@@ -653,7 +653,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 
 	CPacket* packet = NULL;
-	CSafeMemFile data;
+	CMemFile data;
 
 	data.WriteUInt8(CURRENT_VERSION_SHORT);
 	
@@ -749,7 +749,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 	uint8 protocol_version;
 	
 	try {
-		const CSafeMemFile data((byte*)pachPacket,nSize);
+		const CMemFile data((byte*)pachPacket,nSize);
 
 		//The version number part of this packet will soon be useless since it is only able to go to v.99.
 		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
@@ -937,7 +937,7 @@ void CUpDownClient::SendHelloAnswer()
 		return;
 	}
 
-	CSafeMemFile data(128);
+	CMemFile data(128);
 	SendHelloTypePacket(&data);
 	CPacket* packet = new CPacket(&data);
 	packet->SetOpCode(OP_HELLOANSWER);
@@ -949,7 +949,7 @@ void CUpDownClient::SendHelloAnswer()
 }
 
 
-void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
+void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
 	data->WriteHash16(thePrefs::GetUserHash());
 	data->WriteUInt32(theApp.serverconnect->GetClientID());
@@ -1093,7 +1093,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 			throw CInvalidPacket(wxT("Comment packet for completed file"));
 		}
 
-		const CSafeMemFile data((byte*)pachPacket, nSize);
+		const CMemFile data((byte*)pachPacket, nSize);
 
 		m_iRating = data.ReadUInt8();
 		m_reqfile->SetHasRating(true);
@@ -1392,7 +1392,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 
 		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
-			CSafeMemFile data;
+			CMemFile data;
 			// AFAICS, this id must be reversed to be sent to clients
 			// But if I reverse it, we do a serve violation ;)
 			data.WriteUInt32(m_nUserIDHybrid);
@@ -1431,7 +1431,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				
                	 if( GetDownloadState() == DS_WAITCALLBACK ) {
 					if( GetBuddyIP() && GetBuddyPort()) {
-						CSafeMemFile bio(34);
+						CMemFile bio(34);
 						bio.WriteUInt128(Kademlia::CUInt128(GetBuddyID()));
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
@@ -1859,7 +1859,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	if (!theApp.clientcredits->CryptoAvailable())
 		return;
 
-	CSafeMemFile data;
+	CMemFile data;
 	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
 	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
@@ -1920,7 +1920,7 @@ void CUpDownClient::SendSignaturePacket(){
 		wxASSERT ( false );
 		return;
 	}
-	CSafeMemFile data;
+	CMemFile data;
 	data.WriteUInt8(siglen);
 	data.Write(achBuffer, siglen);
 	if (bUseV2) {
@@ -2031,7 +2031,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		uint32 dwRandom = rand()+1;
 		credits->m_dwCryptRndChallengeFor = dwRandom;
 
-		CSafeMemFile data;
+		CMemFile data;
 		data.WriteUInt8(nValue);
 		data.WriteUInt32(dwRandom);
 		CPacket* packet = new CPacket(&data, OP_EMULEPROT);
@@ -2058,7 +2058,7 @@ void CUpDownClient::ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nS
 		return;
 	}
 
-	CSafeMemFile data((byte*)pachPacket,nSize);
+	CMemFile data((byte*)pachPacket,nSize);
 
 	switch ( data.ReadUInt8() ) {
 		case 0:
@@ -2270,7 +2270,7 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 		return false;
 	}
 	if (IsConnected()) {
-		CSafeMemFile data;
+		CMemFile data;
 		data.WriteString(message);
 		CPacket* packet = new CPacket(&data);
 		packet->SetOpCode(OP_MESSAGE);

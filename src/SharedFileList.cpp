@@ -39,7 +39,7 @@
 #include "SharedFileList.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -748,7 +748,7 @@ void CSharedFileList::SendListToServer(){
 		}
 	}
 
-	CSafeMemFile files;
+	CMemFile files;
 	
 	// Files sent.
 	files.WriteUInt32(limit);	
@@ -784,7 +784,7 @@ void CSharedFileList::SendListToServer(){
 
 void CSharedFileList::CreateOfferedFilePacket(
 	CKnownFile *cur_file,
-	CSafeMemFile *files,
+	CMemFile *files,
 	CServer *pServer,
 	CUpDownClient *pClient) {
 		

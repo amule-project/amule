@@ -41,7 +41,7 @@ struct UnknownFile_Struct;
 
 class CKnownFileList;
 class CKnownFile;
-class CSafeMemFile;
+class CMemFile;
 class CMD4Hash;
 class CServer;
 class CUpDownClient;
@@ -64,7 +64,7 @@ public:
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	const CKnownFile* GetFileByIndex(unsigned int index) const;
 	CKnownFileList*	filelist;
-	void	CreateOfferedFilePacket(CKnownFile* cur_file,CSafeMemFile* files, CServer* pServer, CUpDownClient* pClient);
+	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
 	uint64	GetDatasize();
 	uint32	GetCount()	{return m_Files_map.size(); }
 	uint32  GetFileCount()	{return m_Files_map.size(); }

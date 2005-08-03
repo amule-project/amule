@@ -62,7 +62,7 @@ typedef CTag ed2kCTag;
 #include "../../KadDlg.h"
 #include "DownloadQueue.h"
 #include "SearchList.h"
-#include "SafeFile.h"
+#include "MemFile.h"
 #include "ServerConnect.h"
 #include "Server.h"
 #include "SearchDlg.h"
@@ -396,7 +396,7 @@ void CSearch::StorePacket()
 		}
 		case NOTES: {
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Notes"));
-			CSafeMemFile bio(34);
+			CMemFile bio(34);
 			bio.WriteUInt128(m_target);
 			bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 			CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_SRC_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
@@ -518,7 +518,7 @@ void CSearch::StorePacket()
 				prepareToStop();
 				break;
 			}
-			CSafeMemFile bio(34);
+			CMemFile bio(34);
 			bio.WriteUInt128(m_target);
 			bio.WriteUInt128(CKademlia::getPrefs()->getClientHash());
 			bio.WriteUInt16(thePrefs::GetPort());
@@ -534,7 +534,7 @@ void CSearch::StorePacket()
 				prepareToStop();
 				break;
 			}
-			CSafeMemFile bio(34);
+			CMemFile bio(34);
 			bio.WriteUInt128(m_target);
 			if( m_fileIDs.size() != 1) {
 				throw wxString(wxT("Kademlia.CSearch.processResponse: m_fileIDs.size() != 1"));
@@ -805,7 +805,7 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 		if(m_stoping) {
 			return;
 		}
-		CSafeMemFile bio(33);
+		CMemFile bio(33);
 		switch(m_type){
 			case NODE:
 			case NODECOMPLETE:
@@ -958,7 +958,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 	}
 }
 
-//Can't clean these up until Taglist works with CSafeMemFiles.
+//Can't clean these up until Taglist works with CMemFiles.
 void CSearch::PreparePacket(void)
 {
 	try
