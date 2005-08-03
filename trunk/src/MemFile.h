@@ -49,7 +49,7 @@ public:
 	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
-	virtual off_t Length() const { return m_FileSize; };
+	virtual off_t GetLength() const { return m_FileSize; };
 	
 	virtual off_t  Read(void* buf, off_t length) const;
 	virtual size_t Write(const void* buf, size_t length);

@@ -506,7 +506,7 @@ bool CFile::Flush()
 #include <cstring>
 
 // seek
-off_t CFile::Seek(off_t ofs, CFile::SeekMode mode) const
+off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
 {
 	wxASSERT( IsOpened() );
 
@@ -557,7 +557,7 @@ off_t CFile::GetPosition() const
 }
 
 // get current file length
-off_t CFile::Length() const
+off_t CFile::GetLength() const
 {
 	wxASSERT( IsOpened() );
 	
@@ -567,7 +567,7 @@ off_t CFile::Length() const
 	off_t iRc = wxTell(m_fd);
 	if ( iRc != -1 ) {
 		// @ have to use const_cast :-(
-		off_t iLen = ((CFile *)this)->SeekEnd();
+		off_t iLen = ((CFile *)this)->Seek(0, wxFromEnd);
 		if ( iLen != -1 ) {
 			// restore old position
 			if ( ((CFile *)this)->Seek(iRc) == -1 ) {
@@ -608,7 +608,7 @@ bool CFile::Eof() const
 #if defined(__DOS__) || defined(__UNIX__) || defined(__GNUWIN32__) || defined( __MWERKS__ ) || defined(__SALFORDC__)
 	// @@ this doesn't work, of course, on unseekable file descriptors
 	off_t ofsCur = GetPosition(),
-	ofsMax = Length();
+	ofsMax = GetLength();
 	if ( ofsCur == (off_t)wxInvalidOffset || ofsMax == (off_t)wxInvalidOffset ) {
 		iRc = -1;
 	} else {

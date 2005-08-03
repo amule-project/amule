@@ -514,7 +514,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CSafeMemFile& data)
 		m_nServerPort = data.ReadUInt16();
 		// Hybrid now has an extra uint32.. What is it for?
 		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data.Length() - data.GetPosition() == sizeof(uint32) ) {
+		if ( data.GetLength() - data.GetPosition() == sizeof(uint32) ) {
 			uint32 test = data.ReadUInt32();
 			/*if (test == 'KDLM') below kdlm is converted to ascii values.
 			This fixes a warning with gcc 3.4.

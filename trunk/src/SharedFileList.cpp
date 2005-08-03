@@ -495,7 +495,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;			
 		}
 		
-		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.Length());
+		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.GetLength());
 		//theApp.Yield();
 		if (toadd) {
 			if ( AddFile(toadd) ) {

@@ -415,7 +415,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 #endif
 
 				// write the buffered data
-				file->m_hpartfile.Seek(chunkstart, CFile::start);
+				file->m_hpartfile.Seek(chunkstart, wxFromStart);
 				file->m_hpartfile.Write(ba, readed);
 
 				filename = finder.GetNextFile();

@@ -588,7 +588,7 @@ bool CAICHHashSet::SaveHashSet(){
 				throw fullpath;
 			}
 			// skip the rest of this hashset
-			file.Seek(nHashCount*HASHSIZE, CFile::current);
+			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
 		// write hashset
 		m_pHashTree.m_Hash.Write(&file);
@@ -678,7 +678,7 @@ bool CAICHHashSet::LoadHashSet(){
 				throw fullpath;
 			}
 			// skip the rest of this hashset
-			file.Seek(nHashCount*HASHSIZE, CFile::current);
+			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
 		AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
 	} catch (const wxString& error){

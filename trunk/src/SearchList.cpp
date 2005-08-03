@@ -445,7 +445,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 	if (pbMoreResultsAvailable)
 		*pbMoreResultsAvailable = false;
 	
-	int iAddData = (int)(packet.Length() - packet.GetPosition());
+	int iAddData = (int)(packet.GetLength() - packet.GetPosition());
 	if (iAddData == 1) {
 		uint8 ucMore = packet.ReadUInt8();
 		if (ucMore == 0x00 || ucMore == 0x01){

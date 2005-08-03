@@ -396,7 +396,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}
 		return false;
 	} else {
-		if (!(metFile.Length()>0)) {
+		if (!(metFile.GetLength()>0)) {
 			if (from_backup) {
 				AddLogLineM(false, _(
 					"Error: Backup part.met file is 0 size! "
@@ -422,7 +422,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 				"Search http://forum.amule.org for .part.met recovery solutions"));				
 			return false;
 		} else {
-			if (!(metFile.Length()>0)) {
+			if (!(metFile.GetLength()>0)) {
 				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
 					% m_partmetfilename
 					% m_strFileName );
@@ -447,10 +447,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		partmettype = isnewstyle ? PMT_SPLITTED : PMT_DEFAULTOLD;
 		if (!isnewstyle) {
 			uint8 test[4];
-			metFile.Seek(24, CFile::start);
+			metFile.Seek(24, wxFromStart);
 			metFile.Read(test,4);
 		
-			metFile.Seek(1, CFile::start);
+			metFile.Seek(1, wxFromStart);
 			if (test[0]==0 && test[1]==0 && test[2]==2 && test[3]==1) {
 				isnewstyle=true;	// edonkeys so called "old part style"
 				partmettype=PMT_NEWOLD;
@@ -463,7 +463,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 				LoadHashsetFromFile(&metFile, false);
 			} else {
 				byte gethash[16];
-				metFile.Seek(2, CFile::start);
+				metFile.Seek(2, wxFromStart);
 				LoadDateFromFile(&metFile);
 				metFile.ReadHash16(gethash);
 				m_abyFileHash = gethash;
@@ -666,13 +666,13 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}
 		
 		// load the hashsets from the hybridstylepartmet
-		if (isnewstyle && !getsizeonly && (metFile.GetPosition()<metFile.Length()) ) {
+		if (isnewstyle && !getsizeonly && (metFile.GetPosition()<metFile.GetLength()) ) {
 			int8 temp;
 			metFile.Read(&temp,1);
 			
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
-			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.Length()); ++i){
+			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.GetLength()); ++i){
 				CMD4Hash cur_hash;
 				metFile.Read(cur_hash, 16);
 				hashlist.Add(cur_hash);
@@ -1042,7 +1042,7 @@ bool CPartFile::SavePartFile(bool Initial)
 
 		UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
-		if (newpartmet.Length()>0) {			
+		if (newpartmet.GetLength()>0) {			
 			// not error, just backup
 			newpartmet.Close();
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
@@ -1176,7 +1176,7 @@ void CPartFile::LoadSourceSeeds() {
 		return;
 	}	
 	
-	if (!file.Length()>1) {
+	if (!file.GetLength()>1) {
 		AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
 			% m_partmetfilename
 			% m_strFileName );
@@ -2616,7 +2616,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,CFile::start);
+		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
 		uint32 length = PARTSIZE;
 		if (((uint64)PARTSIZE*(partnumber+1)) > (uint64)m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*partnumber));
@@ -3489,10 +3489,10 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 
 uint32 CPartFile::GetNeededSpace()
 {
-	if ((unsigned)m_hpartfile.Length() > GetFileSize()) {
+	if ((unsigned)m_hpartfile.GetLength() > GetFileSize()) {
 		return 0;	// Shouldn't happen, but just in case
 	}
-	return GetFileSize()-m_hpartfile.Length();
+	return GetFileSize()-m_hpartfile.GetLength();
 }
 
 
@@ -3664,7 +3664,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->m_nBaseSize);
 	try{
-		m_hpartfile.Seek((off_t)PARTSIZE*nPart,CFile::start);
+		m_hpartfile.Seek((off_t)PARTSIZE*nPart,wxFromStart);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
 	}
 	catch(...){

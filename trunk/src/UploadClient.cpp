@@ -277,7 +277,7 @@ void CUpDownClient::CreateNextBlockPackage()
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
 				}			
 			
-				file.Seek(currentblock->StartOffset, CFile::start);
+				file.Seek(currentblock->StartOffset, wxFromStart);
 				
 				filedata = new byte[togo+500];
 				// I'm only allowing this to retry once - if we're unable to read less than EMBLOCKSIZE*3

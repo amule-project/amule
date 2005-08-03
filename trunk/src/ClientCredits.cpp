@@ -200,7 +200,7 @@ void CClientCreditsList::LoadList()
 		if (wxFileExists(strBakFileName)) {
 			// Ok, the backup exist, get the size
 			CFile hBakFile(strBakFileName);
-			if ( hBakFile.Length() > file.Length()) {
+			if ( hBakFile.GetLength() > file.GetLength()) {
 				// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
 				bCreateBackup = FALSE;
 			}
@@ -478,7 +478,7 @@ void CClientCreditsList::InitalizeCrypting()
 				}
 				bCreateNewKey = true;
 			} else {
-				if (KeyFile.Length() == 0) {
+				if (KeyFile.GetLength() == 0) {
 					AddDebugLogLineM( true, logCredits, wxT("'cryptkey.dat' is 0 size, creating.") );
 					bCreateNewKey = true;
 				}
