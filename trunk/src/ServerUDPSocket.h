@@ -48,7 +48,7 @@
 
 class CPacket;
 class CServer;
-class CSafeMemFile;
+class CMemFile;
 
 #define WM_DNSLOOKUPDONE WM_USER+280
 
@@ -79,7 +79,7 @@ public:
 private:
 
 	void	SendBuffer();
-	void	ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port);
+	void	ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port);
 
 	amuleIPV4Address m_SaveAddr;
 

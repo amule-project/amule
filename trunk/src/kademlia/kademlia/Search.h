@@ -45,7 +45,7 @@ there client on the eMule forum..
 #include "../io/ByteIO.h"
 
 class CKnownFile;
-class CSafeMemFile;
+class CMemFile;
 class CTag;
 
 ////////////////////////////////////////
@@ -137,7 +137,7 @@ private:
 
 	uint32		m_searchID;
 	CUInt128	m_target;
-	CSafeMemFile *m_searchTerms;
+	CMemFile*	m_searchTerms;
 	WordList	m_words;
 	wxString		m_fileName;
 	UIntList	m_fileIDs;

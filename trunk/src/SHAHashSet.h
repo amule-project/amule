@@ -95,7 +95,7 @@ enum EAICHStatus {
 
 class CFileDataIO;
 class CKnownFile;
-class CSafeMemFile;
+class CMemFile;
 class CPartFile;
 class CUpDownClient;
 
@@ -211,7 +211,7 @@ public:
 	CAICHHashSet(CKnownFile*	pOwner);
 	~CAICHHashSet(void);
 	bool			CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad = false);
-	bool			ReadRecoveryData(uint32 nPartStartPos, CSafeMemFile* fileDataIn);
+	bool			ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn);
 	bool			ReCalculateHash(bool bDontReplace = false);
 	bool			VerifyHashTree(bool bDeleteBadTrees);
 	void			UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP);

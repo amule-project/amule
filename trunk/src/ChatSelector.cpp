@@ -45,7 +45,7 @@
 #include "amule.h"		// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Color.h"		// Needed for RGB
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "FriendListCtrl.h"	// Needed for CDlgFriend
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial

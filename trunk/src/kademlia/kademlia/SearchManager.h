@@ -44,7 +44,7 @@ there client on the eMule forum..
 #include "../utils/UInt128.h"
 #include "../routing/Maps.h"
 
-class CSafeMemFile;
+class CMemFile;
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -85,7 +85,7 @@ public:
 	static CSearch* prepareLookup(uint32 type, bool start, const CUInt128 &id);
 
 	// Will return unique search id, returns zero if already searching for this keyword.
-	static CSearch* prepareFindKeywords(const wxString& keyword, CSafeMemFile* ed2k_packet);
+	static CSearch* prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet);
 
 	static bool startSearch(CSearch* pSearch);
 	static void deleteSearch(CSearch* pSearch);

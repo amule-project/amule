@@ -256,14 +256,3 @@ size_t CSafeFile::Write(const void *pBuf, size_t nCount)
 	return CFile::Write( pBuf, nCount );
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// CSafeMemFile
-
-void CSafeMemFile::ReadUInt128(Kademlia::CUInt128* pVal) const
-{
-	if ((off_t)(m_position + sizeof(uint32)*4) > m_BufferSize)
-		throw CInvalidPacket(wxT("EOF"));
-	CFileDataIO::ReadUInt128(pVal);
-}
-

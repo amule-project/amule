@@ -50,7 +50,7 @@ there client on the eMule forum..
 #include "../io/ByteIO.h"
 #include "../io/IOException.h"
 #include "../kademlia/Prefs.h"
-#include "SafeFile.h"
+#include "MemFile.h"
 #include "OtherFunctions.h"
 #include "Logger.h"
 
@@ -143,7 +143,7 @@ void CSearchManager::deleteSearch(CSearch* pSearch)
 	delete pSearch;
 }
 
-CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CSafeMemFile* ed2k_packet)
+CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet)
 {
 	CSearch *s = new CSearch;
 	try {
@@ -216,7 +216,7 @@ CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &
 		s->m_target = id;
 
 		// Write complete packet
-		s->m_searchTerms = new CSafeMemFile();
+		s->m_searchTerms = new CMemFile();
 		s->m_searchTerms->WriteUInt128(s->m_target);
 		s->m_searchTerms->WriteUInt8(1);
 

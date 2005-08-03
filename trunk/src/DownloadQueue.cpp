@@ -37,7 +37,7 @@
 #include "DownloadQueue.h"	// Interface declarations
 #include "Server.h"		// Needed for CServer
 #include "Packet.h"		// Needed for CPacket
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "ClientList.h"		// Needed for CClientList
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ServerList.h"		// Needed for CServerList
@@ -718,7 +718,7 @@ bool CDownloadQueue::SendNextUDPPacket()
   
  		// Memoryfile containing the hash of every file to request
 		// 20bytes allocation because 16b + 4b is the worse case scenario.
- 		CSafeMemFile hashlist( 20 );
+ 		CMemFile hashlist( 20 );
  		
 		CPartFile* file = m_queueFiles.GetNext();
 		while ( file && filesAllowed ) {
@@ -841,7 +841,7 @@ void CDownloadQueue::ProcessLocalRequests()
 	wxMutexLocker lock( m_mutex );
 	
 	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
-		CSafeMemFile dataTcpFrame(22);
+		CMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
 		int iFiles = 0;
 		while (!m_localServerReqQueue.empty() && iFiles < iMaxFilesPerTcpFrame) {
@@ -880,7 +880,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				iFiles++;
 
 				// create request packet
-				CSafeMemFile data(20);
+				CMemFile data(20);
 				data.WriteHash16(cur_file->GetFileHash());
 				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
 				// There is no need to check anything, old server ignore the extra 4 bytes.
@@ -1120,7 +1120,7 @@ int CDownloadQueue::GetMaxFilesPerUDPServerPacket() const
 }
 
 
-bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile& data)
+bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 {
 	if (!m_udpserver) {
 		return false;
@@ -1194,7 +1194,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 	if ( ip ) {
 		CPartFile* file = GetFileByID( resolved.fileid );
 		if ( file ) {
-			CSafeMemFile sources(1+4+2);
+			CMemFile sources(1+4+2);
 			sources.WriteUInt8(1); // No. Sources
 			sources.WriteUInt32(ip);
 			sources.WriteUInt16(resolved.port);

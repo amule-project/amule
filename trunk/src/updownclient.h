@@ -56,7 +56,7 @@ class CFriend;
 class Requested_Block_Struct;
 class CKnownFile;
 class Pending_Block_Struct;
-class CSafeMemFile;
+class CMemFile;
 class CMemFile;
 class Requested_File_Struct;
 class CAICHHash;
@@ -354,9 +354,9 @@ public:
 	const CKnownFile* GetUploadFile() const		{ return m_uploadingfile; }
 
 	void		SendOutOfPartReqsAndAddToWaitingQueue();
-	void		ProcessExtendedInfo(const CSafeMemFile *data, CKnownFile *tempreqfile);
-	void		ProcessFileInfo(const CSafeMemFile* data, const CPartFile* file);
-	void		ProcessFileStatus(bool bUdpPacket, const CSafeMemFile* data, const CPartFile* file);
+	void		ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile);
+	void		ProcessFileInfo(const CMemFile* data, const CPartFile* file);
+	void		ProcessFileStatus(bool bUdpPacket, const CMemFile* data, const CPartFile* file);
 
 	const CMD4Hash&	GetUploadFileID() const		{ return m_requpfileid; }
 	void		SetUploadFileID(const CMD4Hash& new_id);
@@ -448,7 +448,7 @@ public:
 	bool		IsAICHReqPending() const	{return m_fAICHRequested; }
 	void		ProcessAICHAnswer(const char* packet, uint32 size);
 	void		ProcessAICHRequest(const char* packet, uint32 size);
-	void		ProcessAICHFileHash(CSafeMemFile* data, const CPartFile* file);	
+	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);	
 
 	EUtf8Str	GetUnicodeSupport() const;
 
@@ -610,8 +610,8 @@ private:
 
 	// base
 	void		Init();
-	bool		ProcessHelloTypePacket(const CSafeMemFile& data);
-	void		SendHelloTypePacket(CSafeMemFile* data);
+	bool		ProcessHelloTypePacket(const CMemFile& data);
+	void		SendHelloTypePacket(CMemFile* data);
 	void		ClearHelloProperties(); // eMule 0.42
 	uint32		m_dwUserIP;
 	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP

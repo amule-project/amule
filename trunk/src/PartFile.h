@@ -49,7 +49,7 @@
 class CSearchFile;
 class CUpDownClient;
 class completingThread;
-class CSafeMemFile;
+class CMemFile;
 class CFileDataIO;
 class CED2KFileLink;
 
@@ -116,10 +116,10 @@ public:
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
-	void	WritePartStatus(CSafeMemFile* file);
-	void	WriteCompleteSourcesCount(CSafeMemFile* file);
+	void	WritePartStatus(CMemFile* file);
+	void	WriteCompleteSourcesCount(CMemFile* file);
 	static bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
-	void	AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport);
+	void	AddSources(CMemFile& sources,uint32 serverip, uint16 serverport);
 #ifdef CLIENT_GUI
 	uint8	GetStatus() const { return status; }
 	uint8	GetStatus(bool /*ignorepause = false*/) const { return status; }
@@ -174,7 +174,7 @@ public:
 
 	virtual	CPacket* CreateSrcInfoPacket(const CUpDownClient* forClient);
 	//void	AddClientSources(CMemFile* sources);
-	void    AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion);
+	void    AddClientSources(CMemFile* sources,uint8 sourceexchangeversion);
 
 	bool	PreviewAvailable();
 	uint8	GetAvailablePartCount() const	{ return m_availablePartsCount; }

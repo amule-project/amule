@@ -53,7 +53,7 @@
 #include "ClientList.h"		// Needed for clientlist (buddy support)
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "OtherFunctions.h"
-#include "SafeFile.h"
+#include "MemFile.h"		// Needed for CMemFile
 #include "Logger.h"
 #include "UploadBandwidthThrottler.h"
 
@@ -165,7 +165,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 						break;
 					}
 					if (!md4cmp(packet, buddy->GetBuddyID())) {
-						CSafeMemFile mem_packet((byte*)packet,size-10);
+						CMemFile mem_packet((byte*)packet,size-10);
 						// Change the ip and port while leaving the rest untouched
 						mem_packet.Seek(0,wxFromStart);
 						mem_packet.WriteUInt32(host);
@@ -182,7 +182,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				
-				CSafeMemFile data_in((byte*)packet, size);
+				CMemFile data_in((byte*)packet, size);
 				byte reqfilehash[16];
 				data_in.ReadHash16(reqfilehash);
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
@@ -214,7 +214,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 							}
 						}
 						
-						CSafeMemFile data_out(128);
+						CMemFile data_out(128);
 						if(sender->GetUDPVersion() > 3) {
 							if (reqfile->IsPartFile()) {
 								((CPartFile*)reqfile)->WritePartStatus(&data_out);
@@ -259,7 +259,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				theApp.statistics->AddDownDataOverheadFileRequest(size);
 				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 				if (sender) {
-					CSafeMemFile data_in((byte*)packet,size);
+					CMemFile data_in((byte*)packet,size);
 					if ( sender->GetUDPVersion() > 3 ) {
 						sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
 					}

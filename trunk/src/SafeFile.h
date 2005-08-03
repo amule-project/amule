@@ -32,7 +32,6 @@
 
 #include "CFile.h"		// Needed for CFile
 #include "Types.h"		// Needed for LPCSTR
-#include "MemFile.h"		// Needed for CMemFile
 #include "StringFunctions.h"		// Needed for the utf8 types.
 
 namespace Kademlia{
@@ -91,35 +90,5 @@ class CSafeFile : public CFile, public CFileDataIO
 	}
 };
  
-
-
-///////////////////////////////////////////////////////////////////////////////
-class CSafeMemFile : public CMemFile, public CFileDataIO
-{
-public:
-	CSafeMemFile(uint32 nGrowBytes = 512)
-		: CMemFile(nGrowBytes) {}
-	CSafeMemFile(const byte* lpBuffer, uint32 nBufferSize, uint32 nGrowBytes = 0)
-		: CMemFile(lpBuffer, nBufferSize, nGrowBytes) {}
-
-	// CMemFile already does the needed checks
-	virtual off_t Read(void *pBuf, off_t nCount) const {
-		return CMemFile::Read( pBuf, nCount );
-	}
-	
-	virtual size_t Write(const void *pBuf, size_t nCount) {
-		return CMemFile::Write( pBuf, nCount );
-	}
-
-	virtual off_t GetPosition() const {
-		return CMemFile::GetPosition();
-	}
-	virtual off_t GetLength() const {
-		return CMemFile::GetLength();
-	}
-	
-	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
-};
-
 
 #endif // SAFEFILE_H

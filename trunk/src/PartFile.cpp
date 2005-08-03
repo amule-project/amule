@@ -63,6 +63,7 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
 #include "SafeFile.h"		// Needed for CSafeFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -1161,7 +1162,7 @@ void CPartFile::SaveSourceSeeds()
 void CPartFile::LoadSourceSeeds() {
 	
 	CSafeFile file;
-	CSafeMemFile sources_data;
+	CMemFile sources_data;
 	
 	if (!wxFileName::FileExists(m_fullname + wxT(".seeds"))) {
 		return;
@@ -1486,7 +1487,7 @@ void CPartFile::UpdateCompletedInfos()
 }
 
 
-void CPartFile::WritePartStatus(CSafeMemFile* file)
+void CPartFile::WritePartStatus(CMemFile* file)
 {
 	uint16 parts = GetED2KPartCount();
 	file->WriteUInt16(parts);
@@ -1506,7 +1507,7 @@ void CPartFile::WritePartStatus(CSafeMemFile* file)
 	}
 }
 
-void CPartFile::WriteCompleteSourcesCount(CSafeMemFile* file)
+void CPartFile::WriteCompleteSourcesCount(CMemFile* file)
 {
 	file->WriteUInt16(m_nCompleteSourcesCount);
 }
@@ -1792,7 +1793,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CSafeMemFile& sources,uint32 serverip, uint16 serverport)
+void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport)
 {
 	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
@@ -2841,7 +2842,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return NULL;
 	}	
 	
-	CSafeMemFile data(1024);
+	CMemFile data(1024);
 	uint16 nCount = 0;
 
 	data.WriteHash16(m_abyFileHash);
@@ -2924,7 +2925,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	return result;
 }
 
-void CPartFile::AddClientSources(CSafeMemFile* sources,uint8 sourceexchangeversion)
+void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
 {
 	// Kad reviewed
 	

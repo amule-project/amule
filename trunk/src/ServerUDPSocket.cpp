@@ -34,7 +34,7 @@
 #include "Packet.h"		// Needed for CPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
-#include "SafeFile.h"		// Needed for CSafeMemFile
+#include "MemFile.h"		// Needed for CMemFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
 #include "OPCodes.h"		// Needed for OP_EDONKEYPROT
@@ -98,7 +98,7 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 			case OP_EDONKEYPROT: {
 				length = length - 2; // skip protocol and opcode
 				// Create the safe mem file.	
-				CSafeMemFile  data(buffer+2,length);
+				CMemFile  data(buffer+2,length);
 				wxASSERT(length == data.GetLength());
 				ProcessPacket(data,length,/*opcode*/buffer[1],addr.IPAddress(),addr.Service()); 
 				break;
@@ -122,7 +122,7 @@ int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max
 	return LastCount();
 }
 
-void CServerUDPSocket::ProcessPacket(CSafeMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
+void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
