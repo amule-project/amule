@@ -1120,6 +1120,9 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
     	case PHP_OP_OR:
     	case PHP_OP_AND:
     	case PHP_OP_XOR:
+		case PHP_OP_LOG_OR:
+		case PHP_OP_LOG_AND:
+		case PHP_OP_LOG_XOR:
 			php_expr_eval(expr->tree_node.right, &result_val_right);
 			php_expr_eval(expr->tree_node.left, &result_val_left);
 			if ( result ) {
@@ -1383,9 +1386,18 @@ void php_eval_int_math(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, 
     	case PHP_OP_OR:
     		result->int_val = op1->int_val | op2->int_val;
     		break;
+		case PHP_OP_LOG_OR:
+    		result->int_val = op1->int_val || op2->int_val;
+    		break;
     	case PHP_OP_AND:
     		result->int_val = op1->int_val & op2->int_val;
     		break;
+		case PHP_OP_LOG_AND:
+    		result->int_val = op1->int_val && op2->int_val;
+    		break;
+		case PHP_OP_LOG_XOR:
+			op1->int_val = op1->int_val ? 1 : 0;
+			op2->int_val = op2->int_val ? 1 : 0;
     	case PHP_OP_XOR:
     		result->int_val = op1->int_val ^ op2->int_val;
     		break;
