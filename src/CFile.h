@@ -44,7 +44,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
 
-#include <dirent.h> // for CDirIterator
+#include "SafeFile.h"		// Needed for CFileDataIO
 
 // ----------------------------------------------------------------------------
 // constants
@@ -71,7 +71,8 @@
 // ----------------------------------------------------------------------------
 // class CFile: raw file IO
 // ----------------------------------------------------------------------------
-class CFile {
+class CFile : public CFileDataIO
+{
 public:
 	// more file constants
 	// -------------------
@@ -159,6 +160,20 @@ private:
 	mutable int m_fd; // file descriptor or INVALID_FD if not opened
 	mutable bool m_error; // error memory
 	wxString m_filePath;
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Note: This class will be merged with CFile soon.
+class CSafeFile : public CFile
+{
+ public:
+	CSafeFile() {}
+	CSafeFile(const wxChar* lpszFileName, OpenMode mode = read)
+		: CFile(lpszFileName, mode) {}
+
+	virtual off_t Read(void *pBuf, off_t nCount) const;
+	virtual size_t Write(const void *pBuf, size_t nCount);
 };
 
 #endif // CFILE_H

@@ -63,7 +63,7 @@ there client on the eMule forum..
 #include "../../amuleDlg.h"
 //#include "../../KadContactListCtrl.h"
 #include "../../KadDlg.h"
-#include "../../SafeFile.h"
+#include "../../CFile.h"
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
 

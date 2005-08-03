@@ -31,9 +31,10 @@
 #endif
 
 #include "Types.h"		// Needed for uint8, uint16, uint32
-#include "SafeFile.h"	// Needed for CSafeFile
+#include "SafeFile.h"	// Needed for CFileDataIO
 
-class CMemFile : public CSafeFile
+
+class CMemFile : public CFileDataIO
 {
 public:
 	CMemFile( unsigned int growBytes = 1024 );
@@ -45,7 +46,6 @@ public:
 	byte* Detach();	
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
-	virtual bool GetStatus(unsigned long) const 	{ return true; };
 	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
@@ -54,16 +54,6 @@ public:
 	virtual off_t  Read(void* buf, off_t length) const;
 	virtual size_t Write(const void* buf, size_t length);
 	
-	
-	// These functions should not be used as they make no sense for a MemFile.
-	// However using them has no effect and is safe, though not advisable.
-	virtual bool Create(const wxChar *szFileName, bool bOverwrite = FALSE, int access = -1 );
-	virtual bool Open(const wxChar *szFileName, OpenMode mode = read, int access = -1 );
-	virtual bool Close() const;
-	virtual bool Flush();
-	virtual bool IsOpened() const;
-	virtual bool Error() const;
-
 	// Sometimes we need to get the raw buffer, like sending a packet and 
 	// not wanting to deatach the buffer from the MemFile.
 	byte*	GetBuffer() { return m_buffer; };
