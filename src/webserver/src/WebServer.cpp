@@ -634,16 +634,14 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			const char *httpOut = (const char *)Out;
 #endif
 			bool bOk = false;
-			try {
-				uLongf destLen = strlen(httpOut) + 1024;
-				gzipOut = new char[destLen];
-				if( _GzipCompress((Bytef*)gzipOut, &destLen, 
-				   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
-					bOk = true;
-					gzipLen = destLen;
-				}
-			} catch(...) {
-			}			
+			uLongf destLen = strlen(httpOut) + 1024;
+			gzipOut = new char[destLen];
+			if( _GzipCompress((Bytef*)gzipOut, &destLen, 
+			   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
+				bOk = true;
+				gzipLen = destLen;
+			}
+			
 			if (!bOk) {
 				isUseGzip = false;
 				if (gzipOut != NULL) {
