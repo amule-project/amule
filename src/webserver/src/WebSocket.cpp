@@ -403,11 +403,9 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 		"Cache-Control: no-cache, no-store, must-revalidate\r\n"
 		"%s"
 		"Connection: close\r\nContent-Type: text/html\r\n"
-		"Content-Length: %d\r\n\r\n",
-		 cookie, content_len);
-	if ( use_gzip ) {
-		strcat(szBuf, "Content-Encoding: gzip\r\n");
-	}
+		"Content-Length: %d\r\n%s\r\n\r\n",
+		 cookie, content_len, (use_gzip ? "Content-Encoding: gzip" : ""));
+
 	SendData(szBuf, strlen(szBuf));
 }
 
