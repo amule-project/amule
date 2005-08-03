@@ -264,7 +264,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 	cast_value_dnum(&si->var->value);
 	int port = si->var->value.int_val;
 
-	si = get_scope_item(g_current_scope, "__param_1");
+	si = get_scope_item(g_current_scope, "__param_2");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 3: $command");
 		return;
@@ -687,7 +687,7 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"amule_do_server_cmd",
 		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
 		3,
-		php_native_load_amule_vars,
+		php_native_server_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
