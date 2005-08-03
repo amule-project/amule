@@ -188,7 +188,7 @@ void CRoutingZone::readFile(void)
 void CRoutingZone::writeFile(void)
 {
 	try {
-		uint32 count = 0;
+		unsigned int count = 0;
 		CContact *c;
 		CUInt128 id;
 		CSafeFile file;
@@ -213,7 +213,7 @@ void CRoutingZone::writeFile(void)
 			}
 			file.Close();
 		}
-		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %ld contacts to file."), count));
+		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %d contacts to file."), count));
 	} catch (...) {
 		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::writeFile"));
 	}

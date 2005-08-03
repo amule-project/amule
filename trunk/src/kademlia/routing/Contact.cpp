@@ -143,7 +143,7 @@ uint16 CContact::getTCPPort(void) const
 
 void CContact::getTCPPort(wxString *port) const
 {
-	*port = wxString::Format(wxT("%ld"), m_tcpPort);
+	*port = wxString() << m_tcpPort;
 }
 
 void CContact::setTCPPort(uint16 port)
@@ -158,7 +158,7 @@ uint16 CContact::getUDPPort(void) const
 
 void CContact::getUDPPort(wxString *port) const
 {
-	*port = wxString::Format(wxT("%ld"), m_udpPort);
+	*port = wxString() << m_udpPort;
 }
 
 void CContact::setUDPPort(uint16 port)
