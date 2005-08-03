@@ -1083,64 +1083,30 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
 {
-	try
-	{
-		if (!m_reqfile) {
-			throw CInvalidPacket(wxT("Comment packet for unknown file"));
-		}
-
-		if (!m_reqfile->IsPartFile()) {
-			throw CInvalidPacket(wxT("Comment packet for completed file"));
-		}
-
-		const CMemFile data((byte*)pachPacket, nSize);
-
-		m_iRating = data.ReadUInt8();
-		m_reqfile->SetHasRating(true);
-		
-		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
-
-		// The comment is unicoded, with a uin32 len and safe read 
-		// (won't break if string size is < than advertised len)
-		m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
-
-		AddDebugLogLineM( false, logClient, wxString(wxT("Description for file '")) << m_clientFilename << wxT("' received: ") << m_strComment);
-
-		m_reqfile->SetHasComment(true);
-		// Update file rating
-		m_reqfile->UpdateFileRatingCommentAvail();
+	if (!m_reqfile) {
+		throw CInvalidPacket(wxT("Comment packet for unknown file"));
 	}
-	catch ( const CInvalidPacket& e )
-	{
-		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Invalid MuleComment packet - %s\n"
-						 "Sent by %s on ip %s port %i using client %i version %i\n"
-						 "User Disconnected.") )
-				% e.what()
-				% GetUserName()
-				% GetFullIP()
-				% GetUserPort()
-				% GetClientSoft()
-				% GetMuleVersion()
-		);
-		
-		throw wxString(wxT("Wrong MuleComment packet"));
+
+	if (!m_reqfile->IsPartFile()) {
+		throw CInvalidPacket(wxT("Comment packet for completed file"));
 	}
-	catch (...)
-	{
-		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Invalid MuleComment packet - Unknown exception\n"
-						 "Sent by %s on ip %s port %i using client %i version %i\n"
-						 "User Disconnected.") )
-				% GetUserName()
-				% GetFullIP()
-				% GetUserPort()
-				% GetClientSoft()
-				% GetMuleVersion()
-		);
+
+	const CMemFile data((byte*)pachPacket, nSize);
+
+	m_iRating = data.ReadUInt8();
+	m_reqfile->SetHasRating(true);
 		
-		throw wxString(wxT("Wrong MuleComment packet"));
-	}
+	AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
+
+	// The comment is unicoded, with a uin32 len and safe read 
+	// (won't break if string size is < than advertised len)
+	m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
+
+	AddDebugLogLineM( false, logClient, wxString(wxT("Description for file '")) << m_clientFilename << wxT("' received: ") << m_strComment);
+
+	m_reqfile->SetHasComment(true);
+	// Update file rating
+	m_reqfile->UpdateFileRatingCommentAvail();
 
 	if (!m_strComment.IsEmpty() || m_iRating > 0) {
 		m_reqfile->UpdateFileRatingCommentAvail();

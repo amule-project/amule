@@ -63,17 +63,13 @@ CRoutingBin::CRoutingBin()
 CRoutingBin::~CRoutingBin()
 {
 	ContactList::const_iterator it;
-	try {
-		if (!m_dontDeleteContacts)
-		{
-			for (it = m_entries.begin(); it != m_entries.end(); ++it) {
-				delete *it;
-			}
+	if (!m_dontDeleteContacts) {
+		for (it = m_entries.begin(); it != m_entries.end(); ++it) {
+			delete *it;
 		}
-		m_entries.clear();
-	} catch (...)  {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in ~CRoutingBin"));
 	}
+	
+	m_entries.clear();
 }
 
 bool CRoutingBin::add(CContact *contact)

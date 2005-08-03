@@ -285,78 +285,74 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 	CUInt128 distance;
 	CUInt128 fromDistance;
 
-	try {
-		//Find contact that is responding.
-		for (tried = m_tried.begin(); tried != m_tried.end(); ++tried) {
+	//Find contact that is responding.
+	for (tried = m_tried.begin(); tried != m_tried.end(); ++tried) {
+		fromDistance = tried->first;
+		from = tried->second;
 
-			fromDistance = tried->first;
-			from = tried->second;
+		if ((from->getIPAddress() == fromIP) && (from->getUDPPort() == fromPort)) {
+			// Add to list of people who responded
+			m_responded[fromDistance] = from;
 
-			if ((from->getIPAddress() == fromIP) && (from->getUDPPort() == fromPort)) {
-				// Add to list of people who responded
-				m_responded[fromDistance] = from;
+			// Loop through their responses
+			for (response = results->begin(); response != results->end(); response++) {
+				c = *response;
 
-				// Loop through their responses
-				for (response = results->begin(); response != results->end(); response++) {
-					c = *response;
+				c->getClientID(&distance);
+				distance.XOR(m_target);
 
-					c->getClientID(&distance);
-					distance.XOR(m_target);
+				// Ignore this contact if already know him
+				if (m_possible.count(distance) > 0) {
+					// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
+					continue;
+				}
+				if (m_tried.count(distance) > 0) {
+					// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
+					continue;
+				}
+				
+				// Add to possible
+				m_possible[distance] = c;
+				
+				if (distance < fromDistance) {
 
-					// Ignore this contact if already know him
-					if (m_possible.count(distance) > 0) {
-						// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already known client: ignore"));
-						continue;
-					}
-					if (m_tried.count(distance) > 0) {
-						// AddDebugLogLineM(false, logKadSearch, wxT("Search result from already tried client: ignore"));
-						continue;
-					}
-					
-					// Add to possible
-					m_possible[distance] = c;
-					
-					if (distance < fromDistance) {
-
-						bool top = false;
-						if (m_best.size() < ALPHA_QUERY) {
-							top = true;
+					bool top = false;
+					if (m_best.size() < ALPHA_QUERY) {
+						top = true;
+						m_best[distance] = c;
+					} else {
+						ContactMap::iterator it = m_best.end();
+						--it;
+						if (distance < it->first) {
+							// Rotate best list
+							m_best.erase(it);
 							m_best[distance] = c;
-						} else {
-							ContactMap::iterator it = m_best.end();
-							--it;
-							if (distance < it->first) {
-								// Rotate best list
-								m_best.erase(it);
-								m_best[distance] = c;
-								top = true;
-							}
-						}
-						
-						if (top) {
-							// Add to tried
-							m_tried[distance] = c;
-							// Send request
-							c->checkingType();
-							CUInt128 check;
-							c->getClientID(&check);
-							sendFindValue(check, c->getIPAddress(), c->getUDPPort());
+							top = true;
 						}
 					}
+					
+					if (top) {
+						// Add to tried
+						m_tried[distance] = c;
+						// Send request
+						c->checkingType();
+						CUInt128 check;
+						c->getClientID(&check);
+						sendFindValue(check, c->getIPAddress(), c->getUDPPort());
+					}
 				}
-
-				// We don't want anything from these people, so just increment the counter.
-				if( m_type == NODECOMPLETE ) {
-					AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
-					m_answers++;
-					theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
-				}
-				break;
 			}
+
+			// We don't want anything from these people, so just increment the counter.
+			if( m_type == NODECOMPLETE ) {
+				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
+				m_answers++;
+				theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
+			}
+			break;
 		}
-	} catch (...)  {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::processResponse"));
 	}
+	
 	delete results;
 }
 
@@ -867,8 +863,6 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 		CKademlia::getUDPListener()->sendPacket(&bio, KADEMLIA_REQ, ip, port);
 	} catch (const CIOException& ioe) {
 		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::sendFindValue (IO error(%i))"), ioe.m_cause));
-	} catch (...) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::sendFindValue"));
 	}
 }
 
@@ -953,16 +947,13 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 		}
 	} catch (const CIOException& ioe) {
 		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacketForTags (IO error(%i))"), ioe.m_cause));
-	} catch (...) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::PreparePacketForTags"));
 	}
 }
 
 //Can't clean these up until Taglist works with CMemFiles.
 void CSearch::PreparePacket(void)
 {
-	try
-	{
+	try {
 		int count = m_fileIDs.size();
 		byte fileid[16];
 		CKnownFile* file = NULL;
@@ -1025,8 +1016,6 @@ void CSearch::PreparePacket(void)
 		}
 	} catch (const CIOException& ioe ) {
 		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacket (IO error(%i))"), ioe.m_cause));
-	} catch (...) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearch::PreparePacket"));
 	}
 }
 

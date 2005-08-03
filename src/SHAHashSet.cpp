@@ -682,16 +682,15 @@ bool CAICHHashSet::LoadHashSet(){
 			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
 		AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
-	} catch (const wxString& error){
+	} catch (const wxString& error) {
 		if (file.Eof()) {
 			 AddDebugLogLineM( true, logSHAHashSet, wxT("Error: EOF on ") + error);
 		} else {
 			AddDebugLogLineM( true, logSHAHashSet, wxT("Error: wrong format on ")  + error);
 		}
 		return false;
-	} catch (...) {
-		AddDebugLogLineM( true, logSHAHashSet, wxT("Unexpected error reading known2.met file") );
 	}
+
 	return false;
 }
 

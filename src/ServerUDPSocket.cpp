@@ -130,7 +130,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 	AddDebugLogLineM( false, logServerUDP,
 					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	
-	try{
+	try {
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
 		// This makes Server UDP Flags to be set correctly so we use less bandwith on asking servers for sources
 		// Also we process Search results and Found sources correctly now on 16.40 behaviour.
@@ -317,9 +317,8 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 		}
 	} catch (const wxString& error) {
 		AddDebugLogLineM(false, logServer, wxT("Error while processing incoming UDP Packet: ") + error);
-	} catch (...) {
-		AddDebugLogLineM(false, logServer,
-			wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)"));
+	} catch (const CInvalidPacket& error) {
+		AddDebugLogLineM(false, logServer, wxT("Invalid UDP packet encountered: ") + error.what());
 	}
 	
 	if (update) {

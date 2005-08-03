@@ -267,11 +267,6 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 		);
 		
 		throw CInvalidPacket(wxT("Error reading server.met"));
-	} catch (...) {
-		AddDebugLogLineM( true, logGeneral,
-			wxT("Caught unknown exception in CServer::AddTagFromFile! server.met is corrupted.") );
-		
-		throw CInvalidPacket(wxT("Error reading server.met"));
 	}
 	return true;
 }

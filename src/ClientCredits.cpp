@@ -48,7 +48,8 @@
 #include "OtherFunctions.h" 	// Needed for md4cpy
 #include "Logger.h"				// Needed for Add(Debug)LogLine
 #include "ServerConnect.h" // Needed for CServerConnect
-#include "CFile.h"
+#include "FileFunctions.h"	// Needed for GetFileSize()
+#include "CFile.h"			// Needed for CFIle
 
 #include "CryptoPP_Inc.h"
 
@@ -443,12 +444,13 @@ bool CClientCreditsList::CreateKeyPair()
 		privkeysink.MessageEnd();
 
 		AddDebugLogLineM( true, logCredits, wxT("Created new RSA keypair"));
-	} catch(...) {
-		AddDebugLogLineM( true, logCredits, wxT("Failed to create new RSA keypair"));
-		wxASSERT ( false );
-		return false;
-	}
-	return true;
+	} catch(const CryptoPP::Exception& e) {
+		AddDebugLogLineM(true, logCredits, wxString(wxT("Failed to create new RSA keypair: ")) + char2unicode(e.what()));
+		wxASSERT(false);
+ 		return false;
+ 	}
+	
+ 	return true;
 }
 
 
@@ -461,63 +463,45 @@ void CClientCreditsList::InitalizeCrypting()
 	if (!thePrefs::IsSecureIdentEnabled()) {
 		return;
 	}
-	
-	// check if keyfile is there
-	bool bCreateNewKey = false;
 
-	CFile KeyFile;
-	try{
-		
-		if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
-			KeyFile.Open(theApp.ConfigDir + CRYPTKEY_FILENAME,CFile::read);
-			if (!KeyFile.IsOpened()) {
-				AddDebugLogLineM( true, logCredits, wxT("Can't open 'cryptkey.dat', creating again.") );
-				if (!wxRemoveFile(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
-					AddLogLineM( true, wxT("FATAL: Can't remove 'cryptkey.dat'.") );
-					throw wxString(wxT("FATAL: Can't remove 'cryptkey.dat'."));
-				}
-				bCreateNewKey = true;
-			} else {
-				if (KeyFile.GetLength() == 0) {
-					AddDebugLogLineM( true, logCredits, wxT("'cryptkey.dat' is 0 size, creating.") );
-					bCreateNewKey = true;
-				}
-				KeyFile.Close();
-			}
-		} else {
-			AddLogLineM( false, _("No 'cryptkey.dat' file found, creating") );
-			bCreateNewKey = true;
-		}
-		
-		if (bCreateNewKey) {
-			CreateKeyPair();
-		}
-		
-		// load key
-
-		// load private key
-		// Nothing we can do against this unicode2char :/
-		CryptoPP::FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
-		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
-		// calculate and store public key
+ 
+	try {
+		// check if keyfile is there
+ 		if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
+			off_t keySize = GetFileSize(theApp.ConfigDir + CRYPTKEY_FILENAME);
+			
+			if (keySize < 0) {
+				AddDebugLogLineM(true, logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
+				return;
+			} else if (keySize == 0) {
+				AddDebugLogLineM(true, logCredits, wxT("'cryptkey.dat' is empty, recreating keypair."));
+				CreateKeyPair();
+ 			}
+ 		} else {
+			AddLogLineM( false, _("No 'cryptkey.dat' file found, creating.") );
+ 			CreateKeyPair();
+ 		}
+			
+ 		// load private key
+ 		CryptoPP::FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
+ 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
+ 		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));
 		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
-		pubkey.DEREncode(asink);
-		m_nMyPublicKeyLen = asink.TotalPutLength();
-		asink.MessageEnd();
-	}
-	catch(...)
-	{
-		if (m_pSignkey){
-			delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
-			m_pSignkey = NULL;
-		}
-		AddDebugLogLineM( true, logCredits, wxT("Failed to load encryption-key!") );
-	}
+ 		pubkey.DEREncode(asink);
+ 		m_nMyPublicKeyLen = asink.TotalPutLength();
+ 		asink.MessageEnd();
+	} catch (const CryptoPP::Exception& e) {
+		delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
+		m_pSignkey = NULL;
+		
+		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while initializing encryption keys: ")) + char2unicode(e.what()));
+ 	}
 }
 
-uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey){
-	
+
+uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey)
+{	
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)sigkey;
 	// signer param is used for debug only
 	if (signer == NULL)
@@ -526,11 +510,12 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 	// create a signature of the public key from pTarget
 	wxASSERT( pTarget );
 	wxASSERT( pachOutput );
-	uint8 nResult;
-	if ( !CryptoAvailable() )
-		return 0;
-	try{
-		
+	
+	if ( !CryptoAvailable() ) {
+ 		return 0;
+	}
+	
+	try {		
 		CryptoPP::SecByteBlock sbbSignature(signer->SignatureLength());
 		CryptoPP::AutoSeededRandomPool rng;
 		byte abyBuffer[MAXPUBKEYSIZE+9];
@@ -547,20 +532,22 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 			PokeUInt32(abyBuffer+keylen+4, ChallengeIP);
 			PokeUInt8(abyBuffer+keylen+4+4,byChaIPKind);
 		}
-		signer->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
-		CryptoPP::ArraySink asink(pachOutput, nMaxSize);
-		asink.Put(sbbSignature.begin(), sbbSignature.size());
-		nResult = asink.TotalPutLength();			
-	}
-	catch(...)
-	{
-		wxASSERT ( false );
-		nResult = 0;
-	}
-	return nResult;
+ 		signer->SignMessage(rng, abyBuffer ,keylen+4+ChIpLen , sbbSignature.begin());
+ 		CryptoPP::ArraySink asink(pachOutput, nMaxSize);
+ 		asink.Put(sbbSignature.begin(), sbbSignature.size());
+		
+		return asink.TotalPutLength();			
+	} catch (const CryptoPP::Exception& e) {
+		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while creating signature: ")) + char2unicode(e.what()));
+		wxASSERT(false);
+		
+		return 0;
+ 	}
 }
 
-bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind){
+
+bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind)
+{
 	wxASSERT( pTarget );
 	wxASSERT( pachSignature );
 	if ( !CryptoAvailable() ){
@@ -568,7 +555,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 		return false;
 	}
 	bool bResult;
-	try{
+	try {
 		CryptoPP::StringSource ss_Pubkey((byte*)pTarget->GetSecureIdent(),pTarget->GetSecIDKeyLen(),true,0);
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(ss_Pubkey);
 		// 4 additional bytes random data send from this client +5 bytes v2
@@ -604,30 +591,25 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 		}
 		//v2 end
 		
-		// Hello fellow traveler. If you are here because of a compilation
-		// problem on this line, just comment that line and uncomment the other
-		// Anyway, that means you have libcrypto 5.0 and it's UNDOCUMENTED and 
-		// UNTESTED what will happen to your mule, compilation, linking, whatever.
-		// libcrypto++ 5.1
-		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
-		// libcrypto++ 5.0
-		//bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature);		
-	}
-	catch(...)
-	{
-		bResult = false;
-	}
+ 		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
+	} catch (const CryptoPP::Exception& e) {
+		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while verifying identity: ")) + char2unicode(e.what()));
+ 		bResult = false;
+ 	}
+
 	if (!bResult){
 		if (pTarget->IdentState == IS_IDNEEDED)
 			pTarget->IdentState = IS_IDFAILED;
-	}
-	else{
+	} else {
 		pTarget->Verified(dwForIP);
 	}
+
 	return bResult;
 }
 
-bool CClientCreditsList::CryptoAvailable() const {
+
+bool CClientCreditsList::CryptoAvailable() const
+{
 	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && thePrefs::IsSecureIdentEnabled());
 }
 
