@@ -2480,7 +2480,7 @@ yyreduce:
 
   case 82:
 #line 327 "php_parser.y"
-    { (yyval.exp_node) = make_exp_1(PHP_OP_ARRAY_BY_KEY, 0); ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_ARRAY_BY_KEY, (yyvsp[-2].exp_node), 0); ;}
     break;
 
   case 83:
