@@ -44,12 +44,12 @@ there client on the eMule forum..
 #include "../routing/RoutingZone.h"
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Indexed.h"
-#include "Preferences.h"
-#include "amule.h"
-#include "amuleDlg.h"
-#include "SafeFile.h"
-#include "ServerList.h"
-#include "Logger.h"
+#include "../../Preferences.h"
+#include "../../amule.h"
+#include "../../amuleDlg.h"
+#include "../../CFile.h"
+#include "../../ServerList.h"
+#include "../../Logger.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

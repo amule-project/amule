@@ -39,7 +39,7 @@
 #include "Friend.h"		// Needed for CFriend
 #include "ArchSpecific.h"
 #include "OtherFunctions.h"
-#include "SafeFile.h"
+#include "CFile.h"
 #include "Logger.h"
 
 CFriendList::CFriendList()

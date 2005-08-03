@@ -30,9 +30,11 @@
 #pragma interface "SafeFile.h"
 #endif
 
-#include "CFile.h"		// Needed for CFile
-#include "Types.h"		// Needed for LPCSTR
-#include "StringFunctions.h"		// Needed for the utf8 types.
+#include <wx/filefn.h>			// Needed for wxSeekMode
+
+#include "Types.h"				// Needed for LPCSTR
+#include "StringFunctions.h"	// Needed for the utf8 types.
+
 
 namespace Kademlia{
 	class CUInt128;
@@ -65,29 +67,6 @@ protected:
 	virtual ~CFileDataIO() {};
 private:
 	void WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
- };
- 
-
-
-///////////////////////////////////////////////////////////////////////////////
-class CSafeFile : public CFile, public CFileDataIO
-{
- public:
-	CSafeFile() {}
-	CSafeFile(const wxChar* lpszFileName, OpenMode mode = read)
-		: CFile(lpszFileName, mode) {}
-
-	virtual off_t Read(void *pBuf, off_t nCount) const;
-	virtual size_t Write(const void *pBuf, size_t nCount);
- 	virtual off_t GetPosition() const {
-		return CFile::GetPosition();
-	}
-	virtual off_t GetLength() const {
-		return CFile::GetLength();
-	}
-	virtual off_t Seek(off_t lOff, wxSeekMode nFrom = wxFromStart) const {
-		return CFile::Seek(lOff, nFrom);
-	}
 };
  
 

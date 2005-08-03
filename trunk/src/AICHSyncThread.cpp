@@ -31,7 +31,7 @@
 #include "AICHSyncThread.h"
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "SHAHashSet.h"
-#include "SafeFile.h"
+#include "CFile.h"				// Needed for CSafeFile
 #include "KnownFile.h"
 #include "SHA.h"
 #include "amule.h"

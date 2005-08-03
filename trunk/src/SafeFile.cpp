@@ -238,21 +238,3 @@ void CFileDataIO::WriteString(const wxString& rstr, EUtf8Str eEncode, uint8 Size
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-// CSafeFile
-
-off_t CSafeFile::Read(void *pBuf, off_t nCount) const
-{
-	if ( GetPosition() + nCount > GetLength() )
-		// For lack of better
-		throw CInvalidPacket(wxT("Read after end of CSafeFile"));
-		// AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
-	
-	return CFile::Read( pBuf, nCount );
-}
-
-size_t CSafeFile::Write(const void *pBuf, size_t nCount)
-{
-	return CFile::Write( pBuf, nCount );
-}
-

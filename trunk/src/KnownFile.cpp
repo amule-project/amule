@@ -791,7 +791,6 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, b
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
 
-	CFile* data = NULL;
 	
 	bool delete_in_string = false;
 	
@@ -802,7 +801,7 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, b
 		delete_in_string = true;
 	}
 	
-	data = new CMemFile(in_string,Length);
+	CMemFile data(in_string, Length);
 		
 	uint32 Required = Length;
 	byte   X[64*128];
@@ -818,7 +817,7 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, b
 		if (len > sizeof(X)/(64 * sizeof(X[0]))) {
 			len = sizeof(X)/(64 * sizeof(X[0])); 
 		}
-		data->Read(&X,len*64);
+		data.Read(&X,len*64);
 
 		// SHA hash needs 180KB blocks
 		if (pShaHashOut != NULL){
@@ -843,7 +842,7 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, b
 	// bytes to read
 	Required = Length % 64;
 	if (Required != 0){
-		data->Read(&X,Required);
+		data.Read(&X,Required);
 
 		if (pShaHashOut != NULL){
 			if (nIACHPos + Required >= EMBLOCKSIZE){
@@ -882,7 +881,6 @@ void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, b
 	}
 		
 	delete pHashAlg;
-	delete data;
 	if (delete_in_string) {
 		delete[] in_string;		
 	}
