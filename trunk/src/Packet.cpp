@@ -392,6 +392,10 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			m_uName = data.ReadUInt8();
 			m_pszName = NULL;
 		} else {
+			if (length > data.GetLength()- data.GetPosition()) {
+				// Avoid allocating huge stuff
+				throw CInvalidPacket(wxT(BAD_TAG_MSG));
+			}
 			m_uName = 0;
 			m_pszName = new char[length+1];
 			try {
