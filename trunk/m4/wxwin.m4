@@ -393,7 +393,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 			#include <wx/wx.h>
 
 			int main() {
-			#if !HAVE_LARGEFILE_SUPPORT
+			#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
 				#error No LargeFile support!;
 			#endif
 				exit(0);
@@ -428,7 +428,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 			#include <wx/wx.h>
 
 			int main() {
-			#if !HAVE_LARGEFILE_SUPPORT
+			#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
 				#error No LargeFile support!;
 			#endif
 				exit(0);
