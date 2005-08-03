@@ -68,7 +68,7 @@
 #define PR_POWERSHARE                   6 //added for powershare (deltaHF)
 
 class CUpDownClient;
-class CFile;
+class CFileDataIO;
 class CPacket;
 class CTag;
 
@@ -285,13 +285,13 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
-	void	CreateHashFromFile(CFile* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
+	void	CreateHashFromFile(CFileDataIO* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash hashlist;
 	wxString m_strFilePath;	
 	CAICHHashSet*			m_pAICHHashSet;
 
-	void	CreateHashFromInput(CFile* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
+	void	CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;

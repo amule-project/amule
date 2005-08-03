@@ -781,108 +781,108 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	return true;
 }
 
-#ifndef _AFX
-#ifndef VERIFY
-#define VERIFY(x) (void(x))
-#endif //VERIFY
-#endif //_AFX
 
-void CKnownFile::CreateHashFromInput(CFile* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
+void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
 
-	
+	CAICHHashAlgo* pHashAlg = NULL;
 	bool delete_in_string = false;
 	
-	if (file) {
-		wxASSERT(!in_string);
-		in_string = new unsigned char[Length]; 	 
-		file->Read(in_string,Length); 	 
-		delete_in_string = true;
-	}
-	
-	CMemFile data(in_string, Length);
-		
-	uint32 Required = Length;
-	byte   X[64*128];
-	
-	uint32	posCurrentEMBlock = 0;
-	uint32	nIACHPos = 0;
-	CAICHHashAlgo* pHashAlg = m_pAICHHashSet->GetNewHashAlgo();
-
-	// This is all AICH.
-	
-	while (Required >= 64){
-		uint32 len = Required / 64; 
-		if (len > sizeof(X)/(64 * sizeof(X[0]))) {
-			len = sizeof(X)/(64 * sizeof(X[0])); 
+	try {	
+		if (file) {
+			wxASSERT(!in_string);
+			in_string = new unsigned char[Length]; 	 
+			file->Read(in_string,Length); 	 
+			delete_in_string = true;
 		}
-		data.Read(&X,len*64);
+		
+		CMemFile data(in_string, Length);
+			
+		uint32 Required = Length;
+		byte   X[64*128];
+		
+		uint32	posCurrentEMBlock = 0;
+		uint32	nIACHPos = 0;
+		pHashAlg = m_pAICHHashSet->GetNewHashAlgo();
 
-		// SHA hash needs 180KB blocks
+		// This is all AICH.
+		
+		while (Required >= 64){
+			uint32 len = Required / 64; 
+			if (len > sizeof(X)/(64 * sizeof(X[0]))) {
+				len = sizeof(X)/(64 * sizeof(X[0])); 
+			}
+			data.Read(&X,len*64);
+
+			// SHA hash needs 180KB blocks
+			if (pShaHashOut != NULL){
+				if (nIACHPos + len*64 >= EMBLOCKSIZE){
+					uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
+					pHashAlg->Add(X, nToComplete);
+					wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+					pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
+					posCurrentEMBlock += EMBLOCKSIZE;
+					pHashAlg->Reset();
+					pHashAlg->Add(X+nToComplete,(len*64) - nToComplete);
+					nIACHPos = (len*64) - nToComplete;
+				}
+				else{
+					pHashAlg->Add(X, len*64);
+					nIACHPos += len*64;
+				}
+			}
+
+			Required -= len*64;
+		}
+		// bytes to read
+		Required = Length % 64;
+		if (Required != 0){
+			data.Read(&X,Required);
+
+			if (pShaHashOut != NULL){
+				if (nIACHPos + Required >= EMBLOCKSIZE){
+					uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
+					pHashAlg->Add(X, nToComplete);
+					wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+					pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
+					posCurrentEMBlock += EMBLOCKSIZE;
+					pHashAlg->Reset();
+					pHashAlg->Add(X+nToComplete, Required - nToComplete);
+					nIACHPos = Required - nToComplete;
+				}
+				else{
+					pHashAlg->Add(X, Required);
+					nIACHPos += Required;
+				}
+			}
+		}
 		if (pShaHashOut != NULL){
-			if (nIACHPos + len*64 >= EMBLOCKSIZE){
-				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
-				pHashAlg->Add(X, nToComplete);
-				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
-				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
-				posCurrentEMBlock += EMBLOCKSIZE;
-				pHashAlg->Reset();
-				pHashAlg->Add(X+nToComplete,(len*64) - nToComplete);
-				nIACHPos = (len*64) - nToComplete;
+			if(nIACHPos > 0){
+				pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg);
+				posCurrentEMBlock += nIACHPos;
 			}
-			else{
-				pHashAlg->Add(X, len*64);
-				nIACHPos += len*64;
-			}
+			wxASSERT( posCurrentEMBlock == Length );
+			wxCHECK2( pShaHashOut->ReCalculateHash(pHashAlg, false), );
 		}
 
-		Required -= len*64;
-	}
-	// bytes to read
-	Required = Length % 64;
-	if (Required != 0){
-		data.Read(&X,Required);
-
-		if (pShaHashOut != NULL){
-			if (nIACHPos + Required >= EMBLOCKSIZE){
-				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
-				pHashAlg->Add(X, nToComplete);
-				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
-				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
-				posCurrentEMBlock += EMBLOCKSIZE;
-				pHashAlg->Reset();
-				pHashAlg->Add(X+nToComplete, Required - nToComplete);
-				nIACHPos = Required - nToComplete;
-			}
-			else{
-				pHashAlg->Add(X, Required);
-				nIACHPos += Required;
-			}
-
+		if (Output != NULL){
+			 CryptoPP::MD4 md4_hasher; 	 
+			 md4_hasher.CalculateDigest(Output, in_string, Length);		
+			
 		}
-	}
-	if (pShaHashOut != NULL){
-		if(nIACHPos > 0){
-			pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg);
-			posCurrentEMBlock += nIACHPos;
+			
+		delete pHashAlg;
+		if (delete_in_string) {
+			delete[] in_string;		
 		}
-		wxASSERT( posCurrentEMBlock == Length );
-		VERIFY( pShaHashOut->ReCalculateHash(pHashAlg, false) );
-	}
-
-	if (Output != NULL){
-		// MD4: use crypto.
-	 
-         CryptoPP::MD4 md4_hasher; 	 
-  	 
-         md4_hasher.CalculateDigest(Output,in_string,Length);		
+	} catch (...) {
+		delete pHashAlg;
+		if (delete_in_string) {
+			delete[] in_string;		
+		}
 		
-	}
-		
-	delete pHashAlg;
-	if (delete_in_string) {
-		delete[] in_string;		
+		throw;
 	}
 }
 
