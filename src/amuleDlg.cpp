@@ -1204,13 +1204,13 @@ enum ClientSkinEnum {
 };
 
 
-void CamuleDlg::Apply_Clients_Skin(wxString file) {
-	
+void CamuleDlg::Apply_Clients_Skin(wxString file)
+{	
 	#define ClientItemNumber CLIENT_SKIN_UNUSED
 
 	SkinItem bitmaps_found[ClientItemNumber];
 
-	for (uint32 i=0; i<ClientItemNumber; i++) {	
+	for (uint32 i = 0; i < ClientItemNumber; i++) {	
 		bitmaps_found[i].found = false;
 	}
 
@@ -1219,9 +1219,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 	printf("Testing skins\n");
 	
 	try {
-		
-		if (file.IsEmpty()) {
-			
+		if (file.IsEmpty()) {			
 			throw wxString(_("Skin file name is empty - loading defaults"));
 		}
 
@@ -1386,25 +1384,15 @@ void CamuleDlg::Apply_Clients_Skin(wxString file) {
 		
 		skinfile.Close();
 	} catch (const wxString& error) {
-		
 		wxMessageBox(error);
 		
-		if (skinfile.IsOpened()) {
-			skinfile.Close();
-		}
-		
 		// Load defaults
-		for (uint32 i=0; i<ClientItemNumber; i++) {
+		for (uint32 i = 0; i < ClientItemNumber; i++) {
 			imagelist.Add(wxBitmap(clientImages(i)));
 		}
-		
-		return;
-	} catch (...) {
-		wxASSERT(0);
-		printf("Unhandled exception on Skin file loading - please report to the aMule team.\n");
 	}
-	
 }
+
 
 void CamuleDlg::Create_Toolbar(wxString skinfile) {
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
