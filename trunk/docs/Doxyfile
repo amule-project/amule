@@ -23,7 +23,7 @@ PROJECT_NAME           = aMule
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 2.0.0
+PROJECT_NUMBER         = 2.1.0
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -387,13 +387,13 @@ FILE_PATTERNS          =
 # should be searched for input files as well. Possible values are YES and NO. 
 # If left blank NO is used.
 
-RECURSIVE              = NO
+RECURSIVE              = YES
 
 # The EXCLUDE tag can be used to specify files and/or directories that should 
 # excluded from the INPUT source files. This way you can easily exclude a 
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = src/muuli_wdr.h src/muuli_wdr.cpp src/CryptoPP.h src/CryptoPP.cpp
+EXCLUDE                = src/muuli_wdr.h src/muuli_wdr.cpp src/CryptoPP.h src/CryptoPP.cpp src/utils
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or directories 
 # that are symbolic links (a Unix filesystem feature) are excluded from the input.
