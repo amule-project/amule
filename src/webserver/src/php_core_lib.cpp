@@ -36,6 +36,7 @@
 
 #ifdef AMULEWEB_SCRIPT_EN
 	#include "WebServer.h"
+	#include "ECSpecialTags.h"
 #endif
 
 #include "php_syntree.h"
@@ -242,26 +243,28 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
- * Usage amule_server_cmd($server_it, $server_port, "command");
+ * Usage amule_server_cmd($server_ip, $server_port, "command");
  */
 void php_native_server_cmd(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
-	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 1: $server_ip");
+	if ( !si ) {
+		php_report_error(PHP_ERROR, "Missing argument 1: $server_ip");
 		return;
 	}
+	cast_value_dnum(&si->var->value);
 	int ip = si->var->value.int_val;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
-	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 2: $server_port");
+	if ( !si ) {
+		php_report_error(PHP_ERROR, "Missing argument 2: $server_port");
 		return;
 	}
+	cast_value_dnum(&si->var->value);
 	int port = si->var->value.int_val;
 
 	si = get_scope_item(g_current_scope, "__param_1");
-	if ( !si || (si->var->value.type != PHP_VAL_INT)) {
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 3: $command");
 		return;
 	}
@@ -270,7 +273,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 	CECPacket *req;
 	if ( strcmp(cmd, "connect") == 0 ) {
 		req = new CECPacket(EC_OP_SERVER_CONNECT);
-	} else if ( strcmp(cmd, "connect") == 0 ) {
+	} else if ( strcmp(cmd, "remove") == 0 ) {
 		req = new CECPacket(EC_OP_SERVER_REMOVE);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid server command: [%s]", cmd);
@@ -284,6 +287,45 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 #else
 	printf("php_native_server_cmd: ip=%08x port=%04d cmd=%s\n", ip, port, cmd);
 #endif
+}
+
+/*
+ * Query amule status. Return hash containing stats values
+ */
+void php_get_amule_stats(PHP_VALUE_NODE *result)
+{
+	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
+	CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
+	if (!stats) {
+		return ;
+	}
+	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)stats->GetTagByName(EC_TAG_CONNSTATE);
+	if (!tag) {
+		return ;
+	}
+	
+	cast_value_array(result);
+	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
+	cast_value_dnum(&id->value);
+	id->value.int_val = tag->ClientID();
+	CECTag *server = tag->GetTagByIndex(0);
+	if ( server ) {
+		PHP_VAR_NODE *srv_ip = array_get_by_str_key(result, "serv_ip");
+		cast_value_dnum(&id->value);
+		srv_ip->value.int_val = server->GetIPv4Data().IP();
+
+		PHP_VAR_NODE *srv_port = array_get_by_str_key(result, "serv_port");
+		cast_value_dnum(&srv_port->value);
+		srv_port->value.int_val = server->GetIPv4Data().port;
+		
+		CECTag *sname = server->GetTagByName(EC_TAG_SERVER_NAME);
+		if ( sname ) {
+			PHP_VAR_NODE *srv_name = array_get_by_str_key(result, "serv_name");
+			value_value_free(&id->value);
+			srv_name->value.type = PHP_VAL_STRING;
+			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
+		}
+	}
 }
 
 /*
@@ -558,6 +600,7 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	}
 }
 
+
 #else
 
 void amule_fake_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
@@ -623,6 +666,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"load_amule_vars",
 		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
 		1, php_native_load_amule_vars,
+	},
+	{
+		"amule_get_stats",
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		0, php_get_amule_stats,
 	},
 	{
 		"amule_do_server_cmd",
