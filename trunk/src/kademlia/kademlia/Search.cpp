@@ -226,7 +226,7 @@ void CSearch::jumpStart(void)
 		return;
 	}
 
-	if ((size_t)(m_lastResponse + SEC(3)) > time(NULL)) {
+	if ((time_t)(m_lastResponse + SEC(3)) > time(NULL)) {
 		return;
 	}
 
