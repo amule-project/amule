@@ -332,7 +332,7 @@ wxString get_backtrace(unsigned n)
 		libname[i] = wxBtString.Mid(0, len);
 		/* Function name */
 		if (hasFunction) {
-			int posPlus = wxBtString.Find(wxT('+'));
+			int posPlus = wxBtString.Find(wxT('+'), true);
 			if (posPlus == -1)
 				posPlus = posRPar;
 			len = posPlus - posLPar - 1;
