@@ -90,6 +90,7 @@ void CContact::initContact()
 	m_type = 3;
 	m_expires = 0;
 	m_lastTypeSet = time(NULL);
+	m_created = time(NULL);
 	m_guiRefs = 0;
 	m_inUse = 0;	
 }
