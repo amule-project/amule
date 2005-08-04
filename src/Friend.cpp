@@ -117,10 +117,12 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 			CTag newtag(*file, true);
 			switch ( newtag.GetNameID() ) {
 				case FF_NAME:
-					#if wxUSE_UNICODE
-					if (m_strName.IsEmpty()) 
-					#endif
-						m_strName = newtag.GetStr();
+					if (newtag.IsStr()) {
+						#if wxUSE_UNICODE
+						if (m_strName.IsEmpty()) 
+						#endif
+							m_strName = newtag.GetStr();
+					}
 					break;
 			}
 		}

@@ -178,7 +178,7 @@ CSearchFile::~CSearchFile()
 uint32 CSearchFile::GetIntTagValue(uint8 tagname) const
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->GetNameID() == tagname )
+		if ( m_taglist[i]->GetNameID() == tagname && m_taglist[i]->IsInt() )
 			return m_taglist[i]->GetInt();
 	}
 	
@@ -189,7 +189,7 @@ uint32 CSearchFile::GetIntTagValue(uint8 tagname) const
 wxString CSearchFile::GetStrTagValue(uint8 tagname) const
 {
 	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->GetNameID() == tagname )
+		if ( m_taglist[i]->GetNameID() == tagname && m_taglist[i]->IsStr() )
 			return m_taglist[i]->GetStr();
 	}
 	
@@ -204,21 +204,26 @@ void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 	
 		switch ( tag->GetNameID() ) {
 			case FT_SOURCES:
-				if (m_nKademlia) {
-					if (count > tag->GetInt()) {
-						tag->SetInt(count);
+				if (tag->IsInt()) {
+					if (m_nKademlia) {
+						if (count > tag->GetInt()) {
+							tag->SetInt(count);
+						}
+					} else {
+						tag->SetInt(tag->GetInt() + count);
 					}
-				} else {
-					tag->SetInt(tag->GetInt() + count);
 				}
 				break;
+				
 			case FT_COMPLETE_SOURCES:
-				if (m_nKademlia) {
-					if (count > tag->GetInt())
-						tag->SetInt(count_complete);
-					} else { 
-						tag->SetInt(tag->GetInt() + count_complete);
-					}
+				if (tag->IsInt()) {
+					if (m_nKademlia) {
+						if (count > tag->GetInt())
+							tag->SetInt(count_complete);
+						} else { 
+							tag->SetInt(tag->GetInt() + count_complete);
+						}
+				}
 				break;
 		}
 	}
