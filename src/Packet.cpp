@@ -379,112 +379,117 @@ CTag::CTag(const CTag& rTag)
 	}
 }
 
+
+#define BAD_TAG_MSG "Error reading tag from met file"
+
+
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
-	#define BAD_TAG_MSG "Error reading tag from met file"
+	// Zero variables to allow for safe deletion
+	m_uType = m_uName = m_nBlobSize = 0;
+	m_pszName = NULL;
+	m_pData = NULL;	
 	
-	m_uType = data.ReadUInt8();
-	if (m_uType & 0x80) {
-		m_uType &= 0x7F;
-		m_uName = data.ReadUInt8();
-		m_pszName = NULL;
-	} else {
-		uint16 length = data.ReadUInt16();
-		if (length == 1) {
+	try {
+		m_uType = data.ReadUInt8();
+		if (m_uType & 0x80) {
+			m_uType &= 0x7F;
 			m_uName = data.ReadUInt8();
 			m_pszName = NULL;
 		} else {
-			if (length > data.GetLength()- data.GetPosition()) {
-				// Avoid allocating huge stuff
-				throw CInvalidPacket(wxT(BAD_TAG_MSG));
-			}
-			m_uName = 0;
-			m_pszName = new char[length+1];
-			try {
-				data.Read(m_pszName, length);
-			} catch(...) {
-				delete[] m_pszName;
+			uint16 length = data.ReadUInt16();
+			if (length == 1) {
+				m_uName = data.ReadUInt8();
 				m_pszName = NULL;
-				throw CInvalidPacket(wxT(BAD_TAG_MSG));
+			} else {
+				m_uName = 0;
+				m_pszName = new char[length + 1];
+				data.Read(m_pszName, length);
+				m_pszName[length] = '\0';
 			}
-			m_pszName[length] = '\0';
 		}
-	}
 	
-	m_nBlobSize = 0;
-
-	// NOTE: It's very important that we read the *entire* packet data, even if we do
-	// not use each tag. Otherwise we will get troubles when the packets are returned in 
-	// a list - like the search results from a server.
-	switch (m_uType) {
-		case TAGTYPE_STRING:
-			m_pstrVal = new wxString(data.ReadString(bOptUTF8));
-			break;
-		case TAGTYPE_UINT32:
-			m_uVal = data.ReadUInt32();
-			break;
-		case TAGTYPE_UINT16:
-			m_uVal = data.ReadUInt16();
-			m_uType = TAGTYPE_UINT32;
-			break;
-		case TAGTYPE_UINT8:
-			m_uVal = data.ReadUInt8();
-			m_uType = TAGTYPE_UINT32;
-			break;
-		case TAGTYPE_FLOAT32:
-			#warning Endianess problem?
-			data.Read(&m_fVal, 4);
-			break;
-		case TAGTYPE_HASH:
-			m_pData = new byte[16];
-			try{
+		// NOTE: It's very important that we read the *entire* packet data,
+		// even if we do not use each tag. Otherwise we will get in trouble
+		// when the packets are returned in a list - like the search results
+		// from a server. If we cannot do this, then we throw an exception.
+		switch (m_uType) {
+			case TAGTYPE_STRING:
+				m_pstrVal = new wxString(data.ReadString(bOptUTF8));
+				break;
+			
+			case TAGTYPE_UINT32:
+				m_uVal = data.ReadUInt32();
+				break;
+			
+			case TAGTYPE_UINT16:
+				m_uVal = data.ReadUInt16();
+				m_uType = TAGTYPE_UINT32;
+				break;
+			
+			case TAGTYPE_UINT8:
+				m_uVal = data.ReadUInt8();
+				m_uType = TAGTYPE_UINT32;
+				break;
+			
+			case TAGTYPE_FLOAT32:
+				#warning Endianess problem?
+				data.Read(&m_fVal, 4);
+				break;
+			
+			case TAGTYPE_HASH:
+				m_pData = new byte[16];
 				data.ReadHash16(m_pData);
-			} catch (...){
-				delete[] m_pData;
-				m_pData = NULL;
-				throw CInvalidPacket(wxT(BAD_TAG_MSG));
+				break;
+			
+			case TAGTYPE_BOOL:
+				printf("***NOTE: %s; Reading BOOL tag\n", __FUNCTION__);
+				data.ReadUInt8();
+				break;
+			
+			case TAGTYPE_BOOLARRAY: {
+				printf("***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
+				uint16 len = data.ReadUInt16();
+			
+				// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
+				#warning This seems to be off by one! 8 / 8 + 1 == 2, etc.
+				char discard[(len / 8) + 1];
+				data.Read(discard, (len / 8) + 1);
+				break;
 			}
-			break;
-		case TAGTYPE_BOOL: {
-			printf("***NOTE: %s; Reading BOOL tag\n", __FUNCTION__);
-			data.ReadUInt8();
-			break;
-		}
-		case TAGTYPE_BOOLARRAY: {
-			printf("***NOTE: %s; Reading BOOL Array tag\n", __FUNCTION__);
-			uint16 len = data.ReadUInt16();
-			// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
-			char* discard = new char[ (len/8)+1 ];
-			data.Read(discard, (len/8)+1);
-			delete[] discard;
-			break;
-		}
-		case TAGTYPE_BLOB:
-			// 07-Apr-2004: eMule versions prior to 0.42e.29 handled the "len" as int16!
-			m_nBlobSize = data.ReadUInt32();
-			if (m_nBlobSize <= data.GetLength() - data.GetPosition()) {
+	
+			case TAGTYPE_BLOB:
+				// 07-Apr-2004: eMule versions prior to 0.42e.29 handled the "len" as int16!
+				m_nBlobSize = data.ReadUInt32();
+				
+				// Since the length is 32b, this check is needed to avoid
+				// huge allocations in case of bad tags.
+				if (m_nBlobSize > data.GetLength() - data.GetPosition()) {
+					throw CInvalidPacket(wxT(BAD_TAG_MSG));
+				}
+					
 				m_pData = new unsigned char[m_nBlobSize];
 				data.Read(m_pData, m_nBlobSize);
-			} else{
-				wxASSERT( false );
-				m_nBlobSize = 0;
-				m_pData = NULL;
-			}
-			break;
-		default:
-			// <Kry> I do really HATE that switch() doesn't handle ranges
-			// <Kry> :(
-			// <pho3nix> yes, switches should handle ranges.
-			// <pho3nix> after all, what are compilers for? :)
-			if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
-				uint8 length = m_uType - TAGTYPE_STR1 + 1;
-				m_pstrVal = new wxString(data.ReadOnlyString(bOptUTF8, length));
-				m_uType = TAGTYPE_STRING;
-			} else {
-				// Since we cannot determine the length of this tag, we
-				// simply have to abort reading the file.
-				throw CInvalidPacket(wxT(BAD_TAG_MSG));
-			}
+				break;
+		
+			default:
+				if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
+					uint8 length = m_uType - TAGTYPE_STR1 + 1;
+					m_pstrVal = new wxString(data.ReadOnlyString(bOptUTF8, length));
+					m_uType = TAGTYPE_STRING;
+				} else {
+					// Since we cannot determine the length of this tag, we
+					// simply have to abort reading the file.
+					throw CInvalidPacket(wxT(BAD_TAG_MSG));
+				}
+		}
+	} catch (const CInvalidPacket&) {
+		delete[] m_pszName;
+		if (m_uType == TAGTYPE_HASH || m_uType == TAGTYPE_BLOB) {
+			delete[] m_pData;
+		}
+
+		throw;
 	}
 }
 
