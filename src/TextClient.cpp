@@ -263,8 +263,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			
  		case CMD_ID_SRVSTAT:
 		case CMD_ID_STATS:
-			request = new CECPacket(EC_OP_STAT_REQ);
-			request->AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
+			request = new CECPacket(EC_OP_STAT_REQ, EC_DETAIL_CMD);
 			request_list.push_back(request);
 			break;
 			
@@ -316,8 +315,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_SERVERLIST:
-			request = new CECPacket(EC_OP_GET_SERVER_LIST);
-			request->AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)EC_DETAIL_CMD));
+			request = new CECPacket(EC_OP_GET_SERVER_LIST, EC_DETAIL_CMD);
 			request_list.push_back(request);
 			break;
 
