@@ -142,7 +142,7 @@ uint32 CAbstractFile::GetIntTagValue(const char* tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pTag = taglist[i];
-		if ((pTag->GetNameID()==0) && pTag->IsInt() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+		if (pTag->IsInt() && pTag->GetName() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
 			return pTag->GetInt();
 		}
 	}
@@ -164,7 +164,7 @@ const wxString& CAbstractFile::GetStrTagValue(const char* tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==0 && pTag->IsStr() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+		if (pTag->IsStr() && pTag->GetName() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
 			return pTag->GetStr();
 		}
 	}
@@ -186,7 +186,7 @@ CTag* CAbstractFile::GetTag(const char* tagname, uint8 tagtype) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		CTag* pTag = taglist[i];
-		if ((pTag->GetNameID()==0) && pTag->GetType()==tagtype && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+		if (pTag->GetType()==tagtype && pTag->GetName() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
 			return pTag;
 		}
 	}
@@ -208,7 +208,7 @@ CTag* CAbstractFile::GetTag(const char* tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==0 && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+		if (pTag->GetName() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
 			return pTag;
 		}
 	}
@@ -548,92 +548,110 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 	for (uint32 j = 0; j != tagcount;j++) {
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
-			case FT_FILENAME:{
-				#if wxUSE_UNICODE
-				if (GetFileName().IsEmpty())
-				#endif
-					SetFileName(newtag.GetStr());
-				break;
-			}
-			case FT_FILESIZE:{
-				SetFileSize(newtag.GetInt());
-				m_AvailPartFrequency.Clear();
-				m_AvailPartFrequency.Add(0, GetPartCount());
-				break;
-			}
-			case FT_ATTRANSFERED:{
-				statistic.alltimetransferred += newtag.GetInt();
-				break;
-			}
-			case FT_ATTRANSFEREDHI:{
-				statistic.alltimetransferred =
-					(((uint64)newtag.GetInt()) << 32) +
-					((uint64)statistic.alltimetransferred);
-				break;
-			}
-			case FT_ATREQUESTED:{
-				statistic.alltimerequested = newtag.GetInt();
-				break;
-			}
-			case FT_ATACCEPTED:{
-				statistic.alltimeaccepted = newtag.GetInt();
-				break;
-			}
-			case FT_ULPRIORITY:{
-				m_iUpPriority = newtag.GetInt();
-				if( m_iUpPriority == PR_AUTO ){
-					m_iUpPriority = PR_HIGH;
-					m_bAutoUpPriority = true;
-				}
-				else {
-					if (	m_iUpPriority != PR_VERYLOW &&
-						m_iUpPriority != PR_LOW &&
-						m_iUpPriority != PR_NORMAL &&
-						m_iUpPriority != PR_HIGH &&
-						m_iUpPriority != PR_VERYHIGH &&
-						m_iUpPriority != PR_POWERSHARE) {
-						m_iUpPriority = PR_NORMAL;
-					}					
-					m_bAutoUpPriority = false;
+			case FT_FILENAME:
+				if (newtag.IsStr()) {
+					#if wxUSE_UNICODE
+					if (GetFileName().IsEmpty())
+					#endif
+						SetFileName(newtag.GetStr());
 				}
 				break;
-			}
-			case FT_PERMISSIONS:{
+			
+			case FT_FILESIZE:
+				if (newtag.IsInt()) {
+					SetFileSize(newtag.GetInt());
+					m_AvailPartFrequency.Clear();
+					m_AvailPartFrequency.Add(0, GetPartCount());
+				}
+				break;
+			
+			case FT_ATTRANSFERED:
+				if (newtag.IsInt()) {
+					statistic.alltimetransferred += newtag.GetInt();
+				}
+				break;
+			
+			case FT_ATTRANSFEREDHI:
+				if (newtag.IsInt()) {
+					statistic.alltimetransferred =
+						(((uint64)newtag.GetInt()) << 32) +
+						((uint64)statistic.alltimetransferred);
+				}
+				break;
+			
+			case FT_ATREQUESTED:
+				if (newtag.IsInt()) {
+					statistic.alltimerequested = newtag.GetInt();
+				}
+				break;
+			
+			case FT_ATACCEPTED:
+				if (newtag.IsInt()) {
+					statistic.alltimeaccepted = newtag.GetInt();
+				}
+				break;
+			
+			case FT_ULPRIORITY:
+				if (newtag.IsInt()) {
+					m_iUpPriority = newtag.GetInt();
+					if( m_iUpPriority == PR_AUTO ){
+						m_iUpPriority = PR_HIGH;
+						m_bAutoUpPriority = true;
+					} else {
+						if (	m_iUpPriority != PR_VERYLOW &&
+							m_iUpPriority != PR_LOW &&
+							m_iUpPriority != PR_NORMAL &&
+							m_iUpPriority != PR_HIGH &&
+							m_iUpPriority != PR_VERYHIGH &&
+							m_iUpPriority != PR_POWERSHARE) {
+							m_iUpPriority = PR_NORMAL;
+						}
+						
+						m_bAutoUpPriority = false;
+					}
+				}
+				break;
+			
+			case FT_PERMISSIONS:
 				// Ignore it, it's not used anymore.
 				break;
-			}
-			case FT_AICH_HASH: {
-				CAICHHash hash;
-				bool hashSizeOk =
-					hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
-				wxASSERT(hashSizeOk);
-				if (hashSizeOk) {
-					m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
+			
+			case FT_AICH_HASH:
+				if (newtag.IsStr()) {
+					CAICHHash hash;
+					bool hashSizeOk =
+						hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+					wxASSERT(hashSizeOk);
+					if (hashSizeOk) {
+						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
+					}
 				}
 				break;
-			}
-			case FT_KADLASTPUBLISHSRC:{
+			
+			case FT_KADLASTPUBLISHSRC:
 				wxASSERT( newtag.IsInt() );
 				if (newtag.IsInt()) {
 					SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
-				}
-				if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-					//There may be a posibility of an older client that saved a random number here.. This will check for that..
-					SetLastPublishTimeKadSrc(0,0);
+				
+					if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+						//There may be a posibility of an older client that saved a random number here.. This will check for that..
+						SetLastPublishTimeKadSrc(0, 0);
+					}
 				}
 				break;
-			}
-			case FT_KADLASTPUBLISHNOTES:{
+			
+			case FT_KADLASTPUBLISHNOTES:
 				wxASSERT( newtag.IsInt() );
 				if (newtag.IsInt()) {
 					SetLastPublishTimeKadNotes( newtag.GetInt() );
 				}
 				break;
-			}		
+			
 			case FT_KADLASTPUBLISHKEY:
-				// Just purgue it
+				// Just purge it
 				wxASSERT( newtag.IsInt() );
-				break;				
+				break;
+				
 			default:
 				// Store them here and write them back on saving.
 				taglist.Add(new CTag(newtag));

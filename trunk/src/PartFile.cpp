@@ -178,8 +178,9 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 		const CTag pTag(*searchresult->m_taglist[i]);
 		switch (pTag.GetNameID()){
 			case FT_FILENAME: {
-				if (pTag.IsStr())
+				if (pTag.IsStr()) {
 					SetFileName(pTag.GetStr());
+				}
 				break;
 			}
 			case FT_FILESIZE: {
@@ -212,15 +213,20 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 							}
 
 							// skip "length" tags with "0: 0" values
-							if (	!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH) &&
-								(pTag.GetStr().IsSameAs(wxT("0: 0")) ||
-								 pTag.GetStr().IsSameAs(wxT("0:0")))) {
-								break;
+							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH)) {
+								if (pTag.IsStr()) {
+									if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
+										pTag.GetStr().IsSameAs(wxT("0:0"))) {
+										break;
+									}
+								}
 							}
 
 							// skip "bitrate" tags with '0' values
-							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
-								break;
+							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE)) {
+								if (pTag.IsInt() && !pTag.GetInt()) {
+									break;
+								}
 							}
 
 							AddDebugLogLineM( false, logPartFile,
@@ -509,11 +515,15 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_FILESIZE: {
-						SetFileSize(newtag.GetInt());
+						if (newtag.IsInt()) {
+							SetFileSize(newtag.GetInt());
+						}
 						break;
 					}
 					case FT_TRANSFERED: {
-						transfered = newtag.GetInt();
+						if (newtag.IsInt()) {
+							transfered = newtag.GetInt();
+						}
 						break;
 					}
 					case FT_FILETYPE:{
@@ -522,15 +532,17 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}					
 					case FT_CATEGORY: {
-						m_category = newtag.GetInt();
-						if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
-							m_category = 0;
+						if (newtag.IsInt()) {
+							m_category = newtag.GetInt();
+							if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
+								m_category = 0;
+							}
 						}
 						break;
 					}
 					case FT_OLDDLPRIORITY:
 					case FT_DLPRIORITY: {
-						if (!isnewstyle){
+						if (!isnewstyle && newtag.IsInt()){
 							m_iDownPriority = newtag.GetInt();
 							if( m_iDownPriority == PR_AUTO ){
 								m_iDownPriority = PR_HIGH;
@@ -547,13 +559,15 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_STATUS: {
-						m_paused = newtag.GetInt();
-						m_stopped = m_paused;
+						if (newtag.IsInt()) {
+							m_paused = newtag.GetInt();
+							m_stopped = m_paused;
+						}
 						break;
 					}
 					case FT_OLDULPRIORITY:
 					case FT_ULPRIORITY: {			
-						if (!isnewstyle){
+						if (!isnewstyle && newtag.IsInt()){
 							SetUpPriority(newtag.GetInt(), false);
 							if( GetUpPriority() == PR_AUTO ){
 								SetUpPriority(PR_HIGH, false);
@@ -605,38 +619,48 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					case FT_AICH_HASH:{
 						wxASSERT( newtag.IsStr() );
-						CAICHHash hash;
-						bool hashSizeOk =
-							hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
-						wxASSERT(hashSizeOk);
-						if (hashSizeOk) {
-							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
+						if (newtag.IsStr()) {
+							CAICHHash hash;
+							bool hashSizeOk =
+								hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+							wxASSERT(hashSizeOk);
+							if (hashSizeOk) {
+								m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
+							}
 						}
 						break;
 					}
 					case FT_ATTRANSFERED:{
 						wxASSERT( newtag.IsInt() );
-						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
+						if (newtag.IsInt()) {
+							statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
+						}
 						break;
 					}
 					case FT_ATTRANSFEREDHI:{
 						wxASSERT( newtag.IsInt() );
-						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
+						if (newtag.IsInt()) {
+							statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
+						}
 						break;
 					}
 					case FT_ATREQUESTED:{
 						wxASSERT( newtag.IsInt() );
-						statistic.SetAllTimeRequests(newtag.GetInt());
+						if (newtag.IsInt()) {
+							statistic.SetAllTimeRequests(newtag.GetInt());
+						}
 						break;
 					}
 					case FT_ATACCEPTED:{
 						wxASSERT( newtag.IsInt() );
-						statistic.SetAllTimeAccepts(newtag.GetInt());
+						if (newtag.IsInt()) {
+							statistic.SetAllTimeAccepts(newtag.GetInt());
+						}
 						break;
 					}
 					default: {
 						// Start Changes by Slugfiller for better exception handling
-						if (	(!newtag.GetNameID()) &&
+						if ( newtag.IsInt() && newtag.GetName() &&
 							((newtag.GetName())[0] == FT_GAPSTART ||
 							 (newtag.GetName())[0] == FT_GAPEND)) {
 							Gap_Struct *gap = NULL;

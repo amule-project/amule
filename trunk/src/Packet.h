@@ -146,12 +146,12 @@ public:
 	bool IsHash() const				{ return m_uType == TAGTYPE_HASH; }
 	bool IsBlob() const				{ return m_uType == TAGTYPE_BLOB; }
 	
-	uint32 GetInt() const				{ wxASSERT(IsInt());		return m_uVal; }
-	const wxString& GetStr() const	{ wxASSERT(IsStr());		return *m_pstrVal; }
-	float GetFloat() const			{ wxASSERT(IsFloat());	return m_fVal; }
-	const byte* GetHash() const		{ wxASSERT(IsHash());		return m_pData; }
-	uint32 GetBlobSize() const		{ wxASSERT(IsBlob());		return m_nBlobSize; }
-	const byte* GetBlob() const		{ wxASSERT(IsBlob());		return m_pData; }
+	uint32 GetInt() const			{ wxCHECK(IsInt(), 0);			return m_uVal; }
+	const wxString& GetStr() const	{ wxCHECK(IsStr(), s_emptyStr);	return *m_pstrVal; }
+	float GetFloat() const			{ wxCHECK(IsFloat(), 0.0f);		return m_fVal; }
+	const byte* GetHash() const		{ wxCHECK(IsHash(), NULL);		return m_pData; }
+	uint32 GetBlobSize() const		{ wxCHECK(IsBlob(), 0);			return m_nBlobSize; }
+	const byte* GetBlob() const		{ wxCHECK(IsBlob(), NULL);		return m_pData; }
 
 	void SetInt(uint32 uVal);
 	
@@ -173,6 +173,10 @@ protected:
 	  float		m_fVal;
 	  unsigned char*		m_pData;
 	};
+
+	//! Needed to be able to return a valid string in case of
+	//! GetStr on a non-string tag.
+	static wxString s_emptyStr;
 };
 
 typedef std::list<CTag*> TagPtrList;

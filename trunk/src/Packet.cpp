@@ -296,6 +296,8 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
+wxString CTag::s_emptyStr;
+
 
 CTag::CTag(char* pszName, uint32 uVal)
 {
@@ -479,12 +481,9 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				m_pstrVal = new wxString(data.ReadOnlyString(bOptUTF8, length));
 				m_uType = TAGTYPE_STRING;
 			} else {
-				if (m_uName != 0) {
-					printf("%s; Unknown tag: type=0x%02X  specialtag=%u\n", __FUNCTION__, m_uType, m_uName);
-				} else {
-					printf("%s; Unknown tag: type=0x%02X  name=\"%s\"\n", __FUNCTION__, m_uType, m_pszName);
-				}
-				m_uVal = 0;
+				// Since we cannot determine the length of this tag, we
+				// simply have to abort reading the file.
+				throw CInvalidPacket(wxT(BAD_TAG_MSG));
 			}
 	}
 }

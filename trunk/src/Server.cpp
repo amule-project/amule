@@ -173,44 +173,74 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 
 		switch(tag.GetNameID()){		
 		case ST_SERVERNAME:
-			#if wxUSE_UNICODE
-			if (listname.IsEmpty())
-			#endif
-				listname = tag.GetStr();
+			if (tag.IsStr()) {
+				#if wxUSE_UNICODE
+				if (listname.IsEmpty())
+				#endif
+					listname = tag.GetStr();
+			}
 			break;
+			
 		case ST_DESCRIPTION:
-			#if wxUSE_UNICODE
-			if (description.IsEmpty())
-			#endif
-				description = tag.GetStr();		
+			if (tag.IsStr()) {
+				#if wxUSE_UNICODE
+				if (description.IsEmpty())
+				#endif
+					description = tag.GetStr();		
+			}
 			break;
+			
 		case ST_PREFERENCE:
-			preferences =tag.GetInt();
+			if (tag.IsInt()) {
+				preferences = tag.GetInt();
+			}
 			break;
+			
 		case ST_PING:
-			ping = tag.GetInt();
+			if (tag.IsInt()) {
+				ping = tag.GetInt();
+			}
 			break;
+			
 		case ST_DYNIP:
-			#if wxUSE_UNICODE
-			if (dynip.IsEmpty())
-			#endif	
-				dynip = tag.GetStr();
+			if (tag.IsStr()) {
+				#if wxUSE_UNICODE
+				if (dynip.IsEmpty())
+				#endif	
+					dynip = tag.GetStr();
+			}
 			break;
+			
 		case ST_FAIL:
-			failedcount = tag.GetInt();
+			if (tag.IsInt()) {
+				failedcount = tag.GetInt();
+			}
 			break;
+			
 		case ST_LASTPING:
-			lastpinged = tag.GetInt();
+			if (tag.IsInt()) {
+				lastpinged = tag.GetInt();
+			}
 			break;
+			
 		case ST_MAXUSERS:
-			maxusers = tag.GetInt();
+			if (tag.IsInt()) {
+				maxusers = tag.GetInt();
+			}
 			break;
+			
 		case ST_SOFTFILES:
-			softfiles = tag.GetInt();
+			if (tag.IsInt()) {
+				softfiles = tag.GetInt();
+			}
 			break;
+			
 		case ST_HARDFILES:
-			hardfiles = tag.GetInt();
+			if (tag.IsInt()) {
+				hardfiles = tag.GetInt();
+			}
 			break;
+			
 		case ST_VERSION:
 			if (tag.IsStr()) {
 				#ifdef wxUSE_UNICODE
@@ -223,11 +253,13 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 				wxASSERT(0);
 			}
 			break;
+			
 		case ST_UDPFLAGS:
 			if (tag.IsInt()) {
 				m_uUDPFlags = tag.GetInt();
 			}
 			break;
+			
 		case ST_AUXPORTSLIST:
 			if (tag.IsStr()) {
 				m_auxPorts = tag.GetStr();
@@ -235,23 +267,22 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 				port = StrToULong(m_auxPorts.BeforeFirst(','));
 			}
 			break;
+			
 		case ST_LOWIDUSERS:
-			if (tag.IsInt())			
+			if (tag.IsInt()) {			
 				m_uLowIDUsers = tag.GetInt();
+			}
 			break;
+
 		default:
-			if (tag.GetNameID()){
-				wxASSERT(0);
-			} else if (!CmpED2KTagName(tag.GetName(), "files")) {
-				wxASSERT( tag.IsInt() );
-				if (tag.IsInt()) {
+			if (tag.GetName() && tag.IsInt()) {
+				if (!CmpED2KTagName(tag.GetName(), "files")) {
 					files = tag.GetInt();
-				}
-			} else if (!CmpED2KTagName(tag.GetName(), "users")) {
-				wxASSERT( tag.IsInt() );
-				if (tag.IsInt()) {
+				} else if (!CmpED2KTagName(tag.GetName(), "users")) {
 					users = tag.GetInt();
 				}
+			} else {
+				wxASSERT(0);
 			}
 		}
 	} catch (const CInvalidPacket& e) {
