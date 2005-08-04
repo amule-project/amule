@@ -166,8 +166,10 @@ EOL ("\r"|"\n"|"\r\n")
         return IDENT;
 	}
 
-{DEC_NUM} {
-	yylval.exp_node = make_const_exp_dnum(atoi(yytext));
+{DEC_NUM}|{HEX_NUM} {
+	int val;
+	sscanf("0x%x", yytext, &val);
+	yylval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}
 
