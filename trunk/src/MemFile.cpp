@@ -111,7 +111,7 @@ off_t CMemFile::Seek(off_t offset, wxSeekMode from)
 			MULE_VALIDATE_PARAMS(false, wxT("Using an invalid seek-mode in CMemFile::Seek!"));
 	}
 	
-	MULE_VALIDATE_PARAMS(newpos < 0, wxT("Position after seeking in CMemFile is less than zero!"));
+	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking in CMemFile is less than zero!"));
 
 	// If the new position is greater than current filesize, then the 
 	// file-size is increased to match the position
