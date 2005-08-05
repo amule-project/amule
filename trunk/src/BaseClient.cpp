@@ -377,176 +377,159 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	m_bUnicodeSupport = false;
 	uint32 dwEmuleTags = 0;
 
-	try {
-		CMD4Hash hash;
-		data.ReadHash16(hash);
-		SetUserHash( hash );
-		SetUserIDHybrid( data.ReadUInt32() );
-		uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
-		uint32 tagcount = data.ReadUInt32();
-		for (uint32 i = 0;i < tagcount; i++){
-			CTag temptag(data, true);
-			switch(temptag.GetNameID()){
-				case CT_NAME:
-					m_Username = temptag.GetStr();
-					break;
-					
-				case CT_VERSION:
-					m_nClientVersion = temptag.GetInt();
-					break;
-					
-				case ET_MOD_VERSION:
-					if (temptag.IsStr()) {
-						m_strModVersion = temptag.GetStr();
-					} else if (temptag.IsInt()) {
-						m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
-					} else {
-						m_strModVersion = wxT("ModID=<Unknown>");
-					}
-
-					break;
-					
-				case CT_PORT:
-					nUserPort = temptag.GetInt();
-					break;
-					
-				case CT_EMULE_UDPPORTS:
-					// 16 KAD Port
-					// 16 UDP Port
-					m_nKadPort = (temptag.GetInt() >> 16) & 0xFFFF;
-					m_nUDPPort = temptag.GetInt() & 0xFFFF;
-					dwEmuleTags |= 1;
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
-					#endif
-					break;
-					
-				case CT_EMULE_BUDDYIP:
-					// 32 BUDDY IP
-					m_nBuddyIP = temptag.GetInt();
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
-					#endif
-					break;				
-					
-				case CT_EMULE_BUDDYUDP:
-					// 16 --Reserved for future use--
-					// 16 BUDDY Port
-					m_nBuddyPort = (uint16)temptag.GetInt();
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
-					#endif
-					break;
-					
-				case CT_EMULE_MISCOPTIONS1:
-					//  3 AICH Version (0 = not supported)
-					//  1 Unicode
-					//  4 UDP version
-					//  4 Data compression version
-					//  4 Secure Ident
-					//  4 Source Exchange
-					//  4 Ext. Requests
-					//  4 Comments
-					//	 1 PeerChache supported
-					//	 1 No 'View Shared Files' supported
-					//	 1 MultiPacket
-					//  1 Preview
-					uint32 flags = temptag.GetInt();
-					m_fSupportsAICH			= (flags >> (4*7+1)) & 0x07;
-					m_bUnicodeSupport		= (flags >> 4*7) & 0x01;
-					m_byUDPVer				= (flags >> 4*6) & 0x0f;
-					m_byDataCompVer			= (flags >> 4*5) & 0x0f;
-					m_bySupportSecIdent		= (flags >> 4*4) & 0x0f;
-					m_bySourceExchangeVer	= (flags >> 4*3) & 0x0f;
-					m_byExtendedRequestsVer	= (flags >> 4*2) & 0x0f;
-					m_byAcceptCommentVer	= (flags >> 4*1) & 0x0f;
-					m_fNoViewSharedFiles	= (flags >> 1*2) & 0x01;
-					m_bMultiPacket			= (flags >> 1*1) & 0x01;
-					m_fSupportsPreview		= (flags >> 1*0) & 0x01;
-					dwEmuleTags |= 2;
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule Misc Options:\n");
-					printf("m_byUDPVer = %i\n",m_byUDPVer);
-					printf("m_byDataCompVer = %i\n",m_byDataCompVer);
-					printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
-					printf("m_bySourceExchangeVer = %i\n",m_bySourceExchangeVer);
-					printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
-					printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
-					printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
-					printf("m_bMultiPacket = %i\n",m_bMultiPacket);
-					printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
-					printf("That's all.\n");
-					#endif
-					SecIdentSupRec +=  1;
-					break;
+	CMD4Hash hash;
+	data.ReadHash16(hash);
+	SetUserHash( hash );
+	SetUserIDHybrid( data.ReadUInt32() );
+	uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
+	uint32 tagcount = data.ReadUInt32();
+	for (uint32 i = 0;i < tagcount; i++){
+		CTag temptag(data, true);
+		switch(temptag.GetNameID()){
+			case CT_NAME:
+				m_Username = temptag.GetStr();
+				break;
 				
-				case CT_EMULE_MISCOPTIONS2:
-					//	28 Reserved
-					//   4 Kad Version
-					m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
-					dwEmuleTags |= 8;
-					#ifdef __PACKET_DEBUG__
-					printf("Hello type packet processing with eMule Misc Options 2:\n");
-					printf("  KadVersion = %u\n" , m_byKadVersion );
-					printf("That's all.\n");
-					#endif
-					break;
-					
-				// Special tag fo Compat. Clients Misc options.
-				case CT_EMULECOMPAT_OPTIONS:
-					//  1 Operative System Info
-					m_fOsInfoSupport		= (temptag.GetInt() >> 1*0) & 0x01;
-					break;
-					
-				case CT_EMULE_VERSION:
-					//  8 Compatible Client ID
-					//  7 Mjr Version (Doesn't really matter..)
-					//  7 Min Version (Only need 0-99)
-					//  3 Upd Version (Only need 0-5)
-					//  7 Bld Version (Only need 0-99)
-					m_byCompatibleClient = (temptag.GetInt() >> 24);
-					m_nClientVersion = temptag.GetInt() & 0x00ffffff;
-					m_byEmuleVersion = 0x99;
-					m_fSharedDirectories = 1;
-					dwEmuleTags |= 4;
-					break;				
-			}
-		}
+			case CT_VERSION:
+				m_nClientVersion = temptag.GetInt();
+				break;
+				
+			case ET_MOD_VERSION:
+				if (temptag.IsStr()) {
+					m_strModVersion = temptag.GetStr();
+				} else if (temptag.IsInt()) {
+					m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
+				} else {
+					m_strModVersion = wxT("ModID=<Unknown>");
+				}
 
-		m_nUserPort = nUserPort;
-		m_dwServerIP = data.ReadUInt32();
-		m_nServerPort = data.ReadUInt16();
-		// Hybrid now has an extra uint32.. What is it for?
-		// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
-		if ( data.GetLength() - data.GetPosition() == sizeof(uint32) ) {
-			uint32 test = data.ReadUInt32();
-			/*if (test == 'KDLM') below kdlm is converted to ascii values.
-			This fixes a warning with gcc 3.4.
-			K=4b D=44 L=4c M=4d
-			*/
-			if (test == 0x4b444c4d) { //if it's == "KDLM"
-				m_bIsML=true;
-			} else{
-				m_bIsHybrid = true;
+				break;
+				
+			case CT_PORT:
+				nUserPort = temptag.GetInt();
+				break;
+				
+			case CT_EMULE_UDPPORTS:
+				// 16 KAD Port
+				// 16 UDP Port
+				m_nKadPort = (temptag.GetInt() >> 16) & 0xFFFF;
+				m_nUDPPort = temptag.GetInt() & 0xFFFF;
+				dwEmuleTags |= 1;
+				#ifdef __PACKET_DEBUG__
+				printf("Hello type packet processing with eMule ports UDP=%i KAD=%i\n",m_nUDPPort,m_nKadPort);
+				#endif
+				break;
+				
+			case CT_EMULE_BUDDYIP:
+				// 32 BUDDY IP
+				m_nBuddyIP = temptag.GetInt();
+				#ifdef __PACKET_DEBUG__
+				printf("Hello type packet processing with eMule BuddyIP=%u (%s)\n",m_nBuddyIP, (const char*)unicode2char(Uint32toStringIP(m_nBuddyIP)));
+				#endif
+				break;				
+				
+			case CT_EMULE_BUDDYUDP:
+				// 16 --Reserved for future use--
+				// 16 BUDDY Port
+				m_nBuddyPort = (uint16)temptag.GetInt();
+				#ifdef __PACKET_DEBUG__
+				printf("Hello type packet processing with eMule BuddyPort=%u\n",m_nBuddyPort);
+				#endif
+				break;
+				
+			case CT_EMULE_MISCOPTIONS1:
+				//  3 AICH Version (0 = not supported)
+				//  1 Unicode
+				//  4 UDP version
+				//  4 Data compression version
+				//  4 Secure Ident
+				//  4 Source Exchange
+				//  4 Ext. Requests
+				//  4 Comments
+				//	 1 PeerChache supported
+				//	 1 No 'View Shared Files' supported
+				//	 1 MultiPacket
+				//  1 Preview
+				uint32 flags = temptag.GetInt();
+				m_fSupportsAICH			= (flags >> (4*7+1)) & 0x07;
+				m_bUnicodeSupport		= (flags >> 4*7) & 0x01;
+				m_byUDPVer				= (flags >> 4*6) & 0x0f;
+				m_byDataCompVer			= (flags >> 4*5) & 0x0f;
+				m_bySupportSecIdent		= (flags >> 4*4) & 0x0f;
+				m_bySourceExchangeVer	= (flags >> 4*3) & 0x0f;
+				m_byExtendedRequestsVer	= (flags >> 4*2) & 0x0f;
+				m_byAcceptCommentVer	= (flags >> 4*1) & 0x0f;
+				m_fNoViewSharedFiles	= (flags >> 1*2) & 0x01;
+				m_bMultiPacket			= (flags >> 1*1) & 0x01;
+				m_fSupportsPreview		= (flags >> 1*0) & 0x01;
+				dwEmuleTags |= 2;
+				#ifdef __PACKET_DEBUG__
+				printf("Hello type packet processing with eMule Misc Options:\n");
+				printf("m_byUDPVer = %i\n",m_byUDPVer);
+				printf("m_byDataCompVer = %i\n",m_byDataCompVer);
+				printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
+				printf("m_bySourceExchangeVer = %i\n",m_bySourceExchangeVer);
+				printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
+				printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
+				printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
+				printf("m_bMultiPacket = %i\n",m_bMultiPacket);
+				printf("m_fSupportsPreview = %i\n",m_fSharedDirectories);
+				printf("That's all.\n");
+				#endif
+				SecIdentSupRec +=  1;
+				break;
+			
+			case CT_EMULE_MISCOPTIONS2:
+				//	28 Reserved
+				//   4 Kad Version
+				m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
+				dwEmuleTags |= 8;
+				#ifdef __PACKET_DEBUG__
+				printf("Hello type packet processing with eMule Misc Options 2:\n");
+				printf("  KadVersion = %u\n" , m_byKadVersion );
+				printf("That's all.\n");
+				#endif
+				break;
+				
+			// Special tag fo Compat. Clients Misc options.
+			case CT_EMULECOMPAT_OPTIONS:
+				//  1 Operative System Info
+				m_fOsInfoSupport		= (temptag.GetInt() >> 1*0) & 0x01;
+				break;
+				
+			case CT_EMULE_VERSION:
+				//  8 Compatible Client ID
+				//  7 Mjr Version (Doesn't really matter..)
+				//  7 Min Version (Only need 0-99)
+				//  3 Upd Version (Only need 0-5)
+				//  7 Bld Version (Only need 0-99)
+				m_byCompatibleClient = (temptag.GetInt() >> 24);
+				m_nClientVersion = temptag.GetInt() & 0x00ffffff;
+				m_byEmuleVersion = 0x99;
 				m_fSharedDirectories = 1;
-			}
+				dwEmuleTags |= 4;
+				break;				
 		}
-	} catch ( const CInvalidPacket& e ) {
-		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Wrong Tags on hello type packet - %s\n"
-						 "Sent by %s on ip %s port %i using client %x version %x\n"
-						 "User Disconnected.") )
-				% e.what()
-				% GetUserName()
-				% GetFullIP()
-				% GetUserPort()
-				% GetClientSoft()
-				% GetVersion()
-		);
-
-		throw wxString(wxT("Wrong Tags on hello type packet"));
 	}
 
+	m_nUserPort = nUserPort;
+	m_dwServerIP = data.ReadUInt32();
+	m_nServerPort = data.ReadUInt16();
+	// Hybrid now has an extra uint32.. What is it for?
+	// Also, many clients seem to send an extra 6? These are not eDonkeys or Hybrids..
+	if ( data.GetLength() - data.GetPosition() == sizeof(uint32) ) {
+		uint32 test = data.ReadUInt32();
+		/*if (test == 'KDLM') below kdlm is converted to ascii values.
+		This fixes a warning with gcc 3.4.
+		K=4b D=44 L=4c M=4d
+		*/
+		if (test == 0x4b444c4d) { //if it's == "KDLM"
+			m_bIsML=true;
+		} else{
+			m_bIsHybrid = true;
+			m_fSharedDirectories = 1;
+		}
+	}
 
 	if (m_socket) {
 		amuleIPV4Address address;
@@ -749,199 +732,171 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 {
-
 	uint8 protocol_version;
 	
-	try {
-		const CMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data((byte*)pachPacket,nSize);
 
-		//The version number part of this packet will soon be useless since it is only able to go to v.99.
-		//Why the version is a uint8 and why it was not done as a tag like the eDonkey hello packet is not known..
-		//Therefore, sooner or later, we are going to have to switch over to using the eDonkey hello packet to set the version.
-		//No sense making a third value sent for versions..
-		uint8 mule_version = data.ReadUInt8();
-
-		protocol_version = data.ReadUInt8();
-
-		uint32 tagcount = data.ReadUInt32();
-		
-		if (protocol_version == 0xFF) {
-
-			// OS Info supporting clients sending a recycled Mule info packet
-			for (uint32 i = 0;i < tagcount; i++){
-				CTag temptag(data, true);
-				switch(temptag.GetNameID()){
-					case ET_OS_INFO:
-						// Special tag, only supporting clients (aMule/Hydranode)
-						// It was recycled from a mod's tag, so if the other side
-						// is not supporting OS Info, we're seriously fucked up :)					
-						m_sClientOSInfo = temptag.GetStr();
-						
-						// If we didn't send our OSInfo to this client, just send it
-						if (!m_OSInfo_sent) {
-							SendMuleInfoPacket(false,true);
-						}
+	// The version number part of this packet will soon be useless since
+	// it is only able to go to v.99. Why the version is a uint8 and why
+	// it was not done as a tag like the eDonkey hello packet is not known.
+	// Therefore, sooner or later, we are going to have to switch over to 
+	// using the eDonkey hello packet to set the version. No sense making
+	// a third value sent for versions.
+	uint8 mule_version = data.ReadUInt8();
+	protocol_version = data.ReadUInt8();
+	uint32 tagcount = data.ReadUInt32();
+	if (protocol_version == 0xFF) {
+		// OS Info supporting clients sending a recycled Mule info packet
+		for (uint32 i = 0;i < tagcount; i++){
+			CTag temptag(data, true);
+			switch(temptag.GetNameID()){
+				case ET_OS_INFO:
+					// Special tag, only supporting clients (aMule/Hydranode)
+					// It was recycled from a mod's tag, so if the other side
+					// is not supporting OS Info, we're seriously fucked up :)					
+					m_sClientOSInfo = temptag.GetStr();
 					
-						break;	
+					// If we didn't send our OSInfo to this client, just send it
+					if (!m_OSInfo_sent) {
+						SendMuleInfoPacket(false,true);
+					}
+				
+					break;	
+				
+				// Your ad... er... I mean TAG, here
 					
-					// Your ad... er... I mean TAG, here
-						
-					default:
-						break;
-				}
+				default:
+					break;
 			}
-			
-		} else {
-			
-			// Old eMule sending tags
-			
-			m_byCompatibleClient = 0;
-			
-			m_byEmuleVersion = mule_version;
-
-			if( m_byEmuleVersion == 0x2B ) {
-				m_byEmuleVersion = 0x22;
-			}
-			
-			if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
-				return false;	
-			}
-			
-			for (uint32 i = 0;i < tagcount; i++){
-				CTag temptag(data, false);
-				switch(temptag.GetNameID()){
-					case ET_COMPRESSION:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: data compression version
-						m_byDataCompVer = temptag.GetInt();
-						break;
-						
-					case ET_UDPPORT:
-						// Bits 31-16: 0 - reserved
-						// Bits 15- 0: UDP port
-						m_nUDPPort = temptag.GetInt();
-						break;
-						
-					case ET_UDPVER:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: UDP protocol version
-						m_byUDPVer = temptag.GetInt();
-						break;
-						
-					case ET_SOURCEEXCHANGE:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: source exchange protocol version
-						m_bySourceExchangeVer = temptag.GetInt();
-						break;
-						
-					case ET_COMMENTS:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: comments version
-						m_byAcceptCommentVer = temptag.GetInt();
-						break;
-						
-					case ET_EXTENDEDREQUEST:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: extended requests version
-						m_byExtendedRequestsVer = temptag.GetInt();
-						break;
-						
-					case ET_COMPATIBLECLIENT:
-						// Bits 31- 8: 0 - reserved
-						// Bits  7- 0: compatible client ID
-						m_byCompatibleClient = temptag.GetInt();
-						break;
-
-					case ET_FEATURES:
-						// Bits 31- 8: 0 - reserved
-						// Bit	    7: Preview
-						// Bit   6- 0: secure identification
-						m_bySupportSecIdent = temptag.GetInt() & 3;
-						m_bSupportsPreview = (temptag.GetInt() & 128) > 0;
-						SecIdentSupRec +=  2;
-						break;
-
-					case ET_MOD_VERSION:
-						if (temptag.IsStr()) {
-							m_strModVersion = temptag.GetStr();
-						} else if (temptag.IsInt()) {
-							m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
-						} else {
-							m_strModVersion = wxT("ModID=<Unknown>");
-						}
-	
-						break;
-
-					default:
-						AddDebugLogLineM( false, logPacketErrors,
-							CFormat( wxT("Unknown Mule tag (%s) from client: %s") )
-								% temptag.GetFullInfo()
-								% GetClientFullInfo()
-						);
-
-						break;
-				}
-			}				
-		
-			if( m_byDataCompVer == 0 ){
-				m_bySourceExchangeVer = 0;
-				m_byExtendedRequestsVer = 0;
-				m_byAcceptCommentVer = 0;
-				m_nUDPPort = 0;
-			}
-
-			//implicitly supported options by older clients
-			//in the future do not use version to guess about new features
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
-				m_byUDPVer = 1;
-			}
-	
-			if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
-				m_bySourceExchangeVer = 1;
-			}
-	
-			if(m_byEmuleVersion == 0x24) {
-				m_byAcceptCommentVer = 1;
-			}
-	
-			// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in
-			// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a
-			// directory which has a trailing backslash.
-			if(m_byEmuleVersion >= 0x28 && !m_bIsML) {// MLdonkey currently does not support shared directories
-					m_fSharedDirectories = 1;
-			}
-	
-			ReGetClientSoft();
-	
-			m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
 		}
-	}
-	catch ( const CInvalidPacket& e )
-	{
-		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Wrong Tags on Mule Info packet!\n"
-						 "Sent by %s on ip %s port %i using client %x version %x\n"
-						 "User Disconnected.\n"
-						 "Packet dump:\n"
-						 "%s") )
-				% GetUserName()
-				% GetFullIP()
-				% GetUserPort()
-				% GetClientSoft()
-				% GetMuleVersion()
-				% DumpMemToStr( pachPacket, nSize )
-		);
+	} else {
+		// Old eMule sending tags
+		m_byCompatibleClient = 0;
+		m_byEmuleVersion = mule_version;
+
+		if( m_byEmuleVersion == 0x2B ) {
+			m_byEmuleVersion = 0x22;
+		}
 		
-		throw wxString(wxT("Wrong Tags on Mule Info packet"));
+		if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
+			return false;	
+		}
+		
+		for (uint32 i = 0;i < tagcount; i++){
+			CTag temptag(data, false);
+			switch(temptag.GetNameID()){
+				case ET_COMPRESSION:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: data compression version
+					m_byDataCompVer = temptag.GetInt();
+					break;
+					
+				case ET_UDPPORT:
+					// Bits 31-16: 0 - reserved
+					// Bits 15- 0: UDP port
+					m_nUDPPort = temptag.GetInt();
+					break;
+					
+				case ET_UDPVER:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: UDP protocol version
+					m_byUDPVer = temptag.GetInt();
+					break;
+					
+				case ET_SOURCEEXCHANGE:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: source exchange protocol version
+					m_bySourceExchangeVer = temptag.GetInt();
+					break;
+					
+				case ET_COMMENTS:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: comments version
+					m_byAcceptCommentVer = temptag.GetInt();
+					break;
+					
+				case ET_EXTENDEDREQUEST:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: extended requests version
+					m_byExtendedRequestsVer = temptag.GetInt();
+					break;
+					
+				case ET_COMPATIBLECLIENT:
+					// Bits 31- 8: 0 - reserved
+					// Bits  7- 0: compatible client ID
+					m_byCompatibleClient = temptag.GetInt();
+					break;
+
+				case ET_FEATURES:
+					// Bits 31- 8: 0 - reserved
+					// Bit	    7: Preview
+					// Bit   6- 0: secure identification
+					m_bySupportSecIdent = temptag.GetInt() & 3;
+					m_bSupportsPreview = (temptag.GetInt() & 128) > 0;
+					SecIdentSupRec +=  2;
+					break;
+
+				case ET_MOD_VERSION:
+					if (temptag.IsStr()) {
+						m_strModVersion = temptag.GetStr();
+					} else if (temptag.IsInt()) {
+						m_strModVersion = wxString::Format(wxT("ModID=%u"), temptag.GetInt());
+					} else {
+						m_strModVersion = wxT("ModID=<Unknown>");
+					}
+
+					break;
+
+				default:
+					AddDebugLogLineM( false, logPacketErrors,
+						CFormat( wxT("Unknown Mule tag (%s) from client: %s") )
+							% temptag.GetFullInfo()
+							% GetClientFullInfo()
+					);
+
+					break;
+			}
+		}				
+	
+		if( m_byDataCompVer == 0 ){
+			m_bySourceExchangeVer = 0;
+			m_byExtendedRequestsVer = 0;
+			m_byAcceptCommentVer = 0;
+			m_nUDPPort = 0;
+		}
+
+		//implicitly supported options by older clients
+		//in the future do not use version to guess about new features
+		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x22) {
+			m_byUDPVer = 1;
+		}
+
+		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
+			m_bySourceExchangeVer = 1;
+		}
+
+		if(m_byEmuleVersion == 0x24) {
+			m_byAcceptCommentVer = 1;
+		}
+
+		// Shared directories are requested from eMule 0.28+ because eMule 0.27 has a bug in
+		// the OP_ASKSHAREDFILESDIR handler, which does not return the shared files for a
+		// directory which has a trailing backslash.
+		if(m_byEmuleVersion >= 0x28 && !m_bIsML) {// MLdonkey currently does not support shared directories
+				m_fSharedDirectories = 1;
+		}
+
+		ReGetClientSoft();
+
+		m_byInfopacketsReceived |= IP_EMULEPROTPACK;		
 	}
 
 	return (protocol_version == 0xFF); // This was a OS_Info?
-	
 }
+
 
 void CUpDownClient::SendHelloAnswer()
 {
-
 	if (m_socket == NULL){
 		wxASSERT(0);
 		return;
