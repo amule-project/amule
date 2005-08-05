@@ -28,8 +28,8 @@
 #endif
 
 #include "MemFile.h"		// Needed for CMemFile
-#include "Packet.h"
-
+#include "Packet.h"			// Needed for CInvalidPacket
+#include "MuleDebug.h"		// Needed for MULE_VALIDATE_*
 
 CMemFile::CMemFile(unsigned int growBytes)
 {
