@@ -437,7 +437,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				#endif
 				break;
 				
-			case CT_EMULE_MISCOPTIONS1:
+			case CT_EMULE_MISCOPTIONS1: {
 				//  3 AICH Version (0 = not supported)
 				//  1 Unicode
 				//  4 UDP version
@@ -478,7 +478,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				#endif
 				SecIdentSupRec +=  1;
 				break;
-			
+			}
+
 			case CT_EMULE_MISCOPTIONS2:
 				//	28 Reserved
 				//   4 Kad Version
