@@ -120,7 +120,7 @@ struct CInvalidStateEx : public CRunTimeException
 	#define _MULE_THROW(cond, cls, msg) \
 		do { \
 			if (!(cond)) { \
-				wxASSERT(cond); \
+				wxFAIL_MSG(wxT(#cond)); \
 				throw cls(msg); \
 			} \
 		} while (false)
