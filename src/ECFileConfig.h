@@ -38,8 +38,8 @@
 #include <wx/utils.h>
 #include <wx/string.h>
 
-#include "CMD4Hash.h"
-#include "OtherFunctions.h"
+#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "OtherFunctions.h"	// Needed for GetConfigDir()
 
 
 /**
