@@ -221,7 +221,7 @@ inline wxString StringFrom(signed long long value)
  */
 #define ASSERT_EQUALS(expected, actual) \
 { \
-	if (!DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)) return; \
+	if (!this->DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)) return; \
 }
 
 
