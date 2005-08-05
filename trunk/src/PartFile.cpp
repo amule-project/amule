@@ -373,7 +373,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	m_strFilePath = in_directory;
 	m_fullname = m_strFilePath + wxFileName::GetPathSeparator() + m_partmetfilename;
 	
-	CSafeFile metFile;
+	CFile metFile;
 
 	// readfile data form part.met file
 	wxString file_to_open;
@@ -671,14 +671,11 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}			
 			
 		metFile.Close();
-	} catch (const CInvalidPacket& e) {
-		AddLogLineM(true, CFormat( _("Error: %s is corrupt, unable to load file.") )
-			% m_partmetfilename );
-		return false;
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, CFormat(_("IO failure while loading part file: %s"))
-			% m_partmetfilename );
-		return false;		
+		AddLogLineM(true, CFormat( _("IO failure while loading '%s': %s") )
+			% m_partmetfilename
+			% e.what() );
+		return false;
 	} catch (const CEOFException& e) {
 		AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
 			% m_partmetfilename
@@ -781,13 +778,6 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 
 	if (!isnewstyle) { // not for importing	
-		// check date of .part file - if its wrong, rehash file
-		//CFileStatus filestatus;
-		//m_hpartfile.GetStatus(filestatus);
-		//struct stat statbuf;
-		//fstat(m_hpartfile.fd(),&statbuf);
-		//if ((time_t)date != (time_t)statbuf.st_mtime) {
-
 		time_t file_date = GetLastModificationTime(m_fullname);
 		if (	(((time_t)date) < (time_t)(file_date - 10)) ||
 			(((time_t)date) > (time_t)(file_date + 10))) {
@@ -828,7 +818,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		return false;
 	}
 	
-	CSafeFile file;
+	CFile file;
 	try {
 		if ( !wxFileExists( m_fullname.Left(m_fullname.Length() - 4) ) ) {
 			throw wxString(wxT(".part file not found"));
@@ -972,25 +962,25 @@ bool CPartFile::SavePartFile(bool Initial)
 			
 			++i_pos;
 		}
-		
-		if ( file.Error() ) {
-			throw wxString(wxT("Unexpected write error"));
-		}
-
 	} catch (const wxString& error) {
 		AddLogLineM(false, CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
 			% m_strFileName );
 
+		wxString err = CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
+			% error
+			% m_partmetfilename
+			% m_strFileName;
+		
+		printf("%s\n", (const char*)unicode2char(err));
+		
 		return false;
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, CFormat( _("IO failure while saving partfile: %s (%s ==> %s)") )
-			% e.what()
-			% m_partmetfilename
-			% m_strFileName );
-
-		return false;	
+		AddDebugLogLineM(true, logPartFile, wxT("IO failure while saving partfile: ") + e.what());
+		printf("IO failure while saving partfile: %s\n", (const char*)unicode2char(e.what()));
+		
+		return false;
 	}
 	
 	file.Close();
@@ -1083,13 +1073,13 @@ void CPartFile::SaveSourceSeeds()
 	} 
 	
 
-	CSafeFile file;
-	
+	CFile file;
 	file.Create(m_fullname + wxT(".seeds"), true);
 	
 	if (!file.IsOpened()) {
 		AddLogLineM(false, CFormat( _("Failed to save part.met.seeds file for %s") )
 			% m_fullname);
+		return;
 	}	
 
 	try {
@@ -1100,28 +1090,26 @@ void CPartFile::SaveSourceSeeds()
 			file.WriteUInt32(cur_src->GetUserIDHybrid());
 			file.WriteUInt16(cur_src->GetUserPort());
 		}
+
+		AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
+			% n_sources
+			% m_fullname
+			% m_strFileName);
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(false, CFormat(_("IO failure while saving source seeds to file '%s': %s"))
+		AddLogLineM(false, CFormat( _("Error saving partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
 				% e.what() );
 		
 		n_sources = 0;
 		file.Close();
 		wxRemoveFile(m_fullname + wxT(".seeds"));
-		return;
-	}	
-	
-
-	AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
-		% n_sources
-		% m_fullname
-		% m_strFileName);
+	}
 }	
 
 
-void CPartFile::LoadSourceSeeds() {
-	
-	CSafeFile file;
+void CPartFile::LoadSourceSeeds()
+{	
+	CFile file;
 	CMemFile sources_data;
 	
 	if (!wxFileName::FileExists(m_fullname + wxT(".seeds"))) {
@@ -1150,8 +1138,7 @@ void CPartFile::LoadSourceSeeds() {
 		
 		sources_data.WriteUInt16(src_count);
 	
-		for (int i=0;i<src_count;++i) {
-		
+		for (int i = 0; i< src_count; ++i) {		
 			uint32 dwID = file.ReadUInt32();
 			uint16 nPort = file.ReadUInt16();
 			
@@ -1163,11 +1150,11 @@ void CPartFile::LoadSourceSeeds() {
 		
 		sources_data.Seek(0);
 		
-		AddClientSources(&sources_data, 1 );
-		
+		AddClientSources(&sources_data, 1);
 	} catch (const CSafeIOException& e) {
-		AddLogLineM(false, CFormat( _("IO error while source seeds from file '%s': %s") )
+		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
+				% m_strFileName
 				% e.what() );
 	}
 
@@ -2576,7 +2563,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		m_hpartfile.Seek((off_t)PARTSIZE*partnumber,wxFromStart);
+		m_hpartfile.Seek((off_t)PARTSIZE*partnumber, wxFromStart);
 		uint32 length = PARTSIZE;
 		if (((uint64)PARTSIZE*(partnumber+1)) > (uint64)m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*partnumber));
@@ -3160,8 +3147,12 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		// SLUGFILLER: SafeHash
 		
 		// Go to the correct position in file and write block of data			
-		m_hpartfile.Seek(item->start);
-		m_hpartfile.Write(item->data, lenData);
+		try {
+			m_hpartfile.Seek(item->start);
+			m_hpartfile.Write(item->data, lenData);
+		} catch (const CIOFailureException& e) {
+			AddLogLineM(true, wxT("WARNING: Error while saving part-file: ") + e.what());
+		}
 
 		// Decrease buffer size
 		m_nTotalBufferData -= lenData;
@@ -3179,11 +3170,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	// Partfile should never be too large
 	if (m_hpartfile.GetLength() > m_nFileSize){
 		// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
-		#ifdef __WXMSW__
-		chsize(m_hpartfile.fd(),m_nFileSize);
-		#else
-		ftruncate(m_hpartfile.fd(),m_nFileSize);
-		#endif
+		m_hpartfile.SetLength(m_nFileSize);
 	}		
 	
 	// Flush to disk

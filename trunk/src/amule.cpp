@@ -78,7 +78,6 @@
 #include "GetTickCount.h"		// Needed for GetTickCount
 #include "HTTPDownload.h" // Needed for CHTTPDownloadThreadBase
 #include "Server.h"			// Needed for GetListName
-#include "CFile.h"			// Needed for CFile
 #include "OtherFunctions.h"		// Needed for GetTickCount
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue

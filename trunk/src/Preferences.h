@@ -56,16 +56,6 @@ enum EViewSharedFilesAccess{
 	vsfaNobody = 2
 };
 
-// DO NOT EDIT VALUES like making a uint16 to uint32, or insert any value. ONLY append new vars
-#pragma pack(1)
-struct Preferences_Ext_Struct
-{
-	int8	version;
-	unsigned char	userhash[16];
-};
-#pragma pack()
-
-
 struct Category_Struct
 {
 	wxString	incomingpath;
@@ -199,7 +189,7 @@ public:
 	CPreferences();
 	~CPreferences();
 
-	bool			Save();
+	void			Save();
 	void			SaveCats();
 	void			ReloadSharedFolders();
 

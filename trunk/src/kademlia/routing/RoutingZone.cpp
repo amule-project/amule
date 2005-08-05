@@ -150,7 +150,7 @@ void CRoutingZone::readFile(void)
 	try {
 		theApp.amuledlg->kademliawnd->HideContacts();
 		uint32 numContacts = 0;
-		CSafeFile file;
+		CFile file;
 		if (file.Open(m_filename, CFile::read)) {
 
 			numContacts = file.ReadUInt32();
@@ -186,7 +186,7 @@ void CRoutingZone::writeFile(void)
 		unsigned int count = 0;
 		CContact *c;
 		CUInt128 id;
-		CSafeFile file;
+		CFile file;
 		if (file.Open(m_filename, CFile::write)) {
 			ContactList contacts;
 			getBootstrapContacts(&contacts, 200);

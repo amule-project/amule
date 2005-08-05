@@ -46,19 +46,20 @@
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Server.h"				// Needed for CServer and SRV_PR_*
 #include "OtherStructs.h"		// Needed for ServerMet_Struct
-#include "Packet.h"				// Needed for CInvalidPacket
 #include "OPCodes.h"			// Needed for MET_HEADER
-#include "CFile.h"				// Needed for CSafeFile
+#include "CFile.h"				// Needed for CFile
 #include "HTTPDownload.h"		// Needed for HTTPThread
 #include "Preferences.h"		// Needed for CPreferences
 #include "amule.h"				// Needed for theApp
 #include "GetTickCount.h"		// Neeed for GetTickCount
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 #include "Statistics.h"			// Needed for CStatistics
-#include "StringFunctions.h" // Needed for unicode2char 
+#include "StringFunctions.h"	// Needed for unicode2char 
+#include "Packet.h"				// Needed for CTag
 #include "Logger.h"
 #include "Format.h"
 #include "IPFilter.h"
+
 
 CServerList::CServerList()
 {
@@ -101,7 +102,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		return false;
 	}
 
-	CSafeFile servermet( strFile,CFile::read );
+	CFile servermet( strFile,CFile::read );
 	if ( !servermet.IsOpened() ){ 
 		AddLogLineM( false, _("Failed to open server.met!") );
 		return false;
@@ -114,8 +115,9 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		byte version = servermet.ReadUInt8();
 		
 		if (version != 0xE0 && version != MET_HEADER) {
-			AddLogLineM(false, wxString::Format(_("Invalid versiontag in server.met (0x%x , size %i)!"),version, sizeof(version)));
-			throw CInvalidPacket(wxT("Corrupted server.met"));
+			AddLogLineM(true, wxString::Format(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i"), version, sizeof(version)));
+			Notify_ServerThaw();
+			return false;
 		}
 
 		uint32 fservercount = servermet.ReadUInt32();
@@ -569,7 +571,7 @@ bool CServerList::SaveServerMet()
 {
 	wxString newservermet = theApp.ConfigDir + wxT("server.met.new");
 	
-	CSafeFile servermet( newservermet, CFile::write );
+	CFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
 		AddLogLineM(false,_("Failed to save server.met!"));
 		return false;

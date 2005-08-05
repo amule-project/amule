@@ -54,6 +54,39 @@ CIOFailureException::CIOFailureException(const wxString& what)
 ///////////////////////////////////////////////////////////////////////////////
 // CFileDataIO
 
+
+CFileDataIO::~CFileDataIO()
+{
+}
+
+	
+void CFileDataIO::Read(void *pBuf, off_t nCount) const
+{
+	MULE_VALIDATE_PARAMS(pBuf || nCount == 0, wxT("Attempting to write to NULL buffer."));
+	MULE_VALIDATE_PARAMS(nCount < 0, wxT("Number of bytes to read must not be negative."));
+
+	// Check for read past EOF
+	if (GetLength() < GetPosition() + nCount) {
+		throw CEOFException(wxT("Attempt to read past end of file."));
+	}
+
+	// Check that we read everything we wanted.
+	if (doRead(pBuf, nCount) != nCount) {
+		throw CIOFailureException(wxT("Read error, failed to read from file."));
+	}
+}
+
+
+void CFileDataIO::Write(const void *pBuf, size_t nCount)
+{
+	MULE_VALIDATE_PARAMS(pBuf || nCount == 0, wxT("Attempting to read from NULL buffer."));
+
+	if (doWrite(pBuf, nCount) != nCount) {
+		throw CIOFailureException(wxT("Read error, failed to write to file."));
+	}
+}
+
+
 uint8 CFileDataIO::ReadUInt8() const
 {
 	uint8 nVal = 0;

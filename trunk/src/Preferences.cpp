@@ -697,23 +697,13 @@ CPreferences::CPreferences()
 	CFile preffile;
 	if ( wxFileExists( fullpath ) ) {
 		if ( preffile.Open(fullpath, CFile::read) ) {
-			Preferences_Ext_Struct prefsExt;
-	
-			memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
-			// NOTE: This Read is dangerous.  It doesn't do The Right Thing
-			// with respect to endianness for the fields of prefsExt.  At this
-			// time, it doesn't matter because no fields except the version and
-			// userhash are used and they aren't sensitive to endianness.  If
-			// other fields are used in the future, this will have to be revisited.
-			off_t read = preffile.Read( &prefsExt, sizeof(Preferences_Ext_Struct) );
-
-			if ( read == sizeof(Preferences_Ext_Struct) ) {
-				md4cpy(s_userhash, prefsExt.userhash);
-			} else {
+			try {
+				preffile.ReadUInt8(); // Version. Value is not used.
+				preffile.ReadHash16(s_userhash);
+			} catch (const CSafeIOException& e) {
+				AddDebugLogLineM(true, logGeneral, wxT("Error while reading userhash: ") + e.what());
 				SetStandartValues();
 			}
-			
-			preffile.Close();	
 		} else {
 			SetStandartValues();
 		}
@@ -1183,36 +1173,23 @@ void CPreferences::SetStandartValues()
 	Save();
 }
 
-bool CPreferences::Save()
+
+void CPreferences::Save()
 {
 	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
 
-	bool error = false;
-
 	CFile preffile;
+	if (!wxFileExists(fullpath)) {
+		preffile.Create(fullpath);
+	}
 	
-	if ( !wxFileExists( fullpath ) )
-		preffile.Create( fullpath );
-	
-	if ( preffile.Open(fullpath, CFile::read_write) ) {
-		Preferences_Ext_Struct prefsExt;
-		memset( &prefsExt, 0, sizeof(Preferences_Ext_Struct) );
-		
-		prefsExt.version = PREFFILE_VERSION;
-		md4cpy( prefsExt.userhash, s_userhash.GetHash() );
-		
-		// NOTE: This Write is dangerous.  It doesn't do The Right Thing
-		// with respect to endianness for the fields of prefsExt.  At this
-		// time, it doesn't matter because no fields except the version and
-		// userhash are used and they aren't sensitive to endianness.  If
-		// other fields are used in the future, this will have to be revisited.
-		off_t written = preffile.Write( &prefsExt, sizeof(Preferences_Ext_Struct) );
-
-		error = written != sizeof(Preferences_Ext_Struct);
-		
-		preffile.Close();
-	} else {
-		error = true;
+	if (preffile.Open(fullpath, CFile::read_write)) {
+		try {
+			preffile.WriteUInt8(PREFFILE_VERSION);
+			preffile.WriteHash16(s_userhash);
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM(true, logGeneral, wxT("IO failure while saving user-hash: ") + e.what());
+		}
 	}
 
 	SavePreferences();
@@ -1220,20 +1197,14 @@ bool CPreferences::Save()
 	wxString shareddir(theApp.ConfigDir + wxT("shareddir.dat"));
 
 	wxRemoveFile(shareddir);
-
 	wxTextFile sdirfile(shareddir);
-
-	if(sdirfile.Create()) {
+	if (sdirfile.Create()) {
 		for(unsigned int ii = 0; ii < shareddir_list.GetCount(); ++ii) {
 			sdirfile.AddLine(shareddir_list[ii]);
 		}
-		sdirfile.Write(),
-		sdirfile.Close();
-	} else {
-		error = true;
+		
+		sdirfile.Write();
 	}
-
-	return error;
 }
 
 

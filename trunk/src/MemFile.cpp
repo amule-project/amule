@@ -183,22 +183,10 @@ bool CMemFile::SetLength(off_t newLen)
 }
 
 
-off_t CMemFile::Read(void* buf, off_t length) const
+off_t CMemFile::doRead(void* buf, off_t length) const
 {
-	if ( length == 0 )
-		return 0;
+	MULE_VALIDATE_PARAMS(m_position + length <= m_FileSize, wxT("Invalid read"));
 	
-	// Combined test, which will fail in most cases, so we can just figoure out
-	// what really happened in case it triggers, which is cheaper than doing 2
-	// tests every single time
-	if ( length + m_position > m_FileSize ) {
-		if ( m_position > m_FileSize ) {
-			throw CEOFException(wxT("Position is greater than length in CMemFile"));
-		} else {
-			throw CEOFException(wxT("Attempted to read past end of CMemFile"));
-		}
-	}
-
 	memcpy(buf, m_buffer + m_position, length);
 	m_position += length;
 
@@ -206,7 +194,7 @@ off_t CMemFile::Read(void* buf, off_t length) const
 }
 
 
-size_t CMemFile::Write(const void* buf, size_t length)
+size_t CMemFile::doWrite(const void* buf, size_t length)
 {
 	wxASSERT(buf);
 	

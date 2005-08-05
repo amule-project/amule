@@ -311,7 +311,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 		AddDebugLogLineM(false, logServer, wxT("Error while processing incoming UDP Packet: ") + error);
 	} catch (const CInvalidPacket& error) {
 		AddDebugLogLineM(false, logServer, wxT("Invalid UDP packet encountered: ") + error.what());
-	} catch (const CSafeIOException& e) {
+	} catch (const CEOFException& e) {
 		AddDebugLogLineM(false, logServer, wxT("IO error while processing incoming UDP Packet: ") + e.what());
 	}
 	

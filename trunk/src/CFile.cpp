@@ -400,7 +400,7 @@ bool CFile::Close()
 // ----------------------------------------------------------------------------
 
 // read
-off_t CFile::Read(void *pBuf, off_t nCount) const
+off_t CFile::doRead(void *pBuf, off_t nCount) const
 {
 	wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
 
@@ -427,7 +427,7 @@ off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const
 	off_t total_done = 0;
 	int retries = 0; 
 	while ((total_done < nCount) && (retries <= nRetries)) {
-		int done = Read(pBuf+total_done,nCount-total_done);
+		int done = doRead(pBuf+total_done,nCount-total_done);
 		if (done == wxInvalidOffset) {
 			// Woops, failure!
 			throw wxString(wxT("Error while reading file!"));
@@ -453,7 +453,7 @@ off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const
 
 
 // write
-size_t CFile::Write(const void *pBuf, size_t nCount)
+size_t CFile::doWrite(const void *pBuf, size_t nCount)
 {
 	wxASSERT(pBuf != NULL);
 	wxASSERT(IsOpened());
@@ -638,23 +638,5 @@ bool CFile::Eof() const
 	}
 	
 	return true;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-// CSafeFile
-
-off_t CSafeFile::Read(void *pBuf, off_t nCount) const
-{
-	if (GetPosition() + nCount > GetLength()) {
-		throw CEOFException(wxT("Read after end of CSafeFile"));
-	}
-	
-	return CFile::Read( pBuf, nCount );
-}
-
-size_t CSafeFile::Write(const void *pBuf, size_t nCount)
-{
-	return CFile::Write( pBuf, nCount );
 }
 
