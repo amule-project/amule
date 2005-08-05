@@ -26,7 +26,7 @@
 #ifndef MULEDEBUG_H
 #define MULEDEBUG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA) && !defined(MULEUNIT)
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma interface "MuleDebug.h"
 #endif
 

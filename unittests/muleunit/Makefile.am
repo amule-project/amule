@@ -8,4 +8,4 @@ libmuleunit_a_SOURCES = \
 	testcase.cpp \
 	testregistry.cpp
 
-libmuleunit_a_CXXFLAGS = $(WX_CXXFLAGS) -DMULEUNIT
+libmuleunit_a_CXXFLAGS = $(WX_CXXFLAGS) -DMULEUNIT -DNO_GCC_PRAGMA
