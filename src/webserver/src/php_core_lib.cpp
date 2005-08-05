@@ -389,6 +389,9 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 template <class C, class T>
 void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
 {
+	if ( !result ) {
+		return;
+	}
 	C *container = T::GetContainerInstance();
 
 	container->ReQuery();
@@ -671,7 +674,7 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		php_native_usort,
 	},
 	{
-		"load_amule_vars",
+		"amule_load_vars",
 		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
 		1, php_native_load_amule_vars,
 	},

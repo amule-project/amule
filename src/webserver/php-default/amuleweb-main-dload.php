@@ -17,16 +17,17 @@ body {
 </style></head>
 
 <body>
+<form name="mainform" action="amuleweb-main-dload.php" method="post">
 <table width="100%"  border="1" bgcolor="#0099CC">
   <tr>
-    <td height="20">&nbsp;</td>
+    <td height="20"><input type="submit" name="Submit" value="Submit"></td>
   </tr>
   <tr>
     <td><table width="100%"  border="0">
       <tr>
         <th width="22" scope="col">&nbsp;</th>
         <th width="213" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="329" scope="col"><div align="left">
+        <th width="210" scope="col"><div align="left">
           <div align="left">Progress</div></th>
         <th width="214" scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
@@ -100,7 +101,7 @@ body {
 			return $result;
 		}
 
-		$downloads = load_amule_vars("downloads");
+		$downloads = amule_load_vars("downloads");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
 
@@ -123,12 +124,9 @@ body {
 		foreach ($downloads as $file) {
 			print "<tr>";
 
-			print "<td>";
-			print "</td>";
+			echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			print "<td>";
-			print $file->name;
-			print "</td>";
+			echo "<td>", $file->name, "</td>";
 
 			echo "<td>", $file->progress, "</td>";
 			
@@ -143,5 +141,6 @@ body {
     </table></td>
   </tr>
 </table>
+</form>
 </body>
 </html>
