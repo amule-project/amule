@@ -44,7 +44,7 @@ class wxDC;
  * CBarShader represents the chunks of a file through the use of spans, which 
  * cover a range in the file with a certain color. New spans can be added on 
  * the fly and old spans are automatically removed, resized or merged when
- * neseccary.
+ * necessary.
  *
  * CBarShader will try to minimize the number of spans when possible.
  */
