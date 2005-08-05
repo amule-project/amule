@@ -34,7 +34,7 @@
 
 #include "Types.h"				// Needed for LPCSTR
 #include "StringFunctions.h"	// Needed for the utf8 types.
-
+#include "MuleDebug.h"			// Needed for CMuleException
 
 namespace Kademlia{
 	class CUInt128;
@@ -69,5 +69,40 @@ private:
 	void WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen);
 };
  
+
+/**
+ * The base class of IO exceptions used by
+ * the CSafeFileIO interface and implementations
+ * of the interface.
+ */
+struct CSafeIOException : public CMuleException
+{
+	CSafeIOException(const wxString& what);
+};
+
+
+/**
+ * This exception is thrown when attempts are 
+ * made at reading past the end of the file.
+ *
+ * This typically happens when a invalid packet
+ * is received that is shorter than expected and
+ * is not fatal.
+ */
+struct CEOFException : public CSafeIOException {
+	CEOFException(const wxString& what);	
+};
+
+
+/**
+ * This exception reflects a failure in performing
+ * basic IO operations read and write. It will be
+ * thrown in case a read or a write fails to read
+ * or write the specified number of bytes.
+ */
+struct CIOFailureException : public CSafeIOException {
+	CIOFailureException(const wxString& what);
+};
+
 
 #endif // SAFEFILE_H

@@ -37,6 +37,20 @@
 
 const char BOMHeader[3] = {0xEF,0xBB,0xBF};
 
+
+CSafeIOException::CSafeIOException(const wxString& what)
+	: CMuleException(wxT("CSafeIOException"), what) {}
+
+
+CEOFException::CEOFException(const wxString& what)
+	: CSafeIOException(what) {}
+
+
+CIOFailureException::CIOFailureException(const wxString& what)
+	: CSafeIOException(what) {}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // CFileDataIO
 
