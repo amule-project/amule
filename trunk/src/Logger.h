@@ -198,25 +198,29 @@ namespace CLogger
 }
 
 
-
-#ifdef __DEBUG__
-	#define AddDebugLogLineM( critical, type, string ) \
+#if defined(MULEUNIT)
+	#define AddDebugLogLineM(critical, type, string) do {} while (false)
+	#define AddLogLineM(critical, string) do {} while (false)
+#elif defined(__DEBUG__)
+	#define AddDebugLogLineM(critical, type, string) \
 	do { \
-		if ( critical || CLogger::IsEnabled( type ) ) { \
-			CLogger::AddDebugLogLine( critical, type, string ); \
+		if (critical || CLogger::IsEnabled(type)) { \
+			CLogger::AddDebugLogLine(critical, type, string); \
 		} \
-	} while ( false )
+	} while (false)
+
+	#define AddLogLineM(critical, string) \
+		CLogger::AddLogLine(critical, string)
 #else
-	#define AddDebugLogLineM( critical, type, string ) \
+	#define AddDebugLogLineM(critical, type, string) \
 	do { \
-		if ( critical ) { \
-			CLogger::AddDebugLogLine( critical, type, string ); \
+		if (critical) { \
+			CLogger::AddDebugLogLine(critical, type, string); \
 		} \
-	} while ( false )
+	} while (false)
+
+	#define AddLogLineM(critical, string) \
+		CLogger::AddLogLine(critical, string)
 #endif
-
-#define AddLogLineM( critical, string ) \
-	CLogger::AddLogLine( critical, string )
-
 
 #endif
