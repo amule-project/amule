@@ -48,7 +48,7 @@
 #include "OtherStructs.h"		// Needed for ServerMet_Struct
 #include "Packet.h"				// Needed for CInvalidPacket
 #include "OPCodes.h"			// Needed for MET_HEADER
-#include "SafeFile.h"			// Needed for CSafeFile
+#include "CFile.h"				// Needed for CSafeFile
 #include "HTTPDownload.h"		// Needed for HTTPThread
 #include "Preferences.h"		// Needed for CPreferences
 #include "amule.h"				// Needed for theApp

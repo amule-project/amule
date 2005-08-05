@@ -36,7 +36,6 @@
 #include <list>
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
-#include "CFile.h"
 
 #ifdef CLIENT_GUI
 #include "ECSpecialTags.h"
@@ -44,7 +43,6 @@
 
 class CTag;
 class ServerMet_Struct;
-class CSafeFile;
 class CFileDataIO;
 
 // Server TCP flags
