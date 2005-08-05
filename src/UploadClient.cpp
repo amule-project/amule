@@ -422,74 +422,63 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 
 void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempreqfile)
 {
-	try {
-		m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
-		m_upPartStatus.clear();		
-		m_nUpCompleteSourcesCount= 0;
-		
-		if( GetExtendedRequestsVersion() == 0 ) {
-			// Something is coded wrong on this client if he's sending something it doesn't advertise.
+	m_uploadingfile->UpdateUpPartsFrequency( this, false ); // Decrement
+	m_upPartStatus.clear();		
+	m_nUpCompleteSourcesCount= 0;
+	
+	if( GetExtendedRequestsVersion() == 0 ) {
+		// Something is coded wrong on this client if he's sending something it doesn't advertise.
+		return;
+	}
+	
+	if (data->GetLength() == 16) {
+		// Wrong again. Advertised >0 but send a 0-type packet.
+		// But this time we'll disconnect it.
+		throw CInvalidPacket(wxT("Wrong size on extended info packet"));
+	}
+	
+	uint16 nED2KUpPartCount = data->ReadUInt16();
+	if (!nED2KUpPartCount) {
+		m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
+	} else {
+		if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount) {
+			// We already checked if we are talking about the same file.. So if we get here, something really strange happened!
+			m_upPartStatus.clear();
 			return;
 		}
-		
-		if (data->GetLength() == 16) {
-			// Wrong again. Advertised >0 but send a 0-type packet.
-			// But this time we'll disconnect it.
-			throw(CInvalidPacket(wxT("Wrong size on extended info packet")));
-		}
-		
-		uint16 nED2KUpPartCount = data->ReadUInt16();
-		if (!nED2KUpPartCount) {
-			m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
-		} else {
-			if (tempreqfile->GetED2KPartCount() != nED2KUpPartCount) {
-				// We already checked if we are talking about the same file.. So if we get here, something really strange happened!
-				m_upPartStatus.clear();
-				return;
-			}
-		
-			m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
-		
-			try {
-				uint16 done = 0;
-				while (done != m_upPartStatus.size()) {
-					uint8 toread = data->ReadUInt8();
-					for (sint32 i = 0;i != 8;i++){
-						m_upPartStatus[done] = (toread>>i)&1;
-						//	We may want to use this for another feature..
-						//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
-						// bPartsNeeded = true;
-						done++;
-						if (done == m_upPartStatus.size()) {
-							break;
-						}
+	
+		m_upPartStatus.resize( tempreqfile->GetPartCount(), 0 );
+	
+		try {
+			uint16 done = 0;
+			while (done != m_upPartStatus.size()) {
+				uint8 toread = data->ReadUInt8();
+				for (sint32 i = 0;i != 8;i++){
+					m_upPartStatus[done] = (toread>>i)&1;
+					//	We may want to use this for another feature..
+					//	if (m_upPartStatus[done] && !tempreqfile->IsComplete(done*PARTSIZE,((done+1)*PARTSIZE)-1))
+					// bPartsNeeded = true;
+					done++;
+					if (done == m_upPartStatus.size()) {
+						break;
 					}
 				}
-			} catch (...) {
-				// We want the increment the frequency even if we didn't read everything
-				m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
-				
-				throw;
 			}
+		} catch (...) {
+			// We want the increment the frequency even if we didn't read everything
+			m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
+			
+			throw;
+		}
 
-			if (GetExtendedRequestsVersion() > 1) {
-				uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
-				uint16 nCompleteCountNew = data->ReadUInt16();
-				SetUpCompleteSourcesCount(nCompleteCountNew);
-				if (nCompleteCountLast != nCompleteCountNew) {
-					tempreqfile->UpdatePartsInfo();
-				}
+		if (GetExtendedRequestsVersion() > 1) {
+			uint16 nCompleteCountLast = GetUpCompleteSourcesCount();
+			uint16 nCompleteCountNew = data->ReadUInt16();
+			SetUpCompleteSourcesCount(nCompleteCountNew);
+			if (nCompleteCountLast != nCompleteCountNew) {
+				tempreqfile->UpdatePartsInfo();
 			}
 		}
-	} catch (const CInvalidPacket& InvalidPacket) {
-		wxString error = wxT("CUpDownClient::ProcessExtendedInfo: ");
-		if ( !InvalidPacket.what().IsEmpty() ) {
-			error += InvalidPacket.what();
-		} else {
-			error += wxT("Unknown InvalidPacket exception");
-		}
-		
-		throw(error);
 	}
 	
 	m_uploadingfile->UpdateUpPartsFrequency( this, true ); // Increment
