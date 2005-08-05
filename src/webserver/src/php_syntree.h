@@ -44,7 +44,7 @@ typedef enum PHP_VALUE_TYPE {
 typedef struct PHP_VALUE_NODE {
     PHP_VALUE_TYPE type;
     union {
-        int int_val;
+        unsigned int int_val;
         double float_val;
         char *str_val;
         /* used for arrays and internal objects:
