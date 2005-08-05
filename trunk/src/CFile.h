@@ -147,7 +147,7 @@ public:
 		}
 	}
 	
-	// This safe read will throw() on some issues
+	// This safe read will throw a wxString on some issues
 	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
 
 private:
