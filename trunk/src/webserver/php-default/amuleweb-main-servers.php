@@ -66,7 +66,7 @@ body {
 			return $result;
 		}
 
-		$servers = load_amule_vars("servers");
+		$servers = amule_load_vars("servers");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
 
