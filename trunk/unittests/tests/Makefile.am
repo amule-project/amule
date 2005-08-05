@@ -4,7 +4,7 @@
 
 
 # Use this to be able to catch assertions as exceptions
-MUCXXFLAGS = -DMULEUNIT
+MUCXXFLAGS = -DMULEUNIT -DNO_GCC_PRAGMA
 AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS}
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
