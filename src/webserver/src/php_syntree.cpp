@@ -920,6 +920,8 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 				delete tree->tree_node.right;
 			}
 			break;
+		case PHP_OP_MUX:
+			php_exp_tree_free(tree->exp_node);
 		default:
 			// all other things using left/right
 			php_exp_tree_free(tree->tree_node.left);
@@ -1216,6 +1218,7 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 				}
 				cast_value_str(&index);
 				lval_node = array_get_by_key(&lval_node->value, &index);
+				value_value_free(&index);
 			} else {
 				// this is "$xxx[] = " construct.
 				lval_node = array_push_back(&lval_node->value);
