@@ -3486,11 +3486,15 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 		session = &m_sessions[Data.SessionID];
 		// session times out in 2 hours
 		if ( (curr_time - session->m_last_access) > 7200 ) {
+			Print(_("Session expired - requesting login\n"));
 			m_sessions.erase(Data.SessionID);
 			session = 0;
 		} else {
+			Print(_("Session ok\n"));
 			session->m_last_access = curr_time;
 		}
+	} else {
+		Print(_("No session opened - requesting login\n"));
 	}
 	if ( !session ) {
 		while ( !Data.SessionID || m_sessions.count(Data.SessionID) ) {
@@ -3499,6 +3503,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 		session = &m_sessions[Data.SessionID];
 		session->m_last_access = curr_time;
 		session->m_loggedin = false;
+		Print(_("Session created - requesting login\n"));
 	}
 	Data.parsedURL.ConvertParams(session->m_get_vars);
 	return session;
@@ -3523,6 +3528,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		filename = _("login.html");
 		wxString PwStr(Data.parsedURL.Param(_("pass")));
 		if ( PwStr.Length() ) {
+			Print(_("Checking password\n"));
 			CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 			
 			session->m_loggedin = (PwHash == webInterface->m_AdminPass);
@@ -3532,6 +3538,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		}
 	}
 
+	Print(_("Processing request: ") + filename + _("\n"));
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if ( req_file.Find(_(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
