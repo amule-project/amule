@@ -461,14 +461,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					for (uint32 i = 0; i < nTags; i++){
 						CTag tag(data, update->GetUnicodeSupport());
 						if (tag.GetNameID() == ST_SERVERNAME){
-							if (tag.IsStr()){ //String
-								update->SetListName(tag.GetStr());
-							}
-						}
-						else if (tag.GetNameID() == ST_DESCRIPTION){
-							if (tag.IsStr()){
-								update->SetDescription(tag.GetStr());
-							}
+							update->SetListName(tag.GetStr());
+						} else if (tag.GetNameID() == ST_DESCRIPTION){
+							update->SetDescription(tag.GetStr());
 						} // No more known tags from server
 					}				
 								

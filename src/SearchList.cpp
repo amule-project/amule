@@ -204,25 +204,22 @@ void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 	
 		switch ( tag->GetNameID() ) {
 			case FT_SOURCES:
-				if (tag->IsInt()) {
-					if (m_nKademlia) {
-						if (count > tag->GetInt()) {
-							tag->SetInt(count);
-						}
-					} else {
-						tag->SetInt(tag->GetInt() + count);
+				if (m_nKademlia) {
+					if (count > tag->GetInt()) {
+						tag->SetInt(count);
 					}
+				} else {
+					tag->SetInt(tag->GetInt() + count);
 				}
 				break;
 				
 			case FT_COMPLETE_SOURCES:
-				if (tag->IsInt()) {
-					if (m_nKademlia) {
-						if (count > tag->GetInt())
-							tag->SetInt(count_complete);
-						} else { 
-							tag->SetInt(tag->GetInt() + count_complete);
-						}
+				if (m_nKademlia) {
+					if (count > tag->GetInt()) {
+						tag->SetInt(count_complete);
+					}
+				} else { 
+					tag->SetInt(tag->GetInt() + count_complete);
 				}
 				break;
 		}

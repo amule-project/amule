@@ -192,7 +192,7 @@ char* CPacket::GetPacket() {
 	} else {
 		if (tempbuffer){
 			delete [] tempbuffer;
-			tempbuffer = NULL; // 'new' may throw an exception
+			tempbuffer = NULL;
 		}
 		tempbuffer = new char[size+sizeof(Header_Struct) + 4 /* why this 4?*/];
 		memcpy(tempbuffer    , GetHeader(), sizeof(Header_Struct));
@@ -212,7 +212,7 @@ char* CPacket::DetachPacket() {
 	} else{
 		if (tempbuffer){
 			delete[] tempbuffer;
-			tempbuffer = NULL; // 'new' may throw an exception
+			tempbuffer = NULL;
 		}
 		tempbuffer = new char[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
 		memcpy(tempbuffer,GetHeader(),sizeof(Header_Struct));
@@ -296,8 +296,6 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
-wxString CTag::s_emptyStr;
-
 
 CTag::CTag(char* pszName, uint32 uVal)
 {
@@ -493,6 +491,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 	}
 }
 
+
 CTag::~CTag()
 {
 	delete[] m_pszName;
@@ -504,6 +503,60 @@ CTag::~CTag()
 		delete[] m_pData;
 	}
 }
+
+
+#define CHECK_TAG_TYPE(check, expected) \
+	if (!(check)) { \
+		throw CInvalidPacket(wxT(#expected) wxT(" tag expected, but found ") + GetFullInfo()); \
+	}
+
+uint32 CTag::GetInt() const
+{
+	CHECK_TAG_TYPE(IsInt(), Integer);
+	
+	return m_uVal; 
+}
+
+
+const wxString& CTag::GetStr() const
+{
+	CHECK_TAG_TYPE(IsStr(), String);
+	
+	return *m_pstrVal; 	
+}
+
+
+float CTag::GetFloat() const
+{
+	CHECK_TAG_TYPE(IsFloat(), Float);
+
+	return m_fVal;
+}
+
+
+const byte* CTag::GetHash() const
+{
+	CHECK_TAG_TYPE(IsHash(), Hash);
+	
+	return m_pData;
+}
+	
+
+uint32 CTag::GetBlobSize() const
+{
+	CHECK_TAG_TYPE(IsBlob(), Blob);
+	
+	return m_nBlobSize;
+}
+	
+
+const byte* CTag::GetBlob() const
+{
+	CHECK_TAG_TYPE(IsBlob(), Blob);
+	
+	return m_pData;
+}
+
 
 bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 {

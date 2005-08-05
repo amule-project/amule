@@ -549,66 +549,52 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
 			case FT_FILENAME:
-				if (newtag.IsStr()) {
-					#if wxUSE_UNICODE
-					if (GetFileName().IsEmpty())
-					#endif
-						SetFileName(newtag.GetStr());
-				}
+				#if wxUSE_UNICODE
+				if (GetFileName().IsEmpty())
+				#endif
+					SetFileName(newtag.GetStr());
 				break;
 			
 			case FT_FILESIZE:
-				if (newtag.IsInt()) {
-					SetFileSize(newtag.GetInt());
-					m_AvailPartFrequency.Clear();
-					m_AvailPartFrequency.Add(0, GetPartCount());
-				}
+				SetFileSize(newtag.GetInt());
+				m_AvailPartFrequency.Clear();
+				m_AvailPartFrequency.Add(0, GetPartCount());
 				break;
 			
 			case FT_ATTRANSFERED:
-				if (newtag.IsInt()) {
-					statistic.alltimetransferred += newtag.GetInt();
-				}
+				statistic.alltimetransferred += newtag.GetInt();
 				break;
 			
 			case FT_ATTRANSFEREDHI:
-				if (newtag.IsInt()) {
-					statistic.alltimetransferred =
-						(((uint64)newtag.GetInt()) << 32) +
-						((uint64)statistic.alltimetransferred);
-				}
+				statistic.alltimetransferred =
+					(((uint64)newtag.GetInt()) << 32) +
+					((uint64)statistic.alltimetransferred);
 				break;
 			
 			case FT_ATREQUESTED:
-				if (newtag.IsInt()) {
-					statistic.alltimerequested = newtag.GetInt();
-				}
+				statistic.alltimerequested = newtag.GetInt();
 				break;
 			
 			case FT_ATACCEPTED:
-				if (newtag.IsInt()) {
-					statistic.alltimeaccepted = newtag.GetInt();
-				}
+				statistic.alltimeaccepted = newtag.GetInt();
 				break;
 			
 			case FT_ULPRIORITY:
-				if (newtag.IsInt()) {
-					m_iUpPriority = newtag.GetInt();
-					if( m_iUpPriority == PR_AUTO ){
-						m_iUpPriority = PR_HIGH;
-						m_bAutoUpPriority = true;
-					} else {
-						if (	m_iUpPriority != PR_VERYLOW &&
-							m_iUpPriority != PR_LOW &&
-							m_iUpPriority != PR_NORMAL &&
-							m_iUpPriority != PR_HIGH &&
-							m_iUpPriority != PR_VERYHIGH &&
-							m_iUpPriority != PR_POWERSHARE) {
-							m_iUpPriority = PR_NORMAL;
-						}
-						
-						m_bAutoUpPriority = false;
+				m_iUpPriority = newtag.GetInt();
+				if( m_iUpPriority == PR_AUTO ){
+					m_iUpPriority = PR_HIGH;
+					m_bAutoUpPriority = true;
+				} else {
+					if (	m_iUpPriority != PR_VERYLOW &&
+						m_iUpPriority != PR_LOW &&
+						m_iUpPriority != PR_NORMAL &&
+						m_iUpPriority != PR_HIGH &&
+						m_iUpPriority != PR_VERYHIGH &&
+						m_iUpPriority != PR_POWERSHARE) {
+						m_iUpPriority = PR_NORMAL;
 					}
+					
+					m_bAutoUpPriority = false;
 				}
 				break;
 			
@@ -616,8 +602,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				// Ignore it, it's not used anymore.
 				break;
 			
-			case FT_AICH_HASH:
-				if (newtag.IsStr()) {
+			case FT_AICH_HASH: {
 					CAICHHash hash;
 					bool hashSizeOk =
 						hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
@@ -629,22 +614,16 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 			
 			case FT_KADLASTPUBLISHSRC:
-				wxASSERT( newtag.IsInt() );
-				if (newtag.IsInt()) {
-					SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
+				SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
 				
-					if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-						//There may be a posibility of an older client that saved a random number here.. This will check for that..
-						SetLastPublishTimeKadSrc(0, 0);
-					}
+				if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+					//There may be a posibility of an older client that saved a random number here.. This will check for that..
+					SetLastPublishTimeKadSrc(0, 0);
 				}
 				break;
 			
 			case FT_KADLASTPUBLISHNOTES:
-				wxASSERT( newtag.IsInt() );
-				if (newtag.IsInt()) {
-					SetLastPublishTimeKadNotes( newtag.GetInt() );
-				}
+				SetLastPublishTimeKadNotes( newtag.GetInt() );
 				break;
 			
 			case FT_KADLASTPUBLISHKEY:
