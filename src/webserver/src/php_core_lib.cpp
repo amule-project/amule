@@ -312,18 +312,15 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	id->value.int_val = tag->ClientID();
 	CECTag *server = tag->GetTagByIndex(0);
 	if ( server ) {
-		PHP_VAR_NODE *srv_ip = array_get_by_str_key(result, "serv_ip");
-		cast_value_dnum(&id->value);
-		srv_ip->value.int_val = server->GetIPv4Data().IP();
+		PHP_VAR_NODE *srv_ip = array_get_by_str_key(result, "serv_addr");
+		value_value_free(&srv_ip->value);
+		srv_ip->value.type = PHP_VAL_STRING;
+		srv_ip->value.str_val =strdup(unicode2char(server->GetIPv4Data().StringIP()));
 
-		PHP_VAR_NODE *srv_port = array_get_by_str_key(result, "serv_port");
-		cast_value_dnum(&srv_port->value);
-		srv_port->value.int_val = server->GetIPv4Data().port;
-		
 		CECTag *sname = server->GetTagByName(EC_TAG_SERVER_NAME);
 		if ( sname ) {
 			PHP_VAR_NODE *srv_name = array_get_by_str_key(result, "serv_name");
-			value_value_free(&id->value);
+			value_value_free(&srv_name->value);
 			srv_name->value.type = PHP_VAL_STRING;
 			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
 		}
