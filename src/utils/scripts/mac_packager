@@ -1,3 +1,4 @@
+#!/bin/sh
 ##################################################
 #             aMule.app bundle creator.          #
 ##################################################
@@ -34,7 +35,7 @@ cp src/amule aMule.app/Contents/MacOS/
 cp src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp src/ed2k aMule.app/Contents/MacOS/
 cp -R src/webserver aMule.app/Contents/Resources
-find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" \) -print0 | xargs -0 rm -r
+find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf
 echo "Done"
 echo ""
 echo -n "Step 3: Installing translations to app bundle... "
