@@ -162,119 +162,107 @@ void CServer::Init() {
 	m_auxPorts.Clear();
 }	
 
-bool CServer::AddTagFromFile(CFileDataIO* servermet){
-	
+
+bool CServer::AddTagFromFile(CFileDataIO* servermet)
+{
 	if (servermet == NULL) {
 		return false;
 	}
 	
-	try {
-		CTag tag(*servermet, true);
+	CTag tag(*servermet, true);
 
-		switch(tag.GetNameID()){		
-		case ST_SERVERNAME:
-			#if wxUSE_UNICODE
-			if (listname.IsEmpty())
+	switch(tag.GetNameID()){		
+	case ST_SERVERNAME:
+		#if wxUSE_UNICODE
+		if (listname.IsEmpty())
+		#endif
+			listname = tag.GetStr();
+		break;
+		
+	case ST_DESCRIPTION:
+		#if wxUSE_UNICODE
+		if (description.IsEmpty())
+		#endif
+			description = tag.GetStr();		
+		break;
+		
+	case ST_PREFERENCE:
+		preferences = tag.GetInt();
+		break;
+		
+	case ST_PING:
+		ping = tag.GetInt();
+		break;
+		
+	case ST_DYNIP:
+		#if wxUSE_UNICODE
+		if (dynip.IsEmpty())
+		#endif	
+			dynip = tag.GetStr();
+		break;
+		
+	case ST_FAIL:
+		failedcount = tag.GetInt();
+		break;
+		
+	case ST_LASTPING:
+		lastpinged = tag.GetInt();
+		break;
+		
+	case ST_MAXUSERS:
+		maxusers = tag.GetInt();
+		break;
+		
+	case ST_SOFTFILES:
+		softfiles = tag.GetInt();
+		break;
+		
+	case ST_HARDFILES:
+		hardfiles = tag.GetInt();
+		break;
+		
+	case ST_VERSION:
+		if (tag.IsStr()) {
+			#ifdef wxUSE_UNICODE
+			if (m_strVersion.IsEmpty())
 			#endif
-				listname = tag.GetStr();
-			break;
-			
-		case ST_DESCRIPTION:
-			#if wxUSE_UNICODE
-			if (description.IsEmpty())
-			#endif
-				description = tag.GetStr();		
-			break;
-			
-		case ST_PREFERENCE:
-			preferences = tag.GetInt();
-			break;
-			
-		case ST_PING:
-			ping = tag.GetInt();
-			break;
-			
-		case ST_DYNIP:
-			#if wxUSE_UNICODE
-			if (dynip.IsEmpty())
-			#endif	
-				dynip = tag.GetStr();
-			break;
-			
-		case ST_FAIL:
-			failedcount = tag.GetInt();
-			break;
-			
-		case ST_LASTPING:
-			lastpinged = tag.GetInt();
-			break;
-			
-		case ST_MAXUSERS:
-			maxusers = tag.GetInt();
-			break;
-			
-		case ST_SOFTFILES:
-			softfiles = tag.GetInt();
-			break;
-			
-		case ST_HARDFILES:
-			hardfiles = tag.GetInt();
-			break;
-			
-		case ST_VERSION:
-			if (tag.IsStr()) {
-				#ifdef wxUSE_UNICODE
-				if (m_strVersion.IsEmpty())
-				#endif
-					m_strVersion = tag.GetStr();
-			} else if (tag.IsInt()) {
-				m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
-			} else {
-				wxASSERT(0);
-			}
-			break;
-			
-		case ST_UDPFLAGS:
-			m_uUDPFlags = tag.GetInt();
-			break;
-			
-		case ST_AUXPORTSLIST:
-			m_auxPorts = tag.GetStr();
-			realport = port;
-			port = StrToULong(m_auxPorts.BeforeFirst(','));
-			break;
-			
-		case ST_LOWIDUSERS:
-			m_uLowIDUsers = tag.GetInt();
-			break;
-
-		default:
-			if (tag.GetName()) {
-				if (!CmpED2KTagName(tag.GetName(), "files")) {
-					files = tag.GetInt();
-				} else if (!CmpED2KTagName(tag.GetName(), "users")) {
-					users = tag.GetInt();
-				}
-			} else {
-				wxASSERT(0);
-			}
+				m_strVersion = tag.GetStr();
+		} else if (tag.IsInt()) {
+			m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
+		} else {
+			wxASSERT(0);
 		}
-	} catch (const CInvalidPacket& e) {
-		AddDebugLogLineM( true, logPacketErrors,
-			wxT("Caught CInvalidPacket exception in CServer::AddTagFromFile! server.met is corrupted.")
-		);
+		break;
 		
-		throw;
-	} catch (const wxString& error) {
-		AddDebugLogLineM( true, logPacketErrors,
-			CFormat( wxT("Caught exception in CServer::AddTagFromFile! server.met is corrupted.\nError: %s") )
-				% error
-		);
+	case ST_UDPFLAGS:
+		m_uUDPFlags = tag.GetInt();
+		break;
 		
-		throw CInvalidPacket(wxT("Error reading server.met"));
+	case ST_AUXPORTSLIST:
+		m_auxPorts = tag.GetStr();
+		realport = port;
+		port = StrToULong(m_auxPorts.BeforeFirst(','));
+		break;
+		
+	case ST_LOWIDUSERS:
+		m_uLowIDUsers = tag.GetInt();
+		break;
+
+	default:
+		if (tag.GetName()) {
+			if (!CmpED2KTagName(tag.GetName(), "files")) {
+				files = tag.GetInt();
+			} else if (!CmpED2KTagName(tag.GetName(), "users")) {
+				users = tag.GetInt();
+			}
+		} else {
+			wxASSERT(0);
+		}
 	}
+	
 	return true;
 }
+
 
 void CServer::SetListName(const wxString& newname)
 {
