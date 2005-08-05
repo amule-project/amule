@@ -175,7 +175,6 @@ CClientCreditsList::~CClientCreditsList()
 
 void CClientCreditsList::LoadList()
 {
-	
 	CSafeFile file;
 	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
@@ -184,7 +183,6 @@ void CClientCreditsList::LoadList()
 	}	
 	
 	try {
-	
 		file.Open(strFileName, CFile::read);
 	
 		uint8 version = file.ReadUInt8();
@@ -229,7 +227,6 @@ void CClientCreditsList::LoadList()
 
 		const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
 		uint32 cDeleted = 0;
-		bool error = false;
 		for (uint32 i = 0; i < count; i++){
 			CreditStruct* newcstruct = new CreditStruct;
 			memset(newcstruct, 0, sizeof(CreditStruct));
@@ -257,9 +254,7 @@ void CClientCreditsList::LoadList()
 				}
 				m_mapClients.clear();
 				
-				error = true;
-				
-				break;
+				throw wxString(wxT("Corruptions found while reading Creditfile!"));
 			}
 		
 			if (newcstruct->nLastSeen < dwExpired){
@@ -273,19 +268,15 @@ void CClientCreditsList::LoadList()
 		}
 		file.Close();
 
-		if ( error ) {
-			AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!") );
-		} else {
-			AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
+		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
 	
-			if (cDeleted) {
-				AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
-			}
+		if (cDeleted) {
+			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
 		}
 	} catch (const wxString& error) {
-		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! ") + error);
-	} catch (...) {
-		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file! - Unknown Error"));
+		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file: ") + error);
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM( true, logCredits, wxT("IO error while reading clients.met file: ") + e.what());
 	}
 
 }
@@ -304,41 +295,40 @@ void CClientCreditsList::SaveList()
 	}
 	
 	if ( file.Open(name, CFile::write) ) {
-		uint32 count = 0;
+		try {
+			uint32 count = 0;
+			file.WriteUInt8( CREDITFILE_VERSION );
+			// Temporary place-holder for number of stucts
+			file.WriteUInt32( 0 );
 
-		file.WriteUInt8( CREDITFILE_VERSION );
-
-		// Temporary place-holder for number of stucts
-		file.WriteUInt32( 0 );
-
-		ClientMap::iterator it = m_mapClients.begin();
-		for ( ; it != m_mapClients.end(); ++it ) {	
-			CClientCredits* cur_credit = it->second;
+			ClientMap::iterator it = m_mapClients.begin();
+			for ( ; it != m_mapClients.end(); ++it ) {	
+				CClientCredits* cur_credit = it->second;
 		
-			if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
-				const CreditStruct* const cstruct = cur_credit->GetDataStruct();
-				file.WriteHash16(cstruct->abyKey);
-				file.WriteUInt32(cstruct->nUploadedLo);
-				file.WriteUInt32(cstruct->nDownloadedLo);
-				file.WriteUInt32(cstruct->nLastSeen);
-				file.WriteUInt32(cstruct->nUploadedHi);
-				file.WriteUInt32(cstruct->nDownloadedHi);
-				file.WriteUInt16(cstruct->nReserved3);
-				file.WriteUInt8(cstruct->nKeySize);
-				// Doesn't matter if this saves garbage, will be fixed on load.
-				file.Write(cstruct->abySecureIdent, MAXPUBKEYSIZE);
-				count++;
+				if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
+					const CreditStruct* const cstruct = cur_credit->GetDataStruct();
+					file.WriteHash16(cstruct->abyKey);
+					file.WriteUInt32(cstruct->nUploadedLo);
+					file.WriteUInt32(cstruct->nDownloadedLo);
+					file.WriteUInt32(cstruct->nLastSeen);
+					file.WriteUInt32(cstruct->nUploadedHi);
+					file.WriteUInt32(cstruct->nDownloadedHi);
+					file.WriteUInt16(cstruct->nReserved3);
+					file.WriteUInt8(cstruct->nKeySize);
+					// Doesn't matter if this saves garbage, will be fixed on load.
+					file.Write(cstruct->abySecureIdent, MAXPUBKEYSIZE);
+					count++;
+				}
 			}
-		}
 		
-		// Write the actual number of structs
-		file.Seek( 1 );
-		file.WriteUInt32( count );
-
-		file.Flush();
-		file.Close();
+			// Write the actual number of structs
+			file.Seek( 1 );
+			file.WriteUInt32( count );
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM(true, logCredits, wxT("IO failure while saving clients.met: ") + e.what());
+		}
 	} else {
-		AddDebugLogLineM( true, logCredits, wxT("Failed to open existing creditfile!") );
+		AddDebugLogLineM(true, logCredits, wxT("Failed to open existing creditfile!"));
 	}
 }
 

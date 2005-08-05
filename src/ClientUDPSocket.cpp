@@ -59,6 +59,7 @@
 
 #ifdef __COMPILE_KAD__
 	#include "kademlia/kademlia/Kademlia.h"
+	#include "kademlia/io/IOException.h"
 	#include "zlib.h"
 #endif
 
@@ -127,18 +128,14 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				//theStats.AddDownDataOverheadKad(length);
 				uint32 nNewSize = length*10+300; // Should be enough...
 				byte unpack[nNewSize];
-				try {
-					uLongf unpackedsize = nNewSize-2;
-					uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
-					if (result == Z_OK) {
-						unpack[0] = OP_KADEMLIAHEADER;
-						unpack[1] = buffer[1];
-						Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
-					} else {
-						AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
-					}
-				} catch(...) {
-					AddDebugLogLineM(false, logClientKadUDP, wxT("Something wrong happened on a compressed Kad packet\n"));
+				uLongf unpackedsize = nNewSize-2;
+				uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
+				if (result == Z_OK) {
+					unpack[0] = OP_KADEMLIAHEADER;
+					unpack[1] = buffer[1];
+					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+				} else {
+					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}
 				break;
 			}
@@ -146,148 +143,151 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 			default:
 				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logClientUDP, wxT("Unhanled exception on UDP socket receive!"));
+	} catch (const wxString& e) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
+	} catch (const CEOFException& e) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
+#ifdef __COMPILE_KAD__
+	} catch (const Kademlia::CIOException&) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet"));
+#endif
 	}
 }
 
 
 bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
-	try {
-		switch(opcode) {
-			case OP_REASKCALLBACKUDP: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
-				theApp.statistics->AddDownDataOverheadOther(size);
-				CUpDownClient* buddy = theApp.clientlist->GetBuddy();
-				if( buddy ) {
-					if( size < 17 || buddy->GetSocket() == NULL ) {
-						break;
-					}
-					if (!md4cmp(packet, buddy->GetBuddyID())) {
-						CMemFile mem_packet((byte*)packet,size-10);
-						// Change the ip and port while leaving the rest untouched
-						mem_packet.Seek(0,wxFromStart);
-						mem_packet.WriteUInt32(host);
-						mem_packet.WriteUInt16(port);
-						CPacket* response = new CPacket(&mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
-						AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						buddy->GetSocket()->SendPacket(response);
-					}
-				}
-				break;
-			}
-			case OP_REASKFILEPING: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
-				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				
-				CMemFile data_in((byte*)packet, size);
-				byte reqfilehash[16];
-				data_in.ReadHash16(reqfilehash);
-				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
-				if (!reqfile) {
-					CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
-					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-					SendPacket(response,host,port);
+	switch (opcode) {
+		case OP_REASKCALLBACKUDP: {
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
+			theApp.statistics->AddDownDataOverheadOther(size);
+			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+			if( buddy ) {
+				if( size < 17 || buddy->GetSocket() == NULL ) {
 					break;
 				}
-				CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(host, port);
-				if (sender){
-					sender->CheckForAggressive();
-					
-					//Make sure we are still thinking about the same file
-					if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
-					
-						sender->AddAskedCount();
-						sender->SetUDPPort(port);
-						sender->SetLastUpRequest();
-
-						if (sender->GetUDPVersion() > 3) {
-							sender->ProcessExtendedInfo(&data_in, reqfile);
-						} else  if (sender->GetUDPVersion() > 2) {
-							uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
-							uint16 nCompleteCountNew = data_in.ReadUInt16();
-							sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
-							if (nCompleteCountLast != nCompleteCountNew) {
-								reqfile->UpdatePartsInfo();
-							}
-						}
-						
-						CMemFile data_out(128);
-						if(sender->GetUDPVersion() > 3) {
-							if (reqfile->IsPartFile()) {
-								((CPartFile*)reqfile)->WritePartStatus(&data_out);
-							} else {
-								data_out.WriteUInt16(0);
-							}
-						}
-						
-						data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-						#ifdef __USE_DEBUG__						
-						if (thePrefs.GetDebugClientUDPLevel() > 0) {
-							DebugSend("OP__ReaskAck", sender);
-						}
-						#endif
-						CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
-						response->SetOpCode(OP_REASKACK);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						theApp.clientudp->SendPacket(response, host, port);
-					} else {
-						AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
-					}						
-				} else {
-					if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
-						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-						theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
-						SendPacket(response,host,port);
-					}
+				if (!md4cmp(packet, buddy->GetBuddyID())) {
+					CMemFile mem_packet((byte*)packet,size-10);
+					// Change the ip and port while leaving the rest untouched
+					mem_packet.Seek(0,wxFromStart);
+					mem_packet.WriteUInt32(host);
+					mem_packet.WriteUInt16(port);
+					CPacket* response = new CPacket(&mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
+					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
+					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					buddy->GetSocket()->SendPacket(response);
 				}
-				break;
 			}
-			case OP_QUEUEFULL: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
-				theApp.statistics->AddDownDataOverheadOther(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
-				if (sender) {
-					sender->SetRemoteQueueFull(true);
-					sender->UDPReaskACK(0);
-				}
-				break;
-			}
-			case OP_REASKACK: {				
-				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
-				if (sender) {
-					CMemFile data_in((byte*)packet,size);
-					if ( sender->GetUDPVersion() > 3 ) {
-						sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
-					}
-					uint16 nRank = data_in.ReadUInt16();
-					sender->SetRemoteQueueFull(false);
-					sender->UDPReaskACK(nRank);
-				}
-				break;
-			}
-			case OP_FILENOTFOUND: {
-				AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
-				theApp.statistics->AddDownDataOverheadFileRequest(size);
-				CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
-				if (sender){
-					sender->UDPReaskFNF(); // may delete 'sender'!
-					sender = NULL;
-				}
-				break;
-			}
-			default:
-				theApp.statistics->AddDownDataOverheadOther(size);				
-				return false;
+			break;
 		}
-		return true;
-	} catch(...) {
-		AddDebugLogLineM( false, logClientUDP, wxT("Error while processing incoming UDP Packet (Most likely a misconfigured server)") );
+		case OP_REASKFILEPING: {
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
+			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			
+			CMemFile data_in((byte*)packet, size);
+			byte reqfilehash[16];
+			data_in.ReadHash16(reqfilehash);
+			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+			if (!reqfile) {
+				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
+				theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+				SendPacket(response,host,port);
+				break;
+			}
+			CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(host, port);
+			if (sender){
+				sender->CheckForAggressive();
+				
+				//Make sure we are still thinking about the same file
+				if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
+				
+					sender->AddAskedCount();
+					sender->SetUDPPort(port);
+					sender->SetLastUpRequest();
+
+					if (sender->GetUDPVersion() > 3) {
+						sender->ProcessExtendedInfo(&data_in, reqfile);
+					} else  if (sender->GetUDPVersion() > 2) {
+						uint16 nCompleteCountLast = sender->GetUpCompleteSourcesCount();
+						uint16 nCompleteCountNew = data_in.ReadUInt16();
+						sender->SetUpCompleteSourcesCount(nCompleteCountNew);							
+						if (nCompleteCountLast != nCompleteCountNew) {
+							reqfile->UpdatePartsInfo();
+						}
+					}
+					
+					CMemFile data_out(128);
+					if(sender->GetUDPVersion() > 3) {
+						if (reqfile->IsPartFile()) {
+							((CPartFile*)reqfile)->WritePartStatus(&data_out);
+						} else {
+							data_out.WriteUInt16(0);
+						}
+					}
+					
+					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
+					#ifdef __USE_DEBUG__						
+					if (thePrefs.GetDebugClientUDPLevel() > 0) {
+						DebugSend("OP__ReaskAck", sender);
+					}
+					#endif
+					CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
+					response->SetOpCode(OP_REASKACK);
+					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					theApp.clientudp->SendPacket(response, host, port);
+				} else {
+					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
+				}						
+			} else {
+				if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
+					CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
+					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					SendPacket(response,host,port);
+				}
+			}
+			break;
+		}
+		case OP_QUEUEFULL: {
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
+			theApp.statistics->AddDownDataOverheadOther(size);
+			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			if (sender) {
+				sender->SetRemoteQueueFull(true);
+				sender->UDPReaskACK(0);
+			}
+			break;
+		}
+		case OP_REASKACK: {				
+			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			if (sender) {
+				CMemFile data_in((byte*)packet,size);
+				if ( sender->GetUDPVersion() > 3 ) {
+					sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
+				}
+				uint16 nRank = data_in.ReadUInt16();
+				sender->SetRemoteQueueFull(false);
+				sender->UDPReaskACK(nRank);
+			}
+			break;
+		}
+		case OP_FILENOTFOUND: {
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
+			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			if (sender){
+				sender->UDPReaskFNF(); // may delete 'sender'!
+				sender = NULL;
+			}
+			break;
+		}
+		
+		default:
+			theApp.statistics->AddDownDataOverheadOther(size);				
+			return false;
 	}
-	return false;
+
+	return true;
 }
 
 

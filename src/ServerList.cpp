@@ -173,7 +173,11 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
 	} catch (const CInvalidPacket& e) {
-		AddLogLineM(true,_("Error: the file server.met is corrupted"));
+		AddLogLineM(true, wxT("Error: the file server.met is corrupted: ") + e.what());
+		Notify_ServerThaw();
+		return false;
+	} catch (const CSafeIOException& e) {
+		AddLogLineM(true, wxT("IO error while reading 'server.met': ") + e.what());
 		Notify_ServerThaw();
 		return false;
 	}
@@ -572,84 +576,88 @@ bool CServerList::SaveServerMet()
 	}
 
 
-	servermet.WriteUInt8(0xE0);
-	servermet.WriteUInt32( m_servers.size() );
+	try {
+		servermet.WriteUInt8(0xE0);
+		servermet.WriteUInt32( m_servers.size() );
 
-	
-	for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
-		const CServer* const server = *it;
+		for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+			const CServer* const server = *it;
 
-		uint16 tagcount = 12;
-		if ( !server->GetListName().IsEmpty() ) 			++tagcount;
-		if ( !server->GetDynIP().IsEmpty() )				++tagcount;
-		if ( !server->GetDescription().IsEmpty() )			++tagcount;
-		if ( server->GetConnPort() != server->GetPort() )	++tagcount;		
-		#if wxUSE_UNICODE
-		// For unicoded name, description, and dynip
-		if ( !server->GetListName().IsEmpty() ) {
-			++tagcount;
-		}
-		if ( !server->GetDynIP().IsEmpty() ) {
-			++tagcount;
-		}
-		if ( !server->GetDescription().IsEmpty() ) {
-			++tagcount;
-		}
-		if (!server->GetVersion().IsEmpty()){
-			++tagcount;
-		}
-		#endif
-		
-		
-		servermet.WriteUInt32(server->GetIP());
-		servermet.WriteUInt16(server->GetPort());
-		servermet.WriteUInt32(tagcount);
-					
-		if ( !server->GetListName().IsEmpty() ) {
+			uint16 tagcount = 12;
+			if ( !server->GetListName().IsEmpty() ) 			++tagcount;
+			if ( !server->GetDynIP().IsEmpty() )				++tagcount;
+			if ( !server->GetDescription().IsEmpty() )			++tagcount;
+			if ( server->GetConnPort() != server->GetPort() )	++tagcount;		
 			#if wxUSE_UNICODE
-			// This is BOM to keep eMule compatibility
-			CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
+			// For unicoded name, description, and dynip
+			if ( !server->GetListName().IsEmpty() ) {
+				++tagcount;
+			}
+			if ( !server->GetDynIP().IsEmpty() ) {
+				++tagcount;
+			}
+			if ( !server->GetDescription().IsEmpty() ) {
+				++tagcount;
+			}
+			if (!server->GetVersion().IsEmpty()){
+				++tagcount;
+			}
 			#endif
-			CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
+			
+			
+			servermet.WriteUInt32(server->GetIP());
+			servermet.WriteUInt16(server->GetPort());
+			servermet.WriteUInt32(tagcount);
+						
+			if ( !server->GetListName().IsEmpty() ) {
+				#if wxUSE_UNICODE
+				// This is BOM to keep eMule compatibility
+				CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
+				#endif
+				CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
+			}
+			
+			if ( !server->GetDynIP().IsEmpty() ) {
+				#if wxUSE_UNICODE
+				// This is BOM to keep eMule compatibility
+				CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
+				#endif			
+				CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
+			}
+			
+			if ( !server->GetDescription().IsEmpty() ) {
+				#if wxUSE_UNICODE
+				// This is BOM to keep eMule compatibility
+				CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
+				#endif			
+				CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
+			}
+			
+			if ( server->GetConnPort() != server->GetPort() ) {
+				CTag( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
+			}
+			
+			CTag( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
+			CTag( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
+			CTag( "users",			server->GetUsers()			).WriteTagToFile( &servermet );
+			CTag( "files",			server->GetFiles()			).WriteTagToFile( &servermet );
+			CTag( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
+			CTag( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
+			CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
+			CTag( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
+			CTag( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
+			if (!server->GetVersion().IsEmpty()){
+				#if wxUSE_UNICODE			
+				CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
+				#endif
+				CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+			}
+			CTag( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
+			CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
 		}
-		
-		if ( !server->GetDynIP().IsEmpty() ) {
-			#if wxUSE_UNICODE
-			// This is BOM to keep eMule compatibility
-			CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
-			#endif			
-			CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
-		}
-		
-		if ( !server->GetDescription().IsEmpty() ) {
-			#if wxUSE_UNICODE
-			// This is BOM to keep eMule compatibility
-			CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
-			#endif			
-			CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
-		}
-		
-		if ( server->GetConnPort() != server->GetPort() ) {
-			CTag( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
-		}
-		
-		CTag( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
-		CTag( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
-		CTag( "users",			server->GetUsers()			).WriteTagToFile( &servermet );
-		CTag( "files",			server->GetFiles()			).WriteTagToFile( &servermet );
-		CTag( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
-		CTag( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
-		CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
-		CTag( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
-		CTag( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
-		if (!server->GetVersion().IsEmpty()){
-			#if wxUSE_UNICODE			
-			CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
-			#endif
-			CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
-		}
-		CTag( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
-		CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
+	} catch (const CIOFailureException& e) {
+		AddLogLineM(false, wxT("IO failure while writing 'server.met': ") + e.what());
+		return false;
 	}
 	
 	servermet.Close();

@@ -123,12 +123,11 @@ void CFriendList::LoadList()
 					m_FriendList.push_back(Record);
 				}				
 			}
-			file.Close();
 		} else if ( wxFileExists(metfile) ) {
 			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!"));
 		}
-	} catch (...) {
-		AddLogLineM(false, _("Failed to read corrupted friendlist file 'emfriends.met'!"));
+	} catch (const CSafeIOException& e) {
+		AddLogLineM(true, wxT("IO error while reading 'emfriends.met': ") + e.what());
 	}
 	
 }
@@ -137,17 +136,17 @@ void CFriendList::LoadList()
 void CFriendList::SaveList()
 {
 	CSafeFile file;
-	if( file.Create(theApp.ConfigDir + wxT("emfriends.met"), true) ) {
-		uint8 header = MET_HEADER;
-		file.WriteUInt8(header);
+	if (file.Create(theApp.ConfigDir + wxT("emfriends.met"), true)) {
+		try {
+			file.WriteUInt8(MET_HEADER);
+			file.WriteUInt32(m_FriendList.size());
 		
-		file.WriteUInt32(m_FriendList.size());
-		
-		for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
-			(*it)->WriteToFile(&file);
+			for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
+				(*it)->WriteToFile(&file);
+			}
+		} catch (const CIOFailureException& e) {
+			AddLogLineM(true, wxT("IO failure while writing 'emfriends.met': ") + e.what());
 		}
-		
-		file.Close();	
 	} else {
 		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for writing!"));
 	}

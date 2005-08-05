@@ -109,8 +109,8 @@ void CPrefs::readFile()
 			file.ReadUInt128(&m_clientID);
 			file.Close();
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadPrefs, wxT("Exception in CPrefs::readFile"));
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM(false, logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
 	}
 }
 
@@ -125,8 +125,8 @@ void CPrefs::writeFile()
 			file.WriteUInt8(0); //This is to tell older clients there are no tags..
 			file.Close();
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadPrefs, wxT("Exception in CPrefs::writeFile"));
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(false, logKadPrefs, wxT("IO failure while saving prefs: ") + e.what());
 	}
 }
 

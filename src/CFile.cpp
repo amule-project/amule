@@ -646,10 +646,9 @@ bool CFile::Eof() const
 
 off_t CSafeFile::Read(void *pBuf, off_t nCount) const
 {
-	if ( GetPosition() + nCount > GetLength() )
-		// For lack of better
-		throw CInvalidPacket(wxT("Read after end of CSafeFile"));
-		// AfxThrowFileException(CFileException::endOfFile, 0, GetFileName());
+	if (GetPosition() + nCount > GetLength()) {
+		throw CEOFException(wxT("Read after end of CSafeFile"));
+	}
 	
 	return CFile::Read( pBuf, nCount );
 }

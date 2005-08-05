@@ -59,7 +59,6 @@ bool CKnownFileList::Init()
 	CSafeFile file;
 	uint32 result = false;
 	try {
-		
 		wxString fullpath(theApp.ConfigDir + wxT("known.met"));
 		if (!wxFileExists(fullpath)) {
 			return false;
@@ -74,54 +73,57 @@ bool CKnownFileList::Init()
 		uint32 RecordsNumber = file.ReadUInt32();
 		for (uint32 i = 0; i != RecordsNumber; i++) {
 			CKnownFile* pRecord =  new CKnownFile();
-			if (!pRecord->LoadFromFile(&file)){
+			bool loaded = false;
+			try {
+				loaded = pRecord->LoadFromFile(&file);
+			} catch (...) {
 				delete pRecord;
-				continue;
+				throw;
 			}
-			Append(pRecord);
+				
+			if (loaded) {
+				Append(pRecord);
+			} else {			
+				delete pRecord;
+			}
 		}
-		file.Close();
 		result = true;
-	} catch (...) {
-		AddLogLineM(true,_("Error reading known.met file! (corrupted?)"));
+	} catch (const CSafeIOException& e) {
+		AddLogLineM(true, _("IO error while reading known.met file (File may be corrupted): ") + e.what());
 	}
 	
 	return result;
 }
 
-void CKnownFileList::Save() {
 
-	CSafeFile* file = new CSafeFile();
+void CKnownFileList::Save()
+{
+	CSafeFile file;
 	wxString fullpath(theApp.ConfigDir + wxT("known.met"));
-	file->Open(fullpath, CFile::write);
-	if (!(file->IsOpened())) {
-		delete file;
+	file.Open(fullpath, CFile::write);
+	if (!file.IsOpened()) {
 		return;
 	}
 
-
 	wxMutexLocker sLock(list_mut);
 
-	file->WriteUInt8(MET_HEADER);
-	uint32 RecordsNumber = m_map.size();
-	file->WriteUInt32(RecordsNumber + m_duplicates.size());
+	try {
+		file.WriteUInt8(MET_HEADER);
+		file.WriteUInt32(m_map.size() + m_duplicates.size());
 
-	CKnownFileMap::iterator it = m_map.begin();
-	for (uint32 i = 0; i != RecordsNumber; i++,it++) {
-		if ( it == m_map.end() )
-			break;		// TODO: Throw an exception
-		it->second->WriteToFile(file);
+		CKnownFileMap::iterator it = m_map.begin();
+		for (; it != m_map.end(); ++it) {
+			it->second->WriteToFile(&file);
+		}
+	
+		// Kry - Duplicates handling.
+		KnownFileList::iterator ite = m_duplicates.begin();
+		for ( ; ite != m_duplicates.end(); ++ite ) {
+			(*ite)->WriteToFile(&file);
+		}
+	} catch (const CIOFailureException& e) {
+		AddLogLineM(true, _("IO error while writing known.met file: ") + e.what());	
 	}
-	
-	// Kry - Duplicates handling.
-	KnownFileList::iterator ite = m_duplicates.begin();
-	for ( ; ite != m_duplicates.end(); ++ite ) {
-		(*ite)->WriteToFile(file);
-	}	
-	
-	file->Flush();
-	file->Close();
-	delete file;
 }
 
 
