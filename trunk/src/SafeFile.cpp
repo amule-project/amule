@@ -63,7 +63,7 @@ CFileDataIO::~CFileDataIO()
 void CFileDataIO::Read(void *pBuf, off_t nCount) const
 {
 	MULE_VALIDATE_PARAMS(pBuf || nCount == 0, wxT("Attempting to write to NULL buffer."));
-	MULE_VALIDATE_PARAMS(nCount < 0, wxT("Number of bytes to read must not be negative."));
+	MULE_VALIDATE_PARAMS(nCount >= 0, wxT("Number of bytes to read must not be negative."));
 
 	// Check for read past EOF
 	if (GetLength() < GetPosition() + nCount) {
