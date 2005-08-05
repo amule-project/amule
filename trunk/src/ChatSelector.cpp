@@ -48,7 +48,6 @@
 #include "FriendListCtrl.h"	// Needed for CDlgFriend
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
-#include "Statistics.h"		// Needed for CStatistics
 
 #warning Needed while not ported
 #include "Friend.h"
