@@ -370,7 +370,14 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
 		wxASSERT( pBlockAICHHashTree != NULL );
-		CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
+		
+		try {
+			CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
+			return false;
+		}
+		
 		// SLUGFILLER: SafeHash - quick fallback
 		if ( !theApp.IsRunning()){ // in case of shutdown while still hashing
 			file.Close();
@@ -384,7 +391,12 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	if (togo != 0){
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, togo);
 		wxASSERT( pBlockAICHHashTree != NULL );
-		CreateHashFromFile(&file, togo, NULL, pBlockAICHHashTree);
+		try {
+			CreateHashFromFile(&file, togo, NULL, pBlockAICHHashTree);
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
+			return false;
+		}	
 	}
 	
 	m_pAICHHashSet->ReCalculateHash(false);
@@ -487,7 +499,8 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 
 
 // needed for memfiles. its probably better to switch everything to CFile...
-bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash){
+bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
+{
 	CMD4Hash checkid;
 	file->ReadHash16(checkid);
 	
@@ -521,26 +534,20 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash){
 	// lol, useless comment but made me lmao
 
 	if (!hashlist.IsEmpty()){
-		byte* buffer = new byte[hashlist.GetCount()*16];
+		byte buffer[hashlist.GetCount() * 16];
 		for (size_t i = 0;i != hashlist.GetCount();i++) {
 			md4cpy(buffer+(i*16),hashlist[i]);
 		}
 		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid);
-		delete[] buffer;
 	}
 	if ( m_abyFileHash == checkid ) {
 		return true;
 	} else {
 		hashlist.Clear();
-		/*
-		for (int i = 0; i < hashlist.GetCount(); i++) {
-			delete[] hashlist[i];
-		}
-		hashlist.RemoveAll();
-		*/
 		return false;
 	}
 }
+
 
 bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 {
@@ -603,15 +610,15 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 			
 			case FT_AICH_HASH: {
-					CAICHHash hash;
-					bool hashSizeOk =
-						hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
-					wxASSERT(hashSizeOk);
-					if (hashSizeOk) {
-						m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
-					}
+				CAICHHash hash;
+				bool hashSizeOk =
+					hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+				wxASSERT(hashSizeOk);
+				if (hashSizeOk) {
+					m_pAICHHashSet->SetMasterHash(hash, AICH_HASHSETCOMPLETE);
 				}
 				break;
+			}
 			
 			case FT_KADLASTPUBLISHSRC:
 				SetLastPublishTimeKadSrc( newtag.GetInt(), 0 );
@@ -648,7 +655,8 @@ bool CKnownFile::LoadDateFromFile(const CFileDataIO* file)
 }
 
 
-bool CKnownFile::LoadFromFile(const CFileDataIO* file){
+bool CKnownFile::LoadFromFile(const CFileDataIO* file)
+{
 	// SLUGFILLER: SafeHash - load first, verify later
 	bool ret1 = LoadDateFromFile(file);
 	bool ret2 = LoadHashsetFromFile(file,false);
@@ -783,7 +791,7 @@ void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Out
 	CAICHHashAlgo* pHashAlg = NULL;
 	bool delete_in_string = false;
 	
-	try {	
+	try {
 		if (file) {
 			wxASSERT(!in_string);
 			in_string = new unsigned char[Length]; 	 

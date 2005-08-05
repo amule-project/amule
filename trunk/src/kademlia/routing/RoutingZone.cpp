@@ -147,8 +147,7 @@ CRoutingZone::~CRoutingZone()
 
 void CRoutingZone::readFile(void)
 {
-	try
-	{
+	try {
 		theApp.amuledlg->kademliawnd->HideContacts();
 		uint32 numContacts = 0;
 		CSafeFile file;
@@ -157,31 +156,27 @@ void CRoutingZone::readFile(void)
 			numContacts = file.ReadUInt32();
 
 			CUInt128 id;
-			uint32 ip;
-			uint16 udpPort;
-			uint16 tcpPort;
-			byte type;
 			for (uint32 i=0; i<numContacts; i++) {
 				file.ReadUInt128(&id);
-				ip = file.ReadUInt32();
-				udpPort = file.ReadUInt16();
-				tcpPort = file.ReadUInt16();
-				type = file.ReadUInt8();
+				uint32 ip = file.ReadUInt32();
+				uint16 udpPort = file.ReadUInt16();
+				uint16 tcpPort = file.ReadUInt16();
+				byte type = file.ReadUInt8();
 				if(IsGoodIPPort(ENDIAN_NTOHL(ip),udpPort)) {
 					if( type < 4) {
 						add(id, ip, udpPort, tcpPort, type);
 					}
 				}
 			}
-			file.Close();
 			AddLogLineM( false, wxString::Format(_("Read %u Kad contacts"), numContacts));
 		}
 		if (numContacts == 0) {
 			AddDebugLogLineM( false, logKadRouting, _("Error while reading Kad contacts - 0 entries"));
 		}
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::readFile"));
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
+
 	theApp.amuledlg->kademliawnd->ShowContacts();
 }
 
@@ -193,7 +188,6 @@ void CRoutingZone::writeFile(void)
 		CUInt128 id;
 		CSafeFile file;
 		if (file.Open(m_filename, CFile::write)) {
-
 			ContactList contacts;
 			getBootstrapContacts(&contacts, 200);
 			file.WriteUInt32((uint32)std::min((int)contacts.size(), CONTACT_FILE_LIMIT));
@@ -211,11 +205,10 @@ void CRoutingZone::writeFile(void)
 					break;
 				}
 			}
-			file.Close();
 		}
 		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %d contacts to file."), count));
-	} catch (...) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Exception in CRoutingZone::writeFile"));
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(false, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
 	}
 }
 

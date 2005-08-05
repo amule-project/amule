@@ -62,7 +62,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
-#include "SafeFile.h"		// Needed for CSafeFile
 #include "MemFile.h"		// Needed for CMemFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -569,8 +568,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					case FT_PERMISSIONS:
 					case FT_KADLASTPUBLISHKEY:
 						break;
-						
 					case FT_CORRUPTEDPARTS: {
+						wxASSERT( corrupted_list.GetHeadPosition() == NULL );
 						wxString strCorruptedParts(newtag.GetStr());
 						wxStringTokenizer tokenizer(strCorruptedParts, wxT(","));
 						while ( tokenizer.HasMoreTokens() ) {
@@ -657,11 +656,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 
 			CMD4Hash checkhash;
 			if (!hashlist.IsEmpty()){
-				byte* buffer = new byte[hashlist.GetCount()*16];
+				byte buffer[hashlist.GetCount() * 16];
 				for (size_t i = 0; i < hashlist.GetCount(); ++i)
 					md4cpy(buffer+(i*16), hashlist[i]);
 				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash);
-				delete[] buffer;
 			}
 			bool flag=false;
 			if (m_abyFileHash == checkhash) {
@@ -673,48 +671,43 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}			
 			
 		metFile.Close();
-			
 	} catch (const CInvalidPacket& e) {
-		if (metFile.Eof()) {
-			AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
-				% m_partmetfilename
-				% m_strFileName );
-			AddLogLineM(true, _("Trying to recover file info..."));
-			// Safe file is that who have 
-			// - FileSize
-			if (GetFileSize()) {
-				// We have filesize, try other needed info
-
-				// Do we need to check gaps? I think not,
-				// because they are checked below. Worst 
-				// scenario will only mark file as 0 bytes downloaded.
-				
-				// -Filename
-				if (GetFileName().IsEmpty()) {
-					// Not critical, let's put a random filename.
-					AddLogLineM(true, _(
-						"Recovering no-named file - will try to recover it as RecoveredFile.dat"));
-					SetFileName(wxT("RecoveredFile.dat"));
-				}
-				AddLogLineM(true,
-					_("Recovered all available file info :D - Trying to use it..."));
-			} else {
-				AddLogLineM(true, _("Unable to recover file info :("));
-				if (metFile.IsOpened()) {
-					metFile.Close();		
-				}
-				return false;			
-			}				
-				
-		} else {
-			AddLogLineM(true, CFormat( _("Error: %s is corrupt, unable to load file.") )
-				% m_partmetfilename );
-			if (metFile.IsOpened()) {
-			metFile.Close();		
-			}
-			return false;			
-		}
+		AddLogLineM(true, CFormat( _("Error: %s is corrupt, unable to load file.") )
+			% m_partmetfilename );
+		return false;
+	} catch (const CIOFailureException& e) {
+		AddLogLineM(true, CFormat(_("IO failure while loading part file: %s"))
+			% m_partmetfilename );
+		return false;		
+	} catch (const CEOFException& e) {
+		AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
+			% m_partmetfilename
+			% m_strFileName );
+		AddLogLineM(true, _("Trying to recover file info..."));
 		
+		// Safe file is that who have 
+		// - FileSize
+		if (GetFileSize()) {
+			// We have filesize, try other needed info
+
+			// Do we need to check gaps? I think not,
+			// because they are checked below. Worst 
+			// scenario will only mark file as 0 bytes downloaded.
+				
+			// -Filename
+			if (GetFileName().IsEmpty()) {
+				// Not critical, let's put a random filename.
+				AddLogLineM(true, _(
+					"Recovering no-named file - will try to recover it as RecoveredFile.dat"));
+				SetFileName(wxT("RecoveredFile.dat"));
+			}
+		
+			AddLogLineM(true,
+				_("Recovered all available file info :D - Trying to use it..."));
+		} else {
+			AddLogLineM(true, _("Unable to recover file info :("));
+			return false;			
+		}		
 	}
 
 	if (getsizeonly) {
@@ -985,22 +978,19 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 
 	} catch (const wxString& error) {
-		if (file.IsOpened()) {
-			file.Close();
-		}
-		
 		AddLogLineM(false, CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
 			% m_strFileName );
 
 		return false;
-	} catch (...) {
-		if (file.IsOpened()) {
-			file.Close();
-		}	
-	
-		AddDebugLogLineM( true, logPartFile, wxT("Uncaught exception in SavePartFile()!") );
+	} catch (const CIOFailureException& e) {
+		AddLogLineM(true, CFormat( _("IO failure while saving partfile: %s (%s ==> %s)") )
+			% e.what()
+			% m_partmetfilename
+			% m_strFileName );
+
+		return false;	
 	}
 	
 	file.Close();
@@ -1103,28 +1093,22 @@ void CPartFile::SaveSourceSeeds()
 	}	
 
 	try {
-		
 		file.WriteUInt8(source_seeds.GetCount());
 		
 		for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
 			CUpDownClient* cur_src = source_seeds.GetNext(pos);		
 			file.WriteUInt32(cur_src->GetUserIDHybrid());
 			file.WriteUInt16(cur_src->GetUserPort());
-			//uint32 dwServerIP = cur_src->GetServerIP();
-			//uint16 nServerPort =cur_src->GetServerPort();
-			//file.Write(&dwServerIP,4);
-			//file.Write(&nServerPort,2);
 		}
-		
-		file.Close();
-		
-	} catch (...) {
-		AddLogLineM(false, CFormat( _("Error saving partfile's seeds file (%s - %s)") )
+	} catch (const CIOFailureException& e) {
+		AddLogLineM(false, CFormat(_("IO failure while saving source seeds to file '%s': %s"))
 				% m_partmetfilename
-				% m_strFileName );
+				% e.what() );
+		
 		n_sources = 0;
 		file.Close();
 		wxRemoveFile(m_fullname + wxT(".seeds"));
+		return;
 	}	
 	
 
@@ -1162,7 +1146,6 @@ void CPartFile::LoadSourceSeeds() {
 	}	
 		
 	try {
-		
 		uint8 src_count = file.ReadUInt8();
 		
 		sources_data.WriteUInt16(src_count);
@@ -1182,10 +1165,10 @@ void CPartFile::LoadSourceSeeds() {
 		
 		AddClientSources(&sources_data, 1 );
 		
-	} catch (...) {
-		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s)") )
+	} catch (const CSafeIOException& e) {
+		AddLogLineM(false, CFormat( _("IO error while source seeds from file '%s': %s") )
 				% m_partmetfilename
-				% m_strFileName );
+				% e.what() );
 	}
 
 	file.Close();
@@ -2599,7 +2582,12 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 			length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}
-		CreateHashFromFile(&m_hpartfile,length,hashresult);
+		
+		try {
+			CreateHashFromFile(&m_hpartfile,length,hashresult);
+		} catch (const CIOFailureException& e) {
+			AddLogLineM(true, CFormat( _("IO failure while hashing downloaded part of partfile '%s'.")) % m_strFileName);
+		}
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
@@ -3640,14 +3628,15 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->m_nBaseSize);
-	try{
+	try {
 		m_hpartfile.Seek((off_t)PARTSIZE*nPart,wxFromStart);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
-	}
-	catch(...){
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logAICHRecovery, wxT("IO failure while hashing part-file: ") + m_hpartfile.GetFilePath());
 		wxASSERT( false );
 		return;
 	}
+	
 	if (!htOurHash.m_bHashValid){
 		AddDebugLogLineM( false, logAICHRecovery, wxT("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part") );
 		wxASSERT( false );

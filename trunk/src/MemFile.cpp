@@ -193,9 +193,9 @@ off_t CMemFile::Read(void* buf, off_t length) const
 	// tests every single time
 	if ( length + m_position > m_FileSize ) {
 		if ( m_position > m_FileSize ) {
-			throw CInvalidPacket(wxT("Position is greater than length in CMemFile"));
+			throw CEOFException(wxT("Position is greater than length in CMemFile"));
 		} else {
-			throw CInvalidPacket(wxT("Attempted to read past end of CMemFile"));
+			throw CEOFException(wxT("Attempted to read past end of CMemFile"));
 		}
 	}
 

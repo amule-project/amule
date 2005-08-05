@@ -188,12 +188,8 @@ void* CAICHSyncThread::Entry()
 			uint16 nHashCount = file.ReadUInt16();
 			file.Seek( nHashCount * HASHSIZE, wxFromCurrent );
 		}
-	} catch ( ... ) {
-		if ( file.Eof() ) {
-			AddDebugLogLineM( true, logAICHThread, wxT("EOF while reading hashlist!") );
-		} else {
-			AddDebugLogLineM( true, logAICHThread, wxT("Corrupt file encountered while reading hashlist!") );
-		}
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM( true, logAICHThread, wxT("Corrupt file encountered while reading hashlist: ") + e.what() );
 
 		return 0;
 	}

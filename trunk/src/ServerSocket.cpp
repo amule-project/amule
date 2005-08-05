@@ -38,7 +38,6 @@
 #include "ClientList.h"		// Needed for CClientList
 #include "MemFile.h"		// Needed for CMemFile
 #include "PartFile.h"		// Needed for CPartFile
-#include "MemFile.h"		// Needed for CMemFile
 #include "SearchList.h"		// Needed for CSearchList
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -539,6 +538,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 		}
 		return true;
 	} catch (const CInvalidPacket& e) {
+		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
+	} catch (const CSafeIOException& e) {
 		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const wxString& error) {
 		AddLogLineM(false,CFormat( _("Unhandled error while processing packet from server: %s") ) % error);

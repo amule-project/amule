@@ -572,8 +572,8 @@ bool CAICHHashSet::SaveHashSet(){
 			return false;			
 		}		
 	}
+	
 	try {
-
 		// first we check if the hashset we want to write is already stored
 		CAICHHash CurrentHash;
 		uint32 nExistingSize = file.GetLength();
@@ -610,21 +610,21 @@ bool CAICHHashSet::SaveHashSet(){
 			return false;
 		}
 		AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Sucessfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written"), nHashCount));
-	}
-	catch (const wxString& error){
-		if (file.Eof()) {
-		   AddDebugLogLineM( true, logSHAHashSet, wxT("Error: EOF on ") + error);
-		} else {
-			AddDebugLogLineM( true, logSHAHashSet, wxT("Error: wrong format on ")  + error);
-		}
+	} catch (const wxString& error){
+		AddDebugLogLineM(true, logSHAHashSet, wxT("Error: ") + error);
+		return false;
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM(true, logSHAHashSet, wxT("IO error while saving AICH HashSet: ") + e.what());
 		return false;
 	}
+			
 	FreeHashSet();
 	return true;
 }
 
 
-bool CAICHHashSet::LoadHashSet(){
+bool CAICHHashSet::LoadHashSet()
+{
 	if (m_eStatus != AICH_HASHSETCOMPLETE){
 		wxASSERT( false );
 		return false;
@@ -683,13 +683,13 @@ bool CAICHHashSet::LoadHashSet(){
 		}
 		AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
 	} catch (const wxString& error) {
-		if (file.Eof()) {
-			 AddDebugLogLineM( true, logSHAHashSet, wxT("Error: EOF on ") + error);
-		} else {
-			AddDebugLogLineM( true, logSHAHashSet, wxT("Error: wrong format on ")  + error);
-		}
+		AddDebugLogLineM(true, logSHAHashSet, wxT("Error: ") + error);
+		return false;
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM(true, logSHAHashSet, wxT("IO error while loading AICH HashSet: ") + e.what());
 		return false;
 	}
+
 
 	return false;
 }
