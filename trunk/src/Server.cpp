@@ -173,72 +173,52 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 
 		switch(tag.GetNameID()){		
 		case ST_SERVERNAME:
-			if (tag.IsStr()) {
-				#if wxUSE_UNICODE
-				if (listname.IsEmpty())
-				#endif
-					listname = tag.GetStr();
-			}
+			#if wxUSE_UNICODE
+			if (listname.IsEmpty())
+			#endif
+				listname = tag.GetStr();
 			break;
 			
 		case ST_DESCRIPTION:
-			if (tag.IsStr()) {
-				#if wxUSE_UNICODE
-				if (description.IsEmpty())
-				#endif
-					description = tag.GetStr();		
-			}
+			#if wxUSE_UNICODE
+			if (description.IsEmpty())
+			#endif
+				description = tag.GetStr();		
 			break;
 			
 		case ST_PREFERENCE:
-			if (tag.IsInt()) {
-				preferences = tag.GetInt();
-			}
+			preferences = tag.GetInt();
 			break;
 			
 		case ST_PING:
-			if (tag.IsInt()) {
-				ping = tag.GetInt();
-			}
+			ping = tag.GetInt();
 			break;
 			
 		case ST_DYNIP:
-			if (tag.IsStr()) {
-				#if wxUSE_UNICODE
-				if (dynip.IsEmpty())
-				#endif	
-					dynip = tag.GetStr();
-			}
+			#if wxUSE_UNICODE
+			if (dynip.IsEmpty())
+			#endif	
+				dynip = tag.GetStr();
 			break;
 			
 		case ST_FAIL:
-			if (tag.IsInt()) {
-				failedcount = tag.GetInt();
-			}
+			failedcount = tag.GetInt();
 			break;
 			
 		case ST_LASTPING:
-			if (tag.IsInt()) {
-				lastpinged = tag.GetInt();
-			}
+			lastpinged = tag.GetInt();
 			break;
 			
 		case ST_MAXUSERS:
-			if (tag.IsInt()) {
-				maxusers = tag.GetInt();
-			}
+			maxusers = tag.GetInt();
 			break;
 			
 		case ST_SOFTFILES:
-			if (tag.IsInt()) {
-				softfiles = tag.GetInt();
-			}
+			softfiles = tag.GetInt();
 			break;
 			
 		case ST_HARDFILES:
-			if (tag.IsInt()) {
-				hardfiles = tag.GetInt();
-			}
+			hardfiles = tag.GetInt();
 			break;
 			
 		case ST_VERSION:
@@ -255,27 +235,21 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet){
 			break;
 			
 		case ST_UDPFLAGS:
-			if (tag.IsInt()) {
-				m_uUDPFlags = tag.GetInt();
-			}
+			m_uUDPFlags = tag.GetInt();
 			break;
 			
 		case ST_AUXPORTSLIST:
-			if (tag.IsStr()) {
-				m_auxPorts = tag.GetStr();
-				realport = port;
-				port = StrToULong(m_auxPorts.BeforeFirst(','));
-			}
+			m_auxPorts = tag.GetStr();
+			realport = port;
+			port = StrToULong(m_auxPorts.BeforeFirst(','));
 			break;
 			
 		case ST_LOWIDUSERS:
-			if (tag.IsInt()) {			
-				m_uLowIDUsers = tag.GetInt();
-			}
+			m_uLowIDUsers = tag.GetInt();
 			break;
 
 		default:
-			if (tag.GetName() && tag.IsInt()) {
+			if (tag.GetName()) {
 				if (!CmpED2KTagName(tag.GetName(), "files")) {
 					files = tag.GetInt();
 				} else if (!CmpED2KTagName(tag.GetName(), "users")) {

@@ -265,19 +265,13 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 							CTag tag(packet, update->GetUnicodeSupport());
 							switch (tag.GetNameID()) {
 								case ST_SERVERNAME:
-									if (tag.IsStr()) {
-										update->SetListName(tag.GetStr());
-									}
+									update->SetListName(tag.GetStr());
 									break;
 								case ST_DESCRIPTION:
-									if (tag.IsStr()) {
-										update->SetDescription(tag.GetStr());
-									}
+									update->SetDescription(tag.GetStr());
 									break;
 								case ST_DYNIP:
-									if (tag.IsStr()) {
-										update->SetDynIP(tag.GetStr());
-									}
+									update->SetDynIP(tag.GetStr());
 									break;
 								case ST_VERSION:
 									if (tag.IsStr()) {
@@ -288,9 +282,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 									}
 									break;
 								case ST_AUXPORTSLIST:
-									if (tag.IsStr()) {
-										update->SetAuxPortsList(tag.GetStr());
-									}
+									update->SetAuxPortsList(tag.GetStr());
 									break;
 								default:
 									// Unknown tag

@@ -178,15 +178,11 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 		const CTag pTag(*searchresult->m_taglist[i]);
 		switch (pTag.GetNameID()){
 			case FT_FILENAME: {
-				if (pTag.IsStr()) {
-					SetFileName(pTag.GetStr());
-				}
+				SetFileName(pTag.GetStr());
 				break;
 			}
 			case FT_FILESIZE: {
-				if (pTag.IsInt()) {
-					SetFileSize(pTag.GetInt());
-				}
+				SetFileSize(pTag.GetInt());
 				break;
 			}
 			default: {
@@ -214,19 +210,15 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 
 							// skip "length" tags with "0: 0" values
 							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH)) {
-								if (pTag.IsStr()) {
-									if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
-										pTag.GetStr().IsSameAs(wxT("0:0"))) {
-										break;
-									}
+								if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
+									pTag.GetStr().IsSameAs(wxT("0:0"))) {
+									break;
 								}
 							}
 
 							// skip "bitrate" tags with '0' values
-							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE)) {
-								if (pTag.IsInt() && !pTag.GetInt()) {
-									break;
-								}
+							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
+								break;
 							}
 
 							AddDebugLogLineM( false, logPartFile,
@@ -491,12 +483,6 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					 newtag.GetNameID() == FT_FILENAME))) {
 				switch(newtag.GetNameID()) {
 					case FT_FILENAME: {
-						if(!newtag.IsStr()) {
-							AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt.") )
-								% m_partmetfilename
-								% m_strFileName );
-							return false;
-						}
 						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
@@ -505,25 +491,18 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						#else
 							SetFileName(newtag.GetStr());
 						#endif
-	
 						break;
 					}
 					case FT_LASTSEENCOMPLETE: {
-						if (newtag.IsInt()) {
-							lastseencomplete = newtag.GetInt();		
-						}
+						lastseencomplete = newtag.GetInt();		
 						break;
 					}
 					case FT_FILESIZE: {
-						if (newtag.IsInt()) {
-							SetFileSize(newtag.GetInt());
-						}
+						SetFileSize(newtag.GetInt());
 						break;
 					}
 					case FT_TRANSFERED: {
-						if (newtag.IsInt()) {
-							transfered = newtag.GetInt();
-						}
+						transfered = newtag.GetInt();
 						break;
 					}
 					case FT_FILETYPE:{
@@ -532,17 +511,15 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}					
 					case FT_CATEGORY: {
-						if (newtag.IsInt()) {
-							m_category = newtag.GetInt();
-							if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
-								m_category = 0;
-							}
+						m_category = newtag.GetInt();
+						if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
+							m_category = 0;
 						}
 						break;
 					}
 					case FT_OLDDLPRIORITY:
 					case FT_DLPRIORITY: {
-						if (!isnewstyle && newtag.IsInt()){
+						if (!isnewstyle){
 							m_iDownPriority = newtag.GetInt();
 							if( m_iDownPriority == PR_AUTO ){
 								m_iDownPriority = PR_HIGH;
@@ -559,15 +536,13 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_STATUS: {
-						if (newtag.IsInt()) {
-							m_paused = newtag.GetInt();
-							m_stopped = m_paused;
-						}
+						m_paused = newtag.GetInt();
+						m_stopped = m_paused;
 						break;
 					}
 					case FT_OLDULPRIORITY:
 					case FT_ULPRIORITY: {			
-						if (!isnewstyle && newtag.IsInt()){
+						if (!isnewstyle){
 							SetUpPriority(newtag.GetInt(), false);
 							if( GetUpPriority() == PR_AUTO ){
 								SetUpPriority(PR_HIGH, false);
@@ -579,83 +554,60 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}				
 					case FT_KADLASTPUBLISHSRC:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							SetLastPublishTimeKadSrc(newtag.GetInt(), 0);
-							if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
-								//There may be a posibility of an older client that saved a random number here.. This will check for that..
-								SetLastPublishTimeKadSrc(0,0);
-							}
+						SetLastPublishTimeKadSrc(newtag.GetInt(), 0);
+						if(GetLastPublishTimeKadSrc() > (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES) {
+							//There may be a posibility of an older client that saved a random number here.. This will check for that..
+							SetLastPublishTimeKadSrc(0,0);
 						}
 						break;
 					}
 					case FT_KADLASTPUBLISHNOTES:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-						     SetLastPublishTimeKadNotes(newtag.GetInt());
-						}
+						SetLastPublishTimeKadNotes(newtag.GetInt());
 						break;
 					}					
 					// old tags: as long as they are not needed, take the chance to purge them
 					case FT_PERMISSIONS:
 					case FT_KADLASTPUBLISHKEY:
 						break;
-					case FT_CORRUPTEDPARTS:
-						wxASSERT( newtag.IsStr() );
-						if (newtag.IsStr()) {
-							wxASSERT( corrupted_list.GetHeadPosition() == NULL );
-							wxString strCorruptedParts(newtag.GetStr());
-							wxStringTokenizer tokenizer(strCorruptedParts, wxT(","));
-							while ( tokenizer.HasMoreTokens() ) {
-								wxString token = tokenizer.GetNextToken();
-								unsigned long uPart;
-								if (token.ToULong(&uPart)) {
-									if (uPart < GetPartCount() && !IsCorruptedPart(uPart)) {
-										corrupted_list.AddTail(uPart);
-									}
+						
+					case FT_CORRUPTEDPARTS: {
+						wxString strCorruptedParts(newtag.GetStr());
+						wxStringTokenizer tokenizer(strCorruptedParts, wxT(","));
+						while ( tokenizer.HasMoreTokens() ) {
+							wxString token = tokenizer.GetNextToken();
+							unsigned long uPart;
+							if (token.ToULong(&uPart)) {
+								if (uPart < GetPartCount() && !IsCorruptedPart(uPart)) {
+									corrupted_list.AddTail(uPart);
 								}
 							}
 						}
 						break;
+					}
 					case FT_AICH_HASH:{
-						wxASSERT( newtag.IsStr() );
-						if (newtag.IsStr()) {
-							CAICHHash hash;
-							bool hashSizeOk =
-								hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
-							wxASSERT(hashSizeOk);
-							if (hashSizeOk) {
-								m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
-							}
+						CAICHHash hash;
+						bool hashSizeOk =
+							hash.DecodeBase32(newtag.GetStr()) == CAICHHash::GetHashSize();
+						wxASSERT(hashSizeOk);
+						if (hashSizeOk) {
+							m_pAICHHashSet->SetMasterHash(hash, AICH_VERIFIED);
 						}
 						break;
 					}
 					case FT_ATTRANSFERED:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
-						}
+						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
 						break;
 					}
 					case FT_ATTRANSFEREDHI:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
-						}
+						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
 						break;
 					}
 					case FT_ATREQUESTED:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							statistic.SetAllTimeRequests(newtag.GetInt());
-						}
+						statistic.SetAllTimeRequests(newtag.GetInt());
 						break;
 					}
 					case FT_ATACCEPTED:{
-						wxASSERT( newtag.IsInt() );
-						if (newtag.IsInt()) {
-							statistic.SetAllTimeAccepts(newtag.GetInt());
-						}
+						statistic.SetAllTimeAccepts(newtag.GetInt());
 						break;
 					}
 					default: {
