@@ -143,7 +143,6 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		// This will actually get the first word.
 		getWords(keyword, &s->m_words);
 		if (s->m_words.size() == 0) {
-			delete s;
 			throw wxString(_("Kademlia: search keyword too short"));
 		}
 
@@ -155,7 +154,6 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		KadGetKeywordHash(wstrKeyword, &s->m_target);
 		
 		if (alreadySearchingFor(s->m_target)) {
-			delete s;
 			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
 
@@ -171,13 +169,10 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		s->m_searchID = ++m_nextID;
 		m_searches[s->m_target] = s;
 		s->go();
-		
 	} catch (const CIOException& ioe) {
 		wxString strError = wxString::Format(wxT("IO-Exception in %s: Error %u") , __FUNCTION__, ioe.m_cause);
 		delete s;
 		throw strError;
-	} catch (const wxString& strException) {
-		throw strException;
 	} catch (...) {
 		delete s;
 		throw;
