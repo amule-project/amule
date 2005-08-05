@@ -27,14 +27,15 @@
 #pragma implementation "Friend.h"
 #endif
 
-#include <ctime>		// Needed for time(2)
+#include <ctime>			// Needed for time(2)
 
-#include "Friend.h"		// Interface declarations.
-#include "Packet.h"		// Needed for CInvalidPacket
+#include "Friend.h"			// Interface declarations.
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "amule.h" // Needed for theApp / Notify_ChatRefreshFriend
+#include "amule.h" 			// Needed for theApp / Notify_ChatRefreshFriend
 #include "OtherFunctions.h"
+#include "Packet.h"			// Needed for CTag
+#include "Logger.h"			// Needed for AddDebugLogLineM
 
 
 CFriend::CFriend()
@@ -110,22 +111,18 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 	m_nLastUsedPort = file->ReadUInt16();
 	m_dwLastSeen = file->ReadUInt32();
 	m_dwLastChatted = file->ReadUInt32();
-	
-	try {
-		uint32 tagcount = file->ReadUInt32();
-		for ( uint32 j = 0; j != tagcount; j++) {
-			CTag newtag(*file, true);
-			switch ( newtag.GetNameID() ) {
-				case FF_NAME:
-					#if wxUSE_UNICODE
-					if (m_strName.IsEmpty()) 
-					#endif
-						m_strName = newtag.GetStr();
-					break;
-			}
+
+	uint32 tagcount = file->ReadUInt32();
+	for ( uint32 j = 0; j != tagcount; j++) {
+		CTag newtag(*file, true);
+		switch ( newtag.GetNameID() ) {
+			case FF_NAME:
+				#if wxUSE_UNICODE
+				if (m_strName.IsEmpty()) 
+				#endif
+					m_strName = newtag.GetStr();
+				break;
 		}
-	} catch (...) {
-		printf("Caught exception in CFriend::LoadFromFile!\n");
 	}
 }
 
@@ -133,7 +130,6 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 void CFriend::WriteToFile(CFileDataIO* file)
 {
 	wxASSERT( file );
-	
 	file->WriteHash16(m_UserHash);
 	file->WriteUInt32(m_dwLastUsedIP);
 	file->WriteUInt16(m_nLastUsedPort);
@@ -155,6 +151,7 @@ void CFriend::WriteToFile(CFileDataIO* file)
 		nametag.WriteTagToFile(file);
 	}
 }
+
 
 bool CFriend::HasFriendSlot() {
 	if (GetLinkedClient()) {
