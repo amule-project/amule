@@ -109,12 +109,10 @@ off_t CMemFile::Seek(off_t offset, wxSeekMode from)
 			newpos = m_FileSize - offset;
 			break;
 		default:
-			throw CInvalidPacket(wxT("Using an invalid seek-mode in CMemFile::Seek!"));
+			MULE_VALIDATE_PARAMS(false, wxT("Using an invalid seek-mode in CMemFile::Seek!"));
 	}
 	
-	if ( newpos < 0 ) {
-		throw CInvalidPacket(wxT("Position after seeking in CMemFile is less than zero!"));
-	}
+	MULE_VALIDATE_PARAMS(newpos < 0, wxT("Position after seeking in CMemFile is less than zero!"));
 
 	// If the new position is greater than current filesize, then the 
 	// file-size is increased to match the position
@@ -146,15 +144,12 @@ void CMemFile::enlargeBuffer(unsigned long size)
 		while ( newsize < (off_t)size )
 			newsize += m_GrowBytes;
 	} else {
-		// Does the buffer belong to the CMemFile object? 
-		if ( m_delete ) {
-			// Non-attached. Change to exactly the size specified.
-			newsize = size;
-		} else {
-			// Attached. This is an illegal operation, as we could be trying to 
-			// free/alloc a local variable
-			throw CInvalidPacket(wxT("A CMemFile attempted to grow an attached buffer where m_GrowBytes is zero."));
-		}
+		// Attempting to delete an attached buffer is an invalid operation,
+		// as we could be attempting to free/alloc a heap allocated variable
+		MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
+		
+		// Non-attached. Change to exactly the size specified.
+		newsize = size;
 	}
 
 	if ( m_buffer ) {
