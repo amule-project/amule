@@ -539,7 +539,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 		return true;
 	} catch (const CInvalidPacket& e) {
 		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
-	} catch (const CSafeIOException& e) {
+	} catch (const CEOFException& e) {
 		AddLogLineM(false,CFormat( _("Bogus packet received from server: %s") ) % e.what());
 	} catch (const wxString& error) {
 		AddLogLineM(false,CFormat( _("Unhandled error while processing packet from server: %s") ) % error);
@@ -596,10 +596,11 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 	SetConnectionState(CS_DISCONNECTED);
 }
 
+
 bool CServerSocket::PacketReceived(CPacket* packet)
 {
 	CALL_APP_DATA_LOCK;
-	AddDebugLogLineM(false,logServer,wxT("Server: Packet Received: "));
+	AddDebugLogLineM(false, logServer, wxString::Format(wxT("Server: Packet Received: Prot %x, Opcode %x, Length %u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
 	
 	if (packet->GetProtocol() == OP_PACKEDPROT) {
 		if (!packet->UnPackPacket(250000)){

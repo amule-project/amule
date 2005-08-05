@@ -114,11 +114,6 @@ public:
 	void Detach()       { m_fd = fd_invalid;  }
 	int  fd() const { return m_fd; }
 
-	// read/write (unbuffered)
-		// returns number of bytes read or ofsInvalid on error
-	virtual off_t Read(void *pBuf, off_t nCount) const;
-		// returns the number of bytes written
-	virtual size_t Write(const void *pBuf, size_t nCount);
 		// flush data not yet written
 	virtual bool Flush();
 
@@ -150,6 +145,13 @@ public:
 	// This safe read will throw a wxString on some issues
 	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
 
+protected:
+	// read/write (unbuffered)
+	// returns number of bytes read or ofsInvalid on error
+	virtual off_t doRead(void *pBuf, off_t nCount) const;
+	// returns the number of bytes written
+	virtual size_t doWrite(const void *pBuf, size_t nCount);
+
 private:
 	// copy ctor and assignment operator are private because
 	// it doesn't make sense to copy files this way:
@@ -162,18 +164,5 @@ private:
 	wxString m_filePath;
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Note: This class will be merged with CFile soon.
-class CSafeFile : public CFile
-{
- public:
-	CSafeFile() {}
-	CSafeFile(const wxChar* lpszFileName, OpenMode mode = read)
-		: CFile(lpszFileName, mode) {}
-
-	virtual off_t Read(void *pBuf, off_t nCount) const;
-	virtual size_t Write(const void *pBuf, size_t nCount);
-};
 
 #endif // CFILE_H

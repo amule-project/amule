@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <algorithm>
 
 #include "FileFunctions.h"
 #include "StringFunctions.h"
@@ -97,25 +98,26 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't open original file: ") + from );
 		return false;
 	}
+	
 	CFile output_file(to, CFile::write);
 	if (!output_file.IsOpened()) {
 		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't create destination file: ") + to );
 		return false;
 	}
 	
-	int total_read, total_write;
-	while ((total_read = input_file.Read(buffer,FILE_COPY_BUFFER))) {
-		if (total_read == -1) {
-			AddDebugLogLineM( true, logFileIO, wxT("Unexpected error copying file! (read error)") );
+	while (!input_file.Eof()) {
+		off_t toReadWrite = std::min<off_t>(sizeof(buffer), input_file.GetLength() - input_file.GetPosition());
+		
+		try {
+			input_file.Read(buffer, toReadWrite);
+			output_file.Write(buffer, toReadWrite);
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM(true, logFileIO, wxT("IO failure while copying file '") + from + wxT("' to '") + to + wxT("': ") + e.what());
+			
 			return false;
 		}
-		total_write = output_file.Write(buffer,total_read);
-		if (total_write != total_read) {
-			AddDebugLogLineM( true, logFileIO, wxT("Unexpected error copying file! (write error)") );
-			return false;			
-		}	
 	}
-	
+
 	return true;
 }
 

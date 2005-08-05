@@ -41,7 +41,6 @@ public:
 	CMemFile( const byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
 	virtual ~CMemFile();
 
-
 	void Attach(const byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
 	byte* Detach();	
 	
@@ -51,14 +50,15 @@ public:
 	virtual bool SetLength(off_t newLen);
 	virtual off_t GetLength() const { return m_FileSize; };
 	
-	virtual off_t  Read(void* buf, off_t length) const;
-	virtual size_t Write(const void* buf, size_t length);
-	
 	// Sometimes we need to get the raw buffer, like sending a packet and 
 	// not wanting to deatach the buffer from the MemFile.
 	byte*	GetBuffer() { return m_buffer; };
 	
 protected:
+	virtual off_t  doRead(void* buf, off_t length) const;
+	virtual size_t doWrite(const void* buf, size_t length);
+
+private:
 	void enlargeBuffer(unsigned long size);
 	
 	unsigned int m_GrowBytes;

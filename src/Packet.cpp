@@ -378,9 +378,6 @@ CTag::CTag(const CTag& rTag)
 }
 
 
-#define BAD_TAG_MSG "Error reading tag from met file"
-
-
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
 	// Zero variables to allow for safe deletion
@@ -463,7 +460,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				// Since the length is 32b, this check is needed to avoid
 				// huge allocations in case of bad tags.
 				if (m_nBlobSize > data.GetLength() - data.GetPosition()) {
-					throw CInvalidPacket(wxT(BAD_TAG_MSG));
+					throw CInvalidPacket(wxT("Malformed tag"));
 				}
 					
 				m_pData = new unsigned char[m_nBlobSize];
@@ -478,10 +475,10 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				} else {
 					// Since we cannot determine the length of this tag, we
 					// simply have to abort reading the file.
-					throw CInvalidPacket(wxT(BAD_TAG_MSG));
+					throw CInvalidPacket(wxT("Unknown tag type encounted, cannot proceed"));
 				}
 		}
-	} catch (const CInvalidPacket&) {
+	} catch (...) {
 		delete[] m_pszName;
 		if (m_uType == TAGTYPE_HASH || m_uType == TAGTYPE_BLOB) {
 			delete[] m_pData;

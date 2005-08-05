@@ -104,19 +104,9 @@ private:
 };
 
 
-class CInvalidPacket
-{
-public:
-	CInvalidPacket( const wxString& arg = wxT("Invalid packet") )
-		: m_what(arg)
-	{ }
-
-	const wxString& what() const {
-		return m_what;
-	}
-	
-private:
-	wxString m_what;
+struct CInvalidPacket : public CMuleException {
+	CInvalidPacket(const wxString& what)
+		: CMuleException(wxT("CInvalidPacket"), what) {}
 };
 
 

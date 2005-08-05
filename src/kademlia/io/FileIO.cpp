@@ -54,14 +54,23 @@ using namespace Kademlia;
 
 void CFileIO::readArray(void* lpResult, uint32 byteCount)
 {
-	uint32 test = Read(lpResult, byteCount);
-	if( test != byteCount )
-		throw CIOException(ERR_END_OF_FILE);
+	try {
+		Read(lpResult, byteCount);
+	} catch (const CSafeIOException& e) {
+		// Currently doesn't distinguish between EOF and failures
+ 		throw CIOException(ERR_END_OF_FILE);
+	}
 }
 
 void CFileIO::writeArray(const void* lpVal, uint32 byteCount)
 {
-	Write(lpVal, byteCount);
+	try {
+ 		Write(lpVal, byteCount);
+	} catch (const CSafeIOException& e) {
+		// Current the kad io interface does not throw on write
+		// this will be fixed when the kad io interface is merged
+		// with the CFileDataIO interface.
+	}
 }
 
 uint32 CFileIO::getAvailable() const
@@ -73,14 +82,23 @@ uint32 CFileIO::getAvailable() const
 
 void CBufferedFileIO::readArray(void* lpResult, uint32 byteCount)
 {
-	uint32 test = Read(lpResult, byteCount);
-	if( test != byteCount )
-		throw CIOException(ERR_END_OF_FILE);
+	try {
+		Read(lpResult, byteCount);
+	} catch (const CSafeIOException& e) {
+		// Currently doesn't distinguish between EOF and failures
+ 		throw CIOException(ERR_END_OF_FILE);
+	}
 }
 
 void CBufferedFileIO::writeArray(const void*  lpVal, uint32 byteCount)
 {
-	Write(lpVal, byteCount);
+	try {
+ 		Write(lpVal, byteCount);
+	} catch (const CSafeIOException& e) {
+		// Current the kad io interface does not throw on write
+		// this will be fixed when the kad io interface is merged
+		// with the CFileDataIO interface.
+	}	
 }
 
 uint32 CBufferedFileIO::getAvailable() const

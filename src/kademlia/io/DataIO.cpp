@@ -114,10 +114,9 @@ unsigned char* CDataIO::readBsob(uint8* puSize)
 	if (getAvailable() < *puSize)
 		throw CIOException(ERR_BUFFER_TOO_SMALL);
 	unsigned char* pucBsob = new unsigned char[*puSize];
-	try{
+	try {
 		readArray(pucBsob, *puSize);
-	}
-	catch(...){
+	} catch(...) {
 		delete[] pucBsob;
 		throw;
 	}
@@ -155,8 +154,7 @@ CTag *CDataIO::readTag(bool bOptACP)
 	CTag *retVal = NULL;
 	wxString name;
 	byte type = 0;
-	try
-	{
+	try {
 		type = readByte();
 		name = readStringUTF8(false);
 
@@ -209,10 +207,9 @@ CTag *CDataIO::readTag(bool bOptACP)
 			{
 				uint8 size;
 				unsigned char* value = readBsob(&size);
-				try{
+				try {
 					retVal = new CTagBsob(name, value, size);
-				}
-				catch(...){
+				} catch(...) {
 					delete[] value;
 					throw;
 				}
@@ -235,8 +232,9 @@ CTag *CDataIO::readTag(bool bOptACP)
 		printf("Invalid Kad tag; type=0x%02x name=0x%02x\n",
 			type, ((const char *)unicode2char(name))[0]);
 		delete retVal;
-		throw wxString(wxT("Invalid Kad tag on packet"));
+		throw;
 	}
+	
 	return retVal;
 }
 

@@ -417,8 +417,11 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	byte* data = new byte[cur_length];
 		
 	// Check for read errors
-	if ( file->Read(data, cur_length) != cur_length ) {
+	try {
+		file->Read(data, cur_length);
+	} catch (const CIOFailureException& e) {
 		delete[] data;
+		AddDebugLogLineM(true, logHasher, wxT("IO failure while hashing file: ") + e.what());
 		
 		return false;
 	}
@@ -440,6 +443,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 
 	// Create the md4 hash and perhaps a AICH hash
 	owner->CreateHashFromString( data, cur_length, hash, pBlockAICHHashTree );
+	delete[] data;
 	
 	// Store the md4 hash
 	owner->hashlist.Add( (byte*)hash );
@@ -452,8 +456,6 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	if ( zero_hash ) {
 		owner->hashlist.Add( default_zero_hash );
 	}
-
-	delete[] data;
 
 	return true;
 }

@@ -43,7 +43,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientCredits.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
-#include "SafeFile.h"		// Needed for CSafeFile
+#include "CFile.h"			// Needed for CFile
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for md4cpy
 #include "Logger.h"				// Needed for Add(Debug)LogLine
@@ -175,7 +175,7 @@ CClientCreditsList::~CClientCreditsList()
 
 void CClientCreditsList::LoadList()
 {
-	CSafeFile file;
+	CFile file;
 	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
 		AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile"));
@@ -185,8 +185,7 @@ void CClientCreditsList::LoadList()
 	try {
 		file.Open(strFileName, CFile::read);
 	
-		uint8 version = file.ReadUInt8();
-		if ( version != CREDITFILE_VERSION ){
+		if (file.ReadUInt8() != CREDITFILE_VERSION) {
 			AddDebugLogLineM( true, logCredits, wxT("Creditfile is out of date and will be replaced") );
 			file.Close();
 			return;
@@ -254,7 +253,8 @@ void CClientCreditsList::LoadList()
 				}
 				m_mapClients.clear();
 				
-				throw wxString(wxT("Corruptions found while reading Creditfile!"));
+				AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!") );
+				return;	
 			}
 		
 			if (newcstruct->nLastSeen < dwExpired){
@@ -266,20 +266,17 @@ void CClientCreditsList::LoadList()
 			CClientCredits* newcredits = new CClientCredits(newcstruct);
 			m_mapClients[ CMD4Hash(newcredits->GetKey()) ] = newcredits;
 		}
-		file.Close();
 
 		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
 	
 		if (cDeleted) {
 			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
 		}
-	} catch (const wxString& error) {
-		AddDebugLogLineM( true, logCredits, wxT("Unable to load clients.met file: ") + error);
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM( true, logCredits, wxT("IO error while reading clients.met file: ") + e.what());
+		AddDebugLogLineM(true, logCredits, wxT("IO erro while loading clients.met file: ") + e.what());
 	}
-
 }
+
 
 void CClientCreditsList::SaveList()
 {
@@ -287,7 +284,7 @@ void CClientCreditsList::SaveList()
 	m_nLastSaved = ::GetTickCount();
 
 	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
-	CSafeFile file;
+	CFile file;
 
 	if ( !file.Create(name, true) ) {
 		AddDebugLogLineM( true, logCredits, wxT("Failed to create creditfile") );
@@ -297,6 +294,7 @@ void CClientCreditsList::SaveList()
 	if ( file.Open(name, CFile::write) ) {
 		try {
 			uint32 count = 0;
+
 			file.WriteUInt8( CREDITFILE_VERSION );
 			// Temporary place-holder for number of stucts
 			file.WriteUInt32( 0 );

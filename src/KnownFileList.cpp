@@ -30,7 +30,7 @@
 #include <wx/utils.h>
 
 #include "KnownFileList.h"	// Interface declarations
-#include "SafeFile.h"		// Needed for CSafeFile
+#include "CFile.h"		// Needed for CFile
 #include "PartFile.h"		// Needed for CPartFile
 #include "StringFunctions.h" // Needed for unicode2char
 #include "amule.h"
@@ -56,22 +56,26 @@ CKnownFileList::~CKnownFileList()
 
 bool CKnownFileList::Init()
 {
-	CSafeFile file;
-	uint32 result = false;
+	CFile file;
+	
+	wxString fullpath = theApp.ConfigDir + wxT("known.met");
+	if (!wxFileExists(fullpath)) {
+		return false;
+	}
+
+	if (!file.Open(fullpath)) {
+		return false;
+	}
+	
 	try {
-		wxString fullpath(theApp.ConfigDir + wxT("known.met"));
-		if (!wxFileExists(fullpath)) {
+		if (file.ReadUInt8() != MET_HEADER) {
+			AddLogLineM(true, _("Warning: Knownfile list corrupted, contains invalid header."));
 			return false;
 		}
 		
-		file.Open(fullpath);
-		if (file.ReadUInt8() /*header*/ != MET_HEADER) {
-			file.Close();
-			return false;
-		}
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
-		for (uint32 i = 0; i != RecordsNumber; i++) {
+		for (uint32 i = 0; i < RecordsNumber; i++) {
 			CKnownFile* pRecord =  new CKnownFile();
 			bool loaded = false;
 			try {
@@ -87,20 +91,18 @@ bool CKnownFileList::Init()
 				delete pRecord;
 			}
 		}
-		result = true;
-	} catch (const CSafeIOException& e) {
-		AddLogLineM(true, _("IO error while reading known.met file (File may be corrupted): ") + e.what());
-	}
 	
-	return result;
+		return true;
+	} catch (const CSafeIOException& e) {
+		AddLogLineM(true, CFormat(_("IO error while reading known.met file: %s")) % e.what());
+		
+		return false;
+	}	
 }
-
 
 void CKnownFileList::Save()
 {
-	CSafeFile file;
-	wxString fullpath(theApp.ConfigDir + wxT("known.met"));
-	file.Open(fullpath, CFile::write);
+	CFile file(theApp.ConfigDir + wxT("known.met"), CFile::write);
 	if (!file.IsOpened()) {
 		return;
 	}
@@ -117,12 +119,12 @@ void CKnownFileList::Save()
 		}
 	
 		// Kry - Duplicates handling.
-		KnownFileList::iterator ite = m_duplicates.begin();
-		for ( ; ite != m_duplicates.end(); ++ite ) {
-			(*ite)->WriteToFile(&file);
+		KnownFileList::iterator itDup = m_duplicates.begin();
+		for ( ; itDup != m_duplicates.end(); ++itDup ) {
+			(*itDup)->WriteToFile(&file);
 		}
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, _("IO error while writing known.met file: ") + e.what());	
+		AddLogLineM(true, CFormat(_("Error while saving known.met file: %s")) % e.what());
 	}
 }
 

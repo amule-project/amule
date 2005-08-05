@@ -55,6 +55,8 @@
 #include <wx/filename.h>
 #include <wx/string.h>
 
+#include <algorithm>
+
 enum convstatus{
 	CONV_OK			= 0,
 	CONV_QUEUE,
@@ -326,9 +328,9 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	}
 
 	if (s_pfconverting->partmettype == PMT_SPLITTED) {
-		try {
-			char *ba = new char [PARTSIZE];
-			
+		char *ba = new char [PARTSIZE];
+
+		try {			
 			CFile inputfile;
 			wxString filename;
 
@@ -403,10 +405,11 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				}
 
 				uint32 chunkstart = (fileindex - 1) * PARTSIZE;
-
+				off_t toReadWrite = std::min<off_t>(PARTSIZE, inputfile.GetLength());
+				
 				// open, read data of the part-part-file into buffer, close file
 				inputfile.Open(filename, CFile::read_write);
-				uint32 readed = inputfile.Read(ba, PARTSIZE);
+				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
 
 				buffer = wxString::Format(_("Saving data block into new single download file (%u of %u)"), curindex, partfilecount);
@@ -416,22 +419,19 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 				// write the buffered data
 				file->m_hpartfile.Seek(chunkstart, wxFromStart);
-				file->m_hpartfile.Write(ba, readed);
+				file->m_hpartfile.Write(ba, toReadWrite);
 
 				filename = finder.GetNextFile();
 			}
-			delete [] ba;
-		}
-		catch (const wxString& error) {
-			AddLogLineM(true, wxString(wxT("PartFileConvert: ")) + error);
+			delete[] ba;
+		} catch (const CSafeIOException& e) {
+			AddDebugLogLineM(true, logPfConvert, wxT("IO error while converting partfiles: ") + e.what());
+			
+			delete[] ba;
 			file->Delete();
 			return CONV_IOERROR;
 		}
-		catch (...) {
-			AddLogLineM(true, _("Unknown error while importing partfile."));
-			file->Delete();
-			return CONV_IOERROR;
-		}
+		
 		file->m_hpartfile.Close();
 	}
 	// import an external common format partdownload

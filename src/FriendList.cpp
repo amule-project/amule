@@ -112,7 +112,7 @@ void CFriendList::LoadList()
 		return;
 	}
 	
-	CSafeFile file;
+	CFile file;
 	try {
 		if ( file.Open(metfile) ) {
 			if ( file.ReadUInt8() /*header*/ == MET_HEADER ) {
@@ -123,11 +123,11 @@ void CFriendList::LoadList()
 					m_FriendList.push_back(Record);
 				}				
 			}
-		} else if ( wxFileExists(metfile) ) {
+		} else {
 			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!"));
 		}
 	} catch (const CSafeIOException& e) {
-		AddLogLineM(true, wxT("IO error while reading 'emfriends.met': ") + e.what());
+		AddDebugLogLineM(true, logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
 	}
 	
 }
@@ -135,17 +135,17 @@ void CFriendList::LoadList()
 
 void CFriendList::SaveList()
 {
-	CSafeFile file;
+	CFile file;
 	if (file.Create(theApp.ConfigDir + wxT("emfriends.met"), true)) {
 		try {
 			file.WriteUInt8(MET_HEADER);
 			file.WriteUInt32(m_FriendList.size());
 		
-			for(FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
+			for (FriendList::iterator it = m_FriendList.begin(); it != m_FriendList.end(); ++it) {
 				(*it)->WriteToFile(&file);
 			}
 		} catch (const CIOFailureException& e) {
-			AddLogLineM(true, wxT("IO failure while writing 'emfriends.met': ") + e.what());
+			AddDebugLogLineM(true, logGeneral, wxT("IO failure while saving 'emfriends.met': ") + e.what());
 		}
 	} else {
 		AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for writing!"));

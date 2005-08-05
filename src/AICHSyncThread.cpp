@@ -31,7 +31,7 @@
 #include "AICHSyncThread.h"
 #include "StringFunctions.h"	// Needed for unicode2char
 #include "SHAHashSet.h"
-#include "CFile.h"				// Needed for CSafeFile
+#include "CFile.h"				// Needed for CFile
 #include "KnownFile.h"
 #include "SHA.h"
 #include "amule.h"
@@ -165,7 +165,7 @@ void* CAICHSyncThread::Entry()
 
 	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
 
-	CSafeFile file;
+	CFile file;
 	if ( file.Exists( fullpath ) ) {
 		if ( !file.Open( fullpath, CFile::read_write ) ) {
 			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open hashlist file!") );
