@@ -70,7 +70,7 @@ public:
 	/**
 	 * Adds the specified file to the list.
 	 *
-	 * @parm file The new file to be shown.
+	 * @param file The new file to be shown.
 	 */
 	void	ShowFile(CKnownFile* file);
 
