@@ -25,9 +25,9 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "IPFilter.h"
+#pragma implementation "RangeMap.h"
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for _()
 #include <wx/filefn.h>		// Needed for wxFileExists
 #include <wx/textfile.h>	// Needed for wxTextFile
@@ -434,9 +434,9 @@ void CIPFilter::Update(const wxString& strURL)
 	if (!strURL.IsEmpty()) {
 		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, filename, HTTP_IPFilter);
-		
+
 		downloader->Create();
-		
+
 		downloader->Run();
 	}
 }
@@ -445,7 +445,7 @@ void CIPFilter::Update(const wxString& strURL)
 void CIPFilter::DownloadFinished(uint32 result)
 {
 	if (result == 1) {
-		// curl succeeded. proceed with ipfilter loading
+		// download succeeded. proceed with ipfilter loading
 		wxString newDat = theApp.ConfigDir + wxT("ipfilter.download");
 		wxString oldDat = theApp.ConfigDir + wxT("ipfilter.dat");
 
@@ -455,16 +455,15 @@ void CIPFilter::DownloadFinished(uint32 result)
 				return;
 			}
 		}
-		
+
 		if (!wxRenameFile(newDat, oldDat)) {
 			AddDebugLogLineM(true, logIPFilter, wxT("Failed to rename new ipfilter.dat file, aborting update."));
 			return;
 		}
-		
+
 		// Reload both ipfilter files
 		Reload();
 	} else {
 		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
-

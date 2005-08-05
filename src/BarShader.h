@@ -30,7 +30,7 @@
 #pragma interface "BarShader.h"
 #endif
 
-#include "Types.h"		// Needed for uint16 and uint32
+#include "Types.h"	// Needed for uint16 and uint32
 #include "RangeMap.h"	// Needed for CRangeMap
 
 
@@ -43,7 +43,7 @@ class wxDC;
  *
  * CBarShader represents the chunks of a file through the use of spans, which 
  * cover a range in the file with a certain color. New spans can be added on 
- * the fly and old spams are automatically removed, resized or merged when
+ * the fly and old spans are automatically removed, resized or merged when
  * neseccary.
  *
  * CBarShader will try to minimize the number of spans when possible.

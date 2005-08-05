@@ -32,15 +32,14 @@
 
 #include <wx/thread.h>	// Needed for wxMutex;
 
-#include "Types.h"		// Needed for uint8, uint16 and uint32
+#include "Types.h"	// Needed for uint8, uint16 and uint32
 #include "RangeMap.h"	// Needed for CRangeMap
 
 
 /**
  * This class represents a list of IPs that should not be accepted
  * as valid connection destinations nor sources. It provides an
- * interface to query whenever or not a specific an specific IP
- * is filtered.
+ * interface to query whether or not a specific IP is filtered.
  *
  * Currently this class can handle IPRange files in the Peer-Guardian
  * format and the AntiP2P format, read from either text files or text

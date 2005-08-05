@@ -25,6 +25,9 @@
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "BarShader.h"
+#ifdef CLIENT_GUI
+	#pragma implementation "RangeMap.h"
+#endif
 #endif
 
 #include <cmath>
