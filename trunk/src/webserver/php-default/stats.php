@@ -13,7 +13,6 @@ body {
 	margin-bottom: 0px;
 	background-color: #6699CC;
 }
-.style1 {font-family: Arial, Helvetica, sans-serif}
 -->
 </style>
 </head>
@@ -24,15 +23,27 @@ body {
     <td width="22"></td>
     <td width="152"></td>
     <td width="16"></td>
-    <td width="140"></td>
-    <td width="449"></td>
+    <td width="530"></td>
+    <td width="59"></td>
   </tr>
   <tr>
     <td height="20">&nbsp;</td>
     <td valign="top"><img src="connect.gif" width="16" height="16"></td>
-    <td valign="top">Connection status </td>
+    <td valign="top"><strong>Connection status : </strong></td>
     <td>&nbsp;</td>
-    <td valign="top"><?php ?></td>
+    <td valign="top" width="530">
+    <?php
+    	$stats = amule_get_stats();
+    	if ( $stats["id"] == 0 ) {
+    		echo "Not connected";
+    	} elseif ( $stats["id"] == 0xffffffff ) {
+    		echo "Connecting ...";
+    	} else {
+    		echo "Connected with ", (($stats["id"] < 16777216) ? "low" : "high"), " ID to ",
+    			$stats["serv_name"], "  ", $stats["serv_addr"];
+    	}
+    ?>
+    </td>
     <td>&nbsp;</td>
   </tr>
   <tr>
