@@ -25,12 +25,12 @@
 #ifndef ECPACKET_H
 #define ECPACKET_H
 
-#include "Types.h"	// Needed for uint* types
-#include <wx/string.h>	// Needed for wxString
+#include "Types.h"		// Needed for uint* types
+#include <wx/string.h>		// Needed for wxString
 #include "StringFunctions.h"	// Needed for aMuleConv
-#include "ECcodes.h"	// Needed for EC types
-#include "CMD4Hash.h"	// Needed for CMD4Hash
-#include "ArchSpecific.h" // Needed for ENDIAN_NTOHL
+#include "ECcodes.h"		// Needed for EC types
+#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 #include <vector>
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
