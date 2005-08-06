@@ -196,6 +196,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 		php_report_error(PHP_ERROR, "Invalid or missing argument");
 		return;
 	}
+	char *str_hash = si->var->value.str_val;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
@@ -206,7 +207,6 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	si = get_scope_item(g_current_scope, "__param_2");
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
-	char *str_hash = si->var->value.str_val;
 #ifdef AMULEWEB_SCRIPT_EN
 	DownloadFileInfo *container = DownloadFile::GetContainerInstance();
 
@@ -688,6 +688,12 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
 		3,
 		php_native_server_cmd,
+	},
+	{
+		"amule_do_download_cmd",
+		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		3,
+		php_native_download_file_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
