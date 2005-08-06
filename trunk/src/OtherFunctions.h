@@ -214,11 +214,13 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 wxString CastItoXBytes(uint64 count);
 // Converts the number to human readable form, abbreviating when nessecary.
 wxString CastItoIShort(uint64 number);
-// Converts an ammount of seconds to human readable time.
+// Converts a number of bytes to a human readable speed value.
+wxString CastItoSpeed(uint32 bytes);
+// Converts an amount of seconds to human readable time.
 wxString CastSecondsToHM(sint32 seconds);
-// Returns the smount of Bytes the provided size-type represents
+// Returns the amount of Bytes the provided size-type represents
 uint32 GetTypeSize(uint8 type);
-// Returns the string assosiated with a file-rating value.
+// Returns the string associated with a file-rating value.
 wxString GetRateString(uint16 rate);
 
 
