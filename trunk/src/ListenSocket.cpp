@@ -46,14 +46,14 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 
 #include <wx/listimpl.cpp>
 #include <wx/dynarray.h>
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
-#include <wx/tokenzr.h> 		// Needed for wxStringTokenizer
+#include <wx/tokenzr.h> 	// Needed for wxStringTokenizer
 
 #ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
@@ -289,7 +289,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 	switch(opcode) {
 		case OP_HELLOANSWER: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HELLOANSWER") );
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			m_client->ProcessHelloAnswer(packet,size);
 
 			// start secure identification, if
@@ -314,7 +314,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_HELLO: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HELLO") );
 							
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			bool bNewClient = !m_client;				
 			if (bNewClient) {
 				// create new client to save standart informations
@@ -390,7 +390,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_REQUESTFILENAME: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQUESTFILENAME") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			// IP banned, no answer for this request
 			if (m_client->IsBanned()) {
 				break;
@@ -433,7 +433,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CPacket* packet = new CPacket(&data_out);
 				packet->SetOpCode(OP_REQFILENAMEANSWER);
 				
-				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
 
 				// SendPacket might kill the socket, so check
@@ -448,7 +448,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_SETREQFILEID: {	// 0.43b EXCEPT track of bad clients
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_SETREQFILEID") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			
 			if (m_client->IsBanned()) {
 				break;
@@ -466,7 +466,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					if ( !( reqfile  != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 						CPacket* replypacket = new CPacket(OP_FILEREQANSNOFIL, 16);
 						replypacket->Copy16ToDataBuffer(packet);
-						theApp.statistics->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
+						theStats::AddUpOverheadFileRequest(replypacket->GetPacketSize());
 						SendPacket(replypacket, true);
 						break;
 					}
@@ -489,7 +489,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				CPacket* packet = new CPacket(&data);
 				packet->SetOpCode(OP_FILESTATUS);
 				
-				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet, true);
 				break;
 			}
@@ -501,7 +501,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_FILEREQANSNOFIL: {	// 0.43b protocol, lacks ZZ's download manager on swap
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILEREQANSNOFIL") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if (size == 16) {
 				// if that client does not have my file maybe has another different
 				CPartFile* reqfile = theApp.downloadqueue->GetFileByID((byte*)packet);
@@ -530,7 +530,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_REQFILENAMEANSWER: {	// 0.43b except check for bad clients
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQFILENAMEANSWER") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data((byte*)packet,size);
 			byte cfilehash[16];
 			data.ReadHash16(cfilehash);
@@ -542,7 +542,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_FILESTATUS: {		// 0.43b except check for bad clients
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILESTATUS") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data((byte*)packet,size);
 			byte cfilehash[16];
 			data.ReadHash16(cfilehash);
@@ -554,7 +554,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_STARTUPLOADREQ: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_STARTUPLOADREQ") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 		
 			if (!m_client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode)) {
 				break;
@@ -585,7 +585,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_QUEUERANK: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_QUEUERANK") );
 			 
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data((byte*)packet,size);
 			uint32 rank = data.ReadUInt32();
 			
@@ -596,7 +596,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ACCEPTUPLOADREQ: {	// 0.42e (xcept khaos stats)
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ACCEPTUPLOADREQ") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if (m_client->GetRequestFile() && !m_client->GetRequestFile()->IsStopped() && (m_client->GetRequestFile()->GetStatus()==PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 				if (m_client->GetDownloadState() == DS_ONQUEUE ) {
 					m_client->SetDownloadState(DS_DOWNLOADING);
@@ -606,7 +606,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			} else {
 				if (!m_client->GetSentCancelTransfer()) {
 					CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-					theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 					m_client->SendPacket(packet,true,true);
 					
 					// SendPacket can cause the socket to die, so check
@@ -623,7 +623,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_REQUESTPARTS: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQUESTPARTS") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 
 			CMemFile data((byte*)packet,size);
 
@@ -667,7 +667,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_CANCELTRANSFER: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CANCELTRANSFER") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 			if ( CLogger::IsEnabled( logClient ) ) {
 				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
@@ -678,7 +678,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_END_OF_DOWNLOAD: { // 0.43b except check for bad clients
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if (size>=16 && !md4cmp(m_client->GetUploadFileID(),packet)) {
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
@@ -692,7 +692,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HASHSETREQUEST") );
 			
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if (size != 16) {
 				throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
 			}
@@ -703,7 +703,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_HASHSETANSWER: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HASHSETANSWER") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			m_client->ProcessHashSet(packet,size);
 			break;
 		}
@@ -721,7 +721,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					  m_client->GetRequestFile()->GetStatus() == PS_ERROR) ) {
 					if (!m_client->GetSentCancelTransfer()) {
 						CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-						theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+						theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);
 						
 						// Socket might die because of SendPacket, so check
@@ -735,7 +735,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			} else {
 				if (!m_client->GetSentCancelTransfer()) {
 					CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-					theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 					m_client->SendPacket(packet,true,true);
 					
 					// Socket might die because of SendPacket, so check
@@ -749,7 +749,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_OUTOFPARTREQS: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_OUTOFPARTREQS") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if (m_client->GetDownloadState() == DS_DOWNLOADING) {
 				m_client->SetDownloadState(DS_ONQUEUE);
 			}
@@ -759,7 +759,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_CHANGE_CLIENT_ID: { 	// Kad reviewed
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_CLIENT_ID") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			CMemFile data((byte*)packet, size);
 			uint32 nNewUserID = data.ReadUInt32();
 			uint32 nNewServerIP = data.ReadUInt32();
@@ -787,7 +787,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_SLOT") );
 			
 			// sometimes sent by Hybrid
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			break;
 		}			
 		
@@ -795,7 +795,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 			
 			AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			
 			CMemFile message_file((byte*)packet,size);
 
@@ -816,7 +816,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILES") );
 			
 			// client wants to know what we have in share, let's see if we allow him to know that
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			// IP banned, no answer for this request
 			if (m_client->IsBanned()) {
 				break;
@@ -846,7 +846,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			// create a packet and send it
 			CPacket* replypacket = new CPacket(&tempfile);
 			replypacket->SetOpCode(OP_ASKSHAREDFILESANSWER);
-			theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+			theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 			SendPacket(replypacket, true, true);
 			break;
 		}
@@ -854,7 +854,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDFILESANSWER: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESANSWER") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			wxString EmptyStr;
 			m_client->ProcessSharedFileList(packet,size,EmptyStr);
 			break;
@@ -863,7 +863,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDDIRS: { 		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDDIRS") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			wxASSERT( size == 0 );
 			// IP banned, no answer for this request
 			if (m_client->IsBanned()) {
@@ -925,7 +925,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 				CPacket* replypacket = new CPacket(&tempfile);
 				replypacket->SetOpCode(OP_ASKSHAREDDIRSANS);
-				theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 			} else {
 				AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
@@ -933,7 +933,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					% m_client->GetUserIDHybrid() );
 
 				CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
-				theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 			}
 
@@ -943,7 +943,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDFILESDIR: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESDIR") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			// IP banned, no answer for this request
 			if (m_client->IsBanned()) {
 				break;
@@ -980,13 +980,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				CPacket* replypacket = new CPacket(&tempfile);
 				replypacket->SetOpCode(OP_ASKSHAREDFILESDIRANS);
-				theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 			} else {
 				AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 				
 				CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
-				theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 			}
 			break;
@@ -995,7 +995,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDDIRSANS:{		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDDIRSANS") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			if (m_client->GetFileListRequested() == 1){
 				CMemFile data((byte*)packet, size);
 				uint32 uDirs = data.ReadUInt32();
@@ -1010,7 +1010,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					tempfile.WriteString(strDir);
 					CPacket* replypacket = new CPacket(&tempfile);
 					replypacket->SetOpCode(OP_ASKSHAREDFILESDIR);
-					theApp.statistics->AddUpDataOverheadOther(replypacket->GetPacketSize());
+					theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 					SendPacket(replypacket, true, true);
 				}
 				wxASSERT( data.GetPosition() == data.GetLength() );
@@ -1026,7 +1026,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDFILESDIRANS: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESDIRANS") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			CMemFile data((byte*)packet, size, 0);
 			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
@@ -1053,7 +1053,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_ASKSHAREDDENIEDANS:
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDDENIEDANS" ) );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			wxASSERT( size == 0 );
 			AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
 				% m_client->GetUserName()
@@ -1063,7 +1063,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			break;
 		
 		default:
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x"), opcode, opcode) );
 			return false;
 	}
@@ -1096,7 +1096,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_MULTIPACKET: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET") );
 
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 
 			if (m_client->IsBanned()) {
 				break;
@@ -1117,7 +1117,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 					CPacket* replypacket = new CPacket(OP_FILEREQANSNOFIL, 16);
 					replypacket->Copy16ToDataBuffer(packet);
-					theApp.statistics->AddUpDataOverheadFileRequest(replypacket->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(replypacket->GetPacketSize());
 					SendPacket(replypacket, true);
 					break;
 				}
@@ -1191,7 +1191,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 								m_client->SetLastSrcReqTime();
 								CPacket* tosend = reqfile->CreateSrcInfoPacket(m_client);
 								if(tosend) {
-									theApp.statistics->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
+									theStats::AddUpOverheadSourceExchange(tosend->GetPacketSize());
 									SendPacket(tosend, true);
 								}
 							}
@@ -1199,11 +1199,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						break;
 					}
 				}
+
 			}
 			if( data_out.GetLength() > 16 ) {
 				CPacket* reply = new CPacket(&data_out, OP_EMULEPROT);
 				reply->SetOpCode(OP_MULTIPACKETANSWER);
-				theApp.statistics->AddUpDataOverheadFileRequest(reply->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(reply->GetPacketSize());
 				SendPacket(reply, true);
 			}
 			break;
@@ -1212,7 +1213,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_MULTIPACKETANSWER: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKETANSWER") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 
 			if (m_client->IsBanned()) {
 				break;
@@ -1259,11 +1260,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					}					
 				}
 			}
+
 			break;
 		}
 	
 		case OP_EMULEINFO: {	// 0.43b
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 
 			if (!m_client->ProcessMuleInfoPacket(packet,size)) { 
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO") );
@@ -1282,7 +1284,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		}
 		case OP_EMULEINFOANSWER: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFOANSWER") );
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			
 			m_client->ProcessMuleInfoPacket(packet,size);
 			// start secure identification, if
@@ -1365,7 +1367,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					m_client->GetRequestFile()->GetStatus() == PS_ERROR)) {
 					if (!m_client->GetSentCancelTransfer()) {
 						CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-						theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+						theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 						m_client->SendPacket(packet,true,true);					
 						
 						if (m_client) {
@@ -1380,7 +1382,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			} else {
 				if (!m_client->GetSentCancelTransfer()) {
 					CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-					theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 					m_client->SendPacket(packet,true,true);
 					
 					if ( m_client ) {
@@ -1398,7 +1400,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_QUEUERANKING: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_QUEUERANKING") );
 			
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 				// Here comes a extended packet without finishing the hanshake.
@@ -1419,7 +1421,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_REQUESTSOURCES:{	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQUESTSOURCES") );
 			
-			theApp.statistics->AddDownDataOverheadSourceExchange(size);
+			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 				// Here comes a extended packet without finishing the hanshake.
@@ -1452,7 +1454,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 						m_client->SetLastSrcReqTime();
 						CPacket* tosend = file->CreateSrcInfoPacket(m_client);
 						if(tosend) {
-							theApp.statistics->AddUpDataOverheadSourceExchange(tosend->GetPacketSize());
+							theStats::AddUpOverheadSourceExchange(tosend->GetPacketSize());
 							SendPacket(tosend, true, true);
 						}
 					}
@@ -1464,7 +1466,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_ANSWERSOURCES: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ANSWERSOURCES") );
 			
-			theApp.statistics->AddDownDataOverheadSourceExchange(size);
+			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 				// Here comes a extended packet without finishing the hanshake.
@@ -1491,7 +1493,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_FILEDESC: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILEDESC") );
 			
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 				// Here comes a extended packet without finishing the hanshake.
@@ -1515,31 +1517,31 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		}
 
 		case OP_PUBLICIP_ANSWER: {
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			m_client->ProcessPublicIPAnswer((byte*)packet,size);
 			break;
 		}
 		case OP_PUBLICIP_REQ: {
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			CPacket* pPacket = new CPacket(OP_PUBLICIP_ANSWER, 4, OP_EMULEPROT);
 			pPacket->CopyUInt32ToDataBuffer(m_client->GetIP());
-			theApp.statistics->AddUpDataOverheadOther(pPacket->GetPacketSize());
+			theStats::AddUpOverheadOther(pPacket->GetPacketSize());
 			SendPacket(pPacket);
 			break;
 		}			
 		case OP_AICHANSWER: {
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			m_client->ProcessAICHAnswer(packet,size);
 			break;
 		}
 		case OP_AICHREQUEST: {
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			m_client->ProcessAICHRequest(packet,size);
 			break;
 		}
 		case OP_AICHFILEHASHANS: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			CMemFile data((byte*)packet, size);
 			m_client->ProcessAICHFileHash(&data, NULL);
 			break;
@@ -1560,7 +1562,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				data_out.WriteHash16(abyHash);
 				pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
 				CPacket* packet = new CPacket(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
-				theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+				theStats::AddUpOverheadOther(packet->GetPacketSize());
 				SendPacket(packet);
 			}
 			break;
@@ -1568,7 +1570,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		#ifdef __COMPILE_KAD__
 		case OP_CALLBACK: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK") );				
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			if(!Kademlia::CKademlia::isRunning()) {
 				break;
 			}
@@ -1607,7 +1609,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		
 		case OP_BUDDYPING: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPING") );
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadKad(size);
 
 			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
 			if( buddy != m_client || m_client->GetKadVersion() == 0 || !m_client->AllowIncomeingBuddyPingPong() ) {
@@ -1618,13 +1620,13 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_BUDDYPING") );
 			m_client->SetLastBuddyPingPongTime();
 			CPacket* replypacket = new CPacket(OP_BUDDYPONG, 0, OP_EMULEPROT);
-			theApp.statistics->AddDownDataOverheadOther(replypacket->GetPacketSize());
+			theStats::AddUpOverheadKad(replypacket->GetPacketSize());
 			SendPacket(replypacket);
 			break;
 		}
 		case OP_BUDDYPONG: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPONG") );
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadKad(size);
 
 			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
 			if( buddy != m_client || m_client->GetKadVersion() == 0 ) {
@@ -1636,7 +1638,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			break;
 		}
 		case OP_REASKCALLBACKTCP: {
-			theApp.statistics->AddDownDataOverheadFileRequest(size);
+			theStats::AddDownOverheadFileRequest(size);
 			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
 			if (buddy != m_client) {
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );
@@ -1653,7 +1655,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			if (!reqfile) {
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND") );
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
-				theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 				theApp.clientudp->SendPacket(response, destip, destport);
 				break;
 			}
@@ -1695,16 +1697,16 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REASKACK") );
 					CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
 					response->SetOpCode(OP_REASKACK);
-					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					theApp.clientudp->SendPacket(response, destip, destport);
 				} else {
 					AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
 				}
 			} else {
-				if (((uint32)theApp.uploadqueue->GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
+				if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL") );
 					CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-					theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					theApp.clientudp->SendPacket(response, destip, destport);
 				}
 			}
@@ -1712,7 +1714,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		}
 		#endif
 		default:
-			theApp.statistics->AddDownDataOverheadOther(size);
+			theStats::AddDownOverheadOther(size);
 			AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));
 			break;
 	}
@@ -1861,7 +1863,7 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 				bResult = ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 				break;
 			default: {
-				theApp.statistics->AddDownDataOverheadOther(uRawSize);
+				theStats::AddDownOverheadOther(uRawSize);
 				if (m_client) {
 					m_client->SetDownloadState(DS_ERROR);
 				}
@@ -2003,13 +2005,10 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	// 0.42e - vars not used by us
 	bListening = false;
 	shutdown = false;
-	maxconnectionreached = 0;
 	m_OpenSocketsInterval = 0;
 	m_nPeningConnections = 0;
-	peakconnections = 0;
 	totalconnectionchecks = 0;
 	averageconnections = 0.0;
-	activeconnections = 0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
  		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
@@ -2054,7 +2053,7 @@ void CListenSocket::StopListening()
 {
 	// 0.42e
 	bListening = false;
-	maxconnectionreached++;
+	theStats::AddMaxConnectionLimitReached();
 }
 
 void CListenSocket::OnAccept(int nErrorCode)
@@ -2145,12 +2144,14 @@ void CListenSocket::AddSocket(CClientReqSocket* toadd)
 {
 	wxASSERT(toadd);
 	socket_list.insert(toadd);
+	theStats::AddActiveConnection();
 }
 
 void CListenSocket::RemoveSocket(CClientReqSocket* todel)
 {
 	wxASSERT(todel);
 	socket_list.erase(todel);
+	theStats::RemoveActiveConnection();
 }
 
 void CListenSocket::KillAllSockets()
@@ -2188,10 +2189,6 @@ bool CListenSocket::IsValidSocket(CClientReqSocket* totest)
 void CListenSocket::UpdateConnectionsStatus()
 {
 	// 0.42e xcept for the khaos stats
-	activeconnections = GetOpenSockets();
-	if( peakconnections < activeconnections ) {
-		peakconnections = activeconnections;
-	}
 	if( theApp.IsConnected() ) {
 		totalconnectionchecks++;
 		float percent;
@@ -2199,7 +2196,7 @@ void CListenSocket::UpdateConnectionsStatus()
 		if( percent > .99f ) {
 			percent = .99f;
 		}
-		averageconnections = (averageconnections*percent) + (float)activeconnections*(1.0f-percent);
+		averageconnections = (averageconnections*percent) + (float)GetOpenSockets()*(1.0f-percent);
 	}
 }
 

@@ -44,6 +44,10 @@
 #include <map>
 #include <vector>
 
+#if defined(__DEBUG__) && !defined(EC_REMOTE)
+#include "Statistics.h"
+#endif
+
 
 typedef std::vector<bool> BitVector;
 
@@ -249,6 +253,9 @@ public:
 	uint8		GetUDPVersion() const		{ return m_byUDPVer; }
 	uint8		GetExtendedRequestsVersion() const { return m_byExtendedRequestsVer; }
 	bool		IsFriend() const 		{ return m_Friend != NULL; }
+	bool		IsML() const			{ return m_bIsML; }
+	bool		IsHybrid() const		{ return m_bIsHybrid; }
+	uint32		GetCompatibleClient() const	{ return m_byCompatibleClient; }
 
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
@@ -481,7 +488,17 @@ public:
 	 *
 	 * Please note that this function DOES NOT delete the old socket.
 	 */
-	void 		SetSocket(CClientReqSocket* socket)	{ m_socket = socket; }
+	void 		SetSocket(CClientReqSocket* socket)
+		{
+#if defined(__DEBUG__) && !defined(EC_REMOTE)
+			if (m_socket == NULL && socket != NULL) {
+				theStats::SocketAssignedToClient();
+			} else if (m_socket != NULL && socket == NULL) {
+				theStats::SocketUnassignedFromClient();
+			}
+#endif
+			m_socket = socket;
+		}
 
 	/**
 	 * Function for accessing the socket owned by a client.
@@ -800,6 +817,8 @@ public:
 	const wxString&	GetClientModString() const	{ return m_strModVersion; }
 	const wxString&	GetClientVerString() const	{ return m_clientVerString; }
 
+	void		UpdateStats(bool removing = false);
+
 private:
 	bool 		m_OSInfo_sent;
 	wxString	m_clientVerString;
@@ -809,6 +828,11 @@ private:
 	int		SecIdentSupRec;
 
 	CKnownFile*	m_uploadingfile;
+
+	// needed for stats
+	uint32		m_lastClientSoft;
+	uint32		m_lastClientVersion;
+	wxString	m_lastOSInfo;
 };
 
 

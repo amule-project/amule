@@ -41,12 +41,14 @@
 
 #include "IPFilter.h"		// Interface declarations.
 #include "NetworkFunctions.h"
-#include "Preferences.h"	// Needed for CPreferences
-#include "amule.h"			// Needed for theApp
-#include "Statistics.h"		// Needed for CStatistics
+#include "Preferences.h"	// Needed for thePrefs
+#include "amule.h"		// Needed for theApp
+#include "Statistics.h"		// Needed for theStats
 #include "HTTPDownload.h"	// Needed for CHTTPDownloadThread
-#include "Logger.h"			// Needed for AddDebugLogLineM
-#include "Format.h"
+#include "Logger.h"		// Needed for AddDebugLogLineM
+#include "Format.h"		// Needed for CFormat
+#include "StringFunctions.h"	// Needed for CSimpleTokenizer
+
 
 enum EFileType
 {
@@ -407,7 +409,7 @@ void CIPFilter::RemoveAllIPs()
 }
 
 
-bool CIPFilter::IsFiltered(uint32 IPTest)
+bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 {
 	if (thePrefs::GetIPFilterOn()) {
 		wxMutexLocker lock(m_mutex);
@@ -418,8 +420,11 @@ bool CIPFilter::IsFiltered(uint32 IPTest)
 		if (it != m_iplist.end()) {
 			if (it->AccessLevel < thePrefs::GetIPFilterLevel()) {
 				AddDebugLogLineM(false, logIPFilter, wxT("Filtered IP: ") + Uint32toStringIP(IPTest) + wxT(" (") + it->Description + wxT(")"));
-				theApp.statistics->AddFilteredClient();
-				
+				if (isServer) {
+					theStats::AddFilteredServer();
+				} else {
+					theStats::AddFilteredClient();
+				}
 				return true;
 			}
 		}

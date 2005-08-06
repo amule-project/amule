@@ -151,6 +151,9 @@ int CamuleRemoteGuiApp::OnExit()
 		// Stop the Core Timer
 		delete core_timer;
 	}
+	if (amuledlg) {
+		amuledlg->StopGuiTimer();
+	}
 	return wxApp::OnExit();
 }
 
@@ -164,7 +167,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 
 	{
 		CECPacket stats_req(EC_OP_STAT_REQ);
-		auto_ptr<CEC_Stats_Tag> stats((CEC_Stats_Tag *)connect->SendRecv(&stats_req));
+		auto_ptr<CECPacket> stats(connect->SendRecv(&stats_req));
 		if ( !stats.get() ) {
 			core_timer->Stop();
 			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
@@ -172,10 +175,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			ExitMainLoop();
 			return;
 		}
-		downloadqueue->UpdateStats(stats.get());
-		uploadqueue->UpdateStats(stats.get());
-		clientlist->UpdateStats(stats.get());
-		//statistics->UpdateStats(stats.get());
+		statistics->UpdateStats(stats.get());
 	}
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
@@ -197,13 +197,13 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			case vtNone:
 				break;
 		}
-		amuledlg->transferwnd->ShowQueueCount(uploadqueue->GetWaitingUserCount());
+		amuledlg->transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
 	} else if ( amuledlg->searchwnd->IsShown() ) {
 		if ( searchlist->m_curr_search != -1 ) {
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
-	amuledlg->ShowTransferRate();
+	//amuledlg->ShowTransferRate();
 	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
 }
 
@@ -282,7 +282,7 @@ void CamuleRemoteGuiApp::Startup() {
 	glob_prefs->LoadRemote();
 
 	serverconnect = new CServerConnectRem(connect);
-	statistics = new CStatistics();
+	statistics = new CStatistics(connect);
 	
 	clientlist = new CClientListRem(connect);
 	searchlist = new CSearchListRem(connect);
@@ -322,7 +322,7 @@ void CamuleRemoteGuiApp::Startup() {
 	// Start the Core Timer
 	core_timer->Start(1000);	
 
-    //amuledlg->StartGuiTimer();
+	amuledlg->StartGuiTimer();
 	
 }
 
@@ -1119,12 +1119,6 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
 {
 }
 
-void CUpQueueRem::UpdateStats(CEC_Stats_Tag *tag)
-{
-	m_datarate = tag->UpSpeed();
-	m_waiting_user_count = tag->ClientsInQueue();
-}
-
 /*
  * Download queue container: hold PartFiles with progress status
  * 
@@ -1299,11 +1293,6 @@ bool CDownQueueRem::Phase1Done(CECPacket *)
 	return true;
 }
 
-void CDownQueueRem::UpdateStats(CEC_Stats_Tag *tag)
-{
-	m_kbps = tag->DownSpeed() / 1024.0;
-}
-
 void CDownQueueRem::SendFileCommand(CPartFile *file, ec_tagname_t cmd)
 {
 	CECPacket req(cmd);
@@ -1358,13 +1347,6 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 CClientListRem::CClientListRem(CRemoteConnect *conn)
 {
 	m_conn = conn;
-	// FIXME: Actual value here 
-	m_banned_count = 0;
-}
-
-void CClientListRem::UpdateStats(CEC_Stats_Tag *stats)
-{
-	m_banned_count = stats->BannedCount();
 }
 
 void CClientListRem::FilterQueues()

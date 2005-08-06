@@ -26,7 +26,7 @@
 #define DATATOTEXT_H
 
 class wxString;
-
+class CUpDownClient;
 
 // Returns the textual representation of a priority value
 wxString PriorityToStr( int priority, bool isAuto );
@@ -39,4 +39,28 @@ wxString DownloadStateToStr( int state, bool queueFull );
  */
 const wxString GetSoftName( unsigned int software_ident );
 
-#endif
+
+#ifndef EC_REMOTE
+
+/**
+ * Extract client info in textual form.
+ *
+ * Creates client detail strings (name, version, modname), and puts them into the
+ * appropriate variables. Any of these variables may be NULL, in which case the
+ * corresponding info won't be generated.
+ *
+ * @param pClient The CUpDownClient from which we'll generate the info.
+ * @param clientName Extracted client name will go into this string.
+ * @param clientVersion Properly formatted client version string.
+ * @param clientModName The Mod name of the client, if any.
+ *
+ * @return OS_Info string of the client, if supported.
+ *
+ * @note The clientName returned may be different from what GetSoftName() returns,
+ * namely for xmule clients.
+ */
+const wxString& GetClientDetails(const CUpDownClient *pClient, wxString *clientName, wxString *clientVersion, wxString *clientModName);
+
+#endif /* !EC_REMOTE */
+
+#endif /* DATATOTEXT_H */

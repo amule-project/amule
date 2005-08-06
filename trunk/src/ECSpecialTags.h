@@ -196,19 +196,6 @@ class CEC_ConnState_Tag : public CECTag {
  		uint32 ClientID() { return GetInt32Data(); }
 };
 
-class CEC_Stats_Tag : public CECTag {
-	public:
-		CEC_Stats_Tag();
-		
-		uint32 UpSpeed() { return GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt32Data(); }
-		uint32 DownSpeed() { return GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt32Data(); }
-		
-		uint32 ClientsInQueue() { return GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data(); }
-		uint32 UsersOnServer() { return GetTagByNameSafe(EC_TAG_STATS_USERS_ON_SERVER)->GetInt32Data(); }
-
-		uint32 BannedCount() { return GetTagByNameSafe(EC_TAG_STATS_BANNED_COUNT)->GetInt32Data(); }
-};
-
 class CEC_PartFile_Tag : public CECTag {
  	public:
  		CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level);
@@ -361,11 +348,12 @@ class CEC_Search_Tag : public CECTag {
 		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
 };
 
-#ifndef EC_REMOTE
-class CEC_Tree_Tag : public CECTag {
+#ifdef EC_REMOTE
+class CEC_StatTree_Node_Tag : public CECTag {
 	public:
-		CEC_Tree_Tag(const StatsTreeSiblingIterator& tr);
+		CEC_StatTree_Node_Tag();	// just to keep compiler happy
+		wxString GetDisplayString() const;
 };
-#endif
+#endif /* EC_REMOTE */
 
 #endif /* ECSPEACIALTAGS_H */

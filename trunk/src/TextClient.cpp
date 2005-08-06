@@ -255,23 +255,23 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	wxString args = GetCmdArgs();
 	CECPacket *request = 0;
 	std::list<CECPacket *> request_list;
-	
+
 	switch (CmdId) {
 		case CMD_ID_HELP:
 			ShowHelp();
 			return 0; // No need to contact core to display help ;)
-			
+
  		case CMD_ID_SRVSTAT:
 		case CMD_ID_STATS:
 			request = new CECPacket(EC_OP_STAT_REQ, EC_DETAIL_CMD);
 			request_list.push_back(request);
 			break;
-			
+
 		case CMD_ID_SHUTDOWN:
 			request = new CECPacket(EC_OP_SHUTDOWN);
 			request_list.push_back(request);
 			break;
-			
+
 		case CMD_ID_CONN_TO_SRV:
  		case CMD_ID_CONN:
 			if ( !args.IsEmpty() ) {
@@ -319,12 +319,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(request);
 			break;
 
-			
 		case CMD_ID_RELOAD_IPFILTER:
 			request = new CECPacket(EC_OP_IPFILTER_RELOAD);
 			request_list.push_back(request);
 			break;
-			
+
 		case CMD_ID_SET_IPFILTER:
 			if ( ! args.IsEmpty() ) {
 				uint8 enabledFlag;
@@ -354,7 +353,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request = new CECPacket(EC_OP_GET_DLOAD_QUEUE);
 			request_list.push_back(request);
 			break;
-			
+
 		case CMD_ID_PAUSE:
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all', a number.\n"));
@@ -385,7 +384,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			}
 			break;
-			
+
 		case CMD_ID_RESUME:
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
@@ -416,7 +415,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			}
 			break;
-			
+
 		case CMD_ID_SHOW:
 			// kept for backwards compatibility. Now 'list'
 			if ( args.Left(2) == wxT("dl") ) {
@@ -503,6 +502,22 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 		case CMD_ID_STATTREE:
 			request = new CECPacket(EC_OP_GET_STATSTREE);
+			if (!args.IsEmpty()) {
+				unsigned long int max_versions;
+				if (args.ToULong(&max_versions)) {
+					if (max_versions < 256) {
+						request->AddTag(CECTag(EC_TAG_STATTREE_CAPPING, (uint8)max_versions));
+					} else {
+						delete request;
+						Show(wxString(_("Invalid argument.")) + wxT(" (1-255)"));
+						return 0;
+					}
+				} else {
+					delete request;
+					Show(wxString(_("Invalid argument.")) + wxT(" (1-255)"));
+					return 0;
+				}
+			}
 			request_list.push_back(request);
 			break;
 		case CMD_ID_RELOADSHARED:
@@ -512,7 +527,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		default:
 			return -1;
 	}
-	
+
 	if ( ! request_list.empty() ) {
 		std::list<CECPacket *>::iterator it = request_list.begin();
 		while ( it != request_list.end() ) {
@@ -526,44 +541,28 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		}
 		request_list.resize(0);
 	}
-	
+
 	return 0;
 }
 
-// Formats a filesize in bytes to make it suitable for displaying
-wxString CastItoXBytes( uint64 count )
-{
-
-        if (count < 1024)
-                return wxString::Format( wxT("%.0f %s"), (float)count, _("Bytes") );
-        else if (count < 1048576)
-                return wxString::Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
-        else if (count < 1073741824)
-                return wxString::Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
-        else if (count < 1099511627776LL)
-                return wxString::Format( wxT("%.2f %s"), (float)count/1073741824, _("GB") );
-        else
-                return wxString::Format( wxT("%.3f %s"), (float)count/1099511627776LL, _("TB") );
-
-        return _("Error");
-}
-
 // Formats a statistics (sub)tree to text
-wxString StatTree2Text(CECTag *tree, int depth)
+wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
 {
 	if (!tree) {
 		return wxEmptyString;
 	}
-	wxString result = wxString(wxChar(' '), depth) + tree->GetStringData() + wxT("\n");
+	wxString result = wxString(wxChar(' '), depth) + tree->GetDisplayString() + wxT("\n");
 	for (int i = 0; i < tree->GetTagCount(); ++i) {
-		result += StatTree2Text(tree->GetTagByIndex(i), depth + 1);
+		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*)tree->GetTagByIndex(i);
+		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
+			result += StatTree2Text(tmp, depth + 1);
+		}
 	}
 	return result;
 }
 
 /*
  * Format EC packet into text form for output to console
- * 
  */
 void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 {
@@ -639,10 +638,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			}
 			CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
-				s <<	CFormat(_("\nDownload:\t %s/sec")) % CastItoXBytes(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nDownload:\t%s")) % otherfunctions::CastItoSpeed(tmpTag->GetInt32Data());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_SPEED)) != 0) {
-				s <<	CFormat(_("\nUpload:\t%s/sec")) % CastItoXBytes(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nUpload:\t%s")) % otherfunctions::CastItoSpeed(tmpTag->GetInt32Data());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
 				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt32Data());
@@ -668,7 +667,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 							(int)tag->SourceCount()) <<
 						tag->GetFileStatusString();
 						if ( tag->SourceXferCount() > 0) {
-							s << wxT(" ") + CFormat(_("%s/sec")) % CastItoXBytes(tag->Speed());
+							s << wxT(" ") + otherfunctions::CastItoSpeed(tag->Speed());
 						}
 					s << wxT("\n");
 				}
@@ -686,8 +685,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
 						clientName->GetStringData() << wxT(" ") <<
 						partfileName->GetStringData() << wxT(" ") <<
-						CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
-						CFormat(_("%s/sec")) % CastItoXBytes(partfileSpeed->GetInt32Data());
+						otherfunctions::CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
+						otherfunctions::CastItoSpeed(partfileSpeed->GetInt32Data());
 				}
 			}
 			break;
@@ -703,7 +702,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			}
 			break;
 		case EC_OP_STATSTREE:
-			s << StatTree2Text(response->GetTagByIndex(0), 0);
+			s << StatTree2Text((CEC_StatTree_Node_Tag*)response->GetTagByName(EC_TAG_STATTREE_NODE), 0);
 			break;
 		default:
 			s << wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
@@ -731,11 +730,13 @@ void CamulecmdApp::ShowHelp() {
 //	Show(wxT("GetIPLevel:\t\t") + _("Shows current IP Filter level.\n"));
 //	Show(wxT("SetIPLevel <") + _("new level") + wxT(">:\t") + _("Changes current IP Filter level.\n"));
 	Show(wxT("IPLevel [") + wxString(_("level")) + wxT("]:\t") + _("Shows/Sets current IP Filter level.\n"));
-	Show(wxT("Add <") + wxString(_("ED2k_Link")) + wxT(">:\t\t") + _("Adds <ED2k_Link> (file or server) to aMule.\n"));
+	Show(wxT("Add <") + wxString(_("ED2k_Link")) + wxT(">:\t") + _("Adds <ED2k_Link> (file or server) to aMule.\n"));
 	Show(wxT("SetUpBWLimit <") + wxString(_("limit")) + wxT(">:\t") + _("Sets maximum upload bandwidth.\n"));
 	Show(wxT("SetDownBWLimit <") + wxString(_("limit")) + wxT(">:\t") + _("Sets maximum download bandwidth.\n"));
 	Show(wxT("GetBWLimits:\t\t") + wxString(_("Displays bandwidth limits.\n")));
-	Show(wxT("Statistics:\t\t") + wxString(_("Displays full statistics tree.\n")));
+	Show(wxT("Statistics [") + wxString(_("detail")) + wxT("]:\t") + wxString(_("Displays full statistics tree.\n"
+		"\t\t\tOptional 'detail' specifies how many client version\n"
+		"\t\t\tentries should be shown (0=unlimited)\n")));
 	Show(wxT("ReloadShared:\t\t") + wxString(_("Reload shared files list.\n")));
 	Show(wxT("Help:\t\t\t") + wxString(_("Shows this help.\n")));	
 	Show(wxT("Quit, exit:\t\t") + wxString(_("Exits aMulecmd.\n")));

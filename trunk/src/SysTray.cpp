@@ -47,24 +47,20 @@
 
 #include "pixmaps/mule_Tr_grey.ico.xpm"
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "DownloadQueue.h"	// Needed for GetKBps()
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Server.h"		// Needed for GetListName
 #include "OtherFunctions.h"	// Needed for EncodeBase16
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
 #include "ServerWnd.h"		// Needed for CServerWnd
-#include "Statistics.h"
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "OPCodes.h"		// Needed for UNLIMITED
-#include "Preferences.h"	// Needed for CPreferences
+#include "Preferences.h"	// Needed for thePrefs
 #include "amule.h"		// Needed for theApp
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#include "Statistics.h"		// Needed for theStats
 
 #ifdef __WXGTK__
 	#include "eggtrayicon.h"	// Needed for egg_tray_icon_new
@@ -173,25 +169,25 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// A few stats: Version, Limits and current speeds
 	{
 		wxString label = MOD_VERSION_LONG wxT(":\n");
-		label += wxString::Format(_("Download Speed: %.1f\n"), theApp.downloadqueue->GetKBps());
-		label += wxString::Format(_("Upload Speed: %.1f\n"), theApp.uploadqueue->GetDatarate() / 1024.0f);
-		label += _("\nSpeed Limits:\n");
-	
+		label += wxString::Format(wxString(_("Download Speed: %.1f")) + wxT("\n"), theStats::GetDownloadRate() / 1024.0);
+		label += wxString::Format(wxString(_("Upload Speed: %.1f")) + wxT("\n"), theStats::GetUploadRate() / 1024.0);
+		label += wxT("\n") + _("Speed Limits:") + wxT("\n");
+
 		// Check for upload limits
 		unsigned int max_upload = thePrefs::GetMaxUpload();
 		if ( max_upload == UNLIMITED ) {
-			label += wxString::Format( _("UL: None"));
+			label += _("UL: None");
 		} else {
-			label += wxString::Format( _("UL: %u"), max_upload);
+			label += wxString::Format(_("UL: %u"), max_upload);
 		}
 		label += wxT(", ");
-	
+
 		// Check for download limits
 		unsigned int max_download = thePrefs::GetMaxDownload();
 		if ( max_download == UNLIMITED ) {
-			label += wxString::Format( _("DL: None"));
+			label += _("DL: None");
 		} else {
-			label += wxString::Format( _("DL: %u"), max_download);
+			label += wxString::Format(_("DL: %u"), max_download);
 		}
 
 		item = gtk_menu_item_new_with_label( unicode2gtk( label ) );
@@ -226,7 +222,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	
 	// Client ID
 	{
-		wxString temp = wxString(_("ClientID:")) + wxT(" ");
+		wxString temp = _("ClientID: ");
 		
 		if (theApp.IsConnectedED2K()) {
 			unsigned long id = theApp.serverconnect->GetClientID();
@@ -243,9 +239,9 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Current Server and Server IP
 	{
-		wxString temp_name = wxString(_("ServerName:")) + wxT(" ");
-		wxString temp_ip   = wxString(_("ServerIP:")) + wxT(" ");
-		
+		wxString temp_name = _("ServerName: ");
+		wxString temp_ip   = _("ServerIP: ");
+
 		if ( theApp.serverconnect->GetCurrentServer() ) {
 			temp_name += theApp.serverconnect->GetCurrentServer()->GetListName();
 			temp_ip   += theApp.serverconnect->GetCurrentServer()->GetFullIP();
@@ -286,7 +282,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 	// UDP PORT
 	{
 		if (thePrefs::GetEffectiveUDPPort()) {
-			wxString temp = wxString::Format(_("UDP Port: %d"), thePrefs::GetEffectiveUDPPort());
+			wxString temp = CFormat(_("UDP Port: %d")) % thePrefs::GetEffectiveUDPPort();
 			info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		} else
 			info_item=gtk_menu_item_new_with_label(char2gtk(unicode2char(_("UDP Port: Not Ready"))));
@@ -308,7 +304,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Uptime
 	{
-		wxString temp = CFormat(_("Uptime: %s")) % CastSecondsToHM(theApp.statistics->GetUptimeSecs());
+		wxString temp = CFormat(_("Uptime: %s")) % CastSecondsToHM(theStats::GetUptimeSeconds());
 								   
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -317,7 +313,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Number of shared files
 	{
-		wxString temp = CFormat(_("Shared Files: %d")) % theApp.sharedfiles->GetCount();
+		wxString temp = CFormat(_("Shared Files: %d")) % theStats::GetSharedFileCount();
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add(GTK_CONTAINER (info_menu), info_item);
 	}
@@ -325,7 +321,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Number of queued clients
 	{
-		wxString temp = CFormat(_("Queued Clients: %d")) % theApp.uploadqueue->GetWaitingUserCount();
+		wxString temp = CFormat(_("Queued Clients: %d")) % theStats::GetWaitingUserCount();
 		info_item=gtk_menu_item_new_with_label( unicode2gtk(temp));
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
 	}
@@ -333,7 +329,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		wxString temp = CastItoXBytes( theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		temp = CFormat(_("Total DL: %s")) % temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);
@@ -342,7 +338,7 @@ static gboolean tray_menu (GtkWidget* WXUNUSED(widget), GdkEventButton* event, g
 
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theApp.statistics->GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
+		wxString temp = CastItoXBytes( theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
 		temp = CFormat(_("Total UL: %s")) % temp;
 		info_item=gtk_menu_item_new_with_label( unicode2gtk( temp ) );
 		gtk_container_add (GTK_CONTAINER (info_menu), info_item);

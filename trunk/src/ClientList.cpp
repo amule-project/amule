@@ -27,7 +27,7 @@
 #pragma implementation "ClientList.h"
 #endif
 
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
 #include "ListenSocket.h"	// Needed for CClientReqSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -37,9 +37,9 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
-#include "OtherFunctions.h" // Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
-#include "ServerConnect.h" // Needed for theApp.serverconnect
-#include "Preferences.h" // Needed for thePrefs
+#include "OtherFunctions.h"	// Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
+#include "ServerConnect.h"	// Needed for theApp.serverconnect
+#include "Preferences.h"	// Needed for thePrefs
 #include "Logger.h"
 #include "Format.h"
 
@@ -58,7 +58,7 @@
  * CDeletedClient Class
  *
  * This class / list is a bit overkill, but currently needed to avoid any
- * exploit possibtility. It will keep track of certain clients attributes
+ * exploit possibility. It will keep track of certain clients attributes
  * for 2 hours, while the CUpDownClient object might be deleted already.
  * Currently saves: IP, Port, UserHash.
  */
@@ -131,13 +131,14 @@ void CClientList::AddClient( CUpDownClient* toadd )
 		if ( toadd->HasValidHash() ) {
 			m_hashList.insert( HashMapPair( toadd->GetUserHash(), toadd ) );
 		}
+
+		toadd->UpdateStats();
 	}
 }
 
 
 void CClientList::AddToDeleteQueue(CUpDownClient* client)
 {
-	wxASSERT(client->GetClientState() == CS_DYING);
 	// We have to remove the client from the list immediatly, to avoit it getting
 	// found by functions such as AttachToAlreadyKnown and GetClientsFromIP, 
 	// however, if the client isn't on the clientlist, then it is safe to delete 
@@ -151,6 +152,8 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 	} else {
 		delete client;
 	}
+
+	client->UpdateStats(true);
 }
 
 
@@ -327,12 +330,6 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 }
 
 
-uint16 CClientList::GetBannedCount() const
-{
-	return m_bannedList.size();
-}
-
-
 uint32 CClientList::GetClientCount() const
 {
 	return m_clientList.size(); 
@@ -357,134 +354,32 @@ void CClientList::DeleteAll()
 }
 
 
-void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap)
-{
-	totalclient = m_clientList.size();
-	
-	if (clientVersionEDonkey) {
-		clientVersionEDonkey->clear();
-	}
-		
-	if (clientVersionEMule) {
-		clientVersionEMule->clear();
-	}
-		
-	if (clientVersionEDonkeyHybrid) {
-		clientVersionEDonkeyHybrid->clear();
-	}
-		
-	if (clientVersionAMule) {
-		clientVersionAMule->clear();
-	}
-	
-	if (OSMap) {
-		OSMap->clear();
-	}
+// void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap)
+// {
 
-
-	for ( int i = 0; i < 19; i++ ) {
-		stats[i] = 0;
-	}
-
-	for ( IDMap::iterator it = m_clientList.begin(); it != m_clientList.end(); ++it ) {
-		CUpDownClient* cur_client =	it->second;
+// 	for ( IDMap::iterator it = m_clientList.begin(); it != m_clientList.end(); ++it ) {
+// 		CUpDownClient* cur_client =	it->second;
 		
-		if (cur_client->HasLowID()) {
-			stats[11]++;
-			if (cur_client->GetClientSoft()!=SO_UNKNOWN) {
-				stats[18]++;
-			}
-		}
+// 		if (cur_client->HasLowID()) {
+// 			stats[11]++;
+// 		}
 		
-		switch (cur_client->GetClientSoft()) {
-			case SO_UNKNOWN : 
-				stats[0]++;
-				break;
-			case SO_EDONKEY : 
-				stats[1]++;
-				if(clientVersionEDonkey) {
-					(*clientVersionEDonkey)[cur_client->GetVersion()]++;
-				}
-				break;
-			case SO_EDONKEYHYBRID : 
-				stats[4]++;
-				if(clientVersionEDonkeyHybrid) {
-					(*clientVersionEDonkeyHybrid)[cur_client->GetVersion()]++;
-				}
-				break;
-				
-			case SO_EMULE   :
-			case SO_OLDEMULE:
-				if(clientVersionEMule) {
-					uint8 version = cur_client->GetMuleVersion();
-					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
-						continue;					
-					}
-					(*clientVersionEMule)[cur_client->GetVersion()]++;
-				}
-			case SO_EMULEPLUS: // And SO_EMULE and SO_OLDEMULE (no break before this)
-				stats[2]++;
-				break;
-			
-			case SO_CDONKEY : 
-				stats[5]++;
-				break;
-			case SO_LXMULE:
-				stats[6]++;
-				break;
-			case SO_AMULE:
-				stats[8]++;
-				if(clientVersionAMule) {
-					uint8 version = cur_client->GetMuleVersion();
-					if (version == 0xFF || version == 0x66 || version==0x69 || version==0x90 || version==0x33 || version==0x60) {
-						continue;					
-					}
-					(*clientVersionAMule)[cur_client->GetVersion()]++;
-				}
-				if (OSMap) {
-					wxString OS = cur_client->GetClientOSInfo();
-					if (!OS.IsEmpty()) {
-						(*OSMap)[OS]++;	
-					}
-				}
-				break;
-			case SO_MLDONKEY:
-				stats[3]++;
-				break;
-			case SO_NEW_MLDONKEY:
-			case SO_NEW2_MLDONKEY:
-				stats[7]++;
-				break;
-			case SO_COMPAT_UNK:
-				stats[9]++;
-				break;
-			case SO_LPHANT:
-				stats[10]++;
-				break;
-			case SO_SHAREAZA:
-				stats[16]++;
-				break;
-		}
+// 		if (cur_client->Credits() != NULL){
+// 			switch(cur_client->Credits()->GetCurrentIdentState(cur_client->GetIP())){
+// 				case IS_IDENTIFIED:
+// 					stats[12]++;
+// 					break;
+// 				case IS_IDFAILED:
+// 				case IS_IDNEEDED:
+// 				case IS_IDBADGUY:
+// 					stats[13]++;
+// 				default:
+// 					break;
+// 			}
+// 		}
 		
-		if (cur_client->Credits() != NULL){
-			switch(cur_client->Credits()->GetCurrentIdentState(cur_client->GetIP())){
-				case IS_IDENTIFIED:
-					stats[12]++;
-					break;
-				case IS_IDFAILED:
-				case IS_IDNEEDED:
-				case IS_IDBADGUY:
-					stats[13]++;
-				default:
-					break;
-			}
-		}
-		
-		if (cur_client->GetSocket()) {
-			stats[17]++;
-		}
-	}
-}
+// 	}
+// }
 
 
 bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender)
@@ -636,8 +531,9 @@ void CClientList::Process()
 		while ( it != m_bannedList.end() ) {
 			if ( it->second + CLIENTBANTIME < cur_tick ) {
 				ClientMap::iterator tmp = it++;		
-				
+
 				m_bannedList.erase( tmp );
+				theStats::RemoveBannedClient();
 			} else {
 				++it;
 			}
@@ -815,6 +711,7 @@ void CClientList::Process()
 void CClientList::AddBannedClient(uint32 dwIP)
 {
 	m_bannedList[dwIP] = ::GetTickCount();
+	theStats::AddBannedClient();
 }
 
 
@@ -836,6 +733,7 @@ bool CClientList::IsBannedClient(uint32 dwIP)
 void CClientList::RemoveBannedClient(uint32 dwIP)
 {
 	m_bannedList.erase(dwIP);
+	theStats::RemoveBannedClient();
 }
 
 

@@ -208,6 +208,8 @@ bool		CPreferences::s_AutoSortDownload;
 bool		CPreferences::s_NewVersionCheck;
 bool		CPreferences::s_ConnectToKad;
 bool		CPreferences::s_ConnectToED2K;
+unsigned	CPreferences::s_maxClientVersions;
+
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -924,6 +926,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_UPLOAD_CAP,	(MkCfg_Int( wxT("/eMule/UploadCapacity"), s_maxGraphUploadRate, 3 )));
 	NewCfgItem(IDC_SLIDER3,		(MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 )));
 	NewCfgItem(IDC_SLIDER4,		(MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 )));
+	#warning uncomment and fix the following line, and remove the next one when GUI has been added
+	//NewCfgItem(IDC_whatever,		(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 )));
+	s_MiscList.push_back(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 ));
 
 	/**
 	 * Sources

@@ -102,10 +102,10 @@ const wxString GetSoftName(unsigned int software_ident)
 		case SO_HYDRANODE:
 			return wxT("HydraNode");
 		case SO_MLDONKEY:
-			return _("Old MLDonkey");
+			return wxTRANSLATE("Old MLDonkey");
 		case SO_NEW_MLDONKEY:
 		case SO_NEW2_MLDONKEY:
-			return _("New MlDonkey");
+			return wxTRANSLATE("New MLDonkey");
 		case SO_LPHANT:
 			return wxT("lphant");
 		case SO_EDONKEYHYBRID:
@@ -113,10 +113,145 @@ const wxString GetSoftName(unsigned int software_ident)
 		case SO_EDONKEY:
 			return wxT("eDonkey");
 		case SO_UNKNOWN:
-			return _("Unknown");
+			return wxTRANSLATE("Unknown");
 		case SO_COMPAT_UNK:
-			return _("eMule Compat");
+			return wxTRANSLATE("eMule Compatible");
 		default:
 			return wxEmptyString;
 	}
 }
+
+
+#ifndef EC_REMOTE
+
+const wxString& GetClientDetails(const CUpDownClient *pClient, wxString *clientName, wxString *clientVersion, wxString *clientModName)
+{
+	wxString l_clientName;
+	wxString l_clientVersion;
+	wxString l_clientModName;
+
+	if (!(clientName || clientVersion || clientModName)) {
+		return pClient->GetClientOSInfo();
+	}
+
+	if (!pClient || pClient->GetUserName().IsEmpty()) {
+		l_clientName = wxTRANSLATE("Unknown");
+	} else {
+		uint32 nClientVersion = pClient->GetVersion();
+		// Split client version.
+		uint32 nClientMajVersion = nClientVersion / 100000;
+		uint32 nClientMinVersion = (nClientVersion / 1000) % 100;
+		uint32 nClientUpVersion = (nClientVersion / 100) % 10;
+
+		int iHashType = pClient->GetHashType();
+		if (iHashType == SO_EMULE) {
+			uint32 clientSoft = pClient->GetClientSoft();
+			l_clientName = GetSoftName(clientSoft);
+			// Special issues:
+			if((pClient->GetClientModString().IsEmpty() == false) && (clientSoft != SO_EMULE)) {
+				l_clientName = pClient->GetClientModString();
+			}
+			// Isn't xMule annoying?
+			if ((clientSoft == SO_LXMULE) && (pClient->GetMuleVersion() > 0x26) && (pClient->GetMuleVersion() != 0x99)) {
+				l_clientName += wxString::Format(_(" (Fake eMule version %#x)"), pClient->GetMuleVersion());
+			}
+			if ((clientSoft == SO_EMULE) && 
+			    (
+			     wxString(pClient->GetClientModString()).MakeLower().Find(wxT("xmule")) != -1 
+			     || pClient->GetUserName().Find(wxT("xmule.")) != -1
+			     )
+			    ) {
+				// FAKE eMule -a newer xMule faking its ident.
+				if (pClient->GetClientModString().IsEmpty() == false) {
+					l_clientName = pClient->GetClientModString() + _(" (Fake eMule)");
+				} else {
+					l_clientName = wxTRANSLATE("xMule (Fake eMule)"); // don't use GetSoftName, it's not lmule.
+				}
+			}		
+			// Now, what if we don't know this SO_ID?
+			if (l_clientName.IsEmpty()) {
+				if (pClient->IsML() || pClient->IsHybrid()) {
+					l_clientName = GetSoftName(clientSoft);
+				} else if (pClient->GetCompatibleClient() != 0) {
+					l_clientName = GetSoftName(clientSoft) + wxString::Format(wxT("(%#x)"), pClient->GetCompatibleClient());
+				} else {
+					// If we step here, it might mean 2 things:
+					// a eMule
+					// a Compat Client that has sent no MuleInfo packet yet.
+					l_clientName = wxT("eMule");
+				}
+			}
+
+			if (pClient->GetMuleVersion() == 0) {
+				// just do nothing here
+			} else if (pClient->GetMuleVersion() != 0x99) {
+				switch (clientSoft) {
+				 case SO_AMULE:
+					 l_clientVersion += wxString::Format(wxTRANSLATE("1.x (based on eMule v0.%u)"), nClientMinVersion);
+					 break;
+				 case SO_LPHANT:
+					 l_clientVersion = wxT("< v0.05 ");
+					 break;
+				 default:
+					 l_clientVersion = wxString::Format(wxT("v0.%u"), nClientMinVersion);
+					 l_clientModName = pClient->GetClientModString();
+					 break;
+				}
+			} else {
+				switch (clientSoft) {
+				 case SO_AMULE:
+				 case SO_LXMULE:
+				 case SO_HYDRANODE:
+					 // Kry - xMule started sending correct version tags on 1.9.1b.
+					 // It only took them 4 months, and being told by me and the
+					 // eMule+ developers, so I think they're slowly getting smarter.
+					 // They are based on our implementation, so we use the same format
+					 // for the version string.
+					 l_clientVersion =  wxString::Format(wxT("v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);
+					 break;
+				 case SO_LPHANT:
+					 l_clientVersion =  wxString::Format(wxT("v%u.%.2u%c"), nClientMajVersion-1, nClientMinVersion, 'a' + nClientUpVersion);
+					 break;
+				 case SO_EMULEPLUS:
+					 l_clientVersion =  wxString::Format(wxT("v%u"), nClientMajVersion);
+					 if(nClientMinVersion != 0) {
+						 l_clientVersion +=  wxString::Format(wxT(".%u"), nClientMinVersion);
+					 }
+					 if(nClientUpVersion != 0) {
+						 l_clientVersion +=  wxString::Format(wxT("%c"), 'a' + nClientUpVersion - 1);
+					 }
+					 break;
+				 default:
+					 l_clientVersion = wxString::Format(wxT("v%u.%u%c"), nClientMajVersion, nClientMinVersion, 'a' + nClientUpVersion);
+					 l_clientModName = pClient->GetClientModString();
+					 break;
+				}
+			}
+		} else if (pClient->IsHybrid()) {
+			l_clientName = GetSoftName(pClient->GetClientSoft());
+			if (nClientUpVersion) {
+				l_clientVersion = wxString::Format(wxT("v%u.%u.%u"), nClientMajVersion, nClientMinVersion, nClientUpVersion);
+			} else {
+				l_clientVersion = wxString::Format(wxT("v%u.%u"), nClientMajVersion, nClientMinVersion);
+			}
+		} else {
+			l_clientName = GetSoftName(pClient->GetClientSoft());
+			l_clientVersion = wxString::Format(wxT("v%u.%u"), nClientMajVersion, nClientMinVersion);
+		}
+	}
+
+	// give results
+	if (clientName) {
+		*clientName = l_clientName;
+	}
+	if (clientVersion) {
+		*clientVersion = l_clientVersion;
+	}
+	if (clientModName) {
+		*clientModName = l_clientModName;
+	}
+
+	return pClient->GetClientOSInfo();
+}
+
+#endif /* !EC_REMOTE */

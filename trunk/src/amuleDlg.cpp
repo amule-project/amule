@@ -67,7 +67,6 @@
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "ClientList.h"		// Needed for CClientList
-#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "SearchList.h"		// Needed for CSearchList
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
@@ -93,7 +92,7 @@
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "StringFunctions.h"	// Needed for unicode2char
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 #ifndef CLIENT_GUI
@@ -213,7 +212,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	searchwnd = new CSearchDlg(p_cnt);
 	transferwnd = new CTransferWnd(p_cnt);
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
-	statisticswnd = new CStatisticsDlg(p_cnt);
+	statisticswnd = new CStatisticsDlg(p_cnt, theApp.statistics);
 	chatwnd = new CChatWnd(p_cnt);
 	kademliawnd = new CKadDlg(p_cnt);
 	serverwnd->Show(FALSE);
@@ -794,14 +793,12 @@ void CamuleDlg::ShowUserCount(const wxString& info)
 
 void CamuleDlg::ShowTransferRate()
 {
-	float kBpsUp = theApp.uploadqueue->GetDatarate() / 1024.0f;
-	float kBpsDown = theApp.downloadqueue->GetKBps();
+	float kBpsUp = theStats::GetUploadRate() / 1024.0;
+	float kBpsDown = theStats::GetDownloadRate() / 1024.0;
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )
 	{
-		float overhead_up = theApp.statistics->GetUpDatarateOverhead();
-		float overhead_down = theApp.statistics->GetDownDatarateOverhead();
-		buffer = wxString::Format(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, overhead_up/1024, kBpsDown, overhead_down/1024);
+		buffer = wxString::Format(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, theStats::GetUpOverheadRate() / 1024.0, kBpsDown, theStats::GetDownOverheadRate() / 1024.0);
 	} else {
 		buffer = wxString::Format(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
 	}
@@ -1051,7 +1048,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 	static uint32	/*msPrev1, */msPrev5, msPrevGraph, msPrevStats;
 
-	uint32 			msCur = theApp.statistics->GetUptimeMsecs();
+	uint32 			msCur = theStats::GetUptimeMillis();
 
 	// can this actually happen under wxwin ?
 	if (!SafeState()) {
@@ -1059,6 +1056,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
+#ifndef CLIENT_GUI
 	int msGraphUpdate= thePrefs::GetTrafficOMeterInterval()*1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
@@ -1066,9 +1064,11 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		
 		GraphUpdateInfo update = theApp.statistics->GetPointsForUpdate();
 		
-		statisticswnd->UpdateStatGraphs(bStatsVisible, theApp.listensocket->GetPeakConnections(), update);
+		statisticswnd->UpdateStatGraphs(bStatsVisible, theStats::GetPeakConnections(), update);
 	}
-
+#else
+	#warning TODO: CORE/GUI -- EC needed
+#endif
 	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 		if (bStatsVisible) {

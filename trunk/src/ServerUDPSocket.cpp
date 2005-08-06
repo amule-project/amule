@@ -43,7 +43,7 @@
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
 #include "ServerSocket.h"
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
 #include "Format.h"
@@ -107,7 +107,7 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 				// Silently drop it.
 				AddDebugLogLineM( true, logServerUDP,
 					wxString::Format( wxT("Received UDP server packet with eDonkey protocol (0x%x) and opcode (0x%x)!"), buffer[0], buffer[0] ) );
-				theApp.statistics->AddDownDataOverheadOther(length);
+				theStats::AddDownOverheadOther(length);
 				break;
 			default:
 				AddDebugLogLineM( true, logServerUDP,
@@ -126,7 +126,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 
 	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
 	
-	theApp.statistics->AddDownDataOverheadOther(size);
+	theStats::AddDownOverheadOther(size);
 	AddDebugLogLineM( false, logServerUDP,
 					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
 	

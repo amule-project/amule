@@ -117,6 +117,7 @@ amulegui_SOURCES = \
 	ServerListCtrl.cpp \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
+	StatTree.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp 
 
@@ -204,9 +205,10 @@ amule_SOURCES = \
 	SharedFilesWnd.cpp \
 	SHA.cpp \
 	SHAHashSet.cpp \
+	StateMachine.cpp \
 	Statistics.cpp \
 	StatisticsDlg.cpp \
-	StateMachine.cpp \
+	StatTree.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
 	UploadBandwidthThrottler.cpp \
@@ -268,6 +270,7 @@ amuled_SOURCES = \
 	SharedFileList.cpp \
 	StateMachine.cpp \
 	Statistics.cpp \
+	StatTree.cpp \
 	StringFunctions.cpp \
 	Timer.cpp \
 	UploadBandwidthThrottler.cpp \
@@ -435,9 +438,10 @@ noinst_HEADERS = AddFileThread.h \
 		 SharedFileList.h \
 		 SharedFilesCtrl.h \
 		 SharedFilesWnd.h \
+		 StateMachine.h \
 		 Statistics.h \
 		 StatisticsDlg.h \
-		 StateMachine.h \
+		 StatTree.h \
 		 StringFunctions.h \
 		 Format.h \
 		 Logger.h \
@@ -445,7 +449,6 @@ noinst_HEADERS = AddFileThread.h \
 		 TextClient.h \
 		 Timer.h \
 		 TransferWnd.h \
-		 tree.hh \
 		 Types.h \
 		 updownclient.h \
 		 UploadBandwidthThrottler.h \

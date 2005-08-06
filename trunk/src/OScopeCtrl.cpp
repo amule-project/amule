@@ -38,7 +38,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "OtherFunctions.h"	// Needed for CastSecondsToHM
 #include "StringFunctions.h"
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "Format.h"
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
@@ -480,6 +480,7 @@ void COScopeCtrl::DrawPoints(const float *apf[], unsigned cntPoints)
 
 void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh) 
 {
+#ifndef CLIENT_GUI
 	wxASSERT(graph_type != GRAPH_INVALID);
 	unsigned i, cntFilled;
 	float** apf = new float*[nTrends];
@@ -504,6 +505,9 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 		delete[] apf[i];
 
 	delete[] apf;
+#else
+	#warning CORE/GUI -- EC needed
+#endif
 } // PlotHistory
 
 

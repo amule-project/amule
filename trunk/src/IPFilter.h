@@ -66,11 +66,12 @@ public:
 	 * Checks if a IP is filtered with the current list and AccessLevel.
 	 *
 	 * @param IP2test The IP-Address to test for.
+	 * @param isServer Whether this IP belongs to a server or a client. Needed for statistical purposes only.
 	 * @return True if it is filtered, false otherwise.
 	 *
 	 * Note: IP2Test must be in anti-host order (BE on LE platform, LE on BE platform).
 	 */
-	bool	IsFiltered( uint32 IP2test );
+	bool	IsFiltered( uint32 IP2test, bool isServer = false );
 
 	
 	/**

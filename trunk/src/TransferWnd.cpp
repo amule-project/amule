@@ -46,12 +46,13 @@
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "OtherFunctions.h"	// Needed for GetCatTitle
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
 #include "Preferences.h"
 #include "ClientList.h"
+#include "Statistics.h"		// Needed for theStats
 
 using namespace otherfunctions;
 
@@ -216,10 +217,10 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 	int priority = 0;
 
 	switch ( event.GetId() ) {
-		case MP_PRIOLOW:	priority = PR_LOW;		break;
+		case MP_PRIOLOW:	priority = PR_LOW;	break;
 		case MP_PRIONORMAL:	priority = PR_NORMAL;	break;
-		case MP_PRIOHIGH:	priority = PR_HIGH;		break;
-		case MP_PRIOAUTO:	priority = PR_AUTO;		break;
+		case MP_PRIOHIGH:	priority = PR_HIGH;	break;
+		case MP_PRIOAUTO:	priority = PR_AUTO;	break;
 		default:
 			return;
 	}
@@ -280,7 +281,7 @@ void CTransferWnd::OnSetDefaultCat( wxCommandEvent& event )
 
 void CTransferWnd::ShowQueueCount(uint32 number)
 {
-	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theApp.clientlist->GetBannedCount(), _("Banned") );
+	wxString str = wxString::Format( wxT("%u (%u %s)"), number, theStats::GetBannedCount(), _("Banned") );
 	wxStaticText* label = CastChild( ID_CLIENTCOUNT, wxStaticText );
 	
 	label->SetLabel( str );

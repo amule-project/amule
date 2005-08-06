@@ -35,6 +35,7 @@
 #pragma interface "ECcodes.h"
 #endif
 
+#include "Types.h"		// Needed for uint* types
 
 /*
  * EC types
@@ -566,6 +567,8 @@ enum {
 		 * \brief Retrieves the statistics tree
 		 *
 		 * Server replies with an ::EC_OP_STATSTREE packet.
+		 *
+		 * Might contain an ::EC_TAG_STATTREE_CAPPING tag, to set how tree capping should be done.
 		 */
 	EC_OP_GET_STATSTREE,
 
@@ -573,7 +576,7 @@ enum {
 		 * \brief Statistics tree reply
 		 *
 		 * \par Child Tags:
-		 *	::EC_TAG_TREE\n
+		 *	::EC_TAG_STATTREE_NODE\n
 		 *	::EC_TAG_USER_NICK and ::EC_TAG_SERVER_VERSION only if
 		 *	detail level is ::EC_DETAIL_WEB (ie. for webserver only)
 		 */
@@ -701,45 +704,17 @@ enum {
 		 * server we're connected to.
 		 */
 	EC_TAG_CONNSTATE,
-	EC_TAG_STATS_UL_SPEED,
-	EC_TAG_STATS_DL_SPEED,
-	/*!
-	 *  \brief Up/Down speed/limit
-	 * 
-	 * Values (uint32): speed in bps
-	 */
-	EC_TAG_STATS_UL_SPEED_LIMIT,
-	EC_TAG_STATS_DL_SPEED_LIMIT,
-	/*!
-	 * \brief Number of activel up/downloads
-	 * 
-	 */
-	EC_TAG_STATS_CURR_UL_COUNT,
-	EC_TAG_STATS_CURR_DL_COUNT,
-	/*!
-	 * \brief Total number of file in download queue
-	 */
-	EC_TAG_STATS_TOTAL_DL_COUNT,
-	/*!
-	 * \brief Total number of sources found
-	 */
-	EC_TAG_STATS_TOTAL_SRC_COUNT,
-	/*!
-	 * \brief Number of users in upload queue
-	 */
 
-	EC_TAG_STATS_BANNED_COUNT,
-	/*!
-	 * \brief Number of banned users
-	 */
-
-	EC_TAG_STATS_UL_QUEUE_LEN,
+	EC_TAG_STATS_UL_SPEED,		///< (\c uint32) Current upload speed in bytes/sec.
+	EC_TAG_STATS_DL_SPEED,		///< (\c uint32) Current download speed in bytes/sec.
+	EC_TAG_STATS_UL_SPEED_LIMIT,	///< (\c uint32) Upload speed limit in bytes/sec.
+	EC_TAG_STATS_DL_SPEED_LIMIT,	///< (\c uint32) Download speed limit in bytes/sec.
+	EC_TAG_STATS_UP_OVERHEAD,	///< (\c uint32) Current upload overhead in bytes/sec.
+	EC_TAG_STATS_DOWN_OVERHEAD,	///< (\c uint32) Current download overhead in bytes/sec.
+	EC_TAG_STATS_TOTAL_SRC_COUNT,	///< (\c uint32) Total number of sources found.
+	EC_TAG_STATS_BANNED_COUNT,	///< (\c uint32) Number of banned clients.
+	EC_TAG_STATS_UL_QUEUE_LEN,	///< (\c uint32) Number of waiting clients in the upload queue.
 	
-	/*!
-	 * \brief Number of users on currectly conected server
-	 */
-	EC_TAG_STATS_USERS_ON_SERVER,
-
 
 	//
 	// Partfile
@@ -1292,18 +1267,37 @@ enum {
 
 	EC_TAG_STATSGRAPH_WIDTH,	///< (\c uint16) Maximum number of sample points (for webserver only)
 	EC_TAG_STATSGRAPH_SCALE,	///< (\c uint16) Time between sample point (in seconds) (for webserver only)
-	EC_TAG_STATSGRAPH_LAST,		///< (\c string, should be \c float) Timestamp of last acquired/sent history item. Default: 0.0
+	EC_TAG_STATSGRAPH_LAST,		///< (\c double) Timestamp of last acquired/sent history item. Default: 0.0
 	EC_TAG_STATSGRAPH_DATA,		///< sequence of uint32 triplets for the webserver (dl,ul,conn); ...
 
 		/*!
-		 * \brief (Sub)tree for statistics.
+		 * \brief Describes how stattree capping should be done.
 		 *
-		 * Value: (string) Stats label.
+		 * Holds an \c uint8 value, and defaults to 0 (unlimited).
 		 *
-		 * Children:
-		 *	zero or more ::EC_TAG_TREE tags, containing the subtree for this item
+		 * Its value is passed to CStatTreItemBase::CreateECTag(), so tree items
+		 * which support capping know how many children should they provide at most.
+		 * (It is currently used only on client versions.)
 		 */
-	EC_TAG_TREE
+	EC_TAG_STATTREE_CAPPING,
+
+		/*!
+		 * \brief A node (tree item/subtree root) for statistics.
+		 *
+		 * Value: (\c string) Stats label.
+		 *
+		 * \par Possible children:
+		 *	::EC_TAG_STAT_NODE_VALUE\n
+		 *	::EC_TAG_STATTREE_NODE
+		 */
+	EC_TAG_STATTREE_NODE,
+	EC_TAG_STAT_NODE_VALUE,		///< A value for this node.
+					/*!< May conatin an ::EC_TAG_STAT_VALUE_TYPE tag, describing its contents, otherwise it is interpreted as an \c uint64 integer.
+					 *
+					 *   May also contain a ::EC_TAG_STAT_NODE_VALUE child, and that will be displayed in brackets after this value.
+					 *   This only works for value types that require a \c %s format string.
+					 */
+	EC_TAG_STAT_VALUE_TYPE		///< \c uint8 value describing the value of its parent (::EC_TAG_STAT_NODE_VALUE). See also the ::EC_STATTREE_NODE_VALUE_TYPE enum.
 };
 
 
@@ -1314,6 +1308,7 @@ enum {
  */
 enum EC_DETAIL_LEVEL {
 	EC_DETAIL_CMD,		///< aMuleCmd uses this level to obtain only basic information
+	EC_DETAIL_WEB,		///< aMuleWeb uses this level to obtain specific information/specific format
 	
 	/*
 	 * Send either full info or fields that usually changes (speed, source count, etc).
@@ -1340,6 +1335,22 @@ enum EC_SEARCH_TYPE {
 	EC_SEARCH_KAD,
 	EC_SEARCH_WEB
 };
+
+/**
+ * EC value types for stattree nodes.
+ */
+enum EC_STATTREE_NODE_VALUE_TYPE {
+	EC_VALUE_INTEGER,	///< value is an \c uint64 integer. The ::EC_TAG_STAT_VALUE_TYPE node may be omitted in this case. Format code is \c %u or similar.
+	EC_VALUE_ISTRING,	///< value is an \c uint64 integer. The only difference from ::EC_VALUE_INTEGER is that this reqires a \c %s format code.
+	EC_VALUE_BYTES,		///< value is an \c uint64 representing bytes, format is \c %s.
+	EC_VALUE_ISHORT,	///< value is an \c uint64 integer, format is \c %s. Value will be displayed in a human-readable short form.
+	EC_VALUE_TIME,		///< value is an \c uint32 representing time in seconds, format is \c %s.
+	EC_VALUE_SPEED,		///< value is an \c uint32 representing speed in bytes/second, format is \c %s.
+	EC_VALUE_STRING,	///< \c string type value, with \c %s format
+	EC_VALUE_DOUBLE		///< floating-point (\c double) type value. Format code is \c %g or similar.
+};
+
+
 /*
  * EC Preferences selection bit values.
  */

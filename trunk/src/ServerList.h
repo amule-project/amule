@@ -64,34 +64,32 @@ public:
 	CServer*	GetServerByAddress(const wxString& address, uint16 port);
 	CServer*	GetServerByIP(uint32 nIP);
 	CServer*	GetServerByIP(uint32 nIP, uint16 nPort);	
-	void		GetStatus( uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
+	void		GetStatus(uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
 	void		Sort();
-	uint32		GetDeletedServerCount()		{return delservercount;}
 	void 		UpdateServerMetFromURL(const wxString& strURL);	
 	void		DownloadFinished(uint32 result);	
 	void		AutoDownloadFinished(uint32 result);	
-	uint32	CServerList::GetAvgFile() const;
+	uint32		GetAvgFile() const;
 
 	std::vector<const CServer*> CopySnapshot() const;
 	
 private:
 	virtual void 	ObserverAdded( ObserverType* );
-	void			AutoUpdate();
-	CServer*		GetNextStatServer();
-	
-	void			LoadStaticServers( const wxString& filename );
-	uint8			current_url_index;
+	void		AutoUpdate();
+	CServer*	GetNextStatServer();
 
-	typedef std::list<CServer*>		CInternalList;
-	CInternalList					m_servers;
+	void		LoadStaticServers( const wxString& filename );
+	uint8		current_url_index;
+
+	typedef std::list<CServer*>	CInternalList;
+	CInternalList			m_servers;
 	CInternalList::const_iterator	m_serverpos;
 	CInternalList::const_iterator	m_statserverpos;
 
-	uint32		delservercount;
 	uint32		m_nLastED2KServerLinkCheck;// emanuelw(20030924) added
-	wxString		URLUpdate;
-	wxString		URLAutoUpdate;
+	wxString	URLUpdate;
+	wxString	URLAutoUpdate;
 };
 
 #endif // SERVERLIST_H

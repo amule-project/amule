@@ -30,10 +30,10 @@
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "OtherFunctions.h"	// Needed for md4cmp
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
-#include "Preferences.h"	// Needed for CPreferences
+#include "Preferences.h"	// Needed for thePrefs
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile
@@ -41,10 +41,10 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "OtherFunctions.h" // md4hash
+#include "OtherFunctions.h"	// md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 
 
@@ -162,7 +162,7 @@ void CUpDownClient::SendStartupLoadReq()
 	dataStartupLoadReq.WriteHash16(m_reqfile->GetFileHash());
 	CPacket* packet = new CPacket(&dataStartupLoadReq);
 	packet->SetOpCode(OP_STARTUPLOADREQ);
-	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }
 
@@ -239,7 +239,7 @@ void CUpDownClient::SendFileRequest()
 		}		
 		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT);
 		packet->SetOpCode(OP_MULTIPACKET);
-		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		SendPacket(packet, true);
 	} else {
 		//This is extended information
@@ -251,7 +251,7 @@ void CUpDownClient::SendFileRequest()
 		}
 		CPacket* packet = new CPacket(&dataFileReq);
 		packet->SetOpCode(OP_REQUESTFILENAME);
-		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		SendPacket(packet, true);
 	
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
@@ -264,7 +264,7 @@ void CUpDownClient::SendFileRequest()
 			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
 			packet = new CPacket(&dataSetReqFileID);
 			packet->SetOpCode(OP_SETREQFILEID);
-			theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 			SendPacket(packet, true);
 		}
 	
@@ -278,7 +278,7 @@ void CUpDownClient::SendFileRequest()
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			CPacket* packet = new CPacket(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
-			theApp.statistics->AddUpDataOverheadSourceExchange(packet->GetPacketSize());
+			theStats::AddUpOverheadSourceExchange(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		}
@@ -287,7 +287,7 @@ void CUpDownClient::SendFileRequest()
 		if (m_reqfile && IsSupportingAICH()) {
 			CPacket* packet = new CPacket(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
-			theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+			theStats::AddUpOverheadOther(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 		}
 	}
@@ -331,7 +331,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 			{
 				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
-				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -435,7 +435,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 			if (m_socket) {
 				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
-				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -495,6 +495,11 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 			} else if (m_nDownloadState == DS_DOWNLOADING) {
 				m_reqfile->RemoveDownloadingSource(this);
 			}
+		}
+		if (byNewState == DS_DOWNLOADING) {
+			theStats::AddDownloadingSource();
+		} else if (m_nDownloadState == DS_DOWNLOADING) {
+			theStats::RemoveDownloadingSource();
 		}
 		if (m_nDownloadState == DS_DOWNLOADING) {
 			m_nDownloadState = byNewState;
@@ -598,7 +603,7 @@ void CUpDownClient::SendBlockRequests()
 	if (m_PendingBlocks_list.IsEmpty()) {
 		if (!GetSentCancelTransfer()){
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-			theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -635,7 +640,7 @@ void CUpDownClient::SendBlockRequests()
 	}
 	
 	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, OP_REQUESTPARTS);
-	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }
 
@@ -694,8 +699,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
 		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
 	}
-	theApp.statistics->UpdateReceivedBytes(size - HEADER_SIZE);
-	theApp.statistics->AddDownloadFromSoft(GetClientSoft(),size - HEADER_SIZE);
+	theStats::AddDownloadFromSoft(GetClientSoft(),size - HEADER_SIZE);
 	bytesReceivedCycle += size - HEADER_SIZE;
 
 	credits->AddDownloaded(size - HEADER_SIZE, GetIP());
@@ -977,7 +981,7 @@ float CUpDownClient::CalculateKBpsDown()
 	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
 		if (!GetSentCancelTransfer()){
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
-			theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -1064,7 +1068,7 @@ void CUpDownClient::UDPReaskForDownload()
 		
 		CPacket* response = new CPacket(&data, OP_EMULEPROT);
 		response->SetOpCode(OP_REASKFILEPING);
-		theApp.statistics->AddUpDataOverheadFileRequest(response->GetPacketSize());
+		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
 	}
 }
@@ -1304,7 +1308,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	data.WriteUInt16(nPart);
 	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_AICHREQUEST);
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());	
+	theStats::AddUpOverheadOther(packet->GetPacketSize());	
 	SafeSendPacket(packet);
 }
 
@@ -1372,7 +1376,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 				AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Sucessfully created and send recoverydata for ") + pKnownFile->GetFileName() + wxT(" to ") + GetClientFullInfo() );
 				
 				CPacket* packAnswer = new CPacket(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
-				theApp.statistics->AddUpDataOverheadOther(packAnswer->GetPacketSize());
+				theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
 				SafeSendPacket(packAnswer);
 				return;
 			} else {
@@ -1387,7 +1391,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 		
 	CPacket* packAnswer = new CPacket(OP_AICHANSWER, 16, OP_EMULEPROT);
 	packAnswer->Copy16ToDataBuffer((char*)abyHash);
-	theApp.statistics->AddUpDataOverheadOther(packAnswer->GetPacketSize());
+	theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
 	SafeSendPacket(packAnswer);
 }
 

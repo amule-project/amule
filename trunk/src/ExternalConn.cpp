@@ -38,7 +38,7 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -54,7 +54,7 @@
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for theStats
 #include "Format.h"		// Needed for CFormat
 #include "gsocket-fix.h"
 
@@ -278,31 +278,27 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	return response;
 }
 
-CECPacket *Get_EC_Response_StatRequest(const CECPacket *WXUNUSED(request))
+CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STATS);
 
-	//
-	// ul/dl speeds
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, theApp.uploadqueue->GetDatarate()));
-	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theApp.downloadqueue->GetKBps()*1024.0)));
-	response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
-	response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
-	
-	response->AddTag(CECTag(EC_TAG_STATS_CURR_UL_COUNT,
-		(uint32)theApp.uploadqueue->GetUploadQueueLength()));
-	// get the source count
-	uint32 stats[2];
-	theApp.downloadqueue->GetDownloadStats(stats);
-	response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SRC_COUNT, stats[0]));
-	response->AddTag(CECTag(EC_TAG_STATS_CURR_DL_COUNT, stats[1]));
-	response->AddTag(CECTag(EC_TAG_STATS_TOTAL_DL_COUNT,
-		(uint32)theApp.downloadqueue->GetFileCount()));
-	response->AddTag(CECTag(EC_TAG_STATS_UL_QUEUE_LEN,
-		(uint32)theApp.uploadqueue->GetWaitingUserCount()));
-
-	response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT,
-		(uint32)theApp.clientlist->GetBannedCount()));
+	switch (request->GetDetailLevel()) {
+		case EC_DETAIL_FULL:
+			response->AddTag(CECTag(EC_TAG_STATS_UP_OVERHEAD, (uint32)theStats::GetUpOverheadRate()));
+			response->AddTag(CECTag(EC_TAG_STATS_DOWN_OVERHEAD, (uint32)theStats::GetDownOverheadRate()));
+			response->AddTag(CECTag(EC_TAG_STATS_BANNED_COUNT, /*(uint32)*/theStats::GetBannedCount()));
+		case EC_DETAIL_WEB:
+		case EC_DETAIL_CMD:
+			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED, (uint32)theStats::GetUploadRate()));
+			response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED, (uint32)(theStats::GetDownloadRate())));
+			response->AddTag(CECTag(EC_TAG_STATS_UL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxUpload()*1024.0)));
+			response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
+			response->AddTag(CECTag(EC_TAG_STATS_UL_QUEUE_LEN, /*(uint32)*/theStats::GetWaitingUserCount()));
+			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SRC_COUNT, /*(uint32)*/theStats::GetFoundSources()));
+		case EC_DETAIL_UPDATE:
+		case EC_DETAIL_INC_UPDATE:
+			break;
+	};
 
 	return response;
 }
@@ -911,6 +907,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 	CECPacket *response = NULL;
 
 	switch (request->GetDetailLevel()) {
+		case EC_DETAIL_WEB:
 		case EC_DETAIL_FULL: {
 			double dTimestamp = 0.0;
 			if (request->GetTagByName(EC_TAG_STATSGRAPH_LAST) != NULL) {
@@ -1188,15 +1185,21 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_GET_STATSGRAPHS:
 			response = GetStatsGraphs(request);
 			break;
-		case EC_OP_GET_STATSTREE:
+		case EC_OP_GET_STATSTREE: {
+			theApp.statistics->UpdateStatsTree();
 			response = new CECPacket(EC_OP_STATSTREE);
-			response->AddTag(CEC_Tree_Tag(theApp.statistics->statstree.begin().begin()));
-			if (request->GetDetailLevel() == EC_DETAIL_FULL) {
+			CECTag* tree = theStats::GetECStatTree(request->GetTagByNameSafe(EC_TAG_STATTREE_CAPPING)->GetInt8Data());
+			if (tree) {
+				response->AddTag(*tree);
+				delete tree;
+			}
+			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
 				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(PACKAGE_VERSION)));
 				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
 			}
-			break;		
-		
+			break;
+		}
+
 		default:
 			wxASSERT(false);	// we should never get here, but...
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));

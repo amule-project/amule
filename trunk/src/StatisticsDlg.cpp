@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// StatisticsDlg.cpp : implementation file
-//
-
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "StatisticsDlg.h"
 #endif
@@ -34,30 +30,26 @@
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
+#include <wx/thread.h>		// Needed for wxMutexLocker
 
-#include "muuli_wdr.h"		// Needed for statsDlg
-#include "StatisticsDlg.h"	// Interface declarations
-#include "OtherFunctions.h"	// Needed for GetTickCount
+#include <cmath>		// Needed for std::ceil
+
 #include "ColorFrameCtrl.h"	// Needed for CColorFrameCtrl
-#include "Preferences.h"	// Needed for CPreferences
+#include "OtherFunctions.h"	// Needed for CastChild()
 #include "OScopeCtrl.h"		// Needed for COScopeCtrl
-#include "amuleDlg.h"		// Needed for ShowStatistics
-#include "amule.h"		// Needed for theApp
+#include "Preferences.h"	// Needed for thePrefs
+#include "muuli_wdr.h"		// Needed for statsDlg()
+#include "Statistics.h"		// Needed for theStats
+#include "StatisticsDlg.h"	// Interface declarations
 
-// CStatisticsDlg dialog
-
-BEGIN_EVENT_TABLE(CStatisticsDlg,wxPanel)
-END_EVENT_TABLE()
-
-using namespace otherfunctions;
-
+// CStatisticsDlg panel
 
 COLORREF CStatisticsDlg::getColors(int num){ 
 
 	return acrStat[num];
 }
 
-CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
+CStatisticsDlg::CStatisticsDlg(wxWindow* pParent, CStatistics* stats)
 : wxPanel(pParent, -1)
 {
 	wxSizer* content=statsDlg(this,TRUE);
@@ -71,6 +63,7 @@ CStatisticsDlg::CStatisticsDlg(wxWindow* pParent)
 	pscopeConn->graph_type = GRAPH_CONN;
 	stattree	= CastChild( wxT("statTree"),	wxTreeCtrl  );
 
+	m_stats = stats;
 }
 
 
@@ -206,42 +199,6 @@ void CStatisticsDlg::ResetAveragingTime()
  	pscopeUL->InvalidateGraph();
 }
 
-void  CStatisticsDlg::InitTree()
-{
-	
-	wxTreeItemId root=stattree->AddRoot(_("Statistics"));
-	
-	wxASSERT((++theApp.statistics->statstree.begin()).begin() != (++theApp.statistics->statstree.begin()).end());
-	
-	ShowStatistics();
-	
-	// Expand root
-		
-	stattree->Expand(root);
-	
-	// Expand main items
-
-	wxTreeItemIdValue cookie;
-	wxTreeItemId expand_it = stattree->GetFirstChild(root,cookie);
-	
-	while(expand_it.IsOk()) {
-		stattree->Expand(expand_it);
-		// Next on this level
-		expand_it = stattree->GetNextSibling(expand_it);
-	}	
-	
-}
-
-void CStatisticsDlg::ShowStatistics()
-{
-
-	StatsTreeSiblingIterator sib = theApp.statistics->statstree.begin().begin();
-	
-	wxTreeItemId root = stattree->GetRootItem();
-	
-	FillTree(sib,root);
-	
-}
 
 void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)
 {
@@ -252,38 +209,103 @@ void CStatisticsDlg::SetARange(bool SetDownload,int maxValue)
 	}
 }
 
-void CStatisticsDlg::FillTree(StatsTreeSiblingIterator& statssubtree, wxTreeItemId& StatsGUITree) {
+
+void  CStatisticsDlg::InitTree()
+{
+	wxTreeItemId root=stattree->AddRoot(theStats::GetTreeRoot()->GetDisplayString());
+
+	ShowStatistics(true);
+
+#ifndef CLIENT_GUI
+	// Expand root
+	stattree->Expand(root);
+
+	// Expand main items
+	wxTreeItemIdValue cookie;
+	wxTreeItemId expand_it = stattree->GetFirstChild(root,cookie);
+
+	while(expand_it.IsOk()) {
+		stattree->Expand(expand_it);
+		// Next on this level
+		expand_it = stattree->GetNextSibling(expand_it);
+	}
+#endif
+}
+
+
+void CStatisticsDlg::ShowStatistics(bool init)
+{
+	// If it's not the first initialization of the tree, i.e. application startup
+	if (!init) {
+		// Update sorting / get tree via EC
+		m_stats->UpdateStatsTree();
+	}
 	
-	StatsTreeSiblingIterator temp_it = statssubtree.begin();
-	
+	CStatTreeItemBase* treeRoot = theStats::GetTreeRoot();
+	wxTreeItemId root = stattree->GetRootItem();
+	FillTree(treeRoot, root);
+#ifdef CLIENT_GUI
+	if (!init) {
+		static bool firstUpdate = true;
+		if (firstUpdate) {
+			// Expand root
+			root = stattree->GetRootItem();
+			stattree->Expand(root);
+
+			// Expand main items
+			wxTreeItemIdValue cookie;
+			wxTreeItemId expand_it = stattree->GetFirstChild(root,cookie);
+
+			while(expand_it.IsOk()) {
+				stattree->Expand(expand_it);
+				// Next on this level
+				expand_it = stattree->GetNextSibling(expand_it);
+			}
+			firstUpdate = false;
+		}
+	}
+#endif
+}
+
+
+void CStatisticsDlg::FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& StatsGUITree)
+{
+	wxMutexLocker lock(statssubtree->GetLock());
+
+#ifndef CLIENT_GUI
+	StatTreeItemIterator temp_it = statssubtree->GetFirstVisibleChild(thePrefs::GetMaxClientVersions());
+#else
+	StatTreeItemIterator temp_it = statssubtree->GetFirstVisibleChild();
+#endif	
+
 	wxTreeItemIdValue cookie;
 	wxTreeItemId temp_GUI_it = stattree->GetFirstChild(StatsGUITree,cookie);
 	
-	while (temp_it != statssubtree.end()) {
+	while (!statssubtree->IsAtEndOfList(temp_it)) {
 		wxTreeItemId temp_item;
 		if (temp_GUI_it.IsOk()) {
 			// There's already a child there, update it.
-			stattree->SetItemText(temp_GUI_it, (*temp_it));
+			stattree->SetItemText(temp_GUI_it, (*temp_it)->GetDisplayString());
 			temp_item = temp_GUI_it;
 			temp_GUI_it = stattree->GetNextSibling(temp_GUI_it);
 		} else {
 			// No more child on GUI, add them.
-			temp_item = stattree->AppendItem(StatsGUITree,(*temp_it));
+			temp_item = stattree->AppendItem(StatsGUITree,(*temp_it)->GetDisplayString());
 		}
 		// Has childs?
-		if (temp_it.begin() != temp_it.end()) {
-			FillTree(temp_it, temp_item);
+		if ((*temp_it)->HasVisibleChildren()) {
+			FillTree((*temp_it), temp_item);
+		} else {
+			stattree->DeleteChildren(temp_item);
 		}
-		++temp_it;
+		statssubtree->GetNextVisibleChild(temp_it);
 	}	
-	
+
 	// What if GUI has more items than tree?
-	// This can only happen on the dynamic trees, i.e. client versions. 
 	// Delete the extra items.
-	// On a second thought, it CAN'T happen - dynamic trees only add items.
-	// I'll this around just because we might need it later.
 	while (temp_GUI_it.IsOk()) {
 		wxTreeItemId backup_node = stattree->GetNextSibling(temp_GUI_it);
+		stattree->DeleteChildren(temp_GUI_it);
 		stattree->Delete(temp_GUI_it);
 		temp_GUI_it = backup_node;
 	}

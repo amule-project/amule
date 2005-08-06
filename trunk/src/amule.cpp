@@ -76,7 +76,7 @@
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "HTTPDownload.h" // Needed for CHTTPDownloadThreadBase
+#include "HTTPDownload.h"		// Needed for CHTTPDownloadThreadBase
 #include "Server.h"			// Needed for GetListName
 #include "OtherFunctions.h"		// Needed for GetTickCount
 #include "IPFilter.h"			// Needed for CIPFilter
@@ -101,10 +101,10 @@
 #include "updownclient.h"		// Needed for CUpDownClient
 #include "StringFunctions.h"	// Needed for validateURI
 #include "Packet.h"
-#include "Statistics.h"
+#include "Statistics.h"			// Needed for CStatistics
 #include "AICHSyncThread.h"
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include "Format.h"			// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 #include "PartFileConvert.h"
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
@@ -229,17 +229,17 @@ CamuleApp::CamuleApp()
 	listensocket	= NULL;
 	clientudp	= NULL;
 	clientcredits	= NULL;
-	friendlist = NULL;
+	friendlist	= NULL;
 	downloadqueue	= NULL;
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
 	ECServerHandler = NULL;
-	localserver = NULL;
-	glob_prefs = NULL;
+	localserver	= NULL;
+	glob_prefs	= NULL;
 	
 	m_dwPublicIP	= 0;
 
-	webserver_pid = 0;
+	webserver_pid	= 0;
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
@@ -810,7 +810,7 @@ bool CamuleApp::OnInit()
 	CAddFileThread::Start();
 
 	clientlist	= new CClientList();
-	friendlist = new CFriendList();
+	friendlist	= new CFriendList();
 	searchlist	= new CSearchList();
 	knownfiles	= new CKnownFileList();
 	serverlist	= new CServerList();
@@ -1184,10 +1184,10 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	if ( wxFileExists( m_emulesig_path ) ) { wxRemoveFile( m_emulesig_path ); }
 	if ( wxFileExists( m_amulesig_path ) ) { wxRemoveFile( m_amulesig_path ); }
 
-	
+
 	wxTextFile amulesig_out;
 	wxTextFile emulesig_out;
-	
+
 	// Open both files if needed
 	if ( !emulesig_out.Create( m_emulesig_path) ) {
 		AddLogLineM(true, _("Failed to create OnlineSig File"));
@@ -1196,7 +1196,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		m_emulesig_path.Clear();
 		return;
 	}
-	
+
 	if ( !amulesig_out.Create(m_amulesig_path) ) {
 		AddLogLineM(true, _("Failed to create aMule OnlineSig File"));
 		// Will never try again.
@@ -1204,9 +1204,9 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 		m_emulesig_path.Clear();
 		return;
 	}
-	
+
 	wxString emulesig_string;
-	
+
 	if (zero) {
 		emulesig_string = wxT("0\xA0.0|0.0|0");
 		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
@@ -1216,18 +1216,18 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			// We are online
 			emulesig_string =
 				// Connected
-				wxT("1|") 
+				wxT("1|")
 				//Server name
-				+ serverconnect->GetCurrentServer()->GetListName() 
+				+ serverconnect->GetCurrentServer()->GetListName()
 				+ wxT("|")
 				// IP and port of the server
 				+ serverconnect->GetCurrentServer()->GetFullIP()
 				+ wxT("|")
 				+ wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort());
-				
+
 
 			// Now for amule sig
-			
+
 			// Connected. State 1, full info
 			amulesig_out.AddLine(wxT("1"));
 			// Server Name
@@ -1242,63 +1242,59 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			} else {
 				amulesig_out.AddLine(wxT("H"));
 			}
-			
+
 		} else if (serverconnect->IsConnecting()) {
 			emulesig_string = wxT("0");
-			
+
 			// Connecting. State 2, No info.
 			amulesig_out.AddLine(wxT("2\n0\n0\n0\n0"));
-		} else {	
+		} else {
 			// Not connected to a server
 			emulesig_string = wxT("0");
-			
+
 			// Not connected, state 0, no info
 			amulesig_out.AddLine(wxT("0\n0\n0\n0\n0"));
 		}
-		
+
 		emulesig_string += wxT("\xA");
 
 		wxString temp;
-		
+
 		// Datarate for downloads
-		temp = wxString::Format(wxT("%.1f"),downloadqueue->GetKBps());
-		
+		temp = wxString::Format(wxT("%.1f"), theStats::GetDownloadRate() / 1024.0);
+
 		emulesig_string += temp + wxT("|");
 		amulesig_out.AddLine(temp);
 
 		// Datarate for uploads
-		temp = wxString::Format(wxT("%.1f"),uploadqueue->GetDatarate() / 1024.0f);
-		
-		emulesig_string += temp + wxT("|");		
+		temp = wxString::Format(wxT("%.1f"), theStats::GetUploadRate() / 1024.0);
+
+		emulesig_string += temp + wxT("|");
 		amulesig_out.AddLine(temp);
 
 		// Number of users waiting for upload
-		temp = wxString::Format(wxT("%d"),uploadqueue->GetWaitingUserCount());
-		
+		temp = wxString::Format(wxT("%d"), theStats::GetWaitingUserCount());
+
 		emulesig_string += temp; 
 		amulesig_out.AddLine(temp);
-		
+
 		// Number of shared files (not on eMule)
-		amulesig_out.AddLine(wxString::Format(wxT("%d"), sharedfiles->GetCount()));
+		amulesig_out.AddLine(wxString::Format(wxT("%d"), theStats::GetSharedFileCount()));
 	}
-	
+
 	// eMule signature finished here. Write the line to the wxTextFile.
 	emulesig_out.AddLine(emulesig_string);
 
 	// Now for aMule signature extras
-	
+
 	// Nick on the network
 	amulesig_out.AddLine(thePrefs::GetUserNick());
 
 	// Total received in bytes
-	amulesig_out.AddLine( CFormat( wxT("%llu") ) %
-		(uint64)(theApp.statistics->GetSessionReceivedBytes() +
-		thePrefs::GetTotalDownloaded()) );
+	amulesig_out.AddLine( CFormat( wxT("%llu") ) % (theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded()) );
 
 	// Total sent in bytes
-	amulesig_out.AddLine( CFormat( wxT("%llu") ) %
-		(uint64)(theApp.statistics->GetSessionSentBytes() +
-		thePrefs::GetTotalUploaded()) );
+	amulesig_out.AddLine( CFormat( wxT("%llu") ) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded()) );
 
 	// amule version
 #ifdef CVSDATE
@@ -1314,14 +1310,14 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	} else {
         // Total received bytes in session
 		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
-			(uint64)theApp.statistics->GetSessionReceivedBytes() );
+			theStats::GetSessionReceivedBytes() );
 
         // Total sent bytes in session
 		amulesig_out.AddLine( CFormat( wxT("%llu") ) %
-			(uint64)theApp.statistics->GetSessionSentBytes() );
-		
+			theStats::GetSessionSentBytes() );
+
 		// Uptime
-		amulesig_out.AddLine(wxString::Format(wxT("%u"),statistics->GetUptimeSecs()));
+		amulesig_out.AddLine(wxString::Format(wxT("%u"), theStats::GetUptimeSeconds()));
 	}
 
 	// Flush the files
@@ -1481,7 +1477,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 {
 	// Former TimerProc section
 	static uint32	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
-	uint32 msCur = statistics->GetUptimeMsecs();
+	uint32 msCur = theStats::GetUptimeMillis();
 
 	if (!IsRunning()) {
 		return;
@@ -1504,8 +1500,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	uploadqueue->Process();
 	downloadqueue->Process();
 	//theApp.clientcredits->Process();
-	statistics->CompUpDatarateOverhead();
-	statistics->CompDownDatarateOverhead();
+	theStats::CalculateRates();
 
 	if (msCur-msPrevHist > 1000) {
 		// unlike the other loop counters in this function this one will sometimes
@@ -1526,7 +1521,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		clientlist->Process();
 		
 		// Publish files to server if needed.
-		theApp.sharedfiles->Process();
+		sharedfiles->Process();
 		
 		#ifdef __COMPILE_KAD__
 		if( Kademlia::CKademlia::isRunning() ) {
@@ -1552,8 +1547,6 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		listensocket->Process();
-		// Stats tree is updated every 5 seconds. Maybe we should make it match prefs.
-		statistics->UpdateStatsTree();
 	}
 
 	if (msCur-msPrevSave >= 60000) {
@@ -1562,10 +1555,10 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		
 		// Save total upload/download to preferences
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer = wxString::Format( wxT("%llu"), theApp.statistics->GetSessionSentBytes()+thePrefs::GetTotalUploaded() );
+		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 
 		// Write changes to file
@@ -1683,8 +1676,8 @@ void CamuleApp::ShutDown() {
 		knownfiles->Save();
 	}
 
-	thePrefs::Add2TotalDownloaded(theApp.statistics->GetSessionReceivedBytes());
-	thePrefs::Add2TotalUploaded(theApp.statistics->GetSessionSentBytes());
+	thePrefs::Add2TotalDownloaded(theStats::GetSessionReceivedBytes());
+	thePrefs::Add2TotalUploaded(theStats::GetSessionSentBytes());
 
 	if (glob_prefs) {
 		glob_prefs->Save();

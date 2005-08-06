@@ -39,6 +39,7 @@
 #include "OtherFunctions.h"
 #include "RLE.h"
 
+#include <set>
 #include <map>
 #include <list>
 #include <vector>
@@ -399,10 +400,6 @@ class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_
 };
 
 class CUpQueueRem {
-		uint32 m_waiting_user_count;
-		uint32 m_datarate;
-		uint32 m_data_overhead;
-
 		CUpDownClientListRem m_up_list, m_wait_list;
 	public:
 		CUpQueueRem(CRemoteConnect *);
@@ -410,32 +407,19 @@ class CUpQueueRem {
 		bool ReQueryUp() { return m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		bool ReQueryWait() { return m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		
-		uint32 GetWaitingUserCount() { return m_waiting_user_count; }
-		uint32 GetDatarate() { return m_datarate; }
-		uint32 GetUpDatarateOverhead() { return m_data_overhead; }
-		
 		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }
 		CUpDownClient *GetNextFromUploadList(POSITION &curpos) { return m_up_list.GetNextFromList(curpos); }
 		
 		POSITION GetFirstFromWaitingList() { return m_wait_list.GetFirstFromList(); }
 		CUpDownClient *GetNextFromWaitingList(POSITION &curpos) { return m_wait_list.GetNextFromList(curpos); }
-		
-		void UpdateStats(CEC_Stats_Tag *);
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
-		float m_kbps;
-		uint32 m_data_overhead;
-		
 		std::list<CUpDownClient *>::iterator it;
-		
 		std::map<CMD4Hash, PartFileEncoderData> m_enc_map;
 	public:
 		CDownQueueRem(CRemoteConnect *);
 		
-		float GetKBps() { return m_kbps; }
-		uint32 GetDownDatarateOverhead() { return m_data_overhead; }
-
 		uint32 GetFileCount() { return GetCount(); }
 		CKnownFile *GetFileByID(CMD4Hash id) { return (CKnownFile *)GetByID(id); }
 		CPartFile *GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
@@ -460,7 +444,6 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		void ResetCatParts(int cat);
 		void AddSearchToDownload(CSearchFile* toadd, uint8 category);
 		
-		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// template
 		//
@@ -526,7 +509,6 @@ class CClientCreditsRem {
 
 class CClientListRem {
 		CRemoteConnect *m_conn;
-		uint32 m_banned_count;
 
 		//
 		// map of user_ID -> client
@@ -535,9 +517,7 @@ class CClientListRem {
 		CClientListRem(CRemoteConnect *);
 		
 		const std::multimap<uint32, CUpDownClient*>& GetClientList() { return m_client_list; }
-		uint32 GetBannedCount() { return m_banned_count; }
 		
-		void UpdateStats(CEC_Stats_Tag *);
 		//
 		// Actions
 		//
@@ -586,12 +566,6 @@ class CListenSocketRem {
 		uint32 m_peak_connections;
 	public:
 		uint32 GetPeakConnections() { return m_peak_connections; }
-};
-
-class CStatisticsRem {
-	CStatistics *m_stat_data;
-	public:
-		void UpdateStats(CEC_Stats_Tag *);
 };
 
 #endif /* AMULE_REMOTE_GUI_H */

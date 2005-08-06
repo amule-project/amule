@@ -30,7 +30,7 @@
 #pragma interface "ClientList.h"
 #endif
 
-#include "Types.h"			// Needed for uint16 and uint32
+#include "Types.h"		// Needed for uint16 and uint32
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 
@@ -53,9 +53,6 @@ enum buddyState
 	Connecting,
 	Connected
 };
-
-
-typedef std::map<wxString, uint32> aMuleOSInfoMap;
 
 
 #define BAN_CLEANUP_TIME	1200000 // 20 min
@@ -143,11 +140,6 @@ public:
 
 
 	/**
-	 * Returns the number of banned clients.
-	 */
-	uint16	GetBannedCount() const;
-
-	/**
 	 * Returns the number of listed clients.
 	 */
 	uint32	GetClientCount() const;
@@ -185,11 +177,6 @@ public:
 	//! The list-type used to store clients IPs and other information
 	typedef std::map<uint32, uint32> ClientMap;
 	
-	/**
-	 * Function for generating statistics about the current clients.
-	 */
-	void	GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap); 
-
 
 	/**
 	 * Adds a client to the list of tracked clients.
