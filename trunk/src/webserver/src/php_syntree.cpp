@@ -340,8 +340,12 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
 	for(int i = 0; i < param_count; i++) {
-		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
-		php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &params[i].var->value);
+		if ( i < array_get_size(arg_array) ) {
+			PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
+			php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &params[i].var->value);
+		} else {
+			// put default value
+		}
 	}
 }
 
