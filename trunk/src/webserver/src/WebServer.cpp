@@ -3534,6 +3534,9 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			session->m_loggedin = (PwHash == webInterface->m_AdminPass);
 			if ( session->m_loggedin ) {
 				filename = _("index.html");
+				Print(_("Password ok\n"));
+			} else {
+				Print(_("Password bad\n"));
 			}
 		}
 	}
