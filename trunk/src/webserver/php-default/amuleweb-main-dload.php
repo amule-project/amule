@@ -68,10 +68,10 @@ function MM_nbGroup(event, grpName) { //v6.0
 </script>
 </head>
 <script language="JavaScript" type="text/JavaScript">
-function formDownloadSubmit()
+function formCommandSubmit(command)
 {
 	var frm=document.forms.mainform
-	frm.command.value="download"
+	frm.command.value=command
 	frm.submit()
 }
 
@@ -84,11 +84,11 @@ function formDownloadSubmit()
     <td width="96" height="20"><input type="hidden" name="command"></td>
     <td width="468"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td><a href="javascript:;" target="mainFrame" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="pause.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:;" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:;" target="mainFrame" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="up.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:;" target="mainFrame" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="down.jpeg" alt="" name="down" width="50" height="20" border="0" onload=""></a></td>
-        <td><a href="javascript:;" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
+        <td><a href="javascript:formCommandSubmit('pause');" target="mainFrame" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="pause.jpeg" border="0" alt="" onLoad=""></a></td>
+        <td><a href="javascript:formCommandSubmit('resume');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
+        <td><a href="javascript:formCommandSubmit('prioup');" target="mainFrame" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="up.jpeg" border="0" alt="" onLoad=""></a></td>
+        <td><a href="javascript:formCommandSubmit('priodown');" target="mainFrame" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="down.jpeg" alt="" name="down" width="50" height="20" border="0" onload=""></a></td>
+        <td><a href="javascript:formCommandSubmit('delete');" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
       </tr>
     </table></td>
     <td width="273">
@@ -181,13 +181,14 @@ function formDownloadSubmit()
 		//
 		// perform command before processing content
 		//
-		var_dump($HTTP_GET_VARS);
+		//var_dump($HTTP_GET_VARS);
 		if ( $HTTP_GET_VARS["command"] != "") {
 			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
-					var_dump($name);
+					//var_dump($name);
+					amule_do_download_cmd($name, $HTTP_GET_VARS["command"]);
 				}
 			}
 		}
