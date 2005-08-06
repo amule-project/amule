@@ -120,9 +120,9 @@ wxString CastItoXBytes( uint64 count )
 {
 
 	if (count < 1024)
-		return wxString::Format( wxT("%.0f %s"), (float)count, _("Bytes") );
+		return wxString::Format( wxT("%.0f %s"), (float)count, _("bytes") );
 	else if (count < 1048576)
-		return wxString::Format( wxT("%.0f %s"), (float)count/1024, _("KB") );
+		return wxString::Format( wxT("%.0f %s"), (float)count/1024, _("kB") );
 	else if (count < 1073741824)
 		return wxString::Format( wxT("%.2f %s"), (float)count/1048576, _("MB") );
 	else if (count < 1099511627776LL)
@@ -140,7 +140,7 @@ wxString CastItoIShort(uint64 count)
 	if (count < 1000)
 		return wxString::Format(wxT("%u"), (unsigned)count);
 	else if (count < 1000000)
-		return wxString::Format(wxT("%.0f%s"),(float)count/1000, _("K") );
+		return wxString::Format(wxT("%.0f%s"),(float)count/1000, _("k") );
 	else if (count < 1000000000)
 		return wxString::Format(wxT("%.2f%s"),(float)count/1000000, _("M") );
 	else if (count < 1000000000000LL)
@@ -152,7 +152,18 @@ wxString CastItoIShort(uint64 count)
 }
 
 
-// Make a time value in millieseconds suitable for displaying
+wxString CastItoSpeed(uint32 bytes)
+{
+	if (bytes < 1024)
+		return wxString::Format(wxT("%u %s"), bytes, _("bytes/sec"));
+	else if (bytes < 1048576)
+		return wxString::Format(wxT("%.2f %s"), bytes / 1024.0, _("kB/s"));
+	else
+		return wxString::Format(wxT("%.2f %s"), bytes / 1048576.0, _("MB/s"));
+}
+
+
+// Make a time value in seconds suitable for displaying
 wxString CastSecondsToHM(sint32 count)
 {
 	
@@ -171,7 +182,7 @@ wxString CastSecondsToHM(sint32 count)
 }
 
 
-// Examins a filename and determines the filetype
+// Examines a filename and determines the filetype
 FileType GetFiletype(const wxString& filename)
 {
 	if( filename.Find('.' ) == -1 )
