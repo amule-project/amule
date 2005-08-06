@@ -50,6 +50,7 @@
 
 #include "wx/intl.h"		// Needed for _()
 #include "KnownFile.h"		// Needed for PS_*
+#include "Format.h"		// Needed for CFormat
 #endif
 
 #if !defined(EC_REMOTE) || defined(CLIENT_GUI)
@@ -63,6 +64,7 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_leve
 	switch (detail_level) {
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_INC_UPDATE:
+		case EC_DETAIL_WEB:
 		case EC_DETAIL_FULL:
 			AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->incomingpath));
 			AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
@@ -557,6 +559,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
 			}
 			break;
+		case EC_DETAIL_WEB:
 		case EC_DETAIL_FULL:
 			if ((tmpInt = server->GetPing()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_PING, tmpInt));
@@ -865,18 +868,6 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) :
 	}
 }
 
-//
-// Tree
-//
-CEC_Tree_Tag::CEC_Tree_Tag(const StatsTreeSiblingIterator& tr) : CECTag(EC_TAG_TREE, *tr)
-{
-	StatsTreeSiblingIterator temp_it = tr.begin();
-	while (temp_it != tr.end()) {
-		AddTag(CEC_Tree_Tag(temp_it));
-		++temp_it;
-	}
-}
-
 #endif /* ! EC_REMOTE */
 
 //
@@ -900,3 +891,85 @@ CEC_Search_Tag::CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxStr
 		AddTag(CECTag(EC_TAG_SEARCH_MAX_SIZE, max_size));
 	}
 }
+
+
+#ifdef EC_REMOTE
+
+void FormatValue(CFormat& format, const CECTag* tag)
+{
+	wxASSERT(tag->GetTagName() == EC_TAG_STAT_NODE_VALUE);
+
+	wxString extra;
+	const CECTag *tmp_tag = tag->GetTagByName(EC_TAG_STAT_NODE_VALUE);
+	if (tmp_tag) {
+		wxString tmp_fmt;
+		const CECTag* tmp_vt = tmp_tag->GetTagByName(EC_TAG_STAT_VALUE_TYPE);
+		EC_STATTREE_NODE_VALUE_TYPE tmp_valueType = tmp_vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)tmp_vt->GetInt8Data() : EC_VALUE_INTEGER;
+		switch (tmp_valueType) {
+			case EC_VALUE_INTEGER:
+				tmp_fmt = wxT("%llu");
+				break;
+			case EC_VALUE_DOUBLE:
+				tmp_fmt = wxT("%.2f%%");	// it's used for percentages
+				break;
+			default:
+				tmp_fmt = wxT("%s");
+		}
+		CFormat tmp_format(wxT(" (") + tmp_fmt + wxT(")"));
+		FormatValue(tmp_format, tmp_tag);
+		extra = tmp_format.GetString();
+	}
+
+	const CECTag* vt = tag->GetTagByName(EC_TAG_STAT_VALUE_TYPE);
+	EC_STATTREE_NODE_VALUE_TYPE valueType = vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)vt->GetInt8Data() : EC_VALUE_INTEGER;
+	switch (valueType) {
+		case EC_VALUE_INTEGER:
+			format = format % tag->GetInt64Data();
+			break;
+		case EC_VALUE_ISTRING:
+			format = format % (wxString::Format(wxT("%llu"), tag->GetInt64Data()) + extra);
+			break;
+		case EC_VALUE_BYTES:
+			format = format % (otherfunctions::CastItoXBytes(tag->GetInt64Data()) + extra);
+			break;
+		case EC_VALUE_ISHORT:
+			format = format % (otherfunctions::CastItoIShort(tag->GetInt64Data()) + extra);
+			break;
+		case EC_VALUE_TIME:
+			format = format % (otherfunctions::CastSecondsToHM(tag->GetInt32Data()) + extra);
+			break;
+		case EC_VALUE_SPEED:
+			format = format % (otherfunctions::CastItoSpeed(tag->GetInt32Data()) + extra);
+			break;
+		case EC_VALUE_STRING:
+			format = format % (wxGetTranslation(tag->GetStringData()) + extra);
+			break;
+		case EC_VALUE_DOUBLE:
+			format = format % tag->GetDoubleData();
+			break;
+		default:
+			wxASSERT(0);
+	}
+}
+
+wxString CEC_StatTree_Node_Tag::GetDisplayString() const
+{
+	wxString en_label = GetStringData();
+	wxString my_label = wxGetTranslation(en_label);
+	// This is needed for client names, for example
+	if (my_label == en_label) {
+		if (en_label.Right(4) == wxT(": %s")) {
+			my_label = wxGetTranslation(en_label.Mid(0, en_label.Length() - 4)) + wxString(wxT(": %s"));
+		}
+	}
+	CFormat label(my_label);
+	for (int i = 0; i < GetTagCount(); ++i) {
+		const CECTag *tmp = GetTagByIndex(i);
+		if (tmp->GetTagName() == EC_TAG_STAT_NODE_VALUE) {
+			FormatValue(label, tmp);
+		}
+	}
+	return label.GetString();
+}
+
+#endif /* EC_REMOTE */

@@ -48,7 +48,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"
 
@@ -358,7 +358,8 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 		delete [] tempbuf;
 		CPacket* packet = new CPacket(&data,OP_EDONKEYPROT,OP_SENDINGPART);
 	
-		theApp.statistics->AddUpDataOverheadFileRequest(24);
+		theStats::AddUpOverheadFileRequest(24);
+		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
 		m_socket->SendPacket(packet,true,false, nPacketSize);
 	}
 }
@@ -413,7 +414,8 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		totalPayloadSize += payloadSize;
 
 		// put packet directly on socket
-		theApp.statistics->AddUpDataOverheadFileRequest(24);
+		theStats::AddUpOverheadFileRequest(24);
+		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
 		m_socket->SendPacket(packet,true,false, payloadSize);			
 	}
 	delete[] output;
@@ -667,7 +669,7 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	
 	// Send this inmediately, don't queue.
 	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0);
-	theApp.statistics->AddUpDataOverheadFileRequest(pPacket->GetPacketSize());
+	theStats::AddUpOverheadFileRequest(pPacket->GetPacketSize());
 	SendPacket(pPacket, true, true);
 	
 	theApp.uploadqueue->AddClientToQueue(this);
@@ -721,7 +723,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	}
 	CPacket* packet = new CPacket(&data);	
 	packet->SetOpCode(OP_HASHSETANSWER);
-	theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 }
 
@@ -760,7 +762,7 @@ void CUpDownClient::SendRankingInfo(){
 	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_QUEUERANKING);
 	
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 }
 
@@ -787,7 +789,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_FILEDESC"));	
 	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
 	packet->SetOpCode(OP_FILEDESC);
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 }
 
@@ -799,7 +801,7 @@ void  CUpDownClient::UnBan(){
 	SetUploadState(US_NONE);
 	ClearWaitStartTime();
 	
-	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
+	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
 }
 
 void CUpDownClient::Ban(){
@@ -810,7 +812,7 @@ void CUpDownClient::Ban(){
 	
 	SetUploadState(US_BANNED);
 	
-	Notify_ShowQueueCount(theApp.uploadqueue->GetWaitingUserCount());
+	Notify_ShowQueueCount(theStats::GetWaitingUserCount());
 	Notify_QlistRefreshClient(this);
 }
 

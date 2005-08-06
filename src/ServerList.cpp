@@ -29,14 +29,14 @@
 
 #include "Types.h"
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#include <wx/defs.h>			// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/filename.h>	// Needed for wxFileName
+#include <wx/filename.h>		// Needed for wxFileName
 #include <wx/url.h>			// Needed for wxURL
 #include <wx/tokenzr.h>
 
@@ -44,18 +44,18 @@
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ServerConnect.h"		// Needed for CServerConnect
-#include "Server.h"				// Needed for CServer and SRV_PR_*
+#include "Server.h"			// Needed for CServer and SRV_PR_*
 #include "OtherStructs.h"		// Needed for ServerMet_Struct
 #include "OPCodes.h"			// Needed for MET_HEADER
-#include "CFile.h"				// Needed for CFile
+#include "CFile.h"			// Needed for CFile
 #include "HTTPDownload.h"		// Needed for HTTPThread
-#include "Preferences.h"		// Needed for CPreferences
-#include "amule.h"				// Needed for theApp
-#include "GetTickCount.h"		// Neeed for GetTickCount
-#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
-#include "Statistics.h"			// Needed for CStatistics
-#include "StringFunctions.h"	// Needed for unicode2char 
-#include "Packet.h"				// Needed for CTag
+#include "Preferences.h"		// Needed for thePrefs
+#include "amule.h"			// Needed for theApp
+#include "GetTickCount.h"		// Needed for GetTickCount
+#include "NetworkFunctions.h"		// Needed for StringIPtoUint32
+#include "Statistics.h"			// Needed for theStats
+#include "StringFunctions.h"		// Needed for unicode2char 
+#include "Packet.h"			// Needed for CTag
 #include "Logger.h"
 #include "Format.h"
 #include "IPFilter.h"
@@ -65,7 +65,6 @@ CServerList::CServerList()
 {
 	m_serverpos = m_servers.end();
 	m_statserverpos = m_servers.end();
-	delservercount = 0;
 	m_nLastED2KServerLinkCheck = ::GetTickCount();
 }
 
@@ -126,7 +125,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		uint32 iAddCount = 0;
 
 		for ( uint32 j = 0; j < fservercount; ++j ) {
-			sbuffer.ip			= servermet.ReadUInt32();
+			sbuffer.ip		= servermet.ReadUInt32();
 			sbuffer.port		= servermet.ReadUInt16();
 			sbuffer.tagcount	= servermet.ReadUInt32();
 			
@@ -204,7 +203,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 				!in_server->HasDynIP() &&
 				(
 					!IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ||
-					theApp.ipfilter->IsFiltered( in_server->GetIP() )
+					theApp.ipfilter->IsFiltered( in_server->GetIP(), true )
 				)
 	          ) {
 		if ( fromUser ) {
@@ -234,7 +233,9 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 		
 		return false;
 	}
-	
+
+	theStats::AddServer();
+
 	m_servers.push_back(in_server);
 	NotifyObservers( EventType( EventType::INSERTED, in_server ) );
 
@@ -282,7 +283,7 @@ void CServerList::ServerStats()
 		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
 		Notify_ServerRefresh(ping_server);
-		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		
 		ping_server->SetLastDescPingedCount(false);
@@ -295,7 +296,7 @@ void CServerList::ServerStats()
 			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
 			packet = new CPacket( OP_SERVER_DESC_REQ,4);
 			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
-			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
 			ping_server->SetLastDescPingedCount(true);
@@ -324,7 +325,7 @@ void CServerList::RemoveServer(CServer* in_server)
 				++m_statserverpos;
 			}
 			m_servers.erase(it);
-			++delservercount;
+			theStats::DeleteServer();
 			delete in_server;
 		}
 	}
@@ -335,7 +336,7 @@ void CServerList::RemoveAllServers()
 {
 	NotifyObservers( EventType( EventType::CLEARED ) );
 	
-	delservercount += m_servers.size();
+	theStats::DeleteAllServers();
 	// no connection, safely remove all servers
 	while ( !m_servers.empty() ) {
 		delete m_servers.back();
@@ -346,9 +347,8 @@ void CServerList::RemoveAllServers()
 }
 
 
-void CServerList::GetStatus(uint32 &total, uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)
+void CServerList::GetStatus(uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile,float &occ)
 {
-	total = m_servers.size();
 	failed = 0;
 	user = 0;
 	file = 0;
@@ -815,7 +815,7 @@ uint32 CServerList::GetAvgFile() const
 	}
 	//If the user count is a little low, don't send back a average..
 	//I added 50 to the count as many servers do not allow a large amount of files to be shared..
-	//Therefore the extimate here will be lower then the actual.
+	//Therefore the estimate here will be lower then the actual.
 	//I would love to add a way for the client to send some statistics back so we could see the real
 	//values here..
 	if ( totaluser > 500000 ) {

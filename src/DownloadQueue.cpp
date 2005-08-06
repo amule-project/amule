@@ -50,7 +50,7 @@
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "NetworkFunctions.h" // Needed for CAsyncDNS
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 #include "IPFilter.h"
@@ -165,14 +165,6 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 		DoSortByPriority();
 		CheckDiskspace( path );
 	}
-}
-
-
-float CDownloadQueue::GetKBps() const
-{
-	wxMutexLocker lock( m_mutex );
-
-	return m_datarate / 1024.0;
 }
 
 
@@ -900,7 +892,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
 			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
-			theApp.statistics->AddUpDataOverheadServer(size);
+			theStats::AddUpOverheadServer(size);
 		}
 
 		// next TCP frame with up to 15 source requests is allowed to be sent in..
@@ -915,19 +907,6 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 	wxMutexLocker lock( m_mutex );
 	
 	m_localServerReqQueue.push_back(sender);
-}
-
-
-void CDownloadQueue::GetDownloadStats(uint32 results[]) const
-{
-	results[0] = results[1] = 0;
-
-	for ( uint16 i = 0; i < GetFileCount(); i++ ) {
-		CPartFile* file = GetFileByIndex( i );
-		
-		results[0] += file->GetSourceCount();
-		results[1] += file->GetTransferingSrcCount();
-	}
 }
 
 
@@ -1011,10 +990,10 @@ void CDownloadQueue::SetCatStatus(uint8 cat, int newstatus)
 		
 	for ( ; it != files.end(); it++ ) {
 		switch ( newstatus ) {
-			case MP_CANCEL:		(*it)->Delete(); 		break;
-			case MP_PAUSE:		(*it)->PauseFile();		break;
-			case MP_STOP:		(*it)->StopFile();		break;
-			case MP_RESUME:		(*it)->ResumeFile();	break;
+			case MP_CANCEL:	(*it)->Delete(); 	break;
+			case MP_PAUSE:	(*it)->PauseFile();	break;
+			case MP_STOP:	(*it)->StopFile();	break;
+			case MP_RESUME:	(*it)->ResumeFile();	break;
 		}
 	}
 }
@@ -1143,7 +1122,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 		packet.SetOpCode(OP_GLOBGETSOURCES2);
 	}
 	
-	theApp.statistics->AddUpDataOverheadServer(packet.GetPacketSize());
+	theStats::AddUpOverheadServer(packet.GetPacketSize());
 	theApp.serverconnect->SendUDPPacket(&packet,m_udpserver,false);
 
 	m_cRequestsSentToServer += iFileIDs;

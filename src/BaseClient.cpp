@@ -50,7 +50,7 @@
 #include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
-#include "Statistics.h"
+#include "Statistics.h"		// Needed for theStats
 #include "Format.h"		// Needed for CFormat
 #include "ClientUDPSocket.h"
 #include "Logger.h"
@@ -74,11 +74,16 @@ static wxString empty_name = wxT("[Empty User Name]");
 
 CUpDownClient::CUpDownClient(CClientReqSocket* sender)
 {
+#ifdef __DEBUG__
+	m_socket = NULL;
+	SetSocket(sender);
+#else
 	m_socket = sender;
+#endif
 	Init();
 }
 
-CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid,uint32 in_serverip, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend)
+CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverip, uint16 in_serverport, CPartFile* in_reqfile, bool ed2kID, bool checkfriend)
 {
 	m_socket = NULL;
 	Init();
@@ -234,6 +239,9 @@ void CUpDownClient::Init()
 		SetIP(0);
 	}
 
+	/* Statistics */
+	m_lastClientSoft = (uint32)(-1);
+	m_lastClientVersion = 0;
 }
 
 
@@ -260,7 +268,7 @@ CUpDownClient::~CUpDownClient()
 		// We're going down anyway....
 		m_socket->Destroy();
 		// Paranoia
-		m_socket = NULL;
+		SetSocket(NULL);
 	}
 
 
@@ -291,6 +299,8 @@ CUpDownClient::~CUpDownClient()
 		delete m_pReqFileAICHHash;
 		m_pReqFileAICHHash = NULL;
 	}
+
+	UpdateStats(true);
 }
 
 void CUpDownClient::ClearHelloProperties()
@@ -348,7 +358,7 @@ void CUpDownClient::Safe_Delete()
 		m_socket->SetClient( NULL );
 		m_socket->Safe_Delete();
 		// Paranoia
-		m_socket = NULL;
+		SetSocket(NULL);
 	}
 
 	// Schedule the client for deletion if we still have the clientlist
@@ -626,7 +636,7 @@ bool CUpDownClient::SendHelloPacket() {
 	
 	CPacket* packet = new CPacket(&data);
 	packet->SetOpCode(OP_HELLO);
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLO to ") + GetFullIP() );
@@ -716,7 +726,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 	
 	if (m_socket) {
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		
 		if (!bAnswer) {
@@ -734,7 +744,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 {
 	uint8 protocol_version;
-	
+
 	const CMemFile data((byte*)pachPacket,nSize);
 
 	// The version number part of this packet will soon be useless since
@@ -756,16 +766,18 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 					// It was recycled from a mod's tag, so if the other side
 					// is not supporting OS Info, we're seriously fucked up :)					
 					m_sClientOSInfo = temptag.GetStr();
-					
+
 					// If we didn't send our OSInfo to this client, just send it
 					if (!m_OSInfo_sent) {
 						SendMuleInfoPacket(false,true);
 					}
-				
+
+					UpdateStats();
+
 					break;	
-				
+
 				// Your ad... er... I mean TAG, here
-					
+
 				default:
 					break;
 			}
@@ -778,7 +790,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 		if( m_byEmuleVersion == 0x2B ) {
 			m_byEmuleVersion = 0x22;
 		}
-		
+
 		if (!(m_bEmuleProtocol = (protocol_version == EMULE_PROTOCOL))) {
 			return false;	
 		}
@@ -858,7 +870,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
 					break;
 			}
 		}				
-	
+
 		if( m_byDataCompVer == 0 ){
 			m_bySourceExchangeVer = 0;
 			m_byExtendedRequestsVer = 0;
@@ -908,7 +920,7 @@ void CUpDownClient::SendHelloAnswer()
 	CPacket* packet = new CPacket(&data);
 	packet->SetOpCode(OP_HELLOANSWER);
 
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP() );
@@ -1184,7 +1196,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		m_socket->Safe_Delete();
 	}
 
-	m_socket = NULL;
+	SetSocket(NULL);
 
 	if (m_iFileListRequested){
 		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
@@ -1330,7 +1342,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			data.WriteUInt32(m_nUserIDHybrid);
 			CPacket* packet = new CPacket(&data);
 			packet->SetOpCode(OP_CALLBACKREQUEST);
-			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp.serverconnect->SendPacket(packet);
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
 			//printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
@@ -1370,7 +1382,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
 						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i)"),packet->GetPacketSize()));						
-						theApp.statistics->AddUpDataOverheadKad(packet->GetRealPacketSize());
+						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
 						printf("Searching buddy for lowid connection\n");
@@ -1462,14 +1474,14 @@ void CUpDownClient::ConnectionEstablished()
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
 				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
-				theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ") );
 			}
 	}
 	if (m_iFileListRequested == 1) {
 		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		if (m_fSharedDirectories) {
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRS") );
@@ -1503,11 +1515,11 @@ int CUpDownClient::GetHashType() const
 
 void CUpDownClient::ReGetClientSoft()
 {
-
 	if (m_Username.IsEmpty()) {
 		m_clientSoft=SO_UNKNOWN;
 		m_clientVerString = _("Unknown");
 		m_SoftLen = m_clientVerString.Length();
+		UpdateStats();
 		return;
 	}
 
@@ -1543,13 +1555,13 @@ void CUpDownClient::ReGetClientSoft()
 		}		
 		// Now, what if we don't know this SO_ID?
 		if (m_clientVerString.IsEmpty()) {
-			if(m_bIsML){
+			if(m_bIsML) {
 				m_clientSoft = SO_MLDONKEY;
 				m_clientVerString = GetSoftName(m_clientSoft);
-			} else if (m_bIsHybrid){
+			} else if (m_bIsHybrid) {
 				m_clientSoft = SO_EDONKEYHYBRID;
 				m_clientVerString = GetSoftName(m_clientSoft);
-			} else if (m_byCompatibleClient != 0){
+			} else if (m_byCompatibleClient != 0) {
 				m_clientSoft = SO_COMPAT_UNK;
 				#ifdef __DEBUG__
 				printf("Compatible client found with ET_COMPATIBLECLIENT of 0x%x\n",m_byCompatibleClient);
@@ -1566,7 +1578,7 @@ void CUpDownClient::ReGetClientSoft()
 
 		m_SoftLen = m_clientVerString.Length();
 
-		if (m_byEmuleVersion == 0){
+		if (m_byEmuleVersion == 0) {
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,0,0);
 		} else if (m_byEmuleVersion != 0x99) {
 			uint32 nClientMinVersion = (m_byEmuleVersion >> 4)*10 + (m_byEmuleVersion & 0x0f);
@@ -1626,10 +1638,7 @@ void CUpDownClient::ReGetClientSoft()
 					break;
 			}
 		}
-		return;
-	}
-
-	if (m_bIsHybrid){
+	} else if (m_bIsHybrid) {
 		// seen:
 		// 105010	50.10
 		// 10501	50.1
@@ -1643,25 +1652,25 @@ void CUpDownClient::ReGetClientSoft()
 		uint32 nClientMajVersion;
 		uint32 nClientMinVersion;
 		uint32 nClientUpVersion;
-		if (m_nClientVersion > 100000){
+		if (m_nClientVersion > 100000) {
 			uint32 uMaj = m_nClientVersion/100000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = (m_nClientVersion - uMaj*100000) / 100;
 			nClientUpVersion = m_nClientVersion % 100;
 		}
-		else if (m_nClientVersion > 10000){
+		else if (m_nClientVersion > 10000) {
 			uint32 uMaj = m_nClientVersion/10000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = (m_nClientVersion - uMaj*10000) / 10;
 			nClientUpVersion = m_nClientVersion % 10;
 		}
-		else if (m_nClientVersion > 1000){
+		else if (m_nClientVersion > 1000) {
 			uint32 uMaj = m_nClientVersion/1000;
 			nClientMajVersion = uMaj - 1;
 			nClientMinVersion = m_nClientVersion - uMaj*1000;
 			nClientUpVersion = 0;
 		}
-		else if (m_nClientVersion > 100){
+		else if (m_nClientVersion > 100) {
 			uint32 uMin = m_nClientVersion/10;
 			nClientMajVersion = 0;
 			nClientMinVersion = uMin;
@@ -1678,38 +1687,29 @@ void CUpDownClient::ReGetClientSoft()
 		} else {
 			m_clientVerString += wxString::Format(wxT(" v%u.%u"), nClientMajVersion, nClientMinVersion);
 		}
-
-		return;
-	}
-
-	if (m_bIsML || (iHashType == SO_MLDONKEY)){
+	} else if (m_bIsML || (iHashType == SO_MLDONKEY)) {
 		m_clientSoft = SO_MLDONKEY;
 		m_clientVerString = GetSoftName(m_clientSoft);
 		m_SoftLen = m_clientVerString.Length();
 		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
-		return;
-	}
-
-
-	if (iHashType == SO_OLDEMULE){
+	} else if (iHashType == SO_OLDEMULE) {
 		m_clientSoft = SO_OLDEMULE;
 		m_clientVerString = GetSoftName(m_clientSoft);
 		m_SoftLen = m_clientVerString.Length();
 		uint32 nClientMinVersion = m_nClientVersion;
 		m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
 		m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
-		return;
+	} else {
+		m_clientSoft = SO_EDONKEY;
+		m_clientVerString = GetSoftName(m_clientSoft);
+		m_SoftLen = m_clientVerString.Length();
+		m_nClientVersion *= 10;
+		m_clientVerString += wxString::Format(wxT(" v%u.%u"), m_nClientVersion / 100000, (m_nClientVersion / 1000) % 100);
 	}
 
-	m_clientSoft = SO_EDONKEY;
-	m_clientVerString = GetSoftName(m_clientSoft);
-	m_SoftLen = m_clientVerString.Length();
-	uint32 nClientMinVersion = m_nClientVersion;
-	m_nClientVersion = MAKE_CLIENT_VERSION(0, nClientMinVersion, 0);
-	m_clientVerString += wxString::Format(wxT(" v0.%u"), nClientMinVersion);
-
+	UpdateStats();
 }
 
 void CUpDownClient::RequestSharedFileList()
@@ -1797,7 +1797,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_PUBLICKEY);
 
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
 	
@@ -1861,7 +1861,7 @@ void CUpDownClient::SendSignaturePacket(){
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 	packet->SetOpCode(OP_SIGNATURE);
 
-	theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
 	
@@ -1969,7 +1969,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		CPacket* packet = new CPacket(&data, OP_EMULEPROT);
 		packet->SetOpCode(OP_SECIDENTSTATE);
 
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE") );
@@ -2053,7 +2053,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 void CUpDownClient::SendPublicIPRequest(){
 	if (IsConnected()){
 		CPacket* packet = new CPacket(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICIP_REQ") );
@@ -2206,7 +2206,7 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 		data.WriteString(message);
 		CPacket* packet = new CPacket(&data);
 		packet->SetOpCode(OP_MESSAGE);
-		theApp.statistics->AddUpDataOverheadOther(packet->GetPacketSize());
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet, true, true);
 		return true;
 	} else {
@@ -2237,6 +2237,38 @@ bool CUpDownClient::SendBuddyPing() {
 	AddDebugLogLineM(false, logLocalClient,wxT("Local Client: OP_BuddyPing"));
 	SetLastBuddyPingPongTime();	
 	CPacket* buddyPing = new CPacket(OP_BUDDYPING, 0, OP_EMULEPROT);
-	theApp.statistics->AddUpDataOverheadOther(buddyPing->GetPacketSize());
+	theStats::AddUpOverheadKad(buddyPing->GetPacketSize());
 	return SafeSendPacket(buddyPing);
+}
+
+
+/* Statistics */
+
+void CUpDownClient::UpdateStats(bool removing)
+{
+	if (removing) {
+		if (m_lastClientSoft == SO_UNKNOWN) {
+			theStats::RemoveUnknownClient();
+		} else if (m_lastClientSoft != (uint32)(-1)) {
+			theStats::RemoveKnownClient(m_lastClientSoft, m_lastClientVersion, m_lastOSInfo);
+		}
+		// indicate that we are not anymore on stats
+		m_lastClientSoft = (uint32)(-1);
+	} else {
+		if (m_lastClientSoft != m_clientSoft || m_lastClientVersion != m_nClientVersion || m_lastOSInfo != m_sClientOSInfo) {
+			if (m_lastClientSoft == SO_UNKNOWN) {
+				theStats::RemoveUnknownClient();
+			} else if (m_lastClientSoft != (uint32)(-1)) {
+				theStats::RemoveKnownClient(m_lastClientSoft, m_lastClientVersion, m_lastOSInfo);
+			}
+			m_lastClientSoft = m_clientSoft;
+			m_lastClientVersion = m_nClientVersion;
+			m_lastOSInfo = m_sClientOSInfo;
+			if (m_clientSoft == SO_UNKNOWN) {
+				theStats::AddUnknownClient();
+			} else {
+				theStats::AddKnownClient(this, m_clientSoft, m_nClientVersion);
+			}
+		}
+	}
 }

@@ -73,7 +73,7 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for CleanupFilename
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
@@ -2672,7 +2672,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		CUpDownClient* cur_src = *it++;
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
-				theApp.statistics->AddUpDataOverheadOther( packet.GetPacketSize() );
+				theStats::AddUpOverheadOther( packet.GetPacketSize() );
 				cur_src->SendPacket( &packet, false, true );
 				cur_src->SetSentCancelTransfer( true );
 			}
@@ -3734,13 +3734,23 @@ void CPartFile::ClientStateChanged( int oldState, int newState )
 
 bool CPartFile::AddSource( CUpDownClient* client )
 {
-	return m_SrcList.insert( client ).second;
+	if (m_SrcList.insert( client ).second) {
+		theStats::AddFoundSource();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 	
 bool CPartFile::DelSource( CUpDownClient* client )
 {
-	return m_SrcList.erase( client );
+	if (m_SrcList.erase( client )) {
+		theStats::RemoveFoundSource();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 

@@ -503,7 +503,10 @@ public:
 	static bool GetNetworkKademlia() { return s_ConnectToKad; }
 	// Kad
 	static bool GetNetworkED2K() { return s_ConnectToED2K; }
-	
+
+	// Statistics
+	static unsigned		GetMaxClientVersions()		{ return s_maxClientVersions; }
+
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
@@ -704,6 +707,9 @@ protected:
 	// Kad
 	static bool s_ConnectToKad;
 	static bool s_ConnectToED2K;
+
+	// Statistics
+	static	unsigned	s_maxClientVersions;	// 0 = unlimited
 };
 
 

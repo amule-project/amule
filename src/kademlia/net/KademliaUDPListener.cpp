@@ -1212,7 +1212,7 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 		CPacket* packet = new CPacket(&bio2, OP_EMULEPROT, OP_CALLBACK);
 		if( buddy->GetSocket() ) {
 			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallback %s")) % Uint32_16toStringIP_Port(ip, port));
-			theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
           	buddy->GetSocket()->SendPacket(packet);
 		} else {
 			wxASSERT(0);
@@ -1239,6 +1239,6 @@ void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destin
 	if( packet->GetPacketSize() > 200 ) {
 		packet->PackPacket();
 	}
-	theApp.statistics->AddUpDataOverheadKad(packet->GetPacketSize());
+	theStats::AddUpOverheadKad(packet->GetPacketSize());
 	theApp.clientudp->SendPacket(packet, ENDIAN_NTOHL(destinationHost), destinationPort);
 }

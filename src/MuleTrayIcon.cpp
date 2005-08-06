@@ -41,17 +41,16 @@
 #include "OPCodes.h" 			// Needed for MOD_VERSION_LONG
 #include "amule.h" 			// Needed for theApp
 #include "amuleDlg.h" 			// Needed for IsShown
-#include "Preferences.h"		// Needed for glod_prefs
-#include "DownloadQueue.h" 		// Needed for GetKbps
-#include "UploadQueue.h" 		// Needed for GetKbps
+#include "Preferences.h"		// Needed for thePrefs
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "OtherFunctions.h"		// Needed for CastSecondsToHM
 #include "Server.h"			// Needed for CServer
 #include "NetworkFunctions.h"		// Needed for Uint32toStringIP
-#include "SharedFileList.h"		// Needed for CSharedFileList
 #include "Logger.h"
 #include "Color.h"			// Needed for WxColourFromCr
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
+#include "Statistics.h"			// Needed for theStats
+#include "Format.h"			// Needed for CFormat
 
 using namespace otherfunctions;
 
@@ -331,30 +330,31 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	wxString label = MOD_VERSION_LONG;
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
-	label = _("Speed Limits: ");
+	label = wxString(_("Speed Limits:")) + wxT(" ");
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
 	if ( max_upload == UNLIMITED ) {
-		label += wxString::Format( _("UL: None, "));
+		label += _("UL: None");
 	}
 	else { 
-		label += wxString::Format( _("UL: %u, "), max_upload);
+		label += wxString::Format(_("UL: %u"), max_upload);
 	}
+	label += wxT(", ");
 
 	// Check for download limits
 	unsigned int max_download = thePrefs::GetMaxDownload();
 	if ( max_download == UNLIMITED ) {
-		label += wxString::Format( _("DL: None"));
+		label += _("DL: None");
 	}
 	else {
-		label += wxString::Format( _("DL: %u"), max_download);
+		label += wxString::Format(_("DL: %u"), max_download);
 	}
 
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Download Speed: %.1f"), theApp.downloadqueue->GetKBps());
+	label = wxString::Format(_("Download Speed: %.1f"), theStats::GetDownloadRate() / 1024.0);
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Upload Speed: %.1f"), theApp.uploadqueue->GetDatarate() / 1024.0f);
+	label = wxString::Format(_("Upload Speed: %.1f"), theStats::GetUploadRate() / 1024.0);
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
@@ -364,13 +364,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// User nick-name
 	{
-		wxString temp = _("Nickname: ");
-		if ( thePrefs::GetUserNick().IsEmpty() ) {
-			temp += _("No Nickname Selected!");
-		}
-		else {
-			temp += thePrefs::GetUserNick();
-		}
+		wxString temp = CFormat(_("Nickname: %s")) % ( thePrefs::GetUserNick().IsEmpty() ? wxString(_("No Nickname Selected!")) : thePrefs::GetUserNick() );
+
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
@@ -405,12 +400,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// IP Address
 	{
-		wxString temp = _("IP: ");
-		if ( theApp.GetPublicIP() ) {
-			temp += Uint32toStringIP(theApp.GetPublicIP()); 
-		} else {
-			temp += _("Unknown");
-		}
+		wxString temp = CFormat(_("IP: %s")) % ( (theApp.GetPublicIP()) ? Uint32toStringIP(theApp.GetPublicIP()) : wxString(_("Unknown")) );
+
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
@@ -418,7 +409,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp;
 		if (thePrefs::GetPort()) {
-			temp = wxString::Format(wxT("%s%d"), _("TCP Port: "), thePrefs::GetPort());
+			temp = CFormat(_("TCP Port: %d")) % thePrefs::GetPort();
 		} else {
 			temp=_("TCP Port: Not Ready");
 		}
@@ -429,7 +420,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp;
 		if (thePrefs::GetEffectiveUDPPort()) {
-			temp = wxString::Format(wxT("%s%d"), _("UDP Port: "), thePrefs::GetEffectiveUDPPort());	
+			temp = CFormat(_("UDP Port: %d")) % thePrefs::GetEffectiveUDPPort();
 		} else {
 			temp=_("UDP Port: Not Ready");
 		}
@@ -450,33 +441,33 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// Uptime
 	{
-		wxString temp = _("Uptime: ") + CastSecondsToHM(theApp.statistics->GetUptimeSecs());
+		wxString temp = CFormat(_("Uptime: %s")) % CastSecondsToHM(theStats::GetUptimeSeconds());
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
 	// Number of shared files
 	{
-		wxString temp = wxString::Format(wxT("%s%d"), _("Shared Files: "), theApp.sharedfiles->GetCount());
+		wxString temp = CFormat(_("Shared Files: %d")) % theStats::GetSharedFileCount();
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
 	// Number of queued clients
 	{
-		wxString temp = wxString::Format(wxT("%s%d"), _("Queued Clients: "), theApp.uploadqueue->GetWaitingUserCount() );
+		wxString temp = CFormat(_("Queued Clients: %d")) % theStats::GetWaitingUserCount();
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
 	// Total Downloaded
 	{
-		wxString temp = CastItoXBytes( theApp.statistics->GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
-		temp = wxString(_("Total DL: ")) + temp;
+		wxString temp = CastItoXBytes( theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		temp = CFormat(_("Total DL: %s")) % temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
 	// Total Uploaded
 	{
-		wxString temp = CastItoXBytes( theApp.statistics->GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
-		temp = wxString(_("Total UL: ")) + temp;
+		wxString temp = CastItoXBytes( theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
+		temp = CFormat(_("Total UL: %s")) % temp;
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 

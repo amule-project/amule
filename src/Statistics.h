@@ -3,6 +3,7 @@
 //
 // Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 2005 Dévai Tamás ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -30,26 +31,16 @@
 #pragma interface "Statistics.h"
 #endif
 
-#include "tree.hh"
-#include "CTypedPtrList.h"
-#include "Types.h"
-#include "GetTickCount.h"
-#include "updownclient.h"
+#include "GetTickCount.h"	// Needed for GetTickCount64()
+#include "StatTree.h"		// Needed for CStatTreeItem* classes
+#include "Types.h"		// Needed for uint* types
 
-#include <wx/string.h>
+#include <wx/string.h>		// Needed for wxString
+#include <wx/thread.h>		// Needed for wxMutex and wxMutexLocker
 
-#include <deque>
+#include <deque>		// Needed for std::deque
+#include <list>			// Needed for std::list
 
-
-typedef tree<wxString> StatsTree;
-typedef StatsTree::iterator StatsTreeNode;
-typedef StatsTree::sibling_iterator StatsTreeSiblingIterator;	
-
-typedef struct {
-	StatsTreeNode TreeItem;
-	bool active;
-} StatsTreeVersionItem;
-	
 enum StatsGraphType {
 	GRAPH_INVALID = 0,
 	GRAPH_DOWN,
@@ -75,255 +66,459 @@ typedef struct HistoryRecord {
 	uint16		cntConnections;
 } HR;
 
+
+#ifndef EC_REMOTE
+
+/**
+ * Counts precise rate/average on added bytes/values.
+ *
+ * @note This class is MT-safe.
+ */
+class CPreciseRateCounter {
+	friend class CStatistics;	// for playing dirty tricks to compute running average :P
+ public:
+
+	/**
+	 * Constructor
+	 *
+	 * @param timespan Desired timespan for rate calculations.
+	 * @param count_average Counts average instead of rate.
+	 */
+	CPreciseRateCounter(uint32_t timespan, bool count_average = false)
+		: m_timespan(timespan), m_total(0), m_rate(0.0), m_max_rate(0.0), m_tmp_sum(0), m_count_average(count_average)
+		{
+			if (!count_average) {
+				uint64_t cur_time = GetTickCount64();
+				uint64_t target_time = cur_time - timespan;
+				while (cur_time > target_time) {
+					m_tick_history.push_front(cur_time);
+					m_byte_history.push_front(0);
+					cur_time -= 100;	// default update period
+				}
+				m_tick_history.push_front(cur_time);
+			}
+		}
+
+	/**
+	 * Calculate current rate.
+	 *
+	 * This function should be called reasonably often, to
+	 * keep rates up-to-date, and prevent history growing
+	 * to the skies.
+	 */
+	void	CalculateRate(uint64_t now);
+
+	/**
+	 * Get current rate.
+	 *
+	 * @return Current rate in bytes/second.
+	 */
+	double	GetRate()			{ wxMutexLocker lock(m_mutex); return m_rate; };
+
+	/**
+	 * Gets ever seen maximal rate.
+	 *
+	 * @return The maximal rate which occured.
+	 */
+	double	GetMaxRate()			{ wxMutexLocker lock(m_mutex); return m_max_rate; }
+
+	/**
+	 * Sets desired timespan for rate calculations.
+	 *
+	 * If new timespan is greater than the old was, then the change
+	 * takes effect with time. The exact time needed for the change
+	 * to take effect is new minus old value of the timespan.
+	 *
+	 * If the new timespan is lower than the old, the change takes
+	 * effect immediately at the next call to CalculateRate().
+	 */
+	void	SetTimespan(uint32_t timespan)	{ wxMutexLocker lock(m_mutex); m_timespan = timespan; }
+
+	/**
+	 * Add bytes to be tracked for rate-counting.
+	 */
+	void	operator+=(uint32_t bytes)	{ wxMutexLocker lock(m_mutex); m_tmp_sum += bytes; }
+
+ protected:
+
+	std::deque<uint32>	m_byte_history;
+	std::deque<uint64>	m_tick_history;
+	uint32_t	m_timespan;
+	uint32_t	m_total;
+	double		m_rate;
+	double		m_max_rate;
+	uint32_t	m_tmp_sum;
+	wxMutex		m_mutex;
+	bool		m_count_average;
+};
+
+
+class CECTag;
+
+/**
+ * Stat tree item for rates/averages.
+ */
+class CStatTreeItemRateCounter : public CStatTreeItemBase, public CPreciseRateCounter {
+ public:
+
+	/**
+	 * @see CStatTreeItemBase::CStatTreeItemBase, CPreciseRateCounter::CPreciseRateCounter
+	 *
+	 * @param show_maxrate If true, shows max rate instead of current rate.
+	 */
+	CStatTreeItemRateCounter(const wxString& label, bool show_maxrate, uint32_t timespan, bool count_average = false)
+		: CStatTreeItemBase(label, stNone), CPreciseRateCounter(timespan, count_average), m_show_maxrate(show_maxrate)
+		{}
+
+#ifndef AMULE_DAEMON
+	/**
+	 * @see CStatTreeItemBase::GetDisplayString()
+	 */
+	virtual wxString GetDisplayString() const;
+#endif
+
+ protected:
+	/**
+	 * Add values to EC tag being generated.
+	 *
+	 * @param tag The tag to which values should be added.
+	 *
+	 * @see CStatTreeItemBase::AddECValues
+	 */
+	virtual	void	AddECValues(CECTag* tag) const;
+
+	//! Whether to show max rate instead of actual rate.
+	bool	m_show_maxrate;
+};
+
+
+/**
+ * Stat tree item for Peak Connections.
+ */
+class CStatTreeItemPeakConnections : public CStatTreeItemBase {
+ public:
+
+	/**
+	 * @see CStatTreeItemBase::CStatTreeItemBase
+	 */
+	CStatTreeItemPeakConnections(const wxString& label)
+		: CStatTreeItemBase(label)
+		{}
+
+#ifndef AMULE_DAEMON
+	/**
+	 * @see CStatTreeItemBase::GetDisplayString()
+	 */
+	virtual wxString GetDisplayString() const;
+#endif
+
+ protected:
+	/**
+	 * Add values to EC tag being generated.
+	 *
+	 * @param tag The tag to which values should be added.
+	 *
+	 * @see CStatTreeItemBase::AddECValues
+	 */
+	virtual	void	AddECValues(CECTag* tag) const;
+};
+
+
+class CUpDownClient;
+
 class CStatistics {
-
-public: 
-
+	friend class CStatisticsDlg;	// to access CStatistics::GetTreeRoot()
+ public: 
 	CStatistics();
-	
 	~CStatistics();
 
 	/* Statistics graph functions */
 
-	void		RecordHistory();
+	void	 RecordHistory();
 	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, uint32 **graphData);
 	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, StatsGraphType which_graph);
 	GraphUpdateInfo GetPointsForUpdate();
 
 	/* Statistics tree functions */
-	
+
 	void UpdateStatsTree();
 
-	/* Statistics tree vars */
-	
-	StatsTree statstree; // Tree is public 'cos we want to retrieve to send stats tree.
+	/* Access to the tree */
 
-	/* Common functions inlined for speed */
-	/* Called VERY often */
+	// uptime
+	static	uint64	GetUptimeMillis() 			{ return s_uptime->GetTimerValue(); }
+	static	uint64	GetUptimeSeconds()			{ return s_uptime->GetTimerSeconds(); }
 
-	uint64 GetSessionReceivedBytes() {
-		return stat_sessionReceivedBytes;
-	}
+	// Upload
+	static	uint64	GetSessionSentBytes()			{ return (*s_sessionUpload); }
+	static	void	AddUpOverheadFileRequest(uint32 size)	{ (*s_fileReqUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	void	AddUpOverheadSourceExchange(uint32 size){ (*s_sourceXchgUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	void	AddUpOverheadServer(uint32 size)	{ (*s_serverUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	void	AddUpOverheadKad(uint32 size)		{ (*s_kadUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	void	AddUpOverheadOther(uint32 size)		{ (*s_totalUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	double	GetUpOverheadRate()			{ return s_upOverheadRate->GetRate(); }
+	static	void	AddSuccessfulUpload()			{ ++(*s_totalSuccUploads); }
+	static	void	AddFailedUpload()			{ ++(*s_totalFailedUploads); }
+	static	void	AddUploadTime(uint32 time)		{ (*s_totalUploadTime) += time; }
+	static	void	AddUploadingClient()			{ ++(*s_activeUploads); }
+	static	void	RemoveUploadingClient()			{ --(*s_activeUploads); }
+	static	uint32	GetActiveUploadsCount()			{ return (*s_activeUploads); }
+	static	void	AddWaitingClient()			{ ++(*s_waitingUploads); }
+	static	void	RemoveWaitingClient()			{ --(*s_waitingUploads); }
+	static	uint32	GetWaitingUserCount()			{ return (*s_waitingUploads); }
+	static	double	GetUploadRate()				{ return s_uploadrate->GetRate(); }
 
-	uint64 GetSessionSentBytes() {
-		return stat_sessionSentBytes;
-	}
+	// Download
+	static	uint64	GetSessionReceivedBytes()		{ return (*s_sessionDownload); }
+	static	void	AddDownOverheadFileRequest(uint32 size)	{ (*s_fileReqDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	void	AddDownOverheadSourceExchange(uint32 size){ (*s_sourceXchgDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	void	AddDownOverheadServer(uint32 size)	{ (*s_serverDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	void	AddDownOverheadKad(uint32 size)		{ (*s_kadDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	void	AddDownOverheadOther(uint32 size)	{ (*s_totalDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	double	GetDownOverheadRate()			{ return s_downOverheadRate->GetRate(); }
+	static	void	AddFoundSource()			{ ++(*s_foundSources); }
+	static	void	RemoveFoundSource()			{ --(*s_foundSources); }
+	static	uint32	GetFoundSources()			{ return (*s_foundSources); }
+	static	void	AddDownloadingSource()			{ ++(*s_activeDownloads); }
+	static	void	RemoveDownloadingSource()		{ --(*s_activeDownloads); }
+	static	uint32	GetDownloadingSources()			{ return (*s_activeDownloads); }
+	static	double	GetDownloadRate()			{ return s_downloadrate->GetRate(); }
 
-	void SetServerConnectTime(uint64 conn_time) {
-		stat_serverConnectTime = conn_time;
-	}	
-	
-	void AddReconnect() { stat_reconnects++; };
-	
-	void AddFilteredClient() { stat_filteredclients++; };
-	
-	// Updates the number of received bytes and marks when transfers first began
-	void UpdateReceivedBytes(int32 bytesToAdd) {
-		if (!stat_transferStarttime) {
-			// Saves the time where transfers were started and calucated the time before
-			stat_transferStarttime = GetTickCount64();
-			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
+	// Connection
+	static	CStatTreeItemTimer* GetServerConnectTimer()	{ return s_sinceConnected; }
+	static	void	AddReconnect()				{ ++(*s_reconnects); }
+	static	void	AddActiveConnection()			{ ++(*s_activeConnections); }
+	static	void	RemoveActiveConnection()		{ --(*s_activeConnections); }
+	static	uint32	GetActiveConnections()			{ return s_activeConnections->GetValue(); }
+	static	uint32	GetPeakConnections()			{ return s_activeConnections->GetMaxValue(); }
+	static	void	AddMaxConnectionLimitReached()		{ ++(*s_limitReached); }
+
+	// Clients
+	static	void	AddFilteredClient()			{ ++(*s_filtered); }
+	static	void	AddUnknownClient()			{ ++(*s_unknown); }
+	static	void	RemoveUnknownClient()			{ --(*s_unknown); }
+	static	void	AddKnownClient(CUpDownClient *pClient, uint32 clientSoft, uint32 clientVersion);
+	static	void	RemoveKnownClient(uint32 clientSoft, uint32 clientVersion, const wxString& OSInfo);
+#ifdef __DEBUG__
+	static	void	SocketAssignedToClient()		{ ++(*s_hasSocket); }
+	static	void	SocketUnassignedFromClient()		{ --(*s_hasSocket); }
+#endif
+	static	uint32	GetBannedCount()			{ return (*s_banned); }
+	static	void	AddBannedClient()			{ ++(*s_banned); }
+	static	void	RemoveBannedClient()			{ --(*s_banned); }
+
+	// Servers
+	static	void	AddServer()				{ ++(*s_totalServers); }
+	static	void	DeleteServer()				{ ++(*s_deletedServers); --(*s_totalServers); }
+	static	void	DeleteAllServers()			{ (*s_deletedServers) += (*s_totalServers); (*s_totalServers) = 0; }
+	static	void	AddFilteredServer()			{ ++(*s_filteredServers); }
+
+	// Shared files
+	static	void	ClearSharedFilesInfo()			{ (*s_numberOfShared) = 0; (*s_sizeOfShare) = 0; }
+	static	void	AddSharedFile(uint64 size)		{ ++(*s_numberOfShared); (*s_sizeOfShare) += size; }
+	static	void	RemoveSharedFile(uint64 size)		{ --(*s_numberOfShared); (*s_sizeOfShare) -= size; }
+	static	uint32	GetSharedFileCount()			{ return (*s_numberOfShared); }
+
+
+	// Other
+	static	void	CalculateRates();
+
+	static	void	AddReceivedBytes(uint32 bytes)
+		{
+			if (!s_sinceFirstTransfer->IsRunning()) {
+				s_sinceFirstTransfer->StartTimer();
+			}
+
+			(*s_sessionDownload) += bytes;
+			(*s_downloadrate) += bytes;
 		}
-		stat_sessionReceivedBytes += bytesToAdd;
-	}
 
+	static	void	AddSentBytes(uint32 bytes)
+		{
+			if (!s_sinceFirstTransfer->IsRunning()) {
+				s_sinceFirstTransfer->StartTimer();
+			}
 
-	// Updates the number of received bytes and marks when transfers first began
-	void UpdateSentBytes(int32 bytesToAdd) {
-		if (!stat_transferStarttime && bytesToAdd) {
-			// Saves the time where transfers were started and calucated the time before
-			stat_transferStarttime = GetTickCount64();
-			sTransferDelay = (stat_transferStarttime - Start_time)/1000.0;			
+			(*s_sessionUpload) += bytes;
+			(*s_uploadrate) += bytes;
 		}
-		stat_sessionSentBytes += bytesToAdd;
-	}
 
-	// Returns the uptime in millie-seconds
-	uint64 GetUptimeMsecs() {
-		return GetTickCount64() - Start_time;
-	}
+	static	void	AddDownloadFromSoft(uint8 SoftType, uint32 bytes);
+	static	void	AddUploadToSoft(uint8 SoftType, uint32 bytes);
 
+	// EC
+	static	CECTag*	GetECStatTree(uint8 tree_capping_value)	{ return s_statTree->CreateECTag(tree_capping_value); }
 
-	// Returns the uptime in seconds
-	uint32 GetUptimeSecs() {
-		return GetUptimeMsecs() / 1000;
-	}
-	
-	void AddDownloadFromSoft(uint8 SoftType, uint32 bytes);
-	
-	// Download related
-	void	AddDownDataOverheadSourceExchange(uint32 data)	{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadSourceExchange += data;
-															  m_nDownDataOverheadSourceExchangePackets++;}
-	void	AddDownDataOverheadFileRequest(uint32 data)		{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadFileRequest += data;
-															  m_nDownDataOverheadFileRequestPackets++;}
-	void	AddDownDataOverheadServer(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadServer += data;
-															  m_nDownDataOverheadServerPackets++;}
-	void	AddDownDataOverheadOther(uint32 data)			{ m_nDownDataRateMSOverhead += data;
-															  m_nDownDataOverheadOther += data;
-															  m_nDownDataOverheadOtherPackets++;}
-	
-	double	GetDownDatarateOverhead()			{return m_nDownDatarateOverhead;}
-	uint64	GetDownDataOverheadSourceExchange()		{return m_nDownDataOverheadSourceExchange;}
-	uint64	GetDownDataOverheadFileRequest()		{return m_nDownDataOverheadFileRequest;}
-	uint64	GetDownDataOverheadServer()			{return m_nDownDataOverheadServer;}
-	uint64	GetDownDataOverheadOther()			{return m_nDownDataOverheadOther;}
-	uint64	GetDownDataOverheadSourceExchangePackets()	{return m_nDownDataOverheadSourceExchangePackets;}
-	uint64	GetDownDataOverheadFileRequestPackets()		{return m_nDownDataOverheadFileRequestPackets;}
-	uint64	GetDownDataOverheadServerPackets()		{return m_nDownDataOverheadServerPackets;}
-	uint64	GetDownDataOverheadOtherPackets()		{return m_nDownDataOverheadOtherPackets;}
-	void	CompDownDatarateOverhead();
-
-	// Upload related
-	void	AddUpDataOverheadSourceExchange(uint32 data)	{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadSourceExchange += data;
-															  m_nUpDataOverheadSourceExchangePackets++;}
-	void	AddUpDataOverheadFileRequest(uint32 data)		{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadFileRequest += data;
-															  m_nUpDataOverheadFileRequestPackets++;}
-	void	AddUpDataOverheadServer(uint32 data)			{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadServer += data;
-															  m_nUpDataOverheadServerPackets++;}
-	void	AddUpDataOverheadKad(uint32 data)			{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadKad += data;
-															  m_nUpDataOverheadKadPackets++;}
-	void	AddUpDataOverheadOther(uint32 data)				{ m_nUpDataRateMSOverhead += data;
-															  m_nUpDataOverheadOther += data;
-															  m_nUpDataOverheadOtherPackets++;}
-	double	GetUpDatarateOverhead()						{return m_nUpDatarateOverhead;}
-	uint64	GetUpDataOverheadSourceExchange()			{return m_nUpDataOverheadSourceExchange;}
-	uint64	GetUpDataOverheadFileRequest()				{return m_nUpDataOverheadFileRequest;}
-	uint64	GetUpDataOverheadServer()					{return m_nUpDataOverheadServer;}
-	uint64	GetUpDataOverheadKad()					{return m_nUpDataOverheadKad;}	
-	uint64	GetUpDataOverheadOther()					{return m_nUpDataOverheadOther;}
-	uint64	GetUpDataOverheadSourceExchangePackets()	{return m_nUpDataOverheadSourceExchangePackets;}
-	uint64	GetUpDataOverheadFileRequestPackets()		{return m_nUpDataOverheadFileRequestPackets;}
-	uint64	GetUpDataOverheadServerPackets()			{return m_nUpDataOverheadServerPackets;}
-	uint64	GetUpDataOverheadKadPackets()			{return m_nUpDataOverheadKadPackets;}	
-	uint64	GetUpDataOverheadOtherPackets()				{return m_nUpDataOverheadOtherPackets;}
-	void	CompUpDatarateOverhead();
-private:
+ private:
+ 	std::list<HR>	listHR;
+	typedef std::list<HR>::iterator		listPOS;
+	typedef std::list<HR>::reverse_iterator	listRPOS;
 
 	/* Graph-related functions */
 
-	void ComputeAverages(HR **pphr, POSITION pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
+	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
 
-	// ComputeSessionAvg and ComputeRunningAvg are used to assure consistent computations across
-	// RecordHistory and ComputeAverages; see note in RecordHistory on the use of double and float 
-	void ComputeSessionAvg(float& kBpsSession, float& kBpsCur, double& kBytesTrans, double& sCur, double& sTrans);
-
-	void ComputeRunningAvg(float& kBpsRunning, float& kBpsSession, double& kBytesTrans, 
-							double& kBytesTransPrev, double& sTrans, double& sPrev, float& sAvg);
-	
-	int GetPointsPerRange(){
+	int GetPointsPerRange()
+	{
 		return (1280/2) - 80; // This used to be a calc. based on GUI width
-	};
-	
+	}
+
+#ifdef __DEBUG__
 	void VerifyHistory(bool bMsgIfOk = false);
+#endif
 
 	/* Graphs-related vars */
-	float kBpsUpCur;
-	float kBpsUpAvg;
-	float kBpsUpSession;
-	float kBpsDownCur;
-	float kBpsDownAvg;
-	float kBpsDownSession;
-	float maxDownavg;
-	float maxDown;
-		
-	
- 	CList<HR,HR>	listHR;	
+
+	CPreciseRateCounter	m_graphRunningAvgDown;
+	CPreciseRateCounter	m_graphRunningAvgUp;
+
 	int	nHistRanges;
 	int	bitsHistClockMask;
-	int nPointsPerRange;
-	POSITION*		aposRecycle;	
+	int	nPointsPerRange;
+	listPOS*	aposRecycle;
 
 	HR hrInit;
 
+	/* Rate/Average counters */
+	static	CPreciseRateCounter*		s_upOverheadRate;
+	static	CPreciseRateCounter*		s_downOverheadRate;
+	static	CStatTreeItemRateCounter*	s_uploadrate;
+	static	CStatTreeItemRateCounter*	s_downloadrate;
+	static	CStatTreeItemRateCounter*	s_runningAverageUp;
+	static	CStatTreeItemRateCounter*	s_runningAverageDown;
 
 	/* Tree-related functions */
 	
-	void InitStatsTree();
+	static	void	InitStatsTree();
+
+	static	CStatTreeItemBase*	GetTreeRoot()	{ return s_statTree; }
 
 	/* Tree-related vars */
 
-	uint64		Start_time;
-	double		sTransferDelay;
-	uint64		stat_sessionReceivedBytes;
-	uint64		stat_sessionSentBytes;
-	uint32		stat_reconnects;
-	uint64		stat_transferStarttime;
-	uint64		stat_serverConnectTime;
-	uint32		stat_filteredclients;
-	uint32		m_ilastMaxConnReached;
+	// the tree
+	static	CStatTreeItemBase*		s_statTree;
 
+	// Uptime
+	static	CStatTreeItemTimer*		s_uptime;
 
-	StatsTreeNode h_shared,h_transfer,h_connection,h_clients,h_servers,h_upload,h_download,h_uptime;
-	StatsTreeNode down1,down2,down3,down4,down5,down6,down7;
-	StatsTreeNode	down1_1, down1_2, down1_3, down1_4, down1_5, down1_6, down1_7, down1_8;
-	StatsTreeNode up1,up2,up3,up4,up5,up6,up7,up8,up9,up10,up11;
-	StatsTreeNode tran0;
-	StatsTreeNode con1,con2,con3,con4,con5,con6,con7,con8,con9,con10,con11,con12,con13;
-	StatsTreeNode shar1,shar2,shar3;
-	StatsTreeNode cli1,cli2,cli3,cli4,cli5,cli6,cli7,cli8,cli9,cli10, cli10_1, cli10_2, cli11, cli12,cli13,cli14,cli15,cli16,cli17;	
-	StatsTreeNode srv1,srv2,srv3,srv4,srv5,srv6,srv7,srv8,srv9;
-	
-	StatsTreeVersionItem cli_versions[18];
-	
-	/* Common functions inlined for speed */
-	/* Called VERY often */
+	// Upload
+	static	CStatTreeItemUlDlCounter*	s_sessionUpload;
+	static	CStatTreeItemPacketTotals*	s_totalUpOverhead;
+	static	CStatTreeItemPackets*		s_fileReqUpOverhead;
+	static	CStatTreeItemPackets*		s_sourceXchgUpOverhead;
+	static	CStatTreeItemPackets*		s_serverUpOverhead;
+	static	CStatTreeItemPackets*		s_kadUpOverhead;
+	static	CStatTreeItemNativeCounter*	s_activeUploads;
+	static	CStatTreeItemNativeCounter*	s_waitingUploads;
+	static	CStatTreeItemCounter*		s_totalSuccUploads;
+	static	CStatTreeItemCounter*		s_totalFailedUploads;
+	static	CStatTreeItemCounter*		s_totalUploadTime;
 
-	// Returns the amount of time where transfers have been going on
-	uint32 GetTransferSecs() {
-		return ( GetTickCount64() - stat_transferStarttime ) / 1000;
-	}
+	// Download
+	static	CStatTreeItemUlDlCounter*	s_sessionDownload;
+	static	CStatTreeItemPacketTotals*	s_totalDownOverhead;
+	static	CStatTreeItemPackets*		s_fileReqDownOverhead;
+	static	CStatTreeItemPackets*		s_sourceXchgDownOverhead;
+	static	CStatTreeItemPackets*		s_serverDownOverhead;
+	static	CStatTreeItemPackets*		s_kadDownOverhead;
+	static	CStatTreeItemNativeCounter*	s_foundSources;
+	static	CStatTreeItemNativeCounter*	s_activeDownloads;
 
-	// Returns the amount of time where we've been connected to a server
-	uint32 GetServerSecs() {
-		return ( GetTickCount64() - stat_serverConnectTime) / 1000;
-	}
-	
-	
-	// Download-related vars.
-	long		m_nDownDatarateTotal;
-	double		m_nDownDatarateOverhead;
-	uint32		m_nDownDataRateMSOverhead;
-	uint64		m_nDownDataOverheadSourceExchange;
-	uint64		m_nDownDataOverheadSourceExchangePackets;
-	uint64		m_nDownDataOverheadFileRequest;
-	uint64		m_nDownDataOverheadFileRequestPackets;
-	uint64		m_nDownDataOverheadServer;
-	uint64		m_nDownDataOverheadServerPackets;
-	uint64		m_nDownDataOverheadOther;
-	uint64		m_nDownDataOverheadOtherPackets;
-	std::deque<int>	m_AverageDDRO_list;
-	
-	uint64 downloaded_aMule;
-	uint64 downloaded_eMule;
-	uint64 downloaded_eDonkey;
-	uint64 downloaded_eDonkeyHybrid;
-	uint64 downloaded_Shareaza;
-	uint64 downloaded_MLDonkey;
-	uint64 downloaded_lxMule;
-	uint64 downloaded_Other;
+	// Connection
+	static	CStatTreeItemReconnects*	s_reconnects;
+	static	CStatTreeItemTimer*		s_sinceFirstTransfer;
+	static	CStatTreeItemTimer*		s_sinceConnected;
+	static	CStatTreeItemCounterMax*	s_activeConnections;
+	static	CStatTreeItemMaxConnLimitReached* s_limitReached;
+	static	CStatTreeItemSimple*		s_avgConnections;
 
-	// Upload-related vars.
-	long	m_nUpDatarateTotal;
-	double	m_nUpDatarateOverhead;
-	uint32	m_nUpDataRateMSOverhead;
-	uint64	m_nUpDataOverheadSourceExchange;
-	uint64	m_nUpDataOverheadFileRequest;
-	uint64	m_nUpDataOverheadServer;
-	uint64	m_nUpDataOverheadKad;	
-	uint64	m_nUpDataOverheadOther;
-	uint64	m_nUpDataOverheadSourceExchangePackets;
-	uint64	m_nUpDataOverheadFileRequestPackets;
-	uint64	m_nUpDataOverheadServerPackets;
-	uint64	m_nUpDataOverheadKadPackets;	
-	uint64	m_nUpDataOverheadOtherPackets;
-	std::deque<int>	m_AverageUDRO_list;
+	// Clients
+	static	CStatTreeItemHiddenCounter*	s_clients;
+	static	CStatTreeItemCounter*  		s_unknown;
+	//static	CStatTreeItem			s_lowID;
+	//static	CStatTreeItem			s_secIdentOnOff;
+#ifdef __DEBUG__
+	static	CStatTreeItemNativeCounter*	s_hasSocket;
+#endif
+	static	CStatTreeItemNativeCounter*	s_filtered;
+	static	CStatTreeItemNativeCounter*	s_banned;
+
+	// Servers
+	static	CStatTreeItemSimple*		s_workingServers;
+	static	CStatTreeItemSimple*		s_failedServers;
+	static	CStatTreeItemNativeCounter*	s_totalServers;
+	static	CStatTreeItemNativeCounter*	s_deletedServers;
+	static	CStatTreeItemNativeCounter*	s_filteredServers;
+	static	CStatTreeItemSimple*		s_usersOnWorking;
+	static	CStatTreeItemSimple*		s_filesOnWorking;
+	static	CStatTreeItemSimple*		s_totalUsers;
+	static	CStatTreeItemSimple*		s_totalFiles;
+	static	CStatTreeItemSimple*		s_serverOccupation;
+
+	// Shared files
+	static	CStatTreeItemCounter*		s_numberOfShared;
+	static	CStatTreeItemCounter*		s_sizeOfShare;
 };
+
+#else /* EC_REMOTE == CLIENT_GUI */
+
+class CECPacket;
+class CRemoteConnect;
+
+enum StatDataIndex {
+	sdUpload,
+	sdUpOverhead,
+	sdDownload,
+	sdDownOverhead,
+	sdWaitingClients,
+	sdBannedClients,
+
+	sdTotalItems
+};
+
+class CStatistics {
+	friend class CStatisticsDlg;	// to access CStatistics::GetTreeRoot()
+ public:
+	CStatistics(CRemoteConnect* conn);
+	~CStatistics();
+
+	static	uint64	GetUptimeMillis()			{ return GetTickCount64() - s_start_time; }
+	static	uint64	GetUptimeSeconds()			{ return (GetTickCount64() - s_start_time) / 1000; }
+
+	static	uint64	GetSessionSentBytes()			{ return 0; } // TODO
+	static	double	GetUploadRate()				{ return (double)s_statData[sdUpload]; }
+	static	double	GetUpOverheadRate()			{ return (double)s_statData[sdUpOverhead]; }
+
+	static	uint64	GetSessionReceivedBytes()		{ return 0; } // TODO
+	static	double	GetDownloadRate()			{ return (double)s_statData[sdDownload]; }
+	static	double	GetDownOverheadRate()			{ return (double)s_statData[sdDownOverhead]; }
+
+	static	uint32	GetWaitingUserCount()			{ return s_statData[sdWaitingClients]; }
+	static	uint32	GetBannedCount()			{ return s_statData[sdBannedClients]; }
+
+	static	uint32	GetSharedFileCount()			{ return 0; } // TODO
+
+	static	void	UpdateStats(CECPacket* stats);
+
+	void	UpdateStatsTree();
+
+ private:
+	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
+
+	static	CStatTreeItemBase*	s_statTree;
+
+	static	uint64	s_start_time;
+	static	uint64	s_statData[sdTotalItems];
+
+	CRemoteConnect*	m_conn;
+};
+
+#endif /* !EC_REMOTE / EC_REMOTE */
+
+
+/**
+ * Shortcut for CStatistics
+ */
+typedef	CStatistics	theStats;
 
 #endif // STATISTICS_H

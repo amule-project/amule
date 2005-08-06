@@ -1735,21 +1735,23 @@ wxString CWebServer::_GetDebugLog(ThreadData Data) {
 }
 
 
-wxString ECTree2Html(CECTag *tree, int depth)
+wxString ECTree2Html(CEC_StatTree_Node_Tag *tree, int depth)
 {
-        wxString result;
-
-	if (tree) {
-		for (int i = 0; i < depth; ++i) {
-			result += wxT("&nbsp;&nbsp;&nbsp;");
-		}	
-		result += tree->GetStringData() + wxT("\r\n");
-        	for (int i = 0; i < tree->GetTagCount(); ++i) {
-                	result += ECTree2Html(tree->GetTagByIndex(i), depth + 1);
-	        }
+	if (!tree) {
+		return wxEmptyString;
 	}
-	
-        return result;
+	wxString result;
+	for (int i = 0; i < depth; ++i) {
+		result += wxT("&nbsp;&nbsp;&nbsp;");
+	}	
+	result += tree->GetDisplayString() + wxT("\r\n");
+	for (int i = 0; i < tree->GetTagCount(); ++i) {
+		CEC_StatTree_Node_Tag *tmp = (CEC_StatTree_Node_Tag*)tree->GetTagByIndex(i);
+		if (tmp->GetTagName() == EC_TAG_STATTREE_NODE) {
+			result += ECTree2Html(tmp, depth + 1);
+		}
+	}
+	return result;
 }
 
 wxString CWebServer::_GetStats(ThreadData Data) {
@@ -1761,7 +1763,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 	wxString Out = m_Templates.sStats;
 	wxString sStats;
 	
-	CECPacket req(EC_OP_GET_STATSTREE);
+	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
 	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		CECTag *serverVersion = response->GetTagByName(EC_TAG_SERVER_VERSION);
@@ -1770,7 +1772,7 @@ wxString CWebServer::_GetStats(ThreadData Data) {
 			sStats = wxString::Format(wxT("<b>aMule v%s %s [%s]</b>\r\n<br><br>\r\n"),
 				serverVersion->GetStringData().GetData(), _("Statistics"),
 				userNick->GetStringData().GetData());
-			sStats += ECTree2Html(response->GetTagByName(EC_TAG_TREE), 0);
+			sStats += ECTree2Html((CEC_StatTree_Node_Tag*)response->GetTagByName(EC_TAG_STATTREE_NODE), 0);
 		}
 		delete response;
 	}

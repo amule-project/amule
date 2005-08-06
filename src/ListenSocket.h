@@ -140,14 +140,13 @@ public:
 	~CListenSocket();
 	bool	StartListening();
 	void	StopListening();
-	void OnAccept(int nErrorCode);
+	void	OnAccept(int nErrorCode);
 	void	Process();
 	void	RemoveSocket(CClientReqSocket* todel);
 	void	AddSocket(CClientReqSocket* toadd);
 	uint32	GetOpenSockets()		{return socket_list.size();}
 	void	KillAllSockets();
 	bool	TooManySockets(bool bIgnoreInterval = false);
-	uint32	GetMaxConnectionReached()	{return maxconnectionreached;}
 	bool    IsValidSocket(CClientReqSocket* totest);
 	void	AddConnection();
 	void	RecalculateStats();
@@ -155,10 +154,8 @@ public:
 	void	UpdateConnectionsStatus();
 	
 	float	GetMaxConperFiveModifier();
-	uint32	GetPeakConnections()		{ return peakconnections; }
 	uint32	GetTotalConnectionChecks()	{ return totalconnectionchecks; }
 	float	GetAverageConnections()		{ return averageconnections; }
-	uint32	GetActiveConnections()		{ return activeconnections; }
 	
 	bool	OnShutdown() { return shutdown;}
 	
@@ -170,14 +167,11 @@ private:
 	bool bListening;
 	bool shutdown;
 	
-	uint16 m_OpenSocketsInterval;
-	uint32 maxconnectionreached;
+	uint16	m_OpenSocketsInterval;
 	uint16	m_ConnectionStates[3];
 	uint16	m_nPeningConnections;
-	uint32	peakconnections;
 	uint32	totalconnectionchecks;
 	float	averageconnections;
-	uint32	activeconnections;
 };
 
 

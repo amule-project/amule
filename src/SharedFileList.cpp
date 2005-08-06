@@ -40,19 +40,19 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
-#include "Preferences.h"	// Needed for CPreferences
+#include "Preferences.h"	// Needed for thePrefs
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"
-#include "StringFunctions.h" // Needed for unicode2char
-#include "Statistics.h"		// Needed for CStatistics
+#include "StringFunctions.h"	// Needed for unicode2char
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"
 #include "FileFunctions.h"
@@ -339,10 +339,13 @@ void CSharedFileList::FindSharedFiles() {
 	if(theApp.IsOnShutDown()) {
 		return;
 	}
-	
+
+	// Clear statistics.
+	theStats::ClearSharedFilesInfo();
+
 	// Reload shareddir.dat
 	theApp.glob_prefs->ReloadSharedFolders();
-	
+
 	/* All part files are automatically shared. */
   	if (!m_Files_map.empty()) {
   		{
@@ -531,10 +534,9 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 		/* Keywords to publish on Kad */
 		m_keywords->AddKeywords(pFile);
 		#endif
-
+		theStats::AddSharedFile(pFile->GetFileSize());
 		return true;
 	}
-
 	return false;
 }
 
@@ -558,7 +560,9 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 // removes first occurrence of 'toremove' in 'list'
 void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	Notify_SharedFilesRemoveFile(toremove);
-	m_Files_map.erase(toremove->GetFileHash());
+	if (m_Files_map.erase(toremove->GetFileHash()) > 0) {
+		theStats::RemoveSharedFile(toremove->GetFileSize());
+	}
 	#ifdef __COMPILE_KAD__
 	/* This file keywords must not be published to kad anymore */
 	m_keywords->RemoveKeywords(toremove);
@@ -610,17 +614,6 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
 	// Should never return here
 	wxASSERT(0);
 	return NULL;
-}
-
-uint64 CSharedFileList::GetDatasize() {
-	uint64 fsize;
-	fsize=0;
-
-	for (CKnownFileMap::iterator pos = m_Files_map.begin();
-	     pos != m_Files_map.end(); ++pos ) {
-		fsize+=pos->second->GetFileSize();
-	}
-	return fsize;
 }
 
 CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
@@ -777,7 +770,7 @@ void CSharedFileList::SendListToServer(){
 		packet->PackPacket();
 	}
 
-	theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+	theStats::AddUpOverheadServer(packet->GetPacketSize());
 	theApp.serverconnect->SendPacket(packet,true);
 }
 

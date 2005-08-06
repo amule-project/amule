@@ -345,8 +345,6 @@ public:
 
 	void ShutDown(wxCloseEvent &evt);
 
-	uint32 GetUptimeMsecs();
-
 	CPreferencesRem *glob_prefs;
 	wxString ConfigDir;
 	
@@ -365,7 +363,6 @@ public:
 	CListenSocketRem *listensocket;
 
 	CStatistics *statistics;
-	CStatisticsRem *rem_stat_updater;
 	
 	bool AddServer(CServer *srv, bool fromUser = false);
 	

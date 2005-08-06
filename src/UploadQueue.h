@@ -30,12 +30,9 @@
 #pragma interface "UploadQueue.h"
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/thread.h>		// Needed for wxMutex
-
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "CMD4Hash.h"
+#include "CMD4Hash.h"		// Needed for CMD4Hash
 
 #include <list>
 
@@ -54,8 +51,6 @@ public:
 	bool	IsOnUploadQueue(CUpDownClient* client)	{return GetWaitingClient(client);}
 	bool	IsDownloading(CUpDownClient* client)	{return GetDownloadingClient(client);}
 	bool	CheckForTimeOver(CUpDownClient* client);
-	int	GetWaitingUserCount()			{return waitinglist.GetCount();}
-	int	GetUploadQueueLength()			{return uploadinglist.GetCount();}
 	POSITION GetFirstFromUploadList()		{return uploadinglist.GetHeadPosition();}
 	CUpDownClient* GetNextFromUploadList(POSITION &curpos)	{return uploadinglist.GetNext(curpos);}
 	CUpDownClient* GetQueueClientAt(POSITION &curpos)	{return uploadinglist.GetAt(curpos);}
@@ -68,14 +63,8 @@ public:
 	CUpDownClient* GetNextClient(CUpDownClient* update);
 
 	uint16	GetWaitingPosition(CUpDownClient* client);
-	uint32	GetSuccessfullUpCount()			{return successfullupcount;}
-	uint32	GetFailedUpCount()			{return failedupcount;}
-	uint32	GetAverageUpTime();
 	void	SuspendUpload( const CMD4Hash& );
 	void	ResumeUpload( const CMD4Hash& );
-
-	void	UpdateDatarates();
-	uint32	GetDatarate();
 
 protected:
 	void	RemoveFromWaitingQueue(POSITION pos);
@@ -89,26 +78,8 @@ private:
 	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;
 	typedef std::list<CMD4Hash> suspendlist;
 	suspendlist suspended_uploads_list;  //list for suspended uploads
-	uint32	successfullupcount;
-	uint32	failedupcount;
-	uint32	totaluploadtime;
 	uint32	m_nLastStartUpload;
 	bool	lastupslotHighID; // VQB lowID alternation
-
-	// Mutex used to ensure thread-safe access to GetDatarate()
-	wxMutex m_ratelock;
-
-	// By BadWolf - Accurate Speed Measurement
-	typedef struct TransferredData {
-		uint32	datalen;
-		uint32	timestamp;
-	};
-
-	CList<uint64> avarage_dr_list;
-	CList<uint32,uint32> avarage_tick_list;
-	uint32	datarate;   //datarate sent to network (including friends)
-	uint64	m_avarage_dr_sum;
-	uint32	m_lastCalculatedDataRateTick;
 };
 
 #endif // UPLOADQUEUE_H

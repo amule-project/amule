@@ -26,52 +26,48 @@
 #ifndef STATISTICSDLG_H
 #define STATISTICSDLG_H
 
-#include <cmath>		// Needed for std::exp
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 
 #include "Types.h"		// Needed for uint32 and uint64
-#include "CTypedPtrList.h"	// Needed for CList
-#include "Statistics.h"		// Needed for CStatistics
 #include "Color.h"		// Needed for COLORREF
 
+class COScopeCtrl;
+class CStatistics;
+class CStatTreeItemBase;
 class wxTreeCtrl;
 class wxTreeItemId;
-class COScopeCtrl;
+//struct UpdateInfo;
+typedef struct UpdateInfo GraphUpdateInfo;
 
-// CStatisticsDlg dialog
+// CStatisticsDlg panel
 
-using namespace std;
-
-class CStatisticsDlg : public wxPanel// CResizableDialog
+class CStatisticsDlg : public wxPanel
 {
 	friend class PrefsUnifiedDlg;
 	friend class CPreferences;
 
 public:
-	CStatisticsDlg(wxWindow* pParent = NULL);   // standard constructor
+	CStatisticsDlg(wxWindow* pParent, CStatistics* stats);
 	~CStatisticsDlg();
 
 	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update);
 	void SetUpdatePeriod();
 	void ResetAveragingTime();
-	void ShowStatistics();
-	void SetARange(bool SetDownload,int maxValue);
-	void FillTree(StatsTreeSiblingIterator& statssubtree, wxTreeItemId& StatsGUITree);
+	void ShowStatistics(bool init = false);
+	void SetARange(bool SetDownload, int maxValue);
+	void FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& StatsGUITree);
 	void Init();
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
 	static COLORREF getColors(int num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
-	
+
 protected:
 	static COLORREF	acrStat[13];
 	COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
 	wxTreeCtrl* stattree;
-
-	DECLARE_EVENT_TABLE()
-
+	CStatistics* m_stats;
 };
 
 #endif // STATISTICSDLG_H

@@ -29,8 +29,10 @@
 
 #include <algorithm>
 #include <cstring>
-#include <cmath>			// Needed for std::exp
+#include <cmath>
+
 #include "Types.h"
+
 #ifdef __WXMSW__
 	#include <winsock.h>
 	#include <wx/defs.h>
@@ -53,11 +55,11 @@
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "OPCodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "OtherFunctions.h"	// Needed for GetTickCount
+#include "GetTickCount.h"	// Needed for GetTickCount
 #include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"
 #include "UploadBandwidthThrottler.h"
@@ -68,16 +70,9 @@
 
 CUploadQueue::CUploadQueue()
 {
-	successfullupcount = 0;
-	failedupcount = 0;
-	totaluploadtime = 0;
 	m_nLastStartUpload = 0;
 
 	lastupslotHighID = true;
-
-	datarate = 0;
-	m_avarage_dr_sum = 0;
-	m_lastCalculatedDataRateTick = 0;
 }
 
 
@@ -165,7 +160,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 		}
 	} else {
 		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
-		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		newclient->SendPacket(packet,true);
 		newclient->SetUploadState(US_UPLOADING);
 	}
@@ -174,6 +169,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 
 	theApp.uploadBandwidthThrottler->AddToStandardList(uploadinglist.GetCount(), newclient->GetSocket());
 	uploadinglist.AddTail(newclient);
+	theStats::AddUploadingClient();
 
 	// Statistic
 	CKnownFile* reqfile = (CKnownFile*) newclient->GetUploadFile();
@@ -198,7 +194,7 @@ void CUploadQueue::Process()
 		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
 		//It seems chatting or friend slots can get stuck at times in upload.. This needs looked into..
 		if (!cur_client->GetSocket()) {
-			RemoveFromUploadQueue(cur_client, _T("Uploading to client without socket? (CUploadQueue::Process)"));
+			RemoveFromUploadQueue(cur_client, wxT("Uploading to client without socket? (CUploadQueue::Process)"));
 			if(cur_client->Disconnected(_T("CUploadQueue::Process"))){
 				cur_client->Safe_Delete();
 			}
@@ -209,23 +205,11 @@ void CUploadQueue::Process()
 
 	// Save used bandwidth for speed calculations
 	uint64 sentBytes = theApp.uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
-
-	// Update statistics
-	theApp.statistics->UpdateSentBytes(sentBytes);
-
-	wxMutexLocker lock(m_ratelock);
-	avarage_dr_list.AddTail(sentBytes);
-	m_avarage_dr_sum += sentBytes;
-
 	(void)theApp.uploadBandwidthThrottler->GetNumberOfSentBytesOverheadSinceLastCallAndReset();
 
-	// Save time beetween each speed snapshot
-	avarage_tick_list.AddTail(GetTickCount());
-
-	// don't save more than 30 secs of data
-	while(avarage_tick_list.GetCount() > 3 && ::GetTickCount()-avarage_tick_list.GetHead() > 30*1000) {
-		m_avarage_dr_sum -= avarage_dr_list.RemoveHead();
-		avarage_tick_list.RemoveHead();
+	// Update statistics
+	if (sentBytes) {
+		theStats::AddSentBytes(sentBytes);
 	}
 }
 
@@ -237,7 +221,7 @@ bool CUploadQueue::AcceptNewClient()
 	}
 
 	float kBpsUpPerClient = (float)thePrefs::GetSlotAllocation();
-	float kBpsUp = GetDatarate() / 1024.0f;
+	float kBpsUp = theStats::GetUploadRate() / 1024.0f;
 	if (thePrefs::GetMaxUpload() == UNLIMITED) {
 		if ((uint32)uploadinglist.GetCount() < ((uint32)((kBpsUp)/kBpsUpPerClient)+2)) {
 			return true;
@@ -300,7 +284,7 @@ POSITION CUploadQueue::GetDownloadingClient(CUpDownClient* client)
 
 void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 {
-	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && GetWaitingUserCount() > 50) {
+	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && theStats::GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
@@ -399,7 +383,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	if (client->IsDownloading()) {
 		// he's already downloading and wants probably only another file
 		CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
-		theApp.statistics->AddUpDataOverheadFileRequest(packet->GetPacketSize());
+		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		client->SendPacket(packet,true);
 		return;
 	}
@@ -409,6 +393,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 		m_nLastStartUpload = ::GetTickCount();
 	} else {
 		waitinglist.AddTail(client);
+		theStats::AddWaitingClient();
 		client->ClearWaitStartTime();
 		client->ClearAskedCount();
 		client->SetUploadState(US_ONUPLOADQUEUE);
@@ -427,11 +412,12 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindo
 			Notify_UploadCtrlRemoveClient(client);
 		}
 		uploadinglist.RemoveAt(pos);
+		theStats::RemoveUploadingClient();
 		if( client->GetTransferredUp() ) {
-			successfullupcount++;
-			totaluploadtime += client->GetUpStartTimeDelay()/1000;
+			theStats::AddSuccessfulUpload();
+			theStats::AddUploadTime(client->GetUpStartTimeDelay() / 1000);
 		} else {
-			failedupcount++;
+			theStats::AddFailedUpload();
 		}
 		client->SetUploadState(US_NONE);
 		client->ClearUploadBlockRequests();
@@ -440,18 +426,10 @@ bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindo
 	return false;
 }
 
-uint32 CUploadQueue::GetAverageUpTime()
-{
-	if( successfullupcount ) {
-		return totaluploadtime/successfullupcount;
-	}
-	return 0;
-}
-
 bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 {
 	if (thePrefs::TransferFullChunks()) {
-		if( client->GetUpStartTimeDelay() > 3600000 ) { // Try to keep the clients from downloading for ever.
+		if( client->GetUpStartTimeDelay() > 3600000 ) { // Try to keep the clients from downloading forever.
 			return true;
 		}
 		// For some reason, some clients can continue to download after a chunk size.
@@ -468,7 +446,6 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 	}
 	return false;
 }
-
 
 uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 {
@@ -523,6 +500,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 			RemoveFromUploadQueue(potential, 1);
 
 			waitinglist.AddTail(potential);
+			theStats::AddWaitingClient();
 			potential->SetUploadState(US_ONUPLOADQUEUE);
 			potential->SendRankingInfo();
 			Notify_QlistRefreshClient(potential);
@@ -549,6 +527,7 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
 {
 	CUpDownClient* todelete = waitinglist.GetAt(pos);
 	waitinglist.RemoveAt(pos);
+	theStats::RemoveWaitingClient();
 	if( todelete->IsBanned() ) {
 		todelete->UnBan();
 	}
@@ -574,26 +553,4 @@ CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 	} else {
 		return waitinglist.GetAt(pos);
 	}
-}
-
-void CUploadQueue::UpdateDatarates()
-{
-	wxMutexLocker lock(m_ratelock);
-
-    // Calculate average datarate
-    if(::GetTickCount()-m_lastCalculatedDataRateTick > 500) {
-        m_lastCalculatedDataRateTick = ::GetTickCount();
-
-        if(avarage_dr_list.GetSize() >= 2 && (avarage_tick_list.GetTail() > avarage_tick_list.GetHead())) {
-	        datarate = ((m_avarage_dr_sum-avarage_dr_list.GetHead())*1000) / (avarage_tick_list.GetTail()-avarage_tick_list.GetHead());
-        }
-    }
-}
-
-uint32 CUploadQueue::GetDatarate()
-{
-    UpdateDatarates();
-  
-	wxMutexLocker lock(m_ratelock);
-	return datarate;
 }

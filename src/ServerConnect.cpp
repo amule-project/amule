@@ -27,16 +27,16 @@
 #pragma implementation "ServerConnect.h"
 #endif
 
-#include "ServerConnect.h"		// Interface declarations.
+#include "ServerConnect.h"	// Interface declarations.
 #include "SearchList.h"		// Needed for CSearchList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
+#include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
 #include "OPCodes.h"		// Needed for CT_NAME
 #include "MemFile.h"		// Needed for CMemFile
-#include "OtherFunctions.h"	// Needed for GetTickCount
+//#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "Server.h"		// Needed for CServer
@@ -44,8 +44,8 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
 #include "updownclient.h"	// for SO_AMULE
-#include "Statistics.h"
-#include "NetworkFunctions.h" // for StringHosttoUint32
+#include "Statistics.h"		// Needed for theStats
+#include "NetworkFunctions.h"	// for StringHosttoUint32
 #include "Logger.h"
 #include "Format.h"
 
@@ -211,12 +211,12 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		
 		// FLAGS for server connection
 		CTag tagflags(CT_SERVER_FLAGS, CAPABLE_ZLIB 
-													| CAPABLE_AUXPORT 
-													| CAPABLE_NEWTAGS 
+								| CAPABLE_AUXPORT 
+								| CAPABLE_NEWTAGS 
 #if wxUSE_UNICODE													
-													| CAPABLE_UNICODE
+								| CAPABLE_UNICODE
 #endif													
-													); 
+											); 
 		
 		tagflags.WriteTagToFile(&data);
 
@@ -238,11 +238,11 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		AddLogLineM(true,wxString(wxT("        User Nick: ")) << thePrefs::GetUserNick());
 		AddLogLineM(true,wxString(wxT("        Edonkey  : ")) << EDONKEYVERSION);
 		#endif
-		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		SendPacket(packet, true, sender);
 	} else if (sender->GetConnectionState() == CS_CONNECTED){
-		theApp.statistics->AddReconnect();
-		theApp.statistics->SetServerConnectTime(GetTickCount64());
+		theStats::AddReconnect();
+		theStats::GetServerConnectTimer()->ResetTimer();
 		connected = true;
 		AddLogLineM(true, CFormat( _("Connection established on: %s") ) % sender->cur_server->GetListName());
 		connectedsocket = sender;
@@ -263,7 +263,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		if (thePrefs::AddServersFromServer())
 		{
 			CPacket* packet = new CPacket(OP_GETSERVERLIST,0);
-			theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
 			AddLogLineM(true,wxT("Client: OP_GETSERVERLIST"));
@@ -381,7 +381,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			connectedsocket = NULL;
 			theApp.searchlist->StopGlobalSearch();			
 			Notify_SearchCancel();
-			theApp.statistics->SetServerConnectTime(0);
+			theStats::GetServerConnectTimer()->StopTimer();
 			if (thePrefs::Reconnect() && !connecting){
 				ConnectToAnyServer();		
 			}
@@ -471,7 +471,7 @@ bool CServerConnect::Disconnect()
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
 		Notify_ShowConnState(false,wxEmptyString);
-		theApp.statistics->SetServerConnectTime(0);
+		theStats::GetServerConnectTimer()->StopTimer();
 		return true;
 	}
 	else
@@ -578,7 +578,7 @@ void CServerConnect::KeepConnectionAlive()
 		//   - this function is called once when connecting to a server and when a file becomes shareable - so, it's called rarely.
 		//   - if the compressed size is still >= the original size, we send the uncompressed packet
 		// therefor we always try to compress the packet
-		theApp.statistics->AddUpDataOverheadServer(packet->GetPacketSize());
+		theStats::AddUpOverheadServer(packet->GetPacketSize());
 		connectedsocket->SendPacket(packet,true);
 		
 		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));

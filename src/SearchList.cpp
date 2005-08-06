@@ -38,8 +38,7 @@
 #include "ServerList.h"
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
-#include "UploadQueue.h"	// Needed for AddUpDataOverheadServer
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "ObservableQueue.h"		// Needed for CQueueObserver
 #include "Format.h"
 #include "Logger.h"
@@ -108,7 +107,7 @@ void *CGlobalSearchThread::Entry()
 
 			if ( server != current ) {
 	
-				theApp.statistics->AddUpDataOverheadServer( m_packet->GetPacketSize() );
+				theStats::AddUpOverheadServer( m_packet->GetPacketSize() );
 				theApp.serverconnect->SendUDPPacket( m_packet, server, false );
 		
 				int percentage = 100 - ( queue.GetRemaining() * 100 ) / theApp.serverlist->GetServerCount();
@@ -363,7 +362,7 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	searchpacket->SetOpCode(OP_SEARCHREQUEST);
 	
 
-	theApp.statistics->AddUpDataOverheadServer(searchpacket->GetPacketSize());
+	theStats::AddUpOverheadServer(searchpacket->GetPacketSize());
 	// Send packet. If it's not a global search, delete it after sending.
 	theApp.serverconnect->SendPacket(searchpacket, (search_type == LocalSearch) ); 
 	

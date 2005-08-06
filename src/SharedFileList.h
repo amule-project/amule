@@ -65,7 +65,6 @@ public:
 	const CKnownFile* GetFileByIndex(unsigned int index) const;
 	CKnownFileList*	filelist;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
-	uint64	GetDatasize();
 	uint32	GetCount()	{return m_Files_map.size(); }
 	uint32  GetFileCount()	{return m_Files_map.size(); }
 	void	UpdateItem(CKnownFile* toupdate);

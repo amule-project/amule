@@ -31,11 +31,11 @@
 #endif
 
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
-#include "GetTickCount.h" 		// Needed fot GetTickCount
+#include "GetTickCount.h" 	// Needed fot GetTickCount
 
-#include <wx/thread.h>	// Needed for wxMutex
+#include <wx/thread.h>		// Needed for wxMutex
 
 #include <deque>
 #include <list>
@@ -246,12 +246,6 @@ public:
 	 */
 	void	SetCatStatus(uint8 cat, int newstatus);
 
-
-	/**
-	 * Returns the current download-rate.
-	 */
-	float	GetKBps() const;
-
 	/**
 	 * Returns the current number of queued files.
 	 */
@@ -267,14 +261,7 @@ public:
 	 */
 	uint16	GetPausedFileCount() const;
 
-	/**
-	 * Updates the array with the number of sources and transfering sources.
-	 *
-	 * @param results Must be at least 2 uint32s long.
-	 */
-	void	GetDownloadStats(uint32 results[]) const;
 
-	
 	/**
 	 * This function is called when a DNS lookup is finished.
 	 */

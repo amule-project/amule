@@ -32,7 +32,7 @@
 #include "Logger.h"
 #include "Preferences.h"
 #include "amule.h"
-#include "UploadQueue.h"
+#include "Statistics.h"
 
 #include <algorithm>
 #include <limits>
@@ -335,7 +335,7 @@ void* UploadBandwidthThrottler::Entry()
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
 			// Try to increase the upload rate
 			if (theApp.uploadqueue) {
-				allowedDataRate = theApp.uploadqueue->GetDatarate() + 5 * 1024;
+				allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
 			} else {
 				// App not created yet or already destroyed.
 				allowedDataRate = (uint32)(-1);

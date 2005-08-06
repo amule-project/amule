@@ -56,6 +56,7 @@ src/SharedFileList.cpp
 src/SharedFilesCtrl.cpp
 src/Statistics.cpp
 src/StatisticsDlg.cpp
+src/StatTree.cpp
 src/SysTray.cpp
 src/TextClient.cpp
 src/TransferWnd.cpp

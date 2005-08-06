@@ -48,7 +48,7 @@
 #include "Server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
-#include "Statistics.h"		// Needed for CStatistics
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"
 #include "IPFilter.h"
@@ -216,7 +216,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				/* Kry import of lugdunum 16.40 new features */
 				AddDebugLogLineM( false, logServer, wxT("Server: OP_SERVERMESSAGE") );
 				
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				char* buffer = new char[size-1];
 				memcpy(buffer,&packet[2],size-2);
 				buffer[size-2] = 0;
@@ -295,7 +295,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_IDCHANGE:{
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_IDCHANGE"));
 				
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				
 				if (size < 4 /* uint32 (ID)*/) {
 					throw wxString(wxT("Corrupt or invalid loginanswer from server received"));
@@ -389,7 +389,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_SEARCHRESULT: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_SEARCHRESULT"));
 				
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? 
 					serverconnect->GetCurrentServer() : NULL;
 				theApp.searchlist->ProcessSearchanswer(
@@ -403,7 +403,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			}
 			case OP_FOUNDSOURCES: {
 				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				CMemFile sources((byte*)packet,size);
 				uint8 fileid[16];
 				sources.ReadHash16(fileid);
@@ -433,7 +433,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_SERVERIDENT: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERIDENT"));
 
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				if (size<38) {
 					AddLogLineM(false, _("Unknown server info received! - too short"));
 					// throw wxString(wxT("Unknown server info received!"));
@@ -506,7 +506,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_CALLBACKREQUESTED: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_CALLBACKREQUESTED"));
 				
-				theApp.statistics->AddDownDataOverheadServer(size);
+				theStats::AddDownOverheadServer(size);
 				if (size == 6) {
 					CMemFile data((byte*)packet,size);
 					uint32 dwIP = data.ReadUInt32();
@@ -605,7 +605,7 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 	if (packet->GetProtocol() == OP_PACKEDPROT) {
 		if (!packet->UnPackPacket(250000)){
 			AddDebugLogLineM(false, logZLib, wxString::Format(wxT("Failed to decompress server TCP packet: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-			theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
+			theStats::AddDownOverheadServer(packet->GetPacketSize());
 			return true;
 		}
 		
@@ -616,7 +616,7 @@ bool CServerSocket::PacketReceived(CPacket* packet)
 		ProcessPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
 	} else {
 		AddDebugLogLineM(false, logServer, wxString::Format(wxT("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->GetProtocol() : 0, packet ? packet->GetOpCode() : 0, packet ? packet->GetPacketSize() : 0));
-		theApp.statistics->AddDownDataOverheadServer(packet->GetPacketSize());
+		theStats::AddDownOverheadServer(packet->GetPacketSize());
 	}
 	
 	return true;
@@ -660,7 +660,7 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	
 	m_IsSolving = false;
 	if (ip) {
-		if (theApp.ipfilter->IsFiltered(ip)) {
+		if (theApp.ipfilter->IsFiltered(ip, true)) {
 			AddLogLineM(true, CFormat( _("Server IP %s (%s) is filtered.  Not connecting.") )
 				% Uint32toStringIP(ip) % cur_server->GetAddress() );
 			OnConnect(wxSOCKET_INVADDR);
