@@ -94,7 +94,7 @@ CPacket::CPacket(char* header)
 	pBuffer 	= NULL;
 }
 
-CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode, bool detach)
+CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 {
 	size		= datafile->GetLength();
 	opcode		= ucOpcode;
@@ -108,15 +108,11 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode, bool detach
 	completebuffer = new char[size + sizeof(Header_Struct)/*Why this 4?*/];
 	pBuffer = completebuffer + sizeof(Header_Struct);
 	
-	
-	if (detach) {
-		//		pBuffer = (char*)datafile->Detach();
-		byte* tmp = datafile->Detach();
-		memcpy(pBuffer, tmp, size);
-		free(tmp);
-	} else {
-		memcpy(pBuffer, datafile->GetBuffer(), size);
-	}
+	// Write contents of MemFile to buffer (while keeping original position in file)
+	off_t position = datafile->GetPosition();
+	datafile->Seek(0, wxFromStart);
+	datafile->Read(pBuffer, size);
+	datafile->Seek(position, wxFromStart);
 }
 
 CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)

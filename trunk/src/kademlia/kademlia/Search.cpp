@@ -385,7 +385,7 @@ void CSearch::StorePacket()
 			}
 			wxASSERT( m_searchTerms->GetLength() > 0 );
 			// The data in 'm_searchTerms' is to be sent several times, so use the don't detach flag.
-			CKademlia::getUDPListener()->sendPacket(m_searchTerms, KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort(), false);
+			CKademlia::getUDPListener()->sendPacket(m_searchTerms, KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort());
 			m_totalRequestAnswers++;
 			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;

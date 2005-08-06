@@ -42,17 +42,12 @@ public:
 	virtual ~CMemFile();
 
 	void Attach(const byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
-	byte* Detach();	
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
 	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
 	virtual off_t GetLength() const { return m_FileSize; };
-	
-	// Sometimes we need to get the raw buffer, like sending a packet and 
-	// not wanting to deatach the buffer from the MemFile.
-	byte*	GetBuffer() { return m_buffer; };
 	
 protected:
 	virtual off_t  doRead(void* buf, off_t length) const;

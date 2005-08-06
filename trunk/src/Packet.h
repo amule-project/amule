@@ -57,7 +57,7 @@ public:
 	CPacket(CPacket &p);
 	CPacket(uint8 protocol = OP_EDONKEYPROT);
 	CPacket(char* header); // only used for receiving packets
-	CPacket(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00, bool detach = true);
+	CPacket(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
 	CPacket(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
 	CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
