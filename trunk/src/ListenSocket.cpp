@@ -1078,9 +1078,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 	printf("Rec: OPCODE %x \n",opcode);
 	DumpMem(packet,size);
 	#endif
-	
-	AddDebugLogLineM(false, logPacketErrors, wxString::Format(wxT("Parsing patcket with opcode %x, size %u"), opcode, size));
-	
+		
 	// 0.42e - except the catchs on mem exception and file exception
 	if (!m_client) {
 		throw wxString(wxT("Unknown clients sends extended protocol packet"));
@@ -1841,9 +1839,17 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 {
 	// 0.42e
 	bool bResult = false;
-	uint32 uRawSize = packet->GetPacketSize();	
-	AddDebugLogLineM( false, logRemoteClient, wxString( wxT("Packet received from ") ) + ( m_client ? m_client->GetFullIP() : wxT("Unknown Client") ) );
+	uint32 uRawSize = packet->GetPacketSize();
 
+	AddDebugLogLineM( false, logRemoteClient,
+		CFormat(wxT("Packet with protocol %x, opcode %x, size %u received from %s"))
+			% packet->GetProtocol()
+			% packet->GetOpCode()
+			% packet->GetPacketSize()
+			% ( m_client ? m_client->GetFullIP() : wxT("Unknown Client") )
+	);
+
+	wxString exception;
 	try {
 		switch (packet->GetProtocol()) {
 			case OP_EDONKEYPROT:		
@@ -1851,13 +1857,16 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 				break;		
 			case OP_PACKEDPROT:
 				if (!packet->UnPackPacket()) {
-					AddDebugLogLineM( false, logZLib, 
-						wxString::Format(wxT("Failed to decompress client TCP packet; protocol=0x%02x  opcode=0x%02x  size=%u"),
-						packet->GetProtocol(),
-						packet->GetOpCode(),
-						packet->GetPacketSize()));
+					AddDebugLogLineM( false, logZLib, wxT("Failed to decompress client TCP packet."));
 					bResult = false;
 					break;
+				} else {
+					AddDebugLogLineM(false, logRemoteClient, 
+						wxString::Format(wxT("Packet unpacked, new protocol %x, opcode %x, size %u"), 
+							packet->GetProtocol(),
+							packet->GetOpCode(),
+							packet->GetPacketSize())
+					);
 				}
 			case OP_EMULEPROT:
 				bResult = ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
@@ -1872,57 +1881,37 @@ bool CClientReqSocket::PacketReceived(CPacket* packet)
 			}
 		}
 	} catch (const CEOFException& err) {
-		AddDebugLogLineM( false, logPacketErrors,
-			CFormat( wxT("Caught EOF exception:\n"
-						 "\tError: %s\n"
-						 "\tClientData: %s\n"
-						 "on ListenSocket::ProcessExtPacket") )
-				% ( !err.what().IsEmpty() ? err.what() : wxT("Unknown") )
-				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
-		);
-		
-		if (m_client) {
-			m_client->SetDownloadState(DS_ERROR);
-		}
-		
-		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket\n"));
+		exception = wxT("EOF exception: ") + err.what();
 	} catch (const CInvalidPacket& err) {
+		exception = wxT("InvalidPacket exception: ") + err.what();
+	} catch (const wxString& error) {
+		exception = wxT("error: ") + (error.IsEmpty() ? wxT("Unknown error") : error);
+	}
+
+	if (!exception.IsEmpty()) {
 		AddDebugLogLineM( false, logPacketErrors,
-			CFormat( wxT("Caught InvalidPacket exception:\n"
-						 "\tError: %s\n"
-						 "\tClientData: %s\n"
-						 "on ListenSocket::ProcesstPacket") )
-				% ( !err.what().IsEmpty() ? err.what() : wxT("Unknown") )
+			CFormat(wxT("Caught %s\n"
+						"On packet with protocol %x, opcode %x, size %u"
+						"\tClientData: %s\n"))
+				% exception
+				% packet->GetProtocol()
+				% packet->GetOpCode()
+				% packet->GetPacketSize()
 				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
 		);
-			
+		
 		if (m_client) {
 			m_client->SetDownloadState(DS_ERROR);
 		}
 		
-		Disconnect(wxT("UnCaught invalid packet exception On ProcessPacket"));
-	} catch (const wxString& error) {
-		AddDebugLogLineM( false, logPacketErrors, 
-			CFormat( wxT("Caught error:\n"
-						 "\tError: %s\n"
-						 "\tClientData: %s\n"
-						 "on ListenSocket::ProcessPacket") )
-				% ( error.IsEmpty() ? wxT("Unknown") : error )
-				% ( m_client ? m_client->GetClientFullInfo() : wxT("Unknown") )
-		);
-
 		AddDebugLogLineM( false, logClient, 
 			CFormat( wxT("Client '%s' (IP: %s) caused an error (%s). Disconnecting client!" ) )
 				% ( m_client ? m_client->GetUserName() : wxString(wxT("Unknown")) )
 				% ( m_client ? m_client->GetFullIP() : wxString(wxT("Unknown")) )
-				% error
+				% exception
 		);
-
-		if (m_client) {
-			m_client->SetDownloadState(DS_ERROR);
-		}
 		
-		Disconnect(wxT("Client error on ListenSocket::ProcessPacket: ") + wxString(error));
+		Disconnect(wxT("Caught exception on CClientReqSocket::ProcessPacket\n"));
 	}
 
 	return bResult;
