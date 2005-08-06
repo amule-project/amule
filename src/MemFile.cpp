@@ -69,20 +69,6 @@ void CMemFile::Attach(const byte* buffer, unsigned int bufferSize, unsigned int 
 }
 
 
-byte* CMemFile::Detach()
-{
-	byte *retval	= m_buffer;
-	
-	m_position		= 0;
-	m_BufferSize	= 0;
-	m_FileSize		= 0;
-	m_buffer		= NULL;
-	m_delete		= false;
-	
-	return retval;
-}
-
-
 CMemFile::~CMemFile()
 {
 	if ( m_buffer && m_delete ) {

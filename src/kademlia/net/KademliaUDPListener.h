@@ -69,7 +69,7 @@ public:
 	virtual void processPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
 	void sendPacket(const byte* data, uint32 lenData, uint32 destinationHost, uint16 destinationPort);
 	void sendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort);
-	void sendPacket(CMemFile* data, byte opcode, uint32 destinationHost, uint16 destinationPort, bool detach = true);
+	void sendPacket(CMemFile* data, byte opcode, uint32 destinationHost, uint16 destinationPort);
 
 private:
 	void addContact (const byte* data, uint32 lenData, uint32 ip, uint16 port, uint16 tport = 0);
