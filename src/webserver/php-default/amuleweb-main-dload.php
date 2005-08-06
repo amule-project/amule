@@ -81,8 +81,8 @@ function formCommandSubmit(command)
 <form name="mainform" action="amuleweb-main-dload.php" method="post">
 <table width="100%"  border="1" bgcolor="#0099CC">
   <tr>
-    <td width="96" height="20"><input type="hidden" name="command"></td>
-    <td width="468"><table border="0" cellpadding="0" cellspacing="0">
+    <td width="94" height="20"><input type="hidden" name="command"></td>
+    <td width="363"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td><a href="javascript:formCommandSubmit('pause');" target="mainFrame" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="pause.jpeg" border="0" alt="" onLoad=""></a></td>
         <td><a href="javascript:formCommandSubmit('resume');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
@@ -91,42 +91,45 @@ function formCommandSubmit(command)
         <td><a href="javascript:formCommandSubmit('delete');" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
       </tr>
     </table></td>
-    <td width="273">
-    	<select name="status">
-    		<option selected>All</option>
-      		<option>Waiting</option>
-      		<option>Paused</option>
-      		<option>Downloading</option>
-    	</select></td>
+    <td width="264"><table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><select name="status">
+          <option selected>All</option>
+          <option>Waiting</option>
+          <option>Paused</option>
+          <option>Downloading</option>
+        </select></td>
+        <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
   </tr>
   <tr>
-    <td colspan="3"><table width="100%"  border="0">
+    <td colspan="3"><table width="100%"  border="0" cellpadding="2" cellspacing="2">
       <tr>
         <th width="22" scope="col">&nbsp;</th>
-        <th width="213" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="210" scope="col"><div align="left">
+        <th width="230" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
+        <th width="227" scope="col"><div align="left">
           <div align="left">Progress</div></th>
-        <th width="214" scope="col"><div align="left">
+        <th width="231" scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="27" scope="col">&nbsp;</th>
-      </tr>
+        <th width="44" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
+        <th width="88" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
+        <th width="8" scope="col">&nbsp;</th>
+        <th width="12" scope="col">&nbsp;</th>
+        </tr>
       <tr>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
+        <td nowrap scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-      </tr>
+        </tr>
 	  
 	  <?php
 		function CastToXBytes($size)
@@ -181,7 +184,7 @@ function formCommandSubmit(command)
 		//
 		// perform command before processing content
 		//
-		//var_dump($HTTP_GET_VARS);
+		var_dump($HTTP_GET_VARS);
 		if ( $HTTP_GET_VARS["command"] != "") {
 			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
@@ -191,7 +194,18 @@ function formCommandSubmit(command)
 					amule_do_download_cmd($name, $HTTP_GET_VARS["command"]);
 				}
 			}
+			//
+			// check "filter-by-status" settings
+			//
+			var_dump($HTTP_GET_VARS["command"]);
+			if ( $HTTP_GET_VARS["command"] == "filter") {
+				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
+			var_dump($HTTP_GET_VARS["command"]);
+			}
 		}
+		var_dump($_SESSION["filter_status"]);
+		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "All";
+		
 		$downloads = amule_load_vars("downloads");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
@@ -205,7 +219,7 @@ function formCommandSubmit(command)
 				$_SESSION["sort_reverse"] = !$_SESSION["sort_reverse"];
 			}
 		}
-		//var_dump($_SESSION);
+		var_dump($_SESSION);
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["download_sort"] = $sort_order;
@@ -213,6 +227,7 @@ function formCommandSubmit(command)
 		}
 
 		foreach ($downloads as $file) {
+			if ( ($_SESSION["filter_status"] == "All") or ( $_SESSION["filter_status"] == StatusString($file) ) ) {
 			print "<tr>";
 
 			echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
@@ -227,6 +242,7 @@ function formCommandSubmit(command)
 
 			echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
 			print "</tr>";
+			}
 		}
 	  ?>
     </table></td>
