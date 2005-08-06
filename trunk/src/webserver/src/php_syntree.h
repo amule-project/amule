@@ -92,6 +92,9 @@ typedef enum PHP_EXP_OP {
 	/* object access "->" and "::" */
 	PHP_OP_OBJECT_DEREF, PHP_OP_CLASS_DEREF,
  
+ 	/* casting */
+ 	PHP_OP_CAST_INT, PHP_OP_CAST_FLOAT, PHP_OP_CAST_BOOL, PHP_OP_CAST_STR,
+ 	
     /* arithmetics */
     PHP_OP_MUL, PHP_OP_DIV, PHP_OP_ADD, PHP_OP_SUB, PHP_OP_REM,
     /* str concat */

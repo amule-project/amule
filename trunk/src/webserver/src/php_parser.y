@@ -401,12 +401,12 @@ expr:
 	|	expr IS_GREATER_OR_EQ expr 	{ $$ = make_exp_2(PHP_OP_GRT_EQ, $1, $3); }
 	|	'(' expr ')' 				{ $$ = $2; }
 	|	expr '?' expr ':' expr		{ $$ = make_exp_2(PHP_OP_MUX, $3, $5); $$->exp_node = $1; }
-	|	INT_CAST expr 	{  }
-	|	DOUBLE_CAST expr 	{  }
-	|	STRING_CAST expr	{  } 
-	|	ARRAY_CAST expr 	{  }
-	|	OBJECT_CAST expr 	{  }
-	|	BOOL_CAST expr	{  }
+	|	INT_CAST expr 				{ $$ = make_exp_1(PHP_OP_CAST_INT, $2); }
+	|	DOUBLE_CAST expr 			{ $$ = make_exp_1(PHP_OP_CAST_FLOAT, $2); }
+	|	STRING_CAST expr			{ $$ = make_exp_1(PHP_OP_CAST_STR, $2); } 
+	|	BOOL_CAST expr				{ $$ = make_exp_1(PHP_OP_CAST_BOOL, $2); }
+/*	|	ARRAY_CAST expr 	{  } */
+/*	|	OBJECT_CAST expr 	{  } */
 	|	UNSET_CAST expr	{  }
 	|	EXIT exit_expr	{  }
 	|	'@' expr 					{ $$ = $2; }
