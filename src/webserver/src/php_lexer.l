@@ -134,6 +134,22 @@ EOL ("\r"|"\n"|"\r\n")
 "global"		return GLOBAL;
 "static"		return STATIC;
 
+"("[ \t]*("int"|"integer")[ \t]*")" {
+        return INT_CAST;
+}
+
+"("[ \t]*("real"|"double"|"float")[ \t]*")" {
+        return DOUBLE_CAST;
+}
+
+"("[ \t]*"string"[ \t]*")" {
+        return STRING_CAST;
+}
+
+"("[ \t]*("bool"|"boolean")[ \t]*")" {
+        return BOOL_CAST;
+}
+
 "#"|"//" {
 		BEGIN(LINE_COMMENT);
 		yymore();
