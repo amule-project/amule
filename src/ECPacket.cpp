@@ -783,7 +783,7 @@ bool CECPacket::WritePacket(ECSocket& socket) const
 }
 
 /*!
- * \fn CECPacket::CECPacket(ec_opcode_t opCode)
+ * \fn CECPacket::CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level)
  *
  * \brief Creates a new packet with given OPCODE.
  */
