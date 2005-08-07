@@ -3914,13 +3914,13 @@ msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr ""
-"%d부분 파일 %s에 있는 손상된 부분(%d)이 발견되었습니다."
-"- 파일헤시결과 |%s|파일헤시 |%s|"
+""
+""
 
 #: src/PartFile.cpp:1197
 #, c-format
 msgid "Found completed part (%i) in %s"
-msgstr "%s의 완료된 부분(%i)이 발견되었습니다."
+msgstr ""
 
 #: src/PartFile.cpp:1234
 #, c-format
@@ -4057,7 +4057,7 @@ msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 #: src/PartFile.cpp:3050
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr "ICH: %s를 위해 손상된 부분 %i를 회복합니다. -> 저장된 바이트: %s"
+msgstr ""
 
 #: src/PartFile.cpp:3671
 msgid "Insufficient Diskspace"
