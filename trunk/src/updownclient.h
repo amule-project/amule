@@ -114,26 +114,6 @@ enum ESourceFrom {
 	SF_SOURCE_SEEDS
 };
 
-enum EClientSoftware {
-	SO_EMULE		= 0,
-	SO_CDONKEY		= 1,
-	SO_LXMULE		= 2,
-	SO_AMULE		= 3,
-	SO_SHAREAZA		= 4,
-	SO_EMULEPLUS		= 5,
-	SO_HYDRANODE            = 6,
-	SO_NEW2_MLDONKEY	= 10,
-	SO_LPHANT		= 20,
-	SO_NEW_SHAREAZA		= 68, // shazzas love to send 0x44 lately.
-	SO_EDONKEYHYBRID	= 50,
-	SO_EDONKEY		= 51,
-	SO_MLDONKEY		= 52,
-	SO_OLDEMULE		= 53,
-	SO_UNKNOWN		= 54,
-	SO_NEW_MLDONKEY		= 152,
-	SO_COMPAT_UNK		= 0xFF
-};
-
 enum ESecureIdentState{
 	IS_UNAVAILABLE		= 0,
 	IS_ALLREQUESTSSEND	= 0,

@@ -467,12 +467,6 @@ void ECSocket::OnClose()
 
 void ECSocket::OnError()
 {
-	#ifdef CLIENT_GUI
-	if (!theApp.ShowConnectionDialog()) {
-		wxCloseEvent e;
-		theApp.ShutDown(e);
-	}
-	#endif
 }
 
 bool ECSocket::ReadNumber(void *buffer, unsigned int len)

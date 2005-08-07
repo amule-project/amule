@@ -157,7 +157,7 @@ protected:
 	uint8	m_uName;
 	char*	m_pszName;
 	uint32	m_nBlobSize;
-	union{
+	union {
 	  wxString*	m_pstrVal;
 	  uint32	m_uVal;
 	  float		m_fVal;

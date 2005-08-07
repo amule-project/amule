@@ -31,6 +31,7 @@
 #include "Statistics.h"		// Interface declarations
 #include "ECcodes.h"		// Needed for EC tagnames
 #include "ECPacket.h"		// Needed for CECTag
+#include "OPCodes.h"
 
 #ifndef EC_REMOTE
 	#include "GetTickCount.h"	// Needed for GetTickCount64()
@@ -797,17 +798,6 @@ void CStatistics::RemoveSourceOrigin(unsigned origin)
 	wxASSERT(counter);
 	--(*counter);
 }
-
-
-// Yes, I know this is dirty, but I really don't want to #include "updownclient.h" here
-#define	SO_EMULE		0
-#define SO_AMULE		3
-#define	SO_SHAREAZA		4
-#define SO_HYDRANODE		6
-#define	SO_NEW2_MLDONKEY	10
-#define	SO_NEW_SHAREAZA		68
-#define	SO_OLDEMULE		53
-#define	SO_NEW_MLDONKEY		152
 
 uint32 GetSoftID(uint8 SoftType)
 {
