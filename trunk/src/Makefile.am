@@ -479,3 +479,4 @@ ECVersion.h: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion ECcodes.h
 	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)
 
 utils/mkFileSum$(EXEEXT): utils/mkFileSum.c
+	$(CC) -o $@ $<
