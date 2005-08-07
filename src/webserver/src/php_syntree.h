@@ -88,7 +88,10 @@ typedef enum PHP_EXP_OP {
     
     /* dereference */
     PHP_OP_ARRAY_BY_KEY, PHP_OP_VAR_BY_EXP,
-
+    
+	/* array construct */
+	PHP_OP_ARRAY, PHP_OP_ARRAY_PAIR, PHP_OP_ARRAY_REF_PAIR,
+	
 	/* object access "->" and "::" */
 	PHP_OP_OBJECT_DEREF, PHP_OP_CLASS_DEREF,
  

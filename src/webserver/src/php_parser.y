@@ -76,7 +76,7 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 %type <syn_node> while_statement foreach_statement for_statement elseif_list else_statement switch_case_list case_list
 
 %type <exp_node> VARIABLE variable deref_variable global_var static_var
-%type <exp_node> parameter_list
+%type <exp_node> parameter_list array_pair_list array_elem
 
 %type <exp_node> expr expr_list for_expr exit_expr const_value function_call func_param_list assignment_list assignment_list_element
 %type <exp_node> FNUMBER DNUMBER STRING
@@ -412,7 +412,7 @@ expr:
 	|	'@' expr 					{ $$ = $2; }
 
 	|	const_value					{ $$ = $1; }
-/*	|	ARRAY '(' array_pair_list ')' { } */
+	|	ARRAY '(' array_pair_list ')' { $$ = make_exp_1(PHP_OP_ARRAY, $3); }
 	|	PRINT expr  				{ $$ = make_exp_1(PHP_OP_PRINT, $2); }
 ;
 
@@ -431,3 +431,20 @@ assignment_list_element: variable		{ /*$$ = make_assign_node($1);*/ }
 	|	/* empty */						{ /*$$ = make_assign_node(0);*/ }
 ;
 
+array_pair_list: array_elem				{ $$ = make_exp_1(PHP_OP_LIST, 0); $$->exp_node = $1; }
+	| array_pair_list ',' array_elem	{
+				PHP_EXP_NODE *last = $1;
+				while ( last->next) last = last->next;
+				last->next = make_exp_1(PHP_OP_LIST, 0);
+				last->next->exp_node = $3;
+				$$ = $1;
+			}
+;
+
+array_elem : expr						{ $$ = make_exp_1(PHP_OP_ARRAY_PAIR, $1); }
+	| expr HASH_ASSIGN expr				{ $$ = make_exp_2(PHP_OP_ARRAY_PAIR, $1, $3); }
+	| expr HASH_ASSIGN '&' variable		{ $$ = make_exp_2(PHP_OP_ARRAY_REF_PAIR, $1, $4); }
+	| '&' variable						{ $$ = make_exp_1(PHP_OP_ARRAY_REF_PAIR, $2); }
+;
+
+	
