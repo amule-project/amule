@@ -924,6 +924,16 @@ void php_exp_tree_free(PHP_EXP_NODE *tree)
 				delete tree->tree_node.right;
 			}
 			break;
+		case PHP_OP_ARRAY: {
+				PHP_EXP_NODE *curr = tree->tree_node.left;
+                while (curr) {
+                	PHP_EXP_NODE *next = curr->next;
+                    php_exp_tree_free(curr->exp_node);
+                    delete curr;
+                    curr = next;
+                }
+			}
+			break;
 		case PHP_OP_MUX:
 			php_exp_tree_free(tree->exp_node);
 		default:
@@ -1082,9 +1092,6 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 						default:
 							php_report_error(PHP_INTERNAL_ERROR, "Array list contain wrong node");
 							return;
-					}
-					if ( curr->exp_node ) {
-						php_expr_eval(curr->exp_node, result);
 					}
 					curr = curr->next;
 				}
