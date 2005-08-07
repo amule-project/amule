@@ -851,13 +851,16 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 #ifdef AMULEWEB_SCRIPT_EN
 		save_session_vars(sess->m_vars);
-		sess->m_get_vars.clear();
 #endif	
 
 		delete context;
 		
 		scan_ptr = curr_code_end;
 	}
+
+#ifdef AMULEWEB_SCRIPT_EN
+	sess->m_get_vars.clear();
+#endif	
 
 	delete [] buf;
 }
