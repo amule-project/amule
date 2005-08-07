@@ -348,14 +348,21 @@ void CStatTreeItemCounter::AddECValues(CECTag* tag) const
 #ifndef AMULE_DAEMON
 wxString CStatTreeItemNativeCounter::GetDisplayString() const
 {
+	wxString my_label = wxGetTranslation(m_label);
+	if (my_label == m_label) {
+		if (m_label.Right(4) == wxT(": %s")) {
+			my_label = wxGetTranslation(m_label.Mid(0, m_label.Length() - 4)) + wxString(wxT(": %s"));
+		}
+	}
+	CFormat label(my_label);
 	if (m_displaymode == dmBytes) {
-		return CFormat(wxGetTranslation(m_label)) % CastItoXBytes(m_value);
+		return label % CastItoXBytes(m_value);
 	} else {
 		wxString result = wxString::Format(wxT("%" PRIu32), m_value);
 		if ((m_flags & stShowPercent) && m_parent) {
 			result.append(wxString::Format(wxT(" (%.2f%%)"), ((double)m_value / ((CStatTreeItemNativeCounter*)m_parent)->m_value) * 100.0));
 		}
-		return CFormat(wxGetTranslation(m_label)) % result;
+		return label % result;
 	}
 }
 #endif

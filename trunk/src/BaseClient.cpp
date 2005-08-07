@@ -228,7 +228,7 @@ void CUpDownClient::Init()
 	m_nBuddyPort = 0;	
 	m_nUserIDHybrid = 0;
 
-	m_nSourceFrom = SF_SERVER;
+	m_nSourceFrom = SF_NONE;
 
 	if (m_socket) {
 		amuleIPV4Address address;

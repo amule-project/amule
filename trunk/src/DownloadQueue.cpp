@@ -582,8 +582,8 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			sender->UpdateFileRatingCommentAvail();
 		}
 
-		sender->AddSource( source );
 		source->SetSourceFrom(SF_PASSIVE);
+		sender->AddSource( source );
 		Notify_DownloadCtrlAddSource( sender, source, UNAVAILABLE_SOURCE);
 	}
 }
@@ -1179,7 +1179,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 			sources.WriteUInt16(resolved.port);
 			sources.Seek(0,wxFromStart);
 			
-			file->AddSources(sources,0,0);
+			file->AddSources(sources, 0, 0, SF_LINK);
 		}
 	}
 	
@@ -1267,7 +1267,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 	
 	// Add specified sources, specified by IP
 	if ( link->HasValidSources() ) {
-		file->AddClientSources( link->m_sources, 1 );
+		file->AddClientSources( link->m_sources, 1, SF_LINK );
 	}
 	
 	// Add specified sources, specified by hostname

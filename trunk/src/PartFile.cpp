@@ -1150,7 +1150,7 @@ void CPartFile::LoadSourceSeeds()
 		
 		sources_data.Seek(0);
 		
-		AddClientSources(&sources_data, 1);
+		AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
@@ -1739,7 +1739,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport)
+void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned origin)
 {
 	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
@@ -1773,6 +1773,7 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport)
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			++debug_possiblesources;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
+			newsource->SetSourceFrom((ESourceFrom)origin);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
@@ -2876,7 +2877,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	return result;
 }
 
-void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
+void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion, unsigned nSourceFrom)
 {
 	// Kad reviewed
 	
@@ -2973,7 +2974,7 @@ void CPartFile::AddClientSources(CMemFile* sources,uint8 sourceexchangeversion)
 			if (sourceexchangeversion > 1) {
 				newsource->SetUserHash(achUserHash);
 			}
-			newsource->SetSourceFrom(SF_SOURCE_EXCHANGE);
+			newsource->SetSourceFrom((ESourceFrom)nSourceFrom);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			break;
@@ -3736,6 +3737,7 @@ bool CPartFile::AddSource( CUpDownClient* client )
 {
 	if (m_SrcList.insert( client ).second) {
 		theStats::AddFoundSource();
+		theStats::AddSourceOrigin(client->GetSourceFrom());
 		return true;
 	} else {
 		return false;
@@ -3746,6 +3748,7 @@ bool CPartFile::AddSource( CUpDownClient* client )
 bool CPartFile::DelSource( CUpDownClient* client )
 {
 	if (m_SrcList.erase( client )) {
+		theStats::RemoveSourceOrigin(client->GetSourceFrom());
 		theStats::RemoveFoundSource();
 		return true;
 	} else {

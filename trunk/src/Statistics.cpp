@@ -692,7 +692,7 @@ void CStatistics::InitStatsTree()
 	s_totalDownOverhead->AddPacketCounter(s_serverDownOverhead);
 	s_kadDownOverhead = (CStatTreeItemPackets*)tmpRoot2->AddChild(new CStatTreeItemPackets(wxTRANSLATE("Kad Overhead (Packets): %s")));
 	s_totalDownOverhead->AddPacketCounter(s_kadDownOverhead);
-	s_foundSources = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Found Sources: %s")));
+	s_foundSources = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Found Sources: %s"), stSortChildren | stSortByValue));
 	s_activeDownloads = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Active Downloads (chunks): %s")));
 
 	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload), 3);
@@ -750,6 +750,7 @@ void CStatistics::UpdateStatsTree()
 	s_sessionUpload->ReSortChildren();
 	s_sessionDownload->ReSortChildren();
 	s_clients->ReSortChildren();
+	s_foundSources->ReSortChildren();
 	// TODO: sort OS_Info subtrees.
 
 	s_avgConnections->SetValue(theApp.listensocket->GetAverageConnections());
@@ -775,6 +776,26 @@ void CStatistics::UpdateStatsTree()
 	s_totalUsers->SetValue((uint64)servtuser);
 	s_totalFiles->SetValue((uint64)servtfile);
 	s_serverOccupation->SetValue(servocc);
+}
+
+
+void CStatistics::AddSourceOrigin(unsigned origin)
+{
+	CStatTreeItemNativeCounter* counter = (CStatTreeItemNativeCounter*)s_foundSources->GetChildById(0x0100 + origin);
+	if (counter) {
+		++(*counter);
+	} else {
+		counter = new CStatTreeItemNativeCounter(OriginToText(origin) + wxT(": %s"), stHideIfZero | stShowPercent);
+		++(*counter);
+		s_foundSources->AddChild(counter, 0x0100 + origin);
+	}
+}
+
+void CStatistics::RemoveSourceOrigin(unsigned origin)
+{
+	CStatTreeItemNativeCounter* counter = (CStatTreeItemNativeCounter*)s_foundSources->GetChildById(0x0100 + origin);
+	wxASSERT(counter);
+	--(*counter);
 }
 
 

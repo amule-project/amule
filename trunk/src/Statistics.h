@@ -279,6 +279,8 @@ class CStatistics {
 	static	void	AddFoundSource()			{ ++(*s_foundSources); }
 	static	void	RemoveFoundSource()			{ --(*s_foundSources); }
 	static	uint32	GetFoundSources()			{ return (*s_foundSources); }
+	static	void	AddSourceOrigin(unsigned origin);
+	static	void	RemoveSourceOrigin(unsigned origin);
 	static	void	AddDownloadingSource()			{ ++(*s_activeDownloads); }
 	static	void	RemoveDownloadingSource()		{ --(*s_activeDownloads); }
 	static	uint32	GetDownloadingSources()			{ return (*s_activeDownloads); }

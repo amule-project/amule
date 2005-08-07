@@ -1483,7 +1483,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					//and set the file's last answer time
 					((CPartFile*)file)->SetLastAnsweredTime();
 
-					((CPartFile*)file)->AddClientSources(&data, m_client->GetSourceExchangeVersion());
+					((CPartFile*)file)->AddClientSources(&data, m_client->GetSourceExchangeVersion(), SF_SOURCE_EXCHANGE);
 				}
 			}
 			break;
