@@ -273,10 +273,13 @@ CIndexed::~CIndexed()
 			LoadMap::iterator it = m_Load_map.begin();
 			for ( ; it != m_Load_map.end(); ++it ) {
 				Load* load = it->second;
-				load_file.writeUInt128(load->keyID);
-				load_file.writeUInt32(load->time);
-				l_total++;
-				delete load;
+				wxASSERT(load);
+				if (load) {
+					load_file.writeUInt128(load->keyID);
+					load_file.writeUInt32(load->time);
+					l_total++;
+					delete load;
+				}
 			}
 			load_file.Close();
 		}
