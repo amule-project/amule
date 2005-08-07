@@ -105,11 +105,13 @@ enum {
 };
 
 enum ESourceFrom {
-	SF_SERVER		= 0,
-	SF_KADEMLIA		= 1,
-	SF_SOURCE_EXCHANGE	= 2,
-	SF_PASSIVE		= 3,
-	SF_LINK			= 4
+	SF_NONE,
+	SF_SERVER,
+	SF_KADEMLIA,
+	SF_SOURCE_EXCHANGE,
+	SF_PASSIVE,
+	SF_LINK,
+	SF_SOURCE_SEEDS
 };
 
 enum EClientSoftware {

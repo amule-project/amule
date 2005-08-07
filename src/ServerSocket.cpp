@@ -408,7 +408,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				uint8 fileid[16];
 				sources.ReadHash16(fileid);
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-					file->AddSources(sources,cur_server->GetIP(), cur_server->GetPort());
+					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_SERVER);
 				}
 				break;
 			}

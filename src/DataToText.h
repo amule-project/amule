@@ -63,4 +63,12 @@ const wxString& GetClientDetails(const CUpDownClient *pClient, wxString *clientN
 
 #endif /* !EC_REMOTE */
 
+/**
+ * Get "Source From" text, i.e. where we got the source from.
+ *
+ * @param source_from A ESourceFrom enum value.
+ * @return Human-readable text for the ESourceFrom enum values.
+ */
+wxString OriginToText(unsigned int source_from);
+
 #endif /* DATATOTEXT_H */
