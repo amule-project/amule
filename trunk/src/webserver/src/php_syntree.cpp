@@ -1057,6 +1057,39 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				value_value_assign(result, &lval_node->value);
 			}
 			break;
+		case PHP_OP_ARRAY:
+			if ( result ) {
+				PHP_EXP_NODE *curr = expr->tree_node.left;
+				value_value_free(result);
+				cast_value_array(result);
+				while ( curr ) {
+					switch( curr->exp_node->op ) {
+						case PHP_OP_ARRAY_PAIR:
+							if ( curr->exp_node->tree_node.right ) {
+								php_expr_eval(curr->exp_node->tree_node.left, &result_val_left);
+								cast_value_str(&result_val_left);
+								lval_node = array_get_by_key(result, &result_val_left);
+								value_value_free(&result_val_left);
+								php_expr_eval(curr->exp_node->tree_node.right, &lval_node->value);
+							} else {
+								lval_node = array_push_back(result);
+								php_expr_eval(curr->exp_node->tree_node.left, &lval_node->value);
+							}
+							break;
+						case PHP_OP_ARRAY_REF_PAIR:
+							lval_node = php_expr_eval_lvalue(curr->exp_node->tree_node.right);
+							break;
+						default:
+							php_report_error(PHP_INTERNAL_ERROR, "Array list contain wrong node");
+							return;
+					}
+					if ( curr->exp_node ) {
+						php_expr_eval(curr->exp_node, result);
+					}
+					curr = curr->next;
+				}
+			}
+			break;
 		case PHP_OP_FUNC_CALL:
 			php_run_func_call(expr, result);
 			break;
