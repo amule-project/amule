@@ -28,58 +28,39 @@
 #endif
 
 #include "MemFile.h"		// Needed for CMemFile
-#include "Packet.h"			// Needed for CInvalidPacket
+
 
 CMemFile::CMemFile(unsigned int growBytes)
 {
-	m_GrowBytes		= growBytes;
-	m_position		= 0;
+	m_buffer		= NULL;
 	m_BufferSize	= 0;
 	m_FileSize		= 0;
-	m_delete		= true;
-	m_buffer		= NULL;
-}
-
-
-CMemFile::CMemFile(const byte *buffer, unsigned int bufferSize, unsigned int growBytes)
-{
-	m_buffer		= NULL;
-	m_delete		= true;
-	
-	Attach(buffer, bufferSize, growBytes);
-}
-
-
-void CMemFile::Attach(const byte* buffer, unsigned int bufferSize, unsigned int growBytes)
-{
-	// Should we free the old buffer if one such exists
-	if ( m_buffer && m_delete ) {
-		free(m_buffer);
-	}
-	m_buffer =  (byte*)buffer;
-	
 	m_GrowBytes		= growBytes;
 	m_position		= 0;
-	m_BufferSize	= bufferSize;
-	m_delete		= false;
+	m_delete		= true;
+}
 
-	// According to the MSDN reference, attaching with a non-zero growBytes value
-	// will mean that the current contents is to be ignored
-	m_FileSize 	= ( growBytes ? 0 : bufferSize );
+
+CMemFile::CMemFile(byte *buffer, unsigned int bufferSize)
+{
+	m_buffer		= buffer;
+	m_BufferSize	= bufferSize;
+	m_FileSize		= bufferSize;
+	m_GrowBytes		= 0;
+	m_position		= 0;
+	m_delete		= false;
 }
 
 
 CMemFile::~CMemFile()
 {
-	if ( m_buffer && m_delete ) {
+	if (m_delete) {
 		free(m_buffer);
 	}
-	
-	m_buffer = NULL;
 }
 
 
-off_t CMemFile::Seek(off_t offset, wxSeekMode from)
+off_t CMemFile::Seek(off_t offset, wxSeekMode from) const
 {
 	off_t newpos = 0;
 	
@@ -94,60 +75,39 @@ off_t CMemFile::Seek(off_t offset, wxSeekMode from)
 			newpos = m_FileSize - offset;
 			break;
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Using an invalid seek-mode in CMemFile::Seek!"));
+			MULE_VALIDATE_PARAMS(false, wxT("CMemFile: Using an invalid seek-mode in CMemFile::Seek!"));
 	}
 	
-	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking in CMemFile is less than zero!"));
+	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("CMemFile: Position after seeking in CMemFile is less than zero!"));
 
-	// If the new position is greater than current filesize, then the 
-	// file-size is increased to match the position
-	if ( newpos > m_FileSize ) {
-		SetLength( newpos );
-	}
-
-	m_position = newpos;
-
-	return m_position;
+	return m_position = newpos;
 }
 
 
 bool CMemFile::Eof() const
 {
-	return ( m_position >= m_FileSize );
+	return (m_position >= m_FileSize);
 
 }
 
 
 void CMemFile::enlargeBuffer(unsigned long size)
 {
-	off_t newsize = m_BufferSize;
+	MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
 
-	// Avoid infinate loops and ensure that we dont try to grow attached
-	// buffers with growlength == 0
+	off_t newsize = m_BufferSize;
 	if ( m_GrowBytes ) {
 		// Everything is fine if m_GrowBytes is non-zero
 		while ( newsize < (off_t)size )
 			newsize += m_GrowBytes;
 	} else {
-		// Attempting to delete an attached buffer is an invalid operation,
-		// as we could be attempting to free/alloc a heap allocated variable
-		MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
-		
-		// Non-attached. Change to exactly the size specified.
+		// No growth-rate specified. Change to exactly the size specified.
 		newsize = size;
 	}
 
-	if ( m_buffer ) {
-		m_buffer = (byte*)realloc((void*)m_buffer, newsize);
-	} else {
-		m_buffer = (byte*)malloc(newsize);
-	}
+	m_buffer = (byte*)realloc(m_buffer, newsize);
 
-	// Check for memory errors
-	if ( m_buffer == NULL ) {
-		printf("Unable to allocate memory in CMemFile!\n");
-		exit(1);
-	}
+	MULE_VALIDATE_STATE(m_buffer, wxT("CMemFile: Failed to (re)allocate buffer"));
 
 	m_BufferSize = newsize;
 }
@@ -155,6 +115,8 @@ void CMemFile::enlargeBuffer(unsigned long size)
 
 bool CMemFile::SetLength(off_t newLen)
 {
+	MULE_VALIDATE_STATE(newLen >= 0, wxT("CMemFile: Attempted to resize to invalid length."));
+
 	if ( newLen > m_BufferSize ) {
 		enlargeBuffer(newLen);
 	}
@@ -169,36 +131,37 @@ bool CMemFile::SetLength(off_t newLen)
 }
 
 
-off_t CMemFile::doRead(void* buf, off_t length) const
+off_t CMemFile::doRead(void* buffer, off_t count) const
 {
-	MULE_VALIDATE_PARAMS(m_position + length <= m_FileSize, wxT("Invalid read"));
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to read to invalid buffer"));
+	MULE_VALIDATE_PARAMS(m_position + count <= m_FileSize, wxT("Invalid read"));
 	
-	memcpy(buf, m_buffer + m_position, length);
-	m_position += length;
+	memcpy(buffer, m_buffer + m_position, count);
+	m_position += count;
 
-	return length;
+	return count;
 }
 
 
-size_t CMemFile::doWrite(const void* buf, size_t length)
+size_t CMemFile::doWrite(const void* buffer, size_t count)
 {
-	wxASSERT(buf);
-	
-	if ( length == 0 || buf == NULL)
-		return 0;
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to write from invalid buffer"));
 
 	// Needs more space?
-	if ((off_t)(m_position + length) > m_BufferSize) {
-		enlargeBuffer(m_position + length);
+	if ((off_t)(m_position + count) > m_BufferSize) {
+		enlargeBuffer(m_position + count);
 	}
 	
-	memcpy(m_buffer + m_position, buf, length);
-	m_position += length;
+	MULE_VALIDATE_STATE(m_position + count <= m_BufferSize, wxT("CMemFile: Buffer not resized to needed size."));
 
-	if ( m_position > m_FileSize )
+	memcpy(m_buffer + m_position, buffer, count);
+	m_position += count;
+
+	if (m_position > m_FileSize) {
 		m_FileSize = m_position;
+	}
 
-	return length;
+	return count;
 }
 
 

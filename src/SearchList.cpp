@@ -459,7 +459,7 @@ void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size,
 
 void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, bool bOptUTF8, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
 {
-	CMemFile packet((byte*)in_packet,size,0);
+	CMemFile packet((byte*)in_packet,size);
 
 	uint32 results = packet.ReadUInt32();
 

@@ -38,13 +38,12 @@ class CMemFile : public CFileDataIO
 {
 public:
 	CMemFile( unsigned int growBytes = 1024 );
-	CMemFile( const byte* buffer, unsigned int bufferSize, unsigned int growBytes = 0 );
+	CMemFile(byte* buffer, unsigned int bufferSize);
 	virtual ~CMemFile();
 
-	void Attach(const byte* buffer, unsigned int buffserSize, unsigned int growBytes = 0 );
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
-	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart);
+	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart) const;
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
 	virtual off_t GetLength() const { return m_FileSize; };
@@ -54,6 +53,12 @@ protected:
 	virtual size_t doWrite(const void* buf, size_t length);
 
 private:
+	//! A CMemFile is neither copyable nor assignable.
+	//@{
+	CMemFile(const CMemFile&);
+	CMemFile& operator=(const CMemFile&);
+	//@}
+	
 	void enlargeBuffer(unsigned long size);
 	
 	unsigned int m_GrowBytes;
