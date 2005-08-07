@@ -1027,7 +1027,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESDIRANS") );
 			
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)packet, size, 0);
+			CMemFile data((byte*)packet, size);
 			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 			if (m_client->GetFileListRequested() > 0){
@@ -1572,7 +1572,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			if(!Kademlia::CKademlia::isRunning()) {
 				break;
 			}
-			CMemFile data((const byte*)packet, size);
+			CMemFile data((byte*)packet, size);
 			Kademlia::CUInt128 check;
 			data.ReadUInt128(&check);
 			check.XOR(Kademlia::CUInt128(true));
@@ -1643,7 +1643,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				//This callback was not from our buddy.. Ignore.
 				break;
 			}
-			CMemFile data_in((const byte*)packet, size);
+			CMemFile data_in((byte*)packet, size);
 			uint32 destip = data_in.ReadUInt32();
 			uint16 destport = data_in.ReadUInt16();
 			byte reqfilehash[16];
