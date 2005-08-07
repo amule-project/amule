@@ -819,7 +819,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 	rewind(f);
 	fread(buf, 1, size, f);
 	buf[size] = 0;
-	
+	fclose(f);
 	char *scan_ptr = buf;
 	char *curr_code_end = buf;
 	while ( strlen(scan_ptr) ) {
@@ -936,8 +936,8 @@ void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
 	// i'm not building exp tree, node not needed
 	delete sess_vars_exp_node;
+	cast_value_array(&sess_vars->value);
 	for(std::map<std::string, std::string>::iterator i = varmap.begin(); i != varmap.end(); i++) {
-		cast_value_array(&sess_vars->value);
 		PHP_VAR_NODE *curr_var = array_get_by_str_key(&sess_vars->value, i->first);
 		PHP_VALUE_NODE val;
 		val.type = PHP_VAL_STRING;
