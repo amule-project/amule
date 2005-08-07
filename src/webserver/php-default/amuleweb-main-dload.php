@@ -93,12 +93,29 @@ function formCommandSubmit(command)
     </table></td>
     <td width="264"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td><select name="status">
+        <td>
+        <?php
+        	$all_status = array("All", "Waiting", "Paused", "Downloading");
+        	
+ 			if ( $HTTP_GET_VARS["command"] == "filter") $_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
+        	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'All';
+
+        	echo '<select name ="status"';
+        	foreach ($all_status as $s) {
+        		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
+        	}
+        	echo '</select>';
+        	
+        ?>
+        <!--
+        <select name="status">
           <option selected>All</option>
           <option>Waiting</option>
           <option>Paused</option>
           <option>Downloading</option>
-        </select></td>
+        </select>
+        --!>
+        </td>
         <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -184,7 +201,7 @@ function formCommandSubmit(command)
 		//
 		// perform command before processing content
 		//
-		var_dump($HTTP_GET_VARS);
+		//var_dump($HTTP_GET_VARS);
 		if ( $HTTP_GET_VARS["command"] != "") {
 			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
@@ -197,13 +214,13 @@ function formCommandSubmit(command)
 			//
 			// check "filter-by-status" settings
 			//
-			var_dump($HTTP_GET_VARS["command"]);
+			//var_dump($HTTP_GET_VARS["command"]);
 			if ( $HTTP_GET_VARS["command"] == "filter") {
 				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
-			var_dump($HTTP_GET_VARS["command"]);
+			//var_dump($HTTP_GET_VARS["command"]);
 			}
 		}
-		var_dump($_SESSION["filter_status"]);
+		//var_dump($_SESSION["filter_status"]);
 		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "All";
 		
 		$downloads = amule_load_vars("downloads");
