@@ -64,6 +64,7 @@
 #include <vector>
 
 
+
 // Max. file IDs per UDP packet
 // ----------------------------
 // 576 - 30 bytes of header (28 for UDP, 2 for "E3 9A" edonkey proto) = 546 bytes
@@ -1251,31 +1252,30 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 {
 	// Check if the file already exists, in which case we just add the source
 	CPartFile* file = GetFileByID( link->GetHashKey() );
-		
+
 	if ( !file ) {
 		file = new CPartFile( link );
-	
+
 		if ( file->GetStatus() == PS_ERROR ) {
 			delete file;
 
 			return false;
 		}
-	
+
 		AddDownload( file, thePrefs::AddNewFilesPaused(), category );
 	}
-	
-	
+
 	// Add specified sources, specified by IP
 	if ( link->HasValidSources() ) {
 		file->AddClientSources( link->m_sources, 1, SF_LINK );
 	}
-	
+
 	// Add specified sources, specified by hostname
 	if ( link->HasHostnameSources() ) {
-		const CTypedPtrList<CPtrList, SUnresolvedHostname*>& list = link->m_hostSources;
-		
-		for ( POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos) ) {
-			AddToResolve( link->GetHashKey(), list.GetAt(pos)->strHostname, list.GetAt(pos)->nPort );
+		const std::deque<SUnresolvedHostname*>& list = link->m_hostSources;
+
+		for ( std::deque<SUnresolvedHostname*>::const_iterator it = list.begin(); it != list.end(); ++it ) {
+			AddToResolve( link->GetHashKey(), (*it)->strHostname, (*it)->nPort );
 		}
 	}
 

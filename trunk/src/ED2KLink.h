@@ -32,16 +32,16 @@
 #endif
 
 
-#include "Types.h"		// Needed for uint16 and uint32
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
+#include "Types.h"			// Needed for uint16 and uint32
 #include "CMD4Hash.h"		// Needed for CMD4Hash
-#include "SHAHashSet.h"		// 
+#include "SHAHashSet.h"		// Needed for CAICHHash
 
+#include <deque>
 
 class CMemFile;
 
 
-struct SUnresolvedHostname 
+struct SUnresolvedHostname
 {
 	wxString strHostname;
 	uint16 nPort;
@@ -53,12 +53,12 @@ class CED2KLink
 public:
 	static CED2KLink* CreateLinkFromUrl( const wxString& url );
 	typedef enum { kServerList, kServer , kFile , kInvalid } LinkType;
-	
+
 	LinkType GetKind() const;
 	virtual wxString GetLink() const = 0;
-	
+
 	virtual	~CED2KLink();
-	
+
 protected:
 	CED2KLink( LinkType type );
 
@@ -71,36 +71,36 @@ class CED2KFileLink : public CED2KLink
 {
 public:
 	CED2KFileLink( const wxString& name, const wxString& size, const wxString& hash, const wxString& hashset, const wxString& masterhash, const wxString& sources );
-	
+
 	virtual ~CED2KFileLink();
-	
+
 	virtual wxString GetLink() const;
-	
+
 	wxString GetName() const;
 	uint32 GetSize() const;
-	const CMD4Hash& GetHashKey() const; 
-	bool HasValidSources() const; 
-	
+	const CMD4Hash& GetHashKey() const;
+	bool HasValidSources() const;
+
 	bool HasHostnameSources() const;
 
 	// AICH data
 	bool	HasValidAICHHash() const;
 	const CAICHHash&	GetAICHHash() const;
-	
+
 	CMemFile* m_sources;
 	CMemFile* m_hashset;
-	CTypedPtrList<CPtrList, SUnresolvedHostname*> m_hostSources;
-	
+	std::deque<SUnresolvedHostname*> m_hostSources;
+
 private:
 	CED2KFileLink(); // Not defined
 	CED2KFileLink(const CED2KFileLink&); // Not defined
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
-	
+
 	wxString	m_name;
 	wxString	m_size;
 	CMD4Hash	m_hash;
 	bool		m_bAICHHashValid;
-	CAICHHash	m_AICHHash;		
+	CAICHHash	m_AICHHash;
 };
 
 
@@ -123,14 +123,12 @@ private:
 };
 
 
-
-
 class CED2KServerListLink : public CED2KLink
 {
 public:
 	CED2KServerListLink(const wxString& address);
 	virtual wxString GetLink() const;
-	
+
 	const wxString& GetAddress() const;
 
 private:
