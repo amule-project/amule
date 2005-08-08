@@ -246,7 +246,11 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 	wxASSERT(!sFileName.IsEmpty());
 
 	if ( accessMode == -1 ) {
+#ifndef MULEUNIT // TODO: Remove the need for this
 		accessMode = thePrefs::GetFilePermissions();
+#else
+		accessMode = wxS_DEFAULT;
+#endif
 	}
 	m_filePath = sFileName;
 	if (m_fd != fd_invalid) {
@@ -299,7 +303,11 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 	wxASSERT(!sFileName.IsEmpty());
 	
 	if ( accessMode == -1 ) {
+#ifndef MULEUNIT // TODO: Remove the need for this
 		accessMode = thePrefs::GetFilePermissions();
+#else
+		accessMode = wxS_DEFAULT;
+#endif
 	}
 	int flags = O_BINARY;
 #ifdef __linux__
