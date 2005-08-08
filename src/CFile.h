@@ -94,8 +94,6 @@ public:
 	CFile() { m_fd = fd_invalid; m_error = FALSE; }
 		// open specified file (may fail, use IsOpened())
 	CFile(const wxString& szFileName, OpenMode mode = read);
-		// attach to (already opened) file
-	CFile(int fd) { m_fd = fd; m_error = FALSE; }
 
 	virtual const wxString& GetFilePath() const {return m_filePath;}; 
 
@@ -108,9 +106,6 @@ public:
 
 	virtual bool Close();  // Close is a NOP if not opened
 
-	// assign an existing file descriptor and get it back from CFile object
-	void Attach(int fd) { Close(); m_fd = fd; }
-	void Detach()       { m_fd = fd_invalid;  }
 	int  fd() const { return m_fd; }
 
 		// flush data not yet written
