@@ -288,6 +288,34 @@ PHP_SYN_NODE *make_class_decl_syn_node()
 	return syn_node;
 }
 
+PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
+{
+	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
+	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
+	
+	syn_node->type = PHP_ST_SWITCH;
+	
+	//
+	// Bind all statement lists into single one for
+	// simplier execution
+	//
+	PHP_SYN_NODE *stat_list_tail = 0;
+	for(PHP_EXP_NODE *cur_case = case_list; cur_case; cur_case = cur_case->next) {
+		PHP_SYN_NODE *cur_stat_list = cur_case->exp_node->tree_node.syn_right;
+		if ( stat_list_tail ) {
+			stat_list_tail->next_node = cur_stat_list;
+			while ( stat_list_tail->next_node ) stat_list_tail = stat_list_tail->next_node;
+		} else {
+			stat_list_tail = cur_stat_list;
+		}
+	}
+		
+	syn_node->node_switch.cond = cond;
+	syn_node->node_switch.case_list = case_list;
+	
+	return syn_node;
+}
+
 PHP_VAR_NODE *make_var_node()
 {
 	PHP_VAR_NODE *node = new PHP_VAR_NODE;
@@ -1684,6 +1712,27 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					array->current++;
 				}
 			}
+			case PHP_ST_SWITCH: {
+					PHP_SYN_NODE *cur_exec = 0;
+					php_expr_eval(node->node_switch.cond, &cond_result);
+					PHP_EXP_NODE *curr = node->node_switch.case_list;
+					while (curr) {
+						PHP_VALUE_NODE cur_value, cmp_result;
+						php_expr_eval(curr->exp_node->tree_node.left, &cur_value);
+
+						php_eval_compare(PHP_OP_EQ, &cur_value, &cond_result, &cmp_result);
+						if ( cmp_result.int_val ) {
+							cur_exec = (PHP_SYN_NODE *)curr->exp_node->tree_node.syn_right;
+							break;
+						}
+						//CPhPLibContext::Print(cond_result.str_val);
+						curr = curr->next;
+					}
+					if ( cur_exec ) {
+						php_execute(cur_exec, result);
+					}
+				}
+				break;
 			default: ;
 		}
 		if ( curr_exec_result != 0 ) {

@@ -73,10 +73,11 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 
 %type <syn_node> program_tree statement top_statement function_decl_statement top_statement_list
 %type <syn_node> global_var_list static_var_list
-%type <syn_node> while_statement foreach_statement for_statement elseif_list else_statement switch_case_list case_list
+%type <syn_node> while_statement foreach_statement for_statement elseif_list else_statement 
 
 %type <exp_node> VARIABLE variable deref_variable global_var static_var
 %type <exp_node> parameter_list array_pair_list array_elem
+%type <exp_node> switch_case_list case_list case_list_item
 
 %type <exp_node> expr expr_list for_expr exit_expr const_value function_call func_param_list assignment_list assignment_list_element
 %type <exp_node> FNUMBER DNUMBER STRING
@@ -162,7 +163,7 @@ statement:
 	|	WHILE '(' expr  ')' while_statement					{ $$ = make_while_loop_syn_node($3, $5, 1); }
 	|	DO statement WHILE '(' expr ')' ';'					{ $$ = make_while_loop_syn_node($5, $2, 0); }
 	|	FOR '(' for_expr ';' for_expr ';' for_expr ')' for_statement { $$ = make_for_syn_node($3, $5, $7, $9); }
-	|	SWITCH '(' expr ')' switch_case_list				{ }
+	|	SWITCH '(' expr ')' switch_case_list				{ $$ = make_switch_syn_node($3, $5); }
 	|	CONTINUE ';'										{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, 0); }
 	|	CONTINUE expr ';'									{ $$ = make_expr_syn_node(PHP_ST_CONTINUE, $2); }
 	|	BREAK ';'											{ $$ = make_expr_syn_node(PHP_ST_BREAK, 0); }
@@ -302,10 +303,25 @@ switch_case_list:
 
 case_list:
 		/* empty */	{  $$ = 0; }
-	|	case_list CASE expr case_separator top_statement_list {  }
-	|	case_list DEFAULT case_separator top_statement_list {  }
+	|	case_list case_list_item case_separator top_statement_list {
+			$2->tree_node.syn_right = $4;
+			if ( $1 ) {
+				PHP_EXP_NODE *last = $1;
+				while ( last->next) last = last->next;
+				last->next = make_exp_1(PHP_OP_LIST, 0);
+				last->next->exp_node = $2;
+				$$ = $1;
+			} else {
+				$$ = make_exp_1(PHP_OP_LIST, 0);
+				$$->exp_node = $2;
+			}
+		}
 ;
 
+case_list_item: CASE expr	{ $$ = make_exp_2(PHP_OP_LIST, $2, 0); }
+	| DEFAULT				{ $$ = make_exp_2(PHP_OP_LIST, 0, 0); }
+;
+	
 case_separator:	':'
 	|	';'
 ;
