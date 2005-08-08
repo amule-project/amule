@@ -1011,7 +1011,6 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 				php_exp_tree_free(tree->node_foreach.elems);
 				php_syn_tree_free(tree->node_foreach.code);
 				break;
-			case PHP_ST_SWITCH:
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
 				break;
@@ -1028,6 +1027,20 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 				}
 				delete [] tree->func_decl->params;
 				delete tree->func_decl;
+				break;
+			case PHP_ST_SWITCH: {
+					php_syn_tree_free(tree->node_switch.case_list->exp_node->tree_node.syn_right);
+					PHP_EXP_NODE *curr = tree->node_switch.case_list;
+                    while (curr) {
+                    	PHP_EXP_NODE *next = curr->next;
+                    	if ( curr->exp_node ) {
+	                        php_exp_tree_free(curr->exp_node->tree_node.left);
+    	                    delete curr->exp_node;
+                    	}
+                        delete curr;
+                        curr = next;
+                    }
+				}
 				break;
 			case PHP_ST_CLASS_DECL:
 				free(tree->class_decl->name);
@@ -1718,6 +1731,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 					PHP_EXP_NODE *curr = node->node_switch.case_list;
 					while (curr) {
 						PHP_VALUE_NODE cur_value, cmp_result;
+						cur_value.type = cmp_result.type = PHP_VAL_NONE;
 						php_expr_eval(curr->exp_node->tree_node.left, &cur_value);
 
 						php_eval_compare(PHP_OP_EQ, &cur_value, &cond_result, &cmp_result);
@@ -1725,7 +1739,6 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 							cur_exec = (PHP_SYN_NODE *)curr->exp_node->tree_node.syn_right;
 							break;
 						}
-						//CPhPLibContext::Print(cond_result.str_val);
 						curr = curr->next;
 					}
 					if ( cur_exec ) {
