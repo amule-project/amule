@@ -500,44 +500,15 @@ bool CFile::Flush()
     return true;
 }
 
-// ----------------------------------------------------------------------------
-// seek
-// ----------------------------------------------------------------------------
-#include <cerrno>
-#include <cstring>
 
-// seek
-off_t CFile::Seek(off_t ofs, wxSeekMode mode) const
+off_t CFile::doSeek(off_t offset) const
 {
-	wxASSERT( IsOpened() );
-
-	int origin;
-	switch ( mode ) {
-	default:
-		wxFAIL_MSG(wxT("Unknown seek origin"));
-
-	case wxFromStart:
-		origin = SEEK_SET;
-		break;
-
-	case wxFromCurrent:
-		origin = SEEK_CUR;
-		break;
-
-	case wxFromEnd:
-		origin = SEEK_END;
-		break;
-	}
-
-	off_t iRc = lseek(m_fd, ofs, origin);
-	if ( iRc == -1 ) {
-		AddDebugLogLineM( true, logCFile, wxString(wxT("Error in lseek: ")) + wxString(char2unicode(strerror(errno))));
-		m_error = true;
-		return wxInvalidOffset;
-	} else {
-		return (off_t) iRc;
-	}
+	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot seek on closed file."));
+	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
+	
+	return lseek(m_fd, offset, SEEK_SET);
 }
+
 
 // get current off_t
 off_t CFile::GetPosition() const
@@ -566,12 +537,12 @@ off_t CFile::GetLength() const
 	off_t iRc = _filelength(m_fd);
 #else // !VC++
 	off_t iRc = wxTell(m_fd);
-	if ( iRc != -1 ) {
-		// @ have to use const_cast :-(
-		off_t iLen = ((CFile *)this)->Seek(0, wxFromEnd);
-		if ( iLen != -1 ) {
+	
+	if (iRc != -1) {
+		off_t iLen = lseek(m_fd, 0, SEEK_END);
+		if (iLen != -1) {
 			// restore old position
-			if ( ((CFile *)this)->Seek(iRc) == -1 ) {
+			if (lseek(m_fd, iRc, SEEK_SET) == -1){
 				// error
 				iLen = -1;
 			}
@@ -579,25 +550,22 @@ off_t CFile::GetLength() const
 		iRc = iLen;
 	}
 #endif  // VC++
+
+	MULE_VALIDATE_STATE(iRc >= 0, wxT("CFile: Invalid file length"));
 	
-	if ( iRc == -1 ) {
-		AddDebugLogLineM( true, logCFile,
-			CFormat( wxT("Can't find length of file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );		
-		
-		return wxInvalidOffset;
-	} else {
-		return (off_t)iRc;
-	}
+	return iRc;
 }
-bool CFile::SetLength(off_t new_len) {
+
+
+bool CFile::SetLength(off_t new_len)
+{
 #ifdef __WXMSW__
-	return chsize(this->fd(), new_len);
+	return chsize(m_fd, new_len);
 #else
-	return ftruncate(this->fd(), new_len);
+	return ftruncate(m_fd, new_len);
 #endif
 }	
+
 
 // is end of file reached?
 bool CFile::Eof() const
