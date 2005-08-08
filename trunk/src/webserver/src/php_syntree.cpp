@@ -1029,6 +1029,7 @@ void php_syn_tree_free(PHP_SYN_NODE *tree)
 				delete tree->func_decl;
 				break;
 			case PHP_ST_SWITCH: {
+					php_exp_tree_free(tree->node_switch.cond);
 					php_syn_tree_free(tree->node_switch.case_list->exp_node->tree_node.syn_right);
 					PHP_EXP_NODE *curr = tree->node_switch.case_list;
                     while (curr) {
