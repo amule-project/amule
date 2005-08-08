@@ -561,7 +561,7 @@ bool CAICHHashSet::SaveHashSet(){
 	}
 	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
 	CFile file;
-	if (file.Exists(fullpath)) {	
+	if (wxFileExists(fullpath)) {	
 		if (!file.Open(fullpath, CFile::read_write)) {
 			// Add logline about unable to open file
 			return false;
@@ -636,7 +636,7 @@ bool CAICHHashSet::LoadHashSet()
 	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
 	CFile file(fullpath, CFile::read_write);
 	if (!file.IsOpened()){
-		if (file.Exists(fullpath)) {
+		if (wxFileExists(fullpath)) {
 			wxString strError(wxT("Failed to load ") KNOWN2_MET_FILENAME wxT(" file"));
 			AddDebugLogLineM( true, logSHAHashSet, strError);
 		}

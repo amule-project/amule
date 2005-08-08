@@ -166,7 +166,7 @@ void* CAICHSyncThread::Entry()
 	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
 
 	CFile file;
-	if ( file.Exists( fullpath ) ) {
+	if ( wxFileExists( fullpath ) ) {
 		if ( !file.Open( fullpath, CFile::read_write ) ) {
 			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open hashlist file!") );
 			return 0;
