@@ -190,11 +190,6 @@ enum {
 // static functions
 // ----------------------------------------------------------------------------
 
-bool CFile::Exists(const wxChar *name)
-{
-	return wxFileExists(name);
-}
-
 bool CFile::Access(const wxChar *name, OpenMode mode)
 {
 	int how;
@@ -321,7 +316,7 @@ bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
 		break;
 	
 	case write_append:
-		if (CFile::Exists(sFileName))
+		if (wxFileExists(sFileName))
 		{
 			flags |= O_WRONLY | O_APPEND;
 			break;

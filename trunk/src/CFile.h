@@ -82,8 +82,6 @@ public:
 
 	// static functions
 	// ----------------
-		// check whether a regular file by this name exists
-	static bool Exists(const wxChar *name);
 		// check whetther we can access the given file in given mode
 		// (only read and write make sense here)
 	static bool Access(const wxChar *name, OpenMode mode);
