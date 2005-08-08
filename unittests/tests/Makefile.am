@@ -5,11 +5,11 @@
 
 # Use this to be able to catch assertions as exceptions
 MUCXXFLAGS = -DMULEUNIT -DNO_GCC_PRAGMA
-AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS}
+AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS} -DNO_GCC_PRAGMA
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest
+TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -34,3 +34,8 @@ StringFunctionsTest_LDADD = $(LDADD)
 NetworkFunctionsTest_SOURCES = NetworkFunctionsTest.cpp $(top_srcdir)/src/NetworkFunctions.cpp
 NetworkFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS) -DEC_REMOTE # Needed to avoid compiling the http-thread
 NetworkFunctionsTest_LDADD = $(LDADD)
+
+# Tests for the classes that implement the CFileDataIO interface
+FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/CryptoPP.cpp
+FileDataIOTest_CXXFLAGS = $(AM_CXXFLAGS) 
+FileDataIOTest_LDADD = $(LDADD)
