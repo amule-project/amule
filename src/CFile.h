@@ -42,7 +42,6 @@
 #endif
 
 #include <wx/string.h>		// Needed for wxString
-#include <wx/filefn.h>		// Needed for wxSeekMode and seek related stuff.
 
 #include "SafeFile.h"		// Needed for CFileDataIO
 
@@ -118,8 +117,6 @@ public:
 	virtual bool Flush();
 
 	// file pointer operations (return ofsInvalid on failure)
-		// move ptr ofs bytes related to start/current off_t/end of file
-	virtual off_t Seek(off_t ofs, wxSeekMode mode = wxFromStart) const;
 		// get current off_t
 	virtual off_t GetPosition() const;
 		// get current file length
@@ -151,6 +148,8 @@ protected:
 	virtual off_t doRead(void *pBuf, off_t nCount) const;
 	// returns the number of bytes written
 	virtual size_t doWrite(const void *pBuf, size_t nCount);
+	// move ptr ofs bytes related to start/current off_t/end of file
+	virtual off_t doSeek(off_t offset) const;
 
 private:
 	// copy ctor and assignment operator are private because

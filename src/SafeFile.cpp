@@ -87,6 +87,36 @@ void CFileDataIO::Write(const void *pBuf, size_t nCount)
 }
 
 
+off_t CFileDataIO::Seek(off_t offset, wxSeekMode from) const
+{
+	off_t newpos = 0;
+	switch (from) {
+		case wxFromStart:
+			newpos = offset;
+			break;
+			
+		case wxFromCurrent:
+			newpos = GetPosition() + offset;
+			break;
+			
+		case wxFromEnd:
+			newpos = GetLength() + offset;
+			break;
+			
+		default:
+			MULE_VALIDATE_PARAMS(false, wxT("Invalid seek-mode specified."));
+	}
+	
+	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking would be negative"));
+
+	off_t result = doSeek(newpos);
+	MULE_VALIDATE_STATE(result >= 0, wxT("Seeking resulted in invalid offset."));
+	MULE_VALIDATE_STATE(result == newpos, wxT("Target position and actual position disagree."));
+	
+	return result;
+}
+
+
 uint8 CFileDataIO::ReadUInt8() const
 {
 	uint8 nVal = 0;

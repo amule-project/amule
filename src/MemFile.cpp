@@ -60,30 +60,6 @@ CMemFile::~CMemFile()
 }
 
 
-off_t CMemFile::Seek(off_t offset, wxSeekMode from) const
-{
-	off_t newpos = 0;
-	
-	switch (from) {
-		case wxFromStart:
-			newpos = offset;
-			break;
-		case wxFromCurrent:
-			newpos = m_position + offset;
-			break;
-		case wxFromEnd:
-			newpos = m_FileSize - offset;
-			break;
-		default:
-			MULE_VALIDATE_PARAMS(false, wxT("CMemFile: Using an invalid seek-mode in CMemFile::Seek!"));
-	}
-	
-	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("CMemFile: Position after seeking in CMemFile is less than zero!"));
-
-	return m_position = newpos;
-}
-
-
 bool CMemFile::Eof() const
 {
 	return (m_position >= m_FileSize);
@@ -164,4 +140,11 @@ size_t CMemFile::doWrite(const void* buffer, size_t count)
 	return count;
 }
 
+
+off_t CMemFile::doSeek(off_t offset) const
+{
+	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
+	
+	return m_position = offset;
+}
 

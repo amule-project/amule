@@ -43,7 +43,6 @@ public:
 
 	
 	virtual off_t GetPosition() const 		{ return m_position; };
-	virtual off_t Seek(off_t offset, wxSeekMode from = wxFromStart) const;
 	virtual bool Eof() const;
 	virtual bool SetLength(off_t newLen);
 	virtual off_t GetLength() const { return m_FileSize; };
@@ -51,6 +50,7 @@ public:
 protected:
 	virtual off_t  doRead(void* buf, off_t length) const;
 	virtual size_t doWrite(const void* buf, size_t length);
+	virtual off_t doSeek(off_t offset) const;
 
 private:
 	//! A CMemFile is neither copyable nor assignable.
