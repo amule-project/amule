@@ -117,13 +117,21 @@ typedef enum PHP_EXP_OP {
 	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO,
 	/* list of expressions */
 	PHP_OP_LIST,
+	/* for "switch" list of cases */
+	PHP_OP_CASE,
 } PHP_EXP_OP;
 
 struct PHP_EXP_NODE {
     PHP_EXP_OP op;
     union {
         struct {
-            struct PHP_EXP_NODE *left, *right;
+            struct PHP_EXP_NODE *left;
+            /* In the 'switch' statement expression points
+             * to beginning of code*/
+            union {
+            	struct PHP_EXP_NODE *right;
+            	struct PHP_SYN_NODE *syn_right;
+            };
         } tree_node;
         struct PHP_EXP_NODE *next;
     };
@@ -229,6 +237,11 @@ typedef struct PHP_SYN_FOREACH_NODE {
     int byref;
 } PHP_SYN_FOREACH_NODE;
 
+typedef struct PHP_SYN_SWITCH_NODE {
+    PHP_EXP_NODE *cond;
+    PHP_EXP_NODE *case_list;
+} PHP_SYN_SWITCH_NODE;
+
 /* for built-in or native functions */
 typedef void (*PHP_NATIVE_FUNC_PTR)(PHP_VALUE_NODE *result);
 
@@ -274,6 +287,7 @@ struct PHP_SYN_NODE {
         PHP_SYN_WHILE_NODE		node_while;
         PHP_SYN_FOREACH_NODE	node_foreach;
         PHP_SYN_FOR_NODE		node_for;
+        PHP_SYN_SWITCH_NODE		node_switch;
         PHP_SYN_FUNC_DECL_NODE	*func_decl;
         PHP_SYN_CLASS_DECL_NODE *class_decl;
     };
@@ -393,6 +407,8 @@ extern "C" {
 	
 	PHP_SYN_NODE *make_func_decl_syn_node(char *name, PHP_EXP_NODE *param_list);
 	
+	PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list);
+
 	//
 	// add new item into function param list (in declaration )
 	//
