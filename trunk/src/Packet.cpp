@@ -444,8 +444,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			
 				// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
 				#warning This seems to be off by one! 8 / 8 + 1 == 2, etc.
-				char discard[(len / 8) + 1];
-				data.Read(discard, (len / 8) + 1);
+				data.Seek((len / 8) + 1, wxFromCurrent);
 				break;
 			}
 	

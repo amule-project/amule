@@ -643,8 +643,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		
 		// load the hashsets from the hybridstylepartmet
 		if (isnewstyle && !getsizeonly && (metFile.GetPosition()<metFile.GetLength()) ) {
-			int8 temp;
-			metFile.Read(&temp,1);
+			metFile.Seek(1, wxFromCurrent);
 			
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
