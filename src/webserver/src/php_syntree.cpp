@@ -303,8 +303,8 @@ PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list)
 	for(PHP_EXP_NODE *cur_case = case_list; cur_case; cur_case = cur_case->next) {
 		PHP_SYN_NODE *cur_stat_list = cur_case->exp_node->tree_node.syn_right;
 		if ( stat_list_tail ) {
-			stat_list_tail->next_node = cur_stat_list;
 			while ( stat_list_tail->next_node ) stat_list_tail = stat_list_tail->next_node;
+			stat_list_tail->next_node = cur_stat_list;
 		} else {
 			stat_list_tail = cur_stat_list;
 		}
