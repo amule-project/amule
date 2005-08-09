@@ -493,13 +493,13 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	result->type = PHP_VAL_INT;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sFileName));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sFileHash));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileHash));
 	} else if ( strcmp(prop_name, "progress") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->m_Image->GetHTML()));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->m_Image->GetHTML()));
 	} else if ( strcmp(prop_name, "status") == 0 ) {
 		result->int_val = obj->nFileStatus;
 	} else if ( strcmp(prop_name, "size") == 0 ) {
@@ -536,13 +536,13 @@ void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 	ServerEntry *obj = (ServerEntry *)ptr;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sServerName));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sServerName));
 	} else if ( strcmp(prop_name, "desc") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sServerDescription));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sServerDescription));
 	} else if ( strcmp(prop_name, "addr") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sServerIP));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sServerIP));
 	} else if ( strcmp(prop_name, "users") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->nServerUsers;
@@ -572,10 +572,10 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	SharedFile *obj = (SharedFile *)ptr;
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sFileName));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sFileHash));
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileHash));
 	} else if ( strcmp(prop_name, "size") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->lFileSize;
