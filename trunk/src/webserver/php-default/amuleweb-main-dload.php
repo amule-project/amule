@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>amule download page</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <style type="text/css">
 <!--
 body {
@@ -165,7 +165,6 @@ function formCommandSubmit(command)
 			return $result;
 		}
 
-		// FIXME: replace with switch when supported by interpreter
 		function StatusString($file)
 		{
 			if ( $file->status == 7 ) {
@@ -185,10 +184,12 @@ function formCommandSubmit(command)
 		function my_cmp($a, $b)
 		{
 			global $sort_order, $sort_reverse;
-			if ( $sort_order == "size" ) {
-				$result = $a->size > $b->size;
-			} elseif ( $sort_order == "name" ) {
-				$result = $a->name > $b->name;
+			
+			switch ( $sort_order) {
+				case "size": $result = $a->size - $b->size; break;
+				case "name": $result = $a->name > $b->name; break;
+				case "speed": $result = $a->speed > $b->speed; break;
+				case "status": $result = StatusString($a) > StatusString($b); break;
 			}
 
 			if ( $sort_reverse ) {
@@ -236,7 +237,7 @@ function formCommandSubmit(command)
 				$_SESSION["sort_reverse"] = !$_SESSION["sort_reverse"];
 			}
 		}
-		var_dump($_SESSION);
+		//var_dump($_SESSION);
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["download_sort"] = $sort_order;
