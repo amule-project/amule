@@ -149,7 +149,7 @@ public:
 	wxString GetFullInfo() const;
 
 private:
-	//! CPacket is not assignable.
+	//! CTag is not assignable.
 	CTag& operator=(const CTag&);
 	
 	uint8	m_uType;
