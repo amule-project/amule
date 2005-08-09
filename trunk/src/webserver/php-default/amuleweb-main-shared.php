@@ -78,11 +78,11 @@ function formCommandSubmit(command)
 </script>
 
 <body>
-<form name="mainform" action="amuleweb-main-dload.php" method="post">
+<form name="mainform" action="amuleweb-main-shared.php" method="post">
 <table width="100%"  border="1" bgcolor="#0099CC">
   <tr>
-    <td width="118" height="20"><input type="hidden" name="command"></td>
-    <td width="251"><table border="0" cellpadding="0" cellspacing="0">
+    <td width="94" height="20"><input type="hidden" name="command"></td>
+    <td width="363"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td><a href="javascript:formCommandSubmit('pause');" target="mainFrame" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="pause.jpeg" border="0" alt="" onLoad=""></a></td>
         <td><a href="javascript:formCommandSubmit('resume');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
@@ -91,7 +91,7 @@ function formCommandSubmit(command)
         <td><a href="javascript:formCommandSubmit('delete');" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
       </tr>
     </table></td>
-    <td width="532"><table border="0" cellpadding="0" cellspacing="0">
+    <td width="264"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td>
         <?php
@@ -118,16 +118,16 @@ function formCommandSubmit(command)
   <tr>
     <td colspan="3"><table width="100%"  border="0" cellpadding="2" cellspacing="2">
       <tr>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="230" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="227" scope="col"><div align="left">
-          <div align="left">Progress</div></th>
-        <th width="231" scope="col"><div align="left">
-          <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="44" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
-        <th width="88" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
-        <th width="8" scope="col">&nbsp;</th>
-        <th width="12" scope="col">&nbsp;</th>
+        <th width="20" scope="col">&nbsp;</th>
+        <th width="300" scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=name" target="mainFrame">Filename</a></div></th>
+        <th width="120" scope="col"><div align="left">
+          <div align="left"><a href="amuleweb-main-shared.php?sort=xfer" target="mainFrame">Transfer</a> (<a href="amuleweb-main-shared.php">Total</a>) </div></th>
+        <th width="120" scope="col"><div align="left">
+          <div align="left"><a href="amuleweb-main-shared.php?sort=req" target="mainFrame">Requests</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
+        <th width="120" scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=acc" target="mainFrame">Accepted</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
+        <th width="86" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=size" target="mainFrame">Size</a></div></th>
+        <th width="83" scope="col"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Prio</a></th>
+        <th width="14" scope="col">&nbsp;</th>
         </tr>
       <tr>
         <td scope="col">&nbsp;</td>
@@ -180,8 +180,10 @@ function formCommandSubmit(command)
 			switch ( $sort_order) {
 				case "size": $result = $a->size > $b->size; break;
 				case "name": $result = $a->name > $b->name; break;
-				case "speed": $result = $a->speed > $b->speed; break;
-				case "status": $result = StatusString($a) > StatusString($b); break;
+				case "xfer": $result = $a->xfer > $b->xfer; break;
+				case "acc": $result = $a->accept > $b->accept; break;
+				case "req": $result = $a->req > $b->req; break;
+				case "prio": $result = $a->prio > $b->prio; break;
 			}
 
 			if ( $sort_reverse ) {
@@ -196,32 +198,21 @@ function formCommandSubmit(command)
 		//
 		//var_dump($HTTP_GET_VARS);
 		if ( $HTTP_GET_VARS["command"] != "") {
-			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
 					//var_dump($name);
-					amule_do_download_cmd($name, $HTTP_GET_VARS["command"]);
+					//amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
 				}
 			}
-			//
-			// check "filter-by-status" settings
-			//
-			//var_dump($HTTP_GET_VARS["command"]);
-			if ( $HTTP_GET_VARS["command"] == "filter") {
-				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
-			//var_dump($HTTP_GET_VARS["command"]);
-			}
 		}
-		//var_dump($_SESSION["filter_status"]);
-		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "All";
 		
-		$downloads = amule_load_vars("downloads");
+		$shared = amule_load_vars("downloads");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
 
 		if ( $sort_order == "" ) {
-			$sort_order = $_SESSION["download_sort"];
+			$sort_order = $_SESSION["shared_sort"];
 		} else {
 			if ( $_SESSION["sort_reverse"] == "" ) {
 				$_SESSION["sort_reverse"] = 0;
@@ -232,27 +223,28 @@ function formCommandSubmit(command)
 		//var_dump($_SESSION);
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
-			$_SESSION["download_sort"] = $sort_order;
-			usort($downloads, "my_cmp");
+			$_SESSION["shared_sort"] = $sort_order;
+			usort($shared, "my_cmp");
 		}
 
-		foreach ($downloads as $file) {
-			if ( ($_SESSION["filter_status"] == "All") or ( $_SESSION["filter_status"] == StatusString($file) ) ) {
+		foreach ($shared as $file) {
 			print "<tr>";
 
 			echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
 			echo "<td nowrap>", $file->name, "</td>";
 
-			echo "<td>", $file->progress, "</td>";
-			
+			echo "<td>", CastToXBytes($file->xfer), "</td>";
+
+			echo "<td>", $file->req, "</td>";
+
+			echo "<td>", $file->acc, "</td>";
+
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
-			echo "<td>", StatusString($file), "</td>";
+			echo "<td>", $file->prio, "</td>";
 
-			echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
 			print "</tr>";
-			}
 		}
 	  ?>
     </table></td>
