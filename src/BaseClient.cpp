@@ -250,6 +250,16 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
+	if (m_lastClientSoft == SO_UNKNOWN) {
+		theStats::RemoveUnknownClient();
+	} else if (m_lastClientSoft != (uint32)(-1)) {
+		theStats::RemoveKnownClient(m_lastClientSoft, m_lastClientVersion, m_lastOSInfo);
+	}
+		
+	// Indicate that we are not anymore on stats
+	m_lastClientSoft = (uint32)(-1);
+	
+
 	if (IsAICHReqPending()){
 		m_fAICHRequested = FALSE;
 		CAICHHashSet::ClientAICHRequestFailed(this);
@@ -2246,31 +2256,24 @@ bool CUpDownClient::SendBuddyPing() {
 
 /* Statistics */
 
-void CUpDownClient::UpdateStats(bool removing)
+void CUpDownClient::UpdateStats()
 {
-	if (removing) {
+	if (m_lastClientSoft != m_clientSoft || m_lastClientVersion != m_nClientVersion || m_lastOSInfo != m_sClientOSInfo) {
 		if (m_lastClientSoft == SO_UNKNOWN) {
 			theStats::RemoveUnknownClient();
 		} else if (m_lastClientSoft != (uint32)(-1)) {
 			theStats::RemoveKnownClient(m_lastClientSoft, m_lastClientVersion, m_lastOSInfo);
 		}
-		// indicate that we are not anymore on stats
-		m_lastClientSoft = (uint32)(-1);
-	} else {
-		if (m_lastClientSoft != m_clientSoft || m_lastClientVersion != m_nClientVersion || m_lastOSInfo != m_sClientOSInfo) {
-			if (m_lastClientSoft == SO_UNKNOWN) {
-				theStats::RemoveUnknownClient();
-			} else if (m_lastClientSoft != (uint32)(-1)) {
-				theStats::RemoveKnownClient(m_lastClientSoft, m_lastClientVersion, m_lastOSInfo);
-			}
-			m_lastClientSoft = m_clientSoft;
-			m_lastClientVersion = m_nClientVersion;
-			m_lastOSInfo = m_sClientOSInfo;
-			if (m_clientSoft == SO_UNKNOWN) {
-				theStats::AddUnknownClient();
-			} else {
-				theStats::AddKnownClient(this, m_clientSoft, m_nClientVersion);
-			}
+		
+		m_lastClientSoft = m_clientSoft;
+		m_lastClientVersion = m_nClientVersion;
+		m_lastOSInfo = m_sClientOSInfo;
+		
+		if (m_clientSoft == SO_UNKNOWN) {
+			theStats::AddUnknownClient();
+		} else {
+			theStats::AddKnownClient(this, m_clientSoft, m_nClientVersion);
 		}
 	}
 }
+
