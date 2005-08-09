@@ -67,6 +67,7 @@
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
 #include <wx/choice.h>
+#include <algorithm>		// Needed for std::sort
 #endif
 
 using namespace otherfunctions;
