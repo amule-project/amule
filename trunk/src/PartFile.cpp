@@ -81,6 +81,8 @@
 #include <map>
 #include <algorithm>
 
+using namespace otherfunctions;
+
 #ifdef __COMPILE_KAD__
 	#include "kademlia/kademlia/Kademlia.h"
 	#include "kademlia/kademlia/Search.h"
@@ -460,11 +462,9 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			if (temp==0) {	// 0.48 partmets - different again
 				LoadHashsetFromFile(&metFile, false);
 			} else {
-				byte gethash[16];
 				metFile.Seek(2, wxFromStart);
 				LoadDateFromFile(&metFile);
-				metFile.ReadHash16(gethash);
-				m_abyFileHash = gethash;
+				m_abyFileHash = metFile.ReadHash();
 			}
 
 		} else {
@@ -648,8 +648,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			uint16 parts=GetPartCount();	// assuming we will get all hashsets
 			
 			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.GetLength()); ++i){
-				CMD4Hash cur_hash;
-				metFile.Read(cur_hash, 16);
+				CMD4Hash cur_hash = metFile.ReadHash();
 				hashlist.Add(cur_hash);
 			}
 
@@ -657,8 +656,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			if (!hashlist.IsEmpty()){
 				byte buffer[hashlist.GetCount() * 16];
 				for (size_t i = 0; i < hashlist.GetCount(); ++i)
-					md4cpy(buffer+(i*16), hashlist[i]);
-				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash);
+					md4cpy(buffer+(i*16), hashlist[i].GetHash());
+				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash.GetHash());
 			}
 			bool flag=false;
 			if (m_abyFileHash == checkhash) {
@@ -840,11 +839,11 @@ bool CPartFile::SavePartFile(bool Initial)
 		
 		file.WriteUInt32(GetLastModificationTime(m_fullname));
 		// hash
-		file.WriteHash16(m_abyFileHash);
+		file.WriteHash(m_abyFileHash);
 		uint16 parts = hashlist.GetCount();
 		file.WriteUInt16(parts);
 		for (int x = 0; x < parts; ++x) {
-			file.WriteHash16(hashlist[x]);
+			file.WriteHash(hashlist[x]);
 		}
 		// tags		
 		#define FIXED_TAGS 14
@@ -1362,7 +1361,7 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 			if (result != NULL) {
 				result->StartOffset = start;
 				result->EndOffset = end;
-				md4cpy(result->FileID, GetFileHash());
+				md4cpy(result->FileID, GetFileHash().GetHash());
 				result->transferred = 0;
 			}
 			return true;
@@ -1627,7 +1626,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				//Kademlia
 				theApp.downloadqueue->SetLastKademliaFileRequest();
 				if (!GetKadFileSearchID()) {
-					Kademlia::CUInt128 kadFileID(GetFileHash());
+					Kademlia::CUInt128 kadFileID(GetFileHash().GetHash());
 					Kademlia::CSearch* pSearch = Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::FILE, true, kadFileID);
 					AddDebugLogLineM(false, logKadSearch, wxT("Preparing a Kad Search for ") + GetFileName());
 					if (pSearch) {
@@ -2571,7 +2570,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		}
 		
 		try {
-			CreateHashFromFile(&m_hpartfile,length,hashresult);
+			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( _("IO failure while hashing downloaded part of partfile '%s'.")) % m_strFileName);
 		}
@@ -2796,7 +2795,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	CMemFile data(1024);
 	uint16 nCount = 0;
 
-	data.WriteHash16(m_abyFileHash);
+	data.WriteHash(m_abyFileHash);
 	data.WriteUInt16(nCount);
 	bool bNeeded;
 	for (SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
@@ -2853,7 +2852,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			data.WriteUInt32(cur_src->GetServerIP());
 			data.WriteUInt16(cur_src->GetServerPort());
 			if (forClient->GetSourceExchangeVersion()>1) {
-				data.WriteHash16(cur_src->GetUserHash());
+				data.WriteHash(cur_src->GetUserHash());
 			}
 			if (nCount > 500) {
 				break;
@@ -2913,10 +2912,10 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 		uint16 nPort = sources->ReadUInt16();
 		uint32 dwServerIP = sources->ReadUInt32();
 		uint16 nServerPort = sources->ReadUInt16();
-		
-		byte achUserHash[16];
+	
+		CMD4Hash userHash;
 		if (sourceexchangeversion > 1) {
-			sources->ReadHash16(achUserHash);
+			userHash = sources->ReadHash();
 		}
 		
 		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
@@ -2971,7 +2970,7 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, (sourceexchangeversion != 3), true);
 			if (sourceexchangeversion > 1) {
-				newsource->SetUserHash(achUserHash);
+				newsource->SetUserHash(userHash);
 			}
 			newsource->SetSourceFrom((ESourceFrom)nSourceFrom);
 			theApp.downloadqueue->CheckAndAddSource(this,newsource);

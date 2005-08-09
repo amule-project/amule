@@ -60,6 +60,20 @@
 
 using namespace otherfunctions;
 
+
+CreditStruct::CreditStruct()
+	: nUploadedLo(0),
+	  nDownloadedLo(0),
+	  nLastSeen(0),
+	  nUploadedHi(0),
+	  nDownloadedHi(0),
+	  nReserved3(0),
+	  nKeySize(0)
+{
+	bzero(abySecureIdent, MAXPUBKEYSIZE);
+}
+
+
 CClientCredits::CClientCredits(CreditStruct* in_credits)
 {
 	m_pCredits = in_credits;
@@ -71,9 +85,9 @@ CClientCredits::CClientCredits(CreditStruct* in_credits)
 
 CClientCredits::CClientCredits(const CMD4Hash& key)
 {
-	m_pCredits = new CreditStruct;
-	memset(m_pCredits, 0, sizeof(CreditStruct));
-	md4cpy(m_pCredits->abyKey, key);
+	m_pCredits = new CreditStruct();
+	m_pCredits->key = key;
+	
 	InitalizeIdent();
 	m_dwUnSecureWaitTime = ::GetTickCount();
 	m_dwSecureWaitTime = ::GetTickCount();
@@ -148,6 +162,13 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP)
 		return 10;
 	return result;
 }
+
+
+void CClientCredits::SetLastSeen()
+{
+	m_pCredits->nLastSeen = time(NULL);
+}
+
 
 #ifndef CLIENT_GUI
 
@@ -227,10 +248,9 @@ void CClientCreditsList::LoadList()
 		const uint32 dwExpired = time(NULL) - 12960000; // today - 150 day
 		uint32 cDeleted = 0;
 		for (uint32 i = 0; i < count; i++){
-			CreditStruct* newcstruct = new CreditStruct;
-			memset(newcstruct, 0, sizeof(CreditStruct));
+			CreditStruct* newcstruct = new CreditStruct();
 
-			file.ReadHash16(newcstruct->abyKey);
+			newcstruct->key					= file.ReadHash();
 			newcstruct->nUploadedLo         = file.ReadUInt32();
 			newcstruct->nDownloadedLo       = file.ReadUInt32();
 			newcstruct->nLastSeen           = file.ReadUInt32();
@@ -264,7 +284,7 @@ void CClientCreditsList::LoadList()
 			}
 
 			CClientCredits* newcredits = new CClientCredits(newcstruct);
-			m_mapClients[ CMD4Hash(newcredits->GetKey()) ] = newcredits;
+			m_mapClients[newcredits->GetKey()] = newcredits;
 		}
 
 		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
@@ -305,7 +325,7 @@ void CClientCreditsList::SaveList()
 		
 				if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
 					const CreditStruct* const cstruct = cur_credit->GetDataStruct();
-					file.WriteHash16(cstruct->abyKey);
+					file.WriteHash(cstruct->key);
 					file.WriteUInt32(cstruct->nUploadedLo);
 					file.WriteUInt32(cstruct->nDownloadedLo);
 					file.WriteUInt32(cstruct->nLastSeen);
@@ -340,7 +360,7 @@ CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 	
 	if ( it == m_mapClients.end() ){
 		result = new CClientCredits(key);
-		m_mapClients[ CMD4Hash(result->GetKey()) ] = result;
+		m_mapClients[result->GetKey()] = result;
 	} else {
 		result = it->second;
 	}
@@ -617,8 +637,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	asink.MessageEnd();
 	uint32 challenge = rand();
 	// create fake client which pretends to be this emule
-	CreditStruct* newcstruct = new CreditStruct;
-	memset(newcstruct, 0, sizeof(CreditStruct));
+	CreditStruct* newcstruct = new CreditStruct();
 	CClientCredits newcredits(newcstruct);
 	newcredits.SetSecureIdent(m_abyMyPublicKey,m_nMyPublicKeyLen);
 	newcredits.m_dwCryptRndChallengeFrom = challenge;
@@ -629,8 +648,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 
 
 	// next fake client uses the random created public key
-	CreditStruct* newcstruct2 = new CreditStruct;
-	memset(newcstruct2, 0, sizeof(CreditStruct));
+	CreditStruct* newcstruct2 = new CreditStruct();
 	CClientCredits newcredits2(newcstruct2);
 	newcredits2.m_dwCryptRndChallengeFor = challenge;
 

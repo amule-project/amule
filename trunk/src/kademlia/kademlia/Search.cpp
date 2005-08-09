@@ -80,6 +80,7 @@ static char THIS_FILE[] = __FILE__;
 
 ////////////////////////////////////////
 using namespace Kademlia;
+using namespace otherfunctions;
 ////////////////////////////////////////
 
 CSearch::CSearch()

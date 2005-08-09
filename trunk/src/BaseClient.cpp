@@ -55,11 +55,14 @@
 #include "ClientUDPSocket.h"
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()
+#include "OtherFunctions.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/net/KademliaUDPListener.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
+
+using namespace otherfunctions;
 
 //#define __PACKET_DEBUG__
 
@@ -387,8 +390,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	m_bUnicodeSupport = false;
 	uint32 dwEmuleTags = 0;
 
-	CMD4Hash hash;
-	data.ReadHash16(hash);
+	CMD4Hash hash = data.ReadHash();
 	SetUserHash( hash );
 	SetUserIDHybrid( data.ReadUInt32() );
 	uint16 nUserPort = data.ReadUInt16(); // hmm clientport is sent twice - why?
@@ -929,7 +931,7 @@ void CUpDownClient::SendHelloAnswer()
 
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
-	data->WriteHash16(thePrefs::GetUserHash());
+	data->WriteHash(thePrefs::GetUserHash());
 	data->WriteUInt32(theApp.serverconnect->GetClientID());
 	data->WriteUInt16(thePrefs::GetPort());
 
@@ -1377,7 +1379,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 					if( GetBuddyIP() && GetBuddyPort()) {
 						CMemFile bio(34);
 						bio.WriteUInt128(Kademlia::CUInt128(GetBuddyID()));
-						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash()));
+						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
 						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
@@ -1390,7 +1392,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						Kademlia::CSearch *findSource = new Kademlia::CSearch;
 						findSource->setSearchTypes(Kademlia::CSearch::FINDSOURCE);
 						findSource->setTargetID(GetBuddyID());
-						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash()));
+						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						if(Kademlia::CSearchManager::startSearch(findSource)) {
 							//Started lookup..
 							SetDownloadState(DS_WAITCALLBACKKAD);

@@ -30,13 +30,11 @@
 #pragma interface "ClientCredits.h"
 #endif
 
-#include <cstddef>		// Needed for NULL
-#include <ctime>		// Needed for time(2)
 
 #include "Types.h"		// Needed for uint16 and uint32
-#include <map>
+#include "CMD4Hash.h"	// Needed for CMD4Hash
 
-#include "CMD4Hash.h"
+#include <map>
 
 
 #define	 MAXPUBKEYSIZE		80
@@ -45,9 +43,11 @@
 #define CRYPT_CIP_LOCALCLIENT	20
 #define CRYPT_CIP_NONECLIENT	30
 
-#pragma pack(1)
-struct CreditStruct{
-	byte		abyKey[16];
+struct CreditStruct
+{
+	CreditStruct();
+	
+	CMD4Hash	key;
 	uint32		nUploadedLo;	// uploaded TO him
 	uint32		nDownloadedLo;	// downloaded from him
 	uint32		nLastSeen;
@@ -57,7 +57,6 @@ struct CreditStruct{
 	uint8		nKeySize;
 	byte		abySecureIdent[MAXPUBKEYSIZE];
 };
-#pragma pack()
 
 enum EIdentState{
 	IS_NOTAVAILABLE,
@@ -75,7 +74,7 @@ public:
 	CClientCredits(const CMD4Hash& key);
 	~CClientCredits();
 
-	const byte* GetKey() const 			{return m_pCredits->abyKey;}
+	const CMD4Hash& GetKey() const 			{return m_pCredits->key;}
 	const byte*	GetSecureIdent() const	{return m_abyPublicKey;}
 	uint8	GetSecIDKeyLen() const 			{return m_nPublicKeyLen;}
 	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
@@ -85,7 +84,7 @@ public:
 	uint64	GetUploadedTotal() const;
 	uint64	GetDownloadedTotal() const;
 	float	GetScoreRatio(uint32 dwForIP);
-	void	SetLastSeen()					{m_pCredits->nLastSeen = time(NULL);}
+	void	SetLastSeen();
 	bool	SetSecureIdent(const byte* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;

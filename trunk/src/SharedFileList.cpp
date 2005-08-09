@@ -788,7 +788,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 	wxASSERT(!(pClient && pServer));
 		
 	cur_file->SetPublishedED2K(true);
-	files->WriteHash16(cur_file->GetFileHash());
+	files->WriteHash(cur_file->GetFileHash());
 
 	uint32 nClientID;
 	uint16 nClientPort;
@@ -944,7 +944,7 @@ void CSharedFileList::Publish()
 								//As a side effect, this may help reduce people finding incomplete files in the network.
 								if( !aFiles[f]->IsPartFile() ) {
 									count++;
-									pSearch->addFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash()));
+									pSearch->addFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash().GetHash()));
 									if( count > 150 ) {
 										//We only publish up to 150 files per keyword publish then rotate the list.
 										pPubKw->RotateReferences(f);
@@ -979,7 +979,7 @@ void CSharedFileList::Publish()
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishSrc()) {
 						Kademlia::CUInt128 kadFileID;
-						kadFileID.setValueBE(pCurKnownFile->GetFileHash());
+						kadFileID.setValueBE(pCurKnownFile->GetFileHash().GetHash());
 						if(Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::STOREFILE, true, kadFileID )==NULL) {
 							pCurKnownFile->SetLastPublishTimeKadSrc(0,0);
 						}
@@ -1002,7 +1002,7 @@ void CSharedFileList::Publish()
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishNotes()) {
 						Kademlia::CUInt128 kadFileID;
-						kadFileID.setValueBE(pCurKnownFile->GetFileHash());
+						kadFileID.setValueBE(pCurKnownFile->GetFileHash().GetHash());
 						if(Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::STORENOTES, true, kadFileID )==NULL)
 							pCurKnownFile->SetLastPublishTimeKadNotes(0);
 					}	

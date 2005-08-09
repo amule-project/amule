@@ -701,7 +701,7 @@ CPreferences::CPreferences()
 		if ( preffile.Open(fullpath, CFile::read) ) {
 			try {
 				preffile.ReadUInt8(); // Version. Value is not used.
-				preffile.ReadHash16(s_userhash);
+				s_userhash = preffile.ReadHash();
 			} catch (const CSafeIOException& e) {
 				AddDebugLogLineM(true, logGeneral, wxT("Error while reading userhash: ") + e.what());
 				SetStandartValues();
@@ -1191,7 +1191,7 @@ void CPreferences::Save()
 	if (preffile.Open(fullpath, CFile::read_write)) {
 		try {
 			preffile.WriteUInt8(PREFFILE_VERSION);
-			preffile.WriteHash16(s_userhash);
+			preffile.WriteHash(s_userhash);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logGeneral, wxT("IO failure while saving user-hash: ") + e.what());
 		}

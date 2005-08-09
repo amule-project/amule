@@ -501,15 +501,13 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 // needed for memfiles. its probably better to switch everything to CFile...
 bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 {
-	CMD4Hash checkid;
-	file->ReadHash16(checkid);
+	CMD4Hash checkid = file->ReadHash();
 	
 	uint16 parts = file->ReadUInt16();
 	
 	
 	for (uint16 i = 0; i < parts; i++){
-		CMD4Hash cur_hash;
-		file->ReadHash16(cur_hash);
+		CMD4Hash cur_hash = file->ReadHash();
 		hashlist.Add(cur_hash);
 	}
 	
@@ -536,9 +534,9 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	if (!hashlist.IsEmpty()){
 		byte buffer[hashlist.GetCount() * 16];
 		for (size_t i = 0;i != hashlist.GetCount();i++) {
-			md4cpy(buffer+(i*16),hashlist[i]);
+			otherfunctions::md4cpy(buffer+(i*16),hashlist[i].GetHash());
 		}
-		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid);
+		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid.GetHash());
 	}
 	if ( m_abyFileHash == checkid ) {
 		return true;
@@ -675,13 +673,13 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	// date
 	file->WriteUInt32(date); 
 	// hashset
-	file->WriteHash16(m_abyFileHash);
+	file->WriteHash(m_abyFileHash);
 	
 	uint16 parts = hashlist.GetCount();
 	file->WriteUInt16(parts);
 
 	for (int i = 0; i < parts; i++)
-		file->WriteHash16(hashlist[i]);
+		file->WriteHash(hashlist[i]);
 	
 	//tags
 	const int iFixedTags = 7;
@@ -927,7 +925,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	CMemFile data(1024);
 	uint16 nCount = 0;
 
-	data.WriteHash16(forClient->GetUploadFileID());
+	data.WriteHash(forClient->GetUploadFileID());
 	data.WriteUInt16(nCount);
 	uint32 cDbgNoSrc = 0;
 
@@ -1008,7 +1006,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			data.WriteUInt16(cur_src->GetServerPort());
 			
 			if (forClient->GetSourceExchangeVersion() > 1) {
-				data.WriteHash16(cur_src->GetUserHash());
+				data.WriteHash(cur_src->GetUserHash());
 			}
 			
 			if (nCount > 500) {
@@ -1220,7 +1218,7 @@ void CKnownFile::UpdatePartsInfo()
 
 		if (n > 0) {
 			// Kry - Native wx functions instead
-			count.Sort(Uint16CompareValues);
+			count.Sort(otherfunctions::Uint16CompareValues);
 			
 			// calculate range
 			int i = n >> 1;			// (n / 2)

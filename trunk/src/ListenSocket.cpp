@@ -400,8 +400,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					m_client->SetWaitStartTime();
 				}
 				CMemFile data_in((byte*)packet,size);
-				CMD4Hash reqfilehash;
-				data_in.ReadHash16(reqfilehash);
+				CMD4Hash reqfilehash = data_in.ReadHash();
 				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if ( reqfile == NULL ) {
 					reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
@@ -428,7 +427,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				
 				// send filename etc
 				CMemFile data_out(128);
-				data_out.WriteHash16(reqfile->GetFileHash());
+				data_out.WriteHash(reqfile->GetFileHash());
 				data_out.WriteString(reqfile->GetFileName());
 				CPacket* packet = new CPacket(&data_out);
 				packet->SetOpCode(OP_REQFILENAMEANSWER);
@@ -473,14 +472,14 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 
 				// check to see if this is a new file they are asking for
-				if(md4cmp(m_client->GetUploadFileID(), packet) != 0) {
+				if(otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
 					m_client->SetCommentDirty();
 				}
 
 				m_client->SetUploadFileID(reqfile);
 				// send filestatus
 				CMemFile data(16+16);
-				data.WriteHash16(reqfile->GetFileHash());
+				data.WriteHash(reqfile->GetFileHash());
 				if (reqfile->IsPartFile()) {
 					((CPartFile*)reqfile)->WritePartStatus(&data);
 				} else {
@@ -532,9 +531,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data((byte*)packet,size);
-			byte cfilehash[16];
-			data.ReadHash16(cfilehash);
-			const CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
+			CMD4Hash hash = data.ReadHash();
+			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileInfo(&data, file);
 			break;
 		}
@@ -544,9 +542,8 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data((byte*)packet,size);
-			byte cfilehash[16];
-			data.ReadHash16(cfilehash);
-			const CPartFile* file = theApp.downloadqueue->GetFileByID(cfilehash);
+			CMD4Hash hash = data.ReadHash();
+			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileStatus(false, &data, file);
 			break;
 		}
@@ -568,7 +565,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (size == 16) {
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((byte*)packet);
 				if (reqfile) {
-					if (md4cmp(m_client->GetUploadFileID(), packet) != 0) {
+					if (otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
 						m_client->SetCommentDirty();
 					}
 					m_client->SetUploadFileID(reqfile);
@@ -627,8 +624,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 
 			CMemFile data((byte*)packet,size);
 
-			CMD4Hash reqfilehash;
-			data.ReadHash16(reqfilehash);
+			CMD4Hash reqfilehash = data.ReadHash();
 
 			uint32 auStartOffsets[3];
 			auStartOffsets[0] = data.ReadUInt32();
@@ -646,7 +642,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					Requested_Block_Struct* reqblock = new Requested_Block_Struct;
 					reqblock->StartOffset = auStartOffsets[i];
 					reqblock->EndOffset = auEndOffsets[i];
-					md4cpy(reqblock->FileID, reqfilehash);
+					otherfunctions::md4cpy(reqblock->FileID, reqfilehash.GetHash());
 					reqblock->transferred = 0;
 					m_client->AddReqBlock(reqblock);
 				} else {
@@ -679,7 +675,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			if (size>=16 && !md4cmp(m_client->GetUploadFileID(),packet)) {
+			if (size>=16 && !otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet)) {
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
@@ -1107,8 +1103,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 
 			CMemFile data_in((byte*)packet,size);
-			CMD4Hash reqfilehash;
-			data_in.ReadHash16(reqfilehash);
+			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 			if ( reqfile == NULL ){
 				reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
@@ -1137,7 +1132,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			m_client->SetUploadFileID(reqfile);
 			CMemFile data_out(128);
-			data_out.WriteHash16(reqfile->GetFileHash());
+			data_out.WriteHash(reqfile->GetFileHash());
 			while(data_in.GetLength()-data_in.GetPosition()) {
 				if (!m_client) {
 					throw wxString(wxT("Client suddenly disconnected"));
@@ -1224,8 +1219,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			
 			CMemFile data_in((byte*)packet,size);
-			CMD4Hash reqfilehash;
-			data_in.ReadHash16(reqfilehash);
+			CMD4Hash reqfilehash = data_in.ReadHash();
 			const CPartFile *reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 			//Make sure we are downloading this file.
 			if ( !reqfile ) {
@@ -1473,8 +1467,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			
 			CMemFile data((byte*)packet,size);
-			byte hash[16];
-			data.ReadHash16(hash);
+			CMD4Hash hash = data.ReadHash();
 			const CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
 			if(file){
 				if (file->IsPartFile()){
@@ -1547,9 +1540,8 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_AICHFILEHASHREQ: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
 			CMemFile data((byte*)packet, size);
-			byte abyHash[16];
-			data.ReadHash16(abyHash);
-			CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(abyHash);
+			CMD4Hash hash = data.ReadHash();
+			CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(hash);
 			if (pPartFile == NULL){
 				break;
 			}
@@ -1557,7 +1549,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			if (m_client->IsSupportingAICH() && pPartFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
 				&& pPartFile->GetAICHHashset()->HasValidMasterHash()) {
 				CMemFile data_out;
-				data_out.WriteHash16(abyHash);
+				data_out.WriteHash(hash);
 				pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
 				CPacket* packet = new CPacket(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
 				theStats::AddUpOverheadOther(packet->GetPacketSize());
@@ -1643,13 +1635,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				//This callback was not from our buddy.. Ignore.
 				break;
 			}
+			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
 			CMemFile data_in((byte*)packet, size);
 			uint32 destip = data_in.ReadUInt32();
 			uint16 destport = data_in.ReadUInt16();
-			byte reqfilehash[16];
-			data_in.ReadHash16(reqfilehash);
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
-			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+			CMD4Hash hash = data_in.ReadHash();
+			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(hash);
 			if (!reqfile) {
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND") );
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
@@ -1661,7 +1652,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
 			if (sender) {
 				//Make sure we are still thinking about the same file
-				if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
+				if (hash == sender->GetUploadFileID()) {
 					sender->AddAskedCount();
 					sender->SetLastUpRequest();
 					//I messed up when I first added extended info to UDP

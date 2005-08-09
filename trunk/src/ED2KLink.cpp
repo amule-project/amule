@@ -247,7 +247,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 			tmp_hash.Remove( 0, 2 );
 
 			m_hashset = new CMemFile();
-			m_hashset->WriteHash16(m_hash);
+			m_hashset->WriteHash(m_hash);
 			m_hashset->WriteUInt16(0);
 
 			while ( !tmp_hash.IsEmpty() ) {
@@ -255,7 +255,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 				wxString tmp_hash = tmp_hash.AfterFirst( wxT(':') );
 
 				if ( cur_hash.Length() == 32 ) {
-					m_hashset->WriteHash16( CMD4Hash( cur_hash ) );
+					m_hashset->WriteHash( CMD4Hash( cur_hash ) );
 				}
 			}
 

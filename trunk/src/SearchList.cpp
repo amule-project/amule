@@ -132,7 +132,7 @@ CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID,
 	m_nSearchID = nSearchID;
 	m_nKademlia = nKademlia;
 	
-	in_data.ReadHash16(m_abyFileHash);
+	m_abyFileHash = in_data.ReadHash();
 	m_nClientID = in_data.ReadUInt32();
 	m_nClientPort = in_data.ReadUInt16();
 	
@@ -489,10 +489,10 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	// If the result was not the type user wanted, drop it.
 	if (	!bClientResponse &&
 		!(m_resultType == wxString(wxT("Any")) ||
-		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
+		otherfunctions::GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
 		AddDebugLogLineM( false, logSearch,
 			CFormat( wxT("Dropped result type %s != %s, file %s") )
-				% GetFiletypeByName(toadd->GetFileName(),false)
+				% otherfunctions::GetFiletypeByName(toadd->GetFileName(),false)
 				% m_resultType
 				% toadd->GetFileName() 
 		);
@@ -547,9 +547,9 @@ public:
 	
 		switch ( m_type ) {
 			case 0: result = file1->GetFileName().CmpNoCase( file2->GetFileName() ); break;				
-			case 1: result = CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
+			case 1: result = otherfunctions::CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
 			case 2: result = file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() ); break;
-			case 3: result = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
+			case 3: result = otherfunctions::CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
 		}
 
 		return (result * mod) < 0;
@@ -697,7 +697,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	CMemFile temp(250);
 	byte fileid[16];
 	fileID->toByteArray(fileid);
-	temp.WriteHash16(fileid);
+	temp.WriteHash(fileid);
 	
 	temp.WriteUInt32(0);	// client IP
 	temp.WriteUInt16(0);	// client port

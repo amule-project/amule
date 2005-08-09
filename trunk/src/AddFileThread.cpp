@@ -337,7 +337,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 				byte data[len];
 				
 				for (size_t i = 0; i < knownfile->hashlist.GetCount(); i++) {
-					memcpy( data + 16*i, knownfile->hashlist[i], 16 );
+					memcpy( data + 16*i, knownfile->hashlist[i].GetHash(), 16 );
 				}
 	
 				byte hash[16];

@@ -133,6 +133,8 @@
 	#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #endif
 
+using namespace otherfunctions;
+
 #ifdef HAVE_SYS_RESOURCE_H
 	#include <sys/resource.h>
 #endif
@@ -1083,7 +1085,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
 		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
 		f->GetFileSize() << wxT("|") <<
-		EncodeBase16( f->GetFileHash(), 16 ) << wxT("|/");
+		f->GetFileHash().Encode() << wxT("|/");
 	return strURL;
 }
 

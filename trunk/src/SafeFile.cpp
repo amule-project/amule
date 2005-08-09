@@ -27,11 +27,12 @@
 #pragma implementation "SafeFile.h"
 #endif
 
-#include "SafeFile.h"		// Interface declarations.
-#include "OtherFunctions.h"
+#include "SafeFile.h"				// Interface declarations.
+#include "CMD4Hash.h"				// Needed for CMD4Hash
+#include "ArchSpecific.h"			// Needed for ENDIAN_SWAP_*
+#include "StringFunctions.h"		// Needed for unicode2char, etc.
+#include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 
-#include "Packet.h"
-#include "kademlia/utils/UInt128.h"
 
 #define CHECK_BOM(size,x) ((size > 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 
@@ -153,9 +154,12 @@ void CFileDataIO::ReadUInt128(Kademlia::CUInt128 *pVal) const
 }
 
 
-void CFileDataIO::ReadHash16(byte* pVal) const
+CMD4Hash CFileDataIO::ReadHash() const
 {
-	Read(pVal, 16);
+	unsigned char hash[16];
+	Read(hash, 16);
+
+	return CMD4Hash(hash);
 }
 
 
@@ -250,9 +254,9 @@ void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& pVal)
 }
 
 
-void CFileDataIO::WriteHash16(const byte* pVal)
+void CFileDataIO::WriteHash(const CMD4Hash& value)
 {
-	Write(pVal, 16);
+	Write(value.GetHash(), 16);
 }
 
 

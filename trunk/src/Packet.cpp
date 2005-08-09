@@ -29,11 +29,13 @@
 
 #include <zlib.h>		// Needed for uLongf
 
-#include "Packet.h"		// Interface declarations
+#include "Packet.h"				// Interface declarations
 #include "StringFunctions.h"	// Needed for nstrdup
-#include "MemFile.h"		// Needed for CMemFile
-#include "OtherStructs.h"	// Needed for Header_Struct
-#include "Types.h"		// Needed for wxFileSize_t
+#include "MemFile.h"			// Needed for CMemFile
+#include "OtherStructs.h"		// Needed for Header_Struct
+#include "Types.h"				// Needed for wxFileSize_t
+#include "CMD4Hash.h"			// Needed for CMD4Hash
+#include "OtherFunctions.h"		// Needed for md4cpy
 
 // Copy constructor
 CPacket::CPacket(CPacket &p)
@@ -262,6 +264,7 @@ void CPacket::PackPacket() {
 	size = newsize;
 }
 
+
 bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	wxASSERT( prot == OP_PACKEDPROT );
 
@@ -289,6 +292,20 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 	delete[] unpack;
 	return false;
 }
+
+
+void CPacket::Copy16ToDataBuffer(const void* data)
+{
+	otherfunctions::md4cpy(pBuffer, data);
+}
+
+
+void CPacket::CopyUInt32ToDataBuffer(uint32 data, unsigned int offset)
+{ 
+	wxCHECK_RET(offset <= size - sizeof(uint32), wxT("Bad offset in CopyUInt32ToDataBuffer."));
+	PokeUInt32( pBuffer + offset, data );
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
@@ -329,13 +346,12 @@ CTag::CTag(uint8 uName, const wxString& rstrVal)
 	m_nBlobSize = 0;
 }
 
-CTag::CTag(uint8 uName, const unsigned char* pucHash)
+CTag::CTag(uint8 uName, const CMD4Hash& hash)
 {
 	m_uType = TAGTYPE_HASH;
 	m_uName = uName;
 	m_pszName = NULL;
-	m_pData = new unsigned char[16];
-	md4cpy(m_pData, pucHash);
+	m_hashVal = new CMD4Hash(hash);
 	m_nBlobSize = 0;
 }
 
@@ -361,8 +377,7 @@ CTag::CTag(const CTag& rTag)
 	} else if (rTag.IsFloat()) {
 		m_fVal = rTag.GetFloat();
 	} else if (rTag.IsHash()) {
-		m_pData = new unsigned char[16];
-		md4cpy(m_pData, rTag.GetHash());
+		m_hashVal = new CMD4Hash(rTag.GetHash());
 	} else if (rTag.IsBlob()) {
 		m_nBlobSize = rTag.GetBlobSize();
 		m_pData = new unsigned char[rTag.GetBlobSize()];
@@ -429,8 +444,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				break;
 			
 			case TAGTYPE_HASH:
-				m_pData = new byte[16];
-				data.ReadHash16(m_pData);
+				m_hashVal = new CMD4Hash(data.ReadHash());
 				break;
 			
 			case TAGTYPE_BOOL:
@@ -475,7 +489,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 		}
 	} catch (...) {
 		delete[] m_pszName;
-		if (m_uType == TAGTYPE_HASH || m_uType == TAGTYPE_BLOB) {
+		if (m_uType == TAGTYPE_BLOB) {
 			delete[] m_pData;
 		}
 
@@ -490,7 +504,7 @@ CTag::~CTag()
 	if (IsStr()) {
 		delete m_pstrVal;
 	} else if (IsHash()) {
-		delete[] m_pData;
+		delete m_hashVal;
 	} else if (IsBlob()) {
 		delete[] m_pData;
 	}
@@ -526,11 +540,11 @@ float CTag::GetFloat() const
 }
 
 
-const byte* CTag::GetHash() const
+const CMD4Hash& CTag::GetHash() const
 {
 	CHECK_TAG_TYPE(IsHash(), Hash);
 	
-	return m_pData;
+	return *m_hashVal;
 }
 	
 
@@ -606,7 +620,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			data->Write(&m_fVal, 4);
 			break;
 		case TAGTYPE_HASH:
-			data->WriteHash16(m_pData);
+			data->WriteHash(*m_hashVal);
 			break;
 		case TAGTYPE_BLOB:
 			data->WriteUInt32(m_nBlobSize);

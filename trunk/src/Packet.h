@@ -30,8 +30,6 @@
 #pragma interface "Packet.h"
 #endif
 
-#include <exception>
-#include <stdexcept>
 #include <list>
 
 #include <wx/string.h>
@@ -40,12 +38,10 @@
 #include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 #include "SafeFile.h"		// Needed for CFileDataIO
 #include "ArchSpecific.h"
-#include "OtherFunctions.h"
 
 class CMemFile;
 class CFile;
-
-using namespace otherfunctions;
+class CMD4Hash;
 
 //			CLIENT TO SERVER
 
@@ -68,7 +64,7 @@ public:
 	char*			GetUDPHeader();
 	char*			GetPacket();
 	char*			DetachPacket();
-	inline uint32 GetRealPacketSize() const	{ return size + 6; }
+	uint32 			GetRealPacketSize() const	{ return size + 6; }
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
 	void			PackPacket();
@@ -76,18 +72,15 @@ public:
 	// -khaos--+++> Returns either -1, 0 or 1.  -1 is unset, 0 is from complete file, 1 is from part file
 	bool			IsFromPF()		{ return m_bFromPF; }
 	
-	inline uint8 	GetOpCode() const	{ return opcode; }
+	uint8			GetOpCode() const	{ return opcode; }
 	void			SetOpCode(uint8 oc)	{ opcode = oc; }
-	inline uint32 GetPacketSize() const	{ return size; }
-	inline uint8 	GetProtocol() const	{ return prot; }
-	inline void		SetProtocol(uint8 p)	{ prot = p; }
-	inline const char * 	GetDataBuffer(void) const { return pBuffer; }
-	inline void 		Copy16ToDataBuffer(const char *data) { md4cpy( pBuffer, data ); }
+	uint32			GetPacketSize() const	{ return size; }
+	uint8			GetProtocol() const	{ return prot; }
+	void			SetProtocol(uint8 p)	{ prot = p; }
+	const char* 	GetDataBuffer(void) const { return pBuffer; }
+	void 			Copy16ToDataBuffer(const void* data);
 	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
-	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0) { 
-		wxASSERT(offset <= size - sizeof(uint32) );
-		PokeUInt32( pBuffer + offset, data );
-	}
+	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0);
 	
 private:
 	uint32		size;
@@ -120,7 +113,7 @@ public:
 	CTag(uint8 uName, uint32 uVal);
 	CTag(char* pszName, const wxString& rstrVal);
 	CTag(uint8 uName, const wxString& rstrVal);
-	CTag(uint8 uName, const unsigned char* pucHash);
+	CTag(uint8 uName, const CMD4Hash& hash);
 	CTag(uint8 uName, uint32 nSize, const unsigned char* pucData);
 	CTag(const CTag& rTag);
 	CTag(const CFileDataIO& data, bool bOptUTF8);
@@ -139,7 +132,7 @@ public:
 	uint32 GetInt() const;
 	const wxString& GetStr() const;
 	float GetFloat() const;
-	const byte* GetHash() const;
+	const CMD4Hash& GetHash() const;
 	uint32 GetBlobSize() const;
 	const byte* GetBlob() const;
 
@@ -158,6 +151,7 @@ protected:
 	char*	m_pszName;
 	uint32	m_nBlobSize;
 	union {
+	  CMD4Hash*	m_hashVal;
 	  wxString*	m_pstrVal;
 	  uint32	m_uVal;
 	  float		m_fVal;
