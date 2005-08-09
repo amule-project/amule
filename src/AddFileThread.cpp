@@ -186,7 +186,7 @@ void CAddFileThread::Stop()
 			// By doing this we ensure that this function only returns
 			// once the thread has died.
 
-			otherfunctions::MilliSleep(10);
+			MilliSleep(10);
 		}
 
 #ifdef __WXGTK__

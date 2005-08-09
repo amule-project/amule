@@ -66,6 +66,7 @@ there client on the eMule forum..
 #include "../../CFile.h"
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
+#include "../../ArchSpecific.h"
 
 #include <cmath>
 #include <algorithm>		// Needed for std::min

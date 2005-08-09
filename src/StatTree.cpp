@@ -56,7 +56,6 @@
 
 #define a_brackets_b(a,b)	(a + wxT(" (") + b + wxT(")"))
 
-using namespace otherfunctions;
 #endif /* !AMULE_DAEMON */
 
 #else /* EC_REMOTE */

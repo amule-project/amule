@@ -59,7 +59,6 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
 END_EVENT_TABLE()
 
-using namespace otherfunctions;
 
 std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;
 

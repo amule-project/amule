@@ -638,10 +638,10 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			}
 			CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
-				s <<	CFormat(_("\nDownload:\t%s")) % otherfunctions::CastItoSpeed(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nDownload:\t%s")) % CastItoSpeed(tmpTag->GetInt32Data());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_SPEED)) != 0) {
-				s <<	CFormat(_("\nUpload:\t%s")) % otherfunctions::CastItoSpeed(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nUpload:\t%s")) % CastItoSpeed(tmpTag->GetInt32Data());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
 				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt32Data());
@@ -667,7 +667,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 							(int)tag->SourceCount()) <<
 						tag->GetFileStatusString();
 						if ( tag->SourceXferCount() > 0) {
-							s << wxT(" ") + otherfunctions::CastItoSpeed(tag->Speed());
+							s << wxT(" ") + CastItoSpeed(tag->Speed());
 						}
 					s << wxT("\n");
 				}
@@ -685,8 +685,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
 						clientName->GetStringData() << wxT(" ") <<
 						partfileName->GetStringData() << wxT(" ") <<
-						otherfunctions::CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
-						otherfunctions::CastItoSpeed(partfileSpeed->GetInt32Data());
+						CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
+						CastItoSpeed(partfileSpeed->GetInt32Data());
 				}
 			}
 			break;

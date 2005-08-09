@@ -52,7 +52,6 @@
 #include "Statistics.h"			// Needed for theStats
 #include "Format.h"			// Needed for CFormat
 
-using namespace otherfunctions;
 
 // Pop-up menu clickable entries
 enum {

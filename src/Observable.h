@@ -279,7 +279,7 @@ void CObservable<EventType>::NotifyObservers( const EventType& e, ObserverType* 
 	} else {
 		myIteratorType it = m_list.begin();
 		for ( ; it != m_list.end(); ) {
-			otherfunctions::CMutexUnlocker unlocker(m_mutex);
+			CMutexUnlocker unlocker(m_mutex);
 			(*it++)->ReceiveNotification( this, e );
 		}
 	}
@@ -294,7 +294,7 @@ void CObservable<EventType>::RemoveAllObservers()
 	while ( !m_list.empty() ) {
 		ObserverType* o = *m_list.begin();
 		m_list.erase( m_list.begin() );
-		otherfunctions::CMutexUnlocker unlocker(m_mutex);
+		CMutexUnlocker unlocker(m_mutex);
 		
 		{
 			wxMutexLocker oLock(o->m_mutex);

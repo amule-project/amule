@@ -930,16 +930,16 @@ void FormatValue(CFormat& format, const CECTag* tag)
 			format = format % (wxString::Format(wxT("%llu"), tag->GetInt64Data()) + extra);
 			break;
 		case EC_VALUE_BYTES:
-			format = format % (otherfunctions::CastItoXBytes(tag->GetInt64Data()) + extra);
+			format = format % (CastItoXBytes(tag->GetInt64Data()) + extra);
 			break;
 		case EC_VALUE_ISHORT:
-			format = format % (otherfunctions::CastItoIShort(tag->GetInt64Data()) + extra);
+			format = format % (CastItoIShort(tag->GetInt64Data()) + extra);
 			break;
 		case EC_VALUE_TIME:
-			format = format % (otherfunctions::CastSecondsToHM(tag->GetInt32Data()) + extra);
+			format = format % (CastSecondsToHM(tag->GetInt32Data()) + extra);
 			break;
 		case EC_VALUE_SPEED:
-			format = format % (otherfunctions::CastItoSpeed(tag->GetInt32Data()) + extra);
+			format = format % (CastItoSpeed(tag->GetInt32Data()) + extra);
 			break;
 		case EC_VALUE_STRING:
 			format = format % (wxGetTranslation(tag->GetStringData()) + extra);

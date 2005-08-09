@@ -52,8 +52,6 @@
 #include "Logger.h"
 #include "Format.h"
 
-using namespace otherfunctions;
-
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 

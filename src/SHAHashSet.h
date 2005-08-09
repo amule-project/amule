@@ -79,7 +79,8 @@ Example
 #include <deque>
 #include <set>
 #include <list>
-#include "OtherFunctions.h"
+
+#include "Types.h"
 
 #define HASHSIZE		20
 #define KNOWN2_MET_FILENAME		wxT("known2.met")
@@ -122,9 +123,7 @@ public:
 
 	static uint32	GetHashSize()						{ return HASHSIZE;}
 	
-	unsigned int DecodeBase32(const wxString &base32) {
-		return otherfunctions::DecodeBase32(base32, HASHSIZE, m_abyBuffer);	
-	}	
+	unsigned int DecodeBase32(const wxString &base32);
 	
 private:
 	byte m_abyBuffer[HASHSIZE];

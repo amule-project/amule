@@ -80,7 +80,6 @@ static char THIS_FILE[] = __FILE__;
 
 ////////////////////////////////////////
 using namespace Kademlia;
-using namespace otherfunctions;
 ////////////////////////////////////////
 
 CSearch::CSearch()
@@ -885,7 +884,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			
 			// eD2K file type (Audio, Video, ...)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
-			wxString strED2KFileType(otherfunctions::GetED2KFileTypeSearchTerm(GetED2KFileTypeID(file->GetFileName())));
+			wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(file->GetFileName())));
 			if (!strED2KFileType.IsEmpty()) {
 				taglist.push_back(new CTagStr(TAG_FILETYPE, strED2KFileType));
 			}

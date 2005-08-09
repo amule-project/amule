@@ -64,7 +64,6 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 END_EVENT_TABLE()
 
-using namespace otherfunctions;
 
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
 : wxDialog(parent,-1,_("File Details"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )

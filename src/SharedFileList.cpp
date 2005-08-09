@@ -826,7 +826,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 	tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
 	
 	// NOTE: Archives and CD-Images are published with file type "Pro"
-	wxString strED2KFileType(otherfunctions::GetED2KFileTypeSearchTerm(otherfunctions::GetED2KFileTypeID(cur_file->GetFileName())));
+	wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(cur_file->GetFileName())));
 	if (!strED2KFileType.IsEmpty()) {
 		tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
 	}

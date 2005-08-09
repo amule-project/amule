@@ -104,7 +104,7 @@ void CPreciseRateCounter::CalculateRate(uint64_t now)
 #ifndef AMULE_DAEMON
 wxString CStatTreeItemRateCounter::GetDisplayString() const
 {
-	return CFormat(wxGetTranslation(m_label)) % otherfunctions::CastItoSpeed(m_show_maxrate ? (uint32)m_max_rate : (uint32)m_rate);
+	return CFormat(wxGetTranslation(m_label)) % CastItoSpeed(m_show_maxrate ? (uint32)m_max_rate : (uint32)m_rate);
 }
 #endif
 

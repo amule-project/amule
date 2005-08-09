@@ -33,6 +33,7 @@
 #pragma implementation "updownclient.h"
 #endif
 
+#include <errno.h>
 #include <cmath>
 #include <csignal>
 #include <unistd.h>			// Needed for close(2) and sleep(3)
@@ -73,6 +74,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
+#include <wx/filename.h>
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -133,7 +135,6 @@
 	#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #endif
 
-using namespace otherfunctions;
 
 #ifdef HAVE_SYS_RESOURCE_H
 	#include <sys/resource.h>

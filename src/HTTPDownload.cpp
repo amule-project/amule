@@ -102,9 +102,9 @@ CHTTPDownloadThreadDlg::~CHTTPDownloadThreadDlg()
 
 void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow) 
 {	
-	wxString label = wxT("( ") + otherfunctions::CastItoXBytes(dlnow) + wxT(" / ");
+	wxString label = wxT("( ") + CastItoXBytes(dlnow) + wxT(" / ");
 	if (dltotal > 0) {
-		label += otherfunctions::CastItoXBytes(dltotal);
+		label += CastItoXBytes(dltotal);
 	} else {
 		label += _("Unknown");
 	}

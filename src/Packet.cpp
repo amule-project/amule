@@ -296,7 +296,7 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 
 void CPacket::Copy16ToDataBuffer(const void* data)
 {
-	otherfunctions::md4cpy(pBuffer, data);
+	md4cpy(pBuffer, data);
 }
 
 

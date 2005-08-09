@@ -69,8 +69,6 @@
 #include <list>
 
 
-using namespace otherfunctions;
-
 
 class CPartFile;
 

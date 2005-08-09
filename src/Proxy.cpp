@@ -407,7 +407,7 @@ void CSocks5StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
+		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state]);
@@ -813,7 +813,7 @@ void CSocks4StateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
+		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state]);
@@ -983,7 +983,7 @@ void CHttpStateMachine::process_state(t_sm_state state, bool entry)
 	}
 	
 	if (entry) {
-		otherfunctions::DumpMem(m_buffer, n, m_state_name[state], m_ok);
+		DumpMem(m_buffer, n, m_state_name[state], m_ok);
 	} else {
 		AddDebugLogLineM(false, logProxy,
 			wxString(wxT("wait state -- ")) << m_state_name[state]);
@@ -1051,7 +1051,7 @@ void CHttpStateMachine::process_send_command_request(bool entry)
 		if (m_proxyData.m_enablePassword) {
 			userPass = m_proxyData.m_userName + wxT(":") + m_proxyData.m_password;
 			userPassEncoded =
-				otherfunctions::EncodeBase64(unicode2char(userPass), PROXY_BUFFER_SIZE);
+				EncodeBase64(unicode2char(userPass), PROXY_BUFFER_SIZE);
 		}
 		wxString msg;
 		
@@ -1380,7 +1380,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 			}
 			memcpy(buf, bufUDP + offset, nBytes);
 			// Uncomment here to see the buffer contents on console
-			// otherfunctions::DumpMem(bufUDP, wxDatagramSocket::LastCount(), wxT("RecvFrom"), 3);
+			// DumpMem(bufUDP, wxDatagramSocket::LastCount(), wxT("RecvFrom"), 3);
 			
 			/* Only delete buffer if it was dynamically created */
 			if (bufUDP != m_proxyTCPSocket.GetBuffer()) {
@@ -1421,7 +1421,7 @@ wxDatagramSocket &CDatagramSocketProxy::SendTo(
 				m_proxyTCPSocket.GetProxyBoundAddress(),
 				m_proxyTCPSocket.GetBuffer(), nBytes);
 			// Uncomment here to see the buffer contents on console
-			// otherfunctions::DumpMem(m_proxyTCPSocket.GetBuffer(), nBytes, wxT("SendTo"), 3);
+			// DumpMem(m_proxyTCPSocket.GetBuffer(), nBytes, wxT("SendTo"), 3);
 		}
 	} else {
 		wxDatagramSocket::SendTo(addr, buf, nBytes);

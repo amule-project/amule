@@ -54,7 +54,6 @@
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for theStats
 
-using namespace otherfunctions;
 
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)

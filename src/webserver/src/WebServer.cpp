@@ -100,7 +100,6 @@ WX_DEFINE_OBJARRAY(ArrayOfTransferredData)
 #endif
 
 
-using namespace otherfunctions;
 
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
 {
@@ -1853,8 +1852,8 @@ wxString CWebServer::_GetPreferences(ThreadData Data) {
 		if (webInterface->m_LoadSettingsFromAmule) {
 			prefs.AddTag(webPrefs);
 		} else {
-			if (!wxFileName::DirExists(otherfunctions::GetConfigDir())) {
-				wxFileName::Mkdir(otherfunctions::GetConfigDir());
+			if (!wxFileName::DirExists(GetConfigDir())) {
+				wxFileName::Mkdir(GetConfigDir());
 			}
 			if (!webInterface->m_configFile) {
 				webInterface->m_configFile = new CECFileConfig(webInterface->m_configFileName);

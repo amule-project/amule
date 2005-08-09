@@ -240,10 +240,10 @@ void CServerWnd::UpdateKadInfo()
 				}
 				
 				KadInfoList->InsertItem(next_row, _("Average Users:"));
-				KadInfoList->SetItem(next_row, 1, otherfunctions::CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
+				KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
 				++next_row;
 				KadInfoList->InsertItem(next_row, _("Average Files:"));
-				KadInfoList->SetItem(next_row, 1, otherfunctions::CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
+				KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
 			} 
 			
 		} else {

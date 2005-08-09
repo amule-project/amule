@@ -212,7 +212,7 @@ bool UploadBandwidthThrottler::RemoveFromStandardList(ThrottledFileSocket* socke
 bool UploadBandwidthThrottler::RemoveFromStandardListNoLock(ThrottledFileSocket* socket)
 {
 	// Find the slot
-	bool foundSocket = otherfunctions::EraseFirstValue( m_StandardOrder_list, socket );
+	bool foundSocket = EraseFirstValue( m_StandardOrder_list, socket );
 
 	if ( foundSocket && m_highestNumberOfFullyActivatedSlots > m_StandardOrder_list.size()) {
 		m_highestNumberOfFullyActivatedSlots = m_StandardOrder_list.size();
@@ -261,12 +261,12 @@ void UploadBandwidthThrottler::DoRemoveFromAllQueues(ThrottledControlSocket* soc
 {
 	if ( m_doRun ) {
 		// Remove this socket from control packet queue
-		otherfunctions::EraseValue( m_ControlQueue_list, socket );
-		otherfunctions::EraseValue( m_ControlQueueFirst_list, socket );
+		EraseValue( m_ControlQueue_list, socket );
+		EraseValue( m_ControlQueueFirst_list, socket );
 		
 		wxMutexLocker lock( m_tempQueueLocker );
-		otherfunctions::EraseValue( m_TempControlQueue_list, socket );
-		otherfunctions::EraseValue( m_TempControlQueueFirst_list, socket );
+		EraseValue( m_TempControlQueue_list, socket );
+		EraseValue( m_TempControlQueueFirst_list, socket );
 	}
 }
 

@@ -44,6 +44,7 @@
 #include <wx/stattext.h>
 #include <wx/mimetype.h>
 #include <wx/tokenzr.h>
+#include <wx/filename.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
@@ -107,7 +108,6 @@
 	#include "kademlia/kademlia/Kademlia.h"
 #endif
 
-using namespace otherfunctions;
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 

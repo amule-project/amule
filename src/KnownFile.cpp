@@ -331,7 +331,7 @@ void CKnownFile::AddUploadingClient(CUpDownClient* client)
 	if (!m_ClientUploadList.insert(client).second) {
 //		printf("====================== WARNING ===================\n");
 //		printf("Multiple insertions of a client into a knownfile. Backtrace:\n");
-//		otherfunctions::print_backtrace(0);
+//		print_backtrace(0);
 	}
 }
 
@@ -343,7 +343,7 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 	} else {
 //		printf("====================== WARNING ===================\n");
 //		printf("Multiple removals of a client from a knownfile. Backtrace:\n");
-//		otherfunctions::print_backtrace(0);
+//		print_backtrace(0);
 	}
 }
 
@@ -534,7 +534,7 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	if (!hashlist.IsEmpty()){
 		byte buffer[hashlist.GetCount() * 16];
 		for (size_t i = 0;i != hashlist.GetCount();i++) {
-			otherfunctions::md4cpy(buffer+(i*16),hashlist[i].GetHash());
+			md4cpy(buffer+(i*16),hashlist[i].GetHash());
 		}
 		CreateHashFromString(buffer,hashlist.GetCount()*16,checkid.GetHash());
 	}
@@ -1218,7 +1218,7 @@ void CKnownFile::UpdatePartsInfo()
 
 		if (n > 0) {
 			// Kry - Native wx functions instead
-			count.Sort(otherfunctions::Uint16CompareValues);
+			count.Sort(Uint16CompareValues);
 			
 			// calculate range
 			int i = n >> 1;			// (n / 2)

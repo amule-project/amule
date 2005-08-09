@@ -35,6 +35,7 @@
 #include <wx/utils.h>
 #include <wx/tokenzr.h>
 #include <wx/file.h>		// Needed for wxFile
+#include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -42,28 +43,29 @@
 	#if wxCHECK_VERSION_FULL(2,6,0,1)
 		#include <wx/stdpaths.h>
 	#endif
-#endif
-
-#ifdef __WXMAC__
+#elif defined(__WXMAC__)
 	#include <wx/stdpaths.h>
 #endif
 
-#include "OtherFunctions.h"	// Interface declarations
-#include "Format.h"		// Needed for CFormat
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for a number of defines
 #endif
 
-#include <cctype>
-#include <map>
-
+#include "OtherFunctions.h"	// Interface declarations
 #include "OPCodes.h"
 #include "StringFunctions.h"
 
+#include <cctype>
+#include <map>
 
-namespace otherfunctions
-{
+#ifdef __WXBASE__
+	#include <time.h>
+	#include <errno.h>
+#else
+	#include <wx/utils.h>
+#endif	
+
 
 wxString GetMuleVersion()
 {
@@ -1080,7 +1082,41 @@ void DumpMem_DW(const uint32 *ptr, int count)
 }
 
 
-wxString GetLocaleDir() {
+void MilliSleep(uint32 msecs)
+{
+	#ifdef __WXBASE__
+		#ifdef __WXMSW__
+			if (msecs) {
+				Sleep(msecs);
+			}
+		#else
+			struct timespec waittime;
+				waittime.tv_sec = 0;
+				waittime.tv_nsec = msecs * 1000 /*micro*/* 1000 /*nano*/;
+			struct timespec remtime;
+			while ((nanosleep(&waittime,&remtime)==-1) && (errno == EINTR)) {
+				memcpy(&waittime,&remtime,sizeof(struct timespec));
+			}
+		#endif
+	#else
+		#if wxCHECK_VERSION(2, 5, 3)
+			wxMilliSleep(msecs);
+		#else
+			wxUsleep(msecs);
+		#endif
+	#endif
+}
+
+
+wxString GetConfigDir()
+{
+	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
+}
+
+
+
+wxString GetLocaleDir()
+{
 #ifdef __WXMAC__
 	return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator() + wxT("locale");
 #elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
@@ -1101,12 +1137,8 @@ void InitCustomLanguages()
 	CustomLanguage.CanonicalName = wxT("it_NA");
 	CustomLanguage.Description = wxT("sNeo's Custom Napolitan Language");
 	wxLocale::AddLanguage(CustomLanguage);
-
-//	CustomLanguage.Language = wxLANGUAGE_CUSTOM;
-//	CustomLanguage.CanonicalName = wxT("aMule_custom");
-//	CustomLanguage.Description = wxT("aMule's custom language");
-//	wxLocale::AddLanguage(CustomLanguage)
 }
+
 
 void InitLocale(wxLocale& locale, int language)
 {
@@ -1126,4 +1158,81 @@ void InitLocale(wxLocale& locale, int language)
 	}
 }
 
-} // End namespace
+
+int StrLang2wx(const wxString& language)
+{
+	// get rid of possible encoding and modifier
+	wxString lang(language.BeforeFirst('.').BeforeFirst('@'));
+
+	if (!lang.IsEmpty()) {
+#if wxCHECK_VERSION(2,5,4)
+		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
+		if (lng) {
+			return lng->Language;
+		} else {
+			return wxLANGUAGE_DEFAULT;
+		}
+#else
+/*----------------------------------------------------------------------------*\
+ * Replacement implementation for wxLocale::FindLanguageInfo().
+ * Provides the same functionality, but a little slower, and does not have
+ * support for custom languages.
+\*----------------------------------------------------------------------------*/
+		int RetVal = wxLANGUAGE_DEFAULT;
+
+		// Languages are an enum from wxLANGUAGE_DEFAULT to wxLANGUAGE_USER_DEFINED
+		for ( int i = wxLANGUAGE_DEFAULT; i < wxLANGUAGE_USER_DEFINED; i++ ) {
+
+			if ((i == wxLANGUAGE_DEFAULT) || (i == wxLANGUAGE_UNKNOWN)) {
+				continue;
+			}
+
+			const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
+
+			if (!info) {
+				continue;
+			}
+
+			if ( wxStricmp(lang, info->CanonicalName) == 0 || wxStricmp(lang, info->Description) == 0 ) {
+				// exact match, stop searching
+				RetVal = i;
+				break;
+			}
+
+			if ( wxStricmp(lang, info->CanonicalName.BeforeFirst(wxT('_'))) == 0 ) {
+				// a match -- but maybe we'll find an exact one later, so continue
+				// looking
+				//
+				// OTOH, maybe we had already found a language match and in this
+				// case don't overwrite it becauce the entry for the default
+				// country always appears first in ms_languagesDB
+				if ( RetVal == wxLANGUAGE_DEFAULT ) {
+					RetVal = i;
+				}
+			}
+		}
+
+		return RetVal;
+//------------------------------------------------------------------------------
+#endif
+	} else {
+		return wxLANGUAGE_DEFAULT;
+	}
+}
+
+
+wxString wxLang2Str(const int lang)
+{
+	if (lang != wxLANGUAGE_DEFAULT) {
+		const wxLanguageInfo *lng = wxLocale::GetLanguageInfo(lang);
+		if (lng) {
+			return lng->CanonicalName;
+		} else {
+			return wxEmptyString;
+		}
+	} else {
+		return wxEmptyString;
+	}
+}
+
+
