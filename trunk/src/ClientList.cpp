@@ -152,8 +152,6 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 	} else {
 		delete client;
 	}
-
-	client->UpdateStats(true);
 }
 
 
@@ -352,34 +350,6 @@ void CClientList::DeleteAll()
 	// Clean up the clients now queued for deletion
 	Process();
 }
-
-
-// void CClientList::GetStatistics(uint32 &totalclient, uint32 stats[], ClientMap *clientVersionEDonkey, ClientMap *clientVersionEDonkeyHybrid, ClientMap *clientVersionEMule, ClientMap *clientVersionAMule, aMuleOSInfoMap* OSMap)
-// {
-
-// 	for ( IDMap::iterator it = m_clientList.begin(); it != m_clientList.end(); ++it ) {
-// 		CUpDownClient* cur_client =	it->second;
-		
-// 		if (cur_client->HasLowID()) {
-// 			stats[11]++;
-// 		}
-		
-// 		if (cur_client->Credits() != NULL){
-// 			switch(cur_client->Credits()->GetCurrentIdentState(cur_client->GetIP())){
-// 				case IS_IDENTIFIED:
-// 					stats[12]++;
-// 					break;
-// 				case IS_IDFAILED:
-// 				case IS_IDNEEDED:
-// 				case IS_IDBADGUY:
-// 					stats[13]++;
-// 				default:
-// 					break;
-// 			}
-// 		}
-		
-// 	}
-// }
 
 
 bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender)

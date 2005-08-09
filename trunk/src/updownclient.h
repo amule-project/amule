@@ -799,7 +799,7 @@ public:
 	const wxString&	GetClientModString() const	{ return m_strModVersion; }
 	const wxString&	GetClientVerString() const	{ return m_clientVerString; }
 
-	void		UpdateStats(bool removing = false);
+	void		UpdateStats();
 
 private:
 	bool 		m_OSInfo_sent;
