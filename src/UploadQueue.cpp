@@ -489,7 +489,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 
 	//Append the filehash to the list.
 	suspended_uploads_list.push_back(filehash);
-	wxString base16hash = EncodeBase16(filehash, 16);
+	wxString base16hash = filehash.Encode();
 
 	POSITION pos = uploadinglist.GetHeadPosition();
 	while(pos) { //while we have a valid position

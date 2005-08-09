@@ -194,7 +194,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		}
 		
 		CMemFile data(256);
-		data.WriteHash16(thePrefs::GetUserHash());
+		data.WriteHash(thePrefs::GetUserHash());
 		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
 		data.WriteUInt16(thePrefs::GetPort());
@@ -224,7 +224,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// to send an Hello packet to the server during the callback test))
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
 			(SO_AMULE	<< 24) |
-			make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
+			otherfunctions::make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
 			 );
 		tagMuleVersion.WriteTagToFile(&data);
 

@@ -405,8 +405,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
 				theStats::AddDownOverheadServer(size);
 				CMemFile sources((byte*)packet,size);
-				uint8 fileid[16];
-				sources.ReadHash16(fileid);
+				CMD4Hash fileid = sources.ReadHash();
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_SERVER);
 				}
@@ -442,9 +441,8 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 				if (update) {
 					CMemFile data((byte*)packet,size);
-					uint8 aucHash[16];
-					data.ReadHash16(aucHash);				
-					if (RawPeekUInt32(aucHash) == 0x2A2A2A2A){ // No endian problem here
+					CMD4Hash hash = data.ReadHash();				
+					if (RawPeekUInt32(hash.GetHash()) == 0x2A2A2A2A){ // No endian problem here
 						const wxString& rstrVersion = update->GetVersion();
 						if (!rstrVersion.IsEmpty()) {
 							update->SetVersion(wxT("eFarm ") + rstrVersion);

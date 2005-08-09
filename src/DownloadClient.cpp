@@ -41,7 +41,6 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "OtherFunctions.h"	// md4hash
 #include "SHAHashSet.h"
 #include "SharedFileList.h"
 #include "Statistics.h"		// Needed for theStats
@@ -159,7 +158,7 @@ void CUpDownClient::SendStartupLoadReq()
 	}
 	SetDownloadState(DS_ONQUEUE);
 	CMemFile dataStartupLoadReq(16);
-	dataStartupLoadReq.WriteHash16(m_reqfile->GetFileHash());
+	dataStartupLoadReq.WriteHash(m_reqfile->GetFileHash());
 	CPacket* packet = new CPacket(&dataStartupLoadReq);
 	packet->SetOpCode(OP_STARTUPLOADREQ);
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -212,7 +211,7 @@ void CUpDownClient::SendFileRequest()
 	}
 	
 	CMemFile dataFileReq(16+16);
-	dataFileReq.WriteHash16(m_reqfile->GetFileHash().GetHash());
+	dataFileReq.WriteHash(m_reqfile->GetFileHash());
 	if (SupportMultiPacket()) {
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
 		// Extended information
@@ -261,7 +260,7 @@ void CUpDownClient::SendFileRequest()
 		// Sending the packet could have deleted the client, check m_reqfile		
 		if (m_reqfile && (m_reqfile->GetPartCount() > 1)) {
 			CMemFile dataSetReqFileID(16);
-			dataSetReqFileID.WriteHash16(m_reqfile->GetFileHash());
+			dataSetReqFileID.WriteHash(m_reqfile->GetFileHash());
 			packet = new CPacket(&dataSetReqFileID);
 			packet->SetOpCode(OP_SETREQFILEID);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -385,7 +384,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 			wxString strError;
 			strError << wxT("ProcessFileStatus - wrong part number recv=") << nED2KPartCount <<
 				wxT("  expected=") << m_reqfile->GetED2KPartCount() << wxT(" ") <<
-				EncodeBase16(m_reqfile->GetFileHash(), 16);
+				m_reqfile->GetFileHash().Encode();
 			m_nPartCount = 0;
 			throw strError;
 		}
@@ -554,7 +553,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 
 void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 {
-	if ((!m_reqfile) || md4cmp(packet,m_reqfile->GetFileHash())) {
+	if ((!m_reqfile) || otherfunctions::md4cmp(packet,m_reqfile->GetFileHash().GetHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
 	}
 	if (!m_fHashsetRequesting) {
@@ -613,7 +612,7 @@ void CUpDownClient::SendBlockRequests()
 	
 	
 	CMemFile data(16 /*Hash*/ + (3*4 /* uint32 start*/) + (3*4/* uint32 start*/));
-	data.WriteHash16(m_reqfile->GetFileHash());
+	data.WriteHash(m_reqfile->GetFileHash());
 	
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
 
@@ -676,11 +675,9 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 
 	// Read data from packet
 	const CMemFile data((byte*)packet, size);
-	byte fileID[16];
-	data.ReadHash16(fileID);
 
 	// Check that this data is for the correct file
-	if ((!m_reqfile) || md4cmp(packet, m_reqfile->GetFileHash())) {
+	if ((!m_reqfile) || data.ReadHash() != m_reqfile->GetFileHash()) {
 		throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
 	}
 
@@ -1052,7 +1049,7 @@ void CUpDownClient::UDPReaskForDownload()
 		}
 		m_bUDPPending = true;
 		CMemFile data(128);
-		data.WriteHash16(m_reqfile->GetFileHash());
+		data.WriteHash(m_reqfile->GetFileHash());
 		if (GetUDPVersion() > 3)
 		{
 			if (m_reqfile->IsPartFile()) {
@@ -1304,7 +1301,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	CAICHHashSet::m_liRequestedData.push_back(request);
 	m_fAICHRequested = TRUE;
 	CMemFile data;
-	data.WriteHash16(pForFile->GetFileHash());
+	data.WriteHash(pForFile->GetFileHash());
 	data.WriteUInt16(nPart);
 	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_AICHREQUEST);
@@ -1324,9 +1321,9 @@ void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 		CAICHHashSet::ClientAICHRequestFailed(this);
 		return;
 	}
-	byte abyHash[16];
-	data.ReadHash16(abyHash);
-	CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+
+	CMD4Hash hash = data.ReadHash();
+	CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(hash);
 	CAICHRequestedData request = CAICHHashSet::GetAICHReqDetails(this);
 	uint16 nPart = data.ReadUInt16();
 	if (pPartFile != NULL && request.m_pPartFile == pPartFile && request.m_pClient == this && nPart == request.m_nPart){
@@ -1353,23 +1350,26 @@ void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 	CAICHHashSet::ClientAICHRequestFailed(this);
 }
 
-void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
-	if (size != 16 + 2 + CAICHHash::GetHashSize())
+
+void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size)
+{
+	if (size != 16 + 2 + CAICHHash::GetHashSize()) {
 		throw wxString(wxT("Received AICH Request Packet with wrong size"));
+	}
 	
 	CMemFile data((byte*)packet, size);
-	byte abyHash[16];
-	data.ReadHash16(abyHash);
+
+	CMD4Hash hash = data.ReadHash();
 	uint16 nPart = data.ReadUInt16();
 	CAICHHash ahMasterHash(&data);
-	CKnownFile* pKnownFile = theApp.sharedfiles->GetFileByID(abyHash);
+	CKnownFile* pKnownFile = theApp.sharedfiles->GetFileByID(hash);
 	if (pKnownFile != NULL){
 		if (pKnownFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE && pKnownFile->GetAICHHashset()->HasValidMasterHash()
 			&& pKnownFile->GetAICHHashset()->GetMasterHash() == ahMasterHash && pKnownFile->GetPartCount() > nPart
 			&& pKnownFile->GetFileSize() > EMBLOCKSIZE && pKnownFile->GetFileSize() - PARTSIZE*nPart > EMBLOCKSIZE)
 		{
 			CMemFile fileResponse;
-			fileResponse.WriteHash16(pKnownFile->GetFileHash());
+			fileResponse.WriteHash(pKnownFile->GetFileHash());
 			fileResponse.WriteUInt16(nPart);
 			pKnownFile->GetAICHHashset()->GetMasterHash().Write(&fileResponse);
 			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
@@ -1390,7 +1390,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 	}
 		
 	CPacket* packAnswer = new CPacket(OP_AICHANSWER, 16, OP_EMULEPROT);
-	packAnswer->Copy16ToDataBuffer((char*)abyHash);
+	packAnswer->Copy16ToDataBuffer(hash.GetHash());
 	theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
 	SafeSendPacket(packAnswer);
 }
@@ -1398,9 +1398,7 @@ void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size){
 void CUpDownClient::ProcessAICHFileHash(CMemFile* data, const CPartFile* file){
 	CPartFile* pPartFile;
 	if (file == NULL){
-		byte abyHash[16];
-		data->ReadHash16(abyHash);
-		pPartFile = theApp.downloadqueue->GetFileByID(abyHash);
+		pPartFile = theApp.downloadqueue->GetFileByID(data->ReadHash());
 	} else {
 		pPartFile = (CPartFile*)file;
 	}

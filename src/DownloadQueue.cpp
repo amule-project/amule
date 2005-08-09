@@ -63,6 +63,7 @@
 #include <numeric>
 #include <vector>
 
+using namespace otherfunctions;
 
 
 // Max. file IDs per UDP packet
@@ -718,7 +719,7 @@ bool CDownloadQueue::SendNextUDPPacket()
  			uint8 status = file->GetStatus();
  			
 			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
- 				hashlist.WriteHash16( file->GetFileHash() );
+ 				hashlist.WriteHash( file->GetFileHash() );
 					
 				if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
 					hashlist.WriteUInt32( file->GetFileSize() );
@@ -874,7 +875,7 @@ void CDownloadQueue::ProcessLocalRequests()
 
 				// create request packet
 				CMemFile data(20);
-				data.WriteHash16(cur_file->GetFileHash());
+				data.WriteHash(cur_file->GetFileHash());
 				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
 				// There is no need to check anything, old server ignore the extra 4 bytes.
 				data.WriteUInt32(cur_file->GetFileSize());

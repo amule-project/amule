@@ -52,6 +52,8 @@
 #include "Logger.h"
 #include "Format.h"
 
+using namespace otherfunctions;
+
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 
@@ -349,7 +351,7 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 		togo -= nPacketSize;
 		
 		CMemFile data(nPacketSize+24);
-		data.WriteHash16(GetUploadFileID().GetHash());
+		data.WriteHash(GetUploadFileID());
 		data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
 		data.WriteUInt32((currentblock->EndOffset - togo));
 		char *tempbuf = new char[nPacketSize];
@@ -395,7 +397,7 @@ void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_
 		togo -= nPacketSize;
 
 		CMemFile data(nPacketSize+24);
-		data.WriteHash16(GetUploadFileID().GetHash());
+		data.WriteHash(GetUploadFileID());
 		data.WriteUInt32(currentblock->StartOffset);
 		data.WriteUInt32(newsize);			
 		char *tempbuf = new char[nPacketSize];
@@ -715,11 +717,11 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	}	
 
 	CMemFile data(1024);
-	data.WriteHash16(file->GetFileHash());
+	data.WriteHash(file->GetFileHash());
 	uint16 parts = file->GetHashCount();
 	data.WriteUInt16(parts);
 	for (int i = 0; i != parts; i++) {
-		data.WriteHash16(file->GetPartHash(i));
+		data.WriteHash(file->GetPartHash(i));
 	}
 	CPacket* packet = new CPacket(&data);	
 	packet->SetOpCode(OP_HASHSETANSWER);

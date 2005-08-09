@@ -166,7 +166,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				if( size < 17 || buddy->GetSocket() == NULL ) {
 					break;
 				}
-				if (!md4cmp(packet, buddy->GetBuddyID())) {
+				if (!otherfunctions::md4cmp(packet, buddy->GetBuddyID())) {
 					CMemFile mem_packet((byte*)packet,size-10);
 					// Change the ip and port while leaving the rest untouched
 					mem_packet.Seek(0,wxFromStart);
@@ -185,8 +185,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			theStats::AddDownOverheadFileRequest(size);
 			
 			CMemFile data_in((byte*)packet, size);
-			byte reqfilehash[16];
-			data_in.ReadHash16(reqfilehash);
+			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 			if (!reqfile) {
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
@@ -199,8 +198,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				sender->CheckForAggressive();
 				
 				//Make sure we are still thinking about the same file
-				if (md4cmp(reqfilehash, sender->GetUploadFileID()) == 0) {
-				
+				if (reqfilehash == sender->GetUploadFileID()) {
 					sender->AddAskedCount();
 					sender->SetUDPPort(port);
 					sender->SetLastUpRequest();

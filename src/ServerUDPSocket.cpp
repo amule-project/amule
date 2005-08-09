@@ -167,9 +167,8 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 			}
 			case OP_GLOBFOUNDSOURCES:{
 				// process all source packets
-				do{
-					uint8 fileid[16];
-					packet.ReadHash16(fileid);
+				do {
+					CMD4Hash fileid = packet.ReadHash();
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_SERVER);
 					} else {

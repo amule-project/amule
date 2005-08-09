@@ -87,7 +87,7 @@ void CPrefs::init(const wxString& filename)
 	m_totalNotes = 0;
 	m_totalStoreNotes = 0;
 	m_Publish = false;
-	m_clientHash.setValue((const unsigned char*)thePrefs::GetUserHash());
+	m_clientHash.setValue(thePrefs::GetUserHash().GetHash());
 	m_ip			= 0;
 	m_ipLast		= 0;
 	m_firewalled	= 0;

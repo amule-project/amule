@@ -103,7 +103,7 @@ void CFileDetailDialog::UpdateData()
 		CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(m_file->GetFileName());
 	}
 
-	CastChild(IDC_FHASH,wxStaticText)->SetLabel(EncodeBase16(m_file->GetFileHash(), 16));
+	CastChild(IDC_FHASH,wxStaticText)->SetLabel(m_file->GetFileHash().Encode());
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
 	bufferS = wxString::Format(wxT("%i (%i)"),m_file->GetPartCount(),m_file->GetHashCount());

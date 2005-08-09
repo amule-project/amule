@@ -30,13 +30,12 @@
 #pragma interface "CMD4Hash.h"
 #endif
 
-#include <wx/string.h>
-#include <ctype.h>
-
 #include "Types.h"
 #include "ArchSpecific.h"
+#include "MuleDebug.h"
 
-#define MD4HASH_LENGTH 16
+
+const size_t MD4HASH_LENGTH = 16;
 
 
 /** 
@@ -132,7 +131,7 @@ public:
 	 * sorted STL containers like std::map.
 	 */
 	bool operator  < (const CMD4Hash& other_hash) const {
-		for ( int i = 0; i < MD4HASH_LENGTH; ++i ) {
+		for ( size_t i = 0; i < MD4HASH_LENGTH; ++i ) {
 			if ( m_hash[i] < other_hash.m_hash[i] ) {
 				return true;
 			} else if ( other_hash.m_hash[i] < m_hash[i] ) {
@@ -183,7 +182,7 @@ public:
 	void Decode(const wxString& hash) {
 		wxASSERT(hash.Length() == MD4HASH_LENGTH * 2);
 
-		for ( uint16 i = 0; i < MD4HASH_LENGTH * 2; i++ ) {			
+		for ( size_t i = 0; i < MD4HASH_LENGTH * 2; i++ ) {			
 			unsigned char word = toupper(hash[i]);
 
 			if ((word >= '0') && (word <= '9')) {
@@ -214,8 +213,8 @@ public:
 	wxString Encode() const {
 		wxString Base16Buff;
 
-		for ( uint16 i = 0; i < MD4HASH_LENGTH*2; i++ ) {
-			uint16 x = ( i % 2 == 0 ) ? ( m_hash[i/2] >> 4 ) : ( m_hash[i/2] & 0xf );
+		for ( size_t i = 0; i < MD4HASH_LENGTH*2; i++ ) {
+			size_t x = ( i % 2 == 0 ) ? ( m_hash[i/2] >> 4 ) : ( m_hash[i/2] & 0xf );
 
 			if ( x <  10 ) Base16Buff += (char)( x + '0' ); else 
 			if ( x >= 10 ) Base16Buff += (char)(  x + ( 'A' - 10 ));
@@ -232,7 +231,7 @@ public:
 	 *
 	 * The hash must either be a NULL pointer or be of length 16.
 	 */
-	inline void SetHash(unsigned char hash[]) {
+	void SetHash(unsigned char hash[]) {
 		(*this) = hash;
 	}
 	
@@ -241,30 +240,28 @@ public:
 	 *
 	 * @return Pointer to the hash array.
 	 */
-	inline unsigned char* GetHash() {
+	unsigned char* GetHash() {
 		return m_hash;
 	}
-	inline const unsigned char* GetHash() const {
+	const unsigned char* GetHash() const {
 		return m_hash;
 	}
 	
 	/**
-	 * Implicit access to the array.
+	 * Explic access to values in the hash-array.
 	 *
-	 * @return Pointer to the hash array.
-	 *
-	 * The purpose of this operators is to maintain backwards
-	 * compatibility with code that expects the hash to be a 
-	 * unsigned char array. Please use the GetHash function
-	 * rather than this operator.
+	 * @param i An index less than the length of an MD4 hash.
+	 * @return The value (or its reference) at the given index.
 	 */
-	inline operator unsigned char*() { 
-		return m_hash;
-	}
-	inline operator const unsigned char*() const {
-		return m_hash;
+	unsigned char operator[](size_t i) const {
+		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, wxT("Invalid index in CMD4Hash::operator[]"));
+		return m_hash[i];
 	}
 	
+	unsigned char& operator[](size_t i) {
+		MULE_VALIDATE_PARAMS(i < MD4HASH_LENGTH, wxT("Invalid index in CMD4Hash::operator[]"));
+		return m_hash[i];
+	}
 	
 private:
 	//! The raw MD4-hash.
@@ -273,5 +270,6 @@ private:
 	//! try to avoid direct access and instead use the member functions.
 	unsigned char m_hash[MD4HASH_LENGTH];
 };
+
 
 #endif

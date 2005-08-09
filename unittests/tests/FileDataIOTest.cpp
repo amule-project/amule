@@ -215,13 +215,11 @@ struct RWInterface<CMD4Hash>
 	}
 
 	static CMD4Hash readValue(CFileDataIO* file) {
-		CMD4Hash value;
-		file->ReadHash16(value);
-		return value;
+		return file->ReadMD4Hash();
 	}
 	
 	static void writeValue(CFileDataIO* file, CMD4Hash value) {
-		file->WriteHash16(value);
+		file->WriteMD4Hash(value);
 	}
 
 	static wxString name() { return wxT("CMD4Hash"); }
@@ -444,7 +442,7 @@ public:
 		ASSERT_EQUALS(7, file->GetLength());
 		ASSERT_EQUALS(7, file->GetPosition());
 
-		file->WriteHash16(CMD4Hash());
+		file->WriteMD4Hash(CMD4Hash());
 
 		ASSERT_EQUALS(23, file->GetLength());
 		ASSERT_EQUALS(23, file->GetPosition());
@@ -464,7 +462,7 @@ public:
 		for (size_t j = 0; j < 16; ++j) {
 			ASSERT_EQUALS(length + j - 15, file->Seek(-15, wxFromEnd));
 			ASSERT_EQUALS(length + j - 15, file->GetPosition());
-			file->WriteHash16(CMD4Hash());
+			file->WriteMD4Hash(CMD4Hash());
 			ASSERT_EQUALS(length + j + 1, file->GetLength());
 			ASSERT_EQUALS(length + j + 1, file->GetPosition());
 		}

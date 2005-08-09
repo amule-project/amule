@@ -39,6 +39,7 @@
 namespace Kademlia{
 	class CUInt128;
 }
+class CMD4Hash;
 
 ///////////////////////////////////////////////////////////////////////////////
 class CFileDataIO
@@ -55,7 +56,7 @@ public:
 	virtual uint16		ReadUInt16() const;
 	virtual uint32		ReadUInt32() const;
 	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
-	virtual void		ReadHash16(unsigned char* pVal) const;
+	virtual CMD4Hash	ReadHash() const;
  	virtual wxString ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
 	virtual wxString ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
 
@@ -63,7 +64,7 @@ public:
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
 	virtual void WriteUInt128(const Kademlia::CUInt128& pVal);
-	virtual void WriteHash16(const unsigned char* pVal);
+	virtual void WriteHash(const CMD4Hash& hash);
 	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
 
 protected:

@@ -104,9 +104,7 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 {
 	wxASSERT( file );
 
-	unsigned char friend_hash[16];
-	file->ReadHash16(friend_hash);
-	m_UserHash = friend_hash;
+	m_UserHash = file->ReadHash();
 	m_dwLastUsedIP = file->ReadUInt32();
 	m_nLastUsedPort = file->ReadUInt16();
 	m_dwLastSeen = file->ReadUInt32();
@@ -130,7 +128,7 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 void CFriend::WriteToFile(CFileDataIO* file)
 {
 	wxASSERT( file );
-	file->WriteHash16(m_UserHash);
+	file->WriteHash(m_UserHash);
 	file->WriteUInt32(m_dwLastUsedIP);
 	file->WriteUInt16(m_nLastUsedPort);
 	file->WriteUInt32(m_dwLastSeen);

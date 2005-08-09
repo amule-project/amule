@@ -82,6 +82,7 @@ using std::auto_ptr;
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
 #include "Format.h"
+#include "OtherFunctions.h"		// Needed for CastItoIShort
 
 #include "CMD4Hash.h"
 #include "ECSocket.h"
@@ -714,7 +715,7 @@ void CServerListRem::UpdateUserFileStatus(CServer *server)
 		m_TotalFile = server->GetFiles();
 		
 		wxString buffer = 
-			CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(m_TotalUser) % CastItoIShort(m_TotalFile);
+			CFormat(_("Total Users: %s | Total Files: %s")) % otherfunctions::CastItoIShort(m_TotalUser) % otherfunctions::CastItoIShort(m_TotalFile);
 	
 		Notify_ShowUserCount(buffer);
 	}
@@ -1052,9 +1053,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 
 	m_nCurSessionUp = 0;
 
-	CreditStruct *credit_struct = new CreditStruct;
-	memset(credit_struct, 0, sizeof(CreditStruct));
-	credits = new CClientCredits(credit_struct);
+	credits = new CClientCredits(new CreditStruct());
 }
 
 CUpDownClient::~CUpDownClient()
