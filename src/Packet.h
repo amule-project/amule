@@ -83,6 +83,9 @@ public:
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0);
 	
 private:
+	//! CPacket is not assignable.
+	CPacket& operator=(const CPacket&);
+	
 	uint32		size;
 	uint8		opcode;
 	uint8		prot;
@@ -145,7 +148,10 @@ public:
 	
 	wxString GetFullInfo() const;
 
-protected:
+private:
+	//! CPacket is not assignable.
+	CTag& operator=(const CTag&);
+	
 	uint8	m_uType;
 	uint8	m_uName;
 	char*	m_pszName;
