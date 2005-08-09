@@ -489,10 +489,10 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	// If the result was not the type user wanted, drop it.
 	if (	!bClientResponse &&
 		!(m_resultType == wxString(wxT("Any")) ||
-		otherfunctions::GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
+		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
 		AddDebugLogLineM( false, logSearch,
 			CFormat( wxT("Dropped result type %s != %s, file %s") )
-				% otherfunctions::GetFiletypeByName(toadd->GetFileName(),false)
+				% GetFiletypeByName(toadd->GetFileName(),false)
 				% m_resultType
 				% toadd->GetFileName() 
 		);
@@ -547,9 +547,9 @@ public:
 	
 		switch ( m_type ) {
 			case 0: result = file1->GetFileName().CmpNoCase( file2->GetFileName() ); break;				
-			case 1: result = otherfunctions::CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
+			case 1: result = CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
 			case 2: result = file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() ); break;
-			case 3: result = otherfunctions::CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
+			case 3: result = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
 		}
 
 		return (result * mod) < 0;

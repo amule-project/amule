@@ -62,7 +62,6 @@
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
 
-using namespace otherfunctions;
 
 //#define __PACKET_DEBUG__
 

@@ -63,8 +63,6 @@
 #include <numeric>
 #include <vector>
 
-using namespace otherfunctions;
-
 
 // Max. file IDs per UDP packet
 // ----------------------------
@@ -353,7 +351,7 @@ void CDownloadQueue::Process()
 		for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
 			CPartFile* file = m_filelist[i];
 	
-			otherfunctions::CMutexUnlocker unlocker(m_mutex);
+			CMutexUnlocker unlocker(m_mutex);
 			
 			if ( file->GetStatus() == PS_READY || file->GetStatus() == PS_EMPTY ){
 				cur_datarate += file->Process( downspeed, cur_udcounter );
@@ -371,7 +369,7 @@ void CDownloadQueue::Process()
 				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
 					m_lastudpstattime = ::GetTickCount();
 					
-					otherfunctions::CMutexUnlocker unlocker(m_mutex);
+					CMutexUnlocker unlocker(m_mutex);
 					theApp.serverlist->ServerStats();
 				}
 			}

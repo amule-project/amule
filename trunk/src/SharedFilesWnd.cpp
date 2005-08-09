@@ -138,8 +138,8 @@ void CSharedFilesWnd::SelectionUpdated()
 		// Transferred
 		m_bar_transfer->SetValue( session_transfered / 1024 );
 	
-		CastChild(IDC_STRANSFERED, wxStaticText)->SetLabel( otherfunctions::CastItoXBytes( session_transfered ) );
-		CastChild(IDC_STRANSFERED2, wxStaticText)->SetLabel( otherfunctions::CastItoXBytes( all_transfered ) );
+		CastChild(IDC_STRANSFERED, wxStaticText)->SetLabel( CastItoXBytes( session_transfered ) );
+		CastChild(IDC_STRANSFERED2, wxStaticText)->SetLabel( CastItoXBytes( all_transfered ) );
 	}
 	
 	Layout();

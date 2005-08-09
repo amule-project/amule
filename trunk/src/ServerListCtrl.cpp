@@ -623,15 +623,15 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 				}
 			}
 		// Sort by port
-		case COLUMN_SERVER_PORT: return mode * otherfunctions::CmpAny( server1->GetPort(), server2->GetPort() );
+		case COLUMN_SERVER_PORT: return mode * CmpAny( server1->GetPort(), server2->GetPort() );
 		// Sort by description
 		case COLUMN_SERVER_DESC: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
 		// Sort by Ping
-		case COLUMN_SERVER_PING: return mode * otherfunctions::CmpAny( server1->GetPing(), server2->GetPing() );
+		case COLUMN_SERVER_PING: return mode * CmpAny( server1->GetPing(), server2->GetPing() );
 		// Sort by user-count
-		case COLUMN_SERVER_USERS: return mode * otherfunctions::CmpAny( server1->GetUsers(), server2->GetUsers() );
+		case COLUMN_SERVER_USERS: return mode * CmpAny( server1->GetUsers(), server2->GetUsers() );
 		// Sort by file-count
-		case COLUMN_SERVER_FILES: return mode * otherfunctions::CmpAny( server1->GetFiles(), server2->GetFiles() );
+		case COLUMN_SERVER_FILES: return mode * CmpAny( server1->GetFiles(), server2->GetFiles() );
 		// Sort by priority
 		case COLUMN_SERVER_PRIO:
 			{
@@ -649,10 +649,10 @@ int CServerListCtrl::SortProc( long item1, long item2, long sortData )
 					case SRV_PR_LOW:	srv_pr2 = SRV_PR_MIN; break;
 					default:		return 0;
 				}
-				return mode * otherfunctions::CmpAny( srv_pr1, srv_pr2 );
+				return mode * CmpAny( srv_pr1, srv_pr2 );
 			}
 		// Sort by failure-count
-		case COLUMN_SERVER_FAILS: return mode * otherfunctions::CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
+		case COLUMN_SERVER_FAILS: return mode * CmpAny( server1->GetFailedCount(), server2->GetFailedCount() );
 		// Sort by static servers
 		case COLUMN_SERVER_STATIC:
 			{

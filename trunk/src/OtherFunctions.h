@@ -30,24 +30,12 @@
 #pragma interface "OtherFunctions.h"
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/string.h>		// Needed for wxString
-#include <wx/utils.h>		// Needed for wxGetHomeDir()
-#include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
 #include <wx/thread.h>
 
-#ifdef __WXBASE__
-	#include <time.h>
-	#include <errno.h>
-#else
-	#include <wx/utils.h>
-#endif	
-
 #include "Types.h"		// Needed for uint16, uint32 and uint64
-#include "ArchSpecific.h" // Needed for Peek/Poke functions
 
-namespace otherfunctions {
 	
 /**
  * Helper function.
@@ -299,34 +287,21 @@ wxString GetFileTypeByName(const wxString &strFileName);
 // NOTE: Do *NOT* use that function for determining if hash1<hash2 or hash1>hash2.
 inline int md4cmp(const void* hash1, const void* hash2)
 {
-	const char* hashA = (const char*)hash1;
-	const char* hashB = (const char*)hash2;
-	
-	return !(
-		RawPeekUInt64( hashA		) == RawPeekUInt64( hashB		) &&
-		RawPeekUInt64( hashA + 8	) == RawPeekUInt64( hashB + 8	)
-	);
+	return memcmp(hash1, hash2, 16);
 }
 
 
 // md4clr -- replacement for memset(hash,0,16)
 inline void md4clr(void* hash)
 {
-	char* pDst = (char*)hash;
-
-	RawPokeUInt64( pDst,		0 );
-	RawPokeUInt64( pDst + 8,	0 );
+	bzero(hash, 16);
 }
 
 
 // md4cpy -- replacement for memcpy(dst,src,16)
-inline void md4cpy(const void* dst, const void* src)
+inline void md4cpy(void* dst, const void* src)
 {
-	char* pDst = (char*)dst;
-	const char* pSrc = (const char*)src;
-	
-	RawPokeUInt64( pDst, 		RawPeekUInt64( pSrc		) );
-	RawPokeUInt64( pDst + 8,	RawPeekUInt64( pSrc + 8	) );
+	memcpy(dst, src, 16);
 }
 
 
@@ -343,37 +318,14 @@ void DumpMem_DW(const uint32 *ptr, int count);
 #define IP_FROM_GUI_ID(x) (x >> 16)
 
 
-inline void MilliSleep(uint32 msecs) {
-	#ifdef __WXBASE__
-		#ifdef __WXMSW__
-			if (msecs) {
-				Sleep(msecs);
-			}
-		#else
-			struct timespec waittime;
-				waittime.tv_sec = 0;
-				waittime.tv_nsec = msecs * 1000 /*micro*/* 1000 /*nano*/;
-			struct timespec remtime;
-			while ((nanosleep(&waittime,&remtime)==-1) && (errno == EINTR)) {
-				memcpy(&waittime,&remtime,sizeof(struct timespec));
-			}
-		#endif
-	#else
-		#if wxCHECK_VERSION(2, 5, 3)
-			wxMilliSleep(msecs);
-		#else
-			wxUsleep(msecs);
-		#endif
-	#endif
-}
+void MilliSleep(uint32 msecs);
 
-inline const long int make_full_ed2k_version(int a, int b, int c){
+
+inline const long int make_full_ed2k_version(int a, int b, int c) {
 	return ((a << 17) | (b << 10) | (c << 7));
 }
 
-inline wxString GetConfigDir(void) {
-	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
-}
+wxString GetConfigDir();
 
 #define  wxLANGUAGE_CUSTOM 		wxLANGUAGE_USER_DEFINED+1
 #define  wxLANGUAGE_ITALIAN_NAPOLITAN 	wxLANGUAGE_USER_DEFINED+2
@@ -391,83 +343,13 @@ void InitLocale(wxLocale& locale, int language);
 /**
  * Converts a string locale definition to a wxLANGUAGE id.
  */
-inline int StrLang2wx(const wxString& language)
-{
-	// get rid of possible encoding and modifier
-	wxString lang(language.BeforeFirst('.').BeforeFirst('@'));
+int StrLang2wx(const wxString& language);
 
-	if (!lang.IsEmpty()) {
-#if wxCHECK_VERSION(2,5,4)
-		const wxLanguageInfo *lng = wxLocale::FindLanguageInfo(lang);
-		if (lng) {
-			return lng->Language;
-		} else {
-			return wxLANGUAGE_DEFAULT;
-		}
-#else
-/*----------------------------------------------------------------------------*\
- * Replacement implementation for wxLocale::FindLanguageInfo().
- * Provides the same functionality, but a little slower, and does not have
- * support for custom languages.
-\*----------------------------------------------------------------------------*/
-		int RetVal = wxLANGUAGE_DEFAULT;
-
-		// Languages are an enum from wxLANGUAGE_DEFAULT to wxLANGUAGE_USER_DEFINED
-		for ( int i = wxLANGUAGE_DEFAULT; i < wxLANGUAGE_USER_DEFINED; i++ ) {
-
-			if ((i == wxLANGUAGE_DEFAULT) || (i == wxLANGUAGE_UNKNOWN)) {
-				continue;
-			}
-
-			const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
-
-			if (!info) {
-				continue;
-			}
-
-			if ( wxStricmp(lang, info->CanonicalName) == 0 || wxStricmp(lang, info->Description) == 0 ) {
-				// exact match, stop searching
-				RetVal = i;
-				break;
-			}
-
-			if ( wxStricmp(lang, info->CanonicalName.BeforeFirst(wxT('_'))) == 0 ) {
-				// a match -- but maybe we'll find an exact one later, so continue
-				// looking
-				//
-				// OTOH, maybe we had already found a language match and in this
-				// case don't overwrite it becauce the entry for the default
-				// country always appears first in ms_languagesDB
-				if ( RetVal == wxLANGUAGE_DEFAULT ) {
-					RetVal = i;
-				}
-			}
-		}
-
-		return RetVal;
-//------------------------------------------------------------------------------
-#endif
-	} else {
-		return wxLANGUAGE_DEFAULT;
-	}
-}
 
 /**
  * Converts a wxLANGUAGE id to a string locale name.
  */
-inline wxString wxLang2Str(const int lang)
-{
-	if (lang != wxLANGUAGE_DEFAULT) {
-		const wxLanguageInfo *lng = wxLocale::GetLanguageInfo(lang);
-		if (lng) {
-			return lng->CanonicalName;
-		} else {
-			return wxEmptyString;
-		}
-	} else {
-		return wxEmptyString;
-	}
-}
+wxString wxLang2Str(const int lang);
 
 
 /**
@@ -514,7 +396,5 @@ private:
     wxMutex& m_mutex;
 };
 
-
-} // End namespace
 
 #endif // OTHERFUNCTIONS_H

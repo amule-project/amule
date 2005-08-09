@@ -83,7 +83,7 @@ enum SharedFilesListColumns {
 	ID_SHARED_COL_PATH
 };
 
-using namespace otherfunctions;
+
 CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize size, int flags)
 	: CMuleListCtrl(parent, id, pos, size, flags | wxLC_OWNERDRAW )
 {

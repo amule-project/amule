@@ -81,8 +81,6 @@
 #include <map>
 #include <algorithm>
 
-using namespace otherfunctions;
-
 #ifdef __COMPILE_KAD__
 	#include "kademlia/kademlia/Kademlia.h"
 	#include "kademlia/kademlia/Search.h"

@@ -447,12 +447,12 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 				#endif
 			#endif
 		;
-		printf("%s %s\n", appName, (const char *)unicode2char(otherfunctions::GetMuleVersion()));
+		printf("%s %s\n", appName, (const char *)unicode2char(GetMuleVersion()));
 		return false;
 	}
 
 	if (!parser.Found(wxT("config-file"), &m_configFileName)) {
-		m_configFileName = otherfunctions::GetConfigDir() + wxT("remote.conf");
+		m_configFileName = GetConfigDir() + wxT("remote.conf");
 	}
 
 	wxString aMuleConfigFile;
@@ -500,8 +500,8 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	parser.Found(wxT("locale"), &m_language);
-	otherfunctions::InitCustomLanguages();
-	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(m_language));
+	InitCustomLanguages();
+	InitLocale(m_locale, StrLang2wx(m_language));
 
 	if (parser.Found(wxT("help"))) {
 		parser.Usage();
@@ -538,8 +538,8 @@ void CaMuleExternalConnector::LoadConfigFile()
 
 void CaMuleExternalConnector::SaveConfigFile()
 {
-	if (!wxFileName::DirExists(otherfunctions::GetConfigDir())) {
-		wxFileName::Mkdir(otherfunctions::GetConfigDir());
+	if (!wxFileName::DirExists(GetConfigDir())) {
+		wxFileName::Mkdir(GetConfigDir());
 	}
 	if (!m_configFile) {
 		m_configFile = new CECFileConfig(m_configFileName);

@@ -234,7 +234,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	
 	// Load Preferences
 	// This creates the CFG file we shall use
-	ConfigDir = otherfunctions::GetConfigDir();
+	ConfigDir = GetConfigDir();
 	if ( !wxDirExists( ConfigDir ) ) {
 		wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
 	}
@@ -242,8 +242,8 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	glob_prefs = new CPreferencesRem(connect);	
 	
-	otherfunctions::InitCustomLanguages();
-	otherfunctions::InitLocale(m_locale, otherfunctions::StrLang2wx(thePrefs::GetLanguageID()));
+	InitCustomLanguages();
+	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
 	bool result = ShowConnectionDialog();
 
@@ -715,7 +715,7 @@ void CServerListRem::UpdateUserFileStatus(CServer *server)
 		m_TotalFile = server->GetFiles();
 		
 		wxString buffer = 
-			CFormat(_("Total Users: %s | Total Files: %s")) % otherfunctions::CastItoIShort(m_TotalUser) % otherfunctions::CastItoIShort(m_TotalFile);
+			CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(m_TotalUser) % CastItoIShort(m_TotalFile);
 	
 		Notify_ShowUserCount(buffer);
 	}

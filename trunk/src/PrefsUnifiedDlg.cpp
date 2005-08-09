@@ -517,7 +517,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
 	
-	if (	otherfunctions::IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
+	if (	IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
@@ -653,7 +653,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if (	otherfunctions::IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
+			if (	IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"

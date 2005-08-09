@@ -49,6 +49,7 @@
 #include "Logger.h"
 #include "Format.h"
 
+#include <wx/utils.h>
 
 //#define DEBUG_CLIENT_PROTOCOL
 
@@ -224,7 +225,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// to send an Hello packet to the server during the callback test))
 		CTag tagMuleVersion(CT_EMULE_VERSION, 
 			(SO_AMULE	<< 24) |
-			otherfunctions::make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
+			make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
 			 );
 		tagMuleVersion.WriteTagToFile(&data);
 

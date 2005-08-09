@@ -70,7 +70,6 @@
 #include <algorithm>		// Needed for std::sort
 #endif
 
-using namespace otherfunctions;
 
 #define DEFAULT_TCP_PORT 4662
 
@@ -644,7 +643,7 @@ public:
 			int id = aMuleLanguages[m_selection].id;
 		
 			// save language selection
-			thePrefs::SetLanguageID(otherfunctions::wxLang2Str(id));
+			thePrefs::SetLanguageID(wxLang2Str(id));
 
 			return true;
 		}
@@ -665,7 +664,7 @@ public:
 		langSelector->Clear();
 
 		m_selection = 0;
-		int wxId = otherfunctions::StrLang2wx(thePrefs::GetLanguageID());
+		int wxId = StrLang2wx(thePrefs::GetLanguageID());
 	
 		// Add all other languages in alphabetical order
 		// and find the index of the selected language.

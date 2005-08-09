@@ -166,7 +166,7 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 				if( size < 17 || buddy->GetSocket() == NULL ) {
 					break;
 				}
-				if (!otherfunctions::md4cmp(packet, buddy->GetBuddyID())) {
+				if (!md4cmp(packet, buddy->GetBuddyID())) {
 					CMemFile mem_packet((byte*)packet,size-10);
 					// Change the ip and port while leaving the rest untouched
 					mem_packet.Seek(0,wxFromStart);

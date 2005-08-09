@@ -31,6 +31,7 @@
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "StringFunctions.h"	// Needed for unicode2char
+#include "OtherFunctions.h"		// Needed for DecodeBase32
 
 #include <vector>
 
@@ -277,7 +278,7 @@ CED2KFileLink::CED2KFileLink( const wxString& name, const wxString& size, const 
 		wxString strHash = masterhash.AfterFirst(wxT('='));
 		wxASSERT(!strHash.IsEmpty());
 		if (!strHash.IsEmpty()) {
-			m_bAICHHashValid = otherfunctions::DecodeBase32(
+			m_bAICHHashValid = DecodeBase32(
 					strHash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash()) == 
 				CAICHHash::GetHashSize();
 

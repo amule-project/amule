@@ -58,8 +58,6 @@
 #include "Format.h"		// Needed for CFormat
 #include "gsocket-fix.h"
 
-using namespace otherfunctions;
-
 enum
 {	// id for sockets
 	SERVER_ID = 1000,

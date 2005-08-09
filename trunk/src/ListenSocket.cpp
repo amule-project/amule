@@ -472,7 +472,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 
 				// check to see if this is a new file they are asking for
-				if(otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
+				if(md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
 					m_client->SetCommentDirty();
 				}
 
@@ -565,7 +565,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (size == 16) {
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((byte*)packet);
 				if (reqfile) {
-					if (otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
+					if (md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
 						m_client->SetCommentDirty();
 					}
 					m_client->SetUploadFileID(reqfile);
@@ -642,7 +642,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					Requested_Block_Struct* reqblock = new Requested_Block_Struct;
 					reqblock->StartOffset = auStartOffsets[i];
 					reqblock->EndOffset = auEndOffsets[i];
-					otherfunctions::md4cpy(reqblock->FileID, reqfilehash.GetHash());
+					md4cpy(reqblock->FileID, reqfilehash.GetHash());
 					reqblock->transferred = 0;
 					m_client->AddReqBlock(reqblock);
 				} else {
@@ -675,7 +675,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			if (size>=16 && !otherfunctions::md4cmp(m_client->GetUploadFileID().GetHash(), packet)) {
+			if (size>=16 && !md4cmp(m_client->GetUploadFileID().GetHash(), packet)) {
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));

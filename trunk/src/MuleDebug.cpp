@@ -72,7 +72,7 @@ void OnUnhandledException()
 
 		dem = __cxxabiv1::__cxa_demangle(name, 0, 0, &status);
 		fprintf(stderr, "\naMule terminated after throwing an instance of '%s'\n", (status ? name : dem));
-		fprintf(stderr, "\tVersion: %s\n", (const char*)unicode2char(otherfunctions::GetFullMuleVersion()));
+		fprintf(stderr, "\tVersion: %s\n", (const char*)unicode2char(GetFullMuleVersion()));
 		free(dem);
 
 		try {

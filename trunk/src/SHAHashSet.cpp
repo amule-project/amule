@@ -61,16 +61,25 @@ CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHash
 wxString CAICHHash::GetString() const{
-	return otherfunctions::EncodeBase32(m_abyBuffer, HASHSIZE);
+	return EncodeBase32(m_abyBuffer, HASHSIZE);
 }
+
 
 void CAICHHash::Read(CFileDataIO* file)	{ 
 	file->Read(m_abyBuffer,HASHSIZE);
 }
 
+
 void CAICHHash::Write(CFileDataIO* file) const{ 
 	file->Write(m_abyBuffer,HASHSIZE);
 }
+
+unsigned int CAICHHash::DecodeBase32(const wxString &base32)
+{
+	return ::DecodeBase32(base32, HASHSIZE, m_abyBuffer);	
+}	
+
+
 /////////////////////////////////////////////////////////////////////////////////////////
 ///CAICHHashTree
 

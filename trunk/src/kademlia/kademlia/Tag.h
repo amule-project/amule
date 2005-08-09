@@ -375,7 +375,7 @@ public:
 		: CTag(TAGTYPE_HASH, name)
 	{ 
 		m_value = new byte[16];
-		otherfunctions::md4cpy(m_value, value);
+		md4cpy(m_value, value);
 	}
 	
 	#if wxUSE_UNICODE
@@ -383,7 +383,7 @@ public:
 		: CTag(TAGTYPE_HASH, wxString::FromAscii(name))
 	{ 
 		m_value = new byte[16];
-		otherfunctions::md4cpy(m_value, value);
+		md4cpy(m_value, value);
 	}
 	#endif	
 

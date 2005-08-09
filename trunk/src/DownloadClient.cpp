@@ -553,7 +553,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 
 void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 {
-	if ((!m_reqfile) || otherfunctions::md4cmp(packet,m_reqfile->GetFileHash().GetHash())) {
+	if ((!m_reqfile) || md4cmp(packet,m_reqfile->GetFileHash().GetHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
 	}
 	if (!m_fHashsetRequesting) {

@@ -408,7 +408,7 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 	
 	//printf("Kad keyword hash: UTF8 %s\n",ansi_buffer);
 	md4_hasher.CalculateDigest(Output,(const unsigned char*)ansi_buffer,strlen(ansi_buffer));
-	//otherfunctions::DumpMem(Output,16);
+	//DumpMem(Output,16);
 	free(ansi_buffer);
 	
 	pKadID->setValueBE(Output);

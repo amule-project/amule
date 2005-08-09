@@ -317,7 +317,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 #endif
 
-	dir = otherfunctions::GetConfigDir() + wxT("webserver");
+	dir = GetConfigDir() + wxT("webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;

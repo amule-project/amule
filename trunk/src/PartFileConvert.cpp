@@ -54,6 +54,7 @@
 #include <wx/filefn.h>
 #include <wx/filename.h>
 #include <wx/string.h>
+#include <wx/utils.h>
 
 #include <algorithm>
 
@@ -789,7 +790,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
 		m_joblist->SetItem(itemnr, 0, job->filename.IsEmpty() ? job->folder : job->filename );
 		m_joblist->SetItem(itemnr, 1, CPartFileConvert::GetReturncodeText(job->state) );
 		if (job->size > 0) {
-			buffer = CFormat(_("%s (Disk: %s)")) % otherfunctions::CastItoXBytes(job->size) % otherfunctions::CastItoXBytes(job->spaceneeded);
+			buffer = CFormat(_("%s (Disk: %s)")) % CastItoXBytes(job->size) % CastItoXBytes(job->spaceneeded);
 			m_joblist->SetItem(itemnr, 2, buffer );
 		} else {
 			m_joblist->SetItem(itemnr, 2, wxEmptyString);

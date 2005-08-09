@@ -40,7 +40,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Format.h"
 
-using namespace otherfunctions;
 
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent,CPartFile* file)
 : wxDialog(parent,-1,_("File Comments"),
