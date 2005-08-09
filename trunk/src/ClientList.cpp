@@ -40,6 +40,7 @@
 #include "OtherFunctions.h"	// Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
 #include "ServerConnect.h"	// Needed for theApp.serverconnect
 #include "Preferences.h"	// Needed for thePrefs
+#include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"
 
