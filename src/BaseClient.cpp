@@ -312,8 +312,6 @@ CUpDownClient::~CUpDownClient()
 		delete m_pReqFileAICHHash;
 		m_pReqFileAICHHash = NULL;
 	}
-
-	UpdateStats(true);
 }
 
 void CUpDownClient::ClearHelloProperties()
