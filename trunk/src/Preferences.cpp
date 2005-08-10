@@ -38,6 +38,7 @@
 #include <wx/filename.h>
 #include <wx/textfile.h>
 #include <wx/config.h>
+#include <wx/utils.h>
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
