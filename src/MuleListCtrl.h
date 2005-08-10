@@ -153,6 +153,17 @@ public:
 	 */
 	static bool IsOffsetDec( long offset );
 	
+
+	/**
+	 * Sets the sorter function.
+	 *
+	 * @param func
+	 *
+	 * See the documentation on wxListCtrl::SortItems for more information
+	 * about the expected function type.
+	 */
+	void SetSortFunc(wxListCtrlCompare func);
+
 protected:
 
 	/**
@@ -172,16 +183,6 @@ protected:
 	 * @return Tablename or an empty string if none was set.
 	 */
 	const wxString& GetTableName();
-
-	/**
-	 * Sets the sorter function.
-	 *
-	 * @param func
-	 *
-	 * See the documentation on wxListCtrl::SortItems for more information
-	 * about the expected function type.
-	 */
-	void SetSortFunc(wxListCtrlCompare func);
 
 
 	/**
