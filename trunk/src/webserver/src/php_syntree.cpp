@@ -1690,42 +1690,43 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				}
 				break;
 			case PHP_ST_FOREACH: {
-				PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
-				if ( !elems || (elems->value.type != PHP_VAL_ARRAY) ) {
-					php_report_error(PHP_ERROR, "Argument of 'foreach' must be array");
-					break;
-				}
-				PHP_ARRAY_TYPE *array = (PHP_ARRAY_TYPE *)elems->value.ptr_val;
-				PHP_VAR_NODE *i_key = node->node_foreach.i_key;
-				// keys in array are string values.
-				if ( i_key ) {
-					i_key->value.type = PHP_VAL_STRING;
-				}
-				PHP_VAR_NODE *i_val = node->node_foreach.i_val;
-				array->current = array->sorted_keys.begin();
-				while ( array->current != array->sorted_keys.end() ) {
-					if ( i_key ) {
-						PHP_VALUE_NODE tmp_val;
-						tmp_val.type = PHP_VAL_STRING;
-						tmp_val.str_val = (char *)array->current->c_str();
-						value_value_assign(&i_key->value, &tmp_val);
-					}
-					PHP_VALUE_NODE *curr_value = &array->array[*array->current]->value;
-					value_value_assign(&i_val->value, curr_value);
-					curr_exec_result = php_execute(node->node_foreach.code, 0);
-					if ( i_key ) {
-						value_value_free(&i_key->value);
-					}
-					if ( node->node_foreach.byref ) {
-						value_value_assign(curr_value, &i_val->value);
-					}
-					value_value_free(&i_val->value);
-					if ( curr_exec_result) {
+					PHP_VAR_NODE *elems = php_expr_eval_lvalue(node->node_foreach.elems);
+					if ( !elems || (elems->value.type != PHP_VAL_ARRAY) ) {
+						php_report_error(PHP_ERROR, "Argument of 'foreach' must be array");
 						break;
 					}
-					array->current++;
+					PHP_ARRAY_TYPE *array = (PHP_ARRAY_TYPE *)elems->value.ptr_val;
+					PHP_VAR_NODE *i_key = node->node_foreach.i_key;
+					// keys in array are string values.
+					if ( i_key ) {
+						i_key->value.type = PHP_VAL_STRING;
+					}
+					PHP_VAR_NODE *i_val = node->node_foreach.i_val;
+					array->current = array->sorted_keys.begin();
+					while ( array->current != array->sorted_keys.end() ) {
+						if ( i_key ) {
+							PHP_VALUE_NODE tmp_val;
+							tmp_val.type = PHP_VAL_STRING;
+							tmp_val.str_val = (char *)array->current->c_str();
+							value_value_assign(&i_key->value, &tmp_val);
+						}
+						PHP_VALUE_NODE *curr_value = &array->array[*array->current]->value;
+						value_value_assign(&i_val->value, curr_value);
+						curr_exec_result = php_execute(node->node_foreach.code, 0);
+						if ( i_key ) {
+							value_value_free(&i_key->value);
+						}
+						if ( node->node_foreach.byref ) {
+							value_value_assign(curr_value, &i_val->value);
+						}
+						value_value_free(&i_val->value);
+						if ( curr_exec_result) {
+							break;
+						}
+						array->current++;
+					}
 				}
-			}
+				break;
 			case PHP_ST_SWITCH: {
 					PHP_SYN_NODE *cur_exec = 0;
 					php_expr_eval(node->node_switch.cond, &cond_result);
