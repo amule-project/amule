@@ -421,8 +421,8 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		CDownQueueRem(CRemoteConnect *);
 		
 		uint32 GetFileCount() { return GetCount(); }
-		CKnownFile *GetFileByID(CMD4Hash id) { return (CKnownFile *)GetByID(id); }
-		CPartFile *GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
+		CPartFile* GetFileByID(const CMD4Hash& id) { return GetByID(id); }
+		CPartFile* GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
 		
 		bool IsPartFile(const CKnownFile* totest) const;
 		
