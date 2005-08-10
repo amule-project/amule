@@ -1791,9 +1791,9 @@ void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 	
 	va_list args;
 	va_start(args, msg);
-	sprintf(msgbuf, msg, args);
+	vsprintf(msgbuf, msg, args);
 
-	printf("%s %s\n", type_msg, msg);
+	printf("%s %s\n", type_msg, msgbuf);
 	assert(err_type != PHP_INTERNAL_ERROR);
 }
 
