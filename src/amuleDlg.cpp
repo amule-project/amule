@@ -703,7 +703,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 
 	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 	
-	if (server.Cmp(wxT("Kad"))) {
+	if (server != wxT("Kad")) {
 		if ( connected ) {
 			if ( theApp.serverconnect->IsLowID() ) {
 				NewState = sLowID;
@@ -731,7 +731,7 @@ void CamuleDlg::ShowConnectionState(bool connected, const wxString &server)
 						connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 						_("Disconnect from current server"));
 					wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-					if (server.Cmp(wxT("Kad"))) {
+					if (server != wxT("Kad")) {
 						tx->SetLabel(CFormat(_("Connection established on: %s")) % server);
 						connLabel->SetLabel(server);
 					}
