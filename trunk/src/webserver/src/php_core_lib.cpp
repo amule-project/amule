@@ -494,6 +494,10 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
+	} else if ( strcmp(prop_name, "short_name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(70) + (_(" ..."))) : obj->sFileName);
+		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileHash));
@@ -573,6 +577,10 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
+	} else if ( strcmp(prop_name, "short_name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(70) + (_(" ..."))) : obj->sFileName);
+		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "hash") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileHash));
