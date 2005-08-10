@@ -1076,7 +1076,7 @@ void CKnownFile::LoadComment()
 
 void CKnownFile::SetFileComment(const wxString& strNewComment)
 { 
-	if (!m_strComment.Cmp(strNewComment)) {
+	if (m_strComment != strNewComment) {
 		SetLastPublishTimeKadNotes(0);
 		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 
