@@ -294,7 +294,7 @@ inline int md4cmp(const void* hash1, const void* hash2)
 // md4clr -- replacement for memset(hash,0,16)
 inline void md4clr(void* hash)
 {
-	bzero(hash, 16);
+	memset(hash, 0, 16);
 }
 
 

@@ -68,7 +68,7 @@ CreditStruct::CreditStruct()
 	  nReserved3(0),
 	  nKeySize(0)
 {
-	bzero(abySecureIdent, MAXPUBKEYSIZE);
+	memset(abySecureIdent, 0, MAXPUBKEYSIZE);
 }
 
 
