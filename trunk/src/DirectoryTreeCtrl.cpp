@@ -300,7 +300,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		
 		wxASSERT(folder.Len() > 0);
 
-		if (folder.Cmp(ROOT_STRING)) { // no removal for root dir
+		if (folder != ROOT_STRING) { // no removal for root dir
 			while(folder.Len() > 0 && folder.Last() == ROOT_CHAR) {
 				folder.RemoveLast();	// Minus possible trailing slashes.
 			}

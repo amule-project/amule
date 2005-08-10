@@ -151,7 +151,7 @@ CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint3
 
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
 		cur_file = pos->second;
-		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && (cur_file->GetFileName() == filename)) {
 			return cur_file;
 		}
 	}
@@ -193,7 +193,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			uint32 in_date =  it->second->GetFileDate();
 			uint32 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
-			if (((abs((int)Record->GetFileDate() - (int)in_date) < 20) && Record->GetFileSize() == in_size && !Record->GetFileName().Cmp(filename)) || IsOnDuplicates(filename, in_date, in_size)) {
+			if (((abs((int)Record->GetFileDate() - (int)in_date) < 20) && Record->GetFileSize() == in_size && (Record->GetFileName() == filename)) || IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.
 				return false;
 			} else {
@@ -224,7 +224,7 @@ CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint
 	KnownFileList::const_iterator it = m_duplicates.begin();
 	for ( ; it != m_duplicates.end(); ++it ) {
 		CKnownFile* cur_file = *it;
-		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && !cur_file->GetFileName().Cmp(filename)) {
+		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && (cur_file->GetFileName() == filename)) {
 			return cur_file;
 		}
 		

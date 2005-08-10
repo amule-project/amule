@@ -506,7 +506,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 				toadd->SetFilePath(directory);
 				Notify_SharedFilesShowFile(toadd);
 			} else {
-				if (fname.Cmp(toadd->GetFileName())) {
+				if (fname != toadd->GetFileName()) {
 					AddDebugLogLineM(false, logKnownFiles, wxT("Warning: File '") + directory + fname + wxT("' already shared as '") + toadd->GetFileName() + wxT("'"));
 				} else {
 					AddDebugLogLineM(false, logKnownFiles, wxT("File '") + fname + wxT("' is already shared"));

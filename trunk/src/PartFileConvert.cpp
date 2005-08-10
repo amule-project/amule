@@ -131,8 +131,6 @@ void CPartFileConvert::ConvertToeMule(wxString folder, bool deletesource)
 	if (!wxFileName::FileExists(folder))
 		return;
 	
-	//if (folder.Left(thePrefs::GetTempDir().Length()).CmpNoCase(thePrefs::GetTempDir()) == 0) return;
-
 	ConvertJob* newjob = new ConvertJob();
 	newjob->folder = folder;
 	newjob->removeSource = deletesource;
