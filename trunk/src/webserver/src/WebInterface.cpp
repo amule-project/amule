@@ -478,7 +478,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		m_LoadSettingsFromAmule = parser.Found(wxT("load-settings"));
 		return true;
 	} else {
-		return false;
+		exit(0);		
 	}
 }
 
