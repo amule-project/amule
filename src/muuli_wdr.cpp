@@ -971,7 +971,7 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxListCtrl *item1 = new wxListCtrl( parent, IDC_LST, wxDefaultPosition, wxSize(600,270), wxLC_REPORT|wxSUNKEN_BORDER );
+    CMuleListCtrl *item1 = new CMuleListCtrl( parent, IDC_LST, wxDefaultPosition, wxSize(600,270), wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxFlexGridSizer *item2 = new wxFlexGridSizer( 1, 0, 0, 0 );

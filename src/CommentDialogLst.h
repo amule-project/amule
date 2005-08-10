@@ -30,36 +30,48 @@
 #pragma interface "CommentDialogLst.h"
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dialog.h>		// Needed for wxDialog
 
-class CPartFile;
-class wxListCtrl;
+class CMuleListCtrl;
 class wxCommandEvent;
+class CPartFile;
 
-// CCommentDialogLst dialog 
-
+/**
+ * This dialog is used to display file-comments received from other clients.
+ */
 class CCommentDialogLst : public wxDialog
 { 
-  //DECLARE_DYNAMIC(CCommentDialogLst) 
-
 public: 
-   CCommentDialogLst(wxWindow* pParent, CPartFile* file); 
-   virtual ~CCommentDialogLst(); 
-   virtual bool OnInitDialog(); 
-   //CHyperTextCtrl lstbox; 
-   wxListCtrl* pmyListCtrl;
+	CCommentDialogLst(wxWindow* pParent, CPartFile* file); 
+	~CCommentDialogLst();
 
-protected: 
-   //virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support 
-   //DECLARE_MESSAGE_MAP() 
-   DECLARE_EVENT_TABLE()
-public: 
-   void OnBnClickedApply(wxCommandEvent& evt); 
-   void OnBnClickedRefresh(wxCommandEvent& evt); 
-private: 
-   void CompleteList(); 
-   CPartFile* m_file; 
+	/**
+	 * Sorter function for the CMuleListCtrl used to contain the lists.
+	 */
+	static int SortProc(long item1, long item2, long sortData);
+
+private:
+	void OnBnClickedApply(wxCommandEvent& evt); 
+	void OnBnClickedRefresh(wxCommandEvent& evt); 
+
+	/**
+	 * Updates the contents of the comments/ratings list.
+	 */
+	void UpdateList(); 
+
+	/**
+	 * Clears the contents of the comments/ratings list.
+	 */
+	void ClearList();
+
+	//! The file to display comments for.
+	CPartFile* m_file;
+
+	//! The list containing comments/ratings.
+	CMuleListCtrl* m_list;
+	
+
+	DECLARE_EVENT_TABLE()
 };
 
 #endif // COMMENTDIALOGLST_H
