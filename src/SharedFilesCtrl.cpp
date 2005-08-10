@@ -119,7 +119,6 @@ CSharedFilesCtrl::~CSharedFilesCtrl()
 
 void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 {
-
 	long item_hit = CheckSelection(event);
 
 	if ( (m_menu == NULL) && (item_hit != -1)) {
@@ -135,7 +134,14 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 
 		m_menu->Append(0,_("Priority"),prioMenu);
 		m_menu->AppendSeparator();
-		m_menu->Append(MP_CMT, _("Change this file's comment..."));
+
+		CKnownFile* file = (CKnownFile*)GetItemData(item_hit);
+		if (file->GetFileComment().IsEmpty() && !file->GetFileRating()) {
+			m_menu->Append(MP_CMT, _("Add Comment/Rating"));
+		} else {
+			m_menu->Append(MP_CMT, _("Edit Comment/Rating"));
+		}
+		
 		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
 		m_menu->AppendSeparator();
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
