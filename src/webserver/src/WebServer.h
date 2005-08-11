@@ -117,6 +117,11 @@ WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
 WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 
+uint8 GetHigherPrio(uint32 prio, bool autoprio);
+uint32 GetHigherPrioShared(uint32 prio, bool autoprio);
+uint8 GetLowerPrio(uint32 prio, bool autoprio);
+uint32 GetLowerPrioShared(uint32 prio, bool autoprio);
+
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;
 class CEC_UpDownClient_Tag;
