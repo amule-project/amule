@@ -55,7 +55,9 @@
 	#include <bfd.h>
 #endif
 
-#include <wx/arrstr.h>
+#if wxCHECK_VERSION(2, 5, 0)
+	#include <wx/arrstr.h>
+#endif
 
 /**
  * This functions displays a verbose description of 

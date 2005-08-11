@@ -42,13 +42,13 @@ there client on the eMule forum..
 #include <list>
 #include <map>
 
-#include <wx/arrstr.h>
-
 #include "../../Types.h"
 #include "SearchManager.h"
 #include "../routing/Maps.h"
 #include "../utils/UInt128.h"
 #include "Entry.h"
+
+class wxArrayString;
 
 
 struct key_compare {
