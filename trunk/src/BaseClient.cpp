@@ -1104,15 +1104,16 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 void CUpDownClient::ClearDownloadBlockRequests()
 {
 	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
-		auto_ptr<Requested_Block_Struct> cur_block(m_DownloadBlocks_list.GetNext(pos));
+		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
 		}
+		delete cur_block;
 	}
 	m_DownloadBlocks_list.RemoveAll();
 
 	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
-		auto_ptr<Pending_Block_Struct> pending(m_PendingBlocks_list.GetNext(pos));
+		Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
 		if (m_reqfile){
 			m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
 		}
@@ -1123,6 +1124,7 @@ void CUpDownClient::ClearDownloadBlockRequests()
 			inflateEnd(pending->zStream);
 			delete pending->zStream;
 		}
+		delete pending;
 	}
 	m_PendingBlocks_list.RemoveAll();
 }

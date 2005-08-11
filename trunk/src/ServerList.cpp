@@ -60,6 +60,8 @@
 #include "Format.h"
 #include "IPFilter.h"
 
+#include <algorithm>			// Needed for std::find
+
 
 CServerList::CServerList()
 {

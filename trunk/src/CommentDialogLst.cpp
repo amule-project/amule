@@ -54,7 +54,7 @@ struct SFileRating
 
 
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent, CPartFile* file)
-	: wxDialog(parent, -1,_("File Comments"))
+	: wxDialog(parent, -1, wxString(_("File Comments")))
 {
 	m_file = file;
 	

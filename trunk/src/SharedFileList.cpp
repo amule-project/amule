@@ -62,6 +62,8 @@
 	#include <wx/msgdlg.h>
 #endif
 
+#include <algorithm>		// Needed for std::find, std::sort
+
 #ifdef __COMPILE_KAD__
 
 #include "kademlia/kademlia/Kademlia.h"
