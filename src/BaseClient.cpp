@@ -1522,6 +1522,19 @@ int CUpDownClient::GetHashType() const
 }
 
 
+void CUpDownClient::SetSocket(CClientReqSocket* socket)
+{
+#if defined(__DEBUG__) && !defined(EC_REMOTE)
+	if (m_socket == NULL && socket != NULL) {
+		theStats::SocketAssignedToClient();
+	} else if (m_socket != NULL && socket == NULL) {
+		theStats::SocketUnassignedFromClient();
+	}
+#endif
+	m_socket = socket;
+}
+
+
 void CUpDownClient::ReGetClientSoft()
 {
 	if (m_Username.IsEmpty()) {

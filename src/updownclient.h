@@ -44,10 +44,6 @@
 #include <map>
 #include <vector>
 
-#if defined(__DEBUG__) && !defined(EC_REMOTE)
-#include "Statistics.h"
-#endif
-
 
 typedef std::vector<bool> BitVector;
 
@@ -470,17 +466,7 @@ public:
 	 *
 	 * Please note that this function DOES NOT delete the old socket.
 	 */
-	void 		SetSocket(CClientReqSocket* socket)
-		{
-#if defined(__DEBUG__) && !defined(EC_REMOTE)
-			if (m_socket == NULL && socket != NULL) {
-				theStats::SocketAssignedToClient();
-			} else if (m_socket != NULL && socket == NULL) {
-				theStats::SocketUnassignedFromClient();
-			}
-#endif
-			m_socket = socket;
-		}
+	void 		SetSocket(CClientReqSocket* socket);
 
 	/**
 	 * Function for accessing the socket owned by a client.
