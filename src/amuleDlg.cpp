@@ -1119,8 +1119,8 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		}
 #ifdef __WXMSW__
 	} else {
-		auto_ptr<wxFileType> ft(wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html")));
-		if (!ft.get()) {
+		wxFileType* ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+		if (!ft) {
 			wxLogError(
 				wxT("Impossible to determine the file type for extension html."
 				"Please edit your MIME types.")
@@ -1128,7 +1128,10 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 			return;
 		}
 
-		if (!ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")))) {
+		bool ok = ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")));
+		delete ft;
+
+		if (!ok) {
 			wxMessageBox(
 				_("Could not determine the command for running the browser."),
 				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);

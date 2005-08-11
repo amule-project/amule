@@ -500,11 +500,11 @@ bool CamuleApp::OnInit()
 		
 		// Log to stderr
 		wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
-		auto_ptr<wxConnectionBase> conn(client.MakeConnection(host, server, IPC));
+		wxConnectionBase* conn = client.MakeConnection(host, server, IPC);
 		delete wxLog::SetActiveTarget(oldLog); // Restore old log
 		
 		// If the connection failed, conn is NULL
-		if ( conn.get() ) {
+		if ( conn ) {
 			// An instance is already running!
 			printf("There is an instance of aMule already running\n");
 			// This is very tricky. The most secure way to communicate is via ED2K links file
@@ -524,6 +524,7 @@ bool CamuleApp::OnInit()
 			conn->Disconnect();
 	
 			printf("aMule already running: exiting\n");
+			delete conn;
 			return false;
 		}
 	}
