@@ -564,6 +564,14 @@ const byte* CTag::GetBlob() const
 }
 
 
+void CTag::SetInt(uint32 uVal)
+{
+	CHECK_TAG_TYPE(IsInt(), Integer);
+		
+	m_uVal = uVal;
+}
+
+
 bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 {
 
@@ -688,13 +696,6 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 	}
 }
 
-void CTag::SetInt(uint32 uVal)
-{
-	wxASSERT( IsInt() );
-	if (IsInt()) {
-		m_uVal = uVal;
-	}
-}
 
 wxString CTag::GetFullInfo() const
 {
