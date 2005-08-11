@@ -42,6 +42,8 @@ there client on the eMule forum..
 #include <list>
 #include <map>
 
+#include <wx/arrstr.h>
+
 #include "../../Types.h"
 #include "SearchManager.h"
 #include "../routing/Maps.h"
