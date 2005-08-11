@@ -184,6 +184,10 @@ void php_native_usort(PHP_VALUE_NODE *)
 
 }
 
+void php_native_shared_file_cmd(PHP_VALUE_NODE *)
+{
+}
+
 /*
  * 
  * Usage: php_native_download_file_cmd($file_hash, "command", $optional_arg)
@@ -228,7 +232,21 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	} else if ( strcmp(cmd_name, "cancel") == 0 ) {
 		file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
 	} else if ( strcmp(cmd_name, "prio") == 0 ) {
+		if ( !opt_param ) {
+			php_report_error(PHP_ERROR, "Command 'prio' need 3-rd argument");
+			return;
+		}
+		cast_value_dnum(&opt_param->value);
 		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, opt_param->value.int_val));
+	} else if ( strcmp(cmd_name, "prioup") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+			GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
+	} else if ( strcmp(cmd_name, "priodown") == 0 ) {
+		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+			GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
 	} else if ( strcmp(cmd_name, "setcat") == 0 ) {
 	} else {
 		php_report_error(PHP_ERROR, "Invalid download command: [%s]", cmd_name);
@@ -702,6 +720,12 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
 		3,
 		php_native_download_file_cmd,
+	},
+	{
+		"amule_do_shared_cmd",
+		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		3,
+		php_native_shared_file_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
