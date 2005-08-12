@@ -60,8 +60,8 @@
 #include <map>
 
 #ifdef __WXBASE__
-	#include <time.h>
-	#include <errno.h>
+	#include <ctime>
+	#include <cerrno>
 #else
 	#include <wx/utils.h>
 #endif	

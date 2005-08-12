@@ -30,8 +30,8 @@
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
 #include "ECSocket.h"	// Needed for ECSocket
-#include <stdlib.h>	// Needed for malloc(), realloc(), free(), NULL
-#include <string.h>	// Needed for memcpy(), strlen()
+#include <cstdlib>	// Needed for malloc(), realloc(), free(), NULL
+#include <cstring>	// Needed for memcpy(), strlen()
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 
 /**********************************************************

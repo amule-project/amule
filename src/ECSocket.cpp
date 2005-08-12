@@ -35,7 +35,7 @@
 #include "ECcodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
 #include "zlib.h"		// Needed for packet (de)compression
-#include "string.h"		// Needed for memcpy()/memmove()
+#include "cstring"		// Needed for memcpy()/memmove()
 
 #include "StringFunctions.h"	// Needed for unicode2char()
 #include "OPCodes.h"

@@ -33,7 +33,7 @@
 
 #include "Format.h"		// Needed for CFormat
 
-#include <stdio.h>		// Needed for fprintf(stderr, ...)
+#include <cstdio>		// Needed for fprintf(stderr, ...)
 #include <wx/filefn.h>
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer

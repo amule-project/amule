@@ -27,7 +27,7 @@
 #pragma implementation "StringFunctions.h"
 #endif
 
-#include <ctype.h>
+#include <cctype>
 
 #include <wx/filename.h>
 #include <wx/url.h>
