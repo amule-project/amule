@@ -33,7 +33,7 @@
 #pragma implementation "updownclient.h"
 #endif
 
-#include <errno.h>
+#include <cerrno>
 #include <cmath>
 #include <csignal>
 #include <unistd.h>			// Needed for close(2) and sleep(3)

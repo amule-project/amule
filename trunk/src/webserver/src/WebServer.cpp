@@ -32,9 +32,9 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h> // Needed for cos, M_PI
+#include <cctype>
+#include <cstdlib>
+#include <cmath> // Needed for cos, M_PI
 #include <string>
 
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)

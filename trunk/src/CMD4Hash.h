@@ -30,7 +30,7 @@
 #pragma interface "CMD4Hash.h"
 #endif
 
-#include <ctype.h>			// Needed for toupper()
+#include <cctype>			// Needed for toupper()
 
 #include "ArchSpecific.h"	// Needed for Raw{Peek,Poke}UInt64()
 #include "MuleDebug.h"		// Needed for MULE_VALIDATE_PARAMS

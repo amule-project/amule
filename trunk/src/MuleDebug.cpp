@@ -29,7 +29,7 @@
 
 #include <exception>			// Needed for std::exception
 #include <cxxabi.h>				// Needed for __cxxabiv1::
-#include <signal.h>				// Needed for raise()
+#include <csignal>				// Needed for raise()
 
 #include <wx/string.h>
 

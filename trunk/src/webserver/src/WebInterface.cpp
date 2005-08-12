@@ -42,7 +42,7 @@
 	#include <wx/statline.h>
 #endif
 
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h>
