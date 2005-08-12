@@ -205,7 +205,7 @@ CFormat& CFormat::operator%(double value)
 CFormat& CFormat::operator%( const wxChar* val )
 {
 	wxString field = GetCurrentField();
-	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-integer format string."));
+	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-string format string."));
 	
 	// Check if a max-length is specified
 	if (field.GetChar(1) == wxT('.')) {
