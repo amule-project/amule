@@ -231,10 +231,14 @@ struct RWInterface<CUInt128>
 {
 	static CUInt128 genValue(size_t j) {
 		CUInt128 value;
-		for (size_t y = j; y < j + 16; y++) {
-			value.getDataPtr()[y - j] = y & 0xff;
+		uint32* data = (uint32*)value.getDataPtr();
+		for (size_t y = 0; y < 4; y++) {
+			data[y] = (j + 3 + y * 4) & 0xff;
+			data[y] = (data[y] << 8) | (j + 2 + y * 4) & 0xff;
+			data[y] = (data[y] << 8) | (j + 1 + y * 4) & 0xff;
+			data[y] = (data[y] << 8) | (j + 0 + y * 4) & 0xff;
 		}
-		
+
 		return value;
 	}
 
