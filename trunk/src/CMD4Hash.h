@@ -30,9 +30,12 @@
 #pragma interface "CMD4Hash.h"
 #endif
 
-#include "Types.h"
-#include "ArchSpecific.h"
-#include "MuleDebug.h"
+#include <ctype.h>			// Needed for toupper()
+
+#include "ArchSpecific.h"	// Needed for Raw{Peek,Poke}UInt64()
+#include "MuleDebug.h"		// Needed for MULE_VALIDATE_PARAMS
+
+#include <wx/string.h>		// Needed for wxString
 
 
 const size_t MD4HASH_LENGTH = 16;
