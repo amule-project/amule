@@ -218,9 +218,28 @@ TEST(Format, InjectFloatAndDouble)
 
 TEST(Format, InjectString)
 {
-	testFormat(wxT("s"), (const wxChar*)NULL);
 	testFormat(wxT("s"), wxT(""));
 	testFormat(wxT("s"), wxT("abc"));
+}
+
+
+TEST(Format, InjectNULLString)
+{
+	for (int p = -1; p < 5; ++p) {
+		wxString format = wxT("%");
+			
+		if (p == -1) {
+			format += wxT(".");
+		} else {
+			format += wxString::Format(wxT(".%d"), p);
+		}
+				
+		format += wxT("s");
+		
+		wxString actual = CFormat(format) % (const wxChar*)NULL;
+		
+		ASSERT_TRUE_M(actual.IsEmpty(), wxT("Expected empty string, got '") + actual + wxT("'"));
+	}
 }
 
 
