@@ -2308,11 +2308,10 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	}
 	// Need to use quotes in case filename contains spaces.
 	command.Append(wxT(" \""));
-	if (file->GetStatus() == PS_COMPLETE) {
-		command += thePrefs::GetIncomingDir() + wxFileName::GetPathSeparator() +
-			file->GetFileName();
-	} else {
-		command += file->GetFullName().BeforeLast( wxT('.') );
+	command += file->GetFullName();
+	if (file->GetStatus() != PS_COMPLETE) {
+		// Remove the .met
+		command = command.BeforeLast( wxT('.') );
 	}
 	command += wxT("\"");
 

@@ -2253,16 +2253,16 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	
 	
 	if (!(completing_result & UNEXP_FILE_ERROR)) {
-		m_fullname = (*newname);
 	
+		m_fullname = (*newname);	
 		delete newname;
-		
+
 		if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)) {
 			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
 		} else {
 			m_strFilePath = thePrefs::GetIncomingDir();
 		}	
-	
+		
 		SetPartFileStatus(PS_COMPLETE);
 		m_paused = false;
 		ClearPriority();
