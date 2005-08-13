@@ -841,14 +841,6 @@ void CamuleDlg::DlgShutDown(wxCloseEvent& evt)
 		return;
 	}
 
-	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
-		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")),
-				wxString(_("Exit confirmation")), wxYES_NO)) {
-			evt.Veto();
-			return;
-		}
-	}
-
 	// we are going DOWN
 	is_safe_state = false;
 
@@ -865,6 +857,14 @@ void CamuleDlg::DlgShutDown(wxCloseEvent& evt)
 void CamuleDlg::OnClose(wxCloseEvent& evt)
 {
 	// This will be here till the core close is != app close
+	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
+		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")),
+				wxString(_("Exit confirmation")), wxYES_NO)) {
+			evt.Veto();
+			return;
+		}
+	}
+	
 	theApp.ShutDown(evt);
 }
 
