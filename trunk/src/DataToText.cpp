@@ -96,6 +96,7 @@ const wxString GetSoftName(unsigned int software_ident)
 			return wxT("aMule");
 		case SO_SHAREAZA:
 		case SO_NEW_SHAREAZA:
+		case SO_NEW2_SHAREAZA:
 			return wxT("Shareaza");
 		case SO_EMULEPLUS:
 			return wxT("eMule+");

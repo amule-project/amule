@@ -807,6 +807,7 @@ uint32 GetSoftID(uint8 SoftType)
 		case SO_OLDEMULE:
 			return 0x0100 + SO_EMULE;
 		case SO_NEW_SHAREAZA:
+		case SO_NEW2_SHAREAZA:
 			return 0x0100 + SO_SHAREAZA;
 		case SO_NEW2_MLDONKEY:
 			return 0x0100 + SO_NEW_MLDONKEY;
