@@ -1263,7 +1263,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
 		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
 		if (theApp.ipfilter->IsFiltered(uClientIP)) {
-			AddDebugLogLineM(true, logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
+			AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
 			if (Disconnected(wxT("IPFilter"))) {
 				Safe_Delete();
 				return false;
