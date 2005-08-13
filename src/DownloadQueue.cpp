@@ -1249,18 +1249,18 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 
 bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 {
-	// Check if the file already exists, in which case we just add the source
-	CPartFile* file = GetFileByID( link->GetHashKey() );
+	
+	CPartFile* file = new CPartFile( link );
 
-	if ( !file ) {
-		file = new CPartFile( link );
-
-		if ( file->GetStatus() == PS_ERROR ) {
-			delete file;
-
+	if ( file->GetStatus() == PS_ERROR ) {
+		// That file already exists
+		delete file;
+		file = GetFileByID( link->GetHashKey() );
+		if (!file) {
+			// This is a shared file, return an error.
 			return false;
 		}
-
+	} else {
 		AddDownload( file, thePrefs::AddNewFilesPaused(), category );
 	}
 

@@ -922,19 +922,23 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, dTimestamp));
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("No points for graph")));
 			}
 		}
 		case EC_DETAIL_INC_UPDATE:
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_CMD:
 			// No graphs
+			response = new CECPacket(EC_OP_FAILED);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Your client is not configured for this detail level.")));
 			break;
 	}
-	if (response) {
-		return response;
-	} else {
-		return new CECPacket(EC_OP_FAILED);
+	if (!response) {
+		response = new CECPacket(EC_OP_FAILED);
+		// Unknown reason
 	}
+
+	return response;
 }
 
 CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
@@ -969,11 +973,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
 				int category = tag->GetTagByIndexSafe(0)->GetInt8Data();
+				AddLogLineM(true, CFormat(_("ExternalConn: adding ed2k link '%s'.")) % link);
 				if ( theApp.downloadqueue->AddED2KLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
-					AddLogLineM(true, CFormat(_("ExternalConn: Unable to understand ed2k link '%s'.")) % link);
+					// Error messages are printed by the add function.
 					response = new CECPacket(EC_OP_FAILED);
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid link or already on list.")));
 				}
 			}
 			break;
@@ -1202,6 +1208,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			wxASSERT(false);	// we should never get here, but...
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
 			response = new CECPacket(EC_OP_FAILED);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
 			break;
 	}	
 	return response;
