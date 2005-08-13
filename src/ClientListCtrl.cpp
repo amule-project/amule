@@ -489,6 +489,8 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 						clientImage = 18;
 						break;
 					case SO_SHAREAZA:
+					case SO_NEW_SHAREAZA:
+					case SO_NEW2_SHAREAZA:
 						clientImage = 19;
 						break;
 					case SO_LXMULE:

@@ -105,15 +105,16 @@ enum EClientSoftware {
 	SO_SHAREAZA		= 4,
 	SO_EMULEPLUS		= 5,
 	SO_HYDRANODE            = 6,
-	SO_NEW2_MLDONKEY	= 10,
-	SO_LPHANT		= 20,
-	SO_NEW_SHAREAZA		= 68, // shazzas love to send 0x44 lately.
-	SO_EDONKEYHYBRID	= 50,
-	SO_EDONKEY		= 51,
-	SO_MLDONKEY		= 52,
-	SO_OLDEMULE		= 53,
-	SO_UNKNOWN		= 54,
-	SO_NEW_MLDONKEY		= 152,
+	SO_NEW2_MLDONKEY	= 0x0a,
+	SO_LPHANT		= 0x14,
+	SO_NEW2_SHAREAZA = 0x28,
+	SO_EDONKEYHYBRID	= 0x32,
+	SO_EDONKEY		= 0x33,
+	SO_MLDONKEY		= 0x34,
+	SO_OLDEMULE		= 0x35,
+	SO_UNKNOWN		= 0x36,
+	SO_NEW_SHAREAZA		= 0x44, // shazzas love to send 0x44 lately.
+	SO_NEW_MLDONKEY		= 0x98,
 	SO_COMPAT_UNK		= 0xFF
 };
 
