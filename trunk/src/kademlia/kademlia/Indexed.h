@@ -55,23 +55,19 @@ struct key_compare {
 	bool operator()(const CCKey& k1, const CCKey& k2) const 
 	{
 		if (!k1.m_key && k2.m_key) {
-			return -1;
-		} else if (k1.m_key && !k2.m_key) {
-			return 1;
-		} else if (!k1.m_key && !k2.m_key) {
-			return 0;
+			return true;
+		} else if (!k2.m_key) {
+			return false;
 		} else {
-			int result = (((uint32*)k1.m_key)[0] - ((uint32*)k2.m_key)[0]);
-			if (!result) {
-				result = (((uint32*)k1.m_key)[1] - ((uint32*)k2.m_key)[1]);
+			for (size_t i = 0; i < 16u; ++i) {
+				if (k1.m_key[i] < k2.m_key[i]) {
+					return true;
+				} else if (k2.m_key[i] < k1.m_key[i]) {
+					return false;
+				}
 			}
-			if (!result) {
-				result = (((uint32*)k1.m_key)[2] - ((uint32*)k2.m_key)[2]);
-			}
-			if (!result) {
-				result = (((uint32*)k1.m_key)[3] - ((uint32*)k2.m_key)[3]);
-			}
-			return result;			
+		
+			return false;
 		}
 	}
 };
