@@ -81,34 +81,26 @@ function formCommandSubmit(command)
 <form name="mainform" action="amuleweb-main-shared.php" method="post">
 <table width="100%"  border="1" bgcolor="#0099CC">
   <tr>
-    <td width="94" height="20"><input type="hidden" name="command"></td>
-    <td width="363"><table border="0" cellpadding="0" cellspacing="0">
+    <td width="118" height="20"><input type="hidden" name="command"></td>
+    <td width="200"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td><a href="javascript:formCommandSubmit('pause');" target="mainFrame" onClick="MM_nbGroup('down','group1','pause','',1)" onMouseOver="MM_nbGroup('over','pause','','',1)" onMouseOut="MM_nbGroup('out')"><img name="pause" src="pause.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:formCommandSubmit('resume');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:formCommandSubmit('prioup');" target="mainFrame" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="up.jpeg" border="0" alt="" onLoad=""></a></td>
-        <td><a href="javascript:formCommandSubmit('priodown');" target="mainFrame" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="down.jpeg" alt="" name="down" width="50" height="20" border="0" onload=""></a></td>
-        <td><a href="javascript:formCommandSubmit('delete');" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
+        <td><a href="javascript:formCommandSubmit('reload');" target="mainFrame" onClick="MM_nbGroup('down','group1','reload','',1)" onMouseOver="MM_nbGroup('over','reload','','',1)" onMouseOut="MM_nbGroup('out')"><img src="toolbutton-reload.jpeg" alt="Reload" name="reload" width="50" height="20" border="0" onload=""></a></td>
+        <td>&nbsp;</td>
+        <td><a href="javascript:formCommandSubmit('prioup');" target="mainFrame" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="up.jpeg" border="0" alt="Prio Up" onLoad=""></a></td>
+        <td><a href="javascript:formCommandSubmit('priodown');" target="mainFrame" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="down.jpeg" alt="Prio Down" name="down" width="50" height="20" border="0" onload=""></a></td>
+        <td>&nbsp;</td>
       </tr>
     </table></td>
-    <td width="264"><table border="0" cellpadding="0" cellspacing="0">
+    <td width="583"><table border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td>
-        <?php
-        	$all_status = array("All", "Waiting", "Paused", "Downloading");
-        	
- 			if ( $HTTP_GET_VARS["command"] == "filter") $_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
-        	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'All';
-
-        	echo '<select name ="status"';
-        	foreach ($all_status as $s) {
-        		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
-        	}
-        	echo '</select>';
-        	
-        ?>
-        </td>
-        <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
+        <td><select name="select">
+          <option selected>Select prio</option>
+          <option>Low</option>
+          <option>Normal</option>
+          <option>High</option>
+        </select>
+</td>
+        <td><a href="javascript:formCommandSubmit('setprio');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Set Priority" name="resume" width="50" height="20" border="0" onload=""></a></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -119,26 +111,17 @@ function formCommandSubmit(command)
     <td colspan="3"><table width="100%"  border="0" cellpadding="2" cellspacing="2">
       <tr>
         <th width="20" scope="col">&nbsp;</th>
-        <th width="300" scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="120" scope="col"><div align="left">
+        <th width="300" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=name" target="mainFrame">Filename</a></div></th>
+        <th width="120" nowrap scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-shared.php?sort=xfer" target="mainFrame">Transfer</a> (<a href="amuleweb-main-shared.php">Total</a>) </div></th>
-        <th width="120" scope="col"><div align="left">
+        <th width="120" nowrap scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-shared.php?sort=req" target="mainFrame">Requests</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
-        <th width="120" scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=acc" target="mainFrame">Accepted</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
+        <th width="120" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=acc" target="mainFrame">Accepted</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
         <th width="86" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="83" scope="col"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Prio</a></th>
-        <th width="14" scope="col">&nbsp;</th>
+        <th width="83" nowrap scope="col"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Prio</a></th>
+        <th width="14" nowrap scope="col">&nbsp;</th>
         </tr>
-      <tr>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td nowrap scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        <td scope="col">&nbsp;</td>
-        </tr>
+
 	  
 	  <?php
 		function CastToXBytes($size)
@@ -178,12 +161,11 @@ function formCommandSubmit(command)
 			global $sort_order, $sort_reverse;
 			
 			switch ( $sort_order) {
-				case "size": $result = $a->size > $b->size; break;
+				case "size": $result = $a->size - $b->size; break;
 				case "name": $result = $a->name > $b->name; break;
 				case "xfer": $result = $a->xfer > $b->xfer; break;
 				case "acc": $result = $a->accept > $b->accept; break;
 				case "req": $result = $a->req > $b->req; break;
-				case "prio": $result = $a->prio > $b->prio; break;
 			}
 
 			if ( $sort_reverse ) {
@@ -198,16 +180,16 @@ function formCommandSubmit(command)
 		//
 		//var_dump($HTTP_GET_VARS);
 		if ( $HTTP_GET_VARS["command"] != "") {
+			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
-					//var_dump($name);
-					//amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
+					//var_dump($name);var_dump($val);
+					amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
 				}
 			}
 		}
-		
-		$shared = amule_load_vars("downloads");
+		$shared = amule_load_vars("shared");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
 
@@ -232,14 +214,12 @@ function formCommandSubmit(command)
 
 			echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 
-			echo "<td nowrap>", $file->name, "</td>";
-
+			echo "<td nowrap>", $file->short_name, "</td>";
 			echo "<td>", CastToXBytes($file->xfer), "</td>";
 
 			echo "<td>", $file->req, "</td>";
-
-			echo "<td>", $file->acc, "</td>";
-
+			echo "<td>", $file->accept, "</td>";
+			
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
 			echo "<td>", $file->prio, "</td>";
