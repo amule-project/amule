@@ -484,10 +484,17 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 endif
 
 BUILT_SOURCES = ECVersion.h
-CLEANFILES = ECVersion.h
-
-ECVersion.h: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion ECcodes.h
-	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)
+CLEANFILES = ECVersion.h EC-timestamp utils/mkFileSum$(EXEEXT)
 
 utils/mkFileSum$(EXEEXT): utils/mkFileSum.c
 	$(CC) -o $@ $<
+
+ECVersion.h: EC-timestamp
+	@if test ! -f $@; then \
+	  rm -f EC-timestamp; \
+	  $(MAKE) EC-timestamp; \
+	else :; fi
+
+EC-timestamp: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion ECcodes.h
+	@echo "ECVersion.h timestamp file" > EC-timestamp
+	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)
