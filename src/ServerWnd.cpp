@@ -212,7 +212,8 @@ void CServerWnd::UpdateKadInfo()
 	#ifndef CLIENT_GUI
 	
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
-	
+
+		#ifdef __COMPILE_KAD__
 		if (Kademlia::CKademlia::isRunning()) {
 			KadInfoList->SetItem(next_row, 1, _("Running"));
 			
@@ -251,6 +252,9 @@ void CServerWnd::UpdateKadInfo()
 			// No data
 			KadInfoList->SetItem(next_row, 1, _("Not running"));
 		}
+		#else
+		KadInfoList->SetItem(next_row, 1, _("Not Available"));
+		#endif
 
 	#else
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
