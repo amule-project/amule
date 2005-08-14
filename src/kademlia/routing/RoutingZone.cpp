@@ -60,13 +60,16 @@ there client on the eMule forum..
 #include "../../OtherFunctions.h"
 #include "../../OPCodes.h"
 #include "../../amule.h"
-#include "../../amuleDlg.h"
-//#include "../../KadContactListCtrl.h"
-#include "../../KadDlg.h"
 #include "../../CFile.h"
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
 #include "../../ArchSpecific.h"
+
+#warning KAD TODO: Contact list
+#if 0
+	#include "../../amuleDlg.h"
+	#include "../../KadContactListCtrl.h"
+#endif
 
 #include <cmath>
 #include <algorithm>		// Needed for std::min
@@ -132,8 +135,11 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 CRoutingZone::~CRoutingZone()
 {
 	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
+		#warning KAD TODO: Contact list
+		#if 0		
 		theApp.amuledlg->kademliawnd->HideContacts();
 		writeFile();
+		#endif
 	}
 	if (isLeaf()) {
 		delete m_bin;
@@ -141,15 +147,21 @@ CRoutingZone::~CRoutingZone()
 		delete m_subZones[0];
 		delete m_subZones[1];
 	}
+	#warning KAD TODO: Contact list
+	#if 0
 	if (m_superZone == NULL) {
 		theApp.amuledlg->kademliawnd->ShowContacts();
 	}
+	#endif
 }
 
 void CRoutingZone::readFile(void)
 {
 	try {
+		#warning KAD TODO: Contact list
+		#if 0
 		theApp.amuledlg->kademliawnd->HideContacts();
+		#endif
 		uint32 numContacts = 0;
 		CFile file;
 		if (file.Open(m_filename, CFile::read)) {
@@ -177,8 +189,10 @@ void CRoutingZone::readFile(void)
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
-
+	#warning KAD TODO: Contact list
+	#if 0
 	theApp.amuledlg->kademliawnd->ShowContacts();
+	#endif
 }
 
 void CRoutingZone::writeFile(void)
@@ -220,8 +234,9 @@ bool CRoutingZone::canSplit(void) const
 	}
 		
 	/* Check if we are close to the center */
-	if ( (m_zoneIndex < KK || m_level < KBASE) && m_bin->getSize() == K)
+	if ( (m_zoneIndex < KK || m_level < KBASE) && m_bin->getSize() == K) {
 		return true;
+	}
 	return false;
 }
 
@@ -248,15 +263,21 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			c->setUDPPort(port);
 			c->setTCPPort(tport);
 			retVal = true;
+			#warning KAD TODO: Contact list
+			#if 0
 			theApp.amuledlg->kademliawnd->ContactRef(c);
+			#endif
 		} else if (m_bin->getRemaining() > 0) {
 			c = new CContact(id, ip, port, tport);
 			retVal = m_bin->add(c);
+			#warning KAD TODO: Contact list
+			#if 0
 			if(retVal) {
 				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
 					c->setGuiRefs(true);
 				}
 			}
+			#endif
 		} else if (canSplit()) {
 			split();
 			retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
@@ -264,11 +285,14 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			merge();
 			c = new CContact(id, ip, port, tport);
 			retVal = m_bin->add(c);
+			#warning KAD TODO: Contact list
+			#if 0
 			if(retVal) {
 				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
 					c->setGuiRefs(true);
 				}
 			}
+			#endif
 		}
 
 		if (!retVal) {
@@ -575,4 +599,3 @@ uint32 CRoutingZone::getBootstrapContacts(ContactList *results, uint32 maxRequir
 	
 	return retVal;
 }
-

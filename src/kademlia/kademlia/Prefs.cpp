@@ -46,7 +46,6 @@ there client on the eMule forum..
 #include "../kademlia/Indexed.h"
 #include "../../Preferences.h"
 #include "../../amule.h"
-#include "../../amuleDlg.h"
 #include "../../CFile.h"
 #include "../../ServerList.h"
 #include "../../Logger.h"
@@ -185,13 +184,13 @@ void CPrefs::setFirewalled()
 	//current state to prevent false reports during the recheck..
 	m_lastFirewallState = (m_firewalled<2);
 	m_firewalled = 0;
-	theApp.amuledlg->ShowConnectionState(true, wxT("Kad"));
+	Notify_ShowConnState(true, wxT("Kad"));
 }
 
 void CPrefs::incFirewalled()
 {
 	m_firewalled++;
-	theApp.amuledlg->ShowConnectionState(true, wxT("Kad"));
+	Notify_ShowConnState(true, wxT("Kad"));
 }
 
 bool CPrefs::getFindBuddy() /*const*/

@@ -52,7 +52,6 @@ there client on the eMule forum..
 #include "../../SharedFileList.h"
 #include "../routing/Contact.h"
 #include "amule.h"
-#include "amuleDlg.h"
 #include "OPCodes.h"
 #include "Preferences.h"
 #include "Logger.h"

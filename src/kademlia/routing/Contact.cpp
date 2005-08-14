@@ -42,10 +42,13 @@ there client on the eMule forum..
 #include "../kademlia/Defines.h"
 #include "../../OPCodes.h"
 #include "../../amule.h"
-#include "../../amuleDlg.h"
-//#include "../../KadContactListCtrl.h"
-#include "../../KadDlg.h"
 #include "../../NetworkFunctions.h"
+
+#warning KAD TODO: Contact list
+#if 0
+	#include "../../amuleDlg.h"
+	#include "../../KadContactListCtrl.h"
+#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,7 +64,10 @@ using namespace Kademlia;
 CContact::~CContact()
 {
 	if (m_guiRefs) {
+		#warning KAD TODO: Contact list
+		#if 0
 		theApp.amuledlg->kademliawnd->ContactRem(this);
+		#endif
 	}
 }
 
@@ -182,7 +188,11 @@ void CContact::checkingType()
 
 	m_expires = time(NULL) + MIN2S(2);
 	m_type++;
+
+	#warning KAD TODO: Contact list
+	#if 0	
 	theApp.amuledlg->kademliawnd->ContactRef(this);
+	#endif
 }
 
 void CContact::updateType()
@@ -201,5 +211,8 @@ void CContact::updateType()
 			m_type = 0;
 			m_expires = time(NULL) + HR2S(2);
 	}
+	#warning KAD TODO: Contact list
+	#if 0	
 	theApp.amuledlg->kademliawnd->ContactRef(this);
+	#endif
 }
