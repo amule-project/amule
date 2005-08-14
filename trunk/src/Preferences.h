@@ -202,6 +202,7 @@ public:
 	static const wxString&	GetUserNick()			{ return s_nick; }
 	static void		SetUserNick(const wxString& nick) { s_nick = nick; }
 
+	static const wxString&	GetAddress()			{ return s_Addr; }
 	static uint16		GetPort()			{ return s_port; }
 	static void		SetPort(uint16 val);
 	static uint16		GetUDPPort()			{ return s_udpport; }
@@ -400,6 +401,7 @@ public:
 	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
 	static bool 		ECUseTCPPort()			{ return s_ECUseTCPPort; }
+	static const wxString&	GetECAddress()			{ return s_ECAddr; }
 	static uint32 		ECPort()			{ return s_ECPort; }
 	static void			SetECPort(uint32 val) { s_ECPort = val; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
@@ -540,6 +542,7 @@ protected:
 	static uint16	s_maxupload;
 	static uint16	s_maxdownload;
 	static uint16	s_slotallocation;
+	static wxString s_Addr;
 	static uint16	s_port;
 	static uint16	s_udpport;
 	static bool	s_UDPDisable;
@@ -656,6 +659,7 @@ protected:
 	// Kry - external connections
 	static bool 	s_AcceptExternalConnections;
 	static bool 	s_ECUseTCPPort;
+	static wxString s_ECAddr;
 	static uint32	s_ECPort;
 	static wxString	s_ECPassword;
 	
