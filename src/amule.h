@@ -92,6 +92,10 @@ enum APPState {
 #define AMULE_APP_BASE wxApp
 #endif
 
+#define CONNECTED_ED2K 1<<0
+#define CONNECTED_KAD_OK 1<<1
+#define CONNECTED_KAD_FIREWALLED 1<<2
+
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
@@ -198,7 +202,12 @@ public:
 	const wxString& GetOSType() const { return OSType; }
 	
 	void ShowUserCount();
+	
+	void ShowConnectionState();
 
+	void StartKad();
+	void StopKad();
+	
 protected:
 #ifdef __WXDEBUG__
 	/**
@@ -386,6 +395,9 @@ public:
 	
 	bool IsConnectedED2K();
 	bool IsConnectedKad();
+	
+	void StartKad();
+	void StopKad();
 	
 	DECLARE_EVENT_TABLE()
 

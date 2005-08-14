@@ -489,18 +489,6 @@ void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
 	switch (event.ID) {
 		// GUI->CORE events
 		// it's daemon, so gui isn't here, but macros can be used as function calls
-		case SHOW_CONN_STATE:
-			if ( event.byte_value ) {
-				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
-				AddLogLine(CFormat(_("Connected to %s %s")) % event.string_value % id);
-			} else {
-				if ( theApp.serverconnect->IsConnecting() ) {
-					AddLogLine(CFormat(_("Connecting to %s")) % event.string_value);
-				} else {
-					AddLogLine(_("Disconnected"));
-				}
-			}
-			break;
 		case SEARCH_ADD_TO_DLOAD:
 			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 			break;

@@ -207,9 +207,10 @@ void CServerWnd::UpdateKadInfo()
 	
 	int next_row = 0;
 	
-	#ifdef __COMPILE_KAD__
+	KadInfoList->DeleteAllItems();
 	
-		KadInfoList->DeleteAllItems();
+	#ifndef CLIENT_GUI
+	
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 	
 		if (Kademlia::CKademlia::isRunning()) {
@@ -253,7 +254,7 @@ void CServerWnd::UpdateKadInfo()
 
 	#else
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
-		KadInfoList->SetItem(next_row, 1, _("Not Available"));
+		KadInfoList->SetItem(next_row, 1, _("Info not Available"));
 	#endif
 	
 	// Fit the width of the columns

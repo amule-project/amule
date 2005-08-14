@@ -86,12 +86,9 @@ void CServerConnect::ConnectToAnyServer(bool prioSort)
 	Disconnect();
 	connecting = true;
 	singleconnecting = false;
-	Notify_ShowConnState(false,wxEmptyString);
-
 
 	// Barry - Only auto-connect to static server option
-	if (thePrefs::AutoConnectStaticOnly())
-	{
+	if (thePrefs::AutoConnectStaticOnly()) {
 		bool anystatic = false;
 		CServer *next_server; 
 		used_list->ResetServerPos();
@@ -247,7 +244,6 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		connected = true;
 		AddLogLineM(true, CFormat( _("Connection established on: %s") ) % sender->cur_server->GetListName());
 		connectedsocket = sender;
-		Notify_ShowConnState(true,connectedsocket->cur_server->GetListName());
 		
 		StopConnectionTry();
 		
@@ -261,8 +257,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		Notify_ServerRemoveDead();
 		
 		// tecxx 1609 2002 - serverlist update
-		if (thePrefs::AddServersFromServer())
-		{
+		if (thePrefs::AddServersFromServer()) {
 			CPacket* packet = new CPacket(OP_GETSERVERLIST,0);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
@@ -271,6 +266,8 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			#endif
 		}
 	}
+	
+	theApp.ShowConnectionState();
 }
 
 
@@ -370,15 +367,15 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
-			Notify_ShowConnState(false,wxEmptyString);
 			break;
 		}
 		case CS_DISCONNECTED:{
 			theApp.sharedfiles->ClearED2KPublishInfo();		
 			connected = false;
 			Notify_ServerHighlight(sender->cur_server,false);
-			if (connectedsocket) 
+			if (connectedsocket)  {
 				connectedsocket->Close();
+			}
 			connectedsocket = NULL;
 			theApp.searchlist->StopGlobalSearch();			
 			Notify_SearchCancel();
@@ -388,7 +385,6 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			}
 			
 			AddLogLineM( true, _("Connection lost") );
-			Notify_ShowConnState(false,wxEmptyString);
 			break;
 		}
 		case CS_ERROR:
@@ -420,7 +416,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			TryAnotherConnectionrequest();
 		}
 	}
-	Notify_ShowConnState(false,wxEmptyString);
+	theApp.ShowConnectionState();
 }
 
 void CServerConnect::CheckForTimeout()
@@ -471,12 +467,12 @@ bool CServerConnect::Disconnect()
 		theApp.SetPublicIP(0);
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
-		Notify_ShowConnState(false,wxEmptyString);
+		theApp.ShowConnectionState();
 		theStats::GetServerConnectTimer()->StopTimer();
 		return true;
-	}
-	else
+	} else {
 		return false;
+	}
 }
 
 
@@ -529,7 +525,7 @@ void CServerConnect::SetClientID(uint32 newid)
 		theApp.SetPublicIP(newid);
 	}
 
-	Notify_ShowConnState(IsConnected(),GetCurrentServer()->GetListName());
+	theApp.ShowConnectionState();
 }
 
 
@@ -591,4 +587,3 @@ void CServerConnect::InitLocalIP()
 {
 	m_nLocalIP = StringHosttoUint32(::wxGetFullHostName());
 }
-

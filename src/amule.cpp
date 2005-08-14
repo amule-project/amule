@@ -878,11 +878,9 @@ bool CamuleApp::OnInit()
 		if (thePrefs::GetNetworkED2K()) {
 			theApp.serverconnect->ConnectToAnyServer();
 		}
-		#ifdef __COMPILE_KAD__
-		if(thePrefs::GetNetworkKademlia()) {
-			Kademlia::CKademlia::start();
-		}	
-		#endif
+
+		StartKad();
+
 	}
 
 	// No webserver on Win at all (yet)
@@ -1537,8 +1535,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		if( Kademlia::CKademlia::isRunning() ) {
 			Kademlia::CKademlia::process();
 			if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
-				Kademlia::CKademlia::stop();
-				Notify_ShowConnState(false, wxEmptyString);
+				StopKad();
 			}
 		}
 		#endif
@@ -1657,10 +1654,7 @@ void CamuleApp::ShutDown() {
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	
 	#ifdef __COMPILE_KAD__
-	// Stop Kad if it's running
-	if (Kademlia::CKademlia::isRunning()) {
-		Kademlia::CKademlia::stop();
-	}
+	StopKad();
 	#endif
 	
 	// Kry - Save the sources seeds on app exit
@@ -2076,6 +2070,70 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 	}
 }
 
+void CamuleApp::ShowConnectionState() {
+	static uint8 old_state = (1<<7); // This flag doesn't exist
+	
+	uint8 state = 0;
+	
+	if (theApp.serverconnect->IsConnected()) {
+		state |= CONNECTED_ED2K;
+	}
+	
+	if (Kademlia::CKademlia::isRunning()) {
+		if (!Kademlia::CKademlia::isFirewalled()) {
+			state |= CONNECTED_KAD_OK;
+		} else {
+			state |= CONNECTED_KAD_FIREWALLED;
+		}
+	}
+	
+	Notify_ShowConnState(state);
+	
+	if (old_state != state) {
+				
+		// Get the changed value 
+		
+		int changed_flags = old_state ^ state;
+		
+		if (changed_flags & CONNECTED_ED2K) {
+			// ED2K status changed
+			wxString connected_server;
+			CServer* ed2k_server = theApp.serverconnect->GetCurrentServer();
+			if (ed2k_server) {
+				connected_server = ed2k_server->GetListName();
+			}
+			if (state & CONNECTED_ED2K) {
+				// We connected to some server
+				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
+
+				AddLogLine(CFormat(_("!Connected to %s %s")) % connected_server % id);
+			} else {
+				if ( theApp.serverconnect->IsConnecting() ) {
+					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
+				} else {
+					AddLogLine(_("Disconnected from ED2K"));
+				}
+			}
+		}
+		
+		if (changed_flags & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
+			if (state & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
+				if (state & CONNECTED_KAD_OK) {
+					AddLogLine(_("Connected to Kad (ok)"));
+				} else {
+					AddLogLine(_("Connected to Kad (firewalled)"));
+				}
+			} else {
+				AddLogLine(_("Disconnected from Kad"));
+			}
+		}
+		
+		old_state = state;
+	}
+	
+	ShowUserCount();
+}
+
 void CamuleApp::ServerUDPSocketHandler(wxSocketEvent& event)
 {
 	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
@@ -2143,6 +2201,24 @@ void CamuleApp::OnUnhandledException()
 	::OnUnhandledException();
 }
 
+void CamuleApp::StartKad()
+{
+	#ifdef __COMPILE_KAD__
+	if (!Kademlia::CKademlia::isRunning() && thePrefs::GetNetworkKademlia()) {
+		Kademlia::CKademlia::start();
+	}
+	#endif
+}
+
+void CamuleApp::StopKad()
+{
+	#ifdef __COMPILE_KAD__
+	// Stop Kad if it's running
+	if (Kademlia::CKademlia::isRunning()) {
+		Kademlia::CKademlia::stop();
+	}
+	#endif
+}
 
 DEFINE_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
 DEFINE_EVENT_TYPE(wxEVT_AMULE_TIMER)

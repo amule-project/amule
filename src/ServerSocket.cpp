@@ -380,7 +380,10 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					SetConnectionState(CS_CONNECTED);
 					theApp.OnlineSig();       // Added By Bouc7
 				}
+
 				serverconnect->SetClientID(new_id);
+				theApp.ShowConnectionState();
+
 				AddLogLineM(false, wxString::Format(_("New clientid is %u"),new_id));
 								
 				theApp.downloadqueue->ResetLocalServerRequests();
@@ -464,7 +467,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						} // No more known tags from server
 					}				
 								
-					Notify_ShowConnState(true,update->GetListName());
+					theApp.ShowConnectionState();
 					Notify_ServerRefresh(update);
 				}
 				break;

@@ -121,8 +121,6 @@ void connect_any_server()
 		AddLogLineM(true, _("Connecting"));
 	
 		theApp.serverconnect->ConnectToAnyServer();
-	
-		theApp.amuledlg->ShowConnectionState(false);
 	}
 }
 

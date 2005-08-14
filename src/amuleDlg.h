@@ -68,7 +68,7 @@ class wxTextCtrl;
 
 #define DEFAULT_SIZE_X  800
 #define DEFAULT_SIZE_Y  600
-
+		
 // CamuleDlg Dialogfeld
 class CamuleDlg : public wxFrame 
 {
@@ -83,9 +83,7 @@ public:
 	void ResetLog(uint32 whichone);
 	
 	void ShowUserCount(const wxString& info = wxEmptyString);
-	#warning Kry: KAD TODO - This defaults must be gone!
-	void ShowConnectionState(bool connected = false, const wxString &server = wxEmptyString);
-	// END KAD TODO
+	void ShowConnectionState(uint32 connection_state);
 
 	void ShowTransferRate();
 	
@@ -108,7 +106,7 @@ public:
 
 	void ShowED2KLinksHandler( bool show );
 
-	void DlgShutDown(wxCloseEvent& evt);
+	void DlgShutDown();
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
 

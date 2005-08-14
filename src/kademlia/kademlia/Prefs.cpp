@@ -184,13 +184,13 @@ void CPrefs::setFirewalled()
 	//current state to prevent false reports during the recheck..
 	m_lastFirewallState = (m_firewalled<2);
 	m_firewalled = 0;
-	Notify_ShowConnState(true, wxT("Kad"));
+	theApp.ShowConnectionState();
 }
 
 void CPrefs::incFirewalled()
 {
 	m_firewalled++;
-	Notify_ShowConnState(true, wxT("Kad"));
+	theApp.ShowConnectionState();
 }
 
 bool CPrefs::getFindBuddy() /*const*/

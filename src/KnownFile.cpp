@@ -234,7 +234,7 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 }
 
 void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
-	#ifdef __COMPILE_KAD__
+	#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
