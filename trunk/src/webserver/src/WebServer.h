@@ -118,9 +118,9 @@ WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
 WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
 
 uint8 GetHigherPrio(uint32 prio, bool autoprio);
-uint32 GetHigherPrioShared(uint32 prio, bool autoprio);
+uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
 uint8 GetLowerPrio(uint32 prio, bool autoprio);
-uint32 GetLowerPrioShared(uint32 prio, bool autoprio);
+uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
 
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;
@@ -799,6 +799,15 @@ class CWebServerBase {
 		void Print(const wxString &s);
 
 		long GetWSPrefs();
+
+		//
+		// Command interface
+		//
+		void Send_ReloadSharedFile_Cmd();
+		
+		void Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
+		void Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
+		void Send_SearchFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
 
 		CamulewebApp	*webInterface;
 
