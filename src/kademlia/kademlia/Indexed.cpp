@@ -85,10 +85,10 @@ CIndexed::CIndexed()
 	readFile();
 }
 
+
 void CIndexed::readFile(void)
 {
 	try {
-
 		uint32 totalLoad = 0;
 		uint32 totalSource = 0;
 		uint32 totalKeyword = 0;
@@ -255,7 +255,9 @@ void CIndexed::readFile(void)
 			AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
 		}
 	} catch (const CIOException& ioe) {
-		AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Exception in CIndexed::readFile (IO error(%i))"),ioe.m_cause));
+		AddDebugLogLineM(true, logKadIndex, wxString::Format(wxT("Exception in CIndexed::readFile (IO error(%i))"), ioe.m_cause));
+	} catch (const wxString& e) {
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::readFile: ") + e);
 	}
 }
 
