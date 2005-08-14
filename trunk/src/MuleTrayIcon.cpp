@@ -165,7 +165,6 @@ void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
 		} else if ( !theApp.serverconnect->IsConnecting() ) {
 			AddLogLineM(true, _("Connecting"));
 			theApp.serverconnect->ConnectToAnyServer();
-			theApp.amuledlg->ShowConnectionState(false);
 		}
 	}
 	if (event.GetId()==TRAY_MENU_DISCONNECT) {

@@ -123,7 +123,7 @@ void CKademlia::stop()
 	if( !m_running ) {
 		return;
 	}
-
+	
 	AddDebugLogLineM(false, logKadMain, wxT("Stopping Kademlia"));
 	m_running = false;
 
@@ -144,6 +144,8 @@ void CKademlia::stop()
 	instance = NULL;
 
 	m_events.clear();
+	
+	theApp.ShowConnectionState();
 }
 
 void CKademlia::process()

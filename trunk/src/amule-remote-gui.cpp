@@ -407,7 +407,7 @@ wxString CamuleRemoteGuiApp::GenFakeCheckUrl2(const CAbstractFile *f)
 
 bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
-	// FIXME: add remote command
+	#warning TODO: Add remote command
 	return true;
 }
 
@@ -492,6 +492,16 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 
 bool CamuleRemoteGuiApp::IsConnectedED2K() {
 	return serverconnect->IsConnected();
+}
+
+void CamuleRemoteGuiApp::StartKad() {
+	CECPacket req(EC_OP_KAD_START);
+	connect->Send(&req);	
+}
+
+void CamuleRemoteGuiApp::StopKad() {
+	CECPacket req(EC_OP_KAD_STOP);
+	connect->Send(&req);	
 }
 
 /*
@@ -652,12 +662,13 @@ bool CServerConnectRem::ReQuery()
             return false;
     }
 
+	int state = 0;
+	#warning KAD TODO - check connection state special tag EC_TAG_CONNSTATE
     CServer *server;
 	m_ID = tag->ClientID();
 	switch (m_ID) {
 		case 0:  // not connected
 	    case 0xffffffff: // connecting
-			theApp.amuledlg->ShowConnectionState(false);
 	    	if ( m_CurrServer ) {
 	    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
 	    		m_CurrServer = 0;
@@ -674,11 +685,11 @@ bool CServerConnectRem::ReQuery()
 		    	}
 		    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
 		    	m_CurrServer = server;
-				theApp.amuledlg->ShowConnectionState(true,
-					server->GetListName() + wxT(" ") + server->GetAddress());
+				state |= CONNECTED_ED2K;
 		    	break;
 	    }
 	}
+	theApp.amuledlg->ShowConnectionState(state);
 	return true;
 }
 

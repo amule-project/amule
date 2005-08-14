@@ -600,7 +600,3 @@ void CSearchDlg::UpdateCatChoice()
 void	CSearchDlg::UpdateProgress(uint32 new_value) {
 	m_progressbar->SetValue(new_value);
 }
-
-void CSearchDlg::CancelKadSearch(unsigned int WXUNUSED(uSearchID)) {
-	// KAD TODO: This does not seem to be needed till we have a icon for Kad search active.
-}

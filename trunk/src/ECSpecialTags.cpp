@@ -599,6 +599,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 	(uint32) (theApp.IsConnectedED2K() ? theApp.serverconnect->GetClientID() : 
 		theApp.serverconnect->IsConnecting() ? 0xffffffff : 0))
 {
+	#warning KAD TODO
 	if ( theApp.serverconnect->GetCurrentServer() ) {
 		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
 	}

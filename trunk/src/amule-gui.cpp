@@ -323,9 +323,9 @@ int CamuleGuiApp::OnExit()
 }
 
 
-void CamuleGuiApp::ShutDown(wxCloseEvent &evt)
+void CamuleGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 {
-	amuledlg->DlgShutDown(evt);
+	amuledlg->DlgShutDown();
 	amuledlg->Destroy();
 	CamuleApp::ShutDown();
 
@@ -685,7 +685,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			amuledlg->ShowNotifier(event.string_value,event.long_value,event.byte_value);
 			break;
 		case SHOW_CONN_STATE:
-			amuledlg->ShowConnectionState(event.byte_value, event.string_value);
+			amuledlg->ShowConnectionState(event.long_value);
 			break;
 		case SHOW_QUEUE_COUNT:
 			if ( amuledlg->transferwnd ) {

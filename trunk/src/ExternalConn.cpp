@@ -1203,7 +1203,19 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		}
-
+		
+		//
+		// Kad
+		//
+		case EC_OP_KAD_START:
+			theApp.StartKad();
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		case EC_OP_KAD_STOP:
+			theApp.StopKad();
+			response = new CECPacket(EC_OP_NOOP);
+			break;			
+		
 		default:
 			wxASSERT(false);	// we should never get here, but...
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));

@@ -497,11 +497,11 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( item > -1 ) {
-		if ( theApp.IsConnectedED2K() )
+		if ( theApp.IsConnectedED2K() ) {
 			theApp.serverconnect->Disconnect();
+		}
 
 		theApp.serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
-		theApp.amuledlg->ShowConnectionState( false );
 	}
 }
 	
@@ -537,7 +537,6 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 					theApp.downloadqueue->StopUDPRequests();
 					theApp.serverconnect->StopConnectionTry();
 					theApp.serverconnect->Disconnect();
-					theApp.amuledlg->ShowConnectionState( false );
 				}
 			
 				RemoveAllServers( wxLIST_STATE_DONTCARE, true);

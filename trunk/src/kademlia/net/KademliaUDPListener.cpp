@@ -144,7 +144,7 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 	bool curCon = CKademlia::getPrefs()->hasHadContact();
 	CKademlia::getPrefs()->setLastContact();
 	if( curCon != CKademlia::getPrefs()->hasHadContact()) {
-		Notify_ShowConnState(true,wxT("Kad"));
+		theApp.ShowConnectionState();
 	}
 
 	byte opcode = data[1];
@@ -1108,7 +1108,7 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 	//Update con state only if something changes.
 	if( CKademlia::getPrefs()->getIPAddress() != firewalledIP ) {
 		CKademlia::getPrefs()->setIPAddress(firewalledIP);
-		Notify_ShowConnState(true, wxT("Kad"));
+		theApp.ShowConnectionState();
 	}
 	CKademlia::getPrefs()->incRecheckIP();
 }
