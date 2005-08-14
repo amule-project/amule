@@ -748,7 +748,7 @@ echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
-echo "  Should aMule Kademlia code be compiled? (DOESN'T WORK)     ${kad_compile:-no}"
+echo "  Should aMule Kademlia code be compiled?                    ${kad_compile:-no}"
 echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
 
 echo
