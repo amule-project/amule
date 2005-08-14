@@ -786,6 +786,8 @@ void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Out
 {
 	wxASSERT( Output != NULL || pShaHashOut != NULL);
 
+	wxASSERT( length <= PARTSIZE); // We never hash more than one PARTSIZE
+	
 	CAICHHashAlgo* pHashAlg = NULL;
 	bool delete_in_string = false;
 	
