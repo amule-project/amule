@@ -2079,6 +2079,7 @@ void CamuleApp::ShowConnectionState() {
 		state |= CONNECTED_ED2K;
 	}
 	
+	#ifdef __COMPILE_KAD__
 	if (Kademlia::CKademlia::isRunning()) {
 		if (!Kademlia::CKademlia::isFirewalled()) {
 			state |= CONNECTED_KAD_OK;
@@ -2086,6 +2087,7 @@ void CamuleApp::ShowConnectionState() {
 			state |= CONNECTED_KAD_FIREWALLED;
 		}
 	}
+	#endif
 	
 	Notify_ShowConnState(state);
 	
