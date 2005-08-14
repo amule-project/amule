@@ -56,16 +56,12 @@ typedef CTag ed2kCTag;
 #include "../../amule.h"
 #include "../../SharedFileList.h"
 #include "../../OtherFunctions.h"
-#include "../../amuleDlg.h"
 #include "../../KnownFile.h"
-#include "KadSearchListCtrl.h"
-#include "../../KadDlg.h"
 #include "DownloadQueue.h"
 #include "SearchList.h"
 #include "MemFile.h"
 #include "ServerConnect.h"
 #include "Server.h"
-#include "SearchDlg.h"
 #include "ClientList.h"
 #include "updownclient.h"
 #include "Logger.h"
@@ -99,13 +95,11 @@ CSearch::CSearch()
 	bio1 = NULL;
 	bio2 = NULL;
 	bio3 = NULL;
-	theApp.amuledlg->kademliawnd->searchList->SearchAdd(this);
 	m_lastResponse = time(NULL);
 }
 
 CSearch::~CSearch()
 {
-	theApp.amuledlg->kademliawnd->searchList->SearchRem(this);
 	delete m_searchTerms;
 
 	ContactMap::iterator it;
@@ -117,7 +111,7 @@ CSearch::~CSearch()
 	for (it2 = m_delete.begin(); it2 != m_delete.end(); it2++) {
 		delete *it2;
 	}
-	theApp.amuledlg->kademliawnd->searchList->SearchRem(this);
+	
 	delete bio1;
 	delete bio2;
 	delete bio3;
@@ -136,7 +130,6 @@ CSearch::~CSearch()
 
 void CSearch::go(void)
 {
-	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 	// Start with a lot of possible contacts, this is a fallback in case search stalls due to dead contacts
 	if (m_possible.empty()) {
 		CUInt128 distance(CKademlia::getPrefs()->getKadID());
@@ -191,7 +184,6 @@ void CSearch::prepareToStop()
 			break;
 		case KEYWORD:
 			baseTime = SEARCHKEYWORD_LIFETIME;
-			theApp.amuledlg->searchwnd->CancelKadSearch(getSearchID());
 			break;
 		case NOTES:
 			baseTime = SEARCHNOTES_LIFETIME;
@@ -216,7 +208,6 @@ void CSearch::prepareToStop()
 	}
 	m_created = time(NULL) - baseTime + SEC(15);
 	m_stoping = true;	
-	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 }
 
 void CSearch::jumpStart(void)
@@ -275,7 +266,6 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 		m_answers++;
 		m_possible.clear();
 		delete results;
-		theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 		return;
 	}
 
@@ -347,7 +337,6 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 			if( m_type == NODECOMPLETE ) {
 				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
 				m_answers++;
-				theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			}
 			break;
 		}
@@ -387,7 +376,6 @@ void CSearch::StorePacket()
 			// The data in 'm_searchTerms' is to be sent several times, so use the don't detach flag.
 			CKademlia::getUDPListener()->sendPacket(m_searchTerms, KADEMLIA_SEARCH_REQ, from->getIPAddress(), from->getUDPPort());
 			m_totalRequestAnswers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
 		case NOTES: {
@@ -397,7 +385,6 @@ void CSearch::StorePacket()
 			bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 			CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_SRC_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
 			m_totalRequestAnswers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
 		case STOREFILE: {
@@ -441,7 +428,6 @@ void CSearch::StorePacket()
 
 				CKademlia::getUDPListener()->publishPacket(from->getIPAddress(), from->getUDPPort(),m_target,id, taglist);
 				m_totalRequestAnswers++;
-				theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 				TagList::const_iterator it;
 				for (it = taglist.begin(); it != taglist.end(); ++it) {
 					delete *it;
@@ -468,7 +454,6 @@ void CSearch::StorePacket()
 				CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			m_totalRequestAnswers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
 		case STORENOTES: {
@@ -503,7 +488,6 @@ void CSearch::StorePacket()
 
 				CKademlia::getUDPListener()->sendPacket( packet, sizeof(packet)-bio.getAvailable(), KADEMLIA_PUB_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
 				m_totalRequestAnswers++;
-				theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			}
 			break;
 		}
@@ -520,7 +504,6 @@ void CSearch::StorePacket()
 			bio.WriteUInt16(thePrefs::GetPort());
 			CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_FINDBUDDY_REQ, from->getIPAddress(), from->getUDPPort());
 			m_answers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
 		case FINDSOURCE:
@@ -539,7 +522,6 @@ void CSearch::StorePacket()
 			bio.WriteUInt16(thePrefs::GetPort());
 			CKademlia::getUDPListener()->sendPacket( &bio, KADEMLIA_CALLBACK_REQ, from->getIPAddress(), from->getUDPPort());
 			m_answers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			break;
 		}
 		case NODECOMPLETE:
@@ -572,7 +554,6 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 			break;
 	}
 	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT(" from ") + Uint32_16toStringIP_Port(fromIP,fromPort));
-	theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 }
 
 void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
@@ -619,7 +600,6 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 		case 1:
 		case 3: {
 			m_answers++;
-			theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 			theApp.downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, clientid);
 			break;
 		}
@@ -782,7 +762,6 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 
 	if (interested) {
 		m_answers++;
-		theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
 	} else {
 		printf("Not adding search results: not interested\n");
@@ -826,7 +805,6 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 		bio.WriteUInt128(m_target);
 		bio.WriteUInt128(check);
 		m_kadPacketSent++;
-		theApp.amuledlg->kademliawnd->searchList->SearchRef(this);
 		#ifdef __DEBUG__
 		wxString Type;
 		switch(m_type) {

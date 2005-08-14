@@ -50,9 +50,6 @@ there client on the eMule forum..
 #include "../../amule.h"
 #include "../../ClientUDPSocket.h"
 #include "../../Packet.h"
-#include "../../amuleDlg.h"
-//#include "../../KadContactListCtrl.h"
-#include "../../KadDlg.h"
 #include "../../ClientList.h"
 #include "../../Statistics.h"
 #include "../../MemFile.h"
@@ -147,7 +144,7 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 	bool curCon = CKademlia::getPrefs()->hasHadContact();
 	CKademlia::getPrefs()->setLastContact();
 	if( curCon != CKademlia::getPrefs()->hasHadContact()) {
-		theApp.amuledlg->ShowConnectionState(true,wxT("Kad"));
+		Notify_ShowConnState(true,wxT("Kad"));
 	}
 
 	byte opcode = data[1];
@@ -261,7 +258,10 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 		contact->setIPAddress(ip);
 		contact->setUDPPort(port);
 		contact->setTCPPort(tport);
+		#warning KAD TODO: Contact list
+		#if 0		
 		theApp.amuledlg->kademliawnd->ContactRef(contact);
+		#endif
 	} else {
 		if(IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
 			// Ignore stated ip and port, use the address the packet came from
@@ -1108,13 +1108,13 @@ void CKademliaUDPListener::processFirewalledResponse (const byte *packetData, ui
 	//Update con state only if something changes.
 	if( CKademlia::getPrefs()->getIPAddress() != firewalledIP ) {
 		CKademlia::getPrefs()->setIPAddress(firewalledIP);
-		theApp.amuledlg->ShowConnectionState(true, wxT("Kad"));
+		Notify_ShowConnState(true, wxT("Kad"));
 	}
 	CKademlia::getPrefs()->incRecheckIP();
 }
 
 //KADEMLIA_FIREWALLED_ACK
-void CKademliaUDPListener::processFirewalledResponse2 (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
+void CKademliaUDPListener::processFirewalledResponse2 (const byte *WXUNUSED(packetData), uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
 	if (lenPacket != 0) {
