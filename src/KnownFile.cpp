@@ -793,8 +793,8 @@ void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Out
 		if (file) {
 			wxASSERT(!in_string);
 			in_string = new unsigned char[Length]; 	 
-			file->Read(in_string,Length); 	 
 			delete_in_string = true;
+			file->Read(in_string,Length); 	 
 		}
 		
 		CMemFile data(in_string, Length);
