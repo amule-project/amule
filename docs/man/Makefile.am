@@ -43,10 +43,10 @@ man_langs = de es fr hu
 install-data-hook:
 	@list='$(dlg_MANS)'; \
 	for file in $$list; do \
-		echo " rm -f $(DESTDIR)$(man1dir)/$${file}DLG.1" ; \
-		rm -f $(DESTDIR)$(man1dir)/$${file}DLG.1 ; \
-		echo " $(LN_S) $(man1dir)/$${file}.1 $(DESTDIR)$(man1dir)/$${file}DLG.1" ; \
-		$(LN_S) $(man1dir)/$${file}.1 $(DESTDIR)$(man1dir)/$${file}DLG.1 ; \
+		echo " $(INSTALL_DATA) $${file}DLG.1 $(DESTDIR)$(man1dir)/$${file}DLG.1" ; \
+		echo ".so $(man1dir)/$${file}.1" > $${file}DLG.1 ; \
+		$(INSTALL_DATA) $${file}DLG.1 $(DESTDIR)$(man1dir)/$${file}DLG.1 ; \
+		rm -f $${file}DLG.1 ; \
 	done
 	@for lang in $(man_langs); do \
 		echo " $(mkinstalldirs) $(DESTDIR)$(mandir)/$$lang/man1" ; \
@@ -61,10 +61,10 @@ install-data-hook:
 		done ; \
 		list='$(dlg_MANS)'; \
 		for file in $$list; do \
-			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1" ; \
-			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1 ; \
-			echo " $(LN_S) $(mandir)/$$lang/man1/$${file}.1 $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1" ; \
-			$(LN_S) $(mandir)/$$lang/man1/$${file}.1 $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1 ; \
+			echo " $(INSTALL_DATA) $(mandir)/$$lang/man1/$${file}DLG.$$lang.1 $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1" ; \
+			echo ".so $(mandir)/$$lang/man1/$${file}.1" > $${file}DLG.$$lang.1 ; \
+			$(INSTALL_DATA) $${file}DLG.$$lang.1 $(DESTDIR)$(mandir)/$$lang/man1/$${file}DLG.1 ; \
+			rm -f $${file}DLG.$$lang.1 ; \
 		done ; \
 	done
 
