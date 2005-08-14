@@ -90,6 +90,7 @@ wxString	CPreferences::s_nick;
 uint16		CPreferences::s_maxupload;
 uint16		CPreferences::s_maxdownload;
 uint16		CPreferences::s_slotallocation;
+wxString	CPreferences::s_Addr;
 uint16		CPreferences::s_port;
 uint16		CPreferences::s_udpport;
 bool		CPreferences::s_UDPDisable;
@@ -177,6 +178,7 @@ uint32		CPreferences::s_HighQueueRanking;
 uint32		CPreferences::s_AutoDropTimer;
 bool 		CPreferences::s_AcceptExternalConnections;
 bool 		CPreferences::s_ECUseTCPPort;
+wxString	CPreferences::s_ECAddr;
 uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
 bool		CPreferences::s_IPFilterOn;
@@ -997,7 +999,10 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
-	
+
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Address"),			s_Addr,	wxEmptyString ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/ECAddress"),			s_ECAddr,	wxEmptyString ) );
+
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  

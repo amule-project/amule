@@ -1017,13 +1017,19 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Create the address where we are going to listen
 	// TODO: read this from configuration file
 	amuleIPV4Address myaddr;
-	myaddr.AnyAddress();
-	wxString ip = myaddr.IPAddress();
+	//myaddr.AnyAddress();
+	if (thePrefs::GetECAddress().IsEmpty() || !myaddr.Hostname(thePrefs::GetECAddress())) {
+		myaddr.AnyAddress();
+	}
+	myaddr.Service(thePrefs::ECPort());
 	
 	// Get ready to handle connections from apps like amulecmd
-	myaddr.Service(thePrefs::ECPort());
 	ECServerHandler = new ExternalConn(myaddr, msg);
 
+	if (thePrefs::GetAddress().IsEmpty() || !myaddr.Hostname(thePrefs::GetAddress())) {
+		myaddr.AnyAddress();
+	}
+	wxString ip = myaddr.IPAddress();
 	// Creates the UDP socket TCP+3.
 	// Used for source asking on servers.
 	myaddr.Service(thePrefs::GetPort()+3);
@@ -1165,7 +1171,7 @@ wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
 // jugle.net fake check
 wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
 {
-	wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
+	wxString strURL = wxT("http://www.jugle.net/?fakecheck=");
 	strURL = validateURI( strURL +  CreateED2kLink( f ) );
 	return strURL;
 }
