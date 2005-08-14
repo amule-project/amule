@@ -380,6 +380,9 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
+	if ( param_count < array_get_size(arg_array) ) {
+		param_count = array_get_size(arg_array);
+	}
 	for(int i = 0; i < param_count; i++) {
 		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
 		if ( (curr_arg_val->flags & PHP_VARFLAG_BYREF) || params[i].byref ) {
