@@ -132,7 +132,7 @@ uint8 GetHigherPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint32 GetHigherPrioShared(uint32 prio, bool autoprio)
+uint8 GetHigherPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_VERYLOW;
@@ -190,7 +190,7 @@ uint8 GetLowerPrio(uint32 prio, bool autoprio)
 	}
 }
 
-uint32 GetLowerPrioShared(uint32 prio, bool autoprio)
+uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 {
 	if (autoprio) {
 		return PR_POWERSHARE;
@@ -346,6 +346,85 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 		}
 		delete reply;
 	}
+}
+
+//
+// Command interface
+//
+void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
+{
+	CECPacket *ec_cmd = 0;
+	CECTag hashtag(EC_TAG_KNOWNFILE, CMD4Hash(file_hash));
+	if (cmd == wxT("prio")) {
+		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
+		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
+	} else if ( cmd == wxT("prioup") ) {
+		SharedFile *file = m_SharedFileInfo.GetByID(file_hash);
+		if ( file ) {
+			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
+			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+				GetHigherPrioShared(file->nFilePriority, file->bFileAutoPriority)));
+		}
+	} else if ( cmd == wxT("priodown") ) {
+		SharedFile *file = m_SharedFileInfo.GetByID(file_hash);
+		if ( file ) {
+			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
+			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+				GetLowerPrioShared(file->nFilePriority, file->bFileAutoPriority)));
+		}
+	}
+	
+	if ( ec_cmd ) {
+		ec_cmd->AddTag(hashtag);
+		Send_Discard_V2_Request(ec_cmd);
+		delete ec_cmd;
+	}
+}
+
+void CWebServerBase::Send_ReloadSharedFile_Cmd()
+{
+	CECPacket ec_cmd(EC_OP_SHAREDFILES_RELOAD);
+	Send_Discard_V2_Request(&ec_cmd);
+}
+
+void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
+{
+	CECPacket *ec_cmd = 0;
+	CECTag hashtag(EC_TAG_PARTFILE, CMD4Hash(file_hash));
+	if (cmd == wxT("pause")) {
+		ec_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
+	} else if (cmd == wxT("resume")) {
+		ec_cmd = new CECPacket(EC_OP_PARTFILE_RESUME);
+	} else if (cmd == wxT("cancel")) {
+		ec_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
+	} else if (cmd == wxT("prio")) {
+		ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
+	} else if (cmd == wxT("prioup")) {
+		DownloadFile *file = m_DownloadFileInfo.GetByID(file_hash);
+		if ( file ) {
+			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+				GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
+		}
+	} else if (cmd == wxT("priodown")) {
+		DownloadFile *file = m_DownloadFileInfo.GetByID(file_hash);
+		if ( file ) {
+			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
+				GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
+		}
+	}
+
+	if ( ec_cmd ) {
+		ec_cmd->AddTag(hashtag);
+		Send_Discard_V2_Request(ec_cmd);
+		delete ec_cmd;
+	}
+}
+
+void CWebServerBase::Send_SearchFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
+{
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
@@ -956,35 +1035,7 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 	// Commands
 	//
 	if (!sOp.IsEmpty() && !sFileHash.IsEmpty()) {
-		CECPacket *file_cmd = 0;
-		CECTag hashtag(EC_TAG_PARTFILE, CMD4Hash(sFileHash));
-		if (sOp == wxT("pause")) {
-			file_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
-		} else if (sOp == wxT("resume")) {
-			file_cmd = new CECPacket(EC_OP_PARTFILE_RESUME);
-		} else if (sOp == wxT("cancel")) {
-			file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
-		} else if (sOp == wxT("prioup")) {
-			DownloadFile *file = m_DownloadFileInfo.GetByID(sFileHash);
-			if ( file ) {
-				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
-				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-					GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
-			}
-		} else if (sOp == wxT("priodown")) {
-			DownloadFile *file = m_DownloadFileInfo.GetByID(sFileHash);
-			if ( file ) {
-				file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
-				hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-					GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
-			}
-		}
-		wxASSERT(file_cmd);
-		if ( file_cmd ) {
-			file_cmd->AddTag(hashtag);
-			Send_Discard_V2_Request(file_cmd);
-			delete file_cmd;
-		}
+		Send_DownloadFile_Cmd(sFileHash, sOp);
 	}
 
 	m_DownloadFileInfo.SetSortOrder(sSort, sDownloadSortRev);
@@ -1328,15 +1379,10 @@ wxString CWebServer::_GetSharedFileList(ThreadData Data) {
 	//
 	// commands: setpriority, reload
 	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) {
-		CECTag tag(EC_TAG_KNOWNFILE, CMD4Hash(_ParseURL(Data, wxT("hash"))));
-		tag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)StrToLong(_ParseURL(Data, wxT("setpriority")))));
-		CECPacket prio_req(EC_OP_SHARED_SET_PRIO);
-		prio_req.AddTag(tag);
-		Send_Discard_V2_Request(&prio_req);
+		Send_SharedFile_Cmd(_ParseURL(Data, _("hash")), _("prio"), StrToLong(_ParseURL(Data, wxT("setpriority"))));
 	}
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
-		CECPacket req(EC_OP_SHAREDFILES_RELOAD);
-		Send_Discard_V2_Request(&req);
+		Send_ReloadSharedFile_Cmd();
 	}
 
 	wxString sSortRev = _ParseURL(Data, wxT("sortreverse"));

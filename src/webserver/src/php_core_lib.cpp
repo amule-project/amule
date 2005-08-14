@@ -186,6 +186,42 @@ void php_native_usort(PHP_VALUE_NODE *)
 
 void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 {
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1");
+		return;
+	}
+	char *str_hash = si->var->value.str_val;
+	
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
+		return;
+	}
+	char *cmd_name = si->var->value.str_val;
+	si = get_scope_item(g_current_scope, "__param_2");
+	PHP_VAR_NODE *opt_param = si ? si->var : 0;
+
+#ifdef AMULEWEB_SCRIPT_EN
+	// "reload" doesn't have "file" argument
+	if ( strcmp(cmd_name, "reload") == 0 ) {
+		CPhPLibContext::g_curr_context->WebServer()->Send_SharedFile_Cmd(wxEmptyString, _("reload"));
+		return;
+	}
+
+	if ( !strcmp(cmd_name, "prio") && !opt_param ) {
+		php_report_error(PHP_ERROR, "Command 'prio' need 3-rd argument");
+		return;
+	}
+
+
+	CPhPLibContext::g_curr_context->WebServer()->Send_SharedFile_Cmd(wxString(char2unicode(str_hash)),
+		wxString(char2unicode(cmd_name)),
+		opt_param ? opt_param->value.int_val : 0);
+
+#else
+	printf("php_native_shared_file_cmd: hash=%s cmd=%s\n", str_hash, cmd_name);
+#endif
 }
 
 /*
@@ -197,14 +233,14 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1");
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
 		return;
 	}
 	char *cmd_name = si->var->value.str_val;
@@ -212,49 +248,14 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
 #ifdef AMULEWEB_SCRIPT_EN
-	DownloadFileInfo *container = DownloadFile::GetContainerInstance();
-
-	CMD4Hash file_hash(wxString(char2unicode(str_hash)));
-	DownloadFile *file = container->GetByID(file_hash);
-	
-	if ( !file ) {
-		php_report_error(PHP_WARNING, "File has not been found in container. Hash=%s", si->var->value.str_val);
+	if ( (!strcmp(cmd_name, "prio") || !strcmp(cmd_name, "setcat")) && !opt_param ) {
+		php_report_error(PHP_ERROR, "Commands 'prio' and 'setcat' needs 3-rd argument");
 		return;
 	}
-	
-	CECPacket *file_cmd = 0;
-	CECTag hashtag(EC_TAG_PARTFILE, file_hash);
-	
-	if ( strcmp(cmd_name, "pause") == 0 ) {
-		file_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
-	} else if ( strcmp(cmd_name, "resume") == 0 ) {
-		file_cmd = new CECPacket(EC_OP_PARTFILE_RESUME);
-	} else if ( strcmp(cmd_name, "cancel") == 0 ) {
-		file_cmd = new CECPacket(EC_OP_PARTFILE_DELETE);
-	} else if ( strcmp(cmd_name, "prio") == 0 ) {
-		if ( !opt_param ) {
-			php_report_error(PHP_ERROR, "Command 'prio' need 3-rd argument");
-			return;
-		}
-		cast_value_dnum(&opt_param->value);
-		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
-		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, opt_param->value.int_val));
-	} else if ( strcmp(cmd_name, "prioup") == 0 ) {
-		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
-		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-			GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
-	} else if ( strcmp(cmd_name, "priodown") == 0 ) {
-		file_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
-		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-			GetLowerPrio(file->lFilePrio, file->bFileAutoPriority)));
-	} else if ( strcmp(cmd_name, "setcat") == 0 ) {
-	} else {
-		php_report_error(PHP_ERROR, "Invalid download command: [%s]", cmd_name);
-		return;
-	} 
-	file_cmd->AddTag(hashtag);
-	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(file_cmd);
-	delete file_cmd;
+		
+	CPhPLibContext::g_curr_context->WebServer()->Send_DownloadFile_Cmd(wxString(char2unicode(str_hash)),
+		wxString(char2unicode(cmd_name)),
+		opt_param ? opt_param->value.int_val : 0);
 
 #else
 	printf("php_native_download_file_cmd: hash=%s cmd=%s\n", str_hash, cmd_name);
