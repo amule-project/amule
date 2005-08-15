@@ -88,7 +88,7 @@ function formCommandSubmit(command)
         <td><a href="javascript:formCommandSubmit('resume');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img name="resume" src="resume.jpeg" border="0" alt="" onLoad=""></a></td>
         <td><a href="javascript:formCommandSubmit('prioup');" target="mainFrame" onClick="MM_nbGroup('down','group1','up','',1)" onMouseOver="MM_nbGroup('over','up','','',1)" onMouseOut="MM_nbGroup('out')"><img name="up" src="up.jpeg" border="0" alt="" onLoad=""></a></td>
         <td><a href="javascript:formCommandSubmit('priodown');" target="mainFrame" onClick="MM_nbGroup('down','group1','down','',1)" onMouseOver="MM_nbGroup('over','down','','',1)" onMouseOut="MM_nbGroup('out')"><img src="down.jpeg" alt="" name="down" width="50" height="20" border="0" onload=""></a></td>
-        <td><a href="javascript:formCommandSubmit('delete');" target="mainFrame" onClick="MM_nbGroup('down','group1','delete','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
+        <td><a href="javascript:formCommandSubmit('cancel');" target="mainFrame" onClick="MM_nbGroup('down','group1','cancel','',1)" onMouseOver="MM_nbGroup('over','delete','','',1)" onMouseOut="MM_nbGroup('out')"><img src="delete.jpeg" alt="" name="delete" width="50" height="20" border="0" onload=""></a></td>
       </tr>
     </table></td>
     <td width="532"><table border="0" cellpadding="0" cellspacing="0">
