@@ -359,6 +359,7 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	
 	// Packet takes ownership of data
 	CPacket* searchpacket = new CPacket(ed2k_data);
+	delete ed2k_data;
 	searchpacket->SetOpCode(OP_SEARCHREQUEST);
 	
 
