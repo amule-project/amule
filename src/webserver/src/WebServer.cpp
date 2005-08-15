@@ -423,8 +423,14 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 	}
 }
 
-void CWebServerBase::Send_SearchFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
+void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 {
+	CECPacket ec_cmd(EC_OP_DOWNLOAD_SEARCH_RESULT);
+	CECTag link_tag(EC_TAG_KNOWNFILE, CMD4Hash(file_hash));
+
+	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+	ec_cmd.AddTag(link_tag);
+	Send_Discard_V2_Request(&ec_cmd);
 }
 
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
@@ -2262,19 +2268,13 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	if (!downloads.IsEmpty() && IsSessionAdmin(Data,sSession) ) {
 		int brk;
 		long category = sCat.IsEmpty() ? 0 : StrToLong(sCat);
-		CECPacket dload_req(EC_OP_DOWNLOAD_SEARCH_RESULT);
+
 		while (downloads.Length()>0) {
 			brk=downloads.First(wxT("|"));
-			CMD4Hash file_hash(downloads.Left(brk));
-			CECTag link_tag(EC_TAG_KNOWNFILE, file_hash);
-			link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, (uint8)category));
-			dload_req.AddTag(link_tag);
-			
+
+			Send_DownloadSearchFile_Cmd(downloads.Left(brk), (uint8)category);
+
 			downloads=downloads.Mid(brk+1);
-		}
-		CECPacket *dload_reply = webInterface->SendRecvMsg_v2(&dload_req);
-		if (dload_reply) {
-			delete dload_reply;
 		}
 	}
 
