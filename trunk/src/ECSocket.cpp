@@ -40,7 +40,7 @@
 #include "StringFunctions.h"	// Needed for unicode2char()
 #include "OPCodes.h"
 
-#define EC_SOCKET_BUFFER_SIZE	32768
+#define EC_SOCKET_BUFFER_SIZE	32768*4
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
 
