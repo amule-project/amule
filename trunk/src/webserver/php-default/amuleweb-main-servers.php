@@ -94,7 +94,7 @@ body {
 			echo "<td>",
 				'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
 				'<img src="connect.gif" width="16" height="16" border="0">','</a>',
-				'<a href="amuleweb-main-servers.php?cmd=delete&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
+				'<a href="amuleweb-main-servers.php?cmd=remove&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
 				'<img src="cancel.gif" width="16" height="16" border="0">','</a>',
 				"</td>";
 

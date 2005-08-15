@@ -294,20 +294,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 	}
 	char *cmd = si->var->value.str_val;
 #ifdef AMULEWEB_SCRIPT_EN
-	CECPacket *req;
-	if ( strcmp(cmd, "connect") == 0 ) {
-		req = new CECPacket(EC_OP_SERVER_CONNECT);
-	} else if ( strcmp(cmd, "remove") == 0 ) {
-		req = new CECPacket(EC_OP_SERVER_REMOVE);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid server command: [%s]", cmd);
-		return;
-	}
-	req->AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
-
-	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(req);
-	
-	delete req;
+	CPhPLibContext::g_curr_context->WebServer()->Send_Server_Cmd(ip, port, wxString(char2unicode(cmd)));
 #else
 	printf("php_native_server_cmd: ip=%08x port=%04d cmd=%s\n", ip, port, cmd);
 #endif
