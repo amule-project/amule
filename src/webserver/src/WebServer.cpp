@@ -439,6 +439,21 @@ void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 	Send_Discard_V2_Request(&ec_cmd);
 }
 
+void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
+{
+	CECPacket *ec_cmd = 0;
+	if ( cmd == _("connect") ) {
+		ec_cmd = new CECPacket(EC_OP_SERVER_CONNECT);
+	} else if ( cmd == _("remove") ) {
+		ec_cmd = new CECPacket(EC_OP_SERVER_REMOVE);
+	}
+	if ( ec_cmd ) {
+		ec_cmd->AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+		Send_Discard_V2_Request(ec_cmd);
+		delete ec_cmd;
+	}
+}
+
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
 {
 	m_Params.bShowUploadQueue = false;
@@ -881,29 +896,17 @@ wxString CWebServer::_GetServerList(ThreadData Data) {
 	wxString sAddServerBox;
 
 	wxString sCmd = _ParseURL(Data, wxT("c"));
-	if (sCmd == wxT("connect") && IsSessionAdmin(Data,sSession) ) {
+	if ( ((sCmd == wxT("connect")) || (sCmd == wxT("remove"))) && IsSessionAdmin(Data,sSession) ) {
 		wxString sIP = _ParseURL(Data, wxT("ip"));
 		wxString sPort = _ParseURL(Data, wxT("port"));
 		uint32 ip;
 		uint32 port;
-		CECPacket req(EC_OP_SERVER_CONNECT);
 		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
-			req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+			Send_Server_Cmd(ip, port, sCmd);
 		}
-		Send_Discard_V2_Request(&req);
 	} else if (sCmd == wxT("disconnect") && IsSessionAdmin(Data,sSession)) {
 		CECPacket req(EC_OP_SERVER_DISCONNECT);
 		Send_Discard_V2_Request(&req);
-	} else if (sCmd == wxT("remove") && IsSessionAdmin(Data,sSession)) {
-		wxString sIP = _ParseURL(Data, wxT("ip"));
-		wxString sPort = _ParseURL(Data, wxT("port"));
-		uint32 ip;
-		uint32 port;
-		if ( sIP.ToULong((unsigned long *)&ip, 16) && sPort.ToULong((unsigned long *)&port, 10) ) {
-			CECPacket req(EC_OP_SERVER_REMOVE);
-			req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
-			Send_Discard_V2_Request(&req);
-		}
 	} else if (sCmd == wxT("options")) {
 		sAddServerBox = _GetAddServerBox(Data);
 	}
