@@ -48,16 +48,12 @@ body {
 		function my_cmp($a, $b)
 		{
 			global $sort_order, $sort_reverse;
-			if ( $sort_order == "name" ) {
-				$result = $a->name > $b->name;
-			} elseif ( $sort_order == "desc" ) {
-				$result = $a->desc > $b->desc;
-			} elseif ( $sort_order == "users" ) {
-				$result = $a->users > $b->users;
-			} elseif ( $sort_order == "max_users" ) {
-				$result = $a->maxusers > $b->maxusers;
-			} elseif ( $sort_order == "files" ) {
-				$result = $a->files > $b->files;
+			switch ( $sort_order) {
+				case "name": $result = $a->name > $b->name; break;
+				case "desc": $result = $a->desc > $b->desc; break;
+				case "users": $result = $a->users > $b->users; break;
+				case "max_users": $result = $a->maxusers > $b->maxusers; break;
+				case "files":$result = $a->files > $b->files; break;
 			}
 
 			if ( $sort_reverse ) {
