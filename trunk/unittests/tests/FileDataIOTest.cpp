@@ -243,9 +243,7 @@ struct RWInterface<CUInt128>
 	}
 
 	static CUInt128 readValue(CFileDataIO* file) {
-		CUInt128 value;
-		file->ReadUInt128(&value);
-		return value;
+		return file->ReadUInt128();
 	}
 	
 	static void writeValue(CFileDataIO* file, CUInt128 value) {

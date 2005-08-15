@@ -167,10 +167,8 @@ void CRoutingZone::readFile(void)
 		if (file.Open(m_filename, CFile::read)) {
 
 			numContacts = file.ReadUInt32();
-
-			CUInt128 id;
-			for (uint32 i=0; i<numContacts; i++) {
-				file.ReadUInt128(&id);
+			for (uint32 i = 0; i < numContacts; i++) {
+				CUInt128 id = file.ReadUInt128();
 				uint32 ip = file.ReadUInt32();
 				uint16 udpPort = file.ReadUInt16();
 				uint16 tcpPort = file.ReadUInt16();

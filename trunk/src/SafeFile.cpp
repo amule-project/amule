@@ -146,11 +146,15 @@ uint32 CFileDataIO::ReadUInt32() const
 
 
 
-void CFileDataIO::ReadUInt128(Kademlia::CUInt128 *pVal) const
+CUInt128 CFileDataIO::ReadUInt128() const
 {
-	uint32* data = (uint32*) pVal->getDataPtr();
-	for (int i = 0; i < 4; i++)
+	CUInt128 value;
+	uint32* data = (uint32*)value.getDataPtr();
+	for (int i = 0; i < 4; i++) {
 		data[i] = ReadUInt32();
+	}
+
+	return value;
 }
 
 

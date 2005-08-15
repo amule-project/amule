@@ -119,7 +119,8 @@ amulegui_SOURCES = \
 	StatisticsDlg.cpp \
 	StatTree.cpp \
 	StringFunctions.cpp \
-	TransferWnd.cpp 
+	TransferWnd.cpp \
+	kademlia/utils/UInt128.cpp
 
 amule_SOURCES = \
 	AddFriend.cpp \
