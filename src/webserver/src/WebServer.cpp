@@ -238,7 +238,13 @@ CParsedUrl::CParsedUrl(const wxString &url)
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
 	    	wxString param_val = tkz.GetNextToken();
-	    	m_params[param_val.BeforeFirst('=')] = param_val.AfterFirst('=');
+	    	wxString key = param_val.BeforeFirst('=');
+	    	wxString val = param_val.AfterFirst('=');
+	    	if ( m_params.count(key) ) {
+	    		m_params[key] = m_params[key] + _("|") + val;
+	    	} else {
+	    		m_params[key] = val;
+	    	}
 		}
     }
 }
@@ -756,30 +762,9 @@ void CWebServer::ProcessURL(ThreadData Data) {
 	}
 }
 
-
-wxString CWebServer::_ParseURLArray(ThreadData Data, wxString fieldname) {
-
-	wxString URL = Data.sURL;
-	wxString res,temp;
-	while (URL.Length()>0) {
-		int pos=URL.MakeLower().Find(fieldname.MakeLower() + wxT("="));
-		if (pos>-1) {
-			temp=_ParseURL(Data,fieldname);
-			if (temp.IsEmpty()) break;
-			res.Append(temp+wxT("|"));
-			Data.sURL.Remove(pos, 10);
-			URL=Data.sURL;
-			//URL.Remove(pos,10);
-		} else break;
-	}
-	return res;
-}
-
-
 wxString CWebServer::_ParseURL(ThreadData Data, wxString fieldname){
 	return Data.parsedURL.Param(fieldname);
 }
-
 
 wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 
@@ -2264,7 +2249,7 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 	wxString sCat = _ParseURL(Data, wxT("cat"));
 	wxString Out = m_Templates.sSearch;
 
-	wxString downloads=_ParseURLArray(Data,wxT("downloads"));
+	wxString downloads=_ParseURL(Data,wxT("downloads"));
 	if (!downloads.IsEmpty() && IsSessionAdmin(Data,sSession) ) {
 		int brk;
 		long category = sCat.IsEmpty() ? 0 : StrToLong(sCat);
@@ -2274,6 +2259,9 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 
 			Send_DownloadSearchFile_Cmd(downloads.Left(brk), (uint8)category);
 
+			if ( brk == -1 ) {
+				break;
+			}
 			downloads=downloads.Mid(brk+1);
 		}
 	}

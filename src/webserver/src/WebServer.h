@@ -890,7 +890,7 @@ class CWebServer : public CWebServerBase {
 		wxString 	_GetSearch(ThreadData);
 
 		wxString	_ParseURL(ThreadData Data, wxString fieldname); 
-		wxString	_ParseURLArray(ThreadData Data, wxString fieldname);
+
 		bool		_IsLoggedIn(ThreadData Data, long lSession);
 		void		_RemoveTimeOuts(ThreadData Data, long lSession);
 		bool		_RemoveSession(ThreadData Data, long lSession);
