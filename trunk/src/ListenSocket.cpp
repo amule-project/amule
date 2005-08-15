@@ -127,7 +127,6 @@ CClientReqSocket::CClientReqSocket(CUpDownClient* in_client, const CProxyData *P
 	SetClient(in_client);
 	ResetTimeOutTimer();
 	deletethis = false;
-	last_action = ACTION_NONE;
 
 	my_handler = &g_clientReqSocketHandler;
 	SetEventHandler(*my_handler, CLIENTREQSOCKET_HANDLER);
@@ -191,18 +190,12 @@ bool CClientReqSocket::CheckTimeOut()
 		}
 	}
 	
-	// Kry - Last action check added so we don't remove sources before trying to 
-	// connect to them.
-	 if (last_action == ACTION_NONE) {
-		 timeout_timer = ::GetTickCount();
-		 return false;
-	 }
-	
 	if (::GetTickCount() - timeout_timer > uTimeout){
 		timeout_timer = ::GetTickCount();
 		Disconnect(wxT("Timeout"));
 		return true;
 	}
+	
 	return false;	
 }
 
@@ -213,12 +206,6 @@ void CClientReqSocket::SetClient(CUpDownClient* pClient)
 	if (m_client) {
 		m_client->SetSocket( this );
 	}
-}
-
-
-bool CClientReqSocket::Close()
-{
-	return CEMSocket::Close();
 }
 
 
@@ -1710,13 +1697,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 }
 
 
-bool CClientReqSocket::Connect(amuleIPV4Address addr, bool wait)
-{
-	last_action = ACTION_CONNECT;
-	return CEMSocket::Connect(addr, wait);
-}
-
-
 void CClientReqSocket::OnConnect(int nErrorCode)
 {
 	if (nErrorCode) {
@@ -1735,7 +1715,6 @@ void CClientReqSocket::OnConnect(int nErrorCode)
 
 void CClientReqSocket::OnSend(int nErrorCode)
 {
-	last_action = ACTION_SEND;
 	ResetTimeOutTimer();
 	CEMSocket::OnSend(nErrorCode);
 }
@@ -1743,36 +1722,10 @@ void CClientReqSocket::OnSend(int nErrorCode)
 
 void CClientReqSocket::OnReceive(int nErrorCode)
 {
-	last_action = ACTION_RECEIVE;
 	ResetTimeOutTimer();
 	CEMSocket::OnReceive(nErrorCode);
 }
 
-
-void CClientReqSocket::RepeatLastAction() {
-	switch (last_action) {
-		case ACTION_NONE:
-			break;
-		case ACTION_SEND:
-			OnSend(0);
-		case ACTION_RECEIVE:
-			OnReceive(0);
-		case ACTION_CONNECT: {
-			byConnected = ES_DISCONNECTED;			
-			amuleIPV4Address addr;
-			if (m_client) {
-				addr.Hostname(m_client->GetConnectIP());
-				addr.Service(m_client->GetUserPort());
-			} else {
-				GetPeer(addr);
-			}
-			Connect(addr,FALSE); // non blocking.
-			break;
-		}
-		default:
-			break;
-	}
-}
 
 void CClientReqSocket::OnError(int nErrorCode)
 {

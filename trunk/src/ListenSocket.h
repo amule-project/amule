@@ -71,12 +71,6 @@ class CUpDownClient;
 class CPacket;
 class CTimerWnd;
 
-enum LastActionType {
-	ACTION_NONE,
-	ACTION_CONNECT,
-	ACTION_SEND,
-	ACTION_RECEIVE
-};
 
 class CClientReqSocket : public CEMSocket
 {
@@ -85,9 +79,6 @@ class CClientReqSocket : public CEMSocket
 public:
 	CClientReqSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientReqSocket();
-	
-	virtual	bool 	Close();
-	virtual	bool 	Connect(amuleIPV4Address addr, bool wait);
 	
 	void		Disconnect(const wxString& strReason);
 
@@ -102,9 +93,6 @@ public:
 	void		OnSend(int nErrorCode);
 	void		OnReceive(int nErrorCode);
 	
-	LastActionType	last_action;	
-	void		RepeatLastAction();
-
 	void		OnClose(int nErrorCode);
 	void		OnError(int nErrorCode);
 	
