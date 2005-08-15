@@ -78,7 +78,10 @@ public:
 		m_emptyFile = new CFile();
 		m_emptyFile->Create(wxT("FileDataIOTest.empty"), true);
 		ASSERT_TRUE(m_emptyFile->IsOpened());
-	
+		m_emptyFile->Close();
+		m_emptyFile->Open(wxT("FileDataIOTest.empty"), CFile::read_write);
+		ASSERT_TRUE(m_emptyFile->IsOpened());
+		
 		m_predefFile = new CFile();
 		m_predefFile->Create(wxT("FileDataIOTest.dat"), true);
 		ASSERT_TRUE(m_predefFile->IsOpened());
@@ -472,6 +475,83 @@ public:
 };
 
 
+template <typename IMPL>
+class StringTest : public FileDataIOFixture<IMPL>
+{
+public:
+	StringTest()
+		: FileDataIOFixture<IMPL>(wxT("String")) {}
+	
+	struct Encoding
+	{
+		EUtf8Str		id;
+		const char*		header;
+		size_t			headLen;
+	};
+	
+	void run() {
+		CFileDataIO* file = this->m_emptyFile;
+	
+		// TODO: Need to test non-ascii values when using unicode/etc
+		Encoding encodings[] = 
+		{
+			{utf8strNone,	NULL,			0},
+			{utf8strOptBOM,	"\xEF\xBB\xBF",	3},
+			{utf8strRaw,	NULL,			0}
+		};
+		
+		
+		const wxChar* testData[] = 
+		{
+			wxT("0123456789abcdef"),
+			wxT("")
+		};
+		
+	
+		for (size_t str = 0; str < 2; ++str) {
+			for (size_t enc = 0; enc < 3; ++enc) {
+				const char* curStr = testData[str];
+				size_t strLen = strlen(curStr);
+				size_t headLen = encodings[enc].headLen;
+				
+				file->WriteString(curStr, encodings[enc].id, 2);
+				ASSERT_EQUALS(strLen + 2 + headLen, file->GetPosition());
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(strLen + headLen, file->ReadUInt16());
+
+				// Check header (if any)
+				if (encodings[enc].header) {
+					char head[headLen];
+					file->Read(head, headLen);
+					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
+				}
+				
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(curStr, file->ReadString(encodings[enc].id, 2));
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				
+				
+				file->WriteString(curStr, encodings[enc].id, 4);
+				ASSERT_EQUALS(strLen + 4 + headLen, file->GetPosition());
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(strLen + headLen, file->ReadUInt32());
+
+				// Check header (if any)
+				if (encodings[enc].header) {
+					char head[headLen];
+					file->Read(head, headLen);
+					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
+				}
+				
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(curStr, file->ReadString(encodings[enc].id, 4));
+				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+			}
+		}
+	}
+};
+
+
 /////////////////////////////////////////////////////////////////////
 // Registration of all tests
 
@@ -489,6 +569,7 @@ WriteTest<CFile, CUInt128, 16>		CFileWriteCUInt128Test;
 
 SeekTest<CFile>						CFileSeekTest;
 WritePastEndTest<CFile>				CFileWritePastEnd;
+StringTest<CFile>					CFileStringTest;
 
 
 ReadTest<CMemFile, uint8, 1>		CMemFileReadUInt8Test;
@@ -505,6 +586,7 @@ WriteTest<CMemFile, CUInt128, 16>	CMemFileWriteCUInt128Test;
 
 SeekTest<CMemFile>					CMemFileSeekTest;
 WritePastEndTest<CMemFile>			CMemFileWritePastEnd;
+StringTest<CMemFile>				CMemFileStringTest;
 
 
 // TODO:
