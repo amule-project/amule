@@ -36,10 +36,12 @@
 #include "StringFunctions.h"	// Needed for the utf8 types.
 #include "MuleDebug.h"			// Needed for CMuleException
 
-namespace Kademlia{
+namespace Kademlia {
 	class CUInt128;
 }
+using Kademlia::CUInt128;
 class CMD4Hash;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 class CFileDataIO
@@ -55,15 +57,15 @@ public:
 	virtual uint8		ReadUInt8() const;
 	virtual uint16		ReadUInt16() const;
 	virtual uint32		ReadUInt32() const;
-	virtual void		ReadUInt128(Kademlia::CUInt128 *pVal) const;
+	virtual CUInt128	ReadUInt128() const;
 	virtual CMD4Hash	ReadHash() const;
- 	virtual wxString ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
-	virtual wxString ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
+ 	virtual wxString	ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
+	virtual wxString	ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
 
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
-	virtual void WriteUInt128(const Kademlia::CUInt128& pVal);
+	virtual void WriteUInt128(const CUInt128& pVal);
 	virtual void WriteHash(const CMD4Hash& hash);
 	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
 

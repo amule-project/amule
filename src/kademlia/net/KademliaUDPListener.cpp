@@ -241,8 +241,7 @@ void CKademliaUDPListener::processPacket(const byte* data, uint32 lenData, uint3
 void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 ip, uint16 port, uint16 tport)
 {
 	CMemFile bio((byte*)data, lenData);
-	CUInt128 id;
-	bio.ReadUInt128(&id);
+	CUInt128 id = bio.ReadUInt128();
 	bio.ReadUInt32();
 	bio.ReadUInt16();
 	if( tport ) {
@@ -274,9 +273,8 @@ void CKademliaUDPListener::addContacts( const byte *data, uint32 lenData, uint16
 {
 	CMemFile bio((byte*)data, lenData );
 	CRoutingZone *routingZone = CKademlia::getRoutingZone();
-	CUInt128 id;
 	for (uint16 i=0; i<numContacts; i++) {
-		bio.ReadUInt128(&id);
+		CUInt128 id = bio.ReadUInt128();
 		uint32 ip = bio.ReadUInt32();
 		ip = ENDIAN_NTOHL(ip);
 		uint16 port = bio.ReadUInt16();
@@ -425,14 +423,12 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	}
 
 	//This is the target node trying to be found.
-	CUInt128 target;
-	bio.ReadUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
 	distance.XOR(target);
 
 	//This makes sure we are not mistaken identify. Some client may have fresh installed and have a new hash.
-	CUInt128 check;
-	bio.ReadUInt128(&check);
+	CUInt128 check = bio.ReadUInt128();
 	if( CKademlia::getPrefs()->getKadID().compareTo(check)) {
 		return;
 	}
@@ -485,8 +481,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 
 	// What search does this relate to
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 target;
-	bio.ReadUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 	uint16 numContacts = bio.ReadUInt8();
 
 	// Verify packet is expected size
@@ -497,11 +492,11 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 	// Set contact to alive.
 	routingZone->setAlive(ip, port);
 
-	CUInt128 id;
+	
 	ContactList *results = new ContactList;
 	try {
 		for (uint16 i=0; i<numContacts; i++) {
-			bio.ReadUInt128(&id);
+			CUInt128 id = bio.ReadUInt128();
 			uint32 ip = bio.ReadUInt32();
 			uint16 port = bio.ReadUInt16();
 			uint16 tport = bio.ReadUInt16();
@@ -675,8 +670,7 @@ void CKademliaUDPListener::processSearchRequest (const byte *packetData, uint32 
 	}
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 target;
-	bio.ReadUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 	uint8 restrictive = bio.ReadUInt8();
 
 #ifdef _DEBUG
@@ -909,8 +903,7 @@ void CKademliaUDPListener::processPublishResponse (const byte *packetData, uint3
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 file;
-	bio.ReadUInt128(&file);
+	CUInt128 file = bio.ReadUInt128();
 
 	bool loadResponse = false;
 	uint8 load = 0;
@@ -931,10 +924,8 @@ void CKademliaUDPListener::processSearchNotesRequest (const byte *packetData, ui
 	}
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 target;
-	bio.ReadUInt128(&target);
-	CUInt128 source;
-	bio.ReadUInt128(&source);
+	CUInt128 target = bio.ReadUInt128();
+	CUInt128 source = bio.ReadUInt128();
 
 	CKademlia::getIndexed()->SendValidNoteResult(target, source, ip, port);
 }
@@ -1053,8 +1044,7 @@ void CKademliaUDPListener::processPublishNotesResponse (const byte *packetData, 
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 file;
-	bio.ReadUInt128(&file);
+	CUInt128 file = bio.ReadUInt128();
 
 	bool loadResponse = false;
 	uint8 load = 0;
@@ -1140,10 +1130,8 @@ void CKademliaUDPListener::processFindBuddyRequest (const byte *packetData, uint
 	}
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 BuddyID;
-	bio.ReadUInt128(&BuddyID);
-	CUInt128 userID;
-	bio.ReadUInt128(&userID);
+	CUInt128 BuddyID = bio.ReadUInt128();
+	CUInt128 userID = bio.ReadUInt128();
 	uint16 tcpport = bio.ReadUInt16();
 
 	CContact contact;
@@ -1172,14 +1160,12 @@ void CKademliaUDPListener::processFindBuddyResponse (const byte *packetData, uin
 
 
 	CMemFile bio((byte*)packetData, lenPacket);
-	CUInt128 check;
-	bio.ReadUInt128(&check);
+	CUInt128 check = bio.ReadUInt128();
 	check.XOR(CUInt128(true));
 	if( CKademlia::getPrefs()->getKadID().compareTo(check)) {
 		return;
 	}
-	CUInt128 userID;
-	bio.ReadUInt128(&userID);
+	CUInt128 userID = bio.ReadUInt128();
 	uint16 tcpport = bio.ReadUInt16();
 
 	CContact contact;
@@ -1201,12 +1187,10 @@ void CKademliaUDPListener::processCallbackRequest (const byte *packetData, uint3
 	CUpDownClient* buddy = theApp.clientlist->GetBuddy();
 	if( buddy != NULL ) {
 		CMemFile bio((byte*)packetData, lenPacket);
-		CUInt128 check;
-		bio.ReadUInt128(&check);
+		CUInt128 check = bio.ReadUInt128();
 		// JOHNTODO: Filter bad buddies
 		//CUInt128 bud(buddy->GetBuddyID());
-		CUInt128 file;
-		bio.ReadUInt128(&file);
+		CUInt128 file = bio.ReadUInt128();
 		uint16 tcp = bio.ReadUInt16();
 		CMemFile bio2(lenPacket+6);
 		bio2.WriteUInt128(check);

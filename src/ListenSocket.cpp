@@ -1565,14 +1565,12 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			CMemFile data((byte*)packet, size);
-			Kademlia::CUInt128 check;
-			data.ReadUInt128(&check);
+			CUInt128 check = data.ReadUInt128();
 			check.XOR(Kademlia::CUInt128(true));
 			if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
 				break;
 			}
-			Kademlia::CUInt128 fileid;
-			data.ReadUInt128(&fileid);
+			CUInt128 fileid = data.ReadUInt128();
 			byte fileid2[16];
 			fileid.toByteArray(fileid2);
 			CKnownFile* reqfile;

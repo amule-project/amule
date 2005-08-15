@@ -105,8 +105,7 @@ void CPrefs::readFile()
 		if (file.Open(m_filename,CFile::read)) {
 			m_ip = file.ReadUInt32();
 			file.ReadUInt16();
-			file.ReadUInt128(&m_clientID);
-			file.Close();
+			m_clientID = file.ReadUInt128();
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
