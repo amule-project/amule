@@ -807,7 +807,10 @@ class CWebServerBase {
 		
 		void Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
 		void Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
-		void Send_SearchFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg = 0);
+		
+		void Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat);
+		
+		void Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd);
 
 		CamulewebApp	*webInterface;
 

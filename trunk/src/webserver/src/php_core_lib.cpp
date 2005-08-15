@@ -203,11 +203,6 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
 #ifdef AMULEWEB_SCRIPT_EN
-	// "reload" doesn't have "file" argument
-	if ( strcmp(cmd_name, "reload") == 0 ) {
-		CPhPLibContext::g_curr_context->WebServer()->Send_SharedFile_Cmd(wxEmptyString, _("reload"));
-		return;
-	}
 
 	if ( !strcmp(cmd_name, "prio") && !opt_param ) {
 		php_report_error(PHP_ERROR, "Command 'prio' need 3-rd argument");
@@ -221,6 +216,15 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 
 #else
 	printf("php_native_shared_file_cmd: hash=%s cmd=%s\n", str_hash, cmd_name);
+#endif
+}
+
+void php_native_reload_shared_file_cmd(PHP_VALUE_NODE *)
+{
+#ifdef AMULEWEB_SCRIPT_EN
+	CPhPLibContext::g_curr_context->WebServer()->Send_ReloadSharedFile_Cmd();
+#else
+	printf("php_native_reload_shared_file_cmd\n");
 #endif
 }
 
@@ -727,6 +731,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
 		3,
 		php_native_shared_file_cmd,
+	},
+	{
+		"amule_do_reload_shared_cmd",
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		0, php_native_reload_shared_file_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
