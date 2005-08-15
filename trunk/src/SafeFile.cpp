@@ -294,15 +294,16 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			WriteUInt16(real_length);
 			break;					
 	}		
-	if (sLength) {
-		if (eEncode == utf8strOptBOM) {
-			Write(BOMHeader,3);
-		}
-		// We dont include the NULL terminator.
-		// It is because we write the size, so the NULL is not necessary.		
-		Write(s, sLength);
+		
+	if (eEncode == utf8strOptBOM) {
+		Write(BOMHeader, 3);
 	}
+	
+	// We dont include the NULL terminator.
+	// It is because we write the size, so the NULL is not necessary.		
+	Write(s, sLength);
 }
+
 
 void CFileDataIO::WriteString(const wxString& rstr, EUtf8Str eEncode, uint8 SizeLen)
 {
