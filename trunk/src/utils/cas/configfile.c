@@ -74,7 +74,7 @@ int writeconfig(void)
 	return 1;
 }
 
-// Jacobo221 - [ToDo] There should be a check for corrupt config files!
+/* Jacobo221 - [ToDo] There should be a check for corrupt config files! */
 int readconfig(CONF *config)
 {
 	char buffer[120], option[15], *path;
@@ -106,16 +106,16 @@ int readconfig(CONF *config)
 	buffer[0] = 0;
 	while (!feof(conf)) {
 		ler = fgetc(conf);
-		if (ler == 13); // Jacobo221 - Make it DOS compatible
+		if (ler == 13); /* Jacobo221 - Make it DOS compatible */
 		else if (ler != 10) {
 			sprintf(buffer, "%s%c", buffer, ler);
 		} else {
-			// Jacobo221 - [ToDo] Only first char per line is comment...
+			/* Jacobo221 - [ToDo] Only first char per line is comment... */
 			if (buffer[0] != '#') {
-				// Only two fileds per line
+				/* Only two fileds per line */
 				sscanf(buffer, "%s %*s", option);
 
-				// Jacobo221 - [ToDo] So lines can't be swapped...
+				/* Jacobo221 - [ToDo] So lines can't be swapped... */
 				if (strcmp(option, "font") == 0)
 					sscanf(buffer, "%*s %s", config->font);
 				if (strcmp(option, "font_size") == 0)

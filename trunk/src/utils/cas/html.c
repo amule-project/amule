@@ -41,7 +41,7 @@
 
 int create_html(char stats[20][80], char *lines[6], char template[120])
 {
-	// Strings
+	/* Strings */
 	char version[25], upload[25], download[25];
 	char *search[] = {"#VERSION#", "#CLIENT#", "#NICK#", "#UPLOADRATE#" ,
 		"#DOWNLOADRATE#" , "#QUEUE#" , "#NUMSHARE#" , "#SESSIONUP#" ,
@@ -56,7 +56,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 		stats[7] , stats[8] , stats[14] , stats[13] , stats[11] , stats[10] ,
 		stats[1] , stats[2] , stats[3] };
 
-	// get some memory to read the template into
+	/* get some memory to read the template into */
 	int fdTmpl;
 	if ((fdTmpl = open(template, O_RDONLY)) < 0)
 	{
@@ -73,7 +73,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	}
 	close(fdTmpl);
 
-	// 2 times the size of the template should be enougth
+	/* 2 times the size of the template should be enougth */
 	int size = sb.st_size*2;
 	char *mem = malloc(size);
 	if (NULL == mem)
@@ -83,7 +83,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	}
 	memset(mem, '\0', size);
 
-	// read the template into the memory
+	/* read the template into the memory */
 	int ler;
 	FILE *fTmpl = fopen(template,"r");
 	while ((ler=fgetc(fTmpl)) != EOF)
@@ -92,16 +92,16 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	}
 	fclose(fTmpl);
 	
-	//printf ("HTML: %s\n", mem);
+	/* printf ("HTML: %s\n", mem); */
 
 	int t;
 	for (t=0; t<=13; t++)
 	{
-		// replace the special tags
+		/* replace the special tags */
 		replace(mem, search[t], repl[t]);
 	}
 
-	//printf("FINAL: %s\n",mem);
+	/* printf("FINAL: %s\n",mem); */
 
 	char *path = get_path(".aMule/aMule-online-sign.html");
 	if (NULL == path)
