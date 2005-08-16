@@ -78,14 +78,18 @@ void CSearchManager::stopSearch(uint32 searchID, bool delayDelete)
 		return;
 	}
 	
-	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+	SearchMap::iterator it = m_searches.begin();
+	while ( it != m_searches.end()) {
 		if (it->second->m_searchID == searchID) {
 			if(delayDelete) {
 				it->second->prepareToStop();
+				++it;
 			} else {
 				delete it->second;
-				m_searches.erase(it);
+				m_searches.erase(it++);
 			}
+		} else {
+			++it;
 		}
 	}
 }
