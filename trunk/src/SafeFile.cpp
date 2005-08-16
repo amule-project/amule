@@ -298,10 +298,12 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 	if (eEncode == utf8strOptBOM) {
 		Write(BOMHeader, 3);
 	}
-	
-	// We dont include the NULL terminator.
-	// It is because we write the size, so the NULL is not necessary.		
-	Write(s, sLength);
+
+	// Only attempt to write non-NULL strings.
+	if (sLength) {
+		// No NULL terminator is written since we explicitly specify the length
+		Write(s, sLength);
+	}
 }
 
 
