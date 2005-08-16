@@ -126,7 +126,7 @@ AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for 
 AC_ARG_ENABLE(systray, [  --disable-systray          disable taskbar icon support],
 			systray="$enableval", systray="yes")
 
-AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      compile taskbar icon with support for UTF-8 encoded strings)],
+AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in taskbar icon],
 		utf8_systray="$enableval", utf8_systray="no")
 
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
@@ -487,41 +487,23 @@ esac
 AC_MSG_CHECKING([whether taskbar icon support should be compiled])
 AC_MSG_RESULT($systray)
 
-case "$systray" in
-no) TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
-     ;;
-esac
-
-#systray type (GTK/WX)
-
-case "$gtk_tray" in
-no) TRAY_FLAGS="$TRAY_FLAGS -DUSE_WX_TRAY"
-     ;;
-esac
-
-AC_SUBST(TRAY_FLAGS)
-
-# utf8_systray enable
-AC_MSG_CHECKING([whether taskbar icon should use UTF-8 strings])
-AC_MSG_RESULT($utf8_systray)
-
-case "$utf8_systray" in
-yes)
-	if test x"$systray" = xyes; then
-		UTF8_SYSTRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
-		USE_UTF8_SYSTRAY="yes"
-		if test x"$WX_VERSION" = x"any"; then
-			echo "UTF-8 GTK SysTray disabled, wx native settings will be used"
-			utf8_systray="no"		
-		fi
+if test x$systray == xno; then
+	TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
+else
+	#systray type (GTK/WX)
+	if test x$gtk_tray == xno; then
+		TRAY_FLAGS="-DUSE_WX_TRAY"
 	else
-		echo "***** Warning if you want to enable UTF-8 support for taskbar icon, --enable-systray must be active"
-		utf8_systray="no"		
-	fi
-	;;
-esac
+		# utf8_systray enable
+		AC_MSG_CHECKING([whether taskbar icon should use UTF-8 strings])
+		AC_MSG_RESULT($utf8_systray)
 
-AC_SUBST(UTF8_SYSTRAY_FLAGS)
+		if test x$utf8_systray == xyes; then
+			TRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
+		fi
+	fi
+fi
+AC_SUBST(TRAY_FLAGS)
 
 AC_SUBST(GTK_DEFS)
 
@@ -743,7 +725,9 @@ echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with taskbar icon support?        ${systray:-yes}"
 echo "  Should aMule be compiled with old GTK taskbar icon?        ${gtk_tray:-no}"
-echo "  Should aMule be compiled with UTF-8 taskbar icon support?  ${utf8_systray:-no}"
+if test x$gtk_tray == xyes; then
+	echo "  Should aMule be compiled with UTF-8 taskbar icon support?  ${utf8_systray:-no}"
+fi
 echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET:-no}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-no}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
