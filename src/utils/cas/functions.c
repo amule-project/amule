@@ -73,7 +73,6 @@ char *get_path(char *file)
 			pwd = getpwuid(uid);
 			endpwent();
 
-			// if (pwd == NULL || pwd->pw_dir == NULL) could brake on left-handed compilers
 			/* XXX
 			 * Section 6.5.14 of ANSI C specs (grab C99 at http://www.nirvani.net/docs/ansi_c.pdf)
 			 * states this:
@@ -166,15 +165,15 @@ void replace(char *tmpl, const char *search, const char *replace)
 	char *retStr = NULL;
 	int	befLen,srchLen,repLen,totLen;
 
-	//returning the 'tmpl' if 'search' is NULL
-  if (NULL == tmpl || NULL == search)// || NULL == replace)
+	/* returning the 'tmpl' if 'search' is NULL */
+  if (NULL == tmpl || NULL == search) /* || NULL == replace) */
   {
 		return;
 	}
 
 	while (1)
 	{
-		//if 'search' is found in 'tmpl'
+		/* if 'search' is found in 'tmpl' */
 		retStr = strstr(tmpl, search);
 		if (NULL == retStr)
 		{
@@ -186,23 +185,23 @@ void replace(char *tmpl, const char *search, const char *replace)
 		srchLen = strlen(search);
 		repLen	= strlen(replace);
 
-		// dynamic buffer creation...
+		/* dynamic buffer creation... */
 		dest = (char*)malloc(totLen + 1 + repLen - srchLen);
 		if (NULL == dest)
 			return;
 
-		// copy the before buffer
+		/* copy the before buffer */
 		strncpy(dest, tmpl, befLen);
-		// copy the replace string
-		memcpy((dest+befLen), replace, repLen);//strcat(dest, replace);
-		// copy the after buffer
-		memcpy((dest+befLen+repLen), &tmpl[befLen + srchLen], strlen(&tmpl[befLen + srchLen]));//strcat(dest, &tmpl[befLen + repLen]);
+		/* copy the replace string */
+		memcpy((dest+befLen), replace, repLen); /* strcat(dest, replace); */
+		/* copy the after buffer */
+		memcpy((dest+befLen+repLen), &tmpl[befLen + srchLen], strlen(&tmpl[befLen + srchLen])); /*strcat(dest, &tmpl[befLen + repLen]); */
 
-		// now replace the template string with the resulting and search it again
+		/* now replace the template string with the resulting and search it again */
 		strcpy(tmpl, dest);
-		// we need this, because we're modifying the 'tmpl' instead of creating a new one (so we need to update the position of the null char)
+		/* we need this, because we're modifying the 'tmpl' instead of creating a new one (so we need to update the position of the null char) */
 		tmpl[totLen - srchLen + repLen] = '\0';
-		// clean up...
+		/* clean up... */
 		free(dest);
 	}
 }
