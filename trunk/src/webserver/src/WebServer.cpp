@@ -2868,6 +2868,7 @@ bool UploadsInfo::ReQuery()
 SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
 {
 	nHash = tag->FileHash();
+	sHash = nHash.Encode();
 	sFileName = _SpecialChars(tag->FileName());
 	lFileSize = tag->SizeFull();
 	lSourceCount = tag->SourceCount();

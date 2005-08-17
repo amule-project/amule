@@ -219,6 +219,7 @@ class SearchFile {
 		wxString sFileName;
 		long lFileSize;
 		CMD4Hash  nHash;
+		wxString  sHash;
 		long lSourceCount;
 		bool bPresent;
 		
