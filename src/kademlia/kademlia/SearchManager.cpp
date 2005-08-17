@@ -97,11 +97,8 @@ bool CSearchManager::isNodeSearch(const CUInt128 &target)
 	SearchMap::iterator it = m_searches.begin(); 
 	while (it != m_searches.end()) {
 		if (it->second->m_target == target) {
-			if( it->second->m_type == CSearch::NODE || it->second->m_type == CSearch::NODECOMPLETE ) {
-				return true;
-			} else {
-				return false;
-			}
+			return 	it->second->m_type == CSearch::NODE ||
+				it->second->m_type == CSearch::NODECOMPLETE;
 		} else {
 			++it;
 		}
