@@ -161,7 +161,7 @@ function formCommandSubmit(command)
 			global $sort_order, $sort_reverse;
 			
 			switch ( $sort_order) {
-				case "size": $result = $a->size - $b->size; break;
+				case "size": $result = $a->size > $b->size; break;
 				case "name": $result = $a->name > $b->name; break;
 				case "xfer": $result = $a->xfer > $b->xfer; break;
 				case "acc": $result = $a->accept > $b->accept; break;
