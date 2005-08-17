@@ -211,11 +211,14 @@ CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &
 			s->go();
 		}
 	} catch (const CIOException& ioe) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearchManager::prepareLookup (IO error(%i))"), ioe.m_cause));
+		AddDebugLogLineM( false, logKadSearch,
+			wxString::Format(wxT("Exception in CSearchManager::prepareLookup (IO error(%i))"),
+				ioe.m_cause));
 		delete s;
 		return NULL;
 	} catch (...) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Exception in CSearchManager::prepareLookup"));
+		AddDebugLogLineM(false, logKadSearch,
+			wxT("Exception in CSearchManager::prepareLookup"));
 		delete s;
 		throw;
 	}
@@ -287,7 +290,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHFILE_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHFILE_TOTAL || current_it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHFILE_TOTAL ||
+						current_it->second->m_created + SEARCHFILE_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -298,7 +302,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHKEYWORD_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHKEYWORD_TOTAL || current_it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHKEYWORD_TOTAL ||
+						current_it->second->m_created + SEARCHKEYWORD_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -309,7 +314,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHNOTES_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHNOTES_TOTAL || current_it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHNOTES_TOTAL ||
+						current_it->second->m_created + SEARCHNOTES_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -320,7 +326,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHFINDBUDDY_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHFINDBUDDY_TOTAL || current_it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHFINDBUDDY_TOTAL ||
+						current_it->second->m_created + SEARCHFINDBUDDY_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -331,7 +338,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHFINDSOURCE_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHFINDSOURCE_TOTAL || current_it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHFINDSOURCE_TOTAL ||
+						current_it->second->m_created + SEARCHFINDSOURCE_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -352,7 +360,8 @@ void CSearchManager::jumpStart(void)
 					CKademlia::getPrefs()->setPublish(true);
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if ((current_it->second->m_created + SEARCHNODECOMP_LIFETIME < now) && (current_it->second->getAnswers() > SEARCHNODECOMP_TOTAL)) {
+				} else if (	(current_it->second->m_created + SEARCHNODECOMP_LIFETIME < now) &&
+						(current_it->second->getAnswers() > SEARCHNODECOMP_TOTAL)) {
 					CKademlia::getPrefs()->setPublish(true);
 					delete current_it->second;
 					m_searches.erase(current_it);
@@ -365,7 +374,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHSTOREFILE_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHSTOREFILE_TOTAL || current_it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
+				} else if (	current_it->second->getAnswers() > SEARCHSTOREFILE_TOTAL ||
+						current_it->second->m_created + SEARCHSTOREFILE_LIFETIME - SEC(20) < now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -376,7 +386,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHSTOREKEYWORD_TOTAL || current_it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
+				} else if (	current_it->second->getAnswers() > SEARCHSTOREKEYWORD_TOTAL ||
+						current_it->second->m_created + SEARCHSTOREKEYWORD_LIFETIME - SEC(20)< now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -387,7 +398,8 @@ void CSearchManager::jumpStart(void)
 				if (current_it->second->m_created + SEARCHSTORENOTES_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
-				} else if (current_it->second->getAnswers() > SEARCHSTORENOTES_TOTAL || current_it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
+				} else if (	current_it->second->getAnswers() > SEARCHSTORENOTES_TOTAL ||
+						current_it->second->m_created + SEARCHSTORENOTES_LIFETIME - SEC(20)< now) {
 					current_it->second->prepareToStop();
 				} else {
 					current_it->second->jumpStart();
@@ -465,7 +477,8 @@ void CSearchManager::processPublishResult(const CUInt128 &target, const uint8 lo
 	}
 
 	if (s == NULL) {
-//		AddDebugLogLineM(false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processPublishResults)"));
+//		AddDebugLogLineM(false, logKadSearch,
+//			wxT("Search either never existed or receiving late results (CSearchManager::processPublishResults)"));
 		return;
 	}
 	
@@ -485,7 +498,8 @@ void CSearchManager::processResponse(const CUInt128 &target, uint32 fromIP, uint
 	}
 
 	if (s == NULL) {
-		AddDebugLogLineM(false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResponse)"));
+		AddDebugLogLineM(false, logKadSearch,
+			wxT("Search either never existed or receiving late results (CSearchManager::processResponse)"));
 		ContactList::const_iterator it2;
 		for (it2 = results->begin(); it2 != results->end(); ++it2) {
 			delete (*it2);
@@ -506,7 +520,8 @@ void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16
 	}
 
 	if (s == NULL) {
-		AddDebugLogLineM (false, logKadSearch, wxT("Search either never existed or receiving late results (CSearchManager::processResult)"));
+		AddDebugLogLineM (false, logKadSearch,
+			wxT("Search either never existed or receiving late results (CSearchManager::processResult)"));
 		TagList::const_iterator it;
 		for (it = info->begin(); it != info->end(); it++) {
 			delete *it;
@@ -516,3 +531,4 @@ void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16
 		s->processResult(fromIP, fromPort, answer, info);
 	}
 }
+
