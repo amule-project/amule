@@ -460,6 +460,11 @@ void amule_load_shared(PHP_VALUE_NODE *result)
 	amule_obj_array_create<SharedFileInfo, SharedFile>("AmuleSharedFile", result);
 }
 
+void amule_load_search(PHP_VALUE_NODE *result)
+{
+	amule_obj_array_create<SearchInfo, SearchFile>("AmuleSearchFile", result);
+}
+
 #else
 
 void amule_fake_obj_array_create(int count, char *class_name, PHP_VALUE_NODE *result)
@@ -487,6 +492,12 @@ void amule_load_shared(PHP_VALUE_NODE *result)
 	amule_fake_obj_array_create(15, "AmuleSharedFile", result);
 }
 
+void amule_load_search(PHP_VALUE_NODE *result)
+{
+	amule_fake_obj_array_create(35, "AmuleSearchFile", result);
+}
+
+
 #endif
 
 void php_native_load_amule_vars(PHP_VALUE_NODE *result)
@@ -509,6 +520,7 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 	} else if ( strcmp(varname, "shared") == 0 ) {
 		amule_load_shared(result);
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
+		amule_load_search(result);
 	} else if ( strcmp(varname, "servers") == 0 ) {
 		amule_load_servers(result);
 	} else {
@@ -657,6 +669,36 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	}
 }
 
+void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	SearchFile *obj = (SearchFile *)ptr;
+	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sFileName));
+	} else if ( strcmp(prop_name, "short_name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		wxString short_name(obj->sFileName.Length() > 60 ? (obj->sFileName.Left(70) + (_(" ..."))) : obj->sFileName);
+		result->str_val = strdup((const char *)unicode2UTF8(short_name));
+	} else if ( strcmp(prop_name, "hash") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sHash));
+	} else if ( strcmp(prop_name, "size") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->lFileSize;
+	} else if ( strcmp(prop_name, "sources") == 0 ) {
+		result->type = PHP_VAL_INT;
+		result->int_val = obj->lSourceCount;
+	} else if ( strcmp(prop_name, "present") == 0 ) {
+		result->type = PHP_VAL_BOOL;
+		result->int_val = obj->bPresent;
+	} else {
+		php_report_error(PHP_ERROR, "'SearchFile' property [%s] is unknown", prop_name);
+	}
+}
 
 #else
 
@@ -686,6 +728,10 @@ void amule_shared_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 	amule_fake_prop_get(obj, prop_name, result);
 }
 
+void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	amule_fake_prop_get(obj, prop_name, result);
+}
 
 #endif
 /*
@@ -773,6 +819,7 @@ void php_init_core_lib()
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
 	php_add_native_class("AmuleServer", amule_server_prop_get);
 	php_add_native_class("AmuleSharedFile", amule_shared_file_prop_get);
+	php_add_native_class("AmuleSearchFile", amule_search_file_prop_get);
 }
 
 //
