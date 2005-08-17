@@ -134,6 +134,9 @@ void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uin
 
 void CChatWnd::ProcessMessage(uint64 sender, const wxString& message)
 {
+	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::ChatWnd ) ) {
+		theApp.amuledlg->SetMessageBlink(true);
+	}
 	if (chatselector->ProcessMessage(sender, message)) {
 		// Check to enable the window controls if needed
 		CheckNewButtonsState();
