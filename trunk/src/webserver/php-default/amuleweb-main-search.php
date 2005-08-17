@@ -70,9 +70,9 @@ function formCommandSubmit(command)
         </tr>
       <tr>
         <th width="22" scope="col">&nbsp;</th>
-        <th width="349" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="99" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="96" nowrap scope="col"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Sources</a></th>
+        <th width="349" nowrap scope="col"><div align="left"><a href="amuleweb-main-search.php?sort=name" target="mainFrame">Filename</a></div></th>
+        <th width="99" nowrap scope="col"><div align="left"><a href="amuleweb-main-search.php?sort=size" target="mainFrame">Size</a></div></th>
+        <th width="96" nowrap scope="col"><a href="amuleweb-main-search.php?sort=sources" target="mainFrame">Sources</a></th>
         <th width="222" nowrap scope="col">&nbsp;</th>
         </tr>
 
@@ -93,7 +93,48 @@ function formCommandSubmit(command)
 			return $result;
 		}
 
+		//
+		// declare it here, before any function reffered it in "global"
+		//
+		$sort_order;$sort_reverse;
+
+		function my_cmp($a, $b)
+		{
+			global $sort_order, $sort_reverse;
+			
+			switch ( $sort_order) {
+				case "size": $result = $a->size - $b->size; break;
+				case "name": $result = $a->name > $b->name; break;
+				case "sources": $result = $a->sources > $b->sources; break;
+			}
+
+			if ( $sort_reverse ) {
+				$result = !$result;
+			}
+
+			return $result;
+		}
+
 		$search = amule_load_vars("searchresult");
+
+		$sort_order = $HTTP_GET_VARS["sort"];
+
+		if ( $sort_order == "" ) {
+			$sort_order = $_SESSION["search_sort"];
+		} else {
+			if ( $_SESSION["search_sort_reverse"] == "" ) {
+				$_SESSION["search_sort_reverse"] = 0;
+			} else {
+				$_SESSION["search_sort_reverse"] = !$_SESSION["search_sort_reverse"];
+			}
+		}
+
+		$sort_reverse = $_SESSION["search_sort_reverse"];
+		if ( $sort_order != "" ) {
+			$_SESSION["search_sort"] = $sort_order;
+			usort($search, "my_cmp");
+		}
+
 		foreach ($search as $file) {
 			print "<tr>";
 
