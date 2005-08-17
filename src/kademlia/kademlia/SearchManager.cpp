@@ -80,14 +80,16 @@ void CSearchManager::stopSearch(uint32 searchID, bool delayDelete)
 	
 	SearchMap::iterator it = m_searches.begin();
 	while ( it != m_searches.end()) {
-		SearchMap::iterator eraseIt = it++;
-		if (eraseIt->second->m_searchID == searchID) {
+		if (it->second->m_searchID == searchID) {
 			if(delayDelete) {
-				eraseIt->second->prepareToStop();
+				it->second->prepareToStop();
+				++it;
 			} else {
-				delete eraseIt->second;
-				m_searches.erase(eraseIt);
+				delete it->second;
+				m_searches.erase(it++);
 			}
+		} else {
+			++it;
 		}
 	}
 }
@@ -531,4 +533,3 @@ void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16
 		s->processResult(fromIP, fromPort, answer, info);
 	}
 }
-
