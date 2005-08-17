@@ -276,7 +276,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 			Iconize(TRUE);
 		#endif
 	}
-
+	m_BlinkMessages = false;
+	m_CurrentBlinkBitmap = 24;
+	
 }
 
 
@@ -491,6 +493,7 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					break;
 
 				case ID_BUTTONMESSAGES:
+					m_BlinkMessages = false;
 					SetActiveDialog(ChatWnd, chatwnd);
 					break;
 
@@ -1042,7 +1045,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 
-	static uint32	/*msPrev1, */msPrev5, msPrevGraph, msPrevStats;
+	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats;
 
 	uint32 			msCur = theStats::GetUptimeMillis();
 
@@ -1083,7 +1086,31 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 			transferwnd->downloadlistctrl->SortList();
 		}
 	}
+	
+	if (msCur-msPrev1 > 1000) {  // every second
+		msPrev1 = msCur;
+		if (m_CurrentBlinkBitmap == 33) {
+			m_CurrentBlinkBitmap = 24;
+			SetMessagesTool();		
+		} else {
+			if (m_BlinkMessages) {
+				m_CurrentBlinkBitmap = 33;
+				SetMessagesTool();
+			}
+		}
+		
+	}
+}
 
+void CamuleDlg::SetMessagesTool() {
+	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
+	m_wndToolbar->DeleteTool(ID_BUTTONMESSAGES);
+	m_wndToolbar->InsertTool(pos,ID_BUTTONMESSAGES, _("Messages"), 
+		amuleDlgImages( m_CurrentBlinkBitmap ), 
+		wxNullBitmap, 
+		wxITEM_CHECK, 
+		_("Messages Window") );
+	m_wndToolbar->Realize();
 }
 
 

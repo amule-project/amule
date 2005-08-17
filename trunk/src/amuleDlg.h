@@ -155,7 +155,9 @@ public:
 	 * This function ensures that _all_ list widgets are properly sorted.
 	 */
 	void InitSort();
-
+	
+	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
+	
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);
@@ -196,6 +198,10 @@ private:
 
 	bool is_safe_state;
 
+	bool m_BlinkMessages;
+	
+	int m_CurrentBlinkBitmap;
+
 	//bool is_hidden;
 
 	uint32 last_iconizing;
@@ -205,6 +211,8 @@ private:
 	void Create_Toolbar(wxString skinfile);
 	
 	void ToogleED2KLinksHandler();
+
+	void SetMessagesTool();
 
 	DECLARE_EVENT_TABLE()
 };
