@@ -144,7 +144,6 @@ uint32 CFileDataIO::ReadUInt32() const
 	return ENDIAN_SWAP_32(nVal);
 }
 
-#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
 CUInt128 CFileDataIO::ReadUInt128() const
 {
 	CUInt128 value;
@@ -155,7 +154,6 @@ CUInt128 CFileDataIO::ReadUInt128() const
 
 	return value;
 }
-#endif
 
 CMD4Hash CFileDataIO::ReadHash() const
 {
@@ -248,14 +246,12 @@ void CFileDataIO::WriteUInt32(uint32 nVal)
 	Write(&nVal, sizeof nVal);
 }
 
-#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& pVal)
 {
 	for (int i = 0; i < 4; i++) {
 		WriteUInt32(pVal.get32BitChunk(i));
 	}
 }
-#endif
 
 void CFileDataIO::WriteHash(const CMD4Hash& value)
 {
