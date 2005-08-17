@@ -126,10 +126,10 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item8->SetToolTip( _("Pop-up status text") );
     item7->Add( item8, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxSize(140,-1), wxST_NO_AUTORESIZE );
     item9->SetToolTip( _("Events are displayed here. For a complete list of events, refer to the log in the Servers-tab.") );
     item9->SetName( wxT("infoLabel") );
-    item7->Add( item9, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
+    item7->Add( item9, 1, wxFIXED_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticLine *item10 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
     item7->Add( item10, 0, wxALIGN_CENTER, 5 );
