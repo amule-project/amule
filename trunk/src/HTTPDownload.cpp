@@ -36,9 +36,14 @@
 	#include <wx/msw/winundef.h>
 #endif
 
+#include <wx/zipstrm.h>		// Needed for wxZipInputStream
+#include <wx/zstream.h>		// Needed for wxZlibInputStream
+#include <wx/wfstream.h>	// wxFileInputStream
+#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
+#include <wx/file.h>		// Needed for wxFile
 #include <wx/intl.h>
-#include <cmath>
 #include <wx/protocol/http.h>
+#include <cmath>
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
@@ -56,6 +61,113 @@
 	#include <wx/gauge.h>
 	#include <wx/stattext.h>
 #endif
+
+enum EFileType
+{
+	EFT_Text,
+	EFT_Zip,
+	EFT_GZip,
+	EFT_Unknown
+};
+
+
+/**
+ * Returns true if the file is a zip-archive.
+ */
+EFileType GuessFiletype(const wxString& file)
+{
+	wxFile archive(file, wxFile::read);
+	char head[10];
+
+	if (archive.Read(head, 2) != 2) {
+		// Probably just an empty text-file
+		return EFT_Text;
+	}
+
+	// Attempt to guess the filetype.
+	if ((head[0] == 'P') && (head[1] == 'K')) {
+		// Zip-archives have a header of "PK".
+		return EFT_Zip;
+	} else if (head[0] == (char)0x1F && head[1] == (char)0x8B) {
+		// Gzip-archives have a header of 0x1F8B
+		return EFT_GZip;
+	} else {
+		// Check the first ten chars, if all are printable, 
+		// then we can probably safely assume that this is 
+		// a ascii text-file.
+		archive.Seek(0, wxFromStart);
+		size_t read = archive.Read(head, 10);
+
+		for (size_t i = 0; i < read; ++i) {
+			if (!isprint(head[i]) && !isspace(head[i])) {
+				return EFT_Unknown;
+			}
+		}
+		
+		return EFT_Text;
+	}
+}
+
+
+/**
+ * Replaces the zip-archive with "guarding.p2p" or "ipfilter.dat",
+ * if either of those files are found in the archive.
+ */
+bool UnpackZipFile(const wxString& file)
+{
+	wxZipFSHandler archive; 
+	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
+
+	while (!filename.IsEmpty()) {
+		// Extract the filename part of the URI
+		filename = filename.AfterLast(wxT(':')).Lower();
+	
+		// We only care about the following files
+		if (filename == wxT("guarding.p2p") || filename == wxT("ipfilter.dat") 
+				|| filename == wxT("server.met") ) {
+			wxZipInputStream inputStream(file, filename);
+			
+			wxTempFile target(file);
+			char buffer[10240];
+
+			while (!inputStream.Eof()) {
+				inputStream.Read(buffer, sizeof(buffer));
+
+				target.Write(buffer, inputStream.LastRead());
+			}
+
+			// Save the unpacked file
+			target.Commit();
+			
+			return true;
+		}
+		
+		filename = archive.FindNext();
+	}
+
+	return false;
+}
+
+
+/**
+ * Unpacks a GZip file and replaces the archive.
+ */
+void UnpackGZipFile(const wxString& file)
+{
+	wxFileInputStream source(file);
+	wxZlibInputStream inputStream(source);
+	wxTempFile target(file);
+	char buffer[10240];
+
+	while (!inputStream.Eof()) {
+		inputStream.Read(buffer, sizeof(buffer));
+
+		target.Write(buffer, inputStream.LastRead());
+	}
+
+	// Save the unpacked file
+	target.Commit();
+}
 
 #ifndef AMULE_DAEMON 
 BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
@@ -228,6 +340,33 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		delete url_read_stream;
 		
 		fclose(outfile);
+		
+		// Attempt to discover the filetype and uncompress
+		switch (GuessFiletype(m_tempfile)) {
+			case EFT_Text: {
+					// Ok, it's text, nothing to be done.
+				break;
+			}
+			
+			case EFT_Zip: {
+				if (UnpackZipFile(m_tempfile)) {
+					AddLogLineM(true, CFormat(_("Extracted file from zip-archive '%s'.")) % m_tempfile);
+				} else {
+					AddLogLineM(true, CFormat(_("Unable to extract file from  zip-archive '%s'.")) % m_tempfile);
+					m_result = -1;	
+				}
+				break;
+			}
+
+			case EFT_GZip: {
+				UnpackGZipFile(m_tempfile);
+				break;
+			}
+
+			case EFT_Unknown: {
+				// met files and other stuff.
+			}
+		}
 		
 	} catch (const wxString& download_error) {
 		if (outfile) {
