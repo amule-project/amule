@@ -32,10 +32,7 @@
 #include <wx/filefn.h>		// Needed for wxFileExists
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/string.h>		// Needed for wxString
-#include <wx/zipstrm.h>		// Needed for wxZipInputStream
-#include <wx/zstream.h>		// Needed for wxZlibInputStream
 #include <wx/wfstream.h>	// wxFileInputStream
-#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
 #include <wx/file.h>		// Needed for wxTempFile
 #include <wx/filename.h>
 
@@ -48,115 +45,6 @@
 #include "Logger.h"		// Needed for AddDebugLogLineM
 #include "Format.h"		// Needed for CFormat
 #include "StringFunctions.h"	// Needed for CSimpleTokenizer
-
-
-enum EFileType
-{
-	EFT_Text,
-	EFT_Zip,
-	EFT_GZip,
-	EFT_Unknown
-};
-
-
-/**
- * Returns true if the file is a zip-archive.
- */
-EFileType GuessFiletype(const wxString& file)
-{
-	wxFile archive(file, wxFile::read);
-	char head[10];
-
-	if (archive.Read(head, 2) != 2) {
-		// Probably just an empty text-file
-		return EFT_Text;
-	}
-
-	// Attempt to guess the filetype.
-	if ((head[0] == 'P') && (head[1] == 'K')) {
-		// Zip-archives have a header of "PK".
-		return EFT_Zip;
-	} else if (head[0] == (char)0x1F && head[1] == (char)0x8B) {
-		// Gzip-archives have a header of 0x1F8B
-		return EFT_GZip;
-	} else {
-		// Check the first ten chars, if all are printable, 
-		// then we can probably safely assume that this is 
-		// a ascii text-file.
-		archive.Seek(0, wxFromStart);
-		size_t read = archive.Read(head, 10);
-
-		for (size_t i = 0; i < read; ++i) {
-			if (!isprint(head[i]) && !isspace(head[i])) {
-				return EFT_Unknown;
-			}
-		}
-		
-		return EFT_Text;
-	}
-}
-
-
-/**
- * Replaces the zip-archive with "guarding.p2p" or "ipfilter.dat",
- * if either of those files are found in the archive.
- */
-bool UnpackZipFile(const wxString& file)
-{
-	wxZipFSHandler archive; 
-	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
-
-	while (!filename.IsEmpty()) {
-		// Extract the filename part of the URI
-		filename = filename.AfterLast(wxT(':')).Lower();
-	
-		// We only care about the following files
-		if (filename == wxT("guarding.p2p") || filename == wxT("ipfilter.dat")) {
-			wxZipInputStream inputStream(file, filename);
-			
-			wxTempFile target(file);
-			char buffer[10240];
-
-			while (!inputStream.Eof()) {
-				inputStream.Read(buffer, sizeof(buffer));
-
-				target.Write(buffer, inputStream.LastRead());
-			}
-
-			// Save the unpacked file
-			target.Commit();
-			
-			return true;
-		}
-		
-		filename = archive.FindNext();
-	}
-
-	return false;
-}
-
-
-/**
- * Unpacks a GZip file and replaces the archive.
- */
-void UnpackGZipFile(const wxString& file)
-{
-	wxFileInputStream source(file);
-	wxZlibInputStream inputStream(source);
-	wxTempFile target(file);
-	char buffer[10240];
-
-	while (!inputStream.Eof()) {
-		inputStream.Read(buffer, sizeof(buffer));
-
-		target.Write(buffer, inputStream.LastRead());
-	}
-
-	// Save the unpacked file
-	target.Commit();
-}
-
-
 
 /**
  * This function creates a text-file containing the specified text, 
@@ -318,49 +206,12 @@ bool CIPFilter::ProcessAntiP2PLine(const wxString& sLine)
 void CIPFilter::LoadFromFile(const wxString& file)
 {
 	if (wxFileExists(file)) {	
-		// Attempt to discover the filetype
-		switch (GuessFiletype(file)) {
-			case EFT_Text: {
-				AddedAndDiscarded stat = LoadFromDatFile(file);
-
-				AddLogLineM(false,
-					CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
-						% stat.first
-						% file.AfterLast(wxFileName::GetPathSeparator())
-						% stat.second
-				);
-
-				break;
-			}
-			
-			case EFT_Zip: {
-				if (UnpackZipFile(file)) {
-					AddLogLineM(true, CFormat(_("Extracted ipfilter list from zip-archive '%s'.")) % file);
-					LoadFromFile(file);
-				} else {
-					AddLogLineM(true, CFormat(_("Failed to extract ipfilter list from zip-archive '%s'. File may be damaged or contain misnamed files.")) % file);
-				}
-
-				break;
-			}
-
-			case EFT_GZip: {
-				UnpackGZipFile(file);
-				AddLogLineM(true, CFormat(_("Extracted ipfilter list from gz-archive '%s'.")) % file);
-				LoadFromFile(file);
-
-				break;
-			}
-
-			case EFT_Unknown: {
-				AddLogLineM(true, CFormat(_("IPFilter stored in unknown format, file skipped: '%s'.")) % file);				
-			}
-		}
+		 LoadFromDatFile(file);
 	}
 }
 
 
-CIPFilter::AddedAndDiscarded CIPFilter::LoadFromDatFile(const wxString& file)
+void CIPFilter::LoadFromDatFile(const wxString& file)
 {
 	int filtercount = 0;
 	int discardedCount = 0;
@@ -397,7 +248,12 @@ CIPFilter::AddedAndDiscarded CIPFilter::LoadFromDatFile(const wxString& file)
 		}
 	}
 
-	return AddedAndDiscarded(filtercount, discardedCount);
+	AddLogLineM(false,
+		CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
+		% filtercount
+		% file.AfterLast(wxFileName::GetPathSeparator())
+		% discardedCount
+	);	
 }
 
 

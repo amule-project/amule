@@ -101,8 +101,6 @@ public:
 	void	DownloadFinished(uint32 result);
 	
 private:
-	// Contains the number of ranges added and the number of lines discarded while loading.
-	typedef std::pair<size_t, size_t> AddedAndDiscarded;
 	
 	/**
 	 * Loads a IP-list from the specified file, can be text or zip.
@@ -112,7 +110,7 @@ private:
 	/**
 	 * Helper-function, loads a IP-list from the text file.
 	 */
-	AddedAndDiscarded LoadFromDatFile( const wxString& file );
+	void LoadFromDatFile( const wxString& file );
 
 	/**
 	 * Helper-function for processing the AntiP2P format.
