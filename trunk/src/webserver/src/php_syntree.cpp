@@ -1375,7 +1375,9 @@ PHP_VALUE_TYPE cast_type_resolve(PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2)
 void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result)
 {
 	result->type = PHP_VAL_BOOL;
-	if ( (op1->type == PHP_VAL_STRING) && (op2->type == PHP_VAL_STRING) ) {
+	if ( (op1->type == PHP_VAL_STRING) || (op2->type == PHP_VAL_STRING) ) {
+		cast_value_str(op1);
+		cast_value_str(op2);
 		int cmp_val = strcmp(op1->str_val, op2->str_val);
 		switch(op) {
 			case PHP_OP_EQ:
