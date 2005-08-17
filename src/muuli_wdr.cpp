@@ -3072,7 +3072,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item4->SetName( wxT("serverListLabel") );
     item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SERVERLISTURL, _("http://www.srv1000.com/azz/server.met"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SERVERLISTURL, _("http://gruk.org/server.met.gz"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item5->SetToolTip( _("Enter the url to a server.met file here and press the button to the left to update the list of known servers.") );
     item2->Add( item5, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
