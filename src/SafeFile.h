@@ -57,7 +57,9 @@ public:
 	virtual uint8		ReadUInt8() const;
 	virtual uint16		ReadUInt16() const;
 	virtual uint32		ReadUInt32() const;
+	#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)	
 	virtual CUInt128	ReadUInt128() const;
+	#endif
 	virtual CMD4Hash	ReadHash() const;
  	virtual wxString	ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
 	virtual wxString	ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
@@ -65,7 +67,9 @@ public:
 	virtual void WriteUInt8(uint8 nVal);
 	virtual void WriteUInt16(uint16 nVal);
 	virtual void WriteUInt32(uint32 nVal);
+	#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
 	virtual void WriteUInt128(const CUInt128& pVal);
+	#endif
 	virtual void WriteHash(const CMD4Hash& hash);
 	virtual void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
 
