@@ -131,7 +131,6 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	connecting = true;
 	singleconnecting = !multiconnect;
 
-//#ifdef TESTING_PROXY
 	CServerSocket* newsocket = new CServerSocket(this, thePrefs::GetProxyData());
 	m_lstOpenSockets.AddTail(newsocket);
 	newsocket->ConnectToServer(server);
@@ -487,7 +486,6 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	singleconnecting = false;
 
 	// initalize socket for udp packets
-//#ifdef TESTING_PROXY
 	serverudpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	InitLocalIP();	

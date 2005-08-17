@@ -1070,7 +1070,6 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Default is port 4672.
 	if (!thePrefs::IsUDPDisabled()) {
 		myaddr.Service(thePrefs::GetUDPPort());
-//#ifdef TESTING_PROXY
 		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
 			% ip % (unsigned int)(thePrefs::GetUDPPort());

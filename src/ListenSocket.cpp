@@ -1751,18 +1751,18 @@ void CClientReqSocket::OnError(int nErrorCode)
 			strError += wxT("caused a socket blocking error.");
 		}
 	} else {
-
 		if ( CLogger::IsEnabled( logClient ) && (nErrorCode != 107)) {
 			// 0    -> No Error / Disconect
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
 				if (m_client->GetUserName()) {
 					strError = wxT("OnError: Client '") + m_client->GetUserName() +
-								 wxT("' (IP:") + m_client->GetFullIP() + 
-								wxString::Format(wxT(") caused an error: %u. Disconnecting client!"),nErrorCode);
+						wxT("' (IP:") + m_client->GetFullIP() + 
+						wxString::Format(wxT(") caused an error: %u. Disconnecting client!"), nErrorCode);
 				} else {
 					strError = wxT("OnError: Unknown client (IP:") + 
-					  m_client->GetFullIP() + wxString::Format(wxT(") caused an error: %u. Disconnecting client!"),nErrorCode);
+					m_client->GetFullIP() + 
+					wxString::Format(wxT(") caused an error: %u. Disconnecting client!"), nErrorCode);
 				}
 			} else {
 				strError = wxString::Format(wxT("OnError: A client caused an error or did something bad (error %u). Disconnecting client !"),
