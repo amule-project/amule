@@ -3081,29 +3081,29 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
 
     wxStaticText *item7 = new wxStaticText( parent, ID_TEXT, _("Manual Server Add : Name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item7, 0, wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    item6->Add( item7, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
     CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_SERVERNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item8->SetToolTip( _("Enter the name of the new server here") );
-    item6->Add( item8, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item6->Add( item8, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("IP:Port"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
 
     CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
     item10->SetToolTip( _("Enter the IP of the server here, using the x.x.x.x format.") );
-    item6->Add( item10, 0, wxALIGN_CENTER|wxALL, 5 );
+    item6->Add( item10, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->Add( item11, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
     CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_SPORT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetToolTip( _("Enter the port of the server here.") );
-    item6->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+    item6->Add( item12, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxButton *item13 = new wxButton( parent, ID_ADDTOLIST, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
     item13->SetToolTip( _("Add manually a server (fill fields to the left before) ...") );
-    item6->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
+    item6->Add( item13, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
