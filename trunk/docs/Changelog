@@ -23,6 +23,7 @@ Version 2.1.x - The "???" version
 		* Fixed deadlock in ClientUDPSocket.cpp.
 		* Crash handler improovement, avoid calling functions that
 		  may allocate memory.
+		* Fixed a bug with iterator usage in SearchManager.cpp.
 
 	volpol:
 		* A4AF transfer speed display fix
@@ -3235,7 +3236,7 @@ Version 1.2.5
 		   portuguese:   willy, coolzero
 		   basque:       piarres
 		   galego:       thorero
-  
+
 		* The people at #wxwindows, irc.freenode.net for being so helpful
 		  Specially BrianHV, raboof and ajjl.
 
@@ -3301,7 +3302,7 @@ The "Happy New Year!" version.
 		* Patched Process() function in Partfile class to reduce cpu
 		  load.
 		* Added new optimization to Tray to stop window updating when minimized.
-		
+
 	Shakraw:
 		* Added commands to use with amuleweb to EC.
 		* Completed Transfer feature and Started Search.
@@ -3350,13 +3351,13 @@ The "Happy New Year!" version.
 		* dos2unix several files.
 		* Added GPL license header where needed.
 		* Compile fixes for FreeBSD on systray and gsocket*
-	
+
 	Emilio Sandoz:
 		* Patched stats for acurate resizing / scale.
 		* Fix for inflated UL/DL rates in Transfer and Statistics windows
 		* Debug code for UL/DL rate measurement in UploadQueue.cpp 
 		  (activate with '#define MEASURE_LOST_CYCLES 1')
-	
+
 	Seneca: 
 		* I18N:
 		  ListenSocket.cpp PartFile.cpp ServerList.cpp
@@ -3508,7 +3509,7 @@ Version 1.2.0
 
 	eagle:
 		* Added --geometry option
-	
+
 	pure_ascii:
 		* Fixed a bug on ListenSocket.cpp that crashed amule.
 
