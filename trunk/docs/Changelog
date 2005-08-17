@@ -10,6 +10,9 @@ Version 2.1.x - The "???" version
 		* Use the IPFilter when adding and connecting to servers.  Thanks
 		  to MrFaber for reporting the bug.
 
+	Kry:
+		* Fixed a bug with iterator usage in SearchManager.cpp
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
@@ -23,7 +26,6 @@ Version 2.1.x - The "???" version
 		* Fixed deadlock in ClientUDPSocket.cpp.
 		* Crash handler improovement, avoid calling functions that
 		  may allocate memory.
-		* Fixed a bug with iterator usage in SearchManager.cpp.
 
 	volpol:
 		* A4AF transfer speed display fix
