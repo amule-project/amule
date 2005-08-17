@@ -374,7 +374,7 @@ private:
     int GetImage( int index ) const;
 };
 
-WX_DECLARE_EXPORTED_OBJARRAY(wxListLineData, wxListLineDataArray);
+WX_DECLARE_OBJARRAY(wxListLineData, wxListLineDataArray);
 #include "wx/arrimpl.cpp"
 WX_DEFINE_OBJARRAY(wxListLineDataArray)
 
