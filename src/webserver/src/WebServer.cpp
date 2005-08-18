@@ -3504,7 +3504,7 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 	return buf;
 }
 #else
-char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *, long &size)
+char *CScriptWebServer::ProcessPhpRequest(const char *, CSession *, long &size)
 {
 	return GetErrorPage("PHP support is not enabled in compilation", size);
 }
