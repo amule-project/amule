@@ -727,7 +727,9 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			}
 		case EC_SEARCH_LOCAL: {
 			uint32 search_id = 0xffffffff;
-			if (!theApp.searchlist->StartNewSearch(&search_id, core_search_type, text, file_type, ext, search_request->MinSize(), search_request->MaxSize(), search_request->Avail())) {
+			if (!theApp.searchlist->StartNewSearch(&search_id, core_search_type, text,
+						file_type, ext, search_request->MinSize(), search_request->MaxSize(),
+						search_request->Avail())) {
 				// Not connected?
 				response = wxTRANSLATE("aMule is not connected! Cannot do search.");
 			} else {
