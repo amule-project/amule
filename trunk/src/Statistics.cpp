@@ -356,10 +356,6 @@ void CStatistics::RecordHistory()
 	phr->cntConnections = GetActiveConnections();
 	phr->cntDownloads = GetDownloadingSources();
 	phr->sTimestamp = GetUptimeMillis() / 1000.0;
-#ifdef __DEBUG__
-//	if (bits > bitsHistClockMask)  // every 64 seconds - 
-//		VerifyHistory();  // must do this AFTER phr->sTimestamp has been set
-#endif
 }
 
 
@@ -566,81 +562,6 @@ GraphUpdateInfo CStatistics::GetPointsForUpdate()
 
 	return update;
 }
-
-
-#if 0 //def __DEBUG__ // Needs to be ported to stl
-void CStatistics::VerifyHistory(bool bMsgIfOk)
-// Debugging only: This performs a basic sanity check on the history list: 
-// link integrity, correct number of nodes, sequentiality of timestamps, 
-// approximate gap length between sample points.
-// See graph in RecordHistory() for the mechanics of the list.
-// Un-comment the call at the end of RecordHistory() to activate these checks.
-// Note: if the system is very busy we sometimes get a long gap followed by a short one,
-// and they will be flagged as they move through the list.
-{
-	int	cnt, cntRanges=1, cntInRange=0, cntExpected=nHistRanges*nPointsPerRange;
-	double sStart = (double)GetUptimeMillis() + 0.01;
-	double sStep=1.0, sPrev=sStart, sCur = 0.0;
-	POSITION *ppos = aposRecycle;
-	POSITION posPrev = NULL;
-	POSITION posCur = listHR.GetTailPosition();
-	
-	for (cnt=1; cnt<=cntExpected; ++cnt) {
-		++cntInRange;
-		if (posCur==NULL) {
-			printf("History list too short: %i elements (%i expected), ends at t=%.2f\n", cnt-1,cntExpected, sPrev);
-			return;
-		}
-		sCur = listHR.GetAt(posCur).sTimestamp;
-		if (!(sCur >= 0.0)) {
-			printf("History list has INVALID timestamp at position %i (t1=%.2f)\n", cnt, sCur);
-			return;
-		}
-		if (sCur > sPrev) {
-			printf("History list is non-sequential at position %i (t1=%.2f t0=%.2f dT=%.2f)\n", cnt, sCur, sPrev, sCur-sPrev);
-			return;
-		}
-		if (sCur==sPrev) {
-			if (sCur>0.0) {
-				printf("History list has duplicate timestamp at position %i (t1=%.2f)\n", cnt, sCur);
-				return;
-			}
-		} else if (sStep>1.0 && cntInRange>1) {
-			float sDelta = std::abs(sPrev-sCur-sStep);
-			if (sCur != 0.0  &&  sDelta > sStep*0.5)
-				printf("T=%i History list: gap of %.2f (vs. %i) #%i is %i in range  [%i]t=%.2f [%i]t=%.2f [%i]t=%.2f\n", 
-							(int)round(sStart), sPrev-sCur, (int)round(sStep), cnt, cntInRange,
-									 cnt+1, listHR.GetAt(listHR.PrevAt(posCur)).sTimestamp, cnt, sCur, cnt-1, sPrev);
-		}
-		if (listHR.NextAt(posCur) != posPrev) {
-			printf("History list has bad backlink at position %i (t=%.2f seconds)\n", cnt, sCur);
-			return;
-		}
-		if (cntInRange > nPointsPerRange+1) {
-			printf("History list: range %i is too long (>=%i points, expected %i +/-1)\n", cntRanges, cntInRange, nPointsPerRange);
-		}
-		if (posCur == *ppos) {
-			++ppos;
-			++cntRanges;
-			if (cntInRange < nPointsPerRange-1) {
-				printf("History list: range %i is too short (<>=%i points, expected %i +/-1)\n", cntRanges, cntInRange, nPointsPerRange);
-			}
-			cntInRange = 0;
-			sStep *= 2.0;
-		}
-		posPrev = posCur;
-		posCur = listHR.PrevAt(posCur);
-		sPrev = sCur;
-	}
-	
-	if (posCur != NULL) {
-		printf("History list: head->prev!=NULL (t=%.2f)\n", sCur);
-		return;
-	}
-	if (bMsgIfOk)
-		printf("History list is OK (t=%f)\n", sStart);
-}
-#endif	/* __DEBUG__ */
 
 
 /* ------------------------------- TREE ---------------------------- */
