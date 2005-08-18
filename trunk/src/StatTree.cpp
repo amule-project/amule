@@ -531,6 +531,35 @@ void CStatTreeItemAverage::AddECValues(CECTag* tag) const
 }
 
 
+/* CStatTreeItemAverageSpeed */
+
+#ifndef AMULE_DAEMON
+wxString CStatTreeItemAverageSpeed::GetDisplayString() const
+{
+	uint64 time = m_timer->GetTimerSeconds();
+	if (time) {
+		return CFormat(wxGetTranslation(m_label)) % CastItoSpeed((*m_counter)/time);
+	} else {
+		return CFormat(wxGetTranslation(m_label)) % CastItoSpeed(0);
+	}
+}
+#endif
+
+void CStatTreeItemAverageSpeed::AddECValues(CECTag* tag) const
+{
+	uint64 time = m_timer->GetTimerSeconds();
+	if (time) {
+		CECTag value(EC_TAG_STAT_NODE_VALUE, (uint32)((*m_counter)/time));
+		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_SPEED));
+		tag->AddTag(value);
+	} else {
+		CECTag value(EC_TAG_STAT_NODE_VALUE, (uint32)0);
+		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_SPEED));
+		tag->AddTag(value);
+	}
+}
+
+
 /* CStatTreeItemRatio */
 
 #ifndef AMULE_DAEMON
