@@ -278,7 +278,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	}
 	m_BlinkMessages = false;
 	m_CurrentBlinkBitmap = 24;
-	
 }
 
 
@@ -1107,6 +1106,10 @@ void CamuleDlg::SetMessagesTool()
 {
 #if wxCHECK_VERSION(2, 5, 0)
 	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
+	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
+#else
+	int pos = 6;
+#endif	
 	m_wndToolbar->DeleteTool(ID_BUTTONMESSAGES);
 	m_wndToolbar->InsertTool(pos,ID_BUTTONMESSAGES, _("Messages"), 
 		amuleDlgImages( m_CurrentBlinkBitmap ), 
@@ -1114,7 +1117,7 @@ void CamuleDlg::SetMessagesTool()
 		wxITEM_CHECK, 
 		_("Messages Window") );
 	m_wndToolbar->Realize();
-#endif
+
 }
 
 
