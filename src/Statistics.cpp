@@ -140,8 +140,6 @@ CPreciseRateCounter*		CStatistics::s_upOverheadRate;
 CPreciseRateCounter*		CStatistics::s_downOverheadRate;
 CStatTreeItemRateCounter*	CStatistics::s_uploadrate;
 CStatTreeItemRateCounter*	CStatistics::s_downloadrate;
-CStatTreeItemRateCounter*	CStatistics::s_runningAverageUp;
-CStatTreeItemRateCounter*	CStatistics::s_runningAverageDown;
 
 #else /* EC_REMOTE */
 
@@ -273,10 +271,6 @@ void CStatistics::CalculateRates()
 	s_upOverheadRate->CalculateRate(now);
 	s_downloadrate->CalculateRate(now);
 	s_uploadrate->CalculateRate(now);
-	(*s_runningAverageDown) += (uint32)s_downloadrate->GetRate();
-	(*s_runningAverageUp) += (uint32)s_uploadrate->GetRate();
-	s_runningAverageDown->CalculateRate(now);
-	s_runningAverageUp->CalculateRate(now);
 }
 
 
@@ -699,8 +693,8 @@ void CStatistics::InitStatsTree()
 	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload), 3);
 
 	tmpRoot1 = s_statTree->AddChild(new CStatTreeItemBase(wxTRANSLATE("Connection")));
-	s_runningAverageDown = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Average Downloadrate (Session): %s"), false,300000, true));
-	s_runningAverageUp = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Average Uploadrate (Session): %s"), false, 300000, true));
+	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average Downloadrate (Session): %s"), s_sessionDownload, s_uptime));
+	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average Uploadrate (Session): %s"), s_sessionUpload, s_uptime));
 	s_downloadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max Downloadrate (Session): %s"), true, 30000));
 	s_uploadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max Uploadrate (Session): %s"), true, 30000));
 	s_reconnects = (CStatTreeItemReconnects*)tmpRoot1->AddChild(new CStatTreeItemReconnects(wxTRANSLATE("Reconnects: %i")));

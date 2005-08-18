@@ -983,6 +983,46 @@ class CStatTreeItemAverage : public CStatTreeItemBase {
 
 
 /**
+ * Tree item for average up/down speed.
+ */
+class CStatTreeItemAverageSpeed : public CStatTreeItemBase {
+ public:
+
+	/**
+	 * @see CStatTreeItemBase::CStatTreeItemBase
+	 *
+	 * @param counter Session up/down counter.
+	 * @param timer Session uptime timer.
+	 */
+	CStatTreeItemAverageSpeed(const wxString& label, const CStatTreeItemUlDlCounter* counter, const CStatTreeItemTimer* timer)
+		: CStatTreeItemBase(label, stNone), m_counter(counter), m_timer(timer)
+		{}
+
+#ifndef AMULE_DAEMON
+	/**
+	 * @see CStatTreeItemBase::GetDisplayString()
+	 */
+	virtual	wxString	GetDisplayString() const;
+#endif
+
+ protected:
+	/**
+	 * Add values to EC tag being generated.
+	 *
+	 * @param tag The tag to which values should be added.
+	 *
+	 * @see CStatTreeItemBase::AddECValues
+	 */
+	virtual	void	AddECValues(CECTag* tag) const;
+
+	//! Session sent/received bytes counter.
+	const	CStatTreeItemUlDlCounter*	m_counter;
+	//! Session uptime.
+	const	CStatTreeItemTimer*		m_timer;
+};
+
+
+/**
  * Tree item for displaying ratio between two counters.
  *
  * Ratio is counted as counter1:counter2.

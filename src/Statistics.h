@@ -386,8 +386,6 @@ class CStatistics {
 	static	CPreciseRateCounter*		s_downOverheadRate;
 	static	CStatTreeItemRateCounter*	s_uploadrate;
 	static	CStatTreeItemRateCounter*	s_downloadrate;
-	static	CStatTreeItemRateCounter*	s_runningAverageUp;
-	static	CStatTreeItemRateCounter*	s_runningAverageDown;
 
 	/* Tree-related functions */
 	
