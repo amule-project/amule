@@ -343,6 +343,28 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 #endif
 }
 
+void php_get_amule_categories(PHP_VALUE_NODE *result)
+{
+#ifdef AMULEWEB_SCRIPT_EN
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
+	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	if ( !reply || !reply->GetTagCount()) {
+		return ;
+	}
+	cast_value_array(result);
+	CECTag *cats_tag = reply->GetTagByIndex(0);
+	for (int i = 0; i < cats_tag->GetTagCount(); i++) {
+		CECTag *tag = cats_tag->GetTagByIndex(i);
+		CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
+		PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
+		value_value_free(&cat->value);
+		cat->value.type = PHP_VAL_STRING;
+		cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
+	}
+#endif
+}
+
 /*
  * Download 1 of search results. Params: hash, category (default=0)
  */
@@ -833,6 +855,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"amule_get_stats",
 		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
 		0, php_get_amule_stats,
+	},
+	{
+		"amule_get_categories",
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		0, php_get_amule_categories,
 	},
 	{
 		"amule_do_server_cmd",

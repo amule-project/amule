@@ -76,7 +76,7 @@ function formCommandSubmit(command)
         <th width="22" scope="col">&nbsp;</th>
         <th width="349" nowrap scope="col"><div align="left"><a href="amuleweb-main-search.php?sort=name" target="mainFrame">Filename</a></div></th>
         <th width="99" nowrap scope="col"><div align="left"><a href="amuleweb-main-search.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="96" nowrap scope="col"><a href="amuleweb-main-search.php?sort=sources" target="mainFrame">Sources</a></th>
+        <th width="96" nowrap scope="col"><div align="left"><a href="amuleweb-main-search.php?sort=sources" target="mainFrame">Sources</a></th>
         <th width="222" nowrap scope="col">&nbsp;</th>
         </tr>
 
@@ -118,12 +118,30 @@ function formCommandSubmit(command)
 
 			return $result;
 		}
-		$aaa = "";
-		
+
+		function str2mult($str)
+		{
+			$result = 1;
+			switch($str) {
+				case "Byte":	$result = 1; break;
+				case "KByte":	$result = 1024; break;		
+				case "MByte":	$result = 1012*1024; break;
+				case "GByte":	$result = 1012*1024*1024; break;
+			}
+			return $result;
+		}
 
 		if ( $HTTP_GET_VARS["command"] == "search") {
 			$is_global = 0;
-			$minsize = 0; $maxsize = 0;
+
+			$min_size = $HTTP_GET_VARS["minsize"] == "" ? 0 : $HTTP_GET_VARS["minsize"];
+			$max_size = $HTTP_GET_VARS["maxsize"] == "" ? 0 : $HTTP_GET_VARS["maxsize"];
+
+			$min_size *= str2mult($HTTP_GET_VARS["minsizeu"]);
+			$max_size *= str2mult($HTTP_GET_VARS["maxsizeu"]);
+			
+			var_dump($min_size);
+			var_dump($max_size);
 			amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
 				//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
 				"", "Any",
