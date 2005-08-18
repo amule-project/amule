@@ -28,6 +28,11 @@
 #endif
 
 #include <wx/filename.h>
+#include <wx/zipstrm.h>		// Needed for wxZipInputStream
+#include <wx/zstream.h>		// Needed for wxZlibInputStream
+#include <wx/wfstream.h>	// wxFileInputStream
+#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
+#include <wx/file.h>		// Needed for wxFile
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -348,5 +353,137 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 	// Kry - Safe backup end
 	
 	return true;
+}
+
+
+/**
+ * Returns true if the file is a zip-archive.
+ */
+EFileType GuessFiletype(const wxString& file)
+{
+	wxFile archive(file, wxFile::read);
+	char head[10];
+
+	// We start by reading only the first two chars
+	if (archive.Read(head, 2) != 2) {
+		// Probably just an empty text-file
+		return EFT_Text;
+	}
+
+	// Attempt to guess the filetype.
+	if ((head[0] == 'P') && (head[1] == 'K')) {
+		// Zip-archives have a header of "PK".
+		return EFT_Zip;
+	} else if (head[0] == (char)0x1F && head[1] == (char)0x8B) {
+		// Gzip-archives have a header of 0x1F8B
+		return EFT_GZip;
+	} else if (head[0] == (char)0xE0 || head[0] == (char)0x0E) {
+		// MET files have either of these headers
+		return EFT_Met;
+	} else {
+		// Check the first ten chars, if all are printable, 
+		// then we can probably safely assume that this is 
+		// a ascii text-file.
+		archive.Seek(0, wxFromStart);
+		size_t read = archive.Read(head, 10);
+
+		for (size_t i = 0; i < read; ++i) {
+			if (!isprint(head[i]) && !isspace(head[i])) {
+				return EFT_Unknown;
+			}
+		}
+		
+		return EFT_Text;
+	}
+}
+
+
+/**
+ * Replaces the zip-archive with "guarding.p2p" or "ipfilter.dat",
+ * if either of those files are found in the archive.
+ */
+bool UnpackZipFile(const wxString& file, const wxChar* files[])
+{
+	wxZipFSHandler archive; 
+	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
+
+	while (!filename.IsEmpty()) {
+		// Extract the filename part of the URI
+		filename = filename.AfterLast(wxT(':')).Lower();
+	
+		// We only care about the files specified in the array
+		for (size_t i = 0; files[i]; ++i) {
+			if (files[i] == filename) {
+				wxZipInputStream inputStream(file, filename);
+			
+				char buffer[10240];
+				wxTempFile target(file);
+				
+				while (!inputStream.Eof()) {
+					inputStream.Read(buffer, sizeof(buffer));
+
+					target.Write(buffer, inputStream.LastRead());
+				}
+				
+				target.Commit();
+				
+				return true;
+			}
+		}
+		
+		filename = archive.FindNext();
+	}
+
+	return false;
+}
+
+
+/**
+ * Unpacks a GZip file and replaces the archive.
+ */
+bool UnpackGZipFile(const wxString& file)
+{
+	wxFileInputStream source(file);
+	wxZlibInputStream inputStream(source);
+	
+	char buffer[10240];
+	wxTempFile target(file);
+	
+	while (!inputStream.Eof()) {
+		inputStream.Read(buffer, sizeof(buffer));
+
+		target.Write(buffer, inputStream.LastRead());
+	}
+
+	target.Commit();
+
+	return true;
+}
+
+
+UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
+{
+	// Attempt to discover the filetype and uncompress
+	EFileType type = GuessFiletype(file);
+	switch (type) {
+		case EFT_Zip:
+			if (UnpackZipFile(file, files)) {
+				// Unpack nested archives if needed.
+				return UnpackResult(true, UnpackArchive(file, files).second);
+			} else {
+				return UnpackResult(false, EFT_Zip);
+			}
+
+		case EFT_GZip:
+			if (UnpackGZipFile(file)) {
+				// Unpack nested archives if needed.
+				return UnpackResult(true, UnpackArchive(file, files).second);
+			} else {
+				return UnpackResult(false, EFT_GZip);
+			}
+
+		default:
+			return UnpackResult(false, type);
+	}
 }
 
