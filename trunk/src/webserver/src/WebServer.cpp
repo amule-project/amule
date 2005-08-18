@@ -1532,11 +1532,11 @@ wxString CWebServer::_GetGraphs(ThreadData Data) {
 					}
 				}
 			}
-			for (unsigned int i = 0; i < numItems;) {
+			for (unsigned int i = 0; i < numItems; i += 3) {
 				UpDown *dataLine = new UpDown;
-				dataLine->download = ENDIAN_NTOHL(data[i++]);
-				dataLine->upload = ENDIAN_NTOHL(data[i++]);
-				dataLine->connections = ENDIAN_NTOHL(data[i++]);
+				dataLine->download    = ENDIAN_NTOHL(data[i+0]);
+				dataLine->upload      = ENDIAN_NTOHL(data[i+1]);
+				dataLine->connections = ENDIAN_NTOHL(data[i+2]);
 				m_Params.PointsForWeb.Add(dataLine);
 				while (m_Params.PointsForWeb.GetCount() > m_nGraphWidth) {
 					delete m_Params.PointsForWeb[0];

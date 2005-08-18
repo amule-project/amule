@@ -26,6 +26,7 @@ Version 2.1.x - The "???" version
 		* Fixed deadlock in ClientUDPSocket.cpp.
 		* Crash handler improovement, avoid calling functions that
 		  may allocate memory.
+		* Fixed some compile warnings in WebServer.cpp.
 
 	volpol:
 		* A4AF transfer speed display fix
