@@ -33,7 +33,7 @@
 
 #include <wx/string.h>
 #include <dirent.h>
-
+#include <utility>
 
 struct stat;
 
@@ -87,6 +87,41 @@ private:
 	wxString FileMask;
 };
 	
+
 bool CheckDirExists(const wxString& dir);
+
+
+//! Filetypes understood by UnpackArchive
+enum EFileType
+{
+	//! Text files, will be left unchanged.
+	EFT_Text,
+	//! Zip archive, will be unpacked
+	EFT_Zip,
+	//! GZip archives, will be unpacked
+	EFT_GZip,
+	//! Met file, will be left unchanged.
+	EFT_Met,
+	//! Unknown filetype, will be left unchanged.
+	EFT_Unknown
+};
+
+
+typedef std::pair<bool, EFileType> UnpackResult;
+
+/**
+ * Unpacks a single file from an archive, replacing the archive.
+ *
+ * @param file The archive.
+ * @param files An array of filenames (terminated by a NULL entry) which should be unpacked.
+ * @return The first value is true if the archive was unpacked, the second is the resulting filetype.
+ *
+ * If the file specified is not an archive, it will be left unchanged and
+ * the file-type returned. If it is a GZip archive, the archive will be
+ * unpacked and the new file will replace the archive. If the archive is a
+ * Zip archive, the first file found matching any in the files array (case-
+ * insensitive) will be unpacked and overwrite the archive.
+ */
+UnpackResult UnpackArchive(const wxString& file, const wxChar* files[]);
 
 #endif

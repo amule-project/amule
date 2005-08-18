@@ -108,11 +108,6 @@ private:
 	void LoadFromFile(const wxString& file);
 	
 	/**
-	 * Helper-function, loads a IP-list from the text file.
-	 */
-	void LoadFromDatFile( const wxString& file );
-
-	/**
 	 * Helper-function for processing the AntiP2P format.
 	 *
 	 * @return True if the line was valid, false otherwise.

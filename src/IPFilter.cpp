@@ -36,15 +36,16 @@
 #include <wx/file.h>		// Needed for wxTempFile
 #include <wx/filename.h>
 
-#include "IPFilter.h"		// Interface declarations.
-#include "NetworkFunctions.h"
-#include "Preferences.h"	// Needed for thePrefs
-#include "amule.h"		// Needed for theApp
-#include "Statistics.h"		// Needed for theStats
-#include "HTTPDownload.h"	// Needed for CHTTPDownloadThread
-#include "Logger.h"		// Needed for AddDebugLogLineM
-#include "Format.h"		// Needed for CFormat
+#include "IPFilter.h"			// Interface declarations.
+#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
+#include "Preferences.h"		// Needed for thePrefs
+#include "amule.h"				// Needed for theApp
+#include "Statistics.h"			// Needed for theStats
+#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
+#include "Logger.h"				// Needed for AddDebugLogLineM
+#include "Format.h"				// Needed for CFormat
 #include "StringFunctions.h"	// Needed for CSimpleTokenizer
+#include "FileFunctions.h"		// Needed for UnpackArchive
 
 /**
  * This function creates a text-file containing the specified text, 
@@ -62,8 +63,6 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 		}
 	}
 }
-
-
 
 
 CIPFilter::CIPFilter()
@@ -203,21 +202,30 @@ bool CIPFilter::ProcessAntiP2PLine(const wxString& sLine)
 }
 
 
+const wxChar* ipfilter_files[] = {
+	wxT("server.met"),
+	wxT("guarding.p2p"),
+	NULL
+};
+
+
 void CIPFilter::LoadFromFile(const wxString& file)
 {
-	if (wxFileExists(file)) {	
-		 LoadFromDatFile(file);
+	if (!wxFileExists(file)) {	
+		return;
 	}
-}
-
-
-void CIPFilter::LoadFromDatFile(const wxString& file)
-{
+	
+	// Try to unpack the file, might be an archive
+	if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
+		AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
+		return;
+	}
+	
 	int filtercount = 0;
 	int discardedCount = 0;
 	
 	wxTextFile readFile(file);
-	if(readFile.Exists() && readFile.Open()) {
+	if (readFile.Open()) {
 		wxMutexLocker lock(m_mutex);
 	
 		// Function pointer-type of the parse-functions we can use
@@ -246,6 +254,9 @@ void CIPFilter::LoadFromDatFile(const wxString& file)
 				}
 			}
 		}
+	} else {
+		AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
+		return;
 	}
 
 	AddLogLineM(false,

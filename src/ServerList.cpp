@@ -59,6 +59,7 @@
 #include "Logger.h"
 #include "Format.h"
 #include "IPFilter.h"
+#include "FileFunctions.h"		// Needed for UnpackArchive
 
 #include <algorithm>			// Needed for std::find
 
@@ -102,6 +103,14 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		AddLogLineM( false, _("Server.met file not found!") );
 		return false;
 	}
+
+	// Try to unpack the file, might be an archive
+	const wxChar* mets[] = { wxT("server.met"), NULL };
+	// Try to unpack the file, might be an archive
+	if (UnpackArchive(strFile, mets).second != EFT_Met) {
+		AddLogLineM(true, CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % strFile);
+		return false;
+	}	
 
 	CFile servermet( strFile,CFile::read );
 	if ( !servermet.IsOpened() ){ 
