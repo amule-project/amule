@@ -350,14 +350,14 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 1");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1 (file hash)");
 		return;
 	}
 	char *str_hash = si->var->value.str_val;
 	
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 2");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
 		return;
 	}
 
@@ -369,6 +369,65 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 #else
 	printf("php_native_search_download_cmd: hash=%s category=%d\n", str_hash, cat);
 #endif
+}
+
+void php_native_search_start_cmd(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1 (search term)");
+		return;
+	}
+	char *search = si->var->value.str_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_1")) || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (file extension)");
+		return;
+	}
+	char *ext = si->var->value.str_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_2")) || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 3 (file type)");
+		return;
+	}
+	char *type = si->var->value.str_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_3")) ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 4 (search type)");
+		return;
+	}
+	cast_value_bool(&si->var->value);
+	int is_global = si->var->value.int_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_4")) ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 5 (availability)");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	int avail = si->var->value.int_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_5")) ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 6 (min size)");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	int min_size = si->var->value.int_val;
+
+	if ( !(si = get_scope_item(g_current_scope, "__param_6")) ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 7 (max size)");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	int max_size = si->var->value.int_val;
+
+#ifdef AMULEWEB_SCRIPT_EN
+	CPhPLibContext::g_curr_context->WebServer()->Send_Search_Cmd(
+		wxString(char2unicode(search)), wxString(char2unicode(ext)), wxString(char2unicode(type)),
+		is_global, avail, min_size, max_size);
+#else
+	printf("php_native_search_start_cmd: search=%s \n", search);
+#endif
+
 }
 
 /*
@@ -728,7 +787,7 @@ void amule_shared_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 	amule_fake_prop_get(obj, prop_name, result);
 }
 
-void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
 {
 	amule_fake_prop_get(obj, prop_name, result);
 }
@@ -803,6 +862,17 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
 		2,
 		php_native_search_download_cmd,
+	},
+	{
+		"amule_do_search_start_cmd",
+		{ 
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0},
+		}, 
+		7,
+		php_native_search_start_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };
