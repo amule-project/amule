@@ -945,7 +945,7 @@ bool CRemoteConnect::ConnectionEstablished() {
 	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(ConnectionPassword)));
 
 #ifdef EC_VERSION_ID
-	packet.AddTag(CECTag(EC_TAG_VERSION_ID, wxT(EC_VERSION_ID)));
+	packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
 #endif
 
 	if (! m_ECSocket->WritePacket(&packet) ) {

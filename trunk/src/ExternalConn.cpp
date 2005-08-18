@@ -233,7 +233,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
 		// For CVS versions, both client and server must use CVSDATE, and they must be the same
-		if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetStringData() != wxT(EC_VERSION_ID)) {
+		if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != CMD4Hash(wxT(EC_VERSION_ID))) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else

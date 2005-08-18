@@ -79,7 +79,7 @@ class EC_IPv4_t {
 /**
  * Current EC protocol version
  */
-#define	EC_CURRENT_PROTOCOL_VERSION	0x01f2
+#define	EC_CURRENT_PROTOCOL_VERSION	0x01f3
 
 
 /*
@@ -684,7 +684,7 @@ enum {
 		 * thus we can ensure that releases which are binary compatible
 		 * can still communicate with each other.
 		 *
-		 * Data type: \c string
+		 * Data type: \c hash
 		 */
 	EC_TAG_VERSION_ID,
 

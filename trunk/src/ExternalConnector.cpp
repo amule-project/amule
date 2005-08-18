@@ -303,7 +303,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, m_password));
 
 #ifdef EC_VERSION_ID
-		packet.AddTag(CECTag(EC_TAG_VERSION_ID, wxT(EC_VERSION_ID)));
+		packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
 #endif
 
 		// Clear passwords
