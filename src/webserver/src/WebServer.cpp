@@ -454,6 +454,16 @@ void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 	}
 }
 
+void CWebServerBase::Send_Search_Cmd(wxString search, wxString extention, wxString type,
+	bool global, uint32 avail, uint32 min_size, uint32 max_size)
+{
+	CECPacket search_req(EC_OP_SEARCH_START);
+	search_req.AddTag(CEC_Search_Tag (search, global ? EC_SEARCH_GLOBAL : EC_SEARCH_LOCAL,
+		type, extention, avail, min_size, max_size));
+	Send_Discard_V2_Request(&search_req);
+}
+
+
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
 {
 	m_Params.bShowUploadQueue = false;
@@ -2280,20 +2290,8 @@ wxString CWebServer::_GetSearch(ThreadData Data) {
 		wxString ext = _ParseURL(Data, wxT("ext"));
 		wxString method = _ParseURL(Data, wxT("method"));
 		wxString type = _ParseURL(Data, wxT("type"));
-		EC_SEARCH_TYPE search_type = EC_SEARCH_LOCAL;
-		if ( type == wxT("Global") ) {
-			search_type = EC_SEARCH_GLOBAL;
-		} else if  ( type == wxT("Web") ) {
-			search_type = EC_SEARCH_WEB;
-		}
-		CECPacket search_req(EC_OP_SEARCH_START);
-		search_req.AddTag(CEC_Search_Tag (sToSearch, search_type, type, ext, avail, min_size, max_size));
-		CECPacket *search_reply = webInterface->SendRecvMsg_v2(&search_req);
-		if (search_reply) {
-			messageString =
-				wxGetTranslation(search_reply->GetTagByIndexSafe(0)->GetStringData());
-			delete search_reply;
-		}
+		Send_Search_Cmd(sToSearch,  ext, type, (method == wxT("Global")),  avail, min_size, max_size);
+		messageString = _("Search in progress. Refetch results in a moment!");
 	} else if (!sToSearch.IsEmpty() && !IsSessionAdmin(Data,sSession) ) {
 		messageString = _("Access denied!");
 	}

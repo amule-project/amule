@@ -813,6 +813,9 @@ class CWebServerBase {
 		
 		void Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd);
 
+		void Send_Search_Cmd(wxString search, wxString extention, wxString type,
+			bool global, uint32 avail, uint32 min_size, uint32 max_size);
+		
 		CamulewebApp	*webInterface;
 
 };
