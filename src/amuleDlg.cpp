@@ -1102,7 +1102,10 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 }
 
-void CamuleDlg::SetMessagesTool() {
+
+void CamuleDlg::SetMessagesTool()
+{
+#if wxCHECK_VERSION(2, 5, 0)
 	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
 	m_wndToolbar->DeleteTool(ID_BUTTONMESSAGES);
 	m_wndToolbar->InsertTool(pos,ID_BUTTONMESSAGES, _("Messages"), 
@@ -1111,6 +1114,7 @@ void CamuleDlg::SetMessagesTool() {
 		wxITEM_CHECK, 
 		_("Messages Window") );
 	m_wndToolbar->Realize();
+#endif
 }
 
 
