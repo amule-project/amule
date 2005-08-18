@@ -929,9 +929,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_UPLOAD_CAP,	(MkCfg_Int( wxT("/eMule/UploadCapacity"), s_maxGraphUploadRate, 3 )));
 	NewCfgItem(IDC_SLIDER3,		(MkCfg_Int( wxT("/eMule/StatsAverageMinutes"), s_statsAverageMinutes, 5 )));
 	NewCfgItem(IDC_SLIDER4,		(MkCfg_Int( wxT("/eMule/VariousStatisticsMaxValue"), s_statsMax, 100 )));
-	#warning uncomment and fix the following line, and remove the next one when GUI has been added
-	//NewCfgItem(IDC_whatever,		(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 )));
-	s_MiscList.push_back(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 ));
+	NewCfgItem(IDC_CLIENTVERSIONS,	(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 )));
 
 	/**
 	 * Sources

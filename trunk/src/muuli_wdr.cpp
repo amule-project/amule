@@ -2325,6 +2325,16 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
     wxSlider *item19 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
     item16->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
+    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item21 = new wxStaticText( parent, -1, _("Number of Client Versions shown (0=unlimited)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->Add( item21, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxSpinCtrl *item22 = new wxSpinCtrl( parent, IDC_CLIENTVERSIONS, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
+    item20->Add( item22, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item16->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
     item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
