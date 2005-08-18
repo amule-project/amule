@@ -34,10 +34,14 @@ function formCommandSubmit(command)
       <tr>
         <td colspan="5" scope="col"><table width="100%"  border="1" align="left" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="625" bgcolor="#0099CC">                  <input name="searchval" type="text" id="searchval" size="75">
-              <input type="submit" name="Submit" value="Search">              <div align="left">
+            <td width="625" bgcolor="#0099CC">
+              <input type="hidden" name="command" value="">
+              <input name="searchval" type="text" id="searchval" size="75">
+              <input name="Search" type="submit" id="Search" value="Search" onClick="javascript:formCommandSubmit('search');">
+              <div align="left">
               </div></td>
-            <td width="278" bgcolor="#0099CC"><input name="Download" type="submit" id="Download" value="Download">
+            <td width="278" bgcolor="#0099CC">
+            <input name="Download" type="submit" id="Download" value="Download" onClick="javascript:formCommandSubmit('download');" >
               <select name="select">
                 <option>Any category</option>
               </select></td>
@@ -114,7 +118,27 @@ function formCommandSubmit(command)
 
 			return $result;
 		}
+		$aaa = "";
+		
 
+		if ( $HTTP_GET_VARS["command"] == "search") {
+			$is_global = 0;
+			$minsize = 0; $maxsize = 0;
+			amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
+				//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
+				"", "Any",
+				$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
+		} elseif ( $HTTP_GET_VARS["command"] == "download") {
+			foreach ( $HTTP_GET_VARS as $name => $val) {
+				// this is file checkboxes
+				if ( (strlen($name) == 32) and ($val == "on") ) {
+					//var_dump($name);var_dump($val);
+					//amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
+				}
+			}
+		} else {
+		}
+		
 		$search = amule_load_vars("searchresult");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
