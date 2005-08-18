@@ -365,10 +365,6 @@ class CStatistics {
 		return (1280/2) - 80; // This used to be a calc. based on GUI width
 	}
 
-#ifdef __DEBUG__
-	void VerifyHistory(bool bMsgIfOk = false);
-#endif
-
 	/* Graphs-related vars */
 
 	CPreciseRateCounter	m_graphRunningAvgDown;
