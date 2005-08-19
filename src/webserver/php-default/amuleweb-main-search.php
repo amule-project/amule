@@ -42,7 +42,7 @@ function formCommandSubmit(command)
               </div></td>
             <td width="278" bgcolor="#0099CC">
             <input name="Download" type="submit" id="Download" value="Download" onClick="javascript:formCommandSubmit('download');" >
-            <img src="arrow-r.png" width="42" height="23">              <select name="select">
+            <img src="arrow-r.png" width="42" height="23">              <select name="targetcat" id="targetcat">
                 <?php
                 	$cats = amule_get_categories();
                 	foreach($cats as $c) {
@@ -141,6 +141,16 @@ function formCommandSubmit(command)
 			return $result;
 		}
 
+		function cat2idx($cat)
+		{
+                	$cats = amule_get_categories();
+                	$result = 0;
+                	foreach($cats as $i => $c) {
+                		if ( $cat == $c) $result = $i;
+                	}
+            		return $result;
+		}
+		
 		if ( $HTTP_GET_VARS["command"] == "search") {
 			$is_global = $HTTP_GET_VARS["searchtype"] == "Global" ? 1 : 0;
 
@@ -158,8 +168,9 @@ function formCommandSubmit(command)
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
-					//var_dump($name);var_dump($val);
-					//amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
+					$cat = $HTTP_GET_VARS["targetcat"];
+					$cat_idx = cat2idx($cat);
+					amule_do_search_download_cmd($name, $cat_idx);
 				}
 			}
 		} else {
