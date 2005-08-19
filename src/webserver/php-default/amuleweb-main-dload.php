@@ -120,13 +120,13 @@ function formCommandSubmit(command)
       <tr>
         <th width="22" scope="col">&nbsp;</th>
         <th width="230" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="227" scope="col"><div align="left">
+        <th width="200" scope="col"><div align="left">
           <div align="left">Progress</div></th>
-        <th width="231" scope="col"><div align="left">
+        <th width="80" scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
+        <th width="80" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
         <th width="44" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
         <th width="88" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
-        <th width="8" scope="col">&nbsp;</th>
         <th width="12" scope="col">&nbsp;</th>
         </tr>
       <tr>
@@ -181,6 +181,7 @@ function formCommandSubmit(command)
 				case "size": $result = $a->size > $b->size; break;
 				case "name": $result = $a->name > $b->name; break;
 				case "speed": $result = $a->speed > $b->speed; break;
+				case "scrcount": $result = $a->src_count > $b->src_count; break;
 				case "status": $result = StatusString($a) > StatusString($b); break;
 			}
 
@@ -248,8 +249,18 @@ function formCommandSubmit(command)
 			
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
-			echo "<td>", StatusString($file), "</td>";
+			echo "<td>";
+			if ( $file->src_count_not_curr != 0 ) {
+				echo $file->src_count - $file->src_count_not_curr, " / ";
+			}
+			echo $file->src_count, " &nbsp( ", $file->src_count_xfer, " )&nbsp ";
+			if ( $file->src_count_a4af != 0 ) {
+				echo "+ ", $file->src_count_a4af;
+			}
+			echo "</td>";
 
+			echo "<td>", StatusString($file), "</td>";
+			
 			echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
 			print "</tr>";
 			}
