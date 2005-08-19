@@ -19,39 +19,21 @@
 
 #include <wx/wx.h>
 #include "testregistry.h"
+#include "../../src/MuleDebug.h"
 
 using namespace muleunit;
 
-int g_errCount = 0;
 
-class MyApp : public wxApp
+wxString GetFullMuleVersion()
 {
-public:
-    virtual bool OnInit()
-	{
-		const TestResult* result = TestRegistry::runAndPrint();
+	return wxT("UnitTest");
+}
 
-		g_errCount = result->getFailures();
-		
-		// Musn't enter the main loop
-		return false;			
-	}
-
-	// Needed for console wxLibs
-	virtual int OnRun()
-	{
-		return 0;
-	}
-};
-
-
-// We need to override the default main code, since we want
-// to return an err only if there were any failures in the tests.
-IMPLEMENT_APP_NO_MAIN(MyApp);
 
 int main(int argc, char **argv)
 {
-	wxEntry(argc, argv);
+	InstallMuleExceptionHandler();
 
-	return g_errCount;
+	const TestResult* result = TestRegistry::runAndPrint();
+	return result->getFailures();
 }
