@@ -349,7 +349,7 @@ void CClientList::DeleteAll()
 	}
 
 	// Clean up the clients now queued for deletion
-	Process();
+	ProcessDeleteQueue();
 }
 
 
@@ -476,10 +476,8 @@ uint16 CClientList::GetClientsFromIP(uint32 dwIP)
 }
 
 
-void CClientList::Process()
+void CClientList::ProcessDeleteQueue()
 {
-	const uint32 cur_tick = ::GetTickCount();
-
 	// Delete pending clients
 	while ( !m_delete_queue.empty() ) {
 		CUpDownClient* toremove = m_delete_queue.front();
@@ -494,7 +492,15 @@ void CClientList::Process()
 				
 		delete toremove;
 	}
-	
+}
+
+
+void CClientList::Process()
+{
+	const uint32 cur_tick = ::GetTickCount();
+
+	ProcessDeleteQueue();
+
 	if (m_dwLastBannCleanUp + BAN_CLEANUP_TIME < cur_tick) {
 		m_dwLastBannCleanUp = cur_tick;
 		
