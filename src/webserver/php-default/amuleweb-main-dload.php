@@ -95,17 +95,27 @@ function formCommandSubmit(command)
       <tr>
         <td>
         <?php
-        	$all_status = array("All", "Waiting", "Paused", "Downloading");
+        	$all_status = array("all", "Waiting", "Paused", "Downloading");
         	
- 			if ( $HTTP_GET_VARS["command"] == "filter") $_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
-        	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'All';
+ 			if ( $HTTP_GET_VARS["command"] == "filter") {
+ 				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
+ 				$_SESSION["filter_cat"] = $HTTP_GET_VARS["category"];
+ 			}
+        	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'all';
+        	if ( $_SESSION["filter_cat"] == '') $_SESSION["filter_status"] = 'all';
 
         	echo '<select name ="status"';
         	foreach ($all_status as $s) {
         		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
         	}
         	echo '</select>';
-        	
+        	var_dump($_SESSION["filter_cat"]);
+        	echo '<select name="category" id="category">';
+			$cats = amule_get_categories();
+			foreach($cats as $c) {
+				echo (($c == $_SESSION["filter_cat"]) ? '<option selected>' : '<option>'), $c, '</option>';
+			}
+			echo '</select>';
         ?>
         </td>
         <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
@@ -124,7 +134,7 @@ function formCommandSubmit(command)
           <div align="left">Progress</div></th>
         <th width="80" scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="80" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
+        <th width="90" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
         <th width="44" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
         <th width="88" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
         <th width="12" scope="col">&nbsp;</th>
@@ -194,10 +204,8 @@ function formCommandSubmit(command)
 
 		//
 		// perform command before processing content
-		//
-		//var_dump($HTTP_GET_VARS);
+
 		if ( $HTTP_GET_VARS["command"] != "") {
-			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
@@ -208,14 +216,14 @@ function formCommandSubmit(command)
 			//
 			// check "filter-by-status" settings
 			//
-			//var_dump($HTTP_GET_VARS["command"]);
 			if ( $HTTP_GET_VARS["command"] == "filter") {
+				var_dump($_SESSION);
 				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
-			//var_dump($HTTP_GET_VARS["command"]);
+				$_SESSION["filter_cat"] = $HTTP_GET_VARS["category"];
 			}
 		}
-		//var_dump($_SESSION["filter_status"]);
-		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "All";
+		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "all";
+		if ( $_SESSION["filter_cat"] == "") $_SESSION["filter_status"] = "all";
 		
 		$downloads = amule_load_vars("downloads");
 
@@ -224,45 +232,45 @@ function formCommandSubmit(command)
 		if ( $sort_order == "" ) {
 			$sort_order = $_SESSION["download_sort"];
 		} else {
-			if ( $_SESSION["sort_reverse"] == "" ) {
-				$_SESSION["sort_reverse"] = 0;
+			if ( $_SESSION["download_sort_reverse"] == "" ) {
+				$_SESSION["download_sort_reverse"] = 0;
 			} else {
-				$_SESSION["sort_reverse"] = !$_SESSION["sort_reverse"];
+				$_SESSION["download_sort_reverse"] = !$_SESSION["download_sort_reverse"];
 			}
 		}
 		//var_dump($_SESSION);
-		$sort_reverse = $_SESSION["sort_reverse"];
+		$sort_reverse = $_SESSION["download_sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["download_sort"] = $sort_order;
 			usort($downloads, "my_cmp");
 		}
 
 		foreach ($downloads as $file) {
-			if ( ($_SESSION["filter_status"] == "All") or ( $_SESSION["filter_status"] == StatusString($file) ) ) {
-			print "<tr>";
-
-			echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
-
-			echo "<td nowrap>", $file->name, "</td>";
-
-			echo "<td>", $file->progress, "</td>";
-			
-			echo "<td>", CastToXBytes($file->size), "</td>";
-
-			echo "<td>";
-			if ( $file->src_count_not_curr != 0 ) {
-				echo $file->src_count - $file->src_count_not_curr, " / ";
-			}
-			echo $file->src_count, " &nbsp( ", $file->src_count_xfer, " )&nbsp ";
-			if ( $file->src_count_a4af != 0 ) {
-				echo "+ ", $file->src_count_a4af;
-			}
-			echo "</td>";
-
-			echo "<td>", StatusString($file), "</td>";
-			
-			echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
-			print "</tr>";
+			if ( ($_SESSION["filter_status"] == "all") or ( $_SESSION["filter_status"] == StatusString($file) ) ) {
+				print "<tr>";
+	
+				echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
+	
+				echo "<td nowrap>", $file->name, "</td>";
+	
+				echo "<td>", $file->progress, "</td>";
+				
+				echo "<td>", CastToXBytes($file->size), "</td>";
+	
+				echo "<td>";
+				if ( $file->src_count_not_curr != 0 ) {
+					echo $file->src_count - $file->src_count_not_curr, " / ";
+				}
+				echo $file->src_count, " ( ", $file->src_count_xfer, " ) ";
+				if ( $file->src_count_a4af != 0 ) {
+					echo "+ ", $file->src_count_a4af;
+				}
+				echo "</td>";
+	
+				echo "<td>", StatusString($file), "</td>";
+				
+				echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
+				print "</tr>";
 			}
 		}
 	  ?>
