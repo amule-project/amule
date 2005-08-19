@@ -109,7 +109,7 @@ function formCommandSubmit(command)
         		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
         	}
         	echo '</select>';
-        	var_dump($_SESSION["filter_cat"]);
+        	//var_dump($_SESSION["filter_cat"]);
         	echo '<select name="category" id="category">';
 			$cats = amule_get_categories();
 			foreach($cats as $c) {
@@ -217,7 +217,7 @@ function formCommandSubmit(command)
 			// check "filter-by-status" settings
 			//
 			if ( $HTTP_GET_VARS["command"] == "filter") {
-				var_dump($_SESSION);
+				//var_dump($_SESSION);
 				$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
 				$_SESSION["filter_cat"] = $HTTP_GET_VARS["category"];
 			}
@@ -245,8 +245,17 @@ function formCommandSubmit(command)
 			usort($downloads, "my_cmp");
 		}
 
+		//
+		// Prepare categories index array
+		$cats = amule_get_categories();
+		foreach($cats as $i => $c) {
+			$cat_idx[$c] = $i;
+		}
+
 		foreach ($downloads as $file) {
-			if ( ($_SESSION["filter_status"] == "all") or ( $_SESSION["filter_status"] == StatusString($file) ) ) {
+			if ( (($_SESSION["filter_status"] == "all") or ($_SESSION["filter_status"] == StatusString($file))) and
+				($cat_idx[ $_SESSION["filter_cat"] ] == $file->category)
+				) {
 				print "<tr>";
 	
 				echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
