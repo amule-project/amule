@@ -645,10 +645,10 @@ void CStatistics::InitStatsTree()
 	s_totalServers = (CStatTreeItemNativeCounter*)tmpRoot1->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Total: %s")));
 	s_deletedServers = (CStatTreeItemNativeCounter*)tmpRoot1->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Deleted Servers: %s")));
 	s_filteredServers = (CStatTreeItemNativeCounter*)tmpRoot1->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Filtered Servers: %s")));
-	s_usersOnWorking = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Users on Working Servers: %i")));
-	s_filesOnWorking = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Files on Working Servers: %i")));
-	s_totalUsers = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Total Users: %i")));
-	s_totalFiles = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Total Files: %i")));
+	s_usersOnWorking = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Users on Working Servers: %llu")));
+	s_filesOnWorking = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Files on Working Servers: %llu")));
+	s_totalUsers = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Total Users: %llu")));
+	s_totalFiles = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Total Files: %llu")));
 	s_serverOccupation = (CStatTreeItemSimple*)tmpRoot1->AddChild(new CStatTreeItemSimple(wxTRANSLATE("Server Occupation: %.2f%%")));
 	s_serverOccupation->SetValue(0.0);
 
