@@ -635,6 +635,8 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	} else if ( strcmp(prop_name, "progress") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(obj->m_Image->GetHTML()));
+	} else if ( strcmp(prop_name, "category") == 0 ) {
+		result->int_val = obj->nCat;
 	} else if ( strcmp(prop_name, "status") == 0 ) {
 		result->int_val = obj->nFileStatus;
 	} else if ( strcmp(prop_name, "size") == 0 ) {
