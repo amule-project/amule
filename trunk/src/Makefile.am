@@ -287,16 +287,6 @@ amule_SOURCES += gsocket-2.5.c
 endif
 endif
 
-if HAVE_TRAY
-if HAVE_OLD_TRAY
-amule_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
-amulegui_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp
-else
-amule_SOURCES += MuleTrayIcon.cpp
-amulegui_SOURCES += MuleTrayIcon.cpp
-endif
-endif
-
 if USE_EMBEDDED_CRYPTO
 amule_SOURCES += CryptoPP.cpp
 amuled_SOURCES += CryptoPP.cpp
@@ -322,13 +312,6 @@ amulegui_CFLAGS += -D__COMPILE_KAD__
 amulegui_CXXFLAGS += -D__COMPILE_KAD__
 endif
 
-if HAVE_TRAY
-if HAVE_OLD_TRAY
-amule_LDADD += $(GTK_LIBS) 
-amulegui_LDADD += $(GTK_LIBS) 
-endif
-endif
-
 amuled_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
 amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
 amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
@@ -339,8 +322,19 @@ amuled_CFLAGS += -D__COMPILE_KAD__
 amuled_CXXFLAGS += -D__COMPILE_KAD__
 endif
 
+if HAVE_TRAY
+if HAVE_OLD_TRAY
+amule_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
+amule_LDADD += $(GTK_LIBS) 
+amulegui_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp
+amulegui_LDADD += $(GTK_LIBS) 
+else
+amule_SOURCES += MuleTrayIcon.cpp
+amulegui_SOURCES += MuleTrayIcon.cpp
+endif
+endif
+
 ed2k_SOURCES = ED2KLinkParser.cpp
-ed2k_CFLAGS =
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DEC_REMOTE
