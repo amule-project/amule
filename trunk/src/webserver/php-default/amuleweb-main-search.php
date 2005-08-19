@@ -42,8 +42,13 @@ function formCommandSubmit(command)
               </div></td>
             <td width="278" bgcolor="#0099CC">
             <input name="Download" type="submit" id="Download" value="Download" onClick="javascript:formCommandSubmit('download');" >
-              <select name="select">
-                <option>Any category</option>
+            <img src="arrow-r.png" width="42" height="23">              <select name="select">
+                <?php
+                	$cats = amule_get_categories();
+                	foreach($cats as $c) {
+                		echo "<option>", $c, "</option>";
+                	}
+                ?>
               </select></td>
           </tr>
           <tr>
