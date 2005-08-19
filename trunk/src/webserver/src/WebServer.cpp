@@ -2709,6 +2709,8 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	} else {
 		bFileAutoPriority = false;
 	}
+	nCat = tag->FileCat();
+	
 	nFileStatus = tag->FileStatus();
 	sFileStatus = tag->GetFileStatusString();
 	lSourceCount = tag->SourceCount();

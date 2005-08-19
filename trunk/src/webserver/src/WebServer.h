@@ -146,6 +146,7 @@ class DownloadFile {
 		bool		bFileAutoPriority;
 		wxString	sFileHash;
 		wxString	sED2kLink;
+		uint8		nCat;
 
 		CMD4Hash	nHash;
 		
