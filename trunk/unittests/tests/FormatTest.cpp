@@ -178,6 +178,22 @@ TEST(Format, InjectInt)
 	STANDARD_TYPE_CONSTRAINTS(wxT("u"), unsigned int, long long);
 	STANDARD_TYPE_CONSTRAINTS(wxT("x"), unsigned int, long long);
 	STANDARD_TYPE_CONSTRAINTS(wxT("X"), unsigned int, long long);
+	STANDARD_TYPE_CONSTRAINTS(wxT("X"), long long, unsigned long long);
+
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%o")) % (int)-1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%x")) % (int)-1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%X")) % (int)-1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%u")) % (int)-1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%lu")) % (long)-1);
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%llu")) % (long long)-1);
+
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % MAX(unsigned int));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%i")) % MAX(unsigned int));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%li")) % MAX(unsigned long));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%lli")) % MAX(unsigned long long));
+
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % (1llu << 32));
+	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%i")) % (1llu << 32));
 }
 
 
