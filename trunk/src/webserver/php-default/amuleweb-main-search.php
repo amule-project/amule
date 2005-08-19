@@ -73,7 +73,12 @@ function formCommandSubmit(command)
     </select>  
     <label>Availability</label>
     <input name="avail" type="text" id="avail" size="6">
-</div></td>
+    <label>Search type </label>
+    <select name="searchtype" id="searchtype">
+      <option selected>Local</option>
+      <option>Global</option>
+    </select>
+            </div></td>
             </tr>
         </table></td>
         </tr>
@@ -137,7 +142,7 @@ function formCommandSubmit(command)
 		}
 
 		if ( $HTTP_GET_VARS["command"] == "search") {
-			$is_global = 0;
+			$is_global = $HTTP_GET_VARS["searchtype"] == "Global" ? 1 : 0;
 
 			$min_size = $HTTP_GET_VARS["minsize"] == "" ? 0 : $HTTP_GET_VARS["minsize"];
 			$max_size = $HTTP_GET_VARS["maxsize"] == "" ? 0 : $HTTP_GET_VARS["maxsize"];
@@ -145,8 +150,6 @@ function formCommandSubmit(command)
 			$min_size *= str2mult($HTTP_GET_VARS["minsizeu"]);
 			$max_size *= str2mult($HTTP_GET_VARS["maxsizeu"]);
 			
-			var_dump($min_size);
-			var_dump($max_size);
 			amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
 				//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
 				"", "Any",
