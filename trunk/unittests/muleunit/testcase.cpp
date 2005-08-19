@@ -91,17 +91,7 @@ void TestCase::run()
 		Test* test = *it;
 
 		test->setUp();
-
-		try {
-			test->run();
-		} catch (const std::exception &e) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxConvLibc.cMB2WX(e.what()), error));
-		} catch (const CMuleException& e) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, e.what(), error));			
-		} catch (...) {
-			test->addTestPartResult(new TestPartResult(wxT(""), -1, wxT("Unexpected exception occured"),error));
-		}
-		
+		test->run();
 		test->tearDown();
 		updateCount(test);
 	}
