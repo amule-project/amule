@@ -210,7 +210,22 @@ private:
 template <typename TargetType, typename CurrentType>
 inline bool CanRepresent(CurrentType value) 
 {
-	return (CurrentType)((TargetType)value) == value;
+	typedef std::numeric_limits<TargetType> TT;
+	typedef std::numeric_limits<CurrentType> CT;
+
+	// Check that the new type can contain the value
+	if ((CurrentType)((TargetType)value) == value) {
+		if (TT::is_signed != CT::is_signed) {
+			// Check that the signed bit isn't set, since that would either
+			// mean that the value is negative, or that it is too large to
+			// fit in a signed variable.
+			return value >> (sizeof(CurrentType) * 8 - 1) == 0;
+		} else {
+			return true;
+		}
+	} else {
+		return false;
+	}
 }
 
 
@@ -240,7 +255,8 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 					return SetCurrentField(wxString::Format(field, (signed long)value));
 				
 				case modLongLong:
-					// No need to check, can contain all other value-types
+					MULE_VALIDATE_PARAMS(CanRepresent<signed long long>(value), wxT("Integer value passed cannot be represented as an signed long long."));
+					
 					return SetCurrentField(wxString::Format(field, (signed long long)value));
 
 				default:
@@ -271,7 +287,8 @@ inline CFormat& CFormat::FormatInteger(ValueType value)
 					return SetCurrentField(wxString::Format(field, (unsigned long)value));
 				
 				case modLongLong:
-					// No need to check, can contain all other value-types
+					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long long>(value), wxT("Integer value passed cannot be represented as an unsigned long long."));
+					
 					return SetCurrentField(wxString::Format(field, (unsigned long long)value));
 
 				default:
