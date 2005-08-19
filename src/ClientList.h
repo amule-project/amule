@@ -241,6 +241,15 @@ public:
 
 
 	/**
+	 * Deletes clients previously queued for deletion
+	 *
+	 * This function takes care of deleting pending clients on the
+	 * deletion-queue.
+	 */
+	void	ProcessDeleteQueue();
+
+
+	/**
 	 * This function removes all clients filtered by the current IPFilter.
 	 *
 	 * Call this function after changing the current IPFiler list, to ensure
