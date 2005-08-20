@@ -400,7 +400,6 @@ public:
 	// Kry - External Connections
 	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
-	static bool 		ECUseTCPPort()			{ return s_ECUseTCPPort; }
 	static const wxString&	GetECAddress()			{ return s_ECAddr; }
 	static uint32 		ECPort()			{ return s_ECPort; }
 	static void			SetECPort(uint32 val) { s_ECPort = val; }
@@ -658,7 +657,6 @@ protected:
 	
 	// Kry - external connections
 	static bool 	s_AcceptExternalConnections;
-	static bool 	s_ECUseTCPPort;
 	static wxString s_ECAddr;
 	static uint32	s_ECPort;
 	static wxString	s_ECPassword;
