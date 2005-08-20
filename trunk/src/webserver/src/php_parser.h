@@ -69,21 +69,21 @@
      LIST = 295,
      ARRAY = 296,
      CLASS_SCOPE = 297,
-     LOG_OR = 298,
-     LOG_XOR = 299,
-     LOG_AND = 300,
-     PRINT = 301,
-     SR_EQ = 302,
-     SL_EQ = 303,
-     XOR_EQ = 304,
-     OR_EQ = 305,
-     AND_EQ = 306,
-     MOD_EQ = 307,
-     CONCAT_EQ = 308,
-     DIV_EQ = 309,
-     MUL_EQ = 310,
-     MINUS_EQ = 311,
-     PLUS_EQ = 312,
+     PRINT = 298,
+     SR_EQ = 299,
+     SL_EQ = 300,
+     XOR_EQ = 301,
+     OR_EQ = 302,
+     AND_EQ = 303,
+     MOD_EQ = 304,
+     CONCAT_EQ = 305,
+     DIV_EQ = 306,
+     MUL_EQ = 307,
+     MINUS_EQ = 308,
+     PLUS_EQ = 309,
+     LOG_OR = 310,
+     LOG_XOR = 311,
+     LOG_AND = 312,
      BOOLEAN_OR = 313,
      BOOLEAN_AND = 314,
      IS_NOIDENTICAL = 315,
@@ -159,21 +159,21 @@
 #define LIST 295
 #define ARRAY 296
 #define CLASS_SCOPE 297
-#define LOG_OR 298
-#define LOG_XOR 299
-#define LOG_AND 300
-#define PRINT 301
-#define SR_EQ 302
-#define SL_EQ 303
-#define XOR_EQ 304
-#define OR_EQ 305
-#define AND_EQ 306
-#define MOD_EQ 307
-#define CONCAT_EQ 308
-#define DIV_EQ 309
-#define MUL_EQ 310
-#define MINUS_EQ 311
-#define PLUS_EQ 312
+#define PRINT 298
+#define SR_EQ 299
+#define SL_EQ 300
+#define XOR_EQ 301
+#define OR_EQ 302
+#define AND_EQ 303
+#define MOD_EQ 304
+#define CONCAT_EQ 305
+#define DIV_EQ 306
+#define MUL_EQ 307
+#define MINUS_EQ 308
+#define PLUS_EQ 309
+#define LOG_OR 310
+#define LOG_XOR 311
+#define LOG_AND 312
 #define BOOLEAN_OR 313
 #define BOOLEAN_AND 314
 #define IS_NOIDENTICAL 315

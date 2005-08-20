@@ -107,12 +107,12 @@ PHP_SYN_NODE *add_branch_2_elseif(PHP_SYN_NODE *list, PHP_SYN_NODE *branch)
 	Things with precedence
 */
 %left ','
-%left LOG_OR
-%left LOG_XOR
-%left LOG_AND
 %right PRINT
 %left '=' PLUS_EQ MINUS_EQ MUL_EQ DIV_EQ CONCAT_EQ MOD_EQ AND_EQ OR_EQ XOR_EQ SL_EQ SR_EQ
 %left '?' ':'
+%left LOG_OR
+%left LOG_XOR
+%left LOG_AND
 %left BOOLEAN_OR
 %left BOOLEAN_AND
 %left '|'
