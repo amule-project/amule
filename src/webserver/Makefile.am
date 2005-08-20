@@ -1,1 +1,1 @@
-SUBDIRS = default chicane src
+SUBDIRS = default php-default chicane src

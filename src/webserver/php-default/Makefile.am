@@ -1,0 +1,37 @@
+dist_webserver_DATA = \
+	amuleweb-main-dload.php \
+	amuleweb-main-search.php \
+	amuleweb-main-servers.php \
+	amuleweb-main-shared.php \
+	stats.php \
+	top.html \
+	footer.php \
+	login.html \
+	toolbutton-reload.jpeg \
+	toolbutton-search.jpeg \
+	toolbutton-search-pressed.jpeg \
+	toolbutton-servers.jpeg \
+	toolbutton-servers-pressed.jpeg \
+	toolbutton-settings.jpeg \
+	toolbutton-settings-pressed.jpeg \
+	toolbutton-shared.jpeg \
+	toolbutton-shared-pressed.jpeg \
+	toolbutton-download.jpeg \
+	toolbutton-download-pressed.jpeg \
+	toolbutton-kad.jpeg \
+	toolbutton-kad-pressed.jpeg \
+	toolbutton-stats.jpeg \
+	toolbutton-stats-pressed.jpeg \
+	toolbutton-connect.jpeg \
+	toolbutton-logout.jpeg \
+	toolbutton-logout-pressed.jpeg \
+	up.jpeg \
+	down.jpeg \
+	pause.jpeg \
+	resume.jpeg \
+	apply.jpeg \
+	delete.jpeg \
+	phpamule.png \
+	index.html
+
+webserverdir = $(pkgdatadir)/webserver/php-default
