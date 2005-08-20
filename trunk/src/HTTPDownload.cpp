@@ -181,6 +181,8 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	
 	FILE *outfile = NULL; 
 	
+	wxHTTP* url_handler;
+	
 	try {	
 		
 		outfile = fopen(unicode2char(m_tempfile), "w");
@@ -193,12 +195,13 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 			// Nowhere to download from!
 			throw(wxString(wxT("The URL to download can't be empty\n")));
 		}
-	
-		wxHTTP url_handler;
-		wxInputStream* url_read_stream = GetInputStream(url_handler, m_url);
+
+		url_handler = new wxHTTP;
+		
+		wxInputStream* url_read_stream = GetInputStream(&url_handler, m_url);
 		if (!url_read_stream) {					
 			#if wxCHECK_VERSION(2,5,1)			
-				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler.GetResponse() % url_handler.GetError()));
+				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
 			#else
 				throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
 			#endif
@@ -229,12 +232,16 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		} while (current_read && !TestDestroy());
 		
 		delete url_read_stream;
-		
+		url_handler->Destroy();
+		url_handler = NULL;
 		fclose(outfile);
 	} catch (const wxString& download_error) {
 		if (outfile) {
 			fclose(outfile);
 			wxRemoveFile(m_tempfile);
+		}
+		if (url_handler) {
+			url_handler->Destroy();
 		}
 		m_result = -1;		
 		AddLogLineM(false,download_error);
@@ -254,7 +261,7 @@ void CHTTPDownloadThreadBase::OnExit()
 	wxPostEvent(&theApp,evt);		
 }
 
-wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP& url_handler, const wxString& location) {
+wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, const wxString& location) {
 	// This function's purpose is to handle redirections in a proper way.
 	
 	if (TestDestroy()) {
@@ -302,23 +309,21 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP& url_handler, cons
 		host = host.BeforeFirst(wxT(':'));
 	}
 
-	#if wxCHECK_VERSION(2,5,1)
-		url_handler.Connect(host, port);
-	#else
-		wxIPV4address addr;
-		addr.Hostname(host);
-		addr.Service(port);
-		url_handler.Connect(addr, true);
-	#endif
+	wxIPV4address addr;
+	addr.Hostname(host);
+	addr.Service(port);
+	if (!(*url_handler)->Connect(addr, true)) {
+		throw wxString(wxT("Unable to connect to http download server"));		
+	}
 
-	wxInputStream* url_read_stream = url_handler.GetInputStream(url);
+	wxInputStream* url_read_stream = (*url_handler)->GetInputStream(url);
 	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
 	printf("URL: %s\n",(const char*)unicode2char(url));
 		
 	#if wxCHECK_VERSION(2,5,1) 
-		printf("Response: %i (Error: %i)\n",url_handler.GetResponse(), url_handler.GetError());
+		printf("Response: %i (Error: %i)\n",(*url_handler)->GetResponse(), (*url_handler)->GetError());
 	
-		if (!url_handler.GetResponse()) {
+		if (!(*url_handler)->GetResponse()) {
 			printf("WARNING: Void response on stream creation\n");
 			// WTF? Why does this happen?
 			// I've seen it crash here, sadly.
@@ -328,17 +333,19 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP& url_handler, cons
 			throw wxString(wxT("Invalid response from http download server"));
 		}
 	
-		if (url_handler.GetResponse() == 301  // Moved permanently
-			|| url_handler.GetResponse() == 302 // Moved temporarily
+		if ((*url_handler)->GetResponse() == 301  // Moved permanently
+			|| (*url_handler)->GetResponse() == 302 // Moved temporarily
 			// What about 300 (multiple choices)? Do we have to handle it?
 			) { 
 			
 			// We have to remove the current stream.
 			delete url_read_stream;
 				
-			wxString new_location = url_handler.GetHeader(wxT("Location"));
+			wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
+			(*url_handler)->Destroy();
 			if (!new_location.IsEmpty()) {
 				printf("Redirected\n");
+				(*url_handler) = new wxHTTP;
 				url_read_stream = GetInputStream(url_handler, new_location);
 			} else {
 				printf("ERROR: Redirection code received with no URL\n");
@@ -348,11 +355,13 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP& url_handler, cons
 		
 	#else
 		// This is NOT safe at all. Just a workaround - wx2.4 does not have wxHTTP::GetResponse
-		wxString new_location = url_handler.GetHeader(wxT("Location"));
+		wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
 		if (!new_location.IsEmpty()) {
 			delete url_read_stream;
+			(*url_handler)->Destroy();
 			// Maybe a 301/302
 			printf("Redirected?\n");
+			url_handler = new wxHTTP;
 			url_read_stream = GetInputStream(url_handler, new_location);
 		}
 	#endif
