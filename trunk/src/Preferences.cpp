@@ -177,7 +177,6 @@ bool		CPreferences::s_DropHighQueueRankingSources;
 uint32		CPreferences::s_HighQueueRanking;
 uint32		CPreferences::s_AutoDropTimer;
 bool 		CPreferences::s_AcceptExternalConnections;
-bool 		CPreferences::s_ECUseTCPPort;
 wxString	CPreferences::s_ECAddr;
 uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
@@ -887,7 +886,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false )));
 	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 )));
 	NewCfgItem(IDC_EXT_CONN_ACCEPT,	(new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, false )));
-	NewCfgItem(IDC_EXT_CONN_USETCP,	(new Cfg_Bool( wxT("/ExternalConnect/ECUseTCPPort"), s_ECUseTCPPort, true )));
+	NewCfgItem(IDC_EXT_CONN_IP, new Cfg_Str(  wxT("/ExternalConnect/ECAddress"),			s_ECAddr,	wxEmptyString ) );
 	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 )));
 	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
 
@@ -997,9 +996,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
-
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Address"),			s_Addr,	wxEmptyString ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/ECAddress"),			s_ECAddr,	wxEmptyString ) );
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg

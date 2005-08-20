@@ -2787,28 +2787,36 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxCheckBox *item22 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item23 = new wxCheckBox( parent, IDC_EXT_CONN_USETCP, _("Use TCP ports instead of unix local sockets"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->Add( item23, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("IP of the listening interface (empty for any)"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item23->Add( item24, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item25 = new wxStaticText( parent, ID_TEXT, _("External TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item25, 1, wxALIGN_CENTER|wxRIGHT, 5 );
+    CMuleTextCtrl *item25 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
+    item23->Add( item25, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxSpinCtrl *item26 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item24->Add( item26, 0, wxALIGN_CENTER, 5 );
+    item20->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    item20->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item27 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item27 = new wxStaticText( parent, ID_TEXT, _("TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxSpinCtrl *item28 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item26->Add( item28, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item29 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-    item27->Add( item29, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    item20->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item20->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxBoxSizer *item29 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item30 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    CMuleTextCtrl *item31 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+    item29->Add( item31, 1, wxALIGN_CENTER|wxLEFT, 5 );
+
+    item20->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
     item0->Add( item20, 0, wxGROW|wxALL, 5 );
 
