@@ -453,6 +453,38 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 }
 
 /*
+ * Download ed2k link. Params: link, category (default=0)
+ */
+void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1 (file link)");
+		return;
+	}
+	char *str_link = si->var->value.str_val;
+	
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 2 (category)");
+		return;
+	}
+
+	cast_value_dnum(&si->var->value);
+	int cat = si->var->value.int_val;
+#ifdef AMULEWEB_SCRIPT_EN
+	bool cmd_result = CPhPLibContext::g_curr_context->WebServer()->Send_DownloadEd2k_Cmd(
+		wxString(char2unicode(str_link)), cat);
+	if ( result ) {
+		cast_value_bool(result);
+		result->int_val = cmd_result;
+	}
+#else
+	printf("php_native_search_download_cmd: hash=%s category=%d\n", str_hash, cat);
+#endif
+}
+
+/*
  * String functions
  */
 void php_native_strlen(PHP_VALUE_NODE *result)
@@ -902,6 +934,12 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		}, 
 		7,
 		php_native_search_start_cmd,
+	},
+	{
+		"amule_do_ed2k_download_cmd",
+		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		2,
+		php_native_ed2k_download_cmd,
 	},
 	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
 };

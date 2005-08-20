@@ -17,11 +17,27 @@ body {
   <!--DWLayoutTable-->
   <tr>
     <td width="70" height="41">&nbsp;</td>
-    <td width="100%" valign="top"><form name="form1" method="post" action="">
+    <td width="100%" valign="top"><form name="form1" method="post" action="footer.php">
         <input type="submit" name="Submit" value="Download link">
         <input name="ed2klink" type="text" id="ed2klink" size="100">
-        <img src="arrow-r.png" width="42" height="23"> 
+        <img src="arrow-r.png" width="42" height="23">
         <select name="selectcat" id="selectcat">
+        <?php
+				var_dump($HTTP_GET_VARS);
+			$cats = amule_get_categories();
+			if ( $HTTP_GET_VARS["Submit"] != "" ) {
+				$link = $HTTP_GET_VARS["ed2klink"];
+				$target_cat = $HTTP_GET_VARS["selectcat"];
+				$target_cat_idx = 0;
+            	foreach($cats as $i => $c) {
+            		if ( $target_cat == $c) $target_cat_idx = $i;
+            	}
+            	amule_do_ed2k_download_cmd($link, $target_cat_idx);
+			}
+			foreach($cats as $c) {
+				echo  '<option>', $c, '</option>';
+			}
+        ?>
         </select>
         </form></td>
     <td width="29">&nbsp;</td>
