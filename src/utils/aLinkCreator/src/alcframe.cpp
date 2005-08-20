@@ -256,6 +256,7 @@ AlcFrame::AlcFrame (const wxString & title):
                    wxTB_HORIZONTAL | wxTB_FLAT);
 
   m_toolbar->SetToolBitmapSize (wxSize (32, 32));
+  m_toolbar->SetMargins (2, 2);
 
   m_toolbar->AddTool (ID_BAR_OPEN, wxT("Open"), m_toolBarBitmaps[0],
                       _("Open a file to compute its ed2k link"));
@@ -271,7 +272,6 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->AddTool (ID_BAR_ABOUT, wxT("About"), m_toolBarBitmaps[3],
                       _("About aLinkCreator"));
 
-  m_toolbar->SetMargins (2, 2);
   m_toolbar->Realize ();
 
   SetToolBar (m_toolbar);
