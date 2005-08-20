@@ -3574,6 +3574,14 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 				Print(_("Password bad\n"));
 			}
 		}
+	} else {
+		//
+		// if logged in, but requesting login page again,
+		// means logout command
+		//
+		if ( filename == _("login.html") ) {
+			session->m_loggedin = false;
+		}
 	}
 
 	Print(_("Processing request: ") + filename + _("\n"));
