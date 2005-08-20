@@ -11,14 +11,23 @@ body {
 }
 -->
 </style></head>
+<script language="JavaScript" type="text/JavaScript">
+
+function refreshFrames()
+{
+	top.frames["mainFrame"].location = "amuleweb-main-dload.php"
+	top.frames.mainFrame.location.reload();
+}
+
+</script>
 
 <body>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <!--DWLayoutTable-->
   <tr>
     <td width="70" height="41">&nbsp;</td>
-    <td width="100%" valign="top"><form name="form1" method="post" action="footer.php">
-        <input type="submit" name="Submit" value="Download link">
+    <td width="100%" valign="top"><form name="formlink" method="post" action="footer.php">
+        <input type="submit" name="Submit" value="Download link" onclick="refreshFrames()">
         <input name="ed2klink" type="text" id="ed2klink" size="100">
         <img src="arrow-r.png" width="42" height="23">
         <select name="selectcat" id="selectcat">
@@ -32,7 +41,9 @@ body {
             	foreach($cats as $i => $c) {
             		if ( $target_cat == $c) $target_cat_idx = $i;
             	}
-            	amule_do_ed2k_download_cmd($link, $target_cat_idx);
+            	if ( strlen($link) > 0 ) {
+            		amule_do_ed2k_download_cmd($link, $target_cat_idx);
+            	}
 			}
 			foreach($cats as $c) {
 				echo  '<option>', $c, '</option>';
