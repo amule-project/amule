@@ -463,6 +463,17 @@ void CWebServerBase::Send_Search_Cmd(wxString search, wxString extention, wxStri
 	Send_Discard_V2_Request(&search_req);
 }
 
+bool CWebServerBase::Send_DownloadEd2k_Cmd(wxString link, uint8 cat)
+{
+	CECPacket req(EC_OP_ED2K_LINK);
+	CECTag link_tag(EC_TAG_STRING, link);
+	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
+	req.AddTag(link_tag);
+	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	bool result = (response->GetOpCode() == EC_OP_FAILED);
+	delete response;
+	return result;
+}
 
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
 {
@@ -1014,22 +1025,12 @@ wxString CWebServer::_GetTransferList(ThreadData Data) {
 		if (HTTPTemp.Right(1) != wxT("/")) {
 			HTTPTemp += wxT("/");
 		}
-		CECPacket req(EC_OP_ED2K_LINK);
-		CECTag link_tag(EC_TAG_STRING, HTTPTemp);
 		long category = StrToLong(sCat);
-		link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, (uint8)category));
-		req.AddTag(link_tag);
-		CECPacket *response = webInterface->SendRecvMsg_v2(&req);
-		if (response) {
-			if ( response->GetOpCode() == EC_OP_FAILED) {
-				wxString HTTPTempC = CFormat(_("This ed2k link is invalid (%s)")) % HTTPTemp;
-				Out = m_Templates.sTransferBadLink;
-				Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
-				Out.Replace(wxT("[Link]"), HTTPTemp);
-			}
-			delete response;
-		} else {
-			Out = _("Got no response from aMule.");
+		if ( !Send_DownloadEd2k_Cmd(HTTPTemp, (uint8)category) ) {
+			wxString HTTPTempC = CFormat(_("This ed2k link is invalid (%s)")) % HTTPTemp;
+			Out = m_Templates.sTransferBadLink;
+			Out.Replace(wxT("[InvalidLink]"), HTTPTempC);
+			Out.Replace(wxT("[Link]"), HTTPTemp);
 		}
 	}
 	if ( !HTTPTemp.IsEmpty() ) {
