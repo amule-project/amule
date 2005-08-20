@@ -223,7 +223,7 @@ function formCommandSubmit(command)
 			}
 		}
 		if ( $_SESSION["filter_status"] == "") $_SESSION["filter_status"] = "all";
-		if ( $_SESSION["filter_cat"] == "") $_SESSION["filter_status"] = "all";
+		if ( $_SESSION["filter_cat"] == "") $_SESSION["filter_cat"] = "all";
 		
 		$downloads = amule_load_vars("downloads");
 
@@ -253,9 +253,13 @@ function formCommandSubmit(command)
 		}
 
 		foreach ($downloads as $file) {
-			if ( (($_SESSION["filter_status"] == "all") or ($_SESSION["filter_status"] == StatusString($file))) and
-				($cat_idx[ $_SESSION["filter_cat"] ] == $file->category)
-				) {
+			$filter_status_result = ($_SESSION["filter_status"] == "all") or
+				($_SESSION["filter_status"] == StatusString($file));
+				
+			$filter_cat_result = ($_SESSION["filter_cat"] == "all") or
+				($cat_idx[ $_SESSION["filter_cat"] ] == $file->category);
+
+			if ( $filter_status_result and $filter_cat_result) {
 				print "<tr>";
 	
 				echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
