@@ -25,6 +25,7 @@ dist_webserver_DATA = \
 	toolbutton-connect.jpeg \
 	toolbutton-logout.jpeg \
 	toolbutton-logout-pressed.jpeg \
+	arrow-r.png \
 	up.jpeg \
 	down.jpeg \
 	pause.jpeg \
