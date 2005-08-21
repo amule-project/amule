@@ -1,15 +1,15 @@
-# SOME DESCRIPTIVE TITLE
-# Copyright (C) YEAR Free Software Foundation, Inc
-# This file is distributed under the same license as the PACKAGE package
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR
-#
-
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-04 20:47+0200\n"
-"PO-Revision-Date: 2005-08-15 01:20+0900\n"
+"PO-Revision-Date: 2005-08-21 21:35+0900\n"
 "Last-Translator: Lee, Eun-ho <hoenny@daum.net>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "온라인 정적그림을 프린트"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:225
 msgid "Preferences setting"
-msgstr "선호 설정"
+msgstr "환경 설정"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:230
 #: src/utils/wxCas/src/wxcasframe.cpp:406
@@ -260,7 +260,7 @@ msgstr "%i 일 %i 시간 %i 분 %i 초"
 #: src/utils/wxCas/src/wxcasprefs.cpp:56 src/webserver/src/WebServer.cpp:748
 #: src/muuli_wdr.cpp:3922 src/PrefsUnifiedDlg.cpp:196
 msgid "Preferences"
-msgstr "선호"
+msgstr "환경설정"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:66
 msgid "Directory containing amulesig.dat file"
@@ -1312,7 +1312,7 @@ msgstr "아무 서버나 연결함"
 
 #: src/webserver/src/WebServer.cpp:2044
 msgid "Server Preferences"
-msgstr "서버 선호"
+msgstr "서버 설정"
 
 #: src/webserver/src/WebServer.cpp:2053 src/amuleDlg.cpp:753
 #: src/ServerWnd.cpp:223 src/amuled.cpp:501
@@ -2438,7 +2438,9 @@ msgstr "귀뜸: 내려받기 보임이나 올려주기 보임을 사용하세요
 
 #: src/TextClient.cpp:448
 msgid "IPLevel parameter must be in the range of 0-255.\n"
-msgstr "아이피값은 반듯이 0-255의 범위여야 합니다.\n"
+msgstr ""
+"아이피값은 반듯이 0-255의 범위여야 합니다.\n"
+" "
 
 #: src/TextClient.cpp:462 src/TextClient.cpp:478 src/TextClient.cpp:497
 msgid "This option requires an argument."
@@ -2498,8 +2500,7 @@ msgstr ""
 msgid ""
 "\n"
 "Clients in queue:\t%d\n"
-msgstr "\n" 
-"/n큐의 클라이언트:\t%d\n"
+msgstr "/n큐의 클라이언트:/t %d\n"
 
 #: src/TextClient.cpp:651
 #, c-format
@@ -2565,7 +2566,7 @@ msgstr "파일 숫자 n(혹은 'all')이 일시정지됩니다.\n"
 
 #: src/TextClient.cpp:729
 msgid "Turn on/off amule IPFilter.\n"
-msgstr "어뮬 아이피 차단을 켜거나 끕니다.\n"
+msgstr "어뮬 아이피 차단을 켜거나 끕니다."
 
 #: src/TextClient.cpp:730
 msgid "Reload IPFilter table from file.\n"
@@ -2812,7 +2813,7 @@ msgid ""
 msgstr ""
 "트레이조합 시스템이 동작하기 위해\n"
 "당신은 사용하고있는 데스크탑을 선택해야 합니다.\n"
-"참조로부터 당신은 변경을 할수 있습니다."
+"설정으로부터 당신은 변경을 할수 있습니다."
 
 #: src/muuli_wdr.cpp:68
 msgid "Gnome 2.x (or other XEMBED compatible)"
@@ -4101,11 +4102,11 @@ msgstr "외부 TCP포트"
 
 #: src/muuli_wdr.cpp:2843
 msgid "Click here to apply any changes made to the preferences."
-msgstr "선호하는 것으로 바꾸는것을 적용하려면 이곳을 클릭하세요."
+msgstr "환경설정으로 바꾼것을 적용하려면 이곳을 클릭하세요."
 
 #: src/muuli_wdr.cpp:2847
 msgid "Reset any changes made to the preferences."
-msgstr "선호하는 것으로 바꾼것을 초기화합니다."
+msgstr "환경설정으로 바꾼것을 초기화합니다."
 
 #: src/muuli_wdr.cpp:2871
 msgid "Title :"
@@ -4593,7 +4594,7 @@ msgstr "동적인 윈도우 그래프"
 
 #: src/muuli_wdr.cpp:3922
 msgid "Preferences Settings Window"
-msgstr "윈도우 선호 설정"
+msgstr "윈도우 환경 설정"
 
 #: src/muuli_wdr.cpp:3923
 msgid "Import"
@@ -4991,7 +4992,7 @@ msgid ""
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
-"당신이 선호하는 비디오재생프로그램을 선택하세요.\n"
+"당신이 환경설정에서 비디오재생프로그램을 선택하세요.\n"
 "어뮬에서 미리보기를 할때마다 이경고가 나오는동안 mplayer를 이용합니다."
 
 #: src/DownloadListCtrl.cpp:2322
@@ -5639,7 +5640,7 @@ msgstr "외부연결 끊김"
 
 #: src/ExternalConn.cpp:221
 msgid "External connection refused due to empty password in preferences!"
-msgstr "우선권이있는 암호가 비어있어 외부연결이 끊겼습니다."
+msgstr "환경설정에서 암호가 비어있어 외부연결이 끊겼습니다."
 
 #: src/ExternalConn.cpp:231
 #, c-format
@@ -6227,7 +6228,7 @@ msgstr "비아 서버에 접속합니다"
 
 #: src/ClientListCtrl.cpp:564 src/DataToText.cpp:66
 msgid "Transferring"
-msgstr "이전하다"
+msgstr "전송중"
 
 #: src/ClientListCtrl.cpp:600
 #, c-format
