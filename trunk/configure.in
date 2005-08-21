@@ -697,6 +697,7 @@ AC_CONFIG_FILES([Makefile
 		 src/webserver/Makefile
 		 src/webserver/src/Makefile
 		 src/webserver/default/Makefile
+		 src/webserver/php-default/Makefile
 		 src/webserver/chicane/Makefile
 		 unittests/Makefile
 		 unittests/muleunit/Makefile
