@@ -510,8 +510,8 @@ public:
 	
 		for (size_t str = 0; str < 2; ++str) {
 			for (size_t enc = 0; enc < 3; ++enc) {
-				const char* curStr = testData[str];
-				size_t strLen = strlen(curStr);
+				const wxChar* curStr = testData[str];
+				size_t strLen = wxStrlen(curStr);
 				size_t headLen = encodings[enc].headLen;
 				
 				file->WriteString(curStr, encodings[enc].id, 2);
