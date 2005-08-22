@@ -2107,7 +2107,7 @@ void CamuleApp::ShowConnectionState() {
 				// We connected to some server
 				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
 
-				AddLogLine(CFormat(_("!Connected to %s %s")) % connected_server % id);
+				AddLogLine(CFormat(_("Connected to %s %s")) % connected_server % id);
 			} else {
 				if ( theApp.serverconnect->IsConnecting() ) {
 					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
