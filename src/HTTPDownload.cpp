@@ -181,7 +181,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	
 	FILE *outfile = NULL; 
 	
-	wxHTTP* url_handler;
+	wxHTTP* url_handler = NULL;
 	
 	try {	
 		
