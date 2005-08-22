@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
@@ -2438,9 +2437,7 @@ msgstr "귀뜸: 내려받기 보임이나 올려주기 보임을 사용하세요
 
 #: src/TextClient.cpp:448
 msgid "IPLevel parameter must be in the range of 0-255.\n"
-msgstr ""
-"아이피값은 반듯이 0-255의 범위여야 합니다.\n"
-" "
+msgstr "아이피값은 반듯이 0-255의 범위여야 합니다.\n"
 
 #: src/TextClient.cpp:462 src/TextClient.cpp:478 src/TextClient.cpp:497
 msgid "This option requires an argument."
@@ -2500,7 +2497,7 @@ msgstr ""
 msgid ""
 "\n"
 "Clients in queue:\t%d\n"
-msgstr "/n큐의 클라이언트:/t %d\n"
+msgstr "\n큐의 클라이언트:/t %d\n"
 
 #: src/TextClient.cpp:651
 #, c-format
@@ -2566,7 +2563,7 @@ msgstr "파일 숫자 n(혹은 'all')이 일시정지됩니다.\n"
 
 #: src/TextClient.cpp:729
 msgid "Turn on/off amule IPFilter.\n"
-msgstr "어뮬 아이피 차단을 켜거나 끕니다."
+msgstr "어뮬 아이피 차단을 켜거나 끕니다.\n"
 
 #: src/TextClient.cpp:730
 msgid "Reload IPFilter table from file.\n"
