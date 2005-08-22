@@ -403,7 +403,6 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
-		m_TemplateName = wxT("default");
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
