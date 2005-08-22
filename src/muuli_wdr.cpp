@@ -772,14 +772,14 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     item46->SetForegroundColour( *wxBLUE );
     item45->Add( item46, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item47 = new wxStaticText( parent, ID_TEXT, _(" / ("), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item47 = new wxStaticText( parent, ID_TEXT, wxT(" / ("), wxDefaultPosition, wxDefaultSize, 0 );
     item45->Add( item47, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item48 = new wxStaticText( parent, IDC_PROCCOMPL, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item48->SetForegroundColour( *wxBLUE );
     item45->Add( item48, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item49 = new wxStaticText( parent, ID_TEXT, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item49 = new wxStaticText( parent, ID_TEXT, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
     item45->Add( item49, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
     item43->Add( item45, 0, wxALIGN_CENTER|wxLEFT, 5 );
@@ -977,14 +977,14 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxFlexGridSizer *item2 = new wxFlexGridSizer( 1, 0, 0, 0 );
     item2->AddGrowableCol( 3 );
 
-    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("("), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, wxT("("), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     wxStaticText *item4 = new wxStaticText( parent, IDC_CMSTATUS, _("No comment(s)"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->SetForegroundColour( *wxBLUE );
     item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
     item2->Add( item5, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxButton *item6 = new wxButton( parent, IDCREF, _("Refresh"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2228,7 +2228,7 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
 
     wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, _("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, wxT("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
     item19->Add( item20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     wxButton *item21 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3246,19 +3246,19 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, ID_NODE_IP1, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item11, 0, wxALIGN_CENTER, 5 );
 
     CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_NODE_IP2, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item12, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item13, 0, wxALIGN_CENTER, 5 );
 
     CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_NODE_IP3, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
     item8->Add( item14, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("."), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
     item8->Add( item15, 0, wxALIGN_CENTER, 5 );
 
     CMuleTextCtrl *item16 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
@@ -3720,13 +3720,13 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Connect to:"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_REMOTE_HOST, _("localhost"), wxDefaultPosition, wxSize(160,-1), 0 );
+    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_REMOTE_HOST, wxT("localhost"), wxDefaultPosition, wxSize(160,-1), 0 );
     item3->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, ID_REMOTE_PORT, _("4712"), wxDefaultPosition, wxSize(60,-1), 0 );
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, ID_REMOTE_PORT, wxT("4712"), wxDefaultPosition, wxSize(60,-1), 0 );
     item3->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item2->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -3739,7 +3739,7 @@ wxSizer *CoreConnect( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("User name"), wxDefaultPosition, wxSize(80,-1), 0 );
     item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_EC_LOGIN, _("amule"), wxDefaultPosition, wxSize(200,-1), 0 );
+    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_EC_LOGIN, wxT("amule"), wxDefaultPosition, wxSize(200,-1), 0 );
     item12->Enable( false );
     item10->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
 
