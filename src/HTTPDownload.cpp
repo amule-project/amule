@@ -361,7 +361,7 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 			(*url_handler)->Destroy();
 			// Maybe a 301/302
 			printf("Redirected?\n");
-			url_handler = new wxHTTP;
+			(*url_handler) = new wxHTTP;
 			url_read_stream = GetInputStream(url_handler, new_location);
 		}
 	#endif
