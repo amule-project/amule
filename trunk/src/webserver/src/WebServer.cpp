@@ -239,7 +239,7 @@ CParsedUrl::CParsedUrl(const wxString &url)
 	    	wxString key = param_val.BeforeFirst('=');
 	    	wxString val = param_val.AfterFirst('=');
 	    	if ( m_params.count(key) ) {
-	    		m_params[key] = m_params[key] + _("|") + val;
+	    		m_params[key] = m_params[key] + wxT("|") + val;
 	    	} else {
 	    		m_params[key] = val;
 	    	}
@@ -440,9 +440,9 @@ void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 {
 	CECPacket *ec_cmd = 0;
-	if ( cmd == _("connect") ) {
+	if ( cmd == wxT("connect") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_CONNECT);
-	} else if ( cmd == _("remove") ) {
+	} else if ( cmd == wxT("remove") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_REMOVE);
 	}
 	if ( ec_cmd ) {
@@ -1382,7 +1382,7 @@ wxString CWebServer::_GetSharedFileList(ThreadData Data) {
 	//
 	// commands: setpriority, reload
 	if (!_ParseURL(Data, wxT("hash")).IsEmpty() && !_ParseURL(Data, wxT("setpriority")).IsEmpty() && IsSessionAdmin(Data,sSession)) {
-		Send_SharedFile_Cmd(_ParseURL(Data, _("hash")), _("prio"), StrToLong(_ParseURL(Data, wxT("setpriority"))));
+		Send_SharedFile_Cmd(_ParseURL(Data, wxT("hash")), wxT("prio"), StrToLong(_ParseURL(Data, wxT("setpriority"))));
 	}
 	if (_ParseURL(Data, wxT("reload")) == wxT("true")) {
 		Send_ReloadSharedFile_Cmd();
@@ -3422,7 +3422,7 @@ CAnyImage *CImageLib::GetImage(wxString &name)
 CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir)
 	: CWebServerBase(webApp, templateDir), m_wwwroot(templateDir)
 {
-	wxString img_tmpl(_("<img src=%s height=20 width=%d>"));
+	wxString img_tmpl(wxT("<img src=%s height=20 width=%d>"));
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
 }
 
@@ -3545,21 +3545,21 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	
 	wxString filename = Data.parsedURL.File();
 	if ( filename.Length() == 0 ) {
-		filename = _("index.html");
+		filename = wxT("index.html");
 	}
 
 	CSession *session = CheckLoggedin(Data);
 
 	if ( !session->m_loggedin ) {
-		filename = _("login.html");
-		wxString PwStr(Data.parsedURL.Param(_("pass")));
+		filename = wxT("login.html");
+		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 			
 			session->m_loggedin = (PwHash == webInterface->m_AdminPass);
 			if ( session->m_loggedin ) {
-				filename = _("index.html");
+				filename = wxT("index.html");
 				Print(_("Password ok\n"));
 			} else {
 				Print(_("Password bad\n"));
@@ -3570,16 +3570,16 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		// if logged in, but requesting login page again,
 		// means logout command
 		//
-		if ( filename == _("login.html") ) {
+		if ( filename == wxT("login.html") ) {
 			session->m_loggedin = false;
 		}
 	}
 
-	Print(_("Processing request: ") + filename + _("\n"));
+	Print(_("Processing request: ") + filename + wxT("\n"));
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
-	if ( req_file.Find(_(".html")) != -1 ) {
+	if ( req_file.Find(wxT(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
-	} else if ( req_file.Find(_(".php")) != -1 ) {
+	} else if ( req_file.Find(wxT(".php")) != -1 ) {
 		httpOut = ProcessPhpRequest(unicode2char(req_file), session, httpOutLen);
 	} else {
 		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
