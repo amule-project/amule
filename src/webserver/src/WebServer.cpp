@@ -69,10 +69,8 @@
 #include "Color.h"		// Needed for COLORREF and RGB()
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL()
 
-#ifdef AMULEWEB_SCRIPT_EN
-	#include "php_syntree.h"
-	#include "php_core_lib.h"
-#endif
+#include "php_syntree.h"
+#include "php_core_lib.h"
 
 //-------------------------------------------------------------------
 
@@ -3489,7 +3487,6 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	return buf;
 }
 
-#ifdef AMULEWEB_SCRIPT_EN
 char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, long &size)
 {
 	FILE *f = fopen(filename, "r");
@@ -3506,12 +3503,6 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 	
 	return buf;
 }
-#else
-char *CScriptWebServer::ProcessPhpRequest(const char *, CSession *, long &size)
-{
-	return GetErrorPage("PHP support is not enabled in compilation", size);
-}
-#endif
 
 CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 {

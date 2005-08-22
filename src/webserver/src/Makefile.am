@@ -25,13 +25,11 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/Format.cpp \
 	$(top_srcdir)/src/MuleDebug.cpp
 
-if WEB_PHP
 amuleweb_SOURCES += \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \
 	php_core_lib.cpp
-endif
 
 php_parser.c: php_parser.y
 	bison --debug -t -d -v -o php_parser.c php_parser.y
@@ -60,25 +58,15 @@ amulewebDLG_SOURCES =  \
 	$(top_srcdir)/src/Format.cpp \
 	$(top_srcdir)/src/MuleDebug.cpp
 
-if WEB_PHP
 amulewebDLG_SOURCES += \
         php_parser.c \
         php_lexer.c \
         php_syntree.cpp \
         php_core_lib.cpp
-endif
 
 amulewebDLG_CFLAGS = -I../.. -I$(top_srcdir)/src $(WX_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
 amulewebDLG_CXXFLAGS = -I../.. -I$(top_srcdir)/src $(WX_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DAMULEWEBDLG  -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
 amulewebDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(LIBPNG_LDFLAGS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
-
-if WEB_PHP
-amuleweb_CFLAGS += -DAMULEWEB_SCRIPT_EN
-amuleweb_CXXFLAGS += -DAMULEWEB_SCRIPT_EN
-
-amulewebDLG_CFLAGS += -DAMULEWEB_SCRIPT_EN
-amulewebDLG_CXXFLAGS += -DAMULEWEB_SCRIPT_EN
-endif
 
 noinst_HEADERS = \
 		 WebInterface.h \

@@ -34,7 +34,7 @@
 #include <string>
 #include <algorithm>
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	#include "WebServer.h"
 	#include "ECSpecialTags.h"
 #endif
@@ -202,7 +202,7 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 	si = get_scope_item(g_current_scope, "__param_2");
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 
 	if ( !strcmp(cmd_name, "prio") && !opt_param ) {
 		php_report_error(PHP_ERROR, "Command 'prio' need 3-rd argument");
@@ -221,7 +221,7 @@ void php_native_shared_file_cmd(PHP_VALUE_NODE *)
 
 void php_native_reload_shared_file_cmd(PHP_VALUE_NODE *)
 {
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_ReloadSharedFile_Cmd();
 #else
 	printf("php_native_reload_shared_file_cmd\n");
@@ -251,7 +251,7 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 	si = get_scope_item(g_current_scope, "__param_2");
 	PHP_VAR_NODE *opt_param = si ? si->var : 0;
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	if ( (!strcmp(cmd_name, "prio") || !strcmp(cmd_name, "setcat")) && !opt_param ) {
 		php_report_error(PHP_ERROR, "Commands 'prio' and 'setcat' needs 3-rd argument");
 		return;
@@ -293,7 +293,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	char *cmd = si->var->value.str_val;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_Server_Cmd(ip, port, wxString(char2unicode(cmd)));
 #else
 	printf("php_native_server_cmd: ip=%08x port=%04d cmd=%s\n", ip, port, cmd);
@@ -305,7 +305,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
  */
 void php_get_amule_stats(PHP_VALUE_NODE *result)
 {
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
 	CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
 	if (!stats) {
@@ -345,7 +345,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 
 void php_get_amule_categories(PHP_VALUE_NODE *result)
 {
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
@@ -385,7 +385,7 @@ void php_native_search_download_cmd(PHP_VALUE_NODE *)
 
 	cast_value_dnum(&si->var->value);
 	int cat = si->var->value.int_val;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_DownloadSearchFile_Cmd(
 		wxString(char2unicode(str_hash)), cat);
 #else
@@ -442,7 +442,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 	cast_value_dnum(&si->var->value);
 	int max_size = si->var->value.int_val;
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_Search_Cmd(
 		wxString(char2unicode(search)), wxString(char2unicode(ext)), wxString(char2unicode(type)),
 		is_global, avail, min_size, max_size);
@@ -472,7 +472,7 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 
 	cast_value_dnum(&si->var->value);
 	int cat = si->var->value.int_val;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	bool cmd_result = CPhPLibContext::g_curr_context->WebServer()->Send_DownloadEd2k_Cmd(
 		wxString(char2unicode(str_link)), cat);
 	if ( result ) {
@@ -480,7 +480,7 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 		result->int_val = cmd_result;
 	}
 #else
-	printf("php_native_search_download_cmd: hash=%s category=%d\n", str_hash, cat);
+	printf("php_native_search_download_cmd: hash=%s category=%d\n", str_link, cat);
 #endif
 }
 
@@ -535,7 +535,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
  *  "varname" will tell us, what kind of variables need to load:
  *    "downloads", "uploads", "searchresult", "servers", "options" etc
  */
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 
 template <class C, class T>
 void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
@@ -645,7 +645,7 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 /*
  * Amule objects implementations
  */
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 {
 	if ( !ptr ) {
@@ -968,7 +968,7 @@ void php_set_input_buffer(char *buf, int len);
 CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 {
 	g_curr_context = this;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	m_server = server;
 #endif
 	php_engine_init();
@@ -986,7 +986,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 CPhPLibContext::CPhPLibContext(CWebServerBase *server, char *php_buf, int len)
 {
 	g_curr_context = this;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	m_server = server;
 #endif
 	php_engine_init();
@@ -1089,14 +1089,14 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 		load_session_vars("HTTP_GET_VARS", sess->m_get_vars);
 		load_session_vars("_SESSION", sess->m_vars);
 #endif
 
 		context->Execute(buff);
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 		save_session_vars(sess->m_vars);
 #endif	
 

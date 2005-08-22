@@ -34,7 +34,7 @@
 #include <string>
 #include <algorithm>
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	#include "WebServer.h"
 #endif
 
@@ -1811,7 +1811,7 @@ int yyerror(char *s)
 	return 0;
 }
 
-#ifndef AMULEWEB_SCRIPT_EN
+#ifdef PHP_STANDALONE_EN
 
 int main(int argc, char *argv[])
 {
