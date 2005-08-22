@@ -49,7 +49,7 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
-if test x$SYS == xwin32; then
+if test x$SYS = xwin32; then
 	AC_PROG_AWK
 fi
 AC_PROG_MAKE_SET
@@ -260,7 +260,7 @@ AM_PATH_WXCONFIG(2.4.2)
 AM_WXCONFIG_LARGEFILE
 
 GET_WX_VERSION
-if test $WX_VERSION_MAJOR == 2 -a $WX_VERSION_MINOR == 4; then
+if test $WX_VERSION_MAJOR -eq 2 -a $WX_VERSION_MINOR -eq 4; then
   WX_VERSION="2.4"
 else
   WX_VERSION="any"
@@ -484,18 +484,18 @@ esac
 AC_MSG_CHECKING([whether taskbar icon support should be compiled])
 AC_MSG_RESULT($systray)
 
-if test x$systray == xno; then
+if test x$systray = xno; then
 	TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
 else
 	#systray type (GTK/WX)
-	if test x$gtk_tray == xno; then
+	if test x$gtk_tray = xno; then
 		TRAY_FLAGS="-DUSE_WX_TRAY"
 	else
 		# utf8_systray enable
 		AC_MSG_CHECKING([whether taskbar icon should use UTF-8 strings])
 		AC_MSG_RESULT($utf8_systray)
 
-		if test x$utf8_systray == xyes; then
+		if test x$utf8_systray = xyes; then
 			TRAY_FLAGS="-D__UTF8_SYSTRAY_ENABLED__"
 		fi
 	fi
@@ -722,7 +722,7 @@ echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZ
 echo "  Should aMule be compiled with taskbar icon support?        ${systray:-yes}"
 if test x$systray != xno; then
 	echo "  Should aMule be compiled with old GTK taskbar icon?        ${gtk_tray:-no}"
-	if test x$gtk_tray == xyes; then
+	if test x$gtk_tray = xyes; then
 		echo "  Should aMule be compiled with UTF-8 taskbar icon support?  ${utf8_systray:-no}"
 	fi
 fi
