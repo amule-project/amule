@@ -58,7 +58,7 @@ class CPhPLibContext {
 		PHP_SCOPE_TABLE m_global_scope;
 		
 		CWriteStrBuffer *m_curr_str_buffer;
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 		CWebServerBase *m_server;
 #endif		
 	public:
@@ -76,7 +76,7 @@ class CPhPLibContext {
 
 		static CPhPLibContext *g_curr_context;
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 		CWebServerBase *WebServer() { return m_server; }
 #endif
 };
