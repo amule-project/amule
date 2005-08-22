@@ -37,6 +37,8 @@
 #include "amule.h"				// Needed for theApp
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 
+#include <wx/sizer.h>			// Needed for wxSizer
+
 
 BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCOK,CCommentDialogLst::OnBnClickedApply)
