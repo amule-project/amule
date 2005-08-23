@@ -958,17 +958,22 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Misc commands
 		//
 		case EC_OP_SHUTDOWN:
-			response = new CECPacket(EC_OP_NOOP);
-			AddLogLineM(true, _("ExternalConn: shutdown requested"));
+			if (!theApp.IsOnShutDown()) {
+				response = new CECPacket(EC_OP_NOOP);
+				AddLogLineM(true, _("ExternalConn: shutdown requested"));
 #ifndef AMULE_DAEMON
-			{
-				wxCloseEvent evt;
-				evt.SetCanVeto(false);
-				theApp.ShutDown(evt);
-			}
+				{
+					wxCloseEvent evt;
+					evt.SetCanVeto(false);
+					theApp.ShutDown(evt);
+				}
 #else
-			theApp.ShutDown();
+				theApp.ExitMainLoop();
 #endif
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already shutting down.")));
+			}
 			break;
 		case EC_OP_ED2K_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {
