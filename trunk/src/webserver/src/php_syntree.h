@@ -453,6 +453,7 @@ extern "C" {
 	void php_engine_free();
 	
 	void php_syn_tree_free(PHP_SYN_NODE *tree);
+	void php_exp_tree_free(PHP_EXP_NODE *tree);
 	
 	/*
 	 * Return code meaning:
