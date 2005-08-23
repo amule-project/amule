@@ -186,11 +186,11 @@ void OnShutdownSignal( int /* sig */ )
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTERM, SIG_DFL);
 	
-	printf("Shutdown requested, terminating in next event loop.");
+	printf("Shutdown requested, terminating in next event loop.\n");
 	
 	g_shutdownSignal = true;
 
-#if AMULE_DAEMON
+#ifdef AMULE_DAEMON
 	theApp.ExitMainLoop();
 #endif
 }
@@ -258,8 +258,6 @@ int CamuleApp::OnExit()
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("Now, exiting main app...\n");
 	}
-
-	CPartFileConvert::StopThread();
 
 	// From wxWidgets docs, wxConfigBase:
 	// ...
@@ -1652,6 +1650,8 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	
+	CPartFileConvert::StopThread();
+
 	#ifdef __COMPILE_KAD__
 	StopKad();
 	#endif
