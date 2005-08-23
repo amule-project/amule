@@ -218,6 +218,7 @@ global_var: VARIABLE	{
 		PHP_SCOPE_ITEM *gsi = get_scope_item(g_global_scope, varname);
 		if ( gsi && (gsi->type == PHP_SCOPE_VAR) ) {
 			free_var_node(si->var);
+			php_exp_tree_free($1);
 			gsi->var->ref_count++;
 			si->var = gsi->var;
 		} else {
