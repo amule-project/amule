@@ -40,6 +40,7 @@
 #include <wx/intl.h>
 #include <wx/protocol/http.h>
 #include <cmath>
+#include <memory>
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
@@ -198,8 +199,8 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 
 		url_handler = new wxHTTP;
 		
-		wxInputStream* url_read_stream = GetInputStream(&url_handler, m_url);
-		if (!url_read_stream) {					
+		std::auto_ptr<wxInputStream> url_read_stream(GetInputStream(&url_handler, m_url));
+		if (!url_read_stream.get()) {					
 			#if wxCHECK_VERSION(2,5,1)			
 				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
 			#else
@@ -231,7 +232,6 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 			}
 		} while (current_read && !TestDestroy());
 		
-		delete url_read_stream;
 		url_handler->Destroy();
 		url_handler = NULL;
 		fclose(outfile);
