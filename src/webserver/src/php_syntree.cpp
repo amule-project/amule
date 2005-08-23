@@ -133,12 +133,15 @@ PHP_EXP_NODE *make_known_const(char *name)
 	return make_const_exp_dnum(const_id);
 }
 
+//
+// Create function parameter (in declaration)
+//
 PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node, char *class_name, int byref)
 {
 	PHP_FUNC_PARAM_DEF *param = new PHP_FUNC_PARAM_DEF;
 	memset(param, 0, sizeof(PHP_FUNC_PARAM_DEF));
 
-	PHP_VAR_NODE *var = var_exp_node->var_node;
+	PHP_VAR_NODE *var = var_exp_node->var_si_node->var;
 	delete var_exp_node;
 	
 	param->var = var;
@@ -225,7 +228,7 @@ PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
 }
 
 PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
-	PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref)
+	PHP_EXP_NODE *i_key, PHP_EXP_NODE *i_val, PHP_SYN_NODE *code, int byref)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
@@ -233,9 +236,14 @@ PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 	syn_node->type = PHP_ST_FOREACH;
 	syn_node->node_foreach.elems = elems;
 	syn_node->node_foreach.code = code;
-	syn_node->node_foreach.i_key = i_key;
-	syn_node->node_foreach.i_val = i_val;
+	syn_node->node_foreach.i_key = i_key ? i_key->var_si_node : 0;
+	syn_node->node_foreach.i_val = i_val->var_si_node;
 	syn_node->node_foreach.byref = byref;
+	
+	if ( i_key ) {
+		delete i_key;
+	}
+	delete i_val;
 	
 	return syn_node;
 }
@@ -343,17 +351,18 @@ PHP_EXP_NODE *get_var_node(char *name)
 	
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, name);
 	if ( si ) {
-		if ( si->type == PHP_SCOPE_VAR ) {
-			node->var_node = si->var;
+		if ( (si->type == PHP_SCOPE_VAR) || (si->type == PHP_SCOPE_PARAM) ) {
+			node->var_si_node = si;
 		} else {
 			//
 			// Error: symbol already defined as different entity
 			//
-			php_report_error(PHP_ERROR, "symbol already defined as different entity");
+			php_report_error(PHP_ERROR,
+				"symbol [%s] already defined as different entity (%d)", name, si->type);
 		}
 	} else {
-		node->var_node = make_var_node();
-		add_var_2_scope(g_current_scope, node->var_node, name);
+		add_var_2_scope(g_current_scope, make_var_node(), name);
+		node->var_si_node = get_scope_item(g_current_scope, name);
 	}
 	
 	return node;
@@ -539,6 +548,7 @@ PHP_SCOPE_ITEM_TYPE get_scope_item_type(PHP_SCOPE_TABLE scope, const char *name)
 
 PHP_SCOPE_ITEM *get_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 {
+	assert(name);
 	PHP_SCOPE_TABLE_TYPE *scope_map = (PHP_SCOPE_TABLE_TYPE *)scope;
 	std::string key(name);
 	if ( scope_map->count(key) ) {
@@ -584,6 +594,7 @@ PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key)
 		return (arr_ptr->array)[key];
 	} else {
 		PHP_VAR_NODE *add_node = make_var_node();
+		add_node->value.type = PHP_VAL_NONE;
 		add_node->ref_count++;
 		(arr_ptr->array)[key] = add_node;
 		arr_ptr->sorted_keys.push_back(key);
@@ -1089,7 +1100,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			break;
 		case PHP_OP_VAR:
 			if ( result ) {
-				value_value_assign(result, &expr->var_node->value);
+				value_value_assign(result, &expr->var_si_node->var->value);
 			}
 			break;
 		case PHP_OP_ASS:
@@ -1111,6 +1122,23 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			if ( result ) {
 				value_value_assign(result, &lval_node->value);
 			}
+			break;
+		case PHP_MAKE_REF:
+			lval_node = php_expr_eval_lvalue(expr->tree_node.right);
+			if ( !lval_node ) {
+				break;
+			}
+			//
+			// There's 2 valid cases in making reference:
+			//  1. Target is scalar variable
+			//  2. Target is member of array.
+			/*
+			if ( expr->tree_node.left->op == PHP_OP_VAR ) {
+				value_value_free(&expr->tree_node.left->var_node->value);
+				expr->tree_node.left->var_node->value.type = PHP_VAL_VAR_NODE;
+				expr->tree_node.left->var_node->value.ptr_val = lval_node;
+			}
+			*/
 			break;
 		case PHP_OP_ARRAY:
 			if ( result ) {
@@ -1314,7 +1342,7 @@ PHP_VAR_NODE *php_expr_eval_lvalue(PHP_EXP_NODE *expr)
 	
 	switch(expr->op) {
 		case PHP_OP_VAR:
-			lval_node = expr->var_node;
+			lval_node = expr->var_si_node->var;
 			break;
 		case PHP_OP_ARRAY_BY_KEY:
 			lval_node = php_expr_eval_lvalue(expr->tree_node.left);
@@ -1642,10 +1670,10 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 						php_expr_eval(curr->exp_node, &cond_result);
 						cast_value_str(&cond_result);
 						CPhPLibContext::Print(cond_result.str_val);
+						value_value_free(&cond_result);
 						curr = curr->next;
 					}
 				}
-				value_value_free(&cond_result);
 				break;
 			case PHP_ST_CONTINUE:
 			case PHP_ST_BREAK:
@@ -1701,30 +1729,30 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 						break;
 					}
 					PHP_ARRAY_TYPE *array = (PHP_ARRAY_TYPE *)elems->value.ptr_val;
-					PHP_VAR_NODE *i_key = node->node_foreach.i_key;
+					PHP_SCOPE_ITEM *i_key = node->node_foreach.i_key;
 					// keys in array are string values.
 					if ( i_key ) {
-						i_key->value.type = PHP_VAL_STRING;
+						i_key->var->value.type = PHP_VAL_STRING;
 					}
-					PHP_VAR_NODE *i_val = node->node_foreach.i_val;
+					PHP_SCOPE_ITEM *i_val = node->node_foreach.i_val;
 					array->current = array->sorted_keys.begin();
 					while ( array->current != array->sorted_keys.end() ) {
 						if ( i_key ) {
 							PHP_VALUE_NODE tmp_val;
 							tmp_val.type = PHP_VAL_STRING;
 							tmp_val.str_val = (char *)array->current->c_str();
-							value_value_assign(&i_key->value, &tmp_val);
+							value_value_assign(&i_key->var->value, &tmp_val);
 						}
 						PHP_VALUE_NODE *curr_value = &array->array[*array->current]->value;
-						value_value_assign(&i_val->value, curr_value);
+						value_value_assign(&i_val->var->value, curr_value);
 						curr_exec_result = php_execute(node->node_foreach.code, 0);
 						if ( i_key ) {
-							value_value_free(&i_key->value);
+							value_value_free(&i_key->var->value);
 						}
 						if ( node->node_foreach.byref ) {
-							value_value_assign(curr_value, &i_val->value);
+							value_value_assign(curr_value, &i_val->var->value);
 						}
-						value_value_free(&i_val->value);
+						value_value_free(&i_val->var->value);
 						if ( curr_exec_result) {
 							break;
 						}

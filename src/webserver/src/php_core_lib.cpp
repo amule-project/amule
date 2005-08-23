@@ -362,6 +362,14 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 		cat->value.type = PHP_VAL_STRING;
 		cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
 	}
+#else
+	cast_value_array(result);
+	for (int i = 0; i < 5; i++) {
+		PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
+		value_value_free(&cat->value);
+		cat->value.type = PHP_VAL_STRING;
+		cat->value.str_val = strdup("some_cat");
+	}
 #endif
 }
 
@@ -1183,7 +1191,7 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 {
 	PHP_EXP_NODE *sess_vars_exp_node = get_var_node(target);
-	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
+	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_si_node->var;
 	// i'm not building exp tree, node not needed
 	delete sess_vars_exp_node;
 	cast_value_array(&sess_vars->value);
@@ -1199,7 +1207,7 @@ void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 void save_session_vars(std::map<std::string, std::string> &varmap)
 {
 	PHP_EXP_NODE *sess_vars_exp_node = get_var_node("_SESSION");
-	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_node;
+	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_si_node->var;
 
 	delete sess_vars_exp_node;
 	if ( sess_vars->value.type != PHP_VAL_ARRAY ) {

@@ -114,7 +114,7 @@ typedef enum PHP_EXP_OP {
 	PHP_OP_MUX,
 	
 	/* specials */
-	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO,
+	PHP_OP_FUNC_CALL, PHP_OP_PRINT, PHP_OP_ECHO, PHP_MAKE_REF,
 	/* list of expressions */
 	PHP_OP_LIST,
 	/* for "switch" list of cases */
@@ -137,7 +137,9 @@ struct PHP_EXP_NODE {
     };
     union {
         PHP_VALUE_NODE val_node;
+        // for "internal" variables, like function param list
         PHP_VAR_NODE *var_node;
+        struct PHP_SCOPE_ITEM *var_si_node;
         struct PHP_EXP_NODE *exp_node;
     };
 };
@@ -231,8 +233,8 @@ typedef struct PHP_SYN_FOR_NODE {
 
 typedef struct PHP_SYN_FOREACH_NODE {
     PHP_EXP_NODE *elems;
-  	PHP_VAR_NODE *i_key;
-  	PHP_VAR_NODE *i_val;
+  	PHP_SCOPE_ITEM *i_key;
+  	PHP_SCOPE_ITEM *i_val;
     PHP_SYN_NODE *code;
     int byref;
 } PHP_SYN_FOREACH_NODE;
@@ -398,7 +400,7 @@ extern "C" {
 		PHP_SYN_NODE *code, int do_while);
 		
 	PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
-		PHP_VAR_NODE *i_key, PHP_VAR_NODE *i_val, PHP_SYN_NODE *code, int byref);
+		PHP_EXP_NODE *i_key, PHP_EXP_NODE *i_val, PHP_SYN_NODE *code, int byref);
 
 	PHP_SYN_NODE *make_for_syn_node(PHP_EXP_NODE *start, PHP_EXP_NODE *cond,
 		PHP_EXP_NODE *next, PHP_SYN_NODE *code);
