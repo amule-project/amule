@@ -181,6 +181,37 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 }
 
 
+wxString CFormat::GetIntegerField(const wxChar* fieldType)
+{
+	wxString field = GetCurrentField();
+	wxChar type = field.Last();
+
+	// Drop type and modifier
+	while (isalpha(field.Last())) {
+		field.RemoveLast();
+	}
+	
+	// Set the correct integer type
+	field += fieldType;
+
+	switch (type) {
+		case wxT('o'):		// Unsigned octal
+		case wxT('x'):		// Unsigned hexadecimal integer
+		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
+			// Override the default type
+			field.Last() = type;
+		
+		case wxT('d'):		// Signed decimal integer
+		case wxT('i'):		// Signed decimal integer
+		case wxT('u'):		// Unsigned decimal integer
+			return field;
+		
+		default:
+			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string."));
+	}
+}
+
+
 CFormat& CFormat::operator%(double value)
 {
 	wxString field = GetCurrentField();
@@ -199,6 +230,15 @@ CFormat& CFormat::operator%(double value)
 		default:
 			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-float format string.") );
 	}
+}
+
+
+CFormat& CFormat::operator%(wxChar value)
+{
+	wxString field = GetCurrentField();
+	MULE_VALIDATE_PARAMS(field.Last() == wxT('c'), wxT("Char value passed to non-char format string."));
+	
+	return SetCurrentField(wxString::Format(field, value));
 }
 
 
@@ -227,3 +267,4 @@ CFormat& CFormat::operator%( const wxChar* val )
 
 	return *this;
 }
+

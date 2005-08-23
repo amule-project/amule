@@ -45,16 +45,15 @@
 /**
  * This class offers a typesafe alternative to wxString::Format.
  *
- * Unlike normal format and printf, this class makes useage of integer
- * types safe and transparent, such that any integer-type can be used
- * for any integer-format, provided that it represents a valid value
- * for that type.
+ * Unlike normal format and printf, this class does not care about the
+ * type of integer values passed to it, and will handle a value correctly,
+ * even if the format-string and the actual type dissagree. Therefore, it
+ * is suggested that only %i and %u be used for integers, for the sake of
+ * clarity, though %i alone is enough. 
  *
- * This means that the format strings for integer-types only represents
- * the upper and lower bound of the value displayed and doesn't set any
- * requirements for the actual type of the value provided.
- *
- * This is not done for floating-point types.
+ * The other integer type-fields are supported, but will have no inpact on
+ * how the value is represented. The only exception to this is the 'o', 'x'
+ * and 'X' fields, which will always be considered to be unsigned!
  *
  * CFormat lacks the following capabilities:
  *  * The "*" width-modifier, because only one argument is fed at a time.
@@ -145,7 +144,19 @@ private:
 	/**
 	 * Replaces the current format-field with the specified string.
 	 */
-	CFormat&	SetCurrentField(const wxString&);
+	CFormat&	SetCurrentField(const wxString& value);
+
+	/**
+	 * Returns the next field modified to fit the given integer type.
+	 *
+	 * @param fieldType A modifier and type for an integer value.
+	 * @return The resulting format-string.
+	 *
+	 * This function is used to generate the integer-type independant
+	 * fields, by modifying the existing format-string to fit the type
+	 * of the integer value that has been passed to it.
+	 */
+	wxString	GetIntegerField(const wxChar* fieldType);
 	
 
 	//! Known type-modifiers. 
@@ -163,7 +174,7 @@ private:
 		modLongDouble
 	};
 
-	
+
 	/**
 	 * Extracts modifiers from the argument.
 	 *
@@ -174,19 +185,6 @@ private:
 	 * for malformed format strings.
 	 */
 	Modifiers getModifier(const wxString& str);
-	
-	
-	/**
-	 * Attempts to apply the current format-string to a integer-type value.
-	 * 
-	 * @param value Any integer type, from char to long long.
-	 *
-	 * This function does the value-verification needed to ensure that
-	 * any integer-type can be used for any integer-format, provided that
-	 * it represents a valid value in that type.
-	 */
-	template <typename ValueType>
-	CFormat& FormatInteger(ValueType value);
 	
 	
 	//! Index to the current format-field.
@@ -202,162 +200,54 @@ private:
 
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
-
-//! Checks if a value can be represented in the TargetType.
-template <typename TargetType, typename CurrentType>
-inline bool CanRepresent(CurrentType value) 
-{
-	typedef std::numeric_limits<TargetType> TT;
-	typedef std::numeric_limits<CurrentType> CT;
-
-	// Check that the new type can contain the value
-	if ((CurrentType)((TargetType)value) == value) {
-		if (TT::is_signed != CT::is_signed) {
-			// Check that the signed bit isn't set, since that would either
-			// mean that the value is negative, or that it is too large to
-			// fit in a signed variable.
-			return value >> (sizeof(CurrentType) * 8 - 1) == 0;
-		} else {
-			return true;
-		}
-	} else {
-		return false;
-	}
-}
-
-
-template <typename ValueType>
-inline CFormat& CFormat::FormatInteger(ValueType value)
-{
-	wxString field = GetCurrentField();
-
-	switch (field.Last()) {
-		case wxT('d'):		// Signed decimal integer
-		case wxT('i'):		// Signed decimal integer
-		{
-			switch (getModifier(field)) {
-				case modNone:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed int>(value), wxT("Integer value passed cannot be represented as an signed int."));
-					
-					return SetCurrentField(wxString::Format(field, (signed int)value));
-				
-				case modShort:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed short>(value), wxT("Integer value passed cannot be represented as an signed short."));
-					
-					return SetCurrentField(wxString::Format(field, (signed short)value));
-				
-				case modLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed long>(value), wxT("Integer value passed cannot be represented as an signed long."));
-					
-					return SetCurrentField(wxString::Format(field, (signed long)value));
-				
-				case modLongLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<signed long long>(value), wxT("Integer value passed cannot be represented as an signed long long."));
-					
-					return SetCurrentField(wxString::Format(field, (signed long long)value));
-
-				default:
-					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
-			}
-		}
-
-		
-		case wxT('o'):		// Unsigned octal
-		case wxT('u'):		// Unsigned decimal integer
-		case wxT('x'):		// Unsigned hexadecimal integer
-		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
-		{
-			switch (getModifier(field)) {
-				case modNone:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned int>(value), wxT("Integer value passed cannot be represented as an unsigned int."));
-					
-					return SetCurrentField( wxString::Format( field, (unsigned int)value ) );
-				
-				case modShort:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned short>(value), wxT("Integer value passed cannot be represented as an unsigned short."));
-					
-					return SetCurrentField(wxString::Format(field, (unsigned short)value));
-				
-				case modLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long>(value), wxT("Integer value passed cannot be represented as an unsigned long."));
-					
-					return SetCurrentField(wxString::Format(field, (unsigned long)value));
-				
-				case modLongLong:
-					MULE_VALIDATE_PARAMS(CanRepresent<unsigned long long>(value), wxT("Integer value passed cannot be represented as an unsigned long long."));
-					
-					return SetCurrentField(wxString::Format(field, (unsigned long long)value));
-
-				default:
-					MULE_VALIDATE_STATE(false, wxT("Invalid modifier specified for interger format."));
-			}
-		}
-		
-		case wxT('c'):		// Character
-			MULE_VALIDATE_PARAMS(CanRepresent<wxChar>(value), wxT("Integer value passed cannot be represented as a wxChar.") );
-			
-			return SetCurrentField(wxString::Format(field, (wxChar)value));
-
-		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string."));
-	}
-}
-
-
-inline CFormat& CFormat::operator%(wxChar value)
-{
-	return FormatInteger(value);
-}
 
 
 inline CFormat& CFormat::operator%(signed short value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("hi")), value));
 }
 
 
 inline CFormat& CFormat::operator%(unsigned short value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("hu")), value));
 }
 
 
 inline CFormat& CFormat::operator%(signed int value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("i")), value));
 }
 
 
 inline CFormat& CFormat::operator%(unsigned int value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("u")), value));
 }
 
 
 inline CFormat& CFormat::operator%(signed long value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("li")), value));
 }
 
 
 inline CFormat& CFormat::operator%(unsigned long value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("lu")), value));
 }
 
 
 inline CFormat& CFormat::operator%(signed long long value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("lli")), value));
 }
 
 
 inline CFormat& CFormat::operator%(unsigned long long value)
 {
-	return FormatInteger(value);
+	return SetCurrentField(wxString::Format(GetIntegerField(wxT("llu")), value));
 }
 
 #endif
