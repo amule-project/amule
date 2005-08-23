@@ -462,13 +462,11 @@ case "$WX_VERSION_FULL" in
 2.5.1)
 	USE_24GSOCKET="no"
 	gtk_tray="yes"
-	kad_compile="no"	
 	;;
 2.5.2)
 	USE_24GSOCKET="no"
 	gtk_tray="no"
 	havegtk="not_needed"
-	kad_compile="no"	
 	;;
 *)
 	USE_GSOCKET="no"
