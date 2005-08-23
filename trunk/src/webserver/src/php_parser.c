@@ -2212,21 +2212,21 @@ yyreduce:
   case 24:
 #line 175 "php_parser.y"
     {
-				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-4].exp_node), 0, (yyvsp[-2].exp_node)->var_node, (yyvsp[0].syn_node), 0);
+				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-4].exp_node), 0, (yyvsp[-2].exp_node)->var_si_node, (yyvsp[0].syn_node), 0);
 			;}
     break;
 
   case 25:
 #line 178 "php_parser.y"
     {
-				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-6].exp_node), (yyvsp[-4].exp_node)->var_node, (yyvsp[-2].exp_node)->var_node, (yyvsp[0].syn_node), 0);
+				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-6].exp_node), (yyvsp[-4].exp_node)->var_si_node, (yyvsp[-2].exp_node)->var_si_node, (yyvsp[0].syn_node), 0);
 			;}
     break;
 
   case 26:
 #line 181 "php_parser.y"
     {
-				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-7].exp_node), (yyvsp[-5].exp_node)->var_node, (yyvsp[-2].exp_node)->var_node, (yyvsp[0].syn_node), 1);
+				(yyval.syn_node) = make_foreach_loop_syn_node((yyvsp[-7].exp_node), (yyvsp[-5].exp_node)->var_si_node, (yyvsp[-2].exp_node)->var_si_node, (yyvsp[0].syn_node), 1);
 			;}
     break;
 
@@ -2284,7 +2284,7 @@ yyreduce:
   case 38:
 #line 215 "php_parser.y"
     {
-		const char *varname = get_scope_var_name(g_current_scope, (yyvsp[0].exp_node)->var_node);
+		const char *varname = get_scope_var_name(g_current_scope, (yyvsp[0].exp_node)->var_si_node->var);
 		PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, varname);
 		PHP_SCOPE_ITEM *gsi = get_scope_item(g_global_scope, varname);
 		if ( gsi && (gsi->type == PHP_SCOPE_VAR) ) {
@@ -2559,7 +2559,7 @@ yyreduce:
 
   case 99:
 #line 368 "php_parser.y"
-    {  ;}
+    { (yyval.exp_node) = make_exp_2(PHP_MAKE_REF, (yyvsp[-3].exp_node), (yyvsp[0].exp_node)); ;}
     break;
 
   case 100:

@@ -173,13 +173,13 @@ statement:
 	|	ECHO expr_list ';'									{ $$ = make_expr_syn_node(PHP_ST_ECHO, $2); }
 	|	UNSET '(' variable_list ')' ';'						{  }
 	|	FOREACH '(' expr AS variable ')' foreach_statement 	{
-				$$ = make_foreach_loop_syn_node($3, 0, $5->var_node, $7, 0);
+				$$ = make_foreach_loop_syn_node($3, 0, $5, $7, 0);
 			}
 	|	FOREACH '(' expr AS variable HASH_ASSIGN variable ')' foreach_statement {
-				$$ = make_foreach_loop_syn_node($3, $5->var_node, $7->var_node, $9, 0);
+				$$ = make_foreach_loop_syn_node($3, $5, $7, $9, 0);
 			}
 	|	FOREACH '(' expr AS variable HASH_ASSIGN '&' variable ')' foreach_statement {
-				$$ = make_foreach_loop_syn_node($3, $5->var_node, $8->var_node, $10, 1);
+				$$ = make_foreach_loop_syn_node($3, $5, $8, $10, 1);
 			}
 	|	DECLARE '(' decl_list ')' statement					{ }
 	|	DECLARE '(' decl_list ')' ':' top_statement_list ENDDECLARE { }
@@ -213,7 +213,7 @@ global_var_list: global_var				{ $$ = 0; }
 
 
 global_var: VARIABLE	{
-		const char *varname = get_scope_var_name(g_current_scope, $1->var_node);
+		const char *varname = get_scope_var_name(g_current_scope, $1->var_si_node->var);
 		PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, varname);
 		PHP_SCOPE_ITEM *gsi = get_scope_item(g_global_scope, varname);
 		if ( gsi && (gsi->type == PHP_SCOPE_VAR) ) {
@@ -365,7 +365,7 @@ expr:
 	|	variable
 	|	variable '=' expr			{ $$ = make_exp_2(PHP_OP_ASS, $1, $3); }
 	|	function_call 				{ $$ = $1; }
-	|	variable '=' '&' variable	{  }
+	|	variable '=' '&' variable	{ $$ = make_exp_2(PHP_MAKE_REF, $1, $4); }
 /*
 	|	NEW class_name_reference ctor_arguments { }
 	|	CLONE expr {  }
