@@ -32,7 +32,6 @@ function refreshFrames()
         <img src="arrow-r.png" width="42" height="23">
         <select name="selectcat" id="selectcat">
         <?php
-				var_dump($HTTP_GET_VARS);
 			$cats = amule_get_categories();
 			if ( $HTTP_GET_VARS["Submit"] != "" ) {
 				$link = $HTTP_GET_VARS["ed2klink"];
