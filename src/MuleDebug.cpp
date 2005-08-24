@@ -30,6 +30,8 @@
 #include <exception>			// Needed for std::exception
 #include <cxxabi.h>				// Needed for __cxxabiv1::
 #include <csignal>				// Needed for raise()
+#include <stdio.h>
+#include <wchar.h>				// Needed for fwprintf
 
 #include <wx/string.h>
 
