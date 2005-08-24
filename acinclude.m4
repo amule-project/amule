@@ -225,7 +225,7 @@ AC_DEFUN([AM_PATH_LIBPNGCONFIG],
      LIBPNG_CONFIG_NAME=libpng-config
   fi
   if test "x$libpng_config_name" != x ; then
-     libpng_CONFIG_NAME="$libpng_config_name"
+     LIBPNG_CONFIG_NAME="$libpng_config_name"
   fi
 
   dnl deal with optional prefixes
@@ -292,25 +292,9 @@ AC_DEFUN([AM_PATH_LIBPNGCONFIG],
       no_libpng=yes
     else
       LIBPNG_LIBS=`$LIBPNG_CONFIG_WITH_ARGS --libs`
-
-      if test "x$libpng_has_cppflags" = x ; then
-         dnl no choice but to define all flags like CFLAGS
-         LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
-         LIBPNG_CPPFLAGS=$LIBPNG_CFLAGS
-         LIBPNG_CXXFLAGS=$LIBPNG_CFLAGS
-	 LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags`
-         LIBPNG_CFLAGS_ONLY=$LIBPNG_CFLAGS
-         LIBPNG_CXXFLAGS_ONLY=$LIBPNG_CFLAGS
-      else
-         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS -- ??
-         LIBPNG_CPPFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
-         LIBPNG_CXXFLAGS=`$Libpng_CONFIG_WITH_ARGS --cflags`
-         LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
-	 LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags`
-
-         LIBPNG_CFLAGS_ONLY=`echo $LIBPNG_CFLAGS | sed "s@^$LIBPNG_CPPFLAGS *@@"`
-         LIBPNG_CXXFLAGS_ONLY=`echo $LIBPNG_CXXFLAGS | sed "s@^$LIBPNG_CFLAGS *@@"`
-      fi
+      LIBPNG_LDFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --ldflags`
+      LIBPNG_CFLAGS=`$LIBPNG_CONFIG_WITH_ARGS --cflags`
+      LIBPNG_CXXFLAGS=$LIBPNG_CFLAGS
     fi
 
     if test "x$no_libpng" = x ; then
@@ -325,25 +309,87 @@ AC_DEFUN([AM_PATH_LIBPNGCONFIG],
        fi
 
        LIBPNG_CFLAGS=""
-       LIBPNG_CPPFLAGS=""
        LIBPNG_CXXFLAGS=""
        LIBPNG_LDFLAGS=""
        LIBPNG_LIBS=""
-       LIBPNG_LIBS_STATIC=""
        ifelse([$3], , :, [$3])
     fi
+  else
+	dnl Some RedHat RPMs miss libpng-config, so test for
+	dnl the usability with default options.
+	dnl Checking for libpng >= 1.2.0, and ignoring passed VERSION ($1),
+	dnl to make life simpler.
+	AC_MSG_CHECKING([for libpng >= 1.2.0])
+	dnl Set up LIBS for the test
+	saved_LIBS="$LIBS"
+	LIBS="$LIBS -lpng -lz -lm"
+	dnl Set default (empty) values.
+	LIBPNG_CFLAGS=""
+	LIBPNG_CXXFLAGS=""
+	LIBPNG_LDFLAGS=""
+	LIBPNG_LIBS=""
+	AC_RUN_IFELSE([
+		AC_LANG_PROGRAM([[
+			#include <png.h>
+			#include <stdio.h>
+
+			/* Check linking to png library */
+			void dummy() {
+				png_check_sig(NULL, 0);
+			}
+		]], [[
+			/* png.h defines PNG_LIBPNG_VER=xyyzz */
+			FILE *f=fopen("conftestval", "w");
+			if (!f) exit(1);
+			fprintf(f, "%s", (PNG_LIBPNG_VER >= 10200) ? "yes" : "no");
+			fclose(f);
+			f=fopen("conftestver", "w");
+			if (!f) exit(0);
+			fprintf(f, "%s", PNG_LIBPNG_VER_STRING);
+			fclose(f);
+			exit(0);
+		]])
+	], [
+		if test -f conftestval; then
+	        	result=`cat conftestval`
+		else
+			result=no
+		fi
+		if test x$result = xyes; then
+			if test -f conftestver; then
+				LIBPNG_VERSION=`cat conftestver`
+				lib_version=" (version $LIBPNG_VERSION)"
+			else
+				lib_version=""
+			fi
+		fi
+		AC_MSG_RESULT($result$lib_version)
+		LIBPNG_LIBS="-lpng -lz -lm"
+	], [
+		result=no
+		AC_MSG_RESULT($result)
+	], [
+		AC_MSG_RESULT([cross-compilation detected, checking only the header])
+		AC_CHECK_HEADER(png.h, [result=yes], [result=no])
+		if test x$result = xyes; then
+			LIBPNG_VERSION="detected"
+			LIBPNG_LIBS="-lpng -lz -lm"
+		fi
+	])
+	if test x$result = xyes; then
+		ifelse([$2], , :, [$2])
+	else
+		ifelse([$3], , :, [$3])
+	fi
+	dnl Restore LIBS
+	LIBS="$saved_LIBS"
   fi
 
 
-  AC_SUBST(LIBPNG_CPPFLAGS)
   AC_SUBST(LIBPNG_CFLAGS)
   AC_SUBST(LIBPNG_CXXFLAGS)
   AC_SUBST(LIBPNG_LDFLAGS)
-  AC_SUBST(LIBPNG_CFLAGS_ONLY)
-  AC_SUBST(LIBPNG_CXXFLAGS_ONLY)
   AC_SUBST(LIBPNG_LIBS)
-  AC_SUBST(LIBPNG_LIBS_STATIC)
-  AC_SUBST(LIBPNG_VERSION)
 ])
 
 dnl END_OF_PNG
