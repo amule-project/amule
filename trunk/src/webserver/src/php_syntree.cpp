@@ -1129,16 +1129,25 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 				break;
 			}
 			//
-			// There's 2 valid cases in making reference:
-			//  1. Target is scalar variable
-			//  2. Target is member of array.
-			/*
-			if ( expr->tree_node.left->op == PHP_OP_VAR ) {
-				value_value_free(&expr->tree_node.left->var_node->value);
-				expr->tree_node.left->var_node->value.type = PHP_VAL_VAR_NODE;
-				expr->tree_node.left->var_node->value.ptr_val = lval_node;
+			// There's 3 valid cases in making reference:
+			//  1,2. Target is scalar variable or variable by name ${xxx}
+			//  3. Target is member of array.
+			switch ( expr->tree_node.left->op ) {
+				case PHP_OP_VAR: {
+						if ( expr->tree_node.left->var_si_node->var != lval_node ) {
+							value_value_free(&expr->tree_node.left->var_si_node->var->value);
+							expr->tree_node.left->var_si_node->var = lval_node;
+							lval_node->ref_count++;
+						}
+					}
+					break;
+				case PHP_OP_ARRAY_BY_KEY: {
+					}
+					break;
+				default:
+					php_report_error(PHP_ERROR, "Bad left part of operator =&: (%d)",
+						expr->tree_node.left->op);
 			}
-			*/
 			break;
 		case PHP_OP_ARRAY:
 			if ( result ) {
