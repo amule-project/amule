@@ -27,6 +27,7 @@
 #endif
 
 #include "Format.h"
+#include <cctype>	// Needed for isalpha()
 
 
 /**
