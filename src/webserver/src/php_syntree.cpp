@@ -622,6 +622,18 @@ PHP_VAR_NODE *array_get_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key)
 	return array_get_by_str_key(array, s_key.str_val);
 }
 
+void array_set_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key, PHP_VAR_NODE *node)
+{
+	if ( array->type != PHP_VAL_ARRAY ) {
+		return;
+	}
+	PHP_VALUE_NODE s_key = *key;
+	cast_value_str(&s_key);
+	array_remove_at_str_key(array, s_key.str_val);
+	array_add_to_str_key(array, s_key.str_val, node);
+	value_value_free(&s_key);
+}
+
 void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node)
 {
 	if ( array->type != PHP_VAL_ARRAY ) {
@@ -632,6 +644,28 @@ void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *
 		node->ref_count++;
 		(arr_ptr->array)[key] = node;
 		arr_ptr->sorted_keys.push_back(key);
+	}
+}
+
+void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
+{
+	if ( array->type != PHP_VAL_ARRAY ) {
+		return ;
+	}
+	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
+	if ( arr_ptr->array.count(key) ) {
+		PHP_VAR_NODE *node = (arr_ptr->array)[key];
+		node->ref_count--;
+		if ( !node->ref_count ) {
+			delete node;
+		}
+		arr_ptr->array.erase(key);
+		for(PHP_ARRAY_KEY_ITER_TYPE i = arr_ptr->sorted_keys.begin(); i != arr_ptr->sorted_keys.end(); i++) {
+			if ( *i == key ) {
+				arr_ptr->sorted_keys.erase(i);
+				break;
+			}
+		}
 	}
 }
 
@@ -1080,6 +1114,41 @@ void php_engine_free()
 }
 
 /*
+ * Create reference. This is recoursive process, since operators []
+ * can be stacked: $a[1][2][3] = & $b;
+ * There's 3 valid cases in making reference:
+ *  1,2. Target is scalar variable or variable by name ${xxx}
+ *  3. Target is member of array.
+ */
+void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
+{
+	switch ( expr->op ) {
+		case PHP_OP_VAR: {
+				if ( expr->var_si_node->var != var ) {
+					if ( key ) {
+						cast_value_array(&expr->var_si_node->var->value);
+						array_set_by_key(&expr->var_si_node->var->value, key, var);
+					} else {
+						value_value_free(&expr->var_si_node->var->value);
+						expr->var_si_node->var = var;
+						var->ref_count++;
+					}
+				}
+			}
+			break;
+		case PHP_OP_ARRAY_BY_KEY: {
+				PHP_VALUE_NODE i_key;
+				php_expr_eval(expr->tree_node.right, &i_key);
+				exp_set_ref(expr->tree_node.left, var, &i_key);
+			}
+			break;
+		default:
+			php_report_error(PHP_ERROR, "Bad left part of operator =&: (%d)",
+				expr->tree_node.left->op);
+	}
+}
+
+/*
  * This is heart of expression tree: evaluation. It's split into 2 functions
  * where 1 evaluates "value" of expression, and other evaluates "lvalue" i.e. assignable
  * entity from given subtree.
@@ -1128,26 +1197,7 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			if ( !lval_node ) {
 				break;
 			}
-			//
-			// There's 3 valid cases in making reference:
-			//  1,2. Target is scalar variable or variable by name ${xxx}
-			//  3. Target is member of array.
-			switch ( expr->tree_node.left->op ) {
-				case PHP_OP_VAR: {
-						if ( expr->tree_node.left->var_si_node->var != lval_node ) {
-							value_value_free(&expr->tree_node.left->var_si_node->var->value);
-							expr->tree_node.left->var_si_node->var = lval_node;
-							lval_node->ref_count++;
-						}
-					}
-					break;
-				case PHP_OP_ARRAY_BY_KEY: {
-					}
-					break;
-				default:
-					php_report_error(PHP_ERROR, "Bad left part of operator =&: (%d)",
-						expr->tree_node.left->op);
-			}
+			exp_set_ref(expr->tree_node.left, lval_node, 0);
 			break;
 		case PHP_OP_ARRAY:
 			if ( result ) {
