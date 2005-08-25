@@ -365,6 +365,7 @@ extern "C" {
 	PHP_VAR_NODE *array_push_back(PHP_VALUE_NODE *array);
 	
 	void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node);
+	void array_set_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key, PHP_VAR_NODE *node);
 	
 	PHP_VAR_NODE *make_array_var();
 	
@@ -523,6 +524,7 @@ typedef std::list<PHP_SCOPE_TABLE_TYPE *> PHP_SCOPE_STACK_TYPE;
 const std::string &array_get_ith_key(PHP_VALUE_NODE *array, int i);
 PHP_VAR_NODE *array_get_by_str_key(PHP_VALUE_NODE *array, std::string key);
 void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *node);
+void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key);
 
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array);
