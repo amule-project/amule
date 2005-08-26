@@ -53,22 +53,12 @@
 /*
  * Print info about variable: php var_dump()
  */
-void php_native_var_dump(PHP_VALUE_NODE *)
-{
-	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
-	if ( si ) {
-		assert(si->type == PHP_SCOPE_VAR);
-		php_var_dump(&si->var->value, 0);
-	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
-	}
-}
-
-void php_var_dump(PHP_VALUE_NODE *node, int ident)
+void php_var_dump(PHP_VALUE_NODE *node, int ident, int ref)
 {
 	for(int i = 0; i < ident;i++) {
 		printf("\t");
 	}
+	if ( ref ) printf("&");
 	switch(node->type) {
 		case PHP_VAL_BOOL: printf("bool(%s)\n", node->int_val ? "true" : "false"); break;
 		case PHP_VAL_INT: printf("int(%d)\n", node->int_val); break;
@@ -82,7 +72,7 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
 				const std::string &curr_key = array_get_ith_key(node, i);
 				PHP_VAR_NODE *curr_val = array_get_by_str_key(node, curr_key);
 				printf("\t[%s]=>\n", curr_key.c_str());
-				php_var_dump(&curr_val->value, ident+1);
+				php_var_dump(&curr_val->value, ident+1, curr_val->ref_count > 1);
 			}
 			printf("}\n");
 			break;
@@ -92,6 +82,18 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident)
 		case PHP_VAL_INT_DATA: assert(0); break;
 	}
 }
+
+void php_native_var_dump(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( si ) {
+		assert(si->type == PHP_SCOPE_VAR);
+		php_var_dump(&si->var->value, 0, 0);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+	}
+}
+
 
 /*
  * Sorting stl-way requires operator ">"
@@ -113,8 +115,8 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 {
 	PHP_VALUE_NODE result;
 
-	value_value_assign(&SortElem::callback->params[0].var->value, &o1.obj->value);
-	value_value_assign(&SortElem::callback->params[1].var->value, &o2.obj->value);
+	value_value_assign(&SortElem::callback->params[0].si_var->var->value, &o1.obj->value);
+	value_value_assign(&SortElem::callback->params[1].si_var->var->value, &o2.obj->value);
 	
 	switch_push_scope_table((PHP_SCOPE_TABLE_TYPE *)SortElem::callback->scope);
 
@@ -129,8 +131,8 @@ bool operator<(const SortElem &o1, const SortElem &o2)
 	//
 	switch_pop_scope_table(0);
 
-	value_value_free(&SortElem::callback->params[0].var->value);
-	value_value_free(&SortElem::callback->params[1].var->value);
+	value_value_free(&SortElem::callback->params[0].si_var->var->value);
+	value_value_free(&SortElem::callback->params[1].si_var->var->value);
 	
 	return result.int_val;
 }

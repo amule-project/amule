@@ -251,7 +251,14 @@ typedef struct PHP_FUNC_PARAM_DEF {
 	char *class_name;
 	int byref;
 	PHP_VALUE_NODE def_value;
+	/*
+	 * In PHP, user can choose per-call whether parameter is passed
+	 * by value of by reference. So, save ptr to original varnode,
+	 * for "byvalue" case since we don't have other lvalue to put in
+	 * that scope item.
+	 */
 	PHP_VAR_NODE *var;
+	PHP_SCOPE_ITEM *si_var;
 } PHP_FUNC_PARAM_DEF;
 
 
@@ -441,7 +448,7 @@ extern "C" {
 	
 	void add_class_2_scope(PHP_SCOPE_TABLE scope, PHP_SYN_NODE *class_node);
 	
-	void add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name);
+	PHP_SCOPE_ITEM *add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name);
 
 	const char *get_scope_var_name(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var);
 	

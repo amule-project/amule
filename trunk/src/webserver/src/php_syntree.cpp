@@ -141,10 +141,10 @@ PHP_EXP_NODE *make_func_param(PHP_EXP_NODE *list, PHP_EXP_NODE *var_exp_node, ch
 	PHP_FUNC_PARAM_DEF *param = new PHP_FUNC_PARAM_DEF;
 	memset(param, 0, sizeof(PHP_FUNC_PARAM_DEF));
 
-	PHP_VAR_NODE *var = var_exp_node->var_si_node->var;
-	delete var_exp_node;
+	param->si_var = var_exp_node->var_si_node;
+	param->var = param->si_var->var;
 	
-	param->var = var;
+	delete var_exp_node;
 	param->class_name = class_name ? strdup(class_name) : 0;
 	param->byref = byref;
 	
@@ -373,19 +373,38 @@ void free_var_node(PHP_VAR_NODE *v)
 	delete v;
 }
 
+/*
+ * Init function scope table before transferring control there.
+ *  1. Evaluate all by-value params
+ *  2. Lvalue-evaluate all by-ref params and adjust pointers
+ */
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
 	for(int i = 0; i < param_count; i++) {
 		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
 		if ( curr_arg_val->value.type != PHP_VAL_NONE ) {
-			php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &params[i].var->value);
+			if ( (curr_arg_val->flags & PHP_VARFLAG_BYREF) || params[i].byref ) {
+				params[i].si_var->var = php_expr_eval_lvalue((PHP_EXP_NODE *)curr_arg_val->value.ptr_val);
+				if ( !params[i].si_var->var ) {
+					php_report_error(PHP_ERROR, "Byref parameter is not lvalue");
+					return;
+				}
+			} else {
+				php_expr_eval((PHP_EXP_NODE *)curr_arg_val->value.ptr_val, &params[i].si_var->var->value);
+			}
 		} else {
 			// put default value
 		}
 	}
 }
 
+/*
+ * Since by-ref params changes pointers in scope table, we need to restore them
+ * to original objects, so:
+ *  1. Memory will not leak
+ *  2. Next call may be using same params by-value, so it need independent varnode
+ */
 void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array)
 {
@@ -395,9 +414,7 @@ void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
 	for(int i = 0; i < param_count; i++) {
 		PHP_VAR_NODE *curr_arg_val = array_get_by_int_key(arg_array, i);
 		if ( (curr_arg_val->flags & PHP_VARFLAG_BYREF) || params[i].byref ) {
-			PHP_VAR_NODE *new_arg_val = php_expr_eval_lvalue((PHP_EXP_NODE *)curr_arg_val->value.ptr_val);
-			value_value_assign(&new_arg_val->value, &params[i].var->value);
-			value_value_free(&params[i].var->value);
+			params[i].si_var->var = params[i].var;
 		}
 	}
 }
@@ -519,12 +536,13 @@ PHP_SCOPE_ITEM *make_named_scope_item(PHP_SCOPE_TABLE scope, const char *name)
 	return it;
 }
 
-void add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name)
+PHP_SCOPE_ITEM *add_var_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name)
 {
 	PHP_SCOPE_ITEM *it = make_named_scope_item(scope, name);
 	it->type = PHP_SCOPE_VAR;
 	it->var = var;
 	var->ref_count++;
+	return it;
 }
 
 void add_param_2_scope(PHP_SCOPE_TABLE scope, PHP_VAR_NODE *var, const char *name)
@@ -934,7 +952,8 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 		sprintf(param_name, "__param_%d", i);
 		decl_node->func_decl->params[i] = def->params[i];
 		decl_node->func_decl->params[i].var = func_param;
-		add_var_2_scope(func_scope, func_param, param_name);
+		decl_node->func_decl->params[i].si_var = add_var_2_scope(func_scope, func_param, param_name);
+		
 		if ( def->params[i].class_name ) {
 			decl_node->func_decl->params[i].class_name = strdup(def->params[i].class_name);
 		}
@@ -1138,6 +1157,7 @@ void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
 			break;
 		case PHP_OP_ARRAY_BY_KEY: {
 				PHP_VALUE_NODE i_key;
+				i_key.type = PHP_VAL_NONE;
 				php_expr_eval(expr->tree_node.right, &i_key);
 				exp_set_ref(expr->tree_node.left, var, &i_key);
 			}
