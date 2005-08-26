@@ -382,7 +382,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 [
 	AC_LANG_PUSH(C++)
 	
-	if test "x${no_wx}" == "x";
+	if test "x${no_wx}" = "x";
 	then
 		dnl Backup current flags and setup flags for testing
 		__CPPFLAGS=${CXXFLAGS}
@@ -417,7 +417,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 	fi
 	
 	dnl Test wxBase
-	if test "x${no_wxbase}" == "x";
+	if test "x${no_wxbase}" = "x";
 	then
 		dnl Backup current flags and setup flags for testing
 		__CPPFLAGS=${CXXFLAGS}
