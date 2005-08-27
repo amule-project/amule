@@ -299,7 +299,7 @@ class CStatistics {
 	static	void	AddFilteredClient()			{ ++(*s_filtered); }
 	static	void	AddUnknownClient()			{ ++(*s_unknown); }
 	static	void	RemoveUnknownClient()			{ --(*s_unknown); }
-	static	void	AddKnownClient(CUpDownClient *pClient, uint32 clientSoft, uint32 clientVersion);
+	static	void	AddKnownClient(CUpDownClient *pClient);
 	static	void	RemoveKnownClient(uint32 clientSoft, uint32 clientVersion, const wxString& OSInfo);
 #ifdef __DEBUG__
 	static	void	SocketAssignedToClient()		{ ++(*s_hasSocket); }

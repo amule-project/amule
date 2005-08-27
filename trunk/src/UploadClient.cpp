@@ -841,7 +841,7 @@ void CUpDownClient::CheckForAggressive()
 				% m_Aggressiveness
 				% m_Username
 				% m_strModVersion
-				% m_clientVerString );
+				% m_fullClientVerString );
 			Ban();
 		}
 	} else {

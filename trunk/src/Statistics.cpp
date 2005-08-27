@@ -45,6 +45,7 @@
 	#include "ListenSocket.h"	// (tree, GetAverageConnections)
 	#include "ServerList.h"		// Needed for CServerList (tree)
 	#include <cmath>		// Needed for std::floor
+	#include "updownclient.h"	// Needed for CUpDownClient
 #else
 	#include "amule-remote-gui.h"	// Needed for CRemoteConnect
 #endif
@@ -780,10 +781,11 @@ uint32 GetIdFromString(const wxString& str)
 	return ((id >> 1) + id | 0x00000100) & 0x7fffffff;
 }
 
-void CStatistics::AddKnownClient(CUpDownClient *pClient, uint32 clientSoft, uint32 clientVersion)
+void CStatistics::AddKnownClient(CUpDownClient *pClient)
 {
 	++(*s_clients);
 
+	uint32 clientSoft = pClient->GetClientSoft();
 	uint32 id = GetSoftID(clientSoft);
 
 	CStatTreeItemCounter *client;
@@ -806,36 +808,27 @@ void CStatistics::AddKnownClient(CUpDownClient *pClient, uint32 clientSoft, uint
 	}
 
 	CStatTreeItemBase *versionRoot = SupportsOSInfo(clientSoft) ? client->GetChildById(2) : client;
+	uint32 clientVersion = pClient->GetVersion();
 
 	if (versionRoot->HasChildWithId(clientVersion)) {
 		CStatTreeItemCounter *version = (CStatTreeItemCounter*)versionRoot->GetChildById(clientVersion);
 		++(*version);
 	} else {
-		wxString versionStr;
-		GetClientDetails(pClient, NULL, &versionStr, NULL);
-		if (versionStr.IsEmpty()) {
-			versionStr = wxTRANSLATE("Unknown");
-		}
-		CStatTreeItemCounter *version = new CStatTreeItemCounter(versionStr + wxT(": %s"), stShowPercent | stHideIfZero);
+		const wxString& versionStr = pClient->GetVersionString();
+		CStatTreeItemCounter *version = new CStatTreeItemCounter((versionStr.IsEmpty() ? wxString(wxTRANSLATE("Unknown")) : versionStr) + wxT(": %s"), stShowPercent | stHideIfZero);
 		++(*version);
 		versionRoot->AddChild(version, clientVersion, SupportsOSInfo(clientSoft));
 	}
 
 	if (SupportsOSInfo(clientSoft)) {
-		wxString OSInfo = GetClientDetails(pClient, NULL, NULL, NULL);
-		uint32 OS_ID;
-		if (OSInfo.IsEmpty()) {
-			OSInfo = wxTRANSLATE("Not Received");
-			OS_ID = 0;
-		} else {
-			OS_ID = GetIdFromString(OSInfo);
-		}
+		const wxString& OSInfo = pClient->GetClientOSInfo();
+		uint32 OS_ID = OSInfo.IsEmpty() ? 0 : GetIdFromString(OSInfo);
 		CStatTreeItemBase* OSRoot = client->GetChildById(1);
 		CStatTreeItemCounter* OSNode = (CStatTreeItemCounter*)OSRoot->GetChildById(OS_ID);
 		if (OSNode) {
 			++(*OSNode);
 		} else {
-			OSNode = new CStatTreeItemCounter(OSInfo + wxT(": %s"), stShowPercent | stHideIfZero);
+			OSNode = new CStatTreeItemCounter((OS_ID ? OSInfo : wxString(wxTRANSLATE("Not Received"))) + wxT(": %s"), stShowPercent | stHideIfZero);
 			++(*OSNode);
 			OSRoot->AddChild(OSNode, OS_ID, true);
 		}
