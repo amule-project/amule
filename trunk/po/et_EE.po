@@ -4700,7 +4700,7 @@ msgstr "Loon ühendust serveriga %s (%s - %s:%i)"
 #: src/ServerSocket.cpp:587 src/ServerSocket.cpp:591
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
-msgstr "Ei suuda luua DNS lõime serveriga % ühendumiseks"
+msgstr "Ei suuda luua DNS lõime serveriga %s ühendumiseks"
 
 #: src/ServerSocket.cpp:676
 #, c-format
