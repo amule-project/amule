@@ -419,8 +419,8 @@ public:
 	const wxString&	GetFileComment() const 		{ return m_strComment; }
 	uint8		GetFileRating() const		{ return m_iRating; }
 
-	wxString	GetSoftStr() const 		{ return m_clientVerString.Left(m_SoftLen); }
-	wxString	GetSoftVerStr() const		{ return m_clientVerString.Mid(m_SoftLen+1); }
+	const wxString&	GetSoftStr() const 		{ return m_clientSoftString; }
+	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
 	
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
@@ -608,7 +608,6 @@ private:
 	uint32		m_cSendblock;
 	uint8		m_byEmuleVersion;
 	uint8		m_byDataCompVer;
-	uint8		m_SoftLen;
 	bool		m_bEmuleProtocol;
 	wxString	m_Username;
 	wxString	m_FullUserIP;
@@ -783,13 +782,17 @@ private:
 
 public:
 	const wxString&	GetClientModString() const	{ return m_strModVersion; }
-	const wxString&	GetClientVerString() const	{ return m_clientVerString; }
+	const wxString&	GetClientVerString() const	{ return m_fullClientVerString; }
+	const wxString&	GetVersionString() const	{ return m_clientVersionString; }
 
 	void		UpdateStats();
 
 private:
 	bool 		m_OSInfo_sent;
-	wxString	m_clientVerString;
+	wxString	m_clientSoftString;	/* software name */
+	wxString	m_clientVerString;	/* version + optional mod name */
+	wxString	m_clientVersionString;	/* version string */
+	wxString	m_fullClientVerString;	/* full info string */
 	wxString	m_sClientOSInfo;
 	wxString	m_pendingMessage;
 
