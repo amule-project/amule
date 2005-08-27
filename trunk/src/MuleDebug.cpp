@@ -464,9 +464,5 @@ void print_backtrace(unsigned n)
 	wxString trace = get_backtrace(n);
 
 	// This is because the string is ansi anyway, and the conv classes are very slow
-#if wxUSE_UNICODE
-	fwprintf(stderr, L"%ls\n", (const wchar_t *)(trace.c_str()) );
-#else
 	fprintf(stderr, "%s\n", (const char *)(trace.c_str()));
-#endif
 }
