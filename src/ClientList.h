@@ -390,6 +390,10 @@ private:
 
 	//! This is the lists of clients that should be deleted
 	SourceList m_delete_queue;
+#ifdef __WXDEBUG__
+	#warning TODO: remove this once we learn what code is adding to m_delete_queue after it is closed
+	bool m_delete_queue_closed;
+#endif
 	
 	//! This is the map of banned clients.
 	ClientMap m_bannedList;

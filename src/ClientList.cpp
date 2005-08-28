@@ -94,6 +94,9 @@ CClientList::CClientList()
 	m_dwLastClientCleanUp = 0;
 	m_pBuddy = NULL;
 	m_nBuddyStatus = Disconnected;
+#ifdef __WXDEBUG__
+	m_delete_queue_closed = false;
+#endif
 }
 
 
@@ -149,6 +152,7 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 		RemoveIPFromList( client );
 		RemoveHashFromList( client );
 		
+		wxASSERT(!m_delete_queue_closed);
 		m_delete_queue.push_back( client );
 	} else {
 		delete client;
@@ -349,6 +353,9 @@ void CClientList::DeleteAll()
 	}
 
 	// Clean up the clients now queued for deletion
+#ifdef __WXDEBUG__
+	m_delete_queue_closed = true;
+#endif
 	ProcessDeleteQueue();
 }
 
