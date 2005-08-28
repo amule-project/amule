@@ -27,28 +27,11 @@
 #pragma implementation "StatTree.h"
 #endif
 
+#include "StatTree.h"
+
 #ifndef EC_REMOTE
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for PRI_MACROS_BROKEN
-#endif
-
-#ifndef PRI_MACROS_BROKEN
-	#define __STDC_FORMAT_MACROS	// Needed for the inclusion of the format macros
-	#include <inttypes.h>
-	#include "StatTree.h"
-#else
-	#include "StatTree.h"
-	#ifdef USE_64BIT_ARCH
-		#define PRIu64	"lu"
-	#else
-		#define PRIu64	"llu"
-		#define PRIu32	"u"
-	#endif
-	#warning PRIxxx macros are broken, using a guess
-#endif
-
-#include <wx/intl.h>		// Needed for wxGetTranslation
+#include <wx/intl.h>		// Needed for wxGetTranslation(), _() / wxTRANSLATE()
 
 #ifndef AMULE_DAEMON
 #include "Format.h"		// Needed for CFormat
@@ -58,11 +41,7 @@
 
 #endif /* !AMULE_DAEMON */
 
-#else /* EC_REMOTE */
-
-#include "StatTree.h"
-
-#endif /* !EC_REMOTE / EC_REMOTE */
+#endif /* !EC_REMOTE */
 
 #include "ECcodes.h"		// Needed for EC tag names
 #include "ECPacket.h"		// Needed for CECTag
@@ -315,7 +294,7 @@ wxString CStatTreeItemCounter::GetDisplayString() const
 	if (m_displaymode == dmBytes) {
 		return label % CastItoXBytes(m_value);
 	} else {
-		wxString result = wxString::Format(wxT("%" PRIu64), m_value);
+		wxString result = CFormat(wxT("%u")) % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
 			result.append(wxString::Format(wxT(" (%.2f%%)"), ((double)m_value / ((CStatTreeItemCounter*)m_parent)->m_value) * 100.0));
 		}
@@ -357,7 +336,7 @@ wxString CStatTreeItemNativeCounter::GetDisplayString() const
 	if (m_displaymode == dmBytes) {
 		return label % CastItoXBytes(m_value);
 	} else {
-		wxString result = wxString::Format(wxT("%" PRIu32), m_value);
+		wxString result = CFormat(wxT("%u")) % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
 			result.append(wxString::Format(wxT(" (%.2f%%)"), ((double)m_value / ((CStatTreeItemNativeCounter*)m_parent)->m_value) * 100.0));
 		}
@@ -500,7 +479,7 @@ wxString CStatTreeItemAverage::GetDisplayString() const
 		switch (m_displaymode) {
 			case dmBytes:	return CFormat(wxGetTranslation(m_label)) % CastItoXBytes((*m_dividend)/(*m_divisor));
 			case dmTime:	return CFormat(wxGetTranslation(m_label)) % CastSecondsToHM((*m_dividend)/(*m_divisor));
-			default:	return CFormat(wxGetTranslation(m_label)) % wxString::Format(wxT("%" PRIu64), (uint64)(*m_dividend)/(*m_divisor));
+			default:	return CFormat(wxGetTranslation(m_label)) % (CFormat(wxT("%u")) % ((uint64)(*m_dividend)/(*m_divisor))).GetString();
 		}
 	} else {
 		return CFormat(wxGetTranslation(m_label)) % wxT("-");
