@@ -347,6 +347,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 
 void php_get_amule_categories(PHP_VALUE_NODE *result)
 {
+	cast_value_array(result);
 #ifndef PHP_STANDALONE_EN
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
@@ -354,7 +355,6 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	if ( !reply || !reply->GetTagCount()) {
 		return ;
 	}
-	cast_value_array(result);
 	CECTag *cats_tag = reply->GetTagByIndex(0);
 	for (int i = 0; i < cats_tag->GetTagCount(); i++) {
 		CECTag *tag = cats_tag->GetTagByIndex(i);
@@ -365,13 +365,90 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 		cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
 	}
 #else
-	cast_value_array(result);
 	for (int i = 0; i < 5; i++) {
 		PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
 		value_value_free(&cat->value);
 		cat->value.type = PHP_VAL_STRING;
 		cat->value.str_val = strdup("some_cat");
 	}
+#endif
+}
+
+void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
+{
+	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
+	PHP_VALUE_NODE intval;
+	intval.type = PHP_VAL_INT;
+	intval.int_val = value;
+	value_value_assign(&key->value, &intval);
+}
+
+/*
+ * Return hash of amule options.
+ *  Key: option name
+ *  Value: option value (string)
+ */
+void php_get_amule_options(PHP_VALUE_NODE *result)
+{
+	cast_value_array(result);
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_GET_PREFERENCES);
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_OP_GET_PREFERENCES));
+	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	if ( !reply || !reply->GetTagCount()) {
+		return ;
+	}
+	CECTag *cattag, *valtag = 0;
+	PHP_VALUE_NODE intval;
+	intval.type = PHP_VAL_INT;
+    if ((cattag = reply->GetTagByName(EC_TAG_PREFS_GENERAL)) != 0) {
+        if ((valtag = cattag->GetTagByName(EC_TAG_USER_NICK)) != 0) {
+        		PHP_VAR_NODE *key = array_get_by_str_key(result, "nick");
+        		value_value_free(&key->value);
+        		key->value.type = PHP_VAL_STRING;
+        		key->value.str_val = strdup(unicode2char(valtag->GetStringData()));
+        }
+	}
+
+	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != 0) {
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UL_CAP)) != 0) {
+			set_array_int_val(result, "max_line_up_cap", valtag->GetInt32Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_DL_CAP)) != 0) {
+			set_array_int_val(result, "max_line_down_cap", valtag->GetInt32Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_UL)) != 0) {
+			set_array_int_val(result, "max_conn_up_max", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_DL)) != 0) {
+			set_array_int_val(result, "max_conn_down_max", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_SLOT_ALLOCATION)) != 0) {
+			set_array_int_val(result, "max_conn_slot_alloc", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_TCP_PORT)) != 0) {
+			set_array_int_val(result, "max_conn_tcp_port", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UDP_PORT)) != 0) {
+			set_array_int_val(result, "max_conn_udp_port", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UDP_DISABLE)) != 0) {
+			set_array_int_val(result, "max_conn_udp_en", !valtag->GetInt8Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)) != 0) {
+			set_array_int_val(result, "max_conn_file_src_max", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_CONN)) != 0) {
+			set_array_int_val(result, "max_conn_total_max", valtag->GetInt16Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_AUTOCONNECT)) != 0) {
+			set_array_int_val(result, "max_conn_autoconn_en", valtag->GetInt8Data());
+		}
+		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_RECONNECT)) != 0) {
+			set_array_int_val(result, "max_conn_reconn_en", valtag->GetInt8Data());
+		}
+	}
+
 #endif
 }
 
@@ -875,83 +952,94 @@ void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
-		{ 0, 1, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 1, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1,
 		php_native_var_dump,
 	},
 	{
 		"strlen",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1, php_native_strlen,
 	},
 	{
 		"usort",
-		{ { 0, 1, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} }, 0 } },
+		{ { 0, 1, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 } },
 		2,
 		php_native_usort,
 	},
 	{
 		"amule_load_vars",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1, php_native_load_amule_vars,
 	},
 	{
 		"amule_get_stats",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_get_amule_stats,
 	},
 	{
 		"amule_get_categories",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_get_amule_categories,
 	},
 	{
+		"amule_get_options",
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
+		0, php_get_amule_options,
+	},
+	{
 		"amule_do_server_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		{
+			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
+			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_server_cmd,
 	},
 	{
 		"amule_do_download_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		{
+			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
+			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_download_file_cmd,
 	},
 	{
 		"amule_do_shared_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		{ 
+			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
+		 	{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_shared_file_cmd,
 	},
 	{
 		"amule_do_reload_shared_cmd",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0 },
+		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_native_reload_shared_file_cmd,
 	},
 	{
 		"amule_do_search_download_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		2,
 		php_native_search_download_cmd,
 	},
 	{
 		"amule_do_search_start_cmd",
 		{ 
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0},
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
+			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
 		}, 
 		7,
 		php_native_search_start_cmd,
 	},
 	{
 		"amule_do_ed2k_download_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, }, 
+		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		2,
 		php_native_ed2k_download_cmd,
 	},
-	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0 }, 0, 0, },
+	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, 0, 0, },
 };
 
 void php_init_core_lib()
