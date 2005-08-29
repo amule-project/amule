@@ -315,7 +315,6 @@ struct PHP_SYN_NODE {
 
 typedef struct PHP_BLTIN_FUNC_DEF {
 	char *name;
-	PHP_FUNC_PARAM_DEF params[PHP_MAX_FUNC_PARAM];
 	int param_count;
 	PHP_NATIVE_FUNC_PTR func;
 } PHP_BLTIN_FUNC_DEF;
