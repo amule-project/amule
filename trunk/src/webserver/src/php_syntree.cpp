@@ -946,17 +946,20 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	decl_node->func_decl->param_count = def->param_count;
 	decl_node->func_decl->params = new PHP_FUNC_PARAM_DEF[def->param_count];
 	
+	//
+	// Built-in functions don't have class specifier, and can handle
+	// default arguments internally
+	//
+	memset(decl_node->func_decl->params, 0, sizeof(PHP_FUNC_PARAM_DEF) * def->param_count);
 	for(int i = 0; i < def->param_count;i++) {
 		PHP_VAR_NODE *func_param = make_var_node();
 		char param_name[32];
 		sprintf(param_name, "__param_%d", i);
-		decl_node->func_decl->params[i] = def->params[i];
+
+		decl_node->func_decl->params[i].def_value.type = PHP_VAL_NONE;
 		decl_node->func_decl->params[i].var = func_param;
 		decl_node->func_decl->params[i].si_var = add_var_2_scope(func_scope, func_param, param_name);
 		
-		if ( def->params[i].class_name ) {
-			decl_node->func_decl->params[i].class_name = strdup(def->params[i].class_name);
-		}
 	}
 	decl_node->func_decl->scope = func_scope;
 	decl_node->func_decl->is_native = 1;

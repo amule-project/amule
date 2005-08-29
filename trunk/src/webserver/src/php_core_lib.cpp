@@ -398,57 +398,102 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 	if ( !reply || !reply->GetTagCount()) {
 		return ;
 	}
-	CECTag *cattag, *valtag = 0;
+	CECTag *cattag = 0;
 	PHP_VALUE_NODE intval;
 	intval.type = PHP_VAL_INT;
     if ((cattag = reply->GetTagByName(EC_TAG_PREFS_GENERAL)) != 0) {
-        if ((valtag = cattag->GetTagByName(EC_TAG_USER_NICK)) != 0) {
-        		PHP_VAR_NODE *key = array_get_by_str_key(result, "nick");
-        		value_value_free(&key->value);
-        		key->value.type = PHP_VAL_STRING;
-        		key->value.str_val = strdup(unicode2char(valtag->GetStringData()));
-        }
+		PHP_VAR_NODE *key = array_get_by_str_key(result, "nick");
+		value_value_free(&key->value);
+		key->value.type = PHP_VAL_STRING;
+		key->value.str_val = strdup(unicode2char(cattag->GetTagByNameSafe(EC_TAG_USER_NICK)->GetStringData()));
 	}
 
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != 0) {
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UL_CAP)) != 0) {
-			set_array_int_val(result, "max_line_up_cap", valtag->GetInt32Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_DL_CAP)) != 0) {
-			set_array_int_val(result, "max_line_down_cap", valtag->GetInt32Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_UL)) != 0) {
-			set_array_int_val(result, "max_conn_up_max", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_DL)) != 0) {
-			set_array_int_val(result, "max_conn_down_max", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_SLOT_ALLOCATION)) != 0) {
-			set_array_int_val(result, "max_conn_slot_alloc", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_TCP_PORT)) != 0) {
-			set_array_int_val(result, "max_conn_tcp_port", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UDP_PORT)) != 0) {
-			set_array_int_val(result, "max_conn_udp_port", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_UDP_DISABLE)) != 0) {
-			set_array_int_val(result, "max_conn_udp_en", !valtag->GetInt8Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_FILE_SOURCES)) != 0) {
-			set_array_int_val(result, "max_conn_file_src_max", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_MAX_CONN)) != 0) {
-			set_array_int_val(result, "max_conn_total_max", valtag->GetInt16Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_AUTOCONNECT)) != 0) {
-			set_array_int_val(result, "max_conn_autoconn_en", valtag->GetInt8Data());
-		}
-		if ((valtag = cattag->GetTagByName(EC_TAG_CONN_RECONNECT)) != 0) {
-			set_array_int_val(result, "max_conn_reconn_en", valtag->GetInt8Data());
-		}
-	}
+		PHP_VAR_NODE *cat = array_get_by_str_key(result, "connection");
+		cast_value_array(&cat->value);
+		
+		set_array_int_val(&cat->value, "max_line_up_cap",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_UL_CAP)->GetInt32Data());
 
+		set_array_int_val(&cat->value, "max_line_down_cap",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_DL_CAP)->GetInt32Data());
+
+		set_array_int_val(&cat->value, "max_up_max",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_UL)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "max_down_max",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_DL)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "max_slot_alloc",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_SLOT_ALLOCATION)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "tcp_port",
+			cattag->GetTagByName(EC_TAG_CONN_TCP_PORT)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "udp_port",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_TCP_PORT)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "udp_en",
+			!cattag->GetTagByNameSafe(EC_TAG_CONN_UDP_DISABLE)->GetInt8Data());
+
+		set_array_int_val(&cat->value, "max_file_src",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_FILE_SOURCES)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "max_conn_total",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
+
+		set_array_int_val(&cat->value, "autoconn_en",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_AUTOCONNECT)->GetInt8Data());
+
+		set_array_int_val(&cat->value, "reconn_en",
+			cattag->GetTagByNameSafe(EC_TAG_CONN_RECONNECT)->GetInt8Data());
+	}
+	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
+		set_array_int_val(result, "ich_en",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_ICH_ENABLED)->GetInt8Data());
+		set_array_int_val(result, "aich_trust",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_AICH_TRUST)->GetInt8Data());
+
+		set_array_int_val(result, "new_files_paused",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_PAUSED)->GetInt8Data());
+
+		set_array_int_val(result, "new_files_auto_dl_prio",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_AUTO_DL_PRIO)->GetInt8Data());
+
+		set_array_int_val(result, "preview_prio",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_PREVIEW_PRIO)->GetInt8Data());
+
+		set_array_int_val(result, "new_files_auto_ul_prio",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_AUTO_UL_PRIO)->GetInt8Data());
+
+		set_array_int_val(result, "upload_full_chunks",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_UL_FULL_CHUNKS)->GetInt8Data());
+
+		set_array_int_val(result, "start_next_paused",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_START_NEXT_PAUSED)->GetInt8Data());
+
+		set_array_int_val(result, "resume_same_cat",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_RESUME_SAME_CAT)->GetInt8Data());
+
+		set_array_int_val(result, "save_sources",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_SAVE_SOURCES)->GetInt8Data());
+
+		set_array_int_val(result, "extract_metadata",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_EXTRACT_METADATA)->GetInt8Data());
+
+		set_array_int_val(result, "alloc_full_chunks",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_ALLOC_FULL_CHUNKS)->GetInt8Data());
+
+		set_array_int_val(result, "alloc_full",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_ALLOC_FULL_SIZE)->GetInt8Data());
+
+		set_array_int_val(result, "check_free_space",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_CHECK_FREE_SPACE)->GetInt8Data());
+
+		set_array_int_val(result, "min_free_space",
+			cattag->GetTagByNameSafe(EC_TAG_FILES_MIN_FREE_SPACE)->GetInt32Data());
+	}
+	
 #endif
 }
 
@@ -952,94 +997,69 @@ void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
-		{ 0, 1, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1,
 		php_native_var_dump,
 	},
 	{
 		"strlen",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1, php_native_strlen,
 	},
 	{
 		"usort",
-		{ { 0, 1, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 } },
 		2,
 		php_native_usort,
 	},
 	{
 		"amule_load_vars",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		1, php_native_load_amule_vars,
 	},
 	{
 		"amule_get_stats",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_get_amule_stats,
 	},
 	{
 		"amule_get_categories",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_get_amule_categories,
 	},
 	{
 		"amule_get_options",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_get_amule_options,
 	},
 	{
 		"amule_do_server_cmd",
-		{
-			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
-			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_server_cmd,
 	},
 	{
 		"amule_do_download_cmd",
-		{
-			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
-			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_download_file_cmd,
 	},
 	{
 		"amule_do_shared_cmd",
-		{ 
-			{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
-		 	{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		3,
 		php_native_shared_file_cmd,
 	},
 	{
 		"amule_do_reload_shared_cmd",
-		{ 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
 		0, php_native_reload_shared_file_cmd,
 	},
 	{
 		"amule_do_search_download_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		2,
 		php_native_search_download_cmd,
 	},
 	{
 		"amule_do_search_start_cmd",
-		{ 
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 },
-			{ 0, 0, { PHP_VAL_NONE, {0} } , 0, 0},
-		}, 
 		7,
 		php_native_search_start_cmd,
 	},
 	{
 		"amule_do_ed2k_download_cmd",
-		{ { 0, 0, { PHP_VAL_NONE, {0} } , 0, 0}, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, }, 
 		2,
 		php_native_ed2k_download_cmd,
 	},
-	{ 0, { 0, 0, { PHP_VAL_NONE, {0} }, 0, 0 }, 0, 0, },
+	{ 0, 0, 0, },
 };
 
 void php_init_core_lib()
