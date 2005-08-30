@@ -3918,7 +3918,11 @@ sint32 CPartFile::getTimeRemaining() const
 
 bool CPartFile::PreviewAvailable()
 {
+#ifndef CLIENT_GUI
 	return (( GetFiletype(GetFileName()) == ftVideo ) && IsComplete(0, 256*1024));
+#else
+	return false;
+#endif
 }
 
 bool CPartFile::CheckShowItemInGivenCat(int inCategory)
