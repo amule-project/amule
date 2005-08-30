@@ -3797,18 +3797,19 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_strFileName = tag->FileName();
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
-    m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
 	m_showSources = false;
-	
+	m_partmetfilename = tag->PartMetName();
+
 	transfered = tag->SizeXfer();
 	percentcompleted = (100.0*completedsize) / m_nFileSize;
 	completedsize = tag->SizeDone();
 
 	m_category = tag->FileCat();
-	
+
     // is it ok ?
     m_stopped = 0;
-    
+
 //	m_SrcpartFrequency.SetCount(m_iPartCount);
 	#if wxCHECK_VERSION(2, 5, 0)
 	m_SrcpartFrequency.SetCount(m_iPartCount);
@@ -3830,7 +3831,6 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	hasComment = 0;
 	hasRating = 0;
 	hasBadRating = 0;
-	
 }
 
 /*
