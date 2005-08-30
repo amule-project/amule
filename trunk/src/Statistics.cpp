@@ -253,6 +253,7 @@ CStatistics::~CStatistics()
 {
 	// clearing listHR frees the memory occupied by the nodes
 	listHR.clear();
+	delete aposRecycle;
 
 	delete s_statTree;
 
