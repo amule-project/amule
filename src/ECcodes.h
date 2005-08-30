@@ -746,6 +746,7 @@ enum {
 	EC_TAG_PARTFILE,
 
 	EC_TAG_PARTFILE_NAME,
+	EC_TAG_PARTFILE_PARTMETID,	///< (\c uint16) Partfile number. (nnn.part.met)
 	EC_TAG_PARTFILE_SIZE_FULL,
 	EC_TAG_PARTFILE_SIZE_XFER,    // downloaded
 	EC_TAG_PARTFILE_SIZE_XFER_UP, // uploaded

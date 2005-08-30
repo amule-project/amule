@@ -222,6 +222,16 @@ class CEC_PartFile_Tag : public CECTag {
 
  		uint8		FileCat()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_CAT)->GetInt8Data(); }
 		time_t		LastSeenComplete() { return (time_t)GetTagByNameSafe(EC_TAG_PARTFILE_LAST_SEEN_COMP)->GetInt32Data(); }
+
+		wxString	PartMetName()
+			{
+				CECTag* tmp = GetTagByName(EC_TAG_PARTFILE_PARTMETID);
+				if (tmp) {
+					return wxString::Format(wxT("%03u.part.met"), tmp->GetInt16Data());
+				} else {
+					return wxEmptyString;
+				}
+			}
 		
 		void SetSizeXfer(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, value); }
 		void SetSizeDone(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, value); }

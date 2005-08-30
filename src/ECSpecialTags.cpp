@@ -629,6 +629,11 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 
+	long l;
+	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
+		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint16)l, this);
+	}
+
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
@@ -661,10 +666,15 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint32)file->lastseencomplete));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
-			return;
+		return;
 	}
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
+
+	long l;
+	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
+		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint16)l));
+	}
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
 
