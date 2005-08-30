@@ -423,7 +423,11 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 		parser.Found(wxT("template"), &m_TemplateName);
 		if (m_TemplateName.IsEmpty()) {
-			m_TemplateName = wxT("default");
+			if ( m_UsePhp ) {
+				m_TemplateName = wxT("php-default");
+			} else {
+				m_TemplateName = wxT("default");
+			}
 		}
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
@@ -544,7 +548,7 @@ void CamulewebApp::LoadConfigFile()
 	if (m_configFile) {
 		wxString tmp;
 		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), -1l);
-		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxT("default"));
+		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxEmptyString);
 		m_configFile->Read(wxT("/Webserver/UseGzip"), &m_UseGzip, false);
 		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
 		m_configFile->ReadHash(wxT("/Webserver/AdminPassword"), &m_AdminPass);
