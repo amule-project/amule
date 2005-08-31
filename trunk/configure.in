@@ -564,8 +564,9 @@ fi
 AC_DEFINE_UNQUOTED(AMULE_INSTALL_PREFIX, "${aMuleInstallPrefix}", [aMule installation prefix])
 
 AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales are.])
-		
+	
 # Try to set the CVS checkout-date
+AC_MSG_CHECKING([for CVSDATE])
 if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs
 then
 	cvsdate=`cat $srcdir/CVSDATE`
@@ -574,8 +575,9 @@ then
 	cvsdate="$(stat -Lc %y $srcdir/CVS/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
 elif test -d $srcdir/.svn # CVSDATE for svn
 then
-	cvsdate="r`svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
+	cvsdate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
 fi
+AC_MSG_RESULT(${cvsdate:-None required})
 test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date or svn revision number.])
 
 XRCFLAGS="-Isrc"

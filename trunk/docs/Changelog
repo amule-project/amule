@@ -28,6 +28,9 @@ Version 2.1.x - The "???" version
 		  may allocate memory.
 		* Fixed some compile warnings in WebServer.cpp.
 
+	thedude0001:
+		* Added CVS snapshot date to frame title.
+
 	volpol:
 		* A4AF transfer speed display fix
 
