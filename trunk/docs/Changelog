@@ -30,6 +30,7 @@ Version 2.1.x - The "???" version
 
 	thedude0001:
 		* Added CVS snapshot date to frame title.
+		* Fixed #560: "aMuleWebDLG and aMuleCMDDLG do not report version"
 
 	volpol:
 		* A4AF transfer speed display fix

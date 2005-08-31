@@ -170,10 +170,19 @@ void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
 	wxString msg;
-	msg = wxString::Format( 
-		_("amuleweb [DLG version]\n"
-		"Using %s\n(c) aMule Dev Team"),
-		wxVERSION_STRING);
+	#ifdef CVSDATE
+		msg = wxString::Format( 
+			_("amuleweb [DLG version] %s %s\n"
+			"Using %s\n"
+			"(c) aMule Dev Team"),
+			wxT(VERSION), wxT(CVSDATE), wxVERSION_STRING);
+	#else
+		msg = wxString::Format( 
+			_("amuleweb [DLG version] %s\n"
+			"Using %s\n"
+			"(c) aMule Dev Team"),
+			wxT(VERSION), wxVERSION_STRING);
+	#endif
 	wxMessageBox(msg, _("About amuleweb"), wxOK | wxICON_INFORMATION, this);
 }
 
