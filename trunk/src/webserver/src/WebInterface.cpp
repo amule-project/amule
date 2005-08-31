@@ -55,7 +55,6 @@
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "WebServer.h"
-#include "Format.h"		// Needed for CFormat
 
 //-------------------------------------------------------------------
 
@@ -431,7 +430,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		}
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
-			fprintf(stderr, (const char *)unicode2char(CFormat(_("FATAL ERROR: Cannot find template: %s")) % m_TemplateName + wxT("\n")));
+			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
 			exit(1);
 			//return false;
 		}

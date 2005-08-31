@@ -250,7 +250,8 @@ CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
 
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion, CmdId *UNUSED_IN_GUI(commands))
 {
-	wxString pass_plain;
+	InitCustomLanguages();
+	InitLocale(m_locale, StrLang2wx(m_language));
 
 	if (m_NeedsConfigSave) {
 		SaveConfigFile();
@@ -259,6 +260,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 
 	// HostName, Port and Password
 	if ( m_password.IsEmpty() ) {
+		wxString pass_plain;
 #if wxUSE_GUI
 		m_host = wxGetTextFromUser(
 			wxT("Enter hostname or ip of the box running aMule"),
@@ -291,6 +293,9 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		if (m_password == CMD4Hash(wxT("D41D8CD98F00B204E9800998ECF8427E"))) {
 			m_password.Clear();
 		}
+
+		// Clear plain-text password
+		pass_plain		= wxT("01234567890123456789");
 	}
 	
 	if (!m_password.IsEmpty()) {
@@ -305,9 +310,6 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 #ifdef EC_VERSION_ID
 		packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
 #endif
-
-		// Clear passwords
-		pass_plain		= wxT("01234567890123456789");
 
 		// Create the socket
 		Show(_("\nCreating client...\n"));
@@ -500,8 +502,6 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 
 	parser.Found(wxT("locale"), &m_language);
-	InitCustomLanguages();
-	InitLocale(m_locale, StrLang2wx(m_language));
 
 	if (parser.Found(wxT("help"))) {
 		parser.Usage();
