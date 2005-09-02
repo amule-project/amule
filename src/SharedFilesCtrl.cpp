@@ -67,6 +67,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
+	EVT_MENU( MP_RENAME,		CSharedFilesCtrl::OnRename )
 END_EVENT_TABLE()
 
 enum SharedFilesListColumns {
@@ -144,6 +145,9 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 		
 		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
 		m_menu->AppendSeparator();
+		m_menu->Append(MP_RENAME, _("Rename"));
+		m_menu->Enable(MP_RENAME, !file->IsPartFile());
+		m_menu->AppendSeparator();
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
@@ -151,7 +155,6 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
-		
 
 		PopupMenu( m_menu, event.GetPosition() );
 
@@ -190,7 +193,8 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 	wxString buffer;
 	
 	SetItemData( itemnr, (long)file );
-	
+
+	SetItem(itemnr, ID_SHARED_COL_NAME, file->GetFileName() );
 	SetItem(itemnr, ID_SHARED_COL_TYPE, GetFiletypeByName(file->GetFileName()) );
 	SetItem(itemnr, ID_SHARED_COL_SIZE, CastItoXBytes(file->GetFileSize()) );
 	SetItem(itemnr, ID_SHARED_COL_PRIO, PriorityToStr( file->GetUpPriority(), file->IsAutoUpPriority() ) );
@@ -574,5 +578,83 @@ void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 		CKnownFile* file = (CKnownFile*)GetItemData( item );
 	
 		theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+	}
+}
+
+#warning Move this stuff to muuli as soon as it is melted.
+#include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/textctrl.h>
+
+//define it to a random number until the move
+#define IDC_NEWFILENAME	29714
+
+wxString GetNewName(const wxString& oldname)
+{
+	wxDialog* dlg = new wxDialog(theApp.amuledlg, -1, _("Rename"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+
+	wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxStaticText *item2 = new wxStaticText( dlg, -1, _("File Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxTextCtrl *item3 = new wxTextCtrl( dlg, IDC_NEWFILENAME, oldname, wxDefaultPosition, wxSize(320,-1), 0 );
+	item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxButton *item5 = new wxButton( dlg, wxID_OK, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
+	item5->SetDefault();
+	item4->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	wxButton *item6 = new wxButton( dlg, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+	dlg->SetSizer( item0 );
+	item0->SetSizeHints( dlg );
+
+	if (dlg->ShowModal() == wxID_OK) {
+		wxString retval = dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->GetValue();
+		delete dlg;
+		return retval;
+	} else {
+		delete dlg;
+		return wxEmptyString;
+	}
+}
+
+
+void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item != -1 ) {
+		CKnownFile* file = (CKnownFile*)GetItemData( item );
+
+		if (!file->IsPartFile()) {
+			wxString newName = GetNewName(file->GetFileName());
+
+			if (!newName.IsEmpty()) {
+#ifndef CLIENT_GUI
+				theApp.sharedfiles->RenameFile(file, newName);
+#else
+				CECPacket request(EC_OP_RENAME_FILE);
+				request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
+				request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
+				CECPacket *reply = theApp.connect->SendRecv(&request);
+				if (reply) {
+					if (reply->GetOpCode() == EC_OP_NOOP) {
+						file->SetFileName(newName);
+						UpdateItem(file);
+					}
+				}
+#endif
+			}
+		}
 	}
 }

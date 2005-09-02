@@ -259,14 +259,6 @@ enum {
 	EC_OP_SHARED_SET_PRIO,
 
 		/*
-		 * \brief Add 1 or more of found files to download queue
-		 * 
-		 * \par Tags:
-		 *  ::EC_TAG_SEARCHFILE (1+) file to download
-		 */
-	EC_OP_DOWNLOAD_SEARCH_RESULT,
-	
-		/*
 		 * \brief Perform action on file in queue.
 		 *
 		 * \par Tags:
@@ -311,15 +303,29 @@ enum {
 		 */
 	EC_OP_SHARED_FILES,
 
-		/*
+		/*!
 		 * \brief Reloads the shared files list.
 		 */
 	EC_OP_SHAREDFILES_RELOAD,
 
-		/*
+		/*!
 		 * \brief Add specified directory to the shared files list.
 		 */
 	EC_OP_SHAREDFILES_ADD_DIRECTORY,
+
+		/*!
+		 * \brief Rename a known file.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_KNOWNFILE,\n
+		 *	::EC_TAG_PARTFILE_NAME
+		 */
+	EC_OP_RENAME_FILE,
+
+
+	//
+	// Search
+	//
 
 		/*!
 		 * \brief Command to start new search
@@ -335,11 +341,21 @@ enum {
 		 * \brief Search results returned to client
 		 */
 	EC_OP_SEARCH_RESULTS,
+
 		/*!
 		 * \brief Search results, search is terminated
 		 */
 	EC_OP_SEARCH_RESULTS_DONE,
+
+		/*!
+		 * \brief Add 1 or more of found files to download queue
+		 * 
+		 * \par Tags:
+		 *  ::EC_TAG_SEARCHFILE (1+) file to download
+		 */
+	EC_OP_DOWNLOAD_SEARCH_RESULT,
 	
+
 	//
 	// IPFilter
 	//
@@ -444,6 +460,7 @@ enum {
 		 * Server replies with an ::EC_OP_SERVERINFO packet.
 		 */
 	EC_OP_GET_SERVERINFO,
+
 		/*!
 		 * \brief The log.
 		 *
@@ -606,9 +623,6 @@ enum {
  *
  * TAGs hold the data, on/with the requested operation is to be performed.
  */
-
-// Please do not use tagnames greater than 0x7fff, beacuse that
-// would mess up the protocol.
 
 enum {
 		/*!
@@ -878,6 +892,7 @@ enum {
 	EC_TAG_CLIENT_DOWN_SPEED,
 	EC_TAG_CLIENT_FROM,
 	
+
 	//
 	// Search
 	//
@@ -908,7 +923,8 @@ enum {
 	 * \brief Status of search in core
 	 */
 	 EC_TAG_SEARCH_STATUS,
-	 
+
+
 	//
 	// Preferences
 	//

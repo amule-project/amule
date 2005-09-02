@@ -57,6 +57,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Format.h"		// Needed for CFormat
 #include "gsocket-fix.h"
+#include "KnownFileList.h"	// Needed for CKnownFileList
 
 enum
 {	// id for sockets
@@ -1051,11 +1052,42 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			theApp.sharedfiles->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
-
 		case EC_OP_SHARED_SET_PRIO:
 			response = Get_EC_Response_Set_SharedFile_Prio(request);
 			break;
-			
+		case EC_OP_RENAME_FILE: {
+			CMD4Hash fileHash = request->GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data();
+			CKnownFile* file = theApp.knownfiles->FindKnownFileByID(fileHash);
+			wxString newName = request->GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData();
+			if (!file) {
+				file = theApp.downloadqueue->GetFileByID(fileHash);
+			}
+			if (!file) {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("File not found.")));
+				break;
+			}
+			if (newName.IsEmpty()) {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid file name.")));
+				break;
+			}
+			if (file->IsPartFile()) {
+				((CPartFile*)file)->SetFileName(newName);
+				((CPartFile*)file)->SavePartFile();
+				response = new CECPacket(EC_OP_NOOP);
+			} else {
+				if (theApp.sharedfiles->RenameFile(file, newName)) {
+					response = new CECPacket(EC_OP_NOOP);
+				} else {
+					response = new CECPacket(EC_OP_FAILED);
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Unable to rename file.")));
+				}
+			}
+			break;
+		}
+
+
 		//
 		// Server commands
 		//
