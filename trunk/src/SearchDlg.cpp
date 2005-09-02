@@ -101,11 +101,15 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	
 	m_notebook = CastChild( ID_NOTEBOOK, CMuleNotebook );
 
+#ifdef __WXMAC__
+	#warning TODO: restore the image list if/when wxMac supports locating the image
+#else
 	// Initialise the image list
 	wxImageList* m_ImageList = new wxImageList(16,16);
 	m_ImageList->Add(amuleSpecial(3));
 	m_ImageList->Add(amuleSpecial(4));
 	m_notebook->AssignImageList(m_ImageList);
+#endif
 
 	CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(0);
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
