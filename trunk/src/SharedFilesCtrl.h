@@ -174,6 +174,11 @@ private:
 	 */
 	void	OnEditComment( wxCommandEvent& event );
 
+	/**
+	 * Event-handler for the Rename menu item.
+	 */
+	void	OnRename( wxCommandEvent& event );
+
 
 	//! Pointer used to ensure that the menu isn't displayed twice.
 	wxMenu* m_menu;

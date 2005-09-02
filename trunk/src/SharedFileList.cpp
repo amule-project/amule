@@ -1033,3 +1033,17 @@ void CSharedFileList::RemoveKeywords(CKnownFile* pFile)
 	m_keywords->RemoveKeywords(pFile);
 #endif
 }
+
+bool CSharedFileList::RenameFile(CKnownFile* pFile, const wxString& newName)
+{
+	if (UTF8_MoveFile(pFile->GetFilePath() + pFile->GetFileName(), pFile->GetFilePath() + newName)) {
+		RemoveKeywords(pFile);
+		pFile->SetFileName(newName);
+		AddKeywords(pFile);
+		theApp.knownfiles->Save();
+		UpdateItem(pFile);
+		RepublishFile(pFile);
+		return true;
+	}
+	return false;
+}

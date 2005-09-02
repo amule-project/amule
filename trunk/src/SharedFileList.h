@@ -74,6 +74,7 @@ public:
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();
 	void	PublishNextTurn()	{ m_lastPublishED2KFlag = true; }
+	bool	RenameFile(CKnownFile* pFile, const wxString& newName);
 	
 	/* Kad Stuff */
 	void	Publish();

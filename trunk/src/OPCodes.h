@@ -575,6 +575,7 @@ enum {
 	MP_CLOSE_TAB,
 	MP_CLOSE_ALL_TABS,
 	MP_CLOSE_OTHER_TABS,
+	MP_RENAME,
 
 /* Razor 1a - Modif by MikaelB
      Opcodes for :
