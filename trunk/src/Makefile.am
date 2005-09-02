@@ -101,6 +101,7 @@ amulegui_SOURCES = \
 	OScopeCtrl.cpp \
 	PartFile.cpp \
 	Packet.cpp \
+	PlatformSpecific.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Proxy.cpp \
@@ -186,6 +187,7 @@ amule_SOURCES = \
 	Packet.cpp \
 	PartFile.cpp \
 	PartFileConvert.cpp \
+	PlatformSpecific.cpp \
 	Preferences.cpp \
 	PrefsUnifiedDlg.cpp \
 	Proxy.cpp \
@@ -256,6 +258,7 @@ amuled_SOURCES = \
 	Packet.cpp \
 	PartFile.cpp \
 	PartFileConvert.cpp \
+	PlatformSpecific.cpp \
 	Preferences.cpp \
 	Proxy.cpp \
 	RLE.cpp \
@@ -425,6 +428,7 @@ noinst_HEADERS = AddFileThread.h \
 		 Packet.h \
 		 PartFile.h \
 		 PartFileConvert.h \
+		 PlatformSpecific.h \
 		 Preferences.h \
 		 PrefsUnifiedDlg.h \
 		 Proxy.h \
