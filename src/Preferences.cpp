@@ -60,6 +60,7 @@
 #include "MD5Sum.h"
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat
+#include "PlatformSpecific.h"	// Needed for GetDocumentsDir()
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>
@@ -846,10 +847,14 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
 	
-	#ifdef __WXMAC__
-		wxString incpath = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("Documents") + wxFileName::GetPathSeparator() + wxT("aMule Downloads");
-	#elif defined(__WXMSW__)
-		wxString incpath = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT("aMule Downloads");
+	#if defined(__WXMAC__) || defined(__WINDOWS__)
+		wxString incpath = GetDocumentsDir();
+		if (incpath.IsEmpty()) {
+			// There is a built-in possibility for this call to fail, though I can't imagine a reason for that.
+			incpath = appdir + wxT("Incoming");
+		} else {
+			incpath << wxFileName::GetPathSeparator() << wxT("aMule Downloads");
+		}
 	#else 
 		wxString incpath = appdir + wxT("Incoming");
 	#endif
