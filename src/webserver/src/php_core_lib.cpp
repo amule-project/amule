@@ -418,13 +418,13 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		set_array_int_val(&cat->value, "max_line_down_cap",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_DL_CAP)->GetInt32Data());
 
-		set_array_int_val(&cat->value, "max_up_max",
+		set_array_int_val(&cat->value, "max_up_limit",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_UL)->GetInt16Data());
 
-		set_array_int_val(&cat->value, "max_down_max",
+		set_array_int_val(&cat->value, "max_down_limit",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_DL)->GetInt16Data());
 
-		set_array_int_val(&cat->value, "max_slot_alloc",
+		set_array_int_val(&cat->value, "slot_alloc",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_SLOT_ALLOCATION)->GetInt16Data());
 
 		set_array_int_val(&cat->value, "tcp_port",
@@ -441,12 +441,13 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 
 		set_array_int_val(&cat->value, "max_conn_total",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
-
+/*
 		set_array_int_val(&cat->value, "autoconn_en",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_AUTOCONNECT)->GetInt8Data());
 
 		set_array_int_val(&cat->value, "reconn_en",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_RECONNECT)->GetInt8Data());
+			*/
 	}
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
 		set_array_int_val(result, "ich_en",
