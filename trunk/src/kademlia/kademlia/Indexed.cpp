@@ -151,7 +151,7 @@ void CIndexed::readFile(void)
 												KadTagStrMakeLower(toaddN->fileName); // Make lowercase, the search code expects lower case strings!
 												// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
 												toaddN->taglist.push_back(tag);
-											} else if (!tag->m_name.Compare((TAG_FILESIZE))) {
+											} else if (!tag->m_name.Compare(wxT(TAG_FILESIZE))) {
 												toaddN->size = tag->GetInt();
 												// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
 												toaddN->taglist.push_back(tag);
