@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc
+# This file is distributed under the same license as the PACKAGE package
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-04 20:47+0200\n"
-"PO-Revision-Date: 2005-08-21 21:35+0900\n"
+"PO-Revision-Date: 2005-09-05 23:12+0900\n"
 "Last-Translator: Lee, Eun-ho <hoenny@daum.net>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -2472,7 +2472,7 @@ msgstr "현재 아이피 차단 수준은 %d입니다.\n"
 #: src/TextClient.cpp:603
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "구간제한: 올려주기: %u 킬로바이트/초, 내려받기: %u 킬로바이트/초\n"
+msgstr "대역폭 제한: 올려주기: %u 킬로바이트/초, 내려받기: %u 킬로바이트/초\n"
 
 #: src/TextClient.cpp:642
 #, c-format
@@ -2497,7 +2497,9 @@ msgstr ""
 msgid ""
 "\n"
 "Clients in queue:\t%d\n"
-msgstr "\n큐의 클라이언트:/t %d\n"
+msgstr ""
+"\n"
+"큐의 클라이언트:\t%d\n"
 
 #: src/TextClient.cpp:651
 #, c-format
@@ -2591,15 +2593,15 @@ msgstr "제한"
 
 #: src/TextClient.cpp:735
 msgid "Sets maximum upload bandwidth.\n"
-msgstr "최대 올려주기 너비폭을 설정합니다.\n"
+msgstr "최대 올려주기 대역폭을 설정합니다.\n"
 
 #: src/TextClient.cpp:736
 msgid "Sets maximum download bandwidth.\n"
-msgstr "최대 내려받기 너비폭을 설정합니다.\n"
+msgstr "최대 내려받기 대역폭을 설정합니다.\n"
 
 #: src/TextClient.cpp:737
 msgid "Displays bandwidth limits.\n"
-msgstr "구간제한을 보여줍니다.\n"
+msgstr "대역폭 제한을 보여줍니다.\n"
 
 #: src/TextClient.cpp:738
 msgid "Displays full statistics tree.\n"
@@ -3354,7 +3356,7 @@ msgstr "큐 점수:"
 
 #: src/muuli_wdr.cpp:1634
 msgid "General Settings"
-msgstr "일반적인 설정"
+msgstr "일반 설정"
 
 #: src/muuli_wdr.cpp:1641
 msgid "Nick"
@@ -3378,11 +3380,11 @@ msgstr "컨트롤에서 사용하는 언어를 설정할수 있습니다."
 
 #: src/muuli_wdr.cpp:1662
 msgid "Misc Options"
-msgstr "잡다한 사양"
+msgstr "잡다한 설정"
 
 #: src/muuli_wdr.cpp:1666
 msgid "Check for new version at startup"
-msgstr "시작할때 새로운 버전이 있는지 확인합니다."
+msgstr "시작할때 새로운 버전이 있는지 확인"
 
 #: src/muuli_wdr.cpp:1667
 msgid "Enabling this will make aMule check for new version at startup"
@@ -3391,15 +3393,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1670
 msgid "Start minimized"
-msgstr "최소화를 시작합니다"
+msgstr "시작할때 최소화"
 
 #: src/muuli_wdr.cpp:1671
 msgid "Enabling this makes aMule minimize itself upon start."
-msgstr "이것은 어뮬을 시작할때 최소화가 가능하게 합니다."
+msgstr "이것은 어뮬을 시작할때 최소화를 가능하게 합니다."
 
 #: src/muuli_wdr.cpp:1674
 msgid "Prompt on exit"
-msgstr "즉시 종료하다."
+msgstr "즉시 종료"
 
 #: src/muuli_wdr.cpp:1676
 msgid "Makes aMule promt before exiting."
@@ -3407,7 +3409,7 @@ msgstr "종료이전에 즉시 어뮬을 만든다."
 
 #: src/muuli_wdr.cpp:1679
 msgid "Downloadlist doubleclick to expand"
-msgstr "내려받기 목록을 확장하기 위해서 더블클릭하세요."
+msgstr "내려받기 목록을 확장하기 위해서 더블클릭"
 
 #: src/muuli_wdr.cpp:1681
 msgid ""
@@ -3437,7 +3439,7 @@ msgstr "어뮬을 데스크바보다 작게 시스템 트레이로 최소화가 
 
 #: src/muuli_wdr.cpp:1692
 msgid "Select Window Manager"
-msgstr "윈도우 메니저 선택"
+msgstr "윈도우 관리자 선택"
 
 #: src/muuli_wdr.cpp:1693
 msgid ""
@@ -3507,7 +3509,7 @@ msgid ""
 "Enter your browser name here. To use the custom browser, select the Custom "
 "menu-item from the dropdown-menu above."
 msgstr ""
-"특정 브라우저를 사용하기 위해서 메뉴중에서 특정 브라우저를 선택하고,당신의 브"
+"특정 브라우저를 사용하기 위해서 메뉴중에서 특정 브라우저를 선택하고, 당신의 브"
 "라우저를 입력하세요. "
 
 #: src/muuli_wdr.cpp:1745
@@ -3520,7 +3522,7 @@ msgstr "가능하면 새로운 창을 여는것 대신 새로운 탭을 생성�
 
 #: src/muuli_wdr.cpp:1778
 msgid "Bandwith Limits"
-msgstr "구간폭 제한"
+msgstr "대역폭 제한"
 
 #: src/muuli_wdr.cpp:1807
 msgid "Slot Allocation"
@@ -3534,7 +3536,7 @@ msgstr "라인 량"
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
-msgstr "알림: 이값은 오직 정적으로 사용가능하다."
+msgstr "알림: 이값은 오직 정적으로 사용가능함."
 
 #: src/muuli_wdr.cpp:1863
 msgid "Client TCP Port:"
@@ -3586,7 +3588,7 @@ msgstr "끊겼을시 재접속"
 
 #: src/muuli_wdr.cpp:1966
 msgid "Show overhead bandwith"
-msgstr "과부화 구간폭을 보여줌"
+msgstr "과부화 대역폭을 보여줌"
 
 #: src/muuli_wdr.cpp:1991 src/muuli_wdr.cpp:3913 src/Statistics.cpp:735
 msgid "Servers"
