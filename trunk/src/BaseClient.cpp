@@ -92,19 +92,19 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 	m_nUserPort = in_port;
 
 	if(ed2kID && !IsLowID(in_userid)) {
-		SetUserIDHybrid( ENDIAN_NTOHL(in_userid) );
+		SetUserIDHybrid( wxUINT32_SWAP_ALWAYS(in_userid) );
 	} else {
 		SetUserIDHybrid( in_userid);
 	}
 	
 	//If highID and ED2K source, incoming ID and IP are equal..
-	//If highID and Kad source, incoming IP needs ntohl for the IP
+	//If highID and Kad source, incoming IP needs swap for the IP
 
 	if (!HasLowID()) {
 		if (ed2kID) {
 			m_nConnectIP = in_userid;
 		} else {
-			m_nConnectIP = ENDIAN_NTOHL(in_userid);
+			m_nConnectIP = wxUINT32_SWAP_ALWAYS(in_userid);
 		}
 		// Will be on right endianess now
 		m_FullUserIP = Uint32toStringIP(m_nConnectIP);
@@ -571,7 +571,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	//(c)Kad users with a *.*.*.0 IPs will look like a lowID user they are actually a highID user.. They can be detected easily
 	//because they will send a ID that is the same as their IP..
 	if(!HasLowID() || m_nUserIDHybrid == 0 || m_nUserIDHybrid == m_dwUserIP )  {
-		SetUserIDHybrid(ENDIAN_NTOHL(m_dwUserIP));
+		SetUserIDHybrid(wxUINT32_SWAP_ALWAYS(m_dwUserIP));
 	}
 	
 	// get client credits
@@ -611,7 +611,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 
 	#ifdef __COMPILE_KAD__
 	if( GetKadPort() ) {
-		Kademlia::CKademlia::bootstrap(ENDIAN_NTOHL(GetIP()), GetKadPort());
+		Kademlia::CKademlia::bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort());
 	}
 	#endif
 
@@ -1254,7 +1254,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	// Ipfilter check
 	uint32 uClientIP = GetIP();
 	if (uClientIP == 0 && !HasLowID()) {
-		uClientIP = ENDIAN_NTOHL(m_nUserIDHybrid);
+		uClientIP = wxUINT32_SWAP_ALWAYS(m_nUserIDHybrid);
 	}
 	
 	if (uClientIP) {
@@ -2280,4 +2280,3 @@ void CUpDownClient::UpdateStats()
 		}
 	}
 }
-
