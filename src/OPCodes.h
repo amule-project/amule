@@ -341,44 +341,44 @@ const unsigned int UNLIMITED =	 		0;
 
 //file tags
 #define FT_FILENAME				 0x01	// <string>
-#define TAG_FILENAME				wxT("\x01")	// <string>
+#define TAG_FILENAME				"\x01"	// <string>
 #define FT_FILESIZE				 0x02	// <uint32>
-#define TAG_FILESIZE				wxT("\x02")	// <uint32>
+#define TAG_FILESIZE				"\x02"	// <uint32>
 #define FT_FILETYPE				 0x03	// <string>
-#define TAG_FILETYPE				wxT("\x03")	// <string>
+#define TAG_FILETYPE				"\x03"	// <string>
 #define FT_FILEFORMAT				 0x04	// <string>
-#define TAG_FILEFORMAT				wxT("\x04")	// <string>
+#define TAG_FILEFORMAT				"\x04"	// <string>
 #define FT_LASTSEENCOMPLETE			 0x05	// <uint32>
-#define TAG_COLLECTION				wxT("\x05")
-#define	TAG_PART_PATH				wxT("\x06")	// <string>
-#define	TAG_PART_HASH				wxT("\x07")
+#define TAG_COLLECTION				"\x05"
+#define	TAG_PART_PATH				"\x06"	// <string>
+#define	TAG_PART_HASH				"\x07"
 #define FT_TRANSFERED				 0x08	// <uint32>
-#define	TAG_COPIED				wxT("\x08")	// <uint32>
+#define	TAG_COPIED				"\x08"	// <uint32>
 #define FT_GAPSTART				 0x09	// <uint32>
-#define	TAG_GAP_START				wxT("\x09")	// <uint32>
+#define	TAG_GAP_START				"\x09"	// <uint32>
 #define FT_GAPEND				 0x0A	// <uint32>
-#define	TAG_GAP_END				wxT("\x0A")	// <uint32>
-#define	TAG_DESCRIPTION				wxT("\x0B")	// <string>
-#define	TAG_PING				wxT("\x0C")
-#define	TAG_FAIL				wxT("\x0D")
-#define	TAG_PREFERENCE				wxT("\x0E")
-#define TAG_PORT				wxT("\x0F")
-#define TAG_IP_ADDRESS				wxT("\x10")
-#define TAG_VERSION				wxT("\x11")	// <string>
+#define	TAG_GAP_END				"\x0A"	// <uint32>
+#define	TAG_DESCRIPTION				"\x0B"	// <string>
+#define	TAG_PING				"\x0C"
+#define	TAG_FAIL				"\x0D"
+#define	TAG_PREFERENCE				"\x0E"
+#define TAG_PORT				"\x0F"
+#define TAG_IP_ADDRESS				"\x10"
+#define TAG_VERSION				"\x11"	// <string>
 #define FT_PARTFILENAME				 0x12	// <string>
-#define TAG_TEMPFILE				wxT("\x12")	// <string>
+#define TAG_TEMPFILE				"\x12"	// <string>
 #define FT_OLDDLPRIORITY			 0x13	// Not used anymore
-#define TAG_PRIORITY				wxT("\x13")	// <uint32>
+#define TAG_PRIORITY				"\x13"	// <uint32>
 #define FT_STATUS				 0x14	// <uint32>
-#define TAG_STATUS				wxT("\x14")	// <uint32>
+#define TAG_STATUS				"\x14"	// <uint32>
 #define FT_SOURCES				 0x15	// <uint32>
-#define TAG_SOURCES				wxT("\x15")	// <uint32>
-#define TAG_AVAILABILITY			wxT("\x15")	// <uint32>
+#define TAG_SOURCES				"\x15"	// <uint32>
+#define TAG_AVAILABILITY			"\x15"	// <uint32>
 #define FT_PERMISSIONS				 0x16	// <uint32>
-#define TAG_PERMISSIONS			wxT("\x16")
-#define TAG_QTIME				wxT("\x16")
+#define TAG_PERMISSIONS			"\x16"
+#define TAG_QTIME				"\x16"
 #define FT_OLDULPRIORITY			 0x17	// Not used anymore
-#define TAG_PARTS				wxT("\x17")
+#define TAG_PARTS				"\x17"
 #define FT_DLPRIORITY				 0x18	// Was 13
 #define FT_ULPRIORITY				 0x19	// Was 17
 #define FT_KADLASTPUBLISHKEY			 0x20	// <uint32>
@@ -397,29 +397,29 @@ const unsigned int UNLIMITED =	 		0;
 #define	FT_ATACCEPTED			 0x52	// <uint32>
 #define	FT_CATEGORY			 0x53	// <uint32>
 #define	FT_ATTRANSFEREDHI		 0x54	// <uint32>
-#define	TAG_MEDIA_ARTIST		wxT("\xD0")	// <string>
+#define	TAG_MEDIA_ARTIST		"\xD0"	// <string>
 #define	FT_MEDIA_ARTIST		 0xD0	// <string>
-#define	TAG_MEDIA_ALBUM			wxT("\xD1")	// <string>
+#define	TAG_MEDIA_ALBUM			"\xD1"	// <string>
 #define	FT_MEDIA_ALBUM			 0xD1	// <string>
-#define	TAG_MEDIA_TITLE			wxT("\xD2")	// <string>
+#define	TAG_MEDIA_TITLE			"\xD2"	// <string>
 #define	FT_MEDIA_TITLE			 0xD2	// <string>
-#define	TAG_MEDIA_LENGTH		wxT("\xD3")	// <uint32> !!!
+#define	TAG_MEDIA_LENGTH		"\xD3"	// <uint32> !!!
 #define	FT_MEDIA_LENGTH		 0xD3	// <uint32> !!!
-#define	TAG_MEDIA_BITRATE		wxT("\xD4")	// <uint32>
+#define	TAG_MEDIA_BITRATE		"\xD4"	// <uint32>
 #define	FT_MEDIA_BITRATE		 0xD4	// <uint32>
-#define	TAG_MEDIA_CODEC			wxT("\xD5")	// <string>
+#define	TAG_MEDIA_CODEC			"\xD5"	// <string>
 #define	FT_MEDIA_CODEC			 0xD5	// <string>
 #define	FT_FILERATING			 0xF7	// <uint8>
-#define	TAG_FILERATING			wxT("\xF7")	// <uint8>
+#define	TAG_FILERATING			"\xF7"	// <uint8>
 
-#define	TAG_BUDDYHASH			wxT("\xF8")	// <string>
-#define	TAG_CLIENTLOWID			wxT("\xF9")	// <uint32>
-#define	TAG_SERVERPORT			wxT("\xFA")	// <uint16>
-#define	TAG_SERVERIP			wxT("\xFB")	// <uint32>
-#define	TAG_SOURCEUPORT			wxT("\xFC")	// <uint16>
-#define	TAG_SOURCEPORT			wxT("\xFD")	// <uint16>
-#define	TAG_SOURCEIP			wxT("\xFE")	// <uint32>
-#define	TAG_SOURCETYPE			wxT("\xFF")	// <uint8>
+#define	TAG_BUDDYHASH			"\xF8"	// <string>
+#define	TAG_CLIENTLOWID			"\xF9"	// <uint32>
+#define	TAG_SERVERPORT			"\xFA"	// <uint16>
+#define	TAG_SERVERIP			"\xFB"	// <uint32>
+#define	TAG_SOURCEUPORT			"\xFC"	// <uint16>
+#define	TAG_SOURCEPORT			"\xFD"	// <uint16>
+#define	TAG_SOURCEIP			"\xFE"	// <uint32>
+#define	TAG_SOURCETYPE			"\xFF"	// <uint8>
 
 #define	TAGTYPE_HASH			0x01
 #define	TAGTYPE_STRING			0x02

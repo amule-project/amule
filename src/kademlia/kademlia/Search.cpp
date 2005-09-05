@@ -475,14 +475,14 @@ void CSearch::StorePacket()
 				}
 				//Number of tags.
 				bio.writeUInt8(tagcount);
-				CTagStr fileName(TAG_FILENAME, file->GetFileName());
+				CTagStr fileName(wxT(TAG_FILENAME), file->GetFileName());
 				bio.writeTag(&fileName);
 				if(file->GetFileRating() != 0) {
-					CTagUInt16 rating(TAG_FILERATING, file->GetFileRating());
+					CTagUInt16 rating(wxT(TAG_FILERATING), file->GetFileRating());
 					bio.writeTag(&rating);
 				}
 				if(!file->GetFileComment().IsEmpty()) {
-					CTagStr description(TAG_DESCRIPTION, file->GetFileComment());
+					CTagStr description(wxT(TAG_DESCRIPTION), file->GetFileComment());
 					bio.writeTag(&description);
 				}
 
@@ -622,18 +622,18 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	TagList::const_iterator it;
 	for (it = info->begin(); it != info->end(); it++) {
 		tag = *it;
-		if (!tag->m_name.Compare(TAG_SOURCEIP)) {
+		if (!tag->m_name.Compare(wxT(TAG_SOURCEIP))) {
 			entry->ip = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Compare(TAG_SOURCEPORT)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
 			entry->tcpport = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Compare(TAG_FILENAME)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_FILENAME))) {
 			entry->fileName	= tag->GetStr();
 			delete tag;
-		} else if (!tag->m_name.Compare(TAG_DESCRIPTION)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_DESCRIPTION))) {
 			entry->taglist.push_front(tag);
-		} else if (!tag->m_name.Compare(TAG_FILERATING)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_FILERATING))) {
 			entry->taglist.push_front(tag);
 		} else {
 			delete tag;
@@ -680,28 +680,28 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
 
-		if (!tag->m_name.Compare(TAG_FILENAME)) {
+		if (!tag->m_name.Compare(wxT(TAG_FILENAME))) {
 			name	= tag->GetStr();
 			interested = !name.IsEmpty();
-		} else if (!tag->m_name.Compare(TAG_FILESIZE)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_FILESIZE))) {
 			size = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_FILETYPE)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_FILETYPE))) {
 			type = tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_FILEFORMAT)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_FILEFORMAT))) {
 			format = tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_ARTIST)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_ARTIST))) {
 			artist = tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_ALBUM)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_ALBUM))) {
 			album = tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_TITLE)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_TITLE))) {
 			title = tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_LENGTH)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_LENGTH))) {
 			length = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_BITRATE)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_BITRATE))) {
 			bitrate = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_MEDIA_CODEC)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_CODEC))) {
 			codec	= tag->GetStr();
-		} else if (!tag->m_name.Compare(TAG_SOURCES)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SOURCES))) {
 			availability = tag->GetInt();
 			if( availability > 65500 ) {
 				availability = 0;
@@ -739,25 +739,25 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	TagPtrList taglist;
 	
 	if (!format.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(FT_FILEFORMAT, format));
+		taglist.push_back(new ed2kCTag(TAG_FILEFORMAT, format));
 	}
 	if (!artist.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(FT_MEDIA_ARTIST, artist));
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_ARTIST, artist));
 	}
 	if (!album.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(FT_MEDIA_ALBUM, album));
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_ALBUM, album));
 	}
 	if (!title.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(FT_MEDIA_TITLE, title));
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_TITLE, title));
 	}
 	if (length) {
-		taglist.push_back(new ed2kCTag(FT_MEDIA_LENGTH, length));
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_LENGTH, length));
 	}
 	if (bitrate) {
-		taglist.push_back(new ed2kCTag(FT_MEDIA_BITRATE, bitrate));
+		taglist.push_back(new ed2kCTag(TAG_MEDIA_BITRATE, bitrate));
 	}
 	if (availability) {
-		taglist.push_back(new ed2kCTag(FT_SOURCES, availability));
+		taglist.push_back(new ed2kCTag(TAG_SOURCES, availability));
 	}
 
 	if (interested) {
@@ -856,15 +856,15 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			TagList taglist;
 			
 			// Name, Size
-			taglist.push_back(new CTagStr(TAG_FILENAME, file->GetFileName()));
-			taglist.push_back(new CTagUInt(TAG_FILESIZE, file->GetFileSize()));
-			taglist.push_back(new CTagUInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
+			taglist.push_back(new CTagStr(wxT(TAG_FILENAME), file->GetFileName()));
+			taglist.push_back(new CTagUInt(wxT(TAG_FILESIZE), file->GetFileSize()));
+			taglist.push_back(new CTagUInt(wxT(TAG_SOURCES), (uint32)file->m_nCompleteSourcesCount));
 			
 			// eD2K file type (Audio, Video, ...)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
 			wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(file->GetFileName())));
 			if (!strED2KFileType.IsEmpty()) {
-				taglist.push_back(new CTagStr(TAG_FILETYPE, strED2KFileType));
+				taglist.push_back(new CTagStr(wxT(TAG_FILETYPE), strED2KFileType));
 			}
 			
 			// file format (filename extension)
@@ -874,7 +874,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 				if (!strExt.IsEmpty()) {
 					strExt = strExt.Mid(1);
 					if (!strExt.IsEmpty()) {
-						taglist.push_back(new CTagStr(TAG_FILEFORMAT, strExt));
+						taglist.push_back(new CTagStr(wxT(TAG_FILEFORMAT), strExt));
 					}
 				}
 			}
