@@ -86,9 +86,9 @@ void CKademliaUDPListener::bootstrap(const wxString& host, uint16 port)
 		#warning Blocking call - move to thread/notification
 		retVal = StringHosttoUint32(host);
 	}
-	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(ENDIAN_NTOHL(retVal), port));
+	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(retVal), port));
 
-	bootstrap(ENDIAN_NTOHL(retVal),port);
+	bootstrap(wxUINT32_SWAP_ALWAYS(retVal),port);
 }
 
 void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
@@ -262,7 +262,7 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 		theApp.amuledlg->kademliawnd->ContactRef(contact);
 		#endif
 	} else {
-		if(IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
+		if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
 			// Ignore stated ip and port, use the address the packet came from
 			CKademlia::getRoutingZone()->add(id, ip, port, tport, type);
 		}
@@ -276,12 +276,12 @@ void CKademliaUDPListener::addContacts( const byte *data, uint32 lenData, uint16
 	for (uint16 i=0; i<numContacts; i++) {
 		CUInt128 id = bio.ReadUInt128();
 		uint32 ip = bio.ReadUInt32();
-		ip = ENDIAN_NTOHL(ip);
+		ip = wxUINT32_SWAP_ALWAYS(ip);
 		uint16 port = bio.ReadUInt16();
 		uint16 tport = bio.ReadUInt16();
 		byte type = bio.ReadUInt8();
 		//AddDebugLogLineM(false, logKadMain, wxT("Adding contact(s) with ip ") + Uint32_16toStringIP_Port(ip,port));
-		if (IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
+		if (IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
 			routingZone->add(id, ip, port, tport, type);
 		}
 	}
@@ -501,7 +501,7 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 			uint16 port = bio.ReadUInt16();
 			uint16 tport = bio.ReadUInt16();
 			byte type = bio.ReadUInt8();
-			if(::IsGoodIPPort(ENDIAN_NTOHL(ip),port)) {
+			if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
 				routingZone->add(id, ip, port, tport, type);
 				results->push_back(new CContact(id, ip, port, tport, target));
 			}

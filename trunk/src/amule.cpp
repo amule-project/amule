@@ -1744,7 +1744,7 @@ uint32 CamuleApp::GetPublicIP() const
 {
 	#ifdef __COMPILE_KAD__
 	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
-		return ENDIAN_NTOHL(Kademlia::CKademlia::getIPAddress());
+		return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::getIPAddress());
 	}
 	#endif
 	return m_dwPublicIP;	

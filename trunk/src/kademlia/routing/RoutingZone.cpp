@@ -173,7 +173,7 @@ void CRoutingZone::readFile(void)
 				uint16 udpPort = file.ReadUInt16();
 				uint16 tcpPort = file.ReadUInt16();
 				byte type = file.ReadUInt8();
-				if(IsGoodIPPort(ENDIAN_NTOHL(ip),udpPort)) {
+				if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
 					if( type < 4) {
 						add(id, ip, udpPort, tcpPort, type);
 					}

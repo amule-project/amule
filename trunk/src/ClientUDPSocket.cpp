@@ -122,7 +122,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 			#ifdef __COMPILE_KAD__
 			case OP_KADEMLIAHEADER:
 				theStats::AddDownOverheadKad(length);
-				Kademlia::CKademlia::processPacket(buffer, length, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+				Kademlia::CKademlia::processPacket(buffer, length, wxUINT32_SWAP_ALWAYS(StringIPtoUint32(addr.IPAddress())),addr.Service());
 				break;
 			case OP_KADEMLIAPACKEDPROT: {
 				theStats::AddDownOverheadKad(length);
@@ -133,7 +133,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				if (result == Z_OK) {
 					unpack[0] = OP_KADEMLIAHEADER;
 					unpack[1] = buffer[1];
-					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, ENDIAN_NTOHL(StringIPtoUint32(addr.IPAddress())),addr.Service());
+					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, wxUINT32_SWAP_ALWAYS(StringIPtoUint32(addr.IPAddress())),addr.Service());
 				} else {
 					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}
@@ -389,7 +389,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 					sent = true;
 					break;
 			}
-		}
+		} 
 	} else {
 		// If the socket is not ok, we can do nothing... just run for your life
 		// (and return true or this packet will be sent over and over again)

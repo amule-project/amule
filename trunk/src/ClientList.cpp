@@ -570,7 +570,7 @@ void CClientList::Process()
 			case KS_CONNECTED_FWCHECK:
 				//We successfully connected to the client.
 				//We now send a ack to let them know.
-				Kademlia::CKademlia::getUDPListener()->sendNullPacket(KADEMLIA_FIREWALLED_ACK, ENDIAN_NTOHL(cur_client->GetIP()), cur_client->GetKadPort());
+				Kademlia::CKademlia::getUDPListener()->sendNullPacket(KADEMLIA_FIREWALLED_ACK, wxUINT32_SWAP_ALWAYS(cur_client->GetIP()), cur_client->GetKadPort());
 				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
 				cur_client->SetKadState(KS_NONE);
 				break;
@@ -812,7 +812,7 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 void CClientList::RequestTCP(Kademlia::CContact* contact)
 {
 	#ifdef __COMPILE_KAD__
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// don't connect ourself
 	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
@@ -838,7 +838,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 {
 	#ifdef __COMPILE_KAD__
 	
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// Don't connect to ourself
 	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
@@ -866,7 +866,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 {
 	#ifdef __COMPILE_KAD__
 	
-	uint32 nContactIP = ENDIAN_NTOHL(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	//If eMule already knows this client, abort this.. It could cause conflicts.
 	//Although the odds of this happening is very small, it could still happen.
 	if (FindClientByIP(nContactIP, contact->getTCPPort())) {
