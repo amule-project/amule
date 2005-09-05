@@ -572,21 +572,21 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	TagList::const_iterator it;
 	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
-		if (!tag->m_name.Compare(wxT(TAG_SOURCETYPE))) {
+		if (!tag->m_name.Cmp(wxT(TAG_SOURCETYPE))) {
 			type = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEIP))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP))) {
 			ip = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
 			tcp = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEUPORT))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEUPORT))) {
 			udp = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_SERVERIP))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SERVERIP))) {
 			serverip = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_SERVERPORT))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SERVERPORT))) {
 			serverport = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_CLIENTLOWID))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_CLIENTLOWID))) {
 			clientid	= tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_BUDDYHASH))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_BUDDYHASH))) {
 			CMD4Hash hash(tag->GetStr());
 			md4cpy(buddyhash, hash.GetHash());
 			md4cpy(buddy.getDataPtr(), buddyhash);
@@ -622,18 +622,18 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	TagList::const_iterator it;
 	for (it = info->begin(); it != info->end(); it++) {
 		tag = *it;
-		if (!tag->m_name.Compare(wxT(TAG_SOURCEIP))) {
+		if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP))) {
 			entry->ip = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
 			entry->tcpport = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Compare(wxT(TAG_FILENAME))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
 			entry->fileName	= tag->GetStr();
 			delete tag;
-		} else if (!tag->m_name.Compare(wxT(TAG_DESCRIPTION))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_DESCRIPTION))) {
 			entry->taglist.push_front(tag);
-		} else if (!tag->m_name.Compare(wxT(TAG_FILERATING))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_FILERATING))) {
 			entry->taglist.push_front(tag);
 		} else {
 			delete tag;
@@ -680,28 +680,28 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
 
-		if (!tag->m_name.Compare(wxT(TAG_FILENAME))) {
+		if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
 			name	= tag->GetStr();
 			interested = !name.IsEmpty();
-		} else if (!tag->m_name.Compare(wxT(TAG_FILESIZE))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_FILESIZE))) {
 			size = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_FILETYPE))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_FILETYPE))) {
 			type = tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_FILEFORMAT))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_FILEFORMAT))) {
 			format = tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_ARTIST))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_ARTIST))) {
 			artist = tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_ALBUM))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_ALBUM))) {
 			album = tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_TITLE))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_TITLE))) {
 			title = tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_LENGTH))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_LENGTH))) {
 			length = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_BITRATE))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_BITRATE))) {
 			bitrate = tag->GetInt();
-		} else if (!tag->m_name.Compare(wxT(TAG_MEDIA_CODEC))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_CODEC))) {
 			codec	= tag->GetStr();
-		} else if (!tag->m_name.Compare(wxT(TAG_SOURCES))) {
+		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCES))) {
 			availability = tag->GetInt();
 			if( availability > 65500 ) {
 				availability = 0;

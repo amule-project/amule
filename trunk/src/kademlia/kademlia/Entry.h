@@ -74,7 +74,7 @@ public:
 		Kademlia::CTag* tag;
 		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
-			if (!tag->m_name.Compare(tagname) && tag->IsInt()) {
+			if (!tag->m_name.Cmp(tagname) && tag->IsInt()) {
 				return tag->GetInt();
 			}
 		}
@@ -87,7 +87,7 @@ public:
 		Kademlia::CTag* tag;
 		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
-			if (!tag->m_name.Compare(tagname)&& tag->IsStr()) {
+			if (!tag->m_name.Cmp(tagname)&& tag->IsStr()) {
 				return tag->GetStr();
 			}
 		}

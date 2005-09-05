@@ -797,7 +797,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 			while(tags > 0) {
 				CTag* tag = bio.readTag();
 				if(tag) {
-					if (!tag->m_name.Compare(wxT(TAG_SOURCETYPE)) && tag->m_type == 9) {
+					if (!tag->m_name.Cmp(wxT(TAG_SOURCETYPE)) && tag->m_type == 9) {
 						if( entry->source == false ) {
 							entry->taglist.push_back(new CTagUInt32(TAG_SOURCEIP, entry->ip));
 							entry->taglist.push_back(new CTagUInt16(TAG_SOURCEUPORT, entry->udpport));
@@ -808,7 +808,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 						entry->source = true;
 					}
 					
-					if (!tag->m_name.Compare(wxT(TAG_FILENAME))) {
+					if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
 						if ( entry->fileName.IsEmpty() ) {
 							entry->fileName = tag->GetStr();
 							KadTagStrMakeLower(entry->fileName); // make lowercase, the search code expects lower case strings!							
@@ -819,7 +819,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 							//More then one Name tag found.
 							delete tag;
 						}
-					} else if (!tag->m_name.Compare(wxT(TAG_FILESIZE))) {
+					} else if (!tag->m_name.Cmp(wxT(TAG_FILESIZE))) {
 						if( entry->size == 0 ) {
 							entry->size = tag->GetInt();
 							strInfo += wxString::Format(wxT("  Size=%u"), entry->size);
@@ -829,7 +829,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 							//More then one size tag found
 							delete tag;
 						}
-					} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
+					} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
 						if( entry->tcpport == 0 ) {
 							entry->tcpport = tag->GetInt();
 							entry->taglist.push_back(tag);
