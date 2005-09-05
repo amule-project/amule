@@ -739,25 +739,25 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	TagPtrList taglist;
 	
 	if (!format.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_FILEFORMAT, format));
+		taglist.push_back(new ed2kCTag(FT_FILEFORMAT, format));
 	}
 	if (!artist.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_ARTIST, artist));
+		taglist.push_back(new ed2kCTag(FT_MEDIA_ARTIST, artist));
 	}
 	if (!album.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_ALBUM, album));
+		taglist.push_back(new ed2kCTag(FT_MEDIA_ALBUM, album));
 	}
 	if (!title.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_TITLE, title));
+		taglist.push_back(new ed2kCTag(FT_MEDIA_TITLE, title));
 	}
 	if (length) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_LENGTH, length));
+		taglist.push_back(new ed2kCTag(FT_MEDIA_LENGTH, length));
 	}
 	if (bitrate) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_BITRATE, bitrate));
+		taglist.push_back(new ed2kCTag(FT_MEDIA_BITRATE, bitrate));
 	}
 	if (availability) {
-		taglist.push_back(new ed2kCTag(TAG_SOURCES, availability));
+		taglist.push_back(new ed2kCTag(FT_SOURCES, availability));
 	}
 
 	if (interested) {
