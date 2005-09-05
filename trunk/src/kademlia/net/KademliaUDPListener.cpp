@@ -797,7 +797,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 			while(tags > 0) {
 				CTag* tag = bio.readTag();
 				if(tag) {
-					if (!tag->m_name.Compare(TAG_SOURCETYPE) && tag->m_type == 9) {
+					if (!tag->m_name.Compare(wxT(TAG_SOURCETYPE)) && tag->m_type == 9) {
 						if( entry->source == false ) {
 							entry->taglist.push_back(new CTagUInt32(TAG_SOURCEIP, entry->ip));
 							entry->taglist.push_back(new CTagUInt16(TAG_SOURCEUPORT, entry->udpport));

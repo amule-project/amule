@@ -68,7 +68,7 @@ public:
 		}
 	}
 	
-	uint32 GetIntTagValue(const char* tagname) const
+	uint32 GetIntTagValue(const wxString& tagname) const
 	{
 		TagList::const_iterator it;
 		Kademlia::CTag* tag;
@@ -81,7 +81,7 @@ public:
 		return 0;
 	}
 
-	wxString GetStrTagValue(const char* tagname) const
+	wxString GetStrTagValue(const wxString& tagname) const
 	{
 		TagList::const_iterator it;
 		Kademlia::CTag* tag;
