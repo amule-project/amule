@@ -572,21 +572,21 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	TagList::const_iterator it;
 	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
-		if (!tag->m_name.Compare(TAG_SOURCETYPE)) {
+		if (!tag->m_name.Compare(wxT(TAG_SOURCETYPE))) {
 			type = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_SOURCEIP)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEIP))) {
 			ip = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_SOURCEPORT)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
 			tcp = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_SOURCEUPORT)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SOURCEUPORT))) {
 			udp = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_SERVERIP)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SERVERIP))) {
 			serverip = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_SERVERPORT)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_SERVERPORT))) {
 			serverport = tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_CLIENTLOWID)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_CLIENTLOWID))) {
 			clientid	= tag->GetInt();
-		} else if (!tag->m_name.Compare(TAG_BUDDYHASH)) {
+		} else if (!tag->m_name.Compare(wxT(TAG_BUDDYHASH))) {
 			CMD4Hash hash(tag->GetStr());
 			md4cpy(buddyhash, hash.GetHash());
 			md4cpy(buddy.getDataPtr(), buddyhash);

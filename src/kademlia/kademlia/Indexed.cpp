@@ -216,14 +216,14 @@ void CIndexed::readFile(void)
 								while( tagList ) {
 									CTag* tag = s_file.readTag();
 									if(tag) {
-										if (!tag->m_name.Compare(TAG_SOURCEIP))
+										if (!tag->m_name.Compare(wxT(TAG_SOURCEIP)))
 										{
 											toaddN->ip = tag->GetInt();
 											toaddN->taglist.push_back(tag);
-										} else if (!tag->m_name.Compare(TAG_SOURCEPORT)) {
+										} else if (!tag->m_name.Compare(wxT(TAG_SOURCEPORT))) {
 											toaddN->tcpport = tag->GetInt();
 											toaddN->taglist.push_back(tag);
-										} else if (!tag->m_name.Compare(TAG_SOURCEUPORT)) {
+										} else if (!tag->m_name.Compare(wxT(TAG_SOURCEUPORT))) {
 											toaddN->udpport = tag->GetInt();
 											toaddN->taglist.push_back(tag);
 										} else {
