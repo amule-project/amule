@@ -475,14 +475,14 @@ void CSearch::StorePacket()
 				}
 				//Number of tags.
 				bio.writeUInt8(tagcount);
-				CTagStr fileName(wxT(TAG_FILENAME), file->GetFileName());
+				CTagStr fileName(TAG_FILENAME, file->GetFileName());
 				bio.writeTag(&fileName);
 				if(file->GetFileRating() != 0) {
-					CTagUInt16 rating(wxT(TAG_FILERATING), file->GetFileRating());
+					CTagUInt16 rating(TAG_FILERATING, file->GetFileRating());
 					bio.writeTag(&rating);
 				}
 				if(!file->GetFileComment().IsEmpty()) {
-					CTagStr description(wxT(TAG_DESCRIPTION), file->GetFileComment());
+					CTagStr description(TAG_DESCRIPTION, file->GetFileComment());
 					bio.writeTag(&description);
 				}
 
@@ -856,15 +856,15 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			TagList taglist;
 			
 			// Name, Size
-			taglist.push_back(new CTagStr(wxT(TAG_FILENAME), file->GetFileName()));
-			taglist.push_back(new CTagUInt(wxT(TAG_FILESIZE), file->GetFileSize()));
-			taglist.push_back(new CTagUInt(wxT(TAG_SOURCES), (uint32)file->m_nCompleteSourcesCount));
+			taglist.push_back(new CTagStr(TAG_FILENAME, file->GetFileName()));
+			taglist.push_back(new CTagUInt(TAG_FILESIZE, file->GetFileSize()));
+			taglist.push_back(new CTagUInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
 			
 			// eD2K file type (Audio, Video, ...)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
 			wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(file->GetFileName())));
 			if (!strED2KFileType.IsEmpty()) {
-				taglist.push_back(new CTagStr(wxT(TAG_FILETYPE), strED2KFileType));
+				taglist.push_back(new CTagStr(TAG_FILETYPE, strED2KFileType));
 			}
 			
 			// file format (filename extension)
@@ -874,7 +874,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 				if (!strExt.IsEmpty()) {
 					strExt = strExt.Mid(1);
 					if (!strExt.IsEmpty()) {
-						taglist.push_back(new CTagStr(wxT(TAG_FILEFORMAT), strExt));
+						taglist.push_back(new CTagStr(TAG_FILEFORMAT, strExt));
 					}
 				}
 			}
