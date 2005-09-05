@@ -431,7 +431,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 			cattag->GetTagByName(EC_TAG_CONN_TCP_PORT)->GetInt16Data());
 
 		set_array_int_val(&cat->value, "udp_port",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_TCP_PORT)->GetInt16Data());
+			cattag->GetTagByNameSafe(EC_TAG_CONN_UDP_PORT)->GetInt16Data());
 
 		set_array_int_val(&cat->value, "udp_en",
 			!cattag->GetTagByNameSafe(EC_TAG_CONN_UDP_DISABLE)->GetInt8Data());
@@ -441,13 +441,12 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 
 		set_array_int_val(&cat->value, "max_conn_total",
 			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
-/*
+
 		set_array_int_val(&cat->value, "autoconn_en",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_AUTOCONNECT)->GetInt8Data());
+			cattag->GetTagByName(EC_TAG_CONN_AUTOCONNECT) ? 1 : 0);
 
 		set_array_int_val(&cat->value, "reconn_en",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_RECONNECT)->GetInt8Data());
-			*/
+			cattag->GetTagByName(EC_TAG_CONN_RECONNECT) ? 1 : 0);
 	}
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
 		set_array_int_val(result, "ich_en",
