@@ -25,7 +25,6 @@ function formCommandSubmit(command)
 }
 
 var initvals = new Object;
-initvals["max_down_rate"] = 555;
 
 <?php
 	$opts = amule_get_options();
@@ -36,18 +35,26 @@ initvals["max_down_rate"] = 555;
 		echo 'initvals["', $opt_name, '"] = "', $opt_val, '";';
 	}
 ?>
- 
+
+<!-- Assign php generated data to controls -->
 function init_data()
 {
-	var param_names = new Array(
+	var frm = document.forms.mainform
+
+	var str_param_names = new Array(
 		"max_line_down_cap", "max_line_up_cap",
 		"max_up_limit", "max_down_limit", "max_file_src",
 		"slot_alloc", "max_conn_total",
-		"tcp_port", "udp_port", "udp_en")
-	var frm=document.forms.mainform
-	for(i = 0; i < param_names.length; i++) {
-		frm[param_names[i]].value = initvals[param_names[i]];
+		"tcp_port", "udp_port")
+	for(i = 0; i < str_param_names.length; i++) {
+		frm[str_param_names[i]].value = initvals[str_param_names[i]];
 	}
+	var check_param_names = new Array(
+		"autoconn_en", "reconn_en", "udp_en")
+	for(i = 0; i < check_param_names.length; i++) {
+		frm[check_param_names[i]].checked = initvals[check_param_names[i]];
+	}
+	
 }
 
 </script>
@@ -114,18 +121,41 @@ function init_data()
         </tr>
         <tr>
           <td>Autoconnect at startup </td>
-          <td><input name="auto_conn" type="checkbox" id="auto_conn" value="checkbox"></td>
+          <td><input name="autoconn_en" type="checkbox" id="auto_conn" value="checkbox"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td>Reconnect when connection lost </td>
-          <td><input name="auto_reconn" type="checkbox" id="auto_reconn" value="checkbox"></td>
+          <td><input name="reconn_en" type="checkbox" id="auto_reconn"></td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="108">&nbsp;</td>
+    <td><table width="100%" bgcolor="#66CC00" >
+      <tr>
+        <td colspan="5"><strong>Network settings </strong></td>
+      </tr>
+      <tr>
+        <td width="30%">TCP port </td>
+        <td width="11%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
+        <td width="20%">UDP port </td>
+        <td width="18%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
+        <td width="21%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Enable UDP connections </td>
+        <td><input name="udp_en" type="checkbox" id="udp_en"></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
     </table></td>
     <td>&nbsp;</td>
   </tr>
