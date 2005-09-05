@@ -183,6 +183,9 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	FILE *outfile = NULL; 
 	
 	wxHTTP* url_handler = NULL;
+	wxInputStream* url_read_stream = NULL;
+	
+	printf("HTTP download thread started\n");
 	
 	try {	
 		
@@ -198,9 +201,10 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		}
 
 		url_handler = new wxHTTP;
+	
+		url_read_stream = GetInputStream(&url_handler, m_url);
 		
-		std::auto_ptr<wxInputStream> url_read_stream(GetInputStream(&url_handler, m_url));
-		if (!url_read_stream.get()) {					
+		if (!url_read_stream) {
 			#if wxCHECK_VERSION(2,5,1)			
 				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
 			#else
@@ -231,22 +235,24 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 				}
 			}
 		} while (current_read && !TestDestroy());
-		
-		url_handler->Destroy();
-		url_handler = NULL;
 		fclose(outfile);
 	} catch (const wxString& download_error) {
 		if (outfile) {
 			fclose(outfile);
 			wxRemoveFile(m_tempfile);
 		}
-		if (url_handler) {
-			url_handler->Destroy();
-		}
 		m_result = -1;		
 		AddLogLineM(false,download_error);
 	}
 
+	if (url_read_stream) {
+		delete url_read_stream;
+	}
+
+	if (url_handler) {
+		url_handler->Destroy();
+	}
+	
 	printf("HTTP download thread end\n");
 	
 	return 0;
@@ -317,6 +323,7 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 	}
 
 	wxInputStream* url_read_stream = (*url_handler)->GetInputStream(url);
+
 	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
 	printf("URL: %s\n",(const char*)unicode2char(url));
 		
@@ -342,13 +349,14 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 			delete url_read_stream;
 				
 			wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
+			
 			(*url_handler)->Destroy();
 			if (!new_location.IsEmpty()) {
-				printf("Redirected\n");
 				(*url_handler) = new wxHTTP;
 				url_read_stream = GetInputStream(url_handler, new_location);
 			} else {
 				printf("ERROR: Redirection code received with no URL\n");
+				url_handler = NULL;
 				url_read_stream = NULL;
 			}
 		}
