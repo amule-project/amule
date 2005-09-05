@@ -340,7 +340,7 @@ void CDataIO::writeTag(const CTag* tag)
 
 		writeByte(type);
 		
-		writeString(tag->m_name.GetString(),false); // No utf8
+		writeString(tag->m_name.GetData(),false); // No utf8
 		
 		switch (type)
 		{

@@ -50,74 +50,13 @@ namespace Kademlia {
 
 class CUInt128;
 
-class CTagNameString : public wxString
-{
-public:
-	CTagNameString()
-	{
-	}
-
-	CTagNameString(const wxString& psz)
-		: wxString(psz)
-	{
-	}
-
-	CTagNameString(wxChar* psz, int len)
-		: wxString(psz, len)
-	{
-	}
-
-	// A tag name may include character values >= 0xD0 and therefor also >= 0xF0. to prevent those
-	// characters be interpreted as multi byte character sequences we have to ensure that a binary
-	// string compare is performed.
-	int Compare(const wxString& psz) const throw()
-	{
-		// Do a binary string compare. (independant from any codepage and/or LC_CTYPE setting.)
-		return Cmp(psz);
-	}	
-	
-	int CompareNoCase(const wxString& psz) const throw()
-	{
-		return CmpNoCase(psz);
-	}
-
-	CTagNameString& operator=(const wxString& pszSrc)
-	{
-		wxString::operator=(pszSrc);
-		return *this;
-	}
-	
-	const wxString	GetString() const {
-		return (wxString) GetData();
-	}
-
-#if !wxUSE_STL	
-	wxChar* GetBuffer(int nMinBufferLength)
-	{
-		return wxString::GetWriteBuf(nMinBufferLength);
-	}
-
-	void ReleaseBuffer() {
-		wxString::UngetWriteBuf();
-	}
-#else
-	#warning Need a replacement for wxString::GetWriteBuf()/UngetWriteBuf() !
-#endif
-
-	int GetLength() const throw()
-	{
-		return wxString::Len();
-	}
-};
-
-
 #define CTagValueString wxString
 
 class CTag
 {
 public:
 	byte	m_type;
-	CTagNameString m_name;
+	wxString m_name;
 
 	CTag(byte type, const wxString& name)
 		: m_name(name)
