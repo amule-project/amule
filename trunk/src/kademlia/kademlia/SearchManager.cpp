@@ -153,10 +153,7 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		
 		// Kry - I just decided to assume everyone is unicoded
 		KadGetKeywordHash(wstrKeyword, &s->m_target);
-		
-		printf("Hashed key:\n");
-		DumpMem(s->m_target.getDataPtr(),16);
-		
+				
 		if (alreadySearchingFor(s->m_target)) {
 			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
@@ -169,7 +166,7 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 			// There is actually ed2k search data
 			s->m_searchTerms->WriteUInt8(1);
 		} // 0 is default, no need for else branch
-
+	
 		s->m_searchID = ++m_nextID;
 		m_searches[s->m_target] = s;
 		s->go();

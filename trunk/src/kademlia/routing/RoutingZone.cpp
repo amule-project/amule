@@ -138,8 +138,8 @@ CRoutingZone::~CRoutingZone()
 		#warning KAD TODO: Contact list
 		#if 0		
 		theApp.amuledlg->kademliawnd->HideContacts();
-		writeFile();
 		#endif
+		writeFile();
 	}
 	if (isLeaf()) {
 		delete m_bin;
