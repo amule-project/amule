@@ -755,7 +755,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					m_client->SetServerPort(pNewServer->GetPort());
 				}
 			} else if (nNewUserID == m_client->GetIP()) { // client changed server and gots a HighID(IP)
-				m_client->SetUserIDHybrid(ENDIAN_NTOHL(nNewUserID));
+				m_client->SetUserIDHybrid(wxUINT32_SWAP_ALWAYS(nNewUserID));
 				CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
 				if (pNewServer != NULL){
 					m_client->SetServerIP(nNewServerIP);
@@ -1572,7 +1572,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			uint32 ip = data.ReadUInt32();
 			uint16 tcp = data.ReadUInt16();
 			CUpDownClient* callback;
-			callback = theApp.clientlist->FindClientByIP(ENDIAN_NTOHL(ip), tcp);
+			callback = theApp.clientlist->FindClientByIP(wxUINT32_SWAP_ALWAYS(ip), tcp);
 			if( callback == NULL ) {
 				#warning Do we actually have to check friend status here?
 				callback = new CUpDownClient(tcp,ip,0,0,NULL,false, false);

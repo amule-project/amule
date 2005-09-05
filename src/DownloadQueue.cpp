@@ -559,7 +559,7 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	//
 	// "IPfilter" is not needed here, because that "known" client was already IPfiltered when receiving OP_HELLO.
 	if (!source->HasLowID()) {
-		uint32 nClientIP = ENDIAN_NTOHL(source->GetUserIDHybrid());
+		uint32 nClientIP = wxUINT32_SWAP_ALWAYS(source->GetUserIDHybrid());
 		if (!IsGoodIP(nClientIP, thePrefs::FilterLanIPs())) { // check for 0-IP, localhost and LAN addresses
 			AddDebugLogLineM(false, logIPFilter, wxT("Ignored already known source with IP=%s") + Uint32toStringIP(nClientIP));
 			return;
@@ -1338,7 +1338,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		return;
 	}
 
-	uint32 ED2Kip = ENDIAN_NTOHL(ip);
+	uint32 ED2Kip = wxUINT32_SWAP_ALWAYS(ip);
 	
 	if (theApp.ipfilter->IsFiltered(ED2Kip)) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));

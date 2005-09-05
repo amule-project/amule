@@ -1689,12 +1689,12 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		if (IsLowID(userid)) {
 			hybridID = userid;
 		} else {
-			hybridID = ENDIAN_NTOHL(userid);
+			hybridID = wxUINT32_SWAP_ALWAYS(userid);
 		}
 	} else {
 		hybridID = userid;
 		if (!IsLowID(userid)) {
-			userid = ENDIAN_NTOHL(userid);
+			userid = wxUINT32_SWAP_ALWAYS(userid);
 		}
 	}
 	
@@ -2843,7 +2843,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			if(forClient->GetSourceExchangeVersion() > 2) {
 				dwID = cur_src->GetUserIDHybrid();
 			} else {
-				dwID = ENDIAN_NTOHL(cur_src->GetUserIDHybrid());
+				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserIDHybrid());
 			}
 			data.WriteUInt32(dwID);
 			data.WriteUInt16(cur_src->GetUserPort());
@@ -2918,7 +2918,7 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 		
 		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
 		if (sourceexchangeversion == 3) {
-			uint32 dwIDED2K = ENDIAN_NTOHL(dwID);
+			uint32 dwIDED2K = wxUINT32_SWAP_ALWAYS(dwID);
 
 			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 			if (!IsLowID(dwID)) {
