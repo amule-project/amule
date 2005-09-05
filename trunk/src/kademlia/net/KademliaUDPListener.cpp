@@ -1228,5 +1228,5 @@ void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destin
 		packet->PackPacket();
 	}
 	theStats::AddUpOverheadKad(packet->GetPacketSize());
-	theApp.clientudp->SendPacket(packet, ENDIAN_NTOHL(destinationHost), destinationPort);
+	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
 }
