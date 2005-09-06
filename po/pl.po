@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-04 20:47+0200\n"
-"PO-Revision-Date: 2005-08-08 11:29+0100\n"
+"PO-Revision-Date: 2005-09-06 12:06+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -1161,7 +1161,7 @@ msgstr "Ukryj kolejkę"
 
 #: src/webserver/src/WebServer.cpp:1280
 msgid "Clear Completed"
-msgstr "Czyszczenie zakończone"
+msgstr "Wyczyść skończone"
 
 #: src/webserver/src/WebServer.cpp:1285
 #, c-format
