@@ -415,7 +415,9 @@ void CSearch::StorePacket()
 						taglist.push_back(new CTagUInt8(TAG_SOURCETYPE, 3));
 						taglist.push_back(new CTagUInt32(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
 						taglist.push_back(new CTagUInt16(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
-						taglist.push_back(new CTagStr(TAG_BUDDYHASH, CMD4Hash((unsigned char*)buddyID.getData()).Encode()));
+						byte hashBytes[16];
+						buddyID.toByteArray(hashBytes);
+						taglist.push_back(new CTagStr(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
 						taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs::GetPort()));
 					} else {
 						prepareToStop();
@@ -565,7 +567,6 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	uint32 serverip = 0;
 	uint16 serverport = 0;
 	uint32 clientid = 0;
-	byte buddyhash[16];
 	CUInt128 buddy;
 
 	CTag *tag;
@@ -588,8 +589,7 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 			clientid	= tag->GetInt();
 		} else if (!tag->m_name.Cmp(wxT(TAG_BUDDYHASH))) {
 			CMD4Hash hash(tag->GetStr());
-			md4cpy(buddyhash, hash.GetHash());
-			md4cpy(buddy.getDataPtr(), buddyhash);
+			buddy.setValueBE(hash.GetHash());
 		}
 
 		delete tag;
