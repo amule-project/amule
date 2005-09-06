@@ -131,17 +131,4 @@ static const wxString EmptyString = wxEmptyString;
 
 #endif
 
-#include <wx/object.h>
-
-class CCKey /*: protected wxObject */{
-public:
-	CCKey(const byte* key = 0)	{m_key = key;}
-	CCKey(const CCKey& k1)		{m_key = k1.m_key;}
-
-	CCKey& operator=(const CCKey& k1)						{m_key = k1.m_key; return *this; }
-	friend bool operator==(const CCKey& k1,const CCKey& k2);
-	
-	const byte* m_key;
-};
-
 #endif /* TYPES_H */

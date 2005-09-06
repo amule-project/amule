@@ -51,28 +51,6 @@ there client on the eMule forum..
 class wxArrayString;
 
 
-struct key_compare {
-	bool operator()(const CCKey& k1, const CCKey& k2) const 
-	{
-		if (!k1.m_key && k2.m_key) {
-			return true;
-		} else if (!k2.m_key) {
-			return false;
-		} else {
-			for (size_t i = 0; i < 16u; ++i) {
-				if (k1.m_key[i] < k2.m_key[i]) {
-					return true;
-				} else if (k2.m_key[i] < k1.m_key[i]) {
-					return false;
-				}
-			}
-		
-			return false;
-		}
-	}
-};
-
-
 typedef std::list<Kademlia::CEntry*> CKadEntryPtrList;
 
 struct Source
@@ -82,7 +60,7 @@ struct Source
 };
 
 typedef std::list<Source*> CKadSourcePtrList;
-typedef std::map<CCKey,Source*,key_compare> CSourceKeyMap;
+typedef std::map<Kademlia::CUInt128,Source*> CSourceKeyMap;
 
 struct KeyHash
 {
@@ -129,9 +107,9 @@ struct SSearchTerm
 	SSearchTerm* right;
 };
 
-typedef std::map<CCKey,KeyHash*,key_compare> KeyHashMap;
-typedef std::map<CCKey,SrcHash*,key_compare> SrcHashMap;
-typedef std::map<CCKey,Load*,key_compare> LoadMap;
+typedef std::map<Kademlia::CUInt128,KeyHash*> KeyHashMap;
+typedef std::map<Kademlia::CUInt128,SrcHash*> SrcHashMap;
+typedef std::map<Kademlia::CUInt128,Load*> LoadMap;
 
 ////////////////////////////////////////
 namespace Kademlia {
