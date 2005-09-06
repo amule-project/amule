@@ -393,7 +393,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 	cast_value_array(result);
 #ifndef PHP_STANDALONE_EN
 	CECPacket req(EC_OP_GET_PREFERENCES);
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_OP_GET_PREFERENCES));
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)0xffffffff));
 	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if ( !reply || !reply->GetTagCount()) {
 		return ;
@@ -449,48 +449,52 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 			cattag->GetTagByName(EC_TAG_CONN_RECONNECT) ? 1 : 0);
 	}
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
-		set_array_int_val(result, "ich_en",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_ICH_ENABLED)->GetInt8Data());
-		set_array_int_val(result, "aich_trust",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_AICH_TRUST)->GetInt8Data());
+		PHP_VAR_NODE *cat = array_get_by_str_key(result, "files");
+		cast_value_array(&cat->value);
 
-		set_array_int_val(result, "new_files_paused",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_PAUSED)->GetInt8Data());
+		set_array_int_val(&cat->value, "ich_en",
+			cattag->GetTagByName(EC_TAG_FILES_ICH_ENABLED) ? 1 : 0);
 
-		set_array_int_val(result, "new_files_auto_dl_prio",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_AUTO_DL_PRIO)->GetInt8Data());
+		set_array_int_val(&cat->value, "aich_trust",
+			cattag->GetTagByName(EC_TAG_FILES_AICH_TRUST) ? 1 : 0);
 
-		set_array_int_val(result, "preview_prio",
+		set_array_int_val(&cat->value, "new_files_paused",
+			cattag->GetTagByName(EC_TAG_FILES_NEW_PAUSED) ? 1 : 0);
+
+		set_array_int_val(&cat->value, "new_files_auto_dl_prio",
+			cattag->GetTagByName(EC_TAG_FILES_NEW_AUTO_DL_PRIO) ? 1 : 0);
+
+		set_array_int_val(&cat->value, "preview_prio",
 			cattag->GetTagByNameSafe(EC_TAG_FILES_PREVIEW_PRIO)->GetInt8Data());
 
-		set_array_int_val(result, "new_files_auto_ul_prio",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_NEW_AUTO_UL_PRIO)->GetInt8Data());
+		set_array_int_val(&cat->value, "new_files_auto_ul_prio",
+			cattag->GetTagByName(EC_TAG_FILES_NEW_AUTO_UL_PRIO) ? 1 : 0);
 
-		set_array_int_val(result, "upload_full_chunks",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_UL_FULL_CHUNKS)->GetInt8Data());
+		set_array_int_val(&cat->value, "upload_full_chunks",
+			cattag->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS) ? 1 : 0);
 
-		set_array_int_val(result, "start_next_paused",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_START_NEXT_PAUSED)->GetInt8Data());
+		set_array_int_val(&cat->value, "start_next_paused",
+			cattag->GetTagByName(EC_TAG_FILES_START_NEXT_PAUSED) ? 1 : 0);
 
-		set_array_int_val(result, "resume_same_cat",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_RESUME_SAME_CAT)->GetInt8Data());
+		set_array_int_val(&cat->value, "resume_same_cat",
+			cattag->GetTagByName(EC_TAG_FILES_RESUME_SAME_CAT) ? 1 : 0);
 
-		set_array_int_val(result, "save_sources",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_SAVE_SOURCES)->GetInt8Data());
+		set_array_int_val(&cat->value, "save_sources",
+			cattag->GetTagByName(EC_TAG_FILES_SAVE_SOURCES) ? 1 : 0);
 
-		set_array_int_val(result, "extract_metadata",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_EXTRACT_METADATA)->GetInt8Data());
+		set_array_int_val(&cat->value, "extract_metadata",
+			cattag->GetTagByName(EC_TAG_FILES_EXTRACT_METADATA) ? 1 : 0);
 
-		set_array_int_val(result, "alloc_full_chunks",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_ALLOC_FULL_CHUNKS)->GetInt8Data());
+		set_array_int_val(&cat->value, "alloc_full_chunks",
+			cattag->GetTagByName(EC_TAG_FILES_ALLOC_FULL_CHUNKS) ? 1 : 0);
 
-		set_array_int_val(result, "alloc_full",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_ALLOC_FULL_SIZE)->GetInt8Data());
+		set_array_int_val(&cat->value, "alloc_full",
+			cattag->GetTagByName(EC_TAG_FILES_ALLOC_FULL_SIZE) ? 1 : 0);
 
-		set_array_int_val(result, "check_free_space",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_CHECK_FREE_SPACE)->GetInt8Data());
+		set_array_int_val(&cat->value, "check_free_space",
+			cattag->GetTagByName(EC_TAG_FILES_CHECK_FREE_SPACE) ? 1 : 0);
 
-		set_array_int_val(result, "min_free_space",
+		set_array_int_val(&cat->value, "min_free_space",
 			cattag->GetTagByNameSafe(EC_TAG_FILES_MIN_FREE_SPACE)->GetInt32Data());
 	}
 	
