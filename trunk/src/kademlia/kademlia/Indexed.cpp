@@ -274,7 +274,6 @@ CIndexed::~CIndexed()
 			uint32 version = 1;
 			load_file.writeUInt32(version);
 			load_file.writeUInt32(time(NULL));
-			CCKey key;
 			load_file.writeUInt32(m_Load_map.size());
 			LoadMap::iterator it = m_Load_map.begin();
 			for ( ; it != m_Load_map.end(); ++it ) {
@@ -297,9 +296,6 @@ CIndexed::~CIndexed()
 			s_file.writeUInt32(version);
 
 			s_file.writeUInt32(time(NULL)+KADEMLIAREPUBLISHTIMES);
-
-			CCKey key;
-			CCKey key2;
 
 			s_file.writeUInt32(m_Sources_map.size());
 			SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
@@ -335,9 +331,6 @@ CIndexed::~CIndexed()
 
 		CBufferedFileIO k_file;
 		if (k_file.Open(m_kfilename, CFile::write)) {
-
-			CCKey key;
-			CCKey key2;
 
 			uint32 version = 1;
 			k_file.writeUInt32(version);
@@ -510,7 +503,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		return false;
 	}
 
-	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData())); 
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID); 
 	KeyHash* currKeyHash = NULL;
 	if(itKeyHash == m_Keyword_map.end()) {
 		Source* currSource = new Source;
@@ -518,8 +511,8 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		currSource->entryList.push_front(entry);
 		currKeyHash = new KeyHash;
 		currKeyHash->keyID.setValue(keyID);
-		currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
-		m_Keyword_map[CCKey(currKeyHash->keyID.getData())] = currKeyHash;
+		currKeyHash->m_Source_map[currSource->sourceID] = currSource;
+		m_Keyword_map[currKeyHash->keyID] = currKeyHash;
 		load = 1;
 		m_totalIndexKeyword++;
 		return true;
@@ -532,7 +525,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			return false;
 		}
 		Source* currSource = NULL;
-		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(CCKey(sourceID.getData()));
+		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.find(sourceID);
 		if(itSource != currKeyHash->m_Source_map.end()) {
 			currSource = itSource->second;
 			if (currSource->entryList.size() > 0) {
@@ -554,7 +547,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			currSource = new Source;
 			currSource->sourceID.setValue(sourceID);
 			currSource->entryList.push_front(entry);
-			currKeyHash->m_Source_map[CCKey(currSource->sourceID.getData())] = currSource;
+			currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 			m_totalIndexKeyword++;
 			load = (indexTotal*100)/KADEMLIAMAXINDEX;
 			return true;
@@ -575,7 +568,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	}
 		
 	SrcHash* currSrcHash = NULL;
-	SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if(itSrcHash == m_Sources_map.end()) {
 		Source* currSource = new Source;
 		currSource->sourceID.setValue(sourceID);
@@ -583,7 +576,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		currSrcHash = new SrcHash;
 		currSrcHash->keyID.setValue(keyID);
 		currSrcHash->m_Source_map.push_front(currSource);
-		m_Sources_map[CCKey(currSrcHash->keyID.getData())] =  currSrcHash;
+		m_Sources_map[currSrcHash->keyID] =  currSrcHash;
 		m_totalIndexSource++;
 		load = 1;
 		return true;
@@ -650,7 +643,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	}
 		
 	SrcHash* currNoteHash = NULL;
-	SrcHashMap::iterator itNoteHash = m_Notes_map.find(CCKey(keyID.getData()));
+	SrcHashMap::iterator itNoteHash = m_Notes_map.find(keyID);
 	if(itNoteHash == m_Notes_map.end()) {
 		Source* currNote = new Source;
 		currNote->sourceID.setValue(sourceID);
@@ -658,7 +651,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 		currNoteHash = new SrcHash;
 		currNoteHash->keyID.setValue(keyID);
 		currNoteHash->m_Source_map.push_front(currNote);
-		m_Notes_map[CCKey(currNoteHash->keyID.getData())] = currNoteHash;
+		m_Notes_map[currNoteHash->keyID] = currNoteHash;
 		load = 1;
 		return true;
 	} else {
@@ -721,7 +714,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32 timet)
 		return false;
 	}
 	
-	LoadMap::iterator it = m_Load_map.find(CCKey(keyID.getData()));
+	LoadMap::iterator it = m_Load_map.find(keyID);
 	if(it != m_Load_map.end())
 	{
 		wxASSERT(0);
@@ -731,7 +724,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32 timet)
 	load = new Load();
 	load->keyID.setValue(keyID);
 	load->time = timet;
-	m_Load_map[CCKey(load->keyID.getData())] =  load;
+	m_Load_map[load->keyID] =  load;
 	return true;
 }
 
@@ -956,7 +949,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32 ip, uint16 port)
 {
 	KeyHash* currKeyHash = NULL;
-	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(CCKey(keyID.getData()));
+	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
 	if(itKeyHash != m_Keyword_map.end()) {
 		currKeyHash = itKeyHash->second;
 		byte packet[1024*50];
@@ -1008,7 +1001,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port)
 {
 	SrcHash* currSrcHash = NULL;
-	SrcHashMap::iterator itSrcHash = m_Sources_map.find(CCKey(keyID.getData()));
+	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if(itSrcHash != m_Sources_map.end()) {
 		currSrcHash = itSrcHash->second;
 		byte packet[1024*50];
@@ -1057,7 +1050,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& sourceID, uint32 ip, uint16 port)
 {
 	SrcHash* currNoteHash = NULL;
-	SrcHashMap::iterator itNote = m_Notes_map.find(CCKey(keyID.getData()));
+	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);
 	if(itNote != m_Notes_map.end()) {
 		currNoteHash = itNote->second;		
 		byte packet[1024*50];
@@ -1105,7 +1098,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& source
 bool CIndexed::SendStoreRequest(const CUInt128& keyID)
 {
 	Load* load = NULL;
-	LoadMap::iterator it = m_Load_map.find(CCKey(keyID.getData()));
+	LoadMap::iterator it = m_Load_map.find(keyID);
 	if(it != m_Load_map.end()) {
 		load = it->second;
 		if(load->time < (uint32)time(NULL)) {
