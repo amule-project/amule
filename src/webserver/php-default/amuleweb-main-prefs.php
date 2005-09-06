@@ -52,9 +52,8 @@ function init_data()
 	var check_param_names = new Array(
 		"autoconn_en", "reconn_en", "udp_en")
 	for(i = 0; i < check_param_names.length; i++) {
-		frm[check_param_names[i]].checked = initvals[check_param_names[i]];
+		frm[check_param_names[i]].checked = initvals[check_param_names[i]] == "1" ? true : false;
 	}
-	
 }
 
 </script>
@@ -69,7 +68,7 @@ function init_data()
     <td width="52">&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="74">&nbsp;</td>
+    <td height="58">&nbsp;</td>
     <td><table width="100%" bgcolor="#66CC00" >
         <tr>
           <td colspan="5"><strong>Line capacity (for statistics only) </strong></td>
@@ -85,7 +84,7 @@ function init_data()
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="87">&nbsp;</td>
+    <td height="64">&nbsp;</td>
     <td><table width="100%" >
       <tr>
         <td><table width="100%" bgcolor="#66CC00" >
@@ -143,18 +142,12 @@ function init_data()
         <td colspan="5"><strong>Network settings </strong></td>
       </tr>
       <tr>
-        <td width="30%">TCP port </td>
-        <td width="11%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
-        <td width="20%">UDP port </td>
-        <td width="18%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
-        <td width="21%">&nbsp;</td>
-      </tr>
-      <tr>
-        <td>Enable UDP connections </td>
-        <td><input name="udp_en" type="checkbox" id="udp_en"></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td width="13%">TCP port </td>
+        <td width="23%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
+        <td width="12%">UDP port </td>
+        <td width="17%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
+        <td width="35%">Enable UDP connections 
+          <input name="udp_en" type="checkbox" id="udp_en"></td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
