@@ -28,11 +28,14 @@ var initvals = new Object;
 
 <?php
 	$opts = amule_get_options();
-	var_dump($opts);
-	$conn_opts = $opts["connection"];
-	var_dump($conn_opts);
-	foreach ($conn_opts as $opt_name => $opt_val) {
-		echo 'initvals["', $opt_name, '"] = "', $opt_val, '";';
+	$opt_groups = array("connection", "files");
+	var_dump($opt_groups);
+	foreach ($opt_groups as $group) {
+		$curr_opts = $opts[$group];
+		var_dump($curr_opts);
+		foreach ($curr_opts as $opt_name => $opt_val) {
+			echo 'initvals["', $opt_name, '"] = "', $opt_val, '";';
+		}
 	}
 ?>
 
@@ -45,12 +48,17 @@ function init_data()
 		"max_line_down_cap", "max_line_up_cap",
 		"max_up_limit", "max_down_limit", "max_file_src",
 		"slot_alloc", "max_conn_total",
-		"tcp_port", "udp_port")
+		"tcp_port", "udp_port",
+		"min_free_space")
 	for(i = 0; i < str_param_names.length; i++) {
 		frm[str_param_names[i]].value = initvals[str_param_names[i]];
 	}
 	var check_param_names = new Array(
-		"autoconn_en", "reconn_en", "udp_en")
+		"autoconn_en", "reconn_en", "udp_en",
+		"aich_trust", "alloc_full", "alloc_full_chunks",
+		"check_free_space", "extract_metadata", "ich_en",
+		"new_files_auto_dl_prio", "new_files_auto_ul_prio"
+		)
 	for(i = 0; i < check_param_names.length; i++) {
 		frm[check_param_names[i]].checked = initvals[check_param_names[i]] == "1" ? true : false;
 	}
@@ -84,10 +92,8 @@ function init_data()
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="64">&nbsp;</td>
-    <td><table width="100%" >
-      <tr>
-        <td><table width="100%" bgcolor="#66CC00" >
+    <td height="58">&nbsp;</td>
+    <td><table width="100%" bgcolor="#66CC00" >
             <tr>
               <td colspan="5"><strong>Bandwidth limits</strong></td>
             </tr>
@@ -99,14 +105,12 @@ function init_data()
               <td width="19%"><input name="max_up_limit" type="text" id="max_up_limit" size="4"></td>
               <td width="36%">Slot allocation
                 <input name="slot_alloc" type="text" id="slot_alloc" size="4"></td>
-            </tr>
-        </table></td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="108">&nbsp;</td>
+    <td height="106">&nbsp;</td>
     <td><table width="100%" bgcolor="#66CC00" >
         <tr>
           <td colspan="5"><strong>Connection settings </strong></td>
@@ -119,15 +123,15 @@ function init_data()
           <td width="21%">&nbsp;</td>
         </tr>
         <tr>
-          <td>Autoconnect at startup </td>
-          <td><input name="autoconn_en" type="checkbox" id="auto_conn" value="checkbox"></td>
+          <td colspan="2"><input name="autoconn_en" type="checkbox" id="auto_conn" value="checkbox">
+            Autoconnect at startup </td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <td>Reconnect when connection lost </td>
-          <td><input name="reconn_en" type="checkbox" id="auto_reconn"></td>
+          <td colspan="2"><input name="reconn_en" type="checkbox" id="reconn_en4">
+            Reconnect when connection lost            </td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -136,7 +140,7 @@ function init_data()
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="108">&nbsp;</td>
+    <td height="62">&nbsp;</td>
     <td><table width="100%" bgcolor="#66CC00" >
       <tr>
         <td colspan="5"><strong>Network settings </strong></td>
@@ -146,8 +150,72 @@ function init_data()
         <td width="23%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
         <td width="12%">UDP port </td>
         <td width="17%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
-        <td width="35%">Enable UDP connections 
-          <input name="udp_en" type="checkbox" id="udp_en"></td>
+        <td width="35%"><input name="udp_en" type="checkbox" id="udp_en3">
+          Enable UDP connections          </td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="108">&nbsp;</td>
+    <td><table width="100%" bgcolor="#66CC00" >
+      <tr>
+        <td colspan="4"><strong>File settings </strong></td>
+      </tr>
+      <tr>
+        <td width="27%">Minimum free space (Mb)</td>
+        <td width="15%"><input name="min_free_space" type="text" id="min_free_space" size="4"></td>
+        <td width="3%">&nbsp;</td>
+        <td width="51%"><input name="check_free_space" type="checkbox" id="udp_en22">
+          Check free space          </td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="new_files_auto_dl_prio" type="checkbox" id="new_files_auto_dl_prio">
+    Added download files have auto priority</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="new_files_auto_ul_prio" type="checkbox" id="new_files_auto_ul_prio">
+          New shared files have auto priority</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="ich_en" type="checkbox" id="ich_en">
+          I.C.H. active</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="aich_trust" type="checkbox" id="aich_trust">
+          AICH trusts every hash (not recommended)</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="alloc_full_chunks" type="checkbox" id="alloc_full_chunks">
+          Alloc full chunks of .part files</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="alloc_full" type="checkbox" id="alloc_full">
+          Alloc full disk space for .part files</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="new_files_paused" type="checkbox" id="new_files_paused">
+          Add files to download queue in pause mode</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input name="extract_metadata" type="checkbox" id="extract_metadata">
+          Extract metadata tags</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
