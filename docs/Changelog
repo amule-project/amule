@@ -27,6 +27,8 @@ Version 2.1.x - The "???" version
 		* Crash handler improovement, avoid calling functions that
 		  may allocate memory.
 		* Fixed some compile warnings in WebServer.cpp.
+		* Fixed a crash in SharedFilesWnd.cpp due to aMule beeing now
+		  multithreaded.
 
 	thedude0001:
 		* Added CVS snapshot date to frame title.

@@ -283,7 +283,7 @@ int CamuleApp::OnExit()
 
 
 	if (m_app_state!=APP_STATE_STARTING) {
-		printf("aMule shutdown: Terminating core.\n");
+		printf("aMule OnExit: Terminating core.\n");
 	}
 
 	delete serverlist;
@@ -299,7 +299,7 @@ int CamuleApp::OnExit()
 	friendlist = NULL;
 	
 	// Destroying CDownloadQueue calls destructor for CPartFile
-	// calling CSharedFileList::SafeAddKFile occasally.
+	// calling CSharedFileList::SafeAddKFile occasionally.
 	delete sharedfiles;
 	sharedfiles = NULL;
 	
