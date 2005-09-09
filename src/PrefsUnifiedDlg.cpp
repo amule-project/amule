@@ -235,10 +235,10 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
-			#ifdef USE_WX_TRAY
-				FindWindow(IDC_DESKTOPMODE)->Show(false);
-				IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
-			#endif /* USE_WX_TRAY */
+			#if defined(USE_WX_TRAY) || defined(__SYSTRAY_DISABLED__)
+					FindWindow(IDC_DESKTOPMODE)->Show(false);
+					IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
+			#endif /* USE_WX_TRAY || __SYSTRAY_DISABLED__ */
 			#ifdef __WXMSW__ 
 				CastChild(IDC_FCHECKTABS, wxCheckBox)->Enable(false);
 				wxChoice *fakeCheck = CastChild(IDC_FCHECK, wxChoice);
