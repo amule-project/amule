@@ -34,38 +34,126 @@
 #include "SafeFile.h"	// Needed for CFileDataIO
 
 
+/**
+ * CMemFile handles virtual files stored in memory.
+ * 
+ * This class allows for manipulation of binary data in memory such
+ * as data sent over networks. Using this class rather than writing
+ * the stream onto a struct confers the following advantages:
+ *  - Contents may be read dynamically in case of various versions
+ *    of the same packet.
+ *  - Endian correction is handled transparently. When reading and
+ *    writing values, CMemFile converts to and from little-endian,
+ *    so that no explicit endian convertions are nescesarry.
+ *  - Strings of dynamic length can be read.
+ *
+ * Most of these advantages also hold for writing packets.
+ * 
+ * @see CFileDataIO
+ */
 class CMemFile : public CFileDataIO
 {
 public:
-	CMemFile( unsigned int growBytes = 1024 );
-	CMemFile(byte* buffer, unsigned int bufferSize);
+	/**
+	 * Creates a dynamic file object.
+	 * 
+	 * @param growBytes The growth-rate of the buffer.
+	 *
+	 * The growth-rate specified by how much the buffer-size will
+	 * be increased when the memfile runs out of space. Normally
+	 * this means that the amount of re-allocations is cut down
+	 * at the expence of slightly higher mem-usage.
+	 * 
+	 * If the size of the entire file to be written is known
+	 * in advance, one can avoid needless re-allocations by
+	 * specifying the exact length as the growth-rate.
+	 *
+	 * If the growth-rate is set to zero, the memfile will allocate
+	 * exactly the needed amount of memory and no more when resizing.
+	 */
+	CMemFile(unsigned int growBytes = 1024);
+
+	/**
+	 * Creates a mem-file attached to an already existing buffer.
+	 *
+	 * @param buffer A pre-existing buffer.
+	 * @param bufferSize The size of the buffer.
+	 *
+	 * A buffer attached to a memfile is assumed to already contain
+	 * data and therefore the file-size is set to match the size of
+	 * of the buffer.
+	 *
+	 * Note that while it is valid to resize the buffer to a length
+	 * between zero and 'bufferSize', it is not valid to resize it
+	 * to a length greater than the length specified in the 
+	 * constructor. This also holds for writes that would increase
+	 * the length.
+	 *
+	 * The buffer is _not_ freed by CMemFile upon destruction.
+	 */
+	CMemFile(byte* buffer, off_t bufferSize);
+
+	/** Destructor. */
 	virtual ~CMemFile();
+	
+
+	/** @see CFileDataIO::GetPosition */
+	virtual off_t GetPosition() const;
+	
+	/** @see CFileDataIO::GetLength */
+	virtual off_t GetLength() const;
 
 	
-	virtual off_t GetPosition() const 		{ return m_position; };
+	/**
+	 * Returns true if the position is at or after the end of the file.
+	 */
 	virtual bool Eof() const;
-	virtual bool SetLength(off_t newLen);
-	virtual off_t GetLength() const { return m_FileSize; };
+
+	/** 
+	 * Changes the length of the file, possibly resizing the buffer.
+	 *
+	 * @param newLen The new length of the file.
+	 * 
+	 * If the current position is greater than the new length, it 
+	 * will be set to the end of the file.
+	 * 
+	 * Note that changing the lenght of a file with an attached buffer 
+	 * to a value greater than the actual buffer size is an illegal 
+	 * operation.
+	 */
+	virtual void SetLength(off_t newLen);
 	
 protected:
-	virtual off_t  doRead(void* buf, off_t length) const;
-	virtual size_t doWrite(const void* buf, size_t length);
-	virtual off_t doSeek(off_t offset) const;
+	/** @see CFileDataIO::doRead */
+	virtual off_t  doRead(void* buffer, off_t count) const;
 
+	/** @see CFileDataIO::doWrite */
+	virtual size_t doWrite(const void* buffer, size_t count);
+	
+	/** @see CFileDataIO::doSeek */
+	virtual off_t  doSeek(off_t offset) const;
+	
 private:
 	//! A CMemFile is neither copyable nor assignable.
 	//@{
 	CMemFile(const CMemFile&);
 	CMemFile& operator=(const CMemFile&);
 	//@}
+
+	/** Enlarges the buffer to at least 'size' length. */
+	void enlargeBuffer(off_t size);
 	
-	void enlargeBuffer(unsigned long size);
-	
+	//! The growth-rate for the buffer.
 	unsigned int m_GrowBytes;
+	//! The current position in the file. 
 	mutable off_t m_position;
+	//! The actual size of the buffer.
 	off_t	m_BufferSize;
+	//! The size of the virtual file, may be less than the buffer-size.
 	off_t	m_FileSize;
+	//! If true, the buffer will be freed upon termination.
 	bool	m_delete;
+	//! The actual buffer.
 	byte*	m_buffer;
 };
 

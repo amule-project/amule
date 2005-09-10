@@ -41,8 +41,11 @@ CMemFile::CMemFile(unsigned int growBytes)
 }
 
 
-CMemFile::CMemFile(byte *buffer, unsigned int bufferSize)
+CMemFile::CMemFile(byte* buffer, off_t bufferSize)
 {
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to resize to attach to invalid buffer."));
+	MULE_VALIDATE_STATE(bufferSize >= 0, wxT("CMemFile: Attempted to attach to buffer with invalid size."));
+	
 	m_buffer		= buffer;
 	m_BufferSize	= bufferSize;
 	m_FileSize		= bufferSize;
@@ -60,6 +63,12 @@ CMemFile::~CMemFile()
 }
 
 
+off_t CMemFile::GetPosition() const
+{
+	return m_position;
+}
+
+
 bool CMemFile::Eof() const
 {
 	return (m_position >= m_FileSize);
@@ -67,43 +76,47 @@ bool CMemFile::Eof() const
 }
 
 
-void CMemFile::enlargeBuffer(unsigned long size)
+void CMemFile::SetLength(off_t newLen)
 {
+	MULE_VALIDATE_STATE(newLen >= 0, wxT("CMemFile: Attempted to resize to invalid length."));
+
+	if (newLen > m_BufferSize) {
+		enlargeBuffer(newLen);
+	}
+	
+	if (newLen < m_position) {
+		m_position = newLen;
+	}
+	
+	m_FileSize = newLen;
+}
+
+
+off_t CMemFile::GetLength() const
+{
+	return m_FileSize;
+}
+
+
+void CMemFile::enlargeBuffer(off_t size)
+{
+	MULE_VALIDATE_PARAMS(size >= m_BufferSize, wxT("CMemFile: Attempted to shrink buffer."));
 	MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
 
 	off_t newsize = m_BufferSize;
-	if ( m_GrowBytes ) {
-		// Everything is fine if m_GrowBytes is non-zero
-		while ( newsize < (off_t)size )
+	if (m_GrowBytes) {
+		while (newsize < size) {
 			newsize += m_GrowBytes;
+		}
 	} else {
 		// No growth-rate specified. Change to exactly the size specified.
 		newsize = size;
 	}
 
 	m_buffer = (byte*)realloc(m_buffer, newsize);
+	m_BufferSize = newsize;
 
 	MULE_VALIDATE_STATE(m_buffer, wxT("CMemFile: Failed to (re)allocate buffer"));
-
-	m_BufferSize = newsize;
-}
-
-
-bool CMemFile::SetLength(off_t newLen)
-{
-	MULE_VALIDATE_STATE(newLen >= 0, wxT("CMemFile: Attempted to resize to invalid length."));
-
-	if ( newLen > m_BufferSize ) {
-		enlargeBuffer(newLen);
-	}
-	
-	if ( newLen < m_position ) {
-		m_position = newLen;
-	}
-	
-	m_FileSize = newLen;
-
-	return true;
 }
 
 
@@ -129,7 +142,7 @@ size_t CMemFile::doWrite(const void* buffer, size_t count)
 	}
 	
 	MULE_VALIDATE_STATE(m_position + count <= m_BufferSize, wxT("CMemFile: Buffer not resized to needed size."));
-
+	
 	memcpy(m_buffer + m_position, buffer, count);
 	m_position += count;
 
