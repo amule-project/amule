@@ -64,6 +64,8 @@ public:
 	 */
 	CUInt128(const CUInt128 &value, uint32 numBits = 128);
 
+	~CUInt128() {};
+	
 	const byte* getData() const { return (byte*)m_data; }
 	byte* getDataPtr() const { return (byte*)m_data; }
 
