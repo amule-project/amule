@@ -1142,17 +1142,16 @@ void CPartFile::LoadSourceSeeds()
 			sources_data.WriteUInt16(nPort);
 			sources_data.WriteUInt32(0);
 			sources_data.WriteUInt16(0);	
-		}
-		
-		sources_data.Seek(0);
-		
-		AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);
+		}	
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
 				% m_strFileName
 				% e.what() );
 	}
+	
+	sources_data.Seek(0);
+	AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);
 
 	file.Close();
 }		
