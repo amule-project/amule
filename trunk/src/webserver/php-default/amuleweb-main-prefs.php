@@ -123,14 +123,14 @@ function init_data()
           <td width="21%">&nbsp;</td>
         </tr>
         <tr>
-          <td colspan="2"><input name="autoconn_en" type="checkbox" id="auto_conn" value="checkbox">
+          <td colspan="2"><input name="autoconn_en" type="checkbox" id="autoconn_en">
             Autoconnect at startup </td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr>
-          <td colspan="2"><input name="reconn_en" type="checkbox" id="reconn_en4">
+          <td colspan="2"><input name="reconn_en" type="checkbox" id="reconn_en">
             Reconnect when connection lost            </td>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
@@ -150,7 +150,7 @@ function init_data()
         <td width="23%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
         <td width="12%">UDP port </td>
         <td width="17%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
-        <td width="35%"><input name="udp_en" type="checkbox" id="udp_en3">
+        <td width="35%"><input name="udp_en" type="checkbox" id="udp_en">
           Enable UDP connections          </td>
       </tr>
     </table></td>
@@ -166,7 +166,7 @@ function init_data()
         <td width="27%">Minimum free space (Mb)</td>
         <td width="15%"><input name="min_free_space" type="text" id="min_free_space" size="4"></td>
         <td width="3%">&nbsp;</td>
-        <td width="51%"><input name="check_free_space" type="checkbox" id="udp_en22">
+        <td width="51%"><input name="check_free_space" type="checkbox" id="check_free_space">
           Check free space          </td>
       </tr>
       <tr>
