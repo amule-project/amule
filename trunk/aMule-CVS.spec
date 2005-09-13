@@ -75,7 +75,8 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure $UTF8_SYSTRAY \
         --prefix=%{_prefix} \
         --disable-optimize \
         --enable-debug \
-        --enable-cas \
+        --enable-kad-compile \
+	--enable-cas \
 	--enable-wxcas \
         --enable-amulecmd \
         --enable-webserver \
