@@ -84,7 +84,6 @@ amulegui_SOURCES = \
 	Format.cpp \
 	FriendListCtrl.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFile.cpp \
 	listctrl.cpp \
 	Logger.cpp \
@@ -168,7 +167,6 @@ amule_SOURCES = \
 	IPFilter.cpp \
 	KnownFile.cpp \
 	KadDlg.cpp \
-	KadSearchListCtrl.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	listctrl.cpp \

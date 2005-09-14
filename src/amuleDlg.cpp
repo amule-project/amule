@@ -89,7 +89,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
 #include "OPCodes.h"		// Needed for TM_FINISHEDHASHING
-#include "muuli_wdr.h"		// Needed for ID_BUTTONSERVERS
+#include "muuli_wdr.h"		// Needed for ID_BUTTON*
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "StringFunctions.h"	// Needed for unicode2char
@@ -112,7 +112,7 @@
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
-	EVT_TOOL(ID_BUTTONSERVERS, CamuleDlg::OnToolBarButton)
+	EVT_TOOL(ID_BUTTONNETWORKS, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSEARCH, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONTRANSFER, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSHARED, CamuleDlg::OnToolBarButton)
@@ -233,8 +233,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	// Set Serverlist as active window
 	activewnd=NULL;
-	SetActiveDialog(ServerWnd, serverwnd);
-	m_wndToolbar->ToggleTool(ID_BUTTONSERVERS, true );
+	SetActiveDialog(NetworksWnd, serverwnd);
+	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
 	#ifndef __USE_KAD__
 	m_wndToolbar->DeleteTool(ID_BUTTONKAD);
 	#endif
@@ -450,7 +450,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
-	static int lastbutton = ID_BUTTONSERVERS;
+	static int lastbutton = ID_BUTTONNETWORKS;
 
 	// Kry - just if the GUI is ready for it
 	if ( is_safe_state ) {
@@ -467,8 +467,8 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 
 		if ( lastbutton != ev.GetId() ) {
 			switch ( ev.GetId() ) {
-				case ID_BUTTONSERVERS:
-					SetActiveDialog(ServerWnd, serverwnd);
+				case ID_BUTTONNETWORKS:
+					SetActiveDialog(NetworksWnd, serverwnd);
 					// Set serverlist splitter position
 					CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->SetSashPosition(srv_split_pos, true);
 					break;
