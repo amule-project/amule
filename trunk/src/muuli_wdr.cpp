@@ -187,7 +187,7 @@ wxSizer *serverListDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxSplitterWindow *item1 = new wxSplitterWindow( parent, ID_SRV_SPLITTER, wxDefaultPosition, wxSize(200,160), wxSP_LIVE_UPDATE );
     item1->SetMinimumPaneSize( 120 );
     wxPanel *item2 = new wxPanel( item1, -1 );
-    serverListDlgUp( item2, FALSE, TRUE );
+    NetDialog( item2, FALSE, TRUE );
     wxPanel *item3 = new wxPanel( item1, -1 );
     serverListDlgDown( item3, FALSE, TRUE );
     item1->SplitHorizontally( item2, item3 );
@@ -3025,7 +3025,7 @@ wxSizer *ServerInfoLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET_SERVER, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetToolTip( _("Click this button to reset the log.") );
-    item4->Add( item6, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3060,7 +3060,7 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxButton *item6 = new wxButton( parent, ID_BTN_RESET, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
     item6->SetToolTip( _("Click this button to reset the log.") );
-    item4->Add( item6, 0, wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3213,93 +3213,110 @@ wxSizer *LocaleWarning( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *kadSizer;
 wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxFlexGridSizer *item0 = new wxFlexGridSizer( 1, 0, 0 );
     item0->AddGrowableCol( 0 );
     item0->AddGrowableRow( 0 );
+    kadSizer = item0;
 
     wxFlexGridSizer *item1 = new wxFlexGridSizer( 2, 0, 0 );
     item1->AddGrowableCol( 0 );
     item1->AddGrowableRow( 0 );
 
-    wxFlexGridSizer *item2 = new wxFlexGridSizer( 2, 0, 0 );
-    item2->AddGrowableCol( 0 );
-    item2->AddGrowableRow( 0 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Contacts") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxListCtrl *item3 = new wxListCtrl( parent, ID_NODELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxBitmapButton *item5 = new wxBitmapButton( parent, ID_UPDATEKADLIST, amuleDlgImages( 30 ), wxDefaultPosition, wxDefaultSize );
+    item5->SetToolTip( _("Click on this button to update the nodes list from URL ...") );
+    item5->SetName( wxT("nodesupdateList") );
+    item4->Add( item5, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Nodes list"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetName( wxT("nodesListLabel") );
+    item4->Add( item6, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_NODESLISTURL, _("http://download.overnet2000.de/nodes.dat"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    item7->SetToolTip( _("Enter the url to a nodes.dat file here and press the button to the left to update the list of known servers.") );
+    item4->Add( item7, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
+
+    item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxListCtrl *item8 = new wxListCtrl( parent, ID_NODELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
+    item2->Add( item8, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item2, 0, wxGROW, 0 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Bootstrap") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("Bootstrap") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
 
-    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("New node") );
-    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
+    wxStaticBox *item12 = new wxStaticBox( parent, -1, _("New node") );
+    wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
 
-    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("IP:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 10 );
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("IP:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item13->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 10 );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, ID_NODE_IP1, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
-    item8->Add( item10, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item15 = new CMuleTextCtrl( parent, ID_NODE_IP1, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
+    item13->Add( item15, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item11, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item16, 0, wxALIGN_CENTER|wxTOP, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, ID_NODE_IP2, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
-    item8->Add( item12, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item17 = new CMuleTextCtrl( parent, ID_NODE_IP2, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
+    item13->Add( item17, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item13, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item18, 0, wxALIGN_CENTER|wxTOP, 5 );
 
-    CMuleTextCtrl *item14 = new CMuleTextCtrl( parent, ID_NODE_IP3, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
-    item8->Add( item14, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, ID_NODE_IP3, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
+    item13->Add( item19, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item15, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item20, 0, wxALIGN_CENTER|wxTOP, 5 );
 
-    CMuleTextCtrl *item16 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
-    item8->Add( item16, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, ID_NODE_IP4, wxT(""), wxDefaultPosition, wxSize(30,-1), 0 );
+    item13->Add( item21, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item11->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
-    item17->AddGrowableCol( 1 );
+    wxFlexGridSizer *item22 = new wxFlexGridSizer( 2, 0, 0 );
+    item22->AddGrowableCol( 1 );
 
-    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Port:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item23 = new wxStaticText( parent, ID_TEXT, _("Port:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item22->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item19 = new CMuleTextCtrl( parent, ID_NODE_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CMuleTextCtrl *item24 = new CMuleTextCtrl( parent, ID_NODE_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item6->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item11->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item20 = new wxButton( parent, ID_NODECONNECT, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->Enable( false );
-    item6->Add( item20, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxButton *item25 = new wxButton( parent, ID_NODECONNECT, _("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Enable( false );
+    item11->Add( item25, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item4->Add( item6, 0, wxALIGN_RIGHT, 0 );
+    item9->Add( item11, 0, wxALIGN_RIGHT, 0 );
 
-    item4->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
+    item9->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item21 = new wxButton( parent, ID_KNOWNNODECONNECT, _("Bootstrap known clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item26 = new wxButton( parent, ID_KNOWNNODECONNECT, 
+        _("Bootstrap from \n"
+          "known clients"),
+        wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item1->Add( item4, 0, wxGROW|wxALIGN_RIGHT, 0 );
+    item9->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item27 = new wxButton( parent, ID_KADDISCONNECT, _("Disconnect Kad"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item1->Add( item9, 0, wxGROW|wxALIGN_RIGHT, 0 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Current Searches") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
-
-    CKadSearchListCtrl *item24 = new CKadSearchListCtrl( parent, ID_KADSEARCHLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
-    item24->SetName( wxT("kadsearchlistctrl") );
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -3918,6 +3935,39 @@ wxSizer *Kad_Info( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *netSizer;
+wxSizer *NetDialog( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+    netSizer = item0;
+
+    wxNotebook *item2 = new wxNotebook( parent, ID_NETNOTEBOOK, wxDefaultPosition, wxSize(200,160), 0 );
+#if !wxCHECK_VERSION(2,5,2)
+    wxNotebookSizer *item1 = new wxNotebookSizer( item2 );
+#else
+    wxWindow *item1 = item2;
+#endif
+
+    wxPanel *item3 = new wxPanel( item2, -1 );
+    serverListDlgUp( item3, FALSE );
+    item2->AddPage( item3, _("ED2K") );
+
+    wxPanel *item4 = new wxPanel( item2, -1 );
+    KadDlg( item4, FALSE );
+    item2->AddPage( item4, _("Kad") );
+
+    item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
 // Implement menubar functions
 
 // Implement toolbar functions
@@ -3928,8 +3978,8 @@ void muleToolbar( wxToolBar *parent )
     
     parent->AddTool( ID_BUTTONCONNECT, _("Connect"), connButImg( 0 ), wxNullBitmap, wxITEM_NORMAL, _("Connect to any server") );
     parent->AddSeparator();
-    parent->AddTool( ID_BUTTONSERVERS, _("Servers"), amuleDlgImages( 20 ), wxNullBitmap, wxITEM_CHECK, _("Servers List Window") );
-    parent->ToggleTool( ID_BUTTONSERVERS, TRUE );
+    parent->AddTool( ID_BUTTONNETWORKS, _("Networks"), amuleDlgImages( 20 ), wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
+    parent->ToggleTool( ID_BUTTONNETWORKS, TRUE );
     parent->AddTool( ID_BUTTONKAD, _("Kad"), amuleDlgImages( 27 ), wxNullBitmap, wxITEM_CHECK, _("Kademlia bootstrap") );
     parent->AddTool( ID_BUTTONSEARCH, _("Searches"), amuleDlgImages( 22 ), wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
     parent->AddTool( ID_BUTTONTRANSFER, _("Transfers"), amuleDlgImages( 21 ), wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );

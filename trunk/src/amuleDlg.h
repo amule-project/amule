@@ -90,7 +90,7 @@ public:
 	bool StatisticsWindowActive()	{return (activewnd == (wxWindow*)statisticswnd);}
 	
 	/* Returns the active dialog. Needed to check what to redraw. */
-	enum DialogType { TransferWnd, ServerWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd, KadWnd };
+	enum DialogType { TransferWnd, NetworksWnd, SearchWnd, SharedWnd, ChatWnd, StatsWnd, KadWnd };
 	DialogType GetActiveDialog()	{return m_nActiveDialog;}
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 

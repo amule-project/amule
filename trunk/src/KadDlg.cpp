@@ -53,7 +53,6 @@ BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_BUTTON(ID_KNOWNNODECONNECT, CKadDlg::OnBnClickedBootstrapKnown)
 	
 	EVT_LIST_ITEM_SELECTED(ID_NODELIST, CKadDlg::OnNodeListItemSelected)
-	EVT_LIST_ITEM_SELECTED(ID_KADSEARCHLIST, CKadDlg::OnKadSearchListItemSelected)
 	
 	EVT_RIGHT_DOWN(CKadDlg::OnRMButton)
 
@@ -69,8 +68,9 @@ CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1) {
 	NodesList = (wxListCtrl*)FindWindowById(ID_NODELIST);
 	wxASSERT( NodesList );
 
-	CurrentKadSearches = (wxListCtrl*)FindWindowById(ID_KADSEARCHLIST);
-	wxASSERT( CurrentKadSearches );
+	NodesList->InsertColumn(0,_("Id"),wxLIST_FORMAT_LEFT,140);
+	NodesList->InsertColumn(1,_("Type"),wxLIST_FORMAT_LEFT,50);
+	NodesList->InsertColumn(2,_("Distance"),wxLIST_FORMAT_LEFT,220);
 	
 }
 
@@ -102,10 +102,6 @@ void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
 }
 
 void	CKadDlg::OnNodeListItemSelected(wxListEvent& WXUNUSED(evt)) {
-	
-}
-
-void	CKadDlg::OnKadSearchListItemSelected(wxListEvent& WXUNUSED(evt)) {
 	
 }
 

@@ -40,7 +40,6 @@ class wxCommandEvent;
 class wxMouseEvent;
 	
 class CMD4Hash;
-class CKadSearchListCtrl;
 
 namespace Kademlia {
 	class CContact;
@@ -61,19 +60,15 @@ public:
 	bool ContactAdd(const Kademlia::CContact* WXUNUSED(contact)) const { return false;};
 	void ContactRem(const Kademlia::CContact* WXUNUSED(contact)) const {};
 	void ContactRef(const Kademlia::CContact* WXUNUSED(contact)) const {};
-		
-	CKadSearchListCtrl* searchList;
-		
+
 private:
 
 	wxListCtrl* NodesList;
-	wxListCtrl* CurrentKadSearches;
 		
 	// Event handlers
 	void		OnBnClickedBootstrapClient(wxCommandEvent& evt);
 	void		OnBnClickedBootstrapKnown(wxCommandEvent& evt);
 	void		OnNodeListItemSelected(wxListEvent& evt);
-	void		OnKadSearchListItemSelected(wxListEvent& evt);
 	void		OnFieldsChange(wxCommandEvent& evt);
 	void		OnRMButton(wxMouseEvent& evt);
 
