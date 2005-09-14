@@ -515,7 +515,7 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
 		
-		URL += wxT("ed2k://|server|") + server->GetFullIP() + wxString::Format(wxT("|%d|"), server->GetPort()) + wxT("\n");		
+		URL += wxT("ed2k://|server|") + server->GetFullIP() + wxString::Format(wxT("|%d|"), server->GetPort()) + wxT("/\n");		
 		
 		pos = GetNextItem( pos, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
