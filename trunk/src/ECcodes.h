@@ -597,21 +597,31 @@ enum {
 		 *	::EC_TAG_USER_NICK and ::EC_TAG_SERVER_VERSION only if
 		 *	detail level is ::EC_DETAIL_WEB (ie. for webserver only)
 		 */
-		 
 	EC_OP_STATSTREE,
 
 		/*!
 		 * \brief Connects to Kad
-		 *
 		 */
-		 
 	EC_OP_KAD_START,
 	
 		/*!
 		 * \brief Stops Kad
-		 *
 		 */
-	EC_OP_KAD_STOP
+	EC_OP_KAD_STOP,
+
+		/*!
+		 * \brief Connect to the network.
+		 *
+		 * Connects to those networks that are enabled in preferences (ed2k, kad).
+		 */
+	EC_OP_CONNECT,
+
+		/*!
+		 * \brief Disconnect from networks.
+		 *
+		 * Disconnects from all connected networks.
+		 */
+	EC_OP_DISCONNECT
 	
 };
 

@@ -80,7 +80,6 @@ static CmdId commands[] = {
 	{ wxT("servers"),	CMD_ID_SERVERLIST },
 	{ wxT("add"),		CMD_ID_ADDLINK },
 	// backward compat commands
-	{ wxT("connectto"),	CMD_ID_CONN_TO_SRV },
 	{ wxT("serverstatus"),	CMD_ID_SRVSTAT },
 	{ wxT("setipfilter"),	CMD_ID_SET_IPFILTER },
 	{ wxT("getiplevel"),	CMD_ID_GET_IPLEVEL },
@@ -281,46 +280,60 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(request);
 			break;
 
-		case CMD_ID_CONN_TO_SRV:
  		case CMD_ID_CONN:
 			if ( !args.IsEmpty() ) {
-				unsigned int ip[4];
-				unsigned int port;
-				// Not much we can do against this unicode2char.
-				int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
-				if (result != 5) {
-					// Try to resolve DNS -- good for dynamic IP servers
-					wxString serverName(args.BeforeFirst(wxT(':')));
-					long lPort;
-					bool ok = args.AfterFirst(wxT(':')).ToLong(&lPort);
-					port = (unsigned int)lPort;
-					wxIPV4address a;
-					a.Hostname(serverName);
-					a.Service(port);
-					result = sscanf(unicode2char(a.IPAddress()), "%d.%d.%d.%d", &ip[0], &ip[1], &ip[2], &ip[3]);
-					if (serverName.IsEmpty() || !ok || (result != 4)) {
-						Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
-						return 0;
+				if ( args == wxT("kad") ) {
+					request_list.push_back(new CECPacket(EC_OP_KAD_START));
+				} else if ( args == wxT("ed2k") ) {
+					request_list.push_back(new CECPacket(EC_OP_SERVER_CONNECT));
+				} else {
+					unsigned int ip[4];
+					unsigned int port;
+					// Not much we can do against this unicode2char.
+					int result = sscanf(unicode2char(args), "%d.%d.%d.%d:%d", &ip[0], &ip[1], &ip[2], &ip[3], &port);
+					if (result != 5) {
+						// Try to resolve DNS -- good for dynamic IP servers
+						wxString serverName(args.BeforeFirst(wxT(':')));
+						long lPort;
+						bool ok = args.AfterFirst(wxT(':')).ToLong(&lPort);
+						port = (unsigned int)lPort;
+						wxIPV4address a;
+						a.Hostname(serverName);
+						a.Service(port);
+						result = sscanf(unicode2char(a.IPAddress()), "%d.%d.%d.%d", &ip[0], &ip[1], &ip[2], &ip[3]);
+						if (serverName.IsEmpty() || !ok || (result != 4)) {
+							Show(_("Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"));
+							return 0;
+						}
 					}
+					EC_IPv4_t addr;
+					addr.ip[0] = ip[0];
+					addr.ip[1] = ip[1];
+					addr.ip[2] = ip[2];
+					addr.ip[3] = ip[3];
+					addr.port = port;
+					request = new CECPacket(EC_OP_SERVER_CONNECT);
+					request->AddTag(CECTag(EC_TAG_SERVER, addr));
+					request_list.push_back(request);
 				}
-				EC_IPv4_t addr;
-				addr.ip[0] = ip[0];
-				addr.ip[1] = ip[1];
-				addr.ip[2] = ip[2];
-				addr.ip[3] = ip[3];
-				addr.port = port;
-				request = new CECPacket(EC_OP_SERVER_CONNECT);
-				request->AddTag(CECTag(EC_TAG_SERVER, addr));
-				request_list.push_back(request);
 			} else {
-				request = new CECPacket(EC_OP_SERVER_CONNECT);
-				request_list.push_back(request);
+				request_list.push_back(new CECPacket(EC_OP_CONNECT));
 			}
 			break;
 
  		case CMD_ID_DISCONN:
-			request = new CECPacket(EC_OP_SERVER_DISCONNECT);
-			request_list.push_back(request);
+			if ( !args.IsEmpty() ) {
+				if ( args == wxT("kad") ) {
+					request_list.push_back(new CECPacket(EC_OP_KAD_STOP));
+				} else if ( args == wxT("ed2k") ) {
+					request_list.push_back(new CECPacket(EC_OP_SERVER_DISCONNECT));
+				} else {
+					Show(_("Invalid argument. Valid arguments: 'ed2k', 'kad'.\n"));
+					return 0;
+				}
+			} else {
+				request_list.push_back(new CECPacket(EC_OP_DISCONNECT));
+			}
 			break;
 
 		case CMD_ID_SERVERLIST:
@@ -586,7 +599,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			if (response->GetTagCount()) {
 				CECTag *tag = response->GetTagByIndex(0);
 				if (tag) {
-					s <<	CFormat(_("Request failed with the following error: %s.")) % wxGetTranslation(tag->GetStringData());
+					s <<	CFormat(_("Request failed with the following error: %s")) % wxGetTranslation(tag->GetStringData());
 				} else {
 					s << msgFailedUnknown;
 				}
@@ -618,7 +631,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			for (int i = 0; i < response->GetTagCount(); ++i) {
 				CECTag *tag = response->GetTagByIndex(i);
 				if (tag) {
-					s << tag->GetStringData();
+					s << tag->GetStringData() << wxT("\n");
 				} else {
 				}
 			}
@@ -724,9 +737,11 @@ void CamulecmdApp::ShowHelp() {
 //                                  1         2         3         4         5         6         7         8
 //                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	Show(_("\n--------------------> Available commands (case insensitive): <------------------\n\n"));
-	Show(wxT("Connect [") + wxString(_("server IP")) + wxT("]\t") + _("Connect to given/random server. No warn if failed!\n"));
-//	Show(wxT("ConnectTo [") + _("name") + wxT("] [") + _("port") + wxT("]:\t") + _("Connect to specified server and port.\n"));
-	Show(wxT("Disconnect:\t\t") + wxString(_("Disconnect from server.\n")));
+	Show(wxT("Connect [<") + wxString(_("server IP:Port")) + wxT(">]:\t") + _("Connect to given server.\n"));
+	Show(wxT("Connect [ed2k|kad]:\t") + wxString(_("Connect to random server/kad.\n")));
+	Show(wxT("Connect:\t\t") + wxString(_("Connect to whatever is set in preferences.\n")));
+	Show(wxT("Disconnect [ed2k|kad]:\t") + wxString(_("Disconnect from server/kad.\n")));
+	Show(wxT("Disconnect:\t\t") + wxString(_("Disconnect from whatever aMule is connected to.\n")));
 	Show(wxT("Servers:\t\t") + wxString(_("Show server list.\n")));
 //	Show(wxT("ServerStatus:\t\t") + _("Tell us if connected/not connected.\n"));
 	Show(wxT("Stats:\t\t\t") + wxString(_("Shows status and statistics.\n")));
