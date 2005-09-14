@@ -634,12 +634,17 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 			}
 			break;
 		case EC_OP_SERVER_CONNECT:
-			if ( srv ) {
-				theApp.serverconnect->ConnectToServer(srv);
-				response = new CECPacket(EC_OP_NOOP);
+			if (thePrefs::GetNetworkED2K()) {
+				if ( srv ) {
+					theApp.serverconnect->ConnectToServer(srv);
+					response = new CECPacket(EC_OP_NOOP);
+				} else {
+					theApp.serverconnect->ConnectToAnyServer();
+					response = new CECPacket(EC_OP_NOOP);
+				}
 			} else {
-				theApp.serverconnect->ConnectToAnyServer();
-				response = new CECPacket(EC_OP_NOOP);
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("ED2K is disabled in preferences.")));
 			}
 			break;
 	}
@@ -925,7 +930,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, dTimestamp));
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("No points for graph")));
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("No points for graph.")));
 			}
 		}
 		case EC_DETAIL_INC_UPDATE:
@@ -1247,14 +1252,69 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Kad
 		//
 		case EC_OP_KAD_START:
-			theApp.StartKad();
-			response = new CECPacket(EC_OP_NOOP);
+#ifdef __COMPILE_KAD__
+			if (thePrefs::GetNetworkKademlia()) {
+				theApp.StartKad();
+				response = new CECPacket(EC_OP_NOOP);
+			} else {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
+			}
+#else
+			response = new CECPacket(EC_OP_FAILED);
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("This aMule version was compiled without Kademlia support.")));
+#endif
 			break;
 		case EC_OP_KAD_STOP:
 			theApp.StopKad();
 			response = new CECPacket(EC_OP_NOOP);
 			break;			
-		
+
+		//
+		// Networks
+		//
+		case EC_OP_CONNECT:
+			if (thePrefs::GetNetworkED2K()) {
+				response = new CECPacket(EC_OP_STRINGS);
+				if (theApp.IsConnectedED2K()) {
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to ED2K.")));
+				} else {
+					theApp.serverconnect->ConnectToAnyServer();
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to ED2K...")));
+				}
+			}
+			if (thePrefs::GetNetworkKademlia()) {
+				if (!response) {
+					response = new CECPacket(EC_OP_STRINGS);
+				}
+				if (theApp.IsConnectedKad()) {
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to Kad.")));
+				} else {
+					theApp.StartKad();
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to Kad...")));
+				}
+			}
+			if (!response) {
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("All networks are disabled.")));
+			}
+			break;
+		case EC_OP_DISCONNECT:
+			if (theApp.IsConnected()) {
+				response = new CECPacket(EC_OP_STRINGS);
+				if (theApp.IsConnectedED2K()) {
+					theApp.serverconnect->Disconnect();
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from ED2K.")));
+				}
+				if (theApp.IsConnectedKad()) {
+					theApp.StopKad();
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from Kad.")));
+				}
+			} else {
+				response = new CECPacket(EC_OP_NOOP);
+			}
+			break;
+
 		default:
 			wxASSERT(false);	// we should never get here, but...
 			AddLogLineM(false, _("ExternalConn: invalid opcode received"));
