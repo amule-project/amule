@@ -28,12 +28,8 @@ var initvals = new Object;
 
 <?php
 	// apply new options before proceeding
-	var_dump($HTTP_GET_VARS);
+	//var_dump($HTTP_GET_VARS);
 	if ( $HTTP_GET_VARS["Submit"] == "Apply") {
-		/*
-		 * Attention! Must pass all the options in the group as
-		 * defined in php_set_options prototype.
-		 */
 		$file_opts = array("check_free_space", "extract_metadata", 
 			"ich_en","aich_trust", "preview_prio","save_sources", "resume_same_cat",
 			"min_free_space", "new_files_paused", "alloc_full", "alloc_full_chunks",
@@ -57,7 +53,7 @@ var initvals = new Object;
 			
 			$all_opts["files"][$i] = $curr_value;
 		}
-		var_dump($all_opts);
+		//var_dump($all_opts);
 		amule_set_options($all_opts);
 	}
 	$opts = amule_get_options();
