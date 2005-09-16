@@ -374,6 +374,43 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 #endif
 }
 
+typedef struct {
+	char *php_name;
+	ec_opcode_t tagname;
+	int opsize;
+} PHP_2_EC_OPT_DEF;
+
+PHP_2_EC_OPT_DEF g_connection_opt_defs[] = {
+	{ "max_line_up_cap", EC_TAG_CONN_UL_CAP, 4}, { "max_line_down_cap", EC_TAG_CONN_DL_CAP, 4},
+	{ "max_up_limit", EC_TAG_CONN_MAX_UL, 2}, { "max_down_limit", EC_TAG_CONN_MAX_DL, 2},
+	{ "slot_alloc", EC_TAG_CONN_SLOT_ALLOCATION, 2},
+	{ "tcp_port", EC_TAG_CONN_TCP_PORT, 2}, { "udp_port", EC_TAG_CONN_UDP_PORT, 2}, 
+	{ "udp_dis", EC_TAG_CONN_UDP_DISABLE, 0},
+	{ "max_file_src", EC_TAG_CONN_MAX_FILE_SOURCES, 2},
+	{ "max_conn_total", EC_TAG_CONN_MAX_CONN, 2}, 
+	{ "autoconn_en", EC_TAG_CONN_AUTOCONNECT, 0}, { "reconn_en", EC_TAG_CONN_RECONNECT, 0},
+	{0, 0, 0}
+};
+
+PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
+	{ "ich_en", EC_TAG_FILES_ICH_ENABLED, 0},
+	{ "aich_trust", EC_TAG_FILES_AICH_TRUST, 0},
+	{ "new_files_paused", EC_TAG_FILES_NEW_PAUSED, 0},
+	{ "new_files_auto_dl_prio", EC_TAG_FILES_NEW_AUTO_DL_PRIO, 0},
+	{ "preview_prio", EC_TAG_FILES_PREVIEW_PRIO, 0},
+	{ "new_files_auto_ul_prio", EC_TAG_FILES_NEW_AUTO_UL_PRIO, 0},
+	{ "upload_full_chunks", EC_TAG_FILES_UL_FULL_CHUNKS, 0},
+	{ "start_next_paused", EC_TAG_FILES_START_NEXT_PAUSED, 0},
+	{ "resume_same_cat", EC_TAG_FILES_RESUME_SAME_CAT, 0},
+	{ "save_sources", EC_TAG_FILES_SAVE_SOURCES, 0},
+	{ "extract_metadata", EC_TAG_FILES_EXTRACT_METADATA, 0},
+	{ "alloc_full_chunks", EC_TAG_FILES_ALLOC_FULL_CHUNKS, 0},
+	{ "alloc_full", EC_TAG_FILES_ALLOC_FULL_SIZE, 0},
+	{ "check_free_space", EC_TAG_FILES_CHECK_FREE_SPACE, 0},
+	{ "min_free_space", EC_TAG_FILES_MIN_FREE_SPACE, 4},
+	{0, 0, 0}
+};
+
 void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
 {
 	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
@@ -381,6 +418,22 @@ void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
 	intval.type = PHP_VAL_INT;
 	intval.int_val = value;
 	value_value_assign(&key->value, &intval);
+}
+
+void ec_tag_2_php(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *catvar)
+{
+	for(PHP_2_EC_OPT_DEF *def = opts; def->php_name; def++) {
+		int val;
+		switch(def->opsize) {
+			case 0: val = cattag->GetTagByName(def->tagname) ? 1 : 0; break;
+			case 1: val = cattag->GetTagByNameSafe(def->tagname)->GetInt8Data(); break;
+			case 2: val = cattag->GetTagByNameSafe(def->tagname)->GetInt16Data(); break;
+			case 4: val = cattag->GetTagByNameSafe(def->tagname)->GetInt32Data(); break;
+			default: val = -1;
+		}
+		wxASSERT(val != -1);
+		set_array_int_val(&catvar->value, def->php_name, val);
+	}
 }
 
 /*
@@ -412,91 +465,66 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		PHP_VAR_NODE *cat = array_get_by_str_key(result, "connection");
 		cast_value_array(&cat->value);
 		
-		set_array_int_val(&cat->value, "max_line_up_cap",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_UL_CAP)->GetInt32Data());
-
-		set_array_int_val(&cat->value, "max_line_down_cap",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_DL_CAP)->GetInt32Data());
-
-		set_array_int_val(&cat->value, "max_up_limit",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_UL)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "max_down_limit",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_DL)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "slot_alloc",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_SLOT_ALLOCATION)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "tcp_port",
-			cattag->GetTagByName(EC_TAG_CONN_TCP_PORT)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "udp_port",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_UDP_PORT)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "udp_en",
-			!cattag->GetTagByNameSafe(EC_TAG_CONN_UDP_DISABLE)->GetInt8Data());
-
-		set_array_int_val(&cat->value, "max_file_src",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_FILE_SOURCES)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "max_conn_total",
-			cattag->GetTagByNameSafe(EC_TAG_CONN_MAX_CONN)->GetInt16Data());
-
-		set_array_int_val(&cat->value, "autoconn_en",
-			cattag->GetTagByName(EC_TAG_CONN_AUTOCONNECT) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "reconn_en",
-			cattag->GetTagByName(EC_TAG_CONN_RECONNECT) ? 1 : 0);
+		ec_tag_2_php(cattag, g_connection_opt_defs, cat);
 	}
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_FILES)) != 0) {
 		PHP_VAR_NODE *cat = array_get_by_str_key(result, "files");
 		cast_value_array(&cat->value);
 
-		set_array_int_val(&cat->value, "ich_en",
-			cattag->GetTagByName(EC_TAG_FILES_ICH_ENABLED) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "aich_trust",
-			cattag->GetTagByName(EC_TAG_FILES_AICH_TRUST) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "new_files_paused",
-			cattag->GetTagByName(EC_TAG_FILES_NEW_PAUSED) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "new_files_auto_dl_prio",
-			cattag->GetTagByName(EC_TAG_FILES_NEW_AUTO_DL_PRIO) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "preview_prio",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_PREVIEW_PRIO)->GetInt8Data());
-
-		set_array_int_val(&cat->value, "new_files_auto_ul_prio",
-			cattag->GetTagByName(EC_TAG_FILES_NEW_AUTO_UL_PRIO) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "upload_full_chunks",
-			cattag->GetTagByName(EC_TAG_FILES_UL_FULL_CHUNKS) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "start_next_paused",
-			cattag->GetTagByName(EC_TAG_FILES_START_NEXT_PAUSED) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "resume_same_cat",
-			cattag->GetTagByName(EC_TAG_FILES_RESUME_SAME_CAT) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "save_sources",
-			cattag->GetTagByName(EC_TAG_FILES_SAVE_SOURCES) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "extract_metadata",
-			cattag->GetTagByName(EC_TAG_FILES_EXTRACT_METADATA) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "alloc_full_chunks",
-			cattag->GetTagByName(EC_TAG_FILES_ALLOC_FULL_CHUNKS) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "alloc_full",
-			cattag->GetTagByName(EC_TAG_FILES_ALLOC_FULL_SIZE) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "check_free_space",
-			cattag->GetTagByName(EC_TAG_FILES_CHECK_FREE_SPACE) ? 1 : 0);
-
-		set_array_int_val(&cat->value, "min_free_space",
-			cattag->GetTagByNameSafe(EC_TAG_FILES_MIN_FREE_SPACE)->GetInt32Data());
+		ec_tag_2_php(cattag, g_file_opt_defs, cat);
 	}
+	
+#endif
+}
+
+bool php_2_ec_tag(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VALUE_NODE *catvar)
+{
+	for(PHP_2_EC_OPT_DEF *def = opts; def->php_name; def++) {
+		PHP_VAR_NODE *opt_var = array_get_by_str_key(catvar, def->php_name);
+		if ( opt_var->value.type == PHP_VAL_NONE ) {
+			continue;
+		}
+		cast_value_dnum(&opt_var->value);
+		switch(def->opsize) {
+			case 0: // always transmit !
+			case 1: cattag->AddTag(CECTag(def->tagname ,(uint8)opt_var->value.int_val)); break;
+			case 2: cattag->AddTag(CECTag(def->tagname ,(uint16)opt_var->value.int_val)); break;
+			case 4: cattag->AddTag(CECTag(def->tagname ,(uint32)opt_var->value.int_val)); break;
+			default: return false;
+		}
+	}
+	return true;
+}
+
+/*
+ * Set amule options from given array. Argument looks like "amule_get_options" result
+ */
+void php_set_amule_options(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_ARRAY)) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 1 (options array)");
+		return;
+	}
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_SET_PREFERENCES);
+	PHP_VAR_NODE *opt_group_array = 0;
+
+	// files
+	opt_group_array = array_get_by_str_key(&si->var->value, "files");
+	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
+		CECEmptyTag filePrefs(EC_TAG_PREFS_FILES);
+		php_2_ec_tag(&filePrefs, g_file_opt_defs, &opt_group_array->value);
+		req.AddTag(filePrefs);
+	}
+	// connection
+	opt_group_array = array_get_by_str_key(&si->var->value, "connection");
+	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
+		CECEmptyTag connPrefs(EC_TAG_PREFS_FILES);
+		php_2_ec_tag(&connPrefs, g_connection_opt_defs, &opt_group_array->value);
+		req.AddTag(connPrefs);
+	}
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
 	
 #endif
 }
@@ -1030,6 +1058,10 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		0, php_get_amule_options,
 	},
 	{
+		"amule_set_options",
+		1, php_set_amule_options,
+	},
+	{
 		"amule_do_server_cmd",
 		3,
 		php_native_server_cmd,
@@ -1227,7 +1259,7 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 		scan_ptr = curr_code_end;
 	}
 
-#ifdef AMULEWEB_SCRIPT_EN
+#ifndef PHP_STANDALONE_EN
 	sess->m_get_vars.clear();
 #endif	
 
@@ -1327,6 +1359,7 @@ void save_session_vars(std::map<std::string, std::string> &varmap)
 	if ( sess_vars->value.type != PHP_VAL_ARRAY ) {
 		return;
 	}
+
 	for(int i = 0; i < array_get_size(&sess_vars->value); i++) {
 		std::string s = array_get_ith_key(&sess_vars->value, i);
 		PHP_VAR_NODE *var = array_get_by_str_key(&sess_vars->value, s);
