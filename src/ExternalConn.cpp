@@ -932,6 +932,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("No points for graph.")));
 			}
+			break;
 		}
 		case EC_DETAIL_INC_UPDATE:
 		case EC_DETAIL_UPDATE:

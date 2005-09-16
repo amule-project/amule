@@ -486,6 +486,7 @@ CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWeb
 	m_nGraphHeight = 149;
 	m_nGraphWidth = 500;
 	m_nGraphScale = 3;
+	m_lastHistoryTimeStamp = 0.0;
 }
 
 CWebServer::~CWebServer(void) {
