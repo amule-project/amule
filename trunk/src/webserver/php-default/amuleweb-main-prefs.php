@@ -27,12 +27,45 @@ function formCommandSubmit(command)
 var initvals = new Object;
 
 <?php
+	// apply new options before proceeding
+	var_dump($HTTP_GET_VARS);
+	if ( $HTTP_GET_VARS["Submit"] == "Apply") {
+		/*
+		 * Attention! Must pass all the options in the group as
+		 * defined in php_set_options prototype.
+		 */
+		$file_opts = array("check_free_space", "extract_metadata", 
+			"ich_en","aich_trust", "preview_prio","save_sources", "resume_same_cat",
+			"min_free_space", "new_files_paused", "alloc_full", "alloc_full_chunks",
+			"new_files_auto_dl_prio", "new_files_auto_ul_prio"
+		);
+		$conn_opts = array("max_line_up_cap","max_up_limit","slot_alloc", 
+			"tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en");
+
+		$all_opts;
+		foreach ($conn_opts as $i) {
+			$curr_value = $HTTP_GET_VARS[$i];
+			if ( $curr_value == "on") $curr_value = 1;
+			if ( $curr_value == "") $curr_value = 0;
+			
+			$all_opts["connection"][$i] = $curr_value;
+		}
+		foreach ($file_opts as $i) {
+			$curr_value = $HTTP_GET_VARS[$i];
+			if ( $curr_value == "on") $curr_value = 1;
+			if ( $curr_value == "") $curr_value = 0;
+			
+			$all_opts["files"][$i] = $curr_value;
+		}
+		var_dump($all_opts);
+		amule_set_options($all_opts);
+	}
 	$opts = amule_get_options();
 	$opt_groups = array("connection", "files");
-	var_dump($opt_groups);
+	//var_dump($opt_groups);
 	foreach ($opt_groups as $group) {
 		$curr_opts = $opts[$group];
-		var_dump($curr_opts);
+		//var_dump($curr_opts);
 		foreach ($curr_opts as $opt_name => $opt_val) {
 			echo 'initvals["', $opt_name, '"] = "', $opt_val, '";';
 		}
@@ -54,7 +87,7 @@ function init_data()
 		frm[str_param_names[i]].value = initvals[str_param_names[i]];
 	}
 	var check_param_names = new Array(
-		"autoconn_en", "reconn_en", "udp_en",
+		"autoconn_en", "reconn_en", "udp_dis", "new_files_paused",
 		"aich_trust", "alloc_full", "alloc_full_chunks",
 		"check_free_space", "extract_metadata", "ich_en",
 		"new_files_auto_dl_prio", "new_files_auto_ul_prio"
@@ -150,8 +183,8 @@ function init_data()
         <td width="23%"><input name="tcp_port" type="text" id="tcp_port" size="4"></td>
         <td width="12%">UDP port </td>
         <td width="17%"><input name="udp_port" type="text" id="udp_port" size="4"></td>
-        <td width="35%"><input name="udp_en" type="checkbox" id="udp_en">
-          Enable UDP connections          </td>
+        <td width="35%"><input name="udp_dis" type="checkbox" id="udp_dis">
+          Disable UDP connections          </td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
@@ -218,6 +251,22 @@ function init_data()
         <td>&nbsp;</td>
       </tr>
     </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="28">&nbsp;</td>
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="28">&nbsp;</td>
+    <td align="center"><input type="submit" name="Submit" value="Apply">
+      <input name="command" type="hidden" id="command"></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="108">&nbsp;</td>
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
 </table>
