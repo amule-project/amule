@@ -167,7 +167,13 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					break;
 				}
 				if (!md4cmp(packet, buddy->GetBuddyID())) {
-					CMemFile mem_packet((byte*)packet,size-10);
+					/*
+						The packet has an initial 16 bytes key for the buddy.
+						This is currently unused, so to make the transformation 
+						we discard the first 10 bytes below and then overwrite 
+						the other 6 with ip/port.
+					*/
+					CMemFile mem_packet((byte*)packet+10,size-10);
 					// Change the ip and port while leaving the rest untouched
 					mem_packet.Seek(0,wxFromStart);
 					mem_packet.WriteUInt32(host);

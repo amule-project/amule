@@ -1036,20 +1036,33 @@ void CUpDownClient::UDPReaskFNF()
 
 void CUpDownClient::UDPReaskForDownload()
 {
+	
+	wxASSERT(m_reqfile);
+	
 	if(!m_reqfile || m_bUDPPending ) {
 		return;
 	}
-
+	
+	#warning We should implement the quality tests for udp reliability
+	/*
+	if( m_nTotalUDPPackets > 3 && ((float)(m_nFailedUDPPackets/m_nTotalUDPPackets) > .3)) {
+		return;
+	}
+	*/	
+		
 	if(m_nUDPPort != 0 && thePrefs::GetEffectiveUDPPort() != 0 &&
-	   theApp.clientudp && !HasLowID() && !IsConnected())
-	{ 
+	   theApp.clientudp && !theApp.IsFirewalled() && !IsConnected()) { 
+		   
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {
 			return;
 		}
+		
 		m_bUDPPending = true;
+		
 		CMemFile data(128);
 		data.WriteHash(m_reqfile->GetFileHash());
+		
 		if (GetUDPVersion() > 3)
 		{
 			if (m_reqfile->IsPartFile()) {
@@ -1059,14 +1072,45 @@ void CUpDownClient::UDPReaskForDownload()
 				data.WriteUInt16(0);
 			}
 		}
+		
 		if (GetUDPVersion() > 2) {
 			data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
 		}
 		
-		CPacket* response = new CPacket(&data, OP_EMULEPROT);
-		response->SetOpCode(OP_REASKFILEPING);
+		CPacket* response = new CPacket(&data, OP_EMULEPROT, OP_REASKFILEPING);
+		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKFILEPING") );
 		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
+		
+	} else  {
+		#ifdef __COMPILE_KAD__ 
+		if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
+			
+			m_bUDPPending = true;
+			
+			CMemFile data(128);
+			
+			data.WriteHash(CMD4Hash(GetBuddyID()));
+			data.WriteHash(m_reqfile->GetFileHash());
+			
+			if (GetUDPVersion() > 3) {
+				if (m_reqfile->IsPartFile()) {
+					((CPartFile*)m_reqfile)->WritePartStatus(&data);
+				} else {
+					data.WriteUInt16(0);
+				}
+			}
+			
+			if (GetUDPVersion() > 2) {
+				data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
+			}
+			
+			CPacket* response = new CPacket(&data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKUDP") );
+			theStats::AddUpOverheadFileRequest(response->GetPacketSize());
+			theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
+		}
+		#endif
 	}
 }
 
