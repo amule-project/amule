@@ -28,7 +28,6 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -2781,7 +2780,7 @@ void DownloadFileInfo::LoadImageParams(wxString &tpl, int width, int height)
 
 void DownloadFileInfo::ItemInserted(DownloadFile *item)
 {
-	item->m_Image = new CDynImage(m_width, m_height, m_Template, item);
+	item->m_Image = new CDynProgressImage(m_width, m_height, m_Template, item);
 
 #ifdef WITH_LIBPNG
 	m_ImageLib->AddImage(item->m_Image, wxT("/") + item->m_Image->Name());
@@ -2932,13 +2931,25 @@ bool SearchInfo::CompareItems(const SearchFile &i1, const SearchFile &i2)
  * Image classes:
  * 
  * CFileImage: simply represent local file
- * CDynImage: dynamically generated from gap info
+ * CDynProgressImage: dynamically generated from gap info
  */
  
 CAnyImage::CAnyImage(int size)
 {
 	m_size = 0;
 	m_alloc_size = size;
+	if ( m_alloc_size ) {
+		m_data = new unsigned char[m_alloc_size];
+	} else {
+		m_data = 0;
+	}
+}
+
+CAnyImage::CAnyImage(int width, int height) : m_width(width), m_height(height)
+{
+	m_size = 0;
+	// allocate considering image header
+	m_alloc_size = width * height * sizeof(uint32) + 0x100;
 	if ( m_alloc_size ) {
 		m_data = new unsigned char[m_alloc_size];
 	} else {
@@ -2986,9 +2997,10 @@ void CAnyImage::SetHttpType(wxString ext)
 	m_Http += wxT("ETag: ") + MD5Sum(char2unicode(tmp)).GetHash() + wxT("\r\n");
 }
 
-CFileImage::CFileImage(const wxString& name) : CAnyImage(0), m_name(name)
+CFileImage::CFileImage(const wxString& name) : CAnyImage(0)
 {
 	m_size = 0;
+	m_name = name;
 	wxFFile fis(m_name);
 	// FIXME: proper logging is needed
 	if ( fis.IsOpened() ) {
@@ -3032,10 +3044,8 @@ CImage3D_Modifiers::~CImage3D_Modifiers()
 }
 
 CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFile *file) :
-		CAnyImage(width * height * sizeof(uint32)), m_template(tmpl)
+		CAnyImage(width, height), m_template(tmpl)
 {
-	m_width = width;
-	m_height = height;
 	m_file = file;
 
 	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
@@ -3177,26 +3187,27 @@ int CProgressImage::compare_gaps(const void *g1, const void *g2)
 
 #ifdef WITH_LIBPNG
 
-CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFile *file) :
-	CProgressImage(width, height, tmpl, file), m_modifiers(height)
+CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 {
-	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
 	
 	//
 	// Allocate array of "row pointers" - libpng need it in this form
+	// Fill it also with the image data
 	//
 	
 	// When allocating an array with a new expression, GCC used to allow 
 	// parentheses around the type name. This is actually ill-formed and it is 
 	// now rejected. From gcc3.4
+
 	m_row_ptrs = new png_bytep [m_height];
 	for (int i = 0; i < m_height;i++) {
 		m_row_ptrs[i] = new png_byte[3*m_width];
 		memset(m_row_ptrs[i], 0, 3*m_width);
 	}
+	
 }
 
-CDynImage::~CDynImage()
+CDynPngImage::~CDynPngImage()
 {
 	for (int i = 0; i < m_height;i++) {
 		delete [] m_row_ptrs[i];
@@ -3204,21 +3215,53 @@ CDynImage::~CDynImage()
 	delete [] m_row_ptrs;
 }
 
-void CDynImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
+void CDynPngImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
 {
-	CDynImage *This = (CDynImage *)png_get_io_ptr(png_ptr);
+	CDynPngImage *This = (CDynPngImage *)png_get_io_ptr(png_ptr);
 	wxASSERT((png_size_t)(This->m_size + length) <= (png_size_t)This->m_alloc_size);
 	memcpy(This->m_data + This->m_size, data, length);
 	This->m_size += length;
 }
 
-wxString CDynImage::GetHTML()
+
+unsigned char *CDynPngImage::RequestData(int &size)
+{
+	// write png into buffer
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
+		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_write_fn(png_ptr, this, png_write_fn, 0);
+	
+	m_size = 0;
+	png_write_info(png_ptr, info_ptr);
+	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
+	png_write_end(png_ptr, 0);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	
+	return CAnyImage::RequestData(size);
+}
+
+CDynProgressImage::CDynProgressImage(int width, int height, wxString &tmpl, DownloadFile *file) :
+	CAnyImage(width, height),
+	CProgressImage(width, height, tmpl, file),
+	CDynPngImage(width, height),
+	m_modifiers(height)
+{
+	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
+}
+
+CDynProgressImage::~CDynProgressImage()
+{
+}
+
+wxString CDynProgressImage::GetHTML()
 {
 	// template contain %s (name) %d (width)
 	return wxString::Format(m_template, m_name.GetData(), m_width);
 }
 	
-void CDynImage::DrawImage()
+void CDynProgressImage::DrawImage()
 {
 	CreateSpan();
 
@@ -3235,30 +3278,18 @@ void CDynImage::DrawImage()
 	}
 }
 
-unsigned char *CDynImage::RequestData(int &size)
+unsigned char *CDynProgressImage::RequestData(int &size)
 {
 	// create new one
 	DrawImage();
 
-	// write png into buffer
-	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-	png_infop info_ptr = png_create_info_struct(png_ptr);
-	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
-		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-	png_set_write_fn(png_ptr, this, png_write_fn, 0);
-	
-	m_size = 0;
-	png_write_info(png_ptr, info_ptr);
-	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
-	png_write_end(png_ptr, 0);
-	png_destroy_write_struct(&png_ptr, &info_ptr);
-	
-	return CProgressImage::RequestData(size);
+	return CDynPngImage::RequestData(size);
 }
 
 #else
 
-CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFile *file) :
+CDynProgressImage::CDynProgressImage(int width, int height, wxString &tmpl, DownloadFile *file) :
+	CAnyImage(width, height),
 	CProgressImage(width, height, tmpl, file)
 {
 	m_name = wxT("dyn_") + m_file->sFileHash + wxT(".png");
@@ -3266,9 +3297,9 @@ CDynImage::CDynImage(int width, int height, wxString &tmpl, DownloadFile *file) 
 }
 
 
-wxString CDynImage::GetHTML()
+wxString CDynProgressImage::GetHTML()
 {
-	static wxString progresscolor[12] = {
+	static wxChar *progresscolor[12] = {
 		wxT("transparent.gif"), wxT("black.gif"), wxT("yellow.gif"), wxT("red.gif"),
 		wxT("blue1.gif"),       wxT("blue2.gif"), wxT("blue3.gif"),  wxT("blue4.gif"),
 		wxT("blue5.gif"),       wxT("blue6.gif"), wxT("green.gif"),  wxT("greenpercent.gif") };
@@ -3299,9 +3330,8 @@ wxString CDynImage::GetHTML()
 					}
 				}
 			}
-			// Evil unicode2char, but nothing we ca do against it because of the template.
 			str += wxString::Format(m_template,
-				(const char*) unicode2char(progresscolor[color_idx]), i - lastindex);
+				progresscolor[color_idx], i - lastindex);
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
@@ -3312,67 +3342,80 @@ wxString CDynImage::GetHTML()
 
 #endif
 
+CStatsData::CStatsData(int size)
+{
+	m_size = size;
+	m_data = new int[size];
+	
+	//
+	// initial situation: all data is 0's
+	//
+	memset(m_data, 0, m_size*sizeof(int));
+	m_start_index = m_curr_index = 0;
+	m_end_index = size - 1;
+}
+
+CStatsData::~CStatsData()
+{
+	delete [] m_data;
+}
+
+int CStatsData::GetFirst()
+{
+	m_curr_index = m_start_index;
+	return m_data[m_curr_index];
+}
+
+int CStatsData::GetNext()
+{
+	m_curr_index++;
+	m_curr_index %= m_size;
+	return m_data[m_curr_index];
+}
+
+void CStatsData::PushSample(int sample)
+{
+	m_start_index = (m_start_index + 1) % m_size;
+	m_end_index = (m_end_index + 1) % m_size;
+	m_data[m_start_index] = sample;
+}
+
+CStatsCollection::CStatsCollection(int size)
+{
+	m_down_speed = new CStatsData(size);
+	m_up_speed = new CStatsData(size);
+	m_conn_number = new CStatsData(size);
+}
+
+void CStatsCollection::ReQuery()
+{
+}
+
+//
+// Dynamically generated statistic images
+//
 #ifdef WITH_LIBPNG
-CDynPngImage::CDynPngImage(int w, int h, const unsigned char* Data, wxString name) :
-		CAnyImage(w * h * sizeof(uint32)),m_width(w),m_height(h),m_name(name) {
-	
-	//
-	// Allocate array of "row pointers" - libpng need it in this form
-	// Fill it also with the image data
-	//
-	
-	// When allocating an array with a new expression, GCC used to allow 
-	// parentheses around the type name. This is actually ill-formed and it is 
-	// now rejected. From gcc3.4
 
-	m_row_ptrs = new png_bytep [m_height];
-	for (int i = 0; i < m_height;i++) {
-		m_row_ptrs[i] = new png_byte[3*m_width];
-		memcpy(m_row_ptrs[i], (void*)((unsigned char*)Data + (m_height-1)*m_width), 3*m_width);
-	}
-	
-}
-
-CDynPngImage::~CDynPngImage()
+CDynStatisticImage::CDynStatisticImage(int width, int height, CStatsData *data) :
+	CAnyImage(width, height), CDynPngImage(width, height)
 {
-	for (int i = 0; i < m_height;i++) {
-		delete [] m_row_ptrs[i];
-	}
-	delete [] m_row_ptrs;
+	m_data = data;
 }
 
-void CDynPngImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
+CDynStatisticImage::~CDynStatisticImage()
 {
-	CDynPngImage *This = (CDynPngImage *)png_get_io_ptr(png_ptr);
-	wxASSERT((png_size_t)(This->m_size + length) <= (png_size_t)This->m_alloc_size);
-	memcpy(This->m_data + This->m_size, data, length);
-	This->m_size += length;
 }
 
-wxString CDynPngImage::GetHTML()
+unsigned char *CDynStatisticImage::RequestData(int &size)
 {
-	// template contain %s (name) %d (width)
-	return wxString::Format(/*m_template*/wxT("%s %d"), m_name.GetData(), m_width);
+	return CDynPngImage::RequestData(size);
 }
 
-unsigned char *CDynPngImage::RequestData(int &size)
+wxString CDynStatisticImage::GetHTML()
 {
-
-	// write png into buffer
-	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-	png_infop info_ptr = png_create_info_struct(png_ptr);
-	png_set_IHDR(png_ptr, info_ptr, m_width, m_height, 8, PNG_COLOR_TYPE_RGB,
-		PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
-	png_set_write_fn(png_ptr, this, png_write_fn, 0);
-	
-	m_size = 0;
-	png_write_info(png_ptr, info_ptr);
-	png_write_image(png_ptr, (png_bytep *)m_row_ptrs);
-	png_write_end(png_ptr, 0);
-	png_destroy_write_struct(&png_ptr, &info_ptr);
-	
-	return CAnyImage::RequestData(size);
+	return wxEmptyString;
 }
+
 #endif
 
 CImageLib::CImageLib(wxString image_dir) : m_image_dir(image_dir)

@@ -543,6 +543,10 @@ class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, xDownloadS
 class CAnyImage {
 	protected:
 		unsigned char *m_data;
+
+		int m_width, m_height;
+		wxString m_name;
+
 		int m_size, m_alloc_size;
 		wxString m_Http;
 		
@@ -551,6 +555,7 @@ class CAnyImage {
 		void SetHttpType(wxString ext);
 	public:
 		CAnyImage(int size);
+		CAnyImage(int width, int height);
 		virtual ~CAnyImage();
 
 		const wxString& GetHTTP() const { return m_Http; }
@@ -558,8 +563,7 @@ class CAnyImage {
 		virtual unsigned char *RequestData(int &size);
 };
 
-class CFileImage : public CAnyImage {
-		wxString m_name;
+class CFileImage : public virtual CAnyImage {
 	public:
 		CFileImage(const wxString& name);
 		
@@ -579,13 +583,11 @@ class CImage3D_Modifiers {
 		}
 };
 
-class CProgressImage : public CAnyImage {
+class CProgressImage : public virtual CAnyImage {
 	protected:
 		DownloadFile *m_file;
 		
 		wxString m_template;
-		int m_width, m_height;
-		wxString m_name;
 		
 		//
 		// sorted list of gaps
@@ -619,17 +621,32 @@ class CProgressImage : public CAnyImage {
 #ifdef WITH_LIBPNG
 
 //
-// Dynamic png image generation from gap info
-class CDynImage : public CProgressImage {
-		CImage3D_Modifiers m_modifiers;
+// Dynamic png image generation
+//
+class CDynPngImage : public virtual CAnyImage {
+		
+	public:
+		CDynPngImage(int w, int h);
+		~CDynPngImage();
+		
+		virtual unsigned char *RequestData(int &size);
+	
+	protected:
 		png_bytep *m_row_ptrs;
 		
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
 		
+};
+
+//
+// Dynamic png image generation from gap info
+class CDynProgressImage : public virtual CProgressImage, public virtual CDynPngImage {
+		CImage3D_Modifiers m_modifiers;
+		
 		void DrawImage();
 	public:
-		CDynImage(int w, int h,	wxString &tmpl, DownloadFile *file);
-		~CDynImage();
+		CDynProgressImage(int w, int h,	wxString &tmpl, DownloadFile *file);
+		~CDynProgressImage();
 		
 		virtual unsigned char *RequestData(int &size);
 		virtual wxString GetHTML();
@@ -640,37 +657,53 @@ class CDynImage : public CProgressImage {
 
 //
 // Fallback to original implementation
-class CDynImage : public CProgressImage {
+class CDynProgressImage : public virtual CProgressImage {
 	public:
-		CDynImage(int w, int h,	wxString &tmpl, DownloadFile *file);
+		CDynProgressImage(int w, int h,	wxString &tmpl, DownloadFile *file);
 
 		virtual wxString GetHTML();
 };
 
 #endif
 
+//
+// Representing statistical sample for some parameter. Circular buffer
+// inside to avoid rellocations
+//
+class CStatsData {
+		int *m_data;
+		int m_size;
+		int m_start_index, m_end_index, m_curr_index;
+	public:
+		CStatsData(int size);
+		~CStatsData();
+		
+		int Size() const { return m_size; }
+		int GetFirst();
+		int GetNext();
+		
+		void PushSample(int sample);
+};
+
+class CStatsCollection {
+		CStatsData *m_down_speed, *m_up_speed, *m_conn_number;
+	public:
+		CStatsCollection(int size);
+		~CStatsCollection();
+		
+		void ReQuery();
+};
+
 #ifdef WITH_LIBPNG
 
-//
-// Dynamic png image generation from aMule data.
-
-class CDynPngImage : public CAnyImage {
-		
+class CDynStatisticImage : public virtual CDynPngImage {
+		CStatsData *m_data;
 	public:
-		CDynPngImage(int w, int h, const unsigned char* Data, wxString name);
-		~CDynPngImage();
-		
+		CDynStatisticImage(int w, int h, CStatsData *data);
+		~CDynStatisticImage();
+
 		virtual unsigned char *RequestData(int &size);
 		virtual wxString GetHTML();
-		const wxString &Name() { return m_name; }
-	
-	private:
-		int m_width, m_height;
-		wxString m_name;
-		png_bytep *m_row_ptrs;
-		
-		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
-		
 };
 
 #endif
