@@ -122,7 +122,6 @@ protected:
 	CConvertListCtrl*	m_joblist;
 
 	void	OnAddFolder(wxCommandEvent& event);
-	void	OnCancel(wxCommandEvent& event);
 	void	RetrySel(wxCommandEvent& event);
 	void	RemoveSel(wxCommandEvent& event);
 

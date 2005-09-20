@@ -504,6 +504,7 @@ const int ID_VERBOSEDEBUG = 10367;
 const int ID_DEBUGCATS = 10368;
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+extern wxSizer *IDC_CURJOB;
 const int IDC_CONV_PB_LABEL = 10369;
 const int IDC_CONV_PROZENT = 10370;
 const int IDC_CONV_PB_CURRENT = 10371;

@@ -41,6 +41,7 @@
 #include "FileFunctions.h"
 
 #ifndef AMULE_DAEMON
+#include "PlatformSpecific.h"
 #include "muuli_wdr.h"
 #include <wx/dirdlg.h>
 #include <wx/icon.h>
@@ -177,8 +178,6 @@ void CPartFileConvert::StartThread()
 
 void CPartFileConvert::StopThread()
 {
-	wxMutexLocker lock(s_mutex);
-
 	if (s_convertPfThread) {
 		s_convertPfThread->Delete();
 	} else {
@@ -230,15 +229,11 @@ wxThread::ExitCode CPartFileConvert::Entry()
 			}
 
 			if (TestDestroy()) {
-#ifndef AMULE_DAEMON
-				CloseGUI();
-#endif
 				wxMutexLocker lock(s_mutex);
-				std::list<ConvertJob*>::iterator it = s_jobs.begin();
-				while (it != s_jobs.end()) {
+				for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 					delete *it;
-					it = s_jobs.erase(it);
 				}
+				s_jobs.clear();
 				break;
 			}
 
@@ -271,7 +266,6 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	wxMutexGuiLeave();
 #endif
 
-	wxMutexLocker lock(s_mutex);
 	s_convertPfThread = NULL;
 
 	return NULL;
@@ -404,10 +398,10 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				}
 
 				uint32 chunkstart = (fileindex - 1) * PARTSIZE;
-				off_t toReadWrite = std::min<off_t>(PARTSIZE, inputfile.GetLength());
 				
 				// open, read data of the part-part-file into buffer, close file
-				inputfile.Open(filename, CFile::read_write);
+				inputfile.Open(filename, CFile::read);
+				off_t toReadWrite = std::min<off_t>(PARTSIZE, inputfile.GetLength());
 				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
 
@@ -545,36 +539,45 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 }
 
 #ifndef AMULE_DAEMON
-void CPartFileConvert::UpdateGUI(float percent, wxString text, bool WXUNUSED(fullinfo))
+void CPartFileConvert::UpdateGUI(float percent, wxString text, bool fullinfo)
 {
-	wxMutexGuiEnter();
-	
+	if (!IsMain()) {
+		wxMutexGuiEnter();
+	}
+
 	if (s_convertgui) {
 		s_convertgui->m_pb_current->SetValue((int)percent);
 		wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
-		dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT))->SetLabel(buffer);
+		wxStaticText* percent = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
+		percent->SetLabel(buffer);
 
 		if (!text.IsEmpty()) {
 			dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(text);
 		}
 
-		// to hell with it, wxWidgets doesn't allow changing the title of a wxStaticBox after creation
-		//if (fullinfo) {
-		//	wxMutexLocker(s_mutex);
-		//	dynamic_cast<wxStaticBox*>(s_convertgui->FindWindow(IDC_CURJOB))->SetLabel(s_pfconverting->folder);
-		//}
+		percent->GetParent()->Layout();
+
+		if (fullinfo) {
+			dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(s_pfconverting->folder);
+		}
 	}
 
-	wxMutexGuiLeave();
+	if (!IsMain()) {
+		wxMutexGuiLeave();
+	}
 }
 
 void CPartFileConvert::UpdateGUI(ConvertJob* job)
 {
-	wxMutexGuiEnter();
+	if (!IsMain()) {
+		wxMutexGuiEnter();
+	}
 	if (s_convertgui) {
 		s_convertgui->UpdateJobInfo(job);
 	}
-	wxMutexGuiLeave();
+	if (!IsMain()) {
+		wxMutexGuiLeave();
+	}
 }
 
 void CPartFileConvert::ShowGUI(wxWindow* parent)
@@ -604,7 +607,6 @@ void CPartFileConvert::CloseGUI()
 	if (s_convertgui) {
 		s_convertgui->Destroy();
 		s_convertgui = NULL;
-		// GonoszTopi - Is this correct? Won't it cause memleaks? Does Destroy() call delete on self?
 	}
 }
 #endif /* ! AMULE_DAEMON */
@@ -635,10 +637,6 @@ void CPartFileConvert::RemoveJob(ConvertJob* job)
 #endif
 			s_jobs.erase(it);
 			delete *it;
-			// GonoszTopi - why this?
-			//if (s_jobs.size() == 0) {
-			//	return;
-			//}
 		}
 	}
 }
@@ -718,10 +716,8 @@ static char * convert_xpm[] = {
 "      #         "};
 #endif /* ! __WXMSW__ */
 
-// Modless Dialog Implementation
+// Modeless Dialog Implementation
 // CPartFileConvertDlg dialog
-
-//IMPLEMENT_DYNAMIC(CPartFileConvertDlg, CDialog)
 
 BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
 	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
@@ -743,7 +739,7 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	wxIcon icon(convert_xpm);
 #endif
 	SetIcon(icon);
-	// for some reason, if I try go get the mutex from the dialog
+	// for some reason, if I try to get the mutex from the dialog
 	// it will end up in a deadlock(?) and I have to kill aMule
 	CastChild(IDC_RETRY, wxButton)->Enable(false);
 	CastChild(IDC_CONVREMOVE, wxButton)->Enable(false);
@@ -751,15 +747,10 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 
 // CPartFileConvertDlg message handlers
 
-void CPartFileConvertDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
-{
-    Destroy();
-}
-
 void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 {
 	wxString folder = ::wxDirSelector(_("Please choose a folder to search for temporary downloads! (subfolders will be included)"),
-					  wxFileName::GetHomeDir());
+					  GetDocumentsDir());
 	if (!folder.IsEmpty()) {
 		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
 					 _("Remove sources?"),
@@ -773,7 +764,7 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
 {
 	if (!job) {
-		//CastChild(IDC_CURJOB, wxStaticBox)->SetLabel(_("Waiting..."));
+		dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(_("Waiting..."));
 		CastChild(IDC_CONV_PROZENT, wxStaticText)->SetLabel(wxEmptyString);
 		m_pb_current->SetValue(0);
 		CastChild(IDC_CONV_PB_LABEL, wxStaticText)->SetLabel(wxEmptyString);
