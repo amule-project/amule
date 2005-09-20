@@ -293,11 +293,12 @@ class CRemoteContainer {
 				m_items_hash.erase(*j);
 				for(typename std::list<T *>::iterator k = this->m_items.begin(); k != this->m_items.end(); k++) {
 					if ( *j == GetItemID(*k) ) {
-						this->m_items.erase(k);
-
 						// item may contain data that need to be freed externally, before
 						// dtor is called and memory freed
 						this->DeleteItem(*k);
+
+						this->m_items.erase(k);
+
 						break;
 					}
 				}
