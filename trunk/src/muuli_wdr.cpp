@@ -3852,23 +3852,26 @@ wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *IDC_CURJOB;
 wxSizer *convertDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxFlexGridSizer *item0 = new wxFlexGridSizer( 3, 0, 0, 0 );
     item0->AddGrowableCol( 0 );
     item0->AddGrowableRow( 1 );
 
-    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Waiting...") );
     wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
+    IDC_CURJOB = item1;
 
-    wxFlexGridSizer *item3 = new wxFlexGridSizer( 3, 0, 0 );
-    item3->AddGrowableCol( 0 );
+    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item4 = new wxStaticText( parent, IDC_CONV_PB_LABEL, wxT(""), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    wxStaticText *item4 = new wxStaticText( parent, IDC_CONV_PB_LABEL, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item3->Add( item4, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, IDC_CONV_PROZENT, wxT(""), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE|wxALIGN_RIGHT );
-    item3->Add( item5, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_RIGHT|wxALL, 5 );
+    item3->Add( 20, 20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxStaticText *item5 = new wxStaticText( parent, IDC_CONV_PROZENT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
