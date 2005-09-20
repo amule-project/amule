@@ -79,7 +79,8 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	serverlistctrl=list;
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
-	
+	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://www.gruk.org/server.met.gz"));
+
 	// Insert two columns, currently without a header
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
 	wxASSERT(ED2KInfoList);
