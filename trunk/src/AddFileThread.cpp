@@ -446,7 +446,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	delete[] data;
 	
 	// Store the md4 hash
-	owner->hashlist.Add( (byte*)hash );
+	owner->hashlist.Add( CMD4Hash(hash) );
 
 	
 	// Kry This is because of the ed2k implementation for parts. A 2 * PARTSIZE 
@@ -454,7 +454,7 @@ bool CAddFileThread::CreateNextPartHash( CFile* file, CKnownFile* owner, bool cr
 	// So we have to create the hash for the 0-size data, which will be the default
 	// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
 	if ( zero_hash ) {
-		owner->hashlist.Add( default_zero_hash );
+		owner->hashlist.Add( CMD4Hash(default_zero_hash) );
 	}
 
 	return true;

@@ -225,7 +225,7 @@ void CUpDownClient::CreateNextBlockPackage()
                (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.GetHead();
-			CKnownFile* srcfile = theApp.sharedfiles->GetFileByID(currentblock->FileID);
+			CKnownFile* srcfile = theApp.sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
 			
 			if (!srcfile) {
 				throw wxString(wxT("requested file not found"));

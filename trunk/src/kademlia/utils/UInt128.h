@@ -55,9 +55,9 @@ class CUInt128
 public:
 
 	CUInt128();
-	CUInt128(bool fill);
-	CUInt128(uint32 value);
-	CUInt128(const byte *valueBE);
+	explicit CUInt128(bool fill);
+	explicit CUInt128(uint32 value);
+	explicit CUInt128(const byte *valueBE);
 	/**
 	 * Generates a new number, copying the most significant 'numBits' bits from 'value'.
 	 * The remaining bits are randomly generated.

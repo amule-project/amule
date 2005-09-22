@@ -854,7 +854,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 	pNewClient->SetKadState(KS_QUEUED_BUDDY);
 	byte ID[16];
 	contact->getClientID().toByteArray(ID);
-	pNewClient->SetUserHash(ID);
+	pNewClient->SetUserHash(CMD4Hash(ID));
 	AddToKadList(pNewClient);
 	//This method checks if this is a dup already.
 	AddClient(pNewClient);
@@ -884,7 +884,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	pNewClient->SetKadState(KS_INCOMING_BUDDY);
 	byte ID[16];
 	contact->getClientID().toByteArray(ID);
-	pNewClient->SetUserHash(ID);
+	pNewClient->SetUserHash(CMD4Hash(ID));
 	buddyID->toByteArray(ID);
 	pNewClient->SetBuddyID(ID);
 	AddToKadList(pNewClient);

@@ -395,7 +395,7 @@ void CSearch::StorePacket()
 			}
 			byte fileid[16];
 			m_target.toByteArray(fileid);
-			CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid);
+			CKnownFile* file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
 				m_fileName = file->GetFileName();
 
@@ -462,7 +462,7 @@ void CSearch::StorePacket()
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreNotes"));
 			byte fileid[16];
 			m_target.toByteArray(fileid);
-			CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid);
+			CKnownFile* file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
 				byte packet[1024*2];
 				CByteIO bio(packet,sizeof(packet));
@@ -642,13 +642,14 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	delete info;
 	byte fileid[16];
 	m_target.toByteArray(fileid);
+	const CMD4Hash fileHash(fileid);
 	
 	//Check if this hash is in our shared files..
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid);
+	CKnownFile* file = theApp.sharedfiles->GetFileByID(fileHash);
 	
 	if (!file) {
 		// If we didn't find anything check if it's in our download queue.
-		file = (CKnownFile*)theApp.downloadqueue->GetFileByID(fileid);
+		file = (CKnownFile*)theApp.downloadqueue->GetFileByID(fileHash);
 	}
 	
 	if (file) {
@@ -949,7 +950,7 @@ void CSearch::PreparePacket(void)
 				bio3->writeUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(fileid);
+				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
 				}
@@ -967,7 +968,7 @@ void CSearch::PreparePacket(void)
 				bio2->writeUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(fileid);
+				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
 				}
@@ -985,7 +986,7 @@ void CSearch::PreparePacket(void)
 				bio1->writeUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(fileid);
+				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
 				}

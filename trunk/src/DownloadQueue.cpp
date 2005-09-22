@@ -1371,7 +1371,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetKadPort(udp);
 			byte cID[16];
 			pcontactID->toByteArray(cID);
-			ctemp->SetUserHash(cID);
+			ctemp->SetUserHash(CMD4Hash(cID));
 			break;
 		}
 		case 2: {
@@ -1388,7 +1388,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetKadPort(udp);
 			byte cID[16];
 			pcontactID->toByteArray(cID);
-			ctemp->SetUserHash(cID);
+			ctemp->SetUserHash(CMD4Hash(cID));
 			pbuddyID->toByteArray(cID);
 			ctemp->SetBuddyID(cID);
 			ctemp->SetBuddyIP(serverip);

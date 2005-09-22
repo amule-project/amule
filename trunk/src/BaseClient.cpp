@@ -117,7 +117,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 
 	if (checkfriend) {
 		CFriend* m_Friend;
-		if ((m_Friend = theApp.friendlist->FindFriend(NULL, m_dwUserIP, m_nUserPort)) != NULL){
+		if ((m_Friend = theApp.friendlist->FindFriend(CMD4Hash(), m_dwUserIP, m_nUserPort)) != NULL){
 			m_Friend->LinkClient(this);
 		} else{
 			// avoid that an unwanted client instance keeps a friend slot
@@ -1398,7 +1398,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						//Create search to find buddy.
 						Kademlia::CSearch *findSource = new Kademlia::CSearch;
 						findSource->setSearchTypes(Kademlia::CSearch::FINDSOURCE);
-						findSource->setTargetID(GetBuddyID());
+						findSource->setTargetID(Kademlia::CUInt128(GetBuddyID()));
 						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						if(Kademlia::CSearchManager::startSearch(findSource)) {
 							//Started lookup..

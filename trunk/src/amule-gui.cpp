@@ -747,7 +747,7 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 		// chat window
 		case CHAT_REFRESH_FRIEND:
 			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->RefreshFriend(NULL, event.string_value, event.long_value, event.short_value);
+				amuledlg->chatwnd->RefreshFriend(CMD4Hash(), event.string_value, event.long_value, event.short_value);
 			}
 			break;
 		case CHAT_CONN_RESULT:

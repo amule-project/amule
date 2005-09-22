@@ -446,12 +446,13 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					m_client->SetWaitStartTime();
 				}
 
-				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID((byte*)packet);
+				const CMD4Hash fileID((byte*)packet);
+				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(fileID);
 				if ( reqfile == NULL ) {
-					reqfile = theApp.downloadqueue->GetFileByID((byte*)packet);
+					reqfile = theApp.downloadqueue->GetFileByID(fileID);
 					if ( !( reqfile  != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 						CPacket* replypacket = new CPacket(OP_FILEREQANSNOFIL, 16);
-						replypacket->Copy16ToDataBuffer(packet);
+						replypacket->Copy16ToDataBuffer(fileID.GetHash());
 						theStats::AddUpOverheadFileRequest(replypacket->GetPacketSize());
 						SendPacket(replypacket, true);
 						break;
@@ -459,7 +460,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				}
 
 				// check to see if this is a new file they are asking for
-				if(md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
+				if (m_client->GetUploadFileID() != fileID) {
 					m_client->SetCommentDirty();
 				}
 
@@ -490,7 +491,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size == 16) {
 				// if that client does not have my file maybe has another different
-				CPartFile* reqfile = theApp.downloadqueue->GetFileByID((byte*)packet);
+				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(CMD4Hash((byte*)packet));
 				if ( reqfile) {
 					reqfile->AddDeadSource( m_client );
 				} else {
@@ -550,9 +551,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			
 			if (size == 16) {
-				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID((byte*)packet);
+				const CMD4Hash fileID((byte*)packet);
+				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(fileID);
 				if (reqfile) {
-					if (md4cmp(m_client->GetUploadFileID().GetHash(), packet) != 0) {
+					if (m_client->GetUploadFileID() != fileID) {
 						m_client->SetCommentDirty();
 					}
 					m_client->SetUploadFileID(reqfile);
@@ -662,7 +664,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			if (size>=16 && !md4cmp(m_client->GetUploadFileID().GetHash(), packet)) {
+			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash((byte*)packet)) {
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
@@ -679,7 +681,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (size != 16) {
 				throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
 			}
-			m_client->SendHashsetPacket((byte*)packet);
+			m_client->SendHashsetPacket(CMD4Hash((byte*)packet));
 			break;
 		}
 		
@@ -1096,7 +1098,7 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 				if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 					CPacket* replypacket = new CPacket(OP_FILEREQANSNOFIL, 16);
-					replypacket->Copy16ToDataBuffer(packet);
+					replypacket->Copy16ToDataBuffer(reqfilehash.GetHash());
 					theStats::AddUpOverheadFileRequest(replypacket->GetPacketSize());
 					SendPacket(replypacket, true);
 					break;
@@ -1413,9 +1415,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 				}
 				//first check shared file list, then download list
-				CKnownFile* file = theApp.sharedfiles->GetFileByID((byte*)packet);
+				const CMD4Hash fileID((byte*)packet);
+				CKnownFile* file = theApp.sharedfiles->GetFileByID(fileID);
 				if(!file) {
-					file = theApp.downloadqueue->GetFileByID((byte*)packet);
+					file = theApp.downloadqueue->GetFileByID(fileID);
 				}
 				if(file) {
 					uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
@@ -1560,9 +1563,10 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			CUInt128 fileid = data.ReadUInt128();
 			byte fileid2[16];
 			fileid.toByteArray(fileid2);
+			const CMD4Hash fileHash(fileid2);
 			CKnownFile* reqfile;
-			if ( (reqfile = theApp.sharedfiles->GetFileByID(fileid2)) == NULL ) {
-				if ( (reqfile = theApp.downloadqueue->GetFileByID(fileid2)) == NULL) {
+			if ( (reqfile = theApp.sharedfiles->GetFileByID(fileHash)) == NULL ) {
+				if ( (reqfile = theApp.downloadqueue->GetFileByID(fileHash)) == NULL) {
 					#warning Xaignar? I know we have something like this somewhere
 					//client->CheckFailedFileIdReqs(fileid2);
 					break;
