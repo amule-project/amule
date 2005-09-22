@@ -2,6 +2,9 @@ Version 2.1.x - The "???" version
 ----------
 2005-06-??
 
+	ender:
+		* Fix adding AICH links with amulecmd.
+
 	GonoszTopi:
 		* Ported the partfile importer from eMule.
 		* Proper termination of working threads in webserver.
