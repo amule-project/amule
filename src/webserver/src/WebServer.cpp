@@ -357,19 +357,20 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
 {
 	CECPacket *ec_cmd = 0;
-	CECTag hashtag(EC_TAG_KNOWNFILE, CMD4Hash(file_hash));
+	const CMD4Hash fileHash(file_hash);
+	CECTag hashtag(EC_TAG_KNOWNFILE, fileHash);
 	if (cmd == wxT("prio")) {
 		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
 	} else if ( cmd == wxT("prioup") ) {
-		SharedFile *file = m_SharedFileInfo.GetByID(file_hash);
+		SharedFile *file = m_SharedFileInfo.GetByID(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 				GetHigherPrioShared(file->nFilePriority, file->bFileAutoPriority)));
 		}
 	} else if ( cmd == wxT("priodown") ) {
-		SharedFile *file = m_SharedFileInfo.GetByID(file_hash);
+		SharedFile *file = m_SharedFileInfo.GetByID(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
@@ -393,7 +394,8 @@ void CWebServerBase::Send_ReloadSharedFile_Cmd()
 void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
 {
 	CECPacket *ec_cmd = 0;
-	CECTag hashtag(EC_TAG_PARTFILE, CMD4Hash(file_hash));
+	const CMD4Hash fileHash(file_hash);
+	CECTag hashtag(EC_TAG_PARTFILE, fileHash);
 	if (cmd == wxT("pause")) {
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
 	} else if (cmd == wxT("resume")) {
@@ -404,14 +406,14 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 		hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)opt_arg));
 	} else if (cmd == wxT("prioup")) {
-		DownloadFile *file = m_DownloadFileInfo.GetByID(file_hash);
+		DownloadFile *file = m_DownloadFileInfo.GetByID(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 				GetHigherPrio(file->lFilePrio, file->bFileAutoPriority)));
 		}
 	} else if (cmd == wxT("priodown")) {
-		DownloadFile *file = m_DownloadFileInfo.GetByID(file_hash);
+		DownloadFile *file = m_DownloadFileInfo.GetByID(fileHash);
 		if ( file ) {
 			ec_cmd = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
 			hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,

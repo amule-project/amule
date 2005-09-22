@@ -74,22 +74,8 @@ public:
 	 * Please note that the array must either be a NULL pointer or be at least
 	 * 16 chars long, not including any possible zero-terminator!
 	 */
-	CMD4Hash(const unsigned char hash[]) {
-		if ( hash ) {
-			RawPokeUInt64( m_hash,		RawPeekUInt64( hash ) );
-			RawPokeUInt64( m_hash + 8,	RawPeekUInt64( hash + 8 ) );
-		} else {
-			Clear();
-		}
-	}
-
-	/**
-	 * Copy constructor.
-	 *
-	 * @param hash The hash to be copied.
-	 */
-	CMD4Hash(const CMD4Hash& hash) {
-		(*this) = hash.m_hash;
+	explicit CMD4Hash(const unsigned char hash[]) {
+		SetHash(hash);
 	}
 
 	/**
@@ -99,7 +85,7 @@ public:
 	 *
 	 * Casts the hexadecimal representation of a MD4 hash to a CMD4Hash.
 	 */
-	CMD4Hash(const wxString& hash) {
+	explicit CMD4Hash(const wxString& hash) {
 		Decode( hash );
 	}
 	
@@ -234,8 +220,13 @@ public:
 	 *
 	 * The hash must either be a NULL pointer or be of length 16.
 	 */
-	void SetHash(unsigned char hash[]) {
-		(*this) = hash;
+	void SetHash(const unsigned char hash[]) {
+		if ( hash ) {
+			RawPokeUInt64( m_hash,		RawPeekUInt64( hash ) );
+			RawPokeUInt64( m_hash + 8,	RawPeekUInt64( hash + 8 ) );
+		} else {
+			Clear();
+		}
 	}
 	
 	/**

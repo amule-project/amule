@@ -238,7 +238,7 @@ void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
-		if(entry->ip == pEntry->ip || entry->sourceID.compareTo(pEntry)) {
+		if(entry->ip == pEntry->ip || !entry->sourceID.compareTo(pEntry->sourceID)) {
 			delete pEntry;
 			return;
 		}

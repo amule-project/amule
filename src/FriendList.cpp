@@ -177,7 +177,7 @@ CFriend* CFriendList::FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 n
 
 bool CFriendList::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
 {
-	return FindFriend( NULL, dwLastUsedIP, nLastUsedPort );
+	return FindFriend( CMD4Hash(), dwLastUsedIP, nLastUsedPort );
 }
 
 

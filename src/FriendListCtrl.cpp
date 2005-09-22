@@ -221,7 +221,7 @@ CDlgFriend* CFriendListCtrl::FindFriend(const CMD4Hash& userhash, uint32 dwIP, u
 
 bool CFriendListCtrl::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
 {
-	return FindFriend( NULL, dwLastUsedIP, nLastUsedPort );
+	return FindFriend( CMD4Hash(), dwLastUsedIP, nLastUsedPort );
 }
 
 void CFriendListCtrl::OnRightClick(wxMouseEvent& event)
@@ -350,7 +350,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
 }
 
 void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state) {
-	CDlgFriend* client = FindFriend(NULL, dwIP, nPort);
+	CDlgFriend* client = FindFriend(CMD4Hash(), dwIP, nPort);
 	if (client) {
 		client->m_hash = userhash;
 		client->islinked = new_state;	

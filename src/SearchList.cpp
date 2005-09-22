@@ -620,7 +620,7 @@ CMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, const 
 	
 	if (kad_padding) {
 		// We need to make some room for the keyword hash
-		data->WriteUInt128((uint32)0);
+		data->WriteUInt128(CUInt128());
 		// and the search type (0/1 if there is ed2k data or not)		
 		data->WriteUInt8(0);
 		// Now the search string
@@ -698,7 +698,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	CMemFile temp(250);
 	byte fileid[16];
 	fileID->toByteArray(fileid);
-	temp.WriteHash(fileid);
+	temp.WriteHash(CMD4Hash(fileid));
 	
 	temp.WriteUInt32(0);	// client IP
 	temp.WriteUInt16(0);	// client port
