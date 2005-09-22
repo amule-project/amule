@@ -476,6 +476,10 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 		case CMD_ID_ADDLINK:
 			if ( ! args.IsEmpty() ) {
+				//aMule doesn't like AICH links without |/| in front of h=
+				if (args.Find(wxT("|h=")) > -1 && args.Find(wxT("|/|h=")) == -1) {
+					args.Replace(wxT("|h="),wxT("|/|h="));
+				}
 				request = new CECPacket(EC_OP_ED2K_LINK);
 				request->AddTag(CECTag(EC_TAG_STRING, args));
 				request_list.push_back(request);
