@@ -671,7 +671,7 @@ class CDynProgressImage : public virtual CProgressImage {
 // inside to avoid rellocations
 //
 class CStatsData {
-		int *m_data;
+		uint32 *m_data;
 		int m_size;
 		int m_start_index, m_end_index, m_curr_index;
 	public:
@@ -679,16 +679,19 @@ class CStatsData {
 		~CStatsData();
 		
 		int Size() const { return m_size; }
-		int GetFirst();
-		int GetNext();
+		uint32 GetFirst();
+		uint32 GetNext();
 		
-		void PushSample(int sample);
+		void PushSample(uint32 sample);
 };
 
 class CStatsCollection {
 		CStatsData *m_down_speed, *m_up_speed, *m_conn_number;
+		CamulewebApp *m_iface;
+		double m_LastTimeStamp;
+		int m_size;
 	public:
-		CStatsCollection(int size);
+		CStatsCollection(int size, CamulewebApp	*iface);
 		~CStatsCollection();
 		
 		void ReQuery();
@@ -698,6 +701,8 @@ class CStatsCollection {
 
 class CDynStatisticImage : public virtual CDynPngImage {
 		CStatsData *m_data;
+		
+		void DrawImage();
 	public:
 		CDynStatisticImage(int w, int h, CStatsData *data);
 		~CDynStatisticImage();

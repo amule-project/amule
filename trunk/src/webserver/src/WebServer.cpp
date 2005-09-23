@@ -3347,7 +3347,7 @@ wxString CDynProgressImage::GetHTML()
 CStatsData::CStatsData(int size)
 {
 	m_size = size;
-	m_data = new int[size];
+	m_data = new uint32[size];
 	
 	//
 	// initial situation: all data is 0's
@@ -3362,35 +3362,60 @@ CStatsData::~CStatsData()
 	delete [] m_data;
 }
 
-int CStatsData::GetFirst()
+uint32 CStatsData::GetFirst()
 {
 	m_curr_index = m_start_index;
 	return m_data[m_curr_index];
 }
 
-int CStatsData::GetNext()
+uint32 CStatsData::GetNext()
 {
 	m_curr_index++;
 	m_curr_index %= m_size;
 	return m_data[m_curr_index];
 }
 
-void CStatsData::PushSample(int sample)
+void CStatsData::PushSample(uint32 sample)
 {
 	m_start_index = (m_start_index + 1) % m_size;
 	m_end_index = (m_end_index + 1) % m_size;
 	m_data[m_start_index] = sample;
 }
 
-CStatsCollection::CStatsCollection(int size)
+CStatsCollection::CStatsCollection(int size, CamulewebApp	*iface)
 {
 	m_down_speed = new CStatsData(size);
 	m_up_speed = new CStatsData(size);
 	m_conn_number = new CStatsData(size);
+	
+	m_iface = iface;
+	m_LastTimeStamp = 0.0;
+	m_size = size;
 }
 
 void CStatsCollection::ReQuery()
 {
+	CECPacket request(EC_OP_GET_STATSGRAPHS);
+
+	request.AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)m_size));
+	
+	//request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
+	if (m_LastTimeStamp > 0.0) {
+		request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_LastTimeStamp));
+	}
+	
+	CECPacket *response = m_iface->SendRecvMsg_v2(&request);
+
+	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
+
+	CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+	const uint32 *data = (const uint32 *)dataTag->GetTagData();
+	unsigned int count = dataTag->GetTagDataLen() / sizeof(uint32);
+	for (unsigned int i = 0; i < count; i += 3) {
+		m_down_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
+		m_up_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
+		m_conn_number->PushSample(ENDIAN_NTOHL(data[i+0]));
+	}
 }
 
 //
@@ -3402,10 +3427,43 @@ CDynStatisticImage::CDynStatisticImage(int width, int height, CStatsData *data) 
 	CAnyImage(width, height), CDynPngImage(width, height)
 {
 	m_data = data;
+
+	// actual name doesn't matter, just make it unique
+	m_name = wxString::Format(_("dyn_%d_stat.png"), (uint32)data);
 }
 
 CDynStatisticImage::~CDynStatisticImage()
 {
+}
+
+void CDynStatisticImage::DrawImage()
+{
+//	for(int i = 0; i < m_height; i++) {
+//			memset(m_row_ptrs[i], 0, 3*m_width);
+//	}
+
+	//
+	// Prepare background
+	//
+	static const COLORREF bg_color = RGB(0, 0, 0x7f);
+	for(int i = 0; i < m_height; i++) {
+		png_bytep u_row = m_row_ptrs[i];
+		for(int j = 0; j < m_width; j++) {
+			set_rgb_color_val(u_row+3*j, bg_color, 0);
+		}
+	}
+	//
+	// draw axis
+	//
+	static const int left_margin = 20, bottom_margin = 15;
+	static const COLORREF axis_color = RGB(0, 0, 0x7f);
+	for(int i = 0; i < m_height; i++) {
+		png_bytep u_row = m_row_ptrs[i];
+		set_rgb_color_val(u_row+3*left_margin, axis_color, 0);
+	}
+	for(int j = left_margin; j < m_width; j++) {
+		set_rgb_color_val(m_row_ptrs[bottom_margin]+3*j, axis_color, 0);
+	}
 }
 
 unsigned char *CDynStatisticImage::RequestData(int &size)
@@ -3610,12 +3668,15 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			} else {
 				Print(_("Password bad\n"));
 			}
+		} else {
+			Print(_("Warning: session is not logged in but request have no password\n"));
 		}
 	} else {
 		//
 		// if logged in, but requesting login page again,
 		// means logout command
 		//
+		Print(_("Logout requested\n"));
 		if ( filename == wxT("login.html") ) {
 			session->m_loggedin = false;
 		}
