@@ -314,7 +314,7 @@ class CRemoteContainer {
 		}
 		virtual I GetItemID(T *)
 		{
-			return 0;
+			return I();
 		}
 		virtual void ProcessItemUpdate(G *, T *)
 		{
