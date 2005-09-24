@@ -256,11 +256,18 @@ void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
-	m_UploadsInfo(webApp), m_SearchInfo(webApp),
+	m_UploadsInfo(webApp), m_SearchInfo(webApp), m_Stats(500, webApp),
 	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
 	m_mutexChildren = new wxMutex();
+	
+	//
+	// Init stat graphs
+#ifdef WITH_LIBPNG
+	CDynStatisticImage *img = new CDynStatisticImage(500, 200, m_Stats.DownloadSpeed());
+	m_ImageLib.AddImage(img, _("/test_stats.png"));
+#endif
 }
 
 //sends output to web interface
@@ -3382,7 +3389,7 @@ void CStatsData::PushSample(uint32 sample)
 	m_data[m_start_index] = sample;
 }
 
-CStatsCollection::CStatsCollection(int size, CamulewebApp	*iface)
+CStatsCollection::CStatsCollection(int size, CamulewebApp *iface)
 {
 	m_down_speed = new CStatsData(size);
 	m_up_speed = new CStatsData(size);
@@ -3393,28 +3400,36 @@ CStatsCollection::CStatsCollection(int size, CamulewebApp	*iface)
 	m_size = size;
 }
 
+CStatsCollection::~CStatsCollection()
+{
+	delete m_down_speed;
+	delete m_up_speed;
+	delete m_conn_number;
+}
+
 void CStatsCollection::ReQuery()
 {
 	CECPacket request(EC_OP_GET_STATSGRAPHS);
 
 	request.AddTag(CECTag(EC_TAG_STATSGRAPH_WIDTH, (uint16)m_size));
 	
-	//request->AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
+	uint16 m_nGraphScale = 1;
+	request.AddTag(CECTag(EC_TAG_STATSGRAPH_SCALE, m_nGraphScale));
 	if (m_LastTimeStamp > 0.0) {
 		request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_LastTimeStamp));
 	}
 	
 	CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
-	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
+	//m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 
 	CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 	const uint32 *data = (const uint32 *)dataTag->GetTagData();
 	unsigned int count = dataTag->GetTagDataLen() / sizeof(uint32);
 	for (unsigned int i = 0; i < count; i += 3) {
 		m_down_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
-		m_up_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
-		m_conn_number->PushSample(ENDIAN_NTOHL(data[i+0]));
+		m_up_speed->PushSample(ENDIAN_NTOHL(data[i+1]));
+		m_conn_number->PushSample(ENDIAN_NTOHL(data[i+2]));
 	}
 }
 
@@ -3445,7 +3460,7 @@ void CDynStatisticImage::DrawImage()
 	//
 	// Prepare background
 	//
-	static const COLORREF bg_color = RGB(0, 0, 0x7f);
+	static const COLORREF bg_color = RGB(0xff, 0, 0x7f);
 	for(int i = 0; i < m_height; i++) {
 		png_bytep u_row = m_row_ptrs[i];
 		for(int j = 0; j < m_width; j++) {
@@ -3453,21 +3468,42 @@ void CDynStatisticImage::DrawImage()
 		}
 	}
 	//
-	// draw axis
+	// draw axis - will be moved to ctor eventually
 	//
 	static const int left_margin = 20, bottom_margin = 15;
-	static const COLORREF axis_color = RGB(0, 0, 0x7f);
-	for(int i = 0; i < m_height; i++) {
+	static const COLORREF axis_color = RGB(0xff, 0xff, 0xff);
+	// Y
+	for(int i = bottom_margin; i < (m_height - bottom_margin); i++) {
 		png_bytep u_row = m_row_ptrs[i];
-		set_rgb_color_val(u_row+3*left_margin, axis_color, 0);
+		set_rgb_color_val(u_row+3*(left_margin + 0), axis_color, 0);
+		set_rgb_color_val(u_row+3*(left_margin + 1), axis_color, 0);
 	}
+	// X
 	for(int j = left_margin; j < m_width; j++) {
-		set_rgb_color_val(m_row_ptrs[bottom_margin]+3*j, axis_color, 0);
+		set_rgb_color_val(m_row_ptrs[m_height - bottom_margin - 0]+3*j, axis_color, 0);
+		set_rgb_color_val(m_row_ptrs[m_height - bottom_margin - 1]+3*j, axis_color, 0);
 	}
+	
+	//
+	// Now graph itself
+	//
+	static const COLORREF graph_color = RGB(0xff, 0xff, 0xff);
+	for(int i = bottom_margin; i < (m_height - bottom_margin); i++) {
+		png_bytep u_row = m_row_ptrs[i];
+		for(int j = left_margin, curr_data = m_data->GetFirst(); j < m_width; j++, curr_data = m_data->GetNext()) {
+			int diff = abs(i - bottom_margin - curr_data/1024);
+			if ( diff <= 2 ) {
+				set_rgb_color_val(u_row+3*j, graph_color, 0);
+			}
+		}
+	}
+	
 }
 
 unsigned char *CDynStatisticImage::RequestData(int &size)
 {
+	DrawImage();
+	
 	return CDynPngImage::RequestData(size);
 }
 

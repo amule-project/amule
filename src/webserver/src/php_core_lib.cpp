@@ -742,6 +742,11 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_obj_array_create<SearchInfo, SearchFile>("AmuleSearchFile", result);
 }
 
+void amule_load_stats()
+{
+	CPhPLibContext::g_curr_context->WebServer()->Reload_Stats();
+}
+
 #else
 
 void amule_fake_obj_array_create(int count, char *class_name, PHP_VALUE_NODE *result)
@@ -774,6 +779,9 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_fake_obj_array_create(35, "AmuleSearchFile", result);
 }
 
+void amule_load_sats()
+{
+}
 
 #endif
 
@@ -790,7 +798,9 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 		return;
 	}
 	char *varname = str->str_val;
-	cast_value_array(result);
+	if ( result ) {
+		cast_value_array(result);
+	}
 	if ( strcmp(varname, "downloads") == 0 ) {
 		amule_load_downloads(result);
 	} else if ( strcmp(varname, "uploads") == 0 ) {
@@ -800,6 +810,8 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 		amule_load_search(result);
 	} else if ( strcmp(varname, "servers") == 0 ) {
 		amule_load_servers(result);
+	} else if ( strcmp(varname, "stats") == 0 ) {
+		amule_load_stats();
 	} else {
 		value_value_free(result);
 		php_report_error(PHP_ERROR, "This type of amule variable is unknown");
