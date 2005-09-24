@@ -694,6 +694,10 @@ class CStatsCollection {
 		CStatsCollection(int size, CamulewebApp	*iface);
 		~CStatsCollection();
 		
+		CStatsData *DownloadSpeed() { return m_down_speed; }
+		CStatsData *UploadSpeed() { return m_up_speed; }
+		CStatsData *ConnCount() { return m_conn_number; }
+		
 		void ReQuery();
 };
 
@@ -817,6 +821,8 @@ class CWebServerBase {
 		UploadsInfo m_UploadsInfo;
 		SearchInfo m_SearchInfo;
 		
+		CStatsCollection m_Stats;
+		
 		CImageLib m_ImageLib;
 
 		virtual void ProcessURL(ThreadData) = 0;
@@ -856,6 +862,11 @@ class CWebServerBase {
 			bool global, uint32 avail, uint32 min_size, uint32 max_size);
 
 		bool Send_DownloadEd2k_Cmd(wxString link, uint8 cat);
+		
+		void Reload_Stats()
+		{
+			m_Stats.ReQuery();
+		}
 		
 		CamulewebApp	*webInterface;
 
