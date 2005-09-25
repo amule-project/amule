@@ -92,6 +92,14 @@
 #define CRYPTOPP_CONFIG_H
 
 // ***************** Important Settings ********************
+#ifdef wxBYTE_ORDER
+#if wxBYTE_ORDER == wxLITTLE_ENDIAN
+#	define IS_LITTLE_ENDIAN
+#else
+#	define IS_BIG_ENDIAN
+#endif
+#endif
+
 
 // define this if running on a big-endian CPU
 #if !defined(IS_LITTLE_ENDIAN) && (defined(__BIG_ENDIAN__) || defined(__sparc) || defined(__sparc__) || defined(__hppa__) || defined(__mips__) || (defined(__MWERKS__) && !defined(__INTEL__)))

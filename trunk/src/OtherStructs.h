@@ -37,14 +37,14 @@ struct Header_Struct{
 	int8	eDonkeyID;
 	int32	packetlength;
 	int8	command;
-};
+} __attribute__((__packed__));
 #pragma pack()
 
 #pragma pack(1)
 struct UDP_Header_Struct{
 	int8	eDonkeyID;
 	int8	command;
-};
+} __attribute__((__packed__));
 #pragma pack()
 
 #pragma pack(1)
@@ -54,7 +54,7 @@ struct Requested_Block_Struct{
 	uint32	packedsize;
 	unsigned char	FileID[16];
 	uint32  transferred; // Barry - This counts bytes completed
-};
+} __attribute__((__packed__));
 #pragma pack()
 
 #pragma pack(1)
@@ -62,7 +62,7 @@ struct Requested_File_Struct{
 	unsigned char	  fileid[16];
 	uint32	  lastasked;
 	uint8	  badrequests;
-};
+} __attribute__((__packed__));
 #pragma pack()
 
 struct Pending_Block_Struct{
@@ -82,8 +82,9 @@ struct ServerMet_Struct {
 	uint32	ip;
 	uint16	port;
 	uint32	tagcount;
-};
+} __attribute__((__packed__));
 #pragma pack()
+
 struct TransferredData {
 	uint32	datalen;
 	uint32	timestamp;
@@ -99,7 +100,7 @@ struct Chunk {
 			uint16 frequency; // Availability of the chunk
 			uint16 rank;      // Download priority factor (highest = 0, lowest = 0xffff)
 	};
-};
+} __attribute__((__packed__));
 #pragma pack()
 
 enum DownloadItemType { FILE_TYPE, A4AF_SOURCE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
