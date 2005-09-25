@@ -160,12 +160,10 @@ CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const 
 	wxStaticLine *line = new wxStaticLine( this, -1,
 		wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	vsizer->Add( line, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	cmd_control = new wxTextCtrl(this,Event_Comand_ID, wxEmptyString,
-		wxPoint(2, APP_INIT_SIZE_Y-30-4),
-		wxSize(APP_INIT_SIZE_X-4,30),
-		wxTE_PROCESS_ENTER);
+	cmd_control = new wxTextCtrl(this, Event_Comand_ID, wxEmptyString,
+		wxDefaultPosition, wxSize(APP_INIT_SIZE_X,-1), wxTE_PROCESS_ENTER);
 	cmd_control->SetBackgroundColour(wxT("wheat"));
-vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+	vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
 	SetSizer(vsizer);
 	vsizer->SetSizeHints(this);
