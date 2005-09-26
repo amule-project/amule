@@ -195,17 +195,14 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		// Why pass an ID, if we are loggin in?
 		data.WriteUInt32(GetClientID());
 		data.WriteUInt16(thePrefs::GetPort());
-		data.WriteUInt32(5); // tagcount
+		data.WriteUInt32(4); // tagcount
 
 		CTag tagname(CT_NAME,thePrefs::GetUserNick());
 		tagname.WriteTagToFile(&data);
 
 		CTag tagversion(CT_VERSION,EDONKEYVERSION);
 		tagversion.WriteTagToFile(&data);
-		
-		CTag tagport(CT_PORT,thePrefs::GetPort());
-		tagport.WriteTagToFile(&data);
-		
+				
 		// FLAGS for server connection
 		CTag tagflags(CT_SERVER_FLAGS, CAPABLE_ZLIB 
 								| CAPABLE_AUXPORT 
