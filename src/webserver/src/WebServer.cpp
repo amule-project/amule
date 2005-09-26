@@ -3444,7 +3444,7 @@ CDynStatisticImage::CDynStatisticImage(int width, int height, CStatsData *data) 
 	m_data = data;
 
 	// actual name doesn't matter, just make it unique
-	m_name = wxString::Format(_("dyn_%d_stat.png"), (uint32)data);
+	m_name = wxString::Format(_("dyn_%d_stat.png"), (unsigned long int) data);
 }
 
 CDynStatisticImage::~CDynStatisticImage()
