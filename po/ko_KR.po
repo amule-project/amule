@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE
+# Translation of amule interface to Korean
 # Copyright (C) YEAR Free Software Foundation, Inc
-# This file is distributed under the same license as the PACKAGE package
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR
-#
+# This file is distributed under the same license as the PACKAGE package.
+# Lee, Eun-ho <hoenny@daum.net>, 2005.
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-04 20:47+0200\n"
-"PO-Revision-Date: 2005-09-05 23:12+0900\n"
+"PO-Revision-Date: 2005-09-24 12:30+0900\n"
 "Last-Translator: Lee, Eun-ho <hoenny@daum.net>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +96,7 @@ msgstr "정적그림을 저장"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:367
 msgid "No handler for this file type."
-msgstr "이파일 종류의 핸들러는 없음"
+msgstr "이파일 종류의 처리기는 없음"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:368
 msgid "File was not saved"
@@ -222,7 +222,7 @@ msgstr " 킬로바이트/초, 올려주기: "
 #: src/ClientListCtrl.cpp:537 src/ClientListCtrl.cpp:609
 #: src/StatisticsDlg.cpp:97 src/StatisticsDlg.cpp:99
 msgid "kB/s"
-msgstr "킬로바이트/초"
+msgstr "kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:796
 msgid "Sharing: "
@@ -487,7 +487,7 @@ msgstr "삭제"
 #: src/utils/aLinkCreator/src/alcframe.cpp:153 src/muuli_wdr.cpp:414
 #: src/muuli_wdr.cpp:916 src/MuleTextCtrl.cpp:85
 msgid "Clear"
-msgstr "깨끗히"
+msgstr "깨끗이"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:162
 msgid "Create link with part-hashes"
@@ -995,7 +995,7 @@ msgstr "완료"
 #: src/webserver/src/WebServer.cpp:1016 src/DownloadListCtrl.cpp:190
 #: src/ClientListCtrl.cpp:444
 msgid "Transferred"
-msgstr "이전하다"
+msgstr "전송됨"
 
 #: src/webserver/src/WebServer.cpp:1017 src/DownloadListCtrl.cpp:193
 msgid "Progress"
@@ -1010,7 +1010,7 @@ msgstr "속도"
 #: src/DownloadListCtrl.cpp:194 src/SearchListCtrl.cpp:82
 #: src/FileDetailListCtrl.cpp:49
 msgid "Sources"
-msgstr "소스"
+msgstr "자료"
 
 #: src/webserver/src/WebServer.cpp:1021 src/FriendListCtrl.cpp:81
 #: src/ClientListCtrl.cpp:440 src/ClientListCtrl.cpp:729
@@ -1302,7 +1302,7 @@ msgstr "연결중"
 
 #: src/webserver/src/WebServer.cpp:2038 src/amuleDlg.cpp:731
 msgid "Disconnect"
-msgstr "연결이 끊김"
+msgstr "연결 끊기"
 
 #: src/webserver/src/WebServer.cpp:2039 src/amuleDlg.cpp:751
 #: src/muuli_wdr.cpp:3911 src/SysTray.cpp:438 src/MuleTrayIcon.cpp:549
@@ -1375,13 +1375,13 @@ msgstr "다른 전부"
 #: src/TransferWnd.cpp:322 src/OtherFunctions.cpp:756
 #: src/ECSpecialTags.cpp:695
 msgid "Waiting"
-msgstr "기달리는중"
+msgstr "대기중"
 
 #: src/webserver/src/WebServer.cpp:2381 src/PartFile.cpp:3934
 #: src/TransferWnd.cpp:323 src/OtherFunctions.cpp:757
 #: src/ECSpecialTags.cpp:693
 msgid "Downloading"
-msgstr "내려받기"
+msgstr "받는중"
 
 #: src/webserver/src/WebServer.cpp:2382 src/PartFile.cpp:3927
 #: src/TransferWnd.cpp:324 src/OtherFunctions.cpp:758
@@ -1445,7 +1445,7 @@ msgstr "%s(%s:%i)에 연결되었습니다."
 #: src/ServerConnect.cpp:247 src/amuleDlg.cpp:736
 #, c-format
 msgid "Connection established on: %s"
-msgstr "다음에 연결이 확정되었습니다: %s"
+msgstr "다음에 연결이 되었습니다: %s"
 
 #: src/ServerConnect.cpp:319
 msgid "Fatal Error while trying to connect. Internet connection might be down"
@@ -1594,7 +1594,7 @@ msgstr "%s파일을 열수 없습니다. - %s 파일을 사용합니다."
 
 #: src/PartFile.cpp:1066 src/PartFile.cpp:1079
 msgid "Message"
-msgstr "메세지"
+msgstr "전언"
 
 #: src/PartFile.cpp:1076
 #, c-format
@@ -1957,7 +1957,7 @@ msgstr "친구제거"
 
 #: src/FriendListCtrl.cpp:245
 msgid "Send &Message"
-msgstr "메세지 보내기"
+msgstr "전언 보내기"
 
 #: src/FriendListCtrl.cpp:246 src/DownloadListCtrl.cpp:1103
 #: src/ClientListCtrl.cpp:197
@@ -2008,7 +2008,7 @@ msgstr "내려받음"
 #: src/TransferWnd.cpp:321 src/OtherFunctions.cpp:755
 #: src/DownloadListCtrl.cpp:191 src/PartFileConvert.cpp:666
 msgid "Completed"
-msgstr "완료되다"
+msgstr "완료됨"
 
 #: src/TransferWnd.cpp:327 src/OtherFunctions.cpp:767
 msgid "Active"
@@ -2439,6 +2439,7 @@ msgstr "귀뜸: 내려받기 보임이나 올려주기 보임을 사용하세요
 msgid "IPLevel parameter must be in the range of 0-255.\n"
 msgstr "아이피값은 반듯이 0-255의 범위여야 합니다.\n"
 
+
 #: src/TextClient.cpp:462 src/TextClient.cpp:478 src/TextClient.cpp:497
 msgid "This option requires an argument."
 msgstr "이 설정은 독립변수를 필요로합니다."
@@ -2494,12 +2495,8 @@ msgstr ""
 
 #: src/TextClient.cpp:648
 #, c-format
-msgid ""
-"\n"
-"Clients in queue:\t%d\n"
-msgstr ""
-"\n"
-"큐의 클라이언트:\t%d\n"
+msgid "\nClients in queue:\t%d\n"
+msgstr "\n큐의 클라이언트:/t %d\n"
 
 #: src/TextClient.cpp:651
 #, c-format
@@ -2640,7 +2637,7 @@ msgstr "AICH 스레드: 마지막 스레드로 신호를 보냅니다."
 
 #: src/AICHSyncThread.cpp:154
 msgid "AICH Thread: Terminated."
-msgstr "AICH 스레드: 마지막인"
+msgstr "AICH 스레드: 종료되었습니다."
 
 #: src/AICHSyncThread.cpp:160
 msgid "AICH Thread: Syncronization thread started."
@@ -2721,11 +2718,11 @@ msgstr ""
 " 질문과 답변: http://wiki.amule.org \n"
 "\n"
 " 연락: admin@amule.org (행정상의 문제) \n"
-" 권한 (C) 2003-2005 어뮬 팀 \n"
+" 저작권 (C) 2003-2005 어뮬 팀 \n"
 "\n"
 " 어뮬의 일부분은 카뎀리아기반입니다.\n"
 " 카뎀리아: XOR 미터기반인 사람과 사람간 연결하는 방법입니다.\n"
-" 권한 (C) 2002 페타 마이모운구브\n"
+" 저작권 (C) 2002 페타 마이모운구브\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:625
@@ -2766,17 +2763,17 @@ msgstr "올려주기: %.1f(%.1f) | 내려받기: %.1f(%.1f)"
 #: src/amuleDlg.cpp:806
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
-msgstr "올려주기: %.1f | 내려받기: %.1f"
+msgstr "주기: %.1f | 받기: %.1f"
 
 #: src/amuleDlg.cpp:828
 #, c-format
 msgid "aMule (%s | Connected)"
-msgstr "어뮬 (%s | 연결되었습니다)"
+msgstr "어뮬 (%s | 연결됨)"
 
 #: src/amuleDlg.cpp:830
 #, c-format
 msgid "aMule (%s | Disconnected)"
-msgstr "어뮬 (%s | 연결이 끊겼습니다)"
+msgstr "어뮬 (%s | 끊김)"
 
 #: src/amuleDlg.cpp:848
 msgid "Do you really want to exit aMule?"
@@ -2837,11 +2834,11 @@ msgstr "데스크탑"
 #: src/muuli_wdr.cpp:76 src/muuli_wdr.cpp:2841 src/muuli_wdr.cpp:2944
 #: src/muuli_wdr.cpp:3181 src/ServerWnd.cpp:227
 msgid "OK"
-msgstr "알겠습니다."
+msgstr "확인"
 
 #: src/muuli_wdr.cpp:109
 msgid "ED2K Link Handler"
-msgstr "ed2k 링크 핸들러"
+msgstr "ed2k 링크 처리기"
 
 #: src/muuli_wdr.cpp:117
 msgid "Commit"
@@ -2981,7 +2978,7 @@ msgstr "내려받기"
 
 #: src/muuli_wdr.cpp:460
 msgid "Clears completed downloads"
-msgstr "내려받기가 완료한것을 지운다"
+msgstr "내려받기가 완료한것을 깨끗이합니다."
 
 #: src/muuli_wdr.cpp:468
 msgid ""
@@ -3005,7 +3002,7 @@ msgstr "0"
 
 #: src/muuli_wdr.cpp:562 src/muuli_wdr.cpp:3550 src/muuli_wdr.cpp:3919
 msgid "Messages"
-msgstr "메세지"
+msgstr "전언"
 
 #: src/muuli_wdr.cpp:577
 msgid "Send"
@@ -3013,7 +3010,7 @@ msgstr "보내기"
 
 #: src/muuli_wdr.cpp:578
 msgid "Sends the specified message."
-msgstr "특정 메세지를 보냅니다."
+msgstr "특정 전언을 보냅니다."
 
 #: src/muuli_wdr.cpp:582 src/muuli_wdr.cpp:883 src/muuli_wdr.cpp:993
 #: src/muuli_wdr.cpp:1610 src/muuli_wdr.cpp:3861 src/MuleNotebook.cpp:162
@@ -3421,7 +3418,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1684
 msgid "Enable Tray Icon"
-msgstr "트레이 아이콘 활성화"
+msgstr "트레이아이콘 활성화"
 
 #: src/muuli_wdr.cpp:1685
 msgid "This Enables/Disables the system tray (or taskbar) icon."
@@ -3685,7 +3682,7 @@ msgstr "메타 데이터 테그를 뽑아내다."
 
 #: src/muuli_wdr.cpp:2122
 msgid "Reduce Fragmentation"
-msgstr "깨진 파트를 제거하다."
+msgstr "깨진파트 제거"
 
 #: src/muuli_wdr.cpp:2125
 msgid "Allocate full chunks for .part files"
@@ -3829,7 +3826,7 @@ msgstr "통지"
 
 #: src/muuli_wdr.cpp:2354
 msgid "Messages popup"
-msgstr "메세지 팝업"
+msgstr "전언 팝업"
 
 #: src/muuli_wdr.cpp:2357
 msgid "Use sound"
@@ -3849,7 +3846,7 @@ msgstr "새로운 채팅새션을 시작합니다."
 
 #: src/muuli_wdr.cpp:2386
 msgid "A new chat message is received"
-msgstr "새로운 채팅 메세지를 받았습니다."
+msgstr "새로운 채팅 전언을 받았습니다."
 
 #: src/muuli_wdr.cpp:2390
 msgid "A download is added or finished"
@@ -3900,7 +3897,7 @@ msgstr ""
 "그렇지 않으면 당신 스스로 최악의 설정으로 만들기 쉽습니다.\n"
 "\n"
 "\n"
-"amule은 이 설정의 어떤한 조절 없이도\n"
+"어뮬은 이 설정의 어떤한 조절 없이도\n"
 "잘 돌아갈 것입니다."
 
 #: src/muuli_wdr.cpp:2481
@@ -3925,7 +3922,7 @@ msgstr "서버 연결 내부적으로 새롭게하기: 사용않함"
 
 #: src/muuli_wdr.cpp:2529
 msgid "GUI Tweaks"
-msgstr "그래픽유저인터페이스 조정"
+msgstr "GUI 조정"
 
 #: src/muuli_wdr.cpp:2534
 msgid "Download Queue Files Progress"
@@ -3969,7 +3966,7 @@ msgstr "열 정렬"
 
 #: src/muuli_wdr.cpp:2593
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr "내려받기 큐중 자동으로 정렬합니다. (CPU 높은사용순)"
+msgstr "내려받기큐를 자동으로 정렬합니다. (높은 CPU)"
 
 #: src/muuli_wdr.cpp:2595
 msgid "aMule will sort the columns in your download list automatically"
@@ -4397,7 +4394,7 @@ msgstr "비활성화/활성화"
 
 #: src/muuli_wdr.cpp:3558
 msgid "Filter incoming messages (except current chat):"
-msgstr "받는 메세지 차단(현재 챗은 제외)"
+msgstr "받는 전언 차단(현재 챗은 제외)"
 
 #: src/muuli_wdr.cpp:3561
 msgid "Filtering Options:"
@@ -4405,23 +4402,23 @@ msgstr "차단 설정:"
 
 #: src/muuli_wdr.cpp:3564
 msgid "Filter all messages"
-msgstr "모든 메세지 차단"
+msgstr "모든 전언 차단"
 
 #: src/muuli_wdr.cpp:3567
 msgid "Filter messages from people not on your friend list"
-msgstr "당신의 친구 목록 아닌 사람으로부터 메세지를 차단합니다."
+msgstr "당신의 친구 목록 아닌 사람으로부터 전언을 차단합니다."
 
 #: src/muuli_wdr.cpp:3570
 msgid "Filter messages from unknown clients"
-msgstr "알수없는 클라이언트로부터 메세지를 차단합니다."
+msgstr "알수없는 클라이언트로부터 전언을 차단합니다."
 
 #: src/muuli_wdr.cpp:3573
 msgid "Filter messages containing (use ',' as separator):"
-msgstr "메세지에 포함된(','같이 분리된것을 사용)경우 차단합니다."
+msgstr "전언에 포함된(','같이 분리된것을 사용)경우 차단합니다."
 
 #: src/muuli_wdr.cpp:3577
 msgid "add here the words amule should filter and block messages including it"
-msgstr "amule은 이곳에 추가된 단어를 포함하는 메세지는 차단되거나 막을겁니다."
+msgstr "amule은 이곳에 추가된 단어를 포함하는 전언은 차단되거나 막을겁니다."
 
 #: src/muuli_wdr.cpp:3603 src/PrefsUnifiedDlg.cpp:163
 msgid "Proxy"
@@ -4537,7 +4534,7 @@ msgstr "장황한 디버그로그인 활성화"
 
 #: src/muuli_wdr.cpp:3799
 msgid "Message Categories:"
-msgstr "메세지 분류:"
+msgstr "전언 분류:"
 
 #: src/muuli_wdr.cpp:3851
 msgid "Add imports"
@@ -4585,7 +4582,7 @@ msgstr "윈도우 공유파일"
 
 #: src/muuli_wdr.cpp:3919
 msgid "Messages Window"
-msgstr "윈도우 메세지"
+msgstr "윈도우 전언"
 
 #: src/muuli_wdr.cpp:3920
 msgid "Statistics Graph Window"
@@ -4743,7 +4740,7 @@ msgstr "올려주기 제한"
 #: src/SysTray.cpp:365 src/SysTray.cpp:400 src/MuleTrayIcon.cpp:129
 #: src/MuleTrayIcon.cpp:150 src/MuleTrayIcon.cpp:498 src/MuleTrayIcon.cpp:520
 msgid "Unlimited"
-msgstr "제한되지 않은"
+msgstr "무제한"
 
 #: src/SysTray.cpp:396 src/MuleTrayIcon.cpp:494
 msgid "Download Limit"
@@ -4751,7 +4748,7 @@ msgstr "내려받기 제한"
 
 #: src/SysTray.cpp:433 src/MuleTrayIcon.cpp:546
 msgid "Disconnect from server"
-msgstr "서버로부터 연결이 끊김"
+msgstr "서버로부터 연결 끊기"
 
 #: src/SysTray.cpp:451 src/MuleTrayIcon.cpp:557
 msgid "Hide aMule"
@@ -4784,7 +4781,7 @@ msgstr "***클라이언트에 연결이 실패하였습니다 / 연결이 끊어
 
 #: src/DownloadListCtrl.cpp:197
 msgid "Time Remaining"
-msgstr "시간 유지"
+msgstr "남은시간"
 
 #: src/DownloadListCtrl.cpp:198
 msgid "Last Seen Complete"
@@ -4835,15 +4832,15 @@ msgstr "완료된 소스: %u"
 
 #: src/DownloadListCtrl.cpp:880 src/ClientListCtrl.cpp:290
 msgid "Send message to user"
-msgstr "사용자에게 메세지를 보내기"
+msgstr "사용자에게 전언을 보내기"
 
 #: src/DownloadListCtrl.cpp:881 src/ClientListCtrl.cpp:290
 msgid "Message to send:"
-msgstr "메세지를 보내다"
+msgstr "전언을 보내다"
 
 #: src/DownloadListCtrl.cpp:968
 msgid "C&lear completed"
-msgstr "완료되다."
+msgstr "&l완료된것을 깨끗이함"
 
 #: src/DownloadListCtrl.cpp:974
 msgid "Swap every A4AF to this file now"
@@ -4932,7 +4929,7 @@ msgstr "친구 추가하기"
 
 #: src/DownloadListCtrl.cpp:1104 src/ClientListCtrl.cpp:198
 msgid "Send message"
-msgstr "메세지 보내기"
+msgstr "전언 보내기"
 
 #: src/DownloadListCtrl.cpp:1105
 msgid "Swap to this file"
@@ -5289,7 +5286,7 @@ msgstr "지원하지 않습니다."
 
 #: src/ClientDetailDialog.cpp:148 src/ServerListCtrl.cpp:97
 msgid "Failed"
-msgstr "실패하였습니다"
+msgstr "실패됨"
 
 #: src/ClientDetailDialog.cpp:151
 msgid "Not complete"
@@ -5921,7 +5918,7 @@ msgstr "사용자: E: %s K: %s | 파일 E: %s K: %s"
 
 #: src/PrefsUnifiedDlg.cpp:164
 msgid "Message Filter"
-msgstr "메세지 차단"
+msgstr "전언 차단"
 
 #: src/PrefsUnifiedDlg.cpp:165
 msgid "Remote Controls"
@@ -5933,7 +5930,7 @@ msgstr "소스 버림"
 
 #: src/PrefsUnifiedDlg.cpp:175
 msgid "Gui Tweaks"
-msgstr "그래픽유저인터패이스 트윅"
+msgstr "GUI 조정"
 
 #: src/PrefsUnifiedDlg.cpp:524
 msgid ""
@@ -6083,7 +6080,7 @@ msgstr "알수없는 서버 정보를 받았습니다! - 매우 짧음"
 
 #: src/ServerSocket.cpp:509
 msgid "Saving of server-list completed."
-msgstr "서버 목록 저장이 완료됨"
+msgstr "서버목록 저장이 완료되었습니다."
 
 #: src/ServerSocket.cpp:537
 msgid "Server rejected last command"
@@ -6198,15 +6195,15 @@ msgstr "보기 선택하기"
 #: src/ClientListCtrl.cpp:442 src/ClientListCtrl.cpp:731
 #: src/ClientListCtrl.cpp:915
 msgid "Client Software"
-msgstr "소프트웨어 클라이언트"
+msgstr "클라이언트"
 
 #: src/ClientListCtrl.cpp:445
 msgid "Waited"
-msgstr "기달림"
+msgstr "대기시간"
 
 #: src/ClientListCtrl.cpp:446
 msgid "Upload Time"
-msgstr "올려주기 시간"
+msgstr "올린시간"
 
 #: src/ClientListCtrl.cpp:448 src/ClientListCtrl.cpp:739
 #: src/SharedFilesCtrl.cpp:106
@@ -6319,7 +6316,7 @@ msgstr "자동[낮음]"
 
 #: src/DataToText.cpp:39
 msgid "Auto [No]"
-msgstr "자동[아니요]"
+msgstr "자동[아님]"
 
 #: src/DataToText.cpp:40
 msgid "Auto [Hi]"
@@ -6814,11 +6811,11 @@ msgstr "허락된 요청"
 
 #: src/SharedFilesCtrl.cpp:105
 msgid "Transferred Data"
-msgstr "전송된 데이터"
+msgstr "전송된 크기"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Complete Sources"
-msgstr "완료된 소스"
+msgstr "완료된 자료"
 
 #: src/SharedFilesCtrl.cpp:108
 msgid "Directory Path"
