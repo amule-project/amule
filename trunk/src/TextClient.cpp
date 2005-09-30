@@ -781,7 +781,11 @@ void CamulecmdApp::ShowGreet() {
 #if wxUSE_GUI
 bool CamulecmdApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
-	frame = new CamulecmdFrame(wxT("amulecmd DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#ifdef CVSDATE
+		frame = new CamulecmdFrame(wxString::Format(wxT("amulecmd [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#else
+		frame = new CamulecmdFrame(wxString::Format(wxT("amulecmd [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#endif
 	frame->Show(true);
 #else
 int CamulecmdApp::OnRun() {

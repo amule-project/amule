@@ -227,7 +227,11 @@ int CamulewebApp::OnExit() {
 
 bool CamulewebApp::OnInit() {
 	CaMuleExternalConnector::OnInit();
-	frame = new CamulewebFrame(_("amuleweb DLG"), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#ifdef CVSDATE
+		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#else
+		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+	#endif
 	frame->Show(true);
 	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION), commands);
 
