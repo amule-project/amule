@@ -3971,6 +3971,44 @@ wxSizer *NetDialog( wxWindow *parent, bool call_fit, bool set_sizer )
     return item0;
 }
 
+wxSizer *renameDialog( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("File Name"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item2, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+
+    wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NEWFILENAME, wxT(""), wxDefaultPosition, wxSize(320,-1), 0 );
+    item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxButton *item6 = new wxButton( parent, wxID_OK, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetDefault();
+    item5->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item7 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
 // Implement menubar functions
 
 // Implement toolbar functions
