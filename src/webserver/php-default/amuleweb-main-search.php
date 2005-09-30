@@ -193,7 +193,7 @@ function formCommandSubmit(command)
 		$sort_reverse = $_SESSION["search_sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["search_sort"] = $sort_order;
-			usort($search, "my_cmp");
+			usort(&$search, "my_cmp");
 		}
 
 		foreach ($search as $file) {

@@ -86,7 +86,7 @@ body {
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["servers_sort"] = $sort_order;
-			usort($servers, "my_cmp");
+			usort(&$servers, "my_cmp");
 		}
 		foreach ($servers as $srv) {
 			print "<tr>";

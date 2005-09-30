@@ -206,7 +206,7 @@ function formCommandSubmit(command)
 		$sort_reverse = $_SESSION["sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["shared_sort"] = $sort_order;
-			usort($shared, "my_cmp");
+			usort(&$shared, "my_cmp");
 		}
 
 		foreach ($shared as $file) {

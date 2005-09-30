@@ -242,7 +242,7 @@ function formCommandSubmit(command)
 		$sort_reverse = $_SESSION["download_sort_reverse"];
 		if ( $sort_order != "" ) {
 			$_SESSION["download_sort"] = $sort_order;
-			usort($downloads, "my_cmp");
+			usort(&$downloads, "my_cmp");
 		}
 
 		//
