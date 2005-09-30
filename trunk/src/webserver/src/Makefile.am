@@ -19,6 +19,7 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/ECPacket.cpp \
 	$(top_srcdir)/src/OtherFunctions.cpp \
 	$(top_srcdir)/src/ECSpecialTags.cpp \
+	$(top_srcdir)/src/PlatformSpecific.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
@@ -52,6 +53,7 @@ amulewebDLG_SOURCES =  \
 	$(top_srcdir)/src/ECPacket.cpp \
 	$(top_srcdir)/src/OtherFunctions.cpp \
 	$(top_srcdir)/src/ECSpecialTags.cpp \
+	$(top_srcdir)/src/PlatformSpecific.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \

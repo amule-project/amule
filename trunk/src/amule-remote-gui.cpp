@@ -222,7 +222,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
-	
+
 	// Create the Core timer
 	core_timer = new wxTimer(this,ID_CORETIMER);
 	if (!core_timer) {

@@ -221,8 +221,6 @@ CamuleApp::CamuleApp()
 
 	m_app_state = APP_STATE_STARTING;
 	
-	ConfigDir = GetConfigDir();
-	
 	clientlist	= NULL;
 	searchlist	= NULL;
 	knownfiles	= NULL;
@@ -403,6 +401,8 @@ bool CamuleApp::OnInit()
 	SetVendorName(wxT("TikuWarez"));
 	SetAppName(wxT("aMule"));
 
+	ConfigDir = GetConfigDir();
+	
 	strcpy(strFullMuleVersion, (const char *)unicode2char(FullMuleVersion));
 	strcpy(strOSDescription, (const char *)unicode2char(OSDescription));
 	OSType = OSDescription.BeforeFirst( wxT(' ') );
@@ -483,6 +483,9 @@ bool CamuleApp::OnInit()
 
 	printf("Initialising aMule\n");
 
+	/* Check for old aMule configs, or for old lmule/xmule config if no aMule configs found. */
+	CheckConfig();
+
 	printf("Checking if there is an instance already running...\n");
 	// see if there is another instance running
 	wxString server =
@@ -535,64 +538,6 @@ bool CamuleApp::OnInit()
 	if ( !cmdline.Found(wxT("enable-stdin")) ) {
 		close(0);
 	}
-
-
-	/* If no aMule configuration files exist, see if either lmule or xmule config
-	   exists, so that we can use those. */
-	wxString lMulePrefDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".lmule");
-	wxString xMulePrefDir = wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".xmule");
-
-	if ( !wxDirExists( ConfigDir ) ) {
-		if ( wxDirExists( lMulePrefDir ) ) {
-			printf("Found lMule old settings, moving to new dir.\n");
-			wxRenameFile(lMulePrefDir,ConfigDir);
-
-		} else if ( wxDirExists(xMulePrefDir) ) {
-			printf("Found xMule old settings, copying config & credits files.\n");
-			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
-
-			CDirIterator xMuleDir(xMulePrefDir); 
-			
-			// Copy .dat files to the aMule dir			
-			wxString file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.dat"));
-  			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() +
-					file.AfterLast(wxFileName::GetPathSeparator()));
-				file = xMuleDir.GetNextFile();
-  			}
-
-			// Copy .met files to the aMule dir
-			file = xMuleDir.GetFirstFile(CDirIterator::File,wxT("*.met"));
-			while ( !file.IsEmpty() ) {
-				wxCopyFile( file, ConfigDir + wxFileName::GetPathSeparator() +
-					file.AfterLast(wxFileName::GetPathSeparator()));
-				file = xMuleDir.GetNextFile();
-  			}
-
-			ShowAlert(_("Copied old ~/.xMule config and credit files to ~/.aMule\nHowever, be sure NOT to remove .xMule if your Incoming / Temp folders are still there ;)"), _("Info"), wxOK);
-		} else {
-			// No settings to import, new to build.
-			wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
-		}
-	}
-
-#ifndef __WINDOWS__
-	// Backwards compatibility, check for old config file if our amule.conf file doesn't exist
-	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
-	if ( !wxFileExists( ConfigDir + wxT("amule.conf") ) ) {
-		// Check if an old config file exists
-		#ifdef __APPLE__
-		// Mac is a special case
-		wxString OldConfig = wxT("Library/Preferences/eMule Preferences");
-		#else
-		// *BSD, linux, unix, solaris, whatever
-		wxString OldConfig = wxT(".eMule");
-		#endif
-		if ( wxFileExists( homeDir + OldConfig ) ) {
-			wxCopyFile( homeDir + OldConfig, ConfigDir + wxT("amule.conf") );
- 		}
- 	}
-#endif
 
 	// This creates the CFG file we shall use
 	wxConfigBase* cfg = new wxFileConfig( wxEmptyString, wxEmptyString, ConfigDir + wxT("amule.conf") );
