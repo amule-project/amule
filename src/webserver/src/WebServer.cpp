@@ -266,7 +266,7 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	// Init stat graphs
 #ifdef WITH_LIBPNG
 	CDynStatisticImage *img = new CDynStatisticImage(500, 200, m_Stats.DownloadSpeed());
-	m_ImageLib.AddImage(img, _("/test_stats.png"));
+	m_ImageLib.AddImage(img, wxT("/test_stats.png"));
 #endif
 }
 
@@ -3444,7 +3444,7 @@ CDynStatisticImage::CDynStatisticImage(int width, int height, CStatsData *data) 
 	m_data = data;
 
 	// actual name doesn't matter, just make it unique
-	m_name = wxString::Format(_("dyn_%d_stat.png"), (unsigned long int) data);
+	m_name = wxString::Format(wxT("dyn_%d_stat.png"), (unsigned long int) data);
 }
 
 CDynStatisticImage::~CDynStatisticImage()
