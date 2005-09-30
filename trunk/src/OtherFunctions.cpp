@@ -1124,8 +1124,7 @@ wxString GetLocaleDir()
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 	return localeDir;
 #else
-	wxStandardPaths stdpath;
-	return stdpath.GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
+	return wxStandartdPaths::Get().GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
 #endif
 }
 
