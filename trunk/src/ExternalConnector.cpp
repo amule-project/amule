@@ -91,6 +91,7 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 	m_NeedsConfigSave = false;
 	m_Verbose = false;
 	m_configFile = NULL;
+	SetAppName(wxT("aMule"));
 }
 
 CaMuleExternalConnector::~CaMuleExternalConnector()
