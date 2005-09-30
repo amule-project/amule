@@ -231,6 +231,8 @@ bool CamuleRemoteGuiApp::OnInit()
 	}
 
 	connect = new CRemoteConnect;
+
+	SetAppName(wxT("aMule"));
 	
 	// Load Preferences
 	// This creates the CFG file we shall use
