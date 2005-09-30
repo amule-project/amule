@@ -581,55 +581,6 @@ void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 	}
 }
 
-#warning Move this stuff to muuli as soon as it is melted.
-#include <wx/dialog.h>
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
-
-//define it to a random number until the move
-#define IDC_NEWFILENAME	29714
-
-wxString GetNewName(const wxString& oldname)
-{
-	wxDialog* dlg = new wxDialog(theApp.amuledlg, -1, _("Rename"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
-
-	wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
-
-	wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
-
-	wxStaticText *item2 = new wxStaticText( dlg, -1, _("File Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-	item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	wxTextCtrl *item3 = new wxTextCtrl( dlg, IDC_NEWFILENAME, oldname, wxDefaultPosition, wxSize(320,-1), 0 );
-	item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
-
-	wxButton *item5 = new wxButton( dlg, wxID_OK, _("Rename"), wxDefaultPosition, wxDefaultSize, 0 );
-	item5->SetDefault();
-	item4->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	wxButton *item6 = new wxButton( dlg, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
-
-	dlg->SetSizer( item0 );
-	item0->SetSizeHints( dlg );
-
-	if (dlg->ShowModal() == wxID_OK) {
-		wxString retval = dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->GetValue();
-		delete dlg;
-		return retval;
-	} else {
-		delete dlg;
-		return wxEmptyString;
-	}
-}
-
-
 void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -637,7 +588,19 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 		CKnownFile* file = (CKnownFile*)GetItemData( item );
 
 		if (!file->IsPartFile()) {
-			wxString newName = GetNewName(file->GetFileName());
+			wxString newName;
+
+			wxDialog* dlg = new wxDialog(theApp.amuledlg, -1, _("Rename"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+
+			renameDialog(dlg);
+
+			dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->SetValue(file->GetFileName());
+
+			if (dlg->ShowModal() == wxID_OK) {
+				newName = dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->GetValue();
+			}
+
+			delete dlg;
 
 			if (!newName.IsEmpty()) {
 #ifndef CLIENT_GUI
