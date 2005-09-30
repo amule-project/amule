@@ -259,6 +259,29 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		return;
 	}
 
+	wxString appName = wxT(
+		// Find out Application Name
+		#ifdef AMULECMDDLG
+			"amulecmd [DLG version]"
+		#else
+			#ifdef AMULEWEBDLG
+				"amuleweb [DLG version]"
+			#else
+				#ifdef WEBSERVERDIR
+					"amuleweb"
+				#else
+					"amulecmd"
+				#endif
+			#endif
+		#endif
+	);
+
+	#ifdef CVSDATE
+		Show(CFormat(_("This is %s %s %s\n")) % appName % wxT(VERSION) % wxT(CVSDATE));
+	#else
+		Show(CFormat(_("This is %s %s\n")) % appName % wxT(VERSION));
+	#endif
+
 	// HostName, Port and Password
 	if ( m_password.IsEmpty() ) {
 		wxString pass_plain;
