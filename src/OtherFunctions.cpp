@@ -36,6 +36,7 @@
 #include <wx/tokenzr.h>
 #include <wx/file.h>		// Needed for wxFile
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
+#include <wx/filefn.h>		// Needed for wxRemoveFile, wxMkdir, wxRmdir
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -55,6 +56,10 @@
 #include "OtherFunctions.h"	// Interface declarations
 #include "OPCodes.h"
 #include "StringFunctions.h"
+#include "PlatformSpecific.h"	// Needed for GetUserDataDir()
+#ifndef EC_REMOTE
+	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
+#endif
 
 #include <cctype>
 #include <map>
@@ -1110,9 +1115,138 @@ void MilliSleep(uint32 msecs)
 
 wxString GetConfigDir()
 {
-	return wxGetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule") + wxFileName::GetPathSeparator();
+	return GetUserDataDir() + wxFileName::GetPathSeparator();
 }
 
+
+#ifndef EC_REMOTE
+bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
+{
+	if (oldPath != newPath) {
+		if (!CheckDirExists(oldPath)) {
+			return false;
+		}
+		if (!CheckDirExists(newPath)) {
+			wxMkdir(newPath);
+		}
+		CDirIterator finder(oldPath);
+		wxString file = finder.GetFirstFile(CDirIterator::Dir, wxT("*")).AfterLast(wxFileName::GetPathSeparator());
+		while (!file.IsEmpty()) {
+			if (file != wxT(".") && file != wxT("..")) {
+				MoveFolder(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file, copy);
+			}
+			file = finder.GetNextFile().AfterLast(wxFileName::GetPathSeparator());
+		}
+
+		file = finder.GetFirstFile(CDirIterator::File, wxT("*")).AfterLast(wxFileName::GetPathSeparator());
+		while (!file.IsEmpty()) {
+			if (copy) {
+				UTF8_CopyFile(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file);
+			} else {
+				UTF8_MoveFile(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file);
+			}
+			file = finder.GetNextFile().AfterLast(wxFileName::GetPathSeparator());
+		}
+
+		if (!copy) {
+			wxRmdir(oldPath);
+		}
+	}
+	return true;
+}
+
+bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName, wxString oldConfigDir, wxString newConfigDir, bool copy)
+{
+	if (!CheckFileExists(oldConfigName)) {
+		return false;
+	}
+
+	if (oldConfigDir == newConfigDir) {
+		if (copy) {
+			return UTF8_CopyFile(oldConfigName, newConfigName);
+		} else {
+			return UTF8_MoveFile(oldConfigName, newConfigName);
+		}
+	}
+
+	wxFile file(oldConfigName);
+	if (!file.IsOpened()) {
+		return false;
+	}
+	int len = file.Length();
+	if (len == 0) {
+		return false;
+	}
+	char *tmp_buffer = new char[len + sizeof(wxChar)];
+	file.Read(tmp_buffer, len);
+	file.Close();
+	memset(tmp_buffer + len, 0, sizeof(wxChar));
+#if wxUSE_UNICODE
+	wxString str((wxWCharBuffer&)tmp_buffer);
+#else
+	wxString str(tmp_buffer);
+#endif
+	delete [] tmp_buffer;
+
+#if !defined(__unix__) && !defined(__linux__)  // if (wxFileName::GetPathSeparator() != wxT("/")) {
+	const wxChar pathSeparator = wxFileName::GetPathSeparator();
+	oldConfigDir.Replace(wxT("/"), &pathSeparator);
+	newConfigDir.Replace(wxT("/"), &pathSeparator);
+#ifdef __WINDOWS__  // if (pathSeparator == wxT("\\")) {
+	oldConfigDir.Replace(wxT("\\"), wxT("\\\\"));
+	newConfigDir.Replace(wxT("\\"), wxT("\\\\"));
+#endif	// }
+#endif	// }
+
+	str.Replace(wxT("=") + oldConfigDir, wxT("=") + newConfigDir);
+
+	file.Open(newConfigName, wxFile::write);
+	if (!file.IsOpened()) {
+		return false;
+	}
+	file.Write(str);
+	file.Close();
+	if (!copy) {
+		wxRemoveFile(oldConfigName);
+	}
+	return true;
+}
+
+bool RelocateConfiguration(const wxString& oldPath, const wxString& newPath, const wxString& oldConfigFile, bool copy)
+{
+	if (!CheckDirExists(oldPath)) {
+		return false;
+	}
+
+	return MoveConfigFile(oldConfigFile, newPath + wxFileName::GetPathSeparator() + wxT("amule.conf"), copy ? wxString(wxEmptyString) : oldPath, copy ? wxString(wxEmptyString) : newPath, copy)
+		&& MoveFolder(oldPath, newPath, copy);
+}	
+
+bool CheckConfig()
+{
+	wxString configDir(GetConfigDir().BeforeLast(wxFileName::GetPathSeparator()));
+	wxString homeDir(wxGetHomeDir() + wxFileName::GetPathSeparator());
+
+	if (!CheckDirExists(configDir)) {
+		wxMkdir(configDir);
+	} else {
+		if (CheckFileExists(configDir + wxFileName::GetPathSeparator() + wxT("amule.conf"))) {
+			return false;
+		}
+	}
+
+	return RelocateConfiguration(homeDir + wxT(".aMule"), configDir, homeDir + wxT(".aMule") + wxFileName::GetPathSeparator() + wxT("amule.conf"), false)
+		|| RelocateConfiguration(homeDir + wxT(".aMule"), configDir, homeDir +
+#ifdef __APPLE__
+					 wxT("Library/Preferences/eMule Preferences"),
+#else
+					 wxT(".eMule"),
+#endif
+					 false)
+		|| RelocateConfiguration(homeDir + wxT(".lmule"), configDir, homeDir + wxT(".eMule"), false)
+		|| RelocateConfiguration(homeDir + wxT(".xmule"), configDir, homeDir + wxT(".eMule"), true);
+}
+#endif /* EC_REMOTE */
 
 
 wxString GetLocaleDir()

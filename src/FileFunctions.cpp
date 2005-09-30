@@ -338,6 +338,13 @@ bool CheckDirExists(const wxString& dir)
 }
 
 
+bool CheckFileExists(const wxString& file)
+{
+	struct stat st;
+	return (UTF8_Stat(file, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFREG));
+}
+
+
 bool BackupFile(const wxString& filename, const wxString& appendix)
 {
 	if ( !UTF8_CopyFile(filename, filename + appendix) ) {

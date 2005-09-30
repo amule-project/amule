@@ -25,7 +25,7 @@
 
 const int versionMajor		= 1;
 const int versionMinor		= 1;
-const int versionRevision	= 0;
+const int versionRevision	= 1;
 
 
 #include <string>
@@ -33,9 +33,70 @@ const int versionRevision	= 0;
 #include <iostream>
 #include <fstream>
 
+#ifdef __APPLE__
+	#include <CoreServices/CoreServices.h>
+#elif defined(__WIN32__)
+	#include <winerror.h>
+	#include <shlobj.h>
+	#include <shlwapi.h>
+#endif
 
 using std::string;
 
+
+string GetLinksFilePath()
+{
+#ifdef __APPLE__
+
+	std::string strDir;
+	
+	FSRef fsRef;
+	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
+		CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
+		if (urlRef != NULL) {
+			UInt8 buffer[PATH_MAX];
+			if (CFURLGetFileSystemRepresentation(urlRef, true, buffer, sizeof(buffer))) {
+				strDir.assign((char*) buffer);
+			}
+			CFRelease(urlRef) ;
+		}
+	}
+
+	return strDir + "/aMule/ED2KLinks";
+
+#elif defined(__WIN32__)
+
+	std::string strDir;
+	LPITEMIDLIST pidl;
+	char buffer[MAX_PATH];
+
+	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
+
+	if (SUCCEEDED(hr)) {
+		if (SHGetPathFromIDList(pidl, buffer)) {
+			if (PathAppend(buffer, "aMule\\ED2KLinks")) {
+				strDir.assign(buffer);
+			}
+		}
+	}
+
+	if (pidl) {
+		LPMALLOC pMalloc;
+		SHGetMalloc(&pMalloc);
+		if (pMalloc) {
+			pMalloc->Free(pidl);
+			pMalloc->Release();
+		}
+	}
+
+	return strDir;
+
+#else
+
+	return string( getenv("HOME") ) + "/.aMule/ED2KLinks";
+
+#endif
+}
 
 /**
  * Converts a hexadecimal number to a char.
@@ -191,7 +252,7 @@ void writeLink( const string& uri )
 	static std::ofstream file;
 	
 	if ( !file.is_open() ) {
-		string path = string( getenv("HOME") ) + "/.aMule/ED2KLinks";
+		string path = GetLinksFilePath();
 		
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
 

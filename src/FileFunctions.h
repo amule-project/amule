@@ -90,6 +90,8 @@ private:
 
 bool CheckDirExists(const wxString& dir);
 
+bool CheckFileExists(const wxString& file);
+
 
 //! Filetypes understood by UnpackArchive
 enum EFileType

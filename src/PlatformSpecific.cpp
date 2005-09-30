@@ -24,21 +24,25 @@
 
 #include "PlatformSpecific.h"	// Interface declarations
 
-
 #ifdef __WXMAC__
-//-------------------- Mac specific code --------------------
+	#include <CoreServices/CoreServices.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+	#include <wx/intl.h>
+#elif defined(__WINDOWS__)
+	#include <winerror.h>
+	#include <shlobj.h>
+#else
+	#include <wx/filename.h>
+#endif
 
-#include <CoreServices/CoreServices.h>
-#include <wx/mac/corefoundation/cfstring.h>
-#include <wx/intl.h>
-
-
-wxString GetDocumentsDir()
+wxString doGetDirectory(int whichDir)
 {
 	wxString strDir;
-	
+
+#ifdef __WXMAC__
+
 	FSRef fsRef;
-	if (FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &fsRef) == noErr)
+	if (FSFindFolder(kUserDomain, whichDir, kCreateFolder, &fsRef) == noErr)
 	{
 		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
 		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
@@ -46,22 +50,11 @@ wxString GetDocumentsDir()
 		strDir = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding());
 	}
 
-	return strDir;
-}
-
-
 #elif defined(__WINDOWS__)
-//-------------------- Win32 specific code --------------------
-
-#include <winerror.h>
-#include <shlobj.h>
-
-wxString GetDocumentsDir()
-{
-	wxString strDir;
+ 
 	LPITEMIDLIST pidl;
 
-	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl);
+	HRESULT hr = SHGetSpecialFolderLocation(NULL, whichDir, &pidl);
 
 	if (SUCCEEDED(hr)) {
 		if (!SHGetPathFromIDList(pidl, wxStringBuffer(strDir, MAX_PATH))) {
@@ -78,18 +71,62 @@ wxString GetDocumentsDir()
 		}
 	}
 
+#else
+
+	strDir = wxFileName::GetHomeDir();
+
+#endif
+
 	return strDir;
 }
 
 
-#else
-//-------------------- Generic code --------------------
 
-#include <wx/filename.h>
+#ifdef __WXMAC__
 
 wxString GetDocumentsDir()
 {
-	return wxFileName::GetHomeDir();
+	return doGetDirectory(kDocumentsFolderType);
 }
+
+#if !wxCHECK_VERSION(2,6,0)
+wxString GetUserDataDir()
+{
+	return doGetDirectory(kApplicationSupportFolderType) + wxT("/aMule");
+}
+#endif
+
+
+
+#elif defined(__WINDOWS__)
+
+wxString GetDocumentsDir()
+{
+	return doGetDirectory(CSIDL_PERSONAL);
+}
+
+#if !wxCHECK_VERSION(2,6,0) || (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
+wxString GetUserDataDir()
+{
+	return doGetDirectory(CSIDL_APPDATA) + wxT("\\aMule");
+}
+#endif
+
+
+
+#else
+
+wxString GetDocumentsDir()
+{
+	return doGetDirectory(0);
+}
+
+#if !wxCHECK_VERSION(2,6,0)
+wxString GetUserDataDir()
+{	
+	return doGetDirectory(0) + wxT("/.aMule");
+}
+#endif
+
 
 #endif

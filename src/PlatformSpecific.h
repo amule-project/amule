@@ -26,12 +26,27 @@
 #define PLATFORMSPECIFIC_H
 
 #include <wx/string.h>	// Needed for wxString
+#include <wx/version.h>	// Needed for wxCHECK_VERSION
 
 
 /**
  * Returs the location of the "Documents" folder of the current user.
  */
 wxString GetDocumentsDir();
+
+
+#if !wxCHECK_VERSION(2,6,0) || (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
+/**
+ * Reimplementation of wxStandardPaths::GetUserDataDir() for wxWidgets 2.4
+ */
+wxString GetUserDataDir();
+
+#else
+
+#include <wx/stdpaths.h>
+
+inline wxString GetUserDataDir() { return wxStandardPaths::Get().GetUserDataDir(); }
+#endif
 
 
 #endif /* PLATFORMSPECIFIC_H */
