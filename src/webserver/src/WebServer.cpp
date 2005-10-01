@@ -3491,6 +3491,17 @@ CDynStatisticImage::CDynStatisticImage(int width, int height, bool scale1024, CS
 		set_rgb_color_val(m_row_bg_ptrs[m_y_axis_size - 1]+3*j, axis_color, 0);
 	}
 	
+	// horisontal grid
+	int v_grid_size = m_y_axis_size / 4;
+	for(int i = m_y_axis_size - v_grid_size; i >= v_grid_size; i -= v_grid_size) {
+		png_bytep u_row = m_row_bg_ptrs[i];
+		for(int j = m_left_margin; j < m_width; j++) {
+			if ( (j % 10) < 5 ) {
+				set_rgb_color_val(u_row+3*j, axis_color, 0);
+			}
+		}
+	}
+	
 	//
 	// Pre-create masks for digits
 	//
