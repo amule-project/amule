@@ -414,7 +414,7 @@ bool CamuleDaemonApp::OnInit()
 	}
 	core_timer = new CTimer(this,ID_CORETIMER);
 	
-	core_timer->Start(100);
+	core_timer->Start(300);
 	
 	return true;
 }
