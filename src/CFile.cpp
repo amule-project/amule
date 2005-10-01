@@ -270,8 +270,7 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 	if (m_fd == fd_invalid) {
 		AddDebugLogLineM( true, logCFile, 
 			CFormat( wxT("Failed to created file '%s'!") )
-				% m_filePath
-				% m_fd );
+				% m_filePath);
 		
 		return false;
 	} else {
