@@ -265,7 +265,8 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	//
 	// Init stat graphs
 #ifdef WITH_LIBPNG
-	CDynStatisticImage *img = new CDynStatisticImage(500, 200, m_Stats.DownloadSpeed());
+	//CDynStatisticImage *img = new CDynStatisticImage(500, 200, m_Stats.DownloadSpeed());
+	CDynStatisticImage *img = new CDynStatisticImage(500, 200, false, m_Stats.ConnCount());
 	m_ImageLib.AddImage(img, wxT("/test_stats.png"));
 #endif
 }
@@ -3203,25 +3204,19 @@ CDynPngImage::CDynPngImage(int w, int h) : CAnyImage(w, h)
 	// Allocate array of "row pointers" - libpng need it in this form
 	// Fill it also with the image data
 	//
-	
-	// When allocating an array with a new expression, GCC used to allow 
-	// parentheses around the type name. This is actually ill-formed and it is 
-	// now rejected. From gcc3.4
-
+	m_img_data = new png_byte[3*m_width*m_height];
+	memset(m_img_data, 0, 3*m_width*m_height);
 	m_row_ptrs = new png_bytep [m_height];
 	for (int i = 0; i < m_height;i++) {
-		m_row_ptrs[i] = new png_byte[3*m_width];
-		memset(m_row_ptrs[i], 0, 3*m_width);
+		m_row_ptrs[i] = &m_img_data[3*m_width*i];
 	}
 	
 }
 
 CDynPngImage::~CDynPngImage()
 {
-	for (int i = 0; i < m_height;i++) {
-		delete [] m_row_ptrs[i];
-	}
 	delete [] m_row_ptrs;
+	delete [] m_img_data;
 }
 
 void CDynPngImage::png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length)
@@ -3355,7 +3350,7 @@ CStatsData::CStatsData(int size)
 {
 	m_size = size;
 	m_data = new uint32[size];
-	
+	m_max_value = 0;
 	//
 	// initial situation: all data is 0's
 	//
@@ -3387,6 +3382,10 @@ void CStatsData::PushSample(uint32 sample)
 	m_start_index = (m_start_index + 1) % m_size;
 	m_end_index = (m_end_index + 1) % m_size;
 	m_data[m_start_index] = sample;
+	
+	if ( m_max_value < sample ) {
+		m_max_value = sample;
+	}
 }
 
 CStatsCollection::CStatsCollection(int size, CamulewebApp *iface)
@@ -3438,13 +3437,54 @@ void CStatsCollection::ReQuery()
 //
 #ifdef WITH_LIBPNG
 
-CDynStatisticImage::CDynStatisticImage(int width, int height, CStatsData *data) :
+CDynStatisticImage::CDynStatisticImage(int width, int height, bool scale1024, CStatsData *data) :
 	CAnyImage(width, height), CDynPngImage(width, height)
 {
 	m_data = data;
-
+	m_scale1024 = scale1024;
+	
 	// actual name doesn't matter, just make it unique
 	m_name = wxString::Format(wxT("dyn_%d_stat.png"), (unsigned long int) data);
+	
+	// leave enough space for 3 digit number
+	m_left_margin = 40;
+	// leave enough space for number height
+	m_bottom_margin = 20;
+	
+	// allocate storage for background. Using 1 chunk to speed up
+	// the rendering
+	m_background = new png_byte[width*height*3];
+	m_row_bg_ptrs = new png_bytep[height];
+	for(int i = 0; i < height; i++) {
+		m_row_bg_ptrs[i] = &m_background[i*width*3];
+	}
+	
+	//
+	// Prepare background
+	//
+	static const COLORREF bg_color = RGB(0x00, 0x00, 0x40);
+	for(int i = 0; i < m_height; i++) {
+		png_bytep u_row = m_row_bg_ptrs[i];
+		for(int j = 0; j < m_width; j++) {
+			set_rgb_color_val(u_row+3*j, bg_color, 0);
+		}
+	}
+	//
+	// draw axis
+	//
+	static const COLORREF axis_color = RGB(0xff, 0xff, 0xff);
+	// Y
+	for(int i = m_bottom_margin; i < (m_height - m_bottom_margin); i++) {
+		png_bytep u_row = m_row_bg_ptrs[i];
+		set_rgb_color_val(u_row+3*(m_left_margin + 0), axis_color, 0);
+		set_rgb_color_val(u_row+3*(m_left_margin + 1), axis_color, 0);
+	}
+	// X
+	for(int j = m_left_margin; j < m_width; j++) {
+		set_rgb_color_val(m_row_bg_ptrs[m_height - m_bottom_margin - 0]+3*j, axis_color, 0);
+		set_rgb_color_val(m_row_bg_ptrs[m_height - m_bottom_margin - 1]+3*j, axis_color, 0);
+	}
+	
 }
 
 CDynStatisticImage::~CDynStatisticImage()
@@ -3453,46 +3493,50 @@ CDynStatisticImage::~CDynStatisticImage()
 
 void CDynStatisticImage::DrawImage()
 {
-//	for(int i = 0; i < m_height; i++) {
-//			memset(m_row_ptrs[i], 0, 3*m_width);
-//	}
-
-	//
-	// Prepare background
-	//
-	static const COLORREF bg_color = RGB(0x00, 0x00, 0x40);
-	for(int i = 0; i < m_height; i++) {
-		png_bytep u_row = m_row_ptrs[i];
-		for(int j = 0; j < m_width; j++) {
-			set_rgb_color_val(u_row+3*j, bg_color, 0);
-		}
-	}
-	//
-	// draw axis - will be moved to ctor eventually
-	//
-	static const int left_margin = 20, bottom_margin = 15;
-	static const COLORREF axis_color = RGB(0xff, 0xff, 0xff);
-	// Y
-	for(int i = bottom_margin; i < (m_height - bottom_margin); i++) {
-		png_bytep u_row = m_row_ptrs[i];
-		set_rgb_color_val(u_row+3*(left_margin + 0), axis_color, 0);
-		set_rgb_color_val(u_row+3*(left_margin + 1), axis_color, 0);
-	}
-	// X
-	for(int j = left_margin; j < m_width; j++) {
-		set_rgb_color_val(m_row_ptrs[m_height - bottom_margin - 0]+3*j, axis_color, 0);
-		set_rgb_color_val(m_row_ptrs[m_height - bottom_margin - 1]+3*j, axis_color, 0);
-	}
+	// copy background first
+	memcpy(m_img_data, m_background, m_width*m_height*3);
 	
 	//
 	// Now graph itself
 	//
 	static const COLORREF graph_color = RGB(0xff, 0x00, 0x00);
-	for(int i = bottom_margin; i < (m_height - bottom_margin); i++) {
+	int maxval = m_data->Max();
+	
+	if ( m_scale1024 ) {
+		if ( maxval > 1024 ) {
+			maxval /= 1024;
+		} else {
+			maxval = 1;
+		}
+	}
+	//
+	// Check if we need to scale data up or down
+	//
+	int m_scale_up = 1, m_scale_down = 1;
+	if ( maxval >= (m_height - m_bottom_margin) ) {
+		m_scale_down = 1 + (maxval / (m_height - m_bottom_margin - 10));
+	}
+	// if maximum value is 1/5 or less of graph height - scale it UP, to make 2/3
+	if ( maxval && (maxval < ((m_height - m_bottom_margin) / 5)) ) {
+		m_scale_up = (2*(m_height - m_bottom_margin) / 3) / maxval;
+	}
+	for(int i = m_bottom_margin; i < (m_height - m_bottom_margin); i++) {
 		png_bytep u_row = m_row_ptrs[i];
-		for(int j = left_margin, curr_data = m_data->GetFirst(); j < m_width; j++, curr_data = m_data->GetNext()) {
-			int y_coord = (m_height - bottom_margin) - i;
-			int diff = y_coord - curr_data/1024;
+		for(int j = m_left_margin, curr_data = m_data->GetFirst(); j < m_width; j++, curr_data = m_data->GetNext()) {
+			int y_coord = (m_height - m_bottom_margin) - i;
+			if ( m_scale_down != 1 ) {
+				curr_data /= m_scale_down;
+			} else if ( m_scale_up != 1 ) {
+				curr_data *= m_scale_up;
+			}
+			if ( m_scale1024 ) {
+				if ( curr_data > 1024) {
+					curr_data /= 1024;
+				} else {
+					curr_data = 1;
+				}
+			}
+			int diff = y_coord - curr_data;
 			if ( !diff ) {
 				set_rgb_color_val(u_row+3*j, graph_color, 0);
 			}

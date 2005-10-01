@@ -632,6 +632,7 @@ class CDynPngImage : public virtual CAnyImage {
 		virtual unsigned char *RequestData(int &size);
 	
 	protected:
+		png_bytep m_img_data;
 		png_bytep *m_row_ptrs;
 		
 		static void png_write_fn(png_structp png_ptr, png_bytep data, png_size_t length);
@@ -672,6 +673,7 @@ class CDynProgressImage : public virtual CProgressImage {
 //
 class CStatsData {
 		uint32 *m_data;
+		uint32 m_max_value;
 		int m_size;
 		int m_start_index, m_end_index, m_curr_index;
 	public:
@@ -679,6 +681,7 @@ class CStatsData {
 		~CStatsData();
 		
 		int Size() const { return m_size; }
+		uint32 Max() const { return m_max_value; }
 		uint32 GetFirst();
 		uint32 GetNext();
 		
@@ -728,10 +731,21 @@ class CNumImageMask {
 
 class CDynStatisticImage : public virtual CDynPngImage {
 		CStatsData *m_data;
+		int m_left_margin, m_bottom_margin;
+		
+		// indicates whether data should be divided on 1024 before
+		// drawing graph.
+		bool m_scale1024;
+		
+		//
+		// Prepared background
+		//
+		png_bytep m_background;
+		png_bytep *m_row_bg_ptrs;
 		
 		void DrawImage();
 	public:
-		CDynStatisticImage(int w, int h, CStatsData *data);
+		CDynStatisticImage(int w, int h, bool scale1024, CStatsData *data);
 		~CDynStatisticImage();
 
 		virtual unsigned char *RequestData(int &size);
