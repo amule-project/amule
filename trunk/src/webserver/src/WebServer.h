@@ -731,7 +731,15 @@ class CNumImageMask {
 
 class CDynStatisticImage : public virtual CDynPngImage {
 		CStatsData *m_data;
+		
+		// size of "font" of imprinted numbers
+		int m_num_font_w_size, m_num_font_h_size;
+		
 		int m_left_margin, m_bottom_margin;
+		int m_y_axis_size;
+		
+		// hope nobody needs "define" for 10 !
+		CNumImageMask *m_digits[10];
 		
 		// indicates whether data should be divided on 1024 before
 		// drawing graph.
