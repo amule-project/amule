@@ -46,8 +46,10 @@
 	#include <CoreServices/CoreServices.h>
 	#define CAS_DIR_SEPARATOR	"/"
 #elif defined(__WIN32__)
+	#define COBJMACROS
 	#include <winerror.h>
 	#include <shlobj.h>
+	#include <objidl.h>
 	#define CAS_DIR_SEPARATOR	"\\"
 #else
 	#define CAS_DIR_SEPARATOR	"/"
@@ -103,8 +105,8 @@ char *get_path(char *file)
 			LPMALLOC pMalloc;
 			SHGetMalloc(&pMalloc);
 			if (pMalloc) {
-				pMalloc->Free(pidl);
-				pMalloc->Release();
+				IMalloc_Free(pMalloc, pidl);
+				IMalloc_Release(pMalloc);
 			}
 		}
 

@@ -47,9 +47,10 @@
 #elif defined(__WINDOWS__)
 	#include <winerror.h>
 	#include <shlobj.h>
-#else
-	#include <wx/filename.h>
 #endif
+
+#include <wx/filename.h>
+
 
 #include "wxcascte.h"
 
