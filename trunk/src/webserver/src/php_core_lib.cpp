@@ -374,6 +374,8 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 #endif
 }
 
+#ifndef PHP_STANDALONE_EN
+
 typedef struct {
 	char *php_name;
 	ec_opcode_t tagname;
@@ -435,6 +437,7 @@ void ec_tag_2_php(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *catvar)
 		set_array_int_val(&catvar->value, def->php_name, val);
 	}
 }
+#endif
 
 /*
  * Return hash of amule options.
@@ -477,6 +480,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 #endif
 }
 
+#ifndef PHP_STANDALONE_EN
 bool php_2_ec_tag(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VALUE_NODE *catvar)
 {
 	for(PHP_2_EC_OPT_DEF *def = opts; def->php_name; def++) {
@@ -495,6 +499,7 @@ bool php_2_ec_tag(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VALUE_NODE *catvar
 	}
 	return true;
 }
+#endif
 
 /*
  * Set amule options from given array. Argument looks like "amule_get_options" result
@@ -779,7 +784,7 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_fake_obj_array_create(35, "AmuleSearchFile", result);
 }
 
-void amule_load_sats()
+void amule_load_stats()
 {
 }
 
