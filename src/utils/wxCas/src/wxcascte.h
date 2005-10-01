@@ -144,4 +144,6 @@ struct WxCasCte
 	static const wxString DEFAULT_FTP_PASSWD;
 };
 
+wxString GetDefaultAmulesigPath();
+
 #endif /* _WXCASCTE_H */

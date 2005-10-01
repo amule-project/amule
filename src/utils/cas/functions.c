@@ -30,8 +30,6 @@
 #include <string.h>
 #include <errno.h>
 
-/* XXX: does '/' work on M$ OSes? */
-#define CAS_DIR_SEPARATOR	'/'
 
 /* XXX This needs to be replaced so that we use
  * autoconf to detect the target OS -- As of now
@@ -43,11 +41,22 @@
  * functions like getpwuid() in UNIX-like systems
  * instead of doing this...
  */
-#if defined(unix) || defined(__unix__) || defined(__unix)
-#include <unistd.h>
-#include <pwd.h>
-#include <fcntl.h>
-#define CAS_UNIX
+
+#ifdef __APPLE__
+	#include <CoreServices/CoreServices.h>
+	#define CAS_DIR_SEPARATOR	"/"
+#elif defined(__WIN32__)
+	#include <winerror.h>
+	#include <shlobj.h>
+	#define CAS_DIR_SEPARATOR	"\\"
+#else
+	#define CAS_DIR_SEPARATOR	"/"
+	#if defined(unix) || defined(__unix__) || defined(__unix)
+		#include <unistd.h>
+		#include <pwd.h>
+		#include <fcntl.h>
+		#define CAS_UNIX
+	#endif
 #endif
 
 /* try (hard) to get correct path for aMule signature
@@ -55,11 +64,54 @@
  */
 char *get_path(char *file)
 {
-	char *ret, *home;	/* caller should free return value */
+	char *ret;	/* caller should free return value */
 	static char *saved_home = NULL;
 	static size_t home_len = 0;
 
 	if (saved_home == NULL) {
+#ifdef __APPLE__
+
+		char home[PATH_MAX];
+		home[0] = '\0';
+
+		FSRef fsRef;
+		if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
+			CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
+			if (urlRef != NULL) {
+				if (CFURLGetFileSystemRepresentation(urlRef, true, home, sizeof(home))) {
+					strcat(home, CAS_DIR_SEPARATOR "aMule");
+				}
+				CFRelease(urlRef) ;
+			}
+		}
+
+#elif defined(__WIN32__)
+
+		LPITEMIDLIST pidl;
+		char home[MAX_PATH];
+		home[0] = '\0';
+
+		HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
+
+		if (SUCCEEDED(hr)) {
+			if (SHGetPathFromIDList(pidl, home)) {
+				strcat(home, CAS_DIR_SEPARATOR "aMule");
+			}
+		}
+
+		if (pidl) {
+			LPMALLOC pMalloc;
+			SHGetMalloc(&pMalloc);
+			if (pMalloc) {
+				pMalloc->Free(pidl);
+				pMalloc->Release();
+			}
+		}
+
+
+#else
+		char *home;
+
 		/* get home directory */
 		if ( (home = getenv("HOME")) == NULL) {
 #ifndef CAS_UNIX
@@ -93,6 +145,9 @@ char *get_path(char *file)
 			home = pwd->pw_dir;
 #endif /* CAS_UNIX */
 		}
+		strcat(home, CAS_DIR_SEPARATOR ".aMule");
+
+#endif /* !__APPLE__ && !__WIN32__ */
 
 		/* save the result for future calls */
 		home_len = strlen(home);
@@ -110,7 +165,7 @@ char *get_path(char *file)
 		return NULL;
 
 	strcpy(ret, saved_home);
-	ret[home_len] = CAS_DIR_SEPARATOR;
+	ret[home_len] = CAS_DIR_SEPARATOR[0];
 	ret[home_len+1] = '\0';
 	strcat(ret, file);
 	/* the string is guaranteed to be null-terminated
