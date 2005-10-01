@@ -703,6 +703,29 @@ class CStatsCollection {
 
 #ifdef WITH_LIBPNG
 
+//
+// This gonna to represent data used to "write" numbers on
+// dynamically generated images.
+// Easiest way to represt numbers: 7-segments model
+//
+class CNumImageMask {
+		png_bytep *m_row_mask_ptrs;
+		int m_width, m_height;
+		int m_v_segsize, m_h_segsize;
+		
+		// mask generation
+		void DrawHorzLine(int off);
+		void DrawVertLine(int offx, int offy);
+		void DrawSegment(int id);
+		
+		static const int m_num_to_7_decode[10];
+	public:
+		CNumImageMask(int number, int width, int height);
+		~CNumImageMask();
+		
+		void Apply(png_bytep *image, int offx, int offy);
+};
+
 class CDynStatisticImage : public virtual CDynPngImage {
 		CStatsData *m_data;
 		

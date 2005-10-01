@@ -3421,7 +3421,7 @@ void CStatsCollection::ReQuery()
 	
 	CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
-	//m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
+	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 
 	CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 	const uint32 *data = (const uint32 *)dataTag->GetTagData();
@@ -3460,7 +3460,7 @@ void CDynStatisticImage::DrawImage()
 	//
 	// Prepare background
 	//
-	static const COLORREF bg_color = RGB(0xff, 0, 0x7f);
+	static const COLORREF bg_color = RGB(0x00, 0x00, 0x40);
 	for(int i = 0; i < m_height; i++) {
 		png_bytep u_row = m_row_ptrs[i];
 		for(int j = 0; j < m_width; j++) {
@@ -3487,17 +3487,21 @@ void CDynStatisticImage::DrawImage()
 	//
 	// Now graph itself
 	//
-	static const COLORREF graph_color = RGB(0xff, 0xff, 0xff);
+	static const COLORREF graph_color = RGB(0xff, 0x00, 0x00);
 	for(int i = bottom_margin; i < (m_height - bottom_margin); i++) {
 		png_bytep u_row = m_row_ptrs[i];
 		for(int j = left_margin, curr_data = m_data->GetFirst(); j < m_width; j++, curr_data = m_data->GetNext()) {
-			int diff = abs(i - bottom_margin - curr_data/1024);
-			if ( diff <= 2 ) {
+			int y_coord = (m_height - bottom_margin) - i;
+			int diff = y_coord - curr_data/1024;
+			if ( !diff ) {
 				set_rgb_color_val(u_row+3*j, graph_color, 0);
 			}
 		}
 	}
-	
+	for(int i = 0; i < 10; i++) {
+		CNumImageMask num(i, 40, 40);
+		num.Apply(m_row_ptrs, 90+50*i, 50);
+	}
 }
 
 unsigned char *CDynStatisticImage::RequestData(int &size)
@@ -3510,6 +3514,110 @@ unsigned char *CDynStatisticImage::RequestData(int &size)
 wxString CDynStatisticImage::GetHTML()
 {
 	return wxEmptyString;
+}
+
+//
+// Imprint numbers on generated png's
+//
+//                                                 0     1     2     3     4     5     6     7     8     9
+const int CNumImageMask::m_num_to_7_decode[] = {0x77, 0x24, 0x5d, 0x6d, 0x2e, 0x5d, 0x7a, 0x25, 0x7f, 0x2f};
+
+CNumImageMask::CNumImageMask(int number, int width, int height)
+{
+	m_v_segsize = height / 2;
+	m_h_segsize = width;
+	m_height = height;
+	m_width = width;
+	
+	m_row_mask_ptrs = new png_bytep[m_height];
+	for(int i = 0; i < m_height; i++) {
+		m_row_mask_ptrs[i] = new png_byte[3*m_width];
+		memset(m_row_mask_ptrs[i], 0x00, 3*m_width);
+	}
+	
+	int seg_status = m_num_to_7_decode[number];
+	for(int i = 0; i < 7; i++) {
+		if ( seg_status & (1 << i) ) {
+			DrawSegment(i);
+		}
+	}
+}
+
+CNumImageMask::~CNumImageMask()
+{
+	for(int i = 0; i < m_height; i++) {
+		delete [] m_row_mask_ptrs[i];
+	}
+	delete [] m_row_mask_ptrs;
+}
+
+void CNumImageMask::Apply(png_bytep *image, int offx, int offy)
+{
+	for(int i = 0; i < m_height; i++) {
+		png_bytep img_row = image[offy + i];
+		png_bytep num_row = m_row_mask_ptrs[i];
+		for(int j = 0; j < m_width; j++) {
+			img_row[offx + j] |= num_row[j];
+		}
+	}
+}
+
+void CNumImageMask::DrawHorzLine(int off)
+{
+	png_bytep m_row = m_row_mask_ptrs[off*(m_v_segsize-1)];
+	for(int i = 0; i < m_h_segsize; i++) {
+		m_row[i] = m_row[i+1] = m_row[i+2] = 0xff;
+	}
+}
+
+void CNumImageMask::DrawVertLine(int offx, int offy)
+{
+	for(int i = 0; i < m_v_segsize; i++) {
+		png_bytep m_row = m_row_mask_ptrs[offy*(m_v_segsize-1)+i];
+		int x_idx = offx*(m_h_segsize-3);
+		m_row[x_idx] = m_row[x_idx+1] = m_row[x_idx+2] = 0xff;
+	}
+}
+
+/*
+ * Segment id decoding defined as following
+ * 
+ *   ---- 0 ----
+ *   |         |
+ *   1         2
+ *   |___ 3 ___|
+ *   |         |
+ *   4         5
+ *   |___ 6 ___|
+ */
+void CNumImageMask::DrawSegment(int id)
+{
+	switch(id) {
+		case 0:
+			DrawHorzLine(0);
+			break;
+		case 1:
+			DrawVertLine(0, 0);
+			break;
+		case 2:
+			DrawVertLine(1, 0);
+			break;
+		case 3:
+			DrawHorzLine(1);
+			break;
+		case 4:
+			DrawVertLine(0, 1);
+			break;
+		case 5:
+			DrawVertLine(1, 1);
+			break;
+		case 6:
+			DrawHorzLine(2);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}
 }
 
 #endif
