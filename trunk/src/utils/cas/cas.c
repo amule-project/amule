@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* get amulesig path */
-	path = get_path(".aMule/amulesig.dat");
+	path = get_path("amulesig.dat");
 	if (path == NULL) {
 		printf("Unable to get aMule settings path\n");
 		exit(1);

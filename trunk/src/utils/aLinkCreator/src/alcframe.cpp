@@ -59,6 +59,10 @@
 #ifdef __WXMSW__
 	#include <winerror.h>
 	#include <shlobj.h>
+#elif defined(__WXMAC__)
+	#include <CoreServices/CoreServices.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+	#include <wx/intl.h>
 #endif
 
 #include "md4.h"
@@ -345,6 +349,20 @@ AlcFrame::SetFileToHash()
 			pMalloc->Release();
 		}
 	}
+#elif defined(__WXMAC__)
+
+	FSRef fsRef;
+	wxString browseroot;
+	if (FSFindFolder(kUserDomain, kDocumentsFolderType, kCreateFolder, &fsRef) == noErr)
+	{
+		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
+		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
+		CFRelease(urlRef) ;
+		browseroot = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding());
+	} else {
+		browseroot = wxFileName::GetHomeDir();
+	}
+
 #else
 	wxString browseroot = wxFileName::GetHomeDir();
 #endif

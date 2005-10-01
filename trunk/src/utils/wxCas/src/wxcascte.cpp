@@ -38,7 +38,18 @@
 #pragma hdrstop
 #endif
 
-#include <wx/filename.h>
+#include <wx/defs.h>
+
+#ifdef __WXMAC__
+	#include <CoreServices/CoreServices.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+	#include <wx/intl.h>
+#elif defined(__WINDOWS__)
+	#include <winerror.h>
+	#include <shlobj.h>
+#else
+	#include <wx/filename.h>
+#endif
 
 #include "wxcascte.h"
 
@@ -93,8 +104,7 @@ WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY ( wxT( "AbsoluteMaxDlDate" ) );
 
 // Default config parameters
 const wxString
-WxCasCte::DEFAULT_AMULESIG_PATH ( wxFileName::GetHomeDir () +
-                                  wxFileName::GetPathSeparator () + wxT( ".aMule" ) );
+WxCasCte::DEFAULT_AMULESIG_PATH ( GetDefaultAmulesigPath() );
 const wxUint32
 WxCasCte::DEFAULT_REFRESH_RATE = 5;
 
@@ -117,3 +127,51 @@ const wxString
 WxCasCte::DEFAULT_FTP_USER( wxT( "anonymous" ) );
 const wxString
 WxCasCte::DEFAULT_FTP_PASSWD( wxT( "whiterabit@here" ) );
+
+wxString GetDefaultAmulesigPath()
+{
+	wxString strDir;
+
+#ifdef __WXMAC__
+
+	FSRef fsRef;
+	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr)
+	{
+		CFURLRef	urlRef		= CFURLCreateFromFSRef(NULL, &fsRef);
+		CFStringRef	cfString	= CFURLCopyFileSystemPath(urlRef, kCFURLPOSIXPathStyle);
+		CFRelease(urlRef) ;
+		strDir = wxMacCFStringHolder(cfString).AsString(wxLocale::GetSystemEncoding())
+			+ wxFileName::GetPathSeparator() + wxT("aMule");
+	}
+
+#elif defined(__WINDOWS__)
+ 
+	LPITEMIDLIST pidl;
+
+	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
+
+	if (SUCCEEDED(hr)) {
+		if (!SHGetPathFromIDList(pidl, wxStringBuffer(strDir, MAX_PATH))) {
+			strDir = wxEmptyString;
+		} else {
+			strDir = strDir + wxFileName::GetPathSeparator() + wxT("aMule");
+		}
+	}
+
+	if (pidl) {
+		LPMALLOC pMalloc;
+		SHGetMalloc(&pMalloc);
+		if (pMalloc) {
+			pMalloc->Free(pidl);
+			pMalloc->Release();
+		}
+	}
+
+#else
+
+	strDir = wxFileName::GetHomeDir() + wxFileName::GetPathSeparator() + wxT(".aMule");
+
+#endif
+
+	return strDir;
+}
