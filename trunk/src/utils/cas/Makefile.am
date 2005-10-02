@@ -23,3 +23,7 @@ noinst_HEADERS = configfile.h \
 
 cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
 cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) 
+
+if NEED_CORESERVICES
+cas_LDFLAGS = -framework CoreServices
+endif

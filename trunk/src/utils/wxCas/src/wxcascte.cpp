@@ -39,6 +39,7 @@
 #endif
 
 #include <wx/defs.h>
+#include <wx/string.h>
 
 #ifdef __WXMAC__
 	#include <CoreServices/CoreServices.h>
