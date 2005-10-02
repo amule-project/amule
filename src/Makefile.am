@@ -340,6 +340,10 @@ ed2k_SOURCES = ED2KLinkParser.cpp
 if NEED_RC
 ed2k_LDADD = -lshlwapi
 endif
+# on Mac
+if NEED_CORESERVICES
+ed2k_LDFLAGS = -framework CoreServices
+endif
 
 amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp PlatformSpecific.cpp
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DEC_REMOTE
