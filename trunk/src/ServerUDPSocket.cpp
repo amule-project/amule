@@ -357,24 +357,23 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip) {
   
 }
 
-void CServerUDPSocket::SendBuffer(){
-	if(cur_server && sendbuffer){
-		// don't send if socket isn't there
-		if ( Ok() ) {
-			SendTo(m_SaveAddr,sendbuffer,sendblen);
+void CServerUDPSocket::SendBuffer()
+{
+	if (cur_server && sendbuffer){
+		// don't send if socket isn't ready
+		if (Ok()) {
+			SendTo(m_SaveAddr, sendbuffer, sendblen);
+
+			if (Error()) {
+				printf("Server UDP port returned an error: %i\n", LastError());
+			}
 		}
-		delete[] sendbuffer;
-		sendbuffer = NULL;
-		delete cur_server;
-		cur_server = NULL;
-	} else if (cur_server) {	
-		delete cur_server;
-		cur_server = NULL;		
-	} else  if (sendbuffer) {
-		delete[] sendbuffer;
-		sendbuffer = NULL;		
 	}
 	
+	delete[] sendbuffer;
+	sendbuffer = NULL;
+	delete cur_server;
+	cur_server = NULL;
 	
 	if (!server_packet_queue.IsEmpty()) {
 		ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();

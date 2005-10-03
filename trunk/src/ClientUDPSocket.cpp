@@ -364,34 +364,25 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 	bool sent = false;
 	
 	if (Ok()) {
-
 		CDatagramSocketProxy::SendTo(addr,lpBuf,nBufLen);
 
-		sent = !Error();
-		
-		if(!sent) {
-			uint32 error = LastError();
-			printf("UDP port returned a error: %i\n", error);
+		if (Error()) {
+			wxSocketError error = LastError();
+			printf("Client UDP port returned an error: %i", error);
+			
 			switch (error) {
-				case wxSOCKET_IOERR:
-					// Seems like wxDatagramSocket raises this error
-					// on some special events like invalid addresses or
-					// unreachable hosts. We'll just discard this packet 
-					// by pretending it was sent ok.
-					printf("WARNING! Discarded packet because I/O error on UDP socket\n");
-					sent = true;
-					break;				
 				case wxSOCKET_WOULDBLOCK:
 					// Socket is busy and can't send this data right now,
 					// so we just return not sent and set the wouldblock 
 					// flag so it gets resent when socket is ready.
 					m_bWouldBlock = true;
+					sent = false;
 					break;
+					
 				default:
-					// An unknown error happened on send. This packet
-					// must better be deleted so we don't get into some
-					// infinite loop...
-					printf("WARNING! Discarded packet because unknown error on UDP socket\n");
+					// An error which we can't handle happended, so we drop 
+					// the packet rather than risk entering an infinite loop.
+					printf("WARNING! Discarded packet due to errors while sending.\n");
 					sent = true;
 					break;
 			}
