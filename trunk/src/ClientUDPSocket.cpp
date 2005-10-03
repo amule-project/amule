@@ -408,6 +408,8 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
 {
+	wxASSERT(nPort);
+	
 	UDPPack newpending;
 	newpending.dwIP = dwIP;
 	newpending.nPort = nPort;
