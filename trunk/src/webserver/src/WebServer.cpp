@@ -265,9 +265,12 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	//
 	// Init stat graphs
 #ifdef WITH_LIBPNG
-	//CDynStatisticImage *img = new CDynStatisticImage(500, 200, m_Stats.DownloadSpeed());
-	CDynStatisticImage *img = new CDynStatisticImage(500, 200, false, m_Stats.ConnCount());
-	m_ImageLib.AddImage(img, wxT("/test_stats.png"));
+	m_ImageLib.AddImage(new CDynStatisticImage(200, true, m_Stats.DownloadSpeed()),
+		wxT("/amule_stats_download.png"));
+	m_ImageLib.AddImage(new CDynStatisticImage(200, true, m_Stats.UploadSpeed()),
+		wxT("/amule_stats_upload.png"));
+	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.ConnCount()),
+		wxT("/amule_stats_conncount.png"));
 #endif
 }
 
@@ -3437,8 +3440,8 @@ void CStatsCollection::ReQuery()
 //
 #ifdef WITH_LIBPNG
 
-CDynStatisticImage::CDynStatisticImage(int width, int height, bool scale1024, CStatsData *data) :
-	CAnyImage(width, height), CDynPngImage(width, height)
+CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *data) :
+	CAnyImage(data->Size(), height), CDynPngImage(data->Size(), height)
 {
 	m_data = data;
 	m_scale1024 = scale1024;
@@ -3459,10 +3462,10 @@ CDynStatisticImage::CDynStatisticImage(int width, int height, bool scale1024, CS
 	m_y_axis_size = m_height - m_bottom_margin;
 	// allocate storage for background. Using 1 chunk to speed up
 	// the rendering
-	m_background = new png_byte[width*height*3];
-	m_row_bg_ptrs = new png_bytep[height];
-	for(int i = 0; i < height; i++) {
-		m_row_bg_ptrs[i] = &m_background[i*width*3];
+	m_background = new png_byte[m_width*m_height*3];
+	m_row_bg_ptrs = new png_bytep[m_height];
+	for(int i = 0; i < m_height; i++) {
+		m_row_bg_ptrs[i] = &m_background[i*m_width*3];
 	}
 	
 	//
@@ -3556,13 +3559,15 @@ void CDynStatisticImage::DrawImage()
 	// Number "0" is always there
 	m_digits[0]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, m_y_axis_size-m_num_font_h_size-5);
 	
+	//
+	// When data is scaled down, axis are scaled UP and visa versa
 	int y_axis_max = m_y_axis_size;
 	if ( m_scale_down != 1 ) {
-		y_axis_max /= m_scale_down;
+		y_axis_max *= m_scale_down;
 	} else if ( m_scale_up != 1 ) {
-		y_axis_max *= m_scale_up;
+		y_axis_max /= m_scale_up;
 	}
-	
+
 	if ( y_axis_max > 99 ) {
 		m_digits[y_axis_max / 100]->Apply(m_row_ptrs, img_delta, img_delta);
 	}
@@ -3895,7 +3900,15 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			Print(_("Checking password\n"));
 			CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
 			
-			session->m_loggedin = (PwHash == webInterface->m_AdminPass);
+			session->m_loggedin = false;
+			if ( PwHash == webInterface->m_AdminPass ) {
+				session->m_loggedin = true;
+				// m_vars is map<string, string> - so _() will not work here !
+				session->m_vars["guest_login"] = "0";
+			} else if ( PwHash == webInterface->m_GuestPass ) {
+				session->m_loggedin = true;
+				session->m_vars["guest_login"] = "1";
+			}
 			if ( session->m_loggedin ) {
 				filename = wxT("index.html");
 				Print(_("Password ok\n"));

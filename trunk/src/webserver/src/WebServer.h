@@ -753,7 +753,7 @@ class CDynStatisticImage : public virtual CDynPngImage {
 		
 		void DrawImage();
 	public:
-		CDynStatisticImage(int w, int h, bool scale1024, CStatsData *data);
+		CDynStatisticImage(int height, bool scale1024, CStatsData *data);
 		~CDynStatisticImage();
 
 		virtual unsigned char *RequestData(int &size);
@@ -919,7 +919,6 @@ class CWebServerBase {
 
 class CSession {
 	public:
-		int m_id;
 		bool m_loggedin;
 		time_t m_last_access;
 		std::map<std::string, std::string> m_vars, m_get_vars;
