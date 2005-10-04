@@ -386,7 +386,9 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 					sent = true;
 					break;
 			}
-		} 
+		} else {
+			sent = true;
+		}
 	} else {
 		// If the socket is not ok, we can do nothing... just run for your life
 		// (and return true or this packet will be sent over and over again)
