@@ -368,7 +368,7 @@ bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
 
 		if (Error()) {
 			wxSocketError error = LastError();
-			printf("Client UDP port returned an error: %i", error);
+			printf("Client UDP port returned an error: %i\n", error);
 			
 			switch (error) {
 				case wxSOCKET_WOULDBLOCK:
