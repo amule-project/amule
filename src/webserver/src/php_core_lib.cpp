@@ -659,12 +659,46 @@ void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
 void php_native_strlen(PHP_VALUE_NODE *result)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
-	PHP_VALUE_NODE *param = &si->var->value;
 	if ( si ) {
-		assert(si->type == PHP_SCOPE_VAR);
+		PHP_VALUE_NODE *param = &si->var->value;
 		cast_value_str(param);
-		result->int_val = strlen(param->str_val);
-		result->type = PHP_VAL_INT;
+		if ( result ) {
+			cast_value_dnum(result);
+			result->int_val = strlen(param->str_val);
+		}
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+	}
+}
+
+void php_native_count(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( si ) {
+		PHP_VALUE_NODE *param = &si->var->value;
+		if ( result ) {
+			cast_value_dnum(result);
+			if ( (si->var->value.type == PHP_VAL_NONE) || (si->var->value.type != PHP_VAL_ARRAY) ) {
+				result->int_val = 0;
+			} else {
+				result->int_val = array_get_size(param);
+			}
+		}
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument");
+	}
+}
+
+void php_native_isset(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( si ) {
+		PHP_VALUE_NODE *param = &si->var->value;
+		cast_value_str(param);
+		if ( result ) {
+			cast_value_bool(result);
+			result->int_val = (si->var->value.type == PHP_VAL_NONE) ? 0 : 1;
+		}
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument");
 	}
@@ -1100,6 +1134,14 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"strlen",
 		1, php_native_strlen,
+	},
+	{
+		"count",
+		1, php_native_count,
+	},
+	{
+		"isset",
+		1, php_native_isset,
 	},
 	{
 		"usort",
