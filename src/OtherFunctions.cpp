@@ -1177,21 +1177,26 @@ bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName
 	if (len == 0) {
 		return false;
 	}
-	char *tmp_buffer = new char[len + sizeof(wxChar)];
+	char *tmp_buffer = new char[len + 1];
 	file.Read(tmp_buffer, len);
 	file.Close();
-	memset(tmp_buffer + len, 0, sizeof(wxChar));
+	tmp_buffer[len] = '\0';
 #if wxUSE_UNICODE
-	wxString str((wxWCharBuffer&)tmp_buffer);
+	Char2UnicodeBuf tmp_buffer_unicode(char2unicode(tmp_buffer));
+	wxString str;
+	if (tmp_buffer_unicode)
+		str = tmp_buffer_unicode;
+	else
+		str = UTF82unicode(tmp_buffer);
 #else
 	wxString str(tmp_buffer);
 #endif
 	delete [] tmp_buffer;
 
 #if !defined(__unix__) && !defined(__linux__)  // if (wxFileName::GetPathSeparator() != wxT("/")) {
-	const wxChar pathSeparator = wxFileName::GetPathSeparator();
-	oldConfigDir.Replace(wxT("/"), &pathSeparator);
-	newConfigDir.Replace(wxT("/"), &pathSeparator);
+	const wxString pathSeparator = wxFileName::GetPathSeparator();
+	oldConfigDir.Replace(wxT("/"), pathSeparator);
+	newConfigDir.Replace(wxT("/"), pathSeparator);
 #ifdef __WINDOWS__  // if (pathSeparator == wxT("\\")) {
 	oldConfigDir.Replace(wxT("\\"), wxT("\\\\"));
 	newConfigDir.Replace(wxT("\\"), wxT("\\\\"));
