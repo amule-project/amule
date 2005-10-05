@@ -80,12 +80,30 @@ PHP_EXP_NODE *make_const_exp_fnum(float number)
 	return node;
 }
 
-PHP_EXP_NODE *make_const_exp_str(char *s)
+PHP_EXP_NODE *make_const_exp_str(char *s, int unescape)
 {
 	PHP_EXP_NODE *node = make_zero_exp_node();
 	node->op = PHP_OP_VAL;
 	node->val_node.type = PHP_VAL_STRING;
-	node->val_node.str_val = strdup(s);
+
+	if ( unescape ) {
+		node->val_node.str_val = (char *)malloc(strlen(s)+1);
+		// copy and unescape string
+		char *p = node->val_node.str_val;
+		while(*s) {
+			if ( *s == '\\' ) {
+				switch ( *(++s) ) {
+					case 'n' : *p++ = '\n'; s++; break;
+					default  : *p++ = *s++; break;
+				}
+			} else {
+				*p++ = *s++;
+			}
+		}
+		*p = 0;
+	} else {
+		node->val_node.str_val = strdup(s);
+	}
 	
 	return node;
 }
@@ -1914,10 +1932,9 @@ void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 }
 
 
-
 int yyerror(char *s)
 {
-	printf("ERROR in grammar %s after %s\n", s, yytext);
+	printf("ERROR in grammar %s after [%s] near line %d\n", s, yytext, yylineno);
 	return 0;
 }
 
@@ -1930,6 +1947,8 @@ int main(int argc, char *argv[])
 	CWriteStrBuffer buffer;
 
 	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
+	
+	yydebug = 1;
 	
 	int size = buffer.Length();
 	char *buf = new char [size+1];
