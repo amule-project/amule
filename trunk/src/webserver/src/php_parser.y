@@ -335,8 +335,8 @@ const_value:
 ;
 
 variable:	deref_variable
-	|	IDENT CLASS_SCOPE IDENT 				{ $$ = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str($1), make_const_exp_str($3)); }
-	|	deref_variable OBJECT_OPERATOR IDENT	{ $$ = make_exp_2(PHP_OP_OBJECT_DEREF, $1, make_const_exp_str($3)); }
+	|	IDENT CLASS_SCOPE IDENT 				{ $$ = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str($1, 0), make_const_exp_str($3, 0)); }
+	|	deref_variable OBJECT_OPERATOR IDENT	{ $$ = make_exp_2(PHP_OP_OBJECT_DEREF, $1, make_const_exp_str($3, 0)); }
 ;
 
 

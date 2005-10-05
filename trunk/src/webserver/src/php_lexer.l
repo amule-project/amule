@@ -47,6 +47,7 @@ int yywrap()
 %x LINE_COMMENT
 
 %option stack
+%option yylineno
 
 DEC_NUM			[0-9]+
 FLOANUM	([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]*)
@@ -199,20 +200,17 @@ EOL ("\r"|"\n"|"\r\n")
 	return FNUMBER;
 	}
 
-\"([^"]*)\"	{
-		if (yytext[yyleng-1] == '\\') yymore();
-		else {
-			yytext[strlen(yytext)-1] = 0;
-			yylval.exp_node = make_const_exp_str(yytext+1);
-			return STRING;
-		}
-	}
+\"(\\.|[^\\"])*\" {
+		yytext[strlen(yytext)-1] = 0;
+		yylval.exp_node = make_const_exp_str(yytext+1, 1);
+		return STRING;
+}
 
-\'([^']*)\'	{
-			yytext[strlen(yytext)-1] = 0;
-			yylval.exp_node = make_const_exp_str(yytext+1);
-			return STRING;
-	}
+\'(\\.|[^\\'])*\' {
+		yytext[strlen(yytext)-1] = 0;
+		yylval.exp_node = make_const_exp_str(yytext+1, 0);
+		return STRING;
+}
 
 [ \t\v\n\r\f]		{  }
 

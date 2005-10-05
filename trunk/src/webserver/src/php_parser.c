@@ -2475,12 +2475,12 @@ yyreduce:
 
   case 80:
 #line 338 "php_parser.y"
-    { (yyval.exp_node) = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str((yyvsp[-2].str_val)), make_const_exp_str((yyvsp[0].str_val))); ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_CLASS_DEREF, make_const_exp_str((yyvsp[-2].str_val), 0), make_const_exp_str((yyvsp[0].str_val), 0)); ;}
     break;
 
   case 81:
 #line 339 "php_parser.y"
-    { (yyval.exp_node) = make_exp_2(PHP_OP_OBJECT_DEREF, (yyvsp[-2].exp_node), make_const_exp_str((yyvsp[0].str_val))); ;}
+    { (yyval.exp_node) = make_exp_2(PHP_OP_OBJECT_DEREF, (yyvsp[-2].exp_node), make_const_exp_str((yyvsp[0].str_val), 0)); ;}
     break;
 
   case 83:

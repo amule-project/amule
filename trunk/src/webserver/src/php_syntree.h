@@ -336,7 +336,7 @@ extern "C" {
 	extern int yydebug;
 	extern FILE *yyin;
 	extern char *yytext;
-	//extern int yylineno;
+	extern int yylineno;
 
 /* 
  * Syntax tree interface to parser
@@ -347,7 +347,7 @@ extern "C" {
  */
  	PHP_EXP_NODE *make_const_exp_dnum(int number);
  	PHP_EXP_NODE *make_const_exp_fnum(float number);
- 	PHP_EXP_NODE *make_const_exp_str(char *s);
+ 	PHP_EXP_NODE *make_const_exp_str(char *s, int unescape);
 
 	// exp node for internally handled data
 	PHP_EXP_NODE *make_const_exp_int_obj(void *obj);
