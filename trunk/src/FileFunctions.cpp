@@ -178,7 +178,7 @@ wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search
 	if (!DirPtr) {
 		return wxEmptyString;
 	}
-	seekdir(DirPtr, 0);// 2 if we want to skip . and ..
+	rewinddir(DirPtr);
 	FileMask = search_mask;
 	type = search_type;
 	return GetNextFile();
