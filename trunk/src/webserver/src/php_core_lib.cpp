@@ -752,6 +752,48 @@ void amule_load_stats()
 	CPhPLibContext::g_curr_context->WebServer()->Reload_Stats();
 }
 
+/*
+ * Convert CEC_StatTree_Node_Tag into php associative array
+ * 
+ * Since data structure is recoursive - we need helper function
+ * to perform conversion
+ */
+void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
+{
+	cast_value_array(result);
+	std::string key(unicode2char(root->GetDisplayString()));
+	PHP_VAR_NODE *v_key = array_get_by_str_key(result, key);
+	for (int i = 0; i < root->GetTagCount(); i++) {
+		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)root->GetTagByIndex(i);
+		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
+			ecstats2php(tag, &v_key->value);
+		}
+	}
+
+}
+
+void amule_load_stats_tree(PHP_VALUE_NODE *result)
+{
+	if ( !result ) {
+		return;
+	}
+	value_value_free(result);
+	
+	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
+	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	if ( !response ) {
+		return;
+	}
+	CECTag *server_ver = response->GetTagByName(EC_TAG_SERVER_VERSION);
+	CECTag *user_nick = response->GetTagByName(EC_TAG_USER_NICK);
+	if ( !server_ver || !user_nick ) {
+		delete response;
+		return;
+	}
+	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
+	ecstats2php(stats_root, result);
+}
+
 #else
 
 void amule_fake_obj_array_create(int count, char *class_name, PHP_VALUE_NODE *result)
@@ -788,6 +830,10 @@ void amule_load_stats()
 {
 }
 
+void amule_load_stats_tree(PHP_VALUE_NODE *)
+{
+}
+
 #endif
 
 void php_native_load_amule_vars(PHP_VALUE_NODE *result)
@@ -815,8 +861,10 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 		amule_load_search(result);
 	} else if ( strcmp(varname, "servers") == 0 ) {
 		amule_load_servers(result);
-	} else if ( strcmp(varname, "stats") == 0 ) {
+	} else if ( strcmp(varname, "stats_graph") == 0 ) {
 		amule_load_stats();
+	} else if ( strcmp(varname, "stats_tree") == 0 ) {
+		amule_load_stats_tree(result);
 	} else {
 		value_value_free(result);
 		php_report_error(PHP_ERROR, "This type of amule variable is unknown");
