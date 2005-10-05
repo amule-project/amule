@@ -264,7 +264,7 @@ function formCommandSubmit(command)
 	
 				echo "<td>", '<input type="checkbox" name="', $file->hash, '" >', "</td>";
 	
-				echo "<td nowrap>", $file->name, "</td>";
+				echo "<td nowrap>", $file->short_name, "</td>";
 	
 				echo "<td>", $file->progress, "</td>";
 				
