@@ -36,7 +36,7 @@ php_parser.c: php_parser.y
 	bison --debug -t -d -v -o php_parser.c php_parser.y
 
 php_lexer.c: php_lexer.l
-	lex -F -ophp_lexer.c php_lexer.l
+	lex -ophp_lexer.c php_lexer.l
 
 
 amuleweb_CFLAGS = -I../.. -I$(top_srcdir)/src $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\""
