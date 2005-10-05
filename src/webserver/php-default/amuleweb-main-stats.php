@@ -20,7 +20,10 @@ body {
 
 </script>
 <?php
-	amule_load_vars("stats");
+	amule_load_vars("stats_graph");
+	
+	$stattree = amule_load_vars("stats_tree");
+	var_dump($stattree);
 ?>
 <body onload="init_data();" >
 <form name="mainform" action="amuleweb-main-prefs.php" method="post">
