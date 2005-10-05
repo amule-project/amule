@@ -1,5 +1,5 @@
 # Translation of amule interface to Korean
-# Copyright (C) YEAR Free Software Foundation, Inc
+# Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # Lee, Eun-ho <hoenny@daum.net>, 2005.
 # 
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-04 20:47+0200\n"
-"PO-Revision-Date: 2005-09-24 12:30+0900\n"
+"PO-Revision-Date: 2005-10-02 00:15+0900\n"
 "Last-Translator: Lee, Eun-ho <hoenny@daum.net>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -1199,7 +1199,7 @@ msgstr "연결 제한"
 
 #: src/webserver/src/WebServer.cpp:1941
 msgid "Max Sources Per File"
-msgstr "파일당 최대 소스"
+msgstr "파일당 최대 자료"
 
 #: src/webserver/src/WebServer.cpp:1942
 msgid "Max. Connections"
@@ -1614,7 +1614,7 @@ msgstr "부분파일의 핵심 파일을 저장하는데 에러가 발생하였�
 #: src/PartFile.cpp:1179
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
-msgstr "부분파일을 위해 %i 소스핵심을 저장되었습니다: %s(%s)"
+msgstr "부분파일을 위해 %i 자료핵심을 저장되었습니다: %s(%s)"
 
 #: src/PartFile.cpp:1198
 #, c-format
@@ -2505,7 +2505,7 @@ msgid ""
 "Total sources:\t%d\n"
 msgstr ""
 "\n"
-"전체 소스:\t% d\n"
+"전체 자료:\t% d\n"
 
 #: src/TextClient.cpp:671 src/TextClient.cpp:690
 #, c-format
@@ -3070,11 +3070,11 @@ msgstr "마지막 부분이 완료 :"
 
 #: src/muuli_wdr.cpp:698
 msgid "Found Sources :"
-msgstr "소스 발견 :"
+msgstr "자료 발견 :"
 
 #: src/muuli_wdr.cpp:709
 msgid "Transferring Sources :"
-msgstr "소스 전송 :"
+msgstr "자료 전송 :"
 
 #: src/muuli_wdr.cpp:720
 msgid "Filepart-Count :"
@@ -3413,7 +3413,7 @@ msgid ""
 "If enabled, it is possible to display the sources associated with downloads "
 "by double-clicking on them."
 msgstr ""
-"더블클릭으로 그것들을 활성화를 하면 소스를 내려받기와 연결하여 보여주는것이 "
+"더블클릭으로 그것들을 활성화를 하면 자료를 내려받기와 연결하여 보여주는것이 "
 "가능합니다."
 
 #: src/muuli_wdr.cpp:1684
@@ -3553,7 +3553,7 @@ msgstr "사용않함"
 
 #: src/muuli_wdr.cpp:1889
 msgid "Max Sources per File"
-msgstr "파일당 최대소스수"
+msgstr "파일당 최대자료수"
 
 #: src/muuli_wdr.cpp:1896
 msgid "Hard Limit"
@@ -3674,7 +3674,7 @@ msgstr "동일한 분류로부터"
 
 #: src/muuli_wdr.cpp:2112
 msgid "Save 5 sources on rare files (< 20 sources)"
-msgstr "희귀한 파일 소스 5개를 저장한다. (< 20개 소스)"
+msgstr "희귀한 파일 자료 5개를 저장한다. (< 20개 자료)"
 
 #: src/muuli_wdr.cpp:2116
 msgid "Extract Meta Data Tags"
@@ -3974,11 +3974,11 @@ msgstr "이뮬은 당신이 내려받는 목록열을 자동으로 정렬합니�
 
 #: src/muuli_wdr.cpp:2600
 msgid "Misc Gui Tweaks"
-msgstr "구릅별 그래픽사용자인터페이스 트윅"
+msgstr "구릅별 그래픽사용자인터페이스 조정"
 
 #: src/muuli_wdr.cpp:2603
 msgid "Show Fast ED2K Links Handler"
-msgstr "빠른 ed2k링크 핸드러를 보여줍니다."
+msgstr "빠른 ed2k링크 처리기를 보여줍니다."
 
 #: src/muuli_wdr.cpp:2607
 msgid "Show extended info on categories tabs"
@@ -3990,39 +3990,39 @@ msgstr "제목별 전송률을 보여줍니다."
 
 #: src/muuli_wdr.cpp:2636
 msgid "Source Dropping"
-msgstr "소스 버리기"
+msgstr "자료 버리기"
 
 #: src/muuli_wdr.cpp:2643
 msgid "Keep sources"
-msgstr "소스 유지"
+msgstr "자료 유지"
 
 #: src/muuli_wdr.cpp:2644
 msgid "Drop sources"
-msgstr "소스 버림"
+msgstr "자료 버림"
 
 #: src/muuli_wdr.cpp:2645
 msgid "Send sources to any other file before dropping (High CPU)"
-msgstr "다른파일을 버리기전에 소스를 보냅니다. (CPU 높은사용)"
+msgstr "다른파일을 버리기전에 자료를 보냅니다. (CPU 높은사용)"
 
 #: src/muuli_wdr.cpp:2647
 msgid "Sources with no needed file-parts."
-msgstr "필요없는 파일부분의 소스"
+msgstr "필요없는 파일부분의 자료"
 
 #: src/muuli_wdr.cpp:2650
 msgid "Full Queue Sources Handling"
-msgstr "소스 핸들큐를 채웁니다."
+msgstr "자료 핸들큐를 채웁니다."
 
 #: src/muuli_wdr.cpp:2653
 msgid "Enable auto drop Full Queue Sources"
-msgstr "큐가찬 소스를 자동으로 버리는것을 활성화합니다."
+msgstr "큐가찬 자료를 자동으로 버리는것을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2659
 msgid "High Queue Rating Sources Handling"
-msgstr "소스핸들의 큐속도를 빠르게 합니다."
+msgstr "자료핸들의 큐속도를 빠르게 합니다."
 
 #: src/muuli_wdr.cpp:2662
 msgid "Enable auto drop High Queue Rating Sources"
-msgstr "큐속도가 빠른 소스를 자동으로 버리는것을 활성화합니다."
+msgstr "큐속도가 빠른 자료를 자동으로 버리는것을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2668
 msgid "High Queue Rating value"
@@ -4034,7 +4034,7 @@ msgstr "(최소 300 / 최대 3000)"
 
 #: src/muuli_wdr.cpp:2681
 msgid "Auto Drop Sources Timer"
-msgstr "소스 타이머를 자동으로 버립니다."
+msgstr "자료 타이머를 자동으로 버립니다."
 
 #: src/muuli_wdr.cpp:2684
 msgid "Timer (in secs)"
@@ -4494,7 +4494,7 @@ msgstr "프록시에 적속하기위한 암호"
 
 #: src/muuli_wdr.cpp:3679
 msgid "Automatic server connect without proxy"
-msgstr "프록시없이 서버에 자동으로 역결됩니다."
+msgstr "프록시없이 서버에 자동으로 연결합니다."
 
 #: src/muuli_wdr.cpp:3702
 msgid "Connect to:"
@@ -4823,12 +4823,12 @@ msgstr "내려받기: %s"
 #: src/DownloadListCtrl.cpp:756
 #, c-format
 msgid "Sources: %u"
-msgstr "소스: %u"
+msgstr "자료: %u"
 
 #: src/DownloadListCtrl.cpp:757
 #, c-format
 msgid "Complete Sources: %u"
-msgstr "완료된 소스: %u"
+msgstr "완료된 자료: %u"
 
 #: src/DownloadListCtrl.cpp:880 src/ClientListCtrl.cpp:290
 msgid "Send message to user"
@@ -4856,19 +4856,19 @@ msgstr "모든A4AF를 다른파일로 바꿉니다."
 
 #: src/DownloadListCtrl.cpp:986
 msgid "Drop No Needed Sources now"
-msgstr "더이상 필요하지않는 소스를 제거합니다."
+msgstr "더이상 필요하지않는 자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:988
 msgid "Drop Full Queue Sources now"
-msgstr "가득찬 큐소스를 제거합니다."
+msgstr "가득찬 큐자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:990
 msgid "Drop High Queue Rating Sources now"
-msgstr "큐 사용이 많은 소스를 제거합니다."
+msgstr "큐 사용이 많은 자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:992
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "소스를 깨끗히합니다.(NNS, FQS && HQRS)"
+msgstr "자료를 깨끗히합니다.(NNS, FQS && HQRS)"
 
 #: src/DownloadListCtrl.cpp:994
 msgid "Extended Options"
@@ -4877,7 +4877,7 @@ msgstr "옵션확장"
 #: src/DownloadListCtrl.cpp:999 src/SearchListCtrl.cpp:438
 #: src/SharedFilesCtrl.cpp:141
 msgid "Get Razorback 2's stats for this file"
-msgstr "라백조2의 파일상태 얻기 "
+msgstr "라조백2의 파일상태 얻기 "
 
 #: src/DownloadListCtrl.cpp:1005 src/SearchListCtrl.cpp:440
 msgid "jugle.net Fake Check"
@@ -4967,7 +4967,7 @@ msgstr "다른파일 요청됨"
 
 #: src/DownloadListCtrl.cpp:1802
 msgid "Source Exchange"
-msgstr "소스 교환"
+msgstr "자료 교환"
 
 #: src/DownloadListCtrl.cpp:1805
 msgid "Passive"
@@ -5381,7 +5381,7 @@ msgstr "파일 요청 오버해드(패키지): %s"
 #: src/Statistics.cpp:807 src/Statistics.cpp:848
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr "소스 교환 오버해드(패키지): %s"
+msgstr "자료 교환 오버해드(패키지): %s"
 
 #: src/Statistics.cpp:812 src/Statistics.cpp:853
 #, c-format
@@ -5391,7 +5391,7 @@ msgstr "서버 오버해드(패키지): %s"
 #: src/Statistics.cpp:817
 #, c-format
 msgid "Found Sources: %i"
-msgstr "소스 발견: %i"
+msgstr "자료 발견: %i"
 
 #: src/Statistics.cpp:819
 #, c-format
@@ -5926,7 +5926,7 @@ msgstr "원격 조정"
 
 #: src/PrefsUnifiedDlg.cpp:169
 msgid "Sources Dropping"
-msgstr "소스 버림"
+msgstr "자료 버림"
 
 #: src/PrefsUnifiedDlg.cpp:175
 msgid "Gui Tweaks"
@@ -6612,7 +6612,7 @@ msgstr "복사"
 
 #: src/PartFileConvert.cpp:489
 msgid "Retrieving source downloadfile information"
-msgstr "소스 내려받은 파일 정보를 부활시킵니다."
+msgstr "자료 내려받은 파일 정보를 부활시킵니다."
 
 #: src/PartFileConvert.cpp:519
 msgid "Adding download and saving new partfile"
@@ -6680,11 +6680,11 @@ msgstr ""
 #: src/PartFileConvert.cpp:765
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
-msgstr "당신은 성공적으로 가져온 내려받은 소스파일을 삭제하겠습니까?"
+msgstr "당신은 성공적으로 가져온 내려받은 자료파일을 삭제하겠습니까?"
 
 #: src/PartFileConvert.cpp:766
 msgid "Remove sources?"
-msgstr "소스 삭제?"
+msgstr "자료 삭제?"
 
 #: src/PartFileConvert.cpp:792
 #, c-format
@@ -6827,7 +6827,7 @@ msgstr "이 파일의 덧글을 바꿉..."
 
 #: src/SharedFilesCtrl.cpp:144
 msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "ed2k 링크를 클립보드에 복사합니다.(소스)"
+msgstr "ed2k 링크를 클립보드에 복사합니다.(&S자료)"
 
 #: src/SharedFilesCtrl.cpp:145
 msgid "Copy ED2k link to clipboard (Hostname)"
@@ -6843,7 +6843,7 @@ msgstr "[부분 파일]"
 
 #: src/SharedFilesCtrl.cpp:289
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "당신은 요효한 소스 링크를 만들기 위해서 높은 아이디가 필요합니다."
+msgstr "당신은 요효한 자료 링크를 만들기 위해서 높은 아이디가 필요합니다."
 
 #: src/SharedFilesCtrl.cpp:433
 #, c-format
