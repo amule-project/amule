@@ -74,6 +74,9 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident, int ref)
 				printf("\t[%s]=>\n", curr_key.c_str());
 				php_var_dump(&curr_val->value, ident+1, curr_val->ref_count > 1);
 			}
+			for(int i = 0; i < ident;i++) {
+				printf("\t");
+			}
 			printf("}\n");
 			break;
 		}
