@@ -183,9 +183,9 @@ inline wxString StringFrom(signed long long value)
  */
 #define ASSERT_TRUE_M(condition, message)\
 	{ if (condition) {\
-	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#condition),success));\
+	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#condition),success));\
 	} else {\
-	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message,failure)); return;\
+	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message,failure)); return;\
 	}}
 
 /**
@@ -211,9 +211,9 @@ inline wxString StringFrom(signed long long value)
  */
 #define ASSERT_EQUALS_M(expected,actual,message)\
 { if (expected == actual) {\
-	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#expected),success));\
+	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#expected),success));\
 	} else {\
-	addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,message,failure)); return;\
+	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,message,failure)); return;\
 	}}
 
 /**
@@ -230,7 +230,7 @@ inline wxString StringFrom(signed long long value)
  * @param text Failure message
  */
 #define FAIL_M(text) \
-	{ addTestPartResult(new TestPartResult(wxT(__FILE__), __LINE__,text,failure)); return; }
+	{ this->addTestPartResult(new TestPartResult(wxT(__FILE__), __LINE__,text,failure)); return; }
 
 
 /**
