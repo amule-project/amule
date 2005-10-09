@@ -456,7 +456,7 @@ public:
 		
 
 		char tmp[42];
-		bzero(tmp, 42);
+		memset(tmp, 0, 42);
 		file->Write(tmp, 42);
 
 		ASSERT_EQUALS(65, file->GetLength());
