@@ -1129,6 +1129,10 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 		if (!CheckDirExists(newPath)) {
 			wxMkdir(newPath);
 		}
+		// On a move, first try to move everything in a single step
+		if (!copy && UTF8_MoveFile(oldPath, newPath)) {
+			return true;
+		}
 		CDirIterator finder(oldPath);
 		wxString file = finder.GetFirstFile(CDirIterator::Dir, wxT("*")).AfterLast(wxFileName::GetPathSeparator());
 		while (!file.IsEmpty()) {
