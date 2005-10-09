@@ -1622,25 +1622,28 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			if (theApp.downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::getTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::isConnected() && theApp.IsConnected() && !IsStopped()){ 
 				//Kademlia
 				theApp.downloadqueue->SetLastKademliaFileRequest();
-				if (!GetKadFileSearchID()) {
-					Kademlia::CUInt128 kadFileID(GetFileHash().GetHash());
-					Kademlia::CSearch* pSearch = Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::FILE, true, kadFileID);
-					AddDebugLogLineM(false, logKadSearch, wxT("Preparing a Kad Search for ") + GetFileName());
-					if (pSearch) {
-						AddDebugLogLineM(false, logKadSearch, wxT("Kad lookup started for ") + GetFileName());
-						if(m_TotalSearchesKad < 7) {
-							m_TotalSearchesKad++;
-						}
-						m_LastSearchTimeKad = dwCurTick + (KADEMLIAREASKTIME*m_TotalSearchesKad);
-						SetKadFileSearchID(pSearch->getSearchID());
-					} else {
-						SetKadFileSearchID(0);
+			
+				if (GetKadFileSearchID()) {
+					Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
+					SetKadFileSearchID(0);			
+				}
+			
+				Kademlia::CUInt128 kadFileID(GetFileHash().GetHash());
+				Kademlia::CSearch* pSearch = Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::FILE, true, kadFileID);
+				AddDebugLogLineM(false, logKadSearch, wxT("Preparing a Kad Search for ") + GetFileName());
+				if (pSearch) {
+					AddDebugLogLineM(false, logKadSearch, wxT("Kad lookup started for ") + GetFileName());
+					if(m_TotalSearchesKad < 7) {
+						m_TotalSearchesKad++;
 					}
+					m_LastSearchTimeKad = dwCurTick + (KADEMLIAREASKTIME*m_TotalSearchesKad);
+					SetKadFileSearchID(pSearch->getSearchID());
 				}
 			}
 		} else {
 			if(GetKadFileSearchID()) {
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
+				SetKadFileSearchID(0);
 			}
 		}
 		#endif 
@@ -1776,8 +1779,9 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			// This '+1' is added because 'i' counts from 0.
 			sources.Seek((count-(i+1))*(4+2), wxFromCurrent);
 			#ifdef __COMPILE_KAD__
-			if(GetKadFileSearchID()) {
+			if (GetKadFileSearchID()) {
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
+				SetKadFileSearchID(0);				
 			}
 			#endif
 			break;
@@ -2199,8 +2203,9 @@ void CPartFile::RemoveAllRequestedBlocks(void)
 void CPartFile::CompleteFile(bool bIsHashingDone)
 {
 	#ifdef __COMPILE_KAD__
-	if(GetKadFileSearchID()) {
+	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
+		SetKadFileSearchID(0);				
 	}
 	#endif
 
@@ -2652,8 +2657,9 @@ void CPartFile::PauseFile(bool bInsufficient)
 	}
 
 	#ifdef __COMPILE_KAD__
-	if(GetKadFileSearchID()) {
+	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
+		SetKadFileSearchID(0);
 		// If we were in the middle of searching, reset timer so they can resume searching.
 		m_LastSearchTimeKad = 0; 
 	}
