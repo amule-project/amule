@@ -66,8 +66,6 @@ typedef struct PHP_VALUE_NODE {
 #define PHP_VARFLAG_STATIC		0x0001
 #define PHP_VARFLAG_GLOBAL		0x0002
 #define PHP_VARFLAG_BYREF		0x0004
-#define PHP_VARFLAG_PRIVATE		0x0004
-#define PHP_VARFLAG_BUILTIN		0x0004
 
 /*
   Data about variable.
@@ -533,7 +531,8 @@ void array_add_to_str_key(PHP_VALUE_NODE *array, std::string key, PHP_VAR_NODE *
 void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key);
 
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
-	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array);
+	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array,
+	std::map<std::string, PHP_VAR_NODE *> &saved_vars);
 
 
 #endif

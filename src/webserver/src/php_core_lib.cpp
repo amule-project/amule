@@ -90,7 +90,7 @@ void php_native_var_dump(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( si ) {
-		assert(si->type == PHP_SCOPE_VAR);
+		assert((si->type == PHP_SCOPE_VAR)||(si->type == PHP_SCOPE_PARAM));
 		php_var_dump(&si->var->value, 0, 0);
 	} else {
 		php_report_error(PHP_ERROR, "Invalid or missing argument");
@@ -144,19 +144,19 @@ void php_native_usort(PHP_VALUE_NODE *)
 {
 	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
 	if ( !si || (si->var->value.type != PHP_VAL_ARRAY)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		php_report_error(PHP_ERROR, "Invalid or missing argument (array)");
 		return;
 	}
 	PHP_VAR_NODE *array = si->var;
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si || (si->var->value.type != PHP_VAL_STRING)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		php_report_error(PHP_ERROR, "Invalid or missing argument (func name)");
 		return;
 	}
 	char *cmp_func_name = si->var->value.str_val;
 	si = get_scope_item(g_global_scope, cmp_func_name);
 	if ( !si || (si->type != PHP_SCOPE_FUNC)) {
-		php_report_error(PHP_ERROR, "Invalid or missing argument");
+		php_report_error(PHP_ERROR, "Compare function [%s] not found", cmp_func_name);
 		return;
 	}
 	PHP_SYN_FUNC_DECL_NODE *func_decl = si->func->func_decl;
