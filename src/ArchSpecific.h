@@ -96,14 +96,9 @@ inline void PokeUInt32(void* p, uint32 nVal);
 // \}
 
 
-#ifdef __arm__
-        #define ARM_OR_SPARC
+#if defined(__arm__) or defined(__sparc__)
+	#define ARM_OR_SPARC
 #endif
-
-#ifdef __sparc__
-        #define ARM_OR_SPARC
-#endif
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
