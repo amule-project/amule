@@ -47,7 +47,7 @@ class CMD4Hash;
 class CFileDataIO
 {
 public:
-	virtual void Read(void *pBuf, off_t nCount) const;
+	virtual void Read(void *pBuf, size_t nCount) const;
 	virtual void Write(const void *pBuf, size_t nCount);
 	virtual off_t GetPosition() const = 0;
 	virtual off_t GetLength() const = 0;
@@ -73,7 +73,7 @@ public:
 
 protected:
 	virtual ~CFileDataIO();
-	virtual off_t doRead(void *pBuf, off_t nCount) const = 0;
+	virtual off_t doRead(void *pBuf, size_t nCount) const = 0;
 	virtual size_t doWrite(const void *pBuf, size_t nCount) = 0;
 	virtual off_t doSeek(off_t offset) const = 0;
 
