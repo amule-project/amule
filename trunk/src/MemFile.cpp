@@ -120,7 +120,7 @@ void CMemFile::enlargeBuffer(off_t size)
 }
 
 
-off_t CMemFile::doRead(void* buffer, off_t count) const
+off_t CMemFile::doRead(void* buffer, size_t count) const
 {
 	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to read to invalid buffer"));
 	MULE_VALIDATE_PARAMS(m_position + count <= m_FileSize, wxT("Invalid read"));

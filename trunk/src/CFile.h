@@ -133,12 +133,12 @@ public:
 	}
 	
 	// This safe read will throw a wxString on some issues
-	virtual off_t SafeRead(unsigned char* pBuf, off_t nCount, int nRetries = 1) const;
+	virtual off_t SafeRead(unsigned char* pBuf, size_t nCount, int nRetries = 1) const;
 
 protected:
 	// read/write (unbuffered)
 	// returns number of bytes read or ofsInvalid on error
-	virtual off_t doRead(void *pBuf, off_t nCount) const;
+	virtual off_t doRead(void *pBuf, size_t nCount) const;
 	// returns the number of bytes written
 	virtual size_t doWrite(const void *pBuf, size_t nCount);
 	// move ptr ofs bytes related to start/current off_t/end of file

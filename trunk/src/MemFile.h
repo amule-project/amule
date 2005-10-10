@@ -125,7 +125,7 @@ public:
 	
 protected:
 	/** @see CFileDataIO::doRead */
-	virtual off_t  doRead(void* buffer, off_t count) const;
+	virtual off_t  doRead(void* buffer, size_t count) const;
 
 	/** @see CFileDataIO::doWrite */
 	virtual size_t doWrite(const void* buffer, size_t count);

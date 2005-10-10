@@ -402,7 +402,7 @@ bool CFile::Close()
 // ----------------------------------------------------------------------------
 
 // read
-off_t CFile::doRead(void *pBuf, off_t nCount) const
+off_t CFile::doRead(void *pBuf, size_t nCount) const
 {
 	wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
 
@@ -424,7 +424,7 @@ off_t CFile::doRead(void *pBuf, off_t nCount) const
 	}
 }
 
-off_t CFile::SafeRead(unsigned char* pBuf, off_t nCount, int nRetries) const 
+off_t CFile::SafeRead(unsigned char* pBuf, size_t nCount, int nRetries) const 
 {
 	off_t total_done = 0;
 	int retries = 0; 
