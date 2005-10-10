@@ -80,7 +80,7 @@ function swapFolder(img){
     <td height="62">&nbsp;</td>
     <td colspan="2"><img src="amule_stats_conncount.png" width="286" height="200" border="0" alt="" title="" /></td>
     <td colspan="2">
-		<iframe name="stats" src="stats_tree.php" scrolling="yes" frameborder="1"></iframe>
+		<iframe name="stats" src="stats_tree.php" width="286" height="200" scrolling="yes" frameborder="1"></iframe>
     </td>
   </tr>
   <tr valign="top">
