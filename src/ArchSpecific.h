@@ -96,6 +96,13 @@ inline void PokeUInt32(void* p, uint32 nVal);
 // \}
 
 
+#ifdef __arm__
+        #define ARM_OR_SPARC
+#endif
+
+#ifdef __sparc__
+        #define ARM_OR_SPARC
+#endif
 
 
 
@@ -104,7 +111,7 @@ inline void PokeUInt32(void* p, uint32 nVal);
 
 inline uint16 RawPeekUInt16(const void* p)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	return *((uint16*)p);
 #else
 	uint16 value;
@@ -116,7 +123,7 @@ inline uint16 RawPeekUInt16(const void* p)
 
 inline uint32 RawPeekUInt32(const void* p)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	return *((uint32*)p);
 #else
 	uint32 value;
@@ -128,7 +135,7 @@ inline uint32 RawPeekUInt32(const void* p)
 
 inline uint64 RawPeekUInt64(const void* p)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	return *((uint64*)p);
 #else
 	uint64 value;
@@ -164,7 +171,7 @@ inline uint32 PeekUInt32(const void* p)
 
 inline void RawPokeUInt16(void* p, uint16 nVal)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	*((uint16*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint16) );
@@ -174,7 +181,7 @@ inline void RawPokeUInt16(void* p, uint16 nVal)
 
 inline void RawPokeUInt32(void* p, uint32 nVal)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	*((uint32*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint32) );
@@ -184,7 +191,7 @@ inline void RawPokeUInt32(void* p, uint32 nVal)
 
 inline void RawPokeUInt64(void* p, uint64 nVal)
 {
-#ifndef __sparc__
+#ifndef ARM_OR_SPARC
 	*((uint64*)p) = nVal;
 #else
 	memcpy( p, &nVal, sizeof(uint64) );
