@@ -4,9 +4,13 @@ dist_webserver_DATA = \
 	amuleweb-main-servers.php \
 	amuleweb-main-shared.php \
 	stats.php \
+	stats_tree.php \
 	top.html \
 	footer.php \
 	login.html \
+	tree-open.gif \
+	tree-closed.gif \
+	tree-leaf.gif \
 	toolbutton-reload.jpeg \
 	toolbutton-search.jpeg \
 	toolbutton-search-pressed.jpeg \
