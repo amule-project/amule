@@ -32,22 +32,17 @@
 struct z_stream_s;
 
 //			SERVER TO CLIENT
-#pragma pack(1)
 struct Header_Struct{
 	int8	eDonkeyID;
 	int32	packetlength;
 	int8	command;
 } __attribute__((__packed__));
-#pragma pack()
 
-#pragma pack(1)
 struct UDP_Header_Struct{
 	int8	eDonkeyID;
 	int8	command;
 } __attribute__((__packed__));
-#pragma pack()
 
-#pragma pack(1)
 struct Requested_Block_Struct{
 	uint32	StartOffset;
 	uint32	EndOffset;
@@ -55,15 +50,12 @@ struct Requested_Block_Struct{
 	unsigned char	FileID[16];
 	uint32  transferred; // Barry - This counts bytes completed
 } __attribute__((__packed__));
-#pragma pack()
 
-#pragma pack(1)
 struct Requested_File_Struct{
 	unsigned char	  fileid[16];
 	uint32	  lastasked;
 	uint8	  badrequests;
 } __attribute__((__packed__));
-#pragma pack()
 
 struct Pending_Block_Struct{
 	Requested_Block_Struct*	block;
@@ -77,13 +69,12 @@ struct Gap_Struct{
 	uint32 start;
 	uint32 end;
 };
-#pragma pack(1)
+
 struct ServerMet_Struct {
 	uint32	ip;
 	uint16	port;
 	uint32	tagcount;
 } __attribute__((__packed__));
-#pragma pack()
 
 struct TransferredData {
 	uint32	datalen;
@@ -93,7 +84,6 @@ struct TransferredData {
 
 //Kry import of 0.30d 
 // Maella -Enhanced Chunk Selection- (based on jicxicmic)
-#pragma pack(1)
 struct Chunk {
 	uint16 part;      // Index of the chunk
 		union {
@@ -101,7 +91,6 @@ struct Chunk {
 			uint16 rank;      // Download priority factor (highest = 0, lowest = 0xffff)
 	};
 } __attribute__((__packed__));
-#pragma pack()
 
 enum DownloadItemType { FILE_TYPE, A4AF_SOURCE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
 
