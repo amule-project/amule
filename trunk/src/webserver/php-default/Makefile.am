@@ -4,6 +4,7 @@ dist_webserver_DATA = \
 	amuleweb-main-servers.php \
 	amuleweb-main-shared.php \
 	amuleweb-main-stats.php \
+	amuleweb-main-prefs.php \
 	stats.php \
 	stats_tree.php \
 	top.html \
