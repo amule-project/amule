@@ -94,6 +94,7 @@ PHP_EXP_NODE *make_const_exp_str(char *s, int unescape)
 			if ( *s == '\\' ) {
 				switch ( *(++s) ) {
 					case 'n' : *p++ = '\n'; s++; break;
+					case 't' : *p++ = '\t'; s++; break;
 					default  : *p++ = *s++; break;
 				}
 			} else {
