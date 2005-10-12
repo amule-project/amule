@@ -3,6 +3,7 @@ dist_webserver_DATA = \
 	amuleweb-main-search.php \
 	amuleweb-main-servers.php \
 	amuleweb-main-shared.php \
+	amuleweb-main-stats.php \
 	stats.php \
 	stats_tree.php \
 	top.html \
