@@ -164,7 +164,7 @@ class DownloadFile {
 class SharedFile {
 	public:
 		wxString	sFileName;
-		long		lFileSize;
+		unsigned long	lFileSize;
 		uint32		nFileTransferred;
 		uint64		nFileAllTimeTransferred;
 		uint16		nFileRequests;
@@ -218,7 +218,7 @@ class UploadFile {
 class SearchFile {
 	public:
 		wxString sFileName;
-		long lFileSize;
+		unsigned long lFileSize;
 		CMD4Hash  nHash;
 		wxString  sHash;
 		long lSourceCount;
