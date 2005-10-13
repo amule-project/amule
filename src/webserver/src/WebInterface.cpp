@@ -339,7 +339,18 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		templateDir = dir;
 		return true;
 	}
-	return false;
+	
+	// template not found. reverting to default
+	if ( (!m_UsePhp && (templateName == wxT("default"))) ||
+		((m_UsePhp && templateName == wxT("php-default"))) ) {
+		return false;
+	}
+	Show(wxT("Template ") + templateName + wxT(" not found, reverting to default\n\n"));
+	if ( m_UsePhp ) {
+		return GetTemplateDir(wxT("php-default"), templateDir);
+	} else {
+		return GetTemplateDir(wxT("default"), templateDir);
+	}
 }
 
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
