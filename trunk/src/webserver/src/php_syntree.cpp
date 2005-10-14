@@ -1362,25 +1362,25 @@ void php_expr_eval(PHP_EXP_NODE *expr, PHP_VALUE_NODE *result)
 			break;
 		case PHP_OP_CAST_INT:
 			if ( result ) {
-				value_value_assign(result, &result_val_right);
+				php_expr_eval(expr->tree_node.left, result);
 				cast_value_dnum(result);
 			}
 			break;
 		case PHP_OP_CAST_FLOAT:
 			if ( result ) {
-				value_value_assign(result, &result_val_right);
+				php_expr_eval(expr->tree_node.left, result);
 				cast_value_fnum(result);
 			}
 			break;
 		case PHP_OP_CAST_BOOL:
 			if ( result ) {
-				value_value_assign(result, &result_val_right);
+				php_expr_eval(expr->tree_node.left, result);
 				cast_value_bool(result);
 			}
 			break;
 		case PHP_OP_CAST_STR:
 			if ( result ) {
-				value_value_assign(result, &result_val_right);
+				php_expr_eval(expr->tree_node.left, result);
 				cast_value_str(result);
 			}
 			break;
@@ -1582,45 +1582,45 @@ void php_eval_compare(PHP_EXP_OP op, PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, P
 				php_report_error(PHP_INTERNAL_ERROR, "This op is not compare op");
 		}	
 	} else {
-		cast_type_resolve(op1, op2);
+		PHP_VALUE_TYPE restype = cast_type_resolve(op1, op2);
 		switch(op) {
 			case PHP_OP_EQ:
-				if ( result->type == PHP_VAL_FLOAT ) {
-					result->int_val = op1->int_val == op2->float_val;
+				if ( restype == PHP_VAL_FLOAT ) {
+					result->int_val = op1->float_val == op2->float_val;
 				} else {
 					result->int_val = op1->int_val == op2->int_val;
 				}
 				break;
 			case PHP_OP_NEQ:
-				if ( result->type == PHP_VAL_FLOAT ) {
+				if ( restype == PHP_VAL_FLOAT ) {
 					result->int_val = op1->float_val != op2->float_val;
 				} else {
 					result->int_val = op1->int_val != op2->int_val;
 				}
 				break;
 			case PHP_OP_GRT:
-				if ( result->type == PHP_VAL_FLOAT ) {
+				if ( restype == PHP_VAL_FLOAT ) {
 					result->int_val = op1->float_val > op2->float_val;
 				} else {
 					result->int_val = op1->int_val > op2->int_val;
 				}
 				break;
 			case PHP_OP_GRT_EQ:
-				if ( result->type == PHP_VAL_FLOAT ) {
+				if ( restype == PHP_VAL_FLOAT ) {
 					result->int_val = op1->float_val >= op2->float_val;
 				} else {
 					result->int_val = op1->int_val >= op2->int_val;
 				}
 				break;
 			case PHP_OP_LWR:
-				if ( result->type == PHP_VAL_FLOAT ) {
+				if ( restype == PHP_VAL_FLOAT ) {
 					result->int_val = op1->float_val < op2->float_val;
 				} else {
 					result->int_val = op1->int_val < op2->int_val;
 				}
 				break;
 			case PHP_OP_LWR_EQ:
-				if ( result->type == PHP_VAL_FLOAT ) {
+				if ( restype == PHP_VAL_FLOAT ) {
 					result->int_val = op1->float_val <= op2->float_val;
 				} else {
 					result->int_val = op1->int_val <= op2->int_val;
