@@ -44,7 +44,7 @@ namespace Kademlia {
 ////////////////////////////////////////
 
 #define SEARCHTOLERANCE				16777216
-#define K							10
+const int K	=						10;
 #define KBASE						4
 #define KK							5
 #define ALPHA_QUERY					3
