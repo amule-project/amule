@@ -13,6 +13,10 @@ body {
 	margin-bottom: 0px;
 	background-color: #003399;
 }
+.doad-table {
+	font-family: Tahoma;
+	font-size: small;
+}
 -->
 </style>
 <script language="JavaScript" type="text/JavaScript">
@@ -78,7 +82,7 @@ function formCommandSubmit(command)
 </script>
 
 <body>
-<form name="mainform" action="amuleweb-main-dload.php" method="post">
+<form action="amuleweb-main-dload.php" method="post" name="mainform" class="doad-table">
 <table width="100%"  border="1" bgcolor="#0099CC">
   <tr>
     <td width="118" height="20"><input type="hidden" name="command"></td>
@@ -128,18 +132,20 @@ function formCommandSubmit(command)
   <tr>
     <td colspan="3"><table width="100%"  border="0" cellpadding="2" cellspacing="2">
       <tr>
-        <th width="22" scope="col">&nbsp;</th>
-        <th width="230" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
-        <th width="200" scope="col"><div align="left">
-          <div align="left">Progress</div></th>
-        <th width="80" scope="col"><div align="left">
+        <th width="26" scope="col">&nbsp;</th>
+        <th width="271" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=name" target="mainFrame">Filename</a></div></th>
+        <th width="236" scope="col"><div align="left">
+          <div align="left"><a href="amuleweb-main-dload.php?sort=progress">Progress</a></div></th>
+        <th width="95" scope="col"><div align="left">
           <div align="left"><a href="amuleweb-main-dload.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="90" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
-        <th width="44" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
-        <th width="88" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
-        <th width="12" scope="col">&nbsp;</th>
+        <th width="106" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=size_done" target="mainFrame">Completed</a></div></th>
+        <th width="106" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
+        <th width="52" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
+        <th width="104" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
+        <th width="19" scope="col">&nbsp;</th>
         </tr>
       <tr>
+        <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
         <td scope="col">&nbsp;</td>
@@ -189,6 +195,8 @@ function formCommandSubmit(command)
 			
 			switch ( $sort_order) {
 				case "size": $result = $a->size > $b->size; break;
+				case "size_done": $result = $a->size_done > $b->size_done; break;
+				case "progress": $result = ((float)$a->size)/((float)$a->size_done + 1) > ((float)$b->size)/((float)$b->size_done + 1); break;
 				case "name": $result = $a->name > $b->name; break;
 				case "speed": $result = $a->speed > $b->speed; break;
 				case "scrcount": $result = $a->src_count > $b->src_count; break;
@@ -269,6 +277,8 @@ function formCommandSubmit(command)
 				echo "<td>", $file->progress, "</td>";
 				
 				echo "<td>", CastToXBytes($file->size), "</td>";
+				
+				echo "<td>", CastToXBytes($file->size_done), "</td>";
 	
 				echo "<td>";
 				if ( $file->src_count_not_curr != 0 ) {
