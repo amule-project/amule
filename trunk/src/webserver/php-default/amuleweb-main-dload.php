@@ -196,7 +196,7 @@ function formCommandSubmit(command)
 			switch ( $sort_order) {
 				case "size": $result = $a->size > $b->size; break;
 				case "size_done": $result = $a->size_done > $b->size_done; break;
-				case "progress": $result = ((float)$a->size)/((float)$a->size_done + 1) > ((float)$b->size)/((float)$b->size_done + 1); break;
+				case "progress": $result = ((float)$a->size_done)/((float)$a->size) > ((float)$b->size_done)/((float)$b->size); break;
 				case "name": $result = $a->name > $b->name; break;
 				case "speed": $result = $a->speed > $b->speed; break;
 				case "scrcount": $result = $a->src_count > $b->src_count; break;
