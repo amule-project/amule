@@ -1724,14 +1724,14 @@ void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result)
 		//
 		// Error: undeclared symbol
 		//
-		php_report_error(PHP_ERROR, "Function is not defined");
+		php_report_error(PHP_ERROR, "Function [ %s ] is not defined", l_node->val_node.str_val);
 		return;
 	}
 	if ( si->type != PHP_SCOPE_FUNC) {
 		//
 		// Error: defined, but wrong type !
 		//
-		php_report_error(PHP_ERROR, "This is not a function");
+		php_report_error(PHP_ERROR, "Item [ %s ] is not a function", l_node->val_node.str_val);
 		return;
 	}
 	PHP_SYN_NODE *func = si->func;
