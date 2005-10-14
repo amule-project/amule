@@ -196,7 +196,7 @@ function formCommandSubmit(command)
 			switch ( $sort_order) {
 				case "size": $result = $a->size > $b->size; break;
 				case "size_done": $result = $a->size_done > $b->size_done; break;
-				case "progress": $result = ((float)$a->size_done)/((float)$a->size) > ((float)$b->size_done)/((float)$b->size); break;
+				case "progress": $result = (((float)$a->size_done)/((float)$a->size)) > (((float)$b->size_done)/((float)$b->size)); break;
 				case "name": $result = $a->name > $b->name; break;
 				case "speed": $result = $a->speed > $b->speed; break;
 				case "scrcount": $result = $a->src_count > $b->src_count; break;
@@ -278,7 +278,8 @@ function formCommandSubmit(command)
 				
 				echo "<td>", CastToXBytes($file->size), "</td>";
 				
-				echo "<td>", CastToXBytes($file->size_done), "</td>";
+				echo "<td>", CastToXBytes($file->size_done), "&nbsp;(",
+					((float)$file->size_done*100)/((float)$file->size), "%)</td>";
 	
 				echo "<td>";
 				if ( $file->src_count_not_curr != 0 ) {
