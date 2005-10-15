@@ -853,7 +853,9 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 	pNewClient->SetKadPort(contact->getUDPPort());
 	pNewClient->SetKadState(KS_QUEUED_BUDDY);
 	byte ID[16];
-	contact->getClientID().toByteArray(ID);
+	Kademlia::CUInt128 id;
+	contact->getClientID(&id);
+	id.toByteArray(ID);
 	pNewClient->SetUserHash(CMD4Hash(ID));
 	AddToKadList(pNewClient);
 	//This method checks if this is a dup already.
@@ -883,7 +885,9 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	pNewClient->SetKadPort(contact->getUDPPort());
 	pNewClient->SetKadState(KS_INCOMING_BUDDY);
 	byte ID[16];
-	contact->getClientID().toByteArray(ID);
+	Kademlia::CUInt128 id;
+	contact->getClientID(&id);
+	id.toByteArray(ID);
 	pNewClient->SetUserHash(CMD4Hash(ID));
 	buddyID->toByteArray(ID);
 	pNewClient->SetBuddyID(ID);
@@ -946,6 +950,34 @@ void CClientList::CleanUpClientList(){
 				cDeleted++;
 				pCurClient->Disconnected(wxT("Removed during ClientList cleanup."));
 				pCurClient->Safe_Delete(); 
+			} else {
+				if (!(pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())) {
+					AddDebugLogLineM(false, logProxy,
+						CFormat(wxT("Debug: Not deleted client %x with up state: %i "))
+							% (long int)pCurClient % pCurClient->GetUploadState());
+				}
+				if (!(pCurClient->GetDownloadState() == DS_NONE)) {
+					AddDebugLogLineM(false, logProxy, 
+						CFormat(wxT("Debug: Not deleted client %x with down state: %i "))
+							% (long int)pCurClient % pCurClient->GetDownloadState());
+				}
+				if (!(pCurClient->GetChatState() == MS_NONE)) {	
+					AddDebugLogLineM(false, logProxy, 
+						CFormat(wxT("Debug: Not deleted client %x with chat state: %i "))
+							% (long int)pCurClient % pCurClient->GetChatState());
+				}
+				if (!(pCurClient->GetKadState() == KS_NONE)) {
+					AddDebugLogLineM(false, logProxy, 
+						CFormat(wxT("Debug: Not deleted client %x with kad state: %i"))
+							% (long int)pCurClient % pCurClient->GetKadState());
+				}
+				if (!(pCurClient->GetSocket() == NULL)) {
+					AddDebugLogLineM(false, logProxy, 
+						CFormat(wxT("Debug: Not deleted client %x: has socket")) % (long int)pCurClient);
+				}	
+				AddDebugLogLineM(false, logProxy, 
+					CFormat(wxT("Debug: Not deleted client %x with kad version: %i"))
+						% (long int)pCurClient % pCurClient->GetKadVersion());				
 			}
 		}
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
