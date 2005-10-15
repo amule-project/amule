@@ -5,14 +5,6 @@
 <title>amule preferences page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <style type="text/css">
-.trigger{
-	cursor: pointer;
-	cursor: hand;
-}
-.branch{
-	display: none;
-	margin-left: 16px;
-}
 <!--
 body {
 	margin-left: 0px;
@@ -20,6 +12,9 @@ body {
 	margin-right: 0px;
 	margin-bottom: 0px;
 	background-color: #003399;
+	font-size: small;
+	font-family: Tahoma;
+	color: #FFFFFF;
 }
 -->
 </style>
@@ -52,47 +47,61 @@ function swapFolder(img){
 ?>
 <body>
 <form name="mainform" action="amuleweb-main-prefs.php" method="post">
-<table width="800" border="0" cellpadding="0" cellspacing="0">
+<table width="904" border="0" cellpadding="0" cellspacing="0">
   <!--DWLayoutTable-->
   <tr>
-    <td width="52" height="10"><!--DWLayoutEmptyCell-->&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
+    <td width="11">&nbsp;</td>
+    <td width="379">&nbsp;</td>
+    <td width="10" height="10">&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="58">&nbsp;</td>
-    <td colspan="2"><img src="amule_stats_download.png" width="286" height="200" border="0" alt="" title="" /></td>
-    <td colspan="2"><img src="amule_stats_upload.png" width="286" height="200" border="0" alt="" title="" /></td>
-  </tr>
-  <tr valign="top">
-    <td height="20">&nbsp;</td>
-    <td width="285"><div align="center">Downloads</div></td>
-    <td width="98">&nbsp;</td>
-    <td width="286"><div align="center">Uploads</div></td>
-    <td width="79">&nbsp;</td>
-  </tr>
-  <tr valign="top">
-    <td height="35">&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr valign="top">
-    <td height="62">&nbsp;</td>
-    <td colspan="2"><img src="amule_stats_conncount.png" width="286" height="200" border="0" alt="" title="" /></td>
-    <td colspan="2">
-		<iframe name="stats" src="stats_tree.php" width="286" height="200" scrolling="yes" frameborder="1"></iframe>
-    </td>
-  </tr>
-  <tr valign="top">
-    <td height="20">&nbsp;</td>
-    <td><div align="center">Number of connections </div></td>
     <td><!--DWLayoutEmptyCell-->&nbsp;</td>
-    <td colspan="2"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td rowspan="7"><iframe name="stats" src="stats_tree.php" width="350" height="700" frameborder="1"></iframe></td>
+    <td height="58"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td><img src="amule_stats_download.png" width="500" height="200" border="0" alt="" title="" /></td>
   </tr>
   <tr valign="top">
-    <td height="108">&nbsp;</td>
-    <td colspan="2"><!--DWLayoutEmptyCell-->&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td height="20"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td><div align="center">Download speed </div></td>
+    </tr>
+  <tr valign="top">
+    <td>&nbsp;</td>
+    <td height="35">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td height="58"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td><img src="amule_stats_upload.png" width="500" height="200" border="0" alt="" title="" /></td>
+  </tr>
+  <tr valign="top">
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td height="20"><div align="center"></div></td>
+    <td><div align="center">Upload speed</div></td>
+    </tr>
+  <tr valign="top">
+    <td>&nbsp;</td>
+    <td height="35">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td height="58"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td><img src="amule_stats_conncount.png" width="500" height="200" border="0" alt="" title="" /></td>
+  </tr>
+  <tr valign="top">
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td height="20"><div align="center"></div></td>
+    <td><div align="center">Number of connections </div></td>
+    </tr>
+  <tr valign="top">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td height="35">&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 </table>
 </form>
