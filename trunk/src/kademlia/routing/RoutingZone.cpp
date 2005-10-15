@@ -252,7 +252,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			retVal = true;
 			#warning TODO: EC
 			#ifndef AMULE_DAEMON
-				theApp.amuledlg->kademliawnd->RefreshNode(c);
+			theApp.amuledlg->kademliawnd->RefreshNode(c);
 			#endif
 		} else if (m_bin->getRemaining() > 0) {
 			c = new CContact(id, ip, port, tport);
