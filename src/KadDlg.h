@@ -52,7 +52,7 @@ public:
 		
 	void ShowNodes() const;
 	void HideNodes() const;
-	bool AddNode(const Kademlia::CContact* contact) const;
+	void AddNode(const Kademlia::CContact* contact) const;
 	void RemoveNode(const Kademlia::CContact* contact) const;
 	void RefreshNode(const Kademlia::CContact* contact) const;
 

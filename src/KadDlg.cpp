@@ -171,8 +171,8 @@ void CKadDlg::HideNodes() const {
 	NodesList->Freeze();
 }
 
-bool CKadDlg::AddNode(const Kademlia::CContact* contact) const {
-	return NodesList->AddNode(contact);
+void CKadDlg::AddNode(const Kademlia::CContact* contact) const {
+	NodesList->AddNode(contact);
 }
 
 void CKadDlg::RemoveNode(const Kademlia::CContact* contact) const {

@@ -91,15 +91,11 @@ using namespace Kademlia;
 wxString CRoutingZone::m_filename;
 CUInt128 CRoutingZone::me((uint32)0);
 
-CRoutingZone::CRoutingZone(const wxString& filename)
+CRoutingZone::CRoutingZone()
 {
 	// Can only create routing zone after prefs
 	me = CKademlia::getPrefs()->getKadID();
-	if (filename.IsEmpty()) {
-		m_filename = theApp.ConfigDir + wxT("nodes.dat");
-	} else {
-		m_filename = filename;
-	}
+	m_filename = theApp.ConfigDir + wxT("nodes.dat");
 	CUInt128 zero((uint32)0);
 	init(NULL, 0, zero);
 }
@@ -264,9 +260,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			if(retVal) {
 				#warning TODO: EC
 				#ifndef AMULE_DAEMON
-				if (theApp.amuledlg->kademliawnd->AddNode(c)) {
-					c->setGuiRefs(true);
-				}
+				theApp.amuledlg->kademliawnd->AddNode(c);
 				#endif
 			}
 		} else if (canSplit()) {
@@ -278,9 +272,7 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			retVal = m_bin->add(c);
 			#warning TODO: EC
 			#ifndef AMULE_DAEMON
-			if (theApp.amuledlg->kademliawnd->AddNode(c)) {
-				c->setGuiRefs(true);
-			}
+			theApp.amuledlg->kademliawnd->AddNode(c);
 			#endif
 		}
 

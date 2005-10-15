@@ -80,7 +80,7 @@ public:
 	 * the result that it is legal to add nodes already in the list, though
 	 * not recommended.
 	 */
-	bool	AddNode( const Kademlia::CContact* toadd );
+	void	AddNode( const Kademlia::CContact* toadd );
 	
 	/**
 	 * Removes a node from the list.

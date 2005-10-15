@@ -93,16 +93,14 @@ CNodeListCtrl::~CNodeListCtrl()
 }
 
 
-bool CNodeListCtrl::AddNode( const CContact* toadd )
+void CNodeListCtrl::AddNode( const CContact* toadd )
 {
-	long itemnr = FindItem( -1, (long)toadd );
 	// RefreshNode will add the node.
 	// This also means that we have simple duplicity checking. ;)
 	RefreshNode( toadd );
 	
 	ShowNodeCount();
 	
-	return (itemnr != -1); /* False if it was already there */
 }
 
 
