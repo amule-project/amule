@@ -120,6 +120,7 @@ amulegui_SOURCES = \
 	StatTree.cpp \
 	StringFunctions.cpp \
 	TransferWnd.cpp \
+	kademlia/routing/Contact.cpp \
 	kademlia/utils/UInt128.cpp
 
 amule_SOURCES = \

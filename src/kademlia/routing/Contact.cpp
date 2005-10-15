@@ -98,12 +98,14 @@ const wxString CContact::getClientIDString(void) const
 	return m_clientID.toHexString();
 }
 
+#ifndef CLIENT_GUI
 void CContact::setClientID(const CUInt128 &clientID)
 {
 	m_clientID = clientID;
 	m_distance = CKademlia::getPrefs()->getKadID();
 	m_distance.XOR(clientID);
 }
+#endif
 
 const wxString CContact::getDistanceString(void) const
 {
