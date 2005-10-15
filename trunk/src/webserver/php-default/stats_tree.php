@@ -8,10 +8,14 @@
 .trigger{
 	cursor: pointer;
 	cursor: hand;
+	font-family: Tahoma;
+	font-size: small;
 }
 .branch{
-	display: none;
+	display: block;
 	margin-left: 16px;
+	font-family: Tahoma;
+	font-size: small;
 }
 <!--
 body {
@@ -19,7 +23,7 @@ body {
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	background-color: #003399;
+	background-color: #ffffff;
 }
 -->
 </style>
