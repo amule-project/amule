@@ -78,9 +78,6 @@ public:
 	void updateType();
 	void checkingType();
 	
-	bool getGuiRefs(void) const { return m_guiRefs; }
-	void setGuiRefs(bool refs) { m_guiRefs = refs; }
-
 	bool inUse(void) {return (m_inUse>0); }
 	void incUse(void) {m_inUse++;}
 	void decUse(void) 
@@ -110,7 +107,6 @@ private:
 	uint16		m_tcpPort;
 	uint16		m_udpPort;
 	byte		m_type;
-	bool		m_guiRefs;
 	time_t		m_lastTypeSet;
 	time_t		m_expires;
 	time_t		m_created;

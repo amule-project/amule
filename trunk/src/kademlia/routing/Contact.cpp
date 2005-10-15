@@ -58,12 +58,10 @@ using namespace Kademlia;
 
 CContact::~CContact()
 {
-	if (m_guiRefs) {
-		#warning TODO: EC
-		#ifndef AMULE_DAEMON
-		theApp.amuledlg->kademliawnd->RemoveNode(this);
-		#endif
-	}
+	#warning TODO: EC
+	#ifndef AMULE_DAEMON
+	theApp.amuledlg->kademliawnd->RemoveNode(this);
+	#endif
 }
 
 CContact::CContact()
@@ -92,7 +90,6 @@ void CContact::initContact()
 	m_expires = 0;
 	m_lastTypeSet = time(NULL);
 	m_created = time(NULL);
-	m_guiRefs = 0;
 	m_inUse = 0;	
 }
 
