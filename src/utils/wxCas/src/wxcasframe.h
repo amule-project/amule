@@ -30,10 +30,6 @@
 #ifndef _WXCASFRAME_H
 #define _WXCASFRAME_H
 
-#ifdef __GNUG__
-#pragma interface "wxcasframe.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

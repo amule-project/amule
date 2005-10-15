@@ -32,11 +32,8 @@
 	#include <unistd.h>
 #endif
 
-//-------------------------------------------------------------------
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "TextClient.h"
-#endif
 #include "TextClient.h"
+
 //-------------------------------------------------------------------
 
 #include <wx/intl.h>			// For _()

@@ -23,14 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// ClientDetailDialog.cpp : implementation file
-//
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ClientDetailDialog.h"
-#endif
-
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "OtherFunctions.h"	// Needed for CastItoIShort
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP

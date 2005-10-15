@@ -26,10 +26,6 @@
 #ifndef SHAREDFILESCTRL_H
 #define SHAREDFILESCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SharedFilesCtrl.h"
-#endif
-
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 

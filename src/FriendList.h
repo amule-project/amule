@@ -26,10 +26,6 @@
 #ifndef FRIENDLIST_H
 #define FRIENDLIST_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "FriendList.h"
-#endif
-
 #include <list>
 
 #include "Types.h"	// Needed for uint32

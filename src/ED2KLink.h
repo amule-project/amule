@@ -27,11 +27,6 @@
 #define ED2KLINK_H
 
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ED2KLink.h"
-#endif
-
-
 #include "Types.h"			// Needed for uint16 and uint32
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "SHAHashSet.h"		// Needed for CAICHHash

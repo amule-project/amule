@@ -26,10 +26,6 @@
 #ifndef BARSHADER_H
 #define BARSHADER_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "BarShader.h"
-#endif
-
 #include "Types.h"	// Needed for uint16 and uint32
 #include "RangeMap.h"	// Needed for CRangeMap
 

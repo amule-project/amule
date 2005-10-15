@@ -23,16 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "amule.h"
-// implementations of other header files
-#pragma implementation "CTypedPtrList.h"
-#pragma implementation "GetTickCount.h"
-#pragma implementation "GuiEvents.h"
-#pragma implementation "InternalEvents.h"
-#pragma implementation "updownclient.h"
-#endif
-
 #include <cerrno>
 #include <cmath>
 #include <csignal>

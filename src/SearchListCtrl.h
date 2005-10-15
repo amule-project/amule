@@ -26,10 +26,6 @@
 #ifndef SEARCHLISTCTRL_H
 #define SEARCHLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SearchListCtrl.h"
-#endif
-
 #include <list>				// Needed for std::list
 
 #include "wx/colour.h"		// Needed for wxColour

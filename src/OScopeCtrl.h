@@ -26,10 +26,6 @@
 #ifndef OSCOPECTRL_H
 #define OSCOPECTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "OScopeCtrl.h"
-#endif
-
 #ifndef NULL
 #define NULL 0
 #endif

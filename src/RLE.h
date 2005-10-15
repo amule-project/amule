@@ -25,10 +25,6 @@
 #ifndef RLE_H
 #define RLE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "RLE.h"
-#endif
-
 #include <vector>
 
 #include "Types.h"

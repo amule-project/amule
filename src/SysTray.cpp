@@ -28,10 +28,6 @@
 // this file will implement GNOME/KDE compatible system tray icon
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "SysTray.h"
-#endif
-
 #include "SysTray.h"		// Interface declarations.
 
 #ifndef __WXMSW__

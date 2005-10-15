@@ -28,10 +28,6 @@
 #ifndef _ED2KHASH_H
 #define _ED2KHASH_H
 
-#ifdef __GNUG__
-#pragma interface "ed2khash.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

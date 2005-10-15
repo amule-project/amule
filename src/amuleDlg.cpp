@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "amuleDlg.h"
-#endif
-
 #include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
 #include <cerrno>
 #include <cmath>

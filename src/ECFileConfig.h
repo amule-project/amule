@@ -25,11 +25,6 @@
 #ifndef	ECFILECONFIG_H
 #define	ECFILECONFIG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ECFileConfig.h"
-// implementation in ExternalConnector.cpp
-#endif
-
 #if wxCHECK_VERSION(2,4,2)
 	#include <wx/config.h>
 #endif

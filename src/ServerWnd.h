@@ -26,10 +26,6 @@
 #ifndef SERVERWND_H
 #define SERVERWND_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ServerWnd.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/splitter.h>	// Needed for wxSplitter

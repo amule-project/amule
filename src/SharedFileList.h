@@ -26,10 +26,6 @@
 #ifndef SHAREDFILELIST_H
 #define SHAREDFILELIST_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SharedFileList.h"
-#endif
-
 #include <map>
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex

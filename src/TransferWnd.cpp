@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "TransferWnd.h"
-#endif
-
 #include <wx/settings.h>
 #include <wx/splitter.h>
 #include <wx/defs.h>		// Needed before any other wx/*.h

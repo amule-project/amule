@@ -23,11 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "IPFilter.h"
-#pragma implementation "RangeMap.h"
-#endif
-
 #include <wx/intl.h>		// Needed for _()
 #include <wx/filefn.h>		// Needed for wxFileExists
 #include <wx/textfile.h>	// Needed for wxTextFile

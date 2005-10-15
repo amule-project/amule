@@ -65,10 +65,6 @@
 #ifndef __SHA_H__
 #define __SHA_H__
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SHA.h"
-#endif
-
 #include "Types.h"
 #include "SHAHashSet.h"
 

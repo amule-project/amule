@@ -28,10 +28,6 @@
 #ifndef _ALCPIX_H
 #define _ALCPIX_H
 
-#ifdef __GNUG__
-#pragma interface "alcpix.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

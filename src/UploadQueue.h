@@ -26,10 +26,6 @@
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "UploadQueue.h"
-#endif
-
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "CMD4Hash.h"		// Needed for CMD4Hash

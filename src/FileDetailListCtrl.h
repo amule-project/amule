@@ -26,10 +26,6 @@
 #ifndef FILEDETAILLISTCTRL_H
 #define FILEDETAILLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "FileDetailListCtrl.h"
-#endif
-
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 class CFileDetailListCtrl : public CMuleListCtrl

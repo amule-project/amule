@@ -26,10 +26,6 @@
 #ifndef SAFEFILE_H
 #define SAFEFILE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SafeFile.h"
-#endif
-
 #include <wx/filefn.h>			// Needed for wxSeekMode
 
 #include "Types.h"				// Needed for LPCSTR

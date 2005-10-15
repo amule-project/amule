@@ -23,14 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-
 #ifndef __PROXY_H__
 #define __PROXY_H__
-
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Proxy.h"
-#endif
 
 #include <wx/socket.h>		// For wxSocket*
 #include <wx/string.h>		// For wxString

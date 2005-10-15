@@ -22,10 +22,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "MuleGifCtrl.h"
-#endif
-
 #include <wx/mstream.h>
 #include <wx/gifdecod.h>
 #include <wx/window.h>

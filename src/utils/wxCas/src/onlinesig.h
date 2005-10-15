@@ -30,10 +30,6 @@
 #ifndef _ONLINESIG_H
 #define _ONLINESIG_H
 
-#ifdef __GNUG__
-#pragma interface "onlinesig.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

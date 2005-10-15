@@ -26,10 +26,6 @@
 #ifndef SHAREDFILESWND_H
 #define SHAREDFILESWND_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SharedFilesWnd.h"
-#endif
-
 #include <wx/panel.h>		// Needed for wxPanel
 
 

@@ -26,10 +26,6 @@
 #ifndef IPFILTER_H
 #define IPFILTER_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "IPFilter.h"
-#endif
-
 #include <wx/thread.h>	// Needed for wxMutex;
 
 #include "Types.h"	// Needed for uint8, uint16 and uint32

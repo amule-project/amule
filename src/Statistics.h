@@ -27,10 +27,6 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Statistics.h"
-#endif
-
 #include "GetTickCount.h"	// Needed for GetTickCount64()
 #include "StatTree.h"		// Needed for CStatTreeItem* classes
 #include "Types.h"		// Needed for uint* types

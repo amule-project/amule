@@ -22,10 +22,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "MuleTextCtrl.h"
-#endif
-
 #include "MuleTextCtrl.h"
 #include <wx/menu.h>
 #include <wx/intl.h>

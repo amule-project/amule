@@ -26,10 +26,6 @@
 #ifndef _ALCC_H
 #define _ALCC_H
 
-#ifdef __GNUG__
-#pragma interface "alcc.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

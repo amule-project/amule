@@ -26,10 +26,6 @@
 #ifndef DOWNLOADLISTCTRL_H
 #define DOWNLOADLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "DownloadListCtrl.h"
-#endif
-
 #include <map>				// Needed for std::multimap
 
 #include "Types.h"			// Needed for uint8

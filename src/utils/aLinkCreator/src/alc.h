@@ -28,10 +28,6 @@
 #ifndef _ALC_H
 #define _ALC_H
 
-#ifdef __GNUG__
-#pragma interface "alc.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

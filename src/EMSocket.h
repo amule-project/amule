@@ -26,10 +26,6 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "EMSocket.h"
-#endif
-
 #include "Proxy.h"		// Needed for CSocketClientProxy
 #include <wx/event.h>
 

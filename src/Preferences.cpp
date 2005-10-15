@@ -44,13 +44,9 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "Preferences.h"
-#endif
-
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for PACKAGE_STRING
+	#include "config.h"		// Needed for PACKAGE_STRING
 #endif
 #include "OtherFunctions.h"
 #include "StringFunctions.h"

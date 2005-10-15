@@ -30,10 +30,6 @@
 #ifndef _WXCASPIX_H
 #define _WXCASPIX_H
 
-#ifdef __GNUG__
-#pragma interface "wxcaspix.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

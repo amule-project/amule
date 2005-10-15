@@ -30,10 +30,6 @@
 #ifndef LISTENSOCKET_H
 #define LISTENSOCKET_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ListenSocket.h"
-#endif
-
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR

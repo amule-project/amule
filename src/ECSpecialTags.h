@@ -36,11 +36,7 @@
 #include <vector>
 
 #ifndef EC_REMOTE
-#include "Statistics.h"	// Needed for StatsTree
-#endif
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ECSpecialTags.h"
+	#include "Statistics.h"	// Needed for StatsTree
 #endif
 
 /*

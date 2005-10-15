@@ -26,10 +26,6 @@
 #ifndef DIRECTORYTREECTRL_H
 #define DIRECTORYTREECTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "DirectoryTreeCtrl.h"
-#endif
-
 #include <wx/treectrl.h>
 
 #define USRMSG_ITEMSTATECHANGED		(47101) + 16

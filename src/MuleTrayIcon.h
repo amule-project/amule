@@ -28,10 +28,6 @@
 
 #ifndef AMULE_DAEMON
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "MuleTrayIcon.h"
-#endif
-
 #include <wx/defs.h>	// Needed before any other wx/*.h
 
 #ifndef __SYSTRAY_DISABLED__

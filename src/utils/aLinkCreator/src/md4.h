@@ -38,10 +38,6 @@
 #ifndef _MD4_H
 #define _MD4_H
 
-#ifdef __GNUG__
-#pragma interface "md4.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

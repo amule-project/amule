@@ -22,12 +22,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ECPacket.h"
-#pragma implementation "ECcodes.h"
-#pragma implementation "CMD4Hash.h"
-#endif
-
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
 #include "ECSocket.h"	// Needed for ECSocket
 #include <cstdlib>	// Needed for malloc(), realloc(), free(), NULL

@@ -26,10 +26,6 @@
 #ifndef MD5SUM_H
 #define MD5SUM_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "MD5Sum.h"
-#endif
-
 #include <wx/string.h>		// Needed for wxString
 
 class MD5Sum {

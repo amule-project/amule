@@ -26,10 +26,6 @@
 #ifndef MEMFILE_H
 #define MEMFILE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "MemFile.h"
-#endif
-
 #include "Types.h"		// Needed for uint8, uint16, uint32
 #include "SafeFile.h"	// Needed for CFileDataIO
 

@@ -26,11 +26,6 @@
 	#include "config.h"	// Needed for VERSION and readline detection
 #endif
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ExternalConnector.h"
-#pragma implementation "ECFileConfig.h"
-#endif
-
 #include "Format.h"		// Needed for CFormat
 
 #include <cstdio>		// Needed for fprintf(stderr, ...)

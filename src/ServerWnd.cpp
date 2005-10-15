@@ -23,15 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// ServerWnd.cpp : implementation file
-//
-
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ServerWnd.h"
-#endif
-
 #include <wx/settings.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>

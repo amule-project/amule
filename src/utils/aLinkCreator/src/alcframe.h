@@ -30,10 +30,6 @@
 #ifndef _ALCFRAME_H
 #define _ALCFRAME_H
 
-#ifdef __GNUG__
-#pragma interface "alcframe.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

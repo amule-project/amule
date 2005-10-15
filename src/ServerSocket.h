@@ -30,10 +30,6 @@
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ServerSocket.h"
-#endif
-
 #include "Types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "ServerConnect.h"

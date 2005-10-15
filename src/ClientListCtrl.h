@@ -26,10 +26,6 @@
 #ifndef CLIENTLISTCTRL_H
 #define CLIENTLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ClientListCtrl.h"
-#endif
-
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 
 

@@ -26,10 +26,6 @@
 #ifndef ADDFRIEND_H
 #define ADDFRIEND_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "AddFriend.h"
-#endif
-
 #include <wx/dialog.h>		// Needed for wxDialog
 
 class CAddFriend : public wxDialog

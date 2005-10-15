@@ -26,10 +26,6 @@
 #ifndef SERVERLIST_H
 #define SERVERLIST_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ServerList.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/timer.h>		// Needed for wxTimer
 

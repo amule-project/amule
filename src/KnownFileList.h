@@ -26,10 +26,6 @@
 #ifndef KNOWNFILELIST_H
 #define KNOWNFILELIST_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "KnownFileList.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP, wxStringHash and wxStringEqual
 #include <wx/thread.h>		// Needed for wxMutex

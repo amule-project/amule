@@ -26,10 +26,6 @@
 #ifndef OTHERFUNCTIONS_H
 #define OTHERFUNCTIONS_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "OtherFunctions.h"
-#endif
-
 #include <wx/string.h>		// Needed for wxString
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
 #include <wx/thread.h>

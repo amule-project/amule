@@ -27,10 +27,6 @@
 #ifndef FILEFUNCTIONS_H
 #define FILEFUNCTIONS_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "FileFunctions.h"
-#endif
-
 #include <wx/string.h>
 #include <dirent.h>
 #include <utility>

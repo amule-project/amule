@@ -23,10 +23,6 @@
 //
 
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "MD5Sum.h"
-#endif
-
 #include <wx/string.h>
 #include "StringFunctions.h"
 

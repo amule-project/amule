@@ -26,10 +26,6 @@
 #ifndef __PrefsUnifiedDlg_H__
 #define __PrefsUnifiedDlg_H__
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "PrefsUnifiedDlg.h"
-#endif
-
 #include <wx/dialog.h>		// Needed for wxDialog
 
 

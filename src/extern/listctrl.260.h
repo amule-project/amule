@@ -11,10 +11,6 @@
 #ifndef LISTCTRL_260_H
 #define LISTCTRL_260_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "listctrl.h"
-#endif
-
 #include <wx/defs.h>
 #include <wx/object.h>
 #include <wx/control.h>

@@ -26,10 +26,6 @@
 #ifndef DOWNLOADQUEUE_H
 #define DOWNLOADQUEUE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "DownloadQueue.h"
-#endif
-
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "CMD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
