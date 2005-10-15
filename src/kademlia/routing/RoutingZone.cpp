@@ -91,20 +91,15 @@ using namespace Kademlia;
 wxString CRoutingZone::m_filename;
 CUInt128 CRoutingZone::me((uint32)0);
 
-CRoutingZone::CRoutingZone()
-{
-	// Can only create routing zone after prefs
-	CKademlia::getPrefs()->getKadID(&me);
-	m_filename = theApp.ConfigDir + wxT("nodes.dat");
-	CUInt128 zero((uint32)0);
-	init(NULL, 0, zero);
-}
-
 CRoutingZone::CRoutingZone(const wxString& filename)
 {
 	// Can only create routing zone after prefs
-	CKademlia::getPrefs()->getKadID(&me);
-	m_filename = filename;
+	me = CKademlia::getPrefs()->getKadID();
+	if (filename.IsEmpty()) {
+		m_filename = theApp.ConfigDir + wxT("nodes.dat");
+	} else {
+		m_filename = filename;
+	}
 	CUInt128 zero((uint32)0);
 	init(NULL, 0, zero);
 }
@@ -198,7 +193,6 @@ void CRoutingZone::writeFile(void)
 	try {
 		unsigned int count = 0;
 		CContact *c;
-		CUInt128 id;
 		CFile file;
 		if (file.Open(m_filename, CFile::write)) {
 			ContactList contacts;
@@ -208,8 +202,7 @@ void CRoutingZone::writeFile(void)
 			for (it = contacts.begin(); it != contacts.end(); ++it) {
 				count++;
 				c = *it;
-				c->getClientID(&id);
-				file.WriteUInt128(id);
+				file.WriteUInt128(c->getClientID());
 				file.WriteUInt32(c->getIPAddress());
 				file.WriteUInt16(c->getUDPPort());
 				file.WriteUInt16(c->getTCPPort());
@@ -402,7 +395,7 @@ void CRoutingZone::split(void)
 	m_bin->getEntries(&entries);
 	ContactList::const_iterator it;
 	for (it = entries.begin(); it != entries.end(); ++it) {
-		int sz = (*it)->m_distance.getBitNumber(m_level);
+		int sz = (*it)->getDistance().getBitNumber(m_level);
 		m_subZones[sz]->m_bin->add(*it);
 	}
 	m_bin->m_dontDeleteContacts = true;
@@ -532,7 +525,7 @@ void CRoutingZone::onSmallTimer(void)
 	for (it = entries.begin(); it != entries.end(); ++it) {
 		c = *it;
 		if ( c->getType() == 4) {
-			if (((c->m_expires > 0) && (c->m_expires <= now))) {
+			if (((c->getExpireTime() > 0) && (c->getExpireTime() <= now))) {
 				if(!c->inUse()) {
 					m_bin->remove(c);
 					delete c;
@@ -540,8 +533,8 @@ void CRoutingZone::onSmallTimer(void)
 				continue;
 			}
 		}
-		if(c->m_expires == 0) {
-			c->m_expires = now;
+		if(c->getExpireTime() == 0) {
+			c->setExpireTime(now);
 		}
 	}
 	c = NULL;
@@ -552,7 +545,7 @@ void CRoutingZone::onSmallTimer(void)
 	} 
 	
 	if( c != NULL ) {
-		if ( c->m_expires >= now || c->getType() == 4) {
+		if ( c->getExpireTime() >= now || c->getType() == 4) {
 			m_bin->remove(c);
 			m_bin->m_entries.push_back(c);
 			c = NULL;

@@ -48,11 +48,9 @@ CPing::CPing(CRoutingZone *zone, const ContactList &test, const ContactList &rep
 void CPing::responded(const byte *key)
 {
 	CUInt128 r(key);
-	CUInt128 id;
 	ContactList::const_iterator it;
 	for (it = m_test.begin(); it != m_test.end(); it++) {
-		(*it)->getClientID(&id);
-		if (r == id) {
+		if (r == (*it)->getClientID()) {
 			m_zone->add(*it);
 		}
 	}

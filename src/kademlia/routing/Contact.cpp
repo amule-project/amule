@@ -37,12 +37,8 @@ there client on the eMule forum..
 */
 
 #include "Contact.h"
-#include "../io/ByteIO.h"
-#include "../net/KademliaUDPListener.h"
-#include "../kademlia/Defines.h"
-#include "../../OPCodes.h"
 #include "../../amule.h"
-#include "../../NetworkFunctions.h"
+#include "../../OPCodes.h" // Neededf for MIN2MS and such stuff.
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -100,12 +96,7 @@ void CContact::initContact()
 	m_inUse = 0;	
 }
 
-void CContact::getClientID(CUInt128 *id) const
-{
-	id->setValue(m_clientID);
-}
-
-const wxString CContact::getClientID(void) const
+const wxString CContact::getClientIDString(void) const
 {
 	return m_clientID.toHexString();
 }
@@ -113,16 +104,11 @@ const wxString CContact::getClientID(void) const
 void CContact::setClientID(const CUInt128 &clientID)
 {
 	m_clientID = clientID;
-	CKademlia::getPrefs()->getKadID(&m_distance);
+	m_distance = CKademlia::getPrefs()->getKadID();
 	m_distance.XOR(clientID);
 }
 
-void CContact::getDistance(CUInt128 *distance) const
-{
-	distance->setValue(m_distance);
-}
-
-const wxString CContact::getDistance(void) const
+const wxString CContact::getDistanceString(void) const
 {
 	return m_distance.toBinaryString();
 }
@@ -130,11 +116,6 @@ const wxString CContact::getDistance(void) const
 uint32 CContact::getIPAddress(void) const
 {
 	return m_ip;
-}
-
-void CContact::getIPAddress(wxString* ip) const
-{
-	*ip = Uint32toStringIP(m_ip);
 }
 
 void CContact::setIPAddress(uint32 ip)
@@ -147,11 +128,6 @@ uint16 CContact::getTCPPort(void) const
 	return m_tcpPort;
 }
 
-void CContact::getTCPPort(wxString *port) const
-{
-	*port = wxString() << m_tcpPort;
-}
-
 void CContact::setTCPPort(uint16 port)
 {
 	m_tcpPort = port;
@@ -160,11 +136,6 @@ void CContact::setTCPPort(uint16 port)
 uint16 CContact::getUDPPort(void) const
 {
 	return m_udpPort;
-}
-
-void CContact::getUDPPort(wxString *port) const
-{
-	*port = wxString() << m_udpPort;
 }
 
 void CContact::setUDPPort(uint16 port)

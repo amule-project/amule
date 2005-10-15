@@ -312,23 +312,20 @@ void CKademliaUDPListener::processBootstrapRequest (const byte *packetData, uint
 	//2 + 25(20) + 15(1)
 	CMemFile bio(527);
 
-	CUInt128 id;
-
 	// Write packet info
 	bio.WriteUInt16(numContacts);
 	CContact *contact;
 	ContactList::const_iterator it;
 	for (it = contacts.begin(); it != contacts.end(); it++) {
 		contact = *it;
-		contact->getClientID(&id);
-		bio.WriteUInt128(id);
+		bio.WriteUInt128(contact->getClientID());
 		bio.WriteUInt32(contact->getIPAddress());
 		bio.WriteUInt16(contact->getUDPPort());
 		bio.WriteUInt16(contact->getTCPPort());
 		bio.WriteUInt8(contact->getType());
 	}
-	CKademlia::getPrefs()->getKadID(&id);
-	bio.WriteUInt128(id);
+
+	bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 	bio.WriteUInt32(CKademlia::getPrefs()->getIPAddress());
 	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
 	bio.WriteUInt16(thePrefs::GetPort());
@@ -450,12 +447,10 @@ void CKademliaUDPListener::processKademliaRequest (const byte *packetData, uint3
 	bio2.WriteUInt128(target);
 	bio2.WriteUInt8((byte)count);
 	CContact *c;
-	CUInt128 id;
 	ContactMap::const_iterator it;
 	for (it = results.begin(); it != results.end(); it++) {
 		c = it->second;
-		c->getClientID(&id);
-		bio2.WriteUInt128(id);
+		bio2.WriteUInt128(c->getClientID());
 		bio2.WriteUInt32(c->getIPAddress());
 		bio2.WriteUInt16(c->getUDPPort());
 		bio2.WriteUInt16(c->getTCPPort());
@@ -774,8 +769,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	CUInt128 file;
 	bio.readUInt128(&file);
 
-	CUInt128 distance;
-	CKademlia::getPrefs()->getKadID(&distance);
+	CUInt128 distance(CKademlia::getPrefs()->getKadID());
 	distance.XOR(file);
 
 	if( thePrefs::FilterLanIPs() && distance.get32BitChunk(0) > SEARCHTOLERANCE) {
@@ -994,8 +988,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 	CUInt128 target;
 	bio.readUInt128(&target);
 
-	CUInt128 distance;
-	CKademlia::getPrefs()->getKadID(&distance);
+	CUInt128 distance(CKademlia::getPrefs()->getKadID());
 	distance.XOR(target);
 
 	if( thePrefs::FilterLanIPs() && distance.get32BitChunk(0) > SEARCHTOLERANCE) {
