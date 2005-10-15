@@ -75,8 +75,8 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 	// init serverlist
 	// no use now. too early.
-	CServerListCtrl* list= CastChild( ID_SERVERLIST, CServerListCtrl );
-	serverlistctrl=list;
+
+	serverlistctrl = CastChild( ID_SERVERLIST, CServerListCtrl );
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
 	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://www.gruk.org/server.met.gz"));

@@ -1803,6 +1803,27 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 		case HTTP_VersionCheck:
 			CheckNewVersion(event.GetExtraLong());
 			break;
+		case HTTP_NodesDat:
+			if (event.GetExtraLong() != -1) {
+				#ifdef __COMPILE_KAD__
+				
+				wxString file = ConfigDir + wxT("nodes.dat");
+				if (wxFileExists(file)) {
+					wxRemoveFile(file);
+				}
+				wxRenameFile(file + wxT(".download"),file);
+				if ( Kademlia::CKademlia::isRunning() ) {
+					Kademlia::CKademlia::stop();
+				}
+				
+				Kademlia::CKademlia::start();
+				theApp.ShowConnectionState();
+				
+				#endif				
+			} else {
+				AddLogLineM(true, _("Failed to download the nodes list."));
+			}
+			break;
 	}
 }
 

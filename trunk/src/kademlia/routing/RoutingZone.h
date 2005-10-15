@@ -75,6 +75,7 @@ public:
 	void onSmallTimer(void);
 
 	bool add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+	void remove(const CUInt128 &id);
 	void setAlive(uint32 ip, uint16 port);
 
 	CContact *getContact(const CUInt128 &id) const;

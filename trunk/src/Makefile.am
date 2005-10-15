@@ -96,6 +96,7 @@ amulegui_SOURCES = \
 	MuleTextCtrl.cpp \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
+	NodeListCtrl.cpp \
 	OtherFunctions.cpp \
 	OScopeCtrl.cpp \
 	PartFile.cpp \
@@ -180,6 +181,7 @@ amule_SOURCES = \
 	MuleTextCtrl.cpp \
 	muuli_wdr.cpp \
 	NetworkFunctions.cpp \
+	NodeListCtrl.cpp \
 	OScopeCtrl.cpp \
 	OtherFunctions.cpp \
 	Packet.cpp \

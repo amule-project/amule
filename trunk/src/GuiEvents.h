@@ -155,7 +155,8 @@ enum HTTP_Download_File {
 	HTTP_ServerMet,
 	// Auto-updating server.met has a different callback.
 	HTTP_ServerMetAuto,
-	HTTP_VersionCheck
+	HTTP_VersionCheck,
+	HTTP_NodesDat
 };
 
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)

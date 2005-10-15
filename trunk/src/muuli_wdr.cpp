@@ -48,6 +48,8 @@
 #include "MuleTextCtrl.h" // Needed for CMuleTextCtrl
 #include "ClientListCtrl.h"
 #include "PartFileConvert.h"
+#include "NodeListCtrl.h" // Needed for CNodeListCtrl
+
 
 // Implement window functions
 
@@ -3244,7 +3246,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxListCtrl *item8 = new wxListCtrl( parent, ID_NODELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
+    CNodeListCtrl *item8 = new CNodeListCtrl( parent, ID_NODELIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
     item2->Add( item8, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item1->Add( item2, 0, wxGROW, 0 );
@@ -3976,10 +3978,10 @@ wxSizer *renameDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item2 = new wxStaticText( parent, -1, _("File Name"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("File Name"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item2, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
     wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NEWFILENAME, wxT(""), wxDefaultPosition, wxSize(320,-1), 0 );
@@ -4020,7 +4022,6 @@ void muleToolbar( wxToolBar *parent )
     parent->AddSeparator();
     parent->AddTool( ID_BUTTONNETWORKS, _("Networks"), amuleDlgImages( 20 ), wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
     parent->ToggleTool( ID_BUTTONNETWORKS, TRUE );
-    parent->AddTool( ID_BUTTONKAD, _("Kad"), amuleDlgImages( 27 ), wxNullBitmap, wxITEM_CHECK, _("Kademlia bootstrap") );
     parent->AddTool( ID_BUTTONSEARCH, _("Searches"), amuleDlgImages( 22 ), wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
     parent->AddTool( ID_BUTTONTRANSFER, _("Transfers"), amuleDlgImages( 21 ), wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
     parent->AddTool( ID_BUTTONSHARED, _("SharedFiles"), amuleDlgImages( 23 ), wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
