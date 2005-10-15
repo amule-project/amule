@@ -38,6 +38,7 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "OPCodes.h"		// Needed for MP_RESUME
 #include "amule.h"			// Needed for theApp
+#include "Color.h"		// Needed for BLEND and SYSCOLOR
 
 #include <wx/menu.h>
 #include <wx/settings.h>
@@ -71,7 +72,7 @@ enum SearchListColumns {
 };
 
 CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
-	: CMuleListCtrl( parent, winid, pos, size, style, validator, name )
+	: CMuleListCtrl( parent, winid, pos, size, style, validator, name)
 {
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
@@ -148,9 +149,6 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 	// File-hash
 	SetItem(newid, ID_SEARCH_COL_FILEID, toshow->GetFileHash().Encode() );
-
-	// Set the color of the item
-	UpdateColor( newid );
 }
 
 
@@ -168,7 +166,7 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 }
 
 
-void CSearchListCtrl::UpdateColor( long index )
+wxColour CSearchListCtrl::GetItemColor( long index )
 {
 	wxListItem item;
 	item.SetId( index );
@@ -205,12 +203,9 @@ void CSearchListCtrl::UpdateColor( long index )
 			}
 		}
 
-		// don't forget to set the item data back...
-		wxListItem newitem;
-		newitem.SetId( index );
-		newitem.SetTextColour( wxColour( red, green, blue ) );
-		newitem.SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX));
-		SetItem( newitem );
+		return wxColour( red, green, blue );
+	} else {
+		return wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
 	}
 }
 
@@ -554,5 +549,92 @@ bool CSearchListCtrl::AltSortAllowed( int column )
 		
 		default:
 			return false;
+	}
+}
+
+void CSearchListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted )
+{	
+	CSearchFile *file = (CSearchFile*)GetItemData(item);
+	wxASSERT( file );
+
+	if ( highlighted ) {
+		wxColour newcol;
+		wxBrush hilBrush;
+
+		if (GetFocus()) {
+			newcol = SYSCOLOR(wxSYS_COLOUR_HIGHLIGHT);
+			newcol = wxColour(G_BLEND(newcol.Red(),125),
+					  G_BLEND(newcol.Green(),125),
+					  G_BLEND(newcol.Blue(),125));
+			hilBrush = wxBrush(newcol, wxSOLID);
+			dc->SetBackground(hilBrush);
+		} else {
+			newcol = SYSCOLOR(wxSYS_COLOUR_BTNSHADOW);
+			newcol = wxColour(G_BLEND(newcol.Red(),125),
+					  G_BLEND(newcol.Green(),125),
+					  G_BLEND(newcol.Blue(),125));
+			hilBrush = wxBrush(newcol, wxSOLID);
+			dc->SetBackground(hilBrush);
+		}
+		
+		dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+
+		newcol = wxColour( G_BLEND(newcol.Red(), 65),
+				   G_BLEND(newcol.Green(), 65),
+				   G_BLEND(newcol.Blue(), 65) );
+		dc->SetPen(wxPen(newcol,1,wxSOLID));
+	} else {
+		dc->SetBackground( wxBrush(SYSCOLOR(wxSYS_COLOUR_LISTBOX), wxSOLID) );
+		dc->SetTextForeground(GetItemColor(item));
+		dc->SetPen(*wxTRANSPARENT_PEN);
+	}
+	
+	dc->SetBrush(dc->GetBackground());
+	dc->DrawRectangle(rectHL);
+	dc->SetPen(*wxTRANSPARENT_PEN);
+	
+	wxRect columnRect = rect;
+	
+	// const used for placing items
+	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
+	const int SPARE_PIXELS_HORZ = 4;
+	
+	columnRect.SetLeft( columnRect.GetLeft() + SPARE_PIXELS_HORZ );	
+	for ( int i = 0; i < GetColumnCount(); ++i ) {
+		wxListItem columnItem;
+		GetColumn(i, columnItem);
+		int width = columnItem.GetWidth();
+		columnRect.SetWidth(width-2*SPARE_PIXELS_HORZ);
+		if ( width ) {
+			wxDCClipper clipper(*dc, columnRect);
+			columnItem.m_col = i;
+			columnItem.m_itemId = item;
+			GetItem(columnItem);
+			
+			if(i == ID_SEARCH_COL_NAME) {
+				if (file->HasRating()) {					
+					int image = Client_InvalidRating_Smiley+file->UserRating()-1;
+					int imgWidth;
+					if(file->UserRating() == 1 || file->UserRating() == 5)
+						imgWidth=16;
+					else
+						imgWidth=8;
+					
+					theApp.amuledlg->imagelist.Draw(image, *dc, columnRect.GetLeft(),
+									columnRect.GetTop() + iTextOffset - 1,
+									wxIMAGELIST_DRAW_TRANSPARENT);
+					dc->DrawText(columnItem.m_text, columnRect.GetLeft()+ imgWidth + 4,
+							columnRect.GetTop() + iTextOffset );
+				} else {
+					dc->DrawText(columnItem.m_text, columnRect.GetLeft(),
+							columnRect.GetTop() + iTextOffset );
+				}
+			}
+			else {
+				dc->DrawText(columnItem.m_text, columnRect.GetLeft(), columnRect.GetTop() + iTextOffset );
+			}
+		}
+		columnRect.SetLeft(columnRect.GetLeft()+width);
+		
 	}
 }

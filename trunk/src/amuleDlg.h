@@ -69,6 +69,39 @@ class wxTextCtrl;
 #define DEFAULT_SIZE_X  800
 #define DEFAULT_SIZE_Y  600
 		
+
+enum ClientSkinEnum {
+	
+	Client_Green_Smiley = 0,
+	Client_Red_Smiley,
+	Client_Yellow_Smiley,
+	Client_Grey_Smiley,
+	Client_White_Smiley,
+	Client_ExtendedProtocol_Smiley,
+	Client_SecIdent_Smiley,
+	Client_BadGuy_Smiley,
+	Client_CreditsGrey_Smiley,
+	Client_CreditsYellow_Smiley,
+	Client_Upload_Smiley,
+	Client_Friend_Smiley,
+	Client_eMule_Smiley,
+	Client_mlDonkey_Smiley,
+	Client_eDonkeyHybrid_Smiley,
+	Client_aMule_Smiley,
+	Client_lphant_Smiley,
+	Client_Shareaza_Smiley,
+	Client_xMule_Smiley,
+	Client_Unknown,
+	Client_InvalidRating_Smiley,
+	Client_PoorRating_Smiley,
+	Client_GoodRating_Smiley,
+	Client_FairRating_Smiley,
+	Client_ExcellentRating_Smiley,
+	// Add items here.
+	CLIENT_SKIN_UNUSED
+};
+
+
 // CamuleDlg Dialogfeld
 class CamuleDlg : public wxFrame 
 {

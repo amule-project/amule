@@ -185,11 +185,6 @@ public:
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
 	bool	IsStopped() const		{ return m_stopped; }
 	bool	IsPaused() const		{ return m_paused; }
-	bool	HasComment() const		{ return hasComment; }
-	bool	HasRating() const		{ return hasRating; }
-	bool	HasBadRating() const		{ return hasBadRating; }
-	void	SetHasComment(bool in)		{ hasComment = in; }
-	void	SetHasRating(bool in)		{ hasRating = in; }
 	void	UpdateFileRatingCommentAvail();
 
 	int	GetCommonFilePenalty();
@@ -332,9 +327,6 @@ private:
 	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
 
-	bool	hasRating;
-	bool	hasBadRating;
-	bool	hasComment;
 	uint8 	PerformFileComplete(); // Lord KiRon
 
 	uint32		m_lastRefreshedDLDisplay;

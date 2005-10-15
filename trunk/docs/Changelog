@@ -33,6 +33,12 @@ Version 2.1.x - The "???" version
 		* Fixed a crash in SharedFilesWnd.cpp due to aMule beeing now
 		  multithreaded.
 
+	schtroumpf:
+		* File rating in search dialog.
+		* New file rating icons.
+		* Replaced file rating good/bad with a rating average like in emule.
+		* Amule submits file rating to the server.
+
 	thedude0001:
 		* Added CVS snapshot date to frame title.
 		* Fixed #560: "aMuleWebDLG and aMuleCMDDLG do not report version"

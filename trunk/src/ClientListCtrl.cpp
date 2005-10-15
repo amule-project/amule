@@ -466,40 +466,40 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			uint8 clientImage;
 	
 			if ( client->IsFriend() ) {
-				clientImage = 13;
+				clientImage = Client_Friend_Smiley;
 			} else {
 				switch (client->GetClientSoft()) {
 					case SO_AMULE:
-						clientImage = 17;
+						clientImage = Client_aMule_Smiley;
 						break;
 					case SO_MLDONKEY:
 					case SO_NEW_MLDONKEY:
 					case SO_NEW2_MLDONKEY:
-						clientImage = 15;
+						clientImage = Client_mlDonkey_Smiley;
 						break;
 					case SO_EDONKEY:
 					case SO_EDONKEYHYBRID:
 						// Maybe we would like to make different icons?
-						clientImage = 16;
+						clientImage = Client_eDonkeyHybrid_Smiley;
 						break;
 					case SO_EMULE:
-						clientImage = 14;
+						clientImage = Client_eMule_Smiley;
 					break;
 						case SO_LPHANT:
-						clientImage = 18;
+						clientImage = Client_lphant_Smiley;
 						break;
 					case SO_SHAREAZA:
 					case SO_NEW_SHAREAZA:
 					case SO_NEW2_SHAREAZA:
-						clientImage = 19;
+						clientImage = Client_Shareaza_Smiley;
 						break;
 					case SO_LXMULE:
-						clientImage = 20;
+						clientImage = Client_xMule_Smiley;
 						break;
 					default:
 						// cDonkey, Compat Unk
 						// No icon for those yet. Using the eMule one + '?'
-						clientImage = 21;
+						clientImage = Client_Unknown;
 						break;
 				}
 			}
@@ -508,10 +508,10 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 
 			if (client->credits && client->credits->GetScoreRatio(client->GetIP()) > 1) {
 				// Has credits, draw the gold star
-				imagelist.Draw( 11, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
+				imagelist.Draw( Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
 			} else if (client->ExtProtocolAvailable()) {
 				// Ext protocol -> Draw the '+'
-				imagelist.Draw(  7, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
+				imagelist.Draw(  Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
 			}
 
 			dc->DrawText( client->GetUserName(), rect.x + 20, rect.y + 3 );

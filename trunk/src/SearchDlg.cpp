@@ -343,7 +343,7 @@ bool CSearchDlg::CheckTabNameExists(const wxString& searchString)
 
 void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 {
-    CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)m_notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER );
+	CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)m_notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER | wxLC_OWNERDRAW);
 	m_notebook->AddPage(list, searchString, true, 0);
 
 	// Ensure that new results are filtered
@@ -405,7 +405,7 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 	while ( index > -1 ) {
 		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), category );
 		
-		searchlistctrl->UpdateColor( index );
+		searchlistctrl->RefreshItem( index );
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}

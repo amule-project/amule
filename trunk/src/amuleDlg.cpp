@@ -165,10 +165,12 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxInitAllImageHandlers();
 	imagelist.Create(16,16);
 	
+	static int ClientItemNumber = CLIENT_SKIN_UNUSED;
+
 	if (thePrefs::UseSkin()) {		
 		Apply_Clients_Skin(thePrefs::GetSkinFile());
 	} else {
-		for (uint32 i=0; i<22; i++) {
+		for (uint32 i=0; i<ClientItemNumber; i++) {
 			imagelist.Add(wxBitmap(clientImages(i)));
 		}
 	}
@@ -1200,33 +1202,6 @@ struct SkinItem {
 };
 
 
-enum ClientSkinEnum {
-	
-	Client_Green_Smiley = 0,
-	Client_Red_Smiley,
-	Client_Yellow_Smiley,
-	Client_Grey_Smiley,
-	Client_White_Smiley,
-	Client_BadComment_Smiley,
-	Client_GoodComment_Smiley,
-	Client_ExtendedProtocol_Smiley,
-	Client_SecIdent_Smiley,
-	Client_BadGuy_Smiley,
-	Client_CreditsGrey_Smiley,
-	Client_CreditsYellow_Smiley,
-	Client_Upload_Smiley,
-	Client_Friend_Smiley,
-	Client_eMule_Smiley,
-	Client_mlDonkey_Smiley,
-	Client_eDonkeyHybrid_Smiley,
-	Client_aMule_Smiley,
-	Client_lphant_Smiley,
-	Client_Shareazza_Smiley,
-	Client_xMule_Smiley,
-	Client_Unknown,
-	// Add items here.
-	CLIENT_SKIN_UNUSED
-};
 
 
 void CamuleDlg::Apply_Clients_Skin(wxString file)
@@ -1301,16 +1276,6 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 					bitmaps_found[Client_White_Smiley].found = true;
 				    bitmaps_found[Client_White_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
-				// Client_Bad_Comment_On_File
-				if (skinfile[i].StartsWith(wxT("Client_BadCommentOnFile="))) {
-					bitmaps_found[Client_BadComment_Smiley].found = true;
-				    bitmaps_found[Client_BadComment_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Good_Comment_On_File
-				if (skinfile[i].StartsWith(wxT("Client_GoodCommentOnFile="))) {
-					bitmaps_found[Client_GoodComment_Smiley].found = true;
-				    bitmaps_found[Client_GoodComment_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
 				// Client_Extended_Protocol
 				if (skinfile[i].StartsWith(wxT("Client_ExtendedProtocol="))) {
 					bitmaps_found[Client_ExtendedProtocol_Smiley].found = true;
@@ -1371,10 +1336,10 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 					bitmaps_found[Client_lphant_Smiley].found = true;
 				    bitmaps_found[Client_lphant_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
-	            // Client_Shareazza
-				if (skinfile[i].StartsWith(wxT("Client_Shareazza="))) {
-					bitmaps_found[Client_Shareazza_Smiley].found = true;
-				    bitmaps_found[Client_Shareazza_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+	            // Client_Shareaza
+				if (skinfile[i].StartsWith(wxT("Client_Shareaza="))) {
+					bitmaps_found[Client_Shareaza_Smiley].found = true;
+				    bitmaps_found[Client_Shareaza_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
 	            // Client_xMule
 				if (skinfile[i].StartsWith(wxT("Client_xMule="))) {
@@ -1386,7 +1351,31 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 					bitmaps_found[Client_Unknown].found = true;
 				    bitmaps_found[Client_Unknown].filename=skinfile[i].AfterLast(wxT('='));
 				}
-				
+				// Client_Invalid_Rating_On_File
+				if (skinfile[i].StartsWith(wxT("Client_InvalidRatingOnFile="))) {
+					bitmaps_found[Client_InvalidRating_Smiley].found = true;
+					bitmaps_found[Client_InvalidRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Poor_Rating_On_File
+				if (skinfile[i].StartsWith(wxT("Client_PoorRatingOnFile="))) {
+					bitmaps_found[Client_PoorRating_Smiley].found = true;
+					bitmaps_found[Client_PoorRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}				
+				// Client_Good_Rating_On_File
+				if (skinfile[i].StartsWith(wxT("Client_GoodRatingOnFile="))) {
+					bitmaps_found[Client_GoodRating_Smiley].found = true;
+					bitmaps_found[Client_GoodRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Fair_Rating_On_File
+				if (skinfile[i].StartsWith(wxT("Client_FairRatingOnFile="))) {
+					bitmaps_found[Client_FairRating_Smiley].found = true;
+					bitmaps_found[Client_FairRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
+				// Client_Excellent_Rating_On_File
+				if (skinfile[i].StartsWith(wxT("Client_ExcellentRatingOnFile="))) {
+					bitmaps_found[Client_ExcellentRating_Smiley].found = true;
+					bitmaps_found[Client_ExcellentRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
+				}
 			}
 		}
 		

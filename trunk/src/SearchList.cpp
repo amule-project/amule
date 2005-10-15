@@ -161,6 +161,14 @@ CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID,
 	
 	SetFileSize(GetIntTagValue(FT_FILESIZE));
 
+	m_iUserRating = (GetIntTagValue(FT_FILERATING) & 0xF) / 3;
+
+	if(m_iUserRating>0) {
+		m_hasRating = true;	
+		m_hasBadRating = (m_iUserRating == 1);
+	}
+	
+		
 	m_Directory = pszDirectory;
 }
 
