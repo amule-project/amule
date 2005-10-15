@@ -132,10 +132,8 @@ function formCommandSubmit(command)
 				$result = ($size / 1024.0) . "KB";
 			} elseif ( $size < 1073741824 ) {
 				$result = ($size / 1048576.0) . "MB";
-			} elseif ( $size < 1099511627776 ) {
-				$result = ($size / 1073741824.0) . "GB";
 			} else {
-				$result = "Too big";
+				$result = ($size / 1073741824.0) . "GB";
 			}
 			return $result;
 		}
