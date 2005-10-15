@@ -3976,10 +3976,10 @@ wxSizer *renameDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("File Name"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item2 = new wxStaticText( parent, -1, _("File Name"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item2, 0, wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item3 = new wxStaticText( parent, -1, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item3, 0, wxALIGN_CENTER|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
     wxTextCtrl *item4 = new wxTextCtrl( parent, IDC_NEWFILENAME, wxT(""), wxDefaultPosition, wxSize(320,-1), 0 );
