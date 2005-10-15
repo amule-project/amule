@@ -1047,7 +1047,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 	}
 }
 
-void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& sourceID, uint32 ip, uint16 port)
+void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUSED(sourceID), uint32 ip, uint16 port)
 {
 	SrcHash* currNoteHash = NULL;
 	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);

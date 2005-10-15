@@ -103,7 +103,7 @@ TEST(NetworkFunctions, StringIPtoUint32)
 	ASSERT_FALSE(StringIPtoUint32(wxT("1.2.3.-4"), dummyIP));
 	
 	// Whitespace between fields
-	for (int i = 0; i < itemsof(whitespace); ++i) {
+	for (unsigned i = 0; i < itemsof(whitespace); ++i) {
 		wxChar c = whitespace[i];
 		
 		ASSERT_FALSE(StringIPtoUint32(wxString::Format(wxT("1%c.2.3.4"), c), dummyIP));

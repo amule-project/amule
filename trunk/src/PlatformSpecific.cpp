@@ -35,6 +35,7 @@
 	#include <wx/filename.h>
 #endif
 
+
 wxString doGetDirectory(int whichDir)
 {
 	wxString strDir;
@@ -72,9 +73,9 @@ wxString doGetDirectory(int whichDir)
 	}
 
 #else
+	(void)whichDir; // Avoid unsused-variable warning.
 
 	strDir = wxFileName::GetHomeDir();
-
 #endif
 
 	return strDir;

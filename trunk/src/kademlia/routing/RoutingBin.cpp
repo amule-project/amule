@@ -179,7 +179,7 @@ CContact *CRoutingBin::getOldest(void)
 	return NULL;
 }
 
-uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
+uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128& WXUNUSED(distance), uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
 {
 	if (m_entries.size() == 0) {
 		return 0;
