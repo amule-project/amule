@@ -3574,27 +3574,47 @@ void CDynStatisticImage::DrawImage()
 	m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs, 2*img_delta+m_num_font_w_size, img_delta);
 	m_digits[y_axis_max % 10]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, img_delta);
 
-	for(int i = m_bottom_margin; i < m_y_axis_size; i++) {
-		png_bytep u_row = m_row_ptrs[i];
-		for(int j = m_left_margin, curr_data = m_data->GetFirst(); j < m_width; j++, curr_data = m_data->GetNext()) {
-			int y_coord = m_y_axis_size - i;
-			if ( m_scale_down != 1 ) {
-				curr_data /= m_scale_down;
-			} else if ( m_scale_up != 1 ) {
-				curr_data *= m_scale_up;
-			}
-			if ( m_scale1024 ) {
-				if ( curr_data > 1024) {
-					curr_data /= 1024;
-				} else {
-					curr_data = 1;
-				}
-			}
-			int diff = y_coord - curr_data;
-			if ( !diff ) {
-				set_rgb_color_val(u_row+3*j, graph_color, 0);
+	int prev_data = m_data->GetFirst();
+	if ( m_scale_down != 1 ) {
+		prev_data /= m_scale_down;
+	} else if ( m_scale_up != 1 ) {
+		prev_data *= m_scale_up;
+	}
+	if ( m_scale1024 ) {
+		if ( prev_data > 1024) {
+			prev_data /= 1024;
+		} else {
+			prev_data = 1;
+		}
+	}
+	for(int j = m_left_margin + 1, curr_data = m_data->GetNext(); j < m_width; j++, curr_data = m_data->GetNext()) {
+		if ( m_scale_down != 1 ) {
+			curr_data /= m_scale_down;
+		} else if ( m_scale_up != 1 ) {
+			curr_data *= m_scale_up;
+		}
+		if ( m_scale1024 ) {
+			if ( curr_data > 1024) {
+				curr_data /= 1024;
+			} else {
+				curr_data = 1;
 			}
 		}
+		//
+		// draw between curr_data and prev_data
+		//
+		int min_y, max_y;
+		if ( prev_data > curr_data ) {
+			min_y = curr_data; max_y = prev_data;
+		} else {
+			min_y = prev_data; max_y = curr_data;
+		}
+		for(int k = min_y; k <= max_y; k++) {
+			int i = m_y_axis_size - k;
+			png_bytep u_row = m_row_ptrs[i];
+			set_rgb_color_val(u_row+3*j, graph_color, 0);
+		}
+		prev_data = curr_data;
 	}
 }
 
