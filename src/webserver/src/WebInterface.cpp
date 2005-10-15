@@ -55,28 +55,14 @@
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "WebServer.h"
+#include "Format.h"
 
 //-------------------------------------------------------------------
-
-#define CMD_ID_HELP	1
-//#define CMD_ID_STOP	2
-//#define CMD_ID_START	3
-//#define CMD_ID_RESTART	4
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
 
 #define theApp (*((CamulewebApp*)wxTheApp))
-
-static CmdId commands[] = {
-	{ wxT("quit"),		CMD_ID_QUIT },
-	{ wxT("exit"),		CMD_ID_QUIT },
-	{ wxT("help"),		CMD_ID_HELP },
-//	{ wxT("stop"),		CMD_ID_STOP },
-//	{ wxT("start"),		CMD_ID_START },
-//	{ wxT("restart"),	CMD_ID_RESTART },
-	{ wxEmptyString,	0 },
-};
 
 static CWebServerBase *webserver = NULL;
 
@@ -191,7 +177,7 @@ void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
 		return; 
 	}
 	wxString buffer = cmd_control->GetLineText(0);
-	if (theApp.Parse_Command(buffer, commands)) {
+	if (theApp.Parse_Command(buffer)) {
 		Close(true);
 	}
 	cmd_control->Clear();
@@ -225,26 +211,7 @@ int CamulewebApp::OnExit() {
 	return 0;
 }
 
-bool CamulewebApp::OnInit() {
-	CaMuleExternalConnector::OnInit();
-	#ifdef CVSDATE
-		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-	#else
-		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-	#endif
-	frame->Show(true);
-	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION), commands);
-
-	return true;
-}
-
 #else
-
-int CamulewebApp::OnRun() {
-	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION), commands);
-
-	return true;
-}
 
 void CamulewebApp::Post_Shell() {
 	webserver->StopServer();
@@ -253,6 +220,31 @@ void CamulewebApp::Post_Shell() {
 }
 
 #endif
+
+bool CamulewebApp::OnInit() {
+	if (CaMuleExternalConnector::OnInit()) {
+#if wxUSE_GUI
+		#ifdef CVSDATE
+		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+		#else
+		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
+		#endif
+		frame->Show(true);
+#endif
+		return true;
+	} else {
+		return false;
+	}
+}
+
+int CamulewebApp::OnRun() {
+	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION));
+#if wxUSE_GUI
+	return CaMuleExternalConnector::OnRun();
+#else
+	return 0;
+#endif
+}
 
 bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 {
@@ -421,7 +413,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: ") + aMuleConfigFile + wxT(" does not exist.\n")));
-			exit(1);
+			return false;
 		}
 		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
@@ -429,9 +421,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
-			exit(1);
-			// cmd-line versions exit after a return false; but DLG versions not - that's why the exit()
-			//return false;
+			return false;
 		}
 		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
 		m_Verbose = false;
@@ -455,8 +445,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
-			exit(1);
-			//return false;
+			return false;
 		}
 		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
 		DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
@@ -502,45 +491,10 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 }
 
-int CamulewebApp::ProcessCommand(int ID) {
-	switch (ID) {
-		case CMD_ID_HELP:
-			ShowHelp();
-			break;
-/*		case CMD_ID_STOP:
-			//webserver->StopServer();
-			break;
-		case CMD_ID_START:
-			//webserver->StartServer();
-			break;
-		case CMD_ID_RESTART:
-			//webserver->RestartServer();
-			break;	*/
-		default:
-			return -1;
-			break;
-	}
-
-	return 0;
-}
-
-void CamulewebApp::ShowHelp() {
-//                                  1         2         3         4         5         6         7         8
-//                         12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	Show(         _("\n----------------> Help: Available commands (case insensitive): <----------------\n\n"));	
-	Show(wxT("Help:\t\t\t") +wxString( _("Shows this help.\n")));
-	//Show(wxT("Start:\t\t\t) + _("Start web server.\n"));
-	//Show(wxT("Stop:\t\t\t)  + _("Stop web server.\n"));
-	//Show(wxT("Restart:\t\t\t) + _("Restart web server.\n"));
-	Show(wxT("Quit, Exit:\t\t") + wxString(_("Exits aMuleWeb.\n")));
-	Show(         _("\n----------------------------> End of listing <----------------------------------\n"));
-}
-
 void CamulewebApp::ShowGreet() {
-	Show(wxT("\n---------------------------------\n"));
-	Show(wxT("|       ") + wxString(_("aMule Web Server")) + wxT("        |\n"));
-	Show(wxT("---------------------------------\n\n"));
-	Show(_("\nUse 'Help' for command list\n\n"));
+	PrintBoxedText(_("aMule Web Server"));
+	// Do not merge the line below, or translators could translate "Help"
+	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
 }
 
 void CamulewebApp::Pre_Shell() {

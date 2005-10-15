@@ -73,10 +73,8 @@ private:
 class CamulewebApp : public CaMuleExternalConnector
 {
 public:
-	void ShowHelp();
 	void ShowGreet();
 	void Pre_Shell();
-	int ProcessCommand(int ID);
 	void LoadConfigFile();
 	void SaveConfigFile();
 	void LoadAmuleConfig(CECFileConfig& cfg);
@@ -106,16 +104,14 @@ public:
 	void LocalShow(const wxString &s);
 	CamulewebFrame 	*frame;
 private:
-	// GUI Version
-	virtual bool	OnInit();
 	int		OnExit();
 #else
 public:
 	void Post_Shell();
 private:
-	// Command line version
-	virtual int 	OnRun();
 #endif
+	virtual bool	OnInit();
+	virtual int 	OnRun();
 };
 
 #endif // WEBINTERFACE_H
