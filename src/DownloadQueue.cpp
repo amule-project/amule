@@ -1319,7 +1319,7 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
 }
 
-void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 clientid)
+void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 WXUNUSED(clientid))
 {
 	#ifdef __COMPILE_KAD__
 	

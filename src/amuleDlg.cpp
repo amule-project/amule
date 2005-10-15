@@ -170,7 +170,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	if (thePrefs::UseSkin()) {		
 		Apply_Clients_Skin(thePrefs::GetSkinFile());
 	} else {
-		for (uint32 i=0; i<ClientItemNumber; i++) {
+		for (int i = 0; i < ClientItemNumber; ++i) {
 			imagelist.Add(wxBitmap(clientImages(i)));
 		}
 	}
@@ -1038,7 +1038,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 
-	static uint32	msPrev1, msPrev5, msPrevGraph, msPrevStats;
+	static uint32	msPrev1, msPrev5, msPrevStats;
 
 	uint32 			msCur = theStats::GetUptimeMillis();
 
@@ -1048,8 +1048,10 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
+	
 #ifndef CLIENT_GUI
-	int msGraphUpdate= thePrefs::GetTrafficOMeterInterval()*1000;
+	static uint32 msPrevGraph;
+	int msGraphUpdate = thePrefs::GetTrafficOMeterInterval() * 1000;
 	if ((msGraphUpdate > 0)  && ((msCur / msGraphUpdate) > (msPrevGraph / msGraphUpdate))) {
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
@@ -1061,6 +1063,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 #else
 	#warning TODO: CORE/GUI -- EC needed
 #endif
+	
 	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
 		if (bStatsVisible) {
