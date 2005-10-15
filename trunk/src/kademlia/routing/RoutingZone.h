@@ -64,10 +64,8 @@ class CRoutingZone
 	//friend CRoutingZone;
 public:
 
-	CRoutingZone();
-	CRoutingZone(const wxString& filename);
+	CRoutingZone(const wxString& filename = wxEmptyString);
 	~CRoutingZone();
-
 
 	time_t m_nextBigTimer;
 	time_t m_nextSmallTimer;

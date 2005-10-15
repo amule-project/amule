@@ -77,9 +77,7 @@ bool CRoutingBin::add(CContact *contact)
 	wxASSERT(contact != NULL);
 	bool retVal = false;
 	// If this is already in the entries list
-	CUInt128 id;
-	contact->getClientID(&id);
-	CContact *c = getContact(id);
+	CContact *c = getContact(contact->getClientID());
 	if (c != NULL) {
 		// Move to the end of the list
 		remove(c);
@@ -145,7 +143,7 @@ CContact *CRoutingBin::getContact(const CUInt128 &id)
 	CContact *retVal = NULL;
 	ContactList::const_iterator it;
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
-		if (id == (*it)->m_clientID) {
+		if ((*it)->getClientID() == id) {
 			retVal = *it;
 			break;
 		}
@@ -195,7 +193,7 @@ uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const C
 	ContactList::const_iterator it;
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
 		if((*it)->getType() <= maxType) {
-			CUInt128 targetDistance((*it)->m_clientID);
+			CUInt128 targetDistance((*it)->getClientID());
 			targetDistance.XOR(target);
 			(*result)[targetDistance] = *it;
 			if( inUse ) {

@@ -175,9 +175,7 @@ void CKademlia::process()
 		RecheckFirewalled();
 	}
 	if (m_nextSelfLookup <= now) {
-		CUInt128 me;
-		instance->m_prefs->getKadID(&me);
-		CSearchManager::findNodeComplete(me);
+		CSearchManager::findNodeComplete(instance->m_prefs->getKadID());
 		m_nextSelfLookup = HR2S(4) + now;
 	}
 	if (m_nextFindBuddy <= now) {

@@ -158,9 +158,7 @@ void CSearch::go(void)
 		m_possible.erase(it);
 		// Send request
 		c->checkingType();
-		CUInt128 check;
-		c->getClientID(&check);
-		sendFindValue(check, c->getIPAddress(), c->getUDPPort());
+		sendFindValue(c->getClientID(), c->getIPAddress(), c->getUDPPort());
 		if(m_type == NODE) {
 			break;
 		}
@@ -237,9 +235,7 @@ void CSearch::jumpStart(void)
 			m_tried[m_possible.begin()->first] = c;
 			// Send request
 			c->checkingType();
-			CUInt128 check;
-			c->getClientID(&check);
-			sendFindValue(check, c->getIPAddress(), c->getUDPPort());
+			sendFindValue(c->getClientID(), c->getIPAddress(), c->getUDPPort());
 			break;
 		}
 	}
@@ -288,7 +284,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 			for (response = results->begin(); response != results->end(); response++) {
 				c = *response;
 
-				c->getClientID(&distance);
+				distance = c->getClientID();
 				distance.XOR(m_target);
 
 				// Ignore this contact if already know him
@@ -326,9 +322,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 						m_tried[distance] = c;
 						// Send request
 						c->checkingType();
-						CUInt128 check;
-						c->getClientID(&check);
-						sendFindValue(check, c->getIPAddress(), c->getUDPPort());
+						sendFindValue(c->getClientID(), c->getIPAddress(), c->getUDPPort());
 					}
 				}
 			}
@@ -399,8 +393,7 @@ void CSearch::StorePacket()
 			if (file) {
 				m_fileName = file->GetFileName();
 
-				CUInt128 id;
-				CKademlia::getPrefs()->getClientHash(&id);
+				CUInt128 id(CKademlia::getPrefs()->getClientHash());
 				TagList taglist;
 
 				//We can use type for different types of sources. 

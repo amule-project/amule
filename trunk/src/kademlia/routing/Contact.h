@@ -47,37 +47,30 @@ there client on the eMule forum..
 namespace Kademlia {
 ////////////////////////////////////////
 
-class CRoutingZone;
-class CRoutingBin;
-
 class CContact
 {
-	friend class CRoutingZone;
-	friend class CRoutingBin;
-
+	
 public:
 
 	~CContact();
 	CContact();
 	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target = CKademlia::getPrefs()->getKadID());
 
-	void getClientID(CUInt128 *id) const;
-	const wxString getClientID(void) const;
+	const CUInt128& getClientID(void) const { return m_clientID; };
 	void setClientID(const CUInt128 &clientID);
 
-	void getDistance(CUInt128 *distance) const;
-	const wxString getDistance(void) const;
+	const wxString getClientIDString(void) const;
+
+	const CUInt128& getDistance(void) const { return m_distance; }
+	const wxString getDistanceString(void) const;
 
 	uint32 getIPAddress(void) const;
-	void getIPAddress(wxString *ip) const;
 	void setIPAddress(uint32 ip);
 
 	uint16 getTCPPort(void) const;
-	void getTCPPort(wxString *port) const;
 	void setTCPPort(uint16 port);
 
 	uint16 getUDPPort(void) const;
-	void getUDPPort(wxString *port) const;
 	void setUDPPort(uint16 port);
 
 	byte getType(void) const;
@@ -99,11 +92,12 @@ public:
 		}
 	}
 
-	time_t getCreatedTime() const {return m_created;}
+	const time_t getCreatedTime() const {return m_created;}
 
-	time_t getExpireTime() const {return m_expires;}
+	void setExpireTime(time_t value) { m_expires = value; };	
+	const time_t getExpireTime() const {return m_expires;}
 
-	time_t getLastTypeSet() const {return m_lastTypeSet;}	
+	const time_t getLastTypeSet() const {return m_lastTypeSet;}	
 	
 	
 private:

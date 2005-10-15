@@ -53,13 +53,11 @@ public:
 	CPrefs();
 	~CPrefs();
 
-	void	getKadID(CUInt128 *id) const		{id->setValue(m_clientID);}
 	void	setKadID(const CUInt128 &id)		{m_clientID = id;}
-	CUInt128 getKadID() const					{return m_clientID;}
+	const CUInt128& getKadID() const					{return m_clientID;}
 
-	void	getClientHash(CUInt128 *id) const	{id->setValue(m_clientHash);}
 	void	setClientHash(const CUInt128 &id)	{m_clientHash = id;}
-	CUInt128 getClientHash() const				{return m_clientHash;}
+	const CUInt128& getClientHash() const				{return m_clientHash;}
 
 	uint32	getIPAddress() const				{return m_ip;}
 	void	setIPAddress(uint32 val);
