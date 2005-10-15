@@ -49,7 +49,6 @@ kad_sources = kademlia/io/ByteIO.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/net/KademliaUDPListener.cpp \
 	kademlia/routing/Contact.cpp \
-	kademlia/routing/Ping.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	kademlia/routing/RoutingZone.cpp \
 	kademlia/utils/LittleEndian.cpp
