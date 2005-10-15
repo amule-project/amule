@@ -100,7 +100,6 @@ void CNodeListCtrl::AddNode( const CContact* toadd )
 	RefreshNode( toadd );
 	
 	ShowNodeCount();
-	
 }
 
 
@@ -109,14 +108,9 @@ void CNodeListCtrl::RemoveNode( const CContact* node )
 	
 	long result = FindItem( -1, (long)node );
 	if ( result != -1 ) {
-		#warning TODO EC 
-		#ifndef CLIENT_GUI
-		CKademlia::getRoutingZone()->remove(((CContact*)GetItemData( result ))->getClientID());
 		DeleteItem( result );
-		#endif
 	}
 	ShowNodeCount();
-	
 }
 
 
