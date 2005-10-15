@@ -24,10 +24,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "NetworkFunctions.h"
-#endif
-
 #include "NetworkFunctions.h"	// Interface declaration
 
 bool StringIPtoUint32(const wxString &strIP, uint32& Ip)

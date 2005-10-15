@@ -26,10 +26,6 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Preferences.h"
-#endif
-
 #include "Types.h"			// Needed for ints
 #include "CMD4Hash.h"			// Needed for CMD4Hash
 #include "Color.h"			// Needed for COLORREF

@@ -30,10 +30,6 @@
 #ifndef _WXCASCTE_H
 #define _WXCASCTE_H
 
-#ifdef __GNUG__
-#pragma interface "wxcascte.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

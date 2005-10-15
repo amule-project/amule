@@ -26,10 +26,6 @@
 #ifndef PARTFILECONVERT_H
 #define PARTFILECONVERT_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "PartFileConvert.h"
-#endif
-
 #ifndef CLIENT_GUI
 
 #include <wx/string.h>

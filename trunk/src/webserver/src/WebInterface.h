@@ -31,9 +31,6 @@
 	#include <wx/msw/winundef.h>
 #endif
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "WebInterface.h"
-#endif
 //-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include

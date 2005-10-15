@@ -25,10 +25,6 @@
 #ifndef FORMAT_H
 #define FORMAT_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Format.h"
-#endif
-
 #include <wx/string.h>
 #include <limits>
 

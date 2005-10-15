@@ -23,17 +23,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// DownloadListCtrl.cpp : implementation file
-//
-
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "DownloadListCtrl.h"
-#endif
-
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for VERSION
+	#include "config.h"		// Needed for VERSION
 #endif
 
 #include <cmath>		// Needed for floor

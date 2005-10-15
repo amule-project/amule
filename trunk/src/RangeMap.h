@@ -26,12 +26,6 @@
 #ifndef RANGEMAP_H
 #define RANGEMAP_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "RangeMap.h"
-// implementation in IPFilter.cpp,
-// for remote GUI in BarShader.cpp
-#endif
-
 #include <map>
 
 #include "MuleDebug.h"

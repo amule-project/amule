@@ -30,14 +30,6 @@ using std::auto_ptr;
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "amule-remote-gui.h"
-// implementations for headers which don't have a corresponding .cpp file
-#pragma implementation "GetTickCount.h"
-#pragma implementation "GuiEvents.h"
-#pragma implementation "updownclient.h"
-#endif
-
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>

@@ -25,11 +25,6 @@
 #ifndef CMD4HASH_H
 #define CMD4HASH_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in ECPacket.cpp
-#pragma interface "CMD4Hash.h"
-#endif
-
 #include <cctype>			// Needed for toupper()
 
 #include "ArchSpecific.h"	// Needed for Raw{Peek,Poke}UInt64()

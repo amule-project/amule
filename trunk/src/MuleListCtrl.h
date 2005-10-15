@@ -27,10 +27,6 @@
 #define MULELISTCTRL_H
 
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "MuleListCtrl.h"
-#endif
-
 #include "listctrl.h"
 
 #include <vector>

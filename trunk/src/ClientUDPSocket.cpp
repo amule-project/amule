@@ -23,14 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// ClientUDPSocket.cpp : implementation file
-//
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ClientUDPSocket.h"
-#endif
-
 #include "Types.h"
 
 #include <wx/defs.h>		// Needed before any other wx/*.h

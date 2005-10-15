@@ -26,10 +26,6 @@
 #ifndef CHATSELECTOR_H
 #define CHATSELECTOR_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ChatSelector.h"
-#endif
-
 #include <wx/defs.h>			// Needed before any other wx/*.h
 #include <wx/imaglist.h>		// Needed for wxImageList (at least on wx2.5)
 #include "MuleTextCtrl.h" 

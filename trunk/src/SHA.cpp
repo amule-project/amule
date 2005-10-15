@@ -62,10 +62,6 @@
  stored in memory. It runs at 22 cycles per byte on a Pentium P4 processor
 */
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "SHA.h"
-#endif
-
 #include "SHA.h"
 
 

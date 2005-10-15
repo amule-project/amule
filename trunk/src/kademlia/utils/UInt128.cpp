@@ -37,10 +37,6 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "UInt128.h"
-#endif
-
 #include "UInt128.h"
 
 #include "../../CryptoPP_Inc.h"

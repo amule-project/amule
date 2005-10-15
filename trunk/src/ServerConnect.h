@@ -30,10 +30,6 @@
 #ifndef SERVERCONNECT_H
 #define SERVERCONNECT_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ServerConnect.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include "Types.h"		// Needed for int8, uint8, uint16 and uint32

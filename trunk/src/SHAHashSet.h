@@ -72,10 +72,6 @@ Example
 #ifndef __SHAHAHSET_H__
 #define __SHAHAHSET_H__
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SHAHashSet.h"
-#endif
-
 #include <deque>
 #include <set>
 #include <list>

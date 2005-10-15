@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "SearchListCtrl.h"
-#endif
-
 #include "SearchListCtrl.h"	// Interface declarations
 #include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "DownloadQueue.h"	// Needed for CDownloadQueue

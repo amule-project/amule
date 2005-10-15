@@ -26,10 +26,6 @@
 // The backtrace functions contain modified code from libYaMa, (c) Venkatesha Murthy G.
 // You can check libYaMa at http://personal.pavanashree.org/libyama/
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "OtherFunctions.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/intl.h>		// Needed for wxGetTranslation
 #include <wx/utils.h>

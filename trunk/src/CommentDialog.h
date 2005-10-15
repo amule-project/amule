@@ -26,10 +26,6 @@
 #ifndef COMMENTDIALOG_H
 #define COMMENTDIALOG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "CommentDialog.h"
-#endif
-
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/choice.h>		// Needed for wxChoice

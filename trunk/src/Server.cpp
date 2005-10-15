@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "Server.h"
-#endif
-
 #include "Server.h"		// Interface declarations.
 #include "SafeFile.h"		// Needed for CFileDataIO
 #include "OtherFunctions.h"	// Needed for nstrdup

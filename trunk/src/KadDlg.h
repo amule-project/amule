@@ -26,10 +26,6 @@
 #ifndef KADDLG_H
 #define KADDLG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "KadDlg.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"

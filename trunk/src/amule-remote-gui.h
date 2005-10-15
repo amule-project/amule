@@ -25,10 +25,6 @@
 #ifndef AMULE_REMOTE_GUI_H
 #define AMULE_REMOTE_GUI_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "amule-remote-gui.h"
-#endif
-
 #include <wx/string.h>
 
 #include "CTypedPtrList.h"

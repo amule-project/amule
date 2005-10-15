@@ -30,10 +30,6 @@
 #ifndef STATE_MACHINE_H
 #define STATE_MACHINE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "StateMachine.h"
-#endif
-
 #include <queue>
 
 #include <wx/thread.h>		/* For wxMutex, wxMutexLocker	*/

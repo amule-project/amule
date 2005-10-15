@@ -26,10 +26,6 @@
 #ifndef AMULEDLG_H
 #define AMULEDLG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "amuleDlg.h"
-#endif
-
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
 #endif

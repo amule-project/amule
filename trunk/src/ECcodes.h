@@ -31,19 +31,15 @@
 #ifndef	ECCODES_H
 #define	ECCODES_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ECcodes.h"
-#endif
-
-#include "Types.h"		// Needed for uint* types
+#include <inttypes.h>		// Needed for uint* types
 
 /*
  * EC types
  */
 
-typedef uint8 ec_opcode_t;
-typedef uint16 ec_tagname_t;
-typedef uint32 ec_taglen_t;
+typedef uint8_t ec_opcode_t;
+typedef uint16_t ec_tagname_t;
+typedef uint32_t ec_taglen_t;
 
 
 /**

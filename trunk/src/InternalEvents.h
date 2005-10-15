@@ -25,11 +25,6 @@
 #ifndef INTERNALEVENTS_H
 #define INTERNALEVENTS_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-// implementation in amule.cpp
-#pragma interface "InternalEvents.h"
-#endif
-
 
 #include <wx/event.h>	// Needed for wxEvent
 

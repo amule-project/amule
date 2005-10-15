@@ -22,10 +22,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "AddFileThread.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/event.h>		// Needed for wxCommandEvent
 #include <wx/timer.h>		// Needed for wxStopWatch

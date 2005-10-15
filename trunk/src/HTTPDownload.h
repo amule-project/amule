@@ -26,10 +26,6 @@
 #ifndef HTTPDOWNLOAD_H
 #define HTTPDOWNLOAD_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "HTTPDownload.h"
-#endif
-
 #ifndef AMULE_DAEMON
 	#include <wx/dialog.h>		// Needed for wxDialog
 #endif

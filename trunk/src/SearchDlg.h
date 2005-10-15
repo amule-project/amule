@@ -26,10 +26,6 @@
 #ifndef SEARCHDLG_H
 #define SEARCHDLG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "SearchDlg.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
 #include <wx/timer.h>		// Needed for wxTimer and wxTimerEvent

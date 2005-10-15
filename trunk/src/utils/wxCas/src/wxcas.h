@@ -30,10 +30,6 @@
 #ifndef _WXCAS_H
 #define _WXCAS_H
 
-#ifdef __GNUG__
-#pragma interface "wxcas.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

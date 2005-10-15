@@ -30,10 +30,6 @@
 #ifndef _LINUXMON_H
 #define _LINUXMON_H
 
-#ifdef __GNUG__
-#pragma interface "linuxmon.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

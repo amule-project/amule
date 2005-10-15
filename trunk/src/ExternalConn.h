@@ -26,10 +26,6 @@
 #ifndef EXTERNALCONN_H
 #define EXTERNALCONN_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ExternalConn.h"
-#endif
-
 #include <wx/thread.h>		// For ExitCode
 #include <wx/event.h>		// For ExitCode
 

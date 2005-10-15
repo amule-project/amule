@@ -23,13 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "BarShader.h"
-#ifdef CLIENT_GUI
-	#pragma implementation "RangeMap.h"
-#endif
-#endif
-
 #include <cmath>
 #include <algorithm>		// Needed for std::min
 #include <wx/gdicmn.h>

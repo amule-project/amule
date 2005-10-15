@@ -26,10 +26,6 @@
 #ifndef FRIEND_H
 #define FRIEND_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Friend.h"
-#endif
-
 #include <wx/string.h>		// Needed for wxString
 
 #include "Types.h"		// Needed for uint32

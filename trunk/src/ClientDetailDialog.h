@@ -26,10 +26,6 @@
 #ifndef CLIENTDETAILDIALOG_H
 #define CLIENTDETAILDIALOG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ClientDetailDialog.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>

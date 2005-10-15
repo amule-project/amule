@@ -26,10 +26,6 @@
 #ifndef AMULE_H
 #define AMULE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "amule.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>		// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale

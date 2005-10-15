@@ -23,14 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-//
-// KadDlg.cpp : implementation file
-//
-
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "KadDlg.h"
-#endif
-
 #include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"

@@ -26,10 +26,6 @@
 #ifndef TEXTCLIENT_H
 #define TEXTCLIENT_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "TextClient.h"
-#endif
-
 //-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include

@@ -27,10 +27,6 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "WebServer.h"
-#endif
-
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
 #endif

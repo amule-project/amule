@@ -26,10 +26,6 @@
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "KnownFile.h"
-#endif
-
 #include "CMD4Hash.h"
 #include "SHAHashSet.h"
 #include <wx/defs.h>		// Needed before any other wx/*.h

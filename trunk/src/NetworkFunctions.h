@@ -27,10 +27,6 @@
 #ifndef NETWORK_FUNCTIONS_H
 #define NETWORK_FUNCTIONS_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "NetworkFunctions.h"
-#endif
-
 #include "Types.h"		// Needed for uint16 and uint32
 #include <wx/defs.h>
 #include <wx/string.h>

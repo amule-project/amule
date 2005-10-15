@@ -23,10 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma implementation "ServerConnect.h"
-#endif
-
 #include "ServerConnect.h"	// Interface declarations.
 #include "SearchList.h"		// Needed for CSearchList
 #include "GetTickCount.h"	// Needed for GetTickCount
@@ -36,7 +32,6 @@
 #include "Packet.h"		// Needed for CTag
 #include "OPCodes.h"		// Needed for CT_NAME
 #include "MemFile.h"		// Needed for CMemFile
-//#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "Server.h"		// Needed for CServer

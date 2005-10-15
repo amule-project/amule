@@ -26,10 +26,6 @@
 #ifndef FILEDETAILDIALOG_H
 #define FILEDETAILDIALOG_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "FileDetailDialog.h"
-#endif
-
 #include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/timer.h>		// Needed for wxTimer
 

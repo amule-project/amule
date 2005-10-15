@@ -26,7 +26,7 @@
 #include <wx/defs.h>
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
+	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
 #endif
 
 #include <wx/filefn.h>

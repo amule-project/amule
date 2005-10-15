@@ -26,10 +26,6 @@
 #ifndef SERVERLISTCTRL_H
 #define SERVERLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "ServerListCtrl.h"
-#endif
-
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 #define	COLUMN_SERVER_NAME	0

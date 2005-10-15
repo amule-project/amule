@@ -26,10 +26,6 @@
 #ifndef STATTREE_H
 #define STATTREE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "StatTree.h"
-#endif
-
 /**
  * @file StatTree.h
  *

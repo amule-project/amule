@@ -25,10 +25,6 @@
 /// 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-#pragma implementation "ed2khash.h"
-#endif
-
 // For compilers that support precompilation, includes "wx/wx.h"
 #include "wx/wxprec.h"
 

@@ -26,10 +26,6 @@
 #ifndef PARTFILE_H
 #define PARTFILE_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "PartFile.h"
-#endif
-
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
 #include <wx/datetime.h>	// Needed for wxDateTime

@@ -26,10 +26,6 @@
 #ifndef PACKET_H
 #define PACKET_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "Packet.h"
-#endif
-
 #include <list>
 
 #include <wx/string.h>

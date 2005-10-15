@@ -26,10 +26,6 @@
 #ifndef NODELISTCTRL_H
 #define SERVERLISTCTRL_H
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-#pragma interface "NodeListCtrl.h"
-#endif
-
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 #define	COLUMN_NODE_ID	0
