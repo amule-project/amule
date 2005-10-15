@@ -31,6 +31,7 @@
 #endif
 
 #include <wx/dialog.h>		// Needed for wxDialog
+#include <wx/sizer.h>
 
 class CMuleListCtrl;
 class wxCommandEvent;

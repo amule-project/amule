@@ -1343,18 +1343,18 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	switch (nColumn) {
 	// Filename
 	case 0: {
-		if ( file->HasComment() || file->HasRating() ) {
-			int image = 6;
+		if (file->HasRating()) {
+			int image = Client_InvalidRating_Smiley+file->UserRating()-1;
+			int imgWidth;
+			if(file->UserRating() == 1 || file->UserRating() == 5)
+				imgWidth=16;
+			else
+				imgWidth=8;
 			
-			if ( file->HasRating() ) {
-				if ( file->HasBadRating() ) {
-					image = 5;
-				}
-			}
 			// it's already centered by OnDrawItem() ...
 			m_ImageList.Draw(image, *dc, rect.GetX(), rect.GetY() - 1,
 				wxIMAGELIST_DRAW_TRANSPARENT);
-			dc->DrawText( file->GetFileName(), rect.GetX() + 15, rect.GetY());
+			dc->DrawText( file->GetFileName(), rect.GetX() + imgWidth + 4, rect.GetY());
 		} else {
 			dc->DrawText( file->GetFileName(), rect.GetX(), rect.GetY());
 		}
@@ -1548,31 +1548,31 @@ void CDownloadListCtrl::DrawSourceItem(
 					case DS_CONNECTED:
 					case DS_WAITCALLBACK:
 					case DS_TOOMANYCONNS:
-						image = 1;
+						image = Client_Red_Smiley;
 						break;
 					case DS_ONQUEUE:
 						if (client->IsRemoteQueueFull()) {
-							image = 3;
+							image = Client_Grey_Smiley;
 						} else {
-							image = 2;
+							image = Client_Yellow_Smiley;
 						}
 						break;
 					case DS_DOWNLOADING:
 					case DS_REQHASHSET:
-						image = 0;
+						image = Client_Green_Smiley;
 						break;
 					case DS_NONEEDEDPARTS:
 					case DS_LOWTOLOWIP:
-						image = 3;
+						image = Client_Grey_Smiley;
 						break;
 					default: // DS_NONE i.e.
-						image = 4;
+						image = Client_White_Smiley;
 					}
 
 					m_ImageList.Draw(image, *dc, point.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				} else {
-					m_ImageList.Draw(3, *dc, point.x, point.y,
+					m_ImageList.Draw(Client_Grey_Smiley, *dc, point.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
 
@@ -1582,40 +1582,40 @@ void CDownloadListCtrl::DrawSourceItem(
 				uint8 clientImage;
 				
 				if ( client->IsFriend() ) {
-					clientImage = 13;
+					clientImage = Client_Friend_Smiley;
 				} else {
 					switch ( client->GetClientSoft() ) {
 						case SO_AMULE:
-							clientImage = 17;
+							clientImage = Client_aMule_Smiley;
 							break;
 						case SO_MLDONKEY:
 						case SO_NEW_MLDONKEY:
 						case SO_NEW2_MLDONKEY:
-							clientImage = 15;
+							clientImage = Client_mlDonkey_Smiley;
 							break;
 						case SO_EDONKEY:
 						case SO_EDONKEYHYBRID:
-							clientImage = 16;
+							clientImage = Client_eDonkeyHybrid_Smiley;
 							break;
 						case SO_EMULE:
-							clientImage = 14;
+							clientImage = Client_eMule_Smiley;
 							break;
 						case SO_LPHANT:
-							clientImage = 18;
+							clientImage = Client_lphant_Smiley;
 							break;
 						case SO_SHAREAZA:
 						case SO_NEW_SHAREAZA:
 						case SO_NEW2_SHAREAZA:
-							clientImage = 19;
+							clientImage = Client_Shareaza_Smiley;
 							break;
 						case SO_LXMULE:
-							clientImage = 20;
+							clientImage = Client_xMule_Smiley;
 							break;
 						default:
 							// cDonkey, Compatible, Unknown
 							// No icon for those yet.
 							// Using the eMule one + '?'
-							clientImage = 21;
+							clientImage = Client_Unknown;
 							break;
 					}
 				}
@@ -1625,7 +1625,7 @@ void CDownloadListCtrl::DrawSourceItem(
 
 				if ( client->ExtProtocolAvailable() ) {
 					// Ext protocol -> Draw the '+'
-					m_ImageList.Draw(7, *dc, point2.x, point.y,
+					m_ImageList.Draw(Client_ExtendedProtocol_Smiley, *dc, point2.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
 
@@ -1635,12 +1635,12 @@ void CDownloadListCtrl::DrawSourceItem(
 						GetCurrentIdentState(client->GetIP())) {
 					case IS_IDENTIFIED:
 						// the 'v'
-						m_ImageList.Draw(8, *dc, point2.x, point.y,
+						m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point2.x, point.y,
 							wxIMAGELIST_DRAW_TRANSPARENT);
 						break;
 					case IS_IDBADGUY:
 						// the 'X'
-						m_ImageList.Draw(9, *dc, point2.x, point.y,
+						m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point2.x, point.y,
 							wxIMAGELIST_DRAW_TRANSPARENT);
 						break;
 					default:

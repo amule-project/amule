@@ -146,9 +146,6 @@ void CPartFile::Init()
 	m_iLostDueToCorruption = 0;
 	m_iTotalPacketsSavedDueToICH = 0;
 	m_nSavedReduceDownload = 0; // new
-	hasRating = false;
-	hasComment = false; 
-	hasBadRating = false;
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_is_A4AF_auto = false;
@@ -3316,30 +3313,30 @@ void CPartFile::GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled)
 
 void CPartFile::UpdateFileRatingCommentAvail()
 {
-	bool prev=(hasComment || hasRating);
-	bool prevbad=hasBadRating;
+	bool prev=(m_hasComment || m_hasRating);
+	int prevRating=m_iUserRating;
 
-	hasComment=false;
-	int badratings=0;
-	int ratings=0;
+	m_hasComment=false;
+	int ratingSum=0;
+	int ratingCount=0;
 
 	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 		CUpDownClient* cur_src = *it;
 		
 		if (cur_src->GetFileComment().Length()>0) {
-			hasComment=true;
+			m_hasComment=true;
 		}
 
 		if (cur_src->GetFileRating()>0) {
-			++ratings;
+			ratingCount++;
+			ratingSum+=cur_src->GetFileRating();
 		}
-		if (cur_src->GetFileRating()==1) {
-			++badratings;
 		}
+	if(ratingCount>0)	{
+		m_hasRating=true;
+		m_iUserRating=ratingSum/ratingCount;		
 	}
-	hasBadRating=(badratings> (ratings/3));
-	hasRating=(ratings>0);
-	if ((prev!=(hasComment || hasRating)) || (prevbad!=hasBadRating)) {
+	if ((prev!=(m_hasComment || m_hasRating)) || (prevRating!=m_iUserRating)) {
 		UpdateDisplayedInfo();
 	}
 }
@@ -3833,9 +3830,6 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	}
 	// FIXME: !
 	m_category = 0;
-	hasComment = 0;
-	hasRating = 0;
-	hasBadRating = 0;
 }
 
 /*
