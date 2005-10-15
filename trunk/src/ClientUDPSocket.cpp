@@ -114,6 +114,18 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 		}
 	}
 
+	if (!StringIPtoUint32(addr.IPAddress())) {
+		printf("Unknown ip receiving an UDP packet! Ignoring\n");
+		wxASSERT(0);
+		return;
+	}
+	
+	if (!addr.Service()) {
+		printf("Unknown port receiving an UDP packet! Ignoring\n");
+		wxASSERT(0);
+		return;
+	}
+	
 	try {
 		switch (buffer[0]) {
 			case OP_EMULEPROT:
