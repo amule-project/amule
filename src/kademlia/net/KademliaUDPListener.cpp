@@ -71,6 +71,11 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#ifndef AMULE_DAEMON
+#include "amuleDlg.h"
+#include "KadDlg.h"
+#endif
+
 extern wxChar* InvKadKeywordChars;
 
 ////////////////////////////////////////
@@ -257,9 +262,9 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 		contact->setIPAddress(ip);
 		contact->setUDPPort(port);
 		contact->setTCPPort(tport);
-		#warning KAD TODO: Contact list
-		#if 0		
-		theApp.amuledlg->kademliawnd->ContactRef(contact);
+		#warning TODO: EC
+		#ifndef AMULE_DAEMON
+			theApp.amuledlg->kademliawnd->RefreshNode(contact);
 		#endif
 	} else {
 		if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {

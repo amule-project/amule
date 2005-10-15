@@ -34,12 +34,20 @@
 #include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"
-
+#include "NodeListCtrl.h"
 #include "CMD4Hash.h"
 #include "OtherFunctions.h"
+#include "HTTPDownload.h"
+#include "Logger.h"
 #include <wx/sizer.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
+
+#ifndef CLIENT_GUI
+#include "amule.h"
+#include "NetworkFunctions.h"
+#include "kademlia/kademlia/Kademlia.h"
+#endif
 
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	
@@ -49,29 +57,22 @@ BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_TEXT(ID_NODE_IP4, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_PORT, CKadDlg::OnFieldsChange)
 
+	EVT_TEXT_ENTER(IDC_NODESLISTURL ,CKadDlg::OnBnClickedUpdateNodeList)
+	
 	EVT_BUTTON(ID_NODECONNECT, CKadDlg::OnBnClickedBootstrapClient)
 	EVT_BUTTON(ID_KNOWNNODECONNECT, CKadDlg::OnBnClickedBootstrapKnown)
+	EVT_BUTTON(ID_KADDISCONNECT, CKadDlg::OnBnClickedDisconnectKad)
+	EVT_BUTTON(ID_UPDATEKADLIST, CKadDlg::OnBnClickedUpdateNodeList)
 	
-	EVT_LIST_ITEM_SELECTED(ID_NODELIST, CKadDlg::OnNodeListItemSelected)
-	
-	EVT_RIGHT_DOWN(CKadDlg::OnRMButton)
-
 END_EVENT_TABLE()
 
 
 
-CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1) {
+CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") ) {
 
-	wxSizer* content=KadDlg(this, true);
-	content->Show(this, true);
-
-	NodesList = (wxListCtrl*)FindWindowById(ID_NODELIST);
+	NodesList = (CNodeListCtrl*)FindWindowById(ID_NODELIST);
 	wxASSERT( NodesList );
 
-	NodesList->InsertColumn(0,_("Id"),wxLIST_FORMAT_LEFT,140);
-	NodesList->InsertColumn(1,_("Type"),wxLIST_FORMAT_LEFT,50);
-	NodesList->InsertColumn(2,_("Distance"),wxLIST_FORMAT_LEFT,220);
-	
 }
 
 // Enables or disables the node connect button depending on the conents of the text fields
@@ -92,19 +93,85 @@ void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		// Connect to node
+		uint32 ip = StringIPtoUint32(
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					wxT(".") + 
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					wxT(".") + 
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					wxT(".") + 
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
+		if (ip == 0) {
+			wxMessageBox(_("Invalid ip to bootstrap"));
+		} else {
+			unsigned long port;
+			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
+				#ifndef CLIENT_GUI
+				if ( !Kademlia::CKademlia::isRunning() ) {
+					Kademlia::CKademlia::start();
+					theApp.ShowConnectionState();
+				}
+				Kademlia::CKademlia::bootstrap(ip, port);				
+				#endif
+			} else {
+				wxMessageBox(_("Invalid port to bootstrap"));
+			}
+		}
 	} else {
 		wxMessageBox(_("Please fill all fields required"));
 	}
 }
 
 void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
-	
+	#ifndef CLIENT_GUI
+	if ( !Kademlia::CKademlia::isRunning() ) {
+		Kademlia::CKademlia::start();
+		theApp.ShowConnectionState();
+	}	
+	#endif
 }
 
-void	CKadDlg::OnNodeListItemSelected(wxListEvent& WXUNUSED(evt)) {
-	
+void	CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt)) {
+	#ifndef CLIENT_GUI
+	if ( Kademlia::CKademlia::isRunning() ) {
+		Kademlia::CKademlia::stop();
+		theApp.ShowConnectionState();
+	}
+	#endif
 }
 
-void	CKadDlg::OnRMButton(wxMouseEvent& WXUNUSED(evt)) {
+void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
+	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
+						_("Doing so will remove your current nodes and restart Kademlia connection.")
+					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO) == wxYES ) {
+		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
+		if (strURL.Find(wxT("://")) == -1) {
+			AddLogLineM(true, _("Invalid URL"));
+			return;
+		}
+		wxString strTempFilename(theApp.ConfigDir + wxT("nodes.dat.download"));
+		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_NodesDat);
+		downloader->Create();
+		downloader->Run();
+	}
+}
 
+void CKadDlg::ShowNodes() const {	
+	NodesList->Thaw();
+}
+
+void CKadDlg::HideNodes() const {
+	NodesList->Freeze();
+}
+
+bool CKadDlg::AddNode(const Kademlia::CContact* contact) const {
+	return NodesList->AddNode(contact);
+}
+
+void CKadDlg::RemoveNode(const Kademlia::CContact* contact) const {
+	NodesList->RemoveNode(contact);
+}
+
+void CKadDlg::RefreshNode(const Kademlia::CContact* contact) const {
+	NodesList->RefreshNode(contact);
 }

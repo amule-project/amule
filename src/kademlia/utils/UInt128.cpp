@@ -175,30 +175,32 @@ CUInt128& CUInt128::XORBE(const byte *valueBE)
 	return XOR(temp);
 }
 
-void CUInt128::toHexString(wxString *str) const
+wxString CUInt128::toHexString(void) const
 {
-	str->Clear();
+	wxString str;
 	for (int i=0; i<4; ++i)
 	{
-		str->Append(wxString::Format(wxT("%08X"), m_data[i]));
+		str.Append(wxString::Format(wxT("%08X"), m_data[i]));
 	}
+	return str;
 }
 
-void CUInt128::toBinaryString(wxString *str, bool trim) const
+wxString CUInt128::toBinaryString(bool trim) const
 {
-	str->Clear();
+	wxString str;
 	int b;
 	for (int i=0; i<128; ++i)
 	{
 		b = getBitNumber(i);
 		if ((!trim) || (b != 0)) {
-			str->Append(wxString::Format(wxT("%d"), b));
+			str.Append(wxString::Format(wxT("%d"), b));
 			trim = false;
 		}
 	}
-	if (str->Len() == 0) {
-		*str = wxT("0");
+	if (str.Len() == 0) {
+		str = wxT("0");
 	}
+	return str;
 }
 
 void CUInt128::toByteArray(byte *b) const

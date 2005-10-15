@@ -74,8 +74,8 @@ public:
 	int compareTo(const CUInt128 &other) const;
 	int compareTo(uint32 value) const;
 
-	void toHexString(wxString *str) const;
-	void toBinaryString(wxString *str, bool trim = false) const;
+	wxString toHexString(void) const;
+	wxString toBinaryString(bool trim = false) const;
 	void toByteArray(byte *b) const;
 
 	uint32 get32BitChunk(int val) const {return m_data[val];}

@@ -118,7 +118,6 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_TOOL(ID_BUTTONSHARED, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONMESSAGES, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_BUTTONSTATISTICS, CamuleDlg::OnToolBarButton)
-	EVT_TOOL(ID_BUTTONKAD, CamuleDlg::OnToolBarButton)
 	EVT_TOOL(ID_ABOUT, CamuleDlg::OnAboutButton)
 
 	EVT_TOOL(ID_BUTTONNEWPREFERENCES, CamuleDlg::OnPrefButton)
@@ -235,9 +234,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	activewnd=NULL;
 	SetActiveDialog(NetworksWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
-	#ifndef __USE_KAD__
-	m_wndToolbar->DeleteTool(ID_BUTTONKAD);
-	#endif
 	#if 1 //#ifdef CLIENT_GUI
 	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
 	#endif
@@ -500,10 +496,6 @@ void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 					SetActiveDialog(StatsWnd, statisticswnd);
 					break;
 
-				case ID_BUTTONKAD:
-					SetActiveDialog(KadWnd, kademliawnd);
-					break;
-				
 				// This shouldn't happen, but just in case
 				default:
 					AddLogLineM( true, wxT("Unknown button triggered CamuleApp::OnToolBarButton().") );

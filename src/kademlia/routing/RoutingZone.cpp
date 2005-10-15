@@ -65,10 +65,10 @@ there client on the eMule forum..
 #include "../../NetworkFunctions.h"
 #include "../../ArchSpecific.h"
 
-#warning KAD TODO: Contact list
-#if 0
+#warning EC
+#ifndef AMULE_DAEMON
 	#include "../../amuleDlg.h"
-	#include "../../KadContactListCtrl.h"
+	#include "../../KadDlg.h"
 #endif
 
 #include <cmath>
@@ -135,9 +135,9 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 CRoutingZone::~CRoutingZone()
 {
 	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
-		#warning KAD TODO: Contact list
-		#if 0		
-		theApp.amuledlg->kademliawnd->HideContacts();
+		#warning EC
+		#ifndef AMULE_DAEMON
+		theApp.amuledlg->kademliawnd->HideNodes();
 		#endif
 		writeFile();
 	}
@@ -147,10 +147,10 @@ CRoutingZone::~CRoutingZone()
 		delete m_subZones[0];
 		delete m_subZones[1];
 	}
-	#warning KAD TODO: Contact list
-	#if 0
+	#warning EC
+	#ifndef AMULE_DAEMON
 	if (m_superZone == NULL) {
-		theApp.amuledlg->kademliawnd->ShowContacts();
+		theApp.amuledlg->kademliawnd->ShowNodes();
 	}
 	#endif
 }
@@ -158,9 +158,9 @@ CRoutingZone::~CRoutingZone()
 void CRoutingZone::readFile(void)
 {
 	try {
-		#warning KAD TODO: Contact list
-		#if 0
-		theApp.amuledlg->kademliawnd->HideContacts();
+		#warning EC
+		#ifndef AMULE_DAEMON
+		theApp.amuledlg->kademliawnd->HideNodes();
 		#endif
 		uint32 numContacts = 0;
 		CFile file;
@@ -187,9 +187,9 @@ void CRoutingZone::readFile(void)
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
 	}
-	#warning KAD TODO: Contact list
-	#if 0
-	theApp.amuledlg->kademliawnd->ShowContacts();
+	#warning EC
+	#ifndef AMULE_DAEMON	
+	theApp.amuledlg->kademliawnd->ShowNodes();
 	#endif
 }
 
@@ -261,21 +261,21 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			c->setUDPPort(port);
 			c->setTCPPort(tport);
 			retVal = true;
-			#warning KAD TODO: Contact list
-			#if 0
-			theApp.amuledlg->kademliawnd->ContactRef(c);
+			#warning TODO: EC
+			#ifndef AMULE_DAEMON
+				theApp.amuledlg->kademliawnd->RefreshNode(c);
 			#endif
 		} else if (m_bin->getRemaining() > 0) {
 			c = new CContact(id, ip, port, tport);
 			retVal = m_bin->add(c);
-			#warning KAD TODO: Contact list
-			#if 0
 			if(retVal) {
-				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
+				#warning TODO: EC
+				#ifndef AMULE_DAEMON
+				if (theApp.amuledlg->kademliawnd->AddNode(c)) {
 					c->setGuiRefs(true);
 				}
+				#endif
 			}
-			#endif
 		} else if (canSplit()) {
 			split();
 			retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
@@ -283,12 +283,10 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			merge();
 			c = new CContact(id, ip, port, tport);
 			retVal = m_bin->add(c);
-			#warning KAD TODO: Contact list
-			#if 0
-			if(retVal) {
-				if (theApp.amuledlg->kademliawnd->ContactAdd(c)) {
-					c->setGuiRefs(true);
-				}
+			#warning TODO: EC
+			#ifndef AMULE_DAEMON
+			if (theApp.amuledlg->kademliawnd->AddNode(c)) {
+				c->setGuiRefs(true);
 			}
 			#endif
 		}
@@ -301,6 +299,19 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 	}
 	
 	return retVal;
+}
+
+void CRoutingZone::remove(const CUInt128 &id) {
+	CUInt128 distance(me);
+	distance.XOR(id);
+	if (!isLeaf()) {
+		m_subZones[distance.getBitNumber(m_level)]->remove(id);
+	} else {
+		CContact *c = m_bin->getContact(id);
+		if (c) {
+			m_bin->remove(c);
+		}
+	}
 }
 
 void CRoutingZone::setAlive(uint32 ip, uint16 port)
@@ -509,8 +520,7 @@ void CRoutingZone::onSmallTimer(void)
 		return;
 	}
 
-	wxString test;
-	m_zoneIndex.toBinaryString(&test);
+	wxString test(m_zoneIndex.toBinaryString());
 
 	CContact *c = NULL;
 	time_t now = time(NULL);

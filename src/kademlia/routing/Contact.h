@@ -62,12 +62,11 @@ public:
 	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target = CKademlia::getPrefs()->getKadID());
 
 	void getClientID(CUInt128 *id) const;
-	CUInt128 getClientID() const {return m_clientID;}
-	void getClientID(wxString *id) const;
+	const wxString getClientID(void) const;
 	void setClientID(const CUInt128 &clientID);
 
 	void getDistance(CUInt128 *distance) const;
-	void getDistance(wxString *distance) const;
+	const wxString getDistance(void) const;
 
 	uint32 getIPAddress(void) const;
 	void getIPAddress(wxString *ip) const;

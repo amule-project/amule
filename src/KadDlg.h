@@ -34,7 +34,7 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"
 
-class wxListCtrl;	
+class CNodeListCtrl;	
 class wxListEvent;
 class wxCommandEvent;
 class wxMouseEvent;
@@ -49,28 +49,23 @@ class CKadDlg : public wxPanel {
 public:
 	CKadDlg(wxWindow* pParent);   
 	~CKadDlg() {};
-
-	void AddNode(uint32 ip, uint16 port, CMD4Hash Hash);
-	void RemoveNode();
-
-	#warning KAD TODO: Obviously!
-	// Placeholder anyone?
-	void ShowContacts() const {};
-	void HideContacts() const {};
-	bool ContactAdd(const Kademlia::CContact* WXUNUSED(contact)) const { return false;};
-	void ContactRem(const Kademlia::CContact* WXUNUSED(contact)) const {};
-	void ContactRef(const Kademlia::CContact* WXUNUSED(contact)) const {};
+		
+	void ShowNodes() const;
+	void HideNodes() const;
+	bool AddNode(const Kademlia::CContact* contact) const;
+	void RemoveNode(const Kademlia::CContact* contact) const;
+	void RefreshNode(const Kademlia::CContact* contact) const;
 
 private:
 
-	wxListCtrl* NodesList;
+	CNodeListCtrl* NodesList;
 		
 	// Event handlers
 	void		OnBnClickedBootstrapClient(wxCommandEvent& evt);
 	void		OnBnClickedBootstrapKnown(wxCommandEvent& evt);
-	void		OnNodeListItemSelected(wxListEvent& evt);
+	void		OnBnClickedDisconnectKad(wxCommandEvent& evt);
+	void		OnBnClickedUpdateNodeList(wxCommandEvent& evt);
 	void		OnFieldsChange(wxCommandEvent& evt);
-	void		OnRMButton(wxMouseEvent& evt);
 
 	DECLARE_EVENT_TABLE()
 };

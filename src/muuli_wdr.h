@@ -531,15 +531,14 @@ wxSizer *renameDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = 
 
 const int ID_BUTTONCONNECT = 10380;
 const int ID_BUTTONNETWORKS = 10381;
-const int ID_BUTTONKAD = 10382;
-const int ID_BUTTONSEARCH = 10383;
-const int ID_BUTTONTRANSFER = 10384;
-const int ID_BUTTONSHARED = 10385;
-const int ID_BUTTONMESSAGES = 10386;
-const int ID_BUTTONSTATISTICS = 10387;
-const int ID_BUTTONNEWPREFERENCES = 10388;
-const int ID_BUTTONIMPORT = 10389;
-const int ID_ABOUT = 10390;
+const int ID_BUTTONSEARCH = 10382;
+const int ID_BUTTONTRANSFER = 10383;
+const int ID_BUTTONSHARED = 10384;
+const int ID_BUTTONMESSAGES = 10385;
+const int ID_BUTTONSTATISTICS = 10386;
+const int ID_BUTTONNEWPREFERENCES = 10387;
+const int ID_BUTTONIMPORT = 10388;
+const int ID_ABOUT = 10389;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

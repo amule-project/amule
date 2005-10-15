@@ -54,12 +54,10 @@ public:
 	~CPrefs();
 
 	void	getKadID(CUInt128 *id) const		{id->setValue(m_clientID);}
-	void	getKadID(wxString *id) const			{m_clientID.toHexString(id);}
 	void	setKadID(const CUInt128 &id)		{m_clientID = id;}
 	CUInt128 getKadID() const					{return m_clientID;}
 
 	void	getClientHash(CUInt128 *id) const	{id->setValue(m_clientHash);}
-	void	getClientHash(wxString *id) const	{m_clientHash.toHexString(id);}
 	void	setClientHash(const CUInt128 &id)	{m_clientHash = id;}
 	CUInt128 getClientHash() const				{return m_clientHash;}
 
