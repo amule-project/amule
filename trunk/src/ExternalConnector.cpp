@@ -81,7 +81,136 @@
 
 //-------------------------------------------------------------------
 
+CCommandTree::~CCommandTree()
+{
+	for (CmdPos_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+		delete *it;
+	}
+	m_subcommands.clear();
+}
+
+
+CCommandTree* CCommandTree::AddCommand(CCommandTree* command)
+{
+	command->m_parent = this;
+	const wxString& cmd = command->m_command;
+	CmdPos_t it;
+	for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+		if ((*it)->m_command > cmd) {
+			break;
+		}
+	}
+	m_subcommands.insert(it, command);
+	return command;
+}
+
+
+int CCommandTree::FindCommandId(const wxString& command, wxString& args, wxString& cmdstr) const
+{
+	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+		if ((*it)->m_command.Lower() == cmd) {
+			args = command.AfterFirst(wxT(' ')).Trim(false);
+			return (*it)->FindCommandId(args, args, cmdstr);
+		}
+	}
+	cmdstr = GetFullCommand().Lower();
+	if (m_params == CMD_PARAM_ALWAYS && args.IsEmpty()) {
+		return CMD_ERR_MUST_HAVE_PARAM;
+	} else if (m_params == CMD_PARAM_NEVER && !args.IsEmpty()) {
+		return CMD_ERR_NO_PARAM;
+	} else {
+		if ((m_cmd_id >= 0) && (m_cmd_id & CMD_DEPRECATED)) {
+			m_app.Show(wxT('\n') + m_verbose + wxT('\n'));
+			return m_cmd_id & ~CMD_DEPRECATED;
+		} else {
+			return m_cmd_id;
+		}
+	}
+}
+
+
+wxString CCommandTree::GetFullCommand() const
+{
+	wxString cmd = m_command;
+
+	const CCommandTree *parent = m_parent;
+	while (parent && parent->m_parent) {
+		cmd = parent->m_command + wxT(" ") + cmd;
+		parent = parent->m_parent;
+	}
+
+	return cmd;
+}
+
+
+void CCommandTree::PrintHelpFor(const wxString& command) const
+{
+	wxString cmd = command.BeforeFirst(wxT(' ')).Lower();
+	if (!cmd.IsEmpty()) {
+		for (CmdPosConst_t it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+			if ((*it)->m_command.Lower() == cmd) {
+				(*it)->PrintHelpFor(command.AfterFirst(wxT(' ')).Trim(false));
+				return;
+			}
+		}
+		if (m_parent) {
+			m_app.Show(CFormat(_("Unknown extension '%s' for the '%s' command.\n")) % command % GetFullCommand());
+		} else {
+			m_app.Show(CFormat(_("Unknown command '%s'.\n")) % command);
+		}
+	} else {
+		wxString fullcmd = GetFullCommand();
+		if (!fullcmd.IsEmpty()) {
+			m_app.Show(fullcmd.Upper() + wxT(": ") + wxGetTranslation(m_short) + wxT("\n"));
+			if (!m_verbose.IsEmpty()) {
+				m_app.Show(wxT("\n"));
+				m_app.Show(wxGetTranslation(m_verbose));
+			}
+		}
+		if (m_params == CMD_PARAM_NEVER) {
+			m_app.Show(_("\nThis command cannot have an argument.\n"));
+		} else if (m_params == CMD_PARAM_ALWAYS) {
+			m_app.Show(_("\nThis command must have an argument.\n"));
+		}
+		if (m_cmd_id == CMD_ERR_INCOMPLETE) {
+			m_app.Show(_("\nThis command is incomplete, you must use one of the extensions below.\n"));
+		}
+		if (!m_subcommands.empty()) {
+			CmdPosConst_t it;
+			int maxlen = 0;
+			if (m_parent) {
+				m_app.Show(_("\nAvailable extensions:\n"));
+			} else {
+				m_app.Show(_("Available commands:\n"));
+			}
+			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
+					int len = (*it)->m_command.Length();
+					if (len > maxlen) {
+						maxlen = len;
+					}
+				}
+			}
+			maxlen += 4;
+			for (it = m_subcommands.begin(); it != m_subcommands.end(); ++it) {
+				if (!((*it)->m_cmd_id >= 0 && (*it)->m_cmd_id & CMD_DEPRECATED) || m_parent) {
+					m_app.Show((*it)->m_command + wxString(wxT(' '), maxlen - (*it)->m_command.Length()) + wxGetTranslation((*it)->m_short) + wxT("\n"));
+				}
+			}
+			if (!m_parent) {
+				m_app.Show(_("\nAll commands are case insensitive.\n"
+					   "Type 'help <command>' to get detailed info on <command>.\n"));
+			}
+		}
+	}
+	m_app.Show(wxT("\n"));
+}
+
+//-------------------------------------------------------------------
+
 CaMuleExternalConnector::CaMuleExternalConnector()
+	: m_commands(*this)
 {
 	m_ECClient = NULL;
 	m_isConnected = false;
@@ -97,6 +226,15 @@ CaMuleExternalConnector::CaMuleExternalConnector()
 CaMuleExternalConnector::~CaMuleExternalConnector()
 {
 	delete m_configFile;
+}
+
+void CaMuleExternalConnector::OnInitCommandSet()
+{
+	m_commands.AddCommand(wxT("Quit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
+	m_commands.AddCommand(wxT("Exit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
+	m_commands.AddCommand(wxT("Help"), CMD_ID_HELP, wxTRANSLATE("Show help."),
+			      wxTRANSLATE("To get help on a command, type 'help <command>'.\n"
+					  "To get the full command list type 'help'.\n"));
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
@@ -117,11 +255,12 @@ void CaMuleExternalConnector::Show(const wxString &s)
 	}
 }
 
-void CaMuleExternalConnector::Dump(const wxString &s)
+void CaMuleExternalConnector::PrintBoxedText(const wxString& text)
 {
-	FILE *fp = fopen("x.txt", "a");
-	fprintf(fp, "%s", (const char *)unicode2char(s));
-	fclose(fp);
+	int len = text.Length();
+	Show(wxT('\n') + wxString(wxT('-'), 22 + len) + wxT('\n'));
+	Show(wxT('|') + wxString(wxT(' '), 10) + text + wxString(wxT(' '), 10) + wxT('|') + wxT('\n'));
+	Show(wxString(wxT('-'), 22 + len) + wxT('\n') + wxT('\n'));
 }
 
 #if wxUSE_GUI
@@ -136,56 +275,60 @@ void CaMuleExternalConnector::MainThreadIdleNow()
 }
 #endif
 
-int CaMuleExternalConnector::GetIDFromString(wxString &buffer, CmdId commands[])
-{
-	wxStringTokenizer tokens(buffer);
-	wxString cmd = tokens.GetNextToken().MakeLower();
-
-	if ( cmd.IsEmpty() ) {
-		return 0;
-	}
-	
-	m_cmdargs.Clear();
-	while ( tokens.HasMoreTokens() ) {
-		m_cmdargs += tokens.GetNextToken().MakeLower() + wxT(" ");
-	}
-	// Remove last space.
-	m_cmdargs.Trim();
-
-	register int i = 0;
-	bool found = false;
-	while ( !found && ( commands[i].cmd.IsEmpty() == false ) ) {
-		found = commands[i].cmd == cmd;
-		if (!found) {
-			i++;
-		}
-	}
-	
-	return found ? commands[i].id : CMD_ID_SYNTAX_ERROR;
-}
-
 void CaMuleExternalConnector::Process_Answer(const wxString& answer)
 {
 	wxStringTokenizer tokens(answer, wxT("\n"));
-	wxString t;
 	while ( tokens.HasMoreTokens() ) {
 		Show(wxT(" > ") + tokens.GetNextToken() + wxT("\n"));
 	}
 }
 
-bool CaMuleExternalConnector::Parse_Command(wxString &buffer, CmdId commands[])
+bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 {
-	int cmd_ID = GetIDFromString(buffer, commands);
-	bool quit = cmd_ID == CMD_ID_QUIT;
-	if ( (cmd_ID > 0) && !quit ) {
-		if ( ProcessCommand(cmd_ID) < 0 ) {
-			Show(_("Error processing command - should never happen! Report bug, please\n"));
-		}
-	} else if ( cmd_ID == CMD_ID_SYNTAX_ERROR ) {
-		Show(_("Syntax error!\n"));
+	wxString cmd;
+	wxStringTokenizer tokens(buffer);
+	while (tokens.HasMoreTokens()) {
+		cmd += tokens.GetNextToken() + wxT(' ');
 	}
-	
-	return quit;
+	cmd.Trim(false);
+	cmd.Trim(true);
+	int cmd_ID = GetIDFromString(cmd);
+	if ( cmd_ID >= 0 ) {
+		cmd_ID = ProcessCommand(cmd_ID);
+	}
+	wxString error;
+	switch (cmd_ID) {
+		case CMD_ID_HELP:
+			m_commands.PrintHelpFor(GetCmdArgs());
+			break;
+		case CMD_ERR_SYNTAX:
+			error = _("Syntax error!");
+			break;
+		case CMD_ERR_PROCESS_CMD:
+			Show(_("Error processing command - should never happen! Report bug, please\n"));
+			break;
+		case CMD_ERR_NO_PARAM:
+			error = _("This command should not have any parameters.");
+			break;
+		case CMD_ERR_MUST_HAVE_PARAM:
+			error = _("This command must have a parameter.");
+			break;
+		case CMD_ERR_INVALID_ARG:
+			error = _("Invalid argument.");
+			break;
+		case CMD_ERR_INCOMPLETE:
+			error = _("This is an incomplete command.");
+			break;
+	}
+	if (!error.IsEmpty()) {
+		Show(error + wxT('\n'));
+		wxString helpStr(wxT("help"));
+		if (!GetLastCmdStr().IsEmpty()) {
+			helpStr << wxT(' ') << GetLastCmdStr();
+		}
+		Show(CFormat(_("Type '%s' to get more help.\n")) % helpStr);
+	}
+	return cmd_ID == CMD_ID_QUIT;
 }
 
 void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, size_t buffer_size)
@@ -227,7 +370,7 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 	}
 }
 
-void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[])
+void CaMuleExternalConnector::TextShell(const wxString &prompt)
 {
 	char buffer[256];
 	wxString buf;
@@ -236,7 +379,7 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt, CmdId commands[]
 	do {
 		GetCommand(prompt, buffer, 256);
 		buf = char2unicode(buffer);
-		The_End = Parse_Command(buf, commands);
+		The_End = Parse_Command(buf);
 	} while ((!The_End) && (m_isConnected));
 }
 
@@ -249,11 +392,8 @@ CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
 	return 0;
 }
 
-void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion, CmdId *UNUSED_IN_GUI(commands))
+void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion)
 {
-	InitCustomLanguages();
-	InitLocale(m_locale, StrLang2wx(m_language));
-
 	if (m_NeedsConfigSave) {
 		SaveConfigFile();
 		return;
@@ -287,18 +427,18 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		wxString pass_plain;
 #if wxUSE_GUI
 		m_host = wxGetTextFromUser(
-			wxT("Enter hostname or ip of the box running aMule"),
-			wxT("Enter Hostname"), wxT("localhost"));
+			_("Enter hostname or ip of the box running aMule"),
+			_("Enter Hostname"), wxT("localhost"));
 		wxString sPort = wxGetTextFromUser(
-			wxT("Enter port for aMule's External Connection"),
-			wxT("Enter Port"), wxT("4712"));
+			_("Enter port for aMule's External Connection"),
+			_("Enter Port"), wxT("4712"));
 		if (!sPort.ToLong(&m_port)) {
 			// invalid input, use default
 			m_port = 4712;
 		}
 		pass_plain = ::wxGetPasswordFromUser(
-			wxT("Enter password for mule connection"),
-			wxT("Enter Password"));
+			_("Enter password for mule connection"),
+			_("Enter Password"));
 #else  // wxUse_GUI
 		#ifndef __WXMSW__
 			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
@@ -395,7 +535,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 						#endif
 					}
 				} else {
-					TextShell(ProgName, commands);
+					TextShell(ProgName);
 				}
 				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
 #endif
@@ -574,4 +714,13 @@ void CaMuleExternalConnector::SaveConfigFile()
 		m_configFile->Write(wxT("/EC/Port"), m_port);
 		m_configFile->WriteHash(wxT("/EC/Password"), m_password);
 	}
+}
+
+bool CaMuleExternalConnector::OnInit()
+{
+	bool retval = wxApp::OnInit();
+	OnInitCommandSet();
+	InitCustomLanguages();
+	InitLocale(m_locale, StrLang2wx(m_language));
+	return retval;
 }

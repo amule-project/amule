@@ -31,31 +31,6 @@
 #endif
 
 //-------------------------------------------------------------------
-enum {
-	CMD_ID_HELP	= 1,
-	CMD_ID_STATS,
-	CMD_ID_SHOW	,
-	CMD_ID_RESUME,
-	CMD_ID_PAUSE,
-	CMD_ID_SRVSTAT,
-	CMD_ID_CONN,
-	CMD_ID_DISCONN,
-	CMD_ID_RELOAD_IPFILTER,
-	CMD_ID_SET_IPFILTER,
-	CMD_ID_GET_IPLEVEL,
-	CMD_ID_SET_IPLEVEL,
-	CMD_ID_IPLEVEL,
-	CMD_ID_DLOAD_QUEUE,
-	CMD_ID_SHUTDOWN,
-	CMD_ID_SERVERLIST,
-	CMD_ID_ADDLINK,
-	CMD_ID_SETUPBWLIMIT,
-	CMD_ID_SETDOWNBWLIMIT,
-	CMD_ID_GETBWLIMITS,
-	CMD_ID_STATTREE,
-	CMD_ID_RELOADSHARED
-};
-//-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include
 // 
@@ -94,29 +69,29 @@ private:
 class CamulecmdApp : public CaMuleExternalConnector
 {
 public:
-	void ShowHelp();
 	void ShowGreet();
 	int ProcessCommand(int ID);
 	void Process_Answer_v2(CECPacket *reply);
+	void OnInitCommandSet();
 
 #if wxUSE_GUI
 public:
 	void LocalShow(const wxString &s);
 	CamulecmdFrame *frame;
 private:
-	// GUI Version
-	virtual bool OnInit();
 #else
 private:
-	// Command line version
-	virtual int OnRun();
 	// other command line switches
 	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
-	void TextShell(const wxString& prompt, CmdId *commands);
+	void TextShell(const wxString& prompt);
 	bool m_HasCmdOnCmdLine;
 	wxString m_CmdString;
 #endif
+	virtual bool OnInit();
+	virtual int OnRun();
+
+	int	m_last_cmd_id;
 };
 
 #endif // TEXTCLIENT_H
