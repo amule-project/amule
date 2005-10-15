@@ -39,12 +39,12 @@
 #include "OtherFunctions.h"
 #include "HTTPDownload.h"
 #include "Logger.h"
+#include "amule.h"
 #include <wx/sizer.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 
 #ifndef CLIENT_GUI
-#include "amule.h"
 #include "NetworkFunctions.h"
 #include "kademlia/kademlia/Kademlia.h"
 #endif
@@ -92,6 +92,8 @@ void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 
 void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
+		#warning TODO EC
+		#ifndef CLIENT_GUI
 		// Connect to node
 		uint32 ip = StringIPtoUint32(
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
@@ -106,17 +108,18 @@ void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 		} else {
 			unsigned long port;
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
-				#ifndef CLIENT_GUI
 				if ( !Kademlia::CKademlia::isRunning() ) {
 					Kademlia::CKademlia::start();
 					theApp.ShowConnectionState();
 				}
 				Kademlia::CKademlia::bootstrap(ip, port);				
-				#endif
 			} else {
 				wxMessageBox(_("Invalid port to bootstrap"));
 			}
 		}
+		#else
+			wxMessageBox(_("You can't bootstrap from remote GUI yet."));
+		#endif		
 	} else {
 		wxMessageBox(_("Please fill all fields required"));
 	}
@@ -126,7 +129,6 @@ void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
 	#ifndef CLIENT_GUI
 	if ( !Kademlia::CKademlia::isRunning() ) {
 		Kademlia::CKademlia::start();
-		theApp.ShowConnectionState();
 	}	
 	#endif
 }
@@ -135,12 +137,14 @@ void	CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt)) {
 	#ifndef CLIENT_GUI
 	if ( Kademlia::CKademlia::isRunning() ) {
 		Kademlia::CKademlia::stop();
-		theApp.ShowConnectionState();
 	}
 	#endif
 }
 
 void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
+	#warning TODO EC
+	#ifndef CLIENT_GUI
+
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO) == wxYES ) {
@@ -154,6 +158,9 @@ void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
 		downloader->Create();
 		downloader->Run();
 	}
+	#else
+	wxMessageBox(_("You can't update server.met from remote GUI yet."));
+	#endif		
 }
 
 void CKadDlg::ShowNodes() const {	

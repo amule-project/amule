@@ -111,11 +111,11 @@ void CNodeListCtrl::RemoveNode( const CContact* node )
 	
 	long result = FindItem( -1, (long)node );
 	if ( result != -1 ) {
-		CContact* cur_node = (CContact*) GetItemData( result );
-		CUInt128 id;
-		cur_node->getClientID(&id);
-		CKademlia::getRoutingZone()->remove(id);
+		#warning TODO EC 
+		#ifndef CLIENT_GUI
+		CKademlia::getRoutingZone()->remove(((CContact*)GetItemData( result ))->getClientID());
 		DeleteItem( result );
+		#endif
 	}
 	ShowNodeCount();
 	
@@ -128,12 +128,12 @@ void CNodeListCtrl::RemoveAllNodes( int state )
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
 
 	while ( pos != -1 ) {
-		CContact* cur_node = (CContact*) GetItemData( pos );
-		CUInt128 id;
-		cur_node->getClientID(&id);
-		CKademlia::getRoutingZone()->remove(id);
+		#warning TODO EC 
+		#ifndef CLIENT_GUI
+		CKademlia::getRoutingZone()->remove(((CContact*)GetItemData( pos ))->getClientID());
 		DeleteItem( pos );
 		pos = GetNextItem( pos-1, wxLIST_NEXT_ALL, state );
+		#endif
 	}
 
 	ShowNodeCount();
@@ -188,7 +188,7 @@ void CNodeListCtrl::RefreshNode( const CContact* node )
 	// New item or we deleted the old one
 	if ( itemnr == -1 ) {
 		// We are not sure that the node isn't in the list, so we can re-add
-		itemnr = InsertItem( GetInsertPos( (long)node ), node->getClientID() );
+		itemnr = InsertItem( GetInsertPos( (long)node ), node->getClientIDString() );
 		SetItemData( itemnr, (long)node );
 	
 		item.SetId( itemnr );
@@ -205,9 +205,9 @@ void CNodeListCtrl::RefreshNode( const CContact* node )
 	}
 	
 
-	SetItem( itemnr, COLUMN_NODE_ID, node->getClientID() );
+	SetItem( itemnr, COLUMN_NODE_ID, node->getClientIDString() );
 	SetItem( itemnr, COLUMN_NODE_TYPE, wxString::Format(wxT("%i"),node->getType()) );
-	SetItem( itemnr, COLUMN_NODE_DISTANCE, node->getDistance() );
+	SetItem( itemnr, COLUMN_NODE_DISTANCE, node->getDistanceString() );
 	
 }
 
@@ -272,15 +272,19 @@ void CNodeListCtrl::OnBootstrapNode( wxCommandEvent& WXUNUSED(event) )
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( item > -1 ) {
-		
+		#warning TODO EC 
+		#ifndef CLIENT_GUI
 		if( !Kademlia::CKademlia::isRunning() ) {
 			Kademlia::CKademlia::start();
-			theApp.ShowConnectionState();
 		}
 	
 		CContact* node = (CContact*)GetItemData( item );
 		
 		Kademlia::CKademlia::bootstrap(node->getIPAddress(), node->getUDPPort());
+		#else
+		wxMessageBox(_("You can't bootstrap a node from remote GUI yet."));
+		#endif
+		
 	}
 }
 	
@@ -291,8 +295,11 @@ void CNodeListCtrl::OnRemoveNodes( wxCommandEvent& event )
 			wxString question = _("Are you sure that you wish to delete all nodes?\nKademlia will be stopped and disconnected.");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+				#warning TODO EC 
+				#ifndef CLIENT_GUI
 				Kademlia::CKademlia::stop();
 				RemoveAllNodes( wxLIST_STATE_DONTCARE);
+				#endif
 			}
 		}
 	} else if ( event.GetId() == MP_REMOVE ) {
@@ -334,13 +341,13 @@ int CNodeListCtrl::SortProc( long item1, long item2, long sortData )
 	switch ( sortData ) {
 		// Sort by node-id
 		case COLUMN_NODE_ID:
-			return mode * node1->getClientID().CmpNoCase(node2->getClientID());
+			return mode * node1->getClientIDString().CmpNoCase(node2->getClientIDString());
 		// Sort by type
 		case COLUMN_NODE_TYPE:
 			return mode * CmpAny( node1->getType(), node2->getType());
 		// Sort by distance
 		case COLUMN_NODE_DISTANCE:
-			return mode * node1->getDistance().CmpNoCase(node2->getDistance());
+			return mode * node1->getDistanceString().CmpNoCase(node2->getDistanceString());
 		default:
 			return 0;
 	}
