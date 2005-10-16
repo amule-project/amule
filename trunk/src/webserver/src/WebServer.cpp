@@ -2103,7 +2103,7 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
 	CECPacket *sServerStat = webInterface->SendRecvMsg_v2(&connstate_req);
-	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByNameSafe(EC_TAG_SERVER) : NULL;
+	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByIndex(0) : NULL;
 	if (sServerStat && tag) {
 		if (tag->IsConnectedED2K()) {
 			CECTag *server = tag->GetTagByName(EC_TAG_SERVER);
