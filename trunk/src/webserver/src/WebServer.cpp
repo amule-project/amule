@@ -1654,7 +1654,7 @@ wxString CWebServer::_GetAddServerBox(ThreadData Data) {
 	}
 	
 	Out.Replace(wxT("[Message]"), messageString);
-	Out.Replace(wxT("[AddServer]"), _("Received %d new servers"));
+	Out.Replace(wxT("[AddServer]"), _("Add new server"));
 	Out.Replace(wxT("[IP]"), _("IP or Address"));
 	Out.Replace(wxT("[Port]"), _("Port"));
 	Out.Replace(wxT("[Name]"), _("Name"));
