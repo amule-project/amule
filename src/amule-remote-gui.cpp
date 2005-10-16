@@ -657,32 +657,36 @@ bool CServerConnectRem::ReQuery()
     }
 
 	int state = 0;
-	#warning KAD TODO - check connection state special tag EC_TAG_CONNSTATE
-    CServer *server;
-	m_ID = tag->ClientID();
-	switch (m_ID) {
-		case 0:  // not connected
-	    case 0xffffffff: // connecting
+	CServer *server;
+	m_ID = tag->GetEd2kId();
+
+	if (tag->IsConnectedED2K()) {
+		CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
+		if ( !srvtag ) {
+			return false;
+		}
+		server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
+		if ( m_CurrServer && (server != m_CurrServer) ) {
+			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+		}
+		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
+		m_CurrServer = server;
+		state |= CONNECTED_ED2K;
+	} else {
 	    	if ( m_CurrServer ) {
 	    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
 	    		m_CurrServer = 0;
 	    	}
-	    	break;
-	    default: {// connected
-		    	CECTag *srvtag = tag->GetTagByIndex(0);
-		    	if ( !srvtag ) {
-		    		return false;
-		    	}
-		    	server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
-		    	if ( m_CurrServer && (server != m_CurrServer) ) {
-		    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
-		    	}
-		    	theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
-		    	m_CurrServer = server;
-				state |= CONNECTED_ED2K;
-		    	break;
-	    }
 	}
+
+	if (tag->IsConnectedKademlia()) {
+		if (tag->IsKadFirewalled()) {
+			state |= CONNECTED_KAD_FIREWALLED;
+		} else {
+			state |= CONNECTED_KAD_OK;
+		}
+	}
+
 	theApp.amuledlg->ShowConnectionState(state);
 	return true;
 }

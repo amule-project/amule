@@ -699,17 +699,21 @@ enum {
 		/*!
 		 * \brief Connection state.
 		 *
-		 * Possible values (\c uint32):
-		 *	<ul>
-		 *		<li>0 - Not Connected</li>
-		 *		<li>0xffffffff - Connecting</li>
-		 *		<li>Any other - Client ID</li>
-		 *	</ul>
+		 * Its value (\c uint8) is a bitfield, set up as following:\n
+		 * bits 0-1: ED2K connection state:\n
+		 *	00 = not connected,\n
+		 *	01 = connecting\n
+		 *	11 = connected\n
+		 * bits 2-3: Kademlia connection state:\n
+		 *	00 = not connected\n
+		 *	01 = connected (firewalled)\n
+		 *	11 = connected (ok)
 		 *
-		 * When connected, it contains an ::EC_TAG_SERVER child, describing the
-		 * server we're connected to.
+		 * When connected to ED2K, it contains an ::EC_TAG_SERVER child, describing the
+		 * server we're connected to, and an ::EC_TAG_ED2K_ID, containing the ed2k userID.
 		 */
 	EC_TAG_CONNSTATE,
+	EC_TAG_ED2K_ID,			///< (\c uint32) ED2K user ID.
 
 	EC_TAG_STATS_UL_SPEED,		///< (\c uint32) Current upload speed in bytes/sec.
 	EC_TAG_STATS_DL_SPEED,		///< (\c uint32) Current download speed in bytes/sec.

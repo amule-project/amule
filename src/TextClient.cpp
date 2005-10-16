@@ -621,24 +621,34 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 		case EC_OP_STATS: {
 			CEC_ConnState_Tag *connState = (CEC_ConnState_Tag*)response->GetTagByName(EC_TAG_CONNSTATE);
 			if (connState) {
-				switch (connState->ClientID()) {
-				case 0:
-					s = _("Not connected");
-					break;
-				case 0xffffffff:
-					s = _("Now connecting");
-					break;
-				default:
-					CECTag *server = connState ? connState->GetTagByIndex(0) : NULL;
+				s << _("ED2K") << wxT(": ");
+				if (connState->IsConnectedED2K()) {
+					CECTag *server = connState->GetTagByName(EC_TAG_SERVER);
 					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 					if (server && serverName) {
 						s << CFormat(_("Connected to %s %s %s")) %
 						 serverName->GetStringData() %
 						 server->GetIPv4Data().StringIP() %
-						 (connState->HaveLowID() ? _("with LowID") : _("with HighID"));
+						 (connState->HasLowID() ? _("with LowID") : _("with HighID"));
 					}
-					break;
+				} else if (connState->IsConnectingED2K()) {
+					s << _("Now connecting");
+				} else {
+					s << _("Not connected");
 				}
+				s << wxT('\n') << _("Kad") << wxT(": ");
+				if (connState->IsConnectedKademlia()) {
+					s << _("Connected") << wxT(" (");
+					if (connState->IsKadFirewalled()) {
+						s << _("firewalled");
+					} else {
+						s << _("ok");
+					}
+					s << wxT(')');
+				} else {
+					s << _("Not connected");
+				}
+				s << wxT('\n');
 			}
 			CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {

@@ -42,6 +42,10 @@
 #include "SearchList.h"
 #include "ClientCredits.h"
 
+#ifdef __COMPILE_KAD__
+	#include "kademlia/kademlia/Kademlia.h"
+#endif
+
 #else
 
 #include "wx/intl.h"		// Needed for _()
@@ -600,12 +604,17 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 }
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
-	(uint32) (theApp.IsConnectedED2K() ? theApp.serverconnect->GetClientID() : 
-		theApp.serverconnect->IsConnecting() ? 0xffffffff : 0))
+	(uint8)((theApp.IsConnectedED2K() ? 0x03 : theApp.serverconnect->IsConnecting() ? 0x01 : 0x00)
+#ifdef __COMPILE_KAD__
+		| (theApp.IsConnectedKad() ? Kademlia::CKademlia::isFirewalled() ? 0x04 : 0x0c : 0x00)
+#endif
+		))
 {
-	#warning KAD TODO
-	if ( theApp.serverconnect->GetCurrentServer() ) {
-		AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
+	if (theApp.IsConnectedED2K()) {
+		if ( theApp.serverconnect->GetCurrentServer() ) {
+			AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
+		}
+		AddTag(CECTag(EC_TAG_ED2K_ID, theApp.serverconnect->GetClientID()));
 	}
 }
 

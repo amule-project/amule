@@ -182,14 +182,14 @@ class CEC_Server_Tag : public CECTag {
 class CEC_ConnState_Tag : public CECTag {
  	public:
  		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
- 		
- 		bool IsConnected() { return ClientID() && (ClientID() != 0xffffffff); }
- 		bool IsConnecting() {return (ClientID() == 0xffffffff); }
- 		bool HaveLowID() { return ClientID() < HIGHEST_LOWID_ED2K_KAD; }
- 		// 0  : disconnected
- 		// 0xffffffff : connecting
- 		// other: client ID
- 		uint32 ClientID() { return GetInt32Data(); }
+
+		uint32	GetEd2kId()		{ return GetTagByNameSafe(EC_TAG_ED2K_ID)->GetInt32Data(); }
+ 		bool	HasLowID()		{ return GetEd2kId() < HIGHEST_LOWID_ED2K_KAD; }
+ 		bool	IsConnected()		{ return IsConnectedED2K() || IsConnectedKademlia(); }
+ 		bool	IsConnectedED2K()	{ return (GetInt8Data() & 0x03) == 0x03; }
+ 		bool	IsConnectingED2K()	{ return (GetInt8Data() & 0x03) == 0x01; }
+		bool	IsConnectedKademlia()	{ return GetInt8Data() & 0x04; }
+		bool	IsKadFirewalled()	{ return (GetInt8Data() & 0x08) == 0; }
 };
 
 class CEC_PartFile_Tag : public CECTag {
