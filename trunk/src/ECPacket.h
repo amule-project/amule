@@ -38,6 +38,36 @@
 #undef KEEP_PARTIAL_PACKETS
 
 
+/**
+ * Class to hold IPv4 address.
+ */
+class EC_IPv4_t {
+	public:
+		EC_IPv4_t() { }
+		EC_IPv4_t(uint32 ip, uint16 port)
+		{
+			EC_IPv4_t::ip[0] = ip & 0xff;
+			EC_IPv4_t::ip[1] = (ip >> 8) & 0xff;
+			EC_IPv4_t::ip[2] = (ip >> 16) & 0xff;
+			EC_IPv4_t::ip[3] = (ip >> 24) & 0xff;
+			EC_IPv4_t::port = port;
+		}
+		
+		uint32 IP()
+		{
+			return ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
+		}
+
+		wxString StringIP(bool brackets = true)
+		{
+			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
+		}
+		
+		uint8 ip[4];
+		uint16 port;
+};
+
+
 class CECTag;
 class ECSocket;
 class wxSocketBase;

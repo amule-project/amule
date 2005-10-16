@@ -131,6 +131,12 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		if (thePrefs::Reconnect()) {
 			connPrefs.AddTag(CECEmptyTag(EC_TAG_CONN_RECONNECT));
 		}
+		if (thePrefs::GetNetworkED2K()) {
+			connPrefs.AddTag(CECEmptyTag(EC_TAG_NETWORK_ED2K));
+		}
+		if (thePrefs::GetNetworkKademlia()) {
+			connPrefs.AddTag(CECEmptyTag(EC_TAG_NETWORK_KADEMLIA));
+		}
 		AddTag(connPrefs);
 	}
 
@@ -397,6 +403,8 @@ void CEC_Prefs_Packet::Apply()
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoConnect, EC_TAG_CONN_AUTOCONNECT);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetReconnect, EC_TAG_CONN_RECONNECT);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetNetworkED2K, EC_TAG_NETWORK_ED2K);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetNetworkKademlia, EC_TAG_NETWORK_KADEMLIA);
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_MESSAGEFILTER)) != NULL) {

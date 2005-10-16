@@ -33,7 +33,6 @@
 
 #include <inttypes.h>		// Needed for uint* types
 
-#include "Types.h"
 
 /*
  * EC types
@@ -42,36 +41,6 @@
 typedef uint8_t ec_opcode_t;
 typedef uint16_t ec_tagname_t;
 typedef uint32_t ec_taglen_t;
-
-
-/**
- * Class to hold IPv4 address.
- */
-class EC_IPv4_t {
-	public:
-		EC_IPv4_t() { }
-		EC_IPv4_t(uint32 ip, uint16 port)
-		{
-			EC_IPv4_t::ip[0] = ip & 0xff;
-			EC_IPv4_t::ip[1] = (ip >> 8) & 0xff;
-			EC_IPv4_t::ip[2] = (ip >> 16) & 0xff;
-			EC_IPv4_t::ip[3] = (ip >> 24) & 0xff;
-			EC_IPv4_t::port = port;
-		}
-		
-		uint32 IP()
-		{
-			return ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
-		}
-
-		wxString StringIP(bool brackets = true)
-		{
-			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
-		}
-		
-		uint8 ip[4];
-		uint16 port;
-};
 
 
 /**
@@ -1017,7 +986,9 @@ enum {
 		*	::EC_TAG_CONN_MAX_FILE_SOURCES\n
 		*	::EC_TAG_CONN_MAX_CONN\n
 		*	::EC_TAG_CONN_AUTOCONNECT\n
-		*	::EC_TAG_CONN_RECONNECT
+		*	::EC_TAG_CONN_RECONNECT\n
+		*	::EC_TAG_NETWORK_ED2K\n
+		*	::EC_TAG_NETWORK_KADEMLIA
 		*/
 	EC_TAG_PREFS_CONNECTIONS,
 
@@ -1033,6 +1004,10 @@ enum {
 	EC_TAG_CONN_MAX_CONN,		///< (\c uint16) Maximum total connections allowed.
 	EC_TAG_CONN_AUTOCONNECT,	///< (boolean) Whether to automatically connect at startup or not.
 	EC_TAG_CONN_RECONNECT,		///< (boolean) Whether to reconnect to server upon connection loss or not.
+
+	// Maybe these two could get a new category...
+	EC_TAG_NETWORK_ED2K,		///< (boolean) Whether network ED2K is enabled or not.
+	EC_TAG_NETWORK_KADEMLIA,	///< (boolean) Whether network Kademlia is enabled or not.
 
 
 	//
