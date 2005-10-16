@@ -9,4 +9,4 @@ libmuleunit_a_SOURCES = \
 	testregistry.cpp \
 	$(top_srcdir)/src/MuleDebug.cpp
 
-libmuleunit_a_CXXFLAGS = $(WX_CXXFLAGS) -DMULEUNIT -DNO_GCC_PRAGMA
+libmuleunit_a_CXXFLAGS = $(WX_CXXFLAGS) -DMULEUNIT 

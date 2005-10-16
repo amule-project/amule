@@ -4,8 +4,8 @@
 
 
 # Use this to be able to catch assertions as exceptions
-MUCXXFLAGS = -DMULEUNIT -DNO_GCC_PRAGMA
-AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS} -DNO_GCC_PRAGMA
+MUCXXFLAGS = -DMULEUNIT 
+AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS} 
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
