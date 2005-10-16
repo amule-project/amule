@@ -33,6 +33,8 @@
 
 #include <inttypes.h>		// Needed for uint* types
 
+#include "Types.h"
+
 /*
  * EC types
  */
