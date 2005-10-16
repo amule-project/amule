@@ -496,10 +496,11 @@ public:
 	
 	static bool CheckNewVersion() { return s_NewVersionCheck; }
 
-	// Kad
-	static bool GetNetworkKademlia() { return s_ConnectToKad; }
-	// Kad
-	static bool GetNetworkED2K() { return s_ConnectToED2K; }
+	// Networks
+	static bool GetNetworkKademlia()		{ return s_ConnectToKad; }
+	static void SetNetworkKademlia(bool val)	{ s_ConnectToKad = val; }
+	static bool GetNetworkED2K()			{ return s_ConnectToED2K; }
+	static void SetNetworkED2K(bool val)		{ s_ConnectToED2K = val; }
 
 	// Statistics
 	static unsigned		GetMaxClientVersions()		{ return s_maxClientVersions; }
