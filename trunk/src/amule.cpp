@@ -1257,7 +1257,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			theStats::GetSessionSentBytes() );
 
 		// Uptime
-		amulesig_out.AddLine(wxString::Format(wxT("%u"), theStats::GetUptimeSeconds()));
+		amulesig_out.AddLine(wxString::Format(wxT("%llu"), theStats::GetUptimeSeconds()));
 	}
 
 	// Flush the files
