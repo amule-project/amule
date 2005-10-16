@@ -34,6 +34,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <algorithm>
+#include <cctype>
 
 #include "FileFunctions.h"
 #include "StringFunctions.h"
