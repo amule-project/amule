@@ -867,27 +867,31 @@ wxString CWebServer::_GetHeader(ThreadData Data, long lSession) {
 	if (!tag) {
 		return wxEmptyString;
 	}
-	
-	switch (tag->ClientID()) {
-	case 0:
+
+	if (tag->IsConnectedED2K()) {
+		CECTag *server = tag->GetTagByName(EC_TAG_SERVER);
+		CECTag *sname  = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
+		if (server && sname) {
+			sConnected = CFormat(_("Connected to %s %s %s")) % sname->GetStringData() % server->GetIPv4Data().StringIP() % (tag->HasLowID() ? _("with LowID") : _("with HighID"));
+		}
+	} else if (tag->IsConnectingED2K()) {
+		sConnected = _("Now connecting");
+	} else {
 		sConnected = _("Not connected");
 		if (IsSessionAdmin(Data,sSession)) {
 			sConnected += wxT(" (<small><a href=\"?ses=") + sSession +
 				wxT("&w=server&c=connect\">Connect to any server</a></small>)");
 		}
-		break;
-	case 0xffffffff:
-		sConnected = _("Now connecting");
-		break;
-	default:
-		CECTag *server = tag->GetTagByIndex(0);
-		CECTag *sname  = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
-		if (server && sname) {
-			sConnected = CFormat(_("Connected to %s %s %s")) % sname->GetStringData() % server->GetIPv4Data().StringIP() % (tag->HaveLowID() ? _("with LowID") : _("with HighID"));
+	}
+
+	if (tag->IsConnectedKademlia()) {
+		if (tag->IsKadFirewalled()) {
+			sConnected << wxT(" (Kad: firewalled)");
 		} else {
-			return wxEmptyString;
+			sConnected << wxT(" (Kad: ok)");
 		}
-		break;
+	} else {
+		sConnected << wxT(" (Kad: off)");
 	}
 
 	Out.Replace(wxT("[Connected]"), wxT("<b>Connection:</b> ") + sConnected);
@@ -2099,32 +2103,28 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 
 	CECPacket connstate_req(EC_OP_GET_CONNSTATE);
 	CECPacket *sServerStat = webInterface->SendRecvMsg_v2(&connstate_req);
-	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByIndexSafe(0) : NULL;
+	CEC_ConnState_Tag *tag = sServerStat ? (CEC_ConnState_Tag *)sServerStat->GetTagByNameSafe(EC_TAG_SERVER) : NULL;
 	if (sServerStat && tag) {
-		switch (tag->ClientID()) {
-		case 0:
-			OutS.Replace(wxT("[1]"), _("Disconnected"));
-			OutS.Replace(wxT("[2]"), wxEmptyString);
-			OutS.Replace(wxT("[3]"), wxEmptyString);
-			break;
-		case 0xffffffff:
-			OutS.Replace(wxT("[1]"), _("Connecting"));
-			OutS.Replace(wxT("[2]"), wxEmptyString);
-			OutS.Replace(wxT("[3]"), wxEmptyString);
-			break;
-		default:
-			CECTag *server = tag->GetTagByIndex(0);
+		if (tag->IsConnectedED2K()) {
+			CECTag *server = tag->GetTagByName(EC_TAG_SERVER);
 			CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 			CECTag *serverUsers = server ? server->GetTagByName(EC_TAG_SERVER_USERS) : NULL;
 			if (server && serverName && serverUsers) {
 				OutS.Replace(wxT("[1]"), wxString(_("Connected ")) +
-					(tag->HaveLowID() ? wxString(_("with LowID")) : wxString(_("with HighID"))));
+					(tag->HasLowID() ? wxString(_("with LowID")) : wxString(_("with HighID"))));
 				OutS.Replace(wxT("[2]"), serverName->GetStringData());
 				OutS.Replace(wxT("[3]"), wxString::Format(wxT("%10i"), serverUsers->GetInt32Data()));
 			} else {
 				OutS.Clear();
 			}
-			break;
+		} else if (tag->IsConnectingED2K()) {
+			OutS.Replace(wxT("[1]"), _("Connecting"));
+			OutS.Replace(wxT("[2]"), wxEmptyString);
+			OutS.Replace(wxT("[3]"), wxEmptyString);
+		} else {
+			OutS.Replace(wxT("[1]"), _("Disconnected"));
+			OutS.Replace(wxT("[2]"), wxEmptyString);
+			OutS.Replace(wxT("[3]"), wxEmptyString);
 		}
 		delete sServerStat;
 	} else {
