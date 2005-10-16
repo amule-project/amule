@@ -394,22 +394,22 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		return;
 	}
 
-	wxString appName = wxT(
+	wxString appName =
 		// Find out Application Name
 		#ifdef AMULECMDDLG
-			"amulecmd [DLG version]"
+			wxT("amulecmd [DLG version]")
 		#else
 			#ifdef AMULEWEBDLG
-				"amuleweb [DLG version]"
+				wxT("amuleweb [DLG version]")
 			#else
 				#ifdef WEBSERVERDIR
-					"amuleweb"
+					wxT("amuleweb")
 				#else
-					"amulecmd"
+					wxT("amulecmd")
 				#endif
 			#endif
 		#endif
-	);
+	;
 
 	#ifdef CVSDATE
 		Show(CFormat(_("This is %s %s %s\n")) % appName % wxT(VERSION) % wxT(CVSDATE));
