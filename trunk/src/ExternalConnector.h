@@ -50,7 +50,7 @@
 #define CMD_ID_QUIT		-1
 #define CMD_ID_HELP		-2
 #define CMD_ERR_SYNTAX		-3
-#define	CMD_ERR_PROCESS_CMD	-4
+#define CMD_ERR_PROCESS_CMD	-4
 #define CMD_ERR_NO_PARAM	-5
 #define CMD_ERR_MUST_HAVE_PARAM	-6
 #define CMD_ERR_INVALID_ARG	-7
@@ -120,7 +120,6 @@ public:
 	// Virtual functions
 	//
 	virtual void LocalShow(const wxString &) {};
-	virtual void ShowGreet() {}
 	virtual void Pre_Shell() {}
 	virtual void Post_Shell() {}
 	virtual int ProcessCommand(int) { return -1; }
@@ -130,6 +129,7 @@ public:
 	virtual void LoadAmuleConfig(CECFileConfig& cfg);
 	virtual void OnInitCommandSet();
 	virtual bool OnInit();
+	virtual const wxString GetGreetingTitle() = 0;
 
 	//
 	// Other functions
@@ -145,7 +145,7 @@ public:
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
 	CECPacket *SendRecvMsg_v2(CECPacket *request);
 	void ConnectAndRun(const wxString &ProgName, const wxString& ProgName);
-	void PrintBoxedText(const wxString& text);
+	void ShowGreet();
 
 	//
 	// Command line processing

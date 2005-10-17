@@ -860,12 +860,6 @@ void CamulecmdApp::OnInitCommandSet()
 					  "Use 'Set BwLimit Down' instead.\n"), CMD_PARAM_ALWAYS);
 }
 
-void CamulecmdApp::ShowGreet() {
-	PrintBoxedText(_("aMule text client"));
-	// Do not merge the line below, or translators could translate "Help"
-	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
-}
-
 bool CamulecmdApp::OnInit()
 {
 	if (CaMuleExternalConnector::OnInit()) {
