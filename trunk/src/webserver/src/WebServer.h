@@ -230,21 +230,6 @@ class SearchFile {
 		CMD4Hash ID() { return nHash; }
 };
 
-class KadNode {
-	public:
-		Kademlia::CUInt128 m_id;
-		uint32 m_node_ip;
-		uint16 m_node_port;
-		uint8 m_node_type;
-
-		KadNode(CEC_KadNode_Tag *);
-		
-		void ProcessUpdate(CEC_KadNode_Tag *);
-		static class KadInfo *GetContainerInstance();
-		Kademlia::CUInt128 ID() { return m_id; }
-};
-
-
 /*!
  * Each item of type T must implement GetContainerInstance(T) to return ptr
  * to container holding such items.
@@ -530,16 +515,6 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_S
 		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
 };
 
-class KadInfo : public UpdatableItemsContainer<KadNode, int, CEC_KadNode_Tag, Kademlia::CUInt128> {
-	public:
-		static KadInfo *m_This;
-		
-		KadInfo(CamulewebApp *webApp);
-		
-		virtual bool ReQuery();
-
-		bool CompareItems(const KadNode &i1, const KadNode &i2);
-};
 
 class CImageLib;
 class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {

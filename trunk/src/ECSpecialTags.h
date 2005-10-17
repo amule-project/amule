@@ -356,13 +356,9 @@ class CEC_Search_Tag : public CECTag {
 		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
 };
 
-//class Kademlia::CContact;
-
-class CEC_KadNode_Tag : public CECTag {
+class CEC_Kad_Tag : public CECTag {
 	public:
-		CEC_KadNode_Tag(Kademlia::CUInt128 id, uint32 ip, uint16 port, uint8 type);
-		
-		Kademlia::CUInt128 ID() { return Kademlia::CUInt128(uint32(0)); }
+		CEC_Kad_Tag();
 };
 
 #ifdef EC_REMOTE
