@@ -211,7 +211,7 @@ void *CWCThread::Entry() {
 					stWebSocket.m_bCanRecv = false;
 					//
 					// Process request
-					stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, stWebSocket.m_dwRecv, 0, 0);
+					stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, 0, 0);
 				}
 			}
 			//
@@ -233,8 +233,7 @@ void *CWCThread::Entry() {
 					cont += 4;
 					if ( cont - stWebSocket.m_pBuf + len <= (int)stWebSocket.m_dwRecv ) {
 						stWebSocket.m_bCanRecv = false;
-						stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, 
-							cont - stWebSocket.m_pBuf, cont, len);
+						stWebSocket.OnRequestReceived(stWebSocket.m_pBuf, cont, len);
 					}
 				}
 			}
@@ -296,7 +295,7 @@ void *CWCThread::Entry() {
 	return NULL;	
 }
 
-void CWebSocket::OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen)
+void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 {
 	
 	bool is_post = false;
