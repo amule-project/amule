@@ -250,12 +250,15 @@ void CaMuleExternalConnector::Show(const wxString &s)
 	}
 }
 
-void CaMuleExternalConnector::PrintBoxedText(const wxString& text)
+void CaMuleExternalConnector::ShowGreet()
 {
+	wxString text = GetGreetingTitle();
 	int len = text.Length();
 	Show(wxT('\n') + wxString(wxT('-'), 22 + len) + wxT('\n'));
 	Show(wxT('|') + wxString(wxT(' '), 10) + text + wxString(wxT(' '), 10) + wxT('|') + wxT('\n'));
-	Show(wxString(wxT('-'), 22 + len) + wxT('\n') + wxT('\n'));
+	Show(wxString(wxT('-'), 22 + len) + wxT('\n'));
+	// Do not merge the line below, or translators could translate "Help"
+	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
 }
 
 #if wxUSE_GUI

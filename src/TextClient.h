@@ -31,6 +31,7 @@
 // wxUSE_GUI will only be defined after this include
 // 
 #include "ExternalConnector.h"
+#include <wx/intl.h>
 //-------------------------------------------------------------------
 
 wxString ECv2_Response2String(CECPacket *response);
@@ -65,7 +66,7 @@ private:
 class CamulecmdApp : public CaMuleExternalConnector
 {
 public:
-	void ShowGreet();
+	const wxString GetGreetingTitle() { return _("aMule text client"); }
 	int ProcessCommand(int ID);
 	void Process_Answer_v2(CECPacket *reply);
 	void OnInitCommandSet();

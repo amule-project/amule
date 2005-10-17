@@ -27,10 +27,6 @@
 #ifndef WEBINTERFACE_H
 #define WEBINTERFACE_H
 
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
-#endif
-
 //-------------------------------------------------------------------
 //
 // wxUSE_GUI will only be defined after this include
@@ -70,7 +66,7 @@ private:
 class CamulewebApp : public CaMuleExternalConnector
 {
 public:
-	void ShowGreet();
+	const wxString GetGreetingTitle();
 	void Pre_Shell();
 	void LoadConfigFile();
 	void SaveConfigFile();

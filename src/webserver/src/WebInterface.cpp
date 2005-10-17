@@ -51,7 +51,6 @@
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "WebServer.h"
-#include "Format.h"
 
 //-------------------------------------------------------------------
 
@@ -487,10 +486,9 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	}
 }
 
-void CamulewebApp::ShowGreet() {
-	PrintBoxedText(_("aMule Web Server"));
-	// Do not merge the line below, or translators could translate "Help"
-	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
+const wxString CamulewebApp::GetGreetingTitle()
+{
+	return _("aMule Web Server");
 }
 
 void CamulewebApp::Pre_Shell() {
