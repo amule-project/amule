@@ -325,7 +325,6 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 		if (!(*url_handler)->GetResponse()) {
 			printf("WARNING: Void response on stream creation\n");
 			// WTF? Why does this happen?
-			// I've seen it crash here, sadly.
 			// This is probably produced by an already existing connection, because
 			// the input stream is created nevertheless. However, data is not the same.
 			delete url_read_stream;
