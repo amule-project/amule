@@ -784,11 +784,6 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_obj_array_create<SearchInfo, SearchFile>("AmuleSearchFile", result);
 }
 
-void amule_load_kad(PHP_VALUE_NODE *result)
-{
-	amule_obj_array_create<KadInfo, KadNode>("AmuleSearchFile", result);
-}
-
 void amule_load_stats()
 {
 	CPhPLibContext::g_curr_context->WebServer()->Reload_Stats();
@@ -1086,30 +1081,6 @@ void amule_search_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	}
 }
 
-void amule_kad_node_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
-{
-	if ( !ptr ) {
-		value_value_free(result);
-		return;
-	}
-	KadNode *obj = (KadNode *)ptr;
-	if ( strcmp(prop_name, "id") == 0 ) {
-		result->type = PHP_VAL_STRING;
-		//result->str_val = strdup((const char *)unicode2UTF8(obj->m_id.toHexString()));
-		result->str_val = strdup("uncomment after fixing makefile");
-	} else if ( strcmp(prop_name, "ip") == 0 ) {
-		result->type = PHP_VAL_INT;
-		result->int_val = obj->m_node_ip;
-	} else if ( strcmp(prop_name, "port") == 0 ) {
-		result->type = PHP_VAL_INT;
-		result->int_val = obj->m_node_port;
-	} else if ( strcmp(prop_name, "type") == 0 ) {
-		result->type = PHP_VAL_INT;
-		result->int_val = obj->m_node_type;
-	} else {
-		php_report_error(PHP_ERROR, "'KadNode' property [%s] is unknown", prop_name);
-	}
-}
 
 #else
 
@@ -1140,11 +1111,6 @@ void amule_shared_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 }
 
 void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
-{
-	amule_fake_prop_get(obj, prop_name, result);
-}
-
-void amule_kad_node_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 {
 	amule_fake_prop_get(obj, prop_name, result);
 }
@@ -1256,7 +1222,6 @@ void php_init_core_lib()
 	php_add_native_class("AmuleServer", amule_server_prop_get);
 	php_add_native_class("AmuleSharedFile", amule_shared_file_prop_get);
 	php_add_native_class("AmuleSearchFile", amule_search_file_prop_get);
-	php_add_native_class("AmuleKadNode", amule_kad_node_prop_get);
 }
 
 //
