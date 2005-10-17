@@ -3791,6 +3791,12 @@ CScriptWebServer::~CScriptWebServer()
 
 void CScriptWebServer::StartServer()
 {
+	if (!webInterface->m_LoadSettingsFromAmule) {
+		if (webInterface->m_configFile) {
+			webInterface->m_PageRefresh = webInterface->m_configFile->Read(wxT("/Webserver/PageRefreshTime"), 120l);
+		}
+	}
+
 	wsThread = new CWSThread(this);
 	if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
 		webInterface->Show(_("Can't create web socket thread\n"));
@@ -3945,6 +3951,10 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	}
 
 	Print(_("Processing request: ") + filename + wxT("\n"));
+	
+	session->m_vars["auto_refresh"] = (const char *)unicode2char(
+		wxString::Format(_("%d"), webInterface->m_PageRefresh));
+	
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if ( req_file.Find(wxT(".html")) != -1 ) {
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
