@@ -1114,7 +1114,7 @@ void CPartFile::LoadSourceSeeds()
 		return;
 	}	
 	
-	if (!file.GetLength()>1) {
+	if (file.GetLength() <= 1) {
 		AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
 			% m_partmetfilename
 			% m_strFileName );
@@ -1141,6 +1141,7 @@ void CPartFile::LoadSourceSeeds()
 				% m_partmetfilename
 				% m_strFileName
 				% e.what() );
+		return;
 	}
 	
 	sources_data.Seek(0);
