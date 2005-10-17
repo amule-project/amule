@@ -38,7 +38,7 @@ class CWebServer;
 class CWebSocket {
 	public:
 		void OnReceived(char* pData, uint32 dwDataSize);
-		void OnRequestReceived(char* pHeader, uint32 dwHeaderLen, char* pData, uint32 dwDataLen);
+		void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
 		void Disconnect();
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
@@ -95,7 +95,7 @@ class CWSThread : public wxThread {
 	private:
 		wxSocketServer *m_WSSocket;
 		CWebServerBase *ws;
-		int wsport;
+		long wsport;
 };
 
 

@@ -286,7 +286,8 @@ long CWebServerBase::GetWSPrefs(void)
 	}
 	// we have selected only the webserver preferences
 	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
-	unsigned int wsport = wsprefs->GetTagByNameSafe(EC_TAG_WEBSERVER_PORT)->GetInt16Data();
+	const CECTag *tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT);
+	long wsport = tag ? tag->GetInt16Data() : -1;
 
 	if (webInterface->m_LoadSettingsFromAmule) {
 		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
