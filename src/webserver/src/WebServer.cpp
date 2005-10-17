@@ -2935,6 +2935,17 @@ bool SearchInfo::CompareItems(const SearchFile &i1, const SearchFile &i2)
 	return Result ^ m_SortReverse;
 }
 
+KadNode::KadNode(CEC_KadNode_Tag *)
+{
+}
+
+KadInfo *KadNode::GetContainerInstance()
+{
+	return KadInfo::m_This;
+}
+
+KadInfo *KadInfo::m_This = 0;
+
 /*!
  * Image classes:
  * 

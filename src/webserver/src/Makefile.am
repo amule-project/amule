@@ -24,7 +24,8 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
 	$(top_srcdir)/src/Format.cpp \
-	$(top_srcdir)/src/MuleDebug.cpp
+	$(top_srcdir)/src/MuleDebug.cpp \
+	$(top_srcdir)/src/kademlia/utils/UInt128.cpp
 
 amuleweb_SOURCES += \
 	php_parser.c \
@@ -58,7 +59,8 @@ amulewebDLG_SOURCES =  \
 	$(top_srcdir)/src/StringFunctions.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
 	$(top_srcdir)/src/Format.cpp \
-	$(top_srcdir)/src/MuleDebug.cpp
+	$(top_srcdir)/src/MuleDebug.cpp \
+	$(top_srcdir)/src/kademlia/utils/UInt128.cpp
 
 amulewebDLG_SOURCES += \
         php_parser.c \

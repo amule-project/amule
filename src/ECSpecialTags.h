@@ -32,6 +32,8 @@
 #include "CMD4Hash.h"	// Needed for CMD4Hash
 #include "NetworkFunctions.h" // Needed for IsLowID
 
+#include "kademlia/utils/UInt128.h" // Need for UInt128
+
 #include <map>
 #include <vector>
 
@@ -352,6 +354,15 @@ class CEC_Search_Tag : public CECTag {
 		uint32 Avail() { return GetTagByNameSafe(EC_TAG_SEARCH_AVAILABILITY)->GetInt32Data(); }
 		wxString SearchExt() { return GetTagByNameSafe(EC_TAG_SEARCH_EXTENSION)->GetStringData(); }
 		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
+};
+
+//class Kademlia::CContact;
+
+class CEC_KadNode_Tag : public CECTag {
+	public:
+		CEC_KadNode_Tag(Kademlia::CUInt128 id, uint32 ip, uint16 port, uint8 type);
+		
+		Kademlia::CUInt128 ID() { return Kademlia::CUInt128(uint32(0)); }
 };
 
 #ifdef EC_REMOTE
