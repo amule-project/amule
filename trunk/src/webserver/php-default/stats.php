@@ -25,7 +25,7 @@ body {
 <table width="800" border="0" cellpadding="0" cellspacing="0">
   <!--DWLayoutTable-->
   <tr>
-    <td width="21" height="18"></td>
+    <td width="21" height="9"></td>
     <td width="22"></td>
     <td width="152"></td>
     <td width="16"></td>
@@ -37,8 +37,8 @@ body {
     <td valign="top"><img src="connect.gif" width="16" height="16"></td>
     <td valign="top"><strong>Connection status : </strong></td>
     <td>&nbsp;</td>
-    <td valign="top" width="530">
-    <?php
+    <td valign="top">
+      <?php
     	$stats = amule_get_stats();
     	if ( $stats["id"] == 0 ) {
     		echo "Not connected";
@@ -47,6 +47,28 @@ body {
     	} else {
     		echo "Connected with ", (($stats["id"] < 16777216) ? "low" : "high"), " ID to ",
     			$stats["serv_name"], "  ", $stats["serv_addr"];
+    	}
+    ?>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="20">&nbsp;</td>
+    <td valign="top"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    <td valign="top"><strong>Kad status : </strong></td>
+    <td>&nbsp;</td>
+    <td valign="top">
+      <?php
+    	$stats = amule_get_stats();
+    	if ( $stats["kad_connected"] == 1 ) {
+    		echo "Connected";
+			if ( $stats["kad_firewalled"] == 1 ) {
+				echo "(Firewalled)";
+			} else {
+				echo "(OK)";
+			}
+    	} else {
+    		echo "Disconnected";
     	}
     ?>
     </td>

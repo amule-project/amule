@@ -340,6 +340,18 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
 		}
 	}
+	// kademlia
+	PHP_VAR_NODE *kad = array_get_by_str_key(result, "kad_connected");
+	value_value_free(&kad->value);
+	kad->value.type = PHP_VAL_BOOL;
+	if ( tag->IsConnectedKademlia() ) {
+		kad->value.int_val = 1;
+		PHP_VAR_NODE *kad_fwl = array_get_by_str_key(result, "kad_firewalled");
+		kad_fwl->value.type = PHP_VAL_BOOL;
+		kad_fwl->value.int_val = tag->IsKadFirewalled();
+	} else {
+		kad->value.int_val = 0;
+	}
 #else
 	cast_value_array(result);
 	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
