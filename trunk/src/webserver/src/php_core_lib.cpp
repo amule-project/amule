@@ -367,17 +367,24 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
 	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
-	if ( !reply || !reply->GetTagCount()) {
+	if ( !reply ) {
 		return ;
 	}
-	CECTag *cats_tag = reply->GetTagByIndex(0);
-	for (int i = 0; i < cats_tag->GetTagCount(); i++) {
-		CECTag *tag = cats_tag->GetTagByIndex(i);
-		CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
-		PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
+	CECTag *cats_tag = reply->GetTagCount() ? reply->GetTagByIndex(0) : 0;
+	if ( cats_tag && cats_tag->GetTagCount() ) {
+		for (int i = 0; i < cats_tag->GetTagCount(); i++) {
+			CECTag *tag = cats_tag->GetTagByIndex(i);
+			CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
+			PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
+			value_value_free(&cat->value);
+			cat->value.type = PHP_VAL_STRING;
+			cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
+		}
+	} else {
+		PHP_VAR_NODE *cat = array_get_by_int_key(result, 0);
 		value_value_free(&cat->value);
 		cat->value.type = PHP_VAL_STRING;
-		cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
+		cat->value.str_val = strdup("all");
 	}
 #else
 	for (int i = 0; i < 5; i++) {
