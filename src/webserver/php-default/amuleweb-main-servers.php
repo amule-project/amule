@@ -70,7 +70,9 @@ body {
 		// perform command before processing content
 		//
 		if ( ($HTTP_GET_VARS["cmd"] != "") and ($HTTP_GET_VARS["ip"] != "") and ($HTTP_GET_VARS["port"] != "")) {
-			amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
+			if ($_SESSION["guest_login"] == 0) {
+				amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
+			}
 		}
 		
 		if ( $sort_order == "" ) {
@@ -89,14 +91,20 @@ body {
 			usort(&$servers, "my_cmp");
 		}
 		foreach ($servers as $srv) {
-			print "<tr>";
-
-			echo "<td>",
-				'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
-				'<img src="connect.gif" width="16" height="16" border="0">','</a>',
-				'<a href="amuleweb-main-servers.php?cmd=remove&ip=', $srv->ip, '&port=', $srv->port, '" target="mainFrame">',
-				'<img src="cancel.gif" width="16" height="16" border="0">','</a>',
-				"</td>";
+			echo "<tr>";
+			
+			if ($_SESSION["guest_login"] != 0) {
+				echo "<td></td>";
+			} else {
+				echo "<td>",
+					'<a href="amuleweb-main-servers.php?cmd=connect&ip=', $srv->ip,
+					'&port=', $srv->port, '" target="mainFrame">',
+					'<img src="connect.gif" width="16" height="16" border="0">','</a>',
+					'<a href="amuleweb-main-servers.php?cmd=remove&ip=', $srv->ip,
+					'&port=', $srv->port, '" target="mainFrame">',
+					'<img src="cancel.gif" width="16" height="16" border="0">','</a>',
+					"</td>";
+			}
 
 			echo "<td>", $srv->name, "</td>";
 			echo "<td>", $srv->desc, "</td>";
@@ -105,7 +113,7 @@ body {
 			echo "<td>", $srv->maxusers, "</td>";
 			echo "<td>", $srv->files, "</td>";
 
-			print "</tr>";
+			echo "</tr>";
 		}
 	  ?>
     </table></td>
