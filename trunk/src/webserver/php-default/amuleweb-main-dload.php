@@ -86,6 +86,14 @@ function formCommandSubmit(command)
 			return;
 		}
 	}
+	if ( command != "filter" ) {
+		<?php
+			if ($_SESSION["guest_login"] != 0) {
+					echo 'alert("You logged in as guest - commands are disabled");';
+					echo "return;";
+			}
+		?>
+	}
 	var frm=document.forms.mainform
 	frm.command.value=command
 	frm.submit()
@@ -137,9 +145,18 @@ function formCommandSubmit(command)
         <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td>
+		<?php
+		 	if ($_SESSION["guest_login"] != 0) {
+				echo "<b>&nbsp;You logged in as guest - commands are disabled</b>";
+			} else {
+				echo "Admin login - commands permited";
+			}
+		 ?>
+		</td>
       </tr>
-    </table></td>
+    </table>
+	</td>
   </tr>
   <tr>
     <td colspan="3"><table width="100%"  border="0" cellpadding="2" cellspacing="2">
@@ -223,7 +240,7 @@ function formCommandSubmit(command)
 		//
 		// perform command before processing content
 
-		if ( $HTTP_GET_VARS["command"] != "") {
+		if ( ($HTTP_GET_VARS["command"] != "") && ($_SESSION["guest_login"] == 0) ) {
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes
 				if ( (strlen($name) == 32) and ($val == "on") ) {
