@@ -437,6 +437,8 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
 		} else {
 			// put default value
 			php_report_error(PHP_WARNING, "Default parameters are not implemented yet");
+			call_params[i] = make_var_node();
+			call_params[i]->ref_count = 1;
 		}
 	}
 	//
