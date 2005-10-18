@@ -52,7 +52,7 @@ function formCommandSubmit(command)
               </select></td>
           </tr>
           <tr>
-            <td colspan="2" bgcolor="#0099CC"><div align="left">
+            <td bgcolor="#0099CC"><div align="left">
               <label>Min size</label>
             &nbsp;
                 <input name="minsize" type="text" id="minsize" size="5">
@@ -79,7 +79,8 @@ function formCommandSubmit(command)
       <option>Global</option>
     </select>
             </div></td>
-            </tr>
+            <td bgcolor="#0099CC"><a href="amuleweb-main-search.php" target="mainFrame">Click here to reaload search results </a></td>
+          </tr>
         </table></td>
         </tr>
       <tr>
