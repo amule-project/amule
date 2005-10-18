@@ -180,7 +180,6 @@ void CContact::updateType()
 			m_type = 0;
 			m_expires = time(NULL) + HR2S(2);
 	}
-	#warning TODO: EC
 	#ifndef AMULE_DAEMON
 		theApp.amuledlg->kademliawnd->RefreshNode(this);
 	#endif
