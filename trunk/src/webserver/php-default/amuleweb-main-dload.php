@@ -80,6 +80,12 @@ function MM_nbGroup(event, grpName) { //v6.0
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
 {
+	if ( command == "cancel" ) {
+		var res = confirm("Delete selected files ?")
+		if ( res == false ) {
+			return;
+		}
+	}
 	var frm=document.forms.mainform
 	frm.command.value=command
 	frm.submit()
