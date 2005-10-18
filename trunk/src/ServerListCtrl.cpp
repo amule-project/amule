@@ -176,9 +176,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		item.SetId( itemnr );
 		GetItem( item );
 		
-		int sortby = GetSortColumn();
-		if ( !GetSortAsc() )
-			sortby += SORT_OFFSET_DEC;
+		int sortby = GetSortColumn() & GetSortOrder();
 	
 		// Decides if we should reposition the item (through delete and insert)
 		bool sorted = true;
@@ -563,18 +561,14 @@ void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 }
 
 
-int CServerListCtrl::SortProc( long item1, long item2, long sortData )
+int CServerListCtrl::SortProc(long item1, long item2, long sortData)
 {
 	CServer* server1 = (CServer*)item1;
 	CServer* server2 = (CServer*)item2;
 
-	int mode = 1;
-	if ( sortData >= 1000 ) {
-		mode = -1;
-		sortData -= 1000;
-	}
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	
-	switch ( sortData ) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by server-name
 		case COLUMN_SERVER_NAME:
 			return mode * server1->GetListName().CmpNoCase(server2->GetListName());

@@ -38,27 +38,28 @@ END_EVENT_TABLE()
 CFileDetailListCtrl::CFileDetailListCtrl(wxWindow * &parent, int id, const wxPoint & pos, wxSize siz, int flags):CMuleListCtrl(parent, id, pos, siz, flags)
 {
 	// Set sorter function
-	SetSortFunc( CompareListNameItems );
+	SetSortFunc(SortProc);
 	
 	// Initial sorting: Sources descending
 	InsertColumn(0, _("File Name"), LVCFMT_LEFT, 370);
 	InsertColumn(1, _("Sources"), LVCFMT_LEFT, 70);
 	
-	SetSortColumn( 1 );
+	SetSorting(1, CMuleListCtrl::SORT_DES);
 
 	SortList();
 }
 
-int CFileDetailListCtrl::CompareListNameItems(long lParam1, long lParam2, long lParamSort)
+int CFileDetailListCtrl::SortProc(long param1, long param2, long sortData)
 { 
 	// Comparison for different sortings
-	SourcenameItem *item1 = (SourcenameItem *) lParam1; 
-	SourcenameItem *item2 = (SourcenameItem *) lParam2; 
-	switch (lParamSort){
-		case 1: return (item1->count - item2->count); break;       // Sources descending
-		case 1001: return (item2->count - item1->count); break;      // Sources ascending
-		case 0: return item1->name.CmpNoCase(item2->name); break;  // Name descending
-		case 1000: return item2->name.CmpNoCase(item1->name); break; // Name ascending
+	SourcenameItem *item1 = (SourcenameItem*)param1;
+	SourcenameItem *item2 = (SourcenameItem*)param2;
+
+	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+	
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
+		case 1: return mod * (item1->count - item2->count);			// Sources descending
+		case 0: return mod * item1->name.CmpNoCase(item2->name);	// Name descending
 		default: return 0;
 	}
 } 

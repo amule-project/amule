@@ -119,6 +119,13 @@ private:
 	 * Overloaded function needed to do custom drawing of the items.
 	 */
 	virtual void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
+
+	
+	/**
+	 * @see CMuleListCtrl::GetTTSText
+	 */
+	virtual wxString GetTTSText(unsigned item) const;
+	
 	
 	/**
 	 * Sorter-function.
@@ -132,7 +139,7 @@ private:
 	 *
 	 * @see CMuleListCtrl::AltSortAllowed
 	 */
-	virtual bool AltSortAllowed( int column );
+	virtual bool AltSortAllowed(unsigned column) const;
 
 
 	/**

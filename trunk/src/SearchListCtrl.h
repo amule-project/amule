@@ -168,12 +168,12 @@ protected:
 	 * @see CMuleListCtrl::SetSortFunc
 	 * @see wxListCtrl::SortItems
 	 */
-	static int wxCALLBACK SortProc( long item1, long item2, long sortData );
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 
 	/**
 	 * Override default AltSortAllowed method . See CMuleListCtrl.cpp.
 	 */
-	virtual bool AltSortAllowed( int column );
+	virtual bool AltSortAllowed(unsigned column) const;
 
 
 	/**

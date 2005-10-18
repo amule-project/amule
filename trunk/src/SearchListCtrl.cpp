@@ -301,36 +301,16 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 }
 
 
-int CSearchListCtrl::SortProc( long item1, long item2, long sortData )
+int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 {
 	CSearchFile* file1 = (CSearchFile*)item1;
 	CSearchFile* file2 = (CSearchFile*)item2;
 
 	// Modifies the result, 1 for ascending, -1 for decending
-	int modifier = 1;
-	bool alternate = false;
+	int modifier = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+	bool alternate = (sortData & CMuleListCtrl::SORT_ALT);
 
-	wxASSERT( SORT_OFFSET_ASC < SORT_OFFSET_DEC );
-	wxASSERT( SORT_OFFSET_DEC < SORT_OFFSET_ALT_ASC );
-	wxASSERT( SORT_OFFSET_ALT_ASC < SORT_OFFSET_ALT_DEC );
-
-	if ( sortData >= SORT_OFFSET_ALT_DEC ) {
-		modifier = -1;
-		alternate = true;
-		sortData -= SORT_OFFSET_ALT_DEC;
-	}
-
-	if ( sortData >= SORT_OFFSET_ALT_ASC ) {
-		alternate = true;
-		sortData -= SORT_OFFSET_ALT_ASC;
-	}
-
-	if ( sortData >= SORT_OFFSET_DEC ) {
-		modifier = -1;
-		sortData -= SORT_OFFSET_DEC;
-	}
-
-	switch ( sortData ) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by filename
 		case ID_SEARCH_COL_NAME:
 			return modifier * file1->GetFileName().CmpNoCase( file2->GetFileName() );
@@ -388,13 +368,10 @@ void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 	}
 
 	// Sync sorting
-	if ( src->GetSortColumn() != dst->GetSortColumn() ||
-	     src->GetSortAsc() != dst->GetSortAsc() )
-	{
-		dst->SetSortColumn( src->GetSortColumn() );
-		dst->SetSortAsc( src->GetSortAsc() );
-		dst->SetSortAlt( src->GetSortAlt() );
-
+	unsigned column = src->GetSortColumn();
+	unsigned order  = src->GetSortOrder();
+	if (column != dst->GetSortColumn() || order != dst->GetSortOrder()) {
+		dst->SetSorting(column, order);
 		dst->SortList();
 	}
 }
@@ -537,7 +514,7 @@ void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
 	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
 }
 
-bool CSearchListCtrl::AltSortAllowed( int column )
+bool CSearchListCtrl::AltSortAllowed(unsigned column) const
 {
 	switch ( column ) {
 		case ID_SEARCH_COL_SOURCES:

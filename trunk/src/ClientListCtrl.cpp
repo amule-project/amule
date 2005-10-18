@@ -80,7 +80,7 @@ struct ClientListView
 
 	//! Pointer to the drawing function 
 	void		(*m_draw)(CUpDownClient*, int, wxDC*, const wxRect&);
-
+	
 	//! Pointer to the sorting function.
 	wxListCtrlCompare	m_sort;
 };
@@ -90,16 +90,36 @@ struct ClientListView
 ClientListView g_listViews[] = 
 {
 	//! None: This view does nothing at all.
-	{ wxEmptyString,	NULL,							NULL,						NULL					},
+	{
+		wxEmptyString,
+		NULL,
+		NULL,
+		NULL,
+	},
 
 	//! Uploading: The clients currently being uploaded to.
-	{ wxT("Uploads"),	CUploadingView::Initialize,		CUploadingView::DrawCell,	CUploadingView::SortProc},
+	{
+		wxT("Uploads"),
+		CUploadingView::Initialize,
+		CUploadingView::DrawCell,
+		CUploadingView::SortProc,
+	},
 
 	//! Queued: The clients currently queued for uploading.
-	{ wxT("Queue"),		CQueuedView::Initialize,		CQueuedView::DrawCell,		CQueuedView::SortProc	},
+	{
+		wxT("Queue"),
+		CQueuedView::Initialize,
+		CQueuedView::DrawCell,
+		CQueuedView::SortProc,
+	},
 
 	//! Clients The complete list of all known clients.
-	{ wxT("Clients"),	CClientsView::Initialize,		CClientsView::DrawCell,		CClientsView::SortProc	}
+	{
+		wxT("Clients"),
+		CClientsView::Initialize,
+		CClientsView::DrawCell,
+		CClientsView::SortProc,
+	}
 };
 
 
@@ -427,6 +447,10 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 }
 
 
+wxString CClientListCtrl::GetTTSText(unsigned item) const
+{
+	return ((CUpDownClient*)GetItemData(item))->GetUserName();
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -615,20 +639,15 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 }
 
 
-int CUploadingView::SortProc( long item1, long item2, long sortData )
+int CUploadingView::SortProc(long item1, long item2, long sortData)
 {
 	CUpDownClient* client1 = (CUpDownClient*)item1;
 	CUpDownClient* client2 = (CUpDownClient*)item2;
 
 	// Sorting ascending or decending
-	int mode = 1;
-	if ( sortData >= 1000 ) {
-		mode = -1;
-		sortData -= 1000;
-	}
-
-
-	switch ( sortData) {
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+	
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by username
 		case 0:	return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
 
@@ -716,8 +735,6 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 	dc->SetPen( old_pen );
 	dc->SetBrush( old_brush );
 }
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -826,13 +843,9 @@ int CQueuedView::SortProc( long item1, long item2, long sortData )
 	CUpDownClient* client2 = (CUpDownClient*)item2;
 
 	// Ascending or decending?
-	int mode = 1;
-	if ( sortData >= 1000 ) {
-		mode = -1;
-		sortData -= 1000;
-	}
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 
-	switch ( sortData ) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by username
 		case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
 		
@@ -898,7 +911,6 @@ int CQueuedView::SortProc( long item1, long item2, long sortData )
 		default: return 0;
 	}
 }
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -989,13 +1001,9 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 	CUpDownClient* client2 = (CUpDownClient*)item2;
 
 	// Ascending or decending?
-	int mode = 1;
-	if ( sortData >= 1000 ) {
-		mode = -1;
-		sortData -= 1000;
-	}
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 
-	switch ( sortData ) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by Username
 		case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
 		
@@ -1064,3 +1072,5 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 	}
 
 }
+
+
