@@ -398,7 +398,7 @@ long CMuleListCtrl::CheckSelection(wxMouseEvent &event)
 
 wxString CMuleListCtrl::GetTTSText(unsigned item) const
 {
-	MULE_VALIDATE_PARAMS(item < GetItemCount(), wxT("Invalid row."));
+	MULE_VALIDATE_PARAMS(item < (unsigned)GetItemCount(), wxT("Invalid row."));
 	MULE_VALIDATE_STATE((GetWindowStyle() & wxLC_OWNERDRAW) == 0,
 		wxT("GetTTSText must be overwritten for owner-drawn lists."));
 
@@ -467,6 +467,8 @@ void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 	if (m_tts_item != evt.GetIndex()) {
 		ResetTTS();
 	}
+
+	evt.Skip();
 }
 
 
