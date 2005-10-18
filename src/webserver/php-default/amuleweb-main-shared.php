@@ -70,6 +70,12 @@ function MM_nbGroup(event, grpName) { //v6.0
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
 {
+	<?php
+		if ($_SESSION["guest_login"] != 0) {
+				echo 'alert("You logged in as guest - commands are disabled");';
+				echo "return;";
+		}
+	?>
 	var frm=document.forms.mainform
 	frm.command.value=command
 	frm.submit()
@@ -103,7 +109,13 @@ function formCommandSubmit(command)
         <td><a href="javascript:formCommandSubmit('setprio');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Set Priority" name="resume" width="50" height="20" border="0" onload=""></a></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td>
+		<?php
+		 	if ($_SESSION["guest_login"] != 0) {
+				echo "<b>&nbsp;You logged in as guest - commands are disabled</b>";
+			}
+		 ?>
+		</td>
       </tr>
     </table></td>
   </tr>
@@ -177,7 +189,7 @@ function formCommandSubmit(command)
 		// perform command before processing content
 		//
 		//var_dump($HTTP_GET_VARS);
-		if ( $HTTP_GET_VARS["command"] != "") {
+		if (($HTTP_GET_VARS["command"] != "") && ($_SESSION["guest_login"] == 0)) {
 			//amule_do_download_cmd($HTTP_GET_VARS["command"]);
 			foreach ( $HTTP_GET_VARS as $name => $val) {
 				// this is file checkboxes

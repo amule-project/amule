@@ -19,6 +19,12 @@ body {
 <script language="JavaScript" type="text/JavaScript">
 function formCommandSubmit(command)
 {
+	<?php
+		if ($_SESSION["guest_login"] != 0) {
+				echo 'alert("You logged in as guest - commands are disabled");';
+				echo "return;";
+		}
+	?>
 	var frm=document.forms.mainform
 	frm.command.value=command
 	frm.submit()
@@ -149,32 +155,32 @@ function formCommandSubmit(command)
                 	}
             		return $result;
 		}
-		
-		if ( $HTTP_GET_VARS["command"] == "search") {
-			$is_global = $HTTP_GET_VARS["searchtype"] == "Global" ? 1 : 0;
-
-			$min_size = $HTTP_GET_VARS["minsize"] == "" ? 0 : $HTTP_GET_VARS["minsize"];
-			$max_size = $HTTP_GET_VARS["maxsize"] == "" ? 0 : $HTTP_GET_VARS["maxsize"];
-
-			$min_size *= str2mult($HTTP_GET_VARS["minsizeu"]);
-			$max_size *= str2mult($HTTP_GET_VARS["maxsizeu"]);
-			
-			amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
-				//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
-				"", "Any",
-				$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
-		} elseif ( $HTTP_GET_VARS["command"] == "download") {
-			foreach ( $HTTP_GET_VARS as $name => $val) {
-				// this is file checkboxes
-				if ( (strlen($name) == 32) and ($val == "on") ) {
-					$cat = $HTTP_GET_VARS["targetcat"];
-					$cat_idx = cat2idx($cat);
-					amule_do_search_download_cmd($name, $cat_idx);
+		if ($_SESSION["guest_login"] == 0) {
+			if ( $HTTP_GET_VARS["command"] == "search") {
+				$is_global = $HTTP_GET_VARS["searchtype"] == "Global" ? 1 : 0;
+	
+				$min_size = $HTTP_GET_VARS["minsize"] == "" ? 0 : $HTTP_GET_VARS["minsize"];
+				$max_size = $HTTP_GET_VARS["maxsize"] == "" ? 0 : $HTTP_GET_VARS["maxsize"];
+	
+				$min_size *= str2mult($HTTP_GET_VARS["minsizeu"]);
+				$max_size *= str2mult($HTTP_GET_VARS["maxsizeu"]);
+				
+				amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
+					//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
+					"", "Any",
+					$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
+			} elseif ( $HTTP_GET_VARS["command"] == "download") {
+				foreach ( $HTTP_GET_VARS as $name => $val) {
+					// this is file checkboxes
+					if ( (strlen($name) == 32) and ($val == "on") ) {
+						$cat = $HTTP_GET_VARS["targetcat"];
+						$cat_idx = cat2idx($cat);
+						amule_do_search_download_cmd($name, $cat_idx);
+					}
 				}
+			} else {
 			}
-		} else {
-		}
-		
+		}		
 		$search = amule_load_vars("searchresult");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
