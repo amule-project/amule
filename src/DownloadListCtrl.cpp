@@ -172,9 +172,6 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	colour = BLEND( SYSCOLOR( wxSYS_COLOUR_BTNSHADOW), 125 );
 	m_hilightUnfocusBrush = new wxBrush( colour, wxSOLID );
 
-	s_lastOrder  = ( GetSortAsc() ? 1 : -1 );
-	s_lastColumn = GetSortColumn();
-
 	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
 	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
 	InsertColumn( 2,  _("Transferred"),		wxLIST_FORMAT_LEFT,  65 );
@@ -191,6 +188,9 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	m_category = 0;
 	m_filecount = 0;
 	LoadSettings();
+	
+	s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? 1 : -1;
+	s_lastColumn = GetSortColumn();
 }
 
 
@@ -892,9 +892,9 @@ void CDownloadListCtrl::OnViewClientInfo( wxCommandEvent& WXUNUSED(event) )
 void CDownloadListCtrl::OnColumnLClick(wxListEvent& evt)
 {
 	// Only change the last column if the sorted column has changed
-	if ( GetSortColumn() != evt.GetColumn() ) {
+	if (GetSortColumn() != (unsigned)evt.GetColumn()) {
 		s_lastColumn = GetSortColumn();
-		s_lastOrder  = GetSortAsc() ? 1 : -1;
+		s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? 1 : -1;
 	} else {
 		// Reverse the last-column order to preserve the sorting
 		s_lastOrder *= -1;
@@ -1791,23 +1791,33 @@ void CDownloadListCtrl::DrawSourceItem(
 }
 
 
-int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
+wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 {
-	CtrlItem_Struct* item1 = (CtrlItem_Struct *) lParam1;
-	CtrlItem_Struct* item2 = (CtrlItem_Struct *) lParam2;
+	CtrlItem_Struct* content = (CtrlItem_Struct*)GetItemData(item);
+	
+	if (content->type == FILE_TYPE) {
+		CPartFile* file = (CPartFile*)content->value;
 
-	int sortMod = 1;
-	if (lParamSort >= 1000) {
-		sortMod = -1;
-		lParamSort -= 1000;
+		return file->GetFileName();
 	}
 
+	return wxEmptyString;
+}
+
+
+int CDownloadListCtrl::SortProc(long param1, long param2, long sortData)
+{
+	CtrlItem_Struct* item1 = (CtrlItem_Struct*)param1;
+	CtrlItem_Struct* item2 = (CtrlItem_Struct*)param2;
+
+	int sortMod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+	sortData &= CMuleListCtrl::COLUMN_MASK;
 	int comp = 0;
 
 	if ( item1->type == FILE_TYPE ) {
 		if ( item2->type == FILE_TYPE ) {
 			// Both are files, so we just compare them
-			comp = Compare( (CPartFile*)item1->value, (CPartFile*)item2->value, lParamSort);
+			comp = Compare( (CPartFile*)item1->value, (CPartFile*)item2->value, sortData);
 		} else {
 			// A file and a source, checking if they belong to each other
 			if ( item1->value == item2->owner ) {
@@ -1816,7 +1826,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return -1;
 			} else {
 				// Source belongs to anther file, so we compare the files instead
-				comp = Compare( (CPartFile*)item1->value, item2->owner, lParamSort);
+				comp = Compare( (CPartFile*)item1->value, item2->owner, sortData);
 			}
 		}
 	} else {
@@ -1828,7 +1838,7 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 				return 1;
 			} else {
 				// Source belongs to anther file, so we compare the files instead
-				comp = Compare( item1->owner, (CPartFile*)item2->value, lParamSort);
+				comp = Compare( item1->owner, (CPartFile*)item2->value, sortData);
 			}
 		} else {
 			// Two sources, some different possibilites
@@ -1842,11 +1852,11 @@ int CDownloadListCtrl::SortProc(long lParam1, long lParam2, long lParamSort)
 					comp = Compare(
 						(CUpDownClient*)item1->value,
 						(CUpDownClient*)item2->value,
-						lParamSort);
+						sortData);
 				}
 			} else {
 				// Belongs to different files, so we compare the files
-				comp = Compare( item1->owner, item2->owner, lParamSort);
+				comp = Compare( item1->owner, item2->owner, sortData);
 			}
 		}
 	}

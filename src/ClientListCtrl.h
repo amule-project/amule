@@ -86,9 +86,6 @@ public:
 	~CClientListCtrl();
 
 
-
-
-
 	/**
 	 * Returns the current view-type. 
 	 * 
@@ -155,7 +152,15 @@ public:
 
 	
 private:
-	virtual void OnDrawItem( int item, wxDC* dc, const wxRect& rc, const wxRect& rectHL, bool hl );
+	/**
+	 * Custom cell-drawing function.
+	 */
+	virtual void OnDrawItem(int item, wxDC* dc, const wxRect& rc, const wxRect& rectHL, bool hl);
+	
+	/**
+	 * @see CMuleListCtrl::GetTTSText
+	 */
+	virtual wxString GetTTSText(unsigned item) const;
 	
 	
 	/**
@@ -250,7 +255,7 @@ struct CUploadingView
 	 *
 	 * @see wxListCtrl::SortItems
 	 */
-	static int wxCALLBACK SortProc( long item1, long item2, long sortData );
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 	
 	/**
 	 * Helperfunction which draws a simple bar-span over the clients requested file.
@@ -279,7 +284,7 @@ struct CQueuedView
 	/**
 	 * @see CUploadingView::SortProc
 	 */
-	static int wxCALLBACK SortProc( long item1, long item2, long sortData );
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 };
 
 
@@ -303,7 +308,7 @@ struct CClientsView
 	/**
 	 * @see CUploadingView::SortProc
 	 */
-	static int wxCALLBACK SortProc( long item1, long item2, long sortData );
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 };
 
 #endif

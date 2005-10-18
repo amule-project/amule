@@ -344,32 +344,28 @@ void CSharedFilesCtrl::OnGetComment ( wxCommandEvent& WXUNUSED(event) )
 }
 	
 	
-int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
+int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
 {
 	CKnownFile* file1 = (CKnownFile*)item1;
 	CKnownFile* file2 = (CKnownFile*)item2;
 
-	int mod = 1;
-	if ( IsOffsetDec( sortData ) ) {
-		// Sorting is decending
-		mod = -1;
+	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
+	bool altSorting = (sortData & CMuleListCtrl::SORT_ALT);
 
-		// We only handle the ascending cases
-		sortData -= 1000;
-	}
-
-
-	switch ( sortData ) {
-		// Sort by filename. Ascending.
-		case  ID_SHARED_COL_NAME: return mod * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
+		// Sort by filename.
+		case  ID_SHARED_COL_NAME:
+			return mod * file1->GetFileName().CmpNoCase( file2->GetFileName() );
 		
-		// Sort by filesize. Ascending.
-		case  ID_SHARED_COL_SIZE: return mod * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+		// Sort by filesize.
+		case  ID_SHARED_COL_SIZE:
+			return mod * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
 
-		// Sort by filetype. Ascending.
-		case  ID_SHARED_COL_TYPE: return mod * GetFiletypeByName(file1->GetFileName()).CmpNoCase(GetFiletypeByName( file2->GetFileName()) );
+		// Sort by filetype.
+		case  ID_SHARED_COL_TYPE:
+			return mod * GetFiletypeByName(file1->GetFileName()).CmpNoCase(GetFiletypeByName( file2->GetFileName()) );
 
-		// Sort by priority. Ascending.
+		// Sort by priority.
 		case  ID_SHARED_COL_PRIO: {
 			int8 prioA = file1->GetUpPriority();
 			int8 prioB = file2->GetUpPriority();
@@ -378,20 +374,37 @@ int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 			return mod * CmpAny( ( prioB != PR_VERYLOW ? prioB : -1 ), ( prioA != PR_VERYLOW ? prioA : -1 ) );
 		}
 
-		// Sort by fileID. Ascending.
-		case  ID_SHARED_COL_ID: return mod * file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() );
+		// Sort by fileID.
+		case  ID_SHARED_COL_ID:
+			return mod * file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() );
 
-		// Sort by Requests this session. Ascending.
-		case  ID_SHARED_COL_REQ: return mod * CmpAny( file1->statistic.GetRequests(), file2->statistic.GetRequests() );
+		// Sort by Requests this session.
+		case  ID_SHARED_COL_REQ:
+			if (altSorting) {
+				return mod * CmpAny( file1->statistic.GetAllTimeRequests(), file2->statistic.GetAllTimeRequests() );
+			} else {
+				return mod * CmpAny( file1->statistic.GetRequests(), file2->statistic.GetRequests() );
+			}
 
 		// Sort by accepted requests. Ascending.
-		case  ID_SHARED_COL_AREQ: return mod * CmpAny( file1->statistic.GetAccepts(), file2->statistic.GetAccepts() );
+		case  ID_SHARED_COL_AREQ:
+			if (altSorting) {
+				return mod * CmpAny( file1->statistic.GetAllTimeAccepts(), file2->statistic.GetAllTimeAccepts() );
+			} else {
+				return mod * CmpAny( file1->statistic.GetAccepts(), file2->statistic.GetAccepts() );
+			}
 
 		// Sort by transferred. Ascending.
-		case  ID_SHARED_COL_TRA: return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
+		case  ID_SHARED_COL_TRA:
+			if (altSorting) {
+				return mod * CmpAny( file1->statistic.GetAllTimeTransfered(), file2->statistic.GetAllTimeTransfered() );
+			} else {
+				return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
+			}
 
 		// Complete sources asc
-		case ID_SHARED_COL_CMPL: return mod * CmpAny( file1->m_nCompleteSourcesCount, file2->m_nCompleteSourcesCount );
+		case ID_SHARED_COL_CMPL:
+			return mod * CmpAny( file1->m_nCompleteSourcesCount, file2->m_nCompleteSourcesCount );
 
 		// Folders ascending
 		case ID_SHARED_COL_PATH: {
@@ -405,15 +418,6 @@ int CSharedFilesCtrl::SortProc( long item1, long item2, long sortData )
 			return mod * file1->GetFilePath().Cmp( file2->GetFilePath() );
 		}
 		
-		// Sort by requests (All). Ascending.
-		case (2000 + ID_SHARED_COL_REQ): return mod * CmpAny( file1->statistic.GetAllTimeRequests(), file2->statistic.GetAllTimeRequests() );
-
-		// Sort by accepted requests (All). Ascending.
-		case (2000 + ID_SHARED_COL_AREQ): return mod * CmpAny( file1->statistic.GetAllTimeAccepts(), file2->statistic.GetAllTimeAccepts() );
-
-		// Sort by transferred (All). Ascending.
-		case (2000 + ID_SHARED_COL_TRA): return mod * CmpAny( file1->statistic.GetAllTimeTransfered(), file2->statistic.GetAllTimeTransfered() );
-	
 		default:
 			return 0;
 	}
@@ -530,7 +534,13 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 }
 
 
-bool CSharedFilesCtrl::AltSortAllowed( int column )
+wxString CSharedFilesCtrl::GetTTSText(unsigned item) const
+{
+	return GetItemText(item);
+}
+
+
+bool CSharedFilesCtrl::AltSortAllowed(unsigned column) const
 {
 	switch ( column ) {
 		case ID_SHARED_COL_REQ:

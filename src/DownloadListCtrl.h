@@ -179,6 +179,12 @@ private:
 
 	
 	/**
+	 * @see CMuleListCtrl::GetTTSText
+	 */
+	virtual wxString GetTTSText(unsigned item) const;	
+	
+	
+	/**
 	 * Overloaded function needed for custom drawing of items.
 	 */
 	virtual void OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted );
@@ -210,7 +216,7 @@ private:
 	static int s_lastColumn;
 
 	
-	static int wxCALLBACK SortProc(long item1, long item2, long lpSort);
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
 	

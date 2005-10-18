@@ -148,10 +148,7 @@ void CNodeListCtrl::RefreshNode( const CContact* node )
 		item.SetId( itemnr );
 		GetItem( item );
 		
-		int sortby = GetSortColumn();
-		if ( !GetSortAsc() ) {
-			sortby += SORT_OFFSET_DEC;
-		}
+		int sortby = GetSortColumn() | GetSortOrder();
 		
 		// Decides if we should reposition the item (through delete and insert)
 		bool sorted = true;
@@ -320,13 +317,9 @@ int CNodeListCtrl::SortProc( long item1, long item2, long sortData )
 	CContact* node1 = (CContact*)item1;
 	CContact* node2 = (CContact*)item2;
 
-	int mode = 1;
-	if ( sortData >= 1000 ) {
-		mode = -1;
-		sortData -= 1000;
-	}
+	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	
-	switch ( sortData ) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by node-id
 		case COLUMN_NODE_ID:
 			return mode * node1->getClientIDString().CmpNoCase(node2->getClientIDString());

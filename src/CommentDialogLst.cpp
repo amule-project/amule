@@ -143,16 +143,9 @@ int CCommentDialogLst::SortProc(long item1, long item2, long sortData)
 	SFileRating* file1 = (SFileRating*)item1;
 	SFileRating* file2 = (SFileRating*)item2;
 	
-	int mod = 1;
-	if (((sortData >= SORT_OFFSET_DEC) && (sortData < SORT_OFFSET_ALT_ASC)) || (sortData >= SORT_OFFSET_ALT_DEC)) {
-		// Sorting is decending
-		mod = -1;
-
-		// We only handle the ascending cases
-		sortData -= 1000;
-	}
+	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	
-	switch (sortData) {
+	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		case 0:		return mod * file1->UserName.Cmp(file2->UserName);
 		case 1:		return mod * file1->FileName.Cmp(file2->FileName);
 		case 2:		return mod * (file1->Rating - file2->Rating);

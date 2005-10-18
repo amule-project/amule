@@ -32,14 +32,7 @@
 #include <vector>
 
 
-//! This value will be added to the user-data of the sorter-funtion when sorting ascending.
-const int SORT_OFFSET_ASC = 0;
-//! This value will be added to the user-data of the sorter-funtion when sorting decending.
-const int SORT_OFFSET_DEC = 1000;
-//! This value will be added to the user-data of the sorter-funtion when sorting alt-ascending.
-const int SORT_OFFSET_ALT_ASC = 2000;
-//! This value will be added to the user-data of the sorter-funtion when sorting alt-decending.
-const int SORT_OFFSET_ALT_DEC = 3000;
+
 
 
 /**
@@ -51,10 +44,34 @@ const int SORT_OFFSET_ALT_DEC = 3000;
  *  - Hiding of columns through auto-generated popup-menu.
  *  - Helper function for inserting items pre-sorted.
  *  - Loading and saving of column properties.
+ *  - Selection of items by typing an initial part of the text (TTS).
  */
 class CMuleListCtrl : public MuleExtern::wxGenericListCtrl
 {
 public:
+	/**
+	 * The various ways in which a column can be sorted.
+	 *
+	 * If SORT_DES is not set, sorting is taken to be 
+	 * ascending. If SORT_ALT is not set, sorting is 
+	 * taken to be normal.
+	 */
+	enum MLOrder
+	{
+		//! If set, sorting is to be in descending order.
+		SORT_DES	= 0x1000,
+		
+		//! If sorting should use alternate method.
+		//! Is specified in with or without DEC.
+		SORT_ALT	= 0x2000
+	};
+
+	//! Mask which covers the column part of the sort-data.
+	static const unsigned COLUMN_MASK = 0xfff;
+
+	//! Mask which covers the sorting part of the sort-data.
+	static const unsigned SORTING_MASK = 0x3000;
+
 	/**
 	 * Constructor.
 	 * 
@@ -136,21 +153,6 @@ public:
 
 	
 	/**
-	 * Helper-function which returns true if the offset is for sorting descending.
-	 *
-	 * @param offset The userdata given to the sorter-functions.
-	 *
-	 * This function examines the user-data given to the sorter-functions and returns
-	 * true if the sorting is descending. It does not care if the sorting is alternate
-	 * or not, and will return true in either case, provided that the sorting given 
-	 * is descending.
-	 *
-	 * Use this function in the Sorter functions to cut the cases in half.
-	 */
-	static bool IsOffsetDec( long offset );
-	
-
-	/**
 	 * Sets the sorter function.
 	 *
 	 * @param func
@@ -160,7 +162,37 @@ public:
 	 */
 	void SetSortFunc(wxListCtrlCompare func);
 
+
+	/**
+	 * Deselects all selected items, but does not change focus.
+	 */
+	void ClearSelection();
+	
 protected:
+
+	/**
+	 * Must be overwritten to enable alternate sorting.
+	 *
+	 * @param The column being sorted.
+	 *
+	 * Subclasses of CMuleListCtrl can allow alternative sorting
+	 * of columns. This is done by overriding this function and
+	 * returning true for the columns where alternative sorting
+	 * is desired. 
+	 */
+	virtual bool AltSortAllowed(unsigned column) const;
+
+	/**
+	 * Returns the string used when selecting rows via Type-To-Select.
+	 *
+	 * @param item The index of the item being examined.
+	 *
+	 * By default, this function simply returns the text in the first
+	 * column for the given item. However, when owner-drawing is
+	 * enabled, this function _must_ be overriden.
+	 */
+	virtual wxString GetTTSText(unsigned item) const;
+	
 
 	/**
 	 * Sets the internally used table-name.
@@ -171,94 +203,37 @@ protected:
 	 * make use of the LoadSettings/SaveSettings functions. CMuleListCtrl
 	 * uses the name specified in this command to create unique keynames.
 	 */
-	void SetTableName( const wxString& name );
+	void SetTableName(const wxString& name);
 
 	/**
-	 * Returns the table name.
-	 *
-	 * @return Tablename or an empty string if none was set.
+	 * Returns the column which is currently used to sort the list.
 	 */
-	const wxString& GetTableName();
-
+	unsigned GetSortColumn() const;
 
 	/**
-	 * Returns the current sorter-function.
-	 *
-	 * @return The current sorter function or NULL if none has been set.
+	 * Returns the current sorting order, a combination of the DES and ALT flags.
 	 */
-	wxListCtrlCompare GetSortFunc();
-
-	/**
-	 * Returns the current sort order.
-	 *
-	 * @return True if the sort is ascending, false if it is decending.
-	 */
-	bool GetSortAsc();
-	
-	/**
-	 * Sets the sort order.
-	 *
-	 * @param value Set to true if the search is to be ascending, false if decending.
-	 */
-	void SetSortAsc( bool value );
-
-	
-	/**
-	 * Function that controls which columns have alternate sorting.
-	 *
-	 * @param column The column to be examined.
-	 * @return True if the specified column can be alt-sorted, false otherwise.
-	 *
-	 * By default this function will always return false, so sub-clases that wish
-	 * to make use of alternate sorting should overload this function and return 
-	 * true for columns where it is feasible to alternate-sort.
-	 */
-	virtual bool AltSortAllowed( int column );
-
-
-	/**
-	 * This function specifies if alternate sorting is being used.
-	 *
-	 * @return True if the current column is being sorted using an alternate method, false otherwise.
-	 */
-	bool GetSortAlt();
-	
-	/**
-	 * Enables or disables alternate sorting.
-	 *
-	 * @param value Specifies if alternate sorting should be used or not.
-	 *
-	 * Please note that setting this value will have no effect if the current
-	 * column doesn't support alt-sorting. Also note that it is reset when the
-	 * user clicks on another column.
-	 */
-	void SetSortAlt( bool value );
-
-
-	/**
-	 * Gets the sort column.
-	 *
-	 * @return The column which is currently used to sort the list.
-	 */
-	int  GetSortColumn();
+	unsigned GetSortOrder() const;
 
 	/**
 	 * Set the sort column
 	 *
 	 * @param column The column with which the list should be sorted.
-	 */
-	void SetSortColumn( int column );
-
-
-	/**
-	 * Sets the image of a specific column.
+	 * @param order The order in which to sort the column.
 	 *
-	 * @param col The column to change.
-	 * @param image The image-index to use.
+	 * Note that attempting to sort a column in an unsupported order
+	 * is an illegal operation.
 	 */
-	void SetColumnImage(int col, int image);
+	void SetSorting(unsigned column, unsigned order);
 
 	
+	/*
+	 * Check and fix selection state
+	 * @return Item selected (-1 if none)
+	 */ 
+	long CheckSelection(wxMouseEvent& event);
+	
+
 	/**
 	 * Event handler for right-clicks on the column headers.
 	 */
@@ -275,27 +250,50 @@ protected:
 	 * Event handler for the mouse wheel.
 	 */
 	void OnMouseWheel(wxMouseEvent &event);
+	/**
+	 * Event handler for key-presses, needed by TTS.
+	 */
+	void OnChar(wxKeyEvent& evt);
+	/**
+	 * Event handler for item selection, needed by TTS.
+	 */
+	void OnItemSelected(wxListEvent& evt);
 
-	/*
-	 * Check and fix selection state
-	 * @return Item selected (-1 if none)
-	 */ 
-	long CheckSelection(wxMouseEvent& event);
-
+	
 private:
+	/**
+	 * Resets the current TTS session.
+	 */
+	void ResetTTS();
+	
+	/**
+	 * Sets the image of a specific column.
+	 *
+	 * @param col The column to change.
+	 * @param order The sorting order to represent. Zero unsets the image.
+	 */
+	void SetColumnImage(unsigned col, int image);
 
+	
 	//! The name of the table. Used to load/save settings.
 	wxString			m_name;
 	//! The sort order. Ascending is the default.
-	bool				m_sort_asc;
-	//! Specifies if the sort should be sorted in the alternative fashion.
-	bool				m_sort_alt;
+	unsigned			m_sort_order;
 	//! The column to sort by.
-	int					m_sort_column;
+	unsigned			m_sort_column;
 	//! The sorter function needed by wxListCtrl.
 	wxListCtrlCompare	m_sort_func;
+
+	//! Contains the current search string.
+	wxString			m_tts_text;
+	//! Timestamp for the last TTS event.
+	unsigned			m_tts_time;
+	//! The index of the last item selected via TTS.
+	int					m_tts_item;
+
 	
 	DECLARE_EVENT_TABLE()
 };
+
 
 #endif // MULELISTCTRL_H
