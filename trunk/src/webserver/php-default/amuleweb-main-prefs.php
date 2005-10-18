@@ -29,7 +29,7 @@ var initvals = new Object;
 <?php
 	// apply new options before proceeding
 	//var_dump($HTTP_GET_VARS);
-	if ( $HTTP_GET_VARS["Submit"] == "Apply") {
+	if ( ($HTTP_GET_VARS["Submit"] == "Apply") && ($_SESSION["guest_login"] == 0) ) {
 		$file_opts = array("check_free_space", "extract_metadata", 
 			"ich_en","aich_trust", "preview_prio","save_sources", "resume_same_cat",
 			"min_free_space", "new_files_paused", "alloc_full", "alloc_full_chunks",
@@ -290,8 +290,16 @@ function init_data()
   </tr>
   <tr valign="top">
     <td height="28">&nbsp;</td>
-    <td align="center"><input type="submit" name="Submit" value="Apply">
-      <input name="command" type="hidden" id="command"></td>
+    <td align="center">
+		<?php
+			if ($_SESSION["guest_login"] == 0) {
+				echo '<input type="submit" name="Submit" value="Apply">';
+			} else {
+				echo "<b>&nbsp;You can not change options - logged in as guest</b>";
+			}
+		?>
+    	<input name="command" type="hidden" id="command">
+	</td>
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">

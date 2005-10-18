@@ -149,8 +149,6 @@ function formCommandSubmit(command)
 		<?php
 		 	if ($_SESSION["guest_login"] != 0) {
 				echo "<b>&nbsp;You logged in as guest - commands are disabled</b>";
-			} else {
-				echo "Admin login - commands permited";
 			}
 		 ?>
 		</td>
