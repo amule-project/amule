@@ -486,7 +486,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		ec_tag_2_php(cattag, g_file_opt_defs, cat);
 	}
 	
-	if ((cattag = reply->GetTagByName(EC_PREFS_REMOTECONTROLS)) != 0) {
+	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != 0) {
 		PHP_VAR_NODE *cat = array_get_by_str_key(result, "webserver");
 		cast_value_array(&cat->value);
 
@@ -548,14 +548,14 @@ void php_set_amule_options(PHP_VALUE_NODE *)
 	// webserver
 	opt_group_array = array_get_by_str_key(&si->var->value, "webserver");
 	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
-		CECEmptyTag webPrefs(EC_TAG_PREFS_FILES);
+		CECEmptyTag webPrefs(EC_TAG_PREFS_REMOTECTRL);
 		php_2_ec_tag(&webPrefs, g_webserver_opt_defs, &opt_group_array->value);
 		req.AddTag(webPrefs);
 		// also apply settings localy
 		PHP_VAR_NODE *pref = array_get_by_str_key(&opt_group_array->value, "use_gzip");
 		cast_value_dnum(&pref->value);
 		CPhPLibContext::g_curr_context->WebServer()->webInterface->m_UseGzip = pref->value.int_val != 0;
-		array_get_by_str_key(&opt_group_array->value, "autorefresh_time");
+		pref = array_get_by_str_key(&opt_group_array->value, "autorefresh_time");
 		cast_value_dnum(&pref->value);
 		CPhPLibContext::g_curr_context->WebServer()->webInterface->m_PageRefresh = pref->value.int_val;
 	}

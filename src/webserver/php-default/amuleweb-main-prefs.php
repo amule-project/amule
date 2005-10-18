@@ -37,7 +37,8 @@ var initvals = new Object;
 		);
 		$conn_opts = array("max_line_up_cap","max_up_limit","slot_alloc", 
 			"tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en");
-
+		$webserver_opts = array("use_gzip", "autorefresh_time");
+		
 		$all_opts;
 		foreach ($conn_opts as $i) {
 			$curr_value = $HTTP_GET_VARS[$i];
@@ -53,11 +54,19 @@ var initvals = new Object;
 			
 			$all_opts["files"][$i] = $curr_value;
 		}
+		foreach ($webserver_opts as $i) {
+			$curr_value = $HTTP_GET_VARS[$i];
+			if ( $curr_value == "on") $curr_value = 1;
+			if ( $curr_value == "") $curr_value = 0;
+			
+			$all_opts["webserver"][$i] = $curr_value;
+		}
 		//var_dump($all_opts);
 		amule_set_options($all_opts);
 	}
 	$opts = amule_get_options();
-	$opt_groups = array("connection", "files");
+	//var_dump($opts);
+	$opt_groups = array("connection", "files", "webserver");
 	//var_dump($opt_groups);
 	foreach ($opt_groups as $group) {
 		$curr_opts = $opts[$group];
@@ -78,7 +87,9 @@ function init_data()
 		"max_up_limit", "max_down_limit", "max_file_src",
 		"slot_alloc", "max_conn_total",
 		"tcp_port", "udp_port",
-		"min_free_space")
+		"min_free_space",
+		"autorefresh_time"
+		)
 	for(i = 0; i < str_param_names.length; i++) {
 		frm[str_param_names[i]].value = initvals[str_param_names[i]];
 	}
@@ -86,7 +97,8 @@ function init_data()
 		"autoconn_en", "reconn_en", "udp_dis", "new_files_paused",
 		"aich_trust", "alloc_full", "alloc_full_chunks",
 		"check_free_space", "extract_metadata", "ich_en",
-		"new_files_auto_dl_prio", "new_files_auto_ul_prio"
+		"new_files_auto_dl_prio", "new_files_auto_ul_prio",
+		"use_gzip"
 		)
 	for(i = 0; i < check_param_names.length; i++) {
 		frm[check_param_names[i]].checked = initvals[check_param_names[i]] == "1" ? true : false;
@@ -105,7 +117,29 @@ function init_data()
     <td width="52">&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="58">&nbsp;</td>
+    <td height="86">&nbsp;</td>
+    <td><table width="100%" bgcolor="#66CC00" >
+        <tr>
+          <td colspan="4"><strong>Webserver</strong></td>
+        </tr>
+        <tr>
+          <td>Page refresh interval </td>
+          <td><input name="autorefresh_time" type="text" id="autorefresh_time" size="4"></td>
+          <td width="28%">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="25%"><input name="use_gzip" type="checkbox" id="use_gzip">
+            Use gzip compression </td>
+          <td width="11%">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td width="36%">&nbsp;</td>
+        </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td height="62">&nbsp;</td>
     <td><table width="100%" bgcolor="#66CC00" >
         <tr>
           <td colspan="5"><strong>Line capacity (for statistics only) </strong></td>
@@ -121,7 +155,7 @@ function init_data()
     <td>&nbsp;</td>
   </tr>
   <tr valign="top">
-    <td height="58">&nbsp;</td>
+    <td height="62">&nbsp;</td>
     <td><table width="100%" bgcolor="#66CC00" >
             <tr>
               <td colspan="5"><strong>Bandwidth limits</strong></td>
