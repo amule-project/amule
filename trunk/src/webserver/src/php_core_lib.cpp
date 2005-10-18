@@ -416,6 +416,12 @@ PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
 	{0, 0, 0}
 };
 
+PHP_2_EC_OPT_DEF g_webserver_opt_defs[] = {
+	{ "use_gzip", EC_TAG_WEBSERVER_USEGZIP, 0},
+	{ "autorefresh_time", EC_TAG_WEBSERVER_REFRESH, 4},
+	{0, 0, 0}
+};
+
 void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
 {
 	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
@@ -480,6 +486,13 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		ec_tag_2_php(cattag, g_file_opt_defs, cat);
 	}
 	
+	if ((cattag = reply->GetTagByName(EC_PREFS_REMOTECONTROLS)) != 0) {
+		PHP_VAR_NODE *cat = array_get_by_str_key(result, "webserver");
+		cast_value_array(&cat->value);
+
+		ec_tag_2_php(cattag, g_webserver_opt_defs, cat);
+	}
+	
 #endif
 }
 
@@ -531,6 +544,20 @@ void php_set_amule_options(PHP_VALUE_NODE *)
 		CECEmptyTag connPrefs(EC_TAG_PREFS_FILES);
 		php_2_ec_tag(&connPrefs, g_connection_opt_defs, &opt_group_array->value);
 		req.AddTag(connPrefs);
+	}
+	// webserver
+	opt_group_array = array_get_by_str_key(&si->var->value, "webserver");
+	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
+		CECEmptyTag webPrefs(EC_TAG_PREFS_FILES);
+		php_2_ec_tag(&webPrefs, g_webserver_opt_defs, &opt_group_array->value);
+		req.AddTag(webPrefs);
+		// also apply settings localy
+		PHP_VAR_NODE *pref = array_get_by_str_key(&opt_group_array->value, "use_gzip");
+		cast_value_dnum(&pref->value);
+		CPhPLibContext::g_curr_context->WebServer()->webInterface->m_UseGzip = pref->value.int_val != 0;
+		array_get_by_str_key(&opt_group_array->value, "autorefresh_time");
+		cast_value_dnum(&pref->value);
+		CPhPLibContext::g_curr_context->WebServer()->webInterface->m_PageRefresh = pref->value.int_val;
 	}
 	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
 	
