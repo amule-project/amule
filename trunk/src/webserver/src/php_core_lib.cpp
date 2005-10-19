@@ -1008,6 +1008,37 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 	}
 }
 
+void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
+{
+	if ( !ptr ) {
+		value_value_free(result);
+		return;
+	}
+	UploadFile *obj = (UploadFile *)ptr;
+	result->type = PHP_VAL_INT;
+	if ( strcmp(prop_name, "name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		result->str_val = strdup((const char *)unicode2UTF8(sharedfile->sFileName));
+	} else if ( strcmp(prop_name, "short_name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		wxString short_name(sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (wxT(" ..."))) : sharedfile->sFileName);
+		result->str_val = strdup((const char *)unicode2UTF8(short_name));
+	} else if ( strcmp(prop_name, "user_name") == 0 ) {
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2UTF8(obj->sUserName));
+	} else if ( strcmp(prop_name, "xfer_up") == 0 ) {
+		result->int_val = obj->nTransferredUp;
+	} else if ( strcmp(prop_name, "xfer_down") == 0 ) {
+		result->int_val = obj->nTransferredDown;
+	} else if ( strcmp(prop_name, "xfer_speed") == 0 ) {
+		result->int_val = obj->nSpeed;
+	} else {
+		php_report_error(PHP_ERROR, "'UploadFile' property [%s] is unknown", prop_name);
+	}
+}
+
 void amule_server_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *result)
 {
 	if ( !ptr ) {
@@ -1146,6 +1177,11 @@ void amule_download_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *re
 	amule_fake_prop_get(obj, prop_name, result);
 }
 
+void amule_upload_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
+{
+	amule_fake_prop_get(obj, prop_name, result);
+}
+
 void amule_server_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *result)
 {
 	amule_fake_prop_get(obj, prop_name, result);
@@ -1265,6 +1301,7 @@ void php_init_core_lib()
 	}
 	// load object definitions
 	php_add_native_class("AmuleDownloadFile", amule_download_file_prop_get);
+	php_add_native_class("AmuleUploadFile", amule_upload_file_prop_get);
 	php_add_native_class("AmuleServer", amule_server_prop_get);
 	php_add_native_class("AmuleSharedFile", amule_shared_file_prop_get);
 	php_add_native_class("AmuleSearchFile", amule_search_file_prop_get);

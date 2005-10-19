@@ -130,7 +130,7 @@ function formCommandSubmit(command)
           <div align="left"><a href="amuleweb-main-shared.php?sort=req" target="mainFrame">Requests</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
         <th width="120" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=acc" target="mainFrame">Accepted</a> (<a href="amuleweb-main-shared.php">Total</a>)</div></th>
         <th width="86" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=size" target="mainFrame">Size</a></div></th>
-        <th width="83" nowrap scope="col"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Prio</a></th>
+        <th width="83" nowrap scope="col"><div align="left"><a href="amuleweb-main-shared.php?sort=prio" target="mainFrame">Prio</a></div></th>
         <th width="14" nowrap scope="col">&nbsp;</th>
         </tr>
 
@@ -161,6 +161,17 @@ function formCommandSubmit(command)
 			}
 		}
 
+		function PrioString($file)
+		{
+			$prionames = array(0 => "Low", 1 => "Normal", 2 => "High",
+				3 => "Very high", 4 => "Very low", 5=> "Auto", 6 => "Powershare");
+			$result = $prionames[$file->prio];
+			if ( $file->prio_auto == 1) {
+				$result = $result . "(auto)";
+			}
+			return $result;
+		}
+
 		//
 		// declare it here, before any function reffered it in "global"
 		//
@@ -176,6 +187,7 @@ function formCommandSubmit(command)
 				case "xfer": $result = $a->xfer > $b->xfer; break;
 				case "acc": $result = $a->accept > $b->accept; break;
 				case "req": $result = $a->req > $b->req; break;
+				case "prio": $result = PrioString($a) > PrioString($b); break;
 			}
 
 			if ( $sort_reverse ) {
@@ -232,7 +244,7 @@ function formCommandSubmit(command)
 			
 			echo "<td>", CastToXBytes($file->size), "</td>";
 
-			echo "<td>", $file->prio, "</td>";
+			echo "<td>", PrioString($file), "</td>";
 
 			print "</tr>";
 		}

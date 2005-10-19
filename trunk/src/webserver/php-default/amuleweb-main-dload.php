@@ -168,8 +168,8 @@ function formCommandSubmit(command)
         <th width="106" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=size_done" target="mainFrame">Completed</a></div></th>
         <th width="106" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=srccount" target="mainFrame">Sources</a></div></th>
         <th width="52" scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=status" target="mainFrame">Status</a></div></th>
-        <th width="104" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
-        <th width="19" scope="col">&nbsp;</th>
+        <th width="60" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=speed" target="mainFrame">Speed</a></div></th>
+        <th width="40" nowrap scope="col"><div align="left"><a href="amuleweb-main-dload.php?sort=prio" target="mainFrame">Priority</a></div></th>
         </tr>
       <tr>
         <td scope="col">&nbsp;</td>
@@ -209,6 +209,17 @@ function formCommandSubmit(command)
 			}
 		}
 
+		function PrioString($file)
+		{
+			$prionames = array(0 => "Low", 1 => "Normal", 2 => "High",
+				3 => "Very high", 4 => "Very low", 5=> "Auto", 6 => "Powershare");
+			$result = $prionames[$file->prio];
+			if ( $file->prio_auto == 1) {
+				$result = $result . "(auto)";
+			}
+			return $result;
+		}
+		
 		//
 		// declare it here, before any function reffered it in "global"
 		//
@@ -226,6 +237,7 @@ function formCommandSubmit(command)
 				case "speed": $result = $a->speed > $b->speed; break;
 				case "scrcount": $result = $a->src_count > $b->src_count; break;
 				case "status": $result = StatusString($a) > StatusString($b); break;
+				case "prio": $result = PrioString($a) > PrioString($b); break;
 			}
 
 			if ( $sort_reverse ) {
@@ -319,6 +331,9 @@ function formCommandSubmit(command)
 				echo "<td>", StatusString($file), "</td>";
 				
 				echo "<td>", ($file->speed > 0) ? (CastToXBytes($file->speed) . "/s") : "-", "</td>";
+				
+				echo "<td>", PrioString($file), "</td>";
+				
 				print "</tr>";
 			}
 		}
