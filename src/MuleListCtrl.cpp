@@ -76,7 +76,7 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 	: MuleExtern::wxGenericListCtrl(parent, winid, pos, size, style, validator, name)
 {
 	m_sort_func = NULL;
-	m_sort_order = SORT_DES;
+	m_sort_order = 0;
 	m_sort_column = 0;
 	m_tts_time = 0;
 	m_tts_item = -1;
@@ -141,10 +141,7 @@ void CMuleListCtrl::LoadSettings()
 	
 	// Sainity checking, to avoid asserting due to wrong saved settings
 	if (column >= (unsigned)GetColumnCount()) {
-		column = 0;
-		order  = SORT_DES;
-	} else if (order == 0) {
-		order  = SORT_DES;
+		column = order = 0;
 	}
 
 	// Set the column widts
@@ -275,16 +272,16 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	// otherwise sort ascending.
 	if ((unsigned)evt.GetColumn() == m_sort_column) {
 		if (m_sort_order & SORT_DES) {
-			m_sort_order = m_sort_order & SORT_ALT;
-		} else {
 			if (AltSortAllowed(m_sort_column)) {
-				m_sort_order = SORT_DES | (~m_sort_order & SORT_ALT);
+				m_sort_order = (~m_sort_order) & SORT_ALT;
 			} else {
-				m_sort_order = SORT_DES;
+				m_sort_order = 0;
 			}
+		} else {
+			m_sort_order = SORT_DES | (m_sort_order & SORT_ALT);
 		}
 	} else {
-		m_sort_order = SORT_DES;
+		m_sort_order = 0;
 	}
 
 	SetSorting(evt.GetColumn(), m_sort_order);
