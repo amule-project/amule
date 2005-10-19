@@ -1119,7 +1119,7 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	} else if ( strcmp(prop_name, "prio") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->nFilePriority;
-	} else if ( strcmp(prop_name, "auto_prio") == 0 ) {
+	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
 		result->type = PHP_VAL_BOOL;
 		result->int_val = obj->bFileAutoPriority;
 	} else {
