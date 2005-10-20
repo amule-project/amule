@@ -474,6 +474,9 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 
 class UploadsInfo : public ItemsContainer<UploadFile, int> {
 	public:
+		// can be only one instance.
+		static UploadsInfo *m_This;
+
 		UploadsInfo(CamulewebApp *webApp);
 
 		virtual bool ReQuery();

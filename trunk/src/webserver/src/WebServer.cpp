@@ -2848,8 +2848,16 @@ UploadFile::UploadFile(CEC_UpDownClient_Tag *tag)
 	nTransferredDown = tag->XferDown();
 }
 
+UploadsInfo *UploadFile::GetContainerInstance()
+{
+	return UploadsInfo::m_This;
+}
+
+UploadsInfo *UploadsInfo::m_This = 0;
+
 UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFile, int>(webApp)
 {
+	m_This = this;
 }
 
 bool UploadsInfo::ReQuery()
