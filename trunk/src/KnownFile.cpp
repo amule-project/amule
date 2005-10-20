@@ -104,7 +104,8 @@ CAbstractFile::CAbstractFile() :
 	m_iRating(0),
 	m_hasRating(false),
 	m_hasBadRating(false),
-	m_hasComment(false)
+	m_hasComment(false),
+	m_iUserRating(0)
 {
 }
 
