@@ -1078,7 +1078,12 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 	const CMemFile data((byte*)pachPacket, nSize);
 
-	m_iRating = data.ReadUInt8();
+	uint8 rating = data.ReadUInt8();
+	if (rating > 5) {
+		throw CInvalidPacket(wxT("Invalid rating value for file."));
+	}
+	
+	m_iRating = rating;
 	m_reqfile->SetHasRating(true);
 		
 	AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
