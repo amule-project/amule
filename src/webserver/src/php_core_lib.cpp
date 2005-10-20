@@ -830,6 +830,11 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_obj_array_create<SearchInfo, SearchFile>("AmuleSearchFile", result);
 }
 
+void amule_load_uploads(PHP_VALUE_NODE *result)
+{
+	amule_obj_array_create<UploadsInfo, UploadFile>("AmuleUploadFile", result);
+}
+
 void amule_load_stats()
 {
 	CPhPLibContext::g_curr_context->WebServer()->Reload_Stats();
@@ -938,6 +943,7 @@ void php_native_load_amule_vars(PHP_VALUE_NODE *result)
 	if ( strcmp(varname, "downloads") == 0 ) {
 		amule_load_downloads(result);
 	} else if ( strcmp(varname, "uploads") == 0 ) {
+		amule_load_uploads(result);
 	} else if ( strcmp(varname, "shared") == 0 ) {
 		amule_load_shared(result);
 	} else if ( strcmp(varname, "searchresult") == 0 ) {
@@ -1019,10 +1025,19 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		// uploading file we don't share ?! We must be out of sync with core
+		if ( !sharedfile ) {
+			SharedFile::GetContainerInstance()->ReQuery();
+			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		}
 		result->str_val = strdup((const char *)unicode2UTF8(sharedfile->sFileName));
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		if ( !sharedfile ) {
+			SharedFile::GetContainerInstance()->ReQuery();
+			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
+		}
 		wxString short_name(sharedfile->sFileName.Length() > 60 ? (sharedfile->sFileName.Left(60) + (wxT(" ..."))) : sharedfile->sFileName);
 		result->str_val = strdup((const char *)unicode2UTF8(short_name));
 	} else if ( strcmp(prop_name, "user_name") == 0 ) {
