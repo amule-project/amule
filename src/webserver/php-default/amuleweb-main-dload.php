@@ -342,5 +342,56 @@ function formCommandSubmit(command)
   </tr>
 </table>
 </form>
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="67" valign="top">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#0099CC" class="doad-table">
+	  <tr>
+		<th width="19%" scope="col"><div align="left">User name </div></th>
+		<th width="34%" scope="col"><div align="left">File name </div></th>
+		<th width="12%" scope="col"><div align="left">Transferred Up </div></th>
+		<th width="13%" scope="col"><div align="left">Transferred Down </div></th>
+		<th width="11%" scope="col"><div align="left">Speed</div></th>
+		<th width="11%" scope="col"><div align="left"></div></th>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	  </tr>
+		<?php
+			function CastToXBytes($size)
+			{
+				if ( $size < 1024 ) {
+					$result = $size . " bytes";
+				} elseif ( $size < 1048576 ) {
+					$result = ($size / 1024.0) . "KB";
+				} elseif ( $size < 1073741824 ) {
+					$result = ($size / 1048576.0) . "MB";
+				} else {
+					$result = ($size / 1073741824.0) . "GB";
+				}
+				return $result;
+			}
+			$uploads = amule_load_vars("uploads");
+			foreach ($uploads as $file) {
+				echo "<tr>";
+	
+				echo "<td nowrap>", $file->user_name, "</td>";
+	
+				echo "<td nowrap>", $file->short_name, "</td>";
+	
+				echo "<td>", CastToXBytes($file->xfer_up), "</td>";
+				echo "<td>", CastToXBytes($file->xfer_down), "</td>";
+				echo "<td>", ($file->xfer_speed > 0) ? (CastToXBytes($file->xfer_speed) . "/s") : "-", "</td>";
+				echo "</tr>";
+			}
+		?>
+	</table>	</td>
+  </tr>
+</table>
 </body>
 </html>
