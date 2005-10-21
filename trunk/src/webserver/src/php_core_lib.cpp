@@ -916,6 +916,11 @@ void amule_load_search(PHP_VALUE_NODE *result)
 	amule_fake_obj_array_create(35, "AmuleSearchFile", result);
 }
 
+void amule_load_uploads(PHP_VALUE_NODE *result)
+{
+	amule_fake_obj_array_create(17, "AmuleUploadFile", result);
+}
+
 void amule_load_stats()
 {
 }
