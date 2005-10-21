@@ -3,9 +3,6 @@
 // Do not modify this file, all changes will be lost!
 //------------------------------------------------------------------------------
 
-#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
-    #pragma implementation "muuli_wdr.h"
-#endif
 
 // For compilers that support precompilation
 #include "wx/wxprec.h"
