@@ -612,6 +612,7 @@ char *yytext;
 
 void php_set_input_buffer(char *buf, int len)
 {
+	yy_delete_buffer(YY_CURRENT_BUFFER);
 	yy_scan_bytes(buf, len);
 }
 
@@ -627,7 +628,7 @@ int yywrap()
 #define LINE_COMMENT 2
 
 #define YY_STACK_USED 1
-#line 631 "php_lexer.c"
+#line 632 "php_lexer.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -778,10 +779,10 @@ YY_DECL
 	register char *yy_cp = NULL, *yy_bp = NULL;
 	register int yy_act;
 
-#line 60 "php_lexer.l"
+#line 61 "php_lexer.l"
 
 
-#line 785 "php_lexer.c"
+#line 786 "php_lexer.c"
 
 	if ( yy_init )
 		{
@@ -880,320 +881,320 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 62 "php_lexer.l"
+#line 63 "php_lexer.l"
 return START_SCRIPT;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 63 "php_lexer.l"
+#line 64 "php_lexer.l"
 return END_SCRIPT;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 65 "php_lexer.l"
+#line 66 "php_lexer.l"
 return EXIT;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 67 "php_lexer.l"
+#line 68 "php_lexer.l"
 return FUNCTION;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 69 "php_lexer.l"
+#line 70 "php_lexer.l"
 return CONST;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 71 "php_lexer.l"
+#line 72 "php_lexer.l"
 return RETURN;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 73 "php_lexer.l"
+#line 74 "php_lexer.l"
 return IF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 74 "php_lexer.l"
+#line 75 "php_lexer.l"
 return ELSE;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 75 "php_lexer.l"
+#line 76 "php_lexer.l"
 return ELSEIF;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 76 "php_lexer.l"
+#line 77 "php_lexer.l"
 return ENDIF;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 78 "php_lexer.l"
+#line 79 "php_lexer.l"
 return WHILE;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 79 "php_lexer.l"
+#line 80 "php_lexer.l"
 return ENDWHILE;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 80 "php_lexer.l"
+#line 81 "php_lexer.l"
 return DO;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 82 "php_lexer.l"
+#line 83 "php_lexer.l"
 return FOR;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 83 "php_lexer.l"
+#line 84 "php_lexer.l"
 return ENDFOR;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 84 "php_lexer.l"
+#line 85 "php_lexer.l"
 return FOREACH;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 85 "php_lexer.l"
+#line 86 "php_lexer.l"
 return AS;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 86 "php_lexer.l"
+#line 87 "php_lexer.l"
 return ENDFOREACH;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 88 "php_lexer.l"
+#line 89 "php_lexer.l"
 return SWITCH;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 89 "php_lexer.l"
+#line 90 "php_lexer.l"
 return ENDSWITCH;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 90 "php_lexer.l"
+#line 91 "php_lexer.l"
 return CASE;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 91 "php_lexer.l"
+#line 92 "php_lexer.l"
 return DEFAULT;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 92 "php_lexer.l"
+#line 93 "php_lexer.l"
 return BREAK;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 94 "php_lexer.l"
+#line 95 "php_lexer.l"
 return CONTINUE;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 96 "php_lexer.l"
+#line 97 "php_lexer.l"
 return ECHO;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 97 "php_lexer.l"
+#line 98 "php_lexer.l"
 return PRINT;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 99 "php_lexer.l"
+#line 100 "php_lexer.l"
 return NEW;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 101 "php_lexer.l"
+#line 102 "php_lexer.l"
 return OBJECT_OPERATOR;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 103 "php_lexer.l"
+#line 104 "php_lexer.l"
 return LIST;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 104 "php_lexer.l"
+#line 105 "php_lexer.l"
 return ARRAY;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 106 "php_lexer.l"
+#line 107 "php_lexer.l"
 return INC;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 107 "php_lexer.l"
+#line 108 "php_lexer.l"
 return DEC;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 108 "php_lexer.l"
+#line 109 "php_lexer.l"
 return HASH_ASSIGN;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 110 "php_lexer.l"
+#line 111 "php_lexer.l"
 return LOG_OR;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 111 "php_lexer.l"
+#line 112 "php_lexer.l"
 return LOG_XOR;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 112 "php_lexer.l"
+#line 113 "php_lexer.l"
 return LOG_AND;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 113 "php_lexer.l"
+#line 114 "php_lexer.l"
 return BOOLEAN_OR;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 114 "php_lexer.l"
+#line 115 "php_lexer.l"
 return BOOLEAN_AND;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 116 "php_lexer.l"
+#line 117 "php_lexer.l"
 return PLUS_EQ;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 117 "php_lexer.l"
+#line 118 "php_lexer.l"
 return MINUS_EQ;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 118 "php_lexer.l"
+#line 119 "php_lexer.l"
 return MUL_EQ;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 119 "php_lexer.l"
+#line 120 "php_lexer.l"
 return DIV_EQ;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 120 "php_lexer.l"
+#line 121 "php_lexer.l"
 return CONCAT_EQ;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 121 "php_lexer.l"
+#line 122 "php_lexer.l"
 return MOD_EQ;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 122 "php_lexer.l"
+#line 123 "php_lexer.l"
 return AND_EQ;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 123 "php_lexer.l"
+#line 124 "php_lexer.l"
 return OR_EQ;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 124 "php_lexer.l"
+#line 125 "php_lexer.l"
 return XOR_EQ;
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 125 "php_lexer.l"
+#line 126 "php_lexer.l"
 return SL_EQ;
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 126 "php_lexer.l"
+#line 127 "php_lexer.l"
 return SR_EQ;
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 128 "php_lexer.l"
+#line 129 "php_lexer.l"
 return IS_IDENTICAL;
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 129 "php_lexer.l"
+#line 130 "php_lexer.l"
 return IS_NOIDENTICAL;
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 130 "php_lexer.l"
+#line 131 "php_lexer.l"
 return IS_EQ;
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 131 "php_lexer.l"
+#line 132 "php_lexer.l"
 return IS_NOEQUAL;
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 132 "php_lexer.l"
+#line 133 "php_lexer.l"
 return IS_SMALLER_OR_EQ;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 133 "php_lexer.l"
+#line 134 "php_lexer.l"
 return IS_GREATER_OR_EQ;
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 135 "php_lexer.l"
+#line 136 "php_lexer.l"
 return GLOBAL;
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 136 "php_lexer.l"
+#line 137 "php_lexer.l"
 return STATIC;
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 138 "php_lexer.l"
+#line 139 "php_lexer.l"
 {
         return INT_CAST;
 }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 142 "php_lexer.l"
+#line 143 "php_lexer.l"
 {
         return DOUBLE_CAST;
 }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 146 "php_lexer.l"
+#line 147 "php_lexer.l"
 {
         return STRING_CAST;
 }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 150 "php_lexer.l"
+#line 151 "php_lexer.l"
 {
         return BOOL_CAST;
 }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 154 "php_lexer.l"
+#line 155 "php_lexer.l"
 {
 		BEGIN(LINE_COMMENT);
 		yymore();
@@ -1201,21 +1202,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 159 "php_lexer.l"
+#line 160 "php_lexer.l"
 {
 		yymore();
 	}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 163 "php_lexer.l"
+#line 164 "php_lexer.l"
 {
 		BEGIN(INITIAL);
 	}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 167 "php_lexer.l"
+#line 168 "php_lexer.l"
 {
 		BEGIN(BLOCK_COMMENT);
 		yymore();
@@ -1223,14 +1224,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 172 "php_lexer.l"
+#line 173 "php_lexer.l"
 {
 		BEGIN(INITIAL);
 	}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 176 "php_lexer.l"
+#line 177 "php_lexer.l"
 {
         yylval.exp_node = get_var_node(yytext+1);
         return VARIABLE;
@@ -1238,7 +1239,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 181 "php_lexer.l"
+#line 182 "php_lexer.l"
 {
         strcpy(yylval.str_val, yytext);
         return IDENT;
@@ -1246,7 +1247,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 186 "php_lexer.l"
+#line 187 "php_lexer.l"
 {
 	int val;
 	sscanf("0x%x", yytext, &val);
@@ -1256,7 +1257,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 193 "php_lexer.l"
+#line 194 "php_lexer.l"
 {
 	yylval.exp_node = make_const_exp_dnum(atoi(yytext));
 	return DNUMBER;
@@ -1264,7 +1265,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 198 "php_lexer.l"
+#line 199 "php_lexer.l"
 {
 	yylval.exp_node = make_const_exp_fnum(atof(yytext));
 	return FNUMBER;
@@ -1272,7 +1273,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 203 "php_lexer.l"
+#line 204 "php_lexer.l"
 {
 		yytext[strlen(yytext)-1] = 0;
 		yylval.exp_node = make_const_exp_str(yytext+1, 1);
@@ -1281,7 +1282,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 209 "php_lexer.l"
+#line 210 "php_lexer.l"
 {
 		yytext[strlen(yytext)-1] = 0;
 		yylval.exp_node = make_const_exp_str(yytext+1, 0);
@@ -1290,22 +1291,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 215 "php_lexer.l"
+#line 216 "php_lexer.l"
 {  }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 217 "php_lexer.l"
+#line 218 "php_lexer.l"
 {
 		return yytext[0];
 }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 220 "php_lexer.l"
+#line 221 "php_lexer.l"
 ECHO;
 	YY_BREAK
-#line 1309 "php_lexer.c"
+#line 1310 "php_lexer.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(BLOCK_COMMENT):
 			case YY_STATE_EOF(LINE_COMMENT):
@@ -2187,4 +2188,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 220 "php_lexer.l"
+#line 221 "php_lexer.l"

@@ -31,6 +31,7 @@
 
 void php_set_input_buffer(char *buf, int len)
 {
+	yy_delete_buffer(YY_CURRENT_BUFFER);
 	yy_scan_bytes(buf, len);
 }
 
