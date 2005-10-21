@@ -1100,7 +1100,6 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 	m_reqfile->UpdateFileRatingCommentAvail();
 
 	if (!m_strComment.IsEmpty() || m_iRating > 0) {
-		m_reqfile->UpdateFileRatingCommentAvail();
 		Notify_DownloadCtrlUpdateItem(m_reqfile);
 	}
 }
