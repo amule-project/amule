@@ -146,26 +146,21 @@ public:
 	virtual int8	GetFileRating() 		const { return m_iRating; }	
 	
 	bool	HasComment() const		{ return m_hasComment; }
-	bool	HasRating() const		{ return m_hasRating; }
-	bool	HasBadRating() const		{ return m_hasBadRating; }
+	bool	HasRating() const		{ return m_iUserRating; }
+	bool	HasBadRating() const		{ return (m_iUserRating == 1); }
 	int8	UserRating() const 		{ return m_iUserRating; }
-	void	SetHasComment(bool in)		{ m_hasComment = in; }
-	void	SetHasRating(bool in)		{ m_hasRating = in; }
 	void	UpdateFileRatingCommentAvail();
-	
+
 protected:
 	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
 	wxString	m_strComment;
 	int8		m_iRating;
+	bool		m_hasComment;
+	int8		m_iUserRating;
 	ArrayOfCTag taglist;
 	CKadEntryPtrList m_kadNotes;
-	
-	bool	m_hasRating;
-	bool	m_hasBadRating;
-	bool	m_hasComment;
-	int8	m_iUserRating;
 };
 
 

@@ -3308,35 +3308,43 @@ void CPartFile::GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled)
 	}
 }
 
+
 void CPartFile::UpdateFileRatingCommentAvail()
 {
-	bool prev=(m_hasComment || m_hasRating);
-	int prevRating=m_iUserRating;
+	bool prevComment = m_hasComment;
+	int prevRating = m_iUserRating;
 
-	m_hasComment=false;
-	int ratingSum=0;
-	int ratingCount=0;
+	m_hasComment = false;
+	m_iUserRating = 0;
+	int ratingCount = 0;
 
-	for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
+	SourceSet::iterator it = m_SrcList.begin();
+	for (; it != m_SrcList.end(); ++it) {
 		CUpDownClient* cur_src = *it;
 		
-		if (cur_src->GetFileComment().Length()>0) {
-			m_hasComment=true;
+		if (!cur_src->GetFileComment().IsEmpty()) {
+			m_hasComment = true;
 		}
 
-		if (cur_src->GetFileRating()>0) {
+		uint8 rating = cur_src->GetFileRating();
+		if (rating) {
+			wxASSERT(rating <= 5);
+			
 			ratingCount++;
-			ratingSum+=cur_src->GetFileRating();
+			m_iUserRating += rating;
 		}
-		}
-	if(ratingCount>0)	{
-		m_hasRating=true;
-		m_iUserRating=ratingSum/ratingCount;		
 	}
-	if ((prev!=(m_hasComment || m_hasRating)) || (prevRating!=m_iUserRating)) {
+	
+	if (ratingCount) {
+		m_iUserRating /= ratingCount;
+		wxASSERT(m_iUserRating > 0 && m_iUserRating <= 5);
+	}
+	
+	if ((prevComment != m_hasComment) || (prevRating != m_iUserRating)) {
 		UpdateDisplayedInfo();
 	}
 }
+
 
 void CPartFile::UpdateDisplayedInfo(bool force)
 {
