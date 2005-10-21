@@ -210,7 +210,7 @@ function formCommandSubmit(command)
 					amule_do_shared_cmd($name, $HTTP_GET_VARS["command"]);
 				}
 			}
-			if ($HTTP_GET_VARS["command"] = "reload") {
+			if ($HTTP_GET_VARS["command"] == "reload") {
 				amule_do_reload_shared_cmd();
 			}
 		}
