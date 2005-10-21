@@ -86,21 +86,21 @@ int main(int argc, char *argv[])
 	/* get amulesig path */
 	path = get_path("amulesig.dat");
 	if (path == NULL) {
-		printf("Unable to get aMule settings path\n");
+		perror("Unable to get aMule settings path\n");
 		exit(1);
 	}
 
 	/* open the file and if not exists exit with an error */
 	if ((amulesig = fopen(path, "r")) == NULL) {
-		printf("Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
+		fprintf(stderr, "Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
 	} else {
 		struct stat s_file;
 		if ( stat(path, &s_file) == 0 ) {
 			time_t t_now = time(0);
 			if ( (t_now - s_file.st_mtime) > 60 ) {
-				printf("aMule online signature last updated more then 60 sec ago\n");
-				printf("Check that your aMule is running\n");
+				perror("aMule online signature last updated more then 60 sec ago\n");
+				perror("Check that your aMule is running\n");
 			}
 		}
 	}
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	 * [ToDo] States 0 & 2 mean offline/connecting not "not running"...
 	 */
 	if (stats[0][0] == '0') {
-		printf("aMule is not running\n");
+		perror("aMule is not running\n");
 		exit(3);
 	}
 
@@ -170,12 +170,12 @@ int main(int argc, char *argv[])
 #ifdef __GD__
 	if (argc == 2 && strcmp(argv[1], "-o") == 0) {
 		if (!readconfig(&config)) {
-			printf("Could not read config file\n");
+			perror("Could not read config file\n");
 			exit(4);
 		}
 
 		if (!createimage(&config, lines)) {
-			printf("Could not create image!\n");
+			perror("Could not create image!\n");
 			exit(5);
 		}
 		exit(0);
@@ -185,17 +185,17 @@ int main(int argc, char *argv[])
 	if (argc == 2 && strcmp(argv[1], "-p") == 0) {
 		
 		if (!readconfig(&config)) {
-			printf("Could not read config file\n");
+			perror("Could not read config file\n");
 			exit(4);
 		}
 
 		if (!create_html(stats,lines,config.template)) {
-			printf("Could not create the HTML Page.\n");
+			perror("Could not create the HTML Page.\n");
 		}
 
 #ifdef __GD__
 		if (!createimage(&config, lines)) {
-			printf("Could not create image!\n");
+			perror("Could not create image!\n");
 			exit(5);
 		}
 #endif

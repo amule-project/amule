@@ -48,13 +48,13 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES])
 	int brect[8];
 
 	if ( (in = fopen(config->font, "r")) == NULL) {
-		printf("font not found\ncheck casrc\n");
+		perror("font not found\ncheck casrc\n");
 		return 0;
 	}
 	fclose(in);
 
 	if ( (in = fopen(config->source, "rb")) == NULL) {
-		printf("source_image not found\ncheck casrc\n");
+		perror("source_image not found\ncheck casrc\n");
 		return 0;
 	}
 
@@ -69,7 +69,7 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES])
 
 	path = get_path("aMule-online-sign.png");
 	if (path == NULL) {
-		printf("could not get PNG path\n");
+		perror("could not get PNG path\n");
 		return 0;
 	}
 	out = fopen(path, "w");

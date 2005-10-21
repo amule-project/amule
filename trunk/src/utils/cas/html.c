@@ -78,7 +78,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	char *mem = malloc(size);
 	if (NULL == mem)
 	{
-		printf("coulnt malloc\n");
+		perror("Could not malloc\n");
 		exit(44);
 	}
 	memset(mem, '\0', size);
@@ -106,7 +106,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	char *path = get_path("aMule-online-sign.html");
 	if (NULL == path)
 	{
-		printf("could not get the HTML path\n");
+		perror("could not get the HTML path\n");
 		free(mem);
 		return 0;
 	}
@@ -114,7 +114,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 	FILE *fHTML = NULL;
 	if ((fHTML = fopen(path, "w")) == NULL)
 	{
-		printf("Unable to create file\n");
+		perror("Unable to create file\n");
 		free(path);
 		free(mem);
 		exit(44);
