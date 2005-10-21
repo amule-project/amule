@@ -875,6 +875,8 @@ class CWebServerBase {
 		virtual void ProcessURL(ThreadData) = 0;
 		void ProcessImgFileReq(ThreadData);
 
+		int GzipCompress(Bytef *dest, uLongf *destLen,
+			const Bytef *source, uLong sourceLen, int level);
 	
 	friend class CWebSocket;
 	friend class CWSThread;		// to access the wsThread member
@@ -998,7 +1000,6 @@ class CWebServer : public CWebServerBase {
 		bool		_RemoveSession(ThreadData Data, long lSession);
 		bool		_GetFileHash(wxString sHash, unsigned char *FileHash);
 		wxString	_GetPlainResString(uint32 nID, bool noquote = false);
-		int		_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level);
 		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
 		Session		GetSessionByID(ThreadData Data,long sessionID);
 		bool		IsSessionAdmin(ThreadData Data,wxString SsessionID);
