@@ -347,14 +347,16 @@ function formCommandSubmit(command)
     <td height="67" valign="top">
 	<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#0099CC" class="doad-table">
 	  <tr>
-		<th width="19%" scope="col"><div align="left">User name </div></th>
-		<th width="34%" scope="col"><div align="left">File name </div></th>
-		<th width="12%" scope="col"><div align="left">Transferred Up </div></th>
-		<th width="13%" scope="col"><div align="left">Transferred Down </div></th>
-		<th width="11%" scope="col"><div align="left">Speed</div></th>
-		<th width="11%" scope="col"><div align="left"></div></th>
+		<th width="30" scope="col"><div align="left"></div></th>
+		<th width="300" scope="col"><div align="left">File name </div></th>
+		<th width="100" scope="col"><div align="left">User name </div></th>
+		<th width="120" scope="col"><div align="left">Transferred Up </div></th>
+		<th width="120" scope="col"><div align="left">Transferred Down </div></th>
+		<th width="120" scope="col"><div align="left">Speed</div></th>
+		<th width="110" scope="col"><div align="left"></div></th>
 	  </tr>
 	  <tr>
+		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
@@ -380,9 +382,11 @@ function formCommandSubmit(command)
 			foreach ($uploads as $file) {
 				echo "<tr>";
 	
-				echo "<td nowrap>", $file->user_name, "</td>";
-	
+				echo "<td nowrap>", "</td>";
+				
 				echo "<td nowrap>", $file->short_name, "</td>";
+
+				echo "<td nowrap>", $file->user_name, "</td>";
 	
 				echo "<td>", CastToXBytes($file->xfer_up), "</td>";
 				echo "<td>", CastToXBytes($file->xfer_down), "</td>";
