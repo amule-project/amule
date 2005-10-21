@@ -32,6 +32,7 @@ dist_webserver_DATA = \
 	toolbutton-logout.jpeg \
 	toolbutton-logout-pressed.jpeg \
 	connect.gif \
+	cancel.gif \
 	arrow-r.png \
 	up.jpeg \
 	down.jpeg \
