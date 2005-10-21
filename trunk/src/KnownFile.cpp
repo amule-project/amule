@@ -102,8 +102,6 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 CAbstractFile::CAbstractFile() :
 	m_nFileSize(0),
 	m_iRating(0),
-	m_hasRating(false),
-	m_hasBadRating(false),
 	m_hasComment(false),
 	m_iUserRating(0)
 {

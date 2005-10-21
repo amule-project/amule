@@ -1080,12 +1080,10 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 	uint8 rating = data.ReadUInt8();
 	if (rating > 5) {
-		AddDebugLogLineM( false, logClient, wxString(wxT("Invalid Rating for file '")) << m_clientFilename << wxT("' received: ") << rating);		
+		AddDebugLogLineM( false, logClient, wxString(wxT("Invalid Rating for file '")) << m_clientFilename << wxT("' received: ") << rating);
 		m_iRating = 0;
-		m_reqfile->SetHasRating(false);
 	} else {
 		m_iRating = rating;
-		m_reqfile->SetHasRating(true);
 		AddDebugLogLineM( false, logClient, wxString(wxT("Rating for file '")) << m_clientFilename << wxT("' received: ") << m_iRating);
 	}
 
@@ -1095,14 +1093,10 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 
 	AddDebugLogLineM( false, logClient, wxString(wxT("Description for file '")) << m_clientFilename << wxT("' received: ") << m_strComment);
 
-	m_reqfile->SetHasComment(true);
 	// Update file rating
 	m_reqfile->UpdateFileRatingCommentAvail();
-
-	if (!m_strComment.IsEmpty() || m_iRating > 0) {
-		Notify_DownloadCtrlUpdateItem(m_reqfile);
-	}
 }
+
 
 void CUpDownClient::ClearDownloadBlockRequests()
 {
