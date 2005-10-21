@@ -97,7 +97,7 @@ int readconfig(CONF *config)
 		printf("Unable to open %s. Creating it.\n", path);
 		free(path);
 		if (!writeconfig()) {
-			printf("readconfig: unable to create initial config file");
+			perror("readconfig: unable to create initial config file");
 		}
 		return 0;
 	}
