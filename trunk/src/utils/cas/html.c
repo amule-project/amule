@@ -103,7 +103,7 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 
 	/* printf("FINAL: %s\n",mem); */
 
-	char *path = get_path(".aMule/aMule-online-sign.html");
+	char *path = get_path("aMule-online-sign.html");
 	if (NULL == path)
 	{
 		printf("could not get the HTML path\n");

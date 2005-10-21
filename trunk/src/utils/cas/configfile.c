@@ -56,7 +56,7 @@ int writeconfig(void)
 		"template /usr/share/pixmaps/tmp.html\n"
 	};
 
-	path = get_path(".aMule/casrc");
+	path = get_path("casrc");
 	if (path == NULL)
 		return 0;
 
@@ -89,7 +89,7 @@ int readconfig(CONF *config)
 		"sixth_line"
 	};
 
-	path = get_path(".aMule/casrc");
+	path = get_path("casrc");
 	if (path == NULL)
 		return 0;
 

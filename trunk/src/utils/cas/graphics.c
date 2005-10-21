@@ -67,7 +67,7 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES])
 					0., config->x[i], config->y[i], lines[i]);
 	}
 
-	path = get_path(".aMule/aMule-online-sign.png");
+	path = get_path("aMule-online-sign.png");
 	if (path == NULL) {
 		printf("could not get PNG path\n");
 		return 0;
