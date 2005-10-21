@@ -352,6 +352,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	} else {
 		kad->value.int_val = 0;
 	}
+	delete stats;
 #else
 	cast_value_array(result);
 	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
@@ -386,6 +387,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 		cat->value.type = PHP_VAL_STRING;
 		cat->value.str_val = strdup("all");
 	}
+	delete reply;
 #else
 	for (int i = 0; i < 5; i++) {
 		PHP_VAR_NODE *cat = array_get_by_int_key(result, i);

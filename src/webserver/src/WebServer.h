@@ -464,6 +464,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 					return false;
 				}
 				ProcessFull(reply);	
+				delete reply;
 			}
 			return true;
 		}
