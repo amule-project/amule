@@ -481,6 +481,55 @@ bool CWebServerBase::Send_DownloadEd2k_Cmd(wxString link, uint8 cat)
 	return result;
 }
 
+// We have to add gz-header and some other stuff
+// to standard zlib functions in order to use gzip in web pages
+int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level)
+{
+	static const int gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
+	z_stream stream = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	stream.zalloc = (alloc_func)0;
+	stream.zfree = (free_func)0;
+	stream.opaque = (voidpf)0;
+	uLong crc = crc32(0L, Z_NULL, 0);
+	// init Zlib stream
+	// NOTE windowBits is passed < 0 to suppress zlib header
+	int err = deflateInit2(&stream, level, Z_DEFLATED, -MAX_WBITS, MAX_MEM_LEVEL, Z_DEFAULT_STRATEGY);
+	if (err != Z_OK) {
+		return err;
+	}
+	
+	sprintf((char*)dest , "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
+		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
+
+	// wire buffers
+	stream.next_in = (Bytef*) source ;
+	stream.avail_in = (uInt)sourceLen;
+	stream.next_out = ((Bytef*) dest) + 10;
+	stream.avail_out = *destLen - 18;
+	// doit
+	err = deflate(&stream, Z_FINISH);
+	if (err != Z_STREAM_END) {
+		deflateEnd(&stream);
+		return err;
+	}
+	err = deflateEnd(&stream);
+	crc = crc32(crc, (const Bytef *) source ,  sourceLen );
+	//CRC
+	*(((Bytef*) dest)+10+stream.total_out) = (Bytef)(crc & 0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+1) = (Bytef)((crc>>8) & 0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+2) = (Bytef)((crc>>16) & 0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+3) = (Bytef)((crc>>24) & 0xFF);
+	// Length
+	*(((Bytef*) dest)+10+stream.total_out+4) = (Bytef)( sourceLen  & 0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+5) = (Bytef)(( sourceLen >>8) & 0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+6) = (Bytef)(( sourceLen >>16) &	0xFF);
+	*(((Bytef*) dest)+10+stream.total_out+7) = (Bytef)(( sourceLen >>24) &	0xFF);
+	// return  destLength
+	*destLen = 10 + stream.total_out + 8;
+	
+	return err;
+}
+
 CWebServer::CWebServer(CamulewebApp *webApp, const wxString& templateDir) : CWebServerBase(webApp, templateDir)
 {
 	m_Params.bShowUploadQueue = false;
@@ -764,7 +813,7 @@ void CWebServer::ProcessURL(ThreadData Data) {
 			bool bOk = false;
 			uLongf destLen = strlen(httpOut) + 1024;
 			gzipOut = new char[destLen];
-			if( _GzipCompress((Bytef*)gzipOut, &destLen, 
+			if( GzipCompress((Bytef*)gzipOut, &destLen, 
 			   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
 				bOk = true;
 				gzipLen = destLen;
@@ -2133,55 +2182,6 @@ wxString CWebServer::_GetConnectedServer(ThreadData Data) {
 	}
 	return OutS;
 }
-
-
-// We have to add gz-header and some other stuff
-// to standard zlib functions in order to use gzip in web pages
-int CWebServer::_GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level) { 
-	static const int gz_magic[2] = {0x1f, 0x8b}; // gzip magic header
-	int err;
-	uLong crc;
-	z_stream stream = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	stream.zalloc = (alloc_func)0;
-	stream.zfree = (free_func)0;
-	stream.opaque = (voidpf)0;
-	crc = crc32(0L, Z_NULL, 0);
-	// init Zlib stream
-	// NOTE windowBits is passed < 0 to suppress zlib header
-	err = deflateInit2(&stream, level, Z_DEFLATED, -MAX_WBITS, MAX_MEM_LEVEL, Z_DEFAULT_STRATEGY);
-	if (err != Z_OK)
-		return err;
-
-	sprintf((char*)dest , "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
-		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
-	// wire buffers
-	stream.next_in = (Bytef*) source ;
-	stream.avail_in = (uInt)sourceLen;
-	stream.next_out = ((Bytef*) dest) + 10;
-	stream.avail_out = *destLen - 18;
-	// doit
-	err = deflate(&stream, Z_FINISH);
-	if (err != Z_STREAM_END) {
-		deflateEnd(&stream);
-		return err;
-	}
-	err = deflateEnd(&stream);
-	crc = crc32(crc, (const Bytef *) source ,  sourceLen );
-	//CRC
-	*(((Bytef*) dest)+10+stream.total_out) = (Bytef)(crc & 0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+1) = (Bytef)((crc>>8) & 0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+2) = (Bytef)((crc>>16) & 0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+3) = (Bytef)((crc>>24) & 0xFF);
-	// Length
-	*(((Bytef*) dest)+10+stream.total_out+4) = (Bytef)( sourceLen  & 0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+5) = (Bytef)(( sourceLen >>8) & 0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+6) = (Bytef)(( sourceLen >>16) &	0xFF);
-	*(((Bytef*) dest)+10+stream.total_out+7) = (Bytef)(( sourceLen >>24) &	0xFF);
-	// return  destLength
-	*destLen = 10 + stream.total_out + 8;
-	return err;
-}
-
 
 bool CWebServer::_IsLoggedIn(ThreadData Data, long lSession) {
 
@@ -3912,7 +3912,6 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	wxMutexLocker lock(*m_mutexChildren);
 
-	bool isUseGzip = false; /* will add it later webInterface->m_UseGzip; */
 	long httpOutLen;
 	char *httpOut = 0;
 	
@@ -3973,14 +3972,28 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
 	}
 	
+	bool isUseGzip = webInterface->m_UseGzip;
+
 	if (isUseGzip)	{
-		/*
-		Data.pSocket->SendHttpHeaders(true, gzipLen, 0);
-		Data.pSocket->SendData(gzipOut, gzipLen);
-		delete[] gzipOut;
-		*/
-	} else {
-		Data.pSocket->SendHttpHeaders(false, httpOutLen, Data.SessionID);
+		bool bOk = false;
+		uLongf destLen = strlen(httpOut) + 1024;
+		char *gzipOut = new char[destLen];
+		if( GzipCompress((Bytef*)gzipOut, &destLen, 
+		   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
+			bOk = true;
+		}
+		if ( bOk ) {
+			delete [] httpOut;
+			httpOut = gzipOut;
+			httpOutLen = destLen;
+		} else {
+			isUseGzip = false;
+			delete[] gzipOut;
+		}
+	}
+		
+	if ( httpOut ) {
+		Data.pSocket->SendHttpHeaders(isUseGzip, httpOutLen, Data.SessionID);
 		Data.pSocket->SendData(httpOut, httpOutLen);
 		delete [] httpOut;
 	}
