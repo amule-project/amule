@@ -601,6 +601,7 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 void CPartFileConvert::CloseGUI()
 {
 	if (s_convertgui) {
+		s_convertgui->Show(false);
 		s_convertgui->Destroy();
 		s_convertgui = NULL;
 	}
@@ -719,6 +720,8 @@ BEGIN_EVENT_TABLE(CPartFileConvertDlg, wxDialog)
 	EVT_BUTTON(IDC_ADDITEM,		CPartFileConvertDlg::OnAddFolder)
 	EVT_BUTTON(IDC_RETRY,		CPartFileConvertDlg::RetrySel)
 	EVT_BUTTON(IDC_CONVREMOVE,	CPartFileConvertDlg::RemoveSel)
+	EVT_BUTTON(wxID_CANCEL,		CPartFileConvertDlg::OnCloseButton)
+	EVT_CLOSE(CPartFileConvertDlg::OnClose)
 END_EVENT_TABLE()
 
 CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
@@ -729,12 +732,8 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 	m_joblist = CastChild(IDC_JOBLIST, CConvertListCtrl);
 	m_pb_current = CastChild(IDC_CONV_PB_CURRENT, wxGauge);
 
-#ifdef __WXMSW__
-	wxIcon icon(wxT("convert"));
-#else
-	wxIcon icon(convert_xpm);
-#endif
-	SetIcon(icon);
+	SetIcon(wxICON(convert));
+
 	// for some reason, if I try to get the mutex from the dialog
 	// it will end up in a deadlock(?) and I have to kill aMule
 	CastChild(IDC_RETRY, wxButton)->Enable(false);
@@ -755,6 +754,16 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 			CPartFileConvert::ScanFolderToAdd(folder, (reply == wxYES));
 		}
 	}
+}
+
+void CPartFileConvertDlg::OnClose(wxCloseEvent& WXUNUSED(event))
+{
+	CPartFileConvert::CloseGUI();
+}
+
+void CPartFileConvertDlg::OnCloseButton(wxCommandEvent& WXUNUSED(event))
+{
+	CPartFileConvert::CloseGUI();
 }
 
 void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
