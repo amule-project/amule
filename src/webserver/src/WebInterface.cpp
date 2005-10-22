@@ -413,10 +413,10 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
-		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
+		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
-			return false;
+			return true;
 		}
 		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
 		m_Verbose = false;
@@ -437,10 +437,10 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 				m_TemplateName = wxT("default");
 			}
 		}
-		if (!GetTemplateDir(m_TemplateName, m_TemplateDir)) {
+		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
-			return false;
+			return true;
 		}
 		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
 		DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
@@ -493,10 +493,14 @@ const wxString CamulewebApp::GetGreetingTitle()
 
 void CamulewebApp::Pre_Shell() {
 	//Creating the web server
-	if ( m_UsePhp ) {
-		webserver = new CScriptWebServer(this, m_TemplateDir);
+	if ( m_TemplateOk ) {
+		if ( m_UsePhp ) {
+			webserver = new CScriptWebServer(this, m_TemplateDir);
+		} else {
+			webserver = new CWebServer(this, m_TemplateDir);
+		}
 	} else {
-		webserver = new CWebServer(this, m_TemplateDir);
+		webserver = new CNoTemplateWebServer(this);
 	}
 	webserver->StartServer();
 }

@@ -878,7 +878,7 @@ class CWebServerBase {
 
 		int GzipCompress(Bytef *dest, uLongf *destLen,
 			const Bytef *source, uLong sourceLen, int level);
-	
+			
 	friend class CWebSocket;
 	friend class CWSThread;		// to access the wsThread member
 	friend class CPhPLibContext;
@@ -954,6 +954,14 @@ class CScriptWebServer : public CWebServerBase {
 
 		virtual void StartServer();
 		virtual void StopServer();
+};
+
+class CNoTemplateWebServer : public CScriptWebServer {
+	protected:
+		virtual void ProcessURL(ThreadData);
+	public:
+		CNoTemplateWebServer(CamulewebApp *webApp);
+		~CNoTemplateWebServer();
 };
 
 /*
