@@ -92,6 +92,8 @@ public:
 
 	bool		m_UsePhp;
 
+	bool		m_TemplateOk;
+
 #if wxUSE_GUI
 public:
 	void LocalShow(const wxString &s);

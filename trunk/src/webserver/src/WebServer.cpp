@@ -3998,3 +3998,42 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		delete [] httpOut;
 	}
 }
+
+CNoTemplateWebServer::CNoTemplateWebServer(CamulewebApp *webApp) : CScriptWebServer(webApp, wxEmptyString)
+{
+}
+
+CNoTemplateWebServer::~CNoTemplateWebServer()
+{
+}
+
+void CNoTemplateWebServer::ProcessURL(ThreadData Data)
+{
+	/*
+	 * Since template has not been found, I suspect that installation is broken. Falling back
+	 * into hard-coded page as last resolt.
+	 */
+	char *httpOut = ""
+	"<html>"
+	"<head>"
+		"<title>aMuleWeb error page</title>"
+		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+	"</head>"
+	"<body>"
+	"<p>You seeing this page instead of aMuleWeb page because valid template has not been found.</p>"
+	"<p>This means that there's problem with aMule installation </p>"
+	"<ul>"
+		"<li>Before installation please ensure that you uninstalled previous versions of amule</li>"
+	"<li>If you installing by recompiling from source, check configuration and run &quot;make install&quot; again </li>"
+		"<li>If you installing binary package, you may need to contact package maintainer </li>"
+	"</ul>"
+	"<p>For more information please visit</p>"
+	"<p><a href=\"http://www.amule.org\">aMule main site</a> <a href=\"http://forum.amule.org\">aMule forum</a></p>"
+	"</body>"
+	"</html>";
+
+	long httpOutLen = strlen(httpOut);
+
+	Data.pSocket->SendHttpHeaders(false, httpOutLen, 0);
+	Data.pSocket->SendData(httpOut, httpOutLen);
+}
