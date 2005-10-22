@@ -1618,8 +1618,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				theApp.downloadqueue->SetLastKademliaFileRequest();
 			
 				if (GetKadFileSearchID()) {
-					Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
-					SetKadFileSearchID(0);			
+					/*	This will never happen anyway. We're talking a 
+						1h timespan and searches are at max 45secs */
+					Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
 				}
 			
 				Kademlia::CUInt128 kadFileID(GetFileHash().GetHash());
@@ -1637,7 +1638,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		} else {
 			if(GetKadFileSearchID()) {
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
-				SetKadFileSearchID(0);
 			}
 		}
 		#endif 
@@ -1775,7 +1775,6 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			#ifdef __COMPILE_KAD__
 			if (GetKadFileSearchID()) {
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
-				SetKadFileSearchID(0);				
 			}
 			#endif
 			break;
@@ -2199,7 +2198,6 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	#ifdef __COMPILE_KAD__
 	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
-		SetKadFileSearchID(0);				
 	}
 	#endif
 
@@ -2653,7 +2651,6 @@ void CPartFile::PauseFile(bool bInsufficient)
 	#ifdef __COMPILE_KAD__
 	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
-		SetKadFileSearchID(0);
 		// If we were in the middle of searching, reset timer so they can resume searching.
 		m_LastSearchTimeKad = 0; 
 	}

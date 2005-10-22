@@ -58,6 +58,7 @@ typedef CTag ed2kCTag;
 #include "../../OtherFunctions.h"
 #include "../../KnownFile.h"
 #include "DownloadQueue.h"
+#include "PartFile.h"
 #include "SearchList.h"
 #include "MemFile.h"
 #include "ServerConnect.h"
@@ -100,6 +101,13 @@ CSearch::CSearch()
 
 CSearch::~CSearch()
 {
+	
+	CPartFile* temp = theApp.downloadqueue->GetFileByKadFileSearchID(getSearchID());
+	
+	if(temp) {
+		temp->SetKadFileSearchID(0);
+	}	
+	
 	delete m_searchTerms;
 
 	ContactMap::iterator it;
