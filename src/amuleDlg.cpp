@@ -232,7 +232,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	activewnd=NULL;
 	SetActiveDialog(NetworksWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
-	#if 1 //#ifdef CLIENT_GUI
+	#ifdef CLIENT_GUI
 	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
 	#endif
 
@@ -558,7 +558,7 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if ( is_safe_state ) {
-		CPartFileConvert::ShowGUI(this);
+		CPartFileConvert::ShowGUI(NULL);
 	}
 }
 #endif
