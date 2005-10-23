@@ -126,7 +126,7 @@ function formCommandSubmit(command)
  				$_SESSION["filter_cat"] = $HTTP_GET_VARS["category"];
  			}
         	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'all';
-        	if ( $_SESSION["filter_cat"] == '') $_SESSION["filter_status"] = 'all';
+        	if ( $_SESSION["filter_cat"] == '') $_SESSION["filter_cat"] = 'all';
 
         	echo '<select name ="status"';
         	foreach ($all_status as $s) {
