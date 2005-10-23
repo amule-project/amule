@@ -142,7 +142,7 @@ function formCommandSubmit(command)
 			echo '</select>';
         ?>
         </td>
-        <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="apply.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
+        <td><a href="javascript:formCommandSubmit('filter');" target="mainFrame" onClick="MM_nbGroup('down','group1','resume','',1)" onMouseOver="MM_nbGroup('over','resume','','',1)" onMouseOut="MM_nbGroup('out')"><img src="toolbutton-filter.jpeg" alt="Apply" name="resume" width="50" height="20" border="0" onload=""></a></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>
