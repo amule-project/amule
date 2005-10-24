@@ -41,6 +41,7 @@ dist_webserver_DATA = \
 	apply.jpeg \
 	delete.jpeg \
 	phpamule.png \
+	favicon.ico \
 	index.html
 
 webserverdir = $(pkgdatadir)/webserver/php-default
