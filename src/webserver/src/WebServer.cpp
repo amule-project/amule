@@ -3889,11 +3889,15 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 			m_sessions.erase(Data.SessionID);
 			session = 0;
 		} else {
-			Print(_("Session ok\n"));
+			if ( session->m_loggedin ) {
+				Print(_("Session ok, logged in\n"));
+			} else {
+				Print(_("Session ok, not logged in\n"));
+			}
 			session->m_last_access = curr_time;
 		}
 	} else {
-		Print(_("No session opened - requesting login\n"));
+		Print(_("No session opened - will request login\n"));
 	}
 	if ( !session ) {
 		while ( !Data.SessionID || m_sessions.count(Data.SessionID) ) {
@@ -3916,6 +3920,9 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	char *httpOut = 0;
 	
 	wxString filename = Data.parsedURL.File();
+
+	Print(_("Processing request [original]: ") + filename + wxT("\n"));
+
 	if ( filename.Length() == 0 ) {
 		filename = wxT("index.html");
 	}
@@ -3945,20 +3952,20 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 				Print(_("Password bad\n"));
 			}
 		} else {
-			Print(_("Warning: session is not logged in but request have no password\n"));
+			Print(_("Session is not logged and request have no password\n"));
 		}
 	} else {
 		//
 		// if logged in, but requesting login page again,
 		// means logout command
 		//
-		Print(_("Logout requested\n"));
 		if ( filename == wxT("login.html") ) {
+			Print(_("Logout requested\n"));
 			session->m_loggedin = false;
 		}
 	}
 
-	Print(_("Processing request: ") + filename + wxT("\n"));
+	Print(_("Processing request [redirected]: ") + filename + wxT("\n"));
 	
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
 		wxString::Format(_("%d"), webInterface->m_PageRefresh));
