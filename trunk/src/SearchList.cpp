@@ -95,7 +95,6 @@ void *CGlobalSearchThread::Entry()
 	theApp.serverlist->AddObserver( &queue );
 
 	while ( !TestDestroy() ) {
-		
 		if ( !queue.GetRemaining() ) {
 			break;
 		} else {
@@ -112,13 +111,16 @@ void *CGlobalSearchThread::Entry()
 		}
 		
 		Sleep(750);
-		
 	}
 	
 	// Global search ended, reset progress and controls
 	CoreNotify_Search_Update_Progress(0xffff);
 	
-	theApp.searchlist->ClearThreadData(this);
+	// When shutting down, the searchlist may have been deleted
+	// by the time the sleep() call returns, so a check is needed.
+	if (theApp.searchlist) {
+		theApp.searchlist->ClearThreadData(this);
+	}
 		
 	return NULL;
 }
