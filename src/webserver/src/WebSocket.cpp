@@ -60,7 +60,6 @@ void *CWSThread::Entry() {
 	wxIPV4address addr;
 	addr.AnyAddress();
 	addr.Service(wsport);
-	ws->Print(wxT("WSThread: created service\n"));
 	// Create the socket
 	m_WSSocket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
 	wxString msg = addr.Hostname() + wxString::Format(wxT(":%d\n"), addr.Service());
@@ -341,7 +340,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
 	if (sURL.Length() > 4 ) {
 		wxString url_ext = sURL.Right( sURL.Length() - sURL.Find('.', true) ).MakeLower();
-		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || 
+		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || (url_ext==wxT(".ico")) ||
 			(url_ext==wxT(".png")) || (url_ext==wxT(".bmp")) || (url_ext==wxT(".jpeg")) ) {
 			m_pParent->ProcessImgFileReq(Data);
 		} else {
