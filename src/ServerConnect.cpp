@@ -285,11 +285,10 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacket)
 {
 	if (connected) {
-		serverudpsocket->SendPacket(packet, host);
-	}
-
-	if (delpacket)
+		serverudpsocket->SendPacket(packet, host, delpacket);
+	} else if (delpacket) {
 		delete packet;
+	}
 
 	return true;
 }
@@ -478,7 +477,7 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	singleconnecting = false;
 
 	// initalize socket for udp packets
-	serverudpsocket = new CServerUDPSocket(this, address, thePrefs::GetProxyData());
+	serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 	InitLocalIP();	
 }

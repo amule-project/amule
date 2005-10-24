@@ -47,42 +47,32 @@
 
 #include <sys/types.h>
 
+
+
 //
 // (TCP+3) UDP socket
 //
 
-CServerUDPSocket::CServerUDPSocket(
-	CServerConnect* in_serverconnect,
-	amuleIPV4Address &address,
-	const CProxyData *ProxyData)
-:
-CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+CServerUDPSocket::CServerUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
+	: CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
 {
-	sendbuffer = NULL;
-	cur_server = NULL;
-	serverconnect = in_serverconnect;
-
 	SetEventHandler(theApp, SERVERUDPSOCKET_HANDLER);
 	SetNotify(wxSOCKET_INPUT_FLAG);
 	Notify(true);
-  
 }
 
-CServerUDPSocket::~CServerUDPSocket(){
+
+CServerUDPSocket::~CServerUDPSocket()
+{
 	SetNotify(0);
 	Notify(FALSE);
-	if (cur_server) {
-		delete cur_server;
-	}
-	if (sendbuffer) {
-		delete[] sendbuffer;
-	}
-	server_packet_queue.RemoveAll();
 }
 
-#define SERVER_UDP_BUFFER_SIZE 5000
 
-void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
+const unsigned SERVER_UDP_BUFFER_SIZE = 5000;
+
+void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
+{
 	uint8 buffer[SERVER_UDP_BUFFER_SIZE];
 
 	amuleIPV4Address addr;
@@ -114,14 +104,16 @@ void CServerUDPSocket::OnReceive(int WXUNUSED(nErrorCode)) {
 }
 
 
-int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size) {
+int CServerUDPSocket::DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size)
+{
 	RecvFrom(addr,buffer,max_size);
 	return LastCount();
 }
 
-void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port){
 
-	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port-4 );
+void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port)
+{
+	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port - 4);
 	
 	theStats::AddDownOverheadOther(size);
 	AddDebugLogLineM( false, logServerUDP,
@@ -137,10 +129,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 				// process all search result packets
 
 				do{
-					/*uint16 uResultCount =*/ theApp.searchlist->ProcessUDPSearchanswer(packet, true /* (update && update->GetUnicodeSupport())*/, StringIPtoUint32(host), port-4);
-					// There is no need because we don't limit the global results
-					// theApp.amuledlg->searchwnd->AddUDPResult(uResultCount);
-					// check if there is another source packet
+					theApp.searchlist->ProcessUDPSearchanswer(packet, true, StringIPtoUint32(host), port - 4);
 					
 					if (packet.GetPosition()+2 < size) {
 						// An additional packet?
@@ -318,99 +307,95 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 	
 }
 
-void CServerUDPSocket::OnHostnameResolved(uint32 ip) {
-  /* An asynchronous database routine completed. */
-	if (!ip) { 
-		if (sendbuffer) {
-			delete[] sendbuffer;
-			sendbuffer = NULL;
-		}
-    
-		if (cur_server) {
-			delete cur_server;
-			cur_server = NULL;
-		}
-		
-		if (!server_packet_queue.IsEmpty()) {
-			ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
-			SendPacket(queued_packet->packet, queued_packet->server);
-			delete queued_packet->packet;
-			delete queued_packet;
-		}
-    
-		return;
-	}
- 
-	m_SaveAddr.Hostname(ip);
 
-	if (cur_server){
-		CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
-		if (update) {
-			update->SetID(ip);
-		}
-		SendBuffer();
+void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket)
+{
+	ServerUDPPacket item;
+	
+	if (delPacket) {
+		item.packet = packet;
+	} else {
+		item.packet = new CPacket(*packet);
 	}
-  
+	
+	item.port = host->GetPort();
+	
+	if (host->HasDynIP()) {
+		item.ip = 0;
+		item.addr = host->GetDynIP();
+	} else {
+		item.ip = host->GetIP();
+	}
+	
+	m_queue.push_back(item);
+
+	SendBuffer();
 }
+
 
 void CServerUDPSocket::SendBuffer()
 {
-	if (cur_server && sendbuffer){
-		// don't send if socket isn't ready
+	while (m_queue.size()) {
 		if (Ok()) {
-			SendTo(m_SaveAddr, sendbuffer, sendblen);
+			ServerUDPPacket item = m_queue.front();
+			CPacket* packet = item.packet;
+		
+			// Do we need to do a DNS lookup before sending?
+			wxASSERT(item.ip xor !item.addr.IsEmpty());
+			if (!item.addr.IsEmpty()) {
+				// This not an ip but a hostname. Resolve it.
+				CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, this);
+				if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
+					// Not much we can do here, just drop the packet.
+					m_queue.pop_front();
+				
+					continue;
+				}
+
+				// Wait for the DNS query to be resolved
+				return;
+			}
+		
+			char buffer[packet->GetPacketSize() + 2];
+			memcpy(buffer, packet->GetUDPHeader(), 2);
+			memcpy(buffer + 2, packet->GetDataBuffer(), packet->GetPacketSize());
+		
+			amuleIPV4Address addr;
+			addr.Hostname(item.ip);
+			addr.Service(item.port + 4);
+	
+			SendTo(addr, buffer, packet->GetPacketSize() + 2);
 
 			if (Error()) {
 				printf("Server UDP port returned an error: %i\n", LastError());
 			}
+		
+			delete packet;
 		}
-	}
-	
-	delete[] sendbuffer;
-	sendbuffer = NULL;
-	delete cur_server;
-	cur_server = NULL;
-	
-	if (!server_packet_queue.IsEmpty()) {
-		ServerUDPPacket* queued_packet = server_packet_queue.RemoveHead();
-		SendPacket(queued_packet->packet, queued_packet->server);
-		delete queued_packet->packet;
-		delete queued_packet;
+		
+		m_queue.pop_front();
 	}
 }
 
-void CServerUDPSocket::SendPacket(CPacket* packet,CServer* host){
 
-	if (cur_server) {
-		// There's a packet being processed, queue this one.
-		ServerUDPPacket* queued_packet = new ServerUDPPacket;
-		queued_packet->packet = new CPacket(*packet); // Because packet might be deleted
-		queued_packet->server = host;
-		server_packet_queue.AddTail(queued_packet);
-		return;
-	}
-
-	wxASSERT(!cur_server);
-	
-	cur_server = new CServer(host);
-	sendbuffer = new char[packet->GetPacketSize()+2];
-	memcpy(sendbuffer,packet->GetUDPHeader(),2);
-	memcpy(sendbuffer+2,packet->GetDataBuffer(),packet->GetPacketSize());
-	sendblen = packet->GetPacketSize()+2;
-
-	m_SaveAddr.Service(cur_server->GetPort()+4); 
-
-	// see if we need to dns()
-	if (cur_server->HasDynIP()) {
-		// This not an ip but a hostname. Resolve it.
-		CAsyncDNS* dns=new CAsyncDNS(cur_server->GetDynIP(), DNS_UDP, this);
-		if(dns->Create()!=wxTHREAD_NO_ERROR) {
-			// uh?
-			return;
-		}
-		dns->Run();
+void CServerUDPSocket::OnHostnameResolved(uint32 ip)
+{
+	/* An asynchronous database routine completed. */
+	if (ip == 0) { 
+		m_queue.pop_front();	
 	} else {
-		m_SaveAddr.Hostname(cur_server->GetIP());
-		SendBuffer();
+		ServerUDPPacket item = m_queue.front();
+		wxASSERT(!item.ip and !item.addr.IsEmpty());
+
+		CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
+		if (update) {
+			update->SetID(ip);
+		}
+		
+		item.addr.Clear();
+		item.ip = ip;
 	}
+	
+	SendBuffer();
 }
+

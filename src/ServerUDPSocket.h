@@ -26,64 +26,45 @@
 #ifndef SERVERUDPSOCKET_H
 #define SERVERUDPSOCKET_H
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
-#else
-	#include <sys/types.h>	// FreeBSD neededs this here
-	#include <netinet/in.h>	// Needed for struct sockaddr_in
-#endif
+#include "Types.h"				// Needed for uint16 and uint32
+#include "Proxy.h"				// Needed for CDatagramSocketProxy and amuleIPV4Address
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
+#include <list>
 
-#include "Types.h"		// Needed for uint16 and uint32
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "Proxy.h"		// Needed for CDatagramSocketProxy and amuleIPV4Address
-#include "ServerConnect.h" // Needed on some compilers for the friend class CServerConnect
 
 class CPacket;
 class CServer;
 class CMemFile;
+class CServerConnect;
 
-#define WM_DNSLOOKUPDONE WM_USER+280
-
-struct ServerUDPPacket {
-	CPacket*	packet;
-	CServer*	server;
-};
-
-// Client to Server communication
 
 class CServerUDPSocket : public CDatagramSocketProxy
 {
 	friend class CServerConnect;
 
 public:
-	CServerUDPSocket(
-		CServerConnect* in_serverconnect,
-		amuleIPV4Address &addr,
-		const CProxyData *ProxyData = NULL);
+	CServerUDPSocket(amuleIPV4Address& addr, const CProxyData* ProxyData = NULL);
 	~CServerUDPSocket();
 
-	void	SendPacket(CPacket* packet,CServer* host);
+	void	SendPacket(CPacket* packet, CServer* host, bool delPacket);
 	void	OnHostnameResolved(uint32 ip);
 
 	virtual void OnReceive(int nErrorCode);
- 	int DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
 
 private:
-
 	void	SendBuffer();
 	void	ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port);
+ 	int		DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
 
-	amuleIPV4Address m_SaveAddr;
+	struct ServerUDPPacket {
+		CPacket*	packet;
+		uint32		ip;
+		uint16		port;
+		wxString	addr;
+	};
 
-	CServerConnect*	serverconnect;
-	char*	sendbuffer;
-	uint32	sendblen;
-	CServer* cur_server;
-	CTypedPtrList<CPtrList, ServerUDPPacket*> server_packet_queue;
+	typedef std::list<ServerUDPPacket> PacketList;
+	PacketList m_queue;
 };
 
 #endif // SERVERUDPSOCKET_H
