@@ -2094,6 +2094,10 @@ int CDownloadListCtrl::Compare(
 					client2->GetDownloadState() );
 			}
 		}
+
+		// Source of source ;)
+		case 9:
+			return CmpAny(client1->GetSourceFrom(), client2->GetSourceFrom());
 		
 		default:
 			return 0;
