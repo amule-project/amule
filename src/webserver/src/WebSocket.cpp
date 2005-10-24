@@ -350,30 +350,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		m_pParent->ProcessURL(Data);
 	}
 
-	Disconnect();
 }
-
-
-void CWebSocket::Disconnect() {
-    if (m_bValid && m_bCanSend) {
-        m_bCanSend = false;
-	    
-        if (m_pTail) {
-            // push it as a tail
-            CChunk* pChunk = new CChunk;
-            if (pChunk) {
-                pChunk->m_dwSize = 0;
-                pChunk->m_pData = NULL;
-                pChunk->m_pToSend = NULL;
-                pChunk->m_pNext = NULL;
-
-                m_pTail->m_pNext = pChunk;
-            }
-
-        }
-    }
-}
-
 
 void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize) {
 	char szBuf[0x1000]; // 0x1000 is safe because it's just used for the header
@@ -405,7 +382,7 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 
 void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 	if (m_bValid && m_bCanSend) {
-		if (!m_pHead) {
+		/*if (!m_pHead) {
 			// try to send it directly
 			m_hSocket->Write((const char*) pData, dwDataSize);
 			uint32 nRes = m_hSocket->LastCount();
@@ -417,27 +394,22 @@ void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 				((const char*&) pData) += nRes;
 				dwDataSize -= nRes;
 			}
-		}
+		}*/
 		if (dwDataSize && m_bValid) {
 			// push it to our tails
 			CChunk* pChunk = new CChunk;
-			if (pChunk) {
-				pChunk->m_pNext = NULL;
-				pChunk->m_dwSize = dwDataSize;
-				if ((pChunk->m_pData = new char[dwDataSize])) {
-					memcpy(pChunk->m_pData, pData, dwDataSize);
-					// push it to the end of our queue
-					pChunk->m_pToSend = pChunk->m_pData;
-					if (m_pTail) {
-						m_pTail->m_pNext = pChunk;
-					} else {
-						m_pHead = pChunk;
-					}
-					m_pTail = pChunk;
-				} else {
-					delete pChunk; // oops, no memory (???)
-				}
+			pChunk->m_pNext = NULL;
+			pChunk->m_dwSize = dwDataSize;
+			pChunk->m_pData = new char[dwDataSize];
+			memcpy(pChunk->m_pData, pData, dwDataSize);
+			// push it to the end of our queue
+			pChunk->m_pToSend = pChunk->m_pData;
+			if (m_pTail) {
+				m_pTail->m_pNext = pChunk;
+			} else {
+				m_pHead = pChunk;
 			}
+			m_pTail = pChunk;
 		}
 	}
 }

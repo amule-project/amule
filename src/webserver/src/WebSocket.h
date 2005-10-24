@@ -39,7 +39,7 @@ class CWebSocket {
 	public:
 		void OnReceived(char* pData, uint32 dwDataSize);
 		void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
-		void Disconnect();
+
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
 		void SendHttpHeaders(bool use_gzip, uint32 content_len, int session_id);
