@@ -273,9 +273,7 @@ void CObservable<EventType>::NotifyObservers( const EventType& e, ObserverType* 
 	wxMutexLocker lock(m_mutex);
 
 	if ( o ) {
-		if ( m_list.count( o ) ) {
-			o->ReceiveNotification( this, e );
-		}
+		o->ReceiveNotification( this, e );
 	} else {
 		myIteratorType it = m_list.begin();
 		for ( ; it != m_list.end(); ) {
