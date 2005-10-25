@@ -382,7 +382,7 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 
 void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 	if (m_bValid && m_bCanSend) {
-		/*if (!m_pHead) {
+		if (!m_pHead) {
 			// try to send it directly
 			m_hSocket->Write((const char*) pData, dwDataSize);
 			uint32 nRes = m_hSocket->LastCount();
@@ -394,7 +394,7 @@ void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 				((const char*&) pData) += nRes;
 				dwDataSize -= nRes;
 			}
-		}*/
+		}
 		if (dwDataSize && m_bValid) {
 			// push it to our tails
 			CChunk* pChunk = new CChunk;
