@@ -548,12 +548,7 @@ void delete_scope_table(PHP_SCOPE_TABLE scope)
 			case PHP_SCOPE_VAR: {
 					//printf("removing %s\n", i->first.c_str());
 					PHP_VAR_NODE *var = i->second->var;
-					assert(var->ref_count);
-					var->ref_count--;
-					if ( var->ref_count == 0 ) {
-						value_value_free(&var->value);
-						delete var;
-					}
+					var_node_free(var);
 				}
 				break;
 			case PHP_SCOPE_FUNC: {
@@ -745,10 +740,7 @@ void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
 	PHP_ARRAY_TYPE *arr_ptr = (PHP_ARRAY_TYPE *)array->ptr_val;
 	if ( arr_ptr->array.count(key) ) {
 		PHP_VAR_NODE *node = (arr_ptr->array)[key];
-		node->ref_count--;
-		if ( !node->ref_count ) {
-			delete node;
-		}
+		var_node_free(node);
 		arr_ptr->array.erase(key);
 		for(PHP_ARRAY_KEY_ITER_TYPE i = arr_ptr->sorted_keys.begin(); i != arr_ptr->sorted_keys.end(); i++) {
 			if ( *i == key ) {
@@ -841,6 +833,16 @@ void value_value_assign(PHP_VALUE_NODE *dst, PHP_VALUE_NODE *src)
 	}
 }
 
+void var_node_free(PHP_VAR_NODE *var)
+{
+	assert(var && var->ref_count);
+	var->ref_count--;
+	if ( var->ref_count == 0 ) {
+		value_value_free(&var->value);
+		delete var;
+	}
+}
+
 void value_value_free(PHP_VALUE_NODE *val)
 {
 	switch(val->type) {
@@ -858,11 +860,7 @@ void value_value_free(PHP_VALUE_NODE *val)
 			for(PHP_ARRAY_ITER_TYPE i = ((PHP_ARRAY_TYPE *)val->ptr_val)->array.begin();
 				i != ((PHP_ARRAY_TYPE *)val->ptr_val)->array.end(); i++) {
 					PHP_VAR_NODE *var_i = i->second;
-					var_i->ref_count--;
-					if ( var_i->ref_count == 0 ) {
-						value_value_free(&var_i->value);
-						delete var_i;
-					}
+					var_node_free(var_i);
 				}
 			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
 			break;
@@ -1223,7 +1221,7 @@ void exp_set_ref(PHP_EXP_NODE *expr, PHP_VAR_NODE *var, PHP_VALUE_NODE *key)
 						cast_value_array(&expr->var_si_node->var->value);
 						array_set_by_key(&expr->var_si_node->var->value, key, var);
 					} else {
-						value_value_free(&expr->var_si_node->var->value);
+						var_node_free(expr->var_si_node->var);
 						expr->var_si_node->var = var;
 						var->ref_count++;
 					}
