@@ -358,8 +358,6 @@ void CQueueObserver<ValueType>::ReceiveNotification( const ObservableType* o, co
 {
 	wxMutexLocker lock( m_mutex );
 
-	wxASSERT( m_owner == o || ( !m_owner && e.GetEvent() == EventType::STARTING ) );
-
 	if ( e.GetEvent() == EventType::INSERTED || e.GetEvent() == EventType::INITIAL ) {
 		for ( size_t i = 0; i < e.GetCount(); i++ ) {
 			m_queue.insert( e.GetValue( i ) );
@@ -378,6 +376,7 @@ void CQueueObserver<ValueType>::ReceiveNotification( const ObservableType* o, co
 		m_queue.clear();
 		m_owner = NULL;
 	} else if ( e.GetEvent() == EventType::STARTING ) {
+		wxASSERT(m_owner == NULL);
 		m_owner = o;
 	} else {
 		wxASSERT( false );
