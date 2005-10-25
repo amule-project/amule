@@ -128,7 +128,7 @@ function formCommandSubmit(command)
         	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'all';
         	if ( $_SESSION["filter_cat"] == '') $_SESSION["filter_cat"] = 'all';
 
-        	echo '<select name ="status"';
+        	echo '<select name="status"> ';
         	foreach ($all_status as $s) {
         		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
         	}
