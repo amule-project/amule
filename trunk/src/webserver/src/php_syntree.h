@@ -359,6 +359,7 @@ extern "C" {
 	
 	void value_value_free(PHP_VALUE_NODE *val);
 	void value_value_assign(PHP_VALUE_NODE *src, PHP_VALUE_NODE *dst);
+	void var_node_free(PHP_VAR_NODE *var);
 	
 	/* array operations */
 	PHP_VAR_NODE *array_get_by_key(PHP_VALUE_NODE *array, PHP_VALUE_NODE *key);
