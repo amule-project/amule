@@ -600,18 +600,9 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
 	if ( index >= m_Files_map.size() ) {
 		return NULL;
 	}
-	unsigned int count = 0;
-	for ( 	CKnownFileMap::const_iterator pos = m_Files_map.begin();
-		pos != m_Files_map.end();
-		++pos ) {
-		if ( index == count ) {
-			return pos->second;
-		}
-		++count;
-        }
-	// Should never return here
-	wxASSERT(0);
-	return NULL;
+	CKnownFileMap::const_iterator pos = m_Files_map.begin();
+	std::advance(pos, index);
+	return pos->second;
 }
 
 CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
