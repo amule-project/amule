@@ -101,17 +101,16 @@ public:
 
 
 	/**
-	 * Gets the colors of item at the specified index.
+	 * Updates the colors of item at the specified index.
 	 *
 	 * @param index The zero-based index of the item.
-	 * @return The color in which the item at the specified location should be drawn.
 	 *
 	 * This function returns the color of the item based on the following:
 	 *  - Downloading files are marked in red.
 	 *  - Known (shared/completed) files are marked in green.
 	 *  - New files are marked in blue depending on the number of sources.
 	 */
-	wxColour	GetItemColor( long index );
+	void	UpdateItemColor( long index );
 
 
 	/**
@@ -255,11 +254,6 @@ protected:
 	 * Event handler for download-file(s) menu item.
 	 */
 	void OnPopupDownload( wxCommandEvent& event );
-
-	/**
-	 * Overloaded function needed for custom drawing of items.
-	 */
-	virtual void OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted );
 
 	DECLARE_EVENT_TABLE()
 };
