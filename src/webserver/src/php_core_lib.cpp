@@ -352,6 +352,28 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	} else {
 		kad->value.int_val = 0;
 	}
+	// traffic stats
+	PHP_VAR_NODE *speed;
+	speed = array_get_by_str_key(result, "speed_up");
+	value_value_free(&speed->value);
+	speed->value.type = PHP_VAL_INT;
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data();
+	
+	speed = array_get_by_str_key(result, "speed_down");
+	value_value_free(&speed->value);
+	speed->value.type = PHP_VAL_INT;
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data();
+
+	speed = array_get_by_str_key(result, "speed_limit_up");
+	value_value_free(&speed->value);
+	speed->value.type = PHP_VAL_INT;
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt32Data();
+	
+	speed = array_get_by_str_key(result, "speed_limit_down");
+	value_value_free(&speed->value);
+	speed->value.type = PHP_VAL_INT;
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt32Data();
+
 	delete stats;
 #else
 	cast_value_array(result);
