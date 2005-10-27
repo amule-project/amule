@@ -252,7 +252,7 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 			DebugShow(wxT(" yes\n"));
 
 			wxString tmplPath(dir + wxFileName::GetPathSeparator() +
-				(m_UsePhp ? wxT("index.html") : wxT("aMule.tmpl")) );
+				(m_UsePhp ? wxT("login.html") : wxT("aMule.tmpl")) );
 
 			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {

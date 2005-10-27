@@ -936,6 +936,7 @@ class CSession {
  */
 class CScriptWebServer : public CWebServerBase {
 		wxString m_wwwroot;
+		wxString m_index;
 		
 		char *ProcessHtmlRequest(const char *filename, long &size);
 		char *ProcessPhpRequest(const char *filename, CSession *sess, long &size);
