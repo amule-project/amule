@@ -3791,6 +3791,14 @@ CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templat
 {
 	wxString img_tmpl(wxT("<img src=%s height=20 width=%d>"));
 	m_DownloadFileInfo.LoadImageParams(img_tmpl, 200, 20);
+
+	if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.html")).GetFullPath()) ) {
+		m_index = wxT("index.html");
+	} else if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.php")).GetFullPath()) ) {
+		m_index = wxT("index.php");
+	} else {
+		webInterface->Show(_("Index file not found: bad template\n"));
+	}
 }
 
 CScriptWebServer::~CScriptWebServer()
@@ -3924,7 +3932,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	Print(_("Processing request [original]: ") + filename + wxT("\n"));
 
 	if ( filename.Length() == 0 ) {
-		filename = wxT("index.html");
+		filename = m_index;
 	}
 
 	CSession *session = CheckLoggedin(Data);
@@ -3946,7 +3954,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 				session->m_vars["guest_login"] = "1";
 			}
 			if ( session->m_loggedin ) {
-				filename = wxT("index.html");
+				filename = m_index;
 				Print(_("Password ok\n"));
 			} else {
 				Print(_("Password bad\n"));
