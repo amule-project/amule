@@ -2,9 +2,14 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<META HTTP-EQUIV="PRAGMAS" CONTENT="NO-CACHE">
+<meta http-equiv="pragmas" content="no-cache">
 <title>aMule CVS - Web Control Panel</title>
-<meta http-equiv=refresh content="100; ">
+<?php
+	if ( $_SESSION["auto_refresh"] > 0 ) {
+		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"],
+			'; url=downloads.php', '">';
+	}
+?>
 <style type="text/css">
 img
 {
@@ -250,7 +255,18 @@ function GotoCat(cat) {
  	echo '&nbsp;(', count($downloads), ')';
  ?>
  </b></td>
- <td align="right" class="smallheader" style="background-color: #000000"><form><select name="cat" size="1"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)><option selected value="">All others</option><option value="Waiting">Waiting</option><option value="Downloading">Downloading</option><option value="Erroneous">Erroneous</option><option value="Paused">Paused</option><option value="Stopped">Stopped</option></select></form></td>
+ <td align="right" class="smallheader" style="background-color: #000000">
+ <form>
+ 	<select name="cat" size="1"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>
+ 		<option selected value="">All others</option>
+ 		<option value="Waiting">Waiting</option>
+ 		<option value="Downloading">Downloading</option>
+ 		<option value="Erroneous">Erroneous</option>
+ 		<option value="Paused">Paused</option>
+ 		<option value="Stopped">Stopped</option>
+ 	</select>
+ </form>
+ </td>
 
 </tr>
 <tr>
@@ -301,6 +317,16 @@ function GotoCat(cat) {
 		}
 	}
 
+	var_dump($HTTP_GET_VARS);
+	
+	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
+		$name = $HTTP_GET_VARS['file'];
+		if ( strlen($name) == 32 ) {
+			//var_dump($name);
+			amule_do_download_cmd($name, $HTTP_GET_VARS["cmd"]);
+		}
+	}
+	
 	$downloads = amule_load_vars("downloads");
 
 	foreach ($downloads as $file) {
@@ -335,12 +361,18 @@ function GotoCat(cat) {
 		
 		// commands
 		echo '<acronym title="ED2K Link(s)"><a href="', $file->link, '"><img src="l_ed2klink.gif" alt="ED2K Link(s)"></a></acronym>';
-		echo '<acronym title="Pause"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_pause.gif" alt="Pause"></a></acronym>';
-		echo '<acronym title="Cancel"><a href="?cmd=cancel&file=', $file->hash,
-			"\" onclick=\"return confirm('Are you sure that you want to cancel and delete this file?')\" ",
-			'"><img src="l_cancel.gif" alt="Cancel"></a></acronym>';
-		echo '<acronym title="Increase priority"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_up.gif" alt="Increase priority"></a></acronym>';
-		echo '<acronym title="Decrease priority"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_down.gif" alt="Decrease priority"></a></acronym>';
+		if ( $_SESSION["guest_login"] == 0 ) {
+			if ( $file->status == 7 ) {
+				echo '<acronym title="Resume"><a href="?cmd=resume&file=', $file->hash, '"><img src="l_resume.gif" alt="Resume"></a></acronym>';
+			} else {
+				echo '<acronym title="Pause"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_pause.gif" alt="Pause"></a></acronym>';
+			}
+			echo '<acronym title="Cancel"><a href="?cmd=cancel&file=', $file->hash,
+				"\" onclick=\"return confirm('Are you sure that you want to cancel and delete this file?')\" ",
+				'"><img src="l_cancel.gif" alt="Cancel"></a></acronym>';
+			echo '<acronym title="Increase priority"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_up.gif" alt="Increase priority"></a></acronym>';
+			echo '<acronym title="Decrease priority"><a href="?cmd=pause&file=', $file->hash, '"><img src="l_down.gif" alt="Decrease priority"></a></acronym>';
+		}
 		echo '</tr>';
 		echo "\n";
 	}
