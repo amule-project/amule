@@ -401,7 +401,7 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 	while ( index > -1 ) {
 		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), category );
 		
-		searchlistctrl->RefreshItem( index );
+		searchlistctrl->UpdateItemColor( index );
 
 		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
