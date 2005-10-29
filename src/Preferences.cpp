@@ -192,6 +192,7 @@ wxString	CPreferences::s_OSDirectory;
 wxString	CPreferences::s_SkinFile;
 bool		CPreferences::s_UseSkinFile;
 bool		CPreferences::s_FastED2KLinksHandler;
+bool		CPreferences::s_ToolbarOrientation;
 int		CPreferences::s_perms_files;
 int		CPreferences::s_perms_dirs;
 bool		CPreferences::s_AICHTrustEveryHash;
@@ -913,6 +914,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_USESKIN,		(new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFile"), s_UseSkinFile, false )));
 	NewCfgItem(IDC_SKINFILE,	(new Cfg_Str(  wxT("/SkinGUIOptions/SkinFile"), s_SkinFile, wxEmptyString )));
 	NewCfgItem(IDC_SHOWRATEONTITLE,	(new Cfg_Bool( wxT("/eMule/ShowRatesOnTitle"), s_ShowRatesOnTitle, false )));
+	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
 	
 	/**
 	 * External Apps

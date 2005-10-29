@@ -45,9 +45,11 @@ class CKadDlg : public wxPanel {
 public:
 	CKadDlg(wxWindow* pParent);   
 	~CKadDlg() {};
+	void Init();
+	void SetUpdatePeriod();
 		
-	void AddNode() { m_nodecount++; }
-	void RemoveNode() { wxASSERT(m_nodecount); m_nodecount--; }
+	void AddNode() { m_nodecount++; ShowNodeCount(); }
+	void RemoveNode() { wxASSERT(m_nodecount); m_nodecount--; ShowNodeCount(); }
 
 private:
 
@@ -61,6 +63,8 @@ private:
 	void		OnBnClickedDisconnectKad(wxCommandEvent& evt);
 	void		OnBnClickedUpdateNodeList(wxCommandEvent& evt);
 	void		OnFieldsChange(wxCommandEvent& evt);
+
+	void ShowNodeCount();
 
 	DECLARE_EVENT_TABLE()
 };

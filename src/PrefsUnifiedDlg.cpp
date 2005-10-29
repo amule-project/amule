@@ -90,6 +90,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_VERTTOOLBAR,	PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
@@ -727,6 +728,9 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
+			break;
+		case IDC_VERTTOOLBAR:
+			theApp.amuledlg->Create_Toolbar(wxEmptyString, value);
 			break;
 	}
 }

@@ -32,6 +32,7 @@
 #include "HTTPDownload.h"
 #include "Logger.h"
 #include "amule.h"
+#include "Preferences.h"
 #include <wx/sizer.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
@@ -62,7 +63,26 @@ END_EVENT_TABLE()
 
 CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") ) {
 	m_nodecount = 0;
-	pscopeKad	= CastChild( wxT("kadScope"), COScopeCtrl );
+}
+
+void CKadDlg::Init() {
+	
+	pscopeKad = CastChild( wxT("kadScope"), COScopeCtrl );
+	wxASSERT(pscopeKad);
+	pscopeKad->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
+	pscopeKad->SetYUnits(wxT("Nodes"));		
+	
+}
+
+void CKadDlg::SetUpdatePeriod()
+{
+	// this gets called after the value in Preferences/Statistics/Update delay has been changed
+	double sStep = thePrefs::GetTrafficOMeterInterval();
+	if (sStep == 0.0) {
+	 	pscopeKad->Stop();
+	} else {
+	 	pscopeKad->Reset(sStep);
+	}
 }
 
 // Enables or disables the node connect button depending on the conents of the text fields
@@ -151,4 +171,15 @@ void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
 	#else
 	wxMessageBox(_("You can't update server.met from remote GUI yet."));
 	#endif		
+}
+
+void CKadDlg::ShowNodeCount() {
+	
+	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
+
+	if ( label ) {
+		label->SetLabel( wxString::Format( _("Nodes (%i)"), m_nodecount ) );
+		label->GetParent()->Layout();
+	}
+	
 }

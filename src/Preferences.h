@@ -436,7 +436,9 @@ public:
 	static const wxString&	GetSkinFile()			{ return s_SkinFile; }
 	
 	static bool		UseSkin()			{ return s_UseSkinFile; }
-	
+
+	static bool		VerticalToolbar() { return s_ToolbarOrientation; }
+		
 	static const wxString&	GetOSDir()			{ return s_OSDirectory; }
 	static uint16	GetOSUpdate()			{ return s_OSUpdate; }
 
@@ -630,6 +632,8 @@ protected:
 
 	static uint16	s_maxmsgsessions;
 	static wxString	s_datetimeformat;
+	
+	static bool	s_ToolbarOrientation;
 
 	// Web Server [kuchin]
 	static wxString	s_sWebPassword;

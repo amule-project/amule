@@ -107,6 +107,8 @@ public:
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
 
+	void Init();
+
 	void AddLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
 	void ResetLog(uint32 whichone);
@@ -187,6 +189,8 @@ public:
 	
 	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
 	
+	void Create_Toolbar(wxString skinfile, bool orientation);
+	
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);
@@ -236,9 +240,7 @@ private:
 	uint32 last_iconizing;
 
 	void Apply_Clients_Skin(wxString file);
-	
-	void Create_Toolbar(wxString skinfile);
-	
+		
 	void ToogleED2KLinksHandler();
 
 	void SetMessagesTool();
