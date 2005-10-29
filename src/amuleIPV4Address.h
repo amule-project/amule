@@ -26,41 +26,42 @@
 #ifndef AMULEIPV4ADDRESS_H
 #define AMULEIPV4ADDRESS_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/object.h>		// Needed by wx/sckaddr.h
-#include <wx/sckaddr.h>		// Needed for wxIPV4address
-#include <wx/log.h>		// Needed for wxLogWarning
+#include <wx/defs.h>			// Needed before any other wx/*.h
+#include <wx/object.h>			// Needed by wx/sckaddr.h
+#include <wx/sckaddr.h>			// Needed for wxIPV4address
 
+#include "ArchSpecific.h"		// Needed for ENDIAN_SWAP_32
 #include "NetworkFunctions.h"	// Needed for unicode2char
-#include "ArchSpecific.h"
 
 
 // This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
 // ipaddress structs.
 // prevent fscking dns queries
-class amuleIPV4Address : public wxIPV4address {
+class amuleIPV4Address : public wxIPV4address
+{
 public:
-	amuleIPV4Address(void) {}
+	amuleIPV4Address() {}
 	amuleIPV4Address(const wxIPV4address &a) : wxIPV4address(a) {}
 
 	virtual bool Hostname(const wxString& name) {
-		// Some people are sometimes fool.
+		// Some people are sometimes fools.
 		if (name.IsEmpty()) {
-//			wxLogWarning(wxT("Trying to set a NULL host: giving up") );
-			return FALSE;
+//			wxASSERT(0);
+			return false;
 		}
+		
 		return Hostname(StringIPtoUint32(name));
 	}
 
 	virtual bool Hostname(uint32 ip) {
-		// Some people are sometimes fool.
+		// Some people are sometimes fools.
 		if (!ip) {
-//			wxLogWarning(wxT("Trying to set a wrong ip: giving up") );
 //			wxASSERT(0);
-			return FALSE;
+			return false;
 		}
+		
 		// We have to take care that wxIPV4address's internals changed on 2.5.2
-		#if wxCHECK_VERSION(2,5,2)
+		#if wxCHECK_VERSION(2, 5, 2)
 			return GAddress_INET_SetHostAddress(m_address,wxUINT32_SWAP_ALWAYS(ip))==GSOCK_NOERROR;
 		#else
 			return GAddress_INET_SetHostAddress(m_address,ENDIAN_SWAP_32(ip))==GSOCK_NOERROR;
