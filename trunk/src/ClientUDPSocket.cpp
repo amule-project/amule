@@ -49,11 +49,9 @@
 #include "Logger.h"
 #include "UploadBandwidthThrottler.h"
 
-#ifdef __COMPILE_KAD__
-	#include "kademlia/kademlia/Kademlia.h"
-	#include "kademlia/io/IOException.h"
-	#include "zlib.h"
-#endif
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/io/IOException.h"
+#include "zlib.h"
 
 //
 // CClientUDPSocket -- Extended eMule UDP socket
@@ -123,7 +121,6 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 			case OP_EMULEPROT:
 				ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
 				break;
-			#ifdef __COMPILE_KAD__
 			case OP_KADEMLIAHEADER:
 				theStats::AddDownOverheadKad(length);
 				Kademlia::CKademlia::processPacket(buffer, length, wxUINT32_SWAP_ALWAYS(StringIPtoUint32(addr.IPAddress())),addr.Service());
@@ -143,7 +140,6 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 				}
 				break;
 			}
-			#endif
 			default:
 				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
 		}
@@ -151,10 +147,8 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 		AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
 	} catch (const CEOFException& e) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
-#ifdef __COMPILE_KAD__
 	} catch (const Kademlia::CIOException&) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet"));
-#endif
 	}
 }
 

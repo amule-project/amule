@@ -123,7 +123,7 @@ AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for 
 AC_ARG_ENABLE(systray, [  --disable-systray          disable taskbar icon support],
 			systray="$enableval", systray="yes")
 
-AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in taskbar icon],
+AC_ARG_ENABLE(utf8_systray, [  --enable-utf8-systray      use UTF-8 encoded strings in taskbar icon (only needed for wxGTK 2.4.x)],
 		utf8_systray="$enableval", utf8_systray="no")
 
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
@@ -131,9 +131,6 @@ AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded 
 
 AC_ARG_ENABLE(gsocket, [  --disable-gsocket          disable patched gsocket.c linking],
 		USE_GSOCKET="$enableval", USE_GSOCKET="yes")
-
-AC_ARG_ENABLE(kad_compile, [  --enable-kad-compile      compile Kademlia code],
-		kad_compile="$enableval", kad_compile="no")
 
 # This must be set after AC_ARG_* or it will be overwritten
 if test x"$target_os" = xdarwin; then
@@ -294,8 +291,8 @@ if test "x${need_gui}" = "xyes" ; then
     			AC_MSG_ERROR([
 				Your copy of wxWidgets 2.4.x is built against GTK2. This 
 				combination is not supported. If you wish to make use of
-				GTK2, then use the stable 2.6.x branch of wxWidgets,
-				otherwise compile wxWidgets against GTK1,
+				GTK2, then use at least the stable 2.6.x branch of 
+				wxWidgets, otherwise compile wxWidgets against GTK1,
 				])
 			fi
 		
@@ -625,7 +622,6 @@ AM_CONDITIONAL(HAVE_OLD_TRAY, test x$gtk_tray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
-AM_CONDITIONAL(COMPILE_KAD, test x$kad_compile = xyes)
 AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
 
 dnl
@@ -732,7 +728,6 @@ echo "  Should aMule be linked against patched gsocket?            ${USE_GSOCKET
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
-echo "  Should aMule Kademlia code be compiled?                    ${kad_compile:-no}"
 echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
 
 echo

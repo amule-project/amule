@@ -101,11 +101,8 @@
 #include "PartFileConvert.h"
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator
-
-#ifdef __COMPILE_KAD__
-	#include "kademlia/kademlia/Kademlia.h"
-	#include "kademlia/kademlia/Prefs.h"
-#endif
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/Prefs.h"
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -1463,14 +1460,12 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		// Publish files to server if needed.
 		sharedfiles->Process();
 		
-		#ifdef __COMPILE_KAD__
 		if( Kademlia::CKademlia::isRunning() ) {
 			Kademlia::CKademlia::process();
 			if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
 				StopKad();
 			}
 		}
-		#endif
 			
 		if( serverconnect->IsConnecting() && !serverconnect->IsSingleConnect() ) {
 			serverconnect->TryAnotherConnectionrequest();
@@ -1587,9 +1582,7 @@ void CamuleApp::ShutDown() {
 	
 	CPartFileConvert::StopThread();
 
-	#ifdef __COMPILE_KAD__
 	StopKad();
-	#endif
 	
 	// Kry - Save the sources seeds on app exit
 	if (thePrefs::GetSrcSeedsOn()) {
@@ -1677,11 +1670,9 @@ void CamuleApp::AddLogLine(const wxString &msg)
 
 uint32 CamuleApp::GetPublicIP() const
 {
-	#ifdef __COMPILE_KAD__
 	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
 		return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::getIPAddress());
 	}
-	#endif
 	return m_dwPublicIP;	
 }
 
@@ -1795,7 +1786,6 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 			break;
 		case HTTP_NodesDat:
 			if (event.GetExtraLong() != -1) {
-				#ifdef __COMPILE_KAD__
 				
 				wxString file = ConfigDir + wxT("nodes.dat");
 				if (wxFileExists(file)) {
@@ -1809,7 +1799,6 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 				Kademlia::CKademlia::start();
 				theApp.ShowConnectionState();
 				
-				#endif				
 			} else {
 				AddLogLineM(true, _("Failed to download the nodes list."));
 			}
@@ -1887,18 +1876,12 @@ bool CamuleApp::IsConnectedED2K()
 
 bool CamuleApp::IsConnectedKad()
 {
-	return 
-		#ifdef __COMPILE_KAD__
-			Kademlia::CKademlia::isConnected();
-		#else 
-			false;
-		#endif
+	return Kademlia::CKademlia::isConnected(); 
 }
 
 
 bool CamuleApp::IsFirewalled()
 {
-	#ifdef __COMPILE_KAD__
 	if (theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) {
 		return false; // we have an eD2K HighID -> not firewalled
 	}
@@ -1909,14 +1892,10 @@ bool CamuleApp::IsFirewalled()
 
 	return true; // firewalled
 	
-	#else
-	return false;
-	#endif
 }
 
 bool CamuleApp::DoCallback( CUpDownClient *client )
 {
-	#ifdef __COMPILE_KAD__
 	if(Kademlia::CKademlia::isConnected()) {
 		if(IsConnectedED2K()) {
 			if(serverconnect->IsLowID()) {
@@ -1962,9 +1941,6 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 			return false;
 		}
 	}
-	#else
-	return !(serverconnect->IsLowID());
-	#endif
 }
 
 void CamuleApp::ShowUserCount() {
@@ -1972,14 +1948,9 @@ void CamuleApp::ShowUserCount() {
 	
 	theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
 	
-	#ifdef __COMPILE_KAD__
 	wxString buffer = 
 		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
 		CastItoIShort(Kademlia::CKademlia::getKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::getKademliaFiles());
-	#else
-	wxString buffer = 
-		CFormat(_("Total Users: %s | Total Files: %s")) % CastItoIShort(totaluser) % CastItoIShort(totalfile);
-	#endif
 	
 	Notify_ShowUserCount(buffer);
 }
@@ -2034,7 +2005,6 @@ void CamuleApp::ShowConnectionState() {
 		state |= CONNECTED_ED2K;
 	}
 	
-	#ifdef __COMPILE_KAD__
 	if (Kademlia::CKademlia::isRunning()) {
 		if (!Kademlia::CKademlia::isFirewalled()) {
 			state |= CONNECTED_KAD_OK;
@@ -2042,7 +2012,6 @@ void CamuleApp::ShowConnectionState() {
 			state |= CONNECTED_KAD_FIREWALLED;
 		}
 	}
-	#endif
 	
 	Notify_ShowConnState(state);
 	
@@ -2160,21 +2129,17 @@ void CamuleApp::OnUnhandledException()
 
 void CamuleApp::StartKad()
 {
-	#ifdef __COMPILE_KAD__
 	if (!Kademlia::CKademlia::isRunning() && thePrefs::GetNetworkKademlia()) {
 		Kademlia::CKademlia::start();
 	}
-	#endif
 }
 
 void CamuleApp::StopKad()
 {
-	#ifdef __COMPILE_KAD__
 	// Stop Kad if it's running
 	if (Kademlia::CKademlia::isRunning()) {
 		Kademlia::CKademlia::stop();
 	}
-	#endif
 }
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)

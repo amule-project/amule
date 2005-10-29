@@ -60,8 +60,6 @@
 
 #include <algorithm>		// Needed for std::find, std::sort
 
-#ifdef __COMPILE_KAD__
-
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
 #include "kademlia/kademlia/Prefs.h"
@@ -176,10 +174,6 @@ public:
 
 	uint32 GetNextPublishTime() const { return m_tNextPublishKeywordTime; }
 	void SetNextPublishTime(uint32 tNextPublishKeywordTime) { m_tNextPublishKeywordTime = tNextPublishKeywordTime; }
-
-#if 0
-	void Dump();
-#endif
 
 protected:
 	// can't use a CMap - too many disadvantages in processing the 'list'
@@ -308,7 +302,6 @@ void CPublishKeywordList::PurgeUnreferencedKeywords()
 	}
 }
 
-#endif // __COMPILE_KAD__
 
 CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	filelist = in_filelist;
@@ -316,9 +309,7 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	m_lastPublishED2K = 0;
 	m_lastPublishED2KFlag = true;
 	/* Kad Stuff */
-	#ifdef __COMPILE_KAD__
 	m_keywords = new CPublishKeywordList;
-	#endif
 	m_currFileSrc = 0;
 	m_currFileNotes = 0;
 	m_lastPublishKadSrc = 0;
@@ -327,9 +318,7 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 }
 
 CSharedFileList::~CSharedFileList(){
-	#ifdef __COMPILE_KAD__
 	delete m_keywords;
-	#endif
 }
 
 void CSharedFileList::FindSharedFiles() {
@@ -528,10 +517,8 @@ bool CSharedFileList::AddFile(CKnownFile* pFile)
 
 	CKnownFileMap::value_type entry(pFile->GetFileHash(), pFile);
 	if (m_Files_map.insert(entry).second) {
-		#ifdef __COMPILE_KAD__
 		/* Keywords to publish on Kad */
 		m_keywords->AddKeywords(pFile);
-		#endif
 		theStats::AddSharedFile(pFile->GetFileSize());
 		return true;
 	}
@@ -561,10 +548,8 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	if (m_Files_map.erase(toremove->GetFileHash()) > 0) {
 		theStats::RemoveSharedFile(toremove->GetFileSize());
 	}
-	#ifdef __COMPILE_KAD__
 	/* This file keywords must not be published to kad anymore */
 	m_keywords->RemoveKeywords(toremove);
-	#endif
 }
 
 void CSharedFileList::Reload(bool firstload){
@@ -576,17 +561,13 @@ void CSharedFileList::Reload(bool firstload){
 		reloading = true;
 		Notify_SharedFilesRemoveAllItems();
 		
-		#ifdef __COMPILE_KAD__
 		/* All Kad keywords must be removed */
 		m_keywords->RemoveAllKeywordReferences();
-		#endif
 		
 		FindSharedFiles();
 		
-		#ifdef __COMPILE_KAD__
 		/* And now the unreferenced keywords must be removed also */
 		m_keywords->PurgeUnreferencedKeywords();
-		#endif
 		
 		if (firstload == false) {
 			Notify_SharedFilesShowFileList(this);
@@ -891,7 +872,6 @@ void CSharedFileList::Process()
 
 void CSharedFileList::Publish()
 {
-#ifdef __COMPILE_KAD__
 	// Variables to save cpu.
 	unsigned int tNow = time(NULL);
 	bool isFirewalled = theApp.IsFirewalled();
@@ -1005,21 +985,16 @@ void CSharedFileList::Publish()
 			}
 		}
 	}
-#endif
 }
 
 void CSharedFileList::AddKeywords(CKnownFile* pFile)
 {
-#ifdef __COMPILE_KAD__
 	m_keywords->AddKeywords(pFile);
-#endif
 }
 
 void CSharedFileList::RemoveKeywords(CKnownFile* pFile)
 {
-#ifdef __COMPILE_KAD__
 	m_keywords->RemoveKeywords(pFile);
-#endif
 }
 
 bool CSharedFileList::RenameFile(CKnownFile* pFile, const wxString& newName)

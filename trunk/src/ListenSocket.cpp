@@ -51,11 +51,9 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 	// Needed for wxStringTokenizer
 
-#ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "ClientUDPSocket.h"
-#endif
 
 //#define __PACKET_RECV_DUMP__
 
@@ -1543,7 +1541,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			break;
 		}
-		#ifdef __COMPILE_KAD__
 		case OP_CALLBACK: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK") );				
 			theStats::AddDownOverheadFileRequest(size);
@@ -1686,7 +1683,6 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 			break;
 		}
-		#endif
 		default:
 			theStats::AddDownOverheadOther(size);
 			AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("eMule packet : unknown opcode: %i %x"),opcode,opcode));

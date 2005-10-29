@@ -38,6 +38,113 @@ endif
 
 DEFS = -DHAVE_CONFIG_H
 
+# Sources
+
+core_sources = \
+	AICHSyncThread.cpp \
+	AddFileThread.cpp \
+	amule.cpp \
+	BaseClient.cpp \
+	ClientList.cpp \
+	ClientUDPSocket.cpp \
+	DeadSourceList.cpp \
+	DownloadClient.cpp \
+	DownloadQueue.cpp \
+	EMSocket.cpp \
+	ExternalConn.cpp \
+	Friend.cpp \
+	FriendList.cpp \
+	HTTPDownload.cpp \
+	IPFilter.cpp \
+	KnownFileList.cpp \
+	ListenSocket.cpp \
+	PartFileConvert.cpp \
+	SearchList.cpp \
+	ServerConnect.cpp \
+	ServerList.cpp \
+	ServerSocket.cpp \
+	ServerUDPSocket.cpp \
+	SharedFileList.cpp \
+	StateMachine.cpp \
+	UploadBandwidthThrottler.cpp \
+	UploadClient.cpp \
+	UploadQueue.cpp 
+
+gui_sources = \
+	amule-gui.cpp \
+	amuleDlg.cpp \
+	AddFriend.cpp \
+	BarShader.cpp \
+	CatDialog.cpp \
+	ChatSelector.cpp \
+	ChatWnd.cpp \
+	ClientDetailDialog.cpp \
+	ClientListCtrl.cpp \
+	ColorFrameCtrl.cpp \
+	CommentDialog.cpp \
+	CommentDialogLst.cpp \
+	DirectoryTreeCtrl.cpp \
+	DownloadListCtrl.cpp \
+	EditServerListDlg.cpp \
+	FileDetailDialog.cpp \
+	FileDetailListCtrl.cpp \
+	FriendListCtrl.cpp \
+	KadDlg.cpp \
+	listctrl.cpp \
+	MuleGifCtrl.cpp \
+	MuleListCtrl.cpp \
+	MuleNotebook.cpp \
+	MuleTextCtrl.cpp \
+	muuli_wdr.cpp \
+	NodeListCtrl.cpp \
+	OScopeCtrl.cpp \
+	PrefsUnifiedDlg.cpp \
+	SearchDlg.cpp \
+	SearchListCtrl.cpp \
+	ServerWnd.cpp \
+	SharedFilesCtrl.cpp \
+	SharedFilesWnd.cpp \
+	ServerListCtrl.cpp \
+	StatisticsDlg.cpp \
+	TransferWnd.cpp 
+
+ec_sources = \
+	ECSocket.cpp \
+	ECPacket.cpp \
+	ECSpecialTags.cpp
+
+remote_common_sources = \
+	Format.cpp \
+	MD5Sum.cpp \
+	MuleDebug.cpp \
+	OtherFunctions.cpp \
+	PlatformSpecific.cpp \
+	StringFunctions.cpp
+
+common_sources = \
+	CFile.cpp \
+	ClientCredits.cpp \
+	DataToText.cpp \
+	ED2KLink.cpp \
+	FileFunctions.cpp \
+	KnownFile.cpp \
+	Logger.cpp \
+	MemFile.cpp \
+	NetworkFunctions.cpp \
+	PartFile.cpp \
+	Packet.cpp \
+	Preferences.cpp \
+	Proxy.cpp \
+	RLE.cpp \
+	SafeFile.cpp \
+	Server.cpp \
+	Statistics.cpp \
+	StatTree.cpp \
+	SHA.cpp \
+	SHAHashSet.cpp \
+	kademlia/utils/UInt128.cpp \
+	$(remote_common_sources)
+
 kad_sources = kademlia/io/ByteIO.cpp \
 	kademlia/io/DataIO.cpp \
 	kademlia/io/FileIO.cpp \
@@ -51,291 +158,81 @@ kad_sources = kademlia/io/ByteIO.cpp \
 	kademlia/routing/Contact.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	kademlia/routing/RoutingZone.cpp \
-	kademlia/utils/LittleEndian.cpp
+	kademlia/utils/LittleEndian.cpp 
 
-amulegui_SOURCES = \
-	amule-gui.cpp \
-	amule-remote-gui.cpp \
-	amuleDlg.cpp \
-	AddFriend.cpp \
-	BarShader.cpp \
-	CatDialog.cpp \
-	CFile.cpp \
-	ChatSelector.cpp \
-	ChatWnd.cpp \
-	ClientCredits.cpp \
-	ClientDetailDialog.cpp \
-	ClientListCtrl.cpp \
-	ColorFrameCtrl.cpp \
-	CommentDialog.cpp \
-	CommentDialogLst.cpp \
-	DataToText.cpp \
-	DirectoryTreeCtrl.cpp \
-	DownloadListCtrl.cpp \
-	ED2KLink.cpp \
-	ECSocket.cpp \
-	ECPacket.cpp \
-	ECSpecialTags.cpp \
-	EditServerListDlg.cpp \
-	FileDetailDialog.cpp \
-	FileDetailListCtrl.cpp \
-	FileFunctions.cpp \
-	Format.cpp \
-	FriendListCtrl.cpp \
-	KadDlg.cpp \
-	KnownFile.cpp \
-	listctrl.cpp \
-	Logger.cpp \
-	MD5Sum.cpp \
-	MemFile.cpp \
-	MuleDebug.cpp \
-	MuleGifCtrl.cpp \
-	MuleListCtrl.cpp \
-	MuleNotebook.cpp \
-	MuleTextCtrl.cpp \
-	muuli_wdr.cpp \
-	NetworkFunctions.cpp \
-	NodeListCtrl.cpp \
-	OtherFunctions.cpp \
-	OScopeCtrl.cpp \
-	PartFile.cpp \
-	Packet.cpp \
-	PlatformSpecific.cpp \
-	Preferences.cpp \
-	PrefsUnifiedDlg.cpp \
-	Proxy.cpp \
-	RLE.cpp \
-	SHA.cpp \
-	SHAHashSet.cpp \
-	SafeFile.cpp \
-	SearchDlg.cpp \
-	SearchListCtrl.cpp \
-	Server.cpp \
-	ServerWnd.cpp \
-	SharedFilesCtrl.cpp \
-	SharedFilesWnd.cpp \
-	ServerListCtrl.cpp \
-	Statistics.cpp \
-	StatisticsDlg.cpp \
-	StatTree.cpp \
-	StringFunctions.cpp \
-	TransferWnd.cpp \
-	kademlia/routing/Contact.cpp \
-	kademlia/utils/UInt128.cpp
+# Libs
 
-amule_SOURCES = \
-	AddFriend.cpp \
-	AddFileThread.cpp \
-	AICHSyncThread.cpp \
-	amule.cpp \
-	amule-gui.cpp \
-	amuleDlg.cpp \
-	BarShader.cpp \
-	BaseClient.cpp \
-	ChatSelector.cpp \
-	ChatWnd.cpp \
-	CatDialog.cpp \
-	CFile.cpp \
-	ClientCredits.cpp \
-	ClientDetailDialog.cpp \
-	ClientList.cpp \
-	ClientListCtrl.cpp \
-	ClientUDPSocket.cpp \
-	ColorFrameCtrl.cpp \
-	CommentDialog.cpp \
-	CommentDialogLst.cpp \
-	DataToText.cpp \
-	DeadSourceList.cpp \
-	DirectoryTreeCtrl.cpp \
-	DownloadClient.cpp \
-	DownloadListCtrl.cpp \
-	DownloadQueue.cpp \
-	ECSocket.cpp \
-	ECPacket.cpp \
-	ECSpecialTags.cpp \
-	ED2KLink.cpp \
-	EditServerListDlg.cpp \
-	EMSocket.cpp \
-	ExternalConn.cpp \
-	FileDetailDialog.cpp \
-	FileDetailListCtrl.cpp \
-	FileFunctions.cpp \
-	Format.cpp \
-	Friend.cpp \
-	FriendList.cpp \
-	FriendListCtrl.cpp \
-	HTTPDownload.cpp \
-	IPFilter.cpp \
-	KnownFile.cpp \
-	KadDlg.cpp \
-	KnownFileList.cpp \
-	ListenSocket.cpp \
-	listctrl.cpp \
-	Logger.cpp \
-	MemFile.cpp \
-	MD5Sum.cpp \
-	MuleDebug.cpp \
-	MuleGifCtrl.cpp \
-	MuleListCtrl.cpp \
-	MuleNotebook.cpp \
-	MuleTextCtrl.cpp \
-	muuli_wdr.cpp \
-	NetworkFunctions.cpp \
-	NodeListCtrl.cpp \
-	OScopeCtrl.cpp \
-	OtherFunctions.cpp \
-	Packet.cpp \
-	PartFile.cpp \
-	PartFileConvert.cpp \
-	PlatformSpecific.cpp \
-	Preferences.cpp \
-	PrefsUnifiedDlg.cpp \
-	Proxy.cpp \
-	RLE.cpp \
-	SafeFile.cpp \
-	SearchDlg.cpp \
-	SearchList.cpp \
-	SearchListCtrl.cpp \
-	Server.cpp \
-	ServerConnect.cpp \
-	ServerList.cpp \
-	ServerListCtrl.cpp \
-	ServerSocket.cpp \
-	ServerUDPSocket.cpp \
-	ServerWnd.cpp \
-	SharedFileList.cpp \
-	SharedFilesCtrl.cpp \
-	SharedFilesWnd.cpp \
-	SHA.cpp \
-	SHAHashSet.cpp \
-	StateMachine.cpp \
-	Statistics.cpp \
-	StatisticsDlg.cpp \
-	StatTree.cpp \
-	StringFunctions.cpp \
-	TransferWnd.cpp \
-	UploadBandwidthThrottler.cpp \
-	UploadClient.cpp \
-	UploadQueue.cpp \
-	kademlia/utils/UInt128.cpp
+core_libs = 
+gui_libs =  $(X11LIBS) $(WX_LIBS)
+remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) 
+common_libs = $(CRYPTOLIBS) $(remote_common_libs)
 
+# Flags
 
-amuled_SOURCES = \
-	AICHSyncThread.cpp \
-	AddFileThread.cpp \
-	amule.cpp \
-	amuled.cpp \
-	BaseClient.cpp \
-	CFile.cpp \
-	ClientCredits.cpp \
-	ClientList.cpp \
-	ClientUDPSocket.cpp \
-	DataToText.cpp \
-	DeadSourceList.cpp \
-	DownloadClient.cpp \
-	DownloadQueue.cpp \
-	ECSocket.cpp \
-	ECPacket.cpp \
-	ECSpecialTags.cpp \
-	ED2KLink.cpp \
-	EMSocket.cpp \
-	ExternalConn.cpp \
-	FileFunctions.cpp \
-	Format.cpp \
-	Friend.cpp \
-	FriendList.cpp \
-	HTTPDownload.cpp \
-	IPFilter.cpp \
-	KnownFile.cpp \
-	KnownFileList.cpp \
-	ListenSocket.cpp \
-	Logger.cpp \
-	MD5Sum.cpp \
-	MemFile.cpp \
-	MuleDebug.cpp \
-	NetworkFunctions.cpp \
-	OtherFunctions.cpp \
-	Packet.cpp \
-	PartFile.cpp \
-	PartFileConvert.cpp \
-	PlatformSpecific.cpp \
-	Preferences.cpp \
-	Proxy.cpp \
-	RLE.cpp \
-	SafeFile.cpp \
-	SearchList.cpp \
-	Server.cpp \
-	ServerConnect.cpp \
-	ServerList.cpp \
-	ServerSocket.cpp \
-	ServerUDPSocket.cpp \
-	SHA.cpp \
-	SHAHashSet.cpp \
-	SharedFileList.cpp \
-	StateMachine.cpp \
-	Statistics.cpp \
-	StatTree.cpp \
-	StringFunctions.cpp \
-	Timer.cpp \
-	UploadBandwidthThrottler.cpp \
-	UploadClient.cpp \
-	UploadQueue.cpp \
-	kademlia/utils/UInt128.cpp
+core_flags = 
+gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
+common_flags = $(BFD_FLAGS) 
+
+# Extras 
 
 if ADD_GSOCKET
 if ADD_24GSOCKET
-amule_SOURCES += gsocket.c 
+core_sources += gsocket.c 
 else
-amule_SOURCES += gsocket-2.5.c
+core_sources += gsocket-2.5.c
 endif
 endif
 
 if USE_EMBEDDED_CRYPTO
-amule_SOURCES += CryptoPP.cpp
-amuled_SOURCES += CryptoPP.cpp
-amulegui_SOURCES += CryptoPP.cpp
-endif
-
-amule_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
-amule_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS)
-amule_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB) $(X11LIBS)
-
-if COMPILE_KAD
-amule_SOURCES += $(kad_sources)
-amule_CFLAGS += -D__COMPILE_KAD__
-amule_CXXFLAGS += -D__COMPILE_KAD__
-endif
-
-amulegui_CFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE
-amulegui_CXXFLAGS = $(TRAY_FLAGS) $(WX_CXXFLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS) $(BFD_FLAGS) -DCLIENT_GUI -DEC_REMOTE
-amulegui_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(BFD_LIB) $(X11LIBS)
-
-if COMPILE_KAD
-amulegui_CFLAGS += -D__COMPILE_KAD__
-amulegui_CXXFLAGS += -D__COMPILE_KAD__
-endif
-
-amuled_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
-amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DAMULE_DAEMON 
-amuled_LDADD = $(WXBASE_LIBS) $(ZLIB_LIBS) $(CRYPTOLIBS) $(RESOLV_LIB) $(BFD_LIB)
-
-if COMPILE_KAD
-amuled_SOURCES += $(kad_sources)
-amuled_CFLAGS += -D__COMPILE_KAD__
-amuled_CXXFLAGS += -D__COMPILE_KAD__
+common_sources += CryptoPP.cpp
 endif
 
 if HAVE_TRAY
 if HAVE_OLD_TRAY
-amule_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
-amule_LDADD += $(GTK_LIBS) 
-amulegui_SOURCES += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp
-amulegui_LDADD += $(GTK_LIBS) 
+gui_sources += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
+gui_libs += $(GTK_LIBS) 
 else
-amule_SOURCES += MuleTrayIcon.cpp
-amulegui_SOURCES += MuleTrayIcon.cpp
+gui_sources += MuleTrayIcon.cpp
 endif
 endif
+
+if NEED_RC
+gui_libs += amulerc.$(OBJEXT)
+endif
+
+# --------- Apps ---------
+
+amulegui_SOURCES = \
+	amule-remote-gui.cpp \
+	$(gui_sources) \
+	$(ec_sources) \
+	$(common_sources)
+
+amule_SOURCES = \
+	$(core_sources) \
+	$(gui_sources) \
+	$(ec_sources) \
+	$(kad_sources) \
+	$(common_sources)
+
+amuled_SOURCES = amuled.cpp \
+	Timer.cpp \
+	$(core_sources) \
+	$(ec_sources) \
+	$(kad_sources) \
+	$(common_sources)
+
+amule_CFLAGS = $(core_flags) $(gui_flags) $(common_flags)
+amule_CXXFLAGS = $(core_flags) $(gui_flags) $(common_flags)
+amule_LDADD = $(core_libs) $(gui_libs) $(common_libs)
+
+amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
+amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
+amulegui_LDADD = $(gui_libs) $(common_libs)
+
+amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
+amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
+amuled_LDADD = $(WXBASE_LIBS) $(core_libs) $(common_libs)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 # on Win32
@@ -347,15 +244,21 @@ if NEED_CORESERVICES
 ed2k_LDFLAGS = -framework CoreServices
 endif
 
-amulecmd_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp PlatformSpecific.cpp
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(BFD_FLAGS) -DEC_REMOTE
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(BFD_FLAGS) -DEC_REMOTE
-amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+cmd_sources = \
+	TextClient.cpp \
+	ExternalConnector.cpp \
+	$(remote_common_sources) \
+	$(ec_sources)
 
-amulecmdDLG_SOURCES = TextClient.cpp MD5Sum.cpp ECSocket.cpp ExternalConnector.cpp ECPacket.cpp ECSpecialTags.cpp OtherFunctions.cpp StringFunctions.cpp Format.cpp MuleDebug.cpp PlatformSpecific.cpp
-amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(BFD_FLAGS) -DAMULECMDDLG -DEC_REMOTE
-amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) -DAMULECMDDLG  -DEC_REMOTE
-amulecmdDLG_LDADD = $(WX_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulecmd_SOURCES = $(cmd_sources) 
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE
+amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
+
+amulecmdDLG_SOURCES = $(cmd_sources) 
+amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(common_flags) -DAMULECMDDLG -DEC_REMOTE
+amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(common_flags) -DAMULECMDDLG  -DEC_REMOTE
+amulecmdDLG_LDADD = $(WX_LIBS) $(remote_common_libs)
 
 noinst_HEADERS = AddFileThread.h \
 		 AddFriend.h \
@@ -477,8 +380,6 @@ noinst_HEADERS = AddFileThread.h \
 MAINTAINERCLEANFILES = Makefile.in
 
 if NEED_RC
-amule_LDADD += amulerc.$(OBJEXT)
-amulegui_LDADD += amulerc.$(OBJEXT)
 
 amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	@thisdir=`pwd` ; \
@@ -488,6 +389,7 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
+	
 endif
 
 BUILT_SOURCES = ECVersion.h

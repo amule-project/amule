@@ -101,9 +101,7 @@
 #include "aMule.xpm"
 #endif
 
-#ifdef __COMPILE_KAD__
-	#include "kademlia/kademlia/Kademlia.h"
-#endif
+#include "kademlia/kademlia/Kademlia.h"
 
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
@@ -579,7 +577,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 
 	bool connect = (!theApp.IsConnectedED2K() && !theApp.serverconnect->IsConnecting()) 
-						#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
+						#ifndef CLIENT_GUI
 						|| (!Kademlia::CKademlia::isRunning())
 						#endif
 						;	
@@ -597,14 +595,12 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 		}
 	}
 
-	#ifdef __COMPILE_KAD__
 	// Connect Kad also
 	if( connect && thePrefs::GetNetworkKademlia()) {
 		theApp.StartKad();
 	} else {
 		theApp.StopKad();
 	}
-	#endif
 
 }
 
@@ -751,7 +747,6 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		connLabel->SetLabel(connected_server);
 	}
 
-	#ifdef __COMPILE_KAD__
 	int index = connLabel->GetLabel().Find(wxT(" (Kad:"));
 	if (index == -1) {
 		index = connLabel->GetLabel().Length();
@@ -763,7 +758,6 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 	} else {
 		connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: off)"));
 	}
-	#endif
 	connLabel->GetParent()->Layout();
 	LastState = NewState;
 }

@@ -44,12 +44,10 @@
 
 #include "kademlia/routing/Contact.h"
 
-#ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
 #include "kademlia/net/KademliaUDPListener.h"
-#endif
 
 /**
  * CDeletedClient Class
@@ -535,7 +533,6 @@ void CClientList::Process()
 		}
 	}
 	
-	#ifdef __COMPILE_KAD__
 	//We need to try to connect to the clients in m_KadList
 	//If connected, remove them from the list and send a message back to Kad so we can send a ACK.
 	//If we don't connect, we need to remove the client..
@@ -682,7 +679,6 @@ void CClientList::Process()
 			m_pBuddy->SetKadState(KS_NONE);
 		}
 	}
-	#endif
 	
 	CleanUpClientList();
 }
@@ -807,7 +803,6 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 
 void CClientList::RequestTCP(Kademlia::CContact* contact)
 {
-	#ifdef __COMPILE_KAD__
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// don't connect ourself
 	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
@@ -827,13 +822,11 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 	AddToKadList(pNewClient); // This was a direct adding, but I like to check duplicates
 	//This method checks if this is a dup already.
 	AddClient(pNewClient);
-	#endif
 }
 
 void CClientList::RequestBuddy(Kademlia::CContact* contact)
 {
-	#ifdef __COMPILE_KAD__
-	
+
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// Don't connect to ourself
 	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
@@ -855,13 +848,11 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 	//This method checks if this is a dup already.
 	AddClient(pNewClient);
 	
-	#endif
 }
 
 void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
 {
-	#ifdef __COMPILE_KAD__
-	
+
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	//If eMule already knows this client, abort this.. It could cause conflicts.
 	//Although the odds of this happening is very small, it could still happen.
@@ -885,11 +876,9 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	pNewClient->SetBuddyID(ID);
 	AddToKadList(pNewClient);
 	AddClient(pNewClient);
-	#endif
 }
 
 void CClientList::RemoveFromKadList(CUpDownClient* torem) {
-	#ifdef __COMPILE_KAD__
 	
 	wxASSERT(torem);
 	
@@ -900,11 +889,9 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem) {
 		}
 	}
 		
-	#endif
 }
 
 void CClientList::AddToKadList(CUpDownClient* toadd) {
-	#ifdef __COMPILE_KAD__
 	
 	if(!toadd) {
 		return;
@@ -912,7 +899,6 @@ void CClientList::AddToKadList(CUpDownClient* toadd) {
 	
 	m_KadSources.insert(toadd); // This will take care of duplicates.
 	
-	#endif
 }
 
 void CClientList::CleanUpClientList(){

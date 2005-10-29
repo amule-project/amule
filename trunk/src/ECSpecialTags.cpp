@@ -42,9 +42,7 @@
 #include "SearchList.h"
 #include "ClientCredits.h"
 
-#ifdef __COMPILE_KAD__
-	#include "kademlia/kademlia/Kademlia.h"
-#endif
+#include "kademlia/kademlia/Kademlia.h"
 
 #else
 
@@ -605,9 +603,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
 	(uint8)((theApp.IsConnectedED2K() ? 0x03 : theApp.serverconnect->IsConnecting() ? 0x01 : 0x00)
-#ifdef __COMPILE_KAD__
 		| (theApp.IsConnectedKad() ? Kademlia::CKademlia::isFirewalled() ? 0x04 : 0x0c : 0x00)
-#endif
 		))
 {
 	if (theApp.IsConnectedED2K()) {
