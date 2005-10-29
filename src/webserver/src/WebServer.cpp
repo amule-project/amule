@@ -451,9 +451,11 @@ void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 	if ( cmd == wxT("connect") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_CONNECT);
 	} else if ( cmd == wxT("remove") ) {
+		ec_cmd = new CECPacket(EC_OP_SERVER_DISCONNECT);
+	} else if ( cmd == wxT("disconnect") ) {
 		ec_cmd = new CECPacket(EC_OP_SERVER_REMOVE);
 	}
-	if ( ec_cmd ) {
+	if ( ec_cmd && ip ) {
 		ec_cmd->AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 		Send_Discard_V2_Request(ec_cmd);
 		delete ec_cmd;
