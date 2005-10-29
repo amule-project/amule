@@ -193,7 +193,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	SetSizer( s_main, true );
 
-	Create_Toolbar(wxEmptyString);
+	Create_Toolbar(wxEmptyString, thePrefs::VerticalToolbar());
 
 	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
@@ -210,14 +210,14 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt, theApp.statistics);
 	chatwnd = new CChatWnd(p_cnt);
-	kademliawnd = new CKadDlg(p_cnt);
+	//kademliawnd = new CKadDlg(p_cnt);
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-	kademliawnd->Show(FALSE);	
+	//kademliawnd->Show(FALSE);	
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
@@ -240,8 +240,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	// Init statistics stuff, better do it asap
 	statisticswnd->Init();
-	statisticswnd->SetUpdatePeriod();
-
+	
 	searchwnd->UpdateCatChoice();
 
 #ifndef  __SYSTRAY_DISABLED__
@@ -272,6 +271,11 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	m_CurrentBlinkBitmap = 24;
 }
 
+void CamuleDlg::Init() {
+	//kademliawnd = new CKadDlg(p_cnt);
+	kademliawnd = CastChild( wxT("kadWnd"), CKadDlg );
+	kademliawnd->Init();
+}
 
 // Madcat - Sets Fast ED2K Links Handler on/off.
 void CamuleDlg::ShowED2KLinksHandler( bool show )
@@ -1400,11 +1404,16 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 	}
 }
 
-
-void CamuleDlg::Create_Toolbar(wxString skinfile) {
+void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
-	m_wndToolbar = CreateToolBar( wxTB_HORIZONTAL|wxNO_BORDER|wxTB_TEXT|
-	                               wxTB_3DBUTTONS|wxTB_FLAT|wxCLIP_CHILDREN );
+	wxToolBar* current = GetToolBar();
+	if (current) {
+		current->Destroy();
+		SetToolBar(NULL); // Remove old one if present
+	}
+	m_wndToolbar = CreateToolBar( (orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL)
+									| wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS
+									| wxTB_FLAT | wxCLIP_CHILDREN );
 	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	
 	if (skinfile.IsEmpty()) {

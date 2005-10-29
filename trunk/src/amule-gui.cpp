@@ -278,6 +278,8 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 		amuledlg = new CamuleDlg(NULL, m_FrameTitle);
 	}
 
+	amuledlg->Init();
+
 	return 0;
 }
 
