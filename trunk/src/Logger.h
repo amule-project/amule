@@ -91,7 +91,9 @@ enum DebugType
 	//! Warning/Errors related to Kademlia Preferences
 	logKadPrefs,
 	//! Warnings/Errors related to partfile importer
-	logPfConvert
+	logPfConvert,
+	//! Warnings/Errors related to the basic UDP socket-class.
+	logMuleUDP
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };
