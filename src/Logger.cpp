@@ -99,7 +99,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logKadIndex,		wxT("Kademlia Indexing") ),
 	CDebugCategory( logKadMain,		wxT("Kademlia Main Thread") ),
 	CDebugCategory( logKadPrefs,		wxT("Kademlia Preferences") ),
-	CDebugCategory( logPfConvert,		wxT("PartFileConvert") )
+	CDebugCategory( logPfConvert,		wxT("PartFileConvert") ),
+	CDebugCategory( logMuleUDP,			wxT("MuleUDPSocket" ) )
 };
 
 
