@@ -72,7 +72,7 @@ CNodeListCtrl::CNodeListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint&
 	: CMuleListCtrl( parent, winid, pos, size, style, validator, name )
 {
 	InsertColumn( COLUMN_NODE_ID, _("Void"),	wxLIST_FORMAT_LEFT, 400);
-	InsertItem( 1, wxT("Deprecated List") );
+	InsertItem(0, wxT("Deprecated List"));
 }
 
 
