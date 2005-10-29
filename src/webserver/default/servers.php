@@ -4,7 +4,12 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="PRAGMAS" CONTENT="NO-CACHE">
 <title>aMule CVS - Web Control Panel</title>
-
+<?php
+	if ( $_SESSION["auto_refresh"] > 0 ) {
+		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"],
+			'; url=servers.php', '">';
+	}
+?>
 <style type="text/css">
 img
 {
@@ -142,16 +147,16 @@ border-color: black;
   			Shared Files
   		</a>
   	<td align="center" class="tabs" width="110">
-		<a href="statistics.php">
+		<a href="#" onClick="self.location.href='?ses=9024819&amp;w=stats'; return false;">
 			<img src="cp_stats.gif"><br>
   			Statistics</a>
   		<font color="#000000">|</font>
 
-  		<a href="stat_graphs.php">Graphs</a>
+  		<a href="#" onClick="self.location.href='?ses=9024819&amp;w=graphs'; return false;">Graphs</a>
   	</td>
   	</td>
   	<td align="center" class="tabs" width="95">
-  		<a href="preferences.php">
+  		<a href="#" onClick="self.location.href='?ses=9024819&amp;w=options'; return false;">
   			<img src="cp_settings.gif"><br>
   			Preferences
   		</a>
@@ -159,9 +164,9 @@ border-color: black;
 
   	<td class="tabs" align="center" width="30">&nbsp;</td>
   	<td align="left" class="tabs" width="95">
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=sinfo'; return false;">Serverinfo</a><br>
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=log#end'; return false;">Log</a>
-  		<!--<br><img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=debuglog#end'; return false;">Debug Log</a>-->
+  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=9024819&amp;w=sinfo'; return false;">Serverinfo</a><br>
+  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=9024819&amp;w=log#end'; return false;">Log</a><!--<br>
+  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=9024819&amp;w=debuglog#end'; return false;">Debug Log</a>-->
   	</td>
   </tr>
   </table>
@@ -174,8 +179,8 @@ border-color: black;
 </tr>
 <tr>
  <td class="tabs">
- 	&nbsp;&nbsp;<b>Connection:</b> 
-	<?php
+ 	&nbsp;&nbsp;<b>Connection:</b>
+ 	<?php
 		function CastToXBytes($size)
 		{
 			if ( $size < 1024 ) {
@@ -204,10 +209,9 @@ border-color: black;
 			'<small> (Limits: ', CastToXBytes($stats["speed_limit_up"]), 'ps/',
 			CastToXBytes($stats["speed_limit_down"]), 'ps)</small>&nbsp;';
 	?>
- 
   <font color=black>
 
-	<script type="text/javascript" language="javascript">
+	<script language="javascript">
 	var d = new Date();
 	s = "[ " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes() + ":" + (d.getSeconds() < 10 ? "0" : "") + d.getSeconds() + " ]";
 	document.write(s);
@@ -215,8 +219,77 @@ border-color: black;
   </font>
  </td>
  <td align=right class=tabs>
-  <form action="login.html"><input type="button" name="queue" value="Logout" onClick="self.location.href=login.html"></form>
+  <form><input type="button" name="queue" value="Logout" onClick="self.location.href='?ses=9024819&amp;w=logout'"></form>
  </td>
 </tr>
-</table></body>
+</table><font face=Tahoma style="font-size:8pt;">
+&nbsp;
+<table border=0 align=center cellpadding=4 cellspacing=0 width="95%">
+
+<tr>
+  <td align=center valign=top>
+<p>&nbsp;</p>
+<table border=0 align=center cellpadding=4 cellspacing=0 width="100%">
+<tr>
+ <td class="smallheader" colspan=5 style="background-color: #000000"><b>Server</b></td>
+</tr>
+<tr>
+ <td valign=middle class="server-header"><b>Status</b></td>
+ <td valign=middle class="server-header"><b>Server name</b></td>
+ <td valign=middle class="server-header"><b>users</b></td>
+ <td valign=middle class="server-line"><a href="?ses=9024819&w=server&c=disconnect">Disconnect</a></td>
+ <td valign=middle class="server-header"><a href="?ses=9024819&w=server&c=options">Server Preferences</a></td>
+</tr>
+<tr>
+ <td valign=middle class="server-line">Connected with HighID</td>
+ <td valign=middle class="server-line">!-= www.FreeSexBay.com =-! Behemoth</td>
+ <td valign=middle class="server-line">     43517</td>
+ <td valign=middle class="server-header"><a href="?ses=9024819&w=server&c=connect">Connect to any server</a></td>
+ <td valign=middle class="server-line"></td>
+</tr>
+</table>
+&nbsp;
+<table border=0 align=center cellpadding=4 cellspacing=0 width="100%">
+<tr>
+ <td class="smallheader" colspan=6 style="background-color: #000000"><b>Server list</b></td>
+</tr>
+<tr>
+ <td valign=middle class="server-header-left"><a href="servers.php?sort=name&sortreverse=true"><b>Server name</b></a></td>
+ <td valign=middle class="server-header"><a href="servers.php?sort=description"><b>Description</b></a></td>
+ <td valign=middle class="server-header"><a href="servers.php?sort=ip"><b>IP</b></a></td>
+ <td valign=middle class="server-header"><a href="servers.php?sort=users"><b>users</b></a></td>
+ <td valign=middle class="server-header"><a href="servers.php?sort=files"><b>files</b></a></td>
+ <td valign=middle class="server-header"><b>Actions</b></td>
+</tr>
+
+<?php
+	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
+	}
+	
+	$servers = amule_load_vars("servers");
+
+	foreach ($servers as $srv) {
+		echo "<tr>";
+		echo '<td valign=middle class="server-line-left">', $srv->name, '</td>';
+		echo '<td valign=middle class="server-line">', $srv->desc, '</td>';
+		echo '<td valign=middle class="server-line">', $srv->addr, '</td>';
+		echo '<td valign=middle class="server-line">', $srv->users, '(', $srv->maxusers, ')', '</td>';
+		echo '<td valign=middle class="server-line">', $srv->files, '</td>';
+		if ( $_SESSION["guest_login"] == 0 ) {
+			echo '<td valign=middle class="server-line"><acronym title="Connect">',
+			'<a href="servers.php?cmd="connect&ip="', $srv->ip, '&port=', $srv->port,
+			'" style="text-decoration: none"><img src="l_connect.gif" alt="Connect"></a></acronym>',
+			'<acronym title="Remove selected server"><a href="servers.php?cmd="Remove&ip="',
+			$srv->ip, '&port=', $srv->port,
+			"\" onclick=\"return confirm('Are you sure to remove this server from list?')\">",
+			'<img src="l_cancel.gif" alt="Remove selected server"></a></acronym>';
+		}
+		echo "</tr>";
+	}
+?>
+</table>
+ </td>
+</tr>
+</table>
+</font></body>
 </html>
