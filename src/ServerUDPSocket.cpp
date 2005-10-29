@@ -329,7 +329,11 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 	
 	m_queue.push_back(item);
 
-	SendBuffer();
+	// If there is more than one item in the queue,
+	// then we are already waiting for a dns query.
+	if (m_queue.size() == 1) {
+		SendBuffer();
+	}
 }
 
 
