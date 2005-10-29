@@ -311,7 +311,7 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 void php_get_amule_stats(PHP_VALUE_NODE *result)
 {
 #ifndef PHP_STANDALONE_EN
-	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_CMD);
+	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_FULL);
 	CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
 	if (!stats) {
 		return ;
@@ -339,6 +339,15 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_name->value.type = PHP_VAL_STRING;
 			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
 		}
+		
+		CECTag *susers = server->GetTagByName(EC_TAG_SERVER_USERS);
+		if ( susers ) {
+			PHP_VAR_NODE *srv_users = array_get_by_str_key(result, "serv_users");
+			value_value_free(&srv_users->value);
+			srv_users->value.type = PHP_VAL_INT;
+			srv_users->value.int_val = susers->GetInt32Data();
+		}
+			
 	}
 	// kademlia
 	PHP_VAR_NODE *kad = array_get_by_str_key(result, "kad_connected");
