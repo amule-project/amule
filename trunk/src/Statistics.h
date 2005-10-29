@@ -41,7 +41,8 @@ enum StatsGraphType {
 	GRAPH_INVALID = 0,
 	GRAPH_DOWN,
 	GRAPH_UP,
-	GRAPH_CONN
+	GRAPH_CONN,
+	GRAPH_KAD
 };
 
 typedef struct UpdateInfo {
