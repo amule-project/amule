@@ -1433,6 +1433,8 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 		}
 	}
 #endif
+
+	CLogger::FlushPendingEntries();
 	
 	uploadqueue->Process();
 	downloadqueue->Process();
