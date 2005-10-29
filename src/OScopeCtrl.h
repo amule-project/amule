@@ -52,7 +52,7 @@ class COScopeCtrl : public wxControl
 	friend class CStatisticsDlg;
 		
 public:
-	COScopeCtrl(int NTrends, int nDecimals, wxWindow* parent=NULL);
+	COScopeCtrl(int NTrends, int nDecimals, StatsGraphType type, wxWindow* parent=NULL);
 	~COScopeCtrl();
 
 	void SetRange(float dLower, float dUpper, unsigned iTrend = 0);

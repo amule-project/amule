@@ -262,10 +262,6 @@ void CKademliaUDPListener::addContact( const byte *data, uint32 lenData, uint32 
 		contact->setIPAddress(ip);
 		contact->setUDPPort(port);
 		contact->setTCPPort(tport);
-		#warning TODO: EC
-		#ifndef AMULE_DAEMON
-			theApp.amuledlg->kademliawnd->RefreshNode(contact);
-		#endif
 	} else {
 		if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
 			// Ignore stated ip and port, use the address the packet came from

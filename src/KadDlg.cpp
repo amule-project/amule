@@ -26,8 +26,8 @@
 #include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"
-#include "NodeListCtrl.h"
 #include "CMD4Hash.h"
+#include "OScopeCtrl.h"
 #include "OtherFunctions.h"
 #include "HTTPDownload.h"
 #include "Logger.h"
@@ -61,10 +61,8 @@ END_EVENT_TABLE()
 
 
 CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") ) {
-
-	NodesList = (CNodeListCtrl*)FindWindowById(ID_NODELIST);
-	wxASSERT( NodesList );
-
+	m_nodecount = 0;
+	pscopeKad	= CastChild( wxT("kadScope"), COScopeCtrl );
 }
 
 // Enables or disables the node connect button depending on the conents of the text fields
@@ -153,24 +151,4 @@ void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
 	#else
 	wxMessageBox(_("You can't update server.met from remote GUI yet."));
 	#endif		
-}
-
-void CKadDlg::ShowNodes() const {	
-	NodesList->Thaw();
-}
-
-void CKadDlg::HideNodes() const {
-	NodesList->Freeze();
-}
-
-void CKadDlg::AddNode(const Kademlia::CContact* contact) const {
-	NodesList->AddNode(contact);
-}
-
-void CKadDlg::RemoveNode(const Kademlia::CContact* contact) const {
-	NodesList->RemoveNode(contact);
-}
-
-void CKadDlg::RefreshNode(const Kademlia::CContact* contact) const {
-	NodesList->RefreshNode(contact);
 }

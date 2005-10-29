@@ -58,9 +58,9 @@ using namespace Kademlia;
 
 CContact::~CContact()
 {
-	#warning TODO: EC
+	#warning EC
 	#ifndef AMULE_DAEMON
-	theApp.amuledlg->kademliawnd->RemoveNode(this);
+		theApp.amuledlg->kademliawnd->RemoveNode();
 	#endif
 }
 
@@ -91,6 +91,10 @@ void CContact::initContact()
 	m_lastTypeSet = time(NULL);
 	m_created = time(NULL);
 	m_inUse = 0;	
+	#warning EC
+	#ifndef AMULE_DAEMON
+		theApp.amuledlg->kademliawnd->AddNode();
+	#endif
 }
 
 const wxString CContact::getClientIDString(void) const
@@ -158,9 +162,6 @@ void CContact::checkingType()
 	m_expires = time(NULL) + MIN2S(2);
 	m_type++;
 
-	#ifndef AMULE_DAEMON
-		theApp.amuledlg->kademliawnd->RefreshNode(this);
-	#endif
 }
 
 void CContact::updateType()
@@ -179,7 +180,4 @@ void CContact::updateType()
 			m_type = 0;
 			m_expires = time(NULL) + HR2S(2);
 	}
-	#ifndef AMULE_DAEMON
-		theApp.amuledlg->kademliawnd->RefreshNode(this);
-	#endif
 }

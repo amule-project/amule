@@ -68,7 +68,21 @@ core_sources = \
 	StateMachine.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
-	UploadQueue.cpp 
+	UploadQueue.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
+	kademlia/kademlia/Indexed.cpp \
+	kademlia/kademlia/Kademlia.cpp \
+	kademlia/kademlia/Prefs.cpp \
+	kademlia/kademlia/Search.cpp \
+	kademlia/kademlia/SearchManager.cpp \
+	kademlia/net/KademliaUDPListener.cpp \
+	kademlia/routing/Contact.cpp \
+	kademlia/routing/RoutingBin.cpp \
+	kademlia/routing/RoutingZone.cpp \
+	kademlia/utils/LittleEndian.cpp 
 
 gui_sources = \
 	amule-gui.cpp \
@@ -96,7 +110,6 @@ gui_sources = \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
 	muuli_wdr.cpp \
-	NodeListCtrl.cpp \
 	OScopeCtrl.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
@@ -144,21 +157,6 @@ common_sources = \
 	SHAHashSet.cpp \
 	kademlia/utils/UInt128.cpp \
 	$(remote_common_sources)
-
-kad_sources = kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/kademlia/Indexed.cpp \
-	kademlia/kademlia/Kademlia.cpp \
-	kademlia/kademlia/Prefs.cpp \
-	kademlia/kademlia/Search.cpp \
-	kademlia/kademlia/SearchManager.cpp \
-	kademlia/net/KademliaUDPListener.cpp \
-	kademlia/routing/Contact.cpp \
-	kademlia/routing/RoutingBin.cpp \
-	kademlia/routing/RoutingZone.cpp \
-	kademlia/utils/LittleEndian.cpp 
 
 # Libs
 
@@ -212,14 +210,13 @@ amule_SOURCES = \
 	$(core_sources) \
 	$(gui_sources) \
 	$(ec_sources) \
-	$(kad_sources) \
 	$(common_sources)
 
-amuled_SOURCES = amuled.cpp \
+amuled_SOURCES = \
+	amuled.cpp \
 	Timer.cpp \
 	$(core_sources) \
 	$(ec_sources) \
-	$(kad_sources) \
 	$(common_sources)
 
 amule_CFLAGS = $(core_flags) $(gui_flags) $(common_flags)

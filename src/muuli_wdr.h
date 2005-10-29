@@ -6,6 +6,10 @@
 #ifndef __WDR_muuli_H__
 #define __WDR_muuli_H__
 
+#if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
+    #pragma interface "muuli_wdr.h"
+#endif
+
 // Include wxWidgets' headers
 
 #ifndef WX_PRECOMP
@@ -433,7 +437,7 @@ wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer =
 extern wxSizer *kadSizer;
 const int ID_UPDATEKADLIST = 10316;
 const int IDC_NODESLISTURL = 10317;
-const int ID_NODELIST = 10318;
+const int ID_KADSCOPE = 10318;
 const int ID_NODE_IP1 = 10319;
 const int ID_NODE_IP2 = 10320;
 const int ID_NODE_IP3 = 10321;

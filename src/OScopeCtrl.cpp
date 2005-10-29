@@ -44,7 +44,7 @@ BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 END_EVENT_TABLE()
 
 
-COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, wxWindow*parent)
+COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWindow*parent)
   : wxControl(parent,-1, wxDefaultPosition, wxDefaultSize), timerRedraw(this, TIMER_OSCOPE)
 {
 COLORREF crPreset [ 16 ] = {
@@ -100,7 +100,7 @@ COLORREF crPreset [ 16 ] = {
 	nXGrids = 6;
 	nYGrids = 5;
 	
-	graph_type = GRAPH_INVALID;
+	graph_type = type;
 	
 	timerRedraw.SetOwner(this);
 }  // COScopeCtrl
@@ -478,29 +478,34 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 {
 #ifndef CLIENT_GUI
 	wxASSERT(graph_type != GRAPH_INVALID);
-	unsigned i, cntFilled;
-	float** apf = new float*[nTrends];
-	for (i=0; i<nTrends; ++i)
-		apf[i] = new float[cntPoints];
-	double sFinal = (bStopped ? sLastTimestamp : -1.0);
-	cntFilled = theApp.statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
-	if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
-		if (bShiftGraph) {  // delayed points - we have an fPrev
-			ShiftGraph(cntFilled);
-		} else {  // fresh graph, we need to preset fPrev, yPrev
-			PlotData_t* ppds = pdsTrends;	
-    		for(i=0; i<nTrends; ++i, ++ppds)
-				ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
-			cntFilled--;
+	
+	if (graph_type != GRAPH_KAD) {
+		unsigned i, cntFilled;
+		float** apf = new float*[nTrends];
+		for (i=0; i<nTrends; ++i)
+			apf[i] = new float[cntPoints];
+		double sFinal = (bStopped ? sLastTimestamp : -1.0);
+		cntFilled = theApp.statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
+		if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
+			if (bShiftGraph) {  // delayed points - we have an fPrev
+				ShiftGraph(cntFilled);
+			} else {  // fresh graph, we need to preset fPrev, yPrev
+				PlotData_t* ppds = pdsTrends;	
+				for(i=0; i<nTrends; ++i, ++ppds)
+					ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
+				cntFilled--;
+			}
+			DrawPoints((const float**)apf, cntFilled);
+			if (bRefresh)
+				Refresh(FALSE);
 		}
-		DrawPoints((const float**)apf, cntFilled);
-		if (bRefresh)
-			Refresh(FALSE);
+		for (i=0; i<nTrends; ++i)
+			delete[] apf[i];
+	
+		delete[] apf;
+	} else {
+		// No history (yet) for Kad.
 	}
-	for (i=0; i<nTrends; ++i)
-		delete[] apf[i];
-
-	delete[] apf;
 #else
 	#warning CORE/GUI -- EC needed
 #endif

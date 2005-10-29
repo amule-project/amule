@@ -30,7 +30,7 @@
 #include <wx/panel.h>		// Needed for wxPanel
 #include "Types.h"
 
-class CNodeListCtrl;	
+class COScopeCtrl;	
 class wxListEvent;
 class wxCommandEvent;
 class wxMouseEvent;
@@ -46,16 +46,15 @@ public:
 	CKadDlg(wxWindow* pParent);   
 	~CKadDlg() {};
 		
-	void ShowNodes() const;
-	void HideNodes() const;
-	void AddNode(const Kademlia::CContact* contact) const;
-	void RemoveNode(const Kademlia::CContact* contact) const;
-	void RefreshNode(const Kademlia::CContact* contact) const;
+	void AddNode() { m_nodecount++; }
+	void RemoveNode() { wxASSERT(m_nodecount); m_nodecount--; }
 
 private:
 
-	CNodeListCtrl* NodesList;
-		
+	uint32 m_nodecount;
+
+	COScopeCtrl* pscopeKad;
+
 	// Event handlers
 	void		OnBnClickedBootstrapClient(wxCommandEvent& evt);
 	void		OnBnClickedBootstrapKnown(wxCommandEvent& evt);
