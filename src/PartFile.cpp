@@ -77,10 +77,8 @@
 #include <map>
 #include <algorithm>
 
-#ifdef __COMPILE_KAD__
-	#include "kademlia/kademlia/Kademlia.h"
-	#include "kademlia/kademlia/Search.h"
-#endif
+#include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/kademlia/Search.h"
 
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
@@ -1609,7 +1607,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			SetPartFileStatus(status);
 		}
 	
-		#ifdef __COMPILE_KAD__
 		// Kad source search		
 		if( GetMaxSourcePerFileUDP() > GetSourceCount()){
 			//Once we can handle lowID users in Kad, we remove the second IsConnected
@@ -1640,8 +1637,6 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
 			}
 		}
-		#endif 
-		
 		
 		// check if we want new sources from server
 		if (	!m_bLocalSrcReqQueued &&
@@ -1710,7 +1705,6 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 		}
 	}
 	
-	#ifdef __COMPILE_KAD__
 	if (Kademlia::CKademlia::isConnected()) {
 		if(!Kademlia::CKademlia::isFirewalled()) {
 			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs::GetPort() == port) {
@@ -1718,7 +1712,6 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 			}
 		}
 	}
-	#endif
 
 	//This allows *.*.*.0 clients to not be removed if Ed2kID == false
 	if ( IsLowID(hybridID) && theApp.IsFirewalled()) {
@@ -1772,11 +1765,9 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			// Since we may receive multiple search source UDP results we have to "consume" all data of that packet
 			// This '+1' is added because 'i' counts from 0.
 			sources.Seek((count-(i+1))*(4+2), wxFromCurrent);
-			#ifdef __COMPILE_KAD__
 			if (GetKadFileSearchID()) {
 				Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
 			}
-			#endif
 			break;
 		}
 	}
@@ -2195,11 +2186,9 @@ void CPartFile::RemoveAllRequestedBlocks(void)
 
 void CPartFile::CompleteFile(bool bIsHashingDone)
 {
-	#ifdef __COMPILE_KAD__
 	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), false);
 	}
-	#endif
 
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
@@ -2648,13 +2637,11 @@ void CPartFile::PauseFile(bool bInsufficient)
 		return;
 	}
 
-	#ifdef __COMPILE_KAD__
 	if (GetKadFileSearchID()) {
 		Kademlia::CSearchManager::stopSearch(GetKadFileSearchID(), true);
 		// If we were in the middle of searching, reset timer so they can resume searching.
 		m_LastSearchTimeKad = 0; 
 	}
-	#endif
 	
 	m_iLastPausePurge = time(NULL);
 	

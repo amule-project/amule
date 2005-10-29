@@ -1083,7 +1083,6 @@ void CUpDownClient::UDPReaskForDownload()
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
 		
 	} else  {
-		#ifdef __COMPILE_KAD__ 
 		if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
 			
 			m_bUDPPending = true;
@@ -1110,7 +1109,6 @@ void CUpDownClient::UDPReaskForDownload()
 			theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 			theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
 		}
-		#endif
 	}
 }
 

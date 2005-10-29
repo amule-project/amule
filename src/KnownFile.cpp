@@ -232,7 +232,7 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 }
 
 void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
-	#if defined(__COMPILE_KAD__) && !defined(CLIENT_GUI)
+	#ifndef CLIENT_GUI
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
@@ -1125,7 +1125,6 @@ void CKnownFile::SetPublishedED2K(bool val){
 
 bool CKnownFile::PublishNotes()
 {
-	#ifdef __COMPILE_KAD__
 	if(m_lastPublishTimeKadNotes > (uint32)time(NULL)) {
 		return false;
 	}
@@ -1140,13 +1139,11 @@ bool CKnownFile::PublishNotes()
 		return true;
 	}
 
-	#endif
 	return false;
 }
 
 bool CKnownFile::PublishSrc()
 {
-	#ifdef __COMPILE_KAD__
 	uint32 lastBuddyIP = 0;
 
 	if( theApp.IsFirewalled() ) {
@@ -1169,10 +1166,6 @@ bool CKnownFile::PublishSrc()
 	SetLastPublishTimeKadSrc((uint32)time(NULL)+KADEMLIAREPUBLISHTIMES,lastBuddyIP);
 	return true;
 	
-	#else
-	// REMOVE THIS!!!
-	return false;
-	#endif
 }
 
 void CKnownFile::UpdatePartsInfo()
@@ -1323,10 +1316,8 @@ void CKnownFile::SetFileName(const wxString& strmakeFilename)
 { 
 	CAbstractFile::SetFileName(strmakeFilename);
 	#ifndef CLIENT_GUI
-		#ifdef __COMPILE_KAD__
-			wordlist.clear();
-			Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
-		#endif
+		wordlist.clear();
+		Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
 	#endif
 }
 

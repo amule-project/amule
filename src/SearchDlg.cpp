@@ -514,11 +514,7 @@ void CSearchDlg::StartNewSearch()
 				// Search failed (not connected?)
 				wxString error;
 				if (search_type == KadSearch) {
-					#ifdef __COMPILE_KAD__
 					error = _("Impossible to make Kad search (invalid chars? keywords too short? not connected?)");
-					#else
-					error = _("Kad search is not available yet");
-					#endif
 				} else {
 					error = _("You are not connected to a server!");
 				}

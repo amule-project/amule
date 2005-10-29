@@ -51,11 +51,9 @@
 #include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
 #endif
 
-#ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/SearchManager.h"
 #include "kademlia/kademlia/Search.h"
-#endif
 
 CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	: wxThread(wxTHREAD_DETACHED)
@@ -292,10 +290,8 @@ void CSearchList::Clear()
 
 void CSearchList::RemoveResults(long nSearchID)
 {
-	#ifdef __COMPILE_KAD__
 	// A non-existant search id will just be ignored
 	Kademlia::CSearchManager::stopSearch(nSearchID,true);
-	#endif
 	
 	ResultMap::iterator it = m_Results.find( nSearchID );
 
@@ -325,7 +321,6 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	CMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
 	
 	if (search_type == KadSearch) {
-		#ifdef __COMPILE_KAD__
 		if (Kademlia::CKademlia::isRunning()) {
 			try {
 				// Kad search takes ownership of data and searchstring will get tokenized there
@@ -341,10 +336,6 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 			delete ed2k_data;
 			return false;
 		}
-		#else
-		delete ed2k_data;
-		return false;
-		#endif
 	}
 	
 	// This is ed2k search...

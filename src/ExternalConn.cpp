@@ -1249,7 +1249,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Kad
 		//
 		case EC_OP_KAD_START:
-#ifdef __COMPILE_KAD__
 			if (thePrefs::GetNetworkKademlia()) {
 				theApp.StartKad();
 				response = new CECPacket(EC_OP_NOOP);
@@ -1257,10 +1256,6 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
 			}
-#else
-			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("This aMule version was compiled without Kademlia support.")));
-#endif
 			break;
 		case EC_OP_KAD_STOP:
 			theApp.StopKad();

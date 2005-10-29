@@ -1317,7 +1317,6 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 
 void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 WXUNUSED(clientid))
 {
-	#ifdef __COMPILE_KAD__
 	
 	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
 	
@@ -1397,7 +1396,6 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ip, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}
-	#endif
 }
 
 CPartFile* CDownloadQueue::GetFileByKadFileSearchID(uint32 id) const

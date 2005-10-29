@@ -42,12 +42,10 @@
 #include "StringFunctions.h" // Needed for StrToULong
 #include "Logger.h"
 
-#ifdef __COMPILE_KAD__
 #include "kademlia/kademlia/Kademlia.h"
 #include "ClientList.h"
 #include "OtherFunctions.h"
 #include "updownclient.h"
-#endif
 
 BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
 	EVT_BUTTON(ID_ADDTOLIST,CServerWnd::OnBnClickedAddserver)
@@ -205,7 +203,6 @@ void CServerWnd::UpdateKadInfo()
 	
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
-		#ifdef __COMPILE_KAD__
 		if (Kademlia::CKademlia::isRunning()) {
 			KadInfoList->SetItem(next_row, 1, _("Running"));
 			
@@ -244,9 +241,6 @@ void CServerWnd::UpdateKadInfo()
 			// No data
 			KadInfoList->SetItem(next_row, 1, _("Not running"));
 		}
-		#else
-		KadInfoList->SetItem(next_row, 1, _("Not Available"));
-		#endif
 
 	#else
 		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));

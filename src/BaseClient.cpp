@@ -608,12 +608,9 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 		m_byInfopacketsReceived |= IP_EMULEPROTPACK;
 	}
 
-
-	#ifdef __COMPILE_KAD__
 	if( GetKadPort() ) {
 		Kademlia::CKademlia::bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort());
 	}
-	#endif
 
 	return bIsMule;
 }
@@ -941,12 +938,11 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	data->WriteUInt16(thePrefs::GetPort());
 
 	uint32 tagcount = 6;
-	#ifdef __COMPILE_KAD__
+
 	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
 		tagcount += 2;
 	}
 	tagcount ++; // eMule misc flags 2 (kad version)
-	#endif
 	
 	#ifdef __CVS__
 	// Kry - This is the tagcount!!! Be sure to update it!!
@@ -965,17 +961,16 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	// eMule UDP Ports
 
 	uint32 kadUDPPort = 0;
-	#ifdef __COMPILE_KAD__
+
 	if(Kademlia::CKademlia::isConnected()) {
 		kadUDPPort = (uint32)thePrefs::GetEffectiveUDPPort();
 	}
-	#endif
+
 	CTag tagUdpPorts(CT_EMULE_UDPPORTS,
 				(kadUDPPort									<< 16) |
 				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
 	tagUdpPorts.WriteTagToFile(data);
 
-	#ifdef __COMPILE_KAD__
 	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
 		CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
 		tagBuddyIP.WriteTagToFile(data);
@@ -986,7 +981,6 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 					);
 		tagBuddyPort.WriteTagToFile(data);
 	}	
-	#endif
 	
 	// aMule Version
 	CTag tagMuleVersion(CT_EMULE_VERSION,
@@ -1031,7 +1025,6 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(uSupportPreview		<< 1*0) );
 	tagMisOptions.WriteTagToFile(data);
 
-#ifdef __COMPILE_KAD__
 	// eMule Misc. Options #2
 	const uint32 uKadVersion			= 1;
 	CTag tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
@@ -1039,8 +1032,6 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(uKadVersion			<<  0) 
 				);
 	tagMisOptions2.WriteTagToFile(data);
-#endif
-
 
 	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
 	
@@ -1301,7 +1292,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			return true;
 		}
 
-		#ifdef __COMPILE_KAD__
 		//We already know we are not firewalled here as the above condition already detected LowID->LowID and returned.
 		//If ANYTHING changes with the "if(!theApp.DoCallback(this))" above that will let you fall through 
 		//with the condition that the source is firewalled and we are firewalled, we must
@@ -1317,7 +1307,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				}
 			}
 		}
-		#endif
 	}
 	
 	if (!m_socket || !m_socket->IsConnected()) {
@@ -1370,7 +1359,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 					return true;
 				}
 				
-				#ifdef __COMPILE_KAD__
 				if( !Kademlia::CKademlia::isConnected() ) {
 					//We are not connected to Kad and this is a Kad Firewalled source..
 					theApp.downloadqueue->RemoveSource(this);
@@ -1408,7 +1396,6 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						}
 					}
 				}
-				#endif
 			} else {
 				if (GetDownloadState() == DS_WAITCALLBACK) {
 					m_bReaskPending = true;
