@@ -28,6 +28,7 @@
 #include "StringFunctions.h"
 
 #include <wx/thread.h>
+#include <deque>
 
 
 CDebugCategory::CDebugCategory( DebugType type, const wxString& name )
@@ -141,14 +142,67 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 }
 
 
-void CLogger::AddLogLine( bool critical, const wxString str )
+
+struct LogEntry
 {
-	GUIEvent event( ADDLOGLINE, critical, str );
+	GUI_Event_ID	event;
+	bool			critical;
+	wxString		entry;
+};
+
+static std::deque<LogEntry*> s_backLog;
+static wxMutex s_mutex;
+
+
+void PushEntry(GUI_Event_ID event, bool critical, const wxString& str)
+{
+	wxMutexLocker lock(s_mutex);
+
+	LogEntry* item = new LogEntry;
+	item->event		= event;
+	item->critical	= critical;
+	item->entry		= str;
 	
-	if ( wxThread::IsMain() ) {
-		theApp.NotifyEvent( event );
-	} else {
-		wxPostEvent( &theApp, event );
+	s_backLog.push_back(item);
+}
+
+
+LogEntry* PopEntry()
+{
+	wxMutexLocker lock(s_mutex);
+
+	if (s_backLog.empty()) {
+		return NULL;
+	}
+
+	LogEntry* entry = s_backLog.front();
+	s_backLog.pop_front();
+
+	return entry;
+}
+
+
+
+
+void CLogger::FlushPendingEntries()
+{
+	wxCHECK_RET(wxThread::IsMain(), wxT("Must be called by main thread."));
+	
+	LogEntry* entry = NULL;
+	while ((entry = PopEntry())) {
+		theApp.NotifyEvent(GUIEvent(entry->event, entry->critical, entry->entry)); 
+
+		delete entry;
+	}
+}
+
+
+void CLogger::AddLogLine(bool critical, const wxString str)
+{
+	PushEntry(ADDLOGLINE, critical, str);
+
+	if (wxThread::IsMain()) {
+		FlushPendingEntries();
 	}
 }
 
@@ -164,12 +218,10 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 		wxString line = cat.GetName() + wxT(": ") + str;
 		
 #ifdef __DEBUG__
-		GUIEvent event( ADDDEBUGLOGLINE, critical, line );
-		
-		if ( wxThread::IsMain() ) {
-			theApp.NotifyEvent( event );
-		} else {
-			wxPostEvent( &theApp, event );
+		PushEntry(ADDDEBUGLOGLINE, critical, str);
+
+		if (wxThread::IsMain()) {
+			FlushPendingEntries();
 		}
 #else
 		printf("%s\n", (const char*)unicode2char( line ) );
@@ -192,3 +244,4 @@ unsigned int CLogger::GetDebugCategoryCount()
 {
 	return categoryCount;
 }
+

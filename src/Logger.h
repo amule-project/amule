@@ -187,6 +187,15 @@ namespace CLogger
 	 */
 	void		AddDebugLogLine( bool critical, DebugType type, const wxString& str );
 
+
+	/**
+	 * Ensures that any pending entries are sent to the app.
+	 *
+	 * TODO: Ensure that entries are appended to the
+	 *       logfile even when queued to avoid risk of
+	 *       data loss.
+	 */
+	void		FlushPendingEntries();
 	
 	/**
 	 * Returns a category specified by index.
