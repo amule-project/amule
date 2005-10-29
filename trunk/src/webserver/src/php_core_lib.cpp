@@ -1144,7 +1144,7 @@ void amule_shared_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 		result->int_val = obj->lFileSize;
 	} else if ( strcmp(prop_name, "link") == 0 ) {
 		result->type = PHP_VAL_STRING;
-		result->str_val = strdup((const char *)unicode2char(obj->sED2kLink));
+		result->str_val = strdup(unicode2UTF8(obj->sED2kLink));
 	} else if ( strcmp(prop_name, "xfer") == 0 ) {
 		result->type = PHP_VAL_INT;
 		result->int_val = obj->nFileTransferred;

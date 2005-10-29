@@ -2572,7 +2572,7 @@ SharedFile::SharedFile(CEC_SharedFile_Tag *tag)
 {
 		sFileName = _SpecialChars(tag->FileName());
 		lFileSize = tag->SizeFull();
-		sED2kLink = tag->FileEd2kLink();
+		sED2kLink = _SpecialChars(tag->FileEd2kLink());
 		nHash = tag->ID();
 		
 		ProcessUpdate(tag);
