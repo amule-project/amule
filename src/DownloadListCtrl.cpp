@@ -227,11 +227,6 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 {
 	wxASSERT( owner );
 	wxASSERT( source );
-	
-	CtrlItem_Struct* newitem = new CtrlItem_Struct;
-	newitem->owner = owner;
-	newitem->type = type;
-	newitem->value = source;
 
 	// Update the other instances of this source
 	bool bFound = false;
@@ -242,7 +237,7 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 		// Check if this source has been already added to this file => to be sure
 		if ( cur_item->owner == owner ) {
 			// Update this instance with its new setting
-			cur_item->type = newitem->type;
+			cur_item->type = type;
 			cur_item->dwUpdated = 0;
 			bFound = true;
 		} else if ( type == AVAILABLE_SOURCE ) {
@@ -253,11 +248,15 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 	}
 
 	if ( bFound ) {
-		delete newitem;
 		return;
 	}
 
 	if ( owner->ShowSources() ) {
+		CtrlItem_Struct* newitem = new CtrlItem_Struct;
+		newitem->owner = owner;
+		newitem->type = type;
+		newitem->value = source;
+		
 		m_ListItems.insert( ListItemsPair(source, newitem) );
 
 		// Find the owner-object
