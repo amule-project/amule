@@ -110,9 +110,9 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleGuiApp::ListenSocketHandler)
 
 	// UDP Socket (servers)
-	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleGuiApp::ServerUDPSocketHandler)
+	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
 	// UDP Socket (clients)
-	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::ClientUDPSocketHandler)
+	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
 	EVT_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)

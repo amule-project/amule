@@ -108,9 +108,8 @@ public:
 
 	// Socket handlers
 	void ListenSocketHandler(wxSocketEvent& event);
-	void ServerUDPSocketHandler(wxSocketEvent& event);
 	void ServerSocketHandler(wxSocketEvent& event);
-	void ClientUDPSocketHandler(wxSocketEvent& event);
+	void UDPSocketHandler(wxSocketEvent& event);
 
 	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;

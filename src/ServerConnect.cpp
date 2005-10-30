@@ -492,7 +492,6 @@ CServerConnect::~CServerConnect()
 	DestroySocket(connectedsocket);
 	connectedsocket = NULL;
 	// close udp socket
-	serverudpsocket->Close();
 	delete serverudpsocket;
 }
 
