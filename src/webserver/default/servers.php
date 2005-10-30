@@ -219,16 +219,56 @@ border-color: black;
   </font>
  </td>
  <td align=right class=tabs>
-  <form><input type="button" name="queue" value="Logout" onClick="self.location.href='?ses=9024819&amp;w=logout'"></form>
+  <form><input type="button" name="queue" value="Logout" onClick="self.location.href='login.html"></form>
  </td>
 </tr>
-</table><font face=Tahoma style="font-size:8pt;">
-&nbsp;
-<table border=0 align=center cellpadding=4 cellspacing=0 width="95%">
+</table>
+<font face=Tahoma style="font-size:8pt;">&nbsp;
 
+<table border=0 align=center cellpadding=4 cellspacing=0 width="95%">
 <tr>
   <td align=center valign=top>
-<p>&nbsp;</p>
+
+<?php
+	$add_server_form = '
+<div class="message"></div>
+<table border=0 align=center cellpadding=4 cellspacing=0 width="60%" display="None">
+<tr>
+<td valign=middle class="addserver-header"><img src="add_server.gif"> <b>Add new server</b></td>
+</tr>
+<tr>
+ <td valign=middle class="addserver-line">
+<form action="servers.php" method="GET">
+  IP or Address <input name="ip" type="text" size="15">
+  Port <input name="port" type="text" size="6">
+  Name <input name="name" type="text" size="30"><br>
+  <input name="cmd" type="hidden" value="add"><br>
+  <input type="submit" value="Add to list">
+</form>
+ </td>
+</tr>
+<tr>
+<td valign=middle class="addserver-header"><img src="add_server.gif"> <b>Update server.met from URL</b></td>
+</tr>
+<tr>
+ <td valign=middle class="addserver-line">
+<form action="servers.php" method="GET">
+  URL <input name="servermeturl" type="text" size="60"><br>
+  <input type="hidden" name=w value="server">
+  <input type="hidden" name=c value="options">
+  <input name="updateservermetfromurl" type="hidden" value="true"><br>
+  <input type="submit" value="Apply">
+</form>
+ </td>
+</tr>
+</table>
+';
+	if ( ($_SESSION["guest_login"] == 0) && $HTTP_GET_VARS["showctrl"] ) {
+		echo $add_server_form;
+	}
+?>
+
+&nbsp;
 <table border=0 align=center cellpadding=4 cellspacing=0 width="100%">
 <tr>
  <td class="smallheader" colspan=5 style="background-color: #000000"><b>Server</b></td>
@@ -237,14 +277,25 @@ border-color: black;
  <td valign=middle class="server-header"><b>Status</b></td>
  <td valign=middle class="server-header"><b>Server name</b></td>
  <td valign=middle class="server-header"><b>users</b></td>
- <td valign=middle class="server-line"><a href="?ses=9024819&w=server&c=disconnect">Disconnect</a></td>
- <td valign=middle class="server-header"><a href="?ses=9024819&w=server&c=options">Server Preferences</a></td>
+ <td valign=middle class="server-line"><a href="servers.php?cmd=disconnect&amp;ip=0&amp;port=0">Disconnect</a></td>
+ <td valign=middle class="server-header"><a href="servers.php?showctrl=1">Server Preferences</a></td>
 </tr>
 <tr>
- <td valign=middle class="server-line">Connected with HighID</td>
- <td valign=middle class="server-line">!-= www.FreeSexBay.com =-! Behemoth</td>
- <td valign=middle class="server-line">     43517</td>
- <td valign=middle class="server-header"><a href="?ses=9024819&w=server&c=connect">Connect to any server</a></td>
+<?php
+		echo '<td valign=middle class="server-line">';
+		$stats = amule_get_stats();
+		if ( $stats["id"] == 0 ) {
+			echo "Not connected";
+		} elseif ( $stats["id"] == 0xffffffff ) {
+			echo "Connecting ...";
+		} else {
+			echo "Connected with ", (($stats["id"] < 16777216) ? "low ID" : "high ID");
+		}
+		echo '</td><td valign=middle class="server-line">', $stats["serv_name"], '</td>';
+		echo '<td valign=middle class="server-line">', $stats["serv_users"], '</td>';
+		
+?>
+ <td valign=middle class="server-header"><a href="servers.php?cmd=connect&amp;ip=0&amp;port=0">Connect to any server</a></td>
  <td valign=middle class="server-line"></td>
 </tr>
 </table>
@@ -254,7 +305,7 @@ border-color: black;
  <td class="smallheader" colspan=6 style="background-color: #000000"><b>Server list</b></td>
 </tr>
 <tr>
- <td valign=middle class="server-header-left"><a href="servers.php?sort=name&sortreverse=true"><b>Server name</b></a></td>
+ <td valign=middle class="server-header-left"><a href="servers.php?sort=name"><b>Server name</b></a></td>
  <td valign=middle class="server-header"><a href="servers.php?sort=description"><b>Description</b></a></td>
  <td valign=middle class="server-header"><a href="servers.php?sort=ip"><b>IP</b></a></td>
  <td valign=middle class="server-header"><a href="servers.php?sort=users"><b>users</b></a></td>
@@ -264,6 +315,12 @@ border-color: black;
 
 <?php
 	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
+		var_dump($HTTP_GET_VARS);
+		if ( $HTTP_GET_VARS["cmd"] == "add" ) {
+			amule_do_add_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["name"]);
+		} else {
+			amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
+		}
 	}
 	
 	$servers = amule_load_vars("servers");
