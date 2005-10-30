@@ -235,8 +235,7 @@ private:
 	void	OnViewFileInfo( wxCommandEvent& event );
 	void	OnViewFileComments( wxCommandEvent& event );
 	void	OnPreviewFile( wxCommandEvent& event );
-	void	OnFakeCheckFile( wxCommandEvent& event );
-
+	
 	// Event-handlers for sources
 	void	OnSwapSource( wxCommandEvent& event );
 	void	OnViewFiles( wxCommandEvent& event );
