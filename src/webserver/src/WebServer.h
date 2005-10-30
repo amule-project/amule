@@ -907,7 +907,8 @@ class CWebServerBase {
 		void Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat);
 		
 		void Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd);
-
+		void Send_AddServer_Cmd(wxString addr, wxString port, wxString name);
+		
 		void Send_Search_Cmd(wxString search, wxString extention, wxString type,
 			bool global, uint32 avail, uint32 min_size, uint32 max_size);
 

@@ -598,6 +598,33 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
+{
+	CECPacket *response = NULL;
+
+	const CECTag *srv_tag = request->GetTagByIndex(0);
+
+	wxString full_addr = srv_tag->GetTagByName(EC_TAG_SERVER_ADDRESS)->GetStringData();
+	wxString name = srv_tag->GetTagByName(EC_TAG_SERVER_NAME)->GetStringData();
+	
+	wxString s_ip = full_addr.Left(full_addr.Find(':'));
+	wxString s_port = full_addr.Mid(full_addr.Find(':') + 1);
+	
+	long port = StrToULong(s_port);
+	CServer* toadd = new CServer(port, s_ip);
+	toadd->SetListName(name.IsEmpty() ? full_addr : name);
+	
+	if ( theApp.AddServer(toadd, true) ) {
+		response = new CECPacket(EC_OP_NOOP);
+	} else {
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, _("Server not added")));
+		delete toadd;
+	}
+	
+	return response;
+}
+
 CECPacket *Get_EC_Response_Server(const CECPacket *request)
 {
 	CECPacket *response = NULL;
@@ -1095,6 +1122,9 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		case EC_OP_SERVER_DISCONNECT:
 		case EC_OP_SERVER_CONNECT:
+		case EC_OP_SERVER_ADD:
+			response = Get_EC_Response_Server_Add(request);
+			break;
 		case EC_OP_SERVER_REMOVE:
 			response = Get_EC_Response_Server(request);
 			break;

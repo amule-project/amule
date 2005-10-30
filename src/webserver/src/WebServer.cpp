@@ -445,6 +445,22 @@ void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 	Send_Discard_V2_Request(&ec_cmd);
 }
 
+void CWebServerBase::Send_AddServer_Cmd(wxString addr, wxString port, wxString name)
+{
+	CECPacket ec_cmd(EC_OP_SERVER_ADD);
+
+	addr.Trim();
+	port.Trim();
+	
+	CECTag srv_tag(EC_TAG_SERVER, addr + wxT(":") + port);
+	srv_tag.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, addr + wxT(":") + port));
+	srv_tag.AddTag(CECTag(EC_TAG_SERVER_NAME, name));
+	
+	ec_cmd.AddTag(srv_tag);
+	
+	Send_Discard_V2_Request(&ec_cmd);
+}
+
 void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 {
 	CECPacket *ec_cmd = 0;

@@ -272,6 +272,41 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
+ * Usage amule_add_server_cmd($server_addr, $server_port, $server_name);
+ */
+void php_native_add_server_cmd(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING) ) {
+		php_report_error(PHP_ERROR, "Missing or bad argument 1: $server_addr");
+		return;
+	}
+	char *addr = si->var->value.str_val;
+	
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si ) {
+		php_report_error(PHP_ERROR, "Missing argument 2: $server_port");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	int port = si->var->value.int_val;
+
+	si = get_scope_item(g_current_scope, "__param_2");
+	if ( !si || (si->var->value.type != PHP_VAL_STRING) ) {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 3: $server_name");
+		return;
+	}
+	char *name = si->var->value.str_val;
+
+#ifndef PHP_STANDALONE_EN
+	CPhPLibContext::g_curr_context->WebServer()->Send_AddServer_Cmd(wxString(char2unicode(addr)),
+		wxString::Format(_("%d"), port), wxString(char2unicode(name)));
+#else
+	printf("php_native_add_server_cmd: addr=%s port=%04d name=%s\n", addr, port, name);
+#endif
+}
+
+/*
  * Usage amule_server_cmd($server_ip, $server_port, "command");
  */
 void php_native_server_cmd(PHP_VALUE_NODE *)
@@ -1314,6 +1349,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"amule_do_server_cmd",
 		3,
 		php_native_server_cmd,
+	},
+	{
+		"amule_do_add_server_cmd",
+		3,
+		php_native_add_server_cmd,
 	},
 	{
 		"amule_do_download_cmd",
