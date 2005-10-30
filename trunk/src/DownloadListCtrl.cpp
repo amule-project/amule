@@ -187,7 +187,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	m_filecount = 0;
 	LoadSettings();
 	
-	s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? 1 : -1;
+	s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	s_lastColumn = GetSortColumn();
 }
 
@@ -872,7 +872,7 @@ void CDownloadListCtrl::OnColumnLClick(wxListEvent& evt)
 	// Only change the last column if the sorted column has changed
 	if (GetSortColumn() != (unsigned)evt.GetColumn()) {
 		s_lastColumn = GetSortColumn();
-		s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? 1 : -1;
+		s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	} else {
 		// Reverse the last-column order to preserve the sorting
 		s_lastOrder *= -1;
