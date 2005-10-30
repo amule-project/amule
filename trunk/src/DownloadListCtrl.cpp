@@ -129,8 +129,6 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_GETED2KLINK,		CDownloadListCtrl::OnGetED2KLink )
 	EVT_MENU( MP_GETHTMLED2KLINK,		CDownloadListCtrl::OnGetED2KLink )
 
-	EVT_MENU( MP_FAKECHECK1,		CDownloadListCtrl::OnFakeCheckFile )
-	EVT_MENU( MP_FAKECHECK2,		CDownloadListCtrl::OnFakeCheckFile )
 	EVT_MENU( MP_METINFO,			CDownloadListCtrl::OnViewFileInfo )
 	EVT_MENU( MP_VIEW,			CDownloadListCtrl::OnPreviewFile )
 	EVT_MENU( MP_VIEWFILECOMMENTS,		CDownloadListCtrl::OnViewFileComments )
@@ -802,26 +800,6 @@ void CDownloadListCtrl::OnPreviewFile( wxCommandEvent& WXUNUSED(event) )
 	}
 }
 
-
-void CDownloadListCtrl::OnFakeCheckFile( wxCommandEvent& event )
-{
-	ItemList files = ::GetSelectedItems( this, itFILES );
-
-	if ( files.size() == 1 ) {
-		CPartFile* file = (CPartFile*)files.front()->value;
-	
-		switch ( event.GetId() ) {
-			case MP_FAKECHECK1:
-				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl(file));
-				break;
-			case MP_FAKECHECK2:
-				theApp.amuledlg->LaunchUrl(theApp.GenFakeCheckUrl2(file));
-				break;
-		}
-	}
-}
-
-
 void CDownloadListCtrl::OnSwapSource( wxCommandEvent& WXUNUSED(event) )
 {
 	ItemList sources = ::GetSelectedItems( this, itSOURCES );
@@ -987,16 +965,6 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 			//-----------------------------------------------------
 			m_menu->Append( MP_RAZORSTATS,
 				_("Get Razorback 2's stats for this file"));
-			//-----------------------------------------------------
-			m_menu->AppendSeparator();
-			//-----------------------------------------------------
-			wxMenu* fakecheckmenu = new wxMenu();
-			fakecheckmenu->Append(MP_FAKECHECK2,
-				_("jugle.net Fake Check"));
-			fakecheckmenu->Append(MP_FAKECHECK1,
-				_("'Donkey Fakes' Fake Check"));
-			m_menu->Append(MP_MENU_FAKE,
-				_("FakeCheck"), fakecheckmenu);
 			//-----------------------------------------------------
 			m_menu->AppendSeparator();
 			//-----------------------------------------------------

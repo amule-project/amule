@@ -1405,6 +1405,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 }
 
 void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
+	Freeze();
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
 	wxToolBar* current = GetToolBar();
 	if (current) {
@@ -1421,6 +1422,7 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	} else {
 		muleToolbar( m_wndToolbar );		
 	}
+	Thaw();
 }
 
 void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
