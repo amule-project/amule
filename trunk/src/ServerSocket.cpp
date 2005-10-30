@@ -406,7 +406,9 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				CMemFile sources((byte*)packet,size);
 				CMD4Hash fileid = sources.ReadHash();
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_SERVER);
+					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_LOCAL_SERVER);
+				} else {
+					AddDebugLogLineM(true, logServer, wxT("Sources received for unknown file: ") + fileid.Encode());			
 				}
 				break;
 			}
