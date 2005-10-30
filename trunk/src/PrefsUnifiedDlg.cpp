@@ -114,7 +114,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_COLOR_BUTTON,		PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_BUTTON(IDC_IPFILTERUPDATE,		PrefsUnifiedDlg::OnButtonIPFilterUpdate)
 	EVT_CHOICE(IDC_COLORSELECTOR,		PrefsUnifiedDlg::OnColorCategorySelected)
-	EVT_CHOICE(IDC_FCHECK,			PrefsUnifiedDlg::OnFakeBrowserChange)
+	EVT_CHOICE(IDC_BROWSER,			PrefsUnifiedDlg::OnBrowserChange)
 	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL,PrefsUnifiedDlg::OnPrefsPageChange)
 
 	EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)
@@ -237,11 +237,11 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 					IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
 			#endif /* USE_WX_TRAY || __SYSTRAY_DISABLED__ */
 			#ifdef __WXMSW__ 
-				CastChild(IDC_FCHECKTABS, wxCheckBox)->Enable(false);
-				wxChoice *fakeCheck = CastChild(IDC_FCHECK, wxChoice);
-				fakeCheck->Clear();
-				fakeCheck->Append(_("System default"));
-				fakeCheck->Append(_("User Defined"));
+				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
+				wxChoice *browserCheck = CastChild(IDC_BROWSER, wxChoice);
+				browserCheck->Clear();
+				browserCheck->Append(_("System default"));
+				browserCheck->Append(_("User Defined"));
 			#endif /* __WXMSW__ */
 		}
 		
@@ -371,11 +371,11 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
 	
 	// Enable/Disable some controls
-	bool fcheckCustom = CastChild( IDC_FCHECK, wxChoice )->GetSelection() == CastChild( IDC_FCHECK, wxChoice )->GetCount() - 1;
-	FindWindow( IDC_FCHECKSELF )->Enable( fcheckCustom );
-	FindWindow( IDC_SELBROWSER )->Enable( fcheckCustom );
+	bool customBrowser = CastChild( IDC_BROWSER, wxChoice )->GetSelection() == CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
+	FindWindow( IDC_BROWSERSELF )->Enable( customBrowser );
+	FindWindow( IDC_SELBROWSER )->Enable( customBrowser );
 	#ifndef __WXMSW__
-		FindWindow( IDC_FCHECKTABS )->Enable( !fcheckCustom );
+		FindWindow( IDC_BROWSERTABS )->Enable( !customBrowser );
 	#endif
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
@@ -755,11 +755,11 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
+void PrefsUnifiedDlg::OnBrowserChange( wxCommandEvent& evt )
 {
-	wxTextCtrl* textctrl = CastChild( IDC_FCHECKSELF, wxTextCtrl );
+	wxTextCtrl* textctrl = CastChild( IDC_BROWSERSELF, wxTextCtrl );
 	wxButton* btn = CastChild( IDC_SELBROWSER, wxButton );
-	bool enable = evt.GetSelection() == CastChild( IDC_FCHECK, wxChoice )->GetCount() - 1;
+	bool enable = evt.GetSelection() == CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
 
 	if (textctrl) {
 		textctrl->Enable( enable );
@@ -768,7 +768,7 @@ void PrefsUnifiedDlg::OnFakeBrowserChange( wxCommandEvent& evt )
 		btn->Enable( enable );
 	}
 #ifndef __WXMSW__
-	FindWindow( IDC_FCHECKTABS )->Enable( !enable );
+	FindWindow( IDC_BROWSERTABS )->Enable( !enable );
 #endif
 }
 
@@ -868,7 +868,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 			title = _("Browse for videoplayer");
 			break;
 		case IDC_SELBROWSER:
-			id = IDC_FCHECKSELF;
+			id = IDC_BROWSERSELF;
 			title = _("Select browser");
 			break;
 		default:
