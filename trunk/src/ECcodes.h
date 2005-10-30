@@ -377,6 +377,14 @@ enum {
 	EC_OP_SERVER_REMOVE,
 
 		/*
+		 * \brief Add server from list.
+		 *
+		 * \par Tags:
+		 *	::EC_TAG_SERVER (1) identifies the server to be added
+		 */
+	EC_OP_SERVER_ADD,
+
+		/*
 		 * \brief Update server.met from given URL
 		 *
 		 * \par Tags:
