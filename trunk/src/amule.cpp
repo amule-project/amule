@@ -2115,7 +2115,10 @@ void CamuleApp::OnUnhandledException()
 void CamuleApp::StartKad()
 {
 	if (!Kademlia::CKademlia::isRunning() && thePrefs::GetNetworkKademlia()) {
-		Kademlia::CKademlia::start();
+		// Kad makes no sense without the Client-UDP socket.
+		if (!thePrefs::IsUDPDisabled()) {
+			Kademlia::CKademlia::start();
+		}
 	}
 }
 
