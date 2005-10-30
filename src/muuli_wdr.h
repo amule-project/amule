@@ -231,11 +231,11 @@ const int IDC_MINTRAY = 10151;
 const int IDC_DESKTOPMODE = 10152;
 const int IDC_TOOLTIPDELAY_LBL = 10153;
 const int IDC_TOOLTIPDELAY = 10154;
-const int IDC_FCHECK = 10155;
+const int IDC_BROWSER = 10155;
 const int ID_CUSTOMBROWSETEXT = 10156;
-const int IDC_FCHECKSELF = 10157;
+const int IDC_BROWSERSELF = 10157;
 const int IDC_SELBROWSER = 10158;
-const int IDC_FCHECKTABS = 10159;
+const int IDC_BROWSERTABS = 10159;
 wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 const int IDC_DLIMIT_LBL = 10160;
