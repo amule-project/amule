@@ -45,6 +45,8 @@ public:
 	 * @param testResult TestResult instance that the user wish to print
 	 */
 	virtual void print(const TestResult *testResult) = 0;
+
+	virtual ~TestPrinter() {};
 };
 
 } // MuleUnit ns
