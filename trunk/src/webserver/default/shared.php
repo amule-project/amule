@@ -228,17 +228,17 @@ border-color: black;
 
 <td valign=middle class="shared-header-left"><a href="shared.php?sort=name"><b>File Name</b></a></td>
 <td valign=middle class="shared-header">
-	<a href="shared.php?sort=transferred"><b>Transferred Data</b></a>&nbsp
-	<a href="shared.php?sort=alltimetransferred">(Total)
+	<a href="shared.php?sort=xfer"><b>Transferred Data</b></a>&nbsp
+	<a href="shared.php?sort=allxref">(Total)
 </td>
 <td valign=middle class="shared-header">
-	<a href="shared.php?sort=requests"><b>Requests</b></a>&nbsp
-	<a href="shared.php?sort=alltimerequests"><b>(Total)</b></a>&nbsp
+	<a href="shared.php?sort=req"><b>Requests</b></a>&nbsp
+	<a href="shared.php?sort=allreq"><b>(Total)</b></a>&nbsp
 </td>
 
 <td valign=middle class="shared-header">
-	<a href="shared.php?sort=accepts"><b>Accepted Requests</b></a>&nbsp
-	<a href="shared.php?sort=alltimeaccepts"><b>(Total)</b></a>
+	<a href="shared.php?sort=acc"><b>Accepted Requests</b></a>&nbsp
+	<a href="shared.php?sort=allacc"><b>(Total)</b></a>
 </td>
 <td valign=middle class="shared-header"><a href="shared.php?sort=size"><b>Size</b></a></td>
 <td valign=middle class="shared-header"><a href="shared.php?sort=priority"><b>Priority</b></a></td>
@@ -272,7 +272,60 @@ border-color: black;
 			return $result;
 		}
 
+		//
+		// declare it here, before any function reffered it in "global"
+		//
+		$sort_order;$sort_reverse;
+
+		function my_cmp($a, $b)
+		{
+			global $sort_order, $sort_reverse;
+			
+			switch ( $sort_order) {
+				case "size": $result = $a->size > $b->size; break;
+				case "name": $result = $a->name > $b->name; break;
+				case "xfer": $result = $a->xfer > $b->xfer; break;
+				case "allxfer": $result = $a->xfer_all > $b->xfer_all; break;
+				case "acc": $result = $a->accept > $b->accept; break;
+				case "allacc": $result = $a->accept_all > $b->accept_all; break;
+				case "req": $result = $a->req > $b->req; break;
+				case "req_all": $result = $a->req_all > $b->req_all; break;
+				case "prio": $result = PrioString($a) > PrioString($b); break;
+			}
+
+			if ( $sort_reverse ) {
+				$result = !$result;
+			}
+			return $result;
+		}
+
+		if (($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0)) {
+			if ($HTTP_GET_VARS["cmd"] == "reload") {
+				amule_do_reload_shared_cmd();
+			} else {
+				amule_do_shared_cmd($HTTP_GET_VARS["file"], $HTTP_GET_VARS["cmd"]);
+			}
+		}
+		
 		$shared = amule_load_vars("shared");
+
+		$sort_order = $HTTP_GET_VARS["sort"];
+
+		if ( $sort_order == "" ) {
+			$sort_order = $_SESSION["shared_sort"];
+		} else {
+			if ( $_SESSION["sort_reverse"] == "" ) {
+				$_SESSION["sort_reverse"] = 0;
+			} else {
+				$_SESSION["sort_reverse"] = !$_SESSION["sort_reverse"];
+			}
+		}
+
+		$sort_reverse = $_SESSION["sort_reverse"];
+		if ( $sort_order != "" ) {
+			$_SESSION["shared_sort"] = $sort_order;
+			usort(&$shared, "my_cmp");
+		}
 
 		foreach ($shared as $file) {
 			echo '<tr>';
@@ -289,9 +342,9 @@ border-color: black;
 				$file->link, '"><img src="l_ed2klink.gif" alt="ED2K Link(s)"></a></acronym>';
 
 			if ( $_SESSION["guest_login"] == 0 ) {
-				echo '<acronym title="Increase Priority"><a href=shared.php?cmd=prioup&file=', $file->hash,
+				echo '<acronym title="Increase Priority"><a href="shared.php?cmd=prioup&file=', $file->hash,
 					'"><img src="l_up.gif" alt="Increase Priority"></a></acronym>';
-				echo '<acronym title="Decrease Priority"><a href=shared.php?cmd=priodown&file=', $file->hash,
+				echo '<acronym title="Decrease Priority"><a href="shared.php?cmd=priodown&file=', $file->hash,
 					'"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>';
 			}
 		}
