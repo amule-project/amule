@@ -58,6 +58,7 @@ core_sources = \
 	IPFilter.cpp \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
+	MuleUDPSocket.cpp \
 	PartFileConvert.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
@@ -327,6 +328,7 @@ noinst_HEADERS = AddFileThread.h \
 		 MuleNotebook.h \
 		 MuleTextCtrl.h \
 		 MuleTrayIcon.h \
+		 MuleUDPSocket.h \
 		 muuli_wdr.h \
 		 NetworkFunctions.h \
 		 OPCodes.h \

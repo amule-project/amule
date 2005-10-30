@@ -25,30 +25,24 @@
 
 #include "Types.h"
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
-#include <wx/socket.h>
-
 #include "ClientUDPSocket.h"	// Interface declarations
-#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
-#include "Preferences.h"	// Needed for CPreferences
-#include "PartFile.h"		// Needed for CPartFile
-#include "updownclient.h"	// Needed for CUpDownClient
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "Packet.h"		// Needed for CPacket
-#include "SharedFileList.h"	// Needed for CSharedFileList
-#include "KnownFile.h"		// Needed for CKnownFile
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "OPCodes.h"		// Needed for OP_EMULEPROT
-#include "Statistics.h"		// Needed for theStats
-#include "amule.h"		// Needed for theApp
-#include "ClientList.h"		// Needed for clientlist (buddy support)
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "Preferences.h"		// Needed for CPreferences
+#include "PartFile.h"			// Needed for CPartFile
+#include "updownclient.h"		// Needed for CUpDownClient
+#include "UploadQueue.h"		// Needed for CUploadQueue
+#include "Packet.h"				// Needed for CPacket
+#include "SharedFileList.h"		// Needed for CSharedFileList
+#include "KnownFile.h"			// Needed for CKnownFile
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
+#include "OPCodes.h"			// Needed for OP_EMULEPROT
+#include "Statistics.h"			// Needed for theStats
+#include "amule.h"				// Needed for theApp
+#include "ClientList.h"			// Needed for clientlist (buddy support)
+#include "ListenSocket.h"		// Needed for CClientReqSocket
 #include "OtherFunctions.h"
-#include "MemFile.h"		// Needed for CMemFile
+#include "MemFile.h"			// Needed for CMemFile
 #include "Logger.h"
 #include "UploadBandwidthThrottler.h"
-
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/io/IOException.h"
 #include "zlib.h"
@@ -57,91 +51,63 @@
 // CClientUDPSocket -- Extended eMule UDP socket
 //
 
-IMPLEMENT_DYNAMIC_CLASS(CClientUDPSocket, CDatagramSocketProxy)
-
-CClientUDPSocket::CClientUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
-	: CDatagramSocketProxy(address, wxSOCKET_NOWAIT, ProxyData)
+CClientUDPSocket::CClientUDPSocket(const amuleIPV4Address& address, const CProxyData* ProxyData)
+	: CMuleUDPSocket(wxT("Client UDP-Socket"), CLIENTUDPSOCKET_HANDLER, address, ProxyData)
 {
-	m_bWouldBlock = false;
-
-	SetEventHandler(theApp, CLIENTUDPSOCKET_HANDLER);
-	SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
-	Notify(true);
+	if (!thePrefs::IsUDPDisabled()) {
+		Open();
+	}
 }
 
-CClientUDPSocket::~CClientUDPSocket()
-{
-    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
 
-	SetNotify(0);
-	Notify(FALSE);
+void CClientUDPSocket::OnReceive(int errorCode)
+{
+	CMuleUDPSocket::OnReceive(errorCode);
+
+	// TODO: A better solution is needed.
+	if (thePrefs::IsUDPDisabled()) {
+		Close();
+	}
 }
 
-#define CLIENT_UDP_BUFFER_SIZE 5000
 
-void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
+void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length)
 {
-	amuleIPV4Address	addr;
-	byte				buffer[CLIENT_UDP_BUFFER_SIZE];
-	uint32				length;
-
-	{
-		wxMutexLocker lock(m_sendLocker);
+	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
-		length = RecvFrom(addr, buffer, CLIENT_UDP_BUFFER_SIZE).LastCount();
-		
-		if (Error()) {
-			AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Error while reading from CClientUDPSocket: %i"), LastError()));
-			return;
-		} else if (length < 2) {
-			AddDebugLogLineM(false, logClientUDP, wxT("Packet too short on CClientUDPSocket::OnReceive"));
-			return;
-		}
-		
-		if (thePrefs::IsUDPDisabled()) {
-			Close();
-			return;
-		}
-	}
-
-	if (!StringIPtoUint32(addr.IPAddress())) {
-		printf("Unknown ip receiving an UDP packet! Ignoring\n");
-		wxASSERT(0);
-		return;
-	}
-	
-	if (!addr.Service()) {
-		printf("Unknown port receiving an UDP packet! Ignoring\n");
-		wxASSERT(0);
-		return;
-	}
+	uint8 protocol	= buffer[0];
+	uint8 opcode	= buffer[1];
+	uint32 ip		= StringIPtoUint32(addr.IPAddress());
+	uint16 port		= addr.Service();
 	
 	try {
-		switch (buffer[0]) {
+		switch (protocol) {
 			case OP_EMULEPROT:
-				ProcessPacket(buffer+2,length-2,buffer[1],StringIPtoUint32(addr.IPAddress()),addr.Service());
+				ProcessPacket((char*)buffer + 2,length - 2, opcode, ip, port);
 				break;
+				
 			case OP_KADEMLIAHEADER:
 				theStats::AddDownOverheadKad(length);
-				Kademlia::CKademlia::processPacket(buffer, length, wxUINT32_SWAP_ALWAYS(StringIPtoUint32(addr.IPAddress())),addr.Service());
+				Kademlia::CKademlia::processPacket(buffer, length, wxUINT32_SWAP_ALWAYS(ip), port);
 				break;
+				
 			case OP_KADEMLIAPACKEDPROT: {
 				theStats::AddDownOverheadKad(length);
 				uint32 nNewSize = length*10+300; // Should be enough...
 				byte unpack[nNewSize];
 				uLongf unpackedsize = nNewSize-2;
-				uint16 result = uncompress(unpack +2, &unpackedsize, buffer+2, length-2);
+				uint16 result = uncompress(unpack + 2, &unpackedsize, buffer + 2, length-2);
 				if (result == Z_OK) {
 					unpack[0] = OP_KADEMLIAHEADER;
-					unpack[1] = buffer[1];
-					Kademlia::CKademlia::processPacket(unpack, unpackedsize+2, wxUINT32_SWAP_ALWAYS(StringIPtoUint32(addr.IPAddress())),addr.Service());
+					unpack[1] = opcode;
+					Kademlia::CKademlia::processPacket(unpack, unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
 				} else {
 					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}
 				break;
 			}
 			default:
-				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"),buffer[0]));
+				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"), protocol));
 		}
 	} catch (const wxString& e) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
@@ -153,7 +119,7 @@ void CClientUDPSocket::OnReceive(int WXUNUSED(nErrorCode))
 }
 
 
-bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port)
+void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	switch (opcode) {
 		case OP_REASKCALLBACKUDP: {
@@ -228,15 +194,10 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					}
 					
 					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-					#ifdef __USE_DEBUG__						
-					if (thePrefs.GetDebugClientUDPLevel() > 0) {
-						DebugSend("OP__ReaskAck", sender);
-					}
-					#endif
 					CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
 					response->SetOpCode(OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-					theApp.clientudp->SendPacket(response, host, port);
+					SendPacket(response, host, port);
 				} else {
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
 				}						
@@ -286,132 +247,6 @@ bool CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		
 		default:
 			theStats::AddDownOverheadOther(size);				
-			return false;
 	}
-
-	return true;
 }
 
-
-void CClientUDPSocket::OnSend(int nErrorCode)
-{
-	if (nErrorCode) {
-		return;
-	}
-
-	wxMutexLocker lock(m_sendLocker);
-	m_bWouldBlock = false;
-
-    if(!controlpacket_queue.IsEmpty()) {
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-    }
-}
-
-
-#define UDPMAXQUEUETIME                       SEC2MS(30)      //30 Seconds
-
-SocketSentBytes CClientUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, uint32 WXUNUSED(minFragSize))
-{
-    wxMutexLocker lock(m_sendLocker);
-    uint32 sentBytes = 0;
-
-	while (!controlpacket_queue.IsEmpty() && !IsBusy() && sentBytes < maxNumberOfBytesToSend){ // ZZ:UploadBandWithThrottler (UDP)
-		UDPPack cur_packet = controlpacket_queue.GetHead();
-		if( GetTickCount() - cur_packet.dwTime < UDPMAXQUEUETIME )
-		{
-			char* sendbuffer = new char[cur_packet.packet->GetPacketSize()+2];
-			memcpy(sendbuffer,cur_packet.packet->GetUDPHeader(),2);
-			memcpy(sendbuffer+2,cur_packet.packet->GetDataBuffer(),cur_packet.packet->GetPacketSize());
-
-            if (SendTo(sendbuffer, cur_packet.packet->GetPacketSize()+2, cur_packet.dwIP, cur_packet.nPort)){
-                sentBytes += cur_packet.packet->GetPacketSize()+2; // ZZ:UploadBandWithThrottler (UDP)
-
-				controlpacket_queue.RemoveHead();
-				delete cur_packet.packet;
-				delete[] sendbuffer;
-            } else {
-				// TODO: Needs better error handling, see SentTo
-				delete[] sendbuffer;
-				break;
-			}
-		} else {
-			controlpacket_queue.RemoveHead();
-			delete cur_packet.packet;
-		}
-	}
-
-    if(!IsBusy() && !controlpacket_queue.IsEmpty()) {
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-    }
-
-    SocketSentBytes returnVal = { true, 0, sentBytes };
-    return returnVal;
-}
-
-
-bool CClientUDPSocket::SendTo(char* lpBuf,int nBufLen,uint32 dwIP, uint16 nPort)
-{
-	amuleIPV4Address addr;
-	addr.Hostname(dwIP);
-	addr.Service(nPort);
-
-	// We better clear this flag here, status might have been changed
-	// between the U.B.T. adition and the real sending happening later
-	m_bWouldBlock = false; 
-
-	bool sent = false;
-	
-	if (Ok()) {
-		CDatagramSocketProxy::SendTo(addr,lpBuf,nBufLen);
-
-		if (Error()) {
-			wxSocketError error = LastError();
-			printf("Client UDP port returned an error: %i\n", error);
-			
-			switch (error) {
-				case wxSOCKET_WOULDBLOCK:
-					// Socket is busy and can't send this data right now,
-					// so we just return not sent and set the wouldblock 
-					// flag so it gets resent when socket is ready.
-					m_bWouldBlock = true;
-					sent = false;
-					break;
-					
-				default:
-					// An error which we can't handle happended, so we drop 
-					// the packet rather than risk entering an infinite loop.
-					printf("WARNING! Discarded packet due to errors while sending.\n");
-					sent = true;
-					break;
-			}
-		} else {
-			sent = true;
-		}
-	} else {
-		// If the socket is not ok, we can do nothing... just run for your life
-		// (and return true or this packet will be sent over and over again)
-		sent = true;
-	}
-
-	return sent;
-}
-
-
-bool CClientUDPSocket::SendPacket(CPacket* packet, uint32 dwIP, uint16 nPort)
-{
-	wxASSERT(nPort);
-	
-	UDPPack newpending;
-	newpending.dwIP = dwIP;
-	newpending.nPort = nPort;
-	newpending.packet = packet;
-	newpending.dwTime = GetTickCount();
-    
-	{
-		wxMutexLocker lock(m_sendLocker);
-		controlpacket_queue.AddTail(newpending);
-	}
-	
-	theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
-	return true;
-}

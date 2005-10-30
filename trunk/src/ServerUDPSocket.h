@@ -26,35 +26,26 @@
 #ifndef SERVERUDPSOCKET_H
 #define SERVERUDPSOCKET_H
 
-#include "Types.h"				// Needed for uint16 and uint32
-#include "Proxy.h"				// Needed for CDatagramSocketProxy and amuleIPV4Address
-
-#include <list>
+#include "MuleUDPSocket.h"
 
 
 class CPacket;
 class CServer;
 class CMemFile;
-class CServerConnect;
 
 
-class CServerUDPSocket : public CDatagramSocketProxy
+class CServerUDPSocket : public CMuleUDPSocket
 {
-	friend class CServerConnect;
-
 public:
 	CServerUDPSocket(amuleIPV4Address& addr, const CProxyData* ProxyData = NULL);
-	~CServerUDPSocket();
 
 	void	SendPacket(CPacket* packet, CServer* host, bool delPacket);
 	void	OnHostnameResolved(uint32 ip);
 
-	virtual void OnReceive(int nErrorCode);
-
 private:
-	void	SendBuffer();
-	void	ProcessPacket(CMemFile& packet, int16 size, int8 opcode, const wxString& host, uint16 port);
- 	int		DoReceive(amuleIPV4Address& addr, char* buffer, uint32 max_size);
+	void	OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length);
+	void	ProcessPacket(CMemFile& packet, uint8 opcode, const wxString& host, uint16 port);
+	void	SendQueue();
 
 	struct ServerUDPPacket {
 		CPacket*	packet;

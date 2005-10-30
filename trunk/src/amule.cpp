@@ -75,7 +75,6 @@
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCredits.h"		// Needed for CClientCreditsList
-#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "ServerConnect.h"		// Needed for CServerConnect
@@ -86,7 +85,8 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
+#include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
+#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket & CMuleUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
@@ -293,6 +293,9 @@ int CamuleApp::OnExit()
 	
 	delete listensocket;
 	listensocket = NULL;
+
+	delete clientudp;
+	clientudp = NULL;
 	
 	delete knownfiles;
 	knownfiles = NULL;
@@ -998,15 +1001,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Create the UDP socket.
 	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
 	// Default is port 4672.
+	myaddr.Service(thePrefs::GetUDPPort());
+	clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
+	
 	if (!thePrefs::IsUDPDisabled()) {
-		myaddr.Service(thePrefs::GetUDPPort());
-		clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
-			% ip % (unsigned int)(thePrefs::GetUDPPort());
+			% ip % thePrefs::GetUDPPort();
 	} else {
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
-		
-		clientudp = NULL;
 	}	
 	
 	return ok;
@@ -1352,7 +1354,7 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 void CamuleApp::OnUDPDnsDone(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	CServerUDPSocket* socket=(CServerUDPSocket*)evt.GetClientData();	
+	CServerUDPSocket* socket =(CServerUDPSocket*)evt.GetClientData();	
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 
@@ -1579,9 +1581,6 @@ void CamuleApp::ShutDown() {
 	// Close sockets to avoid new clients coming in
 	if (listensocket) {
 		listensocket->StopListening();
-	}
-	if (clientudp) {
-		clientudp->Destroy();
 	}
 	if (serverconnect) {
 		serverconnect->Disconnect();
@@ -2045,60 +2044,29 @@ void CamuleApp::ShowConnectionState() {
 	ShowUserCount();
 }
 
-void CamuleApp::ServerUDPSocketHandler(wxSocketEvent& event)
+
+void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
-	CServerUDPSocket *socket = dynamic_cast<CServerUDPSocket *>(event.GetSocket());
-	wxASSERT(socket);
+	CMuleUDPSocket* socket = (CMuleUDPSocket*)(event.GetClientData());
+	wxCHECK_RET(socket, wxT("No socket owner specified."));
 	
-	if(!socket) {
-		// This should never happen, anyway, there is nothing to do.
-		return;
-	}
-
 	if (!IsRunning() && !IsOnShutDown()) {
-		// Back to the queue!
-		wxSocketEvent input_event(SERVERUDPSOCKET_HANDLER);
-		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
-		input_event.SetEventObject(socket);
-		theApp.AddPendingEvent(input_event);
-		return;
+		if (event.GetSocketEvent() == wxSOCKET_INPUT) {
+			// Back to the queue!
+			theApp.AddPendingEvent(event);
+			return;
+		}
 	}
 
-	switch(event.GetSocketEvent()) {
+	switch (event.GetSocketEvent()) {
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
 			break;
-		default:
-			wxASSERT(0);
-			break;
-	}
-}
-
-void CamuleApp::ClientUDPSocketHandler(wxSocketEvent& event)
-{
-	CClientUDPSocket *socket = dynamic_cast<CClientUDPSocket *>(event.GetSocket());
-	wxASSERT(socket);
-	if(!socket) {
-		// This should never happen, anyway, there is nothing to do.
-		return;
-	}
-
-	if (!IsRunning() && !IsOnShutDown()) {
-		// Back to the queue!
-		wxSocketEvent input_event(CLIENTUDPSOCKET_HANDLER);
-		input_event.m_event = (wxSocketNotify)(wxSOCKET_INPUT);
-		input_event.SetEventObject(socket);
-		theApp.AddPendingEvent(input_event);
-		return;
-	}
-
-	switch(event.GetSocketEvent()) {
-		case wxSOCKET_INPUT:
-			socket->OnReceive(0);
-			break;
+			
 		case wxSOCKET_OUTPUT:
 			socket->OnSend(0);
 			break;
+			
 		default:
 			wxASSERT(0);
 			break;
