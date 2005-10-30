@@ -138,8 +138,6 @@ public:
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
-	wxString	GenFakeCheckUrl(const CAbstractFile *f);
-	wxString	GenFakeCheckUrl2(const CAbstractFile *f);
 	
 	void RunAICHThread();
 	
@@ -377,8 +375,6 @@ public:
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
 	wxString CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
-	wxString GenFakeCheckUrl(const CAbstractFile *f);
-	wxString GenFakeCheckUrl2(const CAbstractFile *f);
 	
 	virtual void NotifyEvent(const GUIEvent& event);
 
