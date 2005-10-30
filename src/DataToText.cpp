@@ -126,12 +126,13 @@ const wxString GetSoftName(unsigned int software_ident)
 wxString OriginToText(unsigned int source_from)
 {
 	switch ((ESourceFrom)source_from) {
-		case SF_SERVER:		return wxTRANSLATE("Server");
-		case SF_KADEMLIA:	return wxTRANSLATE("Kad");
-		case SF_SOURCE_EXCHANGE: return wxTRANSLATE("Source Exchange");
-		case SF_PASSIVE:	return wxTRANSLATE("Passive");
-		case SF_LINK:		return wxTRANSLATE("Link");
-		case SF_SOURCE_SEEDS:	return wxTRANSLATE("Source Seeds");
+		case SF_LOCAL_SERVER:		return wxTRANSLATE("Local Server");
+		case SF_REMOTE_SERVER:		return wxTRANSLATE("Remote Server");
+		case SF_KADEMLIA:			return wxTRANSLATE("Kad");
+		case SF_SOURCE_EXCHANGE: 	return wxTRANSLATE("Source Exchange");
+		case SF_PASSIVE:			return wxTRANSLATE("Passive");
+		case SF_LINK:				return wxTRANSLATE("Link");
+		case SF_SOURCE_SEEDS:		return wxTRANSLATE("Source Seeds");
 		case SF_NONE:
 		default:		return wxTRANSLATE("Unknown");
 	}
