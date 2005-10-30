@@ -241,11 +241,6 @@ protected:
 	void OnPopupGetUrl( wxCommandEvent& event );
 
 	/**
-	 * Event handler for fake-check menu items.
-	 */
-	void OnPopupFakeCheck( wxCommandEvent& event );
-
-	/**
 	 * Event handler for Razorback 2 stats menu items.
 	 */
 	void OnRazorStatsCheck( wxCommandEvent& event );

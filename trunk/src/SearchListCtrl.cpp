@@ -57,8 +57,6 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_GETED2KLINK,     CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
-	EVT_MENU( MP_FAKECHECK1,      CSearchListCtrl::OnPopupFakeCheck)
-	EVT_MENU( MP_FAKECHECK2,      CSearchListCtrl::OnPopupFakeCheck)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 
@@ -449,9 +447,6 @@ void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
 		menu->AppendSeparator();
 		menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		menu->AppendSeparator();
-		menu->Append( MP_FAKECHECK2, _("jugle.net Fake Check")); // deltahf -> fakecheck
-		menu->Append( MP_FAKECHECK1, _("'Donkey Fakes' Fake Check"));
-		menu->AppendSeparator();
 
 		// These should only be enabled for single-selections
 		bool enable = GetSelectedItemCount();
@@ -508,31 +503,6 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& event )
 	
 }
 
-void CSearchListCtrl::OnPopupFakeCheck( wxCommandEvent& event )
-{
-	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item == -1 ) {
-		return;
-	}
-
-	CSearchFile* file = (CSearchFile*)GetItemData( item );
-	wxString URL;
-
-	// Add new cases as nescesarry
-	switch ( event.GetId() ) {
-		case MP_FAKECHECK1:
-			URL = theApp.GenFakeCheckUrl( file );
-			break;
-		
-		case MP_FAKECHECK2:
-			URL = theApp.GenFakeCheckUrl2( file );
-			break;
-	}
-
-	if ( !URL.IsEmpty() ) {
-		theApp.amuledlg->LaunchUrl( URL );
-	}
-}
 
 void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 {

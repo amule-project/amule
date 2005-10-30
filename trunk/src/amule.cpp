@@ -1087,23 +1087,6 @@ wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
 }
 
 
-// Generates an URL for checking if a file is "fake"
-wxString CamuleApp::GenFakeCheckUrl(const CAbstractFile *f)
-{
-	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
-	strURL = validateURI( strURL +  CreateED2kLink( f ) );
-	return strURL;
-}
-
-// jugle.net fake check
-wxString CamuleApp::GenFakeCheckUrl2(const CAbstractFile *f)
-{
-	wxString strURL = wxT("http://www.jugle.net/?fakecheck=");
-	strURL = validateURI( strURL +  CreateED2kLink( f ) );
-	return strURL;
-}
-
-
 /* Original implementation by Bouc7 of the eMule Project.
    aMule Signature idea was designed by BigBob and implemented
    by Un-Thesis, with design inputs and suggestions from bothie.
