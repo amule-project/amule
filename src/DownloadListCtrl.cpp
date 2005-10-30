@@ -1045,7 +1045,6 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 
 			menu->Enable( MP_MENU_PRIO, fileReady2 );
 			menu->Enable( MP_MENU_EXTD, fileReady2 );
-			menu->Enable( MP_MENU_FAKE, fileReady2 );
 		
 			PopupMenu(m_menu, evt.GetPoint());
 

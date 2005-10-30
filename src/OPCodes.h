@@ -597,7 +597,6 @@ enum {
 //menus
 	MP_MENU_PRIO,
 	MP_MENU_EXTD,
-	MP_MENU_FAKE,
 	MP_MENU_CATS,
 
 // CMuleListCtrl tabs.
