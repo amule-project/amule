@@ -218,7 +218,7 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 		wxString line = cat.GetName() + wxT(": ") + str;
 		
 #ifdef __DEBUG__
-		PushEntry(ADDDEBUGLOGLINE, critical, str);
+		PushEntry(ADDDEBUGLOGLINE, critical, line);
 
 		if (wxThread::IsMain()) {
 			FlushPendingEntries();
