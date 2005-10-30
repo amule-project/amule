@@ -452,8 +452,6 @@ void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
 		bool enable = GetSelectedItemCount();
 		menu->Enable( MP_GETED2KLINK, enable );
 		menu->Enable( MP_GETHTMLED2KLINK, enable );
-		menu->Enable( MP_FAKECHECK1, enable );
-		menu->Enable( MP_FAKECHECK2, enable );
 	
 
 		PopupMenu( menu, event.GetPosition() );
