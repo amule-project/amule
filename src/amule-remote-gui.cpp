@@ -384,21 +384,6 @@ wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
 	return wxEmptyString;
 }
 
-wxString CamuleRemoteGuiApp::GenFakeCheckUrl(const CAbstractFile *f)
-{
-	wxString strURL = wxT("http://donkeyfakes.gambri.net/index.php?action=search&ed2k=");
-	strURL = validateURI( strURL +  CreateED2kLink( f ) );
-	return strURL;
-}
-
-// jugle.net fake check
-wxString CamuleRemoteGuiApp::GenFakeCheckUrl2(const CAbstractFile *f)
-{
-	wxString strURL = wxT("http://www.jugle.net/?fakecheck=%s");
-	strURL = validateURI( strURL +  CreateED2kLink( f ) );
-	return strURL;
-}
-
 bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
 	#warning TODO: Add remote command
