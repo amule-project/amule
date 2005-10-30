@@ -43,7 +43,7 @@
 #include "StringFunctions.h" // Needed for unicode2char 
 #include "Logger.h"
 #include "Format.h"
-#include "updownclient.h"	// Needed for SF_SERVER
+#include "updownclient.h"	// Needed for SF_REMOTE_SERVER
 
 #include <sys/types.h>
 
@@ -155,7 +155,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, int16 size, int8 opcode, 
 				do {
 					CMD4Hash fileid = packet.ReadHash();
 					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
-						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_SERVER);
+						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_REMOTE_SERVER);
 					} else {
 						AddDebugLogLineM( true, logServerUDP, wxT("Sources received for unknown file") );
 						// skip sources for that file
