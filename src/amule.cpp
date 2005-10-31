@@ -541,7 +541,7 @@ bool CamuleApp::OnInit()
 	if ( !applog->Ok() ) {
 #else
 	applog = new wxFile();
-	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true);
 	if ( !applog->IsOpened() ) {
 #endif
 		// use std err as last resolt to indicate problem
