@@ -457,6 +457,7 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBitmapButton *item4 = new wxBitmapButton( parent, ID_BTNCLRCOMPL, amuleDlgImages( 17 ), wxDefaultPosition, wxSize(20,20) );
     item4->SetToolTip( _("Clears completed downloads") );
+    item4->Enable( false );
     item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
