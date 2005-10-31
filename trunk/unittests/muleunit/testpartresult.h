@@ -33,15 +33,13 @@ namespace muleunit
  * A failure means that an assertion failed during the test.
  *
  * A success means that all assertion succeeded during the test.
- *
- * An error means that an exception was thrown during the test.
  */
-enum testType {failure,success,error};
+enum testType {failure,success};
 
 /**
  * This class contains details about assertion processed during the
  * execution of a Test. It contains the line and the file of the assertion, 
- * the result (success, failure or error), the condition (or message), and
+ * the result (success or failure), the condition (or message), and
  * the Test class where the assertion was processed.
  */
 class TestPartResult
@@ -54,7 +52,7 @@ public:
 	 * @param fileName The file name where the assertion is located
 	 * @param lineNumber The line number where the assertion is located
 	 * @param message The assertion condition or message
-	 * @param type The result of the assertion (failure, success or error)
+	 * @param type The result of the assertion (failure or success)
 	 */
 	TestPartResult(const wxString& fileName,
 	                long lineNumber,
@@ -65,7 +63,7 @@ public:
 	 * Get the type of the TestPartResult. This represents the result
 	 * of the assertion.
 	 *
-	 * @return The type of the TestPartResult (failure, success or error)
+	 * @return The type of the TestPartResult (failure or success)
 	 */
 	testType getType() const;
 

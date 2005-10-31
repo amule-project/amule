@@ -25,7 +25,6 @@
 
 #include "test.h"
 #include "testcase.h"
-#include "testprinter.h"
 #include "testresult.h"
 
 namespace muleunit
@@ -67,7 +66,6 @@ private:
 	void add(Test *test);
 	
 	const TestResult* runTests();
-	TestPrinter* m_defaultPrinter;
 	TestResult m_testResult;
 
 	TestCaseList m_testCases;

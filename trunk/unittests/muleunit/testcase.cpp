@@ -84,21 +84,49 @@ void TestCase::updateCount(Test *test)
 	}
 }
 
+
+void Print(const wxChar *pszFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, pszFormat);
+
+	wxPuts(wxString::FormatV(pszFormat, argptr).c_str());
+}
+
+
 void TestCase::run()
 {
+	Print(wxT("\nRunning test-collection \"%s\" with %u test-cases:"),
+		m_name.c_str(), m_tests.size());
+
 	TestList::iterator it = m_tests.begin();
 	for (; it != m_tests.end(); ++it) {
 		Test* test = *it;
+		
+		Print(wxT("\tTest \"%s\" "), test->getTestName().c_str());
 
 		test->setUp();
 		test->run();
 		test->tearDown();
 		updateCount(test);
+
+		const TestPartResultList testPRs = test->getTestPartResult();
+
+		TestPartResultList::const_iterator it = testPRs.begin();
+		for (; it != testPRs.end(); ++it) {
+			TestPartResult* testPR = *it;
+
+			if (testPR->getType() == failure) {
+				Print(wxT("\t\tFailure: \"%s\" line %ld in %s"),
+						 testPR->getMessage().c_str(),
+						 testPR->getLineNumber(),
+						 testPR->getFileName().c_str());
+			}
+		}		
 	}
 
 	m_ran = true;
 
 	m_testResult->addResult(this);
 }
-
 
