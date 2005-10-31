@@ -81,7 +81,8 @@ public:
 	/**
 	 * Closes the socket.
 	 *
-	 * The socket can be reopened by calling Open.
+	 * The socket can be reopened by calling Open. Closing a
+	 * already closed socket is an illegal operation.
 	 */
 	void Close();
 	
@@ -140,6 +141,20 @@ private:
 	 * @param port The target port.
 	 */
 	bool	SendTo(char* buffer, uint32 length, uint32 ip, uint16 port);
+
+
+	/**
+	 * Creates a new socket.
+	 *
+	 * Calling this function when a socket already exists
+	 * is an illegal operation.
+	 */
+	void	CreateSocket();
+
+	/**
+	 * Destroys the current socket, if any.
+	 */
+	void	DestroySocket();
 
 	
 	//! Specifies if the last write attempt would cause the socket to block.

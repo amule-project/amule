@@ -49,25 +49,25 @@ CMuleUDPSocket::~CMuleUDPSocket()
 {
     theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
 
-	Close();
+	if (m_socket) {
+		DestroySocket();
+	}
 }
 
 
-void CMuleUDPSocket::Open()
+void CMuleUDPSocket::CreateSocket()
 {
-	wxMutexLocker lock(m_mutex);
-	
 	wxCHECK_RET(!m_socket, wxT("Socket already opened."));
-
+	
 	m_socket = new CDatagramSocketProxy(m_addr, wxSOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
 	m_socket->SetEventHandler(theApp, m_id);
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
 	m_socket->Notify(true);
-	
+
 	if (!m_socket->Ok()) {
 		AddDebugLogLineM(true, logMuleUDP, wxT("Failed to create valid ") + m_name);
-		Close();
+		DestroySocket();
 	} else {
 		AddDebugLogLineM(true, logMuleUDP, 
 			wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
@@ -75,18 +75,32 @@ void CMuleUDPSocket::Open()
 }
 
 
+void CMuleUDPSocket::DestroySocket()
+{
+	wxCHECK_RET(m_socket, wxT("Cannot destroy non-existing socket."));
+	
+	AddDebugLogLineM(true, logMuleUDP, wxT("Shutting down ") + m_name);
+	m_socket->SetNotify(0);
+	m_socket->Notify(false);
+	m_socket->Close();
+	m_socket->Destroy();
+	m_socket = NULL;
+}	
+
+
+void CMuleUDPSocket::Open()
+{
+	wxMutexLocker lock(m_mutex);
+
+	CreateSocket();
+}
+
+
 void CMuleUDPSocket::Close()
 {
 	wxMutexLocker lock(m_mutex);
 
-	if (m_socket) {
-		AddDebugLogLineM(true, logMuleUDP, wxT("Shutting down ") + m_name);
-		m_socket->SetNotify(0);
-		m_socket->Notify(false);
-		m_socket->Close();
-		m_socket->Destroy();
-		m_socket = NULL;
-	}
+	DestroySocket();
 }
 
 
@@ -272,8 +286,8 @@ bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 				// this problem, we simply create a replacement socket.
 				AddDebugLogLineM(true, logMuleUDP, wxT("Socket died. Recreating socket."));
 				
-				Close();
-				Open();
+				DestroySocket();
+				CreateSocket();
 				break;
 								
 			default:
