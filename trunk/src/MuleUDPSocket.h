@@ -124,7 +124,7 @@ protected:
 	 * @param buffer The data that has been received.
 	 * @param length The length of the data buffer.
 	 */
-	virtual void OnPacketReceived(amuleIPV4Address& addr, byte* buffer, uint32 length) = 0;
+	virtual void OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length) = 0;
 
 	
 	/** See ThrottledControlSocket::SendControlData */
