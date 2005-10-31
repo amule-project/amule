@@ -47,7 +47,6 @@ typedef std::list<TestPartResult*> TestPartResultList;
  * executed, it reports all results in the testPartResult linked list.
  *
  * A failure occurs when a test fails (condition is false).
- * An error occurs when an exception is thrown during a test.
  * A success occurs if a test succeed (condition is true).
  */
 class Test
@@ -87,8 +86,8 @@ public:
 
 	/**
 	 * Add a testpartresult to the testpartresult list of this test. 
-	 * This method is used by the assertion macros to report success,
-	 * failure or error.
+	 * This method is used by the assertion macros to report success
+	 * or failure.
 	 *
 	 * @param testPartResult The testpartresult to be added to the list
 	 */
@@ -97,14 +96,14 @@ public:
 	/**
 	 * Get the testpartresult list of this test. If assertion macros
 	 * and TEST and TESTF macros are used, there may be more than
-	 * one successful testpartresult and no more than one error or failure.
+	 * one successful testpartresult and no more than one failure.
 	 *
 	 * @return testPartResult The list of testpartresults of this test
 	 */
 	const TestPartResultList& getTestPartResult() const;
 
 	/**
-	 * Returns true if any errors or failures occured during the test.
+	 * Returns true if any failures occured during the test.
 	 */
 	bool failed() const;
 	

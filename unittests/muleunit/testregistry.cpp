@@ -21,14 +21,15 @@
 
 
 #include "testregistry.h"
-#include "defaulttestprinter.h"
+
 
 using namespace muleunit;
 
+
 TestRegistry::TestRegistry()
-		: m_defaultPrinter(new DefaultTestPrinter())
 {
 }
+
 
 TestRegistry::~TestRegistry()
 {
@@ -36,19 +37,18 @@ TestRegistry::~TestRegistry()
 	for (; it != m_testCases.end(); ++it) {
 		delete *it;
 	}
-		
-	delete m_defaultPrinter;
 }
+
 
 void TestRegistry::addTest(Test *test)
 {
 	instance().add(test);
 }
 
+
 const TestResult* TestRegistry::runAndPrint()
 {
 	const TestResult *testResult = instance().runTests();
-	instance().m_defaultPrinter->print(testResult);
 	return testResult;
 }
 
@@ -58,6 +58,7 @@ TestRegistry& TestRegistry::instance()
 	static TestRegistry registry;
 	return registry;
 }
+
 
 void TestRegistry::add(Test *test)
 {
@@ -75,6 +76,7 @@ void TestRegistry::add(Test *test)
 
 const TestResult* TestRegistry::runTests()
 {
+	
 	TestCaseList::iterator it = m_testCases.begin();
 	for (; it != m_testCases.end(); ++it) {
 		(*it)->run();
