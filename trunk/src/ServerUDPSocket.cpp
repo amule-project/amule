@@ -336,13 +336,15 @@ void CServerUDPSocket::SendQueue()
 
 void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 {
+	wxCHECK_RET(m_queue.size(), wxT("DNS query returned, but no packets are queued."));
+	
+	ServerUDPPacket item = m_queue.front();
+	wxCHECK_RET(!item.ip and !item.addr.IsEmpty(), wxT("DNS resolution not expected."));
+		
 	/* An asynchronous database routine completed. */
 	if (ip == 0) { 
 		m_queue.pop_front();	
 	} else {
-		ServerUDPPacket item = m_queue.front();
-		wxASSERT(!item.ip and !item.addr.IsEmpty());
-
 		CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
 		if (update) {
 			update->SetID(ip);
