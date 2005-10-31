@@ -1120,11 +1120,11 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		//
 		// Server commands
 		//
-		case EC_OP_SERVER_DISCONNECT:
-		case EC_OP_SERVER_CONNECT:
 		case EC_OP_SERVER_ADD:
 			response = Get_EC_Response_Server_Add(request);
 			break;
+		case EC_OP_SERVER_DISCONNECT:
+		case EC_OP_SERVER_CONNECT:
 		case EC_OP_SERVER_REMOVE:
 			response = Get_EC_Response_Server(request);
 			break;
