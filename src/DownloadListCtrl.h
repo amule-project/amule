@@ -292,6 +292,8 @@ private:
 	//! The currently displayed category
 	uint8 m_category;
 
+	//! True if there are any completed files being displayed.
+	bool  m_completedFiles;
 	
 	//! The number of displayed files
 	int m_filecount;

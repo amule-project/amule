@@ -184,6 +184,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	InsertColumn( 11, _("Last Reception"),		wxLIST_FORMAT_LEFT, 220 );
 
 	m_category = 0;
+	m_completedFiles = 0;
 	m_filecount = 0;
 	LoadSettings();
 	
@@ -373,6 +374,12 @@ void CDownloadListCtrl::UpdateItem(const void* toupdate)
 				// that it should it should be shown in the
 				// current category
 				ShowFile( file, true );
+			}
+
+			if (file->GetStatus() == PS_COMPLETE) {
+				m_completedFiles = true;
+
+				CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->Enable(true);
 			}
 		} else {
 			item->dwUpdated = 0;
@@ -1014,6 +1021,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 			menu->Enable( MP_PAUSE,		fileReady && fileReady2 );
 			menu->Enable( MP_STOP,		fileReady && fileReady2 );
 			menu->Enable( MP_RESUME, 	fileResumable );
+			menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
 
 			wxString view;
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
@@ -2073,6 +2081,9 @@ int CDownloadListCtrl::Compare(
 
 void CDownloadListCtrl::ClearCompleted()
 {
+	m_completedFiles = false;
+	CastByID(ID_BTNCLRCOMPL, GetParent(), wxButton)->Enable(false);
+	
 	// Search for completed files
 	for ( ListItems::iterator it = m_ListItems.begin(); it != m_ListItems.end(); ) {
 		CtrlItem_Struct* item = it->second; ++it;
