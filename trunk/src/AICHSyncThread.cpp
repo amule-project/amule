@@ -185,7 +185,7 @@ void* CAICHSyncThread::Entry()
 		}
 	} catch (const CEOFException&) {
 		AddDebugLogLineM(true, logAICHThread, wxT("Hashlist corrupted, removing file."));
-		file.close();
+		file.Close();
 		wxRemoveFile(fullpath);
 		
 		return 0;
