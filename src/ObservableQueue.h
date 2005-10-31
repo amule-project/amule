@@ -39,8 +39,8 @@ class CQueueObserver;
 /**
  * This class defines the protocol used by the CObservableQueue class.
  *
- * This specific protol can be used by a class to make changes to its
- * contents visible, asuming that said contents does not rely on being
+ * This specific protocol can be used by a class to make changes to its
+ * contents visible, assuming that said contents does not rely on being
  * in a specific order, as insertions commands do not specify positions.
  * 
  * The class CQueueObserver implements a queue that will always be kept
@@ -138,12 +138,12 @@ private:
  * For one thing, the value is assumed to be both key and value, so
  * multimaps cannot be used with this class, since it will only pass
  * the key. Nor can lists that rely on a specific order be used, since
- * neither insertion nor deletion operations specify specify a specific
+ * neither insertion nor deletion operations specify a specific
  * object or position, instead just a "add/remove one of these" rule.
  *
  * The main purpose of this class is to allow another class to follow
  * a list or queue, regardles of changes in actual order of the items
- * and regardles of changes tot he contents.
+ * and regardles of changes to the contents.
  */
 template <typename ValueType>
 class CObservableQueue : public CObservable< CQueueEvent<ValueType> >
@@ -176,7 +176,7 @@ protected:
 
 
 /**
- * This class is is an automatically synchronized queue connected with an ObservableQueue.
+ * This class is an automatically synchronized queue connected with an ObservableQueue.
  *
  * Note that this observer can only be assigned to ONE observable at a time!
  * 
@@ -192,7 +192,7 @@ protected:
  * cannot be certain of the current state of the actual contents of the 
  * original lists.
  *
- * This class superseeds such broken solutions such as rememebering the last
+ * This class supersedes such broken solutions such as remembering the last
  * used position in the original list, since no changes made to the original
  * list will result in items being skipped or treated twice*.
  *
