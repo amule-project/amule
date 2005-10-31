@@ -572,7 +572,7 @@ bool CAICHHashSet::SaveHashSet(){
 			return false;
 		}
 	} else {
-		if (!file.Create(fullpath, CFile::read_write)) {		
+		if (!file.Create(fullpath)) {		
 			// Add logline about unable to create file			
 			return false;			
 		}		

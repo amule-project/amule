@@ -168,12 +168,11 @@ void* CAICHSyncThread::Entry()
 			return 0;
 		}
 	} else {
-		if ( !file.Create( fullpath, CFile::read_write ) ) {
+		if (!file.Create(fullpath)) {
 			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to create hashlist file!") );
 			return 0;
 		}
 	}
-
 
 	try {
 		while ( !file.Eof() ) {
@@ -184,10 +183,16 @@ void* CAICHSyncThread::Entry()
 			uint16 nHashCount = file.ReadUInt16();
 			file.Seek( nHashCount * HASHSIZE, wxFromCurrent );
 		}
-	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM( true, logAICHThread, wxT("Corrupt file encountered while reading hashlist: ") + e.what() );
-
+	} catch (const CEOFException&) {
+		AddDebugLogLineM(true, logAICHThread, wxT("Hashlist corrupted, removing file."));
+		file.close();
+		wxRemoveFile(fullpath);
+		
 		return 0;
+	} catch (const CIOFailureException&) {
+		AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist. Aborting."));
+		
+		return 0;		
 	}
 
 	file.Close();
