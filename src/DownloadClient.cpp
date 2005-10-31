@@ -1048,11 +1048,13 @@ void CUpDownClient::UDPReaskForDownload()
 	if( m_nTotalUDPPackets > 3 && ((float)(m_nFailedUDPPackets/m_nTotalUDPPackets) > .3)) {
 		return;
 	}
-	*/	
+	*/
+
+	if (thePrefs::GetEffectiveUDPPort() == 0) {
+		return;
+	}
 		
-	if(m_nUDPPort != 0 && thePrefs::GetEffectiveUDPPort() != 0 &&
-	   theApp.clientudp && !theApp.IsFirewalled() && !IsConnected()) { 
-		   
+	if (m_nUDPPort != 0 && !theApp.IsFirewalled() && !IsConnected()) {
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {
 			return;
@@ -1063,8 +1065,7 @@ void CUpDownClient::UDPReaskForDownload()
 		CMemFile data(128);
 		data.WriteHash(m_reqfile->GetFileHash());
 		
-		if (GetUDPVersion() > 3)
-		{
+		if (GetUDPVersion() > 3) {
 			if (m_reqfile->IsPartFile()) {
 				((CPartFile*)m_reqfile)->WritePartStatus(&data);
 			}
@@ -1081,7 +1082,6 @@ void CUpDownClient::UDPReaskForDownload()
 		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKFILEPING") );
 		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
-		
 	} else  {
 		if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
 			
