@@ -541,7 +541,7 @@ bool CamuleApp::OnInit()
 	if ( !applog->Ok() ) {
 #else
 	applog = new wxFile();
-	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), wxFile::read_write);
+	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !applog->IsOpened() ) {
 #endif
 		// use std err as last resolt to indicate problem
@@ -1711,7 +1711,7 @@ wxString CamuleApp::GetLog(bool reset)
 		if ( applog->Ok() ) {
 #else
 		applog->Close();
-		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true, wxFile::read_write);
+		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true);
 		if ( applog->IsOpened() ) {
 #endif
 			AddLogLine(_("Log has been reset"));
