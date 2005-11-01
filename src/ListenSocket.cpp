@@ -1557,11 +1557,8 @@ bool CClientReqSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			byte fileid2[16];
 			fileid.toByteArray(fileid2);
 			const CMD4Hash fileHash(fileid2);
-			CKnownFile* reqfile;
-			if ( (reqfile = theApp.sharedfiles->GetFileByID(fileHash)) == NULL ) {
-				if ( (reqfile = theApp.downloadqueue->GetFileByID(fileHash)) == NULL) {
-					#warning Xaignar? I know we have something like this somewhere
-					//client->CheckFailedFileIdReqs(fileid2);
+			if (theApp.sharedfiles->GetFileByID(fileHash) == NULL) {
+				if (theApp.downloadqueue->GetFileByID(fileHash) == NULL) {
 					break;
 				}
 			}
