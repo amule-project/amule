@@ -608,18 +608,30 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 
 }
 
+
 void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
 {
-	wxMessageBox(CastChild( wxT("infoLabel"), wxStaticText )->GetLabel(), wxString(_("Status text")), wxOK|wxICON_INFORMATION);
+	wxString line = CastChild(wxT("infoLabel"), wxStaticText)->GetLabel();
+
+	if (!line.IsEmpty()) {
+		wxMessageBox(line, wxString(_("Status text")), wxOK|wxICON_INFORMATION);
+	}
 }
+
 
 void CamuleDlg::ResetLog(uint32 whichone)
 {
 	wxTextCtrl* ct = CastByID( whichone, serverwnd, wxTextCtrl );
+	wxCHECK_RET(ct, wxT("Resetting unknown log"));
 
-	if(ct) {
-		ct->Clear();
-	}
+	ct->Clear();
+	
+	if (whichone == ID_LOGVIEW) {
+		// Also clear the log line
+		wxStaticText* text = CastChild(wxT("infoLabel"), wxStaticText);
+		text->SetLabel(wxEmptyString);
+		text->GetParent()->Layout();
+	}			
 }
 
 
