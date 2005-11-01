@@ -2238,7 +2238,6 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 	
 	
 	if (!(completing_result & UNEXP_FILE_ERROR)) {
-	
 		m_fullname = (*newname);	
 		delete newname;
 
@@ -2257,7 +2256,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		theApp.uploadqueue->ResumeUpload(GetFileHash());		
 		theApp.downloadqueue->RemoveFile(this);
 		theApp.sharedfiles->SafeAddKFile(this);
-		UpdateDisplayedInfo();
+		UpdateDisplayedInfo(true);
 
 		// republish that file to the ed2k-server to update the 'FT_COMPLETE_SOURCES' counter on the server.
 		theApp.sharedfiles->RepublishFile(this);		
@@ -2267,7 +2266,6 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		completedsize = m_nFileSize;
 
 		theApp.downloadqueue->StartNextFile(this);
-	
 	} else {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);
