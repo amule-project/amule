@@ -85,7 +85,7 @@ function formCommandSubmit(command)
       <option>Global</option>
     </select>
             </div></td>
-            <td bgcolor="#0099CC"><a href="amuleweb-main-search.php" target="mainFrame">Click here to reaload search results </a></td>
+            <td bgcolor="#0099CC"><a href="amuleweb-main-search.php" target="mainFrame">Click here to reload search results</a></td>
           </tr>
         </table></td>
         </tr>
