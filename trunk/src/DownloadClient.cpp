@@ -205,10 +205,7 @@ bool CUpDownClient::IsSourceRequestAllowed()
 void CUpDownClient::SendFileRequest()
 {
 	// 0.42e
-	wxASSERT(m_reqfile != NULL);	
-	if(!m_reqfile) {
-		return;
-	}
+	wxCHECK_RET(m_reqfile, wxT("Cannot request file when no reqfile is set"));	
 	
 	CMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash(m_reqfile->GetFileHash());
