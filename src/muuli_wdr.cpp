@@ -93,81 +93,77 @@ wxSizer *contentSizer;
 wxSizer *s_fed2klh;
 wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxBoxSizer *item0 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
     s_dlgcnt = item0;
 
     wxBoxSizer *item1 = new wxBoxSizer( wxVERTICAL );
-
-    wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
-    contentSizer = item2;
-
-    item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item4 = new wxStaticBox( parent, -1, _("ED2K Link Handler") );
-    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxHORIZONTAL );
-    s_fed2klh = item3;
-
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
-    item5->SetName( wxT("FastEd2kLinks") );
-    item3->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    wxButton *item6 = new wxButton( parent, ID_BUTTON_FAST, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetToolTip( _("Click here to add the ed2k link in the text control to your download queue.") );
-    item3->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxBitmapButton *item8 = new wxBitmapButton( parent, IDC_SHOWSTATUSTEXT, amuleDlgImages( 31 ), wxDefaultPosition, wxSize(15,15) );
-    item8->SetToolTip( _("Pop-up status text") );
-    item7->Add( item8, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxSize(140,-1), wxST_NO_AUTORESIZE );
-    item9->SetToolTip( _("Events are displayed here. For a complete list of events, refer to the log in the Servers-tab.") );
-    item9->SetName( wxT("infoLabel") );
-    item7->Add( item9, 1, wxFIXED_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
-
-    wxStaticLine *item10 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item10, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticBitmap *item11 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 4 ), wxDefaultPosition, wxDefaultSize );
-    item11->SetToolTip( _("Number of users on the server you are connected to ...") );
-    item7->Add( item11, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Users: 0"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetToolTip( _("Users connected to the current server and an estimate of the total number of users.") );
-    item12->SetName( wxT("userLabel") );
-    item7->Add( item12, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticLine *item13 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item13, 0, wxALIGN_CENTER|wxLEFT, 5 );
-
-    wxStaticBitmap *item14 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 5 ), wxDefaultPosition, wxDefaultSize );
-    item14->SetName( wxT("transferImg") );
-    item7->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("Up: 0.0 | Down: 0.0"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetToolTip( _("Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication.") );
-    item15->SetName( wxT("speedLabel") );
-    item7->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
-
-    wxStaticLine *item16 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item7->Add( item16, 0, wxALIGN_CENTER|wxLEFT, 5 );
-
-    wxStaticBitmap *item17 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 13 ), wxDefaultPosition, wxDefaultSize );
-    item17->SetToolTip( _("Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type).") );
-    item17->SetName( wxT("connImage") );
-    item7->Add( item17, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("Not Connected ..."), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetToolTip( _("Currently connected server.") );
-    item18->SetName( wxT("connLabel") );
-    item7->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
-
-    item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    contentSizer = item1;
 
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("ED2K Link Handler") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxHORIZONTAL );
+    s_fed2klh = item2;
+
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, ID_TEXTCTRL, wxT(""), wxDefaultPosition, wxSize(-1,20), wxTE_MULTILINE );
+    item4->SetName( wxT("FastEd2kLinks") );
+    item2->Add( item4, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxButton *item5 = new wxButton( parent, ID_BUTTON_FAST, _("Commit"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetToolTip( _("Click here to add the ed2k link in the text control to your download queue.") );
+    item2->Add( item5, 0, wxALIGN_CENTER, 5 );
+
+    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxBitmapButton *item7 = new wxBitmapButton( parent, IDC_SHOWSTATUSTEXT, amuleDlgImages( 31 ), wxDefaultPosition, wxSize(15,15) );
+    item7->SetToolTip( _("Pop-up status text") );
+    item6->Add( item7, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("Loading ..."), wxDefaultPosition, wxSize(140,-1), wxST_NO_AUTORESIZE );
+    item8->SetToolTip( _("Events are displayed here. For a complete list of events, refer to the log in the Servers-tab.") );
+    item8->SetName( wxT("infoLabel") );
+    item6->Add( item8, 1, wxFIXED_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
+
+    wxStaticLine *item9 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item6->Add( item9, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticBitmap *item10 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 4 ), wxDefaultPosition, wxDefaultSize );
+    item10->SetToolTip( _("Number of users on the server you are connected to ...") );
+    item6->Add( item10, 0, wxALIGN_CENTER, 5 );
+
+    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Users: 0"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetToolTip( _("Users connected to the current server and an estimate of the total number of users.") );
+    item11->SetName( wxT("userLabel") );
+    item6->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticLine *item12 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item6->Add( item12, 0, wxALIGN_CENTER|wxLEFT, 5 );
+
+    wxStaticBitmap *item13 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 5 ), wxDefaultPosition, wxDefaultSize );
+    item13->SetName( wxT("transferImg") );
+    item6->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item14 = new wxStaticText( parent, ID_TEXT, _("Up: 0.0 | Down: 0.0"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetToolTip( _("Current average upload and download rates. If enabled the numbers in the braces signify the overhead from client communication.") );
+    item14->SetName( wxT("speedLabel") );
+    item6->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
+
+    wxStaticLine *item15 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item6->Add( item15, 0, wxALIGN_CENTER|wxLEFT, 5 );
+
+    wxStaticBitmap *item16 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 13 ), wxDefaultPosition, wxDefaultSize );
+    item16->SetToolTip( _("Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type).") );
+    item16->SetName( wxT("connImage") );
+    item6->Add( item16, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxStaticText *item17 = new wxStaticText( parent, ID_TEXT, _("Not Connected ..."), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetToolTip( _("Currently connected server.") );
+    item17->SetName( wxT("connLabel") );
+    item6->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
+
+    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     if (set_sizer)
     {
