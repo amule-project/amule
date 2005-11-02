@@ -310,10 +310,14 @@
 	   <textarea name="c" cols="94" rows="7" class=dinput></textarea>
 	   <br><br>
 	   <input type=submit value="Start"></font><img src="arrow_right.gif" align="absmiddle">
-	   <select name="cat" size="1">
-	   	<option selected value="0">all</option>
-	   	<option value="1">programs</option>
-	   	<option value="2">mp3</option>
+	   <select name="cat" size="1">';
+
+    	$cats = amule_get_categories();
+    	foreach($cats as $c) {
+    		echo "<option>", $c, "</option>";
+    	}
+	   	
+	   	echo '
 	   </select>
 	  </form><br>
 	 </td>
