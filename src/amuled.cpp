@@ -416,6 +416,9 @@ bool CamuleDaemonApp::OnInit()
 	
 	core_timer->Start(300);
 	
+	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
+	glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir();
+	
 	return true;
 }
 
