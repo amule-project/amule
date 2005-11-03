@@ -78,16 +78,19 @@ void CStatisticsDlg::Init()
 
 void CStatisticsDlg::InitGraphs()
 {
-
 	// called after preferences get initialised
-	for (int index=0; index<=10; ++index)
+	for (int index=0; index<=10; ++index) {
 		ApplyStatsColor(index);
+	}
+
 	pscopeDL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphDownloadRate()+4));
 	pscopeDL->SetYUnits(_("kB/s"));
 	pscopeUL->SetRanges(0.0, (float)(thePrefs::GetMaxGraphUploadRate()+4));
 	pscopeUL->SetYUnits(_("kB/s"));
 	pscopeConn->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
 	pscopeConn->SetYUnits(wxEmptyString);
+
+	SetUpdatePeriod();
 }
 
 
