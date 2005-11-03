@@ -405,6 +405,13 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	wxString aMuleConfigFile;
 	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
+		if (aMuleConfigFile.Length() and (aMuleConfigFile.GetChar(0) == wxT('\''))) {
+			aMuleConfigFile.Remove(0, 1);
+		}
+		if (aMuleConfigFile.Length() and (aMuleConfigFile.Last() == wxT('\''))) {
+			aMuleConfigFile.RemoveLast();
+		}
+		
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: ") + aMuleConfigFile + wxT(" does not exist.\n")));
