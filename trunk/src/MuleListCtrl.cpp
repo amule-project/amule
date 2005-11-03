@@ -405,32 +405,16 @@ wxString CMuleListCtrl::GetTTSText(unsigned item) const
 
 void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 {
-	if (m_tts_time + 1000u < GetTickCount()) {
+	if (evt.AltDown() or evt.ControlDown() or evt.MetaDown()) {
+		evt.Skip();
+		return;
+	} else if (m_tts_time + 1500u < GetTickCount()) {
 		m_tts_text.Clear();
 	}
+	
 	m_tts_time = GetTickCount();
-	
-	
-	if (!isprint(evt.GetKeyCode()) || GetItemCount() == 0) {
-		evt.Skip();
-		return;
-	} else if ((evt.GetKeyCode() == WXK_SPACE) && evt.ControlDown()) {
-		// Allow the space button to be used to select items.
-		evt.Skip();
-		return;
-	}
-	
-	
 	m_tts_text.Append(tolower(evt.GetKeyCode()));
-
-	
 	unsigned next = (m_tts_item == -1) ? 0 : m_tts_item;
-	if ((m_tts_text.Length() == 1) && (m_tts_item != -1)) {
-		// Skip the current item so that it is possible
-		// repeatedly typing a letter will walk through
-		// the items starting with that letter.
-		next += 1;
-	}
 	
 	for (unsigned i = 0, count = GetItemCount(); i < count; ++i) {
 		wxString text = GetTTSText((next + i) % count).MakeLower();
@@ -447,13 +431,26 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 		}
 	}
 	
-	
 	if (m_tts_item != -1) {
 		// Crop the string so that it matches the old item (avoid typos).
 		wxString text = GetTTSText(m_tts_item).MakeLower();
-		while (!text.StartsWith(m_tts_text)) {
-			m_tts_text.RemoveLast();
+		
+		// If the last key didn't result in a hit, then we skip the event.
+		if (!text.StartsWith(m_tts_text)) {
+			if ((m_tts_text.Length() == 2) && (m_tts_text[0] == m_tts_text[1])) {
+				// Special case, single-char, repeated. This allows toggeling
+				// between items starting with a specific letter.
+				m_tts_text.Clear();
+				// Increment, so the next will be selected (or wrap around).
+				m_tts_item++;
+				OnChar(evt);
+			} else {
+				m_tts_text.RemoveLast();
+				evt.Skip(true);
+			}
 		}
+	} else {
+		evt.Skip(true);
 	}
 }
 
@@ -463,6 +460,9 @@ void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 	// We reset the current TTS session if the user manually changes the selection
 	if (m_tts_item != evt.GetIndex()) {
 		ResetTTS();
+
+		// The item is changed so that the next TTS starts from the selected item.
+		m_tts_item = evt.GetIndex();
 	}
 
 	evt.Skip();
