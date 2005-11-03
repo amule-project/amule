@@ -218,7 +218,7 @@ FileType GetFiletype(const wxString& filename)
 
 	if ( ext==wxT("rar")  || ext==wxT("zip")  || ext==wxT("ace")  || ext==wxT("gz")   ||
 	     ext==wxT("bz2")  || ext==wxT("tar")  || ext==wxT("arj")  || ext==wxT("lhz")  ||
-		 ext==wxT("bz") )
+		 ext==wxT("bz") || ext==wxT("7z"))
 		return ftArchive;
 
 	if ( ext==wxT("exe")  || ext==wxT("com") )
@@ -1372,5 +1372,3 @@ wxString wxLang2Str(const int lang)
 		return wxEmptyString;
 	}
 }
-
-
