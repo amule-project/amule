@@ -61,7 +61,7 @@ public:
 private:
 
 	CRoutingBin();
-	bool add(CContact *contact);
+	bool add(CContact *contact, bool check = true);
 	void setAlive(uint32 ip, uint16 port);
 	void setTCPPort(uint32 ip, uint16 port, uint16 tcpPort);
 	void remove(CContact *contact);

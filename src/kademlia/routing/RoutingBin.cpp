@@ -72,12 +72,15 @@ CRoutingBin::~CRoutingBin()
 	m_entries.clear();
 }
 
-bool CRoutingBin::add(CContact *contact)
+bool CRoutingBin::add(CContact *contact, bool check)
 {
 	wxASSERT(contact != NULL);
 	bool retVal = false;
 	// If this is already in the entries list
-	CContact *c = getContact(contact->getClientID());
+	CContact *c = NULL;
+	if (check)
+		c=getContact(contact->getClientID());
+
 	if (c != NULL) {
 		// Move to the end of the list
 		remove(c);

@@ -218,13 +218,19 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 		return false;
 	}
 
-	bool retVal = false;
 	CUInt128 distance(me);
 	distance.XOR(id);
+
+	return addByDistance(distance,id,ip,port,tport,type);
+}
+
+bool CRoutingZone::addByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type) {
+
+	bool retVal = false;
 	CContact *c = NULL;
 
 	if (!isLeaf()) {
-		retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
+		retVal = m_subZones[distance.getBitNumber(m_level)]->addByDistance(distance, id, ip, port, tport, type);
 	} else {
 		c = m_bin->getContact(id);
 		if (c != NULL) {
@@ -234,14 +240,14 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 			retVal = true;
 		} else if (m_bin->getRemaining() > 0) {
 			c = new CContact(id, ip, port, tport);
-			retVal = m_bin->add(c);
+			retVal = m_bin->add(c,false);
 		} else if (canSplit()) {
 			split();
-			retVal = m_subZones[distance.getBitNumber(m_level)]->add(id, ip, port, tport, type);
+			retVal = m_subZones[distance.getBitNumber(m_level)]->addByDistance(distance, id, ip, port, tport, type);
 		} else {
 			merge();
 			c = new CContact(id, ip, port, tport);
-			retVal = m_bin->add(c);
+			retVal = m_bin->add(c,false);
 		}
 
 		if (!retVal) {

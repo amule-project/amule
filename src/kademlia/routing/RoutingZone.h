@@ -101,6 +101,8 @@ private:
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
 	void init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
 
+	bool addByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+
 	/**
 	 * Zone pair is an array of two. Either both entries are null, which
 	 * means that *this* is a leaf zone, or both are non-null which means
