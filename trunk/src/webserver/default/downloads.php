@@ -218,7 +218,7 @@ border-color: black;
   </font>
  </td>
  <td align=right class=tabs>
-  <form><input type="button" name="queue" value="Logout" onClick="self.location.href='?ses=1962921590&amp;w=logout'"></form>
+  <form><input type="button" name="queue" value="Logout" onClick="self.location.href=login.html"></form>
  </td>
 </tr>
 </table><font face=Tahoma style="font-size:8pt;">
@@ -230,20 +230,7 @@ border-color: black;
 
 <script type="text/javascript">
 function GotoCat(cat) {
-	var loc= window.location.href;
-	var pos= loc.indexOf("cat=");
-
-	if (pos>1) {
-		if (loc.substr(pos-1,1)=="&") pos--;
-		var subs=loc.substr(pos+3,256);
-		var pos2=subs.indexOf("&");
-		if (pos2==-1) pos2=loc.length;
-		pos2 += pos+3;
-		var t1=loc.substring(0,pos);
-		var t2=loc.substring(pos2+1,loc.length );
-		loc=t1+t2;
-	}
-	window.location.href=loc+"&cat="+cat;
+	window.location.href="downloads.php?cmd=filter&status="+cat;
 }
 </script><font face=Tahoma style="font-size:8pt;">
 <table border=0 align=center cellpadding=3 cellspacing=0 width="100%" bgcolor="#99CCFF">
@@ -258,12 +245,17 @@ function GotoCat(cat) {
  <td align="right" class="smallheader" style="background-color: #000000">
  <form>
  	<select name="cat" size="1"onchange=GotoCat(this.form.cat.options[this.form.cat.selectedIndex].value)>
- 		<option selected value="">All others</option>
- 		<option value="Waiting">Waiting</option>
- 		<option value="Downloading">Downloading</option>
- 		<option value="Erroneous">Erroneous</option>
- 		<option value="Paused">Paused</option>
- 		<option value="Stopped">Stopped</option>
+	<?php
+    	$all_status = array("All", "Waiting", "Paused", "Downloading");
+    	
+		if ( $HTTP_GET_VARS["cmd"] == "filter") {
+			$_SESSION["filter_status"] = $HTTP_GET_VARS["status"];
+		}
+    	if ( $_SESSION["filter_status"] == '') $_SESSION["filter_status"] = 'All';
+    	foreach ($all_status as $s) {
+    		echo (($s == $_SESSION["filter_status"]) ? '<option selected>' : '<option>'), $s, '</option>';
+    	}
+	?>
  	</select>
  </form>
  </td>
@@ -317,12 +309,9 @@ function GotoCat(cat) {
 		}
 	}
 
-	var_dump($HTTP_GET_VARS);
-	
 	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
 		$name = $HTTP_GET_VARS['file'];
 		if ( strlen($name) == 32 ) {
-			//var_dump($name);
 			amule_do_download_cmd($name, $HTTP_GET_VARS["cmd"]);
 		}
 	}
@@ -337,7 +326,7 @@ function GotoCat(cat) {
 		
 		echo '<td valign=middle class="down-line">';
 		echo '<table width=200 height=11 border=1 class="percent_table" cellpadding=0 cellspacing=0 bordercolor="#000000">';
-		echo '<tr><td><img src="greenpercent.gif" height=4 width=', 60, '><br>';
+		echo '<tr><td><img src="greenpercent.gif" height=4 width=', (($file->size_done * 1.0)/$file->size)*200 + 1, '><br>';
 		echo $file->progress, '</td></tr></table></td>';
 		
 		echo '<td valign=top class="down-line-right">', CastToXBytes($file->speed), '</td>';
