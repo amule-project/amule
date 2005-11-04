@@ -165,9 +165,10 @@ void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
 {
 	DeleteAllItems();
 
-	CKnownFileMap::iterator it = list->m_Files_map.begin();
-	for ( ; it != list->m_Files_map.end(); ++it ) {
-		ShowFile( it->second );
+	std::vector<CKnownFile*> files;
+	list->CopyFileList(files);
+	for (int i = 0; i < files.size(); ++i) {
+		ShowFile( files[i] );
 	}
 }
 

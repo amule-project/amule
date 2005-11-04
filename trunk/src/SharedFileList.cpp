@@ -334,12 +334,17 @@ void CSharedFileList::FindSharedFiles() {
 	theApp.glob_prefs->ReloadSharedFolders();
 
 	/* All part files are automatically shared. */
-  	if (!m_Files_map.empty()) {
-  		{
-  			wxMutexLocker lock(list_mut);
+	bool wasEmpty;
+
+	{
+		wxMutexLocker lock(list_mut);
+		wasEmpty = m_Files_map.empty();
+	  	if (!wasEmpty) {
 			m_Files_map.clear();
 		}
+	}
 
+  	if (!wasEmpty) {
 		for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
 			CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
 			
@@ -381,15 +386,14 @@ void CSharedFileList::FindSharedFiles() {
 	uint32 newFiles = CAddFileThread::GetFileCount();
 	if (!newFiles) {
 		AddLogLineM(false,
-			wxString::Format(_("Found %i known shared files"),
-				m_Files_map.size()));
+			wxString::Format(_("Found %i known shared files"), GetCount()));
 		// No new files, run AICH thread
 		theApp.RunAICHThread();
 	} else {	
 		// New files, AICH thread will be run at the end of the hashing thread.
 		AddLogLineM(false,
 			wxString::Format(_("Found %i known shared files, %i unknown"),
-				m_Files_map.size(),newFiles));
+				GetCount(), newFiles));
 	}
 }
 
@@ -545,6 +549,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 // removes first occurrence of 'toremove' in 'list'
 void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	Notify_SharedFilesRemoveFile(toremove);
+	wxMutexLocker lock(list_mut);
 	if (m_Files_map.erase(toremove->GetFileHash()) > 0) {
 		theStats::RemoveSharedFile(toremove->GetFileSize());
 	}
@@ -578,6 +583,7 @@ void CSharedFileList::Reload(bool firstload){
 }
 
 const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
+	wxMutexLocker lock(list_mut);
 	if ( index >= m_Files_map.size() ) {
 		return NULL;
 	}
@@ -588,6 +594,7 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
 
 CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
 {
+	wxMutexLocker lock(list_mut);
 	CKnownFileMap::iterator it = m_Files_map.find(filehash);
 	
 	if ( it != m_Files_map.end() ) {
@@ -607,6 +614,21 @@ short CSharedFileList::GetFilePriorityByID(const CMD4Hash& filehash)
 }
 
 
+void CSharedFileList::CopyFileList(std::vector<CKnownFile*>& out_list)
+{
+	wxMutexLocker lock(list_mut);
+
+	out_list.reserve(m_Files_map.size());
+	for (
+		CKnownFileMap::iterator it = m_Files_map.begin();
+		it != m_Files_map.end();
+		++it
+		) {
+		out_list.push_back(it->second);
+	}
+}
+
+
 void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 {
 	Notify_SharedFilesUpdateItem(toupdate);
@@ -615,7 +637,8 @@ void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
                             CTypedPtrList<CPtrList, CKnownFile*>& list)
 {
-	
+	wxMutexLocker lock(list_mut);
+
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); ++pos ) {
 		CKnownFile *cur_file = pos->second;
@@ -633,6 +656,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
 void CSharedFileList::ClearED2KPublishInfo(){
 	CKnownFile* cur_file;
 	m_lastPublishED2KFlag = true;
+	wxMutexLocker lock(list_mut);
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
 		cur_file = pos->second;
 		cur_file->SetPublishedED2K(false);
@@ -641,6 +665,7 @@ void CSharedFileList::ClearED2KPublishInfo(){
 
 void CSharedFileList::ClearKadSourcePublishInfo()
 {
+	wxMutexLocker lock(list_mut);
 	CKnownFile* cur_file;
 	for (CKnownFileMap::iterator pos = m_Files_map.begin(); pos != m_Files_map.end(); ++pos ) {
 		cur_file = pos->second;
@@ -675,20 +700,23 @@ bool SortFunc( const CKnownFile* fileA, const CKnownFile* fileB )
 }
 
 void CSharedFileList::SendListToServer(){
-	
-	if (m_Files_map.empty() || !theApp.IsConnectedED2K() ) {
-		return;
-	}
-	
-	// Gettting a sorted list of the non-published files.
-
 	std::vector<CKnownFile*> SortedList;
-	SortedList.reserve( m_Files_map.size() );
 
-	CKnownFileMap::iterator it = m_Files_map.begin();
-	for ( ; it != m_Files_map.end(); ++it ) {
-		if (!it->second->GetPublishedED2K()) {
-			SortedList.push_back( it->second );
+	{	
+		wxMutexLocker lock(list_mut);
+
+		if (m_Files_map.empty() || !theApp.IsConnectedED2K() ) {
+			return;
+		}
+
+		// Getting a sorted list of the non-published files.
+		SortedList.reserve( m_Files_map.size() );
+
+		CKnownFileMap::iterator it = m_Files_map.begin();
+		for ( ; it != m_Files_map.end(); ++it ) {
+			if (!it->second->GetPublishedED2K()) {
+				SortedList.push_back( it->second );
+			}
 		}
 	}
 
