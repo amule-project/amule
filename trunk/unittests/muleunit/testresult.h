@@ -22,14 +22,16 @@
 #ifndef testresult_H
 #define testresult_H
 
-#include "testcase.h"
 #include <list>
 
 namespace muleunit
 {
+
+class TestCase;
+
 typedef std::list<TestCase*> TestCaseList;
 	
-	
+
 class TestResult
 {
 public:

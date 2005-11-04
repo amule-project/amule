@@ -26,8 +26,7 @@ using namespace muleunit;
 
 Test::Test(const wxString& testCaseName, const wxString& testName)
 		: m_testCaseName(testCaseName),
-		  m_testName(testName),
-		  m_failed(false)
+		  m_testName(testName)
 {
 	TestRegistry::addTest(this);
 }
@@ -35,10 +34,6 @@ Test::Test(const wxString& testCaseName, const wxString& testName)
 
 Test::~Test()
 {
-	TestPartResultList::iterator it = m_testPartResults.begin();
-	for (; it != m_testPartResults.end(); ++it) {
-		delete *it;
-	}
 }
 
 
@@ -57,23 +52,17 @@ void Test::run()
 }
 
 
-void Test::addTestPartResult(TestPartResult *testPartResult)
+void Test::addTestFailure(const wxString& msg, const wxString& file, long lineNumber)
 {
-	m_testPartResults.push_back(testPartResult);
+	TestFailure entry = {msg, file, lineNumber};
 	
-	m_failed |= (testPartResult->getType() != success);
+	m_testFailures.push_back(entry);
 }
 
 
-const TestPartResultList& Test::getTestPartResult() const
+const TestFailureList& Test::getTestFailures() const
 {
-	return m_testPartResults;
-}
-
-
-bool Test::failed() const
-{
-	return m_failed;
+	return m_testFailures;
 }
 
 

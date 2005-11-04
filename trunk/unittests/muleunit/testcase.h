@@ -20,11 +20,13 @@
 //
 
 
+#ifndef TESTCASE_H
+#define TESTCASE_H
+
+
 #include <wx/string.h>
 #include <list>
 
-#ifndef TESTCASE_H
-#define TESTCASE_H
 
 namespace muleunit
 {

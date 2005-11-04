@@ -21,7 +21,8 @@
 
 
 #include "testregistry.h"
-
+#include "testcase.h"
+#include "test.h"
 
 using namespace muleunit;
 
@@ -48,8 +49,7 @@ void TestRegistry::addTest(Test *test)
 
 const TestResult* TestRegistry::runAndPrint()
 {
-	const TestResult *testResult = instance().runTests();
-	return testResult;
+	return instance().runTests();
 }
 
 
@@ -76,7 +76,6 @@ void TestRegistry::add(Test *test)
 
 const TestResult* TestRegistry::runTests()
 {
-	
 	TestCaseList::iterator it = m_testCases.begin();
 	for (; it != m_testCases.end(); ++it) {
 		(*it)->run();
