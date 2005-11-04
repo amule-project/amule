@@ -392,37 +392,9 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(request);
 			break;
 
-		case CMD_ID_PAUSE:
-			if ( args.IsEmpty() ) {
-				Show(_("This command requieres an argument. Valid arguments: 'all', a number.\n"));
-				return 0;
-			} else if ( args.Left(3) == wxT("all") ) {
-				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
-				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
-				if (reply_all) {
-					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
-					for(int i = 0;i < reply_all->GetTagCount();i++) {
-						CECTag *tag = reply_all->GetTagByIndex(i);
-						if (tag) {
-							request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
-						}
-					}
-					request_list.push_back(request);
-					delete reply_all;
-				}
-			} else {
-				CMD4Hash hash(args);
-				if (!hash.IsEmpty()) {
-					request = new CECPacket(EC_OP_PARTFILE_PAUSE);
-					request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
-					request_list.push_back(request);
-				} else {
-					Show(_("Not a valid number\n"));
-					return 0;
-				}
-			}
-			break;
 
+		case CMD_ID_PAUSE:
+		case CMD_ID_CANCEL:
 		case CMD_ID_RESUME:
 			if ( args.IsEmpty() ) {
 				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
@@ -444,7 +416,15 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			} else {
 				CMD4Hash hash(args);
 				if (!hash.IsEmpty()) {
-					request = new CECPacket(EC_OP_PARTFILE_RESUME);
+					switch(CmdId) {
+						case CMD_ID_PAUSE:
+							request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
+						case CMD_ID_CANCEL:
+							request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
+						case CMD_ID_RESUME:
+							request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
+						default: wxASSERT(0);
+					}
 					request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
 					request_list.push_back(request);
 				} else {
@@ -809,8 +789,8 @@ void CamulecmdApp::OnInitCommandSet()
   	m_commands.AddCommand(wxT("Resume"), CMD_ID_RESUME, wxTRANSLATE("Resume download."),
  			      wxTRANSLATE(""), CMD_PARAM_ALWAYS);
 
-//   	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
-//  			      wxTRANSLATE(""), CMD_PARAM_ALWAYS);
+   	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
+  			      wxTRANSLATE(""), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
