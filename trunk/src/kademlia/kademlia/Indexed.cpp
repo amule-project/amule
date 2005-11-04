@@ -307,7 +307,7 @@ CIndexed::~CIndexed()
 				s_file.writeUInt32(KeyHashSrcMap.size());
 				
 				CKadSourcePtrList::iterator itSource = KeyHashSrcMap.begin();
-				for (; itSource != KeyHashSrcMap.begin(); ++itSource) {
+				for (; itSource != KeyHashSrcMap.end(); ++itSource) {
 					Source* currSource = *itSource;
 					s_file.writeUInt128(currSource->sourceID);
 
