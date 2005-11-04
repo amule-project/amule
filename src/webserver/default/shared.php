@@ -348,6 +348,8 @@ border-color: black;
 					'"><img src="l_down.gif" alt="Decrease Priority"></a></acronym>';
 			}
 		}
+		echo '</td>', "\n";
+		echo '</tr>', "\n";
 
 		?>
 
