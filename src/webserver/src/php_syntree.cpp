@@ -1855,7 +1855,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				}
 				while ( cond_result.int_val ) {
 					curr_exec_result = php_execute(node->node_while.code, 0);
-					if ( curr_exec_result > 0 ) {
+					if ( curr_exec_result < 0 ) {
 						break;
 					}
 					php_expr_eval(node->node_while.cond, &cond_result);
@@ -1868,7 +1868,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				cast_value_bool(&cond_result);
 				while ( cond_result.int_val ) {
 					curr_exec_result = php_execute(node->node_for.code, 0);
-					if ( curr_exec_result > 0 ) {
+					if ( curr_exec_result < 0 ) {
 						break;
 					}
 					php_expr_eval(node->node_for.do_next, &cond_result);
@@ -1907,7 +1907,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 							value_value_assign(curr_value, &i_val->var->value);
 						}
 						value_value_free(&i_val->var->value);
-						if ( curr_exec_result > 0 ) {
+						if ( curr_exec_result < 0 ) {
 							break;
 						}
 						array->current++;
@@ -1937,7 +1937,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 				break;
 			default: ;
 		}
-		if ( curr_exec_result != 0 ) {
+		if ( curr_exec_result ) {
 			return curr_exec_result;
 		}
 		node = node->next_node;
