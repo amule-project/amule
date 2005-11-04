@@ -1289,18 +1289,6 @@ void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 }
 
 #endif
-/*
- * Set of "native" functions to access amule data
- * 
- * The idea is to export internal amuleweb data into PHP script thru
- * set of built-in functions and objects:
- * 
- * $downloads = $aMule->GetDownloads();
- * 
- * $aMule->PauseFile($file_in_queue);
- * 
- * ...
- */
 
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
