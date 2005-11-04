@@ -23,12 +23,11 @@
 #ifndef TESTREGISTRY_H
 #define TESTREGISTRY_H
 
-#include "test.h"
-#include "testcase.h"
 #include "testresult.h"
 
 namespace muleunit
 {
+	class Test;
 
 /**
  * The TestRegistry is the main class used to register all tests,

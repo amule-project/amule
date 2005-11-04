@@ -77,10 +77,10 @@ const wxString& TestCase::getName() const
 
 void TestCase::updateCount(Test *test)
 {
-	if (test->failed()) {
-		m_failuresCount++;
-	} else {
+	if (test->getTestFailures().empty()) {
 		m_successesCount++;
+	} else {
+		m_failuresCount++;
 	}
 }
 
@@ -110,19 +110,15 @@ void TestCase::run()
 		test->tearDown();
 		updateCount(test);
 
-		const TestPartResultList testPRs = test->getTestPartResult();
+		const TestFailureList failures = test->getTestFailures();
 
-		TestPartResultList::const_iterator it = testPRs.begin();
-		for (; it != testPRs.end(); ++it) {
-			TestPartResult* testPR = *it;
-
-			if (testPR->getType() == failure) {
-				Print(wxT("\t\tFailure: \"%s\" line %ld in %s"),
-						 testPR->getMessage().c_str(),
-						 testPR->getLineNumber(),
-						 testPR->getFileName().c_str());
-			}
-		}		
+		TestFailureList::const_iterator it = failures.begin();
+		for (; it != failures.end(); ++it) {
+			Print(wxT("\t\tFailure: \"%s\" line %ld in %s"),
+					 it->message.c_str(),
+					 it->lineNumber,
+					 it->fileName.c_str());
+		}
 	}
 
 	m_ran = true;

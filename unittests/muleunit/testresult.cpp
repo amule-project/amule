@@ -21,6 +21,7 @@
 
 
 #include "testresult.h"
+#include "testcase.h"
 
 using namespace muleunit;
 

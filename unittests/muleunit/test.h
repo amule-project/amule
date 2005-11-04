@@ -24,10 +24,7 @@
 
 #include <wx/string.h>
 #include <list>
-#include <utility>
 
-#include "testcase.h"
-#include "testpartresult.h"
 
 
 /**
@@ -37,17 +34,29 @@
 namespace muleunit
 {
 
+class TestCase;
+	
+struct TestFailure
+{
+	//! The message (or condition) of the assertion.
+	wxString	message;
+	//! The file name where the assertion is located.
+	wxString	fileName;
+	//! The line number where the assertion is located.
+	long		lineNumber;	
+};
+
+	
 //! List used to store partial test-results
-typedef std::list<TestPartResult*> TestPartResultList;
+typedef std::list<TestFailure> TestFailureList;
 
 
 /**
  * Test class containing all macros to do unit testing. 
  * A test object represents a test that will be executed. Once it has been
- * executed, it reports all results in the testPartResult linked list.
+ * executed, it reports all failures in the testPartResult linked list.
  *
  * A failure occurs when a test fails (condition is false).
- * A success occurs if a test succeed (condition is true).
  */
 class Test
 {
@@ -91,7 +100,7 @@ public:
 	 *
 	 * @param testPartResult The testpartresult to be added to the list
 	 */
-	virtual void addTestPartResult(TestPartResult *testPartResult);
+	virtual void addTestFailure(const wxString& msg, const wxString& file, long lineNumber);
 
 	/**
 	 * Get the testpartresult list of this test. If assertion macros
@@ -100,13 +109,8 @@ public:
 	 *
 	 * @return testPartResult The list of testpartresults of this test
 	 */
-	const TestPartResultList& getTestPartResult() const;
+	const TestFailureList& getTestFailures() const;
 
-	/**
-	 * Returns true if any failures occured during the test.
-	 */
-	bool failed() const;
-	
 	/**
 	 * Get the name of the TestCase this test belongs to. The name of the
 	 * TestCase is the first parameter of the test declaration. For example,
@@ -132,14 +136,12 @@ protected:
 	bool DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
 	{
 		if (a == b) {
-			addTestPartResult(new muleunit::TestPartResult(file, line, wxEmptyString, success));
-			
 			return true;
 		} else {
 			wxString message = wxT("Expected '") + StringFrom(a) + 
 								wxT("' but got '") + StringFrom(b) + wxT("'");
 
-			addTestPartResult(new muleunit::TestPartResult(file, line, message, failure));
+			addTestFailure(message, file, line);
 		
 			return false;
 		}
@@ -148,8 +150,7 @@ protected:
 	wxString m_testCaseName;
 	wxString m_testName;
 	TestCase* m_testCase;
-	TestPartResultList m_testPartResults;
-	bool m_failed;
+	TestFailureList m_testFailures;
 };
 
 
@@ -180,12 +181,14 @@ inline wxString StringFrom(signed long long value)
  * @param condition Condition to fullfill for the assertion to pass
  * @param message Message that will be displayed if this assertion fails
  */
-#define ASSERT_TRUE_M(condition, message)\
-	{ if (condition) {\
-	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#condition),success));\
-	} else {\
-	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message,failure)); return;\
-	}}
+#define ASSERT_TRUE_M(condition, message) \
+{ \
+	if (!(condition)) {\
+		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
+		return; \
+	} \
+}
+
 
 /**
  * Same as ASSERT_TRUE, but without an explicit message.
@@ -209,11 +212,13 @@ inline wxString StringFrom(signed long long value)
  * @param message Message that will be displayed if this assertion fails
  */
 #define ASSERT_EQUALS_M(expected,actual,message)\
-{ if (expected == actual) {\
-	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,wxT(#expected),success));\
-	} else {\
-	this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__,message,failure)); return;\
-	}}
+{ \
+	if (!(expected == actual)) { \
+		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
+		return; \
+	} \
+}
+
 
 /**
  * Same as ASSERT_EQUALS_M, but without an explicit message.
@@ -229,7 +234,10 @@ inline wxString StringFrom(signed long long value)
  * @param text Failure message
  */
 #define FAIL_M(text) \
-	{ this->addTestPartResult(new TestPartResult(wxT(__FILE__), __LINE__,text,failure)); return; }
+{ \
+   this->addTestFailure(text, wxT("__FILE__"), __LINE__); \
+   return; \
+}
 
 
 /**
@@ -244,11 +252,9 @@ inline wxString StringFrom(signed long long value)
 #define ASSERT_RAISES_M(type, call, message) \
 	try { \
 		{ call; }\
-		this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, failure)); \
+		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
 		return; \
-	} catch (type) { \
-		this->addTestPartResult(new muleunit::TestPartResult(wxT(__FILE__),__LINE__, message, success)); \
-	}
+	} catch (const type&) {}
 
 
 /**
