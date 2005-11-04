@@ -326,6 +326,15 @@
 			}
 			return $result;
 		}
+		function cat2idx($cat)
+		{
+                	$cats = amule_get_categories();
+                	$result = 0;
+                	foreach($cats as $i => $c) {
+                		if ( $cat == $c) $result = $i;
+                	}
+            		return $result;
+		}
 
 		//
 		// declare it here, before any function reffered it in "global"
@@ -348,6 +357,36 @@
 
 			return $result;
 		}
+
+		if ($_SESSION["guest_login"] == 0) {
+			if ( $HTTP_GET_VARS["cmd"] == "search") {
+
+				$is_global = $HTTP_GET_VARS["method"] == "server" ? 0 : 1;
+	
+				$min_size = $HTTP_GET_VARS["min"] == "" ? 0 : $HTTP_GET_VARS["min"];
+				$max_size = $HTTP_GET_VARS["max"] == "" ? 0 : $HTTP_GET_VARS["max"];
+	
+				$min_size *= 1024*1024;
+				$max_size *= 1024*1024;
+				
+				amule_do_search_start_cmd($HTTP_GET_VARS["tosearch"],
+					$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["type"],
+					$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
+			} elseif ( $HTTP_GET_VARS["cmd"] == "download") {
+				foreach ( $HTTP_GET_VARS as $name => $val) {
+					// this is file checkboxes
+					if ( (strlen($name) == 32) and ($val == "on") ) {
+						$cat = $HTTP_GET_VARS["cat"];
+						$cat_idx = cat2idx($cat);
+						amule_do_search_download_cmd($name, $cat_idx);
+					}
+				}
+			} else {
+				// wrong command come
+				var_dump($HTTP_GET_VARS);
+			}
+		}
+		
 		$search = amule_load_vars("searchresult");
 
 		$sort_order = $HTTP_GET_VARS["sort"];
@@ -372,7 +411,7 @@
 			echo '<tr><td align="left"><font face=Tahoma style="font-size:8pt;">', $file->name,
 				'</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">', CastToXBytes($file->size),
 				'</font></td><td class="websearch-line"><font face=Tahoma style="font-size:8pt;">', $file->sources,
-				'</font></td><td class="websearch-line"><input type="checkbox" name="downloads" value="', $file->hash,
+				'</font></td><td class="websearch-line"><input type="checkbox" name="', $file->hash,
 				'"></td></tr>';
 				
 		}
@@ -422,8 +461,8 @@
   	<option value="Videos">Video</option>
   </select>
   </td></tr>
-  <tr><td class=tabs>Min Size</td><td><input name="min" type="text" size="10"></td></tr>
-  <tr><td class=tabs>Max Size</td><td><input name="max" type="text" size="10"></td></tr>
+  <tr><td class=tabs>Min Size (MB)</td><td><input name="min" type="text" size="10"></td></tr>
+  <tr><td class=tabs>Max Size (MB)</td><td><input name="max" type="text" size="10"></td></tr>
   <tr><td class=tabs>Min Availability</td><td><input name="avail" type="text" size="10"></td></tr>
   <tr><td class=tabs>Extension</td><td><input name="ext" type="text" size="10"></td></tr>
   <tr><td class=tabs>Method</td><td><input value="server" type="radio" name="method" checked>Server</td></tr>
