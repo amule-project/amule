@@ -256,7 +256,7 @@ void CHTTPDownloadThreadBase::OnExit()
 	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_type);
 	evt.SetExtraLong((long)m_result);
-	wxPostEvent(&theApp,evt);		
+	wxPostEvent(&theApp,evt);
 }
 
 wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, const wxString& location) {

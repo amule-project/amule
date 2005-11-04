@@ -37,7 +37,7 @@
 
 #include <list>			// Needed for std::list
 
-// If wx version is less than 2.5.2, we need this defined. This new flag 
+// If wx version is less than 2.5.2, we need this defined. This new flag
 // is needed to ensure the old behaviour of sizers.
 #if !wxCHECK_VERSION(2,5,2)
 	#define wxFIXED_MINSIZE 0
@@ -79,7 +79,7 @@ enum APPState {
 	APP_STATE_RUNNING = 0,
 	APP_STATE_SHUTINGDOWN,
 	APP_STATE_STARTING
-};	
+};
 
 
 #ifdef AMULE_DAEMON
@@ -97,7 +97,7 @@ class CamuleApp : public AMULE_APP_BASE
 public:
 	CamuleApp();
 	virtual	 ~CamuleApp();
-	
+
 	virtual bool	OnInit();
 	int		OnExit();
 	void		OnFatalException();
@@ -113,47 +113,47 @@ public:
 
 	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
-	
+
 	// Barry - To find out if app is running or shutting/shut down
 	const bool IsRunning() const { return (m_app_state == APP_STATE_RUNNING); }
 	const bool IsOnShutDown() const { return (m_app_state == APP_STATE_SHUTINGDOWN); }
-	
+
 	// Check ED2K and Kademlia state
 	bool IsFirewalled();
 	// Check if we should callback this client
 	bool DoCallback( CUpDownClient *client );
-	
+
 	// Connection to ED2K
 	bool IsConnectedED2K();
 	// Connection to Kad
 	bool IsConnectedKad();
 	// Are we connected to at least one network?
 	bool IsConnected();
-	
-	
+
+
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
-	
+
 	void RunAICHThread();
-	
+
 	// Misc functions
-	void		OnlineSig(bool zero = false); 
+	void		OnlineSig(bool zero = false);
 	void		Localize_mule();
 	void		Trigger_New_version(wxString newMule);
 
 	// Used to detect a previous running instance of aMule
 	wxServer*	localserver;
-	
+
 	// shakraw - new EC code using wxSocketBase
 	ExternalConn*	ECServerHandler;
 
 	// Kry - avoid chmod on win32
 	bool		use_chmod;
-	
+
 	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
 	void		SetPublicIP(const uint32 dwIP);
 
@@ -174,33 +174,33 @@ public:
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
-	
+
 	void ShutDown();
-	
+
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 	wxString GetDebugLog(bool reset = false);
-	
+
 	bool AddServer(CServer *srv, bool fromUser = false);
 	void AddServerMessageLine(wxString &msg);
 #ifdef __DEBUG__
 	void AddSocketDeleteDebug(uint32 socket_pointer, uint32 creation_time);
 #endif
-	void SetOSFiles(const wxString new_path); 
-	
+	void SetOSFiles(const wxString new_path);
+
 	wxString ConfigDir;
 
 	void AddLogLine(const wxString &msg);
-	
+
 	const wxString& GetOSType() const { return OSType; }
-	
+
 	void ShowUserCount();
-	
+
 	void ShowConnectionState();
 
 	void StartKad();
 	void StopKad();
-	
+
 protected:
 #ifdef __WXDEBUG__
 	/**
@@ -208,10 +208,10 @@ protected:
 	 */
 	virtual void OnAssert(const wxChar *file, int line, const wxChar *cond, const wxChar *msg);
 #endif
-	
+
 	/**
 	 * This class is used to contain log messages that are to be displayed
-	 * on the GUI, when it is currently impossible to do so. This is in order 
+	 * on the GUI, when it is currently impossible to do so. This is in order
 	 * to allows us to queue messages till after the dialog has been created.
 	 */
 	struct QueuedLogLine
@@ -234,30 +234,30 @@ protected:
 	void OnFinishedCompletion(wxEvent& evt);
 	void OnFinishedHTTPDownload(wxEvent& evt);
 	void OnHashingShutdown(wxEvent&);
-	
+
 	void OnNotifyEvent(wxEvent& evt);
-	
+
 	void SetTimeOnTransfer();
-			
+
 	std::list<QueuedLogLine> m_logLines;
-	
+
 	wxLocale m_locale;
 
-	APPState m_app_state;	
+	APPState m_app_state;
 
 	wxString m_emulesig_path;
 	wxString m_amulesig_path;
 
 	static const wxString FullMuleVersion;
-	static const wxString OSDescription;	
+	static const wxString OSDescription;
 	static char *strFullMuleVersion;
 	static char *strOSDescription;
 	wxString OSType;
-	
+
 	uint32 m_dwPublicIP;
-	
+
 	long webserver_pid;
-	
+
 #if wxCHECK_VERSION(2,5,3)
 	wxFFileOutputStream* applog;
 #else
@@ -271,7 +271,7 @@ protected:
 
 private:
 	virtual void OnUnhandledException();
-	
+
 	void CheckNewVersion(uint32 result);
 };
 
@@ -284,7 +284,7 @@ public:
 
 	wxString	m_FrameTitle;
 	CamuleDlg*	amuledlg;
-	
+
 	bool CopyTextToClipboard( wxString strText );
 
 	virtual void NotifyEvent(const GUIEvent& event);
@@ -297,17 +297,17 @@ public:
 class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
 
     virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	
+
 	int OnExit();
 	bool OnInit();
 	
 public:
 
-    virtual void ShowAlert(wxString msg, wxString title, int flags);
-	
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+
 	void ShutDown(wxCloseEvent &evt);
 	virtual void NotifyEvent(const GUIEvent& event);
-	
+
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 	void AddServerMessageLine(wxString &msg);
@@ -326,19 +326,19 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
 	bool OnInit();
-	
+
 	int OnExit();
-	
+
 	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
 
 public:
 
 	void Startup();
-	
+
 	bool ShowConnectionDialog();
 
 	class CRemoteConnect *connect;
-		
+
 	CEConnectDlg *dialog;
 
 	bool CopyTextToClipboard(wxString strText);
@@ -349,7 +349,7 @@ public:
 
 	CPreferencesRem *glob_prefs;
 	wxString ConfigDir;
-	
+
 	//
 	// Provide access to core data thru EC
 	CServerConnectRem *serverconnect;
@@ -365,31 +365,31 @@ public:
 	CListenSocketRem *listensocket;
 
 	CStatistics *statistics;
-	
+
 	bool AddServer(CServer *srv, bool fromUser = false);
-	
+
 	uint32 GetPublicIP();
 	wxString CreateED2kLink(const CAbstractFile* f);
 	wxString CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
 	wxString CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
-	
+
 	virtual void NotifyEvent(const GUIEvent& event);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
 
 	void AddServerMessageLine(wxString &msg);
-	
+
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
-	
+
 	bool IsConnectedED2K();
 	bool IsConnectedKad();
-	
+
 	void StartKad();
 	void StopKad();
-	
+
 	DECLARE_EVENT_TABLE()
 
 protected:
@@ -411,7 +411,7 @@ class CSocketSet;
 
 class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
 		CSocketSet *m_in_set, *m_out_set;
-		
+
 		wxMutex m_lock;
 	public:
 		CAmuledGSocketFuncTable();
@@ -438,11 +438,11 @@ class CDaemonAppTraits : public wxConsoleAppTraits {
 		std::list<wxObject *> m_sched_delete;
 	public:
 		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
-	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
-	    virtual void ScheduleForDestroy(wxObject *object);
-	    virtual void RemoveFromPendingDelete(wxObject *object);
-	    
-	    void DeletePending();
+		virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+		virtual void ScheduleForDestroy(wxObject *object);
+		virtual void RemoveFromPendingDelete(wxObject *object);
+
+		void DeletePending();
 };
 
 class CamuleDaemonApp : public CamuleApp {
@@ -451,13 +451,13 @@ class CamuleDaemonApp : public CamuleApp {
 	bool OnInit();
 	int OnRun();
 	int OnExit();
-	
+
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-	
+
 	CAmuledGSocketFuncTable *m_table;
 public:
 	CamuleDaemonApp();
-	
+
 	void ExitMainLoop() { m_Exit = true; }
 
 	virtual void NotifyEvent(const GUIEvent& event);
@@ -467,9 +467,9 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	wxMutex data_mutex;
-	
+
 	DECLARE_EVENT_TABLE()
-	
+
 	wxAppTraits *CreateTraits();
 
 };
