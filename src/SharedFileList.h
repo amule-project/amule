@@ -27,6 +27,7 @@
 #define SHAREDFILELIST_H
 
 #include <map>
+#include <vector>
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
 
@@ -46,8 +47,6 @@ class CPublishKeywordList;
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
 
 class CSharedFileList {
-	friend class CSharedFilesCtrl;
-	friend class CClientReqSocket;
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
@@ -55,14 +54,13 @@ public:
 	void 	Reload(bool firstload = false);
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
-	wxMutex	list_mut;
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	const CKnownFile* GetFileByIndex(unsigned int index) const;
-	CKnownFileList*	filelist;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
-	uint32	GetCount()	{return m_Files_map.size(); }
-	uint32  GetFileCount()	{return m_Files_map.size(); }
+	uint32	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	uint32  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	void	CopyFileList(std::vector<CKnownFile*>& out_list);
 	void	UpdateItem(CKnownFile* toupdate);
 	void	AddFilesFromDirectory(wxString directory);
 	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
@@ -87,7 +85,10 @@ private:
 	uint32 m_lastPublishED2K;
 	bool	 m_lastPublishED2KFlag;	
 
+	CKnownFileList*	filelist;
+
 	CKnownFileMap		m_Files_map;
+	mutable wxMutex		list_mut;
 
 	
 	/* Kad Stuff */

@@ -51,6 +51,8 @@
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 	// Needed for wxStringTokenizer
 
+#include <vector>
+
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "ClientUDPSocket.h"
@@ -800,12 +802,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (m_client->IsBanned()) {
 				break;
 			}
-			CList<void*,void*> list;
+			std::vector<CKnownFile*> list;
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-				CKnownFileMap& filemap = theApp.sharedfiles->m_Files_map;
-				for (CKnownFileMap::iterator pos = filemap.begin();pos != filemap.end(); pos++ ) {
-					list.AddTail((void*&)pos->second);
-				}
+				theApp.sharedfiles->CopyFileList(list);
 				AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
@@ -816,10 +815,9 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			// now create the memfile for the packet
 			CMemFile tempfile(80);
-			tempfile.WriteUInt32(list.GetCount());
-			while (list.GetCount()) {
-				theApp.sharedfiles->CreateOfferedFilePacket((CKnownFile*)list.GetHead(), &tempfile, NULL, m_client);
-				list.RemoveHead();
+			tempfile.WriteUInt32(list.size());
+			for (int i = 0; i < list.size(); ++i) {
+				theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
 			}
 			
 			// create a packet and send it
