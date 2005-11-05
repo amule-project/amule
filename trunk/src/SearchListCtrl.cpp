@@ -384,8 +384,18 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 		}
 		
 		// Sort by file-types
-		case ID_SEARCH_COL_TYPE:
-			return modifier *  GetFiletypeByName( file1->GetFileName() ).Cmp(GetFiletypeByName(file2->GetFileName()));
+		case ID_SEARCH_COL_TYPE: {
+			wxString fileName1 = wxT(".") + file1->GetFileName().AfterLast('.').MakeLower();
+			wxString fileName2 = wxT(".") + file2->GetFileName().AfterLast('.').MakeLower();
+			
+			int result = GetFiletypeByName(fileName1).Cmp(GetFiletypeByName(fileName2));
+			if (result == 0) {
+				// Same file-type, sort by extension
+				result = fileName1.Cmp(fileName2);
+			}
+
+			return modifier * result;
+		}
 
 		// Sort by file-hash
 		case ID_SEARCH_COL_FILEID:
