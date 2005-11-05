@@ -129,6 +129,6 @@ TEST(NetworkFunctions, StringIPtoUint32)
 
 	
 	// The dummyIP value shouldn't have been changed by any of these calls
-	ASSERT_EQUALS(27, dummyIP);
+	ASSERT_EQUALS(27u, dummyIP);
 }
 

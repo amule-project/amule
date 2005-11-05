@@ -136,7 +136,7 @@ TEST(RangeMap, DefaultConstructor)
 {
 	TestRangeMap map;
 
-	ASSERT_EQUALS(0, map.size());
+	ASSERT_EQUALS(0u, map.size());
 	ASSERT_TRUE(map.empty());
 }
 
@@ -275,13 +275,13 @@ TEST(RangeMap, Clear)
 {
 	m_map.clear();
 	ASSERT_TRUE(m_map.empty());
-	ASSERT_EQUALS(0, m_map.size());
+	ASSERT_EQUALS(0u, m_map.size());
 	ASSERT_EQUALS(wxT("[]"), StringFrom(m_map));
 	
 	for (int i = 0; i < 3; ++i) {
 		m_mmaps[i].clear();
 		ASSERT_TRUE(m_mmaps[i].empty());
-		ASSERT_EQUALS(0, m_mmaps[i].size());
+		ASSERT_EQUALS(0u, m_mmaps[i].size());
 		ASSERT_EQUALS(wxT("[]"), StringFrom(m_mmaps[i]));
 	}
 }
