@@ -280,18 +280,14 @@ void CUpDownClient::CreateNextBlockPackage()
 				file.Seek(currentblock->StartOffset, wxFromStart);
 				
 				filedata = new byte[togo+500];
-				// I'm only allowing this to retry once - if we're unable to read less than EMBLOCKSIZE*3
-				// in two tries, the reading it's not worth it... something's wrong (and SafeRead will throw)
-				file.SafeRead(filedata,togo,1);
+				file.Read(filedata, togo);
 				file.Close();
 			} else {
 				CPartFile* partfile = (CPartFile*)srcfile;
 				partfile->m_hpartfile.Seek(currentblock->StartOffset);
 				
 				filedata = new byte[togo+500];
-				// I'm only allowing this to retry once - if we're unable to read less than EMBLOCKSIZE*3
-				// in two tries, the reading it's not worth it... something's wrong (and SafeRead will throw)
-				partfile->m_hpartfile.SafeRead(filedata,togo,1); 
+				partfile->m_hpartfile.Read(filedata, togo); 
 				// Partfile should NOT be closed!!!
 			}
 

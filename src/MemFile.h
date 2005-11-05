@@ -53,7 +53,7 @@ public:
 	/**
 	 * Creates a dynamic file object.
 	 * 
-	 * @param growBytes The growth-rate of the buffer.
+	 * @param growthRate The growth-rate of the buffer.
 	 *
 	 * The growth-rate specified by how much the buffer-size will
 	 * be increased when the memfile runs out of space. Normally
@@ -67,7 +67,7 @@ public:
 	 * If the growth-rate is set to zero, the memfile will allocate
 	 * exactly the needed amount of memory and no more when resizing.
 	 */
-	CMemFile(unsigned int growBytes = 1024);
+	CMemFile(unsigned int growthRate = 1024);
 
 	/**
 	 * Creates a mem-file attached to an already existing buffer.
@@ -87,24 +87,19 @@ public:
 	 *
 	 * The buffer is _not_ freed by CMemFile upon destruction.
 	 */
-	CMemFile(byte* buffer, off_t bufferSize);
+	CMemFile(byte* buffer, size_t bufferSize);
 
 	/** Destructor. */
 	virtual ~CMemFile();
 	
 
 	/** @see CFileDataIO::GetPosition */
-	virtual off_t GetPosition() const;
+	virtual uint64 GetPosition() const;
 	
 	/** @see CFileDataIO::GetLength */
-	virtual off_t GetLength() const;
+	virtual uint64 GetLength() const;
 
 	
-	/**
-	 * Returns true if the position is at or after the end of the file.
-	 */
-	virtual bool Eof() const;
-
 	/** 
 	 * Changes the length of the file, possibly resizing the buffer.
 	 *
@@ -117,17 +112,17 @@ public:
 	 * to a value greater than the actual buffer size is an illegal 
 	 * operation.
 	 */
-	virtual void SetLength(off_t newLen);
+	virtual void SetLength(size_t newLen);
 	
 protected:
 	/** @see CFileDataIO::doRead */
-	virtual off_t  doRead(void* buffer, size_t count) const;
+	virtual sint64 doRead(void* buffer, size_t count) const;
 
 	/** @see CFileDataIO::doWrite */
-	virtual size_t doWrite(const void* buffer, size_t count);
+	virtual sint64 doWrite(const void* buffer, size_t count);
 	
 	/** @see CFileDataIO::doSeek */
-	virtual off_t  doSeek(off_t offset) const;
+	virtual sint64 doSeek(sint64 offset) const;
 	
 private:
 	//! A CMemFile is neither copyable nor assignable.
@@ -137,16 +132,16 @@ private:
 	//@}
 
 	/** Enlarges the buffer to at least 'size' length. */
-	void enlargeBuffer(off_t size);
+	void enlargeBuffer(size_t size);
 	
 	//! The growth-rate for the buffer.
-	unsigned int m_GrowBytes;
+	unsigned int m_growthRate;
 	//! The current position in the file. 
-	mutable off_t m_position;
+	mutable size_t m_position;
 	//! The actual size of the buffer.
-	off_t	m_BufferSize;
+	size_t	m_BufferSize;
 	//! The size of the virtual file, may be less than the buffer-size.
-	off_t	m_FileSize;
+	size_t	m_fileSize;
 	//! If true, the buffer will be freed upon termination.
 	bool	m_delete;
 	//! The actual buffer.

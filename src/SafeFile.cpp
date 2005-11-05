@@ -29,22 +29,24 @@
 #include "StringFunctions.h"		// Needed for unicode2char, etc.
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 
-
-#define CHECK_BOM(size,x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
-
-const char BOMHeader[3] = {0xEF,0xBB,0xBF};
+#include <algorithm>		// Needed for std::min
 
 
-CSafeIOException::CSafeIOException(const wxString& what)
-	: CMuleException(wxT("CSafeIOException"), what) {}
+#define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
+
+const char BOMHeader[3] = {0xEF, 0xBB, 0xBF};
+
+
+CSafeIOException::CSafeIOException(const wxString& type, const wxString& what)
+	: CMuleException(wxT("CSafeIOException::") + type, what) {}
 
 
 CEOFException::CEOFException(const wxString& what)
-	: CSafeIOException(what) {}
+	: CSafeIOException(wxT("CEOFException"), what) {}
 
 
 CIOFailureException::CIOFailureException(const wxString& what)
-	: CSafeIOException(what) {}
+	: CSafeIOException(wxT("CIOFailureException"), what) {}
 
 
 
@@ -56,36 +58,44 @@ CFileDataIO::~CFileDataIO()
 {
 }
 
-	
-void CFileDataIO::Read(void *pBuf, size_t nCount) const
-{
-	MULE_VALIDATE_PARAMS(pBuf || nCount == 0, wxT("Attempting to write to NULL buffer."));
 
-	// Check for read past EOF
-	if (GetLength() < GetPosition() + nCount) {
-		throw CEOFException(wxT("Attempt to read past end of file."));
-	}
+bool CFileDataIO::Eof() const
+{
+	return GetPosition() >= GetLength();
+}
+
+
+void CFileDataIO::Read(void *buffer, size_t count) const
+{
+	MULE_VALIDATE_PARAMS(buffer, wxT("Attempting to write to NULL buffer."));
 
 	// Check that we read everything we wanted.
-	if (doRead(pBuf, nCount) != nCount) {
+	if (doRead(buffer, count) == count) {
+		return;
+	}
+
+	// To reduce potential system calls, we only do EOF checks when reads fail.
+	if (Eof()) {
+		throw CEOFException(wxT("Attempt to read past end of file."));
+	} else {
 		throw CIOFailureException(wxT("Read error, failed to read from file."));
 	}
 }
 
 
-void CFileDataIO::Write(const void *pBuf, size_t nCount)
+void CFileDataIO::Write(const void* buffer, size_t count)
 {
-	MULE_VALIDATE_PARAMS(pBuf || nCount == 0, wxT("Attempting to read from NULL buffer."));
+	MULE_VALIDATE_PARAMS(buffer, wxT("Attempting to read from NULL buffer."));
 
-	if (doWrite(pBuf, nCount) != nCount) {
+	if (doWrite(buffer, count) != count) {
 		throw CIOFailureException(wxT("Read error, failed to write to file."));
 	}
 }
 
 
-off_t CFileDataIO::Seek(off_t offset, wxSeekMode from) const
+uint64 CFileDataIO::Seek(sint64 offset, wxSeekMode from) const
 {
-	off_t newpos = 0;
+	sint64 newpos = 0;
 	switch (from) {
 		case wxFromStart:
 			newpos = offset;
@@ -103,9 +113,9 @@ off_t CFileDataIO::Seek(off_t offset, wxSeekMode from) const
 			MULE_VALIDATE_PARAMS(false, wxT("Invalid seek-mode specified."));
 	}
 	
-	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking would be negative"));
+	MULE_VALIDATE_PARAMS(newpos >= 0, wxT("Position after seeking would be less than zero!"));
 
-	off_t result = doSeek(newpos);
+	sint64 result = doSeek(newpos);
 	MULE_VALIDATE_STATE(result >= 0, wxT("Seeking resulted in invalid offset."));
 	MULE_VALIDATE_STATE(result == newpos, wxT("Target position and actual position disagree."));
 	
@@ -115,29 +125,30 @@ off_t CFileDataIO::Seek(off_t offset, wxSeekMode from) const
 
 uint8 CFileDataIO::ReadUInt8() const
 {
-	uint8 nVal = 0;
-	Read(&nVal, sizeof(nVal));
+	uint8 value = 0;
+	Read(&value, 1);
 
-	return nVal;
+	return value;
 }
 
 
 uint16 CFileDataIO::ReadUInt16() const
 {
-	uint16 nVal = 0;
-	Read(&nVal, sizeof(nVal));
-
-	return ENDIAN_SWAP_16(nVal);
+	uint16 value = 0;
+	Read(&value, 2);
+	
+	return ENDIAN_SWAP_16(value);
 }
 
 
 uint32 CFileDataIO::ReadUInt32() const
 {
-	uint32 nVal = 0;
-	Read(&nVal, sizeof(nVal));
-
-	return ENDIAN_SWAP_32(nVal);
+	uint32 value = 0;
+	Read(&value, 4);
+	
+	return ENDIAN_SWAP_32(value);
 }
+
 
 CUInt128 CFileDataIO::ReadUInt128() const
 {
@@ -150,19 +161,37 @@ CUInt128 CFileDataIO::ReadUInt128() const
 	return value;
 }
 
+
 CMD4Hash CFileDataIO::ReadHash() const
 {
-	unsigned char hash[16];
-	Read(hash, 16);
+	CMD4Hash value;
+	Read(value.GetHash(), 16);
 
-	return CMD4Hash(hash);
+	return value;
+}
+
+
+wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) const
+{
+	uint32 readLen;
+	switch (SizeLen) {
+		case 2:	readLen = ReadUInt16();	break;
+		case 4:	readLen = ReadUInt32();	break;
+			
+		default:
+			MULE_VALIDATE_PARAMS(false, wxT("Invalid SizeLen value in ReadString"));
+	}	
+
+	if (SafeRead) {
+		readLen = std::min<uint64>(readLen, GetLength() - GetPosition());
+	}
+	
+	return ReadOnlyString(bOptUTF8, readLen);
 }
 
 
 wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 {
-	// The name is just to confuse people
-	
 	// We only need to set the the NULL terminator, since we know that
 	// reads will either succeed or throw an exception, in which case
 	// we wont be returning anything
@@ -172,7 +201,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 	Read(val, raw_len);
 	wxString str;
 	
-	if (CHECK_BOM(raw_len,val)) {
+	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
 		str = UTF82unicode(val + 3);
 	} else {
@@ -181,7 +210,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 			if (str.IsEmpty()) {
 				// Fallback to system locale
 				str = char2unicode(val);
-			}					
+			}
 		} else {
 			str = char2unicode(val);
 		}
@@ -191,66 +220,58 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 }
 
 
-wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) const
+void CFileDataIO::WriteUInt8(uint8 value)
 {
+	Write(&value, 1);
+}
+
+
+void CFileDataIO::WriteUInt16(uint16 value)
+{
+	ENDIAN_SWAP_I_16(value);
 	
-	uint32 length;
-	switch (SizeLen) {
-		case 2:
-			length = ReadUInt16();
-			break;
-		case 4:
-			length = ReadUInt32();			
-			break;
-		default:
-			// Not uint16 neither uint32. BAD THING.
-			// Let's assume uint16 for not to crash.
-			wxASSERT(0);
-			printf("Unexpected string len size %d on ReadString! Report on forum.amule.org!\n", SizeLen);
-			length = ReadUInt16();				
-			break;					
-	}	
+	Write(&value, 2);
+}
 
-	if (SafeRead) {
-		if ( length > GetLength() - GetPosition() ) {
-			length = GetLength() - GetPosition();
-		}	
-	}
+
+void CFileDataIO::WriteUInt32(uint32 value)
+{
+	ENDIAN_SWAP_I_32(value);
 	
-	return ReadOnlyString(bOptUTF8, length);
-
+	Write(&value, 4);
 }
 
 
-void CFileDataIO::WriteUInt8(uint8 nVal)
-{
-	Write(&nVal, sizeof nVal);
-}
-
-void CFileDataIO::WriteUInt16(uint16 nVal)
-{
-	ENDIAN_SWAP_I_16(nVal);
-	
-	Write(&nVal, sizeof nVal);
-}
-
-void CFileDataIO::WriteUInt32(uint32 nVal)
-{
-	ENDIAN_SWAP_I_32(nVal);
-
-	Write(&nVal, sizeof nVal);
-}
-
-void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& pVal)
+void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 {
 	for (int i = 0; i < 4; i++) {
-		WriteUInt32(pVal.get32BitChunk(i));
+		WriteUInt32(value.get32BitChunk(i));
 	}
 }
+
 
 void CFileDataIO::WriteHash(const CMD4Hash& value)
 {
 	Write(value.GetHash(), 16);
+}
+
+
+void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeLen)
+{
+	switch (eEncode) {
+		case utf8strRaw:
+		case utf8strOptBOM: {
+			Unicode2CharBuf s(unicode2UTF8(str));
+			if (s) {
+				WriteStringCore(s, eEncode, SizeLen);
+				break;
+			}
+		}
+		default: {
+			Unicode2CharBuf s1(unicode2char(str));
+			WriteStringCore(s1, utf8strNone, SizeLen);			
+		}
+	}
 }
 
 
@@ -262,29 +283,28 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 		real_length = sLength + 3; // For BOM header.
 	} else {
 		real_length = sLength;
-	}			
+	}
+
 	switch (SizeLen) {
 		case 0:
-			// don't write size :)
+			// Don't write size.
 			break;
+			
 		case 2:
-			wxASSERT(real_length < (uint16)0xFFFF); // Can't be higher than a uint16
+			// Can't be higher than a uint16
+			wxASSERT(real_length < (uint16)0xFFFF);
 			WriteUInt16(real_length);
 			break;
+			
 		case 4:
-			wxASSERT(real_length < (uint32)0xFFFFFFFF); // Can't be higher than a uint32
 			WriteUInt32(real_length);
 			break;
+			
 		default:
-			// Not uint16 neither uint32. BAD THING.
-			// Let's assume uint16 for not to crash.
-			wxASSERT(0);
-			printf(	"Unexpected string len size %d on WriteString!"
-				" Report on forum.amule.org!\n", SizeLen);
-			WriteUInt16(real_length);
-			break;					
+			MULE_VALIDATE_PARAMS(false, wxT("Invalid length for string-length field."));
 	}		
 		
+	// The BOM header must be written even if the string is empty.
 	if (eEncode == utf8strOptBOM) {
 		Write(BOMHeader, 3);
 	}
@@ -296,21 +316,3 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 	}
 }
 
-
-void CFileDataIO::WriteString(const wxString& rstr, EUtf8Str eEncode, uint8 SizeLen)
-{
-	switch (eEncode) {
-		case utf8strRaw:
-		case utf8strOptBOM: {
-			Unicode2CharBuf s(unicode2UTF8(rstr));
-			if (s) {
-				WriteStringCore(s, eEncode, SizeLen);
-				break;
-			}
-		}
-		default: {
-			Unicode2CharBuf s1(unicode2char(rstr));
-			WriteStringCore(s1, utf8strNone, SizeLen);			
-		}
-	}
-}

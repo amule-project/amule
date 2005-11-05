@@ -487,7 +487,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fil
 	fileDataOut->WriteUInt16(nHashsToWrite);
 	uint32 nCheckFilePos = fileDataOut->GetPosition();
 	if (m_pHashTree.CreatePartRecoveryData(nPartStartPos, nPartSize, fileDataOut, 0)){
-		if (nHashsToWrite*(HASHSIZE+2) != fileDataOut->GetPosition() - nCheckFilePos){
+		if (nHashsToWrite*(HASHSIZE+2u) != fileDataOut->GetPosition() - nCheckFilePos){
 			wxASSERT( false );
 			AddDebugLogLineM( false, logSHAHashSet, wxT("Created RecoveryData has wrong length. File: ") + m_pOwner->GetFileName() );
 			bResult = false;
@@ -520,7 +520,7 @@ bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn)
 	m_pHashTree.FindHash(nPartStartPos, nPartSize,&nLevel);
 	uint16 nHashsToRead = (nLevel-1) + nPartSize/EMBLOCKSIZE + ((nPartSize % EMBLOCKSIZE != 0 )? 1:0);
 	uint16 nHashsAvailable = fileDataIn->ReadUInt16();
-	if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2) || nHashsToRead != nHashsAvailable){
+	if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2u) || nHashsToRead != nHashsAvailable){
 		// this check is redunant, CSafememfile would catch such an error too
 		AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT("%s - Received datasize/amounts of hashs was invalid"));
 		return false;
@@ -582,14 +582,13 @@ bool CAICHHashSet::SaveHashSet(){
 		// first we check if the hashset we want to write is already stored
 		CAICHHash CurrentHash;
 		uint32 nExistingSize = file.GetLength();
-		uint16 nHashCount;
 		while (file.GetPosition() < nExistingSize){
 			CurrentHash.Read(&file);
 			if (m_pHashTree.m_Hash == CurrentHash){
 				// this hashset if already available, no need to save it again
 				return true;
 			}
-			nHashCount = file.ReadUInt16();
+			uint16 nHashCount = file.ReadUInt16();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize){
 				throw fullpath;
 			}
@@ -598,7 +597,7 @@ bool CAICHHashSet::SaveHashSet(){
 		}
 		// write hashset
 		m_pHashTree.m_Hash.Write(&file);
-		nHashCount = (PARTSIZE/EMBLOCKSIZE + ((PARTSIZE % EMBLOCKSIZE != 0)? 1 : 0)) * (m_pHashTree.m_nDataSize/PARTSIZE);
+		uint16 nHashCount = (PARTSIZE/EMBLOCKSIZE + ((PARTSIZE % EMBLOCKSIZE != 0)? 1 : 0)) * (m_pHashTree.m_nDataSize/PARTSIZE);
 		if (m_pHashTree.m_nDataSize % PARTSIZE != 0)
 			nHashCount += (m_pHashTree.m_nDataSize % PARTSIZE)/EMBLOCKSIZE + (((m_pHashTree.m_nDataSize % PARTSIZE) % EMBLOCKSIZE != 0)? 1 : 0);
 		file.WriteUInt16(nHashCount);

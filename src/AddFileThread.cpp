@@ -262,7 +262,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 
 		// We only support files <= 4gigs
-		if ( (uint64)file.GetLength() >= (uint64)(4294967295U) ) {
+		if (file.GetLength() > 4294967295U) {
 			AddDebugLogLineM( true, logHasher, wxT("Warning, file is bigger than 4GB, skipping: ") + filename );
 			continue;
 		}

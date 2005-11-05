@@ -88,7 +88,7 @@ public:
 		ASSERT_TRUE(m_predefFile->IsOpened());
 
 		writePredefData(m_predefFile);
-		ASSERT_EQUALS(0, m_predefFile->GetPosition());
+		ASSERT_EQUALS(0u, m_predefFile->GetPosition());
 		ASSERT_EQUALS(TEST_LENGTH, m_predefFile->GetLength());		
 	}
 	
@@ -118,7 +118,7 @@ public:
 		m_predefFile = new CMemFile();
 		
 		writePredefData(m_predefFile);		
-		ASSERT_EQUALS(0, m_predefFile->GetPosition());
+		ASSERT_EQUALS(0u, m_predefFile->GetPosition());
 		ASSERT_EQUALS(TEST_LENGTH, m_predefFile->GetLength());
 	}
 	
@@ -281,8 +281,8 @@ public:
 		ASSERT_EQUALS(TEST_LENGTH, file->GetLength());
 
 		// Check reads past EOF
-		for (off_t i = 0; i < SIZE; ++i) {
-			ASSERT_EQUALS(TEST_LENGTH - i, file->Seek(-i, wxFromEnd));
+		for (size_t i = 0; i < SIZE; ++i) {
+			ASSERT_EQUALS(TEST_LENGTH - i, file->Seek(-(signed)i, wxFromEnd));
 			ASSERT_RAISES(CEOFException, RW::readValue(file));
 		}
 
@@ -292,8 +292,8 @@ public:
 		char* buf = testBuffer + 8;
 		
 		for (int i = 0; i < 16; ++i) {
-			ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
-			ASSERT_EQUALS(0, file->GetPosition());
+			ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+			ASSERT_EQUALS(0u, file->GetPosition());
 
 			file->Read(buf, i + 1);
 
@@ -379,40 +379,40 @@ public:
 	void run() {
 		CFileDataIO* file = this->m_predefFile;
 		
-		ASSERT_EQUALS(0, file->GetPosition());
-		for (off_t pos = 0; pos < TEST_LENGTH * 2; pos += pos + 1) {
+		ASSERT_EQUALS(0u, file->GetPosition());
+		for (size_t pos = 0; pos < TEST_LENGTH * 2; pos += pos + 1) {
 			ASSERT_EQUALS(pos, file->Seek(pos, wxFromStart));
 			ASSERT_EQUALS(pos, file->GetPosition());
 		}
 		
-		ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
-		ASSERT_EQUALS(0, file->GetPosition());
+		ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+		ASSERT_EQUALS(0u, file->GetPosition());
 		
-		for (off_t pos = 0, cur = 0; pos < TEST_LENGTH * 2; pos += ++cur) {
+		for (size_t pos = 0, cur = 0; pos < TEST_LENGTH * 2; pos += ++cur) {
 			ASSERT_EQUALS(pos, file->Seek(cur, wxFromCurrent));
 			ASSERT_EQUALS(pos, file->GetPosition());
 		}
 	
-		ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
-		ASSERT_EQUALS(0, file->GetPosition());
+		ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+		ASSERT_EQUALS(0u, file->GetPosition());
 		
-		for (off_t pos = 0; pos < TEST_LENGTH; pos += pos + 1) {
-			ASSERT_EQUALS(TEST_LENGTH - pos, file->Seek(-1 * pos, wxFromEnd));
+		for (size_t pos = 0; pos < TEST_LENGTH; pos += pos + 1) {
+			ASSERT_EQUALS(TEST_LENGTH - pos, file->Seek(-(signed)pos, wxFromEnd));
 			ASSERT_EQUALS(TEST_LENGTH - pos, file->GetPosition());
 		}
 
-		ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
-		ASSERT_EQUALS(0, file->GetPosition());
+		ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+		ASSERT_EQUALS(0u, file->GetPosition());
 
 		// Seek to negative is invalid
 		for (off_t pos = 1; pos < 10; ++pos) {
 			ASSERT_RAISES(CInvalidParamsEx, file->Seek(-1 * pos));
-			ASSERT_EQUALS(0, file->GetPosition());
+			ASSERT_EQUALS(0u, file->GetPosition());
 		}
 
 		// Corner-case
 		ASSERT_RAISES(CInvalidParamsEx, file->Seek(std::numeric_limits<off_t>::min()));
-		ASSERT_EQUALS(0, file->GetPosition());
+		ASSERT_EQUALS(0u, file->GetPosition());
 	}
 };
 
@@ -427,28 +427,28 @@ public:
 	void run() {
 		CFileDataIO* file = this->m_emptyFile;
 
-		ASSERT_EQUALS(0, file->GetLength());
-		ASSERT_EQUALS(0, file->GetPosition());
+		ASSERT_EQUALS(0u, file->GetLength());
+		ASSERT_EQUALS(0u, file->GetPosition());
 
 		file->WriteUInt8(0);
 
-		ASSERT_EQUALS(1, file->GetLength());
-		ASSERT_EQUALS(1, file->GetPosition());
+		ASSERT_EQUALS(1u, file->GetLength());
+		ASSERT_EQUALS(1u, file->GetPosition());
 		
 		file->WriteUInt16(0);
 
-		ASSERT_EQUALS(3, file->GetLength());
-		ASSERT_EQUALS(3, file->GetPosition());
+		ASSERT_EQUALS(3u, file->GetLength());
+		ASSERT_EQUALS(3u, file->GetPosition());
 		
 		file->WriteUInt32(0);
 
-		ASSERT_EQUALS(7, file->GetLength());
-		ASSERT_EQUALS(7, file->GetPosition());
+		ASSERT_EQUALS(7u, file->GetLength());
+		ASSERT_EQUALS(7u, file->GetPosition());
 
 		file->WriteHash(CMD4Hash());
 
-		ASSERT_EQUALS(23, file->GetLength());
-		ASSERT_EQUALS(23, file->GetPosition());
+		ASSERT_EQUALS(23u, file->GetLength());
+		ASSERT_EQUALS(23u, file->GetPosition());
 		
 		// TODO: ReadUInt128
 		
@@ -457,17 +457,17 @@ public:
 		memset(tmp, 0, 42);
 		file->Write(tmp, 42);
 
-		ASSERT_EQUALS(65, file->GetLength());
-		ASSERT_EQUALS(65, file->GetPosition());
+		ASSERT_EQUALS(65u, file->GetLength());
+		ASSERT_EQUALS(65u, file->GetPosition());
 
 		// Check that the length is always increased, regardless of starting pos
-		off_t length = file->GetLength();
+		size_t length = file->GetLength();
 		for (size_t j = 0; j < 16; ++j) {
-			ASSERT_EQUALS(length + j - 15, file->Seek(-15, wxFromEnd));
-			ASSERT_EQUALS(length + j - 15, file->GetPosition());
+			ASSERT_EQUALS(length + j - 15u, file->Seek(-15, wxFromEnd));
+			ASSERT_EQUALS(length + j - 15u, file->GetPosition());
 			file->WriteHash(CMD4Hash());
-			ASSERT_EQUALS(length + j + 1, file->GetLength());
-			ASSERT_EQUALS(length + j + 1, file->GetPosition());
+			ASSERT_EQUALS(length + j + 1u, file->GetLength());
+			ASSERT_EQUALS(length + j + 1u, file->GetPosition());
 		}
 	}
 };
@@ -490,7 +490,7 @@ public:
 	void run() {
 		CFileDataIO* file = this->m_emptyFile;
 	
-		// TODO: Need to test non-ascii values when using unicode/etc
+		// TODO: Need to test non-ascii values when using unicode/etc, zero-length lengthfields
 		Encoding encodings[] = 
 		{
 			{utf8strNone,	NULL,			0},
@@ -514,7 +514,7 @@ public:
 				
 				file->WriteString(curStr, encodings[enc].id, 2);
 				ASSERT_EQUALS(strLen + 2 + headLen, file->GetPosition());
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 				ASSERT_EQUALS(strLen + headLen, file->ReadUInt16());
 
 				// Check header (if any)
@@ -524,14 +524,14 @@ public:
 					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
 				}
 				
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 				ASSERT_EQUALS(curStr, file->ReadString(encodings[enc].id, 2));
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 				
 				
 				file->WriteString(curStr, encodings[enc].id, 4);
 				ASSERT_EQUALS(strLen + 4 + headLen, file->GetPosition());
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 				ASSERT_EQUALS(strLen + headLen, file->ReadUInt32());
 
 				// Check header (if any)
@@ -541,13 +541,35 @@ public:
 					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
 				}
 				
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 				ASSERT_EQUALS(curStr, file->ReadString(encodings[enc].id, 4));
-				ASSERT_EQUALS(0, file->Seek(0, wxFromStart));
+				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 			}
 		}
 	}
 };
+
+
+// Do not attempt to use this test with CMemFile.
+template <typename IMPL>
+class LargeFileTest : public FileDataIOFixture<IMPL>
+{
+public:
+	LargeFileTest()
+		: FileDataIOFixture<IMPL>(wxT("LargeFile")) {}
+	
+	void run() {
+		CFile* file = dynamic_cast<CFile*>(this->m_emptyFile);
+		
+		ASSERT_TRUE(file != NULL);
+		ASSERT_EQUALS(2147483647UL, file->Seek(2147483647L, wxFromStart));
+		ASSERT_EQUALS(2147483648UL, file->Seek(1, wxFromCurrent));
+		ASSERT_EQUALS(2147483648UL, file->GetPosition());
+		ASSERT_EQUALS(4294967296ULL, file->Seek(4294967296ULL, wxFromStart));
+		ASSERT_EQUALS(4294967296ULL, file->GetPosition());		
+	}
+};
+
 
 
 /////////////////////////////////////////////////////////////////////
@@ -569,6 +591,8 @@ SeekTest<CFile>						CFileSeekTest;
 WritePastEndTest<CFile>				CFileWritePastEnd;
 StringTest<CFile>					CFileStringTest;
 
+LargeFileTest<CFile>				CFileLargeFileTest;
+
 
 ReadTest<CMemFile, uint8, 1>		CMemFileReadUInt8Test;
 ReadTest<CMemFile, uint16, 2>		CMemFileReadUInt16Test;
@@ -587,10 +611,252 @@ WritePastEndTest<CMemFile>			CMemFileWritePastEnd;
 StringTest<CMemFile>				CMemFileStringTest;
 
 
-// TODO:
-#if 0
-	wxString	ReadString(bool bOptUTF8, uint8 SizeLen = 2 /* bytes */, bool SafeRead = false) const;
-	wxString	ReadOnlyString(bool bOptUTF8, uint16 raw_len) const;
+/////////////////////////////////////////////////////////////////////
+// CMemFile specific tests
 
-	void WriteString(const wxString& rstr, EUtf8Str eEncode = utf8strNone, uint8 SizeLen = 2 /* bytes */);
-#endif
+DECLARE_SIMPLE(CMemFile);
+
+TEST(CMemFile, AttachedBuffer)
+{
+	const size_t BufferLength = 1024;
+	byte buffer[BufferLength];
+	
+	for (size_t i = 0; i < BufferLength; ++i) {
+		buffer[i] = i & 0xFF;
+	}
+
+	CMemFile file(buffer, BufferLength);
+	for (size_t i = 0; i < BufferLength; ++i) {
+		ASSERT_EQUALS(file.ReadUInt8(), i & 0xFF);
+	}
+
+	// Resizing upwards should fail
+	ASSERT_RAISES(CRunTimeException, file.SetLength(BufferLength * 2));
+	ASSERT_EQUALS(BufferLength, file.GetLength());
+
+	// Resizing downwards should be ok, as should resizes up (but within bufferlen)
+	file.SetLength(BufferLength / 2);
+	ASSERT_EQUALS(BufferLength / 2, file.GetLength());
+	file.SetLength(BufferLength);
+	ASSERT_EQUALS(BufferLength, file.GetLength());
+	
+	// Write past end should fail
+	ASSERT_EQUALS(BufferLength, file.Seek(0, wxFromEnd));
+	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
+
+	// Init with invalid buffer should fail
+	ASSERT_RAISES(CRunTimeException, new CMemFile(NULL, 1024));
+}
+
+
+TEST(CMemFile, SetLength)
+{
+	CMemFile file;
+
+	ASSERT_EQUALS(0u, file.GetLength());
+	file.SetLength(1024);	
+	ASSERT_EQUALS(1024u, file.GetLength());
+	ASSERT_EQUALS(1024u, file.Seek(0, wxFromEnd));
+	file.SetLength(512u);	
+	ASSERT_EQUALS(512u, file.GetLength());
+	ASSERT_EQUALS(512u, file.Seek(0, wxFromEnd));
+}
+
+
+/////////////////////////////////////////////////////////////////////
+// CFile specific tests
+
+const wxChar* testFile = wxT("TestFile.dat");
+const unsigned testMode = 0600;
+
+DECLARE(CFile);
+	void setUp() {
+		// Ensure that the testfile doesn't exist
+		if (wxFileExists(testFile)) {
+			if (!wxRemoveFile(testFile)) {
+				MULE_VALIDATE_STATE(false, wxT("Failed to remove temporary file."));
+			}
+		}
+	}
+
+	void tearDown() {
+		if (wxFileExists(testFile)) {
+			wxRemoveFile(testFile);
+		}	
+	}
+END_DECLARE;
+
+
+TEST(CFile, Constructor)
+{
+	// Test initial conditions
+	{
+		CFile file;
+
+		ASSERT_TRUE(!file.IsOpened());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
+		ASSERT_RAISES(CRunTimeException, file.ReadUInt8());
+		ASSERT_RAISES(CRunTimeException, file.Seek(0, wxFromStart));
+		ASSERT_RAISES(CRunTimeException, file.GetLength());
+		ASSERT_RAISES(CRunTimeException, file.GetPosition());
+		ASSERT_RAISES(CRunTimeException, file.SetLength(13));
+		ASSERT_RAISES(CRunTimeException, file.GetFilePath());
+		ASSERT_RAISES(CRunTimeException, file.Flush());
+		ASSERT_RAISES(CRunTimeException, file.Close());
+		ASSERT_TRUE(!file.IsOpened());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+	}	
+	
+	// Create test file
+	{
+		CFile file;
+		ASSERT_TRUE(file.Create(testFile, false, testMode));
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		file.WriteUInt32(1);
+	}
+	
+	{
+		CFile file(testFile, CFile::read);
+		
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_EQUALS(4u, file.GetLength());
+		ASSERT_EQUALS(1u, file.ReadUInt32());
+
+		ASSERT_RAISES(CIOFailureException, file.WriteUInt8(0));
+	}
+
+	{
+		CFile file(testFile, CFile::write);
+		
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_EQUALS(0u, file.GetPosition());
+		ASSERT_EQUALS(0u, file.GetLength());
+		file.WriteUInt32(1);
+		ASSERT_EQUALS(0u, file.Seek(0, wxFromStart));
+
+		ASSERT_RAISES(CIOFailureException, file.ReadUInt8());
+	}
+
+	{
+		CFile file(testFile, CFile::read_write);
+		
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_EQUALS(4u, file.GetLength());
+		ASSERT_EQUALS(0u, file.GetPosition());
+		ASSERT_EQUALS(1u, file.ReadUInt32());
+		ASSERT_EQUALS(0u, file.Seek(0, wxFromStart));
+		file.WriteUInt32(2);
+		ASSERT_EQUALS(0u, file.Seek(0, wxFromStart));
+		ASSERT_EQUALS(2u, file.ReadUInt32());
+	}
+
+	{
+		CFile file(testFile, CFile::write_append);
+		
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(4u, file.GetLength());
+		file.WriteUInt32(1);
+		ASSERT_EQUALS(0u, file.Seek(0, wxFromStart));
+
+		ASSERT_RAISES(CIOFailureException, file.ReadUInt8());
+
+		ASSERT_TRUE(file.Close());
+		ASSERT_TRUE(file.Open(testFile, CFile::read));
+		
+		ASSERT_EQUALS(2u, file.ReadUInt32());
+		ASSERT_EQUALS(1u, file.ReadUInt32());
+	}
+}
+
+
+TEST(CFile, Create)
+{
+	ASSERT_FALSE(wxFileExists(testFile));
+
+	// Check creation of new file, when none exists, with/without overwrite	
+	for (size_t i = 0; i < 2; ++i) {
+		bool overwrite = (i == 1);
+		
+		CFile file;
+		ASSERT_TRUE(!file.IsOpened());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_TRUE(file.Create(testFile, overwrite, testMode));
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_TRUE(file.Close());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_TRUE(!file.IsOpened());
+		
+		ASSERT_TRUE(wxFile::Access(testFile, wxFile::read));
+		ASSERT_TRUE(wxFile::Access(testFile, wxFile::write));
+	
+		ASSERT_TRUE(wxRemoveFile(testFile));
+	}
+
+	// Create testfile, with a bit of contents
+	{
+		CFile file;
+		ASSERT_TRUE(file.Create(testFile, false, testMode));
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		file.WriteUInt32(1);
+	}
+	
+	// Check that owerwrite = false works as expected
+	{
+		CFile file;
+		ASSERT_FALSE(file.Create(testFile, false, testMode));
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_TRUE(!file.IsOpened());
+		
+		// Open and check contents
+		ASSERT_TRUE(file.Open(testFile, CFile::read));
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_EQUALS(4u, file.GetLength());
+		ASSERT_EQUALS(1u, file.ReadUInt32());
+		ASSERT_TRUE(file.Close());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_TRUE(!file.IsOpened());
+	}
+
+	// Check that owerwrite = true works as expected
+	{
+		CFile file;
+		ASSERT_TRUE(file.Create(testFile, true, testMode));
+		ASSERT_TRUE(file.IsOpened());
+		ASSERT_TRUE(file.fd() != CFile::fd_invalid);
+		ASSERT_EQUALS(testFile, file.GetFilePath());
+		ASSERT_EQUALS(0u, file.GetLength());
+		ASSERT_TRUE(file.Close());
+		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
+		ASSERT_TRUE(!file.IsOpened());
+	}
+	
+	ASSERT_TRUE(wxFile::Access(testFile, wxFile::read));
+	ASSERT_TRUE(wxFile::Access(testFile, wxFile::write));
+}
+
+
+TEST(CFile, SetLength)
+{
+	CFile file(testFile, CFile::write);
+
+	ASSERT_EQUALS(0u, file.GetLength());
+	file.SetLength(1024);	
+	ASSERT_EQUALS(1024u, file.GetLength());
+	ASSERT_EQUALS(1024u, file.Seek(0, wxFromEnd));
+	file.SetLength(512u);	
+	ASSERT_EQUALS(512u, file.GetLength());
+	ASSERT_EQUALS(512u, file.Seek(0, wxFromEnd));
+}
+
