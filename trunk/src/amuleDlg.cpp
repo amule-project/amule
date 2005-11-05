@@ -41,6 +41,7 @@
 #include <wx/mimetype.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
+#include <wx/accel.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
@@ -131,6 +132,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
 
+	EVT_MENU(wxID_EXIT, CamuleDlg::OnExit)
 END_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
@@ -269,7 +271,17 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	}
 	m_BlinkMessages = false;
 	m_CurrentBlinkBitmap = 24;
+
+
+	// Set shortcut keys
+	wxAcceleratorEntry entries[] = { 
+		wxAcceleratorEntry(wxACCEL_CTRL, wxT('Q'), wxID_EXIT),
+		wxAcceleratorEntry(wxACCEL_CTRL, wxT('X'), wxID_EXIT)
+	};
+	
+	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
 }
+
 
 void CamuleDlg::Init() {
 	//kademliawnd = new CKadDlg(p_cnt);
@@ -324,6 +336,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	// Since we might be suspending redrawing while hiding the dialog
 	// we have to refresh it once it is visible again
 	dlg->Refresh( true );
+	dlg->SetFocus();
 }
 
 #ifndef __SYSTRAY_DISABLED__
@@ -1459,3 +1472,10 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	#endif
 	
 }
+
+
+void CamuleDlg::OnExit(wxCommandEvent& evt)
+{
+	Close();
+}
+
