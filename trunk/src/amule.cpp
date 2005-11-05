@@ -854,7 +854,7 @@ bool CamuleApp::OnInit()
 		}
 #endif
 
-		webserver_pid = wxExecute(wxT("'") + amulewebPath + wxT("' --amule-config-file='") + aMuleConfigFile + wxT("'"));
+		webserver_pid = wxExecute(wxT("'") + amulewebPath + wxT("' '--amule-config-file=") + aMuleConfigFile + wxT("'"));
 #endif
 		// give amuleweb chance to start or forked child to exit
 		// 1 second if enough time to fail on "path not found"
