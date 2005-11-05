@@ -45,63 +45,63 @@ TEST(SimpleParser, EmptyTokens)
 	{
 		CSimpleTokenizer tkz1(wxT(" a"), wxT(' '));
 		ASSERT_EQUALS(wxT(" a"), tkz1.remaining());
-		ASSERT_EQUALS(0, tkz1.tokenCount());
+		ASSERT_EQUALS(0u, tkz1.tokenCount());
 		
 		ASSERT_EQUALS(wxEmptyString, tkz1.next());
 		ASSERT_EQUALS(wxT("a"), tkz1.remaining());
-		ASSERT_EQUALS(1, tkz1.tokenCount());
+		ASSERT_EQUALS(1u, tkz1.tokenCount());
 		
 		ASSERT_EQUALS(wxT("a"), tkz1.next());
 		ASSERT_EQUALS(wxT(""), tkz1.remaining());
-		ASSERT_EQUALS(1, tkz1.tokenCount());
+		ASSERT_EQUALS(1u, tkz1.tokenCount());
 		
 		ASSERT_EQUALS(wxEmptyString, tkz1.next());
 		ASSERT_EQUALS(wxT(""), tkz1.remaining());
-		ASSERT_EQUALS(1, tkz1.tokenCount());
+		ASSERT_EQUALS(1u, tkz1.tokenCount());
 	}
 	
 	{	
 		CSimpleTokenizer tkz2(wxT("c "), wxT(' '));
 		ASSERT_EQUALS(wxT("c "), tkz2.remaining());
-		ASSERT_EQUALS(0, tkz2.tokenCount());
+		ASSERT_EQUALS(0u, tkz2.tokenCount());
 		
 		ASSERT_EQUALS(wxT("c"), tkz2.next());
 		ASSERT_EQUALS(wxT(""), tkz2.remaining());
-		ASSERT_EQUALS(1, tkz2.tokenCount());
+		ASSERT_EQUALS(1u, tkz2.tokenCount());
 		
 		ASSERT_EQUALS(wxEmptyString, tkz2.next());
 		ASSERT_EQUALS(wxT(""), tkz2.remaining());
-		ASSERT_EQUALS(1, tkz2.tokenCount());
+		ASSERT_EQUALS(1u, tkz2.tokenCount());
 		
 		ASSERT_EQUALS(wxEmptyString, tkz2.next());
 		ASSERT_EQUALS(wxT(""), tkz2.remaining());
-		ASSERT_EQUALS(1, tkz2.tokenCount());
+		ASSERT_EQUALS(1u, tkz2.tokenCount());
 	}
 
 	{
 		CSimpleTokenizer tkz3(wxT(" a c "), wxT(' '));
 		ASSERT_EQUALS(wxT(" a c "), tkz3.remaining());
-		ASSERT_EQUALS(0, tkz3.tokenCount());
+		ASSERT_EQUALS(0u, tkz3.tokenCount());
 
 		ASSERT_EQUALS(wxEmptyString, tkz3.next());
 		ASSERT_EQUALS(wxT("a c "), tkz3.remaining());
-		ASSERT_EQUALS(1, tkz3.tokenCount());
+		ASSERT_EQUALS(1u, tkz3.tokenCount());
 
 		ASSERT_EQUALS(wxT("a"), tkz3.next());
 		ASSERT_EQUALS(wxT("c "), tkz3.remaining());
-		ASSERT_EQUALS(2, tkz3.tokenCount());
+		ASSERT_EQUALS(2u, tkz3.tokenCount());
 
 		ASSERT_EQUALS(wxT("c"), tkz3.next());
 		ASSERT_EQUALS(wxT(""), tkz3.remaining());
-		ASSERT_EQUALS(3, tkz3.tokenCount());
+		ASSERT_EQUALS(3u, tkz3.tokenCount());
 
 		ASSERT_EQUALS(wxEmptyString, tkz3.next());
 		ASSERT_EQUALS(wxT(""), tkz3.remaining());
-		ASSERT_EQUALS(3, tkz3.tokenCount());
+		ASSERT_EQUALS(3u, tkz3.tokenCount());
 
 		ASSERT_EQUALS(wxEmptyString, tkz3.next());
 		ASSERT_EQUALS(wxT(""), tkz3.remaining());
-		ASSERT_EQUALS(3, tkz3.tokenCount());
+		ASSERT_EQUALS(3u, tkz3.tokenCount());
 	}
 }
 
@@ -110,22 +110,22 @@ TEST(SimpleParser, NormalTokens)
 {
 	CSimpleTokenizer tkz(wxT("a c"), wxT(' '));
 	ASSERT_EQUALS(wxT("a c"), tkz.remaining());
-	ASSERT_EQUALS(0, tkz.tokenCount());
+	ASSERT_EQUALS(0u, tkz.tokenCount());
 	
 	ASSERT_EQUALS(wxT("a"), tkz.next());
 	ASSERT_EQUALS(wxT("c"), tkz.remaining());
-	ASSERT_EQUALS(1, tkz.tokenCount());
+	ASSERT_EQUALS(1u, tkz.tokenCount());
 	
 	ASSERT_EQUALS(wxT("c"), tkz.next());
 	ASSERT_EQUALS(wxT(""), tkz.remaining());
-	ASSERT_EQUALS(1, tkz.tokenCount());
+	ASSERT_EQUALS(1u, tkz.tokenCount());
 	
 	ASSERT_EQUALS(wxEmptyString, tkz.next());
 	ASSERT_EQUALS(wxT(""), tkz.remaining());
-	ASSERT_EQUALS(1, tkz.tokenCount());
+	ASSERT_EQUALS(1u, tkz.tokenCount());
 	
 	ASSERT_EQUALS(wxEmptyString, tkz.next());
 	ASSERT_EQUALS(wxT(""), tkz.remaining());
-	ASSERT_EQUALS(1, tkz.tokenCount());
+	ASSERT_EQUALS(1u, tkz.tokenCount());
 }
 
