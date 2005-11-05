@@ -211,23 +211,21 @@ TEST(RangeMap, Iterators)
 	TestRangeMap map(m_mmaps[CONT]);
 	
 	TestRangeMap::iterator it = map.begin();
+	TestRangeMap::iterator it_orig = map.begin();
+	TestRangeMap::iterator it_other = map.end();	
 	
 	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(it));
-
-	++it;
+	
+	it_other = ++it;
 	
 	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(it));
-
-	it++;
-
+	ASSERT_EQUALS(it_other, it++);
 	ASSERT_EQUALS(wxT("(176, 200, 1)"), StringFrom(it));
 	
-	--it;
+	it_other = --it;
 	
 	ASSERT_EQUALS(wxT("(125, 175, 2)"), StringFrom(it));
-
-	it--;
-	
+	ASSERT_EQUALS(it_other, it--);
 	ASSERT_EQUALS(wxT("(100, 124, 0)"), StringFrom(it));
 }
 
