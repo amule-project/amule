@@ -108,7 +108,7 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 	}
 	
 	while (!input_file.Eof()) {
-		off_t toReadWrite = std::min<off_t>(sizeof(buffer), input_file.GetLength() - input_file.GetPosition());
+		uint64 toReadWrite = std::min<uint64>(sizeof(buffer), input_file.GetLength() - input_file.GetPosition());
 		
 		try {
 			input_file.Read(buffer, toReadWrite);
@@ -124,6 +124,7 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 }
 
 
+// Note: Supports only 2gb files on windows.
 off_t GetFileSize(const wxString& fullPath)
 {
 	struct stat buf;

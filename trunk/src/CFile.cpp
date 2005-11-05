@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
+// Copyright (c) 1998 Vadim Zeitlin ( zeitlin@dptmaths.ens-cachan.fr )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -22,41 +22,24 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
-/////////////////////////////////////////////////////////////////////////////
-// Name:        file.cpp
-// Purpose:     wxFile - encapsulates low-level "file descriptor"
-//              wxTempFile
-// Author:      Vadim Zeitlin
-// Modified by:
-// Created:     29/01/98
-// RCS-ID:      $Id$
-// Copyright:   (c) 1998 Vadim Zeitlin <zeitlin@dptmaths.ens-cachan.fr>
-// Licence:     wxWindows license
-/////////////////////////////////////////////////////////////////////////////
 
 
-// ----------------------------------------------------------------------------
-// headers
-// ----------------------------------------------------------------------------
-
-#include <unistd.h>		// Needed for close(2)
-
-#include "CFile.h"		// Interface declarations.
-
-#include "StringFunctions.h" // unicode2char
-#include "Preferences.h"
-#include "Logger.h"
+#include "CFile.h"				// Interface declarations.
+#include "MuleDebug.h"			// Needed for MULE_VALIDATE_*
+#include "StringFunctions.h"	// Needed for unicode2char
+#include "FileFunctions.h"		// Needed for CheckFileExists
+#include "Preferences.h"		// Needed for thePrefs
 #include "Format.h"
-#include "Packet.h"
+
+#include <unistd.h>				// Needed for close(2)
+#include <cstdio>       		// SEEK_xxx constants
+#include <fcntl.h>       		// O_RDONLY &c
+
+#include <wx/filefn.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
 #endif
-
-// Test if we have _GNU_SOURCE before the next step will mess up 
-// setting __USE_GNU 
-// (only needed for gcc-2.95 compatibility, gcc 3.2 always defines it)
-#include <wx/setup.h>
 
 // Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
 // to detect if this is a *BSD system
@@ -64,53 +47,35 @@
 #include <sys/param.h>
 #endif
 
-#ifdef __BORLANDC__
-#	pragma hdrstop
-#endif
-
-#include <wx/log.h>
 
 // standard
 #if defined(__WXMSW__) && !defined(__GNUWIN32__) && !defined(__WXWINE__) && !defined(__WXMICROWIN__)
 #	include <io.h>
-
-#ifndef __SALFORDC__
-#	define   WIN32_LEAN_AND_MEAN
-#	define   NOSERVICE
-#	define   NOIME
-#	define   NOATOM
-#	define   NOGDI
-#	define   NOGDICAPMASKS
-#	define   NOMETAFILE
-#	define   NOMINMAX
-#	define   NOMSG
-#	define   NOOPENFILE
-#	define   NORASTEROPS
-#	define   NOSCROLL
-#	define   NOSOUND
-#	define   NOSYSMETRICS
-#	define   NOTEXTMETRIC
-#	define   NOWH
-#	define   NOCOMM
-#	define   NOKANJI
-#	define   NOCRYPT
-#	define   NOMCX
-#endif
-
+#	ifndef __SALFORDC__
+#		define   WIN32_LEAN_AND_MEAN
+#		define   NOSERVICE
+#		define   NOIME
+#		define   NOATOM
+#		define   NOGDI
+#		define   NOGDICAPMASKS
+#		define   NOMETAFILE
+#		define   NOMINMAX
+#		define   NOMSG
+#		define   NOOPENFILE
+#		define   NORASTEROPS
+#		define   NOSCROLL
+#		define   NOSOUND
+#		define   NOSYSMETRICS
+#		define   NOTEXTMETRIC
+#		define   NOWH
+#		define   NOCOMM
+#		define   NOKANJI
+#		define   NOCRYPT
+#		define   NOMCX
+#	endif
 #elif (defined(__UNIX__) || defined(__GNUWIN32__))
-#	include <unistd.h>
 #	ifdef __GNUWIN32__
 #		include <windows.h>
-#	endif
-#elif defined(__DOS__)
-#	if defined(__WATCOMC__)
-#		include <io.h>
-#	elif defined(__DJGPP__)
-#		include <io.h>
-#		include <unistd.h>
-#		include <cstdio>
-#	else
-#		error  "Please specify the header with file functions declarations."
 #	endif
 #elif (defined(__WXPM__))
 #	include <io.h>
@@ -125,18 +90,10 @@ int _access( const char *path, int mode ) { return 0 ; }
 #endif
 char* mktemp( char * path ) { return path ;}
 #	include <stat.h>
-#	include <unistd.h>
 #else
 #	error  "Please specify the header with file functions declarations."
 #endif  //Win/UNIX
 
-#include <cstdio>       // SEEK_xxx constants
-#include <fcntl.h>       // O_RDONLY &c
-
-#if !defined(__MWERKS__) || defined(__WXMSW__)
-#	include <sys/types.h>   // needed for stat
-#	include <sys/stat.h>    // stat
-#endif
 
 // Windows compilers don't have these constants
 #ifndef W_OK
@@ -154,88 +111,77 @@ enum {
 #	define   O_BINARY    (0)
 #endif  //__UNIX__
 
-#ifdef __SALFORDC__
-#	include <unix.h>
-#endif
-
-// some broken compilers don't have 3rd argument in open() and creat()
-#ifdef __SALFORDC__
-#	define ACCESS(access)
-#	define stat    _stat
-#else // normal compiler
-#	define ACCESS(access)  , (access)
-#endif // Salford C
-
-// wxWindows
-#ifndef WX_PRECOMP
-#	include <wx/string.h>
-#	include <wx/intl.h>
-#	include <wx/log.h>
-#endif // !WX_PRECOMP
-
 #ifdef __WXMSW__
 #include <wx/msw/mslu.h>
 #endif
-#include <wx/filename.h>
-#include <wx/filefn.h>
 
-// ============================================================================
-// implementation of CFile
-// ============================================================================
 
-// ----------------------------------------------------------------------------
-// static functions
-// ----------------------------------------------------------------------------
+// The following defines handle different names across platforms,
+// and ensures that we use 64b IO on windows (only 32b by default).
+#ifdef __WXMSW__
+	#define FLUSH_FD(x)			_commit(x)
+	#define SEEK_FD(x, y, z)	_lseeki64(x, y, z)
+	#define TELL_FD(x)			_telli64(x)
+#else
+	#define FLUSH_FD(x)			fsync(x)
+	#define SEEK_FD(x, y, z)	lseek(x, y, z)
+	#define TELL_FD(x)			wxTell(x)
+#endif
 
-bool CFile::Access(const wxChar *name, OpenMode mode)
+
+CFile::CFile()
+	: m_fd(fd_invalid)
+{}
+
+
+CFile::CFile(const wxString& fileName, OpenMode mode)
+	: m_fd(fd_invalid)
 {
-	int how;
+	Open(fileName, mode);
+}
 
-	switch ( mode ) {
-	default:
-		wxFAIL_MSG(wxT("bad CFile::Access mode parameter."));
-		// fall through
-	case read:
-		how = R_OK;
-		break;
-	
-	case write:
-		how = W_OK;
-		break;
-	case read_write:
-		how = R_OK | W_OK;
-		break;
+
+CFile::~CFile()
+{ 
+	if (IsOpened()) {
+		Close(); 
+	}
+}
+
+
+int CFile::fd() const
+{
+	return m_fd;
+}
+
+
+bool CFile::IsOpened() const
+{
+	return m_fd != fd_invalid;
+}
+
+
+const wxString& CFile::GetFilePath() const
+{
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path when no file is open."));
+
+	return m_filePath;
+}
+
+
+bool CFile::Create(const wxString& path, bool overwrite, int accessMode)
+{
+	if (!overwrite && CheckFileExists(path)) {
+		return false;
 	}
 
-	return wxAccess(name, how) == 0;
+	return Open(path, write, accessMode);
 }
 
-// ----------------------------------------------------------------------------
-// opening/closing
-// ----------------------------------------------------------------------------
 
-// ctors
-CFile::CFile(const wxString& sFileName, OpenMode mode)
+bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 {
-	wxASSERT(!sFileName.IsEmpty());
-
-	m_fd = fd_invalid;
-	m_error = false;
-	Open(sFileName, mode);
-}
-
-//
-// create the file, fail if it already exists and !bOverwrite
-// 
-// When creating files, we will always first try to create an ANSI file name,
-// even if that means an extended ANSI file name. Only if it is not possible
-// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
-// the only way to guarantee that we can later open any file in the file system,
-// even if it is not an UTF-8 valid sequence.
-// 
-bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
-{
-	wxASSERT(!sFileName.IsEmpty());
+	MULE_VALIDATE_PARAMS(!fileName.IsEmpty(), wxT("CFile: Cannot open, empty path."));
 
 	if ( accessMode == -1 ) {
 #ifndef MULEUNIT // TODO: Remove the need for this
@@ -244,366 +190,170 @@ bool CFile::Create(const wxString& sFileName, bool bOverwrite, int accessMode)
 		accessMode = wxS_DEFAULT;
 #endif
 	}
-	m_filePath = sFileName;
-	if (m_fd != fd_invalid) {
-		Close();	
-	}
-	if (wxFileExists(sFileName) && !bOverwrite) {
-		return false;
-	}
-	// Test if it is possible to use an ANSI name
-	Unicode2CharBuf tmpFileName(unicode2char(sFileName));
-	if (tmpFileName) {
-		// Use an ANSI name
-		m_fd = creat(tmpFileName, accessMode);
-	} 
-	
-	if (m_fd == fd_invalid) { // Wrong conversion or can't create.
-		// Try an UTF-8 name
-		m_fd = creat(unicode2UTF8(sFileName), accessMode);
-	}
-	
-	
-	if (m_fd == fd_invalid) {
-		AddDebugLogLineM( true, logCFile, 
-			CFormat( wxT("Failed to created file '%s'!") )
-				% m_filePath);
-		
-		return false;
-	} else {
-		AddDebugLogLineM( false, logCFile, 
-			CFormat( wxT("Created file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );
-		
-		return true;
-	}
-}
 
-//
-// open the file
-// 
-// When opening files, we will always first try to create an ANSI file name,
-// even if that means an extended ANSI file name. Only if it is not possible
-// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
-// the only way to guarantee that we can open any file in the file system,
-// even if it is not an UTF-8 valid sequence.
-//
-bool CFile::Open(const wxString& sFileName, OpenMode mode, int accessMode)
-{
-	wxASSERT(!sFileName.IsEmpty());
-	
-	if ( accessMode == -1 ) {
-#ifndef MULEUNIT // TODO: Remove the need for this
-		accessMode = thePrefs::GetFilePermissions();
-#else
-		accessMode = wxS_DEFAULT;
-#endif
-	}
-	int flags = O_BINARY;
 #ifdef __linux__
-	flags |=  O_LARGEFILE;
+	int flags = O_BINARY | O_LARGEFILE;
+#else
+	int flags = O_BINARY;
 #endif
-	m_filePath = sFileName;
 
 	switch ( mode ) {
-	case read:
-		flags |= O_RDONLY;
-		break;
-	
-	case write_append:
-		if (wxFileExists(sFileName))
-		{
-			flags |= O_WRONLY | O_APPEND;
+		case read:
+			flags |= O_RDONLY;
 			break;
-		}
-		//else: fall through as write_append is the same as write if the
-		//      file doesn't exist
 	
-	case write:
-		flags |= O_WRONLY | O_CREAT | O_TRUNC;
-		break;
+		case write_append:
+			if (CheckFileExists(fileName))
+			{
+				flags |= O_WRONLY | O_APPEND;
+				break;
+			}
+			//else: fall through as write_append is the same as write if the
+			//      file doesn't exist
 	
-	case write_excl:
-		flags |= O_WRONLY | O_CREAT | O_EXCL;
-		break;
+		case write:
+			flags |= O_WRONLY | O_CREAT | O_TRUNC;
+			break;
+	
+		case write_excl:
+			flags |= O_WRONLY | O_CREAT | O_EXCL;
+			break;
 
-	case read_write:
-		flags |= O_RDWR;
+		case read_write:
+			flags |= O_RDWR;
         	break;
 	}
 
-	if (m_fd != fd_invalid) {
+	if (IsOpened()) {
 		Close();	
 	}
+
+	
+	// When opening files, we will always first try to create an ANSI file name,
+	// even if that means an extended ANSI file name. Only if it is not possible
+	// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
+	// the only way to guarantee that we can open any file in the file system,
+	// even if it is not an UTF-8 valid sequence.
+	//
+	
 	// Test if it is possible to use an ANSI name
-	Unicode2CharBuf tmpFileName(unicode2char(sFileName));
+	Unicode2CharBuf tmpFileName = unicode2char(fileName);
 	if (tmpFileName) {
 		// Use an ANSI name
-		m_fd = open(tmpFileName, flags ACCESS(accessMode));
+		m_fd = open(tmpFileName, flags, accessMode);
 	} 
 	
 	if (m_fd == fd_invalid) { // Wrong conversion or can't open.
 		// Try an UTF-8 name
-		m_fd = open(unicode2UTF8(sFileName), flags ACCESS(accessMode));
+		m_fd = open(unicode2UTF8(fileName), flags, accessMode);
 	}
+	
+	m_filePath = fileName;
       
-    
-	if (m_fd == fd_invalid) {
-		AddDebugLogLineM( true, logCFile, wxT("Failed to open file '") + sFileName + wxT("'!") );
-		
-		return false;
-	} else {
-		AddDebugLogLineM( false, logCFile,
-			CFormat( wxT("Opened file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );
-		
-		return true;
-	}    
+    return IsOpened();
 }
 
-//
-// close
-// 
+
 bool CFile::Close() 
 {
-	wxASSERT(!m_filePath.IsEmpty());
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot close closed file."));
 
-	if ( IsOpened() ) {
-		if (close(m_fd) == -1) {
-			AddDebugLogLineM( true, logCFile,
-				CFormat( wxT("Failed to close file '%s' with file descriptor '%d'.") )
-					% m_filePath
-					% m_fd );
-			
-			m_fd = fd_invalid;
-			return false;
-		} else {
-			AddDebugLogLineM( false, logCFile,
-				CFormat( wxT("Closed file '%s' with file descriptor '%d'.") )
-					% m_filePath
-					% m_fd );
-			
-			m_fd = fd_invalid;
-		}
-	} else {
-		wxASSERT(false);
-	}
+	int result = close(m_fd);
+	m_fd = fd_invalid;
 	
-	return true;
-}
-
-// ----------------------------------------------------------------------------
-// read/write
-// ----------------------------------------------------------------------------
-
-// read
-off_t CFile::doRead(void *pBuf, size_t nCount) const
-{
-	wxCHECK( (pBuf != NULL) && IsOpened(), 0 );
-
-#ifdef __MWERKS__
-	off_t iRc = ::read(m_fd, (char*) pBuf, nCount);
-#else
-	off_t iRc = ::read(m_fd, pBuf, nCount);
-#endif
-	if ( iRc == -1 ) {
-		AddDebugLogLineM( true, logCFile,
-			CFormat( wxT("Can't read from file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );
-		
-		m_error = true;
-		return wxInvalidOffset;
-	} else {
-		return iRc;
-	}
-}
-
-off_t CFile::SafeRead(unsigned char* pBuf, size_t nCount, int nRetries) const 
-{
-	off_t total_done = 0;
-	int retries = 0; 
-	while ((total_done < nCount) && (retries <= nRetries)) {
-		int done = doRead(pBuf+total_done,nCount-total_done);
-		if (done == wxInvalidOffset) {
-			// Woops, failure!
-			throw wxString(wxT("Error while reading file!"));
-		} else {
-			total_done += done;
-			wxASSERT(total_done <= nCount);
-			if (total_done == nCount) {
-				// This file is done.
-			} else {
-				retries++;
-			}			
-		}
-	}
-	
-	if (total_done < nCount) {
-		// The total bytes were not reached on the specified replies.
-		throw wxString(wxString::Format(wxT("Error while reading file (unable to read %u bytes on two retries)!"), (unsigned)nCount));
-	}
-		
-	wxASSERT(total_done == nCount);
-	return total_done; // Which should equal nCount	
+	return result != wxInvalidOffset;
 }
 
 
-// write
-size_t CFile::doWrite(const void *pBuf, size_t nCount)
-{
-	wxASSERT(pBuf != NULL);
-	wxASSERT(IsOpened());
-#ifdef __MWERKS__
-#if __MSL__ >= 0x6000
-	size_t iRc = ::write(m_fd, (void*) pBuf, nCount);
-#else
-	size_t iRc = ::write(m_fd, (const char*) pBuf, nCount);
-#endif
-#else
-	size_t iRc = ::write(m_fd, pBuf, nCount);
-#endif
-	if ( ((int)iRc) == -1 ) {
-		AddDebugLogLineM( true, logCFile,
-			CFormat( wxT("Can't write to file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );		
-		
-		m_error = true;
-		return (size_t)0;
-	} else {
-		return iRc;
-	}
-}
-
-// flush
 bool CFile::Flush()
 {
-	if ( IsOpened() ) {
-#ifdef __WXMSW__
-		if (_commit(m_fd) == -1) {
-#else
-	        if ( fsync(m_fd) == -1 ) {
-#endif
-			AddDebugLogLineM( true, logCFile,
-				CFormat( wxT("Can't flush file '%s' with file descriptor '%d'.") )
-					% m_filePath
-					% m_fd );
-
-			m_error = true;			
-			return false;
-		}
-    }
-    return true;
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
+	
+	return (FLUSH_FD(m_fd) != wxInvalidOffset);
 }
 
 
-off_t CFile::doSeek(off_t offset) const
+sint64 CFile::doRead(void* buffer, size_t count) const
+{
+	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in read operation."));
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot read from closed file."));
+	
+	size_t read = 0;
+	while (read < count) {
+		int current = ::read(m_fd, (char*)buffer + read, count - read);
+		
+		if (current == wxInvalidOffset) {
+			// Read error, nothing we can do other than abort.
+			return wxInvalidOffset;
+		} else if ((read + current < count) && Eof()) {
+			// We may fail to read the specified count in a couple
+			// of situations: EOF and interrupts. The check for EOF
+			// is needed to avoid inf. loops.
+			break;
+		}
+		
+		read += current;
+	}
+	
+	return read;
+}
+
+
+sint64 CFile::doWrite(const void* buffer, size_t nCount)
+{
+	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in write operation."));
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot write to closed file."));
+	
+	return ::write(m_fd, buffer, nCount);
+}
+
+
+sint64 CFile::doSeek(sint64 offset) const
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot seek on closed file."));
 	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
 	
-	return lseek(m_fd, offset, SEEK_SET);
+	return SEEK_FD(m_fd, offset, SEEK_SET);
 }
 
 
-// get current off_t
-off_t CFile::GetPosition() const
+uint64 CFile::GetPosition() const
 {
-	wxASSERT( IsOpened() );
+	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot get position on closed file."));
 	
-	off_t iRc = wxTell(m_fd);
-	if (iRc == -1) {
-		AddDebugLogLineM( true, logCFile,
-			CFormat( wxT("Can't get seek position for file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );		
-		
-		return wxInvalidOffset;
-	} else {
-		return (off_t)iRc;
-	}
-}
+	sint64 pos = TELL_FD(m_fd);
 
-// get current file length
-off_t CFile::GetLength() const
-{
-	wxASSERT( IsOpened() );
+	MULE_VALIDATE_STATE(pos >= 0, wxT("Failed to retrieve position in file."));
 	
-#ifdef __VISUALC__
-	off_t iRc = _filelength(m_fd);
-#else // !VC++
-	off_t iRc = wxTell(m_fd);
-	
-	if (iRc != -1) {
-		off_t iLen = lseek(m_fd, 0, SEEK_END);
-		if (iLen != -1) {
-			// restore old position
-			if (lseek(m_fd, iRc, SEEK_SET) == -1){
-				// error
-				iLen = -1;
-			}
-		}
-		iRc = iLen;
-	}
-#endif  // VC++
-
-	MULE_VALIDATE_STATE(iRc >= 0, wxT("CFile: Invalid file length"));
-	
-	return iRc;
+	return pos;
 }
 
 
-bool CFile::SetLength(off_t new_len)
+uint64 CFile::GetLength() const
 {
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot get length of closed file."));
+
+	uint64 pos = GetPosition();
+	sint64 len = SEEK_FD(m_fd, 0, SEEK_END);
+
+	MULE_VALIDATE_STATE(len >= 0, wxT("CFile: Failed to retreive length of file."));
+	
+	if (SEEK_FD(m_fd, pos, SEEK_SET) == wxInvalidOffset) {
+		MULE_VALIDATE_STATE(false, wxT("CFile: Failed to restore pointer position."));
+	}	
+	
+	return len;
+}
+
+
+bool CFile::SetLength(size_t new_len)
+{
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
+
 #ifdef __WXMSW__
 	return chsize(m_fd, new_len);
 #else
 	return ftruncate(m_fd, new_len);
 #endif
 }	
-
-
-// is end of file reached?
-bool CFile::Eof() const
-{
-	wxASSERT( IsOpened() );
-	
-	off_t iRc;
-	
-#if defined(__DOS__) || defined(__UNIX__) || defined(__GNUWIN32__) || defined( __MWERKS__ ) || defined(__SALFORDC__)
-	// @@ this doesn't work, of course, on unseekable file descriptors
-	off_t ofsCur = GetPosition(),
-	ofsMax = GetLength();
-	if ( ofsCur == (off_t)wxInvalidOffset || ofsMax == (off_t)wxInvalidOffset ) {
-		iRc = -1;
-	} else {
-		iRc = ofsCur == ofsMax;
-	}
-#else  // Windows and "native" compiler
-	iRc = eof(m_fd);
-#endif // Windows/Unix
-	
-	switch ( iRc ) {
-	case 1:
-		break;
-	
-	case 0:
-		return false;
-	
-	case -1:
-		AddDebugLogLineM( true, logCFile,
-			CFormat( wxT("Can't determine if the end of file is reached for file '%s' with file descriptor '%d'.") )
-				% m_filePath
-				% m_fd );	
-		break;
-	
-	default:
-		wxFAIL_MSG(wxT("invalid eof() return value."));
-	}
-	
-	return true;
-}
 

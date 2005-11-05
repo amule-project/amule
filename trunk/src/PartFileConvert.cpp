@@ -397,7 +397,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				
 				// open, read data of the part-part-file into buffer, close file
 				inputfile.Open(filename, CFile::read);
-				off_t toReadWrite = std::min<off_t>(PARTSIZE, inputfile.GetLength());
+				uint64 toReadWrite = std::min<uint64>(PARTSIZE, inputfile.GetLength());
 				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
 

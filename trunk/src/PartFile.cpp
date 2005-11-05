@@ -735,11 +735,11 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 
 	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
-	if ((uint64)m_hpartfile.GetLength() < m_nFileSize)
+	if (m_hpartfile.GetLength() < m_nFileSize)
 		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
 	// Goes both ways - Partfile should never be too large
-	if ((uint64)m_hpartfile.GetLength() > m_nFileSize){
-		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % ((uint64)m_hpartfile.GetLength() - m_nFileSize));
+	if (m_hpartfile.GetLength() > m_nFileSize){
+		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % (m_hpartfile.GetLength() - m_nFileSize));
 		m_hpartfile.SetLength(m_nFileSize);
 	}
 	// SLUGFILLER: SafeHash
@@ -2543,10 +2543,10 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		m_hpartfile.Seek((off_t)PARTSIZE*partnumber, wxFromStart);
+		m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
 		uint32 length = PARTSIZE;
-		if (((uint64)PARTSIZE*(partnumber+1)) > (uint64)m_hpartfile.GetLength()){
-			length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*partnumber));
+		if (PARTSIZE * (partnumber + 1) > m_hpartfile.GetLength()){
+			length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}
 		
@@ -3084,7 +3084,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 
 	
 	uint32 partCount = GetPartCount();
-	bool *changedPart = new bool[partCount];
+	bool changedPart[partCount];
 	
 	// Remember which parts need to be checked at the end of the flush
 	for ( uint32 i = 0; i < partCount; ++i ) {
@@ -3151,9 +3151,6 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		m_hpartfile.SetLength(m_nFileSize);
 	}		
 	
-	// Flush to disk
-	m_hpartfile.Flush();
-
 	// Check each part of the file
 	uint32 partRange = (uint32)((m_hpartfile.GetLength() % PARTSIZE > 0) ? ((m_hpartfile.GetLength() % PARTSIZE) - 1) : (PARTSIZE - 1));
 	wxASSERT(((int)partRange) > 0);
@@ -3243,8 +3240,6 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 			CompleteFile(false);
 		}
 	}
-	
-	delete[] changedPart;
 }
 
 
@@ -3427,7 +3422,7 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 
 uint32 CPartFile::GetNeededSpace()
 {
-	if ((unsigned)m_hpartfile.GetLength() > GetFileSize()) {
+	if (m_hpartfile.GetLength() > GetFileSize()) {
 		return 0;	// Shouldn't happen, but just in case
 	}
 	return GetFileSize()-m_hpartfile.GetLength();
@@ -3581,8 +3576,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 	FlushBuffer(true,true,true);
 	uint32 length = PARTSIZE;
-	if ((off_t)PARTSIZE*(nPart+1) > m_hpartfile.GetLength()){
-		length = (m_hpartfile.GetLength() - ((uint64)PARTSIZE*nPart));
+	if (PARTSIZE * (nPart + 1) > m_hpartfile.GetLength()){
+		length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
 		wxASSERT( length <= PARTSIZE );
 	}	
 	// if the part was already ok, it would now be complete
@@ -3602,7 +3597,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	}
 	CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->m_nBaseSize);
 	try {
-		m_hpartfile.Seek((off_t)PARTSIZE*nPart,wxFromStart);
+		m_hpartfile.Seek(PARTSIZE * nPart,wxFromStart);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logAICHRecovery, wxT("IO failure while hashing part-file: ") + m_hpartfile.GetFilePath());
