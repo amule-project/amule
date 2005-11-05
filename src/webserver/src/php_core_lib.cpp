@@ -492,6 +492,7 @@ PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
 	{ "preview_prio", EC_TAG_FILES_PREVIEW_PRIO, 0},
 	{ "new_files_auto_ul_prio", EC_TAG_FILES_NEW_AUTO_UL_PRIO, 0},
 	{ "upload_full_chunks", EC_TAG_FILES_UL_FULL_CHUNKS, 0},
+	{ "first_last_chunks_prio", EC_TAG_FILES_PREVIEW_PRIO, 0},
 	{ "start_next_paused", EC_TAG_FILES_START_NEXT_PAUSED, 0},
 	{ "resume_same_cat", EC_TAG_FILES_RESUME_SAME_CAT, 0},
 	{ "save_sources", EC_TAG_FILES_SAVE_SOURCES, 0},
