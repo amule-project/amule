@@ -509,6 +509,11 @@ PHP_2_EC_OPT_DEF g_webserver_opt_defs[] = {
 	{0, 0, 0}
 };
 
+PHP_2_EC_OPT_DEF g_coretweak_opt_defs[] = {
+	{ "max_conn_5sec", EC_TAG_CORETW_MAX_CONN_PER_FIVE, 2},
+	{0, 0, 0}
+};
+
 void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
 {
 	PHP_VAR_NODE *key = array_get_by_str_key(array, arrkey);
@@ -572,13 +577,21 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 
 		ec_tag_2_php(cattag, g_file_opt_defs, cat);
 	}
-	
+
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_REMOTECTRL)) != 0) {
 		PHP_VAR_NODE *cat = array_get_by_str_key(result, "webserver");
 		cast_value_array(&cat->value);
 
 		ec_tag_2_php(cattag, g_webserver_opt_defs, cat);
 	}
+
+	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != 0) {
+		PHP_VAR_NODE *cat = array_get_by_str_key(result, "coretweaks");
+		cast_value_array(&cat->value);
+
+		ec_tag_2_php(cattag, g_coretweak_opt_defs, cat);
+	}
+	
 	
 #endif
 }
