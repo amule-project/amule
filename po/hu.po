@@ -1589,7 +1589,7 @@ msgstr "Használt host '%s' port: %d\n"
 
 #: src/ExternalConnector.cpp:321
 msgid "Trying to connect (timeout = 10 sec)...\n"
-msgstr "Kapcsolódási kísérlet (időtúlépés = 10 mp)...\n"
+msgstr "Kapcsolódási kísérlet (időtúllépés = 10 mp)...\n"
 
 #: src/ExternalConnector.cpp:327
 msgid "Connection Failed. Unable to connect to the specified host\n"
