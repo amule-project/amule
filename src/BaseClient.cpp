@@ -1572,7 +1572,13 @@ void CUpDownClient::ReGetClientSoft()
 			} else if (m_byCompatibleClient != 0) {
 				m_clientSoft = SO_COMPAT_UNK;
 				#ifdef __DEBUG__
-				printf("Compatible client found with ET_COMPATIBLECLIENT of %#x\n",m_byCompatibleClient);
+				if (
+					// Exceptions:
+					(m_byCompatibleClient != 0xf0)	// Chinese leech mod
+					&& (1==1) 						// Your ad here
+					) {
+					printf("Compatible client found with ET_COMPATIBLECLIENT of %#x\n",m_byCompatibleClient);
+				}
 				#endif
 				m_clientSoftString = GetSoftName(m_clientSoft) + wxString::Format(wxT("(%#x)"),m_byCompatibleClient);
 			} else {
