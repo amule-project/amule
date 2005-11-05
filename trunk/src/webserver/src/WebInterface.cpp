@@ -328,16 +328,13 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 	
 	// template not found. reverting to default
-	if ( (!m_UsePhp && (templateName == wxT("default"))) ||
-		((m_UsePhp && templateName == wxT("php-default"))) ) {
+	const wxChar* const defaultTemplateName =
+		m_UsePhp ? wxT("php-default") : wxT("default");
+	if ( templateName == defaultTemplateName ) {
 		return false;
 	}
 	Show(wxT("Template ") + templateName + wxT(" not found, reverting to default\n\n"));
-	if ( m_UsePhp ) {
-		return GetTemplateDir(wxT("php-default"), templateDir);
-	} else {
-		return GetTemplateDir(wxT("default"), templateDir);
-	}
+	return GetTemplateDir(defaultTemplateName, templateDir);
 }
 
 void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
@@ -413,6 +410,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
+		m_UsePhp = true; // This is used by GetTemplateDir, so set it first
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
