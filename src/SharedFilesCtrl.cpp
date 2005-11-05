@@ -161,6 +161,7 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 }
 
 
+#ifndef CLIENT_GUI
 void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
 {
 	DeleteAllItems();
@@ -171,6 +172,7 @@ void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
 		ShowFile( files[i] );
 	}
 }
+#endif
 
 
 void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)

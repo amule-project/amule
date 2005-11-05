@@ -52,7 +52,8 @@ public:
 	 */
 	~CSharedFilesCtrl();
 
-	
+
+#ifndef CLIENT_GUI
 	/**
 	 * Replaces the current contents of the list with that on the given list.
 	 *
@@ -62,6 +63,7 @@ public:
 	 * files contained on the list given as an argument.
 	 */
 	void	ShowFileList(CSharedFileList* list);
+#endif
 
 	/**
 	 * Adds the specified file to the list.
