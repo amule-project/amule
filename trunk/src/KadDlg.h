@@ -55,6 +55,8 @@ private:
 
 	uint32 m_nodecount;
 
+	uint32 m_nextshow;
+
 	COScopeCtrl* pscopeKad;
 
 	// Event handlers

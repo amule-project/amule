@@ -66,6 +66,7 @@ CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1, wxDefaultPosition, wx
 }
 
 void CKadDlg::Init() {
+	m_nextshow=0;
 	
 	pscopeKad = CastChild( wxT("kadScope"), COScopeCtrl );
 	wxASSERT(pscopeKad);
@@ -174,6 +175,12 @@ void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
 }
 
 void CKadDlg::ShowNodeCount() {
+	uint32 now = ::GetTickCount();
+
+	if (m_nextshow>now)
+		return;
+
+	m_nextshow=now+500;
 	
 	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
 
