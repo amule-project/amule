@@ -16,6 +16,9 @@ Version 2.1.x - The "???" version
 	Kry:
 		* Fixed a bug with iterator usage in SearchManager.cpp
 
+	lupz:
+		* Kad speed improvements.
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
