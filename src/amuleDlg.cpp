@@ -275,8 +275,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	// Set shortcut keys
 	wxAcceleratorEntry entries[] = { 
-		wxAcceleratorEntry(wxACCEL_CTRL, wxT('Q'), wxID_EXIT),
-		wxAcceleratorEntry(wxACCEL_CTRL, wxT('X'), wxID_EXIT)
+		wxAcceleratorEntry(wxACCEL_CTRL, wxT('Q'), wxID_EXIT)
 	};
 	
 	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
