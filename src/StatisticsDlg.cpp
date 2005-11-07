@@ -40,8 +40,10 @@
 
 // CStatisticsDlg panel
 
-COLORREF CStatisticsDlg::getColors(int num){ 
-
+COLORREF CStatisticsDlg::getColors(unsigned num)
+{
+	wxCHECK(num < 13, RGB(0, 0, 0));
+	
 	return acrStat[num];
 }
 
