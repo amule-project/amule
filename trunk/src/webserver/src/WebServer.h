@@ -786,6 +786,14 @@ typedef struct {
 
 } GlobalParams;
 
+class CUrlDecodeTable {
+		wxString m_enc_u_str[256], m_enc_l_str[256], m_dec_str[256];
+	public:
+		CUrlDecodeTable();
+		
+		void DecodeString(wxString &str);
+};
+
 class CParsedUrl {
 		wxString m_path, m_file;
 		std::map<wxString, wxString> m_params;

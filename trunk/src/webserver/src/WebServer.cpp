@@ -201,8 +201,34 @@ uint8 GetLowerPrioShared(uint32 prio, bool autoprio)
 }
 
 /*
- * Url parser
+ * Url string decoder and parser
  */
+CUrlDecodeTable::CUrlDecodeTable()
+{
+	for (int i = 0 ; i < 256 ; i++) {
+		char fromReplace[4];		// decode URL
+		sprintf(fromReplace, "%%%02x", i);
+		m_enc_l_str[i] = char2unicode(fromReplace);
+
+		sprintf(fromReplace, "%%%02X", i);
+		m_enc_u_str[i] = char2unicode(fromReplace);
+
+		char toReplace[2] = {(char)i, 0};	// decode URL
+		m_dec_str[i] = char2unicode(toReplace);
+	}
+}
+
+void CUrlDecodeTable::DecodeString(wxString &str)
+{
+	str.Replace(wxT("+"), wxT(" "));
+	for (int i = 0 ; i < 256 ; i++) {
+		str.Replace(m_enc_l_str[i], m_dec_str[i]);
+		str.Replace(m_enc_u_str[i], m_dec_str[i]);
+	}
+}
+
+CUrlDecodeTable g_decoder_table;
+
 CParsedUrl::CParsedUrl(const wxString &url)
 {
 	if ( url.Find('/') != -1 ) {
@@ -215,23 +241,12 @@ CParsedUrl::CParsedUrl(const wxString &url)
 		
 		wxString params = url.AfterFirst('?');
 		
-		params.Replace(wxT("+"), wxT(" "));
-		for (int i = 0 ; i <= 255 ; ++i) {
-			char fromReplace[4];	// decode URL
-			char toReplace[2];		// decode URL
-			sprintf(fromReplace, "%%%02x", i);
-			toReplace[0] = (char)i;
-			toReplace[1] = 0;
-			params.Replace(char2unicode(fromReplace), char2unicode(toReplace));
-			sprintf(fromReplace, "%%%02X", i);
-			params.Replace(char2unicode(fromReplace), char2unicode(toReplace));
-		}
-
 		wxStringTokenizer tkz(params, wxT("&"));
 		while ( tkz.HasMoreTokens() ) {
 	    	wxString param_val = tkz.GetNextToken();
 	    	wxString key = param_val.BeforeFirst('=');
 	    	wxString val = param_val.AfterFirst('=');
+	    	g_decoder_table.DecodeString(val);
 	    	if ( m_params.count(key) ) {
 	    		m_params[key] = m_params[key] + wxT("|") + val;
 	    	} else {
