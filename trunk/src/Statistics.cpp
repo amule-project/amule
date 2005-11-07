@@ -387,8 +387,11 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 		pphr = ahr;
 	}
 	
-	do {
-		while (pos != listHR.rend() && pos->sTimestamp > sTarget) ++pos;	// find next history record
+	while (pos != listHR.rend()) {
+		if (pos->sTimestamp > sTarget) {
+			++pos;
+			continue;
+		}
 		if (bRateGraph) {		// assemble an array of pointers for ComputeAverages
 			*pphr++ = &(*pos);
 		} else {			// or build the arrays if possible
@@ -408,7 +411,7 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 			++cntFilled;
 			break;
 		}
-	} while (pos != listHR.rend());
+	}
 
 	if (bRateGraph) {
 		if  (cntFilled > 0)
