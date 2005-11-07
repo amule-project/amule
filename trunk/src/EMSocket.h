@@ -26,12 +26,12 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
-#include "Proxy.h"		// Needed for CSocketClientProxy
-#include <wx/event.h>
+#include "Proxy.h"				// Needed for CSocketClientProxy
 
-#include "Types.h"		// Needed for uint8 and uint32
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "ThrottledSocket.h"
+#include "Types.h"				// Needed for uint8 and uint32
+#include "ThrottledSocket.h"	// Needed for ThrottledFileSocket
+
+#include <list>
 
 
 class CPacket;
@@ -122,16 +122,18 @@ private:
 	uint32	sendblen;
 	uint32	sent;
 
-	CList<CPacket*> controlpacket_queue;
+	typedef std::list<CPacket*> CPacketQueue;
+	CPacketQueue m_control_queue;
 
 	struct StandardPacketQueueEntry
 	{
 		uint32 actualPayloadSize;
 		CPacket* packet;
 	};
-	
-	CList<StandardPacketQueueEntry> standartpacket_queue;
 
+	typedef	std::list<StandardPacketQueueEntry> CStdPacketQueue;
+	CStdPacketQueue m_standard_queue;
+	
     bool m_currentPacket_is_controlpacket;
 
 	wxMutex	m_sendLocker;
