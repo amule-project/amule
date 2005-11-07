@@ -60,7 +60,7 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
-	static COLORREF getColors(int num);	
+	static COLORREF getColors(unsigned num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
 
 protected:
