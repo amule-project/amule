@@ -151,9 +151,6 @@ public:
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
 	uint32	WriteToBuffer(uint32 transize, byte *data, uint32 start, uint32 end, Requested_Block_Struct *block);
 	void	FlushBuffer(bool forcewait=false, bool bForceICH = false, bool bNoAICH = false);	
-	// Barry - This will invert the gap list, up to caller to delete gaps when done
-	// 'Gaps' returned are really the filled areas, and guaranteed to be in order
-	void	GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled);
 
 	// Barry - Is archive recovery in progress
 	volatile bool m_bRecoveringArchive;

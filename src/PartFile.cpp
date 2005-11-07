@@ -3243,49 +3243,6 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 }
 
 
-// Barry - This will invert the gap list, up to caller to delete gaps when done
-// 'Gaps' returned are really the filled areas, and guaranteed to be in order
-void CPartFile::GetFilledList(CTypedPtrList<CPtrList, Gap_Struct*> *filled)
-{
-	Gap_Struct *gap = NULL;
-	Gap_Struct *best = NULL;
-	POSITION pos;
-	uint32 start = 0;
-	uint32 bestEnd = 0;
-
-	// Loop until done
-	bool finished = false;
-	while (!finished) {
-		finished = true;
-		// Find first gap after current start pos
-		bestEnd = m_nFileSize;
-		pos = gaplist.GetHeadPosition();
-		while (pos != NULL) {
-			gap = gaplist.GetNext(pos);
-			if ((gap->start > start) && (gap->end < bestEnd)) {
-				best = gap;
-				bestEnd = best->end;
-				finished = false;
-			}
-		}
-
-		if (!finished) {
-			// Invert this gap
-			gap = new Gap_Struct;
-			gap->start = start;
-			gap->end = best->start - 1;
-			start = best->end + 1;
-			filled->AddTail(gap);
-		} else if (best->end < m_nFileSize) {
-			gap = new Gap_Struct;
-			gap->start = best->end + 1;
-			gap->end = m_nFileSize;
-			filled->AddTail(gap);
-		}
-	}
-}
-
-
 void CPartFile::UpdateFileRatingCommentAvail()
 {
 	bool prevComment = m_hasComment;
