@@ -137,7 +137,12 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	chatsession->m_client_id = client_id;
 
 	wxString text;
-	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s - %s %s")) % client_name % wxDateTime::Now().FormatISODate() % wxDateTime::Now().FormatISOTime());
+   	text = wxT(" *** ") + (CFormat(_("Chat-Session Started: %s (%s:%u) - %s %s")) 
+		 	% client_name
+			% Uint32toStringIP(IP_FROM_GUI_ID(client_id))
+			% PORT_FROM_GUI_ID(client_id)
+			% wxDateTime::Now().FormatISODate()
+			% wxDateTime::Now().FormatISOTime());
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);
