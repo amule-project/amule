@@ -1025,35 +1025,29 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	return result;
 }
 
+
 // Updates priority of file if autopriority is activated
-void CKnownFile::UpdateAutoUpPriority(void)
+void CKnownFile::UpdateAutoUpPriority()
 {
-	#warning This function is called TOO MUCH times, give the fact that every client added triggers it.
-	
-	if (!IsAutoUpPriority())
-		return;
+	if (IsAutoUpPriority()) {
+		uint32 queued = GetQueuedCount();
+		uint8 priority = PR_NORMAL;
 
-	if ( GetQueuedCount() > 20 ) {
-		if ( GetUpPriority() != PR_LOW ) {
-			SetUpPriority(PR_LOW, false);
+		if (queued > 20) {
+			priority = PR_LOW;
+		} else if (queued > 1) {
+			priority = PR_NORMAL;
+		} else {
+			priority = PR_HIGH;
+		}
+
+		if (GetUpPriority() != priority) {
+			SetUpPriority(priority, false);
 			Notify_SharedFilesUpdateItem(this);
 		}
-		return;
-	}
-
-	if ( GetQueuedCount() > 1 ) {
-		if ( GetUpPriority() != PR_NORMAL ) {
-			SetUpPriority(PR_NORMAL, false);
-			Notify_SharedFilesUpdateItem(this);
-		}
-		return;
-	}
-	
-	if ( GetUpPriority() != PR_HIGH ) {
-		SetUpPriority(PR_HIGH, false);
-		Notify_SharedFilesUpdateItem(this);
 	}
 }
+
 
 //For File Comment // 
 void CKnownFile::LoadComment()
