@@ -9,7 +9,7 @@ typedef CRangeMap<int> TestRangeMap;
 
 
 /**
- * Returns the contenst of a TestRangeMap iterator as a string-presentation.
+ * Returns the contents of a TestRangeMap iterator as a string-presentation.
  */
 wxString StringFrom(const TestRangeMap::const_iterator& it)
 {
@@ -17,12 +17,31 @@ wxString StringFrom(const TestRangeMap::const_iterator& it)
 }
 
 /**
- * Returns the contenst of a TestRangeMap iterator as a string-presentation.
+ * Returns the contents of a TestRangeMap iterator as a string-presentation.
  */
 wxString StringFrom(TestRangeMap::iterator it)
 {
 	return wxString::Format(wxT("(%u, %u, %i)"), it.keyStart(), it.keyEnd(), *it);
 }
+
+
+/**
+ * Returns the contents of a CRangeSet iterator as a string-presentation.
+ */
+wxString StringFrom(const CRangeMap<void>::const_iterator& it)
+{
+	return wxString::Format(wxT("(%u, %u)"), it.keyStart(), it.keyEnd());
+}
+
+/**
+ * Returns the contents of a CRangeSet iterator as a string-presentation.
+ */
+wxString StringFrom(CRangeMap<void>::iterator it)
+{
+	return wxString::Format(wxT("(%u, %u)"), it.keyStart(), it.keyEnd());
+}
+
+
 
 /**
  * Returns the contents of a TestRangeMap as a string-representation.
@@ -30,11 +49,12 @@ wxString StringFrom(TestRangeMap::iterator it)
  * Using this function allows for easy comparison against the expected 
  * result of a particular test.
  */
-wxString StringFrom(const TestRangeMap& map) 
+template <typename VALUE>
+wxString StringFrom(const CRangeMap<VALUE>& map) 
 {
 	wxString stream;
 
-	TestRangeMap::const_iterator it = map.begin();
+	typename CRangeMap<VALUE>::const_iterator it = map.begin();
 	for (; it != map.end(); ++it) {
 		if (it != map.begin()) {
 			stream << wxT(", ");
@@ -106,7 +126,19 @@ DECLARE(RangeMap);
 		tearDown();
 		setUp();
 	}	
-	
+
+	void doErase(uint32 start, uint32 end, const wxString& result)
+	{
+		m_map.erase_range(start, end);
+		
+		// Check the resulting map
+		ASSERT_EQUALS(result, StringFrom(m_map));
+		ASSERT_EQUALS((uint32)std::count(result.begin(), result.end(), '('), m_map.size());
+		
+		// Reset the rangemap
+		tearDown();
+		setUp();	
+	}
 
 	/** 
 	 * Tests insertion into a map with multiple ranges, checking against an 
@@ -638,4 +670,144 @@ TEST(RangeMap, MultiInsert_AfterEnd_AfterEnd)
 	multiInsert(SSAME, 152, 170, 1, wxT("[(100, 150, 1), (152, 200, 1)]"));
 }
 
+
+/////////////////////////////////////////////////
+// The following tests exercize the erase function.
+// Since the erase function use the insert function, all
+// that is needed is to test that no merging is done.
+
+// Single erase before start <-> before start.
+TEST(RangeMap, Erase_BeforeStart_BeforeStart)
+{
+	// Test with same and different type
+	doErase(0, 90, wxT("[(100, 150, 0)]"));
+}
+
+
+// Single erase before start <-> touching start.
+TEST(RangeMap, Erase_BeforeStart_TouchingStart)
+{
+	doErase(0, 99, wxT("[(100, 150, 0)]"));
+}
+
+
+// Single erase before start <-> at start / inside.
+TEST(RangeMap, Erase_BeforeStart_AtStart_InSide)
+{
+	for (int offset = 0; offset < 3; ++offset) { // at start, inside, inside
+		doErase(0, 100 + offset, wxString::Format(wxT("[(%u, 150, 0)]"), 100 + offset + 1));
+	}
+}
+
+
+// Single erase before start / touching start <-> at end / touching end / after end.
+TEST(RangeMap, Erase_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd)
+{
+	// (at end, touching end, after end)
+	for (int end_offset = 0; end_offset < 3; ++end_offset) {
+		// (before start, touching start)
+		for (int start_offset = 0; start_offset < 2; ++start_offset) {
+			doErase(98 + start_offset, 150 + end_offset, wxT("[]"));
+		}
+	}
+}
+
+
+// Single erase touching start <-> touching start.
+TEST(RangeMap, Erase_TouchingStart_TouchingStart) 
+{
+	doErase(99, 99, wxT("[(100, 150, 0)]"));
+}
+
+
+// Single erase touching start / at start <-> at start / inside.
+TEST(RangeMap, Erase_TouchingStart_AtStart_AtStart_Inside)
+{
+	for (int offset_a = 0; offset_a < 2; ++offset_a) { // (touching start, at start)
+		for (int offset_b = 0; offset_b < 2; ++offset_b) { // (at start, inside)
+			int start = 99 + offset_a;
+			int end   = 100 + offset_b;
+			
+			doErase(start, end, wxString::Format(wxT("[(%u, 150, 0)]"), 100 + offset_b + 1)); 
+		}
+	}
+}
+
+
+// Single erase at start <-> at end / touching end / after end.
+TEST(RangeMap, Erase_AtStart_AtEnd_TouchingEnd_AfterEnd) 
+{
+	// (at end, touching end, after end)
+	for (int offset = 0; offset < 3; ++offset) {
+		doErase(100, 150 + offset, wxT("[]"));
+	}
+}
+
+
+// Single erase inside / at end <-> at end / touching end / after end.
+TEST(RangeMap, Erase_Inside_AtEnd_AtEnd_TouchingEnd_AfterEnd)
+{
+	// (inside, at end)
+	for (int offset_a = 0; offset_a < 2; ++offset_a) {
+		// (at end, touching end, after end)
+		for (int offset_b = 0; offset_b < 3; ++offset_b) {
+			int start = 149 + offset_a;
+			int end   = 150 + offset_b;
+			
+			doErase(start, end, wxString::Format(wxT("[(100, %u, 0)]"), start - 1));
+		}
+	}
+}
+
+
+// Single erase touching end <-> touching end / after end.
+TEST(RangeMap, Erase_TouchingEnd_TouchingEnd_AfterEnd)
+{
+	// (touching end, after end)
+	for (int offset = 0; offset < 2; ++offset) {
+		int end = 151 + offset;
+		
+		doErase(151, end, wxT("[(100, 150, 0)]"));
+	}
+}
+
+
+// Single erase after end <-> after end.
+TEST(RangeMap, Erase_AfterEnd_AfterEnd)
+{
+	doErase(152, 170, wxT("[(100, 150, 0)]"));
+}
+
+
+/////////////////////////////////////////////////
+// The following test exercize the CRangeSet specialization.
+// 
+
+TEST(RangeMap, RangeSet)
+{
+	CRangeSet set;
+
+	set.insert(0, 10);
+	set.insert(20, 30);
+	set.insert(40, 50);
+
+	ASSERT_EQUALS(wxT("[(0, 10), (20, 30), (40, 50)]"), StringFrom(set));
+	ASSERT_EQUALS(3u, set.size());
+
+	{
+		CRangeSet::iterator it = set.begin();
+		unsigned value = 0;
+		for (; it != set.end(); ++it, value += 20) {
+			ASSERT_EQUALS(value, it.keyStart());
+			ASSERT_EQUALS(value + 10, it.keyEnd());
+		}
+
+		ASSERT_EQUALS(60u, value);
+	}
+
+	set.erase_range(5, 45);
+
+	ASSERT_EQUALS(wxT("[(0, 4), (46, 50)]"), StringFrom(set));
+	ASSERT_EQUALS(2u, set.size());
+}
 
