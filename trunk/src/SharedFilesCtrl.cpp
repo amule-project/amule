@@ -168,7 +168,7 @@ void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
 
 	std::vector<CKnownFile*> files;
 	list->CopyFileList(files);
-	for (int i = 0; i < files.size(); ++i) {
+	for (unsigned i = 0; i < files.size(); ++i) {
 		ShowFile( files[i] );
 	}
 }

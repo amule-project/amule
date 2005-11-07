@@ -816,7 +816,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			// now create the memfile for the packet
 			CMemFile tempfile(80);
 			tempfile.WriteUInt32(list.size());
-			for (int i = 0; i < list.size(); ++i) {
+			for (unsigned i = 0; i < list.size(); ++i) {
 				theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
 			}
 			
