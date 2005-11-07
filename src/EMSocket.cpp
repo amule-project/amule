@@ -116,14 +116,23 @@ void CEMSocket::Destroy() {
 
 void CEMSocket::ClearQueues()
 {
-	for (POSITION pos = controlpacket_queue.GetHeadPosition();pos != 0;) {
-		delete controlpacket_queue.GetNext(pos);
+	wxMutexLocker lock(m_sendLocker);
+
+	{
+		CPacketQueue::iterator it = m_control_queue.begin();
+		for (; it != m_control_queue.end(); ++it) {
+			delete *it;
+		}
+		m_control_queue.clear();
 	}
-	controlpacket_queue.RemoveAll();
-	for (POSITION pos = standartpacket_queue.GetHeadPosition();pos != 0;) {
-		delete standartpacket_queue.GetNext(pos).packet;
+	
+	{
+		CStdPacketQueue::iterator it = m_standard_queue.begin();
+		for (; it != m_standard_queue.end(); ++it) {
+			delete it->packet;
+		}
+		m_standard_queue.clear();
 	}
-	standartpacket_queue.RemoveAll();
 	
 	// Download (pseudo) rate control	
 	downloadLimit = 0;
@@ -381,14 +390,14 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 	    }
 
         if (controlpacket) {
-	        controlpacket_queue.AddTail(packet);
+	        m_control_queue.push_back(packet);
 
             // queue up for controlpacket
             theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	    } else {
-            bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty());
+            bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
             StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
-		    standartpacket_queue.AddTail(queueEntry);
+		    m_standard_queue.push_back(queueEntry);
 
             // reset timeout for the first time
             if (first) {
@@ -510,26 +519,28 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
     uint32 sentControlPacketBytesThisCall = 0;
 	
     while(sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend && anErrorHasOccured == false && // don't send more than allowed. Also, there should have been no error in earlier loop
-          (!controlpacket_queue.IsEmpty() || !standartpacket_queue.IsEmpty() || sendbuffer != NULL) && // there must exist something to send
+          (!m_control_queue.empty() || !m_standard_queue.empty() || sendbuffer != NULL) && // there must exist something to send
           (onlyAllowedToSendControlPacket == false || // this means we are allowed to send both types of packets, so proceed
            sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall > 0 && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) % minFragSize != 0 ||
-           sendbuffer == NULL && !controlpacket_queue.IsEmpty() || // There's a control packet in queue, and we are not currently sending anything, so we will handle the control packet next
+           sendbuffer == NULL && !m_control_queue.empty() || // There's a control packet in queue, and we are not currently sending anything, so we will handle the control packet next
            sendbuffer != NULL && m_currentPacket_is_controlpacket == true || // We are in the progress of sending a control packet. We are always allowed to send those
-           sendbuffer != NULL && m_currentPacket_is_controlpacket == false && bWasLongTimeSinceSend && !controlpacket_queue.IsEmpty() && standartpacket_queue.IsEmpty() && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize // We have waited to long to clean the current packet (which may be a standard packet that is in the way). Proceed no matter what the value of onlyAllowedToSendControlPacket.
+           sendbuffer != NULL && m_currentPacket_is_controlpacket == false && bWasLongTimeSinceSend && !m_control_queue.empty() && m_standard_queue.empty() && (sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall) < minFragSize // We have waited to long to clean the current packet (which may be a standard packet that is in the way). Proceed no matter what the value of onlyAllowedToSendControlPacket.
           )
          ) {
 
         // If we are currently not in the progress of sending a packet, we will need to find the next one to send
         if(sendbuffer == NULL) {
             CPacket* curPacket = NULL;
-            if(!controlpacket_queue.IsEmpty()) {
+            if(!m_control_queue.empty()) {
                 // There's a control packet to send
                 m_currentPacket_is_controlpacket = true;
-                curPacket = controlpacket_queue.RemoveHead();
-            } else if(!standartpacket_queue.IsEmpty() /*&& onlyAllowedToSendControlPacket == false*/) {
+                curPacket = m_control_queue.front();
+				m_control_queue.pop_front();
+            } else if(!m_standard_queue.empty() /*&& onlyAllowedToSendControlPacket == false*/) {
                 // There's a standard packet to send
                 m_currentPacket_is_controlpacket = false;
-                StandardPacketQueueEntry queueEntry = standartpacket_queue.RemoveHead();
+                StandardPacketQueueEntry queueEntry = m_standard_queue.front();
+				m_standard_queue.pop_front();
                 curPacket = queueEntry.packet;
                 m_actualPayloadSize = queueEntry.actualPayloadSize;
 
@@ -644,7 +655,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
     }
 
 
-    if(onlyAllowedToSendControlPacket && (!controlpacket_queue.IsEmpty() || sendbuffer != NULL && m_currentPacket_is_controlpacket)) {
+    if(onlyAllowedToSendControlPacket && (!m_control_queue.empty() || sendbuffer != NULL && m_currentPacket_is_controlpacket)) {
         // enter control packet send queue
         // we might enter control packet queue several times for the same package,
         // but that costs very little overhead. Less overhead than trying to make sure
@@ -688,12 +699,12 @@ uint32 CEMSocket::GetNeededBytes()
 			return 0;
 		}
 	
-		if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !standartpacket_queue.IsEmpty())) {
+		if (!((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty())) {
 			// No standard packet to send. Even if data needs to be sent to prevent timout, there's nothing to send.
 			return 0;
 		}
 	
-		if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !controlpacket_queue.IsEmpty())
+		if (((sendbuffer && !m_currentPacket_is_controlpacket)) && !m_control_queue.empty())
 			m_bAccelerateUpload = true;	// We might be trying to send a block request, accelerate packet
 	
 		sendgap = ::GetTickCount() - lastCalledSend;
@@ -704,7 +715,7 @@ uint32 CEMSocket::GetNeededBytes()
 			sizeleft = sendblen-sent;
 			sizetotal = sendblen;
 		} else {
-			sizeleft = sizetotal = standartpacket_queue.GetHead().packet->GetRealPacketSize();
+			sizeleft = sizetotal = m_standard_queue.front().packet->GetRealPacketSize();
 		}
 	}
 
@@ -742,9 +753,12 @@ void CEMSocket::TruncateQueues()
 
 	// Clear the standard queue totally
     // Please note! There may still be a standardpacket in the sendbuffer variable!
-	for(POSITION pos = standartpacket_queue.GetHeadPosition(); pos != NULL; )
-		delete standartpacket_queue.GetNext(pos).packet;
-	standartpacket_queue.RemoveAll();
+	CStdPacketQueue::iterator it = m_standard_queue.begin();
+	for (; it != m_standard_queue.end(); ++it) {
+		delete it->packet;
+	}
+	
+	m_standard_queue.clear();
 }
 
 
