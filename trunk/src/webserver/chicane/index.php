@@ -295,6 +295,24 @@
 &nbsp;
 
 <?php
+	function cat2idx($cat)
+	{
+            	$cats = amule_get_categories();
+            	$result = 0;
+            	foreach($cats as $i => $c) {
+            		if ( $cat == $c) $result = $i;
+            	}
+        		return $result;
+	}
+	
+	if (($HTTP_GET_VARS['cmd'] == 'download' ) && ($_SESSION["guest_login"] == 0)) {
+		$link = $HTTP_GET_VARS['ed2klink'];
+		$target_cat_idx = cat2idx($HTTP_GET_VARS['cat']);
+    	if ( strlen($link) > 0 ) {
+    		amule_do_ed2k_download_cmd($link, $target_cat_idx);
+    	}
+	}
+	
 	if ( $HTTP_GET_VARS['links'] == 1) {
 		echo '
 	<table align=center border=0 cellpadding=4 cellspacing=0 width="80%">
@@ -306,8 +324,9 @@
 	<tr>
 	 <td align=center valign=top class=tabs>
 	  <form action="/" method="GET">
+	   <input type="hidden" name="cmd" value="download">
 	   <font face=Tahoma style="font-size:10pt;">&nbsp;<br>ED2K Link(s)<br><br>
-	   <textarea name="c" cols="94" rows="7" class=dinput></textarea>
+	   <textarea name="ed2klink" cols="94" rows="7" class=dinput></textarea>
 	   <br><br>
 	   <input type=submit value="Start"></font><img src="arrow_right.gif" align="absmiddle">
 	   <select name="cat" size="1">';
