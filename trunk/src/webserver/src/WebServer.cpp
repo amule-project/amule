@@ -3484,7 +3484,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	m_scale1024 = scale1024;
 	
 	// actual name doesn't matter, just make it unique
-	m_name = wxString::Format(wxT("dyn_%d_stat.png"), (unsigned long int) data);
+	m_name = wxString::Format(wxT("dyn_%ld_stat.png"), (unsigned long int) data);
 	
 	m_num_font_w_size = 8;
 	m_num_font_h_size = 16;
