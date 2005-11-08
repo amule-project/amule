@@ -297,7 +297,7 @@
 
 <table border=0 align=center cellpadding=4 cellspacing=0 width="85%">
 <tr>
-<td valign=middle class="websearch-header"><b><font face=Tahoma style="font-size:10pt;">Search Results</font></b>&nbsp;&nbsp;(<a align="right" href="javascript:self.location.href='?ses=-1647003717&amp;w=search'"><font face=Tahoma style="font-size:8pt;">Refetch Results</font></a>)</td>
+<td valign=middle class="websearch-header"><b><font face=Tahoma style="font-size:10pt;">Search Results</font></b>&nbsp;&nbsp;(<a align="right" href="javascript:self.location.href='search.php'"><font face=Tahoma style="font-size:8pt;">Refetch Results</font></a>)</td>
 </tr>
 
 <tr>
