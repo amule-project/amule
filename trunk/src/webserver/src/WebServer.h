@@ -119,6 +119,7 @@ uint8 GetHigherPrio(uint32 prio, bool autoprio);
 uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
 uint8 GetLowerPrio(uint32 prio, bool autoprio);
 uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
+wxString _SpecialChars(wxString str);
 
 class CEC_PartFile_Tag;
 class CEC_SharedFile_Tag;

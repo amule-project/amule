@@ -753,6 +753,45 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 }
 
 /*
+ * Request contents of log
+ */
+void php_get_log(PHP_VALUE_NODE *result)
+{
+	value_value_free(result);
+	
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_GET_LOG);
+	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	if (response) {
+		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
+		delete response;
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
+	}
+#endif
+}
+
+/*
+ * Request contents of server info
+ */
+void php_get_serverinfo(PHP_VALUE_NODE *result)
+{
+	value_value_free(result);
+	
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_GET_SERVERINFO);
+	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	if (response) {
+		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
+		delete response;
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
+	}
+#endif
+}
+
+
+/*
  * Download ed2k link. Params: link, category (default=0)
  */
 void php_native_ed2k_download_cmd(PHP_VALUE_NODE *result)
@@ -1385,6 +1424,14 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"amule_do_ed2k_download_cmd",
 		2,
 		php_native_ed2k_download_cmd,
+	},
+	{
+		"amule_get_log",
+		0, php_get_log,
+	},
+	{
+		"amule_get_serverinfo",
+		0, php_get_serverinfo,
 	},
 	{ 0, 0, 0, },
 };
