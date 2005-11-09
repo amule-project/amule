@@ -236,8 +236,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
 	#endif
 
-	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
-
 	is_safe_state = true;
 
 	// Init statistics stuff, better do it asap
@@ -286,6 +284,8 @@ void CamuleDlg::Init() {
 	//kademliawnd = new CKadDlg(p_cnt);
 	kademliawnd = CastChild( wxT("kadWnd"), CKadDlg );
 	kademliawnd->Init();
+	
+	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 }
 
 // Madcat - Sets Fast ED2K Links Handler on/off.

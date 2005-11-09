@@ -129,9 +129,8 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 
 void CUpDownClient::Init()
 {
-	Extended_aMule_SO = 0;
 	m_bAddNextConnect = false;
-	credits = 0;
+	credits = NULL;
 	m_byChatstate = MS_NONE;
 	m_nKadState = KS_NONE;
 	m_cShowDR = 0;
@@ -1539,9 +1538,6 @@ void CUpDownClient::ReGetClientSoft()
 		// Special issues:
 		if((GetClientModString().IsEmpty() == false) && (m_clientSoft != SO_EMULE)) {
 			m_clientSoftString = GetClientModString();
-			if (m_clientSoft == SO_AMULE) {
-				Extended_aMule_SO &= 2;
-			}
 		}
 		// Isn't xMule annoying?
 		if ((m_clientSoft == SO_LXMULE) && (GetMuleVersion() > 0x26) && (GetMuleVersion() != 0x99)) {
@@ -1597,7 +1593,6 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
-					Extended_aMule_SO = 1; // no CVS flag for 1.x, so no &= right now
 					m_clientVerString = wxString::Format(_("1.x (based on eMule v0.%u)"), nClientMinVersion);
 					break;
 				case SO_LPHANT:
@@ -2271,4 +2266,43 @@ void CUpDownClient::UpdateStats()
 			theStats::AddKnownClient(this);
 		}
 	}
+}
+
+bool CUpDownClient::IsIdentified() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDENTIFIED);
+}
+
+bool CUpDownClient::IsBadGuy() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDBADGUY);
+}
+
+bool CUpDownClient::SUIFailed() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDFAILED);
+}
+
+bool CUpDownClient::SUINeeded() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDNEEDED);
+}
+
+bool CUpDownClient::SUINotSupported() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_NOTAVAILABLE);
+}
+
+uint64 CUpDownClient::GetDownloadedTotal() const 
+{
+	return credits ? credits->GetDownloadedTotal() : 0;
+}
+	
+uint64 CUpDownClient::GetUploadedTotal() const 
+{
+	return credits ? credits->GetUploadedTotal() : 0;
+}
+	
+float CUpDownClient::GetScoreRatio() const {
+	return credits ? credits->GetScoreRatio(GetIP()) : 0;
 }

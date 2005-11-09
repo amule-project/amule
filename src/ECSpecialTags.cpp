@@ -40,7 +40,6 @@
 #include "updownclient.h"
 #include "SharedFileList.h"
 #include "SearchList.h"
-#include "ClientCredits.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -778,8 +777,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
 	
-	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->Credits()->GetUploadedTotal()));
-	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->Credits()->GetDownloadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal()));
+	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal()));
 	
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp()));
 	
@@ -818,9 +817,9 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown(), this);
 	
-	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->Credits()->GetUploadedTotal(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal(), this);
 
-	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->Credits()->GetDownloadedTotal(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal(), this);
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp(), this);
 	

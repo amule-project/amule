@@ -353,7 +353,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 						
 			// Kry - If the other side supports it, send OS_INFO
 			// Client might die from Sending in SendHelloAnswer, so check				
-			if (m_client && m_client->m_fOsInfoSupport) {
+			if (m_client && m_client->GetOSInfoSupport()) {
 				m_client->SendMuleInfoPacket(false,true); // Send the OS Info tag on the recycled Mule Info
 			}				
 			
@@ -582,7 +582,7 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (m_client->GetRequestFile() && !m_client->GetRequestFile()->IsStopped() && (m_client->GetRequestFile()->GetStatus()==PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
 				if (m_client->GetDownloadState() == DS_ONQUEUE ) {
 					m_client->SetDownloadState(DS_DOWNLOADING);
-					m_client->m_lastPartAsked = 0xffff; // Reset current downloaded Chunk // Maella -Enhanced Chunk Selection- (based on jicxicmic)
+					m_client->SetLastPartAsked(0xffff); // Reset current downloaded Chunk // Maella -Enhanced Chunk Selection- (based on jicxicmic)
 					m_client->SendBlockRequests();
 				}
 			} else {
@@ -783,10 +783,10 @@ bool CClientReqSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			//filter me?
 			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 			if (IsMessageFiltered(message, m_client)) {
-				if (!m_client->m_bMsgFiltered) {
+				if (!m_client->GetMsgFiltered()) {
 					AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 				}
-				m_client->m_bMsgFiltered=true;
+				m_client->SetMsgFiltered(true);
 			} else {
 				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 			}
