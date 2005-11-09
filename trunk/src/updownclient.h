@@ -597,6 +597,8 @@ public:
 	
 	float		GetScoreRatio() const;
 	
+	uint32		GetCreationTime() const { return m_nCreationTime; }
+	
 private:
 	
 	CClientCredits	*credits;
@@ -816,6 +818,9 @@ private:
 	uint32		m_lastClientSoft;
 	uint32		m_lastClientVersion;
 	wxString	m_lastOSInfo;
+	
+	/* For buddies timeout */
+	uint32 m_nCreationTime;
 };
 
 

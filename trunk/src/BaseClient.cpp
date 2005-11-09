@@ -244,6 +244,9 @@ void CUpDownClient::Init()
 	/* Statistics */
 	m_lastClientSoft = (uint32)(-1);
 	m_lastClientVersion = 0;
+	
+	/* Creation time (for buddies timeout) */
+	m_nCreationTime = time(NULL);
 }
 
 

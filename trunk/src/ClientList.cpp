@@ -921,7 +921,15 @@ void CClientList::CleanUpClientList(){
 			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
-				&& pCurClient->GetKadState() == KS_NONE
+				&& (
+					(pCurClient->GetKadState() == KS_NONE)
+					|| (
+						(pCurClient->GetKadState() == KS_INCOMING_BUDDY)
+						&&
+						// We didn't receive the promised buddy on 10 min
+						(pCurClient->GetCreationTime() + KADEMLIABUDDYTIMEOUT > time(NULL))
+					   )
+				   )
 				&& pCurClient->GetSocket() == NULL)
 			{
 				cDeleted++;
@@ -945,8 +953,8 @@ void CClientList::CleanUpClientList(){
 				}
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineM(false, logProxy, 
-						CFormat(wxT("Debug: Not deleted client %x with kad state: %i"))
-							% (long int)pCurClient % pCurClient->GetKadState());
+						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
+							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP());
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineM(false, logProxy, 
