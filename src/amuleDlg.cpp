@@ -708,11 +708,25 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 
 void CamuleDlg::ShowConnectionState(uint32 connection_state)
 {
-	enum ed2k_state { sUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
-	static ed2k_state LastState = sUnknown;
+	enum ed2k_state { sED2KUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
+	enum kad_state { sKadUnknown = -1, sOff = 4, sFirewalled = 5, sOK = 6 };
+	static ed2k_state LastED2KState = sED2KUnknown;
+	static kad_state LastKadState = sKadUnknown;
+	static wxImageList status_arrows;
+	static wxMemoryDC bitmap_dc;
+	
+	if (!status_arrows.GetImageCount()) {
+		// Generate the image list (This is only done once)
+		for (int t = 0; t < 7; ++t) {
+			status_arrows.Add(connImages(t));
+		}
+	}
+	
 	serverwnd->UpdateED2KInfo();
 	serverwnd->UpdateKadInfo();
-	ed2k_state NewState = sUnknown;
+	
+	ed2k_state NewED2KState;
+	kad_state NewKadState;
 	
 	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 	
@@ -724,70 +738,104 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 	
 	if ( connection_state & CONNECTED_ED2K ) {
 		if ( theApp.serverconnect->IsLowID() ) {
-			NewState = sLowID;
+			NewED2KState = sLowID;
 		} else {
-			NewState = sHighID;
+			NewED2KState = sHighID;
 		}
 	} else if ( theApp.serverconnect->IsConnecting() ) {
-		NewState = sConnecting;
+		NewED2KState = sConnecting;
 	} else {
-		NewState = sDisconnected;
-	}
-	
-	if ( LastState != NewState ) {
-		CastChild( wxT("connImage"), wxStaticBitmap )->SetBitmap(connImages(NewState));
-		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
-		switch ( NewState ) {
-			case sLowID:
-				// Display a warning about LowID connections
-				AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
-				AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
-				AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
-			
-			case sHighID: {
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
-					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
-					_("Disconnect from current server"));
-				wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
-				tx->SetLabel(CFormat(_("Connection established on: %s")) % connected_server);
-				connLabel->SetLabel(connected_server);
-				break;
-			}
-			case sConnecting:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
-					_("Stops the current connection attempts"));
-				connLabel->SetLabel(_("Connecting"));
-				break;
-	
-			case sDisconnected:
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
-					connButImg(0), wxNullBitmap, wxITEM_NORMAL,
-					_("Connect to any server"));
-				connLabel->SetLabel(_("Not Connected"));
-				break;
-	
-			default:
-				break;
-		}
-		m_wndToolbar->Realize();
-	} else if (connection_state & CONNECTED_ED2K) {
-		connLabel->SetLabel(connected_server);
+		NewED2KState = sDisconnected;
 	}
 
-	int index = connLabel->GetLabel().Find(wxT(" (Kad:"));
-	if (index == -1) {
-		index = connLabel->GetLabel().Length();
-	}
 	if (connection_state & CONNECTED_KAD_OK) {
-		connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: ok)"));
+		NewKadState = sOK;
 	} else if (connection_state & CONNECTED_KAD_FIREWALLED) {
-		connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: firewalled)"));
+		NewKadState = sFirewalled;
 	} else {
-		connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: off)"));
+		NewKadState = sOff;
 	}
-	connLabel->GetParent()->Layout();
-	LastState = NewState;
+	
+	if ( (LastED2KState != NewED2KState) || (LastKadState != NewKadState)) {
+		
+		bitmap_dc.SelectObject(CastChild( wxT("connImage"), wxStaticBitmap )->GetBitmap());	
+		
+		if ( LastED2KState != NewED2KState ) {
+			
+			m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
+			switch ( NewED2KState ) {
+				case sLowID:
+					// Display a warning about LowID connections
+					AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
+					AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
+					AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
+			
+				case sHighID: {
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
+						connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+						_("Disconnect from current server"));
+					wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
+					tx->SetLabel(CFormat(_("Connection established on: %s")) % connected_server);
+					connLabel->SetLabel(connected_server);
+					
+					break;
+				}
+				case sConnecting:
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+						connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+						_("Stops the current connection attempts"));
+					connLabel->SetLabel(_("Connecting"));
+					break;
+		
+				case sDisconnected:
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
+						connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+						_("Connect to any server"));
+					connLabel->SetLabel(_("Not Connected"));
+					break;
+		
+				default:
+					break;
+			}
+			/* Draw ED2K arrow */
+			status_arrows.Draw(NewED2KState, bitmap_dc, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+	
+			m_wndToolbar->Realize();
+			
+			LastED2KState = NewED2KState;
+			
+		}
+		
+		if (NewKadState != LastKadState) {
+			int index = connLabel->GetLabel().Find(wxT(" (Kad:"));
+			
+			if (index == -1) {
+				index = connLabel->GetLabel().Length();
+			}
+			
+			if (connection_state & CONNECTED_KAD_OK) {
+				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: ok)"));
+			} else if (connection_state & CONNECTED_KAD_FIREWALLED) {
+				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: firewalled)"));
+			} else {
+				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: off)"));
+			}
+	
+			/* Kad Connecting arrow */
+			status_arrows.Draw(NewKadState, bitmap_dc, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
+			
+		}
+		
+		connLabel->GetParent()->Layout();
+		
+		bitmap_dc.SelectObject(wxNullBitmap);
+		
+	} else {
+		if (connection_state & CONNECTED_ED2K) {
+			connLabel->SetLabel(connected_server);
+			connLabel->GetParent()->Layout();
+		}
+	}
 }
 
 void CamuleDlg::ShowUserCount(const wxString& info)
