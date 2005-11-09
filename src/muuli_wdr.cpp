@@ -3087,11 +3087,11 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Serverlist"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->SetName( wxT("serverListLabel") );
-    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SERVERLISTURL, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item5->SetToolTip( _("Enter the url to a server.met file here and press the button to the left to update the list of known servers.") );
-    item2->Add( item5, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
+    item2->Add( item5, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 
     item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3112,7 +3112,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item6->Add( item10, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item11, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    item6->Add( item11, 0, wxALIGN_CENTER, 5 );
 
     CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_SPORT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetToolTip( _("Enter the port of the server here.") );
@@ -3122,10 +3122,16 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item13->SetToolTip( _("Add manually a server (fill fields to the left before) ...") );
     item6->Add( item13, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
+    wxStaticLine *item14 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item6->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxButton *item15 = new wxButton( parent, IDC_ED2KDISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->Add( item15, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
     item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CServerListCtrl *item14 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item0->Add( item14, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CServerListCtrl *item16 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item0->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -4062,7 +4068,7 @@ void muleToolbar( wxToolBar *parent )
 {
     parent->SetMargins( 0, 0 );
     
-    parent->AddTool( ID_BUTTONCONNECT, _("Connect"), connButImg( 0 ), wxNullBitmap, wxITEM_NORMAL, _("Connect to any server") );
+    parent->AddTool( ID_BUTTONCONNECT, _("Connect"), connButImg( 0 ), wxNullBitmap, wxITEM_NORMAL, _("Connect to any server and/or Kad") );
     parent->AddSeparator();
     parent->AddTool( ID_BUTTONNETWORKS, _("Networks"), amuleDlgImages( 20 ), wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
     parent->ToggleTool( ID_BUTTONNETWORKS, TRUE );

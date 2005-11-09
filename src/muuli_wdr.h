@@ -424,121 +424,122 @@ const int IDC_SERVERNAME = 10309;
 const int IDC_IPADDRESS = 10310;
 const int IDC_SPORT = 10311;
 const int ID_ADDTOLIST = 10312;
-const int ID_SERVERLIST = 10313;
+const int IDC_ED2KDISCONNECT = 10313;
+const int ID_SERVERLIST = 10314;
 wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_SRVLOG_NOTEBOOK = 10314;
+const int ID_SRVLOG_NOTEBOOK = 10315;
 wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_LOCALETEXT = 10315;
-const int ID_LOCALENEVERAGAIN = 10316;
+const int ID_LOCALETEXT = 10316;
+const int ID_LOCALENEVERAGAIN = 10317;
 wxSizer *LocaleWarning( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *kadSizer;
-const int ID_UPDATEKADLIST = 10317;
-const int IDC_NODESLISTURL = 10318;
-const int ID_KADSCOPE = 10319;
-const int ID_NODE_IP1 = 10320;
-const int ID_NODE_IP2 = 10321;
-const int ID_NODE_IP3 = 10322;
-const int ID_NODE_IP4 = 10323;
-const int ID_NODE_PORT = 10324;
-const int ID_NODECONNECT = 10325;
-const int ID_KNOWNNODECONNECT = 10326;
-const int ID_KADDISCONNECT = 10327;
+const int ID_UPDATEKADLIST = 10318;
+const int IDC_NODESLISTURL = 10319;
+const int ID_KADSCOPE = 10320;
+const int ID_NODE_IP1 = 10321;
+const int ID_NODE_IP2 = 10322;
+const int ID_NODE_IP3 = 10323;
+const int ID_NODE_IP4 = 10324;
+const int ID_NODE_PORT = 10325;
+const int ID_NODECONNECT = 10326;
+const int ID_KNOWNNODECONNECT = 10327;
+const int ID_KADDISCONNECT = 10328;
 wxSizer *KadDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_STATICTEXT = 10328;
-const int ID_ED2KINFO = 10329;
+const int ID_STATICTEXT = 10329;
+const int ID_ED2KINFO = 10330;
 wxSizer *ED2K_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_SEESHARES = 10330;
-const int IDC_SPIN_PERM_FU = 10331;
-const int IDC_SPIN_PERM_FG = 10332;
-const int IDC_SPIN_PERM_FO = 10333;
-const int IDC_SPIN_PERM_DU = 10334;
-const int IDC_SPIN_PERM_DG = 10335;
-const int IDC_SPIN_PERM_DO = 10336;
-const int IDC_IPFONOFF = 10337;
-const int IDC_IPFRELOAD = 10338;
-const int IDC_AUTOIPFILTER = 10339;
-const int IDC_IPFILTERURL = 10340;
-const int IDC_IPFILTERUPDATE = 10341;
-const int ID_IPFILTERLEVEL = 10342;
-const int IDC_FILTER = 10343;
-const int IDC_SECIDENT = 10344;
+const int IDC_SEESHARES = 10331;
+const int IDC_SPIN_PERM_FU = 10332;
+const int IDC_SPIN_PERM_FG = 10333;
+const int IDC_SPIN_PERM_FO = 10334;
+const int IDC_SPIN_PERM_DU = 10335;
+const int IDC_SPIN_PERM_DG = 10336;
+const int IDC_SPIN_PERM_DO = 10337;
+const int IDC_IPFONOFF = 10338;
+const int IDC_IPFRELOAD = 10339;
+const int IDC_AUTOIPFILTER = 10340;
+const int IDC_IPFILTERURL = 10341;
+const int IDC_IPFILTERUPDATE = 10342;
+const int ID_IPFILTERLEVEL = 10343;
+const int IDC_FILTER = 10344;
+const int IDC_SECIDENT = 10345;
 wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_ONLINESIG = 10345;
-const int IDC_OSUPDATE = 10346;
-const int IDC_OSDIR = 10347;
-const int IDC_SELOSDIR = 10348;
+const int IDC_ONLINESIG = 10346;
+const int IDC_OSUPDATE = 10347;
+const int IDC_OSDIR = 10348;
+const int IDC_SELOSDIR = 10349;
 wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_MSGFILTER = 10349;
-const int IDC_MSGFILTER_ALL = 10350;
-const int IDC_MSGFILTER_NONFRIENDS = 10351;
-const int IDC_MSGFILTER_NONSECURE = 10352;
-const int IDC_MSGFILTER_WORD = 10353;
-const int IDC_MSGWORD = 10354;
+const int IDC_MSGFILTER = 10350;
+const int IDC_MSGFILTER_ALL = 10351;
+const int IDC_MSGFILTER_NONFRIENDS = 10352;
+const int IDC_MSGFILTER_NONSECURE = 10353;
+const int IDC_MSGFILTER_WORD = 10354;
+const int IDC_MSGWORD = 10355;
 wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_PROXY_ENABLE_PROXY = 10355;
-const int ID_PROXY_TYPE = 10356;
-const int ID_PROXY_NAME = 10357;
-const int ID_PROXY_PORT = 10358;
-const int ID_PROXY_ENABLE_PASSWORD = 10359;
-const int ID_PROXY_USER = 10360;
-const int ID_PROXY_PASSWORD = 10361;
-const int ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY = 10362;
+const int ID_PROXY_ENABLE_PROXY = 10356;
+const int ID_PROXY_TYPE = 10357;
+const int ID_PROXY_NAME = 10358;
+const int ID_PROXY_PORT = 10359;
+const int ID_PROXY_ENABLE_PASSWORD = 10360;
+const int ID_PROXY_USER = 10361;
+const int ID_PROXY_PASSWORD = 10362;
+const int ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY = 10363;
 wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_REMOTE_HOST = 10363;
-const int ID_REMOTE_PORT = 10364;
-const int ID_EC_LOGIN = 10365;
-const int ID_EC_PASSWD = 10366;
-const int ID_EC_SAVE = 10367;
+const int ID_REMOTE_HOST = 10364;
+const int ID_REMOTE_PORT = 10365;
+const int ID_EC_LOGIN = 10366;
+const int ID_EC_PASSWD = 10367;
+const int ID_EC_SAVE = 10368;
 wxSizer *CoreConnect( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_VERBOSEDEBUG = 10368;
-const int ID_DEBUGCATS = 10369;
+const int ID_VERBOSEDEBUG = 10369;
+const int ID_DEBUGCATS = 10370;
 wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *IDC_CURJOB;
-const int IDC_CONV_PB_LABEL = 10370;
-const int IDC_CONV_PROZENT = 10371;
-const int IDC_CONV_PB_CURRENT = 10372;
-const int IDC_JOBLIST = 10373;
-const int IDC_ADDITEM = 10374;
-const int IDC_RETRY = 10375;
-const int IDC_CONVREMOVE = 10376;
+const int IDC_CONV_PB_LABEL = 10371;
+const int IDC_CONV_PROZENT = 10372;
+const int IDC_CONV_PB_CURRENT = 10373;
+const int IDC_JOBLIST = 10374;
+const int IDC_ADDITEM = 10375;
+const int IDC_RETRY = 10376;
+const int IDC_CONVREMOVE = 10377;
 wxSizer *convertDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int ID_STATICETXT = 10377;
-const int ID_KADINFO = 10378;
+const int ID_STATICETXT = 10378;
+const int ID_KADINFO = 10379;
 wxSizer *Kad_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *netSizer;
-const int ID_NETNOTEBOOK = 10379;
+const int ID_NETNOTEBOOK = 10380;
 wxSizer *NetDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_NEWFILENAME = 10380;
+const int IDC_NEWFILENAME = 10381;
 wxSizer *renameDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 // Declare menubar functions
 
 // Declare toolbar functions
 
-const int ID_BUTTONCONNECT = 10381;
-const int ID_BUTTONNETWORKS = 10382;
-const int ID_BUTTONSEARCH = 10383;
-const int ID_BUTTONTRANSFER = 10384;
-const int ID_BUTTONSHARED = 10385;
-const int ID_BUTTONMESSAGES = 10386;
-const int ID_BUTTONSTATISTICS = 10387;
-const int ID_BUTTONNEWPREFERENCES = 10388;
-const int ID_BUTTONIMPORT = 10389;
-const int ID_ABOUT = 10390;
+const int ID_BUTTONCONNECT = 10382;
+const int ID_BUTTONNETWORKS = 10383;
+const int ID_BUTTONSEARCH = 10384;
+const int ID_BUTTONTRANSFER = 10385;
+const int ID_BUTTONSHARED = 10386;
+const int ID_BUTTONMESSAGES = 10387;
+const int ID_BUTTONSTATISTICS = 10388;
+const int ID_BUTTONNEWPREFERENCES = 10389;
+const int ID_BUTTONIMPORT = 10390;
+const int ID_ABOUT = 10391;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions

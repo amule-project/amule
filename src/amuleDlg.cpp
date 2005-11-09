@@ -592,30 +592,30 @@ CamuleDlg::~CamuleDlg()
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 
-	bool connect = (!theApp.IsConnectedED2K() && !theApp.serverconnect->IsConnecting()) 
+	bool disconnect = (theApp.IsConnectedED2K() || theApp.serverconnect->IsConnecting()) 
 						#ifndef CLIENT_GUI
-						|| (!Kademlia::CKademlia::isRunning())
+						|| (Kademlia::CKademlia::isRunning())
 						#endif
 						;	
 
-	if (connect && thePrefs::GetNetworkED2K()) {
-		//connect if not currently connected
-		AddLogLine(true, _("Connecting"));
-		theApp.serverconnect->ConnectToAnyServer();
-	} else {
+	if (disconnect && thePrefs::GetNetworkED2K()) {
 		//disconnect if currently connected
 		if (theApp.serverconnect->IsConnecting()) {
 			theApp.serverconnect->StopConnectionTry();
 		} else {
 			theApp.serverconnect->Disconnect();
 		}
+	} else {		
+		//connect if not currently connected
+		AddLogLine(true, _("Connecting"));
+		theApp.serverconnect->ConnectToAnyServer();
 	}
 
 	// Connect Kad also
-	if( connect && thePrefs::GetNetworkKademlia()) {
-		theApp.StartKad();
-	} else {
+	if( disconnect && thePrefs::GetNetworkKademlia()) {
 		theApp.StopKad();
+	} else {
+		theApp.StartKad();
 	}
 
 }
@@ -760,9 +760,41 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		
 		bitmap_dc.SelectObject(CastChild( wxT("connImage"), wxStaticBitmap )->GetBitmap());	
 		
+		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
+		
+		if ((NewED2KState != sDisconnected) || (NewKadState != sOff)) {
+			if (NewED2KState == sConnecting) {
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+					_("Stops the current connection attempts"));
+			} else {
+				/* ED2K connected or Kad connected */
+				wxString popup = _("Disconnect from ");
+				
+				if (NewED2KState != sDisconnected) {
+					popup += _("current server");
+					if (NewKadState != sOff) {
+						popup += _(" and ");
+					}
+				}
+				
+				if (NewKadState != sOff) {
+					popup += wxT("Kad");
+				}					
+				
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
+					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+					popup);
+				
+			}
+		} else {
+			m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
+				connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+				_("Connect to any server and/or Kad"));
+		}
+		
 		if ( LastED2KState != NewED2KState ) {
 			
-			m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
 			switch ( NewED2KState ) {
 				case sLowID:
 					// Display a warning about LowID connections
@@ -771,9 +803,6 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 					AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
 			
 				case sHighID: {
-					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
-						connButImg(1), wxNullBitmap, wxITEM_NORMAL,
-						_("Disconnect from current server"));
 					wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
 					tx->SetLabel(CFormat(_("Connection established on: %s")) % connected_server);
 					connLabel->SetLabel(connected_server);
@@ -781,16 +810,10 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 					break;
 				}
 				case sConnecting:
-					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-						connButImg(2), wxNullBitmap, wxITEM_NORMAL,
-						_("Stops the current connection attempts"));
 					connLabel->SetLabel(_("Connecting"));
 					break;
 		
 				case sDisconnected:
-					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
-						connButImg(0), wxNullBitmap, wxITEM_NORMAL,
-						_("Connect to any server"));
 					connLabel->SetLabel(_("Not Connected"));
 					break;
 		
