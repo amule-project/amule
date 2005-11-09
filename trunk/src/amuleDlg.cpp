@@ -422,7 +422,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			if(!theApp.IsConnected()) {
 				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 			} else {
-				if(!theApp.serverconnect->IsLowID()) {
+				if(theApp.serverconnect->IsLowID()) {
 					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 				} else {
 					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
