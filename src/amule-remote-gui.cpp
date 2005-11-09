@@ -280,6 +280,8 @@ void CamuleRemoteGuiApp::Startup() {
 	dialog->Destroy();
 	
 	glob_prefs->LoadRemote();
+	
+	m_KadConnected = false;
 
 	serverconnect = new CServerConnectRem(connect);
 	statistics = new CStatistics(connect);
@@ -474,8 +476,8 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	}
 }
 
-bool CamuleRemoteGuiApp::IsConnectedED2K() {
-	return serverconnect->IsConnected();
+bool CamuleRemoteGuiApp::IsConnectedED2K() const {
+	return serverconnect && serverconnect->IsConnected();
 }
 
 void CamuleRemoteGuiApp::StartKad() {

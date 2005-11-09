@@ -695,6 +695,9 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			amuledlg->ShowNotifier(event.string_value,event.long_value,event.byte_value);
 			break;
 		case SHOW_CONN_STATE:
+			#ifdef CLIENT_GUI
+				theApp.m_KadConnected = (event.long_value & CONNECTED_KAD_OK) || (event.long_value & CONNECTED_KAD_FIREWALLED);
+			#endif
 			amuledlg->ShowConnectionState(event.long_value);
 			break;
 		case SHOW_QUEUE_COUNT:

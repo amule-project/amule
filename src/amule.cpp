@@ -1860,7 +1860,7 @@ bool CamuleApp::IsConnected()
 
 bool CamuleApp::IsConnectedED2K()
 {
-	return serverconnect->IsConnected();
+	return serverconnect && serverconnect->IsConnected();
 }
 
 
