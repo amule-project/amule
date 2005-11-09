@@ -48,6 +48,7 @@ public:
 private:
 	void OnSashPositionChanged(wxSplitterEvent& evt);
 	void OnBnClickedAddserver(wxCommandEvent& evt);
+	void OnBnClickedED2KDisconnect(wxCommandEvent& evt);
 	void OnBnClickedUpdateservermetfromurl(wxCommandEvent& evt);
 	void OnBnClickedResetLog(wxCommandEvent& evt);
 	void OnBnClickedResetServerLog(wxCommandEvent& evt);
