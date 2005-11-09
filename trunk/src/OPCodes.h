@@ -143,7 +143,7 @@ enum EClientSoftware {
 #define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
 #define	KADEMLIAMAXSOUCEPERFILE	300			//Max number of sources per file in index.
 #define	KADEMLIAMAXNOTESPERFILE	50			//Max number of notes per entry in index.
-#define KADEMLIABUDDYTIMEOUT	MIN2S(10)	// 10 min to receive the buddy
+#define KADEMLIABUDDYTIMEOUT	MIN2MS(10)	// 10 min to receive the buddy
 
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min
 #define	MINCOMMONPENALTY		4
