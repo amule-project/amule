@@ -60,7 +60,7 @@ enum EIdentState{
 
 class CClientCredits
 {
-	friend class CClientCreditsList;
+
 public:
 	CClientCredits(CreditStruct* in_credits);
 	CClientCredits(const CMD4Hash& key);
@@ -80,13 +80,15 @@ public:
 	bool	SetSecureIdent(const byte* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;
 	uint32	m_dwCryptRndChallengeFrom;
-	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != IdentState
+	EIdentState	GetCurrentIdentState(uint32 dwForIP) const; // can be != m_identState
 	uint32	GetSecureWaitStartTime(uint32 dwForIP);
 	void	SetSecWaitStartTime(uint32 dwForIP);
-protected:
 	void	Verified(uint32 dwForIP);
-	EIdentState IdentState;
+	EIdentState GetIdentState() const { return m_identState; }
+	void	SetIdentState(EIdentState state) { m_identState = state; }
+	
 private:
+	EIdentState		m_identState;
 	void			InitalizeIdent();
 	CreditStruct*	m_pCredits;
 	byte			m_abyPublicKey[80];			// even keys which are not verified will be stored here, and - if verified - copied into the struct

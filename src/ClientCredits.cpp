@@ -143,12 +143,12 @@ void CClientCredits::InitalizeIdent(){
 	if (m_pCredits->nKeySize == 0 ){
 		memset(m_abyPublicKey,0,80); // for debugging
 		m_nPublicKeyLen = 0;
-		IdentState = IS_NOTAVAILABLE;
+		m_identState = IS_NOTAVAILABLE;
 	}
 	else{
 		m_nPublicKeyLen = m_pCredits->nKeySize;
 		memcpy(m_abyPublicKey, m_pCredits->abySecureIdent, m_nPublicKeyLen);
-		IdentState = IS_IDNEEDED;
+		m_identState = IS_IDNEEDED;
 	}
 	m_dwCryptRndChallengeFor = 0;
 	m_dwCryptRndChallengeFrom = 0;
@@ -170,7 +170,7 @@ void CClientCredits::Verified(uint32 dwForIP){
 			AddDebugLogLineM( false, logCredits, wxT("Credits deleted due to new SecureIdent") );
 		}
 	}
-	IdentState = IS_IDENTIFIED;
+	m_identState = IS_IDENTIFIED;
 }
 
 bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
@@ -179,13 +179,13 @@ bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // 
 	}
 	memcpy(m_abyPublicKey,pachIdent, nIdentLen);
 	m_nPublicKeyLen = nIdentLen;
-	IdentState = IS_IDNEEDED;
+	m_identState = IS_IDNEEDED;
 	return true;
 }
 
 EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
-	if (IdentState != IS_IDENTIFIED)
-		return IdentState;
+	if (m_identState != IS_IDENTIFIED)
+		return m_identState;
 	else{
 		if (dwForIP == m_dwIdentIP)
 			return IS_IDENTIFIED;

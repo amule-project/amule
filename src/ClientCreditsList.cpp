@@ -371,7 +371,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 	wxASSERT( pTarget );
 	wxASSERT( pachSignature );
 	if ( !CryptoAvailable() ){
-		pTarget->IdentState = IS_NOTAVAILABLE;
+		pTarget->SetIdentState(IS_NOTAVAILABLE);
 		return false;
 	}
 	bool bResult;
@@ -424,8 +424,8 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
  	}
 
 	if (!bResult){
-		if (pTarget->IdentState == IS_IDNEEDED)
-			pTarget->IdentState = IS_IDFAILED;
+		if (pTarget->GetIdentState() == IS_IDNEEDED)
+			pTarget->SetIdentState(IS_IDFAILED);
 	} else {
 		pTarget->Verified(dwForIP);
 	}
