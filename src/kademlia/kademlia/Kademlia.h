@@ -87,7 +87,6 @@ public:
 	static bool					getPublish(void);
 	static uint32				getIPAddress(void);
 	static void					bootstrap(uint32 ip, uint16 port);
-	static void					bootstrap(const wxString& host, uint16 port);
 	static void					processPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
 
 	static void addEvent(CRoutingZone *zone);

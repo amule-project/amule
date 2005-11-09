@@ -82,20 +82,6 @@ extern wxChar* InvKadKeywordChars;
 using namespace Kademlia;
 ////////////////////////////////////////
 
-void CKademliaUDPListener::bootstrap(const wxString& host, uint16 port)
-{
-	uint32 retVal = 0;
-	retVal = StringIPtoUint32(host);
-	if (!retVal) {
-		// It's a hostname?
-		#warning Blocking call - move to thread/notification
-		retVal = StringHosttoUint32(host);
-	}
-	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapReq %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(retVal), port));
-
-	bootstrap(wxUINT32_SWAP_ALWAYS(retVal),port);
-}
-
 void CKademliaUDPListener::bootstrap(uint32 ip, uint16 port)
 {
 	wxASSERT(ip);
