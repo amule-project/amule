@@ -36,7 +36,8 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "ClientCredits.h"	// Needed for CClientCreditsList
+#include "ClientCredits.h"	// Needed for CClientCredits
+#include "ClientCreditsList.h"	// Needed for CClientCreditsList
 #include "Server.h"		// Needed for CServer
 #include "Preferences.h"	// Needed for CPreferences
 #include "MemFile.h"		// Needed for CMemFile
@@ -698,7 +699,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		CTag tag6(ET_EXTENDEDREQUEST,2);
 		tag6.WriteTagToFile(&data);
 
-		uint32 dwTagValue = (theApp.clientcredits->CryptoAvailable() ? 3 : 0);
+		uint32 dwTagValue = (theApp.CryptoAvailable() ? 3 : 0);
 		// Kry - Needs the preview code from eMule
 		/*
 		// set 'Preview supported' only if 'View Shared Files' allowed
@@ -933,7 +934,7 @@ void CUpDownClient::SendHelloAnswer()
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
 	data->WriteHash(thePrefs::GetUserHash());
-	data->WriteUInt32(theApp.serverconnect->GetClientID());
+	data->WriteUInt32(theApp.GetED2KID());
 	data->WriteUInt16(thePrefs::GetPort());
 
 	uint32 tagcount = 6;
@@ -993,7 +994,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	// eMule Misc. Options #1
 	const uint32 uUdpVer				= 4;
 	const uint32 uDataCompVer			= 1;
-	const uint32 uSupportSecIdent		= theApp.clientcredits->CryptoAvailable() ? 3 : 0;
+	const uint32 uSupportSecIdent		= theApp.CryptoAvailable() ? 3 : 0;
 	const uint32 uSourceExchangeVer	= 3; 
 	const uint32 uExtendedRequestsVer	= 2;
 	const uint32 uAcceptCommentVer	= 1;
@@ -1416,8 +1417,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 void CUpDownClient::ConnectionEstablished()
 {
-	// check if we should use this client to retrieve our public IP
-	if (theApp.GetPublicIP() == 0 && theApp.IsConnectedED2K()) {
+	// Check if we should use this client to retrieve our public IP
+	// Ignore local ip on GetPublicIP (could be wrong)
+	if (theApp.GetPublicIP(true) == 0 && theApp.IsConnectedED2K()) {
 		SendPublicIPRequest();
 	}
 	
@@ -1791,7 +1793,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 		wxASSERT ( false );
 		return;
 	}
-	if (!theApp.clientcredits->CryptoAvailable())
+	if (!theApp.CryptoAvailable())
 		return;
 
 	CMemFile data;
@@ -1815,7 +1817,7 @@ void CUpDownClient::SendSignaturePacket(){
 		return;
 	}
 
-	if (!theApp.clientcredits->CryptoAvailable()) {
+	if (!theApp.CryptoAvailable()) {
 		return;
 	}
 	if (credits->GetSecIDKeyLen() == 0) {
@@ -1837,13 +1839,12 @@ void CUpDownClient::SendSignaturePacket(){
 	uint8 byChaIPKind = 0;
 	uint32 ChallengeIP = 0;
 	if (bUseV2){
-		if (theApp.serverconnect->GetClientID() == 0 || theApp.serverconnect->IsLowID()){
+		if (::IsLowID(theApp.GetED2KID())) {
 			// we cannot do not know for sure our public ip, so use the remote clients one
 			ChallengeIP = GetIP();
 			byChaIPKind = CRYPT_CIP_REMOTECLIENT;
-		}
-		else{
-			ChallengeIP = theApp.serverconnect->GetClientID();
+		} else {
+			ChallengeIP = theApp.GetED2KID();
 			byChaIPKind  = CRYPT_CIP_LOCALCLIENT;
 		}
 	}
@@ -1881,7 +1882,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 		wxASSERT ( false );
 		return;
 	}
-	if (!theApp.clientcredits->CryptoAvailable())
+	if (!theApp.CryptoAvailable())
 		return;
 	// the function will handle everything (mulitple key etc)
 	if (credits->SetSecureIdent(pachPacket+1, pachPacket[0])){
@@ -1918,7 +1919,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 		return;
 	}
 
-	if (!theApp.clientcredits->CryptoAvailable())
+	if (!theApp.CryptoAvailable())
 		return;
 
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
@@ -1951,7 +1952,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 	// check if we need public key and signature
 	uint8 nValue = 0;
 	if (credits){
-		if (theApp.clientcredits->CryptoAvailable()){
+		if (theApp.CryptoAvailable()){
 			if (credits->GetSecIDKeyLen() == 0) {
 				nValue = IS_KEYANDSIGNEEDED;
 			} else if (m_dwLastSignatureIP != GetIP()) {
@@ -2070,7 +2071,8 @@ void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
 	uint32 dwIP = PeekUInt32(pbyData);
 	if (m_fNeedOurPublicIP == true){ // did we?
 		m_fNeedOurPublicIP = false;
-		if (theApp.GetPublicIP() == 0 && !IsLowID(dwIP) ) {
+		// Ignore local ip on GetPublicIP (could be wrong)
+		if (theApp.GetPublicIP(true) == 0 && !IsLowID(dwIP) ) {
 			theApp.SetPublicIP(dwIP);
 		}
 	}

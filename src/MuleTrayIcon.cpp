@@ -368,7 +368,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp = _("ClientID: ");
 		
 		if (theApp.IsConnectedED2K()) {
-			unsigned long id = theApp.serverconnect->GetClientID();
+			unsigned long id = theApp.GetED2KID();
 			temp += wxString::Format(wxT("%lu"), id);
 		} else {
 			temp += _("Not Connected");

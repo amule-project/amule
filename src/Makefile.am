@@ -46,6 +46,7 @@ core_sources = \
 	amule.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
+	ClientCreditsList.cpp \
 	ClientUDPSocket.cpp \
 	DeadSourceList.cpp \
 	DownloadClient.cpp \
@@ -270,6 +271,7 @@ noinst_HEADERS = AddFileThread.h \
 		 ChatSelector.h \
 		 ChatWnd.h \
 		 ClientCredits.h \
+		 ClientCreditsList.h \
 		 ClientDetailDialog.h \
 		 ClientList.h \
 		 ClientListCtrl.h \

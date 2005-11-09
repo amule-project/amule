@@ -806,11 +806,11 @@ void CSharedFileList::CreateOfferedFilePacket(
 			nClientPort = FILE_INCOMPLETE_PORT;
 		}
 	} else {
-		if (!theApp.IsConnectedED2K() || theApp.serverconnect->IsLowID()){
+		if (!theApp.IsConnectedED2K() || ::IsLowID(theApp.GetED2KID())){
 			nClientID = 0;
 			nClientPort = 0;
 		} else {
-			nClientID = theApp.serverconnect->GetClientID();
+			nClientID = theApp.GetED2KID();
 			nClientPort = thePrefs::GetPort();
 		}
 	}

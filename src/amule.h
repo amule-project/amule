@@ -154,8 +154,12 @@ public:
 	// Kry - avoid chmod on win32
 	bool		use_chmod;
 
-	uint32	GetPublicIP() const;	// return current (valid) public IP or 0 if unknown
+	// return current (valid) public IP or 0 if unknown
+	// If ignorelocal is true, don't use m_localip
+	uint32	GetPublicIP(bool ignorelocal = false) const; 
 	void		SetPublicIP(const uint32 dwIP);
+	
+	uint32	GetED2KID() const;
 
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;
@@ -275,6 +279,8 @@ private:
 	virtual void OnUnhandledException();
 
 	void CheckNewVersion(uint32 result);
+
+	uint32 m_localip;
 };
 
 #ifndef AMULE_DAEMON
@@ -393,6 +399,8 @@ public:
 	void StopKad();
 
 	bool CryptoAvailable() const;
+	
+	uint32 GetED2KID() const;
 	
 	DECLARE_EVENT_TABLE()
 

@@ -253,7 +253,7 @@ bool CamuleRemoteGuiApp::OnInit()
 
 bool CamuleRemoteGuiApp::CryptoAvailable() const
 {
-	return clientcredits && theApp.clientcredits->CryptoAvailable();
+	return clientcredits && clientcredits->CryptoAvailable();
 }
 
 bool CamuleRemoteGuiApp::ShowConnectionDialog() {
@@ -486,6 +486,10 @@ void CamuleRemoteGuiApp::StartKad() {
 void CamuleRemoteGuiApp::StopKad() {
 	CECPacket req(EC_OP_KAD_STOP);
 	connect->Send(&req);	
+}
+
+uint32 CamuleRemoteGuiApp::GetED2KID() const {
+	return serverconnect ? serverconnect->GetClientID() : 0;
 }
 
 /*

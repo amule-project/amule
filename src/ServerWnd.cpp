@@ -165,11 +165,11 @@ void CServerWnd::UpdateED2KInfo()
 		
 		ED2KInfoList->InsertItem(1, _("IP:Port"));
 		ED2KInfoList->SetItem(1, 1, theApp.serverconnect->IsLowID() ? 
-			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
+			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp.GetED2KID(), thePrefs::GetPort()));
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
-		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.serverconnect->GetClientID()));
+		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.GetED2KID()));
 		
 		ED2KInfoList->InsertItem(3, wxEmptyString);		
 
@@ -177,7 +177,7 @@ void CServerWnd::UpdateED2KInfo()
 			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
 			ED2KInfoList->SetItem(3, 1, _("LowID"));
 		} else {
-			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.serverconnect->GetClientID(), thePrefs::GetPort()));
+			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.GetED2KID(), thePrefs::GetPort()));
 			ED2KInfoList->SetItem(3, 1, _("HighID"));
 		}
 		

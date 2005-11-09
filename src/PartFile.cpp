@@ -1691,15 +1691,15 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	
 	// MOD Note: Do not change this part - Merkur
 	if (theApp.IsConnectedED2K()) {
-		if(theApp.serverconnect->IsLowID()) {
-			if(theApp.serverconnect->GetClientID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
+		if(::IsLowID(theApp.GetED2KID())) {
+			if(theApp.GetED2KID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
 				return false;
 			}
-			if(theApp.serverconnect->GetLocalIP() == userid) {
+			if(theApp.GetPublicIP() == userid) {
 				return false;
 			}
 		} else {
-			if(theApp.serverconnect->GetClientID() == userid && thePrefs::GetPort() == port) {
+			if(theApp.GetED2KID() == userid && thePrefs::GetPort() == port) {
 				return false;
 			}
 		}

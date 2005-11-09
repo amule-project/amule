@@ -804,7 +804,7 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 {
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// don't connect ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
 	}
 
@@ -828,7 +828,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
 	// Don't connect to ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
 	}
 	
@@ -860,7 +860,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	}
 
 	// Don't connect ourself
-	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
 	}
 
