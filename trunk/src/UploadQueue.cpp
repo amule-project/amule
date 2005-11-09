@@ -41,7 +41,6 @@
 
 #include "UploadQueue.h"	// Interface declarations
 #include "ServerList.h"		// Needed for CServerList
-#include "ClientCredits.h"	// Needed for CClientCreditsList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "Server.h"		// Needed for CServer
 #include "ServerConnect.h"	// Needed for CServerConnect
@@ -317,10 +316,8 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 
 			} else {
 				// Hash-clash, remove unidentified clients (possibly both)
-				bool oldID = (cur_client->credits && cur_client->credits->GetCurrentIdentState(cur_client->GetIP()) == IS_IDENTIFIED);
-				bool newID = (client->credits && client->credits->GetCurrentIdentState(client->GetIP()) == IS_IDENTIFIED);
-
-				if ( !oldID ) {
+				
+				if ( !cur_client->IsIdentified() ) {
 					// Cur_client isn't identifed, remove it
 					theApp.clientlist->AddTrackClient( cur_client );
 
@@ -332,7 +329,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 					}
 				}
 
-				if ( !newID ) {
+				if ( !client->IsIdentified() ) {
 					// New client isn't identified, remove it
 					theApp.clientlist->AddTrackClient( client );
 

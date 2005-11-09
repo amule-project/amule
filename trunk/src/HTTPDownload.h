@@ -53,7 +53,13 @@ class wxHTTP;
 
 class CHTTPDownloadThreadBase : public wxThread
 {
-private:
+ public:
+
+	CHTTPDownloadThreadBase(wxString urlname, wxString filename, HTTP_Download_File file_id);
+	
+	~CHTTPDownloadThreadBase();
+
+ private:
 
 	wxThread::ExitCode	Entry();
 	virtual void 			OnExit();
@@ -66,12 +72,6 @@ private:
 	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location);
 
 	virtual void ProgressCallback(int WXUNUSED(dltotal), int WXUNUSED(dlnow)) { }
-
- public:
-//	myThread::myThread(wxEvtHandler* parent,char* urlname,char* filename);
-	~CHTTPDownloadThreadBase();
-
-	CHTTPDownloadThreadBase(wxString urlname, wxString filename, HTTP_Download_File file_id);
 
 };
 

@@ -29,7 +29,6 @@
 #include "amuleDlg.h"
 #include "Color.h"
 
-#include "ClientCredits.h"
 #include "updownclient.h"
 #include "amule.h"
 #include "OPCodes.h"
@@ -526,7 +525,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 
 			imagelist.Draw( clientImage, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
 
-			if (client->credits && client->credits->GetScoreRatio(client->GetIP()) > 1) {
+			if (client->GetScoreRatio() > 1) {
 				// Has credits, draw the gold star
 				imagelist.Draw( Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
 			} else if (client->ExtProtocolAvailable()) {
@@ -605,11 +604,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			return;
 		
 		case 9:
-			if ( client->Credits() ) {
-				buffer = CastItoXBytes( client->Credits()->GetUploadedTotal() ) + wxT(" / ") + CastItoXBytes(client->Credits()->GetDownloadedTotal());
-			} else {
-				buffer = wxT("? / ?");
-			}
+			buffer = CastItoXBytes( client->GetUploadedTotal() ) + wxT(" / ") + CastItoXBytes(client->GetDownloadedTotal());
 			break;
  
         case 10: 
@@ -694,7 +689,7 @@ int CUploadingView::SortProc(long item1, long item2, long sortData)
 		case 8: return mode * CmpAny( client1->GetUpPartCount(), client2->GetUpPartCount() );
 		
 		// Sort by U/D ratio
-		case 9: return mode * CmpAny( client2->Credits()->GetDownloadedTotal(), client1->Credits()->GetDownloadedTotal() );
+		case 9: return mode * CmpAny( client2->GetDownloadedTotal(), client1->GetDownloadedTotal() );
 		
 		// Sort by remote rank
 		case 10: return mode * CmpAny( client2->GetRemoteQueueRank(), client1->GetRemoteQueueRank() );
@@ -950,11 +945,7 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 
 		
 		case 2:
-			if ( client->credits ) {
-				buffer = CastItoXBytes( client->credits->GetUploadedTotal() );
-			} else {
-				buffer = CastItoXBytes( 0 );
-			}
+			buffer = CastItoXBytes( client->GetUploadedTotal() );
 			
 			break;
 			
@@ -964,12 +955,7 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 			break;
 	
 		case 4:
-			if ( client->credits ) {
-				buffer = CastItoXBytes( client->credits->GetDownloadedTotal() );
-			} else {
-				buffer = CastItoXBytes( 0 );
-			}
-			
+			buffer = CastItoXBytes( client->GetDownloadedTotal() );
 			break;
 			
 		case 5:
@@ -1011,12 +997,8 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		case 1: return mode * CmpAny( client1->GetUploadState(), client2->GetUploadState() );
 		
 		// Sort by data-uploaded
-		case 2:
-			if ( client1->credits && client2->credits ) {
-				return mode * CmpAny( client1->credits->GetUploadedTotal(), client2->credits->GetUploadedTotal() );
-			}
-
-			return -mode * CmpAny( client1->credits, client2->credits );
+		case 2:			
+			return mode * CmpAny( client1->GetUploadedTotal(), client2->GetUploadedTotal() );
 		
 		// Sort by Downloading-state
 		case 3:
@@ -1035,18 +1017,7 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		
 		// Sort by data downloaded
 		case 4: {
-			uint64 clientA = 0;
-			uint64 clientB = 0;
-
-			if ( client1->credits ) {
-				clientA = client1->credits->GetDownloadedTotal();
-			}
-			
-			if ( client2->credits ) {
-				clientB = client2->credits->GetDownloadedTotal();
-			}
-			
-			return mode * CmpAny( clientA, clientB );
+			return mode * CmpAny( client1->GetDownloadedTotal(), client2->GetDownloadedTotal() );
 		}
 		
 		
@@ -1072,5 +1043,3 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 	}
 
 }
-
-

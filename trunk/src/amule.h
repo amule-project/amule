@@ -201,6 +201,8 @@ public:
 	void StartKad();
 	void StopKad();
 
+	bool CryptoAvailable() const;
+	
 protected:
 #ifdef __WXDEBUG__
 	/**
@@ -390,6 +392,8 @@ public:
 	void StartKad();
 	void StopKad();
 
+	bool CryptoAvailable() const;
+	
 	DECLARE_EVENT_TABLE()
 
 protected:

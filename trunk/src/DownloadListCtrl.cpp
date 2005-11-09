@@ -51,7 +51,6 @@
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "Color.h"		// Needed for BLEND and SYSCOLOR
-#include "ClientCredits.h"	// Needed for GetCurrentIdentState
 #include "BarShader.h"		// Needed for CBarShader
 #include "Preferences.h"
 #include "Logger.h"
@@ -1598,25 +1597,16 @@ void CDownloadListCtrl::DrawSourceItem(
 						wxIMAGELIST_DRAW_TRANSPARENT);
 				}
 
-				if (client->Credits())
-				{
-					switch (client->Credits()->
-						GetCurrentIdentState(client->GetIP())) {
-					case IS_IDENTIFIED:
-						// the 'v'
-						m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point2.x, point.y,
-							wxIMAGELIST_DRAW_TRANSPARENT);
-						break;
-					case IS_IDBADGUY:
-						// the 'X'
-						m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point2.x, point.y,
-							wxIMAGELIST_DRAW_TRANSPARENT);
-						break;
-					default:
-						break;
-					}
+				if (client->IsIdentified()) {
+					// the 'v'
+					m_ImageList.Draw(Client_SecIdent_Smiley, *dc, point2.x, point.y,
+						wxIMAGELIST_DRAW_TRANSPARENT);					
+				} else if (client->IsBadGuy()) {
+					// the 'X'
+					m_ImageList.Draw(Client_BadGuy_Smiley, *dc, point2.x, point.y,
+						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
-				
+							
 				if ( client->GetUserName().IsEmpty() ) {
 					dc->DrawText( wxT("?"), rect.GetX() + 40, rect.GetY() );
 				} else {
@@ -2256,8 +2246,8 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 			if ( reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
 				color = crBoth;
 			} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
-					source->m_nLastBlockOffset < uEnd &&
-					source->m_nLastBlockOffset >= PARTSIZE*i) {
+					source->GetLastBlockOffset() < uEnd &&
+					source->GetLastBlockOffset() >= PARTSIZE*i) {
 				color = crPending;
 			} else if (gettingParts.GetChar((uint16)i) == 'Y') {
 				color = crNextPending;

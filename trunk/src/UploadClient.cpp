@@ -92,7 +92,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 	}
 
 	// bad clients (see note in function)
-	if (credits->GetCurrentIdentState(GetIP()) == IS_IDBADGUY) {
+	if (IsBadGuy()) {
 		return 0;
 	}
 	
@@ -153,7 +153,7 @@ uint32 CUpDownClient::GetScore(bool sysvalue, bool isdownloading, bool onlybasev
 		fBaseValue /= 1000;
 	}
 	
-	float modif = credits->GetScoreRatio(GetIP());
+	float modif = GetScoreRatio();
 	fBaseValue *= modif;
 	
 	if (!onlybasevalue) {

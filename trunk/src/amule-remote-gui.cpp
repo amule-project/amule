@@ -251,6 +251,11 @@ bool CamuleRemoteGuiApp::OnInit()
 	return result;
 }
 
+bool CamuleRemoteGuiApp::CryptoAvailable() const
+{
+	return clientcredits && theApp.clientcredits->CryptoAvailable();
+}
+
 bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 	
 	dialog = new CEConnectDlg;
@@ -1049,6 +1054,48 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 
 	credits = new CClientCredits(new CreditStruct());
 }
+
+/* Warning: do common base */
+
+bool CUpDownClient::IsIdentified() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDENTIFIED);
+}
+
+bool CUpDownClient::IsBadGuy() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDBADGUY);
+}
+
+bool CUpDownClient::SUIFailed() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDFAILED);
+}
+
+bool CUpDownClient::SUINeeded() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_IDNEEDED);
+}
+
+bool CUpDownClient::SUINotSupported() const 
+{
+	return (credits && credits->GetCurrentIdentState(GetIP()) == IS_NOTAVAILABLE);
+}
+
+uint64 CUpDownClient::GetDownloadedTotal() const 
+{
+	return credits ? credits->GetDownloadedTotal() : 0;
+}
+	
+uint64 CUpDownClient::GetUploadedTotal() const 
+{
+	return credits ? credits->GetUploadedTotal() : 0;
+}
+	
+float CUpDownClient::GetScoreRatio() const {
+	return credits ? credits->GetScoreRatio(GetIP()) : 0;
+}
+/* End Warning */
 
 CUpDownClient::~CUpDownClient()
 {

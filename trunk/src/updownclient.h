@@ -218,8 +218,6 @@ public:
 	uint8		GetMuleVersion() const		{ return m_byEmuleVersion;}
 	bool		ExtProtocolAvailable() const	{ return m_bEmuleProtocol;}
 	bool		IsEmuleClient()	const		{ return m_byEmuleVersion;}
-	CClientCredits*	Credits()		{ return credits;}
-	const CClientCredits*	Credits() const { return credits;}
 	bool		IsBanned() const;
 	const wxString&	GetClientFilename() const	{ return m_clientFilename; }
 	uint16		GetUDPPort() const		{ return m_nUDPPort; }
@@ -272,9 +270,6 @@ public:
 
 	uint8		GetInfoPacketsReceived() const	{ return m_byInfopacketsReceived; }
 	void		InfoPacketsReceived();
-
-	CClientCredits	*credits;
-	CFriend 	*m_Friend;
 
 	//upload
 	uint8		GetUploadState() const		{ return m_nUploadState; }
@@ -539,8 +534,74 @@ public:
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
 	// Kad added by me
 	bool			SendBuddyPing();
+	
+	/* Returns the client hash type (SO_EMULE, mldonkey, etc) */
+	int		GetHashType() const;
 
+	/**
+	 * Checks that a client isn't aggressively re-asking for files.
+	 * 
+	 * Call this when a file is requested. If the time since the last request is
+	 * less than MIN_REQUESTTIME, 3 is added to the m_Aggressiveness variable.
+	 * If the time since the last request is >= MIN_REQUESTTIME, the variable is
+	 * decremented by 1. The client is banned if the variable reaches 10 or above.
+	 *
+	 * To check if a client is aggressive use the IsClientAggressive() function.
+	 * 
+	 * Currently this function is called when the following packets are recieved:
+	 *  - OP_STARTUPLOADREQ
+	 *  - OP_REASKFILEPING
+	 */
+	void		CheckForAggressive();
+
+	const wxString&	GetClientModString() const	{ return m_strModVersion; }
+
+	const wxString&	GetClientVerString() const	{ return m_fullClientVerString; }
+
+	const wxString&	GetVersionString() const	{ return m_clientVersionString; }
+
+	void		UpdateStats();
+
+	/* Returns a pointer to the credits, only for hash purposes */
+	void*		GetCreditsHash() const { return (void*)credits; }
+	
+	uint32		GetLastBlockOffset() const { return m_nLastBlockOffset; }
+	
+	bool		GetOSInfoSupport() const { return m_fOsInfoSupport; }
+	
+	uint16		GetLastPartAsked() const { return m_lastPartAsked; }
+	
+	void		SetLastPartAsked(uint16 nPart) { m_lastPartAsked = nPart; }
+	
+	bool		GetMsgFiltered() const { return m_bMsgFiltered; }
+	
+	void		SetMsgFiltered(bool state) { m_bMsgFiltered = state; }
+	
+	CFriend*	GetFriend() const { return m_Friend; }
+	
+	void		SetFriend(CFriend* newfriend) { m_Friend = newfriend; }
+	
+	bool		IsIdentified() const;
+	
+	bool		IsBadGuy() const;
+	
+	bool		SUIFailed() const;
+	
+	bool		SUINeeded() const;
+	
+	bool		SUINotSupported() const;
+
+	uint64		GetDownloadedTotal() const;
+	
+	uint64		GetUploadedTotal() const;
+	
+	float		GetScoreRatio() const;
+	
 private:
+	
+	CClientCredits	*credits;
+	CFriend 	*m_Friend;
+
 	uint32		m_nTransferredUp;
 	uint32		m_nCurQueueSessionPayloadUp;
 	uint32		m_addedPayloadQueueSession;
@@ -654,7 +715,6 @@ private:
 	CMD4Hash	m_requpfileid;
 	uint16		m_nUpCompleteSourcesCount;
 
-public:
 	//! This vector contains the avilability of parts for the file that the user
 	//! is requesting. When changing it, be sure to call CKnownFile::UpdatePartsFrequency
 	//! so that the files know the actual availability of parts.
@@ -710,17 +770,7 @@ public:
 
 	/* Razor 1a - Modif by MikaelB */
 
-	int		GetHashType() const;
 	bool		m_bHelloAnswerPending;
-
-	// Kry - Atribute to get the 1.x / 2.x / CVS flags
-	// Why this way? Well, on future is expected that count(2.x) > count(1x)
-	// So I prefer to set the 1.x flag because it will be less CPU.
-	// I know. I'm paranoid on CPU.
-	// (Extended_aMule_SO & 1)  -> 1.x
-	// !(Extended_aMule_SO & 1) -> 2.x
-	// (Extended_aMule_SO & 2)  -> CVS
-	uint8		Extended_aMule_SO;
 
 	//! This vector contains the avilability of parts for the file we requested 
 	//! from this user. When changing it, be sure to call CPartFile::UpdatePartsFrequency
@@ -744,47 +794,13 @@ public:
 	uint8		m_byKadVersion;
 	uint32		m_dwLastBuddyPingPongTime;
 
-public:
-	/**
-	 * Checks that a client isn't aggressively re-asking for files.
-	 * 
-	 * Call this when a file is requested. If the time since the last request is
-	 * less than MIN_REQUESTTIME, 3 is added to the m_Aggressiveness variable.
-	 * If the time since the last request is >= MIN_REQUESTTIME, the variable is
-	 * decremented by 1. The client is banned if the variable reaches 10 or above.
-	 *
-	 * To check if a client is aggressive use the IsClientAggressive() function.
-	 * 
-	 * Currently this function is called when the following packets are recieved:
-	 *  - OP_STARTUPLOADREQ
-	 *  - OP_REASKFILEPING
-	 */
-	void		CheckForAggressive();
-
-	/**
-	 * Specifies if a client has aggressivly requested files.
-	 *
-	 * @return True if the client is EVIL, false otherwise.
-	 */
-	bool		IsClientAggressive() const	{ return ( m_Aggressiveness >= 10 ); }
-
-	uint8		GetExtended_aMule_SO() const	{ return Extended_aMule_SO; };
-
-private:
 	//! This keeps track of aggressive requests for files. 
 	uint16		m_Aggressiveness;
 	//! This tracks the time of the last time since a file was requested
 	uint32		m_LastFileRequest;
 
-public:
-	const wxString&	GetClientModString() const	{ return m_strModVersion; }
-	const wxString&	GetClientVerString() const	{ return m_fullClientVerString; }
-	const wxString&	GetVersionString() const	{ return m_clientVersionString; }
-
-	void		UpdateStats();
-
-private:
 	bool 		m_OSInfo_sent;
+	
 	wxString	m_clientSoftString;	/* software name */
 	wxString	m_clientVerString;	/* version + optional mod name */
 	wxString	m_clientVersionString;	/* version string */

@@ -26,7 +26,6 @@
 #include "ClientDetailDialog.h"	// Interface declarations
 #include "OtherFunctions.h"	// Needed for CastItoIShort
 #include "NetworkFunctions.h" // Needed for Uint32toStringIP
-#include "ClientCredits.h"	// Needed for GetDownloadedTotal
 #include "PartFile.h"		// Needed for CPartFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -125,38 +124,26 @@ bool CClientDetailDialog::OnInitDialog() {
 	CastChild(ID_DAVUR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetKBpsDown()));
 	CastChild(ID_DAVDR,wxStaticText)->SetLabel(wxString::Format(_("%.1f kB/s"),m_client->GetUploadDatarate() / 1024.0f));
 
-	if (m_client->Credits()) {
-		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetDownloadedTotal()));		
-		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->Credits()->GetUploadedTotal()));
-		CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->Credits()->GetScoreRatio(m_client->GetIP())));
+	CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetDownloadedTotal()));		
+	CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(CastItoXBytes(m_client->GetUploadedTotal()));
+	CastChild(ID_DRATIO,wxStaticText)->SetLabel(wxString::Format(wxT("%.1f"),(float)m_client->GetScoreRatio()));
 		
-		if (theApp.clientcredits->CryptoAvailable()){
-			switch(m_client->Credits()->GetCurrentIdentState(m_client->GetIP())){
-				case IS_NOTAVAILABLE:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Supported"));
-					break;
-				case IS_IDFAILED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Failed"));
-					break;
-				case IS_IDNEEDED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not complete"));
-					break;
-				case IS_IDBADGUY:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Bad Guy"));
-					break;
-				case IS_IDENTIFIED:
-					CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Verified - OK"));
-					break;
-			}
-		} else {
-			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Available"));
+	if (theApp.CryptoAvailable()){
+			
+		if (m_client->SUINotSupported()) {
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Supported"));
+		} else if (m_client->SUIFailed()) {
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Failed"));
+		} else if (m_client->SUINeeded()) {
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not complete"));
+		} else if (m_client->IsBadGuy()) {
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Bad Guy"));
+		} else if (m_client->IsIdentified()) {
+			CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Verified - OK"));
 		}
-		
-		
+			
 	} else {
-		CastChild(ID_DDOWNTOTAL,wxStaticText)->SetLabel(_("Unknown"));
-		CastChild(ID_DUPTOTAL,wxStaticText)->SetLabel(_("Unknown"));
-		CastChild(ID_DRATIO,wxStaticText)->SetLabel(_("Unknown"));
+		CastChild(IDC_CDIDENT,wxStaticText)->SetLabel(_("Not Available"));
 	}
 
 	if (m_client->GetUploadState() != US_NONE) {

@@ -1966,9 +1966,9 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 	uint16 newBlockCount = 0;
 	while(newBlockCount != *count) {
 		// Create a request block stucture if a chunk has been previously selected
-		if(sender->m_lastPartAsked != 0xffff) {
+		if(sender->GetLastPartAsked() != 0xffff) {
 			Requested_Block_Struct* pBlock = new Requested_Block_Struct;
-			if(GetNextEmptyBlockInPart(sender->m_lastPartAsked, pBlock) == true) {
+			if(GetNextEmptyBlockInPart(sender->GetLastPartAsked(), pBlock) == true) {
 				// Keep a track of all pending requested blocks
 				requestedblocks_list.AddTail(pBlock);
 				// Update list of blocks to return
@@ -1979,12 +1979,12 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				// All blocks for this chunk have been already requested
 				delete pBlock;
 				// => Try to select another chunk
-				sender->m_lastPartAsked = 0xffff;
+				sender->SetLastPartAsked(0xffff);
 			}
 		}
 
 		// Check if a new chunk must be selected (e.g. download starting, previous chunk complete)
-		if(sender->m_lastPartAsked == 0xffff) {
+		if(sender->GetLastPartAsked() == 0xffff) {
 			// Quantify all chunks (create list of chunks to download) 
 			// This is done only one time and only if it is necessary (=> CPU load)
 			if(chunksList.IsEmpty() == TRUE) {
@@ -2144,7 +2144,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 						randomness--;
 						if(randomness == 0) {
 							// Selection process is over
-							sender->m_lastPartAsked = cur_chunk.part;
+							sender->SetLastPartAsked(cur_chunk.part);
 							// Remark: this list might be reused up to *count times
 							chunksList.RemoveAt(cur_pos);
 							break; // exit loop for()

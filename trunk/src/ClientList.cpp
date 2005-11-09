@@ -29,7 +29,6 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFIlter
-#include "ClientCredits.h"
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "OPCodes.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
@@ -63,7 +62,7 @@ public:
 	CDeletedClient(CUpDownClient* pClient)
 	{
 		m_dwInserted = ::GetTickCount();
-		PortAndHash porthash = { pClient->GetUserPort(), pClient->Credits()};
+		PortAndHash porthash = { pClient->GetUserPort(), pClient->GetCreditsHash()};
 		m_ItemsList.push_back(porthash);
 	}
 	
@@ -372,7 +371,7 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket*
 					&& (found_client->GetIP() != tocheck->GetIP() || found_client->GetUserPort() != tocheck->GetUserPort() ) )
 				{
 					// if found_client is connected and has the IS_IDENTIFIED, it's safe to say that the other one is a bad guy
-					if (found_client->Credits() && found_client->Credits()->GetCurrentIdentState(found_client->GetIP()) == IS_IDENTIFIED){
+					if (found_client->IsIdentified()){
 						AddDebugLogLineM( false, logClient, wxT("Client: ") + tocheck->GetUserName() + wxT("(") + tocheck->GetFullIP() +  wxT("), Banreason: Userhash invalid")); 
 						tocheck->Ban();
 						return false;
@@ -451,13 +450,13 @@ void CClientList::AddTrackClient(CUpDownClient* toadd)
 		for ( ; it2 != pResult->m_ItemsList.end(); ++it2 ) {
 			if ( it2->nPort == toadd->GetUserPort() ) {
 				// already tracked, update
-				it2->pHash = toadd->Credits();
+				it2->pHash = toadd->GetCreditsHash();
 				return;
 			}
 		}
 	
 		// New client for that IP, add an entry
-		CDeletedClient::PortAndHash porthash = { toadd->GetUserPort(), toadd->Credits()};
+		CDeletedClient::PortAndHash porthash = { toadd->GetUserPort(), toadd->GetCreditsHash()};
 		pResult->m_ItemsList.push_back(porthash);
 	} else {
 		m_trackedClientsList[ toadd->GetIP() ] = new CDeletedClient(toadd);
@@ -854,13 +853,13 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 {
 
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
-	//If eMule already knows this client, abort this.. It could cause conflicts.
+	//If aMule already knows this client, abort this.. It could cause conflicts.
 	//Although the odds of this happening is very small, it could still happen.
 	if (FindClientByIP(nContactIP, contact->getTCPPort())) {
 		return;
 	}
 
-	// don't connect ourself
+	// Don't connect ourself
 	if (theApp.serverconnect->GetLocalIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
 		return;
 	}

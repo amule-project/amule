@@ -73,7 +73,7 @@ void	CFriend::LinkClient(CUpDownClient* client, bool unlink) {
 			bool bFriendSlot = m_LinkedClient->GetFriendSlot();
 			// avoid that an unwanted client instance keeps a friend slot
 			m_LinkedClient->SetFriendSlot(false);
-			m_LinkedClient->m_Friend = NULL;
+			m_LinkedClient->SetFriend(NULL);
 			m_LinkedClient = client;
 			// move an assigned friend slot between different client instances which are/were also friends
 			m_LinkedClient->SetFriendSlot(bFriendSlot);

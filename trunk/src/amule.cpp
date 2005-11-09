@@ -2098,6 +2098,12 @@ void CamuleApp::StopKad()
 	}
 }
 
+bool CamuleApp::CryptoAvailable() const
+{
+	return clientcredits && theApp.clientcredits->CryptoAvailable();
+}
+ 
+
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)

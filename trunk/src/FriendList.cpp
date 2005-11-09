@@ -76,7 +76,7 @@ void CFriendList::AddFriend(CUpDownClient* toadd)
 	}
 	
 	CFriend* NewFriend = new CFriend( toadd );
-	toadd->m_Friend = NewFriend;
+	toadd->SetFriend(NewFriend);
 	
 	AddFriend( NewFriend );
 }
@@ -88,7 +88,7 @@ void CFriendList::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint
 	if (toremove) {
 		if ( toremove->GetLinkedClient() ){
 			toremove->GetLinkedClient()->SetFriendSlot(false);
-			toremove->GetLinkedClient()->m_Friend = NULL;
+			toremove->GetLinkedClient()->SetFriend(NULL);
 			toremove->UnLinkClient();
 		}
 
