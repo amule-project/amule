@@ -927,7 +927,7 @@ void CClientList::CleanUpClientList(){
 						(pCurClient->GetKadState() == KS_INCOMING_BUDDY)
 						&&
 						// We didn't receive the promised buddy on 10 min
-						(pCurClient->GetCreationTime() + KADEMLIABUDDYTIMEOUT > time(NULL))
+						(pCurClient->GetCreationTime() + KADEMLIABUDDYTIMEOUT > ::GetTickCount())
 					   )
 				   )
 				&& pCurClient->GetSocket() == NULL)

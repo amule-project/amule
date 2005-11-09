@@ -246,7 +246,7 @@ void CUpDownClient::Init()
 	m_lastClientVersion = 0;
 	
 	/* Creation time (for buddies timeout) */
-	m_nCreationTime = time(NULL);
+	m_nCreationTime = ::GetTickCount();
 }
 
 
