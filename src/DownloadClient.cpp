@@ -37,6 +37,7 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile
+#include "ClientTCPSocket.h"// Needed for CClientTCPSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile

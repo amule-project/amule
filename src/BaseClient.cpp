@@ -47,7 +47,8 @@
 #include "ClientList.h"		// Needed for CClientList
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
+#include "ListenSocket.h"			// Needed for CListenSocket
 #include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
@@ -75,7 +76,7 @@ static wxString empty_name = wxT("[Empty User Name]");
 //	which are used by down and uploading functions
 
 
-CUpDownClient::CUpDownClient(CClientReqSocket* sender)
+CUpDownClient::CUpDownClient(CClientTCPSocket* sender)
 {
 #ifdef __DEBUG__
 	m_socket = NULL;
@@ -1313,7 +1314,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		if (m_socket) {
 			m_socket->Safe_Delete();
 		}
-		m_socket = new CClientReqSocket(this, thePrefs::GetProxyData());
+		m_socket = new CClientTCPSocket(this, thePrefs::GetProxyData());
 	} else {
 		ConnectionEstablished();
 		return true;
@@ -1509,7 +1510,7 @@ int CUpDownClient::GetHashType() const
 }
 
 
-void CUpDownClient::SetSocket(CClientReqSocket* socket)
+void CUpDownClient::SetSocket(CClientTCPSocket* socket)
 {
 #if defined(__DEBUG__) && !defined(EC_REMOTE)
 	if (m_socket == NULL && socket != NULL) {

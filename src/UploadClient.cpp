@@ -41,7 +41,7 @@
 #include "PartFile.h"		// Needed for PR_POWERSHARE
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"		// Needed for CKnownFileLists
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"		// Needed for theApp
 #include "OPCodes.h"		// Needed for PARTSIZE

@@ -44,7 +44,7 @@ typedef std::vector<bool> BitVector;
 
 
 class CPartFile;
-class CClientReqSocket;
+class CClientTCPSocket;
 class CClientCredits;
 class CPacket;
 class CFriend;
@@ -163,7 +163,7 @@ public:
 	CUpDownClient(class CEC_UpDownClient_Tag *);
 #else
 	//base
-	CUpDownClient(CClientReqSocket* sender = 0);
+	CUpDownClient(CClientTCPSocket* sender = 0);
 	CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serverup, uint16 in_serverport,CPartFile* in_reqfile, bool ed2kID, bool checkfriend);
 #endif
 	/**
@@ -457,7 +457,7 @@ public:
 	 *
 	 * Please note that this function DOES NOT delete the old socket.
 	 */
-	void 		SetSocket(CClientReqSocket* socket);
+	void 		SetSocket(CClientTCPSocket* socket);
 
 	/**
 	 * Function for accessing the socket owned by a client.
@@ -469,7 +469,7 @@ public:
 	 * the safer functions below, which all check if the socket is valid before
 	 * deferring it.
 	 */
-	CClientReqSocket* GetSocket() const		{ return m_socket; }
+	CClientTCPSocket* GetSocket() const		{ return m_socket; }
 
 	/**
 	 * Safe function for checking if the socket is connected.
@@ -689,7 +689,7 @@ private:
 	uint16		m_nKadPort;
 	bool		m_bMultiPacket;
 	ClientState	m_clientState;
-	CClientReqSocket*	m_socket;		
+	CClientTCPSocket*	m_socket;		
 	bool		m_fNeedOurPublicIP; // we requested our IP from this client
 
 	// Kry - Secure User Ident import

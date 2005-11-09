@@ -46,7 +46,7 @@
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "Packet.h"		// Needed for CPacket
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "OPCodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient

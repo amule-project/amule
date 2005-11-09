@@ -54,7 +54,7 @@
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "ListenSocket.h"	// Needed for CClientTCPSocket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "AddFileThread.h"	// Needed for CAddFileThread
