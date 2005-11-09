@@ -862,8 +862,8 @@ bool CamuleApp::OnInit()
 		wxSleep(1);
 		int status, result;
 //#ifdef HAVE_SYS_WAIT_H
-		if ( (result = wait4(webserver_pid, &status, WNOHANG, 0)) == -1 ) {
-			printf("ERROR: wait4 call failed\n");
+		if ( (result = waitpid(webserver_pid, &status, WNOHANG)) == -1 ) {
+			printf("ERROR: waitpid call failed\n");
 		} else {
 			if ( status && WIFEXITED(status) ) {
 				webserver_pid = 0;
