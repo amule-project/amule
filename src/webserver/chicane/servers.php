@@ -405,14 +405,14 @@
 		echo '<td valign=middle class="server-line">', $srv->files, '</td>';
 		if ( $_SESSION["guest_login"] == 0 ) {
 			echo '<td valign=middle class="server-line"><acronym title="Connect">',
-			'<a href="servers.php?cmd="connect&ip="', $srv->ip, '&port=', $srv->port,
+			'<a href="servers.php?cmd=connect&ip=', $srv->ip, '&port=', $srv->port,
 			'" style="text-decoration: none"><img src="l_connect.gif" alt="Connect"></a></acronym>',
-			'<acronym title="Remove selected server"><a href="servers.php?cmd="Remove&ip="',
+			'<acronym title="Remove selected server"><a href="servers.php?cmd=remove&ip=',
 			$srv->ip, '&port=', $srv->port,
 			"\" onclick=\"return confirm('Are you sure to remove this server from list?')\">",
 			'<img src="l_cancel.gif" alt="Remove selected server"></a></acronym>';
 		}
-		echo "</tr>";
+		echo "</tr>\n";
 	}
 ?>
 </table>
