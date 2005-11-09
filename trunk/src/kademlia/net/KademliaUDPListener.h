@@ -60,7 +60,6 @@ class CKademliaUDPListener
 
 public:
 	virtual ~CKademliaUDPListener() {};
-	void bootstrap(const wxString& ip, uint16 port);
 	void bootstrap(uint32 ip, uint16 port);
 	void firewalledCheck(uint32 ip, uint16 port);
 	void sendMyDetails(byte opcode, uint32 ip, uint16 port);

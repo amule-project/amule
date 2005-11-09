@@ -332,13 +332,6 @@ bool CKademlia::getPublish(void)
 	return 0;
 }
 
-void CKademlia::bootstrap(const wxString& host, uint16 port)
-{
-	if( instance && instance->m_udpListener && !isConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
-		instance->m_udpListener->bootstrap( host, port);
-	}
-}
-
 void CKademlia::bootstrap(uint32 ip, uint16 port)
 {
 	if( instance && instance->m_udpListener && !isConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
