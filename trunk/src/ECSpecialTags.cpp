@@ -609,7 +609,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 		if ( theApp.serverconnect->GetCurrentServer() ) {
 			AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
 		}
-		AddTag(CECTag(EC_TAG_ED2K_ID, theApp.serverconnect->GetClientID()));
+		AddTag(CECTag(EC_TAG_ED2K_ID, theApp.GetED2KID()));
 	}
 }
 

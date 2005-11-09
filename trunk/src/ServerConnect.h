@@ -91,9 +91,6 @@ public:
 	void	TryAnotherConnectionrequest();
 	bool	IsSingleConnect()	{ return singleconnecting; }
 	void	KeepConnectionAlive();	
-	void	InitLocalIP();
-	uint32	GetLocalIP()	{ return m_nLocalIP; }
-	
 
 private:
 	bool	connecting;
@@ -107,7 +104,6 @@ private:
 	// list of currently opened sockets
 	CTypedPtrList<CPtrList, CServerSocket*>	m_lstOpenSockets;
 	AMULE_TIMER_CLASS	m_idRetryTimer;
-	uint32	m_nLocalIP;
 
 	std::map<uint32, CServerSocket*> connectionattemps;
 };

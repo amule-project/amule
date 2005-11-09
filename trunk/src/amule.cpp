@@ -74,7 +74,7 @@
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
-#include "ClientCredits.h"		// Needed for CClientCreditsList
+#include "ClientCreditsList.h"	// Needed for CClientCreditsList
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "ServerConnect.h"		// Needed for CServerConnect
@@ -225,7 +225,8 @@ CamuleApp::CamuleApp()
 	localserver	= NULL;
 	glob_prefs	= NULL;
 	
-	m_dwPublicIP	= 0;
+	m_dwPublicIP	=  0;
+	m_localip = StringHosttoUint32(::wxGetFullHostName());
 
 	webserver_pid	= 0;
 	
@@ -1032,7 +1033,7 @@ wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 	if ( !IsConnectedED2K() || serverconnect->IsLowID() ) {
 		return wxEmptyString;
 	}
-	uint32 clientID = serverconnect->GetClientID();
+	uint32 clientID = GetED2KID();
 	// Create the first part of the URL
 	// And append the source information: "|sources,<ip>:<port>|/"
 	wxString strURL = CreateED2kLink(f) <<
@@ -1652,11 +1653,16 @@ void CamuleApp::AddLogLine(const wxString &msg)
 }
 
 
-uint32 CamuleApp::GetPublicIP() const
+uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 {
-	if (m_dwPublicIP == 0 && Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
-		return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::getIPAddress());
+	if (m_dwPublicIP == 0) {
+		if (Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
+			return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::getIPAddress());
+		} else {
+			return ignorelocal ? 0 : m_localip;
+		}
 	}
+	
 	return m_dwPublicIP;	
 }
 
@@ -2100,9 +2106,12 @@ void CamuleApp::StopKad()
 
 bool CamuleApp::CryptoAvailable() const
 {
-	return clientcredits && theApp.clientcredits->CryptoAvailable();
+	return clientcredits && clientcredits->CryptoAvailable();
 }
- 
+
+uint32 CamuleApp::GetED2KID() const {
+	return serverconnect ? serverconnect->GetClientID() : 0;
+}
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)

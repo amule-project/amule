@@ -924,13 +924,6 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	// Kry - Random usable pos for srv_split_pos
 	srv_split_pos = config->Read(section+wxT("SRV_SPLITTER_POS"), 463l);
 
-	if (!override_pos) {
-		// If x1 and y1 != 0 Redefine location
-		if((x1 != -1) && (y1 != -1)) {
-			Move(x1, y1);
-		}
-	}
-
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
 			SetSize(x2, y2);
@@ -939,6 +932,13 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 			// Probably first run. Only works for gtk2
 			Maximize();
 #endif
+		}
+	}
+
+	if (!override_pos) {
+		// If x1 and y1 != 0 Redefine location
+		if((x1 != -1) && (y1 != -1)) {
+			Move(x1, y1);
 		}
 	}
 
@@ -1477,4 +1477,3 @@ void CamuleDlg::OnExit(wxCommandEvent& evt)
 {
 	Close();
 }
-

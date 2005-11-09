@@ -170,7 +170,6 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		DestroySocket(sender);
 		return;
 	}	
-	InitLocalIP();
 	
 	if (sender->GetConnectionState() == CS_WAITFORLOGIN) {
 		AddLogLineM(false, CFormat( _("Connected to %s (%s:%i)") )
@@ -479,7 +478,6 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 	// initalize socket for udp packets
 	serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
 	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
-	InitLocalIP();	
 }
 
 
@@ -512,8 +510,6 @@ void CServerConnect::SetClientID(uint32 newid)
 	if (!::IsLowID(newid)) {
 		theApp.SetPublicIP(newid);
 	}
-
-	theApp.ShowConnectionState();
 }
 
 
@@ -568,10 +564,4 @@ void CServerConnect::KeepConnectionAlive()
 		
 		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));
  	}
-}
-
-
-void CServerConnect::InitLocalIP()
-{
-	m_nLocalIP = StringHosttoUint32(::wxGetFullHostName());
 }

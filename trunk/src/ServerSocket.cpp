@@ -367,9 +367,11 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 						}
 					}
 				}
+				
 				// we need to know our client when sending our shared files (done indirectly on SetConnectionState)
-				serverconnect->clientid = new_id;
 
+				serverconnect->SetClientID(new_id);
+				
 				if (connectionstate != CS_CONNECTED) {
 					AddDebugLogLineM(true,logServer,wxT("Connected"));
 					
@@ -377,7 +379,6 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					theApp.OnlineSig();       // Added By Bouc7
 				}
 
-				serverconnect->SetClientID(new_id);
 				theApp.ShowConnectionState();
 
 				AddLogLineM(false, wxString::Format(_("New clientid is %u"),new_id));
