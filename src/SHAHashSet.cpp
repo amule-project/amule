@@ -481,7 +481,7 @@ bool CAICHHashSet::CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fil
 	}
 	bool bResult;
 	uint8 nLevel = 0;
-	uint32 nPartSize = min(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
+	uint32 nPartSize = min<uint32>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
 	m_pHashTree.FindHash(nPartStartPos, nPartSize,&nLevel);
 	uint16 nHashsToWrite = (nLevel-1) + nPartSize/EMBLOCKSIZE + ((nPartSize % EMBLOCKSIZE != 0 )? 1:0);
 	fileDataOut->WriteUInt16(nHashsToWrite);
@@ -516,7 +516,7 @@ bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn)
 	// all hash are then taken into the tree, depending on there hashidentifier (except the masterhash)
 
 	uint8 nLevel = 0;
-	uint32 nPartSize = min(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
+	uint32 nPartSize = min<uint32>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
 	m_pHashTree.FindHash(nPartStartPos, nPartSize,&nLevel);
 	uint16 nHashsToRead = (nLevel-1) + nPartSize/EMBLOCKSIZE + ((nPartSize % EMBLOCKSIZE != 0 )? 1:0);
 	uint16 nHashsAvailable = fileDataIn->ReadUInt16();
@@ -538,7 +538,7 @@ bool CAICHHashSet::ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn)
 	if (VerifyHashTree(true)){
 		// some final check if all hashs we wanted are there
 		for (uint32 nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE){
-			CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min(EMBLOCKSIZE, nPartSize-nPartPos));
+			CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint32>(EMBLOCKSIZE, nPartSize-nPartPos));
 			if (phtToCheck == NULL || !phtToCheck->m_bHashValid){
 				AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT(" - Error while verifying presence of all lowest level hashs"));
 				return false;
@@ -866,9 +866,9 @@ bool CAICHHashSet::IsPartDataAvailable(uint32 nPartStartPos){
 		wxASSERT( false );
 		return false;
 	}
-	uint32 nPartSize = min(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
+	uint32 nPartSize = min<uint32>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
 	for (uint32 nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE){
-		CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min(EMBLOCKSIZE, nPartSize-nPartPos));
+		CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint32>(EMBLOCKSIZE, nPartSize-nPartPos));
 		if (phtToCheck == NULL || !phtToCheck->m_bHashValid){
 			return false;
 		}

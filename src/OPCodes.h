@@ -38,9 +38,7 @@
 // Handlers
 
 enum {
-
 	// socket handlers
-
 	LISTENSOCKET_HANDLER = wxID_HIGHEST+123,  // random safe ID
 	CLIENTTCPSOCKET_HANDLER,
 	SERVERUDPSOCKET_HANDLER,
@@ -50,7 +48,6 @@ enum {
 	EC_SOCKET_HANDLER,
 	
 	// Custom Events
-
 	ID_CORETIMER,
 	ID_GUITIMER,
 
@@ -92,34 +89,31 @@ enum {
 #define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
 #define	CREDITFILE_VERSION			0x12
 
-#define EMBLOCKSIZE				(uint32)184320
-
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
 
 enum EClientSoftware {
-	SO_EMULE		= 0,
-	SO_CDONKEY		= 1,
-	SO_LXMULE		= 2,
-	SO_AMULE		= 3,
-	SO_SHAREAZA		= 4,
+	SO_EMULE			= 0,
+	SO_CDONKEY			= 1,
+	SO_LXMULE			= 2,
+	SO_AMULE			= 3,
+	SO_SHAREAZA			= 4,
 	SO_EMULEPLUS		= 5,
-	SO_HYDRANODE            = 6,
+	SO_HYDRANODE		= 6,
 	SO_NEW2_MLDONKEY	= 0x0a,
-	SO_LPHANT		= 0x14,
-	SO_NEW2_SHAREAZA = 0x28,
+	SO_LPHANT			= 0x14,
+	SO_NEW2_SHAREAZA	= 0x28,
 	SO_EDONKEYHYBRID	= 0x32,
-	SO_EDONKEY		= 0x33,
-	SO_MLDONKEY		= 0x34,
-	SO_OLDEMULE		= 0x35,
-	SO_UNKNOWN		= 0x36,
-	SO_NEW_SHAREAZA		= 0x44, // shazzas love to send 0x44 lately.
+	SO_EDONKEY			= 0x33,
+	SO_MLDONKEY			= 0x34,
+	SO_OLDEMULE			= 0x35,
+	SO_UNKNOWN			= 0x36,
+	SO_NEW_SHAREAZA		= 0x44,
 	SO_NEW_MLDONKEY		= 0x98,
 	SO_COMPAT_UNK		= 0xFF
 };
 
 // MOD Note: Do not change this part - Merkur
-#define	UDPSEARCHSPEED				1000	// if this value is too low you will miss sources
 #define	MAX_RESULTS				100	// max global search results
 #define	MAX_CLIENTCONNECTIONTRY			2
 #define	CONNECTION_TIMEOUT			40000	// set this lower if you want less connections at once, set  it higher if you have enough sockets (edonkey has its own timout too, so a very high value won't effect this)
@@ -184,49 +178,62 @@ enum EClientSoftware {
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 
 // you shouldn't change anything here if you are not really sure, or amule will probaly not work
+
+enum FileConstants { 
+	MAX_FILE_SIZE	= 4290048000u,	// (4294967295/PARTSIZE)*PARTSIZE
+	PARTSIZE		= 9728000u,
+	BLOCKSIZE		= 184320u,
+	EMBLOCKSIZE		= 184320u
+};
+
 #define	MAXFRAGSIZE				1300
-#define	PARTSIZE				(uint32)9728000
-const int BLOCKSIZE =				184320;
-#define	OP_EDONKEYHEADER			0xE3
-#define	OP_EDONKEYPROT				OP_EDONKEYHEADER
-#define	OP_PACKEDPROT				0xD4
-#define	OP_EMULEPROT				0xC5
-#define	OP_KADEMLIAHEADER		0xE4
-#define	OP_KADEMLIAPACKEDPROT	0xE5
-#define	OP_MLDONKEYPROT				0x00
 #define	MET_HEADER				0x0E
 	
-const unsigned int UNLIMITED =	 		0;
+const unsigned UNLIMITED = 0;
 
-// client <-> server
-#define	OP_LOGINREQUEST				0x01	//<HASH 16><ID 4><PORT 2><1 Tag_set>
-#define	OP_REJECT				0x05	//(null)
-#define	OP_GETSERVERLIST			0x14	//(null)client->server
-#define	OP_OFFERFILES				0x15	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
-#define	OP_SEARCHREQUEST			0x16	// <Query_Tree>
-#define	OP_DISCONNECT				0x18	// (not verified)
-#define	OP_GETSOURCES				0x19	// <HASH 16> /v2 <HASH 16><SIZE_4> (17.3)
-#define	OP_SEARCH_USER				0x1A	// <Query_Tree>
-#define	OP_CALLBACKREQUEST			0x1C	// <ID 4>
-#define	OP_QUERY_CHATS				0x1D	// (deprecated not supported by server any longer)
-#define	OP_CHAT_MESSAGE 		       	0x1E    // (deprecated not supported by server any longer)
-#define	OP_JOIN_ROOM    		        0x1F    // (deprecated not supported by server any longer)
-#define	OP_QUERY_MORE_RESULT    		0x21    // (null)
-#define	OP_SERVERLIST				0x32	// <count 1>(<IP 4><PORT 2>)[count] server->client
-#define	OP_SEARCHRESULT				0x33	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
-#define	OP_SERVERSTATUS				0x34	// <USER 4><FILES 4>
-#define	OP_CALLBACKREQUESTED			0x35	// <IP 4><PORT 2>
-#define	OP_CALLBACK_FAIL			0x36	// (null notverified)
-#define	OP_SERVERMESSAGE			0x38	// <len 2><Message len>
-#define	OP_CHAT_ROOM_REQUEST    		0x39    // (deprecated not supported by server any longer)
-#define	OP_CHAT_BROADCAST       		0x3A    // (deprecated not supported by server any longer)
-#define	OP_CHAT_USER_JOIN       		0x3B    // (deprecated not supported by server any longer)
-#define	OP_CHAT_USER_LEAVE      		0x3C    // (deprecated not supported by server any longer)
-#define	OP_CHAT_USER            		0x3D    // (deprecated not supported by server any longer)
-#define	OP_IDCHANGE				0x40	// <NEW_ID 4>
-#define	OP_SERVERIDENT				0x41	// <HASH 16><IP 4><PORT 2>{1 TAG_SET}
-#define	OP_FOUNDSOURCES				0x42	// <HASH 16><count 1>(<ID 4><PORT 2>)[count]
-#define	OP_USERS_LIST           		0x43    // <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+// Known protocols
+enum Protocols {
+	OP_EDONKEYHEADER		= 0xE3,
+	OP_EDONKEYPROT			= OP_EDONKEYHEADER,
+	OP_PACKEDPROT			= 0xD4,
+	OP_EMULEPROT			= 0xC5,
+	OP_KADEMLIAHEADER		= 0xE4,
+	OP_KADEMLIAPACKEDPROT	= 0xE5,
+	OP_MLDONKEYPROT			= 0x00
+};
+
+
+// OP-codes used with TCP server connctions.
+enum OP_ClientToServer {
+	OP_LOGINREQUEST				= 0x01,	// <HASH 16><ID 4><PORT 2><1 Tag_set>
+	OP_REJECT					= 0x05,	// (null)
+	OP_GETSERVERLIST			= 0x14,	// (null)client->server
+	OP_OFFERFILES				= 0x15,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+	OP_SEARCHREQUEST			= 0x16,	// <Query_Tree>
+	OP_DISCONNECT				= 0x18,	// (not verified)
+	OP_GETSOURCES				= 0x19,	// <HASH 16> /v2 <HASH 16><SIZE_4> (17.3)
+	OP_SEARCH_USER				= 0x1A,	// <Query_Tree>
+	OP_CALLBACKREQUEST			= 0x1C,	// <ID 4>
+//	OP_QUERY_CHATS				= 0x1D,	// (deprecated not supported by server any longer)
+//	OP_CHAT_MESSAGE				= 0x1E,	// (deprecated not supported by server any longer)
+//	OP_JOIN_ROOM				= 0x1F,	// (deprecated not supported by server any longer)
+	OP_QUERY_MORE_RESULT		= 0x21,	// (null)
+	OP_SERVERLIST				= 0x32,	// <count 1>(<IP 4><PORT 2>)[count] server->client
+	OP_SEARCHRESULT				= 0x33,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+	OP_SERVERSTATUS				= 0x34,	// <USER 4><FILES 4>
+	OP_CALLBACKREQUESTED		= 0x35,	// <IP 4><PORT 2>
+	OP_CALLBACK_FAIL			= 0x36,	// (null notverified)
+	OP_SERVERMESSAGE			= 0x38,	// <len 2><Message len>
+//	OP_CHAT_ROOM_REQUEST		= 0x39,	// (deprecated not supported by server any longer)
+//	OP_CHAT_BROADCAST			= 0x3A,	// (deprecated not supported by server any longer)
+//	OP_CHAT_USER_JOIN			= 0x3B,	// (deprecated not supported by server any longer)
+//	OP_CHAT_USER_LEAVE			= 0x3C,	// (deprecated not supported by server any longer)
+//	OP_CHAT_USER				= 0x3D,	// (deprecated not supported by server any longer)
+	OP_IDCHANGE					= 0x40,	// <NEW_ID 4>
+	OP_SERVERIDENT				= 0x41,	// <HASH 16><IP 4><PORT 2>{1 TAG_SET}
+	OP_FOUNDSOURCES				= 0x42,	// <HASH 16><count 1>(<ID 4><PORT 2>)[count]
+	OP_USERS_LIST				= 0x43	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+};
 
 //client <-> UDP server
 #define	OP_GLOBGETSOURCES2		0x94	// <HASH 16><SIZE_4>*
@@ -613,52 +620,31 @@ enum {
 	MP_LISTCOL_12,
 	MP_LISTCOL_13,
 	MP_LISTCOL_14,
-	MP_LISTCOL_15
+	MP_LISTCOL_15,
+
+
+	MP_ASSIGNCAT = 10800, // reserve some for categories!
+	MP_CAT_SET0 = 10900, // reserve some for change all-cats (about 20)
+	MP_SWITCHCTRL_0 = 10950,
+	MP_SWITCHCTRL_9	= 10959,
 };
 
-// This ones can't be enum!
-
-#define	MP_ASSIGNCAT				10800 // reserve some for categories!
-#define	MP_CAT_SET0				10900 // reserve some for change all-cats (about 20)
-#define	MP_SWITCHCTRL_0			10950
-#define	MP_SWITCHCTRL_9			10959
 	
-// aMule tagnames
-#define 	ET_COMPRESSION			0x20
-#define	ET_UDPPORT				0x21
-#define	ET_UDPVER				0x22
-#define	ET_SOURCEEXCHANGE			0x23
-#define	ET_COMMENTS				0x24
-#define	ET_EXTENDEDREQUEST			0x25
-#define	ET_COMPATIBLECLIENT			0x26
-#define	ET_BAD_COMPATABLECLIENT			0x30
-#define	ET_FEATURES				0x27	// bit 0: SecIdent v1 - bit 1: SecIdent v2
-#define	ET_MOD_VERSION				0x55
+// *Mule tagnames
+enum MuleTags {
+	ET_COMPRESSION					= 0x20u,
+	ET_UDPPORT						= 0x21u,
+	ET_UDPVER						= 0x22u,
+	ET_SOURCEEXCHANGE				= 0x23u,
+	ET_COMMENTS						= 0x24u,
+	ET_EXTENDEDREQUEST				= 0x25u,
+	ET_COMPATIBLECLIENT				= 0x26u,
+	ET_FEATURES						= 0x27u,		//! bit 0: SecIdent v1 - bit 1: SecIdent v2
+	ET_MOD_VERSION					= 0x55u,
+	ET_FEATURESET					= 0x54u,	// int - [Bloodymad Featureset]
+	ET_OS_INFO						= 0x94u		// Reused rand tag (MOD_OXY), because the type is unknown
+};
 
-// tags by various mods	
-#define	ET_TAROD				0x77	// int - flag - Tarod mod
-#define	ET_TAROD_VERSION			0x78	// Tarod mod version number
-#define	ET_L2HAC				0x3E	// does send FILEREASKTIME
-							// seems to synchronize connecting between low and high ID users
-
-#define	ET_MOD_LSD				0x87	// int - flag
-#define	ET_MOD_LSD_VERSION			0x88	// int
-#define	ET_MOD_SECURE_COMMUNITY			0x5C	// string
-#define	ET_MOD_PROTOCOL				0x56	// string
-#define	ET_MOD_Morph				0x79	// int
-#define	ET_MOD_Morph_VERSION			0x80	// int
-#define	ET_MOD_FUSION				0x66	// int
-#define	ET_MOD_FUSION_VERSION			0x67	// string
-#define	ET_MOD_MorTillo				0x82	// int
-#define	ET_MOD_MorTillo_VERSION			0x83	// string
-#define	ET_MOD_LOVELACE_VERSION			0x90	// string
-#define	ET_MOD_OXY				0x94	// unspecified type
-#define	ET_PLUS					0x99	// int - eMule Plus version
-#define	ET_FEATURESET				0x54	// int - [Bloodymad Featureset]
-
-// Reuse a random tag for aMule OS_INFO
-
-#define	ET_OS_INFO				ET_MOD_OXY // We use MOD_OXY because the type is unknown
 
 // KADEMLIA (opcodes) (udp)
 #define KADEMLIA_BOOTSTRAP_REQ	0x00	// <PEER (sender) [25]>
