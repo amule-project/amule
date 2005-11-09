@@ -35,6 +35,8 @@ Version 2.1.x - The "???" version
 		* Fixed some compile warnings in WebServer.cpp.
 		* Fixed a crash in SharedFilesWnd.cpp due to aMule beeing now
 		  multithreaded.
+		* Changed wait4 to waitpid in amule.cpp, to improove
+		  compatibility with old HP-UX systems.
 
 	schtroumpf:
 		* File rating in search dialog.
