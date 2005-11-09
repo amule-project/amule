@@ -392,8 +392,9 @@ public:
 
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 
-	bool IsConnectedED2K();
-	bool IsConnectedKad();
+	bool IsConnected() const { return IsConnectedED2K() || IsConnectedKad(); }
+	bool IsConnectedED2K() const;
+	bool IsConnectedKad() const { return m_KadConnected; };
 
 	void StartKad();
 	void StopKad();
@@ -402,8 +403,10 @@ public:
 	
 	uint32 GetED2KID() const;
 	
+	bool m_KadConnected;
+	
 	DECLARE_EVENT_TABLE()
-
+	
 protected:
 	wxLocale	m_locale;
 };

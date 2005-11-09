@@ -385,11 +385,11 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			if(!theApp.serverconnect) {
 				data = mule_Tr_grey_ico;
 			} else {
-				if (theApp.IsConnectedED2K()) {
-				if(!theApp.serverconnect->IsLowID()) {
-						data = mule_TrayIcon_ico;
-					} else {
+				if (theApp.IsConnected()) {
+					if(theApp.serverconnect->IsLowID()) {
 						data = mule_Tr_yellow_ico;
+					} else {
+						data = mule_TrayIcon_ico;						
 					}
 				} else {
 					data = mule_Tr_grey_ico;
@@ -418,19 +418,14 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 		
 		void CamuleDlg::UpdateTrayIcon(int percent)
 		{
-			
 			// set trayicon-icon
-			if(!theApp.serverconnect) {
+			if(!theApp.IsConnected()) {
 				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 			} else {
-				if (theApp.IsConnectedED2K()) {
-					if(!theApp.serverconnect->IsLowID()) {
-						m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);
-					} else {
+				if(!theApp.serverconnect->IsLowID()) {
 					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
-					}
 				} else {
-					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
 				}
 			}
 		}
@@ -764,9 +759,11 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		
 		if ((NewED2KState != sDisconnected) || (NewKadState != sOff)) {
 			if (NewED2KState == sConnecting) {
-				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
-					_("Stops the current connection attempts"));
+				if (LastED2KState != sConnecting) {
+					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+						connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+						_("Stops the current connection attempts"));
+				}
 			} else {
 				/* ED2K connected or Kad connected */
 				wxString popup = _("Disconnect from ");
