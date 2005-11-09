@@ -3571,7 +3571,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	// now compare the hash we just did, to the verified hash and readd all blocks which are ok
 	uint32 nRecovered = 0;
 	for (uint32 pos = 0; pos < length; pos += EMBLOCKSIZE){
-		const uint32 nBlockSize = min(EMBLOCKSIZE, length - pos);
+		const uint32 nBlockSize = min<uint32>(EMBLOCKSIZE, length - pos);
 		CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
 		CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
 		if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid){
