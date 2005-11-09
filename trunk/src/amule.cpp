@@ -226,7 +226,6 @@ CamuleApp::CamuleApp()
 	glob_prefs	= NULL;
 	
 	m_dwPublicIP	=  0;
-	m_localip = StringHosttoUint32(::wxGetFullHostName());
 
 	webserver_pid	= 0;
 	
@@ -372,6 +371,8 @@ char *CamuleApp::strOSDescription = new char[wxGetOsDescription().Length()+1];
 
 bool CamuleApp::OnInit()
 {
+	m_localip = StringHosttoUint32(::wxGetFullHostName());
+
 #if wxUSE_MEMORY_TRACING
 	printf("Checkpoint set on app init for memory debug\n");
 	wxDebugContext::SetCheckpoint();
