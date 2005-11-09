@@ -35,7 +35,7 @@
 #include <set>
 
 class CUpDownClient;
-class CClientReqSocket;
+class CClientTCPSocket;
 class CDeletedClient;
 class CMD4Hash;
 namespace Kademlia {
@@ -158,7 +158,7 @@ public:
 	 * the new one. If that is the case, it will delete the new instance and set the pointer to
 	 * the existing one.
 	 */
-	bool	AttachToAlreadyKnown( CUpDownClient** client, CClientReqSocket* sender );
+	bool	AttachToAlreadyKnown( CUpDownClient** client, CClientTCPSocket* sender );
 
 
 	/**

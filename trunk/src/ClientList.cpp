@@ -25,7 +25,7 @@
 
 #include "amule.h"		// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
-#include "ListenSocket.h"	// Needed for CClientReqSocket
+#include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFIlter
@@ -353,7 +353,7 @@ void CClientList::DeleteAll()
 }
 
 
-bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientReqSocket* sender)
+bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientTCPSocket* sender)
 {
 	CUpDownClient* tocheck = (*client);
 	

@@ -31,90 +31,11 @@
 #define LISTENSOCKET_H
 
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "EMSocket.h"		// Needed for CEMSocket
-#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
-#include "amuleIPV4Address.h"
-#include "Proxy.h"
-
-#include <wx/dynarray.h>
+#include "Proxy.h"		// Needed fot CProxyData, CSocketServerProxy
 
 #include <set> 
-#include <list>
 
-//------------------------------------------------------------------------------
-// CClientReqSocketHandler
-//------------------------------------------------------------------------------
-
-class CClientReqSocket;
-
-class CClientReqSocketHandler: public wxEvtHandler
-{
-public:
-	CClientReqSocketHandler(CClientReqSocket* socket = NULL);
-
-private:
-	void ClientReqSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE()
-};
-
-//------------------------------------------------------------------------------
-// CClientReqSocket
-//------------------------------------------------------------------------------
-
-WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
-
-class CUpDownClient;
-class CPacket;
-class CTimerWnd;
-
-
-class CClientReqSocket : public CEMSocket
-{
-	DECLARE_DYNAMIC_CLASS(CClientReqSocket)
-	friend class CClientReqSocketHandler;
-public:
-	CClientReqSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
-	virtual ~CClientReqSocket();
-	
-	void		Disconnect(const wxString& strReason);
-
-	void		ResetTimeOutTimer();
-	bool		CheckTimeOut();
-
-	void		Safe_Delete();
-
-	bool		deletethis; // 0.30c (Creteil), set as bool
-
-	void		OnConnect(int nErrorCode);
-	void		OnSend(int nErrorCode);
-	void		OnReceive(int nErrorCode);
-	
-	void		OnClose(int nErrorCode);
-	void		OnError(int nErrorCode);
-	
-	uint32		timeout_timer;
-
-	void		SetClient(CUpDownClient* client);
-	CUpDownClient* GetClient() { return m_client; }
-	
-	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
-    virtual SocketSentBytes SendControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-    virtual SocketSentBytes SendFileAndControlData(uint32 maxNumberOfBytesToSend, uint32 overchargeMaxBytesToSend);
-
-protected:
-	virtual bool PacketReceived(CPacket* packet);
-
-private:
-	CUpDownClient*	m_client;
-
-//	void	Delete_Timed();
-	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
-	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
-	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
-
-	CClientReqSocketHandler* my_handler;
-};
-
+class CClientTCPSocket;
 
 // CListenSocket command target
 class CListenSocket : public CSocketServerProxy
@@ -126,12 +47,12 @@ public:
 	void	StopListening();
 	void	OnAccept(int nErrorCode);
 	void	Process();
-	void	RemoveSocket(CClientReqSocket* todel);
-	void	AddSocket(CClientReqSocket* toadd);
+	void	RemoveSocket(CClientTCPSocket* todel);
+	void	AddSocket(CClientTCPSocket* toadd);
 	uint32	GetOpenSockets()		{return socket_list.size();}
 	void	KillAllSockets();
 	bool	TooManySockets(bool bIgnoreInterval = false);
-	bool    IsValidSocket(CClientReqSocket* totest);
+	bool    IsValidSocket(CClientTCPSocket* totest);
 	void	AddConnection();
 	void	RecalculateStats();
 	void	ReStartListening();
@@ -145,7 +66,7 @@ public:
 	
 private:
 	
-	typedef std::set<CClientReqSocket *> SocketSet;
+	typedef std::set<CClientTCPSocket *> SocketSet;
 	SocketSet socket_list;
 	
 	bool bListening;

@@ -54,7 +54,7 @@ there client on the eMule forum..
 #include "../../Statistics.h"
 #include "../../MemFile.h"
 #include "../../updownclient.h"
-#include "../../ListenSocket.h"
+#include "../../ClientTCPSocket.h"
 #include "../../Logger.h"
 #include "../../Format.h"
 #include "../../Preferences.h"

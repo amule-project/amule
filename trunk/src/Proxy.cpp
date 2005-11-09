@@ -242,13 +242,13 @@ void CProxyStateMachine::AddDummyEvent()
  * the event handler from the socket. They should be removed. For now,
  * please leave it here.
  */
-#include "ListenSocket.h"	// For CClientReqSocketHandler
+#include "ListenSocket.h"	// For CClientTCPSocketHandler
 #include "ServerSocket.h"	// For CServerSocketHandler
 
 void CProxyStateMachine::ReactivateSocket()
 {
 	/*    If proxy is beeing used, then the TCP socket handlers 
-	 * (CServerSocketHandler and CClientReqSocketHandler) will not
+	 * (CServerSocketHandler and CClientTCPSocketHandler) will not
 	 * receive a wxSOCKET_CONNECTION event, because the connection has
 	 * already started with the proxy. So we must add a wxSOCKET_CONNECTION
 	 * event to make things go undetected. A wxSOCKET_OUTPUT event is also

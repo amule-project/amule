@@ -55,13 +55,26 @@
 // CServerSocketHandler
 //------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
+// CServerSocketHandler
+//------------------------------------------------------------------------------
+
+
+class CServerSocketHandler: public wxEvtHandler
+{
+public:
+	CServerSocketHandler() {};
+
+public:
+private:
+	void ServerSocketHandler(wxSocketEvent& event);
+	DECLARE_EVENT_TABLE()
+};
+
+
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
 	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
-
-CServerSocketHandler::CServerSocketHandler(CServerSocket *)
-{
-}
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
 {
@@ -118,8 +131,8 @@ CEMSocket(ProxyData)
 	info.Clear();
 	m_bIsDeleting = false;
 
-	my_handler = &g_serverSocketHandler;
-	SetEventHandler(*my_handler, SERVERSOCKET_HANDLER);
+	SetEventHandler(g_serverSocketHandler, SERVERSOCKET_HANDLER);
+	
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |

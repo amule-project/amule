@@ -38,7 +38,7 @@
 #include "Statistics.h"			// Needed for theStats
 #include "amule.h"				// Needed for theApp
 #include "ClientList.h"			// Needed for clientlist (buddy support)
-#include "ListenSocket.h"		// Needed for CClientReqSocket
+#include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "OtherFunctions.h"
 #include "MemFile.h"			// Needed for CMemFile
 #include "Logger.h"
@@ -249,4 +249,3 @@ void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 			theStats::AddDownOverheadOther(size);				
 	}
 }
-

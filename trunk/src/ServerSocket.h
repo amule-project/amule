@@ -35,22 +35,6 @@
 #include "ServerConnect.h"
 
 //------------------------------------------------------------------------------
-// CServerSocketHandler
-//------------------------------------------------------------------------------
-
-
-class CServerSocketHandler: public wxEvtHandler
-{
-public:
-	CServerSocketHandler(CServerSocket *socket = NULL);
-
-public:
-private:
-	void ServerSocketHandler(wxSocketEvent& event);
-	DECLARE_EVENT_TABLE()
-};
-
-//------------------------------------------------------------------------------
 // CServerSocket
 //------------------------------------------------------------------------------
 
@@ -96,8 +80,6 @@ private:
 
 	bool m_IsSolving;
 
-    CServerSocketHandler* my_handler;
-	
 };
 
 #endif // SERVERSOCKET_H
