@@ -96,9 +96,9 @@ inline uint64 GetTickCount64()
 	inline uint32 GetTickCount(void) {
 		struct timeval aika;
 		gettimeofday(&aika,NULL);
-		unsigned long secs = aika.tv_sec * 1000;
-		secs += (aika.tv_usec / 1000);
-		return secs;
+		unsigned long msecs = aika.tv_sec * 1000;
+		msecs += (aika.tv_usec / 1000);
+		return msecs;
 	}
 
 	// avoids 32bit rollover error for differences above 50days
