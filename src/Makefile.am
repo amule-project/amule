@@ -154,9 +154,9 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	kademlia/kademlia/Kademlia.cpp \	
+	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Search.cpp \
-	kademlia/kademlia/Indexed.cpp \	
+	kademlia/kademlia/Indexed.cpp \
 	kademlia/net/KademliaUDPListener.cpp \
 	kademlia/kademlia/Prefs.cpp \
 	kademlia/routing/RoutingZone.cpp \
