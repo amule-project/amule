@@ -219,7 +219,10 @@ border-color: black;
   </font>
  </td>
  <td align=right class=tabs>
-  <form action="login.html"><input type="button" value="Logout" onClick='self.location.href="login.html"'></form>
+  <form>
+  <input type="button" value="ed2k://Download" onClick='self.location.href="index.php?links=1"'>
+  <input type="button" value="Logout" onClick='self.location.href="login.html"'>
+  </form>
  </td>
 </tr>
 </table><font face=Tahoma style="font-size:8pt;">

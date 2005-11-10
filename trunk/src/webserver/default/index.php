@@ -214,9 +214,66 @@ border-color: black;
 </script>
   </font>
  </td>
- <td align=right class=tabs>
-  <form action="login.html"><input type="button" value="Logout" onClick='self.location.href="login.html"'></form>
+ <td align=left class=tabs>
+  <form>
+  <input type="button" value="ed2k://Download" onClick='self.location.href="index.php?links=1"'>
+  <input type="button" value="Logout" onClick='self.location.href="login.html"'>
+  </form>
  </td>
 </tr>
-</table></body>
+</table>
+
+&nbsp;
+
+<?php
+	function cat2idx($cat)
+	{
+            	$cats = amule_get_categories();
+            	$result = 0;
+            	foreach($cats as $i => $c) {
+            		if ( $cat == $c) $result = $i;
+            	}
+        		return $result;
+	}
+	
+	if (($HTTP_GET_VARS['cmd'] == 'download' ) && ($_SESSION["guest_login"] == 0)) {
+		$link = $HTTP_GET_VARS['ed2klink'];
+		$target_cat_idx = cat2idx($HTTP_GET_VARS['cat']);
+    	if ( strlen($link) > 0 ) {
+    		amule_do_ed2k_download_cmd($link, $target_cat_idx);
+    	}
+	}
+	
+	if ( $HTTP_GET_VARS['links'] == 1) {
+		echo '
+	<table align=center border=0 cellpadding=4 cellspacing=0 width="80%">
+	<tr>
+	<td align=center class="shared-header">
+	<p><font face=Tahoma style="font-size:10pt;"><b>Download Selected</b></font></p>
+	</td>
+	</tr>
+	<tr>
+	 <td align=center valign=top class=tabs>
+	  <form action="/" method="GET">
+	   <input type="hidden" name="cmd" value="download">
+	   <font face=Tahoma style="font-size:10pt;">&nbsp;<br>ED2K Link(s)<br><br>
+	   <textarea name="ed2klink" cols="94" rows="7" class=dinput></textarea>
+	   <br><br>
+	   <input type=submit value="Start"></font><img src="arrow_right.gif" align="absmiddle">
+	   <select name="cat" size="1">';
+
+    	$cats = amule_get_categories();
+    	foreach($cats as $c) {
+    		echo "<option>", $c, "</option>";
+    	}
+	   	
+	   	echo '
+	   </select>
+	  </form><br>
+	 </td>
+	</tr>
+	</table>';
+	}
+?>
+</body>
 </html>
