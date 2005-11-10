@@ -202,10 +202,13 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 
 void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt)) {
 	amuledlg->Destroy();
+	StopTickTimer();
 }
 
 bool CamuleRemoteGuiApp::OnInit()
 {
+	StartTickTimer();
+	
 	amuledlg = NULL;
 	
 	if ( !wxApp::OnInit() ) {
@@ -1099,7 +1102,7 @@ uint64 CUpDownClient::GetUploadedTotal() const
 }
 	
 float CUpDownClient::GetScoreRatio() const {
-	return credits ? credits->GetScoreRatio(GetIP()) : 0;
+	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
 }
 /* End Warning */
 

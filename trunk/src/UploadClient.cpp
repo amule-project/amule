@@ -601,7 +601,7 @@ uint32 CUpDownClient::SendBlockData()
 //		thePrefs.Add2SessionTransferData(GetClientSoft(), uUpStatsPort, true, true, sentBytesPartFile, (IsFriend() && GetFriendSlot()));
 
 		m_nTransferredUp += sentBytesCompleteFile + sentBytesPartFile;
-        credits->AddUploaded(sentBytesCompleteFile + sentBytesPartFile, GetIP());
+        credits->AddUploaded(sentBytesCompleteFile + sentBytesPartFile, GetIP(), theApp.CryptoAvailable());
 
         sentBytesPayload = s->GetSentPayloadSinceLastCallAndReset();
         m_nCurQueueSessionPayloadUp += sentBytesPayload;

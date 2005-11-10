@@ -71,11 +71,11 @@ public:
 	uint8	GetSecIDKeyLen() const 			{return m_nPublicKeyLen;}
 	const CreditStruct* GetDataStruct() const	{return m_pCredits;}
 	void	ClearWaitStartTime();
-	void	AddDownloaded(uint32 bytes, uint32 dwForIP);
-	void	AddUploaded(uint32 bytes, uint32 dwForIP);
+	void	AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavail);
+	void	AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail);
 	uint64	GetUploadedTotal() const;
 	uint64	GetDownloadedTotal() const;
-	float	GetScoreRatio(uint32 dwForIP);
+	float	GetScoreRatio(uint32 dwForIP, bool cryptoavail);
 	void	SetLastSeen();
 	bool	SetSecureIdent(const byte* pachIdent, uint8 nIdentLen); // Public key cannot change, use only if there is not public key yet
 	uint32	m_dwCryptRndChallengeFor;

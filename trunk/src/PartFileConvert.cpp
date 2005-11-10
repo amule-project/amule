@@ -23,6 +23,26 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
+#include "PartFileConvert.h"
+
+#ifdef CLIENT_GUI
+
+// This allows us to compile muuli_wdr
+
+CConvertListCtrl::CConvertListCtrl(
+			 wxWindow* WXUNUSED(parent),
+			 wxWindowID WXUNUSED(winid),
+			 const wxPoint& WXUNUSED(pos),
+			 const wxSize& WXUNUSED(size),
+			 long WXUNUSED(style),
+			 const wxValidator& WXUNUSED(validator),
+			 const wxString& WXUNUSED(name))
+			 {};
+				 
+#else 
+
+// Normal compilation
+
 #include "amule.h"
 #include "CFile.h"
 #include "DownloadQueue.h"
@@ -30,13 +50,11 @@
 #include "Logger.h"
 #include "OtherFunctions.h"
 #include "PartFile.h"
-#include "PartFileConvert.h"
 #include "Preferences.h"
 #include "SafeFile.h"
 #include "SharedFileList.h"
 #include "FileFunctions.h"
 
-#ifndef AMULE_DAEMON
 #include "PlatformSpecific.h"
 #include "muuli_wdr.h"
 #include <wx/dirdlg.h>
@@ -45,7 +63,6 @@
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
-#endif /* ! AMULE_DAEMON */
 
 #include <wx/file.h>
 #include <wx/filefn.h>
@@ -86,10 +103,7 @@ std::list<ConvertJob*>	CPartFileConvert::s_jobs;
 ConvertJob*		CPartFileConvert::s_pfconverting = NULL;
 wxMutex			CPartFileConvert::s_mutex;
 
-#ifndef AMULE_DAEMON
 CPartFileConvertDlg*	CPartFileConvert::s_convertgui = NULL;
-#endif
-
 
 int CPartFileConvert::ScanFolderToAdd(wxString folder, bool deletesource)
 {
@@ -137,11 +151,9 @@ void CPartFileConvert::ConvertToeMule(wxString folder, bool deletesource)
 
 	s_jobs.push_back(newjob);
 
-#ifndef AMULE_DAEMON
 	if (s_convertgui) {
 		s_convertgui->AddJob(newjob);
 	}
-#endif
 
 	StartThread();
 }
@@ -211,9 +223,9 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				wxMutexLocker lock(s_mutex);
 				s_pfconverting->state = CONV_INPROGRESS;
 			}
-#ifndef AMULE_DAEMON
+
 			UpdateGUI(s_pfconverting);
-#endif
+
 			int convertResult = performConvertToeMule(s_pfconverting->folder);
 			{
 				wxMutexLocker lock(s_mutex);
@@ -233,34 +245,31 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				break;
 			}
 
-#ifndef AMULE_DAEMON
+
 			UpdateGUI(s_pfconverting);
 			wxMutexGuiEnter();
-#endif
+
 			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetReturncodeText(s_pfconverting->state));
-#ifndef AMULE_DAEMON
+
 			wxMutexGuiLeave();
-#endif
+
 		} else {
 			break; // nothing more to do now
 		}
 	}
 
-#ifndef AMULE_DAEMON
 	// clean up
 	UpdateGUI(NULL);
-#endif
 
 	if (imported) {
 		theApp.sharedfiles->PublishNextTurn();
 	}
-#ifndef AMULE_DAEMON
+
 	wxMutexGuiEnter();
-#endif
+
 	AddDebugLogLineM(false, logPfConvert, wxT("No more jobs on queue, exiting from thread."));
-#ifndef AMULE_DAEMON
+
 	wxMutexGuiLeave();
-#endif
 
 	s_convertPfThread = NULL;
 
@@ -277,17 +286,13 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	partfile = partfile.AfterLast(wxFileName::GetPathSeparator());
 	CDirIterator finder(folder);
 
-#ifndef AMULE_DAEMON
 	UpdateGUI(0, _("Reading temp folder"), true);
-#endif
 
 	filepartindex = partfile.BeforeFirst(wxT('.'));
 	//int pos=filepartindex.ReverseFind('\\');
 	//if (pos>-1) filepartindex=filepartindex.Mid(pos+1,filepartindex.GetLength()-pos);
 
-#ifndef AMULE_DAEMON
 	UpdateGUI(4, _("Retrieving basic information from download info file"));
-#endif
 
 	CPartFile* file = new CPartFile();
 	s_pfconverting->partmettype = file->LoadPartFile(folder, partfile, false, true);
@@ -307,9 +312,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 		s_pfconverting->filename = file->GetFileName();
 		s_pfconverting->filehash = file->GetFileHash().Encode();
 	}
-#ifndef AMULE_DAEMON
+
 	UpdateGUI(s_pfconverting);
-#endif
 
 	if (theApp.downloadqueue->GetFileByID(file->GetFileHash())) {
 		delete file;
@@ -353,9 +357,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				}
 			}
 
-#ifndef AMULE_DAEMON
 			UpdateGUI(s_pfconverting);
-#endif
 
 			wxLongLong freespace;
 			if (wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &freespace)) {
@@ -370,9 +372,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			file->CreatePartFile();
 			newfilename = file->GetFullName();
 
-#ifndef AMULE_DAEMON
 			UpdateGUI(8, _("Creating destination file"));
-#endif
+
 			file->m_hpartfile.SetLength( s_pfconverting->spaceneeded );
 
 			unsigned curindex = 0;
@@ -381,9 +382,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				// stats
 				++curindex;
 				buffer = wxString::Format(_("Loading data from old download file (%u of %u)"), curindex, partfilecount);
-#ifndef AMULE_DAEMON
+
 				UpdateGUI(10 + (curindex * stepperpart), buffer);
-#endif
 
 				long l;
 				filename.AfterLast(wxFileName::GetPathSeparator()).AfterFirst(wxT('.')).BeforeLast(wxT('.')).ToLong(&l);
@@ -402,9 +402,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				inputfile.Close();
 
 				buffer = wxString::Format(_("Saving data block into new single download file (%u of %u)"), curindex, partfilecount);
-#ifndef AMULE_DAEMON
+
 				UpdateGUI(10 + (curindex * stepperpart), buffer);
-#endif
 
 				// write the buffered data
 				file->m_hpartfile.Seek(chunkstart, wxFromStart);
@@ -432,9 +431,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			s_pfconverting->spaceneeded = f.Length();
 		}
 
-#ifndef AMULE_DAEMON
 		UpdateGUI(s_pfconverting);
-#endif
 
 		wxLongLong freespace;
 		if (!wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &freespace)) {
@@ -452,9 +449,9 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 		file->m_hpartfile.Close();
 
 		bool ret = false;
-#ifndef AMULE_DAEMON
+
 		UpdateGUI(92, _("Copy"));
-#endif
+
 		wxRemoveFile(newfilename.Left(newfilename.Length()-4));
 
 		if (!wxFileName::FileExists(oldfile)) {
@@ -474,9 +471,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	}
 
-#ifndef AMULE_DAEMON
 	UpdateGUI(94, _("Retrieving source downloadfile information"));
-#endif
 
 	wxRemoveFile(newfilename);
 	if (s_pfconverting->removeSource) {
@@ -504,9 +499,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 		file->m_iLostDueToCorruption = 0;
 	}
 
-#ifndef AMULE_DAEMON
 	UpdateGUI(100, _("Adding download and saving new partfile"));
-#endif
 
 	theApp.downloadqueue->AddDownload(file, thePrefs::AddNewFilesPaused(), 0);
 	file->SavePartFile();
@@ -534,7 +527,6 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	return CONV_OK;
 }
 
-#ifndef AMULE_DAEMON
 void CPartFileConvert::UpdateGUI(float percent, wxString text, bool fullinfo)
 {
 	if (!IsMain()) {
@@ -606,17 +598,14 @@ void CPartFileConvert::CloseGUI()
 		s_convertgui = NULL;
 	}
 }
-#endif /* ! AMULE_DAEMON */
 
 void CPartFileConvert::RemoveAllJobs()
 {
 	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
-#ifndef AMULE_DAEMON
 		if (s_convertgui) {
 			s_convertgui->RemoveJob(*it);
 		}
-#endif
 		delete *it;
 	}
 	s_jobs.clear();
@@ -627,11 +616,9 @@ void CPartFileConvert::RemoveJob(ConvertJob* job)
 	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 		if (*it == job) {
-#ifndef AMULE_DAEMON
 			if (s_convertgui) {
 				s_convertgui->RemoveJob(job);
 			}
-#endif
 			s_jobs.erase(it);
 			delete *it;
 		}
@@ -643,11 +630,9 @@ void CPartFileConvert::RemoveAllSuccJobs()
 	wxMutexLocker lock(s_mutex);
 	for (std::list<ConvertJob*>::iterator it = s_jobs.begin(); it != s_jobs.end(); ++it) {
 		if ((*it)->state == CONV_OK) {
-#ifndef AMULE_DAEMON
 			if (s_convertgui) {
 				s_convertgui->RemoveJob(*it);
 			}
-#endif
 			s_jobs.erase(it);
 			delete *it;
 		}
@@ -670,8 +655,6 @@ wxString CPartFileConvert::GetReturncodeText(int ret)
 	}
 }
 
-
-#ifndef AMULE_DAEMON
 
 CConvertListCtrl::CConvertListCtrl(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 	: wxListCtrl(parent, winid, pos, size, style, validator, name)
@@ -845,4 +828,4 @@ void CPartFileConvertDlg::RetrySel(wxCommandEvent& WXUNUSED(event))
 	CPartFileConvert::StartThread();
 }
 
-#endif /* ! AMULE_DAEMON */
+#endif

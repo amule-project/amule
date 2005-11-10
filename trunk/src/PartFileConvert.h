@@ -26,18 +26,15 @@
 #ifndef PARTFILECONVERT_H
 #define PARTFILECONVERT_H
 
-#ifndef CLIENT_GUI
-
 #include <wx/string.h>
 #include <wx/thread.h>
+#include <wx/dialog.h>
+#include <wx/listctrl.h>
+#include <wx/gauge.h>
 
 #include <list>
 
 #include "Types.h"
-
-#ifndef AMULE_DAEMON
-	#include <wx/dialog.h>
-#endif
 
 struct ConvertJob;
 class CPartFileConvertDlg;
@@ -49,12 +46,12 @@ public:
 	static void	ConvertToeMule(wxString folder, bool deletesource = false);
 	static void	StartThread();
 	static void	StopThread();
-#ifndef AMULE_DAEMON
+
 	static void	ShowGUI(wxWindow *parent);
 	static void	UpdateGUI(float percent, wxString text, bool fullinfo = false);	// current file information
 	static void	UpdateGUI(ConvertJob* job); // listcontrol update
 	static void	CloseGUI();
-#endif
+
 	static void	RemoveAllJobs();
 	static void	RemoveAllSuccJobs();
 	static void	RemoveJob(ConvertJob* job);
@@ -71,15 +68,10 @@ private:
 	static wxThread*		s_convertPfThread;
 	static std::list<ConvertJob*>	s_jobs;
 	static ConvertJob*		s_pfconverting;
-#ifndef AMULE_DAEMON
+
 	static CPartFileConvertDlg*	s_convertgui;
-#endif
+
 };
-#endif /* ! CLIENT_GUI */
-
-#ifndef AMULE_DAEMON
-
-#include <wx/listctrl.h>
 
 class CConvertListCtrl : public wxListCtrl
 {
@@ -92,16 +84,8 @@ public:
 			 long style = wxLC_ICON,
 			 const wxValidator& validator = wxDefaultValidator,
 			 const wxString& name = wxT("convertlistctrl"))
-#ifdef CLIENT_GUI
-			 {}
-#else
 			 ;
-#endif
 };
-
-#ifndef CLIENT_GUI
-
-#include <wx/gauge.h>
 
 class CPartFileConvertDlg : public wxDialog
 {
@@ -125,8 +109,5 @@ protected:
 
 	DECLARE_EVENT_TABLE()
 };
-#endif /* ! CLIENT_GUI */
-
-#endif /* ! AMULE_DAEMON */
 
 #endif /* PARTFILECONVERT_H */

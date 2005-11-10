@@ -1049,19 +1049,6 @@ void CKnownFile::UpdateAutoUpPriority()
 	}
 }
 
-
-//For File Comment // 
-void CKnownFile::LoadComment()
-{
-	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
-
-	wxConfigBase* cfg = wxConfigBase::Get();
-	
-	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
-	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
-	m_bCommentLoaded = true;
-}    
-
 void CKnownFile::SetFileComment(const wxString& strNewComment)
 { 
 	if (m_strComment != strNewComment) {
@@ -1310,3 +1297,21 @@ void CKnownFile::SetFileName(const wxString& strmakeFilename)
 }
 
 #endif // CLIENT_GUI
+
+//For File Comment // 
+void CKnownFile::LoadComment()
+{
+	#ifndef CLIENT_GUI
+	wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
+
+	wxConfigBase* cfg = wxConfigBase::Get();
+	
+	m_strComment = cfg->Read( strCfgPath + wxT("Comment"), wxEmptyString);
+	m_iRating = cfg->Read( strCfgPath + wxT("Rate"), 0l);
+	m_bCommentLoaded = true;	
+	
+	#else
+	m_strComment = wxT("Comments are not allowed on remote gui yet");
+	#endif
+	
+}

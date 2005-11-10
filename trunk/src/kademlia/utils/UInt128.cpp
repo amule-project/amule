@@ -129,7 +129,6 @@ CUInt128& CUInt128::setValueBE(const byte *valueBE)
 	return *this;
 }
 
-#ifndef EC_REMOTE
 CUInt128& CUInt128::setValueRandom(void)
 {
 	AutoSeededRandomPool rng;
@@ -138,7 +137,6 @@ CUInt128& CUInt128::setValueRandom(void)
 	setValueBE( randomBytes );
 	return *this;
 }
-#endif
 
 uint32 CUInt128::getBitNumber(uint32 bit) const
 {

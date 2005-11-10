@@ -697,7 +697,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	theStats::AddDownloadFromSoft(GetClientSoft(),size - HEADER_SIZE);
 	bytesReceivedCycle += size - HEADER_SIZE;
 
-	credits->AddDownloaded(size - HEADER_SIZE, GetIP());
+	credits->AddDownloaded(size - HEADER_SIZE, GetIP(), theApp.CryptoAvailable());
 	
 	// Move end back one, should be inclusive
 	nEndPos--;

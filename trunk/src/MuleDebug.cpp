@@ -39,9 +39,6 @@
 	#include <execinfo.h>
 	#include <cxxabi.h>
 	#include <wx/thread.h>
-	#if wxUSE_GUI
-		#include <wx/utils.h>
-	#endif
 	#include <unistd.h> // Seems to be needed at least on Creteil's box
 #endif
 
@@ -402,11 +399,8 @@ wxString get_backtrace(unsigned n)
 		// the even elements are the function names, and the odd elements
 		// are the line numbers.
 
-#if wxUSE_GUI
-		::wxEnableTopLevelWindows(false);
 		hasLineNumberInfo = wxExecute(command, out) != -1;
-		::wxEnableTopLevelWindows(true);
-#endif	/* wxUSE_GUI */
+		
 	}
 
 #endif	/* HAVE_BFD / !HAVE_BFD */

@@ -61,10 +61,6 @@
 
 static CWebServerBase *webserver = NULL;
 
-#if wxUSE_GUI && wxUSE_TIMER
-	class MyTimer *mytimer;
-#endif
-
 //-------------------------------------------------------------------
 IMPLEMENT_APP(CamulewebApp)
 //-------------------------------------------------------------------

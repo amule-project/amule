@@ -61,7 +61,7 @@ public:
 	 * will be selected, or it can be less than zero, in which case a new 
 	 * category will be created.
 	 */
-	CCatDialog(wxWindow* parent, int catindex = -1 );
+	CCatDialog(wxWindow* parent, bool allowbrowse, int catindex = -1 );
 	
 	/**
 	 * Destructor.
@@ -106,4 +106,3 @@ private:
 };
 
 #endif
-
