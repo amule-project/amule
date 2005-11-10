@@ -159,8 +159,8 @@ border-color: black;
 
   	<td class="tabs" align="center" width="30">&nbsp;</td>
   	<td align="left" class="tabs" width="95">
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=sinfo'; return false;">Serverinfo</a><br>
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=log#end'; return false;">Log</a>
+  		<img src="log.gif"> <a href="index.php?serverinfo=1">Serverinfo</a><br>
+  		<img src="log.gif"> <a href="index.php?log=1">Log</a>
   		<!--<br><img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=debuglog#end'; return false;">Debug Log</a>-->
   	</td>
   </tr>
@@ -273,6 +273,17 @@ border-color: black;
 	 </td>
 	</tr>
 	</table>';
+	} elseif ( ($HTTP_GET_VARS['serverinfo'] == 1) or ($HTTP_GET_VARS['log'] == 1)) {
+		$strinfo = ($HTTP_GET_VARS['serverinfo'] == 1) ? amule_get_serverinfo() : amule_get_log();
+		echo '<table border=0 align=center cellpadding=4 cellspacing=0 width="80%">
+				<tr><td align=left valign=middle class="commontext">
+				<font color="#000000" face="Lucida Console"><pre>';
+		echo $strinfo;
+		echo '</pre></font></td></tr><tr><td align=left valign=middle>
+				<form action="index.php" method="GET">
+				<input type="hidden" name=cmd value=rst>
+				<input type=submit value="Reset"></form>
+				</td></tr></table>';
 	}
 ?>
 </body>
