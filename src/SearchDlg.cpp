@@ -97,7 +97,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	
 	m_notebook = CastChild( ID_NOTEBOOK, CMuleNotebook );
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2,7,0)
 	#warning TODO: restore the image list if/when wxMac supports locating the image
 #else
 	// Initialise the image list
