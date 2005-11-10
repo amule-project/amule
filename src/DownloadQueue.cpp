@@ -45,7 +45,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h"	// Needed for GetTickCount
-#include "NetworkFunctions.h" // Needed for CAsyncDNS
+#include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include "Format.h"		// Needed for CFormat

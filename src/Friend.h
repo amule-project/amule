@@ -29,7 +29,7 @@
 #include <wx/string.h>		// Needed for wxString
 
 #include "Types.h"		// Needed for uint32
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 
 class CUpDownClient;
 class CFile;

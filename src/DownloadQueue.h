@@ -27,7 +27,7 @@
 #define DOWNLOADQUEUE_H
 
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
 #include "GetTickCount.h" 	// Needed fot GetTickCount
 

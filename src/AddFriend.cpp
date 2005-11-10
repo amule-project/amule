@@ -33,7 +33,7 @@
 #include "ChatWnd.h"
 #include "NetworkFunctions.h"
 #include "OtherFunctions.h"
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 #include "StringFunctions.h" // Needed for unicode2char 
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>

@@ -40,7 +40,7 @@
 
 #include <list>			// For std::list
 
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 #include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECcodes.h"

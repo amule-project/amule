@@ -26,18 +26,11 @@
 #ifndef PACKET_H
 #define PACKET_H
 
-#include <list>
-
-#include <wx/string.h>
-
 #include "Types.h"		// Needed for int8, int32, uint8 and uint32
 #include "OPCodes.h"		// Needed for OP_EDONKEYPROT
-#include "SafeFile.h"		// Needed for CFileDataIO
-#include "ArchSpecific.h"
 
 class CMemFile;
-class CFile;
-class CMD4Hash;
+class wxString;
 
 //			CLIENT TO SERVER
 
@@ -94,84 +87,5 @@ private:
 	char 		*completebuffer;
 	char		*pBuffer;
 };
-
-
-struct CInvalidPacket : public CMuleException {
-	CInvalidPacket(const wxString& what)
-		: CMuleException(wxT("CInvalidPacket"), what) {}
-};
-
-
-///////////////////////////////////////////////////////////////////////////////
-// CTag
-
-class CTag
-{
-public:
-	CTag(char* pszName, uint32 uVal);
-	CTag(uint8 uName, uint32 uVal);
-	CTag(char* pszName, const wxString& rstrVal);
-	CTag(uint8 uName, const wxString& rstrVal);
-	CTag(uint8 uName, const CMD4Hash& hash);
-	CTag(uint8 uName, uint32 nSize, const unsigned char* pucData);
-	CTag(const CTag& rTag);
-	CTag(const CFileDataIO& data, bool bOptUTF8);
-	~CTag();
-
-	uint8 GetType() const			{ return m_uType; }
-	uint8 GetNameID() const			{ return m_uName; }
-	char* GetName() const			{ return m_pszName; }
-	
-	bool IsStr() const				{ return m_uType == TAGTYPE_STRING; }
-	bool IsInt() const				{ return m_uType == TAGTYPE_UINT32; }
-	bool IsFloat() const			{ return m_uType == TAGTYPE_FLOAT32; }
-	bool IsHash() const				{ return m_uType == TAGTYPE_HASH; }
-	bool IsBlob() const				{ return m_uType == TAGTYPE_BLOB; }
-	
-	uint32 GetInt() const;
-	const wxString& GetStr() const;
-	float GetFloat() const;
-	const CMD4Hash& GetHash() const;
-	uint32 GetBlobSize() const;
-	const byte* GetBlob() const;
-
-	void SetInt(uint32 uVal);
-	
-	CTag* CloneTag()				{ return new CTag(*this); }
-	
-	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// old eD2K tags
-	bool WriteNewEd2kTag(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
-	
-	wxString GetFullInfo() const;
-
-private:
-	//! CTag is not assignable.
-	CTag& operator=(const CTag&);
-	
-	uint8	m_uType;
-	uint8	m_uName;
-	char*	m_pszName;
-	uint32	m_nBlobSize;
-	union {
-	  CMD4Hash*	m_hashVal;
-	  wxString*	m_pstrVal;
-	  uint32	m_uVal;
-	  float		m_fVal;
-	  unsigned char*		m_pData;
-	};
-};
-
-typedef std::list<CTag*> TagPtrList;
-
-///////////////////////////////////////////////////////////////////////////////
-// CTag and tag string helpers
-
-inline int CmpED2KTagName(const char* pszTagName1, const char* pszTagName2){
-	// string compare is independant from any codepage and/or LC_CTYPE setting.
-	return strcasecmp(pszTagName1, pszTagName2);
-}
-void ConvertED2KTag(CTag*& pTag);
-
-bool WriteOptED2KUTF8Tag(CFileDataIO* data, const wchar_t* pwsz, uint8 uTagName);
 
 #endif // PACKET_H

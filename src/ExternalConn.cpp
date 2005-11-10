@@ -42,7 +42,7 @@
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
 #include "Preferences.h"	// Needed for CPreferences
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()

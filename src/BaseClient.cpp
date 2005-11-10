@@ -42,6 +42,7 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "MemFile.h"		// Needed for CMemFile
 #include "Packet.h"		// Needed for CPacket
+#include "Tag.h"		// Needed for CTag
 #include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList

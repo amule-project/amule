@@ -35,10 +35,11 @@
 #include "SharedFileList.h" // Needed for GetFileByID
 #include "DownloadQueue.h"  // Needed for GetFileByID
 #include "Statistics.h"		// Needed for theStats
-#include "ObservableQueue.h"		// Needed for CQueueObserver
+#include "ObservableQueue.h"// Needed for CQueueObserver
 #include "Format.h"
 #include "Logger.h"
 #include "Preferences.h"
+#include "Packet.h"			// Neeed for CPacket
 #include "kademlia/utils/UInt128.h" // Needed for CUInt128
 
 #include <algorithm>

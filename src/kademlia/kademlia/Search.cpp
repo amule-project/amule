@@ -39,7 +39,7 @@ there client on the eMule forum..
 
 //#include "stdafx.h"
 
-#include "../../Packet.h"
+#include "../../Tag.h"
 typedef CTag ed2kCTag;
 
 #include "Search.h"

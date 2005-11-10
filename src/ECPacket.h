@@ -29,7 +29,7 @@
 #include <wx/string.h>		// Needed for wxString
 #include "StringFunctions.h"	// Needed for aMuleConv
 #include "ECcodes.h"		// Needed for EC types
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 #include <vector>
 

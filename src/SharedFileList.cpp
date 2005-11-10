@@ -35,6 +35,7 @@
 #include "SharedFileList.h"	// Interface declarations
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
+#include "Tag.h"		// Needed for CTag
 #include "MemFile.h"		// Needed for CMemFile
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
@@ -43,7 +44,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"

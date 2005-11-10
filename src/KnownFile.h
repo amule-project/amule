@@ -26,7 +26,7 @@
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
 
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 #include "SHAHashSet.h"
 #include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/dynarray.h>

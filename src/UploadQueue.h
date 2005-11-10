@@ -28,7 +28,7 @@
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 
 #include <list>
 

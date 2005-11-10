@@ -30,7 +30,7 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "StringFunctions.h" // Needed for unicode2char
 #include "amule.h"
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
 #include "Format.h"
 
