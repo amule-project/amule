@@ -400,23 +400,15 @@ void CSharedFileList::FindSharedFiles() {
 
 
 // Checks if the dir a is the same as b. If they are, then logs the message and returns true.
-bool CheckDirectory( const wxString& a, const wxString& b, bool fatal )
+bool CheckDirectory(const wxString& a, const wxString& b)
 {
 	wxString tmp = a;
 	if ( tmp.Last() != wxFileName::GetPathSeparator() ) {
 		tmp += wxFileName::GetPathSeparator();
 	}
 	
-	if ( tmp == b ) {
-		wxString msg;
-
-		if ( fatal ) {
-			msg = CFormat( _("ERROR! Attempted to share %s") ) % a;
-		} else {
-			msg = CFormat( _("WARNING! Sharing the following directory is not recommended: %s") ) % a;
-		}
-		
-		AddLogLineM(true, msg);
+	if (tmp == b) {
+		AddLogLineM(true, CFormat( _("ERROR! Attempted to share %s") ) % a);
 		
 		return true;
 	}
@@ -441,14 +433,17 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	//  - The Temp folder
 	// The following dirs just result in a warning.
 	//  - The users home-dir
-	CheckDirectory( wxGetHomeDir(),	directory, false );
-		
-	if ( CheckDirectory( theApp.ConfigDir,	directory, true ) )
+	if (CheckDirectory(wxGetHomeDir(), directory)) {
 		return;
+	}
 		
-	if ( CheckDirectory( thePrefs::GetTempDir(), directory, true ) )
+	if (CheckDirectory(theApp.ConfigDir, directory)) {
 		return;
-
+	}
+		
+	if (CheckDirectory(thePrefs::GetTempDir(), directory)) {
+		return;
+	}
 
 	CDirIterator SharedDir(directory); 
 	
