@@ -28,18 +28,20 @@
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"		// Needed for CAbstractFile
-#include "Packet.h"
+#include "Tag.h"		// Needed for TagPtrList
+
 #include <wx/thread.h>
 
 #include <map>
 #include <vector>
+#include <list>
 
 class CMemFile;
 class CMD4Hash;
 class CServer;
 class CSearchList;
-class CTag;
-
+class CPacket;
+	
 namespace Kademlia {
 	class CUInt128;
 }

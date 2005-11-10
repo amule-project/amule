@@ -27,7 +27,7 @@
 #define PREFERENCES_H
 
 #include "Types.h"			// Needed for ints
-#include "CMD4Hash.h"			// Needed for CMD4Hash
+#include "MD4Hash.h"			// Needed for CMD4Hash
 #include "Color.h"			// Needed for COLORREF
 
 #include <wx/string.h>			// Needed for wxString

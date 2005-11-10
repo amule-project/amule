@@ -100,8 +100,11 @@ struct CInvalidStateEx : public CRunTimeException
 		: CRunTimeException(wxT("CInvalidStateException"), what) {}
 };
 
-
-
+/* this exception is thrown on wroing packets or tag files */
+struct CInvalidPacket : public CMuleException {
+	CInvalidPacket(const wxString& what)
+		: CMuleException(wxT("CInvalidPacket"), what) {}
+};
 
 // This ifdef ensures that we wont get assertions while 
 // unittesting, which would otherwise impede the tests.

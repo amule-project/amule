@@ -45,6 +45,7 @@
 #include "amule.h"		// Needed for theApp
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for theStats
+#include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Logger.h"
 #include "Format.h"
 #include "IPFilter.h"

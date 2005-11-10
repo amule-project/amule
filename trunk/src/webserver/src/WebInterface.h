@@ -33,7 +33,7 @@
 // 
 #include "ExternalConnector.h"
 //-------------------------------------------------------------------
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 
 #if wxUSE_GUI
 #include <wx/textctrl.h>	// For wxTextCtrl

@@ -29,7 +29,7 @@
 #include <wx/string.h>	// Needed for wxString
 #include "ECcodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
-#include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "MD4Hash.h"	// Needed for CMD4Hash
 #include "NetworkFunctions.h" // Needed for IsLowID
 
 #include "kademlia/utils/UInt128.h" // Need for UInt128

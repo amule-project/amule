@@ -26,7 +26,7 @@
 #include "ECSocket.h"	// Needed for ECSocket
 #include <cstdlib>	// Needed for malloc(), realloc(), free(), NULL
 #include <cstring>	// Needed for memcpy(), strlen()
-#include "CMD4Hash.h"	// Needed for CMD4Hash
+#include "MD4Hash.h"	// Needed for CMD4Hash
 
 /**********************************************************
  *							  *

@@ -26,7 +26,7 @@
 #include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 #include "OScopeCtrl.h"
 #include "OtherFunctions.h"
 #include "HTTPDownload.h"

@@ -43,6 +43,7 @@ DEFS = -DHAVE_CONFIG_H
 core_sources = \
 	AICHSyncThread.cpp \
 	AddFileThread.cpp \
+	AsyncDNS.cpp \
 	amule.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
@@ -158,6 +159,7 @@ common_sources = \
 	StatTree.cpp \
 	SHA.cpp \
 	SHAHashSet.cpp \
+	Tag.cpp \
 	kademlia/utils/UInt128.cpp \
 	$(remote_common_sources)
 
@@ -278,7 +280,6 @@ noinst_HEADERS = AddFileThread.h \
 		ClientListCtrl.h \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
-		CMD4Hash.h \
 		ColorFrameCtrl.h \
 		Color.h \
 		CommentDialog.h \
@@ -324,6 +325,7 @@ noinst_HEADERS = AddFileThread.h \
 		extern/listctrl.242.h \
 		extern/listctrl.260.h \
 		ListenSocket.h \
+		MD4Hash.h \
 		MD5Sum.h \
 		MemFile.h \
 		MuleDebug.h \
@@ -370,6 +372,7 @@ noinst_HEADERS = AddFileThread.h \
 		Format.h \
 		Logger.h \
 		SysTray.h \
+		Tag.h \
 		TextClient.h \
 		Timer.h \
 		TransferWnd.h \

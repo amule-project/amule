@@ -30,7 +30,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amule.h" 			// Needed for theApp / Notify_ChatRefreshFriend
 #include "OtherFunctions.h"
-#include "Packet.h"			// Needed for CTag
+#include "Tag.h"			// Needed for CTag
 #include "Logger.h"			// Needed for AddDebugLogLineM
 
 

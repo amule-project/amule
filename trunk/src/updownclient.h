@@ -32,7 +32,7 @@
 #include "Types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 #include "StringFunctions.h"
 #include "NetworkFunctions.h"
 

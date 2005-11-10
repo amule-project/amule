@@ -42,7 +42,8 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "MemFile.h"		// Needed for CMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "Packet.h"		// Needed for CTag
+#include "Tag.h"		// Needed for CTag
+#include "Packet.h"		// Needed for CPacket
 #include "Preferences.h"	// Needed for CPreferences
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFileList.h"	// Needed for CKnownFileList

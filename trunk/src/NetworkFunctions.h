@@ -115,30 +115,4 @@ inline bool IsLowID(uint32 id) {
 	return (id < HIGHEST_LOWID_ED2K_KAD);
 }
 
-#ifndef EC_REMOTE
-// Not needed for remote apps.
-
-// Implementation of Asynchronous dns resolving using wxThread 
-//	 and internal wxIPV4address handling of dns
-
-enum DnsSolveType {
-	DNS_UDP,
-	DNS_SOURCE,
-	DNS_SERVER_CONNECT
-};
-
-class CAsyncDNS : public wxThread
-{
-public:
-	CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket = NULL);
-	virtual ExitCode Entry();
-
-private:
-	DnsSolveType m_type;
-	wxString m_ipName;
-	void* m_socket;
-};
-
-#endif /* ! EC_REMOTE */
-
 #endif // NETWORK_FUNCTIONS_H

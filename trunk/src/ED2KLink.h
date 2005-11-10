@@ -28,7 +28,7 @@
 
 
 #include "Types.h"			// Needed for uint16 and uint32
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "SHAHashSet.h"		// Needed for CAICHHash
 
 #include <deque>

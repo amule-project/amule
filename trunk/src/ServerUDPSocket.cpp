@@ -36,7 +36,7 @@
 #include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 #include "Server.h"		// Needed for CServer
 #include "amule.h"			// Needed for theApp
-#include "NetworkFunctions.h" // Needed for CAsyncDNS
+#include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "GetTickCount.h"
 #include "ServerSocket.h"
 #include "Statistics.h"		// Needed for theStats
@@ -356,4 +356,3 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 	
 	SendQueue();
 }
-

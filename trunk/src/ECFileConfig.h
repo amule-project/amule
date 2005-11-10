@@ -33,7 +33,7 @@
 #include <wx/utils.h>
 #include <wx/string.h>
 
-#include "CMD4Hash.h"		// Needed for CMD4Hash
+#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "OtherFunctions.h"	// Needed for GetConfigDir()
 
 

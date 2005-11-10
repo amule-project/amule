@@ -27,7 +27,7 @@
 #define FRIENDLISTCTRL_H
 
 #include "MuleListCtrl.h"
-#include "CMD4Hash.h"
+#include "MD4Hash.h"
 
 class wxString;
 class CUpDownClient;

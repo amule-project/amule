@@ -24,7 +24,7 @@
 //
 
 #include "SafeFile.h"				// Interface declarations.
-#include "CMD4Hash.h"				// Needed for CMD4Hash
+#include "MD4Hash.h"				// Needed for CMD4Hash
 #include "ArchSpecific.h"			// Needed for ENDIAN_SWAP_*
 #include "StringFunctions.h"		// Needed for unicode2char, etc.
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
