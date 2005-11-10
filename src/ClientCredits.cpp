@@ -69,8 +69,8 @@ CClientCredits::~CClientCredits()
 	delete m_pCredits;
 }
 
-void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP) {
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.CryptoAvailable() ){
+void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavail) {
+	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
 		return;
 	}
 	//encode
@@ -82,8 +82,8 @@ void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP) {
 	m_pCredits->nDownloadedHi=(uint32)(current>>32);
 }
 
-void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP) {
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.CryptoAvailable() ){
+void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail) {
+	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
 		return;
 	}
 	//encode
@@ -103,10 +103,10 @@ uint64	CClientCredits::GetDownloadedTotal() const {
 	return ( (uint64)m_pCredits->nDownloadedHi<<32)+m_pCredits->nDownloadedLo;
 }
 
-float CClientCredits::GetScoreRatio(uint32 dwForIP)
+float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 {
 	// check the client ident status
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && theApp.CryptoAvailable() ){
+	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
 		// bad guy - no credits for you
 		return 1;
 	}
@@ -196,8 +196,6 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 	}
 }
 
-#ifndef CLIENT_GUI
-
 uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
 	if (m_dwUnSecureWaitTime == 0 || m_dwSecureWaitTime == 0)
 		SetSecWaitStartTime(dwForIP);
@@ -234,5 +232,3 @@ void CClientCredits::ClearWaitStartTime(){
 	m_dwUnSecureWaitTime = 0;
 	m_dwSecureWaitTime = 0;
 }
-
-#endif /* CLIENT_GUI */

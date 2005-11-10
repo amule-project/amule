@@ -44,7 +44,6 @@
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
-#include "SharedFileList.h"		// Needed for CSharedFileList
 #include "SearchDlg.h"			// Needed for UpdateCatChoice
 #include "StringFunctions.h"		// Needed for MakeFoldername
 #include "OtherFunctions.h"		// Needed for CastChild
@@ -63,7 +62,7 @@ END_EVENT_TABLE()
 
 
 
-CCatDialog::CCatDialog( wxWindow* parent, int index )
+CCatDialog::CCatDialog( wxWindow* parent, bool allowbrowse, int index )
 	: wxDialog(parent, -1, _("Category"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
 {
 	wxSizer* content = CategoriesEditWindow( this, TRUE );
@@ -100,9 +99,10 @@ CCatDialog::CCatDialog( wxWindow* parent, int index )
 
 
 	CastChild(ID_BOX_CATCOLOR, wxStaticBitmap)->SetBitmap( MakeBitmap( WxColourFromCr( m_color ) ) );
-#ifdef CLIENT_GUI
-	CastChild(IDC_BROWSE, wxButton)->Destroy();
-#endif
+	
+	if (!allowbrowse) {
+		CastChild(IDC_BROWSE, wxButton)->Destroy();
+	}
 }
 
 
@@ -203,11 +203,6 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		theApp.glob_prefs->UpdateCategory(index, newname, newpath, 
         	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
         	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
-
-		if ( oldpath != newpath ) {
-			theApp.sharedfiles->AddFilesFromDirectory(newpath);
-			theApp.sharedfiles->Reload();
-		}
 
 		theApp.amuledlg->transferwnd->UpdateCategory( index );
 		

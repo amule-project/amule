@@ -31,7 +31,6 @@
 #include "Types.h"				// Needed for uint* types
 #include "MuleDebug.h"			// Needef for CMuleException
 #include "StringFunctions.h"	// Needed for the utf8 types.
-#include "MuleDebug.h"			// Needed for CMuleException
 
 namespace Kademlia {
 	class CUInt128;

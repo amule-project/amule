@@ -49,7 +49,7 @@
 #include "Preferences.h"
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for theStats
-
+#include "SharedFileList.h"		// Needed for CSharedFileList
 
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
@@ -226,8 +226,20 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 
 void CTransferWnd::OnAddCategory( wxCommandEvent& WXUNUSED(event) )
 {
-	CCatDialog dialog( this );
-	dialog.ShowModal();
+	CCatDialog dialog( this,
+	// Allow browse?
+#ifdef CLIENT_GUI	
+	false
+#else
+	true
+#endif	
+	);
+	if (dialog.ShowModal() == wxOK) {
+		// Add the files on this folder.
+		Category_Struct* newcat = theApp.glob_prefs->GetCategory(theApp.glob_prefs->GetCatCount()-1);
+		theApp.sharedfiles->AddFilesFromDirectory(newcat->incomingpath);
+		theApp.sharedfiles->Reload();		
+	}
 }
 
 
@@ -253,9 +265,23 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 
 void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 {
-	CCatDialog dialog( this, m_dlTab->GetSelection() );
+	Category_Struct* cat = theApp.glob_prefs->GetCategory(m_dlTab->GetSelection());
+	wxString oldpath = cat->incomingpath;
+	CCatDialog dialog( this, 
+	// Allow browse?
+#ifdef CLIENT_GUI	
+	false
+#else
+	true
+#endif
+		, m_dlTab->GetSelection());
 	
-	dialog.ShowModal();
+	if (dialog.ShowModal() == wxOK) {
+		if (oldpath != cat->incomingpath) {
+			theApp.sharedfiles->AddFilesFromDirectory(cat->incomingpath);
+			theApp.sharedfiles->Reload();			
+		}
+	}
 }
 
 

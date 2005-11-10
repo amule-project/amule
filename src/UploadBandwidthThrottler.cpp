@@ -37,20 +37,6 @@
 #include <algorithm>
 #include <limits>
 
-#if wxUSE_GUI && wxUSE_TIMER && !defined(AMULE_DAEMON) && !defined(__WINDOWS__)
-#include <wx/timer.h>
-
-#ifdef GetTickCount
-#undef GetTickCount
-#endif
-
-uint32 GetTickCount() {
-	return wxGetLocalTimeMillis().GetValue();
-}
-#else
-#include "GetTickCount.h"
-#endif
-
 #ifdef _UI64_MAX
 #undef _UI64_MAX
 #endif
@@ -322,14 +308,14 @@ void UploadBandwidthThrottler::EndThread()
  */
 void* UploadBandwidthThrottler::Entry()
 {
-	uint32 lastLoopTick = ::GetTickCount();
+	uint32 lastLoopTick = ::GetTickCountFullRes();
 	sint64 realBytesToSpend = 0;
 	uint32 allowedDataRate = 0;
 	uint32 rememberedSlotCounter = 0;
-	uint32 lastTickReachedBandwidth = ::GetTickCount();
+	uint32 lastTickReachedBandwidth = ::GetTickCountFullRes();
 
 	while (m_doRun) {
-		uint32 timeSinceLastLoop = ::GetTickCount() - lastLoopTick;
+		uint32 timeSinceLastLoop = ::GetTickCountFullRes() - lastLoopTick;
 
 		// Get current speed from UploadSpeedSense
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
@@ -367,7 +353,7 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 			Sleep(sleepTime-timeSinceLastLoop);
 		}
 
-		const uint32 thisLoopTick = ::GetTickCount();
+		const uint32 thisLoopTick = ::GetTickCountFullRes();
 		timeSinceLastLoop = thisLoopTick - lastLoopTick;
 
 		// Calculate how many bytes we can spend

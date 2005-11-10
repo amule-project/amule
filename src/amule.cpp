@@ -98,7 +98,6 @@
 #include "Logger.h"
 #include "Format.h"			// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
-#include "PartFileConvert.h"
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "kademlia/kademlia/Kademlia.h"
@@ -185,6 +184,11 @@ void OnShutdownSignal( int /* sig */ )
 
 CamuleApp::CamuleApp()
 {
+	
+	// Madcat - Initialize timer as the VERY FIRST thing to avoid any issues later.
+	// Kry - I love to init the vars on init, even before timer.
+	StartTickTimer();
+	
 	// Initialization	
 #if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
 	wxString msg;
@@ -352,6 +356,8 @@ int CamuleApp::OnExit()
 	delete wxLog::SetActiveTarget(oldLog);
 #endif
 
+	StopTickTimer();
+	
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
 }
@@ -1569,8 +1575,6 @@ void CamuleApp::ShutDown() {
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	
-	CPartFileConvert::StopThread();
-
 	StopKad();
 	
 	// Kry - Save the sources seeds on app exit

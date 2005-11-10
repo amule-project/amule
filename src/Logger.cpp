@@ -62,13 +62,6 @@ DebugType CDebugCategory::GetType() const
 	return m_type;
 }
 
-
-
-
-
-
-
-
 CDebugCategory g_debugcats[] = {
 	CDebugCategory( logGeneral,		wxT("General") ),
 	CDebugCategory( logHasher,		wxT("Hasher") ),
@@ -244,4 +237,3 @@ unsigned int CLogger::GetDebugCategoryCount()
 {
 	return categoryCount;
 }
-

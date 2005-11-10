@@ -40,17 +40,100 @@ DEFS = -DHAVE_CONFIG_H
 
 # Sources
 
+noinst_LIBRARIES = \
+	libmulecommon.a \
+	libeccommon.a \
+	libmuleappcommon.a \
+	libmuleappcore.a \
+	libmuleappgui.a
+
+# Common to external apps and core/gui/monolithic
+
+libmulecommon_a_SOURCES = \
+	Format.cpp \
+	MD5Sum.cpp \
+	MuleDebug.cpp \
+	PlatformSpecific.cpp \
+	StringFunctions.cpp
+	
+libmulecommon_a_CFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
+libmulecommon_a_CXXFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
+
+# Common to all EC communication code. Ideally all EC should be here
+
+libeccommon_a_SOURCES = \
+	ECPacket.cpp 
+	
+libeccommon_a_CFLAGS =$(WX_CXXFLAGS) 
+libeccommon_a_CXXFLAGS =$(WX_CXXFLAGS)
+
+# Common to core/gui/monolithic
+
+libmuleappcommon_a_SOURCES = \
+	CFile.cpp \
+	DataToText.cpp \
+	ED2KLink.cpp \
+	FileFunctions.cpp \
+	MemFile.cpp \
+	NetworkFunctions.cpp \
+	Packet.cpp \
+	RLE.cpp \
+	SafeFile.cpp \
+	SHA.cpp \
+	Tag.cpp \
+	kademlia/utils/UInt128.cpp
+	
+libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) 
+libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS)	
+
+# Common to core/monolithic
+
+libmuleappcore_a_SOURCES = \
+	AsyncDNS.cpp \
+	DeadSourceList.cpp \
+	kademlia/io/ByteIO.cpp \
+	kademlia/io/DataIO.cpp \
+	kademlia/io/FileIO.cpp \
+	kademlia/io/IOException.cpp \
+	kademlia/utils/LittleEndian.cpp \
+	kademlia/kademlia/SearchManager.cpp \
+	kademlia/routing/RoutingBin.cpp \
+	StateMachine.cpp 
+	
+libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) 
+libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS)
+
+# Common to gui/monolithic
+
+libmuleappgui_a_SOURCES = \
+	BarShader.cpp \
+	CatDialog.cpp \
+	ChatWnd.cpp \
+	CommentDialog.cpp \
+	CommentDialogLst.cpp \
+	DirectoryTreeCtrl.cpp \
+	EditServerListDlg.cpp \
+	listctrl.cpp \
+	MuleGifCtrl.cpp \
+	MuleListCtrl.cpp \
+	MuleNotebook.cpp \
+	MuleTextCtrl.cpp \
+	FileDetailListCtrl.cpp \
+	muuli_wdr.cpp \
+	ColorFrameCtrl.cpp
+	
+libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) 
+libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS)
+
 core_sources = \
 	AICHSyncThread.cpp \
 	AddFileThread.cpp \
-	AsyncDNS.cpp \
 	amule.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
 	ClientCreditsList.cpp \
 	ClientTCPSocket.cpp \
 	ClientUDPSocket.cpp \
-	DeadSourceList.cpp \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
 	EMSocket.cpp \
@@ -62,119 +145,79 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
-	PartFileConvert.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
 	ServerList.cpp \
 	ServerSocket.cpp \
 	ServerUDPSocket.cpp \
 	SharedFileList.cpp \
-	StateMachine.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
-	kademlia/io/IOException.cpp \
-	kademlia/kademlia/Indexed.cpp \
-	kademlia/kademlia/Kademlia.cpp \
-	kademlia/kademlia/Prefs.cpp \
+	kademlia/kademlia/Kademlia.cpp \	
 	kademlia/kademlia/Search.cpp \
-	kademlia/kademlia/SearchManager.cpp \
+	kademlia/kademlia/Indexed.cpp \	
 	kademlia/net/KademliaUDPListener.cpp \
-	kademlia/routing/Contact.cpp \
-	kademlia/routing/RoutingBin.cpp \
+	kademlia/kademlia/Prefs.cpp \
 	kademlia/routing/RoutingZone.cpp \
-	kademlia/utils/LittleEndian.cpp 
+	kademlia/routing/Contact.cpp 
 
 gui_sources = \
 	amule-gui.cpp \
 	amuleDlg.cpp \
 	AddFriend.cpp \
-	BarShader.cpp \
-	CatDialog.cpp \
 	ChatSelector.cpp \
-	ChatWnd.cpp \
 	ClientDetailDialog.cpp \
-	ClientListCtrl.cpp \
-	ColorFrameCtrl.cpp \
-	CommentDialog.cpp \
-	CommentDialogLst.cpp \
-	DirectoryTreeCtrl.cpp \
-	DownloadListCtrl.cpp \
-	EditServerListDlg.cpp \
 	FileDetailDialog.cpp \
-	FileDetailListCtrl.cpp \
-	FriendListCtrl.cpp \
 	KadDlg.cpp \
-	listctrl.cpp \
-	MuleGifCtrl.cpp \
-	MuleListCtrl.cpp \
-	MuleNotebook.cpp \
-	MuleTextCtrl.cpp \
-	muuli_wdr.cpp \
 	OScopeCtrl.cpp \
+	PartFileConvert.cpp \
 	PrefsUnifiedDlg.cpp \
 	SearchDlg.cpp \
-	SearchListCtrl.cpp \
 	ServerWnd.cpp \
-	SharedFilesCtrl.cpp \
 	SharedFilesWnd.cpp \
-	ServerListCtrl.cpp \
 	StatisticsDlg.cpp \
+	SearchListCtrl.cpp \
+	DownloadListCtrl.cpp \
+	ClientListCtrl.cpp \
+	FriendListCtrl.cpp \
+	ServerListCtrl.cpp \
+	SharedFilesCtrl.cpp \
 	TransferWnd.cpp 
 
 ec_sources = \
 	ECSocket.cpp \
-	ECPacket.cpp \
 	ECSpecialTags.cpp
 
 remote_common_sources = \
-	Format.cpp \
-	MD5Sum.cpp \
-	MuleDebug.cpp \
-	OtherFunctions.cpp \
-	PlatformSpecific.cpp \
-	StringFunctions.cpp
+	OtherFunctions.cpp 
 
 common_sources = \
-	CFile.cpp \
 	ClientCredits.cpp \
-	DataToText.cpp \
-	ED2KLink.cpp \
-	FileFunctions.cpp \
 	KnownFile.cpp \
+	GetTickCount.cpp \
 	Logger.cpp \
-	MemFile.cpp \
-	NetworkFunctions.cpp \
 	PartFile.cpp \
-	Packet.cpp \
 	Preferences.cpp \
 	Proxy.cpp \
-	RLE.cpp \
-	SafeFile.cpp \
 	Server.cpp \
 	Statistics.cpp \
 	StatTree.cpp \
-	SHA.cpp \
 	SHAHashSet.cpp \
-	Tag.cpp \
-	kademlia/utils/UInt128.cpp \
 	$(remote_common_sources)
 
 # Libs
 
-core_libs = 
-gui_libs =  $(X11LIBS) $(WX_LIBS)
-remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) 
-common_libs = $(CRYPTOLIBS) $(remote_common_libs)
+core_libs = -lmuleappcore
+gui_libs =  $(X11LIBS) $(WX_LIBS) -lmuleappgui
+remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -lmulecommon -leccommon
+common_libs = $(CRYPTOLIBS) $(remote_common_libs) -lmuleappcommon
 
 # Flags
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
-common_flags = $(BFD_FLAGS) 
+common_flags = 
 
 # Extras 
 

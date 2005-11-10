@@ -147,11 +147,12 @@ bool CClientDetailDialog::OnInitDialog() {
 	}
 
 	if (m_client->GetUploadState() != US_NONE) {
-#ifndef CLIENT_GUI
-		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false),theApp.uploadqueue->GetWaitingPosition(m_client)));
-#else
-		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false),0));
-#endif
+		#ifdef CLIENT_GUI
+		#warning EC needed for queue position
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false), 0));
+		#else
+		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxString::Format(wxT("%u (QR: %u)"),m_client->GetScore(m_client->IsDownloading(),false),theApp.uploadqueue->GetWaitingPosition(m_client)));		
+		#endif
 	} else {
 		CastChild(ID_DSCORE,wxStaticText)->SetLabel(wxT("-"));
 	}

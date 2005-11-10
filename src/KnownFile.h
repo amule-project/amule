@@ -218,10 +218,9 @@ public:
 	void	RemoveUploadingClient(CUpDownClient* client);
 	
 	// comment 
-#ifndef CLIENT_GUI
 	const wxString&	GetFileComment() { if (!m_bCommentLoaded) LoadComment(); return m_strComment; } 
 	int8	GetFileRating() 		{ if (!m_bCommentLoaded) LoadComment(); return m_iRating; }
-#endif
+
 	void	SetFileComment(const wxString& strNewComment);
 	void	SetFileRating(int8 iNewRating); 
 	void	SetPublishedED2K( bool val );
