@@ -927,7 +927,7 @@ void CClientList::CleanUpClientList(){
 						(pCurClient->GetKadState() == KS_INCOMING_BUDDY)
 						&&
 						// We didn't receive the promised buddy on 10 min
-						(pCurClient->GetCreationTime() + KADEMLIABUDDYTIMEOUT > ::GetTickCount())
+						((::GetTickCount() - pCurClient->GetCreationTime()) > KADEMLIABUDDYTIMEOUT)
 					   )
 				   )
 				&& pCurClient->GetSocket() == NULL)
@@ -953,8 +953,8 @@ void CClientList::CleanUpClientList(){
 				}
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineM(false, logProxy, 
-						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
-							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP());
+						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s time left: %i"))
+							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP() % (pCurClient->GetCreationTime()+KADEMLIABUDDYTIMEOUT-::GetTickCount()));
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineM(false, logProxy, 

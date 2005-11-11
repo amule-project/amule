@@ -243,6 +243,8 @@ private:
 
 	void SetMessagesTool();
 
+	void OnKeyPressed(wxKeyEvent& evt);
+
 	DECLARE_EVENT_TABLE()
 };
 

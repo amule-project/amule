@@ -3160,16 +3160,16 @@ wxSizer *serverListDlgDown( wxWindow *parent, bool call_fit, bool set_sizer )
     item3->AddPage( item4, _("aMule Log") );
 
     wxPanel *item5 = new wxPanel( item3, -1 );
-    Kad_Info( item5, FALSE );
-    item3->AddPage( item5, _("Kad Info") );
+    ServerInfoLog( item5, FALSE );
+    item3->AddPage( item5, _("Server Info") );
 
     wxPanel *item6 = new wxPanel( item3, -1 );
     ED2K_Info( item6, FALSE );
     item3->AddPage( item6, _("ED2K Info") );
 
     wxPanel *item7 = new wxPanel( item3, -1 );
-    ServerInfoLog( item7, FALSE );
-    item3->AddPage( item7, _("Server Info") );
+    Kad_Info( item7, FALSE );
+    item3->AddPage( item7, _("Kad Info") );
 
     item0->Add( item2, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 

@@ -167,8 +167,7 @@ protected:
 private:
 	wxString	m_cmdargs;
 	wxString	m_lastcmdstr;
-	ECSocket* 	m_ECClient;
-	bool 		m_isConnected;
+	CRemoteConnect* 	m_ECClient;
 	char *		m_InputLine;
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
@@ -183,4 +182,3 @@ private:
 };
 
 #endif // __EXTERNALCONNECTOR_H__
-

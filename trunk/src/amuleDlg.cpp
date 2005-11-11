@@ -132,7 +132,10 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
 	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
 
+	EVT_KEY_UP(CamuleDlg::OnKeyPressed)
+
 	EVT_MENU(wxID_EXIT, CamuleDlg::OnExit)
+	
 END_EVENT_TABLE()
 
 #ifndef wxCLOSE_BOX
@@ -1544,6 +1547,11 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	
 }
 
+void CamuleDlg::OnKeyPressed(wxKeyEvent& event) {
+	if (event.GetKeyCode() == WXK_F1) {
+		printf("Help requested");
+	}
+}
 
 void CamuleDlg::OnExit(wxCommandEvent& evt)
 {

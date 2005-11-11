@@ -29,6 +29,8 @@
 #include "ECPacket.h"		// Needed for CECTag
 #include "OPCodes.h"
 
+#include <wx/intl.h>	// Needed for i18n
+
 #ifndef EC_REMOTE
 	#include "GetTickCount.h"	// Needed for GetTickCount64()
 	#ifndef AMULE_DAEMON
@@ -43,7 +45,8 @@
 	#include <cmath>		// Needed for std::floor
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
-	#include "amule-remote-gui.h"	// Needed for CRemoteConnect
+	#include "Preferences.h"
+	#include "ECSocket.h"		// Needed for CRemoteConnect
 #endif
 
 

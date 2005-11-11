@@ -35,17 +35,15 @@
 #include <list>
 
 class CECPacket;
-class ECSocket;
 
 class CECSocketHandler: public wxEvtHandler {
 	public:
-        CECSocketHandler(ECSocket* WXUNUSED(socket) = NULL) {};
-
+        CECSocketHandler() {};
+		
 	private:
         void SocketHandler(wxSocketEvent& event);
         DECLARE_EVENT_TABLE()
 };
-
 
 /*! \class ECSocket
  *
@@ -79,11 +77,11 @@ class ECSocket : public wxSocketClient {
 		CECPacket *ReadPacket(void);
 		bool WritePacket(const CECPacket *packet);
 
-		void OnConnect();
-		void OnSend();
-		void OnReceive();
-		void OnClose();
-		void OnError();
+		virtual void OnConnect();
+		virtual void OnSend();
+		virtual void OnReceive();
+		virtual void OnClose();
+		virtual void OnError();
 
 	private:
 		CECSocketHandler handler;
@@ -124,6 +122,75 @@ class ECSocket : public wxSocketClient {
 		};
 		std::list<EC_OUTBUF> m_pending_tx;
 		
+};
+
+class CRemoteConnect : public ECSocket {
+
+public:
+	// The event handler is used for notifying connect/close 
+	CRemoteConnect(wxEvtHandler* evt_handler);
+		
+	bool ConnectToCore(const wxString &host, int port, 
+						const wxString& login, const wxString &pass,
+						const wxString& client, const wxString& version);
+
+	bool ConnectionEstablished();
+
+	CECPacket *SendRecv(CECPacket *);
+	void Send(CECPacket *);
+		
+	bool Busy() { return m_busy; }
+		
+	const wxString& GetServerReply() const { return server_reply; }
+
+	virtual void OnConnect(); // To override connection events
+	virtual void OnClose(); // To override close events
+	
+private:
+
+	wxEvtHandler* notifier;
+	bool m_busy;
+	wxString ConnectionPassword;
+	wxString server_reply;
+	wxString m_client;
+	wxString m_version;
+};
+
+enum {
+	EC_SOCKET_HANDLER = wxID_HIGHEST + 666,
+	ECSOCKETCONNECTION = 1000
+};
+
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST+ECSOCKETCONNECTION)
+
+class wxECSocketEvent : public wxEvent {
+public:
+	wxECSocketEvent(int id, int event_id) : wxEvent(event_id, id)
+	{
+	}
+	wxECSocketEvent(int id) : wxEvent(-1, id)
+	{
+	}
+	wxECSocketEvent(int id, bool result, const wxString& reply) : wxEvent(-1, id)
+	{
+		m_value = result;
+		server_reply = reply;
+	}
+	wxEvent *Clone(void) const
+	{
+		return new wxECSocketEvent(*this);
+	}
+	long GetResult() const
+	{
+		return m_value;
+	}
+	const wxString& GetServerReply() const
+	{
+		return server_reply;
+	}
+private:
+	bool m_value;
+	wxString server_reply;
 };
 
 #endif // ECSOCKET_H

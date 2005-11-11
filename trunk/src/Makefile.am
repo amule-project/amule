@@ -62,7 +62,8 @@ libmulecommon_a_CXXFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS)
 # Common to all EC communication code. Ideally all EC should be here
 
 libeccommon_a_SOURCES = \
-	ECPacket.cpp 
+	ECPacket.cpp \
+	ECSocket.cpp
 	
 libeccommon_a_CFLAGS =$(WX_CXXFLAGS) 
 libeccommon_a_CXXFLAGS =$(WX_CXXFLAGS)
@@ -186,7 +187,6 @@ gui_sources = \
 	TransferWnd.cpp 
 
 ec_sources = \
-	ECSocket.cpp \
 	ECSpecialTags.cpp
 
 remote_common_sources = \

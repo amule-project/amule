@@ -34,7 +34,6 @@
 #include <list>
 #include <vector>
 
-#include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECSpecialTags.h"
 
