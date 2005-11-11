@@ -145,16 +145,16 @@ border-color: black;
   			Shared Files
   		</a>
   	<td align="center" class="tabs" width="110">
-		<a href="#" onClick="self.location.href='?ses=1962921590&amp;w=stats'; return false;">
+		<a href="stat_tree.php">
 			<img src="cp_stats.gif"><br>
   			Statistics</a>
   		<font color="#000000">|</font>
 
-  		<a href="#" onClick="self.location.href='?ses=1962921590&amp;w=graphs'; return false;">Graphs</a>
+  		<a href="stat_graphs.php">Graphs</a>
   	</td>
   	</td>
   	<td align="center" class="tabs" width="95">
-  		<a href="#" onClick="self.location.href='?ses=1962921590&amp;w=options'; return false;">
+  		<a href="preferences.php">
   			<img src="cp_settings.gif"><br>
   			Preferences
   		</a>
