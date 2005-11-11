@@ -36,9 +36,9 @@ dist_webserver_DATA = \
 	transparent.gif \
 	yellow.gif \
 	phpamule.png \
-	tree-leaf \
-	tree-open \
-	tree-closed \
+	tree-leaf.gif \
+	tree-open.gif \
+	tree-closed.gif \
 	favicon.ico \
 	downloads.php \
 	preferences.php \
