@@ -214,9 +214,8 @@
             &nbsp;
           </td>
           <td align="left" class="tabs_three" width="95">
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=sinfo'">Serverinfo</a><br />
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=log#end'">Log</a><!--<br />
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=debuglog#end'">Debug Log</a>-->
+            <img src="log.gif" align="absmiddle"> <a href="index.php?serverinfo=1">Serverinfo</a><br />
+            <img src="log.gif" align="absmiddle"> <a href="index.php?log=1">Log</a>
           </td>
 
         </tr>

@@ -214,9 +214,8 @@
             &nbsp;
           </td>
           <td align="left" class="tabs_three" width="95">
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=sinfo'">Serverinfo</a><br />
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=log#end'">Log</a><!--<br />
-            <img src="log.gif" align="absmiddle"> <a href="#" onClick="self.location.href='?ses=1819955605&amp;w=debuglog#end'">Debug Log</a>-->
+            <img src="log.gif" align="absmiddle"> <a href="index.php?serverinfo=1">Serverinfo</a><br />
+            <img src="log.gif" align="absmiddle"> <a href="index.php?log=1">Log</a>
           </td>
 
         </tr>
@@ -342,6 +341,30 @@
 	 </td>
 	</tr>
 	</table>';
+	} elseif ( $HTTP_GET_VARS['serverinfo'] == 1 ) {
+		$strinfo = amule_get_serverinfo($HTTP_GET_VARS['rst']);
+		echo '<table border=0 align=center cellpadding=4 cellspacing=0 width="80%">
+				<tr><td align=left valign=middle class="commontext">
+				<font color="#000000" face="Lucida Console"><pre>';
+		echo $strinfo;
+		echo '</pre></font></td></tr><tr><td align=left valign=middle>
+				<form action="index.php" method="GET">
+				<input type="hidden" name=rst value=1>
+				<input type="hidden" name=serverinfo value=1>
+				<input type=submit value="Reset"></form>
+				</td></tr></table>';
+	} elseif ( $HTTP_GET_VARS['log'] == 1) {
+		$strinfo = amule_get_log($HTTP_GET_VARS['rst']);
+		echo '<table border=0 align=center cellpadding=4 cellspacing=0 width="80%">
+				<tr><td align=left valign=middle class="commontext">
+				<font color="#000000" face="Lucida Console"><pre>';
+		echo $strinfo;
+		echo '</pre></font></td></tr><tr><td align=left valign=middle>
+				<form action="index.php" method="GET">
+				<input type="hidden" name=rst value=1>
+				<input type="hidden" name=log value=1>
+				<input type=submit value="Reset"></form>
+				</td></tr></table>';
 	}
 ?>
 
