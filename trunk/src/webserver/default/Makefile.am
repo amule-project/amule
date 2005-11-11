@@ -35,6 +35,7 @@ dist_webserver_DATA = \
 	red.gif \
 	transparent.gif \
 	yellow.gif \
+	phpamule.png \
 	tree-leaf \
 	tree-open \
 	tree-closed \
