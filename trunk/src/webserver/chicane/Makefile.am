@@ -48,6 +48,19 @@ dist_webserver_DATA = \
 	main_topbarseperator.gif \
 	red.gif \
 	transparent.gif \
-	yellow.gif
+	yellow.gif \
+	tree-leaf \
+	tree-open \
+	tree-closed \
+	favicon.ico \
+	downloads.php \
+	preferences.php \
+	search.php \
+	servers.php \
+	shared.php \
+	stat_graphs.php \
+	stat_tree.php \
+	login.html \
+	index.php
 
 webserverdir = $(pkgdatadir)/webserver/chicane
