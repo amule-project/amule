@@ -759,7 +759,19 @@ void php_get_log(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
 	
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	bool rst;
+	if ( !si ) {
+		rst = false;
+	} else {
+		cast_value_dnum(&si->var->value);
+		rst = si->var->value.int_val != 0;
+	}
 #ifndef PHP_STANDALONE_EN
+	if ( rst ) {
+		CECPacket req(EC_OP_RESET_LOG);
+		CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+	}
 	CECPacket req(EC_OP_GET_LOG);
 	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
@@ -768,6 +780,8 @@ void php_get_log(PHP_VALUE_NODE *result)
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
 	}
+#else
+	printf("php_get_log: reset=%d\n", rst);
 #endif
 }
 
@@ -778,7 +792,19 @@ void php_get_serverinfo(PHP_VALUE_NODE *result)
 {
 	value_value_free(result);
 	
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	bool rst;
+	if ( !si ) {
+		rst = false;
+	} else {
+		cast_value_dnum(&si->var->value);
+		rst = si->var->value.int_val != 0;
+	}
 #ifndef PHP_STANDALONE_EN
+	if ( rst ) {
+		CECPacket req(EC_OP_CLEAR_SERVERINFO);
+		CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+	}
 	CECPacket req(EC_OP_GET_SERVERINFO);
 	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
@@ -787,6 +813,8 @@ void php_get_serverinfo(PHP_VALUE_NODE *result)
 		result->type = PHP_VAL_STRING;
 		result->str_val = strdup((const char *)unicode2UTF8(serverInfoString));
 	}
+#else
+	printf("php_get_serverinfo: reset=%d\n", rst);
 #endif
 }
 
@@ -1427,11 +1455,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	},
 	{
 		"amule_get_log",
-		0, php_get_log,
+		1, php_get_log,
 	},
 	{
 		"amule_get_serverinfo",
-		0, php_get_serverinfo,
+		1, php_get_serverinfo,
 	},
 	{ 0, 0, 0, },
 };
