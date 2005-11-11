@@ -25,6 +25,12 @@
 
 #include "ECSocket.h"
 
+#include <memory>			// Needed for auto_ptr
+using std::auto_ptr;
+
+#include <wx/intl.h>			// Needed for i18n
+
+#include "ECVersion.h"		// Needed for EC_VERSION_ID
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
@@ -34,7 +40,7 @@
 #include "cstring"		// Needed for memcpy()/memmove()
 
 #include "StringFunctions.h"	// Needed for unicode2char()
-#include "OPCodes.h"
+#include "Format.h"				// Needed for CFormat
 
 #define EC_SOCKET_BUFFER_SIZE	32768*4
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -335,6 +341,46 @@ unsigned int WriteBufferToSocket(wxSocketBase *sock, const void *buffer, unsigne
 	return WroteSoFar;
 }
 
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
+
+BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
+        EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
+END_EVENT_TABLE()
+
+void CECSocketHandler::SocketHandler(wxSocketEvent& event)
+{
+		printf("Socket event\n");
+        ECSocket *socket = dynamic_cast<ECSocket*>(event.GetSocket());
+        wxASSERT(socket);
+        if (!socket) {
+			return;
+        }
+
+        switch(event.GetSocketEvent()) {
+                case wxSOCKET_LOST:
+						printf("ECSocket lost\n");
+                        socket->OnClose();
+                        break;
+                case wxSOCKET_INPUT:
+						printf("ECSocket input\n");
+                        socket->OnReceive();
+                        break;
+                case wxSOCKET_OUTPUT:
+						printf("ECSocket output\n");
+                        socket->OnSend();
+                        break;
+                case wxSOCKET_CONNECTION:
+						printf("ECSocket connect\n");
+                        socket->OnConnect();
+                        break;
+                default:
+						printf("ECSocket UNK\n");
+                        // Nothing should arrive here...
+                        wxASSERT(0);
+                        break;
+        }
+}
+
 ECSocket::ECSocket(void) : wxSocketClient()
 {
 	parms.firsttransfer = true;
@@ -365,55 +411,13 @@ ECSocket::~ECSocket(void)
 	}
 }
 
-BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
-        EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
-END_EVENT_TABLE()
-
-void CECSocketHandler::SocketHandler(wxSocketEvent& event)
-{
-        ECSocket *socket = dynamic_cast<ECSocket *>(event.GetSocket());
-        wxASSERT(socket);
-        if (!socket) {
-                return;
-        }
-
-        switch(event.GetSocketEvent()) {
-                case wxSOCKET_LOST:
-                        socket->OnError();
-                        break;
-                case wxSOCKET_INPUT:
-                        socket->OnReceive();
-                        break;
-                case wxSOCKET_OUTPUT:
-                        socket->OnSend();
-                        break;
-                case wxSOCKET_CONNECTION:
-                        socket->OnConnect();
-                        break;
-                default:
-                        // Nothing should arrive here...
-                        wxASSERT(0);
-                        break;
-        }
-}
-
 /*
  * FIXME: ECSocket must be make "public wxSocketBase" and all "m_sock->" removed.
  * 
  */
-#ifdef CLIENT_GUI
-#include "amule.h"			// Needed for theApp
-#endif
 void ECSocket::OnConnect()
 {
-	#ifdef CLIENT_GUI
-	printf("EC: OnConnect\n");
-	if (!theApp.connect->ConnectionEstablished()) {
-		OnError();
-	} else {
-		theApp.Startup();
-	}
-	#endif
+	printf("ECSocket::OnConnect()");
 }
 
 void ECSocket::OnSend()
@@ -458,11 +462,13 @@ void ECSocket::OnReceive()
 
 void ECSocket::OnClose()
 {
-	Destroy();
+	printf("ECSocket::OnClose\n");
 }
 
 void ECSocket::OnError()
 {
+	printf("ECSocket::OnError\n");
+	OnClose();
 }
 
 bool ECSocket::ReadNumber(void *buffer, unsigned int len)
@@ -732,6 +738,11 @@ bool ECSocket::WriteFlags(uint32 flags)
  */
 bool ECSocket::WritePacket(const CECPacket *packet)
 {
+	
+	if (!IsConnected()) {
+		return false;
+	}
+	
 	uint32 flags = 0x20;
 	uint32 accepted_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS;
 
@@ -783,6 +794,10 @@ bool ECSocket::WritePacket(const CECPacket *packet)
  */
 CECPacket * ECSocket::ReadPacket()
 {
+	if (!IsConnected()) {
+		return NULL;
+	}
+	
 	uint32 flags = ReadFlags();
 
 	if ((flags & 0x60) != 0x20) {
@@ -827,4 +842,138 @@ CECPacket * ECSocket::ReadPacket()
 		}
 	}
 	return p;
+}
+
+/*!
+ * Connection to remote core
+ * 
+ */
+
+CRemoteConnect::CRemoteConnect(wxEvtHandler* evt_handler) : ECSocket()
+{
+	notifier = evt_handler;
+	m_busy = false;
+}
+
+bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
+	const wxString &WXUNUSED(login), const wxString &pass, 
+	const wxString& client, const wxString& version)
+{
+	printf("Core connection called\n");
+	
+	ConnectionPassword = pass;
+	
+	m_client = client;
+	m_version = version;
+	
+	// don't even try to connect without password
+	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(ConnectionPassword).IsEmpty()) {
+		server_reply = _("You must specify a non-empty password.");
+		return false;
+	}
+
+	wxIPV4address addr;
+
+	addr.Hostname(host);
+	addr.Service(port);
+
+	printf("Connecting to remote host %s:%i\n",(const char*)unicode2char(addr.IPAddress()),addr.Service());
+	Connect(addr, false);
+	
+	return true;
+}
+
+void CRemoteConnect::OnConnect() {
+	printf("CRemoteConnect::OnConnect()\n");
+	bool auth = ConnectionEstablished();
+	if (notifier) {
+		// Notify app of success / failure
+		wxECSocketEvent event(wxEVT_EC_CONNECTION,auth,server_reply);
+		notifier->AddPendingEvent(event);
+	}
+}
+
+void CRemoteConnect::OnClose() {
+	printf("CRemoteConnect::OnClose()\n");
+	if (notifier) {
+		// Notify app of failure
+		wxECSocketEvent event(wxEVT_EC_CONNECTION,false,_("Connection failure"));
+		notifier->AddPendingEvent(event);
+	}
+	ECSocket::OnClose();
+}
+
+bool CRemoteConnect::ConnectionEstablished() {
+	
+	SetFlags(wxSOCKET_BLOCK);
+	
+	// Authenticate ourselves
+	CECPacket packet(EC_OP_AUTH_REQ);
+	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, m_client));
+	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, m_version));
+	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
+	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(ConnectionPassword)));
+
+#ifdef EC_VERSION_ID
+	packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
+#endif
+
+	if (! WritePacket(&packet) ) {
+		server_reply = _("EC Connection Failed. Unable to write data to the socket.");
+		Close();
+		return false;
+	}
+    
+	auto_ptr<CECPacket> reply(ReadPacket());
+	
+	if (!reply.get()) {
+		server_reply = _("EC Connection Failed. Empty reply.");
+		Close();
+		return false;
+	}
+	
+	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
+		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
+		if (reason != NULL) {
+			server_reply = CFormat(_("ExternalConn: Access denied because: %s")) % 
+				wxGetTranslation(reason->GetStringData());
+		} else {
+		    server_reply = _("ExternalConn: Access denied");
+		}
+		Close();
+		return false;
+    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+        server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
+		Close();
+		return false;
+    } else {
+        if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
+                server_reply = CFormat(_("Succeeded! Connection established to aMule %s")) %
+                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData();
+        } else {
+                server_reply = _("Succeeded! Connection established.");
+        }
+    }
+    
+	return true;	
+}
+
+
+CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
+{
+	m_busy = true;
+    if (! WritePacket(packet) ) {
+		m_busy = false;
+    	return 0;
+    }
+    CECPacket *reply = ReadPacket();
+
+	m_busy = false;
+	return reply;
+}
+
+void CRemoteConnect::Send(CECPacket *packet)
+{
+	// Just send and ignore reply
+    auto_ptr<CECPacket> reply(SendRecv(packet));
 }

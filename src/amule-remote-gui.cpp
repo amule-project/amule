@@ -130,7 +130,7 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 	// Core timer
 	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
 
-//	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleRemoteGuiApp::OnNotifyEvent)
+	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 
 END_EVENT_TABLE()
 
@@ -201,7 +201,9 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 }
 
 void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt)) {
-	amuledlg->Destroy();
+	if (amuledlg) {
+		amuledlg->Destroy();
+	}
 	StopTickTimer();
 }
 
@@ -225,9 +227,9 @@ bool CamuleRemoteGuiApp::OnInit()
 		OnExit();
 	}
 
-	connect = new CRemoteConnect;
+	connect = new CRemoteConnect(this);
 
-	SetAppName(wxT("aMule"));
+	SetAppName(wxT("aMule Remote GUI"));
 	
 	// Load Preferences
 	// This creates the CFG file we shall use
@@ -235,6 +237,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	if ( !wxDirExists( ConfigDir ) ) {
 		wxMkdir( ConfigDir, CPreferences::GetDirPermissions() );
 	}
+
 	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
 
 	glob_prefs = new CPreferencesRem(connect);	
@@ -244,13 +247,8 @@ bool CamuleRemoteGuiApp::OnInit()
 
 	bool result = ShowConnectionDialog();
 
-	if (result) {
-	#ifndef CLIENT_GUI
-		Startup();
-	#else
-		printf("Going for main loop while we wait for events\n");	
-	#endif
-	}
+	printf("Going to event loop...\n");
+	
 	return result;
 }
 
@@ -262,15 +260,36 @@ bool CamuleRemoteGuiApp::CryptoAvailable() const
 bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 	
 	dialog = new CEConnectDlg;
+	bool onprogress = false;
 	do {
-		
 		if ( dialog->ShowModal() != wxID_OK ) {
 			dialog->Destroy();
 			return false;
 		}
-	} while ( !connect->Connect(dialog->Host(), dialog->Port(), dialog->Login(), dialog->PassHash()) );
+		printf("Connecting...\n");
+		onprogress = connect->ConnectToCore(
+			dialog->Host(), dialog->Port(), 
+			dialog->Login(), dialog->PassHash(),
+			wxT("amule-remote"), wxT("0x0001"));
+		if (!onprogress) {
+			wxMessageBox(connect->GetServerReply(),_("Error"),wxOK);
+		}
+	} while ( !onprogress );
 
 	return true;	
+}
+
+void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
+	wxECSocketEvent& evt = *((wxECSocketEvent*)&event);
+	printf("Remote GUI EC event handler\n");
+	AddLogLineM(true,evt.GetServerReply());
+	if (evt.GetResult() == true) {
+		// Connected
+		Startup();
+	} else {
+		printf("Going down\n");
+		ExitMainLoop();
+	}
 }
 
 void CamuleRemoteGuiApp::Startup() {
@@ -885,129 +904,6 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	req.AddTag(hashtag);
 	
 	m_conn->Send(&req);
-}
-
-/*!
- * Connection to remote core
- * 
- */
-CRemoteConnect::CRemoteConnect()
-{
-	m_ECSocket = new ECSocket;
-	m_isConnected = false;
-	m_busy = false;
-}
-
-bool CRemoteConnect::Connect(const wxString &host, int port,
-	const wxString &WXUNUSED(login), const wxString &pass)
-{
-	
-	ConnectionPassword = pass;
-	
-	// don't even try to connect without password
-	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(ConnectionPassword).IsEmpty()) {
-		wxMessageBox(_("You must specify a non-empty password."), _("Error"));
-		return false;
-	}
-
-	wxIPV4address addr;
-
-	addr.Hostname(host);
-	addr.Service(port);
-
-	m_ECSocket->Connect(addr, false);
-	
-	#ifndef CLIENT_GUI
-	m_ECSocket->WaitOnConnect(10);
-
-	if (!m_ECSocket->IsConnected()) {
-		// no connection => close gracefully
-		AddLogLineM(true, _("EC Connection Failed. Unable to connect to the specified host"));
-		return false;
-	} else {
-		return ConnectionEstablished();
-	}
-	#endif
-	
-	return true;
-}
-
-bool CRemoteConnect::ConnectionEstablished() {
-	
-	// Authenticate ourselves
-	CECPacket packet(EC_OP_AUTH_REQ);
-	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, wxString(wxT("amule-remote"))));
-	packet.AddTag(CECTag(EC_TAG_CLIENT_VERSION, wxString(wxT("0x0001"))));
-	packet.AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
-	packet.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(ConnectionPassword)));
-
-#ifdef EC_VERSION_ID
-	packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
-#endif
-
-	if (! m_ECSocket->WritePacket(&packet) ) {
-		AddLogLineM(true, _("EC Connection Failed. Unable to write data to the socket."));
-		return false;
-	}
-    
-	auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
-	
-	if (!reply.get()) {
-		AddLogLineM(true, _("EC Connection Failed. Empty reply."));
-		return false;
-	}
-	
-	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
-		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
-		if (reason != NULL) {
-			AddLogLineM(true, CFormat(_("ExternalConn: Access denied because: %s")) % 
-				wxGetTranslation(reason->GetStringData()));
-		} else {
-		    AddLogLineM(true, _("ExternalConn: Access denied"));
-		}
-		return false;
-    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-        AddLogLineM(true,_("ExternalConn: Bad reply from server. Connection closed."));
-		return false;
-    } else {
-        m_isConnected = true;
-        if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-                AddLogLineM(true, CFormat(_("Succeeded! Connection established to aMule %s")) %
-                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData());
-        } else {
-                AddLogLineM(true, _("Succeeded! Connection established."));
-        }
-    }
-    m_isConnected = true;
-    m_ECSocket->SetFlags(wxSOCKET_BLOCK);
-    
-	return true;	
-}
-
-
-CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
-{
-	m_busy = true;
-    if (! m_ECSocket->WritePacket(packet) ) {
-		m_busy = false;
-    	return 0;
-    }
-    CECPacket *reply = m_ECSocket->ReadPacket();
-
-	m_busy = false;
-	return reply;
-}
-
-void CRemoteConnect::Send(CECPacket *packet)
-{
-	m_busy = true;
-    if (! m_ECSocket->WritePacket(packet) ) {
-		m_busy = false;
-    	return;
-    }
-    auto_ptr<CECPacket> reply(m_ECSocket->ReadPacket());
-
-	m_busy = false;
 }
 
 /*

@@ -29,6 +29,7 @@
 
 #include "CTypedPtrList.h"
 #include "ECSpecialTags.h"
+#include "ECSocket.h"
 #include "Statistics.h"
 #include "Preferences.h"
 #include "Statistics.h"
@@ -48,6 +49,7 @@ class CSearchFile;
 class CPartFile;
 class CUpDownClient;
 class CStatistics;
+class wxEvtHandler;
 
 #include <wx/dialog.h>
 
@@ -71,26 +73,6 @@ class CEConnectDlg : public wxDialog {
 		wxString Login() { return login; }
 		wxString PassHash();
 		bool SaveUserPass() { return m_save_user_pass; }
-};
-
-class CRemoteConnect {
-		ECSocket *m_ECSocket;
-		bool m_isConnected;
-		bool m_busy;
-		wxString ConnectionPassword;
-	public:
-		CRemoteConnect();
-		~CRemoteConnect();
-		
-		bool Connect(const wxString &host, int port, const wxString& login, const wxString &pass);
-
-		bool ConnectionEstablished();
-	
-		CECPacket *SendRecv(CECPacket *);
-		void Send(CECPacket *);
-		
-		bool Busy() { return m_busy; }
-		
 };
 
 class CPreferencesRem : public CPreferences {
@@ -564,5 +546,92 @@ class CListenSocketRem {
 	public:
 		uint32 GetPeakConnections() { return m_peak_connections; }
 };
+
+class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
+	AMULE_TIMER_CLASS* core_timer;
+
+	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
+
+	bool OnInit();
+
+	int OnExit();
+
+	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
+	
+	void OnECConnection(wxEvent& event);
+
+public:
+
+	void Startup();
+
+	bool ShowConnectionDialog();
+
+	class CRemoteConnect *connect;
+
+	CEConnectDlg *dialog;
+
+	bool CopyTextToClipboard(wxString strText);
+
+	virtual void ShowAlert(wxString msg, wxString title, int flags);
+
+	void ShutDown(wxCloseEvent &evt);
+
+	CPreferencesRem *glob_prefs;
+	wxString ConfigDir;
+
+	//
+	// Provide access to core data thru EC
+	CServerConnectRem *serverconnect;
+	CServerListRem *serverlist;
+	CUpQueueRem *uploadqueue;
+	CDownQueueRem *downloadqueue;
+	CSharedFilesRem *sharedfiles;
+	CKnownFilesRem *knownfiles;
+	CClientCreditsRem *clientcredits;
+	CClientListRem *clientlist;
+	CIPFilterRem *ipfilter;
+	CSearchListRem *searchlist;
+	CListenSocketRem *listensocket;
+
+	CStatistics *statistics;
+
+	bool AddServer(CServer *srv, bool fromUser = false);
+
+	uint32 GetPublicIP();
+	wxString CreateED2kLink(const CAbstractFile* f);
+	wxString CreateHTMLED2kLink(const CAbstractFile* f);
+	wxString CreateED2kSourceLink(const CAbstractFile* f);
+	wxString CreateED2kAICHLink(const CKnownFile* f);
+	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
+
+	virtual void NotifyEvent(const GUIEvent& event);
+
+	wxString GetLog(bool reset = false);
+	wxString GetServerLog(bool reset = false);
+
+	void AddServerMessageLine(wxString &msg);
+
+	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
+
+	bool IsConnected() const { return IsConnectedED2K() || IsConnectedKad(); }
+	bool IsConnectedED2K() const;
+	bool IsConnectedKad() const { return m_KadConnected; };
+
+	void StartKad();
+	void StopKad();
+
+	bool CryptoAvailable() const;
+	
+	uint32 GetED2KID() const;
+	
+	bool m_KadConnected;
+	
+	DECLARE_EVENT_TABLE()
+	
+protected:
+	wxLocale	m_locale;
+};
+
+DECLARE_APP(CamuleRemoteGuiApp)
 
 #endif /* AMULE_REMOTE_GUI_H */

@@ -47,6 +47,7 @@
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
+#include "ECSocket.h"		// Needed for ECSocket
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
