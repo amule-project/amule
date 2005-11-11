@@ -77,7 +77,7 @@ private:
 	void	OnSetFriendslot(wxCommandEvent& event);
 	void	OnAddFriend(wxCommandEvent& event);
 	void	OnViewFiles(wxCommandEvent& event);
-
+	void	OnKeyPressed(wxKeyEvent& event);
 };
 
 #endif
