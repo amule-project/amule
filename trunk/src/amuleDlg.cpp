@@ -42,6 +42,7 @@
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
 #include <wx/accel.h>
+#include <wx/html/htmlwin.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
@@ -1549,7 +1550,7 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 
 void CamuleDlg::OnKeyPressed(wxKeyEvent& event) {
 	if (event.GetKeyCode() == WXK_F1) {
-		printf("Help requested");
+		LaunchUrl(wxT("http://wiki.amule.org"));
 	}
 }
 
