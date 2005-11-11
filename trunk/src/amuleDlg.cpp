@@ -794,6 +794,8 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 				_("Connect to any server and/or Kad"));
 		}
 		
+		m_wndToolbar->Realize();
+		
 		if ( LastED2KState != NewED2KState ) {
 			
 			switch ( NewED2KState ) {
