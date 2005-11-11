@@ -32,7 +32,6 @@
 // Since there are only constructors defined here,
 // removing everything from non-local builds.
 #ifndef EC_REMOTE
-
 #include "amule.h"
 #include "Server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
@@ -42,13 +41,11 @@
 #include "SearchList.h"
 
 #include "kademlia/kademlia/Kademlia.h"
+#endif
 
-#else
-
-#include "wx/intl.h"		// Needed for _()
+#include <wx/intl.h>		// Needed for _()
 #include "KnownFile.h"		// Needed for PS_*
 #include "Format.h"		// Needed for CFormat
-#endif
 
 #if !defined(EC_REMOTE) || defined(CLIENT_GUI)
 
@@ -691,8 +688,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
 }
 
-#else /* EC_REMOTE */
-// Since this is only needed at the remote end
+#endif /* ! EC_REMOTE */
 
 wxString CEC_PartFile_Tag::GetFileStatusString()
 {
@@ -721,7 +717,6 @@ wxString CEC_PartFile_Tag::GetFileStatusString()
         }
 }
 
-#endif /* ! EC_REMOTE */
 #ifndef EC_REMOTE
 
 
@@ -911,9 +906,6 @@ CEC_Search_Tag::CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxStr
 	}
 }
 
-
-#ifdef EC_REMOTE
-
 void FormatValue(CFormat& format, const CECTag* tag)
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STAT_NODE_VALUE);
@@ -990,5 +982,3 @@ wxString CEC_StatTree_Node_Tag::GetDisplayString() const
 	}
 	return label.GetString();
 }
-
-#endif /* EC_REMOTE */
