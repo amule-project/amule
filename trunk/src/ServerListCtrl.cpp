@@ -551,7 +551,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// Check if delete was pressed
-	if ( event.GetKeyCode() == WXK_DELETE ) {
+	if ((event.GetKeyCode() == WXK_DELETE) or (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
 		wxCommandEvent evt;
 		evt.SetId( MP_REMOVE );
 		OnRemoveServers( evt );

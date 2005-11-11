@@ -58,6 +58,8 @@ BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_MENU(MP_DETAIL, CFriendListCtrl::OnShowDetails)
 	EVT_MENU(MP_SHOWLIST, CFriendListCtrl::OnViewFiles)
 	EVT_MENU(MP_FRIENDSLOT, CFriendListCtrl::OnSetFriendslot)
+
+	EVT_CHAR(CFriendListCtrl::OnKeyPressed)
 END_EVENT_TABLE()
 
 
@@ -268,23 +270,31 @@ void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 	}	
 }
 
-void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event)) {
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+
+void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event))
+{
+	wxString question = _("Are you sure that you wish to delete the selected friend(s)?");
+	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+		long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
-	while( index != -1 ) {
-		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
-		RemoveFriend(cur_friend);
-		// -1 because we changed the list and removed that item.
-		index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	}	
-	
+		while( index != -1 ) {
+			CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
+			RemoveFriend(cur_friend);
+			// -1 because we changed the list and removed that item.
+			index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+		}
+	}
 }
 
-void CFriendListCtrl::OnAddFriend(wxCommandEvent& WXUNUSED(event)) {
+
+void CFriendListCtrl::OnAddFriend(wxCommandEvent& WXUNUSED(event))
+{
 	CAddFriend(this).ShowModal();			
 }
 
-void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event)) {
+
+void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event))
+{
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	while( index != -1 ) {
@@ -309,7 +319,9 @@ void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event)) {
 	
 }
 
-void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event)) {
+
+void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
+{
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	while( index != -1 ) {
@@ -323,7 +335,9 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event)) {
 	
 }
 
-void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
+
+void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
+{
 	// Clean friendslots
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
 	while (index != -1) {
@@ -345,10 +359,28 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event) {
 	}
 }
 
-void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state) {
+
+void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort, bool new_state)
+{
 	CDlgFriend* client = FindFriend(CMD4Hash(), dwIP, nPort);
 	if (client) {
 		client->m_hash = userhash;
 		client->islinked = new_state;	
 	}
 }
+
+
+void CFriendListCtrl::OnKeyPressed(wxKeyEvent& event)
+{
+	// Check if delete was pressed
+	if ((event.GetKeyCode() == WXK_DELETE) or (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
+		if (GetItemCount()) {
+			wxCommandEvent evt;
+			evt.SetId( MP_REMOVEFRIEND );
+			OnRemoveFriend( evt );
+		}
+	} else {
+		event.Skip();
+	}
+}
+
