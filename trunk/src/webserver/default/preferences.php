@@ -239,9 +239,8 @@ function init_data()
 
   	<td class="tabs" align="center" width="30">&nbsp;</td>
   	<td align="left" class="tabs" width="95">
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=sinfo'; return false;">Serverinfo</a><br>
-  		<img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=log#end'; return false;">Log</a>
-  		<!--<br><img src="log.gif"> <a href="#" onClick="self.location.href='?ses=2105603570&amp;w=debuglog#end'; return false;">Debug Log</a>-->
+  		<img src="log.gif"> <a href="index.php?serverinfo=1">Serverinfo</a><br>
+  		<img src="log.gif"> <a href="index.php?log=1">Log</a>
   	</td>
   </tr>
   </table>
