@@ -825,9 +825,7 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 			}
 			/* Draw ED2K arrow */
 			status_arrows.Draw(NewED2KState, bitmap_dc, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
-	
-			m_wndToolbar->Realize();
-			
+		
 			LastED2KState = NewED2KState;
 			
 		}
