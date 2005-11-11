@@ -4,12 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="PRAGMAS" CONTENT="NO-CACHE">
 <title>aMule CVS - Web Control Panel</title>
-<?php
-	if ( $_SESSION["auto_refresh"] > 0 ) {
-		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"],
-			'; url=servers.php', '">';
-	}
-?>
+
 <style type="text/css">
 img
 {
@@ -147,7 +142,7 @@ border-color: black;
   			Shared Files
   		</a>
   	<td align="center" class="tabs" width="110">
-		<a href="stat_tree.php">
+		<a href="statistics.php">
 			<img src="cp_stats.gif"><br>
   			Statistics</a>
   		<font color="#000000">|</font>
@@ -178,8 +173,8 @@ border-color: black;
 </tr>
 <tr>
  <td class="tabs">
- 	&nbsp;&nbsp;<b>Connection:</b>
- 	<?php
+ 	&nbsp;&nbsp;<b>Connection:</b> 
+	<?php
 		function CastToXBytes($size)
 		{
 			if ( $size < 1024 ) {
@@ -208,16 +203,17 @@ border-color: black;
 			'<small> (Limits: ', CastToXBytes($stats["speed_limit_up"]), 'ps/',
 			CastToXBytes($stats["speed_limit_down"]), 'ps)</small>&nbsp;';
 	?>
+ 
   <font color=black>
 
-	<script language="javascript">
+	<script type="text/javascript" language="javascript">
 	var d = new Date();
 	s = "[ " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes() + ":" + (d.getSeconds() < 10 ? "0" : "") + d.getSeconds() + " ]";
 	document.write(s);
 </script>
   </font>
  </td>
- <td align=right class=tabs>
+ <td align=left class=tabs>
   <form>
   <input type="button" value="ed2k://Download" onClick='self.location.href="index.php?links=1"'>
   <input type="button" value="Logout" onClick='self.location.href="login.html"'>
@@ -225,130 +221,40 @@ border-color: black;
  </td>
 </tr>
 </table>
-<font face=Tahoma style="font-size:8pt;">&nbsp;
-
-<table border=0 align=center cellpadding=4 cellspacing=0 width="95%">
-<tr>
-  <td align=center valign=top>
-
-<?php
-	$add_server_form = '
-<div class="message"></div>
-<table border=0 align=center cellpadding=4 cellspacing=0 width="60%" display="None">
-<tr>
-<td valign=middle class="addserver-header"><img src="add_server.gif"> <b>Add new server</b></td>
-</tr>
-<tr>
- <td valign=middle class="addserver-line">
-<form action="servers.php" method="GET">
-  IP or Address <input name="ip" type="text" size="15">
-  Port <input name="port" type="text" size="6">
-  Name <input name="name" type="text" size="30"><br>
-  <input name="cmd" type="hidden" value="add"><br>
-  <input type="submit" value="Add to list">
-</form>
- </td>
-</tr>
-<tr>
-<td valign=middle class="addserver-header"><img src="add_server.gif"> <b>Update server.met from URL</b></td>
-</tr>
-<tr>
- <td valign=middle class="addserver-line">
-<form action="servers.php" method="GET">
-  URL <input name="servermeturl" type="text" size="60"><br>
-  <input type="hidden" name=w value="server">
-  <input type="hidden" name=c value="options">
-  <input name="updateservermetfromurl" type="hidden" value="true"><br>
-  <input type="submit" value="Apply">
-</form>
- </td>
-</tr>
-</table>
-';
-	if ( ($_SESSION["guest_login"] == 0) && $HTTP_GET_VARS["showctrl"] ) {
-		echo $add_server_form;
-	}
-?>
 
 &nbsp;
-<table border=0 align=center cellpadding=4 cellspacing=0 width="100%">
-<tr>
- <td class="smallheader" colspan=5 style="background-color: #000000"><b>Server</b></td>
-</tr>
-<tr>
- <td valign=middle class="server-header"><b>Status</b></td>
- <td valign=middle class="server-header"><b>Server name</b></td>
- <td valign=middle class="server-header"><b>users</b></td>
- <td valign=middle class="server-line"><a href="servers.php?cmd=disconnect&amp;ip=0&amp;port=0">Disconnect</a></td>
- <td valign=middle class="server-header"><a href="servers.php?showctrl=1">Server Preferences</a></td>
-</tr>
-<tr>
+
 <?php
-		echo '<td valign=middle class="server-line">';
-		$stats = amule_get_stats();
-		if ( $stats["id"] == 0 ) {
-			echo "Not connected";
-		} elseif ( $stats["id"] == 0xffffffff ) {
-			echo "Connecting ...";
-		} else {
-			echo "Connected with ", (($stats["id"] < 16777216) ? "low ID" : "high ID");
-		}
-		echo '</td><td valign=middle class="server-line">', $stats["serv_name"], '</td>';
-		echo '<td valign=middle class="server-line">', $stats["serv_users"], '</td>';
-		
+	// reload graphs data
+	amule_load_vars("stats_graph");
 ?>
- <td valign=middle class="server-header"><a href="servers.php?cmd=connect&amp;ip=0&amp;port=0">Connect to any server</a></td>
- <td valign=middle class="server-line"></td>
+
+<table border=0 align=center cellpadding=4 cellspacing=0>
+<tr>
+<td class="websearch-line"><img src="amule_stats_download.png" width="500" height="200" border="0" alt="" title="" /></td>
+</tr>
+<tr>
+<td width="600" class="websearch-line"><b><font face=Tahoma style="font-size:8pt;">Download speed</font></b></td>
 </tr>
 </table>
 &nbsp;
-<table border=0 align=center cellpadding=4 cellspacing=0 width="100%">
+<table border=0 align=center cellpadding=4 cellspacing=0>
 <tr>
- <td class="smallheader" colspan=6 style="background-color: #000000"><b>Server list</b></td>
+<td class="websearch-line"><img src="amule_stats_upload.png" width="500" height="200" border="0" alt="" title="" /></td>
 </tr>
 <tr>
- <td valign=middle class="server-header-left"><a href="servers.php?sort=name"><b>Server name</b></a></td>
- <td valign=middle class="server-header"><a href="servers.php?sort=description"><b>Description</b></a></td>
- <td valign=middle class="server-header"><a href="servers.php?sort=ip"><b>IP</b></a></td>
- <td valign=middle class="server-header"><a href="servers.php?sort=users"><b>users</b></a></td>
- <td valign=middle class="server-header"><a href="servers.php?sort=files"><b>files</b></a></td>
- <td valign=middle class="server-header"><b>Actions</b></td>
-</tr>
-
-<?php
-	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
-		var_dump($HTTP_GET_VARS);
-		if ( $HTTP_GET_VARS["cmd"] == "add" ) {
-			amule_do_add_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["name"]);
-		} else {
-			amule_do_server_cmd($HTTP_GET_VARS["ip"], $HTTP_GET_VARS["port"], $HTTP_GET_VARS["cmd"]);
-		}
-	}
-	
-	$servers = amule_load_vars("servers");
-
-	foreach ($servers as $srv) {
-		echo "<tr>";
-		echo '<td valign=middle class="server-line-left">', $srv->name, '</td>';
-		echo '<td valign=middle class="server-line">', $srv->desc, '</td>';
-		echo '<td valign=middle class="server-line">', $srv->addr, '</td>';
-		echo '<td valign=middle class="server-line">', $srv->users, '(', $srv->maxusers, ')', '</td>';
-		echo '<td valign=middle class="server-line">', $srv->files, '</td>';
-		if ( $_SESSION["guest_login"] == 0 ) {
-			echo '<td valign=middle class="server-line"><acronym title="Connect">',
-			'<a href="servers.php?cmd=connect&ip=', $srv->ip, '&port=', $srv->port,
-			'" style="text-decoration: none"><img src="l_connect.gif" alt="Connect"></a></acronym>',
-			'<acronym title="Remove selected server"><a href="servers.php?cmd=remove&ip=',
-			$srv->ip, '&port=', $srv->port,
-			"\" onclick=\"return confirm('Are you sure to remove this server from list?')\">",
-			'<img src="l_cancel.gif" alt="Remove selected server"></a></acronym>';
-		}
-		echo "</tr>";
-	}
-?>
-</table>
- </td>
+<td width="600" class="websearch-line"><b><font face=Tahoma style="font-size:8pt;">Upload speed</font></b></td>
 </tr>
 </table>
-</font></body>
+&nbsp;
+<table border=0 align=center cellpadding=4 cellspacing=0>
+<tr>
+<td class="websearch-line"><img src="amule_stats_conncount.png" width="500" height="200" border="0" alt="" title="" /></td>
+</tr>
+<tr>
+<td width="600" class="websearch-line"><b><font face=Tahoma style="font-size:8pt;">Number of connections</font></b></td>
+</tr>
+</table>
+
+</body>
 </html>

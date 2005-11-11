@@ -222,7 +222,7 @@ function init_data()
   			Shared Files
   		</a>
   	<td align="center" class="tabs" width="110">
-		<a href="statistics.php">
+		<a href="stat_tree.php">
 			<img src="cp_stats.gif"><br>
   			Statistics</a>
   		<font color="#000000">|</font>
