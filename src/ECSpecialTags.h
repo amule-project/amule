@@ -37,10 +37,6 @@
 #include <map>
 #include <vector>
 
-#ifndef EC_REMOTE
-	#include "Statistics.h"	// Needed for StatsTree
-#endif
-
 /*
  * Specific tags for specific requests
  *
@@ -56,8 +52,6 @@ class CKnownFile;
 class CPartFile;
 class CSearchFile;
 class CUpDownClient;
-
-#ifndef EC_REMOTE
 
 /*
  * EC tags encoder. Idea: if for an object <X>, client <Z> tag <Y> have value equal to previous
@@ -132,10 +126,6 @@ class CValueMap {
 			CreateTagT<wxString>(tagname, value, m_map_string, parent);
 		}
 };
-#else
-// define empty class, so compiler will be happy
-class CValueMap {};
-#endif
 
 class CEC_Category_Tag : public CECTag {
  	public:
@@ -248,9 +238,7 @@ class CEC_PartFile_Tag : public CECTag {
 		void SetFileCat(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
 		void SetLastSeenComplete(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, value); }
 		
-		#ifdef EC_REMOTE
 		wxString	GetFileStatusString();
-		#endif /* EC_REMOTE */
 };
 
 class CEC_SharedFile_Tag : public CECTag {
@@ -361,12 +349,10 @@ class CEC_Kad_Tag : public CECTag {
 		CEC_Kad_Tag();
 };
 
-#ifdef EC_REMOTE
 class CEC_StatTree_Node_Tag : public CECTag {
 	public:
 		CEC_StatTree_Node_Tag();	// just to keep compiler happy
 		wxString GetDisplayString() const;
 };
-#endif /* EC_REMOTE */
 
 #endif /* ECSPEACIALTAGS_H */
