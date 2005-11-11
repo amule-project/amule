@@ -211,7 +211,7 @@ common_sources = \
 core_libs = -lmuleappcore
 gui_libs =  $(X11LIBS) $(WX_LIBS) -lmuleappgui
 remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -lmulecommon -leccommon
-common_libs = $(CRYPTOLIBS) $(remote_common_libs) -lmuleappcommon
+common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
 
 # Flags
 
