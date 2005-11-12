@@ -93,14 +93,8 @@ AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon      compile aMule daemon 
 AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd          compile aMule command line client],
               BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
 
-AC_ARG_ENABLE(amulecmdgui,  [  --enable-amulecmdgui       compile aMule command line client (with GUI)],
-             GUI="$enableval", GUI="no")
-
 AC_ARG_ENABLE(webserver,  [  --enable-webserver         compile aMule WebServer],
               WEB="$enableval", WEB="no")
-
-AC_ARG_ENABLE(webservergui,  [  --enable-webservergui      compile aMule WebServer (with GUI)],
-              WEBGUI="$enableval", WEBGUI="no")
 
 AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui         compile aMule remote GUI (EXPERIMENTAL)],
              AMULE_GUI="$enableval", AMULE_GUI="no")
@@ -234,14 +228,6 @@ if test x"$ALC" = x"yes" ; then
 fi
 
 if test x"$AMULE_GUI" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test x"$GUI" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test x"$WEBGUI" = x"yes" ; then
   need_gui="yes"
 fi
 
@@ -610,10 +596,8 @@ AM_CONDITIONAL(CAS, test x$CAS = xyes)
 AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
 AM_CONDITIONAL(ALC, test x$ALC = xyes)
 AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
-AM_CONDITIONAL(GUI, test x$GUI = xyes)
 AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
-AM_CONDITIONAL(WEBGUI, test x$WEBGUI = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(ADD_24GSOCKET, test x$USE_24GSOCKET = xyes)
 AM_CONDITIONAL(ADD_GSOCKET, test x$USE_GSOCKET = xyes)
@@ -677,6 +661,7 @@ AC_CONFIG_FILES([Makefile
 		 src/kademlia/routing/Makefile
 		 src/kademlia/net/Makefile
 		 src/pixmaps/Makefile
+		 src/libs/Makefile
 		 src/utils/Makefile
 		 src/utils/aLinkCreator/Makefile
 		 src/utils/aLinkCreator/docs/Makefile
@@ -733,11 +718,9 @@ echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_S
 echo
 echo "  **** aMule TextClient ****"
 echo "  Should aMule Command Line Client be built?                 ${BUILD_AMULECMD:-no}"
-echo "  Should aMule GUI Client be built?                          ${GUI:-no}"
 echo
 echo "  **** aMule WebServer ****"
 echo "  Should aMule WebServer be built?                           ${WEB:-no}"
-echo "  Should aMule WebServer GUI be built?                       ${WEBGUI:-no}"
 echo
 echo "  **** aMule ED2K Links Handler ****"
 echo "  Should aMule ED2K Links Handler be built?                  ${ED2K:-yes}"
