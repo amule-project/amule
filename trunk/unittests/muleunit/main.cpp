@@ -19,7 +19,7 @@
 
 #include <wx/wx.h>
 #include "testregistry.h"
-#include "../../src/MuleDebug.h"
+#include "MuleDebug.h"
 
 using namespace muleunit;
 

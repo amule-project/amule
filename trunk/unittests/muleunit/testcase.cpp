@@ -22,7 +22,7 @@
 #include "test.h"
 #include "testresult.h"
 
-#include "../../src/MuleDebug.h"
+#include "MuleDebug.h"
 
 #include <exception>
 

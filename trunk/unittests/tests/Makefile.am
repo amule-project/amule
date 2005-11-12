@@ -5,7 +5,7 @@
 
 # Use this to be able to catch assertions as exceptions
 MUCXXFLAGS = -DMULEUNIT 
-AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src $(WX_CXXFLAGS) ${MUCXXFLAGS} 
+AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs/common $(WX_CXXFLAGS) ${MUCXXFLAGS} 
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
@@ -20,13 +20,13 @@ RangeMapTest_LDADD = $(LDADD)
 
 
 # Tests for the CFormat class
-FormatTest_SOURCES = FormatTest.cpp $(top_srcdir)/src/Format.cpp
+FormatTest_SOURCES = FormatTest.cpp $(top_srcdir)/src/libs/common/Format.cpp
 FormatTest_CXXFLAGS = $(AM_CXXFLAGS)
 FormatTest_LDADD = $(LDADD)
 
 
 # Tests for the various string functions.
-StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/StringFunctions.cpp
+StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp
 StringFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
 StringFunctionsTest_LDADD = $(LDADD)
 
