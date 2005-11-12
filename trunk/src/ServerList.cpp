@@ -50,11 +50,11 @@
 #include "GetTickCount.h"		// Needed for GetTickCount
 #include "NetworkFunctions.h"		// Needed for StringIPtoUint32
 #include "Statistics.h"			// Needed for theStats
-#include "StringFunctions.h"		// Needed for unicode2char 
+#include <common/StringFunctions.h>		// Needed for unicode2char 
 #include "Tag.h"			// Needed for CTag
 #include "Packet.h"			// Neeed for CPacket
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "IPFilter.h"
 #include "FileFunctions.h"		// Needed for UnpackArchive
 

@@ -27,15 +27,17 @@
 
 #include <wx/string.h>
 
+#include <ec/ECSpecialTags.h>
+#include <ec/ECSocket.h>
+#include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
+
+
 #include "CTypedPtrList.h"
-#include "ECSpecialTags.h"
-#include "ECSocket.h"
 #include "Statistics.h"
 #include "Preferences.h"
 #include "Statistics.h"
 #include "OtherFunctions.h"
 #include "RLE.h"
-#include "RemoteConnect.h"		// Needed for CRemoteConnect
 
 #include <set>
 #include <map>

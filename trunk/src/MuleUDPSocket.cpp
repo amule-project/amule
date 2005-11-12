@@ -29,7 +29,7 @@
 #include "GetTickCount.h"	// Needed for GetTickCount()
 #include "OPCodes.h"		// Needed for SEC2MS
 #include "Packet.h"			// Needed for CPacket
-#include "StringFunctions.h"// Needed for unicode2char
+#include <common/StringFunctions.h>// Needed for unicode2char
 #include "Proxy.h"			// Needed for CDatagramSocketProxy
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "UploadBandwidthThrottler.h"

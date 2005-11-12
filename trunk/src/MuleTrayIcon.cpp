@@ -46,7 +46,7 @@
 #include "Color.h"			// Needed for WxColourFromCr
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
 #include "Statistics.h"			// Needed for theStats
-#include "Format.h"			// Needed for CFormat
+#include <common/Format.h>			// Needed for CFormat
 
 
 // Pop-up menu clickable entries

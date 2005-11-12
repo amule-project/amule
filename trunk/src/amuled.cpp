@@ -72,7 +72,7 @@
 #include "AICHSyncThread.h"
 #include "Statistics.h"
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
 
 #ifdef HAVE_SYS_RESOURCE_H

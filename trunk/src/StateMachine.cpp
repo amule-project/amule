@@ -25,7 +25,7 @@
 
 #include "StateMachine.h"
 
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 
 CStateMachine::CStateMachine(
 		const wxString &name,

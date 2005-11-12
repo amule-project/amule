@@ -27,7 +27,7 @@
 
 #include "Types.h"	// Needed for uint* types
 #include <wx/string.h>	// Needed for wxString
-#include "ECcodes.h"	// Needed for EC types
+#include "ECCodes.h"	// Needed for EC types
 #include "ECPacket.h"	// Needed for CECTag
 #include "MD4Hash.h"	// Needed for CMD4Hash
 #include "NetworkFunctions.h" // Needed for IsLowID

@@ -34,7 +34,7 @@
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include <wx/stattext.h>
 #include <wx/sizer.h>
 #include <wx/msgdlg.h>

@@ -25,8 +25,8 @@
 //
 
 #include "Statistics.h"		// Interface declarations
-#include "ECcodes.h"		// Needed for EC tagnames
-#include "ECPacket.h"		// Needed for CECTag
+#include <ec/ECCodes.h>		// Needed for EC tagnames
+#include <ec/ECPacket.h>		// Needed for CECTag
 #include "OPCodes.h"
 
 #include <wx/intl.h>	// Needed for i18n
@@ -34,7 +34,7 @@
 #ifndef EC_REMOTE
 	#include "GetTickCount.h"	// Needed for GetTickCount64()
 	#ifndef AMULE_DAEMON
-		#include "Format.h"		// Needed for CFormat
+		#include <common/Format.h>		// Needed for CFormat
 		#include "OtherFunctions.h"	// Needed for CastItoSpeed()
 	#endif
 	#include "DataToText.h"		// Needed for GetSoftName()
@@ -46,7 +46,7 @@
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
 	#include "Preferences.h"
-	#include "RemoteConnect.h"		// Needed for CRemoteConnect
+	#include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
 
 

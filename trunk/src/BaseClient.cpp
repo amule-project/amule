@@ -54,7 +54,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"		// Needed for theStats
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "ClientUDPSocket.h"
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()

@@ -27,41 +27,9 @@
 #ifndef WEBINTERFACE_H
 #define WEBINTERFACE_H
 
-//-------------------------------------------------------------------
-//
-// wxUSE_GUI will only be defined after this include
-// 
 #include "ExternalConnector.h"
-//-------------------------------------------------------------------
+
 #include "MD4Hash.h"
-
-#if wxUSE_GUI
-#include <wx/textctrl.h>	// For wxTextCtrl
-#include <wx/timer.h>		// For wxTimer
-#include <wx/frame.h>		// For wxFrame
-
-class CamulewebFrame : public wxFrame
-{
-public:
-	CamulewebFrame(const wxString& title, const wxPoint& pos,
-		const wxSize& size, long style = wxDEFAULT_FRAME_STYLE);
-
-	// event handlers (these functions should _not_ be virtual)
-	void OnQuit(wxCommandEvent &event);
-	void OnAbout(wxCommandEvent &event);
-	void OnCommandEnter(wxCommandEvent &event);
-	void OnIdle(wxIdleEvent &e);
-	void OnTimerEvent(wxTimerEvent &WXUNUSED(event));
-	wxTextCtrl *log_text;
-	wxTextCtrl *cmd_control;
-	wxTimer *m_timer;
-
-private:
-	wxLog *logTargetOld;
-	// any class wishing to process wxWindows events must use this macro
-	DECLARE_EVENT_TABLE()
-};
-#endif
 
 class CamulewebApp : public CaMuleExternalConnector
 {
@@ -92,20 +60,11 @@ public:
 
 	bool		m_TemplateOk;
 
-#if wxUSE_GUI
-public:
-	void LocalShow(const wxString &s);
-	CamulewebFrame 	*frame;
-private:
-	int		OnExit();
-#else
 public:
 	void Post_Shell();
 private:
-#endif
 	virtual bool	OnInit();
 	virtual int 	OnRun();
 };
 
 #endif // WEBINTERFACE_H
-

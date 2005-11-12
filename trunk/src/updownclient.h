@@ -33,7 +33,7 @@
 #include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD4Hash.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
 
 #include <map>

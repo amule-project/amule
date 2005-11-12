@@ -38,7 +38,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"		// Neeed for logRemoteClient
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "amule.h"		// Needed for theApp
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ClientList.h"		// Needed for CClientList

@@ -48,7 +48,7 @@
 #include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "IPFilter.h"
 #include "FileFunctions.h"	// Needed for CDirIterator
 #include "OtherFunctions.h"	// Needed for CMutexUnlocker

@@ -91,12 +91,12 @@
 #include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
-#include "StringFunctions.h"	// Needed for validateURI
+#include <common/StringFunctions.h>	// Needed for validateURI
 #include "Packet.h"
 #include "Statistics.h"			// Needed for CStatistics
 #include "AICHSyncThread.h"
 #include "Logger.h"
-#include "Format.h"			// Needed for CFormat
+#include <common/Format.h>			// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 #include "InternalEvents.h"		// Needed for wxMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator

@@ -36,7 +36,7 @@
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for StringIPtoUint32()	*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
-#include "StringFunctions.h"	/* for unicode2char */
+#include <common/StringFunctions.h>	/* for unicode2char */
 
 //------------------------------------------------------------------------------
 // CProxyData

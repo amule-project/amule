@@ -29,8 +29,9 @@
 
 #include <wx/string.h>
 
+#include <common/MuleDebug.h>		// Needed for CInvalidPacket
+
 #include "SafeFile.h"		// Needed for CFileDataIO
-#include "MuleDebug.h"		// Needed for CInvalidPacket
 #include "MD4Hash.h"			// Needed for CMD4Hash
 
 ///////////////////////////////////////////////////////////////////////////////

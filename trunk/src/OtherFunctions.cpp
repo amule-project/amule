@@ -44,6 +44,12 @@
 	#include <wx/stdpaths.h>
 #endif
 
+#include <common/StringFunctions.h>
+#include <common/PlatformSpecific.h>	// Needed for GetUserDataDir()
+
+#ifndef EC_REMOTE
+	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
+#endif
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for a number of defines
@@ -51,11 +57,6 @@
 
 #include "OtherFunctions.h"	// Interface declarations
 #include "OPCodes.h"
-#include "StringFunctions.h"
-#include "PlatformSpecific.h"	// Needed for GetUserDataDir()
-#ifndef EC_REMOTE
-	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
-#endif
 
 #include <cctype>
 #include <map>

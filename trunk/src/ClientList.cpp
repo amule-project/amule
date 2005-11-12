@@ -37,7 +37,7 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 #include <algorithm>
 

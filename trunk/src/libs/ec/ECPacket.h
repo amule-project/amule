@@ -25,12 +25,14 @@
 #ifndef ECPACKET_H
 #define ECPACKET_H
 
-#include "Types.h"		// Needed for uint* types
 #include <wx/string.h>		// Needed for wxString
-#include "../common/StringFunctions.h"	// Needed for aMuleConv
+
+#include <common/StringFunctions.h>	// Needed for aMuleConv define
+
+#include "Types.h"		// Needed for uint* types
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
-#include "ECcodes.h"		// Needed for EC types
+#include "ECCodes.h"		// Needed for EC types
 #include <vector>
 
 // Define this to keep partial packets

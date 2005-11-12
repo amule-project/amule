@@ -388,7 +388,7 @@ CIndexed *CKademlia::getIndexed(void)
 // Global function.
 
 #include "../../CryptoPP_Inc.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];

@@ -41,7 +41,7 @@
 #include "kademlia/kademlia/Indexed.h"
 
 #ifdef CLIENT_GUI
-#include "ECSpecialTags.h"
+#include <ec/ECSpecialTags.h>
 #endif
 
 #define	PS_READY			0

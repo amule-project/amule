@@ -29,7 +29,7 @@
 #include <wx/imaglist.h>
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for amuleSpecial
-#include "StringFunctions.h" // Needed for unicode2char
+#include <common/StringFunctions.h> // Needed for unicode2char
 #include <wx/event.h>
 
 #include "FileFunctions.h"

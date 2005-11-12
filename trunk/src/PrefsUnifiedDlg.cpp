@@ -51,7 +51,7 @@
 #include "amuleDlg.h"
 #include "Color.h"
 #include "OtherFunctions.h"		// Needed for IsEmptyFile
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
@@ -63,7 +63,7 @@
 #include "Preferences.h"
 #include "muuli_wdr.h"
 #include "Logger.h"
-#include "Format.h"				// Needed for CFormat
+#include <common/Format.h>				// Needed for CFormat
 #include "TransferWnd.h"		// Needed for CTransferWnd::UpdateCatTabTitles()
 #include "KadDlg.h"				// Needed for CKadDlg
 

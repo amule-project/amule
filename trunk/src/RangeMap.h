@@ -28,7 +28,8 @@
 
 #include <map>
 
-#include "MuleDebug.h"
+#include <common/MuleDebug.h>
+
 #include "Types.h"
 
 

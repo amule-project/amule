@@ -53,11 +53,12 @@
 
 #include <wx/filename.h>
 
+#include <ec/ECPacket.h>
+
 #include "Types.h"
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "KnownFile.h"
-#include "ECPacket.h"
 #include "RLE.h"
 #include "OtherStructs.h"
 

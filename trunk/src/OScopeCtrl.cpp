@@ -33,9 +33,9 @@
 #include "StatisticsDlg.h"	// Needed for GetHistory()
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "OtherFunctions.h"	// Needed for CastSecondsToHM
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 #include "amule.h"		// Needed for theApp
-#include "Format.h"
+#include <common/Format.h>
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
   EVT_PAINT(COScopeCtrl::OnPaint)

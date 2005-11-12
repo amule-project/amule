@@ -49,14 +49,14 @@
 	#include "config.h"		// Needed for PACKAGE_STRING
 #endif
 #include "OtherFunctions.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 #include "OPCodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"
-#include "MD5Sum.h"
+#include <common/MD5Sum.h>
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
-#include "PlatformSpecific.h"	// Needed for GetDocumentsDir()
+#include <common/Format.h>		// Needed for CFormat
+#include <common/PlatformSpecific.h>	// Needed for GetDocumentsDir()
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>

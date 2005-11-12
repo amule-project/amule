@@ -37,22 +37,18 @@
 //-------------------------------------------------------------------
 
 #include <wx/intl.h>			// For _()
-#if wxUSE_GUI
-	#include <wx/menu.h>		// For wxMenu
-	#include <wx/msgdlg.h>		// For wxMessageBox
-	#include <wx/sizer.h>		// For wxBoxSizer
-	#include <wx/statline.h>	// For wxStaticLine
-#endif
-
 #include <list>
 
 //-------------------------------------------------------------------
 
+#include <ec/ECCodes.h>
+#include <ec/ECPacket.h>
+#include <ec/ECSpecialTags.h>
+
+#include <common/Format.h>		// Needed for CFormat
+
 #include "OtherFunctions.h"
-#include "ECcodes.h"
-#include "ECPacket.h"
-#include "ECSpecialTags.h"
-#include "Format.h"		// Needed for CFormat
+
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -99,143 +95,6 @@ enum {
 IMPLEMENT_APP (CamulecmdApp)
 //-------------------------------------------------------------------
 
-//-------------------------------------------------------------------
-#if wxUSE_GUI
-//-------------------------------------------------------------------
-// IDs for the controls and the menu commands
-enum
-{
-    // menu items
-    amulecmd_Quit = 1,
-
-    // it is important for the id corresponding to the "About" command
-    // to have this standard value as otherwise it won't be handled 
-    // properly under Mac (where it is special and put into the "Apple" 
-    // menu)
-    amulecmd_About = wxID_ABOUT,
-    Event_Comand_ID = 32001,
-    amuleFrame_ID = 32000,
-    Timer_ID
-};
-
-
-BEGIN_EVENT_TABLE(CamulecmdFrame, wxFrame)
-	EVT_MENU(amulecmd_Quit, CamulecmdFrame::OnQuit)
-	EVT_MENU(amulecmd_About, CamulecmdFrame::OnAbout)
-	EVT_TEXT_ENTER(Event_Comand_ID, CamulecmdFrame::OnComandEnter)
-	EVT_IDLE(CamulecmdFrame::OnIdle)
-	EVT_TIMER(Timer_ID, CamulecmdFrame::OnTimerEvent)
-END_EVENT_TABLE()
-
-//-------------------------------------------------------------------
-
-CamulecmdFrame::CamulecmdFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-       : wxFrame(NULL, amuleFrame_ID, title, pos, size, style)
-{
-	wxMenu *menuFile = new wxMenu;
-	menuFile->Append(amulecmd_Quit, _("E&xit\tAlt-X"), _("Quit amulecmd"));
-
-	wxMenu *helpMenu = new wxMenu;
-	helpMenu->Append(amulecmd_About, _("&About...\tF1"), _("Show about dialog"));
-
-	// now append the freshly created menu to the menu bar...
-	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(menuFile, _("&File"));
-	menuBar->Append(helpMenu, _("&Help"));
-
-	// ... and attach this menu bar to the frame
-	SetMenuBar(menuBar);
-
-	// Text controls and sizer
-	wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
-	log_text = new wxTextCtrl(this, -1, wxEmptyString,
-		wxDefaultPosition, wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y),
-		wxTE_MULTILINE|wxVSCROLL|wxTE_READONLY);
-	log_text->SetBackgroundColour(wxT("wheat"));
-	log_text->SetDefaultStyle(
-		wxTextAttr(
-			wxNullColour, 
-			wxT("wheat"), 
-			wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
-		)
-	);
-	vsizer->Add( log_text, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-	wxStaticLine *line = new wxStaticLine( this, -1,
-		wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	vsizer->Add( line, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	cmd_control = new wxTextCtrl(this, Event_Comand_ID, wxEmptyString,
-		wxDefaultPosition, wxSize(APP_INIT_SIZE_X,-1), wxTE_PROCESS_ENTER);
-	cmd_control->SetBackgroundColour(wxT("wheat"));
-	vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-
-	SetSizer(vsizer);
-	vsizer->SetSizeHints(this);
-
-	m_timer = new wxTimer(this, Timer_ID);
-	m_timer->Start(5000);
-}
-
-void CamulecmdFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
-{
-	// true is to force the frame to close
-	Show(_("\nOk, exiting Text Client...\n"));
-	Close(true);
-}
-
-void CamulecmdFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
-	wxString msg;
-	#ifdef CVSDATE
-		msg = wxString::Format(
-			_("amulecmd [DLG version] %s %s\n"
-			"Using %s\n"
-			"(c) aMule Dev Team"),
-			wxT(VERSION), wxT(CVSDATE), wxVERSION_STRING);
-	#else
-		msg = wxString::Format(
-			_("amulecmd [DLG version] %s\n"
-			"Using %s\n"
-			"(c) aMule Dev Team"),
-			wxT(VERSION), wxVERSION_STRING);
-	#endif
-	wxMessageBox(msg, _("About amulecmd"), wxOK | wxICON_INFORMATION, this);
-}
-
-void CamulecmdFrame::OnComandEnter(wxCommandEvent& WXUNUSED(event)) { 
-	if (cmd_control->GetLineLength(0) == 0) {
-		return;
-	}
-	
-	wxString buffer = cmd_control->GetLineText(0);
-	
-	if (theApp.Parse_Command(buffer)) {
-		Close(TRUE);
-	}
-	cmd_control->Clear();
-}
-
-void CamulecmdFrame::OnIdle(wxIdleEvent &WXUNUSED(event))
-{
-	theApp.MainThreadIdleNow();
-}
-
-void CamulecmdFrame::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
-{
-	wxWakeUpIdle();
-}
-//-------------------------------------------------------------------
-#endif // wxUSE_GUI
-//-------------------------------------------------------------------
-
-#if wxUSE_GUI
-void CamulecmdApp::LocalShow(const wxString &s)
-{
-	if (!frame) {
-		return;
-	}
-	frame->log_text->AppendText(s);
-}
-#else
 void CamulecmdApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
 	CaMuleExternalConnector::OnInitCmdLine(parser);
@@ -257,7 +116,6 @@ void CamulecmdApp::TextShell(const wxString& prompt)
 	else
 		CaMuleExternalConnector::TextShell(prompt);
 }
-#endif
 
 int CamulecmdApp::ProcessCommand(int CmdId)
 {
@@ -842,27 +700,11 @@ void CamulecmdApp::OnInitCommandSet()
 
 bool CamulecmdApp::OnInit()
 {
-	if (CaMuleExternalConnector::OnInit()) {
-#if wxUSE_GUI
-		#ifdef CVSDATE
-		frame = new CamulecmdFrame(wxString::Format(wxT("amulecmd [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-		#else
-		frame = new CamulecmdFrame(wxString::Format(wxT("amulecmd [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-		#endif
-		frame->Show(true);
-#endif
-		return true;
-	} else {
-		return false;
-	}
+	return CaMuleExternalConnector::OnInit();
 }
 
 int CamulecmdApp::OnRun()
 {
 	ConnectAndRun(wxT("aMulecmd"), wxT(VERSION));
-#if wxUSE_GUI
-	return CaMuleExternalConnector::OnRun();
-#else
 	return 0;
-#endif
 }

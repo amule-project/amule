@@ -26,53 +26,51 @@
 	#include "config.h"	// Needed for VERSION and readline detection
 #endif
 
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 
 #include <cstdio>		// Needed for fprintf(stderr, ...)
 #include <wx/filefn.h>
 #include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
-#if wxUSE_GUI
-	#include <wx/textdlg.h>	// For GetTextFromUser, GetPasswordFromUser
-#endif
+#include <unistd.h>	// For getpass() and pause()
+// For readline
+#ifdef HAVE_LIBREADLINE
+	#if defined(HAVE_READLINE_READLINE_H)
+		#include <readline/readline.h>
+	#elif defined(HAVE_READLINE_H)
+		#include <readline.h>
+	#else /* !defined(HAVE_READLINE_H) */
+		extern "C" char *readline (const char*);
+	#endif /* !defined(HAVE_READLINE_H) */
+#else /* !defined(HAVE_READLINE_READLINE_H) */
+	/* no readline */
+#endif /* HAVE_LIBREADLINE */
 
-#if !wxUSE_GUI
-	#include <unistd.h>	// For getpass() and pause()
-	// For readline
-	#ifdef HAVE_LIBREADLINE
-		#if defined(HAVE_READLINE_READLINE_H)
-			#include <readline/readline.h>
-		#elif defined(HAVE_READLINE_H)
-			#include <readline.h>
-		#else /* !defined(HAVE_READLINE_H) */
-			extern "C" char *readline (const char*);
-		#endif /* !defined(HAVE_READLINE_H) */
-	#else /* !defined(HAVE_READLINE_READLINE_H) */
-		/* no readline */
-	#endif /* HAVE_LIBREADLINE */
- 	// For history
-	#ifdef HAVE_READLINE_HISTORY
-		#if defined(HAVE_READLINE_HISTORY_H)
-			#include <readline/history.h>
-		#elif defined(HAVE_HISTORY_H)
-			#include <history.h>
-		#else /* !defined(HAVE_HISTORY_H) */
-			extern "C" void add_history (const char*);
-		#endif /* defined(HAVE_READLINE_HISTORY_H) */
-	#else
-		/* no history */
-	#endif /* HAVE_READLINE_HISTORY */
-#endif
+// For history
+#ifdef HAVE_READLINE_HISTORY
+	#if defined(HAVE_READLINE_HISTORY_H)
+		#include <readline/history.h>
+	#elif defined(HAVE_HISTORY_H)
+		#include <history.h>
+	#else /* !defined(HAVE_HISTORY_H) */
+		extern "C" void add_history (const char*);
+	#endif /* defined(HAVE_READLINE_HISTORY_H) */
+#else
+	/* no history */
+#endif /* HAVE_READLINE_HISTORY */
 
-#include "ECFileConfig.h"	// Needed for CECFileConfig
-#include "ECPacket.h"		// Needed for CECPacket, CECTag
-#include "ECcodes.h"		// Needed for OPcodes and TAGnames
-#include "ECVersion.h"		// Needed for EC_VERSION_ID
+
+#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
+#include <ec/ECPacket.h>		// Needed for CECPacket, CECTag
+#include <ec/ECCodes.h>		// Needed for OPcodes and TAGnames
+
+#include <common/MD5Sum.h>
+#include <common/StringFunctions.h>
+
 #include "ExternalConnector.h"
-#include "MD5Sum.h"
 #include "OtherFunctions.h"
-#include "StringFunctions.h"
+
 
 //-------------------------------------------------------------------
 

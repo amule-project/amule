@@ -34,10 +34,6 @@
 
 #include <wx/filename.h>	// Needed for wxFileName
 
-#if wxUSE_GUI
-	#include <wx/statline.h>
-#endif
-
 #include <cstdio>
 
 #ifdef __WXMAC__
@@ -46,8 +42,9 @@
 	#include <wx/mac/corefoundation/cfstring.h>
 #endif
 
-#include "ECFileConfig.h"	// Needed for CECFileConfig
-#include "MD5Sum.h"
+#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
+#include <common/MD5Sum.h>
+
 #include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "WebServer.h"
@@ -65,176 +62,19 @@ static CWebServerBase *webserver = NULL;
 IMPLEMENT_APP(CamulewebApp)
 //-------------------------------------------------------------------
 
-//-------------------------------------------------------------------
-#if wxUSE_GUI
-//-------------------------------------------------------------------
-// IDs for the controls and the menu commands
-enum {
-    // menu items
-    amuleweb_Quit = 1,
-
-    // it is important for the id corresponding to the "About" command to have
-    // this standard value as otherwise it won't be handled properly under Mac
-    // (where it is special and put into the "Apple" menu)
-    amuleweb_About = wxID_ABOUT,
-    Event_Comand_ID = 32001,
-    amuleFrame_ID = 32000,
-    Timer_ID
-};
-
-BEGIN_EVENT_TABLE(CamulewebFrame, wxFrame)
-	EVT_MENU(amuleweb_Quit,  CamulewebFrame::OnQuit)
-	EVT_MENU(amuleweb_About, CamulewebFrame::OnAbout)
-	EVT_TEXT_ENTER(Event_Comand_ID, CamulewebFrame::OnCommandEnter)
-	EVT_IDLE(CamulewebFrame::OnIdle)
-	EVT_TIMER(Timer_ID, CamulewebFrame::OnTimerEvent)
-END_EVENT_TABLE()
-
-
-CamulewebFrame::CamulewebFrame(const wxString& title, const wxPoint& pos, const wxSize& size, long style)
-       : wxFrame(NULL, amuleFrame_ID, title, pos, size, style)
-{
-	wxMenu *menuFile = new wxMenu;
-	menuFile->Append(amuleweb_Quit, _("E&xit\tAlt-X"), _("Quit amuleweb"));
-
-	wxMenu *helpMenu = new wxMenu;
-	helpMenu->Append(amuleweb_About, _("&About...\tF1"), _("Show about dialog"));
-
-	// now append the freshly created menu to the menu bar...
-	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(menuFile, _("&File"));
-	menuBar->Append(helpMenu, _("&Help"));
-
-	// ... and attach this menu bar to the frame
-	SetMenuBar(menuBar);
-
-	// Text controls and sizer
-	wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
-	log_text = new wxTextCtrl(this, -1, wxEmptyString,
-		wxDefaultPosition, wxSize(APP_INIT_SIZE_X,APP_INIT_SIZE_Y),
-		wxTE_MULTILINE|wxVSCROLL|wxTE_READONLY);
-	log_text->SetBackgroundColour(wxT("wheat"));
-	log_text->SetDefaultStyle(
-		wxTextAttr(
-			wxNullColour, 
-			wxT("wheat"), 
-			wxFont(10, wxMODERN, wxNORMAL, wxNORMAL)
-		)
-	);
-	vsizer->Add( log_text, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-	wxStaticLine *line = new wxStaticLine( this, -1,
-		wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	vsizer->Add( line, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	cmd_control = new wxTextCtrl(this, Event_Comand_ID, wxEmptyString,
-			wxDefaultPosition, wxSize(APP_INIT_SIZE_X,-1), wxTE_PROCESS_ENTER);
-	cmd_control->SetBackgroundColour(wxT("wheat"));
-	vsizer->Add(cmd_control, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-
-	SetSizer(vsizer);
-	vsizer->SetSizeHints(this);
-
-	m_timer = new wxTimer(this, Timer_ID);
-	m_timer->Start(5000);
-}
-
-void CamulewebFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
-{
-	// true is to force the frame to close
-	Show(_("\nOk, exiting Web Client...\n"));
-	Close(true);
-}
-
-void CamulewebFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
-	wxString msg;
-	#ifdef CVSDATE
-		msg = wxString::Format( 
-			_("amuleweb [DLG version] %s %s\n"
-			"Using %s\n"
-			"(c) aMule Dev Team"),
-			wxT(VERSION), wxT(CVSDATE), wxVERSION_STRING);
-	#else
-		msg = wxString::Format( 
-			_("amuleweb [DLG version] %s\n"
-			"Using %s\n"
-			"(c) aMule Dev Team"),
-			wxT(VERSION), wxVERSION_STRING);
-	#endif
-	wxMessageBox(msg, _("About amuleweb"), wxOK | wxICON_INFORMATION, this);
-}
-
-void CamulewebFrame::OnCommandEnter(wxCommandEvent& WXUNUSED(event)){
-	if (cmd_control->GetLineLength(0) == 0) {
-		return; 
-	}
-	wxString buffer = cmd_control->GetLineText(0);
-	if (theApp.Parse_Command(buffer)) {
-		Close(true);
-	}
-	cmd_control->Clear();
-}
-
-void CamulewebFrame::OnIdle(wxIdleEvent &WXUNUSED(event))
-{
-	theApp.MainThreadIdleNow();
-}
-
-void CamulewebFrame::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
-{
-	wxWakeUpIdle();
-}
-
-void CamulewebApp::LocalShow(const wxString &s)
-{
-	if (!frame) {
-		return;
-	}
-	frame->log_text->AppendText(s);
-}
-
-int CamulewebApp::OnExit() {
-	frame = NULL;
-	if (webserver) {
-		webserver->StopServer();
-		delete webserver;
-		webserver = NULL;
-	}
-	return 0;
-}
-
-#else
-
 void CamulewebApp::Post_Shell() {
 	webserver->StopServer();
 	delete webserver;
 	webserver = NULL;
 }
 
-#endif
-
 bool CamulewebApp::OnInit() {
-	if (CaMuleExternalConnector::OnInit()) {
-#if wxUSE_GUI
-		#ifdef CVSDATE
-		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s %s"), wxT(VERSION), wxT(CVSDATE)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-		#else
-		frame = new CamulewebFrame(wxString::Format(_("amuleweb [DLG version] %s"), wxT(VERSION)), wxPoint(50, 50), wxSize(APP_INIT_SIZE_X, APP_INIT_SIZE_Y));
-		#endif
-		frame->Show(true);
-#endif
-		return true;
-	} else {
-		return false;
-	}
+	return CaMuleExternalConnector::OnInit();
 }
 
 int CamulewebApp::OnRun() {
 	ConnectAndRun(wxT("aMuleweb"), wxT(VERSION));
-#if wxUSE_GUI
-	return CaMuleExternalConnector::OnRun();
-#else
 	return 0;
-#endif
 }
 
 bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)

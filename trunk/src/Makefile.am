@@ -53,8 +53,8 @@ libmuleappcommon_a_SOURCES = \
 	Tag.cpp \
 	kademlia/utils/UInt128.cpp
 	
-libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
-libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
 
 # Common to core/monolithic
 
@@ -70,8 +70,8 @@ libmuleappcore_a_SOURCES = \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp 
 	
-libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
-libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
 
 # Common to gui/monolithic
 
@@ -92,8 +92,8 @@ libmuleappgui_a_SOURCES = \
 	muuli_wdr.cpp \
 	ColorFrameCtrl.cpp
 	
-libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
-libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
 
 core_sources = \
 	AICHSyncThread.cpp \
@@ -179,14 +179,14 @@ common_sources = \
 
 core_libs = -lmuleappcore
 gui_libs =  $(X11LIBS) $(WX_LIBS) -lmuleappgui
-remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs -lmulecommon -lec
+remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs/common -Llibs/ec -lmulecommon -lec
 common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
 
 # Flags
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
-common_flags = -I$(srcdir)/libs/common  -I$(srcdir)/libs/ec
+common_flags = -I$(srcdir)/libs
 
 # Extras 
 
@@ -264,8 +264,8 @@ amulecmd_SOURCES = \
 	$(remote_common_sources) \
 	$(ec_sources)
 	
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs/ec -I$(srcdir)/libs/common
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs/ec -I$(srcdir)/libs/common
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
 
 noinst_HEADERS = AddFileThread.h \
@@ -296,7 +296,6 @@ noinst_HEADERS = AddFileThread.h \
 		DirectoryTreeCtrl.h \
 		DownloadListCtrl.h \
 		DownloadQueue.h \
-		ECFileConfig.h \
 		ED2KLink.h \
 		EditServerListDlg.h \
 		eggtrayicon.h \
@@ -394,19 +393,3 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	mv "$(srcdir)/../$@" "$@"
 	
 endif
-
-BUILT_SOURCES = ECVersion.h
-CLEANFILES = ECVersion.h EC-timestamp utils/mkFileSum$(EXEEXT)
-
-utils/mkFileSum$(EXEEXT): utils/mkFileSum.c
-	$(CC) -o $@ $<
-
-ECVersion.h: EC-timestamp
-	@if test ! -f $@; then \
-	  rm -f EC-timestamp; \
-	  $(MAKE) EC-timestamp; \
-	else :; fi
-
-EC-timestamp: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion libs/ec/ECcodes.h
-	@echo "ECVersion.h timestamp file" > EC-timestamp
-	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)

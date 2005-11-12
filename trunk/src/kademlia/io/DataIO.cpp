@@ -44,7 +44,7 @@ there client on the eMule forum..
 #include "IOException.h"
 #include "SafeFile.h"
 #include "ArchSpecific.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

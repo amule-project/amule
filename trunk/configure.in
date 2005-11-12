@@ -662,6 +662,8 @@ AC_CONFIG_FILES([Makefile
 		 src/kademlia/net/Makefile
 		 src/pixmaps/Makefile
 		 src/libs/Makefile
+		 src/libs/ec/Makefile
+		 src/libs/common/Makefile
 		 src/utils/Makefile
 		 src/utils/aLinkCreator/Makefile
 		 src/utils/aLinkCreator/docs/Makefile

@@ -41,7 +41,7 @@
 #include "Server.h"			// Needed for CServer and SRV_PR_*
 #include "OPCodes.h"		// Needed for MP_PRIO*
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))

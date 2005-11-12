@@ -51,6 +51,14 @@ using std::auto_ptr;
 #include <wx/checkbox.h>
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 
+#include <common/StringFunctions.h>
+#include <common/Format.h>
+#include <common/MD5Sum.h>
+
+#include <ec/ECPacket.h>
+#include <ec/ECCodes.h>
+
+#include "MD4Hash.h"
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
 #include "Server.h"			// Needed for GetListName
@@ -60,7 +68,6 @@ using std::auto_ptr;
 #include "ServerWnd.h"			// Needed for CServerWnd
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #include "Preferences.h"		// Needed for CPreferences
-#include "StringFunctions.h"
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"
 #include "Logger.h"
@@ -73,15 +80,10 @@ using std::auto_ptr;
 #include "ClientListCtrl.h"
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
-#include "Format.h"
 #include "OtherFunctions.h"		// Needed for CastItoIShort
 
-#include "MD4Hash.h"
-#include "ECPacket.h"
-#include "ECcodes.h"
 #include "ECVersion.h"
 
-#include "MD5Sum.h"
 
 CEConnectDlg::CEConnectDlg() :
 	wxDialog(theApp.amuledlg, -1, _("Connect to remote amule"), wxDefaultPosition )
