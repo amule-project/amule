@@ -247,8 +247,7 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 		if (wxFileName::DirExists(dir)) {
 			DebugShow(wxT(" yes\n"));
 
-			wxString tmplPath(dir + wxFileName::GetPathSeparator() +
-				(m_UsePhp ? wxT("login.html") : wxT("aMule.tmpl")) );
+			wxString tmplPath(dir + wxFileName::GetPathSeparator() +wxT("login.html"));
 
 			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {
@@ -324,8 +323,8 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	}
 	
 	// template not found. reverting to default
-	const wxChar* const defaultTemplateName =
-		m_UsePhp ? wxT("php-default") : wxT("default");
+	const wxChar* const defaultTemplateName = wxT("php-default");
+
 	if ( templateName == defaultTemplateName ) {
 		return false;
 	}
@@ -406,7 +405,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		CECFileConfig cfg(aMuleConfigFile);
 		LoadAmuleConfig(cfg);
 		// do not process any other command-line parameters, use defaults instead
-		m_UsePhp = true; // This is used by GetTemplateDir, so set it first
+
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
@@ -421,15 +420,14 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
 
-		m_UsePhp = !parser.Found(wxT("no-php"));
+		if ( parser.Found(wxT("no-php")) ) {
+			fprintf(stderr,
+				(const char *)unicode2char(wxT("WARNING: --no-php switch have no effect. Long live PHP\n")));
+		}
 
 		parser.Found(wxT("template"), &m_TemplateName);
 		if (m_TemplateName.IsEmpty()) {
-			if ( m_UsePhp ) {
-				m_TemplateName = wxT("php-default");
-			} else {
-				m_TemplateName = wxT("default");
-			}
+			m_TemplateName = wxT("php-default");
 		}
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
@@ -488,11 +486,7 @@ const wxString CamulewebApp::GetGreetingTitle()
 void CamulewebApp::Pre_Shell() {
 	//Creating the web server
 	if ( m_TemplateOk ) {
-		if ( m_UsePhp ) {
-			webserver = new CScriptWebServer(this, m_TemplateDir);
-		} else {
-			webserver = new CWebServer(this, m_TemplateDir);
-		}
+		webserver = new CScriptWebServer(this, m_TemplateDir);
 	} else {
 		webserver = new CNoTemplateWebServer(this);
 	}
