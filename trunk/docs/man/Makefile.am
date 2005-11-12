@@ -4,18 +4,8 @@ if COMPILE_CMD
 amulecmd_MANS = amulecmd.1
 endif
 
-if GUI
-amulecmd_MANS = amulecmd.1
-dlg_MANS += amulecmd
-endif
-
 if WEB
 amuleweb_MANS = amuleweb.1
-endif
-
-if WEBGUI
-amuleweb_MANS = amuleweb.1
-dlg_MANS += amuleweb
 endif
 
 dist_man_MANS = $(amulecmd_MANS) $(amuleweb_MANS)
