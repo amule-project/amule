@@ -1,7 +1,7 @@
 #include <muleunit/test.h>
 #include <CFile.h>
 #include <MemFile.h>
-#include <CMD4Hash.h>
+#include <MD4Hash.h>
 #include <limits>
 #include <kademlia/utils/UInt128.h>
 
