@@ -264,8 +264,8 @@ amulecmd_SOURCES = \
 	$(remote_common_sources) \
 	$(ec_sources)
 	
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -Ilibs/ec -Ilibs/common
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -Ilibs/ec -Ilibs/common
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
 
 noinst_HEADERS = AddFileThread.h \
@@ -327,6 +327,7 @@ noinst_HEADERS = AddFileThread.h \
 		extern/listctrl.242.h \
 		extern/listctrl.260.h \
 		ListenSocket.h \
+		Logger.h \
 		MD4Hash.h \
 		MemFile.h \
 		MuleGifCtrl.h \
@@ -367,8 +368,6 @@ noinst_HEADERS = AddFileThread.h \
 		Statistics.h \
 		StatisticsDlg.h \
 		StatTree.h \
-		Format.h \
-		Logger.h \
 		SysTray.h \
 		Tag.h \
 		TextClient.h \
