@@ -53,8 +53,8 @@ libmuleappcommon_a_SOURCES = \
 	Tag.cpp \
 	kademlia/utils/UInt128.cpp
 	
-libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
-libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
 
 # Common to core/monolithic
 
@@ -70,8 +70,8 @@ libmuleappcore_a_SOURCES = \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp 
 	
-libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
-libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
 
 # Common to gui/monolithic
 
@@ -92,8 +92,8 @@ libmuleappgui_a_SOURCES = \
 	muuli_wdr.cpp \
 	ColorFrameCtrl.cpp
 	
-libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
-libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
+libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs/common
 
 core_sources = \
 	AICHSyncThread.cpp \
@@ -186,7 +186,7 @@ common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
-common_flags = -Ilibs/common  -Ilibs/ec
+common_flags = -I$(srcdir)/libs/common  -I$(srcdir)/libs/ec
 
 # Extras 
 
@@ -264,8 +264,8 @@ amulecmd_SOURCES = \
 	$(remote_common_sources) \
 	$(ec_sources)
 	
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -Ilibs/ec -Ilibs/common
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -Ilibs/ec -Ilibs/common
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs/ec -I$(srcdir)/libs/common
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs/ec -I$(srcdir)/libs/common
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
 
 noinst_HEADERS = AddFileThread.h \
