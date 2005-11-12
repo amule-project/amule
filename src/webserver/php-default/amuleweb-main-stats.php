@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>amule preferences page</title>
+<title>amule Kad page</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <meta http-equiv="pragmas" content="no-cache">
 <?php
@@ -52,7 +52,6 @@ function swapFolder(img){
 	amule_load_vars("stats_graph");
 ?>
 <body>
-<form name="mainform" action="amuleweb-main-prefs.php" method="post">
 <table width="904" border="0" cellpadding="0" cellspacing="0">
   <!--DWLayoutTable-->
   <tr>
@@ -63,7 +62,7 @@ function swapFolder(img){
   </tr>
   <tr valign="top">
     <td><!--DWLayoutEmptyCell-->&nbsp;</td>
-    <td rowspan="7"><iframe name="stats" src="stats_tree.php" width="350" height="700" frameborder="1"></iframe></td>
+    <td rowspan="7"><iframe name="stats" src="stats_tree.php" width="400" height="700" frameborder="1"></iframe></td>
     <td height="58"><!--DWLayoutEmptyCell-->&nbsp;</td>
     <td><img src="amule_stats_download.png" width="500" height="200" border="0" alt="" title="" /></td>
   </tr>
@@ -110,6 +109,5 @@ function swapFolder(img){
     <td>&nbsp;</td>
   </tr>
 </table>
-</form>
 </body>
 </html>
