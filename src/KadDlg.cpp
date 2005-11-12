@@ -101,10 +101,10 @@ void CKadDlg::SetGraphColors()
 	m_kad_scope->SetGridColor(CStatisticsDlg::getColors(1));
 	
 	for (size_t i = 0; i < 3; ++i) {	
-		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(2 + i), aTrend[i]);
+		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(13 + i), aTrend[i]);
 		
 		CColorFrameCtrl* ctrl = CastChild(aRes[i], CColorFrameCtrl);
-		ctrl->SetBackgroundColor(CStatisticsDlg::getColors(2 + i));
+		ctrl->SetBackgroundColor(CStatisticsDlg::getColors(13 + i));
 		ctrl->SetFrameColor((COLORREF)RGB(0,0,0));	
 	}
 }
