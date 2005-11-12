@@ -31,11 +31,7 @@ using std::auto_ptr;
 #include <wx/intl.h>			// Needed for i18n
 
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
-//#include "ECcodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
-
-#include "../common/StringFunctions.h"	// Needed for unicode2char()
-#include "../common/Format.h"				// Needed for CFormat
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
 
@@ -54,7 +50,6 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	const wxString &WXUNUSED(login), const wxString &pass, 
 	const wxString& client, const wxString& version)
 {
-	printf("Core connection called\n");
 	
 	ConnectionPassword = pass;
 	
@@ -72,14 +67,12 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Hostname(host);
 	addr.Service(port);
 
-	printf("Connecting to remote host %s:%i\n",(const char*)unicode2char(addr.IPAddress()),addr.Service());
 	Connect(addr, false);
 	
 	return true;
 }
 
 void CRemoteConnect::OnConnect() {
-	printf("CRemoteConnect::OnConnect()\n");
 	bool auth = ConnectionEstablished();
 	if (notifier) {
 		// Notify app of success / failure
@@ -89,7 +82,6 @@ void CRemoteConnect::OnConnect() {
 }
 
 void CRemoteConnect::OnClose() {
-	printf("CRemoteConnect::OnClose()\n");
 	if (notifier) {
 		// Notify app of failure
 		wxECSocketEvent event(wxEVT_EC_CONNECTION,false,_("Connection failure"));
@@ -130,7 +122,7 @@ bool CRemoteConnect::ConnectionEstablished() {
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 		if (reason != NULL) {
-			server_reply = CFormat(_("ExternalConn: Access denied because: %s")) % 
+			server_reply = wxString(_("ExternalConn: Access denied because: ")) +
 				wxGetTranslation(reason->GetStringData());
 		} else {
 		    server_reply = _("ExternalConn: Access denied");
@@ -143,7 +135,7 @@ bool CRemoteConnect::ConnectionEstablished() {
 		return false;
     } else {
         if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-                server_reply = CFormat(_("Succeeded! Connection established to aMule %s")) %
+                server_reply = _("Succeeded! Connection established to aMule ") +
                 	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData();
         } else {
                 server_reply = _("Succeeded! Connection established.");

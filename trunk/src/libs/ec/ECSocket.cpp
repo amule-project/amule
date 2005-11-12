@@ -329,7 +329,6 @@ END_EVENT_TABLE()
 
 void CECSocketHandler::SocketHandler(wxSocketEvent& event)
 {
-		printf("Socket event\n");
         CECSocket *socket = dynamic_cast<CECSocket*>(event.GetSocket());
         wxASSERT(socket);
         if (!socket) {
@@ -338,23 +337,18 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
 
         switch(event.GetSocketEvent()) {
                 case wxSOCKET_LOST:
-						printf("CECSocket lost\n");
                         socket->OnClose();
                         break;
                 case wxSOCKET_INPUT:
-						printf("CECSocket input\n");
                         socket->OnReceive();
                         break;
                 case wxSOCKET_OUTPUT:
-						printf("CECSocket output\n");
                         socket->OnSend();
                         break;
                 case wxSOCKET_CONNECTION:
-						printf("CECSocket connect\n");
                         socket->OnConnect();
                         break;
                 default:
-						printf("CECSocket UNK\n");
                         // Nothing should arrive here...
                         wxASSERT(0);
                         break;
@@ -418,7 +412,7 @@ void CECSocket::InitBuffers()
 
 void CECSocket::OnConnect()
 {
-	printf("CECSocket::OnConnect()");
+
 }
 
 void CECSocket::OnSend()
@@ -463,12 +457,11 @@ void CECSocket::OnReceive()
 
 void CECSocket::OnClose()
 {
-	printf("CECSocket::OnClose\n");
+
 }
 
 void CECSocket::OnError()
 {
-	printf("CECSocket::OnError\n");
 	OnClose();
 }
 
