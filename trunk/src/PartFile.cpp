@@ -2469,17 +2469,17 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 
 void CPartFile::Delete()
 {
-	AddLogLineM( false, CFormat( _("Deleting file: %s") ) % GetFileName() );
+	AddLogLineM(false, CFormat(_("Deleting file: %s")) % GetFileName());
 	// Barry - Need to tell any connected clients to stop sending the file
 	StopFile(true);
-	AddLogLineM( false, _("\tStopped") );
+	AddDebugLogLineM(false, logPartFile, _("\tStopped"));
 	
 	theApp.sharedfiles->RemoveFile(this);
-	AddLogLineM( false, _("\tRemoved from shared") );
+	AddDebugLogLineM(false, logPartFile, _("\tRemoved from shared"));
 	theApp.downloadqueue->RemoveFile(this);
-	AddLogLineM( false, _("\tRemoved from download queue") );
+	AddDebugLogLineM(false, logPartFile, _("\tRemoved from download queue"));
 	Notify_DownloadCtrlRemoveFile(this);
-	AddLogLineM( false, _("\tRemoved transferwnd") );
+	AddDebugLogLineM(false, logPartFile, _("\tRemoved transferwnd"));
 
 	// Kry - WTF? 
 	// eMule had same problem with lseek error ... and override with a simple 
@@ -2489,41 +2489,41 @@ void CPartFile::Delete()
 		m_hpartfile.Close();
 	}
 
-	AddLogLineM( false, _("\tClosed") );
+	AddDebugLogLineM(false, logPartFile, _("\tClosed"));
 	
 	if (!wxRemoveFile(m_fullname)) {
-		AddLogLineM( true, CFormat( _("\tFailed to delete '%s'") ) % m_fullname);
+		AddDebugLogLineM(true, logPartFile, CFormat(_("\tFailed to delete '%s'")) % m_fullname);
 	} else {
-		AddLogLineM( false, _("\tRemoved .part.met") );
+		AddDebugLogLineM(false, logPartFile, _("\tRemoved .part.met"));
 	}
 
-	wxString strPartFile = m_fullname.Left( m_fullname.Length() - 4 );
+	wxString strPartFile = m_fullname.Left(m_fullname.Length() - 4);
 	
 	if (!wxRemoveFile(strPartFile)) {
-		AddLogLineM( true, CFormat( _("Failed to delete '%s'") ) % strPartFile );
+		AddDebugLogLineM(true, logPartFile, CFormat(_("Failed to delete '%s'")) % strPartFile);
 	} else {
-		AddLogLineM( false, _("\tRemoved .part") );
+		AddDebugLogLineM(false, logPartFile, _("\tRemoved .part"));
 	}
 	
 	wxString BAKName = m_fullname + PARTMET_BAK_EXT;
 
 	if (!wxRemoveFile(BAKName)) {
-		AddLogLineM( true, CFormat( _("Failed to delete '%s'") ) % BAKName);
+		AddDebugLogLineM(true, logPartFile, CFormat(_("Failed to delete '%s'")) % BAKName);
 	} else {
-		AddLogLineM( false, _("\tRemoved .BAK") );
+		AddDebugLogLineM(false, logPartFile, _("\tRemoved .BAK"));
 	}
 	
 	wxString SEEDSName = m_fullname + wxT(".seeds");
 	
 	if (wxFileName::FileExists(SEEDSName)) {
-		if ( wxRemoveFile(SEEDSName) ) {
-			AddLogLineM( false, _("\tRemoved .seeds") );
+		if (wxRemoveFile(SEEDSName)) {
+			AddDebugLogLineM(false, logPartFile, _("\tRemoved .seeds"));
 		} else {
-			AddLogLineM( true, CFormat( _("Failed to delete '%s'") ) % SEEDSName );
+			AddDebugLogLineM(true, logPartFile, CFormat(_("Failed to delete '%s'")) % SEEDSName);
 		}
 	}
 
-	AddLogLineM( false, _("Done") );
+	AddDebugLogLineM(false, logPartFile, _("Done"));
 	
 	delete this;
 }
@@ -2558,8 +2558,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 		if (GetPartCount() > 1) {
 			if (hashresult != GetPartHash(partnumber)) {
-				AddLogLineM( false, CFormat( _("Expected part-hash: %s") ) % GetPartHash(partnumber).Encode() );
-				AddLogLineM( false, CFormat( _("Actual part-hash: %s") ) % hashresult.Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( _("%s: Expected part-hash: %s")) % GetFileName() % GetPartHash(partnumber).Encode() );
+				AddDebugLogLineM(false, logPartFile, CFormat( _("%s: Actual part-hash: %s")) % GetFileName() % hashresult.Encode() );
 				return false;
 			} else {
 				return true;
