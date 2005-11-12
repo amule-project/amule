@@ -30,6 +30,8 @@
 #include <wx/tokenzr.h>
 #include <wx/utils.h>
 
+#include <common/Format.h>		// Needed for CFormat
+
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -54,7 +56,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"		// Needed for theStats
-#include <common/Format.h>		// Needed for CFormat
 #include "ClientUDPSocket.h"
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()
