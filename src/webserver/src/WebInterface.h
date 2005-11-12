@@ -90,8 +90,6 @@ public:
 	unsigned int	m_PageRefresh;
 	bool		m_LoadSettingsFromAmule;
 
-	bool		m_UsePhp;
-
 	bool		m_TemplateOk;
 
 #if wxUSE_GUI

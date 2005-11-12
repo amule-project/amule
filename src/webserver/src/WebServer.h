@@ -63,7 +63,7 @@
 
 #include "kademlia/utils/UInt128.h" // Need for UInt128
 
-class TransferredData;
+//class TransferredData;
 class CWSThread;
 class CWebSocket;
 class CMD4Hash;
@@ -71,54 +71,11 @@ class CMD4Hash;
 #define SESSION_TIMEOUT_SECS	300	// 5 minutes session expiration
 #define SHORT_FILENAME_LENGTH	40	// Max size of file name.
 
-typedef struct { float download; float upload; long connections; } UpDown;
-
-typedef struct { time_t startTime; long lSession; bool admin;} Session;
-
-typedef enum {
-	DOWN_SORT_NAME,
-	DOWN_SORT_SIZE,
-	DOWN_SORT_COMPLETED,
-	DOWN_SORT_TRANSFERRED,
-	DOWN_SORT_SPEED,
-	DOWN_SORT_PROGRESS
-} xDownloadSort;
-
-typedef enum {
-	SHARED_SORT_NAME,
-	SHARED_SORT_SIZE,
-	SHARED_SORT_TRANSFERRED,
-	SHARED_SORT_ALL_TIME_TRANSFERRED,
-	SHARED_SORT_REQUESTS,
-	SHARED_SORT_ALL_TIME_REQUESTS,
-	SHARED_SORT_ACCEPTS,
-	SHARED_SORT_ALL_TIME_ACCEPTS,
-	SHARED_SORT_PRIORITY
-} xSharedSort;
-
-
-typedef enum {
-	SERVER_SORT_NAME,
-	SERVER_SORT_DESCRIPTION,
-	SERVER_SORT_IP,
-	SERVER_SORT_USERS,
-	SERVER_SORT_FILES
-} xServerSort;
-
-typedef enum {
-	SEARCH_SORT_NAME,
-	SEARCH_SORT_SIZE,
-	SEARCH_SORT_SOURCES
-} xSearchSort;
-
-WX_DECLARE_OBJARRAY(UpDown*, ArrayOfUpDown);
-WX_DECLARE_OBJARRAY(Session*, ArrayOfSession);
-WX_DECLARE_OBJARRAY(TransferredData*, ArrayOfTransferredData);
-
-uint8 GetHigherPrio(uint32 prio, bool autoprio);
-uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
-uint8 GetLowerPrio(uint32 prio, bool autoprio);
-uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
+//
+//uint8 GetHigherPrio(uint32 prio, bool autoprio);
+//uint8 GetHigherPrioShared(uint32 prio, bool autoprio);
+//uint8 GetLowerPrio(uint32 prio, bool autoprio);
+//uint8 GetLowerPrioShared(uint32 prio, bool autoprio);
 wxString _SpecialChars(wxString str);
 
 class CEC_PartFile_Tag;
@@ -231,45 +188,16 @@ class SearchFile {
 		CMD4Hash ID() { return nHash; }
 };
 
-/*!
- * Each item of type T must implement GetContainerInstance(T) to return ptr
- * to container holding such items.
- * Parameter "T" is used for compiler to distinguish between functions of
- * different types.
- */
-template <typename TYPE>
-struct CmpContainerItems
-{
-	bool operator()(const TYPE &i1, const TYPE &i2)
-	{
-		return TYPE::GetContainerInstance()->CompareItems(i1, i2);
-	}
-};
-
 
 /*!
  * T - type of items in container
- * E - type of enum for sort order
  */
-template <class T, class E>
+template <class T>
 class ItemsContainer {
 	protected:
 		CamulewebApp *m_webApp;
 		std::list<T> m_items;
 
-		// map string value to enum: derived class
-		// must init this map in ctor
-		std::map<wxString, E> m_SortStrVals;
-		// map sort order enums to names of sections
-		// in html template: derived class
-		// must init this map in ctor
-		std::map<E, wxString> m_SortHeaders;
-		
-		
-		bool m_SortReverse;
-		// type is int, so derived class must cast it
-		// to right enum type
-		E m_SortOrder;
 	
 		void EraseAll()
 		{
@@ -279,31 +207,15 @@ class ItemsContainer {
 		ItemsContainer(CamulewebApp *webApp)
 		{
 			m_webApp = webApp;
-			m_SortReverse = false;
-			// by default, sort by first enum
-			m_SortOrder = (E)0;
 		}
 		virtual ~ItemsContainer() { }
 		
-		void SortItems()
-		{
-			m_items.sort(CmpContainerItems<T>());
-		}
-
-		E GetSortOrder()
-		{
-			return m_SortOrder;
-		}
 
 		int ItemCount()
 		{
 			return m_items.size();
 		}
 		
-		bool IsSortingReverse()
-		{
-			return m_SortReverse;
-		}
 		
 		T *AddItem(T &item)
 		{
@@ -312,34 +224,6 @@ class ItemsContainer {
 			return real_ptr;
 		}
 
-		/*!
-		 * Substitute sort-order templates
-		 */
-		void ProcessHeadersLine(wxString &line)
-		{
-			wxString sField = m_SortHeaders[m_SortOrder];
-			// invert sort order in link
-			wxString sSortRev(m_SortReverse ? wxT("&sortreverse=false") : wxT("&sortreverse=true"));
-			for(typename std::map<E, wxString>::iterator i = m_SortHeaders.begin();
-				i != m_SortHeaders.end(); i++) {
-					if (sField == i->second) {
-						line.Replace(i->second, sSortRev);
-					} else {
-						line.Replace(i->second, wxEmptyString);
-					}
-				}
-		}
-		
-		/*!
-		 * Convert string to right enum value
-		 */
-		void SetSortOrder(wxString &order, wxString &reverse)
-		{
-			if ( !order.IsEmpty() ) {
-				m_SortOrder = m_SortStrVals[order];
-			}
-			m_SortReverse = (reverse == wxT("true"));
-		}
 		/*!
 		 * Re-query server: refresh all dataset
 		 */
@@ -358,25 +242,24 @@ class ItemsContainer {
 
 /*!
  * T - type of items in container
- * E - type of enum for sort order
  * I - type of item ID
  * G - type of tag in EC
  */
-template <class T, class E, class G, class I>
-class UpdatableItemsContainer : public ItemsContainer<T, E> {
+template <class T, class G, class I>
+class UpdatableItemsContainer : public ItemsContainer<T> {
 	protected:
 		// need duplicate list with a map, so check "do we already have"
 		// will take O(log(n)) instead of O(n)
 		// map will contain pointers to items in list 
 		std::map<I, T *> m_items_hash;
 	public:
-		UpdatableItemsContainer(CamulewebApp *webApp) : ItemsContainer<T, E>(webApp)
+		UpdatableItemsContainer(CamulewebApp *webApp) : ItemsContainer<T>(webApp)
 		{
 		}
 		
 		T *AddItem(T &item)
 		{
-			T *real_ptr = ItemsContainer<T, E>::AddItem(item);
+			T *real_ptr = ItemsContainer<T>::AddItem(item);
 			m_items_hash[item.ID()] = real_ptr;
 			return real_ptr;
 		}
@@ -474,7 +357,7 @@ class UpdatableItemsContainer : public ItemsContainer<T, E> {
 		virtual void ItemInserted(T *) { }
 };
 
-class UploadsInfo : public ItemsContainer<UploadFile, int> {
+class UploadsInfo : public ItemsContainer<UploadFile> {
 	public:
 		// can be only one instance.
 		static UploadsInfo *m_This;
@@ -484,7 +367,7 @@ class UploadsInfo : public ItemsContainer<UploadFile, int> {
 		virtual bool ReQuery();
 };
 
-class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
+class ServersInfo : public ItemsContainer<ServerEntry> {
 	public:
 		// can be only one instance.
 		static ServersInfo *m_This;
@@ -493,11 +376,10 @@ class ServersInfo : public ItemsContainer<ServerEntry, xServerSort> {
 
 		virtual bool ReQuery();
 
-		bool CompareItems(const ServerEntry &i1, const ServerEntry &i2);
 };
 
 
-class SharedFileInfo : public UpdatableItemsContainer<SharedFile, xSharedSort, CEC_SharedFile_Tag, CMD4Hash> {
+class SharedFileInfo : public UpdatableItemsContainer<SharedFile, CEC_SharedFile_Tag, CMD4Hash> {
 	public:
 		// can be only one instance.
 		static SharedFileInfo *m_This;
@@ -506,10 +388,9 @@ class SharedFileInfo : public UpdatableItemsContainer<SharedFile, xSharedSort, C
 
 		virtual bool ReQuery();
 
-		bool CompareItems(const SharedFile &i1, const SharedFile &i2);
 };
 
-class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_SearchFile_Tag, CMD4Hash> {
+class SearchInfo : public UpdatableItemsContainer<SearchFile, CEC_SearchFile_Tag, CMD4Hash> {
 	public:
 		static SearchInfo *m_This;
 		
@@ -517,12 +398,11 @@ class SearchInfo : public UpdatableItemsContainer<SearchFile, xSearchSort, CEC_S
 		
 		virtual bool ReQuery();
 
-		bool CompareItems(const SearchFile &i1, const SearchFile &i2);
 };
 
 
 class CImageLib;
-class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, xDownloadSort, CEC_PartFile_Tag, CMD4Hash> {
+class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, CEC_PartFile_Tag, CMD4Hash> {
 		CImageLib *m_ImageLib;
 		
 		// parameters of progress images
@@ -539,7 +419,6 @@ class DownloadFileInfo : public UpdatableItemsContainer<DownloadFile, xDownloadS
 		virtual bool ReQuery();
 
 		// container requirements
-		bool CompareItems(const DownloadFile &i1, const DownloadFile &i2);
 		void ItemInserted(DownloadFile *item);
 		void ItemDeleted(DownloadFile *item);
 };
@@ -778,15 +657,6 @@ class CImageLib {
 		void RemoveImage(const wxString &name);
 };
 
-typedef struct {
-	uint32		nUsers;
-	bool		bShowUploadQueue;
-
-	ArrayOfUpDown		PointsForWeb;
-	ArrayOfSession		Sessions;
-
-} GlobalParams;
-
 class CUrlDecodeTable {
 		wxString m_enc_u_str[256], m_enc_l_str[256], m_dec_str[256];
 	public:
@@ -819,50 +689,6 @@ struct ThreadData {
 	int 		SessionID;
 	CWebSocket	*pSocket;
 };
-
-typedef struct {
-	wxString	sHeader;
-	wxString	sHeaderMetaRefresh;
-	wxString	sHeaderStylesheet;
-	wxString	sFooter;
-	wxString	sServerList;
-	wxString	sServerLine;
-	wxString	sTransferImages;
-	wxString	sTransferList;
-	wxString	sTransferDownHeader;
-	wxString	sTransferDownFooter;
-	wxString	sTransferDownLine;
-	wxString	sTransferDownLineGood;
-	wxString	sTransferUpHeader;
-	wxString	sTransferUpFooter;
-	wxString	sTransferUpLine;
-	wxString	sTransferUpQueueShow;
-	wxString	sTransferUpQueueHide;
-	wxString	sTransferUpQueueLine;
-	wxString	sTransferBadLink;
-	wxString	sDownloadLink;
-	wxString	sSharedList;
-	wxString	sSharedLine;
-	wxString	sSharedLineChanged;
-	wxString	sGraphs;
-	wxString	sLog;
-	wxString	sServerInfo;
-	wxString 	sDebugLog;
-	wxString 	sStats;
-	wxString 	sPreferences;
-	wxString	sLogin;
-	wxString	sConnectedServer;
-	wxString	sAddServerBox;
-	wxString	sWebSearch;
-	wxString	sSearch;
-	wxString	sProgressbarImgs;
-	wxString 	sProgressbarImgsPercent;
-	uint16		iProgressbarWidth;
-	wxString	sSearchResultLine;
-	wxString	sSearchHeader;
-	wxString	sClearCompleted;
-	wxString	sCatArrow;
-} WebTemplates;
 
 /*
  * In transition period I want both versions of amuleweb available: CPP and PHP
@@ -979,68 +805,9 @@ class CNoTemplateWebServer : public CScriptWebServer {
  * CPP based webserver
  */
 class CWebServer : public CWebServerBase {
-	public:
-		CWebServer(CamulewebApp *webApp, const wxString& templateDir);
-		~CWebServer();
-
-		void 	StartServer();
-		void 	RestartServer();
-		void 	StopServer();
-		void 	ReloadTemplates();
-	
-		int	UpdateSessionCount();
-		uint16	GetSessionCount()	{ return m_Params.Sessions.GetCount();}
-
-	protected:
-		void	ProcessURL(ThreadData);
-	
-	private:
-		wxString	_GetHeader(ThreadData, long lSession);
-		wxString	_GetFooter(ThreadData);
-		wxString	_GetServerList(ThreadData);
-		wxString	_GetTransferList(ThreadData);
-		wxString	_GetDownloadLink(ThreadData);
-		wxString	_GetSharedFileList(ThreadData);
-		wxString	_GetGraphs(ThreadData);
-		wxString	_GetLog(ThreadData);
-		wxString	_GetServerInfo(ThreadData);
-		wxString	_GetDebugLog(ThreadData);
-		wxString	_GetStats(ThreadData);
-		wxString	_GetPreferences(ThreadData);
-		wxString	_GetLoginScreen(ThreadData);
-		wxString	_GetConnectedServer(ThreadData);
-		wxString	_GetAddServerBox(ThreadData Data);
-		wxString	_GetWebSearch(ThreadData Data);
-		wxString 	_GetSearch(ThreadData);
-
-		wxString	_ParseURL(ThreadData Data, wxString fieldname); 
-
-		bool		_IsLoggedIn(ThreadData Data, long lSession);
-		void		_RemoveTimeOuts(ThreadData Data, long lSession);
-		bool		_RemoveSession(ThreadData Data, long lSession);
-		bool		_GetFileHash(wxString sHash, unsigned char *FileHash);
-		wxString	_GetPlainResString(uint32 nID, bool noquote = false);
-		wxString	_LoadTemplate(wxString sAll, wxString sTemplateName);
-		Session		GetSessionByID(ThreadData Data,long sessionID);
-		bool		IsSessionAdmin(ThreadData Data,wxString SsessionID);
-		wxString	GetPermissionDenied();
-
-		void		InsertCatBox(wxString &Out, int preselect, wxString boxlabel, CECTag *cats, bool jump=false);
-		wxString	GetStatusBox(wxString &preselect);
-
-		// Common data
-		GlobalParams	m_Params;
-		WebTemplates	m_Templates;
-		bool		m_bServerWorking;
-		int		m_iSearchSortby;
-		bool		m_bSearchAsc;
-
-		// Graph related
-		double		m_lastHistoryTimeStamp;
-		uint16		m_nGraphHeight;
-		uint16		m_nGraphWidth;
-		uint16		m_nGraphScale;
-
+	/*
+	 * This remains for historic reasons.
+	 */
 };
 
 #endif // WEBSERVER_H
