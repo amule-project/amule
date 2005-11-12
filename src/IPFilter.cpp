@@ -38,8 +38,8 @@
 #include "Statistics.h"			// Needed for theStats
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "Logger.h"				// Needed for AddDebugLogLineM
-#include "Format.h"				// Needed for CFormat
-#include "StringFunctions.h"	// Needed for CSimpleTokenizer
+#include <common/Format.h>				// Needed for CFormat
+#include <common/StringFunctions.h>	// Needed for CSimpleTokenizer
 #include "FileFunctions.h"		// Needed for UnpackArchive
 
 /**

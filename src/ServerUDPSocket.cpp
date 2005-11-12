@@ -40,9 +40,9 @@
 #include "GetTickCount.h"
 #include "ServerSocket.h"
 #include "Statistics.h"		// Needed for theStats
-#include "StringFunctions.h" // Needed for unicode2char 
+#include <common/StringFunctions.h> // Needed for unicode2char 
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "updownclient.h"	// Needed for SF_REMOTE_SERVER
 
 #include <sys/types.h>

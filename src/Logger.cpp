@@ -25,7 +25,7 @@
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 
 #include <wx/thread.h>
 #include <deque>

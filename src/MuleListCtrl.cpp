@@ -32,11 +32,11 @@
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/imaglist.h>
 
+#include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
+#include <common/StringFunctions.h>	// Needed for StrToLong
+
 #include "MuleListCtrl.h"		// Interface declarations
-#include "StringFunctions.h"	// Needed for StrToLong
 #include "OPCodes.h"			// Needed for MP_LISTCOL_1
-#include "MuleDebug.h"			// Needed for MULE_VALIDATE_
-#include "MuleDebug.h"			// Needed for MULE_VALIDATE_**
 #include "GetTickCount.h"		// Needed for GetTickCount()
 
 #include <cctype>				// Needed for isprint() and tolower
@@ -474,5 +474,3 @@ void CMuleListCtrl::ResetTTS()
 	m_tts_item = -1;
 	m_tts_time =  0;
 }
-
-

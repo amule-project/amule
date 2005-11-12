@@ -34,7 +34,7 @@
 #include "Types.h"		// Needed for uint8, uint16 and uint32
 
 #ifdef CLIENT_GUI
-#include "ECSpecialTags.h"
+#include <ec/ECSpecialTags.h>
 #endif
 
 class CTag;

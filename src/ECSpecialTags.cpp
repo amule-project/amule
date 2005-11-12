@@ -25,9 +25,11 @@
 
 #include <vector>
 
-#include "ECPacket.h"		// Needed for CECTag
-#include "ECcodes.h"		// Needed for TAGnames
-#include "ECSpecialTags.h"	// Needed for special EC tag creator classes
+#include <ec/ECPacket.h>		// Needed for CECTag
+#include <ec/ECCodes.h>		// Needed for TAGnames
+#include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
+
+#include <common/Format.h>		// Needed for CFormat
 
 // Since there are only constructors defined here,
 // removing everything from non-local builds.
@@ -45,7 +47,6 @@
 
 #include <wx/intl.h>		// Needed for _()
 #include "KnownFile.h"		// Needed for PS_*
-#include "Format.h"		// Needed for CFormat
 
 #if !defined(EC_REMOTE) || defined(CLIENT_GUI)
 

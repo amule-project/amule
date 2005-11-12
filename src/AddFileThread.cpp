@@ -34,7 +34,7 @@
 #include <wx/utils.h>
 
 #include "AddFileThread.h"	// Interface declarations
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "amule.h"		// Needed for theApp
 #include "OPCodes.h"		// Needed for TM_HASHTHREADFINISHED
 #include "PartFile.h"		// Needed for CKnownFile and CPartFile
@@ -42,7 +42,7 @@
 #include "FileFunctions.h" // Needed for GetLastModificationTime()
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread
 #include "Logger.h"		// Needed for AddLogLine
-#include "Format.h"
+#include <common/Format.h>
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 #include <algorithm>

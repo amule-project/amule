@@ -23,7 +23,7 @@
 //
 
 /*!
- * \file ECcodes.h
+ * \file ECCodes.h
  *
  * \brief EC types, OPCODEs, TAGNAMEs.
  */

@@ -30,7 +30,7 @@
 #include <wx/intl.h>		// Needed for wxGetTranslation(), _() / wxTRANSLATE()
 
 #ifndef AMULE_DAEMON
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"	// Needed for CastIto* functions
 
 #define a_brackets_b(a,b)	(a + wxT(" (") + b + wxT(")"))
@@ -39,10 +39,11 @@
 
 #endif /* !EC_REMOTE */
 
-#include "ECcodes.h"		// Needed for EC tag names
-#include "ECPacket.h"		// Needed for CECTag
+#include <ec/ECCodes.h>		// Needed for EC tag names
+#include <ec/ECPacket.h>		// Needed for CECTag
+
 #ifdef EC_REMOTE
-	#include "ECSpecialTags.h"	// Needed for CEC_StatTree_Node_Tag
+	#include <ec/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
 #endif
 
 /* CStatTreeItemBase */

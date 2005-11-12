@@ -28,9 +28,10 @@
 
 #include <wx/filefn.h>			// Needed for wxSeekMode
 
+#include <common/MuleDebug.h>			// Needef for CMuleException
+#include <common/StringFunctions.h>	// Needed for the utf8 types.
+
 #include "Types.h"				// Needed for uint* types
-#include "MuleDebug.h"			// Needef for CMuleException
-#include "StringFunctions.h"	// Needed for the utf8 types.
 
 namespace Kademlia {
 	class CUInt128;

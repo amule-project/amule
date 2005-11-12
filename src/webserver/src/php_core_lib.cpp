@@ -36,7 +36,7 @@
 
 #ifndef PHP_STANDALONE_EN
 	#include "WebServer.h"
-	#include "ECSpecialTags.h"
+	#include <ec/ECSpecialTags.h>
 #endif
 
 #include "php_syntree.h"

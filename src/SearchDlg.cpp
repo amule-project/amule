@@ -33,7 +33,7 @@
 #include <wx/choice.h>
 
 #include "SearchDlg.h"		// Interface declarations.
-#include "StringFunctions.h"		// Needed for unicode2char
+#include <common/StringFunctions.h>		// Needed for unicode2char
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -43,7 +43,7 @@
 #include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "amule.h"			// Needed for theApp
 #include "SearchList.h"		// Needed for CSearchList
-#include "Format.h"
+#include <common/Format.h>
 #include "Logger.h"
 
 #define ID_SEARCHLISTCTRL wxID_HIGHEST+667

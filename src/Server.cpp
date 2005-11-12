@@ -29,9 +29,9 @@
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "OtherStructs.h"	// Needed for ServerMet_Struct
 #include "Tag.h"		// Needed for CTag
-#include "StringFunctions.h" // Needed for unicode2char 
+#include <common/StringFunctions.h> // Needed for unicode2char 
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 #include <wx/intl.h>	// Needed for _
 

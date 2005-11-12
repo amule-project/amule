@@ -23,13 +23,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
+#include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_*
+#include <common/StringFunctions.h>	// Needed for unicode2char
+#include <common/Format.h>
 
 #include "CFile.h"				// Interface declarations.
-#include "MuleDebug.h"			// Needed for MULE_VALIDATE_*
-#include "StringFunctions.h"	// Needed for unicode2char
 #include "FileFunctions.h"		// Needed for CheckFileExists
 #include "Preferences.h"		// Needed for thePrefs
-#include "Format.h"
 
 #include <unistd.h>				// Needed for close(2)
 #include <cstdio>       		// SEEK_xxx constants
@@ -355,5 +355,4 @@ bool CFile::SetLength(size_t new_len)
 #else
 	return ftruncate(m_fd, new_len);
 #endif
-}	
-
+}

@@ -46,7 +46,7 @@ CConvertListCtrl::CConvertListCtrl(
 #include "amule.h"
 #include "CFile.h"
 #include "DownloadQueue.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "Logger.h"
 #include "OtherFunctions.h"
 #include "PartFile.h"
@@ -55,7 +55,7 @@ CConvertListCtrl::CConvertListCtrl(
 #include "SharedFileList.h"
 #include "FileFunctions.h"
 
-#include "PlatformSpecific.h"
+#include <common/PlatformSpecific.h>
 #include "muuli_wdr.h"
 #include <wx/dirdlg.h>
 #include <wx/icon.h>

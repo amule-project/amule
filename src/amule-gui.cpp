@@ -93,7 +93,7 @@
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "PartFileConvert.h"
 
 #ifdef __WXMAC__

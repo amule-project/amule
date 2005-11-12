@@ -28,11 +28,11 @@
 #include "KnownFileList.h"	// Interface declarations
 #include "CFile.h"		// Needed for CFile
 #include "PartFile.h"		// Needed for CPartFile
-#include "StringFunctions.h" // Needed for unicode2char
+#include <common/StringFunctions.h> // Needed for unicode2char
 #include "amule.h"
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 
 CKnownFileList::CKnownFileList()

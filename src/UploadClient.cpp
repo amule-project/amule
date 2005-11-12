@@ -50,7 +50,7 @@
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 

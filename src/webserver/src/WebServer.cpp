@@ -46,19 +46,20 @@
 #include <wx/wfstream.h>
 #include <wx/filename.h>
 
+#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
+#include <ec/ECSpecialTags.h>
+#include <ec/ECCodes.h>
+#include <common/MD5Sum.h>
+#include <common/Format.h>		// Needed for CFormat
+
 //-------------------------------------------------------------------
 
-#include "ECFileConfig.h"	// Needed for CECFileConfig
-#include "ECSpecialTags.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
-#include "MD5Sum.h"
 #include "OtherStructs.h"	// Needed for TransferredData
 #include "OtherFunctions.h"	// Needed for atoll, ED2KFT_*
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 #include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
-#include "ECcodes.h"
-#include "Format.h"		// Needed for CFormat
 #include "Color.h"		// Needed for COLORREF and RGB()
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL()
 

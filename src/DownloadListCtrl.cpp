@@ -54,7 +54,7 @@
 #include "BarShader.h"		// Needed for CBarShader
 #include "Preferences.h"
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 
 #include <list>
 

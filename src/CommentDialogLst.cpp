@@ -28,7 +28,7 @@
 #include "OtherFunctions.h"		// Needed for GetRateString
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"		// Needed for CUpDownClient
-#include "Format.h"				// Needed for CFormat
+#include <common/Format.h>				// Needed for CFormat
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 #include "amule.h"				// Needed for theApp
 #include "DownloadQueue.h"		// Needed for CDownloadQueue

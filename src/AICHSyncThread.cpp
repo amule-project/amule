@@ -25,7 +25,7 @@
 //
 
 #include "AICHSyncThread.h"
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "SHAHashSet.h"
 #include "CFile.h"				// Needed for CFile
 #include "KnownFile.h"
@@ -35,7 +35,7 @@
 #include "KnownFileList.h"
 #include "Preferences.h"
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 #include <list>
 #include <algorithm>

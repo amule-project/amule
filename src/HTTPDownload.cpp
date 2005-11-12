@@ -36,10 +36,10 @@
 
 #include "amule.h"
 #include "HTTPDownload.h"	// Interface declarations
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "OtherFunctions.h" 	// Needed for CastChild
 #include "Logger.h"		// Needed for AddLogLine*
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 
 #ifndef AMULE_DAEMON 

@@ -28,6 +28,7 @@
 
 #include <wx/debug.h>
 
+#include <wx/string.h>
 
 /**
  * Installs an exception handler that can handle CMuleExceptions.

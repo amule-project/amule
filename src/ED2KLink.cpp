@@ -26,7 +26,7 @@
 #include "ED2KLink.h"			// Interface declarations.
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "OtherFunctions.h"		// Needed for DecodeBase32
 
 #include <vector>

@@ -41,7 +41,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
 #include "Color.h"		// Needed for SYSCOLOR
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 
 #define ID_MY_TIMER 1652
 

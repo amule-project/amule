@@ -48,10 +48,10 @@
 #include "PartFile.h"		// Needed for PartFile
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "FileFunctions.h"
 
 #ifndef AMULE_DAEMON

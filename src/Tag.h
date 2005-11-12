@@ -30,7 +30,7 @@
 
 #include "Types.h"		// Needed for int8, int32, uint8 and uint32
 #include "OPCodes.h"		// Needed for TAGTYPE_*
-#include "StringFunctions.h"	// Needed for EUtf8Str
+#include <common/StringFunctions.h>	// Needed for EUtf8Str
 
 class CMD4Hash;
 class CFileDataIO;

@@ -55,7 +55,7 @@
 #include "amule.h"		// Needed for theApp
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "Statistics.h"		// Needed for theStats
 
 #ifdef __WXGTK__

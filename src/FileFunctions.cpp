@@ -37,7 +37,7 @@
 #include <cctype>
 
 #include "FileFunctions.h"
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 #include "CFile.h"
 #include "Logger.h"
 

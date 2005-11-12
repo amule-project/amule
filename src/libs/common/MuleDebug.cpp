@@ -29,8 +29,6 @@
 #include <cstdio>
 #include <cwchar>				// Needed for fwprintf
 
-#include <wx/string.h>
-
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"	// Needed for unicode2char
 

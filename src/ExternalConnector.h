@@ -38,12 +38,11 @@
 #include <wx/intl.h>		// For wxLocale
 #include <wx/string.h>		// For wxString
 
-#include <list>			// For std::list
+#include <ec/RemoteConnect.h>
+#include <ec/ECPacket.h>
+#include <ec/ECCodes.h>
 
 #include "MD4Hash.h"
-#include "RemoteConnect.h"
-#include "ECPacket.h"
-#include "ECcodes.h"
 
 #define CMD_DEPRECATED		0x1000
 #define CMD_OK			 0
@@ -172,13 +171,6 @@ private:
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
 	wxLocale	m_locale;
-
-#if wxUSE_GUI
-private:
-	typedef std::list<wxString> StrList;
-	StrList m_printlist;
-	wxMutex m_mutex_printlist;
-#endif
 };
 
 #endif // __EXTERNALCONNECTOR_H__

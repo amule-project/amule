@@ -90,10 +90,10 @@
 #include "muuli_wdr.h"		// Needed for ID_BUTTON*
 #include "PrefsUnifiedDlg.h"
 #include "GetTickCount.h"	// Needed for GetTickCount()
-#include "StringFunctions.h"	// Needed for unicode2char
+#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "Server.h"		// Needed for CServer
 #ifndef CLIENT_GUI
 #include "PartFileConvert.h"

@@ -27,6 +27,13 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
+#include <ec/ECPacket.h>		// Needed for CECPacket, CECTag
+#include <ec/ECSocket.h>		// Needed for CECSocket
+#include <ec/ECCodes.h>		// Needed for OPcodes, TAGnames
+#include <ec/ECVersion.h>		// Needed for EC_VERSION_ID
+
+#include <common/Format.h>		// Needed for CFormat
+
 #include "ExternalConn.h"	// Interface declarations
 #include "OtherFunctions.h"	// Needed for EncodeBase16
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -46,13 +53,7 @@
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
-#include "ECPacket.h"		// Needed for CECPacket, CECTag
-#include "ECSocket.h"		// Needed for CECSocket
-#include "ECcodes.h"		// Needed for OPcodes, TAGnames
-#include "ECSpecialTags.h"	// Needed for special EC tag creator classes
-#include "ECVersion.h"		// Needed for EC_VERSION_ID
 #include "Statistics.h"		// Needed for theStats
-#include "Format.h"		// Needed for CFormat
 #include "gsocket-fix.h"
 #include "KnownFileList.h"	// Needed for CKnownFileList
 

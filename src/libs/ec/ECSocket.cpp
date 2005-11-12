@@ -29,15 +29,15 @@
 using std::auto_ptr;
 
 #include <wx/intl.h>			// Needed for i18n
+#include <zlib.h>		// Needed for packet (de)compression
+#include <cstring>		// Needed for memcpy()/memmove()
 
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
 #include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
-#include "ECcodes.h"		// Needed for the EC_FLAG_* values
+#include "ECCodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
-#include "zlib.h"		// Needed for packet (de)compression
-#include "cstring"		// Needed for memcpy()/memmove()
 
 #define EC_SOCKET_BUFFER_SIZE	32768*4
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION

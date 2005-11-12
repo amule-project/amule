@@ -39,7 +39,7 @@
 #include "NetworkFunctions.h" // Needed for Uint32_16toStringIP_Port
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
-#include "StringFunctions.h" // Needed for StrToULong
+#include <common/StringFunctions.h> // Needed for StrToULong
 #include "Logger.h"
 
 #include "kademlia/kademlia/Kademlia.h"

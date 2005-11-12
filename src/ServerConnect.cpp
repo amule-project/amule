@@ -42,7 +42,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "NetworkFunctions.h"	// for StringHosttoUint32
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 
 #include <wx/utils.h>
 

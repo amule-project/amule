@@ -27,7 +27,7 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-#include "StringFunctions.h"
+#include <common/StringFunctions.h>
 
 #ifndef USE_WX_TRAY
 

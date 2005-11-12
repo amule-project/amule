@@ -68,10 +68,10 @@
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
-#include "StringFunctions.h"	// Needed for CleanupFilename
+#include <common/StringFunctions.h>	// Needed for CleanupFilename
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
 
 #include <map>

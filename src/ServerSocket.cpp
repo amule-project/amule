@@ -47,7 +47,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Logger.h"
-#include "Format.h"
+#include <common/Format.h>
 #include "IPFilter.h"
 
 

@@ -49,7 +49,7 @@
 #include "Friend.h"
 #include "FriendList.h"
 #include "ClientList.h"
-#include "Format.h"		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 
 
 // Default colors, 
