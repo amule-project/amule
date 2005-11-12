@@ -35,6 +35,7 @@
 #include "Statistics.h"
 #include "OtherFunctions.h"
 #include "RLE.h"
+#include "RemoteConnect.h"		// Needed for CRemoteConnect
 
 #include <set>
 #include <map>

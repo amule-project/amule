@@ -41,7 +41,7 @@
 #include <list>			// For std::list
 
 #include "MD4Hash.h"
-#include "ECSocket.h"
+#include "RemoteConnect.h"
 #include "ECPacket.h"
 #include "ECcodes.h"
 

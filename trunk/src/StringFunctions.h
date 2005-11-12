@@ -26,7 +26,7 @@
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
 
-#include "Types.h"		// Needed for uint16 and uint32
+#include "../../Types.h"		// Needed for uint16 and uint32
 #include <wx/defs.h>
 #include <wx/string.h>
 #include <wx/strconv.h>

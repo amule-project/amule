@@ -2088,6 +2088,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 void CamuleApp::OnUnhandledException()
 {
 	// Call the generic exception-handler.
+	fprintf(stderr, "\taMule Version: %s\n", (const char*)unicode2char(GetFullMuleVersion()));	
 	::OnUnhandledException();
 }
 

@@ -1,20 +1,12 @@
 if WEB
   OPT_WEB = webserver
-else
-if WEBGUI
-  OPT_WEB = webserver
-endif
 endif
 
-SUBDIRS = utils pixmaps kademlia $(OPT_WEB)
+SUBDIRS = libs utils pixmaps kademlia $(OPT_WEB)
 
 EXTRA_DIST = Makengfile aMule.xpm
 
 bin_PROGRAMS = 
-
-if GUI
-bin_PROGRAMS += amulecmdDLG
-endif
 
 if COMPILE_CMD
 bin_PROGRAMS += amulecmd   
@@ -41,32 +33,9 @@ DEFS = -DHAVE_CONFIG_H
 # Sources
 
 noinst_LIBRARIES = \
-	libmulecommon.a \
-	libeccommon.a \
 	libmuleappcommon.a \
 	libmuleappcore.a \
 	libmuleappgui.a
-
-# Common to external apps and core/gui/monolithic
-
-libmulecommon_a_SOURCES = \
-	Format.cpp \
-	MD5Sum.cpp \
-	MuleDebug.cpp \
-	PlatformSpecific.cpp \
-	StringFunctions.cpp
-	
-libmulecommon_a_CFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
-libmulecommon_a_CXXFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
-
-# Common to all EC communication code. Ideally all EC should be here
-
-libeccommon_a_SOURCES = \
-	ECPacket.cpp \
-	ECSocket.cpp
-	
-libeccommon_a_CFLAGS =$(WX_CXXFLAGS) 
-libeccommon_a_CXXFLAGS =$(WX_CXXFLAGS)
 
 # Common to core/gui/monolithic
 
@@ -84,8 +53,8 @@ libmuleappcommon_a_SOURCES = \
 	Tag.cpp \
 	kademlia/utils/UInt128.cpp
 	
-libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) 
-libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS)	
+libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
 
 # Common to core/monolithic
 
@@ -101,8 +70,8 @@ libmuleappcore_a_SOURCES = \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp 
 	
-libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) 
-libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS)
+libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
 
 # Common to gui/monolithic
 
@@ -123,8 +92,8 @@ libmuleappgui_a_SOURCES = \
 	muuli_wdr.cpp \
 	ColorFrameCtrl.cpp
 	
-libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) 
-libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS)
+libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -Ilibs/common
+libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -Ilibs/common
 
 core_sources = \
 	AICHSyncThread.cpp \
@@ -210,14 +179,14 @@ common_sources = \
 
 core_libs = -lmuleappcore
 gui_libs =  $(X11LIBS) $(WX_LIBS) -lmuleappgui
-remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -lmulecommon -leccommon
+remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs -lmulecommon -lec
 common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
 
 # Flags
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
-common_flags = 
+common_flags = -Ilibs/common  -Ilibs/ec
 
 # Extras 
 
@@ -289,21 +258,15 @@ if NEED_CORESERVICES
 ed2k_LDFLAGS = -framework CoreServices
 endif
 
-cmd_sources = \
+amulecmd_SOURCES = \
 	TextClient.cpp \
 	ExternalConnector.cpp \
 	$(remote_common_sources) \
 	$(ec_sources)
-
-amulecmd_SOURCES = $(cmd_sources) 
+	
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE
-amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
-
-amulecmdDLG_SOURCES = $(cmd_sources) 
-amulecmdDLG_CFLAGS = $(WX_CFLAGS) $(common_flags) -DAMULECMDDLG -DEC_REMOTE
-amulecmdDLG_CXXFLAGS = $(WX_CXXFLAGS) $(common_flags) -DAMULECMDDLG  -DEC_REMOTE
-amulecmdDLG_LDADD = $(WX_LIBS) $(remote_common_libs)
+amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
 
 noinst_HEADERS = AddFileThread.h \
 		AddFriend.h \
@@ -334,10 +297,6 @@ noinst_HEADERS = AddFileThread.h \
 		DownloadListCtrl.h \
 		DownloadQueue.h \
 		ECFileConfig.h \
-		ECSocket.h \
-		ECPacket.h \
-		ECSpecialTags.h \
-		ECcodes.h \
 		ED2KLink.h \
 		EditServerListDlg.h \
 		eggtrayicon.h \
@@ -369,9 +328,7 @@ noinst_HEADERS = AddFileThread.h \
 		extern/listctrl.260.h \
 		ListenSocket.h \
 		MD4Hash.h \
-		MD5Sum.h \
 		MemFile.h \
-		MuleDebug.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \
@@ -387,7 +344,6 @@ noinst_HEADERS = AddFileThread.h \
 		Packet.h \
 		PartFile.h \
 		PartFileConvert.h \
-		PlatformSpecific.h \
 		Preferences.h \
 		PrefsUnifiedDlg.h \
 		Proxy.h \
@@ -411,7 +367,6 @@ noinst_HEADERS = AddFileThread.h \
 		Statistics.h \
 		StatisticsDlg.h \
 		StatTree.h \
-		StringFunctions.h \
 		Format.h \
 		Logger.h \
 		SysTray.h \
@@ -453,6 +408,6 @@ ECVersion.h: EC-timestamp
 	  $(MAKE) EC-timestamp; \
 	else :; fi
 
-EC-timestamp: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion ECcodes.h
+EC-timestamp: utils/mkFileSum$(EXEEXT) utils/scripts/gen_ECVersion libs/ec/ECcodes.h
 	@echo "ECVersion.h timestamp file" > EC-timestamp
 	@$(top_srcdir)/src/utils/scripts/gen_ECVersion $(top_srcdir)

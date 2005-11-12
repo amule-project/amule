@@ -46,7 +46,7 @@
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
 	#include "Preferences.h"
-	#include "ECSocket.h"		// Needed for CRemoteConnect
+	#include "RemoteConnect.h"		// Needed for CRemoteConnect
 #endif
 
 

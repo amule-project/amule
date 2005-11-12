@@ -27,10 +27,10 @@
 
 #include "Types.h"		// Needed for uint* types
 #include <wx/string.h>		// Needed for wxString
-#include "StringFunctions.h"	// Needed for aMuleConv
-#include "ECcodes.h"		// Needed for EC types
+#include "../common/StringFunctions.h"	// Needed for aMuleConv
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
+#include "ECcodes.h"		// Needed for EC types
 #include <vector>
 
 // Define this to keep partial packets
@@ -69,7 +69,7 @@ class EC_IPv4_t {
 
 
 class CECTag;
-class ECSocket;
+class CECSocket;
 class wxSocketBase;
 
 
@@ -165,11 +165,11 @@ class CECTag {
 		}
 
 	protected:
-		CECTag(ECSocket& socket);
+		CECTag(CECSocket& socket);
 		
-		bool		WriteTag(ECSocket& socket) const;
-		bool		ReadChildren(ECSocket& socket);
-		bool		WriteChildren(ECSocket& socket) const;
+		bool		WriteTag(CECSocket& socket) const;
+		bool		ReadChildren(CECSocket& socket);
+		bool		WriteChildren(CECSocket& socket) const;
 		int		m_error;
 		const void *	m_tagData;
 		
@@ -208,7 +208,7 @@ class CECEmptyTag : public CECTag {
  * High level EC packet handler class
  */
 class CECPacket : protected CECEmptyTag {
-	friend class ECSocket;
+	friend class CECSocket;
 	public:
 		CECPacket(ec_opcode_t opCode, EC_DETAIL_LEVEL detail_level = EC_DETAIL_FULL)
 		: CECEmptyTag(0), m_opCode(opCode)
@@ -235,9 +235,9 @@ class CECPacket : protected CECEmptyTag {
 		}
 		
 	private:
-		CECPacket(ECSocket& socket);
+		CECPacket(CECSocket& socket);
 		
-		bool WritePacket(ECSocket& socket) const;
+		bool WritePacket(CECSocket& socket) const;
 		ec_opcode_t	m_opCode;
 };
 

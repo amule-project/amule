@@ -47,7 +47,7 @@
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
 #include "ECPacket.h"		// Needed for CECPacket, CECTag
-#include "ECSocket.h"		// Needed for ECSocket
+#include "ECSocket.h"		// Needed for CECSocket
 #include "ECcodes.h"		// Needed for OPcodes, TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
@@ -115,7 +115,7 @@ ExternalConn::~ExternalConn() {
 }
 
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
-	ECSocket *sock = new ECSocket;
+	CECSocket *sock = new CECSocket;
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
@@ -133,7 +133,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
 }
 
 void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
-	ECSocket *sock = (ECSocket *)event.GetSocket();
+	CECSocket *sock = (CECSocket *)event.GetSocket();
 	CECPacket * request = NULL;
 	CECPacket * response = NULL;
 

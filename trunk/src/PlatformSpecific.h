@@ -27,7 +27,7 @@
 
 #include <wx/string.h>	// Needed for wxString
 #include <wx/version.h>	// Needed for wxCHECK_VERSION
-#include "Types.h"		// Needed for wxCHECK_VERSION_FULL with wx2.4.x
+#include "../../Types.h"	// Needed for wxCHECK_VERSION_FULL with wx2.4.x
 
 /**
  * Returs the location of the "Documents" folder of the current user.
