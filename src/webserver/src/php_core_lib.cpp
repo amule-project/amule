@@ -347,7 +347,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 {
 #ifndef PHP_STANDALONE_EN
 	CECPacket stat_req(EC_OP_STAT_REQ, EC_DETAIL_FULL);
-	CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
+	const CECPacket *stats = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&stat_req);
 	if (!stats) {
 		return ;
 	}
@@ -360,14 +360,14 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	PHP_VAR_NODE *id = array_get_by_str_key(result, "id");
 	cast_value_dnum(&id->value);
 	id->value.int_val = tag->GetEd2kId();
-	CECTag *server = tag->GetTagByName(EC_TAG_SERVER);
+	const CECTag *server = tag->GetTagByName(EC_TAG_SERVER);
 	if ( server ) {
 		PHP_VAR_NODE *srv_ip = array_get_by_str_key(result, "serv_addr");
 		value_value_free(&srv_ip->value);
 		srv_ip->value.type = PHP_VAL_STRING;
 		srv_ip->value.str_val =strdup(unicode2char(server->GetIPv4Data().StringIP()));
 
-		CECTag *sname = server->GetTagByName(EC_TAG_SERVER_NAME);
+		const CECTag *sname = server->GetTagByName(EC_TAG_SERVER_NAME);
 		if ( sname ) {
 			PHP_VAR_NODE *srv_name = array_get_by_str_key(result, "serv_name");
 			value_value_free(&srv_name->value);
@@ -375,7 +375,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
 		}
 		
-		CECTag *susers = server->GetTagByName(EC_TAG_SERVER_USERS);
+		const CECTag *susers = server->GetTagByName(EC_TAG_SERVER_USERS);
 		if ( susers ) {
 			PHP_VAR_NODE *srv_users = array_get_by_str_key(result, "serv_users");
 			value_value_free(&srv_users->value);
@@ -433,15 +433,15 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 #ifndef PHP_STANDALONE_EN
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_CATEGORIES));
-	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if ( !reply ) {
 		return ;
 	}
-	CECTag *cats_tag = reply->GetTagCount() ? reply->GetTagByIndex(0) : 0;
+	const CECTag *cats_tag = reply->GetTagCount() ? reply->GetTagByIndex(0) : 0;
 	if ( cats_tag && cats_tag->GetTagCount() ) {
 		for (int i = 0; i < cats_tag->GetTagCount(); i++) {
-			CECTag *tag = cats_tag->GetTagByIndex(i);
-			CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
+			const CECTag *tag = cats_tag->GetTagByIndex(i);
+			const CECTag *categoryTitle = tag->GetTagByName(EC_TAG_CATEGORY_TITLE);
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
 			value_value_free(&cat->value);
 			cat->value.type = PHP_VAL_STRING;
@@ -524,7 +524,7 @@ void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
 	value_value_assign(&key->value, &intval);
 }
 
-void ec_tag_2_php(CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *catvar)
+void ec_tag_2_php(const CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *catvar)
 {
 	for(PHP_2_EC_OPT_DEF *def = opts; def->php_name; def++) {
 		int val;
@@ -552,11 +552,11 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 #ifndef PHP_STANDALONE_EN
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)0xffffffff));
-	CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *reply = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if ( !reply || !reply->GetTagCount()) {
 		return ;
 	}
-	CECTag *cattag = 0;
+	const CECTag *cattag = 0;
 	PHP_VALUE_NODE intval;
 	intval.type = PHP_VAL_INT;
     if ((cattag = reply->GetTagByName(EC_TAG_PREFS_GENERAL)) != 0) {
@@ -773,7 +773,7 @@ void php_get_log(PHP_VALUE_NODE *result)
 		CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
 	}
 	CECPacket req(EC_OP_GET_LOG);
-	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
 		delete response;
@@ -806,7 +806,7 @@ void php_get_serverinfo(PHP_VALUE_NODE *result)
 		CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
 	}
 	CECPacket req(EC_OP_GET_SERVERINFO);
-	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if (response) {
 		wxString serverInfoString(_SpecialChars(response->GetTagByIndexSafe(0)->GetStringData()));
 		delete response;
@@ -1017,12 +1017,12 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 	value_value_free(result);
 	
 	CECPacket req(EC_OP_GET_STATSTREE, EC_DETAIL_WEB);
-	CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *response = CPhPLibContext::g_curr_context->WebServer()->webInterface->SendRecvMsg_v2(&req);
 	if ( !response ) {
 		return;
 	}
-	CECTag *server_ver = response->GetTagByName(EC_TAG_SERVER_VERSION);
-	CECTag *user_nick = response->GetTagByName(EC_TAG_USER_NICK);
+	const CECTag *server_ver = response->GetTagByName(EC_TAG_SERVER_VERSION);
+	const CECTag *user_nick = response->GetTagByName(EC_TAG_USER_NICK);
 	if ( !server_ver || !user_nick ) {
 		delete response;
 		return;

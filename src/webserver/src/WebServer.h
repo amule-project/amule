@@ -273,7 +273,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		 * Process answer of update request, create list of new items for
 		 * full request later. Also remove items that no longer exist in core
 		 */
-		void ProcessUpdate(CECPacket *reply, CECPacket *full_req, int req_type)
+		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
 			for (int i = 0;i < reply->GetTagCount();i++) {
@@ -310,7 +310,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 			}
 		}
 		
-		void ProcessFull(CECPacket *reply)
+		void ProcessFull(const CECPacket *reply)
 		{
 			for (int i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
@@ -328,7 +328,7 @@ class UpdatableItemsContainer : public ItemsContainer<T> {
 		
 			//
 			// Phase 1: request status
-			CECPacket *reply = this->m_webApp->SendRecvMsg_v2(&req_sts);
+			const CECPacket *reply = this->m_webApp->SendRecvMsg_v2(&req_sts);
 			if ( !reply ) {
 				return false;
 			}

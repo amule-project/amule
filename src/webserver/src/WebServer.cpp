@@ -245,7 +245,7 @@ long CWebServerBase::GetWSPrefs(void)
 {
 	CECPacket req(EC_OP_GET_PREFERENCES);
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
-	CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
 	if (!reply) {
 		return -1;
 	}
@@ -299,8 +299,8 @@ void CWebServerBase::ProcessImgFileReq(ThreadData Data)
 // send EC request and discard output
 void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 {
-	CECPacket *reply = webInterface->SendRecvMsg_v2(request);
-	CECTag *tag = NULL;
+	const CECPacket *reply = webInterface->SendRecvMsg_v2(request);
+	const CECTag *tag = NULL;
 	if (reply) {
 		if ( reply->GetOpCode() == EC_OP_STRINGS ) {
 			for(int i = 0; i < reply->GetTagCount(); ++i) {
@@ -458,7 +458,7 @@ bool CWebServerBase::Send_DownloadEd2k_Cmd(wxString link, uint8 cat)
 	CECTag link_tag(EC_TAG_STRING, link);
 	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	req.AddTag(link_tag);
-	CECPacket *response = webInterface->SendRecvMsg_v2(&req);
+	const CECPacket *response = webInterface->SendRecvMsg_v2(&req);
 	bool result = (response->GetOpCode() == EC_OP_FAILED);
 	delete response;
 	return result;
@@ -535,7 +535,7 @@ ServersInfo::ServersInfo(CamulewebApp *webApp) : ItemsContainer<ServerEntry>(web
 bool ServersInfo::ServersInfo::ReQuery()
 {
 	CECPacket srv_req(EC_OP_GET_SERVER_LIST);
-	CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
+	const CECPacket *srv_reply = m_webApp->SendRecvMsg_v2(&srv_req);
 	if (!srv_reply) {
 		return false;
 	}
@@ -543,7 +543,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 	// query succeded - flush existing values and refill
 	EraseAll();
 	for (int i = 0; i < srv_reply->GetTagCount(); ++i) {
-		CECTag *tag = srv_reply->GetTagByIndex(i);
+		const CECTag *tag = srv_reply->GetTagByIndex(i);
 		
 		ServerEntry Entry;
 		Entry.sServerName =
@@ -751,7 +751,7 @@ UploadsInfo::UploadsInfo(CamulewebApp *webApp) : ItemsContainer<UploadFile>(webA
 bool UploadsInfo::ReQuery()
 {
 	CECPacket up_req(EC_OP_GET_ULOAD_QUEUE);
-	CECPacket *up_reply = m_webApp->SendRecvMsg_v2(&up_req);
+	const CECPacket *up_reply = m_webApp->SendRecvMsg_v2(&up_req);
 	if (!up_reply) {
 		return false;
 	}
@@ -1286,11 +1286,11 @@ void CStatsCollection::ReQuery()
 		request.AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, m_LastTimeStamp));
 	}
 	
-	CECPacket *response = m_iface->SendRecvMsg_v2(&request);
+	const CECPacket *response = m_iface->SendRecvMsg_v2(&request);
 
 	m_LastTimeStamp = response->GetTagByNameSafe(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 
-	CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
+	const CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 	const uint32 *data = (const uint32 *)dataTag->GetTagData();
 	unsigned int count = dataTag->GetTagDataLen() / sizeof(uint32);
 	for (unsigned int i = 0; i < count; i += 3) {
