@@ -171,13 +171,13 @@ wxString CastSecondsToHM(uint64 count)
 {
 	
 	if (count < 60)
-		return wxString::Format( wxT("%02llui %s"), count, _("secs") );
+		return wxString::Format( wxT("%02llu %s"), count, _("secs") );
 	else if (count < 3600)
-		return wxString::Format( wxT("%llui:%02llui %s"), count/60, (count % 60), _("mins") );
+		return wxString::Format( wxT("%llu:%02llu %s"), count/60, (count % 60), _("mins") );
 	else if (count < 86400)
-		return wxString::Format( wxT("%llui:%02llui %s"), count/3600, (count % 3600)/60, _("hours") );
+		return wxString::Format( wxT("%llu:%02llu %s"), count/3600, (count % 3600)/60, _("hours") );
 	else
-		return wxString::Format( wxT("%llui %s %02llui %s"), count/86400, _("Days") , (count % 86400) / 3600, _("hours") );
+		return wxString::Format( wxT("%llu %s %02llu %s"), count/86400, _("Days") , (count % 86400) / 3600, _("hours") );
 		
 	return _("Error");
 }
