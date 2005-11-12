@@ -216,14 +216,13 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	sharedfileswnd = new CSharedFilesWnd(p_cnt);
 	statisticswnd = new CStatisticsDlg(p_cnt, theApp.statistics);
 	chatwnd = new CChatWnd(p_cnt);
-	//kademliawnd = new CKadDlg(p_cnt);
+	kademliawnd = CastChild(wxT("kadWnd"), CKadDlg);
 	serverwnd->Show(FALSE);
 	searchwnd->Show(FALSE);
 	transferwnd->Show(FALSE);
 	sharedfileswnd->Show(FALSE);
 	statisticswnd->Show(FALSE);
 	chatwnd->Show(FALSE);
-	//kademliawnd->Show(FALSE);	
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUITIMER);
@@ -244,6 +243,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	// Init statistics stuff, better do it asap
 	statisticswnd->Init();
+	kademliawnd->Init();
 	
 	searchwnd->UpdateCatChoice();
 
@@ -281,16 +281,10 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	};
 	
 	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
-}
-
-
-void CamuleDlg::Init() {
-	//kademliawnd = new CKadDlg(p_cnt);
-	kademliawnd = CastChild( wxT("kadWnd"), CKadDlg );
-	kademliawnd->Init();
 	
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 }
+
 
 // Madcat - Sets Fast ED2K Links Handler on/off.
 void CamuleDlg::ShowED2KLinksHandler( bool show )
@@ -1153,6 +1147,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		GraphUpdateInfo update = theApp.statistics->GetPointsForUpdate();
 		
 		statisticswnd->UpdateStatGraphs(bStatsVisible, theStats::GetPeakConnections(), update);
+		kademliawnd->UpdateGraph(!IsIconized() && (activewnd == serverwnd), update);
 	}
 #else
 	#warning TODO: CORE/GUI -- EC needed

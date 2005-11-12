@@ -213,16 +213,21 @@ CStatTreeItemSimple*		CStatistics::s_serverOccupation;
 CStatTreeItemCounter*		CStatistics::s_numberOfShared;
 CStatTreeItemCounter*		CStatistics::s_sizeOfShare;
 
+// Kad
+uint64						CStatistics::s_kadNodesTotal;
+uint16						CStatistics::s_kadNodesCur;
+
 
 CStatistics::CStatistics()
 	: m_graphRunningAvgDown(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true),
-	  m_graphRunningAvgUp(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true)
+	  m_graphRunningAvgUp(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true),
+	  m_graphRunningAvgKad(thePrefs::GetStatsAverageMinutes() * 60 * 1000, true)
 {
 	uint64 start_time = GetTickCount64();
 
 	// Init graphs
 
-	HR hr = {0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0};
+	HR hr = {0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0};
 	hrInit = hr;
 	nHistRanges = 7;	// =ceil(log(max_update_delay)/log(2))
 	nPointsPerRange = GetPointsPerRange(); 
@@ -357,6 +362,10 @@ void CStatistics::RecordHistory()
 	phr->cntConnections = GetActiveConnections();
 	phr->cntDownloads = GetDownloadingSources();
 	phr->sTimestamp = GetUptimeMillis() / 1000.0;
+	
+	s_kadNodesTotal += s_kadNodesCur;
+	phr->kadNodesTotal = s_kadNodesTotal;
+	phr->kadNodesCur = s_kadNodesCur;
 }
 
 
@@ -491,11 +500,19 @@ void CStatistics::ComputeAverages(
 	float		**ppf,			// an array of pointers to arrays of floats with sample data
 	StatsGraphType	which_graph)		// the graph which will receive the points
 {	
-	double		sTarget, kBytesRun;
+	double		sTarget, kValueRun;
 	uint64 		avgTime = thePrefs::GetStatsAverageMinutes() * 60;
 	unsigned	nBtPoints = (unsigned)(avgTime / sStep);
-	CPreciseRateCounter *runningAvg = (which_graph == GRAPH_DOWN) ? &m_graphRunningAvgDown : &m_graphRunningAvgUp;
 
+	CPreciseRateCounter* runningAvg = NULL;
+	switch (which_graph) {
+		case GRAPH_DOWN:	runningAvg = &m_graphRunningAvgDown;	break;
+		case GRAPH_UP:		runningAvg = &m_graphRunningAvgUp;		break;
+		case GRAPH_KAD:		runningAvg = &m_graphRunningAvgKad;		break;
+		default:
+			wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));
+	}
+	
 	runningAvg->m_timespan = avgTime * 1000;
 	runningAvg->m_tick_history.clear();
 	runningAvg->m_byte_history.clear();
@@ -508,9 +525,18 @@ void CStatistics::ComputeAverages(
 		while (pos != listHR.rend() && pos->sTimestamp > sTarget) ++pos;	// find next history record
 		if (pos != listHR.rend()) {
 			runningAvg->m_tick_history.push_front((uint64)(pos->sTimestamp * 1000.0));
-			uint32 bytes = (uint32)((which_graph == GRAPH_DOWN ? pos->kBpsDownCur : pos->kBpsUpCur) * 1024.0);
-			runningAvg->m_byte_history.push_front(bytes);
-			runningAvg->m_total += bytes;
+			
+			uint32 value = 0;
+			switch (which_graph) {
+				case GRAPH_DOWN:	value = (uint32)(pos->kBpsDownCur * 1024.0);	break;
+				case GRAPH_UP:		value = (uint32)(pos->kBpsUpCur * 1024.0);		break;
+				case GRAPH_KAD:		value = (uint32)(pos->kadNodesCur);				break;
+				default:
+					wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));		
+			}		
+			
+			runningAvg->m_byte_history.push_front(value);
+			runningAvg->m_total += value;
 		} else {
 			break;
 		}
@@ -526,14 +552,18 @@ void CStatistics::ComputeAverages(
 
 	for (int cnt=cntFilled; cnt>0; cnt--, pf1--, pf2--, pf3--) {
 		HR *phr = *(--pphr);
-		if (which_graph==GRAPH_DOWN) {
-			kBytesRun = phr->kBytesReceived;
+		if (which_graph == GRAPH_DOWN) {
+			kValueRun = phr->kBytesReceived;
 			*pf3 = phr->kBpsDownCur;
-		} else {
-			kBytesRun = phr->kBytesSent;
+		} else if (which_graph == GRAPH_UP) {
+			kValueRun = phr->kBytesSent;
 			*pf3 = phr->kBpsUpCur;
+		} else {
+			kValueRun = phr->kadNodesTotal;
+			*pf3 = phr->kadNodesCur;
 		}
-		*pf1 = kBytesRun / phr->sTimestamp;
+		
+		*pf1 = kValueRun / phr->sTimestamp;
 		(*runningAvg) += (uint32)(*pf3 * 1024.0);
 		runningAvg->CalculateRate((uint64)(phr->sTimestamp * 1000.0));
 		*pf2 = (float)(runningAvg->GetRate() / 1024.0);
@@ -549,21 +579,29 @@ GraphUpdateInfo CStatistics::GetPointsForUpdate()
 
 	m_graphRunningAvgDown += (uint32)(phr->kBpsDownCur * 1024.0);
 	m_graphRunningAvgUp += (uint32)(phr->kBpsUpCur * 1024.0);
+	// Note: kadNodesCur is multiplied by 1024 since the value is done
+	// in other places, so we simply follow suit here to avoid trouble.
+	m_graphRunningAvgKad += (uint32)(phr->kadNodesCur * 1024.0);
 	m_graphRunningAvgDown.CalculateRate((uint64)(phr->sTimestamp * 1000.0));
 	m_graphRunningAvgUp.CalculateRate((uint64)(phr->sTimestamp * 1000.0));
+	m_graphRunningAvgKad.CalculateRate((uint64)(phr->sTimestamp * 1000.0));
 
 	update.downloads[0] = phr->kBytesReceived / phr->sTimestamp;
-	update.downloads[1] = (float)(m_graphRunningAvgDown.GetRate() / 1024.0);
+	update.downloads[1] = m_graphRunningAvgDown.GetRate() / 1024.0;
 	update.downloads[2] = phr->kBpsDownCur;
 
 	update.uploads[0] = phr->kBytesSent / phr->sTimestamp;
-	update.uploads[1] = (float)(m_graphRunningAvgUp.GetRate() / 1024.0);
+	update.uploads[1] = m_graphRunningAvgUp.GetRate() / 1024.0;
 	update.uploads[2] = phr->kBpsUpCur;
 
 	update.connections[0] = (float)phr->cntUploads;
 	update.connections[1] = (float)phr->cntConnections;
 	update.connections[2] = (float)phr->cntDownloads;
 
+	update.kadnodes[0] = phr->kadNodesTotal / phr->sTimestamp;
+	update.kadnodes[1] = m_graphRunningAvgKad.GetRate() / 1024.0;
+	update.kadnodes[2] = phr->kadNodesCur;
+		
 	return update;
 }
 

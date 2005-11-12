@@ -50,6 +50,7 @@ typedef struct UpdateInfo {
 	float downloads[3];
 	float uploads[3];
 	float connections[3];
+	float kadnodes[3];
 } GraphUpdateInfo;
 
 typedef struct HistoryRecord {
@@ -61,6 +62,8 @@ typedef struct HistoryRecord {
 	uint16		cntDownloads;
 	uint16		cntUploads;
 	uint16		cntConnections;
+	uint16		kadNodesCur;
+	uint64		kadNodesTotal;
 } HR;
 
 
@@ -318,6 +321,10 @@ class CStatistics {
 	static	void	RemoveSharedFile(uint64 size)		{ --(*s_numberOfShared); (*s_sizeOfShare) -= size; }
 	static	uint32	GetSharedFileCount()			{ return (*s_numberOfShared); }
 
+	// Kad nodes
+	static void		AddKadNode()					{ ++s_kadNodesCur; }
+	static void		RemoveKadNode()					{ --s_kadNodesCur; }
+	
 
 	// Other
 	static	void	CalculateRates();
@@ -366,6 +373,7 @@ class CStatistics {
 
 	CPreciseRateCounter	m_graphRunningAvgDown;
 	CPreciseRateCounter	m_graphRunningAvgUp;
+	CPreciseRateCounter	m_graphRunningAvgKad;
 
 	int	nHistRanges;
 	int	bitsHistClockMask;
@@ -451,6 +459,10 @@ class CStatistics {
 	// Shared files
 	static	CStatTreeItemCounter*		s_numberOfShared;
 	static	CStatTreeItemCounter*		s_sizeOfShare;
+
+	// Kad nodes
+	static uint64 s_kadNodesTotal;
+	static uint16 s_kadNodesCur;
 };
 
 #else /* EC_REMOTE == CLIENT_GUI */

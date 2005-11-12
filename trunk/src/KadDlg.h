@@ -34,30 +34,22 @@ class COScopeCtrl;
 class wxListEvent;
 class wxCommandEvent;
 class wxMouseEvent;
+typedef struct UpdateInfo GraphUpdateInfo;
 	
-class CMD4Hash;
 
-namespace Kademlia {
-	class CContact;
-}
-
-class CKadDlg : public wxPanel {
+class CKadDlg : public wxPanel
+{
 public:
 	CKadDlg(wxWindow* pParent);   
 	~CKadDlg() {};
+	
 	void Init();
 	void SetUpdatePeriod();
+	void SetGraphColors();
+	void UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update);
 		
-	void AddNode() { m_nodecount++; ShowNodeCount(); }
-	void RemoveNode() { wxASSERT(m_nodecount); m_nodecount--; ShowNodeCount(); }
-
 private:
-
-	uint32 m_nodecount;
-
-	uint32 m_nextshow;
-
-	COScopeCtrl* pscopeKad;
+	COScopeCtrl* m_kad_scope;
 
 	// Event handlers
 	void		OnBnClickedBootstrapClient(wxCommandEvent& evt);
@@ -65,8 +57,6 @@ private:
 	void		OnBnClickedDisconnectKad(wxCommandEvent& evt);
 	void		OnBnClickedUpdateNodeList(wxCommandEvent& evt);
 	void		OnFieldsChange(wxCommandEvent& evt);
-
-	void ShowNodeCount();
 
 	DECLARE_EVENT_TABLE()
 };
