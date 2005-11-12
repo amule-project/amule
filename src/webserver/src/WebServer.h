@@ -801,13 +801,4 @@ class CNoTemplateWebServer : public CScriptWebServer {
 		~CNoTemplateWebServer();
 };
 
-/*
- * CPP based webserver
- */
-class CWebServer : public CWebServerBase {
-	/*
-	 * This remains for historic reasons.
-	 */
-};
-
 #endif // WEBSERVER_H
