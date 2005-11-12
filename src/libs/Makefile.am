@@ -19,8 +19,8 @@ libmulecommon_a_SOURCES = \
 	common/PlatformSpecific.cpp \
 	common/StringFunctions.cpp
 	
-libmulecommon_a_CFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
-libmulecommon_a_CXXFLAGS =$(WX_CXXFLAGS) $(BFD_FLAGS) 
+libmulecommon_a_CFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
+libmulecommon_a_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
 
 # Common to all EC communication code. Ideally all EC should be here
 
@@ -29,8 +29,8 @@ libec_a_SOURCES = \
 	ec/ECSocket.cpp \
 	ec/RemoteConnect.cpp
 	
-libec_a_CFLAGS =$(WX_CXXFLAGS) -I..
-libec_a_CXXFLAGS =$(WX_CXXFLAGS) -I..
+libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
+libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
 
 noinst_HEADERS =  \
 		ec/ECSocket.h \
