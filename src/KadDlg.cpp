@@ -23,7 +23,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#include <wx/textctrl.h>
 #include "KadDlg.h"
 #include "muuli_wdr.h"
 #include "MD4Hash.h"
@@ -33,8 +32,10 @@
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
-#include <wx/sizer.h>
-#include <wx/intl.h>
+#include "Statistics.h"
+#include "StatisticsDlg.h"
+#include "ColorFrameCtrl.h"
+
 #include <wx/msgdlg.h>
 
 #ifndef CLIENT_GUI
@@ -42,8 +43,9 @@
 #include "kademlia/kademlia/Kademlia.h"
 #endif
 
+#include <utility>
+
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
-	
 	EVT_TEXT(ID_NODE_IP1, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP2, CKadDlg::OnFieldsChange)
 	EVT_TEXT(ID_NODE_IP3, CKadDlg::OnFieldsChange)	
@@ -56,38 +58,80 @@ BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_BUTTON(ID_KNOWNNODECONNECT, CKadDlg::OnBnClickedBootstrapKnown)
 	EVT_BUTTON(ID_KADDISCONNECT, CKadDlg::OnBnClickedDisconnectKad)
 	EVT_BUTTON(ID_UPDATEKADLIST, CKadDlg::OnBnClickedUpdateNodeList)
-	
 END_EVENT_TABLE()
 
 
 
-CKadDlg::CKadDlg(wxWindow* pParent) : wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") ) {
-	m_nodecount = 0;
+CKadDlg::CKadDlg(wxWindow* pParent) 
+	: wxPanel(pParent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxT("kadwnd") )
+{
+	m_kad_scope = NULL;
 }
 
-void CKadDlg::Init() {
-	m_nextshow=0;
-	
-	pscopeKad = CastChild( wxT("kadScope"), COScopeCtrl );
-	wxASSERT(pscopeKad);
-	pscopeKad->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
-	pscopeKad->SetYUnits(wxT("Nodes"));		
-	
+
+void CKadDlg::Init()
+{
+	m_kad_scope = CastChild( wxT("kadScope"), COScopeCtrl );
+	m_kad_scope->SetRanges(0.0, thePrefs::GetStatsMax());
+	m_kad_scope->SetYUnits(wxT("Nodes"));
+
+	SetUpdatePeriod();
+	SetGraphColors();
 }
+
 
 void CKadDlg::SetUpdatePeriod()
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
 	double sStep = thePrefs::GetTrafficOMeterInterval();
 	if (sStep == 0.0) {
-	 	pscopeKad->Stop();
+	 	m_kad_scope->Stop();
 	} else {
-	 	pscopeKad->Reset(sStep);
+	 	m_kad_scope->Reset(sStep);
 	}
 }
 
+
+void CKadDlg::SetGraphColors()
+{
+	static char aTrend[] = { 2,      1,        0        };
+	static int aRes[]    = { IDC_C0, IDC_C0_3, IDC_C0_2 };
+	
+	m_kad_scope->SetBackgroundColor(CStatisticsDlg::getColors(0));
+	m_kad_scope->SetGridColor(CStatisticsDlg::getColors(1));
+	
+	for (size_t i = 0; i < 3; ++i) {	
+		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(2 + i), aTrend[i]);
+		
+		CColorFrameCtrl* ctrl = CastChild(aRes[i], CColorFrameCtrl);
+		ctrl->SetBackgroundColor(CStatisticsDlg::getColors(2 + i));
+		ctrl->SetFrameColor((COLORREF)RGB(0,0,0));	
+	}
+}
+
+
+void CKadDlg::UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update)
+{	
+	const float* apfKad[] = { &update.kadnodes[0], &update.kadnodes[1], &update.kadnodes[2] };
+	
+	if (!bStatsVisible) {
+		m_kad_scope->DelayPoints();
+	} else {
+		float max = std::max(update.kadnodes[2], std::max(update.kadnodes[1], update.kadnodes[0]));
+		
+		// Check the current node-count to see if we should increase the graph height
+		if (m_kad_scope->GetUpperLimit() < update.kadnodes[2]) {
+			// Grow the limit by 50 sized increments.
+			m_kad_scope->SetRanges(0.0, ((update.kadnodes[2] + 49) / 50) * 50);
+		}
+
+		m_kad_scope->AppendPoints(update.timestamp, apfKad);
+	}
+}
+
+
 // Enables or disables the node connect button depending on the conents of the text fields
-void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
+void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 {
 	// These are the IDs of the search-fields 
 	int textfields[] = { ID_NODE_IP1, ID_NODE_IP2, ID_NODE_IP3, ID_NODE_IP4, ID_NODE_PORT};
@@ -101,7 +145,9 @@ void	CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 	FindWindowById(ID_NODECONNECT)->Enable( enable );
 }
 
-void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
+
+void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
+{
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		#warning TODO EC
 		#ifndef CLIENT_GUI
@@ -136,7 +182,9 @@ void	CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt)) {
 	}
 }
 
-void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
+
+void CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt))
+{
 	#ifndef CLIENT_GUI
 	if ( !Kademlia::CKademlia::isRunning() ) {
 		Kademlia::CKademlia::start();
@@ -144,7 +192,9 @@ void	CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt)) {
 	#endif
 }
 
-void	CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt)) {
+
+void CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt))
+{
 	#ifndef CLIENT_GUI
 	if ( Kademlia::CKademlia::isRunning() ) {
 		Kademlia::CKademlia::stop();
@@ -152,10 +202,11 @@ void	CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt)) {
 	#endif
 }
 
-void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
+
+void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
+{
 	#warning TODO EC
 	#ifndef CLIENT_GUI
-
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO) == wxYES ) {
@@ -174,19 +225,3 @@ void	CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt)) {
 	#endif		
 }
 
-void CKadDlg::ShowNodeCount() {
-	uint32 now = ::GetTickCount();
-
-	if (m_nextshow>now)
-		return;
-
-	m_nextshow=now+500;
-	
-	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
-
-	if ( label ) {
-		label->SetLabel( wxString::Format( _("Nodes (%i)"), m_nodecount ) );
-		label->GetParent()->Layout();
-	}
-	
-}

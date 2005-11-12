@@ -39,17 +39,12 @@ there client on the eMule forum..
 #include "Contact.h"
 #include "../../amule.h"
 #include "../../OPCodes.h" // Neededf for MIN2MS and such stuff.
+#include "../../Statistics.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
-
-#warning EC
-#ifndef AMULE_DAEMON
-#include "../../amuleDlg.h"
-#include "../../KadDlg.h"
 #endif
 
 ////////////////////////////////////////
@@ -58,10 +53,7 @@ using namespace Kademlia;
 
 CContact::~CContact()
 {
-	#warning EC
-	#ifndef AMULE_DAEMON
-		theApp.amuledlg->kademliawnd->RemoveNode();
-	#endif
+	theStats::RemoveKadNode();
 }
 
 CContact::CContact()
@@ -91,10 +83,8 @@ void CContact::initContact()
 	m_lastTypeSet = time(NULL);
 	m_created = time(NULL);
 	m_inUse = 0;	
-	#warning EC
-	#ifndef AMULE_DAEMON
-		theApp.amuledlg->kademliawnd->AddNode();
-	#endif
+
+	theStats::AddKadNode();
 }
 
 const wxString CContact::getClientIDString(void) const

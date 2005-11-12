@@ -2300,9 +2300,12 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
         _("Active connections"), 
         _("Active downloads"), 
         _("Active uploads"), 
-        _("Systray Icon Speedbar")
+        _("Systray Icon Speedbar"), 
+        _("Kad-nodes current"), 
+        _("Kad-nodes running"), 
+        _("Kad-nodes session")
     };
-    wxChoice *item14 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 12, strs14, 0 );
+    wxChoice *item14 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 15, strs14, 0 );
     item13->Add( item14, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
     wxButton *item15 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3252,12 +3255,12 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Nodes stats") );
     wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-    wxWindow *item9 = new COScopeCtrl(1,0,GRAPH_KAD,parent);
+    wxWindow *item9 = new COScopeCtrl(3,0,GRAPH_KAD,parent);
 item9->SetName(wxT("kadScope"));
     wxASSERT( item9 );
     item7->Add( item9, 1, wxGROW, 5 );
 
-    wxFlexGridSizer *item10 = new wxFlexGridSizer( 2, 0, 0 );
+    wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
     item10->AddGrowableCol( 0 );
     item10->AddGrowableCol( 1 );
 

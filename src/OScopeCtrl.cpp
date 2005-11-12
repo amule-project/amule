@@ -479,7 +479,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 #ifndef CLIENT_GUI
 	wxASSERT(graph_type != GRAPH_INVALID);
 	
-	if (graph_type != GRAPH_KAD) {
+	if (graph_type != GRAPH_INVALID) {
 		unsigned i, cntFilled;
 		float** apf = new float*[nTrends];
 		for (i=0; i<nTrends; ++i)

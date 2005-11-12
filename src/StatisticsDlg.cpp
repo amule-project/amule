@@ -42,7 +42,7 @@
 
 COLORREF CStatisticsDlg::getColors(unsigned num)
 {
-	wxCHECK(num < 13, RGB(0, 0, 0));
+	wxCHECK(num < 16, RGB(0, 0, 0));
 	
 	return acrStat[num];
 }
@@ -102,7 +102,7 @@ COLORREF CStatisticsDlg::acrStat[cntStatColors] =
 		RGB(0,0,64),		RGB(192,192,255),	RGB(128, 255, 128),	RGB(0, 210, 0),
 		RGB(0, 128, 0),		RGB(255, 128, 128),	RGB(200, 0, 0),		RGB(140, 0, 0),
 	  	RGB(150, 150, 255),	RGB(192, 0, 192),	RGB(255, 255, 128),	RGB(0, 0, 0), 
-	  	RGB(255, 255, 255)
+	  	RGB(255, 255, 255), RGB(128, 255, 128),	RGB(0, 210, 0),		RGB(0, 128, 0)
 	};
 
 

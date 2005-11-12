@@ -65,6 +65,7 @@
 #include "Logger.h"
 #include "Format.h"				// Needed for CFormat
 #include "TransferWnd.h"		// Needed for CTransferWnd::UpdateCatTabTitles()
+#include "KadDlg.h"				// Needed for CKadDlg
 
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
@@ -457,6 +458,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);
 		}
 
+		theApp.amuledlg->kademliawnd->SetGraphColors();
 	}
 
 	// Set the file-permissions value
@@ -572,6 +574,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// Changes related to the statistics-dlg
 	if ( CfgChanged(IDC_SLIDER) ) {
 		theApp.amuledlg->statisticswnd->SetUpdatePeriod();
+		theApp.amuledlg->kademliawnd->SetUpdatePeriod();
 	}
 
 	if ( CfgChanged(IDC_SLIDER3) ) {
