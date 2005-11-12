@@ -77,7 +77,6 @@ using std::auto_ptr;
 #include "OtherFunctions.h"		// Needed for CastItoIShort
 
 #include "MD4Hash.h"
-#include "ECSocket.h"
 #include "ECPacket.h"
 #include "ECcodes.h"
 #include "ECVersion.h"

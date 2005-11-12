@@ -23,10 +23,9 @@
 //
 
 #include "ECPacket.h"	// Needed for ECTag, ECPacket
-#include "ECSocket.h"	// Needed for ECSocket
+#include "ECSocket.h"	// Needed for CECSocket
 #include <cstdlib>	// Needed for malloc(), realloc(), free(), NULL
 #include <cstring>	// Needed for memcpy(), strlen()
-#include "MD4Hash.h"	// Needed for CMD4Hash
 
 /**********************************************************
  *							  *
@@ -427,7 +426,7 @@ bool CECTag::AddTag(const CECTag& tag)
 	}
 }
 
-CECTag::CECTag(ECSocket& socket) : m_dynamic(true)
+CECTag::CECTag(CECSocket& socket) : m_dynamic(true)
 {
 	ec_taglen_t tagLen;
 	ec_tagname_t tmp_tagName;
@@ -468,7 +467,7 @@ CECTag::CECTag(ECSocket& socket) : m_dynamic(true)
 }
 
 
-bool CECTag::WriteTag(ECSocket& socket) const
+bool CECTag::WriteTag(CECSocket& socket) const
 {
 	ec_taglen_t tagLen = GetTagLen();
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
@@ -487,7 +486,7 @@ bool CECTag::WriteTag(ECSocket& socket) const
 }
 
 
-bool CECTag::ReadChildren(ECSocket& socket)
+bool CECTag::ReadChildren(CECSocket& socket)
 {
 	uint16 tmp_tagCount;
 
@@ -514,7 +513,7 @@ bool CECTag::ReadChildren(ECSocket& socket)
 }
 
 
-bool CECTag::WriteChildren(ECSocket& socket) const
+bool CECTag::WriteChildren(CECSocket& socket) const
 {
     uint16 tmp = m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
@@ -758,7 +757,7 @@ double CECTag::GetDoubleData(void) const
  *							  *
  **********************************************************/
 
-CECPacket::CECPacket(ECSocket& socket) : CECEmptyTag(0)
+CECPacket::CECPacket(CECSocket& socket) : CECEmptyTag(0)
 {
 	m_error = 0;
 	if (!socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))) {
@@ -769,7 +768,7 @@ CECPacket::CECPacket(ECSocket& socket) : CECEmptyTag(0)
 }
 
 
-bool CECPacket::WritePacket(ECSocket& socket) const
+bool CECPacket::WritePacket(CECSocket& socket) const
 {
 	if (!socket.WriteNumber(&m_opCode, sizeof(ec_opcode_t))) return false;
 	if (!WriteChildren(socket)) return false;

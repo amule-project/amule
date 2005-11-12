@@ -56,7 +56,7 @@ there client on the eMule forum..
 #include "../../updownclient.h"
 #include "../../ClientTCPSocket.h"
 #include "../../Logger.h"
-#include "../../Format.h"
+#include "Format.h"
 #include "../../Preferences.h"
 
 #include <wx/tokenzr.h>

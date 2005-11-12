@@ -49,7 +49,6 @@
 //-------------------------------------------------------------------
 
 #include "ECFileConfig.h"	// Needed for CECFileConfig
-#include "ECSocket.h"
 #include "ECSpecialTags.h"
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD5Sum.h"
