@@ -272,6 +272,45 @@ void php_native_download_file_cmd(PHP_VALUE_NODE *)
 }
 
 /*
+ * Usage amule_kad_connect($bootstrap_ip, $bootstrap_port)
+ */
+void php_native_kad_connect(PHP_VALUE_NODE *)
+{
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( !si ) {
+		php_report_error(PHP_ERROR, "Missing or bad argument 1: $bootstrap_ip_addr");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	unsigned int ipaddr = si->var->value.int_val;
+
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( !si ) {
+		php_report_error(PHP_ERROR, "Missing or bad argument 2: $bootstrap_ip_port");
+		return;
+	}
+	cast_value_dnum(&si->var->value);
+	unsigned int ipport = si->var->value.int_val;
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_KAD_START);
+	req.AddTag(CECTag(EC_TAG_SERVER_ADDRESS, EC_IPv4_t(ipaddr, ipport)));
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+#else
+	printf("php_native_kad_connect: ip=%08x port=%d\n", ipaddr, ipport);
+#endif
+}
+
+void php_native_kad_disconnect(PHP_VALUE_NODE *)
+{
+#ifndef PHP_STANDALONE_EN
+	CECPacket req(EC_OP_KAD_STOP);
+	CPhPLibContext::g_curr_context->WebServer()->Send_Discard_V2_Request(&req);
+#else
+	printf("php_native_kad_disconnect\n");
+#endif
+}
+
+/*
  * Usage amule_add_server_cmd($server_addr, $server_port, $server_name);
  */
 void php_native_add_server_cmd(PHP_VALUE_NODE *)
