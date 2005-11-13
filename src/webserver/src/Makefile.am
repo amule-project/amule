@@ -8,7 +8,6 @@ amuleweb_SOURCES =  \
 	WebSocket.cpp \
 	$(top_srcdir)/src/ExternalConnector.cpp \
 	$(top_srcdir)/src/OtherFunctions.cpp \
-	$(top_srcdir)/src/ECSpecialTags.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
 	php_parser.c \

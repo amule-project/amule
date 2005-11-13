@@ -107,6 +107,7 @@ core_sources = \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
 	EMSocket.cpp \
+	ECSpecialCoreTags.cpp \
 	ExternalConn.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -155,14 +156,12 @@ gui_sources = \
 	SharedFilesCtrl.cpp \
 	TransferWnd.cpp 
 
-ec_sources = \
-	ECSpecialTags.cpp
-
 remote_common_sources = \
 	OtherFunctions.cpp 
 
 common_sources = \
 	ClientCredits.cpp \
+	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
 	Logger.cpp \
@@ -261,8 +260,7 @@ endif
 amulecmd_SOURCES = \
 	TextClient.cpp \
 	ExternalConnector.cpp \
-	$(remote_common_sources) \
-	$(ec_sources)
+	$(remote_common_sources)
 	
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs

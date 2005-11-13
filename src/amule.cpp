@@ -892,6 +892,11 @@ bool CamuleApp::OnInit()
 	}
 #endif /* ! __WXMSW__ */
 
+	printf("Testing mime type manager:\n");
+	wxMimeTypesManager *manager = wxTheMimeTypesManager;
+	wxFileType* file_type;
+	manager->GetFileTypeFromExtension(wxString(wxT("mp3")));
+	
 	return true;
 }
 

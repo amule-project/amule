@@ -8,7 +8,8 @@ noinst_LIBRARIES = \
 libec_a_SOURCES = \
 	ECPacket.cpp \
 	ECSocket.cpp \
-	RemoteConnect.cpp
+	RemoteConnect.cpp \
+	ECSpecialTags.cpp
 	
 libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
 libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
