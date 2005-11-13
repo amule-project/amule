@@ -507,6 +507,10 @@ public:
 	// Statistics
 	static unsigned		GetMaxClientVersions()		{ return s_maxClientVersions; }
 
+	// Command on completion
+	static bool	CommandOnCompletion()				{ return s_ExecOnCompletion; }
+	static const wxString& GetCommandOnCompletion()	{ return s_ExecOnCompletionCommand; }
+	
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
@@ -713,6 +717,10 @@ protected:
 
 	// Statistics
 	static	unsigned	s_maxClientVersions;	// 0 = unlimited
+
+	// Exec command on completion
+	static bool s_ExecOnCompletion;
+	static wxString s_ExecOnCompletionCommand;
 };
 
 
