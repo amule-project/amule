@@ -697,11 +697,6 @@ void CamulecmdApp::OnInitCommandSet()
 					  "Use 'Set BwLimit Down' instead.\n"), CMD_PARAM_ALWAYS);
 }
 
-bool CamulecmdApp::OnInit()
-{
-	return CaMuleExternalConnector::OnInit();
-}
-
 int CamulecmdApp::OnRun()
 {
 	ConnectAndRun(wxT("aMulecmd"), wxT(VERSION));
