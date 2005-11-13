@@ -164,3 +164,36 @@ void CRemoteConnect::Send(CECPacket *packet)
 	// Just send and ignore reply
     auto_ptr<CECPacket> reply(SendRecv(packet));
 }
+
+/******************** EC API ***********************/
+
+void CRemoteConnect::StartKad() {
+	CECPacket req(EC_OP_KAD_START);
+	Send(&req);	
+}
+
+void CRemoteConnect::StopKad() {
+	CECPacket req(EC_OP_KAD_STOP);
+	Send(&req);	
+}
+
+void CRemoteConnect::ConnectED2K(uint32 ip, uint16 port) {
+	CECPacket req(EC_OP_SERVER_CONNECT);
+	if (ip && port) {
+		req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+	}
+	Send(&req);
+}
+
+void CRemoteConnect::DisconnectED2K() {
+	CECPacket req(EC_OP_SERVER_DISCONNECT);
+	Send(&req);	
+}
+
+void CRemoteConnect::RemoveServer(uint32 ip, uint16 port) {
+	CECPacket req(EC_OP_SERVER_REMOVE);
+	if (ip && port) {
+		req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
+	}
+	Send(&req);
+}
