@@ -132,6 +132,11 @@ public:
 	 */
 	void	SetFilter(const wxString& regExp, bool invert, bool filterKnown);
 
+	/**
+	 * Toggels the use of filtering on and off.
+	 */
+	void	EnableFiltering(bool enabled);
+
 	
 	/**
 	 * Returns the number of items hidden due to filtering.
@@ -148,11 +153,17 @@ protected:
 	//! The current filter reg-exp.
 	wxRegEx		m_filter;
 
+	//! The text from which the filter is compiled.
+	wxString	m_filterText;
+
 	//! Controls if shared/queued results should be shown.
 	bool		m_filterKnown;
 	
 	//! Controls if the result of filter-hits should be inverted
 	bool		m_invert;
+
+	//! Specifies if filtering should be used
+	bool		m_filterEnabled;
 
 
 	/**

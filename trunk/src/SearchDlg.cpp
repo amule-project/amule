@@ -129,10 +129,11 @@ CSearchListCtrl* CSearchDlg::GetSearchList( long id )
 {
 	int nPages = m_notebook->GetPageCount();
 	for ( int i = 0; i < nPages; i++ ) {
-		CSearchListCtrl* page = (CSearchListCtrl*)m_notebook->GetPage( i );
+		CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
 
-		if ( page->GetSearchId() == id )
-			return page;	
+		if (page->GetSearchId() == id) {
+			return page;
+		}
 	}
 
 	return NULL;
@@ -178,19 +179,22 @@ void CSearchDlg::OnExtendedSearchChange(wxCommandEvent& event)
 	Layout();
 }
 
+
 void CSearchDlg::OnFilterCheckChange(wxCommandEvent& event)
 {
 	s_searchsizer->Show(s_filtersizer, event.IsChecked());
-	
 	Layout();
-	
-	// Remove any current filtering
-	if (!event.IsChecked()) {
-		CastChild(ID_FILTER_TEXT, wxTextCtrl)->SetValue(wxT(""));
-		wxCommandEvent evt;
-		OnFilteringChange(evt);
+
+	int nPages = m_notebook->GetPageCount();
+	for ( int i = 0; i < nPages; i++ ) {
+		CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
+
+		page->EnableFiltering(event.IsChecked());
+
+		UpdateHitCount(page);		
 	}
 }
+
 
 void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
 {
@@ -198,7 +202,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
 		OnBnClickedStop(nullEvent);
 	}
-	CSearchListCtrl *ctrl = (CSearchListCtrl*)m_notebook->GetPage(evt.GetSelection());
+	CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(evt.GetSelection()));
 	wxASSERT(ctrl);
 	theApp.searchlist->RemoveResults(ctrl->GetSearchId());
 	
@@ -216,7 +220,7 @@ void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 
 	// Only enable the Download button for pages where files have been selected
 	if ( selection != -1 ) {
-		bool enable = ((CSearchListCtrl*)m_notebook->GetPage( selection ))->GetSelectedItemCount();
+		bool enable = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection))->GetSelectedItemCount();
 
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
 	}
@@ -313,7 +317,7 @@ void CSearchDlg::OnFilteringChange(wxCommandEvent& WXUNUSED(evt))
 	if (wxRegEx(filter, wxRE_DEFAULT | wxRE_ICASE).IsValid()) {
 		int nPages = m_notebook->GetPageCount();
 		for ( int i = 0; i < nPages; i++ ) {
-			CSearchListCtrl* page = (CSearchListCtrl*)m_notebook->GetPage( i );
+			CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
 			
 			page->SetFilter(filter, invert, known);
 		
@@ -385,7 +389,7 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 		return;
 	
 	
-	CSearchListCtrl* searchlistctrl = (CSearchListCtrl*)m_notebook->GetPage( selection );
+	CSearchListCtrl* searchlistctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
 	
 	if ( !searchlistctrl->GetSelectedItemCount() )
 		return;
