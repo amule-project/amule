@@ -209,6 +209,8 @@ bool		CPreferences::s_NewVersionCheck;
 bool		CPreferences::s_ConnectToKad;
 bool		CPreferences::s_ConnectToED2K;
 unsigned	CPreferences::s_maxClientVersions;
+bool		CPreferences::s_ExecOnCompletion;
+wxString	CPreferences::s_ExecOnCompletionCommand;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -859,9 +861,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	
 	NewCfgItem(IDC_ICH,		(new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true )));
 	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false )));
-	NewCfgItem(IDC_METADATA,	(new Cfg_Bool( wxT("/ExternalConnect/ExtractMetaDataTags"), s_ExtractMetaData, false )));
-	NewCfgItem(IDC_CHUNKALLOC,	(new Cfg_Bool( wxT("/ExternalConnect/FullChunkAlloc"), s_AllocFullChunk, false )));
-	NewCfgItem(IDC_FULLALLOCATE,	(new Cfg_Bool( wxT("/ExternalConnect/FullPartAlloc"), s_AllocFullPart, false )));
 	NewCfgItem(IDC_CHECKDISKSPACE,	(new Cfg_Bool( wxT("/eMule/CheckDiskspace"), s_checkDiskspace, true )));
 	NewCfgItem(IDC_MINDISKSPACE,	(MkCfg_Int( wxT("/eMule/MinFreeDiskSpace"), s_uMinFreeDiskSpace, 1 )));
 	NewCfgItem(IDC_ADDNEWFILESPAUSED,	(new Cfg_Bool( wxT("/eMule/AddNewFilesPaused"), s_addnewfilespaused, false )));
@@ -978,6 +977,12 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Version check
 	 **/
 	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, false )));
+	 
+	/**
+	 * Execute command on file completion.
+	 **/
+	NewCfgItem(ID_ONCMPLT,			(new Cfg_Bool( wxT("/eMule/ExecOnCompletion"), s_ExecOnCompletion, false)));
+	NewCfgItem(ID_ONCMPLT_TEXT,		(new Cfg_Str(  wxT("/eMule/ExecOnCompletionCommand"), s_ExecOnCompletionCommand, wxT("sh -c '~/example.sh \"%FILE\" %HASH'"))));
 	 
 	/**
 	 * The following doesn't have an associated widget.

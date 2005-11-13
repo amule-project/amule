@@ -1524,6 +1524,7 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 	} 
 }
 
+
 void CamuleApp::OnFinishedHashing(wxEvent& e)
 {
 	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
@@ -1557,21 +1558,32 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 			delete result;
 		}
 	}
-
-	return;
 }
+
 
 void CamuleApp::OnFinishedCompletion(wxEvent& e)
 {
-	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
+	wxMuleInternalEvent& evt = dynamic_cast<wxMuleInternalEvent&>(e);
 	CPartFile* completed = (CPartFile*)evt.GetClientData();
-	wxASSERT(completed);
+	wxCHECK_RET(completed, wxT("Completion event sent for unspecified file"));
 	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
 
-	return;
+	// Check if we should execute an script/app/whatever.
+	if (thePrefs::CommandOnCompletion()) {
+		wxString command = thePrefs::GetCommandOnCompletion();
+
+		command.Replace(wxT("%FILE"), completed->GetFullName());
+		command.Replace(wxT("%HASH"), completed->GetFileHash().Encode());
+
+		if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
+			AddLogLineM(true, CFormat(_("Failed to execute on-completion command. Template is: %s")) % command);
+		}
+	}	
 }
 
-void CamuleApp::ShutDown() {
+
+void CamuleApp::ShutDown()
+{
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTINGDOWN;
 	
