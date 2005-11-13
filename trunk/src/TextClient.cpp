@@ -250,7 +250,6 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(request);
 			break;
 
-
 		case CMD_ID_PAUSE:
 		case CMD_ID_CANCEL:
 		case CMD_ID_RESUME:
@@ -259,11 +258,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				return 0;
 			} else if ( args.Left(3) == wxT("all") ) {
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
-				CECPacket *reply_all = SendRecvMsg_v2(&request_all);
+				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 				if (reply_all) {
 					request = new CECPacket(EC_OP_PARTFILE_RESUME);
 					for(int i = 0;i < reply_all->GetTagCount();i++) {
-						CECTag *tag = reply_all->GetTagByIndex(i);
+						const CECTag *tag = reply_all->GetTagByIndex(i);
 						if (tag) {
 							request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
 						}
@@ -365,7 +364,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		std::list<CECPacket *>::iterator it = request_list.begin();
 		while ( it != request_list.end() ) {
 			CECPacket *curr = *it++;
-			CECPacket *reply = SendRecvMsg_v2(curr);
+			const CECPacket *reply = SendRecvMsg_v2(curr);
 			delete curr;
 			if ( reply ) {
 				Process_Answer_v2(reply);
@@ -400,7 +399,7 @@ wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
 /*
  * Format EC packet into text form for output to console
  */
-void CamulecmdApp::Process_Answer_v2(CECPacket *response)
+void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 {
 	wxString s;
 	wxString msgFailedUnknown(_("Request failed with an unknown error."));
@@ -411,7 +410,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_FAILED:
 			if (response->GetTagCount()) {
-				CECTag *tag = response->GetTagByIndex(0);
+				const CECTag *tag = response->GetTagByIndex(0);
 				if (tag) {
 					s <<	CFormat(_("Request failed with the following error: %s")) % wxGetTranslation(tag->GetStringData());
 				} else {
@@ -449,7 +448,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_STRINGS:
 			for (int i = 0; i < response->GetTagCount(); ++i) {
-				CECTag *tag = response->GetTagByIndex(i);
+				const CECTag *tag = response->GetTagByIndex(i);
 				if (tag) {
 					s << tag->GetStringData() << wxT("\n");
 				} else {
@@ -488,7 +487,7 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 				}
 				s << wxT('\n');
 			}
-			CECTag *tmpTag;
+			const CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
 				s <<	CFormat(_("\nDownload:\t%s")) % CastItoSpeed(tmpTag->GetInt32Data());
 			}
@@ -527,11 +526,11 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_ULOAD_QUEUE:
 			for(int i = 0; i < response->GetTagCount(); ++i) {
-				CECTag *tag = response->GetTagByIndex(i);
-				CECTag *clientName = tag ? tag->GetTagByName(EC_TAG_CLIENT_NAME) : NULL;
-				CECTag *partfileName = tag ? tag->GetTagByName(EC_TAG_PARTFILE_NAME) : NULL;
-				CECTag *partfileSizeXfer = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER) : NULL;
-				CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
+				const CECTag *tag = response->GetTagByIndex(i);
+				const CECTag *clientName = tag ? tag->GetTagByName(EC_TAG_CLIENT_NAME) : NULL;
+				const CECTag *partfileName = tag ? tag->GetTagByName(EC_TAG_PARTFILE_NAME) : NULL;
+				const CECTag *partfileSizeXfer = tag ? tag->GetTagByName(EC_TAG_PARTFILE_SIZE_XFER) : NULL;
+				const CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
 				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
 					s <<	wxT("\n") <<
 						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
@@ -544,8 +543,8 @@ void CamulecmdApp::Process_Answer_v2(CECPacket *response)
 			break;
 		case EC_OP_SERVER_LIST:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
-				CECTag *tag = response->GetTagByIndex(i);
-				CECTag *serverName = tag ? tag->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
+				const CECTag *tag = response->GetTagByIndex(i);
+				const CECTag *serverName = tag ? tag->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
 				if (tag && serverName) {
 					wxString ip = tag->GetIPv4Data().StringIP();
 					ip.Append(' ', 24 - ip.Length());
