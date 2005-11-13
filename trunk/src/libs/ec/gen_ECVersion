@@ -30,8 +30,7 @@ top_srcdir=$1
 
 echo -n "Generating ECVersion.h... "
 
-# As long as gen_ECVersion is only called from src it is safe to call utils/mkFileSum
-final_hash="`cat $top_srcdir/src/libs/ec/ECCodes.h | $top_srcdir/src/libs/ec/mkFileSum`"
+final_hash="`cat $top_srcdir/src/libs/ec/ECCodes.h | ./mkFileSum`"
 
 cat > ECVersion.h.new <<EOT
 /* Automatically generated file. Do not edit! */
