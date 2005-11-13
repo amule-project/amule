@@ -504,13 +504,11 @@ bool CamuleRemoteGuiApp::IsConnectedED2K() const {
 }
 
 void CamuleRemoteGuiApp::StartKad() {
-	CECPacket req(EC_OP_KAD_START);
-	connect->Send(&req);	
+	connect->StartKad();
 }
 
 void CamuleRemoteGuiApp::StopKad() {
-	CECPacket req(EC_OP_KAD_STOP);
-	connect->Send(&req);	
+	connect->StopKad();
 }
 
 uint32 CamuleRemoteGuiApp::GetED2KID() const {
@@ -656,11 +654,7 @@ void CServerConnectRem::Disconnect()
 
 void CServerConnectRem::ConnectToServer(CServer *server)
 {
-	CECPacket req(EC_OP_SERVER_CONNECT);
-	uint32 ip = server->GetIP();
-	uint16 port = server->GetPort();
-	req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
-	m_Conn->Send(&req);
+	m_Conn->ConnectED2K(server->GetIP(), server->GetPort());
 }
 
 bool CServerConnectRem::ReQuery()
@@ -729,11 +723,7 @@ void CServerListRem::SaveServerMet()
 
 void CServerListRem::RemoveServer(CServer* server)
 {
-	CECPacket req(EC_OP_SERVER_REMOVE);
-	uint32 ip = server->GetIP();
-	uint16 port = server->GetPort();
-	req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
-	m_conn->Send(&req);
+	m_conn->RemoveServer(server->GetIP(),server->GetPort());
 }
 
 void CServerListRem::UpdateUserFileStatus(CServer *server)
