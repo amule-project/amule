@@ -52,9 +52,9 @@ libmuleappcommon_a_SOURCES = \
 	SHA.cpp \
 	Tag.cpp \
 	kademlia/utils/UInt128.cpp
-	
-libmuleappcommon_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappcommon_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+
+libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 # Common to core/monolithic
 
@@ -69,9 +69,9 @@ libmuleappcore_a_SOURCES = \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp 
-	
-libmuleappcore_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappcore_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+
+libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 # Common to gui/monolithic
 
@@ -91,9 +91,9 @@ libmuleappgui_a_SOURCES = \
 	FileDetailListCtrl.cpp \
 	muuli_wdr.cpp \
 	ColorFrameCtrl.cpp
-	
-libmuleappgui_a_CFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappgui_a_CXXFLAGS =$(WX_CXXFLAGS) -I$(srcdir)/libs
+
+libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 core_sources = \
 	AICHSyncThread.cpp \
@@ -185,7 +185,7 @@ common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
-common_flags = -I$(srcdir)/libs
+common_flags = -I$(srcdir)/libs -Ilibs
 
 # Extras 
 
@@ -261,9 +261,9 @@ amulecmd_SOURCES = \
 	TextClient.cpp \
 	ExternalConnector.cpp \
 	$(remote_common_sources)
-	
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -I$(srcdir)/libs
+
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE
 amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
 
 noinst_HEADERS = AddFileThread.h \
@@ -389,5 +389,5 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
-	
+
 endif
