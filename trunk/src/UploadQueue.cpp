@@ -81,12 +81,16 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	CUpDownClient* newclient;
 	// select next client or use given client
 	if (!directadd) {
+		// Track if we purged any clients from the queue, as to only send one notify in total
+		bool purged = false;
+		
 		POSITION pos1, pos2;
 		for (pos1 = waitinglist.GetHeadPosition();( pos2 = pos1 ) != NULL;) {
 			waitinglist.GetNext(pos1);
 			CUpDownClient* cur_client = waitinglist.GetAt(pos2);
 			// clear dead clients
 			if ( (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
+				purged = true;
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(pos2);
 				if (!cur_client->GetSocket()) {
@@ -117,6 +121,11 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 					toaddlow = pos2;
 				}
 			}
+		}
+
+		// Update the count on GUI if any clients were purged
+		if (purged) {
+			Notify_ShowQueueCount(waitinglist.GetCount());
 		}
 
 		if (bestlowscore > bestscore){
@@ -189,7 +198,7 @@ void CUploadQueue::Process()
 		CUpDownClient* cur_client = uploadinglist.GetNext(pos);
 		//It seems chatting or friend slots can get stuck at times in upload.. This needs looked into..
 		if (!cur_client->GetSocket()) {
-			RemoveFromUploadQueue(cur_client, wxT("Uploading to client without socket? (CUploadQueue::Process)"));
+			RemoveFromUploadQueue(cur_client, true);
 			if(cur_client->Disconnected(_T("CUploadQueue::Process"))){
 				cur_client->Safe_Delete();
 			}
@@ -490,7 +499,7 @@ void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 		//check if the client is uploading the file we need to suspend
 		if(potential->GetUploadFileID() == filehash) {
 			//remove the unlucky client from the upload queue and add to the waiting queue
-			RemoveFromUploadQueue(potential, 1);
+			RemoveFromUploadQueue(potential, true);
 
 			waitinglist.AddTail(potential);
 			theStats::AddWaitingClient();
@@ -516,6 +525,7 @@ bool CUploadQueue::RemoveFromWaitingQueue(CUpDownClient* client, bool updatewind
 	}
 }
 
+
 void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
 {
 	CUpDownClient* todelete = waitinglist.GetAt(pos);
@@ -527,6 +537,7 @@ void CUploadQueue::RemoveFromWaitingQueue(POSITION pos)
 	Notify_QlistRemoveClient(todelete);
 	todelete->SetUploadState(US_NONE);
 }
+
 
 CUpDownClient* CUploadQueue::GetNextClient(CUpDownClient* lastclient)
 {
