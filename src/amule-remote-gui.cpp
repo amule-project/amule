@@ -57,6 +57,7 @@ using std::auto_ptr;
 
 #include <ec/ECPacket.h>
 #include <ec/ECCodes.h>
+#include <ec/ECVersion.h>
 
 #include "MD4Hash.h"
 #include "amule.h"			// Interface declarations.
@@ -81,8 +82,6 @@ using std::auto_ptr;
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
 #include "OtherFunctions.h"		// Needed for CastItoIShort
-
-#include "ECVersion.h"
 
 
 CEConnectDlg::CEConnectDlg() :
