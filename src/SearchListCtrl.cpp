@@ -82,7 +82,10 @@ enum SearchListColumns {
 
 
 CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
-	: CMuleListCtrl( parent, winid, pos, size, style, validator, name)
+	: CMuleListCtrl( parent, winid, pos, size, style, validator, name),
+	  m_filterKnown(false),
+	  m_invert(false),
+	  m_filterEnabled(false)
 {
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
@@ -278,39 +281,59 @@ void CSearchListCtrl::SetFilter(const wxString& regExp, bool invert, bool filter
 {
 	if (regExp.IsEmpty()) {
 		// Show everything
-		m_filter.Compile(wxT(".*"));
-	} else {	
-		m_filter.Compile(regExp, wxRE_DEFAULT | wxRE_ICASE);
+		m_filterText = wxT(".*");
+	} else {
+		m_filterText = regExp;
 	}
 	
+	m_filter.Compile(m_filterText, wxRE_DEFAULT | wxRE_ICASE);
 	m_filterKnown = filterKnown;
 	m_invert = invert;
 	
+	if (m_filterEnabled) {
+		// Swap the list of filtered results so we can freely add new items to the list
+		ResultList curFiltered;
+		std::swap(curFiltered, m_filteredOut);
 	
-	// Swap the list of filtered results so we can freely add new items to the list
-	ResultList curFiltered;
-	std::swap(curFiltered, m_filteredOut);
-	
-
-	// Filter items already on the list
-	for (int i = 0; i < GetItemCount();) {
-		CSearchFile* file = (CSearchFile*)GetItemData(i);
+		// Filter items already on the list
+		for (int i = 0; i < GetItemCount();) {
+			CSearchFile* file = (CSearchFile*)GetItemData(i);
 		
-		if (IsFiltered(file)) {
-			++i;
-		} else {
-			m_filteredOut.push_back(file);
-			DeleteItem(i);
+			if (IsFiltered(file)) {
+				++i;
+			} else {
+				m_filteredOut.push_back(file);
+				DeleteItem(i);
+			}
+		}
+
+		// Check the previously filtered items.
+		ResultList::iterator it = curFiltered.begin();
+		for (; it != curFiltered.end(); ++it) {
+			if (IsFiltered(*it)) {
+				AddResult(*it);
+			} else {
+				m_filteredOut.push_back(*it);
+			}
 		}
 	}
+}
 
-	// Check the previously filtered items.
-	ResultList::iterator it = curFiltered.begin();
-	for (; it != curFiltered.end(); ++it) {
-		if (IsFiltered(*it)) {
-			AddResult(*it);
+
+void CSearchListCtrl::EnableFiltering(bool enabled)
+{
+	if (enabled != m_filterEnabled) {
+		m_filterEnabled = enabled;
+		
+		if (enabled) {
+			SetFilter(m_filterText, m_invert, m_filterKnown);
 		} else {
-			m_filteredOut.push_back(*it);
+			ResultList::iterator it = m_filteredOut.begin();
+			for (; it != m_filteredOut.end(); ++it) {
+				AddResult(*it);
+			}
+
+			m_filteredOut.clear();
 		}
 	}
 }
@@ -327,7 +350,7 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 	// By default, everything is displayed
 	bool result = true;
 	
-	if (m_filter.IsValid()) {
+	if (m_filterEnabled && m_filter.IsValid()) {
 		result = m_filter.Matches(file->GetFileName());
 		result = ((result && !m_invert) || (!result && m_invert));
 	
