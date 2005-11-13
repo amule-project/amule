@@ -56,6 +56,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "gsocket-fix.h"
 #include "KnownFileList.h"	// Needed for CKnownFileList
+#include "kademlia/kademlia/Kademlia.h"
 
 enum
 {	// id for sockets
@@ -803,6 +804,29 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	return response;
 }
 
+CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
+{
+	CECPacket *response;
+	if (thePrefs::GetNetworkKademlia()) {
+		response = new CECPacket(EC_OP_NOOP);
+		if ( !Kademlia::CKademlia::isRunning() ) {
+			Kademlia::CKademlia::start();
+			theApp.ShowConnectionState();
+		}
+		const CECTag *addrtag = request->GetTagByIndex(0);
+		if ( addrtag ) {
+			uint32 ip = addrtag->GetIPv4Data().IP();
+			uint16 port = addrtag->GetIPv4Data().port;
+			Kademlia::CKademlia::bootstrap(ip, port);
+		}
+	} else {
+		response = new CECPacket(EC_OP_FAILED);
+		response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
+	}
+
+	return response;
+}
+
 // init with some default size
 CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
 
@@ -1281,13 +1305,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Kad
 		//
 		case EC_OP_KAD_START:
-			if (thePrefs::GetNetworkKademlia()) {
-				theApp.StartKad();
-				response = new CECPacket(EC_OP_NOOP);
-			} else {
-				response = new CECPacket(EC_OP_FAILED);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Kad is disabled in preferences.")));
-			}
+			response = Get_EC_Response_Kad_Connect(request);
 			break;
 		case EC_OP_KAD_STOP:
 			theApp.StopKad();
