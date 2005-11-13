@@ -36,7 +36,7 @@ class CamulecmdApp : public CaMuleExternalConnector
 public:
 	const wxString GetGreetingTitle() { return _("aMule text client"); }
 	int ProcessCommand(int ID);
-	void Process_Answer_v2(CECPacket *reply);
+	void Process_Answer_v2(const CECPacket *reply);
 	void OnInitCommandSet();
 
 private:
@@ -46,7 +46,6 @@ private:
 	void TextShell(const wxString& prompt);
 	bool m_HasCmdOnCmdLine;
 	wxString m_CmdString;
-	virtual bool OnInit();
 	virtual int OnRun();
 
 	int	m_last_cmd_id;
