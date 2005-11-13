@@ -10,9 +10,9 @@ libec_a_SOURCES = \
 	ECSocket.cpp \
 	RemoteConnect.cpp \
 	ECSpecialTags.cpp
-	
-libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
-libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I..
+
+libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs
+libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs
 
 noinst_HEADERS =  \
 		ECSocket.h \
