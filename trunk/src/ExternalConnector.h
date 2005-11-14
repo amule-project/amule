@@ -44,6 +44,8 @@
 
 #include "MD4Hash.h"
 
+#include <list>
+
 #define CMD_DEPRECATED		0x1000
 #define CMD_OK			 0
 #define CMD_ID_QUIT		-1
@@ -142,7 +144,7 @@ public:
 	void Process_Answer(const wxString& answer);
 	bool Parse_Command(const wxString& buffer);
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
-	CECPacket *SendRecvMsg_v2(CECPacket *request);
+	const CECPacket *SendRecvMsg_v2(const CECPacket *request) { return m_ECClient->SendRecvPacket(request); }
 	void ConnectAndRun(const wxString &ProgName, const wxString& ProgName);
 	void ShowGreet();
 

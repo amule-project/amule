@@ -503,7 +503,7 @@ class CStatistics {
 
 	static	uint32	GetSharedFileCount()			{ return 0; } // TODO
 
-	static	void	UpdateStats(CECPacket* stats);
+	static	void	UpdateStats(const CECPacket* stats);
 
 	void	UpdateStatsTree();
 

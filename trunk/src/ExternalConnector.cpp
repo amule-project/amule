@@ -378,15 +378,6 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt)
 	} while ((!The_End) && (m_ECClient->IsConnected()));
 }
 
-CECPacket *CaMuleExternalConnector::SendRecvMsg_v2(CECPacket *request)
-{
-	if (m_ECClient->WritePacket(request)) {
-		CECPacket *reply = m_ECClient->ReadPacket();
-		return reply;
-	}
-	return 0;
-}
-
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion)
 {
 	if (m_NeedsConfigSave) {
@@ -473,7 +464,8 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			Show(_("Connection Failed. Unable to connect to the specified host\n"));
 		} else {
 			// Authenticate ourselves
-			m_ECClient->ConnectionEstablished();
+			// ConnectToCore() already authenticated for us.
+			//m_ECClient->ConnectionEstablished();
 			Show(m_ECClient->GetServerReply()+wxT("\n"));
 			if (m_ECClient->IsConnected()) {
 				ShowGreet();

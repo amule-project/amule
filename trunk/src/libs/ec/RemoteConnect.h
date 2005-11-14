@@ -37,23 +37,20 @@ class CRemoteConnect : public CECSocket {
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);
-		
-	bool ConnectToCore(const wxString &host, int port, 
+
+	bool ConnectToCore(const wxString &host, int port,
 						const wxString& login, const wxString &pass,
 						const wxString& client, const wxString& version);
 
 	bool ConnectionEstablished();
 
-	CECPacket *SendRecv(CECPacket *);
-	void Send(CECPacket *);
-		
 	bool Busy() { return m_busy; }
-		
+
 	const wxString& GetServerReply() const { return server_reply; }
 
 	virtual void OnConnect(); // To override connection events
 	virtual void OnClose(); // To override close events
-	
+
 	
 	/********************* EC API ********************/
 	
