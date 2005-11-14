@@ -181,6 +181,11 @@ gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)
 
+core_deps = libmuleappcore.a
+gui_deps = libmuleappgui.a
+remote_common_deps = libs/common/libmulecommon.a libs/ec/libec.a
+common_deps = libmuleappcommon.a $(remote_common_deps)
+
 # Flags
 
 core_flags = 
@@ -235,14 +240,17 @@ amuled_SOURCES = \
 	$(ec_sources) \
 	$(common_sources)
 
+amule_DEPENDENCIES = $(common_deps) $(core_deps) $(gui_deps)
 amule_CFLAGS = $(core_flags) $(gui_flags) $(common_flags)
 amule_CXXFLAGS = $(core_flags) $(gui_flags) $(common_flags)
 amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 
+amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
 amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
 amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
 amulegui_LDADD =  $(common_libs) $(gui_libs)
 
+amuled_DEPENDENCIES = $(core_deps) $(common_deps)
 amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
 amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
 amuled_LDADD = $(WXBASE_LIBS) $(core_libs) $(common_libs)
@@ -262,6 +270,7 @@ amulecmd_SOURCES = \
 	ExternalConnector.cpp \
 	$(remote_common_sources)
 
+amulecmd_DEPENDENCIES = libs/common/libmulecommon.a libs/ec/libec_noevt.a
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
