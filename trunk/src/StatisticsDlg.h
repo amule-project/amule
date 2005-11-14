@@ -64,7 +64,7 @@ public:
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
 
 protected:
-	static COLORREF	acrStat[16];
+	static COLORREF	acrStat[15];
 	COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
 	wxTreeCtrl* stattree;
 	CStatistics* m_stats;
