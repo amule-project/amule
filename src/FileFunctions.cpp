@@ -94,6 +94,12 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to)
 // 
 bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
+	// Get file permissions
+	struct stat fileStats;
+	if (UTF8_Stat(from, &fileStats)) {
+		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't stat original file: ") + from );
+	}
+	
 	char buffer[FILE_COPY_BUFFER];
 	CFile input_file(from, CFile::read);
 	if (!input_file.IsOpened()) {
@@ -101,8 +107,8 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 		return false;
 	}
 	
-	CFile output_file(to, CFile::write);
-	if (!output_file.IsOpened()) {
+	CFile output_file;
+	if (!output_file.Open(to, CFile::write, fileStats.st_mode & 0777)) {
 		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't create destination file: ") + to );
 		return false;
 	}
@@ -194,7 +200,7 @@ wxString  CDirIterator::GetNextFile()
 	
 	bool found = false;
 	wxString FoundName;
-	struct stat* buf = (struct stat*)malloc(sizeof(struct stat));
+	struct stat buf;
 	while (dp!=NULL && !found) {
 		if (type == CDirIterator::Any) {
 			// return anything.
@@ -234,12 +240,12 @@ wxString  CDirIterator::GetNextFile()
 				Unicode2CharBuf tmpFullName(unicode2char(FullName));		
 				int stat_error = -1;
 				if (tmpFullName) {
-					stat_error = stat(tmpFullName, buf);
+					stat_error = stat(tmpFullName, &buf);
 #ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
-						stat_error = lstat(tmpFullName, buf);
-						if (!stat_error && S_ISLNK(buf->st_mode)) {
+						stat_error = lstat(tmpFullName, &buf);
+						if (!stat_error && S_ISLNK(buf.st_mode)) {
 							// Ok, just a broken symlink. Next, please!
 							dp = readdir(DirPtr);
 							continue;
@@ -250,12 +256,12 @@ wxString  CDirIterator::GetNextFile()
 				// Fallback to UTF-8
 				if (stat_error) {
 					Unicode2CharBuf tmpUTF8FullName(unicode2UTF8(FullName));
-					stat_error = stat(tmpUTF8FullName, buf);
+					stat_error = stat(tmpUTF8FullName, &buf);
 #ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
-						stat_error = lstat(tmpUTF8FullName, buf);
-						if (!stat_error && S_ISLNK(buf->st_mode)) {
+						stat_error = lstat(tmpUTF8FullName, &buf);
+						if (!stat_error && S_ISLNK(buf.st_mode)) {
 							// Ok, just a broken symlink. Next, please!
 							dp = readdir(DirPtr);
 							continue;
@@ -265,14 +271,14 @@ wxString  CDirIterator::GetNextFile()
 				}
 				
 				if (!stat_error) {
-					if (S_ISREG(buf->st_mode)) {
+					if (S_ISREG(buf.st_mode)) {
 						if (type == CDirIterator::File) { 
 							found = true; 
 						} else { 
 							dp = readdir(DirPtr);
 						} 
 					} else {
-						if (S_ISDIR(buf->st_mode)) {
+						if (S_ISDIR(buf.st_mode)) {
 							if (type == CDirIterator::Dir) {
 								found = true; 
 							} else { 
@@ -305,7 +311,6 @@ wxString  CDirIterator::GetNextFile()
 			}
 		}
 	}
-	free(buf);
 	if (dp != NULL) {
 		return DirStr + FoundName;	
 	} else {
