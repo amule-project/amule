@@ -217,6 +217,7 @@ endif
 
 if NEED_RC
 gui_libs += amulerc.$(OBJEXT)
+gui_deps += amulerc.$(OBJEXT)
 endif
 
 # --------- Apps ---------
