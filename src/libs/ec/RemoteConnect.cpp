@@ -92,8 +92,6 @@ void CRemoteConnect::OnClose() {
 
 bool CRemoteConnect::ConnectionEstablished() {
 	
-	SetFlags(wxSOCKET_BLOCK);
-	
 	// Authenticate ourselves
 	CECPacket packet(EC_OP_AUTH_REQ);
 	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, m_client));
@@ -105,13 +103,7 @@ bool CRemoteConnect::ConnectionEstablished() {
 	packet.AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
 #endif
 
-	if (! WritePacket(&packet) ) {
-		server_reply = _("EC Connection Failed. Unable to write data to the socket.");
-		Close();
-		return false;
-	}
-    
-	auto_ptr<CECPacket> reply(ReadPacket());
+	auto_ptr<const CECPacket> reply(SendRecvPacket(&packet));
 	
 	if (!reply.get()) {
 		server_reply = _("EC Connection Failed. Empty reply.");
@@ -145,36 +137,16 @@ bool CRemoteConnect::ConnectionEstablished() {
 	return true;	
 }
 
-
-CECPacket *CRemoteConnect::SendRecv(CECPacket *packet)
-{
-	m_busy = true;
-    if (! WritePacket(packet) ) {
-		m_busy = false;
-    	return 0;
-    }
-    CECPacket *reply = ReadPacket();
-
-	m_busy = false;
-	return reply;
-}
-
-void CRemoteConnect::Send(CECPacket *packet)
-{
-	// Just send and ignore reply
-    auto_ptr<CECPacket> reply(SendRecv(packet));
-}
-
 /******************** EC API ***********************/
 
 void CRemoteConnect::StartKad() {
 	CECPacket req(EC_OP_KAD_START);
-	Send(&req);	
+	SendPacket(&req);	
 }
 
 void CRemoteConnect::StopKad() {
 	CECPacket req(EC_OP_KAD_STOP);
-	Send(&req);	
+	SendPacket(&req);	
 }
 
 void CRemoteConnect::ConnectED2K(uint32 ip, uint16 port) {
@@ -182,12 +154,12 @@ void CRemoteConnect::ConnectED2K(uint32 ip, uint16 port) {
 	if (ip && port) {
 		req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 	}
-	Send(&req);
+	SendPacket(&req);
 }
 
 void CRemoteConnect::DisconnectED2K() {
 	CECPacket req(EC_OP_SERVER_DISCONNECT);
-	Send(&req);	
+	SendPacket(&req);	
 }
 
 void CRemoteConnect::RemoveServer(uint32 ip, uint16 port) {
@@ -195,5 +167,5 @@ void CRemoteConnect::RemoveServer(uint32 ip, uint16 port) {
 	if (ip && port) {
 		req.AddTag(CECTag(EC_TAG_SERVER, EC_IPv4_t(ip, port)));
 	}
-	Send(&req);
+	SendPacket(&req);
 }

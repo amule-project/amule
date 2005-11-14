@@ -58,18 +58,63 @@
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "kademlia/kademlia/Kademlia.h"
 
+
+//-------------------- CECServerSocket --------------------
+
+class CECServerSocket : public CECSocket {
+      public:
+	CECServerSocket();
+
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	virtual void	OnLost();
+      private:
+	bool	m_authenticated;
+	CPartFile_Encoder_Map	m_part_encoder;
+	CKnownFile_Encoder_Map	m_shared_encoder;
+	CObjTagMap		m_obj_tagmap;
+};
+
+CECServerSocket::CECServerSocket()
+{
+	m_authenticated = false;
+}
+
+const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
+{
+	const CECPacket *reply = NULL;
+
+	if (!m_authenticated) {
+		reply = ExternalConn::Authenticate(packet);
+		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+			// Access denied!
+			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
+			// TODO: Close socket
+		} else {
+			m_authenticated = true;
+		}
+	} else {
+		reply = ExternalConn::ProcessRequest2(packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
+	}
+	return reply;
+}
+
+void CECServerSocket::OnLost()
+{
+		AddLogLineM(false,_("External connection closed."));
+		Destroy();
+}
+
+
+//-------------------- ExternalConn --------------------
+
 enum
 {	// id for sockets
-	SERVER_ID = 1000,
-	AUTH_ID,
-	SOCKET_ID
+	SERVER_ID = 1000
 };
 
 
 BEGIN_EVENT_TABLE(ExternalConn, wxEvtHandler)
 	EVT_SOCKET(SERVER_ID, ExternalConn::OnServerEvent)
-	EVT_SOCKET(AUTH_ID,   ExternalConn::OnSocketEvent)
-	EVT_SOCKET(SOCKET_ID, ExternalConn::OnSocketEvent)
 END_EVENT_TABLE()
 
 
@@ -116,89 +161,18 @@ ExternalConn::~ExternalConn() {
 	delete m_ECServer;
 }
 
-void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event)) {
-	CECSocket *sock = new CECSocket;
+void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
+{
+	CECServerSocket *sock = new CECServerSocket;
 	// Accept new connection if there is one in the pending
 	// connections queue, else exit. We use Accept(FALSE) for
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
 	if ( m_ECServer->AcceptWith(*sock, false) ) {
 		AddLogLineM(false, _("New external connection accepted"));
-		sock->SetEventHandler(*this, AUTH_ID);
-		sock->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
-		sock->Notify(true);
-		m_numClients++;
 	} else {
 		delete sock;
 		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
-	}
-}
-
-void ExternalConn::OnSocketEvent(wxSocketEvent& event) {
-	CECSocket *sock = (CECSocket *)event.GetSocket();
-	CECPacket * request = NULL;
-	CECPacket * response = NULL;
-
-	// Now we process the event
-	switch(event.GetSocketEvent()) {
-	case wxSOCKET_INPUT: {
-		// We disable input events, so that the test doesn't trigger
-		// wxSocketEvent again.
-		sock->SetNotify(wxSOCKET_LOST_FLAG);		
-		request = sock->ReadPacket();		
-		if(request == NULL) {
-			AddLogLineM(false, _("Invalid EC packet received"));
-			break;
-		}
-		if (event.GetId() == AUTH_ID) {
-			response = Authenticate(request);
-			delete request;	request = NULL;
-			sock->WritePacket(response);
-			if (response->GetOpCode() != EC_OP_AUTH_OK) {
-				// Access denied!
-				AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-				delete response; response = NULL;
-				sock->Destroy();
-				return;
-			} else {
-				// Authenticated => change socket handler
-				delete response; response = NULL;
-				sock->SetEventHandler(*this, SOCKET_ID);
-			}
-		} else {
-			response = ProcessRequest2(request, m_part_encoders[sock],
-				m_shared_encoders[sock], m_obj_tagmap[sock]);
-			delete request; request = NULL;
-			sock->WritePacket(response);
-			delete response; response = NULL;
-		}		
-		// Re-Enable input events again.
-		sock->SetNotify(wxSOCKET_LOST_FLAG | wxSOCKET_INPUT_FLAG);
-		sock->Notify(true);
-		break;
-	}
-		
-	case wxSOCKET_LOST: {
-		m_numClients--;
-		// Destroy() should be used instead of delete wherever possible,
-		// due to the fact that wxSocket uses 'delayed events' (see the
-		// documentation for wxPostEvent) and we don't want an event to
-		// arrive to the event handler (the frame, here) after the socket
-		// has been deleted. Also, we might be doing some other thing with
-		// the socket at the same time; for example, we might be in the
-		// middle of a test or something. Destroy() takes care of all
-		// this for us.
-		AddLogLineM(false,_("External connection closed."));
-		//sock->Destroy();
-		sock->Close();
-		// remove client data
-		m_part_encoders.erase(sock);
-		m_shared_encoders.erase(sock);
-		m_obj_tagmap.erase(sock);
-		break;
-	}
-	
-	default: ;
 	}
 }
 
@@ -1358,11 +1332,11 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		default:
-			AddLogLineM(false, CFormat(_("ExternalConn: invalid opcode received: %i")) % request->GetOpCode());
-			wxASSERT(false);
+			AddLogLineM(false, wxString::Format(_T("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
+			wxFAIL;
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
 			break;
-	}	
+	}
 	return response;
 }

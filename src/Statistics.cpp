@@ -923,7 +923,7 @@ CStatistics::~CStatistics()
 }
 
 
-void CStatistics::UpdateStats(CECPacket* stats)
+void CStatistics::UpdateStats(const CECPacket* stats)
 {
 	s_statData[sdUpload] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt32Data();
 	s_statData[sdUpOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_UP_OVERHEAD)->GetInt32Data();
@@ -940,9 +940,9 @@ void CStatistics::UpdateStatsTree()
 	if (thePrefs::GetMaxClientVersions() != 0) {
 		request.AddTag(CECTag(EC_TAG_STATTREE_CAPPING, (uint8)thePrefs::GetMaxClientVersions()));
 	}
-	CECPacket* reply = m_conn->SendRecv(&request);
+	const CECPacket* reply = m_conn->SendRecvPacket(&request);
 	if (reply) {
-		CECTag* treeRoot = reply->GetTagByName(EC_TAG_STATTREE_NODE);
+		const CECTag* treeRoot = reply->GetTagByName(EC_TAG_STATTREE_NODE);
 		if (treeRoot) {
 			delete s_statTree;
 			s_statTree = new CStatTreeItemBase(treeRoot);

@@ -214,23 +214,15 @@ class ExternalConn : public wxEvtHandler {
 		ExternalConn(amuleIPV4Address addr, wxString *msg);
 		~ExternalConn();
 	
-		CECPacket *ProcessRequest2(const CECPacket *request,
+		static CECPacket *ProcessRequest2(const CECPacket *request,
 			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &, CObjTagMap &);
 	
-		CECPacket *Authenticate(const CECPacket *);
+		static CECPacket *Authenticate(const CECPacket *);
 		wxSocketServer *m_ECServer;
 
 	private:
-		int m_numClients;
-		//
-		// encoder container must be created per EC client
-		std::map<wxSocketBase *, CPartFile_Encoder_Map> m_part_encoders;
-		std::map<wxSocketBase *, CKnownFile_Encoder_Map> m_shared_encoders;
-		std::map<wxSocketBase *, CObjTagMap> m_obj_tagmap;
-
 		// event handlers (these functions should _not_ be virtual)
 		void OnServerEvent(wxSocketEvent& event);
-		void OnSocketEvent(wxSocketEvent& event);
 		DECLARE_EVENT_TABLE()
 };
 

@@ -160,7 +160,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 
 	{
 		CECPacket stats_req(EC_OP_STAT_REQ);
-		auto_ptr<CECPacket> stats(connect->SendRecv(&stats_req));
+		auto_ptr<const CECPacket> stats(connect->SendRecvPacket(&stats_req));
 		if ( !stats.get() ) {
 			core_timer->Stop();
 			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
@@ -168,7 +168,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 			ExitMainLoop();
 			return;
 		}
-		statistics->UpdateStats(stats.get());
+		theStats::UpdateStats(stats.get());
 	}
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
@@ -544,7 +544,7 @@ bool CPreferencesRem::LoadRemote()
 
 	// bring categories too
 	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
-	auto_ptr<CECPacket> prefs(m_conn->SendRecv(&req));
+	auto_ptr<const CECPacket> prefs(m_conn->SendRecvPacket(&req));
 	
 	if ( !prefs.get() ) {
 		return false;
@@ -578,7 +578,7 @@ bool CPreferencesRem::LoadRemote()
 void CPreferencesRem::SendToRemote()
 {
 	CEC_Prefs_Packet pref_packet(m_exchange_send_selected_prefs, EC_DETAIL_UPDATE, EC_DETAIL_FULL);
-	m_conn->Send(&pref_packet);
+	m_conn->SendPacket(&pref_packet);
 }
 
 Category_Struct *CPreferencesRem::CreateCategory(wxString name, wxString path,
@@ -587,7 +587,7 @@ Category_Struct *CPreferencesRem::CreateCategory(wxString name, wxString path,
 	CECPacket req(EC_OP_CREATE_CATEGORY);
 	CEC_Category_Tag tag(0xffffffff, name, path, comment, color, prio);
 	req.AddTag(tag);
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 
 	Category_Struct *category = new Category_Struct();
 	category->incomingpath	= path;
@@ -607,7 +607,7 @@ void CPreferencesRem::UpdateCategory(uint8 cat, wxString name, wxString path,
 	CECPacket req(EC_OP_UPDATE_CATEGORY);
 	CEC_Category_Tag tag(cat, name, path, comment, color, prio);
 	req.AddTag(tag);
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 
 	Category_Struct *category = m_CatList[cat];
 	category->incomingpath	= path;
@@ -622,7 +622,7 @@ void CPreferencesRem::RemoveCat(uint8 cat)
 	CECPacket req(EC_OP_DELETE_CATEGORY);
 	CEC_Category_Tag tag(cat, EC_DETAIL_CMD);
 	req.AddTag(tag);
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 	CPreferences::RemoveCat(cat);
 }
 
@@ -637,7 +637,7 @@ CServerConnectRem::CServerConnectRem(CRemoteConnect *conn)
 void CServerConnectRem::ConnectToAnyServer()
 {
 	CECPacket req(EC_OP_SERVER_CONNECT);
-	m_Conn->Send(&req);
+	m_Conn->SendPacket(&req);
 }
 
 void CServerConnectRem::StopConnectionTry()
@@ -648,7 +648,7 @@ void CServerConnectRem::StopConnectionTry()
 void CServerConnectRem::Disconnect()
 {
 	CECPacket req(EC_OP_SERVER_DISCONNECT);
-	m_Conn->Send(&req);
+	m_Conn->SendPacket(&req);
 }
 
 void CServerConnectRem::ConnectToServer(CServer *server)
@@ -659,7 +659,7 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 bool CServerConnectRem::ReQuery()
 {
 	CECPacket stat_req(EC_OP_STAT_REQ);
-	CECPacket *stats = m_Conn->SendRecv(&stat_req);
+	const CECPacket *stats = m_Conn->SendRecvPacket(&stat_req);
 	if ( !stats ) {
 		return false;
 	}
@@ -777,7 +777,7 @@ void CServerListRem::ReloadControl()
 void CIPFilterRem::Reload()
 {
 	CECPacket req(EC_OP_IPFILTER_RELOAD);
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CIPFilterRem::Update(wxString /*url*/)
@@ -797,7 +797,7 @@ void CSharedFilesRem::Reload(bool, bool)
 {
 	CECPacket req(EC_OP_SHAREDFILES_RELOAD);
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CSharedFilesRem::AddFilesFromDirectory(wxString path)
@@ -806,7 +806,7 @@ void CSharedFilesRem::AddFilesFromDirectory(wxString path)
 
 	req.AddTag(CECTag(EC_TAG_PREFS_DIRECTORIES, path));
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
@@ -893,7 +893,7 @@ void CSharedFilesRem::SetFilePrio(CKnownFile *file, uint8 prio)
 	
 	req.AddTag(hashtag);
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 /*
@@ -1068,7 +1068,7 @@ bool CDownQueueRem::AddED2KLink(const wxString &link, int)
 	CECPacket req(EC_OP_ED2K_LINK);
 	req.AddTag(CECTag(EC_TAG_STRING, link));
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 	return true;
 }
 
@@ -1233,7 +1233,7 @@ void CDownQueueRem::SendFileCommand(CPartFile *file, ec_tagname_t cmd)
 	CECPacket req(cmd);
 	req.AddTag(CECTag(EC_TAG_PARTFILE, file->GetFileHash()));
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CDownQueueRem::Prio(CPartFile *file, uint8 prio)
@@ -1243,7 +1243,7 @@ void CDownQueueRem::Prio(CPartFile *file, uint8 prio)
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, prio));
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
@@ -1254,7 +1254,7 @@ void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
 	
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)(flag ? PR_AUTO : file->GetDownPriority())));
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CDownQueueRem::Category(CPartFile *file, uint8 cat)
@@ -1266,7 +1266,7 @@ void CDownQueueRem::Category(CPartFile *file, uint8 cat)
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	req.AddTag(hashtag);
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
@@ -1276,7 +1276,7 @@ void CDownQueueRem::AddSearchToDownload(CSearchFile* file, uint8 category)
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, category));
 	req.AddTag(hashtag);
 	
-	m_conn->Send(&req);
+	m_conn->SendPacket(&req);
 }
 
 CClientListRem::CClientListRem(CRemoteConnect *conn)
@@ -1303,7 +1303,7 @@ bool CSearchListRem::StartNewSearch(uint32* nSearchID, bool global_search, wxStr
 		global_search ? EC_SEARCH_GLOBAL : EC_SEARCH_LOCAL, typeText,
 		extension, availability, min_size, max_size));
 		
-	m_conn->Send(&search_req);
+	m_conn->SendPacket(&search_req);
 	m_curr_search = *(nSearchID); // No kad remote search yet.
 	
 	Flush();
@@ -1315,7 +1315,7 @@ void CSearchListRem::StopGlobalSearch()
 {
 	if (m_curr_search != -1) {
 		CECPacket search_req(EC_OP_SEARCH_STOP);
-		m_conn->Send(&search_req);
+		m_conn->SendPacket(&search_req);
 	}
 }
 

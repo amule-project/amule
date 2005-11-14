@@ -618,7 +618,7 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 				CECPacket request(EC_OP_RENAME_FILE);
 				request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 				request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
-				CECPacket *reply = theApp.connect->SendRecv(&request);
+				const CECPacket *reply = theApp.connect->SendRecvPacket(&request);
 				if (reply) {
 					if (reply->GetOpCode() == EC_OP_NOOP) {
 						file->SetFileName(newName);

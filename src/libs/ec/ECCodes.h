@@ -55,9 +55,10 @@ typedef uint32_t ec_taglen_t;
 
 #define EC_FLAG_ZLIB		0x00000001
 #define EC_FLAG_UTF8_NUMBERS	0x00000002
+#define EC_FLAG_HAS_ID		0x00000004
 #define EC_FLAG_ACCEPTS		0x00000010
 
-#define EC_FLAG_UNKNOWN_MASK	0xff7f7f0c
+#define EC_FLAG_UNKNOWN_MASK	0xff7f7f08
 
 
 /**

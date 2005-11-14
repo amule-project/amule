@@ -169,7 +169,7 @@ class CRemoteContainer {
 		bool FullReload(int cmd)
 		{
 			CECPacket req(cmd);
-			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req));
+			std::auto_ptr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req));
 			if ( !reply.get() ) {
 				return false;
 			}
@@ -194,7 +194,7 @@ class CRemoteContainer {
 		
 			//
 			// Phase 1: request status
-			std::auto_ptr<CECPacket> reply(this->m_conn->SendRecv(&req_sts));
+			std::auto_ptr<const CECPacket> reply(this->m_conn->SendRecvPacket(&req_sts));
 			if ( !reply.get() ) {
 				return false;
 			}
@@ -214,7 +214,7 @@ class CRemoteContainer {
 			if ( !m_inc_tags ) {
 				// Phase 3: request full info about files we don't have yet
 				if ( req_full.GetTagCount() ) {
-					reply.reset(this->m_conn->SendRecv(&req_full));
+					reply.reset(this->m_conn->SendRecvPacket(&req_full));
 					if ( !reply.get() ) {
 						return false;
 					}
@@ -224,7 +224,7 @@ class CRemoteContainer {
 			return true;
 		}
 
-		void ProcessFull(CECPacket *reply)
+		void ProcessFull(const CECPacket *reply)
 		{
 			for (int i = 0;i < reply->GetTagCount();i++) {
 				G *tag = (G *)reply->GetTagByIndex(i);
@@ -234,7 +234,7 @@ class CRemoteContainer {
 			}
 		}
 
-		void ProcessUpdate(CECPacket *reply, CECPacket *full_req, int req_type)
+		void ProcessUpdate(const CECPacket *reply, CECPacket *full_req, int req_type)
 		{
 			std::set<I> core_files;
 			for (int i = 0;i < reply->GetTagCount();i++) {
@@ -301,7 +301,7 @@ class CRemoteContainer {
 		{
 		}
 
-		virtual bool Phase1Done(CECPacket *)
+		virtual bool Phase1Done(const CECPacket *)
 		{
 			return true;
 		}

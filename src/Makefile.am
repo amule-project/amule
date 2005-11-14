@@ -262,9 +262,10 @@ amulecmd_SOURCES = \
 	ExternalConnector.cpp \
 	$(remote_common_sources)
 
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE
-amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs) 
+amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
+amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
+#amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
+amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs/common -Llibs/ec -lmulecommon -lec_noevt
 
 noinst_HEADERS = AddFileThread.h \
 		AddFriend.h \

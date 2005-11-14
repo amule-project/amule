@@ -53,7 +53,13 @@ Section 1.1: Transmission layer
 		in the protocol are encoded as a wide char converted to utf-8
 		to let some zero bytes not to be sent over the network.
 
-	bits 2-3: Reserved for later use.
+	bit 2:	Has ID. When this flag is set, an uint32 number follows the
+		flags, which is the ID of this packet. The response to this
+		packet also has to have this ID. The only requirement for the
+		ID value is that they should be unique in one session (or at
+		least do not repeat for a reasonably long time.)
+
+	bit 3:	Reserved for later use.
 
 	bit 4:	Accepts value present. A client sets this flag and sends
 		another uint32 value (encoded as above, LSB first, zero
