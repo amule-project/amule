@@ -34,6 +34,8 @@ openbsd*)
 	;;
 *cygwin* | *mingw32*)
 	SYS=win32
+	CFLAGS="$CFLAGS -DNOMINMAX"
+	CXXFLAGS="$CXXFLAGS -DNOMINMAX"
 	;;
 solaris*)
 	RESOLV_LIB="-lresolv -lnsl"
