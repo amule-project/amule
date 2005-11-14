@@ -404,14 +404,14 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 		PHP_VAR_NODE *srv_ip = array_get_by_str_key(result, "serv_addr");
 		value_value_free(&srv_ip->value);
 		srv_ip->value.type = PHP_VAL_STRING;
-		srv_ip->value.str_val =strdup(unicode2char(server->GetIPv4Data().StringIP()));
+		srv_ip->value.str_val =strdup(unicode2UTF8(server->GetIPv4Data().StringIP()));
 
 		const CECTag *sname = server->GetTagByName(EC_TAG_SERVER_NAME);
 		if ( sname ) {
 			PHP_VAR_NODE *srv_name = array_get_by_str_key(result, "serv_name");
 			value_value_free(&srv_name->value);
 			srv_name->value.type = PHP_VAL_STRING;
-			srv_name->value.str_val = strdup(unicode2char(sname->GetStringData()));
+			srv_name->value.str_val = strdup(unicode2UTF8(sname->GetStringData()));
 		}
 		
 		const CECTag *susers = server->GetTagByName(EC_TAG_SERVER_USERS);
@@ -484,7 +484,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 			PHP_VAR_NODE *cat = array_get_by_int_key(result, i);
 			value_value_free(&cat->value);
 			cat->value.type = PHP_VAL_STRING;
-			cat->value.str_val = strdup(unicode2char(categoryTitle->GetStringData()));
+			cat->value.str_val = strdup(unicode2UTF8(categoryTitle->GetStringData()));
 		}
 	} else {
 		PHP_VAR_NODE *cat = array_get_by_int_key(result, 0);
@@ -602,7 +602,7 @@ void php_get_amule_options(PHP_VALUE_NODE *result)
 		PHP_VAR_NODE *key = array_get_by_str_key(result, "nick");
 		value_value_free(&key->value);
 		key->value.type = PHP_VAL_STRING;
-		key->value.str_val = strdup(unicode2char(cattag->GetTagByNameSafe(EC_TAG_USER_NICK)->GetStringData()));
+		key->value.str_val = strdup(unicode2UTF8(cattag->GetTagByNameSafe(EC_TAG_USER_NICK)->GetStringData()));
 	}
 
 	if ((cattag = reply->GetTagByName(EC_TAG_PREFS_CONNECTIONS)) != 0) {
@@ -1037,7 +1037,7 @@ void amule_load_stats()
 void ecstats2php(CEC_StatTree_Node_Tag *root, PHP_VALUE_NODE *result)
 {
 	cast_value_array(result);
-	std::string key(unicode2char(root->GetDisplayString()));
+	std::string key(unicode2UTF8(root->GetDisplayString()));
 	PHP_VAR_NODE *v_key = array_get_by_str_key(result, key);
 	for (int i = 0; i < root->GetTagCount(); i++) {
 		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)root->GetTagByIndex(i);
