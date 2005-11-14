@@ -1332,7 +1332,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		default:
-			AddLogLineM(false, wxString::Format(_wxT("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
+			AddLogLineM(false, wxString::Format(_("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
 			wxFAIL;
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
