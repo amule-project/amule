@@ -176,15 +176,15 @@ common_sources = \
 
 # Libs
 
-core_libs = -lmuleappcore
-gui_libs =  $(X11LIBS) $(WX_LIBS) -lmuleappgui
-remote_common_libs = $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs/common -Llibs/ec -lmulecommon -lec
-common_libs = $(CRYPTOLIBS) $(remote_common_libs) $(BFD_LIB) -lmuleappcommon
+core_libs = -L. -lmuleappcore
+gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
+remote_common_libs = -Llibs/common -Llibs/ec -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)
 
 # Flags
 
 core_flags = 
-gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS)  $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
+gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs
 
 # Extras 
@@ -237,11 +237,11 @@ amuled_SOURCES = \
 
 amule_CFLAGS = $(core_flags) $(gui_flags) $(common_flags)
 amule_CXXFLAGS = $(core_flags) $(gui_flags) $(common_flags)
-amule_LDADD = $(core_libs) $(gui_libs) $(common_libs)
+amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 
 amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
 amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
-amulegui_LDADD = $(gui_libs) $(common_libs)
+amulegui_LDADD =  $(common_libs) $(gui_libs)
 
 amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
 amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
@@ -265,7 +265,7 @@ amulecmd_SOURCES = \
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
-amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB) -L. -Llibs/common -Llibs/ec -lmulecommon -lec_noevt
+amulecmd_LDADD = -Llibs/common -Llibs/ec -lmulecommon -lec_noevt $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
 noinst_HEADERS = AddFileThread.h \
 		AddFriend.h \
