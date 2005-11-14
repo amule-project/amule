@@ -226,7 +226,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 				m_hashset = NULL;
 			}
 		} else if (field.StartsWith(wxT("h="))) {
-			wxString hash = field.AfterFirst(wxT('='));
+			wxString hash = field.AfterFirst(wxT('=')).MakeUpper();
 			
 			size_t decodedSize = DecodeBase32(hash, CAICHHash::GetHashSize(), m_AICHHash.GetRawHash());
 			if ((decodedSize != CAICHHash::GetHashSize()) || m_AICHHash.GetString() != hash) {
