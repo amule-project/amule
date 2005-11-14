@@ -530,7 +530,7 @@ void CStatistics::ComputeAverages(
 			switch (which_graph) {
 				case GRAPH_DOWN:	value = (uint32)(pos->kBpsDownCur * 1024.0);	break;
 				case GRAPH_UP:		value = (uint32)(pos->kBpsUpCur * 1024.0);		break;
-				case GRAPH_KAD:		value = (uint32)(pos->kadNodesCur);				break;
+				case GRAPH_KAD:		value = (uint32)(pos->kadNodesCur * 1024.0);	break;
 				default:
 					wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));		
 			}		
