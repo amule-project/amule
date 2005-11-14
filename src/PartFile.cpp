@@ -269,8 +269,15 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 		SetPartFileStatus(PS_ERROR);
 	} else {
 		CreatePartFile();
+
+		if (fileLink->m_hashset) {
+			if (!LoadHashsetFromFile(fileLink->m_hashset, true)) {
+				AddDebugLogLineM(true, logPartFile, wxT("eD2K link contained invalid hashset: ") + fileLink->GetLink());
+			}
+		}
 	}
 }
+
 
 CPartFile::~CPartFile()
 {

@@ -1139,20 +1139,20 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 	m_toresolve.push_front(entry);
 
 	// Check if there are other DNS lookups on queue
-	if ( m_toresolve.size() > 1 ) {
-		return;
-	}
-	
-	CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE);
-	
-	if ( dns->Create() == wxTHREAD_NO_ERROR ) {
-		if ( dns->Run() != wxTHREAD_NO_ERROR ) {
-			dns->Delete();
-			m_toresolve.pop_front();
+	if (m_toresolve.size() == 1) {
+		// Check if it is a simple dot address
+		uint32 ip = StringIPtoUint32(pszHostname);
+
+		if (ip) {
+			OnHostnameResolved(ip);
+		} else {
+			CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE);
+
+			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
+				dns->Delete();
+				m_toresolve.pop_front();
+			}
 		}
-	} else {
-		dns->Delete();
-		m_toresolve.pop_front();
 	}
 }
 
@@ -1179,24 +1179,25 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		}
 	}
 	
-	while ( !m_toresolve.empty() ) {
+	while (m_toresolve.size()) {
 		Hostname_Entry entry = m_toresolve.front();
-		
-		CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE);
-	
-		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
-			if ( dns->Run() == wxTHREAD_NO_ERROR ) {
-				break;
-			} else {
+
+		// Check if it is a simple dot address
+		uint32 ip = StringIPtoUint32(entry.strHostname);
+
+		if (ip) {
+			OnHostnameResolved(ip);
+		} else {
+			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE);
+
+			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 				dns->Delete();
 				m_toresolve.pop_front();
+			} else {
+				break;
 			}
-		} else {
-			dns->Delete();
-			m_toresolve.pop_front();
 		}
-	}		
-	
+	}
 }
 
 
@@ -1245,7 +1246,6 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 
 bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 {
-	
 	CPartFile* file = new CPartFile( link );
 
 	if ( file->GetStatus() == PS_ERROR ) {
@@ -1260,18 +1260,19 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 		AddDownload( file, thePrefs::AddNewFilesPaused(), category );
 	}
 
-	// Add specified sources, specified by IP
-	if ( link->HasValidSources() ) {
-		file->AddClientSources( link->m_sources, 1, SF_LINK );
-	}
-
-	// Add specified sources, specified by hostname
-	if ( link->HasHostnameSources() ) {
-		const std::deque<SUnresolvedHostname*>& list = link->m_hostSources;
-
-		for ( std::deque<SUnresolvedHostname*>::const_iterator it = list.begin(); it != list.end(); ++it ) {
-			AddToResolve( link->GetHashKey(), (*it)->strHostname, (*it)->nPort );
+	if (link->HasValidAICHHash()) {
+		CAICHHashSet* hashset = file->GetAICHHashset();
+		
+		if (!hashset->HasValidMasterHash() || (hashset->GetMasterHash() != link->GetAICHHash())) {
+			hashset->SetMasterHash(link->GetAICHHash(), AICH_VERIFIED);
+			hashset->FreeHashSet();
 		}
+	}
+	
+	const CED2KFileLink::CED2KLinkSourceList& list = link->m_sources;
+	CED2KFileLink::CED2KLinkSourceList::const_iterator it = list.begin();
+	for (; it != list.end(); ++it) {
+		AddToResolve(link->GetHashKey(), it->addr, it->port);
 	}
 
 	return true;	

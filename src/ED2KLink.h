@@ -33,21 +33,16 @@
 
 #include <deque>
 
+
 class CMemFile;
-
-
-struct SUnresolvedHostname
-{
-	wxString strHostname;
-	uint16 nPort;
-};
 
 
 class CED2KLink
 {
 public:
-	static CED2KLink* CreateLinkFromUrl( const wxString& url );
 	typedef enum { kServerList, kServer , kFile , kInvalid } LinkType;
+	
+	static CED2KLink* CreateLinkFromUrl(const wxString& link);
 
 	LinkType GetKind() const;
 	virtual wxString GetLink() const = 0;
@@ -64,9 +59,10 @@ private:
 
 class CED2KFileLink : public CED2KLink
 {
+	friend class CED2KLink;
+	CED2KFileLink(const wxString& link);
+	
 public:
-	CED2KFileLink( const wxString& name, const wxString& size, const wxString& hash, const wxString& hashset, const wxString& masterhash, const wxString& sources );
-
 	virtual ~CED2KFileLink();
 
 	virtual wxString GetLink() const;
@@ -74,25 +70,34 @@ public:
 	wxString GetName() const;
 	uint32 GetSize() const;
 	const CMD4Hash& GetHashKey() const;
-	bool HasValidSources() const;
-
-	bool HasHostnameSources() const;
 
 	// AICH data
 	bool	HasValidAICHHash() const;
 	const CAICHHash&	GetAICHHash() const;
 
-	CMemFile* m_sources;
 	CMemFile* m_hashset;
-	std::deque<SUnresolvedHostname*> m_hostSources;
 
+	/**
+	 * Structure used to store sources found in file links.
+	 */
+	struct SED2KLinkSource
+	{
+		//! Hostname or dot-address.
+		wxString addr;
+		//! The source's TCP-port.
+		uint16 port;
+	};
+
+	typedef std::deque<SED2KLinkSource> CED2KLinkSourceList;	
+	CED2KLinkSourceList m_sources;
+	
 private:
 	CED2KFileLink(); // Not defined
 	CED2KFileLink(const CED2KFileLink&); // Not defined
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
 
 	wxString	m_name;
-	wxString	m_size;
+	uint32		m_size;
 	CMD4Hash	m_hash;
 	bool		m_bAICHHashValid;
 	CAICHHash	m_AICHHash;
@@ -101,8 +106,10 @@ private:
 
 class CED2KServerLink : public CED2KLink
 {
+	friend class CED2KLink;
+	CED2KServerLink(const wxString& link);
+
 public:
-	CED2KServerLink( const wxString& ip, const wxString& port);
 	virtual wxString GetLink() const;
 
 	uint32 GetIP() const;
@@ -120,8 +127,10 @@ private:
 
 class CED2KServerListLink : public CED2KLink
 {
+	friend class CED2KLink;	
+	CED2KServerListLink(const wxString& link);
+
 public:
-	CED2KServerListLink(const wxString& address);
 	virtual wxString GetLink() const;
 
 	const wxString& GetAddress() const;
