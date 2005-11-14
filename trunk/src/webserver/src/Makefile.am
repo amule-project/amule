@@ -1,6 +1,8 @@
 bin_PROGRAMS = 
 
+if WEB
 bin_PROGRAMS += amuleweb
+endif
 
 amuleweb_SOURCES =  \
 	WebServer.cpp \
