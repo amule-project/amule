@@ -1,5 +1,5 @@
 #include <muleunit/test.h>
-#include <StringFunctions.h>
+#include <common/StringFunctions.h>
 
 using namespace muleunit;
 
