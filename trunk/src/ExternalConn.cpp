@@ -88,7 +88,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-			// TODO: Close socket
+			Destroy();
 		} else {
 			m_authenticated = true;
 		}
@@ -1332,7 +1332,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		default:
-			AddLogLineM(false, wxString::Format(_T("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
+			AddLogLineM(false, wxString::Format(_wxT("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
 			wxFAIL;
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
