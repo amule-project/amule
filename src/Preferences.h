@@ -169,7 +169,7 @@ private:
 
 
 
-const int cntStatColors = 16;
+const int cntStatColors = 15;
 
 
 //! This typedef is a shortcut similar to the theApp shortcut, but uses :: instead of .
