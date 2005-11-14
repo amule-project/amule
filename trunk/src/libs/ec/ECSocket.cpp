@@ -870,7 +870,7 @@ void CECSocket::InitBuffers()
 	m_z.total_out = 0;
 }
 
-bool CECSocket::ReadNumber(void *buffer, unsigned int len)
+bool CECSocket::ReadNumber(void *buffer, size_t len)
 {
 	if (m_used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
@@ -900,7 +900,7 @@ bool CECSocket::ReadNumber(void *buffer, unsigned int len)
 	return true;
 }
 
-bool CECSocket::WriteNumber(const void *buffer, unsigned int len)
+bool CECSocket::WriteNumber(const void *buffer, size_t len)
 {
 	if (m_used_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
@@ -926,7 +926,7 @@ bool CECSocket::WriteNumber(const void *buffer, unsigned int len)
 	}
 }
 
-bool CECSocket::ReadBuffer(void *buffer, unsigned int len)
+bool CECSocket::ReadBuffer(void *buffer, size_t len)
 {
 	if (m_used_flags & EC_FLAG_ZLIB) {
 		// using zlib compressed i/o
@@ -994,7 +994,7 @@ bool CECSocket::ReadBuffer(void *buffer, unsigned int len)
 	}
 }
 
-bool CECSocket::WriteBuffer(const void *buffer, unsigned int len)
+bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 {
 	unsigned int remain_in;
 
