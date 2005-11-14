@@ -736,10 +736,12 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t
 	do {
 		//
 		// Give socket a 10 sec chance to recv more data.
-		if ( !WaitForRead(10, 0) ) {
-			m_lastError = LastError();
-			OnError();
-			break;
+		if (required_len > 0) {
+			if ( !WaitForRead(10, 0) ) {
+				m_lastError = LastError();
+				OnError();
+				break;
+			}
 		}
 		Read(iobuf, max_len);
 		size_t LastIO = LastCount();
