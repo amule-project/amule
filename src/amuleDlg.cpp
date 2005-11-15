@@ -559,7 +559,9 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 					theApp.glob_prefs->SendToRemote();
 					#endif
 				}
+				
 				prefs_dialog->Destroy();
+				prefs_dialog = NULL;
 			}
 		}
 	}

@@ -307,19 +307,21 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 }
 
 
-PrefsUnifiedDlg::~PrefsUnifiedDlg()
+void PrefsUnifiedDlg::ClosePreferences()
 {
-	// So the gui knows if the dlg exists.
-	if (theApp.amuledlg) {
-		theApp.amuledlg->prefs_dialog = NULL;
-	}
-
 	// Un-Connect the Cfgs
 	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
 	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
 		it->second->ConnectToWidget( 0 );
 	}
+
+	// Final actions:
+	// Reset the ID so that a new dialog can be created
+	s_ID = 0;
+
+	// Hide the dialog since Destroy isn't instant
+	Show(false);
 }
 
 
@@ -589,31 +591,21 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
-	// Final actions:
-	// Reset the ID so that a new dialog can be created
-	s_ID = 0;
-
-	// Hide the dialog since Destroy isn't instant
-	Show( false );
+	ClosePreferences();
 }
+
 
 void PrefsUnifiedDlg::OnClose(wxCloseEvent& WXUNUSED(event))
 {
-	wxCommandEvent temp;
-	OnCancel(temp);
+	ClosePreferences();
 }
+
+
 void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
-	// Final actions:
-	// Reset the ID so that a new dialog can be created
-	s_ID = 0;
-
-	// Hide the dialog since Destroy isn't instant
-	Show( false );
-
-	// Destory the dialog
-	Destroy();
+	ClosePreferences();
 }
+
 
 void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 {
