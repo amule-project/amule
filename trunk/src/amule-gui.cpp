@@ -345,7 +345,7 @@ bool CamuleGuiApp::OnInit()
 		OnExit();
 	}
 
-	// Start the Core Timer
+	// Start the Core and Gui timers
 
 	// Note: wxTimer can be off by more than 10% !!!
 	// In addition to the systematic error introduced by wxTimer, we are losing
@@ -356,17 +356,6 @@ bool CamuleGuiApp::OnInit()
 	// When adding functionality, assume that the timer is only approximately correct;
 	// for measurements, always use the system clock [::GetTickCount()].
 	core_timer->Start(100);
-
-	// Start the Gui Timer
-
-	// Note: wxTimer can be off by more than 10% !!!
-	// In addition to the systematic error introduced by wxTimer, we are losing
-	// timer cycles due to high CPU load.  I've observed about 0.5% random loss of cycles under
-	// low load, and more than 6% lost cycles with heavy download traffic and/or other tasks
-	// in the system, such as a video player or a VMware virtual machine.
-	// The upload queue process loop has now been rewritten to compensate for timer errors.
-	// When adding functionality, assume that the timer is only approximately correct;
-	// for measurements, always use the system clock [::GetTickCount()].
 	amuledlg->StartGuiTimer();
 
 #ifdef __WXMAC__
