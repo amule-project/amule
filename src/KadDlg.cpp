@@ -94,8 +94,8 @@ void CKadDlg::SetUpdatePeriod()
 
 void CKadDlg::SetGraphColors()
 {
-	static char aTrend[] = { 2,      1,        0        };
-	static int aRes[]    = { IDC_C0, IDC_C0_3, IDC_C0_2 };
+	static const char aTrend[] = { 2,      1,        0        };
+	static const int aRes[]    = { IDC_C0, IDC_C0_3, IDC_C0_2 };
 	
 	m_kad_scope->SetBackgroundColor(CStatisticsDlg::getColors(0));
 	m_kad_scope->SetGridColor(CStatisticsDlg::getColors(1));
@@ -113,20 +113,25 @@ void CKadDlg::SetGraphColors()
 void CKadDlg::UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update)
 {	
 	const float* apfKad[] = { &update.kadnodes[0], &update.kadnodes[1], &update.kadnodes[2] };
+	unsigned nodeCount = static_cast<unsigned>(update.kadnodes[2]);
 	
 	if (!bStatsVisible) {
 		m_kad_scope->DelayPoints();
 	} else {
-		float max = std::max(update.kadnodes[2], std::max(update.kadnodes[1], update.kadnodes[0]));
-		
 		// Check the current node-count to see if we should increase the graph height
 		if (m_kad_scope->GetUpperLimit() < update.kadnodes[2]) {
 			// Grow the limit by 50 sized increments.
-			m_kad_scope->SetRanges(0.0, ((update.kadnodes[2] + 49) / 50) * 50);
+			m_kad_scope->SetRanges(0.0, ((nodeCount + 49) / 50) * 50);
 		}
 
 		m_kad_scope->AppendPoints(update.timestamp, apfKad);
 	}
+
+	wxStaticText* label = CastChild( wxT("nodesListLabel"), wxStaticText );
+	wxCHECK_RET(label, wxT("Failed to find kad-nodes label"));
+
+	label->SetLabel(wxString::Format(_("Nodes (%u)"), nodeCount));
+	label->GetParent()->Layout();
 }
 
 
@@ -138,7 +143,7 @@ void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 
 	bool enable = false;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
-		enable &= !((wxTextCtrl*)FindWindowById( textfields[i] ))->GetValue().IsEmpty();
+		enable &= !CastChild(textfields[i], wxTextCtrl)->GetValue().IsEmpty();
 	}
 	
 	// Enable the node connect button if all fields contain text
