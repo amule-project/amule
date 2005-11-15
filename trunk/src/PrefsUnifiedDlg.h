@@ -62,12 +62,6 @@ public:
 	static PrefsUnifiedDlg* NewPrefsDialog(wxWindow* parent);
 
 	/**
-	 * Destructor.
-	 */
-	~PrefsUnifiedDlg();
-
-
-	/**
 	 * Updates the widgets with the values of the preference-variables.
 	 */
 	bool TransferFromWindow();
@@ -90,6 +84,11 @@ protected:
 	 */
 	PrefsUnifiedDlg(wxWindow* parent);
 
+	/**
+	 * Closes the dialog and handles any tasks that must be performed.
+	 */
+	void ClosePreferences();
+	
 	
 	//! Contains the ID of the current window or zero if no preferences window has been created.
 	static int	s_ID;
