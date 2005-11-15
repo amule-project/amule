@@ -1451,15 +1451,17 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	
 	// Remaining
 	case 9: {
-		if (	file->GetStatus() != PS_COMPLETING &&
-			file->GetStatus() != PS_COMPLETE ) {
-			// Size
-			uint32 remains = file->GetFileSize() - file->GetCompletedSize();
+		if ((file->GetStatus() != PS_COMPLETING) && file->IsPartFile()) {
+			uint32 remainSize = file->GetFileSize() - file->GetCompletedSize();
+			sint32 remainTime = file->getTimeRemaining();
 			
-			// time
-			sint32 restTime = file->getTimeRemaining();
-			text = CastSecondsToHM( restTime ) +
-				wxT(" (") + CastItoXBytes( remains ) + wxT(")");
+			if (remainTime >= 0) {
+				text = CastSecondsToHM(remainTime);
+			} else {
+				text = _("Unknown");
+			}
+
+			text += wxT(" (") + CastItoXBytes(remainSize) + wxT(")");
 		}
 		break;
 	}
