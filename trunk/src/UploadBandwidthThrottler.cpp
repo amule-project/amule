@@ -308,12 +308,15 @@ void UploadBandwidthThrottler::EndThread()
  */
 void* UploadBandwidthThrottler::Entry()
 {
+	const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
+	
 	uint32 lastLoopTick = ::GetTickCountFullRes();
 	sint64 realBytesToSpend = 0;
 	uint32 allowedDataRate = 0;
 	uint32 rememberedSlotCounter = 0;
 	uint32 lastTickReachedBandwidth = ::GetTickCountFullRes();
-
+	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
+	
 	while (m_doRun) {
 		uint32 timeSinceLastLoop = ::GetTickCountFullRes() - lastLoopTick;
 
@@ -337,16 +340,14 @@ void* UploadBandwidthThrottler::Entry()
 			doubleSendSize = minFragSize; // don't send two packages at a time at very low speeds to give them a smoother load
 		}
 
-const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 
 		uint32 sleepTime;
 		if(allowedDataRate == 0 || allowedDataRate == _UI32_MAX || realBytesToSpend >= 1000) {
 			// we could send at once, but sleep a while to not suck up all cpu
-			sleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
+			sleepTime = extraSleepTime;
 		} else {
 			// sleep for just as long as we need to get back to having one byte to send
 			sleepTime = std::max((uint32)ceil((double)(-realBytesToSpend + 1000)/allowedDataRate), TIME_BETWEEN_UPLOAD_LOOPS);
-
 		}
 
 		if(timeSinceLastLoop < sleepTime) {
@@ -526,6 +527,12 @@ const uint32 TIME_BETWEEN_UPLOAD_LOOPS = 1;
 			
 			m_SentBytesSinceLastCall += spentBytes;
 			m_SentBytesSinceLastCallOverhead += spentOverhead;
+
+			if ((spentBytes == 0) and (spentOverhead == 0)) {
+				extraSleepTime = std::min<uint32>(extraSleepTime * 5, 1000); // 1s at most
+			} else {
+				extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
+			}
 		}
 	}
 
