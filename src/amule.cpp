@@ -30,21 +30,6 @@
 #include <wx/defs.h>
 #include <wx/process.h>
 
-#ifdef __WXGTK__
-
-	#ifdef __BSD__
-     	#include <sys/param.h>
-       	#include <sys/mount.h>
-	#else 
-		#ifdef __SOLARIS__
-			#include <sys/mnttab.h>
-		#else
-			#include <mntent.h>
-		#endif
-	#endif /* __BSD__ */
-
-#endif
-
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
@@ -628,126 +613,6 @@ bool CamuleApp::OnInit()
 		thePrefs::SetLanguageID(wxLang2Str(wxLANGUAGE_DEFAULT));
 		ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 	}
-
-	#ifdef __WXMSW__
-		use_chmod = false;
-	#else
-		use_chmod = true;
-	#endif
-#ifdef __WXGTK__
-	/* Test to see if the Temp or the Incoming dir is on a vfat partition. If
-	   that is the case, we need to avoid chmoding to avoid lots of warnings.
-	   This is done by reading through fstab entries and comparing to the
-	   folders used for incomming and temp files. */
-#ifndef __BSD__
-	#ifdef __SOLARIS__
-		FILE* mnt_tab = fopen("/etc/mntab","r");		
-	#else
-		FILE* mnt_tab = setmntent("/etc/mtab","r");
-	#endif
-	if ( mnt_tab ) {
-		wxString incomingdir = thePrefs::GetIncomingDir();
-		wxString tempdir = thePrefs::GetTempDir();
-		#ifdef __SOLARIS__
-			struct mnttab entries;
-			while ( getmntent(mnt_tab,&entries )!=-1) {
-				if ( (!strncmp(entries.mnt_fstype, "vfat",4)) 
-					|| (!strncmp(entries.mnt_fstype, "fat",3)) 
-					|| (!strncmp(entries.mnt_fstype, "msdos",5)) 
-					|| (!strncmp(entries.mnt_fstype, "smbfs",5)) 
-				) {
-					#if wxUSE_UNICODE
-					if ( tempdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
-					#else 
-					if ( tempdir.StartsWith( char2unicode(entries.mnt_mountp )) ) {
-					#endif
-		#else
-			struct mntent* entries;
-			entries = getmntent(mnt_tab);
-			while ( entries ) {
-				if ( (!strncmp(entries->mnt_type, "vfat",4)) 
-					|| (!strncmp(entries->mnt_type, "fat",3)) 
-					|| (!strncmp(entries->mnt_type, "msdos",5)) 
-					|| (!strncmp(entries->mnt_type, "smbfs",5)) 
-				) {
-					#if wxUSE_UNICODE
-					if ( tempdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
-					#else 
-					if ( tempdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
-					#endif
-		#endif	
-					// Kry - We cannot addlogline because there's no GUI yet!
-					AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
-					use_chmod = false;
-				}
-				#ifdef __SOLARIS__
-					#if wxUSE_UNICODE
-					if ( incomingdir.StartsWith( UTF82unicode(entries.mnt_mountp )) ) {
-					#else
-					if ( incomingdir.StartsWith( char2unicode(entries.mnt_mountp)) ) {
-					#endif
-				#else
-					#if wxUSE_UNICODE
-					if ( incomingdir.StartsWith( UTF82unicode(entries->mnt_dir )) ) {
-					#else
-					if ( incomingdir.StartsWith( char2unicode(entries->mnt_dir )) ) {
-					#endif
-				#endif
-					AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
-					use_chmod = false;
-				}
-				if (!use_chmod) {
-					break;
-				}
-			}
-			#ifndef __SOLARIS__
-				entries = getmntent(mnt_tab);
-			#endif
-		}
-		fclose(mnt_tab);
-	}
-#else
-	wxString incomingdir = thePrefs::GetIncomingDir();
-	wxString tempdir = thePrefs::GetTempDir();
-	long size, i;
-#if defined(HAVE_SYS_STATVFS_H) && !defined(__FREEBSD__)	
-	struct statvfs *mntbuf;
-#else
-	struct statfs *mntbuf;
-#endif
-
-	size = getmntinfo(&mntbuf, MNT_NOWAIT);
-	for (i = 0; i < size; i++) {
-		if ( (!strncmp(mntbuf[i].f_fstypename,"vfat",4))
-			|| (!strncmp(mntbuf[i].f_fstypename,"fat",3))
-			|| (!strncmp(mntbuf[i].f_fstypename,"msdos",5))
-			|| (!strncmp(mntbuf[i].f_fstypename,"smbfs",5))
-		) {
-			#if wxUSE_UNICODE
-			if ( tempdir.StartsWith( UTF82unicode( mntbuf[i].f_mntonname )) ) {
-			#else
-			if ( tempdir.StartsWith( char2unicode( mntbuf[i].f_mntonname )) ) {
-			#endif
-				// Kry - We cannot addlogline because there's no GUI yet!
-      			AddLogLineM(false,_("Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
-                    use_chmod = false;
-			}
-			#if wxUSE_UNICODE
-			if ( incomingdir.StartsWith( UTF82unicode( mntbuf[i].f_mntonname ) ) ) {
-			#else
-			if ( incomingdir.StartsWith( char2unicode( mntbuf[i].f_mntonname ) ) ) {
-			#endif
-				AddLogLineM(false,_("Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid useless warnings."));
-				use_chmod = false;
-			}
-			if (!use_chmod) {
-				break;
-			}
-		}
-	}
-
-#endif // __BSD__
-#endif
 
 	statistics = new CStatistics();
 	
@@ -1513,6 +1378,7 @@ void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 
 }
 
+
 void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
@@ -1683,22 +1549,14 @@ uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 	return m_dwPublicIP;	
 }
 
-void CamuleApp::SetPublicIP(const uint32 dwIP){
-	if (dwIP != 0){
-		wxASSERT ( !IsLowID(dwIP));
-		//wxASSERT ( m_pPeerCache );
-//		if ( GetPublicIP() == 0)
-			//AddDebugLogLineM(false, wxString::Format(wxT("My public IP Address is: %s"),ipstr(dwIP)));
-//		else if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() && ntohl(Kademlia::CKademlia::getIPAddress()) != dwIP)
-//			AddDebugLogLine(DLP_DEFAULT, false,  wxT("Public IP Address reported from Kademlia (%s) differs from new found (%s)"),ipstr(ntohl(Kademlia::CKademlia::getIPAddress())),ipstr(dwIP));
-//		m_pPeerCache->FoundMyPublicIPAddress(dwIP);	
-	}
-//	else
-//		AddDebugLogLine(DLP_VERYLOW, false, wxT("Deleted public IP"));
+
+void CamuleApp::SetPublicIP(const uint32 dwIP)
+{
+	wxASSERT((dwIP == 0) or !IsLowID(dwIP));
 	
 	m_dwPublicIP = dwIP;
-
 }
+
 
 wxString CamuleApp::GetLog(bool reset)
 {

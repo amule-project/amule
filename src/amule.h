@@ -151,9 +151,6 @@ public:
 	// shakraw - new EC code using wxSocketBase
 	ExternalConn*	ECServerHandler;
 
-	// Kry - avoid chmod on win32
-	bool		use_chmod;
-
 	// return current (valid) public IP or 0 if unknown
 	// If ignorelocal is true, don't use m_localip
 	uint32	GetPublicIP(bool ignorelocal = false) const; 
