@@ -3254,7 +3254,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item4->SetName( wxT("nodesupdateList") );
     item3->Add( item4, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Nodes list"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Nodes (0)"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->SetName( wxT("nodesListLabel") );
     item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
