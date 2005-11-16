@@ -253,8 +253,11 @@ class CECSocket : public wxSocketClient {
 	size_t	ReadBufferFromSocket(void *buffer, size_t required_len, size_t max_len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
 
+	void	CheckDestroy();
+
 	wxSocketError	m_lastError;
 	bool		m_destroying;
+	bool		m_isWorking;
 
 #if ECSOCKET_USE_EVENTS
 
