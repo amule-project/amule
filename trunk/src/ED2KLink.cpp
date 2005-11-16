@@ -248,7 +248,7 @@ CED2KFileLink::~CED2KFileLink()
 
 wxString CED2KFileLink::GetLink() const
 {
-	return wxT("ed2k://|file|") + m_name + wxString::Format(wxT("|%lu|"), m_size) + m_hash.Encode() + wxT("|/");
+	return wxT("ed2k://|file|") + m_name + wxString::Format(wxT("|%u|"), m_size) + m_hash.Encode() + wxT("|/");
 }
 
 
