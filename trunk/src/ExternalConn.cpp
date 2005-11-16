@@ -948,7 +948,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			unsigned int numPoints = theApp.statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
-				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 3 * numPoints * sizeof(uint32), graphData));
+				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 4 * numPoints * sizeof(uint32), graphData));
 				delete [] graphData;
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_LAST, dTimestamp));
 			} else {
