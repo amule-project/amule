@@ -232,6 +232,8 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 		wxT("/amule_stats_upload.png"));
 	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.ConnCount()),
 		wxT("/amule_stats_conncount.png"));
+	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.KadCount()),
+		wxT("/amule_stats_kad.png"));
 #endif
 }
 
@@ -1261,6 +1263,7 @@ CStatsCollection::CStatsCollection(int size, CamulewebApp *iface)
 	m_down_speed = new CStatsData(size);
 	m_up_speed = new CStatsData(size);
 	m_conn_number = new CStatsData(size);
+	m_kad_count = new CStatsData(size);
 	
 	m_iface = iface;
 	m_LastTimeStamp = 0.0;
@@ -1293,10 +1296,11 @@ void CStatsCollection::ReQuery()
 	const CECTag *dataTag = response->GetTagByName(EC_TAG_STATSGRAPH_DATA);
 	const uint32 *data = (const uint32 *)dataTag->GetTagData();
 	unsigned int count = dataTag->GetTagDataLen() / sizeof(uint32);
-	for (unsigned int i = 0; i < count; i += 3) {
+	for (unsigned int i = 0; i < count; i += 4) {
 		m_down_speed->PushSample(ENDIAN_NTOHL(data[i+0]));
 		m_up_speed->PushSample(ENDIAN_NTOHL(data[i+1]));
 		m_conn_number->PushSample(ENDIAN_NTOHL(data[i+2]));
+		m_kad_count->PushSample(ENDIAN_NTOHL(data[i+3]));
 	}
 }
 

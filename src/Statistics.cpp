@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2003-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
-// Copyright (c) 2005 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2005 Dï¿½vai Tamï¿½s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -467,16 +467,18 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 	} while (pos != listHR.rend());
 
 	if (cntFilled) {
-		*graphData = new uint32 [3 * cntFilled];
+		*graphData = new uint32 [4 * cntFilled];
 		if (*graphData) {
 			for (unsigned int i = 0; i < cntFilled; i++) {
 				HR *phr = pphr[cntFilled - i - 1];
 				if (phr) {
-					(*graphData)[3 * i    ] = ENDIAN_HTONL((uint32)(phr->kBpsDownCur * 1024.0));
-					(*graphData)[3 * i + 1] = ENDIAN_HTONL((uint32)(phr->kBpsUpCur * 1024.0));
-					(*graphData)[3 * i + 2] = ENDIAN_HTONL((uint32)phr->cntConnections);
+					(*graphData)[4 * i    ] = ENDIAN_HTONL((uint32)(phr->kBpsDownCur * 1024.0));
+					(*graphData)[4 * i + 1] = ENDIAN_HTONL((uint32)(phr->kBpsUpCur * 1024.0));
+					(*graphData)[4 * i + 2] = ENDIAN_HTONL((uint32)phr->cntConnections);
+					(*graphData)[4 * i + 3] = ENDIAN_HTONL((uint32)phr->kadNodesCur);
 				} else {
-					(*graphData)[3 * i] = (*graphData)[3 * i + 1] = (*graphData)[3 * i + 2] = 0;
+					(*graphData)[4 * i] = (*graphData)[4 * i + 1] = 0;
+					(*graphData)[4 * i + 2] = (*graphData)[4 * i + 3] = 0;
 				}
 			}
 		}

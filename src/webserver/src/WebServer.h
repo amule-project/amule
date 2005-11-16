@@ -572,7 +572,9 @@ class CStatsData {
 };
 
 class CStatsCollection {
-		CStatsData *m_down_speed, *m_up_speed, *m_conn_number;
+		CStatsData *m_down_speed, *m_up_speed,
+			*m_conn_number, *m_kad_count;
+
 		CamulewebApp *m_iface;
 		double m_LastTimeStamp;
 		int m_size;
@@ -583,6 +585,7 @@ class CStatsCollection {
 		CStatsData *DownloadSpeed() { return m_down_speed; }
 		CStatsData *UploadSpeed() { return m_up_speed; }
 		CStatsData *ConnCount() { return m_conn_number; }
+		CStatsData *KadCount() { return m_kad_count; }
 		
 		void ReQuery();
 };
