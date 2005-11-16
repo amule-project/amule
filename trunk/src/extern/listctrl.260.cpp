@@ -595,7 +595,7 @@ public:
 
     void OnPaint( wxPaintEvent &event );
 	void OnErase( wxEraseEvent& event ) {
-		if ( !HasFlag(wxLC_OWNERDRAW) || IsEmpty() ) {
+		if ( IsEmpty() ) {
 			event.Skip();
 		}
 	}
@@ -2619,8 +2619,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
     dc.SetFont( GetFont() );
 
-    if ( InReportView() )
-    {
+    if ( InReportView() ) {
         int lineHeight = GetLineHeight();
 
         size_t visibleFrom, visibleTo;
@@ -2640,10 +2639,15 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
             evCache.m_itemIndex = visibleTo;
             GetParent()->GetEventHandler()->ProcessEvent( evCache );
         }
+		
+		{
+			// This DC is used to write to the bitmaps used to double-buffer
+			wxMemoryDC dbDC( &dc );
+			// The font doesn't get set for some reason ...
+			dbDC.SetFont( GetFont() );
+			// We use this for double-buffer
+			wxBitmap buffer(1, 1);
 
-
-		// Report view is drawn normally, owner-drawn is double-buffered.
-		if ( !HasFlag(wxLC_OWNERDRAW) ) {
 			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
 				rectLine = GetLineRect(line);
 
@@ -2653,27 +2657,6 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 					// don't redraw unaffected lines to avoid flicker
 					continue;
 				}
-
-				GetLine(line)->DrawInReportMode( &dc, rectLine, GetLineHighlightRect(line), IsHighlighted(line) );
-			}
-		} else {
-			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
-				rectLine = GetLineRect(line);
-
-				if ( !IsExposed(rectLine.x - xOrig, rectLine.y - yOrig,
-								rectLine.width, rectLine.height) )
-				{
-					// don't redraw unaffected lines to avoid flicker
-					continue;
-				}
-
-				// This DC is used to write to the bitmaps used to double-buffer
-				wxMemoryDC dbDC( &dc );
-				// The font doesn't get set for some reason ...
-				dbDC.SetFont( GetFont() );
-
-				// We use this for double-buffer
-				wxBitmap buffer( rectLine.width, rectLine.height );
 
 				wxRect rect = rectLine;
 				wxRect highl = GetLineHighlightRect(line);
@@ -2681,48 +2664,55 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				// Map the highlight rect onto the buffer
 				highl.x = highl.x - rectLine.x;
 				highl.y = highl.y - rectLine.y;
-			
+				
 				// Map the normal rect onto the buffer
 				rect.x = 0;
 				rect.y = 0;
 
-				dbDC.SelectObject( buffer );
-
-				((wxGenericListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );
-
-				dc.Blit( rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0 );
-			
-				dbDC.SelectObject( wxNullBitmap );
-			}
-
-			// Clean up empty spaces because we ignore ERASE_BACKGROUND events
-			// Get the item-rect after the last actual item
-			wxRect after = GetLineRect( GetItemCount() );
-			
-			// The displayed size
-			int width = 0, height = 0;
-			GetClientSize( &width, &height );
-			// Change it so that we have the actual coordiantes
-			CalcUnscrolledPosition( width, height, &width, &height );
-	
-			dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
-			dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
-		
-			// Clear below if this is the last item
-			if ( visibleTo + 1 == GetItemCount() ) {
-				// Since visibleTo can include items partly past the bottom, we have
-				// ensure that we dont overwrite items below the visible area
-				if ( after.GetY() < height ) {
-					// Clear the area below the last visible item
-					dc.DrawRectangle( 0, after.GetY(), after.GetWidth(), height - after.GetY() );
+				if ((buffer.GetWidth() != rect.width) or (buffer.GetHeight() != rect.height)) {
+					dbDC.SelectObject(wxNullBitmap);
+					buffer.Create(rect.width, rect.height);
+					dbDC.SelectObject(buffer);
 				}
-			}
 
-			// Clear to the right of the last column if the columns dont fill everything
-			if ( after.GetWidth() < width ) {
-				dc.DrawRectangle( after.GetWidth(), yOrig, width - after.GetWidth(), height );
+				if (HasFlag(wxLC_OWNERDRAW)) {
+					((wxGenericListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );	
+				} else {
+					GetLine(line)->DrawInReportMode( &dbDC, rect, highl, IsHighlighted(line));
+				}
+
+				dc.Blit(rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0);		
 			}
 		}
+		
+		// Clean up empty spaces because we ignore ERASE_BACKGROUND events
+		// Get the item-rect after the last actual item
+		wxRect after = GetLineRect( GetItemCount() );
+		
+		// The displayed size
+		int width = 0, height = 0;
+		GetClientSize( &width, &height );
+		// Change it so that we have the actual coordiantes
+		CalcUnscrolledPosition( width, height, &width, &height );
+
+		dc.SetPen( wxPen( GetBackgroundColour(), 1, wxSOLID) );
+		dc.SetBrush( wxBrush( GetBackgroundColour(), wxSOLID ) );
+	
+		// Clear below if this is the last item
+		if ( visibleTo + 1 == GetItemCount() ) {
+			// Since visibleTo can include items partly past the bottom, we have
+			// ensure that we dont overwrite items below the visible area
+			if ( after.GetY() < height ) {
+				// Clear the area below the last visible item
+				dc.DrawRectangle( 0, after.GetY(), after.GetWidth(), height - after.GetY() );
+			}
+		}
+
+		// Clear to the right of the last column if the columns dont fill everything
+		if ( after.GetWidth() < width ) {
+			dc.DrawRectangle( after.GetWidth(), yOrig, width - after.GetWidth(), height );
+		}
+		
 		
         if ( HasFlag(wxLC_HRULES) )
         {
