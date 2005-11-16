@@ -307,6 +307,7 @@ CECSocket::CECSocket()
 	m_z.opaque = Z_NULL;
 	m_lastError = wxSOCKET_NOERROR;
 	m_destroying = false;
+	m_isWorking = false;
 #if ECSOCKET_USE_EVENTS
 	m_canUseIDs = false;
 	m_canSend = IsConnected();
@@ -368,13 +369,19 @@ void CECSocket::SendPacket(const CECPacket *packet)
 	event.SetEventObject(this);
 	g_ECSocketHandler.AddPendingEvent(event);
 #else
+	m_isWorking = true;
 	WritePacket(packet);
 	delete ReadPacket();
+	m_isWorking = false;
+	CheckDestroy();
 #endif
 }
 
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
+	const CECPacket *reply = NULL;
+	m_isWorking = true;
+
 #if ECSOCKET_USE_EVENTS
 	wxENTER_CRIT_SECT(m_cs_packet_out);
 	uint32 id = m_canUseIDs ? ++m_id : 0;
@@ -387,7 +394,6 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 
 	DoSendPacket();
 
-	const CECPacket *reply = NULL;
 	wxStopWatch swatch;
 	while (!reply) {
 		wxMilliSleep(100);
@@ -416,11 +422,13 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 		}
 	}
 
-	return reply;
 #else
 	WritePacket(packet);
-	return ReadPacket();
+	reply = ReadPacket();
 #endif
+	m_isWorking = false;
+	CheckDestroy();
+	return reply;
 }
 
 wxString CECSocket::GetErrorMsg(wxSocketError code)
@@ -474,9 +482,9 @@ void CECSocket::Destroy(bool raiseLostEvent)
 		if (raiseLostEvent) {
 			OnLost();
 		}
-		wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
-		if (traits) {
-			traits->ScheduleForDestroy(this);
+		if (!m_isWorking) {
+			// Do the real thing if it's safe.
+			CheckDestroy();
 		}
 	}
 }
@@ -484,6 +492,18 @@ void CECSocket::Destroy(bool raiseLostEvent)
 //
 // Implementation from now on
 //
+
+void CECSocket::CheckDestroy()
+{
+	if (m_destroying) {
+		wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
+		if (traits) {
+			traits->ScheduleForDestroy(this);
+		} else {
+			delete this;
+		}
+	}
+}
 
 #if ECSOCKET_USE_EVENTS
 
@@ -777,6 +797,7 @@ void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 				m_canSend = false;
 			} else {
 				OnError();
+				// Hmmmm.....
 			}
 		}
 		if (sentBytes == len) {
