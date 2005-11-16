@@ -8,6 +8,8 @@
 	if ( $_SESSION["auto_refresh"] > 0 ) {
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"], '">';
 	}
+
+	amule_load_vars("stats_graph");
 ?>
 <style type="text/css">
 <!--
