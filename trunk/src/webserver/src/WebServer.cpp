@@ -651,7 +651,6 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 	nCat = tag->FileCat();
 	
 	nFileStatus = tag->FileStatus();
-	sFileStatus = tag->GetFileStatusString();
 	lSourceCount = tag->SourceCount();
 	lNotCurrentSourceCount = tag->SourceNotCurrCount();
 	lTransferringSourceCount = tag->SourceXferCount();

@@ -90,7 +90,6 @@ class DownloadFile {
 	public:
 		wxString	sFileName;
 		uint8		nFileStatus;
-		wxString	sFileStatus;
 		unsigned long	lFileSize;
 		unsigned long	lFileCompleted;
 		unsigned long	lFileTransferred;
