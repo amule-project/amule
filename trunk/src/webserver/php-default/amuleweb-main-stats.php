@@ -9,6 +9,9 @@
 	if ( $_SESSION["auto_refresh"] > 0 ) {
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"], '">';
 	}
+
+	amule_load_vars("stats_graph");
+
 ?>
 <style type="text/css">
 <!--
@@ -48,9 +51,6 @@ function swapFolder(img){
 }
 
 </script>
-<?php
-	amule_load_vars("stats_graph");
-?>
 <body>
 <table width="904" border="0" cellpadding="0" cellspacing="0">
   <!--DWLayoutTable-->
