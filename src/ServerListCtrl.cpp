@@ -182,12 +182,14 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		bool sorted = true;
 			
 		// Check if we are still "smaller" than the item before us
-		if ( itemnr > 0 )
-			sorted &= ( SortProc( (long)server, GetItemData( itemnr - 1 ), sortby ) >= 0 );
+		if ( itemnr > 0 ) {
+			sorted &= ( SortProc( (long)server, GetItemData( itemnr - 1 ), sortby ) <= 0 );
+		}
 
 		// Check if we are still "larger" than the item after us
-		if ( itemnr < GetItemCount() -1 )
-			sorted &= ( SortProc( (long)server, GetItemData( itemnr + 1 ), sortby ) <= 0 );
+		if ( itemnr < GetItemCount() -1 ) {
+			sorted &= ( SortProc( (long)server, GetItemData( itemnr + 1 ), sortby ) >= 0 );
+		}
 
 		if ( !sorted ) {
 			itemState = GetItemState( itemnr, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED );
