@@ -117,7 +117,7 @@ wxSizer *muleDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBitmapButton *item7 = new wxBitmapButton( parent, IDC_SHOWSTATUSTEXT, amuleDlgImages( 31 ), wxDefaultPosition, wxSize(15,15) );
+    wxBitmapButton *item7 = new wxBitmapButton( parent, IDC_SHOWSTATUSTEXT, amuleDlgImages( 31 ), wxDefaultPosition, wxSize(25,25) );
     item7->SetToolTip( _("Pop-up status text") );
     item6->Add( item7, 0, wxALIGN_CENTER, 5 );
 
@@ -445,30 +445,26 @@ wxSizer *transferTopPane( wxWindow *parent, bool call_fit, bool set_sizer )
     transfer_top_boxsizer = item1;
 
     wxStaticBitmap *item2 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 10 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
+    item1->Add( item2, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Downloads"), wxDefaultPosition, wxDefaultSize, 0 );
     item3->SetName( wxT("downloadsLabel") );
     item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxBitmapButton *item4 = new wxBitmapButton( parent, ID_BTNCLRCOMPL, amuleDlgImages( 17 ), wxDefaultPosition, wxSize(20,20) );
+    wxBitmapButton *item4 = new wxBitmapButton( parent, ID_BTNCLRCOMPL, amuleDlgImages( 17 ), wxDefaultPosition, wxSize(30,30) );
     item4->SetToolTip( _("Clears completed downloads") );
     item4->Enable( false );
-    item1->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+    item1->Add( item4, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     CMuleNotebook *item5 = new CMuleNotebook( parent, ID_CATEGORIES, wxDefaultPosition, wxSize(15,30), 0 );
     wxASSERT( item5 );
     item1->Add( item5, 1, wxFIXED_MINSIZE|wxALIGN_CENTER, 5 );
 
-    wxBitmapButton *item6 = new wxBitmapButton( parent, ID_BTNSWWINDOW, amuleDlgImages( 16 ), wxDefaultPosition, wxSize(20,20) );
-    item6->SetToolTip( _("switch download list to clients you're downloading from, with files also (some day)") );
-    item1->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
-
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CDownloadListCtrl *item7 = new CDownloadListCtrl( parent, ID_DLOADLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item7->SetName( wxT("downloadList") );
-    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CDownloadListCtrl *item6 = new CDownloadListCtrl( parent, ID_DLOADLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item6->SetName( wxT("downloadList") );
+    item0->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -1111,17 +1107,17 @@ wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
 
     wxStaticBitmap *item3 = new wxStaticBitmap( parent, ID_STATICBITMAP, moreImages( 0 ), wxDefaultPosition, wxDefaultSize );
-    item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Shared Files"), wxDefaultPosition, wxDefaultSize, 0 );
     item4->SetName( wxT("sharedFilesLabel") );
     item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxBitmapButton *item5 = new wxBitmapButton( parent, ID_BTNRELSHARED, amuleDlgImages( 18 ), wxDefaultPosition, wxSize(22,22) );
+    wxBitmapButton *item5 = new wxBitmapButton( parent, ID_BTNRELSHARED, amuleDlgImages( 18 ), wxDefaultPosition, wxSize(32,32) );
     item5->SetToolTip( _("Reload your shared files") );
     item2->Add( item5, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item0->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
     CSharedFilesCtrl *item6 = new CSharedFilesCtrl( parent, ID_SHFILELIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item6->SetName( wxT("sharedFilesCt") );
@@ -3259,7 +3255,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
     CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_NODESLISTURL, _("http://download.overnet2000.de/nodes.dat"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
-    item6->SetToolTip( _("Enter the url to a nodes.dat file here and press the button to the left to update the list of known servers.") );
+    item6->SetToolTip( _("Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes.") );
     item3->Add( item6, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
