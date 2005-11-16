@@ -1727,6 +1727,8 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	rewind(f);
 	fread(buf, 1, size, f);
 	
+	fclose(f);
+	
 	return buf;
 }
 
@@ -1743,6 +1745,8 @@ char *CScriptWebServer::ProcessPhpRequest(const char *filename, CSession *sess, 
 	size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
+	
+	fclose(f);
 	
 	return buf;
 }
