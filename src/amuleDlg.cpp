@@ -630,19 +630,19 @@ void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CamuleDlg::ResetLog(uint32 whichone)
+void CamuleDlg::ResetLog(int id)
 {
-	wxTextCtrl* ct = CastByID( whichone, serverwnd, wxTextCtrl );
+	wxTextCtrl* ct = CastByID(id, serverwnd, wxTextCtrl);
 	wxCHECK_RET(ct, wxT("Resetting unknown log"));
 
 	ct->Clear();
 	
-	if (whichone == ID_LOGVIEW) {
+	if (id == ID_LOGVIEW) {
 		// Also clear the log line
 		wxStaticText* text = CastChild(wxT("infoLabel"), wxStaticText);
 		text->SetLabel(wxEmptyString);
 		text->GetParent()->Layout();
-	}			
+	}
 }
 
 
@@ -1545,13 +1545,19 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	
 }
 
-void CamuleDlg::OnKeyPressed(wxKeyEvent& event) {
+
+void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
+{
 	if (event.GetKeyCode() == WXK_F1) {
 		LaunchUrl(wxT("http://wiki.amule.org"));
+	} else {
+		event.Skip();
 	}
 }
 
-void CamuleDlg::OnExit(wxCommandEvent& evt)
+
+void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
 	Close();
 }
+

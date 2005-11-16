@@ -109,7 +109,7 @@ public:
 
 	void AddLogLine(bool addtostatusbar, const wxString& line);
 	void AddServerMessageLine(wxString& message);
-	void ResetLog(uint32 whichone);
+	void ResetLog(int id);
 	
 	void ShowUserCount(const wxString& info = wxEmptyString);
 	void ShowConnectionState(uint32 connection_state);
