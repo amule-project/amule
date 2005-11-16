@@ -23,6 +23,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
+#include <wx/string.h>
 #include <wx/regex.h>			// Needed for wxRegEx
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 
