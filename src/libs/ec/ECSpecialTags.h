@@ -344,11 +344,6 @@ class CEC_Search_Tag : public CECTag {
 		wxString SearchFileType() { return GetTagByNameSafe(EC_TAG_SEARCH_FILE_TYPE)->GetStringData(); }
 };
 
-class CEC_Kad_Tag : public CECTag {
-	public:
-		CEC_Kad_Tag();
-};
-
 class CEC_StatTree_Node_Tag : public CECTag {
 	public:
 		CEC_StatTree_Node_Tag();	// just to keep compiler happy
