@@ -533,8 +533,8 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticBitmap *item4 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 14 ), wxDefaultPosition, wxDefaultSize );
     item3->Add( item4, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Friends"), wxDefaultPosition, wxSize(-1,32), 0 );
-    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Friends"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -549,10 +549,10 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
 
     wxStaticBitmap *item10 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleDlgImages( 15 ), wxDefaultPosition, wxDefaultSize );
-    item9->Add( item10, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+    item9->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Messages"), wxDefaultPosition, wxSize(-1,32), 0 );
-    item9->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _("Messages"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
     item7->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -578,7 +578,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item0->Add( item7, 1, wxALIGN_CENTER, 5 );
 
     if (set_sizer)
     {
@@ -3093,63 +3093,62 @@ wxSizer *aMuleLog( wxWindow *parent, bool call_fit, bool set_sizer )
 
 wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
 {
-    wxStaticBox *item1 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item0 = new wxStaticBoxSizer( item1, wxVERTICAL );
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item2 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBitmapButton *item3 = new wxBitmapButton( parent, ID_UPDATELIST, amuleDlgImages( 30 ), wxDefaultPosition, wxDefaultSize );
-    item3->SetToolTip( _("Click on this button to update the servers list from URL ...") );
-    item3->SetName( wxT("updateList") );
-    item2->Add( item3, 0, wxALIGN_CENTER, 5 );
+    wxBitmapButton *item2 = new wxBitmapButton( parent, ID_UPDATELIST, amuleDlgImages( 30 ), wxDefaultPosition, wxDefaultSize );
+    item2->SetToolTip( _("Click on this button to update the servers list from URL ...") );
+    item2->SetName( wxT("updateList") );
+    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Serverlist"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->SetName( wxT("serverListLabel") );
-    item2->Add( item4, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("Serverlist"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->SetName( wxT("serverListLabel") );
+    item1->Add( item3, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item5 = new CMuleTextCtrl( parent, IDC_SERVERLISTURL, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
-    item5->SetToolTip( _("Enter the url to a server.met file here and press the button to the left to update the list of known servers.") );
-    item2->Add( item5, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_SERVERLISTURL, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    item4->SetToolTip( _("Enter the url to a server.met file here and press the button to the left to update the list of known servers.") );
+    item1->Add( item4, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 
-    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item7 = new wxStaticText( parent, ID_TEXT, _("Manual Server Add : Name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item7, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, _("Manual Server Add : Name"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item6, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item8 = new CMuleTextCtrl( parent, IDC_SERVERNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetToolTip( _("Enter the name of the new server here") );
-    item6->Add( item8, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_SERVERNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->SetToolTip( _("Enter the name of the new server here") );
+    item5->Add( item7, 1, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item9 = new wxStaticText( parent, ID_TEXT, _("IP:Port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("IP:Port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
-    item10->SetToolTip( _("Enter the IP of the server here, using the x.x.x.x format.") );
-    item6->Add( item10, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
+    item9->SetToolTip( _("Enter the IP of the server here, using the x.x.x.x format.") );
+    item5->Add( item9, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item11, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_SPORT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->SetToolTip( _("Enter the port of the server here.") );
-    item6->Add( item12, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    CMuleTextCtrl *item11 = new CMuleTextCtrl( parent, IDC_SPORT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetToolTip( _("Enter the port of the server here.") );
+    item5->Add( item11, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxButton *item13 = new wxButton( parent, ID_ADDTOLIST, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetToolTip( _("Add manually a server (fill fields to the left before) ...") );
-    item6->Add( item13, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    wxButton *item12 = new wxButton( parent, ID_ADDTOLIST, _("Add"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetToolTip( _("Add manually a server (fill fields to the left before) ...") );
+    item5->Add( item12, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticLine *item14 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item6->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxStaticLine *item13 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item5->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxButton *item15 = new wxButton( parent, IDC_ED2KDISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item15, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxButton *item14 = new wxButton( parent, IDC_ED2KDISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item14, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CServerListCtrl *item16 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item0->Add( item16, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CServerListCtrl *item15 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
+    item0->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -4092,7 +4091,7 @@ void muleToolbar( wxToolBar *parent )
     parent->ToggleTool( ID_BUTTONNETWORKS, TRUE );
     parent->AddTool( ID_BUTTONSEARCH, _("Searches"), amuleDlgImages( 22 ), wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
     parent->AddTool( ID_BUTTONTRANSFER, _("Transfers"), amuleDlgImages( 21 ), wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
-    parent->AddTool( ID_BUTTONSHARED, _("SharedFiles"), amuleDlgImages( 23 ), wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
+    parent->AddTool( ID_BUTTONSHARED, _("Shared Files"), amuleDlgImages( 23 ), wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
     parent->AddTool( ID_BUTTONMESSAGES, _("Messages"), amuleDlgImages( 24 ), wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
     parent->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), amuleDlgImages( 25 ), wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
     parent->AddSeparator();
