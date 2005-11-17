@@ -153,6 +153,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
 	#if wxCHECK_VERSION(2,6,0)
 		wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
+		wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
 	#endif
 	
 	last_iconizing = 0;
