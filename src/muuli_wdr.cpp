@@ -578,7 +578,7 @@ wxSizer *messagePage( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item7, 1, wxALIGN_CENTER, 5 );
+    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     if (set_sizer)
     {
