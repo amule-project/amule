@@ -38,7 +38,6 @@
 #include "ECPacket.h"		// Needed for CECPacket
 
 #include <wx/app.h>		// Needed for wxTheApp
-#include <wx/apptrait.h>	// Needed for wxAppTraits
 
 #if ECSOCKET_USE_EVENTS
 #	include <wx/event.h>		// Needed for wxEvtHandler
@@ -49,6 +48,14 @@
 #		include <wx/timer.h>		// Needed for wxStopWatch in wxWidgets-2.4.2
 #	endif
 #	include <wx/utils.h>		// Needed for wxMilliSleep
+#endif
+
+#if !wxCHECK_VERSION(2,5,0)
+#	if wxUSE_GUI
+#		include "wx/gdicmn.h"	// for wxPendingDelete
+#	endif
+#else
+#	include <wx/apptrait.h>	// Needed for wxAppTraits
 #endif
 
 #ifdef __DEBUG__
@@ -496,12 +503,21 @@ void CECSocket::Destroy(bool raiseLostEvent)
 void CECSocket::CheckDestroy()
 {
 	if (m_destroying) {
+#if !wxCHECK_VERSION(2,5,0)
+#	if wxUSE_GUI
+		if ( !wxPendingDelete.Member(this) )
+			wxPendingDelete.Append(this);
+#	else
+		delete this;
+#	endif
+#else
 		wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
 		if (traits) {
 			traits->ScheduleForDestroy(this);
 		} else {
 			delete this;
 		}
+#endif
 	}
 }
 
