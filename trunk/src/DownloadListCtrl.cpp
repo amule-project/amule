@@ -923,160 +923,160 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 	
 	CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData( index );
 	
+
+	if (m_menu) {
+		delete m_menu;
+	}
+
 	if ( item->type == FILE_TYPE ) {
-		if ( m_menu == NULL ) {
-			m_menu = new wxMenu( _("Downloads") );
 
-			wxMenu* priomenu = new wxMenu();
-			priomenu->AppendCheckItem(MP_PRIOLOW, _("Low"));
-			priomenu->AppendCheckItem(MP_PRIONORMAL, _("Normal"));
-			priomenu->AppendCheckItem(MP_PRIOHIGH, _("High"));
-			priomenu->AppendCheckItem(MP_PRIOAUTO, _("Auto"));
+		m_menu = new wxMenu( _("Downloads") );
 
-			m_menu->Append(MP_MENU_PRIO, _("Priority"), priomenu);
-			m_menu->Append(MP_CANCEL, _("Cancel"));
-			m_menu->Append(MP_STOP, _("&Stop"));
-			m_menu->Append(MP_PAUSE, _("&Pause"));
-			m_menu->Append(MP_RESUME, _("&Resume"));
-			m_menu->Append(MP_CLEARCOMPLETED, _("C&lear completed"));
-			//-----------------------------------------------------
-			m_menu->AppendSeparator();
-			//-----------------------------------------------------
-			wxMenu* extendedmenu = new wxMenu();
-			extendedmenu->Append(MP_SWAP_A4AF_TO_THIS,
-				_("Swap every A4AF to this file now"));
-			extendedmenu->AppendCheckItem(MP_SWAP_A4AF_TO_THIS_AUTO,
-				_("Swap every A4AF to this file (Auto)"));
-			//-----------------------------------------------------
-			extendedmenu->AppendSeparator();
-			//-----------------------------------------------------
-			extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER,
-				_("Swap every A4AF to any other file now"));
-			//-----------------------------------------------------
-			extendedmenu->AppendSeparator();
-			//-----------------------------------------------------
-			extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES,
-				_("Drop No Needed Sources now"));
-			extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES,
-				_("Drop Full Queue Sources now"));
-			extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES,
-				_("Drop High Queue Rating Sources now"));
-			extendedmenu->Append(MP_CLEAN_UP_SOURCES,
-				_("Clean Up Sources now (NNS, FQS && HQRS)"));
-			m_menu->Append(MP_MENU_EXTD,
-				_("Extended Options"), extendedmenu);
-			//-----------------------------------------------------
-			m_menu->AppendSeparator();
-			//-----------------------------------------------------
-			m_menu->Append( MP_RAZORSTATS,
-				_("Get Razorback 2's stats for this file"));
-			//-----------------------------------------------------
-			m_menu->AppendSeparator();
-			//-----------------------------------------------------
-			m_menu->Append(MP_VIEW, _("Preview"));
-			m_menu->Append(MP_METINFO, _("Show file &details"));
-			m_menu->Append(MP_VIEWFILECOMMENTS,
-				_("Show all comments"));
-			//-----------------------------------------------------
-			m_menu->AppendSeparator();
-			//-----------------------------------------------------
-			m_menu->Append(MP_GETED2KLINK,
-				_("Copy ED2k &link to clipboard"));
-			m_menu->Append(MP_GETHTMLED2KLINK,
-				_("Copy ED2k link to clipboard (&HTML)"));
-			m_menu->Append(MP_WS,
-				_("Copy feedback to clipboard"));
-		
-			// Add dinamic entries
-			wxMenu *cats = new wxMenu(_("Category"));
-			if (theApp.glob_prefs->GetCatCount() > 1) {
-				for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
-					if ( i == 0 ) {
-						cats->Append( MP_ASSIGNCAT, _("unassign") );
-					} else {
-						cats->Append( MP_ASSIGNCAT + i,
-							theApp.glob_prefs->GetCategory(i)->title );
-					}
+		wxMenu* priomenu = new wxMenu();
+		priomenu->AppendCheckItem(MP_PRIOLOW, _("Low"));
+		priomenu->AppendCheckItem(MP_PRIONORMAL, _("Normal"));
+		priomenu->AppendCheckItem(MP_PRIOHIGH, _("High"));
+		priomenu->AppendCheckItem(MP_PRIOAUTO, _("Auto"));
+
+		m_menu->Append(MP_MENU_PRIO, _("Priority"), priomenu);
+		m_menu->Append(MP_CANCEL, _("Cancel"));
+		m_menu->Append(MP_STOP, _("&Stop"));
+		m_menu->Append(MP_PAUSE, _("&Pause"));
+		m_menu->Append(MP_RESUME, _("&Resume"));
+		m_menu->Append(MP_CLEARCOMPLETED, _("C&lear completed"));
+		//-----------------------------------------------------
+		m_menu->AppendSeparator();
+		//-----------------------------------------------------
+		wxMenu* extendedmenu = new wxMenu();
+		extendedmenu->Append(MP_SWAP_A4AF_TO_THIS,
+			_("Swap every A4AF to this file now"));
+		extendedmenu->AppendCheckItem(MP_SWAP_A4AF_TO_THIS_AUTO,
+			_("Swap every A4AF to this file (Auto)"));
+		//-----------------------------------------------------
+		extendedmenu->AppendSeparator();
+		//-----------------------------------------------------
+		extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER,
+			_("Swap every A4AF to any other file now"));
+		//-----------------------------------------------------
+		extendedmenu->AppendSeparator();
+		//-----------------------------------------------------
+		extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES,
+			_("Drop No Needed Sources now"));
+		extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES,
+			_("Drop Full Queue Sources now"));
+		extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES,
+			_("Drop High Queue Rating Sources now"));
+		extendedmenu->Append(MP_CLEAN_UP_SOURCES,
+			_("Clean Up Sources now (NNS, FQS && HQRS)"));
+		m_menu->Append(MP_MENU_EXTD,
+			_("Extended Options"), extendedmenu);
+		//-----------------------------------------------------
+		m_menu->AppendSeparator();
+		//-----------------------------------------------------
+		m_menu->Append( MP_RAZORSTATS,
+			_("Get Razorback 2's stats for this file"));
+		//-----------------------------------------------------
+		m_menu->AppendSeparator();
+		//-----------------------------------------------------
+		m_menu->Append(MP_VIEW, _("Preview"));
+		m_menu->Append(MP_METINFO, _("Show file &details"));
+		m_menu->Append(MP_VIEWFILECOMMENTS,
+			_("Show all comments"));
+		//-----------------------------------------------------
+		m_menu->AppendSeparator();
+		//-----------------------------------------------------
+		m_menu->Append(MP_GETED2KLINK,
+			_("Copy ED2k &link to clipboard"));
+		m_menu->Append(MP_GETHTMLED2KLINK,
+			_("Copy ED2k link to clipboard (&HTML)"));
+		m_menu->Append(MP_WS,
+			_("Copy feedback to clipboard"));
+	
+		// Add dinamic entries
+		wxMenu *cats = new wxMenu(_("Category"));
+		if (theApp.glob_prefs->GetCatCount() > 1) {
+			for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
+				if ( i == 0 ) {
+					cats->Append( MP_ASSIGNCAT, _("unassign") );
+				} else {
+					cats->Append( MP_ASSIGNCAT + i,
+						theApp.glob_prefs->GetCategory(i)->title );
 				}
 			}
-			m_menu->Append(MP_MENU_CATS, _("Assign to category"), cats);
-			m_menu->Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1) );
+		}
+		m_menu->Append(MP_MENU_CATS, _("Assign to category"), cats);
+		m_menu->Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1) );
 
-			CPartFile* file = (CPartFile*)item->value;
-
-			// then set state
-			bool fileReady =
-				(file->GetStatus() != PS_PAUSED) &&
-				(file->GetStatus() != PS_ERROR);
-			bool fileReady2 =
-				(file->GetStatus() != PS_ERROR) &&
-				(file->GetStatus() != PS_COMPLETE);
-			bool fileResumable =
-				(file->GetStatus() == PS_PAUSED) ||
-				(file->GetStatus() == PS_INSUFFICIENT);
-			
-			wxMenu* menu = m_menu;
-			menu->Enable( MP_CANCEL,	( file->GetStatus() != PS_COMPLETE ) );
-			menu->Enable( MP_PAUSE,		fileReady && fileReady2 );
-			menu->Enable( MP_STOP,		fileReady && fileReady2 );
-			menu->Enable( MP_RESUME, 	fileResumable );
-			menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
-
-			wxString view;
-			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-				view << _("Preview") << wxT(" [") <<
-					file->GetPartMetFileName().BeforeLast(wxT('.')) <<
-					wxT("]");
-			} else if ( file->GetStatus() == PS_COMPLETE ) {
-				view << _("&Open the file");
-			}
-			menu->SetLabel(MP_VIEW, view);
-			menu->Enable(MP_VIEW, file->PreviewAvailable() );
-
-			menu->Enable( MP_DROP_NO_NEEDED_SOURCES,	fileReady );
-			menu->Enable( MP_DROP_FULL_QUEUE_SOURCES,	fileReady );
-			menu->Enable( MP_DROP_HIGH_QUEUE_RATING_SOURCES,fileReady );
-			menu->Enable( MP_CLEAN_UP_SOURCES,		fileReady );
-			menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
-			menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
-			menu->Enable( MP_SWAP_A4AF_TO_ANY_OTHER, 	fileReady );
-
-			int priority = file->IsAutoDownPriority() ?
-				PR_AUTO : file->GetDownPriority();
-			
-			priomenu->Check( MP_PRIOHIGH,	priority == PR_HIGH );
-			priomenu->Check( MP_PRIONORMAL, priority == PR_NORMAL );
-			priomenu->Check( MP_PRIOLOW,	priority == PR_LOW );
-			priomenu->Check( MP_PRIOAUTO,	priority == PR_AUTO );
-
-			menu->Enable( MP_MENU_PRIO, fileReady2 );
-			menu->Enable( MP_MENU_EXTD, fileReady2 );
+		CPartFile* file = (CPartFile*)item->value;
+		// then set state
+		bool fileReady =
+			(file->GetStatus() != PS_PAUSED) &&
+			(file->GetStatus() != PS_ERROR);
+		bool fileReady2 =
+			(file->GetStatus() != PS_ERROR) &&
+			(file->GetStatus() != PS_COMPLETE);
+		bool fileResumable =
+			(file->GetStatus() == PS_PAUSED) ||
+			(file->GetStatus() == PS_INSUFFICIENT);
 		
-			PopupMenu(m_menu, evt.GetPoint());
+		wxMenu* menu = m_menu;
+		menu->Enable( MP_CANCEL,	( file->GetStatus() != PS_COMPLETE ) );
+		menu->Enable( MP_PAUSE,		fileReady && fileReady2 );
+		menu->Enable( MP_STOP,		fileReady && fileReady2 );
+		menu->Enable( MP_RESUME, 	fileResumable );
+		menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
 
-			delete m_menu;
-
-			m_menu = NULL;
+		wxString view;
+		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+			view << _("Preview") << wxT(" [") <<
+				file->GetPartMetFileName().BeforeLast(wxT('.')) <<
+				wxT("]");
+		} else if ( file->GetStatus() == PS_COMPLETE ) {
+			view << _("&Open the file");
 		}
+		menu->SetLabel(MP_VIEW, view);
+		menu->Enable(MP_VIEW, file->PreviewAvailable() );
+
+		menu->Enable( MP_DROP_NO_NEEDED_SOURCES,	fileReady );
+		menu->Enable( MP_DROP_FULL_QUEUE_SOURCES,	fileReady );
+		menu->Enable( MP_DROP_HIGH_QUEUE_RATING_SOURCES,fileReady );
+		menu->Enable( MP_CLEAN_UP_SOURCES,		fileReady );
+		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
+		menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
+		menu->Enable( MP_SWAP_A4AF_TO_ANY_OTHER, 	fileReady );
+
+		int priority = file->IsAutoDownPriority() ?
+			PR_AUTO : file->GetDownPriority();
+		
+		priomenu->Check( MP_PRIOHIGH,	priority == PR_HIGH );
+		priomenu->Check( MP_PRIONORMAL, priority == PR_NORMAL );
+		priomenu->Check( MP_PRIOLOW,	priority == PR_LOW );
+		priomenu->Check( MP_PRIOAUTO,	priority == PR_AUTO );
+
+		menu->Enable( MP_MENU_PRIO, fileReady2 );
+		menu->Enable( MP_MENU_EXTD, fileReady2 );
+	
+		PopupMenu(m_menu, evt.GetPoint());
+
 	} else {
-		if ( m_menu == NULL ) {
-			m_menu = new wxMenu(wxT("Clients"));
-			m_menu->Append(MP_DETAIL, _("Show &Details"));
-			m_menu->Append(MP_ADDFRIEND, _("Add to Friends"));
-			m_menu->Append(MP_SHOWLIST, _("View Files"));
-			m_menu->Append(MP_SENDMESSAGE, _("Send message"));
-			m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));
-			
-			// Only enable the Swap option for A4AF sources
-			m_menu->Enable(MP_CHANGE2FILE, ( item->type == A4AF_SOURCE ) );
+		
+		m_menu = new wxMenu(wxT("Clients"));
+		m_menu->Append(MP_DETAIL, _("Show &Details"));
+		m_menu->Append(MP_ADDFRIEND, _("Add to Friends"));
+		m_menu->Append(MP_SHOWLIST, _("View Files"));
+		m_menu->Append(MP_SENDMESSAGE, _("Send message"));
+		m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));
+		
+		// Only enable the Swap option for A4AF sources
+		m_menu->Enable(MP_CHANGE2FILE, ( item->type == A4AF_SOURCE ) );
 
-			PopupMenu(m_menu, evt.GetPoint());
-
-			delete m_menu;
-			
-			m_menu = NULL;
-		}
+		PopupMenu(m_menu, evt.GetPoint());
+					
 	}
+	
+	delete m_menu;
+	m_menu = NULL;
+	
 }
 
 

@@ -1980,6 +1980,14 @@ void CamuleApp::StopKad()
 	}
 }
 
+void CamuleApp::DisconnectED2K()
+{
+	// Stop Kad if it's running
+	if (IsConnectedED2K()) {
+		serverconnect->Disconnect();
+	}
+}
+
 bool CamuleApp::CryptoAvailable() const
 {
 	return clientcredits && clientcredits->CryptoAvailable();
