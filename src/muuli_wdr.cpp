@@ -3258,11 +3258,11 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxStaticText *item5 = new wxStaticText( parent, ID_TEXT, _("Nodes (0)"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->SetName( wxT("nodesListLabel") );
-    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
+    item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_NODESLISTURL, _("http://download.overnet2000.de/nodes.dat"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item6->SetToolTip( _("Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes.") );
-    item3->Add( item6, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
+    item3->Add( item6, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 
     item2->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
