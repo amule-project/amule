@@ -510,6 +510,12 @@ void CamuleRemoteGuiApp::StopKad() {
 	connect->StopKad();
 }
 
+void CamuleRemoteGuiApp::DisconnectED2K() {
+	if (IsConnectedED2K()) {
+		connect->DisconnectED2K();
+	}
+}
+
 uint32 CamuleRemoteGuiApp::GetED2KID() const {
 	return serverconnect ? serverconnect->GetClientID() : 0;
 }

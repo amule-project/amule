@@ -202,6 +202,8 @@ public:
 	void StartKad();
 	void StopKad();
 
+	void DisconnectED2K();
+	
 	bool CryptoAvailable() const;
 	
 protected:
