@@ -513,6 +513,13 @@ case "$WXBASE24FOUND" in
 	;;
 esac
 
+# For proper compilation flags
+if test x"WX_CXXFLAGS" = x""; then
+	WX_LIBS="$(WXBASE_LIBS)"
+	WX_CXXFLAGS="$(WXBASE_CXXFLAGS)"
+	WX_CFLAGS="$(WXBASE_CFLAGS)"
+fi
+
 # Optimization
 if test x"$USE_OPTIMISE" = x"yes" -a x"$USE_OPTIMIZE" = x; then
 	USE_OPTIMIZE=yes
