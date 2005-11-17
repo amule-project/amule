@@ -162,11 +162,16 @@ private:
 		bool operator==( const rangeObject& other ) const {
 			return AccessLevel == other.AccessLevel;
 		}
+
+// Since descriptions are only used for debugging messages, there 
+// is no need to keep them in memory when running a non-debug build.
+#if __DEBUG__
+		//! Contains the user-description of the range.
+		wxString	Description;
+#endif
 		
 		//! The AccessLevel for this filter.
 		uint8		AccessLevel;
-		//! Contains the user-description of the range.
-		wxString	Description;
 	};
 
 	

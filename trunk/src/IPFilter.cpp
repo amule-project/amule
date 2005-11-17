@@ -108,7 +108,9 @@ bool CIPFilter::AddIPRange(uint32 IPStart, uint32 IPEnd, uint16 AccessLevel, con
 		if (IPStart <= IPEnd) {
 			rangeObject item;
 			item.AccessLevel = AccessLevel;
+#if __DEBUG__
 			item.Description = Description;
+#endif
 
 			m_iplist.insert(IPStart, IPEnd, item);
 
@@ -281,7 +283,11 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 
 		if (it != m_iplist.end()) {
 			if (it->AccessLevel < thePrefs::GetIPFilterLevel()) {
-				AddDebugLogLineM(false, logIPFilter, wxT("Filtered IP: ") + Uint32toStringIP(IPTest) + wxT(" (") + it->Description + wxT(")"));
+#if __DEBUG__
+				AddDebugLogLineM(false, logIPFilter, wxString(wxT("Filtered IP (AccLvl: ")) << (long)it->AccessLevel << wxT("): ")
+						<< Uint32toStringIP(IPTest) << wxT(" (") << it->Description + wxT(")"));
+#endif
+				
 				if (isServer) {
 					theStats::AddFilteredServer();
 				} else {
@@ -334,3 +340,4 @@ void CIPFilter::DownloadFinished(uint32 result)
 		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
+
