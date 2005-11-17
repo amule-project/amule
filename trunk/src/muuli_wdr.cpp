@@ -1809,7 +1809,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item5->Add( item16, 0, wxALIGN_CENTER, 5 );
 
-    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
     wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Line Capacities") );
     wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
@@ -1846,120 +1846,127 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
         wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item4->Add( item19, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item4->Add( item19, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
     item0->Add( item4, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
     wxBoxSizer *item30 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Client TCP Port:") );
+    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Standard client TCP Port:") );
     wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxVERTICAL );
 
     wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65531, 4662 );
-    item31->Add( item33, 0, wxALIGN_CENTER|wxALL, 5 );
+    item33->SetToolTip( _("This is the standard ED2K port and cannot be disabled.") );
+    item31->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item34 = new wxStaticText( parent, ID_TEXT_CLIENT_UDP_PORT, _("Client UDP port: 4665"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item30->Add( item31, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxTOP, 5 );
 
-    item30->Add( item31, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxStaticBox *item35 = new wxStaticBox( parent, -1, _("Extended client UDP Port:") );
+    wxStaticBoxSizer *item34 = new wxStaticBoxSizer( item35, wxHORIZONTAL );
 
-    wxStaticBox *item36 = new wxStaticBox( parent, -1, _("eMule extended UDP Port:") );
-    wxStaticBoxSizer *item35 = new wxStaticBoxSizer( item36, wxHORIZONTAL );
+    wxSpinCtrl *item36 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
+    item36->SetToolTip( _("This UDP port is used for extended Ed2K requests and Kad network") );
+    item34->Add( item36, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item37 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
-    item35->Add( item37, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item37 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item34->Add( item37, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
-    wxCheckBox *item38 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item35->Add( item38, 0, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 5 );
-
-    item30->Add( item35, 1, wxGROW|wxALIGN_RIGHT|wxALL, 5 );
+    item30->Add( item34, 1, wxGROW|wxALIGN_RIGHT|wxRIGHT|wxTOP, 5 );
 
     item0->Add( item30, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
-    wxBoxSizer *item39 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item39 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item38 = new wxStaticBoxSizer( item39, wxVERTICAL );
 
-    wxStaticBox *item41 = new wxStaticBox( parent, -1, _("Max Sources per File") );
-    wxStaticBoxSizer *item40 = new wxStaticBoxSizer( item41, wxVERTICAL );
+    wxStaticText *item40 = new wxStaticText( parent, ID_TEXT_CLIENT_UDP_PORT, _("UDP port for extended server requests (TCP+3): 4665"), wxDefaultPosition, wxDefaultSize, 0 );
+    item38->Add( item40, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxBoxSizer *item42 = new wxBoxSizer( wxHORIZONTAL );
+    item0->Add( item38, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item43 = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer *item41 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item44 = new wxStaticText( parent, IDC_MAXSRCHARD_LBL, _("Hard Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item43->Add( item44, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item43 = new wxStaticBox( parent, -1, _("Max Sources per File") );
+    wxStaticBoxSizer *item42 = new wxStaticBoxSizer( item43, wxVERTICAL );
 
-    wxSpinCtrl *item45 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
-    item43->Add( item45, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item44 = new wxBoxSizer( wxHORIZONTAL );
 
-    item42->Add( item43, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxBoxSizer *item45 = new wxBoxSizer( wxVERTICAL );
 
-    item40->Add( item42, 0, wxALIGN_CENTER, 0 );
+    wxStaticText *item46 = new wxStaticText( parent, IDC_MAXSRCHARD_LBL, _("Hard Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+    item45->Add( item46, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item39->Add( item40, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item47 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
+    item45->Add( item47, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item47 = new wxStaticBox( parent, -1, _("Connection Limits") );
-    wxStaticBoxSizer *item46 = new wxStaticBoxSizer( item47, wxVERTICAL );
+    item44->Add( item45, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxBoxSizer *item48 = new wxBoxSizer( wxHORIZONTAL );
+    item42->Add( item44, 0, wxALIGN_CENTER, 0 );
 
-    wxBoxSizer *item49 = new wxBoxSizer( wxVERTICAL );
+    item41->Add( item42, 1, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticText *item50 = new wxStaticText( parent, IDC_MAXCONLABEL, _("Max Connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item49->Add( item50, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item49 = new wxStaticBox( parent, -1, _("Connection Limits") );
+    wxStaticBoxSizer *item48 = new wxStaticBoxSizer( item49, wxVERTICAL );
 
-    wxSpinCtrl *item51 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 25, 7500, 500 );
-    item49->Add( item51, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item50 = new wxBoxSizer( wxHORIZONTAL );
 
-    item48->Add( item49, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxBoxSizer *item51 = new wxBoxSizer( wxVERTICAL );
 
-    item46->Add( item48, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item52 = new wxStaticText( parent, IDC_MAXCONLABEL, _("Max Connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item51->Add( item52, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item39->Add( item46, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxSpinCtrl *item53 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 25, 7500, 500 );
+    item51->Add( item53, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item39, 0, wxADJUST_MINSIZE|wxGROW, 5 );
+    item50->Add( item51, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    wxStaticBox *item53 = new wxStaticBox( parent, -1, _("Networks") );
-    wxStaticBoxSizer *item52 = new wxStaticBoxSizer( item53, wxVERTICAL );
+    item48->Add( item50, 0, wxALIGN_CENTER, 5 );
 
-    wxFlexGridSizer *item54 = new wxFlexGridSizer( 1, 0, 0, 0 );
-    item54->AddGrowableCol( 0 );
-    item54->AddGrowableCol( 1 );
-    item54->AddGrowableCol( 2 );
-    item54->AddGrowableCol( 3 );
-    item54->AddGrowableCol( 4 );
-    item54->AddGrowableCol( 5 );
-    item54->AddGrowableCol( 6 );
+    item41->Add( item48, 1, wxADJUST_MINSIZE|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxCheckBox *item55 = new wxCheckBox( parent, IDC_NETWORKED2K, _("ED2K"), wxDefaultPosition, wxDefaultSize, 0 );
-    item55->SetValue( TRUE );
-    item54->Add( item55, 0, wxALIGN_CENTER|wxLEFT, 40 );
+    item0->Add( item41, 0, wxADJUST_MINSIZE|wxGROW, 5 );
 
-    wxStaticLine *item56 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item54->Add( item56, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
+    wxStaticBox *item55 = new wxStaticBox( parent, -1, _("Networks") );
+    wxStaticBoxSizer *item54 = new wxStaticBoxSizer( item55, wxVERTICAL );
 
-    wxCheckBox *item57 = new wxCheckBox( parent, IDC_NETWORKKAD, _("Kademlia"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxFlexGridSizer *item56 = new wxFlexGridSizer( 1, 0, 0, 0 );
+    item56->AddGrowableCol( 0 );
+    item56->AddGrowableCol( 1 );
+    item56->AddGrowableCol( 2 );
+    item56->AddGrowableCol( 3 );
+    item56->AddGrowableCol( 4 );
+    item56->AddGrowableCol( 5 );
+    item56->AddGrowableCol( 6 );
+
+    wxCheckBox *item57 = new wxCheckBox( parent, IDC_NETWORKED2K, _("ED2K"), wxDefaultPosition, wxDefaultSize, 0 );
     item57->SetValue( TRUE );
-    item54->Add( item57, 0, wxALIGN_CENTER|wxRIGHT, 15 );
+    item56->Add( item57, 0, wxALIGN_CENTER|wxLEFT, 40 );
 
-    item52->Add( item54, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticLine *item58 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item56->Add( item58, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
 
-    item0->Add( item52, 0, wxADJUST_MINSIZE|wxGROW|wxLEFT|wxRIGHT, 5 );
+    wxCheckBox *item59 = new wxCheckBox( parent, IDC_NETWORKKAD, _("Kademlia"), wxDefaultPosition, wxDefaultSize, 0 );
+    item59->SetValue( TRUE );
+    item56->Add( item59, 0, wxALIGN_CENTER|wxRIGHT, 15 );
 
-    wxStaticBox *item59 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item58 = new wxStaticBoxSizer( item59, wxVERTICAL );
+    item54->Add( item56, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item60 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item58->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    item0->Add( item54, 0, wxADJUST_MINSIZE|wxGROW|wxLEFT|wxRIGHT, 5 );
 
-    wxCheckBox *item61 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
-    item61->SetValue( TRUE );
-    item58->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    wxStaticBox *item61 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item60 = new wxStaticBoxSizer( item61, wxVERTICAL );
 
-    wxCheckBox *item62 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
-    item62->SetValue( TRUE );
-    item58->Add( item62, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item62 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item60->Add( item62, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    item0->Add( item58, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    wxCheckBox *item63 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
+    item63->SetValue( TRUE );
+    item60->Add( item63, 0, wxALIGN_CENTER_VERTICAL, 10 );
+
+    wxCheckBox *item64 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    item64->SetValue( TRUE );
+    item60->Add( item64, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item60, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
