@@ -33,7 +33,7 @@
 #ifndef __EXTERNALCONNECTOR_H__
 #define __EXTERNALCONNECTOR_H__
 
-#include <wx/app.h>		// For wxApp and mainly, for wxUSE_GUI
+#include <wx/app.h>		// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
 #include <wx/intl.h>		// For wxLocale
 #include <wx/string.h>		// For wxString
@@ -120,7 +120,6 @@ public:
 	//
 	// Virtual functions
 	//
-	virtual void LocalShow(const wxString &) {};
 	virtual void Pre_Shell() {}
 	virtual void Post_Shell() {}
 	virtual int ProcessCommand(int) { return -1; }
@@ -137,7 +136,6 @@ public:
 	// 
 	void Show(const wxString &s);
 	void DebugShow(const wxString &s) { if (m_Verbose) Show(s); }
-	void MainThreadIdleNow();
 	const wxString& GetCmdArgs() const { return m_cmdargs; }
 	const wxString& GetLastCmdStr() const { return m_lastcmdstr; }
 	int GetIDFromString(const wxString& buffer) { return m_commands.FindCommandId(buffer, m_cmdargs, m_lastcmdstr); }
@@ -168,7 +166,7 @@ protected:
 private:
 	wxString	m_cmdargs;
 	wxString	m_lastcmdstr;
-	CRemoteConnect* 	m_ECClient;
+	CRemoteConnect*	m_ECClient;
 	char *		m_InputLine;
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
