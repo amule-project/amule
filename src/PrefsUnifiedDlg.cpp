@@ -592,7 +592,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if (thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
-		theApp.serverconnect->Disconnect();
+		theApp.DisconnectED2K();
 	}
 	
 	if (thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
