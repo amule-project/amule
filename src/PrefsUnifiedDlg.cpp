@@ -591,6 +591,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
+	if (thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
+		theApp.serverconnect->Disconnect();
+	}
+	
+	if (thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
+		theApp.StopKad();
+	}	
+	
 	ClosePreferences();
 }
 
