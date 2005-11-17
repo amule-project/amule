@@ -232,18 +232,7 @@ void CaMuleExternalConnector::OnInitCommandSet()
 void CaMuleExternalConnector::Show(const wxString &s)
 {
 	if( !m_KeepQuiet ) {
-#if wxUSE_GUI
-		if ( wxThread::IsMain() ) {
-			LocalShow(s);
-		} else {
-			// Print it later
-			wxMutexLocker lock(m_mutex_printlist);
-			m_printlist.push_back(s);
-			//wxWakeUpIdle();
-		}
-#else
 		printf("%s", (const char *)unicode2char(s));
-#endif
 	}
 }
 
@@ -257,18 +246,6 @@ void CaMuleExternalConnector::ShowGreet()
 	// Do not merge the line below, or translators could translate "Help"
 	Show(CFormat(_("\nUse '%s' for command list\n\n")) % wxT("Help"));
 }
-
-#if wxUSE_GUI
-void CaMuleExternalConnector::MainThreadIdleNow()
-{
-	wxMutexLocker lock(m_mutex_printlist);
-	for( StrList::iterator i = m_printlist.begin(); i != m_printlist.end(); ++i)
-	{
-		LocalShow(*i);
-	}
-	m_printlist.clear();
-}
-#endif
 
 void CaMuleExternalConnector::Process_Answer(const wxString& answer)
 {
@@ -329,11 +306,6 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, size_t buffer_size)
 {
 	if( !m_KeepQuiet ) {
-#if wxUSE_GUI
-		const wxCharBuffer buf = unicode2char(
-			wxGetTextFromUser(prompt, wxT("Enter Command")));
-		const char *text = (const char *)buf;
-#else
 #ifdef HAVE_LIBREADLINE
 		if (m_InputLine) {
 			free(m_InputLine);
@@ -350,7 +322,6 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 		fgets(buffer, buffer_size, stdin);
 		const char *text = buffer;
 #endif /* HAVE_LIBREADLINE */
-#endif /* wxUSE_GUI */
 		if ( text ) {
 			size_t len = strlen(text);
 			if (len > buffer_size - 2) {
@@ -411,21 +382,6 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 	// HostName, Port and Password
 	if ( m_password.IsEmpty() ) {
 		wxString pass_plain;
-#if wxUSE_GUI
-		m_host = wxGetTextFromUser(
-			_("Enter hostname or ip of the box running aMule"),
-			_("Enter Hostname"), wxT("localhost"));
-		wxString sPort = wxGetTextFromUser(
-			_("Enter port for aMule's External Connection"),
-			_("Enter Port"), wxT("4712"));
-		if (!sPort.ToLong(&m_port)) {
-			// invalid input, use default
-			m_port = 4712;
-		}
-		pass_plain = ::wxGetPasswordFromUser(
-			_("Enter password for mule connection"),
-			_("Enter Password"));
-#else  // wxUse_GUI
 		#ifndef __WXMSW__
 			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
 		#else
@@ -437,7 +393,6 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			temp_str[strlen(temp_str)-1] = '\0';
 			pass_plain = char2unicode(temp_str);
 		#endif
-#endif // wxUse_GUI
 		m_password.Decode(MD5Sum(pass_plain).GetHash());
 		// MD5 hash for an empty string, according to rfc1321.
 		if (m_password == CMD4Hash(wxT("D41D8CD98F00B204E9800998ECF8427E"))) {
@@ -470,9 +425,6 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			if (m_ECClient->IsConnected()) {
 				ShowGreet();
 				Pre_Shell();
-#if wxUSE_GUI
-				// Do nothing, the shell is in another place.
-#else
 				if (m_KeepQuiet) {
 					while(true) {
 						#ifndef __WXMSW__
@@ -485,15 +437,10 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 					TextShell(ProgName);
 				}
 				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
-#endif
 				Post_Shell();
 			}
 		}
-#if wxUSE_GUI
-		// Destroy will be called elsewhere in gui.
-#else
 		m_ECClient->Destroy();
-#endif
 	} else {
 		Show(_("Cannot connect with an empty password.\nYou must specify a password either in config file\nor on command-line, or enter one when asked.\n\nExiting...\n"));
 	}
