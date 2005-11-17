@@ -271,22 +271,27 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					delete reply_all;
 				}
 			} else {
-				CMD4Hash hash(args);
-				if (!hash.IsEmpty()) {
-					switch(CmdId) {
-						case CMD_ID_PAUSE:
-							request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
-						case CMD_ID_CANCEL:
-							request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
-						case CMD_ID_RESUME:
-							request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
-						default: wxASSERT(0);
+				if (args.Length() == MD4HASH_LENGTH*2) {
+					CMD4Hash hash(args);
+					if (!hash.IsEmpty()) {
+						switch(CmdId) {
+							case CMD_ID_PAUSE:
+								request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
+							case CMD_ID_CANCEL:
+								request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
+							case CMD_ID_RESUME:
+								request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
+							default: wxASSERT(0);
+						}
+						request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
+						request_list.push_back(request);
+					} else {
+						Show(_("Not a valid number\n"));
+						return 0;
 					}
-					request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
-					request_list.push_back(request);
 				} else {
-					Show(_("Not a valid number\n"));
-					return 0;
+						Show(_("Not a valid hash (length should be exactly 32 chars)\n"));
+						return 0;					
 				}
 			}
 			break;
