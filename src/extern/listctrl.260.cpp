@@ -2678,7 +2678,18 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				if (HasFlag(wxLC_OWNERDRAW)) {
 					((wxGenericListCtrl*)m_parent)->OnDrawItem( line, &dbDC, rect, highl, IsHighlighted(line) );	
 				} else {
-					GetLine(line)->DrawInReportMode( &dbDC, rect, highl, IsHighlighted(line));
+					wxListLineData* lineData = GetLine(line);
+					wxListItemAttr* lineAttr = lineData->GetAttr();
+					bool isHighL = IsHighlighted(line);
+					
+					// Background is only cleared automatically if the item is high-lighted or a bg-color is set
+					if (!isHighL and !(lineAttr and lineAttr->HasBackgroundColour())) {
+						dbDC.SetBrush(wxBrush(GetBackgroundColour()));
+						dbDC.SetPen(wxPen(GetBackgroundColour()));
+						dbDC.DrawRectangle(highl.x, highl.y, highl.width, highl.height);
+					}
+
+					lineData->DrawInReportMode(&dbDC, rect, highl, isHighL);
 				}
 
 				dc.Blit(rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0);		
