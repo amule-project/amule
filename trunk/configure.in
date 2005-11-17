@@ -514,10 +514,16 @@ case "$WXBASE24FOUND" in
 esac
 
 # For proper compilation flags
-if test x"WX_CXXFLAGS" = x""; then
-	WX_LIBS="$(WXBASE_LIBS)"
-	WX_CXXFLAGS="$(WXBASE_CXXFLAGS)"
-	WX_CFLAGS="$(WXBASE_CFLAGS)"
+if test x"$WX_CXXFLAGS" = x""; then
+	WX_LIBS="$WXBASE_LIBS"
+	WX_CXXFLAGS="$WXBASE_CXXFLAGS"
+	WX_CFLAGS="$WXBASE_CFLAGS"
+fi
+
+if test x"$WXBASE_CXXFLAGS" = x""; then
+	WXBASE_LIBS="$WX_LIBS"
+	WXBASE_CXXFLAGS="$WX_CXXFLAGS"
+	WXBASE_CFLAGS="$WX_CFLAGS"
 fi
 
 # Optimization
