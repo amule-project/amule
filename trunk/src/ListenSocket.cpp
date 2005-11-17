@@ -70,14 +70,24 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	}
 }
 
+
 CListenSocket::~CListenSocket()
 {
 	shutdown = true;
 	Discard();
 	Close();
 
+#ifdef __DEBUG__
+	// No new sockets should have been opened by now
+	SocketSet::iterator it = socket_list.begin();
+	for (; it != socket_list.end(); ) {
+		wxASSERT((*it)->OnDestroy());
+	}
+#endif
+
 	KillAllSockets();
 }
+
 
 bool CListenSocket::StartListening()
 {
@@ -132,6 +142,8 @@ void CListenSocket::OnAccept(int nErrorCode)
 			if (!AcceptWith(*newclient, false)) {
 				newclient->Safe_Delete();
 			} else {
+				wxASSERT(theApp.IsRunning());
+
 				#ifdef __DEBUG__
 				amuleIPV4Address addr;
 				newclient->GetPeer(addr);

@@ -1464,8 +1464,10 @@ void CamuleApp::ShutDown()
 
 	// Close sockets to avoid new clients coming in
 	if (listensocket) {
-		listensocket->StopListening();
+		listensocket->Close();
+		listensocket->KillAllSockets();	
 	}
+	
 	if (serverconnect) {
 		serverconnect->Disconnect();
 	}
