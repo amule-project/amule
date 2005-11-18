@@ -120,7 +120,6 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 	ReGetClientSoft();
 
 	if (checkfriend) {
-		CFriend* m_Friend;
 		if ((m_Friend = theApp.friendlist->FindFriend(CMD4Hash(), m_dwUserIP, m_nUserPort)) != NULL){
 			m_Friend->LinkClient(this);
 		} else{
