@@ -329,7 +329,7 @@ void CTransferWnd::OnNMRclickDLtab(wxMouseEvent& evt)
 	
 	// Avoid opening another menu when it's already open
 	if ( m_menu == NULL ) {  
-		wxMenu* m_menu = new wxMenu( _("Category") );
+		m_menu = new wxMenu( _("Category") );
 
 		if ( m_dlTab->GetSelection() == 0 ) {
 			wxMenu* catmenu = new wxMenu();
