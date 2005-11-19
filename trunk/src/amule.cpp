@@ -87,6 +87,7 @@
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
+#include "Timer.h"
 
 #ifndef AMULE_DAEMON
 	#include <wx/splash.h>			// Needed for wxSplashScreen
@@ -1255,7 +1256,7 @@ void CamuleApp::OnNotifyEvent(wxEvent& e)
 }
 
 
-void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
+void CamuleApp::OnTCPTimer(wxEvent& WXUNUSED(evt))
 {
 	if(!IsRunning()) {
 		return;
@@ -1268,7 +1269,7 @@ void CamuleApp::OnTCPTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS& WXUNUSED(evt))
+void CamuleApp::OnCoreTimer(wxEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 	static uint64	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
@@ -2000,7 +2001,6 @@ uint32 CamuleApp::GetED2KID() const {
 }
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)

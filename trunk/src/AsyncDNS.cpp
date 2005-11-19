@@ -25,15 +25,16 @@
 //
 
 #include "AsyncDNS.h"	// Interface declaration
-#include "amule.h"		// Needed for theApp
+
 #include "InternalEvents.h"	// Needed for wxEVT_*
 #include "NetworkFunctions.h" // Needed for StringHosttoUint32
 
-CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket) : wxThread(wxTHREAD_DETACHED)
+CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, wxEvtHandler* handler, void* socket) : wxThread(wxTHREAD_DETACHED)
 {
 	m_type = type;
 	m_ipName = ipName;
 	m_socket = socket;
+	m_handler = handler;
 }
 
 wxThread::ExitCode CAsyncDNS::Entry()
@@ -63,7 +64,7 @@ wxThread::ExitCode CAsyncDNS::Entry()
 		wxMuleInternalEvent evt(event_id);
 		evt.SetExtraLong(result);
 		evt.SetClientData(event_data);
-		wxPostEvent(&theApp,evt);
+		wxPostEvent(m_handler,evt);
 	}
 	
 	return NULL;

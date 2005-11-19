@@ -1561,4 +1561,3 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
 	Close();
 }
-

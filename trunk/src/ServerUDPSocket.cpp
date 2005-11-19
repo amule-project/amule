@@ -315,7 +315,7 @@ void CServerUDPSocket::SendQueue()
 		wxASSERT(item.ip xor !item.addr.IsEmpty());
 		if (!item.addr.IsEmpty()) {
 			// This not an ip but a hostname. Resolve it.
-			CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, this);
+			CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, &theApp, this);
 			if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
 				// Not much we can do here, just drop the packet.
 				m_queue.pop_front();

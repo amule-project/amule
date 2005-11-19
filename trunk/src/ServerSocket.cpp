@@ -586,7 +586,7 @@ void CServerSocket::ConnectToServer(CServer* server)
 	if (cur_server->HasDynIP() || !cur_server->GetIP()) {
 		m_IsSolving = true;
 		// Send it to solving thread.
-		CAsyncDNS* dns = new CAsyncDNS(server->GetAddress(), DNS_SERVER_CONNECT, this);
+		CAsyncDNS* dns = new CAsyncDNS(server->GetAddress(), DNS_SERVER_CONNECT, &theApp, this);
 	
 		if ( dns->Create() == wxTHREAD_NO_ERROR ) {
 			if ( dns->Run() != wxTHREAD_NO_ERROR ) {

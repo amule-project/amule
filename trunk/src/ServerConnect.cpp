@@ -352,8 +352,6 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender){
 			StopConnectionTry();
 			if ((thePrefs::Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
 				AddLogLineM(false, wxString::Format(_("Automatic connection to server will retry in %d seconds"), CS_RETRYCONNECTTIME)); 
-				
-				m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
 			break;
@@ -466,6 +464,7 @@ bool CServerConnect::Disconnect()
 
 
 CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address)
+: m_idRetryTimer(&theApp,TM_TCPSOCKET)
 {
 	connectedsocket = NULL;
 	used_list = in_serverlist;
@@ -477,7 +476,6 @@ CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &add
 
 	// initalize socket for udp packets
 	serverudpsocket = new CServerUDPSocket(address, thePrefs::GetProxyData());
-	m_idRetryTimer.SetOwner(&theApp,TM_TCPSOCKET);
 }
 
 

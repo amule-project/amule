@@ -22,12 +22,64 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA, 02111-1307, USA
 //
 
-#include <unistd.h>		// Needed for close(2) and sleep(3)
-
 #include "Timer.h"		// Interface declaration
-#include "amule.h"		// Needed for theApp
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "GetTickCount.h"	// Needed for GetTickCountFullRes
 
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
+
+//////////////////////// Timer Thread ////////////////////
+
+class CTimerThread : public wxThread {
+	unsigned long m_period;
+	bool m_oneShot;
+	wxEvtHandler *m_owner;
+	int m_id;
+	
+	void *Entry();
+
+	public:
+	CTimerThread(wxEvtHandler *owner, unsigned long period, bool oneShot, int id);
+};
+
+
+CTimerThread::CTimerThread(wxEvtHandler *owner,
+	unsigned long period, bool oneShot, int id) : wxThread(wxTHREAD_JOINABLE)
+{
+	m_owner = owner;
+	m_period = period;
+	m_oneShot = oneShot;
+	m_id = id;
+	if ( Create() != wxTHREAD_NO_ERROR ) {
+		printf("CTimer::CTimerThread: create failed\n");
+	}
+}
+
+void* CTimerThread::Entry()
+{
+	static uint64 prev_tick;
+	static uint64 code_exec_time;
+	static wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
+	
+	if ( m_oneShot ) {
+		Sleep(m_period);
+		wxPostEvent(m_owner, evt);
+	} else {
+		while ( !TestDestroy() ) {
+			Sleep(m_period-code_exec_time);
+			prev_tick = GetTickCountFullRes();
+			if ( m_id != -1 ) {
+				// Oh?
+			}
+			wxPostEvent(m_owner, evt);
+			code_exec_time = (GetTickCountFullRes() - prev_tick);
+		}
+	}
+	return 0;
+}
+
+
+////////////////////// CTimer ////////////////////////
 
 CTimer::~CTimer()
 {
@@ -36,11 +88,8 @@ CTimer::~CTimer()
 
 CTimer::CTimer(wxEvtHandler *owner, int id)
 {
-	if ( owner ) {
-		SetOwner(owner, id);
-	} else {
-		SetOwner(&theApp, id);
-	}
+	wxASSERT(owner);
+	SetOwner(owner, id);
 	thread = 0;
 }
 
@@ -73,34 +122,3 @@ void CTimer::Stop()
 		thread = 0;
 	}
 }
-
-CTimer::CTimerThread::CTimerThread(wxEvtHandler *owner,
-	unsigned long period, bool oneShot, int id) : wxThread(wxTHREAD_JOINABLE)
-{
-	m_owner = owner;
-	m_period = period;
-	m_oneShot = oneShot;
-	m_id = id;
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("CTimer::CTimerThread: create failed\n");
-	}
-}
-
-void *CTimer::CTimerThread::Entry()
-{
-	if ( m_oneShot ) {
-		Sleep(m_period);
-		wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
-		wxPostEvent(m_owner, evt);
-	} else {
-		while ( !TestDestroy() ) {
-			Sleep(m_period);
-			wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
-			if ( m_id != -1 ) {
-			}
-			wxPostEvent(m_owner, evt);
-		}
-	}
-	return 0;
-}
-

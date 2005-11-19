@@ -31,7 +31,6 @@
 #include <wx/intl.h>		// Needed for wxLocale
 #include <wx/string.h>		// Needed for wxString
 
-#include "Timer.h"		// Needed for AMULE_TIMER_CLASS and AMULE_TIMER_EVENT_CLASS
 #include "Types.h"		// Needed for int32, uint16 and uint64
 #include "GuiEvents.h"		// Needed for GUIEvent
 
@@ -72,6 +71,8 @@ class wxCommandEvent;
 class wxFFileOutputStream;
 class wxFile;
 class CUpDownClient;
+class CTimer;
+class wxTimerEvent;
 
 #define theApp wxGetApp()
 
@@ -231,9 +232,9 @@ protected:
 	void OnSourceDnsDone(wxEvent& evt);
 	void OnServerDnsDone(wxEvent& evt);
 
-	void OnTCPTimer(AMULE_TIMER_EVENT_CLASS& evt);
+	void OnTCPTimer(wxEvent& evt);
 
-	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
+	void OnCoreTimer(wxEvent& evt);
 
 	void OnFinishedHashing(wxEvent& evt);
 	void OnFinishedCompletion(wxEvent& evt);
@@ -272,7 +273,7 @@ protected:
 	bool enable_daemon_fork;
 	wxString server_msg;
 
-	AMULE_TIMER_CLASS* core_timer;
+	CTimer* core_timer;
 
 private:
 	virtual void OnUnhandledException();

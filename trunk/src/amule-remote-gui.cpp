@@ -50,6 +50,7 @@ using std::auto_ptr;
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
 #include <wx/checkbox.h>
 #include <wx/fileconf.h>		// Needed for wxFileConfig
+#include <wx/timer.h>			// Needed for wxTimer
 
 #include <common/StringFunctions.h>
 #include <common/Format.h>
@@ -128,7 +129,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
-	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnCoreTimer)
+	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnPollTimer)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 
@@ -140,9 +141,9 @@ IMPLEMENT_APP(CamuleRemoteGuiApp)
 
 int CamuleRemoteGuiApp::OnExit()
 {
-	if (core_timer) {
+	if (poll_timer) {
 		// Stop the Core Timer
-		delete core_timer;
+		delete poll_timer;
 	}
 	if (amuledlg) {
 		amuledlg->StopGuiTimer();
@@ -150,7 +151,7 @@ int CamuleRemoteGuiApp::OnExit()
 	return wxApp::OnExit();
 }
 
-void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
+void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
 	if ( connect->Busy() ) {
 		return;
@@ -162,7 +163,7 @@ void CamuleRemoteGuiApp::OnCoreTimer(AMULE_TIMER_EVENT_CLASS&)
 		CECPacket stats_req(EC_OP_STAT_REQ);
 		auto_ptr<const CECPacket> stats(connect->SendRecvPacket(&stats_req));
 		if ( !stats.get() ) {
-			core_timer->Stop();
+			poll_timer->Stop();
 			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
 				_("Error: connection lost"), wxICON_ERROR);
 			ExitMainLoop();
@@ -220,10 +221,10 @@ bool CamuleRemoteGuiApp::OnInit()
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
 
-	// Create the Core timer
-	core_timer = new wxTimer(this,ID_CORETIMER);
-	if (!core_timer) {
-		printf("Fatal Error: Failed to create Core Timer");
+	// Create the polling timer
+	poll_timer = new wxTimer(this,ID_CORETIMER);
+	if (!poll_timer) {
+		printf("Fatal Error: Failed to create Poll Timer");
 		OnExit();
 	}
 
@@ -343,8 +344,8 @@ void CamuleRemoteGuiApp::Startup() {
 	serverlist->ReloadControl();
 	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 
-	// Start the Core Timer
-	core_timer->Start(1000);	
+	// Start the Poll Timer
+	poll_timer->Start(1000);	
 
 	amuledlg->StartGuiTimer();
 	
@@ -1501,7 +1502,6 @@ bool CPartFile::SavePartFile(bool)
 // since gui is not linked with amule.cpp - define events here
 //
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)

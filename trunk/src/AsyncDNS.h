@@ -33,6 +33,8 @@
 // Implementation of Asynchronous dns resolving using wxThread 
 //	 and internal wxIPV4address handling of dns
 
+class wxEvtHandler;
+
 enum DnsSolveType {
 	DNS_UDP,
 	DNS_SOURCE,
@@ -42,13 +44,14 @@ enum DnsSolveType {
 class CAsyncDNS : public wxThread
 {
 public:
-	CAsyncDNS(const wxString& ipName, DnsSolveType type, void* socket = NULL);
+	CAsyncDNS(const wxString& ipName, DnsSolveType type, wxEvtHandler* handler, void* socket = NULL);
 	virtual ExitCode Entry();
 
 private:
 	DnsSolveType m_type;
 	wxString m_ipName;
 	void* m_socket;
+	wxEvtHandler* m_handler;
 };
 
 #endif // ASYNCDNS_H
