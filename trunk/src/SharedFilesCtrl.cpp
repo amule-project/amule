@@ -497,7 +497,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 	const int SPARE_PIXELS_HORZ	= 4;
 
 	// Offset based on the height of the fonts
-	const int textVOffset = ( rect.GetHeight() - GetFont().GetPointSize() ) / 2;
+	const int textVOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
 
 	columnRect.SetLeft( columnRect.GetLeft() + SPARE_PIXELS_HORZ );
 	columnRect.SetWidth( columnRect.GetWidth()-2*SPARE_PIXELS_HORZ);
