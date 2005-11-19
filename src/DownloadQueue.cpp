@@ -1146,7 +1146,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 		if (ip) {
 			OnHostnameResolved(ip);
 		} else {
-			CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE);
+			CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE, &theApp);
 
 			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 				dns->Delete();
@@ -1188,7 +1188,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		if (ip) {
 			OnHostnameResolved(ip);
 		} else {
-			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE);
+			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE, &theApp);
 
 			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 				dns->Delete();

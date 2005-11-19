@@ -53,7 +53,9 @@ class CPartFile;
 class CUpDownClient;
 class CStatistics;
 class wxEvtHandler;
-
+class wxTimer;
+class wxTimerEvent;
+	
 #include <wx/dialog.h>
 
 class CEConnectDlg : public wxDialog {
@@ -551,7 +553,7 @@ class CListenSocketRem {
 };
 
 class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
-	AMULE_TIMER_CLASS* core_timer;
+	wxTimer* poll_timer;
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -559,7 +561,7 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 
 	int OnExit();
 
-	void OnCoreTimer(AMULE_TIMER_EVENT_CLASS& evt);
+	void OnPollTimer(wxTimerEvent& evt);
 	
 	void OnECConnection(wxEvent& event);
 

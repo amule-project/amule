@@ -25,32 +25,18 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#ifdef AMULE_DAEMON
-
-#define AMULE_TIMER_CLASS CTimer
-#define AMULE_TIMER_EVENT_CLASS wxEvent
-
 class wxEvtHandler;
+class CTimerThread;
 
 #include <wx/thread.h>
 
 /**
- * Replacement for wxTimer on non-X builds
+ * Replacement for wxTimer as it doesn't work on non-X builds
  */
 class CTimer {
 	wxEvtHandler *owner;
 	int id;
-	class CTimerThread : public wxThread {
-		unsigned long m_period;
-		bool m_oneShot;
-		wxEvtHandler *m_owner;
-		int m_id;
-		
-		void *Entry();
 
-		public:
-		CTimerThread(wxEvtHandler *owner, unsigned long period, bool oneShot, int id);
-	};
 	CTimerThread *thread;
 
 	public:
@@ -61,14 +47,5 @@ class CTimer {
 	bool IsRunning() const;
 	void Stop();
 };
-
-#else /* ! amuled */
-
-#define AMULE_TIMER_CLASS wxTimer
-#define AMULE_TIMER_EVENT_CLASS wxTimerEvent
-
-#include <wx/timer.h>
-
-#endif /* amuled / ! amuled */
 
 #endif /* TIMER_H */

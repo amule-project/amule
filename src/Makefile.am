@@ -34,8 +34,16 @@ DEFS = -DHAVE_CONFIG_H
 
 noinst_LIBRARIES = \
 	libmuleappcommon.a \
-	libmuleappcore.a \
-	libmuleappgui.a
+	libmuleappcore.a
+
+if AMULE_GUI
+	noinst_LIBRARIES += libmuleappgui.a
+else
+if MONOLITHIC
+noinst_LIBRARIES += libmuleappgui.a
+endif
+endif
+
 
 # Common to core/gui/monolithic
 
@@ -51,6 +59,7 @@ libmuleappcommon_a_SOURCES = \
 	SafeFile.cpp \
 	SHA.cpp \
 	Tag.cpp \
+	Timer.cpp \
 	kademlia/utils/UInt128.cpp
 
 libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs

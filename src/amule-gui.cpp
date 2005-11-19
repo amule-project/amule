@@ -116,10 +116,10 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
-	EVT_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
 
 	// Core timer
-	EVT_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
 
 	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
 
@@ -339,7 +339,7 @@ bool CamuleGuiApp::OnInit()
 	}
 
 	// Create the Core timer
-	core_timer=new wxTimer(this,ID_CORETIMER);
+	core_timer = new CTimer(this,ID_CORETIMER);
 	if (!core_timer) {
 		printf("Fatal Error: Failed to create Core Timer");
 		OnExit();
