@@ -179,10 +179,10 @@ void CAddFileThread::Stop()
 		// Wait for all threads to die
 		while ( s_thread ) {
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
-			// By doing this we ensure that this function only returns
-			// once the thread has died.
-
 			MilliSleep(10);
+
+			// Flush any pending log-entries caused by the thread.
+			CLogger::FlushPendingEntries();
 		}
 
 #ifdef __WXGTK__
