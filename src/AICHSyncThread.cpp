@@ -105,11 +105,6 @@ bool CAICHSyncThread::Stop()
 		s_thread->Delete();
 	}
 
-	// We will be blocking the main thread, so we need to leave the
-	// gui mutex, so that events can still be processed while we are
-	// waiting.
-	wxMutexGuiLeave();
-
 	// Wait for all threads to die
 	while ( IsRunning() ) {
 		// Sleep for 1/100 of a second to avoid clobbering the mutex
@@ -118,11 +113,6 @@ bool CAICHSyncThread::Stop()
 
 		MilliSleep(10);
 	}
-
-#ifdef __WXGTK__
-	// Re-claim the GUI mutex.
-	wxMutexGuiEnter();
-#endif
 
 	return true;
 }
