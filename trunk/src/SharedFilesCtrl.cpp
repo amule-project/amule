@@ -119,7 +119,7 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 	long item_hit = CheckSelection(event);
 
 	if ( (m_menu == NULL) && (item_hit != -1)) {
-		wxMenu* m_menu = new wxMenu(_("Shared Files"));
+		m_menu = new wxMenu(_("Shared Files"));
 		wxMenu* prioMenu = new wxMenu();
 		prioMenu->Append(MP_PRIOVERYLOW, _("Very low"));
 		prioMenu->Append(MP_PRIOLOW, _("Low"));
