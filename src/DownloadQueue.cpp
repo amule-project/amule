@@ -1183,10 +1183,10 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		Hostname_Entry entry = m_toresolve.front();
 
 		// Check if it is a simple dot address
-		uint32 ip = StringIPtoUint32(entry.strHostname);
+		uint32 tmpIP = StringIPtoUint32(entry.strHostname);
 
-		if (ip) {
-			OnHostnameResolved(ip);
+		if (tmpIP) {
+			OnHostnameResolved(tmpIP);
 		} else {
 			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE, &theApp);
 

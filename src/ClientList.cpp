@@ -297,13 +297,13 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 		// Still nothing? Search for the IP
 		if ( client->GetIP() ) {
 			// Find all matching entries
-			std::pair<IDMap::iterator, IDMap::iterator> range = m_ipList.equal_range( client->GetIP() );
+			std::pair<IDMap::iterator, IDMap::iterator> iprange = m_ipList.equal_range( client->GetIP() );
 
-			IDMap::iterator it = range.first;
-			for ( ; it != range.second; it++ ) {
+			IDMap::iterator ipIt = iprange.first;
+			for ( ; ipIt != iprange.second; ipIt++ ) {
 				// Check if the port ( and server for lowids ) matches
-				if ( it->second->GetUserPort() == client->GetUserPort() ) {
-					return it->second;
+				if ( ipIt->second->GetUserPort() == client->GetUserPort() ) {
+					return ipIt->second;
 				}
 			}
 		}

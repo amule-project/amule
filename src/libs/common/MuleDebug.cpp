@@ -158,13 +158,13 @@ wxString get_backtrace(unsigned n)
 
 #if HAVE_BFD
 
-static bfd *abfd;
-static asymbol **symbol_list;
-static bool have_backtrace_symbols = false;
-static const char *file_name;
-static const char *function_name;
-static unsigned int line_number;
-static int found;
+static bfd* s_abfd;
+static asymbol** s_symbol_list;
+static bool s_have_backtrace_symbols = false;
+static const char* s_file_name;
+static const char* s_function_name;
+static unsigned int s_line_number;
+static int s_found;
 
 
 /*
@@ -214,28 +214,28 @@ static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
 void init_backtrace_info()
 {
 	bfd_init();
-	abfd = bfd_openr("/proc/self/exe", NULL);
+	s_abfd = bfd_openr("/proc/self/exe", NULL);
 
-	if (abfd == NULL) {
+	if (s_abfd == NULL) {
 		fprintf(stderr, "Error while opening file for backtrace symbols : %s", bfd_errmsg(bfd_get_error()));
 		return;
 	}
 
-	if (!(bfd_check_format_matches(abfd, bfd_object, NULL))) {
+	if (!(bfd_check_format_matches(s_abfd, bfd_object, NULL))) {
 		fprintf (stderr, "Error while init. backtrace symbols : %s" , bfd_errmsg (bfd_get_error ()));
-		bfd_close(abfd);
+		bfd_close(s_abfd);
 		return;
 	}
 
-	have_backtrace_symbols = (get_backtrace_symbols(abfd, &symbol_list) > 0); 
+	s_have_backtrace_symbols = (get_backtrace_symbols(s_abfd, &s_symbol_list) > 0); 
 }
 
 
 void get_file_line_info(bfd *abfd, asection *section, void* _address)
 {
-	wxASSERT(symbol_list);
+	wxASSERT(s_symbol_list);
 
-	if (found) {
+	if (s_found) {
 		return;
 	}
 
@@ -255,9 +255,9 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 		return;
 	}
 
-	found =  bfd_find_nearest_line(abfd, section, symbol_list,
+	s_found =  bfd_find_nearest_line(abfd, section, s_symbol_list,
 									address - vma,
-									&file_name, &function_name, &line_number);
+									&s_file_name, &s_function_name, &s_line_number);
 }
 
 #endif // HAVE_BFD
@@ -354,31 +354,31 @@ wxString get_backtrace(unsigned n)
 	bool hasLineNumberInfo = false;
 
 #if HAVE_BFD
-	if (!have_backtrace_symbols) {
+	if (!s_have_backtrace_symbols) {
 		init_backtrace_info();
-		wxASSERT(have_backtrace_symbols);
+		wxASSERT(s_have_backtrace_symbols);
 	}
 
 	for (int i = 0; i < num_entries; ++i) {
-		file_name = NULL;
-		function_name = NULL;
-		line_number = 0;
-		found = false ;
+		s_file_name = NULL;
+		s_function_name = NULL;
+		s_line_number = 0;
+		s_found = false ;
 
 		unsigned long addr;
 		address[i].ToULong(&addr,0); // As it's "0x" prepended, wx will read it as base 16. Hopefully.
 
-		bfd_map_over_sections(abfd, get_file_line_info, (void*)addr);
+		bfd_map_over_sections(s_abfd, get_file_line_info, (void*)addr);
 
-		if (found) {
-			wxString function = wxConvCurrent->cMB2WX(function_name);
+		if (s_found) {
+			wxString function = wxConvCurrent->cMB2WX(s_function_name);
 			wxString demangled = demangle(function);
 			if (!demangled.IsEmpty()) {
 				function = demangled;
 				funcname[i] = demangled;
 			}
-			out.Insert(wxConvCurrent->cMB2WX(function_name),i*2);
-			out.Insert(wxConvCurrent->cMB2WX(file_name) + wxString::Format(wxT(":%u"),line_number),i*2+1);
+			out.Insert(wxConvCurrent->cMB2WX(s_function_name),i*2);
+			out.Insert(wxConvCurrent->cMB2WX(s_file_name) + wxString::Format(wxT(":%u"), s_line_number),i*2+1);
 		} else {
 			out.Insert(wxT("??"),i*2);
 			out.Insert(wxT("??"),i*2+1);

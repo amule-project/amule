@@ -77,13 +77,13 @@ CPacket::CPacket(uint8 protocol)
 }
 
 // only used for receiving packets
-CPacket::CPacket(char* header)
+CPacket::CPacket(char* rawHeader)
 {
 	memset(head, 0, sizeof head);
-	Header_Struct* head = (Header_Struct*) header;
-	size 		= ENDIAN_SWAP_32(head->packetlength) - 1;
-	opcode		= head->command;
-	prot		= head->eDonkeyID;
+	Header_Struct* header = (Header_Struct*)rawHeader;
+	size 		= ENDIAN_SWAP_32(header->packetlength) - 1;
+	opcode		= header->command;
+	prot		= header->eDonkeyID;
 	m_bSplitted 	= false;
 	m_bLastSplitted = false;
 	m_bPacked 	= false;

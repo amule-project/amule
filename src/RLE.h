@@ -123,8 +123,8 @@ private:
 			//
 			// can't use memcpy - in case of generic class T this
 			// will rely on "operator []" implementation
-			for(int i = 0; i < m_len;i++) {
-				m_buff[i] = (i < srclen ) ? ((unsigned char)buff[i]) : 0;
+			for(int k = 0; k < m_len;k++) {
+				m_buff[k] = (k < srclen ) ? ((unsigned char)buff[k]) : 0;
 			}
 		}
 		

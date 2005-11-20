@@ -325,11 +325,11 @@ void CUpDownClient::CreateNextBlockPackage()
 }
 
 
-void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock)
+void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	uint32 nPacketSize;
 
-	CMemFile memfile((byte*)data,togo);
+	CMemFile memfile((byte*)buffer, togo);
 	if (togo > 10240) {
 		nPacketSize = togo/(uint32)(togo/10240);
 	} else {
@@ -361,14 +361,14 @@ void CUpDownClient::CreateStandartPackets(const byte* data,uint32 togo, Requeste
 }
 
 
-void CUpDownClient::CreatePackedPackets(const byte* data,uint32 togo, Requested_Block_Struct* currentblock)
+void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Requested_Block_Struct* currentblock)
 {
 	byte* output = new byte[togo+300];
 	uLongf newsize = togo+300;
-	uint16 result = compress2(output,&newsize,data,togo,9);
+	uint16 result = compress2(output, &newsize, buffer, togo,9);
 	if (result != Z_OK || togo <= newsize){
 		delete[] output;
-		CreateStandartPackets(data,togo,currentblock);
+		CreateStandartPackets(buffer, togo, currentblock);
 		return;
 	}
 	

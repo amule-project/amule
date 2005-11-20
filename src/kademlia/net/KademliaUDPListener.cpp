@@ -479,13 +479,13 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 	try {
 		for (uint16 i=0; i<numContacts; i++) {
 			CUInt128 id = bio.ReadUInt128();
-			uint32 ip = bio.ReadUInt32();
-			uint16 port = bio.ReadUInt16();
+			uint32 contactIP = bio.ReadUInt32();
+			uint16 contactPort = bio.ReadUInt16();
 			uint16 tport = bio.ReadUInt16();
 			byte type = bio.ReadUInt8();
-			if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
-				routingZone->add(id, ip, port, tport, type);
-				results->push_back(new CContact(id, ip, port, tport, target));
+			if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(contactIP),contactPort)) {
+				routingZone->add(id, contactIP, contactPort, tport, type);
+				results->push_back(new CContact(id, contactIP, contactPort, tport, target));
 			}
 		}
 	} catch(...) {

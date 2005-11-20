@@ -123,7 +123,7 @@ void CPartFile::Init()
 	kBpsDown = 0.0;
 	
 	hashsetneeded = true;
-	count = 0;
+	m_count = 0;
 	percentcompleted = 0;
 	completedsize=0;
 	m_bPreviewing = false;
@@ -1048,9 +1048,9 @@ void CPartFile::SaveSourceSeeds()
 	if (n_sources < 5) {
 		// Not enought downloading sources to fill the list, going to sources list	
 		if (GetSourceCount() > 0) {
-			SourceSet::reverse_iterator it = m_SrcList.rbegin();
-			for ( ; ((it != m_SrcList.rend()) && (n_sources<5)); ++it) {
-				CUpDownClient* cur_src = *it;
+			SourceSet::reverse_iterator rit = m_SrcList.rbegin();
+			for ( ; ((rit != m_SrcList.rend()) && (n_sources<5)); ++rit) {
+				CUpDownClient* cur_src = *rit;
 				if (cur_src->HasLowID()) {
 					continue;
 				} else {
@@ -1659,11 +1659,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		// calculate datarate, set limit etc.
 	}
 
-	++count;
+	++m_count;
 	
 	// Kry - does the 3 / 30 difference produce too much flickering or CPU?
-	if (count >= 30) {
-		count = 0;
+	if (m_count >= 30) {
+		m_count = 0;
 		UpdateAutoDownPriority();
 		UpdateDisplayedInfo();
 		if(m_bPercentUpdated == false) {
@@ -2068,8 +2068,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
 					// Criterion 4. Completion
 					uint32 partSize = PARTSIZE;
-					for(POSITION pos = gaplist.GetHeadPosition(); pos != NULL;) {
-						const Gap_Struct* cur_gap = gaplist.GetNext(pos);
+					for(POSITION gap_pos = gaplist.GetHeadPosition(); gap_pos != NULL;) {
+						const Gap_Struct* cur_gap = gaplist.GetNext(gap_pos);
 						// Check if Gap is into the limit
 						if(cur_gap->start < uStart) {
 							if(cur_gap->end > uStart && cur_gap->end < uEnd) {
@@ -2127,23 +2127,23 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 			// Select the next chunk to download
 			if(chunksList.IsEmpty() == FALSE) {
 				// Find and count the chunck(s) with the highest priority
-				uint16 count = 0; // Number of found chunks with same priority
+				uint16 chunkCount = 0; // Number of found chunks with same priority
 				uint16 rank = 0xffff; // Highest priority found
 
 				// Collect and calculate criteria for all chunks
 				for (POSITION pos = chunksList.GetHeadPosition(); pos != NULL; ) {
 					const Chunk& cur_chunk = chunksList.GetNext(pos);
 					if(cur_chunk.rank < rank) {
-						count = 1;
+						chunkCount = 1;
 						rank = cur_chunk.rank;
 					} else if(cur_chunk.rank == rank) {
-						++count;
+						++chunkCount;
 					}
 				}
 
 				// Use a random access to avoid that everybody tries to download the 
 				// same chunks at the same time (=> spread the selected chunk among clients)
-				uint16 randomness = 1 + (int) (((float)(count-1))*rand()/(RAND_MAX+1.0));
+				uint16 randomness = 1 + (int) (((float)(chunkCount-1))*rand()/(RAND_MAX+1.0));
 				for (POSITION pos = chunksList.GetHeadPosition(); ; ) {
 					POSITION cur_pos = pos;	
 					const Chunk& cur_chunk = chunksList.GetNext(pos);

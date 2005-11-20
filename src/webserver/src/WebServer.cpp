@@ -555,7 +555,7 @@ bool ServersInfo::ServersInfo::ReQuery()
 			_SpecialChars(tag->GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData());
 		Entry.sServerIP = tag->GetIPv4Data().StringIP(false);
 		Entry.nServerIP = tag->GetIPv4Data().IP();
-		Entry.nServerPort = tag->GetIPv4Data().port;
+		Entry.nServerPort = tag->GetIPv4Data().m_port;
 		Entry.nServerUsers =
 			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt32Data();
 		Entry.nServerMaxUsers =
@@ -1022,8 +1022,7 @@ void CProgressImage::CreateSpan()
 	}
 	//
 	// Now line rendering
-	int i;
-	for(i = 0; i < m_width; ++i) {
+	for(int i = 0; i < m_width; ++i) {
 		m_ColorLine[i] = 0x0;
 	}	
 	if (m_file->lFileSize < (uint32)m_width) {
@@ -1031,11 +1030,11 @@ void CProgressImage::CreateSpan()
 		// if file is that small, draw it in single step
 		//
 		if (m_file->m_ReqParts.size()) {
-			for(i = 0; i < m_width; ++i) {
+			for(int i = 0; i < m_width; ++i) {
 				m_ColorLine[i] = RGB(255, 208, 0);
 			}
 		} else if ( colored_gaps_size ) {
-			for(i = 0; i < m_width; ++i) {
+			for(int i = 0; i < m_width; ++i) {
 				m_ColorLine[i] = colored_gaps[0].color;
 			}
 		}

@@ -248,7 +248,7 @@ private:
  */
 struct CSafeIOException : public CMuleException
 {
-	CSafeIOException(const wxString& type, const wxString& what);
+	CSafeIOException(const wxString& type, const wxString& desc);
 };
 
 
@@ -261,7 +261,7 @@ struct CSafeIOException : public CMuleException
  * is not fatal.
  */
 struct CEOFException : public CSafeIOException {
-	CEOFException(const wxString& what);	
+	CEOFException(const wxString& desc);	
 };
 
 
@@ -272,7 +272,7 @@ struct CEOFException : public CSafeIOException {
  * or write the specified number of bytes.
  */
 struct CIOFailureException : public CSafeIOException {
-	CIOFailureException(const wxString& what);
+	CIOFailureException(const wxString& desc);
 };
 
 

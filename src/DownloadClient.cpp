@@ -273,7 +273,7 @@ void CUpDownClient::SendFileRequest()
 		// Sending the packet could have deleted the client, check m_reqfile		
 		if (m_reqfile && IsSourceRequestAllowed()) {
 			m_reqfile->SetLastAnsweredTimeTimeout();
-			CPacket* packet = new CPacket(OP_REQUESTSOURCES,16,OP_EMULEPROT);
+			packet = new CPacket(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theStats::AddUpOverheadSourceExchange(packet->GetPacketSize());
 			SendPacket(packet,true,true);
@@ -282,7 +282,7 @@ void CUpDownClient::SendFileRequest()
 		
 		// Sending the packet could have deleted the client, check m_reqfile		
 		if (m_reqfile && IsSupportingAICH()) {
-			CPacket* packet = new CPacket(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
+			packet = new CPacket(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theStats::AddUpOverheadOther(packet->GetPacketSize());
 			SendPacket(packet,true,true);

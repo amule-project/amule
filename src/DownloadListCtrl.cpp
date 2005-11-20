@@ -271,12 +271,12 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 				SetItemData( item, (long)newitem );
 
 				// background.. this should be in a function
-				wxListItem item;
-				item.m_itemId = item;
+				wxListItem listitem;
+				listitem.m_itemId = item;
 
-				item.SetBackgroundColour( GetBackgroundColour() );
+				listitem.SetBackgroundColour( GetBackgroundColour() );
 	
-				SetItem( item );
+				SetItem( listitem );
 			}
 		}
 	}
@@ -1676,7 +1676,7 @@ void CDownloadListCtrl::DrawSourceItem(
 					
 					cdcStatus.SelectObject(wxNullBitmap);
 				} else {
-					wxString buffer = _("A4AF");
+					buffer = _("A4AF");
 					
 					int midx = (2*rect.GetX() + rect.GetWidth()) >> 1;
 					int midy = (2*rect.GetY() + rect.GetHeight()) >> 1;

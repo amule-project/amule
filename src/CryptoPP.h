@@ -1932,7 +1932,7 @@ inline T RoundUpToMultipleOf(T n, T m)
 template <class T>
 inline unsigned int GetAlignment(T* /* dummy */ = NULL)	// VC60 workaround
 {
-#if (_MSC_VER >= 1300)
+#if defined(_MSC_VER) and (_MSC_VER >= 1300)
 	return __alignof(T);
 #elif defined(__GNUC__)
 	return __alignof__(T);
@@ -2729,8 +2729,8 @@ template <class T, class A = AllocatorWithCleanup<T> >
 class SecBlock
 {
 public:
-    explicit SecBlock(unsigned int size=0)
-		: m_size(size) {m_ptr = m_alloc.allocate(size, NULL);}
+    explicit SecBlock(unsigned int blocksize=0)
+		: m_size(blocksize) {m_ptr = m_alloc.allocate(blocksize, NULL);}
 	SecBlock(const SecBlock<T, A> &t)
 		: m_size(t.m_size) {m_ptr = m_alloc.allocate(m_size, NULL); memcpy(m_ptr, t.m_ptr, m_size*sizeof(T));}
 	SecBlock(const T *t, unsigned int len)
@@ -3611,9 +3611,9 @@ public:
 	typedef int RandomizationParameter;
 	typedef Integer Element;
 
-	ModularArithmetic(const Integer &modulus = Integer::One())
+	ModularArithmetic(const Integer &mod = Integer::One())
 		: AbstractRing<Integer>(),
-		  modulus(modulus), result((word)0, modulus.reg.size()) {}
+		  modulus(mod), result((word)0, modulus.reg.size()) {}
 
 	ModularArithmetic(const ModularArithmetic &ma)
 		: AbstractRing<Integer>(),
@@ -4089,9 +4089,9 @@ public:
 	{
 		Assign((const byte *)data, data ? strlen(data) : 0, deepCopy);
 	}
-	ConstByteArrayParameter(const byte *data, unsigned int size, bool deepCopy = false)
+	ConstByteArrayParameter(const byte *data, unsigned int datasize, bool deepCopy = false)
 	{
-		Assign(data, size, deepCopy);
+		Assign(data, datasize, deepCopy);
 	}
 	template <class T> ConstByteArrayParameter(const T &string, bool deepCopy = false)
 	{
@@ -4099,14 +4099,14 @@ public:
 		Assign((const byte *)string.data(), string.size(), deepCopy);
 	}
 
-	void Assign(const byte *data, unsigned int size, bool deepCopy)
+	void Assign(const byte *data, unsigned int datasize, bool deepCopy)
 	{
 		if (deepCopy)
-			m_block.Assign(data, size);
+			m_block.Assign(data, datasize);
 		else
 		{
 			m_data = data;
-			m_size = size;
+			m_size = datasize;
 		}
 		m_deepCopy = deepCopy;
 	}
@@ -4125,8 +4125,8 @@ private:
 class ByteArrayParameter
 {
 public:
-	ByteArrayParameter(byte *data = NULL, unsigned int size = 0)
-		: m_data(data), m_size(size) {}
+	ByteArrayParameter(byte *data = NULL, unsigned int datasize = 0)
+		: m_data(data), m_size(datasize) {}
 	ByteArrayParameter(SecByteBlock &block)
 		: m_data(block.begin()), m_size(block.size()) {}
 

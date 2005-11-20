@@ -291,7 +291,7 @@ protected:
 	bool	CheckFreeDiskSpace( uint32 neededSpace = 0 );
 private:
 	uint32	m_iLastPausePurge;
-	uint16	count;
+	uint16	m_count;
 	uint16	m_anStates[STATES_COUNT];
 	uint16	transferingsrc;
 	uint32  completedsize;

@@ -278,24 +278,24 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in read operation."));
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot read from closed file."));
 	
-	size_t read = 0;
-	while (read < count) {
-		int current = ::read(m_fd, (char*)buffer + read, count - read);
+	size_t totalRead = 0;
+	while (totalRead < count) {
+		int current = ::read(m_fd, (char*)buffer + totalRead, count - totalRead);
 		
 		if (current == wxInvalidOffset) {
 			// Read error, nothing we can do other than abort.
 			return wxInvalidOffset;
-		} else if ((read + current < count) && Eof()) {
+		} else if ((totalRead + current < count) && Eof()) {
 			// We may fail to read the specified count in a couple
 			// of situations: EOF and interrupts. The check for EOF
 			// is needed to avoid inf. loops.
 			break;
 		}
 		
-		read += current;
+		totalRead += current;
 	}
 	
-	return read;
+	return totalRead;
 }
 
 
