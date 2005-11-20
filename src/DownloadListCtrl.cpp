@@ -1306,16 +1306,18 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	switch (nColumn) {
 	// Filename
 	case 0: {
-		if (file->HasRating()) {
-			int image = Client_InvalidRating_Smiley + file->UserRating() - 1;
+		if (file->HasRating() || file->HasComment()) {
+			int image = Client_CommentOnly_Smiley;
+			if (file->HasRating()) {
+				image = Client_InvalidRating_Smiley + file->UserRating() - 1;
+			}	
+				
 			wxASSERT(image >= Client_InvalidRating_Smiley);
-			wxASSERT(image <= Client_ExcellentRating_Smiley);
+			wxASSERT(image <= Client_CommentOnly_Smiley);
 			
-			int imgWidth;
-			if (file->UserRating() == 1 || file->UserRating() == 5) {
-				imgWidth=16;
-			} else {
-				imgWidth=8;
+			int imgWidth = 8;
+			if (file->UserRating() <= 1 || file->UserRating() == 5 ) {
+				imgWidth = 16;
 			}
 			
 			// it's already centered by OnDrawItem() ...
