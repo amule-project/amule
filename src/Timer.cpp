@@ -32,7 +32,7 @@
 
 typedef std::set<CTimerThread*> TimerList;
 
-//! List of running times, used to simplify owner-ship issues
+//! List of running timer-threads, used to simplify owner-ship issues
 TimerList g_timerList;
 //! Mutex used to protect access to the timer-list
 wxMutex g_timerMutex;
