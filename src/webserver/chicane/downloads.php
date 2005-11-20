@@ -347,8 +347,7 @@ function GotoCat(cat) {
  <td valign=middle class="down-header"><a href="downloads.php?sort=progress"><b>Progress</b></a></td>
  <td valign=middle class="down-header"><a href="downloads.php?sort=speed"><b>Speed</b></a></td>
  <td valign=middle class="down-header"><b>Sources</b></td>
-
- <td valign=middle class="down-header"><b>Priority</b></td>
+ <td valign=middle class="down-header"><a href="downloads.php?sort=prio"><b>Priority</b></a></td>
  <td valign=middle class="down-header"><b>Actions</b></td>
 </tr>
 
