@@ -523,14 +523,27 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 				}
 			}
 
-			imagelist.Draw( clientImage, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
+			imagelist.Draw(clientImage, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT);
 
 			if (client->GetScoreRatio() > 1) {
 				// Has credits, draw the gold star
-				imagelist.Draw( Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
+				imagelist.Draw(Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1,
+					wxIMAGELIST_DRAW_TRANSPARENT );
 			} else if (client->ExtProtocolAvailable()) {
 				// Ext protocol -> Draw the '+'
-				imagelist.Draw(  Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT );
+				imagelist.Draw(Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1,
+					wxIMAGELIST_DRAW_TRANSPARENT );
+			}
+
+			if (client->IsIdentified()) {
+				// the 'v'
+				imagelist.Draw(Client_SecIdent_Smiley, *dc, rect.x, rect.y + 1,
+					wxIMAGELIST_DRAW_TRANSPARENT);					
+			} else if (client->IsBadGuy()) {
+				// the 'X'
+				imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
+					wxIMAGELIST_DRAW_TRANSPARENT);					
 			}
 
 			dc->DrawText( client->GetUserName(), rect.x + 20, rect.y + 3 );
