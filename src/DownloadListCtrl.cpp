@@ -1594,7 +1594,11 @@ void CDownloadListCtrl::DrawSourceItem(
 				m_ImageList.Draw(clientImage, *dc, point2.x, point.y,
 					wxIMAGELIST_DRAW_TRANSPARENT);
 
-				if ( client->ExtProtocolAvailable() ) {
+				if (client->GetScoreRatio() > 1) {
+					// Has credits, draw the gold star
+					m_ImageList.Draw(Client_CreditsYellow_Smiley, *dc, point2.x, point.y, 
+						wxIMAGELIST_DRAW_TRANSPARENT );
+				}	else if ( client->ExtProtocolAvailable() ) {
 					// Ext protocol -> Draw the '+'
 					m_ImageList.Draw(Client_ExtendedProtocol_Smiley, *dc, point2.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);
