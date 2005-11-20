@@ -26,57 +26,71 @@
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 #include "GetTickCount.h"	// Needed for GetTickCountFullRes
 
+#include <wx/utils.h>		// Needed for wxSleep
+
+#include <set>
+
+typedef std::set<CTimerThread*> TimerList;
+
+//! List of running times, used to simplify owner-ship issues
+TimerList g_timerList;
+//! Mutex used to protect access to the timer-list
+wxMutex g_timerMutex;
+
+
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
 //////////////////////// Timer Thread ////////////////////
 
-class CTimerThread : public wxThread {
-	unsigned long m_period;
-	bool m_oneShot;
-	wxEvtHandler *m_owner;
-	int m_id;
-	
-	void *Entry();
-
-	public:
-	CTimerThread(wxEvtHandler *owner, unsigned long period, bool oneShot, int id);
-};
-
-
-CTimerThread::CTimerThread(wxEvtHandler *owner,
-	unsigned long period, bool oneShot, int id) : wxThread(wxTHREAD_JOINABLE)
+class CTimerThread : public wxThread
 {
-	m_owner = owner;
-	m_period = period;
-	m_oneShot = oneShot;
-	m_id = id;
-	if ( Create() != wxTHREAD_NO_ERROR ) {
-		printf("CTimer::CTimerThread: create failed\n");
+public:
+	CTimerThread()
+		: wxThread(wxTHREAD_DETACHED)
+	{
+		// Register the thread
+		wxMutexLocker lock(g_timerMutex);
+		g_timerList.insert(this);
 	}
-}
-
-void* CTimerThread::Entry()
-{
-	static uint64 prev_tick;
-	static uint64 code_exec_time;
-	static wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
 	
-	if ( m_oneShot ) {
-		Sleep(m_period);
-		wxPostEvent(m_owner, evt);
-	} else {
-		while ( !TestDestroy() ) {
-			Sleep(m_period-code_exec_time);
-			prev_tick = GetTickCountFullRes();
-			if ( m_id != -1 ) {
-				// Oh?
+	virtual ~CTimerThread() {
+		// Unregister the thread
+		wxMutexLocker lock(g_timerMutex);
+		g_timerList.erase(this);
+	}
+	
+	void* Entry() {
+		wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
+
+		if (m_oneShot) {
+			Sleep(m_period);
+
+			if (!TestDestroy()) {
+				wxPostEvent(m_owner, evt);
 			}
-			wxPostEvent(m_owner, evt);
-			code_exec_time = (GetTickCountFullRes() - prev_tick);
+		} else {
+			uint64 code_exec_time = 0;
+			
+			while (!TestDestroy()) {
+				Sleep(m_period - code_exec_time);
+				uint64 prev_tick = GetTickCountFullRes();
+			
+				// Check if the timer was stopped while it slept.
+				if (!TestDestroy()) {	
+					wxPostEvent(m_owner, evt);
+					code_exec_time = (GetTickCountFullRes() - prev_tick);
+				}
+			}
 		}
+
+		return NULL;
 	}
-	return 0;
-}
+	
+	unsigned long	m_period;
+	bool			m_oneShot;
+	wxEvtHandler*	m_owner;
+	int				m_id;
+};
 
 
 ////////////////////// CTimer ////////////////////////
@@ -86,39 +100,96 @@ CTimer::~CTimer()
 	Stop();
 }
 
-CTimer::CTimer(wxEvtHandler *owner, int id)
+
+CTimer::CTimer(wxEvtHandler* owner, int id)
 {
 	wxASSERT(owner);
-	SetOwner(owner, id);
-	thread = 0;
+	m_owner = owner;
+	m_id = id;
+	m_thread = NULL;
 }
 
-void CTimer::SetOwner(wxEvtHandler *owner, int id)
+
+void CTimer::SetOwner(wxEvtHandler* owner, int id)
 {
-	CTimer::owner = owner;
-	CTimer::id = id;
+	m_owner = owner;
+	m_id = id;
 }
+
 
 bool CTimer::IsRunning() const
 {
-	return thread;
+	wxMutexLocker lock(g_timerMutex);
+	return g_timerList.count(m_thread);
 }
 
-bool CTimer::Start( int millisecs, bool oneShot )
+
+bool CTimer::Start(int millisecs, bool oneShot)
 {
-	if ( thread ) {
-		return false;
-	} else {
-		thread = new CTimerThread(owner, millisecs, oneShot, id);
-		thread->Run();
+	wxCHECK_MSG(m_id != -1, false, wxT("Invalid target-ID for timer-events."));
+	
+	if (!IsRunning()) {
+		m_thread = new CTimerThread();
+		
+		m_thread->m_period	= millisecs;
+		m_thread->m_oneShot	= oneShot;
+		m_thread->m_owner	= m_owner;
+		m_thread->m_id		= m_id;
+
+		if (m_thread->Create() == wxTHREAD_NO_ERROR) {
+			if (m_thread->Run() == wxTHREAD_NO_ERROR) {
+				return true;
+			}
+		}
+
+		// Something went wrong ...
+		m_thread->Delete();
+		m_thread = NULL;
 	}
-	return true;
+
+	return false;
 }
+
 
 void CTimer::Stop()
 {
-	if ( thread ) {
-		thread->Delete();
-		thread = 0;
+	wxMutexLocker lock(g_timerMutex);
+	
+	// Check if the thread still exists
+	if (g_timerList.count(m_thread)) {
+		m_thread->Delete();
+	}
+	
+	m_thread = NULL;
+}
+
+
+void CTimer::TerminateTimers()
+{
+	wxCHECK_RET(wxThread::IsMain(), wxT("Timers must be terminated by main thread."));
+	
+	// Tell all timers to terminate
+	{
+		wxMutexLocker lock(g_timerMutex);
+
+		TimerList::iterator it = g_timerList.begin();
+		for (; it != g_timerList.end(); ++it) {
+			(*it)->Delete();
+		}
+	}
+
+	while (true) {
+		{ 
+			wxMutexLocker lock(g_timerMutex);
+
+			if (g_timerList.empty()) {
+				// All threads have been deleted
+				return;
+			}
+		}
+
+		// Sleep a bit to avoid clubbering the mutex.
+		wxMilliSleep(10);
 	}
 }
+
