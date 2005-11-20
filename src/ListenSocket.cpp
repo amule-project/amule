@@ -79,8 +79,7 @@ CListenSocket::~CListenSocket()
 
 #ifdef __DEBUG__
 	// No new sockets should have been opened by now
-	SocketSet::iterator it = socket_list.begin();
-	for (; it != socket_list.end(); ) {
+	for (SocketSet::iterator it = socket_list.begin(); it != socket_list.end(); it++) {
 		wxASSERT((*it)->OnDestroy());
 	}
 #endif
