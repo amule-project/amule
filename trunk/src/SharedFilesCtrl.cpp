@@ -521,6 +521,32 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					}
 					break;
 				}
+				
+				case ID_SHARED_COL_NAME:
+					if (file->GetFileRating() || file->GetFileComment().Length()) {
+						int image = Client_CommentOnly_Smiley;
+						if (file->GetFileRating()) {
+							image = Client_InvalidRating_Smiley + file->GetFileRating() - 1;
+						}	
+							
+						wxASSERT(image >= Client_InvalidRating_Smiley);
+						wxASSERT(image <= Client_CommentOnly_Smiley);
+						
+						int imgWidth = 8;
+						if (file->GetFileRating() <= 1 || file->GetFileRating() == 5 ) {
+							imgWidth = 16;
+						} 
+						
+						theApp.amuledlg->imagelist.Draw(image, *dc, columnRect.x,
+								columnRect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT);
+
+						columnItem.m_col = i;
+						columnItem.m_itemId = item;
+						GetItem(columnItem);
+						dc->DrawText(columnItem.m_text, columnRect.x + imgWidth + 4,
+							   columnRect.y + textVOffset);
+						break;
+					}
 
 				default: {
 					columnItem.m_col = i;
