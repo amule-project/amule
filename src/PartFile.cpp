@@ -3633,7 +3633,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	SavePartFile();
 	
 	// make sure the user appreciates our great recovering work :P
-	AddDebugLogLineM( false, logAICHRecovery, CFormat( 
+	AddDebugLogLineM( true, logAICHRecovery, CFormat( 
 		wxT("AICH successfully recovered %s of %s from part %u for %s") )
 		% CastItoXBytes(nRecovered) 
 		% CastItoXBytes(length)
