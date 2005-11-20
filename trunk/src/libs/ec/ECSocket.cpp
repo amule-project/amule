@@ -366,7 +366,7 @@ void CECSocket::SendPacket(const CECPacket *packet)
 #if ECSOCKET_USE_EVENTS
 	wxENTER_CRIT_SECT(m_cs_packet_out);
 
-	m_output_packet_queue.push_back(packet_desc(packet, 0));
+	m_output_packet_queue.push_back(packet_desc(new CECPacket(*packet), 0));
 
 	wxLEAVE_CRIT_SECT(m_cs_packet_out);
 
