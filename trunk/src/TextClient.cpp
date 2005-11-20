@@ -170,11 +170,11 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					}
 				}
 				EC_IPv4_t addr;
-				addr.ip[0] = ip[0];
-				addr.ip[1] = ip[1];
-				addr.ip[2] = ip[2];
-				addr.ip[3] = ip[3];
-				addr.port = port;
+				addr.m_ip[0] = ip[0];
+				addr.m_ip[1] = ip[1];
+				addr.m_ip[2] = ip[2];
+				addr.m_ip[3] = ip[3];
+				addr.m_port = port;
 				request = new CECPacket(EC_OP_SERVER_CONNECT);
 				request->AddTag(CECTag(EC_TAG_SERVER, addr));
 				request_list.push_back(request);

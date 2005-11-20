@@ -677,10 +677,8 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	uint32 bitrate = 0;
 	uint32 availability = 0;
 
-	CTag *tag;
-	TagList::const_iterator it;
-	for (it = info->begin(); it != info->end(); ++it) {
-		tag = *it;
+	for (TagList::const_iterator it = info->begin(); it != info->end(); ++it) {
+		CTag* tag = *it;
 
 		if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
 			name	= tag->GetStr();

@@ -153,8 +153,8 @@ const unsigned char *RLE_Data::Decode(const unsigned char *buff, int len)
 	// Recreate data from diff
 	//
 	if ( m_use_diff ) {
-		for (int i = 0; i < m_len; i++) {
-			m_buff[i] ^= m_enc_buff[i];
+		for (int k = 0; k < m_len; k++) {
+			m_buff[k] ^= m_enc_buff[k];
 		}
 	}
 		

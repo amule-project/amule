@@ -264,11 +264,11 @@ void CClientTCPSocket::Safe_Delete()
 }
 
 
-bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	printf("Rec: OPCODE %x \n",opcode);
-	DumpMem(packet,size);
+	DumpMem(buffer, size);
 	#endif
 	if (!m_client && opcode != OP_HELLO) {
 		throw wxString(wxT("Asks for something without saying hello"));
@@ -279,7 +279,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 		case OP_HELLOANSWER: {	// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HELLOANSWER") );
 			theStats::AddDownOverheadOther(size);
-			m_client->ProcessHelloAnswer(packet,size);
+			m_client->ProcessHelloAnswer(buffer, size);
 
 			// start secure identification, if
 			//  - we have received OP_EMULEINFO and OP_HELLOANSWER (old eMule)
@@ -309,11 +309,10 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				// create new client to save standart informations
 				m_client = new CUpDownClient(this);
 			}
-			// client->ProcessHelloPacket(packet,size);
 			bool bIsMuleHello = false;
 			
 			try{
-				bIsMuleHello = m_client->ProcessHelloPacket(packet,size);
+				bIsMuleHello = m_client->ProcessHelloPacket(buffer, size);
 			} catch(...) {
 				if (bNewClient && m_client) {
 					// Don't let CUpDownClient::Disconnected be processed for a client which is not in the list of clients.
@@ -341,7 +340,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			// if not we keep our new-constructed client ;)
 			if (theApp.clientlist->AttachToAlreadyKnown(&m_client,this)) {
 				// update the old client informations
-				bIsMuleHello = m_client->ProcessHelloPacket(packet,size);
+				bIsMuleHello = m_client->ProcessHelloPacket(buffer, size);
 			} else {
 				theApp.clientlist->AddClient(m_client);
 				m_client->SetCommentDirty();
@@ -388,7 +387,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 				if (!m_client->GetWaitStartTime()) {
 					m_client->SetWaitStartTime();
 				}
-				CMemFile data_in((byte*)packet,size);
+				CMemFile data_in((byte*)buffer, size);
 				CMD4Hash reqfilehash = data_in.ReadHash();
 				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if ( reqfile == NULL ) {
@@ -448,7 +447,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					m_client->SetWaitStartTime();
 				}
 
-				const CMD4Hash fileID((byte*)packet);
+				const CMD4Hash fileID((byte*)buffer);
 				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(fileID);
 				if ( reqfile == NULL ) {
 					reqfile = theApp.downloadqueue->GetFileByID(fileID);
@@ -493,7 +492,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size == 16) {
 				// if that client does not have my file maybe has another different
-				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(CMD4Hash((byte*)packet));
+				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(CMD4Hash((byte*)buffer));
 				if ( reqfile) {
 					reqfile->AddDeadSource( m_client );
 				} else {
@@ -520,7 +519,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQFILENAMEANSWER") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)packet,size);
+			CMemFile data((byte*)buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileInfo(&data, file);
@@ -531,7 +530,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILESTATUS") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)packet,size);
+			CMemFile data((byte*)buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileStatus(false, &data, file);
@@ -553,7 +552,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			}
 			
 			if (size == 16) {
-				const CMD4Hash fileID((byte*)packet);
+				const CMD4Hash fileID((byte*)buffer);
 				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(fileID);
 				if (reqfile) {
 					if (m_client->GetUploadFileID() != fileID) {
@@ -574,7 +573,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_QUEUERANK") );
 			 
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)packet,size);
+			CMemFile data((byte*)buffer, size);
 			uint32 rank = data.ReadUInt32();
 			
 			m_client->SetRemoteQueueRank(rank);
@@ -613,7 +612,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 
-			CMemFile data((byte*)packet,size);
+			CMemFile data((byte*)buffer, size);
 
 			CMD4Hash reqfilehash = data.ReadHash();
 
@@ -666,7 +665,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash((byte*)packet)) {
+			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash((byte*)buffer)) {
 				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
@@ -683,7 +682,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (size != 16) {
 				throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
 			}
-			m_client->SendHashsetPacket(CMD4Hash((byte*)packet));
+			m_client->SendHashsetPacket(CMD4Hash((byte*)buffer));
 			break;
 		}
 		
@@ -691,7 +690,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HASHSETANSWER") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			m_client->ProcessHashSet(packet,size);
+			m_client->ProcessHashSet(buffer, size);
 			break;
 		}
 		
@@ -701,7 +700,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (	 m_client->GetRequestFile() && 
 				!m_client->GetRequestFile()->IsStopped() && 
 				(m_client->GetRequestFile()->GetStatus() == PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
-				m_client->ProcessBlockPacket(packet,size);
+				m_client->ProcessBlockPacket(buffer, size);
 				if ( 	m_client && 
 					( m_client->GetRequestFile()->IsStopped() || 
 					  m_client->GetRequestFile()->GetStatus() == PS_PAUSED || 
@@ -747,7 +746,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_CLIENT_ID") );
 			
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 			uint32 nNewUserID = data.ReadUInt32();
 			uint32 nNewServerIP = data.ReadUInt32();
 			
@@ -784,7 +783,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			theStats::AddDownOverheadOther(size);
 			
-			CMemFile message_file((byte*)packet,size);
+			CMemFile message_file((byte*)buffer, size);
 
 			//filter me?
 			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
@@ -839,7 +838,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			wxString EmptyStr;
-			m_client->ProcessSharedFileList(packet,size,EmptyStr);
+			m_client->ProcessSharedFileList(buffer, size, EmptyStr);
 			break;
 		}
 		
@@ -931,7 +930,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			if (m_client->IsBanned()) {
 				break;
 			}
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 										
 			wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
@@ -980,7 +979,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			if (m_client->GetFileListRequested() == 1){
-				CMemFile data((byte*)packet, size);
+				CMemFile data((byte*)buffer, size);
 				uint32 uDirs = data.ReadUInt32();
 				for (uint32 i = 0; i < uDirs; i++){
 					wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
@@ -1010,7 +1009,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESDIRANS") );
 			
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 			if (m_client->GetFileListRequested() > 0){
@@ -1019,7 +1018,7 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 					% m_client->GetUserIDHybrid()
 					% strDir );
 				
-				m_client->ProcessSharedFileList(packet + data.GetPosition(), size - data.GetPosition(), strDir);
+				m_client->ProcessSharedFileList(buffer + data.GetPosition(), size - data.GetPosition(), strDir);
 				if (m_client->GetFileListRequested() == 0) {
 					AddLogLineM( true, CFormat( _("User %s (%u) finished sending sharedfiles-list") )
 						% m_client->GetUserName()
@@ -1055,11 +1054,11 @@ bool CClientTCPSocket::ProcessPacket(const char* packet, uint32 size, uint8 opco
 }
 
 
-bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	printf("Rec: OPCODE %x \n",opcode);
-	DumpMem(packet,size);
+	DumpMem(buffer,size);
 	#endif
 		
 	// 0.42e - except the catchs on mem exception and file exception
@@ -1089,7 +1088,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_MULTIPACKET before finishing handshake"));
 			}
 
-			CMemFile data_in((byte*)packet,size);
+			CMemFile data_in((byte*)buffer, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 			if ( reqfile == NULL ){
@@ -1205,7 +1204,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_MULTIPACKETANSWER before finishing handshake"));
 			}
 			
-			CMemFile data_in((byte*)packet,size);
+			CMemFile data_in((byte*)buffer, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			const CPartFile *reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 			//Make sure we are downloading this file.
@@ -1246,7 +1245,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		case OP_EMULEINFO: {	// 0.43b
 			theStats::AddDownOverheadOther(size);
 
-			if (!m_client->ProcessMuleInfoPacket(packet,size)) { 
+			if (!m_client->ProcessMuleInfoPacket(buffer, size)) { 
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFO") );
 				
 				// If it's not a OS Info packet, is an old client
@@ -1265,7 +1264,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_EMULEINFOANSWER") );
 			theStats::AddDownOverheadOther(size);
 			
-			m_client->ProcessMuleInfoPacket(packet,size);
+			m_client->ProcessMuleInfoPacket(buffer, size);
 			// start secure identification, if
 			//  - we have received eD2K and eMule info (old eMule)
 			
@@ -1284,7 +1283,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_SECIDENTSTATE before finishing handshake"));
 			}								
-			m_client->ProcessSecIdentStatePacket((byte*)packet,size);
+			m_client->ProcessSecIdentStatePacket((byte*)buffer, size);
 			// ProcessSecIdentStatePacket() might cause the socket to die, so check
 			if (m_client) {
 				int SecureIdentState = m_client->GetSecureIdentState();
@@ -1314,7 +1313,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_PUBLICKEY before finishing handshake"));
 			}
 											
-			m_client->ProcessPublicKeyPacket((byte*)packet,size);
+			m_client->ProcessPublicKeyPacket((byte*)buffer, size);
 			break;
 		}
 		case OP_SIGNATURE:{			// 0.43b
@@ -1326,7 +1325,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
 			}
 											
-			m_client->ProcessSignaturePacket((byte*)packet,size);
+			m_client->ProcessSignaturePacket((byte*)buffer, size);
 			break;
 		}		
 		case OP_COMPRESSEDPART: {	// 0.43b
@@ -1339,7 +1338,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			}
 											
 			if (m_client->GetRequestFile() && !m_client->GetRequestFile()->IsStopped() && (m_client->GetRequestFile()->GetStatus()==PS_READY || m_client->GetRequestFile()->GetStatus()==PS_EMPTY)) {
-				m_client->ProcessBlockPacket(packet,size,true);
+				m_client->ProcessBlockPacket(buffer, size, true);
 				if (m_client && (
 					m_client->GetRequestFile()->IsStopped() ||
 					m_client->GetRequestFile()->GetStatus() == PS_PAUSED ||
@@ -1391,7 +1390,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 			}
 
-			uint16 newrank = PeekUInt16(packet);
+			uint16 newrank = PeekUInt16(buffer);
 			m_client->SetRemoteQueueFull(false);
 			m_client->SetRemoteQueueRank(newrank);
 			break;
@@ -1413,7 +1412,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 				}
 				//first check shared file list, then download list
-				const CMD4Hash fileID((byte*)packet);
+				const CMD4Hash fileID((byte*)buffer);
 				CKnownFile* file = theApp.sharedfiles->GetFileByID(fileID);
 				if(!file) {
 					file = theApp.downloadqueue->GetFileByID(fileID);
@@ -1454,7 +1453,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_ANSWERSOURCES before finishing handshake"));
 			}
 			
-			CMemFile data((byte*)packet,size);
+			CMemFile data((byte*)buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
 			if(file){
@@ -1480,7 +1479,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_FILEDESC before finishing handshake"));
 			}
 			
-			m_client->ProcessMuleCommentPacket(packet,size);
+			m_client->ProcessMuleCommentPacket(buffer, size);
 			break;
 		}
 
@@ -1497,7 +1496,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 
 		case OP_PUBLICIP_ANSWER: {
 			theStats::AddDownOverheadOther(size);
-			m_client->ProcessPublicIPAnswer((byte*)packet,size);
+			m_client->ProcessPublicIPAnswer((byte*)buffer, size);
 			break;
 		}
 		case OP_PUBLICIP_REQ: {
@@ -1510,24 +1509,24 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 		}			
 		case OP_AICHANSWER: {
 			theStats::AddDownOverheadOther(size);
-			m_client->ProcessAICHAnswer(packet,size);
+			m_client->ProcessAICHAnswer(buffer, size);
 			break;
 		}
 		case OP_AICHREQUEST: {
 			theStats::AddDownOverheadOther(size);
-			m_client->ProcessAICHRequest(packet,size);
+			m_client->ProcessAICHRequest(buffer, size);
 			break;
 		}
 		case OP_AICHFILEHASHANS: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 			m_client->ProcessAICHFileHash(&data, NULL);
 			break;
 		}
 		case OP_AICHFILEHASHREQ: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(hash);
 			if (pPartFile == NULL){
@@ -1551,7 +1550,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 			if(!Kademlia::CKademlia::isRunning()) {
 				break;
 			}
-			CMemFile data((byte*)packet, size);
+			CMemFile data((byte*)buffer, size);
 			CUInt128 check = data.ReadUInt128();
 			check.XOR(Kademlia::CUInt128(true));
 			if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
@@ -1619,7 +1618,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* packet, uint32 size, uint8 o
 				break;
 			}
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
-			CMemFile data_in((byte*)packet, size);
+			CMemFile data_in((byte*)buffer, size);
 			uint32 destip = data_in.ReadUInt32();
 			uint16 destport = data_in.ReadUInt16();
 			CMD4Hash hash = data_in.ReadHash();

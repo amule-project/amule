@@ -536,14 +536,14 @@ void CPartFileConvert::UpdateGUI(float percent, wxString text, bool fullinfo)
 	if (s_convertgui) {
 		s_convertgui->m_pb_current->SetValue((int)percent);
 		wxString buffer = wxString::Format(wxT("%.2f %%"), percent);
-		wxStaticText* percent = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
-		percent->SetLabel(buffer);
+		wxStaticText* percentlabel = dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PROZENT));
+		percentlabel->SetLabel(buffer);
 
 		if (!text.IsEmpty()) {
 			dynamic_cast<wxStaticText*>(s_convertgui->FindWindow(IDC_CONV_PB_LABEL))->SetLabel(text);
 		}
 
-		percent->GetParent()->Layout();
+		percentlabel->GetParent()->Layout();
 
 		if (fullinfo) {
 			dynamic_cast<wxStaticBoxSizer*>(IDC_CURJOB)->GetStaticBox()->SetLabel(s_pfconverting->folder);

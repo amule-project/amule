@@ -220,7 +220,6 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 	try {
 		AddDebugLogLineM( false, logServer, wxT("Processing Server Packet: ") );
 		
-		CServer* update;
 		switch(opcode) {
 			case OP_SERVERMESSAGE: {
 				/* Kry import of lugdunum 16.40 new features */
@@ -434,7 +433,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					throw wxString(wxT("Invalid server status packet"));
 					break;
 				}
-				update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
+				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
 					CMemFile data((byte*)packet, size);
 					update->SetUserCount(data.ReadUInt32());

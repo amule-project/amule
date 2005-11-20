@@ -1308,13 +1308,14 @@ void CPreferences::LoadPreferences()
 }
 
 
-void CPreferences::LoadCats() {
+void CPreferences::LoadCats()
+{
 	// default cat ... Meow! =(^.^)=
-	Category_Struct* newcat = new Category_Struct;
-	newcat->prio = 0;
-	newcat->color = 0;
+	Category_Struct* defaultcat = new Category_Struct;
+	defaultcat->prio = 0;
+	defaultcat->color = 0;
 
-	AddCat( newcat );
+	AddCat( defaultcat );
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 

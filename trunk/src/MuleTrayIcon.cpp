@@ -480,8 +480,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Upload Speed sub-menu
 	{
-		wxString temp=wxString(_("Unlimited"));
-		UploadSpeedMenu->Append(UPLOAD_ITEM1,temp);
+		UploadSpeedMenu->Append(UPLOAD_ITEM1, _("Unlimited"));
 
 		uint32 max_ul_speed = thePrefs::GetMaxGraphUploadRate();
 		
@@ -502,9 +501,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Download Speed sub-menu
 	{ 
-		wxString temp=wxString(_("Unlimited"));
-		
-		DownloadSpeedMenu->Append(DOWNLOAD_ITEM1,temp);
+		DownloadSpeedMenu->Append(DOWNLOAD_ITEM1, _("Unlimited"));
 
 		uint32 max_dl_speed = thePrefs::GetMaxGraphDownloadRate();
 		

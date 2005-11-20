@@ -122,8 +122,8 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 	m_dataLen = sizeof(EC_IPv4_t);
 	m_tagData = malloc(sizeof(EC_IPv4_t));
 	if (m_tagData != NULL) {
-		RawPokeUInt32( ((EC_IPv4_t *)m_tagData)->ip, RawPeekUInt32( data.ip ) );
-		((EC_IPv4_t *)m_tagData)->port = ENDIAN_HTONS(data.port);
+		RawPokeUInt32( ((EC_IPv4_t *)m_tagData)->m_ip, RawPeekUInt32( data.m_ip ) );
+		((EC_IPv4_t *)m_tagData)->m_port = ENDIAN_HTONS(data.m_port);
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -597,8 +597,8 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
 	EC_IPv4_t p;
 
-	RawPokeUInt32( p.ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->ip ) );
-	p.port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->port);
+	RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
+	p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
 
 	return p;
 }

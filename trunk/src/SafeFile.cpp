@@ -37,16 +37,16 @@
 const char BOMHeader[3] = {0xEF, 0xBB, 0xBF};
 
 
-CSafeIOException::CSafeIOException(const wxString& type, const wxString& what)
-	: CMuleException(wxT("CSafeIOException::") + type, what) {}
+CSafeIOException::CSafeIOException(const wxString& type, const wxString& desc)
+	: CMuleException(wxT("CSafeIOException::") + type, desc) {}
 
 
-CEOFException::CEOFException(const wxString& what)
-	: CSafeIOException(wxT("CEOFException"), what) {}
+CEOFException::CEOFException(const wxString& desc)
+	: CSafeIOException(wxT("CEOFException"), desc) {}
 
 
-CIOFailureException::CIOFailureException(const wxString& what)
-	: CSafeIOException(wxT("CIOFailureException"), what) {}
+CIOFailureException::CIOFailureException(const wxString& desc)
+	: CSafeIOException(wxT("CIOFailureException"), desc) {}
 
 
 

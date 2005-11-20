@@ -56,8 +56,8 @@ wxString get_backtrace(unsigned n);
 class CMuleException
 {
 public:
-	CMuleException(const wxString& type, const wxString& what)
-		: m_what(type + wxT(": ") + what)
+	CMuleException(const wxString& type, const wxString& desc)
+		: m_what(type + wxT(": ") + desc)
 	{}
 
 	const wxString& what() const {
@@ -76,8 +76,8 @@ private:
  */
 struct CRunTimeException : public CMuleException
 {
-	CRunTimeException(const wxString& type, const wxString& what)
-		: CMuleException(wxT("CRunTimeException::") + type, what) {}
+	CRunTimeException(const wxString& type, const wxString& desc)
+		: CMuleException(wxT("CRunTimeException::") + type, desc) {}
 };
 
 
@@ -87,8 +87,8 @@ struct CRunTimeException : public CMuleException
  */
 struct CInvalidParamsEx : public CRunTimeException
 {
-	CInvalidParamsEx(const wxString& what)
-		: CRunTimeException(wxT("CInvalidArgsException"), what) {}
+	CInvalidParamsEx(const wxString& desc)
+		: CRunTimeException(wxT("CInvalidArgsException"), desc) {}
 };
 
 
@@ -97,15 +97,19 @@ struct CInvalidParamsEx : public CRunTimeException
  */
 struct CInvalidStateEx : public CRunTimeException
 {
-	CInvalidStateEx(const wxString& what)
-		: CRunTimeException(wxT("CInvalidStateException"), what) {}
+	CInvalidStateEx(const wxString& desc)
+		: CRunTimeException(wxT("CInvalidStateException"), desc) {}
 };
 
-/* this exception is thrown on wroing packets or tag files */
-struct CInvalidPacket : public CMuleException {
-	CInvalidPacket(const wxString& what)
-		: CMuleException(wxT("CInvalidPacket"), what) {}
+/**
+ * This exception is thrown on wrong packets or tags.
+ */
+struct CInvalidPacket : public CMuleException
+{
+	CInvalidPacket(const wxString& desc)
+		: CMuleException(wxT("CInvalidPacket"), desc) {}
 };
+
 
 // This ifdef ensures that we wont get assertions while 
 // unittesting, which would otherwise impede the tests.

@@ -5532,8 +5532,8 @@ template <class T> T AbstractGroup<T>::CascadeScalarMultiply(const Element &x, c
 
 struct WindowSlider
 {
-	WindowSlider(const Integer &exp, bool fastNegate, unsigned int windowSizeIn=0)
-		: exp(exp), windowModulus(Integer::One()), windowSize(windowSizeIn), windowBegin(0), fastNegate(fastNegate), firstTime(true), finished(false)
+	WindowSlider(const Integer &Exp, bool FastNegate, unsigned int windowSizeIn=0)
+		: exp(Exp), windowModulus(Integer::One()), windowSize(windowSizeIn), windowBegin(0), fastNegate(FastNegate), firstTime(true), finished(false)
 	{
 		if (windowSize == 0)
 		{
@@ -6200,8 +6200,8 @@ unsigned int ByteQueue::Walker::TransferTo2(BufferedTransformation &target, unsi
 	if (bytesLeft && m_lazyLength)
 	{
 		unsigned int len = (unsigned int)STDMIN(bytesLeft, (unsigned long)m_lazyLength);
-		unsigned int blockedBytes = target.ChannelPut2(channel, m_lazyString, len, 0, blocking);
-		if (blockedBytes)
+		unsigned int BlockedBytes = target.ChannelPut2(channel, m_lazyString, len, 0, blocking);
+		if (BlockedBytes)
 			goto done;
 
 		m_lazyString += len;

@@ -608,7 +608,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	const CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		srv = theApp.serverlist->GetServerByIP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().port);
+		srv = theApp.serverlist->GetServerByIP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
 		// server tag passed, but server not found
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
@@ -790,7 +790,7 @@ CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 		const CECTag *addrtag = request->GetTagByIndex(0);
 		if ( addrtag ) {
 			uint32 ip = addrtag->GetIPv4Data().IP();
-			uint16 port = addrtag->GetIPv4Data().port;
+			uint16 port = addrtag->GetIPv4Data().m_port;
 			Kademlia::CKademlia::bootstrap(ip, port);
 		}
 	} else {

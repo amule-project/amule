@@ -48,25 +48,25 @@ class EC_IPv4_t {
 		EC_IPv4_t() { }
 		EC_IPv4_t(uint32 ip, uint16 port)
 		{
-			EC_IPv4_t::ip[0] = ip & 0xff;
-			EC_IPv4_t::ip[1] = (ip >> 8) & 0xff;
-			EC_IPv4_t::ip[2] = (ip >> 16) & 0xff;
-			EC_IPv4_t::ip[3] = (ip >> 24) & 0xff;
-			EC_IPv4_t::port = port;
+			m_ip[0] = ip & 0xff;
+			m_ip[1] = (ip >> 8) & 0xff;
+			m_ip[2] = (ip >> 16) & 0xff;
+			m_ip[3] = (ip >> 24) & 0xff;
+			m_port = port;
 		}
 		
 		uint32 IP()
 		{
-			return ip[0] | (ip[1] << 8) | (ip[2] << 16) | (ip[3] << 24);
+			return m_ip[0] | (m_ip[1] << 8) | (m_ip[2] << 16) | (m_ip[3] << 24);
 		}
 
 		wxString StringIP(bool brackets = true)
 		{
-			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), ip[0], ip[1], ip[2], ip[3], port);
+			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), m_ip[0], m_ip[1], m_ip[2], m_ip[3], m_port);
 		}
 		
-		uint8 ip[4];
-		uint16 port;
+		uint8 m_ip[4];
+		uint16 m_port;
 };
 
 

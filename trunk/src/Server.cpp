@@ -65,7 +65,7 @@ CServer::CServer(CEC_Server_Tag *tag)
 {
 	ip = tag->GetIPv4Data().IP();
 	ipfull = Uint32toStringIP(ip);
-	port = tag->GetIPv4Data().port;
+	port = tag->GetIPv4Data().m_port;
 
 	listname = tag->ServerName();
 	description = tag->ServerDesc();

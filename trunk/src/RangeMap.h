@@ -369,23 +369,23 @@ public:
 	}
 
 
-	void erase_range(uint32 start, uint32 end) {
+	void erase_range(uint32 startPos, uint32 endPos) {
 		// Create default initialized entry, which ensures that all fields are initialized.
 		CRangeMapHelper<VALUE> entry = CRangeMapHelper<VALUE>();
 		// Need to set the 'end' field.
-		entry.first = end;
+		entry.first = endPos;
 		
 		// Insert without merging, which forces the creation of an entry that 
 		// only covers the specified range, which will crop existing ranges.
-		erase(do_insert(start, entry, false));
+		erase(do_insert(startPos, entry, false));
 	}	
 	
 
 	/**
 	 * Inserts a new range into the map, potentially erasing/changing old ranges.
 	 *
-	 * @param start The start position of the range, also considered part of the range.
-	 * @param end The end position of the range, also considered part of the range.
+	 * @param startPos The start position of the range, also considered part of the range.
+	 * @param endPos The end position of the range, also considered part of the range.
 	 * @param object The user-data to be assosiated with the range.
 	 * @return An iterator pointing to the resulting range, covering at least the specified range.
 	 *
@@ -405,14 +405,14 @@ public:
 	 * Note that the start position must be smaller than or equal to the end-position.
 	 */
 	//@{
-	iterator insert(uint32 start, uint32 end) {
-		CRangeMapHelper<VALUE> entry = {end};
-		return do_insert(start, entry);
+	iterator insert(uint32 startPos, uint32 endPos) {
+		CRangeMapHelper<VALUE> entry = {endPos};
+		return do_insert(startPos, entry);
 	}
 	template <typename TYPE>
-	iterator insert(uint32 start, uint32 end, const TYPE& value) {
-		CRangeMapHelper<VALUE> entry = {end, value};
-		return do_insert(start, entry);
+	iterator insert(uint32 startPos, uint32 endPos, const TYPE& value) {
+		CRangeMapHelper<VALUE> entry = {endPos, value};
+		return do_insert(startPos, entry);
 	}
 	//@}
 
@@ -427,7 +427,6 @@ protected:
 	 */
 	iterator do_insert(uint32 start, HELPER entry, bool merge = true) {
 		MULE_VALIDATE_PARAMS(start <= entry.first, wxT("Not a valid range."));
-		uint32& end = entry.first;
 		
 		RangeIterator it = get_insert_it(start);
 		while ( it != m_ranges.end() ) {
@@ -435,16 +434,16 @@ protected:
 			if ( start <= it->first ) {
 				// Never touches the current span, it follows that start < it->first
 				// (it->first) is used to avoid checking against (uint32)-1 by accident
-				if ( end < it->first - 1 && it->first ) {
+				if ( entry.first < it->first - 1 && it->first ) {
 					break;
 				}
 
 				// Stops just before the current span, it follows that start < it->first
 				// (it->first) is used to avoid checking against (uint32)-1 by accident
-				else if ( end == it->first - 1 && it->first ) {
+				else if ( entry.first == it->first - 1 && it->first ) {
 					// If same type: Merge
 					if (merge and (entry == it->second)) {
-						end = it->second.first;
+						entry.first = it->second.first;
 						m_ranges.erase( it++ );
 					}
 
@@ -452,14 +451,14 @@ protected:
 				}
 
 				// Covers part of the span
-				else if ( end < it->second.first ) {
+				else if ( entry.first < it->second.first ) {
 					// Same type, merge
 					if (merge and (entry == it->second)) {
-						end = it->second.first;
+						entry.first = it->second.first;
 						m_ranges.erase( it++ );
 					} else {
 						// Resize the partially covered span and get the next one
-						it = ++resize( end + 1, it->second.first, it );
+						it = ++resize( entry.first + 1, it->second.first, it );
 					}
 
 					break;
@@ -474,14 +473,14 @@ protected:
 				// Starts inside the current span
 				if ( start <= it->second.first ) {
 					// Ends inside the current span
-					if ( end < it->second.first ) {
+					if ( entry.first < it->second.first ) {
 						// Adding a span with same type inside a existing span is fruitless
 						if (merge and (entry == it->second)) {
 							return it;
 						}
 
 						// Insert the new span
-						m_ranges.insert(it, RangePair(end + 1, it->second));
+						m_ranges.insert(it, RangePair(entry.first + 1, it->second));
 						
 						// Resize the current span to fit before the new span
 						it->second.first = start - 1;
@@ -552,13 +551,13 @@ protected:
 	
 
 	//! Helper function that resizes an existing range to the specified size.
-	RangeIterator resize( uint32 start, uint32 end, RangeIterator it ) {
+	RangeIterator resize( uint32 startPos, uint32 endPos, RangeIterator it ) {
 		HELPER item = it->second;
-		item.first = end;
+		item.first = endPos;
 
 		m_ranges.erase( it++ );
 
-		return m_ranges.insert(it, RangePair(start, item));
+		return m_ranges.insert(it, RangePair(startPos, item));
 	}
 };
 
