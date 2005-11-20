@@ -91,7 +91,7 @@ void CRemoteConnect::OnClose() {
 }
 
 bool CRemoteConnect::ConnectionEstablished() {
-	
+
 	// Authenticate ourselves
 	CECPacket packet(EC_OP_AUTH_REQ);
 	packet.AddTag(CECTag(EC_TAG_CLIENT_NAME, m_client));
@@ -104,36 +104,36 @@ bool CRemoteConnect::ConnectionEstablished() {
 #endif
 
 	auto_ptr<const CECPacket> reply(SendRecvPacket(&packet));
-	
+
 	if (!reply.get()) {
 		server_reply = _("EC Connection Failed. Empty reply.");
 		Close();
 		return false;
 	}
-	
+
 	if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 		const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 		if (reason != NULL) {
 			server_reply = wxString(_("ExternalConn: Access denied because: ")) +
 				wxGetTranslation(reason->GetStringData());
 		} else {
-		    server_reply = _("ExternalConn: Access denied");
+			server_reply = _("ExternalConn: Access denied");
 		}
 		Close();
 		return false;
-    } else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-        server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
+	} else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
+		server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
 		Close();
 		return false;
-    } else {
-        if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-                server_reply = _("Succeeded! Connection established to aMule ") +
-                	reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData();
-        } else {
-                server_reply = _("Succeeded! Connection established.");
-        }
-    }
-    
+	} else {
+		if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
+			server_reply = _("Succeeded! Connection established to aMule ") +
+				reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData();
+		} else {
+			server_reply = _("Succeeded! Connection established.");
+		}
+	}
+
 	return true;	
 }
 
