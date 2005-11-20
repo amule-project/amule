@@ -428,9 +428,9 @@ AC_CACHE_SAVE
 # Other tests
 
 case "$USE_DEBUG" in
-yes)	DEBUG_FLAGS="-W -Wall -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
+yes)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
     ;;
-*)	DEBUG_FLAGS=""
+*)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef"
     ;;
 esac
 
