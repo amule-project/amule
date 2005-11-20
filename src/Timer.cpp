@@ -120,7 +120,11 @@ void CTimer::SetOwner(wxEvtHandler* owner, int id)
 bool CTimer::IsRunning() const
 {
 	wxMutexLocker lock(g_timerMutex);
-	return g_timerList.count(m_thread);
+	if (g_timerList.count(m_thread)) {
+		return m_thread->IsRunning();
+	}
+
+	return false;
 }
 
 
