@@ -309,14 +309,8 @@ void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 
 int CamuleGuiApp::OnExit()
 {
-	if (core_timer) {
-		// Stop the Core Timer
-		delete core_timer;
-	}
-
-	if (amuledlg) {
-		amuledlg->StopGuiTimer();
-	}
+	// Terminate all timer-threads
+	CTimer::TerminateTimers();
 	
 	return CamuleApp::OnExit();	
 }

@@ -33,19 +33,50 @@ class CTimerThread;
 /**
  * Replacement for wxTimer as it doesn't work on non-X builds
  */
-class CTimer {
-	wxEvtHandler *owner;
-	int id;
-
-	CTimerThread *thread;
-
-	public:
+class CTimer
+{
+public:
 	CTimer(wxEvtHandler *owner = 0, int timerid = -1);
 	~CTimer();
-	void SetOwner(wxEvtHandler *owner, int id = -1);
+	
+	void SetOwner(wxEvtHandler* owner, int id = -1);
+
+	/**
+	 * Starts the timer.
+	 *
+	 * @param millisecs The frequency of events.
+	 * @param oneShot Specifies if only one event should be produced.
+	 */
 	bool Start(int millisecs, bool oneShot = false);
+	
+	/** 
+	 * Returns true if the timer is running.
+	 */
 	bool IsRunning() const;
+
+	/**
+	 * Stops the timer. 
+	 *
+	 * Note that this does not delete the actual thread 
+	 * immediatly, but no new events will be queued after 
+	 * calling this function.
+	 */
 	void Stop();
+
+
+	/**
+	 * Terminates running timers.
+	 *
+	 * This function retuns only when all timer threads 
+	 * have been terminated and should be called on 
+	 * shutdown to ensure that no threads are left.
+	 */
+	static void TerminateTimers();
+	
+private:
+	CTimerThread* m_thread;
+	wxEvtHandler* m_owner;
+	int m_id;
 };
 
 #endif /* TIMER_H */
