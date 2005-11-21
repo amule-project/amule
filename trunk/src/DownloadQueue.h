@@ -297,7 +297,7 @@ public:
 	
 	CPartFile* GetFileByKadFileSearchID(uint32 id) const;
 	
-	bool CDownloadQueue::DoKademliaFileRequest();
+	bool	DoKademliaFileRequest();
 	
 	void	SetLastKademliaFileRequest()	{lastkademliafilerequest = ::GetTickCount();}
 	
