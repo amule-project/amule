@@ -72,6 +72,8 @@ COLORREF crPreset [ 16 ] = {
 	dcGrid=NULL;
 	bmapPlot=NULL;
 	bmapGrid=NULL;
+	memDC = NULL;
+	memBitmap = NULL;
 
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
@@ -112,15 +114,21 @@ COScopeCtrl::~COScopeCtrl()
 	// just to be picky restore the bitmaps for the two memory dc's
 	// (these dc's are being destroyed so there shouldn't be any leaks)
 	if (bmapOldGrid != NULL)
-		dcGrid->SelectObject(wxNullBitmap) ;  
+		dcGrid->SelectObject(wxNullBitmap);  
 	if (bmapOldPlot != NULL)
-		dcPlot->SelectObject(wxNullBitmap) ;  
+		dcPlot->SelectObject(wxNullBitmap);  
 	delete [] pdsTrends;
 
+	if (memDC) {
+		memDC->SelectObject(wxNullBitmap);
+	}
+	
+	delete memDC;
 	delete dcGrid;
 	delete dcPlot;
 	if(bmapPlot) delete bmapPlot;
 	if(bmapGrid) delete bmapGrid;
+	if (memBitmap) delete memBitmap;
 } // ~COScopeCtrl
 
 
@@ -335,26 +343,47 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 		PlotHistory(n, true, false);	// background because the bitmap is shifted only 
 	}									// once for all delayed points together)
 
+	
 	wxPaintDC dc(this);
-	wxMemoryDC memDC;
-	wxBitmap* memBitmap;
-	memBitmap=new wxBitmap(nClientWidth,nClientHeight);
-	memDC.SelectObject(*memBitmap);
-
-	if (memDC.Ok())
-	{	// first drop the grid on the memory dc
-	  memDC.Blit(0,0,nClientWidth,nClientHeight,dcGrid,0,0);
-		// now add the plot on top as a "pattern" via SRCPAINT.
-		// works well with dark background and a light plot
-	  memDC.Blit(0,0,nClientWidth,nClientHeight,dcPlot,0,0,wxOR);
-		// finally send the result to the display
-	  dc.Blit(0,0,nClientWidth,nClientHeight,&memDC,0,0);
-	}
-
-	memDC.SelectObject(wxNullBitmap);
-	delete memBitmap;
+	DoBlit();
+	dc.Blit(0,0,nClientWidth,nClientHeight, memDC,0,0);	
+	
 } // OnPaint
 
+void COScopeCtrl::DoBlit() 
+{
+	printf("Blitting...\n");
+	
+	if (!memDC) {
+		wxASSERT(!memBitmap);
+		memBitmap = new wxBitmap(nClientWidth,nClientHeight);		
+		memDC = new wxMemoryDC;
+		memDC->SelectObject(*memBitmap);
+	} else {
+		wxASSERT(memBitmap);
+		if ((memBitmap->GetHeight() != nClientHeight)
+			|| (memBitmap->GetWidth() != nClientWidth)) {
+			// New bitmap.
+			memDC->SelectObject(wxNullBitmap);
+			delete memBitmap;
+			memBitmap = new wxBitmap(nClientWidth,nClientHeight);
+			memDC->SelectObject(*memBitmap);
+		}
+	}
+
+	wxASSERT(memDC);
+	
+	// We have assured that we have a valid and resized if needed 
+	// wxDc and bitmap. Proceed to blit.
+	
+	memDC->Blit(0,0,nClientWidth,nClientHeight,dcGrid,0,0);
+	// now add the plot on top as a "pattern" via SRCPAINT.
+	// works well with dark background and a light plot
+	memDC->Blit(0,0,nClientWidth,nClientHeight,dcPlot,0,0,wxOR);
+	
+	// Ready.
+	
+}
 
 void COScopeCtrl::OnSize(wxSizeEvent& evt)
 {
@@ -573,4 +602,5 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	} else if (bRecreateGraph) {
 		RecreateGraph(true);
 	}
+
 } // OnTimer
