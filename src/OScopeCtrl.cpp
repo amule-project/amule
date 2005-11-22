@@ -352,8 +352,6 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 
 void COScopeCtrl::DoBlit() 
 {
-	printf("Blitting...\n");
-	
 	if (!memDC) {
 		wxASSERT(!memBitmap);
 		memBitmap = new wxBitmap(nClientWidth,nClientHeight);		
