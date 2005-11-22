@@ -115,6 +115,8 @@ protected:
 
 	wxMemoryDC* dcGrid;
 	wxMemoryDC* dcPlot;
+	wxMemoryDC* memDC;
+	wxBitmap* memBitmap;
 	wxBitmap* bmapOldGrid;
 	wxBitmap* bmapOldPlot;
 	wxBitmap* bmapGrid;
@@ -137,6 +139,7 @@ private:
 	void DrawPoints(const float *apf[], unsigned cntPoints);
 	unsigned GetPlotY(float fPlot, PlotData_t* ppds);
 	void InvalidateCtrl(bool bInvalidateGraph = true, bool bInvalidateGrid = true);
+	void DoBlit();
 };
 
 #endif // OSCOPECTRL_H
