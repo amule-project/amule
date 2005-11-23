@@ -29,6 +29,7 @@
 #include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <wx/defs.h>
 #include <wx/process.h>
+#include <wx/sstream.h>	
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
@@ -176,26 +177,6 @@ CamuleApp::CamuleApp()
 	StartTickTimer();
 	
 	// Initialization	
-#if !wxCHECK_VERSION(2,5,1) && defined(__WXGTK20__)
-	wxString msg;
-	
-	msg << wxT("You have attempted to use a version of wxGTK older than\n")
-		<< wxT("the 2.5.1 release, compiled against GTK2! This combination is not\n")
-		<< wxT("supported by aMule due to many known problems. If you wish to use\n")
-		<< wxT("wxGTK compiled against GTK2, please upgrade to a more recent version\n")
-		<< wxT("of wxGTK.\n\n")
-
-		<< wxT("More information can be found at:\n")
-		<< wxT(" - http://www.amule.org\n")
-		<< wxT(" - http://wiki.amule.org\n\n")
-
-		<< wxT("Current version is: aMule ") << GetMuleVersion() << wxT("\n");
-
-	printf("FATAL ERROR! %s\n", (const char*)unicode2char(msg));
-
-	exit(1);
-#endif
-
 	m_app_state = APP_STATE_STARTING;
 	
 	clientlist	= NULL;
@@ -530,14 +511,8 @@ bool CamuleApp::OnInit()
 	wxConfig::Set( cfg );
 
 
-#if wxCHECK_VERSION(2,5,3)
 	applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 	if ( !applog->Ok() ) {
-#else
-	applog = new wxFile();
-	applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true);
-	if ( !applog->IsOpened() ) {
-#endif
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
 		delete applog;
@@ -1507,11 +1482,7 @@ bool CamuleApp::AddServer(CServer *srv, bool fromUser)
 	return false;
 }
 
-//
-// Kry Yay, unicoding via streams
-#if wxCHECK_VERSION(2,5,3)
-	#include <wx/sstream.h>	
-#endif
+
 void CamuleApp::AddLogLine(const wxString &msg)
 {
 	// At most one trailing new-line, which we add
@@ -1523,15 +1494,10 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	wxString full_line = wxDateTime::Now().FormatISODate() + wxT(" ") + 
 		wxDateTime::Now().FormatISOTime() + wxT(": ") + message + wxT("\n");
 	
-#if wxCHECK_VERSION(2,5,3)
 	wxStringInputStream stream(full_line);
 	
 	(*applog) << stream;
 	applog->Sync();
-#else
-	applog->Write(full_line);
-	applog->Flush();
-#endif
 	
 	if (enable_stdout_log) { 
 		printf("%s", (const char*)unicode2char(full_line));
@@ -1589,15 +1555,9 @@ wxString CamuleApp::GetLog(bool reset)
 #endif
 	delete [] tmp_buffer;
 	if ( reset ) {
-#if wxCHECK_VERSION(2,5,3)
 		delete applog;
 		applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
 		if ( applog->Ok() ) {
-#else
-		applog->Close();
-		applog->Create(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"), true);
-		if ( applog->IsOpened() ) {
-#endif
 			AddLogLine(_("Log has been reset"));
 		} else {
 			delete applog;

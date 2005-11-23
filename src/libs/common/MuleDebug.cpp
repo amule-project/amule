@@ -40,17 +40,14 @@
 #endif
 
 
-#if wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER && defined(__WXMSW__)
+#if wxUSE_STACKWALKER && defined(__WXMSW__)
 	#include <wx/stackwalk.h>
 #elif HAVE_BFD
 	#include <ansidecl.h>
 	#include <bfd.h>
 #endif
 
-#if wxCHECK_VERSION(2, 5, 0)
-	#include <wx/arrstr.h>
-#endif
-
+#include <wx/arrstr.h>
 #include <wx/utils.h>
 
 /**
@@ -99,7 +96,7 @@ void InstallMuleExceptionHandler()
 // Make it 1 for getting the file path also
 #define TOO_VERBOSE_BACKTRACE 0 
 
-#if wxCHECK_VERSION(2,6,0) && wxUSE_STACKWALKER && defined(__WXMSW__)
+#if wxUSE_STACKWALKER && defined(__WXMSW__)
 
 // Derived class to define the actions to be done on frame print.
 // I was tempted to name it MuleSkyWalker

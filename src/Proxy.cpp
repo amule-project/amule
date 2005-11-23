@@ -1303,10 +1303,6 @@ CSocketServerProxy& CSocketServerProxy::Write(const void *buffer, wxUint32 nbyte
 // CDatagramSocketProxy
 //------------------------------------------------------------------------------
 
-#if !wxCHECK_VERSION(2,5,3)
-IMPLEMENT_ABSTRACT_CLASS(CDatagramSocketProxy, wxDatagramSocket)
-#endif
-
 CDatagramSocketProxy::CDatagramSocketProxy(
 	wxIPaddress &address, wxSocketFlags flags, const CProxyData *proxyData)
 :

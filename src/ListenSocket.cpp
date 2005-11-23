@@ -27,7 +27,6 @@
 
 #include "ClientTCPSocket.h"	// Needed for CClientRequestSocket
 #include "Logger.h"			// Needed for AddLogLineM
-#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "Statistics.h"		// Needed for theStats
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp

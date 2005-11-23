@@ -108,7 +108,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     WX_VERSION=""
     no_wx=""
 
-    min_wx_version=ifelse([$1], ,2.4.2,$1)
+    min_wx_version=ifelse([$1], ,2.6.0,$1)
 
     WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args"
 
@@ -289,7 +289,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
       WXBASE_VERSION=""
       no_wxbase=""
 
-      min_wxbase_version=ifelse([$1], ,2.4.2,$1)
+      min_wxbase_version=ifelse([$1], ,2.6.0,$1)
       AC_MSG_CHECKING(for wxWidgets base version >= $min_wxbase_version)
 
       WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"

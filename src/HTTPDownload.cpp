@@ -197,11 +197,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		url_read_stream = GetInputStream(&url_handler, m_url);
 		
 		if (!url_read_stream) {
-			#if wxCHECK_VERSION(2,5,1)			
-				throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
-			#else
-				throw(wxString(CFormat(wxT("The URL %s returned a error!")) % m_url));
-			#endif
+			throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
 		}
 		
 		int download_size = url_read_stream->GetSize();
@@ -318,52 +314,37 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 
 	printf("Host: %s:%i\n",(const char*)unicode2char(host),port);
 	printf("URL: %s\n",(const char*)unicode2char(url));
+	printf("Response: %i (Error: %i)\n",(*url_handler)->GetResponse(), (*url_handler)->GetError());
+
+	if (!(*url_handler)->GetResponse()) {
+		printf("WARNING: Void response on stream creation\n");
+		// WTF? Why does this happen?
+		// This is probably produced by an already existing connection, because
+		// the input stream is created nevertheless. However, data is not the same.
+		delete url_read_stream;
+		throw wxString(wxT("Invalid response from http download server"));
+	}
+
+	if ((*url_handler)->GetResponse() == 301  // Moved permanently
+		|| (*url_handler)->GetResponse() == 302 // Moved temporarily
+		// What about 300 (multiple choices)? Do we have to handle it?
+		) { 
 		
-	#if wxCHECK_VERSION(2,5,1) 
-		printf("Response: %i (Error: %i)\n",(*url_handler)->GetResponse(), (*url_handler)->GetError());
-	
-		if (!(*url_handler)->GetResponse()) {
-			printf("WARNING: Void response on stream creation\n");
-			// WTF? Why does this happen?
-			// This is probably produced by an already existing connection, because
-			// the input stream is created nevertheless. However, data is not the same.
-			delete url_read_stream;
-			throw wxString(wxT("Invalid response from http download server"));
-		}
-	
-		if ((*url_handler)->GetResponse() == 301  // Moved permanently
-			|| (*url_handler)->GetResponse() == 302 // Moved temporarily
-			// What about 300 (multiple choices)? Do we have to handle it?
-			) { 
+		// We have to remove the current stream.
+		delete url_read_stream;
 			
-			// We have to remove the current stream.
-			delete url_read_stream;
-				
-			wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
-			
-			(*url_handler)->Destroy();
-			if (!new_location.IsEmpty()) {
-				(*url_handler) = new wxHTTP;
-				url_read_stream = GetInputStream(url_handler, new_location);
-			} else {
-				printf("ERROR: Redirection code received with no URL\n");
-				url_handler = NULL;
-				url_read_stream = NULL;
-			}
-		}
-		
-	#else
-		// This is NOT safe at all. Just a workaround - wx2.4 does not have wxHTTP::GetResponse
 		wxString new_location = (*url_handler)->GetHeader(wxT("Location"));
+		
+		(*url_handler)->Destroy();
 		if (!new_location.IsEmpty()) {
-			delete url_read_stream;
-			(*url_handler)->Destroy();
-			// Maybe a 301/302
-			printf("Redirected?\n");
 			(*url_handler) = new wxHTTP;
 			url_read_stream = GetInputStream(url_handler, new_location);
+		} else {
+			printf("ERROR: Redirection code received with no URL\n");
+			url_handler = NULL;
+			url_read_stream = NULL;
 		}
-	#endif
-	
+	}
+		
 	return url_read_stream;
 }

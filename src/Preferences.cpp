@@ -27,13 +27,8 @@
 #include <cstdlib>
 
 #include <wx/defs.h>
-
-#if wxCHECK_VERSION(2,5,1)
-	#include <wx/stopwatch.h>
-#endif
-
+#include <wx/stopwatch.h>
 #include <wx/timer.h> // Needed for wxGetLocalTimeMillis
-
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
@@ -167,7 +162,6 @@ uint32		CPreferences::s_nWebPageRefresh;
 bool		CPreferences::s_bWebLowEnabled;
 bool		CPreferences::s_showCatTabInfos;
 uint32		CPreferences::s_allcatType;
-uint32		CPreferences::s_desktopMode;
 uint8		CPreferences::s_NoNeededSources;
 bool		CPreferences::s_DropFullQueueSources;
 bool		CPreferences::s_DropHighQueueRankingSources;
@@ -1001,7 +995,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),		s_bDisableQueueList, false ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
 
-	s_MiscList.push_back(	 MkCfg_Int( wxT("/Statistics/DesktopMode"), s_desktopMode, 4 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Address"),			s_Addr,	wxEmptyString ) );

@@ -40,11 +40,7 @@
 #endif
 
 #ifndef __SYSTRAY_DISABLED__
-	#ifdef USE_WX_TRAY
-		#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
-	#else
-		#include "SysTray.h"		// Needed for TBN_DLOAD
-	#endif
+	#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
 #endif
 
 #include "PartFile.h"		// Interface declarations.
@@ -2305,7 +2301,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 
 	AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	
-#ifndef __SYSTRAY_DISABLED__
+#if !defined(AMULE_DAEMON) && !defined(__SYSTRAY_DISABLED__)
 	Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);
 #endif
 }
@@ -3760,15 +3756,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
     // is it ok ?
     m_stopped = 0;
 
-//	m_SrcpartFrequency.SetCount(m_iPartCount);
-	#if wxCHECK_VERSION(2, 5, 0)
 	m_SrcpartFrequency.SetCount(m_iPartCount);
-	#else
-	// wx2.4 has no SetCount.
-	if (m_SrcpartFrequency.Count() < m_iPartCount) {
-		m_SrcpartFrequency.Add(0, m_iPartCount - m_SrcpartFrequency.Count());
-	}
-	#endif
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
 		m_iDownPriority-= 10;

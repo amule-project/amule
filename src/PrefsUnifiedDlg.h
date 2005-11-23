@@ -126,7 +126,6 @@ protected:
 	void OnButtonBrowseSkin(wxCommandEvent &event);
 	void OnButtonBrowseApplication(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);
-	void OnButtonSystray(wxCommandEvent& event);
 	void OnButtonEditAddr(wxCommandEvent& event);
 	void OnButtonColorChange(wxCommandEvent &event);
 	void OnButtonIPFilterReload(wxCommandEvent &event);

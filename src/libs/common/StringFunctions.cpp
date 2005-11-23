@@ -190,20 +190,9 @@ wxString UnescapeHTML( const wxString& str )
 
 wxString validateURI(const wxString& url)
 {
-#if wxCHECK_VERSION_FULL(2,5,3,2)
 	wxURI uri(url);
 	
 	return uri.BuildURI();
-#else
-	wxString strURI = wxURL::ConvertToValidURI(url);
-	
-	// The following cause problems, so we escape them
-	strURI.Replace(wxT("\""), wxT("%22")); 
-	strURI.Replace(wxT("'"),  wxT("%27")); 
-	strURI.Replace(wxT("`"),  wxT("%60")); 
-	
-	return strURI;
-#endif
 }
 
 

@@ -90,13 +90,6 @@ wxString GetDocumentsDir()
 	return doGetDirectory(kDocumentsFolderType);
 }
 
-#if !wxCHECK_VERSION(2,6,0)
-wxString GetUserDataDir()
-{
-	return doGetDirectory(kApplicationSupportFolderType) + wxT("/aMule");
-}
-#endif
-
 
 
 #elif defined(__WINDOWS__)
@@ -106,7 +99,7 @@ wxString GetDocumentsDir()
 	return doGetDirectory(CSIDL_PERSONAL);
 }
 
-#if !wxCHECK_VERSION(2,6,0) || (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
+#if (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
 wxString GetUserDataDir()
 {
 	return doGetDirectory(CSIDL_APPDATA) + wxT("\\aMule");
@@ -121,13 +114,6 @@ wxString GetDocumentsDir()
 {
 	return doGetDirectory(0);
 }
-
-#if !wxCHECK_VERSION(2,6,0)
-wxString GetUserDataDir()
-{	
-	return doGetDirectory(0) + wxT("/.aMule");
-}
-#endif
 
 
 #endif

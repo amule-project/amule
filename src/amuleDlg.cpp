@@ -51,13 +51,7 @@
 #include "amuleDlg.h"		// Interface declarations.
 
 #ifndef __SYSTRAY_DISABLED__
-	#ifndef USE_WX_TRAY // WX_TRAY icons are on MuleTrayIcon class
-		#include "pixmaps/mule_TrayIcon.ico.xpm"
-		#include "pixmaps/mule_Tr_yellow.ico.xpm"
-		#include "pixmaps/mule_Tr_grey.ico.xpm"
-	#else 
-		#include "MuleTrayIcon.h"
-	#endif // USE_WX_TRAY
+	#include "MuleTrayIcon.h"
 #endif // __SYSTRAY_DISABLED__
 
 #include "OtherFunctions.h"	// Needed for CastItoIShort
@@ -70,7 +64,6 @@
 #include "SearchList.h"		// Needed for CSearchList
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ServerList.h"		// Needed for CServerList
-#include "SysTray.h"		// Needed for CSysTray
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
@@ -151,10 +144,8 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	is_safe_state = false;
 	
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
-	#if wxCHECK_VERSION(2,6,0)
-		wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
-		wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
-	#endif
+	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
+	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
 	
 	last_iconizing = 0;
 	prefs_dialog = NULL;
@@ -206,9 +197,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	AddLogLineM(false, wxEmptyString);
 	AddLogLineM(false, wxT(" - ") + CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
-	#if wxCHECK_VERSION(2,5,0)
 	AddLogLineM(false, wxT("   ") + CFormat(_("Running on %s")) % wxGetOsDescription());
-	#endif
 	AddLogLineM(false, wxT(" - ") + wxString(_("Visit http://www.amule.org to check if a new version is available.")));
 	AddLogLineM(false, wxEmptyString);
 
@@ -259,11 +248,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) { 
 		#ifndef __SYSTRAY_DISABLED__
-		 	if (thePrefs::UseTrayIcon() && 
-			#ifndef USE_WX_TRAY
-				(thePrefs::GetDesktopMode() != 4) &&
-			#endif
-		 		thePrefs::DoMinToTray()) {
+		 	if (thePrefs::UseTrayIcon() && thePrefs::DoMinToTray()) {
 					Hide_aMule();
 				} else {
 					Iconize(TRUE);
@@ -337,107 +322,30 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	dlg->SetFocus();
 }
 
+
 #ifndef __SYSTRAY_DISABLED__
-
-	#ifndef USE_WX_TRAY
-		class QueryDlg : public wxDialog {
-		public:
-			QueryDlg(wxWindow* parent) : wxDialog(
-				parent, 21373, _("Desktop integration"), wxDefaultPosition, wxDefaultSize,
-				wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU )
-			{
-				wxSizer* content=desktopDlg(this, TRUE);
-				content->Show(this, TRUE);
-			};
-		protected:
-			void OnOk(wxCommandEvent& WXUNUSED(evt)) { EndModal(0); };
-			DECLARE_EVENT_TABLE()
-		};
-
-		BEGIN_EVENT_TABLE(QueryDlg, wxDialog)
-			EVT_BUTTON(ID_OK, QueryDlg::OnOk)
-		END_EVENT_TABLE()
-	
-		void CamuleDlg::changeDesktopMode()
-		{
-			QueryDlg query(this);
-
-			wxRadioBox* radiobox = CastByID( ID_SYSTRAYSELECT, &query, wxRadioBox );
-
-			if ( thePrefs::GetDesktopMode() ) {
-				radiobox->SetSelection( thePrefs::GetDesktopMode() - 1 );
+	void CamuleDlg::UpdateTrayIcon(int percent)
+	{
+		// set trayicon-icon
+		if(!theApp.IsConnected()) {
+			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+		} else {
+			if(theApp.IsConnectedED2K() && theApp.serverconnect->IsLowID()) {
+				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 			} else {
-				radiobox->SetSelection( 0 );
-			}
-
-			query.ShowModal();
-
-			thePrefs::SetDesktopMode( radiobox->GetSelection() + 1 );
-		}
-
-		void CamuleDlg::UpdateTrayIcon(int percent)
-		{
-			// ei hienostelua. tarvii kuitenki pelleill?gtk:n kanssa
-			// Whatever that means, it's working.
-			int pVals16[1] = {percent};
-			char** data;
-			if(!theApp.serverconnect) {
-				data = mule_Tr_grey_ico;
-			} else {
-				if (theApp.IsConnected()) {
-					if(theApp.serverconnect->IsLowID()) {
-						data = mule_Tr_yellow_ico;
-					} else {
-						data = mule_TrayIcon_ico;						
-					}
-				} else {
-					data = mule_Tr_grey_ico;
-				}
-			}		
-			m_wndTaskbarNotifier->SetTrayIcon(data, pVals16 );
-		}
-
-		
-		void CamuleDlg::CreateSystray()
-		{
-
-			// create the docklet (at this point we already have preferences!)
-			if( !thePrefs::GetDesktopMode() ) {
-				// ok, it's not set yet.
-				changeDesktopMode();
-			}
-
-			m_wndTaskbarNotifier = new CSysTray(this, (DesktopMode)thePrefs::GetDesktopMode(), wxString::Format(wxT("%s %s"), wxT(PACKAGE), wxT(VERSION)));
-			// This will effectively show the Tray Icon.
-			UpdateTrayIcon(0);
-		}
-
-		
-	#else
-		
-		void CamuleDlg::UpdateTrayIcon(int percent)
-		{
-			// set trayicon-icon
-			if(!theApp.IsConnected()) {
-				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
-			} else {
-				if(theApp.IsConnectedED2K() && theApp.serverconnect->IsLowID()) {
-					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
-				} else {
-					m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
-				}
+				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
 			}
 		}
+	}
 			
-		void CamuleDlg::CreateSystray()
-		{
-			m_wndTaskbarNotifier = new CMuleTrayIcon();
-			wxASSERT(m_wndTaskbarNotifier->IsOk());			
-			// This will effectively show the Tray Icon.
-			UpdateTrayIcon(0);
-		}	
+	void CamuleDlg::CreateSystray()
+	{
+		m_wndTaskbarNotifier = new CMuleTrayIcon();
+		wxASSERT(m_wndTaskbarNotifier->IsOk());			
+		// This will effectively show the Tray Icon.
+		UpdateTrayIcon(0);
+	}	
 		
-	#endif
 
 	// This one is common to both implementations
 	void CamuleDlg::RemoveSystray()
@@ -447,8 +355,8 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 			m_wndTaskbarNotifier = NULL;
 		}
 	}
-	
 #endif // __SYSTRAY_DISABLED__
+
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
@@ -1100,11 +1008,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 #ifndef __SYSTRAY_DISABLED__
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray() 
-		#ifndef USE_WX_TRAY
-			&& (thePrefs::GetDesktopMode() != 4) && thePrefs::UseTrayIcon()
-		#endif
-		) {
+	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
 		if (evt.Iconized()) {
 			Hide_aMule(false);
 		} else {
@@ -1191,12 +1095,9 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 
 void CamuleDlg::SetMessagesTool()
 {
-#if wxCHECK_VERSION(2, 5, 0)
 	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
-#else
-	int pos = 6;
-#endif	
+	
 	m_wndToolbar->DeleteTool(ID_BUTTONMESSAGES);
 	m_wndToolbar->InsertTool(pos,ID_BUTTONMESSAGES, _("Messages"), 
 		amuleDlgImages( m_CurrentBlinkBitmap ), 

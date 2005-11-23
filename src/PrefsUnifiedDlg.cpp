@@ -110,7 +110,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_SPINCTRL(IDC_TOOLTIPDELAY,		PrefsUnifiedDlg::OnToolTipDelayChange)
 
 	EVT_BUTTON(IDC_EDITADR,			PrefsUnifiedDlg::OnButtonEditAddr)
-	EVT_BUTTON(IDC_DESKTOPMODE,		PrefsUnifiedDlg::OnButtonSystray)
 	EVT_BUTTON(IDC_IPFRELOAD,		PrefsUnifiedDlg::OnButtonIPFilterReload)
 	EVT_BUTTON(IDC_COLOR_BUTTON,		PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_BUTTON(IDC_IPFILTERUPDATE,		PrefsUnifiedDlg::OnButtonIPFilterUpdate)
@@ -233,10 +232,6 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
-			#if defined(USE_WX_TRAY) || defined(__SYSTRAY_DISABLED__)
-					FindWindow(IDC_DESKTOPMODE)->Show(false);
-					IDC_MISC_OPTIONS->Remove(FindWindow(IDC_DESKTOPMODE));
-			#endif /* USE_WX_TRAY || __SYSTRAY_DISABLED__ */
 			#ifdef __WXMSW__ 
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
 				wxChoice *browserCheck = CastChild(IDC_BROWSER, wxChoice);
@@ -299,11 +294,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	#ifdef __SYSTRAY_DISABLED__
 		FindWindow(IDC_ENABLETRAYICON)->Enable(false);
 		FindWindow(IDC_MINTRAY)->Enable(false);
-		#ifndef USE_WX_TRAY
-			FindWindow(IDC_DESKTOPMODE)->Enable(false);
-		#endif
 	#endif
-	
 }
 
 
@@ -391,9 +382,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
-	#ifndef USE_WX_TRAY
-		FindWindow(IDC_DESKTOPMODE)->Enable(thePrefs::UseTrayIcon());
-	#endif
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);
@@ -711,7 +699,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_ENABLETRAYICON:
 			#ifndef __SYSTRAY_DISABLED__
 				FindWindow(IDC_MINTRAY)->Enable(value);
-				FindWindow(IDC_DESKTOPMODE)->Enable(value);
 				if (value) {
 					theApp.amuledlg->CreateSystray();
 				} else {
@@ -766,25 +753,6 @@ void PrefsUnifiedDlg::OnBrowserChange( wxCommandEvent& evt )
 #ifndef __WXMSW__
 	FindWindow( IDC_BROWSERTABS )->Enable( !enable );
 #endif
-}
-
-void PrefsUnifiedDlg::OnButtonSystray(wxCommandEvent& WXUNUSED(evt))
-{
-	#ifndef __SYSTRAY_DISABLED__
-		#ifndef USE_WX_TRAY
-			theApp.amuledlg->changeDesktopMode();
-
-			// Ensure that the dialog is still visible afterwards
-			Raise();
-			SetFocus();
-		#else
-			// Should never happen, button is not shown.
-			wxASSERT(0);
-		#endif
-	#else
-			// Should never happen, button is not enabled.
-			wxASSERT(0);	
-	#endif
 }
 
 

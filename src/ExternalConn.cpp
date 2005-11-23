@@ -54,7 +54,6 @@
 #include "GuiEvents.h"		// Needed for Notify_* macros
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
 #include "Statistics.h"		// Needed for theStats
-#include "gsocket-fix.h"
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "kademlia/kademlia/Kademlia.h"
 

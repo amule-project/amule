@@ -50,11 +50,7 @@ class wxTimerEvent;
 class wxTextCtrl;
 
 #ifndef __SYSTRAY_DISABLED__
-	#ifdef USE_WX_TRAY
-		class CMuleTrayIcon;		
-	#else
-		class CSysTray;
-	#endif
+	class CMuleTrayIcon;		
 #endif
 
 #define MP_RESTORE	4001
@@ -155,10 +151,6 @@ public:
 
 
 #ifndef __SYSTRAY_DISABLED__ 
-	#ifndef USE_WX_TRAY
-		// Has to be done in own method
-		void changeDesktopMode();
-	#endif
 	void CreateSystray();
 	void RemoveSystray();	
 #endif
@@ -217,11 +209,7 @@ private:
 // Systray functions
 #ifndef __SYSTRAY_DISABLED__
 	void UpdateTrayIcon(int percent);
-	#ifdef USE_WX_TRAY
-		CMuleTrayIcon* m_wndTaskbarNotifier;
-	#else
-		CSysTray *m_wndTaskbarNotifier;
-	#endif
+	CMuleTrayIcon* m_wndTaskbarNotifier;
 #endif
 
 	DialogType m_nActiveDialog;
