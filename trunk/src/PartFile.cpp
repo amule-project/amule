@@ -39,10 +39,7 @@
 	#include "Color.h"              // Needed for RGB, DarkenColour
 #endif
 
-#ifndef __SYSTRAY_DISABLED__
-	#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
-#endif
-
+#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
 #include "PartFile.h"		// Interface declarations.
 #include "OtherFunctions.h"	// Needed for nstrdup
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -2301,7 +2298,7 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 
 	AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	
-#if !defined(AMULE_DAEMON) && !defined(__SYSTRAY_DISABLED__)
+#ifndef AMULE_DAEMON
 	Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);
 #endif
 }

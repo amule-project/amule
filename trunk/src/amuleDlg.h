@@ -49,9 +49,7 @@ class PrefsUnifiedDlg;
 class wxTimerEvent;
 class wxTextCtrl;
 
-#ifndef __SYSTRAY_DISABLED__
-	class CMuleTrayIcon;		
-#endif
+class CMuleTrayIcon;		
 
 #define MP_RESTORE	4001
 #define MP_CONNECT	4002
@@ -150,10 +148,8 @@ public:
 	wxString GenWebSearchUrl( const wxString &filename, WebSearch provider );
 
 
-#ifndef __SYSTRAY_DISABLED__ 
 	void CreateSystray();
 	void RemoveSystray();	
-#endif
 
 	CTransferWnd*		transferwnd;
 	CServerWnd*		serverwnd;
@@ -207,10 +203,8 @@ private:
 	wxTimer* gui_timer;
 
 // Systray functions
-#ifndef __SYSTRAY_DISABLED__
 	void UpdateTrayIcon(int percent);
 	CMuleTrayIcon* m_wndTaskbarNotifier;
-#endif
 
 	DialogType m_nActiveDialog;
 
