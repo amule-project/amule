@@ -108,7 +108,7 @@ void CPrefs::readFile()
 			m_clientID = file.ReadUInt128();
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(false, logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
+		AddDebugLogLineM(true, logKadPrefs, wxT("IO error while reading prefs: ") + e.what());
 	}
 }
 
@@ -124,7 +124,7 @@ void CPrefs::writeFile()
 			file.Close();
 		}
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(false, logKadPrefs, wxT("IO failure while saving prefs: ") + e.what());
+		AddDebugLogLineM(true, logKadPrefs, wxT("IO failure while saving kad-prefs: ") + e.what());
 	}
 }
 

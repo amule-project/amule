@@ -192,7 +192,7 @@ void CRoutingZone::writeFile(void)
 		}
 		AddDebugLogLineM( false, logKadRouting, wxString::Format(wxT("Wrote %d contacts to file."), count));
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(false, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
+		AddDebugLogLineM(true, logKadRouting, wxT("IO failure in CRoutingZone::writeFile: ") + e.what());
 	}
 }
 

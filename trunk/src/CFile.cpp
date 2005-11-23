@@ -34,6 +34,7 @@
 #include <unistd.h>				// Needed for close(2)
 #include <cstdio>       		// SEEK_xxx constants
 #include <fcntl.h>       		// O_RDONLY &c
+#include <errno.h>				// errno
 
 #include <wx/filefn.h>
 
@@ -127,6 +128,11 @@ enum {
 	#define SEEK_FD(x, y, z)	lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
 #endif
+
+
+CSeekFailureException::CSeekFailureException(const wxString& desc)
+	: CIOFailureException(wxT("SeekFailure"), desc)
+{}
 
 
 CFile::CFile()
@@ -313,17 +319,26 @@ sint64 CFile::doSeek(sint64 offset) const
 	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot seek on closed file."));
 	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
 	
-	return SEEK_FD(m_fd, offset, SEEK_SET);
+	sint64 result = SEEK_FD(m_fd, offset, SEEK_SET);
+
+	if (result == offset) {
+		return result;
+	} else if (result == wxInvalidOffset) {
+		throw CSeekFailureException(wxString(wxT("Seeking failed, with errno: ")) << errno);
+	} else {
+		throw CSeekFailureException(wxT("Seeking returned incorrect position"));		
+	}
 }
 
 
 uint64 CFile::GetPosition() const
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot get position on closed file."));
+	MULE_VALIDATE_STATE(IsOpened(), wxT("Cannot get position in closed file."));
 	
 	sint64 pos = TELL_FD(m_fd);
-
-	MULE_VALIDATE_STATE(pos >= 0, wxT("Failed to retrieve position in file."));
+	if (pos == wxInvalidOffset) {
+		throw CSeekFailureException(wxT("Failed to retrieve position in file."));
+	}
 	
 	return pos;
 }
@@ -333,13 +348,15 @@ uint64 CFile::GetLength() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot get length of closed file."));
 
-	uint64 pos = GetPosition();
+	sint64 pos = GetPosition();
 	sint64 len = SEEK_FD(m_fd, 0, SEEK_END);
 
-	MULE_VALIDATE_STATE(len >= 0, wxT("CFile: Failed to retreive length of file."));
-	
-	if (SEEK_FD(m_fd, pos, SEEK_SET) == wxInvalidOffset) {
-		MULE_VALIDATE_STATE(false, wxT("CFile: Failed to restore pointer position."));
+	if (len == wxInvalidOffset) {
+		throw CSeekFailureException(wxT("Failed to retrieve length of file."));
+	}
+
+	if (SEEK_FD(m_fd, pos, SEEK_SET) != pos) {
+		throw CSeekFailureException(wxT("Failed to restore pointer position."));
 	}	
 	
 	return len;

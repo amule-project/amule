@@ -366,7 +366,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 		try {
 			CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
+			AddDebugLogLineM(true, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
 			return false;
 		}
 		
@@ -386,7 +386,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 		try {
 			CreateHashFromFile(&file, togo, NULL, pBlockAICHHashTree);
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
+			AddDebugLogLineM(true, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
 			return false;
 		}	
 	}

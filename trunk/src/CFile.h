@@ -177,4 +177,13 @@ private:
 	wxString m_filePath;
 };
 
+
+/**
+ * This exception is thrown by CFile if a seek or tell fails.
+ */
+struct CSeekFailureException : public CIOFailureException {
+	CSeekFailureException(const wxString& desc);
+};
+
+
 #endif // CFILE_H

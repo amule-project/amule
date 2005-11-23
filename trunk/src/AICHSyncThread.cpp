@@ -179,8 +179,8 @@ void* CAICHSyncThread::Entry()
 		wxRemoveFile(fullpath);
 		
 		return 0;
-	} catch (const CIOFailureException&) {
-		AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist. Aborting."));
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
 		
 		return 0;		
 	}
