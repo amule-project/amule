@@ -115,13 +115,17 @@ wxBitmap CCatDialog::MakeBitmap( wxColour colour )
 {
 	wxBitmap bitmap( 16, 16 );
 
-	wxMemoryDC dc;
+	// The DC is marked static to avoid a memory-leak which occurs
+	// when GTK2 is used with wxWidgets versions before 2.6.2.
+	static wxMemoryDC dc;
 	dc.SelectObject(bitmap);
 
 	dc.SetBrush( wxBrush( colour, wxSOLID ) );
 	dc.DrawRectangle( 0, 0, 16, 16 );
 	
-	dc.SetBrush(wxNullBrush);
+	// A valid brush must be set, otherwise calls to SetObject will
+	// fail once wxNullBitmap has been selected.
+	dc.SetBrush(*wxTRANSPARENT_BRUSH);
 	dc.SelectObject(wxNullBitmap);
 
 	return bitmap;

@@ -1362,7 +1362,10 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 
 			// DO NOT DRAW IT ALL THE TIME
 			uint32 dwTicks = GetTickCount();
-			wxMemoryDC cdcStatus;
+			
+			// It is marked static to avoid a memory-leak which occurs
+			// when GTK2 is used with wxWidgets versions before 2.6.2.
+			static wxMemoryDC cdcStatus;
 			
 			if ( item->dwUpdated < dwTicks || !item->status || iWidth != item->status->GetWidth() ) {
 				if ( item->status == NULL) {
@@ -1645,7 +1648,10 @@ void CDownloadListCtrl::DrawSourceItem(
 			
 				if ( item->type != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
-					wxMemoryDC cdcStatus;
+					
+					// It is marked static to avoid a memory-leak which occurs
+					// when GTK2 is used with wxWidgets versions before 2.6.2.
+					static wxMemoryDC cdcStatus;
 
 					if ( item->dwUpdated < dwTicks || !item->status || 
 							iWidth != item->status->GetWidth() ) {

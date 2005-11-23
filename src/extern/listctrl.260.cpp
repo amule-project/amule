@@ -2117,6 +2117,7 @@ void wxListTextCtrl::OnKillFocus( wxFocusEvent &event )
     event.Skip();
 }
 
+
 //-----------------------------------------------------------------------------
 //  wxListMainWindow
 //-----------------------------------------------------------------------------
@@ -2641,12 +2642,17 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         }
 		
 		{
-			// This DC is used to write to the bitmaps used to double-buffer
-			wxMemoryDC dbDC( &dc );
-			// The font doesn't get set for some reason ...
-			dbDC.SetFont( GetFont() );
+			// This DC is used to write to the bitmaps used to double-buffer.
+			// It is marked static to avoid a memory-leak which occurs
+			// when GTK2 is used with wxWidgets versions before 2.6.2.
+			static wxMemoryDC dbDC;
+			
 			// We use this for double-buffer
 			wxBitmap buffer(1, 1);
+			
+			// Ready the DC
+			dbDC.SetFont(GetFont());
+			dbDC.SelectObject(buffer);
 
 			for ( size_t line = visibleFrom; line <= visibleTo; line++ ) {
 				rectLine = GetLineRect(line);
@@ -2694,6 +2700,12 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
 				dc.Blit(rectLine.x, rectLine.y, rectLine.width, rectLine.height, &dbDC, 0, 0);		
 			}
+
+			// Due to a quirk of wxMemoryDC we need to have valid a brush set before
+			// we unselect the bitmap, otherwise, future attempts at selecting a bitmap
+			// object will fail.
+			dbDC.SetBrush(*wxTRANSPARENT_BRUSH);
+			dbDC.SelectObject(wxNullBitmap);			
 		}
 		
 		// Clean up empty spaces because we ignore ERASE_BACKGROUND events
