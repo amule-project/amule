@@ -272,6 +272,7 @@ struct CEOFException : public CSafeIOException {
  * or write the specified number of bytes.
  */
 struct CIOFailureException : public CSafeIOException {
+	CIOFailureException(const wxString& type, const wxString& desc);
 	CIOFailureException(const wxString& desc);
 };
 

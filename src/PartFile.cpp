@@ -666,7 +666,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			
 		metFile.Close();
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, CFormat( _("IO failure while loading '%s': %s") )
+		AddDebugLogLineM(true, logPartFile, CFormat( wxT("IO failure while loading '%s': %s") )
 			% m_partmetfilename
 			% e.what() );
 		return false;
@@ -1090,7 +1090,7 @@ void CPartFile::SaveSourceSeeds()
 			% m_fullname
 			% m_strFileName);
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(false, CFormat( _("Error saving partfile's seeds file (%s - %s): %s") )
+		AddDebugLogLineM(true, logPartFile, CFormat( wxT("Error saving partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
 				% e.what() );
 		
@@ -2560,7 +2560,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		try {
 			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
 		} catch (const CIOFailureException& e) {
-			AddLogLineM(true, CFormat( _("IO failure while hashing downloaded part of partfile '%s'.")) % m_strFileName);
+			AddLogLineM(true, CFormat( wxT("IO failure while hashing downloaded part of partfile '%s': %s"))
+				% m_strFileName % e.what());
 		}
 
 		if (GetPartCount() > 1) {
@@ -3136,7 +3137,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 			m_hpartfile.Seek(item->start);
 			m_hpartfile.Write(item->data, lenData);
 		} catch (const CIOFailureException& e) {
-			AddLogLineM(true, wxT("WARNING: Error while saving part-file: ") + e.what());
+			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
 		}
 
 		// Decrease buffer size
@@ -3564,7 +3565,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		m_hpartfile.Seek(PARTSIZE * nPart,wxFromStart);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logAICHRecovery, wxT("IO failure while hashing part-file: ") + m_hpartfile.GetFilePath());
+		AddDebugLogLineM(true, logAICHRecovery, wxT("IO failure while hashing part-file '") + m_hpartfile.GetFilePath()
+			+ wxT("': ") );
 		wxASSERT( false );
 		return;
 	}

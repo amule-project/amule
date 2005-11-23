@@ -666,7 +666,7 @@ bool CServerList::SaveServerMet()
 			CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
 		}
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(false, wxT("IO failure while writing 'server.met': ") + e.what());
+		AddLogLineM(true, wxT("IO failure while writing 'server.met': ") + e.what());
 		return false;
 	}
 	
