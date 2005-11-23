@@ -290,11 +290,6 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	// It must not be resized to something smaller than what it currently is
 	wxSize size = GetClientSize();
 	SetSizeHints( size.GetWidth(), size.GetHeight() );
-	
-	#ifdef __SYSTRAY_DISABLED__
-		FindWindow(IDC_ENABLETRAYICON)->Enable(false);
-		FindWindow(IDC_MINTRAY)->Enable(false);
-	#endif
 }
 
 
@@ -697,17 +692,12 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 		
 		case IDC_ENABLETRAYICON:
-			#ifndef __SYSTRAY_DISABLED__
-				FindWindow(IDC_MINTRAY)->Enable(value);
-				if (value) {
-					theApp.amuledlg->CreateSystray();
-				} else {
-					theApp.amuledlg->RemoveSystray();
-				}
-			#else
-				// This should never happen as button is disabled
-				wxASSERT(0);
-			#endif
+			FindWindow(IDC_MINTRAY)->Enable(value);
+			if (value) {
+				theApp.amuledlg->CreateSystray();
+			} else {
+				theApp.amuledlg->RemoveSystray();
+			}
 			break;
 		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:

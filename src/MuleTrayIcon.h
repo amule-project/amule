@@ -30,8 +30,6 @@
 
 #include <wx/defs.h>	// Needed before any other wx/*.h
 
-#ifndef __SYSTRAY_DISABLED__
-
 enum TaskbarNotifier
 {
 	TBN_NULL = 0,
@@ -114,7 +112,5 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 };
 
 #endif // DAEMON
-
-#endif // __SYSTRAY_DISABLED__
 
 #endif //MULETRAYICON_H

@@ -50,10 +50,7 @@
 
 #include "amuleDlg.h"		// Interface declarations.
 
-#ifndef __SYSTRAY_DISABLED__
-	#include "MuleTrayIcon.h"
-#endif // __SYSTRAY_DISABLED__
-
+#include "MuleTrayIcon.h"
 #include "OtherFunctions.h"	// Needed for CastItoIShort
 #include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
@@ -150,9 +147,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	last_iconizing = 0;
 	prefs_dialog = NULL;
 
-	#ifndef __SYSTRAY_DISABLED__
-		m_wndTaskbarNotifier = NULL;
-	#endif
+	m_wndTaskbarNotifier = NULL;
 
 	wxInitAllImageHandlers();
 	imagelist.Create(16,16);
@@ -237,25 +232,19 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	
 	searchwnd->UpdateCatChoice();
 
-#ifndef  __SYSTRAY_DISABLED__
 	if (thePrefs::UseTrayIcon()) {
 		CreateSystray();
 	}
-#endif
 
 	Show(TRUE);
 
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) { 
-		#ifndef __SYSTRAY_DISABLED__
-		 	if (thePrefs::UseTrayIcon() && thePrefs::DoMinToTray()) {
-					Hide_aMule();
-				} else {
-					Iconize(TRUE);
-				}
-		#else
+		if (thePrefs::UseTrayIcon() && thePrefs::DoMinToTray()) {
+			Hide_aMule();
+		} else {
 			Iconize(TRUE);
-		#endif
+		}
 	}
 	m_BlinkMessages = false;
 	m_CurrentBlinkBitmap = 24;
@@ -323,39 +312,38 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 }
 
 
-#ifndef __SYSTRAY_DISABLED__
-	void CamuleDlg::UpdateTrayIcon(int percent)
-	{
-		// set trayicon-icon
-		if(!theApp.IsConnected()) {
-			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+void CamuleDlg::UpdateTrayIcon(int percent)
+{
+	// set trayicon-icon
+	if(!theApp.IsConnected()) {
+		m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
+	} else {
+		if(theApp.IsConnectedED2K() && theApp.serverconnect->IsLowID()) {
+			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 		} else {
-			if(theApp.IsConnectedED2K() && theApp.serverconnect->IsLowID()) {
-				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
-			} else {
-				m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
-			}
+			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
 		}
 	}
-			
-	void CamuleDlg::CreateSystray()
-	{
-		m_wndTaskbarNotifier = new CMuleTrayIcon();
-		wxASSERT(m_wndTaskbarNotifier->IsOk());			
-		// This will effectively show the Tray Icon.
-		UpdateTrayIcon(0);
-	}	
-		
+}
 
-	// This one is common to both implementations
-	void CamuleDlg::RemoveSystray()
-	{
-		if (m_wndTaskbarNotifier) {
-			delete m_wndTaskbarNotifier;
-			m_wndTaskbarNotifier = NULL;
-		}
+		
+void CamuleDlg::CreateSystray()
+{
+	m_wndTaskbarNotifier = new CMuleTrayIcon();
+	wxASSERT(m_wndTaskbarNotifier->IsOk());			
+	// This will effectively show the Tray Icon.
+	UpdateTrayIcon(0);
+}	
+	
+
+// This one is common to both implementations
+void CamuleDlg::RemoveSystray()
+{
+	if (m_wndTaskbarNotifier) {
+		delete m_wndTaskbarNotifier;
+		m_wndTaskbarNotifier = NULL;
 	}
-#endif // __SYSTRAY_DISABLED__
+}
 
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
@@ -803,7 +791,6 @@ void CamuleDlg::ShowTransferRate()
 		SetTitle(theApp.m_FrameTitle + UpDownSpeed);
 	}
 
-#ifndef __SYSTRAY_DISABLED__
 	if (m_wndTaskbarNotifier) {
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
@@ -817,7 +804,6 @@ void CamuleDlg::ShowTransferRate()
 		}
 		m_wndTaskbarNotifier->SetTrayToolTip(buffer2);
 	}
-#endif
 
 	wxStaticBitmap* bmp = CastChild( wxT("transferImg"), wxStaticBitmap );
 	bmp->SetBitmap(dlStatusImages((kBpsUp>0.01 ? 2 : 0) + (kBpsDown>0.01 ? 1 : 0)));
@@ -837,10 +823,8 @@ void CamuleDlg::DlgShutDown()
 	delete gui_timer;
 	transferwnd->downloadlistctrl->DeleteAllItems();
 
-#ifndef __SYSTRAY_DISABLED__
-	//We want to delete the systray too!
+	// We want to delete the systray too!
 	RemoveSystray();
-#endif
 }
 
 void CamuleDlg::OnClose(wxCloseEvent& evt)
@@ -1005,7 +989,6 @@ void CamuleDlg::Show_aMule(bool uniconize)
 }
 
 
-#ifndef __SYSTRAY_DISABLED__
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
 	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
@@ -1020,11 +1003,6 @@ void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 		}
 	}	
 }
-#else
-void CamuleDlg::OnMinimize(wxIconizeEvent& WXUNUSED(evt))
-{
-}
-#endif
 
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))

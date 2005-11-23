@@ -116,9 +116,6 @@ AC_ARG_ENABLE(alc,  [  --enable-alc               compile aMuleLinkCreator GUI v
 AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for console],
               ALCC="$enableval", ALCC="no")
 
-AC_ARG_ENABLE(systray, [  --disable-systray          disable taskbar icon support],
-			systray="$enableval", systray="yes")
-
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
 		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
 
@@ -235,25 +232,6 @@ AM_PATH_WXCONFIG(2.6.0)
 AM_WXCONFIG_LARGEFILE
 
 GET_WX_VERSION
-
-if test "x${need_gui}" = "xyes" ; then
-
-	# Get toolkit name
-	AC_MSG_CHECKING([for GUI toolkit to use])
-	WXTOOLKIT=`$WX_CONFIG_WITH_ARGS --cflags | sed -e 's/-D__WXDEBUG__//' -e 's/-D__WXUNIVERSAL__//' -e 's/.*-D__WX\([[^[:blank:]]]*\)__.*/\1/'`
-	if test -n "`$WX_CONFIG_WITH_ARGS --cflags | grep __WXUNIVERSAL__`"; then
-		result="${WXTOOLKIT},UNIVERSAL"
-	else
-		result=$WXTOOLKIT
-	fi
-	AC_MSG_RESULT($result)
-else
-	if test "x${systray}" = "xyes" ; then
-		AC_MSG_WARN([Disabling taskbar icon support as we have no GUI.])
-	fi
-	systray=no
-fi
-
 
 dnl Get flags for windres
 if test x$SYS = xwin32; then
@@ -380,15 +358,6 @@ esac
 
 #aMule options
 
-# systray disable
-AC_MSG_CHECKING([whether taskbar icon support should be compiled])
-AC_MSG_RESULT($systray)
-
-if test x$systray = xno; then
-	TRAY_FLAGS="-D__SYSTRAY_DISABLED__"
-fi
-AC_SUBST(TRAY_FLAGS)
-
 # Command line tools
 case "$BUILDAMULECMD" in
 yes)	BUILD_AMULECMD="yes"
@@ -514,7 +483,6 @@ AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
 AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
-AM_CONDITIONAL(HAVE_TRAY, test x$systray = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
@@ -616,7 +584,6 @@ echo "  Should aMule be compiled with i18n support?                ${HAVE_GETTEX
 echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
-echo "  Should aMule be compiled with taskbar icon support?        ${systray:-yes}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"

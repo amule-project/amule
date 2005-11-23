@@ -163,6 +163,7 @@ gui_sources = \
 	FriendListCtrl.cpp \
 	ServerListCtrl.cpp \
 	SharedFilesCtrl.cpp \
+	MuleTrayIcon.cpp \
 	TransferWnd.cpp 
 
 remote_common_sources = \
@@ -198,17 +199,13 @@ common_deps = libmuleappcommon.a $(remote_common_deps)
 # Flags
 
 core_flags = 
-gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS) $(XRCFLAGS)
+gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs
 
 # Extras 
 
 if USE_EMBEDDED_CRYPTO
 common_sources += CryptoPP.cpp
-endif
-
-if HAVE_TRAY
-gui_sources += MuleTrayIcon.cpp
 endif
 
 if NEED_RC
