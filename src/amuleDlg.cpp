@@ -764,11 +764,9 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		
 		if ((NewED2KState != sDisconnected) || (NewKadState != sOff)) {
 			if (NewED2KState == sConnecting) {
-				if (LastED2KState != sConnecting) {
-					m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-						connButImg(2), wxNullBitmap, wxITEM_NORMAL,
-						_("Stops the current connection attempts"));
-				}
+				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
+					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+					_("Stops the current connection attempts"));
 			} else {
 				/* ED2K connected or Kad connected */
 				wxString popup = _("Disconnect from ");
