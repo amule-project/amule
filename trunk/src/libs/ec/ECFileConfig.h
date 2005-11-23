@@ -25,9 +25,7 @@
 #ifndef	ECFILECONFIG_H
 #define	ECFILECONFIG_H
 
-#if wxCHECK_VERSION(2,4,2)
-	#include <wx/config.h>
-#endif
+#include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
 #include <wx/utils.h>

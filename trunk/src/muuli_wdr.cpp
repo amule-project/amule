@@ -53,41 +53,6 @@
 
 // Implement window functions
 
-wxSizer *desktopDlg( wxWindow *parent, bool call_fit, bool set_sizer )
-{
-    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item1 = new wxStaticText( parent, ID_TEXT, 
-        _("For system tray integration to work,\n"
-          "you must specify which desktop you are using.\n"
-          "You can change this later from preferences."),
-        wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxString strs2[] = 
-    {
-        _("Gnome 2.x (or other XEMBED compatible)"), 
-        _("KDE 3.x"), 
-        _("KDE 2.x / Gnome 1.2 "), 
-        _("No systray integration, please")
-    };
-    wxRadioBox *item2 = new wxRadioBox( parent, ID_SYSTRAYSELECT, _("Desktop"), wxDefaultPosition, wxDefaultSize, 4, strs2, 1, wxRA_SPECIFY_COLS );
-    item0->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxButton *item3 = new wxButton( parent, ID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-    item3->SetDefault();
-    item0->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    if (set_sizer)
-    {
-        parent->SetSizer( item0 );
-        if (call_fit)
-            item0->SetSizeHints( parent );
-    }
-    
-    return item0;
-}
-
 wxSizer *s_dlgcnt;
 wxSizer *contentSizer;
 wxSizer *s_fed2klh;
@@ -1681,28 +1646,24 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item18->SetToolTip( _("Enabling this will make aMule minimize to the system-tray, rather than the taskbar.") );
     item11->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item19 = new wxButton( parent, IDC_DESKTOPMODE, _("Select Window Manager"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->SetToolTip( _("Click here to select the type of systray integration you wish aMule to use.") );
-    item11->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item20 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->SetToolTip( _("The delay before showing tool-tips.") );
+    item19->Add( item20, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, IDC_TOOLTIPDELAY_LBL, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxSpinCtrl *item21 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
     item21->SetToolTip( _("The delay before showing tool-tips.") );
-    item20->Add( item21, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    item19->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxSpinCtrl *item22 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
-    item22->SetToolTip( _("The delay before showing tool-tips.") );
-    item20->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxRIGHT, 5 );
-
-    item11->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item11->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("Browser Selection") );
-    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
+    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Browser Selection") );
+    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
 
-    wxString strs25[] = 
+    wxString strs24[] = 
     {
         _("Konqueror"), 
         _("Mozilla"), 
@@ -1714,32 +1675,32 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Epiphany"), 
         _("User Defined")
     };
-    wxChoice *item25 = new wxChoice( parent, IDC_BROWSER, wxDefaultPosition, wxSize(100,-1), 9, strs25, 0 );
-    item25->SetToolTip( _("Select your browser here") );
-    item23->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxChoice *item24 = new wxChoice( parent, IDC_BROWSER, wxDefaultPosition, wxSize(100,-1), 9, strs24, 0 );
+    item24->SetToolTip( _("Select your browser here") );
+    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item26 = new wxFlexGridSizer( 3, 0, 0 );
-    item26->AddGrowableCol( 1 );
+    wxFlexGridSizer *item25 = new wxFlexGridSizer( 3, 0, 0 );
+    item25->AddGrowableCol( 1 );
 
-    wxStaticText *item27 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item26 = new wxStaticText( parent, ID_CUSTOMBROWSETEXT, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item28 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item28->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
-    item28->Enable( false );
-    item26->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CMuleTextCtrl *item27 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item27->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
+    item27->Enable( false );
+    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item29 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item28 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item22->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item30->SetValue( TRUE );
-    item30->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item23->Add( item30, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item29->SetValue( TRUE );
+    item29->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item22->Add( item29, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

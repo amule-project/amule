@@ -26,7 +26,6 @@
 #define PLATFORMSPECIFIC_H
 
 #include <wx/string.h>	// Needed for wxString
-#include <wx/version.h>	// Needed for wxCHECK_VERSION
 #include "../../Types.h"	// Needed for wxCHECK_VERSION_FULL with wx2.4.x
 
 /**
@@ -35,7 +34,7 @@
 wxString GetDocumentsDir();
 
 
-#if !wxCHECK_VERSION(2,6,0) || (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
+#if (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
 /**
  * Reimplementation of wxStandardPaths::GetUserDataDir() for wxWidgets 2.4
  */

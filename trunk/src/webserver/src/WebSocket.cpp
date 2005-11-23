@@ -30,7 +30,6 @@
 
 #include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 
-#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 
 
 WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);

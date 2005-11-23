@@ -36,11 +36,6 @@
 
 #include <list>			// Needed for std::list
 
-// If wx version is less than 2.5.2, we need this defined. This new flag
-// is needed to ensure the old behaviour of sizers.
-#if !wxCHECK_VERSION(2,5,2)
-	#define wxFIXED_MINSIZE 0
-#endif
 
 class CAbstractFile;
 class CKnownFile;
@@ -264,11 +259,7 @@ protected:
 
 	long webserver_pid;
 
-#if wxCHECK_VERSION(2,5,3)
 	wxFFileOutputStream* applog;
-#else
-	wxFile *applog;
-#endif
 	bool enable_stdout_log;
 	bool enable_daemon_fork;
 	wxString server_msg;

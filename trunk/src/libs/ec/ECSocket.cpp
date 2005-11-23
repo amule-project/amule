@@ -30,7 +30,6 @@
 #include <zlib.h>		// Needed for packet (de)compression
 #include <cstring>		// Needed for memcpy()/memmove()
 
-#include "gsocket-fix.h"	// Needed for wxSOCKET_REUSEADDR
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
@@ -42,21 +41,11 @@
 #if ECSOCKET_USE_EVENTS
 #	include <wx/event.h>		// Needed for wxEvtHandler
 #	include <wx/debug.h>		// Needed for wxCHECK_RET
-#	if wxCHECK_VERSION(2,6,0)
-#		include <wx/stopwatch.h>	// Needed for wxStopWatch
-#	else
-#		include <wx/timer.h>		// Needed for wxStopWatch in wxWidgets-2.4.2
-#	endif
+#	include <wx/stopwatch.h>	// Needed for wxStopWatch
 #	include <wx/utils.h>		// Needed for wxMilliSleep
 #endif
 
-#if !wxCHECK_VERSION(2,5,0)
-#	if wxUSE_GUI
-#		include "wx/gdicmn.h"	// for wxPendingDelete
-#	endif
-#else
-#	include <wx/apptrait.h>	// Needed for wxAppTraits
-#endif
+#include <wx/apptrait.h>	// Needed for wxAppTraits
 
 #ifdef __DEBUG__
 #	include "common/StringFunctions.h"	// Needed for unicode2char()
@@ -503,21 +492,12 @@ void CECSocket::Destroy(bool raiseLostEvent)
 void CECSocket::CheckDestroy()
 {
 	if (m_destroying) {
-#if !wxCHECK_VERSION(2,5,0)
-#	if wxUSE_GUI
-		if ( !wxPendingDelete.Member(this) )
-			wxPendingDelete.Append(this);
-#	else
-		delete this;
-#	endif
-#else
 		wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
 		if (traits) {
 			traits->ScheduleForDestroy(this);
 		} else {
 			delete this;
 		}
-#endif
 	}
 }
 

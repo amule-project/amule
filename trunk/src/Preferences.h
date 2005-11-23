@@ -31,9 +31,7 @@
 #include "Color.h"			// Needed for COLORREF
 
 #include <wx/string.h>			// Needed for wxString
-#if wxCHECK_VERSION(2, 5, 2)
-#	include <wx/arrstr.h>		// Needed for wxArrayString
-#endif
+#include <wx/arrstr.h>		// Needed for wxArrayString
 
 #include <map>
 #include <vector>
@@ -373,9 +371,6 @@ public:
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
 	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
 	
-	static uint32 		GetDesktopMode() 		{ return s_desktopMode; }
-	static void 		SetDesktopMode(uint32 mode) 	{ s_desktopMode=mode; }
-
 	static bool		ShowCatTabInfos() 		{ return s_showCatTabInfos; }
 	static void		ShowCatTabInfos(bool in) 	{ s_showCatTabInfos=in; }
 	
@@ -650,8 +645,6 @@ protected:
 
 	static bool	s_showCatTabInfos;
 	static uint32	s_allcatType;
-	
-	static uint32 	s_desktopMode;
 	
 	// Madcat - Sources Dropping Tweaks
 	static uint8	s_NoNeededSources; // 0: Keep, 1: Drop, 2:Swap

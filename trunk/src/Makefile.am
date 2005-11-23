@@ -198,30 +198,17 @@ common_deps = libmuleappcommon.a $(remote_common_deps)
 # Flags
 
 core_flags = 
-gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS) $(GTK_CFLAGS) $(GTK_DEFS) $(XRCFLAGS)
+gui_flags = $(WX_CXXFLAGS) $(TRAY_FLAGS) $(XRCFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs
 
 # Extras 
-
-if ADD_GSOCKET
-if ADD_24GSOCKET
-core_sources += gsocket.c 
-else
-core_sources += gsocket-2.5.c
-endif
-endif
 
 if USE_EMBEDDED_CRYPTO
 common_sources += CryptoPP.cpp
 endif
 
 if HAVE_TRAY
-if HAVE_OLD_TRAY
-gui_sources += eggtrayicon.c gtk2-funcs.c gtkplugxembed.c SysTray.cpp 
-gui_libs += $(GTK_LIBS) 
-else
 gui_sources += MuleTrayIcon.cpp
-endif
 endif
 
 if NEED_RC
@@ -316,7 +303,6 @@ noinst_HEADERS = AddFileThread.h \
 		DownloadQueue.h \
 		ED2KLink.h \
 		EditServerListDlg.h \
-		eggtrayicon.h \
 		EMSocket.h \
 		ArchSpecific.h \
 		ExternalConnector.h \
@@ -328,10 +314,6 @@ noinst_HEADERS = AddFileThread.h \
 		FriendList.h \
 		FriendListCtrl.h \
 		GetTickCount.h \
-		gsocket-fix.h \
-		gsocket.h \
-		gtk2-funcs.h \
-		gtkplugxembed.h \
 		GuiEvents.h \
 		HTTPDownload.h \
 		inetdownload.h \
@@ -341,7 +323,6 @@ noinst_HEADERS = AddFileThread.h \
 		KnownFile.h \
 		KnownFileList.h \
 		listctrl.h \
-		extern/listctrl.242.h \
 		extern/listctrl.260.h \
 		ListenSocket.h \
 		Logger.h \
@@ -385,7 +366,6 @@ noinst_HEADERS = AddFileThread.h \
 		Statistics.h \
 		StatisticsDlg.h \
 		StatTree.h \
-		SysTray.h \
 		Tag.h \
 		TextClient.h \
 		Timer.h \
@@ -393,9 +373,7 @@ noinst_HEADERS = AddFileThread.h \
 		Types.h \
 		updownclient.h \
 		UploadBandwidthThrottler.h \
-		UploadQueue.h \
-		xembed.h
-
+		UploadQueue.h
 
 MAINTAINERCLEANFILES = Makefile.in
 

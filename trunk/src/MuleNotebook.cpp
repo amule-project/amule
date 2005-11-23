@@ -128,7 +128,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 
 
 // For some reason, gtk1 does a rather poor job when using the HitTest
-#if wxCHECK_VERSION(2, 5, 2) && (!defined(__WXGTK__) || defined(__WXGTK20__))
+#if (!defined(__WXGTK__) || defined(__WXGTK20__))
 	int tab = HitTest(event.GetPosition());
 	if (tab != wxNOT_FOUND) {
 		SetSelection(tab);
@@ -215,7 +215,7 @@ void CMuleNotebook::OnPopupCloseOthers(wxCommandEvent& WXUNUSED(evt))
 	}
 }
 
-#if wxCHECK_VERSION(2,5,4) && !defined(__WXGTK12__)
+#if !defined(__WXGTK12__)
 
 void CMuleNotebook::MouseClick(wxMouseEvent &event)
 {

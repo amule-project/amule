@@ -60,10 +60,7 @@ there client on the eMule forum..
 #include "../../Preferences.h"
 
 #include <wx/tokenzr.h>
-
-#if wxCHECK_VERSION(2, 5, 0)
 #include <wx/arrstr.h>
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

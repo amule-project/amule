@@ -25,9 +25,7 @@
 
 #include <wx/defs.h>			// Needed before any other wx/*.h
 #include <wx/menu.h>			// Needed for wxMenu
-#if wxCHECK_VERSION(2,4,2)
-	#include <wx/config.h>		// Needed for wxConfig in wx-2.4.2
-#endif
+#include <wx/config.h>		// Needed for wxConfig in wx-2.4.2
 #include <wx/fileconf.h>		// Needed for wxConfig
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/imaglist.h>

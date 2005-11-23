@@ -32,10 +32,6 @@
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine
 
-#if !wxCHECK_VERSION(2,5,1)
-	#define wxIPaddress wxIPV4address
-#endif
-
 /******************************************************************************/
 
 /*
@@ -555,9 +551,6 @@ const unsigned int PROXY_UDP_MAXIMUM_OVERHEAD		= PROXY_UDP_OVERHEAD_DOMAIN_NAME;
 
 class CDatagramSocketProxy : public wxDatagramSocket
 {
-#if !wxCHECK_VERSION(2,5,3)
-	DECLARE_ABSTRACT_CLASS(CDatagramSocketProxy)
-#endif
 public:
 	/* Constructor */
 	CDatagramSocketProxy(
