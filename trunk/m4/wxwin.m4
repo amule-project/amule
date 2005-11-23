@@ -218,9 +218,9 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   
   if test "$vers" -ge 2005000; then
     if test "$vers" -ge 2005003; then
-      wx_conig_base_libs="--libs base,net";
+      wx_conig_base_libs="--libs net,base";
     else
-      wx_conig_base_libs="--libs=base,net";
+      wx_conig_base_libs="--libs=net,base";
     fi
     AC_MSG_WARN(wxWidgets >=2.5.0: Using wx-config ${wx_conig_base_libs})
   
