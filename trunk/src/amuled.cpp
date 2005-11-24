@@ -385,12 +385,23 @@ int CamuleDaemonApp::OnRun()
 {
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
 	
-	if ( !thePrefs::AcceptExternalConnections() ) {
+	if (!thePrefs::AcceptExternalConnections()) {
 		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
 			"To enable External Connections, use either a normal aMule or set the key"
 			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
+		
 		AddLogLineM(true, warning);
-		// Also to console.
+		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
+		return 0;
+	} else if (thePrefs::ECPassword().IsEmpty()) {
+		wxString warning = wxT("ERROR: A valid password is required to use "
+			"external connections, and aMule daemon cannot be used without "
+			"external connections. To run aMule deamon, you must set the "
+			"\"ECPassword\" field in the file ~/.aMule/amule.conf with an "
+			"appropriate value. More information can be found at "
+			"http://wiki.amule.org");
+	
+		AddLogLineM(true, warning);
 		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
 		return 0;
 	}
