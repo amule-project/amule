@@ -317,8 +317,12 @@ void CUpDownClient::CreateNextBlockPackage()
 			delete[] filedata;
 			filedata = NULL;
 		}
-	} catch(const wxString& error) {
+	} catch (const wxString& error) {
 		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
+		theApp.uploadqueue->RemoveFromUploadQueue(this);
+		delete[] filedata;
+	} catch (const CEOFException& error) {
+		AddDebugLogLineM(true, logClient, wxT("Client '") + GetUserName() + wxT("' requested file-data at an invalid position - disconnecting client"));
 		theApp.uploadqueue->RemoveFromUploadQueue(this);
 		delete[] filedata;
 	}
