@@ -69,16 +69,21 @@ public:
 				wxPostEvent(m_owner, evt);
 			}
 		} else {
-			uint64 code_exec_time = 0;
+			uint64 lastEvent = GetTickCountFullRes();
 			
 			while (!TestDestroy()) {
-				Sleep(m_period - code_exec_time);
-				uint64 prev_tick = GetTickCountFullRes();
-			
+				uint64 sinceLast = GetTickCountFullRes() - lastEvent;
+				if (m_period > sinceLast) {
+					Sleep(m_period - sinceLast);
+				}
+				
+				// Ensure that no events are discarded
+				// by only incrementing for one event.
+				lastEvent += m_period;
+					
 				// Check if the timer was stopped while it slept.
-				if (!TestDestroy()) {	
+				if (!TestDestroy()) {
 					wxPostEvent(m_owner, evt);
-					code_exec_time = (GetTickCountFullRes() - prev_tick);
 				}
 			}
 		}
