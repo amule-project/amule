@@ -1,5 +1,3 @@
-dlg_MANS =
-
 if COMPILE_CMD
 amulecmd_MANS = amulecmd.1
 endif
@@ -31,15 +29,6 @@ EXTRA_DIST = \
 man_langs = de es fr hu
 
 install-data-hook:
-	@list='$(dlg_MANS)'; \
-	for file in $$list; do \
-		inst=`echo $${file}DLG | sed '$(transform)'`.1 ; \
-		echo " $(INSTALL_DATA) $${file}DLG.1 $(DESTDIR)$(man1dir)/$$inst" ; \
-		ref=`echo $$file | sed '$(transform)'`.1 ; \
-		echo ".so $(man1dir)/$$ref" > $${file}DLG.1 ; \
-		$(INSTALL_DATA) $${file}DLG.1 $(DESTDIR)$(man1dir)/$$inst ; \
-		rm -f $${file}DLG.1 ; \
-	done
 	@for lang in $(man_langs); do \
 		echo " $(mkinstalldirs) $(DESTDIR)$(mandir)/$$lang/man1" ; \
 		$(mkinstalldirs) $(DESTDIR)$(mandir)/$$lang/man1 ; \
@@ -52,34 +41,13 @@ install-data-hook:
 			echo " $(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
 			$(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
 		done ; \
-		list='$(dlg_MANS)'; \
-		for file in $$list; do \
-			inst=`echo $${file}DLG | sed '$(transform)'`.1 ; \
-			echo " $(INSTALL_DATA) $(mandir)/$$lang/man1/$${file}DLG.$$lang.1 $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
-			ref=`echo $$file | sed '$(transform)'`.1 ; \
-			echo ".so $(mandir)/$$lang/man1/$$ref" > $${file}DLG.$$lang.1 ; \
-			$(INSTALL_DATA) $${file}DLG.$$lang.1 $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
-			rm -f $${file}DLG.$$lang.1 ; \
-		done ; \
 	done
 
 uninstall-hook:
-	@list='$(dlg_MANS)'; \
-	for file in $$list; do \
-		inst=`echo $${file}DLG | sed '$(transform)'`.1 ; \
-		echo " rm -f $(DESTDIR)$(man1dir)/$$inst" ; \
-		rm -f $(DESTDIR)$(man1dir)/$$inst ; \
-	done
 	@for lang in $(man_langs); do \
 		list='$(dist_man_MANS)' ; \
 		for file in $$list; do \
 			inst=`echo $$file | sed -e "s/\.1//" -e '$(transform)'`.1 ; \
-			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
-			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
-		done ; \
-		list='$(dlg_MANS)'; \
-		for file in $$list; do \
-			inst=`echo $${file}DLG | sed '$(transform)'`.1 ; \
 			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
 			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
 		done ; \
