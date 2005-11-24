@@ -124,8 +124,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 	// Are we allowed to accept External Connections?
 	if ( thePrefs::AcceptExternalConnections() ) {
 		// We must have a valid password, otherwise we will not allow EC connections
-		if ( thePrefs::ECPassword().IsEmpty() ) {
-			thePrefs::EnableExternalConnections( false );
+		if (thePrefs::ECPassword().IsEmpty()) {
 			*msg += wxT("External connections disabled due to empty password!\n");
 			AddLogLineM(true, _("External connections disabled due to empty password!"));
 			return;
