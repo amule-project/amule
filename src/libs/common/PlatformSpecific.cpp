@@ -73,7 +73,7 @@ wxString doGetDirectory(int whichDir)
 	}
 
 #else
-	(void)whichDir; // Avoid unsused-variable warning.
+	(void)whichDir; // Avoid unused-variable warning.
 
 	strDir = wxFileName::GetHomeDir();
 #endif
