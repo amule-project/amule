@@ -26,7 +26,8 @@
 #include <cerrno>
 #include <cmath>
 #include <csignal>
-#include <unistd.h>			// Needed for close(2) and sleep(3)
+#include <unistd.h>			// Needed for close(2) and sleep(3), getuid(2)
+#include <sys/types.h>
 #include <wx/defs.h>
 #include <wx/process.h>
 #include <wx/sstream.h>	
@@ -554,6 +555,23 @@ bool CamuleApp::OnInit()
 	if ( !wxFileExists( vfile.GetName() ) ) {
 		vfile.Create();
 	}
+
+#ifndef __WXMSW__
+	if (getuid() == 0) {
+		wxString msg = 
+			wxT("Warning! You are running aMule as root.\n")
+			wxT("Doing so is not recommended for security reasons,\n")
+			wxT("and you are advised to run aMule as an normal\n")
+			wxT("user instead.");
+		
+		ShowAlert(msg, _("Warning"), wxCENTRE | wxOK | wxICON_ERROR);
+	
+		fprintf(stderr, "\n--------------------------------------------------\n");
+		fprintf(stderr, "%s", (const char*)unicode2char(msg));
+		fprintf(stderr, "\n--------------------------------------------------\n\n");
+	}
+#endif
+
 	
 	if ( vfile.Open() ) {
 		// Check if this version has been run before
