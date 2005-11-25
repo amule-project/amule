@@ -51,7 +51,7 @@
 
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
-	EVT_RIGHT_DOWN(CSearchListCtrl::OnRightClick)
+	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
 	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
 	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
 
@@ -465,9 +465,8 @@ void CSearchListCtrl::SyncOtherLists( CSearchListCtrl* src )
 }
 
 
-void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
+void CSearchListCtrl::OnRightClick(wxListEvent& event)
 {
-
 	CheckSelection(event);
 	
 	if ( GetSelectedItemCount() != 0 ) {
@@ -487,7 +486,7 @@ void CSearchListCtrl::OnRightClick(wxMouseEvent& event)
 		menu->Enable( MP_GETHTMLED2KLINK, enable );
 	
 
-		PopupMenu( menu, event.GetPosition() );
+		PopupMenu( menu, event.GetPoint() );
 
 		delete menu;
 	} else {

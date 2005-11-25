@@ -46,6 +46,7 @@
 
 BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 	EVT_RIGHT_DOWN(CClientListCtrl::OnRightClick)
+	EVT_LIST_ITEM_MIDDLE_CLICK(-1, CClientListCtrl::OnMiddleClick)
 
 	EVT_MENU( MP_DETAIL,		CClientListCtrl::OnShowDetails	)
 	EVT_MENU( MP_ADDFRIEND,		CClientListCtrl::OnAddFriend	)
@@ -243,6 +244,20 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		delete m_menu;
 		
 		m_menu = NULL;
+	}
+}
+
+
+void CClientListCtrl::OnMiddleClick(wxListEvent& event)
+{
+	long index = CheckSelection(event);
+
+	if (index > -1) {
+		CUpDownClient* client = (CUpDownClient*)GetItemData(index);
+
+		CClientDetailDialog dialog(this, client);
+		
+		dialog.ShowModal();
 	}
 }
 

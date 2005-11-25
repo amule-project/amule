@@ -45,7 +45,7 @@
 
 
 BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
-	EVT_RIGHT_DOWN(CSharedFilesCtrl::OnRightClick)
+	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSharedFilesCtrl::OnRightClick)
 
 	EVT_MENU( MP_PRIOVERYLOW,	CSharedFilesCtrl::OnSetPriority )
 	EVT_MENU( MP_PRIOLOW,		CSharedFilesCtrl::OnSetPriority )
@@ -114,7 +114,7 @@ CSharedFilesCtrl::~CSharedFilesCtrl()
 }
 
 
-void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
+void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 {
 	long item_hit = CheckSelection(event);
 
@@ -152,7 +152,7 @@ void CSharedFilesCtrl::OnRightClick(wxMouseEvent& event)
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
 
-		PopupMenu( m_menu, event.GetPosition() );
+		PopupMenu( m_menu, event.GetPoint() );
 
 		delete m_menu;
 

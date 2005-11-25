@@ -224,7 +224,7 @@ protected:
 	/**
 	 * Event handler for right mouse clicks.
 	 */
-	void OnRightClick( wxMouseEvent& event );
+	void OnRightClick( wxListEvent& event );
 
 	/**
 	 * Event handler for double-clicks or enter.

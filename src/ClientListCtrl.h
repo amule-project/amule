@@ -169,6 +169,11 @@ private:
 	void	OnRightClick( wxMouseEvent& event );
 	
 	/**
+	 * Event-handler for displaying the client-details dialog upon middle-clicks.
+	 */
+	void	OnMiddleClick( wxListEvent& event );
+	
+	/**
 	 * Event-handler for switching between the different view-types.
 	 */
 	void	OnChangeView( wxCommandEvent& event );
