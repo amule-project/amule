@@ -900,36 +900,18 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 }
 
 
-void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
+void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 {
-	// Check if clicked item is selected. If not, unselect all and select it.
-	if ( !GetItemState( evt.GetIndex(), wxLIST_STATE_SELECTED ) ) {
-		long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-
-		while ( item > -1 ) {
-			SetItemState( item, 0, wxLIST_STATE_SELECTED );
-		
-			item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		}
-		
-		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-	}
-
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
-	if ( index < 0 ) {
+	long index = CheckSelection(evt);
+	if (index < 0) {
 		return;
 	}	
 	
+	delete m_menu;
+	m_menu = NULL;
+
 	CtrlItem_Struct* item = (CtrlItem_Struct*)GetItemData( index );
-	
-
-	if (m_menu) {
-		delete m_menu;
-	}
-
-	if ( item->type == FILE_TYPE ) {
-
+	if (item->type == FILE_TYPE) {
 		m_menu = new wxMenu( _("Downloads") );
 
 		wxMenu* priomenu = new wxMenu();
@@ -1080,23 +1062,10 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent & evt)
 }
 
 
-void CDownloadListCtrl::OnMouseMiddleClick(wxListEvent & evt)
+void CDownloadListCtrl::OnMouseMiddleClick(wxListEvent& evt)
 {
 	// Check if clicked item is selected. If not, unselect all and select it.
-	if ( !GetItemState( evt.GetIndex(), wxLIST_STATE_SELECTED ) ) {
-		long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-
-		while ( item > -1 ) {
-			SetItemState( item, 0, wxLIST_STATE_SELECTED );
-		
-			item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		}
-		
-		SetItemState(evt.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-	}
-
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+	long index = CheckSelection(evt);
 	if ( index < 0 ) {
 		return;
 	}

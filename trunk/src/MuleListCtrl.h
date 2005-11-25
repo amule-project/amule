@@ -227,11 +227,20 @@ protected:
 	void SetSorting(unsigned column, unsigned order);
 
 	
-	/*
-	 * Check and fix selection state
-	 * @return Item selected (-1 if none)
-	 */ 
+	/**
+	 * Check and fix selection state.
+	 * 
+	 * @param event The event which triggered the selection.
+	 * @return The index of the item selected or -1 if none.
+	 *
+	 * This function checks if the clicked item is selected.
+	 * If not, then the item is selected and all other items
+	 * are deselected.
+	 */
+	//@{
+	long CheckSelection(wxListEvent& event);
 	long CheckSelection(wxMouseEvent& event);
+	//@}
 	
 
 	/**

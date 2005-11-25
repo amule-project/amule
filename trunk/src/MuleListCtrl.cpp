@@ -375,10 +375,19 @@ void CMuleListCtrl::SetColumnImage(unsigned col, int image)
 }
 
 
-long CMuleListCtrl::CheckSelection(wxMouseEvent &event)
+long CMuleListCtrl::CheckSelection(wxMouseEvent& event)
 {
 	int flags = 0;
-	long item = HitTest(event.GetPosition(), flags);
+	wxListEvent evt;
+	evt.m_itemIndex = HitTest(event.GetPosition(), flags);
+
+	return CheckSelection(evt);
+}
+
+
+long CMuleListCtrl::CheckSelection(wxListEvent& event)
+{
+	long item = event.GetIndex();
 	
 	// Check if clicked item is selected. If not, unselect all and select it.
 	if ((item != -1) && !GetItemState(item, wxLIST_STATE_SELECTED)) {

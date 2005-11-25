@@ -364,28 +364,16 @@ void CServerListCtrl::OnItemActivated( wxListEvent& event )
 }
 
 
-void CServerListCtrl::OnItemRightClicked( wxListEvent& event )
+void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 {
 	// Check if clicked item is selected. If not, unselect all and select it.
-	if ( !GetItemState( event.GetIndex(), wxLIST_STATE_SELECTED ) ) {
-		
-		long item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		
-		while ( item > -1 ) {
-			SetItemState( item, 0, wxLIST_STATE_SELECTED);
-			
-			item = GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-		}
-		
-		SetItemState( event.GetIndex(), wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
-	}
+	long index = CheckSelection(event);
 
 	bool enable_reconnect = false;
 	bool enable_static_on = false;
 	bool enable_static_off = false;
 
 	// Gather information on the selected items
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	while ( index > -1 ) {
 		CServer* server = (CServer*)GetItemData( index );
 
