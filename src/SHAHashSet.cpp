@@ -35,6 +35,7 @@
 #include "DownloadQueue.h"
 #include "PartFile.h"
 #include "Logger.h"
+#include <common/Format.h>
 
 #include <algorithm>
 
@@ -783,29 +784,35 @@ void CAICHHashSet::UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP)
 	if ( thePrefs::IsTrustingEveryHash() ||
 		(nMostTrustedIPs >= MINUNIQUEIPS_TOTRUST && (100 * nMostTrustedIPs)/nSigningIPsTotal >= MINPERCENTAGE_TOTRUST)){
 		//trusted
-		AddDebugLogLineM( false, logSHAHashSet, wxString::Format(
-			wxT("IACH Hash recieved (%s added), We have now %u hash from %u unique IPs. We trust the Hash ")
-			, bAdded? "": "not ", m_aUntrustedHashs.size(), nSigningIPsTotal) +
-			m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString() +
-			wxString::Format(wxT(" from %u clients (%u%%). File: ")
-			, nMostTrustedIPs, (100 * nMostTrustedIPs)/nSigningIPsTotal) + m_pOwner->GetFileName());
-		
+		AddDebugLogLineM(false, logSHAHashSet, 
+			CFormat(wxT("IACH Hash recieved (%sadded), We have now %u hash(es) from %u unique IP(s). ")
+			   		wxT("We trust the Hash %s from %u client(s) (%u%%). File: %s"))
+				% (bAdded ? wxT("") : wxT("not "))
+				% m_aUntrustedHashs.size()
+				% nSigningIPsTotal
+				% m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
+				% nMostTrustedIPs
+				% ((100 * nMostTrustedIPs) / nSigningIPsTotal)
+				% m_pOwner->GetFileName());
+			
 		SetStatus(AICH_TRUSTED);
 		if (!HasValidMasterHash() || GetMasterHash() != m_aUntrustedHashs[nMostTrustedPos].m_Hash){
 			SetMasterHash(m_aUntrustedHashs[nMostTrustedPos].m_Hash, AICH_TRUSTED);
 			FreeHashSet();
 		}
-	}
-	else{
+	} else {
 		// untrusted
-		AddDebugLogLineM( false, logSHAHashSet, wxString::Format(
-			wxT("IACH Hash recieved (%s added), We have now %u hash from %u unique IPs. Best Hash ")
-			, bAdded? "": "not ", m_aUntrustedHashs.size(), nSigningIPsTotal) +
-			m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString() +
-			wxString::Format(wxT(" from %u clients (%u%%) - but we dont trust it yet. File: ")
-			, nMostTrustedIPs, (100 * nMostTrustedIPs)/nSigningIPsTotal) + m_pOwner->GetFileName());
-		
-
+		AddDebugLogLineM(false, logSHAHashSet,
+			CFormat(wxT("IACH Hash recieved (%sadded), We have now %u hash(es) from %u unique IP(s). ")
+					wxT("Best Hash %s from %u clients (%u%%) - but we dont trust it yet. File: %s"))
+				% (bAdded ? wxT(""): wxT("not "))
+				% m_aUntrustedHashs.size()
+				% nSigningIPsTotal
+				% m_aUntrustedHashs[nMostTrustedPos].m_Hash.GetString()
+				% nMostTrustedIPs
+				% ((100 * nMostTrustedIPs) / nSigningIPsTotal)
+				% m_pOwner->GetFileName());
+					
 		SetStatus(AICH_UNTRUSTED);
 		if (!HasValidMasterHash() || GetMasterHash() != m_aUntrustedHashs[nMostTrustedPos].m_Hash){
 			SetMasterHash(m_aUntrustedHashs[nMostTrustedPos].m_Hash, AICH_UNTRUSTED);
