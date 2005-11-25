@@ -757,9 +757,17 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 		php_report_error(PHP_ERROR, "Invalid or missing argument 4 (search type)");
 		return;
 	}
-	cast_value_bool(&si->var->value);
-	int is_global = si->var->value.int_val;
+	cast_value_dnum(&si->var->value);
 
+	EC_SEARCH_TYPE search_type;
+	switch(si->var->value.int_val) {
+		case 0: search_type = EC_SEARCH_LOCAL; break;
+		case 1: search_type = EC_SEARCH_GLOBAL; break;
+		case 2: search_type = EC_SEARCH_KAD; break;
+		default: 
+			php_report_error(PHP_ERROR, "Invalid search type %d", search_type);
+			return;
+	}
 	if ( !(si = get_scope_item(g_current_scope, "__param_4")) ) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 5 (availability)");
 		return;
@@ -784,7 +792,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 #ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_Search_Cmd(
 		wxString(char2unicode(search)), wxString(char2unicode(ext)), wxString(char2unicode(type)),
-		is_global, avail, min_size, max_size);
+		search_type, avail, min_size, max_size);
 #else
 	printf("php_native_search_start_cmd: search=%s \n", search);
 #endif
@@ -1532,7 +1540,7 @@ CPhPLibContext::CPhPLibContext(CWebServerBase *server, const char *file)
 	m_server = server;
 #endif
 	php_engine_init();
-	FILE *yyin = fopen(file, "r");
+	yyin = fopen(file, "r");
 	if ( !yyin ) {
 		return;
 	}

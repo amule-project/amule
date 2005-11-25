@@ -83,6 +83,7 @@ function formCommandSubmit(command)
     <select name="searchtype" id="searchtype">
       <option selected>Local</option>
       <option>Global</option>
+      <option>Kad</option>
     </select>
             </div></td>
             <td bgcolor="#0099CC"><a href="amuleweb-main-search.php" target="mainFrame">Click here to reload search results</a></td>
@@ -155,10 +156,15 @@ function formCommandSubmit(command)
                 	}
             		return $result;
 		}
+
 		if ($_SESSION["guest_login"] == 0) {
 			if ( $HTTP_GET_VARS["command"] == "search") {
-				$is_global = $HTTP_GET_VARS["searchtype"] == "Global" ? 1 : 0;
-	
+				$search_type = -1;
+				switch($HTTP_GET_VARS["searchtype"]) {
+					case "Local": $search_type = 0; break;
+					case "Global": $search_type = 1; break;
+					case "Kad": $search_type = 2; break;
+				}
 				$min_size = $HTTP_GET_VARS["minsize"] == "" ? 0 : $HTTP_GET_VARS["minsize"];
 				$max_size = $HTTP_GET_VARS["maxsize"] == "" ? 0 : $HTTP_GET_VARS["maxsize"];
 	
@@ -168,7 +174,7 @@ function formCommandSubmit(command)
 				amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
 					//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
 					"", "Any",
-					$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
+					$search_type, $HTTP_GET_VARS["avail"], $min_size, $max_size);
 			} elseif ( $HTTP_GET_VARS["command"] == "download") {
 				foreach ( $HTTP_GET_VARS as $name => $val) {
 					// this is file checkboxes

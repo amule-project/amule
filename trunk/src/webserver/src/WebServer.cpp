@@ -447,10 +447,10 @@ void CWebServerBase::Send_Server_Cmd(uint32 ip, uint16 port, wxString cmd)
 }
 
 void CWebServerBase::Send_Search_Cmd(wxString search, wxString extention, wxString type,
-	bool global, uint32 avail, uint32 min_size, uint32 max_size)
+	EC_SEARCH_TYPE search_type, uint32 avail, uint32 min_size, uint32 max_size)
 {
 	CECPacket search_req(EC_OP_SEARCH_START);
-	search_req.AddTag(CEC_Search_Tag (search, global ? EC_SEARCH_GLOBAL : EC_SEARCH_LOCAL,
+	search_req.AddTag(CEC_Search_Tag (search, search_type,
 		type, extention, avail, min_size, max_size));
 	Send_Discard_V2_Request(&search_req);
 }
