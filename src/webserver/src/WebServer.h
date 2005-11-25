@@ -748,7 +748,7 @@ class CWebServerBase {
 		void Send_AddServer_Cmd(wxString addr, wxString port, wxString name);
 		
 		void Send_Search_Cmd(wxString search, wxString extention, wxString type,
-			bool global, uint32 avail, uint32 min_size, uint32 max_size);
+			EC_SEARCH_TYPE search_type, uint32 avail, uint32 min_size, uint32 max_size);
 
 		bool Send_DownloadEd2k_Cmd(wxString link, uint8 cat);
 		

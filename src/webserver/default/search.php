@@ -292,7 +292,12 @@ border-color: black;
 		if ($_SESSION["guest_login"] == 0) {
 			if ( $HTTP_GET_VARS["cmd"] == "search") {
 
-				$is_global = $HTTP_GET_VARS["method"] == "server" ? 0 : 1;
+				$search_type = -1;
+				switch($HTTP_GET_VARS["method"]) {
+					case "server": $search_type = 0; break;
+					case "global": $search_type = 1; break;
+					case "kad": $search_type = 2; break;
+				}
 	
 				$min_size = $HTTP_GET_VARS["min"] == "" ? 0 : $HTTP_GET_VARS["min"];
 				$max_size = $HTTP_GET_VARS["max"] == "" ? 0 : $HTTP_GET_VARS["max"];
@@ -302,7 +307,7 @@ border-color: black;
 				
 				amule_do_search_start_cmd($HTTP_GET_VARS["tosearch"],
 					$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["type"],
-					$is_global, $HTTP_GET_VARS["avail"], $min_size, $max_size);
+					$search_type, $HTTP_GET_VARS["avail"], $min_size, $max_size);
 			} elseif ( $HTTP_GET_VARS["cmd"] == "download") {
 				foreach ( $HTTP_GET_VARS as $name => $val) {
 					// this is file checkboxes
@@ -314,7 +319,7 @@ border-color: black;
 				}
 			} else {
 				// wrong command come
-				var_dump($HTTP_GET_VARS);
+				//var_dump($HTTP_GET_VARS);
 			}
 		}
 		
@@ -398,6 +403,7 @@ border-color: black;
   <tr><td class=tabs>Extension</td><td><input name="ext" type="text" size="10"></td></tr>
   <tr><td class=tabs>Method</td><td><input value="server" type="radio" name="method" checked>Server</td></tr>
   <tr><td class=tabs></td><td><input value="global" type="radio" name="method">Global Search</td></tr>
+  <tr><td class=tabs></td><td><input value="kad" type="radio" name="method">Kad Search</td></tr>
   </table>
   <br>
   <input type="hidden" name=cmd value="search">
