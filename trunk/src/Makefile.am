@@ -320,7 +320,7 @@ noinst_HEADERS = AddFileThread.h \
 		KnownFile.h \
 		KnownFileList.h \
 		listctrl.h \
-		extern/listctrl.260.h \
+		extern/listctrl.262.h \
 		ListenSocket.h \
 		Logger.h \
 		MD4Hash.h \

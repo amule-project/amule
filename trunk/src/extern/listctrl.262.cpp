@@ -632,6 +632,7 @@ public:
     wxString GetItemText(long item) const
     {
         wxListItem info;
+        info.m_mask = wxLIST_MASK_TEXT;
         info.m_itemId = item;
         GetItem( info );
         return info.m_text;
@@ -795,11 +796,7 @@ protected:
     // get the colour to be used for drawing the rules
     wxColour GetRuleColour() const
     {
-#ifdef __WXMAC__
-        return *wxWHITE;
-#else
         return wxSystemSettings::GetColour(wxSYS_COLOUR_3DLIGHT);
-#endif
     }
 
 private:
@@ -958,9 +955,19 @@ int wxListItemData::GetHeight() const
 
 void wxListItemData::GetItem( wxListItem &info ) const
 {
-    info.m_text = m_text;
-    info.m_image = m_image;
-    info.m_data = m_data;
+    long mask = info.m_mask;
+    if ( !mask )
+    {
+        // by default, get everything for backwards compatibility
+        mask = -1;
+    }
+
+    if ( mask & wxLIST_MASK_TEXT )
+        info.m_text = m_text;
+    if ( mask & wxLIST_MASK_IMAGE )
+        info.m_image = m_image;
+    if ( mask & wxLIST_MASK_DATA )
+        info.m_data = m_data;
 
     if ( m_attr )
     {
@@ -1887,7 +1894,7 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
         // end of the current column
         int xpos = 0;
 
-        // find the column where this event occured
+        // find the column where this event occurred
         int col,
             countCol = m_owner->GetColumnCount();
         for (col = 0; col < countCol; col++)
@@ -2201,9 +2208,6 @@ wxListMainWindow::wxListMainWindow( wxWindow *parent,
                                        ),
                                        wxSOLID
                                     );
-
-    wxSize sz = size;
-    sz.y = 25;
 
     SetScrollbars( 0, 0, 0, 0, 0, 0 );
 
@@ -3047,11 +3051,11 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
             HighlightAll( false );
             ReverseHighlight(m_lineSelectSingleOnUp);
         }
-        else if (m_lastOnSame)
+        if (m_lastOnSame)
         {
             if ((current == m_current) &&
                 (hitResult == wxLIST_HITTEST_ONITEMLABEL) &&
-                HasFlag(wxLC_EDIT_LABELS)  )
+                HasFlag(wxLC_EDIT_LABELS) )
             {
                 m_renameTimer->Start( 100, true );
             }
@@ -3061,7 +3065,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
     }
     else
     {
-        // This is neccessary , because after a DnD operation in
+        // This is necessary, because after a DnD operation in
         // from and to ourself, the up event is swallowed by the
         // DnD code. So on next non-up event (which means here and
         // now) m_lineSelectSingleOnUp should be reset.
@@ -3094,6 +3098,8 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
         m_lineLastClicked = current;
 
         size_t oldCurrent = m_current;
+        bool oldWasSelected = IsHighlighted(m_current);
+
         bool cmdModifierDown = event.CmdDown();
         if ( IsSingleSel() || !(cmdModifierDown || event.ShiftDown()) )
         {
@@ -3147,7 +3153,7 @@ void wxListMainWindow::OnMouse( wxMouseEvent &event )
         }
 
         // forceClick is only set if the previous click was on another item
-        m_lastOnSame = !forceClick && (m_current == oldCurrent);
+        m_lastOnSame = !forceClick && (m_current == oldCurrent) && oldWasSelected;
     }
 }
 
@@ -3686,6 +3692,10 @@ void wxListMainWindow::SetItem( wxListItem &item )
         wxListLineData *line = GetLine((size_t)id);
         line->SetItem( item.m_col, item );
 
+        // Set item state if user wants
+        if ( item.m_mask & wxLIST_MASK_STATE )
+            SetItemState( item.m_itemId, item.m_state, item.m_state );
+
         if (InReportView())
         {
             //  update the Max Width Cache if needed
@@ -3754,8 +3764,8 @@ void wxListMainWindow::SetItemState( long litem, long state, long stateMask )
         return;
     }
 
-     wxCHECK_RET( litem >= 0 && (size_t)litem < GetItemCount(),
-                  _T("invalid list ctrl item index in SetItem") );
+    wxCHECK_RET( litem >= 0 && (size_t)litem < GetItemCount(),
+                 _T("invalid list ctrl item index in SetItem") );
 
     size_t oldCurrent = m_current;
     size_t item = (size_t)litem;    // safe because of the check above
@@ -3869,6 +3879,11 @@ void wxListMainWindow::GetItem( wxListItem &item ) const
 
     wxListLineData *line = GetLine((size_t)item.m_itemId);
     line->GetItem( item.m_col, item );
+
+    // Get item state if user wants it
+    if ( item.m_mask & wxLIST_MASK_STATE )
+        item.m_state = GetItemState( item.m_itemId, wxLIST_STATE_SELECTED |
+                                                 wxLIST_STATE_FOCUSED );
 }
 
 // ----------------------------------------------------------------------------
@@ -5037,6 +5052,7 @@ void wxGenericListCtrl::SetItemText( long item, const wxString& str )
 wxUIntPtr wxGenericListCtrl::GetItemData( long item ) const
 {
     wxListItem info;
+    info.m_mask = wxLIST_MASK_DATA;
     info.m_itemId = item;
     m_mainWin->GetItem( info );
     return info.m_data;
@@ -5138,6 +5154,22 @@ wxColour wxGenericListCtrl::GetItemBackgroundColour( long item ) const
     info.m_itemId = item;
     m_mainWin->GetItem( info );
     return info.GetBackgroundColour();
+}
+
+void wxGenericListCtrl::SetItemFont( long item, const wxFont &f )
+{
+    wxListItem info;
+    info.m_itemId = item;
+    info.SetFont( f );
+    m_mainWin->SetItem( info );
+}
+
+wxFont wxGenericListCtrl::GetItemFont( long item ) const
+{
+    wxListItem info;
+    info.m_itemId = item;
+    m_mainWin->GetItem( info );
+    return info.GetFont();
 }
 
 int wxGenericListCtrl::GetSelectedItemCount() const

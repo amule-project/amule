@@ -110,6 +110,8 @@ public:
     wxColour GetItemTextColour( long item ) const;
     void SetItemBackgroundColour( long item, const wxColour &col);
     wxColour GetItemBackgroundColour( long item ) const;
+    void SetItemFont( long item, const wxFont &f);
+    wxFont GetItemFont( long item ) const;
     int GetSelectedItemCount() const;
     wxColour GetTextColour() const;
     void SetTextColour(const wxColour& col);
