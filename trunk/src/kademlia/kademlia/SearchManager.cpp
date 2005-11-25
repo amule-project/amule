@@ -135,7 +135,7 @@ void CSearchManager::deleteSearch(CSearch* pSearch)
 	delete pSearch;
 }
 
-CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet)
+CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet, uint32 searchid)
 {
 	CSearch *s = new CSearch;
 	try {
@@ -167,7 +167,9 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 			s->m_searchTerms->WriteUInt8(1);
 		} // 0 is default, no need for else branch
 	
-		s->m_searchID = ++m_nextID;
+		// if called from external client - use predefined search id
+		s->m_searchID = ((searchid & 0xffffff00) == 0xffffff00) ? searchid : ++m_nextID;
+		
 		m_searches[s->m_target] = s;
 		s->go();
 	} catch (const CIOException& ioe) {

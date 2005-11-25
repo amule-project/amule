@@ -85,7 +85,7 @@ public:
 	static CSearch* prepareLookup(uint32 type, bool start, const CUInt128 &id);
 
 	// Will return unique search id, returns zero if already searching for this keyword.
-	static CSearch* prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet);
+	static CSearch* prepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet, uint32 searchid);
 
 	static bool startSearch(CSearch* pSearch);
 	static void deleteSearch(CSearch* pSearch);
