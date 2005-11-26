@@ -38,46 +38,31 @@ public:
 		: wxThread(wxTHREAD_JOINABLE)
 	{
 	}
-	
+
 	void* Entry() {
 		wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
 
-		if (m_oneShot) {
-			Sleep(m_period);
-
-			if (!TestDestroy()) {
-				wxPostEvent(m_owner, evt);
-			}
-		} else {
-			uint64 lastEvent = GetTickCountFullRes();
+		uint64 lastEvent = GetTickCountFullRes();
+		do {
+			unsigned long sinceLast = GetTickCountFullRes() - lastEvent;
+			unsigned long timeout = ((m_period < sinceLast) ? 0 : (m_period - sinceLast));
 			
-			while (!TestDestroy()) {
-				uint64 sinceLast = GetTickCountFullRes() - lastEvent;
-				if (m_period > sinceLast) {
-					// In normal operation, we will never actually acquire the
-					// semaphore; we will always timeout.  This is used to
-					// implement a Sleep operation which the owning CTimer can
-					// interrupt by posting to the semaphore.  So, it follows
-					// that if we do acquire the semaphore it means the owner
-					// wants us to exit.
-					wxSemaError err = m_interruptibleSleepSemaphore.
-						WaitTimeout(m_period - sinceLast);
-					if (err != wxSEMA_TIMEOUT) {
-						break;
-					}
-				}
-				
-				// Ensure that no events are discarded
-				// by only incrementing for one event.
+			// In normal operation, we will never actually acquire the
+			// semaphore; we will always timeout.  This is used to
+			// implement a Sleep operation which the owning CTimer can
+			// interrupt by posting to the semaphore.  So, it follows
+			// that if we do acquire the semaphore it means the owner
+			// wants us to exit.
+			if (m_sleepSemaphore.WaitTimeout(timeout) == wxSEMA_TIMEOUT) {
+				// Increment for one event only, so no events can be lost.
 				lastEvent += m_period;
 					
-				// Check if the timer was stopped while it slept.
-				if (!TestDestroy()) {
-					wxPostEvent(m_owner, evt);
-				}
+				wxPostEvent(m_owner, evt);
+			} else {
+				break;
 			}
-		}
-
+		} while (!m_oneShot);
+		
 		return NULL;
 	}
 	
@@ -85,7 +70,7 @@ public:
 	bool			m_oneShot;
 	wxEvtHandler*	m_owner;
 	int				m_id;
-	wxSemaphore		m_interruptibleSleepSemaphore;
+	wxSemaphore		m_sleepSemaphore;
 };
 
 
@@ -116,24 +101,25 @@ bool CTimer::Start(int millisecs, bool oneShot)
 {
 	wxCHECK_MSG(m_id != -1, false, wxT("Invalid target-ID for timer-events."));
 	
-	if (!IsRunning()) {
-		m_thread = new CTimerThread();
-		
-		m_thread->m_period	= millisecs;
-		m_thread->m_oneShot	= oneShot;
-		m_thread->m_owner	= m_owner;
-		m_thread->m_id		= m_id;
+	// Since this class generally matches wxTimer, calling
+	// start on a running timer stops and then restarts it.
+	Stop();
+	
+	m_thread = new CTimerThread();
+	m_thread->m_period	= millisecs;
+	m_thread->m_oneShot	= oneShot;
+	m_thread->m_owner	= m_owner;
+	m_thread->m_id		= m_id;
 
-		if (m_thread->Create() == wxTHREAD_NO_ERROR) {
-			if (m_thread->Run() == wxTHREAD_NO_ERROR) {
-				return true;
-			}
+	if (m_thread->Create() == wxTHREAD_NO_ERROR) {
+		if (m_thread->Run() == wxTHREAD_NO_ERROR) {
+			return true;
 		}
-
-		// Something went wrong ...
-		m_thread->Delete();
-		m_thread = NULL;
 	}
+
+	// Something went wrong ...
+	m_thread->Delete();
+	m_thread = NULL;
 
 	return false;
 }
@@ -142,10 +128,11 @@ bool CTimer::Start(int millisecs, bool oneShot)
 void CTimer::Stop()
 {
 	if (m_thread) {
-		m_thread->m_interruptibleSleepSemaphore.Post();
+		m_thread->m_sleepSemaphore.Post();
 		m_thread->Delete();
 		m_thread->Wait();
 		delete m_thread;
 		m_thread = NULL;
 	}
 }
+
