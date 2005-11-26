@@ -358,18 +358,10 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 
 	wxString appName =
 		// Find out Application Name
-		#ifdef AMULECMDDLG
-			wxT("amulecmd [DLG version]")
+		#ifdef WEBSERVERDIR
+			wxT("amuleweb")
 		#else
-			#ifdef AMULEWEBDLG
-				wxT("amuleweb [DLG version]")
-			#else
-				#ifdef WEBSERVERDIR
-					wxT("amuleweb")
-				#else
-					wxT("amulecmd")
-				#endif
-			#endif
+			wxT("amulecmd")
 		#endif
 	;
 
@@ -488,18 +480,10 @@ bool CaMuleExternalConnector::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (parser.Found(wxT("version"))) {
 		const char *appName =
 			// Find out Application Name
-			#ifdef AMULECMDDLG
-				"amulecmd DLG"
+			#ifdef WEBSERVERDIR
+				"amuleweb"
 			#else
-				#ifdef AMULEWEBDLG
-					"amuleweb DLG"
-				#else
-					#ifdef WEBSERVERDIR
-						"amuleweb"
-					#else
-						"amulecmd"
-					#endif
-				#endif
+				"amulecmd"
 			#endif
 		;
 		printf("%s %s\n", appName, (const char *)unicode2char(GetMuleVersion()));
