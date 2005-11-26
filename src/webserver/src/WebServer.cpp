@@ -1862,7 +1862,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		uLongf destLen = strlen(httpOut) + 1024;
 		char *gzipOut = new char[destLen];
 		if( GzipCompress((Bytef*)gzipOut, &destLen, 
-		   (const Bytef*)httpOut, strlen(httpOut), Z_DEFAULT_COMPRESSION) == Z_OK) {
+		   (const Bytef*)httpOut, httpOutLen, Z_DEFAULT_COMPRESSION) == Z_OK) {
 			bOk = true;
 		}
 		if ( bOk ) {
