@@ -68,7 +68,6 @@ public:
 	// Connects to ED2K. If ip and port are not 0, connect 
 	// to the specific port. Otherwise, connect to any.
 	void ConnectED2K(uint32 ip, uint16 port);
-	#warning TODO: Version that expects a reply
 	
 	// Disconnects from ED2K
 	void DisconnectED2K();
@@ -79,7 +78,6 @@ public:
 	// Remove specific server
 	// Returns: Error message or empty string for no error
 	void RemoveServer(uint32 ip, uint16 port);
-	#warning TODO: Version that expects a reply
 	
 private:
 
