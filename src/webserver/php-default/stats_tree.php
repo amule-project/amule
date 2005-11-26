@@ -101,8 +101,14 @@ function print_folder($key, &$arr, $ident)
 }
 
 	$stattree = amule_load_vars("stats_tree");
-	//var_dump($stattree);
-	print_folder("Stats", $stattree["Statistics"], 1);
+
+	foreach ($stattree as $k => $v) {
+		if ( count(&$v) ) {
+			print_folder($k, $v, $ident+1);
+		} else {
+			print_item($k, $ident+1);
+		}
+	}
 ?>
 </body>
 </html>
