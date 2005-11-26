@@ -36,10 +36,8 @@ class CTimerThread;
 class CTimer
 {
 public:
-	CTimer(wxEvtHandler *owner = 0, int timerid = -1);
+	CTimer(wxEvtHandler *owner, int timerid = -1);
 	~CTimer();
-	
-	void SetOwner(wxEvtHandler* owner, int id = -1);
 
 	/**
 	 * Starts the timer.
@@ -62,16 +60,6 @@ public:
 	 * calling this function.
 	 */
 	void Stop();
-
-
-	/**
-	 * Terminates running timers.
-	 *
-	 * This function retuns only when all timer threads 
-	 * have been terminated and should be called on 
-	 * shutdown to ensure that no threads are left.
-	 */
-	static void TerminateTimers();
 	
 private:
 	CTimerThread* m_thread;
