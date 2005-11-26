@@ -31,8 +31,8 @@
 
 #include "MD4Hash.h"
 
-class CamulewebApp : public CaMuleExternalConnector
-{
+class CamulewebApp : public CaMuleExternalConnector {
+	class CWebServerBase *m_webserver;
 public:
 	const wxString GetGreetingTitle();
 	void Pre_Shell();

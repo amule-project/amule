@@ -49,23 +49,15 @@
 #include "WebInterface.h"
 #include "WebServer.h"
 
-//-------------------------------------------------------------------
-
-#define APP_INIT_SIZE_X 640
-#define APP_INIT_SIZE_Y 480
-
-#define theApp (*((CamulewebApp*)wxTheApp))
-
-static CWebServerBase *webserver = NULL;
 
 //-------------------------------------------------------------------
 IMPLEMENT_APP(CamulewebApp)
 //-------------------------------------------------------------------
 
 void CamulewebApp::Post_Shell() {
-	webserver->StopServer();
-	delete webserver;
-	webserver = NULL;
+	m_webserver->StopServer();
+	delete m_webserver;
+	m_webserver = 0;
 }
 
 bool CamulewebApp::OnInit() {
@@ -326,11 +318,11 @@ const wxString CamulewebApp::GetGreetingTitle()
 void CamulewebApp::Pre_Shell() {
 	//Creating the web server
 	if ( m_TemplateOk ) {
-		webserver = new CScriptWebServer(this, m_TemplateDir);
+		m_webserver = new CScriptWebServer(this, m_TemplateDir);
 	} else {
-		webserver = new CNoTemplateWebServer(this);
+		m_webserver = new CNoTemplateWebServer(this);
 	}
-	webserver->StartServer();
+	m_webserver->StartServer();
 }
 
 void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
