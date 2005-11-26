@@ -19,6 +19,10 @@ Version 2.1.x - The "???" version
 	lupz:
 		* Kad speed improvements.
 
+	lfroen:
+		* PHP engine implementation for amuleweb
+		* Porting web templates to PHP script
+		
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
