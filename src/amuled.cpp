@@ -484,9 +484,8 @@ int CamuleDaemonApp::OnExit()
 	if (ECServerHandler) {
 		ECServerHandler = 0;
 	}
-	
-	// Terminate all timer-threads.
-	CTimer::TerminateTimers();
+
+	delete core_timer;
 	
 	return CamuleApp::OnExit();
 }

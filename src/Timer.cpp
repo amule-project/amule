@@ -26,17 +26,6 @@
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
 #include "GetTickCount.h"	// Needed for GetTickCountFullRes
 
-#include <wx/utils.h>		// Needed for wxSleep
-
-#include <set>
-
-typedef std::set<CTimerThread*> TimerList;
-
-//! List of running timer-threads, used to simplify owner-ship issues
-TimerList g_timerList;
-//! Mutex used to protect access to the timer-list
-wxMutex g_timerMutex;
-
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
@@ -46,17 +35,8 @@ class CTimerThread : public wxThread
 {
 public:
 	CTimerThread()
-		: wxThread(wxTHREAD_DETACHED)
+		: wxThread(wxTHREAD_JOINABLE)
 	{
-		// Register the thread
-		wxMutexLocker lock(g_timerMutex);
-		g_timerList.insert(this);
-	}
-	
-	virtual ~CTimerThread() {
-		// Unregister the thread
-		wxMutexLocker lock(g_timerMutex);
-		g_timerList.erase(this);
 	}
 	
 	void* Entry() {
@@ -74,7 +54,17 @@ public:
 			while (!TestDestroy()) {
 				uint64 sinceLast = GetTickCountFullRes() - lastEvent;
 				if (m_period > sinceLast) {
-					Sleep(m_period - sinceLast);
+					// In normal operation, we will never actually acquire the
+					// semaphore; we will always timeout.  This is used to
+					// implement a Sleep operation which the owning CTimer can
+					// interrupt by posting to the semaphore.  So, it follows
+					// that if we do acquire the semaphore it means the owner
+					// wants us to exit.
+					wxSemaError err = m_interruptibleSleepSemaphore.
+						WaitTimeout(m_period - sinceLast);
+					if (err != wxSEMA_TIMEOUT) {
+						break;
+					}
 				}
 				
 				// Ensure that no events are discarded
@@ -95,6 +85,7 @@ public:
 	bool			m_oneShot;
 	wxEvtHandler*	m_owner;
 	int				m_id;
+	wxSemaphore		m_interruptibleSleepSemaphore;
 };
 
 
@@ -115,21 +106,9 @@ CTimer::CTimer(wxEvtHandler* owner, int id)
 }
 
 
-void CTimer::SetOwner(wxEvtHandler* owner, int id)
-{
-	m_owner = owner;
-	m_id = id;
-}
-
-
 bool CTimer::IsRunning() const
 {
-	wxMutexLocker lock(g_timerMutex);
-	if (g_timerList.count(m_thread)) {
-		return m_thread->IsRunning();
-	}
-
-	return false;
+	return (m_thread && m_thread->IsRunning());
 }
 
 
@@ -162,43 +141,11 @@ bool CTimer::Start(int millisecs, bool oneShot)
 
 void CTimer::Stop()
 {
-	wxMutexLocker lock(g_timerMutex);
-	
-	// Check if the thread still exists
-	if (g_timerList.count(m_thread)) {
+	if (m_thread) {
+		m_thread->m_interruptibleSleepSemaphore.Post();
 		m_thread->Delete();
-	}
-	
-	m_thread = NULL;
-}
-
-
-void CTimer::TerminateTimers()
-{
-	wxCHECK_RET(wxThread::IsMain(), wxT("Timers must be terminated by main thread."));
-	
-	// Tell all timers to terminate
-	{
-		wxMutexLocker lock(g_timerMutex);
-
-		TimerList::iterator it = g_timerList.begin();
-		for (; it != g_timerList.end(); ++it) {
-			(*it)->Delete();
-		}
-	}
-
-	while (true) {
-		{ 
-			wxMutexLocker lock(g_timerMutex);
-
-			if (g_timerList.empty()) {
-				// All threads have been deleted
-				return;
-			}
-		}
-
-		// Sleep a bit to avoid clubbering the mutex.
-		wxMilliSleep(10);
+		m_thread->Wait();
+		delete m_thread;
+		m_thread = NULL;
 	}
 }
-

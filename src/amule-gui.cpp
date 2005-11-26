@@ -309,8 +309,7 @@ void CamuleGuiApp::ShowAlert(wxString msg, wxString title, int flags)
 
 int CamuleGuiApp::OnExit()
 {
-	// Terminate all timer-threads
-	CTimer::TerminateTimers();
+	delete core_timer;
 	
 	return CamuleApp::OnExit();	
 }
