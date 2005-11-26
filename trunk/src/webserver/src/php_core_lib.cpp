@@ -1075,7 +1075,13 @@ void amule_load_stats_tree(PHP_VALUE_NODE *result)
 		return;
 	}
 	CEC_StatTree_Node_Tag *stats_root = (CEC_StatTree_Node_Tag *)response->GetTagByName(EC_TAG_STATTREE_NODE);
-	ecstats2php(stats_root, result);
+	//ecstats2php(stats_root, result);
+	for (int i = 0; i < stats_root->GetTagCount(); i++) {
+		CEC_StatTree_Node_Tag *tag = (CEC_StatTree_Node_Tag*)stats_root->GetTagByIndex(i);
+		if (tag->GetTagName() == EC_TAG_STATTREE_NODE) {
+			ecstats2php(tag, result);
+		}
+	}
 }
 
 #else
