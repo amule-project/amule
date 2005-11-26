@@ -492,32 +492,31 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 	dc->DrawRectangle(rectHL);
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
-	wxRect columnRect = rect;
-	
-	const int SPARE_PIXELS_HORZ	= 4;
-
 	// Offset based on the height of the fonts
 	const int textVOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
+	// Empty space to each side of a column
+	const int SPARE_PIXELS_HORZ	= 4;
 
-	columnRect.SetLeft( columnRect.GetLeft() + SPARE_PIXELS_HORZ );
-	columnRect.SetWidth( columnRect.GetWidth()-2*SPARE_PIXELS_HORZ);
+	// The leftmost position of the current column
+	int columnLeft = 0;
+	
 	for ( int i = 0; i < GetColumnCount(); ++i ) {
-		wxListItem columnItem;
-		GetColumn(i, columnItem);
-		int width = columnItem.GetWidth();
-		columnRect.SetWidth(width-2*SPARE_PIXELS_HORZ);
+		const int columnWidth = GetColumnWidth(i);
 
-		if ( width ) {
+		if (columnWidth) {
+			wxRect columnRect(
+				columnLeft + SPARE_PIXELS_HORZ, rect.y,
+				columnWidth - 2 * SPARE_PIXELS_HORZ, rect.height);
+			
 			wxDCClipper clipper(*dc, columnRect);
 					
 			switch ( i ) {
 				case ID_SHARED_COL_PART: {
 					if ( file->GetPartCount() ) {
-						--columnRect.height;
-						++columnRect.y;
-						DrawAvailabilityBar(file, dc, columnRect );
-						++columnRect.height;
-						--columnRect.y;
+						wxRect barRect(columnRect.x, columnRect. y + 1, 
+							columnRect.width, columnRect.height - 2);
+						
+						DrawAvailabilityBar(file, dc, barRect);
 					}
 					break;
 				}
@@ -540,25 +539,23 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 						theApp.amuledlg->imagelist.Draw(image, *dc, columnRect.x,
 								columnRect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT);
 
-						columnItem.m_col = i;
-						columnItem.m_itemId = item;
-						GetItem(columnItem);
-						dc->DrawText(columnItem.m_text, columnRect.x + imgWidth + 4,
-							   columnRect.y + textVOffset);
-						break;
+						// Move the text to the right
+						columnRect.x += (imgWidth + 4);
 					}
 
 				default: {
+					wxListItem columnItem;
 					columnItem.m_col = i;
 					columnItem.m_itemId = item;
 					GetItem(columnItem);
-					dc->DrawText(columnItem.m_text, columnRect.GetLeft(), columnRect.GetTop() + textVOffset );
+					dc->DrawText(columnItem.m_text, columnRect.x, columnRect.y + textVOffset );
 					break;
 				}
 			}
 		}
 
-		columnRect.SetLeft(columnRect.GetLeft()+width);
+		// Move to the next column
+		columnLeft += columnWidth;
 	}
 }
 
