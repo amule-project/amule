@@ -364,6 +364,10 @@ class CDaemonAppTraits : public wxConsoleAppTraits {
 		virtual void RemoveFromPendingDelete(wxObject *object);
 
 		void DeletePending();
+
+#ifdef __WXMAC__
+	    virtual wxStandardPathsBase& GetStandardPaths();
+#endif
 };
 
 class CamuleDaemonApp : public CamuleApp {
