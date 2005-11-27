@@ -513,7 +513,7 @@ void CECSocket::DoInput()
 	Read(buffer, EC_SOCKET_BUFFER_SIZE);
 	if (Error()) {
 		m_lastError = LastError();
-		if (m_lastError != wxSOCKET_WOULDBLOCK) {
+		if (m_lastError != wxSOCKET_WOULDBLOCK && m_lastError != wxSOCKET_NOERROR) {
 			OnError();
 			delete [] buffer;
 			return;
@@ -547,7 +547,7 @@ void CECSocket::DoOutput()
 		}
 		if (Error()) {
 			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK) {
+			if (m_lastError == wxSOCKET_WOULDBLOCK || m_lastError == wxSOCKET_NOERROR) {
 				m_lastError = wxSOCKET_NOERROR;
 				return;
 			} else {
@@ -709,7 +709,7 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t
 #if ECSOCKET_USE_EVENTS
 	wxStopWatch swatch;
 	// Wait at most 10 seconds
-	while (!CanReadNBytes(required_len) && (swatch.Time() < 10000)) {
+	while ((GetLastError() == wxSOCKET_NOERROR) && !CanReadNBytes(required_len) && (swatch.Time() < 10000)) {
 		// GTK's event processing is halted as long as we're in an event handler.
 		// So, we cannot wait for a wxSOCKET_INPUT event. Therefore we could use the
 		// WaitForXXX functions with a 0 timeout, so wxYield wouldn't get called,
@@ -717,7 +717,9 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t
 		wxMilliSleep(100);
 		PROCESS_EVENTS();
 	}
-	if (!CanReadNBytes(required_len)) {
+	if (GetLastError() != wxSOCKET_NOERROR) {
+		return 0;
+	} else if (!CanReadNBytes(required_len)) {
 		m_lastError = wxSOCKET_TIMEDOUT;
 		OnError();
 		return 0;
@@ -1142,6 +1144,10 @@ void CECSocket::WritePacket(const CECPacket *packet)
 #define PACKET	(packet)
 #endif
 {
+	if (GetLastError() != wxSOCKET_NOERROR) {
+		return;
+	}
+
 	uint32 flags = 0x20;
 
 	if ((PACKET->GetPacketLength() > EC_MAX_UNCOMPRESSED) && (m_my_flags & EC_FLAG_ZLIB)) {
@@ -1211,6 +1217,10 @@ const CECPacket *CECSocket::ReadPacket()
 #if ECSOCKET_USE_EVENTS
 	uint32 tmp_id = 0;
 #endif
+
+	if (GetLastError() != wxSOCKET_NOERROR) {
+		return INVALID_PACKET;
+	}
 
 	InitBuffers();
 
