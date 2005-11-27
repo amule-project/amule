@@ -38,6 +38,7 @@
 #include "Statistics.h"
 #include "OtherFunctions.h"
 #include "RLE.h"
+#include "SearchList.h"			// Needed for CSearchFile
 
 #include <set>
 #include <map>
@@ -435,7 +436,7 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 		void DeleteItem(CPartFile *);
 		CMD4Hash GetItemID(CPartFile *);
 		void ProcessItemUpdate(CEC_PartFile_Tag *, CPartFile *);
-		bool Phase1Done(CECPacket *);
+		bool Phase1Done(const CECPacket *);
 };
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
@@ -460,7 +461,7 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		void DeleteItem(CKnownFile *);
 		CMD4Hash GetItemID(CKnownFile *);
 		void ProcessItemUpdate(CEC_SharedFile_Tag *, CKnownFile *);
-		bool Phase1Done(CECPacket *);
+		bool Phase1Done(const CECPacket *);
 };
 
 class CKnownFilesRem {
@@ -531,7 +532,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		// Actions
 		//
 
-		bool StartNewSearch(uint32* nSearchID, bool global_search, wxString &searchString, 
+		bool StartNewSearch(uint32* nSearchID, SearchType search_type, wxString &searchString, 
 			wxString& typeText, wxString &extension, uint32 min, uint32 max, uint32 availability);
 			
 		void StopGlobalSearch();
@@ -543,7 +544,7 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		void DeleteItem(CSearchFile *);
 		CMD4Hash GetItemID(CSearchFile *);
 		void ProcessItemUpdate(CEC_SearchFile_Tag *, CSearchFile *);
-		bool Phase1Done(CECPacket *);
+		bool Phase1Done(const CECPacket *);
 };
 
 class CListenSocketRem {

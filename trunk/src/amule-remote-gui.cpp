@@ -75,7 +75,6 @@ using std::auto_ptr;
 #include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
-#include "SearchList.h"			// Needed for CSearchFile
 #include "SearchDlg.h"			// Needed for CSearchDlg
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
 #include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
@@ -426,7 +425,12 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 	        case SEARCH_ADD_TO_DLOAD:
 		        downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 				break;
-
+			case SEARCH_UPDATE_PROGRESS:
+				if ( event.long_value == 0xffff) {
+					amuledlg->searchwnd->ResetControls();
+				}
+				break;
+				
 	        case PARTFILE_REMOVE_NO_NEEDED:
 	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
 				break;
@@ -882,7 +886,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 }
 
-bool CSharedFilesRem::Phase1Done(CECPacket *)
+bool CSharedFilesRem::Phase1Done(const CECPacket *)
 {
 	theApp.knownfiles->requested = 0;
 	theApp.knownfiles->transfered = 0;
@@ -1230,7 +1234,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
-bool CDownQueueRem::Phase1Done(CECPacket *)
+bool CDownQueueRem::Phase1Done(const CECPacket *)
 {
 	return true;
 }
@@ -1302,13 +1306,18 @@ CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchF
 	m_curr_search = -1;
 }
 
-bool CSearchListRem::StartNewSearch(uint32* nSearchID, bool global_search, wxString &searchString,
+bool CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, wxString &searchString,
 	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
 {
 	CECPacket search_req(EC_OP_SEARCH_START);
-	search_req.AddTag(CEC_Search_Tag (searchString,
-		global_search ? EC_SEARCH_GLOBAL : EC_SEARCH_LOCAL, typeText,
-		extension, availability, min_size, max_size));
+	EC_SEARCH_TYPE ec_search_type;
+	switch(search_type) {
+		case LocalSearch: ec_search_type = EC_SEARCH_LOCAL; break;
+		case GlobalSearch: ec_search_type =  EC_SEARCH_GLOBAL; break;
+		case KadSearch: ec_search_type =  EC_SEARCH_KAD; break;
+	}
+	search_req.AddTag(CEC_Search_Tag(searchString,
+		ec_search_type, typeText, extension, availability, min_size, max_size));
 		
 	m_conn->SendPacket(&search_req);
 	m_curr_search = *(nSearchID); // No kad remote search yet.
@@ -1367,7 +1376,7 @@ void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *fil
 	file->m_CompleteSourceCount = tag->CompleteSourceCount();
 }
 
-bool CSearchListRem::Phase1Done(CECPacket *reply)
+bool CSearchListRem::Phase1Done(const CECPacket *reply)
 {
 	switch (reply->GetOpCode()) {
 		case EC_OP_SEARCH_RESULTS:
@@ -1377,6 +1386,7 @@ bool CSearchListRem::Phase1Done(CECPacket *reply)
 				m_curr_search = -1;
 				return false;
 			}
+			CoreNotify_Search_Update_Progress(0xffff);
 			break;
 		default:
 			wxASSERT(0);
