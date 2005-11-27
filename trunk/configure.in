@@ -9,7 +9,7 @@ AC_CONFIG_SRCDIR([src/amule.cpp])
 AM_CONFIG_HEADER([config.h])
 AM_MAINTAINER_MODE
 
-# No -O2 by default, removing -fomit since it causes problems
+# Removing -fomit since it causes problems with CryptoPP
 CFLAGS="`echo $CFLAGS | sed "s/-fomit-frame-pointer//g"`"
 CXXFLAGS="`echo $CXXFLAGS | sed "s/-fomit-frame-pointer//g"`"
 
@@ -73,12 +73,8 @@ AC_ARG_ENABLE(ccache, [  --enable-ccache            enable ccache support for fa
 AC_ARG_ENABLE(debug,   [  --disable-debug            disable additional debugging output],
               USE_DEBUG="$enableval", USE_DEBUG="yes")
 
-# to avoid conflicting, use "" when it is not used, and compare it to "optimise" value
 AC_ARG_ENABLE(optimize, [  --enable-optimize          enable code optimizing],
-		USE_OPTIMIZE="$enableval")
-
-AC_ARG_ENABLE(optimise, [  --enable-optimise          enable code optimizing (deprecated)],
-		USE_OPTIMISE="$enableval", USE_OPTIMISE="no")
+		USE_OPTIMIZE="$enableval", USE_OPTIMIZE="no")
 
 AC_ARG_ENABLE(profile, [  --enable-profile           enable code profiling],
 		USE_PROFILE="$enableval", USE_PROFILE="no")
@@ -367,20 +363,14 @@ yes)	BUILD_AMULECMD="yes"
 esac
 
 
-case "$WXBASE24FOUND" in
-1)	WXBASE_CFLAGS="$WXBASE_CFLAGS -DwxUSE_GUI=0"
+if test "$WXBASE25FOUND" = 1; then
+	WXBASE_CFLAGS="$WXBASE_CFLAGS -DwxUSE_GUI=0"
 	WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DwxUSE_GUI=0"
-	;;
-*)	if test "$WXBASE25FOUND" = 1; then
-		WXBASE_CFLAGS="$WXBASE_CFLAGS -DwxUSE_GUI=0"
-		WXBASE_CXXFLAGS="$WXBASE_CXXFLAGS -DwxUSE_GUI=0"
-	else
-		BUILD_AMULECMD="no"
-		WEB="no"
-		ALCC="no"
-	fi
-	;;
-esac
+else
+	BUILD_AMULECMD="no"
+	WEB="no"
+	ALCC="no"
+fi
 
 # For proper compilation flags
 if test x"$WX_CXXFLAGS" = x""; then
@@ -395,13 +385,7 @@ if test x"$WXBASE_CXXFLAGS" = x""; then
 	WXBASE_CFLAGS="$WX_CFLAGS"
 fi
 
-# Optimization
-if test x"$USE_OPTIMISE" = x"yes" -a x"$USE_OPTIMIZE" = x; then
-	USE_OPTIMIZE=yes
-fi
-
 case "$USE_OPTIMIZE" in
-
 yes)	OPTIMIZE_FLAGS="-O2"
 	;;
 *)	OPTIMIZE_FLAGS=""
