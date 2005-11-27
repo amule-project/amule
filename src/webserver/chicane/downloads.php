@@ -449,7 +449,7 @@ function GotoCat(cat) {
 				echo '<acronym title="Decrease priority"><a href="?cmd=priodown&file=', $file->hash, '"><img src="l_down.gif" alt="Decrease priority"></a></acronym>';
 			}
 	
-			echo '</tr>', "\n";
+			echo '</td></tr>', "\n";
 		}
 	}
 ?>
