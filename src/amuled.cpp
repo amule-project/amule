@@ -45,6 +45,7 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/url.h>
+#include <wx/stdpaths.h>
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -366,6 +367,16 @@ void CDaemonAppTraits::DeletePending()
 	}
 	//m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
 }
+
+
+#ifdef __WXMAC__
+static wxStandardPathsCF gs_stdPaths;
+wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
+{
+	return gs_stdPaths;
+}
+#endif
+
 
 CamuleDaemonApp::CamuleDaemonApp()
 {
