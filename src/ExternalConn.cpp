@@ -655,8 +655,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 {
-	CECPacket *response = new CECPacket(
-		theApp.searchlist->SearchInProgress() ? EC_OP_SEARCH_RESULTS : EC_OP_SEARCH_RESULTS_DONE);
+	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 		
 	EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
 	//
@@ -677,8 +676,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 
 CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 {
-	CECPacket *response = new CECPacket(
-		theApp.searchlist->SearchInProgress() ? EC_OP_SEARCH_RESULTS : EC_OP_SEARCH_RESULTS_DONE);
+	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
 	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffffffff));
 	std::vector<CSearchFile*>::const_iterator it = list.begin();
@@ -1168,7 +1166,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response = Get_EC_Response_Search_Results(request);
 			}
 			break;
-
+			
+		case EC_OP_SEARCH_PROGRESS:
+			response = new CECPacket(EC_OP_SEARCH_PROGRESS);
+			response->AddTag(CECTag(EC_TAG_SEARCH_STATUS,
+				(uint32)theApp.searchlist->Progress()));
+			break;
+			
 		case EC_OP_DOWNLOAD_SEARCH_RESULT:
 			response = Get_EC_Response_Search_Results_Download(request);
 			break;
