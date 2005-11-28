@@ -2260,19 +2260,19 @@ msgstr "Desconectar da rede."
 
 #: src/TextClient.cpp:604
 msgid "This will disconnect from all networks that are currently connected.\n"
-msgstr ""
+msgstr "Isso irá desconectar você de todas as redes conectadas atualmente.\n"
 
 #: src/TextClient.cpp:605
 msgid "Disconnect from ED2K only."
-msgstr ""
+msgstr "Desconectar apenas da rede ED2K."
 
 #: src/TextClient.cpp:606
 msgid "Disconnect from Kad only."
-msgstr ""
+msgstr "Desconectar apenas da rede Kad."
 
 #: src/TextClient.cpp:608
 msgid "Adds an ed2k link to core."
-msgstr ""
+msgstr "Adicionar um link ed2k ao servidor."
 
 #: src/TextClient.cpp:609
 msgid ""
@@ -2283,190 +2283,215 @@ msgid ""
 "to the\n"
 "   server list.\n"
 msgstr ""
+"Um link ed2k para ser adicionado pode ser:\n"
+"*) link de arquivo (ed2k://|file|...), que será adicionado a lista de downloads,\n"
+"*) link de servidor (ed2k://|server|...), que será adicionado a lista de servidores,\n"
+"*) ou um link para lista de servidores. Nesse caso, todos serão adicionados na\n"
+"   Lista de Servidores.\n"
 
 #: src/TextClient.cpp:615
 msgid "Set a preference value."
-msgstr ""
+msgstr "Defina as preferências."
 
 #: src/TextClient.cpp:618
 msgid "Set IPFilter preferences."
-msgstr ""
+msgstr "Preferências do IPFilter."
 
 #: src/TextClient.cpp:620
 msgid "Turn IP filtering on."
-msgstr ""
+msgstr "Ativar o IP Filter."
 
 #: src/TextClient.cpp:621
 msgid "Turn IP filtering off."
-msgstr ""
+msgstr "Desligar o IP Filter."
 
 #: src/TextClient.cpp:622
 msgid "Select IP filtering level."
-msgstr ""
+msgstr "Definir no nível do IP Filter."
 
 #: src/TextClient.cpp:623
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
+"Qualquer valor entre 0 e 255 é válido, e o valor padrão (inicial)\n"
+"é 127.\n"
 
 #: src/TextClient.cpp:626
 msgid "Set bandwidth limits."
-msgstr ""
+msgstr "Limitação de Uso de Banda"
 
 #: src/TextClient.cpp:627
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
-msgstr ""
+msgstr "O Valor informado nesses comandos deve ser em kilobytes/s.\n"
 
 #: src/TextClient.cpp:628
 msgid "Set upload bandwidth limit."
-msgstr ""
+msgstr "Definir limite de Upload."
 
 #: src/TextClient.cpp:630
 msgid "Set download bandwidth limit."
-msgstr ""
+msgstr "Definir limite de Download."
 
 #: src/TextClient.cpp:633
 msgid "Get and display a preference value."
-msgstr ""
+msgstr "Obter e mostrar o valor da opção selecionada."
 
 #: src/TextClient.cpp:636
 msgid "Get IPFilter preferences."
-msgstr ""
+msgstr "Obter preferências do IPFilter."
 
 #: src/TextClient.cpp:638
 msgid "Get IPFilter state."
-msgstr ""
+msgstr "Obter estado do IPFilter"
 
 #: src/TextClient.cpp:639
 msgid "Get IPFilter level."
-msgstr ""
+msgstr "Obter nível do IPFilter"
 
 #: src/TextClient.cpp:641
 msgid "Get bandwidth limits."
-msgstr ""
+msgstr "Obter limites de Up/Down"
 
 #: src/TextClient.cpp:648
 msgid "Pause download."
-msgstr ""
+msgstr "Parar Download."
 
 #: src/TextClient.cpp:651
 msgid "Resume download."
-msgstr ""
+msgstr "Resumir download."
 
 #: src/TextClient.cpp:654
 msgid "Cancel download."
-msgstr ""
+msgstr "Cancelar Download"
 
 #: src/TextClient.cpp:657
 msgid "Show queues/lists."
-msgstr ""
+msgstr "Exibir as listas de Up/Down"
 
 #: src/TextClient.cpp:658
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr ""
+msgstr "Exibe listas de Down/Up, lista de servidores ou lista de compartilhados.\n"
 
 #: src/TextClient.cpp:659
 msgid "Show upload queue."
-msgstr ""
+msgstr "Mostrar fila de Upload."
 
 #: src/TextClient.cpp:660
 msgid "Show download queue."
-msgstr ""
+msgstr "Mostrar fila de Download."
 
 #: src/TextClient.cpp:661
 msgid "Show servers list."
-msgstr ""
+msgstr "Mostrar lista de servidores."
 
 #: src/TextClient.cpp:668
 msgid "Deprecated command, now 'Status'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Status'."
 
 #: src/TextClient.cpp:669
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Status' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Status'.\n"
 
 #: src/TextClient.cpp:672
 msgid "Deprecated command, now 'Set IPFilter'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Set IPFilter'."
 
 #: src/TextClient.cpp:673
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Set IPFilter'.\n"
 
 #: src/TextClient.cpp:676
 msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Get IPFilter Level."
 
 #: src/TextClient.cpp:677
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get IPFilter Level' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Get IPFilter Level'.\n"
 
 #: src/TextClient.cpp:680
 msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Set IPFilter Level'."
 
 #: src/TextClient.cpp:681
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter Level' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Set IPFilter Level'.\n"
 
 #: src/TextClient.cpp:684
 msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Get/Set IPFilter Level'."
 
 #: src/TextClient.cpp:685
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get/Set IPFilter Level' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Get/Set IPFilter Level'.\n"
 
 #: src/TextClient.cpp:688
 msgid "Deprecated command, now 'Show Servers'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Show Servers'."
 
 #: src/TextClient.cpp:689
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Show Servers' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Show Servers'.\n"
 
 #: src/TextClient.cpp:692
 msgid "Deprecated command, now 'Get BwLimits'."
-msgstr ""
+msgstr "Comando Depreciado, agora é 'Get BwLimits'."
 
 #: src/TextClient.cpp:693
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get BwLimits' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Get BwLimits'.\n"
 
 #: src/TextClient.cpp:696
 msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Set BwLimit Up'."
 
 #: src/TextClient.cpp:697
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Up' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Set BwLimit Up'.\n"
 
 #: src/TextClient.cpp:700
 msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr ""
+msgstr "Comando depreciado, agora é 'Set BwLimit Down'."
 
 #: src/TextClient.cpp:701
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Down' instead.\n"
 msgstr ""
+"Este é um comando depreciado, que será removido no futuro.\n"
+"Ao invés desse, use 'Set BwLimit Down'.\n"
 
 #: src/amuled.cpp:389
 msgid ""
@@ -2505,7 +2530,7 @@ msgstr "Velocidade de UP: %.1f"
 
 #: src/SysTray.cpp:166 src/MuleTrayIcon.cpp:327
 msgid "Speed Limits:"
-msgstr ""
+msgstr "Limites de Velocidade:"
 
 #: src/SysTray.cpp:171 src/MuleTrayIcon.cpp:332
 msgid "UL: None"
@@ -2756,7 +2781,7 @@ msgstr ""
 #: src/amule.cpp:1446
 #, c-format
 msgid "Failed to execute on-completion command. Template is: %s"
-msgstr ""
+msgstr "Falha ao executar comando 'on-completion'. O Modelo é: %s"
 
 #: src/amule.cpp:1570
 msgid "ERROR: can't open logfile"
@@ -2777,7 +2802,7 @@ msgstr "MensagemDoServidor: %s"
 
 #: src/amule.cpp:1671
 msgid "Failed to download the nodes list."
-msgstr ""
+msgstr "Falha ao obter a lista de nodes."
 
 #: src/amule.cpp:1684
 msgid "Failed to open the downloaded version check file"
@@ -2803,7 +2828,7 @@ msgstr "A mais recente versão pode ser obtida em http://www.amule.org"
 #: src/amule.cpp:1717
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %i.%i.%i\n"
-msgstr ""
+msgstr "AVISO: Seu aMuled é antigo: %i.%i.%i < %i.%i.%i\n"
 
 #: src/amule.cpp:1720
 msgid "Your copy of aMule is up to date."
@@ -2830,19 +2855,19 @@ msgstr "Conectando a %s"
 
 #: src/amule.cpp:1893
 msgid "Disconnected from ED2K"
-msgstr ""
+msgstr "Desconectado da rede ED2k"
 
 #: src/amule.cpp:1901
 msgid "Connected to Kad (ok)"
-msgstr ""
+msgstr "Conectado a rede Kad (ok)"
 
 #: src/amule.cpp:1903
 msgid "Connected to Kad (firewalled)"
-msgstr ""
+msgstr "Conectado a rede Kad (com firewall)"
 
 #: src/amule.cpp:1906
 msgid "Disconnected from Kad"
-msgstr ""
+msgstr "Desconectado da rede Kad"
 
 #: src/AICHSyncThread.cpp:102
 msgid "AICH Thread: Signaling for thread to terminate."
@@ -2933,7 +2958,7 @@ msgstr ""
 " Contato: admin@amule.org (assuntos administrativos - em inglês) \n"
 " Copyright (C) 2003-2005 aMule Team \n"
 "\n"
-" Trechso do aMule são baseados no \n"
+" Trechos do aMule são baseados no \n"
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
@@ -2948,15 +2973,15 @@ msgstr "Cancelar as tentativas atuais de conexão"
 
 #: src/amuleDlg.cpp:772
 msgid "Disconnect from "
-msgstr ""
+msgstr "Desconectar de "
 
 #: src/amuleDlg.cpp:775
 msgid "current server"
-msgstr ""
+msgstr "servidor atual"
 
 #: src/amuleDlg.cpp:777
 msgid " and "
-msgstr ""
+msgstr " e "
 
 #: src/amuleDlg.cpp:785 src/muuli_wdr.cpp:3145
 msgid "Disconnect"
@@ -2969,7 +2994,7 @@ msgstr "Conectar"
 
 #: src/amuleDlg.cpp:793 src/muuli_wdr.cpp:4088
 msgid "Connect to any server and/or Kad"
-msgstr ""
+msgstr "Conectar a qualquer servidor e/ou Kad"
 
 #: src/amuleDlg.cpp:803
 msgid "WARNING: You have recieved Low-ID!"
@@ -3341,7 +3366,7 @@ msgstr "Não integrar com o SystemTray"
 msgid "Desktop"
 msgstr "Área de Trabalho (Desktop)"
 
-# src/ServerWnd.cpp:69:
+#: src/ServerWnd.cpp:69
 #: src/muuli_wdr.cpp:104
 msgid "ED2K Link Handler"
 msgstr "Gerenciador de Links ED2K"
@@ -3978,7 +4003,7 @@ msgstr "Tempo de espera antes de mostrar as dicas."
 
 #: src/muuli_wdr.cpp:1702
 msgid "Browser Selection"
-msgstr ""
+msgstr "Browser Padrão"
 
 #: src/muuli_wdr.cpp:1707
 msgid "Konqueror"
@@ -4067,19 +4092,19 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1855
 msgid "Standard client TCP Port:"
-msgstr ""
+msgstr "Porta TCP do Cliente:"
 
 #: src/muuli_wdr.cpp:1859
 msgid "This is the standard ED2K port and cannot be disabled."
-msgstr ""
+msgstr "Essa é uma porta essencial do ED2K e não pode ser desativada."
 
 #: src/muuli_wdr.cpp:1864
 msgid "Extended client UDP Port:"
-msgstr ""
+msgstr "Porta UDP do cliente (Extendida):"
 
 #: src/muuli_wdr.cpp:1868
 msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr ""
+msgstr "Essa porta UDP é usada para solicitações ED2K extendidas e rede Kad"
 
 #: src/muuli_wdr.cpp:1871
 msgid "disable"
@@ -4087,7 +4112,7 @@ msgstr "desativado"
 
 #: src/muuli_wdr.cpp:1881
 msgid "UDP port for extended server requests (TCP+3): 4665"
-msgstr ""
+msgstr "Porta UDP para solicitações extendidas (TCP+3):4665"
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Sources per File"
@@ -4236,7 +4261,7 @@ msgstr "Selecione se você quer que o aMule verifique o espaço em disco"
 
 #: src/muuli_wdr.cpp:2128
 msgid "Min Disk Space:"
-msgstr ""
+msgstr "Espaço em disco min:"
 
 #: src/muuli_wdr.cpp:2132
 msgid "Enter here the min disk space desired."
@@ -4248,15 +4273,15 @@ msgstr "Mb"
 
 #: src/muuli_wdr.cpp:2142
 msgid "Execute command on file completion"
-msgstr ""
+msgstr "Comando a ser executado ao completar arquivo"
 
 #: src/muuli_wdr.cpp:2145
 msgid "Enable command execution"
-msgstr ""
+msgstr "Ativar execução de comando"
 
 #: src/muuli_wdr.cpp:2153
 msgid "Command:"
-msgstr ""
+msgstr "Comando:"
 
 #: src/muuli_wdr.cpp:2162
 msgid ""
