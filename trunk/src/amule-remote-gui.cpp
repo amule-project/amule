@@ -426,8 +426,10 @@ void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
 		        downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
 				break;
 			case SEARCH_UPDATE_PROGRESS:
-				if ( event.long_value == 0xffff) {
+				if ( event.long_value == 0xffff ) {
 					amuledlg->searchwnd->ResetControls();
+				} else {
+					amuledlg->searchwnd->UpdateProgress(event.long_value);
 				}
 				break;
 				
@@ -1378,19 +1380,9 @@ void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *fil
 
 bool CSearchListRem::Phase1Done(const CECPacket *reply)
 {
-	switch (reply->GetOpCode()) {
-		case EC_OP_SEARCH_RESULTS:
-			break;
-		case EC_OP_SEARCH_RESULTS_DONE:
-			if ( reply->GetTagCount() <= GetCount() ) {
-				m_curr_search = -1;
-				return false;
-			}
-			CoreNotify_Search_Update_Progress(0xffff);
-			break;
-		default:
-			wxASSERT(0);
-	}
+	CECPacket progress_req(EC_OP_SEARCH_PROGRESS);
+	const CECPacket *progress_reply = m_conn->SendRecvPacket(&progress_req);
+	CoreNotify_Search_Update_Progress(progress_reply->GetTagByIndex(0)->GetInt32Data());
 	return true;
 }
 

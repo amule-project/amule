@@ -54,9 +54,12 @@ enum SearchType {
 
 class CGlobalSearchThread : public wxThread 
 {	
+	int m_progress;
 public:
 	CGlobalSearchThread( CPacket *packet );
 	~CGlobalSearchThread();
+
+	int Progress() { return m_progress; }
 
 private:
 	CPacket* 	m_packet;
@@ -166,6 +169,15 @@ public:
 	bool IsGlobalSearch() { return m_searchthread != NULL; };
 
 	bool SearchInProgress() { return m_SearchInProgress; }
+	
+	int Progress()
+	{
+		if ( m_searchthread ) {
+			return m_searchthread->Progress();
+		} else {
+			return m_SearchInProgress ? 0 : 0xffff;
+		}
+	}
 	
 	void KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* pfileID, const wxString& name, uint32 size, const wxString& type, const TagPtrList& taglist);
 	

@@ -311,10 +311,10 @@ enum {
 	EC_OP_SEARCH_RESULTS,
 
 		/*!
-		 * \brief Search results, search is terminated
+		 * \brief Query (or reply) search progress (in %%)
 		 */
-	EC_OP_SEARCH_RESULTS_DONE,
-
+	EC_OP_SEARCH_PROGRESS,
+	
 		/*!
 		 * \brief Add 1 or more of found files to download queue
 		 * 
