@@ -66,6 +66,7 @@ CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	
 	m_packet->SetOpCode(OP_GLOBSEARCHREQ);
 
+	m_progress = 0;
 }
 
 
@@ -104,8 +105,8 @@ void *CGlobalSearchThread::Entry()
 				theStats::AddUpOverheadServer( m_packet->GetPacketSize() );
 				theApp.serverconnect->SendUDPPacket( m_packet, server, false );
 		
-				int percentage = 100 - ( queue.GetRemaining() * 100 ) / theApp.serverlist->GetServerCount();
-				CoreNotify_Search_Update_Progress( percentage );
+				m_progress = 100 - ( queue.GetRemaining() * 100 ) / theApp.serverlist->GetServerCount();
+				CoreNotify_Search_Update_Progress( m_progress );
 			}	
 		}
 		
