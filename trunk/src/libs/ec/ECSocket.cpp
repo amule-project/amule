@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2004-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2004-2005 Angel Vidal Veiga ( kry@users.sourceforge.net )
-// Copyright (c) 2005 Dï¿½vai Tamï¿½s ( gonosztopi@amule.org )
+// Copyright (c) 2005 Dévai Tamás ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -289,7 +289,7 @@ CECSocket::CECSocket()
 	m_transfer_in_progress = false;
 #endif
 	m_firsttransfer = true;
-	m_my_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS
+	m_my_flags = 0x20 /*| EC_FLAG_ZLIB*/ | EC_FLAG_UTF8_NUMBERS
 #if ECSOCKET_USE_EVENTS
 		| EC_FLAG_HAS_ID
 #endif
@@ -352,7 +352,6 @@ CECSocket::~CECSocket()
 
 void CECSocket::SendPacket(const CECPacket *packet)
 {
-	/*
 #if ECSOCKET_USE_EVENTS
 	wxENTER_CRIT_SECT(m_cs_packet_out);
 
@@ -372,9 +371,6 @@ void CECSocket::SendPacket(const CECPacket *packet)
 	m_isWorking = false;
 	CheckDestroy();
 #endif
-	*/
-	const CECPacket *reply = SendRecvPacket(packet);
-	delete reply;
 }
 
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
@@ -1290,6 +1286,11 @@ const CECPacket *CECSocket::ReadPacket()
 	}
 
 #if ECSOCKET_USE_EVENTS
+	if (m_z.avail_in > 0) {
+		CQueuedData *data = new CQueuedData(m_z.next_in, m_z.avail_in);
+		m_input_queue.push_front(data);
+	}
+
 	if (tmp_packet) {
 		m_input_packet_queue.push_back(packet_desc(tmp_packet, tmp_id));
 		wxSocketEvent event(EC_SOCKET_HANDLER);
