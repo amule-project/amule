@@ -118,29 +118,11 @@ public:
 		m_aFiles.clear();
 	}
 
-	void RotateReferences(int iRotateSize) {
-		if ((int)m_aFiles.size() > iRotateSize) {
-			#ifdef __DEBUG__
-			size_t old_size = m_aFiles.size();
-			#endif
-			m_aFiles.insert(m_aFiles.end(), m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
-			m_aFiles.erase(m_aFiles.begin(), m_aFiles.begin() + iRotateSize);
-			#ifdef __DEBUG__
-			wxASSERT(old_size == m_aFiles.size());
-			#endif			
-			
-			/* I leave this code here for educational purposes.
-			#warning malloc!!! MALLOC!!!!!!!
-			CKnownFile** ppRotated = (CKnownFile**)malloc(m_aFiles.m_nAllocSize * sizeof(*m_aFiles.GetData()));
-			if (ppRotated != NULL) {
-				memcpy(ppRotated, m_aFiles.GetData() + iRotateSize, (m_aFiles.GetSize() - iRotateSize) * sizeof(*m_aFiles.GetData()));
-				memcpy(ppRotated + m_aFiles.GetSize() - iRotateSize, m_aFiles.GetData(), iRotateSize * sizeof(*m_aFiles.GetData()));
-				#warning free!!! FREE!!!
-				free(m_aFiles.GetData());
-				m_aFiles.m_aT = ppRotated;
-			}
-			*/
-		}
+	void RotateReferences(unsigned iRotateSize) {
+		wxCHECK_RET(m_aFiles.size(), wxT("RotateReferences: Rotating empty array"));
+		
+		unsigned shift = (iRotateSize % m_aFiles.size());
+		std::rotate(m_aFiles.begin(), m_aFiles.begin() + shift, m_aFiles.end());
 	}
 
 protected:
