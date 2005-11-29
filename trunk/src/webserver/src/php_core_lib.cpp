@@ -681,7 +681,7 @@ void php_set_amule_options(PHP_VALUE_NODE *)
 	// connection
 	opt_group_array = array_get_by_str_key(&si->var->value, "connection");
 	if ( opt_group_array->value.type == PHP_VAL_ARRAY ) {
-		CECEmptyTag connPrefs(EC_TAG_PREFS_FILES);
+		CECEmptyTag connPrefs(EC_TAG_PREFS_CONNECTIONS);
 		php_2_ec_tag(&connPrefs, g_connection_opt_defs, &opt_group_array->value);
 		req.AddTag(connPrefs);
 	}

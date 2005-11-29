@@ -35,7 +35,8 @@ var initvals = new Object;
 			"min_free_space", "new_files_paused", "alloc_full", "alloc_full_chunks",
 			"new_files_auto_dl_prio", "new_files_auto_ul_prio"
 		);
-		$conn_opts = array("max_line_up_cap","max_up_limit","slot_alloc", 
+		$conn_opts = array("max_line_up_cap","max_up_limit",
+			"max_line_down_cap","max_down_limit", "slot_alloc", 
 			"tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en");
 		$webserver_opts = array("use_gzip", "autorefresh_time");
 		
