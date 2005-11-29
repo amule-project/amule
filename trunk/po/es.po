@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-23 21:36+0100\n"
-"PO-Revision-Date: 2005-11-24 01:46+0100\n"
+"PO-Revision-Date: 2005-11-29 15:11+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -5704,6 +5704,7 @@ msgstr "IdentSeg On/Off: %u (%.2f%%) : %u (%.2f%%)"
 
 #: src/Statistics.cpp:848
 #: src/ServerListCtrl.cpp:95
+#, fuzzy
 msgid "Version"
 msgstr "Versión"
 
@@ -6208,7 +6209,7 @@ msgstr "Muy alta"
 #: src/DataToText.cpp:49
 #: src/SharedFilesCtrl.cpp:129
 msgid "Release"
-msgstr "Versión"
+msgstr "Lanzamiento"
 
 #: src/DataToText.cpp:63
 msgid "Asking"
@@ -6944,3 +6945,4 @@ msgstr "Error: conexión perdida."
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Total Usuarios: %s | Total Archivos: %s"
+
