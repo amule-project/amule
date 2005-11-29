@@ -476,8 +476,9 @@ void CSearchList::ProcessUDPSearchanswer(const CMemFile& packet, bool bOptUTF8, 
 
 bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 {
-	// If filesize is 0, drop it (why would we want to download a 0-byte file anyway?)
-	if (!toadd->GetIntTagValue(FT_FILESIZE)) {
+	uint32 fileSize = toadd->GetIntTagValue(FT_FILESIZE);
+	// If filesize is 0, or file is too large for the network, drop it 
+	if ((fileSize == 0) or (fileSize > MAX_FILE_SIZE)) {
 		delete toadd;
 		return false;
 	}
