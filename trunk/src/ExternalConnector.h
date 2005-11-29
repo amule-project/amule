@@ -33,7 +33,7 @@
 #ifndef __EXTERNALCONNECTOR_H__
 #define __EXTERNALCONNECTOR_H__
 
-#include <wx/app.h>		// For wxApp
+#include <wx/app.h>			// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
 #include <wx/intl.h>		// For wxLocale
 #include <wx/string.h>		// For wxString
@@ -162,6 +162,10 @@ protected:
 	bool		m_KeepQuiet;
 	bool		m_Verbose;
 	CCommandTree	m_commands;
+
+#if !wxUSE_GUI && defined(__WXMAC__)
+	virtual wxAppTraits* CreateTraits();
+#endif
 
 private:
 	wxString	m_cmdargs;

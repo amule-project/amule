@@ -597,3 +597,30 @@ bool CaMuleExternalConnector::OnInit()
 	InitLocale(m_locale, StrLang2wx(m_language));
 	return retval;
 }
+
+
+#if !wxUSE_GUI && defined(__WXMAC__)
+
+#include <wx/apptrait.h>
+#include <wx/stdpaths.h>
+
+class CaMuleExternalConnectorTraits : public wxConsoleAppTraits
+{
+public:
+	virtual wxStandardPathsBase& GetStandardPaths()
+	{
+		return s_stdPaths;
+	}
+
+private:
+	static wxStandardPathsCF s_stdPaths;
+};
+
+wxStandardPathsCF CaMuleExternalConnectorTraits::s_stdPaths;
+
+wxAppTraits* CaMuleExternalConnector::CreateTraits()
+{
+	return new CaMuleExternalConnectorTraits;
+}
+
+#endif
