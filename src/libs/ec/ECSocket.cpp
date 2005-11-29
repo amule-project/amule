@@ -289,7 +289,7 @@ CECSocket::CECSocket()
 	m_transfer_in_progress = false;
 #endif
 	m_firsttransfer = true;
-	m_my_flags = 0x20 /*| EC_FLAG_ZLIB*/ | EC_FLAG_UTF8_NUMBERS
+	m_my_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS
 #if ECSOCKET_USE_EVENTS
 		| EC_FLAG_HAS_ID
 #endif
@@ -701,6 +701,16 @@ bool CECSocket::CanReadNBytes(size_t len)
 
 #endif /* ECSOCKET_USE_EVENTS */
 
+void CECSocket::PushBack(const void * data, size_t len)
+{
+#if ECSOCKET_USE_EVENTS
+	CQueuedData * dta = new CQueuedData(data, len);
+	m_input_queue.push_front(dta);
+#else
+	Unread(data, len);
+#endif
+}
+
 size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t max_len)
 {
 	char *iobuf = (char *)buffer;
@@ -974,9 +984,16 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 				return false;
 			}
 			int zerror = inflate(&m_z, Z_SYNC_FLUSH);
-			if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
-				ShowZError(zerror, &m_z);
-				return false;
+			if (zerror != Z_OK) {
+				if (zerror == Z_STREAM_END) {
+					if (m_z.avail_in > 0) {
+						PushBack(m_z.next_in, m_z.avail_in);
+						m_z.avail_in = 0;
+					}
+				} else {
+					ShowZError(zerror, &m_z);
+					return false;
+				}
 			}
 			m_z.next_out = m_out_ptr;
 			m_z.avail_out = EC_SOCKET_BUFFER_SIZE - m_z.avail_out;
@@ -1285,12 +1302,11 @@ const CECPacket *CECSocket::ReadPacket()
 		}
 	}
 
-#if ECSOCKET_USE_EVENTS
 	if (m_z.avail_in > 0) {
-		CQueuedData *data = new CQueuedData(m_z.next_in, m_z.avail_in);
-		m_input_queue.push_front(data);
+		PushBack(m_z.next_in, m_z.avail_in);
 	}
 
+#if ECSOCKET_USE_EVENTS
 	if (tmp_packet) {
 		m_input_packet_queue.push_back(packet_desc(tmp_packet, tmp_id));
 		wxSocketEvent event(EC_SOCKET_HANDLER);

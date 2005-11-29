@@ -32,7 +32,7 @@
 #include <wx/thread.h>		// Needed for MT-Safe API.
 #include "Types.h"
 
-#include "zlib.h"			// Needed for packet (de)compression
+#include <zlib.h>			// Needed for packet (de)compression
 
 // By default we use event driven sockets.
 #ifndef ECSOCKET_USE_EVENTS
@@ -254,6 +254,8 @@ class CECSocket : public wxSocketClient {
 	void	WriteBufferToSocket(const void *buffer, size_t len);
 
 	void	CheckDestroy();
+
+	void	PushBack(const void * data, size_t len);
 
 	wxSocketError	m_lastError;
 	bool		m_destroying;
