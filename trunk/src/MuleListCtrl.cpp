@@ -413,6 +413,13 @@ wxString CMuleListCtrl::GetTTSText(unsigned item) const
 void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 {
 	if (evt.AltDown() or evt.ControlDown() or evt.MetaDown()) {
+		if (evt.ControlDown() and (evt.GetKeyCode() == wxT('a'))) {
+			// Ctrl+a was pressed, select all items
+			for (size_t i = 0; i < GetItemCount(); ++i) {
+				SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+			}
+		}
+		
 		evt.Skip();
 		return;
 	} else if (m_tts_time + 1500u < GetTickCount()) {
