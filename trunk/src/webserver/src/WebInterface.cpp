@@ -33,6 +33,7 @@
 #endif
 
 #include <wx/filename.h>	// Needed for wxFileName
+#include <wx/stdpaths.h>
 
 #include <cstdio>
 
@@ -153,6 +154,21 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 		templateDir = dir;
 		return true;
 	}
+	
+#ifdef __WXGTK__
+	// Returns 'aMule' when we use 'amule' elsewhere
+	dir = wxStandardPaths::Get().GetDataDir();
+	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
+	dir += wxFileName::GetPathSeparator();
+	dir += wxT("amule");
+	dir += wxFileName::GetPathSeparator();
+	dir += wxT("webserver");
+	if (CheckDirForTemplate(dir, templateName)) {
+		templateDir = dir;
+		return true;
+	}
+#endif
+
 	
 	// template not found. reverting to default
 	const wxChar* const defaultTemplateName = wxT("php-default");

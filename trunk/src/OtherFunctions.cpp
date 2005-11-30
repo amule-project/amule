@@ -40,7 +40,7 @@
 	#if wxCHECK_VERSION_FULL(2,6,0,1)
 		#include <wx/stdpaths.h>
 	#endif
-#elif defined(__WXMAC__)
+#else
 	#include <wx/stdpaths.h>
 #endif
 
@@ -1255,7 +1255,8 @@ wxString GetLocaleDir()
 	return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator() + wxT("locale");
 #elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
-	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
+	localeDir.Replace(wxT("${prefix}"), dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix());
+	printf("%s\n", localeDir.fn_str());
 	return localeDir;
 #else
 	return wxStandardPaths::Get().GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
