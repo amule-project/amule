@@ -160,6 +160,7 @@ bool		CPreferences::s_bWebEnabled;
 bool		CPreferences::s_bWebUseGzip;
 uint32		CPreferences::s_nWebPageRefresh;
 bool		CPreferences::s_bWebLowEnabled;
+wxString	CPreferences::s_WebTemplate;
 bool		CPreferences::s_showCatTabInfos;
 uint32		CPreferences::s_allcatType;
 uint8		CPreferences::s_NoNeededSources;
@@ -880,8 +881,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true )));
 	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false )));
 	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 )));
+	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Str( wxT("/WebServer/Template"), s_WebTemplate, wxEmptyString )));
 	NewCfgItem(IDC_EXT_CONN_ACCEPT,	(new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, false )));
-	NewCfgItem(IDC_EXT_CONN_IP, new Cfg_Str(  wxT("/ExternalConnect/ECAddress"),			s_ECAddr,	wxEmptyString ) );
+	NewCfgItem(IDC_EXT_CONN_IP,	(new Cfg_Str( wxT("/ExternalConnect/ECAddress"), s_ECAddr, wxEmptyString )));
 	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 )));
 	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
 

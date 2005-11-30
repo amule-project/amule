@@ -1059,7 +1059,10 @@ enum {
 		*	::EC_TAG_WEBSERVER_AUTORUN\n
 		*	::EC_TAG_WEBSERVER_PORT (required)\n
 		*	::EC_TAG_PASSWD_HASH (0-1) Admin Password. Omitted, when admin password is blank.\n
-		*	::EC_TAG_WEBSERVER_GUEST (0-1)
+		*	::EC_TAG_WEBSERVER_GUEST (0-1)\n
+		*	::EC_TAG_WEBSERVER_USEGZIP\n
+		*	::EC_TAG_WEBSERVER_REFRESH\n
+		*	::EC_TAG_WEBSERVER_TEMPLATE
 		*/
 	EC_TAG_PREFS_REMOTECTRL,
 
@@ -1072,6 +1075,7 @@ enum {
 					*/
 	EC_TAG_WEBSERVER_USEGZIP,	///< (boolean) When present, webserver uses gzip compression.
 	EC_TAG_WEBSERVER_REFRESH,	///< (\c uint32) Refresh interval of web pages in seconds.
+	EC_TAG_WEBSERVER_TEMPLATE,	///< (\c string) Web template name.
 
 
 	//

@@ -162,6 +162,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 			rc_prefs.AddTag(CECEmptyTag(EC_TAG_WEBSERVER_USEGZIP));
 		}
 		rc_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_REFRESH, thePrefs::GetWebPageRefresh()));
+		rc_prefs.AddTag(CECTag(EC_TAG_WEBSERVER_TEMPLATE, thePrefs::GetWebTemplate()));
 		AddTag(rc_prefs);
 	}
 
@@ -416,6 +417,9 @@ void CEC_Prefs_Packet::Apply()
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetWebUseGzip, EC_TAG_WEBSERVER_USEGZIP);
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_REFRESH)) != NULL) {
 			thePrefs::SetWebPageRefresh(oneTag->GetInt32Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_WEBSERVER_TEMPLATE)) != NULL) {
+			thePrefs::SetWebTemplate(oneTag->GetStringData());
 		}
 	}
 

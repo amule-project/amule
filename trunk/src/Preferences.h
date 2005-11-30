@@ -367,6 +367,8 @@ public:
 	static void		SetWSIsLowUserEnabled(bool in) 	{ s_bWebLowEnabled=in; }
 	static const wxString&	GetWSLowPass() 			{ return s_sWebLowPassword; }
 	static void		SetWSLowPass(const wxString& pass)	{ s_sWebLowPassword = pass; }
+	static const wxString&	GetWebTemplate()		{ return s_WebTemplate; }
+	static void		SetWebTemplate(const wxString& val) { s_WebTemplate = val; }
 
 	static void		SetMaxSourcesPerFile(uint16 in) { s_maxsourceperfile=in;}
 	static void		SetMaxConnections(uint16 in) 	{ s_maxconnections =in;}
@@ -642,6 +644,7 @@ protected:
 	static bool	s_bWebUseGzip;
 	static uint32	s_nWebPageRefresh;
 	static bool	s_bWebLowEnabled;
+	static wxString s_WebTemplate;
 
 	static bool	s_showCatTabInfos;
 	static uint32	s_allcatType;
