@@ -6464,7 +6464,7 @@ msgstr "Caricamento dati da vecchio file in download (%u su %u)"
 #: src/PartFileConvert.cpp:404
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
-msgstr "Salvataggio blocchi di dati in un singolo file (%u su %su)"
+msgstr "Salvataggio blocchi di dati in un singolo file (%u su %u)"
 
 #: src/PartFileConvert.cpp:453 src/MuleTextCtrl.cpp:79
 msgid "Copy"
