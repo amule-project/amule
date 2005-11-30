@@ -1256,7 +1256,6 @@ wxString GetLocaleDir()
 #elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 	localeDir.Replace(wxT("${prefix}"), dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix());
-	printf("%s\n", localeDir.fn_str());
 	return localeDir;
 #else
 	return wxStandardPaths::Get().GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
