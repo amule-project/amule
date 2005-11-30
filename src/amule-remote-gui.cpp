@@ -545,7 +545,7 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 	//
 	m_exchange_send_selected_prefs = EC_PREFS_GENERAL | EC_PREFS_CONNECTIONS | EC_PREFS_MESSAGEFILTER |
 		EC_PREFS_ONLINESIG | EC_PREFS_SERVERS | EC_PREFS_FILES | EC_PREFS_SRCDROP |
-		EC_PREFS_SECURITY | EC_PREFS_CORETWEAKS;
+		EC_PREFS_SECURITY | EC_PREFS_CORETWEAKS | EC_PREFS_REMOTECONTROLS;
 	m_exchange_recv_selected_prefs = m_exchange_send_selected_prefs | EC_PREFS_CATEGORIES;
 }
 
