@@ -93,8 +93,12 @@ wxString GetMuleVersion()
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
 
-#if wxUSE_UNICODE
+#if wxUSE_UNICODE && defined(__WXDEBUG__)
+	ver += wxT(" (Unicoded, Debugging)");
+#elif wxUSE_UNICODE
 	ver += wxT(" (Unicoded)");
+#elif defined(__WXDEBUG__)
+	ver += wxT(" (Debugging)");
 #endif
 	
 #ifdef CVSDATE
