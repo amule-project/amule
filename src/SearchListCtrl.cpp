@@ -32,10 +32,11 @@
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "OPCodes.h"		// Needed for MP_RESUME
+#include "OPCodes.h"		// Needed for MP_ASSIGNCAT
 #include "amule.h"			// Needed for theApp
 #include "Color.h"			// Needed for BLEND and SYSCOLOR
 #include "muuli_wdr.h"		// Needed for clientImages
+#include "Preferences.h"	// Needed for thePrefs
 
 #include <wx/menu.h>
 #include <wx/settings.h>
@@ -59,6 +60,7 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
+	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
 
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
 END_EVENT_TABLE()
@@ -469,26 +471,32 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 {
 	CheckSelection(event);
 	
-	if ( GetSelectedItemCount() != 0 ) {
-
+	if (GetSelectedItemCount()) {
 		// Create the popup-menu
-		wxMenu* menu = new wxMenu( _("File") );
-		menu->Append( MP_RESUME, _("Download"));
-		menu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
-		menu->Append( MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
-		menu->AppendSeparator();
-		menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
-		menu->AppendSeparator();
+		wxMenu menu(_("File"));
+		menu.Append(MP_RESUME, _("Download"));
+		
+		wxMenu* cats = new wxMenu(_("Category"));
+		cats->Append(MP_ASSIGNCAT, _("Main"));
+		for (unsigned i = 1; i < theApp.glob_prefs->GetCatCount(); i++) {
+			cats->Append(MP_ASSIGNCAT + i,
+				theApp.glob_prefs->GetCategory(i)->title);
+		}
+		
+		menu.Append(MP_MENU_CATS, _("Download in category"), cats);
+		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
+		menu.Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
+		menu.AppendSeparator();
+		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
+		menu.AppendSeparator();
 
 		// These should only be enabled for single-selections
 		bool enable = GetSelectedItemCount();
-		menu->Enable( MP_GETED2KLINK, enable );
-		menu->Enable( MP_GETHTMLED2KLINK, enable );
-	
+		menu.Enable(MP_GETED2KLINK, enable);
+		menu.Enable(MP_GETHTMLED2KLINK, enable);
+		menu.Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1));
 
-		PopupMenu( menu, event.GetPoint() );
-
-		delete menu;
+		PopupMenu(&menu, event.GetPoint());
 	} else {
 		event.Skip();
 	}
@@ -546,10 +554,29 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-void CSearchListCtrl::OnPopupDownload( wxCommandEvent& WXUNUSED(event) )
+void CSearchListCtrl::OnPopupDownload(wxCommandEvent& event)
 {
-	wxCommandEvent nullEvt;
-	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
+	FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+	
+	int category = 0;
+	if (event.GetId() == MP_RESUME) {
+		// Either the "Download" menu-item or the download-button
+		if (CastByID(IDC_EXTENDEDSEARCHCHECK, NULL, wxCheckBox)->GetValue()) {
+			category = CastByID(ID_AUTOCATASSIGN, NULL, wxChoice)->GetSelection();
+		}
+	} else {
+		// Via an "Download in category" item
+		category = event.GetId() - MP_ASSIGNCAT;
+	}
+	
+	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	while (index > -1) {
+		CoreNotify_Search_Add_Download((CSearchFile*)GetItemData(index), category);
+		
+		UpdateItemColor(index);
+
+		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
 }
 
 

@@ -383,31 +383,14 @@ void CSearchDlg::LocalSearchEnd()
 
 void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 {
-	int selection = m_notebook->GetSelection();
-
-	if ( selection == -1 )
-		return;
+	int sel = m_notebook->GetSelection();
+	if (sel != -1) {
+		CSearchListCtrl* list = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(sel));
 	
-	
-	CSearchListCtrl* searchlistctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
-	
-	if ( !searchlistctrl->GetSelectedItemCount() )
-		return;
-	
-	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
-
-	uint8 category = 0;
-	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
-		category = CastChild( ID_AUTOCATASSIGN, wxChoice )->GetSelection();
-	}
-	
-	int index = searchlistctrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while ( index > -1 ) {
-		CoreNotify_Search_Add_Download( (CSearchFile*)searchlistctrl->GetItemData(index), category );
-		
-		searchlistctrl->UpdateItemColor( index );
-
-		index = searchlistctrl->GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		// Send event equal to a click on the normal "Download" menu-item
+		wxMenuEvent event; 
+		event.SetId(MP_RESUME);
+		list->AddPendingEvent(event);
 	}
 }
 
