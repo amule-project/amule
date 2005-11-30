@@ -344,13 +344,13 @@ void CamulewebApp::Pre_Shell() {
 void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
 {
 	CaMuleExternalConnector::LoadAmuleConfig(cfg);
-	m_UseGzip = (cfg.Read(wxT("/Webserver/UseGzip"), 0l) == 1l);
-	m_AllowGuest = (cfg.Read(wxT("/Webserver/UseLowRightsUser"), 0l) == 1l);
-	cfg.ReadHash(wxT("/Webserver/Password"), &m_AdminPass);
-	cfg.ReadHash(wxT("/Webserver/PasswordLow"), &m_GuestPass);
-	m_WebserverPort = cfg.Read(wxT("/Webserver/Port"), -1l);
-	m_PageRefresh = cfg.Read(wxT("/Webserver/PageRefreshTime"), 120l);
-	m_TemplateName = wxT("default");
+	m_UseGzip = (cfg.Read(wxT("/WebServer/UseGzip"), 0l) == 1l);
+	m_AllowGuest = (cfg.Read(wxT("/WebServer/UseLowRightsUser"), 0l) == 1l);
+	cfg.ReadHash(wxT("/WebServer/Password"), &m_AdminPass);
+	cfg.ReadHash(wxT("/WebServer/PasswordLow"), &m_GuestPass);
+	m_WebserverPort = cfg.Read(wxT("/WebServer/Port"), -1l);
+	m_PageRefresh = cfg.Read(wxT("/WebServer/PageRefreshTime"), 120l);
+	m_TemplateName = cfg.Read(wxT("/WebServer/Template"), wxT("default"));
 }
 
 void CamulewebApp::LoadConfigFile()
