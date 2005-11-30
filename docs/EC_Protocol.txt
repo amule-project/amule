@@ -173,6 +173,15 @@ Section 2: Data Types
     They are always MSB first.
 
 
+    Floating point numbers
+    ----------------------
+
+    Floating point numbers such as 'float' or 'double' types are converted
+    to their string representation, and are sent as string. Note, that the
+    decimal point is always the '.' (dot) character, independent from the
+    current locale.
+
+
 Section 3: Clarifying things
 ----------------------------
 
