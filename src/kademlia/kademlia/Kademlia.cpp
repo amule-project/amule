@@ -216,6 +216,18 @@ void CKademlia::process()
 			m_nextSearchJumpStart += SEARCH_JUMPSTART;
 		}
 	}
+	
+	it = m_events.begin();
+	
+	/* Do needed merges if there was a successful deletion */
+	while (it != m_events.end()) {
+		zone = it->first;
+		++it;
+		if (zone->IsDirty()) {
+			zone->merge();
+			it = m_events.begin(); /* restart */
+		}
+	}
 
 	//Update user count only if changed.
 	if( updateUserFile ) {
