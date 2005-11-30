@@ -2050,10 +2050,11 @@ wxString CUpDownClient::GetClientFullInfo() {
 		ReGetClientSoft();
 	}
 
-	return CFormat( _("Client %s on IP:Port %s:%d using %s") )
+	return CFormat( _("Client %s on IP:Port %s:%d using %s %s") )
 		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
 		% GetFullIP()
 		% GetUserPort()
+		% m_clientSoftString 
 		% m_clientVerString;
 }
 
