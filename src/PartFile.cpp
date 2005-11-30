@@ -1007,10 +1007,12 @@ bool CPartFile::SavePartFile(bool Initial)
 
 void CPartFile::SaveSourceSeeds()
 {
+	#define MAX_SAVED_SOURCES 10
+	
 	// Kry - Sources seeds
 	// Copyright (c) 2004-2005 Angel Vidal (Kry)
-	// Based on a Feature request, this saves the last 5 sources of the file,
-	// giving a 'seed' for the next run.
+	// Based on a Feature request, this saves the last MAX_SAVED_SOURCES 
+	// sources of the file, giving a 'seed' for the next run.
 	// We save the last sources because:
 	// 1 - They could be the hardest to get
 	// 2 - They will more probably be available
@@ -1028,7 +1030,7 @@ void CPartFile::SaveSourceSeeds()
 	int n_sources = 0;
 	
 	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
-	for( ; it != m_downloadingSourcesList.end() && n_sources < 5; ++it) {
+	for( ; it != m_downloadingSourcesList.end() && n_sources < MAX_SAVED_SOURCES; ++it) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->HasLowID()) {
 			continue;
@@ -1038,11 +1040,11 @@ void CPartFile::SaveSourceSeeds()
 		++n_sources;
 	}
 
-	if (n_sources < 5) {
+	if (n_sources < MAX_SAVED_SOURCES) {
 		// Not enought downloading sources to fill the list, going to sources list	
 		if (GetSourceCount() > 0) {
 			SourceSet::reverse_iterator rit = m_SrcList.rbegin();
-			for ( ; ((rit != m_SrcList.rend()) && (n_sources<5)); ++rit) {
+			for ( ; ((rit != m_SrcList.rend()) && (n_sources<MAX_SAVED_SOURCES)); ++rit) {
 				CUpDownClient* cur_src = *rit;
 				if (cur_src->HasLowID()) {
 					continue;
@@ -1078,6 +1080,9 @@ void CPartFile::SaveSourceSeeds()
 			file.WriteUInt16(cur_src->GetUserPort());
 		}
 
+		/* v2: Added to keep track of too old seeds */
+		file.WriteUInt32(wxDateTime::Now().GetTicks());
+		
 		AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
 			% n_sources
 			% m_fullname
@@ -1098,6 +1103,8 @@ void CPartFile::LoadSourceSeeds()
 {	
 	CFile file;
 	CMemFile sources_data;
+	
+	bool valid_sources = false;
 	
 	if (!wxFileName::FileExists(m_fullname + wxT(".seeds"))) {
 		return;
@@ -1134,6 +1141,24 @@ void CPartFile::LoadSourceSeeds()
 			sources_data.WriteUInt32(0);
 			sources_data.WriteUInt16(0);	
 		}	
+		
+		if (!file.Eof()) {
+	
+			// v2: Added to keep track of too old seeds 
+			uint32 time = file.ReadUInt32();
+	
+			// Time frame is 2 hours. More than enough to compile
+			// your new aMule version!.
+			if ((time + MIN2S(120)) >= wxDateTime::Now().GetTicks()) {
+				valid_sources = true;
+			}
+			
+		} else {
+			// v1 has no time data. We can safely use
+			// the sources, next time will be saved.
+			valid_sources = true;
+		}
+		
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
@@ -1142,9 +1167,11 @@ void CPartFile::LoadSourceSeeds()
 		return;
 	}
 	
-	sources_data.Seek(0);
-	AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);
-
+	if (valid_sources) {
+		sources_data.Seek(0);
+		AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);		
+	}
+	
 	file.Close();
 }		
 
