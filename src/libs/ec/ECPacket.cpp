@@ -26,6 +26,7 @@
 #include "ECSocket.h"	// Needed for CECSocket
 #include <cstdlib>	// Needed for malloc(), realloc(), free(), NULL
 #include <cstring>	// Needed for memcpy(), strlen()
+#include <locale.h>	// Needed for localeconv()
 #include "MD4Hash.h"	// Needed for CMD4Hash
 
 /**********************************************************
@@ -317,7 +318,10 @@ CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true
  */
 CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name), m_dynamic(true)
 {
-	const wxCharBuffer buf = wxConvUTF8.cWC2MB(wxString::Format(wxT("%g"), data).wc_str(aMuleConv));
+	wxString str = wxString::Format(wxT("%g"), data);
+	struct lconv *lc = localeconv();
+	str.Replace(char2unicode(lc->decimal_point), wxT("."));
+	const wxCharBuffer buf = wxConvUTF8.cWC2MB(str.wc_str(aMuleConv));
 	const char *utf8 = (const char *)buf;
 
 	m_dataLen = strlen(utf8) + 1;
@@ -615,8 +619,12 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 double CECTag::GetDoubleData(void) const
 {
+	wxString str = GetStringData();
+	struct lconv *lc = localeconv();
+	str.Replace(wxT("."), char2unicode(lc->decimal_point));
+
 	double tmp;
-	if (!GetStringData().ToDouble(&tmp)) {
+	if (!str.ToDouble(&tmp)) {
 		double x = 0.0;		// let's fool g++, it'd error out on 0.0 / 0.0
 		tmp = 0.0 / x;		// intentionally generate nan
 	}
