@@ -96,6 +96,8 @@ private:
 	void processFindBuddyRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processFindBuddyResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	void processCallbackRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	
+	void DebugClientOutput(const wxString& place, uint32 ip, uint32 port);
 };
 
 } // End namespace

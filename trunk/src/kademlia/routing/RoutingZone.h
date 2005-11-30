@@ -95,7 +95,12 @@ public:
 
 //	uint64 getApproximateNodeCount(uint32 ourLevel) const;
 
+	bool IsDirty() const { return dirty; }
+
 	uint32 estimateCount();
+	
+	void merge(void);
+	
 private:
 
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
@@ -152,12 +157,13 @@ private:
 	CRoutingZone *genSubZone(int side);
 
 	void split(void);
-	void merge(void);
 
 	void startTimer(void);
 	void stopTimer(void);
 
 	void randomLookup(void);
+	
+	bool dirty;
 };
 
 } // End namespace

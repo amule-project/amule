@@ -716,6 +716,7 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 		try {
 			bio.readTagList(tags, true/*bOptACP*/);
 		} catch(...){
+			DebugClientOutput(wxT("CKademliaUDPListener::processSearchResponse"),ip,port);
 			deleteTagListEntries(tags);
 			delete tags;
 			tags = NULL;
@@ -826,6 +827,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 				AddDebugLogLineM(false, logClientKadUDP, strInfo);
 			}
 		} catch(...) {
+			DebugClientOutput(wxT("CKademliaUDPListener::processPublishRequest"),ip,port);
 			delete entry;
 			throw;
 		}
@@ -940,6 +942,7 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 		try{
 			bio.readTagList(tags, true/*bOptACP*/);
 		} catch(...){
+			DebugClientOutput(wxT("CKademliaUDPListener::processSearchNotesResponse"),ip,port);
 			deleteTagListEntries(tags);
 			delete tags;
 			tags = NULL;
@@ -986,6 +989,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 		bio.readTagList(&entry->taglist);
 		entry->source = false;
 	} catch(...) {
+		DebugClientOutput(wxT("CKademliaUDPListener::processPublishNotesRequest"),ip,port);
 		delete entry;
 		throw;
 	}
@@ -1206,4 +1210,16 @@ void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destin
 	}
 	theStats::AddUpOverheadKad(packet->GetPacketSize());
 	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
+}
+
+void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 ip, uint32 port) {
+	printf("Error on %s received from: %s\n",(const char*)unicode2char(place),(const char*)unicode2char(Uint32_16toStringIP_Port(ip,port)));
+	CClientList::SourceList clientslist = theApp.clientlist->GetClientsByIP(ip);
+	if (!clientslist.empty()) {
+		for (CClientList::SourceList::iterator it = clientslist.begin(); it != clientslist.end(); ++it) {
+			printf("Ip Matches: %s\n",(const char*)unicode2char((*it)->GetClientFullInfo()));
+		}
+	} else {
+		printf("No ip match\n");
+	}
 }

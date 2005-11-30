@@ -120,6 +120,8 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 		readFile();
 	}
 
+	dirty = false;
+	
 	startTimer();
 }
 
@@ -244,11 +246,11 @@ bool CRoutingZone::addByDistance(const CUInt128 &distance, const CUInt128 &id, u
 		} else if (canSplit()) {
 			split();
 			retVal = m_subZones[distance.getBitNumber(m_level)]->addByDistance(distance, id, ip, port, tport, type);
-		} else {
+		}/* else {
 			merge();
 			c = new CContact(id, ip, port, tport);
 			retVal = m_bin->add(c,false);
-		}
+		}*/
 
 		if (!retVal) {
 			if (c != NULL) {
@@ -371,7 +373,12 @@ void CRoutingZone::split(void)
 
 void CRoutingZone::merge(void)
 {
+	dirty = false; /* This subzone/superzone won't be re-checked */
+	
+	AddDebugLogLineM( false, logKadRouting, _("Merge attempt"));
+	
 	if (isLeaf() && m_superZone != NULL) {
+		AddDebugLogLineM( false, logKadRouting, _("Recursive merge"));
 		m_superZone->merge();
 	} else if ((!isLeaf())
 		&& (m_subZones[0]->isLeaf() && m_subZones[1]->isLeaf()) 
@@ -406,10 +413,14 @@ void CRoutingZone::merge(void)
 		m_subZones[1] = NULL;
 
 		startTimer();
+			
+		AddDebugLogLineM( false, logKadRouting, _("Sucessful merge!"));
 		
 		if (m_superZone != NULL) {
 			m_superZone->merge();
 		}
+	} else {
+		AddDebugLogLineM( false, logKadRouting, _("No merge possible"));
 	}
 }
 
@@ -478,7 +489,9 @@ void CRoutingZone::onSmallTimer(void)
 	if (!isLeaf()) {
 		return;
 	}
-
+	
+	dirty = false;
+	
 	wxString test(m_zoneIndex.toBinaryString());
 
 	CContact *c = NULL;
@@ -495,6 +508,7 @@ void CRoutingZone::onSmallTimer(void)
 				if(!c->inUse()) {
 					m_bin->remove(c);
 					delete c;
+					dirty = true;
 				}
 				continue;
 			}
@@ -512,6 +526,7 @@ void CRoutingZone::onSmallTimer(void)
 	
 	if( c != NULL ) {
 		if ( c->getExpireTime() >= now || c->getType() == 4) {
+			dirty = true;
 			m_bin->remove(c);
 			m_bin->m_entries.push_back(c);
 			c = NULL;
