@@ -4290,6 +4290,10 @@ msgid ""
 " %FILE - The full path to the file.\n"
 " %HASH - The ED2k hash of the file."
 msgstr ""
+"As variáveis abaixo serão substituídas pelos\n"
+"valores correspondentes do arquivo completo:\n"
+" %FILE - Caminho completo do arquivo.\n"
+" %HASH - A Hash ED2K do arquivo."
 
 #: src/muuli_wdr.cpp:2190 src/muuli_wdr.cpp:3477 src/PrefsUnifiedDlg.cpp:169
 msgid "Directories"
@@ -4385,15 +4389,15 @@ msgstr "Indicador do SystemTray"
 
 #: src/muuli_wdr.cpp:2319
 msgid "Kad-nodes current"
-msgstr ""
+msgstr "Kad-nodes atuais"
 
 #: src/muuli_wdr.cpp:2320
 msgid "Kad-nodes running"
-msgstr ""
+msgstr "Kad-nodes rodando"
 
 #: src/muuli_wdr.cpp:2321
 msgid "Kad-nodes session"
-msgstr ""
+msgstr "Sessões Kad-nodes"
 
 #: src/muuli_wdr.cpp:2326 src/muuli_wdr.cpp:2969
 msgid "Select"
@@ -4401,7 +4405,7 @@ msgstr "Selecione"
 
 #: src/muuli_wdr.cpp:2344
 msgid "Number of Client Versions shown (0=unlimited)"
-msgstr ""
+msgstr "Número de versões a exibir (0=sem limite)"
 
 #: src/muuli_wdr.cpp:2373
 msgid "Notifications"
@@ -4574,7 +4578,7 @@ msgstr "Exibir taxa de transferência no título"
 
 #: src/muuli_wdr.cpp:2639
 msgid "Vertical toolbar orientation"
-msgstr ""
+msgstr "Orientação Vertical da Barra de Ferramentas"
 
 #: src/muuli_wdr.cpp:2663
 msgid "Source Dropping"
@@ -4678,17 +4682,19 @@ msgstr "Aceitar conexões externas"
 
 #: src/muuli_wdr.cpp:2809
 msgid "IP of the listening interface (empty for any)"
-msgstr ""
+msgstr "IP da interface aguardando conexões (vazio para qualquer uma)"
 
 #: src/muuli_wdr.cpp:2813
 msgid ""
 "Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
 "An empty field or 0.0.0.0 will mean any interface."
 msgstr ""
+"Informe um IP válido no formato a.b.c.d para a interface EC que ficará aguardando"
+"Um campo vazio ou 0.0.0.0 quer dizer 'qualquer interface'"
 
 #: src/muuli_wdr.cpp:2820
 msgid "TCP port"
-msgstr ""
+msgstr "Porta TCP"
 
 #: src/muuli_wdr.cpp:2878
 msgid "Click here to apply any changes made to the preferences."
@@ -4808,25 +4814,27 @@ msgstr "Nunca exiba isto novamente"
 
 #: src/muuli_wdr.cpp:3255
 msgid "Click on this button to update the nodes list from URL ..."
-msgstr ""
+msgstr "Clique nesse botão para atualizar a lista de nodes da URL..."
 
 #: src/muuli_wdr.cpp:3259
 msgid "Nodes (0)"
-msgstr ""
+msgstr "Nodes (0)"
 
 #: src/muuli_wdr.cpp:3263
 msgid "http://download.overnet2000.de/nodes.dat"
-msgstr ""
+msgstr "http://download.overnet2000.de/nodes.dat"
 
 #: src/muuli_wdr.cpp:3264
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
 msgstr ""
+"informe uma URL para um arquivo nodes.dat e pressione o botão da esquerda "
+"para atualizar a lista de nodes conhecidos."
 
 #: src/muuli_wdr.cpp:3269
 msgid "Nodes stats"
-msgstr ""
+msgstr "Estatísticas dos Nodes"
 
 #: src/muuli_wdr.cpp:3320
 msgid "Bootstrap"
@@ -4849,10 +4857,12 @@ msgid ""
 "Bootstrap from \n"
 "known clients"
 msgstr ""
+"Inicializando com \n"
+"clientes conhecidos"
 
 #: src/muuli_wdr.cpp:3381
 msgid "Disconnect Kad"
-msgstr ""
+msgstr "Desconectar da rede Kad"
 
 #: src/muuli_wdr.cpp:3434 src/PrefsUnifiedDlg.cpp:171
 msgid "Security"
@@ -5143,7 +5153,7 @@ msgstr "Remover selecionada"
 
 #: src/muuli_wdr.cpp:4090
 msgid "Networks Window"
-msgstr ""
+msgstr "Janela de redes"
 
 #: src/muuli_wdr.cpp:4092
 msgid "Searches"
@@ -5245,17 +5255,17 @@ msgstr "Copiar link ED2K na área de transferência (HTML)"
 
 #: src/KnownFileList.cpp:68
 msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr ""
+msgstr "Aviso: lista de arquivos conhecidos corrompida, cabeçalho inválido."
 
 #: src/KnownFileList.cpp:93
 #, c-format
 msgid "IO error while reading known.met file: %s"
-msgstr ""
+msgstr "Erro de I/O ao ler arquivo known.met: %s"
 
 #: src/KnownFileList.cpp:123
 #, c-format
 msgid "Error while saving known.met file: %s"
-msgstr ""
+msgstr "Erro ao salvar arquivo known.met: %s"
 
 #: src/Statistics.cpp:625
 #, c-format
@@ -5290,22 +5300,22 @@ msgstr "Overhead Kad (pacotes): %s"
 #: src/Statistics.cpp:636
 #, c-format
 msgid "Active Uploads: %s"
-msgstr ""
+msgstr "Uploads ativos: %s"
 
 #: src/Statistics.cpp:637
 #, c-format
 msgid "Waiting Uploads: %s"
-msgstr ""
+msgstr "Uploads em espera: %s"
 
 #: src/Statistics.cpp:638
 #, c-format
 msgid "Total successful upload sessions: %s"
-msgstr ""
+msgstr "Total de sessões de UP com sucesso: %s"
 
 #: src/Statistics.cpp:639
 #, c-format
 msgid "Total failed upload sessions: %s"
-msgstr ""
+msgstr "Total de sessões de UP que falharam: %s"
 
 #: src/Statistics.cpp:641
 #, c-format
@@ -5320,12 +5330,12 @@ msgstr "Dados baixados (Sessão (Total)): %s"
 #: src/Statistics.cpp:655
 #, c-format
 msgid "Found Sources: %s"
-msgstr ""
+msgstr "Fontes encontradas: %s"
 
 #: src/Statistics.cpp:656
 #, c-format
 msgid "Active Downloads (chunks): %s"
-msgstr ""
+msgstr "Downloads ativos (pedaços): %s"
 
 #: src/Statistics.cpp:658
 #, c-format
@@ -5339,22 +5349,22 @@ msgstr "Conexão"
 #: src/Statistics.cpp:661
 #, c-format
 msgid "Average Downloadrate (Session): %s"
-msgstr ""
+msgstr "Média de taxa de Down (Sessão): %s"
 
 #: src/Statistics.cpp:662
 #, c-format
 msgid "Average Uploadrate (Session): %s"
-msgstr ""
+msgstr "Média de taxa de Up (sessão): %s"
 
 #: src/Statistics.cpp:663
 #, c-format
 msgid "Max Downloadrate (Session): %s"
-msgstr ""
+msgstr "Taxa máxima de Down (sessão): %s"
 
 #: src/Statistics.cpp:664
 #, c-format
 msgid "Max Uploadrate (Session): %s"
-msgstr ""
+msgstr "Taxa máxima de Upload (Sessão): %s"
 
 #: src/Statistics.cpp:665
 #, c-format
@@ -5379,12 +5389,12 @@ msgstr "Conexões ativas (estimada): %i"
 #: src/Statistics.cpp:669
 #, c-format
 msgid "Max Connection Limit Reached: %s"
-msgstr ""
+msgstr "Máximo de conexões que atingiram tempo limite: %s"
 
 #: src/Statistics.cpp:670
 #, c-format
 msgid "Average Connections (estimate): %g"
-msgstr ""
+msgstr "Média de conexões (estimativa): %g"
 
 #: src/Statistics.cpp:672
 #, c-format
@@ -5393,7 +5403,7 @@ msgstr "Pico de conexões (estimada): %i"
 
 #: src/Statistics.cpp:681
 msgid "Filtered"
-msgstr ""
+msgstr "Filtrado"
 
 #: src/Statistics.cpp:683
 #, c-format
