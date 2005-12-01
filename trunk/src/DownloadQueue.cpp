@@ -149,11 +149,11 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			
 			wxString msg;
 			if (result) {
-				msg << wxT("Duplicate partfile with hash '")
+				msg << wxT("WARNING: Duplicate partfile with hash '")
 					<< toadd->GetFileHash().Encode() << wxT("' found, skipping: ")
 					<< fileName;
 			} else {
-				msg << wxT("Failed to load PartFile '") << fileName << wxT("'");
+				msg << wxT("ERROR: Failed to load PartFile '") << fileName << wxT("'");
 			} 
 			
 			AddDebugLogLineM(true, logPartFile, msg);
