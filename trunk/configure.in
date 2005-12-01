@@ -125,7 +125,7 @@ AM_GNU_GETTEXT_VERSION(0.11.5)
 # Check for zlib
 CHECK_ZLIB
 
-if test x$CAS = xyes -o x$WEB = xyes -o x$WEBGUI = xyes; then
+if test x$CAS = xyes -o x$WEB = xyes; then
 # Check for gd
 AM_OPTIONS_GDLIBCONFIG
 
@@ -165,7 +165,7 @@ fi
 AC_SUBST(CAS_DEFS)
 
 
-if test x$WEB = xyes -o x$WEBGUI = xyes; then
+if test x$WEB = xyes; then
 # Check for libpng
 # This check _must_ occur *after* the check for gd
 AM_OPTIONS_LIBPNGCONFIG
@@ -474,7 +474,7 @@ AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
 dnl
 dnl Check for readline library
 dnl
-if test x$BUILDAMULECMD = xyes -o x$GUI = xyes -o x$WEB = xyes -o x$WEBGUI = xyes; then
+if test x$BUILDAMULECMD = xyes -o x$WEB = xyes; then
 	VL_LIB_READLINE
 fi
 
