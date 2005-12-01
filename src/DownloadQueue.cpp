@@ -131,23 +131,35 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			result = toadd->LoadPartFile(path, fileName, true);
 		}
 		
-		if (result) {
+		if (result && !IsFileExisting(toadd->GetFileHash())) {
 			{
 				wxMutexLocker lock(m_mutex);
 				m_filelist.push_back(toadd);
 			}
-			
+		
 			NotifyObservers( EventType( EventType::INSERTED, toadd ) );
-			
+		
 			if ( toadd->GetStatus(true) == PS_READY ) {
 				theApp.sharedfiles->SafeAddKFile( toadd, true ); 
 			}
-			
+		
 			Notify_DownloadCtrlAddFile(toadd);
 		} else {
-			// Newline so that the error stays visible.
-			printf(": Failed to load PartFile '%s'\n", (const char*)unicode2char(fileName));
 			delete toadd;
+			
+			wxString msg;
+			if (result) {
+				msg << wxT("Duplicate partfile with hash '")
+					<< toadd->GetFileHash().Encode() << wxT("' found, skipping: ")
+					<< fileName;
+			} else {
+				msg << wxT("Failed to load PartFile '") << fileName << wxT("'");
+			} 
+			
+			AddDebugLogLineM(true, logPartFile, msg);
+			
+			// Newline so that the error stays visible.
+			printf(": %s\n", (const char*)unicode2char(msg));
 		}
 	}
 
@@ -1246,20 +1258,18 @@ bool CDownloadQueue::AddED2KLink( const CED2KLink* link, int category )
 
 bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 {
-	CPartFile* file = new CPartFile( link );
-
-	if ( file->GetStatus() == PS_ERROR ) {
-		// That file already exists
-		delete file;
-		file = GetFileByID( link->GetHashKey() );
-		if (!file) {
-			// This is a shared file, return an error.
+	CPartFile* file = NULL;
+	if (IsFileExisting(link->GetHashKey())) {
+		// Must be a shared file if we are to add hashes or sources
+		if ((file = GetFileByID(link->GetHashKey())) == NULL) {
 			return false;
 		}
 	} else {
-		AddDownload( file, thePrefs::AddNewFilesPaused(), category );
+		file = new CPartFile(link);
 	}
 
+	AddDownload( file, thePrefs::AddNewFilesPaused(), category );
+	
 	if (link->HasValidAICHHash()) {
 		CAICHHashSet* hashset = file->GetAICHHashset();
 		

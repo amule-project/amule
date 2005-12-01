@@ -258,15 +258,11 @@ CPartFile::CPartFile(const CED2KFileLink* fileLink)
 	SetFileSize(fileLink->GetSize());
 	m_abyFileHash = fileLink->GetHashKey();
 
-	if ( theApp.downloadqueue->IsFileExisting(m_abyFileHash) ) {
-		SetPartFileStatus(PS_ERROR);
-	} else {
-		CreatePartFile();
+	CreatePartFile();
 
-		if (fileLink->m_hashset) {
-			if (!LoadHashsetFromFile(fileLink->m_hashset, true)) {
-				AddDebugLogLineM(true, logPartFile, wxT("eD2K link contained invalid hashset: ") + fileLink->GetLink());
-			}
+	if (fileLink->m_hashset) {
+		if (!LoadHashsetFromFile(fileLink->m_hashset, true)) {
+			AddDebugLogLineM(true, logPartFile, wxT("eD2K link contained invalid hashset: ") + fileLink->GetLink());
 		}
 	}
 }
