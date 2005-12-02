@@ -840,7 +840,7 @@ Version 2.0.0 FINAL - The "Let's dedicate this to Tiku" version.
 		* Several improvements on EC network code:
 			- EC now uses buffered I/O, so most EC transmissions will only
 			  require one socket operation.
-			- Added the ability to compress lagre packets with zlib, thus
+			- Added the ability to compress large packets with zlib, thus
 			  reducing network load.
 			- Some (not-so-CPU-consuming) compression is applied to small
 			  packets, too.
