@@ -413,6 +413,7 @@ else
 	aMuleInstallPrefix=$ac_default_prefix
 fi
 
+AC_DEFINE_UNQUOTED(AMULE_INSTALL_PREFIX, "${aMuleInstallPrefix}", [aMule installation prefix])
 AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales are.])
 	
 # Try to set the CVS checkout-date
