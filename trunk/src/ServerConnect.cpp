@@ -146,11 +146,12 @@ void CServerConnect::StopConnectionTry()
 	} 
 
 	// close all currenty opened sockets except the one which is connected to our current server
-	for(SocketsList::iterator it = m_lstOpenSockets.begin(); it != m_lstOpenSockets.end(); ++it) {
-		if ((*it) == connectedsocket)		// don't destroy socket which is connected to server
+	for(SocketsList::iterator it = m_lstOpenSockets.begin(); it != m_lstOpenSockets.end(); ) {
+		CServerSocket *pSck = *it++;
+		if (pSck == connectedsocket)		// don't destroy socket which is connected to server
 			continue;
-		if ((*it)->m_bIsDeleting == false)	// don't destroy socket if it is going to destroy itself later on
-			DestroySocket(*it);
+		if (pSck->m_bIsDeleting == false)	// don't destroy socket if it is going to destroy itself later on
+			DestroySocket(pSck);
 	}
 }
 
