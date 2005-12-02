@@ -127,7 +127,7 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 	singleconnecting = !multiconnect;
 
 	CServerSocket* newsocket = new CServerSocket(this, thePrefs::GetProxyData());
-	m_lstOpenSockets.AddTail(newsocket);
+	m_lstOpenSockets.push_back(newsocket);
 	newsocket->ConnectToServer(server);
 
 	connectionattemps[GetTickCount()] = newsocket;
@@ -146,12 +146,11 @@ void CServerConnect::StopConnectionTry()
 	} 
 
 	// close all currenty opened sockets except the one which is connected to our current server
-	for( POSITION pos = m_lstOpenSockets.GetHeadPosition(); pos != NULL; ) {
-		CServerSocket* pSck = m_lstOpenSockets.GetNext(pos);
-		if (pSck == connectedsocket)		// don't destroy socket which is connected to server
+	for(SocketsList::iterator it = m_lstOpenSockets.begin(); it != m_lstOpenSockets.end(); ++it) {
+		if ((*it) == connectedsocket)		// don't destroy socket which is connected to server
 			continue;
-		if (pSck->m_bIsDeleting == false)	// don't destroy socket if it is going to destroy itself later on
-			DestroySocket(pSck);
+		if ((*it)->m_bIsDeleting == false)	// don't destroy socket if it is going to destroy itself later on
+			DestroySocket(*it);
 	}
 }
 
@@ -293,7 +292,8 @@ bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacke
 }
 
 
-void CServerConnect::ConnectionFailed(CServerSocket* sender){
+void CServerConnect::ConnectionFailed(CServerSocket* sender)
+{
 	if (connecting == false && sender != connectedsocket)
 	{
 		// just return, cleanup is done by the socket itself
@@ -511,15 +511,12 @@ void CServerConnect::SetClientID(uint32 newid)
 }
 
 
-void CServerConnect::DestroySocket(CServerSocket* pSck){
-	if (pSck == NULL)
+void CServerConnect::DestroySocket(CServerSocket* pSck)
+{
+	if (pSck == NULL) {
 		return;
-	// remove socket from list of opened sockets
-	POSITION pos = m_lstOpenSockets.Find( pSck );
-	if ( pos != NULL ) {
-		m_lstOpenSockets.RemoveAt( pos );
 	}
-
+	m_lstOpenSockets.remove(pSck);
 	pSck->Destroy();
 }
 
