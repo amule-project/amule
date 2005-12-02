@@ -1259,7 +1259,16 @@ wxString GetLocaleDir()
 	return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator() + wxT("locale");
 #elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
+
+	// The GetInstallPrefix function is slightly fucked in <= v2.6.2 of wxWidgets,
+	// so only use it when we have to, and can patch the sources anyway.
+#ifdef AUTOPACKAGE
+	#warning Remember to patch GetInstallPrefix()
 	localeDir.Replace(wxT("${prefix}"), dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix());
+#else
+	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
+#endif
+	
 	return localeDir;
 #else
 	return wxStandardPaths::Get().GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
