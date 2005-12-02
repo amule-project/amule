@@ -387,10 +387,8 @@ void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 	if (sel != -1) {
 		CSearchListCtrl* list = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(sel));
 	
-		// Send event equal to a click on the normal "Download" menu-item
-		wxMenuEvent event; 
-		event.SetId(MP_RESUME);
-		list->AddPendingEvent(event);
+		// Download with items added to category specified in the drop-down menu
+		list->DownloadSelected();
 	}
 }
 

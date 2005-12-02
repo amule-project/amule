@@ -556,34 +556,19 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 
 void CSearchListCtrl::OnPopupDownload(wxCommandEvent& event)
 {
-	FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
-	
-	int category = 0;
 	if (event.GetId() == MP_RESUME) {
-		// Either the "Download" menu-item or the download-button
-		if (CastByID(IDC_EXTENDEDSEARCHCHECK, NULL, wxCheckBox)->GetValue()) {
-			category = CastByID(ID_AUTOCATASSIGN, NULL, wxChoice)->GetSelection();
-		}
+		// Via the "Download" menu-item, use category specified in drop-down menu
+		DownloadSelected();
 	} else {
 		// Via an "Download in category" item
-		category = event.GetId() - MP_ASSIGNCAT;
-	}
-	
-	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	while (index > -1) {
-		CoreNotify_Search_Add_Download((CSearchFile*)GetItemData(index), category);
-		
-		UpdateItemColor(index);
-
-		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+		DownloadSelected(event.GetId() - MP_ASSIGNCAT);
 	}
 }
 
 
 void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
 {
-	wxCommandEvent nullEvt;
-	theApp.amuledlg->searchwnd->OnBnClickedDownload(nullEvt);
+	DownloadSelected();
 }
 
 
@@ -596,5 +581,31 @@ bool CSearchListCtrl::AltSortAllowed(unsigned column) const
 		default:
 			return false;
 	}
+}
+
+
+void CSearchListCtrl::DownloadSelected(int category)
+{
+	FindWindowById(IDC_SDOWNLOAD)->Enable(FALSE);
+
+	// Either the "Download" menu-item, the download-button, double-click or enter
+	if (category == -1) {
+		// Defaults to main category
+		category = 0;
+		
+		if (CastByID(IDC_EXTENDEDSEARCHCHECK, NULL, wxCheckBox)->GetValue()) {
+			category = CastByID(ID_AUTOCATASSIGN, NULL, wxChoice)->GetSelection();
+		}		
+	}
+	
+	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	while (index > -1) {
+		CoreNotify_Search_Add_Download((CSearchFile*)GetItemData(index), category);
+		
+		UpdateItemColor(index);
+
+		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	}
+
 }
 
