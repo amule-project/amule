@@ -33,10 +33,10 @@
 #include <wx/defs.h>		// Needed before any other wx/*.h
 
 #include "Types.h"		// Needed for int8, uint8, uint16 and uint32
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Timer.h"		// Needed for CTimer
 
+#include <list>			// Needed for std::list
 #include <map>			// Needed for std::map
 
 class CServerList;
@@ -102,7 +102,8 @@ private:
 	CServerUDPSocket*	serverudpsocket;
 	
 	// list of currently opened sockets
-	CTypedPtrList<CPtrList, CServerSocket*>	m_lstOpenSockets;
+	typedef	std::list<CServerSocket*>	SocketsList;
+	SocketsList	m_lstOpenSockets;
 	CTimer	m_idRetryTimer;
 
 	std::map<uint32, CServerSocket*> connectionattemps;
