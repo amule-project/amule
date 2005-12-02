@@ -1185,6 +1185,15 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SET_PREFERENCES:
 			((CEC_Prefs_Packet *)request)->Apply();
 			theApp.glob_prefs->Save();
+			if (thePrefs::GetIPFilterOn()) {
+				theApp.clientlist->FilterQueues();
+			}
+			if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
+				theApp.DisconnectED2K();
+			}
+			if (!thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
+				theApp.StopKad();
+			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 			
