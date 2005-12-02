@@ -142,7 +142,14 @@ public:
 	 * Returns the number of items hidden due to filtering.
 	 */
 	size_t	GetHiddenItemCount() const;
+
 	
+	/**
+	 * Attempts to download all selected items, updating color-scheme as needed.
+	 *
+	 * @param category The target category, or -1 to use the drop-down selection.
+	 */
+	void	DownloadSelected(int category = -1);	
 	
 protected:
 	typedef std::list<CSearchFile*> ResultList;
