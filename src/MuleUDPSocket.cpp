@@ -182,7 +182,8 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet discarded (socket not Ok): ")) 
 			<< IP << wxT(":") << port << wxT(" ") << packet->GetPacketSize()
 			<< wxT("b"));		
-		
+	
+		delete packet;		
 		return;
 	}
 	
