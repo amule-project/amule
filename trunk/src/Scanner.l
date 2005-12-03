@@ -179,9 +179,9 @@ static void FatalLexError(yyconst char msg[])
 #endif
 }
 
-void LexInit(char* pszInput)
+void LexInit(const wxString& pszInput)
 {
-	_pszLexBuff = strdup(char2UTF8(pszInput));
+	_pszLexBuff = strdup(unicode2UTF8(pszInput));
 }
 
 void LexFree()
