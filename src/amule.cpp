@@ -160,8 +160,6 @@ void OnShutdownSignal( int /* sig */ )
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTERM, SIG_DFL);
 	
-	printf("Shutdown requested, terminating in next event loop.\n");
-	
 	g_shutdownSignal = true;
 
 #ifdef AMULE_DAEMON
@@ -1819,9 +1817,6 @@ void CamuleApp::ListenSocketHandler(wxSocketEvent& event)
 		wxCHECK_RET(socket, wxT("NULL returned by Accept() during startup"));
 		
 		socket->Destroy();
-	} else {
-		// Socket must be closed when shutting down.
-		wxASSERT(listensocket->Ok() == false);
 	}
 }
 
