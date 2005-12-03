@@ -210,7 +210,7 @@ common_flags = -I$(srcdir)/libs -Ilibs
 # Extras 
 
 if USE_EMBEDDED_CRYPTO
-common_sources += CryptoPP.cpp
+libmuleappcommon_a_SOURCES += CryptoPP.cpp
 endif
 
 if NEED_RC
