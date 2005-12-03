@@ -736,7 +736,7 @@ else
 	result="no"
 fi
 
-HAVE_EXTENDED_FLEX=$result
+HAVE_FLEX_EXTENDED=$result
 
 AC_MSG_RESULT($result)
 
