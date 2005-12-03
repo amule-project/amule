@@ -382,8 +382,15 @@ MAINTAINERCLEANFILES = Makefile.in
 Parser.cpp: Parser.y
 	bison --debug -t -d -v -o Parser.cpp Parser.y
 
+if GENERATE_FLEX_HEADER
 Scanner.cpp: Scanner.l Parser.cpp
-	flex --header-file=Scanner.h -o Scanner.cpp Scanner.l
+		flex --header-file=Scanner.h -o Scanner.cpp Scanner.l
+else
+Scanner.cpp: Scanner.l Parser.cpp
+		flex -o Scanner.cpp Scanner.l; \
+		cp Scanner.h.in Scanner.h
+endif
+
 
 if NEED_RC
 
