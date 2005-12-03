@@ -282,6 +282,8 @@ CHECK_BFD
 
 CHECK_AUTOPOINT
 
+CHECK_FLEX_EXTENDED
+
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
 
@@ -471,6 +473,7 @@ AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
+AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 
 dnl
 dnl Check for readline library

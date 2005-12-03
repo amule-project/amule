@@ -719,3 +719,31 @@ if test x$result = xno; then
 fi
 AC_SUBST(HAVE_GETTEXT)
 ])
+
+dnl ----------------------------------------------------
+dnl CHECK_FLEX_EXTENDED
+dnl check if flex can produce header files
+dnl ----------------------------------------------------
+AC_DEFUN([CHECK_FLEX_EXTENDED],
+[
+
+AC_MSG_CHECKING([for extended flex capabilities])
+
+extended_flex=`flex --help | grep header-file`
+if test x"$extended_flex" != x""; then
+	result="yes"
+else
+	result="no"
+fi
+
+HAVE_EXTENDED_FLEX=$result
+
+AC_MSG_RESULT($result)
+
+if test x$result = xno; then
+	AC_MSG_NOTICE([Your flex version doesn't support --header-file flag. This is not critical, but an upgrade is recomended ])
+fi
+
+AC_SUBST(HAVE_FLEX_EXTENDED)
+
+])
