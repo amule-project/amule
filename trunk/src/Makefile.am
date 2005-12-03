@@ -44,6 +44,7 @@ noinst_LIBRARIES += libmuleappgui.a
 endif
 endif
 
+BUILT_SOURCES = Scanner.cpp Parser.cpp
 
 # Common to core/gui/monolithic
 
@@ -70,6 +71,8 @@ libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_SOURCES = \
 	AsyncDNS.cpp \
 	DeadSourceList.cpp \
+	Scanner.cpp \
+	Parser.cpp \
 	kademlia/io/ByteIO.cpp \
 	kademlia/io/DataIO.cpp \
 	kademlia/io/FileIO.cpp \
@@ -125,6 +128,8 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
+	Parser.cpp \
+	Scanner.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
 	ServerList.cpp \
@@ -373,6 +378,12 @@ noinst_HEADERS = AddFileThread.h \
 		UploadQueue.h
 
 MAINTAINERCLEANFILES = Makefile.in
+
+Parser.cpp: Parser.y
+	bison --debug -t -d -v -o Parser.cpp Parser.y
+
+Scanner.cpp: Scanner.l Parser.cpp
+	flex --header-file=Scanner.h -o Scanner.cpp Scanner.l
 
 if NEED_RC
 

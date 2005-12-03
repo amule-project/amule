@@ -56,6 +56,12 @@
 #include "kademlia/kademlia/SearchManager.h"
 #include "kademlia/kademlia/Search.h"
 
+#include "SearchExpr.h"
+
+extern int yyparse();
+extern int yyerror(const char* errstr);
+extern int yyerror(wxString errstr);
+
 CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	: wxThread(wxTHREAD_DETACHED)
 {
@@ -733,4 +739,72 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
 	AddToList(tempFile);
 	
+}
+
+static wxString s_strCurKadKeyword;
+
+static CSearchExpr _SearchExpr;
+
+wxArrayString _astrParserErrors;
+
+void ParsedSearchExpression(const CSearchExpr* pexpr)
+{
+	int iOpAnd = 0;
+	int iOpOr = 0;
+	int iOpNot = 0;
+
+	for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+		wxString str(pexpr->m_aExpr[i]);
+		if (str == SEARCHOPTOK_AND) {
+			iOpAnd++;
+		} else if (str == SEARCHOPTOK_OR) {
+			iOpOr++;
+		} else if (str == SEARCHOPTOK_NOT) {
+			iOpNot++;
+		}
+	}
+
+	// this limit (+ the additional operators which will be added later) has to match the limit in 'CreateSearchExpressionTree'
+	//	+1 Type (Audio, Video)
+	//	+1 MinSize
+	//	+1 MaxSize
+	//	+1 Avail
+	//	+1 Extension
+	//	+1 Complete sources
+	//	+1 Codec
+	//	+1 Bitrate
+	//	+1 Length
+	//	+1 Title
+	//	+1 Album
+	//	+1 Artist
+	// ---------------
+	//  12
+	if (iOpAnd + iOpOr + iOpNot > 10) {
+		yyerror(wxT("Search expression is too complex"));
+	}
+
+	_SearchExpr.m_aExpr.Empty();
+	
+	// optimize search expression, if no OR nor NOT specified
+	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
+		wxString strAndTerms;
+		for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
+				// Minor optimization: Because we added the Kad keyword to the boolean search expression,
+				// we remove it here (and only here) again because we know that the entire search expression
+				// does only contain (implicit) ANDed strings.
+				if (pexpr->m_aExpr[i] != s_strCurKadKeyword) {
+					if (!strAndTerms.IsEmpty()) {
+						strAndTerms += ' ';
+					}
+					strAndTerms += pexpr->m_aExpr[i];
+				}
+			}
+		}
+		wxASSERT( _SearchExpr.m_aExpr.Count() == 0);
+		_SearchExpr.m_aExpr.Add(strAndTerms);
+	} else {
+		if (pexpr->m_aExpr.GetCount() != 1 || pexpr->m_aExpr[0] != s_strCurKadKeyword)			
+			_SearchExpr.Add(pexpr);
+	}
 }
