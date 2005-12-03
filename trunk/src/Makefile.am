@@ -387,7 +387,7 @@ Scanner.cpp: Scanner.l Parser.cpp
 		flex --header-file=Scanner.h -o Scanner.cpp Scanner.l
 else
 Scanner.cpp: Scanner.l Parser.cpp
-		flex -o Scanner.cpp Scanner.l; \
+		flex -oScanner.cpp Scanner.l; \
 		cp Scanner.h.in Scanner.h
 endif
 
