@@ -25,6 +25,7 @@ static void ReadLexBuff(char* pcBuff, int& riResult, size_t uMaxSize);
 static void FatalLexError(yyconst char msg[]);
 
 static char* _pszLexBuff;
+static char* _pszLexStr;
 
 %}
 
@@ -181,7 +182,9 @@ static void FatalLexError(yyconst char msg[])
 
 void LexInit(const wxString& pszInput)
 {
-	_pszLexBuff = strdup(unicode2UTF8(pszInput));
+
+	_pszLexStr = strdup(unicode2UTF8(pszInput));
+	_pszLexBuff = _pszLexStr;
 }
 
 void LexFree()
@@ -193,5 +196,5 @@ void LexFree()
 	yy_start_stack = NULL;
 #endif
 
-	free(_pszLexBuff);
+	free(_pszLexStr);
 }
