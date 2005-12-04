@@ -181,7 +181,7 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 /**
  * Copy constructor
  */
-CECTag::CECTag(const CECTag& tag) : m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic )
+CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic )
 {
 	m_error = 0;
 	m_dataLen = tag.m_dataLen;
@@ -367,6 +367,7 @@ CECTag& CECTag::operator=(const CECTag& rhs)
 		std::swap(m_dataLen,	temp.m_dataLen);
 		std::swap(m_dynamic,	temp.m_dynamic);
 		std::swap(m_tagList,	temp.m_tagList);
+		std::swap(m_state,	temp.m_state);
 	}
 
 	return *this;
@@ -431,44 +432,65 @@ bool CECTag::AddTag(const CECTag& tag)
 	}
 }
 
-CECTag::CECTag(CECSocket& socket) : m_dynamic(true)
+bool CECTag::ReadFromSocket(CECSocket& socket)
 {
-	ec_taglen_t tagLen;
-	ec_tagname_t tmp_tagName;
-
-	m_tagData = NULL;
-	m_dataLen = 0;
-	if (!socket.ReadNumber(&tmp_tagName, sizeof(ec_tagname_t))) {
-		m_error = 2;
-		m_tagName = 0;
-		return;
-	}
-	m_tagName = tmp_tagName >> 1;
-	if (!socket.ReadNumber(&tagLen, sizeof(ec_taglen_t))) {
-		m_error = 2;
-		return;
-	}
-	if (tmp_tagName & 0x01) {
-		if (!ReadChildren(socket)) {
-			return;
+	if (m_state == bsName) {
+		ec_tagname_t tmp_tagName;
+		if (!socket.ReadNumber(&tmp_tagName, sizeof(ec_tagname_t))) {
+			m_tagName = 0;
+			return false;
+		} else {
+			m_tagName = tmp_tagName >> 1;
+			if (tmp_tagName & 0x01) {
+				m_state = bsLengthChld;
+			} else {
+				m_state = bsLength;
+			}
 		}
 	}
-	m_dataLen = tagLen - GetTagLen();
-	if (m_dataLen > 0) {
-		m_tagData = malloc(m_dataLen);
+	if (m_state == bsLength || m_state == bsLengthChld) {
+		ec_taglen_t tagLen;
+		if (!socket.ReadNumber(&tagLen, sizeof(ec_taglen_t))) {
+			return false;
+		} else {
+			m_dataLen = tagLen;
+			if (m_state == bsLength) {
+				m_state = bsData1;
+			} else {
+				m_state = bsChildCnt;
+			}
+		}
+	}
+	if (m_state == bsChildCnt || m_state == bsChildren) {
+		if (!ReadChildren(socket)) {
+			return false;
+		}
+	}
+	if (m_state == bsData1) {
+		unsigned int tmp_len = m_dataLen;
+		m_dataLen = 0;
+		m_dataLen = tmp_len - GetTagLen();
+		if (m_dataLen > 0) {
+			m_tagData = malloc(m_dataLen);
+			m_state = bsData2;
+		} else {
+			m_tagData = NULL;
+			m_state = bsFinished;
+		}
+	}
+	if (m_state == bsData2) {
 		if (m_tagData != NULL) {
 			if (!socket.ReadBuffer((void *)m_tagData, m_dataLen)) {
-				m_error = 2;
-				return;
+				return false;
+			} else {
+				m_state = bsFinished;
 			}
 		} else {
 			m_error = 1;
-			return;
+			return false;
 		}
-	} else {
-		m_tagData = NULL;
 	}
-	m_error = 0;
+	return true;
 }
 
 
@@ -490,33 +512,41 @@ bool CECTag::WriteTag(CECSocket& socket) const
 	return true;
 }
 
-
 bool CECTag::ReadChildren(CECSocket& socket)
 {
-	uint16 tmp_tagCount;
-
-	if (!socket.ReadNumber(&tmp_tagCount, 2)) {
-		m_error = 2;
-		return false;
-	}
-
-	m_tagList.clear();
-	if (tmp_tagCount > 0) {
-		m_tagList.reserve(tmp_tagCount);
-		for (int i=0; i<tmp_tagCount; i++) {
-			m_tagList.push_back(CECTag(socket));
-			if (m_tagList.back().m_error != 0) {
-				m_error = m_tagList.back().m_error;
-#ifndef KEEP_PARTIAL_PACKETS
-				m_tagList.pop_back();
-#endif
-				return false;
+	if (m_state == bsChildCnt) {
+		uint16 tmp_tagCount;
+		if (!socket.ReadNumber(&tmp_tagCount, 2)) {
+			return false;
+		} else {
+			m_tagList.clear();
+			if (tmp_tagCount > 0) {
+				m_tagList.reserve(tmp_tagCount);
+				for (int i=0; i<tmp_tagCount; i++) {
+					m_tagList.push_back(CECTag(socket));
+				}
+				m_state = bsChildren;
+			} else {
+				m_state = bsData1;
 			}
 		}
 	}
+	if (m_state == bsChildren) {
+		for (unsigned int i=0; i<m_tagList.size(); i++) {
+			CECTag& tag = m_tagList[i];
+			if (!tag.IsOk()) {
+				if (!tag.ReadFromSocket(socket)) {
+					if (tag.m_error != 0) {
+						m_error = tag.m_error;
+					}
+					return false;
+				}
+			}
+		}
+		m_state = bsData1;
+	}
 	return true;
 }
-
 
 bool CECTag::WriteChildren(CECSocket& socket) const
 {
@@ -766,14 +796,22 @@ double CECTag::GetDoubleData(void) const
  *							  *
  **********************************************************/
 
-CECPacket::CECPacket(CECSocket& socket) : CECEmptyTag(0)
+bool CECPacket::ReadFromSocket(CECSocket& socket)
 {
-	m_error = 0;
-	if (!socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))) {
-		m_error = 2;
-		return;
+	if (m_state == bsName) {
+		if (!socket.ReadNumber(&m_opCode, sizeof(ec_opcode_t))) {
+			return false;
+		} else {
+			m_state = bsChildCnt;
+		}
 	}
-	ReadChildren(socket);
+	if (m_state == bsChildCnt || m_state == bsChildren) {
+		if (!ReadChildren(socket)) {
+			return false;
+		}
+	}
+	m_state = bsFinished;
+	return true;
 }
 
 

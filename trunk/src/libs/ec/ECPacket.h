@@ -167,14 +167,32 @@ class CECTag {
 		}
 
 	protected:
-		CECTag(CECSocket& socket);
-		
+		enum BuildState {
+			bsName,
+			bsLength,
+			bsLengthChld,
+			bsChildCnt,
+			bsChildren,
+			bsData1,
+			bsData2,
+			bsFinished
+		};
+
+		CECTag(const CECSocket&)
+			: m_error(0), m_tagData(NULL), m_state(bsName), m_dataLen(0), m_dynamic(true)
+			{}
+
+		bool		ReadFromSocket(CECSocket& socket);
 		bool		WriteTag(CECSocket& socket) const;
 		bool		ReadChildren(CECSocket& socket);
 		bool		WriteChildren(CECSocket& socket) const;
 		int		m_error;
 		const void *	m_tagData;
-		
+
+		BuildState	m_state;
+
+		bool		IsOk() const { return m_state == bsFinished; }
+
 	private:
 		// Special type used to invoke the Null tag constructor
 		struct NullTagConstructorSelector { };
@@ -203,6 +221,8 @@ class CECTag {
 class CECEmptyTag : public CECTag {
 	public:
 		CECEmptyTag(ec_tagname_t name) : CECTag(name, 0, NULL, false) {}
+	protected:
+		CECEmptyTag(const CECSocket& socket) : CECTag(socket) {}
 };
 
 
@@ -237,8 +257,11 @@ class CECPacket : protected CECEmptyTag {
 		}
 		
 	private:
-		CECPacket(CECSocket& socket);
-		
+		CECPacket(const CECSocket& socket)
+			: CECEmptyTag(socket)
+			{}
+
+		bool ReadFromSocket(CECSocket& socket);
 		bool WritePacket(CECSocket& socket) const;
 		ec_opcode_t	m_opCode;
 };
