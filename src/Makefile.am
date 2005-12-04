@@ -32,17 +32,30 @@ DEFS = -DHAVE_CONFIG_H
 
 # Sources
 
-noinst_LIBRARIES = \
-	libmuleappcommon.a \
-	libmuleappcore.a
+noinst_LIBRARIES = 
 
-if AMULE_GUI
-	noinst_LIBRARIES += libmuleappgui.a
-else
+if MONOLITHIC
+noinst_LIBRARIES += libmuleappcore.a	
+else 
+if AMULE_DAEMON
+noinst_LIBRARIES += libmuleappcore.a
+endif
+endif
+
 if MONOLITHIC
 noinst_LIBRARIES += libmuleappgui.a
+noinst_LIBRARIES += libmuleappcommon.a
+else
+if AMULE_GUI
+noinst_LIBRARIES += libmuleappgui.a
+noinst_LIBRARIES += libmuleappcommon.a
+else
+if AMULE_DAEMON
+noinst_LIBRARIES += libmuleappcommon.a
 endif
 endif
+endif
+
 
 BUILT_SOURCES = Scanner.cpp Parser.cpp
 
