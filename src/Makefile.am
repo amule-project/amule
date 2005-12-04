@@ -397,11 +397,11 @@ Parser.cpp: Parser.y
 
 if GENERATE_FLEX_HEADER
 Scanner.cpp: Scanner.l Parser.cpp
-		flex --header-file=Scanner.h -o Scanner.cpp Scanner.l
+		flex --header-file=Scanner.h -o $@ Scanner.l
 else
 Scanner.cpp: Scanner.l Parser.cpp
-		flex -oScanner.cpp Scanner.l; \
-		cp Scanner.h.in Scanner.h
+		flex -o$@ Scanner.l; \
+		cp $(srcdir)/Scanner.h.in Scanner.h
 endif
 
 
