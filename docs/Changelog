@@ -5,10 +5,59 @@ Version 2.1.x - The "???" version
 	ender:
 		* Fix adding AICH links with amulecmd.
 
+	Gerd78:
+		* Fix linkage with static wx libraries.
+
 	GonoszTopi:
 		* Fixed a small GUI glitch
-		* Ported the partfile importer from eMule.
+		* Ported the partfile importer from eMule, it's now capable of
+		  importing eDonkey2000 partfiles. MLDonkey partfiles are not yet
+		  supported.
+		* Hid the "debuglog" entry in webserver, it had the same contents
+		  as "log".
+		* Moved CTimer class declaration to its own header file.
+		* Internal events moved to their own header.
 		* Proper termination of working threads in webserver.
+		* Moved GetSoftName() to DataToText.cpp.
+		* Changed the RGB() function to produce correct rgb values.
+		* Added ability to transmit floating point numbers via EC, by
+		  transmitting them in their string representation.
+		* Using svn revision number as CVSDATE for svn working copies.
+		* EC now uses a version ID for detecting binary incompatibilities.
+		* New function: CastItoSpeed(), which converts the given integer
+		  value (assuming it means bytes/second) into string.
+		* Changed 'K' prefix for 'kilo' into 'k'.
+		* Brand new statistics tree. Features include:
+			- internal data is kept up-to-date realtime
+			- support for translation over EC
+			- selectable maximum of client versions shown
+			- remote gui also has the statistics tree
+		* Win32 compilation fixes.
+		* Manpage file names now can be transformed.
+		* Fixed linkage with shared win32 wx libraries (DLLs).
+		* Fixed #538: extended info on tabs aren't removed
+		* Fixed webserver search result page blank.
+		* Strict POSIX compliance in configure script, fix for NetBSD sh.
+		* Removed some strings from translation database that never needed
+		  translation, such as "|", "(", "." and so on.
+		* Fixed #521, #525, #542: amuled didn't handle shutdown command well.
+		* Check for libpng existance and usability even if libpng-config
+		  doesn't exist.
+		* Fixed #545: Can't tell part number in remote gui
+		* Disabled 'Preview' menu item in remote gui.
+		* Fixed #543: amuleweb does not load the good language
+		* More handy (or proper or native or user-friendly or call it
+		  whatever you want) default incoming folder for Mac and Win.
+		* Implemented #510: Rename downloaded files from amule
+		* Made amulecmd able to connect/disconnect kad and/or ed2k.
+		* Proper location for config files on Mac and Win.
+		* Reworked amulecmd's command interface.
+		* Removed #pragma directives from sources.
+		* Various fixes to the new build system.
+		* New EC socket code.
+		* Fixed vertical position of text in shared files list.
+		* Added preference option to select web template for auto-started
+		  webserver.
 
 	ken:
 		* Use the IPFilter when adding and connecting to servers.  Thanks
@@ -42,6 +91,9 @@ Version 2.1.x - The "???" version
 		  multithreaded.
 		* Changed wait4 to waitpid in amule.cpp, to improove
 		  compatibility with old HP-UX systems.
+
+	Ramiro:
+		* Patch to compile on a NSLU2.
 
 	schtroumpf:
 		* File rating in search dialog.
