@@ -298,11 +298,7 @@ void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 
 void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 {
-	if (IsFileExisting(file->GetFileHash())) {
-		wxFAIL_MSG(wxT("Adding duplicate part-file"));
-		delete file;
-		return;
-	}
+	wxCHECK_RET(IsFileExisting(file->GetFileHash()), wxT("Adding duplicate part-file"));
 	
 	if ( paused && GetFileCount() ) {
 		file->StopFile();
@@ -1272,9 +1268,9 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 		}
 	} else {
 		file = new CPartFile(link);
+	
+		AddDownload(file, thePrefs::AddNewFilesPaused(), category);
 	}
-
-	AddDownload( file, thePrefs::AddNewFilesPaused(), category );
 	
 	if (link->HasValidAICHHash()) {
 		CAICHHashSet* hashset = file->GetAICHHashset();
