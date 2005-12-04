@@ -44,7 +44,17 @@ public:
 
 		uint64 lastEvent = GetTickCountFullRes();
 		do {
-			unsigned long sinceLast = GetTickCountFullRes() - lastEvent;
+			uint64 now = GetTickCountFullRes();
+			uint64 sinceLast = now - lastEvent;
+			if (sinceLast > 100 * m_period) {
+				// We're way too far behind.  Probably what really happened is
+				// the system time was adjusted backwards a bit, or (less
+				// likely) the time wrapped past the limit of a uint64.  So,
+				// the calculation of sinceLast has produced an absurd value.
+				sinceLast = 100 * m_period;
+				lastEvent = now - sinceLast;
+			}
+
 			unsigned long timeout = ((m_period < sinceLast) ? 0 : (m_period - sinceLast));
 			
 			// In normal operation, we will never actually acquire the
