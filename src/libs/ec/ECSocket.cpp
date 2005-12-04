@@ -747,7 +747,7 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t
 		memcpy(iobuf, data->GetData(), len);
 		data->Advance(len);
 		iobuf += len;
-		if (len > required_len) {
+		if (len >= required_len) {
 			required_len = 0;
 		} else {
 			required_len -= len;
@@ -1287,8 +1287,10 @@ const CECPacket *CECSocket::ReadPacket()
 #endif
 
 	tmp_packet = new CECPacket(*this);
+	tmp_packet->ReadFromSocket(*this);
+
 #ifndef KEEP_PARTIAL_PACKETS
-	if (tmp_packet->m_error != 0) {
+	if (tmp_packet->m_error != 0 || !tmp_packet->IsOk()) {
 		delete tmp_packet;
 		tmp_packet = NULL;
 		Close();
