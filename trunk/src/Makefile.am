@@ -57,8 +57,6 @@ endif
 endif
 
 
-BUILT_SOURCES = Scanner.cpp Parser.cpp
-
 # Common to core/gui/monolithic
 
 libmuleappcommon_a_SOURCES = \
@@ -392,16 +390,16 @@ noinst_HEADERS = AddFileThread.h \
 
 MAINTAINERCLEANFILES = Makefile.in
 
-Parser.cpp: Parser.y
-	bison --debug -t -d -v -o Parser.cpp Parser.y
+$(srcdir)/Parser.cpp: Parser.y
+	bison --debug -t -d -v -o $@ $(srcdir)/Parser.y
 
 if GENERATE_FLEX_HEADER
-Scanner.cpp: Scanner.l Parser.cpp
-		flex --header-file=Scanner.h -o $@ Scanner.l
+$(srcdir)/Scanner.cpp: Scanner.l Parser.cpp
+		flex --header-file=$(srcdir)/Scanner.h -o $@ $(srcdir)/Scanner.l
 else
-Scanner.cpp: Scanner.l Parser.cpp
+$(srcdir)/Scanner.cpp: Scanner.l Parser.cpp
 		flex -o$@ Scanner.l; \
-		cp $(srcdir)/Scanner.h.in Scanner.h
+		cp $(srcdir)/Scanner.h.in $(srcdir)/Scanner.h
 endif
 
 
