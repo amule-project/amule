@@ -6,6 +6,7 @@ Version 2.1.x - The "???" version
 		* Fix adding AICH links with amulecmd.
 
 	GonoszTopi:
+		* Fixed a small GUI glitch
 		* Ported the partfile importer from eMule.
 		* Proper termination of working threads in webserver.
 
@@ -16,13 +17,13 @@ Version 2.1.x - The "???" version
 	Kry:
 		* Fixed a bug with iterator usage in SearchManager.cpp
 
-	lupz:
-		* Kad speed improvements.
-
 	lfroen:
 		* PHP engine implementation for amuleweb
 		* Porting web templates to PHP script
 		
+	lupz:
+		* Kad speed improvements.
+
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
 		  file. They don't work on all distros, even worse, don't always
@@ -48,15 +49,18 @@ Version 2.1.x - The "???" version
 		* Replaced file rating good/bad with a rating average like in emule.
 		* Amule submits file rating to the server.
 
+	Seagull:
+		* Fixed a small bug on client list view.
+
+	shakraw:
+		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
+
 	thedude0001:
 		* Added CVS snapshot date to frame title.
 		* Fixed #560: "aMuleWebDLG and aMuleCMDDLG do not report version"
 
 	volpol:
 		* A4AF transfer speed display fix
-
-	shakraw:
-		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
 
 	Xaignar:
 		* Add a "Download in category" sub-menu to the right-click menu on
@@ -658,18 +662,6 @@ Version 2.1.x - The "???" version
 		  was causing a specific crash.
 		* Imported the UploadBandwidthThrottler from eMule, which should help
 		  ensure that upload-limits are more closely followed.
-
---------------------------------------------------------------------------------
-
-Version 2.0.4 - The "..." version.
-----------
-2005-06-??
-
-	GonoszTopi:
-		* Fixed a small GUI glitch
-
-	Seagull:
-		* Fixed a small bug on client list view.
 
 --------------------------------------------------------------------------------
 
