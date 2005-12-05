@@ -89,11 +89,13 @@ bool CKnownFileList::Init()
 		}
 	
 		return true;
+	} catch (const CInvalidPacket& e) {
+		AddLogLineM(true, wxT("Invalid entry in knownfilelist, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(true, CFormat(_("IO error while reading known.met file: %s")) % e.what());
-		
-		return false;
 	}	
+	
+	return false;
 }
 
 void CKnownFileList::Save()

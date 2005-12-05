@@ -122,6 +122,8 @@ void CFriendList::LoadList()
 		} else {
 			AddLogLineM(false, _("Failed to open friendlist file 'emfriends.met' for reading!"));
 		}
+	} catch (const CInvalidPacket& e) {
+		AddDebugLogLineM(true, logGeneral, wxT("Invalid entry in friendlist, file may be corrupt: ") + e.what());		
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(true, logGeneral, wxT("IO error while reading 'emfriends.met': ") + e.what());
 	}

@@ -654,6 +654,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}			
 			
 		metFile.Close();
+	} catch (const CInvalidPacket& e) {
+		AddLogLineM(true, CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
+			% m_partmetfilename
+			% m_strFileName
+			% e.what());
+		return false;		
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile, CFormat( wxT("IO failure while loading '%s': %s") )
 			% m_partmetfilename
