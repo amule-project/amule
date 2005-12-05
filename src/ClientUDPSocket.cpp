@@ -111,6 +111,8 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 		}
 	} catch (const wxString& e) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
+	} catch (const CInvalidPacket& e) {
+		AddDebugLogLineM(false, logClientUDP, wxT("Invalid UDP packet encountered: ") + e.what());
 	} catch (const CEOFException& e) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
 	} catch (const Kademlia::CIOException&) {
