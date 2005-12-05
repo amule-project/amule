@@ -317,15 +317,19 @@ void CUpDownClient::CreateNextBlockPackage()
 			delete[] filedata;
 			filedata = NULL;
 		}
+
+		return;
 	} catch (const wxString& error) {
 		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
-		theApp.uploadqueue->RemoveFromUploadQueue(this);
-		delete[] filedata;
+	} catch (const CIOFailureException& error) {
+		AddDebugLogLineM(true, logClient, wxT("IO failure while reading requested file: ") + error.what());
 	} catch (const CEOFException& error) {
 		AddDebugLogLineM(true, logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
-		theApp.uploadqueue->RemoveFromUploadQueue(this);
-		delete[] filedata;
 	}
+	
+	// Error occured.	
+	theApp.uploadqueue->RemoveFromUploadQueue(this);
+	delete[] filedata;
 }
 
 
