@@ -221,8 +221,15 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	if ( IsFileExisting(toadd->GetFileHash()) ) {
 		return;
 	}
+
 	
-	CPartFile* newfile = new CPartFile(toadd);
+	CPartFile* newfile = NULL;
+	try {
+		newfile = new CPartFile(toadd);
+	} catch (const CInvalidPacket& e) {
+		AddDebugLogLineM(true, logDownloadQueue, wxT("Search-result contained invalid tags, could not add"));
+	}
+	
 	if ( newfile && newfile->GetStatus() != PS_ERROR ) {
 		AddDownload( newfile, thePrefs::AddNewFilesPaused(), category );
 	}
