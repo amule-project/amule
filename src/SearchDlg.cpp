@@ -74,7 +74,8 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_SEARCHNAME, CSearchDlg::OnFieldChanged) 
 	EVT_CUSTOM( wxEVT_COMMAND_TEXT_UPDATED,     IDC_EDITSEARCHEXTENSION, CSearchDlg::OnFieldChanged) 
 	EVT_CUSTOM( wxEVT_COMMAND_SPINCTRL_UPDATED, wxID_ANY, CSearchDlg::OnFieldChanged)
-
+	EVT_CUSTOM( wxEVT_COMMAND_CHOICE_SELECTED, wxID_ANY, CSearchDlg::OnFieldChanged)
+	
 	// Event handlers for the filter fields getting changed.
 	EVT_TEXT_ENTER(ID_FILTER_TEXT,	CSearchDlg::OnFilteringChange)
 	EVT_CHECKBOX(ID_FILTER_INVERT,	CSearchDlg::OnFilteringChange)
@@ -287,18 +288,20 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 		enable |= !CastChild( textfields[i], wxTextCtrl )->GetValue().IsEmpty();
 	}
 
-
+	// Check if either of the dropdowns have been changed
+	enable |= CastChild(IDC_SEARCHMINSIZE, wxChoice)->GetSelection() != 2;
+	enable |= CastChild(IDC_SEARCHMAXSIZE, wxChoice)->GetSelection() != 2;
+	enable |= CastChild(IDC_TypeSearch, wxChoice)->GetSelection();
+	enable |= CastChild(ID_AUTOCATASSIGN, wxChoice)->GetSelection();
+	
 	// These are the IDs of the search-fields
 	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
-
 	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
 		enable |= CastChild( spinfields[i], wxSpinCtrl )->GetValue();
 	}
 
-	// Enable the Clear and Clear-All button if any fields contain text
+	// Enable the "Reset" button if any fields contain text
 	FindWindow(IDC_SEARCH_RESET)->Enable( enable );
-	FindWindow(IDC_CLEAR_RESULTS)->Enable( enable || m_notebook->GetPageCount() );
-
 	
 	// Enable the Server Search button if the Name field contains text
 	enable = !CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue().IsEmpty();
@@ -403,8 +406,6 @@ void CSearchDlg::OnBnClickedClear(wxCommandEvent& WXUNUSED(ev))
 
 	FindWindow(IDC_CLEAR_RESULTS)->Enable(FALSE);
 	FindWindow(IDC_SDOWNLOAD)->Enable(FALSE);
-
-	CastChild( IDC_SEARCHNAME, wxTextCtrl )->Clear();
 }
 
 
@@ -553,13 +554,11 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 {
 	CastChild( IDC_SEARCHNAME, wxTextCtrl )->Clear();
 	CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->Clear();
-
 	CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->SetValue(0);
+	CastChild( IDC_SEARCHMINSIZE, wxChoice )->SetSelection(2);
 	CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->SetValue(0);
+	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
 	CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->SetValue(0);
-
-	FindWindow(IDC_CLEAR_RESULTS)->Enable( m_notebook->GetPageCount() );
-
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	
 	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
