@@ -484,11 +484,11 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		}
 		
 		menu.Append(MP_MENU_CATS, _("Download in category"), cats);
-		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
-		menu.Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
 		menu.AppendSeparator();
 		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		menu.AppendSeparator();
+		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
+		menu.Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
 
 		// These should only be enabled for single-selections
 		bool enable = GetSelectedItemCount();
