@@ -560,6 +560,7 @@ void CSearchDlg::OnBnClickedReset(wxCommandEvent& WXUNUSED(evt))
 	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
 	CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->SetValue(0);
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
+	CastChild( ID_AUTOCATASSIGN, wxChoice )->SetSelection(0);
 	
 	FindWindow(IDC_SEARCH_RESET)->Enable(FALSE);
 }
