@@ -347,11 +347,13 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 	m_notebook->AddPage(list, searchString, true, 0);
 
 	// Ensure that new results are filtered
+	bool     enable = CastChild(IDC_FILTERCHECK, wxCheckBox)->GetValue();
 	wxString filter = CastChild(ID_FILTER_TEXT, wxTextCtrl)->GetValue();
 	bool     invert = CastChild(ID_FILTER_INVERT, wxCheckBox)->GetValue();
 	bool     known = CastChild(ID_FILTER_KNOWN, wxCheckBox)->GetValue();	
 	
 	list->SetFilter(filter, invert, known);
+	list->EnableFiltering(enable);
 	list->ShowResults(nSearchID);
 	
 	Layout();
