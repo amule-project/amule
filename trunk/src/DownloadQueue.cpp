@@ -305,7 +305,7 @@ void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 
 void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 {
-	wxCHECK_RET(IsFileExisting(file->GetFileHash()), wxT("Adding duplicate part-file"));
+	wxCHECK_RET(!IsFileExisting(file->GetFileHash()), wxT("Adding duplicate part-file"));
 	
 	if ( paused && GetFileCount() ) {
 		file->StopFile();
