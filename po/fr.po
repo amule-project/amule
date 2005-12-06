@@ -1,24 +1,23 @@
-# translation of source_strings.po to fr
-# translation of source_strings.po to Français
+# translation of fr.po to fr
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# ThePolish <thepolish@amule.org>, 2005.
-# kaouete <kaouete@crazydwarves.org>, 2005.
 #: src/TextClient.cpp:616 src/TextClient.cpp:619 src/TextClient.cpp:634
 #: src/TextClient.cpp:637 src/TextClient.cpp:649 src/TextClient.cpp:652
 #: src/TextClient.cpp:655
+# ThePolish <thepolish@amule.org>, 2005.
+# kaouete <kaouete@crazydwarves.org>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: source_strings\n"
+"Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-23 21:36+0100\n"
-"PO-Revision-Date: 2005-11-28 22:04+0100\n"
+"PO-Revision-Date: 2005-12-06 09:05+0100\n"
 "Last-Translator: kaouete <kaouete@crazydwarves.org>\n"
 "Language-Team: fr <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
 #: src/kademlia/kademlia/SearchManager.cpp:147
@@ -3416,7 +3415,7 @@ msgid ""
 "braces signify the overhead from client communication."
 msgstr ""
 "Taux moyen d'émission et de réception courants. Sil il est présent, le "
-"chiffre entre parenthèses indique le surplus de communication client."
+"chiffre entre parenthèses indique la bande passante supplémentaire utilisée par les connexions aux clients."
 
 #: src/muuli_wdr.cpp:157
 msgid ""
@@ -3877,9 +3876,8 @@ msgid "Scores"
 msgstr "Scores"
 
 #: src/muuli_wdr.cpp:1566
-#, fuzzy
 msgid "DL/UP modifier:"
-msgstr "Modifieur DL/UP:"
+msgstr "Modificateur DL/UP:"
 
 #: src/muuli_wdr.cpp:1575
 msgid "Secure ident:"
@@ -4146,7 +4144,7 @@ msgstr "Reconnecter en cas de déconnexion"
 
 #: src/muuli_wdr.cpp:1965
 msgid "Show overhead bandwith"
-msgstr "Montrer le surplus de bande passante"
+msgstr "Montrer la bande passante supplémentaire utilisée."
 
 #: src/muuli_wdr.cpp:1990 src/Statistics.cpp:686
 msgid "Servers"
@@ -5276,27 +5274,27 @@ msgstr "Données Émises (Session (Total)): %s"
 #: src/Statistics.cpp:627 src/Statistics.cpp:646
 #, c-format
 msgid "Total Overhead (Packets): %s"
-msgstr "Surplus Total (Paquets): %s"
+msgstr "Bande Passante Supplémentaire Utilisée au Total (Paquets): %s"
 
 #: src/Statistics.cpp:628 src/Statistics.cpp:647
 #, c-format
 msgid "File Request Overhead (Packets): %s"
-msgstr "Surplus pour les Requêtes Fichiers (Paquets): %s"
+msgstr "Bande Passante Supplémentaire par les Requêtes Fichiers (Paquets): %s"
 
 #: src/Statistics.cpp:630 src/Statistics.cpp:649
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr "Surplus pour les Échanges de Sources (Paquets): %s"
+msgstr "Bande Passante Supplémentaire par les Échanges de Sources (Paquets): %s"
 
 #: src/Statistics.cpp:632 src/Statistics.cpp:651
 #, c-format
 msgid "Server Overhead (Packets): %s"
-msgstr "Surplus pour les Serveur (Paquets): %s"
+msgstr "Bande Passante Supplémentaire par les Serveur (Paquets): %s"
 
 #: src/Statistics.cpp:634 src/Statistics.cpp:653
 #, c-format
 msgid "Kad Overhead (Packets): %s"
-msgstr "Surplus pour Kad (Paquets): %s"
+msgstr "Bande Passante Supplémentaire par Kad (Paquets): %s"
 
 #: src/Statistics.cpp:636
 #, c-format
@@ -6200,7 +6198,7 @@ msgstr "Pas de fichiers .part trouvés"
 #: src/DownloadQueue.cpp:159
 #, c-format
 msgid "Found %u part files"
-msgstr "%u parties de fichiers trouvées"
+msgstr "%u fichiers .part trouvés"
 
 #: src/DownloadQueue.cpp:303
 #, c-format
