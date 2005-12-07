@@ -56,7 +56,6 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_PRIOAUTO,		CSharedFilesCtrl::OnSetPriorityAuto )
 
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
-	EVT_MENU( MP_GETCOMMENTS,   CSharedFilesCtrl::OnGetComment )  
 	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )	
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHTMLED2KLINK,			CSharedFilesCtrl::OnCreateURI )
@@ -139,7 +138,6 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 			m_menu->Append(MP_CMT, _("Edit Comment/Rating"));
 		}
 		
-		m_menu->Append(MP_GETCOMMENTS,_("Show all comments"));
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_RENAME, _("Rename"));
 		m_menu->Enable(MP_RENAME, !file->IsPartFile());
@@ -336,17 +334,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 	}
 }
 
-void CSharedFilesCtrl::OnGetComment ( wxCommandEvent& WXUNUSED(event) )
-{
-	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( item );
-	
-		theApp.amuledlg->LaunchUrl(wxT("http://jugle.net/?comments=") + file->GetFileHash().Encode());
-	}
-}
-	
-	
+
 int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
 {
 	CKnownFile* file1 = (CKnownFile*)item1;
