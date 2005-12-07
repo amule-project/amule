@@ -195,14 +195,20 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 {
-	long index = FindItem( -1, (long)toupdate );
-
-	if ( index != -1 ) {
-		// Remove the old item
-		DeleteItem( index );
-
-		// Re-add it to update the displayed information and have it properly positioned
-		AddResult( toupdate );
+	long index = FindItem(-1, (long)toupdate);
+	if (index != -1) {
+		if (IsItemSorted(index)) {
+			wxString temp = wxString::Format( wxT("%d (%d)"), toupdate->GetSourceCount(), toupdate->GetCompleteSourceCount());
+			SetItem(index, ID_SEARCH_COL_SOURCES, temp);
+		
+			UpdateItemColor(index);
+		} else {
+			// Remove the old item
+			DeleteItem(index);
+			
+			// Re-add it to update the displayed information and have it properly positioned
+			AddResult(toupdate);
+		}
 	}
 }
 

@@ -174,26 +174,12 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	if ( itemnr != -1 ) {
 		// Try to get the current item, so that we get to keep bold'ness and such
 		item.SetId( itemnr );
-		GetItem( item );
+		GetItem(item);
 		
-		int sortby = GetSortColumn() & GetSortOrder();
-	
-		// Decides if we should reposition the item (through delete and insert)
-		bool sorted = true;
-			
-		// Check if we are still "smaller" than the item before us
-		if ( itemnr > 0 ) {
-			sorted &= ( SortProc( (long)server, GetItemData( itemnr - 1 ), sortby ) <= 0 );
-		}
-
-		// Check if we are still "larger" than the item after us
-		if ( itemnr < GetItemCount() -1 ) {
-			sorted &= ( SortProc( (long)server, GetItemData( itemnr + 1 ), sortby ) >= 0 );
-		}
-
-		if ( !sorted ) {
-			itemState = GetItemState( itemnr, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED );
-			DeleteItem( itemnr );
+		// Decide if we should reposition the item (through delete and insert)
+		if (!IsItemSorted(itemnr)) {
+			itemState = GetItemState(itemnr, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+			DeleteItem(itemnr);
 			itemnr = -1;
 		}
 	}
