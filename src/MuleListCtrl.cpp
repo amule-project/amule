@@ -359,6 +359,28 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 }
 
 
+bool CMuleListCtrl::IsItemSorted(long item)
+{
+	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
+	
+	int sortby = GetSortColumn() & GetSortOrder();
+	bool sorted = true;
+	long data = GetItemData(item);
+	
+	// Check if we are still "smaller" than the item before us
+	if (item > 0) {
+		sorted &= (m_sort_func(data, GetItemData(item - 1), sortby) <= 0);
+	}
+
+	// Check if we are still "larger" than the item after us
+	if (sorted and (item < GetItemCount() - 1)) {
+		sorted &= (m_sort_func(data, GetItemData(item + 1), sortby) >= 0);
+	}
+
+	return sorted;
+}
+
+
 void CMuleListCtrl::OnMouseWheel(wxMouseEvent &event)
 {
  	// This enables scrolling with the mouse wheel

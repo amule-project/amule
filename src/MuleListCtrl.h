@@ -226,6 +226,12 @@ protected:
 	 */
 	void SetSorting(unsigned column, unsigned order);
 
+	/**
+	 * Returns true if the item is sorted compared to its neighbohrs.
+	 */
+	bool IsItemSorted(long item);
+
+	
 	
 	/**
 	 * Check and fix selection state.
