@@ -165,11 +165,6 @@ private:
 	void	OnCreateURI( wxCommandEvent& event );
 	
 	/**
-	 * Event handler for get-comments menu item.
-	 */
-	void OnGetComment( wxCommandEvent& evt );
-	 
-	/**
 	 * Event handler for get-razorback stats menu item
 	 */	 
 	void OnGetRazorStats( wxCommandEvent& evt );

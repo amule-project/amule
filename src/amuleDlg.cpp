@@ -1155,9 +1155,6 @@ wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch provider
 		case wsFileHash:
 			URL = wxT("http://www.filehash.com/search.html?pattern=FILENAME&submit=Find");
 			break;
-		case wsJugle:
-			URL = wxT("http://jugle.net/index.php?searchstring=FILENAME");
-			break;
 		default:
 			wxASSERT(0);
 	}
