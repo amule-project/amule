@@ -2849,7 +2849,7 @@ msgstr "Impossibile scaricare il file per il controllo della versione"
 #: src/amule.cpp:1820
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
-msgstr "tenti: E: %s K: %s | File E: %s K: %s"
+msgstr "Utenti: E: %s K: %s | File E: %s K: %s"
 
 #: src/amule.cpp:1888
 #, c-format
@@ -4873,7 +4873,7 @@ msgstr "Bootstrap da\n"
 
 #: src/muuli_wdr.cpp:3381
 msgid "Disconnect Kad"
-msgstr "Disconnerri rete Kad"
+msgstr "Disconnetti rete Kad"
 
 #: src/muuli_wdr.cpp:3434 src/PrefsUnifiedDlg.cpp:171
 msgid "Security"
@@ -6464,7 +6464,7 @@ msgstr "Caricamento dati da vecchio file in download (%u su %u)"
 #: src/PartFileConvert.cpp:404
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
-msgstr "Salvataggio blocchi di dati in un singolo file (%u su %u)"
+msgstr "Salvataggio blocchi di dati in un singolo file (%u su %su)"
 
 #: src/PartFileConvert.cpp:453 src/MuleTextCtrl.cpp:79
 msgid "Copy"
