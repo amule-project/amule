@@ -161,47 +161,21 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 void CServerListCtrl::RefreshServer( CServer* server )
 {
 	// Cant really refresh a NULL server 
-	if ( !server )
+	if (!server) {
 		return;
-
-	// The current stats
-	int itemState = 0;
-
-	// The new or old item
-	wxListItem item;
-	
-	long itemnr = FindItem( -1, (long)server );
-	if ( itemnr != -1 ) {
-		// Try to get the current item, so that we get to keep bold'ness and such
-		item.SetId( itemnr );
-		GetItem(item);
-		
-		// Decide if we should reposition the item (through delete and insert)
-		if (!IsItemSorted(itemnr)) {
-			itemState = GetItemState(itemnr, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
-			DeleteItem(itemnr);
-			itemnr = -1;
-		}
 	}
-	
-	// New item or we deleted the old one
+
+	long itemnr = FindItem( -1, (long)server );
 	if ( itemnr == -1 ) {
 		// We are not at the sure that the server isn't in the list, so we can re-add
 		itemnr = InsertItem( GetInsertPos( (long)server ), server->GetListName() );
 		SetItemData( itemnr, (long)server );
 	
+		wxListItem item;
 		item.SetId( itemnr );
 		item.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 		SetItem( item );
-		
-		// Resetting the state, which gets lost when we remove the old item
-		SetItemState( itemnr, itemState, itemState );
-
-		// Ensure that the item doesn't just warp out of view
-		if ( itemState & wxLIST_STATE_FOCUSED )
-			EnsureVisible( itemnr );
 	}
-	
 
 	SetItem( itemnr, COLUMN_SERVER_NAME, server->GetListName() );
 	SetItem( itemnr, COLUMN_SERVER_ADDR, server->GetAddress() );
@@ -240,6 +214,12 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%u"),server->GetFailedCount() ) );
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
+
+	// Deletions of items causes rather large ammount of flicker, so to
+	// avoid this, we resort the list to ensure correct ordering.
+	if (!IsItemSorted(itemnr)) {
+		SortList();
+	}
 }
 
 
