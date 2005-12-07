@@ -363,18 +363,18 @@ bool CMuleListCtrl::IsItemSorted(long item)
 {
 	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
 	
-	int sortby = GetSortColumn() & GetSortOrder();
+	int sortby = m_sort_column | m_sort_order;
 	bool sorted = true;
 	long data = GetItemData(item);
-	
-	// Check if we are still "smaller" than the item before us
+
+	// Check that the item before the current item is smaller (or equal)
 	if (item > 0) {
-		sorted &= (m_sort_func(data, GetItemData(item - 1), sortby) <= 0);
+		sorted &= (m_sort_func(GetItemData(item - 1), data, sortby) <= 0);
 	}
 
-	// Check if we are still "larger" than the item after us
+	// Check that the item after the current item is greater (or equal)
 	if (sorted and (item < GetItemCount() - 1)) {
-		sorted &= (m_sort_func(data, GetItemData(item + 1), sortby) >= 0);
+		sorted &= (m_sort_func(GetItemData(item + 1), data, sortby) >= 0);
 	}
 
 	return sorted;
