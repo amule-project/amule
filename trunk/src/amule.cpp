@@ -399,11 +399,11 @@ bool CamuleApp::OnInit()
 		cmdline.Usage();
 		return false;
 	}	
-
+	
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
 	// catch fatal exceptions
-	wxHandleFatalExceptions(true);
+		wxHandleFatalExceptions(true);
 #endif
 	}
 
@@ -449,6 +449,12 @@ bool CamuleApp::OnInit()
 
 	/* Check for old aMule configs, or for old lmule/xmule config if no aMule configs found. */
 	CheckConfig();
+
+	if (wxAccess(ConfigDir, R_OK | W_OK | X_OK)) {
+		ShowAlert(wxT("Bad permissions on aMule config directory!"), 
+			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+		return false;
+	}
 
 	printf("Checking if there is an instance already running...\n");
 	// see if there is another instance running
@@ -525,15 +531,18 @@ bool CamuleApp::OnInit()
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 
-	// Check for a writable Temp directory
-	wxString testFile = wxFileName::CreateTempFileName(thePrefs::GetTempDir() + wxFileName::GetPathSeparator());
-	if (!testFile.IsEmpty()) {
-		wxRemoveFile(testFile);
-	} else {
-		fputs("FATAL ERROR: Temp directory is read-only!\n", stderr);
+	if (wxAccess(thePrefs::GetTempDir(), R_OK | W_OK | X_OK)) {
+		ShowAlert(wxT("Bad permissions on Temp directory!"), 
+			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
 		return false;
 	}
 
+	if (wxAccess(thePrefs::GetIncomingDir(), R_OK | W_OK | X_OK)) {
+		ShowAlert(wxT("Bad permissions on Incoming directory!"),
+			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+		return false;
+	}
+	
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
 		thePrefs::SetMinToTray(false);
