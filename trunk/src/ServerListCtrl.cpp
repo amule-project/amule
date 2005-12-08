@@ -539,21 +539,9 @@ int CServerListCtrl::SortProc(long item1, long item2, long sortData)
 				} else if (server2->HasDynIP()) {
 					return mode * 1;
 				} else {
-					uint32 a = server1->GetIP();
-					uint32 b = server2->GetIP();
-					// This might break on big endian, but who's gonna notice? ;)
-					uint32 tester;
-					if (!(tester = ((a & 0x000000FF) - (b & 0x000000FF)))) {
-						if (!(tester = ((a & 0x0000FF00) - (b & 0x0000FF00)))) {
-							if (!(tester = ((a & 0x00FF0000) - (b & 0x00FF0000)))) {
-								if (!(tester = ((a & 0xFF000000) - (b & 0xFF000000)))) {
-									// Same ip, different port (Shouldn't happen!)
-									return 0;
-								}
-							}
-						}
-					}
-					return (mode * tester);					
+					uint32 a = wxUINT32_SWAP_ALWAYS(server1->GetIP());
+					uint32 b = wxUINT32_SWAP_ALWAYS(server2->GetIP());
+					return mode * CmpAny(a, b);
 				}
 			}
 		// Sort by port
