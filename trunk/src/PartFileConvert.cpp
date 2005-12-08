@@ -572,6 +572,7 @@ void CPartFileConvert::ShowGUI(wxWindow* parent)
 {
 	if (s_convertgui) {
 		s_convertgui->Show(true);
+		s_convertgui->Raise();
 	} else {
 		s_convertgui = new CPartFileConvertDlg(parent);
 		s_convertgui->Show(true);
