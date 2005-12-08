@@ -90,7 +90,7 @@ void CFileDataIO::Write(const void* buffer, size_t count)
 	MULE_VALIDATE_PARAMS(buffer, wxT("Attempting to read from NULL buffer."));
 
 	if (doWrite(buffer, count) != count) {
-		throw CIOFailureException(wxT("Read error, failed to write to file."));
+		throw CIOFailureException(wxT("Write error, failed to write to file."));
 	}
 }
 
