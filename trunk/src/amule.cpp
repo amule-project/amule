@@ -510,7 +510,7 @@ bool CamuleApp::OnInit()
 	wxConfig::Set( cfg );
 
 
-	applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+	applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
 	if ( !applog->Ok() ) {
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
@@ -521,7 +521,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// Load Preferences
-	CPreferences::BuildItemList( theApp.ConfigDir);
+	CPreferences::BuildItemList(ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 
@@ -546,7 +546,7 @@ bool CamuleApp::OnInit()
 	Localize_mule();
 
 	// Display notification on new version or first run
-	wxTextFile vfile( ConfigDir + wxFileName::GetPathSeparator() + wxT("lastversion") );
+	wxTextFile vfile( ConfigDir + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));
 	
 	// Test if there's any new version
@@ -1556,7 +1556,7 @@ wxString CamuleApp::GetLog(bool reset)
 {
 	ConfigDir = GetConfigDir();
 	wxFile logfile;
-	logfile.Open(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+	logfile.Open(ConfigDir + wxT("logfile"));
 	if ( !logfile.IsOpened() ) {
 		return wxTRANSLATE("ERROR: can't open logfile");
 	}
@@ -1581,7 +1581,7 @@ wxString CamuleApp::GetLog(bool reset)
 	delete [] tmp_buffer;
 	if ( reset ) {
 		delete applog;
-		applog = new wxFFileOutputStream(ConfigDir + wxFileName::GetPathSeparator() + wxT("logfile"));
+		applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
 		if ( applog->Ok() ) {
 			AddLogLine(_("Log has been reset"));
 		} else {
@@ -1662,7 +1662,7 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 void CamuleApp::CheckNewVersion(uint32 result)
 {	
 	if (result == 1) {
-		wxString filename = theApp.ConfigDir + wxT("last_version_check");
+		wxString filename = ConfigDir + wxT("last_version_check");
 		wxTextFile file;
 		
 		if (!file.Open(filename)) {
