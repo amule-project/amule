@@ -152,6 +152,8 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_GETHTMLED2KLINK,_("Copy ED2k link to clipboard (&HTML)"));
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
 
+		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
+		
 		PopupMenu( m_menu, event.GetPoint() );
 
 		delete m_menu;
