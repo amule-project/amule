@@ -132,14 +132,9 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 	wxPoint eventPoint = event.GetPosition();
 
 #ifdef __WXMAC__
-	// For some reason, on the Mac clicks on the tabs give positions 37 pixels
-	// off vertically and 3 pixels off horizontally from where HitTest believes
-	// the tabs to be.  It seems the notebook control's coordinate system seems
-	// to place y==0 at the line between the tabs and the pages.  I have no
-	// explanation for the horizontal offset.
-	#warning TODO: Ken, fix Mac tab positions properly
-	eventPoint.x += 3;
-	eventPoint.y += 37;
+	// For some reason, on the Mac clicks on the tabs give positions differing
+	// by the client area origin from where HitTest believes the tabs to be.
+	eventPoint += GetClientAreaOrigin();
 #endif
 
 	int tab = HitTest(eventPoint);
