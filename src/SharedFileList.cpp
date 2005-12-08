@@ -993,26 +993,47 @@ void CSharedFileList::Publish()
 	}
 }
 
+
 void CSharedFileList::AddKeywords(CKnownFile* pFile)
 {
 	m_keywords->AddKeywords(pFile);
 }
+
 
 void CSharedFileList::RemoveKeywords(CKnownFile* pFile)
 {
 	m_keywords->RemoveKeywords(pFile);
 }
 
-bool CSharedFileList::RenameFile(CKnownFile* pFile, const wxString& newName)
+
+bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 {
-	if (UTF8_MoveFile(pFile->GetFilePath() + pFile->GetFileName(), pFile->GetFilePath() + newName)) {
-		RemoveKeywords(pFile);
-		pFile->SetFileName(newName);
-		AddKeywords(pFile);
-		theApp.knownfiles->Save();
-		UpdateItem(pFile);
-		RepublishFile(pFile);
+	if (file->IsPartFile()) {
+		CPartFile* pfile = dynamic_cast<CPartFile*>(file);
+
+		pfile->SetFileName(newName);
+		pfile->SavePartFile();
+	
+		Notify_SharedFilesUpdateItem(file);
+		Notify_DownloadCtrlUpdateItem(file);
+		
 		return true;
+	} else {
+		wxString path = file->GetFilePath();
+		
+		if (UTF8_MoveFile(path + file->GetFileName(), path + newName)) {
+			RemoveKeywords(file);
+			file->SetFileName(newName);
+			AddKeywords(file);
+			theApp.knownfiles->Save();
+			UpdateItem(file);
+			RepublishFile(file);
+
+			Notify_SharedFilesUpdateItem(file);
+			
+			return true;
+		}
 	}
+	
 	return false;
 }

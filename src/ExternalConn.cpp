@@ -1097,18 +1097,14 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid file name.")));
 				break;
 			}
-			if (file->IsPartFile()) {
-				((CPartFile*)file)->SetFileName(newName);
-				((CPartFile*)file)->SavePartFile();
+			
+			if (theApp.sharedfiles->RenameFile(file, newName)) {
 				response = new CECPacket(EC_OP_NOOP);
 			} else {
-				if (theApp.sharedfiles->RenameFile(file, newName)) {
-					response = new CECPacket(EC_OP_NOOP);
-				} else {
-					response = new CECPacket(EC_OP_FAILED);
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Unable to rename file.")));
-				}
+				response = new CECPacket(EC_OP_FAILED);
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Unable to rename file.")));
 			}
+
 			break;
 		}
 

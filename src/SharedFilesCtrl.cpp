@@ -63,6 +63,9 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_RENAME,		CSharedFilesCtrl::OnRename )
+
+
+	EVT_CHAR( CSharedFilesCtrl::OnKeyPressed )
 END_EVENT_TABLE()
 
 enum SharedFilesListColumns {
@@ -140,7 +143,6 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_RENAME, _("Rename"));
-		m_menu->Enable(MP_RENAME, !file->IsPartFile());
 		m_menu->AppendSeparator();
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
@@ -601,43 +603,33 @@ void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 	}
 }
 
+
 void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if ( item != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData( item );
+		CKnownFile* file = (CKnownFile*)GetItemData(item);
 
-		if (!file->IsPartFile()) {
-			wxString newName;
-
-			wxDialog* dlg = new wxDialog(theApp.amuledlg, -1, _("Rename"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
-
-			renameDialog(dlg);
-
-			dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->SetValue(file->GetFileName());
-
-			if (dlg->ShowModal() == wxID_OK) {
-				newName = dynamic_cast<wxTextCtrl*>(dlg->FindWindow(IDC_NEWFILENAME))->GetValue();
-			}
-
-			delete dlg;
-
-			if (!newName.IsEmpty()) {
-#ifndef CLIENT_GUI
-				theApp.sharedfiles->RenameFile(file, newName);
-#else
-				CECPacket request(EC_OP_RENAME_FILE);
-				request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
-				request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
-				const CECPacket *reply = theApp.connect->SendRecvPacket(&request);
-				if (reply) {
-					if (reply->GetOpCode() == EC_OP_NOOP) {
-						file->SetFileName(newName);
-						UpdateItem(file);
-					}
-				}
-#endif
-			}
+		wxString newName = ::wxGetTextFromUser(
+			_("Enter new name for this file:"),
+			_("File rename"), file->GetFileName());
+				
+		if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+			theApp.sharedfiles->RenameFile(file, newName);
 		}
 	}
 }
+
+
+void CSharedFilesCtrl::OnKeyPressed( wxKeyEvent& event )
+{
+	if (event.GetKeyCode() == WXK_F2) {
+		wxCommandEvent evt;
+		OnRename(evt);
+		
+		return;
+	}
+
+	event.Skip();
+}
+

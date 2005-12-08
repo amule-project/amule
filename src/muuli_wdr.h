@@ -518,23 +518,20 @@ extern wxSizer *netSizer;
 const int ID_NETNOTEBOOK = 10377;
 wxSizer *NetDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
-const int IDC_NEWFILENAME = 10378;
-wxSizer *renameDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
-
 // Declare menubar functions
 
 // Declare toolbar functions
 
-const int ID_BUTTONCONNECT = 10379;
-const int ID_BUTTONNETWORKS = 10380;
-const int ID_BUTTONSEARCH = 10381;
-const int ID_BUTTONTRANSFER = 10382;
-const int ID_BUTTONSHARED = 10383;
-const int ID_BUTTONMESSAGES = 10384;
-const int ID_BUTTONSTATISTICS = 10385;
-const int ID_BUTTONNEWPREFERENCES = 10386;
-const int ID_BUTTONIMPORT = 10387;
-const int ID_ABOUT = 10388;
+const int ID_BUTTONCONNECT = 10378;
+const int ID_BUTTONNETWORKS = 10379;
+const int ID_BUTTONSEARCH = 10380;
+const int ID_BUTTONTRANSFER = 10381;
+const int ID_BUTTONSHARED = 10382;
+const int ID_BUTTONMESSAGES = 10383;
+const int ID_BUTTONSTATISTICS = 10384;
+const int ID_BUTTONNEWPREFERENCES = 10385;
+const int ID_BUTTONIMPORT = 10386;
+const int ID_ABOUT = 10387;
 void muleToolbar( wxToolBar *parent );
 
 // Declare bitmap functions
