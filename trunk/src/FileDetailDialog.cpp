@@ -42,6 +42,8 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "Color.h"		// Needed for SYSCOLOR
 #include <common/Format.h>		// Needed for CFormat
+#include "amule.h"				// Needed for theApp
+#include "SharedFileList.h"		// Needed for CSharedFileList
 
 #define ID_MY_TIMER 1652
 
@@ -202,17 +204,21 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 	CCommentDialogLst(this,m_file).ShowModal();
 }
 
+
 void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString NewFileName=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
-	m_file->SetFileName(NewFileName);
-	m_file->SavePartFile(); 
-	FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
-	FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
-	
-	CastChild( IDC_FILENAME, wxTextCtrl )->SetValue(m_file->GetFileName());
+	wxString fileName = CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
 
-	Layout();
+	if (!fileName.IsEmpty()) {
+		if (theApp.sharedfiles->RenameFile(m_file, fileName)) {
+			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
+			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
+	
+			CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(m_file->GetFileName());
+	
+			Layout();
+		}
+	}
 }
 
 

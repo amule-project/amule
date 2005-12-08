@@ -451,8 +451,9 @@ class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_Shared
 		//
 		// Actions
 		//
-		void AddFilesFromDirectory(wxString );
+		void AddFilesFromDirectory(wxString);
 		void Reload(bool sendtoserver = true, bool firstload = false);
+		bool RenameFile(CKnownFile* file, const wxString& newName);
 
 		//
 		// template

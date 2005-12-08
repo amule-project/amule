@@ -813,6 +813,7 @@ void CSharedFilesRem::Reload(bool, bool)
 	m_conn->SendPacket(&req);
 }
 
+
 void CSharedFilesRem::AddFilesFromDirectory(wxString path)
 {
 	CECPacket req(EC_OP_SHAREDFILES_ADD_DIRECTORY);
@@ -821,6 +822,25 @@ void CSharedFilesRem::AddFilesFromDirectory(wxString path)
 	
 	m_conn->SendPacket(&req);
 }
+
+
+bool CSharedFilesRem::RenameFile(CKnownFile* file, const wxString& newName)
+{
+	CECPacket request(EC_OP_RENAME_FILE);
+	request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
+	request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
+	const CECPacket *reply = theApp.connect->SendRecvPacket(&request);
+	if (reply) {
+		if (reply->GetOpCode() == EC_OP_NOOP) {
+			file->SetFileName(newName);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 {

@@ -179,6 +179,11 @@ private:
 	 */
 	void	OnRename( wxCommandEvent& event );
 
+	/**
+	 * Checks for renaming via F2.
+	 */
+	void	OnKeyPressed( wxKeyEvent& event );
+
 
 	//! Pointer used to ensure that the menu isn't displayed twice.
 	wxMenu* m_menu;

@@ -55,6 +55,7 @@
 #include "Preferences.h"
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
+#include "SharedFileList.h"		// Needed for CSharedFileList
 
 #include <list>
 
@@ -1094,12 +1095,12 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 			ItemList files = ::GetSelectedItems( this, itFILES );
 			if (files.size() == 1) {	
 				CPartFile* file = (CPartFile*)(*(files.begin()))->value;
-				wxString NewName = ::wxGetTextFromUser(
+				wxString newName = ::wxGetTextFromUser(
 					_("Enter new name for this file:"),
 					_("File rename"), file->GetFileName());
-				if (!NewName.IsEmpty()) {
-					file->SetFileName(NewName);
-					file->SavePartFile();
+				
+				if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+					theApp.sharedfiles->RenameFile(file, newName);
 				}
 			}
 			break;
