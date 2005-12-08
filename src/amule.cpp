@@ -525,6 +525,15 @@ bool CamuleApp::OnInit()
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 
+	// Check for a writable Temp directory
+	wxString testFile = wxFileName::CreateTempFileName(thePrefs::GetTempDir() + wxFileName::GetPathSeparator());
+	if (!testFile.IsEmpty()) {
+		wxRemoveFile(testFile);
+	} else {
+		fputs("FATAL ERROR: Temp directory is read-only!\n", stderr);
+		return false;
+	}
+
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
 		thePrefs::SetMinToTray(false);
