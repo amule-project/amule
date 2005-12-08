@@ -324,14 +324,15 @@ void CPartFile::CreatePartFile()
 	gaplist.AddTail(gap);
 	
 	wxString strPartPath = m_fullname.Left( m_fullname.Length() - 4);
-	if ( !m_hpartfile.Create(strPartPath, true) ) {
+	if (m_hpartfile.Create(strPartPath, true)) {
+		m_hpartfile.Close();
+
+		if(!m_hpartfile.Open(strPartPath, CFile::read_write)) {
+			AddLogLineM(false,_("ERROR: Failed to open partfile)"));
+			SetPartFileStatus(PS_ERROR);
+		}
+	} else {
 		AddLogLineM(false,_("ERROR: Failed to create partfile)"));
-		SetPartFileStatus(PS_ERROR);
-	}
-	// jesh.. luotu. nyt se vaan pitää avata uudestaan read-writeen..
-	m_hpartfile.Close();
-	if(!m_hpartfile.Open(strPartPath,CFile::read_write)) {
-		AddLogLineM(false,_("ERROR: Failed to open partfile)"));
 		SetPartFileStatus(PS_ERROR);
 	}
 
