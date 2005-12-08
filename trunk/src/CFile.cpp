@@ -30,6 +30,7 @@
 #include "CFile.h"				// Interface declarations.
 #include "FileFunctions.h"		// Needed for CheckFileExists
 #include "Preferences.h"		// Needed for thePrefs
+#include "Logger.h"				// Needed for AddDebugLogLineM
 
 #include <unistd.h>				// Needed for close(2)
 #include <cstdio>       		// SEEK_xxx constants
@@ -37,6 +38,7 @@
 #include <errno.h>				// errno
 
 #include <wx/filefn.h>
+#include <wx/log.h>				// Needed for wxSysErrorMsg
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
@@ -128,6 +130,17 @@ enum {
 	#define SEEK_FD(x, y, z)	lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
 #endif
+
+// This macro is used to check if a syscall failed, in that case
+// log an appropriate message containing the errno string.
+#define SYSCALL_CHECK(check, what) \
+	do { \
+		if (!(check)) { \
+			AddDebugLogLineM(true, logCFile, \
+				wxString() << wxT("Error when ") << what << wxT(" (") \
+					<< m_filePath << wxT("): ") << wxSysErrorMsg()); \
+		} \
+	} while (false);
 
 
 CSeekFailureException::CSeekFailureException(const wxString& desc)
@@ -242,6 +255,7 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 	// even if it is not an UTF-8 valid sequence.
 	//
 	
+	
 	// Test if it is possible to use an ANSI name
 	Unicode2CharBuf tmpFileName = unicode2char(fileName);
 	if (tmpFileName) {
@@ -255,6 +269,8 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 	}
 	
 	m_filePath = fileName;
+
+	SYSCALL_CHECK(m_fd != fd_invalid, wxT("opening file"));	
       
     return IsOpened();
 }
@@ -264,10 +280,12 @@ bool CFile::Close()
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot close closed file."));
 
-	int result = close(m_fd);
-	m_fd = fd_invalid;
+	bool closed = (close(m_fd) != -1);
+	SYSCALL_CHECK(closed, wxT("closing file"));
 	
-	return result != wxInvalidOffset;
+	m_fd = fd_invalid;	
+	
+	return closed;
 }
 
 
@@ -275,7 +293,10 @@ bool CFile::Flush()
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
 	
-	return (FLUSH_FD(m_fd) != wxInvalidOffset);
+	bool flushed = (FLUSH_FD(m_fd) != -1);
+	SYSCALL_CHECK(flushed, wxT("flushing file"));
+
+	return flushed;	
 }
 
 
@@ -288,9 +309,9 @@ sint64 CFile::doRead(void* buffer, size_t count) const
 	while (totalRead < count) {
 		int current = ::read(m_fd, (char*)buffer + totalRead, count - totalRead);
 		
-		if (current == wxInvalidOffset) {
+		if (current == -1) {
 			// Read error, nothing we can do other than abort.
-			return wxInvalidOffset;
+			throw CIOFailureException(wxString(wxT("Error reading from file: ")) + wxSysErrorMsg());
 		} else if ((totalRead + current < count) && Eof()) {
 			// We may fail to read the specified count in a couple
 			// of situations: EOF and interrupts. The check for EOF
@@ -309,8 +330,14 @@ sint64 CFile::doWrite(const void* buffer, size_t nCount)
 {
 	MULE_VALIDATE_PARAMS(buffer, wxT("CFile: Invalid buffer in write operation."));
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot write to closed file."));
+
+	sint64 result = ::write(m_fd, buffer, nCount);
 	
-	return ::write(m_fd, buffer, nCount);
+	if (result != (sint64)nCount) {
+		throw CIOFailureException(wxString(wxT("Error writing to file: ")) + wxSysErrorMsg());
+	}
+
+	return result;
 }
 
 
@@ -324,7 +351,7 @@ sint64 CFile::doSeek(sint64 offset) const
 	if (result == offset) {
 		return result;
 	} else if (result == wxInvalidOffset) {
-		throw CSeekFailureException(wxString(wxT("Seeking failed, with errno: ")) << errno);
+		throw CSeekFailureException(wxString(wxT("Seeking failed: ")) + wxSysErrorMsg());
 	} else {
 		throw CSeekFailureException(wxT("Seeking returned incorrect position"));		
 	}
@@ -337,7 +364,7 @@ uint64 CFile::GetPosition() const
 	
 	sint64 pos = TELL_FD(m_fd);
 	if (pos == wxInvalidOffset) {
-		throw CSeekFailureException(wxT("Failed to retrieve position in file."));
+		throw CSeekFailureException(wxString(wxT("Failed to retrieve position in file: ")) + wxSysErrorMsg());
 	}
 	
 	return pos;
@@ -351,12 +378,12 @@ uint64 CFile::GetLength() const
 	sint64 pos = GetPosition();
 	sint64 len = SEEK_FD(m_fd, 0, SEEK_END);
 
-	if (len == wxInvalidOffset) {
-		throw CSeekFailureException(wxT("Failed to retrieve length of file."));
+	if (len == -1) {
+		throw CSeekFailureException(wxString(wxT("Failed to retrieve length of file: ")) + wxSysErrorMsg());
 	}
 
 	if (SEEK_FD(m_fd, pos, SEEK_SET) != pos) {
-		throw CSeekFailureException(wxT("Failed to restore pointer position."));
+		throw CSeekFailureException(wxString(wxT("Failed to restore pointer position: ")) + wxSysErrorMsg());
 	}	
 	
 	return len;
@@ -368,8 +395,13 @@ bool CFile::SetLength(size_t new_len)
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
 
 #ifdef __WXMSW__
-	return chsize(m_fd, new_len);
+	int result = chsize(m_fd, new_len);
 #else
-	return ftruncate(m_fd, new_len);
+	int result = ftruncate(m_fd, new_len);
 #endif
+
+	SYSCALL_CHECK((result != -1), wxT("truncating file"));	
+
+	return (result != -1);
 }
+
