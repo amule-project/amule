@@ -14,10 +14,10 @@ amuleweb_SOURCES =  \
 	php_core_lib.cpp
 
 php_parser.c: php_parser.y
-	bison --debug -t -d -v -o php_parser.c php_parser.y
+	bison --debug -t -d -v -o $@ $<
 
 php_lexer.c: php_lexer.l
-	lex -ophp_lexer.c php_lexer.l
+	lex -o$@ $<
 
 amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/libec_noevt.a
 amuleweb_CFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) -DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" -DECSOCKET_USE_EVENTS=0
