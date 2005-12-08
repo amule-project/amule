@@ -398,7 +398,7 @@ $(srcdir)/Scanner.cpp: Scanner.l Parser.cpp
 		flex --header-file=$(srcdir)/Scanner.h -o $@ $(srcdir)/Scanner.l
 else
 $(srcdir)/Scanner.cpp: Scanner.l Parser.cpp
-		flex -o$@ Scanner.l; \
+		flex -o$@ $(srcdir)/Scanner.l; \
 		cp $(srcdir)/Scanner.h.in $(srcdir)/Scanner.h
 endif
 
