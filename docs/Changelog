@@ -62,6 +62,25 @@ Version 2.1.x - The "???" version
 	ken:
 		* Use the IPFilter when adding and connecting to servers.  Thanks
 		  to MrFaber for reporting the bug.
+		* Along with GonoszTopi, proper location for config files on the Mac
+		* Along with GonoszTopi, better default location of Incoming directory
+		* Mac compilation fixes
+		* Added more keystrokes (Backspace, Numpad Delete) as synonyms for
+		  Cancel in Downloads list
+		* Improvements to internal memory management to protect against leaks
+		  in the face of exceptions
+		* Protect use of mutexes against exceptions
+		* Enabled language translation support for the Mac binary
+		* Don't show the 'x' close buttons on the search results tabs on the
+		  Mac, since they are non-functional and confusing
+		* Maintain the functionality of control-clicks (right-clicks) on tabs
+		  for search results and categories in the face of wxMac changes
+		* Helped avoid endianess problems with Kad
+		* Fixed handling of empty seeds files
+		* Fixed crashes involving CSharedFileList.  Special thanks to lionel77
+		  for truly heroic debugging efforts.
+		* Fixed a crash in amuleweb when the template isn't found
+		* Contributed to improvements in the new CTimer class
 
 	Kry:
 		* Fixed a bug with iterator usage in SearchManager.cpp
