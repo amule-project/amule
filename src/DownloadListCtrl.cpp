@@ -963,7 +963,9 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 			_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_WS,
 			_("Copy feedback to clipboard"));
-	
+		//-----------------------------------------------------
+		m_menu->AppendSeparator();
+		//-----------------------------------------------------	
 		// Add dinamic entries
 		wxMenu *cats = new wxMenu(_("Category"));
 		if (theApp.glob_prefs->GetCatCount() > 1) {
