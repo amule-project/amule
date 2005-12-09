@@ -2812,7 +2812,6 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
 wxSizer *prefs_main_sizer;
 wxSizer *prefs_sizer;
-wxSizer *prefs_list_sizer;
 wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
@@ -2823,29 +2822,24 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->AddGrowableRow( 0 );
     prefs_sizer = item1;
 
-    wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
-    prefs_list_sizer = item2;
-
-    wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item2->Add( item3, 0, wxGROW|wxALL, 5 );
-
-    item1->Add( item2, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxListCtrl *item2 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    item1->Add( item2, 0, wxGROW|wxALL, 5 );
 
     item0->Add( item1, 1, wxADJUST_MINSIZE|wxGROW|wxALL, 0 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxHORIZONTAL );
+    wxStaticBox *item4 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item3 = new wxStaticBoxSizer( item4, wxHORIZONTAL );
 
-    wxButton *item6 = new wxButton( parent, ID_PREFS_OK_TOP, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetDefault();
-    item6->SetToolTip( _("Click here to apply any changes made to the preferences.") );
-    item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item5 = new wxButton( parent, ID_PREFS_OK_TOP, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetDefault();
+    item5->SetToolTip( _("Click here to apply any changes made to the preferences.") );
+    item3->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item7 = new wxButton( parent, ID_PREFS_CANCEL_TOP, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetToolTip( _("Reset any changes made to the preferences.") );
-    item4->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item6 = new wxButton( parent, ID_PREFS_CANCEL_TOP, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    item6->SetToolTip( _("Reset any changes made to the preferences.") );
+    item3->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item0->Add( item3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
     if (set_sizer)
     {

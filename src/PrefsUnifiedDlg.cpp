@@ -202,7 +202,8 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	
 	// Set list-width so that there arn't any scrollers
 	PrefsIcons->SetColumnWidth( 0, wxLIST_AUTOSIZE );
-	prefs_list_sizer->SetMinSize( PrefsIcons->GetColumnWidth( 0 ) + 10, 0 );
+	PrefsIcons->SetMinSize(wxSize(PrefsIcons->GetColumnWidth( 0 ) + 10, -1));
+	PrefsIcons->SetMaxSize(wxSize(PrefsIcons->GetColumnWidth( 0 ) + 10, -1));
 
 	// Now add the pages and calculate the minimum size	
 	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
