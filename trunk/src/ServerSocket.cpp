@@ -160,7 +160,6 @@ CServerSocket::~CServerSocket()
 
 void CServerSocket::OnConnect(wxSocketError nErrorCode)
 {
-	CALL_APP_DATA_LOCK;
 	switch (nErrorCode) {
 		case wxSOCKET_NOERROR:
 			if (cur_server->HasDynIP()) {
@@ -612,7 +611,6 @@ void CServerSocket::OnError(wxSocketError nErrorCode)
 
 bool CServerSocket::PacketReceived(CPacket* packet)
 {
-	CALL_APP_DATA_LOCK;
 	AddDebugLogLineM(false, logServer, wxString::Format(wxT("Server: Packet Received: Prot %x, Opcode %x, Length %u"), packet->GetProtocol(), packet->GetOpCode(), packet->GetPacketSize()));
 	
 	if (packet->GetProtocol() == OP_PACKEDPROT) {
@@ -691,3 +689,4 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
+

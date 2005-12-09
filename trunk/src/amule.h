@@ -390,16 +390,11 @@ public:
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
-	wxMutex data_mutex;
-
 	DECLARE_EVENT_TABLE()
 
 	wxAppTraits *CreateTraits();
 
 };
-
-//#define CALL_APP_DATA_LOCK wxMutexLocker locker(theApp.data_mutex)
-#define CALL_APP_DATA_LOCK
 
 DECLARE_APP(CamuleDaemonApp)
 
