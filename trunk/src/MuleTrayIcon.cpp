@@ -180,10 +180,12 @@ void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 
-void  CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event)){
-	wxCloseEvent SendCloseEvent;
-	theApp.amuledlg->OnClose(SendCloseEvent);
+
+void CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event))
+{
+	theApp.amuledlg->Close();
 }
+
 
 CMuleTrayIcon::CMuleTrayIcon()
 {
