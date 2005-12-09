@@ -871,11 +871,7 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 
 void PrefsUnifiedDlg::OnToolTipDelayChange(wxSpinEvent& event)
 {
-#ifdef __WXGTK__
 	wxToolTip::SetDelay( event.GetPosition() * 1000 );
-#else
-	#warning NO TOOLTIPS FOR NON-GTK!
-#endif
 }
 
 
