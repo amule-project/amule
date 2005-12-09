@@ -225,19 +225,23 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		m_menu->Append( 0, _("Select View"), view );
 		
 		m_menu->Enable( MP_DETAIL,		index > -1 );
-		m_menu->Enable( MP_ADDFRIEND,	index > -1 );
 		m_menu->Enable( MP_SHOWLIST,	index > -1 );
 		m_menu->Enable( MP_SENDMESSAGE,	index > -1 );
 		
+		
 		bool banned = false;
+		bool canAddFriend = false;
 
 		// Check if the client is banned
 		if ( index > -1 ) {
 			CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 
 			banned = client->IsBanned();
+			canAddFriend = client->GetIP();
 		}
+		
 		m_menu->Enable( MP_UNBAN, 		banned );		
+		m_menu->Enable( MP_ADDFRIEND,	canAddFriend );
 
 		PopupMenu( m_menu, event.GetPosition() );
 		
