@@ -182,7 +182,7 @@ bool CFile::IsOpened() const
 
 const wxString& CFile::GetFilePath() const
 {
-	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path when no file is open."));
+	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path of closed file."));
 
 	return m_filePath;
 }
