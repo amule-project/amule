@@ -51,16 +51,17 @@ class PrefsUnifiedDlg : public wxDialog
 {
 public:
 	/**
-	 * This functions creates a new dialog if no other exists.
-	 * 
-	 * @param The parent of the new dialog.
+	 * Constructor.
 	 *
-	 * This function is needed since we dont want to have more than
-	 * one preference-dialog at a time. Thus if a preference-dialog
-	 * already exists, this function returns NULL;
+	 * @param parent The parent window.
+	 *
+	 * This constructor is a much more simple version of the wxDialog one,
+	 * which only needs to know the parent of the dialog. Please note that 
+	 * it is private so that we can ensure that only one dialog has been 
+	 * created at one time.
 	 */
-	static PrefsUnifiedDlg* NewPrefsDialog(wxWindow* parent);
-
+	PrefsUnifiedDlg(wxWindow* parent);
+	
 	/**
 	 * Updates the widgets with the values of the preference-variables.
 	 */
@@ -73,26 +74,9 @@ public:
 
 protected:
 	/**
-	 * Constructor.
-	 *
-	 * @param parent The parent window.
-	 *
-	 * This constructor is a much more simple version of the wxDialog one,
-	 * which only needs to know the parent of the dialog. Please note that 
-	 * it is private so that we can ensure that only one dialog has been 
-	 * created at one time.
-	 */
-	PrefsUnifiedDlg(wxWindow* parent);
-
-	/**
 	 * Closes the dialog and handles any tasks that must be performed.
 	 */
 	void ClosePreferences();
-	
-	
-	//! Contains the ID of the current window or zero if no preferences window has been created.
-	static int	s_ID;
-
 	
 	/**
 	 * Helper functions which checks if a Cfg has has changed.
