@@ -144,8 +144,7 @@ wxSizer *serverListDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxSplitterWindow *item1 = new wxSplitterWindow( parent, ID_SRV_SPLITTER, wxDefaultPosition, wxSize(200,160), wxSP_LIVE_UPDATE );
-    item1->SetMinimumPaneSize( 120 );
+    wxSplitterWindow *item1 = new wxSplitterWindow( parent, ID_SRV_SPLITTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
     wxPanel *item2 = new wxPanel( item1, -1 );
     NetDialog( item2, FALSE, TRUE );
     wxPanel *item3 = new wxPanel( item1, -1 );
@@ -472,7 +471,7 @@ wxSizer *transferBottomPane( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CClientListCtrl *item7 = new CClientListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxSUNKEN_BORDER );
+    CClientListCtrl *item7 = new CClientListCtrl( parent, ID_CLIENTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
@@ -927,7 +926,7 @@ wxSizer *commentLstDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    CMuleListCtrl *item1 = new CMuleListCtrl( parent, IDC_LST, wxDefaultPosition, wxSize(600,270), wxLC_REPORT|wxSUNKEN_BORDER );
+    CMuleListCtrl *item1 = new CMuleListCtrl( parent, IDC_LST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxFlexGridSizer *item2 = new wxFlexGridSizer( 1, 0, 0, 0 );
@@ -2827,7 +2826,7 @@ wxSizer *preferencesDlgTop( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item2 = new wxBoxSizer( wxVERTICAL );
     prefs_list_sizer = item2;
 
-    wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxSize(150,320), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    wxListCtrl *item3 = new wxListCtrl( parent, ID_PREFSLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
     item2->Add( item3, 0, wxGROW|wxALL, 5 );
 
     item1->Add( item2, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -3088,9 +3087,9 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item8 = new wxStaticText( parent, ID_TEXT, _("IP:Port"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxSize(150,-1), 0 );
+    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_IPADDRESS, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
     item9->SetToolTip( _("Enter the IP of the server here, using the x.x.x.x format.") );
-    item5->Add( item9, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    item5->Add( item9, 1, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxStaticText *item10 = new wxStaticText( parent, ID_TEXT, _(":"), wxDefaultPosition, wxDefaultSize, 0 );
     item5->Add( item10, 0, wxALIGN_CENTER, 5 );
@@ -3103,7 +3102,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item12->SetToolTip( _("Add manually a server (fill fields to the left before) ...") );
     item5->Add( item12, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxStaticLine *item13 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    wxStaticLine *item13 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
     item5->Add( item13, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
     wxButton *item14 = new wxButton( parent, IDC_ED2KDISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -3112,7 +3111,7 @@ wxSizer *serverListDlgUp( wxWindow *parent, bool call_fit, bool set_sizer )
     item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     CServerListCtrl *item15 = new CServerListCtrl( parent, ID_SERVERLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
-    item0->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item15, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -3373,7 +3372,7 @@ wxSizer *ED2K_Info( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxListCtrl *item4 = new wxListCtrl( parent, ID_ED2KINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    wxListCtrl *item4 = new wxListCtrl( parent, ID_ED2KINFO, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
@@ -3911,7 +3910,7 @@ wxSizer *convertDlg( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CConvertListCtrl *item7 = new CConvertListCtrl( parent, IDC_JOBLIST, wxDefaultPosition, wxSize(500,180), wxLC_REPORT|wxSUNKEN_BORDER );
+    CConvertListCtrl *item7 = new CConvertListCtrl( parent, IDC_JOBLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER );
     item0->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxFlexGridSizer *item8 = new wxFlexGridSizer( 4, 0, 0 );
@@ -3956,7 +3955,7 @@ wxSizer *Kad_Info( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxListCtrl *item4 = new wxListCtrl( parent, ID_KADINFO, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
+    wxListCtrl *item4 = new wxListCtrl( parent, ID_KADINFO, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_NO_HEADER|wxSUNKEN_BORDER );
     item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
@@ -3975,7 +3974,7 @@ wxSizer *NetDialog( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
     netSizer = item0;
 
-    wxNotebook *item2 = new wxNotebook( parent, ID_NETNOTEBOOK, wxDefaultPosition, wxSize(200,160), 0 );
+    wxNotebook *item2 = new wxNotebook( parent, ID_NETNOTEBOOK, wxDefaultPosition, wxDefaultSize, 0 );
 #if !wxCHECK_VERSION(2,5,2)
     wxNotebookSizer *item1 = new wxNotebookSizer( item2 );
 #else

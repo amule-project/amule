@@ -69,6 +69,7 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 	serverlistctrl = CastChild( ID_SERVERLIST, CServerListCtrl );
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
+	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
 	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://www.gruk.org/server.met.gz"));
 
 	// Insert two columns, currently without a header
@@ -255,7 +256,9 @@ void CServerWnd::UpdateKadInfo()
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
-	theApp.amuledlg->srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
+	if (theApp.amuledlg) {
+		theApp.amuledlg->srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
+	}
 }
 
 void CServerWnd::OnBnClickedED2KDisconnect(wxCommandEvent& WXUNUSED(evt))
