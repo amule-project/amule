@@ -490,25 +490,34 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 						|| (Kademlia::CKademlia::isRunning())
 						#endif
 						;	
-
-	if (disconnect && thePrefs::GetNetworkED2K()) {
-		//disconnect if currently connected
-		if (theApp.serverconnect->IsConnecting()) {
-			theApp.serverconnect->StopConnectionTry();
-		} else {
-			theApp.serverconnect->Disconnect();
+	if (thePrefs::GetNetworkED2K()) {
+		if (disconnect) {
+			//disconnect if currently connected
+			if (theApp.serverconnect->IsConnecting()) {
+				theApp.serverconnect->StopConnectionTry();
+			} else {
+				theApp.serverconnect->Disconnect();
+			}
+		} else {		
+			//connect if not currently connected
+			AddLogLine(true, _("Connecting"));
+			theApp.serverconnect->ConnectToAnyServer();
 		}
-	} else {		
-		//connect if not currently connected
-		AddLogLine(true, _("Connecting"));
-		theApp.serverconnect->ConnectToAnyServer();
+	} else {
+		wxASSERT(!theApp.IsConnectedED2K());
 	}
 
 	// Connect Kad also
-	if( disconnect && thePrefs::GetNetworkKademlia()) {
-		theApp.StopKad();
+	if (thePrefs::GetNetworkKademlia()) {
+		if( disconnect ) {
+			theApp.StopKad();
+		} else {
+			theApp.StartKad();
+		}
 	} else {
-		theApp.StartKad();
+		#ifndef CLIENT_GUI
+			wxASSERT(!Kademlia::CKademlia::isRunning());
+		#endif
 	}
 
 }
