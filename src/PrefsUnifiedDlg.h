@@ -74,11 +74,6 @@ public:
 
 protected:
 	/**
-	 * Closes the dialog and handles any tasks that must be performed.
-	 */
-	void ClosePreferences();
-	
-	/**
 	 * Helper functions which checks if a Cfg has has changed.
 	 */
 	bool			CfgChanged(int id);

@@ -276,20 +276,6 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 }
 
 
-void PrefsUnifiedDlg::ClosePreferences()
-{
-	// Un-Connect the Cfgs
-	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
-	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
-		// Checking for failures
-		it->second->ConnectToWidget( 0 );
-	}
-
-	// Hide the dialog since Destroy isn't instant
-	Show(false);
-}
-
-
 Cfg_Base* PrefsUnifiedDlg::GetCfg(int id)
 {
 	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.find( id );
@@ -561,20 +547,25 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.StopKad();
 	}	
 	
-	ClosePreferences();
+	Show(false);
 }
 
 
 void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 {
-	ClosePreferences();
-
 	// Try to keep the window alive when possible
 	if (event.CanVeto()) {
 		event.Veto();
 	} else {
 		if (theApp.amuledlg) {
 			theApp.amuledlg->prefs_dialog = NULL;
+		}
+	
+		// Un-Connect the Cfgs
+		thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
+		for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
+			// Checking for failures
+			it->second->ConnectToWidget( 0 );
 		}
 		
 		Destroy();
@@ -584,7 +575,7 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 
 void PrefsUnifiedDlg::OnCancel(wxCommandEvent& WXUNUSED(event))
 {
-	ClosePreferences();
+	Show(false);
 }
 
 
