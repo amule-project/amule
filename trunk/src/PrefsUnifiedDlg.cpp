@@ -553,6 +553,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 {
+	Show(false);
+	
 	// Try to keep the window alive when possible
 	if (event.CanVeto()) {
 		event.Veto();
