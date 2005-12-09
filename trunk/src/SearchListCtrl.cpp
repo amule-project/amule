@@ -57,7 +57,6 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_COL_END_DRAG( -1,    CSearchListCtrl::OnColumnResize)
 
 	EVT_MENU( MP_GETED2KLINK,     CSearchListCtrl::OnPopupGetUrl)
-	EVT_MENU( MP_GETHTMLED2KLINK, CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
@@ -492,12 +491,10 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		menu.AppendSeparator();
 		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
-		menu.Append(MP_GETHTMLED2KLINK, _("Copy ED2k link to clipboard (HTML)"));
 
 		// These should only be enabled for single-selections
 		bool enable = GetSelectedItemCount();
 		menu.Enable(MP_GETED2KLINK, enable);
-		menu.Enable(MP_GETHTMLED2KLINK, enable);
 		menu.Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1));
 
 		PopupMenu(&menu, event.GetPoint());
@@ -531,18 +528,14 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& event )
 	while( index != -1 ) {
 		CSearchFile* file = (CSearchFile*)GetItemData( index );
 
-		switch ( event.GetId() ) {
-			case MP_GETED2KLINK:				URIs += theApp.CreateED2kLink( file ) + wxT("\n");					break;
-			case MP_GETHTMLED2KLINK:			URIs += theApp.CreateHTMLED2kLink( file ) + wxT("\n");				break;
-		}
+		URIs += theApp.CreateED2kLink( file ) + wxT("\n");
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
-	if ( !URIs.IsEmpty() ) {	
+	if ( !URIs.IsEmpty() ) {
 		theApp.CopyTextToClipboard( URIs.RemoveLast() );
 	}
-	
 }
 
 

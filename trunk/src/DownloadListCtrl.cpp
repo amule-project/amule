@@ -127,7 +127,6 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 	EVT_MENU( MP_CLEARCOMPLETED,		CDownloadListCtrl::OnClearCompleted )
 
 	EVT_MENU( MP_GETED2KLINK,		CDownloadListCtrl::OnGetED2KLink )
-	EVT_MENU( MP_GETHTMLED2KLINK,		CDownloadListCtrl::OnGetED2KLink )
 
 	EVT_MENU( MP_METINFO,			CDownloadListCtrl::OnViewFileInfo )
 	EVT_MENU( MP_VIEW,			CDownloadListCtrl::OnPreviewFile )
@@ -716,15 +715,7 @@ void CDownloadListCtrl::OnGetED2KLink( wxCommandEvent& event )
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (CPartFile*)(*it)->value;
 
-		switch ( event.GetId() ) {	
-		case MP_GETED2KLINK:
-			URIs += theApp.CreateED2kLink( file ) + wxT("\n");
-			break;
-			
-		case MP_GETHTMLED2KLINK:
-			URIs += theApp.CreateHTMLED2kLink( file ) + wxT("\n");
-			break;
-		}
+		URIs += theApp.CreateED2kLink( file ) + wxT("\n");
 	}
 
 	if ( !URIs.IsEmpty() ) {
@@ -970,8 +961,6 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		//-----------------------------------------------------
 		m_menu->Append(MP_GETED2KLINK,
 			_("Copy ED2k &link to clipboard"));
-		m_menu->Append(MP_GETHTMLED2KLINK,
-			_("Copy ED2k link to clipboard (&HTML)"));
 		m_menu->Append(MP_WS,
 			_("Copy feedback to clipboard"));
 	

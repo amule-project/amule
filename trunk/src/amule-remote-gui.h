@@ -606,7 +606,6 @@ public:
 
 	uint32 GetPublicIP();
 	wxString CreateED2kLink(const CAbstractFile* f);
-	wxString CreateHTMLED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
 	wxString CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
