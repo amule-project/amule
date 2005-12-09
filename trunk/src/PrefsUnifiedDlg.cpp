@@ -134,10 +134,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 END_EVENT_TABLE()
 
 
-// Static vars
-int PrefsUnifiedDlg::s_ID;
-
-
 /**
  * This struct provides a general way to represent config-tabs.
  */
@@ -178,24 +174,11 @@ PrefsPage pages[] =
 };
 
 
-PrefsUnifiedDlg *PrefsUnifiedDlg::NewPrefsDialog(wxWindow *parent)
-{
-	// Do not allow multiple dialogs
-	if ( s_ID ) {
-		return NULL;
-	}
-
-	return new PrefsUnifiedDlg( parent );
-}
-
-
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 :
 wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	s_ID = GetId();
-
 	preferencesDlgTop( this, FALSE );
 	
 	wxListCtrl* PrefsIcons = CastChild( ID_PREFSLISTCTRL, wxListCtrl );
@@ -301,10 +284,6 @@ void PrefsUnifiedDlg::ClosePreferences()
 		// Checking for failures
 		it->second->ConnectToWidget( 0 );
 	}
-
-	// Final actions:
-	// Reset the ID so that a new dialog can be created
-	s_ID = 0;
 
 	// Hide the dialog since Destroy isn't instant
 	Show(false);
@@ -586,9 +565,20 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 }
 
 
-void PrefsUnifiedDlg::OnClose(wxCloseEvent& WXUNUSED(event))
+void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 {
 	ClosePreferences();
+
+	// Try to keep the window alive when possible
+	if (event.CanVeto()) {
+		event.Veto();
+	} else {
+		if (theApp.amuledlg) {
+			theApp.amuledlg->prefs_dialog = NULL;
+		}
+		
+		Destroy();
+	}
 }
 
 

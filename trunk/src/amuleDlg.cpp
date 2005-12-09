@@ -443,22 +443,18 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
-	if ( is_safe_state ) {
-		// Try to create a new dialog-window
-		if (!prefs_dialog) {
-			prefs_dialog = PrefsUnifiedDlg::NewPrefsDialog( this );
-	
-			// Check if a dialog was created and show it
-			if ( prefs_dialog ) {
-				prefs_dialog->TransferToWindow();
-				if (prefs_dialog->ShowModal() == wxOK){
-					#ifdef CLIENT_GUI
-					theApp.glob_prefs->SendToRemote();
-					#endif
-				}
-				
-				prefs_dialog->Destroy();
-				prefs_dialog = NULL;
+	if (is_safe_state) {
+		if (prefs_dialog) {
+			prefs_dialog->Show(true);
+			prefs_dialog->Raise();
+		} else {
+			prefs_dialog = new PrefsUnifiedDlg(this);
+			
+			prefs_dialog->TransferToWindow();
+			if (prefs_dialog->ShowModal() == wxOK){
+				#ifdef CLIENT_GUI
+				theApp.glob_prefs->SendToRemote();
+				#endif
 			}
 		}
 	}
