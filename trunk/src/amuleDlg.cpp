@@ -145,8 +145,9 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
 	
 	last_iconizing = 0;
-	prefs_dialog = NULL;
-
+	m_prefsDialog = NULL;
+	m_prefsVisible = false;
+	
 	m_wndTaskbarNotifier = NULL;
 
 	wxInitAllImageHandlers();
@@ -444,14 +445,14 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if (is_safe_state) {
-		if (prefs_dialog) {
-			prefs_dialog->Show(true);
-			prefs_dialog->Raise();
+		if (m_prefsDialog) {
+			m_prefsDialog->Show(true);
+			m_prefsDialog->Raise();
 		} else {
-			prefs_dialog = new PrefsUnifiedDlg(this);
+			m_prefsDialog = new PrefsUnifiedDlg(this);
 			
-			prefs_dialog->TransferToWindow();
-			if (prefs_dialog->ShowModal() == wxOK){
+			m_prefsDialog->TransferToWindow();
+			if (m_prefsDialog->ShowModal() == wxOK){
 				#ifdef CLIENT_GUI
 				theApp.glob_prefs->SendToRemote();
 				#endif
@@ -941,16 +942,17 @@ bool CamuleDlg::SaveGUIPrefs()
 }
 
 
-//hides amule
 void CamuleDlg::Hide_aMule(bool iconize)
 {
 	if (IsShown() && ((last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
-	//	is_hidden = true;
 		last_iconizing = GetTickCount();
 
-		if (prefs_dialog) {
-			prefs_dialog->Iconize(true);;
-			prefs_dialog->Show(false);
+		if (m_prefsDialog and m_prefsDialog->IsShown()) {
+			m_prefsVisible = true;
+			m_prefsDialog->Iconize(true);;
+			m_prefsDialog->Show(false);
+		} else {
+			m_prefsVisible = false;
 		}
 		
 		if (iconize) {
@@ -963,25 +965,21 @@ void CamuleDlg::Hide_aMule(bool iconize)
 }
 
 
-//shows amule
 void CamuleDlg::Show_aMule(bool uniconize)
 {
 	if (!IsShown() && ((last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
-	//	is_hidden = false;
 		last_iconizing = GetTickCount();
+	
+		if (m_prefsDialog && m_prefsVisible) {
+			m_prefsDialog->Show(true);
+			m_prefsDialog->Raise();
+		}
 		
 		if (uniconize) {
 			Show(TRUE);
 			Raise();
 		}
-		
-		if (prefs_dialog) {
-			prefs_dialog->Show(true);
-			prefs_dialog->Raise();
-		}
-	
 	}
-
 }
 
 

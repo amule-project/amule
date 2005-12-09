@@ -167,7 +167,6 @@ public:
 	void StartGuiTimer() { gui_timer->Start(100); }
 	void StopGuiTimer() { gui_timer->Stop(); }
 	
-	PrefsUnifiedDlg* prefs_dialog;
 
 	/**
 	 * This function ensures that _all_ list widgets are properly sorted.
@@ -178,6 +177,8 @@ public:
 	
 	void Create_Toolbar(wxString skinfile, bool orientation);
 	
+	//! Pointer to the current preference dialog, if any.
+	PrefsUnifiedDlg* m_prefsDialog;
 protected:
 	
 	void OnToolBarButton(wxCommandEvent& ev);
@@ -195,6 +196,8 @@ protected:
 	void OnExit(wxCommandEvent& evt);
 
 private:
+	//! Specifies if the prefs-dialog was shown before minimizing.
+	bool m_prefsVisible;
 
 	wxToolBar*	m_wndToolbar;
 	bool		LoadGUIPrefs(bool override_pos, bool override_size); 
@@ -214,7 +217,6 @@ private:
 	
 	int m_CurrentBlinkBitmap;
 
-	//bool is_hidden;
 
 	uint32 last_iconizing;
 
