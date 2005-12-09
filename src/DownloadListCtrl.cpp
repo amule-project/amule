@@ -1215,7 +1215,8 @@ void CDownloadListCtrl::OnDrawItem(
 		const bool hasNext = notLast &&
 			((CtrlItem_Struct*)GetItemData(item + 1))->type != FILE_TYPE;
 		const bool isOpenRoot = content->type == FILE_TYPE &&
-			((CPartFile*)content->value)->ShowSources();
+			((CPartFile*)content->value)->ShowSources() &&
+			(((CPartFile*)content->value)->GetStatus() != PS_COMPLETE);
 		const bool isChild = content->type != FILE_TYPE;
 
 		// Might as well calculate these now
