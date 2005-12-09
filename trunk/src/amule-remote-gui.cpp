@@ -140,15 +140,11 @@ IMPLEMENT_APP(CamuleRemoteGuiApp)
 
 int CamuleRemoteGuiApp::OnExit()
 {
-	if (poll_timer) {
-		// Stop the Core Timer
-		delete poll_timer;
-	}
-	if (amuledlg) {
-		amuledlg->StopGuiTimer();
-	}
+	StopTickTimer();
+	
 	return wxApp::OnExit();
 }
+
 
 void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
@@ -200,12 +196,20 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
 }
 
-void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt)) {
+
+void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
+{
+	// Stop the Core Timer
+	delete poll_timer;
+	poll_timer = NULL;
+	
 	if (amuledlg) {
+		amuledlg->DlgShutDown();
 		amuledlg->Destroy();
+		amuledlg = NULL;
 	}
-	StopTickTimer();
 }
+
 
 bool CamuleRemoteGuiApp::OnInit()
 {
