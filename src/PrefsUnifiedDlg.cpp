@@ -560,7 +560,7 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 		event.Veto();
 	} else {
 		if (theApp.amuledlg) {
-			theApp.amuledlg->prefs_dialog = NULL;
+			theApp.amuledlg->m_prefsDialog = NULL;
 		}
 	
 		// Un-Connect the Cfgs
