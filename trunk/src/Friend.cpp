@@ -51,7 +51,13 @@ CFriend::CFriend( const CMD4Hash& userhash, uint32 tm_dwLastSeen, uint32 tm_dwLa
 	m_nLastUsedPort = tm_nLastUsedPort;
 	m_dwLastChatted = tm_dwLastChatted;
 	m_UserHash = userhash;
-	m_strName = tm_strName;
+
+	if (tm_strName.IsEmpty()) {
+		m_strName = wxT("?");
+	} else {
+		m_strName = tm_strName;
+	}	
+	
 	m_LinkedClient = NULL;
 }
 

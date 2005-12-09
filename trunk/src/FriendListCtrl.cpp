@@ -63,9 +63,16 @@ BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 END_EVENT_TABLE()
 
 
-CDlgFriend::CDlgFriend(const CMD4Hash& hash, const wxString& name, uint32 ip, uint16 port, bool IsLinked, bool HasFriendSlot) {
+CDlgFriend::CDlgFriend(const CMD4Hash& hash, const wxString& name, uint32 ip, uint16 port, bool IsLinked, bool HasFriendSlot)
+{
 	m_hash = hash;
-	m_name = name;
+
+	if (name.IsEmpty()) {
+		m_name = wxT("?");
+	} else {
+		m_name = name;
+	}
+	
 	m_ip = ip;
 	m_port = port;
 	islinked = IsLinked;
