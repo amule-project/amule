@@ -240,7 +240,9 @@ char* CPacket::GetUDPHeader() {
 	return head;
 }
 
-void CPacket::PackPacket() {
+
+void CPacket::PackPacket()
+{
 	wxASSERT(!m_bSplitted);
 
 	uLongf newsize = size + 300;
@@ -253,7 +255,12 @@ void CPacket::PackPacket() {
 		return;
 	}
 
-	prot = OP_PACKEDPROT;
+	if (prot == OP_KADEMLIAHEADER) {
+		prot = OP_KADEMLIAPACKEDPROT;
+	} else {
+		prot = OP_PACKEDPROT;
+	}
+	
 	memcpy(pBuffer, output, newsize);
 	delete[] output;
 	m_bPacked = true;
