@@ -962,15 +962,6 @@ wxString CamuleApp::CreateED2kHostnameSourceLink(const CAbstractFile* f)
 	return strURL;
 }
 
-// Creates a ED2k hyperlink
-wxString CamuleApp::CreateHTMLED2kLink(const CAbstractFile* f)
-{
-	wxString strCode = wxT("<a href=\"") + 
-		CreateED2kLink(f) + wxT("\">") + 
-		CleanupFilename(f->GetFileName(), true) + wxT("</a>");
-	return strCode;
-}
-
 
 /* Original implementation by Bouc7 of the eMule Project.
    aMule Signature idea was designed by BigBob and implemented

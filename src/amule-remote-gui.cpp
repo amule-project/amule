@@ -404,14 +404,6 @@ wxString CamuleRemoteGuiApp::CreateED2kHostnameSourceLink(CAbstractFile const *)
 	return wxEmptyString;
 }
 
-wxString CamuleRemoteGuiApp::CreateHTMLED2kLink(CAbstractFile const*f)
-{
-	wxString strCode = wxT("<a href=\"") + 
-		CreateED2kLink(f) + wxT("\">") + 
-		CleanupFilename(f->GetFileName(), true) + wxT("</a>");
-	return strCode;
-}
-
 wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
 {
 	return wxEmptyString;
