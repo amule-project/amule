@@ -9,7 +9,7 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src
 LDADD = $(WX_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest StringFunctionsTest FileFunctionsTest NetworkFunctionsTest FileDataIOTest
+TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -30,10 +30,10 @@ StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/com
 StringFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
 StringFunctionsTest_LDADD = $(LDADD)
 
-# Tests for the various string functions.
-FileFunctionsTest_SOURCES = FileFunctionsTest.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/CryptoPP.cpp
-FileFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
-FileFunctionsTest_LDADD = $(LDADD)
+# Tests for the various file functions.
+#FileFunctionsTest_SOURCES = FileFunctionsTest.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/CryptoPP.cpp
+#FileFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
+#FileFunctionsTest_LDADD = $(LDADD)
 
 # Tests for the various network functions.
 NetworkFunctionsTest_SOURCES = NetworkFunctionsTest.cpp $(top_srcdir)/src/NetworkFunctions.cpp
