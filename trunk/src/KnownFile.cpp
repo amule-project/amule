@@ -232,8 +232,9 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 	taglist.Add(pTag);
 }
 
-void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
-	#ifndef CLIENT_GUI
+#ifndef CLIENT_GUI
+void CAbstractFile::AddNote(Kademlia::CEntry *pEntry)
+{
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
@@ -243,8 +244,12 @@ void CAbstractFile::AddNote(Kademlia::CEntry* pEntry) {
 		}
 	}
 	m_kadNotes.push_front(pEntry);
-	#endif
 }
+#else
+void CAbstractFile::AddNote(Kademlia::CEntry *)
+{
+}
+#endif
 
 
 /* Known File */
