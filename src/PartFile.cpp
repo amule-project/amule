@@ -1148,7 +1148,7 @@ void CPartFile::LoadSourceSeeds()
 		if (!file.Eof()) {
 	
 			// v2: Added to keep track of too old seeds 
-			uint32 time = file.ReadUInt32();
+			time_t time = (time_t)file.ReadUInt32();
 	
 			// Time frame is 2 hours. More than enough to compile
 			// your new aMule version!.
