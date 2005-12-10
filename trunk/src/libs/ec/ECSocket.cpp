@@ -451,7 +451,8 @@ wxString CECSocket::GetErrorMsg(wxSocketError code)
 		case wxSOCKET_MEMERR:
 			return wxT("Memory exhausted");
 		case wxSOCKET_DUMMY:
-			return wxT("Dummy code - should not happen");
+			// abusing this error code for our purposes
+			return wxT("Data error");
 	}
 	return wxString::Format(wxT("Error code 0x%08x unknown"), code);
 }
@@ -992,6 +993,8 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 					}
 				} else {
 					ShowZError(zerror, &m_z);
+					m_lastError = wxSOCKET_DUMMY;
+					OnError();
 					return false;
 				}
 			}
@@ -1046,6 +1049,8 @@ bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 			int zerror = deflate(&m_z, Z_NO_FLUSH);
 			if ( zerror != Z_OK ) {
 				ShowZError(zerror, &m_z);
+				m_lastError = wxSOCKET_DUMMY;
+				OnError();
 				return false;
 			}
 			if (!m_z.avail_out) {
@@ -1107,6 +1112,8 @@ bool CECSocket::FlushBuffers()
 		if (zerror == Z_STREAM_END) return true;
 		else {
 			ShowZError(zerror, &m_z);
+			m_lastError = wxSOCKET_DUMMY;
+			OnError();
 			return false;
 		}
 	} else {
