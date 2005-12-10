@@ -236,68 +236,53 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 }
 
 
+struct SFindBestPF
+{
+	void operator()(CPartFile* file) {
+		// Check if we should filter out other categories
+		if ((m_category != -1) and (file->GetCategory() != m_category)) {
+			return;
+		} else if (file->GetStatus() != PS_PAUSED) {
+			return;
+		}
+	
+		if (!m_result or (file->GetDownPriority() > m_result->GetDownPriority())) {
+			m_result = file;				
+		}
+	}
+
+	//! The category to look for, or -1 if any category is good
+	int m_category;
+	//! If any acceptable files are found, this variable store their pointer
+	CPartFile* m_result;
+};
+
+
 void CDownloadQueue::StartNextFile(CPartFile* oldfile)
 {
 	if ( thePrefs::StartNextFile() ) {
-		CPartFile* tFile = NULL;
-
+		SFindBestPF visitor = { -1, NULL };
+		
 		{
 			wxMutexLocker lock(m_mutex);
 			
-			for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-				CPartFile* file = m_filelist[i];
-			
-				if ( file->GetStatus() == PS_PAUSED ) {
-					if ( !tFile || file->GetDownPriority() > tFile->GetDownPriority() ) {
-						if (tFile && thePrefs::StartNextFileSame()) {
-							if (tFile->GetCategory() == oldfile->GetCategory()) {
-								// Already found a file for this category
-								if (file->GetCategory() == oldfile->GetCategory()) {
-									// But the new one is also for this category
-									if (file->GetDownPriority() > tFile->GetDownPriority()) {
-										// So, higher prio?
-										tFile = file;
-									} else {
-										; // Lower prio, ignore this file.
-									}
-								} else {
-									; // It's not from the same category, so nothing
-								}
-							} else {
-								// Found no file yet with the same category
-								if (file->GetDownPriority() > tFile->GetDownPriority()) {
-									// So, higher prio?
-									tFile = file;
-								} else {
-									; // Lower prio, ignore this file.
-								}
-							}
-						} else {
-							// There is no file found yet or no category selection.
-							tFile = file;
-						}
-						
-						if ( tFile->GetDownPriority() == PR_HIGH ) {
-							if (thePrefs::StartNextFileSame()) {
-								// It's from the same category?
-								if (tFile->GetCategory() == oldfile->GetCategory()) {
-									// There can't be any higher
-									break;
-								} else {
-									; // Maybe we'll find another file from the same category
-								}
-							} else {
-								// There can't be any higher
-								break;							
-							}
-						}	
-					}
-				}
+			if (thePrefs::StartNextFileSame()) {
+				// Get a download in the same category
+				visitor.m_category = oldfile->GetCategory();
+
+				visitor = std::for_each(m_filelist.begin(), m_filelist.end(), visitor);
 			}
+
+			if (visitor.m_result == NULL) {
+				// Get a download, regardless of category
+				visitor.m_category = -1;
+				
+				visitor = std::for_each(m_filelist.begin(), m_filelist.end(), visitor);
+			}	
 		}
 		
-		if ( tFile ) {
-			tFile->ResumeFile();
+		if (visitor.m_result) {
+			visitor.m_result->ResumeFile();
 		}
 	}
 }
