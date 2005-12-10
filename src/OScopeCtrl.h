@@ -104,8 +104,8 @@ protected:
 	DECLARE_EVENT_TABLE()
 	PlotData_t *pdsTrends;
 
-	unsigned nClientHeight;
-	unsigned nClientWidth;
+	int nClientHeight;
+	int nClientWidth;
 	int nPlotHeight;
 	int nPlotWidth;
 
