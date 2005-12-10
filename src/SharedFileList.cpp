@@ -1010,14 +1010,16 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 {
 	if (file->IsPartFile()) {
 		CPartFile* pfile = dynamic_cast<CPartFile*>(file);
-
-		pfile->SetFileName(newName);
-		pfile->SavePartFile();
-	
-		Notify_SharedFilesUpdateItem(file);
-		Notify_DownloadCtrlUpdateItem(file);
 		
-		return true;
+		if (file->GetStatus() != PS_COMPLETING) {
+			pfile->SetFileName(newName);
+			pfile->SavePartFile();
+	
+			Notify_SharedFilesUpdateItem(file);
+			Notify_DownloadCtrlUpdateItem(file);
+			
+			return true;
+		}
 	} else {
 		wxString path = file->GetFilePath();
 		
