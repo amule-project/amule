@@ -311,7 +311,7 @@ void CPartFile::CreatePartFile()
 	do { 
 		++i; 
 		m_partmetfilename = wxString::Format(wxT("%03i.part.met"), i);
-		m_fullname = thePrefs::GetTempDir() + wxFileName::GetPathSeparator() + m_partmetfilename;
+		m_fullname = JoinPaths(thePrefs::GetTempDir(), m_partmetfilename);
 	} while (wxFileName::FileExists(m_fullname));
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
@@ -359,7 +359,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	
 	m_partmetfilename = filename;
 	m_strFilePath = in_directory;
-	m_fullname = m_strFilePath + wxFileName::GetPathSeparator() + m_partmetfilename;
+	m_fullname = JoinPaths(m_strFilePath, m_partmetfilename);
 	
 	CFile metFile;
 
@@ -2369,8 +2369,7 @@ wxThread::ExitCode completingThread::Entry()
 	} else {
 		(*newname) =  thePrefs::GetIncomingDir();
 	}	
-	(*newname) += wxFileName::GetPathSeparator();
-	(*newname) += Completing_FileName;
+	(*newname) = JoinPaths(*(newname), Completing_FileName);
 	
 	if(wxFileName::FileExists(*newname)) {
 		completing_result |= SAME_NAME_RENAMED;
@@ -2384,15 +2383,13 @@ wxThread::ExitCode completingThread::Entry()
 		wxString strTestName;
 		do {
 			++namecount;
+
+			strTestName = JoinPaths(thePrefs::GetIncomingDir(), filename);
+
 			if (ext.IsEmpty()) {
-				strTestName = thePrefs::GetIncomingDir(); 
-				strTestName += wxFileName::GetPathSeparator();
-				strTestName += filename + wxString::Format(wxT("(%d)"), namecount);
+				filename += wxString::Format(wxT("(%d)"), namecount);
 			} else {
-				strTestName = thePrefs::GetIncomingDir(); 
-				strTestName += wxFileName::GetPathSeparator();
-				strTestName += filename + wxString::Format(wxT("(%d)."), namecount);
-				strTestName += ext;
+				filename += wxString::Format(wxT("(%d)."), namecount) + ext;
 			}
 		} while(wxFileName::FileExists(strTestName));
 		
@@ -2650,12 +2647,19 @@ void CPartFile::StopFile(bool bCancel)
 
 void CPartFile::StopPausedFile()
 {
-	//Once an hour, remove any sources for files which are no longer active downloads
-	uint32 uState = GetStatus();
-	if( 	(uState==PS_PAUSED || uState==PS_INSUFFICIENT || uState==PS_ERROR) &&
-		!m_stopped &&
-		time(NULL) - m_iLastPausePurge > (60*60)) {
-		StopFile();
+	if (!IsStopped()) {
+		// Once an hour, remove any sources for files which are no longer active downloads
+		uint32 uState = GetStatus();
+
+		switch (GetStatus()) {
+			case PS_PAUSED:
+			case PS_INSUFFICIENT:
+			case PS_ERROR:
+				if (time(NULL) - m_iLastPausePurge > (60*60)) {
+					m_iLastPausePurge = time(NULL);
+					RemoveAllSources(true);
+				}
+		}
 	}
 }
 
