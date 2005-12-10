@@ -43,9 +43,7 @@
 #include <wx/stattext.h>
 #include <wx/dirdlg.h>
 #include <wx/checklst.h>
-#ifdef __WXGTK__
-	#include <wx/gtk/tooltip.h>
-#endif
+#include <wx/tooltip.h>
 
 #include "amule.h"				// Needed for theApp
 #include "amuleDlg.h"
