@@ -437,7 +437,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	if (evt.AltDown() or evt.ControlDown() or evt.MetaDown()) {
 		if (evt.CmdDown() and (evt.GetKeyCode() == wxT('a'))) {
 			// Ctrl+a (Command+a on Mac) was pressed, select all items
-			for (size_t i = 0; i < GetItemCount(); ++i) {
+			for (int i = 0; i < GetItemCount(); ++i) {
 				SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 			}
 		}
