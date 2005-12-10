@@ -1394,7 +1394,7 @@ void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *fil
 	file->m_CompleteSourceCount = tag->CompleteSourceCount();
 }
 
-bool CSearchListRem::Phase1Done(const CECPacket *reply)
+bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 {
 	CECPacket progress_req(EC_OP_SEARCH_PROGRESS);
 	const CECPacket *progress_reply = m_conn->SendRecvPacket(&progress_req);
