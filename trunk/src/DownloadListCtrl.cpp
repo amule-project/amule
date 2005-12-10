@@ -887,7 +887,7 @@ void CDownloadListCtrl::OnItemActivated( wxListEvent& evt )
 	if ( content->type == FILE_TYPE ) {
 		CPartFile* file = (CPartFile*)content->value;
 
-		if (!file->IsPartFile() || file->GetStatus() == PS_COMPLETE) {
+		if ((!file->IsPartFile() || file->GetStatus() == PS_COMPLETE) && file->PreviewAvailable()) {
 			PreviewFile( file );
 		} else {
 			ShowSources( file, !file->ShowSources() );
