@@ -173,6 +173,14 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 
 wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
 
+/**
+ * Joins two path with the operating system specific path-separator.
+ *
+ * If any of the parameters are empty, the other parameter is
+ * returned unchanged.
+ */
+wxString JoinPaths(const wxString& path, const wxString& file);
+
 // Makes sIn suitable for inclusion in an URL, by escaping all chars that could cause trouble.
 wxString URLEncode(const wxString& sIn);
 

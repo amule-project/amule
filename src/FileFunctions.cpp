@@ -497,25 +497,3 @@ UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
 	}
 }
 
-
-
-wxString JoinPaths(const wxString& path, const wxString& file)
-{
-	if (path.IsEmpty()) {
-		return file;
-	} else if (file.IsEmpty()) {
-		return path;
-	} 
-	
-	bool pathOk = (path.Last() == wxFileName::GetPathSeparators());
-	bool fileOk = (file.GetChar(0) == wxFileName::GetPathSeparators());
-
-	if (pathOk and fileOk) {
-		return wxString(path).RemoveLast() + file;
-	} else if (pathOk or fileOk) {
-		return path + file;
-	} else {
-		return path + wxFileName::GetPathSeparators() + file;
-	}
-}
-
