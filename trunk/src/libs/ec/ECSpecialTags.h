@@ -177,11 +177,12 @@ class CEC_ConnState_Tag : public CECTag {
 
 		uint32	GetEd2kId()		{ return GetTagByNameSafe(EC_TAG_ED2K_ID)->GetInt32Data(); }
  		bool	HasLowID()		{ return GetEd2kId() < HIGHEST_LOWID_ED2K_KAD; }
- 		bool	IsConnected()		{ return IsConnectedED2K() || IsConnectedKademlia(); }
- 		bool	IsConnectedED2K()	{ return (GetInt8Data() & 0x03) == 0x03; }
- 		bool	IsConnectingED2K()	{ return (GetInt8Data() & 0x03) == 0x01; }
-		bool	IsConnectedKademlia()	{ return GetInt8Data() & 0x04; }
-		bool	IsKadFirewalled()	{ return (GetInt8Data() & 0x08) == 0; }
+ 		bool	IsConnected()		const { return IsConnectedED2K() || IsConnectedKademlia(); }
+ 		bool	IsConnectedED2K()	const { return (GetInt8Data() & 0x01); }
+ 		bool	IsConnectingED2K()	const { return (GetInt8Data() & 0x02); }
+		bool	IsConnectedKademlia()	const { return (GetInt8Data() & 0x04); }
+		bool	IsKadFirewalled()	const { return (GetInt8Data() & 0x08); }
+		bool	IsKadRunning()	const { return (GetInt8Data() & 0x10); }
 };
 
 class CEC_PartFile_Tag : public CECTag {
