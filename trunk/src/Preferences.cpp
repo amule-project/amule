@@ -114,7 +114,6 @@ uint16		CPreferences::s_OSUpdate;
 uint64		CPreferences::s_totalDownloadedBytes;
 uint64		CPreferences::s_totalUploadedBytes;
 wxString	CPreferences::s_languageID;
-bool		CPreferences::s_transferDoubleclick;
 uint8		CPreferences::s_iSeeShares;
 uint8		CPreferences::s_iToolDelayTime;
 uint8		CPreferences::s_splitterbarPosition;
@@ -893,7 +892,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_ENABLETRAYICON,	(new Cfg_Bool( wxT("/eMule/EnableTrayIcon"), s_trayiconenabled, false )));
 	NewCfgItem(IDC_MINTRAY,		(new Cfg_Bool( wxT("/eMule/MinToTray"), s_mintotray, false )));
 	NewCfgItem(IDC_EXIT,		(new Cfg_Bool( wxT("/eMule/ConfirmExit"), s_confirmExit, false )));
-	NewCfgItem(IDC_DBLCLICK,	(new Cfg_Bool( wxT("/eMule/TransferDoubleClick"), s_transferDoubleclick, true )));
 	NewCfgItem(IDC_STARTMIN,	(new Cfg_Bool( wxT("/eMule/StartupMinimized"), s_startMinimized, false )));
 
 	/**
