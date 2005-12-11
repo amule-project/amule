@@ -1324,7 +1324,7 @@ CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchF
 	m_curr_search = -1;
 }
 
-bool CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, wxString &searchString,
+wxString CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, wxString &searchString,
 	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
 {
 	CECPacket search_req(EC_OP_SEARCH_START);
@@ -1342,7 +1342,7 @@ bool CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, w
 	
 	Flush();
 	
-	return true;
+	return wxEmptyString; // EC reply will have the error mesg is needed.
 }
 
 void CSearchListRem::StopGlobalSearch()

@@ -58,9 +58,211 @@
 
 #include "SearchExpr.h"
 
+#include "Scanner.h"
 extern int yyparse();
 extern int yyerror(const char* errstr);
 extern int yyerror(wxString errstr);
+
+static wxString s_strCurKadKeyword;
+
+static CSearchExpr _SearchExpr;
+
+wxArrayString _astrParserErrors;
+
+// Helper function for lexer.
+
+void ParsedSearchExpression(const CSearchExpr* pexpr)
+{
+	int iOpAnd = 0;
+	int iOpOr = 0;
+	int iOpNot = 0;
+
+	for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+		wxString str(pexpr->m_aExpr[i]);
+		if (str == SEARCHOPTOK_AND) {
+			iOpAnd++;
+		} else if (str == SEARCHOPTOK_OR) {
+			iOpOr++;
+		} else if (str == SEARCHOPTOK_NOT) {
+			iOpNot++;
+		}
+	}
+
+	// this limit (+ the additional operators which will be added later) has to match the limit in 'CreateSearchExpressionTree'
+	//	+1 Type (Audio, Video)
+	//	+1 MinSize
+	//	+1 MaxSize
+	//	+1 Avail
+	//	+1 Extension
+	//	+1 Complete sources
+	//	+1 Codec
+	//	+1 Bitrate
+	//	+1 Length
+	//	+1 Title
+	//	+1 Album
+	//	+1 Artist
+	// ---------------
+	//  12
+	if (iOpAnd + iOpOr + iOpNot > 10) {
+		yyerror(wxT("Search expression is too complex"));
+	}
+
+	_SearchExpr.m_aExpr.Empty();
+	
+	// optimize search expression, if no OR nor NOT specified
+	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
+		wxString strAndTerms;
+		for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
+			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
+				// Minor optimization: Because we added the Kad keyword to the boolean search expression,
+				// we remove it here (and only here) again because we know that the entire search expression
+				// does only contain (implicit) ANDed strings.
+				if (pexpr->m_aExpr[i] != s_strCurKadKeyword) {
+					if (!strAndTerms.IsEmpty()) {
+						strAndTerms += ' ';
+					}
+					strAndTerms += pexpr->m_aExpr[i];
+				}
+			}
+		}
+		wxASSERT( _SearchExpr.m_aExpr.Count() == 0);
+		_SearchExpr.m_aExpr.Add(strAndTerms);
+	} else {
+		if (pexpr->m_aExpr.GetCount() != 1 || pexpr->m_aExpr[0] != s_strCurKadKeyword)			
+			_SearchExpr.Add(pexpr);
+	}
+}
+
+// Helper class for packet creation
+
+class CSearchExprTarget
+{
+public:
+	CSearchExprTarget(CMemFile* pData, EUtf8Str eStrEncode)
+	{
+		m_data = pData;
+		m_eStrEncode = eStrEncode;
+	}
+
+	void WriteBooleanAND()
+	{
+		m_data->WriteUInt8(0);				// boolean operator parameter type
+		m_data->WriteUInt8(0x00);			// "AND"
+	}
+
+	void WriteBooleanOR()
+	{
+		m_data->WriteUInt8(0);				// boolean operator parameter type
+		m_data->WriteUInt8(0x01);			// "OR"
+	}
+
+	void WriteBooleanNOT()
+	{
+		m_data->WriteUInt8(0);				// boolean operator parameter type
+		m_data->WriteUInt8(0x02);			// "NOT"
+	}
+
+	void WriteMetaDataSearchParam(const wxString& rstrValue)
+	{
+		m_data->WriteUInt8(1);				// string parameter type
+		m_data->WriteString(rstrValue, m_eStrEncode); // string value
+	}
+
+	void WriteMetaDataSearchParam(uint8 uMetaTagID, const wxString& rstrValue)
+	{
+		m_data->WriteUInt8(2);				// string parameter type
+		m_data->WriteString(rstrValue, m_eStrEncode); // string value
+		m_data->WriteUInt16(sizeof(uint8));	// meta tag ID length
+		m_data->WriteUInt8(uMetaTagID);		// meta tag ID name
+	}
+
+	void WriteMetaDataSearchParamASCII(uint8 uMetaTagID, const wxString& rstrValue)
+	{
+		m_data->WriteUInt8(2);				// string parameter type
+		m_data->WriteString(rstrValue, utf8strNone); // string value
+		m_data->WriteUInt16(sizeof(uint8));	// meta tag ID length
+		m_data->WriteUInt8(uMetaTagID);		// meta tag ID name
+	}
+	
+	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, const wxString& rstrValue)
+	{
+		m_data->WriteUInt8(2);				// string parameter type
+		m_data->WriteString(rstrValue, m_eStrEncode); // string value
+		m_data->WriteString(pszMetaTagID);	// meta tag ID
+	}
+
+	void WriteMetaDataSearchParam(uint8 uMetaTagID, uint8 uOperator, uint32 uValue, bool WXUNUSED(bEd2k))
+	{
+		m_data->WriteUInt8(3);				// numeric parameter type
+		m_data->WriteUInt32(uValue);		// numeric value
+		m_data->WriteUInt8(uOperator);		// comparison operator
+		m_data->WriteUInt16(sizeof(uint8));	// meta tag ID length
+		m_data->WriteUInt8(uMetaTagID);		// meta tag ID name
+	}
+
+	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, uint8 uOperator, uint32 uValue, bool WXUNUSED(bEd2k))
+	{
+		m_data->WriteUInt8(3);				// numeric parameter type
+		m_data->WriteUInt32(uValue);		// numeric value
+		m_data->WriteUInt8(uOperator);		// comparison operator
+		m_data->WriteString(pszMetaTagID);	// meta tag ID
+	}
+
+	void WriteOldMinMetaDataSearchParam(uint8 uMetaTagID, uint32 uValue, bool bEd2k)
+	{
+		uint8 uOperator;
+		if (bEd2k){
+			uOperator = ED2K_SEARCH_OP_GREATER;
+			uValue -= 1;
+		} else {
+			uOperator = KAD_SEARCH_OP_GREATER_EQUAL;
+		}
+		WriteMetaDataSearchParam(uMetaTagID, uOperator, uValue, bEd2k);
+	}
+
+	void WriteOldMinMetaDataSearchParam(const wxString& pszMetaTagID, uint32 uValue, bool bEd2k)
+	{
+		uint8 uOperator;
+		if (bEd2k){
+			uOperator = ED2K_SEARCH_OP_GREATER;
+			uValue -= 1;
+		} else {
+			uOperator = KAD_SEARCH_OP_GREATER_EQUAL;
+		}
+		WriteMetaDataSearchParam(pszMetaTagID, uOperator, uValue, bEd2k);
+	}
+
+	void WriteOldMaxMetaDataSearchParam(const wxString& pszMetaTagID, uint32 uValue, bool bEd2k)
+	{
+		uint8 uOperator;
+		if (bEd2k){
+			uOperator = ED2K_SEARCH_OP_LESS;
+			uValue += 1;
+		} else {
+			uOperator = KAD_SEARCH_OP_LESS_EQUAL;
+		}
+		WriteMetaDataSearchParam(pszMetaTagID, uOperator, uValue, bEd2k);
+	}
+
+	void WriteOldMaxMetaDataSearchParam(uint8 uMetaTagID, uint32 uValue, bool bEd2k)
+	{
+		uint8 uOperator;
+		if (bEd2k){
+			uOperator = ED2K_SEARCH_OP_LESS;
+			uValue += 1;
+		} else {
+			uOperator = KAD_SEARCH_OP_LESS_EQUAL;
+		}
+		WriteMetaDataSearchParam(uMetaTagID, uOperator, uValue, bEd2k);
+	}
+
+protected:
+	CMemFile* m_data;
+	EUtf8Str m_eStrEncode;
+};
+
+
+// Search classes
 
 CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
 	: wxThread(wxTHREAD_DETACHED)
@@ -314,19 +516,28 @@ void CSearchList::RemoveResults(long nSearchID)
 }
 
 
-bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
+wxString CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
 											const wxString& extension, uint32 min, uint32 max, uint32 availability)
 {
 	
 	if(!theApp.IsConnected()) {
 		// Failed!
-		return false;
+		return _("aMule is not connected!");
 	}
 	
 	m_resultType = typeText;
 	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
 
-	CMemFile* ed2k_data = CreateED2KSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
+	CMemFile* search_data = CreateSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
+	
+	if (!search_data) {
+		wxASSERT(_astrParserErrors.Count());
+		wxString error;
+		for (unsigned int i = 0; i < _astrParserErrors.Count(); ++i) {
+			error += _astrParserErrors[i] + wxT("\n");
+		}
+		return error;
+	}
 	
 	if (search_type == KadSearch) {
 		if (Kademlia::CKademlia::isRunning()) {
@@ -336,17 +547,17 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 				}
 				// Kad search takes ownership of data and searchstring will get tokenized there
 				Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(searchString,
-					ed2k_data, *nSearchID);
+					search_data, *nSearchID);
 				*(nSearchID) = search->getSearchID(); // The tab must be created with the Kad search id
 			} catch(wxString& what) {
 				AddLogLineM(true,what);
-				delete ed2k_data;
-				return false;				
+				delete search_data;
+				return _("Unexpected error while attempting Kad search: ") + what;				
 			}
-			return true;
+			return wxEmptyString;
 		} else {
-			delete ed2k_data;
-			return false;
+			delete search_data;
+			return _("Kad search can't be done if Kad is not running");
 		}
 	}
 	
@@ -354,13 +565,13 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	
 	if(!theApp.IsConnectedED2K()) {
 		// Failed!
-		delete ed2k_data;
-		return false;
+		delete search_data;
+		return _("ED2K search can't be done if ED2K is not connected");
 	}
 	
 	// Packet takes ownership of data
-	CPacket* searchpacket = new CPacket(ed2k_data);
-	delete ed2k_data;
+	CPacket* searchpacket = new CPacket(search_data);
+	delete search_data;
 	searchpacket->SetOpCode(OP_SEARCHREQUEST);
 	
 
@@ -382,7 +593,7 @@ bool CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, cons
 	
 	m_SearchInProgress = true;
 	
-	return true;
+	return wxEmptyString;
 }
 
 
@@ -491,7 +702,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	
 	// If the result was not the type user wanted, drop it.
 	if (	!bClientResponse &&
-		!(m_resultType == wxString(wxT("Any")) ||
+		!(m_resultType.IsEmpty() ||
 		GetFiletypeByName(toadd->GetFileName(), false) == m_resultType)) {
 		AddDebugLogLineM( false, logSearch,
 			CFormat( wxT("Dropped result type %s != %s, file %s") )
@@ -605,85 +816,328 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CMemFile* CSearchList::CreateED2KSearchData(const wxString& searchString, const wxString& typeText,
-				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding)
+CMemFile* CSearchList::CreateSearchData(const wxString& searchString, const wxString& typeText,
+				const wxString& extension, uint32 min, uint32 max, uint32 availability, bool kad)
 {
 	// Count the number of used parameters
-	int parametercount = 0;
-	if ( !searchString.IsEmpty() )	++parametercount;
+	unsigned int parametercount = 0;
 	if ( !typeText.IsEmpty() )	++parametercount;
 	if ( min > 0 )			++parametercount;
 	if ( max > 0 ) 			++parametercount;
-	if ( avaibility > 0 )		++parametercount;
+	if ( availability > 0 )		++parametercount;
 	if ( !extension.IsEmpty() )	++parametercount;
 	
 	// Must write parametercount - 1 parameter headers
 	CMemFile* data =  new CMemFile(100);
-	
-	if (kad_padding) {
+
+	if (kad) {
 		// We need to make some room for the keyword hash
 		data->WriteUInt128(CUInt128());
 		// and the search type (0/1 if there is ed2k data or not)		
+		// There will obviously be... at least the search string.
 		data->WriteUInt8(0);
-		// Now the search string
-		data->WriteUInt8( 0x01 ); // Search-String is a string parameter type
-		data->WriteString( searchString, utf8strRaw );   // Write the value of the string
-		// Nothing more is supported on Kad right now
-		return data;
-	}
-	
-	const byte stringParameter = 1;
-	const byte typeParameter = 2;
-	const byte numericParameter = 3;
-	const uint16 andParameter = 0x0000;	
-	// Kry - sadly, it has to keep like this, It's 3 bytes, god knows why.
-	// So we can't use any WriteUInt*
-	const char typeNemonic[3] = {0x01,0x00,0x03};
-	const char extensionNemonic[3] = {0x01,0x00,0x04};
-	const uint32 minNemonic = 0x02000101;
-	const uint32 maxNemonic = 0x02000102;
-	const uint32 avaibilityNemonic = 0x15000101;
-	
-	for ( int i = 0; i < parametercount - 1; ++i ) {
-		data->WriteUInt16(andParameter);
 	}
 
-	// Packet body:
-	if ( !searchString.IsEmpty() ) {
-		data->WriteUInt8( stringParameter ); // Search-String is a string parameter type
-		data->WriteString( searchString, utf8strRaw );   // Write the value of the string
-	}
+	_astrParserErrors.Empty();	
+	_SearchExpr.m_aExpr.Empty();
 	
-	if ( !typeText.IsEmpty() ) {
-		data->WriteUInt8( typeParameter );		// Search-Type is a type parameter type
-		data->WriteString( typeText ); 			// Write the parameter
-		data->Write(typeNemonic, 3); 		// Nemonic for this kind of parameter (only 3 bytes!!)
-	}
+    LexInit(searchString);
+    int iParseResult = yyparse();
+    LexFree();
 	
-	if ( min > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( min );		// Write the parameter
-		data->WriteUInt32( minNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( max > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( max );		// Write the parameter
-		data->WriteUInt32( maxNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( avaibility > 0 ) {
-		data->WriteUInt8( numericParameter );	// Write the parameter type
-		data->WriteUInt32( avaibility );	// Write the parameter
-		data->WriteUInt32( avaibilityNemonic );	// Nemonic for this kind of parameter
-	}
-	
-	if ( !extension.IsEmpty() ) {
-		data->WriteUInt8( stringParameter );	// Write the parameter type
-		data->WriteString( extension );			// Write the parameter
-		data->Write(extensionNemonic, 3); // Nemonic for this kind of parameter (only 3 bytes!!)
+	#ifdef __DEBUG__
+	printf("Search parsing result: %i\n",iParseResult);
+	#endif
+	if (_astrParserErrors.Count() > 0) {
+		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
+			printf("Error %u: %s\n",i,(const char*)unicode2char(_astrParserErrors[i]));
+		}
+		delete data;
+		return NULL;
 	}
 
+	if (iParseResult != 0) {
+		_astrParserErrors.Add(wxString::Format(wxT("Undefined error %i on search expression"),iParseResult));
+		delete data;
+		return NULL;
+	}
+	
+	#ifdef __DEBUG__
+	printf("Search expression: ");
+	for (unsigned int i = 0; i < _SearchExpr.m_aExpr.Count(); i++){
+		printf("%s ",(const char*)unicode2char(_SearchExpr.m_aExpr[i]));
+	}
+	printf("\nExpression count: %i\n",(int)_SearchExpr.m_aExpr.GetCount());
+	#endif
+
+	parametercount += _SearchExpr.m_aExpr.GetCount();
+	
+	#ifdef __DEBUG__
+	printf("Parameters: %i\n",parametercount);
+	#endif
+	
+	/* Leave the unicode comment there, please... */
+	CSearchExprTarget target(data, true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone);
+
+	unsigned int iParameterCount = 0;
+	if (_SearchExpr.m_aExpr.GetCount() <= 1) {
+		// lugdunummaster requested that searchs without OR or NOT operators,
+		// and hence with no more expressions than the string itself, be sent
+		// using a series of ANDed terms, intersecting the ANDs on the terms 
+		// (but prepending them) instead of putting the boolean tree at the start 
+		// like other searches. This type of search is supposed to take less load 
+		// on servers. Go figure.
+		//
+		// input:      "a" AND min=1 AND max=2
+		// instead of: AND AND "a" min=1 max=2
+		// we use:     AND "a" AND min=1 max=2
+
+		if (_SearchExpr.m_aExpr.GetCount() > 0) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(_SearchExpr.m_aExpr[0]);
+		}
+
+		if (!typeText.IsEmpty()) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			// Type is always ascii string
+			target.WriteMetaDataSearchParamASCII(FT_FILETYPE, typeText);
+		}
+		
+		if (min > 0) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, min, !kad);
+		}
+
+		if (max > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, max, !kad);
+		}
+		
+		if (availability > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, availability, !kad);
+		}
+
+		if (!extension.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(FT_FILEFORMAT, extension);
+		}
+
+		#warning TODO - I keep this here, ready if we ever allow such searches...
+		#if 0
+		if (complete > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMinMetaDataSearchParam(FT_COMPLETE_SOURCES, complete, !kad);
+		}
+
+		if (minBitrate > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, minBitrate, !kad);
+		}
+
+		if (minLength > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, minLength, !kad);
+		}
+
+		if (!codec.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
+		}
+
+		if (!title.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
+		}
+
+		if (!album.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
+		}
+
+		if (!artist.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
+		}
+		#endif // 0
+		
+		// If this assert fails... we're seriously fucked up 
+		
+		wxASSERT( iParameterCount == parametercount );
+		
+	} else {
+		if (!extension.IsEmpty()) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (availability > 0) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+	  
+		if (max > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+        
+		if (min > 0) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+        
+		if (!typeText.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+        
+		#warning TODO - same as above...
+		#if 0
+		if (complete > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (minBitrate > 0){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (minLength > 0) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (!codec.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (!title.IsEmpty()){
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (!album.IsEmpty()) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+
+		if (!artist.IsEmpty()) {
+			if (++iParameterCount < parametercount) {
+				target.WriteBooleanAND();
+			}
+		}
+		#endif // 0
+
+		// As above, if this fails, we're seriously fucked up.
+		wxASSERT( iParameterCount + _SearchExpr.m_aExpr.GetCount() == parametercount );
+
+		for (unsigned int j = 0; j < _SearchExpr.m_aExpr.GetCount(); ++j) {
+			if (_SearchExpr.m_aExpr[j] == SEARCHOPTOK_AND) {
+				target.WriteBooleanAND();
+			} else if (_SearchExpr.m_aExpr[j] == SEARCHOPTOK_OR) {
+				target.WriteBooleanOR();
+			} else if (_SearchExpr.m_aExpr[j] == SEARCHOPTOK_NOT) {
+				target.WriteBooleanNOT();
+			} else {
+				target.WriteMetaDataSearchParam(_SearchExpr.m_aExpr[j]);
+			}
+		}
+
+		if (!typeText.IsEmpty()) {
+			// Type is always ASCII string
+			target.WriteMetaDataSearchParamASCII(FT_FILETYPE, typeText);
+		}
+
+		if (min > 0) {
+			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, min, !kad);
+		}
+
+		if (max > 0) {
+			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, max, !kad);
+		}
+
+		if (availability > 0) {
+			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, availability, !kad);
+		}
+
+		if (!extension.IsEmpty()) {
+			target.WriteMetaDataSearchParam(FT_FILEFORMAT, extension);
+		}
+
+		#warning TODO - third and last warning of the same series.
+		#if 0
+		if (complete > 0) {
+			target.WriteOldMinMetaDataSearchParam(FT_COMPLETE_SOURCES, pParams->uComplete, !kad);
+		}
+
+		if (minBitrate > 0) {
+			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, minBitrate, !kad);
+		}
+		
+		if (minLength > 0) {
+			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, minLength, bEd2k);
+		}
+		
+		if (!codec.IsEmpty()) {
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
+		}
+		
+		if (!title.IsEmpty()) {
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
+		}
+		
+		if (!album.IsEmpty()) {
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
+		}
+		
+		if (!artist.IsEmpty()) {
+			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
+		}
+		
+		#endif // 0
+	}
+	
+	// Packet ready to go.
+	
 	return data;
 }
 
@@ -739,72 +1193,4 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
 	AddToList(tempFile);
 	
-}
-
-static wxString s_strCurKadKeyword;
-
-static CSearchExpr _SearchExpr;
-
-wxArrayString _astrParserErrors;
-
-void ParsedSearchExpression(const CSearchExpr* pexpr)
-{
-	int iOpAnd = 0;
-	int iOpOr = 0;
-	int iOpNot = 0;
-
-	for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
-		wxString str(pexpr->m_aExpr[i]);
-		if (str == SEARCHOPTOK_AND) {
-			iOpAnd++;
-		} else if (str == SEARCHOPTOK_OR) {
-			iOpOr++;
-		} else if (str == SEARCHOPTOK_NOT) {
-			iOpNot++;
-		}
-	}
-
-	// this limit (+ the additional operators which will be added later) has to match the limit in 'CreateSearchExpressionTree'
-	//	+1 Type (Audio, Video)
-	//	+1 MinSize
-	//	+1 MaxSize
-	//	+1 Avail
-	//	+1 Extension
-	//	+1 Complete sources
-	//	+1 Codec
-	//	+1 Bitrate
-	//	+1 Length
-	//	+1 Title
-	//	+1 Album
-	//	+1 Artist
-	// ---------------
-	//  12
-	if (iOpAnd + iOpOr + iOpNot > 10) {
-		yyerror(wxT("Search expression is too complex"));
-	}
-
-	_SearchExpr.m_aExpr.Empty();
-	
-	// optimize search expression, if no OR nor NOT specified
-	if (iOpAnd > 0 && iOpOr == 0 && iOpNot == 0) {
-		wxString strAndTerms;
-		for (unsigned int i = 0; i < pexpr->m_aExpr.Count(); i++) {
-			if (pexpr->m_aExpr[i] != SEARCHOPTOK_AND) {
-				// Minor optimization: Because we added the Kad keyword to the boolean search expression,
-				// we remove it here (and only here) again because we know that the entire search expression
-				// does only contain (implicit) ANDed strings.
-				if (pexpr->m_aExpr[i] != s_strCurKadKeyword) {
-					if (!strAndTerms.IsEmpty()) {
-						strAndTerms += ' ';
-					}
-					strAndTerms += pexpr->m_aExpr[i];
-				}
-			}
-		}
-		wxASSERT( _SearchExpr.m_aExpr.Count() == 0);
-		_SearchExpr.m_aExpr.Add(strAndTerms);
-	} else {
-		if (pexpr->m_aExpr.GetCount() != 1 || pexpr->m_aExpr[0] != s_strCurKadKeyword)			
-			_SearchExpr.Add(pexpr);
-	}
 }

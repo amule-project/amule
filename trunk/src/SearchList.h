@@ -133,7 +133,7 @@ public:
 	~CSearchList();
 	void	Clear();
 
-	bool	StartNewSearch(uint32* nSearchID, 
+	wxString	StartNewSearch(uint32* nSearchID, 
 								SearchType search_type, 
 								const wxString& searchString, 
 								const wxString& typeText,
@@ -183,8 +183,8 @@ public:
 	
 private:
 
-	CMemFile *CreateED2KSearchData(const wxString &searchString, const wxString& typeText,
-				const wxString &extension, uint32 min, uint32 max, uint32 avaibility, bool kad_padding);
+	CMemFile *CreateSearchData(const wxString &searchString, const wxString& typeText,
+				const wxString &extension, uint32 min, uint32 max, uint32 availability, bool kad);
 
 	CPacket* m_searchpacket;
 
