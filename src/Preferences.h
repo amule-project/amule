@@ -588,7 +588,6 @@ protected:
 	static uint64  	s_totalDownloadedBytes;
 	static uint64	s_totalUploadedBytes;
 	static wxString	s_languageID;
-	static bool	s_transferDoubleclick;
 	static uint8	s_iSeeShares;		// 0=everybody 1=friends only 2=noone
 	static uint8	s_iToolDelayTime;	// tooltip delay time in seconds
 	static uint8	s_splitterbarPosition;
