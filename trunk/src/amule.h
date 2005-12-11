@@ -84,9 +84,10 @@ enum APPState {
 #define AMULE_APP_BASE wxApp
 #endif
 
-#define CONNECTED_ED2K 1<<0
-#define CONNECTED_KAD_OK 1<<1
-#define CONNECTED_KAD_FIREWALLED 1<<2
+#define CONNECTED_ED2K (1<<0)
+#define CONNECTED_KAD_NOT (1<<1)
+#define CONNECTED_KAD_OK (1<<2)
+#define CONNECTED_KAD_FIREWALLED (1<<3)
 
 class CamuleApp : public AMULE_APP_BASE
 {
@@ -116,6 +117,8 @@ public:
 
 	// Check ED2K and Kademlia state
 	bool IsFirewalled();
+	// Check Kad state
+	bool IsFirewalledKad();
 	// Check if we should callback this client
 	bool DoCallback( CUpDownClient *client );
 
@@ -126,6 +129,8 @@ public:
 	// Are we connected to at least one network?
 	bool IsConnected();
 
+	// What about Kad? Is it running?
+	bool IsKadRunning();
 
 	// ed2k URL functions
 	wxString	CreateED2kLink(const CAbstractFile* f);
