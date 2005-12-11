@@ -661,10 +661,16 @@ class CImageLib {
 };
 
 class CUrlDecodeTable {
+		static CUrlDecodeTable*		ms_instance;
+		static wxCriticalSection	ms_instance_guard;
+
 		wxString m_enc_u_str[256], m_enc_l_str[256], m_dec_str[256];
-	public:
+
 		CUrlDecodeTable();
 		
+	public:
+		static CUrlDecodeTable* GetInstance();
+
 		void DecodeString(wxString &str);
 };
 

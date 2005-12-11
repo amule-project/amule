@@ -178,7 +178,17 @@ void CUrlDecodeTable::DecodeString(wxString &str)
 	}
 }
 
-CUrlDecodeTable g_decoder_table;
+CUrlDecodeTable*	CUrlDecodeTable::ms_instance;
+wxCriticalSection	CUrlDecodeTable::ms_instance_guard;
+
+CUrlDecodeTable* CUrlDecodeTable::GetInstance()
+{
+	wxCriticalSectionLocker lock(ms_instance_guard);
+	if (ms_instance == NULL) {
+		ms_instance = new CUrlDecodeTable();
+	}
+	return ms_instance;
+}
 
 CParsedUrl::CParsedUrl(const wxString &url)
 {
@@ -197,7 +207,7 @@ CParsedUrl::CParsedUrl(const wxString &url)
 	    	wxString param_val = tkz.GetNextToken();
 	    	wxString key = param_val.BeforeFirst('=');
 	    	wxString val = param_val.AfterFirst('=');
-	    	g_decoder_table.DecodeString(val);
+	    	CUrlDecodeTable::GetInstance()->DecodeString(val);
 	    	if ( m_params.count(key) ) {
 	    		m_params[key] = m_params[key] + wxT("|") + val;
 	    	} else {
