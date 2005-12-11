@@ -155,20 +155,8 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 
 void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
 	
-	if (event.GetId()==TRAY_MENU_CONNECT) {
-		if ( theApp.IsConnectedED2K() ) {
-			theApp.serverconnect->Disconnect();
-		} else if ( !theApp.serverconnect->IsConnecting() ) {
-			AddLogLineM(true, _("Connecting"));
-			theApp.serverconnect->ConnectToAnyServer();
-		}
-	}
-	if (event.GetId()==TRAY_MENU_DISCONNECT) {
-		if ( theApp.IsConnectedED2K() ) {
-			theApp.serverconnect->Disconnect();
-		}
-	}
-
+	wxCommandEvent evt;
+	theApp.amuledlg->OnBnConnect(evt);
 }
 void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event)){
 
@@ -525,12 +513,12 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// Separator
 	traymenu->AppendSeparator();
 	
-	if (theApp.IsConnectedED2K()) {
+	if (theApp.IsConnected()) {
 		//Disconnection Speed item
-		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect from server"));
+		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect"));
 	} else {
 		//Connect item
-		traymenu->Append(TRAY_MENU_CONNECT, _("Connect to any server"));
+		traymenu->Append(TRAY_MENU_CONNECT, _("Connect"));
 	}
 	
 	// Separator
