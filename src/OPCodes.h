@@ -79,8 +79,8 @@ enum {
 #endif
 
 #define	VERSION_MJR		0x02
-#define	VERSION_MIN		0
-#define	VERSION_UPDATE		3
+#define	VERSION_MIN		1
+#define	VERSION_UPDATE		0
 
 #define	EDONKEYVERSION				0x3c
 #define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
@@ -141,7 +141,7 @@ enum EClientSoftware {
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min
 #define	MINCOMMONPENALTY		4
 #define	UDPSERVERSTATTIME		SEC2MS(5)	//5 secs
-#define	UDPSERVSTATREASKTIME	HR2S(4)		//4 hours
+#define	UDPSERVSTATREASKTIME	HR2MS(4)		//4 hours - eMule uses HR2S, we are based on GetTickCount, hence MS
 #define	UDPSERVERPORT			4665		//default udp port
 #define	UDPMAXQUEUETIME			SEC2MS(30)	//30 Seconds
 #define	RSAKEYSIZE				384			//384 bits

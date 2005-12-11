@@ -263,15 +263,14 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 
 void CServerList::ServerStats()
 {
-	uint32 temp;
-	temp = (uint32)time(NULL);
-	
+
 	if(theApp.IsConnectedED2K() && m_servers.size() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
 		if(!ping_server) {
 			return;
 		}
+
 		while(ping_server->GetLastPinged() != 0 && (::GetTickCount() - ping_server->GetLastPinged()) < UDPSERVSTATREASKTIME) {
 			ping_server = GetNextStatServer();
 			if(ping_server == test) {
@@ -282,13 +281,13 @@ void CServerList::ServerStats()
 			Notify_ServerRemove(ping_server);
 			return;
 		}
+				
 		CPacket* packet = new CPacket(OP_GLOBSERVSTATREQ, 4);
 		srand((unsigned)time(NULL));
-		uint32 time = 0x55AA0000 + (uint16)rand();
-		ping_server->SetChallenge(time);
-		packet->CopyUInt32ToDataBuffer(time);
+		uint32 challenge = 0x55AA0000 + (uint16)rand();
+		ping_server->SetChallenge(challenge);
+		packet->CopyUInt32ToDataBuffer(challenge);
 		ping_server->SetLastPinged(::GetTickCount());
-		//ping_server->SetLastPingedTime(temp);
 		ping_server->AddFailedCount();
 		Notify_ServerRefresh(ping_server);
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
