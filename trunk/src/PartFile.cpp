@@ -2651,7 +2651,7 @@ void CPartFile::StopPausedFile()
 		// Once an hour, remove any sources for files which are no longer active downloads
 		uint32 uState = GetStatus();
 
-		switch (GetStatus()) {
+		switch (uState) {
 			case PS_PAUSED:
 			case PS_INSUFFICIENT:
 			case PS_ERROR:
