@@ -439,7 +439,12 @@ void CSearchDlg::StartNewSearch()
 		// Parameter Maximum Size
 		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
-		if ( max < min ) max = 0;
+		if ( max < min ) {
+			wxMessageDialog* dlg = new wxMessageDialog(this, _("Min size must be smaller than max size. Max size ignored."), _("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
+			dlg->ShowModal();
+			delete dlg;
+			max = 0;
+		}
 
 		// Parameter Availability
 		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
@@ -501,7 +506,7 @@ void CSearchDlg::StartNewSearch()
 			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability);
 			if (!error.IsEmpty()) {
 				// Search failed / Remote in progress
-				wxMessageDialog* dlg = new wxMessageDialog(this, error, wxString(_("Search warning.")), wxOK|wxCENTRE|wxICON_INFORMATION);
+				wxMessageDialog* dlg = new wxMessageDialog(this, error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION);
 				dlg->ShowModal();
 				delete dlg;
 				FindWindow(IDC_STARTS)->Enable();
