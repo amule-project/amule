@@ -803,7 +803,7 @@ void CamuleDlg::ShowTransferRate()
 		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
 	
 		wxString buffer2;
-		if ( theApp.IsConnectedED2K() ) {
+		if ( theApp.IsConnected() ) {
 			buffer2 = CFormat(_("aMule (%s | Connected)")) % buffer;
 		} else {
 			buffer2 = CFormat(_("aMule (%s | Disconnected)")) % buffer;
