@@ -107,7 +107,7 @@ public:
 	void ResetLog(int id);
 	
 	void ShowUserCount(const wxString& info = wxEmptyString);
-	void ShowConnectionState(uint32 connection_state);
+	void ShowConnectionState();
 
 	void ShowTransferRate();
 	

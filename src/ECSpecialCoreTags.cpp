@@ -104,8 +104,16 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 }
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
-	(uint8)((theApp.IsConnectedED2K() ? 0x03 : theApp.serverconnect->IsConnecting() ? 0x01 : 0x00)
-		| (theApp.IsConnectedKad() ? Kademlia::CKademlia::isFirewalled() ? 0x04 : 0x0c : 0x00)
+	(uint8)(
+			(theApp.IsConnectedED2K() ? 0x01 : 0x00)
+			|
+			(theApp.serverconnect->IsConnecting() ? 0x02 : 0x00)
+			|
+			(theApp.IsConnectedKad() ? 0x04 : 0x00)
+			|
+			(Kademlia::CKademlia::isFirewalled() ? 0x08 : 0x00)
+			| 
+			(Kademlia::CKademlia::isRunning() ? 0x10 : 0x00)
 		))
 {
 	if (theApp.IsConnectedED2K()) {

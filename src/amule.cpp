@@ -1739,12 +1739,21 @@ bool CamuleApp::IsFirewalled()
 		return false; // we have an eD2K HighID -> not firewalled
 	}
 
+	return IsFirewalledKad(); // If kad says ok, it's ok.
+}
+
+bool CamuleApp::IsFirewalledKad()
+{
 	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled()) {
 		return false; // we have an Kad HighID -> not firewalled
 	}
 
-	return true; // firewalled
-	
+	return true; // firewalled	
+}
+
+bool CamuleApp::IsKadRunning()
+{
+	return Kademlia::CKademlia::isRunning();
 }
 
 bool CamuleApp::DoCallback( CUpDownClient *client )
@@ -1841,10 +1850,14 @@ void CamuleApp::ShowConnectionState()
 	}
 	
 	if (Kademlia::CKademlia::isRunning()) {
-		if (!Kademlia::CKademlia::isFirewalled()) {
-			state |= CONNECTED_KAD_OK;
+		if (Kademlia::CKademlia::isConnected()) {
+			if (!Kademlia::CKademlia::isFirewalled()) {
+				state |= CONNECTED_KAD_OK;
+			} else {
+				state |= CONNECTED_KAD_FIREWALLED;
+			}
 		} else {
-			state |= CONNECTED_KAD_FIREWALLED;
+			state |= CONNECTED_KAD_NOT;
 		}
 	}
 	
@@ -1874,6 +1887,14 @@ void CamuleApp::ShowConnectionState()
 				} else {
 					AddLogLine(_("Disconnected from ED2K"));
 				}
+			}
+		}
+		
+		if (changed_flags & CONNECTED_KAD_NOT) {
+			if (state & CONNECTED_KAD_NOT) {
+				AddLogLine(_("Kad started."));
+			} else {
+				AddLogLine(_("Kad stopped."));
 			}
 		}
 		

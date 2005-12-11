@@ -479,16 +479,20 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 					s << _("Not connected");
 				}
 				s << wxT('\n') << _("Kad") << wxT(": ");
-				if (connState->IsConnectedKademlia()) {
-					s << _("Connected") << wxT(" (");
-					if (connState->IsKadFirewalled()) {
-						s << _("firewalled");
+				if (connState->IsKadRunning()) {
+					if (connState->IsConnectedKademlia()) {
+						s << _("Connected") << wxT(" (");
+						if (connState->IsKadFirewalled()) {
+							s << _("firewalled");
+						} else {
+							s << _("ok");
+						}
+						s << wxT(')');
 					} else {
-						s << _("ok");
+						s << _("Not connected");
 					}
-					s << wxT(')');
 				} else {
-					s << _("Not connected");
+					s << _("Not running");
 				}
 				s << wxT('\n');
 			}

@@ -201,53 +201,53 @@ void CServerWnd::UpdateKadInfo()
 	
 	KadInfoList->DeleteAllItems();
 	
-	#ifndef CLIENT_GUI
-	
-		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
+	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
-		if (Kademlia::CKademlia::isRunning()) {
-			KadInfoList->SetItem(next_row, 1, _("Running"));
+	if (theApp.IsKadRunning()) {
+		KadInfoList->SetItem(next_row, 1, _("Running"));
 			
+		++next_row;
+			
+		// Connection data		
+			
+		KadInfoList->InsertItem(next_row, _("Status:"));
+		KadInfoList->SetItem(next_row, 1, theApp.IsConnectedKad() ? _("Connected"): _("Disconnected"));
+		++next_row;
+		if (theApp.IsConnectedKad()) {
+			KadInfoList->InsertItem(next_row, _("Connection State:"));
+			KadInfoList->SetItem(next_row, 1, theApp.IsFirewalledKad() ? _("Firewalled") : _("OK"));
 			++next_row;
-			
-			// Connection data		
-			
-			KadInfoList->InsertItem(next_row, _("Status:"));
-			KadInfoList->SetItem(next_row, 1, theApp.IsConnectedKad() ? _("Connected"): _("Disconnected"));
-			++next_row;
-			if (theApp.IsConnectedKad()) {
-				KadInfoList->InsertItem(next_row, _("Connection State:"));
-				KadInfoList->SetItem(next_row, 1, Kademlia::CKademlia::isFirewalled() ? _("Firewalled") : _("OK"));
+			#ifndef CLIENT_GUI
+			if (theApp.IsFirewalledKad()) {
+				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
+				KadInfoList->SetItem(next_row, 1, theApp.clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
 				++next_row;
-				if (Kademlia::CKademlia::isFirewalled()) {
-					KadInfoList->InsertItem(next_row, _("Firewalled state: "));
-					KadInfoList->SetItem(next_row, 1, theApp.clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
-					++next_row;
-					#ifdef __DEBUG__
-					if (theApp.clientlist->GetBuddy()) {
-						KadInfoList->InsertItem(next_row, _("Buddy address: "));
-						KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp.clientlist->GetBuddy()->GetIP(), theApp.clientlist->GetBuddy()->GetUDPPort()));
-						++next_row;		
-					}
-					#endif
+				#ifdef __DEBUG__
+				if (theApp.clientlist->GetBuddy()) {
+					KadInfoList->InsertItem(next_row, _("Buddy address: "));
+					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp.clientlist->GetBuddy()->GetIP(), theApp.clientlist->GetBuddy()->GetUDPPort()));
+					++next_row;		
 				}
-				
-				KadInfoList->InsertItem(next_row, _("Average Users:"));
-				KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
-				++next_row;
-				KadInfoList->InsertItem(next_row, _("Average Files:"));
-				KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
-			} 
+				#endif
+			}
+			KadInfoList->InsertItem(next_row, _("Average Users:"));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
+			++next_row;
+			KadInfoList->InsertItem(next_row, _("Average Files:"));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
 			
-		} else {
-			// No data
-			KadInfoList->SetItem(next_row, 1, _("Not running"));
-		}
-
-	#else
-		KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
-		KadInfoList->SetItem(next_row, 1, _("Info not Available"));
-	#endif
+			#else 
+			#warning TODO: Buddy state on remote GUI
+			/* Maybe Averages too, but that would be redundant 
+			   they are already on the status bar */
+			#endif
+			
+		} 
+			
+	} else {
+		// No data
+		KadInfoList->SetItem(next_row, 1, _("Not running"));
+	}
 	
 	// Fit the width of the columns
 	KadInfoList->SetColumnWidth(0, -1);
