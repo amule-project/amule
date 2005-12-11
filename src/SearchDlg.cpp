@@ -481,6 +481,11 @@ void CSearchDlg::StartNewSearch()
 		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
+	if (typeText == wxT("Any")) {
+		// "Any" is the default, so don't send that parameter.
+		typeText.Clear();
+	}
+	
 	SearchType search_type = KadSearch;
 	
 	uint32 real_id = m_nSearchID;
@@ -492,16 +497,11 @@ void CSearchDlg::StartNewSearch()
 			if (search_type != LocalSearch) {
 				search_type = GlobalSearch;
 			}
-		case 2: // Kad search
-			if (!theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability)) {
-				// Search failed (not connected?)
-				wxString error;
-				if (search_type == KadSearch) {
-					error = _("Impossible to make Kad search (invalid chars? keywords too short? not connected?)");
-				} else {
-					error = _("You are not connected to a server!");
-				}
-				wxMessageDialog* dlg = new wxMessageDialog(this, error, wxString(_("Search not possible")), wxOK|wxCENTRE|wxICON_INFORMATION);
+		case 2: { // Kad search 
+			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability);
+			if (!error.IsEmpty()) {
+				// Search failed / Remote in progress
+				wxMessageDialog* dlg = new wxMessageDialog(this, error, wxString(_("Search warning.")), wxOK|wxCENTRE|wxICON_INFORMATION);
 				dlg->ShowModal();
 				delete dlg;
 				FindWindow(IDC_STARTS)->Enable();
@@ -510,6 +510,7 @@ void CSearchDlg::StartNewSearch()
 				return;
 			}
 			break;
+		}
 		default:
 			// Should never happen
 			wxASSERT(0);
