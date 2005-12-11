@@ -621,8 +621,17 @@ public:
 
 	bool IsConnected() const { return IsConnectedED2K() || IsConnectedKad(); }
 	bool IsConnectedED2K() const;
-	bool IsConnectedKad() const { return m_KadConnected; };
-
+	bool IsConnectedKad() const 
+	{ 
+		return ((m_ConnState & CONNECTED_KAD_OK) 
+				|| (m_ConnState & CONNECTED_KAD_FIREWALLED));
+	}
+	bool IsFirewalledKad() const { return (m_ConnState & CONNECTED_KAD_FIREWALLED); }
+	
+	bool IsKadRunning() const { return ((m_ConnState & CONNECTED_KAD_OK) 
+				|| (m_ConnState & CONNECTED_KAD_FIREWALLED)
+				|| (m_ConnState & CONNECTED_KAD_NOT)); }
+				
 	void StartKad();
 	void StopKad();
 	
@@ -632,7 +641,7 @@ public:
 	
 	uint32 GetED2KID() const;
 	
-	bool m_KadConnected;
+	uint8 m_ConnState;
 	
 	DECLARE_EVENT_TABLE()
 	

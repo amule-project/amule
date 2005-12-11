@@ -608,7 +608,7 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 	}
 }
 
-void CamuleDlg::ShowConnectionState(uint32 connection_state)
+void CamuleDlg::ShowConnectionState()
 {
 	enum ed2k_state { sED2KUnknown = -1, sDisconnected = 0, sLowID = 1, sConnecting = 2, sHighID = 3 };
 	enum kad_state { sKadUnknown = -1, sOff = 4, sFirewalled = 5, sOK = 6 };
@@ -638,7 +638,7 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		connected_server = ed2k_server->GetListName();
 	}	
 	
-	if ( connection_state & CONNECTED_ED2K ) {
+	if ( theApp.IsConnectedED2K() ) {
 		if ( theApp.serverconnect->IsLowID() ) {
 			NewED2KState = sLowID;
 		} else {
@@ -650,10 +650,12 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		NewED2KState = sDisconnected;
 	}
 
-	if (connection_state & CONNECTED_KAD_OK) {
-		NewKadState = sOK;
-	} else if (connection_state & CONNECTED_KAD_FIREWALLED) {
-		NewKadState = sFirewalled;
+	if (theApp.IsConnectedKad()) {
+		if (!theApp.IsFirewalledKad()) {
+			NewKadState = sOK;
+		} else {
+			NewKadState = sFirewalled;
+		}
 	} else {
 		NewKadState = sOff;
 	}
@@ -738,9 +740,9 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 				index = connLabel->GetLabel().Length();
 			}
 			
-			if (connection_state & CONNECTED_KAD_OK) {
+			if (NewKadState == sOK) {
 				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: ok)"));
-			} else if (connection_state & CONNECTED_KAD_FIREWALLED) {
+			} else if (NewKadState == sFirewalled) {
 				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: firewalled)"));
 			} else {
 				connLabel->SetLabel(connLabel->GetLabel().Left(index) + wxT(" (Kad: off)"));
@@ -756,7 +758,7 @@ void CamuleDlg::ShowConnectionState(uint32 connection_state)
 		bitmap_dc.SelectObject(wxNullBitmap);
 		
 	} else {
-		if (connection_state & CONNECTED_ED2K) {
+		if (theApp.IsConnectedED2K()) {
 			connLabel->SetLabel(connected_server);
 			connLabel->GetParent()->Layout();
 		}

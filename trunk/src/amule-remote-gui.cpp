@@ -307,7 +307,7 @@ void CamuleRemoteGuiApp::Startup() {
 	
 	glob_prefs->LoadRemote();
 	
-	m_KadConnected = false;
+	m_ConnState = 0;
 
 	serverconnect = new CServerConnectRem(connect);
 	statistics = new CStatistics(connect);
@@ -677,7 +677,7 @@ bool CServerConnectRem::ReQuery()
             return false;
     }
 
-	int state = 0;
+	theApp.m_ConnState = 0;
 	CServer *server;
 	m_ID = tag->GetEd2kId();
 
@@ -692,7 +692,7 @@ bool CServerConnectRem::ReQuery()
 		}
 		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
 		m_CurrServer = server;
-		state |= CONNECTED_ED2K;
+		theApp.m_ConnState |= CONNECTED_ED2K;
 	} else {
 	    	if ( m_CurrServer ) {
 	    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
@@ -702,13 +702,17 @@ bool CServerConnectRem::ReQuery()
 
 	if (tag->IsConnectedKademlia()) {
 		if (tag->IsKadFirewalled()) {
-			state |= CONNECTED_KAD_FIREWALLED;
+			theApp.m_ConnState |= CONNECTED_KAD_FIREWALLED;
 		} else {
-			state |= CONNECTED_KAD_OK;
+			theApp.m_ConnState |= CONNECTED_KAD_OK;
+		}
+	} else {
+		if (tag->IsKadRunning()) {
+			theApp.m_ConnState |= CONNECTED_KAD_NOT;
 		}
 	}
-
-	theApp.amuledlg->ShowConnectionState(state);
+	
+	theApp.amuledlg->ShowConnectionState();
 	return true;
 }
 
