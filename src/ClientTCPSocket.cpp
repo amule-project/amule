@@ -804,29 +804,36 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			if (m_client->IsBanned()) {
 				break;
 			}
-			std::vector<CKnownFile*> list;
-			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-				theApp.sharedfiles->CopyFileList(list);
+			
+			if (thePrefs::CanSeeShares() == vsfaEverybody || (thePrefs::CanSeeShares() == vsfaFriends && m_client->IsFriend())) {
 				AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
+				
+				std::vector<CKnownFile*> list;
+				theApp.sharedfiles->CopyFileList(list);
+
+				CMemFile tempfile(80);
+				tempfile.WriteUInt32(list.size());
+				for (unsigned i = 0; i < list.size(); ++i) {
+					theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
+				}
+				
+				// create a packet and send it
+				CPacket* replypacket = new CPacket(&tempfile);
+				replypacket->SetOpCode(OP_ASKSHAREDFILESANSWER);
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
+				SendPacket(replypacket, true, true);
 			} else {
 				AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
-			}
-			// now create the memfile for the packet
-			CMemFile tempfile(80);
-			tempfile.WriteUInt32(list.size());
-			for (unsigned i = 0; i < list.size(); ++i) {
-				theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
-			}
 			
-			// create a packet and send it
-			CPacket* replypacket = new CPacket(&tempfile);
-			replypacket->SetOpCode(OP_ASKSHAREDFILESANSWER);
-			theStats::AddUpOverheadOther(replypacket->GetPacketSize());
-			SendPacket(replypacket, true, true);
+				CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0);
+				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
+				SendPacket(replypacket, true, true);				
+			}
+
 			break;
 		}
 		
