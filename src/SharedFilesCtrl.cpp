@@ -151,6 +151,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
 
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
+		m_menu->Enable(MP_RENAME, file->IsPartFile());
 		
 		PopupMenu( m_menu, event.GetPoint() );
 
@@ -609,12 +610,15 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 	if ( item != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData(item);
 
-		wxString newName = ::wxGetTextFromUser(
-			_("Enter new name for this file:"),
-			_("File rename"), file->GetFileName());
+		// Currently renaming of completed files causes problem with kad
+		if (file->IsPartFile()) {
+			wxString newName = ::wxGetTextFromUser(
+				_("Enter new name for this file:"),
+				_("File rename"), file->GetFileName());
 				
-		if (!newName.IsEmpty() and (newName != file->GetFileName())) {
-			theApp.sharedfiles->RenameFile(file, newName);
+			if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+				theApp.sharedfiles->RenameFile(file, newName);
+			}
 		}
 	}
 }

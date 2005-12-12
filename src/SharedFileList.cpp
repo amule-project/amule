@@ -456,10 +456,8 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;
 		}
 
-		if(fname.Find(wxFileName::GetPathSeparator(),TRUE) != -1) {  // starts at end
-			// Take just the file from the path
-			fname=fname.Mid(fname.Find(wxFileName::GetPathSeparator(),TRUE)+1);
-		}
+		// Take just the file from the path
+		fname = wxFileName(fname).GetFullName();
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
@@ -1021,9 +1019,12 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 			return true;
 		}
 	} else {
-		wxString path = file->GetFilePath();
-		
-		if (UTF8_MoveFile(path + file->GetFileName(), path + newName)) {
+#warning Renaming of completed files causes problems on kad. Enable when reviewed.
+#if 0
+		wxString oldPath = JoinPaths(file->GetFilePath(), file->GetFileName());
+		wxString newPath = JoinPaths(file->GetFilePath(), newName);
+
+		if (UTF8_MoveFile(oldPath, newPath)) {
 			RemoveKeywords(file);
 			file->SetFileName(newName);
 			AddKeywords(file);
@@ -1031,10 +1032,12 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 			UpdateItem(file);
 			RepublishFile(file);
 
+			Notify_DownloadCtrlUpdateItem(file);
 			Notify_SharedFilesUpdateItem(file);
 			
 			return true;
 		}
+#endif
 	}
 	
 	return false;

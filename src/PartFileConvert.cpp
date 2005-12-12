@@ -304,7 +304,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			return CONV_BADFORMAT;
 	}
 
-	wxString oldfile = folder + wxFileName::GetPathSeparator() + partfile.Left(partfile.Length() - ((s_pfconverting->partmettype == PMT_SHAREAZA) ? 3 : 4));
+	wxString oldfile = JoinPaths(folder, partfile.Left(partfile.Length() - ((s_pfconverting->partmettype == PMT_SHAREAZA) ? 3 : 4)));
 
 	{
 		wxMutexLocker lock(s_mutex);
@@ -475,9 +475,9 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	wxRemoveFile(newfilename);
 	if (s_pfconverting->removeSource) {
-		wxRenameFile(folder + wxFileName::GetPathSeparator() + partfile, newfilename);
+		wxRenameFile(JoinPaths(folder, partfile), newfilename);
 	} else {
-		wxCopyFile(folder + wxFileName::GetPathSeparator() + partfile, newfilename, false);
+		wxCopyFile(JoinPaths(folder, partfile), newfilename, false);
 	}
 
 	file->hashlist.Clear();

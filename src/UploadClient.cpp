@@ -25,7 +25,6 @@
 
 #include <zlib.h>
 #include <cmath>		// Needed for std::exp
-#include <wx/filename.h>        // Needed for wxFileName::GetPathSeparator()
 
 #include "OtherFunctions.h"	// Needed for nstrdup
 
@@ -249,7 +248,7 @@ void CUpDownClient::CreateNextBlockPackage()
 				fullname = ((CPartFile*)srcfile)->GetFullName();
 				fullname.Truncate(fullname.Length()-4);
 			} else {
-				fullname = srcfile->GetFilePath() + wxFileName::GetPathSeparator() + srcfile->GetFileName();
+				fullname = JoinPaths(srcfile->GetFilePath(), srcfile->GetFileName());
 			}
 		
 			uint32 togo;

@@ -69,6 +69,9 @@ CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
 	UpdateData();
 	content->SetSizeHints(this);
 	content->Show(this,TRUE);
+
+	// Currently renaming of completed files causes problem with kad
+	FindWindow(IDC_RENAME)->Enable(file->IsPartFile());
 }
 
 CFileDetailDialog::~CFileDetailDialog()
@@ -207,9 +210,9 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 
 void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString fileName = CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
+	wxString fileName = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
 
-	if (!fileName.IsEmpty()) {
+	if (!fileName.IsEmpty() and (fileName != m_file->GetFileName())) {
 		if (theApp.sharedfiles->RenameFile(m_file, fileName)) {
 			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
 			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());

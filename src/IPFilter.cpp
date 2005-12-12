@@ -259,7 +259,7 @@ void CIPFilter::LoadFromFile(const wxString& file)
 	AddLogLineM(false,
 		CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
 		% filtercount
-		% file.AfterLast(wxFileName::GetPathSeparator())
+		% wxFileName(file).GetFullName()
 		% discardedCount
 	);	
 }
