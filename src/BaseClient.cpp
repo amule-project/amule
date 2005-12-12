@@ -219,8 +219,6 @@ void CUpDownClient::Init()
 
 	m_nLastBlockOffset = 0;
 
-	m_bMsgFiltered = false;
-
 	m_uploadingfile = NULL;
 
 	m_OSInfo_sent = false;

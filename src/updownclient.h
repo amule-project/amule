@@ -573,10 +573,6 @@ public:
 	
 	void		SetLastPartAsked(uint16 nPart) { m_lastPartAsked = nPart; }
 	
-	bool		GetMsgFiltered() const { return m_bMsgFiltered; }
-	
-	void		SetMsgFiltered(bool state) { m_bMsgFiltered = state; }
-	
 	CFriend*	GetFriend() const { return m_Friend; }
 	
 	void		SetFriend(CFriend* newfriend) { m_Friend = newfriend; }
@@ -780,8 +776,6 @@ private:
 	BitVector	m_downPartStatus;
 
 	CAICHHash* 	m_pReqFileAICHHash; 
-
-	bool		m_bMsgFiltered;
 
 	ESourceFrom	m_nSourceFrom;
 

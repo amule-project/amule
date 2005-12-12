@@ -780,19 +780,16 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 		case OP_MESSAGE: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MESSAGE") );
 			
-			AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			theStats::AddDownOverheadOther(size);
 			
 			CMemFile message_file((byte*)buffer, size);
 
-			//filter me?
 			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 			if (IsMessageFiltered(message, m_client)) {
-				if (!m_client->GetMsgFiltered()) {
-					AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
-				}
-				m_client->SetMsgFiltered(true);
+				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			} else {
+				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				
 				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
 			}
 			break;
