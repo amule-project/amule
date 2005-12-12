@@ -67,8 +67,8 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 	
 	// If the filename is a path, then prefer to remove from the path, rather than the filename
 	if ( isFilePath ) {
-		wxString path = file.BeforeLast( wxFileName::GetPathSeparator() );
-		file          = file.AfterLast( wxFileName::GetPathSeparator() );
+		wxString path = wxFileName(file).GetPath();
+		file          = wxFileName(file).GetFullName();
 
 		if ( path.Length() >= length ) {
 			path.Clear();
@@ -145,15 +145,15 @@ wxString JoinPaths(const wxString& path, const wxString& file)
 		return path;
 	} 
 	
-	bool pathOk = (path.Last() == wxFileName::GetPathSeparators());
-	bool fileOk = (file.GetChar(0) == wxFileName::GetPathSeparators());
+	bool pathOk = (path.Last() == wxFileName::GetPathSeparator());
+	bool fileOk = (file.GetChar(0) == wxFileName::GetPathSeparator());
 
 	if (pathOk and fileOk) {
 		return wxString(path).RemoveLast() + file;
 	} else if (pathOk or fileOk) {
 		return path + file;
 	} else {
-		return path + wxFileName::GetPathSeparators() + file;
+		return path + wxFileName::GetPathSeparator() + file;
 	}
 }
 

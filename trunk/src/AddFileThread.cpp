@@ -245,7 +245,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 		}
 
 
-		wxString filename = current.m_path + wxFileName::GetPathSeparator() + current.m_name;
+		wxString filename = JoinPaths(current.m_path, current.m_name);
 		
 		// The file currently getting hashed
 		CFile file;

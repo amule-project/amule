@@ -33,7 +33,6 @@ using std::auto_ptr;
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/file.h>
-#include <wx/filename.h>		// Needed for wxFileName::GetPathSeparator()
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/config.h>

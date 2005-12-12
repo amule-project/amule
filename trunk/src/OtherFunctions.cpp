@@ -1129,22 +1129,23 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 			return true;
 		}
 		CDirIterator finder(oldPath);
-		wxString file = finder.GetFirstFile(CDirIterator::Dir, wxT("*")).AfterLast(wxFileName::GetPathSeparator());
+		wxString file = wxFileName(finder.GetFirstFile(CDirIterator::Dir, wxT("*"))).GetFullName();
 		while (!file.IsEmpty()) {
 			if (file != wxT(".") && file != wxT("..")) {
-				MoveFolder(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file, copy);
+				MoveFolder(JoinPaths(oldPath, file), JoinPaths(newPath, file), copy);
 			}
-			file = finder.GetNextFile().AfterLast(wxFileName::GetPathSeparator());
+			file = wxFileName(finder.GetNextFile()).GetFullName();
 		}
 
-		file = finder.GetFirstFile(CDirIterator::File, wxT("*")).AfterLast(wxFileName::GetPathSeparator());
+		file = wxFileName(finder.GetFirstFile(CDirIterator::File, wxT("*"))).GetFullName();
 		while (!file.IsEmpty()) {
 			if (copy) {
-				UTF8_CopyFile(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file);
+				UTF8_CopyFile(JoinPaths(oldPath, file), JoinPaths(newPath, file));
 			} else {
-				UTF8_MoveFile(oldPath + wxFileName::GetPathSeparator() + file, newPath + wxFileName::GetPathSeparator() + file);
+				UTF8_MoveFile(JoinPaths(oldPath, file), JoinPaths(newPath, file));
 			}
-			file = finder.GetNextFile().AfterLast(wxFileName::GetPathSeparator());
+			
+			file = wxFileName(finder.GetNextFile()).GetFullName();
 		}
 
 		if (!copy) {
@@ -1192,15 +1193,15 @@ bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName
 #endif
 	delete [] tmp_buffer;
 
-#if !defined(__unix__) && !defined(__linux__)  // if (wxFileName::GetPathSeparator() != wxT("/")) {
+#if !defined(__unix__) && !defined(__linux__) 
 	const wxString pathSeparator = wxFileName::GetPathSeparator();
 	oldConfigDir.Replace(wxT("/"), pathSeparator);
 	newConfigDir.Replace(wxT("/"), pathSeparator);
-#ifdef __WINDOWS__  // if (pathSeparator == wxT("\\")) {
+#ifdef __WINDOWS__ 
 	oldConfigDir.Replace(wxT("\\"), wxT("\\\\"));
 	newConfigDir.Replace(wxT("\\"), wxT("\\\\"));
-#endif	// }
-#endif	// }
+#endif
+#endif
 
 	str.Replace(wxT("=") + oldConfigDir, wxT("=") + newConfigDir);
 
@@ -1222,24 +1223,24 @@ bool RelocateConfiguration(const wxString& oldPath, const wxString& newPath, con
 		return false;
 	}
 
-	return MoveConfigFile(oldConfigFile, newPath + wxFileName::GetPathSeparator() + wxT("amule.conf"), copy ? wxString(wxEmptyString) : oldPath, copy ? wxString(wxEmptyString) : newPath, copy)
+	return MoveConfigFile(oldConfigFile, JoinPaths(newPath, wxT("amule.conf")), copy ? wxString(wxEmptyString) : oldPath, copy ? wxString(wxEmptyString) : newPath, copy)
 		&& MoveFolder(oldPath, newPath, copy);
 }	
 
 bool CheckConfig()
 {
-	wxString configDir(GetConfigDir().BeforeLast(wxFileName::GetPathSeparator()));
-	wxString homeDir(wxGetHomeDir() + wxFileName::GetPathSeparator());
+	wxString configDir = GetConfigDir().BeforeLast(wxFileName::GetPathSeparator());
+	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
 
 	if (!CheckDirExists(configDir)) {
 		wxMkdir(configDir);
 	} else {
-		if (CheckFileExists(configDir + wxFileName::GetPathSeparator() + wxT("amule.conf"))) {
+		if (CheckFileExists(JoinPaths(configDir, wxT("amule.conf")))) {
 			return false;
 		}
 	}
 
-	return RelocateConfiguration(homeDir + wxT(".aMule"), configDir, homeDir + wxT(".aMule") + wxFileName::GetPathSeparator() + wxT("amule.conf"), false)
+	return RelocateConfiguration(homeDir + wxT(".aMule"), configDir, JoinPaths(JoinPaths(homeDir, wxT(".aMule")), wxT("amule.conf")), false)
 		|| RelocateConfiguration(homeDir + wxT(".aMule"), configDir, homeDir +
 #ifdef __APPLE__
 					 wxT("Library/Preferences/eMule Preferences"),
@@ -1256,7 +1257,7 @@ bool CheckConfig()
 wxString GetLocaleDir()
 {
 #ifdef __WXMAC__
-	return wxStandardPaths::Get().GetDataDir() + wxFileName::GetPathSeparator() + wxT("locale");
+	return JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale"));
 #elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 
@@ -1271,7 +1272,7 @@ wxString GetLocaleDir()
 	
 	return localeDir;
 #else
-	return wxStandardPaths::Get().GetPluginsDir() + wxFileName::GetPathSeparator() + wxT("locale");
+	return JoinPaths(wxStandardPaths::Get().GetPluginsDir(), wxT("locale"));
 #endif
 }
 

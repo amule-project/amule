@@ -348,7 +348,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	wxASSERT( !IsPartFile() );
 	m_pAICHHashSet->FreeHashSet();
 	
-	CFile file(GetFilePath() +  wxFileName::GetPathSeparator() + GetFileName(),CFile::read);
+	CFile file(JoinPaths(GetFilePath(), GetFileName()), CFile::read);
 	if ( !file.IsOpened() ){
 		AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): Failed to open file: ") + file.GetFilePath() );
 		return false;

@@ -1091,12 +1091,16 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 			ItemList files = ::GetSelectedItems( this, itFILES );
 			if (files.size() == 1) {	
 				CPartFile* file = (CPartFile*)(*(files.begin()))->value;
-				wxString newName = ::wxGetTextFromUser(
-					_("Enter new name for this file:"),
-					_("File rename"), file->GetFileName());
 				
-				if (!newName.IsEmpty() and (newName != file->GetFileName())) {
-					theApp.sharedfiles->RenameFile(file, newName);
+				// Currently renaming of completed files causes problem with kad
+				if (file->IsPartFile()) {
+					wxString newName = ::wxGetTextFromUser(
+						_("Enter new name for this file:"),
+						_("File rename"), file->GetFileName());
+				
+					if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+						theApp.sharedfiles->RenameFile(file, newName);
+					}
 				}
 			}
 			break;

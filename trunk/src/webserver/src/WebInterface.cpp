@@ -75,12 +75,12 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 	DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
 	if (wxFileName::DirExists(dir)) {
 		DebugShow(wxT(" yes\n"));
-		dir += wxFileName::GetPathSeparator() + tmpl;
+		dir = JoinPaths(dir, tmpl);
 		DebugShow(wxT("checking for directory '") + dir + wxT("'..."));
 		if (wxFileName::DirExists(dir)) {
 			DebugShow(wxT(" yes\n"));
 
-			wxString tmplPath(dir + wxFileName::GetPathSeparator() +wxT("login.html"));
+			wxString tmplPath = JoinPaths(dir, wxT("login.html"));
 
 			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {
@@ -159,10 +159,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	// Returns 'aMule' when we use 'amule' elsewhere
 	dir = wxStandardPaths::Get().GetDataDir();
 	dir = dir.BeforeLast(wxFileName::GetPathSeparator());
-	dir += wxFileName::GetPathSeparator();
-	dir += wxT("amule");
-	dir += wxFileName::GetPathSeparator();
-	dir += wxT("webserver");
+	dir = JoinPaths(dir, JoinPaths(wxT("amule"), wxT("webserver")));
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
 		return true;
@@ -259,7 +256,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
 			return true;
 		}
-		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
+		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));
 		m_Verbose = false;
 		m_KeepQuiet = true;
 		m_LoadSettingsFromAmule = true;
@@ -282,7 +279,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
 			return true;
 		}
-		m_TemplateFileName = m_TemplateDir + wxFileName::GetPathSeparator() + wxT("aMule.tmpl");
+		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));
 		DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
 
 		long port;

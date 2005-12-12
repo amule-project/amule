@@ -846,7 +846,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 			// There is a built-in possibility for this call to fail, though I can't imagine a reason for that.
 			incpath = appdir + wxT("Incoming");
 		} else {
-			incpath << wxFileName::GetPathSeparator() << wxT("aMule Downloads");
+			incpath = JoinPaths(incpath, wxT("aMule Downloads"));
 		}
 	#else 
 		wxString incpath = appdir + wxT("Incoming");
