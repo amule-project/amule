@@ -260,7 +260,16 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
 				if (reply_all) {
-					request = new CECPacket(EC_OP_PARTFILE_RESUME);
+					switch(CmdId) {
+						case CMD_ID_PAUSE:
+							request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
+						case CMD_ID_CANCEL:
+							request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
+						case CMD_ID_RESUME:
+							request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
+						default: wxASSERT(0);
+					}
+					
 					for(int i = 0;i < reply_all->GetTagCount();i++) {
 						const CECTag *tag = reply_all->GetTagByIndex(i);
 						if (tag) {
