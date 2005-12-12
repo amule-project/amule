@@ -2250,38 +2250,27 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 	UpdateDisplayedInfo(true);
 }
 
-#define UNEXP_FILE_ERROR			1
-#define DELETE_FAIL_MET 			2
-#define DELETE_FAIL_MET_BAK		4
-#define SAME_NAME_RENAMED 	8
-#define DELETE_FAIL_PART		 	16
-#define DELETE_FAIL_SEEDS		32
 
-// Kry - Anything to declare? ;)
-// Free for new errors / messages
-
-//#define UNEXP_FILE_ERROR 64
-//#define UNEXP_FILE_ERROR 128
+enum CompleteErrors {
+	UNEXP_FILE_ERROR		= 1,
+};
 
 
-void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
-	
-	
-	if (!(completing_result & UNEXP_FILE_ERROR)) {
+void CPartFile::CompleteFileEnded(int result, wxString* newname)
+{	
+	if (!(result & UNEXP_FILE_ERROR)) {
 		m_fullname = (*newname);	
-		delete newname;
 
-		if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(GetCategory())->incomingpath)) {
-			m_strFilePath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
-		} else {
-			m_strFilePath = thePrefs::GetIncomingDir();
-		}	
+		m_strFilePath = wxFileName(m_fullname).GetPath();
+		m_strFileName = wxFileName(m_fullname).GetFullName();
 		
 		SetPartFileStatus(PS_COMPLETE);
 		m_paused = false;
 		ClearPriority();
+		
 		// TODO: What the f*** if it is already known?
 		theApp.knownfiles->SafeAddKFile(this);
+		
 		// remove the file from the suspended uploads list
 		theApp.uploadqueue->ResumeUpload(GetFileHash());		
 		theApp.downloadqueue->RemoveFile(this);
@@ -2291,160 +2280,138 @@ void CPartFile::CompleteFileEnded(int completing_result, wxString* newname) {
 		// republish that file to the ed2k-server to update the 'FT_COMPLETE_SOURCES' counter on the server.
 		theApp.sharedfiles->RepublishFile(this);		
 		
-		// Barry - Just in case
-		// Kry - Better to set the completted, transferred is different matter.
+		// Ensure that completed shows the correct value
 		completedsize = m_nFileSize;
 
-		theApp.downloadqueue->StartNextFile(this);
+		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
+		
+#ifndef AMULE_DAEMON
+		Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);
+#endif
 	} else {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);
-		theApp.downloadqueue->StartNextFile(this);	
 		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% m_strFileName ); 
-		delete newname;
-		return;
-	}	
+	}
 	
-	if (completing_result & DELETE_FAIL_MET) {
-		AddLogLineM(true, CFormat( _("WARNING: Failed to delete %s") ) % m_fullname);
-	}	
+	theApp.downloadqueue->StartNextFile(this);	
 	
-	if (completing_result & DELETE_FAIL_MET_BAK) {
-		AddLogLineM(true, CFormat( _("WARNING: Failed to delete %s") ) % (m_fullname + PARTMET_BAK_EXT) );
-	}	
-	
-	if (completing_result & SAME_NAME_RENAMED) {
-		AddLogLineM(true, _("WARNING: A file with that name already exists, the file has been renamed"));
-	}		
-
-	if (completing_result & DELETE_FAIL_PART) {
-		AddLogLineM(true, CFormat( _("WARNING: Could not remove original '%s' after creating backup") )
-			% m_partmetfilename.Left(m_partmetfilename.Length()-4) );
-	}	
-	
-	if (completing_result & DELETE_FAIL_SEEDS) {
-		AddLogLineM(true, CFormat( _("WARNING: Failed to delete %s.seeds")) % m_partmetfilename );
-	}	
-
-	AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
-	
-#ifndef AMULE_DAEMON
-	Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);
-#endif
+	delete newname;
 }
 
-completingThread::completingThread(wxString FileName, wxString fullname, uint32 Category, CPartFile* caller)
-:
-wxThread(wxTHREAD_DETACHED)
+
+class CCompletingThread : public wxThread
 {
-	wxASSERT(!FileName.IsEmpty());
-	wxASSERT(caller);
-	wxASSERT(fullname);
-	completing = caller;
-	Completing_FileName = FileName;
-	Completing_Fullname = fullname;
-	Completing_Category = Category;
-}
-
-completingThread::~completingThread()
-{
-	//maybe a thread deletion needed
-}
-
-wxThread::ExitCode completingThread::Entry()
-{
-
-	// Threaded Completion code.
+public:
+	/**
+	 * Creates a thread which will complete the given download.
+	 * 
+	 * @param filename The target filename of the download (only filename).
+	 * @param metPath The full path to the download's '.met' file.
+	 * @param catgory The category of the download.
+	 * @param owner The partfile owning the download.
+	 */
+	CCompletingThread(wxString filename, wxString metPath, uint8 category, void* owner)
+		: m_filename(CleanupFilename(filename)),
+		  m_metPath(metPath),
+		  m_category(category),
+		  m_owner(owner),
+		  m_result(0),
+		  m_newName(NULL)
+	{
+		wxASSERT(!m_filename.IsEmpty());
+		wxASSERT(!m_metPath.IsEmpty());
+		wxASSERT(m_owner);
+	}
 	
-	completing_result = 0;
+private:
+	wxThread::ExitCode Entry() {
+		wxString targetPath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
+		if (!wxFileName::DirExists(targetPath)) {
+			targetPath = thePrefs::GetIncomingDir();
+		}	
+		
+		wxString newName = JoinPaths(targetPath, m_filename);
+		
+		// Avoid saving to an already existing filename
+		if (CheckFileExists(newName)) {
+			wxString prefix  = wxFileName(m_filename).GetName();
+			wxString postfix = m_filename.Mid(prefix.Length());
+			size_t count = 0;
+				
+			do {
+				count++;
+				
+				newName = JoinPaths(targetPath, prefix) 
+						+ wxString::Format(wxT("(%u)"), count) + postfix;
+			} while (CheckFileExists(newName));
+			
+			AddLogLineM(true, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
+				% m_filename
+				% wxFileName(newName).GetFullName());
+		}
 
-	// Strip the .met
-	wxString partfilename =  Completing_Fullname.Left(Completing_Fullname.Length()-4);
-	
-	Completing_FileName = CleanupFilename(Completing_FileName);
-
-	newname = new wxString();
-	if(wxFileName::DirExists(theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath)) {
-		(*newname) =  theApp.glob_prefs->GetCategory(Completing_Category)->incomingpath;
-	} else {
-		(*newname) =  thePrefs::GetIncomingDir();
-	}	
-	(*newname) = JoinPaths(*(newname), Completing_FileName);
-	
-	if(wxFileName::FileExists(*newname)) {
-		completing_result |= SAME_NAME_RENAMED;
-
-		int namecount = 0;
-
-		// the file extension & name
-		wxString ext = Completing_FileName.AfterLast('.');
-		wxString filename = Completing_FileName.BeforeLast('.');
-
-		wxString strTestName;
-		do {
-			++namecount;
-
-			strTestName = JoinPaths(thePrefs::GetIncomingDir(), filename);
-
-			if (ext.IsEmpty()) {
-				filename += wxString::Format(wxT("(%d)"), namecount);
-			} else {
-				filename += wxString::Format(wxT("(%d)."), namecount) + ext;
+		// Move will handle dirs on the same partition, otherwise copy is needed.
+		wxString partfilename = m_metPath.BeforeLast(wxT('.'));
+		if (!UTF8_MoveFile(partfilename, newName)) {
+			if (!UTF8_CopyFile(partfilename, newName)) {
+				m_result |= UNEXP_FILE_ERROR;
+				
+				return NULL;
 			}
-		} while(wxFileName::FileExists(strTestName));
+			
+			if (!wxRemoveFile(partfilename)) {
+				AddLogLineM(true, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
+					% partfilename);
+			}
+		}
+	
+		// Removes the various other data-files	
+		const wxChar* otherMetExt[] = { wxT(""), PARTMET_BAK_EXT, wxT(".seeds"), NULL };
+		for (size_t i = 0; otherMetExt[i]; ++i) {
+			wxString toRemove = m_metPath + otherMetExt[i];
+
+			if (wxFileName::FileExists(toRemove)) {
+				if (!wxRemoveFile(toRemove)) {
+					AddLogLineM(true, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
+				}
+			}
+		}
+
+		// Export the file name in a way that can easily be shared via an event.
+		// TODO: Make a custom event-type for this task.
+		m_newName = new wxString(newName);
 		
-		*newname = strTestName;
+		return NULL;
 	}
 
-	if (!UTF8_MoveFile(partfilename, *newname)) {
-		if (!UTF8_CopyFile(partfilename, *newname)) {
-			completing_result |= UNEXP_FILE_ERROR;
-			return NULL;
-		}
-		
-		if ( !wxRemoveFile(partfilename) ) {
-			completing_result |= DELETE_FAIL_PART;
-		}
-	}
 	
-	if (!wxRemoveFile(Completing_Fullname)) {
-		completing_result |= DELETE_FAIL_MET;
-	}
-	
-	wxString BAKName(Completing_Fullname);
-	BAKName += PARTMET_BAK_EXT;
-	if (!wxRemoveFile(BAKName)) {
-		completing_result |= DELETE_FAIL_MET_BAK;
+	void OnExit() {
+		// Notify the app that the completion has finished for this file.	
+		wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
+		evt.SetClientData(m_owner);
+		evt.SetInt(m_result);
+		evt.SetExtraLong((long)m_newName);
+		wxPostEvent(&theApp, evt);
 	}
 
-	wxString SEEDSName(Completing_Fullname);
-	SEEDSName += wxT(".seeds");
-	if (wxFileName::FileExists(SEEDSName)) {
-		if (!wxRemoveFile(SEEDSName)) {
-			completing_result |= DELETE_FAIL_SEEDS;
-		}
-	}
-	
-	return NULL;
-}
+	//! The target filename.
+	wxString	m_filename;
+	//! The full path to the .met-file
+	wxString	m_metPath;
+	//! The category of the download.
+	uint8		m_category;
+	//! Owner of the file, used when sending completion-event.
+	void*		m_owner;
+	//! Contains the binary mask of errors that occured while completing
+	unsigned	m_result;
+	//! Pointer to the resulting filename (may be renamed).
+	wxString*	m_newName;
+};
 
-void completingThread::OnExit()
+
+void CPartFile::PerformFileComplete()
 {
-	// Kry - Notice the app that the completion has finished for this file.	
-	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
-	evt.SetClientData(completing);
-	evt.SetInt((int)completing_result);
-	evt.SetExtraLong((long)newname);
-	wxPostEvent(&theApp,evt);
-}
-
-
-// Lord KiRon - using threads for file completion
-uint8 CPartFile::PerformFileComplete()
-{
-	uint8 completed_errno = 0;
-	
-	//CSingleLock(&m_FileCompleteMutex,TRUE); // will be unlocked on exit
 	wxMutexLocker sLock(m_FileCompleteMutex);
 
 	// add this file to the suspended uploads list
@@ -2455,12 +2422,21 @@ uint8 CPartFile::PerformFileComplete()
 	m_hpartfile.Close();
 	
 	// Call thread for completion
-	cthread=new completingThread(GetFileName(), m_fullname, GetCategory(), this);
-	cthread->Create();
-	cthread->Run();
+	CCompletingThread* thread = new CCompletingThread(GetFileName(), m_fullname, GetCategory(), this);
+
+	if (thread->Create() != wxTHREAD_NO_ERROR) {
+		AddLogLineM(true, _("Failed to create file-completion thread!"));
+
+		thread->Delete();
+		SetStatus(PS_ERROR);
+	} else if (thread->Run() != wxTHREAD_NO_ERROR) {
+		AddLogLineM(true, _("Failed to start file-completion thread!"));
 	
-	return completed_errno;
+		thread->Delete();
+		SetStatus(PS_ERROR);
+	}
 }
+
 
 void  CPartFile::RemoveAllSources(bool bTryToSwap)
 {
@@ -2649,9 +2625,7 @@ void CPartFile::StopPausedFile()
 {
 	if (!IsStopped()) {
 		// Once an hour, remove any sources for files which are no longer active downloads
-		uint32 uState = GetStatus();
-
-		switch (uState) {
+		switch (GetStatus()) {
 			case PS_PAUSED:
 			case PS_INSUFFICIENT:
 			case PS_ERROR:
