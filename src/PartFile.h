@@ -44,7 +44,6 @@
 
 class CSearchFile;
 class CUpDownClient;
-class completingThread;
 class CMemFile;
 class CFileDataIO;
 class CED2KFileLink;
@@ -194,7 +193,6 @@ public:
 	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
-	completingThread* cthread;
 	bool	GetInsufficient() const		{ return m_insufficient; }
 	
 	void	CompleteFileEnded(int completing_result, wxString* newname);	
@@ -320,7 +318,7 @@ private:
 	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
 
-	uint8 	PerformFileComplete(); // Lord KiRon
+	void	PerformFileComplete();
 
 	uint32		m_lastRefreshedDLDisplay;
 	wxDateTime	m_lastDateChanged;
@@ -375,28 +373,8 @@ private:
 	uint8	m_TotalSearchesKad;
 
 friend class CPartFile_Encoder;
-friend class completingThread;
 friend class CDownQueueRem;
 friend class CPartFileConvert;
-};
-
-class completingThread : public wxThread
-{
-public:
-	~completingThread();
-	completingThread(wxString FileName, wxString fullname, uint32 Category, CPartFile* caller);
-	completingThread() { };
-
-private:
-	virtual	bool InitInstance() { return true; }
-	virtual wxThread::ExitCode Entry();
-	uint8 completing_result;
-	uint32 Completing_Category;
-	wxString Completing_FileName;
-	wxString Completing_Fullname;
-	wxString* newname;
-	CPartFile* completing;
-	virtual void OnExit();
 };
 
 #endif // PARTFILE_H
