@@ -134,6 +134,104 @@ Version 2.1.x - The "???" version
 		* A4AF transfer speed display fix
 
 	Xaignar:
+		* Switched manual path-joining to using the generic function.
+		* Fixed the "pause all" and "cancel all" commands via remote.
+		* Fixed bad replies on sharedfiles-list requests when public viewing
+		  of the list is disabled.
+		* When a message is filtered, always display the "Message filtered
+		  ..." log-entry instead of the "New message ..", rather than only
+		  displaying the "Message filtered" the first time, and then only the
+		  "New Message" the following times.
+		* Cleaned up the file-completion thread and fixed the following:
+		  * If creation or starting of the thread failed, the file would
+		    silently fail to complete.
+		  * If the file was renamed, the downloadlistctrl would still show the
+		    old name.
+		  * If the file was renamed and didn't have an extension, the "(x)"
+		    component would be added to the front of the filename.
+		  * When checking for unused filenames, if an file with the same name
+		    exists, the path would be a changed to the standard incoming
+			folder regardles of the file's category.
+		  * wxFileExists was used to check for the existance of the files,
+		    possibly leading to false negatives with unicoded filenames.
+		* Fixed files being added in stopped-mode when the "Add downloads in
+		  paused mode" setting was enabled. Since the "Start next ..." works
+		  on paused files, this makes more sense.
+		* Fixed bug #513. When "Start next ..." and "Same category .." was
+		  enabled, we would still select downloads from the wrong category,
+		  when there was still paused files in the desired category.
+		* Changed the StopPausedFile from actually stopping the file to simply
+		  clearing the sources, as this is the intended goal. Stopping the
+		  file was wrong, considering that it would leave a window of one hour
+		  in which the "Start next paused download" code would be useful.
+		* Added generic function for joining two paths.
+		* Dont allow renaming of downloads that are being completed.
+		* Made the comment-list dialog resizable.
+		* Enabled use of tool-tips on all variants. Sure, it doesn't work on
+		  all, but that's an issue for the wx-folks.
+		* Fixed Kad-Info and ED2K-Info lists not having any scroll-bars.
+		* Fixed compressed Kad packets having the wrong procotol set. Thanks
+		  to Gnucco for the heads-up.
+		* Only show the root-item circle for incomplete part-files.
+		* Prevent the adding of friends without IPs, via the clientlistctrl.
+		* Fixed serveral problems caused by the reuse of the preferences
+		  dialog window.
+		* Improved the popup menu on the downloadlistctrl.
+		* Fixed starting of next download being called under the wrong
+		  conditions when files were deleted via remote.
+		* Dropped the HTML version of ed2k-links.
+		* Fixed shutdown of the amulegui when the systray is enabled.
+		* Fixed bug #359. The preferences dialog is now reused between
+		  sessions, so the last used page and the state of the shared-files
+		  tree is remembered.
+		* Only enable the host-version of ed2k-links when a hostname has been
+		  specified (still no perferences widget for this).
+		* Fixed bug #700. The partfile conversion window is now raised
+		  properly when the button is clicked again (doesn't work with gtk1).
+		* Improved logging in CFile in situations where system-calls are used.
+		* Improved permissions checks for the .aMule folder. Also added checks
+		  for the Temp and Incoming folders.
+		* Fixed an unconditional Close call when creating part-files, which
+		  happened even if opening the file failed.
+		* Fixed the names of friends being cleared on the chat-notebook when
+		  the clientobject disconnected.
+		* Ensures that both the downloadlistctrl and sharedfileslistctrl are
+		  both up to date when a file has been renamed. Also switched to using
+		  the same dialog on both listsctrl.
+		* Check for items being sorted was moved to the CMuleListCtrl class,
+		  and to fix flickering on the server-list and and searchresult-lists,
+		  which is caused by insertions and deletions, the list is resorted
+		  instead, if an item is out of order after an update.
+		* Drop the use of jugle.net. It's dead, Jim!
+		* Changed the 'Clear' button on the search-page to only clear
+		  search-results. The 'Reset' button now takes care of the text-field
+		  and any extra parameter-fields. Serveral fixes were made to make
+		  sure all fields were properly cleared.
+		* Properly set filtering on newly added searches.
+		* Fixed broken sainitycheck in AddDownload
+		* Bug #688. Made the popup menu on the searchlistctrl similar to those
+		  on the downloadlistctrl and sharedfileslist. 
+		* Added serveral missing exception-handlers, which would cause aMule
+		  to terminate with an uncaught exception-error.
+		* Ensured that the internal libs are only built when needed.
+		* Fixed ed2k-links causing duplicate entries on the download-queue and
+		  made the sainity checks in AddDownload safer.
+		* Made the interal CryptoPP files part of the one of the temporary
+		  libraries to avoid building it three times (amule, amuled, amulegui).
+		* Removed printf-call from signal-handler.
+		* Unified download-handling on the search-page and fixed the download
+		  button, which was broken by previous commits.
+		* Fixed a leak in the UDP sockets which occurs when packets are sent
+		  via a dead or closed socket object.
+		* GetInstallPrefix is broken on wxWidgets 2.6.2, so only use it when
+		  building autopackages (since we can patch the sources). 
+		* Improved logging in case of clients requesting invalid file-data.
+		* Cleaned up autoconfigure files a bit.
+		* Added sainity checks to the downloadqueue's AddDownload function to
+		  catch this, should the problem appear again.
+		* Added checks to avoid loading duplicate partfiles, since downloads
+		  are identified by the hash. A warning is now issued when this
+		  happens.
 		* Add a "Download in category" sub-menu to the right-click menu on
 		  searchresult lists and moved download handling to CSearchListCtrl.
 		  This fixes bug #673.
@@ -365,7 +463,7 @@ Version 2.1.x - The "???" version
 		  it so that servers being deleted while we are doing a DNS lookup on
 		  their hostname cant result in accessing of dangling pointers. This
 		  should bug #581.
-		* Fixed bug #558: Sources not being sorted when the download-queue was
+		* Fixed bug #558. Sources not being sorted when the download-queue was
 		  sorted by the "Time Remaining" column.
 		* Cleaned up file-ratings and comments handling:
 			* Dropped the m_hasRating and m_hasBadRating booleans, as these
