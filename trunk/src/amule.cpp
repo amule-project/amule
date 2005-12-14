@@ -1970,7 +1970,11 @@ void CamuleApp::StartKad()
 		// Kad makes no sense without the Client-UDP socket.
 		if (!thePrefs::IsUDPDisabled()) {
 			Kademlia::CKademlia::start();
+		} else {
+			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
 		}
+	} else if (!thePrefs::GetNetworkKademlia()) {
+		AddLogLineM(true,_("Kad network disabled on preferences, not connecting."));
 	}
 }
 
