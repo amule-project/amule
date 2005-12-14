@@ -146,7 +146,6 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 	if ((hItem.IsOk()) && (flags &  wxTREE_HITTEST_ONITEMICON)) {
 		bool share_it = !IsBold(hItem);
 		CheckChanged(hItem, share_it);
-		Toggle(hItem);
 		wxTreeItemId hChild;
 		wxTreeItemIdValue cookie;
 		hChild = GetFirstChild(hItem,cookie);
@@ -154,7 +153,6 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 			MarkChildren(hChild,share_it);
 			hChild=GetNextSibling(hChild);
 		}
-		Toggle(hItem);
 		Refresh();
 	}
 	HasChanged = true;
