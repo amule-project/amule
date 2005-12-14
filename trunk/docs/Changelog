@@ -1,12 +1,13 @@
-Version 2.1.x - The "???" version
+Version 2.1.0 - The "???" version
 ----------
-2005-06-??
+2005-12-18
 
 	ender:
 		* Fix adding AICH links with amulecmd.
 
 	Gerd78:
 		* Fix linkage with static wx libraries.
+		* 
 
 	GonoszTopi:
 		* Fixed a small GUI glitch
@@ -82,8 +83,120 @@ Version 2.1.x - The "???" version
 		* Fixed a crash in amuleweb when the template isn't found
 		* Contributed to improvements in the new CTimer class
 
+	KingFish:
+		* Fixed systray shared files count.
+
 	Kry:
+		* Initial Kademlia import from eMule.
+		* Fixed endianess problems on Kad.
+		* Cleaning of the CContact class.
+		* Fixes on node lookup and distance calculation.
+		   This is colaborative development with John from eMule.
+		   (Added to eMule 0.46c)
+		* Fixed a crash on Kad search terms on the UDP listener.
+		   (Added to eMule 0.46c)
+		* Proper catching and more debug on Kad search and Data I/O
+		* Proper shutdown of Kad on exit.
+		* Kad firewalled sources are now contacted properly.
+		* Fixed a crash on search manager, caused by erase invalidating an iterator.
+		* Fixed another wrong usage of stl classes and some cleaning on clientlist.
+		* Added GUI checkbox to show/hide Filter options.
+		* Added -D_GLIBCXX_DEBUG to compilation flags.
+		* Fixed a crash on kad indexes caused by deleting the key invalidating the iterator.
+		* Cleaned the connection state functions out of their container classes to theApp.
+		   This fixes possible crashes on uninitialised serveconnect/kad classes.
+		* Removed all low-level winsock/linux sockets erferences from code.
+		* Moved wxEVT_NOTIFY_EVENT to wxEVT_MULE_NOTIFY_EVENT to avoid
+		   conflicting with wxWidgets own definitions.
+		* Removed daemon fork on windows to fix compilation.
+		* Fixed text-mode apps password ask on windows.
+		* Fixed preferences close to do a cancel event.
+		* Added EC debug messages on connection failures.
+		* Fixed memset usage on abstract types, causing crashes on some 
+		   configurations.
+		* Only use date and not hour from CVSDATE.
+		* Fixed MULENOTEBOOK events
+		* Fixed connect button behaviour, about 17 times (counted).
+		   Last implementation does:
+		   - Connect to enabled networks if aMule is not connected to any.
+		   - Disconnect if aMule is connected to any network.
+		* Fixed aMule remote gui to use event-driven EC.
+		* Fixed WOULDBLOCK on EC to retry tranfer.
+		* Fixed wxSOCKET_NOERROR not triggering a transfer on EC.
+		* Rethrow proper info on invalid Kad tag.
+		* Deprecated docs/amule-win32.HOWTO.txt, use wiki instead.
+		* Fixed GCC 4.0 compilation:
+			* ~CMD4Hash()
+			* ~CValueMap()
+			* CValueMap
+		* Update Kad tab on usercount change.
+		* Fixed wxSOCKET_WOULDBLOCK/NOERROR on EC to avoid losing packets.
+		* Avoid widnows execution writing ont he registry.
+		* Fixed Solaris Sparc compialtion (-lrt compilation flag).
+		* Throwing invalid kad type tags for debug measures.
+		* Acording to RFC3330, 24.* and 14.* must be parsed as normal ips.
+		* Some fixes to the (still partial) skin engine.
+		* Allow to expand relative paths on skin engine.
+		* Fix for too big tags (larger than packet) detection.
+		* Updated POTFILES.in, lots of times.
+		* Updated and centralized client emule compatible numbers.
+		* Fixed wxWidgets includes based on version.
+		* Fixed clicking "No" on shutdown confirmation... doing a shutdown.
+		* 
+		* Fxied Open File command on categories.
+		* Fixed detail level on EC tags failing silently on lower values.
+		* Fixed crash on remote gui if not config folder not existant.
+		* Created, fixed, killed the --enable-kad-compile switch to enable 
+		   non-kad compilations during test phase.
+		* Removed platform specific getlocalhost usage.
+		* Fixed ntohl usage on gap list saving.
+		* Removed wrong Merkur (c) from php libs (sorry Merkur, but those are ours :P)
+		* Fixed strings on log categories for protocol.
+		* Listensocket's fixed for debug on connection accept.
+		* Multiple Kad searches are allowed now, with independant tabs.
+		* Debug messages regarding late / unwanted kad searches results.
+		* Fixed Kad gui search return messages.
+		* Safety code on shared files' RotateReferences.
+		* Fixed endiannes on CUInt128::setValueBE / CUInt128::toByteArray
+		* Fixed ENDIAN_SWAP_**(x) definitions to use the proper 
+		   wxUINT**_SWAP_ON_BE/ON_LE/ALWAYS macros.
+		* Publishing of keywords (shared files) works now on Kad.
+		* Implemented Kad GUI.
+		* Fixed low speed connection to sources when only connected to kad
+		* Fixed Kad callback of lowid sources.
+		* Fixed Kad usage when ED2K is disabled.
+		* No more auto-reconnect on disconnect (woops).
+		* Speed up catch and proper window ID on HTTP download class.
+		* Added wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED) to
+		   app startup, cutting CPU usage a lot. Go figure.
+		* Changed the socket destruction to socket's Safe_Delete.
+		* Fixed a GetUDPPort usage where GetEffectiveUDPPort should be.
+		* Added UDP socket warnings on unknown errors.
+		* Client UDP socket error handling rewritten.
+		* Fixed UDP socket heap vs stack problems.
+		* Proper check for libgd (Sorry!).
+		* Showing Kad state on conection for fast reference.
+		* Added some code to catch unhandled exceptions on kad 
+		  and report them, so we know what's going on.
+		* Fix for crash/assert on wrong permisions on cryptkey.dat.
+		* Fixes for daemon compilation on OnRun usage.
+		* Fixed a Crash on Kad caused by packet constructor 
+		  deataching the data, causing a double-delete.
+		* Safety code for uncatched exceptions.
+		* Some changes to packet processing.
+		* Fixed a big mem bug on Kad.
 		* Fixed a bug with iterator usage in SearchManager.cpp
+		* Fixed a bug on PARTSIZE calculation that could lead to
+		   insanely large partsizes.
+		* Fixed possible buffer overflow on gap saving
+		* Fixed the RSB of this release. you know, one per release.
+		   (for those that are new to aMule, RSB = random socket bug)
+		* Cleaned, cleaned, cleaned code.
+		
+		* Fixed:
+			0000492: aMule gui fails to compile when using wxMotif 2.6.1
+			0000514: Not all common file types recognized as Audio
+			0000516: crash after repeated search
 
 	lfroen:
 		* PHP engine implementation for amuleweb
