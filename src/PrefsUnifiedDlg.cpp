@@ -64,7 +64,7 @@
 #include <common/Format.h>				// Needed for CFormat
 #include "TransferWnd.h"		// Needed for CTransferWnd::UpdateCatTabTitles()
 #include "KadDlg.h"				// Needed for CKadDlg
-
+#include "OScopeCtrl.h"			// Needed for OScopeCtrl
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Proxy
@@ -915,16 +915,20 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	case IDC_SLIDER:
 		id = IDC_SLIDERINFO;
 		label = wxString::Format( _("Update delay: %d secs"), event.GetPosition() );
+		theApp.amuledlg->statisticswnd->SetUpdatePeriod(event.GetPosition());
+		theApp.amuledlg->kademliawnd->SetUpdatePeriod(event.GetPosition());
 		break;
 
 	case IDC_SLIDER3:
 		id = IDC_SLIDERINFO3;
 		label = wxString::Format( _("Time for average graph: %d mins"), event.GetPosition() );
+		theApp.statistics->SetAverageMinutes(event.GetPosition());
 		break;
 
 	case IDC_SLIDER4:
 		id = IDC_SLIDERINFO4;
 		label = wxString::Format( _("Connections Graph Scale: %d"), event.GetPosition() );
+		theApp.amuledlg->statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
 		break;
 
 	case IDC_SLIDER2:

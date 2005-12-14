@@ -51,7 +51,7 @@ public:
 	~CStatisticsDlg();
 
 	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update);
-	void SetUpdatePeriod();
+	void SetUpdatePeriod(int step = 0);
 	void ResetAveragingTime();
 	void ShowStatistics(bool init = false);
 	void SetARange(bool SetDownload, int maxValue);
@@ -62,6 +62,7 @@ public:
 	void ApplyStatsColor(int index);
 	static COLORREF getColors(unsigned num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
+	COScopeCtrl* GetConnScope() { return pscopeConn; };
 
 protected:
 	static COLORREF	acrStat[15];

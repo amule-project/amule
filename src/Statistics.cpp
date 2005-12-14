@@ -227,6 +227,8 @@ CStatistics::CStatistics()
 
 	// Init graphs
 
+	average_minutes = thePrefs::GetStatsAverageMinutes();
+	
 	HR hr = {0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0};
 	hrInit = hr;
 	nHistRanges = 7;	// =ceil(log(max_update_delay)/log(2))
@@ -503,7 +505,7 @@ void CStatistics::ComputeAverages(
 	StatsGraphType	which_graph)		// the graph which will receive the points
 {	
 	double		sTarget, kValueRun;
-	uint64 		avgTime = thePrefs::GetStatsAverageMinutes() * 60;
+	uint64 		avgTime = average_minutes * 60;
 	unsigned	nBtPoints = (unsigned)(avgTime / sStep);
 
 	CPreciseRateCounter* runningAvg = NULL;

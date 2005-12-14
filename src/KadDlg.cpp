@@ -80,11 +80,11 @@ void CKadDlg::Init()
 }
 
 
-void CKadDlg::SetUpdatePeriod()
+void CKadDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
-	double sStep = thePrefs::GetTrafficOMeterInterval();
-	if (sStep == 0.0) {
+	double sStep = step ? step : thePrefs::GetTrafficOMeterInterval();
+		if (sStep == 0.0) {
 	 	m_kad_scope->Stop();
 	} else {
 	 	m_kad_scope->Reset(sStep);

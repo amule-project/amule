@@ -177,10 +177,10 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 }
 
 
-void CStatisticsDlg::SetUpdatePeriod()
+void CStatisticsDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
-	double sStep = thePrefs::GetTrafficOMeterInterval();
+	double sStep = step ? step : thePrefs::GetTrafficOMeterInterval();
 	if (sStep == 0.0) {
 	 	pscopeDL->Stop();
  		pscopeUL->Stop();

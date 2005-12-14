@@ -355,6 +355,8 @@ class CStatistics {
 	// EC
 	static	CECTag*	GetECStatTree(uint8 tree_capping_value)	{ return s_statTree->CreateECTag(tree_capping_value); }
 
+	void SetAverageMinutes(uint8 minutes) { average_minutes = minutes; }
+	
  private:
  	std::list<HR>	listHR;
 	typedef std::list<HR>::iterator		listPOS;
@@ -363,7 +365,7 @@ class CStatistics {
 	/* Graph-related functions */
 
 	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
-
+ 
 	int GetPointsPerRange()
 	{
 		return (1280/2) - 80; // This used to be a calc. based on GUI width
@@ -375,6 +377,8 @@ class CStatistics {
 	CPreciseRateCounter	m_graphRunningAvgUp;
 	CPreciseRateCounter	m_graphRunningAvgKad;
 
+	
+	uint8 average_minutes;
 	int	nHistRanges;
 	int	bitsHistClockMask;
 	int	nPointsPerRange;
@@ -507,6 +511,8 @@ class CStatistics {
 
 	void	UpdateStatsTree();
 
+	void SetAverageMinutes(uint8 minutes) { average_minutes = minutes; }
+	
  private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
 
@@ -515,6 +521,8 @@ class CStatistics {
 	static	uint64	s_start_time;
 	static	uint64	s_statData[sdTotalItems];
 
+	uint8 average_minutes;
+	
 	CRemoteConnect*	m_conn;
 };
 
