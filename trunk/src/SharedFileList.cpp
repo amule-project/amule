@@ -801,11 +801,26 @@ void CSharedFileList::CreateOfferedFilePacket(
 	if (cur_file->GetFileRating()) {
 		tags.push_back(new CTag(FT_FILERATING, cur_file->GetFileRating()));
 	}
-	
-	// NOTE: Archives and CD-Images are published with file type "Pro"
-	wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(cur_file->GetFileName())));
-	if (!strED2KFileType.IsEmpty()) {
-		tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
+
+	// NOTE: Archives and CD-Images are published+searched with file type "Pro"
+	bool bAddedFileType = false;
+	if (pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_TYPETAGINTEGER)) {
+		// Send integer file type tags to newer servers
+		EED2KFileType eFileType = GetED2KFileTypeSearchID(GetED2KFileTypeID(cur_file->GetFileName()));
+		if (eFileType >= ED2KFT_AUDIO && eFileType <= ED2KFT_CDIMAGE) {
+			tags.push_back(new CTag(FT_FILETYPE, (uint32)eFileType));
+			bAddedFileType = true;
+		}
+	}
+	if (!bAddedFileType) {
+		// Send string file type tags to:
+		//	- newer servers, in case there is no integer type available for the file type (e.g. emulecollection)
+		//	- older servers
+		//	- all clients
+		wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(cur_file->GetFileName())));
+		if (!strED2KFileType.IsEmpty()) {
+			tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
+		}
 	}
 
 	// There, we could add MetaData info, if we ever get to have that.

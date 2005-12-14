@@ -276,6 +276,7 @@ private:
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName);
 wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
 wxString GetFileTypeByName(const wxString &strFileName);
+EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID);
 ///////////////////////////////////////////////////////////////////////////////
 
 // md4cmp -- replacement for memcmp(hash1,hash2,16)

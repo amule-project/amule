@@ -997,7 +997,22 @@ wxString GetFileTypeByName(const wxString &strFileName)
 		default:		return wxEmptyString;
 	}
 }
-
+// Retuns the ed2k file type integer ID which is to be used for publishing+searching
+EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID)
+{
+	switch (iFileID) {
+		case ED2KFT_AUDIO:	return ED2KFT_AUDIO;
+		case ED2KFT_VIDEO:	return ED2KFT_VIDEO;
+		case ED2KFT_IMAGE:	return ED2KFT_IMAGE;
+		case ED2KFT_DOCUMENT:	return ED2KFT_DOCUMENT;
+		case ED2KFT_PROGRAM:	return ED2KFT_PROGRAM;
+		// NOTE: Archives and CD-Images are published+searched with file type "Pro"
+		// NOTE: If this gets changed, the function 'GetED2KFileTypeSearchTerm' also needs to get updated!
+		case ED2KFT_ARCHIVE:	return ED2KFT_PROGRAM;
+		case ED2KFT_CDIMAGE:	return ED2KFT_PROGRAM;
+		default:		return  ED2KFT_ANY;
+	}
+}
 
 /**
  * Dumps a buffer to a wxString
