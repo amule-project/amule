@@ -183,7 +183,19 @@ void CLogger::FlushPendingEntries()
 	
 	LogEntry* entry = NULL;
 	while ((entry = PopEntry())) {
-		theApp.NotifyEvent(GUIEvent(entry->event, entry->critical, entry->entry)); 
+		GUIEvent event(entry->event, entry->critical, entry->entry);
+	
+#ifdef CLIENT_GUI
+		theApp.NotifyEvent(event);
+#else
+		// Try to handle events immediatly when possible (to save to file).
+		if (theApp.IsRunning() or theApp.IsOnShutDown()) {
+			theApp.NotifyEvent(event);			
+		} else {
+			// The log-file may not yet have been created.
+			theApp.AddPendingEvent(event);
+		}
+#endif
 
 		delete entry;
 	}
@@ -206,19 +218,9 @@ void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& st
 	
 	if ( index >= 0 && index < categoryCount ) {
 		const CDebugCategory& cat = g_debugcats[ index ];
-		wxASSERT( type == cat.GetType() );
+		wxASSERT(type == cat.GetType());
 
-		wxString line = cat.GetName() + wxT(": ") + str;
-		
-#ifdef __DEBUG__
-		PushEntry(ADDDEBUGLOGLINE, critical, line);
-
-		if (wxThread::IsMain()) {
-			FlushPendingEntries();
-		}
-#else
-		printf("%s\n", (const char*)unicode2char( line ) );
-#endif
+		AddLogLine(critical, cat.GetName() + wxT(": ") + str);
 	} else {
 		wxASSERT( false );
 	}
@@ -237,3 +239,22 @@ unsigned int CLogger::GetDebugCategoryCount()
 {
 	return categoryCount;
 }
+
+
+CLoggerTarget::CLoggerTarget()
+{
+}
+
+
+void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
+{
+	wxCHECK_RET(msg, wxT("Log message is NULL in DoLogString!"));
+	
+	wxString str(msg);
+	
+	// This is much simpler than manually handling all wx log-types.
+	bool critical = str.StartsWith(_("Error: ")) or str.StartsWith(_("Warning: "));
+
+	CLogger::AddLogLine(critical, str);
+}
+

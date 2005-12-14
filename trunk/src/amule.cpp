@@ -196,6 +196,10 @@ CamuleApp::CamuleApp()
 
 CamuleApp::~CamuleApp()
 {
+	// Closing the log-file as the very last thing, since
+	// wxWidgets log-events are saved in it as well.
+	delete applog;
+	applog = NULL;
 }
 
 int CamuleApp::OnExit()
@@ -285,9 +289,6 @@ int CamuleApp::OnExit()
 	delete m_singleInstance;
 	m_singleInstance = NULL;
 	
-	delete applog; // deleting a wxFFileOutputStream closes it
-	applog = NULL;
-	
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
 	
@@ -339,6 +340,9 @@ bool CamuleApp::OnInit()
 	printf("Checkpoint set on app init for memory debug\n");
 	wxDebugContext::SetCheckpoint();
 #endif
+
+	// Forward wxLog events to CLogger
+	wxLog::SetActiveTarget(new CLoggerTarget);
 	
 #ifndef __WXMSW__
 	// get rid of sigpipe
