@@ -54,7 +54,7 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 %clean
 [ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
 
-%files
+%files -f amule.lang
 %defattr(-,root,root,-)
 %{_bindir}/amule
 %{_bindir}/ed2k

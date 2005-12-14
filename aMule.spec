@@ -37,7 +37,7 @@ the first multi-platform edonkey network client.
 %clean
 [ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
 
-%files
+%files -f amule.lang
 %defattr(-,root,root,-)
 %{_bindir}/amule
 %{_bindir}/ed2k
