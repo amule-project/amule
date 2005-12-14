@@ -1005,7 +1005,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	if (zero) {
 		emulesig_string = wxT("0\xA0.0|0.0|0");
-		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
+		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
 	} else {
 		if (IsConnectedED2K()) {
 
@@ -1051,7 +1051,18 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			// Not connected, state 0, no info
 			amulesig_out.AddLine(wxT("0\n0\n0\n0\n0"));
 		}
-
+		if (IsConnectedKad()) {
+			if(Kademlia::CKademlia::isFirewalled()) {
+				// Connected. Firewalled. State 1.
+				amulesig_out.AddLine(wxT("1"));
+			} else {
+				// Connected. State 2.
+				amulesig_out.AddLine(wxT("2"));
+			}
+		} else {
+			// Not connected.State 0.
+			amulesig_out.AddLine(wxT("0"));
+		}
 		emulesig_string += wxT("\xA");
 
 		wxString temp;

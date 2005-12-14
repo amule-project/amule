@@ -47,6 +47,7 @@
  * ????.??.?? - falso: HTML page generation
  * 2004.08.27 - GonoszTopi: New line handling routines, to cope with lines
  *		longer than 80 characters. Fixes buffer overflow.
+ * 2005.12.10 - fulgas: added kad info support
  */
 
 #include "lines.h"
@@ -73,9 +74,11 @@ int main(int argc, char *argv[])
 	/* Declaration of variables */
 	FILE *amulesig;
 	char *path;
-	char stats[20][80];
+	char *stats[20];
 	char *lines[6];
-	int ler, i;
+	long lSize;
+	char * buffer;
+	int i;
 	CONF config;
 
 	if ((argc == 2) && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
@@ -85,6 +88,7 @@ int main(int argc, char *argv[])
 
 	/* get amulesig path */
 	path = get_path("amulesig.dat");
+
 	if (path == NULL) {
 		perror("Unable to get aMule settings path\n");
 		exit(1);
@@ -94,7 +98,13 @@ int main(int argc, char *argv[])
 	if ((amulesig = fopen(path, "r")) == NULL) {
 		fprintf(stderr, "Unable to open file %s\nCheck if you have amule online signature enabled.\n", path);
 		exit(2);
-	} else {
+	} 
+	/* i believe this shouldnt be here. 
+	The freq of update could be higher than 60 seconds.
+	And it doesn't mean that the amule is not running.
+	*/
+	/*
+	else {
 		struct stat s_file;
 		if ( stat(path, &s_file) == 0 ) {
 			time_t t_now = time(0);
@@ -103,70 +113,91 @@ int main(int argc, char *argv[])
 				perror("Check that your aMule is running\n");
 			}
 		}
-	}
+	}*/
 	free(path);
 
 	/* initialize all the strings with nothing */
 	for (i = 0; i <= 19; i++)
-		stats[i][0] = 0;
+		stats[i] = 0;
 
 	/* start reading the stuff from amulesign to the stats array */
-	i = 0;
-	while (!feof(amulesig)) {
-		ler = fgetc(amulesig);
-
-		if (!feof(amulesig)) {
-
-			/* Make it DOS compatible.*/
-			if (ler == 13) ler = fgetc(amulesig);
-			if (ler != 10) {
-				if (strlen(stats[i]) < 80)
-					sprintf(stats[i], "%s%c", stats[i],
-							ler);
-			} else
-				i++;
-		}
-
+	// obtain file size.
+	fseek (amulesig , 0 , SEEK_END);
+	lSize = ftell (amulesig);
+	rewind (amulesig);
+	buffer = (char*) malloc (lSize);
+	if (buffer == NULL) {
+		perror("Could not create buffer\n");
+		exit (2);
 	}
+	fread (buffer,1,lSize,amulesig);
 	fclose(amulesig);
+
+	stats[0] = strtok (buffer,"\n"); /* ed2k status*/
+	stats[1] = strtok (NULL,"\n"); /* server name */
+	stats[2] = strtok (NULL,"\n"); /* server ip */
+	stats[3] = strtok (NULL,"\n"); /* server port */
+	stats[4] = strtok (NULL,"\n"); /* high or low id */
+	stats[5] = strtok (NULL,"\n"); /* kad status */
+	stats[6] = strtok (NULL,"\n"); /* dl */
+	stats[7] = strtok (NULL,"\n"); /* ul*/
+	stats[8] = strtok (NULL,"\n"); /* queue*/
+	stats[9] = strtok (NULL,"\n"); /* clients*/
+	stats[10] = strtok (NULL,"\n"); /* nick*/
+	stats[11] = strtok (NULL,"\n"); /* total download */
+	stats[12] = strtok (NULL,"\n"); /* total upload */
+	stats[13] = strtok (NULL,"\n"); /* version */
+	stats[14] = strtok (NULL,"\n"); /*Session download*/
+	stats[15] = strtok (NULL,"\n"); /* Session upload */
+	stats[16] = strtok (NULL,"\n"); /* aMule running Time */
 
 	/* if amule isnt running say that and exit else print out the stuff
 	 * [ToDo] States 0 & 2 mean offline/connecting not "not running"...
 	 */
-	if (stats[0][0] == '0') {
+	if (strcmp(stats[0],"0") == 0) {
 		perror("aMule is not running\n");
 		exit(3);
 	}
 
-	if (stats[0][0] == '2')
-		CreateLine(lines, 0 ,"aMule %s is connecting\n", stats[12]);
+	if (strcmp(stats[0],"2") == 0)
+		CreateLine(lines, 0 ,"aMule %s is connecting\n", stats[13]);
 	else
 		CreateLine(lines, 0, "aMule %s has been running for %s\n",
-				stats[12], timeconv(stats[15]));
+				stats[13], timeconv(stats[16]));
 
-	CreateLine(lines, 1, "%s is on %s [%s:%s] with ", stats[9],
+	CreateLine(lines, 1, "%s is on %s [%s:%s] with ", stats[10],
 			stats[1], stats[2], stats[3]);
-	if (stats[4][0] == 'H')
-		AppendToLine(lines, 1, "HighID\n");
-	else
-		AppendToLine(lines, 1, "LowID\n");
+	if (strcmp(stats[5],"2") == 0) {
+		if (strcmp(stats[4],"H") == 0)
+			AppendToLine(lines, 1, "HighID ( Kad: on )\n");
+		else
+			AppendToLine(lines, 1, "LowID ( Kad: on )\n");
+	} else if (strcmp(stats[5],"1") == 0) {
+		if (strcmp(stats[4],"H") == 0)
+			AppendToLine(lines, 1, "HighID ( Kad: firewalled )\n");
+        else
+			AppendToLine(lines, 1, "LowID ( Kad: firewalled )\n");
+	} else {
+		if (strcmp(stats[4],"H") == 0)
+			AppendToLine(lines, 1, "HighID ( Kad: off )\n");
+        else
+			AppendToLine(lines, 1, "LowID ( Kad: off )\n");
+	}
 
+	strcpy(stats[11],convbytes(stats[11]));
+	stats[12] = convbytes(stats[12]);
 
-	strcpy(stats[10], convbytes(stats[10])); /* total download */
-	strcpy(stats[11], convbytes(stats[11])); /* total upload */
-	CreateLine(lines, 2, "Total Download: %s, Upload: %s\n",
-			stats[10], stats[11]);
+	CreateLine(lines, 2, "Total Download: %s, Upload: %s\n",stats[11] , stats[12]);
 
-	strcpy(stats[13], convbytes(stats[13])); /* sess. download */
-	strcpy(stats[14], convbytes(stats[14])); /* sess. upload */
-	CreateLine(lines, 3, "Session Download: %s, Upload: %s\n",
-			stats[13], stats[14]);
+	strcpy(stats[15],convbytes(stats[15]));
+	stats[14] = convbytes(stats[14]);
 
-	CreateLine(lines, 4, "Download: %s kB/s, Upload: %s kB/s\n",
-			stats[5], stats[6]);
-	CreateLine(lines, 5,
-			"Sharing: %s file(s), Clients on queue: %s\n",
-			stats[8], stats[7]);
+	CreateLine(lines, 3, "Session Download: %s, Upload: %s\n",stats[14], stats[15]);
+
+	CreateLine(lines, 4, "Download: %s kB/s, Upload: %s kB/s\n", stats[6], stats[7]);
+
+	CreateLine(lines, 5, "Sharing: %s file(s), Clients on queue: %s\n", stats[9] , stats[8]);
+
 #ifdef __GD__
 	if (argc == 2 && strcmp(argv[1], "-o") == 0) {
 		if (!readconfig(&config)) {
@@ -203,12 +234,11 @@ int main(int argc, char *argv[])
 
 		exit(0);
 	}
-
 	for (i = 0; i <= 5; i++) {
 		printf("%s", lines[i]);
 		free(lines[i]);
 	}
-
+	free(buffer);
 	exit(0);
 }
 

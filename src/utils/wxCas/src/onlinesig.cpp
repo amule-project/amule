@@ -79,56 +79,71 @@ OnLineSig::SetAmuleSig ( const wxFileName& file )
 void
 OnLineSig::Refresh ()
 {
-	wxFileInputStream input ( m_amulesig.GetFullPath () );
+	wxFile file; 
+	if ( file.Open(m_amulesig.GetFullPath ()) ) {
+		wxFileInputStream input ( file );
 
-	wxTextInputStream text ( input );
-	text.SetStringSeparators ( wxT( "\n" ) );
+		wxTextInputStream text ( input );
+		text.SetStringSeparators ( wxT( "\n" ) );
 
-	text >> m_amuleState;
-	text >> m_serverName;
-	text >> m_serverIP;
-	text >> m_serverPort;
-	text >> m_connexionID;
-	text >> m_DLRate;
-	text >> m_ULRate;
-	text >> m_queue;
-	text >> m_sharedFiles;
-	text >> m_user;
-	text >> m_totalDL;
-	text >> m_totalUL;
-	text >> m_version;
-	text >> m_sessionDL;
-	text >> m_sessionUL;
-	text >> m_runTimeS;
+		text >> m_amuleState;
+		text >> m_serverName;
+		text >> m_serverIP;
+		text >> m_serverPort;
+		text >> m_connexionID;
+		text >> m_kadInfo;
+		text >> m_DLRate;
+		text >> m_ULRate;
+		text >> m_queue;
+		text >> m_sharedFiles;
+		text >> m_user;
+		text >> m_totalDL;
+		text >> m_totalUL;
+		text >> m_version;
+		text >> m_sessionDL;
+		text >> m_sessionUL;
+		text >> m_runTimeS;
 
-	double dl;
-	m_DLRate.ToDouble ( &dl );
+		double dl;
+		m_DLRate.ToDouble ( &dl );
 
-	if ( dl > m_sessionMaxDL || m_isSessionMaxDlReseted ) {
-		m_sessionMaxDL = dl;
-		m_sessionMaxDLDate = wxDateTime::Now();
-		m_isSessionMaxDlChanged = true;
-		m_isSessionMaxDlReseted = false;
+		if ( dl > m_sessionMaxDL || m_isSessionMaxDlReseted ) {
+			m_sessionMaxDL = dl;
+			m_sessionMaxDLDate = wxDateTime::Now();
+			m_isSessionMaxDlChanged = true;
+			m_isSessionMaxDlReseted = false;
+		}
+		else {
+			m_isSessionMaxDlChanged = false;
+		}
+
+		if ( dl > m_absoluteMaxDL || m_isAbsoluteMaxDlReseted ) {
+			m_absoluteMaxDL = dl;
+			m_absoluteMaxDlDate = wxDateTime::Now();
+			m_isAbsoluteMaxDlChanged = true;
+			m_isAbsoluteMaxDlReseted = false;
+		}
+		else {
+			m_isAbsoluteMaxDlChanged = false;
+		}
 	}
-	else {
-		m_isSessionMaxDlChanged = false;
-	}
-
-	if ( dl > m_absoluteMaxDL || m_isAbsoluteMaxDlReseted ) {
-		m_absoluteMaxDL = dl;
-		m_absoluteMaxDlDate = wxDateTime::Now();
-		m_isAbsoluteMaxDlChanged = true;
-		m_isAbsoluteMaxDlReseted = false;
-	}
-	else {
-		m_isAbsoluteMaxDlChanged = false;
-	}
+	file.Close();
+	
 }
 
 int OnLineSig::GetAmuleState() const
 {
 	if ( m_amuleState >= 0 && m_amuleState <= 2 ) {
 		return ( m_amuleState );
+	} else {
+		return ( -1 );
+	}
+}
+
+int OnLineSig::GetKadState() const
+{
+	if ( m_kadInfo >= 0 && m_kadInfo <= 2 ) {
+		return ( m_kadInfo );
 	} else {
 		return ( -1 );
 	}

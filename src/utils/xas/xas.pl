@@ -1,7 +1,7 @@
 #!/usr/bin/perl 
 # we register the script
 # if someone knows how to unload it clean....do tell
-IRC::register("xas", "1.7", "", "Xchat Amule Statistics");
+IRC::register("xas", "1.8", "", "Xchat Amule Statistics");
 # welcome message
 IRC::print "\n\0033  Follow the \0034 white\0033 rabbit\0038...\003\n";
 IRC::print "\n\0035 Use command \0038/xas\0035 to print out aMule statistics\003";
@@ -52,34 +52,60 @@ sub xas
 	 	{$amuleid="low"};
 
 	# are we online / offline / connecting
-	if ($amulesigdata[0]==0) {
-		$amulestatus="offline";
-		$amulextatus="" }
-	elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
-		$amulestatus="connecting"; 
-                $amulextatus="" }
-	else {
-		$amulestatus="online";
-		$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ]" };
+	#kad on
+	if($amulesigdata[5]==2) {
+		if ($amulesigdata[0]==0) {
+			$amulestatus="offline";
+			$amulextatus="( kad: on )";
+		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
+			$amulestatus="connecting"; 
+		    $amulextatus="( kad: on )" 
+		} else {
+			$amulestatus="online";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: on )";
+		}
+	} elsif ($amulesigdata[5]==1) {
+		if ($amulesigdata[0]==0) {
+			$amulestatus="offline";
+			$amulextatus="( kad: firewalled )" 
+		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
+			$amulestatus="connecting"; 
+            $amulextatus="( kad: firewalled )"; 
+		} else {
+			$amulestatus="online";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: firewalled )";
+		}
+	} else {
+		if ($amulesigdata[0]==0) {
+			$amulestatus="offline";
+			$amulextatus="( kad: off )";
+		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
+			$amulestatus="connecting"; 
+			$amulextatus="( kad: off )" ;
+		} else {
+			$amulestatus="online";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: off )";
+		}
+	}
 
 	# total download traffic in Gb
-	my $tdl = (sprintf("%.02f", $amulesigdata[10] / 1073741824));
+	my $tdl = (sprintf("%.02f", $amulesigdata[11] / 1073741824));
 
 	# total upload traffic in Gb
-	my $tul = (sprintf("%.02f", $amulesigdata[11] / 1073741824));
+	my $tul = (sprintf("%.02f", $amulesigdata[12] / 1073741824));
 
 	# session download traffic in Gb
-	my $sdl = (sprintf("%.02f", $amulesigdata[13] / 1048576));
+	my $sdl = (sprintf("%.02f", $amulesigdata[14] / 1048576));
 
 	# session upload traffic in Gb
-	my $sul = (sprintf("%.02f", $amulesigdata[14] / 1048576));
+	my $sul = (sprintf("%.02f", $amulesigdata[15] / 1048576));
 
 	# ratio
 	my $totalratio = (sprintf("%0.1f",$tdl/$tul));
 	my $sessionratio = (sprintf("%0.1f",$sdl/$sul));
 	
 	# convert runtime from sec to string
-	my $seconds = $amulesigdata[15];
+	my $seconds = $amulesigdata[16];
 	my $days    = pull_count($seconds, 86400);
         my $hours   = pull_count($seconds, 3600);
         my $minutes = pull_count($seconds, 60);
@@ -103,20 +129,20 @@ sub xas
 
 	# if current user isn't running aMule
 	if ( ! `ps --no-header -u $ENV{USER} | grep amule`) {
-		IRC::command "/say $amulesigdata[9] is not running";
+		IRC::command "/say $amulesigdata[10] is not running";
 		# Crash detection is implemented since v2-rc4, so XAS should be backwards compatible
-		if ( grep(/^1./,$amulesigdata[12]) || $amulesigdata[12]=="2.0.0rc1" || $amulesigdata[12]=="2.0.0rc2" || $amulesigdata[12]=="2.0.0rc3" ) {
-			IRC::command "/say aMule $amulesigdata[12] was closed after $runtime!" }
+		if ( grep(/^1./,$amulesigdata[13]) || $amulesigdata[13]=="2.0.0rc1" || $amulesigdata[13]=="2.0.0rc2" || $amulesigdata[13]=="2.0.0rc3" ) {
+			IRC::command "/say aMule $amulesigdata[13] was closed after $runtime!" }
 		elsif ( ! grep(/^00 /,$runtime)) {
-			IRC::command "/say aMule $amulesigdata[12] crashed after $runtime!" }
+			IRC::command "/say aMule $amulesigdata[13] crashed after $runtime!" }
 		else {
-			IRC::command "/say aMule $amulesigdata[12] was closed" };
+			IRC::command "/say aMule $amulesigdata[13] was closed" };
 		IRC::command "/say Total download traffic: $tdl Gb";
 		IRC::command "/say Total upload traffic:   $tul Gb" }
 	# if aMule is running
 	else {
-		IRC::command "/say $amulesigdata[9] is $amulestatus $amulextatus";
-		IRC::command "/say aMule $amulesigdata[12] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
+		IRC::command "/say $amulesigdata[10] is $amulestatus $amulextatus";
+		IRC::command "/say aMule $amulesigdata[13] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
 		# we only display "number of cpus" when we have more then one
 		if ($number_cpus > 1) {
@@ -124,10 +150,10 @@ sub xas
 		else {
 			IRC::command "/say on $cpu @ $mhz MHz up $uptime" };
 
-		IRC::command "/say Sharing $amulesigdata[8] files with $amulesigdata[7] clients in queue";
+		IRC::command "/say Sharing $amulesigdata[9] files with $amulesigdata[8] clients in queue";
 		IRC::command "/say Total download traffic: $tdl Gb, total upload traffic: $tul Gb, Total Ratio: 1:$totalratio";
 		IRC::command "/say Session download traffic: $sdl Mb, session upload traffic: $sul Mb, Session Ratio: 1:$sessionratio";
-		IRC::command "/say Current DL speed: $amulesigdata[5] KB/s, current UL speed:  $amulesigdata[6] KB/s" };
+		IRC::command "/say Current DL speed: $amulesigdata[6] KB/s, current UL speed:  $amulesigdata[7] KB/s" };
 	return 1;
 	# that's it
 }

@@ -284,11 +284,11 @@ WxCasFrame::GetStatImage () const
 #ifdef __WXMSW__
 
 	memdc.
-	SetFont ( wxFont::wxFont ( 10, wxSWISS, wxNORMAL, wxBOLD ) );
+	SetFont ( wxFont::wxFont ( 6, wxSWISS, wxNORMAL, wxBOLD ) );
 #else
 
 	memdc.
-	SetFont ( wxFont::wxFont ( 12, wxSWISS, wxNORMAL, wxBOLD ) );
+	SetFont ( wxFont::wxFont ( 8, wxSWISS, wxNORMAL, wxBOLD ) );
 #endif
 
 	memdc.
@@ -747,8 +747,16 @@ WxCasFrame::MakeStatLine_2() const
 			   + _( ":" )
 			   + m_aMuleSig->GetServerPort ()
 			   + _( "] with " )
-			   + m_aMuleSig->GetConnexionIDType ();
-
+			   + m_aMuleSig->GetConnexionIDType ()
+			   + _( " ( Kad: " );
+	if(m_aMuleSig->GetKadState() == 2) {
+		newline += _( "on");
+	} else if (m_aMuleSig->GetKadState() == 1) {
+		newline += _( "firewalled");
+	} else {
+		newline += _( "off");
+	}
+	newline += _( " )");
 	return ( newline );
 }
 
