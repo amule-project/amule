@@ -47,7 +47,7 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 22 "Parser.y"
+#line 23 "./Parser.y"
 typedef union YYSTYPE {
 	wxString*		pstr;
 	CSearchExpr*	pexpr;

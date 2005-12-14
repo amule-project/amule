@@ -58,7 +58,9 @@
 
 #include "SearchExpr.h"
 
+#include "Scanner.h.in"
 #include "Scanner.h"
+
 extern int yyparse();
 extern int yyerror(const char* errstr);
 extern int yyerror(wxString errstr);
@@ -846,7 +848,7 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, const wxSt
     LexFree();
 	
 	#ifdef __DEBUG__
-	printf("Search parsing result: %i\n",iParseResult);
+	printf("Search parsing resultfor \"%s\": %i\n",(const char*)unicode2char(searchString),iParseResult);
 	#endif
 	if (_astrParserErrors.Count() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
