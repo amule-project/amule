@@ -198,7 +198,7 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 void CTransferWnd::OnSetCatStatus( wxCommandEvent& event )
 {
 	if ( event.GetId() == MP_CANCEL ) {
-		if ( wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"), wxYES_NO|wxCENTRE|wxICON_EXCLAMATION) == wxNO ) {
+		if ( wxMessageBox(_("Are you sure you wish to cancel and delete all files in this category?"),_("Confirmation Required"), wxYES_NO|wxCENTRE|wxICON_EXCLAMATION, this) == wxNO) {
 			return;
 		}
 	}

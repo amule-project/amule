@@ -733,7 +733,7 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 	if (!folder.IsEmpty()) {
 		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
 					 _("Remove sources?"),
-					 wxYES_NO | wxCANCEL | wxICON_QUESTION);
+					 wxYES_NO | wxCANCEL | wxICON_QUESTION, this);
 		if (reply != wxCANCEL) {
 			CPartFileConvert::ScanFolderToAdd(folder, (reply == wxYES));
 		}

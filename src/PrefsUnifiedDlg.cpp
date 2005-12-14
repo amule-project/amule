@@ -480,7 +480,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
 			"Your Auto-update servers list is in blank.\n"
-			"'Auto-update serverlist at startup' will be disabled.")));
+			"'Auto-update serverlist at startup' will be disabled.")),
+			_("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 
 	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty() ) {
@@ -488,7 +489,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 		wxMessageBox( _(
 			"You have enabled external connections but have not specified a password.\n"
-			"External connections cannot be enabled unless a valid password is specified.") );
+			"External connections cannot be enabled unless a valid password is specified."));
 	}
 	
 	// save the preferences on ok
@@ -569,12 +570,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}	
 	
 	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
-		wxMessageBox(wxString::wxString(
-			_("Kad will not start if your UDP port is disabled.\nEnable UDP port or disable Kad.")));
+		wxMessageBox(_("Kad will not start if your UDP port is disabled.\nEnable UDP port or disable Kad."),
+			 _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 	
 	if (restart_needed) {
-		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION);
+		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION,this);
 	}
 	
 	Show(false);
@@ -648,7 +649,8 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"
 					"Please fill in at least one URL to point to a valid server.met file.\n"
-					"Click on the button \"List\" by this checkbox to enter an URL.")));
+					"Click on the button \"List\" by this checkbox to enter an URL.")),
+					_("Message"), wxOK | wxICON_INFORMATION);
 				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
 			}
 			break;
