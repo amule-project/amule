@@ -538,8 +538,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "Scanner.l"
-#line 2 "Scanner.l"
+#line 1 "./Scanner.l"
+#line 2 "./Scanner.l"
 #include <stdio.h>
 #include "SearchExpr.h"
 #include "Parser.hpp"
@@ -719,7 +719,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 36 "Scanner.l"
+#line 36 "./Scanner.l"
 
 
 #line 726 "Scanner.cpp"
@@ -807,27 +807,27 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 38 "Scanner.l"
+#line 38 "./Scanner.l"
 { /* Skip blanks. */ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 39 "Scanner.l"
+#line 39 "./Scanner.l"
 { return TOK_OR; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 40 "Scanner.l"
+#line 40 "./Scanner.l"
 { return TOK_AND; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 41 "Scanner.l"
+#line 41 "./Scanner.l"
 { return TOK_NOT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 43 "Scanner.l"
+#line 43 "./Scanner.l"
 {
 					yylval.pstr = new wxString(char2unicode(yytext));
 					return TOK_ED2K_LINK;
@@ -836,7 +836,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 48 "Scanner.l"
+#line 48 "./Scanner.l"
 {
 					yylval.pstr = new wxString(char2unicode(yytext));
 					return TOK_STRING;
@@ -844,7 +844,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 53 "Scanner.l"
+#line 53 "./Scanner.l"
 {
 					int l = 128;
 					char* psz = (char*)malloc(l);
@@ -948,12 +948,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 154 "Scanner.l"
+#line 154 "./Scanner.l"
 { return yytext[0]; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 156 "Scanner.l"
+#line 156 "./Scanner.l"
 ECHO;
 	YY_BREAK
 #line 960 "Scanner.cpp"
@@ -1922,7 +1922,7 @@ void yyfree (void * ptr )
 #undef YY_DECL_IS_OURS
 #undef YY_DECL
 #endif
-#line 156 "Scanner.l"
+#line 156 "./Scanner.l"
 
 
 
@@ -1961,6 +1961,18 @@ void LexInit(const wxString& pszInput)
 void LexFree()
 {
 	yyleng = 0;
+	yytext = NULL;
+	yyin = NULL;
+	yyout = NULL;
+	yy_hold_char = '\0';
+	yy_n_chars = 0;
+	yy_c_buf_p = NULL;
+	yy_init = 1;
+	yy_start = 0;
+	yy_did_buffer_switch_on_eof = 0;
+	yy_last_accepting_state = 0;
+	yy_last_accepting_cpos = NULL;
+	
 #if YY_STACK_USED
 	yy_start_stack_ptr = 0;
 	yy_start_stack_depth = 0;
