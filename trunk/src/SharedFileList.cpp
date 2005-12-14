@@ -806,20 +806,6 @@ void CSharedFileList::CreateOfferedFilePacket(
 		tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
 	}
 
-	wxString strExt;
-	int iExt = cur_file->GetFileName().Find(wxT('.'), true);
-	if (iExt != -1){
-		strExt = cur_file->GetFileName().Mid(iExt);
-		if (!strExt.IsEmpty()){
-			strExt = strExt.Mid(1);
-			if (!strExt.IsEmpty()){
-				strExt.MakeLower();
-				tags.push_back(new CTag(FT_FILEFORMAT, strExt)); // file extension without a "."
-			}
-		}
-	}
-
-		
 	// There, we could add MetaData info, if we ever get to have that.
 	
 	EUtf8Str eStrEncode;
