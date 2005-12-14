@@ -74,9 +74,10 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "Parser.y"
+#line 1 "./Parser.y"
 
 #include "SearchExpr.h"
+#include "Scanner.h.in"
 #include "Scanner.h"
 #include "OtherFunctions.h"
 
@@ -115,13 +116,13 @@ int yyerror(wxString errstr);
 #endif
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 22 "Parser.y"
+#line 23 "./Parser.y"
 typedef union YYSTYPE {
 	wxString*		pstr;
 	CSearchExpr*	pexpr;
 } YYSTYPE;
 /* Line 196 of yacc.c.  */
-#line 125 "Parser.cpp"
+#line 126 "Parser.cpp"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -133,7 +134,7 @@ typedef union YYSTYPE {
 
 
 /* Line 219 of yacc.c.  */
-#line 137 "Parser.cpp"
+#line 138 "Parser.cpp"
 
 #if ! defined (YYSIZE_T) && defined (__SIZE_TYPE__)
 # define YYSIZE_T __SIZE_TYPE__
@@ -357,8 +358,8 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    41,    41,    47,    56,    65,    66,    76,    86,    96,
-     101,   107,   113,   118,   124,   129,   134,   141,   146
+       0,    42,    42,    48,    57,    66,    67,    77,    87,    97,
+     102,   108,   114,   119,   125,   130,   135,   142,   147
 };
 #endif
 
@@ -1129,7 +1130,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 42 "Parser.y"
+#line 43 "./Parser.y"
     {
 						ParsedSearchExpression((yyvsp[0].pexpr));
 						delete (yyvsp[0].pexpr);
@@ -1138,7 +1139,7 @@ yyreduce:
     break;
 
   case 3:
-#line 48 "Parser.y"
+#line 49 "./Parser.y"
     {
 						CSearchExpr* pexpr = new CSearchExpr(*(yyvsp[0].pstr));
 						ParsedSearchExpression(pexpr);
@@ -1149,7 +1150,7 @@ yyreduce:
     break;
 
   case 4:
-#line 57 "Parser.y"
+#line 58 "./Parser.y"
     {
 						yyerror(wxT("Undefined search expression error"));
 						delete (yyvsp[-1].pexpr);
@@ -1158,7 +1159,7 @@ yyreduce:
     break;
 
   case 6:
-#line 67 "Parser.y"
+#line 68 "./Parser.y"
     {
 						CSearchExpr* pexpr = new CSearchExpr;
 						pexpr->Add(SEARCHOP_AND);
@@ -1171,7 +1172,7 @@ yyreduce:
     break;
 
   case 7:
-#line 77 "Parser.y"
+#line 78 "./Parser.y"
     {
 						CSearchExpr* pexpr = new CSearchExpr;
 						pexpr->Add(SEARCHOP_OR);
@@ -1184,7 +1185,7 @@ yyreduce:
     break;
 
   case 8:
-#line 87 "Parser.y"
+#line 88 "./Parser.y"
     {
 						CSearchExpr* pexpr = new CSearchExpr;
 						pexpr->Add(SEARCHOP_NOT);
@@ -1197,14 +1198,14 @@ yyreduce:
     break;
 
   case 9:
-#line 97 "Parser.y"
+#line 98 "./Parser.y"
     {
 						(yyval.pexpr) = (yyvsp[-1].pexpr);
 					;}
     break;
 
   case 10:
-#line 102 "Parser.y"
+#line 103 "./Parser.y"
     {
 						yyerror(wxT("Missing right operand for OR on search expression"));
 						delete (yyvsp[-2].pexpr);
@@ -1213,7 +1214,7 @@ yyreduce:
     break;
 
   case 11:
-#line 108 "Parser.y"
+#line 109 "./Parser.y"
     {
 						yyerror(wxT("Missing operand for NOT on search expression"));
 						delete (yyvsp[-2].pexpr);
@@ -1222,7 +1223,7 @@ yyreduce:
     break;
 
   case 12:
-#line 114 "Parser.y"
+#line 115 "./Parser.y"
     {
 						yyerror(wxT("Missing left parenthesis on search expression"));
 						return 1;
@@ -1230,7 +1231,7 @@ yyreduce:
     break;
 
   case 13:
-#line 119 "Parser.y"
+#line 120 "./Parser.y"
     {
 						yyerror(wxT("Missing closing parenthesis on search expression"));
 						delete (yyvsp[-1].pexpr);
@@ -1239,7 +1240,7 @@ yyreduce:
     break;
 
   case 14:
-#line 125 "Parser.y"
+#line 126 "./Parser.y"
     {
 						yyerror(wxT("Missing left operand for AND on search expression"));
 						return 1;
@@ -1247,7 +1248,7 @@ yyreduce:
     break;
 
   case 15:
-#line 130 "Parser.y"
+#line 131 "./Parser.y"
     {
 						yyerror(wxT("Missing left operand for OR on search expression"));
 						return 1;
@@ -1255,7 +1256,7 @@ yyreduce:
     break;
 
   case 16:
-#line 135 "Parser.y"
+#line 136 "./Parser.y"
     {
 						yyerror(wxT("Missing left operand for NOT on search expression (?)"));
 						return 1;
@@ -1263,7 +1264,7 @@ yyreduce:
     break;
 
   case 17:
-#line 142 "Parser.y"
+#line 143 "./Parser.y"
     {
 						(yyval.pexpr) = new CSearchExpr(*(yyvsp[0].pstr));
 						delete (yyvsp[0].pstr);
@@ -1271,7 +1272,7 @@ yyreduce:
     break;
 
   case 18:
-#line 147 "Parser.y"
+#line 148 "./Parser.y"
     {
 						/*$1->Concatenate($2);
 						delete $2;*/
@@ -1290,7 +1291,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1294 "Parser.cpp"
+#line 1295 "Parser.cpp"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1558,7 +1559,7 @@ yyreturn:
 }
 
 
-#line 160 "Parser.y"
+#line 161 "./Parser.y"
 
 
 int yyerror(const char* errstr)
