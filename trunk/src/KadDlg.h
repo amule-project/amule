@@ -44,7 +44,7 @@ public:
 	~CKadDlg() {};
 	
 	void Init();
-	void SetUpdatePeriod();
+	void SetUpdatePeriod(int step = 0);
 	void SetGraphColors();
 	void UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update);
 		
