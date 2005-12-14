@@ -351,7 +351,7 @@ enum OP_ClientToServer {
 #define TAG_FILENAME				"\x01"	// <string>
 #define FT_FILESIZE				 0x02	// <uint32>
 #define TAG_FILESIZE				"\x02"	// <uint32>
-#define FT_FILETYPE				 0x03	// <string>
+#define FT_FILETYPE				 0x03	// <string> or <uint32>
 #define TAG_FILETYPE				"\x03"	// <string>
 #define FT_FILEFORMAT				 0x04	// <string>
 #define TAG_FILEFORMAT				"\x04"	// <string>
