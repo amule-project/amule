@@ -77,6 +77,11 @@ void CServerConnect::TryAnotherConnectionrequest()
 
 void CServerConnect::ConnectToAnyServer(bool prioSort)
 {
+	if (!thePrefs::GetNetworkED2K()){
+		AddLogLineM(true,_("ED2K network disabled on preferences, not connecting."));
+		return;
+	}
+
 	StopConnectionTry();
 	Disconnect();
 	connecting = true;
@@ -118,7 +123,12 @@ void CServerConnect::ConnectToAnyServer(bool prioSort)
 
 
 void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
-{
+{	
+	if (!thePrefs::GetNetworkED2K()){
+		AddLogLineM(true,_("ED2K network disabled on preferences, not connecting."));
+		return;
+	}
+	
 	if (!multiconnect) {
 		StopConnectionTry();
 		Disconnect();
